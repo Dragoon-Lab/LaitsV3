@@ -1,0 +1,31 @@
+<?xml version='1.0' encoding='ISO-8859-1'  ?>
+<!DOCTYPE toc
+  PUBLIC "-//Sun Microsystems Inc.//DTD JavaHelp TOC Version 1.0//EN"
+         "http://java.sun.com/products/javahelp/toc_1_0.dtd">
+<toc version="1.0">
+  <tocitem text="Introduction" target="introduction"/>
+  <tocitem text="Main window and toolbars" target="main_window_and_toolbars"/>
+  <tocitem text="Editing graphs"> 
+    <tocitem text="Introduction" target="editing_introduction"/>
+    <tocitem text="To edit in insert mode" target="insert_mode"/>
+    <tocitem text="To edit in not insert mode" target="not_insert_mode"/>
+  </tocitem>
+  <tocitem text="Menus and there operations">
+    <tocitem text="File menu" target="file_menu"/>
+    <tocitem text="Edit menu" target="edit_menu"/>
+    <tocitem text="View menu" target="view_menu"/>
+    <tocitem text="Selection menu" target="selection_menu"/>
+    <tocitem text="Operations menu" target="operations_menu"/>
+    <tocitem text="Properties menu" target="properties_menu"/>
+  </tocitem>
+  <tocitem text="Export and import"> 
+    <!--<tocitem text="Introduction" target="introduction_export_and_import"/>-->
+    <tocitem text="Export" target="export_file_formats"/>
+    <tocitem text="Import" target="import_file_formats"/>
+  </tocitem>
+  <tocitem text="About the program">
+  	<tocitem text="Used libraries" target="libraries"/>
+  	<tocitem text="License" target="license"/>
+  	<tocitem text="Contact" target="contact"/>
+  </tocitem>
+</toc>

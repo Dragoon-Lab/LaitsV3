@@ -1,0 +1,142 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<html>
+<head>
+
+
+    
+    
+  
+  
+  <title>Exportable file formats</title>
+  <meta content="">
+
+
+    
+  
+  <style></style>
+</head>
+
+
+<body>
+
+
+  
+  
+<h1>Export</h1>
+
+The file menu contains a submenu with a number of different file
+formats that it is possible to export the graph to. The submenu is under the menu
+item called <i>Export to...</i>. Bellow are the different file formats described with referenses to webpages where it is possible to find more information.
+  
+  
+<h2>Graphviz dot-file format</h2>
+
+
+  
+<p> This format can be used with the Graphviz tools produced in the
+Graphviz project. The Graphviz tools can create images of graphs from
+simple graph descriptions. The generated file is a description of a
+undirected graph created from the current graph. See the Graphviz
+documentation for information of how to change the files and configure
+the output. Bellow is an example of a command that produces a
+PNG-image file with a graph drawn from the description in the test.dot
+file:<br>
+
+
+  <i>neato test.dot -Tpng &gt; test.png</i>
+  </p>
+
+
+  <i>http://www.graphviz.org</i>
+  
+<h2>GraphML</h2>
+
+
+  
+<p> GraphML is an XML based file format for describing all types of
+graph structures. Among other things it has support for both undirected and directed graphs. The generated file is a description of an undirected graph. </p>
+
+
+  <i>http://graphml.graphdrawing.org</i>
+  
+<h2>Graph Modeling Language (GML)</h2>
+
+
+    
+<p> GML was created to make a universal graph file format that could be
+used in all types of graph programs. It is possible to attach all kind
+of data to the graph objects. </p>
+
+
+  <i>http://www.infosun.fim.uni-passau.de/Graphlet/GML</i>
+  
+  
+<h2>File format compatible with Mathematica Combinatorica software</h2>
+
+
+   
+<p> This file format is a simple neighbour list with position
+information for vertices. It can be opened with the Mathematica
+software. </p>
+
+
+  
+  
+<p> Each row in the file format represents a vertex. The first number
+on each line is a vertex identification. The two floating point number
+next on the line is the horizontal and vertical coordinates of the
+vertex. The numbers coming after that is the identifications of the
+vertices that are neighbours to the vertex. </p>
+
+
+  <i>http://www.wolfram.com</i>
+    
+<h2>Neighbour&nbsp;list</h2>
+
+
+   
+<p>
+   The files exported by this exporter are exactly the same as files that are exported by the <i>Mathematica</i> exporter except that they do not contain vertex position information.
+  </p>
+
+
+
+  
+  
+<h2>JPEG image file format</h2>
+
+
+  
+<p>
+  When you export to a JPEG (Joint Photographic Experts Group) image the graph is exported exactly as it looks like in the <i>graph window</i>
+except that the selection is cleared. This means that if you zoom in
+the graph the exported image will be bigger. The image exported is the
+same size as the least bounding rectangle of all vertices plus an empty
+border with 5 pixels. </p>
+
+
+  <i>http://www.jpeg.org</i>
+  
+<h2>PNG image file format</h2>
+
+
+	
+<p>The PNG (Portable Network Graphics) export export is similar to the JPEG export
+but produces a PNG image.</p>
+
+
+	    <i>http://www.w3.org/Graphics/PNG</i>
+  
+<h2>EPS image file format</h2>
+
+
+    
+<p> The EPS (Encapsulated PostScript) image files produced by this exporter uses vector graphics
+which makes the images scalable. It is a very popular file format for
+images included in e.g. scientific reports. </p>
+
+
+http://www.prepressure.com/formats/eps/fileformat.htm
+  
+</body>
+</html>
