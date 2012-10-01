@@ -1,0 +1,241 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<html>
+<head>
+
+
+
+    
+    
+  
+  
+  
+  
+  <title>The operations menu and its content</title>
+  <meta content="">
+
+
+
+    
+  
+  
+  <style></style>
+</head>
+
+
+<body>
+
+
+
+  
+<h1>The operations menu and its content</h1>
+
+
+
+  
+<p>
+  <img src="operations_menu.png"></p>
+<p>
+
+
+  This menu is also available under the menus that come up when you click with the right mouse button in the <i>graph window</i>.
+The menu contain commands that perform some kind of operation on
+the graph. Most operations change the graph, but there is also one command
+that traverses the graph to take information from it, namely <i>Calculate graph statistics</i>.
+The commands have been divided by lines in the menu into categories.
+All menu items in the same category are similar to each other in some
+way. That has been done to make it easier to
+find a certain command. The description of the menu commands below is
+also divided in the same way. The description marked with the number
+one describes the first category from the top of the menu and so on. </p>
+
+
+
+  
+<p>
+  </p>
+
+
+<ol>
+
+
+
+   <li>The first category contains operations or graph products that need two subgraphs. They are selected by the user in two steps: 
+   
+    
+    
+    <p>When a command has been started by a click on a menu item in the
+category the statusbar in the bottom of the window displays a message.
+The message tells the user to select the vertices that is in the first
+subgraph and then press <i>enter</i>. When <i>enter</i> is pressed the user can
+select the second subgraph in the same way. Because the operations need
+two disjoint vertex sets it is not possible to select vertices in the
+first set when the second is being selected. They are therefore marked
+with a red cross. To cancel a started operation the user can press the
+<i>escape</i> key.&nbsp; </p>
+
+
+
+   
+    
+    
+    <p>
+   The operations in this category is:
+ </p>
+
+
+    
+    
+    <ul>
+
+
+
+   <li>The <b>Complete bipartite graph</b> operation creates a
+complete bipartite graph of two vertex sets. The operation does not
+remove edges that are already there. A complete bipartite graph made up
+by two vertex sets A with n vertices and B with m vertices is denoted by K<sub>m,n</sub>
+and is a graph where every vertex in A is connected to all vertices in
+B and every vertex in B is connected to all vertices in A.</li>
+
+
+
+   <li>The <b>Graph Cartesian Product</b> operation creates a graph that is the <i>Graph Cartesian Product</i> of two graphs G<sub>1</sub> and G<sub>2</sub>. The resulting graph is placed to the left under the orginal graph in the <i>graph window</i>. For a definition of &nbsp;the <span style="font-style: italic;">Graph Cartesian Product</span> please see, <span style="font-style: italic;">http://mathworld.wolfram.com/GraphCartesianProduct.html</span>.</li>
+
+
+
+   
+   <li>The <b>Graph Categorical Product</b> operation creates a graph that is the <i>Graph Categorical Product</i> of two graphs G<sub>1</sub> and G<sub>2</sub>. The resulting graph is placed to the left under the orginal graph in the <i>graph window</i>.&nbsp;For a definition of &nbsp;the&nbsp;<i>Graph Categorical Product</i><span style="font-style: italic;"></span> please see, http://mathworld.wolfram.com/GraphCategoricalProduct.html.
+   </li>
+
+
+
+ 
+    
+    
+    </ul>
+
+
+
+   
+   
+    
+    
+    <p></p>
+
+
+
+   
+   </li>
+
+
+
+   <li> This category contains operations that only use one graph as
+operand. The operand is the graph created by the selected vertex set.
+The menu item in this category is only enabled if one or more vertices
+is selected. At the moment there is only one operation in this
+category. The <b>Make selected subgraph complete</b> operation makes
+the subgraph created by the selected vertex set to a complete subgraph
+by adding edges so every vertex is neighbour to every other vertex in
+the vertex set.</li>
+
+
+
+   <li> This category contains operations that modify the position of
+selected vertices. The menu items is only enabled if any vertices are
+selected. The operations in this category is listed below with an
+explanation of what they do:
+    
+    
+    <ul>
+
+
+
+   <li>The <b>Place selected vertices in circle</b> operation
+reorganize the selected vertices so they are placed in the edge of a
+circle with the same distance between each vertex. The circle's
+diameter is equal to the greatest of the width and the height of the
+least bounding rectangle of the selected vertices. The circle's center is in
+the center of the bounding box. </li>
+
+
+
+   <li>The <b>Mirror selected vertices vertical</b> operation mirror
+all selected vertices over the x-axis through the center of the
+least bounding rectangle of all selected vertices. To mirror a
+vertex over a vertical axis is to change its horizontal position so
+it is on equal distance from the axis but on the opposite side.</li>
+
+
+
+   <li>The <b>Mirror selected vertices horizontal</b> does the same thing as <i>Mirror selected vertices vertical</i> does but over the horizontal axis instead of the vertical.</li>
+
+
+
+   <li>The <b>Rotate selected vertices</b> operation brings up a
+rotation dialog where it is possible to select a rotation angle for
+the selected vertices. When the angle is changed in the dialog the
+graph is instantly updated. To keep the new angle press the <i>ok</i> button and use the <i>cancel</i>
+button to cancel the changes. The vertices is rotated around the center
+of the least bounding rectangle for the selected vertices.</li>
+
+
+
+   <li>The <b>Expand selected by factor...</b> command brings up a dialog. In the dialog it is possible to select a decimal expand factor. There are two buttons. A <i>cancel button</i> that closes the dialog and an <i>expand button</i>
+that expand or shrink the selected vertices by the expand factor. The
+name of the command is misleading in the way that it can not only be
+used to expand but also to shrink. When the <i>expand button</i> is pressed the vertical and horizontal distances between vertices is multiplied with the expand factor.</li>
+
+
+
+   <li>The <b>Modify selected vertices</b> menu item brings up a submenu where it is possible to change the color and the shape of selected vertices.</li>
+
+
+
+ 
+    
+    
+    </ul>
+
+
+
+   </li>
+
+
+
+   <li>This category contains edge operations. Items in this
+category is only enabled when one or more edges are selected. The <b>Split selected edges...</b> command brings up a dialog where you can select a number of vertices to input for each selected edge. When the <i>ok button</i>
+is pressed every selected edge is removed and then the number of
+vertices that have been chosen is inserted between all the vertices
+that previously where neighbours. New edges are also created between the
+newly inserted vertices and the vertices that was previously neighbours
+so a path with the length (<span style="font-style: italic;">number of inserted vertices + 1</span>) are created between all vertices that previously were neighbours.
+   </li>
+
+
+
+   <li>The <b>Apply graph layout algorithm...</b> command brings up a
+dialog where you can select a number of graph layout algorithms that
+you can execute on the graph. You can select to execute most of the
+algorithms on selected vertices or all vertices.</li>
+
+
+
+   <li>The <b>Calculate graph statistics</b> command first traverses
+the graph to catch some information from it and then displays a dialog
+with information about the current graph.</li>
+
+
+
+ 
+</ol>
+
+
+
+  
+<p></p>
+
+
+
+  
+  <!--<i>Definition of Graph Cartesian Product:</i> The Cartesian graph product G=G<sub>1</sub><IMG src="square.png" width="12" height="13" border="0">G<sub>2</sub> of graphs G<sub>1</sub> and G<sub>2</sub> with disjoint point sets V<sub>1</sub> and V<sub>2</sub> and edge sets X<sub>1</sub> and X<sub>2</sub> is the graph with point set V<sub>1</sub><IMG src="cross.png" width="12" height="13" border="0">V<sub>2</sub> and u=(u<sub>1</sub>, u<sub>2</sub>) adjacent with v=(v<sub>1</sub>, v<sub>2</sub>) whenever [u<sub>1</sub>=v<sub>1</sub> and u<sub>2</sub> adj v<sub>2</sub>] or [u<sub>2</sub>=v<sub>2</sub> and u<sub>1</sub> adj v<sub>1</sub>] (Harary, F. Graph Theory. Reading, MA: Addison-Wesley, 1994, p. 22).-->
+</body>
+</html>

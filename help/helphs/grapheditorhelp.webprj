@@ -1,0 +1,31 @@
+<!DOCTYPE webproject>
+<webproject>
+  <project usePreviewPrefix="0" type="Local" previewPrefix="" name="Graph Editor Help" encoding="iso 8859-1" >
+    <upload/>
+    <author>Kjell Winblad</author>
+    <email>kjellwinblad@gmail.com</email>
+    <defaultDTD>-//W3C//DTD HTML 4.01 Transitional//EN</defaultDTD>
+    <item modified_time="1179917400" url="editing_introduction.html" uploadstatus="1" />
+    <item modified_time="1176903101" url="GraphEditor.hs" uploadstatus="1" />
+    <item modified_time="1180191685" url="GraphEditorTOC.xml" uploadstatus="1" />
+    <item modified_time="1179916742" url="insert_mode.html" uploadstatus="1" />
+    <item modified_time="1177580134" url="introduction_export_and_import.html" uploadstatus="1" />
+    <item modified_time="1180116746" url="introduction.html" uploadstatus="1" />
+    <item modified_time="1180104400" url="Map.jhm" uploadstatus="1" />
+    <item modified_time="1179917304" url="not_insert_mode.html" uploadstatus="1" />
+    <item url="" uploadstatus="1" />
+    <templates>templates/</templates>
+    <toolbars>toolbars/</toolbars>
+    <item modified_time="1180101632" url="export_file_formats.html" uploadstatus="1" />
+    <item modified_time="1180103182" url="import_file_formats.html" uploadstatus="1" />
+    <item modified_time="1177586047" url="contact.html" uploadstatus="1" />
+    <item modified_time="1179928438" url="main_window_and_toolbars.html" uploadstatus="1" />
+    <item modified_time="1179951796" url="file_menu.html" uploadstatus="1" />
+    <item modified_time="1179955460" url="edit_menu.html" uploadstatus="1" />
+    <item modified_time="1179998963" url="selection_menu.html" uploadstatus="1" />
+    <item modified_time="1179958655" url="view_menu.html" uploadstatus="1" />
+    <item modified_time="1180016590" url="operations_menu.html" uploadstatus="1" />
+    <item modified_time="1179998970" url="properties_menu.html" uploadstatus="1" />
+    <item modified_time="1180106435" url="libraries.html" uploadstatus="1" />
+  </project>
+</webproject>
