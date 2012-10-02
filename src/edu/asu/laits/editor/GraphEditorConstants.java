@@ -3,7 +3,7 @@ package edu.asu.laits.editor;
 import java.awt.Color;
 import java.util.Map;
 
-import edu.asu.laits.model.Vertex.Shape;
+import edu.asu.laits.model.Vertex.VertexType;
 import org.apache.log4j.Logger;
 import org.jgraph.graph.GraphConstants;
 
@@ -24,21 +24,21 @@ public class GraphEditorConstants extends GraphConstants {
     /**
      * Sets the shape attribute in the specified map to the specified value.
      */
-    public static final void setShape(Map map, Shape shape) {
+    public static final void setShape(Map map, VertexType shape) {
         map.put(SHAPE, shape);
     }
 
     /**
      * Returns the shape attribute in the specified map if it exists.
      */
-    public static final Shape getShape(Map map) {
+    public static final VertexType getShape(Map map) {
         Object shape = map.get(SHAPE);
         if (null == shape) {
             return null;
         }
 
-        if (shape instanceof Shape) {
-            return (Shape) shape;
+        if (shape instanceof VertexType) {
+            return (VertexType) shape;
 
         }
         return null;

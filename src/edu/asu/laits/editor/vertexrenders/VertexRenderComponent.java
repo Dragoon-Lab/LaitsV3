@@ -9,7 +9,12 @@ import java.util.Map;
 import edu.asu.laits.editor.GraphEditorConstants;
 import edu.asu.laits.editor.GraphEditorPane;
 import edu.asu.laits.editor.GraphEditorVertexView;
-import edu.asu.laits.model.Vertex.Shape;
+import edu.asu.laits.model.Vertex;
+import edu.asu.laits.model.Vertex.VertexType;
+import edu.asu.laits.properties.ImageLoader;
+import java.awt.Image;
+import java.awt.Toolkit;
+import java.net.URL;
 import org.apache.log4j.Logger;
 import org.jgraph.JGraph;
 import org.jgraph.graph.CellView;
@@ -26,7 +31,7 @@ import org.jgraph.graph.VertexRenderer;
 public class VertexRenderComponent extends VertexRenderer implements
         DrawableVertex {
 
-    Shape shape;
+    VertexType shape;
     private boolean selectable;
     private boolean selected;
     private boolean focus;
@@ -53,21 +58,21 @@ public class VertexRenderComponent extends VertexRenderer implements
         Map<Object, Object> attributes = ((DefaultGraphCell) view.getCell())
                 .getAttributes();
 
-        Shape shape = GraphEditorConstants.getShape(attributes);
-
-        if (shape == Shape.DEFAULT) {
+        VertexType shape = GraphEditorConstants.getShape(attributes);
+        
+        if (shape == VertexType.DEFAULT) {
             return defaultVertexComponent.getRendererComponent(graph,
                     view, sel, focus, preview);
         }
-        else if (shape == null || shape == Shape.FLOW) {
+        else if (shape == null || shape == VertexType.FLOW) {
             return flowVertexRenderComponent.getRendererComponent(graph,
                     view, sel, focus, preview);
         } 
-        else if (shape == Shape.STOCK) {
+        else if (shape == VertexType.STOCK) {
             return stockVertexRenderComponent.getRendererComponent(graph,
                     view, sel, focus, preview);
         } 
-        else if (shape == Shape.CONSTANT) {
+        else if (shape == VertexType.CONSTANT) {
             return constantVertexComponent.getRendererComponent(graph,
                     view, sel, focus, preview);
         } 
@@ -80,13 +85,13 @@ public class VertexRenderComponent extends VertexRenderer implements
        
         Map<Object, Object> atributes = view.getAllAttributes();
 
-        Shape shape = GraphEditorConstants.getShape(atributes);
+        VertexType shape = GraphEditorConstants.getShape(atributes);
 
-        if (shape == Shape.DEFAULT) {
+        if (shape == VertexType.DEFAULT) {
             return defaultVertexComponent;
-        }else if (shape == null || shape == Shape.FLOW) {
+        }else if (shape == null || shape == VertexType.FLOW) {
             return flowVertexRenderComponent;
-        } else if (shape == Shape.STOCK) {
+        } else if (shape == VertexType.STOCK) {
             return stockVertexRenderComponent;
         } else {
             return this;
@@ -120,7 +125,57 @@ public class VertexRenderComponent extends VertexRenderer implements
     }
 
     public void drawVertex(Graphics g) {
-        paintComponent(g);
-
+        paintComponent(g);        
+    }
+    
+    protected void paintVertexStatusIcons(Graphics g, Vertex v){
+        paintInputIcons(g, v);
+        paintCalculationsIcons(g, v);
+        paintGraphsIcons(g, v);
+    }
+    
+    private void paintInputIcons(Graphics g, Vertex currentVertex){
+        
+        if(currentVertex.getInputsStatus() == Vertex.InputsStatus.UNDEFINED){
+            paintIcon(g, ImageLoader.getInstance().getInputsNoStatusIcon(), 0); 
+        
+        }else if(currentVertex.getInputsStatus() == Vertex.InputsStatus.CORRECT){
+            paintIcon(g, ImageLoader.getInstance().getInputsNoStatusIcon(), 0); 
+        
+        }else if(currentVertex.getInputsStatus() == Vertex.InputsStatus.INCORRECT){
+            paintIcon(g, ImageLoader.getInstance().getInputsNoStatusIcon(), 0); 
+        }
+    }
+    
+    private void paintCalculationsIcons(Graphics g, Vertex currentVertex){
+        if(currentVertex.getCalculationsStatus() == Vertex.CalculationsStatus.UNDEFINED){
+            paintIcon(g, ImageLoader.getInstance().getCalculationsNoStatusIcon(), 30); 
+            
+        }else if(currentVertex.getCalculationsStatus() == Vertex.CalculationsStatus.CORRECT){
+            paintIcon(g, ImageLoader.getInstance().getCalculationsCorrectIcon(), 30); 
+            
+        }else if(currentVertex.getCalculationsStatus() == Vertex.CalculationsStatus.INCORRECT){
+            paintIcon(g, ImageLoader.getInstance().getCalculationsInCorrectIcon(), 30);            
+        }
+    }
+    
+    private void paintGraphsIcons(Graphics g, Vertex currentVertex){
+       if(currentVertex.getGraphsStatus() == Vertex.GraphsStatus.UNDEFINED){
+           paintIcon(g, ImageLoader.getInstance().getGraphsNoStatusIcon(), 60);
+        
+       }else if(currentVertex.getGraphsStatus() == Vertex.GraphsStatus.CORRECT){
+           paintIcon(g, ImageLoader.getInstance().getGraphsCorrectIcon(), 60);
+        
+       }else if(currentVertex.getGraphsStatus() == Vertex.GraphsStatus.INCORRECT){
+            paintIcon(g, ImageLoader.getInstance().getGraphsInCorrectIcon(), 60);
+       }  
+    }
+    private void paintIcon(Graphics g, Image iconImage, int displacement){
+        g.drawImage(iconImage, 
+                    getWidth()/2 - 10 + displacement, 
+                    22, 
+                    ImageLoader.statusIconWidth, 
+                    ImageLoader.statusIconWidth, 
+                    this);
     }
 }

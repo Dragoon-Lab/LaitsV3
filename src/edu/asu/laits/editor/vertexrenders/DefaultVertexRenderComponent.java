@@ -14,7 +14,8 @@ import edu.asu.laits.editor.GraphEditorConstants;
 import edu.asu.laits.editor.GraphEditorPane;
 import edu.asu.laits.editor.GraphEditorVertexView;
 import edu.asu.laits.model.Vertex;
-import edu.asu.laits.model.Vertex.Shape;
+import edu.asu.laits.model.Vertex.VertexType;
+import java.awt.BasicStroke;
 import org.apache.log4j.Logger;
 import org.jgraph.JGraph;
 import org.jgraph.graph.CellView;
@@ -81,8 +82,6 @@ public class DefaultVertexRenderComponent extends VertexRenderComponent {
             background = Color.WHITE;
         }
         
-        // CHECK END
-        // TODO Auto-generated method stub
         if (view instanceof GraphEditorVertexView) {
             GraphEditorVertexView graphVertexView = (GraphEditorVertexView) view;
             graphVertexView.setLocalRenderer(this);
@@ -91,9 +90,9 @@ public class DefaultVertexRenderComponent extends VertexRenderComponent {
         this.focus = focus;
         this.preview = preview;
 
-        bounds = new Rectangle(0, 0, 0, 0);
+        bounds = new Rectangle(0, 0, 200, 200);
 
-        this.setBounds(bounds.getBounds());
+        //this.setBounds(bounds.getBounds());
 
         background = GraphEditorConstants.getBackground(attributes);
         if (background == null) {
@@ -113,31 +112,15 @@ public class DefaultVertexRenderComponent extends VertexRenderComponent {
     public void drawVertex(Graphics g) {
         Graphics2D g2 = (Graphics2D) g;
         g2.setColor(foreground);
+        g2.setStroke(new BasicStroke(3, BasicStroke.CAP_BUTT, BasicStroke.JOIN_BEVEL, 0, new float[]{9}, 0));
+        g2.drawRect(60, 0, getWidth() - 62, getHeight() - 18); 
         
-        if (preview || !selected) {
-            if (!useGraphBackground) {
-                Color prevColor = g2.getColor();
-                g2.setColor(background);
-                g2.fillRect(0, 0, getWidth() - 1, getHeight() - 1);
-                g2.setColor(prevColor);
-            }
-            // Draw when the vertex is not selected
-            g2.drawRect(5, 5, getWidth() - 10, getHeight() - 25); 
-            g2.drawRect(0, 0, getWidth() - 1, getHeight() - 15); 
-        } else {
-            if (!useGraphBackground) {
-                Color prevColor = g2.getColor();
-                g2.setColor(background);
-                g2.fillRect(0, 0, getWidth() - 1, getHeight() - 1);
-                g2.setColor(prevColor);
-            }
-            Stroke previousStroke = g2.getStroke();
-            g2.setStroke(GraphEditorConstants.SELECTION_STROKE);
-            g2.drawRect(5, 5, getWidth() - 10, getHeight() - 25);
-            g2.drawRect(0, 0, getWidth() -1, getHeight() -15);
-            g2.setStroke(previousStroke);
-        }
-        g2.drawString(currentVertex.getName(), getWidth()/2 - 20, getHeight());
+        String vertexName = currentVertex.getName();
+        double x = (getWidth()+60) - vertexName.length() * 8.18;
+        x/=2;
+        
+        g2.drawString(vertexName, (int)x, getHeight());
+        paintVertexStatusIcons(g, currentVertex);
         paintSelectable(g);
 
     }

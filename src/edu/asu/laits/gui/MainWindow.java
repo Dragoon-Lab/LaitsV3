@@ -52,7 +52,7 @@ public class MainWindow extends JFrame {
     private EditToolBar editToolBar = null;
     private ViewToolBar viewToolBar = null;
     private ModelToolBar modelToolBar = null;
-    private List<JToolBar> toolBars = new LinkedList<JToolBar>(); // @jve:decl-index=0:
+    private List<JToolBar> toolBars = new LinkedList<JToolBar>(); 
     private StatusBarPanel statusBarPanel = null;
 
     /**

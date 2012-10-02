@@ -102,6 +102,9 @@
                 <Property name="editable" type="boolean" value="true"/>
                 <Property name="rowHeight" type="int" value="23"/>
               </Properties>
+              <AuxValues>
+                <AuxValue name="JavaCodeGenerator_SerializeTo" type="java.lang.String" value="DescriptionPanelView_decisionTree"/>
+              </AuxValues>
             </Component>
           </SubComponents>
         </Container>

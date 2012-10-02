@@ -22,27 +22,19 @@ public class Vertex {
 
     private transient DefaultGraphCell jGraphVertex;
 
-    /**
-     * An enumeration with the possible shapes of a vertex
-     */
-    public enum Shape {
-        DEFAULT, STOCK, FLOW, CONSTANT
-    }
-    
-    public enum Plan{
-        UNDEFINED, FIXED, INCREASE, DECREASE, INCREASE_AND_DECREASE,
-        PROPORTIONAL, DIFFERENCE, RATIO        
-    }
     private double xPosition, yPosition;
     private boolean useGraphBackround = true;
     private Color backgroundColor = Color.WHITE;
     private Color foregroundColor = Color.BLACK;
-    private Shape shape = Shape.DEFAULT;
-    private boolean displayLabel = true;
+    private VertexType type = VertexType.CONSTANT;
     
     private String name = "";
     private String correctDescription = "";
     private Plan plan = Plan.UNDEFINED;
+    private InputsStatus inputsStatus = InputsStatus.UNDEFINED;
+    private CalculationsStatus calculationsStatus = 
+            CalculationsStatus.CORRECT;
+    private GraphsStatus graphsStatus = GraphsStatus.INCORRECT;
     
     
     transient private SortedMap<String, String> properties = new TreeMap<String, String>();
@@ -57,35 +49,37 @@ public class Vertex {
      */
     public Vertex() {
         vertexIndex = vertIndexCount;
-        name = "V"+vertexIndex;
-        xPosition = 160 * (vertexIndex % 6) + 80;
+        name = "Vertex"+vertexIndex;
+        xPosition = 200 * (vertexIndex % 6) + 80;
         yPosition = 200 * (vertexIndex / 6) + 60 ;
         
         vertIndexCount++;
     }
-
-    /**
-     * @return the displayLabel
-     */
-    public boolean isDisplayLabel() {
-        return displayLabel;
-    }
-
-    /**
-     * @param displayLabel the displayLabel to set
-     */
-    public void setDisplayLabel(boolean displayLabel) {
-        this.displayLabel = displayLabel;
-    }
+    
 
     public String getName() {
         return name;
     }
-
     
     public void setName(String label) {
         this.name = label;
     }
+    
+    public String getCorrectDescription(){
+        return correctDescription;
+    }
+    
+    public void setCorrectDescription(String desc){
+        this.correctDescription = desc;
+    }
+    
+    public Plan getPlan(){
+        return plan;
+    }
+    
+    public void setPlan(Plan plan){
+        this.plan = plan;
+    }    
 
     public SortedMap<String, String> getProperties() {
         return properties;
@@ -95,14 +89,38 @@ public class Vertex {
         this.properties = properties;
     }
 
-    public Shape getShape() {
-        return shape;
+    public VertexType getVertexType() {
+        return type;
     }
 
-    public void setShape(Shape shape) {
-        this.shape = shape;
+    public void setVertexType(VertexType shape) {
+        this.type = shape;
     }
 
+    public InputsStatus getInputsStatus(){
+        return inputsStatus;
+    }
+    
+    public void setInputsStatus(InputsStatus status){
+        this.inputsStatus = status;
+    }
+    
+    public CalculationsStatus getCalculationsStatus(){
+        return calculationsStatus;
+    }
+    
+    public void setCalculationsStatus(CalculationsStatus status){
+        this.calculationsStatus = status;
+    }
+           
+    public GraphsStatus getGraphsStatus(){
+        return graphsStatus;
+    }
+    
+    public void setGraphsStatus(GraphsStatus status){
+        this.graphsStatus = status;
+    }
+    
     public double getXPosition() {
         return xPosition;
     }
@@ -130,9 +148,8 @@ public class Vertex {
         vertexInfoClone.setForegroundColor(new Color(foregroundColor.getRGB()));
         vertexInfoClone.setBackgroundColor(new Color(backgroundColor.getRGB()));
         vertexInfoClone.setUseGraphBackround(useGraphBackround);
-        vertexInfoClone.setDisplayLabel(displayLabel);
         vertexInfoClone.setName(new String(name));
-        vertexInfoClone.setShape(shape);
+        vertexInfoClone.setVertexType(type);
 
         return vertexInfoClone;
 
@@ -156,7 +173,7 @@ public class Vertex {
         try {
             Map<Object, Object> map = jGraphVertex.getAttributes();
             Rectangle2D vertexBounds = GraphConstants.getBounds(map);
-            shape = GraphEditorConstants.getShape(map);
+            type = GraphEditorConstants.getShape(map);
             backgroundColor = GraphEditorConstants.getBackground(map);
             foregroundColor = GraphEditorConstants.getForeground(map);
             useGraphBackround = GraphEditorConstants.getUseGraphBackground(map);
@@ -201,4 +218,42 @@ public class Vertex {
     
     public class VertexReaderException extends Exception {
     }
+    
+    
+    /**
+     * An enumeration with the possible shapes of a vertex
+     */
+    public enum VertexType {
+        DEFAULT, STOCK, FLOW, CONSTANT
+    }
+    
+    /**
+     * An enumeration with the possible Plans of a vertex
+    */
+    public enum Plan{
+        UNDEFINED, FIXED, INCREASE, DECREASE, INCREASE_AND_DECREASE,
+        PROPORTIONAL, DIFFERENCE, RATIO        
+    }
+    
+    /**
+     * An enumeration with the possible Status of Inputs of a vertex
+    */
+    public enum InputsStatus{
+        UNDEFINED, CORRECT, INCORRECT
+    }
+    
+    /**
+     * An enumeration with the possible Status of Calculations of a vertex
+    */
+    public enum CalculationsStatus{
+        UNDEFINED, CORRECT, INCORRECT
+    }
+    
+    /**
+     * An enumeration with the possible Status of Graphs of a vertex
+    */
+    public enum GraphsStatus{
+        UNDEFINED, CORRECT, INCORRECT
+    }
+    
 }

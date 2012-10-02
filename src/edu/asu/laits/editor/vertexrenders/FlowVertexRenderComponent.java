@@ -15,7 +15,9 @@ import javax.swing.JComponent;
 import edu.asu.laits.editor.GraphEditorConstants;
 import edu.asu.laits.editor.GraphEditorPane;
 import edu.asu.laits.editor.GraphEditorVertexView;
-import edu.asu.laits.model.Vertex.Shape;
+import edu.asu.laits.model.Vertex;
+import edu.asu.laits.model.Vertex.VertexType;
+import java.awt.BasicStroke;
 import org.apache.log4j.Logger;
 import org.jgraph.JGraph;
 import org.jgraph.graph.CellView;
@@ -39,6 +41,7 @@ public class FlowVertexRenderComponent extends VertexRenderComponent {
     private VertexRenderComponent defaultVertexRenderComponent = null;
     private boolean useGraphBackground;
     private Color foreground;
+    private Vertex currentVertex;
     /**
      * Logger
      */
@@ -65,6 +68,8 @@ public class FlowVertexRenderComponent extends VertexRenderComponent {
 
         if (((DefaultGraphCell) view.getCell()) != null) {
             attributes = ((DefaultGraphCell) view.getCell()).getAttributes();
+            DefaultGraphCell cell = (DefaultGraphCell) view.getCell();
+            currentVertex = (Vertex)cell.getUserObject();
         } else {
             attributes = view.getAllAttributes();
         }
@@ -83,21 +88,6 @@ public class FlowVertexRenderComponent extends VertexRenderComponent {
         if (background == null) {
             background = Color.WHITE;
         }
-        if (graph != null) {
-            Shape shape = GraphEditorConstants.getShape(attributes);
-            GraphEditorPane graphPane = (GraphEditorPane) graph;
-
-            if (Shape.FLOW != shape) {
-                if (!(Shape.DEFAULT == shape && graphPane.getGraphProperties()
-                        .getDefaultShape() == Shape.FLOW)) {
-                    return defaultVertexRenderComponent.getRendererComponent(
-                            graph, view, sel, focus, preview);
-                }
-            }
-
-        }
-        // CHECK END
-        // TODO Auto-generated method stub
         if (view instanceof GraphEditorVertexView) {
             GraphEditorVertexView graphVertexView = (GraphEditorVertexView) view;
             graphVertexView.setLocalRenderer(this);
@@ -125,54 +115,20 @@ public class FlowVertexRenderComponent extends VertexRenderComponent {
 
     }
 
-    @Override
-    public Point2D getPerimeterPoint(VertexView view, Point2D source, Point2D p) {
-
-        Rectangle2D bounds = view.getBounds();
-        double x = bounds.getX();
-        double y = bounds.getY();
-        double width = bounds.getWidth() - 2;
-        double height = bounds.getHeight() - 2;
-        double xCenter = x + 1 + width / 2;
-        double yCenter = y + 1 + width / 2;
-        double dx = p.getX() - xCenter; // Compute Angle
-        double dy = p.getY() - yCenter;
-        double alpha = Math.atan2(dy, dx);
-        double xout = 0, yout = 0;
-        double pi = Math.PI;
-        double pi2 = Math.PI / 2.0;
-        double beta = pi2 - alpha;
-        double t = Math.atan2(height, width);
-        xout = xCenter + Math.cos(alpha) * (width) / 2;
-        yout = yCenter + Math.sin(alpha) * (width) / 2;
-        return new Point2D.Double(xout, yout);
-
-    }
-
     public void drawVertex(Graphics g) {
         Graphics2D g2 = (Graphics2D) g;
         g2.setColor(foreground);
-        if (preview || !selected) {
-            if (!useGraphBackground) {
-                Color prevColor = g2.getColor();
-                g2.setColor(background);
-                g2.fillOval(1, 1, getWidth() - 2, getHeight() - 2);
-                g2.setColor(prevColor);
-            }
-            g2.drawOval(1, 1, getWidth() - 2, getHeight() - 2);
 
-        } else {
-            if (!useGraphBackground) {
-                Color prevColor = g2.getColor();
-                g2.setColor(background);
-                g2.fillOval(1, 1, getWidth() - 2, getHeight() - 2);
-                g2.setColor(prevColor);
-            }
-            Stroke previousStroke = g2.getStroke();
-            g2.setStroke(GraphEditorConstants.SELECTION_STROKE);
-            g2.drawOval(1, 1, getWidth() - 2, getHeight() - 2);
-            g2.setStroke(previousStroke);
-        }
+        g2.setStroke(new BasicStroke(3));
+        g2.drawOval(60, 1, getWidth() - 70  , getHeight()-20);
+       
+        String vertexName = currentVertex.getName();
+        double x = (getWidth()+60) - vertexName.length() * 8.18;
+        x/=2;
+        
+        g2.drawString(vertexName, (int)x, getHeight());
+        
+        paintVertexStatusIcons(g, currentVertex);
         paintSelectable(g);
 
     }

@@ -6,7 +6,7 @@ import java.io.File;
 import java.util.LinkedList;
 import java.util.List;
 
-import edu.asu.laits.model.Vertex.Shape;
+import edu.asu.laits.model.Vertex.VertexType;
 import edu.asu.laits.editor.listeners.GraphChangeListener;
 import edu.asu.laits.editor.listeners.GraphSaveListener;
 
@@ -38,9 +38,9 @@ public class GraphProperties {
 	// The current zoom Level
 	private double zoomLevel = 1.0;
 
-	private Shape defaultShape = Shape.FLOW;
+	private VertexType defaultShape = VertexType.FLOW;
 
-	private Shape defaultInsertShape = Shape.DEFAULT;
+	private VertexType defaultInsertShape = VertexType.DEFAULT;
 
 	private Color backgroundColor = new Color(255, 255, 255);
 
@@ -166,7 +166,7 @@ public class GraphProperties {
 	/**
 	 * @return the defaultShape
 	 */
-	public Shape getDefaultShape() {
+	public VertexType getDefaultShape() {
 		return defaultShape;
 	}
 
@@ -174,7 +174,7 @@ public class GraphProperties {
 	 * @param defaultShape
 	 *            the defaultShape to set
 	 */
-	public void setDefaultShape(Shape defaultShape) {
+	public void setDefaultShape(VertexType defaultShape) {
 		this.defaultShape = defaultShape;
 		changed = true;
 		fireChangedEvent();
@@ -183,7 +183,7 @@ public class GraphProperties {
 	/**
 	 * @return the defaultInsertShape
 	 */
-	public Shape getDefaultInsertShape() {
+	public VertexType getDefaultInsertShape() {
 		return defaultInsertShape;
 	}
 
@@ -191,7 +191,7 @@ public class GraphProperties {
 	 * @param defaultInsertShape
 	 *            the defaultInsertShape to set
 	 */
-	public void setDefaultInsertShape(Shape defaultInsertShape) {
+	public void setDefaultInsertShape(VertexType defaultInsertShape) {
 		this.defaultInsertShape = defaultInsertShape;
 		changed = true;
 		fireChangedEvent();

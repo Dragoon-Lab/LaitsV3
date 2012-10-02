@@ -157,6 +157,8 @@ public class GraphEditorPane extends JGraph {
 
         GraphLayoutCache layoutCache = new GraphLayoutCache(modelAdapter,
                 new GraphEditorCellViewFactory());
+        
+        
         setGraphLayoutCache(layoutCache);
 
         this.setModel(modelAdapter);
@@ -251,7 +253,7 @@ public class GraphEditorPane extends JGraph {
                 .getDefaultVertexForegroundColor());
 
         Rectangle2D newBounds = new Rectangle2D.Double((x - 9) / getScale(),
-                (y - 9) / getScale(), 120, 80);
+                (y - 9) / getScale(), 180, 80);
         GraphConstants.setBounds(attrs, newBounds);
         DefaultPort port = new DefaultPort();
         
@@ -277,13 +279,13 @@ public class GraphEditorPane extends JGraph {
         GraphConstants.setOpaque(attrs, true);
         GraphConstants.setSizeable(attrs, false);
         GraphConstants.setBorderColor(attrs, Color.black);
-        GraphEditorConstants.setShape(attrs, vertex.getShape());
+        GraphEditorConstants.setShape(attrs, vertex.getVertexType());
         GraphEditorConstants.setUseGraphBackground(attrs, vertex
                 .isUseGraphBackround());
         GraphEditorConstants.setBackground(attrs, vertex.getBackgroundColor());
         GraphEditorConstants.setForeground(attrs, vertex.getForegroundColor());
         Rectangle2D newBounds = new Rectangle2D.Double(vertex.getXPosition(),
-                vertex.getYPosition(), 120, 80);
+                vertex.getYPosition(), 180, 80);
 
         GraphConstants.setBounds(attrs, newBounds);
         GraphConstants.setVerticalTextPosition(attrs, SwingConstants.BOTTOM);
