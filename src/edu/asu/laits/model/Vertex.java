@@ -11,6 +11,7 @@ import java.util.Map.Entry;
 
 import edu.asu.laits.editor.GraphEditorConstants;
 import edu.asu.laits.model.Edge.ErrorReaderException;
+import net.sourceforge.jeval.Evaluator;
 import org.apache.log4j.Logger;
 import org.jgraph.graph.DefaultGraphCell;
 import org.jgraph.graph.GraphConstants;
@@ -19,7 +20,7 @@ import org.jgraph.graph.GraphConstants;
  * Class To Hold the information about a Node in the Graph.
  */
 public class Vertex {
-
+    
     private transient DefaultGraphCell jGraphVertex;
 
     private double xPosition, yPosition;
