@@ -6,6 +6,7 @@
 
 package edu.asu.laits.gui.nodeeditor;
 
+import edu.asu.laits.model.Vertex;
 import java.util.ArrayList;
 import java.util.Enumeration;
 import java.util.LinkedList;
@@ -36,13 +37,27 @@ public class DescriptionPanelView extends JPanel{
   
   private static Logger logs = Logger.getLogger(DescriptionPanelView.class);
   
+  String getNodeName()
+  {
+      return this.nodeNameTextField.getText();
+  }
+  
+  String getNodeDesc()
+  {
+      return this.quantityDescriptionTextField.getText();
+  }
+  
   
   public DescriptionPanelView(NodeEditor ne){
     initComponents();
     nodeEditor = ne;
+    initPanel();
   }
   
   public void initPanel(){
+      Vertex currentVertex=this.nodeEditor.getCurrentVertex();
+      this.nodeNameTextField.setText(currentVertex.getName());
+      this.quantityDescriptionTextField.setText(currentVertex.getCorrectDescription());
     
   }
   /**
@@ -140,6 +155,11 @@ public class DescriptionPanelView extends JPanel{
         decisionTree.setModel(new javax.swing.tree.DefaultTreeModel(treeNode1));
         decisionTree.setEditable(true);
         decisionTree.setRowHeight(23);
+        decisionTree.addTreeSelectionListener(new javax.swing.event.TreeSelectionListener() {
+            public void valueChanged(javax.swing.event.TreeSelectionEvent evt) {
+                decisionTreeValueChanged(evt);
+            }
+        });
         jScrollPane2.setViewportView(decisionTree);
 
         evenMorePreciseLabel.setFont(new java.awt.Font("Lucida Grande", 1, 13)); // NOI18N
@@ -215,14 +235,26 @@ public class DescriptionPanelView extends JPanel{
         );
     }// </editor-fold>//GEN-END:initComponents
 
+    private void decisionTreeValueChanged(javax.swing.event.TreeSelectionEvent evt) {//GEN-FIRST:event_decisionTreeValueChanged
+       DefaultMutableTreeNode node = (DefaultMutableTreeNode) decisionTree.getLastSelectedPathComponent();
+       TreeNode[] treeNodes;
+       String fullDesc="";
+       if(node.isLeaf()){
+           treeNodes=node.getPath();
+           for(TreeNode treeNode : treeNodes){
+               if(!treeNode.toString().equals("root"))
+                fullDesc+=" "+treeNode.toString();
+           }
+           this.quantityDescriptionTextField.setText(fullDesc.trim());
+       }
+    }//GEN-LAST:event_decisionTreeValueChanged
+
   // returns the value held by triedDuplicate
   public boolean getTriedDuplicate() {
     return triedDuplicate;
   }
 
-  public boolean duplicatedNode(String nodeName) {
-    return false;
-  }
+ 
 
   
 

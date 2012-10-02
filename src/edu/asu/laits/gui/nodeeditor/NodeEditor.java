@@ -20,6 +20,7 @@ import java.util.LinkedList;
 import java.util.List;
 
 import javax.swing.JFrame;
+import javax.swing.JOptionPane;
 import javax.swing.UIManager;
 import javax.swing.WindowConstants;
 import javax.swing.event.ChangeEvent;
@@ -429,12 +430,34 @@ public class NodeEditor extends JFrame implements WindowListener {
       this.dispose();
   }//GEN-LAST:event_buttonCancelActionPerformed
 
+   private boolean duplicatedNode(String nodeName) {
+      Iterator<Vertex> it = graphPane.getModelGraph().vertexSet().iterator();
+      
+      while(it.hasNext()){
+          if(it.next().getName().equals(nodeName))
+              return true;
+      }
+        return false;
+  }
     /**
      * Method to process the Node after filling all the details in NodeEditor
      *
      * @param evt
      */
   private void buttonOKActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_buttonOKActionPerformed
+      //set up based on the description tab
+      if(!duplicatedNode(dPanel.getNodeName()) || currentVertex.getName().equals(dPanel.getNodeName()))  //this node name is not duplicated or this is the node that has the name before
+        currentVertex.setName(dPanel.getNodeName());
+      else{
+          JOptionPane.showMessageDialog(this, "The node name is already used by another node. Please have a new name for this node.");
+          return;
+      }
+      currentVertex.setCorrectDescription(dPanel.getNodeDesc());
+      
+      
+      
+      
+      /*
       List<Vertex> v  = new ArrayList<Vertex> ();
       Iterator<Vertex> it = graphPane.getModelGraph().vertexSet().iterator();
       
@@ -449,7 +472,7 @@ public class NodeEditor extends JFrame implements WindowListener {
       
       graphPane.insertEdge((Port)p.getCell(), (Port)p2.getCell());
       graphPane.insertEdge((Port)p2.getCell(), (Port)p.getCell());
-      
+      */
       
       this.dispose();      
   }//GEN-LAST:event_buttonOKActionPerformed
