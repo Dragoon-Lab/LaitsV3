@@ -106,6 +106,8 @@ public class DescriptionPanelView extends JPanel{
         nodeNameTextField = new javax.swing.JTextField();
         NodeNameLabel = new javax.swing.JLabel();
 
+        contentPanel.setLayout(new org.netbeans.lib.awtextra.AbsoluteLayout());
+
         decisionTree.setFont(new java.awt.Font("Lucida Grande", 0, 18)); // NOI18N
         javax.swing.tree.DefaultMutableTreeNode treeNode1 = new javax.swing.tree.DefaultMutableTreeNode("root");
         javax.swing.tree.DefaultMutableTreeNode treeNode2 = new javax.swing.tree.DefaultMutableTreeNode("A count of");
@@ -162,8 +164,11 @@ public class DescriptionPanelView extends JPanel{
         });
         jScrollPane2.setViewportView(decisionTree);
 
+        contentPanel.add(jScrollPane2, new org.netbeans.lib.awtextra.AbsoluteConstraints(6, 28, 595, 285));
+
         evenMorePreciseLabel.setFont(new java.awt.Font("Lucida Grande", 1, 13)); // NOI18N
         evenMorePreciseLabel.setText("Description Tree of the Problem");
+        contentPanel.add(evenMorePreciseLabel, new org.netbeans.lib.awtextra.AbsoluteConstraints(6, 6, 363, -1));
 
         quantityDescriptionTextField.setWrapStyleWord(true);
         quantityDescriptionTextField.setColumns(20);
@@ -174,52 +179,18 @@ public class DescriptionPanelView extends JPanel{
         quantityDescriptionTextField.setMargin(new java.awt.Insets(2, 3, 2, 3));
         jScrollPane1.setViewportView(quantityDescriptionTextField);
 
+        contentPanel.add(jScrollPane1, new org.netbeans.lib.awtextra.AbsoluteConstraints(6, 457, 595, -1));
+
         referencesLabel.setFont(new java.awt.Font("Lucida Grande", 1, 13)); // NOI18N
         referencesLabel.setText("Precise description of the quantity:");
+        contentPanel.add(referencesLabel, new org.netbeans.lib.awtextra.AbsoluteConstraints(6, 435, 572, -1));
 
         nodeNameTextField.setDisabledTextColor(new java.awt.Color(102, 102, 102));
+        contentPanel.add(nodeNameTextField, new org.netbeans.lib.awtextra.AbsoluteConstraints(105, 389, 496, -1));
 
         NodeNameLabel.setFont(new java.awt.Font("Lucida Grande", 1, 13)); // NOI18N
         NodeNameLabel.setText("Node Name:");
-
-        javax.swing.GroupLayout contentPanelLayout = new javax.swing.GroupLayout(contentPanel);
-        contentPanel.setLayout(contentPanelLayout);
-        contentPanelLayout.setHorizontalGroup(
-            contentPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(contentPanelLayout.createSequentialGroup()
-                .addContainerGap()
-                .addGroup(contentPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, contentPanelLayout.createSequentialGroup()
-                        .addComponent(referencesLabel, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                        .addGap(53, 53, 53))
-                    .addGroup(contentPanelLayout.createSequentialGroup()
-                        .addGroup(contentPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING, false)
-                            .addGroup(javax.swing.GroupLayout.Alignment.LEADING, contentPanelLayout.createSequentialGroup()
-                                .addComponent(NodeNameLabel)
-                                .addGap(18, 18, 18)
-                                .addComponent(nodeNameTextField))
-                            .addComponent(jScrollPane1, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.DEFAULT_SIZE, 595, Short.MAX_VALUE)
-                            .addComponent(evenMorePreciseLabel, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.PREFERRED_SIZE, 363, javax.swing.GroupLayout.PREFERRED_SIZE)
-                            .addComponent(jScrollPane2, javax.swing.GroupLayout.Alignment.LEADING))
-                        .addContainerGap(30, Short.MAX_VALUE))))
-        );
-        contentPanelLayout.setVerticalGroup(
-            contentPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(contentPanelLayout.createSequentialGroup()
-                .addContainerGap()
-                .addComponent(evenMorePreciseLabel)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(jScrollPane2, javax.swing.GroupLayout.PREFERRED_SIZE, 285, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 76, Short.MAX_VALUE)
-                .addGroup(contentPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(NodeNameLabel)
-                    .addComponent(nodeNameTextField, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addGap(18, 18, 18)
-                .addComponent(referencesLabel, javax.swing.GroupLayout.PREFERRED_SIZE, 16, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(41, 41, 41))
-        );
+        contentPanel.add(NodeNameLabel, new org.netbeans.lib.awtextra.AbsoluteConstraints(6, 395, -1, -1));
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(this);
         this.setLayout(layout);
@@ -227,7 +198,7 @@ public class DescriptionPanelView extends JPanel{
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(layout.createSequentialGroup()
                 .addComponent(contentPanel, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(0, 0, Short.MAX_VALUE))
+                .addGap(0, 30, Short.MAX_VALUE))
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)

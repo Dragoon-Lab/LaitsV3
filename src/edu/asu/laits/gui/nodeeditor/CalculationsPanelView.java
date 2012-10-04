@@ -2,7 +2,7 @@
  * LAITS Project
  * Arizona State University
  * 
- * Updated by rptiwari on Aug 24, 2012
+ * Updated by rptiwari
  */
 package edu.asu.laits.gui.nodeeditor;
 
@@ -203,35 +203,6 @@ public class CalculationsPanelView extends javax.swing.JPanel
 
   
 
-  
-
-  //This is used when the node is a stock
-  private void disableKeyPad() {
-    multiplyButton.setEnabled(false);
-    subtractButton.setEnabled(false);
-    divideButton.setEnabled(false);
-    addButton.setEnabled(false);
-  }
-
-  //This is used when the node is a flow
-  private void enableKeyPadForStock() {
-    multiplyButton.setEnabled(false);
-    subtractButton.setEnabled(true);
-    divideButton.setEnabled(false);
-    addButton.setEnabled(true);
-  }
-
-  //This is used when the node is a flow
-  private void enableKeyPad() {
-    multiplyButton.setEnabled(true);
-    subtractButton.setEnabled(true);
-    divideButton.setEnabled(true);
-    addButton.setEnabled(true);
-  }
-
-  
-
-
   public JFormattedTextField getGivenValueTextField() {
     return fixedValueInputBox;
   }
@@ -309,6 +280,8 @@ public class CalculationsPanelView extends javax.swing.JPanel
     private void initComponents() {
 
         buttonGroup1 = new javax.swing.ButtonGroup();
+        jScrollPane3 = new javax.swing.JScrollPane();
+        jEditorPane1 = new javax.swing.JEditorPane();
         contentPanel = new javax.swing.JPanel();
         fixedValueLabel = new javax.swing.JLabel();
         //Code commented by Josh 011912 -- starts here
@@ -327,17 +300,11 @@ public class CalculationsPanelView extends javax.swing.JPanel
         jScrollPane1 = new javax.swing.JScrollPane();
         formulaInputArea = new javax.swing.JTextArea();
         availableInputsLabel = new javax.swing.JLabel();
+        jScrollPane4 = new javax.swing.JScrollPane();
         jScrollPane2 = new javax.swing.JScrollPane();
         availableInputsJList = new javax.swing.JList();
-        deleteButton = new javax.swing.JButton();
-        addButton = new javax.swing.JButton();
-        subtractButton = new javax.swing.JButton();
-        multiplyButton = new javax.swing.JButton();
-        divideButton = new javax.swing.JButton();
-        openParenButton = new javax.swing.JButton();
-        closeParenButton = new javax.swing.JButton();
-        powerButton = new javax.swing.JButton();
-        clearButton = new javax.swing.JButton();
+
+        jScrollPane3.setViewportView(jEditorPane1);
 
         setLayout(new org.netbeans.lib.awtextra.AbsoluteLayout());
 
@@ -345,7 +312,7 @@ public class CalculationsPanelView extends javax.swing.JPanel
 
         fixedValueLabel.setFont(new java.awt.Font("Lucida Grande", 1, 13)); // NOI18N
         fixedValueLabel.setText("<html><b>Fixed value = </b></html>");
-        contentPanel.add(fixedValueLabel, new org.netbeans.lib.awtextra.AbsoluteConstraints(21, 135, -1, -1));
+        contentPanel.add(fixedValueLabel, new org.netbeans.lib.awtextra.AbsoluteConstraints(20, 136, -1, 30));
 
         fixedValueInputBox.setFormatterFactory(new javax.swing.text.DefaultFormatterFactory(new javax.swing.text.NumberFormatter(inputDecimalFormat)));
         fixedValueInputBox.setHorizontalAlignment(javax.swing.JTextField.LEFT);
@@ -365,7 +332,7 @@ public class CalculationsPanelView extends javax.swing.JPanel
                 fixedValueInputBoxKeyReleased(evt);
             }
         });
-        contentPanel.add(fixedValueInputBox, new org.netbeans.lib.awtextra.AbsoluteConstraints(122, 129, 454, -1));
+        contentPanel.add(fixedValueInputBox, new org.netbeans.lib.awtextra.AbsoluteConstraints(120, 140, 454, -1));
 
         quantitySelectionPanel.setBorder(javax.swing.BorderFactory.createLineBorder(new java.awt.Color(0, 0, 0)));
 
@@ -431,9 +398,8 @@ public class CalculationsPanelView extends javax.swing.JPanel
         add(contentPanel, new org.netbeans.lib.awtextra.AbsoluteConstraints(18, 7, -1, 210));
 
         valuesLabel.setFont(new java.awt.Font("Lucida Grande", 1, 13)); // NOI18N
-        valuesLabel.setText("Next Value = Current Value +");
+        valuesLabel.setText("Next Value = ");
 
-        formulaInputArea.setEditable(false);
         formulaInputArea.setColumns(20);
         formulaInputArea.setLineWrap(true);
         formulaInputArea.setRows(5);
@@ -453,78 +419,7 @@ public class CalculationsPanelView extends javax.swing.JPanel
         });
         jScrollPane2.setViewportView(availableInputsJList);
 
-        deleteButton.setFont(new java.awt.Font("Lucida Grande", 0, 14)); // NOI18N
-        deleteButton.setText("<< Del");
-        deleteButton.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                deleteButtonActionPerformed(evt);
-            }
-        });
-
-        addButton.setFont(new java.awt.Font("Lucida Grande", 0, 18)); // NOI18N
-        addButton.setText("+");
-        addButton.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                addButtonActionPerformed(evt);
-            }
-        });
-
-        subtractButton.setFont(new java.awt.Font("Lucida Grande", 0, 18)); // NOI18N
-        subtractButton.setText("-");
-        subtractButton.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                subtractButtonActionPerformed(evt);
-            }
-        });
-
-        multiplyButton.setFont(new java.awt.Font("Tahoma", 0, 18)); // NOI18N
-        multiplyButton.setText("X");
-        multiplyButton.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                multiplyButtonActionPerformed(evt);
-            }
-        });
-
-        divideButton.setFont(new java.awt.Font("Lucida Grande", 0, 18)); // NOI18N
-        divideButton.setText("/");
-        divideButton.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                divideButtonActionPerformed(evt);
-            }
-        });
-
-        openParenButton.setFont(new java.awt.Font("Lucida Grande", 0, 18)); // NOI18N
-        openParenButton.setText("(");
-        openParenButton.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                openParenButtonActionPerformed(evt);
-            }
-        });
-
-        closeParenButton.setFont(new java.awt.Font("Lucida Grande", 0, 18)); // NOI18N
-        closeParenButton.setText(")");
-        closeParenButton.setVerifyInputWhenFocusTarget(false);
-        closeParenButton.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                closeParenButtonActionPerformed(evt);
-            }
-        });
-
-        powerButton.setFont(new java.awt.Font("Lucida Grande", 0, 18)); // NOI18N
-        powerButton.setText("pow");
-        powerButton.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                powerButtonActionPerformed(evt);
-            }
-        });
-
-        clearButton.setFont(new java.awt.Font("Lucida Grande", 0, 18)); // NOI18N
-        clearButton.setText("clear");
-        clearButton.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                clearButtonActionPerformed(evt);
-            }
-        });
+        jScrollPane4.setViewportView(jScrollPane2);
 
         javax.swing.GroupLayout calculatorPanelLayout = new javax.swing.GroupLayout(calculatorPanel);
         calculatorPanel.setLayout(calculatorPanelLayout);
@@ -533,40 +428,12 @@ public class CalculationsPanelView extends javax.swing.JPanel
             .addGroup(calculatorPanelLayout.createSequentialGroup()
                 .addGroup(calculatorPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addComponent(availableInputsLabel)
-                    .addComponent(jScrollPane2, javax.swing.GroupLayout.PREFERRED_SIZE, 244, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addComponent(jScrollPane4, javax.swing.GroupLayout.PREFERRED_SIZE, 266, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addGap(59, 59, 59)
                 .addGroup(calculatorPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addGroup(calculatorPanelLayout.createSequentialGroup()
-                        .addGap(55, 55, 55)
-                        .addComponent(valuesLabel)
-                        .addContainerGap())
-                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, calculatorPanelLayout.createSequentialGroup()
-                        .addGap(41, 41, 41)
-                        .addGroup(calculatorPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
-                            .addGroup(calculatorPanelLayout.createSequentialGroup()
-                                .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 309, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                .addContainerGap(16, Short.MAX_VALUE))
-                            .addGroup(calculatorPanelLayout.createSequentialGroup()
-                                .addGroup(calculatorPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
-                                    .addComponent(addButton, javax.swing.GroupLayout.PREFERRED_SIZE, 40, Short.MAX_VALUE)
-                                    .addComponent(openParenButton, javax.swing.GroupLayout.PREFERRED_SIZE, 1, Short.MAX_VALUE))
-                                .addGroup(calculatorPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                                    .addGroup(calculatorPanelLayout.createSequentialGroup()
-                                        .addGap(15, 15, 15)
-                                        .addComponent(subtractButton, javax.swing.GroupLayout.PREFERRED_SIZE, 43, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                        .addGap(14, 14, 14)
-                                        .addComponent(multiplyButton, javax.swing.GroupLayout.PREFERRED_SIZE, 40, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                        .addGap(12, 12, 12)
-                                        .addComponent(divideButton, javax.swing.GroupLayout.PREFERRED_SIZE, 40, javax.swing.GroupLayout.PREFERRED_SIZE))
-                                    .addGroup(calculatorPanelLayout.createSequentialGroup()
-                                        .addGap(18, 18, 18)
-                                        .addComponent(closeParenButton, javax.swing.GroupLayout.PREFERRED_SIZE, 40, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                        .addGap(18, 18, 18)
-                                        .addComponent(powerButton, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)))
-                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                                .addGroup(calculatorPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                                    .addComponent(clearButton, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                                    .addComponent(deleteButton, javax.swing.GroupLayout.PREFERRED_SIZE, 1, Short.MAX_VALUE))
-                                .addGap(24, 24, 24))))))
+                    .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(valuesLabel))
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
         calculatorPanelLayout.setVerticalGroup(
             calculatorPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -577,25 +444,10 @@ public class CalculationsPanelView extends javax.swing.JPanel
                     .addComponent(valuesLabel))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addGroup(calculatorPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addComponent(jScrollPane4)
                     .addGroup(calculatorPanelLayout.createSequentialGroup()
-                        .addComponent(jScrollPane1)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                        .addGroup(calculatorPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                            .addComponent(addButton, javax.swing.GroupLayout.PREFERRED_SIZE, 40, javax.swing.GroupLayout.PREFERRED_SIZE)
-                            .addComponent(subtractButton, javax.swing.GroupLayout.PREFERRED_SIZE, 40, javax.swing.GroupLayout.PREFERRED_SIZE)
-                            .addComponent(multiplyButton, javax.swing.GroupLayout.PREFERRED_SIZE, 40, javax.swing.GroupLayout.PREFERRED_SIZE)
-                            .addComponent(divideButton, javax.swing.GroupLayout.PREFERRED_SIZE, 40, javax.swing.GroupLayout.PREFERRED_SIZE)
-                            .addComponent(deleteButton, javax.swing.GroupLayout.PREFERRED_SIZE, 40, javax.swing.GroupLayout.PREFERRED_SIZE))
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addGroup(calculatorPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                            .addComponent(powerButton, javax.swing.GroupLayout.PREFERRED_SIZE, 40, javax.swing.GroupLayout.PREFERRED_SIZE)
-                            .addComponent(openParenButton, javax.swing.GroupLayout.PREFERRED_SIZE, 40, javax.swing.GroupLayout.PREFERRED_SIZE)
-                            .addComponent(clearButton, javax.swing.GroupLayout.PREFERRED_SIZE, 40, javax.swing.GroupLayout.PREFERRED_SIZE)
-                            .addComponent(closeParenButton, javax.swing.GroupLayout.PREFERRED_SIZE, 40, javax.swing.GroupLayout.PREFERRED_SIZE))
-                        .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
-                    .addGroup(calculatorPanelLayout.createSequentialGroup()
-                        .addComponent(jScrollPane2, javax.swing.GroupLayout.PREFERRED_SIZE, 255, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addContainerGap(28, Short.MAX_VALUE))))
+                        .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 160, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addGap(0, 58, Short.MAX_VALUE))))
         );
 
         javax.swing.GroupLayout jPanel2Layout = new javax.swing.GroupLayout(jPanel2);
@@ -605,7 +457,7 @@ public class CalculationsPanelView extends javax.swing.JPanel
             .addGroup(jPanel2Layout.createSequentialGroup()
                 .addContainerGap()
                 .addComponent(calculatorPanel, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                .addContainerGap(19, Short.MAX_VALUE))
         );
         jPanel2Layout.setVerticalGroup(
             jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -616,24 +468,6 @@ public class CalculationsPanelView extends javax.swing.JPanel
 
         add(jPanel2, new org.netbeans.lib.awtextra.AbsoluteConstraints(18, 223, 600, -1));
     }// </editor-fold>//GEN-END:initComponents
-
-    private void multiplyButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_multiplyButtonActionPerformed
-      
-}//GEN-LAST:event_multiplyButtonActionPerformed
-
-    private void addButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_addButtonActionPerformed
-    
-     
- 
-}//GEN-LAST:event_addButtonActionPerformed
-  /**
-   * @author curt
-   * @param evt
-   */
-    private void deleteButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_deleteButtonActionPerformed
-     
-      
-}//GEN-LAST:event_deleteButtonActionPerformed
 
     private void stockValueOptionButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_stockValueOptionButtonActionPerformed
       logs.trace("Preparing UI for Stock Node");
@@ -684,61 +518,31 @@ public class CalculationsPanelView extends javax.swing.JPanel
     // TODO add your handling code here:
   }//GEN-LAST:event_fixedValueInputBoxActionPerformed
 
-  private void subtractButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_subtractButtonActionPerformed
-  
-  }//GEN-LAST:event_subtractButtonActionPerformed
-
-  private void divideButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_divideButtonActionPerformed
-    
-  }//GEN-LAST:event_divideButtonActionPerformed
-
-    private void openParenButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_openParenButtonActionPerformed
-        // TODO add your handling code here:
-    }//GEN-LAST:event_openParenButtonActionPerformed
-
-    private void closeParenButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_closeParenButtonActionPerformed
-        // TODO add your handling code here:
-    }//GEN-LAST:event_closeParenButtonActionPerformed
-
-    private void powerButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_powerButtonActionPerformed
-        // TODO add your handling code here:
-    }//GEN-LAST:event_powerButtonActionPerformed
-
-    private void clearButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_clearButtonActionPerformed
-        // TODO add your handling code here:
-    }//GEN-LAST:event_clearButtonActionPerformed
-
   public JTextArea getFormulaInputArea(){
     return formulaInputArea;
   }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
-    private javax.swing.JButton addButton;
     private javax.swing.JList availableInputsJList;
     private javax.swing.JLabel availableInputsLabel;
     private javax.swing.ButtonGroup buttonGroup1;
     private javax.swing.JPanel calculatorPanel;
-    private javax.swing.JButton clearButton;
-    private javax.swing.JButton closeParenButton;
     private javax.swing.JPanel contentPanel;
-    private javax.swing.JButton deleteButton;
-    private javax.swing.JButton divideButton;
     private javax.swing.JFormattedTextField fixedValueInputBox;
     private javax.swing.JLabel fixedValueLabel;
     private javax.swing.JRadioButton fixedValueOptionButton;
     private javax.swing.JRadioButton flowValueOptionButton;
     private javax.swing.JTextArea formulaInputArea;
+    private javax.swing.JEditorPane jEditorPane1;
     private javax.swing.JPanel jPanel2;
     private javax.swing.JScrollPane jScrollPane1;
     private javax.swing.JScrollPane jScrollPane2;
-    private javax.swing.JButton multiplyButton;
+    private javax.swing.JScrollPane jScrollPane3;
+    private javax.swing.JScrollPane jScrollPane4;
     private javax.swing.JLabel needInputLabel;
-    private javax.swing.JButton openParenButton;
-    private javax.swing.JButton powerButton;
     private javax.swing.JLabel quantityLabel;
     private javax.swing.JPanel quantitySelectionPanel;
     private javax.swing.JRadioButton stockValueOptionButton;
-    private javax.swing.JButton subtractButton;
     private javax.swing.JLabel valuesLabel;
     // End of variables declaration//GEN-END:variables
 

@@ -40,7 +40,7 @@ public class VertexRenderComponent extends VertexRenderer implements
     
     static VertexRenderComponent defaultRender = new VertexRenderComponent();
     
-    private static FlowVertexRenderComponent flowVertexRenderComponent =
+    private  static FlowVertexRenderComponent flowVertexRenderComponent =
             new FlowVertexRenderComponent(defaultRender);
     private static StockVertexRenderComponent stockVertexRenderComponent =
             new StockVertexRenderComponent(defaultRender);
@@ -54,25 +54,33 @@ public class VertexRenderComponent extends VertexRenderer implements
 
     public Component getRendererComponent(JGraph graph, CellView view,
             boolean sel, boolean focus, boolean preview) {
-
+        logs.trace("Called");
         Map<Object, Object> attributes = ((DefaultGraphCell) view.getCell())
                 .getAttributes();
 
-        VertexType shape = GraphEditorConstants.getShape(attributes);
+        DefaultGraphCell cell = (DefaultGraphCell) view.getCell();
+        Vertex currentVertex = (Vertex)cell.getUserObject();
+        
+        VertexType shape = currentVertex.getVertexType();
+        System.out.println("Name "+currentVertex.getName()+"  Type "+currentVertex.getVertexType());
         
         if (shape == VertexType.DEFAULT) {
+            logs.trace("Painting Default");
             return defaultVertexComponent.getRendererComponent(graph,
                     view, sel, focus, preview);
         }
-        else if (shape == null || shape == VertexType.FLOW) {
+        else if (shape == VertexType.FLOW) {
+            logs.trace("Painting Flow");
             return flowVertexRenderComponent.getRendererComponent(graph,
                     view, sel, focus, preview);
         } 
         else if (shape == VertexType.STOCK) {
+            logs.trace("Painting Stock");
             return stockVertexRenderComponent.getRendererComponent(graph,
                     view, sel, focus, preview);
         } 
         else if (shape == VertexType.CONSTANT) {
+            logs.trace("Painting Constant");
             return constantVertexComponent.getRendererComponent(graph,
                     view, sel, focus, preview);
         } 
@@ -82,14 +90,17 @@ public class VertexRenderComponent extends VertexRenderer implements
     }
 
     public CellViewRenderer getRenderer(GraphEditorVertexView view, JGraph graph) {
-       
+       logs.trace("Getting Renderer");
         Map<Object, Object> atributes = view.getAllAttributes();
 
-        VertexType shape = GraphEditorConstants.getShape(atributes);
+        DefaultGraphCell cell = (DefaultGraphCell) view.getCell();
+        Vertex currentVertex = (Vertex)cell.getUserObject();
+        
+        VertexType shape = currentVertex.getVertexType();
 
         if (shape == VertexType.DEFAULT) {
             return defaultVertexComponent;
-        }else if (shape == null || shape == VertexType.FLOW) {
+        }else if (shape == VertexType.FLOW) {
             return flowVertexRenderComponent;
         } else if (shape == VertexType.STOCK) {
             return stockVertexRenderComponent;

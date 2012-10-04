@@ -23,6 +23,7 @@ import edu.asu.laits.model.Vertex;
 import edu.asu.laits.editor.listeners.GraphPropertiesChangeListener;
 import edu.asu.laits.editor.listeners.InsertModeChangeListener;
 import edu.asu.laits.editor.listeners.UndoAndRedoAbleListener;
+import edu.asu.laits.gui.nodeeditor.NodeEditor;
 import edu.asu.laits.properties.GlobalProperties;
 import edu.asu.laits.properties.GraphProperties;
 import javax.swing.SwingConstants;
@@ -87,6 +88,8 @@ public class GraphEditorPane extends JGraph {
     private MessageProvider currentStatusMessageProvider =
             new MessageProvider("");
     private GraphOperationHelper graphOperationHelper;
+    private GraphLayoutCache layoutCache;
+            
     /**
      * Logger
      */
@@ -155,7 +158,7 @@ public class GraphEditorPane extends JGraph {
         // create a visualization using JGraph, via an adapter
         modelAdapter = new JGraphModelAdapter<Vertex, Edge>(graph);
 
-        GraphLayoutCache layoutCache = new GraphLayoutCache(modelAdapter,
+        layoutCache= new GraphLayoutCache(modelAdapter,
                 new GraphEditorCellViewFactory());
         
         
@@ -260,7 +263,7 @@ public class GraphEditorPane extends JGraph {
         vertexCell.add(port);
         port.setParent(vertexCell);
         getGraphLayoutCache().insert(vertexCell);
-
+        
         return vertexCell;
     }
 
@@ -292,8 +295,9 @@ public class GraphEditorPane extends JGraph {
         DefaultPort port = new DefaultPort();
         vertexCell.add(port);
         port.setParent(vertexCell);
-
+    
         getGraphLayoutCache().insert(vertexCell);
+        NodeEditor editor = new NodeEditor(this);        
     }
 
     /**
@@ -335,6 +339,9 @@ public class GraphEditorPane extends JGraph {
         return insertMode;
     }
 
+    public GraphLayoutCache getLayoutCache(){
+        return layoutCache;
+    }
     
     /**
      * Insert an edge between the source and the target port.

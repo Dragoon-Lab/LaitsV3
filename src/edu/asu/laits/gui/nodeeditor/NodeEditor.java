@@ -453,7 +453,7 @@ public class NodeEditor extends JFrame implements WindowListener {
           return;
       }
       currentVertex.setCorrectDescription(dPanel.getNodeDesc());
-      
+      graphPane.repaint();
       
       
       

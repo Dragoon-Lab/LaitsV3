@@ -6,6 +6,7 @@
  */
 package edu.asu.laits.gui.nodeeditor;
 
+import edu.asu.laits.model.Vertex;
 import java.awt.Font;
 import java.awt.GridLayout;
 import java.awt.event.ItemEvent;
@@ -126,22 +127,9 @@ public class InputsPanelView extends javax.swing.JPanel implements ItemListener 
       box.setVisible(flag);
     }
     
-    // Reset the Background color of input selection panel
-    if(flag)
-      setBackgroundEnable();
-    else
-      setBackgroundDisable();
+  
   }
   
-  private void setBackgroundEnable(){
-    logs.trace("setting background color to WHITE");
-    
-  }
-  
-  private void setBackgroundDisable(){
-    logs.trace("setting background color to GREY");
-    
-  }
   
   /**
    * Method to Add One Check Box corresponding to each Available Input Node
@@ -318,19 +306,22 @@ public class InputsPanelView extends javax.swing.JPanel implements ItemListener 
     }// </editor-fold>//GEN-END:initComponents
 /**
  * Event Handler for Fixed Value Option Button. Changes the UI for this panel
- * and prepares Fixed Vlaue UI for Calculation Panel
+ * and prepares Fixed Value UI for Calculation Panel
  * @param evt
  */
     private void fixedValueOptionButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_fixedValueOptionButtonActionPerformed
       // This method is called when Node has a fixed value.
-     
-      
+      nodeEditor.getCurrentVertex().setVertexType(Vertex.VertexType.CONSTANT);
+      logs.trace("Setting Vertex Type to Constant");
+      nodeEditor.getGraphPane().getLayoutCache().reload();
+      nodeEditor.getGraphPane().repaint();
     }//GEN-LAST:event_fixedValueOptionButtonActionPerformed
 
   // Method for handling the click event of Input radio button
     private void inputNodesSelectionOptionButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_inputNodesSelectionOptionButtonActionPerformed
-
-      
+        nodeEditor.getCurrentVertex().setVertexType(Vertex.VertexType.DEFAULT);  
+        nodeEditor.getGraphPane().getLayoutCache().reload();
+        nodeEditor.getGraphPane().repaint();
     }//GEN-LAST:event_inputNodesSelectionOptionButtonActionPerformed
 
 

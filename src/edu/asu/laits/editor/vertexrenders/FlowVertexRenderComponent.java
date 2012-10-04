@@ -119,7 +119,11 @@ public class FlowVertexRenderComponent extends VertexRenderComponent {
         Graphics2D g2 = (Graphics2D) g;
         g2.setColor(foreground);
 
-        g2.setStroke(new BasicStroke(3));
+        if(selected)
+            g2.setStroke(new BasicStroke(2, BasicStroke.CAP_BUTT, BasicStroke.JOIN_BEVEL, 0, new float[]{9}, 0));
+        else
+            g2.setStroke(new BasicStroke(3));
+        
         g2.drawOval(60, 1, getWidth() - 70  , getHeight()-20);
        
         String vertexName = currentVertex.getName();

@@ -11,6 +11,8 @@ import java.util.Map.Entry;
 
 import edu.asu.laits.editor.GraphEditorConstants;
 import edu.asu.laits.model.Edge.ErrorReaderException;
+import java.util.ArrayList;
+import java.util.List;
 import net.sourceforge.jeval.Evaluator;
 import org.apache.log4j.Logger;
 import org.jgraph.graph.DefaultGraphCell;
@@ -27,16 +29,19 @@ public class Vertex {
     private boolean useGraphBackround = true;
     private Color backgroundColor = Color.WHITE;
     private Color foregroundColor = Color.BLACK;
-    private VertexType type = VertexType.CONSTANT;
+    private VertexType type = VertexType.DEFAULT;
     
     private String name = "";
     private String correctDescription = "";
     private Plan plan = Plan.UNDEFINED;
     private InputsStatus inputsStatus = InputsStatus.UNDEFINED;
     private CalculationsStatus calculationsStatus = 
-            CalculationsStatus.CORRECT;
-    private GraphsStatus graphsStatus = GraphsStatus.INCORRECT;
+            CalculationsStatus.UNDEFINED;
+    private GraphsStatus graphsStatus = GraphsStatus.UNDEFINED;
     
+    private double initialValue;
+    private String equation;
+    private List<Double> correctValues;
     
     transient private SortedMap<String, String> properties = new TreeMap<String, String>();
     transient private static int vertIndexCount = 0;
@@ -50,9 +55,16 @@ public class Vertex {
      */
     public Vertex() {
         vertexIndex = vertIndexCount;
-        name = "Vertex"+vertexIndex;
+        name = "Node"+vertexIndex;
         xPosition = 200 * (vertexIndex % 6) + 80;
         yPosition = 200 * (vertexIndex / 6) + 60 ;
+        correctValues = new ArrayList<Double>();
+//        if(vertexIndex % 1 == 0)
+//            setVertexType(VertexType.CONSTANT);
+//        if(vertexIndex % 2 == 0)
+//            setVertexType(VertexType.FLOW);
+//        if(vertexIndex % 3 == 0)
+//            setVertexType(VertexType.STOCK);
         
         vertIndexCount++;
     }
@@ -137,7 +149,27 @@ public class Vertex {
     public void setYPosition(double position) {
         yPosition = position;
     }
+    
+    public List<Double> getCorrectValues(){
+        return correctValues;
+    }
 
+    public double getInitialValue(){
+        return initialValue;
+    }
+    
+    public void setInitialValue(double input){
+        initialValue = input;
+    }
+    
+    public String getEquation(){
+        return equation;
+    }    
+    
+    public void setEquation(String input){
+        equation = input;
+    }
+    
     public String toString() {
         return name;
     }

@@ -84,22 +84,6 @@ public class ConstantVertexRenderComponent extends VertexRenderComponent {
             background = Color.WHITE;
         }
 
-        if (graph != null) {
-            VertexType shape = GraphEditorConstants.getShape(attributes);
-            GraphEditorPane graphPane = (GraphEditorPane) graph;
-
-            if (VertexType.CONSTANT != shape) {
-                if (!(VertexType.DEFAULT == shape && graphPane.getGraphProperties()
-                        .getDefaultShape() == VertexType.CONSTANT)) {
-
-                    return defaultVertexRenderComponent.getRendererComponent(
-                            graph, view, sel, focus, preview);
-                }
-            }
-
-        }
-        // CHECK END
-        // TODO Auto-generated method stub
         if (view instanceof GraphEditorVertexView) {
             GraphEditorVertexView graphVertexView = (GraphEditorVertexView) view;
             graphVertexView.setLocalRenderer(this);
@@ -184,7 +168,10 @@ public class ConstantVertexRenderComponent extends VertexRenderComponent {
         g2.setColor(foreground);
         int[] xpoints = {60, 119, 178, 119};
         int[] ypoints = {31, 1, 31, 63};
-        g2.setStroke(new BasicStroke(3));
+        if(selected)
+            g2.setStroke(new BasicStroke(2, BasicStroke.CAP_BUTT, BasicStroke.JOIN_BEVEL, 0, new float[]{9}, 0));
+        else
+            g2.setStroke(new BasicStroke(3));
 
         if (preview || !selected) {
             if (!useGraphBackround) {
