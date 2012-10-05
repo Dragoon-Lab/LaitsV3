@@ -6,15 +6,23 @@
  */
 package edu.asu.laits.gui.nodeeditor;
 
+import edu.asu.laits.editor.GraphEditorPane;
+import edu.asu.laits.model.Edge;
+import edu.asu.laits.model.Graph;
 import edu.asu.laits.model.Vertex;
+import edu.asu.laits.model.Vertex.VertexType;
 import java.awt.Font;
 import java.awt.GridLayout;
 import java.awt.event.ItemEvent;
 import java.awt.event.ItemListener;
+import java.util.HashMap;
 import java.util.LinkedList;
+import java.util.Set;
 import java.util.Stack;
 import javax.swing.*;
 import org.apache.log4j.Logger;
+import org.jgraph.graph.Port;
+import org.jgraph.graph.PortView;
 
 
 public class InputsPanelView extends javax.swing.JPanel implements ItemListener {
@@ -29,8 +37,9 @@ public class InputsPanelView extends javax.swing.JPanel implements ItemListener 
   private final boolean TYPE_CHANGE = true;
   private static InputsPanelView inputView;
   boolean isViewEnabled;
-  boolean extraChangeEvent;
   NodeEditor nodeEditor;
+  
+  public HashMap<Vertex, Boolean> initialSelection=new HashMap<Vertex, Boolean>();
   
   /** Logger **/
   private static Logger logs = Logger.getLogger(InputsPanelView.class);
@@ -39,13 +48,44 @@ public class InputsPanelView extends javax.swing.JPanel implements ItemListener 
    * Private Constructor
    * @param gc : GraphCanvas of LAITS Application.
    */
-  public InputsPanelView(NodeEditor ne){
+  public InputsPanelView(NodeEditor ne){ 
     initComponents();
-    nodeEditor = ne;
+      nodeEditor = ne;
     checkboxList = new LinkedList<JCheckBox>();
+    initPanel();
   }
   
-  public void initPanel(){
+  public void initPanel(){    
+    Graph graph=(Graph)this.nodeEditor.getGraphPane().getModelGraph();
+    Set<Vertex> vertexes=graph.vertexSet();
+    Vertex currentV=this.nodeEditor.getCurrentVertex();
+    
+    JCheckBox box;
+    availableInputNodesPanels.setLayout(new GridLayout(graph.vertexSet().size(), 1));
+    this.availableInputNodesPanels.setVisible(false);
+    boolean selected;
+    for(Vertex v:vertexes){
+        if(v.getName().equals(currentV.getName()))
+            continue;
+        if(graph.containsEdge(v,currentV))
+            selected=true;
+        else
+            selected=false;
+        box=new JCheckBox(v.getName(),selected);
+        this.initialSelection.put(v, selected);
+        box.setVisible(false);
+        box.setText(v.getName());
+        box.addItemListener(this);
+        this.checkboxList.add(box);
+        this.availableInputNodesPanels.add(box);           
+    }
+    
+    if(currentV.getVertexType()==VertexType.CONSTANT)
+        this.fixedValueOptionButton.setSelected(true);
+    else if(currentV.getVertexType()==VertexType.FLOW || currentV.getVertexType()==VertexType.STOCK){
+        this.inputNodesSelectionOptionButton.setSelected(true);
+        this.displayCurrentInputsPanel(true);
+    }
     
   }
    
@@ -163,14 +203,28 @@ public class InputsPanelView extends javax.swing.JPanel implements ItemListener 
    * available input nodes
    */
   public void itemStateChanged(ItemEvent e) {
-    if (extraChangeEvent) {
-      extraChangeEvent = false;
-      return;
-    }
-
+    Object source=e.getSource();
+    if(!(source instanceof JCheckBox))
+        return;
+    Graph graph=(Graph)this.nodeEditor.getGraphPane().getModelGraph();
+    JCheckBox box=(JCheckBox) source;
+    Vertex connectedV=graph.getVertexByName(box.getText());
+    if(box.isSelected() && !graph.containsEdge(connectedV, nodeEditor.getCurrentVertex()))
+        graph.addEdge(connectedV,nodeEditor.getCurrentVertex());//addEdge(this.nodeEditor.getCurrentVertex(), connectedV);
+    else if(!box.isSelected() && graph.containsEdge(connectedV, nodeEditor.getCurrentVertex()))
+        graph.removeEdge(connectedV, nodeEditor.getCurrentVertex());
     logs.trace("Input Node selection changed");
 
 
+  }
+  
+  private void addEdge(Vertex v1, Vertex v2){
+      GraphEditorPane graphPane=nodeEditor.getGraphPane();
+       PortView  p = graphPane.getPortViewAt(v1.getXPosition(), v1.getYPosition());
+      PortView p2 = graphPane.getPortViewAt(v2.getXPosition(), v2.getYPosition());
+      
+      
+      graphPane.insertEdge((Port)p2.getCell(), (Port)p.getCell());
   }
   
   
@@ -311,7 +365,8 @@ public class InputsPanelView extends javax.swing.JPanel implements ItemListener 
  */
     private void fixedValueOptionButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_fixedValueOptionButtonActionPerformed
       // This method is called when Node has a fixed value.
-      nodeEditor.getCurrentVertex().setVertexType(Vertex.VertexType.CONSTANT);
+      this.displayCurrentInputsPanel(false);
+        nodeEditor.getCurrentVertex().setVertexType(Vertex.VertexType.CONSTANT);
       logs.trace("Setting Vertex Type to Constant");
       nodeEditor.getGraphPane().getLayoutCache().reload();
       nodeEditor.getGraphPane().repaint();
@@ -319,6 +374,7 @@ public class InputsPanelView extends javax.swing.JPanel implements ItemListener 
 
   // Method for handling the click event of Input radio button
     private void inputNodesSelectionOptionButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_inputNodesSelectionOptionButtonActionPerformed
+        this.displayCurrentInputsPanel(true);
         nodeEditor.getCurrentVertex().setVertexType(Vertex.VertexType.DEFAULT);  
         nodeEditor.getGraphPane().getLayoutCache().reload();
         nodeEditor.getGraphPane().repaint();
