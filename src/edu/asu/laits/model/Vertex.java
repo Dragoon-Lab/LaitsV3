@@ -289,4 +289,12 @@ public class Vertex {
         UNDEFINED, CORRECT, INCORRECT
     }
     
+    //for debug purpose
+    public void genRandomValues(){
+        this.correctValues.clear();
+        Task task=Task.getInstance();
+        for(int i=task.getStartTime();i<=task.getEndTime();i++){
+            this.correctValues.add(Math.random()*100);
+        }
+    }
 }

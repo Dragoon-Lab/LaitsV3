@@ -8,6 +8,9 @@
 package edu.asu.laits.gui.nodeeditor;
 
 
+import edu.asu.laits.model.Graph;
+import edu.asu.laits.model.Task;
+import edu.asu.laits.model.Vertex;
 import java.awt.*;
 import javax.swing.JPanel;
 import org.apache.log4j.Logger;
@@ -33,6 +36,14 @@ public class GraphsPanelView extends javax.swing.JPanel {
   public GraphsPanelView(NodeEditor ne){
     initComponents();
     nodeEditor = ne;
+    Vertex currentVertex=nodeEditor.getCurrentVertex();
+    Task task=Task.getInstance();
+    Dimension d=new Dimension(550,400);
+    if(currentVertex.getCorrectValues().isEmpty())
+        currentVertex.genRandomValues();
+    PlotPanel plotPanel=new PlotPanel(currentVertex,task.getStartTime(),task.getEndTime(),task.getUnits(),d);
+    this.userAnswerPanel.setLayout(new java.awt.GridLayout(1, 1));
+    this.userAnswerPanel.add(plotPanel);
   }
   
   
