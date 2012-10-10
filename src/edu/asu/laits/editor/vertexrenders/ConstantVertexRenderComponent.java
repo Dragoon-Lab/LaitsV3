@@ -172,10 +172,12 @@ public class ConstantVertexRenderComponent   extends VertexRenderComponent {
         }else{
             g2.setColor(foreground);
         }
+        
         int[] xpoints = {0, 60, 119, 60};
         int[] ypoints = {31, 1, 31, 62};
         if(selected){
             g2.setStroke(new BasicStroke(2));
+            g2.setColor(Color.GRAY);
         }else
             g2.setStroke(new BasicStroke(3));
 

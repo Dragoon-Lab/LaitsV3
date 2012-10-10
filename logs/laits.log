@@ -1703,4 +1703,889 @@
 [34;40m2012-10-10 10:00:47,617 - edu.asu.laits.gui.nodeeditor.NodeEditor - TRACE - Tab Stage Changed Action - Ends
 [34;40m2012-10-10 10:00:47,632 - edu.asu.laits.gui.nodeeditor.NodeEditor - TRACE - Initializing NodeEditor Tabs - End
 [34;40m2012-10-10 10:00:57,411 - edu.asu.laits.gui.nodeeditor.NodeEditor - TRACE - Setting Inputs to correct
+[34;40m2012-10-10 12:03:12,454 - edu.asu.laits.editor.GraphEditorPane - TRACE - Initializing GraphEditor Pane
+[34;40m2012-10-10 12:03:14,298 - edu.asu.laits.gui.nodeeditor.NodeEditor - TRACE - Setting Tab Listener
+[34;40m2012-10-10 12:03:14,299 - edu.asu.laits.gui.nodeeditor.NodeEditor - TRACE - Setting Tab Listener -Ends
+[34;40m2012-10-10 12:03:14,300 - edu.asu.laits.gui.nodeeditor.NodeEditor - TRACE - Initializing NodeEditor
+[34;40m2012-10-10 12:03:14,300 - edu.asu.laits.gui.nodeeditor.NodeEditor - TRACE - Initializing NodeEditor Tabs - Start
+[34;40m2012-10-10 12:03:14,404 - edu.asu.laits.gui.nodeeditor.PlanPanelView - TRACE - Initializing plan panel for Node 
+[34;40m2012-10-10 12:03:14,429 - edu.asu.laits.gui.nodeeditor.CalculationsPanelView - TRACE - Initializing Calculations Panel for Node 
+[34;40m2012-10-10 12:03:14,430 - edu.asu.laits.gui.nodeeditor.CalculationsPanelView - TRACE - Initializing Available Input Nodes in jList Panel
+[34;40m2012-10-10 12:03:14,444 - edu.asu.laits.gui.nodeeditor.NodeEditor - TRACE - Inside Else
+[34;40m2012-10-10 12:03:14,466 - edu.asu.laits.gui.nodeeditor.NodeEditor - TRACE - Setting Desc Panel as Current
+[34;40m2012-10-10 12:03:14,466 - edu.asu.laits.gui.nodeeditor.NodeEditor - TRACE - Initializing NodeEditor Tabs - End
+[34;40m[0;31m2012-10-10 12:03:20,355 - edu.asu.laits.gui.nodeeditor.NodeEditor - ERROR - Current Tab 1  0
+[34;40m2012-10-10 12:03:20,371 - edu.asu.laits.gui.nodeeditor.NodeEditor - TRACE - Saving Description Panel
+[34;40m2012-10-10 12:03:20,374 - edu.asu.laits.gui.nodeeditor.NodeEditor - TRACE - Plan Panel View Enabled. ExtraTabEvent = false
+[34;40m2012-10-10 12:03:20,375 - edu.asu.laits.gui.nodeeditor.NodeEditor - TRACE - Tab Stage Changed Action - Ends
+[34;40m[0;31m2012-10-10 12:03:21,814 - edu.asu.laits.gui.nodeeditor.NodeEditor - ERROR - Current Tab 2  1
+[34;40m2012-10-10 12:03:21,815 - edu.asu.laits.gui.nodeeditor.NodeEditor - TRACE - Saving PLAN Panel
+[34;40m2012-10-10 12:03:21,816 - edu.asu.laits.gui.nodeeditor.NodeEditor - TRACE - inside ipanel if false
+[34;40m2012-10-10 12:03:21,816 - edu.asu.laits.gui.nodeeditor.NodeEditor - TRACE - Tab Stage Changed Action - Ends
+[34;40m2012-10-10 12:03:22,550 - edu.asu.laits.gui.nodeeditor.InputsPanelView - TRACE - Setting Vertex Type to Constant
+[34;40m[0;31m2012-10-10 12:03:23,314 - edu.asu.laits.gui.nodeeditor.NodeEditor - ERROR - Current Tab 3  2
+[34;40m2012-10-10 12:03:23,314 - edu.asu.laits.gui.nodeeditor.NodeEditor - TRACE - Saving INPUTS Panel
+[34;40m2012-10-10 12:03:23,314 - edu.asu.laits.gui.nodeeditor.CalculationsPanelView - TRACE - Initializing Calculations Panel for Node 
+[34;40m2012-10-10 12:03:23,315 - edu.asu.laits.gui.nodeeditor.CalculationsPanelView - TRACE - Initializing Available Input Nodes in jList Panel
+[34;40m2012-10-10 12:03:23,318 - edu.asu.laits.gui.nodeeditor.NodeEditor - TRACE - Tab Stage Changed Action - Ends
+[34;40m2012-10-10 12:03:26,598 - edu.asu.laits.gui.nodeeditor.NodeEditor - TRACE - Setting Inputs to correct
+[34;40m2012-10-10 12:03:27,869 - edu.asu.laits.gui.nodeeditor.NodeEditor - TRACE - Setting Tab Listener
+[34;40m2012-10-10 12:03:27,870 - edu.asu.laits.gui.nodeeditor.NodeEditor - TRACE - Setting Tab Listener -Ends
+[34;40m2012-10-10 12:03:27,870 - edu.asu.laits.gui.nodeeditor.NodeEditor - TRACE - Initializing NodeEditor
+[34;40m2012-10-10 12:03:27,870 - edu.asu.laits.gui.nodeeditor.NodeEditor - TRACE - Initializing NodeEditor Tabs - Start
+[34;40m2012-10-10 12:03:27,910 - edu.asu.laits.gui.nodeeditor.PlanPanelView - TRACE - Initializing plan panel for Node 
+[34;40m2012-10-10 12:03:27,919 - edu.asu.laits.gui.nodeeditor.CalculationsPanelView - TRACE - Initializing Calculations Panel for Node 
+[34;40m2012-10-10 12:03:27,919 - edu.asu.laits.gui.nodeeditor.CalculationsPanelView - TRACE - Initializing Available Input Nodes in jList Panel
+[34;40m2012-10-10 12:03:27,925 - edu.asu.laits.gui.nodeeditor.NodeEditor - TRACE - Inside Else
+[34;40m2012-10-10 12:03:27,943 - edu.asu.laits.gui.nodeeditor.NodeEditor - TRACE - Setting Desc Panel as Current
+[34;40m2012-10-10 12:03:27,943 - edu.asu.laits.gui.nodeeditor.NodeEditor - TRACE - Initializing NodeEditor Tabs - End
+[34;40m[0;31m2012-10-10 12:03:33,997 - edu.asu.laits.gui.nodeeditor.NodeEditor - ERROR - Current Tab 1  0
+[34;40m2012-10-10 12:03:33,997 - edu.asu.laits.gui.nodeeditor.NodeEditor - TRACE - Saving Description Panel
+[34;40m2012-10-10 12:03:34,000 - edu.asu.laits.gui.nodeeditor.NodeEditor - TRACE - Plan Panel View Enabled. ExtraTabEvent = false
+[34;40m2012-10-10 12:03:34,000 - edu.asu.laits.gui.nodeeditor.NodeEditor - TRACE - Tab Stage Changed Action - Ends
+[34;40m[0;31m2012-10-10 12:03:38,172 - edu.asu.laits.gui.nodeeditor.NodeEditor - ERROR - Current Tab 2  1
+[34;40m2012-10-10 12:03:38,172 - edu.asu.laits.gui.nodeeditor.NodeEditor - TRACE - Saving PLAN Panel
+[34;40m2012-10-10 12:03:38,173 - edu.asu.laits.gui.nodeeditor.NodeEditor - TRACE - inside ipanel if false
+[34;40m2012-10-10 12:03:38,173 - edu.asu.laits.gui.nodeeditor.NodeEditor - TRACE - Tab Stage Changed Action - Ends
+[34;40m2012-10-10 12:03:44,062 - edu.asu.laits.gui.nodeeditor.InputsPanelView - TRACE - Input Node selection changed
+[34;40m2012-10-10 12:03:47,759 - edu.asu.laits.gui.nodeeditor.NodeEditor - TRACE - Setting Inputs to correct
+[34;40m[0;31m2012-10-10 12:03:52,160 - edu.asu.laits.gui.nodeeditor.NodeEditor - ERROR - Current Tab 3  2
+[34;40m2012-10-10 12:03:52,160 - edu.asu.laits.gui.nodeeditor.NodeEditor - TRACE - Saving INPUTS Panel
+[34;40m2012-10-10 12:03:52,160 - edu.asu.laits.gui.nodeeditor.CalculationsPanelView - TRACE - Initializing Calculations Panel for Node 
+[34;40m2012-10-10 12:03:52,160 - edu.asu.laits.gui.nodeeditor.CalculationsPanelView - TRACE - Initializing Available Input Nodes in jList Panel
+[34;40m2012-10-10 12:03:52,160 - edu.asu.laits.gui.nodeeditor.NodeEditor - TRACE - Tab Stage Changed Action - Ends
+[34;40m2012-10-10 12:03:53,517 - edu.asu.laits.gui.nodeeditor.CalculationsPanelView - TRACE - Preparing UI for Stock Node
+[34;40m2012-10-10 12:03:58,585 - edu.asu.laits.gui.nodeeditor.NodeEditor - TRACE - Setting Inputs to correct
+[34;40m2012-10-10 12:04:01,088 - edu.asu.laits.gui.nodeeditor.NodeEditor - TRACE - Setting Tab Listener
+[34;40m2012-10-10 12:04:01,088 - edu.asu.laits.gui.nodeeditor.NodeEditor - TRACE - Setting Tab Listener -Ends
+[34;40m2012-10-10 12:04:01,088 - edu.asu.laits.gui.nodeeditor.NodeEditor - TRACE - Initializing NodeEditor
+[34;40m2012-10-10 12:04:01,089 - edu.asu.laits.gui.nodeeditor.NodeEditor - TRACE - Initializing NodeEditor Tabs - Start
+[34;40m2012-10-10 12:04:01,126 - edu.asu.laits.gui.nodeeditor.PlanPanelView - TRACE - Initializing plan panel for Node 
+[34;40m2012-10-10 12:04:01,134 - edu.asu.laits.gui.nodeeditor.CalculationsPanelView - TRACE - Initializing Calculations Panel for Node 
+[34;40m2012-10-10 12:04:01,134 - edu.asu.laits.gui.nodeeditor.CalculationsPanelView - TRACE - Initializing Available Input Nodes in jList Panel
+[34;40m2012-10-10 12:04:01,141 - edu.asu.laits.gui.nodeeditor.NodeEditor - TRACE - Inside Else
+[34;40m2012-10-10 12:04:01,157 - edu.asu.laits.gui.nodeeditor.NodeEditor - TRACE - Setting Desc Panel as Current
+[34;40m2012-10-10 12:04:01,157 - edu.asu.laits.gui.nodeeditor.NodeEditor - TRACE - Initializing NodeEditor Tabs - End
+[34;40m[0;31m2012-10-10 12:04:08,732 - edu.asu.laits.gui.nodeeditor.NodeEditor - ERROR - Current Tab 1  0
+[34;40m2012-10-10 12:04:08,733 - edu.asu.laits.gui.nodeeditor.NodeEditor - TRACE - Saving Description Panel
+[34;40m2012-10-10 12:04:08,735 - edu.asu.laits.gui.nodeeditor.NodeEditor - TRACE - Plan Panel View Enabled. ExtraTabEvent = false
+[34;40m2012-10-10 12:04:08,736 - edu.asu.laits.gui.nodeeditor.NodeEditor - TRACE - Tab Stage Changed Action - Ends
+[34;40m[0;31m2012-10-10 12:04:10,577 - edu.asu.laits.gui.nodeeditor.NodeEditor - ERROR - Current Tab 2  1
+[34;40m2012-10-10 12:04:10,578 - edu.asu.laits.gui.nodeeditor.NodeEditor - TRACE - Saving PLAN Panel
+[34;40m2012-10-10 12:04:10,578 - edu.asu.laits.gui.nodeeditor.NodeEditor - TRACE - inside ipanel if false
+[34;40m2012-10-10 12:04:10,578 - edu.asu.laits.gui.nodeeditor.NodeEditor - TRACE - Tab Stage Changed Action - Ends
+[34;40m2012-10-10 12:05:00,347 - edu.asu.laits.gui.nodeeditor.InputsPanelView - TRACE - Input Node selection changed
+[34;40m2012-10-10 12:05:01,195 - edu.asu.laits.gui.nodeeditor.InputsPanelView - TRACE - Input Node selection changed
+[34;40m[0;31m2012-10-10 12:05:05,525 - edu.asu.laits.gui.nodeeditor.NodeEditor - ERROR - Current Tab 3  2
+[34;40m2012-10-10 12:05:05,526 - edu.asu.laits.gui.nodeeditor.NodeEditor - TRACE - Saving INPUTS Panel
+[34;40m2012-10-10 12:05:05,526 - edu.asu.laits.gui.nodeeditor.CalculationsPanelView - TRACE - Initializing Calculations Panel for Node 
+[34;40m2012-10-10 12:05:05,526 - edu.asu.laits.gui.nodeeditor.CalculationsPanelView - TRACE - Initializing Available Input Nodes in jList Panel
+[34;40m2012-10-10 12:05:05,526 - edu.asu.laits.gui.nodeeditor.NodeEditor - TRACE - Tab Stage Changed Action - Ends
+[34;40m2012-10-10 12:05:07,067 - edu.asu.laits.gui.nodeeditor.CalculationsPanelView - TRACE - Preparing UI for Flow Node
+[34;40m2012-10-10 12:05:13,167 - edu.asu.laits.gui.nodeeditor.NodeEditor - TRACE - Setting Inputs to correct
+[34;40m2012-10-10 12:05:18,841 - edu.asu.laits.gui.nodeeditor.NodeEditor - TRACE - Setting Tab Listener
+[34;40m2012-10-10 12:05:18,842 - edu.asu.laits.gui.nodeeditor.NodeEditor - TRACE - Setting Tab Listener -Ends
+[34;40m2012-10-10 12:05:18,842 - edu.asu.laits.gui.nodeeditor.NodeEditor - TRACE - Initializing NodeEditor
+[34;40m2012-10-10 12:05:18,842 - edu.asu.laits.gui.nodeeditor.NodeEditor - TRACE - Initializing NodeEditor Tabs - Start
+[34;40m2012-10-10 12:05:18,879 - edu.asu.laits.gui.nodeeditor.PlanPanelView - TRACE - Initializing plan panel for Node 
+[34;40m2012-10-10 12:05:18,886 - edu.asu.laits.gui.nodeeditor.CalculationsPanelView - TRACE - Initializing Calculations Panel for Node 
+[34;40m2012-10-10 12:05:18,886 - edu.asu.laits.gui.nodeeditor.CalculationsPanelView - TRACE - Initializing Available Input Nodes in jList Panel
+[34;40m2012-10-10 12:05:18,892 - edu.asu.laits.gui.nodeeditor.NodeEditor - TRACE - Inside Else
+[34;40m2012-10-10 12:05:18,908 - edu.asu.laits.gui.nodeeditor.NodeEditor - TRACE - Setting Desc Panel as Current
+[34;40m2012-10-10 12:05:18,908 - edu.asu.laits.gui.nodeeditor.NodeEditor - TRACE - Initializing NodeEditor Tabs - End
+[34;40m[0;31m2012-10-10 12:05:31,564 - edu.asu.laits.gui.nodeeditor.NodeEditor - ERROR - Current Tab 1  0
+[34;40m2012-10-10 12:05:31,565 - edu.asu.laits.gui.nodeeditor.NodeEditor - TRACE - Saving Description Panel
+[34;40m2012-10-10 12:05:31,567 - edu.asu.laits.gui.nodeeditor.NodeEditor - TRACE - Plan Panel View Enabled. ExtraTabEvent = false
+[34;40m2012-10-10 12:05:31,567 - edu.asu.laits.gui.nodeeditor.NodeEditor - TRACE - Tab Stage Changed Action - Ends
+[34;40m[0;31m2012-10-10 12:05:34,238 - edu.asu.laits.gui.nodeeditor.NodeEditor - ERROR - Current Tab 2  1
+[34;40m2012-10-10 12:05:34,238 - edu.asu.laits.gui.nodeeditor.NodeEditor - TRACE - Saving PLAN Panel
+[34;40m2012-10-10 12:05:34,238 - edu.asu.laits.gui.nodeeditor.NodeEditor - TRACE - inside ipanel if false
+[34;40m2012-10-10 12:05:34,238 - edu.asu.laits.gui.nodeeditor.NodeEditor - TRACE - Tab Stage Changed Action - Ends
+[34;40m2012-10-10 12:05:45,294 - edu.asu.laits.gui.nodeeditor.InputsPanelView - TRACE - Input Node selection changed
+[34;40m[0;31m2012-10-10 12:05:46,421 - edu.asu.laits.gui.nodeeditor.NodeEditor - ERROR - Current Tab 3  2
+[34;40m2012-10-10 12:05:46,422 - edu.asu.laits.gui.nodeeditor.NodeEditor - TRACE - Saving INPUTS Panel
+[34;40m2012-10-10 12:05:46,422 - edu.asu.laits.gui.nodeeditor.CalculationsPanelView - TRACE - Initializing Calculations Panel for Node 
+[34;40m2012-10-10 12:05:46,422 - edu.asu.laits.gui.nodeeditor.CalculationsPanelView - TRACE - Initializing Available Input Nodes in jList Panel
+[34;40m2012-10-10 12:05:46,422 - edu.asu.laits.gui.nodeeditor.NodeEditor - TRACE - Tab Stage Changed Action - Ends
+[34;40m2012-10-10 12:05:52,004 - edu.asu.laits.gui.nodeeditor.CalculationsPanelView - TRACE - Preparing UI for Flow Node
+[34;40m2012-10-10 12:05:57,965 - edu.asu.laits.gui.nodeeditor.NodeEditor - TRACE - Setting Inputs to correct
+[34;40m2012-10-10 12:06:03,989 - edu.asu.laits.gui.nodeeditor.NodeEditor - TRACE - Setting Tab Listener
+[34;40m2012-10-10 12:06:03,989 - edu.asu.laits.gui.nodeeditor.NodeEditor - TRACE - Setting Tab Listener -Ends
+[34;40m2012-10-10 12:06:03,989 - edu.asu.laits.gui.nodeeditor.NodeEditor - TRACE - Initializing NodeEditor
+[34;40m2012-10-10 12:06:03,989 - edu.asu.laits.gui.nodeeditor.NodeEditor - TRACE - Initializing NodeEditor Tabs - Start
+[34;40m2012-10-10 12:06:04,025 - edu.asu.laits.gui.nodeeditor.PlanPanelView - TRACE - Initializing plan panel for Node 
+[34;40m2012-10-10 12:06:04,033 - edu.asu.laits.gui.nodeeditor.CalculationsPanelView - TRACE - Initializing Calculations Panel for Node 
+[34;40m2012-10-10 12:06:04,033 - edu.asu.laits.gui.nodeeditor.CalculationsPanelView - TRACE - Initializing Available Input Nodes in jList Panel
+[34;40m2012-10-10 12:06:04,039 - edu.asu.laits.gui.nodeeditor.NodeEditor - TRACE - Inside Else
+[34;40m2012-10-10 12:06:04,055 - edu.asu.laits.gui.nodeeditor.NodeEditor - TRACE - setting calc panel as current
+[34;40m[0;31m2012-10-10 12:06:04,056 - edu.asu.laits.gui.nodeeditor.NodeEditor - ERROR - Current Tab 3  2
+[34;40m2012-10-10 12:06:04,056 - edu.asu.laits.gui.nodeeditor.NodeEditor - TRACE - Saving INPUTS Panel
+[34;40m2012-10-10 12:06:04,056 - edu.asu.laits.gui.nodeeditor.CalculationsPanelView - TRACE - Initializing Calculations Panel for Node 
+[34;40m2012-10-10 12:06:04,056 - edu.asu.laits.gui.nodeeditor.CalculationsPanelView - TRACE - Initializing Available Input Nodes in jList Panel
+[34;40m2012-10-10 12:06:04,057 - edu.asu.laits.gui.nodeeditor.NodeEditor - TRACE - Tab Stage Changed Action - Ends
+[34;40m2012-10-10 12:06:04,057 - edu.asu.laits.gui.nodeeditor.NodeEditor - TRACE - Initializing NodeEditor Tabs - End
+[34;40m[0;31m2012-10-10 12:06:05,269 - edu.asu.laits.gui.nodeeditor.NodeEditor - ERROR - Current Tab 2  3
+[34;40m2012-10-10 12:06:05,270 - edu.asu.laits.gui.nodeeditor.NodeEditor - TRACE - Saving CALCULATIONS Panel
+[34;40m2012-10-10 12:06:05,271 - edu.asu.laits.gui.nodeeditor.NodeEditor - TRACE - inside ipanel if false
+[34;40m2012-10-10 12:06:05,271 - edu.asu.laits.gui.nodeeditor.NodeEditor - TRACE - Tab Stage Changed Action - Ends
+[34;40m2012-10-10 12:06:14,108 - edu.asu.laits.gui.nodeeditor.InputsPanelView - TRACE - Input Node selection changed
+[34;40m2012-10-10 12:06:14,983 - edu.asu.laits.gui.nodeeditor.InputsPanelView - TRACE - Input Node selection changed
+[34;40m[0;31m2012-10-10 12:06:18,365 - edu.asu.laits.gui.nodeeditor.NodeEditor - ERROR - Current Tab 3  2
+[34;40m2012-10-10 12:06:18,365 - edu.asu.laits.gui.nodeeditor.NodeEditor - TRACE - Saving INPUTS Panel
+[34;40m2012-10-10 12:06:18,365 - edu.asu.laits.gui.nodeeditor.CalculationsPanelView - TRACE - Initializing Calculations Panel for Node 
+[34;40m2012-10-10 12:06:18,366 - edu.asu.laits.gui.nodeeditor.CalculationsPanelView - TRACE - Initializing Available Input Nodes in jList Panel
+[34;40m2012-10-10 12:06:18,366 - edu.asu.laits.gui.nodeeditor.NodeEditor - TRACE - Tab Stage Changed Action - Ends
+[34;40m2012-10-10 12:06:30,510 - edu.asu.laits.gui.nodeeditor.NodeEditor - TRACE - Setting Inputs to correct
+[34;40m2012-10-10 12:06:36,526 - edu.asu.laits.gui.nodeeditor.NodeEditor - TRACE - Setting Tab Listener
+[34;40m2012-10-10 12:06:36,527 - edu.asu.laits.gui.nodeeditor.NodeEditor - TRACE - Setting Tab Listener -Ends
+[34;40m2012-10-10 12:06:36,527 - edu.asu.laits.gui.nodeeditor.NodeEditor - TRACE - Initializing NodeEditor
+[34;40m2012-10-10 12:06:36,527 - edu.asu.laits.gui.nodeeditor.NodeEditor - TRACE - Initializing NodeEditor Tabs - Start
+[34;40m2012-10-10 12:06:36,561 - edu.asu.laits.gui.nodeeditor.PlanPanelView - TRACE - Initializing plan panel for Node 
+[34;40m2012-10-10 12:06:36,568 - edu.asu.laits.gui.nodeeditor.CalculationsPanelView - TRACE - Initializing Calculations Panel for Node 
+[34;40m2012-10-10 12:06:36,568 - edu.asu.laits.gui.nodeeditor.CalculationsPanelView - TRACE - Initializing Available Input Nodes in jList Panel
+[34;40m[0;31m2012-10-10 12:06:36,686 - edu.asu.laits.gui.nodeeditor.NodeEditor - ERROR - Current Tab 4  4
+[34;40m2012-10-10 12:06:36,687 - edu.asu.laits.gui.nodeeditor.NodeEditor - TRACE - Selected Tab is Graph - DOING NOTHING
+[34;40m2012-10-10 12:06:36,687 - edu.asu.laits.gui.nodeeditor.NodeEditor - TRACE - Tab Stage Changed Action - Ends
+[34;40m2012-10-10 12:06:36,701 - edu.asu.laits.gui.nodeeditor.NodeEditor - TRACE - Initializing NodeEditor Tabs - End
+[34;40m2012-10-10 12:06:41,832 - edu.asu.laits.gui.nodeeditor.NodeEditor - TRACE - Setting Tab Listener
+[34;40m2012-10-10 12:06:41,832 - edu.asu.laits.gui.nodeeditor.NodeEditor - TRACE - Setting Tab Listener -Ends
+[34;40m2012-10-10 12:06:41,833 - edu.asu.laits.gui.nodeeditor.NodeEditor - TRACE - Initializing NodeEditor
+[34;40m2012-10-10 12:06:41,833 - edu.asu.laits.gui.nodeeditor.NodeEditor - TRACE - Initializing NodeEditor Tabs - Start
+[34;40m2012-10-10 12:06:41,868 - edu.asu.laits.gui.nodeeditor.PlanPanelView - TRACE - Initializing plan panel for Node 
+[34;40m2012-10-10 12:06:41,877 - edu.asu.laits.gui.nodeeditor.CalculationsPanelView - TRACE - Initializing Calculations Panel for Node 
+[34;40m2012-10-10 12:06:41,877 - edu.asu.laits.gui.nodeeditor.CalculationsPanelView - TRACE - Initializing Available Input Nodes in jList Panel
+[34;40m[0;31m2012-10-10 12:06:41,892 - edu.asu.laits.gui.nodeeditor.NodeEditor - ERROR - Current Tab 4  4
+[34;40m2012-10-10 12:06:41,892 - edu.asu.laits.gui.nodeeditor.NodeEditor - TRACE - Selected Tab is Graph - DOING NOTHING
+[34;40m2012-10-10 12:06:41,892 - edu.asu.laits.gui.nodeeditor.NodeEditor - TRACE - Tab Stage Changed Action - Ends
+[34;40m2012-10-10 12:06:41,908 - edu.asu.laits.gui.nodeeditor.NodeEditor - TRACE - Initializing NodeEditor Tabs - End
+[34;40m2012-10-10 12:10:19,537 - edu.asu.laits.editor.GraphEditorPane - TRACE - Initializing GraphEditor Pane
+[34;40m2012-10-10 12:10:24,475 - edu.asu.laits.editor.GraphEditorPane - TRACE - Initializing GraphEditor Pane
+[34;40m2012-10-10 12:13:31,582 - edu.asu.laits.model.ModelEvaluator - TRACE - Final Operands   {Node2=[Node4], Node3=[Node1, Node2], Node4=[Node3], Node1=[]}
+[34;40m2012-10-10 12:13:32,214 - edu.asu.laits.model.ModelEvaluator - TRACE - Constant Vertices : 1
+[34;40m2012-10-10 12:25:13,461 - edu.asu.laits.editor.GraphEditorPane - TRACE - Initializing GraphEditor Pane
+[34;40m2012-10-10 12:25:19,286 - edu.asu.laits.model.ModelEvaluator - TRACE - Final Operands   {Node2=[Node4], Node3=[Node1, Node2], Node4=[Node3], Node1=[]}
+[34;40m2012-10-10 12:25:19,286 - edu.asu.laits.model.ModelEvaluator - TRACE - Constant Vertices : 1
+[34;40m2012-10-10 12:25:19,303 - edu.asu.laits.model.ModelEvaluator - TRACE - Vertex Node1
+[34;40m2012-10-10 12:25:19,303 - edu.asu.laits.model.ModelEvaluator - TRACE -    For Point 0  : 0.2
+[34;40m2012-10-10 12:25:19,303 - edu.asu.laits.model.ModelEvaluator - TRACE -    For Point 1  : 0.2
+[34;40m2012-10-10 12:25:19,303 - edu.asu.laits.model.ModelEvaluator - TRACE -    For Point 2  : 0.2
+[34;40m2012-10-10 12:25:19,303 - edu.asu.laits.model.ModelEvaluator - TRACE -    For Point 3  : 0.2
+[34;40m2012-10-10 12:25:19,304 - edu.asu.laits.model.ModelEvaluator - TRACE -    For Point 4  : 0.2
+[34;40m2012-10-10 12:25:19,304 - edu.asu.laits.model.ModelEvaluator - TRACE -    For Point 5  : 0.2
+[34;40m2012-10-10 12:25:19,304 - edu.asu.laits.model.ModelEvaluator - TRACE -    For Point 6  : 0.2
+[34;40m2012-10-10 12:25:19,304 - edu.asu.laits.model.ModelEvaluator - TRACE -    For Point 7  : 0.2
+[34;40m2012-10-10 12:25:19,304 - edu.asu.laits.model.ModelEvaluator - TRACE -    For Point 8  : 0.2
+[34;40m2012-10-10 12:25:19,304 - edu.asu.laits.model.ModelEvaluator - TRACE -    For Point 9  : 0.2
+[34;40m2012-10-10 12:25:19,304 - edu.asu.laits.model.ModelEvaluator - TRACE - Vertex Node2
+[34;40m2012-10-10 12:25:19,305 - edu.asu.laits.model.ModelEvaluator - TRACE -    For Point 0  : 12.0
+[34;40m2012-10-10 12:25:19,305 - edu.asu.laits.model.ModelEvaluator - TRACE -    For Point 1  : 17.76
+[34;40m2012-10-10 12:25:19,306 - edu.asu.laits.model.ModelEvaluator - TRACE -    For Point 2  : 30.376704000000004
+[34;40m2012-10-10 12:25:19,306 - edu.asu.laits.model.ModelEvaluator - TRACE -    For Point 3  : 67.28646983614465
+[34;40m2012-10-10 12:25:19,306 - edu.asu.laits.model.ModelEvaluator - TRACE -    For Point 4  : 248.3852307565608
+[34;40m2012-10-10 12:25:19,306 - edu.asu.laits.model.ModelEvaluator - TRACE -    For Point 5  : 2716.194145076159
+[34;40m2012-10-10 12:25:19,306 - edu.asu.laits.model.ModelEvaluator - TRACE -    For Point 6  : 297824.6194949165
+[34;40m2012-10-10 12:25:19,306 - edu.asu.laits.model.ModelEvaluator - TRACE -    For Point 7  : 3.548277983711168E9
+[34;40m2012-10-10 12:25:19,306 - edu.asu.laits.model.ModelEvaluator - TRACE -    For Point 8  : 5.036110695358537E17
+[34;40m2012-10-10 12:25:19,307 - edu.asu.laits.model.ModelEvaluator - TRACE -    For Point 9  : 1.0144964374361861E34
+[34;40m2012-10-10 12:25:19,307 - edu.asu.laits.model.ModelEvaluator - TRACE - Vertex Node3
+[34;40m2012-10-10 12:25:19,307 - edu.asu.laits.model.ModelEvaluator - TRACE -    For Point 0  : 2.4000000000000004
+[34;40m2012-10-10 12:25:19,307 - edu.asu.laits.model.ModelEvaluator - TRACE -    For Point 1  : 3.5520000000000005
+[34;40m2012-10-10 12:25:19,307 - edu.asu.laits.model.ModelEvaluator - TRACE -    For Point 2  : 6.075340800000001
+[34;40m2012-10-10 12:25:19,307 - edu.asu.laits.model.ModelEvaluator - TRACE -    For Point 3  : 13.45729396722893
+[34;40m2012-10-10 12:25:19,307 - edu.asu.laits.model.ModelEvaluator - TRACE -    For Point 4  : 49.67704615131216
+[34;40m2012-10-10 12:25:19,307 - edu.asu.laits.model.ModelEvaluator - TRACE -    For Point 5  : 543.2388290152319
+[34;40m2012-10-10 12:25:19,308 - edu.asu.laits.model.ModelEvaluator - TRACE -    For Point 6  : 59564.92389898331
+[34;40m2012-10-10 12:25:19,308 - edu.asu.laits.model.ModelEvaluator - TRACE -    For Point 7  : 7.096555967422336E8
+[34;40m2012-10-10 12:25:19,308 - edu.asu.laits.model.ModelEvaluator - TRACE -    For Point 8  : 1.00722213907170752E17
+[34;40m2012-10-10 12:25:19,308 - edu.asu.laits.model.ModelEvaluator - TRACE -    For Point 9  : 2.0289928748723723E33
+[34;40m2012-10-10 12:25:19,308 - edu.asu.laits.model.ModelEvaluator - TRACE - Vertex Node4
+[34;40m2012-10-10 12:25:19,308 - edu.asu.laits.model.ModelEvaluator - TRACE -    For Point 0  : 5.760000000000002
+[34;40m2012-10-10 12:25:19,308 - edu.asu.laits.model.ModelEvaluator - TRACE -    For Point 1  : 12.616704000000004
+[34;40m2012-10-10 12:25:19,309 - edu.asu.laits.model.ModelEvaluator - TRACE -    For Point 2  : 36.90976583614465
+[34;40m2012-10-10 12:25:19,309 - edu.asu.laits.model.ModelEvaluator - TRACE -    For Point 3  : 181.09876092041614
+[34;40m2012-10-10 12:25:19,309 - edu.asu.laits.model.ModelEvaluator - TRACE -    For Point 4  : 2467.8089143195984
+[34;40m2012-10-10 12:25:19,309 - edu.asu.laits.model.ModelEvaluator - TRACE -    For Point 5  : 295108.42534984037
+[34;40m2012-10-10 12:25:19,309 - edu.asu.laits.model.ModelEvaluator - TRACE -    For Point 6  : 3.547980159091673E9
+[34;40m2012-10-10 12:25:19,309 - edu.asu.laits.model.ModelEvaluator - TRACE -    For Point 7  : 5.0361106598757574E17
+[34;40m2012-10-10 12:25:19,309 - edu.asu.laits.model.ModelEvaluator - TRACE -    For Point 8  : 1.0144964374361861E34
+[34;40m2012-10-10 12:25:19,310 - edu.asu.laits.model.ModelEvaluator - TRACE -    For Point 9  : 4.116812086282854E66
+[34;40m2012-10-10 12:26:53,905 - edu.asu.laits.gui.nodeeditor.NodeEditor - TRACE - Setting Tab Listener
+[34;40m2012-10-10 12:26:53,905 - edu.asu.laits.gui.nodeeditor.NodeEditor - TRACE - Setting Tab Listener -Ends
+[34;40m2012-10-10 12:26:53,906 - edu.asu.laits.gui.nodeeditor.NodeEditor - TRACE - Initializing NodeEditor
+[34;40m2012-10-10 12:26:53,906 - edu.asu.laits.gui.nodeeditor.NodeEditor - TRACE - Initializing NodeEditor Tabs - Start
+[34;40m2012-10-10 12:26:53,996 - edu.asu.laits.gui.nodeeditor.PlanPanelView - TRACE - Initializing plan panel for Node 
+[34;40m2012-10-10 12:26:54,014 - edu.asu.laits.gui.nodeeditor.CalculationsPanelView - TRACE - Initializing Calculations Panel for Node 
+[34;40m2012-10-10 12:26:54,015 - edu.asu.laits.gui.nodeeditor.CalculationsPanelView - TRACE - Initializing Available Input Nodes in jList Panel
+[34;40m[0;31m2012-10-10 12:26:54,158 - edu.asu.laits.gui.nodeeditor.NodeEditor - ERROR - Current Tab 4  4
+[34;40m2012-10-10 12:26:54,158 - edu.asu.laits.gui.nodeeditor.NodeEditor - TRACE - Selected Tab is Graph - DOING NOTHING
+[34;40m2012-10-10 12:26:54,159 - edu.asu.laits.gui.nodeeditor.NodeEditor - TRACE - Tab Stage Changed Action - Ends
+[34;40m2012-10-10 12:26:54,177 - edu.asu.laits.gui.nodeeditor.NodeEditor - TRACE - Initializing NodeEditor Tabs - End
+[34;40m2012-10-10 12:26:57,341 - edu.asu.laits.gui.nodeeditor.NodeEditor - TRACE - Setting Tab Listener
+[34;40m2012-10-10 12:26:57,341 - edu.asu.laits.gui.nodeeditor.NodeEditor - TRACE - Setting Tab Listener -Ends
+[34;40m2012-10-10 12:26:57,342 - edu.asu.laits.gui.nodeeditor.NodeEditor - TRACE - Initializing NodeEditor
+[34;40m2012-10-10 12:26:57,342 - edu.asu.laits.gui.nodeeditor.NodeEditor - TRACE - Initializing NodeEditor Tabs - Start
+[34;40m2012-10-10 12:26:57,380 - edu.asu.laits.gui.nodeeditor.PlanPanelView - TRACE - Initializing plan panel for Node 
+[34;40m2012-10-10 12:26:57,389 - edu.asu.laits.gui.nodeeditor.CalculationsPanelView - TRACE - Initializing Calculations Panel for Node 
+[34;40m2012-10-10 12:26:57,390 - edu.asu.laits.gui.nodeeditor.CalculationsPanelView - TRACE - Initializing Available Input Nodes in jList Panel
+[34;40m[0;31m2012-10-10 12:26:57,406 - edu.asu.laits.gui.nodeeditor.NodeEditor - ERROR - Current Tab 4  4
+[34;40m2012-10-10 12:26:57,406 - edu.asu.laits.gui.nodeeditor.NodeEditor - TRACE - Selected Tab is Graph - DOING NOTHING
+[34;40m2012-10-10 12:26:57,407 - edu.asu.laits.gui.nodeeditor.NodeEditor - TRACE - Tab Stage Changed Action - Ends
+[34;40m2012-10-10 12:26:57,424 - edu.asu.laits.gui.nodeeditor.NodeEditor - TRACE - Initializing NodeEditor Tabs - End
+[34;40m2012-10-10 12:27:06,050 - edu.asu.laits.gui.nodeeditor.NodeEditor - TRACE - Setting Tab Listener
+[34;40m2012-10-10 12:27:06,051 - edu.asu.laits.gui.nodeeditor.NodeEditor - TRACE - Setting Tab Listener -Ends
+[34;40m2012-10-10 12:27:06,051 - edu.asu.laits.gui.nodeeditor.NodeEditor - TRACE - Initializing NodeEditor
+[34;40m2012-10-10 12:27:06,051 - edu.asu.laits.gui.nodeeditor.NodeEditor - TRACE - Initializing NodeEditor Tabs - Start
+[34;40m2012-10-10 12:27:06,086 - edu.asu.laits.gui.nodeeditor.PlanPanelView - TRACE - Initializing plan panel for Node 
+[34;40m2012-10-10 12:27:06,093 - edu.asu.laits.gui.nodeeditor.CalculationsPanelView - TRACE - Initializing Calculations Panel for Node 
+[34;40m2012-10-10 12:27:06,093 - edu.asu.laits.gui.nodeeditor.CalculationsPanelView - TRACE - Initializing Available Input Nodes in jList Panel
+[34;40m[0;31m2012-10-10 12:27:06,106 - edu.asu.laits.gui.nodeeditor.NodeEditor - ERROR - Current Tab 4  4
+[34;40m2012-10-10 12:27:06,106 - edu.asu.laits.gui.nodeeditor.NodeEditor - TRACE - Selected Tab is Graph - DOING NOTHING
+[34;40m2012-10-10 12:27:06,106 - edu.asu.laits.gui.nodeeditor.NodeEditor - TRACE - Tab Stage Changed Action - Ends
+[34;40m2012-10-10 12:27:06,122 - edu.asu.laits.gui.nodeeditor.NodeEditor - TRACE - Initializing NodeEditor Tabs - End
+[34;40m[0;31m2012-10-10 12:27:08,084 - edu.asu.laits.gui.nodeeditor.NodeEditor - ERROR - Current Tab 3  4
+[34;40m2012-10-10 12:27:08,084 - edu.asu.laits.gui.nodeeditor.NodeEditor - TRACE - Selected Tab is Graph - DOING NOTHING
+[34;40m2012-10-10 12:27:08,084 - edu.asu.laits.gui.nodeeditor.NodeEditor - TRACE - Tab Stage Changed Action - Ends
+[34;40m2012-10-10 12:27:23,924 - edu.asu.laits.gui.nodeeditor.NodeEditor - TRACE - Setting Tab Listener
+[34;40m2012-10-10 12:27:23,925 - edu.asu.laits.gui.nodeeditor.NodeEditor - TRACE - Setting Tab Listener -Ends
+[34;40m2012-10-10 12:27:23,925 - edu.asu.laits.gui.nodeeditor.NodeEditor - TRACE - Initializing NodeEditor
+[34;40m2012-10-10 12:27:23,925 - edu.asu.laits.gui.nodeeditor.NodeEditor - TRACE - Initializing NodeEditor Tabs - Start
+[34;40m2012-10-10 12:27:23,958 - edu.asu.laits.gui.nodeeditor.PlanPanelView - TRACE - Initializing plan panel for Node 
+[34;40m2012-10-10 12:27:23,964 - edu.asu.laits.gui.nodeeditor.CalculationsPanelView - TRACE - Initializing Calculations Panel for Node 
+[34;40m2012-10-10 12:27:23,964 - edu.asu.laits.gui.nodeeditor.CalculationsPanelView - TRACE - Initializing Available Input Nodes in jList Panel
+[34;40m[0;31m2012-10-10 12:27:23,976 - edu.asu.laits.gui.nodeeditor.NodeEditor - ERROR - Current Tab 4  4
+[34;40m2012-10-10 12:27:23,976 - edu.asu.laits.gui.nodeeditor.NodeEditor - TRACE - Selected Tab is Graph - DOING NOTHING
+[34;40m2012-10-10 12:27:23,977 - edu.asu.laits.gui.nodeeditor.NodeEditor - TRACE - Tab Stage Changed Action - Ends
+[34;40m2012-10-10 12:27:23,991 - edu.asu.laits.gui.nodeeditor.NodeEditor - TRACE - Initializing NodeEditor Tabs - End
+[34;40m[0;31m2012-10-10 12:27:25,450 - edu.asu.laits.gui.nodeeditor.NodeEditor - ERROR - Current Tab 3  4
+[34;40m2012-10-10 12:27:25,450 - edu.asu.laits.gui.nodeeditor.NodeEditor - TRACE - Selected Tab is Graph - DOING NOTHING
+[34;40m2012-10-10 12:27:25,450 - edu.asu.laits.gui.nodeeditor.NodeEditor - TRACE - Tab Stage Changed Action - Ends
+[34;40m2012-10-10 12:27:32,529 - edu.asu.laits.gui.nodeeditor.NodeEditor - TRACE - Setting Inputs to correct
+[34;40m2012-10-10 12:28:13,241 - edu.asu.laits.gui.nodeeditor.NodeEditor - TRACE - Setting Tab Listener
+[34;40m2012-10-10 12:28:13,241 - edu.asu.laits.gui.nodeeditor.NodeEditor - TRACE - Setting Tab Listener -Ends
+[34;40m2012-10-10 12:28:13,241 - edu.asu.laits.gui.nodeeditor.NodeEditor - TRACE - Initializing NodeEditor
+[34;40m2012-10-10 12:28:13,241 - edu.asu.laits.gui.nodeeditor.NodeEditor - TRACE - Initializing NodeEditor Tabs - Start
+[34;40m2012-10-10 12:28:13,273 - edu.asu.laits.gui.nodeeditor.PlanPanelView - TRACE - Initializing plan panel for Node 
+[34;40m2012-10-10 12:28:13,280 - edu.asu.laits.gui.nodeeditor.CalculationsPanelView - TRACE - Initializing Calculations Panel for Node 
+[34;40m2012-10-10 12:28:13,280 - edu.asu.laits.gui.nodeeditor.CalculationsPanelView - TRACE - Initializing Available Input Nodes in jList Panel
+[34;40m[0;31m2012-10-10 12:28:13,292 - edu.asu.laits.gui.nodeeditor.NodeEditor - ERROR - Current Tab 4  4
+[34;40m2012-10-10 12:28:13,292 - edu.asu.laits.gui.nodeeditor.NodeEditor - TRACE - Selected Tab is Graph - DOING NOTHING
+[34;40m2012-10-10 12:28:13,293 - edu.asu.laits.gui.nodeeditor.NodeEditor - TRACE - Tab Stage Changed Action - Ends
+[34;40m2012-10-10 12:28:13,307 - edu.asu.laits.gui.nodeeditor.NodeEditor - TRACE - Initializing NodeEditor Tabs - End
+[34;40m2012-10-10 12:28:49,524 - edu.asu.laits.gui.nodeeditor.NodeEditor - TRACE - Setting Tab Listener
+[34;40m2012-10-10 12:28:49,524 - edu.asu.laits.gui.nodeeditor.NodeEditor - TRACE - Setting Tab Listener -Ends
+[34;40m2012-10-10 12:28:49,525 - edu.asu.laits.gui.nodeeditor.NodeEditor - TRACE - Initializing NodeEditor
+[34;40m2012-10-10 12:28:49,525 - edu.asu.laits.gui.nodeeditor.NodeEditor - TRACE - Initializing NodeEditor Tabs - Start
+[34;40m2012-10-10 12:28:49,556 - edu.asu.laits.gui.nodeeditor.PlanPanelView - TRACE - Initializing plan panel for Node 
+[34;40m2012-10-10 12:28:49,563 - edu.asu.laits.gui.nodeeditor.CalculationsPanelView - TRACE - Initializing Calculations Panel for Node 
+[34;40m2012-10-10 12:28:49,563 - edu.asu.laits.gui.nodeeditor.CalculationsPanelView - TRACE - Initializing Available Input Nodes in jList Panel
+[34;40m[0;31m2012-10-10 12:28:49,574 - edu.asu.laits.gui.nodeeditor.NodeEditor - ERROR - Current Tab 4  4
+[34;40m2012-10-10 12:28:49,574 - edu.asu.laits.gui.nodeeditor.NodeEditor - TRACE - Selected Tab is Graph - DOING NOTHING
+[34;40m2012-10-10 12:28:49,574 - edu.asu.laits.gui.nodeeditor.NodeEditor - TRACE - Tab Stage Changed Action - Ends
+[34;40m2012-10-10 12:28:49,589 - edu.asu.laits.gui.nodeeditor.NodeEditor - TRACE - Initializing NodeEditor Tabs - End
+[34;40m[0;31m2012-10-10 12:28:50,865 - edu.asu.laits.gui.nodeeditor.NodeEditor - ERROR - Current Tab 3  4
+[34;40m2012-10-10 12:28:50,866 - edu.asu.laits.gui.nodeeditor.NodeEditor - TRACE - Selected Tab is Graph - DOING NOTHING
+[34;40m2012-10-10 12:28:50,866 - edu.asu.laits.gui.nodeeditor.NodeEditor - TRACE - Tab Stage Changed Action - Ends
+[34;40m2012-10-10 12:28:56,846 - edu.asu.laits.gui.nodeeditor.NodeEditor - TRACE - Setting Tab Listener
+[34;40m2012-10-10 12:28:56,847 - edu.asu.laits.gui.nodeeditor.NodeEditor - TRACE - Setting Tab Listener -Ends
+[34;40m2012-10-10 12:28:56,847 - edu.asu.laits.gui.nodeeditor.NodeEditor - TRACE - Initializing NodeEditor
+[34;40m2012-10-10 12:28:56,847 - edu.asu.laits.gui.nodeeditor.NodeEditor - TRACE - Initializing NodeEditor Tabs - Start
+[34;40m2012-10-10 12:28:56,877 - edu.asu.laits.gui.nodeeditor.PlanPanelView - TRACE - Initializing plan panel for Node 
+[34;40m2012-10-10 12:28:56,884 - edu.asu.laits.gui.nodeeditor.CalculationsPanelView - TRACE - Initializing Calculations Panel for Node 
+[34;40m2012-10-10 12:28:56,884 - edu.asu.laits.gui.nodeeditor.CalculationsPanelView - TRACE - Initializing Available Input Nodes in jList Panel
+[34;40m[0;31m2012-10-10 12:28:56,895 - edu.asu.laits.gui.nodeeditor.NodeEditor - ERROR - Current Tab 4  4
+[34;40m2012-10-10 12:28:56,895 - edu.asu.laits.gui.nodeeditor.NodeEditor - TRACE - Selected Tab is Graph - DOING NOTHING
+[34;40m2012-10-10 12:28:56,896 - edu.asu.laits.gui.nodeeditor.NodeEditor - TRACE - Tab Stage Changed Action - Ends
+[34;40m2012-10-10 12:28:56,910 - edu.asu.laits.gui.nodeeditor.NodeEditor - TRACE - Initializing NodeEditor Tabs - End
+[34;40m2012-10-10 12:50:14,962 - edu.asu.laits.editor.GraphEditorPane - TRACE - Initializing GraphEditor Pane
+[34;40m2012-10-10 12:50:16,729 - edu.asu.laits.gui.nodeeditor.NodeEditor - TRACE - Setting Tab Listener
+[34;40m2012-10-10 12:50:16,730 - edu.asu.laits.gui.nodeeditor.NodeEditor - TRACE - Setting Tab Listener -Ends
+[34;40m2012-10-10 12:50:16,731 - edu.asu.laits.gui.nodeeditor.NodeEditor - TRACE - Initializing NodeEditor
+[34;40m2012-10-10 12:50:16,731 - edu.asu.laits.gui.nodeeditor.NodeEditor - TRACE - Initializing NodeEditor Tabs - Start
+[34;40m2012-10-10 12:50:16,834 - edu.asu.laits.gui.nodeeditor.PlanPanelView - TRACE - Initializing plan panel for Node 
+[34;40m2012-10-10 12:50:16,855 - edu.asu.laits.gui.nodeeditor.CalculationsPanelView - TRACE - Initializing Calculations Panel for Node 
+[34;40m2012-10-10 12:50:16,855 - edu.asu.laits.gui.nodeeditor.CalculationsPanelView - TRACE - Initializing Available Input Nodes in jList Panel
+[34;40m2012-10-10 12:50:16,868 - edu.asu.laits.gui.nodeeditor.NodeEditor - TRACE - Inside Else
+[34;40m2012-10-10 12:50:16,889 - edu.asu.laits.gui.nodeeditor.NodeEditor - TRACE - Setting Desc Panel as Current
+[34;40m2012-10-10 12:50:16,890 - edu.asu.laits.gui.nodeeditor.NodeEditor - TRACE - Initializing NodeEditor Tabs - End
+[34;40m2012-10-10 12:52:05,237 - edu.asu.laits.editor.GraphEditorPane - TRACE - Initializing GraphEditor Pane
+[34;40m2012-10-10 12:52:06,957 - edu.asu.laits.gui.nodeeditor.NodeEditor - TRACE - Setting Tab Listener
+[34;40m2012-10-10 12:52:06,958 - edu.asu.laits.gui.nodeeditor.NodeEditor - TRACE - Setting Tab Listener -Ends
+[34;40m2012-10-10 12:52:06,958 - edu.asu.laits.gui.nodeeditor.NodeEditor - TRACE - Initializing NodeEditor
+[34;40m2012-10-10 12:52:06,958 - edu.asu.laits.gui.nodeeditor.NodeEditor - TRACE - Initializing NodeEditor Tabs - Start
+[34;40m2012-10-10 12:52:07,058 - edu.asu.laits.gui.nodeeditor.PlanPanelView - TRACE - Initializing plan panel for Node 
+[34;40m2012-10-10 12:52:07,079 - edu.asu.laits.gui.nodeeditor.CalculationsPanelView - TRACE - Initializing Calculations Panel for Node 
+[34;40m2012-10-10 12:52:07,080 - edu.asu.laits.gui.nodeeditor.CalculationsPanelView - TRACE - Initializing Available Input Nodes in jList Panel
+[34;40m2012-10-10 12:52:07,093 - edu.asu.laits.gui.nodeeditor.NodeEditor - TRACE - Inside Else
+[34;40m2012-10-10 12:52:07,114 - edu.asu.laits.gui.nodeeditor.NodeEditor - TRACE - Setting Desc Panel as Current
+[34;40m2012-10-10 12:52:07,114 - edu.asu.laits.gui.nodeeditor.NodeEditor - TRACE - Initializing NodeEditor Tabs - End
+[34;40m[0;31m2012-10-10 12:52:12,201 - edu.asu.laits.gui.nodeeditor.NodeEditor - ERROR - Current Tab 1  0
+[34;40m2012-10-10 12:52:12,217 - edu.asu.laits.gui.nodeeditor.NodeEditor - TRACE - Saving Description Panel
+[34;40m2012-10-10 12:52:12,220 - edu.asu.laits.gui.nodeeditor.NodeEditor - TRACE - Plan Panel View Enabled. ExtraTabEvent = false
+[34;40m2012-10-10 12:52:12,221 - edu.asu.laits.gui.nodeeditor.NodeEditor - TRACE - Tab Stage Changed Action - Ends
+[34;40m[0;31m2012-10-10 12:52:14,144 - edu.asu.laits.gui.nodeeditor.NodeEditor - ERROR - Current Tab 2  1
+[34;40m2012-10-10 12:52:14,145 - edu.asu.laits.gui.nodeeditor.NodeEditor - TRACE - Saving PLAN Panel
+[34;40m2012-10-10 12:52:14,146 - edu.asu.laits.gui.nodeeditor.NodeEditor - TRACE - inside ipanel if false
+[34;40m2012-10-10 12:52:14,146 - edu.asu.laits.gui.nodeeditor.NodeEditor - TRACE - Tab Stage Changed Action - Ends
+[34;40m2012-10-10 12:52:15,382 - edu.asu.laits.gui.nodeeditor.InputsPanelView - TRACE - Setting Vertex Type to Constant
+[34;40m[0;31m2012-10-10 12:52:16,345 - edu.asu.laits.gui.nodeeditor.NodeEditor - ERROR - Current Tab 3  2
+[34;40m2012-10-10 12:52:16,345 - edu.asu.laits.gui.nodeeditor.NodeEditor - TRACE - Saving INPUTS Panel
+[34;40m2012-10-10 12:52:16,346 - edu.asu.laits.gui.nodeeditor.CalculationsPanelView - TRACE - Initializing Calculations Panel for Node 
+[34;40m2012-10-10 12:52:16,346 - edu.asu.laits.gui.nodeeditor.CalculationsPanelView - TRACE - Initializing Available Input Nodes in jList Panel
+[34;40m2012-10-10 12:52:16,347 - edu.asu.laits.gui.nodeeditor.NodeEditor - TRACE - Tab Stage Changed Action - Ends
+[34;40m2012-10-10 12:52:20,948 - edu.asu.laits.gui.nodeeditor.NodeEditor - TRACE - Setting Inputs to correct
+[34;40m2012-10-10 12:52:22,766 - edu.asu.laits.model.ModelEvaluator - TRACE - Final Operands   {no=[]}
+[34;40m2012-10-10 12:52:22,766 - edu.asu.laits.model.ModelEvaluator - TRACE - Constant Vertices : 1
+[34;40m2012-10-10 12:52:22,766 - edu.asu.laits.model.ModelEvaluator - TRACE - Vertex no
+[34;40m2012-10-10 12:52:22,767 - edu.asu.laits.model.ModelEvaluator - TRACE -    For Point 0  : 10.0
+[34;40m2012-10-10 12:52:22,767 - edu.asu.laits.model.ModelEvaluator - TRACE -    For Point 1  : 10.0
+[34;40m2012-10-10 12:52:22,767 - edu.asu.laits.model.ModelEvaluator - TRACE -    For Point 2  : 10.0
+[34;40m2012-10-10 12:52:22,767 - edu.asu.laits.model.ModelEvaluator - TRACE -    For Point 3  : 10.0
+[34;40m2012-10-10 12:52:22,767 - edu.asu.laits.model.ModelEvaluator - TRACE -    For Point 4  : 10.0
+[34;40m2012-10-10 12:52:22,767 - edu.asu.laits.model.ModelEvaluator - TRACE -    For Point 5  : 10.0
+[34;40m2012-10-10 12:52:22,767 - edu.asu.laits.model.ModelEvaluator - TRACE -    For Point 6  : 10.0
+[34;40m2012-10-10 12:52:22,767 - edu.asu.laits.model.ModelEvaluator - TRACE -    For Point 7  : 10.0
+[34;40m2012-10-10 12:52:22,768 - edu.asu.laits.model.ModelEvaluator - TRACE -    For Point 8  : 10.0
+[34;40m2012-10-10 12:52:22,768 - edu.asu.laits.model.ModelEvaluator - TRACE -    For Point 9  : 10.0
+[34;40m2012-10-10 12:52:27,919 - edu.asu.laits.gui.nodeeditor.NodeEditor - TRACE - Setting Tab Listener
+[34;40m2012-10-10 12:52:27,919 - edu.asu.laits.gui.nodeeditor.NodeEditor - TRACE - Setting Tab Listener -Ends
+[34;40m2012-10-10 12:52:27,919 - edu.asu.laits.gui.nodeeditor.NodeEditor - TRACE - Initializing NodeEditor
+[34;40m2012-10-10 12:52:27,919 - edu.asu.laits.gui.nodeeditor.NodeEditor - TRACE - Initializing NodeEditor Tabs - Start
+[34;40m2012-10-10 12:52:27,958 - edu.asu.laits.gui.nodeeditor.PlanPanelView - TRACE - Initializing plan panel for Node 
+[34;40m2012-10-10 12:52:27,966 - edu.asu.laits.gui.nodeeditor.CalculationsPanelView - TRACE - Initializing Calculations Panel for Node 
+[34;40m2012-10-10 12:52:27,966 - edu.asu.laits.gui.nodeeditor.CalculationsPanelView - TRACE - Initializing Available Input Nodes in jList Panel
+[34;40m[0;31m2012-10-10 12:52:28,088 - edu.asu.laits.gui.nodeeditor.NodeEditor - ERROR - Current Tab 4  4
+[34;40m2012-10-10 12:52:28,089 - edu.asu.laits.gui.nodeeditor.NodeEditor - TRACE - Selected Tab is Graph - DOING NOTHING
+[34;40m2012-10-10 12:52:28,089 - edu.asu.laits.gui.nodeeditor.NodeEditor - TRACE - Tab Stage Changed Action - Ends
+[34;40m2012-10-10 12:52:28,104 - edu.asu.laits.gui.nodeeditor.NodeEditor - TRACE - Initializing NodeEditor Tabs - End
+[34;40m2012-10-10 12:52:50,372 - edu.asu.laits.gui.nodeeditor.NodeEditor - TRACE - Setting Tab Listener
+[34;40m2012-10-10 12:52:50,373 - edu.asu.laits.gui.nodeeditor.NodeEditor - TRACE - Setting Tab Listener -Ends
+[34;40m2012-10-10 12:52:50,373 - edu.asu.laits.gui.nodeeditor.NodeEditor - TRACE - Initializing NodeEditor
+[34;40m2012-10-10 12:52:50,373 - edu.asu.laits.gui.nodeeditor.NodeEditor - TRACE - Initializing NodeEditor Tabs - Start
+[34;40m2012-10-10 12:52:50,410 - edu.asu.laits.gui.nodeeditor.PlanPanelView - TRACE - Initializing plan panel for Node 
+[34;40m2012-10-10 12:52:50,418 - edu.asu.laits.gui.nodeeditor.CalculationsPanelView - TRACE - Initializing Calculations Panel for Node 
+[34;40m2012-10-10 12:52:50,418 - edu.asu.laits.gui.nodeeditor.CalculationsPanelView - TRACE - Initializing Available Input Nodes in jList Panel
+[34;40m[0;31m2012-10-10 12:52:50,433 - edu.asu.laits.gui.nodeeditor.NodeEditor - ERROR - Current Tab 4  4
+[34;40m2012-10-10 12:52:50,433 - edu.asu.laits.gui.nodeeditor.NodeEditor - TRACE - Selected Tab is Graph - DOING NOTHING
+[34;40m2012-10-10 12:52:50,434 - edu.asu.laits.gui.nodeeditor.NodeEditor - TRACE - Tab Stage Changed Action - Ends
+[34;40m2012-10-10 12:52:50,448 - edu.asu.laits.gui.nodeeditor.NodeEditor - TRACE - Initializing NodeEditor Tabs - End
+[34;40m[0;31m2012-10-10 12:52:52,365 - edu.asu.laits.gui.nodeeditor.NodeEditor - ERROR - Current Tab 3  4
+[34;40m2012-10-10 12:52:52,366 - edu.asu.laits.gui.nodeeditor.NodeEditor - TRACE - Selected Tab is Graph - DOING NOTHING
+[34;40m2012-10-10 12:52:52,366 - edu.asu.laits.gui.nodeeditor.NodeEditor - TRACE - Tab Stage Changed Action - Ends
+[34;40m2012-10-10 12:52:57,422 - edu.asu.laits.gui.nodeeditor.NodeEditor - TRACE - Setting Inputs to correct
+[34;40m2012-10-10 12:53:02,572 - edu.asu.laits.gui.nodeeditor.NodeEditor - TRACE - Setting Tab Listener
+[34;40m2012-10-10 12:53:02,572 - edu.asu.laits.gui.nodeeditor.NodeEditor - TRACE - Setting Tab Listener -Ends
+[34;40m2012-10-10 12:53:02,573 - edu.asu.laits.gui.nodeeditor.NodeEditor - TRACE - Initializing NodeEditor
+[34;40m2012-10-10 12:53:02,573 - edu.asu.laits.gui.nodeeditor.NodeEditor - TRACE - Initializing NodeEditor Tabs - Start
+[34;40m2012-10-10 12:53:02,607 - edu.asu.laits.gui.nodeeditor.PlanPanelView - TRACE - Initializing plan panel for Node 
+[34;40m2012-10-10 12:53:02,613 - edu.asu.laits.gui.nodeeditor.CalculationsPanelView - TRACE - Initializing Calculations Panel for Node 
+[34;40m2012-10-10 12:53:02,613 - edu.asu.laits.gui.nodeeditor.CalculationsPanelView - TRACE - Initializing Available Input Nodes in jList Panel
+[34;40m2012-10-10 12:53:02,619 - edu.asu.laits.gui.nodeeditor.NodeEditor - TRACE - Inside Else
+[34;40m2012-10-10 12:53:02,633 - edu.asu.laits.gui.nodeeditor.NodeEditor - TRACE - setting calc panel as current
+[34;40m[0;31m2012-10-10 12:53:02,633 - edu.asu.laits.gui.nodeeditor.NodeEditor - ERROR - Current Tab 3  2
+[34;40m2012-10-10 12:53:02,633 - edu.asu.laits.gui.nodeeditor.NodeEditor - TRACE - Saving INPUTS Panel
+[34;40m2012-10-10 12:53:02,634 - edu.asu.laits.gui.nodeeditor.CalculationsPanelView - TRACE - Initializing Calculations Panel for Node 
+[34;40m2012-10-10 12:53:02,634 - edu.asu.laits.gui.nodeeditor.CalculationsPanelView - TRACE - Initializing Available Input Nodes in jList Panel
+[34;40m2012-10-10 12:53:02,634 - edu.asu.laits.gui.nodeeditor.NodeEditor - TRACE - Tab Stage Changed Action - Ends
+[34;40m2012-10-10 12:53:02,634 - edu.asu.laits.gui.nodeeditor.NodeEditor - TRACE - Initializing NodeEditor Tabs - End
+[34;40m2012-10-10 12:53:06,237 - edu.asu.laits.gui.nodeeditor.NodeEditor - TRACE - Setting Inputs to correct
+[34;40m2012-10-10 12:53:07,979 - edu.asu.laits.model.ModelEvaluator - TRACE - Final Operands   {no=[]}
+[34;40m2012-10-10 12:53:07,979 - edu.asu.laits.model.ModelEvaluator - TRACE - Constant Vertices : 1
+[34;40m2012-10-10 12:53:07,979 - edu.asu.laits.model.ModelEvaluator - TRACE - Vertex no
+[34;40m2012-10-10 12:53:07,979 - edu.asu.laits.model.ModelEvaluator - TRACE -    For Point 0  : 15.0
+[34;40m2012-10-10 12:53:07,980 - edu.asu.laits.model.ModelEvaluator - TRACE -    For Point 1  : 15.0
+[34;40m2012-10-10 12:53:07,980 - edu.asu.laits.model.ModelEvaluator - TRACE -    For Point 2  : 15.0
+[34;40m2012-10-10 12:53:07,980 - edu.asu.laits.model.ModelEvaluator - TRACE -    For Point 3  : 15.0
+[34;40m2012-10-10 12:53:07,980 - edu.asu.laits.model.ModelEvaluator - TRACE -    For Point 4  : 15.0
+[34;40m2012-10-10 12:53:07,980 - edu.asu.laits.model.ModelEvaluator - TRACE -    For Point 5  : 15.0
+[34;40m2012-10-10 12:53:07,980 - edu.asu.laits.model.ModelEvaluator - TRACE -    For Point 6  : 15.0
+[34;40m2012-10-10 12:53:07,980 - edu.asu.laits.model.ModelEvaluator - TRACE -    For Point 7  : 15.0
+[34;40m2012-10-10 12:53:07,981 - edu.asu.laits.model.ModelEvaluator - TRACE -    For Point 8  : 15.0
+[34;40m2012-10-10 12:53:07,981 - edu.asu.laits.model.ModelEvaluator - TRACE -    For Point 9  : 15.0
+[34;40m2012-10-10 12:53:09,961 - edu.asu.laits.gui.nodeeditor.NodeEditor - TRACE - Setting Tab Listener
+[34;40m2012-10-10 12:53:09,961 - edu.asu.laits.gui.nodeeditor.NodeEditor - TRACE - Setting Tab Listener -Ends
+[34;40m2012-10-10 12:53:09,961 - edu.asu.laits.gui.nodeeditor.NodeEditor - TRACE - Initializing NodeEditor
+[34;40m2012-10-10 12:53:09,961 - edu.asu.laits.gui.nodeeditor.NodeEditor - TRACE - Initializing NodeEditor Tabs - Start
+[34;40m2012-10-10 12:53:09,995 - edu.asu.laits.gui.nodeeditor.PlanPanelView - TRACE - Initializing plan panel for Node 
+[34;40m2012-10-10 12:53:10,002 - edu.asu.laits.gui.nodeeditor.CalculationsPanelView - TRACE - Initializing Calculations Panel for Node 
+[34;40m2012-10-10 12:53:10,002 - edu.asu.laits.gui.nodeeditor.CalculationsPanelView - TRACE - Initializing Available Input Nodes in jList Panel
+[34;40m[0;31m2012-10-10 12:53:10,014 - edu.asu.laits.gui.nodeeditor.NodeEditor - ERROR - Current Tab 4  4
+[34;40m2012-10-10 12:53:10,014 - edu.asu.laits.gui.nodeeditor.NodeEditor - TRACE - Selected Tab is Graph - DOING NOTHING
+[34;40m2012-10-10 12:53:10,015 - edu.asu.laits.gui.nodeeditor.NodeEditor - TRACE - Tab Stage Changed Action - Ends
+[34;40m2012-10-10 12:53:10,028 - edu.asu.laits.gui.nodeeditor.NodeEditor - TRACE - Initializing NodeEditor Tabs - End
+[34;40m2012-10-10 13:02:15,326 - edu.asu.laits.editor.GraphEditorPane - TRACE - Initializing GraphEditor Pane
+[34;40m2012-10-10 13:02:21,559 - edu.asu.laits.model.ModelEvaluator - TRACE - Final Operands   {Node2=[Node4], Node3=[Node1, Node2], Node4=[Node3], Node1=[]}
+[34;40m2012-10-10 13:02:21,560 - edu.asu.laits.model.ModelEvaluator - TRACE - Constant Vertices : 1
+[34;40m2012-10-10 13:02:21,577 - edu.asu.laits.model.ModelEvaluator - TRACE - Vertex Node1
+[34;40m2012-10-10 13:02:21,577 - edu.asu.laits.model.ModelEvaluator - TRACE - [0.2, 0.2, 0.2, 0.2, 0.2, 0.2, 0.2, 0.2, 0.2, 0.2]
+[34;40m2012-10-10 13:02:21,577 - edu.asu.laits.model.ModelEvaluator - TRACE - Vertex Node2
+[34;40m2012-10-10 13:02:21,577 - edu.asu.laits.model.ModelEvaluator - TRACE - [12.0, 17.76, 30.376704000000004, 67.28646983614465, 248.3852307565608, 2716.194145076159, 297824.6194949165, 3.548277983711168E9, 5.036110695358537E17, 1.0144964374361861E34]
+[34;40m2012-10-10 13:02:21,577 - edu.asu.laits.model.ModelEvaluator - TRACE - Vertex Node3
+[34;40m2012-10-10 13:02:21,578 - edu.asu.laits.model.ModelEvaluator - TRACE - [2.4000000000000004, 3.5520000000000005, 6.075340800000001, 13.45729396722893, 49.67704615131216, 543.2388290152319, 59564.92389898331, 7.096555967422336E8, 1.00722213907170752E17, 2.0289928748723723E33]
+[34;40m2012-10-10 13:02:21,578 - edu.asu.laits.model.ModelEvaluator - TRACE - Vertex Node4
+[34;40m2012-10-10 13:02:21,578 - edu.asu.laits.model.ModelEvaluator - TRACE - [5.760000000000002, 12.616704000000004, 36.90976583614465, 181.09876092041614, 2467.8089143195984, 295108.42534984037, 3.547980159091673E9, 5.0361106598757574E17, 1.0144964374361861E34, 4.116812086282854E66]
+[34;40m2012-10-10 13:02:34,099 - edu.asu.laits.gui.nodeeditor.NodeEditor - TRACE - Setting Tab Listener
+[34;40m2012-10-10 13:02:34,099 - edu.asu.laits.gui.nodeeditor.NodeEditor - TRACE - Setting Tab Listener -Ends
+[34;40m2012-10-10 13:02:34,099 - edu.asu.laits.gui.nodeeditor.NodeEditor - TRACE - Initializing NodeEditor
+[34;40m2012-10-10 13:02:34,100 - edu.asu.laits.gui.nodeeditor.NodeEditor - TRACE - Initializing NodeEditor Tabs - Start
+[34;40m2012-10-10 13:02:34,192 - edu.asu.laits.gui.nodeeditor.PlanPanelView - TRACE - Initializing plan panel for Node 
+[34;40m2012-10-10 13:02:34,211 - edu.asu.laits.gui.nodeeditor.CalculationsPanelView - TRACE - Initializing Calculations Panel for Node 
+[34;40m2012-10-10 13:02:34,211 - edu.asu.laits.gui.nodeeditor.CalculationsPanelView - TRACE - Initializing Available Input Nodes in jList Panel
+[34;40m2012-10-10 13:02:34,220 - edu.asu.laits.gui.nodeeditor.GraphsPanelView - TRACE - Print Node Values in Graph
+[34;40m2012-10-10 13:02:34,220 - edu.asu.laits.gui.nodeeditor.GraphsPanelView - TRACE - Vertex: Node2
+[34;40m2012-10-10 13:02:34,220 - edu.asu.laits.gui.nodeeditor.GraphsPanelView - TRACE - [12.0, 17.76, 30.376704000000004, 67.28646983614465, 248.3852307565608, 2716.194145076159, 297824.6194949165, 3.548277983711168E9, 5.036110695358537E17, 1.0144964374361861E34]
+[34;40m[0;31m2012-10-10 13:02:34,356 - edu.asu.laits.gui.nodeeditor.NodeEditor - ERROR - Current Tab 4  4
+[34;40m2012-10-10 13:02:34,357 - edu.asu.laits.gui.nodeeditor.NodeEditor - TRACE - Selected Tab is Graph - DOING NOTHING
+[34;40m2012-10-10 13:02:34,357 - edu.asu.laits.gui.nodeeditor.NodeEditor - TRACE - Tab Stage Changed Action - Ends
+[34;40m2012-10-10 13:02:34,378 - edu.asu.laits.gui.nodeeditor.NodeEditor - TRACE - Initializing NodeEditor Tabs - End
+[34;40m2012-10-10 13:06:03,203 - edu.asu.laits.editor.GraphEditorPane - TRACE - Initializing GraphEditor Pane
+[34;40m2012-10-10 13:06:08,721 - edu.asu.laits.model.ModelEvaluator - TRACE - Final Operands   {Node2=[Node4], Node3=[Node1, Node2], Node4=[Node3], Node1=[]}
+[34;40m2012-10-10 13:06:08,722 - edu.asu.laits.model.ModelEvaluator - TRACE - Constant Vertices : 1
+[34;40m2012-10-10 13:06:08,740 - edu.asu.laits.model.ModelEvaluator - TRACE - Vertex Node1
+[34;40m2012-10-10 13:06:08,740 - edu.asu.laits.model.ModelEvaluator - TRACE - [0.2, 0.2, 0.2, 0.2, 0.2, 0.2, 0.2, 0.2, 0.2, 0.2]
+[34;40m2012-10-10 13:06:08,740 - edu.asu.laits.model.ModelEvaluator - TRACE - Vertex Node2
+[34;40m2012-10-10 13:06:08,740 - edu.asu.laits.model.ModelEvaluator - TRACE - [12.0, 17.76, 30.376704000000004, 67.28646983614465, 248.3852307565608, 2716.194145076159, 297824.6194949165, 3.548277983711168E9, 5.036110695358537E17, 1.0144964374361861E34]
+[34;40m2012-10-10 13:06:08,741 - edu.asu.laits.model.ModelEvaluator - TRACE - Vertex Node3
+[34;40m2012-10-10 13:06:08,741 - edu.asu.laits.model.ModelEvaluator - TRACE - [2.4000000000000004, 3.5520000000000005, 6.075340800000001, 13.45729396722893, 49.67704615131216, 543.2388290152319, 59564.92389898331, 7.096555967422336E8, 1.00722213907170752E17, 2.0289928748723723E33]
+[34;40m2012-10-10 13:06:08,741 - edu.asu.laits.model.ModelEvaluator - TRACE - Vertex Node4
+[34;40m2012-10-10 13:06:08,741 - edu.asu.laits.model.ModelEvaluator - TRACE - [5.760000000000002, 12.616704000000004, 36.90976583614465, 181.09876092041614, 2467.8089143195984, 295108.42534984037, 3.547980159091673E9, 5.0361106598757574E17, 1.0144964374361861E34, 4.116812086282854E66]
+[34;40m2012-10-10 13:06:10,701 - edu.asu.laits.gui.nodeeditor.NodeEditor - TRACE - Setting Tab Listener
+[34;40m2012-10-10 13:06:10,701 - edu.asu.laits.gui.nodeeditor.NodeEditor - TRACE - Setting Tab Listener -Ends
+[34;40m2012-10-10 13:06:10,701 - edu.asu.laits.gui.nodeeditor.NodeEditor - TRACE - Initializing NodeEditor
+[34;40m2012-10-10 13:06:10,701 - edu.asu.laits.gui.nodeeditor.NodeEditor - TRACE - Initializing NodeEditor Tabs - Start
+[34;40m2012-10-10 13:06:10,794 - edu.asu.laits.gui.nodeeditor.PlanPanelView - TRACE - Initializing plan panel for Node 
+[34;40m2012-10-10 13:06:10,814 - edu.asu.laits.gui.nodeeditor.CalculationsPanelView - TRACE - Initializing Calculations Panel for Node 
+[34;40m2012-10-10 13:06:10,814 - edu.asu.laits.gui.nodeeditor.CalculationsPanelView - TRACE - Initializing Available Input Nodes in jList Panel
+[34;40m2012-10-10 13:06:10,832 - edu.asu.laits.gui.nodeeditor.PlotPanel - TRACE - Print Node Values in Graph
+[34;40m2012-10-10 13:06:10,833 - edu.asu.laits.gui.nodeeditor.PlotPanel - TRACE - Vertex: Node2
+[34;40m2012-10-10 13:06:10,833 - edu.asu.laits.gui.nodeeditor.PlotPanel - TRACE - Adding: 0   12.0
+[34;40m2012-10-10 13:06:10,834 - edu.asu.laits.gui.nodeeditor.PlotPanel - TRACE - Adding: 1   17.76
+[34;40m2012-10-10 13:06:10,834 - edu.asu.laits.gui.nodeeditor.PlotPanel - TRACE - Adding: 2   30.376704000000004
+[34;40m2012-10-10 13:06:10,834 - edu.asu.laits.gui.nodeeditor.PlotPanel - TRACE - Adding: 3   67.28646983614465
+[34;40m2012-10-10 13:06:10,834 - edu.asu.laits.gui.nodeeditor.PlotPanel - TRACE - Adding: 4   248.3852307565608
+[34;40m2012-10-10 13:06:10,834 - edu.asu.laits.gui.nodeeditor.PlotPanel - TRACE - Adding: 5   2716.194145076159
+[34;40m2012-10-10 13:06:10,834 - edu.asu.laits.gui.nodeeditor.PlotPanel - TRACE - Adding: 6   297824.6194949165
+[34;40m2012-10-10 13:06:10,835 - edu.asu.laits.gui.nodeeditor.PlotPanel - TRACE - Adding: 7   3.548277983711168E9
+[34;40m2012-10-10 13:06:10,835 - edu.asu.laits.gui.nodeeditor.PlotPanel - TRACE - Adding: 8   5.036110695358537E17
+[34;40m2012-10-10 13:06:10,835 - edu.asu.laits.gui.nodeeditor.PlotPanel - TRACE - Adding: 9   1.0144964374361861E34
+[34;40m[0;31m2012-10-10 13:06:10,969 - edu.asu.laits.gui.nodeeditor.NodeEditor - ERROR - Current Tab 4  4
+[34;40m2012-10-10 13:06:10,969 - edu.asu.laits.gui.nodeeditor.NodeEditor - TRACE - Selected Tab is Graph - DOING NOTHING
+[34;40m2012-10-10 13:06:10,969 - edu.asu.laits.gui.nodeeditor.NodeEditor - TRACE - Tab Stage Changed Action - Ends
+[34;40m2012-10-10 13:06:10,990 - edu.asu.laits.gui.nodeeditor.NodeEditor - TRACE - Initializing NodeEditor Tabs - End
+[34;40m2012-10-10 13:07:27,694 - edu.asu.laits.editor.GraphEditorPane - TRACE - Initializing GraphEditor Pane
+[34;40m2012-10-10 13:07:35,203 - edu.asu.laits.gui.nodeeditor.NodeEditor - TRACE - Setting Tab Listener
+[34;40m2012-10-10 13:07:35,204 - edu.asu.laits.gui.nodeeditor.NodeEditor - TRACE - Setting Tab Listener -Ends
+[34;40m2012-10-10 13:07:35,204 - edu.asu.laits.gui.nodeeditor.NodeEditor - TRACE - Initializing NodeEditor
+[34;40m2012-10-10 13:07:35,204 - edu.asu.laits.gui.nodeeditor.NodeEditor - TRACE - Initializing NodeEditor Tabs - Start
+[34;40m2012-10-10 13:07:35,296 - edu.asu.laits.gui.nodeeditor.PlanPanelView - TRACE - Initializing plan panel for Node 
+[34;40m2012-10-10 13:07:35,315 - edu.asu.laits.gui.nodeeditor.CalculationsPanelView - TRACE - Initializing Calculations Panel for Node 
+[34;40m2012-10-10 13:07:35,315 - edu.asu.laits.gui.nodeeditor.CalculationsPanelView - TRACE - Initializing Available Input Nodes in jList Panel
+[34;40m2012-10-10 13:07:35,334 - edu.asu.laits.gui.nodeeditor.PlotPanel - TRACE - Print Node Values in Graph
+[34;40m2012-10-10 13:07:35,334 - edu.asu.laits.gui.nodeeditor.PlotPanel - TRACE - Vertex: Node3
+[34;40m2012-10-10 13:07:35,335 - edu.asu.laits.gui.nodeeditor.PlotPanel - TRACE - Adding: 0   2.4000000000000004
+[34;40m2012-10-10 13:07:35,335 - edu.asu.laits.gui.nodeeditor.PlotPanel - TRACE - Adding: 1   3.5520000000000005
+[34;40m2012-10-10 13:07:35,335 - edu.asu.laits.gui.nodeeditor.PlotPanel - TRACE - Adding: 2   6.075340800000001
+[34;40m2012-10-10 13:07:35,335 - edu.asu.laits.gui.nodeeditor.PlotPanel - TRACE - Adding: 3   13.45729396722893
+[34;40m2012-10-10 13:07:35,335 - edu.asu.laits.gui.nodeeditor.PlotPanel - TRACE - Adding: 4   49.67704615131216
+[34;40m2012-10-10 13:07:35,336 - edu.asu.laits.gui.nodeeditor.PlotPanel - TRACE - Adding: 5   543.2388290152319
+[34;40m2012-10-10 13:07:35,336 - edu.asu.laits.gui.nodeeditor.PlotPanel - TRACE - Adding: 6   59564.92389898331
+[34;40m2012-10-10 13:07:35,337 - edu.asu.laits.gui.nodeeditor.PlotPanel - TRACE - Adding: 7   7.096555967422336E8
+[34;40m2012-10-10 13:07:35,337 - edu.asu.laits.gui.nodeeditor.PlotPanel - TRACE - Adding: 8   1.00722213907170752E17
+[34;40m2012-10-10 13:07:35,337 - edu.asu.laits.gui.nodeeditor.PlotPanel - TRACE - Adding: 9   2.0289928748723723E33
+[34;40m[0;31m2012-10-10 13:07:35,470 - edu.asu.laits.gui.nodeeditor.NodeEditor - ERROR - Current Tab 4  4
+[34;40m2012-10-10 13:07:35,470 - edu.asu.laits.gui.nodeeditor.NodeEditor - TRACE - Selected Tab is Graph - DOING NOTHING
+[34;40m2012-10-10 13:07:35,471 - edu.asu.laits.gui.nodeeditor.NodeEditor - TRACE - Tab Stage Changed Action - Ends
+[34;40m2012-10-10 13:07:35,491 - edu.asu.laits.gui.nodeeditor.NodeEditor - TRACE - Initializing NodeEditor Tabs - End
+[34;40m[0;31m2012-10-10 13:08:00,561 - edu.asu.laits.gui.nodeeditor.NodeEditor - ERROR - Current Tab 3  4
+[34;40m2012-10-10 13:08:00,561 - edu.asu.laits.gui.nodeeditor.NodeEditor - TRACE - Selected Tab is Graph - DOING NOTHING
+[34;40m2012-10-10 13:08:00,561 - edu.asu.laits.gui.nodeeditor.NodeEditor - TRACE - Tab Stage Changed Action - Ends
+[34;40m2012-10-10 13:08:05,503 - edu.asu.laits.gui.nodeeditor.NodeEditor - TRACE - Setting Inputs to correct
+[34;40m2012-10-10 13:08:10,573 - edu.asu.laits.model.ModelEvaluator - TRACE - Final Operands   {Node2=[Node4], Node3=[Node1, Node2], Node4=[Node3], Node1=[]}
+[34;40m2012-10-10 13:08:10,573 - edu.asu.laits.model.ModelEvaluator - TRACE - Constant Vertices : 1
+[34;40m2012-10-10 13:08:10,587 - edu.asu.laits.model.ModelEvaluator - TRACE - Vertex Node1
+[34;40m2012-10-10 13:08:10,588 - edu.asu.laits.model.ModelEvaluator - TRACE - [0.2, 0.2, 0.2, 0.2, 0.2, 0.2, 0.2, 0.2, 0.2, 0.2]
+[34;40m2012-10-10 13:08:10,588 - edu.asu.laits.model.ModelEvaluator - TRACE - Vertex Node2
+[34;40m2012-10-10 13:08:10,588 - edu.asu.laits.model.ModelEvaluator - TRACE - [12.0, 160.83999999999997, 26094.72159999999, 6.809710280317461E8, 4.6372154197197267E17, 2.1503766848886403E35, 4.624119886912659E70, 2.138248472854114E141, 4.5721065316629503E282, Infinity]
+[34;40m2012-10-10 13:08:10,588 - edu.asu.laits.model.ModelEvaluator - TRACE - Vertex Node3
+[34;40m2012-10-10 13:08:10,589 - edu.asu.laits.model.ModelEvaluator - TRACE - [12.2, 161.03999999999996, 26094.92159999999, 6.809710282317462E8, 4.6372154197197267E17, 2.1503766848886403E35, 4.624119886912659E70, 2.138248472854114E141, 4.5721065316629503E282, Infinity]
+[34;40m2012-10-10 13:08:10,589 - edu.asu.laits.model.ModelEvaluator - TRACE - Vertex Node4
+[34;40m2012-10-10 13:08:10,590 - edu.asu.laits.model.ModelEvaluator - TRACE - [148.83999999999997, 25933.88159999999, 6.809449333101461E8, 4.6372154129100166E17, 2.1503766848886403E35, 4.624119886912659E70, 2.138248472854114E141, 4.5721065316629503E282, Infinity, Infinity]
+[34;40m2012-10-10 13:08:12,344 - edu.asu.laits.gui.nodeeditor.NodeEditor - TRACE - Setting Tab Listener
+[34;40m2012-10-10 13:08:12,344 - edu.asu.laits.gui.nodeeditor.NodeEditor - TRACE - Setting Tab Listener -Ends
+[34;40m2012-10-10 13:08:12,344 - edu.asu.laits.gui.nodeeditor.NodeEditor - TRACE - Initializing NodeEditor
+[34;40m2012-10-10 13:08:12,345 - edu.asu.laits.gui.nodeeditor.NodeEditor - TRACE - Initializing NodeEditor Tabs - Start
+[34;40m2012-10-10 13:08:12,383 - edu.asu.laits.gui.nodeeditor.PlanPanelView - TRACE - Initializing plan panel for Node 
+[34;40m2012-10-10 13:08:12,392 - edu.asu.laits.gui.nodeeditor.CalculationsPanelView - TRACE - Initializing Calculations Panel for Node 
+[34;40m2012-10-10 13:08:12,393 - edu.asu.laits.gui.nodeeditor.CalculationsPanelView - TRACE - Initializing Available Input Nodes in jList Panel
+[34;40m2012-10-10 13:08:12,402 - edu.asu.laits.gui.nodeeditor.PlotPanel - TRACE - Print Node Values in Graph
+[34;40m2012-10-10 13:08:12,402 - edu.asu.laits.gui.nodeeditor.PlotPanel - TRACE - Vertex: Node4
+[34;40m2012-10-10 13:08:12,402 - edu.asu.laits.gui.nodeeditor.PlotPanel - TRACE - Adding: 0   148.83999999999997
+[34;40m2012-10-10 13:08:12,402 - edu.asu.laits.gui.nodeeditor.PlotPanel - TRACE - Adding: 1   25933.88159999999
+[34;40m2012-10-10 13:08:12,402 - edu.asu.laits.gui.nodeeditor.PlotPanel - TRACE - Adding: 2   6.809449333101461E8
+[34;40m2012-10-10 13:08:12,402 - edu.asu.laits.gui.nodeeditor.PlotPanel - TRACE - Adding: 3   4.6372154129100166E17
+[34;40m2012-10-10 13:08:12,403 - edu.asu.laits.gui.nodeeditor.PlotPanel - TRACE - Adding: 4   2.1503766848886403E35
+[34;40m2012-10-10 13:08:12,403 - edu.asu.laits.gui.nodeeditor.PlotPanel - TRACE - Adding: 5   4.624119886912659E70
+[34;40m2012-10-10 13:08:12,403 - edu.asu.laits.gui.nodeeditor.PlotPanel - TRACE - Adding: 6   2.138248472854114E141
+[34;40m2012-10-10 13:08:12,403 - edu.asu.laits.gui.nodeeditor.PlotPanel - TRACE - Adding: 7   4.5721065316629503E282
+[34;40m2012-10-10 13:08:12,403 - edu.asu.laits.gui.nodeeditor.PlotPanel - TRACE - Adding: 8   Infinity
+[34;40m2012-10-10 13:08:12,404 - edu.asu.laits.gui.nodeeditor.PlotPanel - TRACE - Adding: 9   Infinity
+[34;40m[0;31m2012-10-10 13:08:12,410 - edu.asu.laits.gui.nodeeditor.NodeEditor - ERROR - Current Tab 4  4
+[34;40m2012-10-10 13:08:12,410 - edu.asu.laits.gui.nodeeditor.NodeEditor - TRACE - Selected Tab is Graph - DOING NOTHING
+[34;40m2012-10-10 13:08:12,411 - edu.asu.laits.gui.nodeeditor.NodeEditor - TRACE - Tab Stage Changed Action - Ends
+[34;40m2012-10-10 13:08:12,428 - edu.asu.laits.gui.nodeeditor.NodeEditor - TRACE - Initializing NodeEditor Tabs - End
+[34;40m2012-10-10 13:08:17,765 - edu.asu.laits.gui.nodeeditor.NodeEditor - TRACE - Setting Tab Listener
+[34;40m2012-10-10 13:08:17,765 - edu.asu.laits.gui.nodeeditor.NodeEditor - TRACE - Setting Tab Listener -Ends
+[34;40m2012-10-10 13:08:17,765 - edu.asu.laits.gui.nodeeditor.NodeEditor - TRACE - Initializing NodeEditor
+[34;40m2012-10-10 13:08:17,765 - edu.asu.laits.gui.nodeeditor.NodeEditor - TRACE - Initializing NodeEditor Tabs - Start
+[34;40m2012-10-10 13:08:17,802 - edu.asu.laits.gui.nodeeditor.PlanPanelView - TRACE - Initializing plan panel for Node 
+[34;40m2012-10-10 13:08:17,810 - edu.asu.laits.gui.nodeeditor.CalculationsPanelView - TRACE - Initializing Calculations Panel for Node 
+[34;40m2012-10-10 13:08:17,811 - edu.asu.laits.gui.nodeeditor.CalculationsPanelView - TRACE - Initializing Available Input Nodes in jList Panel
+[34;40m2012-10-10 13:08:17,819 - edu.asu.laits.gui.nodeeditor.PlotPanel - TRACE - Print Node Values in Graph
+[34;40m2012-10-10 13:08:17,819 - edu.asu.laits.gui.nodeeditor.PlotPanel - TRACE - Vertex: Node3
+[34;40m2012-10-10 13:08:17,819 - edu.asu.laits.gui.nodeeditor.PlotPanel - TRACE - Adding: 0   12.2
+[34;40m2012-10-10 13:08:17,819 - edu.asu.laits.gui.nodeeditor.PlotPanel - TRACE - Adding: 1   161.03999999999996
+[34;40m2012-10-10 13:08:17,819 - edu.asu.laits.gui.nodeeditor.PlotPanel - TRACE - Adding: 2   26094.92159999999
+[34;40m2012-10-10 13:08:17,820 - edu.asu.laits.gui.nodeeditor.PlotPanel - TRACE - Adding: 3   6.809710282317462E8
+[34;40m2012-10-10 13:08:17,820 - edu.asu.laits.gui.nodeeditor.PlotPanel - TRACE - Adding: 4   4.6372154197197267E17
+[34;40m2012-10-10 13:08:17,820 - edu.asu.laits.gui.nodeeditor.PlotPanel - TRACE - Adding: 5   2.1503766848886403E35
+[34;40m2012-10-10 13:08:17,820 - edu.asu.laits.gui.nodeeditor.PlotPanel - TRACE - Adding: 6   4.624119886912659E70
+[34;40m2012-10-10 13:08:17,820 - edu.asu.laits.gui.nodeeditor.PlotPanel - TRACE - Adding: 7   2.138248472854114E141
+[34;40m2012-10-10 13:08:17,821 - edu.asu.laits.gui.nodeeditor.PlotPanel - TRACE - Adding: 8   4.5721065316629503E282
+[34;40m2012-10-10 13:08:17,821 - edu.asu.laits.gui.nodeeditor.PlotPanel - TRACE - Adding: 9   Infinity
+[34;40m[0;31m2012-10-10 13:08:17,825 - edu.asu.laits.gui.nodeeditor.NodeEditor - ERROR - Current Tab 4  4
+[34;40m2012-10-10 13:08:17,825 - edu.asu.laits.gui.nodeeditor.NodeEditor - TRACE - Selected Tab is Graph - DOING NOTHING
+[34;40m2012-10-10 13:08:17,826 - edu.asu.laits.gui.nodeeditor.NodeEditor - TRACE - Tab Stage Changed Action - Ends
+[34;40m2012-10-10 13:08:17,842 - edu.asu.laits.gui.nodeeditor.NodeEditor - TRACE - Initializing NodeEditor Tabs - End
+[34;40m2012-10-10 13:08:22,207 - edu.asu.laits.gui.nodeeditor.NodeEditor - TRACE - Setting Tab Listener
+[34;40m2012-10-10 13:08:22,207 - edu.asu.laits.gui.nodeeditor.NodeEditor - TRACE - Setting Tab Listener -Ends
+[34;40m2012-10-10 13:08:22,207 - edu.asu.laits.gui.nodeeditor.NodeEditor - TRACE - Initializing NodeEditor
+[34;40m2012-10-10 13:08:22,207 - edu.asu.laits.gui.nodeeditor.NodeEditor - TRACE - Initializing NodeEditor Tabs - Start
+[34;40m2012-10-10 13:08:22,243 - edu.asu.laits.gui.nodeeditor.PlanPanelView - TRACE - Initializing plan panel for Node 
+[34;40m2012-10-10 13:08:22,250 - edu.asu.laits.gui.nodeeditor.CalculationsPanelView - TRACE - Initializing Calculations Panel for Node 
+[34;40m2012-10-10 13:08:22,250 - edu.asu.laits.gui.nodeeditor.CalculationsPanelView - TRACE - Initializing Available Input Nodes in jList Panel
+[34;40m2012-10-10 13:08:22,258 - edu.asu.laits.gui.nodeeditor.PlotPanel - TRACE - Print Node Values in Graph
+[34;40m2012-10-10 13:08:22,259 - edu.asu.laits.gui.nodeeditor.PlotPanel - TRACE - Vertex: Node2
+[34;40m2012-10-10 13:08:22,259 - edu.asu.laits.gui.nodeeditor.PlotPanel - TRACE - Adding: 0   12.0
+[34;40m2012-10-10 13:08:22,259 - edu.asu.laits.gui.nodeeditor.PlotPanel - TRACE - Adding: 1   160.83999999999997
+[34;40m2012-10-10 13:08:22,259 - edu.asu.laits.gui.nodeeditor.PlotPanel - TRACE - Adding: 2   26094.72159999999
+[34;40m2012-10-10 13:08:22,259 - edu.asu.laits.gui.nodeeditor.PlotPanel - TRACE - Adding: 3   6.809710280317461E8
+[34;40m2012-10-10 13:08:22,259 - edu.asu.laits.gui.nodeeditor.PlotPanel - TRACE - Adding: 4   4.6372154197197267E17
+[34;40m2012-10-10 13:08:22,260 - edu.asu.laits.gui.nodeeditor.PlotPanel - TRACE - Adding: 5   2.1503766848886403E35
+[34;40m2012-10-10 13:08:22,260 - edu.asu.laits.gui.nodeeditor.PlotPanel - TRACE - Adding: 6   4.624119886912659E70
+[34;40m2012-10-10 13:08:22,260 - edu.asu.laits.gui.nodeeditor.PlotPanel - TRACE - Adding: 7   2.138248472854114E141
+[34;40m2012-10-10 13:08:22,260 - edu.asu.laits.gui.nodeeditor.PlotPanel - TRACE - Adding: 8   4.5721065316629503E282
+[34;40m2012-10-10 13:08:22,260 - edu.asu.laits.gui.nodeeditor.PlotPanel - TRACE - Adding: 9   Infinity
+[34;40m[0;31m2012-10-10 13:08:22,265 - edu.asu.laits.gui.nodeeditor.NodeEditor - ERROR - Current Tab 4  4
+[34;40m2012-10-10 13:08:22,265 - edu.asu.laits.gui.nodeeditor.NodeEditor - TRACE - Selected Tab is Graph - DOING NOTHING
+[34;40m2012-10-10 13:08:22,265 - edu.asu.laits.gui.nodeeditor.NodeEditor - TRACE - Tab Stage Changed Action - Ends
+[34;40m2012-10-10 13:08:22,281 - edu.asu.laits.gui.nodeeditor.NodeEditor - TRACE - Initializing NodeEditor Tabs - End
+[34;40m[0;31m2012-10-10 13:08:25,075 - edu.asu.laits.gui.nodeeditor.NodeEditor - ERROR - Current Tab 3  4
+[34;40m2012-10-10 13:08:25,075 - edu.asu.laits.gui.nodeeditor.NodeEditor - TRACE - Selected Tab is Graph - DOING NOTHING
+[34;40m2012-10-10 13:08:25,076 - edu.asu.laits.gui.nodeeditor.NodeEditor - TRACE - Tab Stage Changed Action - Ends
+[34;40m2012-10-10 13:08:35,981 - edu.asu.laits.gui.nodeeditor.NodeEditor - TRACE - Setting Tab Listener
+[34;40m2012-10-10 13:08:35,981 - edu.asu.laits.gui.nodeeditor.NodeEditor - TRACE - Setting Tab Listener -Ends
+[34;40m2012-10-10 13:08:35,981 - edu.asu.laits.gui.nodeeditor.NodeEditor - TRACE - Initializing NodeEditor
+[34;40m2012-10-10 13:08:35,982 - edu.asu.laits.gui.nodeeditor.NodeEditor - TRACE - Initializing NodeEditor Tabs - Start
+[34;40m2012-10-10 13:08:36,012 - edu.asu.laits.gui.nodeeditor.PlanPanelView - TRACE - Initializing plan panel for Node 
+[34;40m2012-10-10 13:08:36,019 - edu.asu.laits.gui.nodeeditor.CalculationsPanelView - TRACE - Initializing Calculations Panel for Node 
+[34;40m2012-10-10 13:08:36,019 - edu.asu.laits.gui.nodeeditor.CalculationsPanelView - TRACE - Initializing Available Input Nodes in jList Panel
+[34;40m2012-10-10 13:08:36,026 - edu.asu.laits.gui.nodeeditor.PlotPanel - TRACE - Print Node Values in Graph
+[34;40m2012-10-10 13:08:36,026 - edu.asu.laits.gui.nodeeditor.PlotPanel - TRACE - Vertex: Node3
+[34;40m2012-10-10 13:08:36,026 - edu.asu.laits.gui.nodeeditor.PlotPanel - TRACE - Adding: 0   12.2
+[34;40m2012-10-10 13:08:36,026 - edu.asu.laits.gui.nodeeditor.PlotPanel - TRACE - Adding: 1   161.03999999999996
+[34;40m2012-10-10 13:08:36,026 - edu.asu.laits.gui.nodeeditor.PlotPanel - TRACE - Adding: 2   26094.92159999999
+[34;40m2012-10-10 13:08:36,026 - edu.asu.laits.gui.nodeeditor.PlotPanel - TRACE - Adding: 3   6.809710282317462E8
+[34;40m2012-10-10 13:08:36,027 - edu.asu.laits.gui.nodeeditor.PlotPanel - TRACE - Adding: 4   4.6372154197197267E17
+[34;40m2012-10-10 13:08:36,027 - edu.asu.laits.gui.nodeeditor.PlotPanel - TRACE - Adding: 5   2.1503766848886403E35
+[34;40m2012-10-10 13:08:36,027 - edu.asu.laits.gui.nodeeditor.PlotPanel - TRACE - Adding: 6   4.624119886912659E70
+[34;40m2012-10-10 13:08:36,027 - edu.asu.laits.gui.nodeeditor.PlotPanel - TRACE - Adding: 7   2.138248472854114E141
+[34;40m2012-10-10 13:08:36,027 - edu.asu.laits.gui.nodeeditor.PlotPanel - TRACE - Adding: 8   4.5721065316629503E282
+[34;40m2012-10-10 13:08:36,028 - edu.asu.laits.gui.nodeeditor.PlotPanel - TRACE - Adding: 9   Infinity
+[34;40m[0;31m2012-10-10 13:08:36,032 - edu.asu.laits.gui.nodeeditor.NodeEditor - ERROR - Current Tab 4  4
+[34;40m2012-10-10 13:08:36,032 - edu.asu.laits.gui.nodeeditor.NodeEditor - TRACE - Selected Tab is Graph - DOING NOTHING
+[34;40m2012-10-10 13:08:36,032 - edu.asu.laits.gui.nodeeditor.NodeEditor - TRACE - Tab Stage Changed Action - Ends
+[34;40m2012-10-10 13:08:36,046 - edu.asu.laits.gui.nodeeditor.NodeEditor - TRACE - Initializing NodeEditor Tabs - End
+[34;40m[0;31m2012-10-10 13:08:39,525 - edu.asu.laits.gui.nodeeditor.NodeEditor - ERROR - Current Tab 3  4
+[34;40m2012-10-10 13:08:39,526 - edu.asu.laits.gui.nodeeditor.NodeEditor - TRACE - Selected Tab is Graph - DOING NOTHING
+[34;40m2012-10-10 13:08:39,526 - edu.asu.laits.gui.nodeeditor.NodeEditor - TRACE - Tab Stage Changed Action - Ends
+[34;40m2012-10-10 13:08:45,921 - edu.asu.laits.gui.nodeeditor.NodeEditor - TRACE - Setting Tab Listener
+[34;40m2012-10-10 13:08:45,921 - edu.asu.laits.gui.nodeeditor.NodeEditor - TRACE - Setting Tab Listener -Ends
+[34;40m2012-10-10 13:08:45,921 - edu.asu.laits.gui.nodeeditor.NodeEditor - TRACE - Initializing NodeEditor
+[34;40m2012-10-10 13:08:45,922 - edu.asu.laits.gui.nodeeditor.NodeEditor - TRACE - Initializing NodeEditor Tabs - Start
+[34;40m2012-10-10 13:08:45,951 - edu.asu.laits.gui.nodeeditor.PlanPanelView - TRACE - Initializing plan panel for Node 
+[34;40m2012-10-10 13:08:45,957 - edu.asu.laits.gui.nodeeditor.CalculationsPanelView - TRACE - Initializing Calculations Panel for Node 
+[34;40m2012-10-10 13:08:45,957 - edu.asu.laits.gui.nodeeditor.CalculationsPanelView - TRACE - Initializing Available Input Nodes in jList Panel
+[34;40m2012-10-10 13:08:45,964 - edu.asu.laits.gui.nodeeditor.PlotPanel - TRACE - Print Node Values in Graph
+[34;40m2012-10-10 13:08:45,965 - edu.asu.laits.gui.nodeeditor.PlotPanel - TRACE - Vertex: Node4
+[34;40m2012-10-10 13:08:45,965 - edu.asu.laits.gui.nodeeditor.PlotPanel - TRACE - Adding: 0   148.83999999999997
+[34;40m2012-10-10 13:08:45,965 - edu.asu.laits.gui.nodeeditor.PlotPanel - TRACE - Adding: 1   25933.88159999999
+[34;40m2012-10-10 13:08:45,965 - edu.asu.laits.gui.nodeeditor.PlotPanel - TRACE - Adding: 2   6.809449333101461E8
+[34;40m2012-10-10 13:08:45,965 - edu.asu.laits.gui.nodeeditor.PlotPanel - TRACE - Adding: 3   4.6372154129100166E17
+[34;40m2012-10-10 13:08:45,965 - edu.asu.laits.gui.nodeeditor.PlotPanel - TRACE - Adding: 4   2.1503766848886403E35
+[34;40m2012-10-10 13:08:45,966 - edu.asu.laits.gui.nodeeditor.PlotPanel - TRACE - Adding: 5   4.624119886912659E70
+[34;40m2012-10-10 13:08:45,966 - edu.asu.laits.gui.nodeeditor.PlotPanel - TRACE - Adding: 6   2.138248472854114E141
+[34;40m2012-10-10 13:08:45,966 - edu.asu.laits.gui.nodeeditor.PlotPanel - TRACE - Adding: 7   4.5721065316629503E282
+[34;40m2012-10-10 13:08:45,966 - edu.asu.laits.gui.nodeeditor.PlotPanel - TRACE - Adding: 8   Infinity
+[34;40m2012-10-10 13:08:45,966 - edu.asu.laits.gui.nodeeditor.PlotPanel - TRACE - Adding: 9   Infinity
+[34;40m[0;31m2012-10-10 13:08:45,971 - edu.asu.laits.gui.nodeeditor.NodeEditor - ERROR - Current Tab 4  4
+[34;40m2012-10-10 13:08:45,971 - edu.asu.laits.gui.nodeeditor.NodeEditor - TRACE - Selected Tab is Graph - DOING NOTHING
+[34;40m2012-10-10 13:08:45,971 - edu.asu.laits.gui.nodeeditor.NodeEditor - TRACE - Tab Stage Changed Action - Ends
+[34;40m2012-10-10 13:08:45,984 - edu.asu.laits.gui.nodeeditor.NodeEditor - TRACE - Initializing NodeEditor Tabs - End
+[34;40m[0;31m2012-10-10 13:08:47,408 - edu.asu.laits.gui.nodeeditor.NodeEditor - ERROR - Current Tab 3  4
+[34;40m2012-10-10 13:08:47,408 - edu.asu.laits.gui.nodeeditor.NodeEditor - TRACE - Selected Tab is Graph - DOING NOTHING
+[34;40m2012-10-10 13:08:47,408 - edu.asu.laits.gui.nodeeditor.NodeEditor - TRACE - Tab Stage Changed Action - Ends
+[34;40m2012-10-10 13:08:53,056 - edu.asu.laits.gui.nodeeditor.NodeEditor - TRACE - Setting Inputs to correct
+[34;40m2012-10-10 13:08:54,665 - edu.asu.laits.model.ModelEvaluator - TRACE - Final Operands   {Node2=[Node4], Node3=[Node1, Node2], Node4=[Node3], Node1=[]}
+[34;40m2012-10-10 13:08:54,665 - edu.asu.laits.model.ModelEvaluator - TRACE - Constant Vertices : 1
+[34;40m2012-10-10 13:08:54,672 - edu.asu.laits.model.ModelEvaluator - TRACE - Vertex Node1
+[34;40m2012-10-10 13:08:54,672 - edu.asu.laits.model.ModelEvaluator - TRACE - [0.2, 0.2, 0.2, 0.2, 0.2, 0.2, 0.2, 0.2, 0.2, 0.2]
+[34;40m2012-10-10 13:08:54,673 - edu.asu.laits.model.ModelEvaluator - TRACE - Vertex Node2
+[34;40m2012-10-10 13:08:54,673 - edu.asu.laits.model.ModelEvaluator - TRACE - [12.0, 36.4, 109.6, 329.2, 988.0, 2964.4, 8893.6, 26681.200000000004, 80044.00000000001, 240132.40000000002]
+[34;40m2012-10-10 13:08:54,673 - edu.asu.laits.model.ModelEvaluator - TRACE - Vertex Node3
+[34;40m2012-10-10 13:08:54,673 - edu.asu.laits.model.ModelEvaluator - TRACE - [12.2, 36.6, 109.8, 329.4, 988.2, 2964.6, 8893.800000000001, 26681.400000000005, 80044.20000000001, 240132.60000000003]
+[34;40m2012-10-10 13:08:54,673 - edu.asu.laits.model.ModelEvaluator - TRACE - Vertex Node4
+[34;40m2012-10-10 13:08:54,674 - edu.asu.laits.model.ModelEvaluator - TRACE - [24.4, 73.2, 219.6, 658.8, 1976.4, 5929.2, 17787.600000000002, 53362.80000000001, 160088.40000000002, 480265.20000000007]
+[34;40m2012-10-10 13:08:55,915 - edu.asu.laits.gui.nodeeditor.NodeEditor - TRACE - Setting Tab Listener
+[34;40m2012-10-10 13:08:55,915 - edu.asu.laits.gui.nodeeditor.NodeEditor - TRACE - Setting Tab Listener -Ends
+[34;40m2012-10-10 13:08:55,915 - edu.asu.laits.gui.nodeeditor.NodeEditor - TRACE - Initializing NodeEditor
+[34;40m2012-10-10 13:08:55,915 - edu.asu.laits.gui.nodeeditor.NodeEditor - TRACE - Initializing NodeEditor Tabs - Start
+[34;40m2012-10-10 13:08:55,944 - edu.asu.laits.gui.nodeeditor.PlanPanelView - TRACE - Initializing plan panel for Node 
+[34;40m2012-10-10 13:08:55,950 - edu.asu.laits.gui.nodeeditor.CalculationsPanelView - TRACE - Initializing Calculations Panel for Node 
+[34;40m2012-10-10 13:08:55,950 - edu.asu.laits.gui.nodeeditor.CalculationsPanelView - TRACE - Initializing Available Input Nodes in jList Panel
+[34;40m2012-10-10 13:08:55,957 - edu.asu.laits.gui.nodeeditor.PlotPanel - TRACE - Print Node Values in Graph
+[34;40m2012-10-10 13:08:55,957 - edu.asu.laits.gui.nodeeditor.PlotPanel - TRACE - Vertex: Node4
+[34;40m2012-10-10 13:08:55,957 - edu.asu.laits.gui.nodeeditor.PlotPanel - TRACE - Adding: 0   24.4
+[34;40m2012-10-10 13:08:55,958 - edu.asu.laits.gui.nodeeditor.PlotPanel - TRACE - Adding: 1   73.2
+[34;40m2012-10-10 13:08:55,958 - edu.asu.laits.gui.nodeeditor.PlotPanel - TRACE - Adding: 2   219.6
+[34;40m2012-10-10 13:08:55,958 - edu.asu.laits.gui.nodeeditor.PlotPanel - TRACE - Adding: 3   658.8
+[34;40m2012-10-10 13:08:55,958 - edu.asu.laits.gui.nodeeditor.PlotPanel - TRACE - Adding: 4   1976.4
+[34;40m2012-10-10 13:08:55,958 - edu.asu.laits.gui.nodeeditor.PlotPanel - TRACE - Adding: 5   5929.2
+[34;40m2012-10-10 13:08:55,958 - edu.asu.laits.gui.nodeeditor.PlotPanel - TRACE - Adding: 6   17787.600000000002
+[34;40m2012-10-10 13:08:55,958 - edu.asu.laits.gui.nodeeditor.PlotPanel - TRACE - Adding: 7   53362.80000000001
+[34;40m2012-10-10 13:08:55,959 - edu.asu.laits.gui.nodeeditor.PlotPanel - TRACE - Adding: 8   160088.40000000002
+[34;40m2012-10-10 13:08:55,959 - edu.asu.laits.gui.nodeeditor.PlotPanel - TRACE - Adding: 9   480265.20000000007
+[34;40m[0;31m2012-10-10 13:08:55,963 - edu.asu.laits.gui.nodeeditor.NodeEditor - ERROR - Current Tab 4  4
+[34;40m2012-10-10 13:08:55,963 - edu.asu.laits.gui.nodeeditor.NodeEditor - TRACE - Selected Tab is Graph - DOING NOTHING
+[34;40m2012-10-10 13:08:55,963 - edu.asu.laits.gui.nodeeditor.NodeEditor - TRACE - Tab Stage Changed Action - Ends
+[34;40m2012-10-10 13:08:55,976 - edu.asu.laits.gui.nodeeditor.NodeEditor - TRACE - Initializing NodeEditor Tabs - End
+[34;40m2012-10-10 13:09:44,330 - edu.asu.laits.gui.nodeeditor.NodeEditor - TRACE - Setting Tab Listener
+[34;40m2012-10-10 13:09:44,331 - edu.asu.laits.gui.nodeeditor.NodeEditor - TRACE - Setting Tab Listener -Ends
+[34;40m2012-10-10 13:09:44,331 - edu.asu.laits.gui.nodeeditor.NodeEditor - TRACE - Initializing NodeEditor
+[34;40m2012-10-10 13:09:44,331 - edu.asu.laits.gui.nodeeditor.NodeEditor - TRACE - Initializing NodeEditor Tabs - Start
+[34;40m2012-10-10 13:09:44,358 - edu.asu.laits.gui.nodeeditor.PlanPanelView - TRACE - Initializing plan panel for Node 
+[34;40m2012-10-10 13:09:44,364 - edu.asu.laits.gui.nodeeditor.CalculationsPanelView - TRACE - Initializing Calculations Panel for Node 
+[34;40m2012-10-10 13:09:44,364 - edu.asu.laits.gui.nodeeditor.CalculationsPanelView - TRACE - Initializing Available Input Nodes in jList Panel
+[34;40m2012-10-10 13:09:44,371 - edu.asu.laits.gui.nodeeditor.PlotPanel - TRACE - Print Node Values in Graph
+[34;40m2012-10-10 13:09:44,371 - edu.asu.laits.gui.nodeeditor.PlotPanel - TRACE - Vertex: Node4
+[34;40m2012-10-10 13:09:44,371 - edu.asu.laits.gui.nodeeditor.PlotPanel - TRACE - Adding: 0   24.4
+[34;40m2012-10-10 13:09:44,372 - edu.asu.laits.gui.nodeeditor.PlotPanel - TRACE - Adding: 1   73.2
+[34;40m2012-10-10 13:09:44,372 - edu.asu.laits.gui.nodeeditor.PlotPanel - TRACE - Adding: 2   219.6
+[34;40m2012-10-10 13:09:44,372 - edu.asu.laits.gui.nodeeditor.PlotPanel - TRACE - Adding: 3   658.8
+[34;40m2012-10-10 13:09:44,372 - edu.asu.laits.gui.nodeeditor.PlotPanel - TRACE - Adding: 4   1976.4
+[34;40m2012-10-10 13:09:44,372 - edu.asu.laits.gui.nodeeditor.PlotPanel - TRACE - Adding: 5   5929.2
+[34;40m2012-10-10 13:09:44,372 - edu.asu.laits.gui.nodeeditor.PlotPanel - TRACE - Adding: 6   17787.600000000002
+[34;40m2012-10-10 13:09:44,373 - edu.asu.laits.gui.nodeeditor.PlotPanel - TRACE - Adding: 7   53362.80000000001
+[34;40m2012-10-10 13:09:44,373 - edu.asu.laits.gui.nodeeditor.PlotPanel - TRACE - Adding: 8   160088.40000000002
+[34;40m2012-10-10 13:09:44,373 - edu.asu.laits.gui.nodeeditor.PlotPanel - TRACE - Adding: 9   480265.20000000007
+[34;40m[0;31m2012-10-10 13:09:44,377 - edu.asu.laits.gui.nodeeditor.NodeEditor - ERROR - Current Tab 4  4
+[34;40m2012-10-10 13:09:44,377 - edu.asu.laits.gui.nodeeditor.NodeEditor - TRACE - Selected Tab is Graph - DOING NOTHING
+[34;40m2012-10-10 13:09:44,377 - edu.asu.laits.gui.nodeeditor.NodeEditor - TRACE - Tab Stage Changed Action - Ends
+[34;40m2012-10-10 13:09:44,390 - edu.asu.laits.gui.nodeeditor.NodeEditor - TRACE - Initializing NodeEditor Tabs - End
+[34;40m[0;31m2012-10-10 13:09:45,522 - edu.asu.laits.gui.nodeeditor.NodeEditor - ERROR - Current Tab 3  4
+[34;40m2012-10-10 13:09:45,522 - edu.asu.laits.gui.nodeeditor.NodeEditor - TRACE - Selected Tab is Graph - DOING NOTHING
+[34;40m2012-10-10 13:09:45,522 - edu.asu.laits.gui.nodeeditor.NodeEditor - TRACE - Tab Stage Changed Action - Ends
+[34;40m2012-10-10 13:09:49,574 - edu.asu.laits.gui.nodeeditor.NodeEditor - TRACE - Setting Inputs to correct
+[34;40m2012-10-10 13:09:51,245 - edu.asu.laits.model.ModelEvaluator - TRACE - Final Operands   {Node2=[Node4], Node3=[Node1, Node2], Node4=[Node3], Node1=[]}
+[34;40m2012-10-10 13:09:51,245 - edu.asu.laits.model.ModelEvaluator - TRACE - Constant Vertices : 1
+[34;40m2012-10-10 13:09:51,253 - edu.asu.laits.model.ModelEvaluator - TRACE - Vertex Node1
+[34;40m2012-10-10 13:09:51,253 - edu.asu.laits.model.ModelEvaluator - TRACE - [0.2, 0.2, 0.2, 0.2, 0.2, 0.2, 0.2, 0.2, 0.2, 0.2]
+[34;40m2012-10-10 13:09:51,253 - edu.asu.laits.model.ModelEvaluator - TRACE - Vertex Node2
+[34;40m2012-10-10 13:09:51,254 - edu.asu.laits.model.ModelEvaluator - TRACE - [12.0, 160.83999999999997, 26094.72159999999, 6.809710280317461E8, 4.6372154197197267E17, 2.1503766848886403E35, 4.624119886912659E70, 2.138248472854114E141, 4.5721065316629503E282, Infinity]
+[34;40m2012-10-10 13:09:51,254 - edu.asu.laits.model.ModelEvaluator - TRACE - Vertex Node3
+[34;40m2012-10-10 13:09:51,254 - edu.asu.laits.model.ModelEvaluator - TRACE - [12.2, 161.03999999999996, 26094.92159999999, 6.809710282317462E8, 4.6372154197197267E17, 2.1503766848886403E35, 4.624119886912659E70, 2.138248472854114E141, 4.5721065316629503E282, Infinity]
+[34;40m2012-10-10 13:09:51,254 - edu.asu.laits.model.ModelEvaluator - TRACE - Vertex Node4
+[34;40m2012-10-10 13:09:51,254 - edu.asu.laits.model.ModelEvaluator - TRACE - [148.83999999999997, 25933.88159999999, 6.809449333101461E8, 4.6372154129100166E17, 2.1503766848886403E35, 4.624119886912659E70, 2.138248472854114E141, 4.5721065316629503E282, Infinity, Infinity]
+[34;40m2012-10-10 13:10:04,300 - edu.asu.laits.gui.nodeeditor.NodeEditor - TRACE - Setting Tab Listener
+[34;40m2012-10-10 13:10:04,300 - edu.asu.laits.gui.nodeeditor.NodeEditor - TRACE - Setting Tab Listener -Ends
+[34;40m2012-10-10 13:10:04,300 - edu.asu.laits.gui.nodeeditor.NodeEditor - TRACE - Initializing NodeEditor
+[34;40m2012-10-10 13:10:04,300 - edu.asu.laits.gui.nodeeditor.NodeEditor - TRACE - Initializing NodeEditor Tabs - Start
+[34;40m2012-10-10 13:10:04,328 - edu.asu.laits.gui.nodeeditor.PlanPanelView - TRACE - Initializing plan panel for Node 
+[34;40m2012-10-10 13:10:04,334 - edu.asu.laits.gui.nodeeditor.CalculationsPanelView - TRACE - Initializing Calculations Panel for Node 
+[34;40m2012-10-10 13:10:04,335 - edu.asu.laits.gui.nodeeditor.CalculationsPanelView - TRACE - Initializing Available Input Nodes in jList Panel
+[34;40m2012-10-10 13:10:04,341 - edu.asu.laits.gui.nodeeditor.PlotPanel - TRACE - Print Node Values in Graph
+[34;40m2012-10-10 13:10:04,342 - edu.asu.laits.gui.nodeeditor.PlotPanel - TRACE - Vertex: Node4
+[34;40m2012-10-10 13:10:04,342 - edu.asu.laits.gui.nodeeditor.PlotPanel - TRACE - Adding: 0   148.83999999999997
+[34;40m2012-10-10 13:10:04,342 - edu.asu.laits.gui.nodeeditor.PlotPanel - TRACE - Adding: 1   25933.88159999999
+[34;40m2012-10-10 13:10:04,342 - edu.asu.laits.gui.nodeeditor.PlotPanel - TRACE - Adding: 2   6.809449333101461E8
+[34;40m2012-10-10 13:10:04,342 - edu.asu.laits.gui.nodeeditor.PlotPanel - TRACE - Adding: 3   4.6372154129100166E17
+[34;40m2012-10-10 13:10:04,342 - edu.asu.laits.gui.nodeeditor.PlotPanel - TRACE - Adding: 4   2.1503766848886403E35
+[34;40m2012-10-10 13:10:04,343 - edu.asu.laits.gui.nodeeditor.PlotPanel - TRACE - Adding: 5   4.624119886912659E70
+[34;40m2012-10-10 13:10:04,343 - edu.asu.laits.gui.nodeeditor.PlotPanel - TRACE - Adding: 6   2.138248472854114E141
+[34;40m2012-10-10 13:10:04,343 - edu.asu.laits.gui.nodeeditor.PlotPanel - TRACE - Adding: 7   4.5721065316629503E282
+[34;40m2012-10-10 13:10:04,343 - edu.asu.laits.gui.nodeeditor.PlotPanel - TRACE - Adding: 8   Infinity
+[34;40m2012-10-10 13:10:04,343 - edu.asu.laits.gui.nodeeditor.PlotPanel - TRACE - Adding: 9   Infinity
+[34;40m[0;31m2012-10-10 13:10:04,347 - edu.asu.laits.gui.nodeeditor.NodeEditor - ERROR - Current Tab 4  4
+[34;40m2012-10-10 13:10:04,347 - edu.asu.laits.gui.nodeeditor.NodeEditor - TRACE - Selected Tab is Graph - DOING NOTHING
+[34;40m2012-10-10 13:10:04,348 - edu.asu.laits.gui.nodeeditor.NodeEditor - TRACE - Tab Stage Changed Action - Ends
+[34;40m2012-10-10 13:10:04,361 - edu.asu.laits.gui.nodeeditor.NodeEditor - TRACE - Initializing NodeEditor Tabs - End
+[34;40m2012-10-10 13:10:27,099 - edu.asu.laits.gui.nodeeditor.NodeEditor - TRACE - Setting Tab Listener
+[34;40m2012-10-10 13:10:27,099 - edu.asu.laits.gui.nodeeditor.NodeEditor - TRACE - Setting Tab Listener -Ends
+[34;40m2012-10-10 13:10:27,099 - edu.asu.laits.gui.nodeeditor.NodeEditor - TRACE - Initializing NodeEditor
+[34;40m2012-10-10 13:10:27,100 - edu.asu.laits.gui.nodeeditor.NodeEditor - TRACE - Initializing NodeEditor Tabs - Start
+[34;40m2012-10-10 13:10:27,127 - edu.asu.laits.gui.nodeeditor.PlanPanelView - TRACE - Initializing plan panel for Node 
+[34;40m2012-10-10 13:10:27,133 - edu.asu.laits.gui.nodeeditor.CalculationsPanelView - TRACE - Initializing Calculations Panel for Node 
+[34;40m2012-10-10 13:10:27,133 - edu.asu.laits.gui.nodeeditor.CalculationsPanelView - TRACE - Initializing Available Input Nodes in jList Panel
+[34;40m2012-10-10 13:10:27,139 - edu.asu.laits.gui.nodeeditor.PlotPanel - TRACE - Print Node Values in Graph
+[34;40m2012-10-10 13:10:27,139 - edu.asu.laits.gui.nodeeditor.PlotPanel - TRACE - Vertex: Node4
+[34;40m2012-10-10 13:10:27,140 - edu.asu.laits.gui.nodeeditor.PlotPanel - TRACE - Adding: 0   148.83999999999997
+[34;40m2012-10-10 13:10:27,140 - edu.asu.laits.gui.nodeeditor.PlotPanel - TRACE - Adding: 1   25933.88159999999
+[34;40m2012-10-10 13:10:27,140 - edu.asu.laits.gui.nodeeditor.PlotPanel - TRACE - Adding: 2   6.809449333101461E8
+[34;40m2012-10-10 13:10:27,140 - edu.asu.laits.gui.nodeeditor.PlotPanel - TRACE - Adding: 3   4.6372154129100166E17
+[34;40m2012-10-10 13:10:27,140 - edu.asu.laits.gui.nodeeditor.PlotPanel - TRACE - Adding: 4   2.1503766848886403E35
+[34;40m2012-10-10 13:10:27,140 - edu.asu.laits.gui.nodeeditor.PlotPanel - TRACE - Adding: 5   4.624119886912659E70
+[34;40m2012-10-10 13:10:27,141 - edu.asu.laits.gui.nodeeditor.PlotPanel - TRACE - Adding: 6   2.138248472854114E141
+[34;40m2012-10-10 13:10:27,141 - edu.asu.laits.gui.nodeeditor.PlotPanel - TRACE - Adding: 7   4.5721065316629503E282
+[34;40m2012-10-10 13:10:27,141 - edu.asu.laits.gui.nodeeditor.PlotPanel - TRACE - Adding: 8   Infinity
+[34;40m2012-10-10 13:10:27,141 - edu.asu.laits.gui.nodeeditor.PlotPanel - TRACE - Adding: 9   Infinity
+[34;40m[0;31m2012-10-10 13:10:27,145 - edu.asu.laits.gui.nodeeditor.NodeEditor - ERROR - Current Tab 4  4
+[34;40m2012-10-10 13:10:27,146 - edu.asu.laits.gui.nodeeditor.NodeEditor - TRACE - Selected Tab is Graph - DOING NOTHING
+[34;40m2012-10-10 13:10:27,146 - edu.asu.laits.gui.nodeeditor.NodeEditor - TRACE - Tab Stage Changed Action - Ends
+[34;40m2012-10-10 13:10:27,159 - edu.asu.laits.gui.nodeeditor.NodeEditor - TRACE - Initializing NodeEditor Tabs - End
+[34;40m2012-10-10 13:11:31,997 - edu.asu.laits.editor.GraphEditorPane - TRACE - Initializing GraphEditor Pane
+[34;40m2012-10-10 13:11:39,906 - edu.asu.laits.gui.nodeeditor.NodeEditor - TRACE - Setting Tab Listener
+[34;40m2012-10-10 13:11:39,907 - edu.asu.laits.gui.nodeeditor.NodeEditor - TRACE - Setting Tab Listener -Ends
+[34;40m2012-10-10 13:11:39,907 - edu.asu.laits.gui.nodeeditor.NodeEditor - TRACE - Initializing NodeEditor
+[34;40m2012-10-10 13:11:39,907 - edu.asu.laits.gui.nodeeditor.NodeEditor - TRACE - Initializing NodeEditor Tabs - Start
+[34;40m2012-10-10 13:11:40,001 - edu.asu.laits.gui.nodeeditor.PlanPanelView - TRACE - Initializing plan panel for Node 
+[34;40m2012-10-10 13:11:40,021 - edu.asu.laits.gui.nodeeditor.CalculationsPanelView - TRACE - Initializing Calculations Panel for Node 
+[34;40m2012-10-10 13:11:40,021 - edu.asu.laits.gui.nodeeditor.CalculationsPanelView - TRACE - Initializing Available Input Nodes in jList Panel
+[34;40m2012-10-10 13:11:40,041 - edu.asu.laits.gui.nodeeditor.PlotPanel - TRACE - Print Node Values in Graph
+[34;40m2012-10-10 13:11:40,041 - edu.asu.laits.gui.nodeeditor.PlotPanel - TRACE - Vertex: Node4
+[34;40m2012-10-10 13:11:40,042 - edu.asu.laits.gui.nodeeditor.PlotPanel - TRACE - Adding: 0   5.760000000000002
+[34;40m2012-10-10 13:11:40,042 - edu.asu.laits.gui.nodeeditor.PlotPanel - TRACE - Adding: 1   12.616704000000004
+[34;40m2012-10-10 13:11:40,042 - edu.asu.laits.gui.nodeeditor.PlotPanel - TRACE - Adding: 2   36.90976583614465
+[34;40m2012-10-10 13:11:40,042 - edu.asu.laits.gui.nodeeditor.PlotPanel - TRACE - Adding: 3   181.09876092041614
+[34;40m2012-10-10 13:11:40,043 - edu.asu.laits.gui.nodeeditor.PlotPanel - TRACE - Adding: 4   2467.8089143195984
+[34;40m2012-10-10 13:11:40,043 - edu.asu.laits.gui.nodeeditor.PlotPanel - TRACE - Adding: 5   295108.42534984037
+[34;40m2012-10-10 13:11:40,044 - edu.asu.laits.gui.nodeeditor.PlotPanel - TRACE - Adding: 6   3.547980159091673E9
+[34;40m2012-10-10 13:11:40,044 - edu.asu.laits.gui.nodeeditor.PlotPanel - TRACE - Adding: 7   5.0361106598757574E17
+[34;40m2012-10-10 13:11:40,044 - edu.asu.laits.gui.nodeeditor.PlotPanel - TRACE - Adding: 8   1.0144964374361861E34
+[34;40m2012-10-10 13:11:40,044 - edu.asu.laits.gui.nodeeditor.PlotPanel - TRACE - Adding: 9   4.116812086282854E66
+[34;40m[0;31m2012-10-10 13:11:40,181 - edu.asu.laits.gui.nodeeditor.NodeEditor - ERROR - Current Tab 4  4
+[34;40m2012-10-10 13:11:40,181 - edu.asu.laits.gui.nodeeditor.NodeEditor - TRACE - Selected Tab is Graph - DOING NOTHING
+[34;40m2012-10-10 13:11:40,182 - edu.asu.laits.gui.nodeeditor.NodeEditor - TRACE - Tab Stage Changed Action - Ends
+[34;40m2012-10-10 13:11:40,203 - edu.asu.laits.gui.nodeeditor.NodeEditor - TRACE - Initializing NodeEditor Tabs - End
+[34;40m2012-10-10 13:12:10,006 - edu.asu.laits.gui.nodeeditor.NodeEditor - TRACE - Setting Tab Listener
+[34;40m2012-10-10 13:12:10,007 - edu.asu.laits.gui.nodeeditor.NodeEditor - TRACE - Setting Tab Listener -Ends
+[34;40m2012-10-10 13:12:10,007 - edu.asu.laits.gui.nodeeditor.NodeEditor - TRACE - Initializing NodeEditor
+[34;40m2012-10-10 13:12:10,007 - edu.asu.laits.gui.nodeeditor.NodeEditor - TRACE - Initializing NodeEditor Tabs - Start
+[34;40m2012-10-10 13:12:10,045 - edu.asu.laits.gui.nodeeditor.PlanPanelView - TRACE - Initializing plan panel for Node 
+[34;40m2012-10-10 13:12:10,054 - edu.asu.laits.gui.nodeeditor.CalculationsPanelView - TRACE - Initializing Calculations Panel for Node 
+[34;40m2012-10-10 13:12:10,054 - edu.asu.laits.gui.nodeeditor.CalculationsPanelView - TRACE - Initializing Available Input Nodes in jList Panel
+[34;40m2012-10-10 13:12:10,063 - edu.asu.laits.gui.nodeeditor.PlotPanel - TRACE - Print Node Values in Graph
+[34;40m2012-10-10 13:12:10,063 - edu.asu.laits.gui.nodeeditor.PlotPanel - TRACE - Vertex: Node4
+[34;40m2012-10-10 13:12:10,063 - edu.asu.laits.gui.nodeeditor.PlotPanel - TRACE - Adding: 0   5.760000000000002
+[34;40m2012-10-10 13:12:10,063 - edu.asu.laits.gui.nodeeditor.PlotPanel - TRACE - Adding: 1   12.616704000000004
+[34;40m2012-10-10 13:12:10,064 - edu.asu.laits.gui.nodeeditor.PlotPanel - TRACE - Adding: 2   36.90976583614465
+[34;40m2012-10-10 13:12:10,064 - edu.asu.laits.gui.nodeeditor.PlotPanel - TRACE - Adding: 3   181.09876092041614
+[34;40m2012-10-10 13:12:10,064 - edu.asu.laits.gui.nodeeditor.PlotPanel - TRACE - Adding: 4   2467.8089143195984
+[34;40m2012-10-10 13:12:10,064 - edu.asu.laits.gui.nodeeditor.PlotPanel - TRACE - Adding: 5   295108.42534984037
+[34;40m2012-10-10 13:12:10,064 - edu.asu.laits.gui.nodeeditor.PlotPanel - TRACE - Adding: 6   3.547980159091673E9
+[34;40m2012-10-10 13:12:10,064 - edu.asu.laits.gui.nodeeditor.PlotPanel - TRACE - Adding: 7   5.0361106598757574E17
+[34;40m2012-10-10 13:12:10,065 - edu.asu.laits.gui.nodeeditor.PlotPanel - TRACE - Adding: 8   1.0144964374361861E34
+[34;40m2012-10-10 13:12:10,065 - edu.asu.laits.gui.nodeeditor.PlotPanel - TRACE - Adding: 9   4.116812086282854E66
+[34;40m[0;31m2012-10-10 13:12:10,072 - edu.asu.laits.gui.nodeeditor.NodeEditor - ERROR - Current Tab 4  4
+[34;40m2012-10-10 13:12:10,072 - edu.asu.laits.gui.nodeeditor.NodeEditor - TRACE - Selected Tab is Graph - DOING NOTHING
+[34;40m2012-10-10 13:12:10,072 - edu.asu.laits.gui.nodeeditor.NodeEditor - TRACE - Tab Stage Changed Action - Ends
+[34;40m2012-10-10 13:12:10,090 - edu.asu.laits.gui.nodeeditor.NodeEditor - TRACE - Initializing NodeEditor Tabs - End
+[34;40m2012-10-10 13:12:13,748 - edu.asu.laits.gui.nodeeditor.NodeEditor - TRACE - Setting Tab Listener
+[34;40m2012-10-10 13:12:13,748 - edu.asu.laits.gui.nodeeditor.NodeEditor - TRACE - Setting Tab Listener -Ends
+[34;40m2012-10-10 13:12:13,748 - edu.asu.laits.gui.nodeeditor.NodeEditor - TRACE - Initializing NodeEditor
+[34;40m2012-10-10 13:12:13,748 - edu.asu.laits.gui.nodeeditor.NodeEditor - TRACE - Initializing NodeEditor Tabs - Start
+[34;40m2012-10-10 13:12:13,786 - edu.asu.laits.gui.nodeeditor.PlanPanelView - TRACE - Initializing plan panel for Node 
+[34;40m2012-10-10 13:12:13,794 - edu.asu.laits.gui.nodeeditor.CalculationsPanelView - TRACE - Initializing Calculations Panel for Node 
+[34;40m2012-10-10 13:12:13,795 - edu.asu.laits.gui.nodeeditor.CalculationsPanelView - TRACE - Initializing Available Input Nodes in jList Panel
+[34;40m2012-10-10 13:12:13,803 - edu.asu.laits.gui.nodeeditor.PlotPanel - TRACE - Print Node Values in Graph
+[34;40m2012-10-10 13:12:13,803 - edu.asu.laits.gui.nodeeditor.PlotPanel - TRACE - Vertex: Node4
+[34;40m2012-10-10 13:12:13,804 - edu.asu.laits.gui.nodeeditor.PlotPanel - TRACE - Adding: 0   5.760000000000002
+[34;40m2012-10-10 13:12:13,804 - edu.asu.laits.gui.nodeeditor.PlotPanel - TRACE - Adding: 1   12.616704000000004
+[34;40m2012-10-10 13:12:13,804 - edu.asu.laits.gui.nodeeditor.PlotPanel - TRACE - Adding: 2   36.90976583614465
+[34;40m2012-10-10 13:12:13,804 - edu.asu.laits.gui.nodeeditor.PlotPanel - TRACE - Adding: 3   181.09876092041614
+[34;40m2012-10-10 13:12:13,804 - edu.asu.laits.gui.nodeeditor.PlotPanel - TRACE - Adding: 4   2467.8089143195984
+[34;40m2012-10-10 13:12:13,804 - edu.asu.laits.gui.nodeeditor.PlotPanel - TRACE - Adding: 5   295108.42534984037
+[34;40m2012-10-10 13:12:13,805 - edu.asu.laits.gui.nodeeditor.PlotPanel - TRACE - Adding: 6   3.547980159091673E9
+[34;40m2012-10-10 13:12:13,805 - edu.asu.laits.gui.nodeeditor.PlotPanel - TRACE - Adding: 7   5.0361106598757574E17
+[34;40m2012-10-10 13:12:13,805 - edu.asu.laits.gui.nodeeditor.PlotPanel - TRACE - Adding: 8   1.0144964374361861E34
+[34;40m2012-10-10 13:12:13,805 - edu.asu.laits.gui.nodeeditor.PlotPanel - TRACE - Adding: 9   4.116812086282854E66
+[34;40m[0;31m2012-10-10 13:12:13,810 - edu.asu.laits.gui.nodeeditor.NodeEditor - ERROR - Current Tab 4  4
+[34;40m2012-10-10 13:12:13,810 - edu.asu.laits.gui.nodeeditor.NodeEditor - TRACE - Selected Tab is Graph - DOING NOTHING
+[34;40m2012-10-10 13:12:13,810 - edu.asu.laits.gui.nodeeditor.NodeEditor - TRACE - Tab Stage Changed Action - Ends
+[34;40m2012-10-10 13:12:13,828 - edu.asu.laits.gui.nodeeditor.NodeEditor - TRACE - Initializing NodeEditor Tabs - End
+[34;40m[0;31m2012-10-10 13:12:15,434 - edu.asu.laits.gui.nodeeditor.NodeEditor - ERROR - Current Tab 3  4
+[34;40m2012-10-10 13:12:15,434 - edu.asu.laits.gui.nodeeditor.NodeEditor - TRACE - Selected Tab is Graph - DOING NOTHING
+[34;40m2012-10-10 13:12:15,434 - edu.asu.laits.gui.nodeeditor.NodeEditor - TRACE - Tab Stage Changed Action - Ends
+[34;40m2012-10-10 13:12:20,325 - edu.asu.laits.gui.nodeeditor.NodeEditor - TRACE - Setting Inputs to correct
+[34;40m2012-10-10 13:12:23,704 - edu.asu.laits.gui.nodeeditor.NodeEditor - TRACE - Setting Tab Listener
+[34;40m2012-10-10 13:12:23,704 - edu.asu.laits.gui.nodeeditor.NodeEditor - TRACE - Setting Tab Listener -Ends
+[34;40m2012-10-10 13:12:23,704 - edu.asu.laits.gui.nodeeditor.NodeEditor - TRACE - Initializing NodeEditor
+[34;40m2012-10-10 13:12:23,704 - edu.asu.laits.gui.nodeeditor.NodeEditor - TRACE - Initializing NodeEditor Tabs - Start
+[34;40m2012-10-10 13:12:23,738 - edu.asu.laits.gui.nodeeditor.PlanPanelView - TRACE - Initializing plan panel for Node 
+[34;40m2012-10-10 13:12:23,747 - edu.asu.laits.gui.nodeeditor.CalculationsPanelView - TRACE - Initializing Calculations Panel for Node 
+[34;40m2012-10-10 13:12:23,747 - edu.asu.laits.gui.nodeeditor.CalculationsPanelView - TRACE - Initializing Available Input Nodes in jList Panel
+[34;40m2012-10-10 13:12:23,753 - edu.asu.laits.gui.nodeeditor.NodeEditor - TRACE - Inside Else
+[34;40m2012-10-10 13:12:23,769 - edu.asu.laits.gui.nodeeditor.NodeEditor - TRACE - setting calc panel as current
+[34;40m[0;31m2012-10-10 13:12:23,769 - edu.asu.laits.gui.nodeeditor.NodeEditor - ERROR - Current Tab 3  2
+[34;40m2012-10-10 13:12:23,770 - edu.asu.laits.gui.nodeeditor.NodeEditor - TRACE - Saving INPUTS Panel
+[34;40m2012-10-10 13:12:23,770 - edu.asu.laits.gui.nodeeditor.CalculationsPanelView - TRACE - Initializing Calculations Panel for Node 
+[34;40m2012-10-10 13:12:23,770 - edu.asu.laits.gui.nodeeditor.CalculationsPanelView - TRACE - Initializing Available Input Nodes in jList Panel
+[34;40m2012-10-10 13:12:23,770 - edu.asu.laits.gui.nodeeditor.NodeEditor - TRACE - Tab Stage Changed Action - Ends
+[34;40m2012-10-10 13:12:23,770 - edu.asu.laits.gui.nodeeditor.NodeEditor - TRACE - Initializing NodeEditor Tabs - End
+[34;40m2012-10-10 13:28:35,158 - edu.asu.laits.editor.GraphEditorPane - TRACE - Initializing GraphEditor Pane
+[34;40m2012-10-10 13:30:55,909 - edu.asu.laits.editor.GraphEditorPane - TRACE - Initializing GraphEditor Pane
+[34;40m2012-10-10 13:33:31,045 - edu.asu.laits.editor.GraphEditorPane - TRACE - Initializing GraphEditor Pane
+[34;40m2012-10-10 13:33:36,876 - edu.asu.laits.gui.menus.VertexSelectionMenu - TRACE - Setting Graph Popup Status
+[34;40m2012-10-10 13:33:36,876 - edu.asu.laits.gui.menus.VertexSelectionMenu - TRACE - CORRECT
+[34;40m2012-10-10 13:34:36,993 - edu.asu.laits.editor.GraphEditorPane - TRACE - Initializing GraphEditor Pane
+[34;40m2012-10-10 13:36:52,714 - edu.asu.laits.editor.GraphEditorPane - TRACE - Initializing GraphEditor Pane
+[34;40m2012-10-10 13:37:14,865 - edu.asu.laits.gui.nodeeditor.NodeEditor - TRACE - Setting Tab Listener
+[34;40m2012-10-10 13:37:14,866 - edu.asu.laits.gui.nodeeditor.NodeEditor - TRACE - Setting Tab Listener -Ends
+[34;40m2012-10-10 13:37:14,866 - edu.asu.laits.gui.nodeeditor.NodeEditor - TRACE - Initializing NodeEditor
+[34;40m2012-10-10 13:37:14,866 - edu.asu.laits.gui.nodeeditor.NodeEditor - TRACE - Initializing NodeEditor Tabs - Start
+[34;40m2012-10-10 13:37:14,955 - edu.asu.laits.gui.nodeeditor.PlanPanelView - TRACE - Initializing plan panel for Node 
+[34;40m2012-10-10 13:37:14,974 - edu.asu.laits.gui.nodeeditor.CalculationsPanelView - TRACE - Initializing Calculations Panel for Node 
+[34;40m2012-10-10 13:37:14,975 - edu.asu.laits.gui.nodeeditor.CalculationsPanelView - TRACE - Initializing Available Input Nodes in jList Panel
+[34;40m[0;31m2012-10-10 13:37:15,127 - edu.asu.laits.gui.nodeeditor.NodeEditor - ERROR - Current Tab 4  4
+[34;40m2012-10-10 13:37:15,127 - edu.asu.laits.gui.nodeeditor.NodeEditor - TRACE - Selected Tab is Graph - DOING NOTHING
+[34;40m2012-10-10 13:37:15,127 - edu.asu.laits.gui.nodeeditor.NodeEditor - TRACE - Tab Stage Changed Action - Ends
+[34;40m2012-10-10 13:37:15,148 - edu.asu.laits.gui.nodeeditor.NodeEditor - TRACE - Initializing NodeEditor Tabs - End
+[34;40m2012-10-10 13:37:18,243 - edu.asu.laits.gui.nodeeditor.NodeEditor - TRACE - Setting Tab Listener
+[34;40m2012-10-10 13:37:18,244 - edu.asu.laits.gui.nodeeditor.NodeEditor - TRACE - Setting Tab Listener -Ends
+[34;40m2012-10-10 13:37:18,244 - edu.asu.laits.gui.nodeeditor.NodeEditor - TRACE - Initializing NodeEditor
+[34;40m2012-10-10 13:37:18,244 - edu.asu.laits.gui.nodeeditor.NodeEditor - TRACE - Initializing NodeEditor Tabs - Start
+[34;40m2012-10-10 13:37:18,284 - edu.asu.laits.gui.nodeeditor.PlanPanelView - TRACE - Initializing plan panel for Node 
+[34;40m2012-10-10 13:37:18,292 - edu.asu.laits.gui.nodeeditor.CalculationsPanelView - TRACE - Initializing Calculations Panel for Node 
+[34;40m2012-10-10 13:37:18,293 - edu.asu.laits.gui.nodeeditor.CalculationsPanelView - TRACE - Initializing Available Input Nodes in jList Panel
+[34;40m[0;31m2012-10-10 13:37:18,308 - edu.asu.laits.gui.nodeeditor.NodeEditor - ERROR - Current Tab 4  4
+[34;40m2012-10-10 13:37:18,309 - edu.asu.laits.gui.nodeeditor.NodeEditor - TRACE - Selected Tab is Graph - DOING NOTHING
+[34;40m2012-10-10 13:37:18,309 - edu.asu.laits.gui.nodeeditor.NodeEditor - TRACE - Tab Stage Changed Action - Ends
+[34;40m2012-10-10 13:37:18,327 - edu.asu.laits.gui.nodeeditor.NodeEditor - TRACE - Initializing NodeEditor Tabs - End
+[34;40m2012-10-10 13:51:29,221 - edu.asu.laits.editor.GraphEditorPane - TRACE - Initializing GraphEditor Pane
+[34;40m2012-10-10 13:53:54,124 - edu.asu.laits.editor.GraphEditorPane - TRACE - Initializing GraphEditor Pane
+[34;40m2012-10-10 13:55:04,065 - edu.asu.laits.editor.GraphEditorPane - TRACE - Initializing GraphEditor Pane
+[34;40m2012-10-10 13:56:21,505 - edu.asu.laits.editor.GraphEditorPane - TRACE - Initializing GraphEditor Pane
+[34;40m2012-10-10 13:57:23,650 - edu.asu.laits.editor.GraphEditorPane - TRACE - Initializing GraphEditor Pane
+[34;40m2012-10-10 13:58:50,805 - edu.asu.laits.editor.GraphEditorPane - TRACE - Initializing GraphEditor Pane
+[34;40m2012-10-10 13:59:39,932 - edu.asu.laits.editor.GraphEditorPane - TRACE - Initializing GraphEditor Pane
+[34;40m2012-10-10 14:01:29,105 - edu.asu.laits.editor.GraphEditorPane - TRACE - Initializing GraphEditor Pane
+[34;40m2012-10-10 14:03:16,855 - edu.asu.laits.gui.nodeeditor.NodeEditor - TRACE - Setting Tab Listener
+[34;40m2012-10-10 14:03:16,855 - edu.asu.laits.gui.nodeeditor.NodeEditor - TRACE - Setting Tab Listener -Ends
+[34;40m2012-10-10 14:03:16,856 - edu.asu.laits.gui.nodeeditor.NodeEditor - TRACE - Initializing NodeEditor
+[34;40m2012-10-10 14:03:16,856 - edu.asu.laits.gui.nodeeditor.NodeEditor - TRACE - Initializing NodeEditor Tabs - Start
+[34;40m2012-10-10 14:03:16,945 - edu.asu.laits.gui.nodeeditor.PlanPanelView - TRACE - Initializing plan panel for Node 
+[34;40m2012-10-10 14:03:16,965 - edu.asu.laits.gui.nodeeditor.CalculationsPanelView - TRACE - Initializing Calculations Panel for Node 
+[34;40m2012-10-10 14:03:16,965 - edu.asu.laits.gui.nodeeditor.CalculationsPanelView - TRACE - Initializing Available Input Nodes in jList Panel
+[34;40m[0;31m2012-10-10 14:03:17,118 - edu.asu.laits.gui.nodeeditor.NodeEditor - ERROR - Current Tab 4  4
+[34;40m2012-10-10 14:03:17,118 - edu.asu.laits.gui.nodeeditor.NodeEditor - TRACE - Selected Tab is Graph - DOING NOTHING
+[34;40m2012-10-10 14:03:17,119 - edu.asu.laits.gui.nodeeditor.NodeEditor - TRACE - Tab Stage Changed Action - Ends
+[34;40m2012-10-10 14:03:17,139 - edu.asu.laits.gui.nodeeditor.NodeEditor - TRACE - Initializing NodeEditor Tabs - End
+[34;40m2012-10-10 14:04:46,167 - edu.asu.laits.editor.GraphEditorPane - TRACE - Initializing GraphEditor Pane
 [34;40m

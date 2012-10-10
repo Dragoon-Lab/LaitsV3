@@ -126,6 +126,7 @@ public class FlowVertexRenderComponent extends VertexRenderComponent {
         }
             
         if(selected){
+            g2.setColor(Color.GRAY);
             g2.setStroke(new BasicStroke(2));
         }
         else

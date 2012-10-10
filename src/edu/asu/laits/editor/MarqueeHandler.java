@@ -112,9 +112,11 @@ public class MarqueeHandler extends BasicMarqueeHandler {
                                 .getCells(false, true, false, false));
                         
 
-                        if(selectedVerteces.length > 0)
+                        if(selectedVerteces.length > 0){
+                            vertexSelectedMenu.setGraphDataItem();
                             vertexSelectedMenu.show(graph, (int) point.getX(),
                                     (int) point.getY());
+                        }    
 
 
                     }

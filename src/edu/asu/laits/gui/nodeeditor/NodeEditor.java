@@ -550,6 +550,11 @@ public class NodeEditor extends JFrame implements WindowListener {
 
   private void buttonCancelActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_buttonCancelActionPerformed
       // Process Cancel Action for all the Tabs
+      
+      // Delete this vertex if its not defined and user hits Cancel
+      if(currentVertex.getName().equals("")){
+          graphPane.removeSelected();
+      }
       this.dispose();
   }//GEN-LAST:event_buttonCancelActionPerformed
 

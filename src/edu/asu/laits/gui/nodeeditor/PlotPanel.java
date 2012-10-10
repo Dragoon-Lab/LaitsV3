@@ -12,6 +12,7 @@ import java.awt.Font;
 import java.awt.GridLayout;
 import java.util.List;
 import javax.swing.JPanel;
+import org.apache.log4j.Logger;
 import org.jfree.chart.ChartFactory;
 import org.jfree.chart.ChartPanel;
 import org.jfree.chart.JFreeChart;
@@ -37,12 +38,13 @@ public class PlotPanel extends JPanel {
 
   private Vertex vertex;
   private String units;
-
+  
+  private static Logger logs = Logger.getLogger(PlotPanel.class);
   /**
    * Constructor
    *
    * Creates a new window with a plot inside of it
-   * @param vertex is the name of the vertex that is being ploted
+   * @param vertex is the name of the vertex that is being plotted
    * @param x0 is the initial value for the x-axis
    * @param xf is the final value for the x-axis
    * @param units  
@@ -73,14 +75,17 @@ public class PlotPanel extends JPanel {
    */
   private XYDataset createSolutionDataset(Vertex vertex, int x0) {
     final XYSeries series = new XYSeries("");
-    List<Double> correctValues=vertex.getCorrectValues();
+    List<Double> correctValues = vertex.getCorrectValues();
+    
     for(int i = 0; i < correctValues.size(); i++) {
       series.add(x0, correctValues.get(i));
       x0++;
     }
+    
     final XYSeriesCollection dataset = new XYSeriesCollection();
     if(correctValues.size()>0)
       dataset.addSeries(series);    
+    
     return dataset;
   }
 

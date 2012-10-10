@@ -47,6 +47,6 @@ public class Application {
                     "An error has occured", JOptionPane.ERROR_MESSAGE);
 
             e.printStackTrace();
-        } */
+        }*/
     }
 }

@@ -161,7 +161,7 @@ public class CalculationsPanelView extends javax.swing.JPanel {
         }else if(flowValueOptionButton.isSelected()){
             return processFlowVertex();
         }else{
-            nodeEditor.setEditorMessage("Please Select Node Type.");
+            nodeEditor.setEditorMessage("Please Select Node Type in Calculation.");
             return false;
         }
     }
@@ -171,8 +171,12 @@ public class CalculationsPanelView extends javax.swing.JPanel {
             nodeEditor.setEditorMessage("Please provide fixed value for this node.");
             return false;
         }else{
-            currentVertex.setInitialValue(Double.valueOf(
-                    fixedValueInputBox.getText()));
+            // Check if value is getting changed - disable Graph
+            Double newValue = Double.valueOf(fixedValueInputBox.getText());
+            if(currentVertex.getInitialValue() != newValue){
+                disableAllGraphs();
+            }
+            currentVertex.setInitialValue(newValue);
             return true;
         }
     }
@@ -180,6 +184,10 @@ public class CalculationsPanelView extends javax.swing.JPanel {
     private boolean processStockVertex(){
         
         if(processConstantVertex() && validateEquation()){
+            // Check if equation is changed - disable graph
+            if(!currentVertex.getEquation().equals(formulaInputArea.getText().trim()))
+                disableAllGraphs();
+                        
             currentVertex.setEquation(formulaInputArea.getText().trim());
             return true;
         }else{
@@ -189,6 +197,9 @@ public class CalculationsPanelView extends javax.swing.JPanel {
     
     private boolean processFlowVertex(){
         if(validateEquation()){
+            if(!currentVertex.getEquation().equals(formulaInputArea.getText().trim()))
+                disableAllGraphs();
+            
             currentVertex.setEquation(formulaInputArea.getText().trim());
             return true;
         }else{
@@ -249,6 +260,15 @@ public class CalculationsPanelView extends javax.swing.JPanel {
     public boolean isViewEnabled(){
         return isViewEnabled;
     }
+    
+    private void disableAllGraphs(){
+        Iterator<Vertex> vertices = nodeEditor.getGraphPane().getModelGraph().
+                vertexSet().iterator();
+        
+        while(vertices.hasNext()){
+            vertices.next().setGraphsStatus(Vertex.GraphsStatus.UNDEFINED);
+        }
+    }
     /**
      * This method is called from within the constructor to initialize the form.
      * WARNING: Do NOT modify this code. The content of this method is always
@@ -290,7 +310,7 @@ public class CalculationsPanelView extends javax.swing.JPanel {
         contentPanel.setLayout(new org.netbeans.lib.awtextra.AbsoluteLayout());
 
         fixedValueLabel.setFont(new java.awt.Font("Lucida Grande", 1, 13)); // NOI18N
-        fixedValueLabel.setText("<html><b>Fixed value = </b></html>");
+        fixedValueLabel.setText("<html><b>Initial value = </b></html>");
         contentPanel.add(fixedValueLabel, new org.netbeans.lib.awtextra.AbsoluteConstraints(20, 136, -1, 30));
 
         fixedValueInputBox.setFormatterFactory(new javax.swing.text.DefaultFormatterFactory(new javax.swing.text.NumberFormatter(inputDecimalFormat)));
@@ -354,7 +374,7 @@ public class CalculationsPanelView extends javax.swing.JPanel {
                     .addComponent(fixedValueOptionButton)
                     .addComponent(flowValueOptionButton)
                     .addComponent(stockValueOptionButton))
-                .addContainerGap(306, Short.MAX_VALUE))
+                .addContainerGap(314, Short.MAX_VALUE))
         );
         quantitySelectionPanelLayout.setVerticalGroup(
             quantitySelectionPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)

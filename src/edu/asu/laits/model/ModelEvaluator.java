@@ -52,7 +52,9 @@ public class ModelEvaluator {
         try{
             int totalPoints = endTime - startTime;
             constructFinalEquations(vertexList);
-
+            logs.trace("Final Operands   "+finalOperands.toString());
+            logs.trace("Constant Vertices : "+constantVertices);
+            
             // Calculating Initial Flow for i =0
             for (int j = constantVertices; j < vertexList.size(); j++) {
                 Vertex currentVertex = vertexList.get(j);
@@ -80,7 +82,7 @@ public class ModelEvaluator {
                 v.setGraphsStatus(Vertex.GraphsStatus.CORRECT);
             }
             
-            
+            printVertexValues(vertexList);
         }catch(Exception ex){
             ex.printStackTrace();
             String err = "Error in Model Execution "+ex.getMessage();
@@ -246,7 +248,7 @@ public class ModelEvaluator {
                 vertex = (Vertex) currentGraph.getEdgeSource(inEdges.next());
                 operands.add(vertex.getName());
             }
-
+            
             finalOperands.put(v.getName(), operands);
         }
        
@@ -260,5 +262,12 @@ public class ModelEvaluator {
         }
 
         return null;
+    }
+    
+    private void printVertexValues(List<Vertex> vertices){
+        for (Vertex v : vertices) {
+            logs.trace("Vertex "+v.getName());
+            logs.trace(v.getCorrectValues().toString());
+        }
     }
 }

@@ -123,8 +123,8 @@ public class StockVertexRenderComponent extends VertexRenderComponent {
             g2.setColor(foreground);
         }
         if(selected){
-           g2.setStroke(new BasicStroke(2));
-           
+           g2.setColor(Color.GRAY);
+           g2.setStroke(new BasicStroke(2));           
         }
         else
             g2.setStroke(new BasicStroke(3));
