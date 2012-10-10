@@ -104,6 +104,7 @@ public class ModelEvaluator {
         Iterator<Vertex> it = currentGraph.vertexSet().iterator();
         while (it.hasNext()) {
             Vertex thisVertex = it.next();
+            thisVertex.getCorrectValues().clear();
 
             if (thisVertex.getVertexType().equals(Vertex.VertexType.CONSTANT)) {
                 // Initialize constant values
