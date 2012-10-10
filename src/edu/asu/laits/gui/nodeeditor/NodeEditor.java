@@ -139,6 +139,7 @@ public class NodeEditor extends JFrame implements WindowListener {
         enableViewForPanels();
 
         if (currentVertex.getGraphsStatus().equals(Vertex.GraphsStatus.CORRECT)) {
+            gPanel.loadGraph();
             selectedTab = GRAPH;
             tabPane.setEnabledAt(GRAPH, true);
             tabPane.setSelectedIndex(GRAPH);

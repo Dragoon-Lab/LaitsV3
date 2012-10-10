@@ -160,9 +160,10 @@ public class CalculationsPanelView extends javax.swing.JPanel {
             return processStockVertex();
         }else if(flowValueOptionButton.isSelected()){
             return processFlowVertex();
+        }else{
+            nodeEditor.setEditorMessage("Please Select Node Type.");
+            return false;
         }
-        
-        return true;
     }
     
     private boolean processConstantVertex(){

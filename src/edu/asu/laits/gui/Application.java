@@ -1,5 +1,6 @@
 package edu.asu.laits.gui;
 
+import edu.asu.laits.editor.ApplicationUser;
 import javax.swing.JOptionPane;
 import javax.swing.LookAndFeel;
 import javax.swing.UIManager;
@@ -23,7 +24,9 @@ public class Application {
      * @param args
      */
     public static void main(String[] args) {
-        try {
+        UserRegistration reg = new UserRegistration(null, true);
+        
+        /*try {
             String uiClassName = GlobalProperties.getInstance().getUITheme();
             if (null != uiClassName) {
                 try {
@@ -44,7 +47,6 @@ public class Application {
                     "An error has occured", JOptionPane.ERROR_MESSAGE);
 
             e.printStackTrace();
-        }
-
+        } */
     }
 }

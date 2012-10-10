@@ -41,7 +41,6 @@ public class Vertex {
     
     private double initialValue;
     private String equation;
-    private String parsedEquation;
     private List<Double> correctValues;
     
     transient private SortedMap<String, String> properties = new TreeMap<String, String>();
@@ -172,14 +171,6 @@ public class Vertex {
         equation = input;
     }
     
-    public String getParsedEquation(){
-        return parsedEquation;
-    }    
-    
-    public void setParsedEquation(String input){
-        parsedEquation = input;
-    }
-    
     public String toString() {
         return name;
     }
@@ -196,7 +187,6 @@ public class Vertex {
         vertexInfoClone.setEquation(equation);
 
         return vertexInfoClone;
-
     }
 
     public int getVertexIndex() {

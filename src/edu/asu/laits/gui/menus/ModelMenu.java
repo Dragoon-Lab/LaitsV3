@@ -1,6 +1,7 @@
 package edu.asu.laits.gui.menus;
 
 import edu.asu.laits.editor.GraphEditorPane;
+import edu.asu.laits.editor.GraphRangeEditor;
 import edu.asu.laits.gui.MainWindow;
 import edu.asu.laits.gui.nodeeditor.NodeEditor;
 import edu.asu.laits.model.Graph;
@@ -104,7 +105,7 @@ public class ModelMenu extends JMenu {
             editTimeRangeMenuItem
                     .addActionListener(new java.awt.event.ActionListener() {
                 public void actionPerformed(java.awt.event.ActionEvent e) {
-                    
+                    editTimeRangeAction();
                 }
             });
         }
@@ -137,7 +138,7 @@ public class ModelMenu extends JMenu {
             boolean verticesSelected = !((selectedVertices == null)
                     || (selectedVertices.length == 0));
 
-            getEditTimeRangeMenuItem().setEnabled(verticesSelected);
+            getEditTimeRangeMenuItem().setEnabled(true);
             getExportSolutionMenuItem().setEnabled(verticesSelected);
         }
     }
@@ -164,5 +165,10 @@ public class ModelMenu extends JMenu {
         }else{
             window.getStatusBarPanel().setStatusMessage("Please complete all the nodes before running Model", false);
         }
+    }
+    
+    public void editTimeRangeAction(){
+        GraphRangeEditor ed = new GraphRangeEditor(graphPane, true);
+        ed.setVisible(true);
     }
 }

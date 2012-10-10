@@ -82,6 +82,7 @@ public class ModelEvaluator {
             
             
         }catch(Exception ex){
+            ex.printStackTrace();
             String err = "Error in Model Execution "+ex.getMessage();
             logs.error(err);
             for(Vertex v : vertexList){
@@ -191,9 +192,9 @@ public class ModelEvaluator {
     }
         
     private double calculateStock(List<Vertex> vertexList, Vertex currentVertex, int pointNumber) throws Exception {
-        String formula = currentVertex.getParsedEquation();
+        String formula = currentVertex.getEquation();
         Iterator<String> it = finalOperands.get(currentVertex.getName()).iterator();
-
+        
         Evaluator eval = new Evaluator();
         eval.parse(formula);
         String name, value;
@@ -209,7 +210,7 @@ public class ModelEvaluator {
     }
     
     private double calculateFlow(List<Vertex> vertexList, Vertex currentVertex, int pointNumber) throws Exception {
-        String formula = currentVertex.getParsedEquation();
+        String formula = currentVertex.getEquation();
         Iterator<String> it = finalOperands.get(currentVertex.getName()).iterator();
 
         Evaluator eval = new Evaluator();
