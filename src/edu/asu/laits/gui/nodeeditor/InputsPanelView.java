@@ -21,6 +21,7 @@ import java.util.Set;
 import java.util.Stack;
 import javax.swing.*;
 import org.apache.log4j.Logger;
+import org.jgraph.graph.DefaultPort;
 import org.jgraph.graph.Port;
 import org.jgraph.graph.PortView;
 
@@ -50,19 +51,21 @@ public class InputsPanelView extends javax.swing.JPanel implements ItemListener 
    */
   public InputsPanelView(NodeEditor ne){ 
     initComponents();
-      nodeEditor = ne;
+    nodeEditor = ne;
     checkboxList = new LinkedList<JCheckBox>();
     initPanel();
   }
   
   public void initPanel(){    
     Graph graph=(Graph)this.nodeEditor.getGraphPane().getModelGraph();
-    Set<Vertex> vertexes=graph.vertexSet();
-    Vertex currentV=this.nodeEditor.getCurrentVertex();
+    Set<Vertex> vertexes = graph.vertexSet();
+    Vertex currentV = this.nodeEditor.getCurrentVertex();
+    nodeDescriptionLabel.setText(currentV.getCorrectDescription());
     
     JCheckBox box;
     availableInputNodesPanels.setLayout(new GridLayout(graph.vertexSet().size(), 1));
-    this.availableInputNodesPanels.setVisible(false);
+    availableInputNodesPanels.setVisible(false);
+    
     boolean selected;
     for(Vertex v:vertexes){
         if(v.getName().equals(currentV.getName()))
@@ -71,46 +74,28 @@ public class InputsPanelView extends javax.swing.JPanel implements ItemListener 
             selected=true;
         else
             selected=false;
-        box=new JCheckBox(v.getName(),selected);
-        this.initialSelection.put(v, selected);
+        box = new JCheckBox(v.getName(),selected);
+        initialSelection.put(v, selected);
         box.setVisible(false);
         box.setText(v.getName());
         box.addItemListener(this);
-        this.checkboxList.add(box);
-        this.availableInputNodesPanels.add(box);           
+        checkboxList.add(box);
+        availableInputNodesPanels.add(box);           
     }
     
     if(currentV.getVertexType()==VertexType.CONSTANT)
-        this.fixedValueOptionButton.setSelected(true);
+        fixedValueOptionButton.setSelected(true);
+    
     else if(currentV.getVertexType()==VertexType.FLOW || currentV.getVertexType()==VertexType.STOCK){
-        this.inputNodesSelectionOptionButton.setSelected(true);
-        this.displayCurrentInputsPanel(true);
+        inputNodesSelectionOptionButton.setSelected(true);
+        displayCurrentInputsPanel(true);
+        
+        if(checkboxList.size() == 0)
+            displayInappropriteInputsMsg();
     }
     
   }
    
-  /**
-   * Method to Initialize Input Tab of Node Editor for a particular node
-   * @param inputVertex: Vertex for which this Input tab is being constructed
-   */ 
-  public void initPanelForSavedNode(){
-    logs.trace("Initializing InputPanel for Vertex ");
-    resetInputsPanel();
-    updateNodeDescription();
-    initAvailableInputNodes();
-    loadSavedInputState();
-  }
-  
-  public void initPanelForNewNode(){
-    logs.trace("Initializing InputPanel for New Node");
-    resetInputsPanel();
-    
-    
-    availableInputNodesPanels.setVisible(false);
-    undoStack.setSize(1);
-    initAvailableInputNodes();    
-  }
-  
   private void resetInputsPanel(){
     buttonGroup1.clearSelection();
     nodeDescriptionLabel.setText("");
@@ -122,21 +107,6 @@ public class InputsPanelView extends javax.swing.JPanel implements ItemListener 
     isViewEnabled = false;
   }
   
-  /**
-   * Method to set the Node Description in the UI
-   */
-  public void updateNodeDescription() {
-   
-  }
-  
-  /**
-   * Method to Initialize the available inputs. A checkbox will be provided
-   * corresponding to each available input node. User will select the input nodes
-   * from this list
-   */
-  public void initAvailableInputNodes() {
-    
-  }
   
   /**
    * Method to display Unavailable Inputs message when there are no inputs to
@@ -165,9 +135,7 @@ public class InputsPanelView extends javax.swing.JPanel implements ItemListener 
     availableInputNodesPanels.setVisible(flag);
     for (JCheckBox box : checkboxList) {
       box.setVisible(flag);
-    }
-    
-  
+    }    
   }
   
   
@@ -198,6 +166,9 @@ public class InputsPanelView extends javax.swing.JPanel implements ItemListener 
     
   }
   
+  public void updateNodeDescription(){
+      nodeDescriptionLabel.setText(nodeEditor.getCurrentVertex().getCorrectDescription());
+  }
   /**
    * This method is called when any input check box is selected from the
    * available input nodes
@@ -206,25 +177,26 @@ public class InputsPanelView extends javax.swing.JPanel implements ItemListener 
     Object source=e.getSource();
     if(!(source instanceof JCheckBox))
         return;
+    
     Graph graph=(Graph)this.nodeEditor.getGraphPane().getModelGraph();
     JCheckBox box=(JCheckBox) source;
-    Vertex connectedV=graph.getVertexByName(box.getText());
+    
+    Vertex connectedV = graph.getVertexByName(box.getText());
+    
     if(box.isSelected() && !graph.containsEdge(connectedV, nodeEditor.getCurrentVertex()))
-        graph.addEdge(connectedV,nodeEditor.getCurrentVertex());//addEdge(this.nodeEditor.getCurrentVertex(), connectedV);
+        addEdge(connectedV,nodeEditor.getCurrentVertex());
+    
     else if(!box.isSelected() && graph.containsEdge(connectedV, nodeEditor.getCurrentVertex()))
         graph.removeEdge(connectedV, nodeEditor.getCurrentVertex());
+    
     logs.trace("Input Node selection changed");
-
-
   }
   
   private void addEdge(Vertex v1, Vertex v2){
-      GraphEditorPane graphPane=nodeEditor.getGraphPane();
-       PortView  p = graphPane.getPortViewAt(v1.getXPosition(), v1.getYPosition());
-      PortView p2 = graphPane.getPortViewAt(v2.getXPosition(), v2.getYPosition());
+      DefaultPort p1 = nodeEditor.getGraphPane().getJGraphTModelAdapter().getVertexPort(v1);
+      DefaultPort p2 = nodeEditor.getGraphPane().getJGraphTModelAdapter().getVertexPort(v2);
       
-      
-      graphPane.insertEdge((Port)p2.getCell(), (Port)p.getCell());
+      nodeEditor.getGraphPane().insertEdge(p1, p2);
   }
   
   
@@ -236,9 +208,6 @@ public class InputsPanelView extends javax.swing.JPanel implements ItemListener 
     
     
   }
-
- 
-  
 
   /**
    * This method returns true if the value button is selected, false if it isn't
@@ -350,7 +319,7 @@ public class InputsPanelView extends javax.swing.JPanel implements ItemListener 
         contentPanel.add(radioPanel, new org.netbeans.lib.awtextra.AbsoluteConstraints(20, 28, -1, -1));
 
         nodeDescriptionLabel.setVerticalAlignment(javax.swing.SwingConstants.TOP);
-        contentPanel.add(nodeDescriptionLabel, new org.netbeans.lib.awtextra.AbsoluteConstraints(339, 144, 433, 213));
+        contentPanel.add(nodeDescriptionLabel, new org.netbeans.lib.awtextra.AbsoluteConstraints(339, 144, 210, 213));
 
         nodeDescriptionHeading.setFont(new java.awt.Font("Lucida Grande", 1, 13)); // NOI18N
         nodeDescriptionHeading.setText("Description");
@@ -418,6 +387,17 @@ public class InputsPanelView extends javax.swing.JPanel implements ItemListener 
   
   public void setViewEnabled(boolean flag){
     isViewEnabled = flag;
+  }
+  
+  public boolean processInputsPanel(){
+      if(fixedValueOptionButton.isSelected())
+          return true;
+      
+      if(inputNodesSelectionOptionButton.isSelected() && checkboxList.size()!=0)
+          return true;
+      
+      nodeEditor.setEditorMessage("Please provide input for this node.");
+      return false;
   }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables

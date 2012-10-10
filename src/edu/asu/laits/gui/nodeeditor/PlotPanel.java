@@ -59,6 +59,7 @@ public class PlotPanel extends JPanel {
 
     // The size of the panel depends on the size of the GraphDialog panel
     chartPanel.setPreferredSize(d);
+    chartPanel.setSize(d);
     this.setLayout(new GridLayout(1, 1));
     add(chartPanel);
   }

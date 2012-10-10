@@ -54,7 +54,6 @@ public class VertexRenderComponent extends VertexRenderer implements
 
     public Component getRendererComponent(JGraph graph, CellView view,
             boolean sel, boolean focus, boolean preview) {
-        logs.trace("Called");
         Map<Object, Object> attributes = ((DefaultGraphCell) view.getCell())
                 .getAttributes();
 
@@ -62,25 +61,20 @@ public class VertexRenderComponent extends VertexRenderer implements
         Vertex currentVertex = (Vertex)cell.getUserObject();
         
         VertexType shape = currentVertex.getVertexType();
-        System.out.println("Name "+currentVertex.getName()+"  Type "+currentVertex.getVertexType());
         
         if (shape == VertexType.DEFAULT) {
-            logs.trace("Painting Default");
             return defaultVertexComponent.getRendererComponent(graph,
                     view, sel, focus, preview);
         }
         else if (shape == VertexType.FLOW) {
-            logs.trace("Painting Flow");
             return flowVertexRenderComponent.getRendererComponent(graph,
                     view, sel, focus, preview);
         } 
         else if (shape == VertexType.STOCK) {
-            logs.trace("Painting Stock");
             return stockVertexRenderComponent.getRendererComponent(graph,
                     view, sel, focus, preview);
         } 
         else if (shape == VertexType.CONSTANT) {
-            logs.trace("Painting Constant");
             return constantVertexComponent.getRendererComponent(graph,
                     view, sel, focus, preview);
         } 
@@ -151,10 +145,10 @@ public class VertexRenderComponent extends VertexRenderer implements
             paintIcon(g, ImageLoader.getInstance().getInputsNoStatusIcon(), 0); 
         
         }else if(currentVertex.getInputsStatus() == Vertex.InputsStatus.CORRECT){
-            paintIcon(g, ImageLoader.getInstance().getInputsNoStatusIcon(), 0); 
+            paintIcon(g, ImageLoader.getInstance().getInputsCorrectIcon(), 0); 
         
         }else if(currentVertex.getInputsStatus() == Vertex.InputsStatus.INCORRECT){
-            paintIcon(g, ImageLoader.getInstance().getInputsNoStatusIcon(), 0); 
+            paintIcon(g, ImageLoader.getInstance().getInputsInCorrectIcon(), 0); 
         }
     }
     
@@ -183,7 +177,7 @@ public class VertexRenderComponent extends VertexRenderer implements
     }
     private void paintIcon(Graphics g, Image iconImage, int displacement){
         g.drawImage(iconImage, 
-                    getWidth()/2 - 10 + displacement, 
+                    getWidth()/2 - 40 + displacement, 
                     22, 
                     ImageLoader.statusIconWidth, 
                     ImageLoader.statusIconWidth, 

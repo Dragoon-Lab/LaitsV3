@@ -81,6 +81,7 @@ public class MainWindow extends JFrame {
             reader.close();
             GlobalProperties.getInstance().addFileToLatestFiles(file);
             window.getMainMenu().getFileMenu().setCurrentGraphsFile(file);
+            
             window.setVisible(true);
         } catch (IOException e1) {
             // TODO Auto-generated catch block
@@ -101,7 +102,7 @@ public class MainWindow extends JFrame {
         int xSize = ((int) tk.getScreenSize().getWidth());
         int ySize = ((int) tk.getScreenSize().getHeight());
         this.setPreferredSize(new Dimension(xSize, ySize));
-
+        
         this.setContentPane(getJPanel());
         this.setJMenuBar(getMainMenu());
         this.addWindowListener(new java.awt.event.WindowAdapter() {
@@ -186,7 +187,7 @@ public class MainWindow extends JFrame {
     private GraphEditorPane getGraphEditorPane() {
         if (graphEditorPane == null) {
             graphEditorPane = new GraphEditorPane(this, getStatusBarPanel());
-            getStatusBarPanel().setGraphPane(graphEditorPane);
+            //getStatusBarPanel().setGraphPane(graphEditorPane);
             graphEditorPane.setAntiAliased(GlobalProperties.getInstance()
                     .isAntialiasing());
             graphEditorPane.setDoubleBuffered(GlobalProperties.getInstance()
@@ -321,9 +322,10 @@ public class MainWindow extends JFrame {
      *
      * @return StatusBarPanel
      */
-    private StatusBarPanel getStatusBarPanel() {
+    public StatusBarPanel getStatusBarPanel() {
         if (statusBarPanel == null) {
             statusBarPanel = new StatusBarPanel();
+            statusBarPanel.setStatusMessage("", true);
         }
         return statusBarPanel;
     }

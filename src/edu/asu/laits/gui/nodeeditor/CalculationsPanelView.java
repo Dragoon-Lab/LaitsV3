@@ -1,281 +1,259 @@
 /**
- * LAITS Project
- * Arizona State University
- * 
+ * LAITS Project Arizona State University
+ *
  * Updated by rptiwari
  */
 package edu.asu.laits.gui.nodeeditor;
 
+import edu.asu.laits.model.Edge;
+import edu.asu.laits.model.Graph;
+import edu.asu.laits.model.Vertex;
 import java.awt.Color;
 import java.awt.event.KeyEvent;
 import java.beans.PropertyChangeEvent;
 import java.beans.PropertyChangeListener;
 import java.text.DecimalFormat;
 import java.text.ParseException;
+import java.util.ArrayList;
+import java.util.HashSet;
+import java.util.Iterator;
 import java.util.LinkedList;
+import java.util.List;
+import java.util.Set;
 
 import javax.swing.DefaultListModel;
 import javax.swing.JButton;
 import javax.swing.JFormattedTextField;
 import javax.swing.JTextArea;
 import javax.swing.text.DefaultFormatter;
+import net.sourceforge.jeval.EvaluationException;
+import net.sourceforge.jeval.Evaluator;
+
 
 import org.apache.log4j.Logger;
 
-
 /**
  * View class of Calculation Panel displayed in calculation tab of NodeEditor
- * This is responsible for creating FLOW and STOCK nodes and provide a way 
- * to input formula using the selected nodes of Input Tab
-*/
-public class CalculationsPanelView extends javax.swing.JPanel 
-                                   implements PropertyChangeListener {
+ * This is responsible for creating FLOW and STOCK nodes and provide a way to
+ * input formula using the selected nodes of Input Tab
+ */
+public class CalculationsPanelView extends javax.swing.JPanel {
 
-  private DefaultListModel availableInputJListModel = new DefaultListModel();
-  private boolean changed = false;
-  private boolean givenValueButtonPreviouslySelected = false;
-  boolean jListVariablesNotEmpty = false;
-  private LinkedList<String> changes = new LinkedList<String>();
-  private final DecimalFormat inputDecimalFormat = new DecimalFormat("###0.###");
-  private static CalculationsPanelView calcView;
-  private boolean isViewEnabled;
-  private NodeEditor nodeEditor;
-  
-  /** Logger **/
-  private static Logger logs = Logger.getLogger(CalculationsPanelView.class);
-  
-  
-  
-  public CalculationsPanelView(NodeEditor ne){
-    initComponents();
-    nodeEditor = ne; 
-  }
-  
-  public void initPanel(){
-  }
-  
-  public void initPanelForSavedNode(){
-    logs.trace("Initializing Calculations Panel for Node ");
-    resetCalculationsPanel();
+    private DefaultListModel availableInputJListModel = new DefaultListModel();
+    private final DecimalFormat inputDecimalFormat = new DecimalFormat("###0.###");
+    private NodeEditor nodeEditor;
+    private Vertex currentVertex;
+    boolean isViewEnabled;
     
-    initValues();
-    addedOperand(false);    
-    
-  }
-  
-  public void initPanelForNewNode(){
-    logs.trace("Initializing Calculations Panel for Node ");
-    resetCalculationsPanel();
-    
-    initValues();
-    addedOperand(false);    
-  }
-  
-  private void resetCalculationsPanel(){
-    isViewEnabled = false;
-    buttonGroup1.clearSelection();
-    
-    fixedValueOptionButton.setEnabled(true);
-    flowValueOptionButton.setEnabled(true);
-    stockValueOptionButton.setEnabled(true);
-    
-    availableInputJListModel.clear();
-    
-    calculatorPanel.setVisible(true);
-    fixedValueLabel.setVisible(true);
-    fixedValueInputBox.setText("");
-    fixedValueInputBox.setVisible(true);
-    
-  }
-  
-  public void initValues() {
-    logs.trace("Intializing calc panel values");
-    initializeAvailableInputNodes();
+    private static Logger logs = Logger.getLogger(CalculationsPanelView.class);
 
-    quantitySelectionPanel.setEnabled(true);
-    fixedValueOptionButton.setEnabled(true);
-    flowValueOptionButton.setEnabled(true);
-    stockValueOptionButton.setEnabled(true); 
-    
-    logs.trace("Type of this node is ");
+    public CalculationsPanelView(NodeEditor ne) {
+        initComponents();
+        nodeEditor = ne;
+        currentVertex = ne.getCurrentVertex();
+        initPanel();
+    }
 
-  }
-  
-  /**
-   * Method to initialize the list of available inputs for STOCK and FLOW
-   */
-  public void initializeAvailableInputNodes() {
-    logs.trace("Initializing Available Input Nodes in jList Panel");
-    
-    availableInputJListModel.clear();
-
-    
-
-    availableInputsJList.repaint();
-  }
-  
-  private void setLinkType(){
-    
-  }
-  
-  public void showThatJListModelHasNoInputs() {
-    availableInputJListModel.clear();
-    availableInputJListModel.add(0, "This node does not have any inputs defined yet,");
-    availableInputJListModel.add(1, "please go back to the Inputs Tab and choose ");
-    availableInputJListModel.add(2, "at least one input, if there are not inputs ");
-    availableInputJListModel.add(3, "available, please exit this node and create ");
-    availableInputJListModel.add(4, "the needed nodes using the \"New node\" button.");
-  }
-  
-  /**
-   * Method to enable/disable fixed value input panel
-   * @param flag : true/false to enable and disable
-   */
-  private void enableFixedValuePanel(boolean flag){
-   fixedValueInputBox.setVisible(flag);
-   fixedValueLabel.setVisible(flag);
-  }
-  
-
-  private void clearEquation(){
-    formulaInputArea.setText("");
-  }
-  
-  /**
-   * Update displayed equation in the text area by removing the last value
-   * entered
-   *
-   * @param notError
-   * @return
-   */
-  public void deleteLastFormula() {
-
-    resetGraphStatus();
-    
-
-  }
-
-  /**
-   * CommitEdit() needed to be created because of the fact that we need a method
-   * that will refresh all the components when a value is added/removed from the
-   * formula/jTextAreaEqation/givenValueTextField
-   */
-  public void commitEdit() {
-    resetGraphStatus();
-    
-
-  }
-
-  public void resetColors(boolean typeChange) {
-    
- }
-
-   public void resetColors() {
- 
-  }
-
-  private void resetGraphStatus() {
-    
-    
-  }
-
-  void restart_calc_panel(boolean TYPE_CHANGE) {
-
-    clearEquationArea(TYPE_CHANGE);    
-    initValues();
-  }
-
-  public void update() {
-    initValues();
-  }
-
-  public void clearEquationArea(boolean typeChange) {
-    formulaInputArea.setText("");
-       
-  }
-
-  /**
-   * This method clears the givenValueTextField and jTextAreaEquation
-   */
-  public void clearEquationArea() {
-    formulaInputArea.setText("");    
-  }
-
-  
-
-  public JFormattedTextField getGivenValueTextField() {
-    return fixedValueInputBox;
-  }
-
-  public String getFixedValue(){
-    return fixedValueInputBox.getText();
-  }
-
-  public void setGivenValueTextField(JFormattedTextField givenValueTextField) {
-    this.fixedValueInputBox = givenValueTextField;
-  }
-
-  public LinkedList<String> splitEquation(String equation) {
-    LinkedList<String> parsed = new LinkedList<String>();
-    String variable = "";
-    for (int i = 0; i < equation.length(); i++) {
-      char currentChar = equation.charAt(i);
-      if (currentChar == '+' || currentChar == '*' || currentChar == '-'
-              || currentChar == '/' || currentChar == '^') {
-        if (!variable.isEmpty()) {
-          parsed.add(variable);
-          variable = "";
+    public void initPanel() {
+        logs.trace("Initializing Calculations Panel for Node ");
+        initializeAvailableInputNodes();
+        
+        if(currentVertex.getVertexType().equals(Vertex.VertexType.CONSTANT)){
+            preparePanelForFixedValue();
+            fixedValueInputBox.setText(String.valueOf(currentVertex.getInitialValue()));
+            fixedValueOptionButton.setSelected(true);
+        }else if(currentVertex.getVertexType().equals(Vertex.VertexType.STOCK)){
+            preparePanelForStock();
+            fixedValueInputBox.setText(String.valueOf(currentVertex.getInitialValue()));
+            formulaInputArea.setText(currentVertex.getEquation());
+            stockValueOptionButton.setSelected(true);
+        }else if(currentVertex.getVertexType().equals(Vertex.VertexType.FLOW)){
+            preparePanelForFlow();
+            flowValueOptionButton.setSelected(true);
+            formulaInputArea.setText(currentVertex.getEquation());
+        }else{
+            preparePanelForStockOrFlow();
         }
-        parsed.add(currentChar + "");
-      } else {
-        variable += currentChar;
-      }
     }
-    if (!variable.isEmpty()) {
-      parsed.add(variable);
-      variable = "";
-    }
-    return parsed;
-  }
 
-  private void addedOperand(boolean justAdded) {
+    /**
+     * Method to initialize the list of available inputs for STOCK and FLOW
+     */
+    public void initializeAvailableInputNodes() {
+        logs.trace("Initializing Available Input Nodes in jList Panel");
+
+        availableInputJListModel.clear();
+        Vertex currentVertex = nodeEditor.getCurrentVertex();
+        Graph graph = (Graph) nodeEditor.getGraphPane().getModelGraph();
+        Iterator<Edge> inEdges = graph.incomingEdgesOf(currentVertex).iterator();
+
+        if(!inEdges.hasNext()){
+            showThatJListModelHasNoInputs();
+            return;
+        }
+        
+        Vertex v;
+        while (inEdges.hasNext()) {
+            v = (Vertex) graph.getEdgeSource(inEdges.next());
+            availableInputJListModel.addElement(v.getName());
+        }
+
+        availableInputsJList.repaint();
+    }
+
+    public void showThatJListModelHasNoInputs() {
+        availableInputJListModel.clear();
+        availableInputJListModel.add(0, "This node does not have any inputs defined yet,");
+        availableInputJListModel.add(1, "please go back to the Inputs Tab and choose ");
+        availableInputJListModel.add(2, "at least one input, if there are not inputs ");
+        availableInputJListModel.add(3, "available, please exit this node and create ");
+        availableInputJListModel.add(4, "the needed nodes using the \"New node\" button.");
+    }
+
+    public String getFixedValue() {
+        return fixedValueInputBox.getText();
+    }
+
+    public void setGivenValueTextField(JFormattedTextField givenValueTextField) {
+        this.fixedValueInputBox = givenValueTextField;
+    }
+
+    public void preparePanelForFixedValue() {
+        fixedValueOptionButton.setSelected(true);
+        fixedValueOptionButton.setEnabled(false);
+        flowValueOptionButton.setEnabled(false);
+        stockValueOptionButton.setEnabled(false);
+        
+        fixedValueInputBox.setEnabled(true);
+        calculatorPanel.setVisible(false);
+    }
+
+    public void preparePanelForFlow() {
+        fixedValueInputBox.setEnabled(false); 
+        formulaInputArea.setText("");
+        valuesLabel.setText("Next Value = ");
+    }
+
+    public void preparePanelForStock() {
+        fixedValueInputBox.setEnabled(true);  
+        fixedValueInputBox.setText("");
+        formulaInputArea.setText("");
+        valuesLabel.setText("Next Value = Current Value + ");
+    }
+
+    public void preparePanelForStockOrFlow() {
+        fixedValueOptionButton.setEnabled(false);
+        buttonGroup1.clearSelection();
+        
+        flowValueOptionButton.setEnabled(true);
+        stockValueOptionButton.setEnabled(true);
+        
+        formulaInputArea.setText("");
+        
+        calculatorPanel.setEnabled(true);
+    }
     
-  }
-  
-  public void propertyChange(PropertyChangeEvent pce) {
-
-  }
-
-
-  public void preparePanelForFixedValue(){
-    contentPanel.setVisible(true);
-    calculatorPanel.setVisible(false);
-  }
-
-  public void preparePanelForFlow(){
-    contentPanel.setVisible(true);
-    calculatorPanel.setVisible(false);
-  }
-
-  public void preparePanelForStock(){
-    preparePanelForFlow();
-  }
-  
-  public boolean isViewEnabled(){
-    return isViewEnabled;
-  }
-  
-  public void setViewEnabled(boolean flag){
-    isViewEnabled = flag;
-  } 
-  
-
-  /**
-   * This method is called from within the constructor to initialize the form.
-   * WARNING: Do NOT modify this code. The content of this method is always
-   * regenerated by the Form Editor.
-   */
-  @SuppressWarnings("unchecked")
+    public boolean processCalculationsPanel(){
+        if(fixedValueOptionButton.isSelected()){
+            return processConstantVertex();
+        }else if(stockValueOptionButton.isSelected()){
+            return processStockVertex();
+        }else if(flowValueOptionButton.isSelected()){
+            return processFlowVertex();
+        }
+        
+        return true;
+    }
+    
+    private boolean processConstantVertex(){
+        if(fixedValueInputBox.getText().isEmpty()){
+            nodeEditor.setEditorMessage("Please provide fixed value for this node.");
+            return false;
+        }else{
+            currentVertex.setInitialValue(Double.valueOf(
+                    fixedValueInputBox.getText()));
+            return true;
+        }
+    }
+    
+    private boolean processStockVertex(){
+        
+        if(processConstantVertex() && validateEquation()){
+            currentVertex.setEquation(formulaInputArea.getText().trim());
+            return true;
+        }else{
+            return false;
+        }    
+    }
+    
+    private boolean processFlowVertex(){
+        if(validateEquation()){
+            currentVertex.setEquation(formulaInputArea.getText().trim());
+            return true;
+        }else{
+            return false;
+        }  
+    }
+    
+    private boolean validateEquation(){
+        String equation = formulaInputArea.getText().trim();
+        
+        if(equation.isEmpty()){
+            nodeEditor.setEditorMessage("Please provide an equation for this node.");
+            return false;
+        }   
+        
+        // Check Syantax of this equation
+        Evaluator eval = new Evaluator();
+        try{
+            eval.parse(equation);
+        }catch(EvaluationException ex){
+            nodeEditor.setEditorMessage(ex.getMessage());
+            return false;
+        }    
+        
+        List<String> availableVariables = new ArrayList<String>();
+        List<String> usedVariables = eval.getAllVariables();
+        
+        for(int i=0; i<availableInputJListModel.getSize(); i++){
+            availableVariables.add(String.valueOf(availableInputJListModel.get(i)));                       
+        }
+        
+        // Check if this equation uses all the inputs
+        
+        for(String s : availableVariables){
+            if(!usedVariables.contains(s)){
+                nodeEditor.setEditorMessage("Input node "+s+" is not used in the equation.");
+                return false;
+            }           
+            eval.putVariable(s, String.valueOf(Math.random()));
+        }
+        
+        
+        // Check Sematics of the equation
+        try{
+            eval.evaluate();
+        }catch(EvaluationException ex){
+            logs.error(ex.getMessage());
+            nodeEditor.setEditorMessage(ex.getMessage());
+            return false;
+        }
+        return true;
+    }
+       
+    public void setViewEnabled(boolean input){
+        isViewEnabled = input;
+    }
+    
+    public boolean isViewEnabled(){
+        return isViewEnabled;
+    }
+    /**
+     * This method is called from within the constructor to initialize the form.
+     * WARNING: Do NOT modify this code. The content of this method is always
+     * regenerated by the Form Editor.
+     */
+    @SuppressWarnings("unchecked")
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
     private void initComponents() {
 
@@ -375,7 +353,7 @@ public class CalculationsPanelView extends javax.swing.JPanel
                     .addComponent(fixedValueOptionButton)
                     .addComponent(flowValueOptionButton)
                     .addComponent(stockValueOptionButton))
-                .addContainerGap(314, Short.MAX_VALUE))
+                .addContainerGap(306, Short.MAX_VALUE))
         );
         quantitySelectionPanelLayout.setVerticalGroup(
             quantitySelectionPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -470,58 +448,58 @@ public class CalculationsPanelView extends javax.swing.JPanel
     }// </editor-fold>//GEN-END:initComponents
 
     private void stockValueOptionButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_stockValueOptionButtonActionPerformed
-      logs.trace("Preparing UI for Stock Node");
-
-
+        logs.trace("Preparing UI for Stock Node");
+        preparePanelForStock();
+        currentVertex.setVertexType(Vertex.VertexType.STOCK);
+        nodeEditor.getGraphPane().getLayoutCache().reload();
+        nodeEditor.getGraphPane().repaint();
     }//GEN-LAST:event_stockValueOptionButtonActionPerformed
 
     private void flowValueOptionButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_flowValueOptionButtonActionPerformed
-      logs.trace("Preparing UI for Flow Node");
-     
-      
+        logs.trace("Preparing UI for Flow Node");
+        preparePanelForFlow();
+        currentVertex.setVertexType(Vertex.VertexType.FLOW);
+        nodeEditor.getGraphPane().getLayoutCache().reload();
+        nodeEditor.getGraphPane().repaint();
     }//GEN-LAST:event_flowValueOptionButtonActionPerformed
 
-    
     /**
      * This method will remove the given node from Available Input Nodes jList
+     *
      * @param nodeName : index of the node to be removed
      */
-    private void removeAvailableInputNode(int nodeIndex){
-      availableInputJListModel.remove(nodeIndex);
+    private void removeAvailableInputNode(int nodeIndex) {
+        availableInputJListModel.remove(nodeIndex);
     }
-    
-  /**
-   * This method is called when user selects any node from available input jList
-   * Once a particular input node is selected, it gets removed from the list. If
-   * there are no more input nodes to be selected, then jList gets disabled.
-   */
-    private void availableInputsJListMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_availableInputsJListMouseClicked
 
-      
+    /**
+     * This method is called when user selects any node from available input
+     * jList Once a particular input node is selected, it gets removed from the
+     * list. If there are no more input nodes to be selected, then jList gets
+     * disabled.
+     */
+    private void availableInputsJListMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_availableInputsJListMouseClicked
+        formulaInputArea.setText(formulaInputArea.getText()+" "
+                +availableInputsJList.getSelectedValue().toString());
 }//GEN-LAST:event_availableInputsJListMouseClicked
 
     private void fixedValueOptionButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_fixedValueOptionButtonActionPerformed
-      //Delete the equation
-
+        //Delete the equation
     }//GEN-LAST:event_fixedValueOptionButtonActionPerformed
 
-  
     private void fixedValueInputBoxKeyReleased(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_fixedValueInputBoxKeyReleased
-      
     }//GEN-LAST:event_fixedValueInputBoxKeyReleased
 
     private void fixedValueInputBoxKeyTyped(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_fixedValueInputBoxKeyTyped
-      
     }//GEN-LAST:event_fixedValueInputBoxKeyTyped
 
   private void fixedValueInputBoxActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_fixedValueInputBoxActionPerformed
-    // TODO add your handling code here:
+      // TODO add your handling code here:
   }//GEN-LAST:event_fixedValueInputBoxActionPerformed
 
-  public JTextArea getFormulaInputArea(){
-    return formulaInputArea;
-  }
-
+    public JTextArea getFormulaInputArea() {
+        return formulaInputArea;
+    }
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JList availableInputsJList;
     private javax.swing.JLabel availableInputsLabel;
@@ -545,10 +523,4 @@ public class CalculationsPanelView extends javax.swing.JPanel
     private javax.swing.JRadioButton stockValueOptionButton;
     private javax.swing.JLabel valuesLabel;
     // End of variables declaration//GEN-END:variables
-
-
-
-   
 }
-
-

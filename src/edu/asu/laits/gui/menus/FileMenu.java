@@ -334,7 +334,7 @@ public class FileMenu extends JMenu {
 
             File selectedFile = getSaveAsFileChooser().getSelectedFile();
 
-            if (!selectedFile.getName().matches("(.*)(\\.ged)")) {
+            if (!selectedFile.getName().matches("(.*)(\\.laits)")) {
 
                 if (selectedFile.getName().matches("\".*\"")) {
                     if (selectedFile.getName().length() < 3) {
@@ -360,7 +360,7 @@ public class FileMenu extends JMenu {
                     }
                 } else {
                     selectedFile = new File(selectedFile.getAbsoluteFile()
-                            + ".ged");
+                            + ".laits");
                 }
             }
             globalProperties.addFileToLatestFiles(selectedFile);
@@ -435,13 +435,13 @@ public class FileMenu extends JMenu {
             saveAsFileChooser.addChoosableFileFilter(new FileFilter() {
                 @Override
                 public boolean accept(File f) {
-                    return f.getName().matches(".*.ged");
+                    return f.getName().matches(".*.laits");
                 }
 
                 @Override
                 public String getDescription() {
 
-                    return "Graph files (*.ged)";
+                    return "Laits files (*.laits)";
                 }
             });
         }
@@ -461,13 +461,13 @@ public class FileMenu extends JMenu {
             openFileChooser.addChoosableFileFilter(new FileFilter() {
                 @Override
                 public boolean accept(File f) {
-                    return f.getName().matches(".*\\.ged");
+                    return f.getName().matches(".*\\.laits");
                 }
 
                 @Override
                 public String getDescription() {
 
-                    return "Graph files (*.ged)";
+                    return "Laits files (*.laits)";
                 }
             });
         }

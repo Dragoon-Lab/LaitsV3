@@ -29,7 +29,7 @@ import java.util.Stack;
 
 /**
  * This panel implements information pane so it can get information from a
- * GraphEditoPane. It has one status field that shows informaiton from the
+ * GraphEditoPane. It has one status field that shows information from the
  * associated GraphEditorPane.
  */
 public class StatusBarPanel extends JPanel implements InformationPane {
@@ -40,7 +40,7 @@ public class StatusBarPanel extends JPanel implements InformationPane {
     private GraphEditorPane graphPane;
     private JPanel jPanel = null;
     private JPanel jPanel1 = null;
-    private Stack<MessageProvider> messageQueue = new Stack<MessageProvider>(); // @jve:decl-index=0:
+    private Stack<MessageProvider> messageQueue = new Stack<MessageProvider>(); 
 
     public StatusBarPanel() {
         super();
@@ -63,6 +63,7 @@ public class StatusBarPanel extends JPanel implements InformationPane {
         if (insertModeStatusLabel == null) {
             insertModeStatusLabel = new JLabel();
             insertModeStatusLabel.setText("JLabel");
+            
         }
         return insertModeStatusLabel;
     }
@@ -187,19 +188,28 @@ public class StatusBarPanel extends JPanel implements InformationPane {
         }
     }
 
-    public void setGraphPane(GraphEditorPane graphPane) {
-        this.graphPane = graphPane;
-        InsertModeChangeListener l = new InsertModeChangeListener() {
-            public void newInsertModeEvent(boolean insertMode) {
-                if (insertMode) {
-                    insertModeStatusLabel.setText("Insert mode: ON ");
-                } else {
-                    insertModeStatusLabel.setText("Insert mode: OFF");
-                }
-
-            }
-        };
-        graphPane.addInsertModeChangeListener(l);
-        l.newInsertModeEvent(graphPane.isInsertMode());
+//    public void setGraphPane(GraphEditorPane graphPane) {
+//        this.graphPane = graphPane;
+//        InsertModeChangeListener l = new InsertModeChangeListener() {
+//            public void newInsertModeEvent(boolean insertMode) {
+//                if (insertMode) {
+//                    insertModeStatusLabel.setText("Insert mode: ON ");
+//                } else {
+//                    insertModeStatusLabel.setText("Insert mode: OFF");
+//                }
+//
+//            }
+//        };
+//        graphPane.addInsertModeChangeListener(l);
+//        l.newInsertModeEvent(graphPane.isInsertMode());
+//    }
+    
+    public void setStatusMessage(String message, boolean errType){
+        if(errType){
+            insertModeStatusLabel.setForeground(Color.BLUE);
+        }else{
+            insertModeStatusLabel.setForeground(Color.RED);
+        }
+        insertModeStatusLabel.setText(message+"                   ");
     }
 }

@@ -9,6 +9,7 @@ package edu.asu.laits.gui.nodeeditor;
 import edu.asu.laits.model.Vertex;
 import java.util.ArrayList;
 import java.util.Enumeration;
+import java.util.Iterator;
 import java.util.LinkedList;
 import java.util.List;
 import javax.swing.ImageIcon;
@@ -311,6 +312,51 @@ public class DescriptionPanelView extends JPanel{
     
   }
   
+  public boolean processDescriptionPanel(){
+      if(getNodeName().trim().length() == 0){
+        nodeEditor.setEditorMessage("Node Name can not be empty.");
+        return false;
+      }
+      
+      Vertex currentVertex = nodeEditor.getCurrentVertex();
+      if (!currentVertex.getName().equals(getNodeName())) {
+          if(getNodeName().trim().length() > 20)
+          {
+              nodeEditor.setEditorMessage("Node Name can not be larger than 20 characters.");
+              return false;
+          }
+          if (!duplicatedNode(getNodeName())) 
+          {
+              try {
+                  currentVertex.setName(getNodeName().trim());
+              } catch (Exception ex) {
+                  nodeEditor.setEditorMessage(ex.getMessage());
+                  return false;
+              }
+          } else {
+              nodeEditor.setEditorMessage("The node name is already used by another node. Please have a new name for this node.");
+              return false;
+          }
+      }
+
+      if (getNodeDesc().trim().isEmpty()) {
+          nodeEditor.setEditorMessage("Please provide correct description for this node.");
+          return false;
+      }
+
+      currentVertex.setCorrectDescription(getNodeDesc().trim());
+      return true;
+  }
+  
+  private boolean duplicatedNode(String nodeName) {
+      Iterator<Vertex> it = nodeEditor.getGraphPane().getModelGraph().vertexSet().iterator();
+      
+      while(it.hasNext()){
+          if(it.next().getName().equals(nodeName))
+              return true;
+      }
+        return false;
+  }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JLabel NodeNameLabel;

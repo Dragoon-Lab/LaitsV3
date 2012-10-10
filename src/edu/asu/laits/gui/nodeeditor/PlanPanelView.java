@@ -5,6 +5,7 @@
 
 package edu.asu.laits.gui.nodeeditor;
 
+import edu.asu.laits.model.Vertex;
 import javax.swing.JPanel;
 import org.apache.log4j.Logger;
 
@@ -16,7 +17,7 @@ public class PlanPanelView extends JPanel {
 
   private String selectedPlan;
   private static PlanPanelView planView;
-  private boolean isViewEnabled;
+  private boolean isViewEnabled = false;
   private NodeEditor nodeEditor;
   
   /** Logger **/
@@ -26,21 +27,12 @@ public class PlanPanelView extends JPanel {
   public PlanPanelView(NodeEditor ne){
     initComponents();
     nodeEditor = ne;
+    initPanel();
   }
   
-  public void initPanel(boolean newNode){
-    
-    if(newNode)
-      initPanelForNewNode();
-    else
-      initPanelForSavedNode();
-    
-    setVisible(true);
-  }
-  
-  public void initPanelForSavedNode(){
+  public void initPanel(){
     logs.trace("Initializing plan panel for Node ");
-    setSelectedPlan();
+    setSelectedPlan(nodeEditor.getCurrentVertex().getPlan());
   }
   
   public void initPanelForNewNode(){
@@ -54,25 +46,57 @@ public class PlanPanelView extends JPanel {
   
   }
  
+  public boolean processPlanPanel(){
+      if(buttonGroup1.getSelection() != null){
+          nodeEditor.getCurrentVertex().setPlan(getSelectedPlan());
+      }
+//      else{
+//          nodeEditor.setEditorMessage("Please select a plan for this node.");
+//          return false;
+//      }
+      return true;
+  }
   /**
    * Method to set the initialize the selected plan radio button
    */
-  private void setSelectedPlan(){
-    
+  private void setSelectedPlan(Vertex.Plan plan){
+      if(plan.equals(Vertex.Plan.FIXED))
+          fixedNumberButton.setSelected(true);
+      else if(plan.equals(Vertex.Plan.DECREASE))
+          decreaseButton.setSelected(true);
+      else if(plan.equals(Vertex.Plan.INCREASE))
+          increaseButton.setSelected(true);
+      else if(plan.equals(Vertex.Plan.INCREASE_AND_DECREASE))
+          bothButton.setSelected(true);
+      else if(plan.equals(Vertex.Plan.PROPORTIONAL))
+          proportionalValueButton.setSelected(true);
+      else if(plan.equals(Vertex.Plan.RATIO))
+          ratioTwoQuantitiesButton.setSelected(true);
+      else if(plan.equals(Vertex.Plan.DIFFERENCE))
+          differenceButton.setSelected(true);
+      else
+          buttonGroup1.clearSelection();
   }
   
-  public int getSelectedPlan(){
-    return 0;
-    
+  public Vertex.Plan getSelectedPlan(){
+    if(fixedNumberButton.isSelected())
+        return Vertex.Plan.FIXED;
+    else if(decreaseButton.isSelected())
+        return Vertex.Plan.DECREASE;
+    else if(differenceButton.isSelected())
+        return Vertex.Plan.DIFFERENCE;
+    else if(increaseButton.isSelected())
+        return Vertex.Plan.INCREASE;
+    else if(bothButton.isSelected())
+        return Vertex.Plan.INCREASE_AND_DECREASE;
+    else if(ratioTwoQuantitiesButton.isSelected())
+        return Vertex.Plan.RATIO;
+    else if(proportionalValueButton.isSelected())
+        return Vertex.Plan.PROPORTIONAL;
+    else 
+        return Vertex.Plan.UNDEFINED;
   }
   
-  public boolean validatePlanPanel(){
-    if(buttonGroup1.getSelection() == null)
-      return false;
-    
-    return true;
-  }
-
   public boolean isViewEnabled(){
     return isViewEnabled;
   }

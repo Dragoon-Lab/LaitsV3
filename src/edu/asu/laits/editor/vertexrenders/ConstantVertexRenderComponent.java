@@ -17,6 +17,7 @@ import edu.asu.laits.model.Vertex;
 import edu.asu.laits.model.Vertex.VertexType;
 import edu.asu.laits.properties.ImageLoader;
 import java.awt.BasicStroke;
+import java.awt.Font;
 import java.awt.Image;
 import java.awt.Toolkit;
 import java.net.URL;
@@ -33,7 +34,7 @@ import org.jgraph.graph.VertexView;
  * vertex render for triangle vertex type.
  *
  */
-public class ConstantVertexRenderComponent extends VertexRenderComponent {
+public class ConstantVertexRenderComponent   extends VertexRenderComponent {
 
     private boolean selected;
     private boolean focus;
@@ -165,12 +166,17 @@ public class ConstantVertexRenderComponent extends VertexRenderComponent {
 
     public void drawVertex(Graphics g) {
         Graphics2D g2 = (Graphics2D) g;
-        g2.setColor(foreground);
-        int[] xpoints = {60, 119, 178, 119};
-        int[] ypoints = {31, 1, 31, 63};
-        if(selected)
-            g2.setStroke(new BasicStroke(2, BasicStroke.CAP_BUTT, BasicStroke.JOIN_BEVEL, 0, new float[]{9}, 0));
-        else
+        if(currentVertex.getInputsStatus().equals(Vertex.InputsStatus.CORRECT) && 
+                currentVertex.getCalculationsStatus().equals(Vertex.CalculationsStatus.CORRECT)){
+            g2.setColor(Color.BLUE);
+        }else{
+            g2.setColor(foreground);
+        }
+        int[] xpoints = {0, 60, 119, 60};
+        int[] ypoints = {31, 1, 31, 62};
+        if(selected){
+            g2.setStroke(new BasicStroke(2));
+        }else
             g2.setStroke(new BasicStroke(3));
 
         if (preview || !selected) {
@@ -192,9 +198,11 @@ public class ConstantVertexRenderComponent extends VertexRenderComponent {
             g2.drawPolygon(xpoints, ypoints, 4);
         }
         String vertexName = currentVertex.getName();
-        double x = (getWidth() + 60) - vertexName.length() * 8.18;
-        x /= 2;
-        g2.drawString(vertexName, (int) x+5, getHeight());
+        
+        double x = getWidth()/2 - (vertexName.length() * 3 -1);
+       
+        g2.setFont(new Font(null, Font.PLAIN, 10));
+        g2.drawString(vertexName, (int)x-1, getHeight()-2);
         
         paintVertexStatusIcons(g, currentVertex);
         paintSelectable(g);

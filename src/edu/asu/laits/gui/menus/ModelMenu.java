@@ -2,6 +2,10 @@ package edu.asu.laits.gui.menus;
 
 import edu.asu.laits.editor.GraphEditorPane;
 import edu.asu.laits.gui.MainWindow;
+import edu.asu.laits.gui.nodeeditor.NodeEditor;
+import edu.asu.laits.model.Graph;
+import edu.asu.laits.model.ModelEvaluationException;
+import edu.asu.laits.model.ModelEvaluator;
 import edu.asu.laits.model.Vertex;
 import java.awt.event.KeyEvent;
 import javax.swing.JMenu;
@@ -140,7 +144,24 @@ public class ModelMenu extends JMenu {
     
     public void newNodeAction(){
         Vertex v = new Vertex();
+        NodeEditor editor = new NodeEditor(graphPane);  
         graphPane.addVertex(v);
         graphPane.repaint(); 
+    }
+    
+    public void runModelAction(){
+        ModelEvaluator me = new ModelEvaluator((Graph)graphPane.getModelGraph());
+        MainWindow window = (MainWindow)graphPane.getMainFrame();
+        if(me.isModelComplete()){
+            try{
+                me.run();
+                window.getStatusBarPanel().setStatusMessage("Model Run Complete...", true);
+                graphPane.repaint(); 
+            }catch(ModelEvaluationException ex){
+                window.getStatusBarPanel().setStatusMessage(ex.getMessage(), false);
+            }    
+        }else{
+            window.getStatusBarPanel().setStatusMessage("Please complete all the nodes before running Model", false);
+        }
     }
 }

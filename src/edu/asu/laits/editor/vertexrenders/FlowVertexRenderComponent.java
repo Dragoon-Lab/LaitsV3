@@ -18,6 +18,7 @@ import edu.asu.laits.editor.GraphEditorVertexView;
 import edu.asu.laits.model.Vertex;
 import edu.asu.laits.model.Vertex.VertexType;
 import java.awt.BasicStroke;
+import java.awt.Font;
 import org.apache.log4j.Logger;
 import org.jgraph.JGraph;
 import org.jgraph.graph.CellView;
@@ -117,20 +118,32 @@ public class FlowVertexRenderComponent extends VertexRenderComponent {
 
     public void drawVertex(Graphics g) {
         Graphics2D g2 = (Graphics2D) g;
-        g2.setColor(foreground);
-
-        if(selected)
-            g2.setStroke(new BasicStroke(2, BasicStroke.CAP_BUTT, BasicStroke.JOIN_BEVEL, 0, new float[]{9}, 0));
+        if(currentVertex.getInputsStatus().equals(Vertex.InputsStatus.CORRECT) && 
+                currentVertex.getCalculationsStatus().equals(Vertex.CalculationsStatus.CORRECT)){
+            g2.setColor(Color.BLUE);
+        }else{
+            g2.setColor(foreground);
+        }
+            
+        if(selected){
+            g2.setStroke(new BasicStroke(2));
+        }
         else
             g2.setStroke(new BasicStroke(3));
         
-        g2.drawOval(60, 1, getWidth() - 70  , getHeight()-20);
-       
-        String vertexName = currentVertex.getName();
-        double x = (getWidth()+60) - vertexName.length() * 8.18;
-        x/=2;
+        int a = getWidth() / 2;
+        int b = getHeight() / 2;
+        int m = Math.min(a, b);
+        int r = 4 * m / 5;
+        int r2 = Math.abs(m - r) / 2;
+        g2.drawOval(a - r, b - r - 7, 2 * r, 2 * r);
         
-        g2.drawString(vertexName, (int)x, getHeight());
+        String vertexName = currentVertex.getName();
+        double x = getWidth()/2 - (vertexName.length() * 3 -1);
+       
+        g2.setFont(new Font(null, Font.PLAIN, 10));
+        
+        g2.drawString(vertexName, (int)x-1, getHeight()-2);
         
         paintVertexStatusIcons(g, currentVertex);
         paintSelectable(g);

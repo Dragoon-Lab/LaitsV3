@@ -41,6 +41,7 @@ public class Vertex {
     
     private double initialValue;
     private String equation;
+    private String parsedEquation;
     private List<Double> correctValues;
     
     transient private SortedMap<String, String> properties = new TreeMap<String, String>();
@@ -55,16 +56,10 @@ public class Vertex {
      */
     public Vertex() {
         vertexIndex = vertIndexCount;
-        name = "Node"+vertexIndex;
+        //name = "Node"+vertexIndex;
         xPosition = 200 * (vertexIndex % 6) + 80;
         yPosition = 200 * (vertexIndex / 6) + 60 ;
         correctValues = new ArrayList<Double>();
-//        if(vertexIndex % 1 == 0)
-//            setVertexType(VertexType.CONSTANT);
-//        if(vertexIndex % 2 == 0)
-//            setVertexType(VertexType.FLOW);
-//        if(vertexIndex % 3 == 0)
-//            setVertexType(VertexType.STOCK);
         
         vertIndexCount++;
     }
@@ -74,7 +69,14 @@ public class Vertex {
         return name;
     }
     
-    public void setName(String label) {
+    public void setName(String label) throws IllegalArgumentException{
+        Evaluator eval = new Evaluator();
+        try{
+            eval.isValidName(label);
+        }catch(IllegalArgumentException e){
+            logs.trace(e.getMessage());
+            throw new IllegalArgumentException(e.getMessage());            
+        }
         this.name = label;
     }
     
@@ -168,6 +170,14 @@ public class Vertex {
     
     public void setEquation(String input){
         equation = input;
+    }
+    
+    public String getParsedEquation(){
+        return parsedEquation;
+    }    
+    
+    public void setParsedEquation(String input){
+        parsedEquation = input;
     }
     
     public String toString() {

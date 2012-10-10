@@ -78,6 +78,12 @@ public class ModelToolBar extends JToolBar {
                                    Font.BOLD,
                                    runModelButton.getFont().getSize() - 1)
                                   );
+            runModelButton
+                    .addActionListener(new java.awt.event.ActionListener() {
+                public void actionPerformed(java.awt.event.ActionEvent e) {
+                    modelMenu.runModelAction();
+                }
+            });
         }
         return runModelButton;
     }
