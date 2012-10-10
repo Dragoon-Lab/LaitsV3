@@ -193,6 +193,7 @@ public class Vertex {
         vertexInfoClone.setUseGraphBackround(useGraphBackround);
         vertexInfoClone.setName(new String(name));
         vertexInfoClone.setVertexType(type);
+        vertexInfoClone.setEquation(equation);
 
         return vertexInfoClone;
 
@@ -216,12 +217,13 @@ public class Vertex {
         try {
             Map<Object, Object> map = jGraphVertex.getAttributes();
             Rectangle2D vertexBounds = GraphConstants.getBounds(map);
-            type = GraphEditorConstants.getShape(map);
+            type = getVertexType();
             backgroundColor = GraphEditorConstants.getBackground(map);
             foregroundColor = GraphEditorConstants.getForeground(map);
             useGraphBackround = GraphEditorConstants.getUseGraphBackground(map);
             xPosition = vertexBounds.getX();
             yPosition = vertexBounds.getY();
+            equation = getEquation();
 
         } catch (Exception e) {
             throw new VertexReaderException();

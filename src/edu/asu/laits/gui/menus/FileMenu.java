@@ -33,7 +33,7 @@ import javax.swing.JFileChooser;
 import javax.swing.filechooser.FileFilter;
 
 /**
- * This is the file menu that is in the MainMenu. It has otions for file
+ * This is the file menu that is in the MainMenu. It has Options for file
  * operations like open, save, export, import and new etc.
  *
  * @author kjellw

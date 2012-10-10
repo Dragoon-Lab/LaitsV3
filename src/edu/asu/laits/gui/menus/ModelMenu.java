@@ -143,10 +143,11 @@ public class ModelMenu extends JMenu {
     }
     
     public void newNodeAction(){
-        Vertex v = new Vertex();
-        NodeEditor editor = new NodeEditor(graphPane);  
+        Vertex v = new Vertex();        
         graphPane.addVertex(v);
         graphPane.repaint(); 
+        
+        NodeEditor editor = new NodeEditor(graphPane);  
     }
     
     public void runModelAction(){

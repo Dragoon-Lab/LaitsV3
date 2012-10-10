@@ -53,13 +53,14 @@ public class DescriptionPanelView extends JPanel{
     initComponents();
     nodeEditor = ne;
     initPanel();
+    initTree();
   }
   
   public void initPanel(){
       Vertex currentVertex=this.nodeEditor.getCurrentVertex();
       this.nodeNameTextField.setText(currentVertex.getName());
       this.quantityDescriptionTextField.setText(currentVertex.getCorrectDescription());
-    
+      
   }
   /**
    * Initialize Description Panel for a particular Vertex
@@ -260,8 +261,8 @@ public class DescriptionPanelView extends JPanel{
 
     jScrollPane2.setViewportView(decisionTree);
 
-    TreeNode root = (TreeNode) decisionTree.getModel().getRoot();
-    expandAll(decisionTree, new TreePath(root));
+//    TreeNode root = (TreeNode) decisionTree.getModel().getRoot();
+//    expandAll(decisionTree, new TreePath(root));
   }
 
   private void expandAll(JTree tree, TreePath parent) {
