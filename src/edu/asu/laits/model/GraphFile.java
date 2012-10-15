@@ -13,6 +13,7 @@ public class GraphFile {
     private GraphProperties properties;
     private LinkedList<Vertex> vertexList;
     private LinkedList<Edge> edgeList;
+    private Task task;
 
     public LinkedList<Edge> getEdgeList() {
         return edgeList;
@@ -36,5 +37,13 @@ public class GraphFile {
 
     public void setProperties(GraphProperties properties) {
         this.properties = properties;
+    }
+    
+    public Task getTask(){
+        return task;
+    }
+    
+    public void setTask(Task task){
+        this.task = task;
     }
 }

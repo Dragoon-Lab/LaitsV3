@@ -69,7 +69,7 @@ public class MarqueeHandler extends BasicMarqueeHandler {
         // If Right Mouse Button we want to Display the PopupMenu
         if (SwingUtilities.isRightMouseButton(e)) // Return Immediately
         {
-            return true;
+            mousePressed(e);
         }
 
         return super.isForceMarqueeEvent(e);
@@ -112,7 +112,7 @@ public class MarqueeHandler extends BasicMarqueeHandler {
                                 .getCells(false, true, false, false));
                         
 
-                        if(selectedVerteces.length > 0){
+                        if(selectedVerteces.length == 1){
                             vertexSelectedMenu.setGraphDataItem();
                             vertexSelectedMenu.show(graph, (int) point.getX(),
                                     (int) point.getY());

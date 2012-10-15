@@ -40,12 +40,8 @@ public class GraphsPanelView extends javax.swing.JPanel {
         
         Vertex currentVertex = nodeEditor.getCurrentVertex();
         updateDescription();
-        Task task = Task.getInstance();
+        Task task = nodeEditor.getGraphPane().getModelGraph().getCurrentTask();
         Dimension d = new Dimension(575, 300);
-
-        if (currentVertex.getCorrectValues().isEmpty()) {
-            currentVertex.genRandomValues();
-        }
 
         PlotPanel plotPanel = new PlotPanel(currentVertex, task.getStartTime(), task.getEndTime(), task.getUnits(), d);
         this.userAnswerPanel.setLayout(new java.awt.GridLayout(1, 1));

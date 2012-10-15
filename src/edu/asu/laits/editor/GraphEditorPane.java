@@ -81,7 +81,7 @@ public class GraphEditorPane extends JGraph {
     private GraphProperties graphProperties = new GraphProperties();
     private List<GraphPropertiesChangeListener> graphPropertiesChangeListeners = new LinkedList<GraphPropertiesChangeListener>();
     private List<InsertModeChangeListener> insertModeListeners = new LinkedList<InsertModeChangeListener>();
-    private ListenableDirectedGraph<Vertex, Edge> graph;
+    private Graph<Vertex, Edge> graph;
     private MouseAndMotionListener mouseListener;
     private JFrame mainFrame;
     private InformationPane informationPane;
@@ -98,7 +98,7 @@ public class GraphEditorPane extends JGraph {
     /**
      * Returns the underlying JGraphT graph
      */
-    public ListenableDirectedGraph<Vertex, Edge> getModelGraph() {
+    public Graph getModelGraph() {
         return graph;
     }
 

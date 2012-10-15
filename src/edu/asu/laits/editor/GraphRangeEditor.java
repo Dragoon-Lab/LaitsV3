@@ -12,6 +12,7 @@ package edu.asu.laits.editor;
 
 import edu.asu.laits.model.Task;
 import edu.asu.laits.model.Vertex;
+import edu.asu.laits.model.Graph;
 import java.awt.Color;
 import java.util.Iterator;
 
@@ -22,19 +23,21 @@ import java.util.Iterator;
 public class GraphRangeEditor extends javax.swing.JDialog {
 
     GraphEditorPane editorPane;
+    Graph graph;
     
     /** Creates new form GraphRangeEditor */
     public GraphRangeEditor(GraphEditorPane editorPane, boolean modal) {
         super(editorPane.getMainFrame(), modal);
         this.editorPane = editorPane;
+        this.graph = editorPane.getModelGraph();
         initComponents();
         labelErrorFinal.setVisible(false);
         labelErrorInitial.setVisible(false);
         try{
-            System.out.println("Initializing Range Editor "+ "Unit time : "+Task.getInstance().getUnits());
-            textIntialValue.setText(String.valueOf(Task.getInstance().getStartTime()));
-            textFinalValue.setText(String.valueOf(Task.getInstance().getEndTime()));
-            comboUnits.setSelectedItem(Task.getInstance().getUnits());
+            System.out.println("Initializing Range Editor "+ "Unit time : "+graph.getCurrentTask().getUnits());
+            textIntialValue.setText(String.valueOf(graph.getCurrentTask().getStartTime()));
+            textFinalValue.setText(String.valueOf(graph.getCurrentTask().getEndTime()));
+            comboUnits.setSelectedItem(graph.getCurrentTask().getUnits());
 
         }catch(Exception e){
             e.printStackTrace();
@@ -235,9 +238,9 @@ public class GraphRangeEditor extends javax.swing.JDialog {
 
             String units = String.valueOf(comboUnits.getSelectedItem());
             try{
-                Task.getInstance().setStartTime(startTime);
-                Task.getInstance().setEndTime(endTime);
-                Task.getInstance().setUnits(units);
+                graph.getCurrentTask().setStartTime(startTime);
+                graph.getCurrentTask().setEndTime(endTime);
+                graph.getCurrentTask().setUnits(units);
                 
                 Iterator<Vertex> vertices = editorPane.getModelGraph().vertexSet().iterator();
                 while(vertices.hasNext()){

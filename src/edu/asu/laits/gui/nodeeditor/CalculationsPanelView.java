@@ -40,7 +40,7 @@ import org.apache.log4j.Logger;
 public class CalculationsPanelView extends javax.swing.JPanel {
 
     private DefaultListModel availableInputJListModel = new DefaultListModel();
-    private final DecimalFormat inputDecimalFormat = new DecimalFormat("###0.###");
+    private final DecimalFormat inputDecimalFormat = new DecimalFormat("###0.000000##");
     private NodeEditor nodeEditor;
     private Vertex currentVertex;
     boolean isViewEnabled;
@@ -130,12 +130,15 @@ public class CalculationsPanelView extends javax.swing.JPanel {
 
     public void preparePanelForFlow() {
         fixedValueInputBox.setEnabled(false); 
+        fixedValueInputBox.setText("");
+        calculatorPanel.setVisible(true);
         formulaInputArea.setText("");
         valuesLabel.setText("Next Value = ");
     }
 
     public void preparePanelForStock() {
         fixedValueInputBox.setEnabled(true);  
+        calculatorPanel.setVisible(true);
         fixedValueInputBox.setText("");
         formulaInputArea.setText("");
         valuesLabel.setText("Next Value = Current Value + ");

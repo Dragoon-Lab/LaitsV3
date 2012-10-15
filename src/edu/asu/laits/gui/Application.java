@@ -24,9 +24,9 @@ public class Application {
      * @param args
      */
     public static void main(String[] args) {
-        UserRegistration reg = new UserRegistration(null, true);
+        //UserRegistration reg = new UserRegistration(null, true);
         
-        /*try {
+        try {
             String uiClassName = GlobalProperties.getInstance().getUITheme();
             if (null != uiClassName) {
                 try {
@@ -47,6 +47,6 @@ public class Application {
                     "An error has occured", JOptionPane.ERROR_MESSAGE);
 
             e.printStackTrace();
-        }*/
+        }
     }
 }

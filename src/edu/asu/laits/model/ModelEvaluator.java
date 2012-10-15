@@ -5,13 +5,18 @@ package edu.asu.laits.model;
 
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.HashSet;
 import java.util.Iterator;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
 import java.util.Queue;
+import java.util.Set;
 import net.sourceforge.jeval.Evaluator;
 import org.apache.log4j.Logger;
+import org.jgrapht.alg.CycleDetector;
+import org.jgrapht.traverse.TopologicalOrderIterator;
+
 
 /**
  *
@@ -28,11 +33,15 @@ public class ModelEvaluator {
 
     public ModelEvaluator(Graph inputGraph) {
         currentGraph = inputGraph;
-        startTime = Task.getInstance().getStartTime();
-        endTime = Task.getInstance().getEndTime();
+        startTime = currentGraph.getCurrentTask().getStartTime();
+        endTime = currentGraph.getCurrentTask().getEndTime();
         finalOperands = new HashMap<String, List<String>>();
     }
     
+    /**
+     * Test if current model can be run
+     * @return 
+     */
     public boolean isModelComplete(){
         Iterator<Vertex> allVertices = currentGraph.vertexSet().iterator();
         Vertex thisVertex;
@@ -47,8 +56,14 @@ public class ModelEvaluator {
         return true;
     }
 
+    /**
+     * Run Model 
+     * @throws ModelEvaluationException 
+     */
     public void run() throws ModelEvaluationException{
         List<Vertex> vertexList = getArrangedVertexList();
+        logs.trace("Arranged Vertex List "+vertexList.toString());
+        
         try{
             int totalPoints = endTime - startTime;
             constructFinalEquations(vertexList);
@@ -75,7 +90,6 @@ public class ModelEvaluator {
                         currentVertex.getCorrectValues().add(calculateFlow(vertexList, currentVertex, i));
                     }
                 }
-
             }
             
             for(Vertex v : vertexList){
@@ -95,8 +109,12 @@ public class ModelEvaluator {
         }        
     }
 
-    public List<Vertex> getArrangedVertexList() {
-        
+    /**
+     * Arrange all the vertices in Order : Constant, Stock, Flow
+     * @return: arranged Vertex List
+     * @throws ModelEvaluationException 
+     */
+    public List<Vertex> getArrangedVertexList() throws ModelEvaluationException{        
         List<Vertex> allVertices = new ArrayList<Vertex>();
         List<Vertex> constantList = new ArrayList<Vertex>();
         List<Vertex> flowList = new ArrayList<Vertex>();
@@ -106,7 +124,7 @@ public class ModelEvaluator {
         Iterator<Vertex> it = currentGraph.vertexSet().iterator();
         while (it.hasNext()) {
             Vertex thisVertex = it.next();
-            thisVertex.getCorrectValues().clear();
+            thisVertex.resetCorrectValues();
 
             if (thisVertex.getVertexType().equals(Vertex.VertexType.CONSTANT)) {
                 // Initialize constant values
@@ -124,9 +142,14 @@ public class ModelEvaluator {
             }
         }
 
+        // Model is invalid if only Flow Vertices are present
+        if(flowList.size() == currentGraph.vertexSet().size()){
+            throw new ModelEvaluationException("Invalid Model - only Flow Nodes are present");
+        }        
+        
         allVertices.addAll(constantList);
         allVertices.addAll(stockList);
-        allVertices.addAll(rearrangeFlowVertices(flowList));
+        allVertices.addAll(topologialSort(flowList));
 
         // Bad approach
         constantVertices = constantList.size();
@@ -135,65 +158,72 @@ public class ModelEvaluator {
     }
 
     /**
-     * Method to Arrange the Flow nodes based on input dependencies
-     * @param inputVertices 
+     * Method to Arrange the Flow nodes in Topological Order
+     * @param inputVertices
+     * @return : Arrange Vertices
+     * @throws ModelEvaluationException 
      */
-    private List<Vertex> rearrangeFlowVertices(List<Vertex> inputVertices){
-        List<Vertex> newList = new ArrayList<Vertex>();
-        List<Vertex> dependsList = new ArrayList<Vertex>();
-
-        for (int i = 0; i < inputVertices.size(); i++) {
-
-            Vertex v1 = inputVertices.get(i);
-            boolean foundInput = false;
-      
-            LinkedList<String> operandsList = new LinkedList<String>(); 
-            LinkedList<Vertex> operands = new LinkedList<Vertex>();
-
-            String equation = v1.getEquation();
-            Evaluator eval = new Evaluator();
-            List<String> inputs = null;
-            try{
-                eval.parse(equation);
-                inputs = eval.getAllVariables();
-            }catch(Exception e){
-                logs.error("error in retrieving operands for Node "+v1.getName());
-            }
-            
-            
-            // adds the inputs to the operands list and takes away any '_' that may be 
-            //from the eq
-            for (int m = 0; m < inputs.size(); m++) {
-                operandsList.add(inputs.get(m)); 
-            }
-
-            // the below nested for loop goes through each of the correct vertexes and 
-            //operands and adds the vertex's they represent to the operands linked list
-            for (int m = 0; m < operandsList.size(); m++) {
-                for (int n = 0; n < inputVertices.size(); n++) {
-                    if (operandsList.get(m).equals(inputVertices.get(n).getName())) {
-                        foundInput = true;
-                        break;
-                    }
-                }
-            }
-
-
-            if (!foundInput) {
-                newList.add(inputVertices.get(i));
-            }
-            else {
-                dependsList.add(inputVertices.get(i));
+    private List<Vertex> topologialSort(List<Vertex> inputVertices) 
+            throws ModelEvaluationException {
+        
+        List<Vertex> sortedList = new ArrayList<Vertex>();
+        Graph<Vertex,Edge> newGraph = new Graph<Vertex, Edge>(Edge.class);
+        
+        for(Vertex v : inputVertices){
+            newGraph.addVertex(v);
+        }
+        for(Edge e : currentGraph.edgeSet()){
+            if(inputVertices.contains(currentGraph.getEdgeSource(e)) && 
+                    inputVertices.contains(currentGraph.getEdgeTarget(e))){
+                
+                newGraph.addEdge(currentGraph.getEdgeSource(e), 
+                        currentGraph.getEdgeTarget(e));
             }
         }
-
-        for (int i = 0; i < dependsList.size(); i++){
-            newList.add(dependsList.get(i));
-        }   
-
-        return newList;
-    }
         
+        detectCycles(newGraph);
+        
+        TopologicalOrderIterator<Vertex, Edge> itr = 
+                    new TopologicalOrderIterator<Vertex, Edge>(newGraph);
+        while(itr.hasNext()){            
+           sortedList.add(itr.next());            
+        }
+        
+        return sortedList;        
+    }
+    
+    /**
+     * Method to check Cycles among Flow Nodes
+     * @param graph : new graph construct from flow nodes
+     * @throws ModelEvaluationException 
+     */
+    private void detectCycles(Graph graph) throws ModelEvaluationException{
+        CycleDetector<Vertex, Edge> cycleDetector = new CycleDetector<Vertex, Edge>(graph);
+        
+        if(cycleDetector.detectCycles()){
+            Set<Vertex> cycleVertices;
+            cycleVertices = cycleDetector.findCycles();
+            
+            String names="[ ";
+            for(Vertex v : cycleVertices){
+                names += v.getName()+" ";
+            }
+            names += "]";
+            
+            String msg = "Cycles found among Flow Nodes "+names;
+            logs.error(msg);
+            throw new ModelEvaluationException(msg);
+        }     
+    }
+    
+    /**
+     * Calculate Value of Stock Vertex
+     * @param vertexList
+     * @param currentVertex
+     * @param pointNumber
+     * @return
+     * @throws Exception 
+     */
     private double calculateStock(List<Vertex> vertexList, Vertex currentVertex, int pointNumber) throws Exception {
         String formula = currentVertex.getEquation();
         Iterator<String> it = finalOperands.get(currentVertex.getName()).iterator();
@@ -212,7 +242,16 @@ public class ModelEvaluator {
         return result;
     }
     
+    /**
+     * Calculate value of Flow Vertex
+     * @param vertexList
+     * @param currentVertex
+     * @param pointNumber
+     * @return
+     * @throws Exception 
+     */
     private double calculateFlow(List<Vertex> vertexList, Vertex currentVertex, int pointNumber) throws Exception {
+        
         String formula = currentVertex.getEquation();
         Iterator<String> it = finalOperands.get(currentVertex.getName()).iterator();
 
@@ -224,7 +263,7 @@ public class ModelEvaluator {
             name = it.next();
             if (getVertexByName(vertexList, name).getCorrectValues().size() == 0) {
                 value = "0.0";
-            } else {
+            } else { 
                 value = String.valueOf(getVertexByName(vertexList, name).getCorrectValues().get(pointNumber));
             }
             eval.putVariable(name, value);
@@ -233,10 +272,12 @@ public class ModelEvaluator {
         return Double.valueOf(eval.evaluate());
     }
 
+    /**
+     * Build operand - dependent operand list
+     * @param vertexList
+     * @throws Exception 
+     */
     private void constructFinalEquations(List<Vertex> vertexList) throws Exception {
-        
-        List<String> allName = new ArrayList<String>();
-
         for (Vertex v : vertexList) {
          
             Iterator<Edge> inEdges = currentGraph.incomingEdgesOf(v).iterator();
@@ -254,6 +295,12 @@ public class ModelEvaluator {
        
     }
 
+    /**
+     * Find a vertex by using its name in the given list
+     * @param vertexList
+     * @param name
+     * @return 
+     */
     private Vertex getVertexByName(List<Vertex> vertexList, String name) {
         for (Vertex v : vertexList) {
             if (v.getName().equals(name)) {
@@ -264,6 +311,10 @@ public class ModelEvaluator {
         return null;
     }
     
+    /**
+     * Print values of vertices : used in debugging
+     * @param vertices 
+     */
     private void printVertexValues(List<Vertex> vertices){
         for (Vertex v : vertices) {
             logs.trace("Vertex "+v.getName());

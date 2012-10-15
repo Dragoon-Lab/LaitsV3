@@ -16,15 +16,15 @@ public class Task {
     private int startTime, endTime;
     private String units;
     
-    private static Task currentTask;
+    //private static Task currentTask;
     
-    public static Task getInstance(){
+    /*public static Task getInstance(){
         if(currentTask == null)
             currentTask = new Task();
         return currentTask;
-    }
+    }*/
     
-    private Task(){
+    public Task(){
         taskName = "";
         taskDescription = "";
         imageURL = "";

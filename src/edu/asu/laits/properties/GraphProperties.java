@@ -16,8 +16,6 @@ import edu.asu.laits.editor.listeners.GraphSaveListener;
  * possible to add listeners to the objects of this class to listen for graph
  * changes etc. Objects of GraphEditorPane has a GraphProperties object.
  * 
- * @author kjellw
- * 
  */
 public class GraphProperties {
 
@@ -38,7 +36,7 @@ public class GraphProperties {
 	// The current zoom Level
 	private double zoomLevel = 1.0;
 
-	private VertexType defaultShape = VertexType.FLOW;
+	private VertexType defaultShape = VertexType.DEFAULT;
 
 	private VertexType defaultInsertShape = VertexType.DEFAULT;
 

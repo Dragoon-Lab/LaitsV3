@@ -13,9 +13,11 @@ import org.jgrapht.graph.ListenableDirectedGraph;
 public class Graph<V, E> extends ListenableDirectedGraph<V, E> implements
 		DirectedGraph<V, E> {
 	private static final long serialVersionUID = 1L;
+        private Task currentTask;
 
 	public Graph(Class<E> edgeClass) {
 		super(new DirectedMultigraph<V, E>(edgeClass));
+                currentTask = new Task();
 	}
         
         public Vertex getVertexByName(String name){
@@ -28,5 +30,13 @@ public class Graph<V, E> extends ListenableDirectedGraph<V, E> implements
                     return v;
             }
             return null;
+        }
+        
+        public Task getCurrentTask(){
+            return currentTask;
+        }
+        
+        public void setCurrentTask(Task task){
+            currentTask = task;
         }
 }

@@ -41,7 +41,7 @@ public class Vertex {
     
     private double initialValue;
     private String equation;
-    private List<Double> correctValues;
+    private transient List<Double> correctValues;
     
     transient private SortedMap<String, String> properties = new TreeMap<String, String>();
     transient private static int vertIndexCount = 0;
@@ -59,7 +59,7 @@ public class Vertex {
         xPosition = 200 * (vertexIndex % 6) + 80;
         yPosition = 200 * (vertexIndex / 6) + 60 ;
         correctValues = new ArrayList<Double>();
-        
+        equation = "";
         vertIndexCount++;
     }
     
@@ -155,6 +155,10 @@ public class Vertex {
         return correctValues;
     }
 
+    public void resetCorrectValues(){
+        correctValues = new ArrayList<Double>();
+    }
+    
     public double getInitialValue(){
         return initialValue;
     }
@@ -213,7 +217,7 @@ public class Vertex {
             useGraphBackround = GraphEditorConstants.getUseGraphBackground(map);
             xPosition = vertexBounds.getX();
             yPosition = vertexBounds.getY();
-            equation = getEquation();
+            equation = getEquation();           
 
         } catch (Exception e) {
             throw new VertexReaderException();
@@ -291,12 +295,5 @@ public class Vertex {
         UNDEFINED, CORRECT, INCORRECT
     }
     
-    //for debug purpose
-    public void genRandomValues(){
-        this.correctValues.clear();
-        Task task=Task.getInstance();
-        for(int i=task.getStartTime();i<=task.getEndTime();i++){
-            this.correctValues.add(Math.random()*100);
-        }
-    }
+    
 }

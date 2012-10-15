@@ -94,6 +94,10 @@ public class GraphSaver {
         file.setProperties(paneToSave.getGraphProperties());
         file.setVertexList(vertexList);
         file.setEdgeList(edgeList);
+        
+        xstream.alias("task", Task.class);
+        Graph g = (Graph)graph;
+        file.setTask(g.getCurrentTask());
 
         xstream.alias("graph", GraphFile.class);
         xstream.toXML(file, writer);

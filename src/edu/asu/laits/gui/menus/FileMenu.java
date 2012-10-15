@@ -219,8 +219,10 @@ public class FileMenu extends JMenu {
         } catch (IOException e1) {
             // TODO Auto-generated catch block
             e1.printStackTrace();
+            mainWindow.getStatusBarPanel().setStatusMessage("Error in Loading Graph File", false);
         } catch (IncorcectGraphXMLFileException e) {
             // TODO Auto-generated catch block
+            mainWindow.getStatusBarPanel().setStatusMessage("Error in Loading Graph File", false);
             e.printStackTrace();
         }
     }
