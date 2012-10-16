@@ -568,20 +568,20 @@ public class NodeEditor extends JFrame implements WindowListener {
       if (dPanel.processDescriptionPanel()) {
           if (pPanel.processPlanPanel()) {
               if (iPanel.processInputsPanel()) {
-                  logs.trace("Setting Inputs to correct");
+                  logs.trace("Setting Inputs completely");
                   currentVertex.setInputsStatus(Vertex.InputsStatus.CORRECT);
                   if (cPanel.processCalculationsPanel()) {
                       currentVertex.setCalculationsStatus(Vertex.CalculationsStatus.CORRECT);
-                      this.dispose();
                   } else {
                       currentVertex.setCalculationsStatus(Vertex.CalculationsStatus.INCORRECT);
                   }
               } else {
-                  logs.trace("Setting input to incorrect");
+                  logs.trace("Setting input incompletely");
                   currentVertex.setInputsStatus(Vertex.InputsStatus.INCORRECT);
               }
               graphPane.repaint();
           }
+          this.dispose();
       }
   }//GEN-LAST:event_buttonOKActionPerformed
     // Variables declaration - do not modify//GEN-BEGIN:variables

@@ -11,6 +11,7 @@ import edu.asu.laits.model.Vertex;
 import java.awt.event.KeyEvent;
 import javax.swing.JMenu;
 import javax.swing.JMenuItem;
+import javax.swing.JOptionPane;
 import org.apache.log4j.Logger;
 
 /**
@@ -163,6 +164,7 @@ public class ModelMenu extends JMenu {
                 window.getStatusBarPanel().setStatusMessage(ex.getMessage(), false);
             }    
         }else{
+            JOptionPane.showMessageDialog(window, "The model is incomplete, please complete all the nodes before running Model");
             window.getStatusBarPanel().setStatusMessage("Please complete all the nodes before running Model", false);
         }
     }

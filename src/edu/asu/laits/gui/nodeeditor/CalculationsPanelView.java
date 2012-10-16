@@ -125,19 +125,25 @@ public class CalculationsPanelView extends javax.swing.JPanel {
         stockValueOptionButton.setEnabled(false);
         
         fixedValueInputBox.setEnabled(true);
+        fixedValueInputBox.setVisible(true);
+        fixedValueLabel.setVisible(true);
         calculatorPanel.setVisible(false);
     }
 
     public void preparePanelForFlow() {
         fixedValueInputBox.setEnabled(false); 
         fixedValueInputBox.setText("");
+        fixedValueInputBox.setVisible(false);
+        fixedValueLabel.setVisible(false);
         calculatorPanel.setVisible(true);
         formulaInputArea.setText("");
         valuesLabel.setText("Next Value = ");
     }
 
     public void preparePanelForStock() {
-        fixedValueInputBox.setEnabled(true);  
+        fixedValueInputBox.setEnabled(true); 
+        fixedValueInputBox.setVisible(true);
+        fixedValueLabel.setVisible(true);
         calculatorPanel.setVisible(true);
         fixedValueInputBox.setText("");
         formulaInputArea.setText("");

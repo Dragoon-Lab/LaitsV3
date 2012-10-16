@@ -6,6 +6,7 @@
 
 package edu.asu.laits.gui.nodeeditor;
 
+import edu.asu.laits.model.Graph;
 import edu.asu.laits.model.Vertex;
 import java.util.ArrayList;
 import java.util.Enumeration;
@@ -350,13 +351,12 @@ public class DescriptionPanelView extends JPanel{
   }
   
   private boolean duplicatedNode(String nodeName) {
-      Iterator<Vertex> it = nodeEditor.getGraphPane().getModelGraph().vertexSet().iterator();
       
-      while(it.hasNext()){
-          if(it.next().getName().equals(nodeName))
-              return true;
-      }
-        return false;
+      Graph graph = nodeEditor.getGraphPane().getModelGraph();
+      if(graph.getVertexByName(nodeName)!=null && this.nodeEditor.getCurrentVertex().getName()!=nodeName)
+          return true;
+      else
+          return false;
   }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
