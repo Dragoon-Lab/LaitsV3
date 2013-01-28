@@ -16,6 +16,7 @@ import edu.asu.laits.editor.GraphEditorPane;
 
 
 import com.thoughtworks.xstream.XStream;
+import java.awt.Dimension;
 import org.apache.log4j.Logger;
 
 /**
@@ -47,7 +48,8 @@ public class GlobalProperties {
     private transient HelpSet helpSet;
     private transient HelpBroker helpBroker;
     
-    private static Logger logs = Logger.getLogger(GlobalProperties.class);
+    private static Logger logs = Logger.getLogger("DevLogs");
+    private static Logger activityLogs = Logger.getLogger("ActivityLogs");
 
     /**
      * @return the helpBroker
@@ -128,7 +130,9 @@ public class GlobalProperties {
         try {
             url = HelpSet.findHelpSet(loader, helpSetName);
             HelpSet helpSet = new HelpSet(loader, url);
+            
             helpBroker = helpSet.createHelpBroker();
+            helpBroker.setSize(new Dimension(830, 680));
         } catch (Exception e) {
             e.printStackTrace();
             return;

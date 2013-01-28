@@ -37,6 +37,10 @@ public class Graph<V, E> extends ListenableDirectedGraph<V, E> implements
         }
         
         public void setCurrentTask(Task task){
-            currentTask = task;
+            System.out.println("Task = "+task);
+            if(task == null){
+                currentTask = new Task();
+            }else
+                currentTask = task;
         }
 }

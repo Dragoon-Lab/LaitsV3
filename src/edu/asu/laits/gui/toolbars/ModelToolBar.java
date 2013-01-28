@@ -21,7 +21,7 @@ public class ModelToolBar extends JToolBar {
 
     private JButton addNodeButton = null;
     private JButton runModelButton = null;
-    private JButton spacerButton = null;
+    private JButton doneButton = null;
     private ModelMenu modelMenu;
 
     /**
@@ -43,6 +43,8 @@ public class ModelToolBar extends JToolBar {
         this.add(getAddNodeButton());
         this.add(Box.createHorizontalStrut(5)); 
         this.add(getRunModelButton());
+        this.add(Box.createHorizontalStrut(5));
+        this.add(getDoneButton());
     }
 
     /**
@@ -86,6 +88,28 @@ public class ModelToolBar extends JToolBar {
             });
         }
         return runModelButton;
+    }
+    
+    /**
+     * This method initializes Done Button on ToolBar
+     */
+    private JButton getDoneButton() {
+        if (doneButton == null) {
+            doneButton = new JButton();
+            doneButton.setText("Done");  
+            doneButton.setToolTipText("Done with the Task");
+            doneButton.setFont(new Font(doneButton.getFont().getName(),
+                                   Font.BOLD,
+                                   doneButton.getFont().getSize() - 1)
+                                  );
+            doneButton
+                    .addActionListener(new java.awt.event.ActionListener() {
+                public void actionPerformed(java.awt.event.ActionEvent e) {
+                    // Implement Done Button Action here
+                }
+            });
+        }
+        return doneButton;
     }
     
 }

@@ -36,7 +36,8 @@ public class MouseAndMotionListener implements MouseListener,
     private PortView mergePairToMergeTo;
     private PortView mergePairMerge;
     
-    private static Logger logs = Logger.getLogger(MouseAndMotionListener.class);
+    private static Logger logs = Logger.getLogger("DevLogs");
+    private static Logger activityLogs = Logger.getLogger("ActivityLogs");
 
     public MouseAndMotionListener(GraphEditorPane pane,
             MouseListener ml, MouseMotionListener mml) {

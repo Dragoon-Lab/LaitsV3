@@ -50,7 +50,8 @@ public class VertexRenderComponent extends VertexRenderer implements
             new DefaultVertexRenderComponent(defaultRender);
     
     /** Logger */
-    private static Logger logs = Logger.getLogger(VertexRenderComponent.class);
+    private static Logger logs = Logger.getLogger("DevLogs");
+    private static Logger activityLogs = Logger.getLogger("ActivityLogs");
 
     public Component getRendererComponent(JGraph graph, CellView view,
             boolean sel, boolean focus, boolean preview) {
@@ -84,7 +85,7 @@ public class VertexRenderComponent extends VertexRenderer implements
     }
 
     public CellViewRenderer getRenderer(GraphEditorVertexView view, JGraph graph) {
-       logs.trace("Getting Renderer");
+       logs.debug("Getting Renderer");
         Map<Object, Object> atributes = view.getAllAttributes();
 
         DefaultGraphCell cell = (DefaultGraphCell) view.getCell();

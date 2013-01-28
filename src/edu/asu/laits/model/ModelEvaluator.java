@@ -29,7 +29,8 @@ public class ModelEvaluator {
     int startTime;
     int endTime;
     Map<String, List<String>> finalOperands;
-    private static Logger logs = Logger.getLogger(ModelEvaluator.class);
+    private static Logger logs = Logger.getLogger("DevLogs");
+    private static Logger activityLogs = Logger.getLogger("ActivityLogs");
 
     public ModelEvaluator(Graph inputGraph) {
         currentGraph = inputGraph;
@@ -62,17 +63,17 @@ public class ModelEvaluator {
      */
     public void run() throws ModelEvaluationException{
         List<Vertex> vertexList = getArrangedVertexList();
-        logs.trace("Arranged Vertex List "+vertexList.toString());
-        
+        logs.debug("Arranged Vertex List "+vertexList.toString());
+        Vertex currentVertex = null;
         try{
             int totalPoints = endTime - startTime;
             constructFinalEquations(vertexList);
-            logs.trace("Final Operands   "+finalOperands.toString());
-            logs.trace("Constant Vertices : "+constantVertices);
+            logs.debug("Final Operands   "+finalOperands.toString());
+            logs.debug("Constant Vertices : "+constantVertices);
             
             // Calculating Initial Flow for i =0
             for (int j = constantVertices; j < vertexList.size(); j++) {
-                Vertex currentVertex = vertexList.get(j);
+                currentVertex = vertexList.get(j);
                 if (currentVertex.getVertexType().equals(Vertex.VertexType.FLOW)) {
                     currentVertex.getCorrectValues().add(calculateFlow(vertexList, currentVertex, 0));
                 }
@@ -82,30 +83,26 @@ public class ModelEvaluator {
             for (int i = 1; i < totalPoints; i++) {
 
                 for (int j = constantVertices; j < vertexList.size(); j++) {
-                    Vertex currentVertex = vertexList.get(j);
+                    currentVertex = vertexList.get(j);
 
                     if (currentVertex.getVertexType().equals(Vertex.VertexType.STOCK)) {
                         currentVertex.getCorrectValues().add(calculateStock(vertexList, currentVertex, i));
                     } else if (currentVertex.getVertexType().equals(Vertex.VertexType.FLOW)) {
                         currentVertex.getCorrectValues().add(calculateFlow(vertexList, currentVertex, i));
                     }
+                    
+                    currentVertex.setGraphsStatus(Vertex.GraphsStatus.CORRECT);
                 }
             }
             
-            for(Vertex v : vertexList){
-                v.setGraphsStatus(Vertex.GraphsStatus.CORRECT);
-            }
-            
-            printVertexValues(vertexList);
+            //printVertexValues(vertexList);
         }catch(Exception ex){
             ex.printStackTrace();
-            String err = "Error in Model Execution "+ex.getMessage();
-            logs.error(err);
-            for(Vertex v : vertexList){
-                v.setGraphsStatus(Vertex.GraphsStatus.CORRECT);
-            }
-            throw new ModelEvaluationException(err);
-            
+            String err = "Error in Model Execution at Node '"+currentVertex.getName()+"'  "+ex.getMessage();
+            logs.error(err);  
+            currentVertex.setCalculationsStatus(Vertex.CalculationsStatus.INCORRECT);
+            currentVertex.setGraphsStatus(Vertex.GraphsStatus.INCORRECT);            
+            throw new ModelEvaluationException(err);            
         }        
     }
 
@@ -131,7 +128,7 @@ public class ModelEvaluator {
                 for (int i = 0; i < totalPoints; i++) {
                     thisVertex.getCorrectValues().add(thisVertex.getInitialValue());
                 }
-
+                thisVertex.setGraphsStatus(Vertex.GraphsStatus.CORRECT);
                 constantList.add(thisVertex);
             } else if (thisVertex.getVertexType().equals(Vertex.VertexType.STOCK)) {
                 // Setting initial value for Stock
@@ -251,7 +248,6 @@ public class ModelEvaluator {
      * @throws Exception 
      */
     private double calculateFlow(List<Vertex> vertexList, Vertex currentVertex, int pointNumber) throws Exception {
-        
         String formula = currentVertex.getEquation();
         Iterator<String> it = finalOperands.get(currentVertex.getName()).iterator();
 
@@ -268,7 +264,6 @@ public class ModelEvaluator {
             }
             eval.putVariable(name, value);
         }
-
         return Double.valueOf(eval.evaluate());
     }
 
@@ -317,8 +312,8 @@ public class ModelEvaluator {
      */
     private void printVertexValues(List<Vertex> vertices){
         for (Vertex v : vertices) {
-            logs.trace("Vertex "+v.getName());
-            logs.trace(v.getCorrectValues().toString());
+            logs.debug("Vertex "+v.getName());
+            logs.debug(v.getCorrectValues().toString());
         }
     }
 }

@@ -27,7 +27,8 @@ public class GraphsPanelView extends javax.swing.JPanel {
     /**
      * Logger *
      */
-    private static Logger logs = Logger.getLogger(GraphsPanelView.class);
+    private static Logger logs = Logger.getLogger("DevLogs");
+    private static Logger activityLogs = Logger.getLogger("ActivityLogs");
 
     public GraphsPanelView(NodeEditor ne) {
         initComponents();
@@ -112,7 +113,7 @@ public class GraphsPanelView extends javax.swing.JPanel {
 
         descriptionLabel.setText("<html><b>Description:</b></html>");
         descriptionLabel.setVerticalAlignment(javax.swing.SwingConstants.TOP);
-        add(descriptionLabel, new org.netbeans.lib.awtextra.AbsoluteConstraints(6, 20, 450, 41));
+        add(descriptionLabel, new org.netbeans.lib.awtextra.AbsoluteConstraints(6, 20, 560, 50));
     }// </editor-fold>//GEN-END:initComponents
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JPanel allGraphsPanel;

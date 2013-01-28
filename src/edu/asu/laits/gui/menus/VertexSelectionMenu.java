@@ -24,7 +24,8 @@ public class VertexSelectionMenu extends JPopupMenu {
     private JMenuItem deleteItem = null;
     private JMenuItem editItem = null;
     private JMenuItem graphDataItem = null;
-    private static Logger logs = Logger.getLogger(VertexSelectionMenu.class);
+    private static Logger logs = Logger.getLogger("DevLogs");
+    private static Logger activityLogs = Logger.getLogger("ActivityLogs");
     /**
      * This method initializes
      *

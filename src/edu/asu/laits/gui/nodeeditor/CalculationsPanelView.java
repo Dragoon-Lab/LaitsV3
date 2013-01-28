@@ -45,7 +45,8 @@ public class CalculationsPanelView extends javax.swing.JPanel {
     private Vertex currentVertex;
     boolean isViewEnabled;
     
-    private static Logger logs = Logger.getLogger(CalculationsPanelView.class);
+    private static Logger logs = Logger.getLogger("DevLogs");
+    private static Logger activityLogs = Logger.getLogger("ActivityLogs");
 
     public CalculationsPanelView(NodeEditor ne) {
         initComponents();
@@ -55,7 +56,7 @@ public class CalculationsPanelView extends javax.swing.JPanel {
     }
 
     public void initPanel() {
-        logs.trace("Initializing Calculations Panel for Node ");
+        logs.debug("Initializing Calculations Panel for Node ");
         initializeAvailableInputNodes();
         
         if(currentVertex.getVertexType().equals(Vertex.VertexType.CONSTANT)){
@@ -80,7 +81,7 @@ public class CalculationsPanelView extends javax.swing.JPanel {
      * Method to initialize the list of available inputs for STOCK and FLOW
      */
     public void initializeAvailableInputNodes() {
-        logs.trace("Initializing Available Input Nodes in jList Panel");
+        logs.debug("Initializing Available Input Nodes in jList Panel");
 
         availableInputJListModel.clear();
         Vertex currentVertex = nodeEditor.getCurrentVertex();
@@ -411,6 +412,7 @@ public class CalculationsPanelView extends javax.swing.JPanel {
         formulaInputArea.setColumns(20);
         formulaInputArea.setLineWrap(true);
         formulaInputArea.setRows(5);
+        formulaInputArea.setToolTipText("Node Equation");
         formulaInputArea.setDisabledTextColor(new java.awt.Color(102, 102, 102));
         formulaInputArea.setHighlighter(null);
         jScrollPane1.setViewportView(formulaInputArea);
@@ -478,7 +480,7 @@ public class CalculationsPanelView extends javax.swing.JPanel {
     }// </editor-fold>//GEN-END:initComponents
 
     private void stockValueOptionButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_stockValueOptionButtonActionPerformed
-        logs.trace("Preparing UI for Stock Node");
+        logs.debug("Preparing UI for Stock Node");
         preparePanelForStock();
         currentVertex.setVertexType(Vertex.VertexType.STOCK);
         nodeEditor.getGraphPane().getLayoutCache().reload();
@@ -486,7 +488,7 @@ public class CalculationsPanelView extends javax.swing.JPanel {
     }//GEN-LAST:event_stockValueOptionButtonActionPerformed
 
     private void flowValueOptionButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_flowValueOptionButtonActionPerformed
-        logs.trace("Preparing UI for Flow Node");
+        logs.debug("Preparing UI for Flow Node");
         preparePanelForFlow();
         currentVertex.setVertexType(Vertex.VertexType.FLOW);
         nodeEditor.getGraphPane().getLayoutCache().reload();

@@ -34,7 +34,7 @@ public class GraphRangeEditor extends javax.swing.JDialog {
         labelErrorFinal.setVisible(false);
         labelErrorInitial.setVisible(false);
         try{
-            System.out.println("Initializing Range Editor "+ "Unit time : "+graph.getCurrentTask().getUnits());
+            //System.out.println("Initializing Range Editor "+ "Unit time : "+graph.getCurrentTask().getUnits());
             textIntialValue.setText(String.valueOf(graph.getCurrentTask().getStartTime()));
             textFinalValue.setText(String.valueOf(graph.getCurrentTask().getEndTime()));
             comboUnits.setSelectedItem(graph.getCurrentTask().getUnits());

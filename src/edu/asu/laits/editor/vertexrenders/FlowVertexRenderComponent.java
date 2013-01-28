@@ -46,7 +46,8 @@ public class FlowVertexRenderComponent extends VertexRenderComponent {
     /**
      * Logger
      */
-    private static Logger logs = Logger.getLogger(GraphEditorConstants.class);
+    private static Logger logs = Logger.getLogger("DevLogs");
+    private static Logger activityLogs = Logger.getLogger("ActivityLogs");
 
     /**
      * @param defaultVertexRenderComponent

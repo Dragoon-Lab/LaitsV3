@@ -22,8 +22,8 @@ import org.apache.log4j.Logger;
 public class UserRegistration extends javax.swing.JDialog {
 
   /**Logger */
-  private static org.apache.log4j.Logger devLogs = org.apache.log4j.Logger.getLogger(UserRegistration.class);
-  
+  private static Logger devLogs = Logger.getLogger("DevLogs");
+  private static Logger activityLogs = Logger.getLogger("ActivityLogs");
   /**
    * Creates new form UserRegistration2
    */
@@ -124,7 +124,7 @@ public class UserRegistration extends javax.swing.JDialog {
     String asuId = asuidInputBox.getText();
     
     if(validateInputFields(firstName,lastName,asuId)){
-      logs.trace("User Registration Successful");
+      logs.debug("User Registration Successful");
       ApplicationUser.setUserFirstName(firstName);
       ApplicationUser.setUserLastName(lastName);
       ApplicationUser.setUserASUID(asuId);

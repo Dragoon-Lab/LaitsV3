@@ -24,7 +24,8 @@ import org.jgraph.graph.DefaultPort;
 public class GraphLoader {
 
     GraphEditorPane graphPane;
-    private static Logger logs = Logger.getLogger(GraphLoader.class);
+    private static Logger logs = Logger.getLogger("DevLogs");
+    private static Logger activityLogs = Logger.getLogger("ActivityLogs");
 
     public class IncorcectGraphXMLFileException extends Exception {
     };
@@ -52,7 +53,7 @@ public class GraphLoader {
             graphFile = (GraphFile) xstream.fromXML(reader);
         } catch (BaseException e) {
             // Could not read the XML file
-            logs.trace(e.getMessage());
+            logs.debug(e.getMessage());
             throw new IncorcectGraphXMLFileException();
         }
         // An hash wich makes it fast to find vertices

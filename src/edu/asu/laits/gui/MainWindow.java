@@ -24,12 +24,17 @@ import javax.swing.JScrollPane;
 import edu.asu.laits.gui.toolbars.FileToolBar;
 import edu.asu.laits.gui.toolbars.EditToolBar;
 import edu.asu.laits.gui.toolbars.ModelToolBar;
+import edu.asu.laits.gui.toolbars.TutorModeToolBar;
 import edu.asu.laits.gui.toolbars.ViewToolBar;
 import edu.asu.laits.properties.GlobalProperties;
 import edu.asu.laits.properties.GraphProperties;
+import java.awt.GridLayout;
 import java.awt.Toolkit;
 
 import javax.swing.BoxLayout;
+import javax.swing.JComponent;
+import javax.swing.JLabel;
+import javax.swing.JTabbedPane;
 
 /**
  * The main window in the program. This can be opened both with an empty graph
@@ -43,7 +48,7 @@ public class MainWindow extends JFrame {
     private JPanel toolBarPanel = null;
     private JScrollPane graphPaneScrollPane = null;
     private GraphEditorPane graphEditorPane = null;
-    
+    private JTabbedPane editorTabs;
     
     // Number of windows opened
     private static int windowCount;
@@ -52,6 +57,7 @@ public class MainWindow extends JFrame {
     private EditToolBar editToolBar = null;
     private ViewToolBar viewToolBar = null;
     private ModelToolBar modelToolBar = null;
+    private TutorModeToolBar tutorModeToolBar = null;
     private List<JToolBar> toolBars = new LinkedList<JToolBar>(); 
     private StatusBarPanel statusBarPanel = null;
 
@@ -66,6 +72,7 @@ public class MainWindow extends JFrame {
         l.graphPropertiesChanged();
         getGraphEditorPane().addGraphPropertiesChangeListener(l);
         pack();
+        setExtendedState(MAXIMIZED_BOTH);
         setDefaultCloseOperation(DO_NOTHING_ON_CLOSE);
 
         windowCount++;
@@ -121,7 +128,6 @@ public class MainWindow extends JFrame {
      */
     private MainMenu getMainMenu() {
         if (mainMenu == null) {
-
             mainMenu = new MainMenu(getGraphEditorPane(), this);
         }
         return mainMenu;
@@ -137,6 +143,8 @@ public class MainWindow extends JFrame {
             jPanel = new JPanel();
             jPanel.setLayout(new BorderLayout());
             jPanel.add(getToolBarPanel(), BorderLayout.NORTH);
+            
+            //jPanel.add(getTabbedPane(), BorderLayout.LINE_START);
             jPanel.add(getGraphPaneScrollPane(), BorderLayout.CENTER);
             jPanel.add(getStatusBarPanel(), BorderLayout.SOUTH);
         }
@@ -155,19 +163,21 @@ public class MainWindow extends JFrame {
             toolBarPanel.add(getFileToolBar(), null);
             toolBarPanel.add(getEditToolBar(), null);
             toolBarPanel.add(getViewToolBar(), null);
+            toolBarPanel.add(getTutorModeToolBar(), null);
             toolBarPanel.add(getModelToolBar(), null);
-
+            
             toolBars.add(getFileToolBar());
             toolBars.add(getEditToolBar());
             toolBars.add(getViewToolBar());
+            toolBars.add(getTutorModeToolBar());
             toolBars.add(getModelToolBar());
-
+            
 
             //getMainMenu().getPropertiesMenu().setJToolBars(toolBars);
         }
         return toolBarPanel;
     }
-
+    
     /**
      * This method initializes graphPaneScrollPane
      *
@@ -317,6 +327,13 @@ public class MainWindow extends JFrame {
         return modelToolBar;
     }
 
+    private TutorModeToolBar getTutorModeToolBar(){
+        if(tutorModeToolBar == null){
+            tutorModeToolBar = new TutorModeToolBar();
+        }
+        
+        return tutorModeToolBar;
+    }
     /**
      * This method initializes statusBarPanel
      *

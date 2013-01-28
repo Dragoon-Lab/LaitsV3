@@ -43,7 +43,8 @@ public class InputsPanelView extends javax.swing.JPanel implements ItemListener 
   public HashMap<Vertex, Boolean> initialSelection=new HashMap<Vertex, Boolean>();
   
   /** Logger **/
-  private static Logger logs = Logger.getLogger(InputsPanelView.class);
+  private static Logger logs = Logger.getLogger("DevLogs");
+  private static Logger activityLogs = Logger.getLogger("ActivityLogs");
   
   /**
    * Private Constructor
@@ -60,10 +61,10 @@ public class InputsPanelView extends javax.swing.JPanel implements ItemListener 
     Graph graph=(Graph)this.nodeEditor.getGraphPane().getModelGraph();
     Set<Vertex> vertexes = graph.vertexSet();
     Vertex currentV = this.nodeEditor.getCurrentVertex();
-    nodeDescriptionLabel.setText(currentV.getCorrectDescription());
+    descriptionTextArea.setText(currentV.getCorrectDescription());
     
     JCheckBox box;
-    availableInputNodesPanels.setLayout(new GridLayout(graph.vertexSet().size(), 1));
+    availableInputNodesPanels.setLayout(new GridLayout(0, 1));
     availableInputNodesPanels.setVisible(false);
     
     boolean selected;
@@ -98,7 +99,7 @@ public class InputsPanelView extends javax.swing.JPanel implements ItemListener 
    
   private void resetInputsPanel(){
     buttonGroup1.clearSelection();
-    nodeDescriptionLabel.setText("");
+    descriptionTextArea.setText("");
     inputNodesSelectionOptionButton.setEnabled(true);
     fixedValueOptionButton.setEnabled(true);
     availableInputNodesPanels.removeAll();
@@ -143,7 +144,7 @@ public class InputsPanelView extends javax.swing.JPanel implements ItemListener 
    * Method to Add One Check Box corresponding to each Available Input Node
    */
   private void addAvailableNodesCheckBoxes(){
-    logs.trace("Adding all the Available Input Nodes for ");
+    logs.debug("Adding all the Available Input Nodes for ");
     
   }
   
@@ -153,7 +154,7 @@ public class InputsPanelView extends javax.swing.JPanel implements ItemListener 
    * this will mark previously selected inputs as selected check boxes.
    */
   public void loadSavedInputState() {
-    logs.trace("Loading Saved Inputs for Vertex ");
+    logs.debug("Loading Saved Inputs for Vertex ");
     
     
   }
@@ -162,12 +163,12 @@ public class InputsPanelView extends javax.swing.JPanel implements ItemListener 
    * Method to load previously selected Inputs for Stock and Flow Nodes
    */
   private void loadSavedInputsForStockAndFlow(){
-    logs.trace("Loading previously selected inputs for ");
+    logs.debug("Loading previously selected inputs for ");
     
   }
   
   public void updateNodeDescription(){
-      nodeDescriptionLabel.setText(nodeEditor.getCurrentVertex().getCorrectDescription());
+      descriptionTextArea.setText(nodeEditor.getCurrentVertex().getCorrectDescription());
   }
   /**
    * This method is called when any input check box is selected from the
@@ -189,7 +190,7 @@ public class InputsPanelView extends javax.swing.JPanel implements ItemListener 
     else if(!box.isSelected() && graph.containsEdge(connectedV, nodeEditor.getCurrentVertex()))
         graph.removeEdge(connectedV, nodeEditor.getCurrentVertex());
     
-    logs.trace("Input Node selection changed");
+    logs.debug("Input Node selection changed");
   }
   
   private void addEdge(Vertex v1, Vertex v2){
@@ -204,7 +205,7 @@ public class InputsPanelView extends javax.swing.JPanel implements ItemListener 
    * Reset the Generated Graph Status
    */
   private void resetGraphStatus() {
-    logs.trace( "Resetting Graph Status");
+    logs.debug( "Resetting Graph Status");
     
     
   }
@@ -250,37 +251,19 @@ public class InputsPanelView extends javax.swing.JPanel implements ItemListener 
 
         buttonGroup1 = new javax.swing.ButtonGroup();
         contentPanel = new javax.swing.JPanel();
-        checkBoxScrollPane = new javax.swing.JScrollPane();
-        availableInputNodesPanels = new javax.swing.JPanel();
         radioPanel = new javax.swing.JPanel();
         inputNodesSelectionOptionButton = new javax.swing.JRadioButton();
         fixedValueOptionButton = new javax.swing.JRadioButton();
-        nodeDescriptionLabel = new javax.swing.JLabel();
         nodeDescriptionHeading = new javax.swing.JLabel();
+        jScrollPane1 = new javax.swing.JScrollPane();
+        descriptionTextArea = new javax.swing.JTextArea();
+        jScrollPane2 = new javax.swing.JScrollPane();
+        checkBoxScrollPane = new javax.swing.JScrollPane();
+        availableInputNodesPanels = new javax.swing.JPanel();
 
         setLayout(new org.netbeans.lib.awtextra.AbsoluteLayout());
 
         contentPanel.setLayout(new org.netbeans.lib.awtextra.AbsoluteLayout());
-
-        checkBoxScrollPane.setHorizontalScrollBarPolicy(javax.swing.ScrollPaneConstants.HORIZONTAL_SCROLLBAR_NEVER);
-        checkBoxScrollPane.setVerticalScrollBarPolicy(javax.swing.ScrollPaneConstants.VERTICAL_SCROLLBAR_NEVER);
-
-        availableInputNodesPanels.setMaximumSize(new java.awt.Dimension(32767, 500));
-
-        javax.swing.GroupLayout availableInputNodesPanelsLayout = new javax.swing.GroupLayout(availableInputNodesPanels);
-        availableInputNodesPanels.setLayout(availableInputNodesPanelsLayout);
-        availableInputNodesPanelsLayout.setHorizontalGroup(
-            availableInputNodesPanelsLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 408, Short.MAX_VALUE)
-        );
-        availableInputNodesPanelsLayout.setVerticalGroup(
-            availableInputNodesPanelsLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 253, Short.MAX_VALUE)
-        );
-
-        checkBoxScrollPane.setViewportView(availableInputNodesPanels);
-
-        contentPanel.add(checkBoxScrollPane, new org.netbeans.lib.awtextra.AbsoluteConstraints(6, 122, 327, 235));
 
         buttonGroup1.add(inputNodesSelectionOptionButton);
         inputNodesSelectionOptionButton.setText("Inputs:");
@@ -318,14 +301,43 @@ public class InputsPanelView extends javax.swing.JPanel implements ItemListener 
 
         contentPanel.add(radioPanel, new org.netbeans.lib.awtextra.AbsoluteConstraints(20, 28, -1, -1));
 
-        nodeDescriptionLabel.setVerticalAlignment(javax.swing.SwingConstants.TOP);
-        contentPanel.add(nodeDescriptionLabel, new org.netbeans.lib.awtextra.AbsoluteConstraints(339, 144, 210, 213));
-
         nodeDescriptionHeading.setFont(new java.awt.Font("Lucida Grande", 1, 13)); // NOI18N
         nodeDescriptionHeading.setText("Description");
         contentPanel.add(nodeDescriptionHeading, new org.netbeans.lib.awtextra.AbsoluteConstraints(339, 122, 237, -1));
 
-        add(contentPanel, new org.netbeans.lib.awtextra.AbsoluteConstraints(0, 6, -1, -1));
+        descriptionTextArea.setEditable(false);
+        descriptionTextArea.setBackground(new java.awt.Color(238, 238, 238));
+        descriptionTextArea.setColumns(20);
+        descriptionTextArea.setLineWrap(true);
+        descriptionTextArea.setRows(5);
+        descriptionTextArea.setAutoscrolls(false);
+        jScrollPane1.setViewportView(descriptionTextArea);
+
+        contentPanel.add(jScrollPane1, new org.netbeans.lib.awtextra.AbsoluteConstraints(340, 140, 220, 140));
+
+        checkBoxScrollPane.setHorizontalScrollBarPolicy(javax.swing.ScrollPaneConstants.HORIZONTAL_SCROLLBAR_NEVER);
+        checkBoxScrollPane.setVerticalScrollBarPolicy(javax.swing.ScrollPaneConstants.VERTICAL_SCROLLBAR_NEVER);
+
+        availableInputNodesPanels.setMaximumSize(new java.awt.Dimension(32767, 500));
+
+        javax.swing.GroupLayout availableInputNodesPanelsLayout = new javax.swing.GroupLayout(availableInputNodesPanels);
+        availableInputNodesPanels.setLayout(availableInputNodesPanelsLayout);
+        availableInputNodesPanelsLayout.setHorizontalGroup(
+            availableInputNodesPanelsLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGap(0, 292, Short.MAX_VALUE)
+        );
+        availableInputNodesPanelsLayout.setVerticalGroup(
+            availableInputNodesPanelsLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGap(0, 242, Short.MAX_VALUE)
+        );
+
+        checkBoxScrollPane.setViewportView(availableInputNodesPanels);
+
+        jScrollPane2.setViewportView(checkBoxScrollPane);
+
+        contentPanel.add(jScrollPane2, new org.netbeans.lib.awtextra.AbsoluteConstraints(10, 110, 300, 250));
+
+        add(contentPanel, new org.netbeans.lib.awtextra.AbsoluteConstraints(0, 6, 560, 480));
     }// </editor-fold>//GEN-END:initComponents
 /**
  * Event Handler for Fixed Value Option Button. Changes the UI for this panel
@@ -336,7 +348,7 @@ public class InputsPanelView extends javax.swing.JPanel implements ItemListener 
       // This method is called when Node has a fixed value.
       this.displayCurrentInputsPanel(false);
         nodeEditor.getCurrentVertex().setVertexType(Vertex.VertexType.CONSTANT);
-      logs.trace("Setting Vertex Type to Constant");
+      logs.debug("Setting Vertex Type to Constant");
       nodeEditor.getGraphPane().getLayoutCache().reload();
       nodeEditor.getGraphPane().repaint();
     }//GEN-LAST:event_fixedValueOptionButtonActionPerformed
@@ -372,7 +384,7 @@ public class InputsPanelView extends javax.swing.JPanel implements ItemListener 
           }
         }
       }
-    logs.trace("Error in Inputs Panel = "+syntaxError);
+    logs.debug("Error in Inputs Panel = "+syntaxError);
     return syntaxError;
   }
 
@@ -405,10 +417,12 @@ public class InputsPanelView extends javax.swing.JPanel implements ItemListener 
     private javax.swing.ButtonGroup buttonGroup1;
     private javax.swing.JScrollPane checkBoxScrollPane;
     private javax.swing.JPanel contentPanel;
+    private javax.swing.JTextArea descriptionTextArea;
     private javax.swing.JRadioButton fixedValueOptionButton;
     private javax.swing.JRadioButton inputNodesSelectionOptionButton;
+    private javax.swing.JScrollPane jScrollPane1;
+    private javax.swing.JScrollPane jScrollPane2;
     private javax.swing.JLabel nodeDescriptionHeading;
-    private javax.swing.JLabel nodeDescriptionLabel;
     private javax.swing.JPanel radioPanel;
     // End of variables declaration//GEN-END:variables
 

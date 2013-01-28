@@ -19,7 +19,8 @@ public class GraphEditorConstants extends GraphConstants {
     /**
      * Logger
      */
-    private static Logger logs = Logger.getLogger(GraphEditorConstants.class);
+    private static Logger logs = Logger.getLogger("DevLogs");
+    private static Logger activityLogs = Logger.getLogger("ActivityLogs");
 
     /**
      * Sets the shape attribute in the specified map to the specified value.

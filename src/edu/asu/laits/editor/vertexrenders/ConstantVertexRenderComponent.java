@@ -46,7 +46,8 @@ public class ConstantVertexRenderComponent   extends VertexRenderComponent {
     private boolean useGraphBackround;
     private Color foreground;
     private Vertex currentVertex;
-    private static Logger logs = Logger.getLogger(ConstantVertexRenderComponent.class);
+    private static Logger logs = Logger.getLogger("DevLogs");
+    private static Logger activityLogs = Logger.getLogger("ActivityLogs");
 
     /**
      * @param defaultVertexRenderComponent

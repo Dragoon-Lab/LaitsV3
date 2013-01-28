@@ -93,7 +93,8 @@ public class GraphEditorPane extends JGraph {
     /**
      * Logger
      */
-    private static Logger logs = Logger.getLogger(GraphEditorPane.class);
+    private static Logger logs = Logger.getLogger("DevLogs");
+    private static Logger activityLogs = Logger.getLogger("ActivityLogs");
 
     /**
      * Returns the underlying JGraphT graph
@@ -112,7 +113,7 @@ public class GraphEditorPane extends JGraph {
     public GraphEditorPane(JFrame mainFrame, InformationPane informationPane) {
         super();
         
-        logs.trace("Initializing GraphEditor Pane");
+        logs.debug("Initializing GraphEditor Pane");
         this.informationPane = informationPane;
         informationPane.putMessage(currentStatusMessageProvider);
         graphOperationHelper = new GraphOperationHelper(this, informationPane);

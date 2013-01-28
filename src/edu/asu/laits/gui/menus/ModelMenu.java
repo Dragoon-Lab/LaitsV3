@@ -31,7 +31,8 @@ public class ModelMenu extends JMenu {
     private GraphEditorPane graphPane;
     private MainWindow mainWindow;
     
-    private static Logger logs = Logger.getLogger(ModelMenu.class);
+    private static Logger logs = Logger.getLogger("DevLogs");
+    private static Logger activityLogs = Logger.getLogger("ActivityLogs");
 
     /**
      * This method initializes
@@ -158,11 +159,11 @@ public class ModelMenu extends JMenu {
         if(me.isModelComplete()){
             try{
                 me.run();
-                window.getStatusBarPanel().setStatusMessage("Model Run Complete...", true);
-                graphPane.repaint(); 
+                window.getStatusBarPanel().setStatusMessage("Model Run Complete...", true);                
             }catch(ModelEvaluationException ex){
                 window.getStatusBarPanel().setStatusMessage(ex.getMessage(), false);
             }    
+            graphPane.repaint(); 
         }else{
             JOptionPane.showMessageDialog(window, "The model is incomplete, please complete all the nodes before running Model");
             window.getStatusBarPanel().setStatusMessage("Please complete all the nodes before running Model", false);

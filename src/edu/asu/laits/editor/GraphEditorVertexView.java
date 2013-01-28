@@ -22,7 +22,8 @@ public class GraphEditorVertexView extends VertexView {
     /**
      * Logger
      */
-    private static Logger logs = Logger.getLogger(GraphEditorVertexView.class);
+    private static Logger logs = Logger.getLogger("DevLogs");
+    private static Logger activityLogs = Logger.getLogger("ActivityLogs");
 
     // Headless environment does not allow vertex renderer
     static {

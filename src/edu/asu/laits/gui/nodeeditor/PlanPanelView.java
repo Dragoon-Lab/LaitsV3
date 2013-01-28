@@ -21,7 +21,8 @@ public class PlanPanelView extends JPanel {
   private NodeEditor nodeEditor;
   
   /** Logger **/
-  private static Logger logs = Logger.getLogger(PlanPanelView.class);
+  private static Logger logs = Logger.getLogger("DevLogs");
+  private static Logger activityLogs = Logger.getLogger("ActivityLogs");
   
   
   public PlanPanelView(NodeEditor ne){
@@ -31,12 +32,12 @@ public class PlanPanelView extends JPanel {
   }
   
   public void initPanel(){
-    logs.trace("Initializing plan panel for Node ");
+    logs.debug("Initializing plan panel for Node ");
     setSelectedPlan(nodeEditor.getCurrentVertex().getPlan());
   }
   
   public void initPanelForNewNode(){
-    logs.trace("Initializing plan panel For New Node");
+    logs.debug("Initializing plan panel For New Node");
     resetPlanPanel();   
   }
   

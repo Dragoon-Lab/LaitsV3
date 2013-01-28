@@ -8,6 +8,7 @@ import javax.swing.JMenuItem;
 
 import edu.asu.laits.gui.AboutDialog;
 import edu.asu.laits.properties.GlobalProperties;
+import org.apache.log4j.Logger;
 
 /**
  * A menu where you can choose to open the about menu and the help menu.
@@ -18,6 +19,9 @@ public class HelpAboutMenu extends JMenu {
     private JMenuItem aboutHelpMenuItem = null;
     private Frame mainFrame;
 
+    private static Logger logs = Logger.getLogger("DevLogs");
+    private static Logger activityLogs = Logger.getLogger("ActivityLogs");
+    
     /**
      * This method initializes
      *
@@ -49,6 +53,7 @@ public class HelpAboutMenu extends JMenu {
             helpHelpMenuItem
                     .addActionListener(new java.awt.event.ActionListener() {
                 public void actionPerformed(java.awt.event.ActionEvent e) {
+                    activityLogs.info("User Selected Help Menu.");
                     GlobalProperties.getInstance().getHelpBroker()
                             .setDisplayed(true);
                     GlobalProperties.getInstance().getHelpBroker()
@@ -69,6 +74,7 @@ public class HelpAboutMenu extends JMenu {
             aboutHelpMenuItem
                     .addActionListener(new java.awt.event.ActionListener() {
                 public void actionPerformed(java.awt.event.ActionEvent e) {
+                    activityLogs.info("User selected About Menu.");
                     AboutDialog.showAboutDialog(mainFrame);
                 }
             });

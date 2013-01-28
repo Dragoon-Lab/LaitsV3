@@ -55,7 +55,8 @@ public class NodeEditor extends JFrame implements WindowListener {
     /**
      * Logger
      */
-    private static Logger logs = Logger.getLogger(NodeEditor.class);
+    private static Logger logs = Logger.getLogger("DevLogs");
+    private static Logger activityLogs = Logger.getLogger("ActivityLogs");
 
     public NodeEditor(GraphEditorPane editorPane) {
         graphPane = editorPane;
@@ -71,7 +72,7 @@ public class NodeEditor extends JFrame implements WindowListener {
      * Initialize NodeEditor for a new Node
      */
     public void initNodeEditor() {
-        logs.trace("Initializing NodeEditor");
+        logs.debug("Initializing NodeEditor");
 
         initTabs(true);
         addWindowListener(this);
@@ -106,7 +107,7 @@ public class NodeEditor extends JFrame implements WindowListener {
      * @param newNode : if the tabs are for new node or for an existing node
      */
     public void initTabs(boolean newNode) {
-        logs.trace("Initializing NodeEditor Tabs - Start");
+        logs.debug("Initializing NodeEditor Tabs - Start");
 
         dPanel = new DescriptionPanelView(this);
         pPanel = new PlanPanelView(this);
@@ -131,7 +132,7 @@ public class NodeEditor extends JFrame implements WindowListener {
         
         setSelectedPanel();
 
-        logs.trace("Initializing NodeEditor Tabs - End");
+        logs.debug("Initializing NodeEditor Tabs - End");
     }
 
     private void setSelectedPanel() {
@@ -145,24 +146,24 @@ public class NodeEditor extends JFrame implements WindowListener {
             tabPane.setSelectedIndex(GRAPH);
             tabPane.setForegroundAt(GRAPH, Color.BLACK);
         } else {
-            logs.trace("Inside Else");
+            logs.debug("Inside Else");
             tabPane.setEnabledAt(GRAPH, false);
             tabPane.setForegroundAt(GRAPH, Color.GRAY);
 
             if (!currentVertex.getInputsStatus().equals(Vertex.InputsStatus.UNDEFINED)) {
-                logs.trace("setting calc panel as current");
+                logs.debug("setting calc panel as current");
                 selectedTab = INPUTS;
                 tabPane.setSelectedIndex(CALCULATIONS);
             } else if (!currentVertex.getPlan().equals(Vertex.Plan.UNDEFINED)) {
-                logs.trace("Setting Inputs Panel as Current");
+                logs.debug("Setting Inputs Panel as Current");
                 selectedTab = PLAN;
                 tabPane.setSelectedIndex(INPUTS);
             } else if (!currentVertex.getName().equals("")) {
-                logs.trace("Setting Plan Panel as Current");
+                logs.debug("Setting Plan Panel as Current");
                 selectedTab = DESCRIPTION;
                 tabPane.setSelectedIndex(PLAN);
             } else {
-                logs.trace("Setting Desc Panel as Current");
+                logs.debug("Setting Desc Panel as Current");
                 selectedTab = DESCRIPTION;
                 tabPane.setSelectedIndex(DESCRIPTION);
             }
@@ -184,7 +185,7 @@ public class NodeEditor extends JFrame implements WindowListener {
     }
 
     private void setTabListener() {
-        logs.trace("Setting Tab Listener");
+        logs.debug("Setting Tab Listener");
         final JFrame f = this;
 
         tabPane.addChangeListener(new ChangeListener() {
@@ -194,7 +195,7 @@ public class NodeEditor extends JFrame implements WindowListener {
                 logs.error("Current Tab " + tabPane.getSelectedIndex() + "  " + selectedTab);
 
                 if (extraTabEvent) {
-                    logs.trace("Exiting because of extraTabEvent");
+                    logs.debug("Exiting because of extraTabEvent");
                     extraTabEvent = false;
                     return;
                 }
@@ -206,7 +207,7 @@ public class NodeEditor extends JFrame implements WindowListener {
                 } else if (tabPane.getSelectedIndex() == PLAN) {
                     if (pPanel.isViewEnabled()) {
                         selectedTab = PLAN;
-                        logs.trace("Plan Panel View Enabled. ExtraTabEvent = " + extraTabEvent);
+                        logs.debug("Plan Panel View Enabled. ExtraTabEvent = " + extraTabEvent);
                     } else {
                         extraTabEvent = true;
                         tabPane.setSelectedIndex(selectedTab);
@@ -214,7 +215,7 @@ public class NodeEditor extends JFrame implements WindowListener {
                     }
                 } else if (tabPane.getSelectedIndex() == INPUTS) {
                     if (iPanel.isViewEnabled()) {
-                        logs.trace("inside ipanel if " + extraTabEvent);
+                        logs.debug("inside ipanel if " + extraTabEvent);
                         selectedTab = INPUTS;
                     } else {
                         extraTabEvent = true;
@@ -230,20 +231,20 @@ public class NodeEditor extends JFrame implements WindowListener {
                         return;
                     }
                 }
-                logs.trace("Tab Stage Changed Action - Ends");
+                logs.debug("Tab Stage Changed Action - Ends");
             }
         });
-        logs.trace("Setting Tab Listener -Ends");
+        logs.debug("Setting Tab Listener -Ends");
     }
 
     private boolean processEditorInput() {
         if (selectedTab == GRAPH) {
-            logs.trace("Selected Tab is Graph - DOING NOTHING");
+            logs.debug("Selected Tab is Graph - DOING NOTHING");
             selectedTab = tabPane.getSelectedIndex();
         } else if (selectedTab == DESCRIPTION) {
 
             if (dPanel.processDescriptionPanel()) {
-                logs.trace("Saving Description Panel");
+                logs.debug("Saving Description Panel");
                 getInputsPanel().updateNodeDescription();
                 getGraphsPanel().updateDescription();
                 editorMsgLabel.setText("");
@@ -256,7 +257,7 @@ public class NodeEditor extends JFrame implements WindowListener {
         } else if (selectedTab == PLAN) {
 
             if (pPanel.processPlanPanel()) {
-                logs.trace("Saving PLAN Panel");
+                logs.debug("Saving PLAN Panel");
                 editorMsgLabel.setText("");
                 iPanel.setViewEnabled(true);
             } else {
@@ -267,7 +268,7 @@ public class NodeEditor extends JFrame implements WindowListener {
         } else if (selectedTab == INPUTS) {
 
             if (iPanel.processInputsPanel()) {
-                logs.trace("Saving INPUTS Panel");
+                logs.debug("Saving INPUTS Panel");
                 editorMsgLabel.setText("");
                 cPanel.initPanel();
                 cPanel.setViewEnabled(true);
@@ -279,7 +280,7 @@ public class NodeEditor extends JFrame implements WindowListener {
         } else if (selectedTab == CALCULATIONS) {
 
             if (cPanel.processCalculationsPanel()) {
-                logs.trace("Saving CALCULATIONS Panel");
+                logs.debug("Saving CALCULATIONS Panel");
                 editorMsgLabel.setText("");
             } else {
                 extraTabEvent = true;
@@ -331,7 +332,7 @@ public class NodeEditor extends JFrame implements WindowListener {
      * @param e
      */
     public void windowClosing(WindowEvent e) {
-        logs.trace("Closing Node Editor");
+        logs.debug("Closing Node Editor");
     }
 
     public void windowOpened(WindowEvent e) {
@@ -568,7 +569,7 @@ public class NodeEditor extends JFrame implements WindowListener {
       if (dPanel.processDescriptionPanel()) {
           if (pPanel.processPlanPanel()) {
               if (iPanel.processInputsPanel()) {
-                  logs.trace("Setting Inputs completely");
+                  logs.debug("Setting Inputs completely");
                   currentVertex.setInputsStatus(Vertex.InputsStatus.CORRECT);
                   if (cPanel.processCalculationsPanel()) {
                       currentVertex.setCalculationsStatus(Vertex.CalculationsStatus.CORRECT);
@@ -576,7 +577,7 @@ public class NodeEditor extends JFrame implements WindowListener {
                       currentVertex.setCalculationsStatus(Vertex.CalculationsStatus.INCORRECT);
                   }
               } else {
-                  logs.trace("Setting input incompletely");
+                  logs.debug("Setting input incompletely");
                   currentVertex.setInputsStatus(Vertex.InputsStatus.INCORRECT);
               }
               graphPane.repaint();

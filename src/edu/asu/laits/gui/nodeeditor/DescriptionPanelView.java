@@ -37,7 +37,8 @@ public class DescriptionPanelView extends JPanel{
   private static DescriptionPanelView descView;
   private NodeEditor nodeEditor;
   
-  private static Logger logs = Logger.getLogger(DescriptionPanelView.class);
+  private static Logger logs = Logger.getLogger("DevLogs");
+  private static Logger activityLogs = Logger.getLogger("ActivityLogs");
   
   String getNodeName()
   {
@@ -68,14 +69,14 @@ public class DescriptionPanelView extends JPanel{
    * @param inputVertex 
    */
   public void initPanelForSavedNode(){
-    logs.trace("Initializing Description Panel for Node ");
+    logs.debug("Initializing Description Panel for Node ");
     
     initTree();
     
   }
   
   public void initPanelForNewNode(){
-    logs.trace("Initializing Description Panel for New Node");
+    logs.debug("Initializing Description Panel for New Node");
     resetDescriptionPanel();
     initTree();    
   }
@@ -306,7 +307,7 @@ public class DescriptionPanelView extends JPanel{
   }
 
   public void processDeleteAction(){
-    logs.trace(  "Author deleted the node.");
+    logs.debug(  "Author deleted the node.");
     
   }
 

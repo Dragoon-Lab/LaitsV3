@@ -48,7 +48,8 @@ public class Vertex {
     private int vertexIndex;
     
     /** Logger */
-    private static Logger logs = Logger.getLogger(Vertex.class);
+    private static Logger logs = Logger.getLogger("DevLogs");
+    private static Logger activityLogs = Logger.getLogger("ActivityLogs");
 
     /**
      *
@@ -73,7 +74,7 @@ public class Vertex {
         try{
             eval.isValidName(label);
         }catch(IllegalArgumentException e){
-            logs.trace(e.getMessage());
+            logs.debug(e.getMessage());
             throw new IllegalArgumentException(e.getMessage());            
         }
         this.name = label;

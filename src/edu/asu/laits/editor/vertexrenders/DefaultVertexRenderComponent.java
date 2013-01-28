@@ -41,7 +41,8 @@ public class DefaultVertexRenderComponent extends VertexRenderComponent {
     /**
      * Logger
      */
-    private static Logger logs = Logger.getLogger(DefaultVertexRenderComponent.class);
+    private static Logger logs = Logger.getLogger("DevLogs");
+    private static Logger activityLogs = Logger.getLogger("ActivityLogs");
 
     /**
      * @param defaultVertexRenderComponent

@@ -7,6 +7,7 @@ import javax.swing.UIManager;
 
 import edu.asu.laits.properties.GlobalProperties;
 import org.apache.log4j.Logger;
+import org.apache.log4j.PropertyConfigurator;
 
 /**
  *
@@ -18,7 +19,8 @@ public class Application {
     /**
      * Logger
      */
-    private static Logger logs = Logger.getLogger(Application.class);
+    private static Logger logs = Logger.getLogger("DevLogs");
+    private static Logger activityLogs = Logger.getLogger("ActivityLogs");
 
     /**
      * @param args
@@ -41,6 +43,7 @@ public class Application {
             MainWindow window = new MainWindow();
 
             window.setVisible(true);
+            
 
         } catch (Exception e) {
             JOptionPane.showMessageDialog(null, e.getMessage(),

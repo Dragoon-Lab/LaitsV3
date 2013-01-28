@@ -5,7 +5,7 @@
 
 <helpset version="1.0">
   <!-- title -->
-  <title>Graph Editor - Help</title>
+  <title>LAITS - Help</title>
 
   <!-- maps -->
   <maps>

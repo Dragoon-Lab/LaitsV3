@@ -39,7 +39,8 @@ public class PlotPanel extends JPanel {
   private Vertex vertex;
   private String units;
   
-  private static Logger logs = Logger.getLogger(PlotPanel.class);
+  private static Logger logs = Logger.getLogger("DevLogs");
+  private static Logger activityLogs = Logger.getLogger("ActivityLogs");
   /**
    * Constructor
    *
