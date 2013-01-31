@@ -16,14 +16,6 @@ public class Task {
     private int startTime, endTime;
     private String units;
     
-    //private static Task currentTask;
-    
-    /*public static Task getInstance(){
-        if(currentTask == null)
-            currentTask = new Task();
-        return currentTask;
-    }*/
-    
     public Task(){
         taskName = "";
         taskDescription = "";
@@ -31,6 +23,12 @@ public class Task {
         startTime = 0;
         endTime = 10;
         units = "Days";
+    }
+    
+    public Task(int s, int e, String u){
+        this.startTime = s;
+        this.endTime = e;
+        this.units = u;
     }
     
     public int getStartTime(){

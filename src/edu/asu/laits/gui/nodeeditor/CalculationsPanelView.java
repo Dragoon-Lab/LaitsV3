@@ -279,6 +279,20 @@ public class CalculationsPanelView extends javax.swing.JPanel {
             vertices.next().setGraphsStatus(Vertex.GraphsStatus.UNDEFINED);
         }
     }
+    
+    public void setCheckedBackground(Color c){
+        quantitySelectionPanel.setBackground(c);
+        
+        if(currentVertex.getVertexType().equals(Vertex.VertexType.CONSTANT) || 
+                currentVertex.getVertexType().equals(Vertex.VertexType.STOCK)){
+            fixedValueInputBox.setBackground(c);
+        }
+        
+        if(currentVertex.getVertexType().equals(Vertex.VertexType.FLOW) || 
+                currentVertex.getVertexType().equals(Vertex.VertexType.STOCK)){
+            formulaInputArea.setBackground(c);
+        }
+    }
     /**
      * This method is called from within the constructor to initialize the form.
      * WARNING: Do NOT modify this code. The content of this method is always

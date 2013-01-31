@@ -4,7 +4,7 @@
  */
 package edu.asu.laits.gui;
 
-import edu.asu.laits.editor.ApplicationUser;
+import edu.asu.laits.editor.ApplicationContext;
 import edu.asu.laits.properties.GlobalProperties;
 import java.io.BufferedReader;
 import java.io.InputStreamReader;
@@ -46,11 +46,12 @@ public class UserRegistration extends javax.swing.JDialog {
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
     private void initComponents() {
 
+        buttonGroup1 = new javax.swing.ButtonGroup();
         firstnameInputBox = new javax.swing.JTextField();
         jLabel1 = new javax.swing.JLabel();
         firstnameErrMsg = new javax.swing.JLabel();
         jLabel2 = new javax.swing.JLabel();
-        jLabel3 = new javax.swing.JLabel();
+        labelAppMode = new javax.swing.JLabel();
         asuidInputBox = new javax.swing.JTextField();
         lastnameInputBox = new javax.swing.JTextField();
         lastnameErrMsg = new javax.swing.JLabel();
@@ -59,6 +60,9 @@ public class UserRegistration extends javax.swing.JDialog {
         buttonCancel = new javax.swing.JButton();
         jLabel4 = new javax.swing.JLabel();
         asuidErrMsg = new javax.swing.JLabel();
+        jLabel5 = new javax.swing.JLabel();
+        radioButtonStudent = new javax.swing.JRadioButton();
+        radioButtonAuthor = new javax.swing.JRadioButton();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.DISPOSE_ON_CLOSE);
         setTitle("LAITS User Registration");
@@ -73,10 +77,11 @@ public class UserRegistration extends javax.swing.JDialog {
         getContentPane().add(firstnameErrMsg, new org.netbeans.lib.awtextra.AbsoluteConstraints(380, 70, 89, -1));
 
         jLabel2.setText("Last Name*: ");
-        getContentPane().add(jLabel2, new org.netbeans.lib.awtextra.AbsoluteConstraints(85, 113, -1, -1));
+        getContentPane().add(jLabel2, new org.netbeans.lib.awtextra.AbsoluteConstraints(85, 113, 80, -1));
 
-        jLabel3.setText("ASU ID*: ");
-        getContentPane().add(jLabel3, new org.netbeans.lib.awtextra.AbsoluteConstraints(85, 159, 80, -1));
+        labelAppMode.setText("Mode*:");
+        labelAppMode.setPreferredSize(new java.awt.Dimension(57, 16));
+        getContentPane().add(labelAppMode, new org.netbeans.lib.awtextra.AbsoluteConstraints(85, 200, 90, -1));
         getContentPane().add(asuidInputBox, new org.netbeans.lib.awtextra.AbsoluteConstraints(203, 153, 158, -1));
         getContentPane().add(lastnameInputBox, new org.netbeans.lib.awtextra.AbsoluteConstraints(203, 107, 158, -1));
 
@@ -94,7 +99,7 @@ public class UserRegistration extends javax.swing.JDialog {
                 buttonSubmitActionPerformed(evt);
             }
         });
-        getContentPane().add(buttonSubmit, new org.netbeans.lib.awtextra.AbsoluteConstraints(277, 212, -1, -1));
+        getContentPane().add(buttonSubmit, new org.netbeans.lib.awtextra.AbsoluteConstraints(280, 260, -1, -1));
 
         buttonCancel.setText("Cancel");
         buttonCancel.addActionListener(new java.awt.event.ActionListener() {
@@ -102,7 +107,7 @@ public class UserRegistration extends javax.swing.JDialog {
                 buttonCancelActionPerformed(evt);
             }
         });
-        getContentPane().add(buttonCancel, new org.netbeans.lib.awtextra.AbsoluteConstraints(179, 212, -1, -1));
+        getContentPane().add(buttonCancel, new org.netbeans.lib.awtextra.AbsoluteConstraints(160, 260, -1, -1));
 
         jLabel4.setFont(new java.awt.Font("Arial", 1, 18)); // NOI18N
         jLabel4.setText("User Registration");
@@ -111,6 +116,18 @@ public class UserRegistration extends javax.swing.JDialog {
         asuidErrMsg.setForeground(new java.awt.Color(252, 0, 0));
         asuidErrMsg.setText("jLabel5");
         getContentPane().add(asuidErrMsg, new org.netbeans.lib.awtextra.AbsoluteConstraints(380, 160, 89, -1));
+
+        jLabel5.setText("ASU ID*: ");
+        getContentPane().add(jLabel5, new org.netbeans.lib.awtextra.AbsoluteConstraints(85, 159, 80, -1));
+
+        buttonGroup1.add(radioButtonStudent);
+        radioButtonStudent.setSelected(true);
+        radioButtonStudent.setText("Student");
+        getContentPane().add(radioButtonStudent, new org.netbeans.lib.awtextra.AbsoluteConstraints(200, 200, -1, -1));
+
+        buttonGroup1.add(radioButtonAuthor);
+        radioButtonAuthor.setText("Author");
+        getContentPane().add(radioButtonAuthor, new org.netbeans.lib.awtextra.AbsoluteConstraints(290, 200, -1, -1));
 
         pack();
     }// </editor-fold>//GEN-END:initComponents
@@ -122,32 +139,40 @@ public class UserRegistration extends javax.swing.JDialog {
     String firstName = firstnameInputBox.getText();
     String lastName = lastnameInputBox.getText();
     String asuId = asuidInputBox.getText();
+    String appMode = null;
+    if(radioButtonStudent.isSelected())
+        appMode = "STUDENT";
+    else
+        appMode = "AUTHOR";
+    
+    devLogs.debug("User Registration Input: "+firstName+" "+lastName+" "+asuId + " "+appMode);
     
     if(validateInputFields(firstName,lastName,asuId)){
       logs.debug("User Registration Successful");
-      ApplicationUser.setUserFirstName(firstName);
-      ApplicationUser.setUserLastName(lastName);
-      ApplicationUser.setUserASUID(asuId);
+      ApplicationContext.setUserFirstName(firstName);
+      ApplicationContext.setUserLastName(lastName);
+      ApplicationContext.setUserASUID(asuId);
+      ApplicationContext.setAppMode(appMode);
       
       // Update this User record in database
       final String WEB = "http://laits.engineering.asu.edu/updateprob.php";
 
     try {
       //idtask taskID of the current task
-      String fname = ApplicationUser.getUserFirstName();
-      String lname = ApplicationUser.getUserLastName();
-      String asuid = ApplicationUser.getUserASUID();          
+      String fname = ApplicationContext.getUserFirstName();
+      String lname = ApplicationContext.getUserLastName();
+      String asuid = ApplicationContext.getUserASUID();          
       
-      devLogs.trace("Writing Student "+fname+" "+lname+" Task: "+ "LAITS_Author"+" to server");
+      devLogs.info("Writing Student "+fname+" "+lname+" Mode: "+ appMode+" to server");
 
       String url = WEB;
-      url += "?id=" + asuid + "&fname=" + fname + "&lname=" + lname + "&title=" + "LAITS_Author";
+      url += "?id=" + asuid + "&fname=" + fname + "&lname=" + lname + "&title=" + appMode;
       URL myURL = new URL(url);
       
       BufferedReader in = new BufferedReader(new InputStreamReader(myURL.openStream()));
 
       in.close();
-      ApplicationUser.setUserValid(true);      
+      ApplicationContext.setUserValid(true);      
       this.dispose();
       
       // Open Main Window
@@ -244,15 +269,19 @@ public class UserRegistration extends javax.swing.JDialog {
     private javax.swing.JLabel asuidErrMsg;
     private javax.swing.JTextField asuidInputBox;
     private javax.swing.JButton buttonCancel;
+    private javax.swing.ButtonGroup buttonGroup1;
     private javax.swing.JButton buttonSubmit;
     private javax.swing.JLabel firstnameErrMsg;
     private javax.swing.JTextField firstnameInputBox;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel2;
-    private javax.swing.JLabel jLabel3;
     private javax.swing.JLabel jLabel4;
+    private javax.swing.JLabel jLabel5;
+    private javax.swing.JLabel labelAppMode;
     private javax.swing.JLabel lastnameErrMsg;
     private javax.swing.JTextField lastnameInputBox;
+    private javax.swing.JRadioButton radioButtonAuthor;
+    private javax.swing.JRadioButton radioButtonStudent;
     private javax.swing.JLabel spacer;
     // End of variables declaration//GEN-END:variables
 

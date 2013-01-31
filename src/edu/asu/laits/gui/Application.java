@@ -1,6 +1,6 @@
 package edu.asu.laits.gui;
 
-import edu.asu.laits.editor.ApplicationUser;
+import edu.asu.laits.editor.ApplicationContext;
 import javax.swing.JOptionPane;
 import javax.swing.LookAndFeel;
 import javax.swing.UIManager;
@@ -27,29 +27,34 @@ public class Application {
      */
     public static void main(String[] args) {
         //UserRegistration reg = new UserRegistration(null, true);
+        ApplicationContext.setUserValid(true);
+        ApplicationContext.setAppMode("STUDENT");
         
-        try {
-            String uiClassName = GlobalProperties.getInstance().getUITheme();
-            if (null != uiClassName) {
-                try {
-                    UIManager.setLookAndFeel((LookAndFeel) Class.forName(
-                            uiClassName).newInstance());
-                } catch (Exception e) {
-                    System.err.println("Could not load theme: " + uiClassName);
+        
+        if (ApplicationContext.isUserValid()) {
+            try {
+                String uiClassName = GlobalProperties.getInstance().getUITheme();
+                if (null != uiClassName) {
+                    try {
+                        UIManager.setLookAndFeel((LookAndFeel) Class.forName(
+                                uiClassName).newInstance());
+                    } catch (Exception e) {
+                        System.err.println("Could not load theme: " + uiClassName);
+                    }
                 }
+
+                // Main application window of LAITS
+                MainWindow window = new MainWindow();
+
+                window.setVisible(true);
+
+
+            } catch (Exception e) {
+                JOptionPane.showMessageDialog(null, e.getMessage(),
+                        "An error has occured", JOptionPane.ERROR_MESSAGE);
+
+                e.printStackTrace();
             }
-            
-            // Main application window of LAITS
-            MainWindow window = new MainWindow();
-
-            window.setVisible(true);
-            
-
-        } catch (Exception e) {
-            JOptionPane.showMessageDialog(null, e.getMessage(),
-                    "An error has occured", JOptionPane.ERROR_MESSAGE);
-
-            e.printStackTrace();
         }
     }
 }

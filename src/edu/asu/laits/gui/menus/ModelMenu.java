@@ -1,5 +1,6 @@
 package edu.asu.laits.gui.menus;
 
+import edu.asu.laits.editor.ApplicationContext;
 import edu.asu.laits.editor.GraphEditorPane;
 import edu.asu.laits.editor.GraphRangeEditor;
 import edu.asu.laits.gui.MainWindow;
@@ -89,7 +90,7 @@ public class ModelMenu extends JMenu {
             runModelMenuItem
                     .addActionListener(new java.awt.event.ActionListener() {
                 public void actionPerformed(java.awt.event.ActionEvent e) {
-                    
+                    runModelAction();
                 }
             });
         }
@@ -159,7 +160,14 @@ public class ModelMenu extends JMenu {
         if(me.isModelComplete()){
             try{
                 me.run();
-                window.getStatusBarPanel().setStatusMessage("Model Run Complete...", true);                
+                
+                if(ApplicationContext.getAppMode().equals("STUDENT"))
+                    me.validateStudentGraph();
+                
+                window.getStatusBarPanel().setStatusMessage("", true);                
+                JOptionPane.showMessageDialog(MainWindow.getFrames()[0], 
+                           "Run Model Complete.", 
+                           "Success", JOptionPane.INFORMATION_MESSAGE);
             }catch(ModelEvaluationException ex){
                 window.getStatusBarPanel().setStatusMessage(ex.getMessage(), false);
             }    
@@ -169,6 +177,8 @@ public class ModelMenu extends JMenu {
             window.getStatusBarPanel().setStatusMessage("Please complete all the nodes before running Model", false);
         }
     }
+    
+    
     
     public void editTimeRangeAction(){
         GraphRangeEditor ed = new GraphRangeEditor(graphPane, true);

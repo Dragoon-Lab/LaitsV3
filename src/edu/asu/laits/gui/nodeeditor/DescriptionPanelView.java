@@ -6,8 +6,13 @@
 
 package edu.asu.laits.gui.nodeeditor;
 
+import edu.asu.laits.editor.ApplicationContext;
 import edu.asu.laits.model.Graph;
+import edu.asu.laits.model.SolutionDTreeNode;
+import edu.asu.laits.model.SolutionNode;
+import edu.asu.laits.model.TaskSolution;
 import edu.asu.laits.model.Vertex;
+import java.awt.Color;
 import java.util.ArrayList;
 import java.util.Enumeration;
 import java.util.Iterator;
@@ -31,7 +36,7 @@ public class DescriptionPanelView extends JPanel{
 
   TreePath[] decisionTreePaths;
   
-  DefaultMutableTreeNode root = null;
+  SolutionDTreeNode root = null;
   DefaultTreeModel model = null;
   private boolean triedDuplicate = false;
   private static DescriptionPanelView descView;
@@ -59,35 +64,24 @@ public class DescriptionPanelView extends JPanel{
   }
   
   public void initPanel(){
-      Vertex currentVertex=this.nodeEditor.getCurrentVertex();
+      if(ApplicationContext.getAppMode().equals("STUDENT")){
+          this.nodeNameTextField.setEditable(false);
+          this.quantityDescriptionTextField.setEditable(false);
+      }
+      
+      Vertex currentVertex = this.nodeEditor.getCurrentVertex();
       this.nodeNameTextField.setText(currentVertex.getName());
       this.quantityDescriptionTextField.setText(currentVertex.getCorrectDescription());
       
   }
-  /**
-   * Initialize Description Panel for a particular Vertex
-   * @param inputVertex 
-   */
-  public void initPanelForSavedNode(){
-    logs.debug("Initializing Description Panel for Node ");
-    
-    initTree();
-    
-  }
   
-  public void initPanelForNewNode(){
-    logs.debug("Initializing Description Panel for New Node");
-    resetDescriptionPanel();
-    initTree();    
-  }
-  
-  private void resetDescriptionPanel(){
-    nodeNameTextField.setText("");
-    quantityDescriptionTextField.setText("");   
-  }
-  
-  public void setquantityDescriptionTextField(String desc) {
-    
+  private void initTree() {
+    root = ApplicationContext.getCorrectSolution().getdTreeNode();
+    model = new DefaultTreeModel(root);
+    decisionTree.setModel(model);
+
+    jScrollPane2.setViewportView(decisionTree);
+
   }
 
   /**
@@ -211,25 +205,30 @@ public class DescriptionPanelView extends JPanel{
     }// </editor-fold>//GEN-END:initComponents
 
     private void decisionTreeValueChanged(javax.swing.event.TreeSelectionEvent evt) {//GEN-FIRST:event_decisionTreeValueChanged
-       DefaultMutableTreeNode node = (DefaultMutableTreeNode) decisionTree.getLastSelectedPathComponent();
+       resetTextFieldBackground();
+       SolutionDTreeNode node = (SolutionDTreeNode) decisionTree.getLastSelectedPathComponent();
        TreeNode[] treeNodes;
-       String fullDesc="";
+       StringBuilder sb = new StringBuilder();
+       
        if(node.isLeaf()){
-           treeNodes=node.getPath();
-           for(TreeNode treeNode : treeNodes){
-               if(!treeNode.toString().equals("root"))
-                fullDesc+=" "+treeNode.toString();
+           treeNodes = node.getPath();
+           
+           for(int i=1; i<treeNodes.length; i++){
+               sb.append(treeNodes[i].toString().trim());
+               sb.append(" ");
            }
-           this.quantityDescriptionTextField.setText(fullDesc.trim());
+           
+           this.quantityDescriptionTextField.setText(sb.toString().trim());
+           this.nodeNameTextField.setText(node.getNodeName());
+           this.repaint();
        }
+       
     }//GEN-LAST:event_decisionTreeValueChanged
 
   // returns the value held by triedDuplicate
   public boolean getTriedDuplicate() {
     return triedDuplicate;
   }
-
- 
 
   
 
@@ -256,16 +255,7 @@ public class DescriptionPanelView extends JPanel{
     }
   }
 
-  private void initTree() {
-    
-    model = new DefaultTreeModel(root);
-    decisionTree.setModel(model);
-
-    jScrollPane2.setViewportView(decisionTree);
-
-//    TreeNode root = (TreeNode) decisionTree.getModel().getRoot();
-//    expandAll(decisionTree, new TreePath(root));
-  }
+  
 
   private void expandAll(JTree tree, TreePath parent) {
     TreeNode node = (TreeNode) parent.getLastPathComponent();
@@ -358,6 +348,53 @@ public class DescriptionPanelView extends JPanel{
           return true;
       else
           return false;
+  }
+  
+  public void setTextFieldBackground(Color c){
+      nodeNameTextField.setBackground(c);
+      quantityDescriptionTextField.setBackground(c);
+  }
+  
+  public void resetTextFieldBackground(){
+      nodeNameTextField.setBackground(Color.white);
+      quantityDescriptionTextField.setBackground(Color.white);
+  }
+  
+  public void giveUpDescriptionPanel(){
+      // Get a correct Node Name
+      TaskSolution solution = ApplicationContext.getCorrectSolution();
+      List<SolutionNode> allNodes = solution.getSolutionNodes();
+      
+      String giveupNode = null;
+      for(SolutionNode node : allNodes){
+          if(!node.getNodeName().equals(nodeEditor.getGraphPane().getModelGraph()
+                  .getVertexByName(node.getNodeName()))){
+              giveupNode = node.getNodeName();
+              break;
+          }
+      }
+      
+      if(giveupNode == null){
+          nodeEditor.setEditorMessage("All Nodes are already being used in the Model.");
+          return ;
+      }
+      
+      logs.debug("Found Giveup Node as : "+giveupNode);
+      
+      setDescriptionTreeNode(giveupNode);
+      setTextFieldBackground(Color.YELLOW);
+  }
+  
+  private void setDescriptionTreeNode(String nodeName){
+      Enumeration<SolutionDTreeNode> allNodes = root.breadthFirstEnumeration();
+      while(allNodes.hasMoreElements()){
+          SolutionDTreeNode node = allNodes.nextElement();
+          
+          if(node.isLeaf() && node.getNodeName().equals(nodeName)){
+              TreePath path = new TreePath(node.getPath());
+              decisionTree.setSelectionPath(path);
+          }
+      }
   }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables

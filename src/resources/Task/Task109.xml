@@ -1,0 +1,164 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<Task phase="Challenge" type="Construct">
+  <URL>http://www.cdc.gov/parasites/images/giardia/Giardia_trophs.jpg</URL>
+  <TaskDescription>Problem: Giardia are microscopic single-cell organisms that live in streams and lakes. It mutiplies quickly. Suppose a hiker's water bottle initially holds 100 Giardia. On average, 40% of the Giardia reproduce each hour, each producing a new Giardia. Thus, after the first hour, there are 140 Giardia in the bottle, after the second hour there are 196 in the bottle, and so on. 
+  Goal: Graph the number of Giardia in the bottle over 8 hours.</TaskDescription>
+  <ShortDescription>
+  \n Accumulator: population = population + births; initial population = 100
+  \n Function: births = growth rate * population 
+  \n Given: growth rate = 0.40</ShortDescription>
+  \n Given: population_first_hour = 140
+  \n Given: initial_population = 100
+  \n Given: population_second_hour = 196
+  <StartTime>0</StartTime>
+  <EndTime>8</EndTime>
+  <Units>hours</Units>
+  <Vertexes>
+    <VertexLabel>population</VertexLabel>
+    <VertexLabel>births</VertexLabel>
+    <VertexLabel>growth rate</VertexLabel>
+	<VertexLabel>initial population</VertexLabel>
+    <VertexLabel>population first hour</VertexLabel>
+    <VertexLabel>population second hour</VertexLabel>
+  </Vertexes>
+  
+  <NodeCount>6</NodeCount>
+
+  <ProblemSeeking>population</ProblemSeeking>
+  <CorrespondingSentence>Graph the number of Giardia in the bottle over 8 hours.</CorrespondingSentence>
+  <Nodes>
+    <Node type="constant" name="initial population" extra="yes">
+      <Inputs></Inputs>
+      <Outputs></Outputs>
+      <Equation>100</Equation>
+      <InitialValue>100</InitialValue>
+      <CorrectDescription>The number of Giardia in the bottle initially</CorrectDescription>
+      <Plan>fixed value</Plan>
+    </Node>
+    
+    <Node type="constant" name="population second hour" extra="yes">
+      <Inputs></Inputs>
+      <Outputs></Outputs>
+      <Equation>196</Equation>
+      <InitialValue>196</InitialValue>
+      <CorrectDescription>The number of Giardia in the bottle during the second hour</CorrectDescription>
+      <Plan>fixed value</Plan>
+    </Node>
+    
+    <Node type="constant" name="population first hour" extra="yes">
+      <Inputs></Inputs>
+      <Outputs></Outputs>
+      <Equation>140</Equation>
+      <InitialValue>140</InitialValue>
+      <CorrectDescription>The number of Giardia in the bottle during the first hour</CorrectDescription>
+      <Plan>fixed value</Plan>
+    </Node>
+    
+    <Node type="constant" name="growth rate" extra="no">
+      <Inputs></Inputs>
+      <Outputs>
+        <Node name="births"></Node>
+		</Outputs>
+      <Equation>.40</Equation>
+      <InitialValue>.40</InitialValue>
+      <CorrectDescription>The rate that Giardia reproduce</CorrectDescription>
+      <Plan>fixed value</Plan>
+    </Node>
+    
+    <Node type="stock" name="population" extra="no">
+      <Inputs>        
+        <Node name="births" type="plus"></Node>
+      </Inputs>
+      <Outputs>
+      	<Node name="births"></Node>
+      </Outputs>
+      <InitialValue>100</InitialValue>
+      <Equation>+births</Equation>
+      <CorrectDescription>The number of Giardia in the bottle each hour</CorrectDescription>
+      <Plan>said to increase</Plan>
+    </Node>
+    
+    <Node type="flow" name="births" extra="no">
+      <Inputs>        
+        <Node name="population"></Node>
+        <Node name="growth rate"></Node>
+      </Inputs>
+      <Outputs>
+      	<Node name="population"></Node>
+      </Outputs>
+      <InitialValue>100</InitialValue>
+      <Equation>population*growth_rate</Equation>
+      <CorrectDescription>The number of Giardia born each hour</CorrectDescription>
+      <Plan>proportional to accumulator and input</Plan>
+    </Node>
+  </Nodes>  
+       
+  <DescriptionTree>
+    <Node level="root">
+      <Description>The number of</Description>      
+      <Node level="intermediate">
+        <Description>Giardia in the bottle</Description>            
+        <Node level="leaf">
+          <Description>initially</Description>
+          <NodeName>initial population</NodeName>
+        </Node>
+        <Node level="leaf">
+          <Description>during the first hour</Description>
+          <NodeName>population first hour</NodeName>
+        </Node>
+        <Node level="leaf">
+          <Description>during the second hour</Description>
+          <NodeName>population second hour</NodeName>
+        </Node>
+        <Node level="leaf">
+          <Description>each hour</Description>
+          <NodeName>population</NodeName>
+        </Node>
+        <Node level="leaf">
+          <Description>during the last hour</Description>
+          <NodeName>final population</NodeName>
+        </Node>
+	  </Node>
+      <Node level="intermediate">
+        <Description>Giardia born</Description>            
+        <Node level="leaf">
+          <Description>at the beginning</Description>
+          <NodeName>initial births</NodeName>
+        </Node>
+        <Node level="leaf">
+          <Description>each hour</Description>
+          <NodeName>births</NodeName>
+        </Node>
+        <Node level="leaf">
+          <Description>during the first hour</Description>
+          <NodeName>births first hour</NodeName>
+        </Node>
+        <Node level="leaf">
+          <Description>during the second hour</Description>
+          <NodeName>births second hour</NodeName>
+        </Node>
+        <Node level="leaf">
+          <Description>during the last hour</Description>
+          <NodeName>final births</NodeName>
+        </Node>
+	  </Node>
+    </Node>
+    <Node level="root">
+      <Description>The rate that</Description>      
+      <Node level="intermediate">
+        <Description></Description>            
+        <Node level="leaf">
+          <Description>Giardia reproduce</Description>
+          <NodeName>growth rate</NodeName>
+        </Node>
+        <Node level="leaf">
+          <Description>hikers get sick from drinking Giardia-infested water</Description>
+          <NodeName>sickness rate</NodeName>
+        </Node>
+	  </Node>
+	</Node>
+  </DescriptionTree>
+
+  
+</Task>

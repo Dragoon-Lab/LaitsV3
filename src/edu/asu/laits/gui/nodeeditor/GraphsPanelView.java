@@ -6,6 +6,7 @@
  */
 package edu.asu.laits.gui.nodeeditor;
 
+import edu.asu.laits.editor.ApplicationContext;
 import edu.asu.laits.model.Graph;
 import edu.asu.laits.model.Task;
 import edu.asu.laits.model.Vertex;
@@ -36,17 +37,47 @@ public class GraphsPanelView extends javax.swing.JPanel {
 
     }
 
-    public void loadGraph() {
-        userAnswerPanel.removeAll();
+    public void loadGraph(){
+        
+        if(ApplicationContext.getAppMode().equals("STUDENT")){
+            Task t = new Task(ApplicationContext.getCorrectSolution().getStartTime(), 
+                    ApplicationContext.getCorrectSolution().getEndTime(), 
+                    ApplicationContext.getCorrectSolution().getGraphUnits());
+            loadStudentGraph(t);
+            
+            loadCorrectGraph(ApplicationContext.getCorrectSolution()
+                    .getSolutionGraph().getVertexByName(nodeEditor.getCurrentVertex().getName())
+                    , t);
+        }else{
+            correctAnswerPanel.setVisible(false);
+            correctGraphLabel.setVisible(false);
+            studentGraphLabel.setText("Author's Graph");
+            
+            Task task = nodeEditor.getGraphPane().getModelGraph().getCurrentTask();
+            loadStudentGraph(task);
+        }
+    }
+    
+    public void loadCorrectGraph(Vertex v, Task task) {
+        correctAnswerPanel.removeAll();
+        
+        Dimension d = new Dimension(575, 190);
+        PlotPanel plotPanel = new PlotPanel(v, task.getStartTime(), task.getEndTime(), task.getUnits(), d);
+        this.correctAnswerPanel.setLayout(new java.awt.GridLayout(1, 1));
+        this.correctAnswerPanel.add(plotPanel);
+    }
+    
+    public void loadStudentGraph(Task task) {
+        studentAnswerPanel.removeAll();
         
         Vertex currentVertex = nodeEditor.getCurrentVertex();
         updateDescription();
-        Task task = nodeEditor.getGraphPane().getModelGraph().getCurrentTask();
-        Dimension d = new Dimension(575, 300);
+        
+        Dimension d = new Dimension(575, 190);
 
         PlotPanel plotPanel = new PlotPanel(currentVertex, task.getStartTime(), task.getEndTime(), task.getUnits(), d);
-        this.userAnswerPanel.setLayout(new java.awt.GridLayout(1, 1));
-        this.userAnswerPanel.add(plotPanel);
+        this.studentAnswerPanel.setLayout(new java.awt.GridLayout(1, 1));
+        this.studentAnswerPanel.add(plotPanel);
     }
 
     /**
@@ -56,7 +87,8 @@ public class GraphsPanelView extends javax.swing.JPanel {
     public void updateDescription() {
         descriptionLabel.setText("<html><b>Description:</b> <br/>" +nodeEditor.getCurrentVertex().getCorrectDescription()+ "</html>");
     }
-
+    
+    
     /**
      * This method is called from within the constructor to initialize the form.
      * WARNING: Do NOT modify this code. The content of this method is always
@@ -68,11 +100,12 @@ public class GraphsPanelView extends javax.swing.JPanel {
 
         nodeDescriptionLabel = new javax.swing.JLabel();
         allGraphsPanel = new javax.swing.JPanel();
-        userGraphLabel = new javax.swing.JLabel();
-        filler1 = new javax.swing.Box.Filler(new java.awt.Dimension(15, 0), new java.awt.Dimension(15, 0), new java.awt.Dimension(15, 32767));
-        userAnswerPanel = new javax.swing.JPanel();
+        studentGraphLabel = new javax.swing.JLabel();
+        studentAnswerPanel = new javax.swing.JPanel();
         correctGraphLabel1 = new javax.swing.JLabel();
         correctGraphLabel2 = new javax.swing.JLabel();
+        correctAnswerPanel = new javax.swing.JPanel();
+        correctGraphLabel = new javax.swing.JLabel();
         descriptionLabel = new javax.swing.JLabel();
 
         setLayout(new org.netbeans.lib.awtextra.AbsoluteLayout());
@@ -82,26 +115,25 @@ public class GraphsPanelView extends javax.swing.JPanel {
 
         allGraphsPanel.setLayout(new org.netbeans.lib.awtextra.AbsoluteLayout());
 
-        userGraphLabel.setFont(new java.awt.Font("Lucida Grande", 1, 13)); // NOI18N
-        userGraphLabel.setText("Author's Graph:");
-        allGraphsPanel.add(userGraphLabel, new org.netbeans.lib.awtextra.AbsoluteConstraints(6, 6, -1, -1));
-        allGraphsPanel.add(filler1, new org.netbeans.lib.awtextra.AbsoluteConstraints(6, 303, 447, 41));
+        studentGraphLabel.setFont(new java.awt.Font("Lucida Grande", 1, 13)); // NOI18N
+        studentGraphLabel.setText("Student's Graph:");
+        allGraphsPanel.add(studentGraphLabel, new org.netbeans.lib.awtextra.AbsoluteConstraints(6, 6, -1, -1));
 
-        userAnswerPanel.setMaximumSize(new java.awt.Dimension(575, 300));
-        userAnswerPanel.setPreferredSize(new java.awt.Dimension(575, 300));
+        studentAnswerPanel.setMaximumSize(new java.awt.Dimension(575, 300));
+        studentAnswerPanel.setPreferredSize(new java.awt.Dimension(575, 300));
 
-        javax.swing.GroupLayout userAnswerPanelLayout = new javax.swing.GroupLayout(userAnswerPanel);
-        userAnswerPanel.setLayout(userAnswerPanelLayout);
-        userAnswerPanelLayout.setHorizontalGroup(
-            userAnswerPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+        javax.swing.GroupLayout studentAnswerPanelLayout = new javax.swing.GroupLayout(studentAnswerPanel);
+        studentAnswerPanel.setLayout(studentAnswerPanelLayout);
+        studentAnswerPanelLayout.setHorizontalGroup(
+            studentAnswerPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGap(0, 575, Short.MAX_VALUE)
         );
-        userAnswerPanelLayout.setVerticalGroup(
-            userAnswerPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 300, Short.MAX_VALUE)
+        studentAnswerPanelLayout.setVerticalGroup(
+            studentAnswerPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGap(0, 190, Short.MAX_VALUE)
         );
 
-        allGraphsPanel.add(userAnswerPanel, new org.netbeans.lib.awtextra.AbsoluteConstraints(10, 40, 575, 300));
+        allGraphsPanel.add(studentAnswerPanel, new org.netbeans.lib.awtextra.AbsoluteConstraints(10, 30, 575, 190));
 
         correctGraphLabel1.setText("     ");
         allGraphsPanel.add(correctGraphLabel1, new org.netbeans.lib.awtextra.AbsoluteConstraints(6, 391, -1, -1));
@@ -109,7 +141,27 @@ public class GraphsPanelView extends javax.swing.JPanel {
         correctGraphLabel2.setText("                   ");
         allGraphsPanel.add(correctGraphLabel2, new org.netbeans.lib.awtextra.AbsoluteConstraints(6, 369, -1, -1));
 
-        add(allGraphsPanel, new org.netbeans.lib.awtextra.AbsoluteConstraints(6, 79, -1, -1));
+        correctAnswerPanel.setMaximumSize(new java.awt.Dimension(575, 300));
+        correctAnswerPanel.setPreferredSize(new java.awt.Dimension(575, 300));
+
+        javax.swing.GroupLayout correctAnswerPanelLayout = new javax.swing.GroupLayout(correctAnswerPanel);
+        correctAnswerPanel.setLayout(correctAnswerPanelLayout);
+        correctAnswerPanelLayout.setHorizontalGroup(
+            correctAnswerPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGap(0, 575, Short.MAX_VALUE)
+        );
+        correctAnswerPanelLayout.setVerticalGroup(
+            correctAnswerPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGap(0, 190, Short.MAX_VALUE)
+        );
+
+        allGraphsPanel.add(correctAnswerPanel, new org.netbeans.lib.awtextra.AbsoluteConstraints(10, 270, 575, 190));
+
+        correctGraphLabel.setFont(new java.awt.Font("Lucida Grande", 1, 13)); // NOI18N
+        correctGraphLabel.setText("Correct's Graph:");
+        allGraphsPanel.add(correctGraphLabel, new org.netbeans.lib.awtextra.AbsoluteConstraints(10, 240, -1, -1));
+
+        add(allGraphsPanel, new org.netbeans.lib.awtextra.AbsoluteConstraints(10, 60, -1, 460));
 
         descriptionLabel.setText("<html><b>Description:</b></html>");
         descriptionLabel.setVerticalAlignment(javax.swing.SwingConstants.TOP);
@@ -117,12 +169,13 @@ public class GraphsPanelView extends javax.swing.JPanel {
     }// </editor-fold>//GEN-END:initComponents
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JPanel allGraphsPanel;
+    private javax.swing.JPanel correctAnswerPanel;
+    private javax.swing.JLabel correctGraphLabel;
     private javax.swing.JLabel correctGraphLabel1;
     private javax.swing.JLabel correctGraphLabel2;
     private javax.swing.JLabel descriptionLabel;
-    private javax.swing.Box.Filler filler1;
     private javax.swing.JLabel nodeDescriptionLabel;
-    private javax.swing.JPanel userAnswerPanel;
-    private javax.swing.JLabel userGraphLabel;
+    private javax.swing.JPanel studentAnswerPanel;
+    private javax.swing.JLabel studentGraphLabel;
     // End of variables declaration//GEN-END:variables
 }

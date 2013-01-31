@@ -1,5 +1,6 @@
 package edu.asu.laits.gui;
 
+import edu.asu.laits.editor.ApplicationContext;
 import javax.swing.JFrame;
 import javax.swing.JOptionPane;
 import javax.swing.JToolBar;
@@ -26,15 +27,22 @@ import edu.asu.laits.gui.toolbars.EditToolBar;
 import edu.asu.laits.gui.toolbars.ModelToolBar;
 import edu.asu.laits.gui.toolbars.TutorModeToolBar;
 import edu.asu.laits.gui.toolbars.ViewToolBar;
+import edu.asu.laits.model.TaskSolution;
+import edu.asu.laits.model.TaskSolutionReader;
 import edu.asu.laits.properties.GlobalProperties;
 import edu.asu.laits.properties.GraphProperties;
+import java.awt.Color;
 import java.awt.GridLayout;
 import java.awt.Toolkit;
+import javax.swing.BorderFactory;
 
 import javax.swing.BoxLayout;
 import javax.swing.JComponent;
 import javax.swing.JLabel;
 import javax.swing.JTabbedPane;
+import javax.swing.SwingConstants;
+import javax.swing.border.Border;
+import org.apache.log4j.Logger;
 
 /**
  * The main window in the program. This can be opened both with an empty graph
@@ -44,11 +52,11 @@ import javax.swing.JTabbedPane;
 public class MainWindow extends JFrame {
 
     private MainMenu mainMenu = null;
-    private JPanel jPanel = null;
+    private JPanel mainPanel = null;
+    private JScrollPane situationPanel = null;
     private JPanel toolBarPanel = null;
     private JScrollPane graphPaneScrollPane = null;
     private GraphEditorPane graphEditorPane = null;
-    private JTabbedPane editorTabs;
     
     // Number of windows opened
     private static int windowCount;
@@ -61,6 +69,13 @@ public class MainWindow extends JFrame {
     private List<JToolBar> toolBars = new LinkedList<JToolBar>(); 
     private StatusBarPanel statusBarPanel = null;
 
+    // Label to Display Tasks
+    JLabel situationLabel;
+    /**
+     * Logger
+     */
+    private static Logger logs = Logger.getLogger("DevLogs");
+    private static Logger activityLogs = Logger.getLogger("ActivityLogs");
     /**
      * This method initializes
      *
@@ -97,6 +112,13 @@ public class MainWindow extends JFrame {
             // TODO Auto-generated catch block
             e.printStackTrace();
         }
+    }
+    
+    /**
+     * This method is responsible for creating Task Menu in Tutor Mode
+     */
+    private void initializeTutorTaskMenu(){
+        
     }
 
     /**
@@ -139,18 +161,99 @@ public class MainWindow extends JFrame {
      * @return javax.swing.JPanel
      */
     private JPanel getJPanel() {
-        if (jPanel == null) {
-            jPanel = new JPanel();
-            jPanel.setLayout(new BorderLayout());
-            jPanel.add(getToolBarPanel(), BorderLayout.NORTH);
+        if (mainPanel == null) {
+            mainPanel = new JPanel();
+            mainPanel.setLayout(new BorderLayout());
+            mainPanel.add(getToolBarPanel(), BorderLayout.NORTH);
             
-            //jPanel.add(getTabbedPane(), BorderLayout.LINE_START);
-            jPanel.add(getGraphPaneScrollPane(), BorderLayout.CENTER);
-            jPanel.add(getStatusBarPanel(), BorderLayout.SOUTH);
+            
+            // Temporary - switch panels based on Mode
+            logs.debug("Application running in "+ApplicationContext.getAppMode() + " Mode");
+            if(ApplicationContext.getAppMode().equals("AUTHOR"))
+                mainPanel.add(getGraphPaneScrollPane(), BorderLayout.CENTER);
+            else{
+                mainPanel.add(getSituationPanel(), BorderLayout.CENTER);
+                loadFirstTask();
+            }
+            mainPanel.add(getStatusBarPanel(), BorderLayout.SOUTH);
         }
-        return jPanel;
+        return mainPanel;
     }
 
+    /**
+     * This method create a JPanel for displaying Situation of a Task
+     */ 
+    private JScrollPane getSituationPanel(){
+        if(situationPanel == null){
+            logs.debug("Initializing Situation Panel");
+            
+            situationPanel = new JScrollPane();
+            
+            situationLabel = new JLabel("");
+            situationLabel.setVerticalTextPosition(JLabel.BOTTOM);
+            situationLabel.setHorizontalTextPosition(JLabel.CENTER);
+            situationLabel.setVerticalAlignment(JLabel.TOP);
+            situationLabel.setHorizontalAlignment(JLabel.CENTER);
+            situationLabel.setBorder(BorderFactory.createTitledBorder(""));
+            situationLabel.setBackground(Color.WHITE);
+            situationLabel.setOpaque(true);
+            situationLabel.setVerticalAlignment(SwingConstants.TOP);
+            
+            situationPanel.setViewportView(situationLabel); 
+            
+        } 
+        
+        return situationPanel;
+    }
+    
+    public void loadTaskDescription(String name, String description, String imageURL){
+        logs.debug("Loading New Task ");
+        
+        StringBuilder sb = new StringBuilder();
+        sb.append("<html><center>");
+        sb.append("<BR/><BR/><BR/>");
+        sb.append("<B><H2>"+name+"</B></H2>");
+        sb.append("<BR/><BR/>");
+        sb.append("<img src='"+imageURL+"' height='300' width='300'> </img>");
+        sb.append("</center><BR/><BR/>");
+        
+        description = description.replaceFirst("Problem:", "<B>Problem:</B>");
+        description = description.replaceFirst("Goal:", "<B>Goal:</B>");
+        description = description.replaceFirst("Hint:", "<B>Hint:</B>");
+        
+        description = description.replaceAll("NEWLINE", "<BR/>");
+        
+        sb.append(description);
+       
+        sb.append("</html");
+        
+        situationLabel.setText(sb.toString());
+        this.validate();
+        mainPanel.repaint();
+    }
+    
+    /**
+     * This method replaces situation panel with graph panel and vice versa
+     */ 
+    public void switchTutorModelPanels(boolean toSituationPanel){
+        if(toSituationPanel){
+            
+            logs.debug("Switching to Situation Panel");
+            mainPanel.removeAll();
+            mainPanel.add(getToolBarPanel(), BorderLayout.NORTH);
+            mainPanel.add(getSituationPanel(), BorderLayout.CENTER);            
+            mainPanel.add(getStatusBarPanel(), BorderLayout.SOUTH);             
+        }else{
+            logs.debug("Switching to Model Design Panel");
+            mainPanel.removeAll();
+            mainPanel.add(getToolBarPanel(), BorderLayout.NORTH);
+            mainPanel.add(getGraphPaneScrollPane(), BorderLayout.CENTER);
+            mainPanel.add(getStatusBarPanel(), BorderLayout.SOUTH);
+        }
+        this.validate();
+        mainPanel.repaint();
+    }
+    
     /**
      * This method initializes toolBarPanel
      *
@@ -163,13 +266,18 @@ public class MainWindow extends JFrame {
             toolBarPanel.add(getFileToolBar(), null);
             toolBarPanel.add(getEditToolBar(), null);
             toolBarPanel.add(getViewToolBar(), null);
-            toolBarPanel.add(getTutorModeToolBar(), null);
-            toolBarPanel.add(getModelToolBar(), null);
             
             toolBars.add(getFileToolBar());
             toolBars.add(getEditToolBar());
             toolBars.add(getViewToolBar());
-            toolBars.add(getTutorModeToolBar());
+            
+            // Temporary - Add toobar based on mode
+            if(ApplicationContext.getAppMode().equals("STUDENT")){
+                toolBarPanel.add(getTutorModeToolBar(), null);
+                toolBars.add(getTutorModeToolBar());
+            }
+            
+            toolBarPanel.add(getModelToolBar(), null);
             toolBars.add(getModelToolBar());
             
 
@@ -194,7 +302,7 @@ public class MainWindow extends JFrame {
      * This method initializes graphEditorPane
      *
      */
-    private GraphEditorPane getGraphEditorPane() {
+    public GraphEditorPane getGraphEditorPane() {
         if (graphEditorPane == null) {
             graphEditorPane = new GraphEditorPane(this, getStatusBarPanel());
             //getStatusBarPanel().setGraphPane(graphEditorPane);
@@ -329,7 +437,7 @@ public class MainWindow extends JFrame {
 
     private TutorModeToolBar getTutorModeToolBar(){
         if(tutorModeToolBar == null){
-            tutorModeToolBar = new TutorModeToolBar();
+            tutorModeToolBar = new TutorModeToolBar(this);
         }
         
         return tutorModeToolBar;
@@ -345,5 +453,20 @@ public class MainWindow extends JFrame {
             statusBarPanel.setStatusMessage("", true);
         }
         return statusBarPanel;
+    }
+    
+    
+    private void loadFirstTask(){
+        TaskSolutionReader solutionReader = new TaskSolutionReader();
+        try{
+            TaskSolution solution = solutionReader.loadSolution("105");
+            ApplicationContext.setCorrectSolution(solution);
+            
+            this.loadTaskDescription(ApplicationContext.getTaskIdNameMap().get("105"),
+                    solution.getTaskDescription(), 
+                    solution.getImageURL());
+        }catch(Exception e){
+            e.printStackTrace();
+        }
     }
 }

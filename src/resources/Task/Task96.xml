@@ -1,0 +1,202 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<Task phase="Training" type="Whole">
+  <URL>http://upload.wikimedia.org/wikipedia/commons/c/cd/ARTurista.JPG</URL>
+  <TaskDescription>Problem: Capacity utilization is an important statistic for virtually any form of passenger transportation, regardless of whether the transportation is by bus, train, plane, or ship.  Capacity utilization is the ratio of the number of passengers riding to the capacity of the system, which is usually determined by the number of seats (for busses, trains and planes) or cabins (for cruise ships).  Unfortunately, transportation management usually cannot rapidly adjust capacity. Suppose that a small airline initially flies 222 flights per month, which combine to a total capacity of 10000 seats. The airline is running at about 0.9 capacity utilization, which means 9000 of its seats are filled every month. During an economic downturn, the airline loses 1000 passengers each month but can take only 500 seats out of service each month.  
+NEWLINEGoal: Graph the capacity utilization over 6 months.</TaskDescription>
+  <ShortDescription>Function: capacity utilization = passengers / seats in service
+\n  Accumulator: seats in service = seats in service – seats removed each month
+initial value = 10000
+\n  Given: seats removed each month = 500
+\n  Accumulator: passengers = passengers – passengers lost each month
+initial value = 9000
+\n  Given: passengers lost each month = 1000
+\n  Given: flights per month = 222</ShortDescription>
+  <StartTime>0</StartTime>
+  <EndTime>6</EndTime>
+  <Units>months</Units>
+  <Vertexes>
+    <VertexLabel>seats in service</VertexLabel>
+    <VertexLabel>passengers lost each month</VertexLabel>
+    <VertexLabel>passengers</VertexLabel>
+    <VertexLabel>seats removed each month</VertexLabel>
+    <VertexLabel>capacity utilization</VertexLabel>
+    <VertexLabel>flights per month</VertexLabel>
+  </Vertexes>
+
+  <NodeCount>6</NodeCount>
+
+  <ProblemSeeking>capacity utilization</ProblemSeeking>
+  <CorrespondingSentence>Graph the capacity utilization over 6 months.</CorrespondingSentence>
+  <Nodes>
+    <Node type="constant" name="passengers lost each month" extra="no">
+      <Inputs></Inputs>
+      <Outputs>
+      	<Node name="passengers"></Node>
+      </Outputs>
+      <Equation>1000</Equation>
+      <InitialValue>1000</InitialValue>
+      <CorrectDescription>The number of passengers lost each month</CorrectDescription>
+      <Plan>fixed value</Plan>
+    </Node>
+    
+    <Node type="constant" name="seats removed each month" extra="no">
+      <Inputs></Inputs>
+      <Outputs>
+      	<Node name="seats in service"></Node>
+      </Outputs>
+      <Equation>500</Equation>
+      <InitialValue>500</InitialValue>
+      <CorrectDescription>The number of seats removed from service each month from all flights</CorrectDescription>
+      <Plan>fixed value</Plan>
+    </Node>
+    
+    <Node type="constant" name="flights per month" extra="yes">
+      <Inputs></Inputs>
+      <Outputs></Outputs>
+      <Equation>222</Equation>
+      <InitialValue>222</InitialValue>
+      <CorrectDescription>The number of flights the small airline has each month</CorrectDescription>
+      <Plan>fixed value</Plan>
+    </Node>
+
+    <Node type="stock" name="seats in service" extra="no">
+      <Inputs>
+      	<Node name="seats removed each month" type="minus"></Node>
+      </Inputs>
+      <Outputs>
+		<Node name="seats removed each month"></Node>
+	  </Outputs>
+      <InitialValue>10000</InitialValue>
+      <Equation>-seats_removed_each_month</Equation>
+      <CorrectDescription>The number of seats in service in the whole airline each month</CorrectDescription>
+      <Plan>said to decrease</Plan>
+    </Node>
+    
+    <Node type="stock" name="passengers" extra="no">
+      <Inputs>
+      	<Node name="passengers lost each month" type="minus"></Node>
+      </Inputs>
+      <Outputs>
+		<Node name="capacity utilization"></Node>
+	  </Outputs>
+      <InitialValue>9000</InitialValue>
+      <Equation>-passengers_lost_each_month</Equation>
+      <CorrectDescription>The number of passengers flying each month</CorrectDescription>
+      <Plan>said to decrease</Plan>
+    </Node>
+    
+    <Node type="flow" name="capacity utilization" extra="no">
+      <Inputs>        
+        <Node name="seats in service"></Node>
+        <Node name="passengers"></Node>
+      </Inputs>
+      <Outputs></Outputs>
+      <InitialValue></InitialValue>
+      <Equation>passengers/seats_in_service</Equation>
+      <CorrectDescription>The proportion of passengers flying to seats in service each month</CorrectDescription>
+      <Plan>ratio of two quantities</Plan>
+    </Node>
+  </Nodes>  
+ 
+  <DescriptionTree>
+    <Node level="root">
+      <Description>The number of</Description>      
+      <Node level="intermediate">
+        <Description>flights the small airline has</Description>            
+        <Node level="leaf">
+          <Description>each month</Description>
+          <NodeName>flights per month</NodeName>
+        </Node>
+        <Node level="leaf">
+          <Description>at the beginning of the 6 month period</Description>
+          <NodeName>flights initially</NodeName>
+        </Node>
+        <Node level="leaf">
+          <Description>total over the 6 month period</Description>
+          <NodeName>total flights</NodeName>
+        </Node>
+	  </Node>
+      <Node level="intermediate">
+        <Description>passengers lost</Description>            
+        <Node level="leaf">
+          <Description>over the 6 month period</Description>
+          <NodeName>total passengers lost</NodeName>
+        </Node>
+        <Node level="leaf">
+          <Description>each month</Description>
+          <NodeName>passengers lost each month</NodeName>
+        </Node>
+        </Node>
+      <Node level="intermediate">
+        <Description>seats in service</Description>            
+        <Node level="leaf">
+          <Description>per flight</Description>
+          <NodeName>seats per flight</NodeName>
+        </Node>
+        <Node level="leaf">
+          <Description>in the whole airline each month</Description>
+          <NodeName>seats in service</NodeName>
+        </Node>
+        </Node>
+      <Node level="intermediate">
+        <Description>seats removed from service</Description>            
+        <Node level="leaf">
+          <Description>per flight</Description>
+          <NodeName>seats lost per flight</NodeName>
+        </Node>
+        <Node level="leaf">
+          <Description>each month from all flights</Description>
+          <NodeName>seats removed each month</NodeName>
+        </Node>
+        </Node>
+      <Node level="intermediate">
+        <Description>passengers flying</Description>            
+        <Node level="leaf">
+          <Description>each month</Description>
+          <NodeName>passengers</NodeName>
+        </Node>
+        <Node level="leaf">
+          <Description>on frequent flyer miles</Description>
+          <NodeName>frequent flyers</NodeName>
+        </Node>
+      </Node>
+    </Node>
+    <Node level="root">
+      <Description>The proportion of</Description>      
+      <Node level="intermediate">
+        <Description>passengers flying</Description>            
+        <Node level="leaf">
+          <Description>to seats in service each month</Description>
+          <NodeName>capacity utilization</NodeName>
+        </Node>
+        <Node level="leaf">
+          <Description>to seats removed from service each month</Description>
+          <NodeName>passenger discomfort</NodeName>
+        </Node>
+        <Node level="leaf">
+          <Description>to number of flights each month</Description>
+          <NodeName>passengers per fligh</NodeName>
+        </Node>
+	  </Node>
+      <Node level="intermediate">
+        <Description>seats in service</Description>            
+        <Node level="leaf">
+          <Description>to passengers flying each month</Description>
+          <NodeName>inverse capacity</NodeName>
+        </Node>
+        <Node level="leaf">
+          <Description>to seats removed from service each month</Description>
+          <NodeName>capacity reduction rate</NodeName>
+        </Node>
+        <Node level="leaf">
+          <Description>to flights each month</Description>
+          <NodeName>capacity per flight</NodeName>
+        </Node>
+	  </Node>
+    </Node>
+</DescriptionTree>
+     
+
+
+</Task>

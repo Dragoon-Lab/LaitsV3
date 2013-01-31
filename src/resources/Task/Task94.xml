@@ -1,0 +1,124 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<Task phase="Training" type="Construct">
+  <URL>http://upload.wikimedia.org/wikipedia/commons/3/3f/Box_car_DSSA_18052.jpg</URL>
+  <TaskDescription>
+  Problem: Rust destroys steel and can spread quickly. Suppose you take a large sheet of steel, such as one that might be used as the roof of the boxcar on a train, and you put it outside in the weather. Suppose it starts with a spot of rust that is 10 square inches in area. However, each week the rust spot gets bigger, as it grows by 30%. Therefore at the end of the first week, the rust spot is 13 square inches in area.
+  Goal: Graph the size of the rust spot over 10 weeks.
+  </TaskDescription>
+  <ShortDescription>\n Accumulator: Rust spot area = rust spot area + new rust area per week ; initial value = 10\n Function: new rust area per week = rust spot area * rust growth factor\n Given: rust growth factor = 0.30</ShortDescription>
+  <StartTime>0</StartTime>
+  <EndTime>10</EndTime>
+  <Units>weeks</Units>
+  <Vertexes>
+    <VertexLabel>rust spot area</VertexLabel>
+    <VertexLabel>rust spot area first week</VertexLabel>
+    <VertexLabel>new rust area per week</VertexLabel>
+    <VertexLabel>rust growth factor</VertexLabel>
+  </Vertexes>
+    
+  <NodeCount>4</NodeCount>
+
+  <ProblemSeeking>rust spot area</ProblemSeeking>
+  <CorrespondingSentence>Graph the size of the rust spot over 10 weeks.</CorrespondingSentence>
+  
+  <Nodes>
+    <Node type="constant" name="rust spot area first week" extra="yes">
+      <Inputs></Inputs>
+      <Outputs></Outputs>
+      <Equation>13</Equation>
+      <InitialValue>13</InitialValue>
+      <CorrectDescription>The amount in square inches of total rust after the first week</CorrectDescription>
+      <Plan>fixed value</Plan>
+    </Node>
+    
+    <Node type="constant" name="rust growth factor" extra="no">
+      <Inputs></Inputs>
+      <Outputs>
+      	<Node name="new rust area per week"></Node>
+      </Outputs>
+      <Equation>rust_growth_factor</Equation>
+      <InitialValue>.3</InitialValue>
+      <CorrectDescription>The proportion of new rust to the existing rusted area</CorrectDescription>
+      <Plan>fixed value</Plan>
+    </Node>
+    
+    <Node type="stock" name="rust spot area" extra="no">
+      <Inputs>        
+        <Node name="new rust area per week" type="plus"></Node>
+      </Inputs>
+      <Outputs>
+      	<Node name="new rust area per week"></Node>
+      </Outputs>
+      <InitialValue>10</InitialValue>
+      <Equation>+new_rust_area_per_week</Equation>
+      <CorrectDescription>The amount in square inches of total rust each week</CorrectDescription>
+      <Plan>said to increase</Plan>
+    </Node>
+    
+    <Node type="flow" name="new rust area per week" extra="no">
+      <Inputs>        
+        <Node name="rust spot area"></Node>
+        <Node name="rust growth factor"></Node>
+      </Inputs>
+      <Outputs>
+      	<Node name="rust spot area"></Node>
+      </Outputs>
+      <InitialValue></InitialValue>
+      <Equation>rust_spot_area*rust_growth_factor</Equation>
+      <CorrectDescription>The amount in square inches of new rust each week</CorrectDescription>
+      <Plan>proportional to accumulator and input</Plan>
+    </Node>
+  </Nodes>  
+
+     
+  <DescriptionTree>
+    <Node level="root">
+      <Description>The amount in square inches of</Description>      
+      <Node level="intermediate">
+        <Description>new rust</Description>            
+        <Node level="leaf">
+          <Description>each week</Description>
+          <NodeName>new rust area per week</NodeName>
+        </Node>
+        <Node level="leaf">
+          <Description>in the first week</Description>
+          <NodeName>rust added during first week</NodeName>
+        </Node>
+	  </Node>
+      <Node level="intermediate">
+        <Description>total rust</Description>            
+        <Node level="leaf">
+          <Description>after the first week</Description>
+          <NodeName>rust spot area first week</NodeName>
+        </Node>
+        <Node level="leaf">
+          <Description>each week</Description>
+          <NodeName>rust spot area</NodeName>
+        </Node>
+        <Node level="leaf">
+
+
+          <Description>after 10 weeks</Description>
+          <NodeName>final rust spot area</NodeName>
+        </Node>
+	  </Node>
+    </Node>
+    <Node level="root">
+      <Description>The proportion of</Description>      
+      <Node level="intermediate">
+        <Description></Description>            
+        <Node level="leaf">
+          <Description>new rust to the existing rusted area</Description>
+          <NodeName>rust growth factor</NodeName>
+        </Node>
+        <Node level="leaf">
+          <Description>rusted area to non-rusted area</Description>
+          <NodeName>rust to non-rust ratio</NodeName>
+        </Node>
+      </Node>
+    </Node>
+  </DescriptionTree>
+
+  
+</Task>

@@ -36,7 +36,7 @@
         <Container class="javax.swing.JPanel" name="radioPanel">
           <Constraints>
             <Constraint layoutClass="org.netbeans.modules.form.compat2.layouts.DesignAbsoluteLayout" value="org.netbeans.modules.form.compat2.layouts.DesignAbsoluteLayout$AbsoluteConstraintsDescription">
-              <AbsoluteConstraints x="20" y="28" width="-1" height="-1"/>
+              <AbsoluteConstraints x="20" y="28" width="280" height="-1"/>
             </Constraint>
           </Constraints>
 
@@ -48,7 +48,7 @@
                           <Component id="fixedValueOptionButton" min="-2" max="-2" attributes="0"/>
                           <Component id="inputNodesSelectionOptionButton" alignment="0" min="-2" max="-2" attributes="0"/>
                       </Group>
-                      <EmptySpace max="32767" attributes="0"/>
+                      <EmptySpace pref="76" max="32767" attributes="0"/>
                   </Group>
               </Group>
             </DimensionLayout>

@@ -6,6 +6,7 @@
 package edu.asu.laits.gui.nodeeditor;
 
 import edu.asu.laits.model.Vertex;
+import java.awt.Color;
 import javax.swing.JPanel;
 import org.apache.log4j.Logger;
 
@@ -106,6 +107,37 @@ public class PlanPanelView extends JPanel {
     isViewEnabled = flag;
   }
   
+    public void setSelectedPlanBackground(Color c) {
+        logs.debug("Setting Background of Selected Plan to "+c.toString());
+        resetBackGroundColor();
+        
+        if (fixedNumberButton.isSelected()) {
+            fixedNumberPanel.setBackground(c);
+        } else if (decreaseButton.isSelected()) {
+            decreasePanel.setBackground(c);
+        } else if (differenceButton.isSelected()) {
+            differencePanel.setBackground(c);
+        } else if (increaseButton.isSelected()) {
+            increasePanel.setBackground(c);
+        } else if (bothButton.isSelected()) {
+            bothPanel.setBackground(c);
+        } else if (ratioTwoQuantitiesButton.isSelected()) {
+            ratioTwoQuantitiesPanel.setBackground(c);
+        } else if (proportionalValueButton.isSelected()) {
+            proportionalValuePanel.setBackground(c);
+        }
+
+    }
+    
+    private void resetBackGroundColor(){
+        fixedNumberPanel.setBackground(new Color(238, 238, 238));
+        decreasePanel.setBackground(new Color(238, 238, 238));
+        differencePanel.setBackground(new Color(238, 238, 238));    
+        increasePanel.setBackground(new Color(238, 238, 238));
+        bothPanel.setBackground(new Color(238, 238, 238));
+        ratioTwoQuantitiesPanel.setBackground(new Color(238, 238, 238));
+        proportionalValuePanel.setBackground(new Color(238, 238, 238));
+    }
   
   /**
      * This method is called from within the constructor to initialize the form.
@@ -118,6 +150,7 @@ public class PlanPanelView extends JPanel {
 
         buttonGroup1 = new javax.swing.ButtonGroup();
         buttonGroup2 = new javax.swing.ButtonGroup();
+        jProgressBar1 = new javax.swing.JProgressBar();
         ratioTwoQuantitiesPanel = new javax.swing.JPanel();
         ratioTwoQuantitiesButton = new javax.swing.JRadioButton();
         jLabel26 = new javax.swing.JLabel();
@@ -219,7 +252,7 @@ public class PlanPanelView extends JPanel {
                 .addComponent(jLabel14, javax.swing.GroupLayout.PREFERRED_SIZE, 92, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addGap(53, 53, 53)
                 .addComponent(jLabel15, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addContainerGap(54, Short.MAX_VALUE))
+                .addContainerGap(69, Short.MAX_VALUE))
         );
         fixedNumberPanelLayout.setVerticalGroup(
             fixedNumberPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -246,10 +279,11 @@ public class PlanPanelView extends JPanel {
                 .addComponent(jLabel11, javax.swing.GroupLayout.PREFERRED_SIZE, 108, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addGap(33, 33, 33)
                 .addComponent(jLabel10, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addContainerGap())
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
             .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel2Layout.createSequentialGroup()
-                .addGap(0, 0, Short.MAX_VALUE)
-                .addComponent(fixedNumberPanel, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                .addComponent(fixedNumberPanel, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addContainerGap())
         );
         jPanel2Layout.setVerticalGroup(
             jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -296,10 +330,10 @@ public class PlanPanelView extends JPanel {
                     .addComponent(proportionalValueButton, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(jLabel16, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(jLabel17, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                .addContainerGap(7, Short.MAX_VALUE))
         );
 
-        add(proportionalValuePanel, new org.netbeans.lib.awtextra.AbsoluteConstraints(6, 91, 570, -1));
+        add(proportionalValuePanel, new org.netbeans.lib.awtextra.AbsoluteConstraints(6, 90, 570, 50));
 
         buttonGroup1.add(increaseButton);
         increaseButton.setText("said to increase");
@@ -321,7 +355,7 @@ public class PlanPanelView extends JPanel {
                 .addComponent(jLabel18, javax.swing.GroupLayout.PREFERRED_SIZE, 87, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addGap(58, 58, 58)
                 .addComponent(jLabel19, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addContainerGap(52, Short.MAX_VALUE))
+                .addContainerGap(102, Short.MAX_VALUE))
         );
         increasePanelLayout.setVerticalGroup(
             increasePanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -335,7 +369,7 @@ public class PlanPanelView extends JPanel {
                 .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
 
-        add(increasePanel, new org.netbeans.lib.awtextra.AbsoluteConstraints(6, 135, 520, -1));
+        add(increasePanel, new org.netbeans.lib.awtextra.AbsoluteConstraints(6, 135, 570, -1));
 
         buttonGroup1.add(decreaseButton);
         decreaseButton.setText("said to decrease");
@@ -357,7 +391,7 @@ public class PlanPanelView extends JPanel {
                 .addComponent(jLabel20, javax.swing.GroupLayout.PREFERRED_SIZE, 87, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addGap(58, 58, 58)
                 .addComponent(jLabel21, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addContainerGap(48, Short.MAX_VALUE))
+                .addContainerGap(88, Short.MAX_VALUE))
         );
         decreasePanelLayout.setVerticalGroup(
             decreasePanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -370,7 +404,7 @@ public class PlanPanelView extends JPanel {
                 .addContainerGap(11, Short.MAX_VALUE))
         );
 
-        add(decreasePanel, new org.netbeans.lib.awtextra.AbsoluteConstraints(6, 172, 530, -1));
+        add(decreasePanel, new org.netbeans.lib.awtextra.AbsoluteConstraints(6, 172, 570, -1));
 
         buttonGroup1.add(bothButton);
         bothButton.setText("said to both increase and decrease");
@@ -473,6 +507,7 @@ public class PlanPanelView extends JPanel {
     private javax.swing.JLabel jLabel26;
     private javax.swing.JLabel jLabel27;
     private javax.swing.JPanel jPanel2;
+    private javax.swing.JProgressBar jProgressBar1;
     private javax.swing.JRadioButton proportionalValueButton;
     private javax.swing.JPanel proportionalValuePanel;
     private javax.swing.JRadioButton ratioTwoQuantitiesButton;

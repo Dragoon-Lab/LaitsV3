@@ -6,19 +6,23 @@
  */
 package edu.asu.laits.gui.nodeeditor;
 
+import apple.awt.CColor;
 import edu.asu.laits.editor.GraphEditorPane;
 import edu.asu.laits.model.Edge;
 import edu.asu.laits.model.Graph;
 import edu.asu.laits.model.Vertex;
 import edu.asu.laits.model.Vertex.VertexType;
+import java.awt.Color;
 import java.awt.Font;
 import java.awt.GridLayout;
 import java.awt.event.ItemEvent;
 import java.awt.event.ItemListener;
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.LinkedList;
 import java.util.Set;
 import java.util.Stack;
+import java.util.List;
 import javax.swing.*;
 import org.apache.log4j.Logger;
 import org.jgraph.graph.DefaultPort;
@@ -106,6 +110,7 @@ public class InputsPanelView extends javax.swing.JPanel implements ItemListener 
     availableInputNodesPanels.setEnabled(true);
     checkboxList.clear();
     isViewEnabled = false;
+    resetOptionPanelBackground();
   }
   
   
@@ -289,7 +294,7 @@ public class InputsPanelView extends javax.swing.JPanel implements ItemListener 
                 .addGroup(radioPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addComponent(fixedValueOptionButton)
                     .addComponent(inputNodesSelectionOptionButton))
-                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                .addContainerGap(76, Short.MAX_VALUE))
         );
         radioPanelLayout.setVerticalGroup(
             radioPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -299,7 +304,7 @@ public class InputsPanelView extends javax.swing.JPanel implements ItemListener 
                 .addComponent(inputNodesSelectionOptionButton))
         );
 
-        contentPanel.add(radioPanel, new org.netbeans.lib.awtextra.AbsoluteConstraints(20, 28, -1, -1));
+        contentPanel.add(radioPanel, new org.netbeans.lib.awtextra.AbsoluteConstraints(20, 28, 280, -1));
 
         nodeDescriptionHeading.setFont(new java.awt.Font("Lucida Grande", 1, 13)); // NOI18N
         nodeDescriptionHeading.setText("Description");
@@ -347,6 +352,7 @@ public class InputsPanelView extends javax.swing.JPanel implements ItemListener 
     private void fixedValueOptionButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_fixedValueOptionButtonActionPerformed
       // This method is called when Node has a fixed value.
       this.displayCurrentInputsPanel(false);
+      resetOptionPanelBackground();
         nodeEditor.getCurrentVertex().setVertexType(Vertex.VertexType.CONSTANT);
       logs.debug("Setting Vertex Type to Constant");
       nodeEditor.getGraphPane().getLayoutCache().reload();
@@ -356,6 +362,7 @@ public class InputsPanelView extends javax.swing.JPanel implements ItemListener 
   // Method for handling the click event of Input radio button
     private void inputNodesSelectionOptionButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_inputNodesSelectionOptionButtonActionPerformed
         this.displayCurrentInputsPanel(true);
+        resetOptionPanelBackground();
         nodeEditor.getCurrentVertex().setVertexType(Vertex.VertexType.DEFAULT);  
         nodeEditor.getGraphPane().getLayoutCache().reload();
         nodeEditor.getGraphPane().repaint();
@@ -410,6 +417,25 @@ public class InputsPanelView extends javax.swing.JPanel implements ItemListener 
       
       nodeEditor.setEditorMessage("Please provide input for this node.");
       return false;
+  }
+  
+  public void setOptionPanelBackground(Color c){
+      radioPanel.setBackground(c);
+  }
+  
+  public void resetOptionPanelBackground(){
+      radioPanel.setBackground(new Color(238,238,238));
+  }
+  
+  public List<String> getSelectedInputsList(){
+      List<String> inputsList = new ArrayList<String>();
+      for(JCheckBox j : checkboxList){
+          if(j.isSelected()){
+              inputsList.add(j.getText());
+          }
+      }
+      
+      return inputsList;
   }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables

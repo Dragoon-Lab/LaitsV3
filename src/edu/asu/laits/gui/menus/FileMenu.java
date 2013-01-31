@@ -1,5 +1,6 @@
 package edu.asu.laits.gui.menus;
 
+import edu.asu.laits.editor.ApplicationContext;
 import javax.swing.JMenu;
 
 import java.awt.event.ActionEvent;
@@ -25,9 +26,15 @@ import edu.asu.laits.editor.listeners.GraphChangeListener;
 import edu.asu.laits.editor.listeners.GraphPropertiesChangeListener;
 import edu.asu.laits.editor.listeners.GraphSaveListener;
 import edu.asu.laits.gui.MainWindow;
+import edu.asu.laits.model.TaskMenuItem;
+import edu.asu.laits.model.TaskMenuReader;
+import edu.asu.laits.model.TaskSolution;
+import edu.asu.laits.model.TaskSolutionReader;
 import edu.asu.laits.properties.GlobalProperties;
 import edu.asu.laits.properties.GraphProperties;
 import edu.asu.laits.properties.LatestFilesPropertyChangeListener;
+import java.util.HashMap;
+import java.util.LinkedList;
 
 import javax.swing.JFileChooser;
 import javax.swing.filechooser.FileFilter;
@@ -51,14 +58,16 @@ public class FileMenu extends JMenu {
     private JSeparator jSeparator2 = null;
     private JMenuItem exitFileMenuItem = null;
     private GraphEditorPane graphPane;
-    private JFileChooser saveAsFileChooser = null; 
-    private JFileChooser openFileChooser = null; 
+    private JFileChooser saveAsFileChooser = null;
+    private JFileChooser openFileChooser = null;
     // Actions
     private ActionListener newAction;
     private ActionListener openAction;
     private ActionListener saveAction;
-    GlobalProperties globalProperties = GlobalProperties.getInstance(); 
-
+    GlobalProperties globalProperties = GlobalProperties.getInstance();
+    private JMenu taskListMenu = null;
+    private ActionListener openTaskAction;
+    private static String selectedTaskId;
     /*
      * Indicate if the current graph is associated with a file
      */
@@ -67,12 +76,12 @@ public class FileMenu extends JMenu {
     /*
      * The file that the current graph is asociated with
      */
-    private File currentGraphsFile; 
+    private File currentGraphsFile;
     private MainWindow mainWindow;
 
     public FileMenu() {
         super();
-        initialize();
+        initializeAuthorMenu();
 
     }
 
@@ -82,18 +91,22 @@ public class FileMenu extends JMenu {
      */
     public FileMenu(GraphEditorPane pane, MainWindow mainWindow) {
         super();
-        initialize();
         this.mainWindow = mainWindow;
         graphPane = pane;
 
-        updateOpenLatestMenu();
-        globalProperties
-                .addLatestFilesPropertyChangeListener(new LatestFilesPropertyChangeListener() {
-            public void newFileOpened(File file) {
-                updateOpenLatestMenu();
+        if (ApplicationContext.getAppMode().equals("STUDENT")) {
+            initializeTutorMenu();
+        } else {
+            initializeAuthorMenu();
+            updateOpenLatestMenu();
+            globalProperties
+                    .addLatestFilesPropertyChangeListener(new LatestFilesPropertyChangeListener() {
+                public void newFileOpened(File file) {
+                    updateOpenLatestMenu();
+                }
+            });
+        }
 
-            }
-        });
         MainGraphPropertiesChangeListener l = new MainGraphPropertiesChangeListener();
         l.graphPropertiesChanged();
         graphPane.addGraphPropertiesChangeListener(l);
@@ -110,7 +123,7 @@ public class FileMenu extends JMenu {
      * This method initializes this
      *
      */
-    private void initialize() {
+    private void initializeAuthorMenu() {
         this.setText("File");
         this.setMnemonic(KeyEvent.VK_F);
         this.add(getNewFileMenuItem());
@@ -123,6 +136,95 @@ public class FileMenu extends JMenu {
         this.add(getJSeparator2());
         this.add(getExitFileMenuItem());
 
+    }
+
+    /**
+     * This method initializes File Menu for Tutor Mode
+     *
+     */
+    private void initializeTutorMenu() {
+        this.setText("File");
+        this.setMnemonic(KeyEvent.VK_F);
+        this.add(getNewTaskMenuItem());
+        this.add(getJSeparator());
+        this.add(getExitFileMenuItem());
+    }
+
+    /**
+     * Add Tasks in the File Menu
+     * @return 
+     */
+    private JMenu getNewTaskMenuItem() {
+        if (taskListMenu == null) {
+            taskListMenu = new JMenu();
+            taskListMenu.setText("Open Task");
+
+            TaskMenuReader menuReader = new TaskMenuReader();
+            try {
+                LinkedList<TaskMenuItem> allMenuItems = menuReader.load();
+                HashMap<String,String> taskIdNameMap = new HashMap<String, String>();
+                
+                // HardCoded Subcategories - needs to be dynamic
+                JMenu intro = new JMenu("Intro");
+                JMenu challenge = new JMenu("Challenge");
+                JMenu training = new JMenu("Training");
+
+                for (TaskMenuItem menuItem : allMenuItems) {
+                    taskIdNameMap.put(menuItem.getTaskId(), menuItem.getTaskName());
+                    JMenuItem anotherTask = new JMenuItem();
+                    anotherTask.setText(menuItem.getTaskName());
+                    anotherTask.setActionCommand(menuItem.getTaskId());
+                    
+                    if (menuItem.getTaskPhase().equals("Intro")) {
+                        intro.add(anotherTask);
+                    } else if (menuItem.getTaskPhase().equals("Challenge")) {
+                        challenge.add(anotherTask);
+                    } else if (menuItem.getTaskPhase().equals("Training")) {
+                        training.add(anotherTask);
+                    }
+                    
+                    // Attaching Action Listener
+                    anotherTask.addActionListener(new java.awt.event.ActionListener() {
+                        public void actionPerformed(java.awt.event.ActionEvent e) {
+                            JMenuItem newMenu = (JMenuItem)e.getSource();
+                            openTaskById(newMenu.getActionCommand());
+                        }
+                    });
+                }
+                
+
+                taskListMenu.add(intro);
+                taskListMenu.add(training);
+                taskListMenu.add(challenge);
+
+                ApplicationContext.setTaskIdNameMap(taskIdNameMap);
+                
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
+        }
+
+        return taskListMenu;
+    }
+
+    /**
+     * Method to open a new Task in Tutor Mode
+     */ 
+    private void openTaskById(String id){
+        TaskSolutionReader solutionReader = new TaskSolutionReader();
+        try{
+            TaskSolution solution = solutionReader.loadSolution(id);
+            ApplicationContext.setCorrectSolution(solution);
+            
+            mainWindow.loadTaskDescription(ApplicationContext.getTaskIdNameMap().get(id),
+                    solution.getTaskDescription(), 
+                    solution.getImageURL());
+            
+            mainWindow.getGraphEditorPane().getModelGraph().removeAll();
+            mainWindow.switchTutorModelPanels(true);
+        }catch(Exception e){
+            e.printStackTrace();
+        }
     }
 
     /**
@@ -486,7 +588,6 @@ public class FileMenu extends JMenu {
         this.currentGraphsFile = currentGraphsFile;
     }
 
-    
     private class MainGraphPropertiesChangeListener implements
             GraphPropertiesChangeListener {
 

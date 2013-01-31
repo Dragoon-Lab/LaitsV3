@@ -34,6 +34,10 @@ public class Vertex {
     private String name = "";
     private String correctDescription = "";
     private Plan plan = Plan.UNDEFINED;
+    
+    // Status of All the Tabs
+    private DescriptionStatus descriptionStatus = DescriptionStatus.UNDEFINED;
+    private PlanStatus planStatus = PlanStatus.UNDEFINED;
     private InputsStatus inputsStatus = InputsStatus.UNDEFINED;
     private CalculationsStatus calculationsStatus = 
             CalculationsStatus.UNDEFINED;
@@ -112,6 +116,22 @@ public class Vertex {
         this.type = shape;
     }
 
+    public DescriptionStatus getDescriptionStatus(){
+        return descriptionStatus;
+    }
+    
+    public void setDescriptionStatus(DescriptionStatus status){
+        this.descriptionStatus = status;
+    }
+    
+    public PlanStatus getPlanStatus(){
+        return planStatus;
+    }
+    
+    public void setPlanStatus(PlanStatus status){
+        this.planStatus = status;
+    }
+    
     public InputsStatus getInputsStatus(){
         return inputsStatus;
     }
@@ -278,22 +298,36 @@ public class Vertex {
     /**
      * An enumeration with the possible Status of Inputs of a vertex
     */
+    public enum DescriptionStatus{
+        UNDEFINED, CORRECT, INCORRECT, GAVEUP
+    }
+    
+    /**
+     * An enumeration with the possible Status of Inputs of a vertex
+    */
+    public enum PlanStatus{
+        UNDEFINED, CORRECT, INCORRECT, GAVEUP
+    }
+    
+    /**
+     * An enumeration with the possible Status of Inputs of a vertex
+    */
     public enum InputsStatus{
-        UNDEFINED, CORRECT, INCORRECT
+        UNDEFINED, CORRECT, INCORRECT, GAVEUP
     }
     
     /**
      * An enumeration with the possible Status of Calculations of a vertex
     */
     public enum CalculationsStatus{
-        UNDEFINED, CORRECT, INCORRECT
+        UNDEFINED, CORRECT, INCORRECT, GAVEUP
     }
     
     /**
      * An enumeration with the possible Status of Graphs of a vertex
     */
     public enum GraphsStatus{
-        UNDEFINED, CORRECT, INCORRECT
+        UNDEFINED, CORRECT, INCORRECT, GAVEUP
     }
     
     

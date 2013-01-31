@@ -3,6 +3,7 @@
  */
 package edu.asu.laits.model;
 
+import edu.asu.laits.editor.ApplicationContext;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.HashSet;
@@ -34,8 +35,16 @@ public class ModelEvaluator {
 
     public ModelEvaluator(Graph inputGraph) {
         currentGraph = inputGraph;
-        startTime = currentGraph.getCurrentTask().getStartTime();
-        endTime = currentGraph.getCurrentTask().getEndTime();
+        if(ApplicationContext.getAppMode().equals("STUDENT")){
+            startTime = ApplicationContext.getCorrectSolution().getStartTime();
+            endTime = ApplicationContext.getCorrectSolution().getEndTime();
+            
+            logs.debug("Getting Start Time and End Time from AppContext. "+
+                    startTime+"  "+endTime);            
+        }else{
+            startTime = currentGraph.getCurrentTask().getStartTime();
+            endTime = currentGraph.getCurrentTask().getEndTime();
+        }
         finalOperands = new HashMap<String, List<String>>();
     }
     
@@ -105,6 +114,20 @@ public class ModelEvaluator {
             throw new ModelEvaluationException(err);            
         }        
     }
+    
+    public void validateStudentGraph(){
+        TaskSolution solution = ApplicationContext.getCorrectSolution();
+        
+        Iterator<Vertex> it = currentGraph.vertexSet().iterator();
+        while(it.hasNext()){
+            Vertex currentVertex = it.next();
+            logs.debug(" Checking Vertex "+currentVertex.getName());
+            if(!solution.checkNodeGraph(currentVertex)){
+                logs.debug("Student Graph for Vertex "+currentVertex.getName()+" is Incorrect.");
+                currentVertex.setGraphsStatus(Vertex.GraphsStatus.INCORRECT);
+            }
+        }
+    }
 
     /**
      * Arrange all the vertices in Order : Constant, Stock, Flow
@@ -119,6 +142,8 @@ public class ModelEvaluator {
         int totalPoints = endTime - startTime;
 
         Iterator<Vertex> it = currentGraph.vertexSet().iterator();
+        logs.debug("Total Vertex : "+currentGraph.vertexSet().size());
+        
         while (it.hasNext()) {
             Vertex thisVertex = it.next();
             thisVertex.resetCorrectValues();

@@ -2,9 +2,11 @@
 package edu.asu.laits.model;
 
 import java.util.Iterator;
+import org.apache.log4j.Logger;
 import org.jgrapht.DirectedGraph;
 import org.jgrapht.graph.DirectedMultigraph;
 import org.jgrapht.graph.ListenableDirectedGraph;
+import java.util.Set;
 
 /**
  * This class is used as the data structure for graphs in the GraphEditorPane.
@@ -15,6 +17,8 @@ public class Graph<V, E> extends ListenableDirectedGraph<V, E> implements
 	private static final long serialVersionUID = 1L;
         private Task currentTask;
 
+        private static Logger logs = Logger.getLogger("DevLogs");
+        
 	public Graph(Class<E> edgeClass) {
 		super(new DirectedMultigraph<V, E>(edgeClass));
                 currentTask = new Task();
@@ -37,10 +41,19 @@ public class Graph<V, E> extends ListenableDirectedGraph<V, E> implements
         }
         
         public void setCurrentTask(Task task){
-            System.out.println("Task = "+task);
+            logs.debug("Setting new Task in the Graph with Start = "+
+                    task.getStartTime()+" End = "+task.getEndTime());
+            
             if(task == null){
                 currentTask = new Task();
             }else
                 currentTask = task;
+        }
+        
+        public void removeAll(){
+            Set<V> allV = vertexSet();
+            for(V vertex : allV){
+                this.removeVertex(vertex);
+            }
         }
 }

@@ -6,7 +6,9 @@
  */
 package edu.asu.laits.gui.nodeeditor;
 
+import edu.asu.laits.editor.ApplicationContext;
 import edu.asu.laits.editor.GraphEditorPane;
+import edu.asu.laits.model.TaskSolution;
 import edu.asu.laits.model.Vertex;
 import java.awt.Color;
 import java.awt.Component;
@@ -42,6 +44,7 @@ public class NodeEditor extends JFrame implements WindowListener {
     private CalculationsPanelView cPanel;
     private GraphsPanelView gPanel;
     public boolean graphCanBeDisplayed = false;
+    
     //Tab Pane Indexes
     public static final int DESCRIPTION = 0;
     public static final int PLAN = 1;
@@ -52,6 +55,7 @@ public class NodeEditor extends JFrame implements WindowListener {
     private int selectedTab;
     private GraphEditorPane graphPane;
     private Vertex currentVertex;
+    
     /**
      * Logger
      */
@@ -79,6 +83,11 @@ public class NodeEditor extends JFrame implements WindowListener {
         setTitle(currentVertex.getName());
         prepareNodeEditorDisplay();
 
+        if(ApplicationContext.getAppMode().equals("STUDENT")){
+            this.checkButton.setEnabled(true);
+            this.giveUpButton.setEnabled(true);            
+        }
+        
     }
 
     private void prepareNodeEditorDisplay() {
@@ -139,7 +148,7 @@ public class NodeEditor extends JFrame implements WindowListener {
         extraTabEvent = false;
         enableViewForPanels();
 
-        if (currentVertex.getGraphsStatus().equals(Vertex.GraphsStatus.CORRECT)) {
+        if (!currentVertex.getGraphsStatus().equals(Vertex.GraphsStatus.UNDEFINED)) {
             gPanel.loadGraph();
             selectedTab = GRAPH;
             tabPane.setEnabledAt(GRAPH, true);
@@ -325,7 +334,8 @@ public class NodeEditor extends JFrame implements WindowListener {
         editorMsgLabel.setText(msg);
         editorMsgLabel.setVisible(true);
     }
-
+    
+    
     /**
      * Method to handle closing of Editor
      *
@@ -375,6 +385,7 @@ public class NodeEditor extends JFrame implements WindowListener {
         buttonOK = new javax.swing.JButton();
         editorMsgLabel = new javax.swing.JLabel();
         bottomSpacer = new javax.swing.JLabel();
+        buttonDelete = new javax.swing.JButton();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
         setTitle("Node Editor");
@@ -522,8 +533,16 @@ public class NodeEditor extends JFrame implements WindowListener {
         editorMsgLabel.setFont(new java.awt.Font("Lucida Grande", 0, 12)); // NOI18N
         editorMsgLabel.setForeground(new java.awt.Color(255, 0, 0));
         editorMsgLabel.setText("jLabel1");
-        getContentPane().add(editorMsgLabel, new org.netbeans.lib.awtextra.AbsoluteConstraints(10, 545, 601, 30));
+        getContentPane().add(editorMsgLabel, new org.netbeans.lib.awtextra.AbsoluteConstraints(10, 550, 601, -1));
         getContentPane().add(bottomSpacer, new org.netbeans.lib.awtextra.AbsoluteConstraints(10, 616, 30, 10));
+
+        buttonDelete.setText("Delete Node");
+        buttonDelete.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                buttonDeleteActionPerformed(evt);
+            }
+        });
+        getContentPane().add(buttonDelete, new org.netbeans.lib.awtextra.AbsoluteConstraints(290, 570, 115, 40));
 
         pack();
     }// </editor-fold>//GEN-END:initComponents
@@ -544,9 +563,96 @@ public class NodeEditor extends JFrame implements WindowListener {
   }//GEN-LAST:event_tabPaneMouseDragged
 
   private void checkButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_checkButtonActionPerformed
+      // Action for Check Button
+      logs.debug("Handling Check Action");
+      TaskSolution correctSolution = ApplicationContext.getCorrectSolution();
+
+      if (tabPane.getSelectedIndex() == DESCRIPTION) {
+          checkDescriptionPanel(correctSolution);
+      } else if (tabPane.getSelectedIndex() == PLAN) {
+          checkPlanPanel(correctSolution);
+      } else if (tabPane.getSelectedIndex() == INPUTS) {
+          checkInputsPanel(correctSolution);
+      } else if (tabPane.getSelectedIndex() == CALCULATIONS) {
+          checkCalculationsPanel(correctSolution);
+      }
+
  }//GEN-LAST:event_checkButtonActionPerformed
 
+    private void checkDescriptionPanel(TaskSolution correctSolution) {
+        if (correctSolution.checkNodeName(dPanel.getNodeName())) {
+            currentVertex.setDescriptionStatus(Vertex.DescriptionStatus.CORRECT);
+            dPanel.setTextFieldBackground(Color.GREEN);
+        } else {
+            currentVertex.setDescriptionStatus(Vertex.DescriptionStatus.INCORRECT);
+            dPanel.setTextFieldBackground(Color.RED);
+        }
+        
+        // Save Description Panel Information in the Vertex Object
+        dPanel.processDescriptionPanel();
+        setTitle(currentVertex.getName());
+    }
+
+    private void checkPlanPanel(TaskSolution correctSolution) {
+        logs.debug("Checking Plan Panel");
+        if (correctSolution.checkNodePlan(dPanel.getNodeName(), pPanel.getSelectedPlan())) {
+            pPanel.setSelectedPlanBackground(Color.GREEN);
+            currentVertex.setPlanStatus(Vertex.PlanStatus.CORRECT);
+        } else {
+            pPanel.setSelectedPlanBackground(Color.RED);
+            currentVertex.setPlanStatus(Vertex.PlanStatus.INCORRECT);
+        }
+        // Save Selected Plan to the Vertex Object
+        pPanel.processPlanPanel();
+    }
+    
+    private void checkInputsPanel(TaskSolution correctSolution){
+        iPanel.processInputsPanel();
+        
+        boolean result = false;
+        if(iPanel.getValueButtonSelected()){
+            result = correctSolution.checkNodeInputs(dPanel.getNodeName(), null);
+        }else if(iPanel.getInputsButtonSelected()){
+            result = correctSolution.checkNodeInputs(dPanel.getNodeName(), iPanel.getSelectedInputsList());
+        }
+        
+        if(result){
+            iPanel.setOptionPanelBackground(Color.GREEN);
+            currentVertex.setInputsStatus(Vertex.InputsStatus.CORRECT);
+        }    
+        else{
+            iPanel.setOptionPanelBackground(Color.RED);
+            currentVertex.setInputsStatus(Vertex.InputsStatus.INCORRECT);
+        }              
+    }
+    
+    private void checkCalculationsPanel(TaskSolution correctSolution){
+        // Check Parsing Errors and Set Student's Equation in Vertex
+        cPanel.processCalculationsPanel();
+        
+        // Check for fixed value
+        if(correctSolution.checkNodeCalculations(currentVertex)){
+            cPanel.setCheckedBackground(Color.GREEN);
+            currentVertex.setCalculationsStatus(Vertex.CalculationsStatus.CORRECT);
+        }else{
+            cPanel.setCheckedBackground(Color.RED);
+            currentVertex.setCalculationsStatus(Vertex.CalculationsStatus.INCORRECT);
+        }
+    }
+  
   private void giveUpButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_giveUpButtonActionPerformed
+      // Action for Giveup Button
+      if(tabPane.getSelectedIndex() == DESCRIPTION){
+          logs.debug("Handling Give up Action for DESCRIPTION Tab");
+          dPanel.giveUpDescriptionPanel();
+          currentVertex.setDescriptionStatus(Vertex.DescriptionStatus.GAVEUP);
+      }else if(tabPane.getSelectedIndex() == PLAN){
+      
+      }else if(tabPane.getSelectedIndex() == INPUTS){
+      
+      }else if(tabPane.getSelectedIndex() == CALCULATIONS){
+      
+      }
  }//GEN-LAST:event_giveUpButtonActionPerformed
 
   private void buttonCancelActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_buttonCancelActionPerformed
@@ -556,16 +662,12 @@ public class NodeEditor extends JFrame implements WindowListener {
       if(currentVertex.getName().equals("")){
           graphPane.removeSelected();
       }
+      
       this.dispose();
   }//GEN-LAST:event_buttonCancelActionPerformed
 
-    /**
-     * Method to process the Node after filling all the details in NodeEditor
-     *
-     * @param evt
-     */
-  private void buttonOKActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_buttonOKActionPerformed
-      //set up based on the description tab
+  private void processAuthorModeOKAction(){
+      logs.debug("Processing Author Mode OK Button Action");
       if (dPanel.processDescriptionPanel()) {
           if (pPanel.processPlanPanel()) {
               if (iPanel.processInputsPanel()) {
@@ -584,10 +686,85 @@ public class NodeEditor extends JFrame implements WindowListener {
           }
           this.dispose();
       }
+  }
+  
+  private void processTutorModeOKAction(){
+      logs.debug("Processing Tutor Mode OK Button Action");
+      if(!isCheckGiveupButtonUsed())
+          return;
+      
+      this.dispose();
+  }
+  
+  private boolean isCheckGiveupButtonUsed(){
+      logs.debug("Verifying if Check or Giveup button was used");
+      
+      if(tabPane.getSelectedIndex() == DESCRIPTION && 
+              currentVertex.getDescriptionStatus().equals(Vertex.DescriptionStatus.UNDEFINED)){
+          showUndefinedTabErr();
+          return false;
+      }
+      
+      if(tabPane.getSelectedIndex() == PLAN && 
+              currentVertex.getPlanStatus().equals(Vertex.PlanStatus.UNDEFINED)){
+          showUndefinedTabErr();
+          return false;
+      }
+      
+      if(tabPane.getSelectedIndex() == INPUTS && 
+              currentVertex.getInputsStatus().equals(Vertex.InputsStatus.UNDEFINED)){
+          showUndefinedTabErr();
+          return false;
+      }
+      
+      if(tabPane.getSelectedIndex() == CALCULATIONS && 
+              currentVertex.getCalculationsStatus().equals(Vertex.CalculationsStatus.UNDEFINED)){
+          showUndefinedTabErr();
+          return false;
+      }
+      
+      return true;
+  }
+  
+  private void showUndefinedTabErr(){
+      this.editorMsgLabel.setText("Please use Check or Giveup buttons before exiting");
+  }
+  
+    /**
+     * Method to process the Node after filling all the details in NodeEditor
+     *
+     * @param evt
+     */
+  private void buttonOKActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_buttonOKActionPerformed
+      if(ApplicationContext.getAppMode().equalsIgnoreCase("STUDENT")){
+          processTutorModeOKAction();
+      }else{
+          processAuthorModeOKAction();
+      }
+      
   }//GEN-LAST:event_buttonOKActionPerformed
+
+    private void buttonDeleteActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_buttonDeleteActionPerformed
+        // TODO add your handling code here:
+        logs.debug("Delete Button Action Performed "+graphPane.getSelectionCount());
+        graphPane.removeSelected();        
+        
+        Iterator it=graphPane.getModelGraph().vertexSet().iterator();
+            Vertex v;
+            while(it.hasNext())
+            {
+                v=(Vertex)it.next();
+                v.getCorrectValues().clear();
+                v.setGraphsStatus(Vertex.GraphsStatus.UNDEFINED);
+            }
+        
+        this.dispose();        
+    }//GEN-LAST:event_buttonDeleteActionPerformed
+
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JLabel bottomSpacer;
     private javax.swing.JButton buttonCancel;
+    private javax.swing.JButton buttonDelete;
     private javax.swing.JButton buttonOK;
     private javax.swing.JPanel calculationPanel;
     private javax.swing.JButton checkButton;

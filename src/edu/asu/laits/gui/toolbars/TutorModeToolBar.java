@@ -5,6 +5,7 @@
 
 package edu.asu.laits.gui.toolbars;
 
+import edu.asu.laits.gui.MainWindow;
 import java.awt.Font;
 import javax.swing.Box;
 import javax.swing.JButton;
@@ -18,14 +19,16 @@ public class TutorModeToolBar extends JToolBar{
     private JButton situationButton = null;
     private JButton modelButton = null;
     private JButton spacerButton = null;
+    private MainWindow mainWindow;
     
 
     /**
      * This method initializes The ToolBar buttons for Model
      *
      */
-    public TutorModeToolBar() {
+    public TutorModeToolBar(MainWindow mw) {
         super();
+        mainWindow = mw;
         initialize();
     }
 
@@ -55,6 +58,7 @@ public class TutorModeToolBar extends JToolBar{
                     .addActionListener(new java.awt.event.ActionListener() {
                 public void actionPerformed(java.awt.event.ActionEvent e) {
                     //Implement Action here
+                    mainWindow.switchTutorModelPanels(true);
                 }
             });
         }
@@ -77,6 +81,7 @@ public class TutorModeToolBar extends JToolBar{
                     .addActionListener(new java.awt.event.ActionListener() {
                 public void actionPerformed(java.awt.event.ActionEvent e) {
                     // Implement Action here
+                    mainWindow.switchTutorModelPanels(false);
                 }
             });
         }
