@@ -3,64 +3,45 @@
 <Task phase="Intro" type="Debug">
   <URL>http://www.azdot.gov/highways/rfs/images/SR101_I17_AerialPhoto.jpg</URL>
   <TaskDescription>
-Problem:Suppose the Phoenix Metro area currently has a population of 4,192,887. Suppose the population grows at 5.5% per year. That is, the number of new residents added to the population each year is 5.5% of the number of residents at the beginning of the year. 
-Goal:Graph the population for the Phoenix Metro area each year over a 15 year period.
+Problem: Suppose the Phoenix Metro area currently has a population of 4,192,887. Suppose the population grows NEWLINE at 5.5% per year. That is, the number of
+      new residents added to the population each year is 5.5% ofNEWLINEthe number of residents at the beginning of the year. 
+      
+NEWLINE NEWLINEGoal: Graph the population for the Phoenix Metro area each year over a 15 year period.
   </TaskDescription>
-  <ShortDescription>
-  \n Accumulator: population = population + new residents per year; initial population = 4,192,887
-  \n Function: new residents per year = growth rate * population 
-  \n Given: growth rate = 0.055
-  </ShortDescription>
+  
   <StartTime>0</StartTime>
   <EndTime>15</EndTime>
   <Units>years</Units>
-  <Vertexes>
-    <VertexLabel>population</VertexLabel>
-    <VertexLabel>new residents per year</VertexLabel>
-    <VertexLabel>growth rate</VertexLabel>
-  </Vertexes>
   
   <NodeCount>3</NodeCount>
 
-  <ProblemSeeking>population</ProblemSeeking>
-  <CorrespondingSentence>Graph the population for the Phoenix Metro area each year over a 15 year period.</CorrespondingSentence>
-  
   <Nodes>
   
     <Node type="constant" name="growth rate" extra="no">
       <Inputs></Inputs>
-      <Outputs>
-      	<Node name="new residents per year"></Node>
-      </Outputs>
       <InitialValue>.055</InitialValue>
       <Equation>.055</Equation>
       <CorrectDescription>The rate that people move into the Phoenix Metro area during each year</CorrectDescription>
       <Plan>fixed value</Plan>
     </Node>
     
-    <Node type="flow" name="new residents per year" extra="no">
+    <Node type="flow" name="new residents" extra="no">
       <Inputs>        
-        <Node name="population"></Node>
-        <Node name="growth rate"></Node>
+        <Name>population</Name>
+        <Name>growth rate</Name>
       </Inputs>
-      <Outputs>
-    	<Node name="population"></Node>
-      </Outputs>
       <InitialValue></InitialValue>
-      <Equation>population*growth_rate</Equation>
+      <Equation>population * growth rate</Equation>
       <CorrectDescription>The number of new residents that move into the Phoenix Metro Area each year</CorrectDescription>
       <Plan>proportional to accumulator and input</Plan>
     </Node>
     
     <Node type="stock" name="population" extra="no">
       <Inputs>
-        <Node name="new residents per year" type="plus"></Node>
-	  </Inputs>
-      <Outputs>
-      	<Node name="new residents per year"></Node>
-      </Outputs>
+        <Name>new residents</Name>
+      </Inputs>
       <InitialValue>4192887</InitialValue>
-      <Equation>+new_residents_per_year</Equation>
+      <Equation>+new residents</Equation>
       <CorrectDescription>The number of people in the Phoenix Metro Area each year</CorrectDescription>
       <Plan>said to increase</Plan>
     </Node>
@@ -70,36 +51,29 @@ Goal:Graph the population for the Phoenix Metro area each year over a 15 year pe
   <GivenModel>
     <Node type="constant" name="growth rate" extra="no">
       <Inputs></Inputs>
-      <Outputs>
-      	<Node name="new residents per year"></Node>
-      </Outputs>
       <InitialValue>.055</InitialValue>
       <Equation>.055</Equation>
       <CorrectDescription>The rate that people move into the Phoenix Metro area during each year</CorrectDescription>
       <Plan>fixed value</Plan>
     </Node>
-    <Node type="flow" name="new residents per year" extra="no">
+    
+    <Node type="flow" name="new residents" extra="no">
       <Inputs>        
-        <Node name="population"></Node>
-        <Node name="growth rate"></Node>
+        <Name>population</Name>
+        <Name>growth rate</Name>
       </Inputs>
-      <Outputs>
-    	<Node name="population"></Node>
-      </Outputs>
       <InitialValue></InitialValue>
-      <Equation>population+growth_rate</Equation>
+      <Equation>population + growth rate</Equation>
       <CorrectDescription>The number of new residents that move into the Phoenix Metro Area each year</CorrectDescription>
       <Plan>proportional to accumulator and input</Plan>
     </Node>
+    
     <Node type="stock" name="population" extra="no">
       <Inputs>
-        <Node name="new residents per year" type="plus"></Node>
-	  </Inputs>
-      <Outputs>
-      	<Node name="new residents per year"></Node>
-      </Outputs>
+        <Name>new residents</Name>
+      </Inputs>
       <InitialValue>4192887</InitialValue>
-      <Equation>+new_residents_per_year</Equation>
+      <Equation>+new residents</Equation>
       <CorrectDescription>The number of people in the Phoenix Metro Area each year</CorrectDescription>
       <Plan>said to increase</Plan>
     </Node>
@@ -123,7 +97,7 @@ Goal:Graph the population for the Phoenix Metro area each year over a 15 year pe
         <Description>new residents that move into the Phoenix Metro Area</Description>            
         <Node level="leaf">
           <Description>each year</Description>
-          <NodeName>new residents per year</NodeName>
+          <NodeName>new residents</NodeName>
         </Node>
         <Node level="leaf">
           <Description>in the first year</Description>
@@ -141,7 +115,7 @@ Goal:Graph the population for the Phoenix Metro area each year over a 15 year pe
         </Node>
         <Node level="leaf">
           <Description>only in the first year</Description>
-          <NodeName>first year growth rate</NodeName>
+          <NodeName>first year growth</NodeName>
         </Node>
         <Node level="leaf">
           <Description>after 15 years</Description>

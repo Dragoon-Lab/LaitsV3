@@ -3,45 +3,30 @@
 <Task phase="Training" type="Debug">
   <URL>http://farm3.static.flickr.com/2465/3825067478_cb2c3ce571.jpg</URL>
   <TaskDescription>
-Problem: Suppose a city wins a large federal grant and uses it to buy 105 low-emission buses.  Although the buses have excellent technology, they are driven all day long so 9% of them fail each week. Therefore, approximately 9 buses fail in the first week. Since the city does not have the funding to increase the staff of its bus fleet maintenance facility, the staff can fix only 6 buses per week.
-Goal: Graph the size of the bus fleet (i.e., the ones that are on the road and not being repaired) over the first 10 weeks of operation. NEWLINE A model has been provided for you and run. As you can tell from the G indicators, some of the graphs are wrong.  You will need to fix the model.   </TaskDescription>
-  <ShortDescription>Accumulator: bus fleet = bus fleet + buses fixed each week – buses failing each week
-initial value = 105
-\n  Function: buses failing each week = bus fleet * proportion of buses that fail
-\n  Given: buses fixed each week = 6
-\n  Given: proportion of buses that fail = 0.09</ShortDescription>
+Problem: Suppose a city wins a large federal grant and uses it to buy 105 low-emission buses.  Although the buses have excellent technology, 
+      NEWLINE they are driven all day long so 9% of them fail each week. Therefore, approximately 9 buses fail in the first week. Since the city does 
+      NEWLINE not have the funding to increase the staff of its bus fleet maintenance facility, the staff can fix only 6 buses per week.
+NEWLINE NEWLINE Goal: Graph the size of the bus fleet (i.e., the ones that are on the road and not being repaired) over the first 10 weeks of operation. 
+NEWLINE A model has been provided for you and run. As you can tell from the G indicators, some of the graphs are wrong.  You will need to fix the model.   
+  </TaskDescription>
+ 
   <StartTime>0</StartTime>
   <EndTime>10</EndTime>
   <Units>weeks</Units>
-  <Vertexes>
-    <VertexLabel>proportion of buses that fail</VertexLabel>
-    <VertexLabel>bus fleet</VertexLabel>
-    <VertexLabel>buses failing each week</VertexLabel>
-    <VertexLabel>buses fixed each week</VertexLabel>
-  </Vertexes>
   
   <NodeCount>4</NodeCount>
-
-  <ProblemSeeking>bus fleet</ProblemSeeking>
-  <CorrespondingSentence> Graph the size of the bus fleet (i.e., the ones that are on the road and not being repaired) over the first 10 weeks of operation. </CorrespondingSentence>
-  
+ 
   <Nodes>
-    <Node type="constant" name="buses fixed each week" extra="no">
+    <Node type="constant" name="buses each week" extra="no">
       <Inputs></Inputs>
-      <Outputs>
-      	<Node name="bus fleet"></Node>
-      </Outputs>
       <Equation>6</Equation>
       <InitialValue>6</InitialValue>
       <CorrectDescription>The number of buses that are fixed each week</CorrectDescription>
       <Plan>fixed value</Plan>
     </Node>
     
-    <Node type="constant" name="proportion of buses that fail" extra="no">
+    <Node type="constant" name="prop buses that fail" extra="no">
       <Inputs></Inputs>
-      <Outputs>
-      	<Node name="buses failing each week"></Node>
-      </Outputs>
       <Equation>.09</Equation>
       <InitialValue>.09</InitialValue>
       <CorrectDescription>The proportion of the number of buses that fail to the number of buses that are in the bus fleet each week</CorrectDescription>
@@ -50,50 +35,38 @@ initial value = 105
     
     <Node type="stock" name="bus fleet" extra="no">
       <Inputs>        
-        <Node name="buses fixed each week" type="plus"></Node>
-        <Node name="buses failing each week" type="minus"></Node>
+        <Name>buses each week</Name>
+        <Name>buses fail each week</Name>
       </Inputs>
-      <Outputs>
-		<Node name="buses failing each week"></Node>
-	  </Outputs>
       <InitialValue>105</InitialValue>
-      <Equation>+buses_fixed_each_week-buses_failing_each_week</Equation>
+      <Equation>+buses each week - buses fail each week</Equation>
       <CorrectDescription>The number of buses that are working and used each week by the city</CorrectDescription>
       <Plan>said to both increase and decrease</Plan>
     </Node>
     
-    <Node type="flow" name="buses failing each week" extra="no">
+    <Node type="flow" name="buses fail each week" extra="no">
       <Inputs>        
-        <Node name="bus fleet"></Node>
-        <Node name="proportion of buses that fail"></Node>
+        <Name>bus fleet</Name>
+        <Name>prop buses that fail</Name>
       </Inputs>
-      <Outputs>
-      	<Node name="bus fleet"></Node>
-      </Outputs>
       <InitialValue></InitialValue>
-      <Equation>bus_fleet*proportion_of_buses_that_fail</Equation>
+      <Equation>bus fleet * prop buses that fail</Equation>
       <CorrectDescription>The number of buses that fail each week</CorrectDescription>
       <Plan>proportional to accumulator and input</Plan>
     </Node>
   </Nodes>  
 
   <GivenModel>
-    <Node type="constant" name="buses fixed each week" extra="no">
+    <Node type="constant" name="buses each week" extra="no">
       <Inputs></Inputs>
-      <Outputs>
-      	<Node name="bus fleet"></Node>
-      </Outputs>
       <Equation>6</Equation>
       <InitialValue>6</InitialValue>
       <CorrectDescription>The number of buses that are fixed each week</CorrectDescription>
       <Plan>fixed value</Plan>
     </Node>
     
-    <Node type="constant" name="proportion of buses that fail" extra="no">
+    <Node type="constant" name="prop buses that fail" extra="no">
       <Inputs></Inputs>
-      <Outputs>
-      	<Node name="buses failing each week"></Node>
-      </Outputs>
       <Equation>9</Equation>
       <InitialValue>9</InitialValue>
       <CorrectDescription>The proportion of the number of buses that fail to the number of buses that are in the bus fleet each week</CorrectDescription>
@@ -102,28 +75,22 @@ initial value = 105
     
     <Node type="stock" name="bus fleet" extra="no">
       <Inputs>        
-        <Node name="buses fixed each week"></Node>
-        <Node name="buses failing each week"></Node>
+        <Name>buses each week</Name>
+        <Name>buses fail each week</Name>
       </Inputs>
-      <Outputs>
-		<Node name="buses failing each week"></Node>
-	  </Outputs>
       <InitialValue>105</InitialValue>
-      <Equation>+buses_fixed_each_week-buses_failing_each_week</Equation>
+      <Equation>+ buses each week - buses fail each week</Equation>
       <CorrectDescription>The number of buses that are working and used each week by the city</CorrectDescription>
       <Plan>said to both increase and decrease</Plan>
     </Node>
     
-    <Node type="flow" name="buses failing each week" extra="no">
+    <Node type="flow" name="buses fail each week" extra="no">
       <Inputs>
-		<Node name="bus_fleet"/>
-		<Node name="proportion_of_buses_that_fail"/>
-	</Inputs>
-      <Outputs>
-      	<Node name="buses failing each week"></Node>
-      </Outputs>
+	<Name>bus fleet</Name>
+	<Name>prop buses that fail</Name>
+      </Inputs>
       <InitialValue></InitialValue>
-      <Equation>bus_fleet+proportion_of_buses_that_fail</Equation>
+      <Equation>bus fleet + prop buses that fail</Equation>
       <CorrectDescription>The number of buses that fail each week</CorrectDescription>
       <Plan>said to increase</Plan>
     </Node>
@@ -136,7 +103,7 @@ initial value = 105
         <Description>the number of buses</Description>            
         <Node level="leaf">
           <Description>that fail to the number of buses that are in the bus fleet each week</Description>
-          <NodeName>proportion of buses that fail</NodeName>
+          <NodeName>prop buses that fail</NodeName>
         </Node>
 	  </Node>
     </Node>
@@ -146,11 +113,11 @@ initial value = 105
         <Description>buses that</Description>            
         <Node level="leaf">
           <Description>fail each week</Description>
-          <NodeName>buses failing each week</NodeName>
+          <NodeName>buses fail each week</NodeName>
         </Node>
         <Node level="leaf">
           <Description>are fixed each week</Description>
-          <NodeName>buses fixed each week</NodeName>
+          <NodeName>buses each week</NodeName>
         </Node>
         <Node level="leaf">
           <Description>are working and used each week by the city</Description>

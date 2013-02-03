@@ -83,7 +83,7 @@ public class VertexSelectionMenu extends JPopupMenu {
             editItem.setText("Edit");
             editItem.addActionListener(new java.awt.event.ActionListener() {
                 public void actionPerformed(java.awt.event.ActionEvent e) {
-                    new NodeEditor(graphPane);
+                    new NodeEditor(graphPane, true);
                 }
             });
         }

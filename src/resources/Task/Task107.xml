@@ -3,60 +3,44 @@
 <Task phase="Intro" type="Debug">
   <URL>http://amt.javiergs.com/images/tasks/intro-4.png</URL>
   <TaskDescription>
-Problem: Corky is a struggling student.  He keeps a task list of assignments he needs to do, but it keeps getting longer and longer.  Each week Corky adds 7 new assignments to his task list.  As hard as he tries, Corky is only able to complete 3 assignments each week and remove them from his task list.  At the beginning of the semester, he starts with 2 tasks on his list.  
-Goal: Graph the number of assignments on the task list over the 12-week semester.
+Problem: Corky is a struggling student.  He keeps a task list of assignments he needs to do, but it keeps getting longer and longer. 
+      NEWLINE Each week Corky adds 7 new assignments to his task list.  As hard as he tries, Corky is only able to complete 3 assignments NEWLINE
+      each week and remove them from his task list.  At the beginning of the semester, he starts with 2 tasks on his list.  
+NEWLINE NEWLINEGoal: Graph the number of assignments on the task list over the 12-week semester.
   </TaskDescription>
-  <ShortDescription>
-\nAccumulator: new task list = task list + assignments added weekly – assignments removed weekly; initial value = 2.
-\n  Given: assignments added weekly = 7
-\n  Function: assignments removed weekly = 3
-  </ShortDescription>
+  
   <StartTime>0</StartTime>
   <EndTime>12</EndTime>
   <Units>weeks</Units>
-  <Vertexes>
-    <VertexLabel>task list</VertexLabel>
-    <VertexLabel>assignments added weekly</VertexLabel>
-    <VertexLabel>assignments removed weekly</VertexLabel>
-  </Vertexes>
   
   <NodeCount>3</NodeCount>
 
-  <ProblemSeeking>task list</ProblemSeeking>
-  <CorrespondingSentence>Graph the number of assignments on the task list over the 12-week semester.</CorrespondingSentence>
-
   <Nodes>
   
-    <Node type="constant" name="assignments added weekly" extra="no">
+    <Node type="constant" name="assignments added" extra="no">
       <Inputs></Inputs>
-      <Outputs>
-      	<Node name="task list"></Node>
-      </Outputs>
       <Equation>7</Equation>
       <InitialValue>7</InitialValue>
       <CorrectDescription>The number of new assignments added each week</CorrectDescription>
       <Plan>fixed value</Plan>
     </Node>
     
-    <Node type="constant" name="assignments removed weekly" extra="no">
+    <Node type="constant" name="assignments removed" extra="no">
       <Inputs></Inputs>
-      <Outputs>
-      	<Node name="task list"></Node>
-      </Outputs>
       <Equation>3</Equation>
       <InitialValue>3</InitialValue>
       <CorrectDescription>The number of assignments completed and removed from the task list each week</CorrectDescription>
       <Plan>fixed value</Plan>
     </Node>
     
-	<Node type="stock" name="task list" extra="no">
+    <Node type="stock" name="task list" extra="no">
       <Inputs>        
-        <Node name="assignments added weekly" type="plus"></Node>
-    	<Node name="assignments removed weekly" type="minus"></Node> 
+        <Name>assignments added</Name>
+    	<Name>assignments removed</Name> 
       </Inputs>
       <Outputs></Outputs>
       <InitialValue>2</InitialValue>
-      <Equation>+assignments_added_weekly-assignments_removed_weekly</Equation>
+      <Equation>+assignments added - assignments removed</Equation>
       <CorrectDescription>The number of assignments on the task list at the end of each week</CorrectDescription>
       <Plan>said to both increase and decrease</Plan>
     </Node>
@@ -64,17 +48,17 @@ Goal: Graph the number of assignments on the task list over the 12-week semester
   </Nodes>  
   
   <GivenModel>
-    <Node type="constant" name="assignments added weekly" extra="no">
+    <Node type="constant" name="assignments added" extra="no">
       <Inputs></Inputs>
-      <Outputs></Outputs>
       <Equation>7</Equation>
       <InitialValue>7</InitialValue>
+      <InputStatus>correct</InputStatus>
+      <CalculationStatus>correct</CalculationStatus>
       <CorrectDescription>The number of new assignments added each week</CorrectDescription>
       <Plan>fixed value</Plan>
     </Node>
-    <Node type="constant" name="assignments removed weekly" extra="no">
+    <Node type="constant" name="assignments removed" extra="no">
       <Inputs></Inputs>
-      <Outputs></Outputs>
       <Equation>3</Equation>
       <InitialValue>3</InitialValue>
       <CorrectDescription>The number of assignments completed and removed from the task list each week</CorrectDescription>
@@ -93,11 +77,11 @@ Goal: Graph the number of assignments on the task list over the 12-week semester
         </Node>
         <Node level="leaf">
           <Description>added each week</Description>
-          <NodeName>assignments added weekly</NodeName>
+          <NodeName>assignments added</NodeName>
         </Node>
         <Node level="leaf">
           <Description>completed and removed from the task list each week</Description>
-          <NodeName>assignments removed weekly</NodeName>
+          <NodeName>assignments removed</NodeName>
         </Node>
 	  </Node>
     </Node>

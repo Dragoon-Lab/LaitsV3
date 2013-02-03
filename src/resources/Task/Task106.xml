@@ -2,56 +2,39 @@
 <Task phase="Intro" type="Debug">
   <URL>http://amt.javiergs.com/images/tasks/intro-3.png</URL>
   <TaskDescription>
-  Problem:The US Supreme Court has 9 justices, and 3 justices are female. 
+  Problem:The US Supreme Court has 9 justices, and 3 justices are female. NEWLINE NEWLINE
   Goal: Create a model that uses a function node to calculate the proportion of the justices that are female.</TaskDescription>
-  <ShortDescription>
-  \n Given: justices = 9
-  \n Given: female justices = 3
-  \n Function: proportion of justices that are female = female justices / justices
-  </ShortDescription>
+  
   <StartTime>2000</StartTime>
   <EndTime>2011</EndTime>
   <Units>years</Units>
-  <Vertexes>
-    <VertexLabel>justices</VertexLabel>
-    <VertexLabel>female justices</VertexLabel>
-    <VertexLabel>proportion of justices that are female</VertexLabel>
-  </Vertexes>
   
   <NodeCount>3</NodeCount>
-
-  <ProblemSeeking>proportion of justices that are female</ProblemSeeking>
-  <CorrespondingSentence>Create a model that uses a function node to calculate the proportion of the justices that are female.</CorrespondingSentence>
   
   <Nodes>
     <Node type="constant" name="female justices" extra="no">
       <Inputs></Inputs>
-      <Outputs>
-      	<Node name="proportion of justices that are female"></Node>
-      </Outputs>
       <Equation>3</Equation>
       <InitialValue>3</InitialValue>
       <CorrectDescription>The number of US Supreme Court justices that are female</CorrectDescription>
       <Plan>fixed value</Plan>
     </Node>
+    
     <Node type="constant" name="justices" extra="no">
       <Inputs></Inputs>
-      <Outputs>
-      	<Node name="proportion of justices that are female"></Node>
-      </Outputs>
       <Equation>9</Equation>
       <InitialValue>9</InitialValue>
       <CorrectDescription>The total number of US Supreme Court justices</CorrectDescription>
       <Plan>fixed value</Plan>
     </Node>
-	<Node type="flow" name="proportion of justices that are female" extra="no">
+    
+    <Node type="flow" name="female justice prop" extra="no">
       <Inputs>
-	<Node name="female justices"></Node>
-        <Node name="justices"></Node>
-	</Inputs>
-      <Outputs></Outputs>
+	<Name>female justices</Name>
+        <Name>justices</Name>
+      </Inputs>
       <InitialValue></InitialValue>
-      <Equation>female_justices/justices</Equation>
+      <Equation>female justices/justices</Equation>
       <CorrectDescription>The ratio of female justices to total justices in the US Supreme court</CorrectDescription>
       <Plan>ratio of two quantities</Plan>
     </Node>
@@ -61,7 +44,6 @@
   <GivenModel>
     <Node type="constant" name="female justices" extra="no">
       <Inputs></Inputs>
-      <Outputs></Outputs>
       <Equation>3</Equation>
       <InitialValue>3</InitialValue>
       <CorrectDescription>The number of US Supreme Court justices that are female</CorrectDescription>
@@ -69,7 +51,6 @@
     </Node>
     <Node type="constant" name="justices" extra="no">
       <Inputs></Inputs>
-      <Outputs></Outputs>
       <Equation>9</Equation>
       <InitialValue>9</InitialValue>
       <CorrectDescription>The total number of US Supreme Court justices</CorrectDescription>
@@ -109,7 +90,7 @@
         <Description>female justices to</Description>            
         <Node level="leaf">
           <Description>total justices in the US Supreme court</Description>
-          <NodeName>proportion of justices that are female</NodeName>
+          <NodeName>female justice prop</NodeName>
         </Node>
         <Node level="leaf">
           <Description>male lawyers in Alabama</Description>
@@ -120,11 +101,11 @@
         <Description>female gorillas to</Description>            
         <Node level="leaf">
           <Description>male gorillas in the Phoenix zoo</Description>
-          <NodeName>male to female gorilla ratio</NodeName>
+          <NodeName>male to female ratio</NodeName>
         </Node>
         <Node level="leaf">
           <Description>baby gorillas in the Phoenix zoo</Description>
-          <NodeName>mother to child gorilla ratio</NodeName>
+          <NodeName>mother to child ratio</NodeName>
         </Node>
 	  </Node>
     </Node>

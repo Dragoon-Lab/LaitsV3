@@ -151,6 +151,9 @@ public class VertexRenderComponent extends VertexRenderer implements
         }else if(currentVertex.getInputsStatus() == Vertex.InputsStatus.INCORRECT){
             paintIcon(g, ImageLoader.getInstance().getInputsInCorrectIcon(), 0); 
         }
+        else if(currentVertex.getInputsStatus() == Vertex.InputsStatus.GAVEUP){
+            paintIcon(g, ImageLoader.getInstance().getInputsGaveUpIcon(), 0); 
+        }
     }
     
     private void paintCalculationsIcons(Graphics g, Vertex currentVertex){
@@ -162,6 +165,8 @@ public class VertexRenderComponent extends VertexRenderer implements
             
         }else if(currentVertex.getCalculationsStatus() == Vertex.CalculationsStatus.INCORRECT){
             paintIcon(g, ImageLoader.getInstance().getCalculationsInCorrectIcon(), 30);            
+        }else if(currentVertex.getCalculationsStatus() == Vertex.CalculationsStatus.GAVEUP){
+            paintIcon(g, ImageLoader.getInstance().getCalculationsGaveUpIcon(), 30);            
         }
     }
     
@@ -174,6 +179,8 @@ public class VertexRenderComponent extends VertexRenderer implements
         
        }else if(currentVertex.getGraphsStatus() == Vertex.GraphsStatus.INCORRECT){
             paintIcon(g, ImageLoader.getInstance().getGraphsInCorrectIcon(), 60);
+       }else if(currentVertex.getGraphsStatus() == Vertex.GraphsStatus.GAVEUP){
+            paintIcon(g, ImageLoader.getInstance().getGraphsGaveUpIcon(), 60);
        }  
     }
     private void paintIcon(Graphics g, Image iconImage, int displacement){

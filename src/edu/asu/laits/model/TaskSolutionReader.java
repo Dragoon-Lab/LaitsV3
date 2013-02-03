@@ -30,6 +30,9 @@ public class TaskSolutionReader {
         try {
             Document parsedSolution = loadRootDocument(taskId);
             Element taskNode = parsedSolution.getRootElement();
+            solution.setTaskType(taskNode.attributeValue("type"));
+            solution.setPhase(taskNode.attributeValue("phase"));
+            
             
             // Read Task Params
             fillTaskParams(solution, taskNode);
@@ -38,6 +41,11 @@ public class TaskSolutionReader {
             Element allNodes = taskNode.element("Nodes");
             fillAllCorrectNodes(solution, allNodes);
             
+            //Read Given Nodes for Debug problem
+            if(solution.getTaskType().equalsIgnoreCase("debug")){
+                Element givenNodes = taskNode.element("GivenModel");
+                fillGivenNodes(solution, givenNodes);
+            }
             //Fill Description Tree in the Solution Structure
             Element descriptionTree = taskNode.element("DescriptionTree");
             fillDescriptionTree(solution, descriptionTree);
@@ -71,34 +79,12 @@ public class TaskSolutionReader {
     }
     
     private void fillAllCorrectNodes(TaskSolution solution, Element nodes){
-        //Extract all the XML nodes in a list
-        List<Element> allNodes = nodes.elements("Node");
-        
-        for(Element node : allNodes){
-            SolutionNode newNode = new SolutionNode();
-            
-            newNode.setNodeName(node.attributeValue("name"));
-            newNode.setNodeType(node.attributeValue("type"));
-            newNode.setIsExtra(node.attributeValue("extra"));
-            
-            // Read all the Input Nodes of this node
-            Element nodeInput = node.element("Inputs");
-            List<Element> allInputNodes = nodeInput.elements("Name");
-            List<String> inputNodes = new ArrayList<String> ();
-            
-            for(Element inputNode : allInputNodes){
-                inputNodes.add(inputNode.getTextTrim());                
+        fillNodes(solution.getSolutionNodes(), nodes);
+        List<SolutionNode> allNodes = solution.getSolutionNodes();
+        for(SolutionNode node : allNodes){
+            if(!node.isExtra()){
+                solution.getCorrectNodeNames().add(node.getNodeName());
             }
-            
-            newNode.setInputNodes(inputNodes);
-            
-            // Read remaining info of the node
-            newNode.setNodeEquation(node.elementTextTrim("Equation"));
-            newNode.setInitialValue(node.elementTextTrim("InitialValue"));
-            newNode.setCorrectDescription(node.elementTextTrim("CorrectDescription"));
-            newNode.setNodePlan(node.elementTextTrim("Plan"));
-            
-            solution.getSolutionNodes().add(newNode);
         }
     }
     
@@ -132,6 +118,42 @@ public class TaskSolutionReader {
             for(Element innerNode : allNodes){
                 fillDTreeNodeRecursively(innerNode, (nextNode == null) ? node : nextNode);
             }
+        }
+    }
+    
+    private void fillGivenNodes(TaskSolution solution, Element nodes){        
+        fillNodes(solution.getGivenNodes(), nodes);
+    }
+    
+    private void fillNodes(List<SolutionNode> list, Element nodes){
+        //Extract all the XML nodes in a list
+        List<Element> allNodes = nodes.elements("Node");
+        
+        for(Element node : allNodes){
+            SolutionNode newNode = new SolutionNode();
+            
+            newNode.setNodeName(node.attributeValue("name"));
+            newNode.setNodeType(node.attributeValue("type"));
+            newNode.setIsExtra(node.attributeValue("extra"));
+            
+            // Read all the Input Nodes of this node
+            Element nodeInput = node.element("Inputs");
+            List<Element> allInputNodes = nodeInput.elements("Name");
+            List<String> inputNodes = new ArrayList<String> ();
+            
+            for(Element inputNode : allInputNodes){
+                inputNodes.add(inputNode.getTextTrim());                
+            }
+            
+            newNode.setInputNodes(inputNodes);
+            
+            // Read remaining info of the node
+            newNode.setNodeEquation(node.elementTextTrim("Equation"));
+            newNode.setInitialValue(node.elementTextTrim("InitialValue"));
+            newNode.setCorrectDescription(node.elementTextTrim("CorrectDescription"));
+            newNode.setNodePlan(node.elementTextTrim("Plan"));
+            
+            list.add(newNode);
         }
     }
 }

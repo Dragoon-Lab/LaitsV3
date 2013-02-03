@@ -55,6 +55,12 @@ public class SolutionNode {
             nodePlan = Plan.PROPORTIONAL;
         else if(planText.equalsIgnoreCase("fixed value"))
             nodePlan = Plan.FIXED;
+        else if(planText.equalsIgnoreCase("ratio of two quantities"))
+            nodePlan = Plan.RATIO;
+        else if(planText.equalsIgnoreCase("said to increase"))
+            nodePlan = Plan.INCREASE;
+        else if(planText.equalsIgnoreCase("said to decrease"))
+            nodePlan = Plan.DECREASE;
     }
     
     public void setInputNodes(List<String> nodeList){
@@ -67,6 +73,10 @@ public class SolutionNode {
             isExtra = false;
         else 
             isExtra = true;
+    }
+    
+    public boolean isExtra(){
+        return isExtra;
     }
     
     public void setInitialValue(String value){

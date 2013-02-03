@@ -5,6 +5,7 @@
 
 package edu.asu.laits.editor;
 
+import edu.asu.laits.model.TaskMenuItem;
 import edu.asu.laits.model.TaskSolution;
 import java.util.HashMap;
 
@@ -20,7 +21,9 @@ public class ApplicationContext {
   
   private static boolean isValid = false;
   private static TaskSolution correctSolution;
-  private static HashMap<String,String> taskIdNameMap;
+  private static HashMap<String,TaskMenuItem> taskIdNameMap;
+  private static String currentTaskID;
+  private static boolean isProblemSolved = false;
   
   
   public static String getUserFirstName(){
@@ -71,12 +74,27 @@ public class ApplicationContext {
       return correctSolution;
   }
   
-  public static void setTaskIdNameMap(HashMap<String,String> map){
+  public static void setTaskIdNameMap(HashMap<String,TaskMenuItem> map){
       taskIdNameMap = map;
   }
   
-  public static HashMap<String,String> getTaskIdNameMap(){
+  public static HashMap<String,TaskMenuItem> getTaskIdNameMap(){
       return taskIdNameMap;
   }
   
+  public static String getCurrentTaskID(){
+    return currentTaskID;
+  }
+  
+  public static void setCurrentTaskID(String uid){
+    currentTaskID = uid;
+  }
+  
+  public static boolean isProblemSolved(){
+    return isProblemSolved;
+  }
+  
+  public static void setProblemSolved(boolean input){
+    isProblemSolved = input;
+  }
 }

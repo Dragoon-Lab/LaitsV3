@@ -50,7 +50,7 @@ public class Graph<V, E> extends ListenableDirectedGraph<V, E> implements
                 currentTask = task;
         }
         
-        public void removeAll(){
+        public synchronized void removeAll(){
             Set<V> allV = vertexSet();
             for(V vertex : allV){
                 this.removeVertex(vertex);

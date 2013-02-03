@@ -5,15 +5,26 @@ import edu.asu.laits.editor.GraphEditorPane;
 import edu.asu.laits.editor.GraphRangeEditor;
 import edu.asu.laits.gui.MainWindow;
 import edu.asu.laits.gui.nodeeditor.NodeEditor;
+import edu.asu.laits.gui.nodeeditor.NodeEditor;
 import edu.asu.laits.model.Graph;
 import edu.asu.laits.model.ModelEvaluationException;
 import edu.asu.laits.model.ModelEvaluator;
+import edu.asu.laits.model.SolutionNode;
+import edu.asu.laits.model.TaskMenuItem;
+import edu.asu.laits.model.TaskSolution;
+import edu.asu.laits.model.TaskSolutionReader;
 import edu.asu.laits.model.Vertex;
 import java.awt.event.KeyEvent;
+import java.io.BufferedReader;
+import java.io.InputStreamReader;
+import java.net.URL;
+import java.util.Iterator;
+import java.util.List;
 import javax.swing.JMenu;
 import javax.swing.JMenuItem;
 import javax.swing.JOptionPane;
 import org.apache.log4j.Logger;
+import org.jgraph.graph.DefaultPort;
 
 /**
  * Menu for all Model Functionalities. Contains Menu Items for Run Model,
@@ -28,10 +39,8 @@ public class ModelMenu extends JMenu {
     private JMenuItem runModelMenuItem = null;
     private JMenuItem editTimeRangeMenuItem = null;
     private JMenuItem exportSolutionMenuItem = null;
-    
     private GraphEditorPane graphPane;
     private MainWindow mainWindow;
-    
     private static Logger logs = Logger.getLogger("DevLogs");
     private static Logger activityLogs = Logger.getLogger("ActivityLogs");
 
@@ -67,18 +76,18 @@ public class ModelMenu extends JMenu {
     private JMenuItem getAddNodeMenuItem() {
         if (addNodeMenuItem == null) {
             addNodeMenuItem = new JMenuItem();
-            addNodeMenuItem.setText("Add Node ");
-            
+            addNodeMenuItem.setText("Create Node ");
+
             addNodeMenuItem
                     .addActionListener(new java.awt.event.ActionListener() {
                 public void actionPerformed(java.awt.event.ActionEvent e) {
-                    newNodeAction();                   
+                    newNodeAction();
                 }
             });
         }
         return addNodeMenuItem;
     }
-    
+
     /**
      * This method initializes runModelMenuItem
      *
@@ -116,7 +125,7 @@ public class ModelMenu extends JMenu {
     }
 
     /**
-     * This method initializes selectOtherSelectionMenuItem     
+     * This method initializes selectOtherSelectionMenuItem
      */
     private JMenuItem getExportSolutionMenuItem() {
         if (exportSolutionMenuItem == null) {
@@ -125,7 +134,6 @@ public class ModelMenu extends JMenu {
             exportSolutionMenuItem
                     .addActionListener(new java.awt.event.ActionListener() {
                 public void actionPerformed(java.awt.event.ActionEvent e) {
-                    
                 }
             });
         }
@@ -145,43 +153,181 @@ public class ModelMenu extends JMenu {
             getExportSolutionMenuItem().setEnabled(verticesSelected);
         }
     }
-    
-    public void newNodeAction(){
-        Vertex v = new Vertex();        
-        graphPane.addVertex(v);
-        graphPane.repaint(); 
-        
-        NodeEditor editor = new NodeEditor(graphPane);  
+
+    public void newNodeAction() {
+        MainWindow window = (MainWindow) graphPane.getMainFrame();
+        if (newNodeAllowed()) {
+            Vertex v = new Vertex();
+            graphPane.addVertex(v);
+
+            if (graphPane.getMainFrame().isSituationSelected()) {
+                logs.debug("Switing to Model Design Panel");
+                graphPane.getMainFrame().switchTutorModelPanels(false);
+            }
+
+            graphPane.repaint();
+            NodeEditor editor = new NodeEditor(graphPane, true);
+        } else {
+            JOptionPane.showMessageDialog(window, "The model is already using all the correct nodes.");
+            //window.getStatusBarPanel().setStatusMessage("Please complete all the nodes before running Model", false);
+        }
+
     }
-    
-    public void runModelAction(){
-        ModelEvaluator me = new ModelEvaluator((Graph)graphPane.getModelGraph());
-        MainWindow window = (MainWindow)graphPane.getMainFrame();
-        if(me.isModelComplete()){
-            try{
-                me.run();
-                
-                if(ApplicationContext.getAppMode().equals("STUDENT"))
-                    me.validateStudentGraph();
-                
-                window.getStatusBarPanel().setStatusMessage("", true);                
-                JOptionPane.showMessageDialog(MainWindow.getFrames()[0], 
-                           "Run Model Complete.", 
-                           "Success", JOptionPane.INFORMATION_MESSAGE);
-            }catch(ModelEvaluationException ex){
-                window.getStatusBarPanel().setStatusMessage(ex.getMessage(), false);
-            }    
-            graphPane.repaint(); 
-        }else{
+
+    private boolean newNodeAllowed() {
+        TaskSolution solution = ApplicationContext.getCorrectSolution();
+        if (graphPane.getModelGraph().vertexSet().size()
+                < solution.getSolutionNodes().size()) {
+            return true;
+        }
+
+        return false;
+    }
+
+    public void runModelAction() {
+        ModelEvaluator me = new ModelEvaluator((Graph) graphPane.getModelGraph());
+        MainWindow window = (MainWindow) graphPane.getMainFrame();
+        if (me.isModelComplete()) {
+            if (me.hasExtraNodes()) {
+                try {
+                    me.run();
+
+                    if (ApplicationContext.getAppMode().equals("STUDENT")) {
+                        me.validateStudentGraph();
+                    }
+
+                    window.getStatusBarPanel().setStatusMessage("", true);
+                    JOptionPane.showMessageDialog(MainWindow.getFrames()[0],
+                            "Run Model Complete.",
+                            "Success", JOptionPane.INFORMATION_MESSAGE);
+                } catch (ModelEvaluationException ex) {
+                    window.getStatusBarPanel().setStatusMessage(ex.getMessage(), false);
+                }
+                graphPane.repaint();
+            } else {
+                JOptionPane.showMessageDialog(window, "Model has extra nodes in it, please remove them before running the model.");
+            }
+        } else {
             JOptionPane.showMessageDialog(window, "The model is incomplete, please complete all the nodes before running Model");
             window.getStatusBarPanel().setStatusMessage("Please complete all the nodes before running Model", false);
         }
     }
-    
-    
-    
-    public void editTimeRangeAction(){
+
+    public void editTimeRangeAction() {
         GraphRangeEditor ed = new GraphRangeEditor(graphPane, true);
         ed.setVisible(true);
+    }
+    
+    public void doneButtonAction(){
+        if(!ApplicationContext.isProblemSolved()){
+            JOptionPane.showMessageDialog(graphPane.getMainFrame(), "Please Solve the problem before using Done !!!");
+            return;
+        }
+        
+        writeResultToServer();
+        
+        String currentTaskLevel = ApplicationContext.getTaskIdNameMap()
+                .get(ApplicationContext.getCurrentTaskID()).getTaskLevel();
+        int level = Integer.parseInt(currentTaskLevel);
+        level++;
+        
+        String nextLevel = String.valueOf(level);
+        Iterator<TaskMenuItem> it = ApplicationContext.getTaskIdNameMap().values().iterator();
+        String nextTaskID = null;
+        
+        while(it.hasNext()){
+            TaskMenuItem item = it.next();
+            if(item.getTaskLevel().equals(nextLevel)){
+                nextTaskID = item.getTaskId();
+                break;
+            }    
+        }
+        
+        TaskSolutionReader solutionReader = new TaskSolutionReader();
+        try{
+            TaskSolution solution = solutionReader.loadSolution(nextTaskID);
+            ApplicationContext.setCorrectSolution(solution);
+            
+            mainWindow.loadTaskDescription(ApplicationContext.getTaskIdNameMap().get(nextTaskID).getTaskName(),
+                    solution.getTaskDescription(), 
+                    solution.getImageURL());
+            
+            mainWindow.getGraphEditorPane().resetModelGraph();
+            if(solution.getTaskType().equalsIgnoreCase("debug")){
+                createGivenModel(solution, graphPane);
+            }
+            
+            mainWindow.switchTutorModelPanels(true);
+        }catch(Exception e){
+            e.printStackTrace();
+        }
+    }
+    
+    private void createGivenModel(TaskSolution solution, GraphEditorPane editorPane){
+        List<SolutionNode> givenNodes = solution.getGivenNodes();
+        
+        for(SolutionNode node : givenNodes){
+            Vertex v = new Vertex();
+            v.setName(node.getNodeName());
+            v.setCorrectDescription(node.getCorrectDescription());
+            v.setPlan(node.getNodePlan());
+            v.setDescriptionStatus(Vertex.DescriptionStatus.CORRECT);
+            v.setPlanStatus(Vertex.PlanStatus.CORRECT);
+            v.setEquation(node.getNodeEquation());
+            v.setInitialValue(node.getInitialValue());
+            
+            v.setVertexType(node.getNodeType());
+            
+            if(solution.checkNodeInputs(node.getNodeName(), node.getInputNodes()))
+                v.setInputsStatus(Vertex.InputsStatus.CORRECT);
+            else 
+                v.setInputsStatus(Vertex.InputsStatus.INCORRECT);
+            
+            if(solution.checkNodeCalculations(v))
+                v.setCalculationsStatus(Vertex.CalculationsStatus.CORRECT);
+            else 
+                v.setCalculationsStatus(Vertex.CalculationsStatus.INCORRECT);
+            
+            editorPane.addVertex(v);
+        }
+        
+        for(SolutionNode node : givenNodes){
+            List<String> inputVertices = node.getInputNodes();
+            for(String vertexName : inputVertices){
+                Vertex v1 = editorPane.getModelGraph().getVertexByName(node.getNodeName());
+                Vertex v2 = editorPane.getModelGraph().getVertexByName(vertexName);
+                
+                DefaultPort p1 = editorPane.getJGraphTModelAdapter().getVertexPort(v1);
+                DefaultPort p2 = editorPane.getJGraphTModelAdapter().getVertexPort(v2);
+                
+                editorPane.insertEdge(p2, p1);
+            }            
+        }
+    }
+    
+    private void writeResultToServer(){
+        final String WEB = "http://laits.engineering.asu.edu/updateprob.php";
+
+    try {
+      //idtask taskID of the current task
+      String fname = ApplicationContext.getUserFirstName();
+      String lname = ApplicationContext.getUserLastName();
+      String asuid = ApplicationContext.getUserASUID();
+      String taskTitle = ApplicationContext.getTaskIdNameMap().
+              get(ApplicationContext.getCurrentTaskID()).getTaskName();
+      
+      logs.debug("Writing Student "+fname+" "+lname+" Task: "+taskTitle+" to server");
+
+      String url = WEB;
+      url += "?id=" + asuid + "&fname=" + fname + "&lname=" + lname + "&title=" + taskTitle;
+      URL myURL = new URL(url);
+      
+      BufferedReader in = new BufferedReader(new InputStreamReader(myURL.openStream()));
+
+      in.close();
+
+    } catch (Exception e) {
+      logs.debug("Error in Updating student completed prob. "+e.getMessage());
+    }
     }
 }

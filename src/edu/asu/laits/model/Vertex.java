@@ -48,7 +48,7 @@ public class Vertex {
     private transient List<Double> correctValues;
     
     transient private SortedMap<String, String> properties = new TreeMap<String, String>();
-    transient private static int vertIndexCount = 0;
+    transient public static int vertIndexCount = 0;
     private int vertexIndex;
     
     /** Logger */
@@ -65,7 +65,7 @@ public class Vertex {
         yPosition = 200 * (vertexIndex / 6) + 60 ;
         correctValues = new ArrayList<Double>();
         equation = "";
-        vertIndexCount++;
+        vertIndexCount++;        
     }
     
 

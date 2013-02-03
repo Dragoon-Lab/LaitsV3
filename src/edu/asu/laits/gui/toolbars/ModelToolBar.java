@@ -1,13 +1,18 @@
 package edu.asu.laits.gui.toolbars;
 
+import edu.asu.laits.editor.ApplicationContext;
 import edu.asu.laits.gui.menus.ModelMenu;
 import javax.swing.JToolBar;
 import javax.swing.JButton;
 import javax.swing.ImageIcon;
 
 import edu.asu.laits.gui.menus.ViewMenu;
+import edu.asu.laits.model.TaskMenuItem;
+import edu.asu.laits.model.TaskSolution;
+import edu.asu.laits.model.TaskSolutionReader;
 import edu.asu.laits.model.Vertex;
 import java.awt.Font;
+import java.util.Iterator;
 import javax.swing.Box;
 
 /**
@@ -53,7 +58,7 @@ public class ModelToolBar extends JToolBar {
     private JButton getAddNodeButton() {
         if (addNodeButton == null) {
             addNodeButton = new JButton();
-            addNodeButton.setText("Add Node");
+            addNodeButton.setText("Create Node");
             addNodeButton.setToolTipText("Create a New Node");
             addNodeButton.setFont(new Font(addNodeButton.getFont().getName(),
                                            Font.BOLD,
@@ -105,11 +110,14 @@ public class ModelToolBar extends JToolBar {
             doneButton
                     .addActionListener(new java.awt.event.ActionListener() {
                 public void actionPerformed(java.awt.event.ActionEvent e) {
-                    // Implement Done Button Action here
+                    
+                    modelMenu.doneButtonAction();
                 }
             });
         }
         return doneButton;
     }
+    
+    
     
 }

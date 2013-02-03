@@ -16,14 +16,17 @@ public class ImageLoader {
     private Image inputsNoStatus;
     private Image inputsCorrect;
     private Image inputsInCorrect;
+    private Image inputsGaveUp;
     
     private Image calculationsNoStatus;
     private Image calculationsCorrect;
     private Image calculationsInCorrect;
+    private Image calculationsGaveUp;
     
     private Image graphsNoStatus;
     private Image graphsCorrect;
     private Image graphsInCorrect;
+    private Image graphsGaveUp;
     
     public static final int statusIconHeight = 20;
     public static final int statusIconWidth = 20;
@@ -45,6 +48,8 @@ public class ImageLoader {
                 "/resources/icons/InputsCorrectStatus.png")).getImage();
         inputsInCorrect = new ImageIcon(getClass().getResource(
                 "/resources/icons/InputsWrongStatus.png")).getImage();
+        inputsGaveUp = new ImageIcon(getClass().getResource(
+                "/resources/icons/InputsGaveUpStatus.png")).getImage();
         
         calculationsNoStatus = new ImageIcon(getClass().getResource(
                 "/resources/icons/CalculationsNoStatus.png")).getImage();
@@ -52,6 +57,8 @@ public class ImageLoader {
                 "/resources/icons/CalculationsCorrectStatus.png")).getImage();
         calculationsInCorrect = new ImageIcon(getClass().getResource(
                 "/resources/icons/CalculationsWrongStatus.png")).getImage();
+        calculationsGaveUp = new ImageIcon(getClass().getResource(
+                "/resources/icons/CalculationsGaveUpStatus.png")).getImage();
         
         graphsNoStatus = new ImageIcon(getClass().getResource(
                 "/resources/icons/GraphsNoStatus.png")).getImage();
@@ -59,6 +66,8 @@ public class ImageLoader {
                 "/resources/icons/GraphsCorrectStatus.png")).getImage();
         graphsInCorrect = new ImageIcon(getClass().getResource(
                 "/resources/icons/GraphsWrongStatus.png")).getImage();
+        graphsGaveUp = new ImageIcon(getClass().getResource(
+                "/resources/icons/GraphsGaveUpStatus.png")).getImage();
         
     }
     
@@ -74,6 +83,10 @@ public class ImageLoader {
         return inputsInCorrect;
     }
     
+    public Image getInputsGaveUpIcon(){
+        return inputsGaveUp;
+    }
+    
     public Image getCalculationsNoStatusIcon(){
         return calculationsNoStatus;
     }
@@ -84,6 +97,10 @@ public class ImageLoader {
     
     public Image getCalculationsInCorrectIcon(){
         return calculationsInCorrect;
+    }
+    
+    public Image getCalculationsGaveUpIcon(){
+        return calculationsGaveUp;
     }
     
     public Image getGraphsNoStatusIcon(){
@@ -98,6 +115,9 @@ public class ImageLoader {
         return graphsInCorrect;
     }
     
+    public Image getGraphsGaveUpIcon(){
+        return graphsGaveUp;
+    }
     
     
 }

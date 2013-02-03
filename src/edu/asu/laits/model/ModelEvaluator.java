@@ -54,16 +54,56 @@ public class ModelEvaluator {
      */
     public boolean isModelComplete(){
         Iterator<Vertex> allVertices = currentGraph.vertexSet().iterator();
+        
+        // In STUDENT Mode Verify if all the correct nodes are defined
+        if(ApplicationContext.getAppMode().equals("STUDENT")){
+            if(!correctNodesDefined())
+                return false;
+        }
+        
         Vertex thisVertex;
         while(allVertices.hasNext()){
             thisVertex = allVertices.next();
-            if(!thisVertex.getInputsStatus().equals(Vertex.InputsStatus.CORRECT) &&
-                    !thisVertex.getCalculationsStatus().equals(Vertex.InputsStatus.CORRECT)){
+            if(thisVertex.getInputsStatus().equals(Vertex.InputsStatus.UNDEFINED) ||
+                    thisVertex.getCalculationsStatus().equals(Vertex.CalculationsStatus.UNDEFINED)){
                 return false;
             }
+            /*if(thisVertex.getInputsStatus().equals(Vertex.InputsStatus.INCORRECT) ||
+                  eturn false;
+            }   */ 
         }
        
         return true;
+    }
+    
+    public boolean hasExtraNodes(){
+        List<String> correctNodeNames = ApplicationContext.getCorrectSolution()
+                .getCorrectNodeNames();
+        Iterator<Vertex> allVertices = currentGraph.vertexSet().iterator();
+        List<String> studentNodeNames = new ArrayList<String>();
+        while(allVertices.hasNext()){
+            studentNodeNames.add(allVertices.next().getName());
+        }
+        if(studentNodeNames.size() != correctNodeNames.size())
+            return false;
+        else 
+            return true;
+    }
+    
+    private boolean correctNodesDefined(){
+        Iterator<Vertex> allVertices = currentGraph.vertexSet().iterator();
+        List<String> studentNodeNames = new ArrayList<String>();
+        while(allVertices.hasNext()){
+            studentNodeNames.add(allVertices.next().getName());
+        }
+        
+        List<String> correctNodeNames = ApplicationContext.getCorrectSolution()
+                .getCorrectNodeNames();
+        
+        if(studentNodeNames.containsAll(correctNodeNames))
+            return true;
+        else
+            return false;
     }
 
     /**
@@ -117,6 +157,7 @@ public class ModelEvaluator {
     
     public void validateStudentGraph(){
         TaskSolution solution = ApplicationContext.getCorrectSolution();
+        int incorrectVertices = currentGraph.vertexSet().size();
         
         Iterator<Vertex> it = currentGraph.vertexSet().iterator();
         while(it.hasNext()){
@@ -125,7 +166,12 @@ public class ModelEvaluator {
             if(!solution.checkNodeGraph(currentVertex)){
                 logs.debug("Student Graph for Vertex "+currentVertex.getName()+" is Incorrect.");
                 currentVertex.setGraphsStatus(Vertex.GraphsStatus.INCORRECT);
+            }else{
+                incorrectVertices--;
             }
+        }
+        if(incorrectVertices == 0){
+            ApplicationContext.setProblemSolved(true);
         }
     }
 

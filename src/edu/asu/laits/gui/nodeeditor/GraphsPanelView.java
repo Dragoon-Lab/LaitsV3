@@ -88,7 +88,12 @@ public class GraphsPanelView extends javax.swing.JPanel {
         descriptionLabel.setText("<html><b>Description:</b> <br/>" +nodeEditor.getCurrentVertex().getCorrectDescription()+ "</html>");
     }
     
-    
+    public boolean isViewEnabled(){
+        if (!nodeEditor.getCurrentVertex().getGraphsStatus().equals(Vertex.GraphsStatus.UNDEFINED)) 
+            return true;
+        
+        return false;
+    }
     /**
      * This method is called from within the constructor to initialize the form.
      * WARNING: Do NOT modify this code. The content of this method is always

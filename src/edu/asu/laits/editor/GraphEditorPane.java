@@ -23,9 +23,12 @@ import edu.asu.laits.model.Vertex;
 import edu.asu.laits.editor.listeners.GraphPropertiesChangeListener;
 import edu.asu.laits.editor.listeners.InsertModeChangeListener;
 import edu.asu.laits.editor.listeners.UndoAndRedoAbleListener;
+import edu.asu.laits.gui.MainWindow;
 import edu.asu.laits.gui.nodeeditor.NodeEditor;
 import edu.asu.laits.properties.GlobalProperties;
 import edu.asu.laits.properties.GraphProperties;
+import java.awt.Robot;
+import java.awt.event.InputEvent;
 import javax.swing.SwingConstants;
 import org.apache.log4j.Logger;
 import org.jgraph.JGraph;
@@ -83,7 +86,7 @@ public class GraphEditorPane extends JGraph {
     private List<InsertModeChangeListener> insertModeListeners = new LinkedList<InsertModeChangeListener>();
     private Graph<Vertex, Edge> graph;
     private MouseAndMotionListener mouseListener;
-    private JFrame mainFrame;
+    private MainWindow mainFrame;
     private InformationPane informationPane;
     private MessageProvider currentStatusMessageProvider =
             new MessageProvider("");
@@ -110,7 +113,7 @@ public class GraphEditorPane extends JGraph {
      * @param informationPane is an information pane that is used by the graph
      * editor
      */
-    public GraphEditorPane(JFrame mainFrame, InformationPane informationPane) {
+    public GraphEditorPane(MainWindow mainFrame, InformationPane informationPane) {
         super();
         
         logs.debug("Initializing GraphEditor Pane");
@@ -154,6 +157,7 @@ public class GraphEditorPane extends JGraph {
      */
     private void init() {
         // create a JGraphT graph
+        Vertex.vertIndexCount = 0;
         graph = new Graph<Vertex, Edge>(Edge.class);
         
         // create a visualization using JGraph, via an adapter
@@ -558,7 +562,7 @@ public class GraphEditorPane extends JGraph {
     /**
      * @return the mainFrame
      */
-    public JFrame getMainFrame() {
+    public MainWindow getMainFrame() {
         return mainFrame;
     }
 
@@ -673,5 +677,9 @@ public class GraphEditorPane extends JGraph {
         Color marqueeColor = new Color(255 - background.getRed(), 255 - background.getGreen(), 255 - background.getBlue());
         this.setMarqueeColor(marqueeColor);
 
+    }
+    
+    public void resetModelGraph(){
+        init();
     }
 }

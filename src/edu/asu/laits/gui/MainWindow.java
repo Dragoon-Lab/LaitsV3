@@ -33,7 +33,9 @@ import edu.asu.laits.properties.GlobalProperties;
 import edu.asu.laits.properties.GraphProperties;
 import java.awt.Color;
 import java.awt.GridLayout;
+import java.awt.Robot;
 import java.awt.Toolkit;
+import java.awt.event.InputEvent;
 import javax.swing.BorderFactory;
 
 import javax.swing.BoxLayout;
@@ -68,6 +70,7 @@ public class MainWindow extends JFrame {
     private TutorModeToolBar tutorModeToolBar = null;
     private List<JToolBar> toolBars = new LinkedList<JToolBar>(); 
     private StatusBarPanel statusBarPanel = null;
+    private boolean isSituationTabSelected = true;
 
     // Label to Display Tasks
     JLabel situationLabel;
@@ -114,13 +117,6 @@ public class MainWindow extends JFrame {
         }
     }
     
-    /**
-     * This method is responsible for creating Task Menu in Tutor Mode
-     */
-    private void initializeTutorTaskMenu(){
-        
-    }
-
     /**
      * This method initializes this
      *
@@ -242,18 +238,25 @@ public class MainWindow extends JFrame {
             mainPanel.removeAll();
             mainPanel.add(getToolBarPanel(), BorderLayout.NORTH);
             mainPanel.add(getSituationPanel(), BorderLayout.CENTER);            
-            mainPanel.add(getStatusBarPanel(), BorderLayout.SOUTH);             
+            mainPanel.add(getStatusBarPanel(), BorderLayout.SOUTH);   
+            isSituationTabSelected = true;
         }else{
             logs.debug("Switching to Model Design Panel");
             mainPanel.removeAll();
             mainPanel.add(getToolBarPanel(), BorderLayout.NORTH);
             mainPanel.add(getGraphPaneScrollPane(), BorderLayout.CENTER);
             mainPanel.add(getStatusBarPanel(), BorderLayout.SOUTH);
+            isSituationTabSelected = false;
         }
         this.validate();
+        setFocusOnGraph();
         mainPanel.repaint();
     }
     
+    
+    public boolean isSituationSelected(){
+        return isSituationTabSelected;
+    }
     /**
      * This method initializes toolBarPanel
      *
@@ -462,11 +465,26 @@ public class MainWindow extends JFrame {
             TaskSolution solution = solutionReader.loadSolution("105");
             ApplicationContext.setCorrectSolution(solution);
             
-            this.loadTaskDescription(ApplicationContext.getTaskIdNameMap().get("105"),
+            this.loadTaskDescription(ApplicationContext.getTaskIdNameMap().get("105").getTaskName(),
                     solution.getTaskDescription(), 
                     solution.getImageURL());
+            ApplicationContext.setCurrentTaskID("105");
         }catch(Exception e){
             e.printStackTrace();
         }
+    }
+    
+    public void setFocusOnGraph(){
+        try{
+        Robot r = new Robot();
+        r.mouseMove(150,100);
+        r.mousePress(InputEvent.BUTTON1_MASK);
+        Thread.sleep(100);  
+        
+        r.mouseRelease(InputEvent.BUTTON1_MASK);
+        }catch (Exception e) {
+        
+        }
+    
     }
 }

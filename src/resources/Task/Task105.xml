@@ -2,20 +2,17 @@
 
 <Task phase="Intro" type="Construct">
   <TaskDescription>
-  Problem: By weight, potato chips are 35% fat (Hint: You always have to convert percentages to decimals).
-  Goal: Graph the proportion of weight of fat per potato chips over the next 10 months.</TaskDescription>
+  Problem: By weight, potato chips are 35% fat. NEWLINE NEWLINE
+      Hint: You always have to convert percentages to decimals. NEWLINE NEWLINE
+      Goal: Graph the proportion of weight of fat per potato chips over the next 10 months.</TaskDescription>
   <URL>http://amt.javiergs.com/images/tasks/intro-2.png</URL>
   <ShortDescription>\n Given: fat content = 0.35</ShortDescription>
   <StartTime>0</StartTime>
   <EndTime>10</EndTime>
   <Units>months</Units>
-  <Vertexes>
-    <VertexLabel>fat content</VertexLabel>
-  </Vertexes>
+  
   <NodeCount>1</NodeCount>
 
-  <ProblemSeeking>fat content</ProblemSeeking>
-  <CorrespondingSentence>Graph the proportion of weight of fat per potato chips over the next 10 months.</CorrespondingSentence>
   <Nodes>
     <Node type="constant" name="fat content" extra="no">
       <Inputs></Inputs>

@@ -7,9 +7,12 @@
 package edu.asu.laits.gui.nodeeditor;
 
 import apple.awt.CColor;
+import edu.asu.laits.editor.ApplicationContext;
 import edu.asu.laits.editor.GraphEditorPane;
 import edu.asu.laits.model.Edge;
 import edu.asu.laits.model.Graph;
+import edu.asu.laits.model.SolutionNode;
+import edu.asu.laits.model.TaskSolution;
 import edu.asu.laits.model.Vertex;
 import edu.asu.laits.model.Vertex.VertexType;
 import java.awt.Color;
@@ -39,9 +42,6 @@ public class InputsPanelView extends javax.swing.JPanel implements ItemListener 
   public String itemChanged;
   
   public boolean correctinput = false;
-  private final boolean TYPE_CHANGE = true;
-  private static InputsPanelView inputView;
-  boolean isViewEnabled;
   NodeEditor nodeEditor;
   
   public HashMap<Vertex, Boolean> initialSelection=new HashMap<Vertex, Boolean>();
@@ -101,18 +101,6 @@ public class InputsPanelView extends javax.swing.JPanel implements ItemListener 
     
   }
    
-  private void resetInputsPanel(){
-    buttonGroup1.clearSelection();
-    descriptionTextArea.setText("");
-    inputNodesSelectionOptionButton.setEnabled(true);
-    fixedValueOptionButton.setEnabled(true);
-    availableInputNodesPanels.removeAll();
-    availableInputNodesPanels.setEnabled(true);
-    checkboxList.clear();
-    isViewEnabled = false;
-    resetOptionPanelBackground();
-  }
-  
   
   /**
    * Method to display Unavailable Inputs message when there are no inputs to
@@ -243,7 +231,46 @@ public class InputsPanelView extends javax.swing.JPanel implements ItemListener 
   }
 
 
-  
+  public boolean giveUpInputsPanel(){
+      TaskSolution solution = ApplicationContext.getCorrectSolution();
+      SolutionNode correctNode = solution.getNodeByName(
+              nodeEditor.getCurrentVertex().getName());
+      
+      if(correctNode.getNodeType().equals(VertexType.CONSTANT)){
+          fixedValueOptionButton.setSelected(true);
+          nodeEditor.getCurrentVertex().setVertexType(VertexType.CONSTANT);          
+      }else{
+          List<String> correctInputs = correctNode.getInputNodes();
+          List<String> availableInputs = new ArrayList<String>();
+          
+          Set<Vertex> vertices = nodeEditor.getGraphPane().getModelGraph().vertexSet();
+          for(Vertex v : vertices){
+              availableInputs.add(v.getName());
+          }
+          
+          availableInputs.remove(nodeEditor.getCurrentVertex().getName());
+          
+          if(!availableInputs.containsAll(correctInputs)){
+              nodeEditor.setEditorMessage("Please define all the Nodes before using Giveup.");
+              return false;
+          }
+          
+          for(JCheckBox input : checkboxList){
+              input.setSelected(false);
+              if(correctInputs.contains(input.getText())){
+                  input.setSelected(true);
+              }
+          }
+          inputNodesSelectionOptionButton.setSelected(true);
+          this.displayCurrentInputsPanel(true);
+          nodeEditor.getCurrentVertex().setVertexType(VertexType.DEFAULT);
+      }
+      
+      setOptionPanelBackground(Color.YELLOW);
+      nodeEditor.getGraphPane().getLayoutCache().reload();
+      nodeEditor.getGraphPane().repaint();
+      return true;
+  }
 
   /**
    * This method is called from within the constructor to initialize the form.
@@ -401,12 +428,13 @@ public class InputsPanelView extends javax.swing.JPanel implements ItemListener 
   }
 
   public boolean isViewEnabled(){
-    return isViewEnabled;
+    if(nodeEditor.getCurrentVertex().getPlanStatus().equals(Vertex.PlanStatus.CORRECT) ||
+                nodeEditor.getCurrentVertex().getPlanStatus().equals(Vertex.PlanStatus.GAVEUP))
+            return true;
+        else 
+            return false;
   }
   
-  public void setViewEnabled(boolean flag){
-    isViewEnabled = flag;
-  }
   
   public boolean processInputsPanel(){
       if(fixedValueOptionButton.isSelected())

@@ -14,6 +14,7 @@ import javax.swing.JOptionPane;
 import net.sourceforge.jeval.EvaluationException;
 import net.sourceforge.jeval.Evaluator;
 import org.apache.log4j.Logger;
+import org.jgraph.graph.DefaultPort;
 
 /**
  *
@@ -21,6 +22,7 @@ import org.apache.log4j.Logger;
  */
 public class TaskSolution {
     private String phase;
+    private String taskType;
     private String taskDescription;
     private String imageURL;
     private int startTime;
@@ -28,13 +30,18 @@ public class TaskSolution {
     private String graphUnits;
     private int nodeCount;
     private List<SolutionNode> solutionNodes;
+    private List<SolutionNode> givenNodes;
+    private List<String> correctNodeNames;
+    
     private SolutionDTreeNode dTreeNode;
     private Graph solutionGraph = null;
 
     private static Logger logs = Logger.getLogger("DevLogs");
     
     public TaskSolution(){
-        solutionNodes = new ArrayList<SolutionNode> ();        
+        solutionNodes = new ArrayList<SolutionNode> ();
+        givenNodes = new ArrayList<SolutionNode> ();
+        correctNodeNames = new ArrayList<String>();
     }
     
     /**
@@ -51,6 +58,20 @@ public class TaskSolution {
         this.phase = phase;
     }
 
+    /**
+     * @return the phase
+     */
+    public String getTaskType() {
+        return taskType;
+    }
+
+    /**
+     * @param phase the phase to set
+     */
+    public void setTaskType(String type) {
+        this.taskType = type;
+    }
+    
     /**
      * @return the taskDescription
      */
@@ -147,6 +168,34 @@ public class TaskSolution {
      */
     public void setSolutionNodes(List<SolutionNode> solutionNodes) {
         this.solutionNodes = solutionNodes;
+    }
+    
+    /**
+     * @return the solutionNodes
+     */
+    public List<String> getCorrectNodeNames() {
+        return correctNodeNames;
+    }
+
+    /**
+     * @param solutionNodes the solutionNodes to set
+     */
+    public void setCorrectNodeNames(List<String> solutionNodeNames) {
+        this.correctNodeNames = solutionNodeNames;
+    }
+    
+    /**
+     * @return the solutionNodes
+     */
+    public List<SolutionNode> getGivenNodes() {
+        return givenNodes;
+    }
+
+    /**
+     * @param solutionNodes the solutionNodes to set
+     */
+    public void setGivenNodes(List<SolutionNode> givenNodes) {
+        this.givenNodes = givenNodes;
     }
 
     /**
@@ -337,17 +386,19 @@ public class TaskSolution {
         
         // Add all the vertices in the Graph
         for(SolutionNode node : solutionNodes){
-            Vertex v = new Vertex();
-            v.setName(node.getNodeName());
-            v.setEquation(node.getNodeEquation());
-            v.setInitialValue(node.getInitialValue());
-            
-            v.setVertexType(node.getNodeType());
-            
-            v.setInputsStatus(Vertex.InputsStatus.CORRECT);
-            v.setCalculationsStatus(Vertex.CalculationsStatus.CORRECT);
-            
-            solutionGraph.addVertex(v);
+            if(correctNodeNames.contains(node.getNodeName())){
+                Vertex v = new Vertex();
+                v.setName(node.getNodeName());
+                v.setEquation(node.getNodeEquation());
+                v.setInitialValue(node.getInitialValue());
+
+                v.setVertexType(node.getNodeType());
+
+                v.setInputsStatus(Vertex.InputsStatus.CORRECT);
+                v.setCalculationsStatus(Vertex.CalculationsStatus.CORRECT);
+
+                solutionGraph.addVertex(v);
+            }
         }
         
         // Add all the Edges in the Graph
@@ -359,6 +410,7 @@ public class TaskSolution {
             }            
         }
         
+         
         logs.debug("Solution Graph Created with "+solutionGraph.vertexSet().size()+
                 " Vertices, and "+solutionGraph.edgeSet().size()+" edges.");
     }

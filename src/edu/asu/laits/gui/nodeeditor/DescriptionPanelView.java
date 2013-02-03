@@ -269,41 +269,6 @@ public class DescriptionPanelView extends JPanel{
     tree.expandPath(parent);
   }
 
-  /*
-   * Method to process the Action of Ok Button on the Description Panel
-   * This is called from NodeEditor
-   */
-  public boolean processSubmitAction(){
-    // TODO - validate if a node already has a correct description
-      
-    
-    return false;
-  }
-  
-  private boolean validateNodeName(){
-    String inputNodeName = nodeNameTextField.getText();
-    
-    
-    
-    return true;
-  }
-  
-  private boolean validateNodeDescription(){
-  if(quantityDescriptionTextField.getText().isEmpty()){
-      
-      return false;
-    }
-    return true;
-  }
-
-  public void processDeleteAction(){
-    logs.debug(  "Author deleted the node.");
-    
-  }
-
-  public void processCloseAction(){
-    
-  }
   
   public boolean processDescriptionPanel(){
       if(getNodeName().trim().length() == 0){
@@ -363,13 +328,13 @@ public class DescriptionPanelView extends JPanel{
   public void giveUpDescriptionPanel(){
       // Get a correct Node Name
       TaskSolution solution = ApplicationContext.getCorrectSolution();
-      List<SolutionNode> allNodes = solution.getSolutionNodes();
+      //List<String> correctNodeNames = solution.getCorrectNodeNames();
+      List<SolutionNode> correctNodeNames = solution.getSolutionNodes();
       
       String giveupNode = null;
-      for(SolutionNode node : allNodes){
-          if(!node.getNodeName().equals(nodeEditor.getGraphPane().getModelGraph()
-                  .getVertexByName(node.getNodeName()))){
-              giveupNode = node.getNodeName();
+      for(SolutionNode name : correctNodeNames){
+          if(nodeEditor.getGraphPane().getModelGraph().getVertexByName(name.getNodeName()) == null){
+              giveupNode = name.getNodeName();
               break;
           }
       }

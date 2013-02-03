@@ -31,7 +31,7 @@ public class CellEditor extends BasicGraphUI {
      */
     protected void createEditDialog(Object cell) {
         GraphEditorPane g = (GraphEditorPane) graph;
-        new NodeEditor(g);
+        new NodeEditor(g, true);
     }
 
     /**

@@ -26,10 +26,13 @@ import edu.asu.laits.editor.listeners.GraphChangeListener;
 import edu.asu.laits.editor.listeners.GraphPropertiesChangeListener;
 import edu.asu.laits.editor.listeners.GraphSaveListener;
 import edu.asu.laits.gui.MainWindow;
+import edu.asu.laits.model.Graph;
+import edu.asu.laits.model.SolutionNode;
 import edu.asu.laits.model.TaskMenuItem;
 import edu.asu.laits.model.TaskMenuReader;
 import edu.asu.laits.model.TaskSolution;
 import edu.asu.laits.model.TaskSolutionReader;
+import edu.asu.laits.model.Vertex;
 import edu.asu.laits.properties.GlobalProperties;
 import edu.asu.laits.properties.GraphProperties;
 import edu.asu.laits.properties.LatestFilesPropertyChangeListener;
@@ -38,6 +41,7 @@ import java.util.LinkedList;
 
 import javax.swing.JFileChooser;
 import javax.swing.filechooser.FileFilter;
+import org.jgraph.graph.DefaultPort;
 
 /**
  * This is the file menu that is in the MainMenu. It has Options for file
@@ -147,6 +151,12 @@ public class FileMenu extends JMenu {
         this.setMnemonic(KeyEvent.VK_F);
         this.add(getNewTaskMenuItem());
         this.add(getJSeparator());
+        this.add(getOpenFileMenuItem());
+        this.add(getOpenLatestFileMenu());
+        this.add(getJSeparator1());
+        this.add(getSaveFileMenuItem());
+        this.add(getSaveAsFileMenuItem());
+        this.add(getJSeparator2());
         this.add(getExitFileMenuItem());
     }
 
@@ -162,7 +172,7 @@ public class FileMenu extends JMenu {
             TaskMenuReader menuReader = new TaskMenuReader();
             try {
                 LinkedList<TaskMenuItem> allMenuItems = menuReader.load();
-                HashMap<String,String> taskIdNameMap = new HashMap<String, String>();
+                HashMap<String,TaskMenuItem> taskIdNameMap = new HashMap<String, TaskMenuItem>();
                 
                 // HardCoded Subcategories - needs to be dynamic
                 JMenu intro = new JMenu("Intro");
@@ -170,7 +180,7 @@ public class FileMenu extends JMenu {
                 JMenu training = new JMenu("Training");
 
                 for (TaskMenuItem menuItem : allMenuItems) {
-                    taskIdNameMap.put(menuItem.getTaskId(), menuItem.getTaskName());
+                    taskIdNameMap.put(menuItem.getTaskId(), menuItem);
                     JMenuItem anotherTask = new JMenuItem();
                     anotherTask.setText(menuItem.getTaskName());
                     anotherTask.setActionCommand(menuItem.getTaskId());
@@ -187,6 +197,7 @@ public class FileMenu extends JMenu {
                     anotherTask.addActionListener(new java.awt.event.ActionListener() {
                         public void actionPerformed(java.awt.event.ActionEvent e) {
                             JMenuItem newMenu = (JMenuItem)e.getSource();
+                            ApplicationContext.setCurrentTaskID(newMenu.getActionCommand());
                             openTaskById(newMenu.getActionCommand());
                         }
                     });
@@ -216,14 +227,60 @@ public class FileMenu extends JMenu {
             TaskSolution solution = solutionReader.loadSolution(id);
             ApplicationContext.setCorrectSolution(solution);
             
-            mainWindow.loadTaskDescription(ApplicationContext.getTaskIdNameMap().get(id),
+            mainWindow.loadTaskDescription(ApplicationContext.getTaskIdNameMap().get(id).getTaskName(),
                     solution.getTaskDescription(), 
                     solution.getImageURL());
             
-            mainWindow.getGraphEditorPane().getModelGraph().removeAll();
+            mainWindow.getGraphEditorPane().resetModelGraph();
+            if(solution.getTaskType().equalsIgnoreCase("debug")){
+                createGivenModel(solution, graphPane);
+            }
+            
             mainWindow.switchTutorModelPanels(true);
         }catch(Exception e){
             e.printStackTrace();
+        }
+    }
+    
+    private void createGivenModel(TaskSolution solution, GraphEditorPane editorPane){
+        List<SolutionNode> givenNodes = solution.getGivenNodes();
+        
+        for(SolutionNode node : givenNodes){
+            Vertex v = new Vertex();
+            v.setName(node.getNodeName());
+            v.setCorrectDescription(node.getCorrectDescription());
+            v.setPlan(node.getNodePlan());
+            v.setDescriptionStatus(Vertex.DescriptionStatus.CORRECT);
+            v.setPlanStatus(Vertex.PlanStatus.CORRECT);
+            v.setEquation(node.getNodeEquation());
+            v.setInitialValue(node.getInitialValue());
+            
+            v.setVertexType(node.getNodeType());
+            
+            if(solution.checkNodeInputs(node.getNodeName(), node.getInputNodes()))
+                v.setInputsStatus(Vertex.InputsStatus.CORRECT);
+            else 
+                v.setInputsStatus(Vertex.InputsStatus.INCORRECT);
+            
+            if(solution.checkNodeCalculations(v))
+                v.setCalculationsStatus(Vertex.CalculationsStatus.CORRECT);
+            else 
+                v.setCalculationsStatus(Vertex.CalculationsStatus.INCORRECT);
+            
+            editorPane.addVertex(v);
+        }
+        
+        for(SolutionNode node : givenNodes){
+            List<String> inputVertices = node.getInputNodes();
+            for(String vertexName : inputVertices){
+                Vertex v1 = editorPane.getModelGraph().getVertexByName(node.getNodeName());
+                Vertex v2 = editorPane.getModelGraph().getVertexByName(vertexName);
+                
+                DefaultPort p1 = editorPane.getJGraphTModelAdapter().getVertexPort(v1);
+                DefaultPort p2 = editorPane.getJGraphTModelAdapter().getVertexPort(v2);
+                
+                editorPane.insertEdge(p2, p1);
+            }            
         }
     }
 
