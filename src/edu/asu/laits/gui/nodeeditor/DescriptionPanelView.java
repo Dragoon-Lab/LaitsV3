@@ -59,14 +59,16 @@ public class DescriptionPanelView extends JPanel{
   public DescriptionPanelView(NodeEditor ne){
     initComponents();
     nodeEditor = ne;
-    initPanel();
-    initTree();
+    initPanel();    
   }
   
   public void initPanel(){
       if(ApplicationContext.getAppMode().equals("STUDENT")){
           this.nodeNameTextField.setEditable(false);
           this.quantityDescriptionTextField.setEditable(false);
+          initTree();
+      }else{
+          decisionTree.setVisible(false);
       }
       
       Vertex currentVertex = this.nodeEditor.getCurrentVertex();
@@ -272,7 +274,7 @@ public class DescriptionPanelView extends JPanel{
   
   public boolean processDescriptionPanel(){
       if(getNodeName().trim().length() == 0){
-        nodeEditor.setEditorMessage("Node Name can not be empty.");
+        nodeEditor.setEditorMessage("Node Name can not be empty.", true);
         return false;
       }
       
@@ -280,7 +282,7 @@ public class DescriptionPanelView extends JPanel{
       if (!currentVertex.getName().equals(getNodeName())) {
           if(getNodeName().trim().length() > 20)
           {
-              nodeEditor.setEditorMessage("Node Name can not be larger than 20 characters.");
+              nodeEditor.setEditorMessage("Node Name can not be larger than 20 characters.", true);
               return false;
           }
           if (!duplicatedNode(getNodeName())) 
@@ -288,17 +290,17 @@ public class DescriptionPanelView extends JPanel{
               try {
                   currentVertex.setName(getNodeName().trim());
               } catch (Exception ex) {
-                  nodeEditor.setEditorMessage(ex.getMessage());
+                  nodeEditor.setEditorMessage(ex.getMessage(), true);
                   return false;
               }
           } else {
-              nodeEditor.setEditorMessage("The node name is already used by another node. Please have a new name for this node.");
+              nodeEditor.setEditorMessage("The node name is already used by another node. Please have a new name for this node.", true);
               return false;
           }
       }
 
       if (getNodeDesc().trim().isEmpty()) {
-          nodeEditor.setEditorMessage("Please provide correct description for this node.");
+          nodeEditor.setEditorMessage("Please provide correct description for this node.", true);
           return false;
       }
 
@@ -340,7 +342,7 @@ public class DescriptionPanelView extends JPanel{
       }
       
       if(giveupNode == null){
-          nodeEditor.setEditorMessage("All Nodes are already being used in the Model.");
+          nodeEditor.setEditorMessage("All Nodes are already being used in the Model.", true);
           return ;
       }
       
@@ -360,6 +362,15 @@ public class DescriptionPanelView extends JPanel{
               decisionTree.setSelectionPath(path);
           }
       }
+  }
+  
+  public String printDescriptionPanelDetails(){
+      StringBuilder sb = new StringBuilder();
+      sb.append("Node Name = '");
+      sb.append(nodeNameTextField.getText()+"'");
+      sb.append("  Description = '");
+      sb.append(quantityDescriptionTextField.getText()+"'");
+      return sb.toString();
   }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables

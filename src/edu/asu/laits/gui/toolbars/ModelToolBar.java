@@ -48,8 +48,10 @@ public class ModelToolBar extends JToolBar {
         this.add(getAddNodeButton());
         this.add(Box.createHorizontalStrut(5)); 
         this.add(getRunModelButton());
-        this.add(Box.createHorizontalStrut(5));
-        this.add(getDoneButton());
+        if(ApplicationContext.getAppMode().equals("STUDENT")){
+            this.add(Box.createHorizontalStrut(5));
+            this.add(getDoneButton());
+        }
     }
 
     /**
@@ -110,7 +112,9 @@ public class ModelToolBar extends JToolBar {
             doneButton
                     .addActionListener(new java.awt.event.ActionListener() {
                 public void actionPerformed(java.awt.event.ActionEvent e) {
-                    
+                    if (ApplicationContext.getAppMode().equals("AUTHOR")) {
+                        return;
+                    }
                     modelMenu.doneButtonAction();
                 }
             });

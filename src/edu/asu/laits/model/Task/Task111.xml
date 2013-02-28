@@ -1,0 +1,70 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<Task phase="Challenge" type="Construct">
+  <TaskDescription>Problem: Rod is a book worm. He already has 100 books. Each week he buys and reads 2 more books. NEWLINE NEWLINE
+  Goal: Graph the number of books Rod has in 52 weeks. 
+  NEWLINE NEWLINE Hints: 
+  NEWLINE (1) The Done button is enabled (turns green) only when the model is complete and correct. 
+  NEWLINE (2) Although you could construct models by guessing and running them until the Done button is enabled, this will take too long; it is better to analyze the task and design the model using the advice starting on slide 67 of the instruction tab. 
+  NEWLINE (3) If you get really stuck or the software acts buggy, then please ask an experimenter for help.</TaskDescription>
+  
+  <URL>http://passion2read.files.wordpress.com/2011/09/bookworm1.gif</URL>
+  <StartTime>0</StartTime>
+  <EndTime>52</EndTime>
+  <Units>weeks</Units>
+  
+  <NodeCount>2</NodeCount>
+
+  <Nodes>
+    <Node type="constant" name="books bought" extra="no">
+      <Inputs></Inputs>
+      <Equation>books bought</Equation>
+      <InitialValue>2</InitialValue>
+      <CorrectDescription>The number of books Rod buys each week</CorrectDescription>
+      <Plan>fixed value</Plan>
+    </Node>
+    
+    <Node type="stock" name="books" extra="no">
+      <Inputs>        
+        <Name>books bought</Name>
+      </Inputs>
+      <InitialValue>100</InitialValue>
+      <Equation>+ books bought</Equation>
+      <CorrectDescription>The number of books Rod has</CorrectDescription>
+      <Plan>said to increase</Plan>
+    </Node>
+  </Nodes>
+       
+  <DescriptionTree>
+    <Node level="root">
+      <Description>The number of</Description>      
+      <Node level="intermediate">
+        <Description>books</Description>            
+        <Node level="leaf">
+          <Description>Rod has</Description>
+          <NodeName>books</NodeName>
+        </Node>
+        <Node level="leaf">
+          <Description>Rod buys each week</Description>
+          <NodeName>books bought</NodeName>
+        </Node>
+	  </Node>
+    </Node>
+    <Node level="root">
+      <Description>The proportion of</Description>      
+      <Node level="intermediate">
+        <Description>books</Description>            
+        <Node level="leaf">
+          <Description>Rod has to the books he buys</Description>
+          <NodeName>possess to buy ratio</NodeName>
+        </Node>
+        <Node level="leaf">
+          <Description>Rod buys to the books he has</Description>
+          <NodeName>buy to possess ratio</NodeName>
+        </Node>
+	  </Node>
+    </Node>
+  </DescriptionTree>
+
+  
+</Task>

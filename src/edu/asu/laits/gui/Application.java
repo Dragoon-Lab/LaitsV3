@@ -17,18 +17,12 @@ import org.apache.log4j.PropertyConfigurator;
 public class Application {
 
     /**
-     * Logger
-     */
-    private static Logger logs = Logger.getLogger("DevLogs");
-    private static Logger activityLogs = Logger.getLogger("ActivityLogs");
-
-    /**
      * @param args
      */
     public static void main(String[] args) {
-        //UserRegistration reg = new UserRegistration(null, true);
-        ApplicationContext.setUserValid(true);
-        ApplicationContext.setAppMode("STUDENT");
+        UserRegistration reg = new UserRegistration(null, true);
+        /*ApplicationContext.setUserValid(true);
+        ApplicationContext.setAppMode("AUTHOR");
         
         
         if (ApplicationContext.isUserValid()) {
@@ -39,22 +33,21 @@ public class Application {
                         UIManager.setLookAndFeel((LookAndFeel) Class.forName(
                                 uiClassName).newInstance());
                     } catch (Exception e) {
-                        System.err.println("Could not load theme: " + uiClassName);
+                        JOptionPane.showMessageDialog(null, e.getMessage(),
+                        "Could not load theme "+uiClassName, JOptionPane.ERROR_MESSAGE);
                     }
                 }
 
                 // Main application window of LAITS
                 MainWindow window = new MainWindow();
-
                 window.setVisible(true);
-
 
             } catch (Exception e) {
                 JOptionPane.showMessageDialog(null, e.getMessage(),
-                        "An error has occured", JOptionPane.ERROR_MESSAGE);
+                        "An error has occured. Contact Support.", JOptionPane.ERROR_MESSAGE);
 
                 e.printStackTrace();
             }
-        }
+        } */
     }
 }

@@ -54,7 +54,7 @@ public class PlanPanelView extends JPanel {
         if (buttonGroup1.getSelection() != null) {
             nodeEditor.getCurrentVertex().setPlan(getSelectedPlan());
         } else {
-            nodeEditor.setEditorMessage("Please select a plan for this node.");
+            nodeEditor.setEditorMessage("Please select a plan for this node.", true);
             return false;
         }
         return true;
@@ -118,18 +118,25 @@ public class PlanPanelView extends JPanel {
         resetBackGroundColor();
         
         if (fixedNumberButton.isSelected()) {
+            fixedNumberButton.setBackground(c);
             fixedNumberPanel.setBackground(c);
         } else if (decreaseButton.isSelected()) {
+            decreaseButton.setBackground(c);
             decreasePanel.setBackground(c);
         } else if (differenceButton.isSelected()) {
+            differenceButton.setBackground(c);
             differencePanel.setBackground(c);
         } else if (increaseButton.isSelected()) {
+            increaseButton.setBackground(c);
             increasePanel.setBackground(c);
         } else if (bothButton.isSelected()) {
+            bothButton.setBackground(c);
             bothPanel.setBackground(c);
         } else if (ratioTwoQuantitiesButton.isSelected()) {
+            ratioTwoQuantitiesButton.setBackground(c);
             ratioTwoQuantitiesPanel.setBackground(c);
         } else if (proportionalValueButton.isSelected()) {
+            proportionalValueButton.setBackground(c);
             proportionalValuePanel.setBackground(c);
         }
         
@@ -137,12 +144,19 @@ public class PlanPanelView extends JPanel {
     
     public void resetBackGroundColor() {
         fixedNumberPanel.setBackground(new Color(238, 238, 238));
+        fixedNumberButton.setBackground(new Color(238, 238, 238));
         decreasePanel.setBackground(new Color(238, 238, 238));
+        decreaseButton.setBackground(new Color(238, 238, 238));
         differencePanel.setBackground(new Color(238, 238, 238));        
+        differenceButton.setBackground(new Color(238, 238, 238));
         increasePanel.setBackground(new Color(238, 238, 238));
+        increaseButton.setBackground(new Color(238, 238, 238));
         bothPanel.setBackground(new Color(238, 238, 238));
+        bothButton.setBackground(new Color(238, 238, 238));
         ratioTwoQuantitiesPanel.setBackground(new Color(238, 238, 238));
+        ratioTwoQuantitiesButton.setBackground(new Color(238, 238, 238));
         proportionalValuePanel.setBackground(new Color(238, 238, 238));
+        proportionalValueButton.setBackground(new Color(238, 238, 238));
     }
     
     public void giveUpPlanPanel() {
@@ -152,6 +166,32 @@ public class PlanPanelView extends JPanel {
         
         setSelectedPlan(correctPlan);
         setSelectedPlanBackground(Color.YELLOW);
+    }
+    
+    public String printPlanPanel(){
+        StringBuilder sb = new StringBuilder();
+        sb.append("Selected Plan : '");
+        sb.append(planToString(getSelectedPlan())+"'");
+        return sb.toString();        
+    }
+    
+    private String planToString(Vertex.Plan p){
+        if(p.equals(Vertex.Plan.DECREASE))
+            return "Decrease";
+        else if(p.equals(Vertex.Plan.INCREASE))
+            return "Increase";
+        else if(p.equals(Vertex.Plan.DIFFERENCE))
+            return "Difference";
+        else if(p.equals(Vertex.Plan.FIXED))
+            return "Fixed";
+        else if(p.equals(Vertex.Plan.INCREASE_AND_DECREASE))
+            return "Increase and Decrease";
+        else if(p.equals(Vertex.Plan.PROPORTIONAL))
+            return "Proportional";
+        else if(p.equals(Vertex.Plan.RATIO))
+            return "Ratio";
+        else 
+            return "Undefined";
     }
 
     /**
@@ -263,11 +303,11 @@ public class PlanPanelView extends JPanel {
             .addGroup(fixedNumberPanelLayout.createSequentialGroup()
                 .addContainerGap()
                 .addComponent(fixedNumberButton, javax.swing.GroupLayout.PREFERRED_SIZE, 223, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(44, 44, 44)
+                .addGap(37, 37, 37)
                 .addComponent(jLabel14, javax.swing.GroupLayout.PREFERRED_SIZE, 92, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(53, 53, 53)
+                .addGap(49, 49, 49)
                 .addComponent(jLabel15, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addContainerGap(69, Short.MAX_VALUE))
+                .addContainerGap(80, Short.MAX_VALUE))
         );
         fixedNumberPanelLayout.setVerticalGroup(
             fixedNumberPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -275,12 +315,9 @@ public class PlanPanelView extends JPanel {
                 .addContainerGap(8, Short.MAX_VALUE)
                 .addGroup(fixedNumberPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(fixedNumberButton)
-                    .addComponent(jLabel14, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addComponent(jLabel14, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(jLabel15, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addContainerGap(9, Short.MAX_VALUE))
-            .addGroup(fixedNumberPanelLayout.createSequentialGroup()
-                .addContainerGap()
-                .addComponent(jLabel15, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
 
         javax.swing.GroupLayout jPanel2Layout = new javax.swing.GroupLayout(jPanel2);
@@ -332,10 +369,10 @@ public class PlanPanelView extends JPanel {
                 .addContainerGap()
                 .addComponent(proportionalValueButton, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addGap(38, 38, 38)
-                .addComponent(jLabel16, javax.swing.GroupLayout.PREFERRED_SIZE, 87, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(55, 55, 55)
+                .addComponent(jLabel16, javax.swing.GroupLayout.PREFERRED_SIZE, 92, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 48, Short.MAX_VALUE)
                 .addComponent(jLabel17, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                .addContainerGap())
         );
         proportionalValuePanelLayout.setVerticalGroup(
             proportionalValuePanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -438,9 +475,9 @@ public class PlanPanelView extends JPanel {
                 .addComponent(bothButton)
                 .addGap(18, 18, 18)
                 .addComponent(jLabel22, javax.swing.GroupLayout.PREFERRED_SIZE, 87, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(68, 68, 68)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 55, Short.MAX_VALUE)
                 .addComponent(jLabel23, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addContainerGap(22, Short.MAX_VALUE))
+                .addGap(35, 35, 35))
         );
         bothPanelLayout.setVerticalGroup(
             bothPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)

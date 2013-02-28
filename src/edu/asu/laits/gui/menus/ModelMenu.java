@@ -99,6 +99,7 @@ public class ModelMenu extends JMenu {
             runModelMenuItem
                     .addActionListener(new java.awt.event.ActionListener() {
                 public void actionPerformed(java.awt.event.ActionEvent e) {
+                    activityLogs.debug("User pressed Run Model Button.");
                     runModelAction();
                 }
             });
@@ -117,6 +118,7 @@ public class ModelMenu extends JMenu {
             editTimeRangeMenuItem
                     .addActionListener(new java.awt.event.ActionListener() {
                 public void actionPerformed(java.awt.event.ActionEvent e) {
+                    activityLogs.debug("User pressed Edit Time Range Button.");
                     editTimeRangeAction();
                 }
             });
@@ -134,6 +136,7 @@ public class ModelMenu extends JMenu {
             exportSolutionMenuItem
                     .addActionListener(new java.awt.event.ActionListener() {
                 public void actionPerformed(java.awt.event.ActionEvent e) {
+                    activityLogs.debug("User pressed Export Solution Button.");
                 }
             });
         }
@@ -155,8 +158,10 @@ public class ModelMenu extends JMenu {
     }
 
     public void newNodeAction() {
+        activityLogs.debug("User Pressed Create Node Button");
         MainWindow window = (MainWindow) graphPane.getMainFrame();
         if (newNodeAllowed()) {
+            activityLogs.debug("User is allowed to create a new node");
             Vertex v = new Vertex();
             graphPane.addVertex(v);
 
@@ -168,6 +173,7 @@ public class ModelMenu extends JMenu {
             graphPane.repaint();
             NodeEditor editor = new NodeEditor(graphPane, true);
         } else {
+            activityLogs.debug("User was not allowed to create new node as all the nodes were already present");
             JOptionPane.showMessageDialog(window, "The model is already using all the correct nodes.");
             //window.getStatusBarPanel().setStatusMessage("Please complete all the nodes before running Model", false);
         }
@@ -175,6 +181,9 @@ public class ModelMenu extends JMenu {
     }
 
     private boolean newNodeAllowed() {
+        if(ApplicationContext.getAppMode().equals("AUTHOR"))
+            return true;
+        
         TaskSolution solution = ApplicationContext.getCorrectSolution();
         if (graphPane.getModelGraph().vertexSet().size()
                 < solution.getSolutionNodes().size()) {
@@ -185,10 +194,11 @@ public class ModelMenu extends JMenu {
     }
 
     public void runModelAction() {
+        activityLogs.debug("User pressed Run Model button.");
         ModelEvaluator me = new ModelEvaluator((Graph) graphPane.getModelGraph());
         MainWindow window = (MainWindow) graphPane.getMainFrame();
         if (me.isModelComplete()) {
-            if (me.hasExtraNodes()) {
+            if (!me.hasExtraNodes()) {
                 try {
                     me.run();
 
@@ -200,26 +210,32 @@ public class ModelMenu extends JMenu {
                     JOptionPane.showMessageDialog(MainWindow.getFrames()[0],
                             "Run Model Complete.",
                             "Success", JOptionPane.INFORMATION_MESSAGE);
+                    activityLogs.debug("Model ran successfully.");
                 } catch (ModelEvaluationException ex) {
                     window.getStatusBarPanel().setStatusMessage(ex.getMessage(), false);
                 }
                 graphPane.repaint();
             } else {
+                activityLogs.debug("Model had extra nodes, so user could not run the model.");
                 JOptionPane.showMessageDialog(window, "Model has extra nodes in it, please remove them before running the model.");
             }
         } else {
+            activityLogs.debug("Model was incomplete, so user could not run the model.");
             JOptionPane.showMessageDialog(window, "The model is incomplete, please complete all the nodes before running Model");
             window.getStatusBarPanel().setStatusMessage("Please complete all the nodes before running Model", false);
         }
     }
 
     public void editTimeRangeAction() {
+        activityLogs.debug("User pressed EditTimeRange Menu Item.");
         GraphRangeEditor ed = new GraphRangeEditor(graphPane, true);
         ed.setVisible(true);
     }
     
     public void doneButtonAction(){
+        activityLogs.debug("User Pressed Done button with current task as "+ApplicationContext.getCurrentTaskID());
         if(!ApplicationContext.isProblemSolved()){
+            activityLogs.debug("User was not allowed to proceced with Done because the problem is unsolved.");
             JOptionPane.showMessageDialog(graphPane.getMainFrame(), "Please Solve the problem before using Done !!!");
             return;
         }
@@ -242,7 +258,8 @@ public class ModelMenu extends JMenu {
                 break;
             }    
         }
-        
+        activityLogs.debug("User is being given the next task "+nextTaskID);
+        ApplicationContext.setCurrentTaskID(nextTaskID);
         TaskSolutionReader solutionReader = new TaskSolutionReader();
         try{
             TaskSolution solution = solutionReader.loadSolution(nextTaskID);

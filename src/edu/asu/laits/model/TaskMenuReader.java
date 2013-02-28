@@ -10,6 +10,8 @@ import com.thoughtworks.xstream.core.BaseException;
 import com.thoughtworks.xstream.io.xml.DomDriver;
 import java.io.File;
 import java.io.FileReader;
+import java.io.InputStream;
+import java.io.InputStreamReader;
 import java.io.Reader;
 import java.util.LinkedList;
 import org.apache.log4j.Logger;
@@ -31,9 +33,8 @@ public class TaskMenuReader {
         
         TaskMenu menuList = null;
         try {
-            File file = new File(getClass().getResource("/resources/TaskMenu.xml").toURI());
-            
-            Reader reader = new FileReader(file);
+            InputStream in = getClass().getResourceAsStream("TaskMenu.xml");
+            Reader reader = new InputStreamReader(in);
             menuList = (TaskMenu) xstream.fromXML(reader);
             
         } catch (Exception e) {

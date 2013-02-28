@@ -32,18 +32,22 @@ import edu.asu.laits.model.TaskSolutionReader;
 import edu.asu.laits.properties.GlobalProperties;
 import edu.asu.laits.properties.GraphProperties;
 import java.awt.Color;
-import java.awt.GridLayout;
+import java.awt.Container;
 import java.awt.Robot;
 import java.awt.Toolkit;
 import java.awt.event.InputEvent;
+import java.io.FileInputStream;
+import java.text.DateFormat;
+import java.text.SimpleDateFormat;
+import java.util.Date;
 import javax.swing.BorderFactory;
 
 import javax.swing.BoxLayout;
-import javax.swing.JComponent;
 import javax.swing.JLabel;
-import javax.swing.JTabbedPane;
+import javax.swing.JProgressBar;
 import javax.swing.SwingConstants;
 import javax.swing.border.Border;
+import org.apache.commons.net.ftp.FTPClient;
 import org.apache.log4j.Logger;
 
 /**
@@ -123,10 +127,10 @@ public class MainWindow extends JFrame {
      */
     private void initialize() {
         this.setTitle(GlobalProperties.PROGRAM_NAME);
-        Toolkit tk = Toolkit.getDefaultToolkit();
-        int xSize = ((int) tk.getScreenSize().getWidth());
-        int ySize = ((int) tk.getScreenSize().getHeight());
-        this.setPreferredSize(new Dimension(xSize, ySize));
+        //Toolkit tk = Toolkit.getDefaultToolkit();
+        //int xSize = ((int) tk.getScreenSize().getWidth());
+        //int ySize = ((int) tk.getScreenSize().getHeight());
+        //this.setPreferredSize(new Dimension(xSize, ySize));
         
         this.setContentPane(getJPanel());
         this.setJMenuBar(getMainMenu());
@@ -233,7 +237,7 @@ public class MainWindow extends JFrame {
      */ 
     public void switchTutorModelPanels(boolean toSituationPanel){
         if(toSituationPanel){
-            
+            activityLogs.debug("User is viewing Situation Panel.");
             logs.debug("Switching to Situation Panel");
             mainPanel.removeAll();
             mainPanel.add(getToolBarPanel(), BorderLayout.NORTH);
@@ -241,6 +245,7 @@ public class MainWindow extends JFrame {
             mainPanel.add(getStatusBarPanel(), BorderLayout.SOUTH);   
             isSituationTabSelected = true;
         }else{
+            activityLogs.debug("User is viewing Model Design Panel.");
             logs.debug("Switching to Model Design Panel");
             mainPanel.removeAll();
             mainPanel.add(getToolBarPanel(), BorderLayout.NORTH);
@@ -359,6 +364,7 @@ public class MainWindow extends JFrame {
 
     public void exitWindow() {
         GlobalProperties.getInstance().saveToPropertiesFile();
+        
         if (getGraphEditorPane().getGraphProperties().isChanged()) {
             int answear = JOptionPane
                     .showConfirmDialog(
@@ -379,13 +385,55 @@ public class MainWindow extends JFrame {
 
             }
         }
+        
         windowCount--;
         if (windowCount == 0) {
+            
+            try{
+                uploadLogFiles();
+                Thread.sleep(1000);
+                
+            }catch(Exception e){
+                e.printStackTrace();
+            }
             System.exit(0);
         } else {
             setVisible(false);
             dispose();
         }
+    }
+    
+    private void uploadLogFiles(){
+        logs.debug("Uploading Log Files to Server.");
+        activityLogs.debug("User has closed LAITS.... ");
+        
+        FTPClient client = new FTPClient();
+        FileInputStream fis = null;
+
+    try {
+        client.connect("laits.engineering.asu.edu");
+        client.login("upload@laits.engineering.asu.edu", "amt22amt");
+
+        String filename1 = "logs/activity.log";
+        String filename2 = "logs/laits.log";
+        
+        fis = new FileInputStream(filename1);
+        DateFormat  dateFormat = new SimpleDateFormat("MM-dd_HH:mm:ss");
+        Date date = new Date();
+        
+        String name1 = ApplicationContext.getUserASUID()+"_"+dateFormat.format(date)+"_activity.log";
+        String name2 = ApplicationContext.getUserASUID()+"_"+dateFormat.format(date)+"_laits.log";
+        
+        client.storeFile(name1, fis);
+        fis = new FileInputStream(filename2);
+        client.storeFile(name2, fis);
+        fis.close();
+        client.logout();
+    } catch (IOException e) {
+        e.printStackTrace();
+    }
+
+        
     }
 
     /**
@@ -460,6 +508,8 @@ public class MainWindow extends JFrame {
     
     
     private void loadFirstTask(){
+        activityLogs.debug("Student is given default problem ID: 105 - Intro 1");
+        
         TaskSolutionReader solutionReader = new TaskSolutionReader();
         try{
             TaskSolution solution = solutionReader.loadSolution("105");

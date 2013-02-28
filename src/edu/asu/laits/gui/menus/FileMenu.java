@@ -36,11 +36,17 @@ import edu.asu.laits.model.Vertex;
 import edu.asu.laits.properties.GlobalProperties;
 import edu.asu.laits.properties.GraphProperties;
 import edu.asu.laits.properties.LatestFilesPropertyChangeListener;
+import java.io.FileInputStream;
+import java.io.FileOutputStream;
+import java.io.InputStream;
+import java.io.OutputStream;
 import java.util.HashMap;
 import java.util.LinkedList;
 
 import javax.swing.JFileChooser;
 import javax.swing.filechooser.FileFilter;
+import org.apache.log4j.Logger;
+import org.jfree.io.IOUtils;
 import org.jgraph.graph.DefaultPort;
 
 /**
@@ -70,13 +76,14 @@ public class FileMenu extends JMenu {
     private ActionListener saveAction;
     GlobalProperties globalProperties = GlobalProperties.getInstance();
     private JMenu taskListMenu = null;
-    private ActionListener openTaskAction;
-    private static String selectedTaskId;
+    private JMenu tempTaskMenu = null;
     /*
      * Indicate if the current graph is associated with a file
      */
     private boolean currentGraphAssociateWithFile = false;
-
+    private static Logger logs = Logger.getLogger("DevLogs");
+    private static Logger activityLogs = Logger.getLogger("ActivityLogs");
+    
     /*
      * The file that the current graph is asociated with
      */
@@ -130,6 +137,8 @@ public class FileMenu extends JMenu {
     private void initializeAuthorMenu() {
         this.setText("File");
         this.setMnemonic(KeyEvent.VK_F);
+        this.add(getTaskMenuForAuthor());
+        this.add(getJSeparator());
         this.add(getNewFileMenuItem());
         this.add(getJSeparator());
         this.add(getOpenFileMenuItem());
@@ -140,6 +149,46 @@ public class FileMenu extends JMenu {
         this.add(getJSeparator2());
         this.add(getExitFileMenuItem());
 
+    }
+    
+    /**
+     * Add Tasks in the File Menu
+     * @return 
+     */
+    private JMenu getTaskMenuForAuthor() {
+        if (tempTaskMenu == null) {
+            tempTaskMenu = new JMenu();
+            tempTaskMenu.setText("Open Task");
+            
+            JMenuItem task1 = new JMenuItem();
+            task1.setText("Ecosystem Model");
+            task1.setActionCommand("EcosystemModel");
+            
+            JMenuItem task2 = new JMenuItem();
+            task2.setText("Predator-Prey Model");
+            task2.setActionCommand("Predator-PreyModel");
+            
+            // Attaching Action Listener
+                    task1.addActionListener(new java.awt.event.ActionListener() {
+                        public void actionPerformed(java.awt.event.ActionEvent e) {
+                            JMenuItem newMenu = (JMenuItem)e.getSource();
+                            openTempTask(newMenu.getActionCommand());                            
+                        }
+                    });
+                    // Attaching Action Listener
+                    task2.addActionListener(new java.awt.event.ActionListener() {
+                        public void actionPerformed(java.awt.event.ActionEvent e) {
+                            JMenuItem newMenu = (JMenuItem)e.getSource();
+                            openTempTask(newMenu.getActionCommand());
+                        }
+                    });
+                    
+                tempTaskMenu.add(task2);
+                tempTaskMenu.add(task1);
+               
+        }
+
+        return tempTaskMenu;
     }
 
     /**
@@ -222,6 +271,9 @@ public class FileMenu extends JMenu {
      * Method to open a new Task in Tutor Mode
      */ 
     private void openTaskById(String id){
+        activityLogs.debug("Student opened a new task ID: "+id+" - "+
+                ApplicationContext.getTaskIdNameMap().get(id).getTaskName());
+        
         TaskSolutionReader solutionReader = new TaskSolutionReader();
         try{
             TaskSolution solution = solutionReader.loadSolution(id);
@@ -298,6 +350,7 @@ public class FileMenu extends JMenu {
             newAction = new java.awt.event.ActionListener() {
                 public void actionPerformed(java.awt.event.ActionEvent e) {
                     // If new is called a new main window is created
+                    activityLogs.debug("User Pressed New File Menu");
                     MainWindow newWindow = new MainWindow();
                     newWindow.setVisible(true);
                 }
@@ -332,8 +385,8 @@ public class FileMenu extends JMenu {
                     "/resources/icons/16x16/fileopen.png")));
             openAction = new java.awt.event.ActionListener() {
                 public void actionPerformed(java.awt.event.ActionEvent e) {
+                    activityLogs.debug("User Pressed Open File Menu");
                     open();
-
                 }
             };
             openFileMenuItem.addActionListener(openAction);
@@ -361,6 +414,25 @@ public class FileMenu extends JMenu {
                 return;
             }
             openFile(selectedFile);
+        }
+
+    }
+    
+    private void openTempTask(String name) {
+        String solutionFilePath = name+".laits";
+        activityLogs.debug("Student working on Problem "+name);
+        InputStream in = getClass().getResourceAsStream(solutionFilePath);
+        
+        try{
+            
+            File selectedFile = new File("Model.laits");
+            OutputStream out = new FileOutputStream(selectedFile);
+             IOUtils.getInstance().copyStreams(in, out);
+            out.close();
+            mainWindow.getGraphEditorPane().resetModelGraph();
+            openFile(selectedFile);
+        }catch(Exception e){
+            e.printStackTrace();
         }
 
     }
@@ -451,6 +523,7 @@ public class FileMenu extends JMenu {
             saveFileMenuItem.setEnabled(false);
             saveAction = new java.awt.event.ActionListener() {
                 public void actionPerformed(java.awt.event.ActionEvent e) {
+                    activityLogs.debug("User Pressed Save File Menu");
                     save();
                 }
             };
@@ -473,6 +546,7 @@ public class FileMenu extends JMenu {
             saveAsFileMenuItem
                     .addActionListener(new java.awt.event.ActionListener() {
                 public void actionPerformed(java.awt.event.ActionEvent e) {
+                    activityLogs.debug("User Pressed Save As File Menu");
                     saveAs();
                 }
             });

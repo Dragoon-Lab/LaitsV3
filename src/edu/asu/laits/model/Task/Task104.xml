@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<Task>
+  <URL>http://amt.javiergs.com/images/tasks/intro-1.png</URL>
+  <Description>Problem: The population of the Phoenix Metro area in 2009 was 4192887 people.NEWLINE NEWLINEGoal: Graph the population of Phoenix in 2009.</Description>
+  <ShortDescription>\n Given: population = 4192887</ShortDescription>
+  <StartTime>2009</StartTime>
+  <EndTime>2010</EndTime>
+  <Units>years</Units>
+  <Vertexes>
+    <VertexLabel>population</VertexLabel>
+  </Vertexes>
+</Task>

@@ -1,0 +1,116 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<Task phase="Training" type="Construct">
+  <URL>http://upload.wikimedia.org/wikipedia/commons/thumb/c/cd/Bilge_well.jpg/450px-Bilge_well.jpg</URL>
+  <TaskDescription>
+Problem: No matter how well constructed most large ships are, water still leaks into them. They are designed so that water collects in the 
+      NEWLINE lowest part of the ship, called the bilge.  The water there is called bilge water and is nasty, filthy stuff.  Suppose that on a certain 
+      ship, NEWLINE leaks contribute 500 gallons of water to the bilge every hour.  Fortunately, the ship has pumps that can remove 900 gallons an hour, 
+      so NEWLINE normally the bilge doesn't have much water in it.  However, during a particularly severe storm, the bilge pumps fail.  By the time they 
+      are repaired,NEWLINE there are 10,000 gallons of bilge water. The first hour after the repair, there are 9,600 gallons of bilge water remaining. 
+NEWLINE NEWLINE Goal: With the pumps running at full power and the leaks going at their usual rate, graph the amount of bilge water over 24 hours.
+  </TaskDescription>
+  
+  <StartTime>0</StartTime>
+  <EndTime>24</EndTime>
+  <Units>hours</Units>
+  
+  <NodeCount>4</NodeCount>
+
+  <Nodes>
+    <Node type="constant" name="water first hour" extra="yes">
+      <Inputs></Inputs>
+      <Outputs></Outputs>
+      <InitialValue>9600</InitialValue>
+      <Equation>9600</Equation>
+      <CorrectDescription>The amount of water in the bilge after the first hour</CorrectDescription>
+      <Plan>fixed value</Plan>
+    </Node>
+    
+    <Node type="constant" name="leaked in per hour" extra="no">
+      <Inputs></Inputs>
+      <InitialValue>500</InitialValue>
+      <Equation>500</Equation>
+      <CorrectDescription>The amount of water leaked into the bilge each hour</CorrectDescription>
+      <Plan>fixed value</Plan>
+    </Node>
+    
+    <Node type="constant" name="pumped out per hour" extra="no">
+      <Inputs></Inputs>
+      <InitialValue>900</InitialValue>
+      <Equation>900</Equation>
+      <CorrectDescription>The amount of water being pumped out of the bilge each hour</CorrectDescription>
+      <Plan>fixed value</Plan>
+      
+    </Node>
+    
+    <Node type="stock" name="bilge water" extra="no">
+      <Inputs>
+        <Name>leaked in per hour</Name>
+        <Name>pumped out per hour</Name>
+      </Inputs>
+      
+      <Equation>+ leaked in per hour - pumped out per hour</Equation>
+      <InitialValue>10000</InitialValue>
+      <CorrectDescription>The amount of water in the bilge each hour</CorrectDescription>
+      <Plan>said to both increase and decrease</Plan>
+    </Node>
+  </Nodes>  
+
+     
+  <DescriptionTree>
+    <Node level="root">
+      <Description>The amount of</Description>      
+      <Node level="intermediate">
+        <Description>water leaked into the bilge</Description>            
+        <Node level="leaf">
+          <Description>each hour</Description>
+          <NodeName>leaked in per hour</NodeName>
+        </Node>
+        <Node level="leaf">
+          <Description>during the first hour</Description>
+          <NodeName>leaked in first hour</NodeName>
+        </Node>
+        <Node level="leaf">
+          <Description>during the last hour</Description>
+          <NodeName>leaked in last hour</NodeName>
+        </Node>
+	  </Node>
+      <Node level="intermediate">
+        <Description>water being pumped out of the bilge</Description>            
+        <Node level="leaf">
+          <Description>during the first hour</Description>
+          <NodeName>pumped out in first hour</NodeName>
+        </Node>
+        <Node level="leaf">
+          <Description>each hour</Description>
+          <NodeName>pumped out per hour</NodeName>
+        </Node>
+        <Node level="leaf">
+          <Description>during the last hour</Description>
+          <NodeName>pumped out in last hour</NodeName>
+        </Node>
+	  </Node>
+      <Node level="intermediate">
+        <Description>water in the bilge</Description>            
+        <Node level="leaf">
+          <Description>initially</Description>
+          <NodeName>initial bilge water</NodeName>
+        </Node>
+        <Node level="leaf">
+          <Description>after the first hour</Description>
+          <NodeName>water first hour</NodeName>
+        </Node>
+        <Node level="leaf">
+          <Description>each hour</Description>
+          <NodeName>bilge water</NodeName>
+        </Node>
+        <Node level="leaf">
+          <Description>at the end of 24 hours</Description>
+          <NodeName>final bilge water</NodeName>
+        </Node>
+	  </Node>
+    </Node>
+  </DescriptionTree>
+  
+</Task>

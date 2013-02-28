@@ -6,10 +6,7 @@
  */
 package edu.asu.laits.gui.nodeeditor;
 
-import apple.awt.CColor;
 import edu.asu.laits.editor.ApplicationContext;
-import edu.asu.laits.editor.GraphEditorPane;
-import edu.asu.laits.model.Edge;
 import edu.asu.laits.model.Graph;
 import edu.asu.laits.model.SolutionNode;
 import edu.asu.laits.model.TaskSolution;
@@ -29,255 +26,221 @@ import java.util.List;
 import javax.swing.*;
 import org.apache.log4j.Logger;
 import org.jgraph.graph.DefaultPort;
-import org.jgraph.graph.Port;
-import org.jgraph.graph.PortView;
-
 
 public class InputsPanelView extends javax.swing.JPanel implements ItemListener {
 
-  public LinkedList<JCheckBox> checkboxList;
-  Stack undoStack = new Stack();
-  boolean undoFlag = false;
-  
-  public String itemChanged;
-  
-  public boolean correctinput = false;
-  NodeEditor nodeEditor;
-  
-  public HashMap<Vertex, Boolean> initialSelection=new HashMap<Vertex, Boolean>();
-  
-  /** Logger **/
-  private static Logger logs = Logger.getLogger("DevLogs");
-  private static Logger activityLogs = Logger.getLogger("ActivityLogs");
-  
-  /**
-   * Private Constructor
-   * @param gc : GraphCanvas of LAITS Application.
-   */
-  public InputsPanelView(NodeEditor ne){ 
-    initComponents();
-    nodeEditor = ne;
-    checkboxList = new LinkedList<JCheckBox>();
-    initPanel();
-  }
-  
-  public void initPanel(){    
-    Graph graph=(Graph)this.nodeEditor.getGraphPane().getModelGraph();
-    Set<Vertex> vertexes = graph.vertexSet();
-    Vertex currentV = this.nodeEditor.getCurrentVertex();
-    descriptionTextArea.setText(currentV.getCorrectDescription());
-    
-    JCheckBox box;
-    availableInputNodesPanels.setLayout(new GridLayout(0, 1));
-    availableInputNodesPanels.setVisible(false);
-    
-    boolean selected;
-    for(Vertex v:vertexes){
-        if(v.getName().equals(currentV.getName()))
-            continue;
-        if(graph.containsEdge(v,currentV))
-            selected=true;
-        else
-            selected=false;
-        box = new JCheckBox(v.getName(),selected);
-        initialSelection.put(v, selected);
-        box.setVisible(false);
-        box.setText(v.getName());
-        box.addItemListener(this);
-        checkboxList.add(box);
-        availableInputNodesPanels.add(box);           
+    public LinkedList<JCheckBox> checkboxList;
+    Stack undoStack = new Stack();
+    boolean undoFlag = false;
+    public String itemChanged;
+    public boolean correctinput = false;
+    NodeEditor nodeEditor;
+    public HashMap<Vertex, Boolean> initialSelection = new HashMap<Vertex, Boolean>();
+    /**
+     * Logger *
+     */
+    private static Logger logs = Logger.getLogger("DevLogs");
+    private static Logger activityLogs = Logger.getLogger("ActivityLogs");
+
+    /**
+     * Private Constructor
+     *
+     * @param gc : GraphCanvas of LAITS Application.
+     */
+    public InputsPanelView(NodeEditor ne) {
+        initComponents();
+        nodeEditor = ne;
+        checkboxList = new LinkedList<JCheckBox>();
+        initPanel();
     }
-    
-    if(currentV.getVertexType()==VertexType.CONSTANT)
-        fixedValueOptionButton.setSelected(true);
-    
-    else if(currentV.getVertexType()==VertexType.FLOW || currentV.getVertexType()==VertexType.STOCK){
-        inputNodesSelectionOptionButton.setSelected(true);
+
+    public void initPanel() {
+        Graph graph = (Graph) this.nodeEditor.getGraphPane().getModelGraph();
+        Set<Vertex> vertexes = graph.vertexSet();
+        Vertex currentV = this.nodeEditor.getCurrentVertex();
+        descriptionTextArea.setText(currentV.getCorrectDescription());
+
+        JCheckBox box;
+        availableInputNodesPanels.setLayout(new GridLayout(0, 1));
+        availableInputNodesPanels.setVisible(false);
+
+        boolean selected;
+        for (Vertex v : vertexes) {
+            if (v.getName().equals(currentV.getName())) {
+                continue;
+            }
+            if (graph.containsEdge(v, currentV)) {
+                selected = true;
+            } else {
+                selected = false;
+            }
+            box = new JCheckBox(v.getName(), selected);
+            initialSelection.put(v, selected);
+            box.setVisible(false);
+            box.setText(v.getName());
+            box.addItemListener(this);
+            checkboxList.add(box);
+            availableInputNodesPanels.add(box);
+        }
+
+        if (currentV.getVertexType() == VertexType.CONSTANT) {
+            fixedValueOptionButton.setSelected(true);
+        } else if (currentV.getVertexType() == VertexType.FLOW || currentV.getVertexType() == VertexType.STOCK) {
+            inputNodesSelectionOptionButton.setSelected(true);
+            displayCurrentInputsPanel(true);
+
+            if (checkboxList.size() == 0) {
+                displayInappropriteInputsMsg();
+            }
+        }
+
+    }
+
+    /**
+     * Method to display Unavailable Inputs message when there are no inputs to
+     * be selected for the current node
+     */
+    private void displayInappropriteInputsMsg() {
+        inputNodesSelectionOptionButton.setEnabled(false);
         displayCurrentInputsPanel(true);
+
+        availableInputNodesPanels.repaint();
+        JTextArea txt = new JTextArea(UNAVAILABLE_INPUTS_MSG);
+        txt.setLineWrap(true);
+        txt.setEditable(false);
+        txt.setWrapStyleWord(true);
+        txt.setFont(new Font("Arial", Font.PLAIN, 14));
+        txt.setMargin(new java.awt.Insets(50, 5, 0, 0));
+        availableInputNodesPanels.add(txt);
+
+    }
+
+    /**
+     * Method to Show/Hide available input panel and check boxes
+     *
+     * @param flag : show/hide flag
+     */
+    private void displayCurrentInputsPanel(boolean flag) {
+        availableInputNodesPanels.setVisible(flag);
+        for (JCheckBox box : checkboxList) {
+            box.setVisible(flag);
+        }
+    }
+
+    public void updateNodeDescription() {
+        descriptionTextArea.setText(nodeEditor.getCurrentVertex().getCorrectDescription());
+    }
+
+    /**
+     * This method is called when any input check box is selected from the
+     * available input nodes
+     */
+    public void itemStateChanged(ItemEvent e) {
+        logs.debug("Input Node selection changed");
         
-        if(checkboxList.size() == 0)
-            displayInappropriteInputsMsg();
+        Object source = e.getSource();
+        if (!(source instanceof JCheckBox)) {
+            return;
+        }
+
+        Graph graph = (Graph) this.nodeEditor.getGraphPane().getModelGraph();
+        JCheckBox box = (JCheckBox) source;
+
+        activityLogs.debug("User selected input vertex as "+box.getText()+
+                " as input for Vertex "+nodeEditor.getCurrentVertex().getName());
+        Vertex connectedV = graph.getVertexByName(box.getText());
+
+        if (box.isSelected() && !graph.containsEdge(connectedV, nodeEditor.getCurrentVertex())) {
+            addEdge(connectedV, nodeEditor.getCurrentVertex());
+        } else if (!box.isSelected() && graph.containsEdge(connectedV, nodeEditor.getCurrentVertex())) {
+            graph.removeEdge(connectedV, nodeEditor.getCurrentVertex());
+        }
+
     }
-    
-  }
-   
-  
-  /**
-   * Method to display Unavailable Inputs message when there are no inputs to
-   * be selected for the current node
-   */
-  private void displayInappropriteInputsMsg(){
-    inputNodesSelectionOptionButton.setEnabled(false);
-    displayCurrentInputsPanel(true);
 
-    availableInputNodesPanels.repaint();
-    JTextArea txt = new JTextArea(UNAVAILABLE_INPUTS_MSG);
-    txt.setLineWrap(true);
-    txt.setEditable(false);
-    txt.setWrapStyleWord(true);
-    txt.setFont(new Font("Arial", Font.PLAIN, 14));
-    txt.setMargin(new java.awt.Insets(50, 5, 0, 0));
-    availableInputNodesPanels.add(txt);
-    
-  }
-  
-  /**
-   * Method to Show/Hide available input panel and check boxes
-   * @param flag : show/hide flag
-   */
-  private void displayCurrentInputsPanel(boolean flag) {
-    availableInputNodesPanels.setVisible(flag);
-    for (JCheckBox box : checkboxList) {
-      box.setVisible(flag);
-    }    
-  }
-  
-  
-  /**
-   * Method to Add One Check Box corresponding to each Available Input Node
-   */
-  private void addAvailableNodesCheckBoxes(){
-    logs.debug("Adding all the Available Input Nodes for ");
-    
-  }
-  
-  /**
-   * Method to load the Input Panel saved by the User last time. 
-   * This will make constant/input option button selected. In case of Inputs,
-   * this will mark previously selected inputs as selected check boxes.
-   */
-  public void loadSavedInputState() {
-    logs.debug("Loading Saved Inputs for Vertex ");
-    
-    
-  }
-    
-  /**
-   * Method to load previously selected Inputs for Stock and Flow Nodes
-   */
-  private void loadSavedInputsForStockAndFlow(){
-    logs.debug("Loading previously selected inputs for ");
-    
-  }
-  
-  public void updateNodeDescription(){
-      descriptionTextArea.setText(nodeEditor.getCurrentVertex().getCorrectDescription());
-  }
-  /**
-   * This method is called when any input check box is selected from the
-   * available input nodes
-   */
-  public void itemStateChanged(ItemEvent e) {
-    Object source=e.getSource();
-    if(!(source instanceof JCheckBox))
-        return;
-    
-    Graph graph=(Graph)this.nodeEditor.getGraphPane().getModelGraph();
-    JCheckBox box=(JCheckBox) source;
-    
-    Vertex connectedV = graph.getVertexByName(box.getText());
-    
-    if(box.isSelected() && !graph.containsEdge(connectedV, nodeEditor.getCurrentVertex()))
-        addEdge(connectedV,nodeEditor.getCurrentVertex());
-    
-    else if(!box.isSelected() && graph.containsEdge(connectedV, nodeEditor.getCurrentVertex()))
-        graph.removeEdge(connectedV, nodeEditor.getCurrentVertex());
-    
-    logs.debug("Input Node selection changed");
-  }
-  
-  private void addEdge(Vertex v1, Vertex v2){
-      DefaultPort p1 = nodeEditor.getGraphPane().getJGraphTModelAdapter().getVertexPort(v1);
-      DefaultPort p2 = nodeEditor.getGraphPane().getJGraphTModelAdapter().getVertexPort(v2);
-      
-      nodeEditor.getGraphPane().insertEdge(p1, p2);
-  }
-  
-  
-  /**
-   * Reset the Generated Graph Status
-   */
-  private void resetGraphStatus() {
-    logs.debug( "Resetting Graph Status");
-    
-    
-  }
+    private void addEdge(Vertex v1, Vertex v2) {
+        DefaultPort p1 = nodeEditor.getGraphPane().getJGraphTModelAdapter().getVertexPort(v1);
+        DefaultPort p2 = nodeEditor.getGraphPane().getJGraphTModelAdapter().getVertexPort(v2);
 
-  /**
-   * This method returns true if the value button is selected, false if it isn't
-   *
-   * @return whether the value button is selected
-   */
-  public boolean getValueButtonSelected() {
-    if (fixedValueOptionButton.isSelected() == true) {
-      return true;
-    } else {
-      return false;
+        nodeEditor.getGraphPane().insertEdge(p1, p2);
     }
-  }
 
-  /**
-   * This method returns true if the inputs button is selected, false if it
-   * isn't
-   *
-   * @return whether the inputs button is selected
-   */
-  public boolean getInputsButtonSelected() {
-    if (inputNodesSelectionOptionButton.isSelected() == true) {
-      return true;
-    } else {
-      return false;
+    
+    /**
+     * This method returns true if the value button is selected, false if it
+     * isn't
+     *
+     * @return whether the value button is selected
+     */
+    public boolean getValueButtonSelected() {
+        if (fixedValueOptionButton.isSelected() == true) {
+            return true;
+        } else {
+            return false;
+        }
     }
-  }
 
+    /**
+     * This method returns true if the inputs button is selected, false if it
+     * isn't
+     *
+     * @return whether the inputs button is selected
+     */
+    public boolean getInputsButtonSelected() {
+        if (inputNodesSelectionOptionButton.isSelected() == true) {
+            return true;
+        } else {
+            return false;
+        }
+    }
 
-  public boolean giveUpInputsPanel(){
-      TaskSolution solution = ApplicationContext.getCorrectSolution();
-      SolutionNode correctNode = solution.getNodeByName(
-              nodeEditor.getCurrentVertex().getName());
-      
-      if(correctNode.getNodeType().equals(VertexType.CONSTANT)){
-          fixedValueOptionButton.setSelected(true);
-          nodeEditor.getCurrentVertex().setVertexType(VertexType.CONSTANT);          
-      }else{
-          List<String> correctInputs = correctNode.getInputNodes();
-          List<String> availableInputs = new ArrayList<String>();
-          
-          Set<Vertex> vertices = nodeEditor.getGraphPane().getModelGraph().vertexSet();
-          for(Vertex v : vertices){
-              availableInputs.add(v.getName());
-          }
-          
-          availableInputs.remove(nodeEditor.getCurrentVertex().getName());
-          
-          if(!availableInputs.containsAll(correctInputs)){
-              nodeEditor.setEditorMessage("Please define all the Nodes before using Giveup.");
-              return false;
-          }
-          
-          for(JCheckBox input : checkboxList){
-              input.setSelected(false);
-              if(correctInputs.contains(input.getText())){
-                  input.setSelected(true);
-              }
-          }
-          inputNodesSelectionOptionButton.setSelected(true);
-          this.displayCurrentInputsPanel(true);
-          nodeEditor.getCurrentVertex().setVertexType(VertexType.DEFAULT);
-      }
-      
-      setOptionPanelBackground(Color.YELLOW);
-      nodeEditor.getGraphPane().getLayoutCache().reload();
-      nodeEditor.getGraphPane().repaint();
-      return true;
-  }
+    public boolean giveUpInputsPanel() {
+        TaskSolution solution = ApplicationContext.getCorrectSolution();
+        SolutionNode correctNode = solution.getNodeByName(
+                nodeEditor.getCurrentVertex().getName());
 
-  /**
-   * This method is called from within the constructor to initialize the form.
-   * WARNING: Do NOT modify this code. The content of this method is always
-   * regenerated by the Form Editor.
-   */
-  @SuppressWarnings("unchecked")
+        if (correctNode.getNodeType().equals(VertexType.CONSTANT)) {
+            fixedValueOptionButton.setSelected(true);
+            nodeEditor.getCurrentVertex().setVertexType(VertexType.CONSTANT);
+        } else {
+            List<String> correctInputs = correctNode.getInputNodes();
+            List<String> availableInputs = new ArrayList<String>();
+
+            Set<Vertex> vertices = nodeEditor.getGraphPane().getModelGraph().vertexSet();
+            for (Vertex v : vertices) {
+                availableInputs.add(v.getName());
+            }
+
+            availableInputs.remove(nodeEditor.getCurrentVertex().getName());
+
+            if (!availableInputs.containsAll(correctInputs)) {
+                nodeEditor.setEditorMessage("Please define all the Nodes before using Giveup.", true);
+                return false;
+            }
+
+            for (JCheckBox input : checkboxList) {
+                input.setSelected(false);
+                if (correctInputs.contains(input.getText())) {
+                    input.setSelected(true);
+                }
+            }
+            inputNodesSelectionOptionButton.setSelected(true);
+            this.displayCurrentInputsPanel(true);
+            nodeEditor.getCurrentVertex().setVertexType(VertexType.DEFAULT);
+        }
+
+        setOptionPanelBackground(Color.YELLOW);
+        nodeEditor.getGraphPane().getLayoutCache().reload();
+        nodeEditor.getGraphPane().repaint();
+        return true;
+    }
+
+    /**
+     * This method is called from within the constructor to initialize the form.
+     * WARNING: Do NOT modify this code. The content of this method is always
+     * regenerated by the Form Editor.
+     */
+    @SuppressWarnings("unchecked")
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
     private void initComponents() {
 
@@ -371,101 +334,124 @@ public class InputsPanelView extends javax.swing.JPanel implements ItemListener 
 
         add(contentPanel, new org.netbeans.lib.awtextra.AbsoluteConstraints(0, 6, 560, 480));
     }// </editor-fold>//GEN-END:initComponents
-/**
- * Event Handler for Fixed Value Option Button. Changes the UI for this panel
- * and prepares Fixed Value UI for Calculation Panel
- * @param evt
- */
+
+    /**
+     * Event Handler for Fixed Value Option Button. Changes the UI for this
+     * panel and prepares Fixed Value UI for Calculation Panel
+     *
+     * @param evt
+     */
     private void fixedValueOptionButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_fixedValueOptionButtonActionPerformed
-      // This method is called when Node has a fixed value.
-      this.displayCurrentInputsPanel(false);
-      resetOptionPanelBackground();
+        // This method is called when Node has a fixed value.
+        activityLogs.debug("Inputs Panel : User selected node type as CONSTANT for Node "+
+                nodeEditor.getCurrentVertex().getName());
+        
+        this.displayCurrentInputsPanel(false);
+        resetOptionPanelBackground();
         nodeEditor.getCurrentVertex().setVertexType(Vertex.VertexType.CONSTANT);
-      logs.debug("Setting Vertex Type to Constant");
-      nodeEditor.getGraphPane().getLayoutCache().reload();
-      nodeEditor.getGraphPane().repaint();
+        logs.debug("Setting Vertex Type to Constant");
+        nodeEditor.getGraphPane().getLayoutCache().reload();
+        nodeEditor.getGraphPane().repaint();
     }//GEN-LAST:event_fixedValueOptionButtonActionPerformed
 
-  // Method for handling the click event of Input radio button
+    // Method for handling the click event of Input radio button
     private void inputNodesSelectionOptionButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_inputNodesSelectionOptionButtonActionPerformed
+        activityLogs.debug("Inputs Panel : User selected node type as INPUTS for Node "+
+                nodeEditor.getCurrentVertex().getName());
+        
         this.displayCurrentInputsPanel(true);
         resetOptionPanelBackground();
-        nodeEditor.getCurrentVertex().setVertexType(Vertex.VertexType.DEFAULT);  
+        nodeEditor.getCurrentVertex().setVertexType(Vertex.VertexType.DEFAULT);
         nodeEditor.getGraphPane().getLayoutCache().reload();
         nodeEditor.getGraphPane().repaint();
     }//GEN-LAST:event_inputNodesSelectionOptionButtonActionPerformed
 
+    /**
+     * This function checks for any syntax errors in the inputsTab, and returns
+     * true if there are
+     *
+     * @author Curt Tyler
+     * @return boolean
+     */
+    public boolean hasInputError() {
+        boolean syntaxError = false;
 
-  /**
-   * This function checks for any syntax errors in the inputsTab, and returns
-   * true if there are
-   *
-   * @author Curt Tyler
-   * @return boolean
-   */
-  public boolean hasInputError() {
-    boolean syntaxError = false;
-
-    if (!getValueButtonSelected()  && !getInputsButtonSelected() ) {
-        syntaxError = true;
-    }
-    else if (getInputsButtonSelected() == true) {
-        syntaxError = true;
-        for (JCheckBox box : checkboxList) {
-          // If there is at least one inputs check box selected, then there is no error
-          if (box.isSelected() != false) {
-            syntaxError = false;
-          }
+        if (!getValueButtonSelected() && !getInputsButtonSelected()) {
+            syntaxError = true;
+        } else if (getInputsButtonSelected() == true) {
+            syntaxError = true;
+            for (JCheckBox box : checkboxList) {
+                // If there is at least one inputs check box selected, then there is no error
+                if (box.isSelected() != false) {
+                    syntaxError = false;
+                }
+            }
         }
-      }
-    logs.debug("Error in Inputs Panel = "+syntaxError);
-    return syntaxError;
-  }
+        logs.debug("Error in Inputs Panel = " + syntaxError);
+        return syntaxError;
+    }
 
-  
-  public boolean validateInputsPanel(){
-    return !hasInputError();
-  }
+    public boolean validateInputsPanel() {
+        return !hasInputError();
+    }
 
-  public boolean isViewEnabled(){
-    if(nodeEditor.getCurrentVertex().getPlanStatus().equals(Vertex.PlanStatus.CORRECT) ||
-                nodeEditor.getCurrentVertex().getPlanStatus().equals(Vertex.PlanStatus.GAVEUP))
+    public boolean isViewEnabled() {
+        if (nodeEditor.getCurrentVertex().getPlanStatus().equals(Vertex.PlanStatus.CORRECT)
+                || nodeEditor.getCurrentVertex().getPlanStatus().equals(Vertex.PlanStatus.GAVEUP)) {
             return true;
-        else 
+        } else {
             return false;
-  }
-  
-  
-  public boolean processInputsPanel(){
-      if(fixedValueOptionButton.isSelected())
-          return true;
-      
-      if(inputNodesSelectionOptionButton.isSelected() && checkboxList.size()!=0)
-          return true;
-      
-      nodeEditor.setEditorMessage("Please provide input for this node.");
-      return false;
-  }
-  
-  public void setOptionPanelBackground(Color c){
-      radioPanel.setBackground(c);
-  }
-  
-  public void resetOptionPanelBackground(){
-      radioPanel.setBackground(new Color(238,238,238));
-  }
-  
-  public List<String> getSelectedInputsList(){
-      List<String> inputsList = new ArrayList<String>();
-      for(JCheckBox j : checkboxList){
-          if(j.isSelected()){
-              inputsList.add(j.getText());
-          }
-      }
-      
-      return inputsList;
-  }
+        }
+    }
 
+    public boolean processInputsPanel() {
+        if (fixedValueOptionButton.isSelected()) {
+            return true;
+        }
+
+        if (inputNodesSelectionOptionButton.isSelected() && checkboxList.size() != 0) {
+            return true;
+        }
+
+        nodeEditor.setEditorMessage("Please provide input for this node.", true);
+        return false;
+    }
+
+    public void setOptionPanelBackground(Color c) {
+        radioPanel.setBackground(c);
+    }
+
+    public void resetOptionPanelBackground() {
+        radioPanel.setBackground(new Color(238, 238, 238));
+    }
+
+    public List<String> getSelectedInputsList() {
+        List<String> inputsList = new ArrayList<String>();
+        for (JCheckBox j : checkboxList) {
+            if (j.isSelected()) {
+                inputsList.add(j.getText());
+            }
+        }
+
+        return inputsList;
+    }
+    
+    public String printInputsPanel(){
+        StringBuilder sb = new StringBuilder();
+        sb.append("Node Type: '");
+        if(fixedValueOptionButton.isSelected())
+            sb.append("CONSTANT");
+        else if(inputNodesSelectionOptionButton.isSelected()){
+            sb.append("INPUTS");
+            sb.append("' Input List: "+getSelectedInputsList().toString());
+        }    
+        else
+            sb.append("UNDEFINED");
+        
+        return sb.toString();
+    }
+    
+    
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JPanel availableInputNodesPanels;
     private javax.swing.ButtonGroup buttonGroup1;
@@ -479,10 +465,7 @@ public class InputsPanelView extends javax.swing.JPanel implements ItemListener 
     private javax.swing.JLabel nodeDescriptionHeading;
     private javax.swing.JPanel radioPanel;
     // End of variables declaration//GEN-END:variables
-
-
-  
-  private static String UNAVAILABLE_INPUTS_MSG = "Create some more nodes, and "
-          + "they will appear here.  You have created only one node, and it "
-          + "cannot be its own input, so there is nothing to display here.";
+    private static String UNAVAILABLE_INPUTS_MSG = "Create some more nodes, and "
+            + "they will appear here.  You have created only one node, and it "
+            + "cannot be its own input, so there is nothing to display here.";
 }

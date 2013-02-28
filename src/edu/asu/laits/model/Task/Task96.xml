@@ -21,9 +21,6 @@ NEWLINE NEWLINE Goal: Graph the capacity utilization over 6 months.</TaskDescrip
   <Nodes>
     <Node type="constant" name="passengers lost" extra="no">
       <Inputs></Inputs>
-      <Outputs>
-      	<Node name="passengers"></Node>
-      </Outputs>
       <Equation>1000</Equation>
       <InitialValue>1000</InitialValue>
       <CorrectDescription>The number of passengers lost each month</CorrectDescription>
@@ -32,9 +29,6 @@ NEWLINE NEWLINE Goal: Graph the capacity utilization over 6 months.</TaskDescrip
     
     <Node type="constant" name="seats removed" extra="no">
       <Inputs></Inputs>
-      <Outputs>
-      	<Node name="seats in service"></Node>
-      </Outputs>
       <Equation>500</Equation>
       <InitialValue>500</InitialValue>
       <CorrectDescription>The number of seats removed from service each month from all flights</CorrectDescription>
@@ -43,7 +37,6 @@ NEWLINE NEWLINE Goal: Graph the capacity utilization over 6 months.</TaskDescrip
     
     <Node type="constant" name="flights per month" extra="yes">
       <Inputs></Inputs>
-      <Outputs></Outputs>
       <Equation>222</Equation>
       <InitialValue>222</InitialValue>
       <CorrectDescription>The number of flights the small airline has each month</CorrectDescription>
@@ -74,7 +67,7 @@ NEWLINE NEWLINE Goal: Graph the capacity utilization over 6 months.</TaskDescrip
     <Node type="flow" name="capacity utilization" extra="no">
       <Inputs>        
         <Name>seats in service</Name>
-        <Name>passengers</Node>
+        <Name>passengers</Name>
       </Inputs>
       <InitialValue></InitialValue>
       <Equation>passengers / seats in service</Equation>

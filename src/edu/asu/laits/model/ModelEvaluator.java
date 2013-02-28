@@ -77,6 +77,10 @@ public class ModelEvaluator {
     }
     
     public boolean hasExtraNodes(){
+        if (ApplicationContext.getAppMode().equals("AUTHOR")) {
+            return false;
+        }
+        
         List<String> correctNodeNames = ApplicationContext.getCorrectSolution()
                 .getCorrectNodeNames();
         Iterator<Vertex> allVertices = currentGraph.vertexSet().iterator();
@@ -84,10 +88,10 @@ public class ModelEvaluator {
         while(allVertices.hasNext()){
             studentNodeNames.add(allVertices.next().getName());
         }
-        if(studentNodeNames.size() != correctNodeNames.size())
-            return false;
-        else 
+        if(studentNodeNames.size() > correctNodeNames.size())
             return true;
+        else 
+            return false;
     }
     
     private boolean correctNodesDefined(){

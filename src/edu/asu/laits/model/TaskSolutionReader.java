@@ -8,6 +8,7 @@ package edu.asu.laits.model;
 import java.util.List;
 import java.io.File;
 import java.io.FileReader;
+import java.io.InputStream;
 import java.io.Reader;
 import java.util.ArrayList;
 import org.apache.log4j.Logger;
@@ -59,12 +60,13 @@ public class TaskSolutionReader {
     }
     
     private Document loadRootDocument(String taskId) throws Exception{
-        String solutionFilePath = "/resources/Task/Task"+taskId+".xml";
+        String solutionFilePath = "Task/Task"+taskId+".xml";
         Document document = null;
         SAXReader reader = new SAXReader();
-        
-        File file = new File(getClass().getResource(solutionFilePath).toURI());
-        document = reader.read(file);
+        InputStream in = getClass().getResourceAsStream(solutionFilePath);
+        //File file = new File(getClass().getResource(solutionFilePath).toURI());
+        //File file = new File(solutionFilePath);
+        document = reader.read(in);
         
         return document;
     }

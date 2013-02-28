@@ -59,9 +59,9 @@
 	  
 	  <Node type="flow" name="popul growth rate" extra="no">
       <Inputs>
-          <Name>unutilized K prop<Name>
-          <Name>growth rate coeff<Name>
-          <Name>water fowl<Name>
+          <Name>unutilized K prop</Name>
+          <Name>growth rate coeff</Name>
+          <Name>water fowl</Name>
       </Inputs>
       
       <Equation>unutilized K prop * growth rate coeff * water fowl</Equation>
@@ -80,7 +80,7 @@
 	  
 	  <Node type="stock" name="water fowl" extra="no">
       <Inputs>
-        <Name>popul growth rate<Name>
+        <Name>popul growth rate</Name>
       </Inputs>
       
       <Equation>+ popul growth rate</Equation>

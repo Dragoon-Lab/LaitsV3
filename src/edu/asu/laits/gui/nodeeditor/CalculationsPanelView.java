@@ -12,20 +12,13 @@ import edu.asu.laits.model.SolutionNode;
 import edu.asu.laits.model.TaskSolution;
 import edu.asu.laits.model.Vertex;
 import java.awt.Color;
-import java.awt.event.KeyEvent;
-import java.beans.PropertyChangeEvent;
-import java.beans.PropertyChangeListener;
 import java.text.DecimalFormat;
-import java.text.ParseException;
 import java.util.ArrayList;
-import java.util.HashSet;
 import java.util.Iterator;
-import java.util.LinkedList;
 import java.util.List;
 import java.util.Set;
 
 import javax.swing.DefaultListModel;
-import javax.swing.JButton;
 import javax.swing.JFormattedTextField;
 import javax.swing.JTextArea;
 import javax.swing.text.DefaultFormatter;
@@ -177,14 +170,14 @@ public class CalculationsPanelView extends javax.swing.JPanel {
         } else if (flowValueOptionButton.isSelected()) {
             return processFlowVertex();
         } else {
-            nodeEditor.setEditorMessage("Please Select Node Type in Calculation.");
+            nodeEditor.setEditorMessage("Please Select Node Type in Calculation.", true);
             return false;
         }
     }
     
     private boolean processConstantVertex() {
         if (fixedValueInputBox.getText().isEmpty()) {
-            nodeEditor.setEditorMessage("Please provide fixed value for this node.");
+            nodeEditor.setEditorMessage("Please provide fixed value for this node.", true);
             return false;
         } else {
             // Check if value is getting changed - disable Graph
@@ -229,7 +222,7 @@ public class CalculationsPanelView extends javax.swing.JPanel {
         String equation = formulaInputArea.getText().trim();
         
         if (equation.isEmpty()) {
-            nodeEditor.setEditorMessage("Please provide an equation for this node.");
+            nodeEditor.setEditorMessage("Please provide an equation for this node.", true);
             return false;
         }
 
@@ -238,7 +231,7 @@ public class CalculationsPanelView extends javax.swing.JPanel {
         try {
             eval.parse(equation);
         } catch (EvaluationException ex) {
-            nodeEditor.setEditorMessage(ex.getMessage());
+            nodeEditor.setEditorMessage(ex.getMessage(), true);
             return false;
         }        
         
@@ -253,7 +246,9 @@ public class CalculationsPanelView extends javax.swing.JPanel {
         
         for (String s : availableVariables) {
             if (!usedVariables.contains(s)) {
-                nodeEditor.setEditorMessage("Input node " + s + " is not used in the equation.");
+                nodeEditor.setEditorMessage("Input node " + s + " is not used in the equation.", true);
+                activityLogs.debug("User entered incorrect equation - "+
+                        "Input node " + s + " is not used in the equation.");
                 return false;
             }            
             eval.putVariable(s, String.valueOf(Math.random()));
@@ -265,7 +260,7 @@ public class CalculationsPanelView extends javax.swing.JPanel {
             eval.evaluate();
         } catch (EvaluationException ex) {
             logs.error(ex.getMessage());
-            nodeEditor.setEditorMessage(ex.getMessage());
+            nodeEditor.setEditorMessage(ex.getMessage(), true);
             return false;
         }
         return true;
@@ -290,10 +285,13 @@ public class CalculationsPanelView extends javax.swing.JPanel {
     
     public void setCheckedBackground(Color c) {
         quantitySelectionPanel.setBackground(c);
+        fixedValueOptionButton.setBackground(c);
+        stockValueOptionButton.setBackground(c);
+        flowValueOptionButton.setBackground(c);
         
         if (currentVertex.getVertexType().equals(Vertex.VertexType.CONSTANT)
                 || currentVertex.getVertexType().equals(Vertex.VertexType.STOCK)) {
-            fixedValueInputBox.setBackground(c);
+            fixedValueInputBox.setBackground(c);            
         }
         
         if (currentVertex.getVertexType().equals(Vertex.VertexType.FLOW)
@@ -303,7 +301,7 @@ public class CalculationsPanelView extends javax.swing.JPanel {
     }
     
     public void resetBackgroundColor(){
-        setBackground(new Color(238, 238, 238));
+        setCheckedBackground(new Color(238, 238, 238));
     }
     
     public boolean giveUpCalculationsPanel() {
@@ -343,7 +341,7 @@ public class CalculationsPanelView extends javax.swing.JPanel {
             availableInputs.remove(nodeEditor.getCurrentVertex().getName());
             
             if (!availableInputs.containsAll(correctInputs)) {
-                nodeEditor.setEditorMessage("Please define all the Nodes before using Giveup.");
+                nodeEditor.setEditorMessage("Please define all the Nodes before using Giveup.", true);
                 return false;
             }
             reloadGraphPane();
@@ -498,7 +496,6 @@ public class CalculationsPanelView extends javax.swing.JPanel {
         formulaInputArea.setRows(5);
         formulaInputArea.setToolTipText("Node Equation");
         formulaInputArea.setDisabledTextColor(new java.awt.Color(102, 102, 102));
-        formulaInputArea.setHighlighter(null);
         jScrollPane1.setViewportView(formulaInputArea);
 
         availableInputsLabel.setFont(new java.awt.Font("Lucida Grande", 1, 13)); // NOI18N
@@ -565,6 +562,8 @@ public class CalculationsPanelView extends javax.swing.JPanel {
 
     private void stockValueOptionButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_stockValueOptionButtonActionPerformed
         logs.debug("Preparing UI for Stock Node");
+        activityLogs.debug("User Selected Node type as STOCK for Node "+
+                currentVertex.getName());
         preparePanelForStock();
         currentVertex.setVertexType(Vertex.VertexType.STOCK);
         reloadGraphPane();
@@ -572,11 +571,35 @@ public class CalculationsPanelView extends javax.swing.JPanel {
     
     private void flowValueOptionButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_flowValueOptionButtonActionPerformed
         logs.debug("Preparing UI for Flow Node");
+        activityLogs.debug("User Selected Node type as FLOW for Node "+
+                currentVertex.getName());
         preparePanelForFlow();
         currentVertex.setVertexType(Vertex.VertexType.FLOW);
         reloadGraphPane();
     }//GEN-LAST:event_flowValueOptionButtonActionPerformed
 
+    public String printCalculationPanel(){
+        StringBuilder sb = new StringBuilder();
+        sb.append("Node Type: '");
+        if(currentVertex.getVertexType().equals(Vertex.VertexType.FLOW)){
+            sb.append("FLOW");
+            sb.append("'  Calculations: '"+currentVertex.getEquation()+"'");
+        }    
+        else if(currentVertex.getVertexType().equals(Vertex.VertexType.STOCK)){
+            sb.append("STOCK");                    
+            sb.append("'  Initial Value: '"+currentVertex.getInitialValue()+"'");
+            sb.append("'  Calculations: '"+currentVertex.getEquation()+"'");
+        }    
+        else if(currentVertex.getVertexType().equals(Vertex.VertexType.CONSTANT)){
+            sb.append("CONSTANT");
+            sb.append("'  Initial Value: '"+currentVertex.getInitialValue()+"'");
+        }    
+        else 
+            sb.append("UNDEFINED");
+        
+        
+        return sb.toString();
+    }
     /**
      * This method will remove the given node from Available Input Nodes jList
      *
@@ -595,6 +618,8 @@ public class CalculationsPanelView extends javax.swing.JPanel {
     private void availableInputsJListMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_availableInputsJListMouseClicked
         formulaInputArea.setText(formulaInputArea.getText() + " "
                 + availableInputsJList.getSelectedValue().toString());
+        activityLogs.debug("User selected input "+availableInputsJList.getSelectedValue().toString()+
+                " for the Calculations of Node "+currentVertex.getName());
 }//GEN-LAST:event_availableInputsJListMouseClicked
     
     private void fixedValueOptionButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_fixedValueOptionButtonActionPerformed
