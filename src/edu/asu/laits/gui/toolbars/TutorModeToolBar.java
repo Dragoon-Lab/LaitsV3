@@ -16,6 +16,7 @@ import javax.swing.JToolBar;
  * @author ramayantiwari
  */
 public class TutorModeToolBar extends JToolBar{
+    private JButton introductionButton = null;
     private JButton situationButton = null;
     private JButton modelButton = null;
     private JButton spacerButton = null;
@@ -38,11 +39,34 @@ public class TutorModeToolBar extends JToolBar{
      */
     private void initialize() {
         this.setName("Tutor Menu");
+        this.add(getIntroductionButton());
+        this.add(Box.createHorizontalStrut(5));
         this.add(getSituationButton());
         this.add(Box.createHorizontalStrut(5)); 
         this.add(getModelButton());
     }
 
+    /**
+     * This method initializes Introduction button on the ToolBar
+     */
+    private JButton getIntroductionButton() {
+        if (introductionButton == null) {
+            introductionButton = new JButton();
+            introductionButton.setText("Introduction");
+            introductionButton.setToolTipText("View Introduction Slides");
+            introductionButton.setFont(new Font(introductionButton.getFont().getName(),
+                                           Font.BOLD,
+                                           introductionButton.getFont().getSize() - 1));
+            introductionButton
+                    .addActionListener(new java.awt.event.ActionListener() {
+                public void actionPerformed(java.awt.event.ActionEvent e) {
+                    mainWindow.displayIntroductionSlides();
+                }
+            });
+        }
+        return introductionButton;
+    }
+    
     /**
      * This method initializes Add Note button on the ToolBar
      */

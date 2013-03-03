@@ -20,9 +20,9 @@ public class Application {
      * @param args
      */
     public static void main(String[] args) {
-        UserRegistration reg = new UserRegistration(null, true);
-        /*ApplicationContext.setUserValid(true);
-        ApplicationContext.setAppMode("AUTHOR");
+        //UserRegistration reg = new UserRegistration(null, true);
+        ApplicationContext.setUserValid(true);
+        ApplicationContext.setAppMode("STUDENT");
         
         
         if (ApplicationContext.isUserValid()) {
@@ -48,6 +48,6 @@ public class Application {
 
                 e.printStackTrace();
             }
-        } */
+        }
     }
 }

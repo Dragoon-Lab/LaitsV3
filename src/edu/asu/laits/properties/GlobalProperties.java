@@ -63,7 +63,7 @@ public class GlobalProperties {
 
     private GlobalProperties() {
         latestFiles = new LinkedList<File>();
-        createHelpSet(HELPSET_DESTINATION);
+        //createHelpSet(HELPSET_DESTINATION);
     }
 
     public static GlobalProperties getInstance() {

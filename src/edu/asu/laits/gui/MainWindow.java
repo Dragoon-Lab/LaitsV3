@@ -59,6 +59,7 @@ public class MainWindow extends JFrame {
 
     private MainMenu mainMenu = null;
     private JPanel mainPanel = null;
+    private JScrollPane introductionPanel = null;
     private JScrollPane situationPanel = null;
     private JPanel toolBarPanel = null;
     private JScrollPane graphPaneScrollPane = null;
@@ -172,14 +173,34 @@ public class MainWindow extends JFrame {
             if(ApplicationContext.getAppMode().equals("AUTHOR"))
                 mainPanel.add(getGraphPaneScrollPane(), BorderLayout.CENTER);
             else{
-                mainPanel.add(getSituationPanel(), BorderLayout.CENTER);
-                loadFirstTask();
+                mainPanel.add(getIntroductionPanel(), BorderLayout.CENTER);
+                // Initialize Situation Panel so that first task can be loaded
+                getSituationPanel();
+                loadFirstTask();                
             }
             mainPanel.add(getStatusBarPanel(), BorderLayout.SOUTH);
         }
         return mainPanel;
     }
 
+    /**
+     * This method create a JPanel for displaying Introduction Slides
+     */ 
+    private JScrollPane getIntroductionPanel(){
+        if(introductionPanel == null){
+            logs.debug("Initializing Introduction Panel");
+            
+            introductionPanel = new JScrollPane();
+            
+            // Initialize All the Slides 
+            InstructionPanel  panel = new InstructionPanel(this);
+            panel.setBackground(Color.WHITE);
+            introductionPanel.setViewportView(panel);
+        } 
+        
+        return introductionPanel;
+    }
+    
     /**
      * This method create a JPanel for displaying Situation of a Task
      */ 
@@ -258,6 +279,23 @@ public class MainWindow extends JFrame {
         mainPanel.repaint();
     }
     
+    
+    /**
+     * This method replaces situation panel with graph panel and vice versa
+     */
+    public void displayIntroductionSlides() {
+        activityLogs.debug("User is viewing Indroduction Slides.");
+        logs.debug("Switching to Introduction Panel");
+        
+        mainPanel.removeAll();
+        mainPanel.add(getToolBarPanel(), BorderLayout.NORTH);
+        mainPanel.add(getIntroductionPanel(), BorderLayout.CENTER);
+        mainPanel.add(getStatusBarPanel(), BorderLayout.SOUTH);
+        
+
+        this.validate();
+        mainPanel.repaint();
+    }
     
     public boolean isSituationSelected(){
         return isSituationTabSelected;

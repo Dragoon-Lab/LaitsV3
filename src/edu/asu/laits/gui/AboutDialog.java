@@ -186,7 +186,8 @@ public class AboutDialog extends JDialog {
             informationTextPane.setEditable(false);
             informationTextPane.setEditorKit(new HTMLEditorKit());
             InputStream is = getClass().getResourceAsStream(
-                    "/edu/asu/laits/grapheditor/gui/about.html");
+                    "/edu/asu/laits/gui/about.html");
+           
             try {
                 informationTextPane.read(is, htmlDocument);
                 is.close();
