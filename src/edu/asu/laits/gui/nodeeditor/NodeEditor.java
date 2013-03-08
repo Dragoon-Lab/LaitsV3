@@ -10,8 +10,6 @@ import edu.asu.laits.model.TaskSolution;
 import edu.asu.laits.model.Vertex;
 import java.awt.Color;
 import java.awt.Insets;
-import java.awt.Robot;
-import java.awt.event.InputEvent;
 import java.util.Iterator;
 import javax.swing.UIManager;
 import javax.swing.event.ChangeEvent;
@@ -563,20 +561,7 @@ public class NodeEditor extends javax.swing.JDialog {
         graphPane.getMainFrame().repaint();
     }
     
-    private void setFocusOnGraph(){
-        try{
-        Robot r = new Robot();
-        r.mouseMove((int)currentVertex.getXPosition()+150,
-                (int)currentVertex.getYPosition()+50);
-        r.mousePress(InputEvent.BUTTON1_MASK);
-        Thread.sleep(100);  
-        
-        r.mouseRelease(InputEvent.BUTTON1_MASK);
-        }catch (Exception e) {
-        
-        }
     
-    }
     /**
      * This method is called from within the constructor to initialize the form.
      * WARNING: Do NOT modify this code. The content of this method is always
@@ -867,7 +852,7 @@ public class NodeEditor extends javax.swing.JDialog {
         
         activityLogs.debug("Closing NodeEditor because of Close action.");
         this.dispose();
-        setFocusOnGraph();
+        
     }//GEN-LAST:event_buttonCancelActionPerformed
 
     private void buttonOKActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_buttonOKActionPerformed
@@ -877,7 +862,7 @@ public class NodeEditor extends javax.swing.JDialog {
         } else {
             processAuthorModeOKAction();
         }
-        setFocusOnGraph();
+        
     }//GEN-LAST:event_buttonOKActionPerformed
 
     private void buttonDeleteActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_buttonDeleteActionPerformed
@@ -895,7 +880,7 @@ public class NodeEditor extends javax.swing.JDialog {
         
         activityLogs.debug("Closing NodeEditor because of Delete action.");
         this.dispose();
-        setFocusOnGraph();
+        
     }//GEN-LAST:event_buttonDeleteActionPerformed
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JLabel bottomSpacer;

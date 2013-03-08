@@ -30,6 +30,7 @@ public class Application {
                 String uiClassName = GlobalProperties.getInstance().getUITheme();
                 if (null != uiClassName) {
                     try {
+                        
                         UIManager.setLookAndFeel((LookAndFeel) Class.forName(
                                 uiClassName).newInstance());
                     } catch (Exception e) {

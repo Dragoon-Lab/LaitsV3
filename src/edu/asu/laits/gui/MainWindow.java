@@ -6,7 +6,6 @@ import javax.swing.JOptionPane;
 import javax.swing.JToolBar;
 import javax.swing.JPanel;
 import java.awt.BorderLayout;
-import java.awt.Dimension;
 import java.io.File;
 import java.io.FileReader;
 import java.io.IOException;
@@ -32,10 +31,6 @@ import edu.asu.laits.model.TaskSolutionReader;
 import edu.asu.laits.properties.GlobalProperties;
 import edu.asu.laits.properties.GraphProperties;
 import java.awt.Color;
-import java.awt.Container;
-import java.awt.Robot;
-import java.awt.Toolkit;
-import java.awt.event.InputEvent;
 import java.io.FileInputStream;
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
@@ -44,9 +39,7 @@ import javax.swing.BorderFactory;
 
 import javax.swing.BoxLayout;
 import javax.swing.JLabel;
-import javax.swing.JProgressBar;
 import javax.swing.SwingConstants;
-import javax.swing.border.Border;
 import org.apache.commons.net.ftp.FTPClient;
 import org.apache.log4j.Logger;
 
@@ -90,6 +83,7 @@ public class MainWindow extends JFrame {
      */
     public MainWindow() {
         super();
+        
         initialize();
         GraphPropertiesChangeListener l = new MainGraphPropertiesChangeListener();
         l.graphPropertiesChanged();
@@ -275,7 +269,7 @@ public class MainWindow extends JFrame {
             isSituationTabSelected = false;
         }
         this.validate();
-        setFocusOnGraph();
+        
         mainPanel.repaint();
     }
     
@@ -562,17 +556,5 @@ public class MainWindow extends JFrame {
         }
     }
     
-    public void setFocusOnGraph(){
-        try{
-        Robot r = new Robot();
-        r.mouseMove(150,100);
-        r.mousePress(InputEvent.BUTTON1_MASK);
-        Thread.sleep(100);  
-        
-        r.mouseRelease(InputEvent.BUTTON1_MASK);
-        }catch (Exception e) {
-        
-        }
     
-    }
 }
