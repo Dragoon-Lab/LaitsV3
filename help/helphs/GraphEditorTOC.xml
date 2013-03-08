@@ -1,0 +1,94 @@
+<?xml version='1.0' encoding='ISO-8859-1'  ?>
+<!DOCTYPE toc
+  PUBLIC "-//Sun Microsystems Inc.//DTD JavaHelp TOC Version 1.0//EN"
+         "http://java.sun.com/products/javahelp/toc_1_0.dtd">
+<toc version="1.0">
+  <tocitem text="Introduction" target="introduction"/>
+  
+  <tocitem text="Basics"> 
+    <tocitem text="Slide2" target="slide2"/>
+    <tocitem text="Slide3" target="slide3"/>
+    <tocitem text="Slide4" target="slide4"/>
+    <tocitem text="Slide5" target="slide5"/>
+    <tocitem text="Slide6" target="slide6"/>
+    <tocitem text="Slide7" target="slide7"/>
+    <tocitem text="Slide8" target="slide8"/>
+    <tocitem text="Slide9" target="slide9"/>
+    <tocitem text="Slide10" target="slide10"/>
+    <tocitem text="Slide11" target="slide11"/>
+    <tocitem text="Slide12" target="slide12"/>
+    <tocitem text="Slide13" target="slide13"/>
+    <tocitem text="Slide14" target="slide14"/>
+  </tocitem>
+  
+  <tocitem text="Constructs">
+        <tocitem text="Slide15" target="slide15"/>
+        <tocitem text="Slide16" target="slide16"/>
+        <tocitem text="Slide17" target="slide17"/>
+        <tocitem text="Slide18" target="slide18"/>
+        <tocitem text="Slide19" target="slide19"/>
+        <tocitem text="Introduction Problem 1" target="slide20"/>
+        <tocitem text="Slide21" target="slide21"/>
+        <tocitem text="Slide22" target="slide22"/>
+        <tocitem text="Slide23" target="slide23"/>
+        <tocitem text="Slide24" target="slide24"/>
+        <tocitem text="Slide25" target="slide25"/>
+        <tocitem text="Slide26" target="slide26"/>
+        <tocitem text="Slide27" target="slide27"/>
+        <tocitem text="Slide28" target="slide28"/>
+        <tocitem text="Slide29" target="slide29"/>
+        <tocitem text="Slide30" target="slide30"/>
+        <tocitem text="Slide31" target="slide31"/>
+        <tocitem text="Slide32" target="slide32"/>
+        <tocitem text="Slide33" target="slide33"/>
+        <tocitem text="Slide34" target="slide34"/>
+        <tocitem text="Slide35" target="slide35"/>
+        <tocitem text="Slide36" target="slide36"/>
+        <tocitem text="Slide37" target="slide37"/>
+        <tocitem text="Introduction Problem 2" target="slide38"/>
+        <tocitem text="Slide39" target="slide39"/>
+        <tocitem text="Slide40" target="slide40"/>
+        <tocitem text="Slide41" target="slide41"/>
+        <tocitem text="Slide42" target="slide42"/>
+        <tocitem text="Slide43" target="slide43"/>
+        <tocitem text="Slide44" target="slide44"/>
+        <tocitem text="Slide45" target="slide45"/>
+        <tocitem text="Slide46" target="slide46"/>
+        <tocitem text="Slide47" target="slide47"/>
+        <tocitem text="Introduction Problem 3" target="slide48"/>
+        <tocitem text="Slide49" target="slide49"/>
+        <tocitem text="Slide50" target="slide50"/>
+        <tocitem text="Slide51" target="slide51"/>
+        <tocitem text="Slide52" target="slide52"/>
+        <tocitem text="Slide53" target="slide53"/>
+        <tocitem text="Slide54" target="slide54"/>
+        <tocitem text="Slide55" target="slide55"/>
+        <tocitem text="Slide56" target="slide56"/>
+        <tocitem text="Slide57" target="slide57"/>
+  </tocitem>
+  
+  <tocitem text="Fixing a Model"> 
+    <tocitem text="Slide58" target="slide58"/>
+    <tocitem text="Slide59" target="slide59"/>
+    <tocitem text="Slide60" target="slide60"/>
+    <tocitem text="Slide61" target="slide61"/>
+    <tocitem text="Slide62" target="slide62"/>
+    <tocitem text="Slide63" target="slide63"/>
+    <tocitem text="Slide64" target="slide64"/>
+    <tocitem text="Slide65" target="slide65"/>
+    <tocitem text="Slide66" target="slide66"/>
+    <tocitem text="Slide67" target="slide67"/>
+  </tocitem>
+  
+  <tocitem text="Designing Models">
+    <tocitem text="Slide68" target="slide68"/>
+    <tocitem text="Slide69" target="slide69"/>
+    <tocitem text="Slide70" target="slide70"/>
+    <tocitem text="Slide71" target="slide71"/>
+    <tocitem text="Slide72" target="slide72"/>
+    <tocitem text="Slide73" target="slide73"/>
+    <tocitem text="Slide74" target="slide74"/>
+    <tocitem text="Slide75" target="slide75"/>
+    <tocitem text="Slide76" target="slide76"/>
+  </tocitem>
+</toc>
