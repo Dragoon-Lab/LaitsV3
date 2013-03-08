@@ -385,7 +385,7 @@ public class NodeEditor extends javax.swing.JDialog {
         if (correctSolution.checkNodeName(dPanel.getNodeName())) {
             currentVertex.setDescriptionStatus(Vertex.DescriptionStatus.CORRECT);
             dPanel.setTextFieldBackground(Color.GREEN);
-            setEditorMessage("You have selected correct Node.", false);
+    //        setEditorMessage("You have selected correct Node.", false);
             activityLogs.debug("User entered correct description");
         } else {
             currentVertex.setDescriptionStatus(Vertex.DescriptionStatus.INCORRECT);
@@ -404,7 +404,7 @@ public class NodeEditor extends javax.swing.JDialog {
         if (correctSolution.checkNodePlan(dPanel.getNodeName(), pPanel.getSelectedPlan())) {
             pPanel.setSelectedPlanBackground(Color.GREEN);
             currentVertex.setPlanStatus(Vertex.PlanStatus.CORRECT);
-            setEditorMessage("You have selected correct Plan for this Node.", false);
+           // setEditorMessage("You have selected correct Plan for this Node.", false);
             activityLogs.debug("User entered correct Plan");
             iPanel.updateNodeDescription();
         } else {
@@ -430,7 +430,7 @@ public class NodeEditor extends javax.swing.JDialog {
 
         if (result) {
             iPanel.setOptionPanelBackground(Color.GREEN);
-            setEditorMessage("You Inputs are Correct.", false);
+    //        setEditorMessage("You Inputs are Correct.", false);
             activityLogs.debug("User entered correct Inputs");
             currentVertex.setInputsStatus(Vertex.InputsStatus.CORRECT);            
         } else {
@@ -450,7 +450,7 @@ public class NodeEditor extends javax.swing.JDialog {
         // Check for fixed value
         if (correctSolution.checkNodeCalculations(currentVertex)) {
             cPanel.setCheckedBackground(Color.GREEN);
-            setEditorMessage("You Calculations are Correct.", false);
+    //        setEditorMessage("You Calculations are Correct.", false);
             activityLogs.debug("User entered correct Calculations.");
             currentVertex.setCalculationsStatus(Vertex.CalculationsStatus.CORRECT);
         } else {
@@ -621,30 +621,18 @@ public class NodeEditor extends javax.swing.JDialog {
         descriptionPanel.setCursor(new java.awt.Cursor(java.awt.Cursor.DEFAULT_CURSOR));
         descriptionPanel.setFocusable(false);
         descriptionPanel.setPreferredSize(new java.awt.Dimension(506, 615));
-        descriptionPanel.setSize(new java.awt.Dimension(506, 615));
-
-        org.jdesktop.layout.GroupLayout descriptionPanelLayout = new org.jdesktop.layout.GroupLayout(descriptionPanel);
-        descriptionPanel.setLayout(descriptionPanelLayout);
-        descriptionPanelLayout.setHorizontalGroup(
-            descriptionPanelLayout.createParallelGroup(org.jdesktop.layout.GroupLayout.LEADING)
-            .add(0, 601, Short.MAX_VALUE)
-        );
-        descriptionPanelLayout.setVerticalGroup(
-            descriptionPanelLayout.createParallelGroup(org.jdesktop.layout.GroupLayout.LEADING)
-            .add(0, 506, Short.MAX_VALUE)
-        );
-
+        descriptionPanel.setLayout(new org.netbeans.lib.awtextra.AbsoluteLayout());
         tabPane.addTab("Description", descriptionPanel);
 
         org.jdesktop.layout.GroupLayout planPanelLayout = new org.jdesktop.layout.GroupLayout(planPanel);
         planPanel.setLayout(planPanelLayout);
         planPanelLayout.setHorizontalGroup(
             planPanelLayout.createParallelGroup(org.jdesktop.layout.GroupLayout.LEADING)
-            .add(0, 601, Short.MAX_VALUE)
+            .add(0, 617, Short.MAX_VALUE)
         );
         planPanelLayout.setVerticalGroup(
             planPanelLayout.createParallelGroup(org.jdesktop.layout.GroupLayout.LEADING)
-            .add(0, 506, Short.MAX_VALUE)
+            .add(0, 524, Short.MAX_VALUE)
         );
 
         tabPane.addTab("Plan", planPanel);
@@ -653,11 +641,11 @@ public class NodeEditor extends javax.swing.JDialog {
         inputsPanel.setLayout(inputsPanelLayout);
         inputsPanelLayout.setHorizontalGroup(
             inputsPanelLayout.createParallelGroup(org.jdesktop.layout.GroupLayout.LEADING)
-            .add(0, 601, Short.MAX_VALUE)
+            .add(0, 617, Short.MAX_VALUE)
         );
         inputsPanelLayout.setVerticalGroup(
             inputsPanelLayout.createParallelGroup(org.jdesktop.layout.GroupLayout.LEADING)
-            .add(0, 506, Short.MAX_VALUE)
+            .add(0, 524, Short.MAX_VALUE)
         );
 
         tabPane.addTab("Inputs", inputsPanel);
@@ -666,11 +654,11 @@ public class NodeEditor extends javax.swing.JDialog {
         calculationPanel.setLayout(calculationPanelLayout);
         calculationPanelLayout.setHorizontalGroup(
             calculationPanelLayout.createParallelGroup(org.jdesktop.layout.GroupLayout.LEADING)
-            .add(0, 601, Short.MAX_VALUE)
+            .add(0, 617, Short.MAX_VALUE)
         );
         calculationPanelLayout.setVerticalGroup(
             calculationPanelLayout.createParallelGroup(org.jdesktop.layout.GroupLayout.LEADING)
-            .add(0, 506, Short.MAX_VALUE)
+            .add(0, 524, Short.MAX_VALUE)
         );
 
         tabPane.addTab("Calculations", calculationPanel);
@@ -681,11 +669,11 @@ public class NodeEditor extends javax.swing.JDialog {
         graphsPanel.setLayout(graphsPanelLayout);
         graphsPanelLayout.setHorizontalGroup(
             graphsPanelLayout.createParallelGroup(org.jdesktop.layout.GroupLayout.LEADING)
-            .add(0, 601, Short.MAX_VALUE)
+            .add(0, 617, Short.MAX_VALUE)
         );
         graphsPanelLayout.setVerticalGroup(
             graphsPanelLayout.createParallelGroup(org.jdesktop.layout.GroupLayout.LEADING)
-            .add(0, 506, Short.MAX_VALUE)
+            .add(0, 524, Short.MAX_VALUE)
         );
 
         tabPane.addTab("Graphs", graphsPanel);
@@ -754,13 +742,13 @@ public class NodeEditor extends javax.swing.JDialog {
                 .addContainerGap(15, Short.MAX_VALUE))
             .add(layout.createParallelGroup(org.jdesktop.layout.GroupLayout.LEADING)
                 .add(layout.createSequentialGroup()
-                    .add(0, 0, Short.MAX_VALUE)
+                    .add(0, 2, Short.MAX_VALUE)
                     .add(layout.createParallelGroup(org.jdesktop.layout.GroupLayout.LEADING)
                         .add(tabPane, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE, 622, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE)
                         .add(layout.createSequentialGroup()
                             .add(10, 10, 10)
                             .add(bottomSpacer, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE, 30, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE)))
-                    .add(0, 0, Short.MAX_VALUE)))
+                    .add(0, 2, Short.MAX_VALUE)))
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(org.jdesktop.layout.GroupLayout.LEADING)
@@ -777,11 +765,11 @@ public class NodeEditor extends javax.swing.JDialog {
                 .addContainerGap())
             .add(layout.createParallelGroup(org.jdesktop.layout.GroupLayout.LEADING)
                 .add(layout.createSequentialGroup()
-                    .add(0, 0, Short.MAX_VALUE)
+                    .add(0, 2, Short.MAX_VALUE)
                     .add(tabPane, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE, 552, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE)
                     .add(64, 64, 64)
                     .add(bottomSpacer, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE, 10, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE)
-                    .add(0, 0, Short.MAX_VALUE)))
+                    .add(0, 3, Short.MAX_VALUE)))
         );
 
         pack();
@@ -832,6 +820,7 @@ public class NodeEditor extends javax.swing.JDialog {
     
     private void giveUpButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_giveUpButtonActionPerformed
         // Action for Giveup Button
+        editorMsgLabel.setText("");
         if (tabPane.getSelectedIndex() == DESCRIPTION) {
             activityLogs.debug("Giveup button pressed for Description Panel");
             dPanel.giveUpDescriptionPanel();
