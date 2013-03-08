@@ -390,7 +390,7 @@ public class NodeEditor extends javax.swing.JDialog {
         } else {
             currentVertex.setDescriptionStatus(Vertex.DescriptionStatus.INCORRECT);
             dPanel.setTextFieldBackground(Color.RED);
-            setEditorMessage("You have selected an incorrect Node.", true);
+            setEditorMessage("That quantity is not used in the correct model. Please select another description.", true);
             activityLogs.debug("User entered incorrect description");
         }
 
