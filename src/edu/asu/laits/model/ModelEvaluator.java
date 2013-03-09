@@ -175,6 +175,7 @@ public class ModelEvaluator {
             }
         }
         if(incorrectVertices == 0){
+            logs.debug("Setting Problem Solved to True");
             ApplicationContext.setProblemSolved(true);
         }
     }

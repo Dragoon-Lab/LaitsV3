@@ -211,6 +211,12 @@ public class ModelMenu extends JMenu {
                             "Run Model Complete.",
                             "Success", JOptionPane.INFORMATION_MESSAGE);
                     activityLogs.debug("Model ran successfully.");
+                    
+                    // Enable Done Button
+                    if(ApplicationContext.isProblemSolved()){
+                        mainWindow.getModelToolBar().enableDoneButton();
+                    }
+                    
                 } catch (ModelEvaluationException ex) {
                     window.getStatusBarPanel().setStatusMessage(ex.getMessage(), false);
                 }
@@ -234,11 +240,7 @@ public class ModelMenu extends JMenu {
     
     public void doneButtonAction(){
         activityLogs.debug("User Pressed Done button with current task as "+ApplicationContext.getCurrentTaskID());
-        if(!ApplicationContext.isProblemSolved()){
-            activityLogs.debug("User was not allowed to proceced with Done because the problem is unsolved.");
-            JOptionPane.showMessageDialog(graphPane.getMainFrame(), "Please Solve the problem before using Done !!!");
-            return;
-        }
+        
         
         writeResultToServer();
         
@@ -278,6 +280,8 @@ public class ModelMenu extends JMenu {
         }catch(Exception e){
             e.printStackTrace();
         }
+        
+        mainWindow.getModelToolBar().disableDoneButton();
     }
     
     private void createGivenModel(TaskSolution solution, GraphEditorPane editorPane){

@@ -511,7 +511,7 @@ public class MainWindow extends JFrame {
      *
      * @return ViewToolBar
      */
-    private ModelToolBar getModelToolBar() {
+    public ModelToolBar getModelToolBar() {
         if (modelToolBar == null) {
             modelToolBar = new ModelToolBar(mainMenu.getModelMenu());
         }

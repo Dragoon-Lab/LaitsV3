@@ -248,6 +248,7 @@ public class FileMenu extends JMenu {
                             JMenuItem newMenu = (JMenuItem)e.getSource();
                             ApplicationContext.setCurrentTaskID(newMenu.getActionCommand());
                             openTaskById(newMenu.getActionCommand());
+                            mainWindow.getModelToolBar().disableDoneButton();
                         }
                     });
                 }
