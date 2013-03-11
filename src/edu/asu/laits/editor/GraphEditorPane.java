@@ -198,9 +198,15 @@ public class GraphEditorPane extends JGraph {
                 int selectedVertices = selectedVertexObjects.length;
                 int selectedEdges = selectedEdgeObjects.length;
 
+                /*
+                 * Code changed by: Deepak Bhosale
+                 *  Code removed to fix bug 1983
+                 * Description: Removing message on status bar
+                 */
+                /*
                 currentStatusMessageProvider.setMessage("Nodes: " + vertices + ", Edges: " + edges
                         + ", Selected Nodes:  " + selectedVertices + ", Selected Edges: "
-                        + selectedEdges);
+                        + selectedEdges);*/
 
             }
         };
