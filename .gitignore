@@ -4,7 +4,8 @@
 /nbproject/
 /build.xml
 /manifest.mf
-/master-application
+/master-application.jnlp
 /Model.laits
 /preview-application.html
 /README.md
+/.gitignore
