@@ -14,7 +14,6 @@ import edu.asu.laits.model.TaskMenuItem;
 import edu.asu.laits.model.TaskSolution;
 import edu.asu.laits.model.TaskSolutionReader;
 import edu.asu.laits.model.Vertex;
-import java.awt.Window;
 import java.awt.event.KeyEvent;
 import java.io.BufferedReader;
 import java.io.InputStreamReader;
@@ -167,17 +166,12 @@ public class ModelMenu extends JMenu {
             graphPane.addVertex(v);
 
             if (graphPane.getMainFrame().isSituationSelected()) {
-                logs.debug("Switching to Model Design Panel");
+                logs.debug("Switing to Model Design Panel");
                 graphPane.getMainFrame().switchTutorModelPanels(false);
             }
 
             graphPane.repaint();
-
-
-
-
             NodeEditor editor = new NodeEditor(graphPane, true);
-
         } else {
             activityLogs.debug("User was not allowed to create new node as all the nodes were already present");
             JOptionPane.showMessageDialog(window, "The model is already using all the correct nodes.");
@@ -187,10 +181,9 @@ public class ModelMenu extends JMenu {
     }
 
     private boolean newNodeAllowed() {
-        if (ApplicationContext.getAppMode().equals("AUTHOR")) {
+        if(ApplicationContext.getAppMode().equals("AUTHOR"))
             return true;
-        }
-
+        
         TaskSolution solution = ApplicationContext.getCorrectSolution();
         if (graphPane.getModelGraph().vertexSet().size()
                 < solution.getSolutionNodes().size()) {
@@ -218,6 +211,12 @@ public class ModelMenu extends JMenu {
                             "Run Model Complete.",
                             "Success", JOptionPane.INFORMATION_MESSAGE);
                     activityLogs.debug("Model ran successfully.");
+                    
+                    // Enable Done Button
+                    if(ApplicationContext.isProblemSolved()){
+                        mainWindow.getModelToolBar().enableDoneButton();
+                    }
+                    
                 } catch (ModelEvaluationException ex) {
                     window.getStatusBarPanel().setStatusMessage(ex.getMessage(), false);
                 }
@@ -238,59 +237,57 @@ public class ModelMenu extends JMenu {
         GraphRangeEditor ed = new GraphRangeEditor(graphPane, true);
         ed.setVisible(true);
     }
-
-    public void doneButtonAction() {
-        activityLogs.debug("User Pressed Done button with current task as " + ApplicationContext.getCurrentTaskID());
-        if (!ApplicationContext.isProblemSolved()) {
-            activityLogs.debug("User was not allowed to proceced with Done because the problem is unsolved.");
-            JOptionPane.showMessageDialog(graphPane.getMainFrame(), "Please Solve the problem before using Done !!!");
-            return;
-        }
-
+    
+    public void doneButtonAction(){
+        activityLogs.debug("User Pressed Done button with current task as "+ApplicationContext.getCurrentTaskID());
+        
+        
         writeResultToServer();
-
+        
         String currentTaskLevel = ApplicationContext.getTaskIdNameMap()
                 .get(ApplicationContext.getCurrentTaskID()).getTaskLevel();
         int level = Integer.parseInt(currentTaskLevel);
         level++;
-
+        
         String nextLevel = String.valueOf(level);
         Iterator<TaskMenuItem> it = ApplicationContext.getTaskIdNameMap().values().iterator();
         String nextTaskID = null;
-
-        while (it.hasNext()) {
+        
+        while(it.hasNext()){
             TaskMenuItem item = it.next();
-            if (item.getTaskLevel().equals(nextLevel)) {
+            if(item.getTaskLevel().equals(nextLevel)){
                 nextTaskID = item.getTaskId();
                 break;
-            }
+            }    
         }
-        activityLogs.debug("User is being given the next task " + nextTaskID);
+        activityLogs.debug("User is being given the next task "+nextTaskID);
         ApplicationContext.setCurrentTaskID(nextTaskID);
         TaskSolutionReader solutionReader = new TaskSolutionReader();
-        try {
+        try{
             TaskSolution solution = solutionReader.loadSolution(nextTaskID);
             ApplicationContext.setCorrectSolution(solution);
-
+            
             mainWindow.loadTaskDescription(ApplicationContext.getTaskIdNameMap().get(nextTaskID).getTaskName(),
-                    solution.getTaskDescription(),
+                    solution.getTaskDescription(), 
                     solution.getImageURL());
-
+            
             mainWindow.getGraphEditorPane().resetModelGraph();
-            if (solution.getTaskType().equalsIgnoreCase("debug")) {
+            if(solution.getTaskType().equalsIgnoreCase("debug")){
                 createGivenModel(solution, graphPane);
             }
-
+            
             mainWindow.switchTutorModelPanels(true);
-        } catch (Exception e) {
+        }catch(Exception e){
             e.printStackTrace();
         }
+        
+        mainWindow.getModelToolBar().disableDoneButton();
     }
-
-    private void createGivenModel(TaskSolution solution, GraphEditorPane editorPane) {
+    
+    private void createGivenModel(TaskSolution solution, GraphEditorPane editorPane){
         List<SolutionNode> givenNodes = solution.getGivenNodes();
-
-        for (SolutionNode node : givenNodes) {
+        
+        for(SolutionNode node : givenNodes){
             Vertex v = new Vertex();
             v.setName(node.getNodeName());
             v.setCorrectDescription(node.getCorrectDescription());
@@ -299,61 +296,59 @@ public class ModelMenu extends JMenu {
             v.setPlanStatus(Vertex.PlanStatus.CORRECT);
             v.setEquation(node.getNodeEquation());
             v.setInitialValue(node.getInitialValue());
-
+            
             v.setVertexType(node.getNodeType());
-
-            if (solution.checkNodeInputs(node.getNodeName(), node.getInputNodes())) {
+            
+            if(solution.checkNodeInputs(node.getNodeName(), node.getInputNodes()))
                 v.setInputsStatus(Vertex.InputsStatus.CORRECT);
-            } else {
+            else 
                 v.setInputsStatus(Vertex.InputsStatus.INCORRECT);
-            }
-
-            if (solution.checkNodeCalculations(v)) {
+            
+            if(solution.checkNodeCalculations(v))
                 v.setCalculationsStatus(Vertex.CalculationsStatus.CORRECT);
-            } else {
+            else 
                 v.setCalculationsStatus(Vertex.CalculationsStatus.INCORRECT);
-            }
-
+            
             editorPane.addVertex(v);
         }
-
-        for (SolutionNode node : givenNodes) {
+        
+        for(SolutionNode node : givenNodes){
             List<String> inputVertices = node.getInputNodes();
-            for (String vertexName : inputVertices) {
+            for(String vertexName : inputVertices){
                 Vertex v1 = editorPane.getModelGraph().getVertexByName(node.getNodeName());
                 Vertex v2 = editorPane.getModelGraph().getVertexByName(vertexName);
-
+                
                 DefaultPort p1 = editorPane.getJGraphTModelAdapter().getVertexPort(v1);
                 DefaultPort p2 = editorPane.getJGraphTModelAdapter().getVertexPort(v2);
-
+                
                 editorPane.insertEdge(p2, p1);
-            }
+            }            
         }
     }
-
-    private void writeResultToServer() {
+    
+    private void writeResultToServer(){
         final String WEB = "http://laits.engineering.asu.edu/updateprob.php";
 
-        try {
-            //idtask taskID of the current task
-            String fname = ApplicationContext.getUserFirstName();
-            String lname = ApplicationContext.getUserLastName();
-            String asuid = ApplicationContext.getUserASUID();
-            String taskTitle = ApplicationContext.getTaskIdNameMap().
-                    get(ApplicationContext.getCurrentTaskID()).getTaskName();
+    try {
+      //idtask taskID of the current task
+      String fname = ApplicationContext.getUserFirstName();
+      String lname = ApplicationContext.getUserLastName();
+      String asuid = ApplicationContext.getUserASUID();
+      String taskTitle = ApplicationContext.getTaskIdNameMap().
+              get(ApplicationContext.getCurrentTaskID()).getTaskName();
+      
+      logs.debug("Writing Student "+fname+" "+lname+" Task: "+taskTitle+" to server");
 
-            logs.debug("Writing Student " + fname + " " + lname + " Task: " + taskTitle + " to server");
+      String url = WEB;
+      url += "?id=" + asuid + "&fname=" + fname + "&lname=" + lname + "&title=" + taskTitle;
+      URL myURL = new URL(url);
+      
+      BufferedReader in = new BufferedReader(new InputStreamReader(myURL.openStream()));
 
-            String url = WEB;
-            url += "?id=" + asuid + "&fname=" + fname + "&lname=" + lname + "&title=" + taskTitle;
-            URL myURL = new URL(url);
+      in.close();
 
-            BufferedReader in = new BufferedReader(new InputStreamReader(myURL.openStream()));
-
-            in.close();
-
-        } catch (Exception e) {
-            logs.debug("Error in Updating student completed prob. " + e.getMessage());
-        }
+    } catch (Exception e) {
+      logs.debug("Error in Updating student completed prob. "+e.getMessage());
+    }
     }
 }

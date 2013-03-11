@@ -118,10 +118,17 @@ public class ModelToolBar extends JToolBar {
                     modelMenu.doneButtonAction();
                 }
             });
+            disableDoneButton();
         }
         return doneButton;
     }
     
     
+    public void enableDoneButton(){
+        doneButton.setEnabled(true);
+    }
     
+    public void disableDoneButton(){    
+        doneButton.setEnabled(false);
+    }
 }
