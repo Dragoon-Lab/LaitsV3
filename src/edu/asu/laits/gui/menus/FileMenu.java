@@ -26,6 +26,7 @@ import edu.asu.laits.editor.listeners.GraphChangeListener;
 import edu.asu.laits.editor.listeners.GraphPropertiesChangeListener;
 import edu.asu.laits.editor.listeners.GraphSaveListener;
 import edu.asu.laits.gui.MainWindow;
+import edu.asu.laits.gui.nodeeditor.NodeEditor;
 import edu.asu.laits.model.Graph;
 import edu.asu.laits.model.SolutionNode;
 import edu.asu.laits.model.TaskMenuItem;
@@ -36,6 +37,7 @@ import edu.asu.laits.model.Vertex;
 import edu.asu.laits.properties.GlobalProperties;
 import edu.asu.laits.properties.GraphProperties;
 import edu.asu.laits.properties.LatestFilesPropertyChangeListener;
+import java.awt.Window;
 import java.io.FileInputStream;
 import java.io.FileOutputStream;
 import java.io.InputStream;
@@ -83,7 +85,6 @@ public class FileMenu extends JMenu {
     private boolean currentGraphAssociateWithFile = false;
     private static Logger logs = Logger.getLogger("DevLogs");
     private static Logger activityLogs = Logger.getLogger("ActivityLogs");
-    
     /*
      * The file that the current graph is asociated with
      */
@@ -150,42 +151,43 @@ public class FileMenu extends JMenu {
         this.add(getExitFileMenuItem());
 
     }
-    
+
     /**
      * Add Tasks in the File Menu
-     * @return 
+     *
+     * @return
      */
     private JMenu getTaskMenuForAuthor() {
         if (tempTaskMenu == null) {
             tempTaskMenu = new JMenu();
             tempTaskMenu.setText("Open Task");
-            
+
             JMenuItem task1 = new JMenuItem();
             task1.setText("Ecosystem Model");
             task1.setActionCommand("EcosystemModel");
-            
+
             JMenuItem task2 = new JMenuItem();
             task2.setText("Predator-Prey Model");
             task2.setActionCommand("Predator-PreyModel");
-            
+
             // Attaching Action Listener
-                    task1.addActionListener(new java.awt.event.ActionListener() {
-                        public void actionPerformed(java.awt.event.ActionEvent e) {
-                            JMenuItem newMenu = (JMenuItem)e.getSource();
-                            openTempTask(newMenu.getActionCommand());                            
-                        }
-                    });
-                    // Attaching Action Listener
-                    task2.addActionListener(new java.awt.event.ActionListener() {
-                        public void actionPerformed(java.awt.event.ActionEvent e) {
-                            JMenuItem newMenu = (JMenuItem)e.getSource();
-                            openTempTask(newMenu.getActionCommand());
-                        }
-                    });
-                    
-                tempTaskMenu.add(task2);
-                tempTaskMenu.add(task1);
-               
+            task1.addActionListener(new java.awt.event.ActionListener() {
+                public void actionPerformed(java.awt.event.ActionEvent e) {
+                    JMenuItem newMenu = (JMenuItem) e.getSource();
+                    openTempTask(newMenu.getActionCommand());
+                }
+            });
+            // Attaching Action Listener
+            task2.addActionListener(new java.awt.event.ActionListener() {
+                public void actionPerformed(java.awt.event.ActionEvent e) {
+                    JMenuItem newMenu = (JMenuItem) e.getSource();
+                    openTempTask(newMenu.getActionCommand());
+                }
+            });
+
+            tempTaskMenu.add(task2);
+            tempTaskMenu.add(task1);
+
         }
 
         return tempTaskMenu;
@@ -211,7 +213,8 @@ public class FileMenu extends JMenu {
 
     /**
      * Add Tasks in the File Menu
-     * @return 
+     *
+     * @return
      */
     private JMenu getNewTaskMenuItem() {
         if (taskListMenu == null) {
@@ -221,8 +224,8 @@ public class FileMenu extends JMenu {
             TaskMenuReader menuReader = new TaskMenuReader();
             try {
                 LinkedList<TaskMenuItem> allMenuItems = menuReader.load();
-                HashMap<String,TaskMenuItem> taskIdNameMap = new HashMap<String, TaskMenuItem>();
-                
+                HashMap<String, TaskMenuItem> taskIdNameMap = new HashMap<String, TaskMenuItem>();
+
                 // HardCoded Subcategories - needs to be dynamic
                 JMenu intro = new JMenu("Intro");
                 JMenu challenge = new JMenu("Challenge");
@@ -233,7 +236,7 @@ public class FileMenu extends JMenu {
                     JMenuItem anotherTask = new JMenuItem();
                     anotherTask.setText(menuItem.getTaskName());
                     anotherTask.setActionCommand(menuItem.getTaskId());
-                    
+
                     if (menuItem.getTaskPhase().equals("Intro")) {
                         intro.add(anotherTask);
                     } else if (menuItem.getTaskPhase().equals("Challenge")) {
@@ -241,25 +244,37 @@ public class FileMenu extends JMenu {
                     } else if (menuItem.getTaskPhase().equals("Training")) {
                         training.add(anotherTask);
                     }
-                    
+
                     // Attaching Action Listener
                     anotherTask.addActionListener(new java.awt.event.ActionListener() {
                         public void actionPerformed(java.awt.event.ActionEvent e) {
-                            JMenuItem newMenu = (JMenuItem)e.getSource();
+                            JMenuItem newMenu = (JMenuItem) e.getSource();
                             ApplicationContext.setCurrentTaskID(newMenu.getActionCommand());
                             openTaskById(newMenu.getActionCommand());
                             mainWindow.getModelToolBar().disableDoneButton();
+
+                            /*
+                             * Author/Modifier: Deepak
+                             * Description: Code added to close nodeEditor when new problem is opened
+                             * Bug fix: 1997
+                             */
+                            Window[] windows = MainWindow.getWindows();
+                            for (int i = 0; i < windows.length; i++) {
+                                if (windows[i].getClass() == NodeEditor.class) {
+                                    windows[i].dispose();
+                                }
+                            }
                         }
                     });
                 }
-                
+
 
                 taskListMenu.add(intro);
                 taskListMenu.add(training);
                 taskListMenu.add(challenge);
 
                 ApplicationContext.setTaskIdNameMap(taskIdNameMap);
-                
+
             } catch (Exception e) {
                 e.printStackTrace();
             }
@@ -270,35 +285,35 @@ public class FileMenu extends JMenu {
 
     /**
      * Method to open a new Task in Tutor Mode
-     */ 
-    private void openTaskById(String id){
-        activityLogs.debug("Student opened a new task ID: "+id+" - "+
-                ApplicationContext.getTaskIdNameMap().get(id).getTaskName());
-        
+     */
+    private void openTaskById(String id) {
+        activityLogs.debug("Student opened a new task ID: " + id + " - "
+                + ApplicationContext.getTaskIdNameMap().get(id).getTaskName());
+
         TaskSolutionReader solutionReader = new TaskSolutionReader();
-        try{
+        try {
             TaskSolution solution = solutionReader.loadSolution(id);
             ApplicationContext.setCorrectSolution(solution);
-            
+
             mainWindow.loadTaskDescription(ApplicationContext.getTaskIdNameMap().get(id).getTaskName(),
-                    solution.getTaskDescription(), 
+                    solution.getTaskDescription(),
                     solution.getImageURL());
-            
+
             mainWindow.getGraphEditorPane().resetModelGraph();
-            if(solution.getTaskType().equalsIgnoreCase("debug")){
+            if (solution.getTaskType().equalsIgnoreCase("debug")) {
                 createGivenModel(solution, graphPane);
             }
-            
+
             mainWindow.switchTutorModelPanels(true);
-        }catch(Exception e){
+        } catch (Exception e) {
             e.printStackTrace();
         }
     }
-    
-    private void createGivenModel(TaskSolution solution, GraphEditorPane editorPane){
+
+    private void createGivenModel(TaskSolution solution, GraphEditorPane editorPane) {
         List<SolutionNode> givenNodes = solution.getGivenNodes();
-        
-        for(SolutionNode node : givenNodes){
+
+        for (SolutionNode node : givenNodes) {
             Vertex v = new Vertex();
             v.setName(node.getNodeName());
             v.setCorrectDescription(node.getCorrectDescription());
@@ -307,33 +322,35 @@ public class FileMenu extends JMenu {
             v.setPlanStatus(Vertex.PlanStatus.CORRECT);
             v.setEquation(node.getNodeEquation());
             v.setInitialValue(node.getInitialValue());
-            
+
             v.setVertexType(node.getNodeType());
-            
-            if(solution.checkNodeInputs(node.getNodeName(), node.getInputNodes()))
+
+            if (solution.checkNodeInputs(node.getNodeName(), node.getInputNodes())) {
                 v.setInputsStatus(Vertex.InputsStatus.CORRECT);
-            else 
+            } else {
                 v.setInputsStatus(Vertex.InputsStatus.INCORRECT);
-            
-            if(solution.checkNodeCalculations(v))
+            }
+
+            if (solution.checkNodeCalculations(v)) {
                 v.setCalculationsStatus(Vertex.CalculationsStatus.CORRECT);
-            else 
+            } else {
                 v.setCalculationsStatus(Vertex.CalculationsStatus.INCORRECT);
-            
+            }
+
             editorPane.addVertex(v);
         }
-        
-        for(SolutionNode node : givenNodes){
+
+        for (SolutionNode node : givenNodes) {
             List<String> inputVertices = node.getInputNodes();
-            for(String vertexName : inputVertices){
+            for (String vertexName : inputVertices) {
                 Vertex v1 = editorPane.getModelGraph().getVertexByName(node.getNodeName());
                 Vertex v2 = editorPane.getModelGraph().getVertexByName(vertexName);
-                
+
                 DefaultPort p1 = editorPane.getJGraphTModelAdapter().getVertexPort(v1);
                 DefaultPort p2 = editorPane.getJGraphTModelAdapter().getVertexPort(v2);
-                
+
                 editorPane.insertEdge(p2, p1);
-            }            
+            }
         }
     }
 
@@ -418,21 +435,21 @@ public class FileMenu extends JMenu {
         }
 
     }
-    
+
     private void openTempTask(String name) {
-        String solutionFilePath = name+".laits";
-        activityLogs.debug("Student working on Problem "+name);
+        String solutionFilePath = name + ".laits";
+        activityLogs.debug("Student working on Problem " + name);
         InputStream in = getClass().getResourceAsStream(solutionFilePath);
-        
-        try{
-            
+
+        try {
+
             File selectedFile = new File("Model.laits");
             OutputStream out = new FileOutputStream(selectedFile);
-             IOUtils.getInstance().copyStreams(in, out);
+            IOUtils.getInstance().copyStreams(in, out);
             out.close();
             mainWindow.getGraphEditorPane().resetModelGraph();
             openFile(selectedFile);
-        }catch(Exception e){
+        } catch (Exception e) {
             e.printStackTrace();
         }
 

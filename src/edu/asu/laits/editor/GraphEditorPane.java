@@ -1,6 +1,5 @@
 package edu.asu.laits.editor;
 
-
 import java.awt.Color;
 import java.awt.event.ActionEvent;
 import java.awt.event.MouseListener;
@@ -86,7 +85,6 @@ public class GraphEditorPane extends JGraph {
             new MessageProvider("");
     private GraphOperationHelper graphOperationHelper;
     private GraphLayoutCache layoutCache;
-            
     /**
      * Logger
      */
@@ -109,7 +107,7 @@ public class GraphEditorPane extends JGraph {
      */
     public GraphEditorPane(MainWindow mainFrame, InformationPane informationPane) {
         super();
-        
+
         logs.debug("Initializing GraphEditor Pane");
         this.informationPane = informationPane;
         informationPane.putMessage(currentStatusMessageProvider);
@@ -153,14 +151,14 @@ public class GraphEditorPane extends JGraph {
         // create a JGraphT graph
         Vertex.vertIndexCount = 0;
         graph = new Graph<Vertex, Edge>(Edge.class);
-        
+
         // create a visualization using JGraph, via an adapter
         modelAdapter = new JGraphModelAdapter<Vertex, Edge>(graph);
 
-        layoutCache= new GraphLayoutCache(modelAdapter,
+        layoutCache = new GraphLayoutCache(modelAdapter,
                 new GraphEditorCellViewFactory());
-        
-        
+
+
         setGraphLayoutCache(layoutCache);
 
         this.setModel(modelAdapter);
@@ -204,9 +202,9 @@ public class GraphEditorPane extends JGraph {
                  * Description: Removing message on status bar
                  */
                 /*
-                currentStatusMessageProvider.setMessage("Nodes: " + vertices + ", Edges: " + edges
-                        + ", Selected Nodes:  " + selectedVertices + ", Selected Edges: "
-                        + selectedEdges);*/
+                 currentStatusMessageProvider.setMessage("Nodes: " + vertices + ", Edges: " + edges
+                 + ", Selected Nodes:  " + selectedVertices + ", Selected Edges: "
+                 + selectedEdges);*/
 
             }
         };
@@ -217,15 +215,15 @@ public class GraphEditorPane extends JGraph {
                         "model changed", 0, "modelChange"));
             }
         });
-        
+
         getSelectionModel().addGraphSelectionListener(
                 new GraphSelectionListener() {
-                    public void valueChanged(GraphSelectionEvent e) {
-                        statusUpdateAction.actionPerformed(new ActionEvent(
-                                "model changed", 0, "modelChange"));
+            public void valueChanged(GraphSelectionEvent e) {
+                statusUpdateAction.actionPerformed(new ActionEvent(
+                        "model changed", 0, "modelChange"));
 
-                    }
-                });
+            }
+        });
 
     }
 
@@ -264,11 +262,11 @@ public class GraphEditorPane extends JGraph {
                 (y - 9) / getScale(), 120, 75);
         GraphConstants.setBounds(attrs, newBounds);
         DefaultPort port = new DefaultPort();
-        
+
         vertexCell.add(port);
         port.setParent(vertexCell);
         getGraphLayoutCache().insert(vertexCell);
-        
+
         return vertexCell;
     }
 
@@ -282,7 +280,7 @@ public class GraphEditorPane extends JGraph {
         DefaultGraphCell vertexCell = new DefaultGraphCell(vertex);
         vertex.setJGraphVertex(vertexCell);
         vertexCell.setUserObject(vertex);
-        
+
         Map attrs = vertexCell.getAttributes();
         GraphConstants.setOpaque(attrs, true);
         GraphConstants.setSizeable(attrs, false);
@@ -300,9 +298,9 @@ public class GraphEditorPane extends JGraph {
         DefaultPort port = new DefaultPort();
         vertexCell.add(port);
         port.setParent(vertexCell);
-    
+
         getGraphLayoutCache().insert(vertexCell);
-              
+
     }
 
     /**
@@ -328,13 +326,13 @@ public class GraphEditorPane extends JGraph {
     public void addInsertModeChangeListener(InsertModeChangeListener l) {
         insertModeListeners.add(l);
     }
-    
+
     /**
      * Method to add our custom NodeEditor
      */
     public void updateUI() {
-	setUI(new CellEditor());
-	invalidate();
+        setUI(new CellEditor());
+        invalidate();
     }
 
     /**
@@ -344,10 +342,10 @@ public class GraphEditorPane extends JGraph {
         return insertMode;
     }
 
-    public GraphLayoutCache getLayoutCache(){
+    public GraphLayoutCache getLayoutCache() {
         return layoutCache;
     }
-    
+
     /**
      * Insert an edge between the source and the target port.
      *
@@ -386,7 +384,7 @@ public class GraphEditorPane extends JGraph {
         }
 
         DefaultEdge edge = new DefaultEdge();
-        
+
         if (getModel().acceptsSource(edge, source)
                 && getModel().acceptsTarget(edge, target)) {
             /*
@@ -397,13 +395,12 @@ public class GraphEditorPane extends JGraph {
             getGraphLayoutCache().insertEdge(edge, source, target);
             // ((EdgeInformation)edge.getUserObject()).setJGraphEdge(edge);
             return edge;
-            
+
         }
         return null;
     }
-    
-    
-    public void insertEdge(Port source, Port target){
+
+    public void insertEdge(Port source, Port target) {
         DefaultEdge edge = new DefaultEdge();
         edge.getAttributes().applyMap(createEdgeAttributes());
         getGraphLayoutCache().insertEdge(edge, source, target);
@@ -419,7 +416,7 @@ public class GraphEditorPane extends JGraph {
         int arrow = GraphConstants.ARROW_CLASSIC;
         GraphConstants.setLineEnd(map, arrow);
         GraphConstants.setEndFill(map, true);
-        
+
         return map;
     }
 
@@ -678,8 +675,8 @@ public class GraphEditorPane extends JGraph {
         this.setMarqueeColor(marqueeColor);
 
     }
-    
-    public void resetModelGraph(){
+
+    public void resetModelGraph() {
         init();
     }
 }
