@@ -382,6 +382,7 @@ public class NodeEditor extends javax.swing.JDialog {
         
         if (correctSolution.checkNodeName(dPanel.getNodeName())) {
             currentVertex.setDescriptionStatus(Vertex.DescriptionStatus.CORRECT);
+            setEditorMessage("",false);
             dPanel.setTextFieldBackground(Color.GREEN);
     //        setEditorMessage("You have selected correct Node.", false);
             activityLogs.debug("User entered correct description");
@@ -401,6 +402,7 @@ public class NodeEditor extends javax.swing.JDialog {
         logs.debug("Checking Plan Panel");
         if (correctSolution.checkNodePlan(dPanel.getNodeName(), pPanel.getSelectedPlan())) {
             pPanel.setSelectedPlanBackground(Color.GREEN);
+            setEditorMessage("",false);
             currentVertex.setPlanStatus(Vertex.PlanStatus.CORRECT);
            // setEditorMessage("You have selected correct Plan for this Node.", false);
             activityLogs.debug("User entered correct Plan");
@@ -428,6 +430,7 @@ public class NodeEditor extends javax.swing.JDialog {
 
         if (result) {
             iPanel.setOptionPanelBackground(Color.GREEN);
+            setEditorMessage("",false);
     //        setEditorMessage("You Inputs are Correct.", false);
             activityLogs.debug("User entered correct Inputs");
             currentVertex.setInputsStatus(Vertex.InputsStatus.CORRECT);            
@@ -448,6 +451,7 @@ public class NodeEditor extends javax.swing.JDialog {
         // Check for fixed value
         if (correctSolution.checkNodeCalculations(currentVertex)) {
             cPanel.setCheckedBackground(Color.GREEN);
+            setEditorMessage("",false);
     //        setEditorMessage("You Calculations are Correct.", false);
             activityLogs.debug("User entered correct Calculations.");
             currentVertex.setCalculationsStatus(Vertex.CalculationsStatus.CORRECT);
