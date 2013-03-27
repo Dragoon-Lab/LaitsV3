@@ -30,7 +30,7 @@ public class InstructionPanel extends javax.swing.JPanel implements java.beans.C
     
     private int currentSlideIndex = 0;
    
-    private final int TOTAL_SLIDES = 76;
+    private final int TOTAL_SLIDES = 75;
     // creates the images that go under the slide
     
     public Image partInit = getImageFromURL("/resources/icons/INIT.jpg");
