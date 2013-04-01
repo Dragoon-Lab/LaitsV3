@@ -119,6 +119,9 @@ public class StockVertexRenderComponent extends VertexRenderComponent {
         if(currentVertex.getInputsStatus().equals(Vertex.InputsStatus.CORRECT) && 
                 currentVertex.getCalculationsStatus().equals(Vertex.CalculationsStatus.CORRECT)){
             g2.setColor(Color.BLUE);
+        }else if(currentVertex.getInputsStatus().equals(Vertex.InputsStatus.GAVEUP) && 
+                currentVertex.getCalculationsStatus().equals(Vertex.CalculationsStatus.GAVEUP)){
+            g2.setColor(Color.BLUE);
         }else{
             g2.setColor(foreground);
         }

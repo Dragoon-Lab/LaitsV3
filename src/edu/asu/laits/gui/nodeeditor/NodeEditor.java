@@ -135,7 +135,6 @@ public class NodeEditor extends javax.swing.JDialog {
                     !currentVertex.getInputsStatus().equals(Vertex.InputsStatus.INCORRECT)) {
                 logs.debug("setting calc panel as current");
                 activityLogs.debug("Node Editor is opend with Calculations Tab for Node: "+currentVertex.getName());
-                currentVertex.setCalculationsStatus(Vertex.CalculationsStatus.UNDEFINED);
                 selectedTab = CALCULATIONS;
                 tabPane.setSelectedIndex(CALCULATIONS);
             } 
@@ -143,7 +142,6 @@ public class NodeEditor extends javax.swing.JDialog {
                     !currentVertex.getPlanStatus().equals(Vertex.PlanStatus.INCORRECT)) {
                 logs.debug("Setting Inputs Panel as Current");
                 activityLogs.debug("Node Editor is opend with Inputs Tab for Node: "+currentVertex.getName());
-                currentVertex.setInputsStatus(Vertex.InputsStatus.UNDEFINED);
                 selectedTab = INPUTS;
                 tabPane.setSelectedIndex(INPUTS);
             } 
@@ -151,14 +149,12 @@ public class NodeEditor extends javax.swing.JDialog {
                     !currentVertex.getDescriptionStatus().equals(Vertex.DescriptionStatus.INCORRECT)) {
                 logs.debug("Setting Plan Panel as Current");
                 activityLogs.debug("Node Editor is opend with Plan Tab for Node: "+currentVertex.getName());
-                currentVertex.setPlanStatus(Vertex.PlanStatus.UNDEFINED);
                 selectedTab = PLAN;
                 tabPane.setSelectedIndex(PLAN);
             } 
             else {
                 logs.debug("Setting Desc Panel as Current");
                 activityLogs.debug("Node Editor is opend with Description Tab for Node: "+currentVertex.getName());
-                currentVertex.setDescriptionStatus(Vertex.DescriptionStatus.UNDEFINED);
                 selectedTab = DESCRIPTION;
                 tabPane.setSelectedIndex(DESCRIPTION);
             }
@@ -193,7 +189,6 @@ public class NodeEditor extends javax.swing.JDialog {
                     if(!isCurrentPanelChecked()){
                         activityLogs.debug("User tried switching Tab without using Check or Giveup ");
                         setEditorMessage("Please use Check or Giveup buttons before proceeding.", true);
-                        //extraTabEvent = true;
                         tabPane.setSelectedIndex(selectedTab);
                         return;
                     }
@@ -202,17 +197,17 @@ public class NodeEditor extends javax.swing.JDialog {
                 if (tabPane.getSelectedIndex() == DESCRIPTION) {
                     activityLogs.debug("User Is in the Description Tab ");
                     setEditorMessage("", true);
-                    dPanel.resetTextFieldBackground();
+                    //dPanel.resetTextFieldBackground();
                     selectedTab = DESCRIPTION;
-                    currentVertex.setDescriptionStatus(Vertex.DescriptionStatus.UNDEFINED);
+                    //currentVertex.setDescriptionStatus(Vertex.DescriptionStatus.UNDEFINED);
                 } 
                 else if (tabPane.getSelectedIndex() == PLAN) {
                     if (pPanel.isViewEnabled()) {
                         activityLogs.debug("User Is in the Plan Tab ");
                         setEditorMessage("", true);
-                        pPanel.resetBackGroundColor();
+                        //pPanel.resetBackGroundColor();
                         selectedTab = PLAN;  
-                        currentVertex.setPlanStatus(Vertex.PlanStatus.UNDEFINED);
+                        //currentVertex.setPlanStatus(Vertex.PlanStatus.UNDEFINED);
                     } else {
                         extraTabEvent = true;
                         tabPane.setSelectedIndex(selectedTab);
@@ -223,9 +218,9 @@ public class NodeEditor extends javax.swing.JDialog {
                     if (iPanel.isViewEnabled()) {
                         activityLogs.debug("User Is in the Inputs Tab ");
                         setEditorMessage("", true);
-                        iPanel.resetOptionPanelBackground();
+                        //iPanel.resetOptionPanelBackground();
                         selectedTab = INPUTS;
-                        currentVertex.setInputsStatus(Vertex.InputsStatus.UNDEFINED);
+                        //currentVertex.setInputsStatus(Vertex.InputsStatus.UNDEFINED);
                     } else {
                         extraTabEvent = true;
                         tabPane.setSelectedIndex(selectedTab);
@@ -236,9 +231,9 @@ public class NodeEditor extends javax.swing.JDialog {
                     if (cPanel.isViewEnabled()) {
                         activityLogs.debug("User Is in the Calculations Tab ");
                         setEditorMessage("", true);
-                        cPanel.resetBackgroundColor();
+                        //cPanel.resetBackgroundColor();
                         selectedTab = CALCULATIONS;
-                        currentVertex.setCalculationsStatus(Vertex.CalculationsStatus.UNDEFINED);
+                        //currentVertex.setCalculationsStatus(Vertex.CalculationsStatus.UNDEFINED);
                     } else {
                         extraTabEvent = true;
                         tabPane.setSelectedIndex(selectedTab);
@@ -339,6 +334,7 @@ public class NodeEditor extends javax.swing.JDialog {
                     return false;
                 }
             }
+            
         }
 
         return true;
@@ -347,17 +343,46 @@ public class NodeEditor extends javax.swing.JDialog {
     
 
     private void setCheckGiveupButtons() {
+        logs.debug("Setting Check and Giveup Button for Tab "+selectedTab);
+        
         if (ApplicationContext.getAppMode().equals("STUDENT")
                 && selectedTab != GRAPH) {
             logs.debug("Enabling Check and Giveup");
             this.checkButton.setEnabled(true);
             this.giveUpButton.setEnabled(true);
+            
             String taskPhase = ApplicationContext.getTaskIdNameMap()
                     .get(ApplicationContext.getCurrentTaskID()).getTaskPhase();
             // Disable Giveup in Challege tasks
             if (taskPhase.equalsIgnoreCase("Challenge")) {
                 this.giveUpButton.setEnabled(false);
             }
+                     
+            if(selectedTab == DESCRIPTION){
+                if(currentVertex.getDescriptionStatus().equals(Vertex.DescriptionStatus.GAVEUP)){
+                    giveUpButton.setEnabled(false);
+                    checkButton.setEnabled(false);
+                }    
+            }
+            else if(selectedTab == PLAN){
+                if(currentVertex.getPlanStatus().equals(Vertex.PlanStatus.GAVEUP)){
+                    giveUpButton.setEnabled(false);
+                    checkButton.setEnabled(false);
+                }    
+            }
+            else if(selectedTab == INPUTS){
+                if(currentVertex.getInputsStatus().equals(Vertex.InputsStatus.GAVEUP)){
+                    giveUpButton.setEnabled(false);
+                    checkButton.setEnabled(false);
+                }    
+            }
+            else if(selectedTab == CALCULATIONS){
+                if(currentVertex.getCalculationsStatus().equals(Vertex.CalculationsStatus.GAVEUP)){
+                    giveUpButton.setEnabled(false);
+                    checkButton.setEnabled(false);
+                }    
+            }
+            
         } else {
             logs.debug("Disabling Check and Giveup");
             this.checkButton.setEnabled(false);
@@ -431,7 +456,6 @@ public class NodeEditor extends javax.swing.JDialog {
         if (result) {
             iPanel.setOptionPanelBackground(Color.GREEN);
             setEditorMessage("",false);
-    //        setEditorMessage("You Inputs are Correct.", false);
             activityLogs.debug("User entered correct Inputs");
             currentVertex.setInputsStatus(Vertex.InputsStatus.CORRECT);            
         } else {
@@ -560,7 +584,7 @@ public class NodeEditor extends javax.swing.JDialog {
         return gPanel;
     }
     
-    private void referehGraphPane(){
+    private void refreshGraphPane(){
         graphPane.getMainFrame().validate();
         graphPane.getMainFrame().repaint();
     }
@@ -790,7 +814,7 @@ public class NodeEditor extends javax.swing.JDialog {
         }
         
         // Refreshing Graph
-        referehGraphPane();
+        refreshGraphPane();
     }//GEN-LAST:event_checkButtonActionPerformed
 
     public String getTabName(int id){
@@ -814,6 +838,7 @@ public class NodeEditor extends javax.swing.JDialog {
             activityLogs.debug("Giveup button pressed for Description Panel");
             dPanel.giveUpDescriptionPanel();
             dPanel.processDescriptionPanel();
+            currentVertex.setDescriptionStatus(Vertex.DescriptionStatus.GAVEUP);
             setTitle(currentVertex.getName());
             validate();
             repaint();
@@ -843,7 +868,9 @@ public class NodeEditor extends javax.swing.JDialog {
                 currentVertex.setCalculationsStatus(Vertex.CalculationsStatus.INCORRECT);
             }
         }
-        referehGraphPane();
+        checkButton.setEnabled(false);
+        giveUpButton.setEnabled(false);
+        refreshGraphPane();
     }//GEN-LAST:event_giveUpButtonActionPerformed
 
     private void buttonCancelActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_buttonCancelActionPerformed
