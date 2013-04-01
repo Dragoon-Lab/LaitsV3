@@ -183,6 +183,7 @@ public class VertexRenderComponent extends VertexRenderer implements
             paintIcon(g, ImageLoader.getInstance().getGraphsGaveUpIcon(), 60);
        }  
     }
+    
     private void paintIcon(Graphics g, Image iconImage, int displacement){
         g.drawImage(iconImage, 
                     getWidth()/2 - 40 + displacement, 
@@ -190,5 +191,17 @@ public class VertexRenderComponent extends VertexRenderer implements
                     ImageLoader.statusIconWidth, 
                     ImageLoader.statusIconWidth, 
                     this);
+    }
+    
+    protected String truncateNodeName(String name){
+        if(name == null || name.trim().length() == 0)
+            return "";
+        
+        if(name.length() < 20)
+            return name;
+        
+        String newName = name.substring(0, 17);
+        newName += "...";
+        return newName;
     }
 }

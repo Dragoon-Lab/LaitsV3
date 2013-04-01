@@ -120,13 +120,12 @@ public class DefaultVertexRenderComponent extends VertexRenderComponent {
         g2.setStroke(new BasicStroke(3, BasicStroke.CAP_BUTT, BasicStroke.JOIN_BEVEL, 0, new float[]{9}, 0));
         g2.drawRect(0, 0, getWidth() - 1, getHeight() - 18); 
         
-        String vertexName = currentVertex.getName();
+        String vertexName = truncateNodeName(currentVertex.getName());
         double x = getWidth()/2 - (vertexName.length() * 3 -1);
        
         g2.setFont(new Font(null, Font.PLAIN, 10));
         g2.drawString(vertexName, (int)x-1, getHeight()-2);
         paintVertexStatusIcons(g, currentVertex);
-        paintSelectable(g);
-
+        paintSelectable(g);        
     }
 }

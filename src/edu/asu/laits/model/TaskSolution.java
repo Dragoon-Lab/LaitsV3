@@ -230,13 +230,14 @@ public class TaskSolution {
         logs.debug("Checking Inputs for Node "+nodeName);
         
         SolutionNode correctNode = getNodeByName(nodeName);
-        if(inputs == null){
-            if(correctNode.getNodeType().compareTo(Vertex.VertexType.CONSTANT) == 0){
+        if(correctNode.getNodeType().equals(Vertex.VertexType.CONSTANT)){
+            if(inputs == null)
                 return true;
-            }else{
-                return false;
-            }
-        }else{
+            
+            return false;
+        }
+        
+        else{
             List<String> correctInputs = correctNode.getInputNodes();
             logs.debug("Correct Inputs : "+correctInputs);
             logs.debug("User Inputs : "+inputs);

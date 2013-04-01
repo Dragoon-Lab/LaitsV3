@@ -275,11 +275,11 @@ public class DescriptionPanelView extends JPanel{
       
       Vertex currentVertex = nodeEditor.getCurrentVertex();
       if (!currentVertex.getName().equals(getNodeName())) {
-          if(getNodeName().trim().length() > 20)
+          /*if(getNodeName().trim().length() > 20)
           {
               nodeEditor.setEditorMessage("Node Name can not be larger than 20 characters.", true);
               return false;
-          }
+          }*/
           if (!duplicatedNode(getNodeName())) 
           {
               try {
