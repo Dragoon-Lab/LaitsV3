@@ -163,6 +163,7 @@ public class ModelMenu extends JMenu {
         if (newNodeAllowed()) {
             activityLogs.debug("User is allowed to create a new node");
             Vertex v = new Vertex();
+            v.setVertexIndex(graphPane.getModelGraph().getNextAvailableIndex());
             graphPane.addVertex(v);
 
             if (graphPane.getMainFrame().isSituationSelected()) {
@@ -289,6 +290,8 @@ public class ModelMenu extends JMenu {
         
         for(SolutionNode node : givenNodes){
             Vertex v = new Vertex();
+            v.setVertexIndex(graphPane.getModelGraph().getNextAvailableIndex());
+            
             v.setName(node.getNodeName());
             v.setCorrectDescription(node.getCorrectDescription());
             v.setPlan(node.getNodePlan());

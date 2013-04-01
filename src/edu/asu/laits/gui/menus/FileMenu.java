@@ -315,6 +315,8 @@ public class FileMenu extends JMenu {
 
         for (SolutionNode node : givenNodes) {
             Vertex v = new Vertex();
+            v.setVertexIndex(graphPane.getModelGraph().getNextAvailableIndex());
+            
             v.setName(node.getNodeName());
             v.setCorrectDescription(node.getCorrectDescription());
             v.setPlan(node.getNodePlan());

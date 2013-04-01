@@ -48,7 +48,7 @@ public class Vertex {
     private transient List<Double> correctValues;
     
     transient private SortedMap<String, String> properties = new TreeMap<String, String>();
-    transient public static int vertIndexCount = 0;
+    //transient public static int vertIndexCount = 0;
     private int vertexIndex;
     
     /** Logger */
@@ -59,16 +59,18 @@ public class Vertex {
      *
      */
     public Vertex() {
-        vertexIndex = vertIndexCount;
         //name = "Node"+vertexIndex;
-        xPosition = 200 * (vertexIndex % 6) + 80;
-        yPosition = 200 * (vertexIndex / 6) + 60 ;
         correctValues = new ArrayList<Double>();
-        equation = "";
-        vertIndexCount++;        
+        equation = "";        
     }
     
-
+    public void setVertexIndex(int index){
+        vertexIndex = index;
+        
+        xPosition = 200 * (vertexIndex % 6) + 80;
+        yPosition = 200 * (vertexIndex / 6) + 60 ;
+    }
+    
     public String getName() {
         return name;
     }
@@ -246,10 +248,7 @@ public class Vertex {
 
     }
 
-    public void generateNewVertexIndex() {
-        vertexIndex = vertIndexCount;
-        vertIndexCount++;
-    }
+    
 
     public Color getBackgroundColor() {
         return backgroundColor;

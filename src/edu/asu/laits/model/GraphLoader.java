@@ -85,8 +85,10 @@ public class GraphLoader {
       
             graphPane.insertEdge(p1, p2);
         }
+        int index = 0;
         for (Vertex vertex : vertexList) {
-            vertex.generateNewVertexIndex();
+            vertex.setVertexIndex(index);
+            index++;
         }
 
         GraphProperties prop = graphFile.getProperties();

@@ -149,7 +149,7 @@ public class GraphEditorPane extends JGraph {
      */
     private void init() {
         // create a JGraphT graph
-        Vertex.vertIndexCount = 0;
+        
         graph = new Graph<Vertex, Edge>(Edge.class);
 
         // create a visualization using JGraph, via an adapter
@@ -241,6 +241,8 @@ public class GraphEditorPane extends JGraph {
     public DefaultGraphCell addDefaultVertexAt(double x, double y) {
 
         Vertex newVertex = new Vertex();
+        newVertex.setVertexIndex(graph.getNextAvailableIndex());
+        
         DefaultGraphCell vertexCell = new DefaultGraphCell(newVertex);
         newVertex.setJGraphVertex(vertexCell);
         vertexCell.setUserObject(newVertex);
@@ -430,8 +432,28 @@ public class GraphEditorPane extends JGraph {
         if (!isSelectionEmpty()) {
             Object[] cells = getSelectionCells();
             cells = getDescendants(cells);
+            
+            for(Object obj : cells){
+                if(obj instanceof DefaultGraphCell){
+                    
+                    DefaultGraphCell cell = (DefaultGraphCell)obj;
+                    Vertex v = (Vertex)cell.getUserObject();
+                    if(v != null){
+                        logs.debug("Removing  Vertex "+v.getName());
+                        
+                        for(Edge e : graph.outgoingEdgesOf(v)){
+                            Vertex target = graph.getEdgeTarget(e);
+                            logs.debug("Updating Target "+target.getName());
+                            
+                            target.setInputsStatus(Vertex.InputsStatus.UNDEFINED);
+                            target.setCalculationsStatus(Vertex.CalculationsStatus.UNDEFINED);
+                        }
+                    }
+                }
+            }
+            
             getGraphLayoutCache().remove(cells);
-
+            
         }
 
     }

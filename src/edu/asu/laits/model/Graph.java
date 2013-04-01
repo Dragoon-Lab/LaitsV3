@@ -1,6 +1,7 @@
 
 package edu.asu.laits.model;
 
+import java.util.HashSet;
 import java.util.Iterator;
 import org.apache.log4j.Logger;
 import org.jgrapht.DirectedGraph;
@@ -55,5 +56,22 @@ public class Graph<V, E> extends ListenableDirectedGraph<V, E> implements
             for(V vertex : allV){
                 this.removeVertex(vertex);
             }
+        }
+        
+        public int getNextAvailableIndex(){
+            Set<Integer> usedSlots = new HashSet<Integer> ();
+            
+            for(V v : vertexSet()){
+                Vertex vertex = (Vertex)v;
+                usedSlots.add(vertex.getVertexIndex());
+            }
+            
+            int max = vertexSet().size();
+            for(int i=0; i<max ;++i){
+                if(!usedSlots.contains(i))
+                    return i;
+            }
+            
+            return max;
         }
 }
