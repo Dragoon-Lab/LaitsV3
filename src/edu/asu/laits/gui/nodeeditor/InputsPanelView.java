@@ -79,6 +79,7 @@ public class InputsPanelView extends javax.swing.JPanel implements ItemListener 
             box.setVisible(false);
             box.setText(v.getName());
             box.addItemListener(this);
+            box.setOpaque(false);
             checkboxList.add(box);
             availableInputNodesPanels.add(box);
         }
@@ -418,11 +419,20 @@ public class InputsPanelView extends javax.swing.JPanel implements ItemListener 
     }
 
     public void setOptionPanelBackground(Color c) {
-        radioPanel.setBackground(c);
+        //radioPanel.setBackground(c);
+        if(this.getValueButtonSelected())
+            fixedValueOptionButton.setBackground(c);
+        else if(this.getInputsButtonSelected()){
+            inputNodesSelectionOptionButton.setBackground(c);
+            availableInputNodesPanels.setBackground(c);
+        }
     }
 
     public void resetOptionPanelBackground() {
-        radioPanel.setBackground(new Color(238, 238, 238));
+        //radioPanel.setBackground(new Color(238, 238, 238));
+        inputNodesSelectionOptionButton.setBackground(new Color(238, 238, 238));
+        fixedValueOptionButton.setBackground(new Color(238, 238, 238));
+        availableInputNodesPanels.setBackground(new Color(238, 238, 238));
     }
 
     public List<String> getSelectedInputsList() {
