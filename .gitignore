@@ -1,0 +1,11 @@
+/build/
+/dist/
+/logs/
+/nbproject/
+/build.xml
+/manifest.mf
+/master-application.jnlp
+/Model.laits
+/preview-application.html
+/README.md
+.DS_Store

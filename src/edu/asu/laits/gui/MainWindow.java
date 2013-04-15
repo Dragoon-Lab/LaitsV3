@@ -143,7 +143,7 @@ public class MainWindow extends JFrame {
      * This method initializes mainMenu
      *
      */
-    public MainMenu getMainMenu() {
+    private MainMenu getMainMenu() {
         if (mainMenu == null) {
             mainMenu = new MainMenu(getGraphEditorPane(), this);
         }

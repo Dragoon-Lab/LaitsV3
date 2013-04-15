@@ -485,8 +485,11 @@ public class CalculationsPanelView extends javax.swing.JPanel {
 
         add(contentPanel, new org.netbeans.lib.awtextra.AbsoluteConstraints(18, 7, -1, 210));
 
+        calculatorPanel.setLayout(new org.netbeans.lib.awtextra.AbsoluteLayout());
+
         valuesLabel.setFont(new java.awt.Font("Lucida Grande", 1, 13)); // NOI18N
         valuesLabel.setText("Next Value = ");
+        calculatorPanel.add(valuesLabel, new org.netbeans.lib.awtextra.AbsoluteConstraints(325, 11, -1, -1));
 
         formulaInputArea.setColumns(20);
         formulaInputArea.setLineWrap(true);
@@ -495,8 +498,11 @@ public class CalculationsPanelView extends javax.swing.JPanel {
         formulaInputArea.setDisabledTextColor(new java.awt.Color(102, 102, 102));
         jScrollPane1.setViewportView(formulaInputArea);
 
+        calculatorPanel.add(jScrollPane1, new org.netbeans.lib.awtextra.AbsoluteConstraints(325, 35, -1, 160));
+
         availableInputsLabel.setFont(new java.awt.Font("Lucida Grande", 1, 13)); // NOI18N
         availableInputsLabel.setText("Available Inputs:");
+        calculatorPanel.add(availableInputsLabel, new org.netbeans.lib.awtextra.AbsoluteConstraints(0, 11, -1, -1));
 
         availableInputsJList.setModel(availableInputJListModel);
         availableInputsJList.setSelectionMode(javax.swing.ListSelectionModel.SINGLE_SELECTION);
@@ -509,34 +515,7 @@ public class CalculationsPanelView extends javax.swing.JPanel {
 
         jScrollPane4.setViewportView(jScrollPane2);
 
-        javax.swing.GroupLayout calculatorPanelLayout = new javax.swing.GroupLayout(calculatorPanel);
-        calculatorPanel.setLayout(calculatorPanelLayout);
-        calculatorPanelLayout.setHorizontalGroup(
-            calculatorPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(calculatorPanelLayout.createSequentialGroup()
-                .addGroup(calculatorPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addComponent(availableInputsLabel)
-                    .addComponent(jScrollPane4, javax.swing.GroupLayout.PREFERRED_SIZE, 266, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addGap(59, 59, 59)
-                .addGroup(calculatorPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(valuesLabel))
-                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
-        );
-        calculatorPanelLayout.setVerticalGroup(
-            calculatorPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(calculatorPanelLayout.createSequentialGroup()
-                .addContainerGap()
-                .addGroup(calculatorPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(availableInputsLabel)
-                    .addComponent(valuesLabel))
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addGroup(calculatorPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addComponent(jScrollPane4)
-                    .addGroup(calculatorPanelLayout.createSequentialGroup()
-                        .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 160, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addGap(0, 58, Short.MAX_VALUE))))
-        );
+        calculatorPanel.add(jScrollPane4, new org.netbeans.lib.awtextra.AbsoluteConstraints(0, 35, 266, 218));
 
         javax.swing.GroupLayout jPanel2Layout = new javax.swing.GroupLayout(jPanel2);
         jPanel2.setLayout(jPanel2Layout);
@@ -545,7 +524,7 @@ public class CalculationsPanelView extends javax.swing.JPanel {
             .addGroup(jPanel2Layout.createSequentialGroup()
                 .addContainerGap()
                 .addComponent(calculatorPanel, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addContainerGap(19, Short.MAX_VALUE))
+                .addContainerGap(99, Short.MAX_VALUE))
         );
         jPanel2Layout.setVerticalGroup(
             jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)

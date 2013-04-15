@@ -25,7 +25,6 @@ import javax.swing.Box;
 public class ModelToolBar extends JToolBar {
 
     private JButton addNodeButton = null;
-    private JButton deleteNodeButton = null;
     private JButton runModelButton = null;
     private JButton doneButton = null;
     private ModelMenu modelMenu;
@@ -47,8 +46,6 @@ public class ModelToolBar extends JToolBar {
     private void initialize() {
         this.setName("Model quickmenu");
         this.add(getAddNodeButton());
-        this.add(Box.createHorizontalStrut(5)); 
-        this.add(getDeleteNodeButton());
         this.add(Box.createHorizontalStrut(5)); 
         this.add(getRunModelButton());
         if(ApplicationContext.getAppMode().equals("STUDENT")){
@@ -76,24 +73,6 @@ public class ModelToolBar extends JToolBar {
             });
         }
         return addNodeButton;
-    }
-    
-    private JButton getDeleteNodeButton() {
-        if (deleteNodeButton == null) {
-            deleteNodeButton = new JButton();
-            deleteNodeButton.setText("Delete Node");
-            deleteNodeButton.setToolTipText("Delete selected Node");
-            deleteNodeButton.setFont(new Font(deleteNodeButton.getFont().getName(),
-                                           Font.BOLD,
-                                           deleteNodeButton.getFont().getSize() - 1));
-            deleteNodeButton
-                    .addActionListener(new java.awt.event.ActionListener() {
-                public void actionPerformed(java.awt.event.ActionEvent e) {
-                    modelMenu.deleteNodeAction();
-                }
-            });
-        }
-        return deleteNodeButton;
     }
 
     /**
@@ -151,15 +130,5 @@ public class ModelToolBar extends JToolBar {
     
     public void disableDoneButton(){    
         doneButton.setEnabled(false);
-    }
-    
-    public void enableDeleteNodeButton()
-    {
-        deleteNodeButton.setEnabled(true);
-    }
-    
-    public void disableDeleteNodeButton()
-    {
-        deleteNodeButton.setEnabled(false);
     }
 }
