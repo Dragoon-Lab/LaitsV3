@@ -1,0 +1,325 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<Task phase="Challenge" type="Debug">
+  <URL>http://laits.engineering.asu.edu/laits_images/1.jpg</URL>
+  
+  <TaskDescription>Problem: You are still interested in the same population of water fowl, but you now want to include information on how the rate of population growth 
+      NEWLINE is constrained by environmental factors (i.e. limited by food and space).
+    
+      NEWLINE NEWLINE Suppose the urban lake starts with a population size of 10 water fowl and each year (365 days) the population size can grow by 40%, but the lake can only support 
+      NEWLINE a maximum of 50 individuals.    
+
+    NEWLINE NEWLINE Goal: Graph the water fowl population over 3650 days.
+
+    NEWLINE NEWLINE Hint: 1. Use the logistic equation form (K-N)/K to calculate environmental resistance, p. 242 NEWLINE
+    2. Only use up to the thousandth decimal place.
+      
+  </TaskDescription>
+
+  <ShortDescription>
+
+  </ShortDescription>
+  
+  <StartTime>0</StartTime>
+  <EndTime>3650</EndTime>
+  <Units>days</Units>
+  
+  <Vertexes>
+    <VertexLabel>proportion of unutilized K</VertexLabel>
+	<VertexLabel>carrying capacity</VertexLabel>
+	<VertexLabel>utilized K</VertexLabel>
+	<VertexLabel>population growth rate</VertexLabel>
+	<VertexLabel>growth rate coefficient</VertexLabel>
+    <VertexLabel>water fowl</VertexLabel>
+  </Vertexes>
+  
+  <NodeCount>6</NodeCount>
+
+  <ProblemSeeking>water fowl</ProblemSeeking>
+  <CorrespondingSentence>Make a graph that shows hoGraph the water fowl population over 3650 days.</CorrespondingSentence>
+
+  <Nodes>
+      <Node type="flow" name="proportion of unutilized K" extra="no">
+      <Inputs>
+          <Node name="utilized K"></Node>
+          <Node name="carrying capacity"></Node>
+      </Inputs>
+      <Outputs>
+      	<Node name="population growth rate"></Node>        
+      </Outputs>
+      <Equation>utilized_K/carrying_capacity</Equation>
+      <InitialValue></InitialValue>
+      <CorrectDescription>The proportion of the carrying capacity not utilized by the water fowl</CorrectDescription>
+      <Plan>proportional to accumulator and input</Plan>
+	  </Node>
+	  
+      <Node type="constant" name="carrying capacity" extra="no">
+      <Inputs></Inputs>
+      <Outputs>
+          <Node name="proportion of unutilized K"></Node>
+          <Node name="utilized K"></Node>
+      </Outputs>
+      <Equation>50.0</Equation>
+      <InitialValue>50.0</InitialValue>
+      <CorrectDescription>The maximum number of water fowl the lake can support</CorrectDescription>
+      <Plan>fixed value</Plan>
+	  </Node>
+	  
+	  <Node type="flow" name="utilized K" extra="no">
+      <Inputs>
+          <Node name="carrying capacity"></Node>
+          <Node name="water fowl"></Node>
+      </Inputs>
+      <Outputs>
+        <Node name="proportion of unutilized K"></Node>
+      </Outputs>
+      <Equation>carrying_capacity-water_fowl</Equation>
+      <InitialValue></InitialValue>
+      <CorrectDescription>The amount of carrying capacity utilized by the water fowl population</CorrectDescription>
+      <Plan>proportional to accumulator and input</Plan>
+	  </Node>
+	  
+	  <Node type="flow" name="population growth rate" extra="no">
+      <Inputs>
+          <Node name="proportion of unutilized K"></Node>
+          <Node name="growth rate coefficient"></Node>
+          <Node name="water fowl"></Node>
+      </Inputs>
+      <Outputs>
+          <Node name="water fowl"></Node>
+      </Outputs>
+      <Equation>proportion_of_unutilized_K*growth_rate_coefficient*water_fowl</Equation>
+      <InitialValue></InitialValue>
+      <CorrectDescription>The amount of water fowl added per day</CorrectDescription>
+      <Plan>proportional to accumulator and input</Plan>
+	  </Node>
+	  
+	  <Node type="constant" name="growth rate coefficient" extra="no">
+      <Inputs></Inputs>
+      <Outputs>
+          <Node name="population growth rate"></Node>
+      </Outputs>
+      <Equation>0.001</Equation>
+      <InitialValue>0.001</InitialValue>
+      <CorrectDescription>The proportion that the water fowl population grows</CorrectDescription>
+      <Plan>fixed value</Plan>
+	  </Node>
+	  
+	  <Node type="stock" name="water fowl" extra="no">
+      <Inputs>
+        <Node name="population growth rate" type="plus"></Node>
+      </Inputs>
+      <Outputs>
+        <Node name="population growth rate"></Node>  
+        <Node name="utilized K"></Node>  
+	  </Outputs>
+      <Equation>+population_growth_rate</Equation>
+      <InitialValue>10.0</InitialValue>
+      <CorrectDescription>The size of water fowl population</CorrectDescription>
+      <Plan>said to both increase and decrease</Plan>
+      </Node>
+     
+  </Nodes>
+  
+  
+  
+  <GivenModel>
+      <Node type="flow" name="proportion of unutilized K" extra="no">
+      <Inputs>
+          <Node name="utilized K"></Node>
+          <Node name="carrying capacity"></Node>
+      </Inputs>
+      <Outputs>
+      	<Node name="population growth rate"></Node>        
+      </Outputs>
+      <Equation>utilized_K/carrying_capacity</Equation>
+      <InitialValue></InitialValue>
+      <CorrectDescription>The proportion of the carrying capacity not utilized by the water fowl</CorrectDescription>
+      <Plan>proportional to accumulator and input</Plan>
+	  </Node>
+	  
+      <Node type="constant" name="carrying capacity" extra="no">
+      <Inputs></Inputs>
+      <Outputs>
+          <Node name="proportion of unutilized K"></Node>
+          <Node name="utilized K"></Node>
+      </Outputs>
+      <Equation>50.0</Equation>
+      <InitialValue>50.0</InitialValue>
+      <CorrectDescription>The maximum number of water fowl the lake can support</CorrectDescription>
+      <Plan>fixed value</Plan>
+	  </Node>
+	  
+	  <Node type="flow" name="utilized K" extra="no">
+      <Inputs>
+          <Node name="carrying capacity"></Node>          
+      </Inputs>
+      <Outputs>
+        <Node name="proportion of unutilized K"></Node>
+      </Outputs>
+      <Equation>carrying_capacity</Equation>
+      <InitialValue></InitialValue>
+      <CorrectDescription>The amount of carrying capacity utilized by the water fowl population</CorrectDescription>
+      <Plan>proportional to accumulator and input</Plan>
+	  </Node>
+	  
+	  <Node type="flow" name="population growth rate" extra="no">
+      <Inputs>
+          <Node name="proportion of unutilized K"></Node>
+          <Node name="growth rate coefficient"></Node>
+          <Node name="water fowl"></Node>
+      </Inputs>
+      <Outputs>
+          <Node name="water fowl"></Node>
+      </Outputs>
+      <Equation>proportion_of_unutilized_K*growth_rate_coefficient*water_fowl</Equation>
+      <InitialValue></InitialValue>
+      <CorrectDescription>The amount of water fowl added per day</CorrectDescription>
+      <Plan>proportional to accumulator and input</Plan>
+	  </Node>
+	  
+	  <Node type="constant" name="growth rate coefficient" extra="no">
+      <Inputs></Inputs>
+      <Outputs>
+          <Node name="population growth rate"></Node>
+      </Outputs>
+      <Equation>0.001</Equation>
+      <InitialValue>0.001</InitialValue>
+      <CorrectDescription>The rate that the water fowl population changes</CorrectDescription>
+      <Plan>fixed value</Plan>
+	  </Node>
+	  
+	  <Node type="stock" name="water fowl" extra="no">
+      <Inputs>
+        <Node name="population growth rate" type="plus"></Node>
+      </Inputs>
+      <Outputs>
+        <Node name="population growth rate"></Node>         
+	  </Outputs>
+      <Equation>-population_growth_rate</Equation>
+      <InitialValue>10.0</InitialValue>
+      <CorrectDescription>The size of water fowl population</CorrectDescription>
+      <Plan>said to both increase and decrease</Plan>
+      </Node>
+  </GivenModel>
+
+
+  <DescriptionTree>
+    <Node level="root">
+      <Description>The proportion that the</Description>      
+      <Node level="intermediate">
+        <Description></Description>            
+        <Node level="leaf">
+          <Description>number of urban lakes change</Description>
+          <NodeName>urban change rate</NodeName>
+        </Node>
+        <Node level="leaf">
+          <Description>water fowl population grows</Description>
+          <NodeName>growth rate coefficient</NodeName>
+        </Node>
+        <Node level="leaf">
+          <Description>water fowl consume their food source</Description>
+          <NodeName>consumption rate</NodeName>
+        </Node>
+	  </Node>      
+    </Node>
+    
+    <Node level="root">
+      <Description>The amount of</Description>      
+      <Node level="intermediate">
+        <Description>water fowl added</Description>            
+        <Node level="leaf">
+          <Description>per day</Description>
+          <NodeName>population growth rate</NodeName>
+        </Node>
+        <Node level="leaf">
+          <Description>per week</Description>
+          <NodeName>water fowl per week</NodeName>
+        </Node>
+        <Node level="leaf">
+          <Description>per season</Description>
+          <NodeName>water fowl per season</NodeName>
+        </Node>
+      </Node>
+      <Node level="intermediate">
+        <Description>carrying capacity utilized</Description>            
+        <Node level="leaf">
+          <Description>by the lake's fish population</Description>
+          <NodeName>utilized fish population</NodeName>
+        </Node>
+        <Node level="leaf">
+          <Description>by the water fowl population</Description>
+          <NodeName>utilized K</NodeName>
+        </Node>
+        <Node level="leaf">
+          <Description>by the microbial population</Description>
+          <NodeName>utilized population</NodeName>
+        </Node>
+	  </Node>
+    </Node>
+    
+    <Node level="root">
+      <Description>The proportion of</Description>      
+      <Node level="intermediate">
+        <Description>the carrying capacity not utilized</Description>            
+        
+        <Node level="leaf">
+          <Description>by the microbial population</Description>
+          <NodeName>unutilized microbial</NodeName>
+        </Node>
+        
+        <Node level="leaf">
+          <Description>by the lake's fish population</Description>
+          <NodeName>unutilized fish</NodeName>
+        </Node>
+        
+        <Node level="leaf">
+          <Description>by the water fowl</Description>
+          <NodeName>proportion of unutilized K</NodeName>
+        </Node>
+	  </Node>
+      
+    </Node>
+    
+    <Node level="root">
+       <Description>The size of</Description>  
+      <Node level="intermediate">
+        <Description></Description>            
+        <Node level="leaf">
+          <Description>urban lakes</Description>
+          <NodeName>urban lakes size</NodeName>
+        </Node>
+        <Node level="leaf">
+          <Description>water fowl population</Description>
+          <NodeName>water fowl</NodeName>
+        </Node>
+        <Node level="leaf">
+          <Description>urban population</Description>
+          <NodeName>urban population size</NodeName>
+        </Node>        
+	  </Node>
+   </Node>
+   
+    <Node level="root">
+       <Description>The maximum</Description>  
+      <Node level="intermediate">
+        <Description></Description>            
+        <Node level="leaf">
+          <Description>number of water fowl the lake can support</Description>
+          <NodeName>carrying capacity</NodeName>
+        </Node>
+        <Node level="leaf">
+          <Description>rate of growth of the carrying capacity</Description>
+          <NodeName>capacity growth</NodeName>
+        </Node>
+        <Node level="leaf">
+          <Description>number of resources needed to support the water fowl population</Description>
+          <NodeName>resources required</NodeName>
+        </Node>        
+	  </Node>
+   </Node> 
+    
+  </DescriptionTree>
+
+  
+</Task>

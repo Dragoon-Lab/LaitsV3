@@ -1,0 +1,82 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<Task phase="Training" type="Construct">
+  <URL>http://image1.masterfile.com/getImage/NjAwLTAwMTcwOTExbi4wMDAwMDAwMA=AKB8Lk/600-00170911n.jpg</URL>
+  <TaskDescription>
+  Problem: There are initially 256 trees in the orange orchard "La belle orangerie", and 16 trees die each year. NEWLINE
+      So at the end of the first year, there are only 240 trees remaining in the orchad.
+  NEWLINE NEWLINE Goal: Graph the number of trees in the orchard each year for 10 years.
+  </TaskDescription>
+ 
+  <StartTime>0</StartTime>
+  <EndTime>10</EndTime>
+  <Units>years</Units>
+  <NodeCount>3</NodeCount>
+
+  <Nodes>
+    <Node type="constant" name="trees first year" extra="yes">
+      <Inputs></Inputs>
+      <Equation>240</Equation>
+      <InitialValue>240</InitialValue>
+      <CorrectDescription>The number of trees alive in the orchard at the end of the first year</CorrectDescription>
+      <Plan>fixed value</Plan>
+    </Node>
+
+    <Node type="constant" name="annual tree deaths" extra="no">
+      <Inputs></Inputs>
+      <Equation>16</Equation>
+      <InitialValue>16</InitialValue>
+      <CorrectDescription>The number of trees that die each year</CorrectDescription>
+      <Plan>fixed value</Plan>
+    </Node>
+    
+    <Node type="stock" name="trees in orchard" extra="no">
+      <Inputs>
+      	<Name> annual tree deaths</Name>
+      </Inputs>
+      <InitialValue>256</InitialValue>
+      <Equation>- annual tree deaths</Equation>
+      <CorrectDescription>The number of trees alive in the orchard each year</CorrectDescription>
+      <Plan>said to decrease</Plan>
+    </Node>
+</Nodes>  
+
+
+  <DescriptionTree>
+    <Node level="root">
+      <Description>The number of</Description>      
+      <Node level="intermediate">
+        <Description>trees alive in the orchard</Description>            
+        <Node level="leaf">
+          <Description>initially</Description>
+          <NodeName>initial number of trees in orchard</NodeName>
+        </Node>
+        <Node level="leaf">
+          <Description>each year</Description>
+          <NodeName>trees in orchard</NodeName>
+        </Node>
+        <Node level="leaf">
+          <Description>at the end of the first year</Description>
+          <NodeName>trees first year</NodeName>
+        </Node>
+	  </Node>
+      <Node level="intermediate">
+        <Description>trees that die</Description>            
+        <Node level="leaf">
+          <Description>initially</Description>
+          <NodeName>initial tree deaths</NodeName>
+        </Node>
+        <Node level="leaf">
+          <Description>each year</Description>
+          <NodeName>annual tree deaths</NodeName>
+        </Node>
+        <Node level="leaf">
+          <Description>total over 10 years</Description>
+          <NodeName>total tree deaths</NodeName>
+        </Node>
+	  </Node>
+    </Node>
+  </DescriptionTree>
+
+  
+</Task>

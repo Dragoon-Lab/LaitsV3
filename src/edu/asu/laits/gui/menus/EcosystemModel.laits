@@ -1,0 +1,422 @@
+<graph>
+  <properties>
+    <zoomLevel>1.0</zoomLevel>
+    <defaultShape>DEFAULT</defaultShape>
+    <defaultInsertShape reference="../defaultShape"/>
+    <backgroundColor>
+      <red>255</red>
+      <green>255</green>
+      <blue>255</blue>
+      <alpha>255</alpha>
+    </backgroundColor>
+    <defaultUseGraphBackground>true</defaultUseGraphBackground>
+    <defaultVertexBackgroundColor>
+      <red>255</red>
+      <green>255</green>
+      <blue>255</blue>
+      <alpha>255</alpha>
+    </defaultVertexBackgroundColor>
+    <defaultVertexForegroundColor>
+      <red>0</red>
+      <green>0</green>
+      <blue>0</blue>
+      <alpha>255</alpha>
+    </defaultVertexForegroundColor>
+  </properties>
+  <vertexList>
+    <vertex>
+      <xPosition>1058.0</xPosition>
+      <yPosition>392.0</yPosition>
+      <useGraphBackround>true</useGraphBackround>
+      <backgroundColor>
+        <red>255</red>
+        <green>255</green>
+        <blue>255</blue>
+        <alpha>255</alpha>
+      </backgroundColor>
+      <foregroundColor>
+        <red>0</red>
+        <green>0</green>
+        <blue>0</blue>
+        <alpha>255</alpha>
+      </foregroundColor>
+      <type>CONSTANT</type>
+      <name>Cat Death Rate</name>
+      <correctDescription>The death rate coefficient for the cat population</correctDescription>
+      <plan>FIXED</plan>
+      <inputsStatus>CORRECT</inputsStatus>
+      <calculationsStatus>CORRECT</calculationsStatus>
+      <graphsStatus>CORRECT</graphsStatus>
+      <initialValue>0.005</initialValue>
+      <equation></equation>
+      <vertexIndex>10</vertexIndex>
+    </vertex>
+    <vertex>
+      <xPosition>89.0</xPosition>
+      <yPosition>399.0</yPosition>
+      <useGraphBackround>true</useGraphBackround>
+      <backgroundColor reference="../../vertex/backgroundColor"/>
+      <foregroundColor reference="../../vertex/foregroundColor"/>
+      <type reference="../../vertex/type"/>
+      <name>Cat Birth Rate</name>
+      <correctDescription>The birth rate coefficient for the cat population</correctDescription>
+      <plan reference="../../vertex/plan"/>
+      <inputsStatus reference="../../vertex/inputsStatus"/>
+      <calculationsStatus reference="../../vertex/calculationsStatus"/>
+      <graphsStatus reference="../../vertex/graphsStatus"/>
+      <initialValue>0.001</initialValue>
+      <equation></equation>
+      <vertexIndex>11</vertexIndex>
+    </vertex>
+    <vertex>
+      <xPosition>1046.0</xPosition>
+      <yPosition>233.0</yPosition>
+      <useGraphBackround>true</useGraphBackround>
+      <backgroundColor reference="../../vertex/backgroundColor"/>
+      <foregroundColor reference="../../vertex/foregroundColor"/>
+      <type reference="../../vertex/type"/>
+      <name>Bird Death Rate</name>
+      <correctDescription>The death rate coefficient for the water fowl population</correctDescription>
+      <plan reference="../../vertex/plan"/>
+      <inputsStatus reference="../../vertex/inputsStatus"/>
+      <calculationsStatus reference="../../vertex/calculationsStatus"/>
+      <graphsStatus reference="../../vertex/graphsStatus"/>
+      <initialValue>0.01</initialValue>
+      <equation></equation>
+      <vertexIndex>12</vertexIndex>
+    </vertex>
+    <vertex>
+      <xPosition>92.0</xPosition>
+      <yPosition>243.0</yPosition>
+      <useGraphBackround>true</useGraphBackround>
+      <backgroundColor reference="../../vertex/backgroundColor"/>
+      <foregroundColor reference="../../vertex/foregroundColor"/>
+      <type reference="../../vertex/type"/>
+      <name>Bird Birth Rate</name>
+      <correctDescription>The birth rate coefficient for the water fowl population</correctDescription>
+      <plan reference="../../vertex/plan"/>
+      <inputsStatus reference="../../vertex/inputsStatus"/>
+      <calculationsStatus reference="../../vertex/calculationsStatus"/>
+      <graphsStatus reference="../../vertex/graphsStatus"/>
+      <initialValue>0.02</initialValue>
+      <equation></equation>
+      <vertexIndex>13</vertexIndex>
+    </vertex>
+    <vertex>
+      <xPosition>322.0</xPosition>
+      <yPosition>254.0</yPosition>
+      <useGraphBackround>true</useGraphBackround>
+      <backgroundColor reference="../../vertex/backgroundColor"/>
+      <foregroundColor reference="../../vertex/foregroundColor"/>
+      <type>FLOW</type>
+      <name>Bird Births Per Day</name>
+      <correctDescription>The number of new water fowl added to the population each day</correctDescription>
+      <plan>PROPORTIONAL</plan>
+      <inputsStatus reference="../../vertex/inputsStatus"/>
+      <calculationsStatus reference="../../vertex/calculationsStatus"/>
+      <graphsStatus reference="../../vertex/graphsStatus"/>
+      <initialValue>0.0</initialValue>
+      <equation>Water Fowl* Bird Birth Rate* carrying capacity</equation>
+      <vertexIndex>14</vertexIndex>
+    </vertex>
+    <vertex>
+      <xPosition>848.0</xPosition>
+      <yPosition>260.0</yPosition>
+      <useGraphBackround>true</useGraphBackround>
+      <backgroundColor reference="../../vertex/backgroundColor"/>
+      <foregroundColor reference="../../vertex/foregroundColor"/>
+      <type reference="../../vertex[5]/type"/>
+      <name>Bird Deaths Per Day</name>
+      <correctDescription>The number of water fowl removed from the population each day</correctDescription>
+      <plan reference="../../vertex[5]/plan"/>
+      <inputsStatus reference="../../vertex/inputsStatus"/>
+      <calculationsStatus reference="../../vertex/calculationsStatus"/>
+      <graphsStatus reference="../../vertex/graphsStatus"/>
+      <initialValue>0.0</initialValue>
+      <equation>Water Fowl* Bird Death Rate* Domestic Cats</equation>
+      <vertexIndex>15</vertexIndex>
+    </vertex>
+    <vertex>
+      <xPosition>322.0</xPosition>
+      <yPosition>421.0</yPosition>
+      <useGraphBackround>true</useGraphBackround>
+      <backgroundColor reference="../../vertex/backgroundColor"/>
+      <foregroundColor reference="../../vertex/foregroundColor"/>
+      <type reference="../../vertex[5]/type"/>
+      <name>Cat Births Per Day</name>
+      <correctDescription>The number of new cats added to the population each day</correctDescription>
+      <plan reference="../../vertex[5]/plan"/>
+      <inputsStatus reference="../../vertex/inputsStatus"/>
+      <calculationsStatus reference="../../vertex/calculationsStatus"/>
+      <graphsStatus reference="../../vertex/graphsStatus"/>
+      <initialValue>0.0</initialValue>
+      <equation>Water Fowl* Cat Birth Rate* Domestic Cats</equation>
+      <vertexIndex>16</vertexIndex>
+    </vertex>
+    <vertex>
+      <xPosition>845.0</xPosition>
+      <yPosition>420.0</yPosition>
+      <useGraphBackround>true</useGraphBackround>
+      <backgroundColor reference="../../vertex/backgroundColor"/>
+      <foregroundColor reference="../../vertex/foregroundColor"/>
+      <type reference="../../vertex[5]/type"/>
+      <name>Cat Deaths Per Day</name>
+      <correctDescription>The number of cats removed from the population each day</correctDescription>
+      <plan reference="../../vertex[5]/plan"/>
+      <inputsStatus reference="../../vertex/inputsStatus"/>
+      <calculationsStatus reference="../../vertex/calculationsStatus"/>
+      <graphsStatus reference="../../vertex/graphsStatus"/>
+      <initialValue>0.0</initialValue>
+      <equation>Domestic Cats* Cat Death Rate</equation>
+      <vertexIndex>17</vertexIndex>
+    </vertex>
+    <vertex>
+      <xPosition>602.0</xPosition>
+      <yPosition>274.0</yPosition>
+      <useGraphBackround>true</useGraphBackround>
+      <backgroundColor reference="../../vertex/backgroundColor"/>
+      <foregroundColor reference="../../vertex/foregroundColor"/>
+      <type>STOCK</type>
+      <name>Water Fowl</name>
+      <correctDescription>The population size of the water fowl</correctDescription>
+      <plan>INCREASE</plan>
+      <inputsStatus reference="../../vertex/inputsStatus"/>
+      <calculationsStatus reference="../../vertex/calculationsStatus"/>
+      <graphsStatus reference="../../vertex/graphsStatus"/>
+      <initialValue>25.0</initialValue>
+      <equation>Bird Births Per Day- Bird Deaths Per Day</equation>
+      <vertexIndex>18</vertexIndex>
+    </vertex>
+    <vertex>
+      <xPosition>597.0</xPosition>
+      <yPosition>421.0</yPosition>
+      <useGraphBackround>true</useGraphBackround>
+      <backgroundColor reference="../../vertex/backgroundColor"/>
+      <foregroundColor reference="../../vertex/foregroundColor"/>
+      <type reference="../../vertex[9]/type"/>
+      <name>Domestic Cats</name>
+      <correctDescription>The population size of the domestic cats</correctDescription>
+      <plan>INCREASE_AND_DECREASE</plan>
+      <inputsStatus reference="../../vertex/inputsStatus"/>
+      <calculationsStatus reference="../../vertex/calculationsStatus"/>
+      <graphsStatus reference="../../vertex/graphsStatus"/>
+      <initialValue>3.0</initialValue>
+      <equation>Cat Births Per Day- Cat Deaths Per Day</equation>
+      <vertexIndex>19</vertexIndex>
+    </vertex>
+    <vertex>
+      <xPosition>1054.0</xPosition>
+      <yPosition>34.0</yPosition>
+      <useGraphBackround>true</useGraphBackround>
+      <backgroundColor>
+        <red>255</red>
+        <green>255</green>
+        <blue>255</blue>
+        <alpha>255</alpha>
+      </backgroundColor>
+      <foregroundColor>
+        <red>0</red>
+        <green>0</green>
+        <blue>0</blue>
+        <alpha>255</alpha>
+      </foregroundColor>
+      <type reference="../../vertex/type"/>
+      <name>consump rate</name>
+      <correctDescription>The maximum rate that the resource is consumed</correctDescription>
+      <plan reference="../../vertex/plan"/>
+      <inputsStatus reference="../../vertex/inputsStatus"/>
+      <calculationsStatus reference="../../vertex/calculationsStatus"/>
+      <graphsStatus reference="../../vertex/graphsStatus"/>
+      <initialValue>0.0025</initialValue>
+      <equation></equation>
+      <vertexIndex>41</vertexIndex>
+    </vertex>
+    <vertex>
+      <xPosition>849.0</xPosition>
+      <yPosition>33.0</yPosition>
+      <useGraphBackround>true</useGraphBackround>
+      <backgroundColor reference="../../vertex[11]/backgroundColor"/>
+      <foregroundColor reference="../../vertex[11]/foregroundColor"/>
+      <type reference="../../vertex[5]/type"/>
+      <name>consump per day</name>
+      <correctDescription>The amount of resources consumed each day</correctDescription>
+      <plan reference="../../vertex[5]/plan"/>
+      <inputsStatus reference="../../vertex/inputsStatus"/>
+      <calculationsStatus reference="../../vertex/calculationsStatus"/>
+      <graphsStatus reference="../../vertex/graphsStatus"/>
+      <initialValue>0.0</initialValue>
+      <equation>Water Fowl* consump rate</equation>
+      <vertexIndex>42</vertexIndex>
+    </vertex>
+    <vertex>
+      <xPosition>93.0</xPosition>
+      <yPosition>23.0</yPosition>
+      <useGraphBackround>true</useGraphBackround>
+      <backgroundColor reference="../../vertex[11]/backgroundColor"/>
+      <foregroundColor reference="../../vertex[11]/foregroundColor"/>
+      <type reference="../../vertex/type"/>
+      <name>renew rate</name>
+      <correctDescription>The maximum rate that the resource is renewed</correctDescription>
+      <plan reference="../../vertex/plan"/>
+      <inputsStatus reference="../../vertex/inputsStatus"/>
+      <calculationsStatus reference="../../vertex/calculationsStatus"/>
+      <graphsStatus reference="../../vertex/graphsStatus"/>
+      <initialValue>0.001</initialValue>
+      <equation></equation>
+      <vertexIndex>43</vertexIndex>
+    </vertex>
+    <vertex>
+      <xPosition>325.0</xPosition>
+      <yPosition>26.0</yPosition>
+      <useGraphBackround>true</useGraphBackround>
+      <backgroundColor reference="../../vertex[11]/backgroundColor"/>
+      <foregroundColor reference="../../vertex[11]/foregroundColor"/>
+      <type reference="../../vertex[5]/type"/>
+      <name>renew per day</name>
+      <correctDescription>The amount of new resources added to the resource pool each day</correctDescription>
+      <plan reference="../../vertex[5]/plan"/>
+      <inputsStatus reference="../../vertex/inputsStatus"/>
+      <calculationsStatus reference="../../vertex/calculationsStatus"/>
+      <graphsStatus reference="../../vertex/graphsStatus"/>
+      <initialValue>0.0</initialValue>
+      <equation>resource* renew rate</equation>
+      <vertexIndex>44</vertexIndex>
+    </vertex>
+    <vertex>
+      <xPosition>607.0</xPosition>
+      <yPosition>34.0</yPosition>
+      <useGraphBackround>true</useGraphBackround>
+      <backgroundColor reference="../../vertex[11]/backgroundColor"/>
+      <foregroundColor reference="../../vertex[11]/foregroundColor"/>
+      <type reference="../../vertex[9]/type"/>
+      <name>resource</name>
+      <correctDescription>The size of the resource pool (hg) available to the water fowl</correctDescription>
+      <plan reference="../../vertex[10]/plan"/>
+      <inputsStatus reference="../../vertex/inputsStatus"/>
+      <calculationsStatus reference="../../vertex/calculationsStatus"/>
+      <graphsStatus reference="../../vertex/graphsStatus"/>
+      <initialValue>15.0</initialValue>
+      <equation>renew per day- consump per day</equation>
+      <vertexIndex>45</vertexIndex>
+    </vertex>
+    <vertex>
+      <xPosition>608.0</xPosition>
+      <yPosition>152.0</yPosition>
+      <useGraphBackround>true</useGraphBackround>
+      <backgroundColor reference="../../vertex[11]/backgroundColor"/>
+      <foregroundColor reference="../../vertex[11]/foregroundColor"/>
+      <type reference="../../vertex[5]/type"/>
+      <name>carrying capacity</name>
+      <correctDescription>Ecosystem carrying capacity for the water fowl population</correctDescription>
+      <plan reference="../../vertex[5]/plan"/>
+      <inputsStatus reference="../../vertex/inputsStatus"/>
+      <calculationsStatus reference="../../vertex/calculationsStatus"/>
+      <graphsStatus reference="../../vertex/graphsStatus"/>
+      <initialValue>0.0</initialValue>
+      <equation>( resource- Water Fowl)/ resource</equation>
+      <vertexIndex>46</vertexIndex>
+    </vertex>
+  </vertexList>
+  <edgeList>
+    <edge>
+      <sourceVertexId>14</sourceVertexId>
+      <targetVertexId>18</targetVertexId>
+    </edge>
+    <edge>
+      <sourceVertexId>15</sourceVertexId>
+      <targetVertexId>18</targetVertexId>
+    </edge>
+    <edge>
+      <sourceVertexId>16</sourceVertexId>
+      <targetVertexId>19</targetVertexId>
+    </edge>
+    <edge>
+      <sourceVertexId>17</sourceVertexId>
+      <targetVertexId>19</targetVertexId>
+    </edge>
+    <edge>
+      <sourceVertexId>13</sourceVertexId>
+      <targetVertexId>14</targetVertexId>
+    </edge>
+    <edge>
+      <sourceVertexId>18</sourceVertexId>
+      <targetVertexId>14</targetVertexId>
+    </edge>
+    <edge>
+      <sourceVertexId>18</sourceVertexId>
+      <targetVertexId>15</targetVertexId>
+    </edge>
+    <edge>
+      <sourceVertexId>12</sourceVertexId>
+      <targetVertexId>15</targetVertexId>
+    </edge>
+    <edge>
+      <sourceVertexId>19</sourceVertexId>
+      <targetVertexId>15</targetVertexId>
+    </edge>
+    <edge>
+      <sourceVertexId>18</sourceVertexId>
+      <targetVertexId>16</targetVertexId>
+    </edge>
+    <edge>
+      <sourceVertexId>11</sourceVertexId>
+      <targetVertexId>16</targetVertexId>
+    </edge>
+    <edge>
+      <sourceVertexId>19</sourceVertexId>
+      <targetVertexId>16</targetVertexId>
+    </edge>
+    <edge>
+      <sourceVertexId>10</sourceVertexId>
+      <targetVertexId>17</targetVertexId>
+    </edge>
+    <edge>
+      <sourceVertexId>19</sourceVertexId>
+      <targetVertexId>17</targetVertexId>
+    </edge>
+    <edge>
+      <sourceVertexId>44</sourceVertexId>
+      <targetVertexId>45</targetVertexId>
+    </edge>
+    <edge>
+      <sourceVertexId>42</sourceVertexId>
+      <targetVertexId>45</targetVertexId>
+    </edge>
+    <edge>
+      <sourceVertexId>18</sourceVertexId>
+      <targetVertexId>42</targetVertexId>
+    </edge>
+    <edge>
+      <sourceVertexId>41</sourceVertexId>
+      <targetVertexId>42</targetVertexId>
+    </edge>
+    <edge>
+      <sourceVertexId>45</sourceVertexId>
+      <targetVertexId>46</targetVertexId>
+    </edge>
+    <edge>
+      <sourceVertexId>18</sourceVertexId>
+      <targetVertexId>46</targetVertexId>
+    </edge>
+    <edge>
+      <sourceVertexId>45</sourceVertexId>
+      <targetVertexId>44</targetVertexId>
+    </edge>
+    <edge>
+      <sourceVertexId>43</sourceVertexId>
+      <targetVertexId>44</targetVertexId>
+    </edge>
+    <edge>
+      <sourceVertexId>46</sourceVertexId>
+      <targetVertexId>14</targetVertexId>
+    </edge>
+  </edgeList>
+  <task>
+    <taskName></taskName>
+    <taskDescription></taskDescription>
+    <imageURL></imageURL>
+    <startTime>0</startTime>
+    <endTime>5000</endTime>
+    <units>Days</units>
+  </task>
+</graph>
