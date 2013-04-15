@@ -63,10 +63,19 @@ public class NodeEditor extends javax.swing.JDialog {
     private void initNodeEditor() {
         logs.debug("Initializing NodeEditor");
         activityLogs.debug("NodeEditor opened for Node '"+currentVertex.getName()+"'");
+        displayEnterButton();
         initTabs(true);
         setTitle(currentVertex.getName());
         setEditorMessage("", true);
         prepareNodeEditorDisplay();
+        
+        this.addWindowListener(new java.awt.event.WindowAdapter() {
+            public void windowClosing(java.awt.event.WindowEvent e) {
+
+                closeNodeEditor();
+
+            }
+        });
     }
 
     private void prepareNodeEditorDisplay() {
@@ -402,6 +411,7 @@ public class NodeEditor extends javax.swing.JDialog {
         
         if (correctSolution.checkNodeName(dPanel.getNodeName())) {
             currentVertex.setDescriptionStatus(Vertex.DescriptionStatus.CORRECT);
+            graphPane.getMainFrame().getMainMenu().getModelMenu().addDeleteNodeMenu();
             setEditorMessage("",false);
             dPanel.setTextFieldBackground(Color.GREEN);
             activityLogs.debug("User entered correct description");
@@ -582,6 +592,34 @@ public class NodeEditor extends javax.swing.JDialog {
         graphPane.getMainFrame().repaint();
     }
     
+    private void closeNodeEditor()
+    {
+        
+        activityLogs.debug("User pressed Close button for Node "+currentVertex.getName());
+        // Delete this vertex if its not defined and user hits Cancel
+        if (currentVertex.getName().equals("")) {
+            graphPane.removeSelected();
+        }
+        
+        activityLogs.debug("Closing NodeEditor because of Close action.");
+        graphPane.getMainFrame().getModelToolBar().enableDeleteNodeButton();
+        graphPane.getMainFrame().getMainMenu().getModelMenu().enableDeleteNodeMenu();
+        this.dispose();
+    }
+    
+    private void displayEnterButton()
+    {
+        if(ApplicationContext.getAppMode().equalsIgnoreCase("STUDENT"))
+        {
+            buttonOK.hide();
+        }
+        else
+        {
+            buttonOK.show();
+        }
+    }
+    
+    
     
     /**
      * This method is called from within the constructor to initialize the form.
@@ -700,14 +738,14 @@ public class NodeEditor extends javax.swing.JDialog {
             }
         });
 
-        buttonCancel.setText("Cancel");
+        buttonCancel.setText("Close");
         buttonCancel.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 buttonCancelActionPerformed(evt);
             }
         });
 
-        buttonOK.setText("Ok");
+        buttonOK.setText("Enter");
         buttonOK.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 buttonOKActionPerformed(evt);
@@ -736,12 +774,12 @@ public class NodeEditor extends javax.swing.JDialog {
                         .add(checkButton, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE, 82, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE)
                         .add(18, 18, 18)
                         .add(giveUpButton, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE, 78, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE)
-                        .add(92, 92, 92)
+                        .add(26, 26, 26)
                         .add(buttonDelete, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE, 115, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE)
-                        .add(15, 15, 15)
-                        .add(buttonCancel)
-                        .add(14, 14, 14)
-                        .add(buttonOK, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE, 91, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE))
+                        .add(106, 106, 106)
+                        .add(buttonOK, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE, 78, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE)
+                        .addPreferredGap(org.jdesktop.layout.LayoutStyle.UNRELATED)
+                        .add(buttonCancel, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE, 78, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE))
                     .add(layout.createSequentialGroup()
                         .addContainerGap()
                         .add(editorMsgLabel, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE, 601, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE)))
@@ -764,10 +802,11 @@ public class NodeEditor extends javax.swing.JDialog {
                 .addPreferredGap(org.jdesktop.layout.LayoutStyle.RELATED)
                 .add(layout.createParallelGroup(org.jdesktop.layout.GroupLayout.LEADING)
                     .add(checkButton, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE, 41, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE)
-                    .add(giveUpButton, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE, 41, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE)
-                    .add(buttonDelete, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE, 40, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE)
-                    .add(buttonCancel, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE, 41, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE)
-                    .add(buttonOK, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE, 41, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE))
+                    .add(layout.createParallelGroup(org.jdesktop.layout.GroupLayout.BASELINE)
+                        .add(giveUpButton, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE, 41, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE)
+                        .add(buttonDelete, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE, 40, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE)
+                        .add(buttonCancel, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE, 41, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE)
+                        .add(buttonOK, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE, 41, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE)))
                 .addContainerGap())
             .add(layout.createParallelGroup(org.jdesktop.layout.GroupLayout.LEADING)
                 .add(layout.createSequentialGroup()
@@ -833,6 +872,7 @@ public class NodeEditor extends javax.swing.JDialog {
             dPanel.processDescriptionPanel();
             currentVertex.setDescriptionStatus(Vertex.DescriptionStatus.GAVEUP);
             setTitle(currentVertex.getName());
+            graphPane.getMainFrame().getMainMenu().getModelMenu().addDeleteNodeMenu();
             validate();
             repaint();
             currentVertex.setDescriptionStatus(Vertex.DescriptionStatus.GAVEUP);
@@ -868,22 +908,24 @@ public class NodeEditor extends javax.swing.JDialog {
 
     private void buttonCancelActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_buttonCancelActionPerformed
         // Process Cancel Action for all the Tabs
-        activityLogs.debug("User pressed Cancel button for Node "+currentVertex.getName());
+        activityLogs.debug("User pressed Close button for Node "+currentVertex.getName());
         // Delete this vertex if its not defined and user hits Cancel
         if (currentVertex.getName().equals("")) {
             graphPane.removeSelected();
         }
         
         activityLogs.debug("Closing NodeEditor because of Close action.");
+        graphPane.getMainFrame().getModelToolBar().enableDeleteNodeButton();
+        graphPane.getMainFrame().getMainMenu().getModelMenu().enableDeleteNodeMenu();
         this.dispose();
         
     }//GEN-LAST:event_buttonCancelActionPerformed
 
     private void buttonOKActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_buttonOKActionPerformed
-        activityLogs.debug("User pressed Ok button for Node '"+currentVertex.getName()+"'");
-        if (ApplicationContext.getAppMode().equalsIgnoreCase("STUDENT")) {
+        activityLogs.debug("User pressed Enter button for Node '"+currentVertex.getName()+"'");
+        /*if (ApplicationContext.getAppMode().equalsIgnoreCase("STUDENT")) {
             processTutorModeOKAction();
-        } else {
+        } else */{
             processAuthorModeOKAction();
         }
         
@@ -901,11 +943,12 @@ public class NodeEditor extends javax.swing.JDialog {
             v.getCorrectValues().clear();
             v.setGraphsStatus(Vertex.GraphsStatus.UNDEFINED);
         }
-        
+
         activityLogs.debug("Closing NodeEditor because of Delete action.");
         this.dispose();
-        
+
     }//GEN-LAST:event_buttonDeleteActionPerformed
+
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JLabel bottomSpacer;
     private javax.swing.JButton buttonCancel;
