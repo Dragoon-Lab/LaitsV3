@@ -212,7 +212,12 @@ public class ModelMenu extends JMenu {
             if(v!=null)
             {
                 activityLogs.debug("User pressed Delete button for Node "+v.getName());
-                deleteNodeMenu.remove(menuMap.get(v.getName()));
+                
+                if(menuMap.get(v.getName())!=null)
+                {
+                    deleteNodeMenu.remove(menuMap.get(v.getName()));
+                }
+                
             }
             
         }
