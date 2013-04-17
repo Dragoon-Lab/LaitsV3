@@ -448,7 +448,7 @@ public class NodeEditor extends javax.swing.JDialog {
 
     private void checkInputsPanel(TaskSolution correctSolution) {
         iPanel.processInputsPanel();
-
+        iPanel.setOptionPanelBackground(new Color(240,240,240));
         boolean result = false;
         if (iPanel.getValueButtonSelected()) {
             result = correctSolution.checkNodeInputs(dPanel.getNodeName(), null);
@@ -475,7 +475,7 @@ public class NodeEditor extends javax.swing.JDialog {
     private void checkCalculationsPanel(TaskSolution correctSolution) {
         // Check Parsing Errors and Set Student's Equation in Vertex
         cPanel.processCalculationsPanel();
-
+        cPanel.setCheckedBackground(new Color(240,240,240));
         // Check for fixed value
         if (correctSolution.checkNodeCalculations(currentVertex)) {
             cPanel.setCheckedBackground(Color.GREEN);
@@ -829,6 +829,7 @@ public class NodeEditor extends javax.swing.JDialog {
             checkPlanPanel(correctSolution);
         } else if (tabPane.getSelectedIndex() == INPUTS) {
             activityLogs.debug("Check button pressed for Inputs Panel");
+            
             checkInputsPanel(correctSolution);
         } else if (tabPane.getSelectedIndex() == CALCULATIONS) {
             activityLogs.debug("Check button pressed for Calculations Panel");
@@ -874,7 +875,8 @@ public class NodeEditor extends javax.swing.JDialog {
             iPanel.updateNodeDescription();
         } else if (tabPane.getSelectedIndex() == INPUTS) {
             activityLogs.debug("Giveup button pressed for Inputs Panel");
-
+            
+            iPanel.setOptionPanelBackground(new Color(240,240,240));
             if (iPanel.giveUpInputsPanel()) {
                 iPanel.processInputsPanel();
                 currentVertex.setInputsStatus(Vertex.InputsStatus.GAVEUP);
@@ -884,6 +886,7 @@ public class NodeEditor extends javax.swing.JDialog {
             cPanel.initPanel();
         } else if (tabPane.getSelectedIndex() == CALCULATIONS) {
             activityLogs.debug("Giveup button pressed for Calculations Panel");
+            cPanel.setCheckedBackground(new Color(240,240,240));
             if (cPanel.giveUpCalculationsPanel()) {
                 cPanel.processCalculationsPanel();
                 currentVertex.setCalculationsStatus(Vertex.CalculationsStatus.GAVEUP);
