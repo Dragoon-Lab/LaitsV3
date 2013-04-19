@@ -9,7 +9,9 @@ import edu.asu.laits.editor.GraphEditorPane;
 import edu.asu.laits.model.TaskSolution;
 import edu.asu.laits.model.Vertex;
 import java.awt.Color;
+import java.awt.Dimension;
 import java.awt.Insets;
+import java.awt.Toolkit;
 import java.util.Iterator;
 import javax.swing.UIManager;
 import javax.swing.event.ChangeEvent;
@@ -80,8 +82,15 @@ public class NodeEditor extends javax.swing.JDialog {
 
     private void prepareNodeEditorDisplay() {
         logs.debug("Preparing Node Editor Display");
-        setBounds((int)currentVertex.getXPosition() + 140,
+        Dimension screenSize = Toolkit.getDefaultToolkit().getScreenSize();
+        double width = screenSize.getWidth();
+        double height = screenSize.getHeight();
+        int yPositionNodeEditor=(int)(height - getPreferredSize().height);
+        /*setBounds((int)currentVertex.getXPosition() + 140,
                 (int)currentVertex.getYPosition()+80,
+                getPreferredSize().width, getPreferredSize().height);*/
+        setBounds((int)currentVertex.getXPosition() + 140,
+                yPositionNodeEditor/2,
                 getPreferredSize().width, getPreferredSize().height);
         pack();
 
