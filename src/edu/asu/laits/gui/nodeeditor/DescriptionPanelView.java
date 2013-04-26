@@ -373,6 +373,12 @@ public class DescriptionPanelView extends JPanel{
       sb.append(quantityDescriptionTextField.getText()+"'");
       return sb.toString();
   }
+  
+  
+public void setEditableTree(boolean b){
+      decisionTree.setEditable(b);
+      decisionTree.setEnabled(b);
+}
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JLabel NodeNameLabel;

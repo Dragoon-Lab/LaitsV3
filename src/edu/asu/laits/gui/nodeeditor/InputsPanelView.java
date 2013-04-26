@@ -461,6 +461,12 @@ public class InputsPanelView extends javax.swing.JPanel implements ItemListener 
         return sb.toString();
     }
     
+    public void setEditableInputs(Boolean b){
+        fixedValueOptionButton.setEnabled(b);
+        inputNodesSelectionOptionButton.setEnabled(b);
+        availableInputNodesPanels.setEnabled(b);
+    }
+    
     
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JPanel availableInputNodesPanels;

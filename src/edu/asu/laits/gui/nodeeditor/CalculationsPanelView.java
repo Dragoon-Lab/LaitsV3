@@ -636,6 +636,16 @@ public class CalculationsPanelView extends javax.swing.JPanel {
     public JTextArea getFormulaInputArea() {
         return formulaInputArea;
     }
+    
+    public void setEditableCalculations(Boolean b){
+        fixedValueOptionButton.setEnabled(b);
+        flowValueOptionButton.setEnabled(b);    
+        stockValueOptionButton.setEnabled(b);
+        fixedValueInputBox.setEnabled(b);
+        availableInputsJList.setEnabled(b);
+        formulaInputArea.setEnabled(b);
+    }
+    
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JList availableInputsJList;
     private javax.swing.JLabel availableInputsLabel;
