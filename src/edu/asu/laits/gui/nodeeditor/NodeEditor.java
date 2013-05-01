@@ -65,6 +65,7 @@ public class NodeEditor extends javax.swing.JDialog {
         logs.debug("Initializing NodeEditor");
         activityLogs.debug("NodeEditor opened for Node '" + currentVertex.getName() + "'");
         displayEnterButton();
+        showCreateNodeButtonInputTab(false);
         initTabs(true);
         setTitle(currentVertex.getName());
         setEditorMessage("", true);
@@ -153,23 +154,27 @@ public class NodeEditor extends javax.swing.JDialog {
                 logs.debug("setting calc panel as current");
                 activityLogs.debug("Node Editor is opend with Calculations Tab for Node: " + currentVertex.getName());
                 selectedTab = CALCULATIONS;
+                showCreateNodeButtonInputTab(false);
                 tabPane.setSelectedIndex(CALCULATIONS);
             } else if (!currentVertex.getPlanStatus().equals(Vertex.PlanStatus.UNDEFINED)
                     && !currentVertex.getPlanStatus().equals(Vertex.PlanStatus.INCORRECT)) {
                 logs.debug("Setting Inputs Panel as Current");
                 activityLogs.debug("Node Editor is opend with Inputs Tab for Node: " + currentVertex.getName());
                 selectedTab = INPUTS;
+                showCreateNodeButtonInputTab(true);
                 tabPane.setSelectedIndex(INPUTS);
             } else if (!currentVertex.getDescriptionStatus().equals(Vertex.DescriptionStatus.UNDEFINED)
                     && !currentVertex.getDescriptionStatus().equals(Vertex.DescriptionStatus.INCORRECT)) {
                 logs.debug("Setting Plan Panel as Current");
                 activityLogs.debug("Node Editor is opend with Plan Tab for Node: " + currentVertex.getName());
                 selectedTab = PLAN;
+                showCreateNodeButtonInputTab(false);
                 tabPane.setSelectedIndex(PLAN);
             } else {
                 logs.debug("Setting Desc Panel as Current");
                 activityLogs.debug("Node Editor is opend with Description Tab for Node: " + currentVertex.getName());
                 selectedTab = DESCRIPTION;
+                showCreateNodeButtonInputTab(false);
                 tabPane.setSelectedIndex(DESCRIPTION);
             }
         }
@@ -217,7 +222,9 @@ public class NodeEditor extends javax.swing.JDialog {
                     if (currentVertex.getDescriptionStatus().equals(Vertex.DescriptionStatus.CORRECT)) {
                         dPanel.setEditableTree(false);
                     }
+                    showCreateNodeButtonInputTab(false);
                 } else if (tabPane.getSelectedIndex() == PLAN) {
+                    showCreateNodeButtonInputTab(false);
                     if (pPanel.isViewEnabled()) {
                         activityLogs.debug("User Is in the Plan Tab ");
                         setEditorMessage("", true);
@@ -232,6 +239,7 @@ public class NodeEditor extends javax.swing.JDialog {
                     }
                 } else if (tabPane.getSelectedIndex() == INPUTS) {
                     if (iPanel.isViewEnabled()) {
+                        showCreateNodeButtonInputTab(true);
                         activityLogs.debug("User Is in the Inputs Tab ");
                         setEditorMessage("", true);
                         selectedTab = INPUTS;
@@ -244,6 +252,7 @@ public class NodeEditor extends javax.swing.JDialog {
                         return;
                     }
                 } else if (tabPane.getSelectedIndex() == CALCULATIONS) {
+                    showCreateNodeButtonInputTab(false);
                     if (cPanel.isViewEnabled()) {
                         activityLogs.debug("User Is in the Calculations Tab ");
                         setEditorMessage("", true);
@@ -257,6 +266,7 @@ public class NodeEditor extends javax.swing.JDialog {
                         return;
                     }
                 } else if (tabPane.getSelectedIndex() == GRAPH) {
+                    showCreateNodeButtonInputTab(false);
                     if (gPanel.isViewEnabled()) {
                         setEditorMessage("", true);
                         selectedTab = GRAPH;
@@ -633,6 +643,10 @@ public class NodeEditor extends javax.swing.JDialog {
             buttonOK.show();
         }
     }
+    
+    private void showCreateNodeButtonInputTab(Boolean b){
+        buttonCreateNodeInputTab.setVisible(b);
+    }
 
     /**
      * This method is called from within the constructor to initialize the form.
@@ -655,6 +669,7 @@ public class NodeEditor extends javax.swing.JDialog {
         buttonOK = new javax.swing.JButton();
         editorMsgLabel = new javax.swing.JLabel();
         bottomSpacer = new javax.swing.JLabel();
+        buttonCreateNodeInputTab = new javax.swing.JButton();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.DO_NOTHING_ON_CLOSE);
 
@@ -768,6 +783,8 @@ public class NodeEditor extends javax.swing.JDialog {
         editorMsgLabel.setForeground(new java.awt.Color(255, 0, 0));
         editorMsgLabel.setText("jLabel1");
 
+        buttonCreateNodeInputTab.setText("Create Node");
+
         org.jdesktop.layout.GroupLayout layout = new org.jdesktop.layout.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
         layout.setHorizontalGroup(
@@ -788,6 +805,8 @@ public class NodeEditor extends javax.swing.JDialog {
                 .add(18, 18, 18)
                 .add(giveUpButton, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE, 78, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE)
                 .addPreferredGap(org.jdesktop.layout.LayoutStyle.RELATED, org.jdesktop.layout.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                .add(buttonCreateNodeInputTab, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE, 106, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE)
+                .add(32, 32, 32)
                 .add(buttonOK, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE, 78, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE)
                 .add(18, 18, 18)
                 .add(buttonCancel, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE, 78, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE)
@@ -806,12 +825,12 @@ public class NodeEditor extends javax.swing.JDialog {
                 .addPreferredGap(org.jdesktop.layout.LayoutStyle.RELATED)
                 .add(editorMsgLabel, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE, 21, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE)
                 .addPreferredGap(org.jdesktop.layout.LayoutStyle.RELATED)
-                .add(layout.createParallelGroup(org.jdesktop.layout.GroupLayout.LEADING)
-                    .add(checkButton, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE, 41, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE)
-                    .add(layout.createParallelGroup(org.jdesktop.layout.GroupLayout.BASELINE)
-                        .add(giveUpButton, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE, 41, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE)
-                        .add(buttonCancel, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE, 41, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE)
-                        .add(buttonOK, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE, 41, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE)))
+                .add(layout.createParallelGroup(org.jdesktop.layout.GroupLayout.LEADING, false)
+                    .add(checkButton, org.jdesktop.layout.GroupLayout.DEFAULT_SIZE, org.jdesktop.layout.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                    .add(giveUpButton, org.jdesktop.layout.GroupLayout.DEFAULT_SIZE, org.jdesktop.layout.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                    .add(buttonCancel, org.jdesktop.layout.GroupLayout.DEFAULT_SIZE, org.jdesktop.layout.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                    .add(buttonOK, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE, 41, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE)
+                    .add(buttonCreateNodeInputTab, org.jdesktop.layout.GroupLayout.DEFAULT_SIZE, org.jdesktop.layout.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
                 .addContainerGap())
             .add(layout.createParallelGroup(org.jdesktop.layout.GroupLayout.LEADING)
                 .add(layout.createSequentialGroup()
@@ -942,6 +961,7 @@ public class NodeEditor extends javax.swing.JDialog {
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JLabel bottomSpacer;
     private javax.swing.JButton buttonCancel;
+    private javax.swing.JButton buttonCreateNodeInputTab;
     private javax.swing.JButton buttonOK;
     private javax.swing.JPanel calculationPanel;
     private javax.swing.JButton checkButton;
