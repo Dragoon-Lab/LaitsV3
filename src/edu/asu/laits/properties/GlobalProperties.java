@@ -115,7 +115,8 @@ public class GlobalProperties {
             latestFilesTemp.add(f);
         }
 
-        createHelpSet(HELPSET_DESTINATION);
+        // Disabling HelpSet creation - slides are used for this
+        //createHelpSet(HELPSET_DESTINATION);
 
     }
 

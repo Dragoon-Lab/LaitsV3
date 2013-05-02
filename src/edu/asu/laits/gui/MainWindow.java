@@ -540,17 +540,19 @@ public class MainWindow extends JFrame {
     
     
     private void loadFirstTask(){
-        activityLogs.debug("Student is given default problem ID: 105 - Intro 1");
         
         TaskSolutionReader solutionReader = new TaskSolutionReader();
         try{
-            TaskSolution solution = solutionReader.loadSolution("105");
+            String task = ApplicationContext.getCurrentTaskID();
+            activityLogs.debug("Student is given default problem ID: "+task);
+            
+            TaskSolution solution = solutionReader.loadSolution(task);
             ApplicationContext.setCorrectSolution(solution);
             
-            this.loadTaskDescription(ApplicationContext.getTaskIdNameMap().get("105").getTaskName(),
+            this.loadTaskDescription(ApplicationContext.getTaskIdNameMap().get(task).getTaskName(),
                     solution.getTaskDescription(), 
                     solution.getImageURL());
-            ApplicationContext.setCurrentTaskID("105");
+            //ApplicationContext.setCurrentTaskID("105");
         }catch(Exception e){
             e.printStackTrace();
         }

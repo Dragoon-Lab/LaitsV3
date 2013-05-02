@@ -200,8 +200,9 @@ public class FileMenu extends JMenu {
     private void initializeTutorMenu() {
         this.setText("File");
         this.setMnemonic(KeyEvent.VK_F);
-        this.add(getNewTaskMenuItem());
-        this.add(getJSeparator());
+        getNewTaskMenuItem();
+        //this.add(getNewTaskMenuItem());
+        //this.add(getJSeparator());
         this.add(getOpenFileMenuItem());
         this.add(getOpenLatestFileMenu());
         this.add(getJSeparator1());

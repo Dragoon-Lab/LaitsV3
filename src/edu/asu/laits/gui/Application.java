@@ -6,6 +6,8 @@ import javax.swing.LookAndFeel;
 import javax.swing.UIManager;
 
 import edu.asu.laits.properties.GlobalProperties;
+import java.awt.Graphics;
+import javax.swing.JApplet;
 import org.apache.log4j.Logger;
 import org.apache.log4j.PropertyConfigurator;
 
@@ -14,16 +16,20 @@ import org.apache.log4j.PropertyConfigurator;
  * This is a class that only contain an static main method to start the
  * application. It simply starts the application.
  */
-public class Application {
+public class Application extends JApplet{
 
     /**
      * @param args
      */
     public static void main(String[] args) {
         //UserRegistration reg = new UserRegistration(null, true);
-        ApplicationContext.setUserValid(true);
-        ApplicationContext.setAppMode("STUDENT");
+        if(args.length < 3){
+            System.err.println("Invalid initialization parameters");
+            System.err.println("Usage: USER_ID MODE PROBLEM_ID");
+            System.exit(1);
+        }
         
+        initializeApplication(args);
         
         if (ApplicationContext.isUserValid()) {
             try {
@@ -51,4 +57,17 @@ public class Application {
             }
         }
     }
+    
+    private static void initializeApplication(String[] args){
+        String username = args[0];        
+        String mode = args[1];
+        String problem_id = args[2];
+        
+        ApplicationContext.setUserASUID(username);
+        ApplicationContext.setUserValid(true);
+        
+        ApplicationContext.setCurrentTaskID(problem_id);
+        ApplicationContext.setAppMode(mode);
+    }
+    
 }
