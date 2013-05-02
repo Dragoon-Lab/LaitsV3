@@ -167,19 +167,32 @@ public class ConstantVertexRenderComponent   extends VertexRenderComponent {
 
     public void drawVertex(Graphics g) {
         Graphics2D g2 = (Graphics2D) g;
+        boolean isCorrect = false;
         if(currentVertex.getInputsStatus().equals(Vertex.InputsStatus.CORRECT) && 
                 currentVertex.getCalculationsStatus().equals(Vertex.CalculationsStatus.CORRECT)){
             g2.setColor(Color.BLUE);
+            isCorrect = true;
         }else if(currentVertex.getInputsStatus().equals(Vertex.InputsStatus.GAVEUP) && 
                 currentVertex.getCalculationsStatus().equals(Vertex.CalculationsStatus.GAVEUP)){
             g2.setColor(Color.BLUE);
-        }else{
+            isCorrect = true;
+        }else if(currentVertex.getInputsStatus().equals(Vertex.InputsStatus.CORRECT) && 
+                currentVertex.getCalculationsStatus().equals(Vertex.CalculationsStatus.GAVEUP)){
+            g2.setColor(Color.BLUE);
+            isCorrect = true;
+        }
+        else if(currentVertex.getInputsStatus().equals(Vertex.InputsStatus.GAVEUP) && 
+                currentVertex.getCalculationsStatus().equals(Vertex.CalculationsStatus.CORRECT)){
+            g2.setColor(Color.BLUE);
+            isCorrect = true;
+        }
+        else{
             g2.setColor(foreground);
         }
         
         int[] xpoints = {0, 60, 119, 60};
         int[] ypoints = {31, 1, 31, 62};
-        if(selected){
+        if(selected && !(isCorrect)){
             g2.setStroke(new BasicStroke(2));
             g2.setColor(Color.GRAY);
         }else

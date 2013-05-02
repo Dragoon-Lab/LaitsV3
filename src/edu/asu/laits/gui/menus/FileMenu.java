@@ -253,7 +253,7 @@ public class FileMenu extends JMenu {
                             ApplicationContext.setCurrentTaskID(newMenu.getActionCommand());
                             openTaskById(newMenu.getActionCommand());
                             mainWindow.getModelToolBar().disableDoneButton();
-
+                            graphPane.getMainFrame().getMainMenu().getModelMenu().removeAllDeleteMenu();
                             /*
                              * Author/Modifier: Deepak
                              * Description: Code added to close nodeEditor when new problem is opened

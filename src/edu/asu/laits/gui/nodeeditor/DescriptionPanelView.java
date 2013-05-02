@@ -286,16 +286,22 @@ public class DescriptionPanelView extends JPanel{
                   currentVertex.setName(getNodeName().trim());
               } catch (Exception ex) {
                   nodeEditor.setEditorMessage(ex.getMessage(), true);
+                  setTextFieldBackground(Color.RED);
+                  activityLogs.debug(ex.getMessage());
                   return false;
               }
           } else {
-              nodeEditor.setEditorMessage("The node name is already used by another node. Please have a new name for this node.", true);
+              nodeEditor.setEditorMessage("The node name is already used by another node. Please choose a new name for this node.", true);
+              setTextFieldBackground(Color.RED);
+              activityLogs.debug("User entered duplicate node name");
               return false;
           }
       }
 
       if (getNodeDesc().trim().isEmpty()) {
           nodeEditor.setEditorMessage("Please provide correct description for this node.", true);
+          setTextFieldBackground(Color.RED);
+          activityLogs.debug("User entered incorrect description");
           return false;
       }
 
@@ -367,6 +373,12 @@ public class DescriptionPanelView extends JPanel{
       sb.append(quantityDescriptionTextField.getText()+"'");
       return sb.toString();
   }
+  
+  
+public void setEditableTree(boolean b){
+      decisionTree.setEditable(b);
+      decisionTree.setEnabled(b);
+}
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JLabel NodeNameLabel;

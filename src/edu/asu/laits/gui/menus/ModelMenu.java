@@ -14,16 +14,20 @@ import edu.asu.laits.model.TaskMenuItem;
 import edu.asu.laits.model.TaskSolution;
 import edu.asu.laits.model.TaskSolutionReader;
 import edu.asu.laits.model.Vertex;
+import java.awt.event.ActionEvent;
 import java.awt.event.KeyEvent;
 import java.io.BufferedReader;
 import java.io.InputStreamReader;
 import java.net.URL;
+import java.util.HashMap;
 import java.util.Iterator;
 import java.util.List;
 import javax.swing.JMenu;
 import javax.swing.JMenuItem;
 import javax.swing.JOptionPane;
+import javax.swing.event.MenuEvent;
 import org.apache.log4j.Logger;
+import org.jgraph.graph.DefaultGraphCell;
 import org.jgraph.graph.DefaultPort;
 
 /**
@@ -39,10 +43,12 @@ public class ModelMenu extends JMenu {
     private JMenuItem runModelMenuItem = null;
     private JMenuItem editTimeRangeMenuItem = null;
     private JMenuItem exportSolutionMenuItem = null;
+    private JMenu deleteNodeMenu= null;
     private GraphEditorPane graphPane;
     private MainWindow mainWindow;
     private static Logger logs = Logger.getLogger("DevLogs");
     private static Logger activityLogs = Logger.getLogger("ActivityLogs");
+    private HashMap<String,JMenuItem> menuMap = new HashMap<String,JMenuItem>();
 
     /**
      * This method initializes
@@ -63,6 +69,7 @@ public class ModelMenu extends JMenu {
         this.setText("Model");
         this.setMnemonic(KeyEvent.VK_M);
         this.add(getAddNodeMenuItem());
+        this.add(getDeleteNodeMenu());
         this.add(getRunModelMenuItem());
         this.add(getEditTimeRangeMenuItem());
         this.add(getExportSolutionMenuItem());
@@ -86,6 +93,17 @@ public class ModelMenu extends JMenu {
             });
         }
         return addNodeMenuItem;
+    }
+    
+    private JMenu getDeleteNodeMenu()
+    {
+        if (deleteNodeMenu == null) 
+        {
+            deleteNodeMenu = new JMenu("Delete Node");
+            
+        }
+        
+        return deleteNodeMenu;
     }
 
     /**
@@ -165,6 +183,8 @@ public class ModelMenu extends JMenu {
             Vertex v = new Vertex();
             v.setVertexIndex(graphPane.getModelGraph().getNextAvailableIndex());
             graphPane.addVertex(v);
+            graphPane.getMainFrame().getModelToolBar().disableDeleteNodeButton();
+            disableDeleteNodeMenu();
 
             if (graphPane.getMainFrame().isSituationSelected()) {
                 logs.debug("Switing to Model Design Panel");
@@ -179,6 +199,104 @@ public class ModelMenu extends JMenu {
             //window.getStatusBarPanel().setStatusMessage("Please complete all the nodes before running Model", false);
         }
 
+    }
+    
+    public void deleteNodeAction()
+    {
+        
+        Object[] cells = graphPane.getSelectionCells();
+        for(Object obj:cells)
+        {
+            DefaultGraphCell cell = (DefaultGraphCell)obj;
+            Vertex v = (Vertex)cell.getUserObject();
+            if(v!=null)
+            {
+                activityLogs.debug("User pressed Delete button for Node "+v.getName());
+                
+                if(menuMap.get(v.getName())!=null)
+                {
+                    deleteNodeMenu.remove(menuMap.get(v.getName()));
+                }
+                
+            }
+            
+        }
+        
+        //DefaultGraphCell cell = (DefaultGraphCell)graphPane.getSelectionCell();
+        //Vertex currentVertex = (Vertex)cell.getUserObject();
+        
+        
+        graphPane.removeSelected();
+
+        Iterator it = graphPane.getModelGraph().vertexSet().iterator();
+        Vertex v;
+        while (it.hasNext()) {
+            v = (Vertex) it.next();
+            v.getCorrectValues().clear();
+            v.setGraphsStatus(Vertex.GraphsStatus.UNDEFINED);
+        }
+
+        activityLogs.debug("Closing NodeEditor because of Delete action.");
+        
+
+    }
+    
+    public void addDeleteNodeMenu()
+    {
+        DefaultGraphCell cell = (DefaultGraphCell)graphPane.getSelectionCell();
+        Vertex currentVertex = (Vertex)cell.getUserObject();
+        
+        JMenuItem menu = new JMenuItem(currentVertex.getName());
+        menuMap.put(currentVertex.getName(), menu);
+        
+        
+     
+        
+        
+     menu.addActionListener(new java.awt.event.ActionListener() {
+
+         
+            public void actionPerformed(ActionEvent e) {
+                
+                JMenuItem m = (JMenuItem)e.getSource();
+                
+                Object[] cells = graphPane.getGraphLayoutCache().getCells(true, true, true, true);
+                for(Object obj:cells)
+                {
+                    DefaultGraphCell cell = (DefaultGraphCell)obj;
+                    Vertex v = (Vertex)cell.getUserObject();
+                    
+                    if(v!=null)
+                    {
+                        //JMenuItem m = (JMenuItem)e.getSource();
+                        if(v.getName() == m.getText())
+                        {
+                            graphPane.setSelectionCell(obj);
+                            graphPane.removeSelected();
+                            deleteNodeMenu.remove(menuMap.get(v.getName()));
+                        }
+                            
+                    }
+                }
+            }
+        });
+        deleteNodeMenu.add(menu);
+        
+    }
+    
+    public void removeAllDeleteMenu()
+    {
+        deleteNodeMenu.removeAll();
+    }
+    
+    public void enableDeleteNodeMenu()
+    {
+        deleteNodeMenu.setEnabled(true);
+    }
+    
+    public void disableDeleteNodeMenu()
+    {
+        deleteNodeMenu.setEnabled(false);
     }
 
     private boolean newNodeAllowed() {

@@ -113,6 +113,7 @@ public class DefaultVertexRenderComponent extends VertexRenderComponent {
    
     public void drawVertex(Graphics g) {
         Graphics2D g2 = (Graphics2D) g;
+        
         g2.setColor(foreground);
         if(selected){
             g2.setColor(Color.GRAY);           
