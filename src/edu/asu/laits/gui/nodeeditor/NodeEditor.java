@@ -784,6 +784,11 @@ public class NodeEditor extends javax.swing.JDialog {
         editorMsgLabel.setText("jLabel1");
 
         buttonCreateNodeInputTab.setText("Create Node");
+        buttonCreateNodeInputTab.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                buttonCreateNodeInputTabActionPerformed(evt);
+            }
+        });
 
         org.jdesktop.layout.GroupLayout layout = new org.jdesktop.layout.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
@@ -945,7 +950,6 @@ public class NodeEditor extends javax.swing.JDialog {
         graphPane.getMainFrame().getModelToolBar().enableDeleteNodeButton();
         graphPane.getMainFrame().getMainMenu().getModelMenu().enableDeleteNodeMenu();
         this.dispose();
-
     }//GEN-LAST:event_buttonCancelActionPerformed
 
     private void buttonOKActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_buttonOKActionPerformed
@@ -958,6 +962,24 @@ public class NodeEditor extends javax.swing.JDialog {
         }
 
     }//GEN-LAST:event_buttonOKActionPerformed
+
+    private void buttonCreateNodeInputTabActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_buttonCreateNodeInputTabActionPerformed
+        // TODO add your handling code here:
+        // Process Cancel Action for all the Tabs
+        activityLogs.debug("User pressed Create node button on inputs tab for Node " + currentVertex.getName());
+        // Delete this vertex if its not defined and user hits Cancel
+        if (currentVertex.getName().equals("")) {
+            graphPane.removeSelected();
+        }
+
+        activityLogs.debug("Closing NodeEditor for Node " + currentVertex.getName());
+        graphPane.getMainFrame().getModelToolBar().enableDeleteNodeButton();
+        graphPane.getMainFrame().getMainMenu().getModelMenu().enableDeleteNodeMenu();
+        this.dispose();
+        
+        graphPane.getMainFrame().getMainMenu().getModelMenu().newNodeAction();
+    }//GEN-LAST:event_buttonCreateNodeInputTabActionPerformed
+
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JLabel bottomSpacer;
     private javax.swing.JButton buttonCancel;
