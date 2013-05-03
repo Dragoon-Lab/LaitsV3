@@ -9,6 +9,7 @@ package edu.asu.laits.editor;
 import edu.asu.laits.model.TaskMenuItem;
 import edu.asu.laits.model.TaskSolution;
 import java.util.HashMap;
+import org.apache.log4j.Logger;
 
 /**
  *
@@ -25,7 +26,7 @@ public class ApplicationContext {
   private static HashMap<String,TaskMenuItem> taskIdNameMap;
   private static String currentTaskID;
   private static boolean isProblemSolved = false;
-  
+  private static Logger logs = Logger.getLogger("DevLogs");
   
   public static String getUserFirstName(){
     return firstName;
@@ -88,6 +89,7 @@ public class ApplicationContext {
   }
   
   public static void setCurrentTaskID(String uid){
+      logs.debug("Setting Current Task ID : "+uid);
     currentTaskID = uid;
   }
   

@@ -7,6 +7,7 @@ import javax.swing.UIManager;
 
 import edu.asu.laits.properties.GlobalProperties;
 import java.awt.Graphics;
+import java.util.Arrays;
 import javax.swing.JApplet;
 import org.apache.log4j.Logger;
 import org.apache.log4j.PropertyConfigurator;
@@ -18,6 +19,8 @@ import org.apache.log4j.PropertyConfigurator;
  */
 public class Application extends JApplet{
 
+    private static Logger logs = Logger.getLogger("DevLogs");
+    
     /**
      * @param args
      */
@@ -29,6 +32,7 @@ public class Application extends JApplet{
             System.exit(1);
         }
         
+        logs.debug("App Args: "+Arrays.asList(args));
         initializeApplication(args);
         
         if (ApplicationContext.isUserValid()) {
