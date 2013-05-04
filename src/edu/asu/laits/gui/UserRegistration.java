@@ -156,29 +156,13 @@ public class UserRegistration extends javax.swing.JDialog {
           logs.debug("User Registration Successful");
           activityLogs.debug("User registered with "+firstName+" "+lastName+" "+asuId);
           
-          ApplicationContext.setUserFirstName(firstName);
-          ApplicationContext.setUserLastName(lastName);
-          ApplicationContext.setUserASUID(asuId);
+          ApplicationContext.setUserID(asuId);
           ApplicationContext.setAppMode(appMode);
 
           // Update this User record in database
           final String WEB = "http://laits.engineering.asu.edu/updateprob.php";
 
           try {
-              //idtask taskID of the current task
-              String fname = ApplicationContext.getUserFirstName();
-              String lname = ApplicationContext.getUserLastName();
-              String asuid = ApplicationContext.getUserASUID();
-
-              devLogs.info("Writing Student " + fname + " " + lname + " Mode: " + appMode + " to server");
-
-              String url = WEB;
-              url += "?id=" + asuid + "&fname=" + fname + "&lname=" + lname + "&title=" + appMode;
-              URL myURL = new URL(url);
-
-              BufferedReader in = new BufferedReader(new InputStreamReader(myURL.openStream()));
-
-              in.close();
               ApplicationContext.setUserValid(true);
               this.dispose();
 

@@ -395,6 +395,8 @@ public class MainWindow extends JFrame {
     }
 
     public void exitWindow() {
+        activityLogs.info("User exited LAITS....");
+        
         GlobalProperties.getInstance().saveToPropertiesFile();
         
         if (getGraphEditorPane().getGraphProperties().isChanged()) {
@@ -420,14 +422,6 @@ public class MainWindow extends JFrame {
         
         windowCount--;
         if (windowCount == 0) {
-            
-            try{
-                uploadLogFiles();
-                Thread.sleep(1000);
-                
-            }catch(Exception e){
-                e.printStackTrace();
-            }
             System.exit(0);
         } else {
             setVisible(false);
@@ -435,39 +429,6 @@ public class MainWindow extends JFrame {
         }
     }
     
-    private void uploadLogFiles(){
-        logs.debug("Uploading Log Files to Server.");
-        activityLogs.debug("User has closed LAITS.... ");
-        
-        FTPClient client = new FTPClient();
-        FileInputStream fis = null;
-
-    try {
-        client.connect("laits.engineering.asu.edu");
-        client.login("upload@laits.engineering.asu.edu", "amt22amt");
-
-        String filename1 = "logs/activity.log";
-        String filename2 = "logs/laits.log";
-        
-        fis = new FileInputStream(filename1);
-        DateFormat  dateFormat = new SimpleDateFormat("MM-dd_HH:mm:ss");
-        Date date = new Date();
-        
-        String name1 = ApplicationContext.getUserASUID()+"_"+dateFormat.format(date)+"_activity.log";
-        String name2 = ApplicationContext.getUserASUID()+"_"+dateFormat.format(date)+"_laits.log";
-        
-        client.storeFile(name1, fis);
-        fis = new FileInputStream(filename2);
-        client.storeFile(name2, fis);
-        fis.close();
-        client.logout();
-    } catch (IOException e) {
-        e.printStackTrace();
-    }
-
-        
-    }
-
     /**
      * This method initializes fileToolBar
      *

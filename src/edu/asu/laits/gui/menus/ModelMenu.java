@@ -5,7 +5,6 @@ import edu.asu.laits.editor.GraphEditorPane;
 import edu.asu.laits.editor.GraphRangeEditor;
 import edu.asu.laits.gui.MainWindow;
 import edu.asu.laits.gui.nodeeditor.NodeEditor;
-import edu.asu.laits.gui.nodeeditor.NodeEditor;
 import edu.asu.laits.model.Graph;
 import edu.asu.laits.model.ModelEvaluationException;
 import edu.asu.laits.model.ModelEvaluator;
@@ -16,16 +15,12 @@ import edu.asu.laits.model.TaskSolutionReader;
 import edu.asu.laits.model.Vertex;
 import java.awt.event.ActionEvent;
 import java.awt.event.KeyEvent;
-import java.io.BufferedReader;
-import java.io.InputStreamReader;
-import java.net.URL;
 import java.util.HashMap;
 import java.util.Iterator;
 import java.util.List;
 import javax.swing.JMenu;
 import javax.swing.JMenuItem;
 import javax.swing.JOptionPane;
-import javax.swing.event.MenuEvent;
 import org.apache.log4j.Logger;
 import org.jgraph.graph.DefaultGraphCell;
 import org.jgraph.graph.DefaultPort;
@@ -448,28 +443,6 @@ public class ModelMenu extends JMenu {
     }
     
     private void writeResultToServer(){
-        final String WEB = "http://laits.engineering.asu.edu/updateprob.php";
-
-    try {
-      //idtask taskID of the current task
-      String fname = ApplicationContext.getUserFirstName();
-      String lname = ApplicationContext.getUserLastName();
-      String asuid = ApplicationContext.getUserASUID();
-      String taskTitle = ApplicationContext.getTaskIdNameMap().
-              get(ApplicationContext.getCurrentTaskID()).getTaskName();
-      
-      logs.debug("Writing Student "+fname+" "+lname+" Task: "+taskTitle+" to server");
-
-      String url = WEB;
-      url += "?id=" + asuid + "&fname=" + fname + "&lname=" + lname + "&title=" + taskTitle;
-      URL myURL = new URL(url);
-      
-      BufferedReader in = new BufferedReader(new InputStreamReader(myURL.openStream()));
-
-      in.close();
-
-    } catch (Exception e) {
-      logs.debug("Error in Updating student completed prob. "+e.getMessage());
-    }
+      logs.debug("Student "+ApplicationContext.getUserID()+" Completed Task: "+ApplicationContext.getCurrentTaskID());
     }
 }

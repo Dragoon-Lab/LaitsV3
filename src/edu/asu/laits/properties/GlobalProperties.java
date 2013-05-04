@@ -51,9 +51,6 @@ public class GlobalProperties {
     private transient HelpSet helpSet;
     private transient HelpBroker helpBroker;
     
-    private static Logger logs = Logger.getLogger("DevLogs");
-    private static Logger activityLogs = Logger.getLogger("ActivityLogs");
-
     /**
      * @return the helpBroker
      */
@@ -137,7 +134,6 @@ public class GlobalProperties {
             helpBroker = helpSet.createHelpBroker();
             helpBroker.setSize(new Dimension(830, 680));            
         } catch (Exception e) {
-            logs.error("Error in Creating HelpSet");
             e.printStackTrace();
             return;
         }

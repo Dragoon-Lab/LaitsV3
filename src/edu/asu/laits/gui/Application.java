@@ -19,7 +19,7 @@ import org.apache.log4j.PropertyConfigurator;
  */
 public class Application extends JApplet{
 
-    private static Logger logs = Logger.getLogger("DevLogs");
+    
     
     /**
      * @param args
@@ -32,7 +32,7 @@ public class Application extends JApplet{
             System.exit(1);
         }
         
-        logs.debug("App Args: "+Arrays.asList(args));
+        
         initializeApplication(args);
         
         if (ApplicationContext.isUserValid()) {
@@ -67,7 +67,7 @@ public class Application extends JApplet{
         String mode = args[1];
         String problem_id = args[2];
         
-        ApplicationContext.setUserASUID(username);
+        ApplicationContext.setUserID(username);
         ApplicationContext.setUserValid(true);
         
         ApplicationContext.setCurrentTaskID(problem_id);

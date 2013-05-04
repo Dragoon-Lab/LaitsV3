@@ -16,9 +16,7 @@ import org.apache.log4j.Logger;
  * @author ramayantiwari
  */
 public class ApplicationContext {
-  private static String firstName;
-  private static String lastName;
-  private static String asuid;
+  private static String userId;
   private static String appMode;
   
   private static boolean isValid = false;
@@ -26,30 +24,13 @@ public class ApplicationContext {
   private static HashMap<String,TaskMenuItem> taskIdNameMap;
   private static String currentTaskID;
   private static boolean isProblemSolved = false;
-  private static Logger logs = Logger.getLogger("DevLogs");
   
-  public static String getUserFirstName(){
-    return firstName;
+  public static String getUserID(){
+    return userId;
   }
   
-  public static void setUserFirstName(String fName){
-    firstName = fName;
-  }
-  
-  public static String getUserLastName(){
-    return lastName;
-  }
-  
-  public static void setUserLastName(String lName){
-    lastName = lName;
-  }
-  
-  public static String getUserASUID(){
-    return asuid;
-  }
-  
-  public static void setUserASUID(String uid){
-    asuid = uid;
+  public static void setUserID(String uid){
+    userId = uid;
   }
   
   public static boolean isUserValid(){
@@ -89,7 +70,6 @@ public class ApplicationContext {
   }
   
   public static void setCurrentTaskID(String uid){
-      logs.debug("Setting Current Task ID : "+uid);
     currentTaskID = uid;
   }
   
