@@ -5,7 +5,7 @@ Version 3 of LAITS Project with jGraph
 
 Requires command line arguments in to run locally from NetBeans.  To set up command line arguments in NetBeans, right-click the project, select "Configuration" > "Customize", select the "Run" category, and enter into the Arguments line in this format:
 
-<username> <mode> <problemid>
+username mode problemid
 
 Currently accepted modes are STUDENT and AUTHOR.  Problemid is the problem number you wish to run.  Example command line argument:
 
