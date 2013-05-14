@@ -1,3 +1,7 @@
+package edu.asu.laits.model;
+
+import java.util.LinkedList;
+
 /**
  * LAITS Project
  * Arizona State University
@@ -18,12 +22,18 @@
  * along with LAITS.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-package edu.asu.laits.model;
-
 /**
  *
  * @author ramayantiwari
  */
-public class InvalidEquationException extends Exception{
-    
+public class TaskMenu {
+   private LinkedList<TaskMenuItem> Tasks; 
+   
+   public LinkedList<TaskMenuItem> getAllTasks(){
+       return Tasks;
+   }
+   
+   public void setAllTasks(LinkedList<TaskMenuItem> tasks){
+       Tasks = tasks;
+   }
 }
