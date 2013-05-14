@@ -26,7 +26,7 @@ import org.jgraph.graph.DefaultGraphCell;
 public class NodeEditor extends javax.swing.JDialog {
 
     private DescriptionPanelView dPanel;
-    private PlanPanelView pPanel;
+    private NewPlanPanel pPanel;
     private InputsPanelView iPanel;
     private CalculationsPanelView cPanel;
     private GraphsPanelView gPanel;
@@ -105,14 +105,16 @@ public class NodeEditor extends javax.swing.JDialog {
         logs.debug("Initializing NodeEditor Tabs - Start");
 
         dPanel = new DescriptionPanelView(this);
-        pPanel = new PlanPanelView(this);
+        //pPanel = new PlanPanelView(this);
+        pPanel = new NewPlanPanel(this);
+        
         iPanel = new InputsPanelView(this);
         cPanel = new CalculationsPanelView(this);
         gPanel = new GraphsPanelView(this);
 
         activityLogs.debug("Vertex Details before opening node editor ");
         activityLogs.debug(dPanel.printDescriptionPanelDetails());
-        activityLogs.debug(pPanel.printPlanPanel());
+        //activityLogs.debug(pPanel.printPlanPanel());
         activityLogs.debug(iPanel.printInputsPanel());
         activityLogs.debug(cPanel.printCalculationPanel());
 
@@ -384,7 +386,7 @@ public class NodeEditor extends javax.swing.JDialog {
             this.checkButton.setEnabled(true);
             this.giveUpButton.setEnabled(true);
 
-            String taskPhase = ApplicationContext.getTaskIdNameMap().get(ApplicationContext.getCurrentTaskID()).getTaskPhase();
+            String taskPhase = ApplicationContext.getCorrectSolution().getPhase();
 
             // Disable Giveup in Challege tasks
             if (taskPhase.equalsIgnoreCase("Challenge")) {

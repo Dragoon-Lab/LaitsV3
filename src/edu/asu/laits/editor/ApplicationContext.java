@@ -6,10 +6,7 @@
 
 package edu.asu.laits.editor;
 
-import edu.asu.laits.model.TaskMenuItem;
 import edu.asu.laits.model.TaskSolution;
-import java.util.HashMap;
-import org.apache.log4j.Logger;
 
 /**
  *
@@ -21,9 +18,9 @@ public class ApplicationContext {
   
   private static boolean isValid = false;
   private static TaskSolution correctSolution;
-  private static HashMap<String,TaskMenuItem> taskIdNameMap;
   private static String currentTaskID;
   private static boolean isProblemSolved = false;
+  public static String taskLoaderURL = "http://laits.engineering.asu.edu/demo/task_fetcher.php?taskid=";
   
   public static String getUserID(){
     return userId;
@@ -57,14 +54,6 @@ public class ApplicationContext {
       return correctSolution;
   }
   
-  public static void setTaskIdNameMap(HashMap<String,TaskMenuItem> map){
-      taskIdNameMap = map;
-  }
-  
-  public static HashMap<String,TaskMenuItem> getTaskIdNameMap(){
-      return taskIdNameMap;
-  }
-  
   public static String getCurrentTaskID(){
     return currentTaskID;
   }
@@ -80,4 +69,6 @@ public class ApplicationContext {
   public static void setProblemSolved(boolean input){
     isProblemSolved = input;
   }
+  
+  
 }

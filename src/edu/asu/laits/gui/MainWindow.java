@@ -170,7 +170,7 @@ public class MainWindow extends JFrame {
                 mainPanel.add(getIntroductionPanel(), BorderLayout.CENTER);
                 // Initialize Situation Panel so that first task can be loaded
                 getSituationPanel();
-                loadFirstTask();                
+                loadTask();                
             }
             mainPanel.add(getStatusBarPanel(), BorderLayout.SOUTH);
         }
@@ -222,7 +222,7 @@ public class MainWindow extends JFrame {
     }
     
     public void loadTaskDescription(String name, String description, String imageURL){
-        logs.debug("Loading New Task ");
+        logs.debug("Loading New Task - "+name);
         
         StringBuilder sb = new StringBuilder();
         sb.append("<html><center>");
@@ -243,6 +243,7 @@ public class MainWindow extends JFrame {
         sb.append("</html");
         
         situationLabel.setText(sb.toString());
+        
         this.validate();
         mainPanel.repaint();
     }
@@ -500,7 +501,7 @@ public class MainWindow extends JFrame {
     }
     
     
-    private void loadFirstTask(){
+    private void loadTask(){
         
         TaskSolutionReader solutionReader = new TaskSolutionReader();
         try{
@@ -510,7 +511,7 @@ public class MainWindow extends JFrame {
             TaskSolution solution = solutionReader.loadSolution(task);
             ApplicationContext.setCorrectSolution(solution);
             
-            this.loadTaskDescription(ApplicationContext.getTaskIdNameMap().get(task).getTaskName(),
+            this.loadTaskDescription(solution.getTaskName(),
                     solution.getTaskDescription(), 
                     solution.getImageURL());
             //ApplicationContext.setCurrentTaskID("105");

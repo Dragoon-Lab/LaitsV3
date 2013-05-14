@@ -5,11 +5,13 @@
 
 package edu.asu.laits.model;
 
+import edu.asu.laits.editor.ApplicationContext;
 import java.util.List;
 import java.io.File;
 import java.io.FileReader;
 import java.io.InputStream;
 import java.io.Reader;
+import java.net.URL;
 import java.util.ArrayList;
 import org.apache.log4j.Logger;
 import org.dom4j.Document;
@@ -66,12 +68,17 @@ public class TaskSolutionReader {
         InputStream in = getClass().getResourceAsStream(solutionFilePath);
         //File file = new File(getClass().getResource(solutionFilePath).toURI());
         //File file = new File(solutionFilePath);
-        document = reader.read(in);
+        //document = reader.read(in);
+        String resourceURL = ApplicationContext.taskLoaderURL + taskId;
         
+        logs.info("Task URL : "+resourceURL);
+        document = reader.read(new URL(resourceURL));
         return document;
     }
     
+    
     private void fillTaskParams(TaskSolution solution, Element rootNode){
+        solution.setTaskName(rootNode.elementTextTrim("TaskName"));
         solution.setTaskDescription(rootNode.elementTextTrim("TaskDescription"));
         solution.setImageURL(rootNode.elementText("URL"));
         solution.setStartTime(Integer.parseInt(rootNode.elementTextTrim("StartTime")));

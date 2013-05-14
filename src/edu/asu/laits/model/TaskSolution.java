@@ -21,6 +21,7 @@ import org.jgraph.graph.DefaultPort;
  * @author ramayantiwari
  */
 public class TaskSolution {
+    private String taskName;
     private String phase;
     private String taskType;
     private String taskDescription;
@@ -42,6 +43,20 @@ public class TaskSolution {
         solutionNodes = new ArrayList<SolutionNode> ();
         givenNodes = new ArrayList<SolutionNode> ();
         correctNodeNames = new ArrayList<String>();
+    }
+    
+    /**
+     * @return the phase
+     */
+    public String getTaskName() {
+        return taskName;
+    }
+
+    /**
+     * @param phase the phase to set
+     */
+    public void setTaskName(String name) {
+        this.taskName = name;
     }
     
     /**

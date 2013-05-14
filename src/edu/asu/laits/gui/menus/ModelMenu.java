@@ -9,7 +9,6 @@ import edu.asu.laits.model.Graph;
 import edu.asu.laits.model.ModelEvaluationException;
 import edu.asu.laits.model.ModelEvaluator;
 import edu.asu.laits.model.SolutionNode;
-import edu.asu.laits.model.TaskMenuItem;
 import edu.asu.laits.model.TaskSolution;
 import edu.asu.laits.model.TaskSolutionReader;
 import edu.asu.laits.model.Vertex;
@@ -358,44 +357,45 @@ public class ModelMenu extends JMenu {
         
         writeResultToServer();
         
-        String currentTaskLevel = ApplicationContext.getTaskIdNameMap()
-                .get(ApplicationContext.getCurrentTaskID()).getTaskLevel();
-        int level = Integer.parseInt(currentTaskLevel);
-        level++;
-        
-        String nextLevel = String.valueOf(level);
-        Iterator<TaskMenuItem> it = ApplicationContext.getTaskIdNameMap().values().iterator();
-        String nextTaskID = null;
-        
-        while(it.hasNext()){
-            TaskMenuItem item = it.next();
-            if(item.getTaskLevel().equals(nextLevel)){
-                nextTaskID = item.getTaskId();
-                break;
-            }    
-        }
-        activityLogs.debug("User is being given the next task "+nextTaskID);
-        ApplicationContext.setCurrentTaskID(nextTaskID);
-        TaskSolutionReader solutionReader = new TaskSolutionReader();
-        try{
-            TaskSolution solution = solutionReader.loadSolution(nextTaskID);
-            ApplicationContext.setCorrectSolution(solution);
-            
-            mainWindow.loadTaskDescription(ApplicationContext.getTaskIdNameMap().get(nextTaskID).getTaskName(),
-                    solution.getTaskDescription(), 
-                    solution.getImageURL());
-            
-            mainWindow.getGraphEditorPane().resetModelGraph();
-            if(solution.getTaskType().equalsIgnoreCase("debug")){
-                createGivenModel(solution, graphPane);
-            }
-            
-            mainWindow.switchTutorModelPanels(true);
-        }catch(Exception e){
-            e.printStackTrace();
-        }
-        
-        mainWindow.getModelToolBar().disableDoneButton();
+//        String currentTaskLevel = ApplicationContext.getTaskIdNameMap()
+//                .get(ApplicationContext.getCurrentTaskID()).getTaskLevel();
+//        int level = Integer.parseInt(currentTaskLevel);
+//        level++;
+//        
+//        String nextLevel = String.valueOf(level);
+//        Iterator<TaskMenuItem> it = ApplicationContext.getTaskIdNameMap().values().iterator();
+//        String nextTaskID = null;
+//        
+//        while(it.hasNext()){
+//            TaskMenuItem item = it.next();
+//            if(item.getTaskLevel().equals(nextLevel)){
+//                nextTaskID = item.getTaskId();
+//                break;
+//            }    
+//        }
+//        activityLogs.debug("User is being given the next task "+nextTaskID);
+//        ApplicationContext.setCurrentTaskID(nextTaskID);
+//        TaskSolutionReader solutionReader = new TaskSolutionReader();
+//        try{
+//            TaskSolution solution = solutionReader.loadSolution(nextTaskID);
+//            ApplicationContext.setCorrectSolution(solution);
+//            
+//            mainWindow.loadTaskDescription(ApplicationContext.getTaskIdNameMap().get(nextTaskID).getTaskName(),
+//                    solution.getTaskDescription(), 
+//                    solution.getImageURL());
+//            
+//            mainWindow.getGraphEditorPane().resetModelGraph();
+//            if(solution.getTaskType().equalsIgnoreCase("debug")){
+//                createGivenModel(solution, graphPane);
+//            }
+//            
+//            mainWindow.switchTutorModelPanels(true);
+//        }catch(Exception e){
+//            e.printStackTrace();
+//        }
+//        
+//        mainWindow.getModelToolBar().disableDoneButton();
+        System.exit(0);
     }
     
     private void createGivenModel(TaskSolution solution, GraphEditorPane editorPane){

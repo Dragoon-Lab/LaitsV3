@@ -4,15 +4,7 @@ import edu.asu.laits.editor.ApplicationContext;
 import edu.asu.laits.gui.menus.ModelMenu;
 import javax.swing.JToolBar;
 import javax.swing.JButton;
-import javax.swing.ImageIcon;
-
-import edu.asu.laits.gui.menus.ViewMenu;
-import edu.asu.laits.model.TaskMenuItem;
-import edu.asu.laits.model.TaskSolution;
-import edu.asu.laits.model.TaskSolutionReader;
-import edu.asu.laits.model.Vertex;
 import java.awt.Font;
-import java.util.Iterator;
 import javax.swing.Box;
 
 /**
