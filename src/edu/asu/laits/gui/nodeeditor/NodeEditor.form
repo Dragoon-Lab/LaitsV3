@@ -6,6 +6,7 @@
   </Properties>
   <SyntheticProperties>
     <SyntheticProperty name="formSizePolicy" type="int" value="1"/>
+    <SyntheticProperty name="generateCenter" type="boolean" value="false"/>
   </SyntheticProperties>
   <AuxValues>
     <AuxValue name="FormSettings_autoResourcing" type="java.lang.Integer" value="0"/>
@@ -235,7 +236,8 @@
     </Component>
     <Component class="javax.swing.JButton" name="giveUpButton">
       <Properties>
-        <Property name="text" type="java.lang.String" value="Give Up"/>
+        <Property name="text" type="java.lang.String" value="Demo"/>
+        <Property name="actionCommand" type="java.lang.String" value="Give Up"/>
         <Property name="enabled" type="boolean" value="false"/>
       </Properties>
       <Events>
