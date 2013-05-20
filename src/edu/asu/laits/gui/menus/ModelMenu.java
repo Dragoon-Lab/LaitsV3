@@ -1,3 +1,20 @@
+/** (c) 2013, Arizona Board of Regents for and on behalf of Arizona State University.
+ * This file is part of LAITS.
+ *
+ * LAITS is free software: you can redistribute it and/or modify
+ * it under the terms of the GNU Lesser General Public License as published by
+ * the Free Software Foundation, either version 3 of the License, or
+ * (at your option) any later version.
+ *
+ * LAITS is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ * GNU Lesser General Public License for more details.
+
+ * You should have received a copy of the GNU Lesser General Public License
+ * along with LAITS.  If not, see <http://www.gnu.org/licenses/>.
+ */
+
 package edu.asu.laits.gui.menus;
 
 import edu.asu.laits.editor.ApplicationContext;
@@ -9,7 +26,6 @@ import edu.asu.laits.model.Graph;
 import edu.asu.laits.model.ModelEvaluationException;
 import edu.asu.laits.model.ModelEvaluator;
 import edu.asu.laits.model.SolutionNode;
-import edu.asu.laits.model.TaskMenuItem;
 import edu.asu.laits.model.TaskSolution;
 import edu.asu.laits.model.TaskSolutionReader;
 import edu.asu.laits.model.Vertex;
@@ -358,44 +374,45 @@ public class ModelMenu extends JMenu {
         
         writeResultToServer();
         
-        String currentTaskLevel = ApplicationContext.getTaskIdNameMap()
-                .get(ApplicationContext.getCurrentTaskID()).getTaskLevel();
-        int level = Integer.parseInt(currentTaskLevel);
-        level++;
-        
-        String nextLevel = String.valueOf(level);
-        Iterator<TaskMenuItem> it = ApplicationContext.getTaskIdNameMap().values().iterator();
-        String nextTaskID = null;
-        
-        while(it.hasNext()){
-            TaskMenuItem item = it.next();
-            if(item.getTaskLevel().equals(nextLevel)){
-                nextTaskID = item.getTaskId();
-                break;
-            }    
-        }
-        activityLogs.debug("User is being given the next task "+nextTaskID);
-        ApplicationContext.setCurrentTaskID(nextTaskID);
-        TaskSolutionReader solutionReader = new TaskSolutionReader();
-        try{
-            TaskSolution solution = solutionReader.loadSolution(nextTaskID);
-            ApplicationContext.setCorrectSolution(solution);
-            
-            mainWindow.loadTaskDescription(ApplicationContext.getTaskIdNameMap().get(nextTaskID).getTaskName(),
-                    solution.getTaskDescription(), 
-                    solution.getImageURL());
-            
-            mainWindow.getGraphEditorPane().resetModelGraph();
-            if(solution.getTaskType().equalsIgnoreCase("debug")){
-                createGivenModel(solution, graphPane);
-            }
-            
-            mainWindow.switchTutorModelPanels(true);
-        }catch(Exception e){
-            e.printStackTrace();
-        }
-        
-        mainWindow.getModelToolBar().disableDoneButton();
+//        String currentTaskLevel = ApplicationContext.getTaskIdNameMap()
+//                .get(ApplicationContext.getCurrentTaskID()).getTaskLevel();
+//        int level = Integer.parseInt(currentTaskLevel);
+//        level++;
+//        
+//        String nextLevel = String.valueOf(level);
+//        Iterator<TaskMenuItem> it = ApplicationContext.getTaskIdNameMap().values().iterator();
+//        String nextTaskID = null;
+//        
+//        while(it.hasNext()){
+//            TaskMenuItem item = it.next();
+//            if(item.getTaskLevel().equals(nextLevel)){
+//                nextTaskID = item.getTaskId();
+//                break;
+//            }    
+//        }
+//        activityLogs.debug("User is being given the next task "+nextTaskID);
+//        ApplicationContext.setCurrentTaskID(nextTaskID);
+//        TaskSolutionReader solutionReader = new TaskSolutionReader();
+//        try{
+//            TaskSolution solution = solutionReader.loadSolution(nextTaskID);
+//            ApplicationContext.setCorrectSolution(solution);
+//            
+//            mainWindow.loadTaskDescription(ApplicationContext.getTaskIdNameMap().get(nextTaskID).getTaskName(),
+//                    solution.getTaskDescription(), 
+//                    solution.getImageURL());
+//            
+//            mainWindow.getGraphEditorPane().resetModelGraph();
+//            if(solution.getTaskType().equalsIgnoreCase("debug")){
+//                createGivenModel(solution, graphPane);
+//            }
+//            
+//            mainWindow.switchTutorModelPanels(true);
+//        }catch(Exception e){
+//            e.printStackTrace();
+//        }
+//        
+//        mainWindow.getModelToolBar().disableDoneButton();
+        System.exit(0);
     }
     
     private void createGivenModel(TaskSolution solution, GraphEditorPane editorPane){

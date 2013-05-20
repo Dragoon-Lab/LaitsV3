@@ -27,10 +27,7 @@ import edu.asu.laits.editor.listeners.GraphPropertiesChangeListener;
 import edu.asu.laits.editor.listeners.GraphSaveListener;
 import edu.asu.laits.gui.MainWindow;
 import edu.asu.laits.gui.nodeeditor.NodeEditor;
-import edu.asu.laits.model.Graph;
 import edu.asu.laits.model.SolutionNode;
-import edu.asu.laits.model.TaskMenuItem;
-import edu.asu.laits.model.TaskMenuReader;
 import edu.asu.laits.model.TaskSolution;
 import edu.asu.laits.model.TaskSolutionReader;
 import edu.asu.laits.model.Vertex;
@@ -38,7 +35,6 @@ import edu.asu.laits.properties.GlobalProperties;
 import edu.asu.laits.properties.GraphProperties;
 import edu.asu.laits.properties.LatestFilesPropertyChangeListener;
 import java.awt.Window;
-import java.io.FileInputStream;
 import java.io.FileOutputStream;
 import java.io.InputStream;
 import java.io.OutputStream;
@@ -126,7 +122,6 @@ public class FileMenu extends JMenu {
     }
 
     private void updateOpenLatestMenu() {
-
         getOpenLatestFileMenu().removeAll();
         addLatestFilesMenuItems();
     }
@@ -138,8 +133,6 @@ public class FileMenu extends JMenu {
     private void initializeAuthorMenu() {
         this.setText("File");
         this.setMnemonic(KeyEvent.VK_F);
-        this.add(getTaskMenuForAuthor());
-        this.add(getJSeparator());
         this.add(getNewFileMenuItem());
         this.add(getJSeparator());
         this.add(getOpenFileMenuItem());
@@ -153,54 +146,13 @@ public class FileMenu extends JMenu {
     }
 
     /**
-     * Add Tasks in the File Menu
-     *
-     * @return
-     */
-    private JMenu getTaskMenuForAuthor() {
-        if (tempTaskMenu == null) {
-            tempTaskMenu = new JMenu();
-            tempTaskMenu.setText("Open Task");
-
-            JMenuItem task1 = new JMenuItem();
-            task1.setText("Ecosystem Model");
-            task1.setActionCommand("EcosystemModel");
-
-            JMenuItem task2 = new JMenuItem();
-            task2.setText("Predator-Prey Model");
-            task2.setActionCommand("Predator-PreyModel");
-
-            // Attaching Action Listener
-            task1.addActionListener(new java.awt.event.ActionListener() {
-                public void actionPerformed(java.awt.event.ActionEvent e) {
-                    JMenuItem newMenu = (JMenuItem) e.getSource();
-                    openTempTask(newMenu.getActionCommand());
-                }
-            });
-            // Attaching Action Listener
-            task2.addActionListener(new java.awt.event.ActionListener() {
-                public void actionPerformed(java.awt.event.ActionEvent e) {
-                    JMenuItem newMenu = (JMenuItem) e.getSource();
-                    openTempTask(newMenu.getActionCommand());
-                }
-            });
-
-            tempTaskMenu.add(task2);
-            tempTaskMenu.add(task1);
-
-        }
-
-        return tempTaskMenu;
-    }
-
-    /**
      * This method initializes File Menu for Tutor Mode
      *
      */
     private void initializeTutorMenu() {
         this.setText("File");
         this.setMnemonic(KeyEvent.VK_F);
-        getNewTaskMenuItem();
+        //getNewTaskMenuItem();
         //this.add(getNewTaskMenuItem());
         //this.add(getJSeparator());
         this.add(getOpenFileMenuItem());
@@ -212,91 +164,20 @@ public class FileMenu extends JMenu {
         this.add(getExitFileMenuItem());
     }
 
-    /**
-     * Add Tasks in the File Menu
-     *
-     * @return
-     */
-    private JMenu getNewTaskMenuItem() {
-        if (taskListMenu == null) {
-            taskListMenu = new JMenu();
-            taskListMenu.setText("Open Task");
-
-            TaskMenuReader menuReader = new TaskMenuReader();
-            try {
-                LinkedList<TaskMenuItem> allMenuItems = menuReader.load();
-                HashMap<String, TaskMenuItem> taskIdNameMap = new HashMap<String, TaskMenuItem>();
-
-                // HardCoded Subcategories - needs to be dynamic
-                JMenu intro = new JMenu("Intro");
-                JMenu challenge = new JMenu("Challenge");
-                JMenu training = new JMenu("Training");
-
-                for (TaskMenuItem menuItem : allMenuItems) {
-                    taskIdNameMap.put(menuItem.getTaskId(), menuItem);
-                    JMenuItem anotherTask = new JMenuItem();
-                    anotherTask.setText(menuItem.getTaskName());
-                    anotherTask.setActionCommand(menuItem.getTaskId());
-
-                    if (menuItem.getTaskPhase().equals("Intro")) {
-                        intro.add(anotherTask);
-                    } else if (menuItem.getTaskPhase().equals("Challenge")) {
-                        challenge.add(anotherTask);
-                    } else if (menuItem.getTaskPhase().equals("Training")) {
-                        training.add(anotherTask);
-                    }
-
-                    // Attaching Action Listener
-                    anotherTask.addActionListener(new java.awt.event.ActionListener() {
-                        public void actionPerformed(java.awt.event.ActionEvent e) {
-                            JMenuItem newMenu = (JMenuItem) e.getSource();
-                            ApplicationContext.setCurrentTaskID(newMenu.getActionCommand());
-                            openTaskById(newMenu.getActionCommand());
-                            mainWindow.getModelToolBar().disableDoneButton();
-                            graphPane.getMainFrame().getMainMenu().getModelMenu().removeAllDeleteMenu();
-                            /*
-                             * Author/Modifier: Deepak
-                             * Description: Code added to close nodeEditor when new problem is opened
-                             * Bug fix: 1997
-                             */
-                            Window[] windows = MainWindow.getWindows();
-                            for (int i = 0; i < windows.length; i++) {
-                                if (windows[i].getClass() == NodeEditor.class) {
-                                    windows[i].dispose();
-                                }
-                            }
-                        }
-                    });
-                }
-
-
-                taskListMenu.add(intro);
-                taskListMenu.add(training);
-                taskListMenu.add(challenge);
-
-                ApplicationContext.setTaskIdNameMap(taskIdNameMap);
-
-            } catch (Exception e) {
-                e.printStackTrace();
-            }
-        }
-
-        return taskListMenu;
-    }
-
+    
     /**
      * Method to open a new Task in Tutor Mode
      */
     private void openTaskById(String id) {
-        activityLogs.debug("Student opened a new task ID: " + id + " - "
-                + ApplicationContext.getTaskIdNameMap().get(id).getTaskName());
-
         TaskSolutionReader solutionReader = new TaskSolutionReader();
         try {
             TaskSolution solution = solutionReader.loadSolution(id);
             ApplicationContext.setCorrectSolution(solution);
 
-            mainWindow.loadTaskDescription(ApplicationContext.getTaskIdNameMap().get(id).getTaskName(),
+            activityLogs.debug("Student opened a new task ID: " + id + " - "
+                + solution.getTaskName());
+            
+            mainWindow.loadTaskDescription(solution.getTaskName(),
                     solution.getTaskDescription(),
                     solution.getImageURL());
 

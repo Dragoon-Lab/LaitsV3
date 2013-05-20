@@ -66,6 +66,9 @@ public class Application extends JApplet{
         String username = args[0];        
         String mode = args[1];
         String problem_id = args[2];
+//        String username = "ramayan";
+//        String mode = "STUDENT";
+//        String problem_id = "105";
         
         ApplicationContext.setUserID(username);
         ApplicationContext.setUserValid(true);

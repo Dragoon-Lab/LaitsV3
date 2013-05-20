@@ -1,3 +1,20 @@
+/** (c) 2013, Arizona Board of Regents for and on behalf of Arizona State University.
+ * This file is part of LAITS.
+ *
+ * LAITS is free software: you can redistribute it and/or modify
+ * it under the terms of the GNU Lesser General Public License as published by
+ * the Free Software Foundation, either version 3 of the License, or
+ * (at your option) any later version.
+ *
+ * LAITS is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ * GNU Lesser General Public License for more details.
+
+ * You should have received a copy of the GNU Lesser General Public License
+ * along with LAITS.  If not, see <http://www.gnu.org/licenses/>.
+ */
+
 /*
  * To change this template, choose Tools | Templates
  * and open the template in the editor.
@@ -26,7 +43,7 @@ import org.jgraph.graph.DefaultGraphCell;
 public class NodeEditor extends javax.swing.JDialog {
 
     private DescriptionPanelView dPanel;
-    private PlanPanelView pPanel;
+    private NewPlanPanel pPanel;
     private InputsPanelView iPanel;
     private CalculationsPanelView cPanel;
     private GraphsPanelView gPanel;
@@ -120,14 +137,16 @@ public class NodeEditor extends javax.swing.JDialog {
         logs.debug("Initializing NodeEditor Tabs - Start");
 
         dPanel = new DescriptionPanelView(this);
-        pPanel = new PlanPanelView(this);
+        //pPanel = new PlanPanelView(this);
+        pPanel = new NewPlanPanel(this);
+        
         iPanel = new InputsPanelView(this);
         cPanel = new CalculationsPanelView(this);
         gPanel = new GraphsPanelView(this);
 
         activityLogs.debug("Vertex Details before opening node editor ");
         activityLogs.debug(dPanel.printDescriptionPanelDetails());
-        activityLogs.debug(pPanel.printPlanPanel());
+        //activityLogs.debug(pPanel.printPlanPanel());
         activityLogs.debug(iPanel.printInputsPanel());
         activityLogs.debug(cPanel.printCalculationPanel());
 
@@ -403,7 +422,7 @@ public class NodeEditor extends javax.swing.JDialog {
             this.checkButton.setEnabled(true);
             this.giveUpButton.setEnabled(true);
 
-            String taskPhase = ApplicationContext.getTaskIdNameMap().get(ApplicationContext.getCurrentTaskID()).getTaskPhase();
+            String taskPhase = ApplicationContext.getCorrectSolution().getPhase();
 
             // Disable Giveup in Challege tasks
             if (taskPhase.equalsIgnoreCase("Challenge")) {
@@ -724,11 +743,11 @@ public class NodeEditor extends javax.swing.JDialog {
         planPanel.setLayout(planPanelLayout);
         planPanelLayout.setHorizontalGroup(
             planPanelLayout.createParallelGroup(org.jdesktop.layout.GroupLayout.LEADING)
-            .add(0, 617, Short.MAX_VALUE)
+            .add(0, 601, Short.MAX_VALUE)
         );
         planPanelLayout.setVerticalGroup(
             planPanelLayout.createParallelGroup(org.jdesktop.layout.GroupLayout.LEADING)
-            .add(0, 524, Short.MAX_VALUE)
+            .add(0, 506, Short.MAX_VALUE)
         );
 
         tabPane.addTab("Plan", planPanel);
@@ -737,11 +756,11 @@ public class NodeEditor extends javax.swing.JDialog {
         inputsPanel.setLayout(inputsPanelLayout);
         inputsPanelLayout.setHorizontalGroup(
             inputsPanelLayout.createParallelGroup(org.jdesktop.layout.GroupLayout.LEADING)
-            .add(0, 617, Short.MAX_VALUE)
+            .add(0, 601, Short.MAX_VALUE)
         );
         inputsPanelLayout.setVerticalGroup(
             inputsPanelLayout.createParallelGroup(org.jdesktop.layout.GroupLayout.LEADING)
-            .add(0, 524, Short.MAX_VALUE)
+            .add(0, 506, Short.MAX_VALUE)
         );
 
         tabPane.addTab("Inputs", inputsPanel);
@@ -750,11 +769,11 @@ public class NodeEditor extends javax.swing.JDialog {
         calculationPanel.setLayout(calculationPanelLayout);
         calculationPanelLayout.setHorizontalGroup(
             calculationPanelLayout.createParallelGroup(org.jdesktop.layout.GroupLayout.LEADING)
-            .add(0, 617, Short.MAX_VALUE)
+            .add(0, 601, Short.MAX_VALUE)
         );
         calculationPanelLayout.setVerticalGroup(
             calculationPanelLayout.createParallelGroup(org.jdesktop.layout.GroupLayout.LEADING)
-            .add(0, 524, Short.MAX_VALUE)
+            .add(0, 506, Short.MAX_VALUE)
         );
 
         tabPane.addTab("Calculations", calculationPanel);
@@ -765,11 +784,11 @@ public class NodeEditor extends javax.swing.JDialog {
         graphsPanel.setLayout(graphsPanelLayout);
         graphsPanelLayout.setHorizontalGroup(
             graphsPanelLayout.createParallelGroup(org.jdesktop.layout.GroupLayout.LEADING)
-            .add(0, 617, Short.MAX_VALUE)
+            .add(0, 601, Short.MAX_VALUE)
         );
         graphsPanelLayout.setVerticalGroup(
             graphsPanelLayout.createParallelGroup(org.jdesktop.layout.GroupLayout.LEADING)
-            .add(0, 524, Short.MAX_VALUE)
+            .add(0, 506, Short.MAX_VALUE)
         );
 
         tabPane.addTab("Graphs", graphsPanel);
@@ -782,7 +801,8 @@ public class NodeEditor extends javax.swing.JDialog {
             }
         });
 
-        giveUpButton.setText("Give Up");
+        giveUpButton.setText("Demo");
+        giveUpButton.setActionCommand("Give Up");
         giveUpButton.setEnabled(false);
         giveUpButton.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
@@ -826,7 +846,7 @@ public class NodeEditor extends javax.swing.JDialog {
                         .add(editorMsgLabel, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE, 601, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE)
                         .add(0, 0, Short.MAX_VALUE))
                     .add(org.jdesktop.layout.GroupLayout.TRAILING, layout.createSequentialGroup()
-                        .add(0, 10, Short.MAX_VALUE)
+                        .add(0, 14, Short.MAX_VALUE)
                         .add(tabPane, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE, 622, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE)))
                 .addContainerGap())
             .add(layout.createSequentialGroup()
@@ -850,7 +870,7 @@ public class NodeEditor extends javax.swing.JDialog {
         layout.setVerticalGroup(
             layout.createParallelGroup(org.jdesktop.layout.GroupLayout.LEADING)
             .add(org.jdesktop.layout.GroupLayout.TRAILING, layout.createSequentialGroup()
-                .addContainerGap(org.jdesktop.layout.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                .addContainerGap(16, Short.MAX_VALUE)
                 .add(tabPane, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE, 552, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE)
                 .addPreferredGap(org.jdesktop.layout.LayoutStyle.RELATED)
                 .add(editorMsgLabel, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE, 21, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE)
