@@ -36,6 +36,15 @@ public class ApplicationContext {
   private static String currentTaskID;
   private static boolean isProblemSolved = false;
   public static String taskLoaderURL = "http://laits.engineering.asu.edu/demo/task_fetcher.php?taskid=";
+  private static boolean situationMerge =true;
+  
+  public static boolean getSituationMerge(){
+      return situationMerge;
+  }
+  
+  public static void setSituationMerge(boolean flag){
+      situationMerge=flag;
+  }
   
   public static String getUserID(){
     return userId;

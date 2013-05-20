@@ -57,9 +57,9 @@ public class TutorModeToolBar extends JToolBar{
         this.setName("Tutor Menu");
         this.add(getIntroductionButton());
         this.add(Box.createHorizontalStrut(5));
-        /*if (!ApplicationContext.getSituationMerge()) {
+        if (!ApplicationContext.getSituationMerge()) {
             this.add(getSituationButton());
-        }*/
+        }
         this.add(Box.createHorizontalStrut(5)); 
         this.add(getModelButton());
     }

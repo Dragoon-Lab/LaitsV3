@@ -264,11 +264,11 @@ public class MainWindow extends JFrame {
             
             mainPanel.removeAll();
             mainPanel.add(getToolBarPanel(), BorderLayout.NORTH);
-            /*if (ApplicationContext.getSituationMerge()) {
+            if (ApplicationContext.getSituationMerge()) {
                 situationLabel.setOpaque(false);
                 situationLabel.setBorder(BorderFactory.createLineBorder(Color.white));
                 mainPanel.add(situationLabel, BorderLayout.CENTER);
-            }*/
+            }
             mainPanel.add(getGraphPaneScrollPane(), BorderLayout.CENTER);
            // mainPanel.add(getSituationPanel(), BorderLayout.CENTER);
             
