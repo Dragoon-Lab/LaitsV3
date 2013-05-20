@@ -5,6 +5,7 @@
 
 package edu.asu.laits.gui.toolbars;
 
+import edu.asu.laits.editor.ApplicationContext;
 import edu.asu.laits.gui.MainWindow;
 import java.awt.Font;
 import javax.swing.Box;
@@ -41,7 +42,9 @@ public class TutorModeToolBar extends JToolBar{
         this.setName("Tutor Menu");
         this.add(getIntroductionButton());
         this.add(Box.createHorizontalStrut(5));
-        this.add(getSituationButton());
+        if (!ApplicationContext.getSituationMerge()) {
+            this.add(getSituationButton());
+        }
         this.add(Box.createHorizontalStrut(5)); 
         this.add(getModelButton());
     }

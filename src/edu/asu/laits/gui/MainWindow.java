@@ -35,13 +35,10 @@ import java.io.FileInputStream;
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
 import java.util.Date;
-import javax.swing.BorderFactory;
-
-import javax.swing.BoxLayout;
-import javax.swing.JLabel;
-import javax.swing.SwingConstants;
+import javax.swing.*;
 import org.apache.commons.net.ftp.FTPClient;
 import org.apache.log4j.Logger;
+import org.omg.PortableInterceptor.SYSTEM_EXCEPTION;
 
 /**
  * The main window in the program. This can be opened both with an empty graph
@@ -159,8 +156,7 @@ public class MainWindow extends JFrame {
         if (mainPanel == null) {
             mainPanel = new JPanel();
             mainPanel.setLayout(new BorderLayout());
-            mainPanel.add(getToolBarPanel(), BorderLayout.NORTH);
-            
+            mainPanel.add(getToolBarPanel(), BorderLayout.NORTH);           
             
             // Temporary - switch panels based on Mode
             logs.debug("Application running in "+ApplicationContext.getAppMode() + " Mode");
@@ -211,13 +207,10 @@ public class MainWindow extends JFrame {
             situationLabel.setHorizontalAlignment(JLabel.CENTER);
             situationLabel.setBorder(BorderFactory.createTitledBorder(""));
             situationLabel.setBackground(Color.WHITE);
-            situationLabel.setOpaque(true);
             situationLabel.setVerticalAlignment(SwingConstants.TOP);
-            
-            situationPanel.setViewportView(situationLabel); 
-            
         } 
-        
+        situationLabel.setOpaque(true);
+        situationPanel.setViewportView(situationLabel);
         return situationPanel;
     }
     
@@ -240,7 +233,7 @@ public class MainWindow extends JFrame {
         
         sb.append(description);
        
-        sb.append("</html");
+        sb.append("</html>");
         
         situationLabel.setText(sb.toString());
         this.validate();
@@ -256,15 +249,28 @@ public class MainWindow extends JFrame {
             logs.debug("Switching to Situation Panel");
             mainPanel.removeAll();
             mainPanel.add(getToolBarPanel(), BorderLayout.NORTH);
-            mainPanel.add(getSituationPanel(), BorderLayout.CENTER);            
+            mainPanel.add(getSituationPanel(), BorderLayout.CENTER);     
             mainPanel.add(getStatusBarPanel(), BorderLayout.SOUTH);   
             isSituationTabSelected = true;
         }else{
+            //System.out.println(situationLabel.getText());
             activityLogs.debug("User is viewing Model Design Panel.");
             logs.debug("Switching to Model Design Panel");
+            
+            mainPanel.add(getSituationPanel(), BorderLayout.CENTER);
+            this.validate();
+            mainPanel.repaint();
+            
             mainPanel.removeAll();
             mainPanel.add(getToolBarPanel(), BorderLayout.NORTH);
+            if (ApplicationContext.getSituationMerge()) {
+                situationLabel.setOpaque(false);
+                situationLabel.setBorder(BorderFactory.createLineBorder(Color.white));
+                mainPanel.add(situationLabel, BorderLayout.CENTER);
+            }
             mainPanel.add(getGraphPaneScrollPane(), BorderLayout.CENTER);
+           // mainPanel.add(getSituationPanel(), BorderLayout.CENTER);
+            
             mainPanel.add(getStatusBarPanel(), BorderLayout.SOUTH);
             isSituationTabSelected = false;
         }
@@ -333,6 +339,7 @@ public class MainWindow extends JFrame {
     public JScrollPane getGraphPaneScrollPane() {
         if (graphPaneScrollPane == null) {
             graphPaneScrollPane = new JScrollPane();
+            //graphPaneScrollPane.setViewportView(getGraphEditorPane());
             graphPaneScrollPane.setViewportView(getGraphEditorPane());
         }
         return graphPaneScrollPane;

@@ -24,6 +24,15 @@ public class ApplicationContext {
   private static HashMap<String,TaskMenuItem> taskIdNameMap;
   private static String currentTaskID;
   private static boolean isProblemSolved = false;
+  private static boolean situationMerge = true;
+  
+  public static boolean getSituationMerge(){
+      return situationMerge;
+  }
+  
+  public static void setSituationMerge(boolean mergeFlag){
+      situationMerge=mergeFlag;
+  }
   
   public static String getUserID(){
     return userId;

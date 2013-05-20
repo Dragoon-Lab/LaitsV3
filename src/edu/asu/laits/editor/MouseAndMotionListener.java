@@ -48,6 +48,7 @@ public class MouseAndMotionListener implements MouseListener,
 
     
     public void mouseClicked(MouseEvent e) {
+        graphPane.getMainFrame().repaint();
         orginalMouseListener.mouseClicked(e);
     }
 
@@ -82,6 +83,7 @@ public class MouseAndMotionListener implements MouseListener,
                 movingPortView = result;
             }
         }
+        graphPane.getMainFrame().repaint();
         orginalMouseListener.mousePressed(e);
     }
 
@@ -89,6 +91,7 @@ public class MouseAndMotionListener implements MouseListener,
     public void mouseReleased(MouseEvent e) {
         // What is at the current position?
         cellMoving = false;
+        graphPane.getMainFrame().repaint();
         orginalMouseListener.mouseReleased(e);
     }
 
@@ -136,7 +139,6 @@ public class MouseAndMotionListener implements MouseListener,
     }
 
     public void mouseMoved(MouseEvent e) {
-
         orginalMotionListener.mouseMoved(e);
     }
 }

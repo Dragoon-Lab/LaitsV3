@@ -24,6 +24,8 @@ import edu.asu.laits.editor.listeners.UndoAndRedoAbleListener;
 import edu.asu.laits.gui.MainWindow;
 import edu.asu.laits.properties.GlobalProperties;
 import edu.asu.laits.properties.GraphProperties;
+import java.awt.BorderLayout;
+import java.awt.Component;
 import javax.swing.SwingConstants;
 import org.apache.log4j.Logger;
 import org.jgraph.JGraph;
@@ -695,7 +697,6 @@ public class GraphEditorPane extends JGraph {
         Color background = bg;
         Color marqueeColor = new Color(255 - background.getRed(), 255 - background.getGreen(), 255 - background.getBlue());
         this.setMarqueeColor(marqueeColor);
-
     }
 
     public void resetModelGraph() {
