@@ -206,8 +206,7 @@ public class ModelMenu extends JMenu {
             NodeEditor editor = new NodeEditor(graphPane, true);
         } else {
             activityLogs.debug("User was not allowed to create new node as all the nodes were already present");
-            JOptionPane.showMessageDialog(window, "The model is already using all the correct nodes.");
-            //window.getStatusBarPanel().setStatusMessage("Please complete all the nodes before running Model", false);
+            JOptionPane.showMessageDialog(window, "The model is already using all the correct nodes.");            
         }
 
     }
@@ -310,7 +309,7 @@ public class ModelMenu extends JMenu {
         deleteNodeMenu.setEnabled(false);
     }
 
-    private boolean newNodeAllowed() {
+    public boolean newNodeAllowed() {
         if(ApplicationContext.getAppMode().equals("AUTHOR"))
             return true;
         

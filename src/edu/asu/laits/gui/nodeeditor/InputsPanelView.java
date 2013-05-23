@@ -71,7 +71,10 @@ public class InputsPanelView extends javax.swing.JPanel implements ItemListener 
         Set<Vertex> vertexes = graph.vertexSet();
         Vertex currentV = this.nodeEditor.getCurrentVertex();
         descriptionTextArea.setText(currentV.getCorrectDescription());
-
+        checkboxList.clear();
+        availableInputNodesPanels.removeAll();
+        
+        
         JCheckBox box;
         availableInputNodesPanels.setLayout(new GridLayout(0, 1));
         availableInputNodesPanels.setVisible(false);
@@ -369,16 +372,19 @@ public class InputsPanelView extends javax.swing.JPanel implements ItemListener 
 
     // Method for handling the click event of Input radio button
     private void inputNodesSelectionOptionButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_inputNodesSelectionOptionButtonActionPerformed
+        refreshInputs();
+    }//GEN-LAST:event_inputNodesSelectionOptionButtonActionPerformed
+
+    public void refreshInputs(){
         activityLogs.debug("Inputs Panel : User selected node type as INPUTS for Node "+
                 nodeEditor.getCurrentVertex().getName());
         
         this.displayCurrentInputsPanel(true);
-        resetOptionPanelBackground();
         nodeEditor.getCurrentVertex().setVertexType(Vertex.VertexType.DEFAULT);
         nodeEditor.getGraphPane().getLayoutCache().reload();
         nodeEditor.getGraphPane().repaint();
-    }//GEN-LAST:event_inputNodesSelectionOptionButtonActionPerformed
-
+        inputNodesSelectionOptionButton.setSelected(true);        
+    }
     /**
      * This function checks for any syntax errors in the inputsTab, and returns
      * true if there are

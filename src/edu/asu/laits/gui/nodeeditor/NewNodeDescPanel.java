@@ -22,6 +22,7 @@
 package edu.asu.laits.gui.nodeeditor;
 
 import edu.asu.laits.editor.ApplicationContext;
+import edu.asu.laits.editor.GraphEditorPane;
 import edu.asu.laits.model.Graph;
 import edu.asu.laits.model.SolutionDTreeNode;
 import edu.asu.laits.model.SolutionNode;
@@ -42,15 +43,15 @@ import org.apache.log4j.Logger;
  *
  * @author ramayantiwari
  */
-public class DescriptionPanelView extends JPanel{
+public class NewNodeDescPanel extends JPanel{
 
   TreePath[] decisionTreePaths;
   
   SolutionDTreeNode root = null;
   DefaultTreeModel model = null;
   private boolean triedDuplicate = false;
-  private static DescriptionPanelView descView;
-  private NodeEditor nodeEditor;
+  private static NewNodeDescPanel descView;
+  private CreateNewNodeDialog nodeEditor;
   
   private static Logger logs = Logger.getLogger("DevLogs");
   private static Logger activityLogs = Logger.getLogger("ActivityLogs");
@@ -68,9 +69,10 @@ public class DescriptionPanelView extends JPanel{
   }
   
   
-  public DescriptionPanelView(NodeEditor ne){
+  public NewNodeDescPanel(CreateNewNodeDialog ne, Vertex v){
     initComponents();
     nodeEditor = ne;
+    currentVertex = v;
     initPanel();    
   }
   
@@ -83,7 +85,6 @@ public class DescriptionPanelView extends JPanel{
           decisionTree.setVisible(false);
       }
       
-      Vertex currentVertex = this.nodeEditor.getCurrentVertex();
       this.nodeNameTextField.setText(currentVertex.getName());
       this.quantityDescriptionTextField.setText(currentVertex.getCorrectDescription());
       
@@ -98,6 +99,8 @@ public class DescriptionPanelView extends JPanel{
 
   }
 
+  
+  
   /**
    * This method is called from within the constructor to initialize the form.
    * WARNING: Do NOT modify this code. The content of this method is always
@@ -260,7 +263,7 @@ public class DescriptionPanelView extends JPanel{
     decisionTree.setSelectionPath(treepath);
   }
  protected static ImageIcon createImageIcon(String path) {
-    java.net.URL imgURL = DescriptionPanelView.class.getResource(path);
+    java.net.URL imgURL = NewNodeDescPanel.class.getResource(path);
     if (imgURL != null) {
       return new ImageIcon(imgURL);
     } else {
@@ -270,33 +273,14 @@ public class DescriptionPanelView extends JPanel{
   }
 
   
-
-  private void expandAll(JTree tree, TreePath parent) {
-    TreeNode node = (TreeNode) parent.getLastPathComponent();
-    if (node.getChildCount() >= 0) {
-      for (Enumeration e = node.children(); e.hasMoreElements();) {
-        TreeNode n = (TreeNode) e.nextElement();
-        TreePath path = parent.pathByAddingChild(n);
-        expandAll(tree, path);
-      }
-    }
-    tree.expandPath(parent);
-  }
-
-  
   public boolean processDescriptionPanel(){
       if(getNodeName().trim().length() == 0){
         nodeEditor.setEditorMessage("Node Name can not be empty.", true);
         return false;
       }
       
-      Vertex currentVertex = nodeEditor.getCurrentVertex();
       if (!currentVertex.getName().equals(getNodeName())) {
-          /*if(getNodeName().trim().length() > 20)
-          {
-              nodeEditor.setEditorMessage("Node Name can not be larger than 20 characters.", true);
-              return false;
-          }*/
+         
           if (!duplicatedNode(getNodeName())) 
           {
               try {
@@ -329,7 +313,8 @@ public class DescriptionPanelView extends JPanel{
   private boolean duplicatedNode(String nodeName) {
       
       Graph graph = nodeEditor.getGraphPane().getModelGraph();
-      if(graph.getVertexByName(nodeName)!=null && this.nodeEditor.getCurrentVertex().getName()!=nodeName)
+      
+      if(graph.getVertexByName(nodeName)!=null && currentVertex.getName()!=nodeName)
           return true;
       else
           return false;
