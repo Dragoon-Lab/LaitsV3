@@ -1,73 +1,114 @@
 /*
  * LAITS Project
  * Arizona State University
- * (c) 2013, Arizona Board of Regents for and on behalf of Arizona State University.
- * This file is part of LAITS.
- *
- * LAITS is free software: you can redistribute it and/or modify
- * it under the terms of the GNU Lesser General Public License as published by
- * the Free Software Foundation, either version 3 of the License, or
- * (at your option) any later version.
- *
- * LAITS is distributed in the hope that it will be useful,
- * but WITHOUT ANY WARRANTY; without even the implied warranty of
- * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
- * GNU Lesser General Public License for more details.
-
- * You should have received a copy of the GNU Lesser General Public License
- * along with LAITS.  If not, see <http://www.gnu.org/licenses/>.
  */
-
 package edu.asu.laits.gui.nodeeditor;
 
 import edu.asu.laits.editor.ApplicationContext;
 import edu.asu.laits.model.TaskSolution;
 import edu.asu.laits.model.Vertex;
+import java.awt.BorderLayout;
 import java.awt.Color;
-import javax.swing.JPanel;
-import org.apache.log4j.Logger;
+import java.awt.Component;
+import java.awt.Dimension;
+import java.awt.GridLayout;
+import java.awt.event.MouseAdapter;
+import java.awt.event.MouseEvent;
+import java.util.Vector;
+import javax.swing.AbstractCellEditor;
+import javax.swing.BorderFactory;
 
-/**
- * This class implements Author's plan while creating any node
- *
- * @author ramayantiwari
- */
+import javax.swing.ButtonGroup;
+import javax.swing.JPanel;
+import javax.swing.JRadioButton;
+import javax.swing.JScrollPane;
+import javax.swing.JTable;
+import javax.swing.table.AbstractTableModel;
+import javax.swing.table.TableCellEditor;
+import javax.swing.table.TableCellRenderer;
+
 public class PlanPanelView extends JPanel {
-    
+
+    private static final String[] COLUMN_NAMES = {
+        "<html><h3>The Node's value is...", "<html><h3>Node Type", "<html><h3>Calculations"};
+    private MyTableModel tableModel;
+    private JTable table;
     private String selectedPlan;
-    private static PlanPanelView planView;
     private boolean isViewEnabled = false;
     private NodeEditor nodeEditor;
-    /**
-     * Logger *
-     */
-    private static Logger logs = Logger.getLogger("DevLogs");
-    private static Logger activityLogs = Logger.getLogger("ActivityLogs");
+    private static String[] firstOption = {"a fixed, given number", "fixed value", "the number"};
+    private static String[] secondOption = {"<html>proportional to the value of the <BR/> accumulator that it is input to", "function", "accumulator * proportion"};
+    private static String[] thirdOption = {"said to increase", "accumulator", "increase"};
+    private static String[] fourthOption = {"said to decrease", "accumulator", "- decrease"};
+    private static String[] fifthOption = {"said to both increase and decrease", "accumulator", "increase - decrease"};
+    private static String[] sixedOption = {"the difference of two quantities", "function", "quantity1 - quantity2"};
+    private static String[] seventhOption = {"the ratio of two quantities", "function", "quantity1 / quantity2"};
+
     
     public PlanPanelView(NodeEditor ne) {
-        initComponents();
+        super(new BorderLayout(0, 5));
+
         nodeEditor = ne;
         initPanel();
     }
     
     public void initPanel() {
-        logs.debug("Initializing plan panel for Node ");
+        setBorder(BorderFactory.createEmptyBorder(5, 5, 5, 5));
+        tableModel = new MyTableModel();
+        table = new JTable(tableModel);
+
+        table.setDefaultEditor(String.class, new StatusEditor());
+        table.setDefaultRenderer(String.class, new StatusRenderer());
+
+        table.setRowHeight(36);
+        table.getColumnModel().getColumn(0).setPreferredWidth(260);
+        table.getColumnModel().getColumn(1).setPreferredWidth(150);
+        table.getColumnModel().getColumn(2).setPreferredWidth(170);
+
+        table.getColumnModel().getColumn(0).setResizable(false);
+        table.getColumnModel().getColumn(1).setResizable(false);
+        table.getColumnModel().getColumn(2).setResizable(false);
+        table.addMouseListener(new MouseAdapter() {
+             @Override
+                public void mousePressed(MouseEvent e)
+                {
+                    table.setSelectionBackground(new Color(201, 197, 199));
+                }
+                
+        });
+
+        JScrollPane scroll = new JScrollPane(table);
+        scroll.setPreferredSize(new Dimension(577, 335));
+        scroll.setMinimumSize(new Dimension(577, 335));
+
+        add(scroll, BorderLayout.CENTER);
+        tableModel.add(new TableEntry(firstOption[0], firstOption[1], firstOption[2]));
+        tableModel.add(new TableEntry(secondOption[0], secondOption[1], secondOption[2]));
+        tableModel.add(new TableEntry(thirdOption[0], thirdOption[1], thirdOption[2]));
+        tableModel.add(new TableEntry(fourthOption[0], fourthOption[1], fourthOption[2]));
+        tableModel.add(new TableEntry(fifthOption[0], fifthOption[1], fifthOption[2]));
+        tableModel.add(new TableEntry(sixedOption[0], sixedOption[1], sixedOption[2]));
+        tableModel.add(new TableEntry(seventhOption[0], seventhOption[1], seventhOption[2]));
+        
         setSelectedPlan(nodeEditor.getCurrentVertex().getPlan());
     }
+
     
     public void initPanelForNewNode() {
-        logs.debug("Initializing plan panel For New Node");
-        resetPlanPanel();        
+
+        resetPlanPanel();
     }
-    
+
     private void resetPlanPanel() {
         isViewEnabled = false;
-        buttonGroup1.clearSelection();
-        
+
+
     }
-    
+
     public boolean processPlanPanel() {
-        if (buttonGroup1.getSelection() != null) {
+        int rowIndex = table.getSelectedRow();
+        
+        if (rowIndex >= 0) {
             nodeEditor.getCurrentVertex().setPlan(getSelectedPlan());
         } else {
             nodeEditor.setEditorMessage("Please select a plan for this node.", true);
@@ -81,44 +122,44 @@ public class PlanPanelView extends JPanel {
      */
     private void setSelectedPlan(Vertex.Plan plan) {
         if (plan.equals(Vertex.Plan.FIXED)) {
-            fixedNumberButton.setSelected(true);
+            table.setRowSelectionInterval(0, 0);
         } else if (plan.equals(Vertex.Plan.DECREASE)) {
-            decreaseButton.setSelected(true);
+            table.setRowSelectionInterval(0, 0);
         } else if (plan.equals(Vertex.Plan.INCREASE)) {
-            increaseButton.setSelected(true);
+            table.setRowSelectionInterval(0, 0);
         } else if (plan.equals(Vertex.Plan.INCREASE_AND_DECREASE)) {
-            bothButton.setSelected(true);
+            table.setRowSelectionInterval(0, 0);
         } else if (plan.equals(Vertex.Plan.PROPORTIONAL)) {
-            proportionalValueButton.setSelected(true);
+            table.setRowSelectionInterval(0, 0);
         } else if (plan.equals(Vertex.Plan.RATIO)) {
-            ratioTwoQuantitiesButton.setSelected(true);
+            table.setRowSelectionInterval(0, 0);
         } else if (plan.equals(Vertex.Plan.DIFFERENCE)) {
-            differenceButton.setSelected(true);
+            table.setRowSelectionInterval(0, 0);
         } else {
-            buttonGroup1.clearSelection();
+            table.clearSelection();
         }
     }
-    
+
     public Vertex.Plan getSelectedPlan() {
-        if (fixedNumberButton.isSelected()) {
+        if(table.getSelectedRow() == 0 && table.getSelectedColumn() == 0){
             return Vertex.Plan.FIXED;
-        } else if (decreaseButton.isSelected()) {
+        }else if(table.getSelectedRow() == 1 && table.getSelectedColumn() == 0){
             return Vertex.Plan.DECREASE;
-        } else if (differenceButton.isSelected()) {
+        }else if(table.getSelectedRow() == 2 && table.getSelectedColumn() == 0){
             return Vertex.Plan.DIFFERENCE;
-        } else if (increaseButton.isSelected()) {
+        }else if(table.getSelectedRow() == 3 && table.getSelectedColumn() == 0){
             return Vertex.Plan.INCREASE;
-        } else if (bothButton.isSelected()) {
+        }else if(table.getSelectedRow() == 4 && table.getSelectedColumn() == 0){
             return Vertex.Plan.INCREASE_AND_DECREASE;
-        } else if (ratioTwoQuantitiesButton.isSelected()) {
+        }else if(table.getSelectedRow() == 5 && table.getSelectedColumn() == 0){
             return Vertex.Plan.RATIO;
-        } else if (proportionalValueButton.isSelected()) {
+        }else if(table.getSelectedRow() == 6 && table.getSelectedColumn() == 0){
             return Vertex.Plan.PROPORTIONAL;
-        } else {
+        }else{
             return Vertex.Plan.UNDEFINED;
         }
     }
-    
+
     public boolean isViewEnabled() {
         if(nodeEditor.getCurrentVertex().getDescriptionStatus().equals(Vertex.DescriptionStatus.CORRECT) ||
                 nodeEditor.getCurrentVertex().getDescriptionStatus().equals(Vertex.DescriptionStatus.GAVEUP))
@@ -126,487 +167,234 @@ public class PlanPanelView extends JPanel {
         else 
             return false;
     }
-    
-    
-    
+
     public void setSelectedPlanBackground(Color c) {
-        logs.debug("Setting Background of Selected Plan to " + c.toString());
-        resetBackGroundColor();
+        table.setSelectionBackground(c);
+        StatusEditor s = (StatusEditor)table.getCellEditor(table.getSelectedRow(), 0);
         
-        if (fixedNumberButton.isSelected()) {
-            fixedNumberButton.setBackground(c);
-            fixedNumberPanel.setBackground(c);
-        } else if (decreaseButton.isSelected()) {
-            decreaseButton.setBackground(c);
-            decreasePanel.setBackground(c);
-        } else if (differenceButton.isSelected()) {
-            differenceButton.setBackground(c);
-            differencePanel.setBackground(c);
-        } else if (increaseButton.isSelected()) {
-            increaseButton.setBackground(c);
-            increasePanel.setBackground(c);
-        } else if (bothButton.isSelected()) {
-            bothButton.setBackground(c);
-            bothPanel.setBackground(c);
-        } else if (ratioTwoQuantitiesButton.isSelected()) {
-            ratioTwoQuantitiesButton.setBackground(c);
-            ratioTwoQuantitiesPanel.setBackground(c);
-        } else if (proportionalValueButton.isSelected()) {
-            proportionalValueButton.setBackground(c);
-            proportionalValuePanel.setBackground(c);
-        }
-        
+        s.setStatusPanelBackgound(c);
     }
-    
+
     public void resetBackGroundColor() {
-        fixedNumberPanel.setBackground(new Color(238, 238, 238));
-        fixedNumberButton.setBackground(new Color(238, 238, 238));
-        decreasePanel.setBackground(new Color(238, 238, 238));
-        decreaseButton.setBackground(new Color(238, 238, 238));
-        differencePanel.setBackground(new Color(238, 238, 238));        
-        differenceButton.setBackground(new Color(238, 238, 238));
-        increasePanel.setBackground(new Color(238, 238, 238));
-        increaseButton.setBackground(new Color(238, 238, 238));
-        bothPanel.setBackground(new Color(238, 238, 238));
-        bothButton.setBackground(new Color(238, 238, 238));
-        ratioTwoQuantitiesPanel.setBackground(new Color(238, 238, 238));
-        ratioTwoQuantitiesButton.setBackground(new Color(238, 238, 238));
-        proportionalValuePanel.setBackground(new Color(238, 238, 238));
-        proportionalValueButton.setBackground(new Color(238, 238, 238));
+        table.setSelectionBackground(Color.WHITE);
     }
-    
+
     public void giveUpPlanPanel() {
         TaskSolution solution = ApplicationContext.getCorrectSolution();
         Vertex.Plan correctPlan = solution.getNodeByName(
                 nodeEditor.getCurrentVertex().getName()).getNodePlan();
-        
+
         setSelectedPlan(correctPlan);
         setSelectedPlanBackground(Color.YELLOW);
     }
-    
-    public String printPlanPanel(){
+
+    public String printPlanPanel() {
         StringBuilder sb = new StringBuilder();
         sb.append("Selected Plan : '");
-        sb.append(planToString(getSelectedPlan())+"'");
-        return sb.toString();        
+        sb.append(planToString(getSelectedPlan()) + "'");
+        return sb.toString();
     }
-    
-    private String planToString(Vertex.Plan p){
-        if(p.equals(Vertex.Plan.DECREASE))
+
+    private String planToString(Vertex.Plan p) {
+        if (p.equals(Vertex.Plan.DECREASE)) {
             return "Decrease";
-        else if(p.equals(Vertex.Plan.INCREASE))
+        } else if (p.equals(Vertex.Plan.INCREASE)) {
             return "Increase";
-        else if(p.equals(Vertex.Plan.DIFFERENCE))
+        } else if (p.equals(Vertex.Plan.DIFFERENCE)) {
             return "Difference";
-        else if(p.equals(Vertex.Plan.FIXED))
+        } else if (p.equals(Vertex.Plan.FIXED)) {
             return "Fixed";
-        else if(p.equals(Vertex.Plan.INCREASE_AND_DECREASE))
+        } else if (p.equals(Vertex.Plan.INCREASE_AND_DECREASE)) {
             return "Increase and Decrease";
-        else if(p.equals(Vertex.Plan.PROPORTIONAL))
+        } else if (p.equals(Vertex.Plan.PROPORTIONAL)) {
             return "Proportional";
-        else if(p.equals(Vertex.Plan.RATIO))
+        } else if (p.equals(Vertex.Plan.RATIO)) {
             return "Ratio";
-        else 
+        } else {
             return "Undefined";
-    }
-    
-    public void setEditableRadio(Boolean b){
-        bothButton.setEnabled(b);
-        decreaseButton.setEnabled(b);
-        fixedNumberButton.setEnabled(b);
-        differenceButton.setEnabled(b);
-        increaseButton.setEnabled(b);
-        proportionalValueButton.setEnabled(b);
-        ratioTwoQuantitiesButton.setEnabled(b);
+        }
     }
 
-    /**
-     * This method is called from within the constructor to initialize the form.
-     * WARNING: Do NOT modify this code. The content of this method is always
-     * regenerated by the Form Editor.
-     */
-    @SuppressWarnings("unchecked")
-    // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
-    private void initComponents() {
+    public void setEditableRadio(Boolean b) {
+        table.setEnabled(b);
+    }
 
-        buttonGroup1 = new javax.swing.ButtonGroup();
-        buttonGroup2 = new javax.swing.ButtonGroup();
-        jProgressBar1 = new javax.swing.JProgressBar();
-        jScrollPane1 = new javax.swing.JScrollPane();
-        jTable1 = new javax.swing.JTable();
-        ratioTwoQuantitiesPanel = new javax.swing.JPanel();
-        ratioTwoQuantitiesButton = new javax.swing.JRadioButton();
-        jLabel26 = new javax.swing.JLabel();
-        jLabel27 = new javax.swing.JLabel();
-        jPanel2 = new javax.swing.JPanel();
-        jLabel10 = new javax.swing.JLabel();
-        jLabel11 = new javax.swing.JLabel();
-        jLabel12 = new javax.swing.JLabel();
-        fixedNumberPanel = new javax.swing.JPanel();
-        fixedNumberButton = new javax.swing.JRadioButton();
-        jLabel14 = new javax.swing.JLabel();
-        jLabel15 = new javax.swing.JLabel();
-        proportionalValuePanel = new javax.swing.JPanel();
-        proportionalValueButton = new javax.swing.JRadioButton();
-        jLabel16 = new javax.swing.JLabel();
-        jLabel17 = new javax.swing.JLabel();
-        increasePanel = new javax.swing.JPanel();
-        increaseButton = new javax.swing.JRadioButton();
-        jLabel18 = new javax.swing.JLabel();
-        jLabel19 = new javax.swing.JLabel();
-        decreasePanel = new javax.swing.JPanel();
-        decreaseButton = new javax.swing.JRadioButton();
-        jLabel20 = new javax.swing.JLabel();
-        jLabel21 = new javax.swing.JLabel();
-        bothPanel = new javax.swing.JPanel();
-        bothButton = new javax.swing.JRadioButton();
-        jLabel22 = new javax.swing.JLabel();
-        jLabel23 = new javax.swing.JLabel();
-        differencePanel = new javax.swing.JPanel();
-        differenceButton = new javax.swing.JRadioButton();
-        jLabel24 = new javax.swing.JLabel();
-        jLabel25 = new javax.swing.JLabel();
+    private class TableEntry {
 
-        jTable1.setModel(new javax.swing.table.DefaultTableModel(
-            new Object [][] {
-                {null, null, null, null},
-                {null, null, null, null},
-                {null, null, null, null},
-                {null, null, null, null}
-            },
-            new String [] {
-                "Title 1", "Title 2", "Title 3", "Title 4"
+        private String valueType;
+        private String nodeType;
+        private String nodeEquation;
+
+        TableEntry(String vt, String nt, String ne) {
+            valueType = vt;
+            nodeType = nt;
+            nodeEquation = ne;
+        }
+
+        public String getNodeType() {
+            return nodeType;
+        }
+
+        public void setNodeType(String s) {
+            nodeType = s;
+        }
+
+        public String getValueType() {
+            return valueType;
+        }
+
+        public void setValueType(String s) {
+            valueType = s;
+        }
+
+        public String getNodeEquation() {
+            return nodeEquation;
+        }
+
+        public void setNodeEquation(String s) {
+            nodeEquation = s;
+        }
+    }
+
+    private class MyTableModel extends AbstractTableModel {
+
+        private Vector<Object> theEntries;
+
+        MyTableModel() {
+            theEntries = new Vector<Object>();
+        }
+
+        @SuppressWarnings("unchecked")
+        public void add(TableEntry anEntry) {
+            int index = theEntries.size();
+            theEntries.add(anEntry);
+            fireTableRowsInserted(index, index);
+        }
+
+        public int getRowCount() {
+            return theEntries.size();
+        }
+
+        @Override
+        public String getColumnName(int column) {
+            return COLUMN_NAMES[column];
+        }
+
+        @Override
+        public Class<?> getColumnClass(int columnIndex) {
+            if (columnIndex == 0) {
+                return String.class;
             }
-        ));
-        jScrollPane1.setViewportView(jTable1);
 
-        setLayout(new org.netbeans.lib.awtextra.AbsoluteLayout());
+            return Object.class;
+        }
 
-        buttonGroup1.add(ratioTwoQuantitiesButton);
-        ratioTwoQuantitiesButton.setText("the ratio of two quantities");
+        
+        @Override
+        public boolean isCellEditable(int rowIndex, int columnIndex) {
+            if (columnIndex == 0) {
+                return true;
+            }
+            return false;
+        }
 
-        jLabel26.setText("<html>quantity1/quantity2</html>");
-        jLabel26.setAutoscrolls(true);
+        @Override
+        public int getColumnCount() {
+            return 3;
+        }
 
-        jLabel27.setText("<html>function</html>");
-        jLabel27.setAutoscrolls(true);
+        @Override
+        public Object getValueAt(int rowIndex, int columnIndex) {
+            TableEntry entry = (TableEntry) theEntries.elementAt(rowIndex);
+            switch (columnIndex) {
+                case 0:
+                    return entry.getValueType();
+                case 1:
+                    return entry.getNodeType();
+                case 2:
+                    return entry.getNodeEquation();
+            }
+            return null;
+        }
+    }
 
-        javax.swing.GroupLayout ratioTwoQuantitiesPanelLayout = new javax.swing.GroupLayout(ratioTwoQuantitiesPanel);
-        ratioTwoQuantitiesPanel.setLayout(ratioTwoQuantitiesPanelLayout);
-        ratioTwoQuantitiesPanelLayout.setHorizontalGroup(
-            ratioTwoQuantitiesPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(ratioTwoQuantitiesPanelLayout.createSequentialGroup()
-                .addContainerGap()
-                .addComponent(ratioTwoQuantitiesButton, javax.swing.GroupLayout.PREFERRED_SIZE, 259, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(jLabel27, javax.swing.GroupLayout.PREFERRED_SIZE, 87, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(55, 55, 55)
-                .addComponent(jLabel26, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addContainerGap(10, Short.MAX_VALUE))
-        );
-        ratioTwoQuantitiesPanelLayout.setVerticalGroup(
-            ratioTwoQuantitiesPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(ratioTwoQuantitiesPanelLayout.createSequentialGroup()
-                .addContainerGap()
-                .addGroup(ratioTwoQuantitiesPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(ratioTwoQuantitiesButton)
-                    .addComponent(jLabel27, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(jLabel26, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addContainerGap(11, Short.MAX_VALUE))
-        );
+    private class StatusPanel extends JPanel {
 
-        add(ratioTwoQuantitiesPanel, new org.netbeans.lib.awtextra.AbsoluteConstraints(6, 295, 550, -1));
+        private JRadioButton theSingleOption;
+        private ButtonGroup buttonGroup = new ButtonGroup();
 
-        jLabel10.setFont(new java.awt.Font("Lucida Grande", 1, 13)); // NOI18N
-        jLabel10.setText("<html>Calculation</html>");
-        jLabel10.setAutoscrolls(true);
+        StatusPanel() {
+            super(new GridLayout(0, 1));
+            setOpaque(true);
+            theSingleOption = createRadio("");
 
-        jLabel11.setFont(new java.awt.Font("Lucida Grande", 1, 13)); // NOI18N
-        jLabel11.setText("<html>Node type</html>");
-        jLabel11.setAutoscrolls(true);
+        }
 
-        jLabel12.setFont(new java.awt.Font("Lucida Grande", 1, 13)); // NOI18N
-        jLabel12.setText("The Node's value is...");
+        private JRadioButton createRadio(String status) {
+            JRadioButton jrb = new JRadioButton(status);
+            jrb.setOpaque(false);
+            add(jrb);
+            buttonGroup.add(jrb);
+            return jrb;
+        }
 
-        buttonGroup1.add(fixedNumberButton);
-        fixedNumberButton.setText("a fixed, given number");
+        public void setLabel(String s) {
+            theSingleOption.setText(s);
+        }
 
-        jLabel14.setText("<html>fixed value</html>");
-        jLabel14.setAutoscrolls(true);
+        public String getLabel() {
+            return theSingleOption.getText();
+        }
+        
+        
+    }
 
-        jLabel15.setText("<html>the number</html>");
-        jLabel15.setAutoscrolls(true);
+    private class StatusEditor extends AbstractCellEditor implements TableCellEditor {
 
-        javax.swing.GroupLayout fixedNumberPanelLayout = new javax.swing.GroupLayout(fixedNumberPanel);
-        fixedNumberPanel.setLayout(fixedNumberPanelLayout);
-        fixedNumberPanelLayout.setHorizontalGroup(
-            fixedNumberPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(fixedNumberPanelLayout.createSequentialGroup()
-                .addContainerGap()
-                .addComponent(fixedNumberButton, javax.swing.GroupLayout.PREFERRED_SIZE, 223, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(37, 37, 37)
-                .addComponent(jLabel14, javax.swing.GroupLayout.PREFERRED_SIZE, 92, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(49, 49, 49)
-                .addComponent(jLabel15, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addContainerGap(80, Short.MAX_VALUE))
-        );
-        fixedNumberPanelLayout.setVerticalGroup(
-            fixedNumberPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, fixedNumberPanelLayout.createSequentialGroup()
-                .addContainerGap(8, Short.MAX_VALUE)
-                .addGroup(fixedNumberPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(fixedNumberButton)
-                    .addComponent(jLabel14, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(jLabel15, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addContainerGap(9, Short.MAX_VALUE))
-        );
+        private StatusPanel theStatusPanel;
 
-        javax.swing.GroupLayout jPanel2Layout = new javax.swing.GroupLayout(jPanel2);
-        jPanel2.setLayout(jPanel2Layout);
-        jPanel2Layout.setHorizontalGroup(
-            jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(jPanel2Layout.createSequentialGroup()
-                .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addGroup(jPanel2Layout.createSequentialGroup()
-                        .addGap(16, 16, 16)
-                        .addComponent(jLabel12)
-                        .addGap(119, 119, 119)
-                        .addComponent(jLabel11, javax.swing.GroupLayout.PREFERRED_SIZE, 108, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addGap(33, 33, 33)
-                        .addComponent(jLabel10, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addGap(0, 0, Short.MAX_VALUE))
-                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel2Layout.createSequentialGroup()
-                        .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                        .addComponent(fixedNumberPanel, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)))
-                .addContainerGap())
-        );
-        jPanel2Layout.setVerticalGroup(
-            jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(jPanel2Layout.createSequentialGroup()
-                .addGap(11, 11, 11)
-                .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(jLabel12)
-                    .addComponent(jLabel11, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(jLabel10, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addGap(18, 18, 18)
-                .addComponent(fixedNumberPanel, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
-        );
+        StatusEditor() {
+            theStatusPanel = new StatusPanel();
+        }
 
-        add(jPanel2, new org.netbeans.lib.awtextra.AbsoluteConstraints(6, 6, -1, -1));
+        @Override
+        public Object getCellEditorValue() {
+            return theStatusPanel.getLabel();
+        }
 
-        buttonGroup1.add(proportionalValueButton);
-        proportionalValueButton.setText("<html>proportional to the value of the <br>accumulator that it is input to</html>");
+        @Override
+        public Component getTableCellEditorComponent(JTable table, Object value,
+                boolean isSelected, int row, int column) {
+            theStatusPanel.setLabel((String) value);
+            if (isSelected) {
+                theStatusPanel.setBackground(new Color(201, 197, 199));
+            } else {
+                theStatusPanel.setBackground(new Color(201, 197, 199));
+            }
+            return theStatusPanel;
+        }
+        
+        public void setStatusPanelBackgound(Color c){
+            theStatusPanel.setBackground(c);            
+        }
+    }
 
-        jLabel16.setText("<html>function</html>");
-        jLabel16.setAutoscrolls(true);
+    private class StatusRenderer extends StatusPanel implements TableCellRenderer {
 
-        jLabel17.setText("<html>accumulator*proportion</html>");
-        jLabel17.setAutoscrolls(true);
+        @Override
+        public Component getTableCellRendererComponent(JTable table, Object value,
+                boolean isSelected, boolean hasFocus, int row, int column) {
+            setLabel((String) value);
+            
+            if (isSelected) {
+                setBackground(new Color(201, 197, 199));
+            } else {
+                setBackground(table.getBackground());
+            }
 
-        javax.swing.GroupLayout proportionalValuePanelLayout = new javax.swing.GroupLayout(proportionalValuePanel);
-        proportionalValuePanel.setLayout(proportionalValuePanelLayout);
-        proportionalValuePanelLayout.setHorizontalGroup(
-            proportionalValuePanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(proportionalValuePanelLayout.createSequentialGroup()
-                .addContainerGap()
-                .addComponent(proportionalValueButton, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(36, 36, 36)
-                .addComponent(jLabel16, javax.swing.GroupLayout.PREFERRED_SIZE, 92, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 50, Short.MAX_VALUE)
-                .addComponent(jLabel17, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addContainerGap())
-        );
-        proportionalValuePanelLayout.setVerticalGroup(
-            proportionalValuePanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(proportionalValuePanelLayout.createSequentialGroup()
-                .addContainerGap()
-                .addGroup(proportionalValuePanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(proportionalValueButton, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(jLabel16, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(jLabel17, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addContainerGap(7, Short.MAX_VALUE))
-        );
+            return this;
+        }
+    }
 
-        add(proportionalValuePanel, new org.netbeans.lib.awtextra.AbsoluteConstraints(6, 90, 570, 50));
-
-        buttonGroup1.add(increaseButton);
-        increaseButton.setText("said to increase");
-
-        jLabel18.setText("<html>accumulator</html>");
-        jLabel18.setAutoscrolls(true);
-
-        jLabel19.setText("<html>increase</html>");
-        jLabel19.setAutoscrolls(true);
-
-        javax.swing.GroupLayout increasePanelLayout = new javax.swing.GroupLayout(increasePanel);
-        increasePanel.setLayout(increasePanelLayout);
-        increasePanelLayout.setHorizontalGroup(
-            increasePanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(increasePanelLayout.createSequentialGroup()
-                .addContainerGap()
-                .addComponent(increaseButton, javax.swing.GroupLayout.PREFERRED_SIZE, 226, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(39, 39, 39)
-                .addComponent(jLabel18, javax.swing.GroupLayout.PREFERRED_SIZE, 87, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(58, 58, 58)
-                .addComponent(jLabel19, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addContainerGap(102, Short.MAX_VALUE))
-        );
-        increasePanelLayout.setVerticalGroup(
-            increasePanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(increasePanelLayout.createSequentialGroup()
-                .addContainerGap()
-                .addGroup(increasePanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addGroup(increasePanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                        .addComponent(jLabel19, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addComponent(jLabel18, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                    .addComponent(increaseButton))
-                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
-        );
-
-        add(increasePanel, new org.netbeans.lib.awtextra.AbsoluteConstraints(6, 135, 570, -1));
-
-        buttonGroup1.add(decreaseButton);
-        decreaseButton.setText("said to decrease");
-
-        jLabel20.setText("<html>accumulator</html>");
-        jLabel20.setAutoscrolls(true);
-
-        jLabel21.setText("<html> - decrease</html>");
-        jLabel21.setAutoscrolls(true);
-
-        javax.swing.GroupLayout decreasePanelLayout = new javax.swing.GroupLayout(decreasePanel);
-        decreasePanel.setLayout(decreasePanelLayout);
-        decreasePanelLayout.setHorizontalGroup(
-            decreasePanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(decreasePanelLayout.createSequentialGroup()
-                .addContainerGap()
-                .addComponent(decreaseButton, javax.swing.GroupLayout.PREFERRED_SIZE, 204, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(60, 60, 60)
-                .addComponent(jLabel20, javax.swing.GroupLayout.PREFERRED_SIZE, 87, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(58, 58, 58)
-                .addComponent(jLabel21, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addContainerGap(88, Short.MAX_VALUE))
-        );
-        decreasePanelLayout.setVerticalGroup(
-            decreasePanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(decreasePanelLayout.createSequentialGroup()
-                .addContainerGap()
-                .addGroup(decreasePanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(decreaseButton)
-                    .addComponent(jLabel20, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(jLabel21, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addContainerGap(11, Short.MAX_VALUE))
-        );
-
-        add(decreasePanel, new org.netbeans.lib.awtextra.AbsoluteConstraints(6, 172, 570, -1));
-
-        buttonGroup1.add(bothButton);
-        bothButton.setText("said to both increase and decrease");
-
-        jLabel22.setText("<html>accumulator</html>");
-        jLabel22.setAutoscrolls(true);
-
-        jLabel23.setText("<html>increase-decrease</html>");
-        jLabel23.setAutoscrolls(true);
-
-        javax.swing.GroupLayout bothPanelLayout = new javax.swing.GroupLayout(bothPanel);
-        bothPanel.setLayout(bothPanelLayout);
-        bothPanelLayout.setHorizontalGroup(
-            bothPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(bothPanelLayout.createSequentialGroup()
-                .addComponent(bothButton)
-                .addGap(18, 18, 18)
-                .addComponent(jLabel22, javax.swing.GroupLayout.PREFERRED_SIZE, 87, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 55, Short.MAX_VALUE)
-                .addComponent(jLabel23, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(35, 35, 35))
-        );
-        bothPanelLayout.setVerticalGroup(
-            bothPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(bothPanelLayout.createSequentialGroup()
-                .addContainerGap()
-                .addGroup(bothPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(bothButton)
-                    .addComponent(jLabel22, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(jLabel23, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
-        );
-
-        add(bothPanel, new org.netbeans.lib.awtextra.AbsoluteConstraints(10, 210, 560, -1));
-
-        buttonGroup1.add(differenceButton);
-        differenceButton.setText("the difference of two quantities");
-
-        jLabel24.setText("<html>function</html>");
-        jLabel24.setAutoscrolls(true);
-
-        jLabel25.setText("<html>quantity1-quantity2</html>");
-        jLabel25.setAutoscrolls(true);
-
-        javax.swing.GroupLayout differencePanelLayout = new javax.swing.GroupLayout(differencePanel);
-        differencePanel.setLayout(differencePanelLayout);
-        differencePanelLayout.setHorizontalGroup(
-            differencePanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(differencePanelLayout.createSequentialGroup()
-                .addContainerGap()
-                .addComponent(differenceButton, javax.swing.GroupLayout.PREFERRED_SIZE, 257, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(jLabel24, javax.swing.GroupLayout.PREFERRED_SIZE, 87, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(57, 57, 57)
-                .addComponent(jLabel25, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addContainerGap(9, Short.MAX_VALUE))
-        );
-        differencePanelLayout.setVerticalGroup(
-            differencePanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(differencePanelLayout.createSequentialGroup()
-                .addContainerGap()
-                .addGroup(differencePanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(differenceButton)
-                    .addComponent(jLabel24, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(jLabel25, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addContainerGap(11, Short.MAX_VALUE))
-        );
-
-        add(differencePanel, new org.netbeans.lib.awtextra.AbsoluteConstraints(6, 252, 550, -1));
-    }// </editor-fold>//GEN-END:initComponents
-    // Variables declaration - do not modify//GEN-BEGIN:variables
-    private javax.swing.JRadioButton bothButton;
-    private javax.swing.JPanel bothPanel;
-    private javax.swing.ButtonGroup buttonGroup1;
-    private javax.swing.ButtonGroup buttonGroup2;
-    private javax.swing.JRadioButton decreaseButton;
-    private javax.swing.JPanel decreasePanel;
-    private javax.swing.JRadioButton differenceButton;
-    private javax.swing.JPanel differencePanel;
-    private javax.swing.JRadioButton fixedNumberButton;
-    private javax.swing.JPanel fixedNumberPanel;
-    private javax.swing.JRadioButton increaseButton;
-    private javax.swing.JPanel increasePanel;
-    private javax.swing.JLabel jLabel10;
-    private javax.swing.JLabel jLabel11;
-    private javax.swing.JLabel jLabel12;
-    private javax.swing.JLabel jLabel14;
-    private javax.swing.JLabel jLabel15;
-    private javax.swing.JLabel jLabel16;
-    private javax.swing.JLabel jLabel17;
-    private javax.swing.JLabel jLabel18;
-    private javax.swing.JLabel jLabel19;
-    private javax.swing.JLabel jLabel20;
-    private javax.swing.JLabel jLabel21;
-    private javax.swing.JLabel jLabel22;
-    private javax.swing.JLabel jLabel23;
-    private javax.swing.JLabel jLabel24;
-    private javax.swing.JLabel jLabel25;
-    private javax.swing.JLabel jLabel26;
-    private javax.swing.JLabel jLabel27;
-    private javax.swing.JPanel jPanel2;
-    private javax.swing.JProgressBar jProgressBar1;
-    private javax.swing.JScrollPane jScrollPane1;
-    private javax.swing.JTable jTable1;
-    private javax.swing.JRadioButton proportionalValueButton;
-    private javax.swing.JPanel proportionalValuePanel;
-    private javax.swing.JRadioButton ratioTwoQuantitiesButton;
-    private javax.swing.JPanel ratioTwoQuantitiesPanel;
-    // End of variables declaration//GEN-END:variables
+    
 }

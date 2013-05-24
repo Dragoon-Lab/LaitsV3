@@ -268,6 +268,9 @@ public class TaskSolution {
         }
         
         else{
+            if(inputs == null)
+                return false;
+            
             List<String> correctInputs = correctNode.getInputNodes();
             logs.debug("Correct Inputs : "+correctInputs);
             logs.debug("User Inputs : "+inputs);

@@ -29,7 +29,7 @@ import java.awt.Color;
 import java.awt.Dimension;
 import java.awt.Insets;
 import java.awt.Toolkit;
-import java.util.Iterator;
+import javax.swing.JOptionPane;
 import javax.swing.UIManager;
 import javax.swing.event.ChangeEvent;
 import javax.swing.event.ChangeListener;
@@ -43,7 +43,7 @@ import org.jgraph.graph.DefaultGraphCell;
 public class NodeEditor extends javax.swing.JDialog {
 
     private DescriptionPanelView dPanel;
-    private NewPlanPanel pPanel;
+    private PlanPanelView pPanel;
     private InputsPanelView iPanel;
     private CalculationsPanelView cPanel;
     private GraphsPanelView gPanel;
@@ -138,7 +138,7 @@ public class NodeEditor extends javax.swing.JDialog {
 
         dPanel = new DescriptionPanelView(this);
         //pPanel = new PlanPanelView(this);
-        pPanel = new NewPlanPanel(this);
+        pPanel = new PlanPanelView(this);
         
         iPanel = new InputsPanelView(this);
         cPanel = new CalculationsPanelView(this);
@@ -170,6 +170,7 @@ public class NodeEditor extends javax.swing.JDialog {
         logs.debug("Initializing NodeEditor Tabs - End");
     }
 
+   
     private void setSelectedPanel() {
         if (gPanel.isViewEnabled()) {
             activityLogs.debug("Node Editor is opend with Graph Tab for Node: " + currentVertex.getName());
@@ -476,7 +477,7 @@ public class NodeEditor extends javax.swing.JDialog {
 
         if (correctSolution.checkNodeName(dPanel.getNodeName())) {
             currentVertex.setDescriptionStatus(Vertex.DescriptionStatus.CORRECT);
-            graphPane.getMainFrame().getMainMenu().getModelMenu().addDeleteNodeMenu();
+            //graphPane.getMainFrame().getMainMenu().getModelMenu().addDeleteNodeMenu();
             setEditorMessage("", false);
             dPanel.setTextFieldBackground(Color.GREEN);
             activityLogs.debug("User entered correct description");
@@ -947,7 +948,7 @@ public class NodeEditor extends javax.swing.JDialog {
             dPanel.processDescriptionPanel();
             currentVertex.setDescriptionStatus(Vertex.DescriptionStatus.GAVEUP);
             setTitle(currentVertex.getName());
-            graphPane.getMainFrame().getMainMenu().getModelMenu().addDeleteNodeMenu();
+            //graphPane.getMainFrame().getMainMenu().getModelMenu().addDeleteNodeMenu();
             validate();
             repaint();
             currentVertex.setDescriptionStatus(Vertex.DescriptionStatus.GAVEUP);
@@ -994,6 +995,10 @@ public class NodeEditor extends javax.swing.JDialog {
         refreshGraphPane();
     }//GEN-LAST:event_giveUpButtonActionPerformed
 
+    public void refreshInputs(){
+        iPanel.refreshInputs();
+    }
+    
     private void buttonCancelActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_buttonCancelActionPerformed
         // Process Cancel Action for all the Tabs
         activityLogs.debug("User pressed Close button for Node " + currentVertex.getName());
@@ -1023,17 +1028,17 @@ public class NodeEditor extends javax.swing.JDialog {
         // TODO add your handling code here:
         // Process Cancel Action for all the Tabs
         activityLogs.debug("User pressed Create node button on inputs tab for Node " + currentVertex.getName());
-        // Delete this vertex if its not defined and user hits Cancel
-        if (currentVertex.getName().equals("")) {
-            graphPane.removeSelected();
+        if(graphPane.getMainFrame().getMainMenu().getModelMenu().newNodeAllowed()){
+            Vertex v = new Vertex();
+            v.setVertexIndex(graphPane.getModelGraph().getNextAvailableIndex());
+            graphPane.addVertex(v);
+            
+            CreateNewNodeDialog newNodeDialog = new CreateNewNodeDialog(this,v);
+            
+        }else{
+            activityLogs.debug("User was not allowed to create new node as all the nodes were already present");
+            JOptionPane.showMessageDialog(this, "The model is already using all the correct nodes.");
         }
-
-        activityLogs.debug("Closing NodeEditor for Node " + currentVertex.getName());
-        graphPane.getMainFrame().getModelToolBar().enableDeleteNodeButton();
-        graphPane.getMainFrame().getMainMenu().getModelMenu().enableDeleteNodeMenu();
-        this.dispose();
-        
-        graphPane.getMainFrame().getMainMenu().getModelMenu().newNodeAction();
     }//GEN-LAST:event_buttonCreateNodeInputTabActionPerformed
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
