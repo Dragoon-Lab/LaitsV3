@@ -268,7 +268,6 @@ public class MainWindow extends JFrame {
             isSituationTabSelected = false;
         }
         this.validate();
-        
         mainPanel.repaint();
     }
     
