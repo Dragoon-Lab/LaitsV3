@@ -31,10 +31,12 @@ import edu.asu.laits.model.TaskSolutionReader;
 import edu.asu.laits.properties.GlobalProperties;
 import edu.asu.laits.properties.GraphProperties;
 import java.awt.Color;
+import java.awt.Image;
 import java.io.FileInputStream;
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
 import java.util.Date;
+import javax.imageio.ImageIO;
 import javax.swing.*;
 import org.apache.commons.net.ftp.FTPClient;
 import org.apache.log4j.Logger;
@@ -205,7 +207,7 @@ public class MainWindow extends JFrame {
             situationLabel.setHorizontalTextPosition(JLabel.CENTER);
             situationLabel.setVerticalAlignment(JLabel.TOP);
             situationLabel.setHorizontalAlignment(JLabel.CENTER);
-            situationLabel.setBorder(BorderFactory.createTitledBorder(""));
+            //situationLabel.setBorder(BorderFactory.createTitledBorder(""));
             situationLabel.setBackground(Color.WHITE);
             situationLabel.setVerticalAlignment(SwingConstants.TOP);
         } 
@@ -256,24 +258,12 @@ public class MainWindow extends JFrame {
             mainPanel.add(getStatusBarPanel(), BorderLayout.SOUTH);   
             isSituationTabSelected = true;
         }else{
-            //System.out.println(situationLabel.getText());
             activityLogs.debug("User is viewing Model Design Panel.");
             logs.debug("Switching to Model Design Panel");
             
-            mainPanel.add(getSituationPanel(), BorderLayout.CENTER);
-            this.validate();
-            mainPanel.repaint();
-            
             mainPanel.removeAll();
             mainPanel.add(getToolBarPanel(), BorderLayout.NORTH);
-            if (ApplicationContext.getSituationMerge()) {
-                situationLabel.setOpaque(false);
-                situationLabel.setBorder(BorderFactory.createLineBorder(Color.white));
-                mainPanel.add(situationLabel, BorderLayout.CENTER);
-            }
-            mainPanel.add(getGraphPaneScrollPane(), BorderLayout.CENTER);
-           // mainPanel.add(getSituationPanel(), BorderLayout.CENTER);
-            
+            mainPanel.add(getGraphPaneScrollPane(), BorderLayout.CENTER);            
             mainPanel.add(getStatusBarPanel(), BorderLayout.SOUTH);
             isSituationTabSelected = false;
         }
@@ -341,8 +331,7 @@ public class MainWindow extends JFrame {
      */
     public JScrollPane getGraphPaneScrollPane() {
         if (graphPaneScrollPane == null) {
-            graphPaneScrollPane = new JScrollPane();
-            //graphPaneScrollPane.setViewportView(getGraphEditorPane());
+            graphPaneScrollPane = new JScrollPane();           
             graphPaneScrollPane.setViewportView(getGraphEditorPane());
         }
         return graphPaneScrollPane;
@@ -360,6 +349,9 @@ public class MainWindow extends JFrame {
                     .isAntialiasing());
             graphEditorPane.setDoubleBuffered(GlobalProperties.getInstance()
                     .isDoubleBuffering());
+        }
+        if (ApplicationContext.getSituationMerge()) {
+            graphEditorPane.setBackgroundComponent(situationLabel);
         }
         return graphEditorPane;
     }
