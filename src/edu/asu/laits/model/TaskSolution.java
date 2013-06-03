@@ -249,6 +249,19 @@ public class TaskSolution {
             return false;
     }
     
+    public int checkNodeNameOrdered(String nodeName, int order){
+        SolutionNode correctNode = getNodeByName(nodeName);
+        if(correctNode != null){
+            if(correctNode.getNodeOrder() == order)
+                return 1;
+            else
+                return 2;
+        }
+        else
+            return 0;
+        
+    }
+    
     public boolean checkNodePlan(String nodeName, Vertex.Plan plan){
         if(getNodeByName(nodeName).getNodePlan().compareTo(plan) == 0)
             return true;

@@ -331,7 +331,7 @@ public class ModelMenu extends JMenu {
                 try {
                     me.run();
 
-                    if (ApplicationContext.getAppMode().equals("STUDENT")) {
+                    if (ApplicationContext.getAppMode().equals("STUDENT") || ApplicationContext.getAppMode().equals("COACHED")) {
                         me.validateStudentGraph();
                     }
 

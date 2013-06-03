@@ -37,6 +37,14 @@ public class ApplicationContext {
   private static boolean isProblemSolved = false;
   public static String taskLoaderURL = "http://laits.engineering.asu.edu/demo/task_fetcher.php?taskid=";
   private static boolean situationMerge =true;
+  private static int currentOrder = 1;
+
+  public static int getCurrentOrder() {
+        return currentOrder;
+    }
+  public static void nextCurrentOrder(){
+      currentOrder++;
+  } 
   
   public static boolean getSituationMerge(){
       return situationMerge;

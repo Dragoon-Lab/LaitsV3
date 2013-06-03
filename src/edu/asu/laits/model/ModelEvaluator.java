@@ -50,7 +50,7 @@ public class ModelEvaluator {
 
     public ModelEvaluator(Graph inputGraph) {
         currentGraph = inputGraph;
-        if(ApplicationContext.getAppMode().equals("STUDENT")){
+        if(ApplicationContext.getAppMode().equals("STUDENT") || ApplicationContext.getAppMode().equals("COACHED")){
             startTime = ApplicationContext.getCorrectSolution().getStartTime();
             endTime = ApplicationContext.getCorrectSolution().getEndTime();
             
@@ -71,7 +71,7 @@ public class ModelEvaluator {
         Iterator<Vertex> allVertices = currentGraph.vertexSet().iterator();
         
         // In STUDENT Mode Verify if all the correct nodes are defined
-        if(ApplicationContext.getAppMode().equals("STUDENT")){
+        if(ApplicationContext.getAppMode().equals("STUDENT") || ApplicationContext.getAppMode().equals("COACHED")){
             if(!correctNodesDefined())
                 return false;
         }

@@ -161,6 +161,11 @@ public class TaskSolutionReader {
             newNode.setIsExtra(node.attributeValue("extra"));
             
             // Read all the Input Nodes of this node
+            if(ApplicationContext.getAppMode().equals("COACHED") && node.elementTextTrim("Order") != null){
+              newNode.setNodeOrder(Integer.parseInt(node.elementTextTrim("Order")));
+              logs.debug("Added element" + node.elementTextTrim("Order") + " " + node.elementTextTrim("CorrectDescription"));
+         }
+            
             Element nodeInput = node.element("Inputs");
             List<Element> allInputNodes = nodeInput.elements("Name");
             List<String> inputNodes = new ArrayList<String> ();
@@ -176,7 +181,7 @@ public class TaskSolutionReader {
             newNode.setInitialValue(node.elementTextTrim("InitialValue"));
             newNode.setCorrectDescription(node.elementTextTrim("CorrectDescription"));
             newNode.setNodePlan(node.elementTextTrim("Plan"));
-            
+
             list.add(newNode);
         }
     }

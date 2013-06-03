@@ -36,6 +36,7 @@ public class SolutionNode {
     private List<String> inputNodes;
     private boolean isExtra;
     private double initialValue;
+    private int nodeOrder;
     
     
     public void setNodeName(String name){
@@ -123,6 +124,14 @@ public class SolutionNode {
     
     public List<String> getInputNodes(){
         return inputNodes;
+    }
+    
+    public void setNodeOrder(int order){
+        this.nodeOrder = order;
+    }
+    
+    public int getNodeOrder(){
+        return nodeOrder;
     }
     
     

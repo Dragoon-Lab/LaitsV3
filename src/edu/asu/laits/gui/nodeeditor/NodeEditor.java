@@ -87,6 +87,9 @@ public class NodeEditor extends javax.swing.JDialog {
         setTitle(currentVertex.getName());
         setEditorMessage("", true);
         prepareNodeEditorDisplay();
+        if(ApplicationContext.getAppMode().equals("COACHED")){
+            buttonCancel.setEnabled(false);
+        }
         
         this.addWindowListener(new java.awt.event.WindowAdapter() {
 
@@ -115,22 +118,27 @@ public class NodeEditor extends javax.swing.JDialog {
 
         setVisible(true);
         setResizable(false);
-
+        
+      
+            
         if(!currentVertex.getDescriptionStatus().equals(Vertex.DescriptionStatus.CORRECT) && 
-                !currentVertex.getDescriptionStatus().equals(Vertex.DescriptionStatus.GAVEUP)){
-            tabPane.setEnabledAt(PLAN, false);
-            tabPane.setForegroundAt(PLAN, Color.GRAY);
-        }
-        if(!currentVertex.getPlanStatus().equals(Vertex.PlanStatus.CORRECT) &&
-                !currentVertex.getPlanStatus().equals(Vertex.PlanStatus.GAVEUP)){
-            tabPane.setEnabledAt(INPUTS, false);
-            tabPane.setForegroundAt(INPUTS, Color.GRAY);
-        }
+                    !currentVertex.getDescriptionStatus().equals(Vertex.DescriptionStatus.GAVEUP)){
+                tabPane.setEnabledAt(PLAN, false);
+                tabPane.setForegroundAt(PLAN, Color.GRAY);
+             }  
+       if(ApplicationContext.getAppMode().equals("COACHED")){
+         if(!currentVertex.getPlanStatus().equals(Vertex.PlanStatus.CORRECT) &&
+                    !currentVertex.getPlanStatus().equals(Vertex.PlanStatus.GAVEUP)){
+               tabPane.setEnabledAt(INPUTS, false);
+                tabPane.setForegroundAt(INPUTS, Color.GRAY);
+            }
         if(!currentVertex.getInputsStatus().equals(Vertex.InputsStatus.CORRECT) &&
                 !currentVertex.getInputsStatus().equals(Vertex.InputsStatus.GAVEUP)){
             tabPane.setEnabledAt(CALCULATIONS, false);
             tabPane.setForegroundAt(CALCULATIONS, Color.GRAY);
+            }
         }
+        
     }
 
     public void initTabs(boolean newNode) {
@@ -242,7 +250,7 @@ public class NodeEditor extends javax.swing.JDialog {
                 if (ApplicationContext.getAppMode().equals("AUTHOR")) {
                     processEditorInput();
                 } else {
-                    if (!isCurrentPanelChecked()) {
+                    if (!isCurrentPanelChecked() && ApplicationContext.getAppMode().equals("COACHED")) {
                         activityLogs.debug("User tried switching Tab without using Check or Giveup ");
                         setEditorMessage("Please use Check or Giveup buttons before proceeding.", true);
                         tabPane.setSelectedIndex(selectedTab);
@@ -417,7 +425,7 @@ public class NodeEditor extends javax.swing.JDialog {
     private void setCheckGiveupButtons() {
         logs.debug("Setting Check and Giveup Button for Tab " + selectedTab);
 
-        if (ApplicationContext.getAppMode().equals("STUDENT")
+        if ((ApplicationContext.getAppMode().equals("STUDENT") || ApplicationContext.getAppMode().equals("COACHED"))
                 && selectedTab != GRAPH) {
             logs.debug("Enabling Check and Giveup");
             this.checkButton.setEnabled(true);
@@ -495,6 +503,40 @@ public class NodeEditor extends javax.swing.JDialog {
         validate();
         repaint();
     }
+    
+        private void checkDescriptionPanelCoached(TaskSolution correctSolution) {
+        // Save Description Panel Information in the Vertex Object
+        if (!dPanel.processDescriptionPanel()) {
+            return;
+        }
+        int solutionCheck = correctSolution.checkNodeNameOrdered(dPanel.getNodeName(),ApplicationContext.getCurrentOrder());
+        if (solutionCheck == 1) {
+            currentVertex.setDescriptionStatus(Vertex.DescriptionStatus.CORRECT);
+            //graphPane.getMainFrame().getMainMenu().getModelMenu().addDeleteNodeMenu();
+            setEditorMessage("", false);
+            dPanel.setTextFieldBackground(Color.GREEN);
+            activityLogs.debug("User entered correct description");
+            dPanel.setEditableTree(false);
+            tabPane.setEnabledAt(PLAN, true);
+            tabPane.setForegroundAt(PLAN, Color.BLACK);
+        } else if(solutionCheck == 2){
+            dPanel.setBackground(Color.CYAN);
+            setEditorMessage("That quantity used in this model, but now is not the right time to define it. Please select another description.", true);
+            activityLogs.debug("User entered description out of order");
+        } else {
+            currentVertex.setDescriptionStatus(Vertex.DescriptionStatus.INCORRECT);
+            dPanel.setTextFieldBackground(Color.RED);
+            setEditorMessage("That quantity is not used in the correct model. Please select another description.", true);
+            activityLogs.debug("User entered incorrect description");
+            
+        }
+            
+
+        setTitle(currentVertex.getName());
+        validate();
+        repaint();
+    }
+
 
     private void checkPlanPanel(TaskSolution correctSolution) {
         logs.debug("Checking Plan Panel");
@@ -557,6 +599,7 @@ public class NodeEditor extends javax.swing.JDialog {
             activityLogs.debug("User entered correct Calculations.");
             currentVertex.setCalculationsStatus(Vertex.CalculationsStatus.CORRECT);
             cPanel.setEditableCalculations(false);
+            buttonCancel.setEnabled(true);
         } else {
             cPanel.setCheckedBackground(Color.RED);
             setEditorMessage("You Calculations are Inorrect.", true);
@@ -682,7 +725,7 @@ public class NodeEditor extends javax.swing.JDialog {
     }
 
     private void displayEnterButton() {
-        if (ApplicationContext.getAppMode().equalsIgnoreCase("STUDENT")) {
+        if (ApplicationContext.getAppMode().equalsIgnoreCase("STUDENT")  || ApplicationContext.getAppMode().equals("COACHED") ) {
             buttonOK.hide();
         } else {
             buttonOK.show();
@@ -906,7 +949,12 @@ public class NodeEditor extends javax.swing.JDialog {
 
         if (tabPane.getSelectedIndex() == DESCRIPTION) {
             activityLogs.debug("Check button pressed for Description Panel");
-            checkDescriptionPanel(correctSolution);
+            if(ApplicationContext.getAppMode().equals("COACHED")){
+                checkDescriptionPanelCoached(correctSolution);
+            } else {
+                
+                checkDescriptionPanel(correctSolution);
+            }
         } else if (tabPane.getSelectedIndex() == PLAN) {
             activityLogs.debug("Check button pressed for Plan Panel");
             checkPlanPanel(correctSolution);

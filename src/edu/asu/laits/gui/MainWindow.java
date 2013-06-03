@@ -310,7 +310,7 @@ public class MainWindow extends JFrame {
             toolBars.add(getViewToolBar());
             
             // Temporary - Add toobar based on mode
-            if(ApplicationContext.getAppMode().equals("STUDENT")){
+            if(ApplicationContext.getAppMode().equals("STUDENT") || ApplicationContext.getAppMode().equals("COACHED") ){
                 toolBarPanel.add(getTutorModeToolBar(), null);
                 toolBars.add(getTutorModeToolBar());
             }

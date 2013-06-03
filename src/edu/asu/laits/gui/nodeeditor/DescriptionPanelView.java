@@ -75,7 +75,7 @@ public class DescriptionPanelView extends JPanel{
   }
   
   public void initPanel(){
-      if(ApplicationContext.getAppMode().equals("STUDENT")){
+      if(ApplicationContext.getAppMode().equals("STUDENT") || ApplicationContext.getAppMode().equals("COACHED") ){
           this.nodeNameTextField.setEditable(false);
           this.quantityDescriptionTextField.setEditable(false);
           initTree();
