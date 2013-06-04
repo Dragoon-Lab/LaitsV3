@@ -218,8 +218,8 @@ public class MainWindow extends JFrame {
         sb.append("</html>");
         
         situationLabel.setText(sb.toString());
-        situationLabel.setHorizontalAlignment(javax.swing.SwingConstants.RIGHT);
-        situationLabel.setVerticalAlignment(javax.swing.SwingConstants.TOP);
+        situationLabel.setHorizontalAlignment(javax.swing.SwingConstants.LEFT);
+        //situationLabel.setVerticalAlignment(javax.swing.SwingConstants.TOP);
         this.validate();
         mainPanel.repaint();
     }
