@@ -38,7 +38,7 @@ public class HelpAboutMenu extends JMenu {
      */
     private void initialize() {
         this.setText("Help");
-        //this.add(getHelpHelpMenuItem());
+        this.add(getHelpHelpMenuItem());
         this.add(getAboutHelpMenuItem());
 
     }
