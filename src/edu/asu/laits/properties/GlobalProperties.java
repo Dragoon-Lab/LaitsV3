@@ -60,7 +60,7 @@ public class GlobalProperties {
 
     private GlobalProperties() {
         latestFiles = new LinkedList<File>();
-        //createHelpSet(HELPSET_DESTINATION);
+        createHelpSet(HELPSET_DESTINATION);
     }
 
     public static GlobalProperties getInstance() {
@@ -83,6 +83,7 @@ public class GlobalProperties {
                 + "properties.xml");
 
         if (!propertiesFile.exists()) {
+            System.out.println("Could not find Property File");
             // There is no properties file.
             return false;
         }
@@ -113,7 +114,7 @@ public class GlobalProperties {
         }
 
         // Disabling HelpSet creation - slides are used for this
-        //createHelpSet(HELPSET_DESTINATION);
+        createHelpSet(HELPSET_DESTINATION);
 
     }
 
