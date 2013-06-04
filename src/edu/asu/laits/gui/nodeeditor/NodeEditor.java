@@ -517,10 +517,11 @@ public class NodeEditor extends javax.swing.JDialog {
             dPanel.setTextFieldBackground(Color.GREEN);
             activityLogs.debug("User entered correct description");
             dPanel.setEditableTree(false);
+            ApplicationContext.nextCurrentOrder();
             tabPane.setEnabledAt(PLAN, true);
             tabPane.setForegroundAt(PLAN, Color.BLACK);
         } else if(solutionCheck == 2){
-            dPanel.setBackground(Color.CYAN);
+            dPanel.setTextFieldBackground(Color.CYAN);
             setEditorMessage("That quantity used in this model, but now is not the right time to define it. Please select another description.", true);
             activityLogs.debug("User entered description out of order");
         } else {

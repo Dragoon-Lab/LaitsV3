@@ -163,8 +163,13 @@ public class CreateNewNodeDialog extends javax.swing.JDialog {
         // Action for Check Button
         logs.debug("Handling Check Action");
         TaskSolution correctSolution = ApplicationContext.getCorrectSolution();
+        if(ApplicationContext.getAppMode().equalsIgnoreCase("COACHED")){
+            
+            checkDescriptionPanelCoached(correctSolution);
+        }else {
+            checkDescriptionPanel(correctSolution);
+        }
 
-        checkDescriptionPanel(correctSolution);
     }//GEN-LAST:event_checkButtonActionPerformed
 
     private void giveUpButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_giveUpButtonActionPerformed
@@ -192,24 +197,54 @@ public class CreateNewNodeDialog extends javax.swing.JDialog {
             return;
         }
 
-        if (correctSolution.checkNodeName(dPanel.getNodeName())) {
-            currentVertex.setDescriptionStatus(Vertex.DescriptionStatus.CORRECT);
-            setEditorMessage("", false);
-            dPanel.setTextFieldBackground(Color.GREEN);
-            activityLogs.debug("User entered correct description");
-            dPanel.setEditableTree(false);
+            if (correctSolution.checkNodeName(dPanel.getNodeName())) {
+                currentVertex.setDescriptionStatus(Vertex.DescriptionStatus.CORRECT);
+                setEditorMessage("", false);
+                dPanel.setTextFieldBackground(Color.GREEN);
+                activityLogs.debug("User entered correct description");
+                dPanel.setEditableTree(false);
 
-        } else {
-            currentVertex.setDescriptionStatus(Vertex.DescriptionStatus.INCORRECT);
-            dPanel.setTextFieldBackground(Color.RED);
-            setEditorMessage("That quantity is not used in the correct model. Please select another description.", true);
-            activityLogs.debug("User entered incorrect description");
-        }
+            } else {
+                currentVertex.setDescriptionStatus(Vertex.DescriptionStatus.INCORRECT);
+                dPanel.setTextFieldBackground(Color.RED);
+                setEditorMessage("That quantity is not used in the correct model. Please select another description.", true);
+                activityLogs.debug("User entered incorrect description");
+            }
 
         setTitle(currentVertex.getName());
         validate();
         repaint();
     }
+    
+   private void checkDescriptionPanelCoached(TaskSolution correctSolution) {
+        // Save Description Panel Information in the Vertex Object
+        if (!dPanel.processDescriptionPanel()) {
+            return;
+        }  
+        
+        int solutionCheck = correctSolution.checkNodeNameOrdered(dPanel.getNodeName(),ApplicationContext.getCurrentOrder());
+        if (solutionCheck == 1) {
+            currentVertex.setDescriptionStatus(Vertex.DescriptionStatus.CORRECT);
+            //graphPane.getMainFrame().getMainMenu().getModelMenu().addDeleteNodeMenu();
+            setEditorMessage("", false);
+            dPanel.setTextFieldBackground(Color.GREEN);
+            activityLogs.debug("User entered correct description");
+            dPanel.setEditableTree(false);
+            ApplicationContext.nextCurrentOrder();
+            giveUpButton.setEnabled(false);
+            
+        } else if(solutionCheck == 2){
+            dPanel.setTextFieldBackground(Color.CYAN);
+            setEditorMessage("That quantity used in this model, but now is not the right time to define it. Please select another description.", true);
+            activityLogs.debug("User entered description out of order");
+        } else {
+            currentVertex.setDescriptionStatus(Vertex.DescriptionStatus.INCORRECT);
+            dPanel.setTextFieldBackground(Color.RED);
+            setEditorMessage("That quantity is not used in the correct model. Please select another description.", true);
+            activityLogs.debug("User entered incorrect description");
+            
+        }
+   }
 
     public JPanel getDescriptionPanel() {
         return descriptionPanel;
