@@ -58,16 +58,6 @@ public class InstructionPanel extends javax.swing.JPanel implements java.beans.C
     /**
      * Constructor
      */
-    public InstructionPanel(MainWindow mw) {
-        super();
-        this.mainWindow = mw;
-        createSlides();
-        initComponents();
-        initTree();
-     
-        setVisible(true);
-    }
-
     private Image getImageFromURL(String url){
         if(url == null || url.length() == 0)
             return null;
