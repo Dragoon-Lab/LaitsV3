@@ -200,12 +200,13 @@ public class MainWindow extends JFrame {
         logs.debug("Loading New Task - "+name);
         
         StringBuilder sb = new StringBuilder();
-        sb.append("<html><center>");
+        sb.append("<html>");
         sb.append("<BR/><BR/><BR/>");
-        sb.append("<B><H2>"+name+"</B></H2>");
+        //sb.append("<B><H2>"+name+"</B></H2>");
+        sb.append("<B><H2 style='margin-left:150'>"+name+"</B></H2>");
         sb.append("<BR/><BR/>");
-        sb.append("<img src='"+imageURL+"' height='300' width='300'> </img>");
-        sb.append("</center><BR/><BR/>");
+        sb.append("<img src='"+imageURL+"' height='300' width='300' hspace='40'> </img>");
+        sb.append("<BR/><BR/>");
         
         description = description.replaceFirst("Problem:", "<B>Problem:</B>");
         description = description.replaceFirst("Goal:", "<B>Goal:</B>");
@@ -213,13 +214,13 @@ public class MainWindow extends JFrame {
         
         description = description.replaceAll("NEWLINE", "<BR/>");
         
-        sb.append(description);
+        sb.append("<div style='margin-left:10'>"+description+"</div>");
        
         sb.append("</html>");
         
         situationLabel.setText(sb.toString());
-        situationLabel.setHorizontalAlignment(javax.swing.SwingConstants.RIGHT);
-        situationLabel.setVerticalAlignment(javax.swing.SwingConstants.TOP);
+        situationLabel.setHorizontalAlignment(javax.swing.SwingConstants.LEFT);
+        //situationLabel.setVerticalAlignment(javax.swing.SwingConstants.TOP);
         this.validate();
         mainPanel.repaint();
     }

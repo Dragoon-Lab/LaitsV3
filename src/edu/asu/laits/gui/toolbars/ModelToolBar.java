@@ -56,9 +56,12 @@ public class ModelToolBar extends JToolBar {
     private void initialize() {
         this.setName("Model quickmenu");
         this.add(getAddNodeButton());
-        this.add(Box.createHorizontalStrut(5)); 
+        this.add(Box.createHorizontalStrut(5));
         this.add(getDeleteNodeButton());
-        this.add(Box.createHorizontalStrut(5)); 
+        this.add(Box.createHorizontalStrut(5));  
+        if(ApplicationContext.getAppMode().equalsIgnoreCase("COACHED")){
+            this.disableDeleteNodeButton();
+        }
         this.add(getRunModelButton());
         if(ApplicationContext.getAppMode().equals("STUDENT") || ApplicationContext.getAppMode().equals("COACHED")){
             this.add(Box.createHorizontalStrut(5));

@@ -26,6 +26,8 @@ import edu.asu.laits.properties.GlobalProperties;
 import edu.asu.laits.properties.GraphProperties;
 import java.awt.BorderLayout;
 import java.awt.Component;
+import java.awt.ComponentOrientation;
+import javax.swing.JLabel;
 import javax.swing.SwingConstants;
 import org.apache.log4j.Logger;
 import org.jgraph.JGraph;
@@ -241,7 +243,6 @@ public class GraphEditorPane extends JGraph {
      * @return
      */
     public DefaultGraphCell addDefaultVertexAt(double x, double y) {
-
         Vertex newVertex = new Vertex();
         newVertex.setVertexIndex(graph.getNextAvailableIndex());
         

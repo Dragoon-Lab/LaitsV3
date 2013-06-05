@@ -184,6 +184,9 @@ public class CreateNewNodeDialog extends javax.swing.JDialog {
         repaint();
         currentVertex.setDescriptionStatus(Vertex.DescriptionStatus.GAVEUP);
         dPanel.setEditableTree(false);
+        this.checkButton.setEnabled(false);
+        this.giveUpButton.setEnabled(false);
+
     }//GEN-LAST:event_giveUpButtonActionPerformed
 
     private void buttonCancelActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_buttonCancelActionPerformed
@@ -235,7 +238,7 @@ public class CreateNewNodeDialog extends javax.swing.JDialog {
             
         } else if(solutionCheck == 2){
             dPanel.setTextFieldBackground(Color.CYAN);
-            setEditorMessage("That quantity used in this model, but now is not the right time to define it. Please select another description.", true);
+            setEditorMessage("Quantity is used in model, but is not ready to be defined. Please try another description.", true);
             activityLogs.debug("User entered description out of order");
         } else {
             currentVertex.setDescriptionStatus(Vertex.DescriptionStatus.INCORRECT);
