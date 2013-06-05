@@ -107,12 +107,10 @@ public class NodeEditor extends javax.swing.JDialog {
         double width = screenSize.getWidth();
         double height = screenSize.getHeight();
         int yPositionNodeEditor = (int) (height - getPreferredSize().height);
-        /*
-         * setBounds((int)currentVertex.getXPosition() + 140,
-         * (int)currentVertex.getYPosition()+80, getPreferredSize().width, getPreferredSize().height);
-         */
-        setBounds((int) currentVertex.getXPosition() + 140,
-                yPositionNodeEditor / 2,
+        int xPositionNodeEditor = 
+                (int) currentVertex.getXPosition() + 140 + getPreferredSize().width > width ? 
+                (int)(width-getPreferredSize().width) : (int) currentVertex.getXPosition() + 140 ;
+        setBounds(xPositionNodeEditor, yPositionNodeEditor / 2,
                 getPreferredSize().width, getPreferredSize().height);
         pack();
 
@@ -208,6 +206,7 @@ public class NodeEditor extends javax.swing.JDialog {
                 tabPane.setSelectedIndex(INPUTS);
             } else if (!currentVertex.getDescriptionStatus().equals(Vertex.DescriptionStatus.UNDEFINED)
                     && !currentVertex.getDescriptionStatus().equals(Vertex.DescriptionStatus.INCORRECT)) {
+                System.out.println("Setting Plan as current");
                 logs.debug("Setting Plan Panel as Current");
                 activityLogs.debug("Node Editor is opend with Plan Tab for Node: " + currentVertex.getName());
                 selectedTab = PLAN;

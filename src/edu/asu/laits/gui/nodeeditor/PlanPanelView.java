@@ -53,6 +53,7 @@ public class PlanPanelView extends JPanel {
     }
     
     public void initPanel() {
+        System.out.println("Initializing Plan Panel");
         setBorder(BorderFactory.createEmptyBorder(5, 5, 5, 5));
         tableModel = new MyTableModel();
         table = new JTable(tableModel);
@@ -121,39 +122,43 @@ public class PlanPanelView extends JPanel {
      * Method to set the initialize the selected plan radio button
      */
     private void setSelectedPlan(Vertex.Plan plan) {
+        System.out.println("Setting Selected plan to : "+plan);
+        
         if (plan.equals(Vertex.Plan.FIXED)) {
             table.setRowSelectionInterval(0, 0);
         } else if (plan.equals(Vertex.Plan.DECREASE)) {
-            table.setRowSelectionInterval(0, 0);
+            table.setRowSelectionInterval(3, 0);
         } else if (plan.equals(Vertex.Plan.INCREASE)) {
-            table.setRowSelectionInterval(0, 0);
+            System.out.println("here");
+            table.getSelectionModel().setSelectionInterval(2, 2);
+            
         } else if (plan.equals(Vertex.Plan.INCREASE_AND_DECREASE)) {
-            table.setRowSelectionInterval(0, 0);
+            table.setRowSelectionInterval(4, 0);
         } else if (plan.equals(Vertex.Plan.PROPORTIONAL)) {
-            table.setRowSelectionInterval(0, 0);
+            table.setRowSelectionInterval(1, 0);
         } else if (plan.equals(Vertex.Plan.RATIO)) {
-            table.setRowSelectionInterval(0, 0);
+            table.setRowSelectionInterval(6, 0);
         } else if (plan.equals(Vertex.Plan.DIFFERENCE)) {
-            table.setRowSelectionInterval(0, 0);
+            table.setRowSelectionInterval(5, 0);
         } else {
-            table.clearSelection();
+            table.getSelectionModel().clearSelection();
         }
     }
 
     public Vertex.Plan getSelectedPlan() {
-        if(table.getSelectedRow() == 0 && table.getSelectedColumn() == 0){
+        if(table.getSelectedRow() == 0){
             return Vertex.Plan.FIXED;
-        }else if(table.getSelectedRow() == 1 && table.getSelectedColumn() == 0){
+        }else if(table.getSelectedRow() == 3){
             return Vertex.Plan.DECREASE;
-        }else if(table.getSelectedRow() == 2 && table.getSelectedColumn() == 0){
+        }else if(table.getSelectedRow() == 5){
             return Vertex.Plan.DIFFERENCE;
-        }else if(table.getSelectedRow() == 3 && table.getSelectedColumn() == 0){
+        }else if(table.getSelectedRow() == 2){
             return Vertex.Plan.INCREASE;
-        }else if(table.getSelectedRow() == 4 && table.getSelectedColumn() == 0){
+        }else if(table.getSelectedRow() == 4){
             return Vertex.Plan.INCREASE_AND_DECREASE;
-        }else if(table.getSelectedRow() == 5 && table.getSelectedColumn() == 0){
+        }else if(table.getSelectedRow() == 6){
             return Vertex.Plan.RATIO;
-        }else if(table.getSelectedRow() == 6 && table.getSelectedColumn() == 0){
+        }else if(table.getSelectedRow() == 1){
             return Vertex.Plan.PROPORTIONAL;
         }else{
             return Vertex.Plan.UNDEFINED;
@@ -183,7 +188,7 @@ public class PlanPanelView extends JPanel {
         TaskSolution solution = ApplicationContext.getCorrectSolution();
         Vertex.Plan correctPlan = solution.getNodeByName(
                 nodeEditor.getCurrentVertex().getName()).getNodePlan();
-
+        System.out.println("Found Correct Plan as : "+correctPlan);
         setSelectedPlan(correctPlan);
         setSelectedPlanBackground(Color.YELLOW);
     }
