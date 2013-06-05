@@ -53,6 +53,7 @@ public class PlanPanelView extends JPanel {
     }
     
     public void initPanel() {
+        System.out.println("Initializing Plan Panel");
         setBorder(BorderFactory.createEmptyBorder(5, 5, 5, 5));
         tableModel = new MyTableModel();
         table = new JTable(tableModel);
@@ -121,12 +122,16 @@ public class PlanPanelView extends JPanel {
      * Method to set the initialize the selected plan radio button
      */
     private void setSelectedPlan(Vertex.Plan plan) {
+        System.out.println("Setting Selected plan to : "+plan);
+        
         if (plan.equals(Vertex.Plan.FIXED)) {
             table.setRowSelectionInterval(0, 0);
         } else if (plan.equals(Vertex.Plan.DECREASE)) {
             table.setRowSelectionInterval(3, 0);
         } else if (plan.equals(Vertex.Plan.INCREASE)) {
-            table.setRowSelectionInterval(2, 0);
+            System.out.println("here");
+            table.getSelectionModel().setSelectionInterval(2, 2);
+            
         } else if (plan.equals(Vertex.Plan.INCREASE_AND_DECREASE)) {
             table.setRowSelectionInterval(4, 0);
         } else if (plan.equals(Vertex.Plan.PROPORTIONAL)) {
@@ -136,7 +141,7 @@ public class PlanPanelView extends JPanel {
         } else if (plan.equals(Vertex.Plan.DIFFERENCE)) {
             table.setRowSelectionInterval(5, 0);
         } else {
-            table.clearSelection();
+            table.getSelectionModel().clearSelection();
         }
     }
 
@@ -183,7 +188,7 @@ public class PlanPanelView extends JPanel {
         TaskSolution solution = ApplicationContext.getCorrectSolution();
         Vertex.Plan correctPlan = solution.getNodeByName(
                 nodeEditor.getCurrentVertex().getName()).getNodePlan();
-
+        System.out.println("Found Correct Plan as : "+correctPlan);
         setSelectedPlan(correctPlan);
         setSelectedPlanBackground(Color.YELLOW);
     }

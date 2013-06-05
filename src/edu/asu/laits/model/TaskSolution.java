@@ -263,6 +263,7 @@ public class TaskSolution {
     }
     
     public boolean checkNodePlan(String nodeName, Vertex.Plan plan){
+        System.out.println("Node : "+nodeName+"  "+"selected plan: "+plan);
         if(getNodeByName(nodeName).getNodePlan().compareTo(plan) == 0)
             return true;
         else

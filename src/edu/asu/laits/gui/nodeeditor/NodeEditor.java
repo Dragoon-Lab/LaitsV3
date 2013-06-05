@@ -208,6 +208,7 @@ public class NodeEditor extends javax.swing.JDialog {
                 tabPane.setSelectedIndex(INPUTS);
             } else if (!currentVertex.getDescriptionStatus().equals(Vertex.DescriptionStatus.UNDEFINED)
                     && !currentVertex.getDescriptionStatus().equals(Vertex.DescriptionStatus.INCORRECT)) {
+                System.out.println("Setting Plan as current");
                 logs.debug("Setting Plan Panel as Current");
                 activityLogs.debug("Node Editor is opend with Plan Tab for Node: " + currentVertex.getName());
                 selectedTab = PLAN;
