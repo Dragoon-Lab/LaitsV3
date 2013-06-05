@@ -1022,6 +1022,7 @@ public class NodeEditor extends javax.swing.JDialog {
             if (iPanel.giveUpInputsPanel()) {
                 iPanel.processInputsPanel();
                 currentVertex.setInputsStatus(Vertex.InputsStatus.GAVEUP);
+                buttonCreateNodeInputTab.setEnabled(false);
             } else {
                 currentVertex.setInputsStatus(Vertex.InputsStatus.INCORRECT);
             }
@@ -1060,8 +1061,10 @@ public class NodeEditor extends javax.swing.JDialog {
         }
 
         activityLogs.debug("Closing NodeEditor because of Close action.");
-        graphPane.getMainFrame().getModelToolBar().enableDeleteNodeButton();
-        graphPane.getMainFrame().getMainMenu().getModelMenu().enableDeleteNodeMenu();
+        if(!ApplicationContext.getAppMode().equalsIgnoreCase("COACHED")){
+          graphPane.getMainFrame().getModelToolBar().enableDeleteNodeButton();
+          graphPane.getMainFrame().getMainMenu().getModelMenu().enableDeleteNodeMenu();  
+        }
         this.dispose();
     }//GEN-LAST:event_buttonCancelActionPerformed
 
