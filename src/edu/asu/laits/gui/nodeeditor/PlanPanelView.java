@@ -125,21 +125,19 @@ public class PlanPanelView extends JPanel {
         System.out.println("Setting Selected plan to : "+plan);
         
         if (plan.equals(Vertex.Plan.FIXED)) {
-            table.setRowSelectionInterval(0, 0);
+            table.getSelectionModel().setSelectionInterval(0, 0);            
         } else if (plan.equals(Vertex.Plan.DECREASE)) {
-            table.setRowSelectionInterval(3, 0);
+            table.getSelectionModel().setSelectionInterval(3, 3);
         } else if (plan.equals(Vertex.Plan.INCREASE)) {
-            System.out.println("here");
-            table.getSelectionModel().setSelectionInterval(2, 2);
-            
+            table.getSelectionModel().setSelectionInterval(2, 2);            
         } else if (plan.equals(Vertex.Plan.INCREASE_AND_DECREASE)) {
-            table.setRowSelectionInterval(4, 0);
+            table.getSelectionModel().setSelectionInterval(4, 4);
         } else if (plan.equals(Vertex.Plan.PROPORTIONAL)) {
-            table.setRowSelectionInterval(1, 0);
+            table.getSelectionModel().setSelectionInterval(1, 1);
         } else if (plan.equals(Vertex.Plan.RATIO)) {
-            table.setRowSelectionInterval(6, 0);
+            table.getSelectionModel().setSelectionInterval(6, 6);
         } else if (plan.equals(Vertex.Plan.DIFFERENCE)) {
-            table.setRowSelectionInterval(5, 0);
+            table.getSelectionModel().setSelectionInterval(5, 5);
         } else {
             table.getSelectionModel().clearSelection();
         }
