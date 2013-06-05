@@ -206,6 +206,7 @@ public class NodeEditor extends javax.swing.JDialog {
                 tabPane.setSelectedIndex(INPUTS);
             } else if (!currentVertex.getDescriptionStatus().equals(Vertex.DescriptionStatus.UNDEFINED)
                     && !currentVertex.getDescriptionStatus().equals(Vertex.DescriptionStatus.INCORRECT)) {
+                System.out.println("Setting Plan as current");
                 logs.debug("Setting Plan Panel as Current");
                 activityLogs.debug("Node Editor is opend with Plan Tab for Node: " + currentVertex.getName());
                 selectedTab = PLAN;
@@ -718,8 +719,10 @@ public class NodeEditor extends javax.swing.JDialog {
         }
 
         activityLogs.debug("Closing NodeEditor because of Close action.");
-        graphPane.getMainFrame().getModelToolBar().enableDeleteNodeButton();
-        graphPane.getMainFrame().getMainMenu().getModelMenu().enableDeleteNodeMenu();
+        if(!ApplicationContext.getAppMode().equalsIgnoreCase("COACHED")){
+          graphPane.getMainFrame().getModelToolBar().enableDeleteNodeButton();
+          graphPane.getMainFrame().getMainMenu().getModelMenu().enableDeleteNodeMenu();  
+        }
         this.dispose();
     }
 
@@ -1032,6 +1035,7 @@ public class NodeEditor extends javax.swing.JDialog {
                 cPanel.processCalculationsPanel();
                 currentVertex.setCalculationsStatus(Vertex.CalculationsStatus.GAVEUP);
                 cPanel.setEditableCalculations(false);
+                buttonCancel.setEnabled(true);
             } 
             else {
                 currentVertex.setCalculationsStatus(Vertex.CalculationsStatus.INCORRECT);
@@ -1076,6 +1080,8 @@ public class NodeEditor extends javax.swing.JDialog {
         // Process Cancel Action for all the Tabs
         activityLogs.debug("User pressed Create node button on inputs tab for Node " + currentVertex.getName());
         if(graphPane.getMainFrame().getMainMenu().getModelMenu().newNodeAllowed()){
+            this.checkButton.setEnabled(true);
+            this.giveUpButton.setEnabled(true);
             Vertex v = new Vertex();
             v.setVertexIndex(graphPane.getModelGraph().getNextAvailableIndex());
             graphPane.addVertex(v);

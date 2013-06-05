@@ -76,11 +76,11 @@
             <Property name="font" type="java.awt.Font" editor="org.netbeans.beaninfo.editors.FontEditor">
               <Font name="Lucida Grande" size="13" style="1"/>
             </Property>
-            <Property name="text" type="java.lang.String" value="Description Tree of the Problem"/>
+            <Property name="text" type="java.lang.String" value="Select a Description for this Quantity (then click &quot;Check&quot;)"/>
           </Properties>
           <Constraints>
             <Constraint layoutClass="org.netbeans.modules.form.compat2.layouts.DesignAbsoluteLayout" value="org.netbeans.modules.form.compat2.layouts.DesignAbsoluteLayout$AbsoluteConstraintsDescription">
-              <AbsoluteConstraints x="6" y="6" width="363" height="-1"/>
+              <AbsoluteConstraints x="6" y="6" width="390" height="-1"/>
             </Constraint>
           </Constraints>
         </Component>
