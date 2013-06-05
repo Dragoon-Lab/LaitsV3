@@ -353,7 +353,7 @@ public class CalculationsPanelView extends javax.swing.JPanel {
             availableInputs.remove(nodeEditor.getCurrentVertex().getName());
             
             if (!availableInputs.containsAll(correctInputs)) {
-                nodeEditor.setEditorMessage("Please define all the Nodes before using Giveup.", true);
+                nodeEditor.setEditorMessage("Please define all the Nodes before using Demo.", true);
                 return false;
             }
             reloadGraphPane();

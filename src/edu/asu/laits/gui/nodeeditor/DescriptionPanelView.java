@@ -179,8 +179,8 @@ public class DescriptionPanelView extends JPanel{
         contentPanel.add(jScrollPane2, new org.netbeans.lib.awtextra.AbsoluteConstraints(6, 28, 595, 285));
 
         evenMorePreciseLabel.setFont(new java.awt.Font("Lucida Grande", 1, 13)); // NOI18N
-        evenMorePreciseLabel.setText("Description Tree of the Problem");
-        contentPanel.add(evenMorePreciseLabel, new org.netbeans.lib.awtextra.AbsoluteConstraints(6, 6, 363, -1));
+        evenMorePreciseLabel.setText("Select a Description for this Quantity (then click \"Check\")");
+        contentPanel.add(evenMorePreciseLabel, new org.netbeans.lib.awtextra.AbsoluteConstraints(6, 6, 390, -1));
 
         quantityDescriptionTextField.setWrapStyleWord(true);
         quantityDescriptionTextField.setColumns(20);
@@ -352,13 +352,22 @@ public class DescriptionPanelView extends JPanel{
       List<SolutionNode> correctNodeNames = solution.getSolutionNodes();
       
       String giveupNode = null;
-      for(SolutionNode name : correctNodeNames){
-          if(nodeEditor.getGraphPane().getModelGraph().getVertexByName(name.getNodeName()) == null){
-              giveupNode = name.getNodeName();
-              break;
+      if(ApplicationContext.getAppMode().equalsIgnoreCase("COACHED")){
+          for(SolutionNode name : correctNodeNames){
+             if(name.getNodeOrder() == ApplicationContext.getCurrentOrder()){
+                  giveupNode = name.getNodeName();
+                  ApplicationContext.nextCurrentOrder();
+                  break;
+             } 
           }
+      }  else {
+           for(SolutionNode name : correctNodeNames){
+            if(nodeEditor.getGraphPane().getModelGraph().getVertexByName(name.getNodeName()) == null){
+                 giveupNode = name.getNodeName();
+                 break;
+              }
+         }
       }
-      
       if(giveupNode == null){
           nodeEditor.setEditorMessage("All Nodes are already being used in the Model.", true);
           return ;

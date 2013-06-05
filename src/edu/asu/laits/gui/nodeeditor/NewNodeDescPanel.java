@@ -337,13 +337,22 @@ public class NewNodeDescPanel extends JPanel{
       List<SolutionNode> correctNodeNames = solution.getSolutionNodes();
       
       String giveupNode = null;
-      for(SolutionNode name : correctNodeNames){
-          if(nodeEditor.getGraphPane().getModelGraph().getVertexByName(name.getNodeName()) == null){
-              giveupNode = name.getNodeName();
-              break;
+      if(ApplicationContext.getAppMode().equalsIgnoreCase("COACHED")){
+          for(SolutionNode name : correctNodeNames){
+             if(name.getNodeOrder() == ApplicationContext.getCurrentOrder()){
+                  giveupNode = name.getNodeName();
+                  ApplicationContext.nextCurrentOrder();
+                  break;
+             } 
           }
+      }  else {
+           for(SolutionNode name : correctNodeNames){
+            if(nodeEditor.getGraphPane().getModelGraph().getVertexByName(name.getNodeName()) == null){
+                 giveupNode = name.getNodeName();
+                 break;
+              }
+         }
       }
-      
       if(giveupNode == null){
           nodeEditor.setEditorMessage("All Nodes are already being used in the Model.", true);
           return ;
