@@ -107,12 +107,10 @@ public class NodeEditor extends javax.swing.JDialog {
         double width = screenSize.getWidth();
         double height = screenSize.getHeight();
         int yPositionNodeEditor = (int) (height - getPreferredSize().height);
-        /*
-         * setBounds((int)currentVertex.getXPosition() + 140,
-         * (int)currentVertex.getYPosition()+80, getPreferredSize().width, getPreferredSize().height);
-         */
-        setBounds((int) currentVertex.getXPosition() + 140,
-                yPositionNodeEditor / 2,
+        int xPositionNodeEditor = 
+                (int) currentVertex.getXPosition() + 140 + getPreferredSize().width > width ? 
+                (int)(width-getPreferredSize().width) : (int) currentVertex.getXPosition() + 140 ;
+        setBounds(xPositionNodeEditor, yPositionNodeEditor / 2,
                 getPreferredSize().width, getPreferredSize().height);
         pack();
 
@@ -1023,6 +1021,7 @@ public class NodeEditor extends javax.swing.JDialog {
             if (iPanel.giveUpInputsPanel()) {
                 iPanel.processInputsPanel();
                 currentVertex.setInputsStatus(Vertex.InputsStatus.GAVEUP);
+                buttonCreateNodeInputTab.setEnabled(false);
             } else {
                 currentVertex.setInputsStatus(Vertex.InputsStatus.INCORRECT);
             }
@@ -1061,8 +1060,10 @@ public class NodeEditor extends javax.swing.JDialog {
         }
 
         activityLogs.debug("Closing NodeEditor because of Close action.");
-        graphPane.getMainFrame().getModelToolBar().enableDeleteNodeButton();
-        graphPane.getMainFrame().getMainMenu().getModelMenu().enableDeleteNodeMenu();
+        if(!ApplicationContext.getAppMode().equalsIgnoreCase("COACHED")){
+          graphPane.getMainFrame().getModelToolBar().enableDeleteNodeButton();
+          graphPane.getMainFrame().getMainMenu().getModelMenu().enableDeleteNodeMenu();  
+        }
         this.dispose();
     }//GEN-LAST:event_buttonCancelActionPerformed
 
