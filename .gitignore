@@ -9,3 +9,6 @@
 /preview-application.html
 /README.md
 .DS_Store
+db_user_password
+*.jar
+*~
