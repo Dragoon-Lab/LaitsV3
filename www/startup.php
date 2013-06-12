@@ -67,6 +67,7 @@ echo "<jnlp codebase=\"$codebase\" spec=\"1.0+\">\n";
 	$username = $_POST['username'];
 	$mode = $_POST['mode'];
 	$problem_id = $_POST['problem_id'];
+        $section = $_POST['section'];
 	
 	if($mode == "AUTHOR"){
 		$problem_id = "_Author";
@@ -75,6 +76,7 @@ echo "<jnlp codebase=\"$codebase\" spec=\"1.0+\">\n";
 	echo "<argument>$username</argument>\n";
         echo "<argument>$mode</argument>\n";
         echo "<argument>$problem_id</argument>\n";
+        echo "<argument>$section</argument>\n";
         header("Content-Disposition: attachment; filename=\"laits-$problem_id.jnlp\"");
 ?>
     </application-desc>
