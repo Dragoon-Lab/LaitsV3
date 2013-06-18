@@ -46,6 +46,10 @@ public class ApplicationContext {
       currentOrder++;
   } 
   
+  public static void setLoaderURL(String loadURL){
+      taskLoaderURL = loadURL;
+  }
+  
   public static boolean getSituationMerge(){
       return situationMerge;
   }

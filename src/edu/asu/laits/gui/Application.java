@@ -75,6 +75,11 @@ public class Application extends JApplet{
         
         ApplicationContext.setCurrentTaskID(problem_id);
         ApplicationContext.setAppMode(mode);
+        if(args.length > 3)
+        {
+            String loadURL = args[3];
+            ApplicationContext.setLoaderURL(loadURL);
+        }
     }
     
 }
