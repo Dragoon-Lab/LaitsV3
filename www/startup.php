@@ -1,7 +1,14 @@
 <?xml version="1.0" encoding="UTF-8"?>
-
+    
 <?php
-     header('Content-type: application/x-java-jnlp-file');
+$username = $_POST['username'];
+$mode = $_POST['mode'];
+$problem_id = $_POST['problem_id'];
+$section = $_POST['section'];
+
+header("Content-Disposition: attachment; filename=\"laits-$problem_id.jnlp\"");
+header('Content-type: application/x-java-jnlp-file');
+
 /*
   Since the jnlp file is created dynamically, don't include
   the href attribute in the jnlp element.
@@ -10,6 +17,7 @@
 $uri= $_SERVER['REQUEST_URI'];
 $codebase="http://" . $_SERVER['SERVER_NAME'] . 
   substr($uri,0,strrpos($uri,'/')+1);
+/* Codebase not needed in Java 7.  */
 echo "<jnlp codebase=\"$codebase\" spec=\"1.0+\">\n";
 
 ?>
@@ -59,25 +67,21 @@ echo "<jnlp codebase=\"$codebase\" spec=\"1.0+\">\n";
 	<jar href="./lib/httpmime-4.2.5.jar" />
 	<jar href="./lib/fluent-hc-4.2.5.jar" />
 	<jar href="./lib/commons-logging-1.1.1.jar" />
+<?php
+	echo "<property name=\"jnlp.username\" value=\"$username\" />\n";
+	echo "<property name=\"jnlp.mode\" value=\"$mode\" />\n";
+	echo "<property name=\"jnlp.problem\" value=\"$problem_id\" />\n";
+	echo "<property name=\"jnlp.section\" value=\"$section\" />\n";
+	echo "<property name=\"jnlp.server\" value=\"$codebase\" />\n";
+?>
     </resources>
 
     <application-desc main-class="edu.asu.laits.gui.Application">
 <?php
-    //  print_r($_POST);
-	$username = $_POST['username'];
-	$mode = $_POST['mode'];
-	$problem_id = $_POST['problem_id'];
-        $section = $_POST['section'];
-	
-	if($mode == "AUTHOR"){
-		$problem_id = "_Author";
-	}
-
+	  // This is the old way of doing it
 	echo "<argument>$username</argument>\n";
         echo "<argument>$mode</argument>\n";
         echo "<argument>$problem_id</argument>\n";
-        echo "<argument>$section</argument>\n";
-        header("Content-Disposition: attachment; filename=\"laits-$problem_id.jnlp\"");
 ?>
     </application-desc>
 
