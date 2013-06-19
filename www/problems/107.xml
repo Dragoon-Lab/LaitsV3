@@ -1,0 +1,90 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<TaskName>Intro Problem 3</TaskName>
+<Task phase="Intro" type="Debug">
+  <URL>http://amt.javiergs.com/images/tasks/intro-4.png</URL>
+  <TaskDescription>
+Problem: Corky is a struggling student.  He keeps a task list of assignments he needs to do, but it keeps getting longer and longer. 
+      NEWLINE Each week Corky adds 7 new assignments to his task list.  As hard as he tries, Corky is only able to complete 3 assignments NEWLINE
+      each week and remove them from his task list.  At the beginning of the semester, he starts with 2 tasks on his list.  
+NEWLINE NEWLINEGoal: Graph the number of assignments on the task list over the 12-week semester.
+  </TaskDescription>
+  
+  <StartTime>0</StartTime>
+  <EndTime>12</EndTime>
+  <Units>weeks</Units>
+  
+  <NodeCount>3</NodeCount>
+
+  <Nodes>
+  
+    <Node type="constant" name="assignments added" extra="no">
+      <Inputs></Inputs>
+      <Equation>7</Equation>
+      <InitialValue>7</InitialValue>
+      <CorrectDescription>The number of new assignments added each week</CorrectDescription>
+      <Plan>fixed value</Plan>
+    </Node>
+    
+    <Node type="constant" name="assignments removed" extra="no">
+      <Inputs></Inputs>
+      <Equation>3</Equation>
+      <InitialValue>3</InitialValue>
+      <CorrectDescription>The number of assignments completed and removed from the task list each week</CorrectDescription>
+      <Plan>fixed value</Plan>
+    </Node>
+    
+    <Node type="stock" name="task list" extra="no">
+      <Inputs>        
+        <Name>assignments added</Name>
+    	<Name>assignments removed</Name> 
+      </Inputs>
+      <Outputs></Outputs>
+      <InitialValue>2</InitialValue>
+      <Equation>+assignments added - assignments removed</Equation>
+      <CorrectDescription>The number of assignments on the task list at the end of each week</CorrectDescription>
+      <Plan>said to both increase and decrease</Plan>
+    </Node>
+
+  </Nodes>  
+  
+  <GivenModel>
+    <Node type="constant" name="assignments added" extra="no">
+      <Inputs></Inputs>
+      <Equation>7</Equation>
+      <InitialValue>7</InitialValue>
+      <InputStatus>correct</InputStatus>
+      <CalculationStatus>correct</CalculationStatus>
+      <CorrectDescription>The number of new assignments added each week</CorrectDescription>
+      <Plan>fixed value</Plan>
+    </Node>
+    <Node type="constant" name="assignments removed" extra="no">
+      <Inputs></Inputs>
+      <Equation>3</Equation>
+      <InitialValue>3</InitialValue>
+      <CorrectDescription>The number of assignments completed and removed from the task list each week</CorrectDescription>
+      <Plan>fixed value</Plan>
+    </Node>
+  </GivenModel>  
+  
+  <DescriptionTree>
+    <Node level="root">
+      <Description>The number of</Description>      
+      <Node level="intermediate">
+        <Description>assignments</Description>            
+        <Node level="leaf">
+          <Description>on the task list at the end of each week</Description>
+          <NodeName>task list</NodeName>
+        </Node>
+        <Node level="leaf">
+          <Description>added each week</Description>
+          <NodeName>assignments added</NodeName>
+        </Node>
+        <Node level="leaf">
+          <Description>completed and removed from the task list each week</Description>
+          <NodeName>assignments removed</NodeName>
+        </Node>
+	  </Node>
+    </Node>
+  </DescriptionTree>
+  
+</Task>

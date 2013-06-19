@@ -1,0 +1,351 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<TaskName>Ecosystem Model 1</TaskName>
+<Task phase="Challenge" type="Whole">
+  <URL>http://laits.engineering.asu.edu/laits_images/1.jpg</URL>
+  
+  <TaskDescription>Let's include even more specific information on how population dynamics can be constraint by environmental factors.
+
+The urban lake starts with a population of 10 water fowl and each year (365 days) the population can grow by 40%. The maximum number of water fowl that the urban lake can support (K) now depends directly on the quantity of the renewable resource (e.g. if there is only 20 hg of the resource, then the lake can only support a maximum of 20 individual water fowl).
+
+The quantity of the renewable resource starts out at 100 hg is renewed by 60% per year (365 days) and 2% of the resource is consumed by each water fowl per year (365 days).
+
+Goal:
+Graph the water fowl population and quantity of the resource over 3650 days.
+
+Hint: Enter constant to the Hundred Thousandth decimal place.
+Use the logistic equation form (K-N)/K to calculate environmental resistance, p. 242
+      
+  </TaskDescription>
+
+  <ShortDescription>
+
+  </ShortDescription>
+  
+  <StartTime>0</StartTime>
+  <EndTime>3650</EndTime>
+  <Units>days</Units>
+  
+  <Vertexes>
+    <VertexLabel>births per day</VertexLabel>
+	<VertexLabel>proportion capacity remaining</VertexLabel>
+	<VertexLabel>renew per day</VertexLabel>
+	<VertexLabel>consump per day</VertexLabel>
+	<VertexLabel>capacity remaining</VertexLabel>
+    <VertexLabel>water fowl</VertexLabel>
+    <VertexLabel>resource</VertexLabel>
+    <VertexLabel>birth rate</VertexLabel>
+    <VertexLabel>renew rate</VertexLabel>
+    <VertexLabel>consump rate</VertexLabel>
+  </Vertexes>
+  
+  <NodeCount>10</NodeCount>
+
+  <ProblemSeeking>water fowl</ProblemSeeking>
+  <CorrespondingSentence>Graph the water fowl population over 3650 days.</CorrespondingSentence>
+
+  <Nodes>
+      <Node type="flow" name="births per day" extra="no">
+      <Inputs>
+          <Node name="water fowl"></Node>
+          <Node name="birth rate"></Node>
+          <Node name="proportion capacity remaining"></Node>
+      </Inputs>
+      <Outputs>
+      	<Node name="water fowl"></Node>        
+      </Outputs>
+      <Equation>water_fowl*birth_rate*proportion_capacity_remaining</Equation>
+      <InitialValue></InitialValue>
+      <CorrectDescription>The number of new water fowl added to the population each day</CorrectDescription>
+      <Plan>proportional to accumulator and input</Plan>
+	  </Node>
+	  
+      <Node type="flow" name="proportion capacity remaining" extra="no">
+      <Inputs>
+          <Node name="capacity remaining"></Node>
+          <Node name="resource"></Node>
+      </Inputs>
+      <Outputs>
+          <Node name="births per day"></Node>
+      </Outputs>
+      <Equation>capacity_remaining/resource</Equation>
+      <InitialValue></InitialValue>
+      <CorrectDescription>The proportion of the unutilized ecosystem carrying capacity</CorrectDescription>
+      <Plan>proportional to accumulator and input</Plan>
+	  </Node>
+	  
+	  <Node type="flow" name="renew per day" extra="no">
+      <Inputs>
+          <Node name="resource"></Node>
+          <Node name="renew rate"></Node>
+      </Inputs>
+      <Outputs> 
+        <Node name="resource"></Node>
+      </Outputs>
+      <Equation>resource*renew_rate</Equation>
+      <InitialValue></InitialValue>
+      <CorrectDescription>The number of new resources added to the resource pool each day</CorrectDescription>
+      <Plan>proportional to accumulator and input</Plan>
+	  </Node>
+	  
+	  <Node type="flow" name="consump per day" extra="no">
+      <Inputs>
+          <Node name="consump rate"></Node>
+          <Node name="water fowl"></Node>
+          <Node name="resource"></Node>
+      </Inputs>
+      <Outputs>
+          <Node name="resource"></Node>
+      </Outputs>
+      <Equation>consump_rate*water_fowl*resource</Equation>
+      <InitialValue></InitialValue>
+      <CorrectDescription>The number of resources consumed each day</CorrectDescription>
+      <Plan>proportional to accumulator and input</Plan>
+	  </Node>
+	  
+	  <Node type="flow" name="capacity remaining" extra="no">
+      <Inputs>
+          <Node name="water fowl"></Node>
+          <Node name="resource"></Node>
+      </Inputs>
+      <Outputs>
+          <Node name="proportion capacity remaining"></Node>
+      </Outputs>
+      <Equation>resource-water_fowl</Equation>
+      <InitialValue></InitialValue>
+      <CorrectDescription>The amount of the ecosystem carrying capacity not utilized by the water fowl population</CorrectDescription>
+      <Plan>fixed value</Plan>
+	  </Node>
+	  
+	  <Node type="stock" name="water fowl" extra="no">
+      <Inputs>
+        <Node name="births per day" type="plus"></Node>
+      </Inputs>
+      <Outputs>
+          <Node name="births per day"></Node>
+          <Node name="consump per day"></Node>
+          <Node name="capacity remaining"></Node>
+	  </Outputs>
+      <Equation>births_per_day</Equation>
+      <InitialValue>10.0</InitialValue>
+      <CorrectDescription>The water fowl population size</CorrectDescription>
+      <Plan>said to increase</Plan>
+      </Node>
+      
+      <Node type="stock" name="resource" extra="no">
+        <Inputs>
+            <Node name="renew per day" type="plus"></Node>
+            <Node name="consump per day" type="minus"></Node>
+        </Inputs>
+        <Outputs> 
+          <Node name="proportion capacity remaining"></Node>
+          <Node name="renew per day"></Node>
+          <Node name="consump per day"></Node>
+          <Node name="capacity remaining"></Node>
+        </Outputs>
+        <Equation>renew_per_day-consump_per_day</Equation>
+        <InitialValue>100.0</InitialValue>
+        <CorrectDescription>The size of the resource pool (hg) available to the water fowl</CorrectDescription>
+        <Plan>said to increase</Plan>
+	  </Node>
+	  
+	  <Node type="constant" name="birth rate" extra="no">
+        <Inputs></Inputs>
+        <Outputs>
+            <Node name="water fowl"></Node>
+            <Node name="births per day"></Node>
+        </Outputs>
+        <Equation>0.0010</Equation>
+        <InitialValue>0.0010</InitialValue>
+        <CorrectDescription>The maximum rate of birth of water fowl</CorrectDescription>
+        <Plan>fixed value</Plan>
+	  </Node>
+	  
+	  <Node type="constant" name="renew rate" extra="no">
+        <Inputs></Inputs>
+        <Outputs>
+            <Node name="population growth rate"></Node>
+            <Node name="renew per day"></Node>
+        </Outputs>
+        <Equation>0.0020</Equation>
+        <InitialValue>0.0020</InitialValue>
+        <CorrectDescription>The maximum rate that the resource is renewed</CorrectDescription>
+        <Plan>fixed value</Plan>
+	  </Node>
+	  
+	  <Node type="constant" name="consump rate" extra="no">
+        <Inputs></Inputs>
+        <Outputs>
+          <Node name="consump per day"></Node>        
+        </Outputs>
+        <Equation>0.0010</Equation>
+        <InitialValue>0.0010</InitialValue>
+        <CorrectDescription>The maximum rate that the resource is consumed</CorrectDescription>
+        <Plan>fixed value</Plan>
+      </Node>
+     
+  </Nodes>
+
+
+  <DescriptionTree>
+    <Node level="root">
+      <Description>The maximum rate</Description>      
+      <Node level="intermediate">
+        <Description></Description>            
+        <Node level="leaf">
+          <Description>of urban lake turnover</Description>
+          <NodeName>urban rate</NodeName>
+        </Node>
+        <Node level="leaf">
+          <Description>of birth of water fowl</Description>
+          <NodeName>birth rate</NodeName>
+        </Node>
+        <Node level="leaf">
+          <Description>that predators eat water fowl</Description>
+          <NodeName>predator rate</NodeName>
+        </Node>
+	  </Node>  
+      <Node level="intermediate">
+        <Description></Description>            
+        <Node level="leaf">
+          <Description>that the resource is renewed</Description>
+          <NodeName>renew rate</NodeName>
+        </Node>
+	  </Node>
+      <Node level="intermediate">
+        <Description></Description>            
+        <Node level="leaf">
+          <Description>that the resource is consumed</Description>
+          <NodeName>consump rate</NodeName>
+        </Node>
+	  </Node>      
+    </Node>
+    
+    <Node level="root">
+      <Description>The number of</Description>      
+      <Node level="intermediate">
+        <Description>new water fowl added to the population</Description>            
+        <Node level="leaf">
+          <Description>each day</Description>
+          <NodeName>births per day</NodeName>
+        </Node>
+        <Node level="leaf">
+          <Description>each week</Description>
+          <NodeName>births per week</NodeName>
+        </Node>
+        <Node level="leaf">
+          <Description>each season</Description>
+          <NodeName>births per season</NodeName>
+        </Node>
+      </Node>
+      <Node level="intermediate">
+        <Description>new resources added to the resource pool</Description>            
+        <Node level="leaf">
+          <Description>each day</Description>
+          <NodeName>renew per day</NodeName>
+        </Node>
+        <Node level="leaf">
+          <Description>each week</Description>
+          <NodeName>renew per week</NodeName>
+        </Node>
+        <Node level="leaf">
+          <Description>each season</Description>
+          <NodeName>renew per season</NodeName>
+        </Node>
+	  </Node>
+      <Node level="intermediate">
+        <Description>resources consumed</Description>            
+        <Node level="leaf">
+          <Description>each day</Description>
+          <NodeName>consump per day</NodeName>
+        </Node>
+        <Node level="leaf">
+          <Description>each week</Description>
+          <NodeName>consump per week</NodeName>
+        </Node>
+        <Node level="leaf">
+          <Description>each season</Description>
+          <NodeName>consump per season</NodeName>
+        </Node>
+	  </Node>
+    </Node>
+    
+    <Node level="root">
+      <Description>The water fowl</Description>      
+      <Node level="intermediate">
+        <Description></Description>            
+        
+        <Node level="leaf">
+          <Description>population size</Description>
+          <NodeName>water fowl</NodeName>
+        </Node>
+        
+        <Node level="leaf">
+          <Description>migration pattern</Description>
+          <NodeName>water fowl mig</NodeName>
+        </Node>
+        
+        <Node level="leaf">
+          <Description>population that get eaten by predators</Description>
+          <NodeName>water fowl eaten</NodeName>
+        </Node>
+	  </Node>
+      
+    </Node>
+    
+    <Node level="root">
+       <Description>The amount of the</Description>  
+      <Node level="intermediate">
+        <Description>ecosystem carrying capacity not utilized by</Description>            
+        <Node level="leaf">
+          <Description>the water fowl population</Description>
+          <NodeName>capacity remaining</NodeName>
+        </Node>
+        <Node level="leaf">
+          <Description>the lake's fish population</Description>
+          <NodeName>fish remaining</NodeName>
+        </Node>
+        <Node level="leaf">
+          <Description>the lake's microbial population</Description>
+          <NodeName>microbial remaining</NodeName>
+        </Node>        
+	  </Node>
+   </Node>
+   
+    <Node level="root">
+       <Description>The proportion of the</Description>  
+      <Node level="intermediate">
+        <Description></Description>            
+        <Node level="leaf">
+          <Description>unutilized ecosystem carrying capacity</Description>
+          <NodeName>proportion capacity remaining</NodeName>
+        </Node>
+        <Node level="leaf">
+          <Description>unutilized water fowl's capacity to swim away from predators</Description>
+          <NodeName>proportion capacity swim</NodeName>
+        </Node>               
+	  </Node>
+   </Node>
+   
+    <Node level="root">
+       <Description>The size of the resource pool (hg)</Description>  
+      <Node level="intermediate">
+        <Description></Description>            
+        <Node level="leaf">
+          <Description>available to the water fowl</Description>
+          <NodeName>resource</NodeName>
+        </Node>
+        <Node level="leaf">
+          <Description>unavailable to the water fowl</Description>
+          <NodeName>unavl resource</NodeName>
+        </Node>
+        <Node level="leaf">
+          <Description>available to the fish population</Description>
+          <NodeName>fish resource</NodeName>
+        </Node>               
+	  </Node>
+   </Node> 
+    
+  </DescriptionTree>
+
+  
+</Task>
