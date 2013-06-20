@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<TaskName>Bookworm</TaskName>
 <Task phase="Challenge" type="Construct">
+  <TaskName>Bookworm</TaskName>
   <TaskDescription>Problem: Rod is a book worm. He already has 100 books. Each week he buys and reads 2 more books. 
   Goal: Graph the number of books Rod has in 52 weeks. 
   NEWLINE NEWLINE Hints: 

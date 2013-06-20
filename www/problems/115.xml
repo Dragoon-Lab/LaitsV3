@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<TaskName>Widget Stocking</TaskName>
 <Task phase="Challenge" type="Whole">
+  <TaskName>Widget Stocking</TaskName>
   <URL>http://img.shopstyle.com/uim/y2010/d345/51/5135f69e005364825c125b1c914e468c.jpg</URL>
   
   <TaskDescription>Problem: Shane and Shawn manage a widget store.  Shawn is the saleperson, and she is very good.  However many widgets are in stock, she manages to sell 25% of them each week.  It's Shane's job to make sure the number of widgets in stock is around 100, which means Shawn would sell about 25 widgets a week.  However, while Shane was sick, the widget stock dropped to 25 widgets.  Although the current widget deficit is 75, and Shawn wants him to order that many, Shane is conservative.  He decides the number of widgets he will order and add to stock each week will be 30% of the deficit each week until the deficit is gone. 

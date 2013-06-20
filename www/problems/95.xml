@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<TaskName>Bus Fleet</TaskName>
 <Task phase="Training" type="Debug">
+  <TaskName>Bus Fleet</TaskName>
   <URL>http://farm3.static.flickr.com/2465/3825067478_cb2c3ce571.jpg</URL>
   <TaskDescription>
 Problem: Suppose a city wins a large federal grant and uses it to buy 105 low-emission buses.  Although the buses have excellent technology, 

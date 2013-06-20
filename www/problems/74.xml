@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<TaskName>Dying Orchard</TaskName>
 <Task phase="Training" type="Construct">
+  <TaskName>Dying Orchard</TaskName>
   <URL>http://image1.masterfile.com/getImage/NjAwLTAwMTcwOTExbi4wMDAwMDAwMA=AKB8Lk/600-00170911n.jpg</URL>
   <TaskDescription>
   Problem: There are initially 256 trees in the orange orchard "La belle orangerie", and 16 trees die each year. NEWLINE

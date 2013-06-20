@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<TaskName>Population Model 1</TaskName>
 <Task phase="Challenge" type="Debug">
+  <TaskName>Population Model 1</TaskName>
   <URL>http://laits.engineering.asu.edu/laits_images/1.jpg</URL>
   
   <TaskDescription>Problem: You are still interested in the same population of water fowl, but you now want to include information on how the rate of population growth 

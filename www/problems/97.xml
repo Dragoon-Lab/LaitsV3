@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<TaskName>Bank Account</TaskName>
 <Task phase="Training" type="Whole">
+  <TaskName>Bank Account</TaskName>
   <URL>http://upload.wikimedia.org/wikipedia/commons/c/c3/Backing_it_in_2.jpg</URL>
   <TaskDescription>Problem: Jack owns a trucking company that is not quite breaking even.  In fact, it loses about $1200 each year.  Jack sells one of the trucks for $50000 but after paying expenses, he has only $47500, which he puts into a bank account.  The interest rate of the account is 2% per year, which means that the money the bank adds to the account each year is 2% of what is in the account at the beginning of that year.  However, each year Jack takes $1200 out of the account to cover his losses.  
 Goal: Graph the amount of money in the account over a 15-year period.

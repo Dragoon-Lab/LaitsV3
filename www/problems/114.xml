@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<TaskName>ObscureFlix</TaskName>
 <Task phase="Challenge" type="Whole">
+  <TaskName>ObscureFlix</TaskName>
   <URL>http://fc03.deviantart.net/fs70/f/2010/069/1/1/Gorosaurus_pinup_by_KaijuSamurai.jpg</URL>
   
   <TaskDescription>Problem: Mark enjoys watching obscure, barely known movies so he subscribes to ObscureFlix.  He can watch all the movies he wants, although he has to pay $2.5 per movie.  However, the good people at ObscureFlix only have an average of 5 copies of each movie, so they often have to wait for movies to be returned before they can ship them out again. On average ObscureFlix can only ship half of the movies on Mark’s movie queue each week, which of course removes them from the queue.  After an initial frenzy where he started up his queue by putting 30 really rare movies on it, the number of movies Mark adds to his queue each week is about 20% of the number of movies already on the queue.   

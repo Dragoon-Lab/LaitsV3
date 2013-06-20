@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<TaskName>Intro Problem 3</TaskName>
 <Task phase="Intro" type="Debug">
+  <TaskName>Intro Problem 3</TaskName>
   <URL>http://amt.javiergs.com/images/tasks/intro-4.png</URL>
   <TaskDescription>
 Problem: Corky is a struggling student.  He keeps a task list of assignments he needs to do, but it keeps getting longer and longer. 

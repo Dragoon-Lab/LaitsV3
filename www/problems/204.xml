@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<TaskName>Ecosystem Model 1</TaskName>
 <Task phase="Challenge" type="Whole">
+  <TaskName>Ecosystem Model 1</TaskName>
   <URL>http://laits.engineering.asu.edu/laits_images/1.jpg</URL>
   
   <TaskDescription>Let's include even more specific information on how population dynamics can be constraint by environmental factors.

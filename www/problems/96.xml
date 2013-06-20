@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<TaskName>Capacity Utilization</TaskName>
 <Task phase="Training" type="Whole">
+  <TaskName>Capacity Utilization</TaskName>
   <URL>http://upload.wikimedia.org/wikipedia/commons/c/cd/ARTurista.JPG</URL>
   
   <TaskDescription>Problem: Capacity utilization is an important statistic for virtually any form of passenger transportation, regardless of whether the 

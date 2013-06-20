@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<TaskName>Intro Problem 1</TaskName>
 <Task phase="Intro" type="Construct">
+  <TaskName>Intro Problem 1</TaskName>
   <TaskDescription>
   Problem: By weight, potato chips are 35% fat. NEWLINE NEWLINE
       Hint: You always have to convert percentages to decimals. NEWLINE NEWLINE

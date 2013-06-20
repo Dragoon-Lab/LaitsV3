@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<TaskName>Rider Gap</TaskName>
 <Task phase="Training" type="Debug">
+  <TaskName>Rider Gap</TaskName>
   <URL>http://www.millavenue.com/_files/images/light-rail.jpg</URL>
   <TaskDescription>Problem: Suppose that a commuter rail line has 4000 daily riders when it first opens. The number of cars on the trains determines the 
       NEWLINE capacity of the rail line. The system has an initial capacity of 10000 riders, so there is a spare capacity of 10000-4000=6000 riders initially. 

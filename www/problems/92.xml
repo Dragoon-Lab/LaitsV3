@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<TaskName>Bilge Water</TaskName>
 <Task phase="Training" type="Construct">
+  <TaskName>Bilge Water</TaskName>
   <URL>http://upload.wikimedia.org/wikipedia/commons/thumb/c/cd/Bilge_well.jpg/450px-Bilge_well.jpg</URL>
   <TaskDescription>
 Problem: No matter how well constructed most large ships are, water still leaks into them. They are designed so that water collects in the 

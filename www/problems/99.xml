@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<TaskName>Venice</TaskName>
 <Task phase="Challenge" type="Construct">
+  <TaskName>Venice</TaskName>
   <URL>http://upload.wikimedia.org/wikipedia/commons/3/36/Venezia_acqua_alta_notte_2005_modificata.jpg</URL>
   <TaskDescription>
   Problem: The city of Venice in Italy is famous for its canals. The largest canal is 36,576 centimeters wide and on average the smaller canals are 3,810 centimeters wide. While the main form of transportation is via waterways, there are still a few streets and road that are mainly used by pedestrians. Unfortunately, like many coastal cities, Venice is sinking slowly. It sinks about 10 centimeters per decade. The elevation of most of the streets still in use is 300 centimeters above sea level. 

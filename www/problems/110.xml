@@ -1,5 +1,6 @@
 <Task type="Construct" phase="Training">
-<TaskName>Chestnut Blight</TaskName>	<URL>http://upload.wikimedia.org/wikipedia/commons/f/f1/Chestnut_blight.jpg</URL>
+  <TaskName>Chestnut Blight</TaskName>
+	<URL>http://upload.wikimedia.org/wikipedia/commons/f/f1/Chestnut_blight.jpg</URL>
 	<TaskDescription>Problem: In 1900, there were nearly 4,000 million American Chestnut trees in the forests of the United States, but then the 
 			NEWLINE Chestnut blight arrived from Asia. By 1940, nearly all of the mature American Chestnut trees were dead. Let's assume that the 
 			NEWLINE blight kills about 10% of the trees each year. For instance, in the first year of the blight, 400 million trees died, leaving 

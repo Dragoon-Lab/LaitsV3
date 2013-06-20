@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<TaskName>Predator-Prey Model</TaskName>
 <Task phase="Challenge" type="Whole">
+  <TaskName>Predator-Prey Model</TaskName>
   <URL>http://laits.engineering.asu.edu/laits_images/2.jpg</URL>
   
   <TaskDescription>The urban lake is home to two interacting populations: the water fowl and domestic cat. The urban lake starts with a population of 10 water fowl and 2 domestic cats. 

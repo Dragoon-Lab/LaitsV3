@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<TaskName>Rust</TaskName>
 <Task phase="Training" type="Construct">
+  <TaskName>Rust</TaskName>
   <URL>http://upload.wikimedia.org/wikipedia/commons/3/3f/Box_car_DSSA_18052.jpg</URL>
   <TaskDescription>
   Problem: Rust destroys steel and can spread quickly. Suppose you take a large sheet of steel, such as one that might be used as the 
