@@ -4,6 +4,16 @@
     <script src="http://ajax.googleapis.com/ajax/libs/jquery/1/jquery.min.js"></script>
     <script type="text/javascript" src="jquery.validate.min.js"></script>
 
+    <script>
+        function reset_options(){
+            document.getElementById('mode').options.length=0;
+            document.getElementById('problem_category').options.length=0;
+            $('#problem_category').prop('disabled', false);
+            $('#problem_id').prop('disabled', false);
+            return true;
+        }
+    </script>
+
     <title>LAITS Demo</title>
 
     <link rel="stylesheet" type="text/css" href="bootstrap.css">
@@ -128,15 +138,22 @@
             });
 
             $("#mode").change(function(){
-                if($("#mode").val() == "AUTHOR"){
+                if($("#mode").val() == "STUDENT"){
+                    $('#problem_category').prop('disabled', false);
+                    $('#problem_id').prop('disabled', false);
+                    location.reload(); 
+                }else if($("#mode").val() == "AUTHOR"){
                     $('#problem_category').prop('disabled', true);
                     $('#problem_id').prop('disabled', true);
                 }else if($("#mode").val() == "COACHED"){
                     $('#problem_category').prop('disabled', true);
+                    $('#problem_id').prop('disabled', false);
                     set_problems("Coached","");
                 }else{
                     $('#problem_category').prop('disabled', false);
                     $('#problem_id').prop('disabled', false);
+
+
                 }
             });
         });
@@ -167,7 +184,7 @@
     </script>
 
 </head>
-<body>
+<body onbeforeunload='reset_options()'>
 <div id="page-wrap">
 
     <div id="content">
@@ -187,6 +204,9 @@
                     <div class="fieldgroup">
                         <label for="mode">Mode: </label>
                         <select name="mode" id="mode">
+
+                            <script>reset_options();</script>
+
                             <option value="STUDENT">Student</option>
                             <option value="AUTHOR">Author</option>
                             <option value="COACHED">Coached</option>
