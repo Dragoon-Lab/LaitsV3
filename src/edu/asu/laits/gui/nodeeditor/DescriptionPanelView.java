@@ -36,6 +36,14 @@ import javax.swing.JTree;
 import javax.swing.tree.*;
 
 import org.apache.log4j.Logger;
+import net.java.balloontip.BalloonTip;
+import edu.asu.laits.model.HelpBubble;
+import javax.swing.JLabel;
+import net.java.balloontip.BalloonTip.AttachLocation;
+import net.java.balloontip.BalloonTip.Orientation;
+import net.java.balloontip.styles.BalloonTipStyle;
+import net.java.balloontip.styles.MinimalBalloonStyle;
+ 
 
 
 /**
@@ -86,6 +94,13 @@ public class DescriptionPanelView extends JPanel{
       Vertex currentVertex = this.nodeEditor.getCurrentVertex();
       this.nodeNameTextField.setText(currentVertex.getName());
       this.quantityDescriptionTextField.setText(currentVertex.getCorrectDescription());
+      //logs.debug(String.valueOf(ApplicationContext.getCurrentOrder()));
+      HelpBubble bubble = ApplicationContext.getHelp(String.valueOf(ApplicationContext.getCurrentOrder()), "Description", "onLoad");
+      if(bubble != null){
+          
+          BalloonTipStyle style = new MinimalBalloonStyle(Color.WHITE, 0);
+           BalloonTip myBalloonTip = new BalloonTip(this.evenMorePreciseLabel, new JLabel(bubble.getMessage()),style,Orientation.RIGHT_ABOVE, AttachLocation.ALIGNED, 20, 20, true);
+      }
       
   }
   

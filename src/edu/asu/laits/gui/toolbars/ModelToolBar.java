@@ -23,6 +23,8 @@ import javax.swing.JToolBar;
 import javax.swing.JButton;
 import java.awt.Font;
 import javax.swing.Box;
+import net.java.balloontip.BalloonTip;
+ 
 
 /**
  * ToolBar for Model functionalities Provides Add Node and Run Model buttons on
@@ -67,6 +69,7 @@ public class ModelToolBar extends JToolBar {
             this.add(Box.createHorizontalStrut(5));
             this.add(getDoneButton());
         }
+        
     }
 
     /**
@@ -87,6 +90,8 @@ public class ModelToolBar extends JToolBar {
                 }
             });
         }
+        
+        BalloonTip myBalloonTip = new BalloonTip(addNodeButton, "Click the Create Node button to begin");
         return addNodeButton;
     }
     

@@ -581,7 +581,11 @@ public class NodeEditor extends javax.swing.JDialog {
         } else {
             iPanel.setOptionPanelBackground(Color.RED);
             activityLogs.debug("User entered incorrect Inputs");
-            setEditorMessage("Your Inputs are Incorrect.", true);
+            if(iPanel.getSelectedInputsList().isEmpty() & iPanel.getInputsButtonSelected()){
+                setEditorMessage("No inputs are created or selected.", true);
+            } else{
+                setEditorMessage("Your Inputs are Incorrect.", true);
+            }
             currentVertex.setInputsStatus(Vertex.InputsStatus.INCORRECT);
         }
         activityLogs.debug("User checked Inputs Panel with Type: " + currentVertex.getVertexType());
