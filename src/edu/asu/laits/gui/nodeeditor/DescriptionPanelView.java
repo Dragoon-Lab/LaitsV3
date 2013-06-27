@@ -42,8 +42,7 @@ import javax.swing.JLabel;
 import net.java.balloontip.BalloonTip.AttachLocation;
 import net.java.balloontip.BalloonTip.Orientation;
 import net.java.balloontip.styles.BalloonTipStyle;
-import net.java.balloontip.styles.MinimalBalloonStyle;
- 
+import net.java.balloontip.styles.MinimalBalloonStyle; 
 
 
 /**

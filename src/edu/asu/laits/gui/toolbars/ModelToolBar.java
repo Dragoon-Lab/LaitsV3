@@ -23,8 +23,7 @@ import javax.swing.JToolBar;
 import javax.swing.JButton;
 import java.awt.Font;
 import javax.swing.Box;
-import net.java.balloontip.BalloonTip;
- 
+import net.java.balloontip.BalloonTip; 
 
 /**
  * ToolBar for Model functionalities Provides Add Node and Run Model buttons on
