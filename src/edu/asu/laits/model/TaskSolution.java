@@ -48,6 +48,7 @@ public class TaskSolution {
     private List<SolutionNode> solutionNodes;
     private List<SolutionNode> givenNodes;
     private List<String> correctNodeNames;
+    private List<HelpBubble> helpBubbles;
     
     private SolutionDTreeNode dTreeNode;
     private Graph solutionGraph = null;
@@ -58,6 +59,7 @@ public class TaskSolution {
         solutionNodes = new ArrayList<SolutionNode> ();
         givenNodes = new ArrayList<SolutionNode> ();
         correctNodeNames = new ArrayList<String>();
+        helpBubbles = new ArrayList<HelpBubble>();
     }
     
     /**
@@ -465,5 +467,22 @@ public class TaskSolution {
     
     public Graph getSolutionGraph(){
         return solutionGraph;
+    }
+    
+    public void addHelpBubble(HelpBubble newBubble){
+        helpBubbles.add(newBubble);
+    }
+    
+    public HelpBubble checkForHelp(String order, String time, String cevent){
+        for (HelpBubble bubble : this.helpBubbles){
+            if(order.equalsIgnoreCase(bubble.getNodeName())&& time.equalsIgnoreCase(bubble.getTiming()) && cevent.equalsIgnoreCase(bubble.getEvent())){
+               
+        logs.debug("check for help worked");
+        return bubble;
+            }
+        }
+        logs.debug("check for help failed");
+        return null;
+        
     }
 }
