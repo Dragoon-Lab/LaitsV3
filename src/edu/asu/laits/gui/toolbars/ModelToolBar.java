@@ -23,8 +23,6 @@ import javax.swing.JToolBar;
 import javax.swing.JButton;
 import java.awt.Font;
 import javax.swing.Box;
-import net.java.balloontip.BalloonTip;
- 
 
 /**
  * ToolBar for Model functionalities Provides Add Node and Run Model buttons on
@@ -75,7 +73,7 @@ public class ModelToolBar extends JToolBar {
     /**
      * This method initializes Add Note button on the ToolBar
      */
-    private JButton getAddNodeButton() {
+    public JButton getAddNodeButton() {
         if (addNodeButton == null) {
             addNodeButton = new JButton();
             addNodeButton.setText("Create Node");
@@ -91,11 +89,10 @@ public class ModelToolBar extends JToolBar {
             });
         }
         
-        BalloonTip myBalloonTip = new BalloonTip(addNodeButton, "Click the Create Node button to begin");
         return addNodeButton;
     }
     
-    private JButton getDeleteNodeButton() {
+    public JButton getDeleteNodeButton() {
         if (deleteNodeButton == null) {
             deleteNodeButton = new JButton();
             deleteNodeButton.setText("Delete Node");

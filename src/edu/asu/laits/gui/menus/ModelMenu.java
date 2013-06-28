@@ -461,4 +461,8 @@ public class ModelMenu extends JMenu {
     private void writeResultToServer(){
       logs.debug("Student "+ApplicationContext.getUserID()+" Completed Task: "+ApplicationContext.getCurrentTaskID());
     }
+    
+    public MainWindow getMainWindow(){
+        return mainWindow;
+    }
 }

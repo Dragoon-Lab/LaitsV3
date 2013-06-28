@@ -34,6 +34,8 @@ import org.apache.http.params.HttpConnectionParams;
 import org.apache.http.params.HttpParams;
 import org.apache.log4j.AppenderSkeleton;
 import org.apache.log4j.spi.LoggingEvent;
+import java.net.HttpURLConnection;
+import java.net.URL;
 
 
 public class HttpAppender extends AppenderSkeleton {
@@ -60,7 +62,7 @@ public class HttpAppender extends AppenderSkeleton {
     }
 
     @Override
-    protected void append(LoggingEvent paramLoggingEvent) {
+    public void append(LoggingEvent paramLoggingEvent) {
 
         if (!(this.getLayout() instanceof HttpLayout)) {
             errorHandler.error("you must use a HttpLayout type");
@@ -113,6 +115,13 @@ public class HttpAppender extends AppenderSkeleton {
             }
         } catch (UnsupportedEncodingException ex) {
         }
+    }
+    
+    public static void sendHttpRequest(String address) throws Exception{
+        URL url = new URL(address);
+        HttpURLConnection connect = (HttpURLConnection) url.openConnection();
+        //connect.setRequestMethod("GET");
+        connect.disconnect();        
     }
 
     /*
