@@ -1,0 +1,186 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!--
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+ *
+ *      http://www.apache.org/licenses/LICENSE-2.0
+ *
+ *  Unless required by applicable law or agreed to in writing, software
+ *  distributed under the License is distributed on an "AS IS" BASIS,
+ *  WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ *  See the License for the specific language governing permissions and
+ *  limitations under the License.
+ *
+-->
+<project xmlns:ivy="antlib:fr.jayasoft.ivy.ant" basedir=".." default="default" name="ivy-impl">
+    <target name="-check-ivy">
+        <available property="have.ivy" resource="fr/jayasoft/ivy/ant/antlib.xml"/>
+    </target>
+    <target depends="-check-ivy" name="-ivy-define" unless="have.ivy">
+        <echo level="debug" message="ivy.home : ${ivy.home}"/>
+        <taskdef resource="fr/jayasoft/ivy/ant/antlib.xml" uri="antlib:fr.jayasoft.ivy.ant">
+            <classpath>
+                <fileset file="${ivy.home}"/>
+            </classpath>
+        </taskdef>
+    </target>
+    <target name="-ant-contrib-define">
+        <echo level="debug" message="ant-contrib.lib: ${ant-contrib.lib}"/>
+        <taskdef resource="net/sf/antcontrib/antcontrib.properties">
+            <classpath>
+                <pathelement location="${ant-contrib.lib}"/>
+            </classpath>
+        </taskdef>
+    </target>
+    <target depends="-ant-contrib-define" name="-ivy-settings-define">
+        <!--
+        we need to switch between file= and url= attributes on <ivy:settings
+        but ant can't handle <ivy:settings ${ivy.settings.location.kind}="${ivy.settings.location}" />
+        so define one of two alternate macros that uses the appropriate attribute name
+        -->
+        <if>
+            <equals arg1="${ivy.settings.location.kind}" arg2="url"/>
+            <then>
+                <macrodef name="ivysettings">
+                    <sequential>
+                        <ivy:settings url="${ivy.settings.location}"/>
+                    </sequential>
+                </macrodef>
+            </then>
+            <else>
+                <macrodef name="ivysettings">
+                    <sequential>
+                        <ivy:settings file="${ivy.settings.location}"/>
+                    </sequential>
+                </macrodef>
+            </else>
+        </if>
+    </target>
+    <target name="-ivy-properties-defaults">
+        <!-- don't change ivy-retrieve.pattern without also changing ivyreport2properties.xsl to match -->
+        <property name="ivy-retrieve.pattern" value="[artifact]-[revision].[ext]"/>
+        <!-- the following values used by <ivy:retrieve> and <ivy:publish> may be overridden in project.properties or elsewhere -->
+        <property name="ivy-retrieve.type" value="jar"/>
+        <property name="ivy-publish.forcedeliver" value="true"/>
+        <property name="ivy-publish.resolver" value="local"/>
+        <property name="ivy-publish.overwrite" value="true"/>
+        <property name="ivy-publish.artifacts.pattern" value="${basedir}/${dist.dir}/[artifact].[ext]"/>
+    </target>
+    <target name="-lib-path-init">
+        <echo level="debug" message="$${lib.dir} : ${lib.dir}"/>
+        <if>
+            <equals arg1="${lib.dir}" arg2="$${lib.dir}"/>
+            <then>
+                <if>
+                    <equals arg1="${build.classes.dir}" arg2="$${build.classes.dir}"/>
+                    <then>
+                        <property name="lib.dir" value="lib"/>
+                    </then>
+                    <else>
+                        <property name="lib.dir" value="jar"/>
+                    </else>
+                </if>
+            </then>
+        </if>
+        <echo level="debug" message="$${lib.dir} : ${lib.dir}"/>
+        <mkdir dir="${basedir}/${build.dir}/${lib.dir}"/>
+    </target>
+    <target depends="-ivy-properties-defaults, -ivy-define, -ivy-settings-define, -ant-contrib-define, -lib-path-init, -ivy-paths-and-retrieve, -ivy-custom-paths" name="-ivy-retrieve"/>
+    <target name="-ivy-paths-and-retrieve">
+        <ivysettings/>
+        <ivy:resolve file="${ivy.descriptor.file}"/>
+        <property name="ivy-retrieve-dir" value="${basedir}/${build.dir}/${lib.dir}"/>
+        <ivy:retrieve pattern="${ivy-retrieve-dir}/${ivy-retrieve.pattern}" type="${ivy-retrieve.type}"/>
+        <ivy:report graph="false" outputpattern="[conf]-path.properties" todir="${basedir}/${build.dir}/ivy-paths" xslfile="nbproject/ivyreport2properties.xsl"/>
+        <concat destfile="${basedir}/${build.dir}/ivy-paths/confspaths.properties" fixlastline="true">
+            <fileset dir="${basedir}/${build.dir}/ivy-paths" includes="*-path.properties"/>
+        </concat>
+        <property file="${basedir}/${build.dir}/ivy-paths/confspaths.properties"/>
+        <pathconvert dirsep="/" pathsep="${path.separator}" property="ivy.classpath.computed.COMPILE">
+            <path path="${ivy.conf.path.compile}"/>
+        </pathconvert>
+        <pathconvert dirsep="/" pathsep="${path.separator}" property="ivy.classpath.computed.PROCESSOR">
+            <path path="${ivy.conf.path.compile}"/>
+        </pathconvert>
+        <pathconvert dirsep="/" pathsep="${path.separator}" property="ivy.classpath.computed.RUNTIME">
+            <path path="${ivy.conf.path.compile}"/>
+            <path path="${ivy.conf.path.runtime}"/>
+        </pathconvert>
+        <pathconvert dirsep="/" pathsep="${path.separator}" property="ivy.classpath.computed.COMPILE_TEST">
+            <path path="${ivy.conf.path.compile}"/>
+            <path path="${ivy.conf.path.compile-test}"/>
+        </pathconvert>
+        <pathconvert dirsep="/" pathsep="${path.separator}" property="ivy.classpath.computed.RUNTIME_TEST">
+            <path path="${ivy.conf.path.compile}"/>
+            <path path="${ivy.conf.path.compile-test}"/>
+            <path path="${ivy.conf.path.runtime}"/>
+            <path path="${ivy.conf.path.runtime-test}"/>
+        </pathconvert>
+        <macrodef name="appendIvyComputedPath">
+            <attribute name="property"/>
+            <attribute name="suffix"/>
+            <sequential>
+                <property name="old.@{property}" value="${@{property}}"/>
+                <var name="@{property}" unset="true"/>
+                <if>
+                    <equals arg1="${old.@{property}}" arg2=""/>
+                    <then>
+                        <property name="@{property}" value="@{suffix}"/>
+                    </then>
+                    <else>
+                        <property name="@{property}" value="${old.@{property}}${path.separator}@{suffix}"/>
+                    </else>
+                </if>
+                <echo level="debug" message="$${@{property}} : ${@{property}}"/>
+            </sequential>
+        </macrodef>
+        <macrodef name="appendIvyScopePath">
+            <attribute name="property"/>
+            <attribute name="scope"/>
+            <sequential>
+                <appendIvyComputedPath property="@{property}" suffix="${ivy.classpath.computed.@{scope}}"/>
+            </sequential>
+        </macrodef>
+        <macrodef name="appendIvyConfPath">
+            <attribute name="property"/>
+            <attribute name="conf"/>
+            <sequential>
+                <appendIvyComputedPath property="@{property}" suffix="${ivy.conf.path.@{conf}}"/>
+            </sequential>
+        </macrodef>
+        <appendIvyScopePath property="javac.classpath" scope="COMPILE"/>
+        <appendIvyScopePath property="javac.test.classpath" scope="COMPILE_TEST"/>
+        <appendIvyScopePath property="run.classpath" scope="RUNTIME"/>
+        <appendIvyScopePath property="run.test.classpath" scope="RUNTIME_TEST"/>
+        <appendIvyScopePath property="debug.classpath" scope="RUNTIME"/>
+        <appendIvyScopePath property="debug.test.classpath" scope="RUNTIME_TEST"/>
+        <appendIvyScopePath property="javac.processorpath" scope="PROCESSOR"/>
+    </target>
+    <target name="-ivy-custom-paths">
+        <!-- Empty placeholder for easier customization. -->
+        <!-- You can override this target in the ../build.xml file -->
+        <!-- where you can use appendIvyScopePath and appendIvyConfPath macros to set -->
+        <!-- any additional classpaths required for the project by appending the -->
+        <!-- jar files for an ivybeans scope or ivy conf. -->
+        <!-- e.g. to set the classpath property jaxbwiz.xjcdef.classpath
+             in ivy.xml define a jaxb conf with appropriate dependencies
+             then in build.xml add this target
+
+        <target name="-ivy-custom-paths">
+           <appendIvyConfPath property="jaxbwiz.xjcdef.classpath" conf="jaxb" />
+        </target>
+
+        -->
+    </target>
+    <target depends="-ivy-properties-defaults, -ivy-settings-define" name="-ivy-publish">
+        <ivysettings/>
+        <ivy:resolve file="${ivy.descriptor.file}"/>
+        <ivy:publish forcedeliver="${ivy-publish.forcedeliver}" overwrite="${ivy-publish.overwrite}" resolver="${ivy-publish.resolver}">
+            <artifacts pattern="${ivy-publish.artifacts.pattern}"/>
+        </ivy:publish>
+    </target>
+    <target name="-ivy-clean">
+        <!--delete dir="lib"/-->
+    </target>
+</project>
