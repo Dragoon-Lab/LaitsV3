@@ -57,19 +57,17 @@ public class Application extends JApplet{
     }
     
     private static void initializeApplication(String[] args){
-        String username = args[0];        
-        String mode = args[1];
-        String problem_id = args[2];
+        String username = System.getProperty("jnlp.username",args[0]);        
+        String mode = System.getProperty("jnlp.mode",args[1]);
+        String problem_id = System.getProperty("jnlp.problem",args[2]);
+        
         ApplicationContext.setUserID(username);
         ApplicationContext.setUserValid(true);
         
         ApplicationContext.setCurrentTaskID(problem_id);
-        ApplicationContext.setAppMode(mode);
-        if(args.length > 3)
-        {
-            String loadURL = args[3];
-            ApplicationContext.setLoaderURL(loadURL);
-        }
+        ApplicationContext.setAppMode(mode);    
+        ApplicationContext.setLoaderURL(
+                System.getProperty("jnlp.server","http://dragoon.asu.edu/demo")
+                );  
     }
-    
 }

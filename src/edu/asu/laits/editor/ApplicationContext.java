@@ -47,8 +47,8 @@ public class ApplicationContext {
       currentOrder++;
   } 
   
-  public static void setLoaderURL(String loadURL){
-      taskLoaderURL = loadURL;
+  public static void setLoaderURL(String baseURL){
+      taskLoaderURL =  baseURL.concat("/task_fetcher.php?taskid=");
   }
   
   public static boolean getSituationMerge(){
