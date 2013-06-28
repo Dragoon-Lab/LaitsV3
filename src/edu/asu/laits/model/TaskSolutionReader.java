@@ -92,6 +92,7 @@ public class TaskSolutionReader {
         
         logs.info("Task URL : "+resourceURL);
         document = reader.read(new URL(resourceURL));
+        
         return document;
     }
     

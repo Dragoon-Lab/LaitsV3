@@ -6,11 +6,7 @@ import javax.swing.LookAndFeel;
 import javax.swing.UIManager;
 
 import edu.asu.laits.properties.GlobalProperties;
-import java.awt.Graphics;
-import java.util.Arrays;
 import javax.swing.JApplet;
-import org.apache.log4j.Logger;
-import org.apache.log4j.PropertyConfigurator;
 
 /**
  *
@@ -19,8 +15,6 @@ import org.apache.log4j.PropertyConfigurator;
  */
 public class Application extends JApplet{
 
-    
-    
     /**
      * @param args
      */
@@ -51,7 +45,7 @@ public class Application extends JApplet{
 
                 // Main application window of LAITS
                 MainWindow window = new MainWindow();
-                window.setVisible(true);
+                //window.setVisible(true);
 
             } catch (Exception e) {
                 JOptionPane.showMessageDialog(null, e.getMessage(),
@@ -66,10 +60,6 @@ public class Application extends JApplet{
         String username = args[0];        
         String mode = args[1];
         String problem_id = args[2];
-//        String username = "ramayan";
-//        String mode = "STUDENT";
-//        String problem_id = "106";
-        
         ApplicationContext.setUserID(username);
         ApplicationContext.setUserValid(true);
         

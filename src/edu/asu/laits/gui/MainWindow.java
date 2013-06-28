@@ -89,8 +89,12 @@ public class MainWindow extends JFrame {
         pack();
         setExtendedState(MAXIMIZED_BOTH);
         setDefaultCloseOperation(DO_NOTHING_ON_CLOSE);
-
         windowCount++;
+        setVisible(true);
+        
+        new BalloonTip(this, "Click the Create Node button to begin",modelToolBar.getAddNodeButton());
+        
+        
     }
 
     public static void openWindowWithFile(File file) {

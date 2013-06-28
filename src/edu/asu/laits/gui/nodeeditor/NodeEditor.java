@@ -23,6 +23,8 @@ package edu.asu.laits.gui.nodeeditor;
 
 import edu.asu.laits.editor.ApplicationContext;
 import edu.asu.laits.editor.GraphEditorPane;
+import edu.asu.laits.gui.BalloonTip;
+import edu.asu.laits.model.HelpBubble;
 import edu.asu.laits.model.TaskSolution;
 import edu.asu.laits.model.Vertex;
 import java.awt.Color;
@@ -76,6 +78,8 @@ public class NodeEditor extends javax.swing.JDialog {
         UIManager.getDefaults().put("TabbedPane.contentBorderInsets", new Insets(2, 0, -1, 0));
         setTabListener();
         initNodeEditor();
+        
+        initializeBalloon();
     }
 
     private void initNodeEditor() {
@@ -99,8 +103,21 @@ public class NodeEditor extends javax.swing.JDialog {
 
             }
         });
+        
+        
     }
 
+    private void initializeBalloon(){
+        HelpBubble bubble = ApplicationContext.getHelp(String.valueOf(ApplicationContext.getCurrentOrder()), "Description", "onLoad");
+        if(bubble != null){
+          /*BalloonTipStyle style = new MinimalBalloonStyle(Color.WHITE, 0);
+          BalloonTip myBalloonTip = new BalloonTip(this.evenMorePreciseLabel, new JLabel(bubble.getMessage()),style,Orientation.RIGHT_ABOVE, AttachLocation.ALIGNED, 20, 20, true);
+          * */
+          
+          new BalloonTip(this, bubble.getMessage(), dPanel.getTopDescriptionLabel());
+      }
+    }
+    
     private void prepareNodeEditorDisplay() {
         logs.debug("Preparing Node Editor Display");
         Dimension screenSize = Toolkit.getDefaultToolkit().getScreenSize();
@@ -143,7 +160,6 @@ public class NodeEditor extends javax.swing.JDialog {
         logs.debug("Initializing NodeEditor Tabs - Start");
 
         dPanel = new DescriptionPanelView(this);
-        //pPanel = new PlanPanelView(this);
         pPanel = new PlanPanelView(this);
         
         iPanel = new InputsPanelView(this);
