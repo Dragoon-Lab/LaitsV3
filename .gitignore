@@ -12,5 +12,3 @@
 db_user_password
 *.jar
 *~
-/Laitsv3second/build/
-/Laitsv3second/nbproject/private/
