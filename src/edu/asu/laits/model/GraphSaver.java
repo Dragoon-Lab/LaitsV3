@@ -46,7 +46,7 @@ public class GraphSaver {
      * @param writer
      */
     public void write(Writer writer) {
-        // Used to vonvert objects to xml
+        // Used to convert objects to xml
         XStream xstream = new XStream();
 
         ListenableGraph<Vertex, Edge> graph = paneToSave
@@ -101,5 +101,65 @@ public class GraphSaver {
 
         xstream.alias("graph", GraphFile.class);
         xstream.toXML(file, writer);
+    }
+    
+    //returns string of what would be written to xml file 
+    //to save to the database
+    public String getString(Writer writer) {
+        // Used to convert objects to xml
+        XStream xstream = new XStream();
+
+        ListenableGraph<Vertex, Edge> graph = paneToSave
+                .getModelGraph();
+
+        // Start to write the vertices
+        Set<Vertex> vertexSet = graph.vertexSet();
+        LinkedList<Vertex> vertexList = new LinkedList<Vertex>(
+                vertexSet);
+
+        for (Vertex vertex : vertexList) {
+            try {
+                vertex.fetchInformationFromJGraph();
+            } catch (VertexReaderException e) {
+                // TODO Auto-generated catch block
+                e.printStackTrace();
+            }
+        }
+        /*
+         * Save the vertex set
+         */
+
+        xstream.alias("vertex", Vertex.class);
+
+        // Write the edges
+        Set<Edge> edgeSet = graph.edgeSet();
+        LinkedList<Edge> edgeList = new LinkedList<Edge>(
+                edgeSet);
+
+        for (Edge edge : edgeList) {
+            try {
+                edge.fetchInformationFromJGraphT(graph);
+            } catch (ErrorReaderException e) {
+                // TODO Auto-generated catch block
+                e.printStackTrace();
+            }
+        }
+        /*
+         * Save the edge set
+         */
+
+        xstream.alias("edge", Edge.class);
+
+        GraphFile file = new GraphFile();
+        file.setProperties(paneToSave.getGraphProperties());
+        file.setVertexList(vertexList);
+        file.setEdgeList(edgeList);
+        
+        xstream.alias("task", Task.class);
+        Graph g = (Graph)graph;
+        file.setTask(g.getCurrentTask());
+
+        xstream.alias("graph", GraphFile.class);
+        return xstream.toString();
     }
 }
