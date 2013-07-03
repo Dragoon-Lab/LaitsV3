@@ -24,6 +24,7 @@ package edu.asu.laits.gui.nodeeditor;
 import edu.asu.laits.editor.ApplicationContext;
 import edu.asu.laits.editor.GraphEditorPane;
 import edu.asu.laits.gui.BalloonTip;
+import edu.asu.laits.logger.HttpAppender;
 import edu.asu.laits.model.HelpBubble;
 import edu.asu.laits.model.TaskSolution;
 import edu.asu.laits.model.Vertex;
@@ -31,6 +32,7 @@ import java.awt.Color;
 import java.awt.Dimension;
 import java.awt.Insets;
 import java.awt.Toolkit;
+import java.util.logging.Level;
 import javax.swing.JOptionPane;
 import javax.swing.UIManager;
 import javax.swing.event.ChangeEvent;
@@ -1072,19 +1074,27 @@ public class NodeEditor extends javax.swing.JDialog {
     }
     
     private void buttonCancelActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_buttonCancelActionPerformed
-        // Process Cancel Action for all the Tabs
-        activityLogs.debug("User pressed Close button for Node " + currentVertex.getName());
-        // Delete this vertex if its not defined and user hits Cancel
-        if (currentVertex.getName().equals("")) {
-            graphPane.removeSelected();
-        }
+        try{
+            // Process Cancel Action for all the Tabs
+            activityLogs.debug("User pressed Close button for Node " + currentVertex.getName());
+            // Delete this vertex if its not defined and user hits Cancel
+            if (currentVertex.getName().equals("")) {
+                graphPane.removeSelected();
+            }
 
-        activityLogs.debug("Closing NodeEditor because of Close action.");
-        if(!ApplicationContext.getAppMode().equalsIgnoreCase("COACHED")){
-          graphPane.getMainFrame().getModelToolBar().enableDeleteNodeButton();
-          graphPane.getMainFrame().getMainMenu().getModelMenu().enableDeleteNodeMenu();  
+            activityLogs.debug("Closing NodeEditor because of Close action.");
+            if(!ApplicationContext.getAppMode().equalsIgnoreCase("COACHED")){
+              graphPane.getMainFrame().getModelToolBar().enableDeleteNodeButton();
+              graphPane.getMainFrame().getMainMenu().getModelMenu().enableDeleteNodeMenu();  
+            }
+            //HttpAppender save = new HttpAppender();
+            //save.sendHttpRequest("http://dragoon.asu.edu/demo/autosave.php?user=user1&group=theGroup&problem=1&data=NULL");
+            this.dispose();
+        } catch (Exception ex) {
+            java.util.logging.Logger.getLogger(NodeEditor.class.getName()).log(Level.SEVERE, null, ex);
         }
-        this.dispose();
+        
+        
     }//GEN-LAST:event_buttonCancelActionPerformed
 
     private void buttonOKActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_buttonOKActionPerformed
