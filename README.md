@@ -31,3 +31,6 @@ Ivy Installation Instructions
 4. Go to netbeans -> plugins editor -> downloaded tab -> add plugin -> install these 2 files. Restart netbeans
  IDE.
 5. Right click on the project -> properties -> check enable ivy. Point ivy file and settings file to ivy.xml & ivysettings.xml (you can pull these two files from git), respectively.
+
+6.  In the third line of ivy.xml, the module  and organisation
+to be the name of your netbeans project.
