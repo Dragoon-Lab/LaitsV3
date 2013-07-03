@@ -1,6 +1,13 @@
 LaitsV3
 =======
 
+Database Setup:
+
+Create the database using the script create-database.sql.
+In the project root directory, create a file db_user_passsword
+containing three lines containing the username, password, and 
+database name.
+
 Version 3 of LAITS Project with jGraph
 
 Requires command line arguments in to run locally from NetBeans.  To set up command line arguments in NetBeans, right-click the project, select "Configuration" > "Customize", select the "Run" category, and enter into the Arguments line in this format:
