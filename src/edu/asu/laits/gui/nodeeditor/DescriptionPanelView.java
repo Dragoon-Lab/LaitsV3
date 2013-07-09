@@ -30,7 +30,7 @@ import edu.asu.laits.model.TaskSolution;
 import edu.asu.laits.model.Vertex;
 import java.awt.Color;
 import java.util.Enumeration;
-import java.util.List;
+import java.util.List; 
 import javax.swing.ImageIcon;
 import javax.swing.JPanel;
 import javax.swing.JTree;
@@ -39,6 +39,9 @@ import javax.swing.tree.*;
 import org.apache.log4j.Logger;
 
 import edu.asu.laits.model.HelpBubble;
+import java.util.HashMap;
+import java.util.Map;
+import javax.swing.JComponent;
 import javax.swing.JLabel;
 
 /**
@@ -238,10 +241,22 @@ public class DescriptionPanelView extends JPanel{
            this.quantityDescriptionTextField.setText(sb.toString().trim());
            this.nodeNameTextField.setText(node.getNodeName());
            this.repaint();
+           addHelpBalloon("descFilled");
+           
        }
        
     }//GEN-LAST:event_decisionTreeValueChanged
 
+    private void addHelpBalloon(String timing){
+        HelpBubble bubble = ApplicationContext.getHelp(String.valueOf(ApplicationContext.getCurrentOrder()), "Description", timing);
+        if(bubble != null){
+          /*BalloonTipStyle style = new MinimalBalloonStyle(Color.WHITE, 0);
+          BalloonTip myBalloonTip = new BalloonTip(this.evenMorePreciseLabel, new JLabel(bubble.getMessage()),style,Orientation.RIGHT_ABOVE, AttachLocation.ALIGNED, 20, 20, true);
+          * */
+          
+          new BalloonTip(this.nodeEditor, bubble.getMessage(), this.getLabel(bubble.getAttachedTo()));
+      }
+    }
   // returns the value held by triedDuplicate
   public boolean getTriedDuplicate() {
     return triedDuplicate;
@@ -326,7 +341,9 @@ public class DescriptionPanelView extends JPanel{
       }
 
       currentVertex.setCorrectDescription(getNodeDesc().trim());
+      addHelpBalloon("descCheckDemo");
       return true;
+
   }
   
   private boolean duplicatedNode(String nodeName) {
@@ -411,6 +428,22 @@ public void setEditableTree(boolean b){
 
 public JLabel getTopDescriptionLabel(){
     return evenMorePreciseLabel;
+}
+
+public JComponent getLabel(String label){
+ 
+    Map<String, JComponent> map = new HashMap<String, JComponent>();
+    map.put("evenMorePreciseLabel", evenMorePreciseLabel);
+    map.put("referencesLabel", referencesLabel);
+    map.put("NodeNameLabel", NodeNameLabel);
+    map.put("jScrollPane1", jScrollPane1);
+    map.put("jScrollPane2", jScrollPane2);
+    if(map.containsKey(label)){
+        return map.get(label);
+    }
+    else {
+        return null;
+    }
 }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
