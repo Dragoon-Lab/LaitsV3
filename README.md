@@ -41,3 +41,8 @@ Ivy Installation Instructions
 
 6.  In the third line of ivy.xml, the module  and organisation
 to be the name of your netbeans project.
+
+7.  There is a bug in ivy (https://code.google.com/p/ivybeans/issues/detail?id=58)
+Here is a workaround:
+    right click project -> properties -> build -> compiling -> uncheck compile
+    on save option.
