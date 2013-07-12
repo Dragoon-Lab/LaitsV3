@@ -254,7 +254,7 @@ public class DescriptionPanelView extends JPanel{
           BalloonTip myBalloonTip = new BalloonTip(this.evenMorePreciseLabel, new JLabel(bubble.getMessage()),style,Orientation.RIGHT_ABOVE, AttachLocation.ALIGNED, 20, 20, true);
           * */
           
-          new BalloonTip(this.nodeEditor, bubble.getMessage(), this.getLabel(bubble.getAttachedTo()));
+          //new BlockingToolTip(this.nodeEditor, bubble.getMessage(), this.getLabel(bubble.getAttachedTo()));
       }
     }
   // returns the value held by triedDuplicate

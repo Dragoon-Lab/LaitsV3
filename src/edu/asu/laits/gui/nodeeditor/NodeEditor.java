@@ -116,7 +116,7 @@ public class NodeEditor extends javax.swing.JDialog {
           BalloonTip myBalloonTip = new BalloonTip(this.evenMorePreciseLabel, new JLabel(bubble.getMessage()),style,Orientation.RIGHT_ABOVE, AttachLocation.ALIGNED, 20, 20, true);
           * */
           
-          new BalloonTip(this, bubble.getMessage(), dPanel.getLabel(bubble.getAttachedTo()));
+          //new BalloonTip(this, bubble.getMessage(), dPanel.getLabel(bubble.getAttachedTo()));
       }
     }
     
