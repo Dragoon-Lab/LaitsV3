@@ -29,11 +29,14 @@ import edu.asu.laits.model.Vertex;
 import java.awt.Color;
 import java.text.DecimalFormat;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.Iterator;
 import java.util.List;
+import java.util.Map;
 import java.util.Set;
 
 import javax.swing.DefaultListModel;
+import javax.swing.JComponent;
 import javax.swing.JFormattedTextField;
 import javax.swing.JTextArea;
 import javax.swing.text.DefaultFormatter;
@@ -612,6 +615,21 @@ public class CalculationsPanelView extends javax.swing.JPanel {
         
         return sb.toString();
     }
+    
+    public JComponent getLabel(String label){
+ 
+    Map<String, JComponent> map = new HashMap<String, JComponent>();
+    map.put("fixedValueLabel", fixedValueLabel);
+    map.put("referencesLabel", quantitySelectionPanel);
+    map.put("jScrollPane1", jScrollPane1);
+    map.put("jScrollPane2", jScrollPane2);
+    if(map.containsKey(label)){
+        return map.get(label);
+    }
+    else {
+        return null;
+    }
+}
     /**
      * This method will remove the given node from Available Input Nodes jList
      *

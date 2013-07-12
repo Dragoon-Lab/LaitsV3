@@ -138,11 +138,11 @@ public class NodeEditor extends javax.swing.JDialog {
         
       
             
-        if(!currentVertex.getDescriptionStatus().equals(Vertex.DescriptionStatus.CORRECT) && 
-                    !currentVertex.getDescriptionStatus().equals(Vertex.DescriptionStatus.GAVEUP)){
-                tabPane.setEnabledAt(PLAN, false);
-                tabPane.setForegroundAt(PLAN, Color.GRAY);
-             }  
+//        if(!currentVertex.getDescriptionStatus().equals(Vertex.DescriptionStatus.CORRECT) && 
+//                    !currentVertex.getDescriptionStatus().equals(Vertex.DescriptionStatus.GAVEUP)){
+//                tabPane.setEnabledAt(PLAN, false);
+//                tabPane.setForegroundAt(PLAN, Color.GRAY);
+//             }  
        if(ApplicationContext.getAppMode().equals("COACHED")){
          if(!currentVertex.getPlanStatus().equals(Vertex.PlanStatus.CORRECT) &&
                     !currentVertex.getPlanStatus().equals(Vertex.PlanStatus.GAVEUP)){

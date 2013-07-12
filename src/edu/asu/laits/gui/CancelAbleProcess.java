@@ -19,7 +19,7 @@ package edu.asu.laits.gui;
 
 /**
  * An interface that processes like an operation on a graph can implement so it
- * can easaly notify a StatusNotifier to show feed back to the user.
+ * can easily notify a StatusNotifier to show feed back to the user.
  * 
  * @author kjellw
  * 

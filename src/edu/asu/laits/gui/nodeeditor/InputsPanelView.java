@@ -35,6 +35,7 @@ import java.util.LinkedList;
 import java.util.Set;
 import java.util.Stack;
 import java.util.List;
+import java.util.Map;
 import javax.swing.*;
 import org.apache.log4j.Logger;
 import org.jgraph.graph.DefaultPort;
@@ -477,7 +478,22 @@ public class InputsPanelView extends javax.swing.JPanel implements ItemListener 
             sb.append("UNDEFINED");
         
         return sb.toString();
+        
     }
+    
+    public JComponent getLabel(String label){
+ 
+    Map<String, JComponent> map = new HashMap<String, JComponent>();
+    map.put("radioPanel", radioPanel);
+    map.put("jScrollPane1", jScrollPane1);
+    map.put("jScrollPane2", jScrollPane2);
+    if(map.containsKey(label)){
+        return map.get(label);
+    }
+    else {
+        return null;
+    }
+}
     
     public void setEditableInputs(Boolean b){
         fixedValueOptionButton.setEnabled(b);
