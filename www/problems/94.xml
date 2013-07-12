@@ -90,19 +90,19 @@
 	  </Node>
     </Node>
     <Node level="root">
-      <Description>The proportion of</Description>      
-      <Node level="intermediate">
-        <Description></Description>            
-        <Node level="leaf">
-          <Description>new rust to the existing rusted area</Description>
-          <NodeName>rust growth factor</NodeName>
-        </Node>
-        <Node level="leaf">
-          <Description>rusted area to non-rusted area</Description>
-          <NodeName>rust to non-rust</NodeName>
-        </Node>
-      </Node>
-    </Node>
+            <Description>The proportion of</Description>            
+            <Node level="intermediate">
+                <Description></Description>                        
+                <Node level="leaf">
+                    <Description>new rust to the existing rusted area</Description>
+                    <NodeName>rust growth factor</NodeName>
+                </Node>
+                <Node level="leaf">
+                    <Description>rusted area to non-rusted area</Description>
+                    <NodeName>rust to non-rust</NodeName>
+                </Node>
+            </Node>
+        </Node>
   </DescriptionTree>
 
   
