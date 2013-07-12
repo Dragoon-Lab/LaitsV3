@@ -92,9 +92,7 @@ public class MainWindow extends JFrame {
         windowCount++;
         setVisible(true);
         
-        new BalloonTip(this, "Click the Create Node button to begin",modelToolBar.getAddNodeButton());
-        
-        
+        new BlockingToolTip(this, "Click the Create Node button to begin",modelToolBar.getAddNodeButton(), 0, 10);                
     }
 
     public static void openWindowWithFile(File file) {

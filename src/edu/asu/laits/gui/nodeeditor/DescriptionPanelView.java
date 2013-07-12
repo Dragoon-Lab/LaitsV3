@@ -22,7 +22,7 @@
 package edu.asu.laits.gui.nodeeditor;
 
 import edu.asu.laits.editor.ApplicationContext;
-import edu.asu.laits.gui.BalloonTip;
+import edu.asu.laits.gui.BlockingToolTip;
 import edu.asu.laits.model.Graph;
 import edu.asu.laits.model.SolutionDTreeNode;
 import edu.asu.laits.model.SolutionNode;

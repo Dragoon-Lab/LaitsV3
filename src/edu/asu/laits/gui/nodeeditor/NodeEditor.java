@@ -23,7 +23,8 @@ package edu.asu.laits.gui.nodeeditor;
 
 import edu.asu.laits.editor.ApplicationContext;
 import edu.asu.laits.editor.GraphEditorPane;
-import edu.asu.laits.gui.BalloonTip;
+import edu.asu.laits.gui.BlockingToolTip;
+//import edu.asu.laits.gui.BalloonTip;
 import edu.asu.laits.logger.HttpAppender;
 import edu.asu.laits.model.HelpBubble;
 import edu.asu.laits.model.TaskSolution;
@@ -50,14 +51,13 @@ public class NodeEditor extends javax.swing.JDialog {
     private PlanPanelView pPanel;
     private InputsPanelView iPanel;
     private CalculationsPanelView cPanel;
-    private GraphsPanelView gPanel;
-    public boolean graphCanBeDisplayed = false;
+    
     //Tab Pane Indexes
     public static final int DESCRIPTION = 0;
     public static final int PLAN = 1;
     public static final int INPUTS = 2;
     public static final int CALCULATIONS = 3;
-    public static final int GRAPH = 4;
+    
     private boolean extraTabEvent;
     private int selectedTab;
     private GraphEditorPane graphPane;
@@ -116,7 +116,7 @@ public class NodeEditor extends javax.swing.JDialog {
           BalloonTip myBalloonTip = new BalloonTip(this.evenMorePreciseLabel, new JLabel(bubble.getMessage()),style,Orientation.RIGHT_ABOVE, AttachLocation.ALIGNED, 20, 20, true);
           * */
           
-          new BalloonTip(this, bubble.getMessage(), dPanel.getTopDescriptionLabel());
+          new BlockingToolTip(this, bubble.getMessage(), dPanel.getTopDescriptionLabel(),0,0);
       }
     }
     
@@ -166,8 +166,7 @@ public class NodeEditor extends javax.swing.JDialog {
         
         iPanel = new InputsPanelView(this);
         cPanel = new CalculationsPanelView(this);
-        gPanel = new GraphsPanelView(this);
-
+        
         activityLogs.debug("Vertex Details before opening node editor ");
         activityLogs.debug(dPanel.printDescriptionPanelDetails());
         //activityLogs.debug(pPanel.printPlanPanel());
@@ -186,9 +185,6 @@ public class NodeEditor extends javax.swing.JDialog {
         calculationPanel.setLayout(new java.awt.GridLayout(1, 1));
         calculationPanel.add(cPanel);
 
-        graphsPanel.setLayout(new java.awt.GridLayout(1, 1));
-        graphsPanel.add(gPanel);
-
         setSelectedPanel();
 
         logs.debug("Initializing NodeEditor Tabs - End");
@@ -196,18 +192,7 @@ public class NodeEditor extends javax.swing.JDialog {
 
    
     private void setSelectedPanel() {
-        if (gPanel.isViewEnabled()) {
-            activityLogs.debug("Node Editor is opend with Graph Tab for Node: " + currentVertex.getName());
-            activityLogs.debug("The Current Graph Status is : " + currentVertex.getGraphsStatus());
-            gPanel.loadGraph();
-            selectedTab = GRAPH;
-            tabPane.setEnabledAt(GRAPH, true);
-            tabPane.setSelectedIndex(GRAPH);
-            tabPane.setForegroundAt(GRAPH, Color.BLACK);
-        } else {
-            tabPane.setEnabledAt(GRAPH, false);
-            tabPane.setForegroundAt(GRAPH, Color.GRAY);
-
+        
             if (!currentVertex.getInputsStatus().equals(Vertex.InputsStatus.UNDEFINED)
                     && !currentVertex.getInputsStatus().equals(Vertex.InputsStatus.INCORRECT)) {
                 logs.debug("setting calc panel as current");
@@ -237,7 +222,7 @@ public class NodeEditor extends javax.swing.JDialog {
                 showCreateNodeButtonInputTab(false);
                 tabPane.setSelectedIndex(DESCRIPTION);
             }
-        }
+        
 
         setCheckGiveupButtons();
     }
@@ -329,17 +314,7 @@ public class NodeEditor extends javax.swing.JDialog {
                         tabPane.setSelectedIndex(selectedTab);
                         return;
                     }
-                } else if (tabPane.getSelectedIndex() == GRAPH) {
-                    showCreateNodeButtonInputTab(false);
-                    if (gPanel.isViewEnabled()) {
-                        setEditorMessage("", true);
-                        selectedTab = GRAPH;
-                    } else {
-                        //extraTabEvent = true;
-                        tabPane.setSelectedIndex(selectedTab);
-                        return;
-                    }
-                }
+                } 
                 setCheckGiveupButtons();
                 logs.debug("Tab Stage Changed Action - Ends");
             }
@@ -374,15 +349,11 @@ public class NodeEditor extends javax.swing.JDialog {
     }
 
     private boolean processEditorInput() {
-        if (selectedTab == GRAPH) {
-            logs.debug("Selected Tab is Graph - DOING NOTHING");
-            selectedTab = tabPane.getSelectedIndex();
-        } else {
+        
             if (selectedTab == DESCRIPTION) {
                 if (dPanel.processDescriptionPanel()) {
                     logs.debug("Saving Description Panel");
                     getInputsPanel().updateNodeDescription();
-                    getGraphsPanel().updateDescription();
                     currentVertex.setDescriptionStatus(Vertex.DescriptionStatus.CORRECT);
                     editorMsgLabel.setText("");
                 } else {
@@ -430,7 +401,7 @@ public class NodeEditor extends javax.swing.JDialog {
                 }
             }
 
-        }
+        
 
         return true;
     }
@@ -442,8 +413,7 @@ public class NodeEditor extends javax.swing.JDialog {
     private void setCheckGiveupButtons() {
         logs.debug("Setting Check and Giveup Button for Tab " + selectedTab);
 
-        if ((ApplicationContext.getAppMode().equals("STUDENT") || ApplicationContext.getAppMode().equals("COACHED"))
-                && selectedTab != GRAPH) {
+        if ((ApplicationContext.getAppMode().equals("STUDENT") || ApplicationContext.getAppMode().equals("COACHED"))) {
             logs.debug("Enabling Check and Giveup");
             this.checkButton.setEnabled(true);
             this.giveUpButton.setEnabled(true);
@@ -723,10 +693,6 @@ public class NodeEditor extends javax.swing.JDialog {
         return iPanel;
     }
 
-    public GraphsPanelView getGraphsPanel() {
-        return gPanel;
-    }
-
     private void refreshGraphPane() {
         graphPane.getMainFrame().validate();
         graphPane.getMainFrame().repaint();
@@ -774,7 +740,6 @@ public class NodeEditor extends javax.swing.JDialog {
         planPanel = new javax.swing.JPanel();
         inputsPanel = new javax.swing.JPanel();
         calculationPanel = new javax.swing.JPanel();
-        graphsPanel = new javax.swing.JPanel();
         checkButton = new javax.swing.JButton();
         giveUpButton = new javax.swing.JButton();
         buttonCancel = new javax.swing.JButton();
@@ -846,21 +811,6 @@ public class NodeEditor extends javax.swing.JDialog {
 
         tabPane.addTab("Calculations", calculationPanel);
 
-        graphsPanel.setPreferredSize(new java.awt.Dimension(611, 506));
-
-        org.jdesktop.layout.GroupLayout graphsPanelLayout = new org.jdesktop.layout.GroupLayout(graphsPanel);
-        graphsPanel.setLayout(graphsPanelLayout);
-        graphsPanelLayout.setHorizontalGroup(
-            graphsPanelLayout.createParallelGroup(org.jdesktop.layout.GroupLayout.LEADING)
-            .add(0, 601, Short.MAX_VALUE)
-        );
-        graphsPanelLayout.setVerticalGroup(
-            graphsPanelLayout.createParallelGroup(org.jdesktop.layout.GroupLayout.LEADING)
-            .add(0, 506, Short.MAX_VALUE)
-        );
-
-        tabPane.addTab("Graphs", graphsPanel);
-
         checkButton.setText("Check");
         checkButton.setEnabled(false);
         checkButton.addActionListener(new java.awt.event.ActionListener() {
@@ -914,7 +864,7 @@ public class NodeEditor extends javax.swing.JDialog {
                         .add(editorMsgLabel, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE, 601, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE)
                         .add(0, 0, Short.MAX_VALUE))
                     .add(org.jdesktop.layout.GroupLayout.TRAILING, layout.createSequentialGroup()
-                        .add(0, 14, Short.MAX_VALUE)
+                        .add(0, 18, Short.MAX_VALUE)
                         .add(tabPane, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE, 622, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE)))
                 .addContainerGap())
             .add(layout.createSequentialGroup()
@@ -931,14 +881,14 @@ public class NodeEditor extends javax.swing.JDialog {
                 .add(20, 20, 20))
             .add(layout.createParallelGroup(org.jdesktop.layout.GroupLayout.LEADING)
                 .add(layout.createSequentialGroup()
-                    .add(10, 20, Short.MAX_VALUE)
+                    .add(10, 22, Short.MAX_VALUE)
                     .add(bottomSpacer, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE, 30, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE)
-                    .add(0, 592, Short.MAX_VALUE)))
+                    .add(0, 594, Short.MAX_VALUE)))
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(org.jdesktop.layout.GroupLayout.LEADING)
             .add(org.jdesktop.layout.GroupLayout.TRAILING, layout.createSequentialGroup()
-                .addContainerGap(16, Short.MAX_VALUE)
+                .addContainerGap(21, Short.MAX_VALUE)
                 .add(tabPane, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE, 552, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE)
                 .addPreferredGap(org.jdesktop.layout.LayoutStyle.RELATED)
                 .add(editorMsgLabel, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE, 21, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE)
@@ -952,19 +902,13 @@ public class NodeEditor extends javax.swing.JDialog {
                 .addContainerGap())
             .add(layout.createParallelGroup(org.jdesktop.layout.GroupLayout.LEADING)
                 .add(layout.createSequentialGroup()
-                    .add(0, 626, Short.MAX_VALUE)
+                    .add(0, 628, Short.MAX_VALUE)
                     .add(bottomSpacer, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE, 10, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE)
-                    .add(0, 12, Short.MAX_VALUE)))
+                    .add(0, 15, Short.MAX_VALUE)))
         );
 
         pack();
     }// </editor-fold>//GEN-END:initComponents
-
-    private void tabPaneMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_tabPaneMouseClicked
-    }//GEN-LAST:event_tabPaneMouseClicked
-
-    private void tabPaneMouseDragged(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_tabPaneMouseDragged
-    }//GEN-LAST:event_tabPaneMouseDragged
 
     private void checkButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_checkButtonActionPerformed
         // Action for Check Button
@@ -1004,8 +948,6 @@ public class NodeEditor extends javax.swing.JDialog {
             return "INPUTS";
         } else if (id == CALCULATIONS) {
             return "CALCULATIONS";
-        } else if (id == GRAPH) {
-            return "GRAPH";
         } else {
             return "";
         }
@@ -1127,6 +1069,14 @@ public class NodeEditor extends javax.swing.JDialog {
         }
     }//GEN-LAST:event_buttonCreateNodeInputTabActionPerformed
 
+    private void tabPaneMouseDragged(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_tabPaneMouseDragged
+
+    }//GEN-LAST:event_tabPaneMouseDragged
+
+    private void tabPaneMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_tabPaneMouseClicked
+
+    }//GEN-LAST:event_tabPaneMouseClicked
+
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JLabel bottomSpacer;
     private javax.swing.JButton buttonCancel;
@@ -1137,7 +1087,6 @@ public class NodeEditor extends javax.swing.JDialog {
     private javax.swing.JPanel descriptionPanel;
     private javax.swing.JLabel editorMsgLabel;
     private javax.swing.JButton giveUpButton;
-    private javax.swing.JPanel graphsPanel;
     private javax.swing.JPanel inputsPanel;
     private javax.swing.JPanel planPanel;
     private javax.swing.JTabbedPane tabPane;

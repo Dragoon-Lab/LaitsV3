@@ -89,7 +89,7 @@ public class TaskSolutionReader {
         //File file = new File(solutionFilePath);
         //document = reader.read(in);
         String resourceURL = ApplicationContext.taskLoaderURL + taskId;
-        
+        System.out.println("Resource URL "+resourceURL);
         logs.info("Task URL : "+resourceURL);
         document = reader.read(new URL(resourceURL));
         
