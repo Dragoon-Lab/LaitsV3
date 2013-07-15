@@ -6,13 +6,13 @@
 
     <script>
         function reset_options(){
-            document.getElementById('mode').options.length=0;
-            document.getElementById('problem_category').options.length=0;
+            //document.getElementById('mode').options.length=0;
+            //document.getElementById('problem_category').options.length=0;
             $('#problem_category').prop('disabled', false);
             $('#problem_id').prop('disabled', false);
             return true;
         }
-    </script>
+    </script> 
 
     <title>LAITS Demo</title>
 
@@ -129,8 +129,7 @@
                     username: "Please enter your Username.",
                 },
                 submitHandler: function(form) {
-                    form.submit();
-                    location.reload();                    
+                    form.submit();                   
                 }
             });
 
@@ -153,8 +152,6 @@
                 }else{
                     $('#problem_category').prop('disabled', false);
                     $('#problem_id').prop('disabled', false);
-
-
                 }
             });
         });
@@ -185,7 +182,8 @@
     </script>
 
 </head>
-<body onbeforeunload='reset_options()'>
+<body>
+    <!--Removed "onbeforeunload='reset_options()'" from body tag to correct form reset problems after download-->
 <div id="page-wrap">
 
     <div id="content">
@@ -242,6 +240,7 @@
                         <p class="right">By clicking Continue, you agree to our <a target="_blank"
                                                                                   href="">policy</a>.</p>
                         <input type="submit" value="Continue" class="submit">
+                        
                     </div>
 
                 </fieldset>
