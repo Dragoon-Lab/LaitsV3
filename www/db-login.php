@@ -12,6 +12,6 @@ $dbuser = chop(fgets($fh));
 $dbpass = chop(fgets($fh));
 $dbname = chop(fgets($fh));
 if(strlen($dbname)==0){
-  $dbname='lait-devel';
+  $dbname='laits_devel';
 }
 fclose($fh);
