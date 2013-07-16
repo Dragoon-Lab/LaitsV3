@@ -18,11 +18,14 @@
 
 package edu.asu.laits.gui;
 
+import java.awt.Color;
 import java.awt.event.MouseEvent;
 import java.awt.event.MouseListener;
 import javax.swing.JComponent;
+import javax.swing.JLabel;
 import javax.swing.RootPaneContainer;
 import net.java.balloontip.BalloonTip;
+import net.java.balloontip.styles.RoundedBalloonStyle;
 
 /**
  *
@@ -30,16 +33,12 @@ import net.java.balloontip.BalloonTip;
  */
 public class BlockingToolTip {
 
-    int paddingX, paddingY;
     BalloonTip bTip = null;
     RootPaneContainer parent;
 
     public BlockingToolTip(RootPaneContainer parent, String text, JComponent c, int x, int y) {
         this.parent = parent;
-        paddingX = x;
-        paddingY = y;
-        
-        initBalloon(text, c);        
+        initBalloon(text, c, x, y);        
         disableWindow();
     }
 
@@ -48,8 +47,11 @@ public class BlockingToolTip {
      * @param text
      * @param c 
      */
-    private void initBalloon(String text, JComponent c) {
-        bTip = new BalloonTip(c, text);
+    private void initBalloon(String text, JComponent c, int x, int y) {
+        bTip = new BalloonTip(c, new JLabel(text),
+                new RoundedBalloonStyle(5,5,Color.WHITE, Color.BLACK),
+                BalloonTip.Orientation.LEFT_ABOVE, BalloonTip.AttachLocation.ALIGNED,
+                x, y, true);
     }
     
     /**
