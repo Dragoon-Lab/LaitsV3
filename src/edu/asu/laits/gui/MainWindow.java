@@ -144,10 +144,6 @@ public class MainWindow extends JFrame {
      */
     private void initialize() {
         this.setTitle(GlobalProperties.PROGRAM_NAME);
-        //Toolkit tk = Toolkit.getDefaultToolkit();
-        //int xSize = ((int) tk.getScreenSize().getWidth());
-        //int ySize = ((int) tk.getScreenSize().getHeight());
-        //this.setPreferredSize(new Dimension(xSize, ySize));
         
         this.setContentPane(getJPanel());
         this.setJMenuBar(getMainMenu());

@@ -101,6 +101,11 @@ public class BlockingToolTip {
                 && e.getYOnScreen() >= startY && e.getYOnScreen() <= endY) {
             bTip.setVisible(false);
             bTip.closeBalloon();
+            
+            for( MouseListener al : parent.getGlassPane().getMouseListeners() ) {
+                parent.getGlassPane().removeMouseListener(al);
+            }
+            
             parent.getGlassPane().setVisible(false);
         }
 
