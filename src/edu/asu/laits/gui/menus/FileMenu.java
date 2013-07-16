@@ -209,7 +209,7 @@ public class FileMenu extends JMenu {
 
             v.setVertexType(node.getNodeType());
 
-            if (solution.checkNodeInputs(node.getNodeName(), node.getInputNodes())) {
+            if (solution.checkNodeInputs(node.getNodeName(), node.getInputNodes()) == 0) {
                 v.setInputsStatus(Vertex.InputsStatus.CORRECT);
             } else {
                 v.setInputsStatus(Vertex.InputsStatus.INCORRECT);

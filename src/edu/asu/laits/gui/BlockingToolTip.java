@@ -1,104 +1,110 @@
 /**
- * LAITS Project
- * Arizona State University
+ * (c) 2013, Arizona Board of Regents for and on behalf of Arizona State
+ * University. This file is part of LAITS.
+ *
+ * LAITS is free software: you can redistribute it and/or modify it under the
+ * terms of the GNU Lesser General Public License as published by the Free
+ * Software Foundation, either version 3 of the License, or (at your option) any
+ * later version.
+ *
+ * LAITS is distributed in the hope that it will be useful, but WITHOUT ANY
+ * WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS FOR
+ * A PARTICULAR PURPOSE. See the GNU Lesser General Public License for more
+ * details.
+ *
+ * You should have received a copy of the GNU Lesser General Public License
+ * along with LAITS. If not, see <http://www.gnu.org/licenses/>.
  */
 
 package edu.asu.laits.gui;
 
-import java.awt.Color;
-import java.awt.Component;
-import java.awt.event.ActionEvent;
-import javax.swing.AbstractAction;
-import javax.swing.Icon;
-import javax.swing.JButton;
+import java.awt.event.MouseEvent;
+import java.awt.event.MouseListener;
 import javax.swing.JComponent;
-import javax.swing.JDialog;
-import javax.swing.JLabel;
-import javax.swing.JPanel;
+import javax.swing.RootPaneContainer;
 import net.java.balloontip.BalloonTip;
-
 
 /**
  *
  * @author ramayantiwari
  */
-public class BlockingToolTip extends JDialog{
+public class BlockingToolTip {
+
     int paddingX, paddingY;
-    
-    public BlockingToolTip(java.awt.Frame parent, String text, JComponent c, int x, int y){
-        
-        super(parent,true);
+    BalloonTip bTip = null;
+    RootPaneContainer parent;
+
+    public BlockingToolTip(RootPaneContainer parent, String text, JComponent c, int x, int y) {
+        this.parent = parent;
         paddingX = x;
         paddingY = y;
-        initBalloon(text, c);
+        
+        initBalloon(text, c);        
+        disableWindow();
+    }
+
+    /**
+     * Initialize BalloonTip with text and the component to attach it
+     * @param text
+     * @param c 
+     */
+    private void initBalloon(String text, JComponent c) {
+        bTip = new BalloonTip(c, text);
     }
     
-    public BlockingToolTip(javax.swing.JDialog parent, String text, JComponent c, int x, int y){
+    /**
+     * Disable window by enabling GlassPane
+     * Attaches listeners to all the mouse events, if click event is detected on
+     * Close button of balloontip, we close balloon and disable glass pane, so that 
+     * window becomes responsive.
+     */
+    private void disableWindow(){
+        parent.getGlassPane().setVisible(true);
         
-        super(parent,true);
-        paddingX = x;
-        paddingY = y;
-        initBalloon(text, c);
-    }
-    
-    private void init(String text, JComponent c){
-        setDefaultCloseOperation(JDialog.DISPOSE_ON_CLOSE);
-        setUndecorated(true);
-        
-        JPanel panel = new JPanel();
-        JLabel message = new JLabel(text);
-        
-        panel.add(message);
-        panel.add(new JButton(new AbstractAction("Close"){
+        parent.getGlassPane().addMouseListener(new MouseListener() {
             @Override
-            public void actionPerformed(ActionEvent e){
-                dispose();
+            public void mouseClicked(MouseEvent me) {
+                processEvent(me);
             }
-        }));
-        
-        add(panel);
-        setBounds(c.getLocationOnScreen().x + 30 + paddingX, c.getLocationOnScreen().y + 30 + paddingY, message.getSize().width+140, message.getSize().height+30);
-        pack();
-        
-        setVisible(true);    
-    }
-    
-    private void initBalloon(String text, JComponent c){
-        setDefaultCloseOperation(JDialog.DISPOSE_ON_CLOSE);
-//        setUndecorated(true);
-//        getRootPane().setOpaque(true);
-//        getContentPane ().setBackground (new Color (0, 0, 0, 0));
-//        setBackground (new Color(0, 0, 0, 0));
-        
-        BalloonTip bTip = createBalloonTip(c, text);
-        
-        JPanel panel = new JPanel();
-        panel.add(bTip);
-        add(panel);
-        
-        setBounds(c.getLocationOnScreen().x + paddingX, c.getLocationOnScreen().y + paddingY, bTip.getSize().width, bTip.getSize().height);
-        pack();
-        
-        setVisible(true);    
-    }
-    
-    private BalloonTip createBalloonTip(JComponent compToAttach, String message){
-        BalloonTip bTip = new BalloonTip(compToAttach, message);
-        compToAttach.remove(bTip);
-        
-        JButton closeButton = BalloonTip.getDefaultCloseButton();
-        final Icon buttonIcon = closeButton.getIcon();
-        
-        closeButton.setAction(new AbstractAction("", buttonIcon) {
+
             @Override
-            public void actionPerformed(ActionEvent ae) {
-                dispose();
+            public void mousePressed(MouseEvent me) {
+            }
+
+            @Override
+            public void mouseReleased(MouseEvent me) {
+            }
+
+            @Override
+            public void mouseEntered(MouseEvent me) {
+            }
+
+            @Override
+            public void mouseExited(MouseEvent me) {
             }
         });
         
-        bTip.setCloseButton(closeButton);
-        
-        
-        return bTip;
     }
+    /**
+     * Method to Process Click Event
+     * Check if click event was generated from close button of BalloonTip, if so,
+     * remove BalloonTip and GlassPane
+     */ 
+    private void processEvent(MouseEvent e) {
+        int startX = (int) bTip.getCloseButton().getLocationOnScreen().getX();
+        int startY = (int) bTip.getCloseButton().getLocationOnScreen().getY();
+
+        int endX = bTip.getCloseButton().getHeight() + startX;
+        int endY = bTip.getCloseButton().getWidth() + startY;
+
+        if (e.getXOnScreen() >= startX && e.getXOnScreen() <= endX
+                && e.getYOnScreen() >= startY && e.getYOnScreen() <= endY) {
+            bTip.setVisible(false);
+            bTip.closeBalloon();
+            parent.getGlassPane().setVisible(false);
+        }
+
+    }
+
+    
 }

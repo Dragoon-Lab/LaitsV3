@@ -1,31 +1,26 @@
-/** (c) 2013, Arizona Board of Regents for and on behalf of Arizona State University.
- * This file is part of LAITS.
+/**
+ * (c) 2013, Arizona Board of Regents for and on behalf of Arizona State
+ * University. This file is part of LAITS.
  *
- * LAITS is free software: you can redistribute it and/or modify
- * it under the terms of the GNU Lesser General Public License as published by
- * the Free Software Foundation, either version 3 of the License, or
- * (at your option) any later version.
+ * LAITS is free software: you can redistribute it and/or modify it under the
+ * terms of the GNU Lesser General Public License as published by the Free
+ * Software Foundation, either version 3 of the License, or (at your option) any
+ * later version.
  *
- * LAITS is distributed in the hope that it will be useful,
- * but WITHOUT ANY WARRANTY; without even the implied warranty of
- * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
- * GNU Lesser General Public License for more details.
-
+ * LAITS is distributed in the hope that it will be useful, but WITHOUT ANY
+ * WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS FOR
+ * A PARTICULAR PURPOSE. See the GNU Lesser General Public License for more
+ * details.
+ *
  * You should have received a copy of the GNU Lesser General Public License
- * along with LAITS.  If not, see <http://www.gnu.org/licenses/>.
+ * along with LAITS. If not, see <http://www.gnu.org/licenses/>.
  */
 
-/*
- * To change this template, choose Tools | Templates
- * and open the template in the editor.
- */
 package edu.asu.laits.gui.nodeeditor;
 
 import edu.asu.laits.editor.ApplicationContext;
 import edu.asu.laits.editor.GraphEditorPane;
 import edu.asu.laits.gui.BlockingToolTip;
-//import edu.asu.laits.gui.BalloonTip;
-import edu.asu.laits.logger.HttpAppender;
 import edu.asu.laits.model.HelpBubble;
 import edu.asu.laits.model.TaskSolution;
 import edu.asu.laits.model.Vertex;
@@ -51,13 +46,11 @@ public class NodeEditor extends javax.swing.JDialog {
     private PlanPanelView pPanel;
     private InputsPanelView iPanel;
     private CalculationsPanelView cPanel;
-    
     //Tab Pane Indexes
     public static final int DESCRIPTION = 0;
     public static final int PLAN = 1;
     public static final int INPUTS = 2;
     public static final int CALCULATIONS = 3;
-    
     private boolean extraTabEvent;
     private int selectedTab;
     private GraphEditorPane graphPane;
@@ -80,7 +73,7 @@ public class NodeEditor extends javax.swing.JDialog {
         UIManager.getDefaults().put("TabbedPane.contentBorderInsets", new Insets(2, 0, -1, 0));
         setTabListener();
         initNodeEditor();
-        
+
         initializeBalloon();
     }
 
@@ -93,69 +86,60 @@ public class NodeEditor extends javax.swing.JDialog {
         setTitle(currentVertex.getName());
         setEditorMessage("", true);
         prepareNodeEditorDisplay();
-        if(ApplicationContext.getAppMode().equals("COACHED")){
+        if (ApplicationContext.getAppMode().equals("COACHED")) {
             buttonCancel.setEnabled(false);
         }
-        
-        this.addWindowListener(new java.awt.event.WindowAdapter() {
 
+        this.addWindowListener(new java.awt.event.WindowAdapter() {
             public void windowClosing(java.awt.event.WindowEvent e) {
 
                 closeNodeEditor();
 
             }
         });
-        
-        
+
     }
 
-    private void initializeBalloon(){
-        HelpBubble bubble = ApplicationContext.getHelp(String.valueOf(ApplicationContext.getCurrentOrder()), "Description", "onLoad");
-        if(bubble != null){
-          /*BalloonTipStyle style = new MinimalBalloonStyle(Color.WHITE, 0);
-          BalloonTip myBalloonTip = new BalloonTip(this.evenMorePreciseLabel, new JLabel(bubble.getMessage()),style,Orientation.RIGHT_ABOVE, AttachLocation.ALIGNED, 20, 20, true);
-          * */
-          
-          //new BalloonTip(this, bubble.getMessage(), dPanel.getLabel(bubble.getAttachedTo()));
-      }
+    /**
+     * Attach BalloonTip at the start of Node Editor
+     */
+    private void initializeBalloon() {
+//        HelpBubble bubble = ApplicationContext.getHelp(String.valueOf(ApplicationContext.getCurrentOrder()), "Description", "onLoad");
+//        if (bubble != null) {
+//           new BlockingToolTip(this, bubble.getMessage(), dPanel.getLabel(bubble.getAttachedTo()),0,0);
+//        }
+        new BlockingToolTip(this, "Start by selecting a description..", dPanel.getLabel("evenMorePreciseLabel"),0,0);
     }
-    
+
     private void prepareNodeEditorDisplay() {
         logs.debug("Preparing Node Editor Display");
         Dimension screenSize = Toolkit.getDefaultToolkit().getScreenSize();
         double width = screenSize.getWidth();
         double height = screenSize.getHeight();
         int yPositionNodeEditor = (int) (height - getPreferredSize().height);
-        int xPositionNodeEditor = 
-                (int) currentVertex.getXPosition() + 140 + getPreferredSize().width > width ? 
-                (int)(width-getPreferredSize().width) : (int) currentVertex.getXPosition() + 140 ;
+        int xPositionNodeEditor =
+                (int) currentVertex.getXPosition() + 140 + getPreferredSize().width > width
+                ? (int) (width - getPreferredSize().width) : (int) currentVertex.getXPosition() + 140;
         setBounds(xPositionNodeEditor, yPositionNodeEditor / 2,
                 getPreferredSize().width, getPreferredSize().height);
         pack();
 
         setVisible(true);
         setResizable(false);
-        
-      
-            
-//        if(!currentVertex.getDescriptionStatus().equals(Vertex.DescriptionStatus.CORRECT) && 
-//                    !currentVertex.getDescriptionStatus().equals(Vertex.DescriptionStatus.GAVEUP)){
-//                tabPane.setEnabledAt(PLAN, false);
-//                tabPane.setForegroundAt(PLAN, Color.GRAY);
-//             }  
-       if(ApplicationContext.getAppMode().equals("COACHED")){
-         if(!currentVertex.getPlanStatus().equals(Vertex.PlanStatus.CORRECT) &&
-                    !currentVertex.getPlanStatus().equals(Vertex.PlanStatus.GAVEUP)){
-               tabPane.setEnabledAt(INPUTS, false);
+
+        if (ApplicationContext.getAppMode().equals("COACHED")) {
+            if (!currentVertex.getPlanStatus().equals(Vertex.PlanStatus.CORRECT)
+                    && !currentVertex.getPlanStatus().equals(Vertex.PlanStatus.GAVEUP)) {
+                tabPane.setEnabledAt(INPUTS, false);
                 tabPane.setForegroundAt(INPUTS, Color.GRAY);
             }
-        if(!currentVertex.getInputsStatus().equals(Vertex.InputsStatus.CORRECT) &&
-                !currentVertex.getInputsStatus().equals(Vertex.InputsStatus.GAVEUP)){
-            tabPane.setEnabledAt(CALCULATIONS, false);
-            tabPane.setForegroundAt(CALCULATIONS, Color.GRAY);
+            if (!currentVertex.getInputsStatus().equals(Vertex.InputsStatus.CORRECT)
+                    && !currentVertex.getInputsStatus().equals(Vertex.InputsStatus.GAVEUP)) {
+                tabPane.setEnabledAt(CALCULATIONS, false);
+                tabPane.setForegroundAt(CALCULATIONS, Color.GRAY);
             }
         }
-        
+
     }
 
     public void initTabs(boolean newNode) {
@@ -163,10 +147,10 @@ public class NodeEditor extends javax.swing.JDialog {
 
         dPanel = new DescriptionPanelView(this);
         pPanel = new PlanPanelView(this);
-        
+
         iPanel = new InputsPanelView(this);
         cPanel = new CalculationsPanelView(this);
-        
+
         activityLogs.debug("Vertex Details before opening node editor ");
         activityLogs.debug(dPanel.printDescriptionPanelDetails());
         //activityLogs.debug(pPanel.printPlanPanel());
@@ -190,39 +174,38 @@ public class NodeEditor extends javax.swing.JDialog {
         logs.debug("Initializing NodeEditor Tabs - End");
     }
 
-   
     private void setSelectedPanel() {
-        
-            if (!currentVertex.getInputsStatus().equals(Vertex.InputsStatus.UNDEFINED)
-                    && !currentVertex.getInputsStatus().equals(Vertex.InputsStatus.INCORRECT)) {
-                logs.debug("setting calc panel as current");
-                activityLogs.debug("Node Editor is opend with Calculations Tab for Node: " + currentVertex.getName());
-                selectedTab = CALCULATIONS;
-                showCreateNodeButtonInputTab(false);
-                tabPane.setSelectedIndex(CALCULATIONS);
-            } else if (!currentVertex.getPlanStatus().equals(Vertex.PlanStatus.UNDEFINED)
-                    && !currentVertex.getPlanStatus().equals(Vertex.PlanStatus.INCORRECT)) {
-                logs.debug("Setting Inputs Panel as Current");
-                activityLogs.debug("Node Editor is opend with Inputs Tab for Node: " + currentVertex.getName());
-                selectedTab = INPUTS;
-                showCreateNodeButtonInputTab(true);
-                tabPane.setSelectedIndex(INPUTS);
-            } else if (!currentVertex.getDescriptionStatus().equals(Vertex.DescriptionStatus.UNDEFINED)
-                    && !currentVertex.getDescriptionStatus().equals(Vertex.DescriptionStatus.INCORRECT)) {
-                System.out.println("Setting Plan as current");
-                logs.debug("Setting Plan Panel as Current");
-                activityLogs.debug("Node Editor is opend with Plan Tab for Node: " + currentVertex.getName());
-                selectedTab = PLAN;
-                showCreateNodeButtonInputTab(false);
-                tabPane.setSelectedIndex(PLAN);
-            } else {
-                logs.debug("Setting Desc Panel as Current");
-                activityLogs.debug("Node Editor is opend with Description Tab for Node: " + currentVertex.getName());
-                selectedTab = DESCRIPTION;
-                showCreateNodeButtonInputTab(false);
-                tabPane.setSelectedIndex(DESCRIPTION);
-            }
-        
+
+        if (!currentVertex.getInputsStatus().equals(Vertex.InputsStatus.UNDEFINED)
+                && !currentVertex.getInputsStatus().equals(Vertex.InputsStatus.INCORRECT)) {
+            logs.debug("setting calc panel as current");
+            activityLogs.debug("Node Editor is opend with Calculations Tab for Node: " + currentVertex.getName());
+            selectedTab = CALCULATIONS;
+            showCreateNodeButtonInputTab(false);
+            tabPane.setSelectedIndex(CALCULATIONS);
+        } else if (!currentVertex.getPlanStatus().equals(Vertex.PlanStatus.UNDEFINED)
+                && !currentVertex.getPlanStatus().equals(Vertex.PlanStatus.INCORRECT)) {
+            logs.debug("Setting Inputs Panel as Current");
+            activityLogs.debug("Node Editor is opend with Inputs Tab for Node: " + currentVertex.getName());
+            selectedTab = INPUTS;
+            showCreateNodeButtonInputTab(true);
+            tabPane.setSelectedIndex(INPUTS);
+        } else if (!currentVertex.getDescriptionStatus().equals(Vertex.DescriptionStatus.UNDEFINED)
+                && !currentVertex.getDescriptionStatus().equals(Vertex.DescriptionStatus.INCORRECT)) {
+            System.out.println("Setting Plan as current");
+            logs.debug("Setting Plan Panel as Current");
+            activityLogs.debug("Node Editor is opend with Plan Tab for Node: " + currentVertex.getName());
+            selectedTab = PLAN;
+            showCreateNodeButtonInputTab(false);
+            tabPane.setSelectedIndex(PLAN);
+        } else {
+            logs.debug("Setting Desc Panel as Current");
+            activityLogs.debug("Node Editor is opend with Description Tab for Node: " + currentVertex.getName());
+            selectedTab = DESCRIPTION;
+            showCreateNodeButtonInputTab(false);
+            tabPane.setSelectedIndex(DESCRIPTION);
+        }
+
 
         setCheckGiveupButtons();
     }
@@ -232,7 +215,6 @@ public class NodeEditor extends javax.swing.JDialog {
 
         tabPane.addChangeListener(new ChangeListener() {
             // Set the Tab of Node Editor according to the finished Tabs
-
             public void stateChanged(ChangeEvent e) {
 
                 // If clicking on same Tab - Do nothing
@@ -264,8 +246,8 @@ public class NodeEditor extends javax.swing.JDialog {
                     activityLogs.debug("User Is in the Description Tab ");
                     setEditorMessage("", true);
                     selectedTab = DESCRIPTION;
-                    if (currentVertex.getDescriptionStatus().equals(Vertex.DescriptionStatus.CORRECT)||
-                            currentVertex.getDescriptionStatus().equals(Vertex.DescriptionStatus.GAVEUP)) {
+                    if (currentVertex.getDescriptionStatus().equals(Vertex.DescriptionStatus.CORRECT)
+                            || currentVertex.getDescriptionStatus().equals(Vertex.DescriptionStatus.GAVEUP)) {
                         dPanel.setEditableTree(false);
                     }
                     showCreateNodeButtonInputTab(false);
@@ -275,8 +257,8 @@ public class NodeEditor extends javax.swing.JDialog {
                         activityLogs.debug("User Is in the Plan Tab ");
                         setEditorMessage("", true);
                         selectedTab = PLAN;
-                        if (currentVertex.getPlanStatus().equals(Vertex.PlanStatus.CORRECT) ||
-                                currentVertex.getPlanStatus().equals(Vertex.PlanStatus.GAVEUP)) {
+                        if (currentVertex.getPlanStatus().equals(Vertex.PlanStatus.CORRECT)
+                                || currentVertex.getPlanStatus().equals(Vertex.PlanStatus.GAVEUP)) {
                             pPanel.setEditableRadio(false);
                         }
                     } else {
@@ -290,8 +272,8 @@ public class NodeEditor extends javax.swing.JDialog {
                         activityLogs.debug("User Is in the Inputs Tab ");
                         setEditorMessage("", true);
                         selectedTab = INPUTS;
-                        if (currentVertex.getInputsStatus().equals(Vertex.InputsStatus.CORRECT) ||
-                                currentVertex.getInputsStatus().equals(Vertex.InputsStatus.GAVEUP)) {
+                        if (currentVertex.getInputsStatus().equals(Vertex.InputsStatus.CORRECT)
+                                || currentVertex.getInputsStatus().equals(Vertex.InputsStatus.GAVEUP)) {
                             iPanel.setEditableInputs(false);
                         }
                     } else {
@@ -305,8 +287,8 @@ public class NodeEditor extends javax.swing.JDialog {
                         activityLogs.debug("User Is in the Calculations Tab ");
                         setEditorMessage("", true);
                         selectedTab = CALCULATIONS;
-                        if (currentVertex.getCalculationsStatus().equals(Vertex.CalculationsStatus.CORRECT) ||
-                                currentVertex.getCalculationsStatus().equals(Vertex.CalculationsStatus.GAVEUP)) {
+                        if (currentVertex.getCalculationsStatus().equals(Vertex.CalculationsStatus.CORRECT)
+                                || currentVertex.getCalculationsStatus().equals(Vertex.CalculationsStatus.GAVEUP)) {
                             cPanel.setEditableCalculations(false);
                         }
                     } else {
@@ -314,7 +296,7 @@ public class NodeEditor extends javax.swing.JDialog {
                         tabPane.setSelectedIndex(selectedTab);
                         return;
                     }
-                } 
+                }
                 setCheckGiveupButtons();
                 logs.debug("Tab Stage Changed Action - Ends");
             }
@@ -349,59 +331,59 @@ public class NodeEditor extends javax.swing.JDialog {
     }
 
     private boolean processEditorInput() {
-        
-            if (selectedTab == DESCRIPTION) {
-                if (dPanel.processDescriptionPanel()) {
-                    logs.debug("Saving Description Panel");
-                    getInputsPanel().updateNodeDescription();
-                    currentVertex.setDescriptionStatus(Vertex.DescriptionStatus.CORRECT);
-                    editorMsgLabel.setText("");
-                } else {
-                    extraTabEvent = true;
-                    currentVertex.setDescriptionStatus(Vertex.DescriptionStatus.INCORRECT);
-                    tabPane.setSelectedIndex(DESCRIPTION);
-                    return false;
-                }
-            } else if (selectedTab == PLAN) {
 
-                if (pPanel.processPlanPanel()) {
-                    logs.debug("Saving PLAN Panel");
-                    currentVertex.setPlanStatus(Vertex.PlanStatus.CORRECT);
-                    editorMsgLabel.setText("");
-                } else {
-                    extraTabEvent = true;
-                    currentVertex.setPlanStatus(Vertex.PlanStatus.INCORRECT);
-                    tabPane.setSelectedIndex(PLAN);
-                    return false;
-                }
-            } else if (selectedTab == INPUTS) {
-
-                if (iPanel.processInputsPanel()) {
-                    logs.debug("Saving INPUTS Panel");
-                    editorMsgLabel.setText("");
-                    currentVertex.setInputsStatus(Vertex.InputsStatus.CORRECT);
-                    cPanel.initPanel();
-                } else {
-                    extraTabEvent = true;
-                    tabPane.setSelectedIndex(INPUTS);
-                    currentVertex.setInputsStatus(Vertex.InputsStatus.INCORRECT);
-                    return false;
-                }
-            } else if (selectedTab == CALCULATIONS) {
-
-                if (cPanel.processCalculationsPanel()) {
-                    logs.debug("Saving CALCULATIONS Panel");
-                    editorMsgLabel.setText("");
-                    currentVertex.setCalculationsStatus(Vertex.CalculationsStatus.CORRECT);
-                } else {
-                    extraTabEvent = true;
-                    tabPane.setSelectedIndex(CALCULATIONS);
-                    currentVertex.setCalculationsStatus(Vertex.CalculationsStatus.INCORRECT);
-                    return false;
-                }
+        if (selectedTab == DESCRIPTION) {
+            if (dPanel.processDescriptionPanel()) {
+                logs.debug("Saving Description Panel");
+                getInputsPanel().updateNodeDescription();
+                currentVertex.setDescriptionStatus(Vertex.DescriptionStatus.CORRECT);
+                editorMsgLabel.setText("");
+            } else {
+                extraTabEvent = true;
+                currentVertex.setDescriptionStatus(Vertex.DescriptionStatus.INCORRECT);
+                tabPane.setSelectedIndex(DESCRIPTION);
+                return false;
             }
+        } else if (selectedTab == PLAN) {
 
-        
+            if (pPanel.processPlanPanel()) {
+                logs.debug("Saving PLAN Panel");
+                currentVertex.setPlanStatus(Vertex.PlanStatus.CORRECT);
+                editorMsgLabel.setText("");
+            } else {
+                extraTabEvent = true;
+                currentVertex.setPlanStatus(Vertex.PlanStatus.INCORRECT);
+                tabPane.setSelectedIndex(PLAN);
+                return false;
+            }
+        } else if (selectedTab == INPUTS) {
+
+            if (iPanel.processInputsPanel()) {
+                logs.debug("Saving INPUTS Panel");
+                editorMsgLabel.setText("");
+                currentVertex.setInputsStatus(Vertex.InputsStatus.CORRECT);
+                cPanel.initPanel();
+            } else {
+                extraTabEvent = true;
+                tabPane.setSelectedIndex(INPUTS);
+                currentVertex.setInputsStatus(Vertex.InputsStatus.INCORRECT);
+                return false;
+            }
+        } else if (selectedTab == CALCULATIONS) {
+
+            if (cPanel.processCalculationsPanel()) {
+                logs.debug("Saving CALCULATIONS Panel");
+                editorMsgLabel.setText("");
+                currentVertex.setCalculationsStatus(Vertex.CalculationsStatus.CORRECT);
+            } else {
+                extraTabEvent = true;
+                tabPane.setSelectedIndex(CALCULATIONS);
+                currentVertex.setCalculationsStatus(Vertex.CalculationsStatus.INCORRECT);
+                return false;
+            }
+        }
+
+
 
         return true;
     }
@@ -490,13 +472,13 @@ public class NodeEditor extends javax.swing.JDialog {
         validate();
         repaint();
     }
-    
-        private void checkDescriptionPanelCoached(TaskSolution correctSolution) {
+
+    private void checkDescriptionPanelCoached(TaskSolution correctSolution) {
         // Save Description Panel Information in the Vertex Object
         if (!dPanel.processDescriptionPanel()) {
             return;
         }
-        int solutionCheck = correctSolution.checkNodeNameOrdered(dPanel.getNodeName(),ApplicationContext.getCurrentOrder());
+        int solutionCheck = correctSolution.checkNodeNameOrdered(dPanel.getNodeName(), ApplicationContext.getCurrentOrder());
         if (solutionCheck == 1) {
             currentVertex.setDescriptionStatus(Vertex.DescriptionStatus.CORRECT);
             //graphPane.getMainFrame().getMainMenu().getModelMenu().addDeleteNodeMenu();
@@ -507,7 +489,7 @@ public class NodeEditor extends javax.swing.JDialog {
             ApplicationContext.nextCurrentOrder();
             tabPane.setEnabledAt(PLAN, true);
             tabPane.setForegroundAt(PLAN, Color.BLACK);
-        } else if(solutionCheck == 2){
+        } else if (solutionCheck == 2) {
             dPanel.setTextFieldBackground(Color.CYAN);
             setEditorMessage("That quantity used in this model, but now is not the right time to define it. Please select another description.", true);
             activityLogs.debug("User entered description out of order");
@@ -516,15 +498,14 @@ public class NodeEditor extends javax.swing.JDialog {
             dPanel.setTextFieldBackground(Color.RED);
             setEditorMessage("That quantity is not used in the correct model. Please select another description.", true);
             activityLogs.debug("User entered incorrect description");
-            
+
         }
-            
+
 
         setTitle(currentVertex.getName());
         validate();
         repaint();
     }
-
 
     private void checkPlanPanel(TaskSolution correctSolution) {
         logs.debug("Checking Plan Panel");
@@ -550,16 +531,26 @@ public class NodeEditor extends javax.swing.JDialog {
 
     private void checkInputsPanel(TaskSolution correctSolution) {
         iPanel.processInputsPanel();
-        iPanel.setOptionPanelBackground(new Color(240, 240, 240));
-        boolean result = false;
+        iPanel.setInputsTypeBackground(new Color(240, 240, 240));
+        iPanel.setInputValuesBackground(new Color(240, 240, 240));
+      
+        int result = 0;
+
         if (iPanel.getValueButtonSelected()) {
             result = correctSolution.checkNodeInputs(dPanel.getNodeName(), null);
         } else if (iPanel.getInputsButtonSelected()) {
             result = correctSolution.checkNodeInputs(dPanel.getNodeName(), iPanel.getSelectedInputsList());
         }
 
-        if (result) {
-            iPanel.setOptionPanelBackground(Color.GREEN);
+        System.out.println("result = "+result);
+        if (result == 0 || result == 3) {
+            if (result == 0) {
+                iPanel.setInputsTypeBackground(Color.GREEN);
+            } else {
+                iPanel.setInputsTypeBackground(Color.GREEN);
+                iPanel.setInputValuesBackground(Color.GREEN);
+            }
+
             setEditorMessage("", false);
             activityLogs.debug("User entered correct Inputs");
             currentVertex.setInputsStatus(Vertex.InputsStatus.CORRECT);
@@ -567,11 +558,17 @@ public class NodeEditor extends javax.swing.JDialog {
             tabPane.setEnabledAt(CALCULATIONS, true);
             tabPane.setForegroundAt(CALCULATIONS, Color.BLACK);
         } else {
-            iPanel.setOptionPanelBackground(Color.RED);
+            if (result == 1) {
+                iPanel.setInputsTypeBackground(Color.RED);
+            } else {
+                iPanel.setInputsTypeBackground(Color.GREEN);
+                iPanel.setInputValuesBackground(Color.RED);
+            }
+
             activityLogs.debug("User entered incorrect Inputs");
-            if(iPanel.getSelectedInputsList().isEmpty() & iPanel.getInputsButtonSelected()){
+            if (iPanel.getSelectedInputsList().isEmpty() & iPanel.getInputsButtonSelected()) {
                 setEditorMessage("No inputs are created or selected.", true);
-            } else{
+            } else {
                 setEditorMessage("Your Inputs are Incorrect.", true);
             }
             currentVertex.setInputsStatus(Vertex.InputsStatus.INCORRECT);
@@ -707,22 +704,23 @@ public class NodeEditor extends javax.swing.JDialog {
         }
 
         activityLogs.debug("Closing NodeEditor because of Close action.");
-        if(!ApplicationContext.getAppMode().equalsIgnoreCase("COACHED")){
-          graphPane.getMainFrame().getModelToolBar().enableDeleteNodeButton();
-          graphPane.getMainFrame().getMainMenu().getModelMenu().enableDeleteNodeMenu();  
+        if (!ApplicationContext.getAppMode().equalsIgnoreCase("COACHED")) {
+            graphPane.getMainFrame().getModelToolBar().enableDeleteNodeButton();
+            graphPane.getMainFrame().getMainMenu().getModelMenu().enableDeleteNodeMenu();
         }
+        
         this.dispose();
     }
 
     private void displayEnterButton() {
-        if (ApplicationContext.getAppMode().equalsIgnoreCase("STUDENT")  || ApplicationContext.getAppMode().equals("COACHED") ) {
+        if (ApplicationContext.getAppMode().equalsIgnoreCase("STUDENT") || ApplicationContext.getAppMode().equals("COACHED")) {
             buttonOK.hide();
         } else {
             buttonOK.show();
         }
     }
-    
-    private void showCreateNodeButtonInputTab(Boolean b){
+
+    private void showCreateNodeButtonInputTab(Boolean b) {
         buttonCreateNodeInputTab.setVisible(b);
     }
 
@@ -917,10 +915,10 @@ public class NodeEditor extends javax.swing.JDialog {
 
         if (tabPane.getSelectedIndex() == DESCRIPTION) {
             activityLogs.debug("Check button pressed for Description Panel");
-            if(ApplicationContext.getAppMode().equals("COACHED")){
+            if (ApplicationContext.getAppMode().equals("COACHED")) {
                 checkDescriptionPanelCoached(correctSolution);
             } else {
-                
+
                 checkDescriptionPanel(correctSolution);
             }
         } else if (tabPane.getSelectedIndex() == PLAN) {
@@ -981,7 +979,8 @@ public class NodeEditor extends javax.swing.JDialog {
         } else if (tabPane.getSelectedIndex() == INPUTS) {
             activityLogs.debug("Giveup button pressed for Inputs Panel");
 
-            iPanel.setOptionPanelBackground(new Color(240, 240, 240));
+            iPanel.setInputsTypeBackground(new Color(240, 240, 240));
+            iPanel.setInputValuesBackground(new Color(240, 240, 240));
             if (iPanel.giveUpInputsPanel()) {
                 iPanel.processInputsPanel();
                 currentVertex.setInputsStatus(Vertex.InputsStatus.GAVEUP);
@@ -1001,8 +1000,7 @@ public class NodeEditor extends javax.swing.JDialog {
                 currentVertex.setCalculationsStatus(Vertex.CalculationsStatus.GAVEUP);
                 cPanel.setEditableCalculations(false);
                 buttonCancel.setEnabled(true);
-            } 
-            else {
+            } else {
                 currentVertex.setCalculationsStatus(Vertex.CalculationsStatus.INCORRECT);
             }
         }
@@ -1011,12 +1009,12 @@ public class NodeEditor extends javax.swing.JDialog {
         refreshGraphPane();
     }//GEN-LAST:event_giveUpButtonActionPerformed
 
-    public void refreshInputs(){
+    public void refreshInputs() {
         iPanel.refreshInputs();
     }
-    
+
     private void buttonCancelActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_buttonCancelActionPerformed
-        try{
+        try {
             // Process Cancel Action for all the Tabs
             activityLogs.debug("User pressed Close button for Node " + currentVertex.getName());
             // Delete this vertex if its not defined and user hits Cancel
@@ -1025,9 +1023,9 @@ public class NodeEditor extends javax.swing.JDialog {
             }
 
             activityLogs.debug("Closing NodeEditor because of Close action.");
-            if(!ApplicationContext.getAppMode().equalsIgnoreCase("COACHED")){
-              graphPane.getMainFrame().getModelToolBar().enableDeleteNodeButton();
-              graphPane.getMainFrame().getMainMenu().getModelMenu().enableDeleteNodeMenu();  
+            if (!ApplicationContext.getAppMode().equalsIgnoreCase("COACHED")) {
+                graphPane.getMainFrame().getModelToolBar().enableDeleteNodeButton();
+                graphPane.getMainFrame().getMainMenu().getModelMenu().enableDeleteNodeMenu();
             }
             //HttpAppender save = new HttpAppender();
             //save.sendHttpRequest("http://dragoon.asu.edu/demo/autosave.php?user=user1&group=theGroup&problem=1&data=NULL");
@@ -1035,8 +1033,8 @@ public class NodeEditor extends javax.swing.JDialog {
         } catch (Exception ex) {
             java.util.logging.Logger.getLogger(NodeEditor.class.getName()).log(Level.SEVERE, null, ex);
         }
-        
-        
+
+
     }//GEN-LAST:event_buttonCancelActionPerformed
 
     private void buttonOKActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_buttonOKActionPerformed
@@ -1044,7 +1042,7 @@ public class NodeEditor extends javax.swing.JDialog {
         /*
          * if (ApplicationContext.getAppMode().equalsIgnoreCase("STUDENT")) {
          * processTutorModeOKAction(); } else
-         */        {
+         */ {
             processAuthorModeOKAction();
         }
 
@@ -1054,29 +1052,26 @@ public class NodeEditor extends javax.swing.JDialog {
         // TODO add your handling code here:
         // Process Cancel Action for all the Tabs
         activityLogs.debug("User pressed Create node button on inputs tab for Node " + currentVertex.getName());
-        if(graphPane.getMainFrame().getMainMenu().getModelMenu().newNodeAllowed()){
+        if (graphPane.getMainFrame().getMainMenu().getModelMenu().newNodeAllowed()) {
             this.checkButton.setEnabled(true);
             this.giveUpButton.setEnabled(true);
             Vertex v = new Vertex();
             v.setVertexIndex(graphPane.getModelGraph().getNextAvailableIndex());
             graphPane.addVertex(v);
-            
-            CreateNewNodeDialog newNodeDialog = new CreateNewNodeDialog(this,v);
-            
-        }else{
+
+            CreateNewNodeDialog newNodeDialog = new CreateNewNodeDialog(this, v);
+
+        } else {
             activityLogs.debug("User was not allowed to create new node as all the nodes were already present");
             JOptionPane.showMessageDialog(this, "The model is already using all the correct nodes.");
         }
     }//GEN-LAST:event_buttonCreateNodeInputTabActionPerformed
 
     private void tabPaneMouseDragged(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_tabPaneMouseDragged
-
     }//GEN-LAST:event_tabPaneMouseDragged
 
     private void tabPaneMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_tabPaneMouseClicked
-
     }//GEN-LAST:event_tabPaneMouseClicked
-
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JLabel bottomSpacer;
     private javax.swing.JButton buttonCancel;

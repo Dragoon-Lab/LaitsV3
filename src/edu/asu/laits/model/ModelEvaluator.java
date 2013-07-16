@@ -82,10 +82,7 @@ public class ModelEvaluator {
             if(thisVertex.getInputsStatus().equals(Vertex.InputsStatus.UNDEFINED) ||
                     thisVertex.getCalculationsStatus().equals(Vertex.CalculationsStatus.UNDEFINED)){
                 return false;
-            }
-            /*if(thisVertex.getInputsStatus().equals(Vertex.InputsStatus.INCORRECT) ||
-                  eturn false;
-            }   */ 
+            }            
         }
        
         return true;

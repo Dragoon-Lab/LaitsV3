@@ -69,8 +69,8 @@ public class TaskSolutionReader {
             fillDescriptionTree(solution, descriptionTree);
             
             //Read in help bubbles
-            Element bubbles = taskNode.element("HelpBubbles");
-            fillHelpBubbles(solution, bubbles);
+            //Element bubbles = taskNode.element("HelpBubbles");
+            //fillHelpBubbles(solution, bubbles);
                 
         } catch (Exception e) {
             // Could not read the XML file

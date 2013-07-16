@@ -89,6 +89,9 @@ public class ModelMenu extends JMenu {
         this.add(getEditTimeRangeMenuItem());
         this.add(getExportSolutionMenuItem());
         this.add(getshowGraphMenuItem());
+        
+        disableShowGraphMenu();
+        disableDeleteNodeMenu();
     }
 
     /**
@@ -347,6 +350,14 @@ public class ModelMenu extends JMenu {
     public void disableDeleteNodeMenu() {
         deleteNodeMenu.setEnabled(false);
     }
+    
+    public void enableShowGraphMenu() {
+        showGraphMenuItem.setEnabled(true);
+    }
+
+    public void disableShowGraphMenu() {
+        showGraphMenuItem.setEnabled(false);
+    }
 
     public boolean newNodeAllowed() {
         if (ApplicationContext.getAppMode().equals("AUTHOR")) {
@@ -430,7 +441,7 @@ public class ModelMenu extends JMenu {
 
             v.setVertexType(node.getNodeType());
 
-            if (solution.checkNodeInputs(node.getNodeName(), node.getInputNodes())) {
+            if (solution.checkNodeInputs(node.getNodeName(), node.getInputNodes()) == 0) {
                 v.setInputsStatus(Vertex.InputsStatus.CORRECT);
             } else {
                 v.setInputsStatus(Vertex.InputsStatus.INCORRECT);

@@ -1,4 +1,4 @@
-/*
+/**
  * LAITS Project
  * Arizona State University
  * LAITS is free software: you can redistribute it and/or modify
@@ -246,7 +246,8 @@ public class InputsPanelView extends javax.swing.JPanel implements ItemListener 
             nodeEditor.getCurrentVertex().setVertexType(VertexType.DEFAULT);
         }
 
-        setOptionPanelBackground(Color.YELLOW);
+        setInputsTypeBackground(new Color(240, 240, 240));
+        setInputValuesBackground(new Color(240, 240, 240));
         nodeEditor.getGraphPane().getLayoutCache().reload();
         nodeEditor.getGraphPane().repaint();
         return true;
@@ -277,6 +278,8 @@ public class InputsPanelView extends javax.swing.JPanel implements ItemListener 
 
         contentPanel.setLayout(new org.netbeans.lib.awtextra.AbsoluteLayout());
 
+        radioPanel.setBorder(javax.swing.BorderFactory.createLineBorder(new java.awt.Color(0, 0, 0)));
+
         buttonGroup1.add(inputNodesSelectionOptionButton);
         inputNodesSelectionOptionButton.setText("Inputs:");
         inputNodesSelectionOptionButton.addActionListener(new java.awt.event.ActionListener() {
@@ -301,7 +304,7 @@ public class InputsPanelView extends javax.swing.JPanel implements ItemListener 
                 .addGroup(radioPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addComponent(fixedValueOptionButton)
                     .addComponent(inputNodesSelectionOptionButton))
-                .addContainerGap(76, Short.MAX_VALUE))
+                .addContainerGap(74, Short.MAX_VALUE))
         );
         radioPanelLayout.setVerticalGroup(
             radioPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -336,11 +339,11 @@ public class InputsPanelView extends javax.swing.JPanel implements ItemListener 
         availableInputNodesPanels.setLayout(availableInputNodesPanelsLayout);
         availableInputNodesPanelsLayout.setHorizontalGroup(
             availableInputNodesPanelsLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 292, Short.MAX_VALUE)
+            .addGap(0, 296, Short.MAX_VALUE)
         );
         availableInputNodesPanelsLayout.setVerticalGroup(
             availableInputNodesPanelsLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 242, Short.MAX_VALUE)
+            .addGap(0, 246, Short.MAX_VALUE)
         );
 
         checkBoxScrollPane.setViewportView(availableInputNodesPanels);
@@ -437,14 +440,19 @@ public class InputsPanelView extends javax.swing.JPanel implements ItemListener 
         return false;
     }
 
-    public void setOptionPanelBackground(Color c) {
-        //radioPanel.setBackground(c);
-        if(this.getValueButtonSelected())
-            fixedValueOptionButton.setBackground(c);
-        else if(this.getInputsButtonSelected()){
-            inputNodesSelectionOptionButton.setBackground(c);
-            availableInputNodesPanels.setBackground(c);
-        }
+//    public void setOptionPanelBackground(Color c, boolean paintBoth) {
+//        setInputsTypeBackground(c);
+//        if(paintBoth){
+//            setInputValuesBackground(c);
+//        }
+//    }
+    
+    public void setInputsTypeBackground(Color c){
+        radioPanel.setBackground(c);
+    }
+    
+    public void setInputValuesBackground(Color c){
+        availableInputNodesPanels.setBackground(c);
     }
 
     public void resetOptionPanelBackground() {

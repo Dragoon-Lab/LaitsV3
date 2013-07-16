@@ -177,4 +177,11 @@ public class ModelToolBar extends JToolBar {
     {
         deleteNodeButton.setEnabled(false);
     }
+    public void enableShowGraphMenu() {
+        showGraphButton.setEnabled(true);
+    }
+
+    public void disableShowGraphMenu() {
+        showGraphButton.setEnabled(false);
+    }
 }

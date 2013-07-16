@@ -78,8 +78,6 @@ public class GraphLoader {
             Vertex sInfo = vertexHash.get(edge.getSourceVertexId());
             Vertex tInfo = vertexHash.get(edge.getTargetVertexId());
 
-            //graphPane.connect((Port) model.getVertexCell(sInfo).getChildAt(0),
-            //        (Port) model.getVertexCell(tInfo).getChildAt(0));
             DefaultPort p1 = graphPane.getJGraphTModelAdapter().getVertexPort(sInfo);
             DefaultPort p2 = graphPane.getJGraphTModelAdapter().getVertexPort(tInfo);
       

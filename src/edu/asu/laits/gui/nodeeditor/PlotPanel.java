@@ -75,8 +75,8 @@ public class PlotPanel extends JXTaskPane {
     private XYDataset createSolutionDataset(List<Vertex> vertices, int x0) {
         XYSeriesCollection dataset = new XYSeriesCollection();
         String legends[] = new String[2];
-        legends[0] = vertices.get(0)+"- Student Graph";
-        legends[1] = vertices.get(0)+"- Correct Graph";
+        legends[0] = "Student Graph";
+        legends[1] = "Correct Graph";
         int legendIndex = 0;
         
         for(Vertex v : vertices){
