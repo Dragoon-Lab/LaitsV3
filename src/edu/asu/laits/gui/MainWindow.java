@@ -44,6 +44,8 @@ import edu.asu.laits.gui.toolbars.EditToolBar;
 import edu.asu.laits.gui.toolbars.ModelToolBar;
 import edu.asu.laits.gui.toolbars.TutorModeToolBar;
 import edu.asu.laits.gui.toolbars.ViewToolBar;
+import edu.asu.laits.model.GraphSaver;
+import edu.asu.laits.model.PersistenceManager;
 import edu.asu.laits.model.TaskSolution;
 import edu.asu.laits.model.TaskSolutionReader;
 import edu.asu.laits.properties.GlobalProperties;
@@ -110,10 +112,8 @@ public class MainWindow extends JFrame {
         setDefaultCloseOperation(DO_NOTHING_ON_CLOSE);
         windowCount++;
         
-        
+        attachPersistanceManager();
         setVisible(true);
-        //BalloonTip bTip = new BalloonTip(modelToolBar.getAddNodeButton(), "testing");
-        
         new BlockingToolTip(this, "Click the Create Node button to begin",modelToolBar.getAddNodeButton(), 0, 10);                
     }
 
@@ -495,5 +495,11 @@ public class MainWindow extends JFrame {
         }catch(Exception e){
             e.printStackTrace();
         }
+    }
+    
+    private void attachPersistanceManager(){
+        PersistenceManager persistanceManager = new PersistenceManager(new GraphSaver(graphEditorPane));
+        Thread t = new Thread(persistanceManager);
+        t.start();
     }
 }

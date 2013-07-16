@@ -1,18 +1,35 @@
+/**
+ * (c) 2013, Arizona Board of Regents for and on behalf of Arizona State
+ * University. This file is part of LAITS.
+ *
+ * LAITS is free software: you can redistribute it and/or modify it under the
+ * terms of the GNU Lesser General Public License as published by the Free
+ * Software Foundation, either version 3 of the License, or (at your option) any
+ * later version.
+ *
+ * LAITS is distributed in the hope that it will be useful, but WITHOUT ANY
+ * WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS FOR
+ * A PARTICULAR PURPOSE. See the GNU Lesser General Public License for more
+ * details.
+ *
+ * You should have received a copy of the GNU Lesser General Public License
+ * along with LAITS. If not, see <http://www.gnu.org/licenses/>.
+ */
+
 package edu.asu.laits.model;
 
 import java.io.File;
 import java.io.Reader;
 import java.util.HashMap;
-import java.util.LinkedList;
 
 import edu.asu.laits.editor.GraphEditorPane;
 import edu.asu.laits.properties.GraphProperties;
-import org.jgraph.graph.Port;
 import org.jgrapht.ext.JGraphModelAdapter;
 
 import com.thoughtworks.xstream.XStream;
 import com.thoughtworks.xstream.core.BaseException;
 import com.thoughtworks.xstream.io.xml.DomDriver;
+import java.util.List;
 import org.apache.log4j.Logger;
 import org.jgraph.graph.DefaultPort;
 
@@ -59,7 +76,7 @@ public class GraphLoader {
         // An hash wich makes it fast to find vertices
         HashMap<Integer, Vertex> vertexHash = new HashMap<Integer, Vertex>();
 
-        LinkedList<Vertex> vertexList = graphFile.getVertexList();
+        List<Vertex> vertexList = graphFile.getVertexList();
         for (Vertex vertex : vertexList) {
             vertex.setGraphsStatus(Vertex.GraphsStatus.UNDEFINED);
             graphPane.addVertex(vertex);
@@ -70,7 +87,7 @@ public class GraphLoader {
          * Load all edges
          */
 
-        LinkedList<Edge> edgeList = graphFile.getEdgeList();
+        List<Edge> edgeList = graphFile.getEdgeList();
         
         JGraphModelAdapter<Vertex, Edge> model = graphPane
                 .getJGraphTModelAdapter();
