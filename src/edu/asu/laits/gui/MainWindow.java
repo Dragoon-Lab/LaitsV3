@@ -36,32 +36,20 @@ import edu.asu.laits.model.GraphLoader;
 import edu.asu.laits.model.GraphLoader.IncorcectGraphXMLFileException;
 import edu.asu.laits.editor.listeners.GraphChangeListener;
 import edu.asu.laits.editor.listeners.GraphPropertiesChangeListener;
-import edu.asu.laits.editor.listeners.GraphSaveListener;
 
 import javax.swing.JScrollPane;
 import edu.asu.laits.gui.toolbars.FileToolBar;
 import edu.asu.laits.gui.toolbars.EditToolBar;
 import edu.asu.laits.gui.toolbars.ModelToolBar;
-import edu.asu.laits.gui.toolbars.TutorModeToolBar;
 import edu.asu.laits.gui.toolbars.ViewToolBar;
-import edu.asu.laits.model.GraphSaver;
 import edu.asu.laits.model.PersistenceManager;
 import edu.asu.laits.model.TaskSolution;
 import edu.asu.laits.model.TaskSolutionReader;
 import edu.asu.laits.properties.GlobalProperties;
 import edu.asu.laits.properties.GraphProperties;
 import java.awt.Color;
-import java.awt.Image;
-import java.io.FileInputStream;
-import java.text.DateFormat;
-import java.text.SimpleDateFormat;
-import java.util.Date;
-import javax.imageio.ImageIO;
 import javax.swing.*;
-import net.java.balloontip.BalloonTip;
-import org.apache.commons.net.ftp.FTPClient;
 import org.apache.log4j.Logger;
-import org.omg.PortableInterceptor.SYSTEM_EXCEPTION;
 
 /**
  * The main window in the program. This can be opened both with an empty graph
@@ -84,7 +72,6 @@ public class MainWindow extends JFrame {
     private EditToolBar editToolBar = null;
     private ViewToolBar viewToolBar = null;
     private ModelToolBar modelToolBar = null;
-    private TutorModeToolBar tutorModeToolBar = null;
     private List<JToolBar> toolBars = new LinkedList<JToolBar>(); 
     private StatusBarPanel statusBarPanel = null;
     private boolean isSituationTabSelected = true;
@@ -111,10 +98,8 @@ public class MainWindow extends JFrame {
         setExtendedState(MAXIMIZED_BOTH);
         setDefaultCloseOperation(DO_NOTHING_ON_CLOSE);
         windowCount++;
-        
-        attachPersistanceManager();
-        setVisible(true);
-        new BlockingToolTip(this, "Click the Create Node button to begin",modelToolBar.getAddNodeButton(), 0, 10);                
+       
+        setVisible(true);        
     }
 
     public static void openWindowWithFile(File file) {
@@ -143,7 +128,9 @@ public class MainWindow extends JFrame {
      *
      */
     private void initialize() {
-        this.setTitle(GlobalProperties.PROGRAM_NAME);
+        String title = GlobalProperties.PROGRAM_NAME + 
+                " - "+ ApplicationContext.getAppMode() + " Mode";
+        this.setTitle(title);
         
         this.setContentPane(getJPanel());
         this.setJMenuBar(getMainMenu());
@@ -240,7 +227,7 @@ public class MainWindow extends JFrame {
         
         situationLabel.setText(sb.toString());
         situationLabel.setHorizontalAlignment(javax.swing.SwingConstants.LEFT);
-        //situationLabel.setVerticalAlignment(javax.swing.SwingConstants.TOP);
+       
         this.validate();
         mainPanel.repaint();
     }
@@ -282,18 +269,10 @@ public class MainWindow extends JFrame {
             toolBars.add(getFileToolBar());
             toolBars.add(getEditToolBar());
             toolBars.add(getViewToolBar());
-            
-            // Temporary - Add toobar based on mode
-            if(ApplicationContext.getAppMode().equals("STUDENT") || ApplicationContext.getAppMode().equals("COACHED") ){
-                toolBarPanel.add(getTutorModeToolBar(), null);
-                toolBars.add(getTutorModeToolBar());
-            }
-            
+          
             toolBarPanel.add(getModelToolBar(), null);
             toolBars.add(getModelToolBar());
-            
 
-            //getMainMenu().getPropertiesMenu().setJToolBars(toolBars);
         }
         return toolBarPanel;
     }
@@ -322,10 +301,11 @@ public class MainWindow extends JFrame {
                     .isAntialiasing());
             graphEditorPane.setDoubleBuffered(GlobalProperties.getInstance()
                     .isDoubleBuffering());
+            
+            // Set GraphEditorPane in ApplicationContext to make is visible to whole app
+            ApplicationContext.setGraphEditorPane(graphEditorPane);
         }
-        if (ApplicationContext.getSituationMerge()) {
-            graphEditorPane.setBackgroundComponent(situationLabel);
-        }
+        graphEditorPane.setBackgroundComponent(situationLabel);
         return graphEditorPane;
     }
 
@@ -339,26 +319,19 @@ public class MainWindow extends JFrame {
             final GraphProperties prop = getGraphEditorPane()
                     .getGraphProperties();
 
+            // Save session in Server when graph changes
             prop.addGraphChangeListener(new GraphChangeListener() {
                 public void graphChanged() {
-                    if (prop.isExistsOnFileSystem()) {
-                        setTitle(prop.getSavedAs().getName()
-                                + " - [Changed] - "
-                                + GlobalProperties.PROGRAM_NAME);
-                    } else {
-                        setTitle("[New graph] - [Changed] - "
-                                + GlobalProperties.PROGRAM_NAME);
-                    }
-
+                    PersistenceManager.saveSession();
                 }
             });
 
-            prop.addSaveListener(new GraphSaveListener() {
-                public void graphSaved() {
-                    setTitle(prop.getSavedAs().getName() + " - "
-                            + GlobalProperties.PROGRAM_NAME);
-                }
-            });
+//            prop.addSaveListener(new GraphSaveListener() {
+//                public void graphSaved() {
+//                    setTitle(prop.getSavedAs().getName() + " - "
+//                            + GlobalProperties.PROGRAM_NAME);
+//                }
+//            });
         }
     }
 
@@ -454,13 +427,6 @@ public class MainWindow extends JFrame {
         return modelToolBar;
     }
 
-    private TutorModeToolBar getTutorModeToolBar(){
-        if(tutorModeToolBar == null){
-            tutorModeToolBar = new TutorModeToolBar(this);
-        }
-        
-        return tutorModeToolBar;
-    }
     /**
      * This method initializes statusBarPanel
      *
@@ -493,9 +459,4 @@ public class MainWindow extends JFrame {
         }
     }
     
-    private void attachPersistanceManager(){
-        PersistenceManager persistanceManager = new PersistenceManager(new GraphSaver(graphEditorPane));
-        Thread t = new Thread(persistanceManager);
-        t.start();
-    }
 }

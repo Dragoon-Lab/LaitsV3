@@ -92,4 +92,5 @@ public class HttpLayout extends Layout {
         returnMessage = returnMessage.replace("%" + key, value);
         return returnMessage;
     }
+    
 }

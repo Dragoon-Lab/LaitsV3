@@ -22,6 +22,7 @@ import edu.asu.laits.editor.ApplicationContext;
 import edu.asu.laits.editor.GraphEditorPane;
 import edu.asu.laits.gui.BlockingToolTip;
 import edu.asu.laits.model.HelpBubble;
+import edu.asu.laits.model.PersistenceManager;
 import edu.asu.laits.model.TaskSolution;
 import edu.asu.laits.model.Vertex;
 import java.awt.Color;
@@ -83,7 +84,7 @@ public class NodeEditor extends javax.swing.JDialog {
         displayEnterButton();
         showCreateNodeButtonInputTab(false);
         initTabs(true);
-        setTitle(currentVertex.getName());
+        setTitle(getNodeEditorTitle());
         setEditorMessage("", true);
         prepareNodeEditorDisplay();
         if (ApplicationContext.getAppMode().equals("COACHED")) {
@@ -98,6 +99,15 @@ public class NodeEditor extends javax.swing.JDialog {
 
     }
 
+    private String getNodeEditorTitle(){
+        String title = "Node Editor - ";
+        if(currentVertex.getName().equals(""))
+            title += "New Node";
+        else
+            title += currentVertex.getName();
+        
+        return title;
+    }
     /**
      * Attach BalloonTip at the start of Node Editor
      */
@@ -106,7 +116,7 @@ public class NodeEditor extends javax.swing.JDialog {
 //        if (bubble != null) {
 //           new BlockingToolTip(this, bubble.getMessage(), dPanel.getLabel(bubble.getAttachedTo()),0,0);
 //        }
-        new BlockingToolTip(this, "Start by selecting a description..", dPanel.getLabel("evenMorePreciseLabel"),0,0);
+        //new BlockingToolTip(this, "Start by selecting a description..", dPanel.getLabel("evenMorePreciseLabel"),0,0);
     }
 
     private void prepareNodeEditorDisplay() {
@@ -540,7 +550,6 @@ public class NodeEditor extends javax.swing.JDialog {
             result = correctSolution.checkNodeInputs(dPanel.getNodeName(), iPanel.getSelectedInputsList());
         }
 
-        System.out.println("result = "+result);
         if (result == 0 || result == 3) {
             if (result == 0) {
                 iPanel.setInputsTypeBackground(Color.GREEN);
@@ -693,6 +702,9 @@ public class NodeEditor extends javax.swing.JDialog {
         graphPane.getMainFrame().repaint();
     }
 
+    /**
+     * Make necessary clean up and save graph session when NodeEditor closes
+     */
     private void closeNodeEditor() {
 
         activityLogs.debug("User pressed Close button for Node " + currentVertex.getName());
@@ -706,6 +718,8 @@ public class NodeEditor extends javax.swing.JDialog {
             graphPane.getMainFrame().getModelToolBar().enableDeleteNodeButton();
             graphPane.getMainFrame().getMainMenu().getModelMenu().enableDeleteNodeMenu();
         }
+        
+        PersistenceManager.saveSession();
         
         this.dispose();
     }
@@ -1012,27 +1026,7 @@ public class NodeEditor extends javax.swing.JDialog {
     }
 
     private void buttonCancelActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_buttonCancelActionPerformed
-        try {
-            // Process Cancel Action for all the Tabs
-            activityLogs.debug("User pressed Close button for Node " + currentVertex.getName());
-            // Delete this vertex if its not defined and user hits Cancel
-            if (currentVertex.getName().equals("")) {
-                graphPane.removeSelected();
-            }
-
-            activityLogs.debug("Closing NodeEditor because of Close action.");
-            if (!ApplicationContext.getAppMode().equalsIgnoreCase("COACHED")) {
-                graphPane.getMainFrame().getModelToolBar().enableDeleteNodeButton();
-                graphPane.getMainFrame().getMainMenu().getModelMenu().enableDeleteNodeMenu();
-            }
-            //HttpAppender save = new HttpAppender();
-            //save.sendHttpRequest("http://dragoon.asu.edu/demo/autosave.php?user=user1&group=theGroup&problem=1&data=NULL");
-            this.dispose();
-        } catch (Exception ex) {
-            java.util.logging.Logger.getLogger(NodeEditor.class.getName()).log(Level.SEVERE, null, ex);
-        }
-
-
+        closeNodeEditor();
     }//GEN-LAST:event_buttonCancelActionPerformed
 
     private void buttonOKActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_buttonOKActionPerformed

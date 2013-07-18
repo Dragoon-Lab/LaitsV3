@@ -248,7 +248,6 @@ public class DescriptionPanelView extends JPanel{
     }//GEN-LAST:event_decisionTreeValueChanged
 
     private void addHelpBalloon(String timing){
-        new BlockingToolTip(this.nodeEditor, "Test error msg", NodeNameLabel,0,0);
         HelpBubble bubble = ApplicationContext.getHelp(String.valueOf(ApplicationContext.getCurrentOrder()), "Description", timing);
         if(bubble != null){
           /*BalloonTipStyle style = new MinimalBalloonStyle(Color.WHITE, 0);
