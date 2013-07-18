@@ -52,6 +52,15 @@ public class ApplicationContext {
   public static void nextCurrentOrder(){
       currentOrder++;
   } 
+
+  public static String getNameByOrder(int order){
+      if(correctSolution.getNodeByOrder(order) != null){
+          System.out.println(correctSolution.getNodeByOrder(order).getNodeName());
+      return correctSolution.getNodeByOrder(order).getNodeName();
+      } else{
+          return null;
+      }
+  }
   
   public static void setLoaderURL(String baseURL){
       taskLoaderURL =  baseURL.concat("/task_fetcher.php?taskid=");

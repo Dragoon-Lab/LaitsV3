@@ -42,6 +42,8 @@ import edu.asu.laits.gui.toolbars.FileToolBar;
 import edu.asu.laits.gui.toolbars.EditToolBar;
 import edu.asu.laits.gui.toolbars.ModelToolBar;
 import edu.asu.laits.gui.toolbars.ViewToolBar;
+import edu.asu.laits.model.GraphSaver;
+import edu.asu.laits.model.HelpBubble;
 import edu.asu.laits.model.PersistenceManager;
 import edu.asu.laits.model.TaskSolution;
 import edu.asu.laits.model.TaskSolutionReader;
@@ -98,8 +100,22 @@ public class MainWindow extends JFrame {
         setExtendedState(MAXIMIZED_BOTH);
         setDefaultCloseOperation(DO_NOTHING_ON_CLOSE);
         windowCount++;
-       
-        setVisible(true);        
+    //    attachPersistanceManager();
+        setVisible(true);
+        addHelpBalloon("onLoad");
+    }
+    
+    
+    private void addHelpBalloon(String timing){
+        HelpBubble bubble = ApplicationContext.getHelp(ApplicationContext.getNameByOrder(1), "MainWindow", timing);
+        logs.debug(String.valueOf(ApplicationContext.getCurrentOrder()) + " MainWindow " + timing);
+        if(bubble != null){
+          /*BalloonTipStyle style = new MinimalBalloonStyle(Color.WHITE, 0);
+          BalloonTip myBalloonTip = new BalloonTip(this.evenMorePreciseLabel, new JLabel(bubble.getMessage()),style,Orientation.RIGHT_ABOVE, AttachLocation.ALIGNED, 20, 20, true);
+          * */
+          
+          new BlockingToolTip(this, bubble.getMessage(), modelToolBar.getAddNodeButton(), 0, 0);
+      }
     }
 
     public static void openWindowWithFile(File file) {
