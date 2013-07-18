@@ -229,7 +229,7 @@ public class GlobalProperties {
             writer.close();
         } catch (Exception e) {
             System.err
-                    .println("Not possible to write properties file, because of the followin reason:"
+                    .println("Not possible to write properties file, because of the following reason:"
                     + e.getMessage());
             return false;
         }
