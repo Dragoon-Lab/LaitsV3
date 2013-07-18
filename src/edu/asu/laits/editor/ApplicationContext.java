@@ -52,7 +52,7 @@ public class ApplicationContext {
   public static void nextCurrentOrder(){
       currentOrder++;
   } 
-  
+
   public static String getNameByOrder(int order){
       if(correctSolution.getNodeByOrder(order) != null){
           System.out.println(correctSolution.getNodeByOrder(order).getNodeName());

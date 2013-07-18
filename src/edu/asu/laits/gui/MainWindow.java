@@ -100,7 +100,6 @@ public class MainWindow extends JFrame {
         setExtendedState(MAXIMIZED_BOTH);
         setDefaultCloseOperation(DO_NOTHING_ON_CLOSE);
         windowCount++;
-        
     //    attachPersistanceManager();
         setVisible(true);
         addHelpBalloon("onLoad");
