@@ -57,7 +57,7 @@ public class PlotPanel extends JXTaskPane {
         chart.getTitle().setFont(new Font("Arial", Font.BOLD, 14));
 
         // The size of the panel depends on the size of the GraphDialog panel
-        System.out.println("Got Dimention as "+d);
+        
         chartPanel.setPreferredSize(d);
         chartPanel.setSize(d);
         chartPanel.setMinimumSize(d);

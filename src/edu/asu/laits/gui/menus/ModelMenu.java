@@ -195,37 +195,61 @@ public class ModelMenu extends JMenu {
     }
 
     public void showNodeGraph() {
-        if(!runModelAction())
-            return ;
+        activityLogs.debug("User pressed Run Model button.");
         
-        Object[] selectedCells = graphPane.getSelectionCells();
-        ArrayList<Vertex> vertices = new ArrayList<Vertex>();
+        if(runModel()) {
+            showChartDialog();
+        } 
+    }
 
-        for (Object cell : selectedCells) {
-            DefaultGraphCell graphCell = (DefaultGraphCell) cell;
-            Vertex v = (Vertex) graphCell.getUserObject();
-            System.out.println(v.getName());
-            vertices.add(v);
-        }
+    public boolean runModel() {
+        // Check if Model has already been executed and is still valid
+        if(isGraphPrepared())
+            return true;
+        
+        ModelEvaluator me = new ModelEvaluator((Graph) graphPane.getModelGraph());
+        MainWindow window = (MainWindow) graphPane.getMainFrame();
+        if (me.isModelComplete()) {
+            if (!me.hasExtraNodes()) {
+                try {
+                    me.run();
 
-        if (isGraphViewEnable(vertices)) {
-            JDialog graphValuesDialog = new JDialog(graphPane.getMainFrame(), true);
-            GraphView gPanel = new GraphView(graphPane.getModelGraph(), graphValuesDialog);
-            graphValuesDialog.setTitle("Model Graph");
-            graphValuesDialog.setBounds((int) vertices.get(0).getXPosition() + 150,
-                    (int) vertices.get(0).getYPosition() + 50, 610, 510);
+                    if (ApplicationContext.getAppMode().equals("STUDENT") || ApplicationContext.getAppMode().equals("COACHED")) {
+                        me.validateStudentGraph();
+                    }
 
-            graphValuesDialog.setResizable(false);
-            graphValuesDialog.setVisible(true);
+                    window.getStatusBarPanel().setStatusMessage("", true);
+                    activityLogs.debug("Model ran successfully.");
+
+                    // Enable Done Button
+                    if (ApplicationContext.isProblemSolved()) {
+                        mainWindow.getModelToolBar().enableDoneButton();
+                    }
+
+                } catch (ModelEvaluationException ex) {
+                    window.getStatusBarPanel().setStatusMessage(ex.getMessage(), false);
+                }
+                graphPane.repaint();
+            } else {
+                activityLogs.debug("Model had extra nodes, so user could not run the model.");
+                JOptionPane.showMessageDialog(window, "Model has extra nodes in it, please remove them before running the model.");
+            }
+
+            return true;
         } else {
-            System.out.println("View Not Enabled");
+            activityLogs.debug("Model was incomplete, so user could not run the model.");
+            JOptionPane.showMessageDialog(window, "The model is incomplete, please complete all the nodes before running Model");
+            window.getStatusBarPanel().setStatusMessage("Please complete all the nodes before running Model", false);
+            return false;
         }
     }
 
-    private boolean isGraphViewEnable(ArrayList<Vertex> vertices) {
+    private boolean isGraphPrepared() {
         boolean isEnable = true;
 
-        for (Vertex v : vertices) {
+        Iterator<Vertex> allVertices = graphPane.getModelGraph().vertexSet().iterator();
+        while (allVertices.hasNext()) {
+            Vertex v = allVertices.next();
             if (v.getGraphsStatus().equals(Vertex.GraphsStatus.UNDEFINED)) {
                 isEnable = false;
                 break;
@@ -233,6 +257,17 @@ public class ModelMenu extends JMenu {
         }
 
         return isEnable;
+    }
+    
+    private void showChartDialog(){
+        JDialog graphValuesDialog = new JDialog(graphPane.getMainFrame(), true);
+        GraphView gPanel = new GraphView(graphPane.getModelGraph(), graphValuesDialog);
+        graphValuesDialog.setTitle("Model Graph");
+        graphValuesDialog.setSize(610,510);
+        graphValuesDialog.setLocationRelativeTo(null);
+
+            graphValuesDialog.setResizable(false);
+            graphValuesDialog.setVisible(true);
     }
 
     public void menuSelectionChanged(boolean value) {
@@ -373,45 +408,7 @@ public class ModelMenu extends JMenu {
         return false;
     }
 
-    public boolean runModelAction() {
-        activityLogs.debug("User pressed Run Model button.");
-        ModelEvaluator me = new ModelEvaluator((Graph) graphPane.getModelGraph());
-        MainWindow window = (MainWindow) graphPane.getMainFrame();
-        if (me.isModelComplete()) {
-            if (!me.hasExtraNodes()) {
-                try {
-                    me.run();
-
-                    if (ApplicationContext.getAppMode().equals("STUDENT") || ApplicationContext.getAppMode().equals("COACHED")) {
-                        me.validateStudentGraph();
-                    }
-
-                    window.getStatusBarPanel().setStatusMessage("", true);
-                    activityLogs.debug("Model ran successfully.");
-
-                    // Enable Done Button
-                    if (ApplicationContext.isProblemSolved()) {
-                        mainWindow.getModelToolBar().enableDoneButton();
-                    }
-
-                } catch (ModelEvaluationException ex) {
-                    window.getStatusBarPanel().setStatusMessage(ex.getMessage(), false);
-                }
-                graphPane.repaint();
-            } else {
-                activityLogs.debug("Model had extra nodes, so user could not run the model.");
-                JOptionPane.showMessageDialog(window, "Model has extra nodes in it, please remove them before running the model.");
-            }
-
-            return true;
-        } else {
-            activityLogs.debug("Model was incomplete, so user could not run the model.");
-            JOptionPane.showMessageDialog(window, "The model is incomplete, please complete all the nodes before running Model");
-            window.getStatusBarPanel().setStatusMessage("Please complete all the nodes before running Model", false);
-            return false;
-        }
-    }
-
+    
     public void editTimeRangeAction() {
         activityLogs.debug("User pressed EditTimeRange Menu Item.");
         GraphRangeEditor ed = new GraphRangeEditor(graphPane, true);

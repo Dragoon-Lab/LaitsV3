@@ -39,32 +39,38 @@ public class PersistenceManager implements Runnable {
 
     
     private static String URL = "http://dragoon.asu.edu/demo/save_session.php?";
-    private GraphSaver graphSaver = null;
+    
+    private GraphSaver graphSaver;
     private Map<String, String> parameters = null;
     
-    public PersistenceManager(GraphSaver gs) {
+    private PersistenceManager(GraphSaver gs) {
         graphSaver = gs;
     }
 
+    
+    public static void saveSession(){
+        PersistenceManager persistanceManager = new PersistenceManager(new GraphSaver(ApplicationContext.getGraphEditorPane()));
+        
+        Thread t = new Thread(persistanceManager);
+        t.start();
+    }
+    
     public void run() {
         int statusCode = 0;
 
         try {
-            while (true) {
-                DefaultHttpClient httpClient = new DefaultHttpClient();
-                
-                HttpGet httpMethod = new HttpGet(prepareHttpGetRequest());
-                HttpResponse response = httpClient.execute(httpMethod);
-                statusCode = response.getStatusLine().getStatusCode();
-                
-                if (statusCode != HttpStatus.SC_OK) {
-                    System.out.println("Error Server URL " + httpMethod.getURI() + " return status code " + statusCode);
-                }
-                
-                Thread.sleep(30 * 1000);
+
+            DefaultHttpClient httpClient = new DefaultHttpClient();
+
+            HttpGet httpMethod = new HttpGet(prepareHttpGetRequest());
+            HttpResponse response = httpClient.execute(httpMethod);
+            statusCode = response.getStatusLine().getStatusCode();
+
+            if (statusCode != HttpStatus.SC_OK) {
+                System.out.println("Error Server URL " + httpMethod.getURI() + " return status code " + statusCode);
             }
-        } catch (InterruptedException e) {
-            e.printStackTrace();
+
+
         } catch (UnsupportedEncodingException ex) {
             ex.printStackTrace();
         } catch (IOException e) {
