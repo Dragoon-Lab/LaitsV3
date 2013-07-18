@@ -6,7 +6,7 @@
  * LAITS is free software: you can redistribute it and/or modify
  * it under the terms of the GNU Lesser General Public License as published by
  * the Free Software Foundation, either version 3 of the License, or
- * (at your option) any later version.
+ * (at your option) any later version.ß
  *
  * LAITS is distributed in the hope that it will be useful,
  * but WITHOUT ANY WARRANTY; without even the implied warranty of
@@ -36,6 +36,8 @@ import org.apache.log4j.AppenderSkeleton;
 import org.apache.log4j.spi.LoggingEvent;
 import java.net.HttpURLConnection;
 import java.net.URL;
+import java.io.BufferedReader;
+import java.io.InputStreamReader;
 
 
 public class HttpAppender extends AppenderSkeleton {
@@ -117,10 +119,18 @@ public class HttpAppender extends AppenderSkeleton {
         }
     }
     
+    //in process
     public static void sendHttpRequest(String address) throws Exception{
         URL url = new URL(address);
         HttpURLConnection connect = (HttpURLConnection) url.openConnection();
         //connect.setRequestMethod("GET");
+        System.out.println("HttpURLConnection Response: " + connect.getResponseCode());
+        System.out.println("connect.toString: " + connect.getInputStream());
+        BufferedReader in = new BufferedReader(new InputStreamReader(
+                                connect.getInputStream()));
+        String message = in.readLine();
+        in.close();
+        System.out.println("Message: " + message);
         connect.disconnect();        
     }
 
