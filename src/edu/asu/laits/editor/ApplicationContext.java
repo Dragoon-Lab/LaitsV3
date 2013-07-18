@@ -32,17 +32,23 @@ public class ApplicationContext {
   private static String userId;
   private static String appMode;
   
+  private static GraphEditorPane graphPane;
   private static boolean isValid = false;
   private static TaskSolution correctSolution;
   private static String currentTaskID;
   private static boolean isProblemSolved = false;
   public static String taskLoaderURL = "http://dragoon.asu.edu/demo/task_fetcher.php?taskid=";
-  private static boolean situationMerge =true;
   private static int currentOrder = 1;
+  private static ApplicationEnvironment applicationEnvironment;
+  
+  public enum ApplicationEnvironment{
+        DEV, TEST, PROD
+  }
 
   public static int getCurrentOrder() {
         return currentOrder;
-    }
+  }
+  
   public static void nextCurrentOrder(){
       currentOrder++;
   } 
@@ -58,14 +64,6 @@ public class ApplicationContext {
   
   public static void setLoaderURL(String baseURL){
       taskLoaderURL =  baseURL.concat("/task_fetcher.php?taskid=");
-  }
-  
-  public static boolean getSituationMerge(){
-      return situationMerge;
-  }
-  
-  public static void setSituationMerge(boolean flag){
-      situationMerge=flag;
   }
   
   public static String getUserID(){
@@ -121,4 +119,19 @@ public class ApplicationContext {
       
   }
   
+  public static void setGraphEditorPane(GraphEditorPane gp){
+      graphPane = gp;
+  }
+  
+  public static GraphEditorPane getGraphEditorPane(){
+      return graphPane;
+  }
+  
+  public static ApplicationEnvironment getApplicationEnvironment(){
+    return applicationEnvironment;
+  }
+  
+  public static void setApplicationEnvironment(ApplicationEnvironment en){
+      applicationEnvironment = en;
+  }
 }

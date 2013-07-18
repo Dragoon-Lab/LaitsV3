@@ -18,11 +18,14 @@
 
 package edu.asu.laits.gui;
 
+import java.awt.Color;
 import java.awt.event.MouseEvent;
 import java.awt.event.MouseListener;
 import javax.swing.JComponent;
+import javax.swing.JLabel;
 import javax.swing.RootPaneContainer;
 import net.java.balloontip.BalloonTip;
+import net.java.balloontip.styles.RoundedBalloonStyle;
 
 /**
  *
@@ -30,26 +33,29 @@ import net.java.balloontip.BalloonTip;
  */
 public class BlockingToolTip {
 
-    int paddingX, paddingY;
     BalloonTip bTip = null;
     RootPaneContainer parent;
 
     public BlockingToolTip(RootPaneContainer parent, String text, JComponent c, int x, int y) {
         this.parent = parent;
-        paddingX = x;
-        paddingY = y;
-        
-        initBalloon(text, c);        
+        initBalloon(text, c, x, y);        
         disableWindow();
     }
 
     /**
      * Initialize BalloonTip with text and the component to attach it
+     * Pass Horizontal and Vertical Alignment Parameters to BalloonTip Constructor. 
+     * 15,15 are the default values used to position to correct location. Adding 
+     * X and Y values will shift the balloon by using x,y as padding. However, array will
+     * still be started from the component attached.
      * @param text
      * @param c 
      */
-    private void initBalloon(String text, JComponent c) {
-        bTip = new BalloonTip(c, text);
+    private void initBalloon(String text, JComponent c, int x, int y) {
+        bTip = new BalloonTip(c, new JLabel(text),
+                new RoundedBalloonStyle(5,5,Color.WHITE, Color.BLACK),
+                BalloonTip.Orientation.LEFT_ABOVE, BalloonTip.AttachLocation.ALIGNED,
+                15+x, 15+y, true);
     }
     
     /**
@@ -91,7 +97,8 @@ public class BlockingToolTip {
      * remove BalloonTip and GlassPane
      */ 
     private void processEvent(MouseEvent e) {
-        int startX = (int) bTip.getCloseButton().getLocationOnScreen().getX();
+        try{
+            int startX = (int) bTip.getCloseButton().getLocationOnScreen().getX();
         int startY = (int) bTip.getCloseButton().getLocationOnScreen().getY();
 
         int endX = bTip.getCloseButton().getHeight() + startX;
@@ -108,7 +115,12 @@ public class BlockingToolTip {
             
             parent.getGlassPane().setVisible(false);
         }
-
+        
+        }catch(Exception ex){
+            System.out.println("Error in Handling Balloon Close Button");
+            ex.printStackTrace();
+        }
+        
     }
 
     
