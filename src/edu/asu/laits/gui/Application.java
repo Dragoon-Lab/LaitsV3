@@ -73,8 +73,6 @@ public class Application extends JApplet {
 
             ApplicationContext.setCurrentTaskID(args[2]);
             ApplicationContext.setAppMode(args[1]);
-            ApplicationContext.setLoaderURL("http://dragoon.asu.edu/demo");
-            
         }else {
             // Try to Launch application using JNLP for PROD
             String userName = System.getProperty("jnlp.username");
@@ -83,15 +81,17 @@ public class Application extends JApplet {
                 ApplicationContext.setUserID(userName);
 
                 ApplicationContext.setCurrentTaskID(System.getProperty("jnlp.problem"));
-                ApplicationContext.setAppMode(System.getProperty("jnlp.mode"));
-                ApplicationContext.setLoaderURL(System.getProperty("jnlp.server"));
-            
+                ApplicationContext.setAppMode(System.getProperty("jnlp.mode"));            
             }else{
                 JOptionPane.showMessageDialog(null, "Incorrect Initialization Parameters",
                         "An error has occured. Contact Support.", JOptionPane.ERROR_MESSAGE);
                 System.exit(1);
             }
         }
+        // Can set the server from the command line by using an option:
+        // -Djnlp.server=<server-url>
+        ApplicationContext.setLoaderURL(System.getProperty("jnlp.server","http://dragoon.asu.edu/demo"));
+        
         ApplicationContext.setUserValid(true);
     }
 }
