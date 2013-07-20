@@ -19,7 +19,7 @@ package edu.asu.laits.gui.menus;
 
 import edu.asu.laits.editor.GraphEditorPane;
 import edu.asu.laits.editor.listeners.InsertModeChangeListener;
-import edu.asu.laits.gui.GraphView;
+import edu.asu.laits.gui.GraphViewPanel;
 import edu.asu.laits.gui.nodeeditor.GraphValuesDialog;
 import edu.asu.laits.gui.nodeeditor.NodeEditor;
 import edu.asu.laits.model.Vertex;

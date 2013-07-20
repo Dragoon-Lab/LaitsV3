@@ -1,3 +1,20 @@
+/** (c) 2013, Arizona Board of Regents for and on behalf of Arizona State University.
+ * This file is part of LAITS.
+ *
+ * LAITS is free software: you can redistribute it and/or modify
+ * it under the terms of the GNU Lesser General Public License as published by
+ * the Free Software Foundation, either version 3 of the License, or
+ * (at your option) any later version.
+ *
+ * LAITS is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ * GNU Lesser General Public License for more details.
+
+ * You should have received a copy of the GNU Lesser General Public License
+ * along with LAITS.  If not, see <http://www.gnu.org/licenses/>.
+ */
+
 package edu.asu.laits.gui.nodeeditor;
 
 import edu.asu.laits.editor.ApplicationContext;
@@ -20,6 +37,7 @@ import org.jfree.data.xy.XYDataset;
 import org.jfree.data.xy.XYSeries;
 import org.jfree.data.xy.XYSeriesCollection;
 import org.jfree.ui.RectangleInsets;
+import org.jfree.util.ShapeUtilities;
 
 public class PlotPanel extends JXTaskPane {
     
@@ -117,15 +135,21 @@ public class PlotPanel extends JXTaskPane {
         plot.setAxisOffset(new RectangleInsets(5.0, 5.0, 5.0, 5.0));
         plot.setDomainCrosshairVisible(true);
         plot.setRangeCrosshairVisible(true);
-
+       
+        
         XYItemRenderer r = plot.getRenderer();
         if (r instanceof XYLineAndShapeRenderer) {
             XYLineAndShapeRenderer renderer = (XYLineAndShapeRenderer) r;
             renderer.setBaseShapesVisible(true);
             renderer.setBaseShapesFilled(true);
             renderer.setDrawSeriesLineAsPath(true);
+            renderer.setSeriesShape(0, ShapeUtilities.createDownTriangle(3.5f));
+            renderer.setSeriesShape(1, ShapeUtilities.createUpTriangle(3.5f));
         }
         
         return chart;
     }
+    
+    
+    
 }

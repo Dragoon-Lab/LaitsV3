@@ -709,7 +709,8 @@ public class NodeEditor extends javax.swing.JDialog {
 
         activityLogs.debug("User pressed Close button for Node " + currentVertex.getName());
         // Delete this vertex if its not defined and user hits Cancel
-        if (currentVertex.getName().equals("")) {
+        if (currentVertex.getDescriptionStatus().equals(Vertex.DescriptionStatus.UNDEFINED) || 
+                currentVertex.getDescriptionStatus().equals(Vertex.DescriptionStatus.INCORRECT)) {
             graphPane.removeSelected();
         }
 
@@ -719,6 +720,7 @@ public class NodeEditor extends javax.swing.JDialog {
             graphPane.getMainFrame().getMainMenu().getModelMenu().enableDeleteNodeMenu();
         }
         
+        // Save Student's session to server
         PersistenceManager.saveSession();
         
         this.dispose();

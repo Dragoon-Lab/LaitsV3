@@ -72,7 +72,7 @@ public class HttpAppender extends AppenderSkeleton {
 
         if (ApplicationContext.getApplicationEnvironment()
                 .equals(ApplicationContext.ApplicationEnvironment.DEV)) {
-            
+
             System.out.println(prepareDevLogMessage(paramLoggingEvent));
             return;
         }
@@ -169,15 +169,15 @@ public class HttpAppender extends AppenderSkeleton {
         sb.append(time.toString() + "  ");
         sb.append(paramLoggingEvent.getLoggerName() + "  ");
         sb.append(paramLoggingEvent.getLevel().toString() + "  ");
-        if (paramLoggingEvent.getLoggerName().equals("DevLogs")) {
-            String info = paramLoggingEvent.getLocationInformation().getFileName() + "-"
-                    + paramLoggingEvent.getLocationInformation().getMethodName() + ":"
-                    + paramLoggingEvent.getLocationInformation().getLineNumber();
 
-            sb.append(info + "  ");
-            sb.append(paramLoggingEvent.getMessage().toString() + "  ");
+        String info = paramLoggingEvent.getLocationInformation().getFileName() + "-"
+                + paramLoggingEvent.getLocationInformation().getMethodName() + ":"
+                + paramLoggingEvent.getLocationInformation().getLineNumber();
 
-        }
+        sb.append(info + "  ");
+        sb.append(paramLoggingEvent.getMessage().toString() + "  ");
+
+
         return sb.toString();
     }
 }

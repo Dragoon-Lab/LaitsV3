@@ -409,6 +409,10 @@ public class CalculationsPanelView extends javax.swing.JPanel {
         jScrollPane4 = new javax.swing.JScrollPane();
         jScrollPane2 = new javax.swing.JScrollPane();
         availableInputsJList = new javax.swing.JList();
+        buttonAdd = new javax.swing.JButton();
+        buttonSubtract = new javax.swing.JButton();
+        buttonMultiply = new javax.swing.JButton();
+        buttonDivide = new javax.swing.JButton();
 
         jScrollPane3.setViewportView(jEditorPane1);
 
@@ -527,6 +531,37 @@ public class CalculationsPanelView extends javax.swing.JPanel {
 
         jScrollPane4.setViewportView(jScrollPane2);
 
+        buttonAdd.setText("+");
+        buttonAdd.setMaximumSize(new java.awt.Dimension(65, 29));
+        buttonAdd.setMinimumSize(new java.awt.Dimension(65, 29));
+        buttonAdd.setPreferredSize(new java.awt.Dimension(65, 29));
+        buttonAdd.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                buttonAddActionPerformed(evt);
+            }
+        });
+
+        buttonSubtract.setText("-");
+        buttonSubtract.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                buttonSubtractActionPerformed(evt);
+            }
+        });
+
+        buttonMultiply.setText("*");
+        buttonMultiply.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                buttonMultiplyActionPerformed(evt);
+            }
+        });
+
+        buttonDivide.setText("/");
+        buttonDivide.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                buttonDivideActionPerformed(evt);
+            }
+        });
+
         javax.swing.GroupLayout calculatorPanelLayout = new javax.swing.GroupLayout(calculatorPanel);
         calculatorPanel.setLayout(calculatorPanelLayout);
         calculatorPanelLayout.setHorizontalGroup(
@@ -535,10 +570,18 @@ public class CalculationsPanelView extends javax.swing.JPanel {
                 .addGroup(calculatorPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addComponent(availableInputsLabel)
                     .addComponent(jScrollPane4, javax.swing.GroupLayout.PREFERRED_SIZE, 266, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addGap(59, 59, 59)
+                .addGap(65, 65, 65)
                 .addGroup(calculatorPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(valuesLabel))
+                    .addComponent(valuesLabel)
+                    .addGroup(calculatorPanelLayout.createSequentialGroup()
+                        .addComponent(buttonAdd, javax.swing.GroupLayout.PREFERRED_SIZE, 54, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                        .addComponent(buttonSubtract, javax.swing.GroupLayout.PREFERRED_SIZE, 55, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                        .addComponent(buttonMultiply, javax.swing.GroupLayout.PREFERRED_SIZE, 53, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                        .addComponent(buttonDivide, javax.swing.GroupLayout.PREFERRED_SIZE, 55, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 252, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
         calculatorPanelLayout.setVerticalGroup(
@@ -552,8 +595,14 @@ public class CalculationsPanelView extends javax.swing.JPanel {
                 .addGroup(calculatorPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addComponent(jScrollPane4)
                     .addGroup(calculatorPanelLayout.createSequentialGroup()
-                        .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 160, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addGap(0, 58, Short.MAX_VALUE))))
+                        .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 125, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addGap(18, 18, 18)
+                        .addGroup(calculatorPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                            .addComponent(buttonAdd, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addComponent(buttonSubtract)
+                            .addComponent(buttonMultiply)
+                            .addComponent(buttonDivide))
+                        .addGap(0, 85, Short.MAX_VALUE))))
         );
 
         javax.swing.GroupLayout jPanel2Layout = new javax.swing.GroupLayout(jPanel2);
@@ -561,18 +610,17 @@ public class CalculationsPanelView extends javax.swing.JPanel {
         jPanel2Layout.setHorizontalGroup(
             jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(jPanel2Layout.createSequentialGroup()
-                .addContainerGap()
                 .addComponent(calculatorPanel, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addContainerGap(19, Short.MAX_VALUE))
+                .addGap(0, 11, Short.MAX_VALUE))
         );
         jPanel2Layout.setVerticalGroup(
             jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(jPanel2Layout.createSequentialGroup()
+            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel2Layout.createSequentialGroup()
                 .addComponent(calculatorPanel, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addGap(0, 0, Short.MAX_VALUE))
         );
 
-        add(jPanel2, new org.netbeans.lib.awtextra.AbsoluteConstraints(18, 223, 600, -1));
+        add(jPanel2, new org.netbeans.lib.awtextra.AbsoluteConstraints(18, 223, 600, 270));
     }// </editor-fold>//GEN-END:initComponents
 
     private void stockValueOptionButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_stockValueOptionButtonActionPerformed
@@ -665,6 +713,26 @@ public class CalculationsPanelView extends javax.swing.JPanel {
   private void fixedValueInputBoxActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_fixedValueInputBoxActionPerformed
       // TODO add your handling code here:
   }//GEN-LAST:event_fixedValueInputBoxActionPerformed
+
+    private void buttonAddActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_buttonAddActionPerformed
+        // TODO add your handling code here:
+        formulaInputArea.setText(formulaInputArea.getText()+" + ");
+    }//GEN-LAST:event_buttonAddActionPerformed
+
+    private void buttonSubtractActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_buttonSubtractActionPerformed
+        // TODO add your handling code here:
+        formulaInputArea.setText(formulaInputArea.getText()+" - ");
+    }//GEN-LAST:event_buttonSubtractActionPerformed
+
+    private void buttonMultiplyActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_buttonMultiplyActionPerformed
+        // TODO add your handling code here:
+        formulaInputArea.setText(formulaInputArea.getText()+" * ");
+    }//GEN-LAST:event_buttonMultiplyActionPerformed
+
+    private void buttonDivideActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_buttonDivideActionPerformed
+        // TODO add your handling code here:
+        formulaInputArea.setText(formulaInputArea.getText()+" / ");
+    }//GEN-LAST:event_buttonDivideActionPerformed
     
     public JTextArea getFormulaInputArea() {
         return formulaInputArea;
@@ -682,7 +750,11 @@ public class CalculationsPanelView extends javax.swing.JPanel {
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JList availableInputsJList;
     private javax.swing.JLabel availableInputsLabel;
+    private javax.swing.JButton buttonAdd;
+    private javax.swing.JButton buttonDivide;
     private javax.swing.ButtonGroup buttonGroup1;
+    private javax.swing.JButton buttonMultiply;
+    private javax.swing.JButton buttonSubtract;
     private javax.swing.JPanel calculatorPanel;
     private javax.swing.JPanel contentPanel;
     private javax.swing.JFormattedTextField fixedValueInputBox;

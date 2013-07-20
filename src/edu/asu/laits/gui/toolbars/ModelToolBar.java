@@ -35,7 +35,7 @@ public class ModelToolBar extends JToolBar {
 
     private JButton addNodeButton = null;
     private JButton deleteNodeButton = null;
-    private JButton runModelButton = null;
+    private JButton showForumButton = null;
     private JButton doneButton = null;
     private JButton showGraphButton = null;
     private ModelMenu modelMenu;
@@ -62,12 +62,14 @@ public class ModelToolBar extends JToolBar {
         add(Box.createHorizontalStrut(5)); 
         add(getshowGraphButton());
         if(ApplicationContext.getAppMode().equals("STUDENT") || ApplicationContext.getAppMode().equals("COACHED")){
-            this.add(Box.createHorizontalStrut(5));
-            this.add(getDoneButton());
+            add(Box.createHorizontalStrut(5));
+            add(getDoneButton());
         }
         if(ApplicationContext.getAppMode().equalsIgnoreCase("COACHED")){
             disableDeleteNodeButton();
         }
+        add(Box.createHorizontalStrut(5)); 
+        add(getShowForumButton());
     }
 
     /**
@@ -158,6 +160,29 @@ public class ModelToolBar extends JToolBar {
         }
         return doneButton;
     }
+    
+    /**
+     * This method initializes Discussion button on ToolBar - not in Menu right now
+     */
+    private JButton getShowForumButton() {
+        if (showForumButton == null) {
+            showForumButton = new JButton();
+            showForumButton.setText("Show Forum");  
+            showForumButton.setToolTipText("Discussion about this Model");
+            showForumButton.setFont(new Font(showForumButton.getFont().getName(),
+                                   Font.BOLD,
+                                   showForumButton.getFont().getSize() - 1)
+                                  );
+            showForumButton
+                    .addActionListener(new java.awt.event.ActionListener() {
+                public void actionPerformed(java.awt.event.ActionEvent e) {
+                    modelMenu.showForumButtonAction();
+                }
+            });
+        }
+        return showForumButton;
+    }
+    
     
     
     public void enableDoneButton(){

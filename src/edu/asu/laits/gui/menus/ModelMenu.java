@@ -20,7 +20,8 @@ package edu.asu.laits.gui.menus;
 import edu.asu.laits.editor.ApplicationContext;
 import edu.asu.laits.editor.GraphEditorPane;
 import edu.asu.laits.editor.GraphRangeEditor;
-import edu.asu.laits.gui.GraphView;
+import edu.asu.laits.gui.ForumViewPanel;
+import edu.asu.laits.gui.GraphViewPanel;
 import edu.asu.laits.gui.MainWindow;
 import edu.asu.laits.gui.nodeeditor.NodeEditor;
 import edu.asu.laits.model.Graph;
@@ -54,9 +55,8 @@ import org.jgraph.graph.DefaultPort;
 public class ModelMenu extends JMenu {
 
     private JMenuItem addNodeMenuItem = null;
-    private JMenuItem runModelMenuItem = null;
     private JMenuItem editTimeRangeMenuItem = null;
-    private JMenuItem exportSolutionMenuItem = null;
+    private JMenuItem showForumMenuItem = null;
     private JMenu deleteNodeMenu = null;
     private JMenuItem showGraphMenuItem = null;
     private GraphEditorPane graphPane;
@@ -85,10 +85,9 @@ public class ModelMenu extends JMenu {
         this.setMnemonic(KeyEvent.VK_M);
         this.add(getAddNodeMenuItem());
         this.add(getDeleteNodeMenu());
-        this.add(getRunModelMenuItem());
+        this.add(getShowGraphMenuItem());
+        this.add(getshowForumMenuItem());
         this.add(getEditTimeRangeMenuItem());
-        this.add(getExportSolutionMenuItem());
-        this.add(getshowGraphMenuItem());
         
         disableShowGraphMenu();
         disableDeleteNodeMenu();
@@ -126,11 +125,11 @@ public class ModelMenu extends JMenu {
      * This method initializes runModelMenuItem
      *
      */
-    private JMenuItem getRunModelMenuItem() {
-        if (runModelMenuItem == null) {
-            runModelMenuItem = new JMenuItem();
-            runModelMenuItem.setText("Show Graph");
-            runModelMenuItem
+    private JMenuItem getShowGraphMenuItem() {
+        if (showGraphMenuItem == null) {
+            showGraphMenuItem = new JMenuItem();
+            showGraphMenuItem.setText("Show Graph");
+            showGraphMenuItem
                     .addActionListener(new java.awt.event.ActionListener() {
                 public void actionPerformed(java.awt.event.ActionEvent e) {
                     activityLogs.debug("User pressed Run Model Button.");
@@ -138,7 +137,7 @@ public class ModelMenu extends JMenu {
                 }
             });
         }
-        return runModelMenuItem;
+        return showGraphMenuItem;
     }
 
     /**
@@ -163,50 +162,34 @@ public class ModelMenu extends JMenu {
     /**
      * This method initializes selectOtherSelectionMenuItem
      */
-    private JMenuItem getExportSolutionMenuItem() {
-        if (exportSolutionMenuItem == null) {
-            exportSolutionMenuItem = new JMenuItem();
-            exportSolutionMenuItem.setText("Export Solution");
-            exportSolutionMenuItem
+    private JMenuItem getshowForumMenuItem() {
+        if (showForumMenuItem == null) {
+            showForumMenuItem = new JMenuItem();
+            showForumMenuItem.setText("Show Forum");
+            showForumMenuItem
                     .addActionListener(new java.awt.event.ActionListener() {
                 public void actionPerformed(java.awt.event.ActionEvent e) {
-                    activityLogs.debug("User pressed Export Solution Button.");
+                    showForumButtonAction();
                 }
             });
         }
-        return exportSolutionMenuItem;
-    }
-
-    /**
-     * This method initializes selectOtherSelectionMenuItem
-     */
-    private JMenuItem getshowGraphMenuItem() {
-        if (showGraphMenuItem == null) {
-            showGraphMenuItem = new JMenuItem();
-            showGraphMenuItem.setText("Export Solution");
-            showGraphMenuItem
-                    .addActionListener(new java.awt.event.ActionListener() {
-                public void actionPerformed(java.awt.event.ActionEvent e) {
-                    showNodeGraph();
-                }
-            });
-        }
-        return showGraphMenuItem;
+        return showForumMenuItem;
     }
 
     public void showNodeGraph() {
         activityLogs.debug("User pressed Run Model button.");
-        
-        if(runModel()) {
+
+        if (runModel()) {
             showChartDialog();
-        } 
+        }
     }
 
     public boolean runModel() {
         // Check if Model has already been executed and is still valid
-        if(isGraphPrepared())
+        if (isGraphPrepared()) {
             return true;
-        
+        }
+
         ModelEvaluator me = new ModelEvaluator((Graph) graphPane.getModelGraph());
         MainWindow window = (MainWindow) graphPane.getMainFrame();
         if (me.isModelComplete()) {
@@ -258,16 +241,16 @@ public class ModelMenu extends JMenu {
 
         return isEnable;
     }
-    
-    private void showChartDialog(){
+
+    private void showChartDialog() {
         JDialog graphValuesDialog = new JDialog(graphPane.getMainFrame(), true);
-        GraphView gPanel = new GraphView(graphPane.getModelGraph(), graphValuesDialog);
+        GraphViewPanel gPanel = new GraphViewPanel(graphPane.getModelGraph(), graphValuesDialog);
         graphValuesDialog.setTitle("Model Graph");
-        graphValuesDialog.setSize(610,510);
+        graphValuesDialog.setSize(610, 510);
         graphValuesDialog.setLocationRelativeTo(null);
 
-            graphValuesDialog.setResizable(false);
-            graphValuesDialog.setVisible(true);
+        graphValuesDialog.setResizable(false);
+        graphValuesDialog.setVisible(true);
     }
 
     public void menuSelectionChanged(boolean value) {
@@ -276,11 +259,8 @@ public class ModelMenu extends JMenu {
             Object[] selectedVertices = graphPane.getSelectionCells(graphPane
                     .getGraphLayoutCache().getCells(false, true, false, false));
 
-            boolean verticesSelected = !((selectedVertices == null)
-                    || (selectedVertices.length == 0));
-
             getEditTimeRangeMenuItem().setEnabled(true);
-            getExportSolutionMenuItem().setEnabled(verticesSelected);
+
         }
     }
 
@@ -337,8 +317,17 @@ public class ModelMenu extends JMenu {
         }
 
         activityLogs.debug("Closing NodeEditor because of Delete action.");
+    }
+    
+    public void showForumButtonAction(){
+        JDialog forumDialog = new JDialog(graphPane.getMainFrame(), true);
+        new ForumViewPanel(forumDialog);
+        forumDialog.setTitle("Discussion Forum");
+        forumDialog.setSize(610, 540);
+        forumDialog.setLocationRelativeTo(null);
 
-
+        forumDialog.setResizable(false);
+        forumDialog.setVisible(true);
     }
 
     public void addDeleteNodeMenu() {
@@ -385,7 +374,7 @@ public class ModelMenu extends JMenu {
     public void disableDeleteNodeMenu() {
         deleteNodeMenu.setEnabled(false);
     }
-    
+
     public void enableShowGraphMenu() {
         showGraphMenuItem.setEnabled(true);
     }
@@ -408,7 +397,6 @@ public class ModelMenu extends JMenu {
         return false;
     }
 
-    
     public void editTimeRangeAction() {
         activityLogs.debug("User pressed EditTimeRange Menu Item.");
         GraphRangeEditor ed = new GraphRangeEditor(graphPane, true);

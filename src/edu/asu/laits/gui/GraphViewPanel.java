@@ -37,12 +37,12 @@ import org.jdesktop.swingx.JXTaskPaneContainer;
  *
  * @author ramayantiwari
  */
-public class GraphView{
+public class GraphViewPanel{
     private Graph<Vertex, Edge> currentGraph;
     JXTaskPaneContainer chartContainer;
     JDialog parent;
     
-    public GraphView(Graph<Vertex, Edge> graph, JDialog parent){
+    public GraphViewPanel(Graph<Vertex, Edge> graph, JDialog parent){
         currentGraph = graph;
         this.parent = parent;
         initializeComponents();
