@@ -74,8 +74,7 @@ public class NodeEditor extends javax.swing.JDialog {
         UIManager.getDefaults().put("TabbedPane.contentBorderInsets", new Insets(2, 0, -1, 0));
         setTabListener();
         initNodeEditor();
-
-        initializeBalloon();
+        addHelpBalloon(1, "onLoad", "Description");
     }
 
     private void initNodeEditor() {
@@ -268,7 +267,10 @@ public class NodeEditor extends javax.swing.JDialog {
                         if (currentVertex.getPlanStatus().equals(Vertex.PlanStatus.CORRECT)
                                 || currentVertex.getPlanStatus().equals(Vertex.PlanStatus.GAVEUP)) {
                             pPanel.setEditableRadio(false);
+                            
                         }
+                       // System.out.println("trying help for plan");
+                       // pPanel.addHelpBalloon("onLoad");
                     } else {
                         extraTabEvent = true;
                         tabPane.setSelectedIndex(selectedTab);
@@ -497,10 +499,12 @@ public class NodeEditor extends javax.swing.JDialog {
             ApplicationContext.nextCurrentOrder();
             tabPane.setEnabledAt(PLAN, true);
             tabPane.setForegroundAt(PLAN, Color.BLACK);
+            addHelpBalloon(ApplicationContext.getCurrentOrder()-1, "descCheckDemo", "Description");
         } else if (solutionCheck == 2) {
             dPanel.setTextFieldBackground(Color.CYAN);
             setEditorMessage("That quantity used in this model, but now is not the right time to define it. Please select another description.", true);
             activityLogs.debug("User entered description out of order");
+            addHelpBalloon(ApplicationContext.getCurrentOrder(), "onLoad", "Description");
         } else {
             currentVertex.setDescriptionStatus(Vertex.DescriptionStatus.INCORRECT);
             dPanel.setTextFieldBackground(Color.RED);
@@ -738,6 +742,25 @@ public class NodeEditor extends javax.swing.JDialog {
         buttonCreateNodeInputTab.setVisible(b);
     }
 
+        
+        private void addHelpBalloon(int order, String timing, String panel){
+            String name = ApplicationContext.getNameByOrder(order);
+           // System.out.println("addhelpballoon passing in " + name);
+        HelpBubble bubble = ApplicationContext.getHelp(name, panel, timing);
+        
+        if(bubble != null){
+          /*BalloonTipStyle style = new MinimalBalloonStyle(Color.WHITE, 0);
+          BalloonTip myBalloonTip = new BalloonTip(this.evenMorePreciseLabel, new JLabel(bubble.getMessage()),style,Orientation.RIGHT_ABOVE, AttachLocation.ALIGNED, 20, 20, true);
+          * */
+        //  System.out.println("help was not null");
+          new BlockingToolTip(this, bubble.getMessage(), dPanel.getLabel(bubble.getAttachedTo()), 0, 0);
+      } else{
+       //     System.out.println("help was null");
+        }
+            
+    }
+
+    
     /**
      * This method is called from within the constructor to initialize the form.
      * WARNING: Do NOT modify this code. The content of this method is always

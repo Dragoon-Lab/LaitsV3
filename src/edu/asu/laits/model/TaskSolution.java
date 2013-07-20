@@ -392,6 +392,14 @@ public class TaskSolution {
         }
         return null;
     }
+    public SolutionNode getNodeByOrder(int order) {
+        for (SolutionNode currentNode : solutionNodes) {
+            if (currentNode.getNodeOrder() == order) {
+                return currentNode;
+            }
+        }
+        return null;
+    }
 
     public boolean checkNodeGraph(Vertex studentVertex) {
         if (solutionGraph == null) {
@@ -479,13 +487,14 @@ public class TaskSolution {
 
     public HelpBubble checkForHelp(String order, String time, String cevent) {
         for (HelpBubble bubble : this.helpBubbles) {
+            //System.out.println("Help check passed in " + order + " looking at " + bubble.getNodeName());
             if (order.equalsIgnoreCase(bubble.getNodeName()) && time.equalsIgnoreCase(bubble.getTiming()) && cevent.equalsIgnoreCase(bubble.getEvent())) {
 
-                logs.debug("check for help worked");
+              //  System.out.println("check for help worked");
                 return bubble;
             }
         }
-        logs.debug("check for help failed");
+        //System.out.println("check for help failed");
         return null;
 
     }

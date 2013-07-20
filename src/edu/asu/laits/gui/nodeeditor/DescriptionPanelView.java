@@ -248,13 +248,13 @@ public class DescriptionPanelView extends JPanel{
     }//GEN-LAST:event_decisionTreeValueChanged
 
     private void addHelpBalloon(String timing){
-        HelpBubble bubble = ApplicationContext.getHelp(String.valueOf(ApplicationContext.getCurrentOrder()), "Description", timing);
+        HelpBubble bubble = ApplicationContext.getHelp(ApplicationContext.getNameByOrder(ApplicationContext.getCurrentOrder()), "Description", timing);
         if(bubble != null){
           /*BalloonTipStyle style = new MinimalBalloonStyle(Color.WHITE, 0);
           BalloonTip myBalloonTip = new BalloonTip(this.evenMorePreciseLabel, new JLabel(bubble.getMessage()),style,Orientation.RIGHT_ABOVE, AttachLocation.ALIGNED, 20, 20, true);
           * */
           
-         //new BlockingToolTip(this.nodeEditor, "Test error msg", NodeNameLabel,0,0);
+          new BlockingToolTip(this.nodeEditor, bubble.getMessage(), this.getLabel(bubble.getAttachedTo()), 0, 0);
       }
     }
   // returns the value held by triedDuplicate
@@ -341,7 +341,6 @@ public class DescriptionPanelView extends JPanel{
       }
 
       currentVertex.setCorrectDescription(getNodeDesc().trim());
-      addHelpBalloon("descCheckDemo");
       return true;
 
   }

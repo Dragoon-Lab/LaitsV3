@@ -5,6 +5,8 @@
 package edu.asu.laits.gui.nodeeditor;
 
 import edu.asu.laits.editor.ApplicationContext;
+import edu.asu.laits.gui.BlockingToolTip;
+import edu.asu.laits.model.HelpBubble;
 import edu.asu.laits.model.TaskSolution;
 import edu.asu.laits.model.Vertex;
 import java.awt.BorderLayout;
@@ -14,11 +16,14 @@ import java.awt.Dimension;
 import java.awt.GridLayout;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
+import java.util.HashMap;
+import java.util.Map;
 import java.util.Vector;
 import javax.swing.AbstractCellEditor;
 import javax.swing.BorderFactory;
 
 import javax.swing.ButtonGroup;
+import javax.swing.JComponent;
 import javax.swing.JPanel;
 import javax.swing.JRadioButton;
 import javax.swing.JScrollPane;
@@ -221,6 +226,29 @@ public class PlanPanelView extends JPanel {
     public void setEditableRadio(Boolean b) {
         table.setEnabled(b);
     }
+    
+    public void addHelpBalloon(String timing){
+        HelpBubble bubble = ApplicationContext.getHelp(ApplicationContext.getNameByOrder(ApplicationContext.getCurrentOrder()-1), "Plan", timing);
+        if(bubble != null){
+          /*BalloonTipStyle style = new MinimalBalloonStyle(Color.WHITE, 0);
+          BalloonTip myBalloonTip = new BalloonTip(this.evenMorePreciseLabel, new JLabel(bubble.getMessage()),style,Orientation.RIGHT_ABOVE, AttachLocation.ALIGNED, 20, 20, true);
+          * */
+          
+          new BlockingToolTip(this.nodeEditor, bubble.getMessage(), this.getLabel(bubble.getAttachedTo()), 0, 0);
+      }
+    }
+    
+    public JComponent getLabel(String label){
+ 
+    Map<String, JComponent> map = new HashMap<String, JComponent>();
+    map.put("table", table);
+    if(map.containsKey(label)){
+        return map.get(label);
+    }
+    else {
+        return null;
+    }
+}
 
     private class TableEntry {
 

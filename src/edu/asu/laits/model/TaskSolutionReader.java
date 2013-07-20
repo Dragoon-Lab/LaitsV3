@@ -69,8 +69,8 @@ public class TaskSolutionReader {
             fillDescriptionTree(solution, descriptionTree);
             
             //Read in help bubbles
-            //Element bubbles = taskNode.element("HelpBubbles");
-            //fillHelpBubbles(solution, bubbles);
+            Element bubbles = taskNode.element("HelpBubbles");
+            fillHelpBubbles(solution, bubbles);
                 
         } catch (Exception e) {
             // Could not read the XML file
@@ -168,7 +168,7 @@ public class TaskSolutionReader {
             // Read all the Input Nodes of this node
             if(ApplicationContext.getAppMode().equals("COACHED") && node.elementTextTrim("Order") != null){
               newNode.setNodeOrder(Integer.parseInt(node.elementTextTrim("Order")));
-              logs.debug("Added element" + node.elementTextTrim("Order") + " " + node.elementTextTrim("CorrectDescription"));
+              System.out.println("Added element" + node.elementTextTrim("Order") + " " + node.elementTextTrim("CorrectDescription"));
          }
             
             Element nodeInput = node.element("Inputs");
