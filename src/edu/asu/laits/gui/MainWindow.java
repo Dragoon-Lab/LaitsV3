@@ -100,13 +100,14 @@ public class MainWindow extends JFrame {
         setExtendedState(MAXIMIZED_BOTH);
         setDefaultCloseOperation(DO_NOTHING_ON_CLOSE);
         windowCount++;
-    //    attachPersistanceManager();
+    
         setVisible(true);
         addHelpBalloon("onLoad");
     }
     
     
     private void addHelpBalloon(String timing){
+        if(ApplicationContext.getAppMode().equals("COACHED")){
         HelpBubble bubble = ApplicationContext.getHelp(ApplicationContext.getNameByOrder(1), "MainWindow", timing);
         logs.debug(String.valueOf(ApplicationContext.getCurrentOrder()) + " MainWindow " + timing);
         if(bubble != null){
@@ -116,6 +117,7 @@ public class MainWindow extends JFrame {
           
           new BlockingToolTip(this, bubble.getMessage(), modelToolBar.getAddNodeButton(), 0, 0);
       }
+        }
     }
 
     public static void openWindowWithFile(File file) {

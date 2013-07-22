@@ -57,18 +57,25 @@ public class GraphViewPanel{
     }
     
     private void addCharts(){
-        Task t = new Task(ApplicationContext.getCorrectSolution().getStartTime(), 
+        Task t = null;
+        if(!ApplicationContext.getAppMode().equals("AUTHOR")){
+            t = new Task(ApplicationContext.getCorrectSolution().getStartTime(), 
                     ApplicationContext.getCorrectSolution().getEndTime(), 
                     ApplicationContext.getCorrectSolution().getGraphUnits());
-        
+        }
         for(Vertex currentVertex : currentGraph.vertexSet()){
             chartContainer.add(addChart(currentVertex, t));
         }        
     }
     
     private JXTaskPane addChart(Vertex vertex, Task task){
-        PlotPanel plotPanel = new PlotPanel(vertex, task.getStartTime(), task.getUnits()); 
-        
+        PlotPanel plotPanel = null;
+        if(task == null){
+            plotPanel = new PlotPanel(vertex, currentGraph.getCurrentTask().getStartTime(), 
+                    currentGraph.getCurrentTask().getUnits());
+        }else{
+             plotPanel = new PlotPanel(vertex, task.getStartTime(), task.getUnits()); 
+        }
         return plotPanel;
     }
 }

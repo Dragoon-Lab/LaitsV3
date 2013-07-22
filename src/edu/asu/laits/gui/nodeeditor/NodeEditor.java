@@ -15,7 +15,6 @@
  * You should have received a copy of the GNU Lesser General Public License
  * along with LAITS. If not, see <http://www.gnu.org/licenses/>.
  */
-
 package edu.asu.laits.gui.nodeeditor;
 
 import edu.asu.laits.editor.ApplicationContext;
@@ -98,15 +97,17 @@ public class NodeEditor extends javax.swing.JDialog {
 
     }
 
-    private String getNodeEditorTitle(){
+    private String getNodeEditorTitle() {
         String title = "Node Editor - ";
-        if(currentVertex.getName().equals(""))
+        if (currentVertex.getName().equals("")) {
             title += "New Node";
-        else
+        } else {
             title += currentVertex.getName();
-        
+        }
+
         return title;
     }
+
     /**
      * Attach BalloonTip at the start of Node Editor
      */
@@ -267,10 +268,10 @@ public class NodeEditor extends javax.swing.JDialog {
                         if (currentVertex.getPlanStatus().equals(Vertex.PlanStatus.CORRECT)
                                 || currentVertex.getPlanStatus().equals(Vertex.PlanStatus.GAVEUP)) {
                             pPanel.setEditableRadio(false);
-                            
+
                         }
-                       // System.out.println("trying help for plan");
-                       // pPanel.addHelpBalloon("onLoad");
+                        // System.out.println("trying help for plan");
+                        // pPanel.addHelpBalloon("onLoad");
                     } else {
                         extraTabEvent = true;
                         tabPane.setSelectedIndex(selectedTab);
@@ -499,7 +500,7 @@ public class NodeEditor extends javax.swing.JDialog {
             ApplicationContext.nextCurrentOrder();
             tabPane.setEnabledAt(PLAN, true);
             tabPane.setForegroundAt(PLAN, Color.BLACK);
-            addHelpBalloon(ApplicationContext.getCurrentOrder()-1, "descCheckDemo", "Description");
+            addHelpBalloon(ApplicationContext.getCurrentOrder() - 1, "descCheckDemo", "Description");
         } else if (solutionCheck == 2) {
             dPanel.setTextFieldBackground(Color.CYAN);
             setEditorMessage("That quantity used in this model, but now is not the right time to define it. Please select another description.", true);
@@ -545,7 +546,7 @@ public class NodeEditor extends javax.swing.JDialog {
         iPanel.processInputsPanel();
         iPanel.setInputsTypeBackground(new Color(240, 240, 240));
         iPanel.setInputValuesBackground(new Color(240, 240, 240));
-      
+
         int result = 0;
 
         if (iPanel.getValueButtonSelected()) {
@@ -713,8 +714,8 @@ public class NodeEditor extends javax.swing.JDialog {
 
         activityLogs.debug("User pressed Close button for Node " + currentVertex.getName());
         // Delete this vertex if its not defined and user hits Cancel
-        if (currentVertex.getDescriptionStatus().equals(Vertex.DescriptionStatus.UNDEFINED) || 
-                currentVertex.getDescriptionStatus().equals(Vertex.DescriptionStatus.INCORRECT)) {
+        if (currentVertex.getDescriptionStatus().equals(Vertex.DescriptionStatus.UNDEFINED)
+                || currentVertex.getDescriptionStatus().equals(Vertex.DescriptionStatus.INCORRECT)) {
             graphPane.removeSelected();
         }
 
@@ -723,10 +724,10 @@ public class NodeEditor extends javax.swing.JDialog {
             graphPane.getMainFrame().getModelToolBar().enableDeleteNodeButton();
             graphPane.getMainFrame().getMainMenu().getModelMenu().enableDeleteNodeMenu();
         }
-        
+
         // Save Student's session to server
         PersistenceManager.saveSession();
-        
+
         this.dispose();
     }
 
@@ -742,25 +743,25 @@ public class NodeEditor extends javax.swing.JDialog {
         buttonCreateNodeInputTab.setVisible(b);
     }
 
-        
-        private void addHelpBalloon(int order, String timing, String panel){
+    private void addHelpBalloon(int order, String timing, String panel) {
+        if (ApplicationContext.getAppMode().equals("COACHED")) {
             String name = ApplicationContext.getNameByOrder(order);
-           // System.out.println("addhelpballoon passing in " + name);
-        HelpBubble bubble = ApplicationContext.getHelp(name, panel, timing);
-        
-        if(bubble != null){
-          /*BalloonTipStyle style = new MinimalBalloonStyle(Color.WHITE, 0);
-          BalloonTip myBalloonTip = new BalloonTip(this.evenMorePreciseLabel, new JLabel(bubble.getMessage()),style,Orientation.RIGHT_ABOVE, AttachLocation.ALIGNED, 20, 20, true);
-          * */
-        //  System.out.println("help was not null");
-          new BlockingToolTip(this, bubble.getMessage(), dPanel.getLabel(bubble.getAttachedTo()), 0, 0);
-      } else{
-       //     System.out.println("help was null");
+            // System.out.println("addhelpballoon passing in " + name);
+            HelpBubble bubble = ApplicationContext.getHelp(name, panel, timing);
+
+            if (bubble != null) {
+                /*BalloonTipStyle style = new MinimalBalloonStyle(Color.WHITE, 0);
+                 BalloonTip myBalloonTip = new BalloonTip(this.evenMorePreciseLabel, new JLabel(bubble.getMessage()),style,Orientation.RIGHT_ABOVE, AttachLocation.ALIGNED, 20, 20, true);
+                 * */
+                //  System.out.println("help was not null");
+                new BlockingToolTip(this, bubble.getMessage(), dPanel.getLabel(bubble.getAttachedTo()), 0, 0);
+            } else {
+                //     System.out.println("help was null");
+            }
         }
-            
+
     }
 
-    
     /**
      * This method is called from within the constructor to initialize the form.
      * WARNING: Do NOT modify this code. The content of this method is always

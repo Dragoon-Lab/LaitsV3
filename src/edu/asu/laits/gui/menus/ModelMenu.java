@@ -246,7 +246,7 @@ public class ModelMenu extends JMenu {
         JDialog graphValuesDialog = new JDialog(graphPane.getMainFrame(), true);
         GraphViewPanel gPanel = new GraphViewPanel(graphPane.getModelGraph(), graphValuesDialog);
         graphValuesDialog.setTitle("Model Graph");
-        graphValuesDialog.setSize(610, 510);
+        graphValuesDialog.setSize(610, 530);
         graphValuesDialog.setLocationRelativeTo(null);
 
         graphValuesDialog.setResizable(false);

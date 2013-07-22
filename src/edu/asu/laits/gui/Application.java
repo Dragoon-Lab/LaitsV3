@@ -67,21 +67,21 @@ public class Application extends JApplet {
 
     private static void initializeApplication(String[] args) {
         // Check if application was launched using command line args
-        if(args.length >= 3){
+        if(args.length > 0 && args.length <= 3){
             ApplicationContext.setApplicationEnvironment(ApplicationContext.ApplicationEnvironment.DEV);
+            
             ApplicationContext.setUserID(args[0]);
-
-            ApplicationContext.setCurrentTaskID(args[2]);
             ApplicationContext.setAppMode(args[1]);
+            if(!args[1].equals("AUTHOR"))
+                ApplicationContext.setCurrentTaskID(args[2]);
         }else {
             // Try to Launch application using JNLP for PROD
             String userName = System.getProperty("jnlp.username");
             if(userName != null){
                 ApplicationContext.setApplicationEnvironment(ApplicationContext.ApplicationEnvironment.PROD);
                 ApplicationContext.setUserID(userName);
-
-                ApplicationContext.setCurrentTaskID(System.getProperty("jnlp.problem"));
-                ApplicationContext.setAppMode(System.getProperty("jnlp.mode"));            
+                ApplicationContext.setAppMode(System.getProperty("jnlp.mode"));
+                ApplicationContext.setCurrentTaskID(System.getProperty("jnlp.problem"));                            
             }else{
                 JOptionPane.showMessageDialog(null, "Incorrect Initialization Parameters",
                         "An error has occured. Contact Support.", JOptionPane.ERROR_MESSAGE);
