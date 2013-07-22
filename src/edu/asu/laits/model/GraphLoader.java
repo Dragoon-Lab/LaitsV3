@@ -23,6 +23,7 @@ import java.io.Reader;
 import java.util.HashMap;
 
 import edu.asu.laits.editor.GraphEditorPane;
+import edu.asu.laits.editor.ApplicationContext;
 import edu.asu.laits.properties.GraphProperties;
 import edu.asu.laits.logger.HttpAppender;
 import org.jgrapht.ext.JGraphModelAdapter;
@@ -60,79 +61,99 @@ public class GraphLoader {
     public void load(Reader reader, File file)
             throws IncorcectGraphXMLFileException {
         
-        // Used to load objects from xml
-        XStream xstream = new XStream(new DomDriver());
-
-        xstream.alias("vertex", Vertex.class);
-        xstream.alias("edge", Edge.class);
-        xstream.alias("graph", GraphFile.class);
-        xstream.alias("task",Task.class);
-        
-        GraphFile graphFile = null;
-        try {
-            graphFile = (GraphFile) xstream.fromXML(reader);
-        } catch (BaseException e) {
-            // Could not read the XML file
-            logs.debug(e.getMessage());
-            throw new IncorcectGraphXMLFileException();
-        }
-        // An hash wich makes it fast to find vertices
-        HashMap<Integer, Vertex> vertexHash = new HashMap<Integer, Vertex>();
-
-        List<Vertex> vertexList = graphFile.getVertexList();
-        for (Vertex vertex : vertexList) {
-            vertex.setGraphsStatus(Vertex.GraphsStatus.UNDEFINED);
-            graphPane.addVertex(vertex);
-            vertexHash.put(vertex.getVertexIndex(), vertex);
-        }
-
         /*
-         * Load all edges
-         */
-
-        List<Edge> edgeList = graphFile.getEdgeList();
+        * Check for saved state on server. Currently being checked in FileMenu.java before open window is displayed.
+        * This code can be removed if we keep the check in FileMenu.java (keep contents of if statement but remove if
+        * surrounding code ("if(...){" and "}") and remove else block in this method).
+        */
+        String user = ApplicationContext.getUserID();
         
-        JGraphModelAdapter<Vertex, Edge> model = graphPane
-                .getJGraphTModelAdapter();
-        for (Edge edge : edgeList) {
-            Vertex sInfo = vertexHash.get(edge.getSourceVertexId());
-            Vertex tInfo = vertexHash.get(edge.getTargetVertexId());
-
-            DefaultPort p1 = graphPane.getJGraphTModelAdapter().getVertexPort(sInfo);
-            DefaultPort p2 = graphPane.getJGraphTModelAdapter().getVertexPort(tInfo);
-      
-            graphPane.insertEdge(p1, p2);
+        String group = "login.html";//****If group is added or changed this line needs to be updated.****
+        
+        String probNum = ApplicationContext.getCurrentTaskID();
+        String xmlString = "";
+        HttpAppender get = new HttpAppender();
+        try {
+            xmlString = get.sendHttpRequest("http://dragoon.asu.edu/demo/get_session.php?id=" 
+                    + user + "&group=" + group + "&problem=" + probNum);
+        } catch (Exception ex) {
+            java.util.logging.Logger.getLogger(GraphLoader.class.getName()).log(Level.SEVERE, null, ex);
         }
-        int index = 0;
-        for (Vertex vertex : vertexList) {
-            vertex.setVertexIndex(index);
-            index++;
-        }
+        
+        /*
+        * If saved state does not exist on server, load from file.
+        */
+        if(xmlString.trim().isEmpty()){
+            // Used to load objects from xml
+            XStream xstream = new XStream(new DomDriver());
 
-        GraphProperties prop = graphFile.getProperties();
-        prop.initializeNotSerializeFeelds();
+            xstream.alias("vertex", Vertex.class);
+            xstream.alias("edge", Edge.class);
+            xstream.alias("graph", GraphFile.class);
+            xstream.alias("task",Task.class);
 
-        graphPane.setScale(prop.getZoomLevel());
-        graphPane.setBackground(prop.getBackgroundColor());
-        graphPane.setGraphProperties(prop);
-        
-        Graph graph = (Graph)graphPane.getModelGraph();
-        graph.setCurrentTask(graphFile.getTask());
-        
-        prop.setSavedAs(file);
-        
-        //will move to new method--currently testing functionality
-//        //in process
-//        HttpAppender get = new HttpAppender();
-//        try {
-//            get.sendHttpRequest("http://dragoon.asu.edu/demo/get_session.php?user=yo&group=login.html&problem=105");
-//        } catch (Exception ex) {
-//            java.util.logging.Logger.getLogger(GraphLoader.class.getName()).log(Level.SEVERE, null, ex);
-//        }
-//        System.out.println("Output from connection: " + get.toString());
+            GraphFile graphFile = null;
+            try {
+                graphFile = (GraphFile) xstream.fromXML(reader);
+            } catch (BaseException e) {
+                // Could not read the XML file
+                logs.debug(e.getMessage());
+                throw new IncorcectGraphXMLFileException();
+            }
+            // An hash which makes it fast to find vertices
+            HashMap<Integer, Vertex> vertexHash = new HashMap<Integer, Vertex>();
+
+            List<Vertex> vertexList = graphFile.getVertexList();
+            for (Vertex vertex : vertexList) {
+                vertex.setGraphsStatus(Vertex.GraphsStatus.UNDEFINED);
+                graphPane.addVertex(vertex);
+                vertexHash.put(vertex.getVertexIndex(), vertex);
+            }
+
+            /*
+             * Load all edges
+             */
+
+            List<Edge> edgeList = graphFile.getEdgeList();
+
+            JGraphModelAdapter<Vertex, Edge> model = graphPane
+                    .getJGraphTModelAdapter();
+            for (Edge edge : edgeList) {
+                Vertex sInfo = vertexHash.get(edge.getSourceVertexId());
+                Vertex tInfo = vertexHash.get(edge.getTargetVertexId());
+
+                DefaultPort p1 = graphPane.getJGraphTModelAdapter().getVertexPort(sInfo);
+                DefaultPort p2 = graphPane.getJGraphTModelAdapter().getVertexPort(tInfo);
+
+                graphPane.insertEdge(p1, p2);
+            }
+            int index = 0;
+            for (Vertex vertex : vertexList) {
+                vertex.setVertexIndex(index);
+                index++;
+            }
+
+            GraphProperties prop = graphFile.getProperties();
+            prop.initializeNotSerializeFeelds();
+
+            graphPane.setScale(prop.getZoomLevel());
+            graphPane.setBackground(prop.getBackgroundColor());
+            graphPane.setGraphProperties(prop);
+
+            Graph graph = (Graph)graphPane.getModelGraph();
+            graph.setCurrentTask(graphFile.getTask());
+
+            prop.setSavedAs(file);
+            
+        }else{
+            /*
+            * If saved state exists on server, load from server.
+            */
+            loadFromServer(xmlString);            
+        }                
     }
     
-    public void load(Reader reader, String xmlString)
+    public void loadFromServer(String xmlString)
             throws IncorcectGraphXMLFileException {
         
         // Used to load objects from xml
@@ -194,8 +215,6 @@ public class GraphLoader {
         Graph graph = (Graph)graphPane.getModelGraph();
         graph.setCurrentTask(graphFile.getTask());
         
-        //prop.setSavedAs(xmlString);
-        System.out.println(xstream.toString());
-
+        //prop.setSavedAs(file);
     }
 }
