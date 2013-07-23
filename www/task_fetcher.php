@@ -19,7 +19,7 @@ if($section)
     $dbpass = chop(fgets($fh));
     $dbname = chop(fgets($fh));
     if(strlen($dbname)==0){
-      $dbname='laitsad_laitsdb';
+      $dbname='laitsad_stable';
     }
     fclose($fh);
     
