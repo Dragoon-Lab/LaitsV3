@@ -125,25 +125,20 @@ public class HttpAppender extends AppenderSkeleton {
     }
 
     //in process
-    public static void sendHttpRequest(String address) throws Exception {
+    public static String sendHttpRequest(String address) throws Exception {
         URL url = new URL(address);
-        HttpURLConnection connect = (HttpURLConnection) url.openConnection();
-        //connect.setRequestMethod("GET");
-        System.out.println("HttpURLConnection Response: " + connect.getResponseCode());
+        HttpURLConnection connect = (HttpURLConnection) url.openConnection();        
         StringBuffer sb = new StringBuffer();
         BufferedReader in = new BufferedReader(new InputStreamReader(
-                connect.getInputStream()));
-        
-        String line = "";
-        
+                connect.getInputStream()));        
+        String line = "";        
         while((line = in.readLine()) != null){
             sb.append(line);
             sb.append("\n");
         }
-
         in.close();
-        System.out.println(sb.toString());//temp line to check reader.
         connect.disconnect();
+        return sb.toString();
     }
 
     /*
