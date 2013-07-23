@@ -21,8 +21,10 @@
 package edu.asu.laits.gui.nodeeditor;
 
 import edu.asu.laits.editor.ApplicationContext;
+import edu.asu.laits.gui.BlockingToolTip;
 import edu.asu.laits.model.Edge;
 import edu.asu.laits.model.Graph;
+import edu.asu.laits.model.HelpBubble;
 import edu.asu.laits.model.SolutionNode;
 import edu.asu.laits.model.TaskSolution;
 import edu.asu.laits.model.Vertex;
@@ -375,6 +377,14 @@ public class CalculationsPanelView extends javax.swing.JPanel {
         nodeEditor.getGraphPane().getLayoutCache().reload();
         nodeEditor.getGraphPane().repaint();
     }
+    
+        private void addHelpBalloon(String timing){
+        HelpBubble bubble = ApplicationContext.getHelp(ApplicationContext.getNameByOrder(ApplicationContext.getCurrentOrder()-2), "Calculations", timing);
+        if(bubble != null){
+
+          new BlockingToolTip(this.nodeEditor, bubble.getMessage(), this.getLabel(bubble.getAttachedTo()), 0, 0);
+      }
+    }
 
     /**
      * This method is called from within the constructor to initialize the form.
@@ -630,6 +640,7 @@ public class CalculationsPanelView extends javax.swing.JPanel {
         preparePanelForStock();
         currentVertex.setVertexType(Vertex.VertexType.STOCK);
         reloadGraphPane();
+        addHelpBalloon("stockSelected");
     }//GEN-LAST:event_stockValueOptionButtonActionPerformed
     
     private void flowValueOptionButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_flowValueOptionButtonActionPerformed
@@ -671,6 +682,7 @@ public class CalculationsPanelView extends javax.swing.JPanel {
     map.put("referencesLabel", quantitySelectionPanel);
     map.put("jScrollPane1", jScrollPane1);
     map.put("jScrollPane2", jScrollPane2);
+    map.put("quantityLabel", quantityLabel);
     if(map.containsKey(label)){
         return map.get(label);
     }

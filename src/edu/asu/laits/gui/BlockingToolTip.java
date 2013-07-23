@@ -41,7 +41,7 @@ public class BlockingToolTip {
         initBalloon(text, c, x, y);        
         disableWindow();
     }
-
+  
     /**
      * Initialize BalloonTip with text and the component to attach it
      * Pass Horizontal and Vertical Alignment Parameters to BalloonTip Constructor. 

@@ -236,6 +236,7 @@ public class CreateNewNodeDialog extends javax.swing.JDialog {
             ApplicationContext.nextCurrentOrder();
             giveUpButton.setEnabled(false);
             
+            
         } else if(solutionCheck == 2){
             dPanel.setTextFieldBackground(Color.CYAN);
             setEditorMessage("Quantity is used in model, but is not ready to be defined. Please try another description.", true);
