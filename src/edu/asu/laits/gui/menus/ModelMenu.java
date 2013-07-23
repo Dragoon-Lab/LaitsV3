@@ -25,6 +25,8 @@ import edu.asu.laits.gui.GraphViewPanel;
 import edu.asu.laits.gui.MainWindow;
 import edu.asu.laits.gui.nodeeditor.NodeEditor;
 import edu.asu.laits.model.Graph;
+import edu.asu.laits.model.GraphSaver;
+import edu.asu.laits.model.LaitsSolutionExporter;
 import edu.asu.laits.model.ModelEvaluationException;
 import edu.asu.laits.model.ModelEvaluator;
 import edu.asu.laits.model.SolutionNode;
@@ -33,14 +35,19 @@ import edu.asu.laits.model.TaskSolutionReader;
 import edu.asu.laits.model.Vertex;
 import java.awt.event.ActionEvent;
 import java.awt.event.KeyEvent;
+import java.io.File;
+import java.io.FileWriter;
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Iterator;
 import java.util.List;
 import javax.swing.JDialog;
+import javax.swing.JFileChooser;
 import javax.swing.JMenu;
 import javax.swing.JMenuItem;
 import javax.swing.JOptionPane;
+import javax.swing.filechooser.FileFilter;
 import org.apache.log4j.Logger;
 import org.jgraph.graph.DefaultGraphCell;
 import org.jgraph.graph.DefaultPort;
@@ -56,6 +63,7 @@ public class ModelMenu extends JMenu {
 
     private JMenuItem addNodeMenuItem = null;
     private JMenuItem editTimeRangeMenuItem = null;
+    private JMenuItem exportSolutionMenuItem = null;
     private JMenuItem showForumMenuItem = null;
     private JMenu deleteNodeMenu = null;
     private JMenuItem showGraphMenuItem = null;
@@ -64,7 +72,7 @@ public class ModelMenu extends JMenu {
     private static Logger logs = Logger.getLogger("DevLogs");
     private static Logger activityLogs = Logger.getLogger("ActivityLogs");
     private HashMap<String, JMenuItem> menuMap = new HashMap<String, JMenuItem>();
-
+    private JFileChooser saveAsFileChooser = null;
     /**
      * This method initializes
      *
@@ -87,8 +95,11 @@ public class ModelMenu extends JMenu {
         this.add(getDeleteNodeMenu());
         this.add(getShowGraphMenuItem());
         this.add(getshowForumMenuItem());
-        this.add(getEditTimeRangeMenuItem());
         
+        if(ApplicationContext.getAppMode().equals("AUTHOR")){
+            this.add(getExportSolutionMenuItem());
+            this.add(getEditTimeRangeMenuItem());
+        }
         disableShowGraphMenu();
         disableDeleteNodeMenu();
     }
@@ -140,6 +151,25 @@ public class ModelMenu extends JMenu {
         return showGraphMenuItem;
     }
 
+    
+    /**
+     * This method initializes selectOtherSelectionMenuItem
+     */
+    private JMenuItem getExportSolutionMenuItem() {
+        if (exportSolutionMenuItem == null) {
+            exportSolutionMenuItem = new JMenuItem();
+            exportSolutionMenuItem.setText("Export Solution");
+            exportSolutionMenuItem
+                    .addActionListener(new java.awt.event.ActionListener() {
+                public void actionPerformed(java.awt.event.ActionEvent e) {
+                    activityLogs.debug("User pressed Export Solution Button.");
+                    exportSolution();
+                }
+            });
+        }
+        return exportSolutionMenuItem;
+    }
+    
     /**
      * This method initializes selectNeighbourSelectionMenuItem
      *
@@ -462,4 +492,76 @@ public class ModelMenu extends JMenu {
     public MainWindow getMainWindow() {
         return mainWindow;
     }
-}
+    
+    /**
+     * Export Author's Graph as a LAITS Solution File
+     */ 
+    private void exportSolution(){
+        int returnVal = getSaveAsFileChooser().showSaveDialog(getRootPane());
+        if (returnVal == JFileChooser.APPROVE_OPTION) {
+
+            File selectedFile = getSaveAsFileChooser().getSelectedFile();
+
+            if (!selectedFile.getName().matches("(.*)(\\.xml)")) {
+
+                if (selectedFile.getName().matches("\".*\"")) {
+                    if (selectedFile.getName().length() < 3) {
+                        JOptionPane
+                                .showMessageDialog(
+                                getRootPane(),
+                                "Can not save to file "
+                                + selectedFile
+                                .getAbsolutePath()
+                                + "\nBecause of the following reason:\n"
+                                + "File name is too short.",
+                                "Unable to save file",
+                                JOptionPane.ERROR_MESSAGE);
+                        return;
+                    } else {
+                        selectedFile = new File(selectedFile.getParent()
+                                + File.separator
+                                + selectedFile.getName()
+                                .substring(
+                                1,
+                                (int) (selectedFile.getName()
+                                .length() - 2)));
+                    }
+                } else {
+                    selectedFile = new File(selectedFile.getAbsoluteFile()
+                            + ".xml");
+                }
+            }
+            
+            saveToFile(selectedFile);
+        }
+    }
+    
+    /**
+     * Tries to save to the specified file
+     */
+    private void saveToFile(File file) {
+        LaitsSolutionExporter exporter = new LaitsSolutionExporter(graphPane.getModelGraph(), file);
+        exporter.export();
+    }
+    
+    private JFileChooser getSaveAsFileChooser() {
+        if (saveAsFileChooser == null) {
+            saveAsFileChooser = new JFileChooser();
+            saveAsFileChooser.setDialogTitle("Export Model as LAITS Solution...");
+            saveAsFileChooser.setAcceptAllFileFilterUsed(true);
+            saveAsFileChooser.addChoosableFileFilter(new FileFilter() {
+                @Override
+                public boolean accept(File f) {
+                    return f.getName().matches(".*.xml");
+                }
+
+                @Override
+                public String getDescription() {
+                    return "Laits Solution Files (*.xml)";
+                }
+            });
+        }
+        return saveAsFileChooser;
+    }
+    
+}    

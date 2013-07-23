@@ -27,6 +27,7 @@ import edu.asu.laits.editor.listeners.GraphPropertiesChangeListener;
 import edu.asu.laits.editor.listeners.GraphSaveListener;
 import edu.asu.laits.gui.MainWindow;
 import edu.asu.laits.gui.nodeeditor.NodeEditor;
+import edu.asu.laits.logger.HttpAppender;
 import edu.asu.laits.model.SolutionNode;
 import edu.asu.laits.model.TaskSolution;
 import edu.asu.laits.model.TaskSolutionReader;
@@ -40,6 +41,7 @@ import java.io.InputStream;
 import java.io.OutputStream;
 import java.util.HashMap;
 import java.util.LinkedList;
+import java.util.logging.Level;
 
 import javax.swing.JFileChooser;
 import javax.swing.filechooser.FileFilter;
@@ -288,7 +290,40 @@ public class FileMenu extends JMenu {
             openAction = new java.awt.event.ActionListener() {
                 public void actionPerformed(java.awt.event.ActionEvent e) {
                     activityLogs.debug("User Pressed Open File Menu");
-                    open();
+                    
+                    /*
+                    * Check for saved state on server.
+                    */
+                    String user = ApplicationContext.getUserID();
+
+                    String group = "login.html";//****If group is added or changed this line needs to be updated.****
+
+                    String probNum = ApplicationContext.getCurrentTaskID();
+                    String xmlString = "";
+                    HttpAppender get = new HttpAppender();
+                    try {
+                        xmlString = get.sendHttpRequest("http://dragoon.asu.edu/demo/get_session.php?id=" 
+                                + user + "&group=" + group + "&problem=" + probNum);
+                    } catch (Exception ex) {
+                        java.util.logging.Logger.getLogger(GraphLoader.class.getName()).log(Level.SEVERE, null, ex);
+                    }
+
+                    /*
+                    * If saved state does not exist on server, load from file.
+                    */
+                    if(xmlString.trim().isEmpty()){
+                        open();
+                    }else{
+                        /*
+                        * If saved state exists on server, load from server.
+                        */
+                        try {                            
+                            GraphLoader loader = new GraphLoader(graphPane);
+                            loader.loadFromServer(xmlString);
+                        } catch (IncorcectGraphXMLFileException ex) {
+                            java.util.logging.Logger.getLogger(FileMenu.class.getName()).log(Level.SEVERE, null, ex);
+                        }
+                    }
                 }
             };
             openFileMenuItem.addActionListener(openAction);
