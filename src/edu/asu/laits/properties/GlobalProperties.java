@@ -18,6 +18,7 @@ import edu.asu.laits.editor.GraphEditorPane;
 import com.thoughtworks.xstream.XStream;
 import edu.asu.laits.editor.ApplicationContext;
 import java.awt.Dimension;
+import java.awt.Point;
 import javax.help.event.HelpSetListener;
 import org.apache.log4j.Logger;
 
@@ -131,8 +132,11 @@ public class GlobalProperties {
         try {
             url = HelpSet.findHelpSet(loader, helpSetName);
             HelpSet helpSet = new HelpSet(loader, url);
+            
             helpBroker = helpSet.createHelpBroker();
-            helpBroker.setSize(new Dimension(830, 680));            
+            helpBroker.setSize(new Dimension(830, 680));     
+            helpBroker.setLocation(new Point(300,100));
+            
         } catch (Exception e) {
             e.printStackTrace();
             return;

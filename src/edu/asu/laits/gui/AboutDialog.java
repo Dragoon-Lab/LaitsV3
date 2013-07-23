@@ -68,7 +68,7 @@ public class AboutDialog extends JDialog {
     private JTextPane informationTextPane = null;
 
     private AboutDialog(Frame rootComponent) {
-        super(rootComponent);
+        super(rootComponent, true);
         initialize();
     }
 
@@ -78,6 +78,7 @@ public class AboutDialog extends JDialog {
      */
     private void initialize() {
         this.setSize(new Dimension(400, 400));
+        this.setLocationRelativeTo(null);
         this.setTitle("About " + GlobalProperties.PROGRAM_NAME);
         this.setContentPane(getRootPanel());
 

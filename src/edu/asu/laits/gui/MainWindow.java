@@ -92,7 +92,6 @@ public class MainWindow extends JFrame {
     public MainWindow() {
         super();
         
-        initialize();
         GraphPropertiesChangeListener l = new MainGraphPropertiesChangeListener();
         l.graphPropertiesChanged();
         getGraphEditorPane().addGraphPropertiesChangeListener(l);
@@ -101,6 +100,7 @@ public class MainWindow extends JFrame {
         setDefaultCloseOperation(DO_NOTHING_ON_CLOSE);
         windowCount++;
     
+        initializeFrameElements();
         setVisible(true);
         addHelpBalloon("onLoad");
     }
@@ -145,21 +145,22 @@ public class MainWindow extends JFrame {
      * This method initializes this
      *
      */
-    private void initialize() {
-        String title = GlobalProperties.PROGRAM_NAME + 
-                " - "+ ApplicationContext.getAppMode() + " Mode";
-        this.setTitle(title);
-        
+    private void initializeFrameElements() {
         this.setContentPane(getJPanel());
         this.setJMenuBar(getMainMenu());
         this.addWindowListener(new java.awt.event.WindowAdapter() {
             public void windowClosing(java.awt.event.WindowEvent e) {
-
                 exitWindow();
-
             }
         });
 
+        // Set Title of Main Frame
+        String title = GlobalProperties.PROGRAM_NAME + 
+                " - "+ ApplicationContext.getAppMode() + " Mode";
+        if(!ApplicationContext.getAppMode().equals("AUTHOR"))
+            title += " : " + ApplicationContext.getCorrectSolution().getTaskName();
+        
+        this.setTitle(title);
     }
 
     /**

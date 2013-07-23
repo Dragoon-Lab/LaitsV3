@@ -54,6 +54,7 @@ public class HelpAboutMenu extends JMenu {
                     .addActionListener(new java.awt.event.ActionListener() {
                 public void actionPerformed(java.awt.event.ActionEvent e) {
                     activityLogs.info("User Opened Help Menu.");
+                   
                     GlobalProperties.getInstance().getHelpBroker()
                             .setDisplayed(true);
                     GlobalProperties.getInstance().getHelpBroker()

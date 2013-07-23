@@ -64,6 +64,10 @@ public class Vertex {
         equation = "";        
     }
     
+    public int getVertexIndex(){
+        return vertexIndex;
+    }
+    
     public void setVertexIndex(int index){
         vertexIndex = index;
         
@@ -218,9 +222,7 @@ public class Vertex {
         return vertexInfoClone;
     }
 
-    public int getVertexIndex() {
-        return vertexIndex;
-    }
+    
 
     public DefaultGraphCell getJGraphVertex() {
         return jGraphVertex;

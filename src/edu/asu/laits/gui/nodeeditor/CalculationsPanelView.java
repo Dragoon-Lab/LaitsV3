@@ -101,6 +101,9 @@ public class CalculationsPanelView extends javax.swing.JPanel {
         logs.debug("Initializing Available Input Nodes in jList Panel");
         
         availableInputJListModel.clear();
+        if(nodeEditor.getGraphPane().getModelGraph().vertexSet().size() <= 1)
+            return;
+        
         Vertex currentVertex = nodeEditor.getCurrentVertex();
         Graph graph = (Graph) nodeEditor.getGraphPane().getModelGraph();
         Iterator<Edge> inEdges = graph.incomingEdgesOf(currentVertex).iterator();
