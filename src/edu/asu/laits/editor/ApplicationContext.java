@@ -76,7 +76,7 @@ public class ApplicationContext {
   }
   
   public static String getSection(){
-    return "login.html";//Temp. Need to adjust to user input.
+    return "login.html";//Temp.  Need to adjust to user input.
   }
   
   public static void setSection(String theSection){
