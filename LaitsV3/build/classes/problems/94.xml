@@ -1,0 +1,109 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<Task phase="Training" type="Construct">
+  <TaskName>Rust</TaskName>
+  <URL>http://upload.wikimedia.org/wikipedia/commons/3/3f/Box_car_DSSA_18052.jpg</URL>
+  <TaskDescription>
+  Problem: Rust destroys steel and can spread quickly. Suppose you take a large sheet of steel, such as one that might be used as the 
+      NEWLINE roof of the boxcar on a train, and you put it outside in the weather. Suppose it starts with a spot of rust that is 10 square 
+      NEWLINE inches in area. However, each week the rust spot gets bigger, as it grows by 30%. Therefore at the end of the first week, the 
+      NEWLINE rust spot is 13 square inches in area.
+  NEWLINE NEWLINE Goal: Graph the size of the rust spot over 10 weeks.
+  </TaskDescription>
+  
+  <StartTime>0</StartTime>
+  <EndTime>10</EndTime>
+  <Units>weeks</Units>
+  
+    
+  <NodeCount>4</NodeCount>
+
+  <Nodes>
+    <Node type="constant" name="rust area first week" extra="yes">
+      <Inputs></Inputs>
+      <Equation>13</Equation>
+      <InitialValue>13</InitialValue>
+      <CorrectDescription>The amount in square inches of total rust after the first week</CorrectDescription>
+      <Plan>fixed value</Plan>
+    </Node>
+    
+    <Node type="constant" name="rust growth factor" extra="no">
+      <Inputs></Inputs>
+      <Equation>0.3</Equation>
+      <InitialValue>0.3</InitialValue>
+      <CorrectDescription>The proportion of new rust to the existing rusted area</CorrectDescription>
+      <Plan>fixed value</Plan>
+    </Node>
+    
+    <Node type="stock" name="rust spot area" extra="no">
+      <Inputs>        
+        <Name>new rust per week</Name>
+      </Inputs>
+      <InitialValue>10</InitialValue>
+      <Equation>+new rust per week</Equation>
+      <CorrectDescription>The amount in square inches of total rust each week</CorrectDescription>
+      <Plan>said to increase</Plan>
+    </Node>
+    
+    <Node type="flow" name="new rust per week" extra="no">
+      <Inputs>        
+        <Name>rust spot area</Name>
+        <Name>rust growth factor</Name>
+      </Inputs>
+      <InitialValue></InitialValue>
+      <Equation>rust spot area * rust growth factor</Equation>
+      <CorrectDescription>The amount in square inches of new rust each week</CorrectDescription>
+      <Plan>proportional to accumulator and input</Plan>
+    </Node>
+  </Nodes>  
+
+     
+  <DescriptionTree>
+    <Node level="root">
+      <Description>The amount in square inches of</Description>      
+      <Node level="intermediate">
+        <Description>new rust</Description>            
+        <Node level="leaf">
+          <Description>each week</Description>
+          <NodeName>new rust per week</NodeName>
+        </Node>
+        <Node level="leaf">
+          <Description>in the first week</Description>
+          <NodeName>rust during first</NodeName>
+        </Node>
+	  </Node>
+      <Node level="intermediate">
+        <Description>total rust</Description>            
+        <Node level="leaf">
+          <Description>after the first week</Description>
+          <NodeName>rust area first week</NodeName>
+        </Node>
+        <Node level="leaf">
+          <Description>each week</Description>
+          <NodeName>rust spot area</NodeName>
+        </Node>
+        <Node level="leaf">
+
+
+          <Description>after 10 weeks</Description>
+          <NodeName>final rust spot area</NodeName>
+        </Node>
+	  </Node>
+    </Node>
+    <Node level="root">
+            <Description>The proportion of</Description>            
+            <Node level="intermediate">
+                <Description></Description>                        
+                <Node level="leaf">
+                    <Description>new rust to the existing rusted area</Description>
+                    <NodeName>rust growth factor</NodeName>
+                </Node>
+                <Node level="leaf">
+                    <Description>rusted area to non-rusted area</Description>
+                    <NodeName>rust to non-rust</NodeName>
+                </Node>
+            </Node>
+        </Node>
+  </DescriptionTree>
+
+  
+</Task>

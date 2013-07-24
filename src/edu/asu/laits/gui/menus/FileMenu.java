@@ -291,39 +291,41 @@ public class FileMenu extends JMenu {
                 public void actionPerformed(java.awt.event.ActionEvent e) {
                     activityLogs.debug("User Pressed Open File Menu");
                     
-                    /*
-                    * Check for saved state on server.
-                    */
-                    String user = ApplicationContext.getUserID();
-
-                    String group = "login.html";//****If group is added or changed this line needs to be updated.****
-
-                    String probNum = ApplicationContext.getCurrentTaskID();
-                    String xmlString = "";
-                    HttpAppender get = new HttpAppender();
-                    try {
-                        xmlString = get.sendHttpRequest("http://dragoon.asu.edu/demo/get_session.php?id=" 
-                                + user + "&group=" + group + "&problem=" + probNum);
-                    } catch (Exception ex) {
-                        java.util.logging.Logger.getLogger(GraphLoader.class.getName()).log(Level.SEVERE, null, ex);
-                    }
-
-                    /*
-                    * If saved state does not exist on server, load from file.
-                    */
-                    if(xmlString.trim().isEmpty()){
-                        open();
-                    }else{
-                        /*
-                        * If saved state exists on server, load from server.
-                        */
-                        try {                            
-                            GraphLoader loader = new GraphLoader(graphPane);
-                            loader.loadFromServer(xmlString);
-                        } catch (IncorcectGraphXMLFileException ex) {
-                            java.util.logging.Logger.getLogger(FileMenu.class.getName()).log(Level.SEVERE, null, ex);
-                        }
-                    }
+                    //Remove after open works correctly.                   
+//                    /*
+//                    * Check for saved state on server.
+//                    */
+//                    String user = ApplicationContext.getUserID();
+//
+//                    String group = "login.html";//****If group is added or changed this line needs to be updated.****
+//
+//                    String probNum = ApplicationContext.getCurrentTaskID();
+//                    String xmlString = "";
+//                    HttpAppender get = new HttpAppender();
+//                    try {
+//                        xmlString = get.sendHttpRequest("http://dragoon.asu.edu/demo/get_session.php?id=" 
+//                                + user + "&group=" + group + "&problem=" + probNum);
+//                    } catch (Exception ex) {
+//                        java.util.logging.Logger.getLogger(GraphLoader.class.getName()).log(Level.SEVERE, null, ex);
+//                    }
+//
+//                    /*
+//                    * If saved state does not exist on server, load from file.
+//                    */
+//                    if(xmlString.trim().isEmpty()){
+//                        open();
+//                    }else{
+//                        /*
+//                        * If saved state exists on server, load from server.
+//                        */
+//                        try {                            
+//                            GraphLoader loader = new GraphLoader(graphPane);
+//                            loader.loadFromServer(xmlString);
+//                        } catch (IncorcectGraphXMLFileException ex) {
+//                            java.util.logging.Logger.getLogger(FileMenu.class.getName()).log(Level.SEVERE, null, ex);
+//                        }
+//                    }
+                    open();
                 }
             };
             openFileMenuItem.addActionListener(openAction);
