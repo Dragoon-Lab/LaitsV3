@@ -58,6 +58,7 @@ public class GraphLoader {
         super();
         this.graphPane = graphPane;
     }
+    
 
     public void load(Reader reader, File file)
             throws IncorcectGraphXMLFileException {
