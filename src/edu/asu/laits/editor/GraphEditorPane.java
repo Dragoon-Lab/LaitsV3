@@ -144,7 +144,6 @@ public class GraphEditorPane extends JGraph {
         this.addMouseMotionListener(mouseListener);
         this.setDisconnectable(false);
         this.setPortsVisible(false);
-
         
         init();
         loadSession();
@@ -153,10 +152,7 @@ public class GraphEditorPane extends JGraph {
         
         Color background = this.getBackground();
         Color marqueeColor = new Color(255 - background.getRed(), 255 - background.getGreen(), 255 - background.getBlue());
-        this.setMarqueeColor(marqueeColor);
-        
-        
-        
+        this.setMarqueeColor(marqueeColor);       
     }
 
     private void loadSession(){
