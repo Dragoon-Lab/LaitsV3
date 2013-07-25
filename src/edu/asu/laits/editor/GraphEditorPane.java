@@ -156,26 +156,23 @@ public class GraphEditorPane extends JGraph {
     }
 
     private void loadSession(){
-         /*
+        /*
         * Check for saved state on server.
         */
 
         String user = ApplicationContext.getUserID();
-        String group = ApplicationContext.getSection();
+        String section = ApplicationContext.getSection();
         String probNum = ApplicationContext.getCurrentTaskID();
 
         String xmlString = "";
         HttpAppender get = new HttpAppender();
         try {
-            xmlString = get.sendHttpRequest("http://dragoon.asu.edu/demo/get_session.php?id=" 
-                    + user + "&group=" + group + "&problem=" + probNum);
+            xmlString = get.sendHttpRequest(ApplicationContext.getRootURL() + "/get_session.php?id="
+                    + user + "&group=" + section + "&problem=" + probNum);
         } catch (Exception ex) {
             java.util.logging.Logger.getLogger(GraphLoader.class.getName()).log(Level.SEVERE, null, ex);
         }                 
-
-        /*
-        * If saved state does not exist on server, load from file.
-        */
+       
         if(!xmlString.trim().isEmpty()){
             /*
             * If saved state exists on server, load from server.
