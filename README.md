@@ -27,6 +27,23 @@ Currently valid problem ids for STUDENT: 74, 79, 80, 92 - 102, 105
 
 Current problem ids for COACHED: 1005, 1006, 1007, 1008
 
+Also in the "Run" category the "VM Options" line can be used to specify
+the server and the section.
+
+The server currently defaults to "http://dragoon.asu.edu/demo". This can be 
+changed by entering the following into the "VM Options" line:
+
+-Djnlp.server=http://dragoon.asu.edu/devel
+
+The section (group) currently defaults to "login.html". This can be 
+changed by entering the following into the "VM Options" line (replace
+"SectionName" with your section):
+
+-Djnlp.section=SectionName
+
+Note that the "VM Options" line can receive multiple instructions.
+
+
 
 Ivy Installation Instructions
 
@@ -40,7 +57,7 @@ netbeans 7.1 you will download ivybeans-1.2-nb71.zip)
 3. Unzip it. You will get 2 files : com-googlecode-ivybeans-libs.nbm &
 com-googlecode-ivybeans-module.nbm
 
-4. Go to netbeans -> plugins editor -> downloaded tab -> add plugin ->
+4. In NetBeans go to Tools -> plugins -> downloaded tab -> add plugin ->
  install these 2 files.  Restart the netbeans IDE.  
 
 5. Right click on the project -> properties -> check enable ivy. Then

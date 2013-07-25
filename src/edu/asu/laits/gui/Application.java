@@ -91,7 +91,9 @@ public class Application extends JApplet {
         // Can set the server from the command line by using an option:
         // -Djnlp.server=<server-url>
         ApplicationContext.setLoaderURL(System.getProperty("jnlp.server","http://dragoon.asu.edu/demo"));
-        
+        ApplicationContext.setRootURL(System.getProperty("jnlp.server","http://dragoon.asu.edu/demo"));
+        ApplicationContext.setSection(System.getProperty("jnlp.section","login.html"));
+                
         ApplicationContext.setUserValid(true);
     }
 }
