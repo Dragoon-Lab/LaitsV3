@@ -31,6 +31,7 @@ import edu.asu.laits.model.HelpBubble;
 public class ApplicationContext {
   private static String userId;
   private static String appMode;
+  private static String section;
   
   private static GraphEditorPane graphPane;
   private static boolean isValid = false;
@@ -72,6 +73,14 @@ public class ApplicationContext {
   
   public static void setUserID(String uid){
     userId = uid;
+  }
+  
+  public static String getSection(){
+    return "login.html";//Temp.  Need to adjust to user input.
+  }
+  
+  public static void setSection(String theSection){
+    section = "login.html";//Temp. Need to adjust to user input.
   }
   
   public static boolean isUserValid(){
