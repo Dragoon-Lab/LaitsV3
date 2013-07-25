@@ -15,10 +15,10 @@ fclose($fh);
 $mysqli = mysqli_connect("localhost", $dbuser, $dbpass, $dbname);
 
 $id = addslashes($_GET['id']);
-$groupNum = addslashes($_GET['group']);
+$section = addslashes($_GET['section']);
 $problemNum = addslashes($_GET['problem']);
 
-$result = $mysqli->query("SELECT saveData FROM autosave_table WHERE id='$id' AND groupNum='$groupNum' AND problemNum='$problemNum'");
+$result = $mysqli->query("SELECT saveData FROM autosave_table WHERE id='$id' AND section='$section' AND problemNum='$problemNum'");
 
 $num_rows = $result->num_rows;
 

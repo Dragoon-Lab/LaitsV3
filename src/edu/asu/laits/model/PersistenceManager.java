@@ -99,7 +99,7 @@ public class PersistenceManager implements Runnable {
         if (parameters == null) {
             parameters = new HashMap<String, String>();
             parameters.put("id", ApplicationContext.getUserID());
-            parameters.put("groupNum", ApplicationContext.getSection());
+            parameters.put("section", ApplicationContext.getSection());
             parameters.put("problemNum", ApplicationContext.getCurrentTaskID());
         }
         parameters.put("saveData", URLEncoder.encode(graphSaver.getSerializedGraphInXML(), "UTF-8"));

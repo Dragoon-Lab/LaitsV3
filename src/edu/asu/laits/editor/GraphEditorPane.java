@@ -168,7 +168,7 @@ public class GraphEditorPane extends JGraph {
         HttpAppender get = new HttpAppender();
         try {
             xmlString = get.sendHttpRequest(ApplicationContext.getRootURL() + "/get_session.php?id="
-                    + user + "&group=" + section + "&problem=" + probNum);
+                    + user + "&section=" + section + "&problem=" + probNum);
         } catch (Exception ex) {
             java.util.logging.Logger.getLogger(GraphLoader.class.getName()).log(Level.SEVERE, null, ex);
         }                 
