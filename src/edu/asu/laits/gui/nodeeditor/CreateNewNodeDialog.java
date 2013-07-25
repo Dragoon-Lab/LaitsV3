@@ -266,6 +266,7 @@ public class CreateNewNodeDialog extends javax.swing.JDialog {
 
 
         this.dispose();
+        ne.addHelpBalloon(currentVertex.getName(), "newNodeClosed", "INPUTS");
     }
 
     public void setEditorMessage(String msg, boolean err) {

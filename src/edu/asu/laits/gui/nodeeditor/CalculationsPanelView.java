@@ -726,7 +726,7 @@ public class CalculationsPanelView extends javax.swing.JPanel {
     }//GEN-LAST:event_fixedValueInputBoxKeyTyped
     
   private void fixedValueInputBoxActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_fixedValueInputBoxActionPerformed
-      // TODO add your handling code here:
+
   }//GEN-LAST:event_fixedValueInputBoxActionPerformed
 
     private void buttonAddActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_buttonAddActionPerformed

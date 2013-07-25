@@ -244,8 +244,8 @@ public class NewNodeDescPanel extends JPanel{
            this.quantityDescriptionTextField.setText(sb.toString().trim());
            this.nodeNameTextField.setText(node.getNodeName());
            this.repaint();
-       }
        addHelpBalloon(ApplicationContext.getCurrentOrder(), "descFilled", "InputNewNode");
+       }
        
     }//GEN-LAST:event_decisionTreeValueChanged
 

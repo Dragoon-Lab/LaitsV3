@@ -734,6 +734,8 @@ public class NodeEditor extends javax.swing.JDialog {
         PersistenceManager.saveSession();
 
         this.dispose();
+        graphPane.getMainFrame().addHelpBalloon(currentVertex.getName(), "nodeEditorClose");
+        
     }
 
     private void displayEnterButton() {
@@ -748,7 +750,7 @@ public class NodeEditor extends javax.swing.JDialog {
         buttonCreateNodeInputTab.setVisible(b);
     }
 
-    private void addHelpBalloon(String name, String timing, String panel) {
+    public void addHelpBalloon(String name, String timing, String panel) {
         if (ApplicationContext.getAppMode().equals("COACHED")) {
             // System.out.println("addhelpballoon passing in " + name);
             HelpBubble bubble = ApplicationContext.getHelp(name, panel, timing);
