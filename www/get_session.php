@@ -14,9 +14,9 @@ fclose($fh);
 
 $mysqli = mysqli_connect("localhost", $dbuser, $dbpass, $dbname);
 
-$id = $_GET['id'];
-$groupNum = $_GET['group'];
-$problemNum = $_GET['problem'];
+$id = addslashes($_GET['id']);
+$groupNum = addslashes($_GET['group']);
+$problemNum = addslashes($_GET['problem']);
 
 $result = $mysqli->query("SELECT saveData FROM autosave_table WHERE id='$id' AND groupNum='$groupNum' AND problemNum='$problemNum'");
 
@@ -28,5 +28,3 @@ if ($num_rows == 1) {
     }
 }
 ?>
-
-

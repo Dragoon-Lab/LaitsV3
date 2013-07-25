@@ -15,10 +15,10 @@ $con = mysql_pconnect("localhost", $dbuser, $dbpass) or
 
 mysql_select_db($dbname, $con) or die("Could not find database");
 
-$id = urldecode($_GET['id']);
-$groupNum = urldecode($_GET['groupNum']);
-$problemNum = urldecode($_GET['problemNum']);
-$saveData = urldecode($_GET['saveData']);
+$id = addslashes($_GET['id']);
+$groupNum = addslashes($_GET['groupNum']);
+$problemNum = addslashes($_GET['problemNum']);
+$saveData = addslashes($_GET['saveData']);
 
 $query = "SELECT saveData FROM autosave_table WHERE id='$id' AND groupNum='$groupNum' AND problemNum='$problemNum'";
 $result = mysql_query($query);
@@ -32,5 +32,4 @@ if ($num_rows == 0) {
 }
 
 mysql_query($updateQuery);
-
 ?>
