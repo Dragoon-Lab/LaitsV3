@@ -149,48 +149,15 @@ public class GraphEditorPane extends JGraph {
         //loadSession();
         
         setGridProps();
-        
         Color background = this.getBackground();
         Color marqueeColor = new Color(255 - background.getRed(), 255 - background.getGreen(), 255 - background.getBlue());
-        this.setMarqueeColor(marqueeColor);       
+        this.setMarqueeColor(marqueeColor);            
     }
 
-    private void loadSession(){
-         /*
-        * Check for saved state on server.
-        */
-
-        String user = ApplicationContext.getUserID();
-        String group = ApplicationContext.getSection();
-        String probNum = ApplicationContext.getCurrentTaskID();
-
-        String xmlString = "";
-        HttpAppender get = new HttpAppender();
-        try {
-            xmlString = get.sendHttpRequest("http://dragoon.asu.edu/demo/get_session.php?id=" 
-                    + user + "&group=" + group + "&problem=" + probNum);
-        } catch (Exception ex) {
-            java.util.logging.Logger.getLogger(GraphLoader.class.getName()).log(Level.SEVERE, null, ex);
-        }                 
-
-        /*
-        * If saved state does not exist on server, load from file.
-        */
-        if(!xmlString.trim().isEmpty()){
-            /*
-            * If saved state exists on server, load from server.
-            */
-            try {                            
-                GraphLoader loader = new GraphLoader(this);
-                loader.loadFromServer(xmlString);
-
-            } catch (GraphLoader.IncorcectGraphXMLFileException ex) {
-                java.util.logging.Logger.getLogger(FileMenu.class.getName()).log(Level.SEVERE, null, ex);
-            }
-        }
-                    
-                    
-    }
+    /*
+     * Check for saved state on server.
+    */
+    
     
     
     public void setGridProps() {

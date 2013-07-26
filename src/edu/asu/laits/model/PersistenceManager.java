@@ -38,7 +38,7 @@ import org.apache.http.impl.client.DefaultHttpClient;
 public class PersistenceManager implements Runnable {
 
     
-    private static String URL = "http://dragoon.asu.edu/demo/save_session.php?";
+    private static String URL = ApplicationContext.getRootURL().concat("/save_session.php?");
     
     private GraphSaver graphSaver;
     private Map<String, String> parameters = null;
@@ -49,6 +49,7 @@ public class PersistenceManager implements Runnable {
 
     
     public static void saveSession(){
+        
         PersistenceManager persistanceManager = new PersistenceManager(new GraphSaver(ApplicationContext.getGraphEditorPane()));
         
         Thread t = new Thread(persistanceManager);
@@ -98,7 +99,7 @@ public class PersistenceManager implements Runnable {
         if (parameters == null) {
             parameters = new HashMap<String, String>();
             parameters.put("id", ApplicationContext.getUserID());
-            parameters.put("groupNum", "login.html");
+            parameters.put("section", ApplicationContext.getSection());
             parameters.put("problemNum", ApplicationContext.getCurrentTaskID());
         }
         parameters.put("saveData", URLEncoder.encode(graphSaver.getSerializedGraphInXML(), "UTF-8"));

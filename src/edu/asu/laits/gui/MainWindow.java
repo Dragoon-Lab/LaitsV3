@@ -42,14 +42,17 @@ import edu.asu.laits.gui.toolbars.FileToolBar;
 import edu.asu.laits.gui.toolbars.EditToolBar;
 import edu.asu.laits.gui.toolbars.ModelToolBar;
 import edu.asu.laits.gui.toolbars.ViewToolBar;
+import edu.asu.laits.logger.HttpAppender;
 import edu.asu.laits.model.GraphSaver;
 import edu.asu.laits.model.HelpBubble;
 import edu.asu.laits.model.PersistenceManager;
 import edu.asu.laits.model.TaskSolution;
 import edu.asu.laits.model.TaskSolutionReader;
+import edu.asu.laits.model.Vertex;
 import edu.asu.laits.properties.GlobalProperties;
 import edu.asu.laits.properties.GraphProperties;
 import java.awt.Color;
+import java.util.logging.Level;
 import javax.swing.*;
 import org.apache.log4j.Logger;
 
@@ -91,18 +94,18 @@ public class MainWindow extends JFrame {
      */
     public MainWindow() {
         super();
-        
+        initializeFrameElements();
         GraphPropertiesChangeListener l = new MainGraphPropertiesChangeListener();
         l.graphPropertiesChanged();
         getGraphEditorPane().addGraphPropertiesChangeListener(l);
-        pack();
         setExtendedState(MAXIMIZED_BOTH);
         setDefaultCloseOperation(DO_NOTHING_ON_CLOSE);
         windowCount++;
-    
-        initializeFrameElements();
-        setVisible(true);
-        addHelpBalloon(ApplicationContext.getNameByOrder(1),"onLoad");
+        
+        addHelpBalloon("onLoad");
+        loadSession();
+        pack();
+        setVisible(true);        
     }
     
     
@@ -192,7 +195,7 @@ public class MainWindow extends JFrame {
             else{
                 // Initialize Situation Panel so that first task can be loaded
                 mainPanel.add(getSituationPanel());
-                loadTask();                     
+                loadTask();                    
             }
             mainPanel.add(getStatusBarPanel(), BorderLayout.SOUTH);
         }
@@ -476,6 +479,36 @@ public class MainWindow extends JFrame {
         }catch(Exception e){
             e.printStackTrace();
         }
+    }
+    
+    private void loadSession(){
+        String user = ApplicationContext.getUserID();
+        String section = ApplicationContext.getSection();
+        String probNum = ApplicationContext.getCurrentTaskID();
+
+        String xmlString = "";
+        HttpAppender get = new HttpAppender();
+        try {
+            xmlString = get.sendHttpRequest(ApplicationContext.getRootURL() + "/get_session.php?id="
+                    + user + "&section=" + section + "&problem=" + probNum);
+            
+        } catch (Exception ex) {
+            java.util.logging.Logger.getLogger(GraphLoader.class.getName()).log(Level.SEVERE, null, ex);
+        }                 
+       
+        if(!xmlString.trim().isEmpty()){
+            /*
+            * If saved state exists on server, load from server.
+            */
+            try {                            
+                GraphLoader loader = new GraphLoader(getGraphEditorPane());
+                loader.loadFromServer(xmlString);
+
+            } catch (GraphLoader.IncorcectGraphXMLFileException ex) {
+                logs.error("Could not Load Graph : Incorrect Graph XML. "+ex.getMessage());
+            }
+            switchTutorModelPanels(false);
+        }        
     }
     
 }

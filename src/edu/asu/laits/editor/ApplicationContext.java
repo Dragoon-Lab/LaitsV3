@@ -32,13 +32,14 @@ public class ApplicationContext {
   private static String userId;
   private static String appMode;
   private static String section;
+  private static String rootURL;
   
   private static GraphEditorPane graphPane;
   private static boolean isValid = false;
   private static TaskSolution correctSolution;
   private static String currentTaskID;
   private static boolean isProblemSolved = false;
-  public static String taskLoaderURL = "http://dragoon.asu.edu/demo/task_fetcher.php?taskid=";
+  public static String taskLoaderURL;
   private static int currentOrder = 1;
   private static ApplicationEnvironment applicationEnvironment;
   
@@ -67,6 +68,14 @@ public class ApplicationContext {
       taskLoaderURL =  baseURL.concat("/task_fetcher.php?taskid=");
   }
   
+  public static String getRootURL(){
+      return rootURL;
+  }
+  
+  public static void setRootURL(String baseURL){
+      rootURL =  baseURL;
+  }
+  
   public static String getUserID(){
     return userId;
   }
@@ -76,11 +85,11 @@ public class ApplicationContext {
   }
   
   public static String getSection(){
-    return "login.html";//Temp.  Need to adjust to user input.
+    return section;
   }
   
   public static void setSection(String theSection){
-    section = "login.html";//Temp. Need to adjust to user input.
+    section = theSection;
   }
   
   public static boolean isUserValid(){

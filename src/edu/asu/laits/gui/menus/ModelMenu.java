@@ -338,11 +338,11 @@ public class ModelMenu extends JMenu {
 
         graphPane.removeSelected();
 
-        Iterator it = graphPane.getModelGraph().vertexSet().iterator();
+        Iterator<Vertex> it = graphPane.getModelGraph().vertexSet().iterator();
         Vertex v;
         while (it.hasNext()) {
-            v = (Vertex) it.next();
-            v.getCorrectValues().clear();
+            v =  it.next();
+            //v.getCorrectValues().clear();
             v.setGraphsStatus(Vertex.GraphsStatus.UNDEFINED);
         }
 
