@@ -146,7 +146,7 @@ public class GraphEditorPane extends JGraph {
         this.setPortsVisible(false);
         
         init();
-        loadSession();
+        //loadSession();
         
         setGridProps();
         
