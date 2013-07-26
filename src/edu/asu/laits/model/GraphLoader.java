@@ -15,7 +15,6 @@
  * You should have received a copy of the GNU Lesser General Public License
  * along with LAITS. If not, see <http://www.gnu.org/licenses/>.
  */
-
 package edu.asu.laits.model;
 
 import java.io.File;
@@ -48,7 +47,6 @@ public class GraphLoader {
     private static Logger activityLogs = Logger.getLogger("ActivityLogs");
 
     public class IncorcectGraphXMLFileException extends Exception {
-    
     };
 
     /**
@@ -58,41 +56,40 @@ public class GraphLoader {
         super();
         this.graphPane = graphPane;
     }
-    
 
     public void load(Reader reader, File file)
             throws IncorcectGraphXMLFileException {
-        // Used to load objects from xml
-            XStream xstream = new XStream(new DomDriver());
-
-            xstream.alias("vertex", Vertex.class);
-            xstream.alias("edge", Edge.class);
-            xstream.alias("graph", GraphFile.class);
-            xstream.alias("task",Task.class);
-
-            GraphFile graphFile = null;
-            try {
-                graphFile = (GraphFile) xstream.fromXML(reader);
-            } catch (BaseException e) {
-                // Could not read the XML file
-                logs.debug(e.getMessage());
-                throw new IncorcectGraphXMLFileException();
-            }
-            
-        getGraph(graphFile, file);
-    }
-    
-    public void loadFromServer(String xmlString)
-            throws IncorcectGraphXMLFileException {
-        
         // Used to load objects from xml
         XStream xstream = new XStream(new DomDriver());
 
         xstream.alias("vertex", Vertex.class);
         xstream.alias("edge", Edge.class);
         xstream.alias("graph", GraphFile.class);
-        xstream.alias("task",Task.class);
-        
+        xstream.alias("task", Task.class);
+
+        GraphFile graphFile = null;
+        try {
+            graphFile = (GraphFile) xstream.fromXML(reader);
+        } catch (BaseException e) {
+            // Could not read the XML file
+            logs.debug(e.getMessage());
+            throw new IncorcectGraphXMLFileException();
+        }
+
+        getGraph(graphFile, file);
+    }
+
+    public void loadFromServer(String xmlString)
+            throws IncorcectGraphXMLFileException {
+
+        // Used to load objects from xml
+        XStream xstream = new XStream(new DomDriver());
+
+        xstream.alias("vertex", Vertex.class);
+        xstream.alias("edge", Edge.class);
+        xstream.alias("graph", GraphFile.class);
+        xstream.alias("task", Task.class);
+
         GraphFile graphFile = null;
         try {
             graphFile = (GraphFile) xstream.fromXML(xmlString);
@@ -106,54 +103,52 @@ public class GraphLoader {
 
     public void getGraph(GraphFile graphFile, File file)
             throws IncorcectGraphXMLFileException {
+
+        // An hash which makes it fast to find vertices
+        HashMap<Integer, Vertex> vertexHash = new HashMap<Integer, Vertex>();
+
+        List<Vertex> vertexList = graphFile.getVertexList();
+        for (Vertex vertex : vertexList) {
+            vertex.setGraphsStatus(Vertex.GraphsStatus.UNDEFINED);
+            graphPane.addVertex(vertex);
+            System.out.println("Added " + vertex.getName() + "  "+vertex.getVertexIndex());
+            vertexHash.put(vertex.getVertexIndex(), vertex);
+        }
+
+        /*
+         * Load all edges
+         */
+        List<Edge> edgeList = graphFile.getEdgeList();
+
+        for (Edge edge : edgeList) {
+            System.out.println("Edge From: "+edge.getSourceVertexId()+"   To: "+edge.getTargetVertexId());
+            Vertex sInfo = vertexHash.get(edge.getSourceVertexId());
+            Vertex tInfo = vertexHash.get(edge.getTargetVertexId());
+
+            DefaultPort p1 = graphPane.getJGraphTModelAdapter().getVertexPort(sInfo);
+            DefaultPort p2 = graphPane.getJGraphTModelAdapter().getVertexPort(tInfo);
+
+            graphPane.insertEdge(p1, p2);
+        }
+//        int index = 0;
+//        for (Vertex vertex : vertexList) {
+//            vertex.setVertexIndex(index);
+//            index++;
+//        }
+
+        GraphProperties prop = graphFile.getProperties();
+        prop.initializeNotSerializeFeelds();
+
+        graphPane.setScale(prop.getZoomLevel());
+        graphPane.setBackground(prop.getBackgroundColor());
+        graphPane.setGraphProperties(prop);
         
+        graphPane.validate();
+        graphPane.repaint();
         
-            
+        Graph graph = (Graph) graphPane.getModelGraph();
+        graph.setCurrentTask(graphFile.getTask());
 
-            // An hash which makes it fast to find vertices
-            HashMap<Integer, Vertex> vertexHash = new HashMap<Integer, Vertex>();
-
-            List<Vertex> vertexList = graphFile.getVertexList();
-            for (Vertex vertex : vertexList) {
-                vertex.setGraphsStatus(Vertex.GraphsStatus.UNDEFINED);
-                graphPane.addVertex(vertex);
-                System.out.println("Added "+vertex.getName());
-                vertexHash.put(vertex.getVertexIndex(), vertex);
-            }
-
-            /*
-             * Load all edges
-             */
-            List<Edge> edgeList = graphFile.getEdgeList();
-
-            JGraphModelAdapter<Vertex, Edge> model = graphPane
-                    .getJGraphTModelAdapter();
-            for (Edge edge : edgeList) {
-                Vertex sInfo = vertexHash.get(edge.getSourceVertexId());
-                Vertex tInfo = vertexHash.get(edge.getTargetVertexId());
-
-                DefaultPort p1 = graphPane.getJGraphTModelAdapter().getVertexPort(sInfo);
-                DefaultPort p2 = graphPane.getJGraphTModelAdapter().getVertexPort(tInfo);
-
-                graphPane.insertEdge(p1, p2);
-            }
-            int index = 0;
-            for (Vertex vertex : vertexList) {
-                vertex.setVertexIndex(index);
-                index++;
-            }
-
-            GraphProperties prop = graphFile.getProperties();
-            prop.initializeNotSerializeFeelds();
-
-            graphPane.setScale(prop.getZoomLevel());
-            graphPane.setBackground(prop.getBackgroundColor());
-            graphPane.setGraphProperties(prop);
-
-            Graph graph = (Graph)graphPane.getModelGraph();
-            graph.setCurrentTask(graphFile.getTask());
-
-            prop.setSavedAs(file);                       
+        prop.setSavedAs(file);
     }
-    
 }

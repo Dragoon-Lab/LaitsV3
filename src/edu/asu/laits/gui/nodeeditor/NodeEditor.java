@@ -275,8 +275,8 @@ public class NodeEditor extends javax.swing.JDialog {
                             pPanel.setEditableRadio(false);
 
                         }
-                        System.out.println("trying help for plan");
-                        //addHelpBalloon(currentVertex.getName(), "onLoad", "Plan");  //not working
+                        
+                        addHelpBalloon(currentVertex.getName(), "onLoad", "Plan");  //not working
                     } else {
                         extraTabEvent = true;
                         tabPane.setSelectedIndex(selectedTab);
@@ -752,28 +752,25 @@ public class NodeEditor extends javax.swing.JDialog {
 
     private void addHelpBalloon(String name, String timing, String panel) {
         if (ApplicationContext.getAppMode().equals("COACHED")) {
-            // System.out.println("addhelpballoon passing in " + name);
+            System.out.println("addhelpballoon passing in " + name);
             HelpBubble bubble = ApplicationContext.getHelp(name, panel, timing);
 
             if (bubble != null) {
-
-                switch(panel){
-                    case "DESCRIPTION":
-                        new BlockingToolTip(this, bubble.getMessage(), dPanel.getLabel(bubble.getAttachedTo()), 0, 0);
-                        break;
-//                    case "Plan":    //Plan tab bubbles not working, bubbles not visible
-//                        refreshGraphPane();
-//                        new BlockingToolTip(this, bubble.getMessage(), pPanel.getLabel(bubble.getAttachedTo()), 0, 0);
-//                        break;
-                    case "INPUTS":
-                        new BlockingToolTip(this, bubble.getMessage(), iPanel.getLabel(bubble.getAttachedTo()), 0, 0);
-                        break;
-                    case "CALCULATIONS":
-                        new BlockingToolTip(this, bubble.getMessage(), cPanel.getLabel(bubble.getAttachedTo()), 0, 0);
-                        break;
+                
+                if(panel.equalsIgnoreCase("description")){
+                    new BlockingToolTip(this, bubble.getMessage(), dPanel.getLabel(bubble.getAttachedTo()), 0, 0);
+                }else if(panel.equalsIgnoreCase("plan")){
+                    System.out.println("Trying to add help in Plan. Msg: "+bubble.getMessage()+"  "+bubble.getAttachedTo());
+                    System.out.println("comp: "+pPanel.getLabel(bubble.getAttachedTo()));
+                    new BlockingToolTip(this, bubble.getMessage(), pPanel.getLabel(bubble.getAttachedTo()), 0, 0);
+                }else if(panel.equalsIgnoreCase("inputs")){
+                    new BlockingToolTip(this, bubble.getMessage(), iPanel.getLabel(bubble.getAttachedTo()), 0, 0);
+                }else if(panel.equalsIgnoreCase("calculations")){
+                    new BlockingToolTip(this, bubble.getMessage(), cPanel.getLabel(bubble.getAttachedTo()), 0, 0);
                 }
+                
              } else {
-                //     System.out.println("help was null");
+                     System.out.println("help was null");
             }
         }
 
