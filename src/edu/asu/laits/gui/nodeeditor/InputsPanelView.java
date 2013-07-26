@@ -273,6 +273,7 @@ public class InputsPanelView extends javax.swing.JPanel implements ItemListener 
         jScrollPane2 = new javax.swing.JScrollPane();
         checkBoxScrollPane = new javax.swing.JScrollPane();
         availableInputNodesPanels = new javax.swing.JPanel();
+        buttonCreateNodeInputTab = new javax.swing.JButton();
 
         setLayout(new org.netbeans.lib.awtextra.AbsoluteLayout());
 
@@ -352,6 +353,14 @@ public class InputsPanelView extends javax.swing.JPanel implements ItemListener 
 
         contentPanel.add(jScrollPane2, new org.netbeans.lib.awtextra.AbsoluteConstraints(10, 110, 300, 250));
 
+        buttonCreateNodeInputTab.setText("Create Node");
+        buttonCreateNodeInputTab.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                buttonCreateNodeInputTabActionPerformed(evt);
+            }
+        });
+        contentPanel.add(buttonCreateNodeInputTab, new org.netbeans.lib.awtextra.AbsoluteConstraints(440, 440, 110, -1));
+
         add(contentPanel, new org.netbeans.lib.awtextra.AbsoluteConstraints(0, 6, 560, 480));
     }// </editor-fold>//GEN-END:initComponents
 
@@ -378,6 +387,23 @@ public class InputsPanelView extends javax.swing.JPanel implements ItemListener 
     private void inputNodesSelectionOptionButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_inputNodesSelectionOptionButtonActionPerformed
         refreshInputs();
     }//GEN-LAST:event_inputNodesSelectionOptionButtonActionPerformed
+
+    private void buttonCreateNodeInputTabActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_buttonCreateNodeInputTabActionPerformed
+        // TODO add your handling code here:
+        // Process Cancel Action for all the Tabs
+        activityLogs.debug("User pressed Create node button on inputs tab for Node " + nodeEditor.getCurrentVertex().getName());
+        if (nodeEditor.getGraphPane().getMainFrame().getMainMenu().getModelMenu().newNodeAllowed()) {
+            Vertex v = new Vertex();
+            v.setVertexIndex(nodeEditor.getGraphPane().getModelGraph().getNextAvailableIndex());
+            nodeEditor.getGraphPane().addVertex(v);
+
+            CreateNewNodeDialog newNodeDialog = new CreateNewNodeDialog(nodeEditor, v);
+
+        } else {
+            activityLogs.debug("User was not allowed to create new node as all the nodes were already present");
+            JOptionPane.showMessageDialog(this, "The model is already using all the correct nodes.");
+        }
+    }//GEN-LAST:event_buttonCreateNodeInputTabActionPerformed
 
     public void refreshInputs(){
         activityLogs.debug("Inputs Panel : User selected node type as INPUTS for Node "+
@@ -512,6 +538,7 @@ public class InputsPanelView extends javax.swing.JPanel implements ItemListener 
     
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JPanel availableInputNodesPanels;
+    private javax.swing.JButton buttonCreateNodeInputTab;
     private javax.swing.ButtonGroup buttonGroup1;
     private javax.swing.JScrollPane checkBoxScrollPane;
     private javax.swing.JPanel contentPanel;
