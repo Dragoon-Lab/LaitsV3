@@ -8,6 +8,8 @@
         <conf name="runtime-test"/>
     </configurations>
     <dependencies>
+        <dependency org="org.jgrapht" name="jgrapht-jdk1.5" rev="0.7.3" />
+        <dependency org="jgraph" name="jgraph" rev="5.13.0.0" />
         <dependency org="edu.stanford.ejalbert" name="BrowserLauncher2" rev="latest.integration"/>
         <dependency org="org.jfree" name="jfreechart" rev="latest.integration">
             <artifact name="jfreechart" type="jar" ext="jar" />
