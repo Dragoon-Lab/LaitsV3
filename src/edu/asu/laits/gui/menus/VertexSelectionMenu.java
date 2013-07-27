@@ -1,28 +1,30 @@
 /**
- * LAITS Project Arizona State University
- * (c) 2013, Arizona Board of Regents for and on behalf of Arizona State University.
- * This file is part of LAITS.
+ * LAITS Project Arizona State University (c) 2013, Arizona Board of Regents for
+ * and on behalf of Arizona State University. This file is part of LAITS.
  *
- * LAITS is free software: you can redistribute it and/or modify
- * it under the terms of the GNU Lesser General Public License as published by
- * the Free Software Foundation, either version 3 of the License, or
- * (at your option) any later version.
+ * LAITS is free software: you can redistribute it and/or modify it under the
+ * terms of the GNU Lesser General Public License as published by the Free
+ * Software Foundation, either version 3 of the License, or (at your option) any
+ * later version.
  *
- * LAITS is distributed in the hope that it will be useful,
- * but WITHOUT ANY WARRANTY; without even the implied warranty of
- * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
- * GNU Lesser General Public License for more details.
-
+ * LAITS is distributed in the hope that it will be useful, but WITHOUT ANY
+ * WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS FOR
+ * A PARTICULAR PURPOSE. See the GNU Lesser General Public License for more
+ * details.
+ *
  * You should have received a copy of the GNU Lesser General Public License
- * along with LAITS.  If not, see <http://www.gnu.org/licenses/>.
+ * along with LAITS. If not, see <http://www.gnu.org/licenses/>.
  */
 package edu.asu.laits.gui.menus;
 
 import edu.asu.laits.editor.GraphEditorPane;
 import edu.asu.laits.editor.listeners.InsertModeChangeListener;
+import edu.asu.laits.gui.GraphViewPanel;
 import edu.asu.laits.gui.nodeeditor.GraphValuesDialog;
 import edu.asu.laits.gui.nodeeditor.NodeEditor;
 import edu.asu.laits.model.Vertex;
+import java.util.ArrayList;
+import javax.swing.JDialog;
 import javax.swing.JMenuItem;
 import javax.swing.JPopupMenu;
 import javax.swing.JSeparator;
@@ -39,8 +41,10 @@ public class VertexSelectionMenu extends JPopupMenu {
     private JMenuItem deleteItem = null;
     private JMenuItem editItem = null;
     private JMenuItem graphDataItem = null;
+    private JMenuItem nodeCharts = null;
     private static Logger logs = Logger.getLogger("DevLogs");
     private static Logger activityLogs = Logger.getLogger("ActivityLogs");
+
     /**
      * This method initializes
      *
@@ -58,17 +62,16 @@ public class VertexSelectionMenu extends JPopupMenu {
     private void initialize() {
         add(getEditItem());
         add(getDeleteItem());
-        add(getGraphDataItem());
-        
+        add(getGraphDataItem());        
     }
-    
-    public void setGraphDataItem(){
+
+    public void setGraphDataItem() {
         DefaultGraphCell gc = (DefaultGraphCell) graphPane.getSelectionCell();
         Vertex currentVertex = (Vertex) gc.getUserObject();
-        
-        if(!currentVertex.getGraphsStatus().equals(Vertex.GraphsStatus.UNDEFINED)){
+
+        if (!currentVertex.getGraphsStatus().equals(Vertex.GraphsStatus.UNDEFINED)) {
             graphDataItem.setEnabled(true);
-        }else{
+        } else {
             graphDataItem.setEnabled(false);
         }
     }
@@ -89,6 +92,19 @@ public class VertexSelectionMenu extends JPopupMenu {
         return deleteItem;
     }
 
+    private boolean isGraphViewEnable(ArrayList<Vertex> vertices) {
+        boolean isEnable = true;
+
+        for (Vertex v : vertices) {
+            if (v.getGraphsStatus().equals(Vertex.GraphsStatus.UNDEFINED)) {
+                isEnable = false;
+                break;
+            }
+        }
+
+        return isEnable;
+    }
+
     /**
      * This method initializes deleteItem
      */
@@ -104,7 +120,7 @@ public class VertexSelectionMenu extends JPopupMenu {
         }
         return editItem;
     }
-    
+
     /**
      * This method initializes deleteItem
      */

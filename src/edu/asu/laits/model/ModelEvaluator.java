@@ -82,10 +82,7 @@ public class ModelEvaluator {
             if(thisVertex.getInputsStatus().equals(Vertex.InputsStatus.UNDEFINED) ||
                     thisVertex.getCalculationsStatus().equals(Vertex.CalculationsStatus.UNDEFINED)){
                 return false;
-            }
-            /*if(thisVertex.getInputsStatus().equals(Vertex.InputsStatus.INCORRECT) ||
-                  eturn false;
-            }   */ 
+            }            
         }
        
         return true;
@@ -134,7 +131,7 @@ public class ModelEvaluator {
         logs.debug("Arranged Vertex List "+vertexList.toString());
         Vertex currentVertex = null;
         try{
-            int totalPoints = endTime - startTime;
+            int totalPoints = endTime - startTime + 1;
             constructFinalEquations(vertexList);
             logs.debug("Final Operands   "+finalOperands.toString());
             logs.debug("Constant Vertices : "+constantVertices);
@@ -205,7 +202,7 @@ public class ModelEvaluator {
         List<Vertex> constantList = new ArrayList<Vertex>();
         List<Vertex> flowList = new ArrayList<Vertex>();
         List<Vertex> stockList = new ArrayList<Vertex>();
-        int totalPoints = endTime - startTime;
+        int totalPoints = endTime - startTime +1;
 
         Iterator<Vertex> it = currentGraph.vertexSet().iterator();
         logs.debug("Total Vertex : "+currentGraph.vertexSet().size());

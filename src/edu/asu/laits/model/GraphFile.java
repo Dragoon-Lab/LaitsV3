@@ -3,6 +3,7 @@ package edu.asu.laits.model;
 import java.util.LinkedList;
 
 import edu.asu.laits.properties.GraphProperties;
+import java.util.List;
 
 /**
  * This class represents a graph file and is used by GraphSaver and GraphLoader
@@ -11,23 +12,23 @@ import edu.asu.laits.properties.GraphProperties;
 public class GraphFile {
 
     private GraphProperties properties;
-    private LinkedList<Vertex> vertexList;
-    private LinkedList<Edge> edgeList;
+    private List<Vertex> vertexList;
+    private List<Edge> edgeList;
     private Task task;
 
-    public LinkedList<Edge> getEdgeList() {
+    public List<Edge> getEdgeList() {
         return edgeList;
     }
 
-    public void setEdgeList(LinkedList<Edge> edgeList) {
+    public void setEdgeList(List<Edge> edgeList) {
         this.edgeList = edgeList;
     }
 
-    public LinkedList<Vertex> getVertexList() {
+    public List<Vertex> getVertexList() {
         return vertexList;
     }
 
-    public void setVertexList(LinkedList<Vertex> vertexList) {
+    public void setVertexList(List<Vertex> vertexList) {
         this.vertexList = vertexList;
     }
 

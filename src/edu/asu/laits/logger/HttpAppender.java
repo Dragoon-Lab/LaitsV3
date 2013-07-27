@@ -1,24 +1,23 @@
 /**
- * LAITS Project Arizona State University
- * (c) 2013, Arizona Board of Regents for and on behalf of Arizona State University.
- * This file is part of LAITS.
+ * LAITS Project Arizona State University (c) 2013, Arizona Board of Regents for
+ * and on behalf of Arizona State University. This file is part of LAITS.
  *
- * LAITS is free software: you can redistribute it and/or modify
- * it under the terms of the GNU Lesser General Public License as published by
- * the Free Software Foundation, either version 3 of the License, or
- * (at your option) any later version.
+ * LAITS is free software: you can redistribute it and/or modify it under the
+ * terms of the GNU Lesser General Public License as published by the Free
+ * Software Foundation, either version 3 of the License, or (at your option) any
+ * later version.ß
  *
- * LAITS is distributed in the hope that it will be useful,
- * but WITHOUT ANY WARRANTY; without even the implied warranty of
- * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
- * GNU Lesser General Public License for more details.
-
+ * LAITS is distributed in the hope that it will be useful, but WITHOUT ANY
+ * WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS FOR
+ * A PARTICULAR PURPOSE. See the GNU Lesser General Public License for more
+ * details.
+ *
  * You should have received a copy of the GNU Lesser General Public License
- * along with LAITS.  If not, see <http://www.gnu.org/licenses/>.
+ * along with LAITS. If not, see <http://www.gnu.org/licenses/>.
  */
-
 package edu.asu.laits.logger;
 
+import edu.asu.laits.editor.ApplicationContext;
 import java.io.UnsupportedEncodingException;
 import java.util.ArrayList;
 import java.util.List;
@@ -34,7 +33,11 @@ import org.apache.http.params.HttpConnectionParams;
 import org.apache.http.params.HttpParams;
 import org.apache.log4j.AppenderSkeleton;
 import org.apache.log4j.spi.LoggingEvent;
-
+import java.net.HttpURLConnection;
+import java.net.URL;
+import java.io.BufferedReader;
+import java.io.InputStreamReader;
+import java.sql.Timestamp;
 
 public class HttpAppender extends AppenderSkeleton {
 
@@ -60,10 +63,17 @@ public class HttpAppender extends AppenderSkeleton {
     }
 
     @Override
-    protected void append(LoggingEvent paramLoggingEvent) {
+    public void append(LoggingEvent paramLoggingEvent) {
 
         if (!(this.getLayout() instanceof HttpLayout)) {
             errorHandler.error("you must use a HttpLayout type");
+            return;
+        }
+
+        if (ApplicationContext.getApplicationEnvironment()
+                .equals(ApplicationContext.ApplicationEnvironment.DEV)) {
+
+            System.out.println(prepareDevLogMessage(paramLoggingEvent));
             return;
         }
 
@@ -73,9 +83,8 @@ public class HttpAppender extends AppenderSkeleton {
         HttpParams params = httpClient.getParams();
         HttpConnectionParams.setConnectionTimeout(params, timeOut);
         HttpConnectionParams.setSoTimeout(params, timeOut);
-
         String message = this.getLayout().format(paramLoggingEvent);
-        
+
         try {
             if (this.HttpMethodBase.equalsIgnoreCase(METHOD_GET)) {
                 StringBuffer sb = new StringBuffer(this.logURL);
@@ -115,6 +124,23 @@ public class HttpAppender extends AppenderSkeleton {
         }
     }
 
+    //in process
+    public static String sendHttpRequest(String address) throws Exception {
+        URL url = new URL(address);
+        HttpURLConnection connect = (HttpURLConnection) url.openConnection();        
+        StringBuffer sb = new StringBuffer();
+        BufferedReader in = new BufferedReader(new InputStreamReader(
+                connect.getInputStream()));        
+        String line = "";        
+        while((line = in.readLine()) != null){
+            sb.append(line);
+            sb.append("\n");
+        }
+        in.close();
+        connect.disconnect();
+        return sb.toString();
+    }
+
     /*
      * Getter
      */
@@ -136,5 +162,24 @@ public class HttpAppender extends AppenderSkeleton {
 
     public void setTimeout(int to) {
         this.timeOut = to;
+    }
+
+    private String prepareDevLogMessage(LoggingEvent paramLoggingEvent) {
+        StringBuilder sb = new StringBuilder();
+        Timestamp time = new Timestamp(paramLoggingEvent.getTimeStamp());
+
+        sb.append(time.toString() + "  ");
+        sb.append(paramLoggingEvent.getLoggerName() + "  ");
+        sb.append(paramLoggingEvent.getLevel().toString() + "  ");
+
+        String info = paramLoggingEvent.getLocationInformation().getFileName() + "-"
+                + paramLoggingEvent.getLocationInformation().getMethodName() + ":"
+                + paramLoggingEvent.getLocationInformation().getLineNumber();
+
+        sb.append(info + "  ");
+        sb.append(paramLoggingEvent.getMessage().toString() + "  ");
+
+
+        return sb.toString();
     }
 }

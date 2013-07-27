@@ -22,6 +22,7 @@
 package edu.asu.laits.editor;
 
 import edu.asu.laits.model.TaskSolution;
+import edu.asu.laits.model.HelpBubble;
 
 /**
  *
@@ -30,32 +31,49 @@ import edu.asu.laits.model.TaskSolution;
 public class ApplicationContext {
   private static String userId;
   private static String appMode;
+  private static String section;
+  private static String rootURL;
   
+  private static GraphEditorPane graphPane;
   private static boolean isValid = false;
   private static TaskSolution correctSolution;
   private static String currentTaskID;
   private static boolean isProblemSolved = false;
-  public static String taskLoaderURL = "http://dragoon.asu.edu/demo/task_fetcher.php?taskid=";
-  private static boolean situationMerge =true;
+  public static String taskLoaderURL;
   private static int currentOrder = 1;
+  private static ApplicationEnvironment applicationEnvironment;
+  
+  public enum ApplicationEnvironment{
+        DEV, TEST, PROD
+  }
 
   public static int getCurrentOrder() {
         return currentOrder;
-    }
+  }
+  
   public static void nextCurrentOrder(){
       currentOrder++;
   } 
-  
-  public static void setLoaderURL(String loadURL){
-      taskLoaderURL = loadURL;
+
+  public static String getNameByOrder(int order){
+      if(correctSolution.getNodeByOrder(order) != null){
+          System.out.println(correctSolution.getNodeByOrder(order).getNodeName());
+      return correctSolution.getNodeByOrder(order).getNodeName();
+      } else{
+          return null;
+      }
   }
   
-  public static boolean getSituationMerge(){
-      return situationMerge;
+  public static void setLoaderURL(String baseURL){
+      taskLoaderURL =  baseURL.concat("/task_fetcher.php?taskid=");
   }
   
-  public static void setSituationMerge(boolean flag){
-      situationMerge=flag;
+  public static String getRootURL(){
+      return rootURL;
+  }
+  
+  public static void setRootURL(String baseURL){
+      rootURL =  baseURL;
   }
   
   public static String getUserID(){
@@ -64,6 +82,14 @@ public class ApplicationContext {
   
   public static void setUserID(String uid){
     userId = uid;
+  }
+  
+  public static String getSection(){
+    return section;
+  }
+  
+  public static void setSection(String theSection){
+    section = theSection;
   }
   
   public static boolean isUserValid(){
@@ -106,5 +132,24 @@ public class ApplicationContext {
     isProblemSolved = input;
   }
   
+  public static HelpBubble getHelp(String order, String time, String cevent){
+      return correctSolution.checkForHelp(order, time, cevent);
+      
+  }
   
+  public static void setGraphEditorPane(GraphEditorPane gp){
+      graphPane = gp;
+  }
+  
+  public static GraphEditorPane getGraphEditorPane(){
+      return graphPane;
+  }
+  
+  public static ApplicationEnvironment getApplicationEnvironment(){
+    return applicationEnvironment;
+  }
+  
+  public static void setApplicationEnvironment(ApplicationEnvironment en){
+      applicationEnvironment = en;
+  }
 }

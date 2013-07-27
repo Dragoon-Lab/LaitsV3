@@ -23,15 +23,20 @@ package edu.asu.laits.gui.nodeeditor;
 
 import edu.asu.laits.editor.ApplicationContext;
 import edu.asu.laits.editor.GraphEditorPane;
+import edu.asu.laits.gui.BlockingToolTip;
 import edu.asu.laits.model.Graph;
+import edu.asu.laits.model.HelpBubble;
 import edu.asu.laits.model.SolutionDTreeNode;
 import edu.asu.laits.model.SolutionNode;
 import edu.asu.laits.model.TaskSolution;
 import edu.asu.laits.model.Vertex;
 import java.awt.Color;
 import java.util.Enumeration;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 import javax.swing.ImageIcon;
+import javax.swing.JComponent;
 import javax.swing.JPanel;
 import javax.swing.JTree;
 import javax.swing.tree.*;
@@ -73,7 +78,8 @@ public class NewNodeDescPanel extends JPanel{
     initComponents();
     nodeEditor = ne;
     currentVertex = v;
-    initPanel();    
+    initPanel();  
+    addHelpBalloon(ApplicationContext.getCurrentOrder(), "onLoad", "InputNewNode");
   }
   
   public void initPanel(){
@@ -239,6 +245,7 @@ public class NewNodeDescPanel extends JPanel{
            this.nodeNameTextField.setText(node.getNodeName());
            this.repaint();
        }
+       addHelpBalloon(ApplicationContext.getCurrentOrder(), "descFilled", "InputNewNode");
        
     }//GEN-LAST:event_decisionTreeValueChanged
 
@@ -390,6 +397,40 @@ public void setEditableTree(boolean b){
       decisionTree.setEditable(b);
       decisionTree.setEnabled(b);
 }
+
+
+public JComponent getLabel(String label){
+ 
+    Map<String, JComponent> map = new HashMap<String, JComponent>();
+    map.put("evenMorePreciseLabel", evenMorePreciseLabel);
+    map.put("referencesLabel", referencesLabel);
+    map.put("NodeNameLabel", NodeNameLabel);
+    map.put("jScrollPane1", jScrollPane1);
+    map.put("jScrollPane2", jScrollPane2);
+    if(map.containsKey(label)){
+        return map.get(label);
+    }
+    else {
+        return null;
+    }
+}
+
+   private void addHelpBalloon(int order, String timing, String panel) {
+        if (ApplicationContext.getAppMode().equals("COACHED")) {
+            String name = ApplicationContext.getNameByOrder(order);
+            System.out.println("addhelpballoon passing in " + name);
+            HelpBubble bubble = ApplicationContext.getHelp(name, panel, timing);
+
+            if (bubble != null) {
+                System.out.println("help was not null");
+                        new BlockingToolTip(this.nodeEditor, bubble.getMessage(), getLabel(bubble.getAttachedTo()), 0, 0);
+          //      new BlockingToolTip(this, bubble.getMessage(), dPanel.getLabel(bubble.getAttachedTo()), 0, 0);
+            } else {
+                     System.out.println("help was null");
+            }
+        }
+   }
+
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JLabel NodeNameLabel;

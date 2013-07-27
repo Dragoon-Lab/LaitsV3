@@ -18,6 +18,7 @@ import edu.asu.laits.editor.GraphEditorPane;
 import com.thoughtworks.xstream.XStream;
 import edu.asu.laits.editor.ApplicationContext;
 import java.awt.Dimension;
+import java.awt.Point;
 import javax.help.event.HelpSetListener;
 import org.apache.log4j.Logger;
 
@@ -29,8 +30,7 @@ import org.apache.log4j.Logger;
  */
 public class GlobalProperties {
 
-    public static final String PROGRAM_NAME = "LAITS"+ " - " 
-                +ApplicationContext.getAppMode() + " Mode";
+    public static final String PROGRAM_NAME = "LAITS";
     public static final String PROPERTIES_DIR = ".laits";
     public static final String HELPSET_DESTINATION = "GraphEditor.hs";
     public static final double SCALE_INTERVALL = 0.2;
@@ -132,8 +132,11 @@ public class GlobalProperties {
         try {
             url = HelpSet.findHelpSet(loader, helpSetName);
             HelpSet helpSet = new HelpSet(loader, url);
+            
             helpBroker = helpSet.createHelpBroker();
-            helpBroker.setSize(new Dimension(830, 680));            
+            helpBroker.setSize(new Dimension(830, 680));     
+            helpBroker.setLocation(new Point(300,100));
+            
         } catch (Exception e) {
             e.printStackTrace();
             return;
@@ -229,7 +232,7 @@ public class GlobalProperties {
             writer.close();
         } catch (Exception e) {
             System.err
-                    .println("Not possible to write properties file, because of the followin reason:"
+                    .println("Not possible to write properties file, because of the following reason:"
                     + e.getMessage());
             return false;
         }

@@ -35,8 +35,9 @@ public class ModelToolBar extends JToolBar {
 
     private JButton addNodeButton = null;
     private JButton deleteNodeButton = null;
-    private JButton runModelButton = null;
+    private JButton showForumButton = null;
     private JButton doneButton = null;
+    private JButton showGraphButton = null;
     private ModelMenu modelMenu;
 
     /**
@@ -54,25 +55,27 @@ public class ModelToolBar extends JToolBar {
      *
      */
     private void initialize() {
-        this.setName("Model quickmenu");
-        this.add(getAddNodeButton());
-        this.add(Box.createHorizontalStrut(5));
-        this.add(getDeleteNodeButton());
-        this.add(Box.createHorizontalStrut(5));  
-        if(ApplicationContext.getAppMode().equalsIgnoreCase("COACHED")){
-            this.disableDeleteNodeButton();
-        }
-        this.add(getRunModelButton());
+        setName("Model quickmenu");
+        add(getAddNodeButton());
+        add(Box.createHorizontalStrut(5));
+        add(getDeleteNodeButton());
+        add(Box.createHorizontalStrut(5)); 
+        add(getshowGraphButton());
         if(ApplicationContext.getAppMode().equals("STUDENT") || ApplicationContext.getAppMode().equals("COACHED")){
-            this.add(Box.createHorizontalStrut(5));
-            this.add(getDoneButton());
+            add(Box.createHorizontalStrut(5));
+            add(getDoneButton());
         }
+        if(ApplicationContext.getAppMode().equalsIgnoreCase("COACHED")){
+            disableDeleteNodeButton();
+        }
+        add(Box.createHorizontalStrut(5)); 
+        add(getShowForumButton());
     }
 
     /**
      * This method initializes Add Note button on the ToolBar
      */
-    private JButton getAddNodeButton() {
+    public JButton getAddNodeButton() {
         if (addNodeButton == null) {
             addNodeButton = new JButton();
             addNodeButton.setText("Create Node");
@@ -87,10 +90,11 @@ public class ModelToolBar extends JToolBar {
                 }
             });
         }
+        
         return addNodeButton;
     }
     
-    private JButton getDeleteNodeButton() {
+    public JButton getDeleteNodeButton() {
         if (deleteNodeButton == null) {
             deleteNodeButton = new JButton();
             deleteNodeButton.setText("Delete Node");
@@ -108,26 +112,27 @@ public class ModelToolBar extends JToolBar {
         return deleteNodeButton;
     }
 
+    
     /**
-     * This method initializes Run Model Button on ToolBar
+     * This method initializes Done Button on ToolBar
      */
-    private JButton getRunModelButton() {
-        if (runModelButton == null) {
-            runModelButton = new JButton();
-            runModelButton.setText("Run Model");  
-            runModelButton.setToolTipText("Run Current Model");
-            runModelButton.setFont(new Font(runModelButton.getFont().getName(),
+    private JButton getshowGraphButton() {
+        if (showGraphButton == null) {
+            showGraphButton = new JButton();
+            showGraphButton.setText("Show Graph");  
+            showGraphButton.setToolTipText("Display Node's Graph");
+            showGraphButton.setFont(new Font(showGraphButton.getFont().getName(),
                                    Font.BOLD,
-                                   runModelButton.getFont().getSize() - 1)
+                                   showGraphButton.getFont().getSize() - 1)
                                   );
-            runModelButton
+            showGraphButton
                     .addActionListener(new java.awt.event.ActionListener() {
                 public void actionPerformed(java.awt.event.ActionEvent e) {
-                    modelMenu.runModelAction();
+                    modelMenu.showNodeGraph();
                 }
-            });
+            });            
         }
-        return runModelButton;
+        return showGraphButton;
     }
     
     /**
@@ -156,6 +161,29 @@ public class ModelToolBar extends JToolBar {
         return doneButton;
     }
     
+    /**
+     * This method initializes Discussion button on ToolBar - not in Menu right now
+     */
+    private JButton getShowForumButton() {
+        if (showForumButton == null) {
+            showForumButton = new JButton();
+            showForumButton.setText("Show Forum");  
+            showForumButton.setToolTipText("Discussion about this Model");
+            showForumButton.setFont(new Font(showForumButton.getFont().getName(),
+                                   Font.BOLD,
+                                   showForumButton.getFont().getSize() - 1)
+                                  );
+            showForumButton
+                    .addActionListener(new java.awt.event.ActionListener() {
+                public void actionPerformed(java.awt.event.ActionEvent e) {
+                    modelMenu.showForumButtonAction();
+                }
+            });
+        }
+        return showForumButton;
+    }
+    
+    
     
     public void enableDoneButton(){
         doneButton.setEnabled(true);
@@ -173,5 +201,12 @@ public class ModelToolBar extends JToolBar {
     public void disableDeleteNodeButton()
     {
         deleteNodeButton.setEnabled(false);
+    }
+    public void enableShowGraphMenu() {
+        showGraphButton.setEnabled(true);
+    }
+
+    public void disableShowGraphMenu() {
+        showGraphButton.setEnabled(false);
     }
 }

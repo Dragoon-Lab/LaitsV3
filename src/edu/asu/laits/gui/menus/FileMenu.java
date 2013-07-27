@@ -1,5 +1,6 @@
 package edu.asu.laits.gui.menus;
 
+
 import edu.asu.laits.editor.ApplicationContext;
 import javax.swing.JMenu;
 
@@ -27,6 +28,7 @@ import edu.asu.laits.editor.listeners.GraphPropertiesChangeListener;
 import edu.asu.laits.editor.listeners.GraphSaveListener;
 import edu.asu.laits.gui.MainWindow;
 import edu.asu.laits.gui.nodeeditor.NodeEditor;
+import edu.asu.laits.logger.HttpAppender;
 import edu.asu.laits.model.SolutionNode;
 import edu.asu.laits.model.TaskSolution;
 import edu.asu.laits.model.TaskSolutionReader;
@@ -40,6 +42,7 @@ import java.io.InputStream;
 import java.io.OutputStream;
 import java.util.HashMap;
 import java.util.LinkedList;
+import java.util.logging.Level;
 
 import javax.swing.JFileChooser;
 import javax.swing.filechooser.FileFilter;
@@ -209,7 +212,7 @@ public class FileMenu extends JMenu {
 
             v.setVertexType(node.getNodeType());
 
-            if (solution.checkNodeInputs(node.getNodeName(), node.getInputNodes())) {
+            if (solution.checkNodeInputs(node.getNodeName(), node.getInputNodes()) == 0) {
                 v.setInputsStatus(Vertex.InputsStatus.CORRECT);
             } else {
                 v.setInputsStatus(Vertex.InputsStatus.INCORRECT);
@@ -287,7 +290,7 @@ public class FileMenu extends JMenu {
                     "/resources/icons/16x16/fileopen.png")));
             openAction = new java.awt.event.ActionListener() {
                 public void actionPerformed(java.awt.event.ActionEvent e) {
-                    activityLogs.debug("User Pressed Open File Menu");
+                    activityLogs.debug("User Pressed Open File Menu");                   
                     open();
                 }
             };

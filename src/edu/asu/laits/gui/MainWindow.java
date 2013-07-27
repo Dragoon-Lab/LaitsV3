@@ -1,3 +1,21 @@
+/**
+ * (c) 2013, Arizona Board of Regents for and on behalf of Arizona State
+ * University. This file is part of LAITS.
+ *
+ * LAITS is free software: you can redistribute it and/or modify it under the
+ * terms of the GNU Lesser General Public License as published by the Free
+ * Software Foundation, either version 3 of the License, or (at your option) any
+ * later version.
+ *
+ * LAITS is distributed in the hope that it will be useful, but WITHOUT ANY
+ * WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS FOR
+ * A PARTICULAR PURPOSE. See the GNU Lesser General Public License for more
+ * details.
+ *
+ * You should have received a copy of the GNU Lesser General Public License
+ * along with LAITS. If not, see <http://www.gnu.org/licenses/>.
+ */
+
 package edu.asu.laits.gui;
 
 import edu.asu.laits.editor.ApplicationContext;
@@ -18,29 +36,25 @@ import edu.asu.laits.model.GraphLoader;
 import edu.asu.laits.model.GraphLoader.IncorcectGraphXMLFileException;
 import edu.asu.laits.editor.listeners.GraphChangeListener;
 import edu.asu.laits.editor.listeners.GraphPropertiesChangeListener;
-import edu.asu.laits.editor.listeners.GraphSaveListener;
 
 import javax.swing.JScrollPane;
 import edu.asu.laits.gui.toolbars.FileToolBar;
 import edu.asu.laits.gui.toolbars.EditToolBar;
 import edu.asu.laits.gui.toolbars.ModelToolBar;
-import edu.asu.laits.gui.toolbars.TutorModeToolBar;
 import edu.asu.laits.gui.toolbars.ViewToolBar;
+import edu.asu.laits.logger.HttpAppender;
+import edu.asu.laits.model.GraphSaver;
+import edu.asu.laits.model.HelpBubble;
+import edu.asu.laits.model.PersistenceManager;
 import edu.asu.laits.model.TaskSolution;
 import edu.asu.laits.model.TaskSolutionReader;
+import edu.asu.laits.model.Vertex;
 import edu.asu.laits.properties.GlobalProperties;
 import edu.asu.laits.properties.GraphProperties;
 import java.awt.Color;
-import java.awt.Image;
-import java.io.FileInputStream;
-import java.text.DateFormat;
-import java.text.SimpleDateFormat;
-import java.util.Date;
-import javax.imageio.ImageIO;
+import java.util.logging.Level;
 import javax.swing.*;
-import org.apache.commons.net.ftp.FTPClient;
 import org.apache.log4j.Logger;
-import org.omg.PortableInterceptor.SYSTEM_EXCEPTION;
 
 /**
  * The main window in the program. This can be opened both with an empty graph
@@ -63,7 +77,6 @@ public class MainWindow extends JFrame {
     private EditToolBar editToolBar = null;
     private ViewToolBar viewToolBar = null;
     private ModelToolBar modelToolBar = null;
-    private TutorModeToolBar tutorModeToolBar = null;
     private List<JToolBar> toolBars = new LinkedList<JToolBar>(); 
     private StatusBarPanel statusBarPanel = null;
     private boolean isSituationTabSelected = true;
@@ -81,16 +94,33 @@ public class MainWindow extends JFrame {
      */
     public MainWindow() {
         super();
-        
-        initialize();
+        initializeFrameElements();
         GraphPropertiesChangeListener l = new MainGraphPropertiesChangeListener();
         l.graphPropertiesChanged();
         getGraphEditorPane().addGraphPropertiesChangeListener(l);
-        pack();
         setExtendedState(MAXIMIZED_BOTH);
         setDefaultCloseOperation(DO_NOTHING_ON_CLOSE);
-
         windowCount++;
+        
+        addHelpBalloon("onLoad");
+        loadSession();
+        pack();
+        setVisible(true);        
+    }
+    
+    
+    private void addHelpBalloon(String timing){
+        if(ApplicationContext.getAppMode().equals("COACHED")){
+        HelpBubble bubble = ApplicationContext.getHelp(ApplicationContext.getNameByOrder(1), "MainWindow", timing);
+        logs.debug(String.valueOf(ApplicationContext.getCurrentOrder()) + " MainWindow " + timing);
+        if(bubble != null){
+          /*BalloonTipStyle style = new MinimalBalloonStyle(Color.WHITE, 0);
+          BalloonTip myBalloonTip = new BalloonTip(this.evenMorePreciseLabel, new JLabel(bubble.getMessage()),style,Orientation.RIGHT_ABOVE, AttachLocation.ALIGNED, 20, 20, true);
+          * */
+          
+          new BlockingToolTip(this, bubble.getMessage(), modelToolBar.getAddNodeButton(), 0, 0);
+      }
+        }
     }
 
     public static void openWindowWithFile(File file) {
@@ -118,23 +148,22 @@ public class MainWindow extends JFrame {
      * This method initializes this
      *
      */
-    private void initialize() {
-        this.setTitle(GlobalProperties.PROGRAM_NAME);
-        //Toolkit tk = Toolkit.getDefaultToolkit();
-        //int xSize = ((int) tk.getScreenSize().getWidth());
-        //int ySize = ((int) tk.getScreenSize().getHeight());
-        //this.setPreferredSize(new Dimension(xSize, ySize));
-        
+    private void initializeFrameElements() {
         this.setContentPane(getJPanel());
         this.setJMenuBar(getMainMenu());
         this.addWindowListener(new java.awt.event.WindowAdapter() {
             public void windowClosing(java.awt.event.WindowEvent e) {
-
                 exitWindow();
-
             }
         });
 
+        // Set Title of Main Frame
+        String title = GlobalProperties.PROGRAM_NAME + 
+                " - "+ ApplicationContext.getAppMode() + " Mode";
+        if(!ApplicationContext.getAppMode().equals("AUTHOR"))
+            title += " : " + ApplicationContext.getCorrectSolution().getTaskName();
+        
+        this.setTitle(title);
     }
 
     /**
@@ -166,7 +195,7 @@ public class MainWindow extends JFrame {
             else{
                 // Initialize Situation Panel so that first task can be loaded
                 mainPanel.add(getSituationPanel());
-                loadTask();                     
+                loadTask();                    
             }
             mainPanel.add(getStatusBarPanel(), BorderLayout.SOUTH);
         }
@@ -220,7 +249,7 @@ public class MainWindow extends JFrame {
         
         situationLabel.setText(sb.toString());
         situationLabel.setHorizontalAlignment(javax.swing.SwingConstants.LEFT);
-        //situationLabel.setVerticalAlignment(javax.swing.SwingConstants.TOP);
+       
         this.validate();
         mainPanel.repaint();
     }
@@ -262,18 +291,10 @@ public class MainWindow extends JFrame {
             toolBars.add(getFileToolBar());
             toolBars.add(getEditToolBar());
             toolBars.add(getViewToolBar());
-            
-            // Temporary - Add toobar based on mode
-            if(ApplicationContext.getAppMode().equals("STUDENT") || ApplicationContext.getAppMode().equals("COACHED") ){
-                toolBarPanel.add(getTutorModeToolBar(), null);
-                toolBars.add(getTutorModeToolBar());
-            }
-            
+          
             toolBarPanel.add(getModelToolBar(), null);
             toolBars.add(getModelToolBar());
-            
 
-            //getMainMenu().getPropertiesMenu().setJToolBars(toolBars);
         }
         return toolBarPanel;
     }
@@ -302,10 +323,11 @@ public class MainWindow extends JFrame {
                     .isAntialiasing());
             graphEditorPane.setDoubleBuffered(GlobalProperties.getInstance()
                     .isDoubleBuffering());
+            
+            // Set GraphEditorPane in ApplicationContext to make is visible to whole app
+            ApplicationContext.setGraphEditorPane(graphEditorPane);
         }
-        if (ApplicationContext.getSituationMerge()) {
-            graphEditorPane.setBackgroundComponent(situationLabel);
-        }
+        graphEditorPane.setBackgroundComponent(situationLabel);
         return graphEditorPane;
     }
 
@@ -319,26 +341,19 @@ public class MainWindow extends JFrame {
             final GraphProperties prop = getGraphEditorPane()
                     .getGraphProperties();
 
+            // Save session in Server when graph changes
             prop.addGraphChangeListener(new GraphChangeListener() {
                 public void graphChanged() {
-                    if (prop.isExistsOnFileSystem()) {
-                        setTitle(prop.getSavedAs().getName()
-                                + " - [Changed] - "
-                                + GlobalProperties.PROGRAM_NAME);
-                    } else {
-                        setTitle("[New graph] - [Changed] - "
-                                + GlobalProperties.PROGRAM_NAME);
-                    }
-
+                    PersistenceManager.saveSession();
                 }
             });
 
-            prop.addSaveListener(new GraphSaveListener() {
-                public void graphSaved() {
-                    setTitle(prop.getSavedAs().getName() + " - "
-                            + GlobalProperties.PROGRAM_NAME);
-                }
-            });
+//            prop.addSaveListener(new GraphSaveListener() {
+//                public void graphSaved() {
+//                    setTitle(prop.getSavedAs().getName() + " - "
+//                            + GlobalProperties.PROGRAM_NAME);
+//                }
+//            });
         }
     }
 
@@ -434,13 +449,6 @@ public class MainWindow extends JFrame {
         return modelToolBar;
     }
 
-    private TutorModeToolBar getTutorModeToolBar(){
-        if(tutorModeToolBar == null){
-            tutorModeToolBar = new TutorModeToolBar(this);
-        }
-        
-        return tutorModeToolBar;
-    }
     /**
      * This method initializes statusBarPanel
      *
@@ -468,11 +476,39 @@ public class MainWindow extends JFrame {
             this.loadTaskDescription(solution.getTaskName(),
                     solution.getTaskDescription(), 
                     solution.getImageURL());
-            //ApplicationContext.setCurrentTaskID("105");
         }catch(Exception e){
             e.printStackTrace();
         }
     }
     
+    private void loadSession(){
+        String user = ApplicationContext.getUserID();
+        String section = ApplicationContext.getSection();
+        String probNum = ApplicationContext.getCurrentTaskID();
+
+        String xmlString = "";
+        HttpAppender get = new HttpAppender();
+        try {
+            xmlString = get.sendHttpRequest(ApplicationContext.getRootURL() + "/get_session.php?id="
+                    + user + "&section=" + section + "&problem=" + probNum);
+            
+        } catch (Exception ex) {
+            java.util.logging.Logger.getLogger(GraphLoader.class.getName()).log(Level.SEVERE, null, ex);
+        }                 
+       
+        if(!xmlString.trim().isEmpty()){
+            /*
+            * If saved state exists on server, load from server.
+            */
+            try {                            
+                GraphLoader loader = new GraphLoader(getGraphEditorPane());
+                loader.loadFromServer(xmlString);
+
+            } catch (GraphLoader.IncorcectGraphXMLFileException ex) {
+                logs.error("Could not Load Graph : Incorrect Graph XML. "+ex.getMessage());
+            }
+            switchTutorModelPanels(false);
+        }        
+    }
     
 }

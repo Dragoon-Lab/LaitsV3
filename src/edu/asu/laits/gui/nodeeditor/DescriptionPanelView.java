@@ -22,6 +22,7 @@
 package edu.asu.laits.gui.nodeeditor;
 
 import edu.asu.laits.editor.ApplicationContext;
+import edu.asu.laits.gui.BlockingToolTip;
 import edu.asu.laits.model.Graph;
 import edu.asu.laits.model.SolutionDTreeNode;
 import edu.asu.laits.model.SolutionNode;
@@ -29,7 +30,7 @@ import edu.asu.laits.model.TaskSolution;
 import edu.asu.laits.model.Vertex;
 import java.awt.Color;
 import java.util.Enumeration;
-import java.util.List;
+import java.util.List; 
 import javax.swing.ImageIcon;
 import javax.swing.JPanel;
 import javax.swing.JTree;
@@ -37,6 +38,11 @@ import javax.swing.tree.*;
 
 import org.apache.log4j.Logger;
 
+import edu.asu.laits.model.HelpBubble;
+import java.util.HashMap;
+import java.util.Map;
+import javax.swing.JComponent;
+import javax.swing.JLabel;
 
 /**
  *
@@ -86,7 +92,7 @@ public class DescriptionPanelView extends JPanel{
       Vertex currentVertex = this.nodeEditor.getCurrentVertex();
       this.nodeNameTextField.setText(currentVertex.getName());
       this.quantityDescriptionTextField.setText(currentVertex.getCorrectDescription());
-      
+      //logs.debug(String.valueOf(ApplicationContext.getCurrentOrder()));      
   }
   
   private void initTree() {
@@ -235,10 +241,22 @@ public class DescriptionPanelView extends JPanel{
            this.quantityDescriptionTextField.setText(sb.toString().trim());
            this.nodeNameTextField.setText(node.getNodeName());
            this.repaint();
+           addHelpBalloon("descFilled");
+           
        }
        
     }//GEN-LAST:event_decisionTreeValueChanged
 
+    private void addHelpBalloon(String timing){
+        HelpBubble bubble = ApplicationContext.getHelp(ApplicationContext.getNameByOrder(ApplicationContext.getCurrentOrder()), "DESCRIPTION", timing);
+        if(bubble != null){
+          /*BalloonTipStyle style = new MinimalBalloonStyle(Color.WHITE, 0);
+          BalloonTip myBalloonTip = new BalloonTip(this.evenMorePreciseLabel, new JLabel(bubble.getMessage()),style,Orientation.RIGHT_ABOVE, AttachLocation.ALIGNED, 20, 20, true);
+          * */
+          
+          new BlockingToolTip(this.nodeEditor, bubble.getMessage(), this.getLabel(bubble.getAttachedTo()), 0, 0);
+      }
+    }
   // returns the value held by triedDuplicate
   public boolean getTriedDuplicate() {
     return triedDuplicate;
@@ -324,6 +342,7 @@ public class DescriptionPanelView extends JPanel{
 
       currentVertex.setCorrectDescription(getNodeDesc().trim());
       return true;
+
   }
   
   private boolean duplicatedNode(String nodeName) {
@@ -404,6 +423,26 @@ public class DescriptionPanelView extends JPanel{
 public void setEditableTree(boolean b){
       decisionTree.setEditable(b);
       decisionTree.setEnabled(b);
+}
+
+public JLabel getTopDescriptionLabel(){
+    return evenMorePreciseLabel;
+}
+
+public JComponent getLabel(String label){
+ 
+    Map<String, JComponent> map = new HashMap<String, JComponent>();
+    map.put("evenMorePreciseLabel", evenMorePreciseLabel);
+    map.put("referencesLabel", referencesLabel);
+    map.put("NodeNameLabel", NodeNameLabel);
+    map.put("jScrollPane1", jScrollPane1);
+    map.put("jScrollPane2", jScrollPane2);
+    if(map.containsKey(label)){
+        return map.get(label);
+    }
+    else {
+        return null;
+    }
 }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables

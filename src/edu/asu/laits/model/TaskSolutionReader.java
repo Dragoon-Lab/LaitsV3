@@ -67,6 +67,10 @@ public class TaskSolutionReader {
             //Fill Description Tree in the Solution Structure
             Element descriptionTree = taskNode.element("DescriptionTree");
             fillDescriptionTree(solution, descriptionTree);
+            
+            //Read in help bubbles
+            Element bubbles = taskNode.element("HelpBubbles");
+            fillHelpBubbles(solution, bubbles);
                 
         } catch (Exception e) {
             // Could not read the XML file
@@ -85,9 +89,10 @@ public class TaskSolutionReader {
         //File file = new File(solutionFilePath);
         //document = reader.read(in);
         String resourceURL = ApplicationContext.taskLoaderURL + taskId;
-        
+        System.out.println("Resource URL "+resourceURL);
         logs.info("Task URL : "+resourceURL);
         document = reader.read(new URL(resourceURL));
+        
         return document;
     }
     
@@ -163,7 +168,7 @@ public class TaskSolutionReader {
             // Read all the Input Nodes of this node
             if(ApplicationContext.getAppMode().equals("COACHED") && node.elementTextTrim("Order") != null){
               newNode.setNodeOrder(Integer.parseInt(node.elementTextTrim("Order")));
-              logs.debug("Added element" + node.elementTextTrim("Order") + " " + node.elementTextTrim("CorrectDescription"));
+              System.out.println("Added element" + node.elementTextTrim("Order") + " " + node.elementTextTrim("CorrectDescription"));
          }
             
             Element nodeInput = node.element("Inputs");
@@ -185,4 +190,23 @@ public class TaskSolutionReader {
             list.add(newNode);
         }
     }
+    //Read in help bubble info
+    private void fillHelpBubbles(TaskSolution solution, Element bubbles){
+        
+        List<Element> allBubbles = bubbles.elements("Bubble");
+        for(Element bubble : allBubbles){
+            HelpBubble newBubble = new HelpBubble();
+            newBubble.setTiming(bubble.elementTextTrim("Timing"));
+            newBubble.setNodeName(bubble.elementTextTrim("nodeName"));
+            newBubble.setAttachedTo(bubble.elementTextTrim("attachedTo"));
+            newBubble.setEvent(bubble.elementTextTrim("Event"));
+            newBubble.setMessage(bubble.elementTextTrim("Message"));
+            
+        //    logs.debug(" " + bubble.elementTextTrim("Message") + " " + bubble.elementTextTrim("Timing") + " " + bubble.elementTextTrim("nodeName") + " " + bubble.elementTextTrim("attachedTo") + " " + bubble.elementTextTrim("Event"));
+
+            solution.addHelpBubble(newBubble);
+            
+        }
+    }
+    
 }
