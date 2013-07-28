@@ -382,7 +382,7 @@ public class CalculationsPanelView extends javax.swing.JPanel {
     }
     
         private void addHelpBalloon(String timing){
-        HelpBubble bubble = ApplicationContext.getHelp(ApplicationContext.getNameByOrder(ApplicationContext.getCurrentOrder()-2), "Calculations", timing);
+        HelpBubble bubble = ApplicationContext.getHelp(currentVertex.getName(), "Calculations", timing);
         if(bubble != null){
 
           new BlockingToolTip(this.nodeEditor, bubble.getMessage(), this.getLabel(bubble.getAttachedTo()), 0, 0);

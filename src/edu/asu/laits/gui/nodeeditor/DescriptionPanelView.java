@@ -248,7 +248,7 @@ public class DescriptionPanelView extends JPanel{
     }//GEN-LAST:event_decisionTreeValueChanged
 
     private void addHelpBalloon(String timing){
-        HelpBubble bubble = ApplicationContext.getHelp(ApplicationContext.getNameByOrder(ApplicationContext.getCurrentOrder()), "DESCRIPTION", timing);
+        HelpBubble bubble = ApplicationContext.getHelp(ApplicationContext.getFirstNextNode(), "DESCRIPTION", timing);
         if(bubble != null){
           /*BalloonTipStyle style = new MinimalBalloonStyle(Color.WHITE, 0);
           BalloonTip myBalloonTip = new BalloonTip(this.evenMorePreciseLabel, new JLabel(bubble.getMessage()),style,Orientation.RIGHT_ABOVE, AttachLocation.ALIGNED, 20, 20, true);
@@ -373,9 +373,9 @@ public class DescriptionPanelView extends JPanel{
       String giveupNode = null;
       if(ApplicationContext.getAppMode().equalsIgnoreCase("COACHED")){
           for(SolutionNode name : correctNodeNames){
-             if(name.getNodeOrder() == ApplicationContext.getCurrentOrder()){
+             if(name.getNodeName() == ApplicationContext.getFirstNextNode()){
                   giveupNode = name.getNodeName();
-                  ApplicationContext.nextCurrentOrder();
+//                  ApplicationContext.nextCurrentOrder();
                   break;
              } 
           }

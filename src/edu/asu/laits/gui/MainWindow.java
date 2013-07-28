@@ -94,18 +94,19 @@ public class MainWindow extends JFrame {
      */
     public MainWindow() {
         super();
-        initializeFrameElements();
+        
         GraphPropertiesChangeListener l = new MainGraphPropertiesChangeListener();
         l.graphPropertiesChanged();
         getGraphEditorPane().addGraphPropertiesChangeListener(l);
+        pack();
         setExtendedState(MAXIMIZED_BOTH);
         setDefaultCloseOperation(DO_NOTHING_ON_CLOSE);
         windowCount++;
         
-        addHelpBalloon("onLoad");
-        loadSession();
-        pack();
-        setVisible(true);        
+        initializeFrameElements();
+        setVisible(true); 
+        addHelpBalloon(ApplicationContext.getFirstNextNode(), "onLoad");
+ 
     }
     
     

@@ -78,7 +78,7 @@ public class NodeEditor extends javax.swing.JDialog {
         UIManager.getDefaults().put("TabbedPane.contentBorderInsets", new Insets(2, 0, -1, 0));
         setTabListener();
         initNodeEditor();
-        addHelpBalloon(ApplicationContext.getNameByOrder(ApplicationContext.getCurrentOrder()), "onLoad", getTabName(selectedTab));
+        addHelpBalloon(ApplicationContext.getFirstNextNode(), "onLoad", getTabName(selectedTab));
     }
 
     private void initNodeEditor() {
@@ -496,7 +496,7 @@ public class NodeEditor extends javax.swing.JDialog {
         if (!dPanel.processDescriptionPanel()) {
             return;
         }
-        int solutionCheck = correctSolution.checkNodeNameOrdered(dPanel.getNodeName(), ApplicationContext.getCurrentOrder());
+        int solutionCheck = correctSolution.checkNodeNameOrdered(dPanel.getNodeName());
         if (solutionCheck == 1) {
             currentVertex.setDescriptionStatus(Vertex.DescriptionStatus.CORRECT);
             //graphPane.getMainFrame().getMainMenu().getModelMenu().addDeleteNodeMenu();
@@ -507,12 +507,12 @@ public class NodeEditor extends javax.swing.JDialog {
             ApplicationContext.nextCurrentOrder();
             tabPane.setEnabledAt(PLAN, true);
             tabPane.setForegroundAt(PLAN, Color.BLACK);
-            addHelpBalloon(ApplicationContext.getNameByOrder(ApplicationContext.getCurrentOrder() - 1), "descCheckDemo", "DESCRIPTION");
+            addHelpBalloon(ApplicationContext.getFirstNextNode(), "descCheckDemo", "DESCRIPTION");
         } else if (solutionCheck == 2) {
             dPanel.setTextFieldBackground(Color.CYAN);
             setEditorMessage("That quantity used in this model, but now is not the right time to define it. Please select another description.", true);
             activityLogs.debug("User entered description out of order");
-            addHelpBalloon(ApplicationContext.getNameByOrder(ApplicationContext.getCurrentOrder()), "onLoad", "DESCRIPTION");
+            addHelpBalloon(ApplicationContext.getFirstNextNode(), "onLoad", "DESCRIPTION");
         } else {
             currentVertex.setDescriptionStatus(Vertex.DescriptionStatus.INCORRECT);
             dPanel.setTextFieldBackground(Color.RED);

@@ -79,7 +79,7 @@ public class NewNodeDescPanel extends JPanel{
     nodeEditor = ne;
     currentVertex = v;
     initPanel();  
-    addHelpBalloon(ApplicationContext.getCurrentOrder(), "onLoad", "InputNewNode");
+    addHelpBalloon(ApplicationContext.getFirstNextNode(), "onLoad", "InputNewNode");
   }
   
   public void initPanel(){
@@ -244,7 +244,7 @@ public class NewNodeDescPanel extends JPanel{
            this.quantityDescriptionTextField.setText(sb.toString().trim());
            this.nodeNameTextField.setText(node.getNodeName());
            this.repaint();
-       addHelpBalloon(ApplicationContext.getCurrentOrder(), "descFilled", "InputNewNode");
+       addHelpBalloon(ApplicationContext.getFirstNextNode(), "descFilled", "InputNewNode");
        }
        
     }//GEN-LAST:event_decisionTreeValueChanged
@@ -346,7 +346,7 @@ public class NewNodeDescPanel extends JPanel{
       String giveupNode = null;
       if(ApplicationContext.getAppMode().equalsIgnoreCase("COACHED")){
           for(SolutionNode name : correctNodeNames){
-             if(name.getNodeOrder() == ApplicationContext.getCurrentOrder()){
+             if(name.getNodeName() == ApplicationContext.getFirstNextNode()){
                   giveupNode = name.getNodeName();
                   ApplicationContext.nextCurrentOrder();
                   break;
@@ -415,9 +415,8 @@ public JComponent getLabel(String label){
     }
 }
 
-   private void addHelpBalloon(int order, String timing, String panel) {
+   private void addHelpBalloon(String name, String timing, String panel) {
         if (ApplicationContext.getAppMode().equals("COACHED")) {
-            String name = ApplicationContext.getNameByOrder(order);
             System.out.println("addhelpballoon passing in " + name);
             HelpBubble bubble = ApplicationContext.getHelp(name, panel, timing);
 
