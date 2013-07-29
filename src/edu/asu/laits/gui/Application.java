@@ -72,8 +72,10 @@ public class Application extends JApplet {
             
             ApplicationContext.setUserID(args[0]);
             ApplicationContext.setAppMode(args[1]);
+            
             if(!args[1].equals("AUTHOR"))
                 ApplicationContext.setCurrentTaskID(args[2]);
+            
             
         }else {
             // Try to Launch application using JNLP for PROD
@@ -89,12 +91,11 @@ public class Application extends JApplet {
                 System.exit(1);
             }
         }
-        // Can set the server from the command line by using an option:
-        // -Djnlp.server=<server-url>
         ApplicationContext.setLoaderURL(System.getProperty("jnlp.server","http://dragoon.asu.edu/devel"));
         ApplicationContext.setRootURL(System.getProperty("jnlp.server","http://dragoon.asu.edu/devel"));
         ApplicationContext.setSection(System.getProperty("jnlp.section","testing"));
-                
+        
+        System.out.println("Application is Running in : "+ApplicationContext.getApplicationEnvironment());
         ApplicationContext.setUserValid(true);
     }
 }
