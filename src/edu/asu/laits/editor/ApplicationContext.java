@@ -77,7 +77,11 @@ public class ApplicationContext {
   }
   
   public static String getFirstNextNode(){
-      return nextNodes.get(0);
+      if (!nextNodes.isEmpty()){
+        return nextNodes.get(0);
+      } else {
+          return null;
+      }
   }
 
   
