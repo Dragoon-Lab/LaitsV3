@@ -94,25 +94,26 @@ public class MainWindow extends JFrame {
      */
     public MainWindow() {
         super();
-        initializeFrameElements();
+        
         GraphPropertiesChangeListener l = new MainGraphPropertiesChangeListener();
         l.graphPropertiesChanged();
         getGraphEditorPane().addGraphPropertiesChangeListener(l);
+        pack();
         setExtendedState(MAXIMIZED_BOTH);
         setDefaultCloseOperation(DO_NOTHING_ON_CLOSE);
         windowCount++;
         
-        addHelpBalloon("onLoad");
-        loadSession();
-        pack();
-        setVisible(true);        
+        initializeFrameElements();
+        setVisible(true); 
+        addHelpBalloon(ApplicationContext.getFirstNextNode(), "onLoad");
+ 
     }
     
     
-    private void addHelpBalloon(String timing){
+    public void addHelpBalloon(String node, String timing){
         if(ApplicationContext.getAppMode().equals("COACHED")){
-        HelpBubble bubble = ApplicationContext.getHelp(ApplicationContext.getNameByOrder(1), "MainWindow", timing);
-        logs.debug(String.valueOf(ApplicationContext.getCurrentOrder()) + " MainWindow " + timing);
+        HelpBubble bubble = ApplicationContext.getHelp(node, "MainWindow", timing);
+        logs.debug(node + " MainWindow " + timing);
         if(bubble != null){
           /*BalloonTipStyle style = new MinimalBalloonStyle(Color.WHITE, 0);
           BalloonTip myBalloonTip = new BalloonTip(this.evenMorePreciseLabel, new JLabel(bubble.getMessage()),style,Orientation.RIGHT_ABOVE, AttachLocation.ALIGNED, 20, 20, true);

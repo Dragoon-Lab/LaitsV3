@@ -160,16 +160,22 @@ public class TaskSolutionReader {
         
         for(Element node : allNodes){
             SolutionNode newNode = new SolutionNode();
+            int order = 0;
             
             newNode.setNodeName(node.attributeValue("name"));
             newNode.setNodeType(node.attributeValue("type"));
             newNode.setIsExtra(node.attributeValue("extra"));
+            if(node.elementTextTrim("Order") != null){
+                order = Integer.parseInt(node.elementTextTrim("Order"));
+            }
             
             // Read all the Input Nodes of this node
-            if(ApplicationContext.getAppMode().equals("COACHED") && node.elementTextTrim("Order") != null){
-              newNode.setNodeOrder(Integer.parseInt(node.elementTextTrim("Order")));
-              System.out.println("Added element" + node.elementTextTrim("Order") + " " + node.elementTextTrim("CorrectDescription"));
-         }
+            if(ApplicationContext.getAppMode().equals("COACHED") && order == 1){
+                System.out.println("attempting to add first next node " + node.attributeValue("name"));
+//              newNode.setNodeOrder(Integer.parseInt(node.elementTextTrim("Order")));
+//              System.out.println("Added element" + node.elementTextTrim("Order") + " " + node.elementTextTrim("CorrectDescription"));
+                ApplicationContext.addNextNodes(node.attributeValue("name"));
+            }
             
             Element nodeInput = node.element("Inputs");
             List<Element> allInputNodes = nodeInput.elements("Name");

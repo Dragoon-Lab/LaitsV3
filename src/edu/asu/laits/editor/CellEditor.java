@@ -20,6 +20,7 @@
 package edu.asu.laits.editor;
 
 import edu.asu.laits.gui.nodeeditor.NodeEditor;
+import edu.asu.laits.model.Vertex;
 import java.awt.Component;
 import java.awt.Dimension;
 import java.awt.Point;
@@ -30,6 +31,7 @@ import javax.swing.JFrame;
 import javax.swing.SwingUtilities;
 import javax.swing.event.CellEditorListener;
 import org.jgraph.graph.CellView;
+import org.jgraph.graph.DefaultGraphCell;
 import org.jgraph.graph.GraphCellEditor;
 import org.jgraph.plaf.basic.BasicGraphUI;
 
@@ -47,7 +49,9 @@ public class CellEditor extends BasicGraphUI {
      */
     protected void createEditDialog(Object cell) {
         GraphEditorPane g = (GraphEditorPane) graph;
-        new NodeEditor(g, true);
+        DefaultGraphCell gc = (DefaultGraphCell) g.getSelectionCell();
+        Vertex v = (Vertex) gc.getUserObject();
+        new NodeEditor(g, v);
     }
 
     /**

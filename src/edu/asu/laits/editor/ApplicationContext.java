@@ -23,6 +23,8 @@ package edu.asu.laits.editor;
 
 import edu.asu.laits.model.TaskSolution;
 import edu.asu.laits.model.HelpBubble;
+import java.util.ArrayList;
+import java.util.List;
 
 /**
  *
@@ -41,6 +43,44 @@ public class ApplicationContext {
   private static boolean isProblemSolved = false;
   public static String taskLoaderURL;
   private static int currentOrder = 1;
+  private static List<String> nextNodes = new ArrayList<String>();
+
+  public static void setNextNodes(String parentNode) {
+//        ApplicationContext.nextNodes = nextNodes;
+      List<String> childNodes = new ArrayList<String>();
+      childNodes = correctSolution.getNodeByName(parentNode).getInputNodes();
+      for(String childNode : childNodes){
+          System.out.println("checking " + childNode);
+          if (graphPane.getModelGraph().getVertexByName(childNode) == null){
+             addNextNodes(childNode);
+             System.out.println("added " + childNode);
+          }
+      }
+  }
+
+  public static List<String> getNextNodes() {
+        return nextNodes;
+  }
+  
+  public static void addNextNodes(String nextNode){
+  
+      System.out.println("adding " + nextNode);
+      nextNodes.add(nextNode);
+      for(String nNode : nextNodes){
+          System.out.println("current next nodes include " + nNode + "   ");
+      }
+  }
+  
+  public static void removeNextNodes(String nextNode){
+      int index = nextNodes.indexOf(nextNode);
+      nextNodes.remove(index);
+  }
+  
+  public static String getFirstNextNode(){
+      return nextNodes.get(0);
+  }
+
+  
   private static ApplicationEnvironment applicationEnvironment;
   
   public enum ApplicationEnvironment{

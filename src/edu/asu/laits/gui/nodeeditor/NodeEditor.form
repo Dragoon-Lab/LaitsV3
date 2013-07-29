@@ -35,8 +35,6 @@
                       <EmptySpace min="18" pref="18" max="-2" attributes="0"/>
                       <Component id="giveUpButton" min="-2" pref="78" max="-2" attributes="0"/>
                       <EmptySpace max="32767" attributes="0"/>
-                      <Component id="buttonCreateNodeInputTab" min="-2" pref="106" max="-2" attributes="0"/>
-                      <EmptySpace min="-2" pref="32" max="-2" attributes="0"/>
                       <Component id="buttonOK" min="-2" pref="78" max="-2" attributes="0"/>
                       <EmptySpace type="separate" max="-2" attributes="0"/>
                       <Component id="buttonCancel" min="-2" pref="78" max="-2" attributes="0"/>
@@ -69,7 +67,6 @@
                   <Component id="giveUpButton" alignment="0" max="32767" attributes="0"/>
                   <Component id="buttonCancel" alignment="0" max="32767" attributes="0"/>
                   <Component id="buttonOK" alignment="0" min="-2" pref="41" max="-2" attributes="0"/>
-                  <Component id="buttonCreateNodeInputTab" alignment="0" min="-2" pref="41" max="-2" attributes="0"/>
               </Group>
               <EmptySpace max="32767" attributes="0"/>
           </Group>
@@ -242,14 +239,6 @@
       </Properties>
     </Component>
     <Component class="javax.swing.JLabel" name="bottomSpacer">
-    </Component>
-    <Component class="javax.swing.JButton" name="buttonCreateNodeInputTab">
-      <Properties>
-        <Property name="text" type="java.lang.String" value="Create Node"/>
-      </Properties>
-      <Events>
-        <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="buttonCreateNodeInputTabActionPerformed"/>
-      </Events>
     </Component>
   </SubComponents>
 </Form>

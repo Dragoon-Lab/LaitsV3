@@ -382,7 +382,7 @@ public class CalculationsPanelView extends javax.swing.JPanel {
     }
     
         private void addHelpBalloon(String timing){
-        HelpBubble bubble = ApplicationContext.getHelp(ApplicationContext.getNameByOrder(ApplicationContext.getCurrentOrder()-2), "Calculations", timing);
+        HelpBubble bubble = ApplicationContext.getHelp(currentVertex.getName(), "Calculations", timing);
         if(bubble != null){
 
           new BlockingToolTip(this.nodeEditor, bubble.getMessage(), this.getLabel(bubble.getAttachedTo()), 0, 0);
@@ -726,7 +726,7 @@ public class CalculationsPanelView extends javax.swing.JPanel {
     }//GEN-LAST:event_fixedValueInputBoxKeyTyped
     
   private void fixedValueInputBoxActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_fixedValueInputBoxActionPerformed
-      // TODO add your handling code here:
+
   }//GEN-LAST:event_fixedValueInputBoxActionPerformed
 
     private void buttonAddActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_buttonAddActionPerformed

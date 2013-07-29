@@ -17,6 +17,7 @@
  */
 package edu.asu.laits.model;
 
+import edu.asu.laits.editor.ApplicationContext;
 import edu.asu.laits.gui.MainWindow;
 import java.util.ArrayList;
 import java.util.Iterator;
@@ -248,10 +249,10 @@ public class TaskSolution {
         }
     }
 
-    public int checkNodeNameOrdered(String nodeName, int order) {
+    public int checkNodeNameOrdered(String nodeName) {
         SolutionNode correctNode = getNodeByName(nodeName);
         if (correctNode != null) {
-            if (correctNode.getNodeOrder() == order) {
+            if (ApplicationContext.getNextNodes().contains(nodeName)) {
                 return 1;
             } else {
                 return 2;

@@ -225,7 +225,7 @@ public class CreateNewNodeDialog extends javax.swing.JDialog {
             return;
         }  
         
-        int solutionCheck = correctSolution.checkNodeNameOrdered(dPanel.getNodeName(),ApplicationContext.getCurrentOrder());
+        int solutionCheck = correctSolution.checkNodeNameOrdered(dPanel.getNodeName());
         if (solutionCheck == 1) {
             currentVertex.setDescriptionStatus(Vertex.DescriptionStatus.CORRECT);
             //graphPane.getMainFrame().getMainMenu().getModelMenu().addDeleteNodeMenu();
@@ -260,12 +260,13 @@ public class CreateNewNodeDialog extends javax.swing.JDialog {
             ne.getGraphPane().removeSelected();
         } else {
             ne.getInputsPanel().initPanel();
-            ne.getGraphPane().setSelectionCell(ne.getCurrentVertex());
+           // ne.getGraphPane().setSelectionCell(ne.getCurrentVertex());
             ne.refreshInputs();
         }
 
 
         this.dispose();
+        ne.addHelpBalloon(currentVertex.getName(), "newNodeClosed", "INPUTS");
     }
 
     public void setEditorMessage(String msg, boolean err) {
