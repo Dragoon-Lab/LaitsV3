@@ -749,15 +749,15 @@ public class NodeEditor extends javax.swing.JDialog {
             if (bubble != null) {
                 
                 if(panel.equalsIgnoreCase("description")){
-                    new BlockingToolTip(this, bubble.getMessage(), dPanel.getLabel(bubble.getAttachedTo()), bubble.getX(), bubble.getY());
+                    new BlockingToolTip(this, bubble, dPanel.getLabel(bubble.getAttachedTo()));
                 }else if(panel.equalsIgnoreCase("plan")){
                     System.out.println("Trying to add help in Plan. Msg: "+bubble.getMessage()+"  "+bubble.getAttachedTo());
                     System.out.println("comp: "+pPanel.getLabel(bubble.getAttachedTo()));
-                    new BlockingToolTip(this, bubble.getMessage(), pPanel.getLabel(bubble.getAttachedTo()), bubble.getX(), bubble.getY());
+                    new BlockingToolTip(this, bubble, pPanel.getLabel(bubble.getAttachedTo()));
                 }else if(panel.equalsIgnoreCase("inputs")){
-                    new BlockingToolTip(this, bubble.getMessage(), iPanel.getLabel(bubble.getAttachedTo()), bubble.getX(), bubble.getY());
+                    new BlockingToolTip(this, bubble, iPanel.getLabel(bubble.getAttachedTo()));
                 }else if(panel.equalsIgnoreCase("calculations")){
-                    new BlockingToolTip(this, bubble.getMessage(), cPanel.getLabel(bubble.getAttachedTo()), bubble.getX(), bubble.getY());
+                    new BlockingToolTip(this, bubble, cPanel.getLabel(bubble.getAttachedTo()));
                 }
                 
              } else {

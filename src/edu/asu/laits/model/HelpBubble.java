@@ -16,6 +16,15 @@ public class HelpBubble {
     private String nodeName;
     private int x;
     private int y;
+    private boolean displayed;
+
+    public void setDisplayed(boolean displayed) {
+        this.displayed = displayed;
+    }
+
+    public boolean isDisplayed() {
+        return displayed;
+    }
 
     public void setNodeName(String nodeName) {
         this.nodeName = nodeName;
@@ -43,6 +52,7 @@ public class HelpBubble {
         this.nodeName = null;
         this.x=0;
         this.y=0;
+        this.displayed = false;
     }
 
     public void setEvent(String event) {

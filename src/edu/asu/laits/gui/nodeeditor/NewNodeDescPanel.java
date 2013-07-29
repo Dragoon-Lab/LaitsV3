@@ -424,7 +424,7 @@ public JComponent getLabel(String label){
 
             if (bubble != null) {
                 System.out.println("help was not null");
-                        new BlockingToolTip(this.nodeEditor, bubble.getMessage(), getLabel(bubble.getAttachedTo()), 0, 0);
+                        new BlockingToolTip(this.nodeEditor, bubble, getLabel(bubble.getAttachedTo()));
           //      new BlockingToolTip(this, bubble.getMessage(), dPanel.getLabel(bubble.getAttachedTo()), 0, 0);
             } else {
                      System.out.println("help was null");

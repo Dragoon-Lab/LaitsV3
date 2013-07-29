@@ -121,7 +121,7 @@ public class MainWindow extends JFrame {
           BalloonTip myBalloonTip = new BalloonTip(this.evenMorePreciseLabel, new JLabel(bubble.getMessage()),style,Orientation.RIGHT_ABOVE, AttachLocation.ALIGNED, 20, 20, true);
           * */
           
-          new BlockingToolTip(this, bubble.getMessage(), modelToolBar.getAddNodeButton(), bubble.getX(), bubble.getY());
+          new BlockingToolTip(this, bubble, modelToolBar.getAddNodeButton());
       }
         }
     }

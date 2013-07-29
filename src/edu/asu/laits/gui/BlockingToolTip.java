@@ -18,6 +18,7 @@
 
 package edu.asu.laits.gui;
 
+import edu.asu.laits.model.HelpBubble;
 import java.awt.Color;
 import java.awt.event.MouseEvent;
 import java.awt.event.MouseListener;
@@ -40,6 +41,16 @@ public class BlockingToolTip {
         this.parent = parent;
         initBalloon(text, c, x, y);        
         disableWindow();
+    }
+    
+    public BlockingToolTip(RootPaneContainer parent, HelpBubble bubble, JComponent c){
+        if(!bubble.isDisplayed()){
+            this.parent = parent;
+            bubble.setDisplayed(true);
+            initBalloon(bubble.getMessage(), c, bubble.getX(), bubble.getY());        
+            disableWindow();
+           
+        }
     }
   
     /**
