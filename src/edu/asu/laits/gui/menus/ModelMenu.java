@@ -311,7 +311,7 @@ public class ModelMenu extends JMenu {
             }
 
             graphPane.repaint();
-            NodeEditor editor = new NodeEditor(graphPane, true);
+            NodeEditor editor = new NodeEditor(graphPane, v);
         } else {
             activityLogs.debug("User was not allowed to create new node as all the nodes were already present");
             JOptionPane.showMessageDialog(window, "The model is already using all the correct nodes.");

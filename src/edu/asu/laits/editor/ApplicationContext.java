@@ -50,8 +50,10 @@ public class ApplicationContext {
       List<String> childNodes = new ArrayList<String>();
       childNodes = correctSolution.getNodeByName(parentNode).getInputNodes();
       for(String childNode : childNodes){
+          System.out.println("checking " + childNode);
           if (graphPane.getModelGraph().getVertexByName(childNode) == null){
              addNextNodes(childNode);
+             System.out.println("added " + childNode);
           }
       }
   }
@@ -70,7 +72,8 @@ public class ApplicationContext {
   }
   
   public static void removeNextNodes(String nextNode){
-      nextNodes.remove(nextNode);
+      int index = nextNodes.indexOf(nextNode);
+      nextNodes.remove(index);
   }
   
   public static String getFirstNextNode(){

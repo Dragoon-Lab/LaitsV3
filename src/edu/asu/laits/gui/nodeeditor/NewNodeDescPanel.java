@@ -346,9 +346,11 @@ public class NewNodeDescPanel extends JPanel{
       String giveupNode = null;
       if(ApplicationContext.getAppMode().equalsIgnoreCase("COACHED")){
           for(SolutionNode name : correctNodeNames){
-             if(name.getNodeName() == ApplicationContext.getFirstNextNode()){
+             if(name.getNodeName().equalsIgnoreCase(ApplicationContext.getFirstNextNode())){
                   giveupNode = name.getNodeName();
                   ApplicationContext.nextCurrentOrder();
+                  ApplicationContext.removeNextNodes(name.getNodeName());
+                  ApplicationContext.setNextNodes(name.getNodeName());
                   break;
              } 
           }
