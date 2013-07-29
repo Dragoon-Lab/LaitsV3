@@ -260,7 +260,7 @@ public class CreateNewNodeDialog extends javax.swing.JDialog {
             ne.getGraphPane().removeSelected();
         } else {
             ne.getInputsPanel().initPanel();
-            ne.getGraphPane().setSelectionCell(ne.getCurrentVertex());
+           // ne.getGraphPane().setSelectionCell(ne.getCurrentVertex());
             ne.refreshInputs();
         }
 
