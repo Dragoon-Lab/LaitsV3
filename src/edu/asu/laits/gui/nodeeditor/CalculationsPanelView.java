@@ -381,14 +381,17 @@ public class CalculationsPanelView extends javax.swing.JPanel {
         nodeEditor.getGraphPane().repaint();
     }
     
-        private void addHelpBalloon(String timing){
+    private void addHelpBalloon(String timing){
         if(ApplicationContext.getAppMode().equalsIgnoreCase("COACHED")){
-            HelpBubble bubble = ApplicationContext.getHelp(currentVertex.getName(), "Calculations", timing);
-            if(bubble != null){
+             List<HelpBubble> bubbles = ApplicationContext.getHelp(currentVertex.getName(), "Calculations", timing);
+                if(!bubbles.isEmpty()){
+                    for(HelpBubble bubble : bubbles){
+
                 new BlockingToolTip(this.nodeEditor, bubble, this.getLabel(bubble.getAttachedTo()));
             }
         }
     }
+ }
 
     /**
      * This method is called from within the constructor to initialize the form.

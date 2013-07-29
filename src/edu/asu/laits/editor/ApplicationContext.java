@@ -176,7 +176,7 @@ public class ApplicationContext {
     isProblemSolved = input;
   }
   
-  public static HelpBubble getHelp(String order, String time, String cevent){
+  public static List<HelpBubble> getHelp(String order, String time, String cevent){
       return correctSolution.checkForHelp(order, time, cevent);
       
   }

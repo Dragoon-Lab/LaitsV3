@@ -29,6 +29,7 @@ import java.awt.Dimension;
 import java.awt.Insets;
 import java.awt.Toolkit;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 import java.util.logging.Level;
 import javax.swing.JComponent;
@@ -747,10 +748,10 @@ public class NodeEditor extends javax.swing.JDialog {
     public void addHelpBalloon(String name, String timing, String panel) {
         if (ApplicationContext.getAppMode().equals("COACHED")) {
             System.out.println("addhelpballoon passing in " + name);
-            HelpBubble bubble = ApplicationContext.getHelp(name, panel, timing);
+            List<HelpBubble> bubbles = ApplicationContext.getHelp(name, panel, timing);
+            if(!bubbles.isEmpty()){
+               for(HelpBubble bubble : bubbles){ 
 
-            if (bubble != null) {
-                
                 if(panel.equalsIgnoreCase("description")){
                     new BlockingToolTip(this, bubble, getLabel("dPanel", bubble.getAttachedTo()));
                 }else if(panel.equalsIgnoreCase("plan")){
@@ -763,11 +764,9 @@ public class NodeEditor extends javax.swing.JDialog {
                     new BlockingToolTip(this, bubble, getLabel("cPanel", bubble.getAttachedTo()));
                 }
                 
-             } else {
-                     System.out.println("help was null");
+             }
             }
         }
-
     }
     
     public JComponent getLabel(String panel, String attachedTo){

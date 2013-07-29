@@ -114,16 +114,18 @@ public class MainWindow extends JFrame {
     
     public void addHelpBalloon(String node, String timing){
         if(ApplicationContext.getAppMode().equals("COACHED")){
-        HelpBubble bubble = ApplicationContext.getHelp(node, "MainWindow", timing);
+        List<HelpBubble> bubbles = ApplicationContext.getHelp(node, "MainWindow", timing);
         logs.debug(node + " MainWindow " + timing);
-        if(bubble != null){
+        if(!bubbles.isEmpty()){
+            for(HelpBubble bubble : bubbles){
           /*BalloonTipStyle style = new MinimalBalloonStyle(Color.WHITE, 0);
           BalloonTip myBalloonTip = new BalloonTip(this.evenMorePreciseLabel, new JLabel(bubble.getMessage()),style,Orientation.RIGHT_ABOVE, AttachLocation.ALIGNED, 20, 20, true);
           * */
           
-          new BlockingToolTip(this, bubble, modelToolBar.getAddNodeButton());
-      }
+            new BlockingToolTip(this, bubble, modelToolBar.getAddNodeButton());
+            }
         }
+    }
     }
 
     public static void openWindowWithFile(File file) {

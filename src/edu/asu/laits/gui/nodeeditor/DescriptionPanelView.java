@@ -250,13 +250,11 @@ public class DescriptionPanelView extends JPanel{
     }//GEN-LAST:event_decisionTreeValueChanged
 
     private void addHelpBalloon(String node, String timing){
-        HelpBubble bubble = ApplicationContext.getHelp(node, "DESCRIPTION", timing);
-        if(bubble != null){
-          /*BalloonTipStyle style = new MinimalBalloonStyle(Color.WHITE, 0);
-          BalloonTip myBalloonTip = new BalloonTip(this.evenMorePreciseLabel, new JLabel(bubble.getMessage()),style,Orientation.RIGHT_ABOVE, AttachLocation.ALIGNED, 20, 20, true);
-          * */
-          
-          new BlockingToolTip(this.nodeEditor, bubble, this.getLabel(bubble.getAttachedTo()));
+       List<HelpBubble> bubbles = ApplicationContext.getHelp(node, "DESCRIPTION", timing);
+       if(!bubbles.isEmpty()){
+           for(HelpBubble bubble : bubbles){ 
+               new BlockingToolTip(this.nodeEditor, bubble, this.getLabel(bubble.getAttachedTo()));
+           }
       }
     }
   // returns the value held by triedDuplicate

@@ -423,19 +423,15 @@ public JComponent getLabel(String label){
 
    private void addHelpBalloon(String name, String timing, String panel) {
         if (ApplicationContext.getAppMode().equals("COACHED")) {
-            System.out.println("addhelpballoon passing in " + name);
-            HelpBubble bubble = ApplicationContext.getHelp(name, panel, timing);
-
-            if (bubble != null) {
-                System.out.println("help was not null");
+           List<HelpBubble> bubbles = ApplicationContext.getHelp(name, panel, timing);
+                if(!bubbles.isEmpty()){
+                    for(HelpBubble bubble : bubbles){ 
                         new BlockingToolTip(this.nodeEditor, bubble, getLabel(bubble.getAttachedTo()));
           //      new BlockingToolTip(this, bubble.getMessage(), dPanel.getLabel(bubble.getAttachedTo()), 0, 0);
-            } else {
-                     System.out.println("help was null");
             }
         }
    }
-
+   }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JLabel NodeNameLabel;
