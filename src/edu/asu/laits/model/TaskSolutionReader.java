@@ -61,6 +61,7 @@ public class TaskSolutionReader {
             
             //Read Given Nodes for Debug problem
             if(solution.getTaskType().equalsIgnoreCase("debug")){
+                
                 Element givenNodes = taskNode.element("GivenModel");
                 fillGivenNodes(solution, givenNodes);
             }
@@ -188,7 +189,9 @@ public class TaskSolutionReader {
             newNode.setNodePlan(node.elementTextTrim("Plan"));
 
             list.add(newNode);
+            
         }
+        
     }
     //Read in help bubble info
     private void fillHelpBubbles(TaskSolution solution, Element bubbles){
