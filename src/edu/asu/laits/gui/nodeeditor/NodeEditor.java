@@ -743,6 +743,7 @@ public class NodeEditor extends javax.swing.JDialog {
         }
     }
 
+
     public void addHelpBalloon(String name, String timing, String panel) {
         if (ApplicationContext.getAppMode().equals("COACHED")) {
             System.out.println("addhelpballoon passing in " + name);
@@ -751,15 +752,15 @@ public class NodeEditor extends javax.swing.JDialog {
             if (bubble != null) {
                 
                 if(panel.equalsIgnoreCase("description")){
-                    new BlockingToolTip(this, bubble, dPanel.getLabel(bubble.getAttachedTo()));
+                    new BlockingToolTip(this, bubble, getLabel("dPanel", bubble.getAttachedTo()));
                 }else if(panel.equalsIgnoreCase("plan")){
                     System.out.println("Trying to add help in Plan. Msg: "+bubble.getMessage()+"  "+bubble.getAttachedTo());
                     System.out.println("comp: "+pPanel.getLabel(bubble.getAttachedTo()));
-                    new BlockingToolTip(this, bubble, pPanel.getLabel(bubble.getAttachedTo()));
+                    new BlockingToolTip(this, bubble, getLabel("pPanel", bubble.getAttachedTo()));
                 }else if(panel.equalsIgnoreCase("inputs")){
-                    new BlockingToolTip(this, bubble, iPanel.getLabel(bubble.getAttachedTo()));
+                    new BlockingToolTip(this, bubble, getLabel("iPanel", bubble.getAttachedTo()));
                 }else if(panel.equalsIgnoreCase("calculations")){
-                    new BlockingToolTip(this, bubble, cPanel.getLabel(bubble.getAttachedTo()));
+                    new BlockingToolTip(this, bubble, getLabel("cPanel", bubble.getAttachedTo()));
                 }
                 
              } else {
@@ -767,6 +768,27 @@ public class NodeEditor extends javax.swing.JDialog {
             }
         }
 
+    }
+    
+    public JComponent getLabel(String panel, String attachedTo){
+        JComponent rPanel = null;
+        if(panel.equalsIgnoreCase("dPanel")){
+            rPanel = dPanel.getLabel(attachedTo);
+        } else if(panel.equalsIgnoreCase("pPanel")){
+            rPanel = pPanel.getLabel(attachedTo);
+        } else if(panel.equalsIgnoreCase("iPanel")){
+            rPanel = iPanel.getLabel(attachedTo);
+        } else if(panel.equalsIgnoreCase("cPanel")){
+            rPanel = cPanel.getLabel(attachedTo);
+        }
+        if(rPanel == null){
+            rPanel = getLabel(attachedTo);
+        }
+        if(rPanel == null){
+            return null;
+        } else{
+            return rPanel;
+        }  
     }
 
     /**
@@ -1044,6 +1066,10 @@ public JComponent getLabel(String label){
  
     Map<String, JComponent> map = new HashMap<String, JComponent>();
     map.put("tabPane", tabPane);
+    map.put("checkButton", checkButton);
+    map.put("giveUpButton", giveUpButton);
+    map.put("buttonCancel", buttonCancel);
+    map.put("editorMsgLabel", editorMsgLabel);
     if(map.containsKey(label)){
         return map.get(label);
     }

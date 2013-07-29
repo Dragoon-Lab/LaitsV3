@@ -445,7 +445,7 @@ public JComponent getLabel(String label){
         return map.get(label);
     }
     else {
-        return null;
+        return nodeEditor.getLabel(label);
     }
 }
 
