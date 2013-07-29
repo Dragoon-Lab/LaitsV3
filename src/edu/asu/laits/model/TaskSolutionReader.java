@@ -70,9 +70,10 @@ public class TaskSolutionReader {
             fillDescriptionTree(solution, descriptionTree);
             
             //Read in help bubbles
-            Element bubbles = taskNode.element("HelpBubbles");
-            fillHelpBubbles(solution, bubbles);
-                
+            if(ApplicationContext.getAppMode().equalsIgnoreCase("COACHED")){
+                Element bubbles = taskNode.element("HelpBubbles");
+                fillHelpBubbles(solution, bubbles);
+            }    
         } catch (Exception e) {
             // Could not read the XML file
             e.printStackTrace();
@@ -161,16 +162,22 @@ public class TaskSolutionReader {
         
         for(Element node : allNodes){
             SolutionNode newNode = new SolutionNode();
+            int order = 0;
             
             newNode.setNodeName(node.attributeValue("name"));
             newNode.setNodeType(node.attributeValue("type"));
             newNode.setIsExtra(node.attributeValue("extra"));
+            if(node.elementTextTrim("Order") != null){
+                order = Integer.parseInt(node.elementTextTrim("Order"));
+            }
             
             // Read all the Input Nodes of this node
-            if(ApplicationContext.getAppMode().equals("COACHED") && node.elementTextTrim("Order") != null){
-              newNode.setNodeOrder(Integer.parseInt(node.elementTextTrim("Order")));
-              System.out.println("Added element" + node.elementTextTrim("Order") + " " + node.elementTextTrim("CorrectDescription"));
-         }
+            if(ApplicationContext.getAppMode().equals("COACHED") && order == 1){
+                System.out.println("attempting to add first next node " + node.attributeValue("name"));
+//              newNode.setNodeOrder(Integer.parseInt(node.elementTextTrim("Order")));
+//              System.out.println("Added element" + node.elementTextTrim("Order") + " " + node.elementTextTrim("CorrectDescription"));
+                ApplicationContext.addNextNodes(node.attributeValue("name"));
+            }
             
             Element nodeInput = node.element("Inputs");
             List<Element> allInputNodes = nodeInput.elements("Name");
@@ -203,8 +210,15 @@ public class TaskSolutionReader {
             newBubble.setNodeName(bubble.elementTextTrim("nodeName"));
             newBubble.setAttachedTo(bubble.elementTextTrim("attachedTo"));
             newBubble.setEvent(bubble.elementTextTrim("Event"));
+            if(bubble.elementTextTrim("xValue")!= null){
+                newBubble.setX(Integer.parseInt(bubble.elementTextTrim("xValue")));
+                System.out.println(newBubble.getX());
+            } 
+            if(bubble.elementTextTrim("yValue")!= null){
+                newBubble.setY(Integer.parseInt(bubble.elementTextTrim("yValue")));
+            }    
             newBubble.setMessage(bubble.elementTextTrim("Message"));
-            
+        
         //    logs.debug(" " + bubble.elementTextTrim("Message") + " " + bubble.elementTextTrim("Timing") + " " + bubble.elementTextTrim("nodeName") + " " + bubble.elementTextTrim("attachedTo") + " " + bubble.elementTextTrim("Event"));
 
             solution.addHelpBubble(newBubble);

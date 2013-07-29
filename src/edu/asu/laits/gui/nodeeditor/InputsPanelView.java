@@ -521,6 +521,7 @@ public class InputsPanelView extends javax.swing.JPanel implements ItemListener 
     map.put("radioPanel", radioPanel);
     map.put("jScrollPane1", jScrollPane1);
     map.put("jScrollPane2", jScrollPane2);
+    map.put("buttonCreateNodeInputTab", buttonCreateNodeInputTab);
     if(map.containsKey(label)){
         return map.get(label);
     }

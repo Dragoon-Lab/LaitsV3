@@ -225,7 +225,7 @@ public class CreateNewNodeDialog extends javax.swing.JDialog {
             return;
         }  
         
-        int solutionCheck = correctSolution.checkNodeNameOrdered(dPanel.getNodeName(),ApplicationContext.getCurrentOrder());
+        int solutionCheck = correctSolution.checkNodeNameOrdered(dPanel.getNodeName());
         if (solutionCheck == 1) {
             currentVertex.setDescriptionStatus(Vertex.DescriptionStatus.CORRECT);
             //graphPane.getMainFrame().getMainMenu().getModelMenu().addDeleteNodeMenu();
@@ -233,7 +233,9 @@ public class CreateNewNodeDialog extends javax.swing.JDialog {
             dPanel.setTextFieldBackground(Color.GREEN);
             activityLogs.debug("User entered correct description");
             dPanel.setEditableTree(false);
-            ApplicationContext.nextCurrentOrder();
+            //ApplicationContext.nextCurrentOrder();
+            ApplicationContext.removeNextNodes(currentVertex.getName());
+            ApplicationContext.setNextNodes(currentVertex.getName());            
             giveUpButton.setEnabled(false);
             
             
@@ -266,6 +268,7 @@ public class CreateNewNodeDialog extends javax.swing.JDialog {
 
 
         this.dispose();
+        ne.addHelpBalloon(currentVertex.getName(), "newNodeClosed", "INPUTS");
     }
 
     public void setEditorMessage(String msg, boolean err) {

@@ -146,6 +146,8 @@ public class GraphEditorPane extends JGraph {
         this.setPortsVisible(false);
         
         init();
+        //loadSession();
+        
         setGridProps();
         Color background = this.getBackground();
         Color marqueeColor = new Color(255 - background.getRed(), 255 - background.getGreen(), 255 - background.getBlue());

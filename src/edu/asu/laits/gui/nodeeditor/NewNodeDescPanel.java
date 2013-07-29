@@ -78,10 +78,12 @@ public class NewNodeDescPanel extends JPanel{
     initComponents();
     nodeEditor = ne;
     currentVertex = v;
-    initPanel();  
-    addHelpBalloon(ApplicationContext.getCurrentOrder(), "onLoad", "InputNewNode");
-  }
+    initPanel();
+    if(ApplicationContext.getAppMode().equalsIgnoreCase("COACHED")){
+        addHelpBalloon(ApplicationContext.getFirstNextNode(), "onLoad", "InputNewNode");
   
+    }
+  }
   public void initPanel(){
       if(ApplicationContext.getAppMode().equals("STUDENT") || ApplicationContext.getAppMode().equals("COACHED")){
           this.nodeNameTextField.setEditable(false);
@@ -244,8 +246,10 @@ public class NewNodeDescPanel extends JPanel{
            this.quantityDescriptionTextField.setText(sb.toString().trim());
            this.nodeNameTextField.setText(node.getNodeName());
            this.repaint();
+        if(ApplicationContext.getAppMode().equalsIgnoreCase("COACHED") && ApplicationContext.getFirstNextNode() != null){
+             addHelpBalloon(ApplicationContext.getFirstNextNode(), "descFilled", "InputNewNode");
        }
-       addHelpBalloon(ApplicationContext.getCurrentOrder(), "descFilled", "InputNewNode");
+       }
        
     }//GEN-LAST:event_decisionTreeValueChanged
 
@@ -346,9 +350,11 @@ public class NewNodeDescPanel extends JPanel{
       String giveupNode = null;
       if(ApplicationContext.getAppMode().equalsIgnoreCase("COACHED")){
           for(SolutionNode name : correctNodeNames){
-             if(name.getNodeOrder() == ApplicationContext.getCurrentOrder()){
+             if(name.getNodeName().equalsIgnoreCase(ApplicationContext.getFirstNextNode())){
                   giveupNode = name.getNodeName();
-                  ApplicationContext.nextCurrentOrder();
+                  //ApplicationContext.nextCurrentOrder();
+                  ApplicationContext.removeNextNodes(name.getNodeName());
+                  ApplicationContext.setNextNodes(name.getNodeName());
                   break;
              } 
           }
@@ -415,22 +421,17 @@ public JComponent getLabel(String label){
     }
 }
 
-   private void addHelpBalloon(int order, String timing, String panel) {
+   private void addHelpBalloon(String name, String timing, String panel) {
         if (ApplicationContext.getAppMode().equals("COACHED")) {
-            String name = ApplicationContext.getNameByOrder(order);
-            System.out.println("addhelpballoon passing in " + name);
-            HelpBubble bubble = ApplicationContext.getHelp(name, panel, timing);
-
-            if (bubble != null) {
-                System.out.println("help was not null");
-                        new BlockingToolTip(this.nodeEditor, bubble.getMessage(), getLabel(bubble.getAttachedTo()), 0, 0);
+           List<HelpBubble> bubbles = ApplicationContext.getHelp(name, panel, timing);
+                if(!bubbles.isEmpty()){
+                    for(HelpBubble bubble : bubbles){ 
+                        new BlockingToolTip(this.nodeEditor, bubble, getLabel(bubble.getAttachedTo()));
           //      new BlockingToolTip(this, bubble.getMessage(), dPanel.getLabel(bubble.getAttachedTo()), 0, 0);
-            } else {
-                     System.out.println("help was null");
             }
         }
    }
-
+   }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JLabel NodeNameLabel;

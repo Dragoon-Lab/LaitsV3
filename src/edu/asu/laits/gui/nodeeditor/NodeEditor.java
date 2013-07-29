@@ -29,6 +29,7 @@ import java.awt.Dimension;
 import java.awt.Insets;
 import java.awt.Toolkit;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 import java.util.logging.Level;
 import javax.swing.JComponent;
@@ -77,7 +78,9 @@ public class NodeEditor extends javax.swing.JDialog {
         UIManager.getDefaults().put("TabbedPane.contentBorderInsets", new Insets(2, 0, -1, 0));
         setTabListener();
         initNodeEditor();
-        addHelpBalloon(ApplicationContext.getNameByOrder(ApplicationContext.getCurrentOrder()), "onLoad", getTabName(selectedTab));
+        if(ApplicationContext.getAppMode().equalsIgnoreCase("COACHED")){
+        addHelpBalloon(ApplicationContext.getFirstNextNode(), "onLoad", getTabName(selectedTab));
+        }
     }
 
     private void initNodeEditor() {
@@ -487,7 +490,7 @@ public class NodeEditor extends javax.swing.JDialog {
         if (!dPanel.processDescriptionPanel()) {
             return;
         }
-        int solutionCheck = correctSolution.checkNodeNameOrdered(dPanel.getNodeName(), ApplicationContext.getCurrentOrder());
+        int solutionCheck = correctSolution.checkNodeNameOrdered(dPanel.getNodeName());
         if (solutionCheck == 1) {
             currentVertex.setDescriptionStatus(Vertex.DescriptionStatus.CORRECT);
             //graphPane.getMainFrame().getMainMenu().getModelMenu().addDeleteNodeMenu();
@@ -495,15 +498,17 @@ public class NodeEditor extends javax.swing.JDialog {
             dPanel.setTextFieldBackground(Color.GREEN);
             activityLogs.debug("User entered correct description");
             dPanel.setEditableTree(false);
-            ApplicationContext.nextCurrentOrder();
+            //ApplicationContext.nextCurrentOrder();
+            ApplicationContext.removeNextNodes(currentVertex.getName());
+            ApplicationContext.setNextNodes(currentVertex.getName());
             tabPane.setEnabledAt(PLAN, true);
             tabPane.setForegroundAt(PLAN, Color.BLACK);
-            addHelpBalloon(ApplicationContext.getNameByOrder(ApplicationContext.getCurrentOrder() - 1), "descCheckDemo", "DESCRIPTION");
+            addHelpBalloon(currentVertex.getName(), "descCheckDemo", "DESCRIPTION");
         } else if (solutionCheck == 2) {
             dPanel.setTextFieldBackground(Color.CYAN);
             setEditorMessage("That quantity used in this model, but now is not the right time to define it. Please select another description.", true);
             activityLogs.debug("User entered description out of order");
-            addHelpBalloon(ApplicationContext.getNameByOrder(ApplicationContext.getCurrentOrder()), "onLoad", "DESCRIPTION");
+            addHelpBalloon(ApplicationContext.getFirstNextNode(), "onLoad", "DESCRIPTION");
         } else {
             currentVertex.setDescriptionStatus(Vertex.DescriptionStatus.INCORRECT);
             dPanel.setTextFieldBackground(Color.RED);
@@ -727,6 +732,8 @@ public class NodeEditor extends javax.swing.JDialog {
         PersistenceManager.saveSession();
 
         this.dispose();
+        graphPane.getMainFrame().addHelpBalloon(currentVertex.getName(), "nodeEditorClose");
+        
     }
 
     private void displayEnterButton() {
@@ -737,30 +744,50 @@ public class NodeEditor extends javax.swing.JDialog {
         }
     }
 
-    private void addHelpBalloon(String name, String timing, String panel) {
+
+    public void addHelpBalloon(String name, String timing, String panel) {
         if (ApplicationContext.getAppMode().equals("COACHED")) {
             System.out.println("addhelpballoon passing in " + name);
-            HelpBubble bubble = ApplicationContext.getHelp(name, panel, timing);
+            List<HelpBubble> bubbles = ApplicationContext.getHelp(name, panel, timing);
+            if(!bubbles.isEmpty()){
+               for(HelpBubble bubble : bubbles){ 
 
-            if (bubble != null) {
-                
                 if(panel.equalsIgnoreCase("description")){
-                    new BlockingToolTip(this, bubble.getMessage(), dPanel.getLabel(bubble.getAttachedTo()), 0, 0);
+                    new BlockingToolTip(this, bubble, getLabel("dPanel", bubble.getAttachedTo()));
                 }else if(panel.equalsIgnoreCase("plan")){
                     System.out.println("Trying to add help in Plan. Msg: "+bubble.getMessage()+"  "+bubble.getAttachedTo());
                     System.out.println("comp: "+pPanel.getLabel(bubble.getAttachedTo()));
-                    new BlockingToolTip(this, bubble.getMessage(), pPanel.getLabel(bubble.getAttachedTo()), 0, 0);
+                    new BlockingToolTip(this, bubble, getLabel("pPanel", bubble.getAttachedTo()));
                 }else if(panel.equalsIgnoreCase("inputs")){
-                    new BlockingToolTip(this, bubble.getMessage(), iPanel.getLabel(bubble.getAttachedTo()), 0, 0);
+                    new BlockingToolTip(this, bubble, getLabel("iPanel", bubble.getAttachedTo()));
                 }else if(panel.equalsIgnoreCase("calculations")){
-                    new BlockingToolTip(this, bubble.getMessage(), cPanel.getLabel(bubble.getAttachedTo()), 0, 0);
+                    new BlockingToolTip(this, bubble, getLabel("cPanel", bubble.getAttachedTo()));
                 }
                 
-             } else {
-                     System.out.println("help was null");
+             }
             }
         }
-
+    }
+    
+    public JComponent getLabel(String panel, String attachedTo){
+        JComponent rPanel = null;
+        if(panel.equalsIgnoreCase("dPanel")){
+            rPanel = dPanel.getLabel(attachedTo);
+        } else if(panel.equalsIgnoreCase("pPanel")){
+            rPanel = pPanel.getLabel(attachedTo);
+        } else if(panel.equalsIgnoreCase("iPanel")){
+            rPanel = iPanel.getLabel(attachedTo);
+        } else if(panel.equalsIgnoreCase("cPanel")){
+            rPanel = cPanel.getLabel(attachedTo);
+        }
+        if(rPanel == null){
+            rPanel = getLabel(attachedTo);
+        }
+        if(rPanel == null){
+            return null;
+        } else{
+            return rPanel;
+        }  
     }
 
     /**
@@ -1038,6 +1065,10 @@ public JComponent getLabel(String label){
  
     Map<String, JComponent> map = new HashMap<String, JComponent>();
     map.put("tabPane", tabPane);
+    map.put("checkButton", checkButton);
+    map.put("giveUpButton", giveUpButton);
+    map.put("buttonCancel", buttonCancel);
+    map.put("editorMsgLabel", editorMsgLabel);
     if(map.containsKey(label)){
         return map.get(label);
     }
