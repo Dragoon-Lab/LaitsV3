@@ -241,20 +241,20 @@ public class DescriptionPanelView extends JPanel{
            this.quantityDescriptionTextField.setText(sb.toString().trim());
            this.nodeNameTextField.setText(node.getNodeName());
            this.repaint();
-           addHelpBalloon("descFilled");
+        if(ApplicationContext.getAppMode().equalsIgnoreCase("COACHED")){
+           addHelpBalloon(ApplicationContext.getFirstNextNode(), "descFilled");
+        }
            
        }
        
     }//GEN-LAST:event_decisionTreeValueChanged
 
-    private void addHelpBalloon(String timing){
-        HelpBubble bubble = ApplicationContext.getHelp(ApplicationContext.getFirstNextNode(), "DESCRIPTION", timing);
-        if(bubble != null){
-          /*BalloonTipStyle style = new MinimalBalloonStyle(Color.WHITE, 0);
-          BalloonTip myBalloonTip = new BalloonTip(this.evenMorePreciseLabel, new JLabel(bubble.getMessage()),style,Orientation.RIGHT_ABOVE, AttachLocation.ALIGNED, 20, 20, true);
-          * */
-          
-          new BlockingToolTip(this.nodeEditor, bubble.getMessage(), this.getLabel(bubble.getAttachedTo()), 0, 0);
+    private void addHelpBalloon(String node, String timing){
+       List<HelpBubble> bubbles = ApplicationContext.getHelp(node, "DESCRIPTION", timing);
+       if(!bubbles.isEmpty()){
+           for(HelpBubble bubble : bubbles){ 
+               new BlockingToolTip(this.nodeEditor, bubble, this.getLabel(bubble.getAttachedTo()));
+           }
       }
     }
   // returns the value held by triedDuplicate
@@ -443,7 +443,7 @@ public JComponent getLabel(String label){
         return map.get(label);
     }
     else {
-        return null;
+        return nodeEditor.getLabel(label);
     }
 }
 

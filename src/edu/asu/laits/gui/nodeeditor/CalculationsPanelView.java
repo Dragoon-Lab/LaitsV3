@@ -381,13 +381,17 @@ public class CalculationsPanelView extends javax.swing.JPanel {
         nodeEditor.getGraphPane().repaint();
     }
     
-        private void addHelpBalloon(String timing){
-        HelpBubble bubble = ApplicationContext.getHelp(currentVertex.getName(), "Calculations", timing);
-        if(bubble != null){
+    private void addHelpBalloon(String timing){
+        if(ApplicationContext.getAppMode().equalsIgnoreCase("COACHED")){
+             List<HelpBubble> bubbles = ApplicationContext.getHelp(currentVertex.getName(), "Calculations", timing);
+                if(!bubbles.isEmpty()){
+                    for(HelpBubble bubble : bubbles){
 
-          new BlockingToolTip(this.nodeEditor, bubble.getMessage(), this.getLabel(bubble.getAttachedTo()), 0, 0);
-      }
+                new BlockingToolTip(this.nodeEditor, bubble, this.getLabel(bubble.getAttachedTo()));
+            }
+        }
     }
+ }
 
     /**
      * This method is called from within the constructor to initialize the form.
@@ -686,6 +690,7 @@ public class CalculationsPanelView extends javax.swing.JPanel {
     map.put("jScrollPane1", jScrollPane1);
     map.put("jScrollPane2", jScrollPane2);
     map.put("quantityLabel", quantityLabel);
+    map.put("availableInputsJList", availableInputsLabel);
     if(map.containsKey(label)){
         return map.get(label);
     }
