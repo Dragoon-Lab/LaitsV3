@@ -534,6 +534,9 @@ public class NodeEditor extends javax.swing.JDialog {
             pPanel.setEditableRadio(false);
             tabPane.setEnabledAt(INPUTS, true);
             tabPane.setForegroundAt(INPUTS, Color.BLACK);
+            if(ApplicationContext.getAppMode().equalsIgnoreCase("COACHED")){            
+                addHelpBalloon(currentVertex.getName(), "descCheckDemo", "PLAN");
+            }
         } else {
             pPanel.setSelectedPlanBackground(Color.RED);
             setEditorMessage("You have selected incorrect Plan for this Node.", true);
@@ -543,6 +546,7 @@ public class NodeEditor extends javax.swing.JDialog {
         // Save Selected Plan to the Vertex Object
         pPanel.processPlanPanel();
         activityLogs.debug("User checked plan panel with node plan as " + pPanel.getSelectedPlan());
+
     }
 
     private void checkInputsPanel(TaskSolution correctSolution) {
@@ -572,6 +576,9 @@ public class NodeEditor extends javax.swing.JDialog {
             iPanel.setEditableInputs(false);
             tabPane.setEnabledAt(CALCULATIONS, true);
             tabPane.setForegroundAt(CALCULATIONS, Color.BLACK);
+            if(ApplicationContext.getAppMode().equalsIgnoreCase("COACHED")){            
+                addHelpBalloon(currentVertex.getName(), "descCheckDemo", "INPUTS");
+            }
         } else {
             if (result == 1) {
                 iPanel.setInputsTypeBackground(Color.RED);
@@ -604,6 +611,9 @@ public class NodeEditor extends javax.swing.JDialog {
             currentVertex.setCalculationsStatus(Vertex.CalculationsStatus.CORRECT);
             cPanel.setEditableCalculations(false);
             buttonCancel.setEnabled(true);
+            if(ApplicationContext.getAppMode().equalsIgnoreCase("COACHED")){            
+               addHelpBalloon(currentVertex.getName(), "descCheckDemo", "CALCULATIONS");
+            }            
         } else {
             cPanel.setCheckedBackground(Color.RED);
             setEditorMessage("You Calculations are Inorrect.", true);
@@ -1009,6 +1019,12 @@ public class NodeEditor extends javax.swing.JDialog {
         editorMsgLabel.setText("");
         if (tabPane.getSelectedIndex() == DESCRIPTION) {
             activityLogs.debug("Giveup button pressed for Description Panel");
+            List<HelpBubble> bubbles = ApplicationContext.getHelp(ApplicationContext.getFirstNextNode(), "DESCRIPTION", "descFilled");
+            if(!bubbles.isEmpty()){
+             for(HelpBubble bubble : bubbles){
+                 bubble.setDisplayed(true);
+             }
+            }
             dPanel.giveUpDescriptionPanel();
             dPanel.processDescriptionPanel();
             currentVertex.setDescriptionStatus(Vertex.DescriptionStatus.GAVEUP);

@@ -498,9 +498,7 @@ public class TaskSolution {
             }
         }
         //System.out.println("check for help failed");
-        if(!bubbles.isEmpty()){
             return bubbles;
-        }else{return null;}
 
     }
 }
