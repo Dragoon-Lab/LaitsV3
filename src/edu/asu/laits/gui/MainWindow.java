@@ -104,8 +104,10 @@ public class MainWindow extends JFrame {
         windowCount++;
         
         initializeFrameElements();
-        setVisible(true); 
+        setVisible(true);
+        if(ApplicationContext.getAppMode().equalsIgnoreCase("COACHED")){
         addHelpBalloon(ApplicationContext.getFirstNextNode(), "onLoad");
+        }
  
     }
     
@@ -119,7 +121,7 @@ public class MainWindow extends JFrame {
           BalloonTip myBalloonTip = new BalloonTip(this.evenMorePreciseLabel, new JLabel(bubble.getMessage()),style,Orientation.RIGHT_ABOVE, AttachLocation.ALIGNED, 20, 20, true);
           * */
           
-          new BlockingToolTip(this, bubble.getMessage(), modelToolBar.getAddNodeButton(), 0, 0);
+          new BlockingToolTip(this, bubble.getMessage(), modelToolBar.getAddNodeButton(), bubble.getX(), bubble.getY());
       }
         }
     }

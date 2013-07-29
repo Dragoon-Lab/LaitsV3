@@ -500,7 +500,7 @@ public class NodeEditor extends javax.swing.JDialog {
             ApplicationContext.setNextNodes(currentVertex.getName());
             tabPane.setEnabledAt(PLAN, true);
             tabPane.setForegroundAt(PLAN, Color.BLACK);
-            addHelpBalloon(ApplicationContext.getFirstNextNode(), "descCheckDemo", "DESCRIPTION");
+            addHelpBalloon(currentVertex.getName(), "descCheckDemo", "DESCRIPTION");
         } else if (solutionCheck == 2) {
             dPanel.setTextFieldBackground(Color.CYAN);
             setEditorMessage("That quantity used in this model, but now is not the right time to define it. Please select another description.", true);
@@ -749,15 +749,15 @@ public class NodeEditor extends javax.swing.JDialog {
             if (bubble != null) {
                 
                 if(panel.equalsIgnoreCase("description")){
-                    new BlockingToolTip(this, bubble.getMessage(), dPanel.getLabel(bubble.getAttachedTo()), 0, 0);
+                    new BlockingToolTip(this, bubble.getMessage(), dPanel.getLabel(bubble.getAttachedTo()), bubble.getX(), bubble.getY());
                 }else if(panel.equalsIgnoreCase("plan")){
                     System.out.println("Trying to add help in Plan. Msg: "+bubble.getMessage()+"  "+bubble.getAttachedTo());
                     System.out.println("comp: "+pPanel.getLabel(bubble.getAttachedTo()));
-                    new BlockingToolTip(this, bubble.getMessage(), pPanel.getLabel(bubble.getAttachedTo()), 0, 0);
+                    new BlockingToolTip(this, bubble.getMessage(), pPanel.getLabel(bubble.getAttachedTo()), bubble.getX(), bubble.getY());
                 }else if(panel.equalsIgnoreCase("inputs")){
-                    new BlockingToolTip(this, bubble.getMessage(), iPanel.getLabel(bubble.getAttachedTo()), 0, 0);
+                    new BlockingToolTip(this, bubble.getMessage(), iPanel.getLabel(bubble.getAttachedTo()), bubble.getX(), bubble.getY());
                 }else if(panel.equalsIgnoreCase("calculations")){
-                    new BlockingToolTip(this, bubble.getMessage(), cPanel.getLabel(bubble.getAttachedTo()), 0, 0);
+                    new BlockingToolTip(this, bubble.getMessage(), cPanel.getLabel(bubble.getAttachedTo()), bubble.getX(), bubble.getY());
                 }
                 
              } else {

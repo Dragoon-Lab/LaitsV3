@@ -241,20 +241,20 @@ public class DescriptionPanelView extends JPanel{
            this.quantityDescriptionTextField.setText(sb.toString().trim());
            this.nodeNameTextField.setText(node.getNodeName());
            this.repaint();
-           addHelpBalloon("descFilled");
+           addHelpBalloon(ApplicationContext.getFirstNextNode(), "descFilled");
            
        }
        
     }//GEN-LAST:event_decisionTreeValueChanged
 
-    private void addHelpBalloon(String timing){
-        HelpBubble bubble = ApplicationContext.getHelp(ApplicationContext.getFirstNextNode(), "DESCRIPTION", timing);
+    private void addHelpBalloon(String node, String timing){
+        HelpBubble bubble = ApplicationContext.getHelp(node, "DESCRIPTION", timing);
         if(bubble != null){
           /*BalloonTipStyle style = new MinimalBalloonStyle(Color.WHITE, 0);
           BalloonTip myBalloonTip = new BalloonTip(this.evenMorePreciseLabel, new JLabel(bubble.getMessage()),style,Orientation.RIGHT_ABOVE, AttachLocation.ALIGNED, 20, 20, true);
           * */
           
-          new BlockingToolTip(this.nodeEditor, bubble.getMessage(), this.getLabel(bubble.getAttachedTo()), 0, 0);
+          new BlockingToolTip(this.nodeEditor, bubble.getMessage(), this.getLabel(bubble.getAttachedTo()), bubble.getX(), bubble.getY());
       }
     }
   // returns the value held by triedDuplicate

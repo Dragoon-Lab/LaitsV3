@@ -14,6 +14,8 @@ public class HelpBubble {
     private String message;
     private String attachedTo;
     private String nodeName;
+    private int x;
+    private int y;
 
     public void setNodeName(String nodeName) {
         this.nodeName = nodeName;
@@ -23,12 +25,14 @@ public class HelpBubble {
         return nodeName;
     }
 
-    public HelpBubble(String event, String timing, String message, String attachedTo, String nodeName) {
+    public HelpBubble(String event, String timing, String message, String attachedTo, String nodeName, int x, int y) {
         this.event = event;
         this.timing = timing;
         this.message = message;
         this.attachedTo = attachedTo;
         this.nodeName = nodeName;
+        this.x = x;
+        this.y = y;
     }
     
     public HelpBubble(){
@@ -37,6 +41,8 @@ public class HelpBubble {
         this.message = null;
         this.attachedTo = null;
         this.nodeName = null;
+        this.x=0;
+        this.y=0;
     }
 
     public void setEvent(String event) {
@@ -69,6 +75,22 @@ public class HelpBubble {
 
     public String getAttachedTo() {
         return attachedTo;
+    }
+    
+    public int getX() {
+        return x;
+    }
+
+    public int getY() {
+        return y;
+    }
+
+    public void setX(int x) {
+        this.x = x;
+    }
+
+    public void setY(int y) {
+        this.y = y;
     }
     
        
