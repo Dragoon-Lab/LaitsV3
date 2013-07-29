@@ -78,10 +78,12 @@ public class NewNodeDescPanel extends JPanel{
     initComponents();
     nodeEditor = ne;
     currentVertex = v;
-    initPanel();  
-    addHelpBalloon(ApplicationContext.getFirstNextNode(), "onLoad", "InputNewNode");
-  }
+    initPanel();
+    if(ApplicationContext.getAppMode().equalsIgnoreCase("COACHED")){
+        addHelpBalloon(ApplicationContext.getFirstNextNode(), "onLoad", "InputNewNode");
   
+    }
+  }
   public void initPanel(){
       if(ApplicationContext.getAppMode().equals("STUDENT") || ApplicationContext.getAppMode().equals("COACHED")){
           this.nodeNameTextField.setEditable(false);
@@ -244,7 +246,9 @@ public class NewNodeDescPanel extends JPanel{
            this.quantityDescriptionTextField.setText(sb.toString().trim());
            this.nodeNameTextField.setText(node.getNodeName());
            this.repaint();
-       addHelpBalloon(ApplicationContext.getFirstNextNode(), "descFilled", "InputNewNode");
+        if(ApplicationContext.getAppMode().equalsIgnoreCase("COACHED")){
+             addHelpBalloon(ApplicationContext.getFirstNextNode(), "descFilled", "InputNewNode");
+       }
        }
        
     }//GEN-LAST:event_decisionTreeValueChanged

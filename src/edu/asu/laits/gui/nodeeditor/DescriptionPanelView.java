@@ -241,7 +241,9 @@ public class DescriptionPanelView extends JPanel{
            this.quantityDescriptionTextField.setText(sb.toString().trim());
            this.nodeNameTextField.setText(node.getNodeName());
            this.repaint();
+        if(ApplicationContext.getAppMode().equalsIgnoreCase("COACHED")){
            addHelpBalloon(ApplicationContext.getFirstNextNode(), "descFilled");
+        }
            
        }
        

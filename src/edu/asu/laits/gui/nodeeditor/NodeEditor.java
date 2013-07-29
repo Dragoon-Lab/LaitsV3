@@ -77,7 +77,9 @@ public class NodeEditor extends javax.swing.JDialog {
         UIManager.getDefaults().put("TabbedPane.contentBorderInsets", new Insets(2, 0, -1, 0));
         setTabListener();
         initNodeEditor();
+        if(ApplicationContext.getAppMode().equalsIgnoreCase("COACHED")){
         addHelpBalloon(ApplicationContext.getFirstNextNode(), "onLoad", getTabName(selectedTab));
+        }
     }
 
     private void initNodeEditor() {
