@@ -246,7 +246,7 @@ public class NewNodeDescPanel extends JPanel{
            this.quantityDescriptionTextField.setText(sb.toString().trim());
            this.nodeNameTextField.setText(node.getNodeName());
            this.repaint();
-        if(ApplicationContext.getAppMode().equalsIgnoreCase("COACHED")){
+        if(ApplicationContext.getAppMode().equalsIgnoreCase("COACHED") && ApplicationContext.getFirstNextNode() != null){
              addHelpBalloon(ApplicationContext.getFirstNextNode(), "descFilled", "InputNewNode");
        }
        }
@@ -352,7 +352,7 @@ public class NewNodeDescPanel extends JPanel{
           for(SolutionNode name : correctNodeNames){
              if(name.getNodeName().equalsIgnoreCase(ApplicationContext.getFirstNextNode())){
                   giveupNode = name.getNodeName();
-                  ApplicationContext.nextCurrentOrder();
+                  //ApplicationContext.nextCurrentOrder();
                   ApplicationContext.removeNextNodes(name.getNodeName());
                   ApplicationContext.setNextNodes(name.getNodeName());
                   break;

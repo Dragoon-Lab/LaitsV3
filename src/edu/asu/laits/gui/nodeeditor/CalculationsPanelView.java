@@ -687,6 +687,7 @@ public class CalculationsPanelView extends javax.swing.JPanel {
     map.put("jScrollPane1", jScrollPane1);
     map.put("jScrollPane2", jScrollPane2);
     map.put("quantityLabel", quantityLabel);
+    map.put("availableInputsJList", availableInputsLabel);
     if(map.containsKey(label)){
         return map.get(label);
     }
