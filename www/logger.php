@@ -22,5 +22,4 @@ if($logger == "DevLogs"){
 }
 
 mysql_query($query);
-
 ?>
