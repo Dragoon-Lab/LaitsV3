@@ -61,6 +61,7 @@ public class TaskSolutionReader {
             
             //Read Given Nodes for Debug problem
             if(solution.getTaskType().equalsIgnoreCase("debug")){
+                
                 Element givenNodes = taskNode.element("GivenModel");
                 fillGivenNodes(solution, givenNodes);
             }
@@ -69,9 +70,10 @@ public class TaskSolutionReader {
             fillDescriptionTree(solution, descriptionTree);
             
             //Read in help bubbles
-            Element bubbles = taskNode.element("HelpBubbles");
-            fillHelpBubbles(solution, bubbles);
-                
+            if(ApplicationContext.getAppMode().equalsIgnoreCase("COACHED")){
+                Element bubbles = taskNode.element("HelpBubbles");
+                fillHelpBubbles(solution, bubbles);
+            }    
         } catch (Exception e) {
             // Could not read the XML file
             e.printStackTrace();
@@ -194,7 +196,9 @@ public class TaskSolutionReader {
             newNode.setNodePlan(node.elementTextTrim("Plan"));
 
             list.add(newNode);
+            
         }
+        
     }
     //Read in help bubble info
     private void fillHelpBubbles(TaskSolution solution, Element bubbles){
@@ -206,8 +210,15 @@ public class TaskSolutionReader {
             newBubble.setNodeName(bubble.elementTextTrim("nodeName"));
             newBubble.setAttachedTo(bubble.elementTextTrim("attachedTo"));
             newBubble.setEvent(bubble.elementTextTrim("Event"));
+            if(bubble.elementTextTrim("xValue")!= null){
+                newBubble.setX(Integer.parseInt(bubble.elementTextTrim("xValue")));
+                System.out.println(newBubble.getX());
+            } 
+            if(bubble.elementTextTrim("yValue")!= null){
+                newBubble.setY(Integer.parseInt(bubble.elementTextTrim("yValue")));
+            }    
             newBubble.setMessage(bubble.elementTextTrim("Message"));
-            
+        
         //    logs.debug(" " + bubble.elementTextTrim("Message") + " " + bubble.elementTextTrim("Timing") + " " + bubble.elementTextTrim("nodeName") + " " + bubble.elementTextTrim("attachedTo") + " " + bubble.elementTextTrim("Event"));
 
             solution.addHelpBubble(newBubble);

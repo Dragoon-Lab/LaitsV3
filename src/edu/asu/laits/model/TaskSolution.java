@@ -486,17 +486,21 @@ public class TaskSolution {
         helpBubbles.add(newBubble);
     }
 
-    public HelpBubble checkForHelp(String order, String time, String cevent) {
+    public List<HelpBubble> checkForHelp(String order, String time, String cevent) {
+        List<HelpBubble> bubbles = new ArrayList<HelpBubble>();
         for (HelpBubble bubble : this.helpBubbles) {
             //System.out.println("Help check passed in " + order + " looking at " + bubble.getNodeName());
             if (order.equalsIgnoreCase(bubble.getNodeName()) && time.equalsIgnoreCase(bubble.getTiming()) && cevent.equalsIgnoreCase(bubble.getEvent())) {
 
               //  System.out.println("check for help worked");
-                return bubble;
+              //  return bubble;
+                bubbles.add(bubble);
             }
         }
         //System.out.println("check for help failed");
-        return null;
+        if(!bubbles.isEmpty()){
+            return bubbles;
+        }else{return null;}
 
     }
 }

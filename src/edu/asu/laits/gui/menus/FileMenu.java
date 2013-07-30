@@ -171,7 +171,7 @@ public class FileMenu extends JMenu {
     /**
      * Method to open a new Task in Tutor Mode
      */
-    private void openTaskById(String id) {
+    public void openTaskById(String id) {
         TaskSolutionReader solutionReader = new TaskSolutionReader();
         try {
             TaskSolution solution = solutionReader.loadSolution(id);

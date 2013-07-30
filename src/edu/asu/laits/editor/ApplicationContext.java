@@ -77,7 +77,11 @@ public class ApplicationContext {
   }
   
   public static String getFirstNextNode(){
-      return nextNodes.get(0);
+      if (!nextNodes.isEmpty()){
+        return nextNodes.get(0);
+      } else {
+          return null;
+      }
   }
 
   
@@ -172,7 +176,7 @@ public class ApplicationContext {
     isProblemSolved = input;
   }
   
-  public static HelpBubble getHelp(String order, String time, String cevent){
+  public static List<HelpBubble> getHelp(String order, String time, String cevent){
       return correctSolution.checkForHelp(order, time, cevent);
       
   }

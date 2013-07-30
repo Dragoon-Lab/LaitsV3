@@ -104,24 +104,28 @@ public class MainWindow extends JFrame {
         windowCount++;
         
         initializeFrameElements();
-        setVisible(true); 
+        setVisible(true);
+        if(ApplicationContext.getAppMode().equalsIgnoreCase("COACHED")){
         addHelpBalloon(ApplicationContext.getFirstNextNode(), "onLoad");
+        }
  
     }
     
     
     public void addHelpBalloon(String node, String timing){
         if(ApplicationContext.getAppMode().equals("COACHED")){
-        HelpBubble bubble = ApplicationContext.getHelp(node, "MainWindow", timing);
+        List<HelpBubble> bubbles = ApplicationContext.getHelp(node, "MainWindow", timing);
         logs.debug(node + " MainWindow " + timing);
-        if(bubble != null){
+        if(!bubbles.isEmpty()){
+            for(HelpBubble bubble : bubbles){
           /*BalloonTipStyle style = new MinimalBalloonStyle(Color.WHITE, 0);
           BalloonTip myBalloonTip = new BalloonTip(this.evenMorePreciseLabel, new JLabel(bubble.getMessage()),style,Orientation.RIGHT_ABOVE, AttachLocation.ALIGNED, 20, 20, true);
           * */
           
-          new BlockingToolTip(this, bubble.getMessage(), modelToolBar.getAddNodeButton(), 0, 0);
-      }
+            new BlockingToolTip(this, bubble, modelToolBar.getAddNodeButton());
+            }
         }
+    }
     }
 
     public static void openWindowWithFile(File file) {
@@ -465,18 +469,9 @@ public class MainWindow extends JFrame {
     
     
     private void loadTask(){
-        
-        TaskSolutionReader solutionReader = new TaskSolutionReader();
         try{
             String task = ApplicationContext.getCurrentTaskID();
-            activityLogs.debug("Student is given default problem ID: "+task);
-            
-            TaskSolution solution = solutionReader.loadSolution(task);
-            ApplicationContext.setCorrectSolution(solution);
-            
-            this.loadTaskDescription(solution.getTaskName(),
-                    solution.getTaskDescription(), 
-                    solution.getImageURL());
+            mainMenu.getFileMenu().openTaskById(task);
         }catch(Exception e){
             e.printStackTrace();
         }
