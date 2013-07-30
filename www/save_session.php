@@ -32,4 +32,5 @@ if ($num_rows == 0) {
 }
 
 mysql_query($updateQuery);
+
 ?>

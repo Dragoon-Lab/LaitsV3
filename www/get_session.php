@@ -27,4 +27,5 @@ if ($num_rows == 1) {
         printf("%s", $row[0]);
     }
 }
+
 ?>
