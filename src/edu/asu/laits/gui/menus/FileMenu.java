@@ -196,9 +196,16 @@ public class FileMenu extends JMenu {
     }
 
     private void createGivenModel(TaskSolution solution, GraphEditorPane editorPane) {
+        logs.debug("Building Given Model for Task : "+solution.getTaskName());
         List<SolutionNode> givenNodes = solution.getGivenNodes();
 
         for (SolutionNode node : givenNodes) {
+            
+            if(editorPane.getModelGraph().getVertexByName(node.getNodeName()) != null){
+                logs.info("Node "+node.getNodeName()+" was loaded from session. Skipping in GivenModelCreation.");
+               continue;
+            }
+            
             Vertex v = new Vertex();
             v.setVertexIndex(graphPane.getModelGraph().getNextAvailableIndex());
             
@@ -225,6 +232,7 @@ public class FileMenu extends JMenu {
             }
 
             editorPane.addVertex(v);
+            logs.debug("Added Node "+v.getName()+" in the Given Model.");
         }
 
         for (SolutionNode node : givenNodes) {
