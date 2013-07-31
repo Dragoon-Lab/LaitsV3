@@ -71,7 +71,7 @@ public class NodeEditor extends javax.swing.JDialog {
      * Creates new form NodeEditor2
      */
     public NodeEditor(GraphEditorPane editorPane, Vertex selected) {
-        super(editorPane.getMainFrame(), false);
+        super(editorPane.getMainFrame(), true);
         graphPane = editorPane;
         currentVertex = selected;
         initComponents();

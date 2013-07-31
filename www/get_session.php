@@ -12,11 +12,12 @@ if (strlen($dbname) == 0) {
 }
 fclose($fh);
 
-$mysqli = mysqli_connect("localhost", $dbuser, $dbpass, $dbname);
+$mysqli = mysqli_connect("localhost", $dbuser, $dbpass, $dbname)
+        or die('Could not connect to database.');
 
-$id = addslashes($_GET['id']);
-$section = addslashes($_GET['section']);
-$problemNum = addslashes($_GET['problem']);
+$id = mysqli_real_escape_string($mysqli, $_GET['id']);
+$section = mysqli_real_escape_string($mysqli, $_GET['section']);
+$problemNum = mysqli_real_escape_string($mysqli, $_GET['problem']);
 
 $result = $mysqli->query("SELECT saveData FROM autosave_table WHERE id='$id' AND section='$section' AND problemNum='$problemNum'");
 
@@ -27,4 +28,5 @@ if ($num_rows == 1) {
         printf("%s", $row[0]);
     }
 }
+
 ?>

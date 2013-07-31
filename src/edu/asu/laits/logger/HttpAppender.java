@@ -84,11 +84,13 @@ public class HttpAppender extends AppenderSkeleton {
         HttpConnectionParams.setConnectionTimeout(params, timeOut);
         HttpConnectionParams.setSoTimeout(params, timeOut);
         String message = this.getLayout().format(paramLoggingEvent);
-
+        logURL = ApplicationContext.getRootURL()+"/logger.php";
+        
         try {
             if (this.HttpMethodBase.equalsIgnoreCase(METHOD_GET)) {
                 StringBuffer sb = new StringBuffer(this.logURL);
                 sb.append(message);
+                System.out.println("test : "+sb.toString());
                 httpMethod = new HttpGet(sb.toString());
             } else {
                 if (this.postMethod.equalsIgnoreCase(POST_PARAMETERS)) {

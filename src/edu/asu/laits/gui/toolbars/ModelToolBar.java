@@ -23,6 +23,7 @@ import javax.swing.JToolBar;
 import javax.swing.JButton;
 import java.awt.Font;
 import javax.swing.Box;
+import org.jgraph.graph.CellView;
 
 /**
  * ToolBar for Model functionalities Provides Add Node and Run Model buttons on
@@ -176,7 +177,7 @@ public class ModelToolBar extends JToolBar {
             showForumButton
                     .addActionListener(new java.awt.event.ActionListener() {
                 public void actionPerformed(java.awt.event.ActionEvent e) {
-                    modelMenu.showForumButtonAction();
+                    modelMenu.showForumButtonAction();                    
                 }
             });
         }

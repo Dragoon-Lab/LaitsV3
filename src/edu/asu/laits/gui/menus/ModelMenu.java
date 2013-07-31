@@ -49,6 +49,7 @@ import javax.swing.JMenuItem;
 import javax.swing.JOptionPane;
 import javax.swing.filechooser.FileFilter;
 import org.apache.log4j.Logger;
+import org.jgraph.graph.CellView;
 import org.jgraph.graph.DefaultGraphCell;
 import org.jgraph.graph.DefaultPort;
 
@@ -358,6 +359,10 @@ public class ModelMenu extends JMenu {
 
         forumDialog.setResizable(false);
         forumDialog.setVisible(true);
+        
+//        CellView[] test = graphPane.getGraphLayoutCache().getAllViews();
+//        for(CellView v : test)
+//            System.out.println("V : "+v);
     }
 
     public void addDeleteNodeMenu() {

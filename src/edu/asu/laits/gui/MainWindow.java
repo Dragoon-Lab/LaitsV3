@@ -469,18 +469,9 @@ public class MainWindow extends JFrame {
     
     
     private void loadTask(){
-        
-        TaskSolutionReader solutionReader = new TaskSolutionReader();
         try{
             String task = ApplicationContext.getCurrentTaskID();
-            activityLogs.debug("Student is given default problem ID: "+task);
-            
-            TaskSolution solution = solutionReader.loadSolution(task);
-            ApplicationContext.setCorrectSolution(solution);
-            
-            this.loadTaskDescription(solution.getTaskName(),
-                    solution.getTaskDescription(), 
-                    solution.getImageURL());
+            mainMenu.getFileMenu().openTaskById(task);
         }catch(Exception e){
             e.printStackTrace();
         }
