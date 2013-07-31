@@ -3,7 +3,7 @@
 <Task phase="Intro" type="Debug">
   <TaskName>Training Problem 2 - Jared's weight</TaskName>
   <TaskDescription>Finish this model to determine how much weight Jared loses after 10 weeks.  </TaskDescription>
-  <URL>images/weighing-scales2.jpg</URL>
+  <URL>http://dragoon.asu.edu/devel/images/weighing-scales2.jpg</URL> <!-- Bug #2065 -->
   <StartTime>0</StartTime>
   <EndTime>10</EndTime>
   <Units>Weeks</Units>
