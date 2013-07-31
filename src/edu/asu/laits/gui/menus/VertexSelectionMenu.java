@@ -17,6 +17,7 @@
  */
 package edu.asu.laits.gui.menus;
 
+import edu.asu.laits.editor.ApplicationContext;
 import edu.asu.laits.editor.GraphEditorPane;
 import edu.asu.laits.editor.listeners.InsertModeChangeListener;
 import edu.asu.laits.gui.GraphViewPanel;
@@ -61,7 +62,9 @@ public class VertexSelectionMenu extends JPopupMenu {
      */
     private void initialize() {
         add(getEditItem());
-        add(getDeleteItem());
+        if(!ApplicationContext.getAppMode().equalsIgnoreCase("COACHED")){
+           add(getDeleteItem());    
+        }
         add(getGraphDataItem());        
     }
 

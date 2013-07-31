@@ -810,6 +810,7 @@ public class NodeEditor extends javax.swing.JDialog {
     private void initComponents() {
 
         jLayeredPane1 = new javax.swing.JLayeredPane();
+        jRadioButton1 = new javax.swing.JRadioButton();
         tabPane = new javax.swing.JTabbedPane();
         descriptionPanel = new javax.swing.JPanel();
         planPanel = new javax.swing.JPanel();
@@ -822,6 +823,8 @@ public class NodeEditor extends javax.swing.JDialog {
         editorMsgLabel = new javax.swing.JLabel();
         bottomSpacer = new javax.swing.JLabel();
         tabPanel = new javax.swing.JLabel();
+
+        jRadioButton1.setText("jRadioButton1");
 
         setDefaultCloseOperation(javax.swing.WindowConstants.DO_NOTHING_ON_CLOSE);
 
@@ -1138,6 +1141,7 @@ public JComponent getLabel(String label){
     private javax.swing.JButton giveUpButton;
     private javax.swing.JPanel inputsPanel;
     private javax.swing.JLayeredPane jLayeredPane1;
+    private javax.swing.JRadioButton jRadioButton1;
     private javax.swing.JPanel planPanel;
     private javax.swing.JTabbedPane tabPane;
     private javax.swing.JLabel tabPanel;
