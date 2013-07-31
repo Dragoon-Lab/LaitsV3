@@ -3,7 +3,7 @@
 <Task phase="Intro" type="Debug">
   <TaskName>Training Problem 3 - Jared and Oprah</TaskName>
   <TaskDescription>Finish this model comparing Oprah and Jared's weights.  </TaskDescription>
-  <URL>http://dragoon.asu.edu/devel/images/ht_oprah_letterman_nt_121220_wblog.jpg</URL> <!-- Bug #2065 -->
+  <URL>http://dragoon.asu.edu/devel/images/jared-and-oprah.jpg</URL> <!-- Bug #2065 -->
   <StartTime>0</StartTime>
   <EndTime>10</EndTime>
   <Units>Days</Units>
@@ -14,7 +14,7 @@
       <Plan>said to both increase and decrease</Plan>
       <Inputs/>
       <Outputs>
-        <Node name="Jared weight"/>
+        <Name>Jared weight</Name>
       </Outputs>
       <Equation></Equation>
       <InitialValue>120.0</InitialValue>
@@ -24,7 +24,7 @@
       <Plan>the difference of two quantities</Plan>
       <Order>1</Order>
       <Inputs>
-        <Node name="Oprah weight"/>
+        <Name>Oprah weight</Name>
       </Inputs>
       <Outputs/>
       <Equation/>
@@ -37,7 +37,7 @@
       <Plan>said to both increase and decrease</Plan>
       <Inputs/>
       <Outputs>
-        <Node name="Jared weight"/>
+        <Name>Jared weight</Name>
       </Outputs>
       <Equation></Equation>
       <InitialValue>120.0</InitialValue>
