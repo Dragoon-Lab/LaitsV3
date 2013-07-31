@@ -820,6 +820,7 @@ public class NodeEditor extends javax.swing.JDialog {
         buttonOK = new javax.swing.JButton();
         editorMsgLabel = new javax.swing.JLabel();
         bottomSpacer = new javax.swing.JLabel();
+        tabPanel = new javax.swing.JLabel();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.DO_NOTHING_ON_CLOSE);
 
@@ -853,7 +854,7 @@ public class NodeEditor extends javax.swing.JDialog {
         );
         planPanelLayout.setVerticalGroup(
             planPanelLayout.createParallelGroup(org.jdesktop.layout.GroupLayout.LEADING)
-            .add(0, 506, Short.MAX_VALUE)
+            .add(0, 549, Short.MAX_VALUE)
         );
 
         tabPane.addTab("Plan", planPanel);
@@ -866,7 +867,7 @@ public class NodeEditor extends javax.swing.JDialog {
         );
         inputsPanelLayout.setVerticalGroup(
             inputsPanelLayout.createParallelGroup(org.jdesktop.layout.GroupLayout.LEADING)
-            .add(0, 506, Short.MAX_VALUE)
+            .add(0, 549, Short.MAX_VALUE)
         );
 
         tabPane.addTab("Inputs", inputsPanel);
@@ -879,7 +880,7 @@ public class NodeEditor extends javax.swing.JDialog {
         );
         calculationPanelLayout.setVerticalGroup(
             calculationPanelLayout.createParallelGroup(org.jdesktop.layout.GroupLayout.LEADING)
-            .add(0, 506, Short.MAX_VALUE)
+            .add(0, 549, Short.MAX_VALUE)
         );
 
         tabPane.addTab("Calculations", calculationPanel);
@@ -919,39 +920,47 @@ public class NodeEditor extends javax.swing.JDialog {
         editorMsgLabel.setForeground(new java.awt.Color(255, 0, 0));
         editorMsgLabel.setText("jLabel1");
 
+        tabPanel.setForeground(new java.awt.Color(238, 238, 238));
+        tabPanel.setText("Node Editor");
+
         org.jdesktop.layout.GroupLayout layout = new org.jdesktop.layout.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
         layout.setHorizontalGroup(
             layout.createParallelGroup(org.jdesktop.layout.GroupLayout.LEADING)
             .add(layout.createSequentialGroup()
-                .add(0, 18, Short.MAX_VALUE)
-                .add(tabPane, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE, 622, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE)
-                .addContainerGap())
-            .add(org.jdesktop.layout.GroupLayout.TRAILING, layout.createSequentialGroup()
-                .addContainerGap(org.jdesktop.layout.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                .addContainerGap()
                 .add(layout.createParallelGroup(org.jdesktop.layout.GroupLayout.LEADING)
                     .add(layout.createSequentialGroup()
                         .add(checkButton, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE, 82, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE)
                         .add(18, 18, 18)
                         .add(giveUpButton, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE, 78, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE)
-                        .addPreferredGap(org.jdesktop.layout.LayoutStyle.RELATED, org.jdesktop.layout.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                        .addPreferredGap(org.jdesktop.layout.LayoutStyle.RELATED, 285, Short.MAX_VALUE)
                         .add(buttonOK, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE, 78, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE)
                         .add(18, 18, 18)
-                        .add(buttonCancel, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE, 78, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE)
-                        .addContainerGap())
+                        .add(buttonCancel, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE, 78, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE))
                     .add(org.jdesktop.layout.GroupLayout.TRAILING, layout.createSequentialGroup()
                         .add(editorMsgLabel, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE, 601, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE)
-                        .add(20, 20, 20))))
+                        .add(14, 14, 14))
+                    .add(org.jdesktop.layout.GroupLayout.TRAILING, layout.createSequentialGroup()
+                        .add(4, 4, 4)
+                        .add(tabPane, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE, 622, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE)))
+                .addContainerGap())
+            .add(layout.createSequentialGroup()
+                .add(302, 302, 302)
+                .add(tabPanel)
+                .addContainerGap(org.jdesktop.layout.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
             .add(layout.createParallelGroup(org.jdesktop.layout.GroupLayout.LEADING)
                 .add(layout.createSequentialGroup()
-                    .add(10, 22, Short.MAX_VALUE)
+                    .add(10, 24, Short.MAX_VALUE)
                     .add(bottomSpacer, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE, 30, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE)
-                    .add(0, 594, Short.MAX_VALUE)))
+                    .add(0, 595, Short.MAX_VALUE)))
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(org.jdesktop.layout.GroupLayout.LEADING)
             .add(org.jdesktop.layout.GroupLayout.TRAILING, layout.createSequentialGroup()
-                .add(tabPane, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE, 552, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE)
+                .add(tabPanel)
+                .addPreferredGap(org.jdesktop.layout.LayoutStyle.RELATED)
+                .add(tabPane, org.jdesktop.layout.GroupLayout.DEFAULT_SIZE, 595, Short.MAX_VALUE)
                 .addPreferredGap(org.jdesktop.layout.LayoutStyle.RELATED)
                 .add(editorMsgLabel, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE, 21, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE)
                 .addPreferredGap(org.jdesktop.layout.LayoutStyle.RELATED)
@@ -959,13 +968,12 @@ public class NodeEditor extends javax.swing.JDialog {
                     .add(checkButton, org.jdesktop.layout.GroupLayout.DEFAULT_SIZE, org.jdesktop.layout.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                     .add(giveUpButton, org.jdesktop.layout.GroupLayout.DEFAULT_SIZE, org.jdesktop.layout.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                     .add(buttonCancel, org.jdesktop.layout.GroupLayout.DEFAULT_SIZE, org.jdesktop.layout.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                    .add(buttonOK, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE, 41, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE))
-                .addContainerGap(org.jdesktop.layout.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                    .add(buttonOK, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE, 41, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE)))
             .add(layout.createParallelGroup(org.jdesktop.layout.GroupLayout.LEADING)
                 .add(layout.createSequentialGroup()
-                    .add(0, 617, Short.MAX_VALUE)
+                    .add(0, 646, Short.MAX_VALUE)
                     .add(bottomSpacer, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE, 10, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE)
-                    .add(0, 5, Short.MAX_VALUE)))
+                    .add(0, 35, Short.MAX_VALUE)))
         );
 
         pack();
@@ -1085,6 +1093,7 @@ public JComponent getLabel(String label){
     map.put("giveUpButton", giveUpButton);
     map.put("buttonCancel", buttonCancel);
     map.put("editorMsgLabel", editorMsgLabel);
+    map.put("tabPanel", tabPanel);
     if(map.containsKey(label)){
         return map.get(label);
     }
@@ -1129,6 +1138,7 @@ public JComponent getLabel(String label){
     private javax.swing.JPanel inputsPanel;
     private javax.swing.JPanel planPanel;
     private javax.swing.JTabbedPane tabPane;
+    private javax.swing.JLabel tabPanel;
     // End of variables declaration//GEN-END:variables
 }
 
