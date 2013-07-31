@@ -14,7 +14,7 @@
       <Plan>fixed value</Plan>
       <Inputs/>
       <Outputs>
-        <Node name="Jared weight"/>
+        <Name>Jared weight</Name>
       </Outputs>
       <Equation></Equation>
       <InitialValue>2.5</InitialValue>
@@ -23,7 +23,7 @@
       <CorrectDescription>Jared's weight.</CorrectDescription>
       <Plan>said to decrease</Plan>
       <Inputs>
-        <Node name="weight change"/>
+        <Name>weight change</Name>
       </Inputs>
       <Order>1</Order>
       <Outputs/>
@@ -37,7 +37,7 @@
       <Plan>fixed value</Plan>
       <Inputs/>
       <Outputs>
-        <Node name="Jared weight"/>
+        <Name>Jared weight</Name>
       </Outputs>
       <Equation></Equation>
       <InitialValue>2.5</InitialValue>

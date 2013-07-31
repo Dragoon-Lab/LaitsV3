@@ -3,7 +3,7 @@
 <Task phase="Intro" type="Debug">
 <TaskName>Training Problem 4 - Jared and Oprah</TaskName>
 <TaskDescription>Finish this model comparing Oprah and Jared's weights.  </TaskDescription>
-  <URL/>
+  <URL>http://dragoon.asu.edu/devel/images/jared-and-oprah.jpg</URL> <!-- Bug #2065 -->
   <StartTime>0</StartTime>
   <EndTime>10</EndTime>
   <Units>Weeks</Units>
@@ -13,10 +13,10 @@
       <CorrectDescription>How much Oprah weighs at the end of the week</CorrectDescription>
       <Plan>said to decrease</Plan>
       <Inputs>
-        <Node name="Oprah weight loss"/>
+        <Name>Oprah weight loss</Name>
       </Inputs>
       <Outputs>
-        <Node name="Jared weight"/>
+        <Name>Jared weight</Name>
       </Outputs>
       <Equation>- Oprah weight loss</Equation>
       <InitialValue>140.0</InitialValue>
@@ -26,7 +26,7 @@
       <Plan>fixed value</Plan>
       <Inputs/>
       <Outputs>
-        <Node name="Oprah weight"/>
+        <Name>Oprah weight</Name>
       </Outputs>
       <Equation></Equation>
       <InitialValue>1.5</InitialValue>
@@ -48,10 +48,10 @@
       <CorrectDescription>How much Oprah weighs at the end of the week</CorrectDescription>
       <Plan>said to decrease</Plan>
       <Inputs>
-        <Node name="Oprah weight loss"/>
+        <Name>Oprah weight loss</Name>
       </Inputs>
       <Outputs>
-        <Node name="Jared weight"/>
+        <Name>Jared weight</Name>
       </Outputs>
       <Equation>- Oprah weight loss</Equation>
       <InitialValue>140.0</InitialValue>
@@ -61,7 +61,7 @@
       <Plan>fixed value</Plan>
       <Inputs/>
       <Outputs>
-        <Node name="Oprah weight"/>
+        <Name>Oprah weight</Name>
       </Outputs>
       <Equation></Equation>
       <InitialValue>1.5</InitialValue>

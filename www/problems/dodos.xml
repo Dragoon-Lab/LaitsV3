@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
-<Task phase="Intro" type="Debug">
+<Task phase="Intro" type="Construct">
   <TaskName>Training Problem 6 - Dodo extinction</TaskName>
   <TaskDescription>Model how long the Dodos have left to live.  Initial population 1000, 20% death rate yearly</TaskDescription>
   <URL/>
@@ -14,10 +14,10 @@
       <Plan>said to decrease</Plan>
       <Order>1</Order>
       <Inputs>
-        <Node name="deaths"/>
+        <Name>deaths</Name>
       </Inputs>
       <Outputs>
-        <Node name="deaths"/>
+       <Name>deaths</Name>
       </Outputs>
       <Equation>- deaths</Equation>
       <InitialValue>1000.0</InitialValue>
@@ -26,11 +26,11 @@
       <CorrectDescription>The number of Dodos that die each year</CorrectDescription>
       <Plan>ratio of two quantities</Plan>
       <Inputs>
-        <Node name="population"/>
-        <Node name="death rate"/>
+        <Name>population</Name>
+        <Name>death rate</Name>
       </Inputs>
       <Outputs>
-        <Node name="population"/>
+        <Name>population</Name>
       </Outputs>
       <Equation/>
       <InitialValue>0.0</InitialValue>
@@ -40,7 +40,7 @@
       <Plan>fixed value</Plan>
       <Inputs/>
       <Outputs>
-        <Node name="deaths"/>
+        <Name>deaths</Name>
       </Outputs>
       <Equation></Equation>
       <InitialValue>0.2</InitialValue>

@@ -3,7 +3,7 @@
 <Task phase="Intro" type="Construct">
 <TaskName>Training Problem 3 - Jared and Oprah</TaskName>
 <TaskDescription>Finish this model comparing Oprah and Jared's weights.  </TaskDescription>
-  <URL>http://dragoon.asu.edu/devel/images/ht_oprah_letterman_nt_121220_wblog.jpg</URL> <!-- Bug #2065 -->
+  <URL>http://dragoon.asu.edu/devel/images/jared-and-oprah.jpg</URL> <!-- Bug #2065 -->
   <StartTime>0</StartTime>
   <EndTime>10</EndTime>
   <Units>Days</Units>
@@ -14,7 +14,7 @@
       <Plan>fixed value</Plan>
       <Inputs/>
       <Outputs>
-        <Node name="Jared weight"/>
+        <Name>Jared weight</Name>
       </Outputs>
       <Equation></Equation>
       <InitialValue>50.0</InitialValue>
@@ -23,10 +23,10 @@
       <CorrectDescription>How much Oprah weighs at the end of the week</CorrectDescription>
       <Plan>said to decrease</Plan>
       <Inputs>
-        <Node name="Oprah weight loss"/>
+       <Name>Oprah weight loss</Name>
       </Inputs>
       <Outputs>
-        <Node name="Jared weight"/>
+        <Name>Jared weight</Name>
       </Outputs>
       <Equation>- Oprah weight loss</Equation>
       <InitialValue>140.0</InitialValue>
@@ -36,7 +36,7 @@
       <Plan>fixed value</Plan>
       <Inputs/>
       <Outputs>
-        <Node name="Oprah weight"/>
+        <Name>Oprah weight</Name>
       </Outputs>
       <Equation></Equation>
       <InitialValue>1.5</InitialValue>
@@ -46,8 +46,8 @@
       <Plan>the difference of two quantities</Plan>
       <Order>1</Order>
       <Inputs>
-        <Node name="Oprah weight"/>
-        <Node name="Jared extra weight"/>
+        <Name>Oprah weight</Name>
+        <Name>Jared extra weight</Name>
       </Inputs>
       <Outputs/>
       <Equation/>
