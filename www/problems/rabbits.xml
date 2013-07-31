@@ -2,7 +2,7 @@
 
 <Task phase="Intro" type="Debug">
    <TaskName>Rabbits - Intro Problem</TaskName>
-   <URL>http://dragoon.asu.edu/demo/problems/rabbits.png</URL>
+   <URL>images/rabbits.png</URL>
    <TaskDescription>&lt;html&gt;In this exercise, you will construct a model of how a rabbit population grows when no rabbits die.  NEWLINE The first quantity in this model is the &lt;strong&gt;population&lt;/strong&gt; or
 &lt;em&gt;number of rabbits in the model&lt;/em&gt;.   Initially, there are 100 rabbits, but the number increases with time. NEWLINE The increase in the population each month is its present value plus the number of &lt;strong&gt;births&lt;/strong&gt; NEWLINE (&lt;em&gt;number of rabbits born each month&lt;/em&gt;).  The &lt;strong&gt;births&lt;/strong&gt;
 is equal to the product of the population and the &lt;strong&gt;birth rate&lt;/strong&gt;. NEWLINE
