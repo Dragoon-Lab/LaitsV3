@@ -1105,6 +1105,10 @@ public JComponent getLabel(String label){
         return null;
     }
 }
+public void setCheckDemoEnabled(){
+        checkButton.setEnabled(true);
+        giveUpButton.setEnabled(true);
+}
 
     public void refreshInputs() {
         iPanel.refreshInputs();
