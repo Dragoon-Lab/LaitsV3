@@ -10,26 +10,20 @@ if (strlen($dbname) == 0) {
 }
 fclose($fh);
 
-$con = mysql_pconnect("localhost", $dbuser, $dbpass) or
-        die('Could not connect: ' . mysql_error());
+$mysqli = mysqli_connect("localhost", $dbuser, $dbpass, $dbname)
+        or die('Could not connect to database.');
 
-mysql_select_db($dbname, $con) or die("Could not find database");
+$id = mysqli_real_escape_string($mysqli, $_GET['id']);
+$section = mysqli_real_escape_string($mysqli, $_GET['section']);
+$problemNum = mysqli_real_escape_string($mysqli, $_GET['problemNum']);
+$saveData = mysqli_real_escape_string($mysqli, $_GET['saveData']);
 
-$id = addslashes($_GET['id']);
-$section = addslashes($_GET['section']);
-$problemNum = addslashes($_GET['problemNum']);
-$saveData = addslashes($_GET['saveData']);
+$result = $mysqli->query("SELECT saveData FROM autosave_table WHERE id='$id' AND section='$section' AND problemNum='$problemNum'");
+$num_rows = $result->num_rows;
 
-$query = "SELECT saveData FROM autosave_table WHERE id='$id' AND section='$section' AND problemNum='$problemNum'";
-$result = mysql_query($query);
-$num_rows = mysql_num_rows($result);
-
-$updateQuery = "";
 if ($num_rows == 0) {
-    $updateQuery = "INSERT INTO autosave_table(id,section,problemNum,saveData) VALUES ('$id','$section','$problemNum','$saveData')";
+    $mysqli->query("INSERT INTO autosave_table(id,section,problemNum,saveData) VALUES ('$id','$section','$problemNum','$saveData')");
 } else {
-    $updateQuery = "UPDATE autosave_table SET saveData='$saveData', date = CURRENT_TIMESTAMP WHERE id='$id' AND section='$section' AND problemNum='$problemNum'";
+    $mysqli->query("UPDATE autosave_table SET saveData='$saveData', date = CURRENT_TIMESTAMP WHERE id='$id' AND section='$section' AND problemNum='$problemNum'");
 }
-
-mysql_query($updateQuery);
 ?>

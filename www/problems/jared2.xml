@@ -1,0 +1,69 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<Task phase="Intro" type="Debug">
+  <TaskName>Training Problem 3 - Jared and Oprah</TaskName>
+  <TaskDescription>Finish this model comparing Oprah and Jared's weights.  </TaskDescription>
+  <URL/>
+  <StartTime>0</StartTime>
+  <EndTime>10</EndTime>
+  <Units>Days</Units>
+  <NodeCount>2</NodeCount>
+  <Nodes>
+    <Node type="constant" name="Oprah weight" extra="no">
+      <CorrectDescription>How much Oprah weighs</CorrectDescription>
+      <Plan>said to both increase and decrease</Plan>
+      <Inputs/>
+      <Outputs>
+        <Node name="Jared weight"/>
+      </Outputs>
+      <Equation></Equation>
+      <InitialValue>120.0</InitialValue>
+    </Node>
+    <Node type="flow" name="Jared weight" extra="no">
+      <CorrectDescription>How much Jared weighs</CorrectDescription>
+      <Plan>the difference of two quantities</Plan>
+      <Order>1</Order>
+      <Inputs>
+        <Node name="Oprah weight"/>
+      </Inputs>
+      <Outputs/>
+      <Equation/>
+      <InitialValue>0.0</InitialValue>
+    </Node>
+  </Nodes>
+<GivenModel>
+    <Node type="constant" name="Oprah weight" extra="no">
+      <CorrectDescription>How much Oprah weighs</CorrectDescription>
+      <Plan>said to both increase and decrease</Plan>
+      <Inputs/>
+      <Outputs>
+        <Node name="Jared weight"/>
+      </Outputs>
+      <Equation></Equation>
+      <InitialValue>120.0</InitialValue>
+    </Node>
+</GivenModel>
+  <DescriptionTree>    
+     <Node level="root">
+      <Description>How much does Jared</Description>           
+        <Node level="leaf">
+          <Description>lose each week</Description>
+          <NodeName>weight change</NodeName>
+        </Node>
+        <Node level="leaf">
+          <Description>weigh at the end of each week</Description>
+          <NodeName>Jared weight</NodeName>
+        </Node>
+    </Node>
+    <Node level="root">
+      <Description>How much does Oprah</Description>             
+        <Node level="leaf">
+          <Description>weigh at the end of each week</Description>
+          <NodeName>Oprah weight</NodeName>
+        </Node>
+        <Node level="leaf">
+          <Description>earn each week</Description>
+          <NodeName>Oprah salary</NodeName>
+        </Node>
+    </Node></DescriptionTree>
+</Task>
