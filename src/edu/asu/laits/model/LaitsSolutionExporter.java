@@ -151,8 +151,8 @@ public class LaitsSolutionExporter {
         while(edges.hasNext()){
             Edge e = edges.next();
             Vertex source = graph.getVertexById(e.getSourceVertexId());
-            Element el = node.addElement("Node");
-            el.addAttribute("name", source.getName());
+            Element el = node.addElement("Name");
+            el.addText(source.getName());
         }
     }
     
