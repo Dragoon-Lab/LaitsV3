@@ -475,6 +475,8 @@ public class InputsPanelView extends javax.swing.JPanel implements ItemListener 
     
     public void setInputsTypeBackground(Color c){
         radioPanel.setBackground(c);
+        inputNodesSelectionOptionButton.setBackground(c);
+        fixedValueOptionButton.setBackground(c);
     }
     
     public void setInputValuesBackground(Color c){
@@ -482,7 +484,7 @@ public class InputsPanelView extends javax.swing.JPanel implements ItemListener 
     }
 
     public void resetOptionPanelBackground() {
-        //radioPanel.setBackground(new Color(238, 238, 238));
+        radioPanel.setBackground(new Color(238, 238, 238));
         inputNodesSelectionOptionButton.setBackground(new Color(238, 238, 238));
         fixedValueOptionButton.setBackground(new Color(238, 238, 238));
         availableInputNodesPanels.setBackground(new Color(238, 238, 238));

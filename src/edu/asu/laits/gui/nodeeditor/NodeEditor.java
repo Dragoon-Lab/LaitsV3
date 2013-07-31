@@ -138,9 +138,6 @@ public class NodeEditor extends javax.swing.JDialog {
                 getPreferredSize().width, getPreferredSize().height);
         pack();
 
-        setVisible(true);
-        setResizable(false);
-
         if (ApplicationContext.getAppMode().equals("COACHED")) {
             if (!currentVertex.getPlanStatus().equals(Vertex.PlanStatus.CORRECT)
                     && !currentVertex.getPlanStatus().equals(Vertex.PlanStatus.GAVEUP)) {
@@ -153,7 +150,25 @@ public class NodeEditor extends javax.swing.JDialog {
                 tabPane.setForegroundAt(CALCULATIONS, Color.GRAY);
             }
         }
-
+        if (ApplicationContext.getAppMode().equals("STUDENT")) {
+            if (!currentVertex.getPlanStatus().equals(Vertex.PlanStatus.CORRECT)
+                    && !currentVertex.getPlanStatus().equals(Vertex.PlanStatus.GAVEUP)) {
+                tabPane.setEnabledAt(INPUTS, false);
+                tabPane.setForegroundAt(INPUTS, Color.GRAY);
+            }
+            if (!currentVertex.getDescriptionStatus().equals(Vertex.DescriptionStatus.CORRECT)
+                    && !currentVertex.getDescriptionStatus().equals(Vertex.DescriptionStatus.GAVEUP)) {
+                tabPane.setEnabledAt(PLAN, false);
+                tabPane.setForegroundAt(PLAN, Color.GRAY);
+            }
+            if (!currentVertex.getInputsStatus().equals(Vertex.InputsStatus.CORRECT)
+                    && !currentVertex.getInputsStatus().equals(Vertex.InputsStatus.GAVEUP)) {
+                tabPane.setEnabledAt(CALCULATIONS, false);
+                tabPane.setForegroundAt(CALCULATIONS, Color.GRAY);
+            }
+        }
+        setVisible(true);
+        setResizable(false);
     }
 
     public void initTabs(boolean newNode) {
@@ -554,7 +569,7 @@ public class NodeEditor extends javax.swing.JDialog {
         iPanel.setInputsTypeBackground(new Color(240, 240, 240));
         iPanel.setInputValuesBackground(new Color(240, 240, 240));
 
-        int result = 0;
+        int result = -1;
 
         if (iPanel.getValueButtonSelected()) {
             result = correctSolution.checkNodeInputs(dPanel.getNodeName(), null);
@@ -579,8 +594,9 @@ public class NodeEditor extends javax.swing.JDialog {
             if(ApplicationContext.getAppMode().equalsIgnoreCase("COACHED")){            
                 addHelpBalloon(currentVertex.getName(), "descCheckDemo", "INPUTS");
             }
-        } else {
-            if (result == 1) {
+        } 
+        else {
+            if (result == 1 || result == -1) {
                 iPanel.setInputsTypeBackground(Color.RED);
             } else {
                 iPanel.setInputsTypeBackground(Color.GREEN);
@@ -593,6 +609,8 @@ public class NodeEditor extends javax.swing.JDialog {
             } else {
                 setEditorMessage("Your Inputs are Incorrect.", true);
             }
+            tabPane.setEnabledAt(CALCULATIONS, true);
+            tabPane.setForegroundAt(CALCULATIONS, Color.BLACK);
             currentVertex.setInputsStatus(Vertex.InputsStatus.INCORRECT);
         }
         activityLogs.debug("User checked Inputs Panel with Type: " + currentVertex.getVertexType());
@@ -850,11 +868,11 @@ public class NodeEditor extends javax.swing.JDialog {
         planPanel.setLayout(planPanelLayout);
         planPanelLayout.setHorizontalGroup(
             planPanelLayout.createParallelGroup(org.jdesktop.layout.GroupLayout.LEADING)
-            .add(0, 601, Short.MAX_VALUE)
+            .add(0, 617, Short.MAX_VALUE)
         );
         planPanelLayout.setVerticalGroup(
             planPanelLayout.createParallelGroup(org.jdesktop.layout.GroupLayout.LEADING)
-            .add(0, 549, Short.MAX_VALUE)
+            .add(0, 569, Short.MAX_VALUE)
         );
 
         tabPane.addTab("Plan", planPanel);
@@ -863,11 +881,11 @@ public class NodeEditor extends javax.swing.JDialog {
         inputsPanel.setLayout(inputsPanelLayout);
         inputsPanelLayout.setHorizontalGroup(
             inputsPanelLayout.createParallelGroup(org.jdesktop.layout.GroupLayout.LEADING)
-            .add(0, 601, Short.MAX_VALUE)
+            .add(0, 617, Short.MAX_VALUE)
         );
         inputsPanelLayout.setVerticalGroup(
             inputsPanelLayout.createParallelGroup(org.jdesktop.layout.GroupLayout.LEADING)
-            .add(0, 549, Short.MAX_VALUE)
+            .add(0, 569, Short.MAX_VALUE)
         );
 
         tabPane.addTab("Inputs", inputsPanel);
@@ -876,11 +894,11 @@ public class NodeEditor extends javax.swing.JDialog {
         calculationPanel.setLayout(calculationPanelLayout);
         calculationPanelLayout.setHorizontalGroup(
             calculationPanelLayout.createParallelGroup(org.jdesktop.layout.GroupLayout.LEADING)
-            .add(0, 601, Short.MAX_VALUE)
+            .add(0, 617, Short.MAX_VALUE)
         );
         calculationPanelLayout.setVerticalGroup(
             calculationPanelLayout.createParallelGroup(org.jdesktop.layout.GroupLayout.LEADING)
-            .add(0, 549, Short.MAX_VALUE)
+            .add(0, 569, Short.MAX_VALUE)
         );
 
         tabPane.addTab("Calculations", calculationPanel);
@@ -928,39 +946,39 @@ public class NodeEditor extends javax.swing.JDialog {
         layout.setHorizontalGroup(
             layout.createParallelGroup(org.jdesktop.layout.GroupLayout.LEADING)
             .add(layout.createSequentialGroup()
-                .addContainerGap()
                 .add(layout.createParallelGroup(org.jdesktop.layout.GroupLayout.LEADING)
                     .add(layout.createSequentialGroup()
-                        .add(checkButton, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE, 82, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE)
-                        .add(18, 18, 18)
-                        .add(giveUpButton, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE, 78, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE)
-                        .addPreferredGap(org.jdesktop.layout.LayoutStyle.RELATED, 285, Short.MAX_VALUE)
-                        .add(buttonOK, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE, 78, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE)
-                        .add(18, 18, 18)
-                        .add(buttonCancel, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE, 78, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE))
-                    .add(org.jdesktop.layout.GroupLayout.TRAILING, layout.createSequentialGroup()
-                        .add(editorMsgLabel, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE, 601, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE)
-                        .add(14, 14, 14))
-                    .add(org.jdesktop.layout.GroupLayout.TRAILING, layout.createSequentialGroup()
-                        .add(4, 4, 4)
-                        .add(tabPane, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE, 622, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE)))
+                        .addContainerGap()
+                        .add(layout.createParallelGroup(org.jdesktop.layout.GroupLayout.LEADING)
+                            .add(layout.createSequentialGroup()
+                                .add(checkButton, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE, 82, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE)
+                                .add(18, 18, 18)
+                                .add(giveUpButton, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE, 78, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE)
+                                .addPreferredGap(org.jdesktop.layout.LayoutStyle.RELATED, 285, Short.MAX_VALUE)
+                                .add(buttonOK, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE, 78, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE)
+                                .add(18, 18, 18)
+                                .add(buttonCancel, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE, 78, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE))
+                            .add(org.jdesktop.layout.GroupLayout.TRAILING, layout.createSequentialGroup()
+                                .add(editorMsgLabel, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE, 601, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE)
+                                .add(14, 14, 14))
+                            .add(org.jdesktop.layout.GroupLayout.TRAILING, tabPane, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE, 622, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE)))
+                    .add(layout.createSequentialGroup()
+                        .add(302, 302, 302)
+                        .add(tabPanel)
+                        .add(0, 0, Short.MAX_VALUE)))
                 .addContainerGap())
-            .add(layout.createSequentialGroup()
-                .add(302, 302, 302)
-                .add(tabPanel)
-                .addContainerGap(org.jdesktop.layout.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
             .add(layout.createParallelGroup(org.jdesktop.layout.GroupLayout.LEADING)
                 .add(layout.createSequentialGroup()
-                    .add(10, 24, Short.MAX_VALUE)
+                    .add(10, 28, Short.MAX_VALUE)
                     .add(bottomSpacer, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE, 30, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE)
-                    .add(0, 595, Short.MAX_VALUE)))
+                    .add(0, 599, Short.MAX_VALUE)))
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(org.jdesktop.layout.GroupLayout.LEADING)
             .add(org.jdesktop.layout.GroupLayout.TRAILING, layout.createSequentialGroup()
                 .add(tabPanel)
                 .addPreferredGap(org.jdesktop.layout.LayoutStyle.RELATED)
-                .add(tabPane, org.jdesktop.layout.GroupLayout.DEFAULT_SIZE, 595, Short.MAX_VALUE)
+                .add(tabPane, org.jdesktop.layout.GroupLayout.DEFAULT_SIZE, 597, Short.MAX_VALUE)
                 .addPreferredGap(org.jdesktop.layout.LayoutStyle.RELATED)
                 .add(editorMsgLabel, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE, 21, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE)
                 .addPreferredGap(org.jdesktop.layout.LayoutStyle.RELATED)
