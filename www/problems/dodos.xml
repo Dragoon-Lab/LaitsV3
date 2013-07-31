@@ -1,0 +1,72 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<Task phase="Intro" type="Debug">
+  <TaskName>Training Problem 6 - Dodo extinction</TaskName>
+  <TaskDescription>Model how long the Dodos have left to live.  Initial population 1000, 20% death rate yearly</TaskDescription>
+  <URL/>
+  <StartTime>0</StartTime>
+  <EndTime>20</EndTime>
+  <Units>Years</Units>
+  <NodeCount>3</NodeCount>
+  <Nodes>
+    <Node type="stock" name="population" extra="no">
+      <CorrectDescription>The number of Dodos in the Dodo population</CorrectDescription>
+      <Plan>said to decrease</Plan>
+      <Order>1</Order>
+      <Inputs>
+        <Node name="deaths"/>
+      </Inputs>
+      <Outputs>
+        <Node name="deaths"/>
+      </Outputs>
+      <Equation>- deaths</Equation>
+      <InitialValue>1000.0</InitialValue>
+    </Node>
+    <Node type="flow" name="deaths" extra="no">
+      <CorrectDescription>The number of Dodos that die each year</CorrectDescription>
+      <Plan>ratio of two quantities</Plan>
+      <Inputs>
+        <Node name="population"/>
+        <Node name="death rate"/>
+      </Inputs>
+      <Outputs>
+        <Node name="population"/>
+      </Outputs>
+      <Equation/>
+      <InitialValue>0.0</InitialValue>
+    </Node>
+    <Node type="constant" name="death rate" extra="no">
+      <CorrectDescription>The percentage of Dodos that die each year</CorrectDescription>
+      <Plan>fixed value</Plan>
+      <Inputs/>
+      <Outputs>
+        <Node name="deaths"/>
+      </Outputs>
+      <Equation></Equation>
+      <InitialValue>0.2</InitialValue>
+    </Node>
+  </Nodes>
+  <DescriptionTree>
+     <Node level="root">
+      <Description>The number of Dodos</Description>           
+        <Node level="leaf">
+          <Description>in the Dodo population</Description>
+          <NodeName>population</NodeName>
+        </Node>
+        <Node level="leaf">
+          <Description>that die each year</Description>
+          <NodeName>deaths</NodeName>
+        </Node>
+    </Node>
+    <Node level="root">
+      <Description>The percentage of Dodos</Description>             
+        <Node level="leaf">
+          <Description>that are born each year</Description>
+          <NodeName>birth rate</NodeName>
+        </Node>
+        <Node level="leaf">
+          <Description>that die each year</Description>
+          <NodeName>death rate</NodeName>
+        </Node>
+    </Node></DescriptionTree>
+</Task>
