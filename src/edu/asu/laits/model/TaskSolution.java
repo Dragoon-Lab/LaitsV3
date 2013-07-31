@@ -264,7 +264,7 @@ public class TaskSolution {
     }
 
     public boolean checkNodePlan(String nodeName, Vertex.Plan plan) {
-        System.out.println("Node : " + nodeName + "  " + "selected plan: " + plan);
+        logs.info("Checking Plan for Node : " + nodeName + "  " + "selected plan: " + plan);
         if (getNodeByName(nodeName).getNodePlan().compareTo(plan) == 0) {
             return true;
         } else {
@@ -290,7 +290,7 @@ public class TaskSolution {
 
             List<String> correctInputs = correctNode.getInputNodes();
             logs.debug("Correct Inputs : " + correctInputs);
-            logs.debug("User Inputs : " + inputs);
+            
             if (correctInputs.size() != inputs.size()) {
                 return 2;
             } else if (correctInputs.containsAll(inputs)) {
@@ -332,7 +332,7 @@ public class TaskSolution {
     }
 
     private boolean checkNodeEquation(String correctEquation, String studentEquation) {
-        logs.debug("Check Node Equation ");
+        logs.debug("Checking Node Equation. Correct Equation: "+correctEquation + ", Student's Equation: "+studentEquation);
 
         Evaluator evalStudent = new Evaluator();
         Evaluator evalCorrect = new Evaluator();

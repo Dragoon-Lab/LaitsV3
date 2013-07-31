@@ -228,7 +228,8 @@ public class ModelMenu extends JMenu {
                 try {
                     me.run();
 
-                    if (ApplicationContext.getAppMode().equals("STUDENT") || ApplicationContext.getAppMode().equals("COACHED")) {
+                    if (ApplicationContext.getAppMode().equalsIgnoreCase("STUDENT") || 
+                            ApplicationContext.getAppMode().equalsIgnoreCase("COACHED")) {
                         me.validateStudentGraph();
                     }
 

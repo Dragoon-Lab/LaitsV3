@@ -57,11 +57,14 @@ public class PlotPanel extends JXTaskPane {
     private static Color transparent = new Color(0, 0, 0, 0);
 
     public PlotPanel(Vertex vertex, int x0, String units) {
+        logs.info("Initializing Plot Panel. Vertex: "+vertex.getName()+
+                "  Initial Point: "+x0+" Units: "+units);
         List<Vertex> v = new ArrayList<Vertex>();
         v.add(vertex);
         this.units = units;
 
-        if (ApplicationContext.getAppMode().equals("STUDENT") || ApplicationContext.getAppMode().equals("COACHED")) {
+        if (ApplicationContext.getAppMode().equalsIgnoreCase("STUDENT") || 
+                ApplicationContext.getAppMode().equalsIgnoreCase("COACHED")) {
             Vertex correctVertex = ApplicationContext.getCorrectSolution()
                     .getSolutionGraph().getVertexByName(vertex.getName());
             v.add(correctVertex);
@@ -85,7 +88,8 @@ public class PlotPanel extends JXTaskPane {
         ChartPanel chartPanel = new ChartPanel(chart);
         chartPanel.setFillZoomRectangle(true);
         chartPanel.setMouseWheelEnabled(true);
-
+        chartPanel.setDomainZoomable(false);
+        chartPanel.setRangeZoomable(false);
         chart.getTitle().setFont(new Font("Arial", Font.BOLD, 14));
 
         // The size of the panel depends on the size of the GraphDialog panel
@@ -105,12 +109,13 @@ public class PlotPanel extends JXTaskPane {
      * @return
      */
     private XYDataset createSolutionDataset(List<Vertex> vertices, int x0) {
+        logs.info("Creating Solution Dataset for PlotPanel");
         XYSeriesCollection dataset = new XYSeriesCollection();
         String legends[] = new String[2];
         legends[0] = "Your Graph";
         legends[1] = "Target Graph";
 
-        if (ApplicationContext.getAppMode().equals("AUTHOR")) {
+        if (ApplicationContext.getAppMode().equalsIgnoreCase("AUTHOR")) {
             legends[0] = "Author's Graph";
         }
         int legendIndex = 0;
