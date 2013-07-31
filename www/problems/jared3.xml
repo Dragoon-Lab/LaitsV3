@@ -1,8 +1,11 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
 <Task phase="Intro" type="Construct">
-<TaskName>Training Problem 3 - Jared and Oprah</TaskName>
-<TaskDescription>Finish this model comparing Oprah and Jared's weights.  </TaskDescription>
+<TaskName>Jared and Oprah with difference</TaskName>
+<TaskDescription>Jared, who is larger than Oprah, is following the exact same NEWLINE
+  diet as Oprah, except that he eats an afternoon snack.  Consequently, NEWLINE
+  Jared always weighs 50 pounds more than Oprah.  Oprah initially weighs 140 pounds NEWLINE
+  but loses 1.5 pounds each week.</TaskDescription>
   <URL>http://dragoon.asu.edu/devel/images/jared-and-oprah.jpg</URL> <!-- Bug #2065 -->
   <StartTime>0</StartTime>
   <EndTime>10</EndTime>

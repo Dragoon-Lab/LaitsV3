@@ -1,8 +1,11 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
 <Task phase="Intro" type="Debug">
-  <TaskName>Training Problem 3 - Jared and Oprah</TaskName>
-  <TaskDescription>Finish this model comparing Oprah and Jared's weights.  </TaskDescription>
+  <TaskName>Jared and Oprah</TaskName>
+  <TaskDescription>Jared, who is larger than Oprah, is following the exact same NEWLINE
+  diet as Oprah, except that he eats an afternoon snack.  Consequently, NEWLINE
+  Jared always weighs 50 pounds more than Oprah.  In this model Oprah's NEWLINE
+  weight as a function of time is given.</TaskDescription>
   <URL>http://dragoon.asu.edu/devel/images/jared-and-oprah.jpg</URL> <!-- Bug #2065 -->
   <StartTime>0</StartTime>
   <EndTime>10</EndTime>
