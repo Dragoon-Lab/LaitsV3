@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
-<Task phase="Intro" type="Debug">
+<Task phase="Intro" type="Construct">
   <TaskName>Training Problem 6 - Dodo extinction</TaskName>
   <TaskDescription>Model how long the Dodos have left to live.  Initial population 1000, 20% death rate yearly</TaskDescription>
   <URL/>

@@ -98,15 +98,19 @@ public class MainWindow extends JFrame {
         GraphPropertiesChangeListener l = new MainGraphPropertiesChangeListener();
         l.graphPropertiesChanged();
         getGraphEditorPane().addGraphPropertiesChangeListener(l);
-        pack();
+        
         setExtendedState(MAXIMIZED_BOTH);
         setDefaultCloseOperation(DO_NOTHING_ON_CLOSE);
         windowCount++;
-        
         initializeFrameElements();
+        
+        loadSession();
+        loadTask();
+        setFrameTitle();
+        pack();
         setVisible(true);
         if(ApplicationContext.getAppMode().equalsIgnoreCase("COACHED")){
-        addHelpBalloon(ApplicationContext.getFirstNextNode(), "onLoad");
+            addHelpBalloon(ApplicationContext.getFirstNextNode(), "onLoad");
         }
  
     }
@@ -161,7 +165,9 @@ public class MainWindow extends JFrame {
                 exitWindow();
             }
         });
-
+    }
+    
+    private void setFrameTitle(){
         // Set Title of Main Frame
         String title = GlobalProperties.PROGRAM_NAME + 
                 " - "+ ApplicationContext.getAppMode() + " Mode";
@@ -199,8 +205,7 @@ public class MainWindow extends JFrame {
                 mainPanel.add(getGraphPaneScrollPane(), BorderLayout.CENTER);
             else{
                 // Initialize Situation Panel so that first task can be loaded
-                mainPanel.add(getSituationPanel());
-                loadTask();                    
+                mainPanel.add(getSituationPanel());                                    
             }
             mainPanel.add(getStatusBarPanel(), BorderLayout.SOUTH);
         }

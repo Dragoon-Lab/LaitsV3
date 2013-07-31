@@ -274,11 +274,11 @@ public class TaskSolution {
 
     // Error Code 1 - type error, 2 - inputs error, 0 - No Type error, 3 - no type n input error
     public int checkNodeInputs(String nodeName, List<String> inputs) {
-        logs.debug("Checking Inputs for Node " + nodeName);
+        logs.debug("Checking Inputs for Node " + nodeName + " Given Inputs: "+inputs);
 
         SolutionNode correctNode = getNodeByName(nodeName);
         if (correctNode.getNodeType().equals(Vertex.VertexType.CONSTANT)) {
-            if (inputs == null) {
+            if (inputs == null || inputs.size() == 0) {
                 return 0;
             }
 
