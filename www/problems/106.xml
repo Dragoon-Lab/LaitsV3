@@ -1,4 +1,5 @@
-<?xml version="1.0" encoding="UTF-8"?><Task phase="Intro" type="Debug">
+<?xml version="1.0" encoding="UTF-8"?>
+<Task phase="Intro" type="Debug">
   <TaskName>Intro Problem 2</TaskName>
   <URL>http://amt.javiergs.com/images/tasks/intro-3.png</URL>
   <TaskDescription>
@@ -29,6 +30,7 @@
     </Node>
     
     <Node type="flow" name="female justice prop" extra="no">
+      <Order>1</Order>
       <Inputs>
 	<Name>female justices</Name>
         <Name>justices</Name>
