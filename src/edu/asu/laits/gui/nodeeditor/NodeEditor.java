@@ -152,8 +152,7 @@ public class NodeEditor extends javax.swing.JDialog {
                 tabPane.setForegroundAt(CALCULATIONS, Color.GRAY);
             }
         }
-        setVisible(true);
-        setResizable(false);
+        
     }
 
     public void initTabs() {
@@ -723,7 +722,7 @@ public class NodeEditor extends javax.swing.JDialog {
     /**
      * Make necessary clean up and save graph session when NodeEditor closes
      */
-    private int closeNodeEditor() {
+    private void closeNodeEditor() {
 
         activityLogs.debug("User pressed Close button for Node " + currentVertex.getName());
         // Delete this vertex if its not defined and user hits Cancel
@@ -741,10 +740,8 @@ public class NodeEditor extends javax.swing.JDialog {
         // Save Student's session to server
         PersistenceManager.saveSession();
 
-        this.dispose();
         graphPane.getMainFrame().addHelpBalloon(currentVertex.getName(), "nodeEditorClose");
-
-        return 0;
+        this.dispose();
     }
 
     private void displayEnterButton() {
@@ -827,6 +824,8 @@ public class NodeEditor extends javax.swing.JDialog {
 
         jRadioButton1.setText("jRadioButton1");
 
+        setDefaultCloseOperation(javax.swing.WindowConstants.DO_NOTHING_ON_CLOSE);
+
         tabPane.setCursor(new java.awt.Cursor(java.awt.Cursor.DEFAULT_CURSOR));
         tabPane.setMinimumSize(new java.awt.Dimension(500, 500));
         tabPane.setOpaque(true);
@@ -853,7 +852,7 @@ public class NodeEditor extends javax.swing.JDialog {
         planPanel.setLayout(planPanelLayout);
         planPanelLayout.setHorizontalGroup(
             planPanelLayout.createParallelGroup(org.jdesktop.layout.GroupLayout.LEADING)
-            .add(0, 617, Short.MAX_VALUE)
+            .add(0, 601, Short.MAX_VALUE)
         );
         planPanelLayout.setVerticalGroup(
             planPanelLayout.createParallelGroup(org.jdesktop.layout.GroupLayout.LEADING)
@@ -866,7 +865,7 @@ public class NodeEditor extends javax.swing.JDialog {
         inputsPanel.setLayout(inputsPanelLayout);
         inputsPanelLayout.setHorizontalGroup(
             inputsPanelLayout.createParallelGroup(org.jdesktop.layout.GroupLayout.LEADING)
-            .add(0, 617, Short.MAX_VALUE)
+            .add(0, 601, Short.MAX_VALUE)
         );
         inputsPanelLayout.setVerticalGroup(
             inputsPanelLayout.createParallelGroup(org.jdesktop.layout.GroupLayout.LEADING)
@@ -879,7 +878,7 @@ public class NodeEditor extends javax.swing.JDialog {
         calculationPanel.setLayout(calculationPanelLayout);
         calculationPanelLayout.setHorizontalGroup(
             calculationPanelLayout.createParallelGroup(org.jdesktop.layout.GroupLayout.LEADING)
-            .add(0, 617, Short.MAX_VALUE)
+            .add(0, 601, Short.MAX_VALUE)
         );
         calculationPanelLayout.setVerticalGroup(
             calculationPanelLayout.createParallelGroup(org.jdesktop.layout.GroupLayout.LEADING)
