@@ -1,8 +1,10 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
 <Task phase="Intro" type="Debug">
-  <TaskName>Training Problem 2 - Jared's weight</TaskName>
-  <TaskDescription>Finish this model to determine how much weight Jared loses after 10 weeks.  </TaskDescription>
+  <TaskName>Jared's weight</TaskName>
+  <TaskDescription>A node defining Jared's weekly weight change as NEWLINE
+  a function of time has been given.  Construct a model for Jared's NEWLINE
+  weight as a function of tme.</TaskDescription>
   <URL>http://dragoon.asu.edu/devel/images/weighing-scales2.jpg</URL> <!-- Bug #2065 -->
   <StartTime>0</StartTime>
   <EndTime>10</EndTime>

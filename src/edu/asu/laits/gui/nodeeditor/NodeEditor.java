@@ -135,7 +135,25 @@ public class NodeEditor extends javax.swing.JDialog {
                 tabPane.setForegroundAt(CALCULATIONS, Color.GRAY);
             }
         }
-
+        if (ApplicationContext.getAppMode().equals("STUDENT")) {
+            if (!currentVertex.getPlanStatus().equals(Vertex.PlanStatus.CORRECT)
+                    && !currentVertex.getPlanStatus().equals(Vertex.PlanStatus.GAVEUP)) {
+                tabPane.setEnabledAt(INPUTS, false);
+                tabPane.setForegroundAt(INPUTS, Color.GRAY);
+            }
+            if (!currentVertex.getDescriptionStatus().equals(Vertex.DescriptionStatus.CORRECT)
+                    && !currentVertex.getDescriptionStatus().equals(Vertex.DescriptionStatus.GAVEUP)) {
+                tabPane.setEnabledAt(PLAN, false);
+                tabPane.setForegroundAt(PLAN, Color.GRAY);
+            }
+            if (!currentVertex.getInputsStatus().equals(Vertex.InputsStatus.CORRECT)
+                    && !currentVertex.getInputsStatus().equals(Vertex.InputsStatus.GAVEUP)) {
+                tabPane.setEnabledAt(CALCULATIONS, false);
+                tabPane.setForegroundAt(CALCULATIONS, Color.GRAY);
+            }
+        }
+        setVisible(true);
+        setResizable(false);
     }
 
     public void initTabs() {
@@ -533,7 +551,7 @@ public class NodeEditor extends javax.swing.JDialog {
         iPanel.setInputsTypeBackground(new Color(240, 240, 240));
         iPanel.setInputValuesBackground(new Color(240, 240, 240));
 
-        int result = 0;
+        int result = -1;
 
         if (iPanel.getValueButtonSelected()) {
             result = correctSolution.checkNodeInputs(dPanel.getNodeName(), null);
@@ -558,8 +576,9 @@ public class NodeEditor extends javax.swing.JDialog {
             if (ApplicationContext.getAppMode().equalsIgnoreCase("COACHED")) {
                 addHelpBalloon(currentVertex.getName(), "descCheckDemo", "INPUTS");
             }
-        } else {
-            if (result == 1) {
+        } 
+        else {
+            if (result == 1 || result == -1) {
                 iPanel.setInputsTypeBackground(Color.RED);
             } else {
                 iPanel.setInputsTypeBackground(Color.GREEN);
@@ -572,6 +591,8 @@ public class NodeEditor extends javax.swing.JDialog {
             } else {
                 setEditorMessage("Your Inputs are Incorrect.", true);
             }
+            tabPane.setEnabledAt(CALCULATIONS, true);
+            tabPane.setForegroundAt(CALCULATIONS, Color.BLACK);
             currentVertex.setInputsStatus(Vertex.InputsStatus.INCORRECT);
         }
         activityLogs.debug("User checked Inputs Panel with Type: " + currentVertex.getVertexType());
@@ -832,7 +853,7 @@ public class NodeEditor extends javax.swing.JDialog {
         planPanel.setLayout(planPanelLayout);
         planPanelLayout.setHorizontalGroup(
             planPanelLayout.createParallelGroup(org.jdesktop.layout.GroupLayout.LEADING)
-            .add(0, 601, Short.MAX_VALUE)
+            .add(0, 617, Short.MAX_VALUE)
         );
         planPanelLayout.setVerticalGroup(
             planPanelLayout.createParallelGroup(org.jdesktop.layout.GroupLayout.LEADING)
@@ -845,7 +866,7 @@ public class NodeEditor extends javax.swing.JDialog {
         inputsPanel.setLayout(inputsPanelLayout);
         inputsPanelLayout.setHorizontalGroup(
             inputsPanelLayout.createParallelGroup(org.jdesktop.layout.GroupLayout.LEADING)
-            .add(0, 601, Short.MAX_VALUE)
+            .add(0, 617, Short.MAX_VALUE)
         );
         inputsPanelLayout.setVerticalGroup(
             inputsPanelLayout.createParallelGroup(org.jdesktop.layout.GroupLayout.LEADING)
@@ -858,7 +879,7 @@ public class NodeEditor extends javax.swing.JDialog {
         calculationPanel.setLayout(calculationPanelLayout);
         calculationPanelLayout.setHorizontalGroup(
             calculationPanelLayout.createParallelGroup(org.jdesktop.layout.GroupLayout.LEADING)
-            .add(0, 601, Short.MAX_VALUE)
+            .add(0, 617, Short.MAX_VALUE)
         );
         calculationPanelLayout.setVerticalGroup(
             calculationPanelLayout.createParallelGroup(org.jdesktop.layout.GroupLayout.LEADING)
