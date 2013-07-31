@@ -3,7 +3,7 @@
 <Task phase="Intro" type="Construct">
 <TaskName>Training Problem 3 - Jared and Oprah</TaskName>
 <TaskDescription>Finish this model comparing Oprah and Jared's weights.  </TaskDescription>
-  <URL>http://dragoon.asu.edu/devel/images/ht_oprah_letterman_nt_121220_wblog.jpg</URL> <!-- Bug #2065 -->
+  <URL>http://dragoon.asu.edu/devel/images/jared-and-oprah.jpg</URL> <!-- Bug #2065 -->
   <StartTime>0</StartTime>
   <EndTime>10</EndTime>
   <Units>Days</Units>
