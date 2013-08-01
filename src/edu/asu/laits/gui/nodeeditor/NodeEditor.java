@@ -25,20 +25,15 @@ import edu.asu.laits.model.PersistenceManager;
 import edu.asu.laits.model.TaskSolution;
 import edu.asu.laits.model.Vertex;
 import java.awt.Color;
-import java.awt.Dimension;
 import java.awt.Insets;
-import java.awt.Toolkit;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
-import java.util.logging.Level;
 import javax.swing.JComponent;
-import javax.swing.JOptionPane;
 import javax.swing.UIManager;
 import javax.swing.event.ChangeEvent;
 import javax.swing.event.ChangeListener;
 import org.apache.log4j.Logger;
-import org.jgraph.graph.DefaultGraphCell;
 
 /**
  *
@@ -64,19 +59,20 @@ public class NodeEditor extends javax.swing.JDialog {
      */
     private static Logger logs = Logger.getLogger("DevLogs");
     private static Logger activityLogs = Logger.getLogger("ActivityLogs");
-
     /**
      * Creates new form NodeEditor2
      */
     public NodeEditor(GraphEditorPane editorPane, Vertex selected) {
-        super(editorPane.getMainFrame(), true);
+        super(editorPane.getMainFrame(), false);
         graphPane = editorPane;
         currentVertex = selected;
         initComponents();
         UIManager.getDefaults().put("TabbedPane.contentBorderInsets", new Insets(2, 0, -1, 0));
         setTabListener();
         initNodeEditor();
-        
+        if(ApplicationContext.getAppMode().equalsIgnoreCase("COACHED")){
+            addHelpBalloon(ApplicationContext.getFirstNextNode(), "onLoad", getTabName(selectedTab));
+        }       
     }
 
     private void initNodeEditor() {
@@ -84,8 +80,6 @@ public class NodeEditor extends javax.swing.JDialog {
         activityLogs.debug("NodeEditor opened for Node '" + currentVertex.getName() + "'");
         displayEnterButton();
         initTabs();
-        setSelectedPanel();
-        setCheckGiveupButtons();
         setTitle(getNodeEditorTitle());
         setEditorMessage("", true);
         prepareNodeEditorDisplay();
@@ -93,22 +87,14 @@ public class NodeEditor extends javax.swing.JDialog {
             buttonCancel.setEnabled(false);
         }
 
-        if (ApplicationContext.getAppMode().equalsIgnoreCase("COACHED")) {
-            addHelpBalloon(ApplicationContext.getFirstNextNode(), "onLoad", getTabName(selectedTab));
-        }
-        
         this.addWindowListener(new java.awt.event.WindowAdapter() {
             public void windowClosing(java.awt.event.WindowEvent e) {
                 closeNodeEditor();
             }
         });
-
-        setLocationRelativeTo(null);
-        pack();
-        setVisible(true);
-        setResizable(false);
+        
     }
-
+    
     private String getNodeEditorTitle() {
         String title = "Node Editor - ";
         if (currentVertex.getName().equals("")) {
@@ -122,29 +108,17 @@ public class NodeEditor extends javax.swing.JDialog {
 
     private void prepareNodeEditorDisplay() {
         logs.debug("Preparing Node Editor Display");
-        
+        setLocationRelativeTo(null);
+        pack();
+
+        setVisible(true);
+        setResizable(false);
+
         if (ApplicationContext.getAppMode().equalsIgnoreCase("COACHED")) {
             if (!currentVertex.getPlanStatus().equals(Vertex.PlanStatus.CORRECT)
                     && !currentVertex.getPlanStatus().equals(Vertex.PlanStatus.GAVEUP)) {
                 tabPane.setEnabledAt(INPUTS, false);
                 tabPane.setForegroundAt(INPUTS, Color.GRAY);
-            }
-            if (!currentVertex.getInputsStatus().equals(Vertex.InputsStatus.CORRECT)
-                    && !currentVertex.getInputsStatus().equals(Vertex.InputsStatus.GAVEUP)) {
-                tabPane.setEnabledAt(CALCULATIONS, false);
-                tabPane.setForegroundAt(CALCULATIONS, Color.GRAY);
-            }
-        }
-        if (ApplicationContext.getAppMode().equals("STUDENT")) {
-            if (!currentVertex.getPlanStatus().equals(Vertex.PlanStatus.CORRECT)
-                    && !currentVertex.getPlanStatus().equals(Vertex.PlanStatus.GAVEUP)) {
-                tabPane.setEnabledAt(INPUTS, false);
-                tabPane.setForegroundAt(INPUTS, Color.GRAY);
-            }
-            if (!currentVertex.getDescriptionStatus().equals(Vertex.DescriptionStatus.CORRECT)
-                    && !currentVertex.getDescriptionStatus().equals(Vertex.DescriptionStatus.GAVEUP)) {
-                tabPane.setEnabledAt(PLAN, false);
-                tabPane.setForegroundAt(PLAN, Color.GRAY);
             }
             if (!currentVertex.getInputsStatus().equals(Vertex.InputsStatus.CORRECT)
                     && !currentVertex.getInputsStatus().equals(Vertex.InputsStatus.GAVEUP)) {
@@ -166,7 +140,7 @@ public class NodeEditor extends javax.swing.JDialog {
 
         activityLogs.debug("Vertex Details before opening node editor ");
         activityLogs.debug(dPanel.printDescriptionPanelDetails());
-        
+        //activityLogs.debug(pPanel.printPlanPanel());
         activityLogs.debug(iPanel.printInputsPanel());
         activityLogs.debug(cPanel.printCalculationPanel());
 
@@ -181,6 +155,8 @@ public class NodeEditor extends javax.swing.JDialog {
 
         calculationPanel.setLayout(new java.awt.GridLayout(1, 1));
         calculationPanel.add(cPanel);
+
+        setSelectedPanel();
 
         logs.debug("Initializing NodeEditor Tabs - End");
     }
@@ -212,6 +188,9 @@ public class NodeEditor extends javax.swing.JDialog {
             selectedTab = DESCRIPTION;
             tabPane.setSelectedIndex(DESCRIPTION);
         }
+
+
+        setCheckGiveupButtons();
 
     }
 
@@ -389,8 +368,6 @@ public class NodeEditor extends javax.swing.JDialog {
                 return false;
             }
         }
-
-
 
         return true;
     }
@@ -754,6 +731,7 @@ public class NodeEditor extends javax.swing.JDialog {
     }
 
     public void addHelpBalloon(String name, String timing, String panel) {
+        logs.debug("Adding Help Bubble for "+panel);
         if (ApplicationContext.getAppMode().equalsIgnoreCase("COACHED")) {
             System.out.println("addhelpballoon passing in " + name);
             List<HelpBubble> bubbles = ApplicationContext.getHelp(name, panel, timing);
