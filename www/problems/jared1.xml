@@ -5,7 +5,7 @@
   <TaskDescription>A node defining Jared's weekly weight change as NEWLINE
   a function of time has been given.  Construct a model for Jared's NEWLINE
   weight as a function of tme.</TaskDescription>
-  <URL>http://dragoon.asu.edu/devel/images/weighing-scales2.jpg</URL> <!-- Bug #2065 -->
+  <URL>images/weighing-scales2.jpg</URL>
   <StartTime>0</StartTime>
   <EndTime>10</EndTime>
   <Units>Weeks</Units>

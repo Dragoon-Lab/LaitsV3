@@ -7,7 +7,7 @@
   introduced preditors: pigs, crab-eating macaques, &lt;em&gt;et cetera&lt;/em&gt;.NEWLINE
   Each year, 20% of the Dodos die due to hunting or from natural causes.NEWLINE
   Construct a model of the Dodo population as a function of time.</TaskDescription>
-    <URL>http://dragoon.asu.edu/devel/images/737px-Frohawk_Dodo.png</URL> <!-- Bug #2065 -->
+    <URL>images/737px-Frohawk_Dodo.png</URL> <!-- Bug #2065 -->
   <StartTime>0</StartTime>
   <EndTime>20</EndTime>
   <Units>Years</Units>
