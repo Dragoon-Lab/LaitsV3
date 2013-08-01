@@ -30,7 +30,7 @@
         <Name>Oprah weight</Name>
       </Inputs>
       <Outputs/>
-      <Equation/>
+      <Equation>50 + Oprah weight</Equation>
       <InitialValue>0.0</InitialValue>
     </Node>
   </Nodes>

@@ -1,4 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
+
 <Task phase="Intro" type="Construct">
   <TaskName>Intro Problem 1 Coached</TaskName>
   <TaskDescription>
@@ -25,6 +26,38 @@
       <Plan>fixed value</Plan>
     </Node>
   </Nodes>  
+
+<HelpBubbles>
+	<Bubble>
+		<Timing>Description</Timing>
+		<nodeName>1</nodeName>
+		<attachedTo>evenMorePreciseLabel</attachedTo>
+		<Event>onLoad</Event>
+		<Message>&lt;html&gt;Use the decision tree to create the correct description of the problem: &lt;br /&gt;"The ratio of the weight of the fat in a potato chip to the weight of the potato chip"&lt;/html&gt;</Message>
+	</Bubble>
+	<Bubble>
+		<Timing>Description</Timing>
+		<nodeName>1</nodeName>
+		<attachedTo>referencesLabel</attachedTo>
+		<Event>descFilled</Event>
+		<Message>Click the Check button to verify your description.</Message>
+	</Bubble>
+	<Bubble>
+		<Timing>Description</Timing>
+		<nodeName>1</nodeName>
+		<attachedTo>evenMorePreciseLabel</attachedTo>
+		<Event>descCheckDemo</Event>
+		<Message>Click on the Plan tab to continue.</Message>
+	</Bubble>
+
+	<Bubble>
+		<Timing>Plan</Timing>
+		<nodeName>1</nodeName>
+		<attachedTo>radioPanel</attachedTo>
+		<Event>onLoad</Event>
+		<Message>&lt;html&gt;This value is a fixed constant -- it does not rely on&lt;br /&gt;on other inputs.  Select "Value is fixed, so no inputs"&lt;/html&gt;</Message>
+	</Bubble>
+</HelpBubbles>
      
   <DescriptionTree>
     <Node level="root">
@@ -74,5 +107,5 @@
       </Node>
     </Node>
   </DescriptionTree>
-
+    
 </Task>
