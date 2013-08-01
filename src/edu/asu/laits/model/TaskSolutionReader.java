@@ -72,7 +72,9 @@ public class TaskSolutionReader {
             //Read in help bubbles
             if(ApplicationContext.getAppMode().equalsIgnoreCase("COACHED")){
                 Element bubbles = taskNode.element("HelpBubbles");
-                fillHelpBubbles(solution, bubbles);
+                if(bubbles != null){
+                    fillHelpBubbles(solution, bubbles);
+                }
             }    
         } catch (Exception e) {
             // Could not read the XML file

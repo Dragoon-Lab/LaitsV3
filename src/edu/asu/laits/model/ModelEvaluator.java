@@ -50,7 +50,8 @@ public class ModelEvaluator {
 
     public ModelEvaluator(Graph inputGraph) {
         currentGraph = inputGraph;
-        if(ApplicationContext.getAppMode().equals("STUDENT") || ApplicationContext.getAppMode().equals("COACHED")){
+        if(ApplicationContext.getAppMode().equalsIgnoreCase("STUDENT") || 
+                ApplicationContext.getAppMode().equalsIgnoreCase("COACHED")){
             startTime = ApplicationContext.getCorrectSolution().getStartTime();
             endTime = ApplicationContext.getCorrectSolution().getEndTime();
             
@@ -71,7 +72,8 @@ public class ModelEvaluator {
         Iterator<Vertex> allVertices = currentGraph.vertexSet().iterator();
         
         // In STUDENT Mode Verify if all the correct nodes are defined
-        if(ApplicationContext.getAppMode().equals("STUDENT") || ApplicationContext.getAppMode().equals("COACHED")){
+        if(ApplicationContext.getAppMode().equalsIgnoreCase("STUDENT") || 
+                ApplicationContext.getAppMode().equalsIgnoreCase("COACHED")){
             if(!correctNodesDefined())
                 return false;
         }
@@ -89,7 +91,7 @@ public class ModelEvaluator {
     }
     
     public boolean hasExtraNodes(){
-        if (ApplicationContext.getAppMode().equals("AUTHOR")) {
+        if (ApplicationContext.getAppMode().equalsIgnoreCase("AUTHOR")) {
             return false;
         }
         

@@ -41,6 +41,7 @@ import java.io.FileOutputStream;
 import java.io.InputStream;
 import java.io.OutputStream;
 import java.util.HashMap;
+import java.util.Iterator;
 import java.util.LinkedList;
 import java.util.logging.Level;
 
@@ -105,7 +106,7 @@ public class FileMenu extends JMenu {
         this.mainWindow = mainWindow;
         graphPane = pane;
 
-        if (ApplicationContext.getAppMode().equals("STUDENT")) {
+        if (ApplicationContext.getAppMode().equalsIgnoreCase("STUDENT")) {
             initializeTutorMenu();
         } else {
             initializeAuthorMenu();
@@ -184,7 +185,6 @@ public class FileMenu extends JMenu {
                     solution.getTaskDescription(),
                     solution.getImageURL());
 
-            mainWindow.getGraphEditorPane().resetModelGraph();
             if (solution.getTaskType().equalsIgnoreCase("debug")) {
                 createGivenModel(solution, graphPane);
             }
@@ -196,9 +196,21 @@ public class FileMenu extends JMenu {
     }
 
     private void createGivenModel(TaskSolution solution, GraphEditorPane editorPane) {
+        logs.debug("Building Given Model for Task : "+solution.getTaskName());
         List<SolutionNode> givenNodes = solution.getGivenNodes();
-
+        logs.debug("Graph Presently Contains");
+        Iterator<Vertex> it = graphPane.getModelGraph().vertexSet().iterator();
+        while(it.hasNext()){
+            logs.debug(it.next().getName());
+        }
+        
         for (SolutionNode node : givenNodes) {
+            logs.info("Processing Node "+node.getNodeName());
+            if(editorPane.getModelGraph().getVertexByName(node.getNodeName()) != null){
+                logs.info("Node "+node.getNodeName()+" was loaded from session. Skipping in GivenModelCreation.");
+               continue;
+            }
+            
             Vertex v = new Vertex();
             v.setVertexIndex(graphPane.getModelGraph().getNextAvailableIndex());
             
@@ -225,6 +237,7 @@ public class FileMenu extends JMenu {
             }
 
             editorPane.addVertex(v);
+            logs.debug("Added Node "+v.getName()+" in the Given Model.");
         }
 
         for (SolutionNode node : givenNodes) {

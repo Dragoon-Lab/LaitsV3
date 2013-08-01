@@ -85,7 +85,8 @@ public class NewNodeDescPanel extends JPanel{
     }
   }
   public void initPanel(){
-      if(ApplicationContext.getAppMode().equals("STUDENT") || ApplicationContext.getAppMode().equals("COACHED")){
+      if(ApplicationContext.getAppMode().equalsIgnoreCase("STUDENT") || 
+              ApplicationContext.getAppMode().equalsIgnoreCase("COACHED")){
           this.nodeNameTextField.setEditable(false);
           this.quantityDescriptionTextField.setEditable(false);
           initTree();
@@ -422,7 +423,7 @@ public JComponent getLabel(String label){
 }
 
    private void addHelpBalloon(String name, String timing, String panel) {
-        if (ApplicationContext.getAppMode().equals("COACHED")) {
+        if (ApplicationContext.getAppMode().equalsIgnoreCase("COACHED")) {
            List<HelpBubble> bubbles = ApplicationContext.getHelp(name, panel, timing);
                 if(!bubbles.isEmpty()){
                     for(HelpBubble bubble : bubbles){ 

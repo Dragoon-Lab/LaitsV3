@@ -28,6 +28,7 @@ import org.apache.http.HttpResponse;
 import org.apache.http.HttpStatus;
 import org.apache.http.client.methods.HttpGet;
 import org.apache.http.impl.client.DefaultHttpClient;
+import org.apache.log4j.Logger;
 
 /**
  * Class responsible for writing student's working solution at the server
@@ -43,13 +44,14 @@ public class PersistenceManager implements Runnable {
     private GraphSaver graphSaver;
     private Map<String, String> parameters = null;
     
+    private static Logger logs = Logger.getLogger("DevLogs");
+    private static Logger activityLogs = Logger.getLogger("ActivityLogs");
+    
     private PersistenceManager(GraphSaver gs) {
         graphSaver = gs;
     }
-
     
     public static void saveSession(){
-        
         PersistenceManager persistanceManager = new PersistenceManager(new GraphSaver(ApplicationContext.getGraphEditorPane()));
         
         Thread t = new Thread(persistanceManager);
@@ -60,7 +62,6 @@ public class PersistenceManager implements Runnable {
         int statusCode = 0;
 
         try {
-
             DefaultHttpClient httpClient = new DefaultHttpClient();
 
             HttpGet httpMethod = new HttpGet(prepareHttpGetRequest());
@@ -68,14 +69,14 @@ public class PersistenceManager implements Runnable {
             statusCode = response.getStatusLine().getStatusCode();
 
             if (statusCode != HttpStatus.SC_OK) {
-                System.out.println("Error Server URL " + httpMethod.getURI() + " return status code " + statusCode);
+                logs.error("Error Server URL " + httpMethod.getURI() + " return status code " + statusCode);
             }
-
-
+               
+            logs.info("Successfully Written Session to Server at "+httpMethod.getURI());
         } catch (UnsupportedEncodingException ex) {
             ex.printStackTrace();
         } catch (IOException e) {
-            System.out.println("Io error in sending request to server: returned: " + statusCode);
+            logs.error("Io error in sending request to server: returned: " + statusCode);
         } 
     }
 

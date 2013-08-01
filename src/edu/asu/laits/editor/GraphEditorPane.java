@@ -146,7 +146,6 @@ public class GraphEditorPane extends JGraph {
         this.setPortsVisible(false);
         
         init();
-        //loadSession();
         
         setGridProps();
         Color background = this.getBackground();

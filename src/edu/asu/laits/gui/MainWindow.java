@@ -94,26 +94,31 @@ public class MainWindow extends JFrame {
      */
     public MainWindow() {
         super();
+        initializeFrameElements();
+        
+        loadSession();
+        loadTask();
+        setFrameTitle();
         
         GraphPropertiesChangeListener l = new MainGraphPropertiesChangeListener();
         l.graphPropertiesChanged();
         getGraphEditorPane().addGraphPropertiesChangeListener(l);
-        pack();
+        
         setExtendedState(MAXIMIZED_BOTH);
         setDefaultCloseOperation(DO_NOTHING_ON_CLOSE);
         windowCount++;
         
-        initializeFrameElements();
+        pack();
         setVisible(true);
         if(ApplicationContext.getAppMode().equalsIgnoreCase("COACHED")){
-        addHelpBalloon(ApplicationContext.getFirstNextNode(), "onLoad");
+            addHelpBalloon(ApplicationContext.getFirstNextNode(), "onLoad");
         }
  
     }
     
     
     public void addHelpBalloon(String node, String timing){
-        if(ApplicationContext.getAppMode().equals("COACHED")){
+        if(ApplicationContext.getAppMode().equalsIgnoreCase("COACHED")){
         List<HelpBubble> bubbles = ApplicationContext.getHelp(node, "MainWindow", timing);
         logs.debug(node + " MainWindow " + timing);
         if(!bubbles.isEmpty()){
@@ -161,7 +166,9 @@ public class MainWindow extends JFrame {
                 exitWindow();
             }
         });
-
+    }
+    
+    private void setFrameTitle(){
         // Set Title of Main Frame
         String title = GlobalProperties.PROGRAM_NAME + 
                 " - "+ ApplicationContext.getAppMode() + " Mode";
@@ -199,8 +206,7 @@ public class MainWindow extends JFrame {
                 mainPanel.add(getGraphPaneScrollPane(), BorderLayout.CENTER);
             else{
                 // Initialize Situation Panel so that first task can be loaded
-                mainPanel.add(getSituationPanel());
-                loadTask();                    
+                mainPanel.add(getSituationPanel());                                    
             }
             mainPanel.add(getStatusBarPanel(), BorderLayout.SOUTH);
         }
@@ -477,6 +483,10 @@ public class MainWindow extends JFrame {
         }
     }
     
+    /**
+     * Method to Load user session form Server
+     * It will load previously saved Graph from the last session of user
+     */
     private void loadSession(){
         String user = ApplicationContext.getUserID();
         String section = ApplicationContext.getSection();
@@ -493,13 +503,12 @@ public class MainWindow extends JFrame {
         }                 
        
         if(!xmlString.trim().isEmpty()){
-            /*
-            * If saved state exists on server, load from server.
-            */
+            logs.debug("Previous Session Found for User "+user+" Section:"+section+" Prob: "+probNum);
+            getGraphEditorPane().resetModelGraph();
             try {                            
                 GraphLoader loader = new GraphLoader(getGraphEditorPane());
                 loader.loadFromServer(xmlString);
-
+                
             } catch (GraphLoader.IncorcectGraphXMLFileException ex) {
                 logs.error("Could not Load Graph : Incorrect Graph XML. "+ex.getMessage());
             }

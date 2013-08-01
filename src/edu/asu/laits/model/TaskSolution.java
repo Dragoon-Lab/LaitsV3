@@ -264,7 +264,7 @@ public class TaskSolution {
     }
 
     public boolean checkNodePlan(String nodeName, Vertex.Plan plan) {
-        System.out.println("Node : " + nodeName + "  " + "selected plan: " + plan);
+        logs.info("Checking Plan for Node : " + nodeName + "  " + "selected plan: " + plan);
         if (getNodeByName(nodeName).getNodePlan().compareTo(plan) == 0) {
             return true;
         } else {
@@ -274,11 +274,11 @@ public class TaskSolution {
 
     // Error Code 1 - type error, 2 - inputs error, 0 - No Type error, 3 - no type n input error
     public int checkNodeInputs(String nodeName, List<String> inputs) {
-        logs.debug("Checking Inputs for Node " + nodeName);
+        logs.debug("Checking Inputs for Node " + nodeName + " Given Inputs: "+inputs);
 
         SolutionNode correctNode = getNodeByName(nodeName);
         if (correctNode.getNodeType().equals(Vertex.VertexType.CONSTANT)) {
-            if (inputs == null) {
+            if (inputs == null || inputs.size() == 0) {
                 return 0;
             }
 
@@ -290,7 +290,7 @@ public class TaskSolution {
 
             List<String> correctInputs = correctNode.getInputNodes();
             logs.debug("Correct Inputs : " + correctInputs);
-            logs.debug("User Inputs : " + inputs);
+            
             if (correctInputs.size() != inputs.size()) {
                 return 2;
             } else if (correctInputs.containsAll(inputs)) {
@@ -332,7 +332,7 @@ public class TaskSolution {
     }
 
     private boolean checkNodeEquation(String correctEquation, String studentEquation) {
-        logs.debug("Check Node Equation ");
+        logs.debug("Checking Node Equation. Correct Equation: "+correctEquation + ", Student's Equation: "+studentEquation);
 
         Evaluator evalStudent = new Evaluator();
         Evaluator evalCorrect = new Evaluator();
@@ -498,9 +498,7 @@ public class TaskSolution {
             }
         }
         //System.out.println("check for help failed");
-        if(!bubbles.isEmpty()){
             return bubbles;
-        }else{return null;}
 
     }
 }

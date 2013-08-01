@@ -38,8 +38,8 @@ public class KeyHandler extends KeyAdapter {
     @Override
     public void keyReleased(KeyEvent e) {
 
-        if (e.getKeyCode() == KeyEvent.VK_DELETE
-                || e.getKeyCode() == KeyEvent.VK_BACK_SPACE) {
+        if ((e.getKeyCode() == KeyEvent.VK_DELETE
+                || e.getKeyCode() == KeyEvent.VK_BACK_SPACE) && !ApplicationContext.getAppMode().equalsIgnoreCase("COACHED")) {
             /*
              * If it is the delete key the selected objects in the graph shall
              * be removed.

@@ -228,7 +228,8 @@ public class ModelMenu extends JMenu {
                 try {
                     me.run();
 
-                    if (ApplicationContext.getAppMode().equals("STUDENT") || ApplicationContext.getAppMode().equals("COACHED")) {
+                    if (ApplicationContext.getAppMode().equalsIgnoreCase("STUDENT") || 
+                            ApplicationContext.getAppMode().equalsIgnoreCase("COACHED")) {
                         me.validateStudentGraph();
                     }
 
@@ -313,6 +314,7 @@ public class ModelMenu extends JMenu {
 
             graphPane.repaint();
             NodeEditor editor = new NodeEditor(graphPane, v);
+            
         } else {
             activityLogs.debug("User was not allowed to create new node as all the nodes were already present");
             JOptionPane.showMessageDialog(window, "The model is already using all the correct nodes.");
