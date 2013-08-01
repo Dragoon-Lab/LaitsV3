@@ -126,7 +126,11 @@ public class TaskSolution {
      * @param imageURL the imageURL to set
      */
     public void setImageURL(String imageURL) {
-        this.imageURL = imageURL;
+        if(imageURL.startsWith("http")){
+            this.imageURL = imageURL;
+        } else {
+            this.imageURL = ApplicationContext.getRootURL() + "/" + imageURL;
+        }
     }
 
     /**
