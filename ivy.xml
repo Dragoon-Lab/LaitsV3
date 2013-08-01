@@ -10,23 +10,23 @@
     <dependencies>
         <dependency org="org.jgrapht" name="jgrapht-jdk1.5" rev="0.7.3" />
         <dependency org="jgraph" name="jgraph" rev="5.13.0.0" />
-        <dependency org="edu.stanford.ejalbert" name="BrowserLauncher2" rev="latest.integration"/>
-        <dependency org="org.jfree" name="jfreechart" rev="latest.integration">
+        <dependency org="edu.stanford.ejalbert" name="BrowserLauncher2" rev="latest.release"/>
+        <dependency org="org.jfree" name="jfreechart" rev="latest.release">
             <artifact name="jfreechart" type="jar" ext="jar" />
         </dependency>
-        <dependency org="org.jfree" name="jcommon" rev="latest.integration" />
-        <dependency org="commons-net" name="commons-net" rev="latest.integration" />
-        <dependency org="com.thoughtworks.xstream" name="xstream" rev="latest.integration" />
-        <dependency org="org.apache.httpcomponents" name="httpcore" rev="latest.integration" />
-        <dependency org="org.apache.httpcomponents" name="httpclient" rev="latest.integration" />
-        <dependency org="com.sun.woodstock.dependlibs" name="jhall" rev="latest.integration" />
-        <dependency org="log4j" name="log4j" rev="latest.integration" >
+        <dependency org="org.jfree" name="jcommon" rev="latest.release" />
+        <dependency org="commons-net" name="commons-net" rev="latest.release" />
+        <dependency org="com.thoughtworks.xstream" name="xstream" rev="latest.release" />
+        <dependency org="org.apache.httpcomponents" name="httpcore" rev="latest.release" />
+        <dependency org="org.apache.httpcomponents" name="httpclient" rev="latest.release" />
+        <dependency org="com.sun.woodstock.dependlibs" name="jhall" rev="latest.release" />
+        <dependency org="log4j" name="log4j" rev="latest.release" >
             <artifact name="log4j" type="jar" />
         </dependency>
-        <dependency org="xpp3" name="xpp3_min" rev="latest.integration" />
-        <dependency org="org.swinglabs" name="swingx" rev="latest.integration" />
-        <dependency org="net.java.balloontip" name="balloontip" rev="latest.integration" />
-        <dependency org="org.swinglabs" name="swing-layout" rev="latest.integration" />
+        <dependency org="xpp3" name="xpp3_min" rev="latest.release" />
+        <dependency org="org.swinglabs" name="swingx" rev="latest.release" />
+        <dependency org="net.java.balloontip" name="balloontip" rev="latest.release" />
+        <dependency org="org.swinglabs" name="swing-layout" rev="latest.release" />
         <exclude org="com.jhlabs" module="filters" />
         <exclude org="org.jdom" module="jdom" />
         <exclude org="xom" module="xom" />
