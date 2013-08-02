@@ -31,7 +31,7 @@
       <Outputs>
         <Name>Oprah weight</Name>
       </Outputs>
-      <Equation></Equation>
+      <Equation>1.5</Equation>
       <InitialValue>1.5</InitialValue>
     </Node>
     <Node type="flow" name="Jared weight" extra="no">
@@ -39,10 +39,10 @@
       <Plan>proportional to accumulator and input</Plan>
       <Order>1</Order>
       <Inputs>
-        <Node name="Oprah weight"/>
+          <Name>Oprah weight</Name>
       </Inputs>
       <Outputs/>
-      <Equation/>
+      <Equation>1.3 * Oprah weight</Equation>
       <InitialValue>0.0</InitialValue>
     </Node>
   </Nodes>

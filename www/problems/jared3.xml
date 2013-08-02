@@ -19,7 +19,7 @@
       <Outputs>
         <Name>Jared weight</Name>
       </Outputs>
-      <Equation></Equation>
+      <Equation>50.0</Equation>
       <InitialValue>50.0</InitialValue>
     </Node>
     <Node type="stock" name="Oprah weight" extra="no">
@@ -41,7 +41,7 @@
       <Outputs>
         <Name>Oprah weight</Name>
       </Outputs>
-      <Equation></Equation>
+      <Equation>1.5</Equation>
       <InitialValue>1.5</InitialValue>
     </Node>
     <Node type="flow" name="Jared weight" extra="no">
@@ -53,7 +53,7 @@
         <Name>Jared extra weight</Name>
       </Inputs>
       <Outputs/>
-      <Equation/>
+      <Equation>Oprah weight + Jared extra weight</Equation>
       <InitialValue>0.0</InitialValue>
     </Node>
   </Nodes>
