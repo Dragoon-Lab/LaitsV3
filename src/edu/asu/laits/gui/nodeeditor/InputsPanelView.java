@@ -305,7 +305,7 @@ public class InputsPanelView extends javax.swing.JPanel implements ItemListener 
                 .addGroup(radioPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addComponent(fixedValueOptionButton)
                     .addComponent(inputNodesSelectionOptionButton))
-                .addContainerGap(74, Short.MAX_VALUE))
+                .addContainerGap(63, Short.MAX_VALUE))
         );
         radioPanelLayout.setVerticalGroup(
             radioPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -354,12 +354,13 @@ public class InputsPanelView extends javax.swing.JPanel implements ItemListener 
         contentPanel.add(jScrollPane2, new org.netbeans.lib.awtextra.AbsoluteConstraints(10, 110, 300, 250));
 
         buttonCreateNodeInputTab.setText("Create Node");
+        buttonCreateNodeInputTab.setHorizontalTextPosition(javax.swing.SwingConstants.CENTER);
         buttonCreateNodeInputTab.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 buttonCreateNodeInputTabActionPerformed(evt);
             }
         });
-        contentPanel.add(buttonCreateNodeInputTab, new org.netbeans.lib.awtextra.AbsoluteConstraints(440, 440, 110, -1));
+        contentPanel.add(buttonCreateNodeInputTab, new org.netbeans.lib.awtextra.AbsoluteConstraints(420, 440, -1, -1));
 
         add(contentPanel, new org.netbeans.lib.awtextra.AbsoluteConstraints(0, 6, 560, 480));
     }// </editor-fold>//GEN-END:initComponents

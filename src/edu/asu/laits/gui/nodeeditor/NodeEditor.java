@@ -26,7 +26,7 @@ import edu.asu.laits.model.TaskSolution;
 import edu.asu.laits.model.Vertex;
 import java.awt.Color;
 import java.awt.Insets;
-import java.util.HashMap;
+import java.util.HashMap; 
 import java.util.List;
 import java.util.Map;
 import javax.swing.JComponent;
@@ -220,7 +220,8 @@ public class NodeEditor extends javax.swing.JDialog {
                 } else {
                     if (!isCurrentPanelChecked() && ApplicationContext.getAppMode().equalsIgnoreCase("COACHED")) {
                         activityLogs.debug("User tried switching Tab without using Check or Giveup ");
-                        setEditorMessage("Please use Check or Giveup buttons before proceeding.", true);
+                        // Need variables with button name text; see Bug #2104.
+                        setEditorMessage("Please use Check or Demo buttons before proceeding.", true);
                         tabPane.setSelectedIndex(selectedTab);
                         return;
                     }
@@ -728,7 +729,7 @@ public class NodeEditor extends javax.swing.JDialog {
             buttonOK.show();
         }
     }
-
+    
     public void addHelpBalloon(String name, String timing, String panel) {
         logs.debug("Adding Help Bubble for "+panel);
         if (ApplicationContext.getAppMode().equalsIgnoreCase("COACHED")) {
@@ -736,19 +737,22 @@ public class NodeEditor extends javax.swing.JDialog {
             List<HelpBubble> bubbles = ApplicationContext.getHelp(name, panel, timing);
             if (!bubbles.isEmpty()) {
                 for (HelpBubble bubble : bubbles) {
-
-                    if (panel.equalsIgnoreCase("description")) {
-                        new BlockingToolTip(this, bubble, getLabel("dPanel", bubble.getAttachedTo()));
-                    } else if (panel.equalsIgnoreCase("plan")) {
-                        System.out.println("Trying to add help in Plan. Msg: " + bubble.getMessage() + "  " + bubble.getAttachedTo());
-                        System.out.println("comp: " + pPanel.getLabel(bubble.getAttachedTo()));
-                        new BlockingToolTip(this, bubble, getLabel("pPanel", bubble.getAttachedTo()));
-                    } else if (panel.equalsIgnoreCase("inputs")) {
-                        new BlockingToolTip(this, bubble, getLabel("iPanel", bubble.getAttachedTo()));
-                    } else if (panel.equalsIgnoreCase("calculations")) {
-                        new BlockingToolTip(this, bubble, getLabel("cPanel", bubble.getAttachedTo()));
+                    try{
+                        if (panel.equalsIgnoreCase("description")) {
+                            new BlockingToolTip(this, bubble, getLabel("dPanel", bubble.getAttachedTo()));
+                        } else if (panel.equalsIgnoreCase("plan")) {
+                            System.out.println("Trying to add help in Plan. Msg: " + bubble.getMessage() + "  " + bubble.getAttachedTo());
+                            System.out.println("comp: " + pPanel.getLabel(bubble.getAttachedTo()));
+                            new BlockingToolTip(this, bubble, getLabel("pPanel", bubble.getAttachedTo()));
+                        } else if (panel.equalsIgnoreCase("inputs")) {
+                            new BlockingToolTip(this, bubble, getLabel("iPanel", bubble.getAttachedTo()));
+                        } else if (panel.equalsIgnoreCase("calculations")) {
+                            new BlockingToolTip(this, bubble, getLabel("cPanel", bubble.getAttachedTo()));
+                        }
                     }
-
+                    catch(IllegalArgumentException e){
+                        System.err.println("Error creating bubble: " + e.getMessage());
+                    }
                 }
             }
         }
@@ -769,10 +773,10 @@ public class NodeEditor extends javax.swing.JDialog {
             rPanel = getLabel(attachedTo);
         }
         if (rPanel == null) {
-            return null;
-        } else {
-            return rPanel;
+            // This is a bit ugly:  should create new exception type.
+            throw new IllegalArgumentException("panel="+panel+" not found; attachedTo="+attachedTo);
         }
+        return rPanel;
     }
 
     /**
@@ -1087,7 +1091,7 @@ public class NodeEditor extends javax.swing.JDialog {
         refreshGraphPane();
     }//GEN-LAST:event_giveUpButtonActionPerformed
     public JComponent getLabel(String label) {
-
+        // Hash table should be created earlier; See Bug #2085
         Map<String, JComponent> map = new HashMap<String, JComponent>();
         map.put("tabPane", tabPane);
         map.put("checkButton", checkButton);
