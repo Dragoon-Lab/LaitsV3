@@ -386,14 +386,14 @@ public class NodeEditor extends javax.swing.JDialog {
             logs.debug("Enabling Check and Giveup");
             this.checkButton.setEnabled(true);
             this.giveUpButton.setEnabled(true);
-
+              
             String taskPhase = ApplicationContext.getCorrectSolution().getPhase();
 
             // Disable Giveup in Challege tasks
             if (taskPhase.equalsIgnoreCase("Challenge")) {
                 this.giveUpButton.setEnabled(false);
             }
-
+            
             switch(selectedTab){
             case DESCRIPTION:
                if (currentVertex.getDescriptionStatus().equals(Vertex.DescriptionStatus.GAVEUP)) {
@@ -1038,6 +1038,8 @@ public class NodeEditor extends javax.swing.JDialog {
             validate();
             repaint();
             currentVertex.setDescriptionStatus(Vertex.DescriptionStatus.GAVEUP);
+            checkButton.setEnabled(false);
+            giveUpButton.setEnabled(false);
             dPanel.setEditableTree(false);
             tabPane.setEnabledAt(PLAN, true);
             tabPane.setForegroundAt(PLAN, Color.BLACK);
@@ -1049,6 +1051,8 @@ public class NodeEditor extends javax.swing.JDialog {
             pPanel.giveUpPlanPanel();
             pPanel.processPlanPanel();
             currentVertex.setPlanStatus(Vertex.PlanStatus.GAVEUP);
+            checkButton.setEnabled(false);
+            giveUpButton.setEnabled(false);
             iPanel.updateNodeDescription();
             pPanel.setEditableRadio(false);
             tabPane.setEnabledAt(INPUTS, true);
@@ -1063,14 +1067,19 @@ public class NodeEditor extends javax.swing.JDialog {
             if (iPanel.giveUpInputsPanel()) {
                 iPanel.processInputsPanel();
                 currentVertex.setInputsStatus(Vertex.InputsStatus.GAVEUP);
-            } else {
+                checkButton.setEnabled(false);
+                giveUpButton.setEnabled(false);
+                cPanel.initPanel();
+                iPanel.setEditableInputs(false);
+                tabPane.setEnabledAt(CALCULATIONS, true);
+                tabPane.setForegroundAt(CALCULATIONS, Color.BLACK);
+           } else {
+                // Only disable buttons/entries if tab was turned yellow.
+                // In this case, warning message was given and student
+                // needs to be able to update entry and check it.
                 currentVertex.setInputsStatus(Vertex.InputsStatus.INCORRECT);
             }
-            cPanel.initPanel();
-            iPanel.setEditableInputs(false);
-            tabPane.setEnabledAt(CALCULATIONS, true);
-            tabPane.setForegroundAt(CALCULATIONS, Color.BLACK);
-            break;
+             break;
             
         case CALCULATIONS:
             activityLogs.debug("Giveup button pressed for Calculations Panel");
@@ -1080,14 +1089,18 @@ public class NodeEditor extends javax.swing.JDialog {
                 currentVertex.setCalculationsStatus(Vertex.CalculationsStatus.GAVEUP);
                 cPanel.setEditableCalculations(false);
                 buttonCancel.setEnabled(true);
+                checkButton.setEnabled(false);
+                giveUpButton.setEnabled(false);
+
             } else {
+                // Only disable buttons if tab was turned yellow.
+                // In this case, warning message was given and student
+                // needs to be able to update entry and check it.
                 currentVertex.setCalculationsStatus(Vertex.CalculationsStatus.INCORRECT);
             }
             break;
             
         }
-        checkButton.setEnabled(false);
-        giveUpButton.setEnabled(false);
         refreshGraphPane();
     }//GEN-LAST:event_giveUpButtonActionPerformed
     public JComponent getLabel(String label) {

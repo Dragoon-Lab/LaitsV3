@@ -231,7 +231,8 @@ public class InputsPanelView extends javax.swing.JPanel implements ItemListener 
             availableInputs.remove(nodeEditor.getCurrentVertex().getName());
 
             if (!availableInputs.containsAll(correctInputs)) {
-                nodeEditor.setEditorMessage("Please define all the Nodes before using Giveup.", true);
+                // Button name should be a variable;  see Bug #2104
+                nodeEditor.setEditorMessage("Please define all the Nodes before using Demo.", true);
                 return false;
             }
 
