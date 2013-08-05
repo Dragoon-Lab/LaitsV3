@@ -1,14 +1,14 @@
 <?php
 
 $problem = $_GET['taskid'];
-$section = $_GET['section'];
 
-if($section)
+if(isset($_GET['section']))
   {
     /*
       If section is given as argument, then look for 
       section-authored problems stored in database.
     */
+    $section=$_GET['section'];
     $user = $_GET['user'];
 
     require "db-login.php";

@@ -6,7 +6,7 @@
   diet as Oprah, except that he eats larger portions.  Consequently, NEWLINE
   Jared always weighs 1.3 times as much as Oprah.  Oprah initially weighs 140 pounds NEWLINE
   but loses 1.5 pounds each week.</TaskDescription>
-  <URL>http://dragoon.asu.edu/devel/images/jared-and-oprah.jpg</URL> <!-- Bug #2065 -->
+  <URL>images/jared-and-oprah.jpg</URL>
   <StartTime>0</StartTime>
   <EndTime>10</EndTime>
   <Units>Weeks</Units>
@@ -31,7 +31,7 @@
       <Outputs>
         <Name>Oprah weight</Name>
       </Outputs>
-      <Equation></Equation>
+      <Equation>1.5</Equation>
       <InitialValue>1.5</InitialValue>
     </Node>
     <Node type="flow" name="Jared weight" extra="no">
@@ -39,10 +39,10 @@
       <Plan>proportional to accumulator and input</Plan>
       <Order>1</Order>
       <Inputs>
-        <Node name="Oprah weight"/>
+          <Name>Oprah weight</Name>
       </Inputs>
       <Outputs/>
-      <Equation/>
+      <Equation>1.3 * Oprah weight</Equation>
       <InitialValue>0.0</InitialValue>
     </Node>
   </Nodes>

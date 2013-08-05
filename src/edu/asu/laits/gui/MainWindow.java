@@ -375,24 +375,38 @@ public class MainWindow extends JFrame {
         
         /*GlobalProperties.getInstance().saveToPropertiesFile();
         
-        if (getGraphEditorPane().getGraphProperties().isChanged()) {
+//        if (getGraphEditorPane().getGraphProperties().isChanged()) {
+//            int answear = JOptionPane
+//                    .showConfirmDialog(
+//                    getRootPane(),
+//                    "The graph has been changed.\nDo you want to save changes before exit?",
+//                    "Save before exit?",
+//                    JOptionPane.YES_NO_CANCEL_OPTION);
+//            switch (answear) {
+//                case JOptionPane.YES_OPTION:
+//                    getMainMenu().getFileMenu().save();
+//                    break;
+//                case JOptionPane.NO_OPTION:
+//
+//                    break;
+//                case JOptionPane.CANCEL_OPTION:
+//                    // Dont close window and return
+//                    return;
+//
+//            }
+//        }
             int answear = JOptionPane
-                    .showConfirmDialog(
+            .showConfirmDialog(
                     getRootPane(),
-                    "The graph has been changed.\nDo you want to save changes before exit?",
-                    "Save before exit?",
-                    JOptionPane.YES_NO_CANCEL_OPTION);
+                    "Are you sure you want to exit?",
+                    "Exit Application?",
+                    JOptionPane.YES_NO_OPTION);
             switch (answear) {
                 case JOptionPane.YES_OPTION:
-                    getMainMenu().getFileMenu().save();
                     break;
                 case JOptionPane.NO_OPTION:
 
-                    break;
-                case JOptionPane.CANCEL_OPTION:
-                    // Dont close window and return
                     return;
-
             }
         }*/
         

@@ -365,6 +365,7 @@ public class CalculationsPanelView extends javax.swing.JPanel {
             availableInputs.remove(nodeEditor.getCurrentVertex().getName());
             
             if (!availableInputs.containsAll(correctInputs)) {
+                // Button name should be a variable;  see Bug #2104
                 nodeEditor.setEditorMessage("Please define all the Nodes before using Demo.", true);
                 return false;
             }

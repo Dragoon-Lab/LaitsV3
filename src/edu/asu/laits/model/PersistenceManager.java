@@ -63,7 +63,7 @@ public class PersistenceManager implements Runnable {
 
         try {
             DefaultHttpClient httpClient = new DefaultHttpClient();
-
+            //  Should use post method!  Bug #2106 
             HttpGet httpMethod = new HttpGet(prepareHttpGetRequest());
             HttpResponse response = httpClient.execute(httpMethod);
             statusCode = response.getStatusLine().getStatusCode();
