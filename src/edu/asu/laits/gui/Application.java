@@ -73,9 +73,7 @@ public class Application extends JApplet {
             
             ApplicationContext.setUserID(args[0]);
             ApplicationContext.setAppMode(args[1]);
-            
-            if(!args[1].equals("AUTHOR"))
-                ApplicationContext.setCurrentTaskID(args[2]);
+            ApplicationContext.setCurrentTaskID(args[2]);
             
         }else {
             // Try to Launch application using JNLP for PROD

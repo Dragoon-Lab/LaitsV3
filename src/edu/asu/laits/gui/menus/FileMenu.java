@@ -77,8 +77,7 @@ public class FileMenu extends JMenu {
     private ActionListener openAction;
     private ActionListener saveAction;
     GlobalProperties globalProperties = GlobalProperties.getInstance();
-    private JMenu taskListMenu = null;
-    private JMenu tempTaskMenu = null;
+    
     /*
      * Indicate if the current graph is associated with a file
      */

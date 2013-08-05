@@ -20,7 +20,6 @@ package edu.asu.laits.gui;
 
 import edu.asu.laits.editor.ApplicationContext;
 import javax.swing.JFrame;
-import javax.swing.JOptionPane;
 import javax.swing.JToolBar;
 import javax.swing.JPanel;
 import java.awt.BorderLayout;
@@ -43,12 +42,8 @@ import edu.asu.laits.gui.toolbars.EditToolBar;
 import edu.asu.laits.gui.toolbars.ModelToolBar;
 import edu.asu.laits.gui.toolbars.ViewToolBar;
 import edu.asu.laits.logger.HttpAppender;
-import edu.asu.laits.model.GraphSaver;
 import edu.asu.laits.model.HelpBubble;
 import edu.asu.laits.model.PersistenceManager;
-import edu.asu.laits.model.TaskSolution;
-import edu.asu.laits.model.TaskSolutionReader;
-import edu.asu.laits.model.Vertex;
 import edu.asu.laits.properties.GlobalProperties;
 import edu.asu.laits.properties.GraphProperties;
 import java.awt.Color;
@@ -97,7 +92,8 @@ public class MainWindow extends JFrame {
         initializeFrameElements();
         
         loadSession();
-        loadTask();
+        if(!ApplicationContext.getAppMode().equalsIgnoreCase("AUTHOR"))
+            loadTask();
         setFrameTitle();
         
         GraphPropertiesChangeListener l = new MainGraphPropertiesChangeListener();
@@ -316,8 +312,8 @@ public class MainWindow extends JFrame {
      */
     public JScrollPane getGraphPaneScrollPane() {
         if (graphPaneScrollPane == null) {
-            graphPaneScrollPane = new JScrollPane();           
-            graphPaneScrollPane.setViewportView(getGraphEditorPane());
+            graphPaneScrollPane = new JScrollPane();  
+            graphPaneScrollPane.setViewportView(getGraphEditorPane());            
         }
         return graphPaneScrollPane;
     }
@@ -334,7 +330,6 @@ public class MainWindow extends JFrame {
                     .isAntialiasing());
             graphEditorPane.setDoubleBuffered(GlobalProperties.getInstance()
                     .isDoubleBuffering());
-            
             // Set GraphEditorPane in ApplicationContext to make is visible to whole app
             ApplicationContext.setGraphEditorPane(graphEditorPane);
         }
@@ -378,7 +373,7 @@ public class MainWindow extends JFrame {
     public void exitWindow() {
         activityLogs.info("User exited LAITS....");
         
-        GlobalProperties.getInstance().saveToPropertiesFile();
+        /*GlobalProperties.getInstance().saveToPropertiesFile();
         
         if (getGraphEditorPane().getGraphProperties().isChanged()) {
             int answear = JOptionPane
@@ -399,7 +394,7 @@ public class MainWindow extends JFrame {
                     return;
 
             }
-        }
+        }*/
         
         windowCount--;
         if (windowCount == 0) {

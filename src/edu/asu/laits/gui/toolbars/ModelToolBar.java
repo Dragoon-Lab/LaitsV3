@@ -71,7 +71,7 @@ public class ModelToolBar extends JToolBar {
             disableDeleteNodeButton();
         }
         add(Box.createHorizontalStrut(5)); 
-        add(getShowForumButton());
+        //add(getShowForumButton());
     }
 
     /**

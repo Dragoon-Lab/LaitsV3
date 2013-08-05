@@ -604,11 +604,13 @@ public class NodeEditor extends javax.swing.JDialog {
     private void processAuthorModeOKAction() {
         logs.debug("Processing Author Mode OK Button Action");
         if (dPanel.processDescriptionPanel()) {
+            currentVertex.setDescriptionStatus(Vertex.DescriptionStatus.CORRECT);
             activityLogs.debug(dPanel.printDescriptionPanelDetails());
             if (pPanel.processPlanPanel()) {
+                currentVertex.setPlanStatus(Vertex.PlanStatus.CORRECT);
                 activityLogs.debug(pPanel.printPlanPanel());
                 if (iPanel.processInputsPanel()) {
-                    logs.debug("Setting Inputs completely");
+                    logs.debug("Inputs are Provided Correctly");
                     activityLogs.debug(iPanel.printInputsPanel());
                     currentVertex.setInputsStatus(Vertex.InputsStatus.CORRECT);
                     if (cPanel.processCalculationsPanel()) {
@@ -618,11 +620,14 @@ public class NodeEditor extends javax.swing.JDialog {
                     }
                     activityLogs.debug(cPanel.printCalculationPanel());
                 } else {
-                    logs.debug("Setting input incompletely");
+                    logs.debug("Inputs are Incorrect");
                     currentVertex.setInputsStatus(Vertex.InputsStatus.INCORRECT);
-                }
-                graphPane.repaint();
+                }                
             }
+            // Save Student's session to server
+            PersistenceManager.saveSession();
+            
+            graphPane.repaint();
             this.dispose();
         }
     }

@@ -165,7 +165,6 @@ public class GraphEditorPane extends JGraph {
         setGridVisible((prop.isGridEnabled() ? prop.isGridVisable() : false));
         setGridMode(prop.getGridMode());
         setGridSize(prop.getGridSize());
-
     }
 
     /**
