@@ -50,7 +50,7 @@ public class PlanPanelView extends JPanel {
     private static String[] thirdOption = {"said to increase", "accumulator", "increase"};
     private static String[] fourthOption = {"said to decrease", "accumulator", "- decrease"};
     private static String[] fifthOption = {"said to both increase and decrease", "accumulator", "increase - decrease"};
-    private static String[] sixedOption = {"<html>the sum or difference <BR//>of two quantities</html>", "function", "quantity1 + quantity2"};
+    private static String[] sixedOption = {"<html>the sum or difference <BR/>of two quantities</html>", "function", "quantity1 + quantity2"};
     private static String[] seventhOption = {"the ratio of two quantities", "function", "quantity1 / quantity2"};
 
     /**
