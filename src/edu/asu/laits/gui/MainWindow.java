@@ -168,7 +168,9 @@ public class MainWindow extends JFrame {
         // Set Title of Main Frame
         String title = GlobalProperties.PROGRAM_NAME + 
                 " - "+ ApplicationContext.getAppMode() + " Mode";
-        if(!ApplicationContext.getAppMode().equals("AUTHOR"))
+        if(ApplicationContext.getAppMode().equals("AUTHOR"))
+            title += " : " + ApplicationContext.getCurrentTaskID();
+        else
             title += " : " + ApplicationContext.getCorrectSolution().getTaskName();
         
         this.setTitle(title);
