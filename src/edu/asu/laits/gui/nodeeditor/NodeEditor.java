@@ -479,7 +479,7 @@ public class NodeEditor extends javax.swing.JDialog {
             activityLogs.debug("User entered correct description");
             dPanel.setEditableTree(false);
             //ApplicationContext.nextCurrentOrder();
-            ApplicationContext.removeNextNodes(currentVertex.getName());
+            //ApplicationContext.removeNextNodes(currentVertex.getName());
             ApplicationContext.setNextNodes(currentVertex.getName());
             tabPane.setEnabledAt(PLAN, true);
             tabPane.setForegroundAt(PLAN, Color.BLACK);

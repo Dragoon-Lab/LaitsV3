@@ -234,7 +234,7 @@ public class CreateNewNodeDialog extends javax.swing.JDialog {
             activityLogs.debug("User entered correct description");
             dPanel.setEditableTree(false);
             //ApplicationContext.nextCurrentOrder();
-            ApplicationContext.removeNextNodes(currentVertex.getName());
+            //ApplicationContext.removeNextNodes(currentVertex.getName());
             ApplicationContext.setNextNodes(currentVertex.getName());            
             giveUpButton.setEnabled(false);
             

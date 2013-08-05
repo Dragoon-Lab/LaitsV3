@@ -354,7 +354,7 @@ public class DescriptionPanelView extends JPanel {
             for (SolutionNode name : correctNodeNames) {
                 if (name.getNodeName().equalsIgnoreCase(ApplicationContext.getFirstNextNode())) {
                     giveupNode = name.getNodeName();
-                    ApplicationContext.removeNextNodes(name.getNodeName());
+                    //ApplicationContext.removeNextNodes(name.getNodeName());
                     ApplicationContext.setNextNodes(name.getNodeName());
 //                  ApplicationContext.nextCurrentOrder();
                     break;

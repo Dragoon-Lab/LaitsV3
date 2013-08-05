@@ -113,6 +113,8 @@ public class GraphLoader {
             graphPane.addVertex(vertex);
             System.out.println("Added " + vertex.getName() + "  "+vertex.getVertexIndex());
             vertexHash.put(vertex.getVertexIndex(), vertex);
+                        System.out.println("removing from next nodes  " + vertex.getName() + "  "+vertex.getVertexIndex());
+            ApplicationContext.setNextNodes(vertex.getName());
         }
 
         /*

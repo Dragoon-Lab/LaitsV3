@@ -56,6 +56,7 @@ public class ApplicationContext {
              System.out.println("added " + childNode);
           }
       }
+      removeNextNodes(parentNode);
   }
 
   public static List<String> getNextNodes() {

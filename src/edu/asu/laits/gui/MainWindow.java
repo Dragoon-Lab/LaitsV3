@@ -91,9 +91,9 @@ public class MainWindow extends JFrame {
         super();
         initializeFrameElements();
         
-        loadSession();
         if(!ApplicationContext.getAppMode().equalsIgnoreCase("AUTHOR"))
             loadTask();
+        loadSession();
         setFrameTitle();
         
         GraphPropertiesChangeListener l = new MainGraphPropertiesChangeListener();

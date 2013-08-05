@@ -354,7 +354,7 @@ public class NewNodeDescPanel extends JPanel{
              if(name.getNodeName().equalsIgnoreCase(ApplicationContext.getFirstNextNode())){
                   giveupNode = name.getNodeName();
                   //ApplicationContext.nextCurrentOrder();
-                  ApplicationContext.removeNextNodes(name.getNodeName());
+                  //ApplicationContext.removeNextNodes(name.getNodeName());
                   ApplicationContext.setNextNodes(name.getNodeName());
                   break;
              } 
