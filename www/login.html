@@ -141,7 +141,7 @@
                 if($("#mode").val() == "STUDENT"){
                     $('#problem_category').prop('disabled', false);
                     $('#problem_id').prop('disabled', false);
-                    location.reload(); 
+                    //location.reload(); //reloads page to reset values; enable if issue with problems resetting when user goes back to "Student" mode
                 }else if($("#mode").val() == "AUTHOR"){
                     $('#problem_category').prop('disabled', true);
                     $('#problem_id').prop('disabled', true);
