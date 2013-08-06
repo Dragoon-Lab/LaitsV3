@@ -3,12 +3,20 @@
   <TaskName>ObscureFlix</TaskName>
   <URL>http://fc03.deviantart.net/fs70/f/2010/069/1/1/Gorosaurus_pinup_by_KaijuSamurai.jpg</URL>
   
-  <TaskDescription>Problem: Mark enjoys watching obscure, barely known movies so he subscribes to ObscureFlix.  He can watch all the movies he wants, although he has to pay $2.5 per movie.  However, the good people at ObscureFlix only have an average of 5 copies of each movie, so they often have to wait for movies to be returned before they can ship them out again. On average ObscureFlix can only ship half of the movies on Mark’s movie queue each week, which of course removes them from the queue.  After an initial frenzy where he started up his queue by putting 30 really rare movies on it, the number of movies Mark adds to his queue each week is about 20% of the number of movies already on the queue.   
-Goal: Make a graph that shows how many movies he has in his queue over the space of 12 weeks.</TaskDescription>
+  <TaskDescription>
+      Problem: Mark enjoys watching obscure, barely known movies so he subscribes to ObscureFlix.  He can NEWLINE
+      watch all the movies he wants, although he has to pay $2.5 per movie.  However, the good people at NEWLINE
+      ObscureFlix only have an average of 5 copies of each movie, so they often have to wait for movies to NEWLINE
+      be returned before they can ship them out again. On average ObscureFlix can only ship half of the NEWLINE
+      movies on Markâ€™s movie queue each week, which of course removes them from the queue.  After an NEWLINE
+      initial frenzy where he started up his queue by putting 30 really rare movies on it, the number of NEWLINE
+      movies Mark adds to his queue each week is about 20% of the number of movies already on the queue. NEWLINE NEWLINE
+      Goal: Make a graph that shows how many movies he has in his queue over the space of 12 weeks.
+  </TaskDescription>
 
   <ShortDescription>
 The number of movies on the queue at the end of this week =
-\n     the number of movies on Mark’s queue at the end of the previous week
+\n     the number of movies on Markâ€™s queue at the end of the previous week
 \n     + the number movies Mark adds to the queue this week
 \n     - the number of movies  removed from the queue this week.
 \n     Initially, the number of movies in the queue is 30.
@@ -58,7 +66,7 @@ The number of movies on the queue at the end of this week =
       <CorrectDescription>The proportion of movies shipped from the queue each week</CorrectDescription>
       <Plan>fixed value</Plan>
 	  </Node>
-	  
+
       <Node type="constant" name="proportion of movies added" extra="no">
       <Inputs></Inputs>
       <Outputs></Outputs>
@@ -67,7 +75,7 @@ The number of movies on the queue at the end of this week =
       <CorrectDescription>The proportion of movies that Marks adds to the queue each week</CorrectDescription>
       <Plan>fixed value</Plan>
 	  </Node>
-	  
+
 	  <Node type="constant" name="price per movie" extra="yes">
       <Inputs></Inputs>
       <Outputs>
@@ -78,7 +86,7 @@ The number of movies on the queue at the end of this week =
       <CorrectDescription>The amount of money Marks spends per movie in dollars</CorrectDescription>
       <Plan>fixed value</Plan>
 	  </Node>
-	  
+
 	  <Node type="constant" name="copies per movie" extra="yes">
       <Inputs></Inputs>
       <Outputs></Outputs>
@@ -87,7 +95,7 @@ The number of movies on the queue at the end of this week =
       <CorrectDescription>The amount of copies of a movie on average</CorrectDescription>
       <Plan>fixed value</Plan>
 	  </Node>
-	  
+
 	  <Node type="constant" name="movies on queue initially" extra="yes">
       <Inputs></Inputs>
       <Outputs></Outputs>
@@ -96,7 +104,7 @@ The number of movies on the queue at the end of this week =
       <CorrectDescription>The number of movies on the queue initially</CorrectDescription>
       <Plan>fixed value</Plan>
 	  </Node>
-	  
+
 	  <Node type="stock" name="movies on queue" extra="no">
       <Inputs>
         <Node name="movies added weekly" type="plus"></Node>
