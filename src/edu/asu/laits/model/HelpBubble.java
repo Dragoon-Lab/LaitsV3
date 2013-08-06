@@ -4,6 +4,8 @@
  */
 package edu.asu.laits.model;
 
+import net.java.balloontip.BalloonTip;
+
 /**
  *
  * @author rjoiner1
@@ -17,6 +19,28 @@ public class HelpBubble {
     private int x;
     private int y;
     private boolean displayed;
+    private BalloonTip.Orientation orientation;
+
+    public void setOrientation(BalloonTip.Orientation orientation) {
+        this.orientation = orientation;
+    }
+    public void setOrientation(String orientation){
+        if (orientation.equalsIgnoreCase("right_above")){
+            System.out.println("adding bubble as right above");
+            this.orientation = BalloonTip.Orientation.RIGHT_ABOVE;
+        } else if (orientation.equalsIgnoreCase("left_below")){
+            this.orientation = BalloonTip.Orientation.LEFT_BELOW;
+        } else if (orientation.equalsIgnoreCase("left_above")){
+            this.orientation = BalloonTip.Orientation.LEFT_ABOVE;
+        } else {
+            System.out.println("adding bubble as right above");
+            this.orientation = BalloonTip.Orientation.RIGHT_BELOW; 
+        }
+    }
+
+    public BalloonTip.Orientation getOrientation() {
+        return orientation;
+    }
 
     public void setDisplayed(boolean displayed) {
         this.displayed = displayed;
@@ -34,7 +58,7 @@ public class HelpBubble {
         return nodeName;
     }
 
-    public HelpBubble(String event, String timing, String message, String attachedTo, String nodeName, int x, int y) {
+    public HelpBubble(String event, String timing, String message, String attachedTo, String nodeName, int x, int y, BalloonTip.Orientation orientation) {
         this.event = event;
         this.timing = timing;
         this.message = message;
@@ -42,6 +66,7 @@ public class HelpBubble {
         this.nodeName = nodeName;
         this.x = x;
         this.y = y;
+        this.orientation = orientation;
     }
     
     public HelpBubble(){
@@ -53,6 +78,7 @@ public class HelpBubble {
         this.x=0;
         this.y=0;
         this.displayed = false;
+        this.orientation = BalloonTip.Orientation.LEFT_ABOVE;
     }
 
     public void setEvent(String event) {
