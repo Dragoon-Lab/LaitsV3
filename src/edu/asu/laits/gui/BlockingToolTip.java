@@ -47,7 +47,7 @@ public class BlockingToolTip {
         if(!bubble.isDisplayed()){
             this.parent = parent;
             bubble.setDisplayed(true);
-            initBalloon(bubble.getMessage(), c, bubble.getX(), bubble.getY());        
+            initBalloon(bubble, c);        
             disableWindow();
            
         }
@@ -67,6 +67,12 @@ public class BlockingToolTip {
                 new RoundedBalloonStyle(5,5,Color.WHITE, Color.BLACK),
                 BalloonTip.Orientation.LEFT_ABOVE, BalloonTip.AttachLocation.ALIGNED,
                 15+x, 15+y, true);
+    }
+    private void initBalloon(HelpBubble bubble, JComponent c) {
+        bTip = new BalloonTip(c, new JLabel(bubble.getMessage()),
+                new RoundedBalloonStyle(5,5,Color.WHITE, Color.BLACK),
+                bubble.getOrientation(), BalloonTip.AttachLocation.ALIGNED,
+                15+bubble.getX(), 15+bubble.getY(), true);
     }
     
     /**

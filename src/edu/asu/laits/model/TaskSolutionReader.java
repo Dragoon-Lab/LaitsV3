@@ -214,10 +214,12 @@ public class TaskSolutionReader {
             newBubble.setEvent(bubble.elementTextTrim("Event"));
             if(bubble.elementTextTrim("xValue")!= null){
                 newBubble.setX(Integer.parseInt(bubble.elementTextTrim("xValue")));
-                System.out.println(newBubble.getX());
             } 
             if(bubble.elementTextTrim("yValue")!= null){
                 newBubble.setY(Integer.parseInt(bubble.elementTextTrim("yValue")));
+            }  
+            if(bubble.elementTextTrim("Orient")!= null){
+                newBubble.setOrientation(bubble.elementTextTrim("Orient"));
             }    
             newBubble.setMessage(bubble.elementTextTrim("Message"));
         

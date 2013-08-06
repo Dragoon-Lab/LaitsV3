@@ -92,7 +92,6 @@ public class NodeEditor extends javax.swing.JDialog {
         if (ApplicationContext.getAppMode().equalsIgnoreCase("COACHED")) {
             buttonCancel.setEnabled(false);
         }
-
         this.addWindowListener(new java.awt.event.WindowAdapter() {
             public void windowClosing(java.awt.event.WindowEvent e) {
                 closeNodeEditor();
@@ -716,6 +715,7 @@ public class NodeEditor extends javax.swing.JDialog {
         // Delete this vertex if its not defined and user hits Cancel
         if (currentVertex.getDescriptionStatus().equals(Vertex.DescriptionStatus.UNDEFINED)
                 || currentVertex.getDescriptionStatus().equals(Vertex.DescriptionStatus.INCORRECT)) {
+            graphPane.setSelectionCell(currentVertex.getJGraphVertex());
             graphPane.removeSelected();
         }
 
