@@ -41,7 +41,7 @@
       </Inputs>
       <Outputs></Outputs>
       <InitialValue>100</InitialValue>
-      <Equation>+weekly_books_bought</Equation>
+      <Equation>+weekly books bought</Equation>
       <CorrectDescription>The number of books Rod has</CorrectDescription>
       <Plan>said to increase</Plan>
     </Node>
