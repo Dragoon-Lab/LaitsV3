@@ -82,7 +82,7 @@
     <Node level="root">
       <Description>How much more</Description>             
         <Node level="leaf">
-          <Description>Jareds weigh than Oprah/Description>
+          <Description>Jareds weigh than Oprah</Description>
           <NodeName>Jared extra weight</NodeName>
         </Node>
         <Node level="leaf">

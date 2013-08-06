@@ -12,17 +12,17 @@
       Goal: Graph the glucose level in the blood for 24 hours.
   </TaskDescription>
   <ShortDescription>
-  The amount of glucose in the blood at the end of the hour =
-\n     the amount of glucose in the blood at the end of the previous hour
-\n     + the amount of glucose added to the blood this hour
-\n     - the amount of glucose removed from the blood this hour.
-\n     Initially, the amount of glucose in the blood is 10.
-\nthe amount of glucose added to the blood each hour is given at 3.
-\nthe amount of glucose removed from the blood each hour =
-\n     the amount of glucose in the blood at the beginning of the hour
-\n     * the proportion of glucose removed from the blood during the hour.
-\nthe proportion of glucose removed from the blood during the hour is given at 0.02.
-</ShortDescription>
+        The amount of glucose in the blood at the end of the hour =
+      \n     the amount of glucose in the blood at the end of the previous hour
+      \n     + the amount of glucose added to the blood this hour
+      \n     - the amount of glucose removed from the blood this hour.
+      \n     Initially, the amount of glucose in the blood is 10.
+      \nthe amount of glucose added to the blood each hour is given at 3.
+      \nthe amount of glucose removed from the blood each hour =
+      \n     the amount of glucose in the blood at the beginning of the hour
+      \n     * the proportion of glucose removed from the blood during the hour.
+      \nthe proportion of glucose removed from the blood during the hour is given at 0.02.
+  </ShortDescription>
   <StartTime>0</StartTime>
   <EndTime>24</EndTime>
   <Units>hours</Units>
@@ -81,13 +81,13 @@
     
     <Node type="flow" name="glucose removed" extra="no">
       <Inputs>
-	    <Node name="removal rate"></Node>
-	    <Node name="glucose in the blood"></Node>
-	  </Inputs>
+          <Name>removal rate</Name>
+          <Name>glucose in the blood</Name>
+      </Inputs>
       <Outputs>
       	<Node name="glucose in the blood"></Node>
       </Outputs>
-      <Equation>glucose_in_the_blood*removal_rate</Equation>
+      <Equation>glucose in the blood*removal rate</Equation>
       <InitialValue></InitialValue>
       <CorrectDescription>The amount of glucose removed from the blood each hour and it varies from hour to hour</CorrectDescription>
       <Plan>proportional to accumulator and input</Plan>
@@ -95,13 +95,13 @@
     
     <Node type="stock" name="glucose in the blood" extra="no">
       <Inputs>
-        <Node name="glucose added" type="plus"></Node>
-        <Node name="glucose removed" type="minus"></Node>
+        <Name>glucose added</Name>
+        <Name>glucose removed</Name>
 	  </Inputs>
       <Outputs>
         <Node name="glucose removed"></Node>
 	  </Outputs>
-      <Equation>+glucose_added-glucose_removed</Equation>
+      <Equation>+glucose added-glucose removed</Equation>
       <InitialValue>10</InitialValue>
       <CorrectDescription>The amount of glucose in the blood at the end of each hour and it varies from hour to hour</CorrectDescription>
       <Plan>said to both increase and decrease</Plan>
@@ -116,52 +116,52 @@
         <Description>glucose removed from the blood after 24 hours</Description>            
         <Node level="leaf">
           <Description>and it increased each hour</Description>
-          <NodeName>final_glucose_removed_after_increase</NodeName>
+          <NodeName>final glucose removed after increase</NodeName>
         </Node>
         <Node level="leaf">
           <Description>and it decreased each hour</Description>
-          <NodeName>final_glucose_removed_after_decrease</NodeName>
+          <NodeName>final glucose removed after decrease</NodeName>
         </Node>
 	  </Node>
       <Node level="intermediate">
         <Description>glucose removed from the blood each hour</Description>            
         <Node level="leaf">
           <Description>and it varies from hour to hour</Description>
-          <NodeName>glucose_removed</NodeName>
+          <NodeName>glucose removed</NodeName>
         </Node>
         <Node level="leaf">
           <Description>and it remains the same from hour to hour</Description>
-          <NodeName>constant_glucose_removed</NodeName>
+          <NodeName>constant glucose removed</NodeName>
         </Node>
 	  </Node>
       <Node level="intermediate">
         <Description>glucose in the blood</Description>            
         <Node level="leaf">
           <Description>at the end of each hour and it remains the same from hour to hour</Description>
-          <NodeName>constant_glucose_in_the_blood</NodeName>
+          <NodeName>constant glucose in the blood</NodeName>
         </Node>
         <Node level="leaf">
           <Description>at the end of each hour and it varies from hour to hour</Description>
-          <NodeName>glucose_in_the_blood</NodeName>
+          <NodeName>glucose in the blood</NodeName>
         </Node>
         <Node level="leaf">
           <Description>that was originally in the blood</Description>
-          <NodeName>initial_glucose_in_the_blood</NodeName>
+          <NodeName>initial glucose in the blood</NodeName>
         </Node>
         <Node level="leaf">
           <Description>that was in the blood after the first hour</Description>
-          <NodeName>glucose_in_the_blood_after_first_hour</NodeName>
+          <NodeName>glucose in the blood after first hour</NodeName>
         </Node>
 	  </Node>
       <Node level="intermediate">
         <Description>glucose added to the blood each hour</Description>            
         <Node level="leaf">
           <Description>and it remains the same from hour to hour</Description>
-          <NodeName>glucose_added</NodeName>
+          <NodeName>glucose added</NodeName>
         </Node>
         <Node level="leaf">
           <Description>and it changes from hour to hour</Description>
-          <NodeName>proportion_glucose_added</NodeName>
+          <NodeName>proportion glucose added</NodeName>
         </Node>
 	  </Node>
     </Node>
@@ -171,22 +171,22 @@
         <Description>glucose removed from the blood</Description>            
         <Node level="leaf">
           <Description>after 24 hours</Description>
-          <NodeName>final_removal_rate</NodeName>
+          <NodeName>final removal rate</NodeName>
         </Node>
         <Node level="leaf">
           <Description>during each hour</Description>
-          <NodeName>removal_rate</NodeName>
+          <NodeName>removal rate</NodeName>
         </Node>
 	  </Node>
       <Node level="intermediate">
         <Description>glucose in the body</Description>            
         <Node level="leaf">
           <Description>at the end of each hour</Description>
-          <NodeName>glucose_level</NodeName>
+          <NodeName>glucose level</NodeName>
         </Node>
         <Node level="leaf">
           <Description>after 24 hours</Description>
-          <NodeName>final_glucose_level</NodeName>
+          <NodeName>final glucose level</NodeName>
         </Node>
 	  </Node>
     </Node>
