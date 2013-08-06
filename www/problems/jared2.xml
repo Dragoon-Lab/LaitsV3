@@ -82,11 +82,11 @@
     <Node level="root">
       <Description>How much more</Description>             
         <Node level="leaf">
-          <Description>does Jared weigh than Oprah?</Description>
+          <Description>Jareds weigh than Oprah/Description>
           <NodeName>Jared extra weight</NodeName>
         </Node>
         <Node level="leaf">
-          <Description>does Jared eat than Oprah?</Description>
+          <Description>Jared eats than Oprah</Description>
           <NodeName>Jared eat</NodeName>
         </Node>
     </Node>
