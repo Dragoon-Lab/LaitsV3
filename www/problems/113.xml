@@ -3,8 +3,19 @@
   <TaskName>Busy Hospital</TaskName>
   <URL>http://www.todohumor.com/UserFiles/Image/imagenes/2009/marzo09/hospital-mixto.jpg</URL>
   
-  <TaskDescription>Problem: A teaching hospital has just installed a cell-phone based work-flow monitoring system, and the workflow seems to be working quite well.  When a few more doctors are needed in the hospital, the system texts their cell phone and the doctors walk across the street from their offices to the hospital.  When the hospital doesn't need as many doctors, the system sends some of them back to their offices where they can do their research, read email, and etc. until the next time they are needed.  The system is set so that the doctor-to-patient ratio is 1 to 8.  That is, there are 0.125 doctors per patient.  When the system was turned on, there were 80 patients in the hospital and 10 doctors present, so just the right ratio was in place at that instant.  However, things change.  The number of patients admitted (i.e., added) to the hospital is 10 per hour on average.  The number of patients discharged from the hospital (i.e., sent home) depends on the number of doctors working at the time.  In general, for each doctor working during an hour, 3 patients are discharged.  
-Goal: Graph the number of doctors working in the hospital each hour for 10 hours.
+  <TaskDescription>
+      Problem: A teaching hospital has just installed a cell-phone based workflow monitoring system, and NEWLINE
+      the workflow seems to be working quite well.  When a few more doctors are needed in the hospital, the NEWLINE
+      system texts their cell phone and the doctors walk across the street from their offices to the NEWLINE
+      hospital.  When the hospital doesn't need as many doctors, the system sends some of them back to their NEWLINE
+      offices where they can do their research, read email, and etc. until the next time they are needed.  NEWLINE
+      The system is set so that the doctor-to-patient ratio is 1 to 8.  That is, there are 0.125 doctors per NEWLINE
+      patient.  When the system was turned on, there were 80 patients in the hospital and 10 doctors present, NEWLINE
+      so just the right ratio was in place at that instant.  However, things change.  The number of patients NEWLINE
+      admitted (i.e., added) to the hospital is 10 per hour on average.  The number of patients discharged NEWLINE
+      from the hospital (i.e., sent home) depends on the number of doctors working at the time.  In general, NEWLINE
+      for each doctor working during an hour, 3 patients are discharged.  NEWLINE NEWLINE
+      Goal: Graph the number of doctors working in the hospital each hour for 10 hours.
 </TaskDescription>
   <ShortDescription>
   the number of doctors in the hospital each hour = 
