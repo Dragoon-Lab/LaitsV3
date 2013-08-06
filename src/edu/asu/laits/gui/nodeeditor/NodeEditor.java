@@ -71,7 +71,13 @@ public class NodeEditor extends javax.swing.JDialog {
         setTabListener();
         initNodeEditor();
         if(ApplicationContext.getAppMode().equalsIgnoreCase("COACHED")){
-            addHelpBalloon(ApplicationContext.getFirstNextNode(), "onLoad", getTabName(selectedTab));
+            if(currentVertex.getName().equalsIgnoreCase(""))
+            {
+                addHelpBalloon(ApplicationContext.getFirstNextNode(), "onLoad", getTabName(selectedTab));
+            } else{
+                addHelpBalloon(currentVertex.getName(), "onLoad", getTabName(selectedTab));
+                
+            }
         }       
     }
 
