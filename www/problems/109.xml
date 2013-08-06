@@ -3,11 +3,11 @@
   <TaskName>Giardia Bacteria</TaskName>
   <URL>http://www.cdc.gov/parasites/images/giardia/Giardia_trophs.jpg</URL>
   <TaskDescription>
-      Problem: Giardia are microscopic single-cell organisms that live in streams and lakes. It mutiplies NEWLINE
+      Problem: Giardia is a microscopic single-cell organism that lives in streams and lakes. It can multiply  NEWLINE
       quickly. Suppose a hiker's water bottle initially holds 100 Giardia. On average, 40% of the Giardia NEWLINE
-      reproduce each hour, each producing a new Giardia. Thus, after the first hour, there are 140 Giardia NEWLINE
-      in the bottle, after the second hour there are 196 in the bottle, and so on. NEWLINE NEWLINE
-  Goal: Graph the number of Giardia in the bottle over 8 hours.</TaskDescription>
+      reproduce each hour, each producing a new Giardia. Thus, after the first hour, there are 140 Giardia in NEWLINE
+      the bottle, after the second hour there are 196 in the bottle, and so on. NEWLINE NEWLINE
+      Goal: Graph the number of Giardia in the bottle over 8 hours.</TaskDescription>
   <ShortDescription>
   \n Accumulator: population = population + births; initial population = 100
   \n Function: births = growth rate * population 
@@ -72,7 +72,7 @@
     
     <Node type="stock" name="population" extra="no">
       <Inputs>        
-        <Node name="births" type="plus"></Node>
+        <Name>births</Name>
       </Inputs>
       <Outputs>
       	<Node name="births"></Node>
@@ -91,8 +91,8 @@
       <Outputs>
       	<Node name="population"></Node>
       </Outputs>
-      <InitialValue>100</InitialValue>
-      <Equation>population*growth_rate</Equation>
+      <InitialValue></InitialValue>
+      <Equation>population*growth rate</Equation>
       <CorrectDescription>The number of Giardia born each hour</CorrectDescription>
       <Plan>proportional to accumulator and input</Plan>
     </Node>
