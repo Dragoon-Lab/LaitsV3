@@ -36,7 +36,7 @@
       <Outputs>
         <Name>population</Name>
       </Outputs>
-      <Equation/>
+      <Equation>population * death rate</Equation>
       <InitialValue>0.0</InitialValue>
     </Node>
     <Node type="constant" name="death rate" extra="no">
@@ -46,7 +46,7 @@
       <Outputs>
         <Name>deaths</Name>
       </Outputs>
-      <Equation></Equation>
+      <Equation>0.2</Equation>
       <InitialValue>0.2</InitialValue>
     </Node>
   </Nodes>
