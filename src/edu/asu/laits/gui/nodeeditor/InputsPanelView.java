@@ -538,6 +538,9 @@ public class InputsPanelView extends javax.swing.JPanel implements ItemListener 
         fixedValueOptionButton.setEnabled(b);
         inputNodesSelectionOptionButton.setEnabled(b);
         availableInputNodesPanels.setEnabled(b);
+        for(JCheckBox J : checkboxList){
+            J.setEnabled(b);
+        }
     }
     
     
