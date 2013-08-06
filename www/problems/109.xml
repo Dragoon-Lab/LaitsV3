@@ -2,7 +2,11 @@
 <Task phase="Challenge" type="Construct">
   <TaskName>Giardia Bacteria</TaskName>
   <URL>http://www.cdc.gov/parasites/images/giardia/Giardia_trophs.jpg</URL>
-  <TaskDescription>Problem: Giardia are microscopic single-cell organisms that live in streams and lakes. It mutiplies quickly. Suppose a hiker's water bottle initially holds 100 Giardia. On average, 40% of the Giardia reproduce each hour, each producing a new Giardia. Thus, after the first hour, there are 140 Giardia in the bottle, after the second hour there are 196 in the bottle, and so on. 
+  <TaskDescription>
+      Problem: Giardia are microscopic single-cell organisms that live in streams and lakes. It mutiplies NEWLINE
+      quickly. Suppose a hiker's water bottle initially holds 100 Giardia. On average, 40% of the Giardia NEWLINE
+      reproduce each hour, each producing a new Giardia. Thus, after the first hour, there are 140 Giardia NEWLINE
+      in the bottle, after the second hour there are 196 in the bottle, and so on. NEWLINE NEWLINE
   Goal: Graph the number of Giardia in the bottle over 8 hours.</TaskDescription>
   <ShortDescription>
   \n Accumulator: population = population + births; initial population = 100
@@ -81,8 +85,8 @@
     
     <Node type="flow" name="births" extra="no">
       <Inputs>        
-        <Node name="population"></Node>
-        <Node name="growth rate"></Node>
+        <Name>population</Name>
+        <Name>growth rate</Name>
       </Inputs>
       <Outputs>
       	<Node name="population"></Node>

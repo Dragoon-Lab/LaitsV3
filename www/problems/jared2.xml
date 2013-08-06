@@ -3,14 +3,14 @@
 <Task phase="Intro" type="Debug">
   <TaskName>Jared and Oprah</TaskName>
   <TaskDescription>Jared, who is larger than Oprah, is following the exact same NEWLINE
-  diet as Oprah, except that he eats an afternoon snack.  Consequently, NEWLINE
-  Jared always weighs 50 pounds more than Oprah.  In this model Oprah's NEWLINE
-  weight as a function of time is given.</TaskDescription>
+  diet as Oprah, except that he eats an afternoon snack.  Consequently, Jared NEWLINE
+  always weighs 50 pounds more than Oprah.  Oprah weighs 120 pounds. In this NEWLINE
+  model Oprah's weight as a function of time is given.</TaskDescription>
   <URL>images/jared-and-oprah.jpg</URL>
   <StartTime>0</StartTime>
   <EndTime>10</EndTime>
   <Units>Days</Units>
-  <NodeCount>2</NodeCount>
+  <NodeCount>3</NodeCount>
   <Nodes>
     <Node type="constant" name="Oprah weight" extra="no">
       <CorrectDescription>How much Oprah weighs</CorrectDescription>
@@ -28,10 +28,20 @@
       <Order>1</Order>
       <Inputs>
         <Name>Oprah weight</Name>
+        <Name>Jared extra weight</Name>
       </Inputs>
       <Outputs/>
-      <Equation>50 + Oprah weight</Equation>
+      <Equation>Jared extra weight + Oprah weight</Equation>
       <InitialValue>0.0</InitialValue>
+    </Node>
+    <Node type="constant" name="Jared extra weight" extra="no">
+      <CorrectDescription>Jared additional weight</CorrectDescription>
+      <Plan>fixed value</Plan>
+      <Inputs>
+      </Inputs>
+      <Outputs/>
+      <Equation>50.0</Equation>
+      <InitialValue>50.0</InitialValue>
     </Node>
   </Nodes>
 <GivenModel>
@@ -68,5 +78,17 @@
           <Description>earn each week</Description>
           <NodeName>Oprah salary</NodeName>
         </Node>
-    </Node></DescriptionTree>
+    </Node>
+    <Node level="root">
+      <Description>How much more</Description>             
+        <Node level="leaf">
+          <Description>does Jared weigh than Oprah?</Description>
+          <NodeName>Jared extra weight</NodeName>
+        </Node>
+        <Node level="leaf">
+          <Description>does Jared eat than Oprah?</Description>
+          <NodeName>Jared eat</NodeName>
+        </Node>
+    </Node>
+  </DescriptionTree>
 </Task>

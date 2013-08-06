@@ -3,8 +3,12 @@
   <TaskName>Venice</TaskName>
   <URL>http://upload.wikimedia.org/wikipedia/commons/3/36/Venezia_acqua_alta_notte_2005_modificata.jpg</URL>
   <TaskDescription>
-  Problem: The city of Venice in Italy is famous for its canals. The largest canal is 36,576 centimeters wide and on average the smaller canals are 3,810 centimeters wide. While the main form of transportation is via waterways, there are still a few streets and road that are mainly used by pedestrians. Unfortunately, like many coastal cities, Venice is sinking slowly. It sinks about 10 centimeters per decade. The elevation of most of the streets still in use is 300 centimeters above sea level. 
-Goal:Graph the elevation above sea level of those streets for the next 10 decades.</TaskDescription>
+  Problem: The city of Venice in Italy is famous for its canals. The largest canal is 36,576 centimeters wide NEWLINE
+      and on average the smaller canals are 3,810 centimeters wide. While the main form of transportation is NEWLINE
+      via waterways, there are still a few streets and road that are mainly used by pedestrians. Unfortunately, NEWLINE
+      like many coastal cities, Venice is sinking slowly. It sinks about 10 centimeters per decade. The NEWLINE
+      elevation of most of the streets still in use is 300 centimeters above sea level. NEWLINE NEWLINE
+      Goal: Graph the elevation above sea level of those streets for the next 10 decades.</TaskDescription>
   <ShortDescription>Accumulator: centimeters above sea level = centimeters above sea level in centimeters sunk per decadeinitial value= 300\n Given: centimeters sunk per decade = 10\n Given: width in centimeters of largest canals = 36,576\n Given: average width in centimeters of the smaller canals = 3810</ShortDescription>
   <StartTime>0</StartTime>
   <EndTime>10</EndTime>
@@ -38,24 +42,24 @@ Goal:Graph the elevation above sea level of those streets for the next 10 decade
       <Plan>fixed value</Plan>
     </Node>
     
-	<Node type="constant" name="centimeters sunk per decade" extra="no">
+    <Node type="constant" name="centimeters sunk per decade" extra="no">
       <Inputs></Inputs>
       <Outputs>
-      	<Node name="centimeters above sea level"></Node>
+          <Node name="centimeters above sea level"></Node>
       </Outputs>
-      <Equation>10</Equation>
+      <Equation>centimeters_sunk_per_decade</Equation>
       <InitialValue>10</InitialValue>
       <CorrectDescription>The number of centimeters the streets of Venice sink each decade</CorrectDescription>
       <Plan>fixed value</Plan>
     </Node>
-    
-	<Node type="stock" name="centimeters above sea level" extra="no">
+
+    <Node type="stock" name="centimeters above sea level" extra="no">
       <Inputs>
-      	<Node name="centimeters sunk per decade" type="minus"></Node>
+          <Name>centimeters sunk per decade</Name>
       </Inputs>
       <Outputs></Outputs>
       <InitialValue>300</InitialValue>
-      <Equation>-centimeters_sunk_per_decade</Equation>
+      <Equation>-centimeters sunk per decade</Equation>
       <CorrectDescription>The number of centimeters the streets of Venice are above sea level each decade</CorrectDescription>
       <Plan>said to decrease</Plan>
     </Node>
@@ -87,7 +91,7 @@ Goal:Graph the elevation above sea level of those streets for the next 10 decade
           <Description>are above sea level each decade</Description>
           <NodeName>centimeters above sea level</NodeName>
         </Node>
-	  </Node>
+      </Node>
     </Node>
   </DescriptionTree>
 

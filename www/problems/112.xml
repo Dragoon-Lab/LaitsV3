@@ -4,7 +4,11 @@
   <URL>http://lh6.ggpht.com/_9F9_RUESS2E/SqpDdiLBcII/AAAAAAAABEE/ZNVbA8UwO1k/s800/Looking-at-the-World-through-a-Microscope-red-blood-cells3.jpg</URL>
   
   <TaskDescription>
-Problem: When admitted to the hospital, the glucose levels in the patient's blood was 10 units, which is too low.  Thus, an IV line was started which adds 3 units per hour to the blood.  Even though the patient is lying still on the bed, the body burns up some glucose.  The amount of glucose the body removes from the blood each hour is 2% of the glucose in the blood at that time. So after the first hour, the glucose levels in the patient's blood was 12.74 units.
+      Problem: When admitted to the hospital, the glucose levels in the patient's blood was 10 units, NEWLINE
+      which is too low.  Thus, an IV line was started which adds 3 units per hour to the blood.  Even NEWLINE
+      though the patient is lying still on the bed, the body burns up some glucose.  The amount of NEWLINE
+      glucose the body removes from the blood each hour is 2% of the glucose in the blood at that time. NEWLINE
+      So after the first hour, the glucose levels in the patient's blood was 12.74 units. NEWLINE NEWLINE
 Goal: Graph the glucose level in the blood for 24 hours.</TaskDescription>
   <ShortDescription>
   The amount of glucose in the blood at the end of the hour =
