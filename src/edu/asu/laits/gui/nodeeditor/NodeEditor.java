@@ -220,7 +220,7 @@ public class NodeEditor extends javax.swing.JDialog {
                     return;
                 }
 
-                if (ApplicationContext.getAppMode().equals("AUTHOR")) {
+                if (ApplicationContext.getAppMode().equalsIgnoreCase("AUTHOR")) {
                     processEditorInput();
                 } else {
                     if (!isCurrentPanelChecked() && ApplicationContext.getAppMode().equalsIgnoreCase("COACHED")) {

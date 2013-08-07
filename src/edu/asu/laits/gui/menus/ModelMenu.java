@@ -97,7 +97,7 @@ public class ModelMenu extends JMenu {
         this.add(getShowGraphMenuItem());
         this.add(getshowForumMenuItem());
         
-        if(ApplicationContext.getAppMode().equals("AUTHOR")){
+        if(ApplicationContext.getAppMode().equalsIgnoreCase("AUTHOR")){
             this.add(getExportSolutionMenuItem());
             this.add(getEditTimeRangeMenuItem());
         }

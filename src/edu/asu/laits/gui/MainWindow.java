@@ -168,7 +168,7 @@ public class MainWindow extends JFrame {
         // Set Title of Main Frame
         String title = GlobalProperties.PROGRAM_NAME + 
                 " - "+ ApplicationContext.getAppMode() + " Mode";
-        if(ApplicationContext.getAppMode().equals("AUTHOR"))
+        if(ApplicationContext.getAppMode().equalsIgnoreCase("AUTHOR"))
             title += " : " + ApplicationContext.getCurrentTaskID();
         else
             title += " : " + ApplicationContext.getCorrectSolution().getTaskName();
@@ -200,7 +200,7 @@ public class MainWindow extends JFrame {
             
             // Temporary - switch panels based on Mode
             logs.debug("Application running in "+ApplicationContext.getAppMode() + " Mode");
-            if(ApplicationContext.getAppMode().equals("AUTHOR"))
+            if(ApplicationContext.getAppMode().equalsIgnoreCase("AUTHOR"))
                 mainPanel.add(getGraphPaneScrollPane(), BorderLayout.CENTER);
             else{
                 // Initialize Situation Panel so that first task can be loaded

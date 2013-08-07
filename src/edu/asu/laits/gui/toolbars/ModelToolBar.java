@@ -152,7 +152,7 @@ public class ModelToolBar extends JToolBar {
             doneButton
                     .addActionListener(new java.awt.event.ActionListener() {
                 public void actionPerformed(java.awt.event.ActionEvent e) {
-                    if (ApplicationContext.getAppMode().equals("AUTHOR")) {
+                    if (ApplicationContext.getAppMode().equalsIgnoreCase("AUTHOR")) {
                         return;
                     }
                     modelMenu.doneButtonAction();
