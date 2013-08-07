@@ -28,8 +28,8 @@
   <Units>hours</Units>
   <Vertexes>
     <VertexLabel>glucose in the blood</VertexLabel>
-    <VertexLabel>glucose in the blood after first hour</VertexLabel>
-    <VertexLabel>initial glucose in the blood</VertexLabel>
+    <VertexLabel>glucose level 1 hour</VertexLabel>
+    <VertexLabel>beg. glucose level</VertexLabel>
     <VertexLabel>glucose added</VertexLabel>
     <VertexLabel>glucose removed</VertexLabel>
     <VertexLabel>removal rate</VertexLabel>
@@ -41,7 +41,7 @@
   <CorrespondingSentence>Graph the glucose level in the blood for 24 hours.</CorrespondingSentence>
 
   <Nodes>
-    <Node type="constant" name="initial glucose in the blood" extra="yes">
+    <Node type="constant" name="beg. glucose level" extra="yes">
       <Inputs></Inputs>
       <Outputs></Outputs>
       <Equation>10</Equation>
@@ -50,7 +50,7 @@
       <Plan>fixed value</Plan>
     </Node>
     
-    <Node type="constant" name="glucose in the blood after first hour" extra="yes">
+    <Node type="constant" name="glucose level 1 hour" extra="yes">
       <Inputs></Inputs>
       <Outputs></Outputs>
       <Equation>12.74</Equation>
@@ -146,11 +146,11 @@
         </Node>
         <Node level="leaf">
           <Description>that was originally in the blood</Description>
-          <NodeName>initial glucose in the blood</NodeName>
+          <NodeName>beg. glucose level</NodeName>
         </Node>
         <Node level="leaf">
           <Description>that was in the blood after the first hour</Description>
-          <NodeName>glucose in the blood after first hour</NodeName>
+          <NodeName>glucose level 1 hour</NodeName>
         </Node>
 	  </Node>
       <Node level="intermediate">
