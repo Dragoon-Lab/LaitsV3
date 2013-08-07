@@ -421,7 +421,7 @@ public class ModelMenu extends JMenu {
     }
 
     public boolean newNodeAllowed() {
-        if (ApplicationContext.getAppMode().equals("AUTHOR")) {
+        if (ApplicationContext.getAppMode().equalsIgnoreCase("AUTHOR")) {
             return true;
         }
 
