@@ -138,6 +138,15 @@ public class BlockingToolTip {
         }catch(Exception ex){
             System.out.println("Error in Handling Balloon Close Button");
             ex.printStackTrace();
+            bTip.setVisible(false);
+            bTip.closeBalloon();
+            
+            for( MouseListener al : parent.getGlassPane().getMouseListeners() ) {
+                parent.getGlassPane().removeMouseListener(al);
+            }
+            
+            parent.getGlassPane().setVisible(false);
+            
         }
         
     }

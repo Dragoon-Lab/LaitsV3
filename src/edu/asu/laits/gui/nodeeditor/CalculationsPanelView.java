@@ -662,6 +662,8 @@ public class CalculationsPanelView extends javax.swing.JPanel {
         preparePanelForFlow();
         currentVertex.setVertexType(Vertex.VertexType.FLOW);
         reloadGraphPane();
+        addHelpBalloon("flowSelected");
+
     }//GEN-LAST:event_flowValueOptionButtonActionPerformed
 
     public String printCalculationPanel(){
@@ -696,6 +698,8 @@ public class CalculationsPanelView extends javax.swing.JPanel {
     map.put("jScrollPane2", jScrollPane2);
     map.put("quantityLabel", quantityLabel);
     map.put("availableInputsJList", availableInputsLabel);
+    map.put("formulaInputArea", formulaInputArea);
+    map.put("valuesLabel", valuesLabel);
     if(map.containsKey(label)){
         return map.get(label);
     }
