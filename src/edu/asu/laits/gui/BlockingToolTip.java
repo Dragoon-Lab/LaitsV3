@@ -69,10 +69,12 @@ public class BlockingToolTip {
                 15+x, 15+y, true);
     }
     private void initBalloon(HelpBubble bubble, JComponent c) {
+        if(c.isVisible()){
         bTip = new BalloonTip(c, new JLabel(bubble.getMessage()),
                 new RoundedBalloonStyle(5,5,Color.WHITE, Color.BLACK),
                 bubble.getOrientation(), BalloonTip.AttachLocation.ALIGNED,
                 15+bubble.getX(), 15+bubble.getY(), true);
+        }
     }
     
     /**
