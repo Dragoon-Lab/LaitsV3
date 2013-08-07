@@ -109,12 +109,18 @@ public class GraphLoader {
 
         List<Vertex> vertexList = graphFile.getVertexList();
         for (Vertex vertex : vertexList) {
-            vertex.setGraphsStatus(Vertex.GraphsStatus.UNDEFINED);
-            graphPane.addVertex(vertex);
-            System.out.println("Added " + vertex.getName() + "  "+vertex.getVertexIndex());
-            vertexHash.put(vertex.getVertexIndex(), vertex);
+            try {
+                vertex.setGraphsStatus(Vertex.GraphsStatus.UNDEFINED);
+                graphPane.addVertex(vertex);
+                System.out.println("Added " + vertex.getName() + "  "+vertex.getVertexIndex());
+                vertexHash.put(vertex.getVertexIndex(), vertex);
                         System.out.println("removing from next nodes  " + vertex.getName() + "  "+vertex.getVertexIndex());
-            ApplicationContext.setNextNodes(vertex.getName());
+                ApplicationContext.setNextNodes(vertex.getName());
+            }
+            catch (Exception e){
+                System.err.println("Could not load node:  "+e.getMessage());
+
+            }
         }
 
         /*
