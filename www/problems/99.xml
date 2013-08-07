@@ -3,7 +3,7 @@
   <TaskName>Venice</TaskName>
   <URL>http://upload.wikimedia.org/wikipedia/commons/3/36/Venezia_acqua_alta_notte_2005_modificata.jpg</URL>
   <TaskDescription>
-  Problem: The city of Venice in Italy is famous for its canals. The largest canal is 36,576 centimeters wide NEWLINE
+      Problem: The city of Venice in Italy is famous for its canals. The largest canal is 36,576 centimeters wide NEWLINE
       and on average the smaller canals are 3,810 centimeters wide. While the main form of transportation is NEWLINE
       via waterways, there are still a few streets and road that are mainly used by pedestrians. Unfortunately, NEWLINE
       like many coastal cities, Venice is sinking slowly. It sinks about 10 centimeters per decade. The NEWLINE
@@ -24,7 +24,7 @@
   <ProblemSeeking>centimeters above sea level</ProblemSeeking>
   <CorrespondingSentence>Graph the distance between the streets and the sea level for the next 10 decades</CorrespondingSentence>
   <Nodes>
-    <Node type="constant" name="width in centimeters of the smaller canals" extra="yes">
+    <Node type="constant" name="smaller canal width" extra="yes">
       <Inputs></Inputs>
       <Outputs></Outputs>
       <Equation>3810</Equation>
@@ -33,7 +33,7 @@
       <Plan>fixed value</Plan>
     </Node>
 	
-    <Node type="constant" name="width in centimeters of largest canals" extra="yes">
+    <Node type="constant" name="largest canal width" extra="yes">
       <Inputs></Inputs>
       <Outputs></Outputs>
       <Equation>36576</Equation>
@@ -42,24 +42,24 @@
       <Plan>fixed value</Plan>
     </Node>
     
-    <Node type="constant" name="centimeters sunk per decade" extra="no">
+    <Node type="constant" name="cm sunk per decade" extra="no">
       <Inputs></Inputs>
       <Outputs>
-          <Node name="centimeters above sea level"></Node>
+          <Node name="cm above sea level"></Node>
       </Outputs>
-      <Equation>centimeters_sunk_per_decade</Equation>
+      <Equation></Equation>
       <InitialValue>10</InitialValue>
       <CorrectDescription>The number of centimeters the streets of Venice sink each decade</CorrectDescription>
       <Plan>fixed value</Plan>
     </Node>
 
-    <Node type="stock" name="centimeters above sea level" extra="no">
+    <Node type="stock" name="cm above sea level" extra="no">
       <Inputs>
-          <Name>centimeters sunk per decade</Name>
+          <Name>cm sunk per decade</Name>
       </Inputs>
       <Outputs></Outputs>
       <InitialValue>300</InitialValue>
-      <Equation>-centimeters sunk per decade</Equation>
+      <Equation>-cm sunk per decade</Equation>
       <CorrectDescription>The number of centimeters the streets of Venice are above sea level each decade</CorrectDescription>
       <Plan>said to decrease</Plan>
     </Node>
@@ -74,22 +74,22 @@
         <Description>centimeters wide</Description>            
         <Node level="leaf">
           <Description>of the smaller canals</Description>
-          <NodeName>width in centimeters of the smaller canals</NodeName>
+          <NodeName>smaller canal width</NodeName>
         </Node>
         <Node level="leaf">
           <Description>of the largest canals</Description>
-          <NodeName>width in centimeters of largest canals</NodeName>
+          <NodeName>largest canal width</NodeName>
         </Node>
 	  </Node>
       <Node level="intermediate">
         <Description>centimeters the streets of Venice</Description>            
         <Node level="leaf">
           <Description>sink each decade</Description>
-          <NodeName>centimeters sunk per decade</NodeName>
+          <NodeName>cm sunk per decade</NodeName>
         </Node>
         <Node level="leaf">
           <Description>are above sea level each decade</Description>
-          <NodeName>centimeters above sea level</NodeName>
+          <NodeName>cm above sea level</NodeName>
         </Node>
       </Node>
     </Node>
