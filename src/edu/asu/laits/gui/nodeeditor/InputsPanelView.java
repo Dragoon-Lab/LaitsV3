@@ -72,6 +72,7 @@ public class InputsPanelView extends javax.swing.JPanel implements ItemListener 
         Set<Vertex> vertexes = graph.vertexSet();
         Vertex currentV = this.nodeEditor.getCurrentVertex();
         descriptionTextArea.setText(currentV.getCorrectDescription());
+        descriptionTextArea.setLineWrap(true);
         checkboxList.clear();
         availableInputNodesPanels.removeAll();
         
@@ -247,8 +248,8 @@ public class InputsPanelView extends javax.swing.JPanel implements ItemListener 
             nodeEditor.getCurrentVertex().setVertexType(VertexType.DEFAULT);
         }
 
-        setInputsTypeBackground(new Color(240, 240, 240));
-        setInputValuesBackground(new Color(240, 240, 240));
+        setInputsTypeBackground(Color.YELLOW);
+        setInputValuesBackground(Color.YELLOW);
         nodeEditor.getGraphPane().getLayoutCache().reload();
         nodeEditor.getGraphPane().repaint();
         return true;
@@ -306,7 +307,7 @@ public class InputsPanelView extends javax.swing.JPanel implements ItemListener 
                 .addGroup(radioPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addComponent(fixedValueOptionButton)
                     .addComponent(inputNodesSelectionOptionButton))
-                .addContainerGap(63, Short.MAX_VALUE))
+                .addContainerGap(74, Short.MAX_VALUE))
         );
         radioPanelLayout.setVerticalGroup(
             radioPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -538,6 +539,10 @@ public class InputsPanelView extends javax.swing.JPanel implements ItemListener 
         fixedValueOptionButton.setEnabled(b);
         inputNodesSelectionOptionButton.setEnabled(b);
         availableInputNodesPanels.setEnabled(b);
+        for(JCheckBox J : checkboxList){
+            J.setEnabled(b);
+        }
+        buttonCreateNodeInputTab.setEnabled(b);
     }
     
     

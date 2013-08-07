@@ -69,10 +69,12 @@ public class BlockingToolTip {
                 15+x, 15+y, true);
     }
     private void initBalloon(HelpBubble bubble, JComponent c) {
+        if(c.isVisible()){
         bTip = new BalloonTip(c, new JLabel(bubble.getMessage()),
                 new RoundedBalloonStyle(5,5,Color.WHITE, Color.BLACK),
                 bubble.getOrientation(), BalloonTip.AttachLocation.ALIGNED,
                 15+bubble.getX(), 15+bubble.getY(), true);
+        }
     }
     
     /**
@@ -136,6 +138,15 @@ public class BlockingToolTip {
         }catch(Exception ex){
             System.out.println("Error in Handling Balloon Close Button");
             ex.printStackTrace();
+            bTip.setVisible(false);
+            bTip.closeBalloon();
+            
+            for( MouseListener al : parent.getGlassPane().getMouseListeners() ) {
+                parent.getGlassPane().removeMouseListener(al);
+            }
+            
+            parent.getGlassPane().setVisible(false);
+            
         }
         
     }

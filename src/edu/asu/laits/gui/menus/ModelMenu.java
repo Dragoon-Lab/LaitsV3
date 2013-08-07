@@ -97,7 +97,7 @@ public class ModelMenu extends JMenu {
         this.add(getShowGraphMenuItem());
         this.add(getshowForumMenuItem());
         
-        if(ApplicationContext.getAppMode().equals("AUTHOR")){
+        if(ApplicationContext.getAppMode().equalsIgnoreCase("AUTHOR")){
             this.add(getExportSolutionMenuItem());
             this.add(getEditTimeRangeMenuItem());
         }
@@ -421,7 +421,7 @@ public class ModelMenu extends JMenu {
     }
 
     public boolean newNodeAllowed() {
-        if (ApplicationContext.getAppMode().equals("AUTHOR")) {
+        if (ApplicationContext.getAppMode().equalsIgnoreCase("AUTHOR")) {
             return true;
         }
 
