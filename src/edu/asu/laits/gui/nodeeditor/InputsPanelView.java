@@ -247,8 +247,8 @@ public class InputsPanelView extends javax.swing.JPanel implements ItemListener 
             nodeEditor.getCurrentVertex().setVertexType(VertexType.DEFAULT);
         }
 
-        setInputsTypeBackground(new Color(240, 240, 240));
-        setInputValuesBackground(new Color(240, 240, 240));
+        setInputsTypeBackground(Color.YELLOW);
+        setInputValuesBackground(Color.YELLOW);
         nodeEditor.getGraphPane().getLayoutCache().reload();
         nodeEditor.getGraphPane().repaint();
         return true;
