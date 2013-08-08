@@ -2,12 +2,11 @@
 
 <Task phase="Intro" type="Debug">
 <TaskName>Jared and Oprah with ratio</TaskName>
-<TaskDescription>
-    Jared, who is larger than Oprah, is following the exact same NEWLINE
-    diet as Oprah, except that he eats larger portions.  Consequently, NEWLINE
-    Jared always weighs 1.3 times as much as Oprah.  Oprah initially NEWLINE
-    weighs 140 pounds but loses 1.5 pounds each week.
-</TaskDescription>
+<TaskDescription>Jared, who is larger than Oprah, is following the exact same NEWLINE
+  diet as Oprah, except that he eats larger portions.  Consequently, NEWLINE
+  Jared always weighs 1.3 times as much as Oprah.  Oprah initially weighs 140 pounds NEWLINE
+  but loses 1.5 pounds each week. NEWLINE NEWLINE
+  Find a model of Jared's weight as a function of time.</TaskDescription>
   <URL>images/jared-and-oprah.jpg</URL>
   <StartTime>0</StartTime>
   <EndTime>10</EndTime>
