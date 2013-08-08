@@ -1,5 +1,3 @@
-<?xml version="1.0" encoding="UTF-8"?>
-    
 <?php
 $username = $_POST['username'];
 $mode = $_POST['mode'];
@@ -8,6 +6,7 @@ $section = $_POST['section'];
 
 header("Content-Disposition: attachment; filename=\"laits-$problem_id.jnlp\"");
 header('Content-type: application/x-java-jnlp-file');
+echo "<?xml version='1.0' encoding='UTF-8'?>";
 
 /*
   Since the jnlp file is created dynamically, don't include
