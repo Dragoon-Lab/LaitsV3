@@ -14,10 +14,10 @@
   <EndTime>10</EndTime>
   <Units>decades</Units>
   <Vertexes>
-    <VertexLabel>centimeters above sea level</VertexLabel>
-    <VertexLabel>centimeters sunk per decade</VertexLabel>
-    <VertexLabel>width in centimeters of largest canals</VertexLabel>
-    <VertexLabel>width in centimeters of the smaller canals</VertexLabel>
+    <VertexLabel>cm above sea level</VertexLabel>
+    <VertexLabel>cm sunk per decade</VertexLabel>
+    <VertexLabel>largest canal width</VertexLabel>
+    <VertexLabel>smaller canal width</VertexLabel>
   </Vertexes>
     <NodeCount>4</NodeCount>
 
