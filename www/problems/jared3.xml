@@ -5,7 +5,8 @@
 <TaskDescription>Jared, who is larger than Oprah, is following the exact same NEWLINE
   diet as Oprah, except that he eats an afternoon snack.  Consequently, NEWLINE
   Jared always weighs 50 pounds more than Oprah.  Oprah initially weighs 140 pounds NEWLINE
-  but loses 1.5 pounds each week.</TaskDescription>
+  but loses 1.5 pounds each week.NEWLINE NEWLINE
+  Find a model of Jared's weight as a function of time.</TaskDescription>
   <URL>images/jared-and-oprah.jpg</URL>
   <StartTime>0</StartTime>
   <EndTime>10</EndTime>
