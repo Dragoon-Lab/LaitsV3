@@ -23,8 +23,8 @@
     <VertexLabel>births</VertexLabel>
     <VertexLabel>growth rate</VertexLabel>
 	<VertexLabel>initial population</VertexLabel>
-    <VertexLabel>population first hour</VertexLabel>
-    <VertexLabel>population second hour</VertexLabel>
+    <VertexLabel>population 1st hour</VertexLabel>
+    <VertexLabel>population 2nd hour</VertexLabel>
   </Vertexes>
   
   <NodeCount>6</NodeCount>
@@ -41,7 +41,7 @@
       <Plan>fixed value</Plan>
     </Node>
     
-    <Node type="constant" name="population second hour" extra="yes">
+    <Node type="constant" name="population 2nd hour" extra="yes">
       <Inputs></Inputs>
       <Outputs></Outputs>
       <Equation>196</Equation>
@@ -50,7 +50,7 @@
       <Plan>fixed value</Plan>
     </Node>
     
-    <Node type="constant" name="population first hour" extra="yes">
+    <Node type="constant" name="population 1st hour" extra="yes">
       <Inputs></Inputs>
       <Outputs></Outputs>
       <Equation>140</Equation>
@@ -109,11 +109,11 @@
         </Node>
         <Node level="leaf">
           <Description>during the first hour</Description>
-          <NodeName>population first hour</NodeName>
+          <NodeName>population 1st hour</NodeName>
         </Node>
         <Node level="leaf">
           <Description>during the second hour</Description>
-          <NodeName>population second hour</NodeName>
+          <NodeName>population 2nd hour</NodeName>
         </Node>
         <Node level="leaf">
           <Description>each hour</Description>

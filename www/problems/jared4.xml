@@ -58,7 +58,7 @@
     </Node>
   </Nodes>
 <GivenModel>
-<Node type="stock" name="Oprah weight" extra="no">
+    <Node type="stock" name="Oprah weight" extra="no">
       <CorrectDescription>How much Oprah weighs at the end of the week</CorrectDescription>
       <Plan>said to decrease</Plan>
       <Inputs>
