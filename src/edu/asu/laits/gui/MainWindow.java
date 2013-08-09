@@ -504,10 +504,10 @@ public class MainWindow extends JFrame {
         String probNum = ApplicationContext.getCurrentTaskID();
 
         String xmlString = "";
-        HttpAppender get = new HttpAppender();
+        HttpAppender sessionLoader = new HttpAppender();
         try {
-            xmlString = get.sendHttpRequest(ApplicationContext.getRootURL() + "/get_session.php?id="
-                    + user + "&section=" + section + "&problem=" + probNum);
+            xmlString = sessionLoader.saveGetSession("load", ApplicationContext.getRootURL().concat("/postvar.php"), 
+                    ApplicationContext.getUserID(), ApplicationContext.getSection(), ApplicationContext.getCurrentTaskID(), "");
             
         } catch (Exception ex) {
             java.util.logging.Logger.getLogger(GraphLoader.class.getName()).log(Level.SEVERE, null, ex);
