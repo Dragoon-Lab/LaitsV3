@@ -19,11 +19,13 @@
 package edu.asu.laits.model;
 
 import edu.asu.laits.editor.ApplicationContext;
+import edu.asu.laits.logger.HttpAppender;
 import java.io.IOException;
 import java.io.UnsupportedEncodingException;
 import java.net.URLEncoder;
 import java.util.HashMap;
 import java.util.Map;
+import java.util.logging.Level;
 import org.apache.http.HttpResponse;
 import org.apache.http.HttpStatus;
 import org.apache.http.client.methods.HttpGet;
@@ -60,24 +62,23 @@ public class PersistenceManager implements Runnable {
     
     public void run() {
         int statusCode = 0;
-
+        
+        HttpAppender sessionSaver = new HttpAppender();
         try {
-            DefaultHttpClient httpClient = new DefaultHttpClient();
-            //  Should use post method!  Bug #2106 
-            HttpGet httpMethod = new HttpGet(prepareHttpGetRequest());
-            HttpResponse response = httpClient.execute(httpMethod);
-            statusCode = response.getStatusLine().getStatusCode();
-
-            if (statusCode != HttpStatus.SC_OK) {
-                logs.error("Error Server URL " + httpMethod.getURI() + " return status code " + statusCode);
+            statusCode = sessionSaver.sendSession(ApplicationContext.getRootURL().concat("/postvar.php"), 
+                    ApplicationContext.getUserID(), ApplicationContext.getSection(), ApplicationContext.getCurrentTaskID(), 
+                    URLEncoder.encode(graphSaver.getSerializedGraphInXML(), "UTF-8"));
+            if(statusCode == 200){
+                logs.info("Successfully wrote session to server at "+ApplicationContext.getRootURL().concat("/postvar.php"));
+            }else{
+                logs.error("Error: URL " + ApplicationContext.getRootURL().concat("/postvar.php")
+                        + " returned status code " + statusCode);
             }
-               
-            logs.info("Successfully Written Session to Server at "+httpMethod.getURI());
-        } catch (UnsupportedEncodingException ex) {
-            ex.printStackTrace();
-        } catch (IOException e) {
-            logs.error("Io error in sending request to server: returned: " + statusCode);
-        } 
+        } catch (Exception ex) {
+            java.util.logging.Logger.getLogger(PersistenceManager.class.getName()).log(Level.SEVERE, null, ex);
+            logs.error("Exception caught while attempting to write to server. File: PersistenceManager.java.");
+            logs.error("Error in sending request to server: returned: " + statusCode);
+        }
     }
 
     
@@ -104,6 +105,7 @@ public class PersistenceManager implements Runnable {
             parameters.put("problemNum", ApplicationContext.getCurrentTaskID());
         }
         parameters.put("saveData", URLEncoder.encode(graphSaver.getSerializedGraphInXML(), "UTF-8"));
+        
         
         return parameters;
     }

@@ -36,6 +36,8 @@ import org.apache.log4j.spi.LoggingEvent;
 import java.net.HttpURLConnection;
 import java.net.URL;
 import java.io.BufferedReader;
+import java.io.DataOutputStream;
+import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.sql.Timestamp;
 
@@ -141,6 +143,43 @@ public class HttpAppender extends AppenderSkeleton {
         in.close();
         connect.disconnect();
         return sb.toString();
+    }
+    
+    public static int sendSession(String address, String id, String section, String problem, String data) throws Exception {
+        //open connection
+        URL url = new URL(address);
+        HttpURLConnection connect = (HttpURLConnection) url.openConnection();       
+        
+        //sets POST and adds POST data type as URLENCODED
+        connect.setRequestMethod("POST");
+        connect.setRequestProperty("Content-Type","application/x-www-form-urlencoded");
+        
+        //sets mode as output and disables cache
+        connect.setUseCaches (false);
+        connect.setDoInput(true);
+        connect.setDoOutput(true);
+        
+        //builds variable to send
+        StringBuilder sb = new StringBuilder();
+        sb.append("id=");
+        sb.append(id);
+        sb.append("&section=");
+        sb.append(section);
+        sb.append("&problem=");
+        sb.append(problem);
+        sb.append("&saveData=");
+        sb.append(data);        
+        
+        //sends request
+        DataOutputStream wr = new DataOutputStream (connect.getOutputStream ());
+        wr.writeBytes (sb.toString());
+        wr.flush ();
+        wr.close ();
+        
+        // Gets and returns response code. 200 is ok.       
+        int response = connect.getResponseCode();
+        connect.disconnect();
+        return response;       
     }
 
     /*
