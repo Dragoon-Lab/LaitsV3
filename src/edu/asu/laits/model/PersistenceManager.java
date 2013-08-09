@@ -36,26 +36,18 @@ import org.apache.log4j.Logger;
  * Class responsible for writing student's working solution at the server
  * Student will be able to restore half finished models using same userid
  *
- * @author ramayantiwari
+ * @author ramayantiwari, brandonstrong
  */
 public class PersistenceManager implements Runnable {
-
-    
-    private static String URL = ApplicationContext.getRootURL().concat("/save_session.php?");
-    
+   
     private GraphSaver graphSaver;
-    private Map<String, String> parameters = null;
-    
     private static Logger logs = Logger.getLogger("DevLogs");
-    private static Logger activityLogs = Logger.getLogger("ActivityLogs");
-    
     private PersistenceManager(GraphSaver gs) {
         graphSaver = gs;
     }
     
     public static void saveSession(){
         PersistenceManager persistanceManager = new PersistenceManager(new GraphSaver(ApplicationContext.getGraphEditorPane()));
-        
         Thread t = new Thread(persistanceManager);
         t.start();
     }
@@ -65,9 +57,10 @@ public class PersistenceManager implements Runnable {
         
         HttpAppender sessionSaver = new HttpAppender();
         try {
-            statusCode = sessionSaver.sendSession(ApplicationContext.getRootURL().concat("/postvar.php"), 
+            String sendSession = sessionSaver.saveGetSession("save", ApplicationContext.getRootURL().concat("/postvar.php"), 
                     ApplicationContext.getUserID(), ApplicationContext.getSection(), ApplicationContext.getCurrentTaskID(), 
                     URLEncoder.encode(graphSaver.getSerializedGraphInXML(), "UTF-8"));
+            statusCode = Integer.parseInt(sendSession);
             if(statusCode == 200){
                 logs.info("Successfully wrote session to server at "+ApplicationContext.getRootURL().concat("/postvar.php"));
             }else{
@@ -80,33 +73,5 @@ public class PersistenceManager implements Runnable {
             logs.error("Error in sending request to server: returned: " + statusCode);
         }
     }
-
     
-    private String prepareHttpGetRequest() throws UnsupportedEncodingException {
-        StringBuilder sb = new StringBuilder(URL);
-
-        Map<String, String> map = prepareMessageMap();
-        for (Map.Entry<String, String> entry : map.entrySet()) {
-            sb.append(entry.getKey());
-            sb.append("=");
-            sb.append(entry.getValue());
-            sb.append("&");
-        }
-
-        sb.deleteCharAt(sb.length() - 1);
-        return sb.toString();
-    }
-
-    private Map<String, String> prepareMessageMap() throws UnsupportedEncodingException {
-        if (parameters == null) {
-            parameters = new HashMap<String, String>();
-            parameters.put("id", ApplicationContext.getUserID());
-            parameters.put("section", ApplicationContext.getSection());
-            parameters.put("problemNum", ApplicationContext.getCurrentTaskID());
-        }
-        parameters.put("saveData", URLEncoder.encode(graphSaver.getSerializedGraphInXML(), "UTF-8"));
-        
-        
-        return parameters;
-    }
 }

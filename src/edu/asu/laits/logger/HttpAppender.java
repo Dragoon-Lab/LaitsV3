@@ -127,25 +127,8 @@ public class HttpAppender extends AppenderSkeleton {
         } catch (UnsupportedEncodingException ex) {
         }
     }
-
-    //in process
-    public static String sendHttpRequest(String address) throws Exception {
-        URL url = new URL(address);
-        HttpURLConnection connect = (HttpURLConnection) url.openConnection();        
-        StringBuffer sb = new StringBuffer();
-        BufferedReader in = new BufferedReader(new InputStreamReader(
-                connect.getInputStream()));        
-        String line = "";        
-        while((line = in.readLine()) != null){
-            sb.append(line);
-            sb.append("\n");
-        }
-        in.close();
-        connect.disconnect();
-        return sb.toString();
-    }
     
-    public static int sendSession(String address, String id, String section, String problem, String data) throws Exception {
+    public static String saveGetSession(String action, String address, String id, String section, String problem, String data) throws Exception {
         //open connection
         URL url = new URL(address);
         HttpURLConnection connect = (HttpURLConnection) url.openConnection();       
@@ -161,25 +144,45 @@ public class HttpAppender extends AppenderSkeleton {
         
         //builds variable to send
         StringBuilder sb = new StringBuilder();
-        sb.append("id=");
+        sb.append("action=");
+        sb.append(action);
+        sb.append("&id=");
         sb.append(id);
         sb.append("&section=");
         sb.append(section);
         sb.append("&problem=");
         sb.append(problem);
-        sb.append("&saveData=");
-        sb.append(data);        
+        if(action.equals("save")){
+            sb.append("&saveData=");
+            sb.append(data);
+        }
         
         //sends request
-        DataOutputStream wr = new DataOutputStream (connect.getOutputStream ());
-        wr.writeBytes (sb.toString());
-        wr.flush ();
-        wr.close ();
+        DataOutputStream stream = new DataOutputStream (connect.getOutputStream ());
+        stream.writeBytes (sb.toString());
+        stream.flush ();
+        stream.close ();
         
         // Gets and returns response code. 200 is ok.       
-        int response = connect.getResponseCode();
+        if(action.equals("save")){
+            int response = connect.getResponseCode();
+            connect.disconnect();
+            return Integer.toString(response);
+        }else if(action.equals("load")){
+            StringBuilder returnString = new StringBuilder();
+            BufferedReader in = new BufferedReader(new InputStreamReader(
+                    connect.getInputStream()));        
+            String line = "";        
+            while((line = in.readLine()) != null){
+                returnString.append(line);
+                returnString.append("\n");
+            }
+            in.close();
+            connect.disconnect();
+            return returnString.toString();
+        }
         connect.disconnect();
-        return response;       
+        return null;
     }
 
     /*
