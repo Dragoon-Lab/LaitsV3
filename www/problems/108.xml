@@ -37,6 +37,7 @@ NEWLINE NEWLINEGoal: Graph the population for the Phoenix Metro area each year o
     </Node>
     
     <Node type="stock" name="population" extra="no">
+      <Order>1</Order>
       <Inputs>
         <Name>new residents</Name>
       </Inputs>
@@ -92,7 +93,7 @@ NEWLINE NEWLINEGoal: Graph the population for the Phoenix Metro area each year o
           <Description>after 15 years</Description>
           <NodeName>final population</NodeName>
         </Node>
-	  </Node>
+  </Node>
       <Node level="intermediate">
         <Description>new residents that move into the Phoenix Metro Area</Description>            
         <Node level="leaf">
@@ -103,7 +104,7 @@ NEWLINE NEWLINEGoal: Graph the population for the Phoenix Metro area each year o
           <Description>in the first year</Description>
           <NodeName>first year residents</NodeName>
         </Node>
-	  </Node>
+  </Node>
     </Node>
     <Node level="root">
       <Description>The rate that</Description>      
@@ -121,7 +122,7 @@ NEWLINE NEWLINEGoal: Graph the population for the Phoenix Metro area each year o
           <Description>after 15 years</Description>
           <NodeName>total growth rate</NodeName>
         </Node>
-	  </Node>
+  </Node>
     </Node>
   </DescriptionTree>
 

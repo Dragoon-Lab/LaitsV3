@@ -1,0 +1,263 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<html>
+<head>
+    <meta http-equiv="Content-type" content="text/html;charset=UTF-8">
+    <script  type="text/javascript" src="http://ajax.googleapis.com/ajax/libs/jquery/1/jquery.min.js"></script>
+    <script type="text/javascript" src="jquery.validate.min.js"></script>
+
+
+    <title>Additional Dragoon Problems</title>
+
+    <link rel="stylesheet" type="text/css" href="bootstrap.css">
+    <style type="text/css">
+        body {
+            background-color: #C6F5F2;
+            font-family:"Helvetica Neue",Helvetica,Arial,sans-serif;
+        }
+
+        #content {
+            background-color:#C6F5F2;
+            width:950px;
+            min-height:450px;
+            text-align:left;
+            padding:20px;
+        }
+
+        h2 {
+            padding-left: 0px !important;
+            text-align:right;
+        }
+
+        .large { font-size:22px; }
+        .orange { color:orange; }
+        .italic { font-style:italic }
+        .textmiddle {vertical-align:middle;}
+        .padout { padding-left:25px; padding-right:25px; }
+
+        .rounded-corners {
+            -moz-border-radius: 40px;
+            -webkit-border-radius: 40px;
+            -khtml-border-radius: 40px;
+            border-radius: 40px;
+        }
+        .rounded-corners-top {
+            -moz-border-top-radius: 40px;
+            -webkit-border-radius: 40px;
+            -khtml-border-radius: 40px;
+            border-radius: 40px;
+        }
+        .right {
+            float: right;
+        }
+        .scrolldown {
+            padding-left:20px;
+            color:#EDECE8; font-size:40px;
+            font-weight:bold;
+            vertical-align:middle;
+            text-shadow: #6374AB 2px 2px 2px;
+        }
+        .contentblock { margin: 0px 20px; }
+        .results { border: 1px solid blue; padding:20px; margin-top:20px; min-height:50px; }
+        .blue-bold { font-size:18px; font-weight:bold; color:blue; }
+
+        .problem-selection-form {
+            background: url("form-fieldset.gif") repeat-x scroll left bottom #F8FDEF;
+            border: 1px solid #DFDCDC;
+            border-radius: 15px 15px 15px 15px;
+            display: inline-block;
+            margin-bottom: 30px;
+            margin-left: 20px;
+            margin-top: 10px;
+            padding: 25px 50px 10px;
+            width: 390px;
+        }
+
+        .problem-selection-form .fieldgroup {
+            background: url("form-divider.gif") repeat-x scroll left top transparent;
+            display: inline-block;
+            padding: 8px 10px;
+            width: 380px;
+        }
+
+        .problem-selection-form .fieldgroup label {
+            float: left;
+            padding: 15px 5px 0;
+            text-align: right;
+            width: 120px;
+            font-weight:bold;
+        }
+
+        .problem-selection-form .fieldgroup input, #problem-selection-form .fieldgroup textarea, #problem-selection-form .fieldgroup select {
+            float: right;
+            margin: 10px 0;
+            height: 30px;
+        }
+
+        .problem-selection-form .submit {
+            padding: 10px;
+            width: 220px;
+            height: 40px !important;
+        }
+
+        .problem-selection-form .fieldgroup label.error {
+            color: #FB3A3A;
+            display: inline-block;
+            margin: 4px 0 5px 175px;
+            padding: 0;
+            text-align: left;
+            width: 220px;
+        }
+    </style>
+
+    <script type="text/javascript">
+
+        //when the dom has loaded setup form validation rules
+        $(document).ready(function($) {
+	    $(".problem-selection-form").each(function(){
+                $(this).validate({
+                    rules: {
+                        username: "required",
+                    },
+                    messages: {
+                        username: "Please enter your Username.",
+                    },
+                    submitHandler: function(form) {
+                       form.submit();                   
+                    }
+                });
+            });
+
+            $("#problem_category").change(function(){
+                set_problems($("#mode option:selected").text(),
+	                 $("#problem_category option:selected").text());
+            });
+
+        });
+
+        function set_problems(mode,category){
+             var map = {
+             // This should be an associative array!
+             'Introduction' : {
+	          105:'Intro problem 1',106:'Intro problem 2',
+                  107:'Intro problem 3',108:'Intro problem 4'
+	     },
+             'Training': {
+                  74:'Dying orchard',92:'Bilge water',94:'Rust',
+                  110:'Chestnut blight',95:'Bus Fleet'
+                  // The following problems not working 
+                  // on August 6, 2013:
+                  // ,93:'Rider gap',
+                  // 96:'Capacity utilization',97:'Bank Account',
+                  // 98:'Merchant Marine',80:'Metro Singles Club'
+             },
+             'Challenge': {
+                  111:'Bookworm',99:'Venice',109:'Giardia Bacteria',
+                  112:'Blood Glucose'
+                  // The following problems not working 
+                  // on August 6, 2013:
+                  // ,100:'Oil Tanker',79:'Hardwood Forest',
+                  // 101:'ASU Commuters',113:'Busy Hospital',
+                  // 115:'Widget Stocking',114:'ObscureFlix'
+             }};
+	
+	     var newList='';
+	     for(var id in map[category]){
+                  newList += "<option value='"+id+"'> "+map[category][id] + 
+                  "<\/option>\n";  // backslash so html validator works.
+             }
+	  
+            $('#problem_id').children().remove().end().append(newList) ;
+        }
+	  
+    </script>
+
+</head>
+<body>
+    <!-- Removed "onbeforeunload='reset_options()'" from body tag to correct form reset problems after download-->
+<div id="page-wrap">
+
+    <div id="content">
+
+        <form action="startup.php" method="POST" class="problem-selection-form">
+
+            <h2>Additional Dragoon Problems</h2>
+
+ 
+                    <div class="fieldgroup">
+                        <label for="un1">Username: </label>
+                        <input id="un1" type="text" name="username">
+                    </div>
+
+                    <div class="fieldgroup">
+                        <label for="mode">Mode: </label>
+                        <select name="mode" id="mode">
+                            <option value="STUDENT">Student</option>
+                            <option value="COACHED">Coached</option>
+                        </select>
+                    </div>
+
+                    <div class="fieldgroup">
+                        <label for="problem_category">Problem Category: </label>
+                        <select id="problem_category" name="problem_category">
+                            <option>Introduction</option>
+                            <option>Training</option>
+                            <option>Challenge</option>
+                        </select>
+                    </div>
+
+                    <div class="fieldgroup">
+                        <label for="problem_id">Problem: </label>
+                        <select id="problem_id" name="problem_id">
+                            <option value="105">Intro Problem 1</option>
+                            <option value="106">Intro Problem 2</option>
+                            <option value="107">Intro Problem 3</option>
+                            <option value="108">Intro Problem 4</option>
+                        </select>
+                    </div>
+
+                    <input type="hidden" name="section" value="public-login.html">
+
+                    <div class="fieldgroup">
+                        <button type="submit" value="Continue" class="submit">
+                        Open problem
+                        </button>
+                    </div>
+
+
+        </form>
+
+        <form action="startup.php" method="POST" class="problem-selection-form">
+
+            <h2>Author a problem</h2>
+
+                    <div class="fieldgroup">
+                        <label for="un2">Username: </label>
+                        <input id="un2" type="text" name="username">
+                    </div>
+
+		    <input type="hidden" name="mode" value="author">
+
+                    <div class="fieldgroup">
+                        <label for="problem_id">Problem: </label>
+                        <input type="text" name="problem_id" onChange="javascript:this.value=this.value.toLowerCase();">
+                    </div>
+
+                    <input type="hidden" name="section" value="public-login.html">
+
+                    <div class="fieldgroup">
+                        <button type="submit" value="Continue" class="submit">
+                        Open problem
+                        </button>
+                    </div>
+
+
+        </form>
+
+
+    </div>
+
+</div>
+
+
+</body>
+</html>
