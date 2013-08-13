@@ -100,10 +100,6 @@ public class InputsPanelView extends javax.swing.JPanel implements ItemListener 
             checkboxList.add(box);
             availableInputNodesPanels.add(box);
         }
-
-        if(ApplicationContext.getAppMode().equalsIgnoreCase("COACHED")){
-            setCreateButtonEnabled();
-        }
         if (currentV.getVertexType() == VertexType.CONSTANT) {
             fixedValueOptionButton.setSelected(true);
         } else if (currentV.getVertexType() == VertexType.FLOW || currentV.getVertexType() == VertexType.STOCK) {
