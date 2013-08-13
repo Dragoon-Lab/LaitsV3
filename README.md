@@ -1,4 +1,13 @@
+## Dragoon documentation ##
+
+[Documentation and design documents](documentation/README.md)
+
 ## Dragoon Install ##
+
+Instructions for setting up a dragoon server and for
+setting up a development environment for dragoon.  We use
+netbeans for java code development, but none of the code
+is netbean-specific.
 
 ### Database Setup ###
 
@@ -40,21 +49,6 @@ changed by entering the following into the "VM Options" line (replace
 
 Note that the "VM Options" line can receive multiple instructions.
 
-### Run on local server ###
-
-This section describes how to set up Dragoon to run off the 
-local server on OS X 10.8 (mountain lion).
-
-    sudo apachectl start
-    cd /Library/WebServer/Documents/
-    sudo ln -s /Users/bvds/NetBeansProjects/laits/www/ ./laits # try http//localhost/laits/
-    sudo nano /etc/apache2/httpd.conf  || uncomment php line
-    sudo apachectl restart
-    echo "<?php phpinfo(); ?>" > ~/NetBeansProjects/laits/www/index.php  
-    # try http://localhost/laits/index.php on Browser
-
-More information on [starting php and Apache on OS X](http://coolestguyplanettech.com/downtown/install-and-configure-apache-mysql-php-and-phpmyadmin-osx-108-mountain-lion).
-
 
 ### Libraries via Ivy ###
 
@@ -84,3 +78,18 @@ the name of your netbeans project.
 7. There is a [bug in ivy](https://code.google.com/p/ivybeans/issues/detail?id=58). Here is a
 workaround: right click project -> properties -> build -> compiling ->
 uncheck "compile on save" option.
+
+### Run on local server ###
+
+This section describes how to set up Dragoon to run off the 
+local server on OS X 10.8 (mountain lion).
+
+    sudo apachectl start
+    cd /Library/WebServer/Documents/
+    sudo ln -s /Users/bvds/NetBeansProjects/laits/www/ ./laits # try http//localhost/laits/
+    sudo nano /etc/apache2/httpd.conf  || uncomment php line
+    sudo apachectl restart
+    echo "<?php phpinfo(); ?>" > ~/NetBeansProjects/laits/www/index.php  
+    # try http://localhost/laits/index.php on Browser
+
+More information on [starting php and Apache on OS X](http://coolestguyplanettech.com/downtown/install-and-configure-apache-mysql-php-and-phpmyadmin-osx-108-mountain-lion).
