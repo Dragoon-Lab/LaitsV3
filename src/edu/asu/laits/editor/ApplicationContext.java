@@ -44,6 +44,11 @@ public class ApplicationContext {
   public static String taskLoaderURL;
   private static int currentOrder = 1;
   private static List<String> nextNodes = new ArrayList<String>();
+  private static boolean helpBubbles = false;
+
+    public static boolean isHelpBubbles() {
+        return helpBubbles;
+    }
 
   public static void setNextNodes(String parentNode) {
 //        ApplicationContext.nextNodes = nextNodes;
