@@ -46,14 +46,14 @@ Use the logistic equation form (K-N)/K to calculate environmental resistance, p.
   <Nodes>
       <Node type="flow" name="births per day" extra="no">
       <Inputs>
-          <Node name="water fowl"></Node>
-          <Node name="birth rate"></Node>
-          <Node name="proportion capacity remaining"></Node>
+          <Name>water fowl</Name>
+          <Name>birth rate</Name>
+          <Name>proportion capacity remaining</Name>
       </Inputs>
       <Outputs>
-      	<Node name="water fowl"></Node>        
+          <Name>water fowl</Name>
       </Outputs>
-      <Equation>water_fowl*birth_rate*proportion_capacity_remaining</Equation>
+      <Equation>water fowl*birth rate*proportion capacity remaining</Equation>
       <InitialValue></InitialValue>
       <CorrectDescription>The number of new water fowl added to the population each day</CorrectDescription>
       <Plan>proportional to accumulator and input</Plan>
@@ -61,13 +61,13 @@ Use the logistic equation form (K-N)/K to calculate environmental resistance, p.
 	  
       <Node type="flow" name="proportion capacity remaining" extra="no">
       <Inputs>
-          <Node name="capacity remaining"></Node>
-          <Node name="resource"></Node>
+          <Name>capacity remaining</Name>
+          <Name>resource</Name>
       </Inputs>
       <Outputs>
-          <Node name="births per day"></Node>
+          <Name>births per day</Name>
       </Outputs>
-      <Equation>capacity_remaining/resource</Equation>
+      <Equation>capacity remaining/resource</Equation>
       <InitialValue></InitialValue>
       <CorrectDescription>The proportion of the unutilized ecosystem carrying capacity</CorrectDescription>
       <Plan>proportional to accumulator and input</Plan>
@@ -75,13 +75,13 @@ Use the logistic equation form (K-N)/K to calculate environmental resistance, p.
 	  
 	  <Node type="flow" name="renew per day" extra="no">
       <Inputs>
-          <Node name="resource"></Node>
-          <Node name="renew rate"></Node>
+          <Name>resource</Name>
+          <Name>renew rate</Name>
       </Inputs>
       <Outputs> 
-        <Node name="resource"></Node>
+          <Name>resource</Name>
       </Outputs>
-      <Equation>resource*renew_rate</Equation>
+      <Equation>resource*renew rate</Equation>
       <InitialValue></InitialValue>
       <CorrectDescription>The number of new resources added to the resource pool each day</CorrectDescription>
       <Plan>proportional to accumulator and input</Plan>
@@ -89,14 +89,14 @@ Use the logistic equation form (K-N)/K to calculate environmental resistance, p.
 	  
 	  <Node type="flow" name="consump per day" extra="no">
       <Inputs>
-          <Node name="consump rate"></Node>
-          <Node name="water fowl"></Node>
-          <Node name="resource"></Node>
+          <Name>consump rate</Name>
+          <Name>water fowl</Name>
+          <Name>resource</Name>
       </Inputs>
       <Outputs>
-          <Node name="resource"></Node>
+          <Name>resource</Name>
       </Outputs>
-      <Equation>consump_rate*water_fowl*resource</Equation>
+      <Equation>consump rate*water fowl*resource</Equation>
       <InitialValue></InitialValue>
       <CorrectDescription>The number of resources consumed each day</CorrectDescription>
       <Plan>proportional to accumulator and input</Plan>
@@ -104,13 +104,13 @@ Use the logistic equation form (K-N)/K to calculate environmental resistance, p.
 	  
 	  <Node type="flow" name="capacity remaining" extra="no">
       <Inputs>
-          <Node name="water fowl"></Node>
-          <Node name="resource"></Node>
+          <Name>water fowl</Name>
+          <Name>resource</Name>
       </Inputs>
       <Outputs>
-          <Node name="proportion capacity remaining"></Node>
+          <Name>proportion capacity remaining</Name>
       </Outputs>
-      <Equation>resource-water_fowl</Equation>
+      <Equation>resource-water fowl</Equation>
       <InitialValue></InitialValue>
       <CorrectDescription>The amount of the ecosystem carrying capacity not utilized by the water fowl population</CorrectDescription>
       <Plan>fixed value</Plan>
@@ -118,14 +118,14 @@ Use the logistic equation form (K-N)/K to calculate environmental resistance, p.
 	  
 	  <Node type="stock" name="water fowl" extra="no">
       <Inputs>
-        <Node name="births per day" type="plus"></Node>
+          <Name>births per day</Name>
       </Inputs>
       <Outputs>
-          <Node name="births per day"></Node>
-          <Node name="consump per day"></Node>
-          <Node name="capacity remaining"></Node>
+          <Name>births per day</Name>
+          <Name>consump per day</Name>
+          <Name>capacity remaining</Name>
 	  </Outputs>
-      <Equation>births_per_day</Equation>
+      <Equation>births per day</Equation>
       <InitialValue>10.0</InitialValue>
       <CorrectDescription>The water fowl population size</CorrectDescription>
       <Plan>said to increase</Plan>
@@ -133,16 +133,16 @@ Use the logistic equation form (K-N)/K to calculate environmental resistance, p.
       
       <Node type="stock" name="resource" extra="no">
         <Inputs>
-            <Node name="renew per day" type="plus"></Node>
-            <Node name="consump per day" type="minus"></Node>
+            <Name>renew per day</Name>
+            <Name>consump per day</Name>
         </Inputs>
         <Outputs> 
-          <Node name="proportion capacity remaining"></Node>
-          <Node name="renew per day"></Node>
-          <Node name="consump per day"></Node>
-          <Node name="capacity remaining"></Node>
+          <Name>proportion capacity remaining</Name>
+          <Name>renew per day</Name>
+          <Name>consump per day</Name>
+          <Name>capacity remaining</Name>
         </Outputs>
-        <Equation>renew_per_day-consump_per_day</Equation>
+        <Equation>renew per day-consump per day</Equation>
         <InitialValue>100.0</InitialValue>
         <CorrectDescription>The size of the resource pool (hg) available to the water fowl</CorrectDescription>
         <Plan>said to increase</Plan>
@@ -151,8 +151,8 @@ Use the logistic equation form (K-N)/K to calculate environmental resistance, p.
 	  <Node type="constant" name="birth rate" extra="no">
         <Inputs></Inputs>
         <Outputs>
-            <Node name="water fowl"></Node>
-            <Node name="births per day"></Node>
+            <Name>water fowl</Name>
+            <Name>births per day</Name>
         </Outputs>
         <Equation>0.0010</Equation>
         <InitialValue>0.0010</InitialValue>
@@ -163,8 +163,8 @@ Use the logistic equation form (K-N)/K to calculate environmental resistance, p.
 	  <Node type="constant" name="renew rate" extra="no">
         <Inputs></Inputs>
         <Outputs>
-            <Node name="population growth rate"></Node>
-            <Node name="renew per day"></Node>
+            <Name>population growth rate</Name>
+            <Name>renew per day</Name>
         </Outputs>
         <Equation>0.0020</Equation>
         <InitialValue>0.0020</InitialValue>
@@ -175,7 +175,7 @@ Use the logistic equation form (K-N)/K to calculate environmental resistance, p.
 	  <Node type="constant" name="consump rate" extra="no">
         <Inputs></Inputs>
         <Outputs>
-          <Node name="consump per day"></Node>        
+            <Name>consump per day</Name>    
         </Outputs>
         <Equation>0.0010</Equation>
         <InitialValue>0.0010</InitialValue>

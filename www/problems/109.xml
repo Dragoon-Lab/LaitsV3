@@ -12,9 +12,9 @@
   \n Accumulator: population = population + births; initial population = 100
   \n Function: births = growth rate * population 
   \n Given: growth rate = 0.40</ShortDescription>
-  \n Given: population_first_hour = 140
-  \n Given: initial_population = 100
-  \n Given: population_second_hour = 196
+  \n Given: population 1st hour = 140
+  \n Given: initial population = 100
+  \n Given: population 2nd hour = 196
   <StartTime>0</StartTime>
   <EndTime>8</EndTime>
   <Units>hours</Units>
@@ -62,8 +62,8 @@
     <Node type="constant" name="growth rate" extra="no">
       <Inputs></Inputs>
       <Outputs>
-        <Node name="births"></Node>
-		</Outputs>
+          <Name>births</Name>
+      </Outputs>
       <Equation>.40</Equation>
       <InitialValue>.40</InitialValue>
       <CorrectDescription>The rate that Giardia reproduce</CorrectDescription>
@@ -75,7 +75,7 @@
         <Name>births</Name>
       </Inputs>
       <Outputs>
-      	<Node name="births"></Node>
+          <Name>births</Name>
       </Outputs>
       <InitialValue>100</InitialValue>
       <Equation>+births</Equation>
@@ -89,7 +89,7 @@
         <Name>growth rate</Name>
       </Inputs>
       <Outputs>
-      	<Node name="population"></Node>
+          <Name>population</Name>
       </Outputs>
       <InitialValue></InitialValue>
       <Equation>population*growth rate</Equation>
