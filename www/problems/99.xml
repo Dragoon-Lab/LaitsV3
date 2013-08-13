@@ -45,7 +45,7 @@
     <Node type="constant" name="cm sunk per decade" extra="no">
       <Inputs></Inputs>
       <Outputs>
-          <Node name="cm above sea level"></Node>
+          <Name>cm above sea level</Name>
       </Outputs>
       <Equation></Equation>
       <InitialValue>10</InitialValue>

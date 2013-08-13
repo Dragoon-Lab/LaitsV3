@@ -16,7 +16,7 @@
         <Name>births</Name>
       </Inputs>
       <Outputs>
-        <Node name="births"/>
+          <Name>births</Name>
       </Outputs>
       <Equation>births</Equation>
       <InitialValue>20.0</InitialValue>
@@ -26,7 +26,7 @@
       <Plan>fixed value</Plan>
       <Inputs/>
       <Outputs>
-        <Node name="births"/>
+        <Name>births</Name>
       </Outputs>
       <Equation>0.2</Equation>
       <InitialValue>0.2</InitialValue>
@@ -40,7 +40,7 @@
         <Name>birth rate</Name>
       </Inputs>
       <Outputs>
-        <Node name="population"/>
+          <Name>population</Name>
       </Outputs>
       <Equation>population * birth rate</Equation>
       <InitialValue>0.0</InitialValue>
