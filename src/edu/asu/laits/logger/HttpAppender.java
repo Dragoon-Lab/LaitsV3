@@ -36,9 +36,13 @@ import org.apache.log4j.spi.LoggingEvent;
 import java.net.HttpURLConnection;
 import java.net.URL;
 import java.io.BufferedReader;
+import java.io.BufferedWriter;
 import java.io.DataOutputStream;
 import java.io.InputStream;
 import java.io.InputStreamReader;
+import java.io.OutputStream;
+import java.io.OutputStreamWriter;
+import java.net.URLEncoder;
 import java.sql.Timestamp;
 
 public class HttpAppender extends AppenderSkeleton {
@@ -142,33 +146,34 @@ public class HttpAppender extends AppenderSkeleton {
         connect.setDoInput(true);
         connect.setDoOutput(true);
         
-        //builds variable to send
+        //add variables to send
+        List<NameValuePair> postVariable = new ArrayList<NameValuePair>();
         StringBuilder sb = new StringBuilder();
-        sb.append("action=");
-        sb.append(action);
-        sb.append("&id=");
-        sb.append(id);
-        sb.append("&section=");
-        sb.append(section);
-        sb.append("&problem=");
-        sb.append(problem);
+        postVariable.add(new BasicNameValuePair("action", action));
+        postVariable.add(new BasicNameValuePair("id", id));
+        postVariable.add(new BasicNameValuePair("section", section));
+        postVariable.add(new BasicNameValuePair("problem", problem));
         if(action.equals("save")){
-            sb.append("&saveData=");
-            sb.append(data);
+            postVariable.add(new BasicNameValuePair("saveData", data));           
         }
         
         //sends request
-        DataOutputStream stream = new DataOutputStream (connect.getOutputStream ());
-        stream.writeBytes (sb.toString());
+        OutputStream stream = new DataOutputStream (connect.getOutputStream ());
+        BufferedWriter writer = new BufferedWriter(new OutputStreamWriter(stream, "UTF-8"));
+        writer.write(getQuery(postVariable));
+        writer.close();
         stream.flush ();
         stream.close ();
         
-        // Gets and returns response code. 200 is ok.       
+        // If action = 'save' gets and returns response code. 200 is ok.       
         if(action.equals("save")){
             int response = connect.getResponseCode();
             connect.disconnect();
             return Integer.toString(response);
-        }else if(action.equals("load")){
+        }
+        
+        // If action = 'load' returns string with loaded problem.
+        else if(action.equals("load")){
             StringBuilder returnString = new StringBuilder();
             BufferedReader in = new BufferedReader(new InputStreamReader(
                     connect.getInputStream()));        
@@ -183,6 +188,26 @@ public class HttpAppender extends AppenderSkeleton {
         }
         connect.disconnect();
         return null;
+    }
+    
+    private static String getQuery(List<NameValuePair> params) throws UnsupportedEncodingException{
+        StringBuilder result = new StringBuilder();
+        boolean first = true;
+
+        for (NameValuePair pair : params)
+        {
+            if (first){
+                first = false;
+            }else{
+                result.append("&");           
+            }
+            
+            result.append(pair.getName());
+            result.append("=");
+            result.append(pair.getValue());
+        }
+
+        return result.toString();
     }
 
     /*

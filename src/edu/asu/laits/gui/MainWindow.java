@@ -512,7 +512,7 @@ public class MainWindow extends JFrame {
         } catch (Exception ex) {
             java.util.logging.Logger.getLogger(GraphLoader.class.getName()).log(Level.SEVERE, null, ex);
             logs.error("Problem loading session from database. "+ex.getMessage());
-        }                 
+        }
        
         if(!xmlString.trim().isEmpty()){
             logs.debug("Previous Session Found for User "+user+" Section:"+section+" Prob: "+probNum);
