@@ -271,6 +271,10 @@ public class NodeEditor extends javax.swing.JDialog {
                                 || currentVertex.getInputsStatus().equals(Vertex.InputsStatus.GAVEUP)) {
                             iPanel.setEditableInputs(false);
                         }
+                        
+                         if(ApplicationContext.getAppMode().equalsIgnoreCase("COACHED")){
+                             iPanel.setCreateButtonEnabled();
+                        }
                         addHelpBalloon(currentVertex.getName(), "onLoad", "INPUTS");
                     } else {
                         extraTabEvent = true;

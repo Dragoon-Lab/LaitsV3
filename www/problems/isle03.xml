@@ -2,108 +2,109 @@
 
 <Task phase="" type="">
   <TaskName>Isle Royale - Moose population 3</TaskName>
-  <TaskDescription>Assumptions: etc.</TaskDescription>
-  <URL/>
+  <TaskDescription>This model makes these assumptions:  NEWLINE   *The moose population is 20 in the first year. NEWLINE   *The number of births each year is 10% of the moose population. NEWLINE   *The number of deaths each year is the birth rate times the moose population divided by the island's capacity.  NEWLINE   *The island's moose capacity is 500.</TaskDescription>
+  <URL>images/moose_60.png</URL>
   <StartTime>1900</StartTime>
   <EndTime>1950</EndTime>
   <Units>Years</Units>
   <NodeCount>6</NodeCount>
   <Nodes>
-    <Node type="flow" name="births" extra="no">
+    <Node type="flow" name="moose births" extra="no">
       <CorrectDescription>The number of moose born each year</CorrectDescription>
       <Plan>proportional to accumulator and input</Plan>
       <Inputs>
-        <Name>birth rate</Name>
-        <Name>population</Name>
+        <Name>moose birth rate</Name>
+        <Name>moose population</Name>
       </Inputs>
       <Outputs>
-          <Name>population</Name>
+          <Name>moose population</Name>
       </Outputs>
-      <Equation>birth rate * population</Equation>
+      <Equation>moose birth rate * moose population</Equation>
       <InitialValue>0.0</InitialValue>
     </Node>
-    <Node type="constant" name="birth rate" extra="no">
+    <Node type="constant" name="moose birth rate" extra="no">
       <CorrectDescription>The ratio of moose born each year to the moose population</CorrectDescription>
       <Plan>fixed value</Plan>
       <Inputs/>
       <Outputs>
-          <Name>births</Name>
-          <Name>death rate</Name>
+          <Name>moose births</Name>
+          <Name>moose death rate</Name>
       </Outputs>
-      <Equation>0.2</Equation>
-      <InitialValue>0.2</InitialValue>
+      <Equation>0.1</Equation>
+      <InitialValue>0.1</InitialValue>
     </Node>
-    <Node type="constant" name="capacity" extra="no">
+    <Node type="constant" name="moose capacity" extra="no">
       <CorrectDescription>The number of moose the island can support</CorrectDescription>
       <Plan>fixed value</Plan>
       <Inputs/>
       <Outputs>
-          <Name>death rate</Name>
+          <Name>moose death rate</Name>
       </Outputs>
       <Equation>500.0</Equation>
       <InitialValue>500.0</InitialValue>
     </Node>
-    <Node type="flow" name="death rate" extra="no">
+    <Node type="flow" name="moose death rate" extra="no">
       <CorrectDescription>The ratio of moose that die each year to the moose population</CorrectDescription>
       <Plan>proportional to accumulator and input</Plan>
       <Inputs>
-        <Name>capacity</Name>
-        <Name>birth rate</Name>
-        <Name>population</Name>
+        <Name>moose capacity</Name>
+        <Name>moose birth rate</Name>
+        <Name>moose population</Name>
       </Inputs>
       <Outputs>
-          <Name>deaths</Name>
+          <Name>moose deaths</Name>
       </Outputs>
-      <Equation>birth rate * population / capacity</Equation>
+      <Equation>moose birth rate * moose population / moose capacity</Equation>
       <InitialValue>0.0</InitialValue>
     </Node>
-    <Node type="stock" name="population" extra="no">
+    <Node type="stock" name="moose population" extra="no">
       <CorrectDescription>The number of moose in the population</CorrectDescription>
       <Plan>proportional to accumulator and input</Plan>
       <Order>1</Order>
       <Inputs>
-        <Name>births</Name>
-        <Name>deaths</Name>
+        <Name>moose births</Name>
+        <Name>moose deaths</Name>
       </Inputs>
       <Outputs>
-          <Name>deaths</Name>
-          <Name>births</Name>
-          <Name>death rate</Name>
+          <Name>moose deaths</Name>
+          <Name>moose births</Name>
+          <Name>moose death rate</Name>
       </Outputs>
-      <Equation>births - deaths</Equation>
+      <Equation>moose births - moose deaths</Equation>
       <InitialValue>20.0</InitialValue>
     </Node>
-    <Node type="flow" name="deaths" extra="no">
+    <Node type="flow" name="moose deaths" extra="no">
       <CorrectDescription>The number of moose that die each year</CorrectDescription>
       <Plan>proportional to accumulator and input</Plan>
       <Inputs>
-        <Name>population</Name>
-        <Name>death rate</Name>
+        <Name>moose population</Name>
+        <Name>moose death rate</Name>
       </Inputs>
       <Outputs>
-          <Name>population</Name>
+          <Name>moose population</Name>
       </Outputs>
-      <Equation>population * death rate</Equation>
+      <Equation>moose population * moose death rate</Equation>
       <InitialValue>0.0</InitialValue>
     </Node>
   </Nodes>
-  <DescriptionTree>    <Node level="root">
+    <DescriptionTree>
+  	<Node level="root">
       <Description>The number of moose</Description>            
         <Node level="leaf">
           <Description>born each year</Description>
-          <NodeName>births</NodeName>
+          <NodeName>moose births</NodeName>
         </Node>
         <Node level="leaf">
           <Description>that die each year</Description>
-          <NodeName>deaths</NodeName>
+          <NodeName>moose deaths</NodeName>
+        </Node>
+        <Node level="leaf">
+          <Description>in the population each year</Description>
+          <NodeName>moose population</NodeName>
         </Node>
         <Node level="leaf">
           <Description>the island can support</Description>
-          <NodeName>capacity</NodeName>
-        </Node>
-        <Node level="leaf">
-          <Description>in the population</Description>
-          <NodeName>population</NodeName>
+          <NodeName>moose capacity</NodeName>
         </Node>
     </Node>
     <Node level="root">
@@ -112,23 +113,28 @@
         <Description>moose born each year</Description>            
         <Node level="leaf">
           <Description>to the moose population</Description>
-          <NodeName>birth rate</NodeName>
-        </Node>
-        <Node level="leaf">
-          <Description>to the carrying capacity of the island</Description>
-          <NodeName>capacity births</NodeName>
+          <NodeName>moose birth rate</NodeName>
         </Node>
 	  </Node>
       <Node level="intermediate">
         <Description>moose that die each year</Description>            
         <Node level="leaf">
-          <Description>to the number of moose born each year</Description>
-          <NodeName>death to births</NodeName>
-        </Node>
-        <Node level="leaf">
           <Description>to the moose population</Description>
-          <NodeName>death rate</NodeName>
+          <NodeName>moose death rate</NodeName>
         </Node>
 	  </Node>
-    </Node></DescriptionTree>
+    </Node>
+  	<Node level="root">
+      <Description>The number of wolves</Description>            
+        <Node level="leaf">
+          <Description>born each year</Description>
+          <NodeName>wolf births</NodeName>
+        </Node>
+        <Node level="leaf">
+          <Description>in the population each year</Description>
+          <NodeName>wolf population</NodeName>
+        </Node>
+    </Node>
+    </DescriptionTree>
+
 </Task>
