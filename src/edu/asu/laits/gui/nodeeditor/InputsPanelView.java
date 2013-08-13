@@ -101,6 +101,9 @@ public class InputsPanelView extends javax.swing.JPanel implements ItemListener 
             availableInputNodesPanels.add(box);
         }
 
+        if(ApplicationContext.getAppMode().equalsIgnoreCase("COACHED")){
+            setCreateButtonEnabled();
+        }
         if (currentV.getVertexType() == VertexType.CONSTANT) {
             fixedValueOptionButton.setSelected(true);
         } else if (currentV.getVertexType() == VertexType.FLOW || currentV.getVertexType() == VertexType.STOCK) {
@@ -545,6 +548,26 @@ public class InputsPanelView extends javax.swing.JPanel implements ItemListener 
         buttonCreateNodeInputTab.setEnabled(b);
     }
     
+    public void setCreateButtonEnabled() {
+        boolean showCreateButton = false;
+        boolean isInputListed = false;
+        List<String> inputNodes = ApplicationContext.getCorrectSolution().getNodeByName(nodeEditor.getCurrentVertex().getName()).getInputNodes();
+        for(String node : inputNodes) {
+            isInputListed = false;
+            for(JCheckBox J : checkboxList){
+                if(J.getText().equalsIgnoreCase(node)) { 
+                    isInputListed = true;
+                    break;
+                   }
+                }
+            if(!isInputListed){
+                showCreateButton = true; 
+            }
+
+        }
+        buttonCreateNodeInputTab.setEnabled(showCreateButton);
+        
+    }
     
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JPanel availableInputNodesPanels;
