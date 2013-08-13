@@ -1,17 +1,9 @@
 <?php
     session_start();
+    
+    require "db-login.php";
 
     //connect to database
-    $myFile = "../db_user_password";
-    $fh = fopen($myFile, 'r') or die("Could not access password file.");
-    $dbuser = chop(fgets($fh));
-    $dbpass = chop(fgets($fh));
-    $dbname = chop(fgets($fh));
-    if (strlen($dbname) == 0) {
-        $dbname = 'laits_devel';
-    }
-    fclose($fh);
-
     $mysqli = mysqli_connect("localhost", $dbuser, $dbpass, $dbname)
             or die('Could not connect to database.');
     
