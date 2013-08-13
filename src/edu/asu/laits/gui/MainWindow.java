@@ -511,6 +511,7 @@ public class MainWindow extends JFrame {
             
         } catch (Exception ex) {
             java.util.logging.Logger.getLogger(GraphLoader.class.getName()).log(Level.SEVERE, null, ex);
+            logs.error("Problem loading session from database. "+ex.getMessage());
         }                 
        
         if(!xmlString.trim().isEmpty()){
