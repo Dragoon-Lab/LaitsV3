@@ -299,7 +299,7 @@ public class ModelMenu extends JMenu {
     public void newNodeAction() {
         activityLogs.debug("User Pressed Create Node Button");
         MainWindow window = (MainWindow) graphPane.getMainFrame();
-        if (newNodeAllowed()) {
+        if (notAllNodesDefined()) {
             activityLogs.debug("User is allowed to create a new node");
             Vertex v = new Vertex();
             v.setVertexIndex(graphPane.getModelGraph().getNextAvailableIndex());
@@ -420,20 +420,33 @@ public class ModelMenu extends JMenu {
         showGraphMenuItem.setEnabled(false);
     }
 
-    public boolean newNodeAllowed() {
+    // This is really a property of the student graph
+    // and doesn't have anything to do with the menus.
+    // It should be moved elsewhere; Bug #2160  
+    public boolean notAllNodesDefined() {
         if (ApplicationContext.getAppMode().equalsIgnoreCase("AUTHOR")) {
             return true;
         }
 
+        // Go through the solution graph and find any vertices that
+        // don't have a match in the student graph.
         TaskSolution solution = ApplicationContext.getCorrectSolution();
-        if (graphPane.getModelGraph().vertexSet().size()
-                < solution.getSolutionNodes().size()) {
-            return true;
+        for(SolutionNode solNode: solution.getSolutionNodes()){
+            boolean noMatch=true;
+            Iterator<Vertex> vertices = graphPane.getModelGraph().vertexSet().iterator();
+            while(vertices.hasNext()){
+                if(vertices.next().getName().equals(solNode.getNodeName())){
+                    noMatch=false;
+                    break;
+                }
+            }
+            if(noMatch){
+                return true;
+            }
         }
-
         return false;
     }
-
+  
     public void editTimeRangeAction() {
         activityLogs.debug("User pressed EditTimeRange Menu Item.");
         GraphRangeEditor ed = new GraphRangeEditor(graphPane, true);
