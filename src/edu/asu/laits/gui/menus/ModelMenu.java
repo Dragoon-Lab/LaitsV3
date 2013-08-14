@@ -426,12 +426,20 @@ public class ModelMenu extends JMenu {
         }
 
         TaskSolution solution = ApplicationContext.getCorrectSolution();
-        if (graphPane.getModelGraph().vertexSet().size()
-                < solution.getSolutionNodes().size()) {
-            return true;
+//        if (graphPane.getModelGraph().vertexSet().size()
+//                < solution.getSolutionNodes().size()) {
+//            return true;
+//        }
+        boolean allowed = false;
+        List<String> names= solution.getCorrectNodeNames();
+        for(String n : names){
+            if(graphPane.getModelGraph().getVertexByName(n) == null){
+                allowed = true;
+                break;
+            }
         }
 
-        return false;
+        return allowed;
     }
 
     public void editTimeRangeAction() {
