@@ -17,7 +17,7 @@
         <Name>moose population</Name>
       </Inputs>
       <Outputs>
-        <Node name="moose population"/>
+          <Name>moose population</Name>
       </Outputs>
       <Equation>moose birth rate * moose population</Equation>
       <InitialValue>0.0</InitialValue>
@@ -27,8 +27,8 @@
       <Plan>fixed value</Plan>
       <Inputs/>
       <Outputs>
-        <Node name="moose births"/>
-        <Node name="moose death rate"/>
+          <Name>moose births</Name>
+          <Name>moose death rate</Name>
       </Outputs>
       <Equation>0.1</Equation>
       <InitialValue>0.1</InitialValue>
@@ -38,7 +38,7 @@
       <Plan>fixed value</Plan>
       <Inputs/>
       <Outputs>
-        <Node name="moose death rate"/>
+          <Name>moose death rate</Name>
       </Outputs>
       <Equation>500.0</Equation>
       <InitialValue>500.0</InitialValue>
@@ -52,7 +52,7 @@
         <Name>moose population</Name>
       </Inputs>
       <Outputs>
-        <Node name="moose deaths"/>
+          <Name>moose deaths</Name>
       </Outputs>
       <Equation>moose birth rate * moose population / moose capacity</Equation>
       <InitialValue>0.0</InitialValue>
@@ -66,9 +66,9 @@
         <Name>moose deaths</Name>
       </Inputs>
       <Outputs>
-        <Node name="moose deaths"/>
-        <Node name="moose births"/>
-        <Node name="moose death rate"/>
+          <Name>moose deaths</Name>
+          <Name>moose births</Name>
+          <Name>moose death rate</Name>
       </Outputs>
       <Equation>moose births - moose deaths</Equation>
       <InitialValue>20.0</InitialValue>
@@ -81,7 +81,7 @@
         <Name>moose death rate</Name>
       </Inputs>
       <Outputs>
-        <Node name="moose population"/>
+          <Name>moose population</Name>
       </Outputs>
       <Equation>moose population * moose death rate</Equation>
       <InitialValue>0.0</InitialValue>

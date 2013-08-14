@@ -17,7 +17,7 @@
         <Name>moose births</Name>
       </Inputs>
       <Outputs>
-        <Node name="moose births"/>
+          <Name>moose births</Name>
       </Outputs>
       <Equation>moose births</Equation>
       <InitialValue>20.0</InitialValue>
@@ -27,7 +27,7 @@
       <Plan>fixed value</Plan>
       <Inputs/>
       <Outputs>
-        <Node name="moose births"/>
+        <Name>moose births</Name>
       </Outputs>
       <Equation>0.1</Equation>
       <InitialValue>0.1</InitialValue>
@@ -40,7 +40,7 @@
         <Name>moose birth rate</Name>
       </Inputs>
       <Outputs>
-        <Node name="moose population"/>
+          <Name>moose population</Name>
       </Outputs>
       <Equation>moose population * moose birth rate</Equation>
       <InitialValue>0.0</InitialValue>

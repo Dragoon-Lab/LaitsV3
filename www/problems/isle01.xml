@@ -25,7 +25,7 @@
       <Plan>fixed value</Plan>
       <Inputs/>
       <Outputs>
-        <Node name="moose population"/>
+          <Name>moose population</Name>
       </Outputs>
       <Equation>2.0</Equation>
       <InitialValue>2.0</InitialValue>

@@ -46,13 +46,13 @@ Graph the water fowl and domestic cat populations over 3650 days. Explore how ch
   <Nodes>
       <Node type="flow" name="Bird Births Per Day" extra="no">
       <Inputs>
-        <Node name="Water Fowl"></Node>
-        <Node name="Bird Birth Rate"></Node>
+          <Name>Water Fowl</Name>
+          <Name>Bird Birth Rate</Name>
       </Inputs>
       <Outputs>
-        <Node name="Water Fowl"></Node>
+          <Name>Water Fowl</Name>
       </Outputs>
-      <Equation>Water_Fowl*Bird_Birth_Rate</Equation>
+      <Equation>Water Fowl*Bird Birth Rate</Equation>
       <InitialValue></InitialValue>
       <CorrectDescription>The number of new water fowl added to the population each day</CorrectDescription>
       <Plan>proportional to accumulator and input</Plan>
@@ -60,14 +60,14 @@ Graph the water fowl and domestic cat populations over 3650 days. Explore how ch
 	  
 	  <Node type="flow" name="Bird Deaths Per Day" extra="no">
       <Inputs>
-        <Node name="Water Fowl"></Node>
-        <Node name="Bird Death Rate"></Node>
-        <Node name="Domestic Cats"></Node>
+          <Name>Water Fowl</Name>
+          <Name>Bird Death Rate</Name>
+          <Name>Domestic Cats</Name>
       </Inputs>
       <Outputs> 
-        <Node name="Water Fowl"></Node>
+          <Name>Water Fowl</Name>
       </Outputs>
-      <Equation>Water_Fowl*Bird_Death_Rate*Domestic_Cats</Equation>
+      <Equation>Water Fowl*Bird Death Rate*Domestic Cats</Equation>
       <InitialValue></InitialValue>
       <CorrectDescription>The number of water fowl removed from the population each day</CorrectDescription>
       <Plan>proportional to accumulator and input</Plan>
@@ -75,14 +75,14 @@ Graph the water fowl and domestic cat populations over 3650 days. Explore how ch
 	  
 	  <Node type="flow" name="Cat Births Per Day" extra="no">
       <Inputs>
-        <Node name="Water Fowl"></Node>
-        <Node name="Cat Birth Rate"></Node>
-        <Node name="Domestic Cats"></Node>
+          <Name>Water Fowl</Name>
+          <Name>Cat Birth Rate</Name>
+          <Name>Domestic Cats</Name>
       </Inputs>
       <Outputs>
-        <Node name="Domestic Cats"></Node>  
+        <Name>Domestic Cats</Name>
       </Outputs>
-      <Equation>Water_Fowl*Cat_Birth_Rate*Domestic_Cats</Equation>
+      <Equation>Water Fowl*Cat Birth Rate*Domestic Cats</Equation>
       <InitialValue></InitialValue>
       <CorrectDescription>The number of new cats added to the population each day</CorrectDescription>
       <Plan>proportional to accumulator and input</Plan>
@@ -90,13 +90,13 @@ Graph the water fowl and domestic cat populations over 3650 days. Explore how ch
 	  
 	  <Node type="flow" name="Cat Deaths Per Day" extra="no">
       <Inputs>
-        <Node name="Cat Death Rate"></Node>
-        <Node name="Domestic Cats"></Node>
+          <Name>Cat Death Rate</Name>
+          <Name>Domestic Cats</Name>
       </Inputs>
       <Outputs>
-        <Node name="Domestic Cats"></Node>  
+          <Name>Domestic Cats</Name>
       </Outputs>
-      <Equation>Domestic_Cats*Cat_Death_Rate</Equation>
+      <Equation>Domestic Cats*Cat Death Rate</Equation>
       <InitialValue></InitialValue>
       <CorrectDescription>The number of cats removed from the population each day</CorrectDescription>
       <Plan>fixed value</Plan>
@@ -104,14 +104,14 @@ Graph the water fowl and domestic cat populations over 3650 days. Explore how ch
 	  
 	  <Node type="stock" name="Water Fowl" extra="no">
       <Inputs>
-        <Node name="Bird Births Per Day" type="plus"></Node>
-        <Node name="Bird Deaths Per Day" type="minus"></Node>
+        <Name>Bird Births Per Day</Name>
+        <Name>Bird Deaths Per Day</Name>
       </Inputs>
       <Outputs>
-          <Node name="Bird Deaths Per Day"></Node>  
-          <Node name="Cat Births Per Day"></Node>      
+          <Name>Bird Deaths Per Day</Name>
+          <Name>Cat Births Per Day</Name>
 	  </Outputs>
-      <Equation>Bird_Births_Per_Day-Bird_Deaths_Per_Day</Equation>
+      <Equation>Bird Births Per Day-Bird Deaths Per Day</Equation>
       <InitialValue>10.0</InitialValue>
       <CorrectDescription>The population size of the water fowl</CorrectDescription>
       <Plan>said to increase</Plan>
@@ -119,15 +119,15 @@ Graph the water fowl and domestic cat populations over 3650 days. Explore how ch
       
       <Node type="stock" name="Domestic Cats" extra="no">
       <Inputs>
-        <Node name="Cat Births Per Day" type="plus"></Node>
-        <Node name="Cat Deaths Per Day" type="minus"></Node>
+          <Name>Cat Births Per Day</Name>
+          <Name>Cat Deaths Per Day</Name>
       </Inputs>
       <Outputs>
-       <Node name="Bird Deaths Per Day"></Node>  
-       <Node name="Cat Births Per Day"></Node> 
-       <Node name="Cat Deaths Per Day"></Node> 
+          <Name>Bird Deaths Per Day</Name>
+          <Name>Cat Births Per Day</Name>
+          <Name>Cat Deaths Per Day</Name>
       </Outputs>
-      <Equation>Cat_Births_Per_Day-Cat_Deaths_Per_Day</Equation>
+      <Equation>Cat Births Per Day-Cat Deaths Per Day</Equation>
       <InitialValue>2.0</InitialValue>
       <CorrectDescription>The population size of the domestic cats</CorrectDescription>
       <Plan>fixed value</Plan>
@@ -137,7 +137,7 @@ Graph the water fowl and domestic cat populations over 3650 days. Explore how ch
         <Inputs>
         </Inputs>
         <Outputs> 
-         <Node name="Bird Death Per Day"></Node>  
+            <Name>Bird Death Per Day</Name>
         </Outputs>
         <Equation>0.0020</Equation>
         <InitialValue>0.0020</InitialValue>
@@ -148,7 +148,7 @@ Graph the water fowl and domestic cat populations over 3650 days. Explore how ch
 	  <Node type="constant" name="Bird Death Rate" extra="no">
         <Inputs></Inputs>
         <Outputs>
-         <Node name="Bird Births Per Day"></Node>   
+            <Name>Bird Births Per Day</Name>
         </Outputs>
         <Equation>0.0010</Equation>
         <InitialValue>0.0010</InitialValue>
@@ -159,7 +159,7 @@ Graph the water fowl and domestic cat populations over 3650 days. Explore how ch
 	  <Node type="constant" name="Cat Birth Rate" extra="no">
         <Inputs></Inputs>
         <Outputs>
-            <Node name="Cat Births Per Day"></Node>
+            <Name>Cat Births Per Day</Name>
         </Outputs>
         <Equation>0.0010</Equation>
         <InitialValue>0.0010</InitialValue>
@@ -170,7 +170,7 @@ Graph the water fowl and domestic cat populations over 3650 days. Explore how ch
 	  <Node type="constant" name="Cat Death Rate" extra="no">
         <Inputs></Inputs>
         <Outputs>
-         <Node name="Cat Deaths Per Day"></Node>         
+         <Name>Cat Deaths Per Day</Name>
         </Outputs>
         <Equation>0.011</Equation>
         <InitialValue>0.011</InitialValue>
