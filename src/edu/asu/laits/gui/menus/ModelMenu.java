@@ -431,20 +431,16 @@ public class ModelMenu extends JMenu {
         // Go through the solution graph and find any vertices that
         // don't have a match in the student graph.
         TaskSolution solution = ApplicationContext.getCorrectSolution();
-        for(SolutionNode solNode: solution.getSolutionNodes()){
-            boolean noMatch=true;
-            Iterator<Vertex> vertices = graphPane.getModelGraph().vertexSet().iterator();
-            while(vertices.hasNext()){
-                if(vertices.next().getName().equals(solNode.getNodeName())){
-                    noMatch=false;
-                    break;
-                }
-            }
-            if(noMatch){
-                return true;
+        boolean noMatch = false;
+        List<String> names= solution.getCorrectNodeNames();
+        for(String n : names){
+            if(graphPane.getModelGraph().getVertexByName(n) == null){
+                noMatch = true;
+                break;
             }
         }
-        return false;
+
+        return noMatch;
     }
   
     public void editTimeRangeAction() {
