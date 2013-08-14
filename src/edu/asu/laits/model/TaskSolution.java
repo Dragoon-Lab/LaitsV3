@@ -357,9 +357,9 @@ public class TaskSolution {
             }
 
             for (int i = 0; i < 5; i++) {
+                    Random rand = new Random(123);
 
                 for (String var : studentVariables) {
-                    Random rand = new Random(123);
                     int r = rand.nextInt(100);
 
                     double value = (r + rand.nextDouble()) % 150;

@@ -1,0 +1,125 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<Task phase="" type="">
+  <TaskName>Isle Royale - Wolves</TaskName>
+  <TaskDescription>Assumptions: NEWLINE   *Birth rate 65% NEWLINE   *Death rate 50% NEWLINE   *Initial population 10</TaskDescription>
+  <URL>images/moose_wolves.png</URL>
+  <StartTime>1949</StartTime>
+  <EndTime>2009</EndTime>
+  <Units>Years</Units>
+  <NodeCount>5</NodeCount>
+  <Nodes>
+    <Node type="stock" name="wolf population" extra="no">
+      <CorrectDescription>The number of wolves in the population</CorrectDescription>
+      <Plan>said to both increase and decrease</Plan>
+      <Order>1</Order>
+      <Inputs>
+        <Name>wolf births</Name>
+        <Name>wolf deaths</Name>
+      </Inputs>
+      <Outputs>
+        <Node name="wolf births"/>
+        <Node name="wolf deaths"/>
+      </Outputs>
+      <Equation>wolf births - wolf deaths</Equation>
+      <InitialValue>10.0</InitialValue>
+    </Node>
+    <Node type="constant" name="wolf birth rate" extra="no">
+      <CorrectDescription>The ratio of wolves born each year to the wolf population</CorrectDescription>
+      <Plan>fixed value</Plan>
+      <Inputs/>
+      <Outputs>
+        <Node name="wolf births"/>
+      </Outputs>
+      <Equation>0.65</Equation>
+      <InitialValue>0.65</InitialValue>
+    </Node>
+    <Node type="flow" name="wolf births" extra="no">
+      <CorrectDescription>The number of wolves born each year</CorrectDescription>
+      <Plan>proportional to accumulator and input</Plan>
+      <Inputs>
+        <Name>wolf population</Name>
+        <Name>wolf birth rate</Name>
+      </Inputs>
+      <Outputs>
+        <Node name="wolf population"/>
+      </Outputs>
+      <Equation>wolf population * wolf birth rate</Equation>
+      <InitialValue>0.0</InitialValue>
+    </Node>
+    <Node type="flow" name="wolf deaths" extra="no">
+      <CorrectDescription>The number of wolves that die each year</CorrectDescription>
+      <Plan>proportional to accumulator and input</Plan>
+      <Inputs>
+        <Name>wolf population</Name>
+        <Name>wolf death rate</Name>
+      </Inputs>
+      <Outputs>
+        <Node name="wolf population"/>
+      </Outputs>
+      <Equation>wolf population * wolf death rate</Equation>
+      <InitialValue>0.0</InitialValue>
+    </Node>
+    <Node type="constant" name="wolf death rate" extra="no">
+      <CorrectDescription>The ratio of wolves that die each year to the wolf population</CorrectDescription>
+      <Plan>fixed value</Plan>
+      <Inputs/>
+      <Outputs>
+        <Node name="wolf deaths"/>
+      </Outputs>
+      <Equation>0.5</Equation>
+      <InitialValue>0.5</InitialValue>
+    </Node>
+  </Nodes>
+  <DescriptionTree>
+      <Node level="root">
+      <Description>The number of wolves</Description>            
+        <Node level="leaf">
+          <Description>born each year</Description>
+          <NodeName>wolf births</NodeName>
+        </Node>
+        <Node level="leaf">
+          <Description>that die each year</Description>
+          <NodeName>wolf deaths</NodeName>
+        </Node>
+        <Node level="leaf">
+          <Description>the island can support</Description>
+          <NodeName>wolf capacity</NodeName>
+        </Node>
+        <Node level="leaf">
+          <Description>in the population</Description>
+          <NodeName>wolf population</NodeName>
+        </Node>
+    </Node>
+	<Node level="root">
+      <Description>The ratio of wolves</Description>      
+      <Node level="intermediate">
+        <Description>born each year</Description>            
+        <Node level="leaf">
+          <Description>to the wolf population</Description>
+          <NodeName>wolf birth rate</NodeName>
+        </Node>
+        <Node level="leaf">
+          <Description>to the wolf population when food is scarce</Description>
+          <NodeName>starving wolf birth rate</NodeName>
+        </Node>
+        <Node level="leaf">
+          <Description>to the carrying capacity of the island</Description>
+          <NodeName>wolf capacity births</NodeName>
+        </Node>
+	  </Node>
+      <Node level="intermediate">
+        <Description>that die each year</Description>            
+        <Node level="leaf">
+          <Description>to the number of wolves born each year</Description>
+          <NodeName>wolf death to births</NodeName>
+        </Node>
+        <Node level="leaf">
+          <Description>to the wolf population</Description>
+          <NodeName>wolf death rate</NodeName>
+        </Node>
+	  </Node>
+    </Node>
+
+  </DescriptionTree>
+</Task>

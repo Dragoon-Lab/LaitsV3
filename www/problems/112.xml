@@ -71,7 +71,7 @@
     <Node type="constant" name="glucose added" extra="no">
       <Inputs></Inputs>
       <Outputs>
-      	<Node name="glucose in the blood"></Node>
+          <Name>glucose in the blood</Name>
       </Outputs>
       <Equation>3</Equation>
       <InitialValue>3</InitialValue>
@@ -85,7 +85,7 @@
           <Name>glucose in the blood</Name>
       </Inputs>
       <Outputs>
-      	<Node name="glucose in the blood"></Node>
+          <Name>glucose in the blood</Name>
       </Outputs>
       <Equation>glucose in the blood*removal rate</Equation>
       <InitialValue></InitialValue>
@@ -99,8 +99,8 @@
         <Name>glucose removed</Name>
 	  </Inputs>
       <Outputs>
-        <Node name="glucose removed"></Node>
-	  </Outputs>
+          <Name>glucose removed</Name>
+      </Outputs>
       <Equation>+glucose added-glucose removed</Equation>
       <InitialValue>10</InitialValue>
       <CorrectDescription>The amount of glucose in the blood at the end of each hour and it varies from hour to hour</CorrectDescription>

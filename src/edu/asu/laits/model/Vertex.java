@@ -74,7 +74,7 @@ public class Vertex {
         //xPosition = 200 * (vertexIndex % 6) + 80;
         //yPosition = 200 * (vertexIndex / 6) + 60 ;
         xPosition = 200 * (vertexIndex % 4) + 480;
-        yPosition = 200 * (vertexIndex / 6) + 60 ;
+        yPosition = 200 * (vertexIndex / 4) + 60 ;
     }
     
     public String getName() {

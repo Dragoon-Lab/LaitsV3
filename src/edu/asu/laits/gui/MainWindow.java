@@ -168,7 +168,7 @@ public class MainWindow extends JFrame {
         // Set Title of Main Frame
         String title = GlobalProperties.PROGRAM_NAME + 
                 " - "+ ApplicationContext.getAppMode() + " Mode";
-        if(ApplicationContext.getAppMode().equals("AUTHOR"))
+        if(ApplicationContext.getAppMode().equalsIgnoreCase("AUTHOR"))
             title += " : " + ApplicationContext.getCurrentTaskID();
         else
             title += " : " + ApplicationContext.getCorrectSolution().getTaskName();
@@ -200,7 +200,7 @@ public class MainWindow extends JFrame {
             
             // Temporary - switch panels based on Mode
             logs.debug("Application running in "+ApplicationContext.getAppMode() + " Mode");
-            if(ApplicationContext.getAppMode().equals("AUTHOR"))
+            if(ApplicationContext.getAppMode().equalsIgnoreCase("AUTHOR"))
                 mainPanel.add(getGraphPaneScrollPane(), BorderLayout.CENTER);
             else{
                 // Initialize Situation Panel so that first task can be loaded
@@ -504,14 +504,15 @@ public class MainWindow extends JFrame {
         String probNum = ApplicationContext.getCurrentTaskID();
 
         String xmlString = "";
-        HttpAppender get = new HttpAppender();
+        HttpAppender sessionLoader = new HttpAppender();
         try {
-            xmlString = get.sendHttpRequest(ApplicationContext.getRootURL() + "/get_session.php?id="
-                    + user + "&section=" + section + "&problem=" + probNum);
+            xmlString = sessionLoader.saveGetSession("load", ApplicationContext.getRootURL().concat("/postvar.php"), 
+                    ApplicationContext.getUserID(), ApplicationContext.getSection(), ApplicationContext.getCurrentTaskID(), "");
             
         } catch (Exception ex) {
             java.util.logging.Logger.getLogger(GraphLoader.class.getName()).log(Level.SEVERE, null, ex);
-        }                 
+            logs.error("Problem loading session from database. "+ex.getMessage());
+        }
        
         if(!xmlString.trim().isEmpty()){
             logs.debug("Previous Session Found for User "+user+" Section:"+section+" Prob: "+probNum);

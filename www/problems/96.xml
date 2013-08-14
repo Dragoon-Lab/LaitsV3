@@ -8,8 +8,8 @@
       NEWLINE which is usually determined by the number of seats (for busses, trains and planes) or cabins (for cruise ships).  Unfortunately, transportation 
       NEWLINE management usually cannot rapidly adjust capacity. Suppose that a small airline initially flies 222 flights per month, which combine to a total capacity 
       NEWLINE of 10000 seats. The airline is running at about 0.9 capacity utilization, which means 9000 of its seats are filled every month. During an economic downturn, 
-      NEWLINE the airline loses 1000 passengers each month but can take only 500 seats out of service each month.  
-NEWLINE NEWLINE Goal: Graph the capacity utilization over 6 months.</TaskDescription>
+      NEWLINE the airline loses 1000 passengers each month but can take only 500 seats out of service each month.
+      NEWLINE NEWLINE Goal: Graph the capacity utilization over 6 months.</TaskDescription>
   
   <StartTime>0</StartTime>
   <EndTime>6</EndTime>
@@ -22,7 +22,7 @@ NEWLINE NEWLINE Goal: Graph the capacity utilization over 6 months.</TaskDescrip
     <Node type="constant" name="passengers lost" extra="no">
       <Inputs></Inputs>
       <Outputs>
-      	<Node name="passengers"></Node>
+          <Name>passengers</Name>
       </Outputs>
       <Equation>1000</Equation>
       <InitialValue>1000</InitialValue>
@@ -33,7 +33,7 @@ NEWLINE NEWLINE Goal: Graph the capacity utilization over 6 months.</TaskDescrip
     <Node type="constant" name="seats removed" extra="no">
       <Inputs></Inputs>
       <Outputs>
-      	<Node name="seats in service"></Node>
+          <Name>seats in service</Name>
       </Outputs>
       <Equation>500</Equation>
       <InitialValue>500</InitialValue>

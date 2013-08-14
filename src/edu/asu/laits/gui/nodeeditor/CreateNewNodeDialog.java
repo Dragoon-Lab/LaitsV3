@@ -266,7 +266,7 @@ public class CreateNewNodeDialog extends javax.swing.JDialog {
             ne.refreshInputs();
         }
 
-
+        ne.getInputsPanel().setCreateButtonEnabled();
         this.dispose();
         ne.addHelpBalloon(currentVertex.getName(), "newNodeClosed", "INPUTS");
         

@@ -44,6 +44,11 @@ public class ApplicationContext {
   public static String taskLoaderURL;
   private static int currentOrder = 1;
   private static List<String> nextNodes = new ArrayList<String>();
+  private static boolean helpBubbles = false;
+
+    public static boolean isHelpBubbles() {
+        return helpBubbles;
+    }
 
   public static void setNextNodes(String parentNode) {
 //        ApplicationContext.nextNodes = nextNodes;
@@ -51,7 +56,7 @@ public class ApplicationContext {
       childNodes = correctSolution.getNodeByName(parentNode).getInputNodes();
       for(String childNode : childNodes){
           System.out.println("checking " + childNode);
-          if (graphPane.getModelGraph().getVertexByName(childNode) == null){
+          if (graphPane.getModelGraph().getVertexByName(childNode) == null && nextNodes.indexOf(childNode) == -1){
              addNextNodes(childNode);
              System.out.println("added " + childNode);
           }
@@ -74,7 +79,9 @@ public class ApplicationContext {
   
   public static void removeNextNodes(String nextNode){
       int index = nextNodes.indexOf(nextNode);
+      if(index != -1){
       nextNodes.remove(index);
+      }
   }
   
   public static String getFirstNextNode(){

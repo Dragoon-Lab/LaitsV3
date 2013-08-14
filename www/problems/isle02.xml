@@ -1,0 +1,90 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<Task phase="" type="">
+  <TaskName>Isle Royale - Moose population 2</TaskName>
+  <TaskDescription>This model makes 3 assumptions:  NEWLINE   *The moose population is 20 in the first year. NEWLINE   *Births are the only change in population. NEWLINE   *The number of births each year is 10% of the moose population.</TaskDescription>
+  <URL>images/moose_60.png</URL>
+  <StartTime>1900</StartTime>
+  <EndTime>1950</EndTime>
+  <Units>Years</Units>
+  <NodeCount>3</NodeCount>
+  <Nodes>
+    <Node type="stock" name="moose population" extra="no">
+      <CorrectDescription>The number of moose in the population</CorrectDescription>
+      <Plan>said to increase</Plan>
+      <Order>1</Order>
+      <Inputs>
+        <Name>moose births</Name>
+      </Inputs>
+      <Outputs>
+          <Name>moose births</Name>
+      </Outputs>
+      <Equation>moose births</Equation>
+      <InitialValue>20.0</InitialValue>
+    </Node>
+    <Node type="constant" name="moose birth rate" extra="no">
+      <CorrectDescription>The ratio of moose born each year to the moose population</CorrectDescription>
+      <Plan>fixed value</Plan>
+      <Inputs/>
+      <Outputs>
+        <Name>moose births</Name>
+      </Outputs>
+      <Equation>0.1</Equation>
+      <InitialValue>0.1</InitialValue>
+    </Node>
+    <Node type="flow" name="moose births" extra="no">
+      <CorrectDescription>The number of moose born each year</CorrectDescription>
+      <Plan>proportional to accumulator and input</Plan>
+      <Inputs>
+        <Name>moose population</Name>
+        <Name>moose birth rate</Name>
+      </Inputs>
+      <Outputs>
+          <Name>moose population</Name>
+      </Outputs>
+      <Equation>moose population * moose birth rate</Equation>
+      <InitialValue>0.0</InitialValue>
+    </Node>
+  </Nodes>
+  <DescriptionTree>
+  	<Node level="root">
+      <Description>The number of moose</Description>            
+        <Node level="leaf">
+          <Description>born each year</Description>
+          <NodeName>moose births</NodeName>
+        </Node>
+        <Node level="leaf">
+          <Description>in the population each year</Description>
+          <NodeName>moose population</NodeName>
+        </Node>
+    </Node>
+    <Node level="root">
+      <Description>The ratio of</Description>      
+      <Node level="intermediate">
+        <Description>moose born each year</Description>            
+        <Node level="leaf">
+          <Description>to the moose population</Description>
+          <NodeName>moose birth rate</NodeName>
+        </Node>
+	  </Node>
+      <Node level="intermediate">
+        <Description>moose that die each year</Description>            
+        <Node level="leaf">
+          <Description>to the moose population</Description>
+          <NodeName>moose death rate</NodeName>
+        </Node>
+	  </Node>
+    </Node>
+  	<Node level="root">
+      <Description>The number of wolves</Description>            
+        <Node level="leaf">
+          <Description>born each year</Description>
+          <NodeName>wolf births</NodeName>
+        </Node>
+        <Node level="leaf">
+          <Description>in the population each year</Description>
+          <NodeName>wolf population</NodeName>
+        </Node>
+    </Node>
+    </DescriptionTree>
+</Task>

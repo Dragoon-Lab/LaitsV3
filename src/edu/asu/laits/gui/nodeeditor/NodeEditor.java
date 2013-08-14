@@ -63,7 +63,7 @@ public class NodeEditor extends javax.swing.JDialog {
      * Creates new form NodeEditor2
      */
     public NodeEditor(GraphEditorPane editorPane, Vertex selected) {
-        super(editorPane.getMainFrame(), false);
+        super(editorPane.getMainFrame(), true);
         graphPane = editorPane;
         currentVertex = selected;
         initComponents();
@@ -220,7 +220,7 @@ public class NodeEditor extends javax.swing.JDialog {
                     return;
                 }
 
-                if (ApplicationContext.getAppMode().equals("AUTHOR")) {
+                if (ApplicationContext.getAppMode().equalsIgnoreCase("AUTHOR")) {
                     processEditorInput();
                 } else {
                     if (!isCurrentPanelChecked() && ApplicationContext.getAppMode().equalsIgnoreCase("COACHED")) {
@@ -270,6 +270,10 @@ public class NodeEditor extends javax.swing.JDialog {
                         if (currentVertex.getInputsStatus().equals(Vertex.InputsStatus.CORRECT)
                                 || currentVertex.getInputsStatus().equals(Vertex.InputsStatus.GAVEUP)) {
                             iPanel.setEditableInputs(false);
+                        }
+                        
+                         if(ApplicationContext.getAppMode().equalsIgnoreCase("COACHED")){
+                             iPanel.setCreateButtonEnabled();
                         }
                         addHelpBalloon(currentVertex.getName(), "onLoad", "INPUTS");
                     } else {
@@ -547,7 +551,7 @@ public class NodeEditor extends javax.swing.JDialog {
             result = correctSolution.checkNodeInputs(dPanel.getNodeName(), iPanel.getSelectedInputsList());
         }
 
-        if (result == 0 || result == 3) {
+        if ((result == 0  && iPanel.getValueButtonSelected())|| result == 3) {
             if (result == 0) {
                 iPanel.setInputsTypeBackground(Color.GREEN);
             } else {
@@ -565,7 +569,7 @@ public class NodeEditor extends javax.swing.JDialog {
                 addHelpBalloon(currentVertex.getName(), "descCheckDemo", "INPUTS");
             }
         } else {
-            if (result == 1 || result == -1) {
+            if (result == 1 || result == -1 || (result == 0 && !iPanel.getValueButtonSelected())) {
                 iPanel.setInputsTypeBackground(Color.RED);
             } else {
                 iPanel.setInputsTypeBackground(Color.GREEN);
