@@ -2,12 +2,8 @@
 
 <Task phase="Intro" type="Debug">
   <TaskName>Jared and Oprah</TaskName>
-  <TaskDescription>Jared, who is larger than Oprah, is following the exact same NEWLINE
-  diet as Oprah, except that he eats an afternoon snack.  Consequently, Jared NEWLINE
-  always weighs 50 pounds more than Oprah.  Oprah weighs 120 pounds. In this NEWLINE
-  model Oprah's weight as a function of time is given. NEWLINE NEWLINE
-  Find a model of Jared's weight as a function of time.  NEWLINE
-  A model node has already been created.
+  <TaskDescription>Suppose Jared is a diet tester for Oprah Winfrey.  He eats exactly what she eats, and does the same exercises too. NEWLINE He and Oprah compare weights each week, and it turns out that Jared is always 50 pounds heavier than Oprah.  Create a model of Jared’s weight. NEWLINE A node representing Oprah’s weight has already been created for you. 
+
 </TaskDescription>
   <URL>images/jared-and-oprah.jpg</URL>
   <StartTime>0</StartTime>
