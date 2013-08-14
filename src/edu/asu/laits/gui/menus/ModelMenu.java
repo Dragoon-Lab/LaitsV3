@@ -420,28 +420,29 @@ public class ModelMenu extends JMenu {
         showGraphMenuItem.setEnabled(false);
     }
 
+    // This is really a property of the student graph
+    // and doesn't have anything to do with the menus.
+    // It should be moved elsewhere; Bug #2160  
     public boolean notAllNodesDefined() {
         if (ApplicationContext.getAppMode().equalsIgnoreCase("AUTHOR")) {
             return true;
         }
 
+        // Go through the solution graph and find any vertices that
+        // don't have a match in the student graph.
         TaskSolution solution = ApplicationContext.getCorrectSolution();
-//        if (graphPane.getModelGraph().vertexSet().size()
-//                < solution.getSolutionNodes().size()) {
-//            return true;
-//        }
-        boolean allowed = false;
+        boolean noMatch = false;
         List<String> names= solution.getCorrectNodeNames();
         for(String n : names){
             if(graphPane.getModelGraph().getVertexByName(n) == null){
-                allowed = true;
+                noMatch = true;
                 break;
             }
         }
 
-        return allowed;
+        return noMatch;
     }
-
+  
     public void editTimeRangeAction() {
         activityLogs.debug("User pressed EditTimeRange Menu Item.");
         GraphRangeEditor ed = new GraphRangeEditor(graphPane, true);
