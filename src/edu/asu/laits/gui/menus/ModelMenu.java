@@ -299,7 +299,7 @@ public class ModelMenu extends JMenu {
     public void newNodeAction() {
         activityLogs.debug("User Pressed Create Node Button");
         MainWindow window = (MainWindow) graphPane.getMainFrame();
-        if (newNodeAllowed()) {
+        if (notAllNodesDefined()) {
             activityLogs.debug("User is allowed to create a new node");
             Vertex v = new Vertex();
             v.setVertexIndex(graphPane.getModelGraph().getNextAvailableIndex());
@@ -420,7 +420,7 @@ public class ModelMenu extends JMenu {
         showGraphMenuItem.setEnabled(false);
     }
 
-    public boolean newNodeAllowed() {
+    public boolean notAllNodesDefined() {
         if (ApplicationContext.getAppMode().equalsIgnoreCase("AUTHOR")) {
             return true;
         }
