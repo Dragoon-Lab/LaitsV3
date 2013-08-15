@@ -22,7 +22,7 @@
     <Node type="constant" name="passengers lost" extra="no">
       <Inputs></Inputs>
       <Outputs>
-      	<Node name="passengers"></Node>
+          <Name>passengers</Name>
       </Outputs>
       <Equation>1000</Equation>
       <InitialValue>1000</InitialValue>
@@ -33,7 +33,7 @@
     <Node type="constant" name="seats removed" extra="no">
       <Inputs></Inputs>
       <Outputs>
-      	<Node name="seats in service"></Node>
+          <Name>seats in service</Name>
       </Outputs>
       <Equation>500</Equation>
       <InitialValue>500</InitialValue>

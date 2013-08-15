@@ -1,18 +1,20 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<Task phase="Training" type="Whole">
+<Task phase="Training" type="">
   <TaskName>Bank Account</TaskName>
-  <URL>http://upload.wikimedia.org/wikipedia/commons/c/c3/Backing_it_in_2.jpg</URL>
-  <TaskDescription>Problem: Jack owns a trucking company that is not quite breaking even.  In fact, it loses about $1200 each year.  Jack sells one of the trucks for $50000 but after paying expenses, he has only $47500, which he puts into a bank account.  The interest rate of the account is 2% per year, which means that the money the bank adds to the account each year is 2% of what is in the account at the beginning of that year.  However, each year Jack takes $1200 out of the account to cover his losses.  
-Goal: Graph the amount of money in the account over a 15-year period.
+  
+  <TaskDescription>
+      Problem: Jack owns a trucking company that is not quite breaking even.  In fact, it NEWLINE
+      loses about $1200 each year.  Jack sells one of the trucks for $50000 but after paying NEWLINE
+      expenses, he has only $47500, which he puts into a bank account.  The interest rate of NEWLINE
+      the account is 2% per year, which means that the money the bank adds to the account NEWLINE
+      each year is 2% of what is in the account at the beginning of that year.  However, each NEWLINE
+      year Jack takes $1200 out of the account to cover his losses. NEWLINE NEWLINE
+      Goal: Graph the amount of money in the account over a 15-year period.
   </TaskDescription>
-  <ShortDescription>Accumulator: money in account = money in account + money added by bank annually – money taken out annually
-initial value = 47500
-\n  Function: money added by bank annually = money in account * interest rate
-\n  Given: interest rate = 0.02
-\n  Given: sale price of truck = 50000
-\n  Given: money taken out annually = 1200
+  
+  <URL>http://upload.wikimedia.org/wikipedia/commons/c/c3/Backing_it_in_2.jpg</URL>
 
-</ShortDescription>
+  
   <StartTime>0</StartTime>
   <EndTime>15</EndTime>
   <Units>years</Units>
@@ -23,12 +25,9 @@ initial value = 47500
     <VertexLabel>money in account</VertexLabel>
     <VertexLabel>interest rate</VertexLabel>
   </Vertexes>
-  
+
   <NodeCount>5</NodeCount>
 
-  <ProblemSeeking>money in account</ProblemSeeking>
-  <CorrespondingSentence>Graph the amount of money in the account over a 15-year period.</CorrespondingSentence>
-  
   <Nodes>
     <Node type="constant" name="sale price of truck" extra="yes">
       <Inputs></Inputs>
@@ -42,18 +41,18 @@ initial value = 47500
     <Node type="constant" name="money taken out annually" extra="no">
       <Inputs></Inputs>
       <Outputs>
-      	<Node name="money in account"></Node>
+        <Name>money in account</Name>
       </Outputs>
       <Equation>1200</Equation>
       <InitialValue>1200</InitialValue>
       <CorrectDescription>The amount of money taken out of the bank account each year and it remains the same from year to year</CorrectDescription>
       <Plan>fixed value</Plan>
     </Node>
-
+    
     <Node type="constant" name="interest rate" extra="no">
       <Inputs></Inputs>
       <Outputs>
-      	<Node name="money added by bank annually"></Node>
+          <Name>money added by bank annually</Name>
       </Outputs>
       <Equation>.02</Equation>
       <InitialValue>.02</InitialValue>
@@ -62,46 +61,46 @@ initial value = 47500
     </Node>
 
     <Node type="stock" name="money in account" extra="no">
-      <Inputs>        
-        <Node name="money added by bank annually" type="plus"></Node>
-        <Node name="money taken out annually" type="minus"></Node>
+      <Inputs>
+          <Name>money added by bank annually</Name>
+          <Name>money taken out annually</Name>
       </Inputs>
       <Outputs>
-		<Node name="money added by bank annually"></Node>	
-	  </Outputs>
+          <Name>money added by bank annually</Name>
+      </Outputs>
       <InitialValue>47500</InitialValue>
-      <Equation>+money_added_by_bank_annually-money_taken_out_annually</Equation>
+      <Equation>+money added by bank annually-money taken out annually</Equation>
       <CorrectDescription>The amount of money in the bank account each year and it changes from year to year</CorrectDescription>
       <Plan>said to both increase and decrease</Plan>
     </Node>
-    
+
     <Node type="flow" name="money added by bank annually" extra="no">
-      <Inputs>        
-        <Node name="money in account"></Node>
-        <Node name="interest rate"></Node>
+      <Inputs>
+          <Name>money in account</Name>
+          <Name>interest rate</Name>
       </Inputs>
       <Outputs>
-      	<Node name="money in account"></Node>
+          <Name>money in account</Name>
       </Outputs>
       <InitialValue></InitialValue>
-      <Equation>money_in_account*interest_rate</Equation>
+      <Equation>money in account*interest rate</Equation>
       <CorrectDescription>The amount of money added to the account by the bank each year and it changes from year to year</CorrectDescription>
       <Plan>proportional to accumulator and input</Plan>
     </Node>
-  </Nodes>   
-     
+  </Nodes>
+  
   <DescriptionTree>
     <Node level="root">
-      <Description>The amount of</Description>      
+      <Description>The amount of</Description>
       <Node level="intermediate">
-        <Description>money the truck</Description>            
+        <Description>money the truck</Description>
         <Node level="leaf">
           <Description>was sold for by Jack</Description>
           <NodeName>sale price of truck</NodeName>
         </Node>
-	  </Node>
+          </Node>
       <Node level="intermediate">
-        <Description>money taken out of the bank account</Description>            
+        <Description>money taken out of the bank account</Description>
         <Node level="leaf">
           <Description>each year and it remains the same from year to year</Description>
           <NodeName>money taken out annually</NodeName>
@@ -118,9 +117,9 @@ initial value = 47500
           <Description>after 15 years</Description>
           <NodeName>money taken out after 15 years</NodeName>
         </Node>
-	  </Node>
+          </Node>
       <Node level="intermediate">
-        <Description>money added to the account by the bank</Description>            
+        <Description>money added to the account by the bank</Description>
         <Node level="leaf">
           <Description>each year and it stays the same from year to year</Description>
           <NodeName>money added by bank annually</NodeName>
@@ -137,9 +136,9 @@ initial value = 47500
           <Description>after 15 years</Description>
           <NodeName>money added by bank after 15 years</NodeName>
         </Node>
-	  </Node>
+          </Node>
       <Node level="intermediate">
-        <Description>money in the bank account</Description>            
+        <Description>money in the bank account</Description>
         <Node level="leaf">
           <Description>each year and it stays the same from year to year</Description>
           <NodeName>money in account</NodeName>
@@ -156,12 +155,12 @@ initial value = 47500
           <Description>after 15 years</Description>
           <NodeName>money in account after 15 years</NodeName>
         </Node>
-	  </Node>
+          </Node>
     </Node>
     <Node level="root">
-      <Description>The proportion of</Description>      
+      <Description>The proportion of</Description>
       <Node level="intermediate">
-        <Description>the amount of money added to the account by the bank to the amount of money already in the bank account</Description>            
+        <Description>the amount of money added to the account by the bank to the amount of money already in the bank account</Description>
         <Node level="leaf">
           <Description>and it remains the same from year to year</Description>
           <NodeName>interest rate</NodeName>
@@ -170,9 +169,9 @@ initial value = 47500
           <Description>and it changes from year to year</Description>
           <NodeName>fluctuating interest rate</NodeName>
         </Node>
-	  </Node>
+          </Node>
       <Node level="intermediate">
-        <Description>the amount of money added to the sale price of the truck</Description>            
+        <Description>the amount of money added to the sale price of the truck</Description>
         <Node level="leaf">
           <Description>and it remains the same from year to year</Description>
           <NodeName>constant interest rate</NodeName>
@@ -181,20 +180,23 @@ initial value = 47500
           <Description>and it changes from year to year</Description>
           <NodeName>interest rate</NodeName>
         </Node>
-	  </Node>
+          </Node>
       <Node level="intermediate">
-        <Description>the amount of money added to the amount of money Jack deposited in the first year</Description> 
+        <Description>the amount of money added to the amount of money Jack deposited in the first year</Description>
         <Node level="leaf">
           <Description>and it remains the same from year to year</Description>
           <NodeName>constant interest rate</NodeName>
         </Node>
         <Node level="leaf">
           <Description>and it changes from year to year</Description>
-          <NodeName>interest rate</NodeName>		  
+          <NodeName>interest rate</NodeName>
         </Node>
-	  </Node>
+          </Node>
     </Node>
 
   </DescriptionTree>
-       
+
 </Task>
+
+
+

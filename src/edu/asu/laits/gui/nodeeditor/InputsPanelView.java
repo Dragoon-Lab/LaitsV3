@@ -100,7 +100,6 @@ public class InputsPanelView extends javax.swing.JPanel implements ItemListener 
             checkboxList.add(box);
             availableInputNodesPanels.add(box);
         }
-
         if (currentV.getVertexType() == VertexType.CONSTANT) {
             fixedValueOptionButton.setSelected(true);
         } else if (currentV.getVertexType() == VertexType.FLOW || currentV.getVertexType() == VertexType.STOCK) {
@@ -395,17 +394,12 @@ public class InputsPanelView extends javax.swing.JPanel implements ItemListener 
         // TODO add your handling code here:
         // Process Cancel Action for all the Tabs
         activityLogs.debug("User pressed Create node button on inputs tab for Node " + nodeEditor.getCurrentVertex().getName());
-        if (nodeEditor.getGraphPane().getMainFrame().getMainMenu().getModelMenu().newNodeAllowed()) {
-            Vertex v = new Vertex();
+           Vertex v = new Vertex();
             v.setVertexIndex(nodeEditor.getGraphPane().getModelGraph().getNextAvailableIndex());
             nodeEditor.getGraphPane().addVertex(v);
 
             CreateNewNodeDialog newNodeDialog = new CreateNewNodeDialog(nodeEditor, v);
 
-        } else {
-            activityLogs.debug("User was not allowed to create new node as all the nodes were already present");
-            JOptionPane.showMessageDialog(this, "The model is already using all the correct nodes.");
-        }
     }//GEN-LAST:event_buttonCreateNodeInputTabActionPerformed
 
     public void refreshInputs(){
@@ -545,6 +539,26 @@ public class InputsPanelView extends javax.swing.JPanel implements ItemListener 
         buttonCreateNodeInputTab.setEnabled(b);
     }
     
+    public void setCreateButtonEnabled() {
+        boolean showCreateButton = false;
+        boolean isInputListed = false;
+        List<String> inputNodes = ApplicationContext.getCorrectSolution().getNodeByName(nodeEditor.getCurrentVertex().getName()).getInputNodes();
+        for(String node : inputNodes) {
+            isInputListed = false;
+            for(JCheckBox J : checkboxList){
+                if(J.getText().equalsIgnoreCase(node)) { 
+                    isInputListed = true;
+                    break;
+                   }
+                }
+            if(!isInputListed){
+                showCreateButton = true; 
+            }
+
+        }
+        buttonCreateNodeInputTab.setEnabled(showCreateButton);
+        
+    }
     
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JPanel availableInputNodesPanels;

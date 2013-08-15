@@ -2,11 +2,11 @@
 
 <Task phase="Intro" type="Construct">
 <TaskName>Jared and Oprah with difference</TaskName>
-<TaskDescription>Jared, who is larger than Oprah, is following the exact same NEWLINE
-  diet as Oprah, except that he eats an afternoon snack.  Consequently, NEWLINE
-  Jared always weighs 50 pounds more than Oprah.  Oprah initially weighs 140 pounds NEWLINE
-  but loses 1.5 pounds each week.NEWLINE NEWLINE
-  Find a model of Jared's weight as a function of time.</TaskDescription>
+<TaskDescription>Create a model with four nodes: NEWLINE
+    *Jared weight:  Jared always weighs a certain amount more than Oprah. NEWLINE
+    *Jared extra weight:  This is 50 pounds, which is how much more he weighs than Oprah. NEWLINE
+    *Oprah weight:  She starts at 140 pounds and decreases by a certain amount a week.NEWLINE
+    *Oprah weight loss:  She loses 1.5 pounds a week.</TaskDescription>
   <URL>images/jared-and-oprah.jpg</URL>
   <StartTime>0</StartTime>
   <EndTime>10</EndTime>

@@ -119,7 +119,10 @@ public class LaitsSolutionExporter {
         addOutputDetails(vertex, outputs);
         
         Element equation = node.addElement("Equation");
-        if(!vertex.getVertexType().equals(Vertex.VertexType.FLOW))
+
+        if(vertex.getVertexType().equals(Vertex.VertexType.CONSTANT))
+            equation.setText(String.valueOf(vertex.getInitialValue()));
+        else
             equation.setText(vertex.getEquation());
         
         Element initialValue = node.addElement("InitialValue");

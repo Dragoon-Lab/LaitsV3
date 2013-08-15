@@ -25,10 +25,18 @@
       <Plan>fixed value</Plan>
       <Inputs/>
       <Outputs>
-          <Name>moose population</Name>
+        <Node name="moose population"/>
       </Outputs>
       <Equation>2.0</Equation>
       <InitialValue>2.0</InitialValue>
+    </Node>
+	<Node type="constant" name="wolf population" extra="yes">
+      <CorrectDescription>The number of wolves in the population</CorrectDescription>
+      <Plan>fixed value</Plan>
+      <Inputs/>
+      <Outputs/>
+      <Equation>wolf population</Equation>
+      <InitialValue>20.0</InitialValue>
     </Node>
   </Nodes>
   <DescriptionTree>

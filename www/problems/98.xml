@@ -2,21 +2,27 @@
 <Task phase="Training" type="Construct">
   <TaskName>Merchant Marine</TaskName>
   <URL>http://upload.wikimedia.org/wikipedia/commons/8/89/Usns_comfort.jpg</URL>
-  <TaskDescription>Problem: After World War II, the United States had the largest merchant marine of any nation.  The merchant marine is the collection of ships that transport goods and people over the oceans, not counting navy vessels.  Unfortunately, the US Merchant Marine got smaller and smaller each year, while the merchant marine of other countries has grown.  Suppose that in 1950 the US Merchant Marine was 5000 ships of 10000 tons or larger, where Panama's merchant marine was only 1000 ships of 10000 tons or larger.  Suppose that the US Merchant Marine shrank by 5% each year mostly because ships were sold to other countries.  Suppose that Panama's merchant marine grew by 100 ships a year mostly because it was cheap to own a ship registered in Panama. For instance, the difference starts out with the US having 4000 more ships than the Panama in 1950.  What happens on the way to 1951?
-Goal: Graph the difference in size between the two fleets over 50 years. 
+  <TaskDescription>
+      Problem: After World War II, the United States had the largest merchant NEWLINE
+      marine of any nation.  The merchant marine is the collection of ships that NEWLINE
+      transport goods and people over the oceans, not counting navy vessels.  NEWLINE
+      Unfortunately, the US Merchant Marine got smaller and smaller each year, NEWLINE
+      while the merchant marine of other countries has grown.  Suppose that in NEWLINE
+      1950 the US Merchant Marine was 5000 ships of 10000 tons or larger, where NEWLINE
+      Panama's merchant marine was only 1000 ships of 10000 tons or larger. NEWLINE
+      Suppose that the US Merchant Marine shrank by 5% each year mostly because NEWLINE
+      ships were sold to other countries.  Suppose that Panama's merchant marine NEWLINE
+      grew by 100 ships a year mostly because it was cheap to own a ship NEWLINE
+      registered in Panama. For instance, the difference starts out with the US NEWLINE
+      having 4000 more ships than the Panama in 1950.  What happens on the way NEWLINE
+      to 1951? NEWLINE NEWLINE
+      Goal: Graph the difference in size between the two fleets over 50 years.
 </TaskDescription>
-  <ShortDescription>Function: difference in fleet sizes = US fleet – Panama’s fleet
-\n  Accumulator: US fleet = US fleet  - number of US ships removed annually
-initial value = 5000
-\n  Function: number of US ships removed annually = US fleet * proportion of US ships removed annually
-\n  Given: proportion of US ships removed annually = 0.05
-\n  Accumulator: Panama’s fleet = Panama’s fleet + Panama ships added annually
-initial value = 1000
-\n  Given: Panama ships added annually = 100
-\n  Given: minimal size of ships in tons = 10000
+  <ShortDescription>
+      
   </ShortDescription>
-  <StartTime>0</StartTime>
-  <EndTime>50</EndTime>
+  <StartTime>1950</StartTime>
+  <EndTime>2000</EndTime>
   <Units>years</Units>
   <Vertexes>
     <VertexLabel>minimal size of ships</VertexLabel>
@@ -27,7 +33,7 @@ initial value = 1000
     <VertexLabel>fleet of Panama</VertexLabel>
     <VertexLabel>fleet of the US</VertexLabel>
   </Vertexes>
-  
+
   <NodeCount>7</NodeCount>
 
   <ProblemSeeking>difference in fleet sizes</ProblemSeeking>
@@ -41,11 +47,11 @@ initial value = 1000
       <CorrectDescription>The number in tons of the minimum size of ships counted</CorrectDescription>
       <Plan>fixed value</Plan>
     </Node>
-    
-    <Node type="constant" name="Panama ships added" extra="yes">
+
+    <Node type="constant" name="Panama ships added" extra="no">
       <Inputs></Inputs>
       <Outputs>
-      	<Node name="fleet of Panama"></Node>
+          <Name>fleet of Panama</Name>
       </Outputs>
       <Equation>100</Equation>
       <InitialValue>100</InitialValue>
@@ -53,185 +59,185 @@ initial value = 1000
       <Plan>fixed value</Plan>
     </Node>
     
-    <Node type="constant" name="proportion of US ships removed" extra="yes">
+    <Node type="constant" name="proportion of US ships removed" extra="no">
       <Inputs></Inputs>
       <Outputs>
-      	<Node name="US ships removed"></Node>
+          <Name>US ships removed</Name>
       </Outputs>
       <Equation>.05</Equation>
       <InitialValue>.05</InitialValue>
       <CorrectDescription>The proportion of US ships removed annually from service to ships still serving in the US fleet each year</CorrectDescription>
       <Plan>fixed value</Plan>
     </Node>
-    
+
     <Node type="stock" name="fleet of Panama" extra="no">
-      <Inputs>        
-        <Node name="Panama ships added" type="plus"></Node>
+      <Inputs>
+          <Name>Panama ships added</Name>
       </Inputs>
       <Outputs>
-      	<Node name="difference in fleet sizes"></Node>
+          <Name>difference in fleet sizes</Name>
       </Outputs>
       <InitialValue>1000</InitialValue>
-      <Equation>+Panama_ships_added</Equation>
+      <Equation>+Panama ships added</Equation>
       <CorrectDescription>The number of ships that Panama has in its fleet each year</CorrectDescription>
       <Plan>said to increase</Plan>
     </Node>
-    
+
     <Node type="stock" name="fleet of the US" extra="no">
       <Inputs>
-      	<Node name="US ships removed" type="minus"></Node>
+          <Name>US ships removed</Name>
       </Inputs>
       <Outputs>
-        <Node name="US ships removed"></Node>
-        <Node name="difference in fleet sizes"></Node>
-	  </Outputs>
+          <Name>US ships removed</Name>
+          <Name>difference in fleet sizes</Name>
+      </Outputs>
       <InitialValue>5000</InitialValue>
-      <Equation>-US_ships_removed</Equation>
+      <Equation>-US ships removed</Equation>
       <CorrectDescription>The number of ships that the US has in its fleet each year</CorrectDescription>
       <Plan>said to decrease</Plan>
     </Node>
-    
+
     <Node type="flow" name="difference in fleet sizes" extra="no">
-      <Inputs>        
-        <Node name="fleet of the US"></Node>
-        <Node name="fleet of Panama"></Node>
+      <Inputs>
+          <Name>fleet of the US</Name>
+          <Name>fleet of Panama</Name>
       </Inputs>
       <Outputs></Outputs>
       <InitialValue></InitialValue>
-      <Equation>fleet_of_the_US-fleet_of_Panama</Equation>
+      <Equation>fleet of the US-fleet of Panama</Equation>
       <CorrectDescription>The number the US has each year in excess of those that Panama has each year</CorrectDescription>
-      <Plan>difference of two quantities</Plan>
+      <Plan>the difference of two quantities</Plan>
     </Node>
-    
+
     <Node type="flow" name="US ships removed" extra="no">
-      <Inputs>        
-        <Node name="proportion of US ships removed"></Node>
-        <Node name="fleet of the US"></Node>
+      <Inputs>
+          <Name>proportion of US ships removed</Name>
+          <Name>fleet of the US</Name>
       </Inputs>
       <Outputs>
-      	<Node name="fleet of the US"></Node>
+          <Name>fleet of the US</Name>
       </Outputs>
       <InitialValue></InitialValue>
-      <Equation>fleet_of_the_US*proportion_of_US_ships_removed</Equation>
+      <Equation>fleet of the US*proportion of US ships removed</Equation>
       <CorrectDescription>The number the US removes from its fleet each year</CorrectDescription>
       <Plan>proportional to accumulator and input</Plan>
     </Node>
-  </Nodes>  
+    </Nodes>
 
   <DescriptionTree>
     <Node level="root">
-      <Description>The number</Description>      
+      <Description>The number</Description>
       <Node level="intermediate">
-        <Description>in tons of</Description>            
+        <Description>in tons of</Description>
         <Node level="leaf">
           <Description>the minimum size of ships counted</Description>
-          <NodeName>minimal_size_of_ships</NodeName>
+          <NodeName>minimal size of ships</NodeName>
         </Node>
         <Node level="leaf">
           <Description>the maximum size of ships counted</Description>
-          <NodeName>maximum_size_of_ships</NodeName>
+          <NodeName>maximum size of ships</NodeName>
         </Node>
-	  </Node>
+          </Node>
       <Node level="intermediate">
-        <Description>of ships that the US has in its fleet</Description>            
+        <Description>of ships that the US has in its fleet</Description>
         <Node level="leaf">
           <Description>each year</Description>
-          <NodeName>fleet_of_the_US</NodeName>
+          <NodeName>fleet of the US</NodeName>
         </Node>
         <Node level="leaf">
           <Description>initially</Description>
-          <NodeName>initial_fleet_of_the_US</NodeName>
+          <NodeName>initial fleet of the US</NodeName>
         </Node>
-	  </Node>
+          </Node>
       <Node level="intermediate">
-        <Description>of ships that Panama has in its fleet</Description>            
+        <Description>of ships that Panama has in its fleet</Description>
         <Node level="leaf">
           <Description>each year</Description>
-          <NodeName>fleet_of_Panama</NodeName>
+          <NodeName>fleet of Panama</NodeName>
         </Node>
         <Node level="leaf">
           <Description>initially</Description>
-          <NodeName>fleet_of_Panama_initially</NodeName>
+          <NodeName>fleet of Panama initially</NodeName>
         </Node>
-	  </Node>
+          </Node>
       <Node level="intermediate">
-        <Description>the US removes from its fleet</Description>            
+        <Description>the US removes from its fleet</Description>
         <Node level="leaf">
           <Description>each year</Description>
-          <NodeName>US_ships_removed</NodeName>
+          <NodeName>US ships removed</NodeName>
         </Node>
         <Node level="leaf">
           <Description>initially</Description>
-          <NodeName>US_ships_removed_initially</NodeName>
+          <NodeName>US ships removed initially</NodeName>
         </Node>
-	  </Node>
+          </Node>
       <Node level="intermediate">
-        <Description>Panama removes from its fleet</Description>            
+        <Description>Panama removes from its fleet</Description>
         <Node level="leaf">
           <Description>each year</Description>
-          <NodeName>Panama_ships_removed</NodeName>
+          <NodeName>Panama ships removed</NodeName>
         </Node>
         <Node level="leaf">
           <Description>initially</Description>
-          <NodeName>Panama_ships_removed_initially</NodeName>
+          <NodeName>Panama ships removed initially</NodeName>
         </Node>
-	  </Node>
+          </Node>
       <Node level="intermediate">
-        <Description>the US adds to its fleet</Description>            
+        <Description>the US adds to its fleet</Description>
         <Node level="leaf">
           <Description>each year</Description>
-          <NodeName>US_ships_added</NodeName>
+          <NodeName>US ships added</NodeName>
         </Node>
         <Node level="leaf">
           <Description>initially</Description>
-          <NodeName>US_ships_added_initially</NodeName>
+          <NodeName>US ships added initially</NodeName>
         </Node>
-	  </Node>
+          </Node>
       <Node level="intermediate">
-        <Description>Panama adds to its fleet</Description>            
+        <Description>Panama adds to its fleet</Description>
         <Node level="leaf">
           <Description>each year</Description>
-          <NodeName>Panama_ships_added</NodeName>
+          <NodeName>Panama ships added</NodeName>
         </Node>
         <Node level="leaf">
           <Description>initially</Description>
-          <NodeName>Panama_ships_added_initially</NodeName>
+          <NodeName>Panama ships added initially</NodeName>
         </Node>
-	  </Node>
+          </Node>
       <Node level="intermediate">
-        <Description></Description>            
+        <Description></Description>
         <Node level="leaf">
           <Description>the US has each year in excess of those that Panama has each year</Description>
-          <NodeName>difference_in_fleet_sizes</NodeName>
+          <NodeName>difference in fleet sizes</NodeName>
         </Node>
-	  </Node>
+          </Node>
     </Node>
     <Node level="root">
-      <Description>The proportion of</Description>      
+      <Description>The proportion of</Description>
       <Node level="intermediate">
-        <Description>US ships removed annually from service to</Description>            
+        <Description>US ships removed annually from service to</Description>
         <Node level="leaf">
           <Description>ships in the fleet of Panama each year</Description>
-          <NodeName>relative_loss</NodeName>
+          <NodeName>relative loss</NodeName>
         </Node>
         <Node level="leaf">
           <Description>ships still serving in the US fleet each year</Description>
-          <NodeName>proportion_of_US_ships_removed</NodeName>
+          <NodeName>proportion of US ships removed</NodeName>
         </Node>
-	  </Node>
+          </Node>
       <Node level="intermediate">
-        <Description>US ships still serving annually to</Description>            
+        <Description>US ships still serving annually to</Description>
         <Node level="leaf">
           <Description>US ships initially, when the fleet was at its peak</Description>
-          <NodeName>proportional_loss</NodeName>
+          <NodeName>proportional loss</NodeName>
         </Node>
         <Node level="leaf">
           <Description>ships from Panama serving annually</Description>
-          <NodeName>relative_fleet_size</NodeName>
+          <NodeName>relative fleet size</NodeName>
         </Node>
-	  </Node>
+          </Node>
     </Node>
 
   </DescriptionTree>
-       
+
 </Task>

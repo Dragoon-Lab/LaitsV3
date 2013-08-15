@@ -50,7 +50,7 @@ Initial value = 45000
     <Node type="constant" name="added to rear tank" extra="no">
       <Inputs></Inputs>
       <Outputs>
-      	<Node name="rear tank"></Node>
+          <Name>rear tank</Name>
       </Outputs>
       <Equation>15000</Equation>
       <InitialValue>15000</InitialValue>
@@ -79,7 +79,7 @@ Initial value = 45000
     <Node type="constant" name="added to front tank" extra="no">
       <Inputs></Inputs>
       <Outputs>
-      	<Node name="front tank"></Node>
+          <Name>front tank</Name>
       </Outputs>
       <Equation>5000</Equation>
       <InitialValue>5000</InitialValue>
@@ -92,7 +92,7 @@ Initial value = 45000
           <Name>added to rear tank</Name>>
       </Inputs>
       <Outputs>
-      	<Node name="rear to front ratio"></Node>
+          <Name>rear to front ratio</Name>
       </Outputs>
       <InitialValue>500</InitialValue>
       <Equation>+added to rear tank</Equation>
@@ -105,7 +105,7 @@ Initial value = 45000
         <Name>added to front tank</Name>
       </Inputs>
       <Outputs>
-      	<Node name="rear to front ratio"></Node>
+          <Name>rear to front ratio</Name>
       </Outputs>
       <InitialValue>45000</InitialValue>
       <Equation>+added to front tank</Equation>

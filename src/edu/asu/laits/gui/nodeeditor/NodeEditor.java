@@ -271,6 +271,10 @@ public class NodeEditor extends javax.swing.JDialog {
                                 || currentVertex.getInputsStatus().equals(Vertex.InputsStatus.GAVEUP)) {
                             iPanel.setEditableInputs(false);
                         }
+                        
+                         if(ApplicationContext.getAppMode().equalsIgnoreCase("COACHED")){
+                             iPanel.setCreateButtonEnabled();
+                        }
                         addHelpBalloon(currentVertex.getName(), "onLoad", "INPUTS");
                     } else {
                         extraTabEvent = true;
@@ -454,6 +458,8 @@ public class NodeEditor extends javax.swing.JDialog {
             //graphPane.getMainFrame().getMainMenu().getModelMenu().addDeleteNodeMenu();
             setEditorMessage("", false);
             dPanel.setTextFieldBackground(Color.GREEN);
+            checkButton.setEnabled(false);
+            giveUpButton.setEnabled(false);
             activityLogs.debug("User entered correct description");
             dPanel.setEditableTree(false);
             tabPane.setEnabledAt(PLAN, true);
@@ -481,6 +487,8 @@ public class NodeEditor extends javax.swing.JDialog {
             //graphPane.getMainFrame().getMainMenu().getModelMenu().addDeleteNodeMenu();
             setEditorMessage("", false);
             dPanel.setTextFieldBackground(Color.GREEN);
+            checkButton.setEnabled(false);
+            giveUpButton.setEnabled(false);
             activityLogs.debug("User entered correct description");
             dPanel.setEditableTree(false);
             //ApplicationContext.nextCurrentOrder();
@@ -512,6 +520,8 @@ public class NodeEditor extends javax.swing.JDialog {
         logs.debug("Checking Plan Panel");
         if (correctSolution.checkNodePlan(dPanel.getNodeName(), pPanel.getSelectedPlan())) {
             pPanel.setSelectedPlanBackground(Color.GREEN);
+            checkButton.setEnabled(false);
+            giveUpButton.setEnabled(false);
             setEditorMessage("", false);
             currentVertex.setPlanStatus(Vertex.PlanStatus.CORRECT);
             activityLogs.debug("User entered correct Plan");
@@ -550,9 +560,13 @@ public class NodeEditor extends javax.swing.JDialog {
         if ((result == 0  && iPanel.getValueButtonSelected())|| result == 3) {
             if (result == 0) {
                 iPanel.setInputsTypeBackground(Color.GREEN);
+                checkButton.setEnabled(false);
+                giveUpButton.setEnabled(false);
             } else {
                 iPanel.setInputsTypeBackground(Color.GREEN);
                 iPanel.setInputValuesBackground(Color.GREEN);
+                checkButton.setEnabled(false);
+                giveUpButton.setEnabled(false);
             }
 
             setEditorMessage("", false);
@@ -593,6 +607,8 @@ public class NodeEditor extends javax.swing.JDialog {
         // Check for fixed value
         if (correctSolution.checkNodeCalculations(currentVertex)) {
             cPanel.setCheckedBackground(Color.GREEN);
+            checkButton.setEnabled(false);
+            giveUpButton.setEnabled(false);
             setEditorMessage("", false);
             activityLogs.debug("User entered correct Calculations.");
             currentVertex.setCalculationsStatus(Vertex.CalculationsStatus.CORRECT);
