@@ -14,3 +14,10 @@ Documentation can be in any convenient format (word, html, *et cetera*) with gen
 [markdown](http://en.wikipedia.org/wiki/Markdown) being the default choice.  Any
 document should have an associated link in this file.  
 
+### Install Documentation ###
+
+Place a link to the `documentation` directory in your webserver root directory.  
+For the sever to properly translate the markdown, download a 
+[markdown handler](https://github.com/alue/markdown-handler), 
+edit the provided `.htaccess` file, and install the files your the web server root directory.
+You may need to activate `AllowOverride` in your Apache configuration file.
