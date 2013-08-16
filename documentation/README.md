@@ -2,9 +2,9 @@
 
 This contains mostly design documents.  
 
+* [Node Editor](node-editor.md) with tabs:  Description, Plan, and Calculation
 * [Add sliders to parameters](sliders.md)
 * [Major modes](major-modes.md) (STUDENT COACHED TEST AUTHOR)
-* [Node Editor](node-editor.md) with tabs:  Description, Plan, and Calculation
 * [Session behavior](sessions.md) which discusses saving, modifying, and sharing problems.
 * [Problem and node-specific forum](Forum_Feature_in_Dragoon.docx).  Document written by Ram
   with comments by BvdS.
