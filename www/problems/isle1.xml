@@ -2,7 +2,12 @@
 
 <Task phase="" type="">
   <TaskName>Isle Royale - Moose population 1</TaskName>
-  <TaskDescription>This model makes 3 assumptions:  NEWLINE   *The moose population is 20 in the first year. NEWLINE   *Births are the only change in population. NEWLINE   *2 moose are born each year.</TaskDescription>
+  <TaskDescription>
+      Assumptions: NEWLINE
+      * The moose population is 20 in the first year (1900). NEWLINE   
+      * Births are the only change in population. Deaths, immigration and emigration do not occur.NEWLINE   
+      * The number of moose births each year is 2. 
+  </TaskDescription>
   <URL>images/moose_20.png</URL>
   <StartTime>1900</StartTime>
   <EndTime>1920</EndTime>

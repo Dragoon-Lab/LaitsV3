@@ -2,7 +2,13 @@
 
 <Task phase="" type="">
   <TaskName>Isle Royale - Wolves</TaskName>
-  <TaskDescription>Assumptions: NEWLINE   *Birth rate 65% NEWLINE   *Death rate 50% NEWLINE   *Initial population 10</TaskDescription>
+  <TaskDescription>
+      Assumptions: NEWLINE
+      * The wolf population is 2 in the first year (1949). NEWLINE
+      * Births and deaths are the only change in the population.  Immigration and emigration do not occur. NEWLINE
+      * The number of wolf deaths each year is 67% of the wolf population. NEWLINE
+      * The number of births each year is year is 75% of the wolf population. NEWLINE
+  </TaskDescription>
   <URL>images/moose_wolves.png</URL>
   <StartTime>1949</StartTime>
   <EndTime>2009</EndTime>
@@ -22,7 +28,7 @@
         <Node name="wolf deaths"/>
       </Outputs>
       <Equation>wolf births - wolf deaths</Equation>
-      <InitialValue>10.0</InitialValue>
+      <InitialValue>2.0</InitialValue>
     </Node>
     <Node type="constant" name="wolf birth rate" extra="no">
       <CorrectDescription>The ratio of wolves born each year to the wolf population</CorrectDescription>
@@ -31,8 +37,8 @@
       <Outputs>
         <Node name="wolf births"/>
       </Outputs>
-      <Equation>0.65</Equation>
-      <InitialValue>0.65</InitialValue>
+      <Equation>0.75</Equation>
+      <InitialValue>0.75</InitialValue>
     </Node>
     <Node type="flow" name="wolf births" extra="no">
       <CorrectDescription>The number of wolves born each year</CorrectDescription>
@@ -67,8 +73,8 @@
       <Outputs>
         <Node name="wolf deaths"/>
       </Outputs>
-      <Equation>0.5</Equation>
-      <InitialValue>0.5</InitialValue>
+      <Equation>0.67</Equation>
+      <InitialValue>0.67</InitialValue>
     </Node>
   </Nodes>
   <DescriptionTree>

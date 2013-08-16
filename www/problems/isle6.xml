@@ -1,10 +1,27 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
 <Task phase="" type="debug">
-  <TaskName>Isle Royale 2 - Moose and Wolves</TaskName>
-  <TaskDescription>ASSUMPTIONS: NEWLINE   *The effect of moose predation on the wolf birth rate is .15% per moose.  NEWLINE   *The effect of predation on the moose death rate is .8% per wolf</TaskDescription>
+  <TaskName>Isle Royale - Moose and Wolves</TaskName>
+  <TaskDescription>
+      Assumptions: NEWLINE
+      * Births and deaths are the only change in the population.  Immigration NEWLINE
+      and emigration do not occur. NEWLINE
+      * The wolf population is 2 in the first year. NEWLINE
+      * The number of wolf deaths each year is 67% of the wolf population. NEWLINE
+      * The number of wolf births is wolf birth rate times the wolf population. NEWLINE
+      * Wolf birth rate is the moose population times a parameter, effect of NEWLINE
+      moose on wolves. NEWLINE
+      * The effect of moose on wolves is 0.0015. NEWLINE
+      * The moose population is 500 in the first year NEWLINE
+      * Moose birth rate is 10% of the moose population.  NEWLINE
+      * The number of moose deaths each year is moose death rate times the NEWLINE
+      moose population. NEWLINE
+      * Moose death rate is the wolf population times a parameter, effect of NEWLINE
+      wolves on moose. NEWLINE
+      * The effect of wolves on moose is 0.008. NEWLINE
+  </TaskDescription>
   <URL>images/moose_wolves.png</URL>
-  <StartTime>1949</StartTime>
+  <StartTime>1950</StartTime>
   <EndTime>2009</EndTime>
   <Units>Years</Units>
   <NodeCount>12</NodeCount>
@@ -36,13 +53,13 @@
       <CorrectDescription>The ratio of moose that die each year to the moose population</CorrectDescription>
       <Plan>proportional to accumulator and input</Plan>
       <Inputs>
-        <Name>effect of predation on mdr</Name>
+        <Name>effect of wolves on moose</Name>
         <Name>wolf population</Name>
       </Inputs>
       <Outputs>
         <Node name="moose deaths"/>
       </Outputs>
-      <Equation>effect of predation on mdr * wolf population</Equation>
+      <Equation>effect of wolves on moose * wolf population</Equation>
       <InitialValue>0.0</InitialValue>
     </Node>
     <Node type="stock" name="moose population" extra="no">
@@ -70,8 +87,8 @@
       <Equation>0.67</Equation>
       <InitialValue>0.67</InitialValue>
     </Node>
-    <Node type="constant" name="effect of predation on wbr" extra="no">
-      <CorrectDescription>The effect of food on the wolf birth rate</CorrectDescription>
+    <Node type="constant" name="effect of moose on wolves" extra="no">
+      <CorrectDescription>The effect of moose on the wolf population</CorrectDescription>
       <Plan>fixed value</Plan>
       <Inputs/>
       <Outputs>
@@ -80,8 +97,8 @@
       <Equation>0.0015</Equation>
       <InitialValue>0.0015</InitialValue>
     </Node>
-	<Node type="constant" name="effect of predation on mdr" extra="no">
-      <CorrectDescription>The effect of food on the moose death rate</CorrectDescription>
+	<Node type="constant" name="effect of wolves on moose" extra="no">
+      <CorrectDescription>The effect of wolves on the moose population</CorrectDescription>
       <Plan>fixed value</Plan>
       <Inputs/>
       <Outputs>
@@ -124,12 +141,12 @@
       <Plan>proportional to accumulator and input</Plan>
       <Inputs>
         <Name>moose population</Name>
-        <Name>effect of predation on wbr</Name>
+        <Name>effect of moose on wolves</Name>
       </Inputs>
       <Outputs>
         <Node name="wolf births"/>
       </Outputs>
-      <Equation>moose population * effect of predation on wbr</Equation>
+      <Equation>moose population * effect of moose on wolves</Equation>
       <InitialValue>0.0</InitialValue>
     </Node>
     <Node type="flow" name="wolf births" extra="no">
@@ -159,129 +176,133 @@
       <InitialValue>0.0</InitialValue>
     </Node>
   </Nodes>
-  <GivenModel>    
-    <Node type="stock" name="wolf population" extra="no">
-      <CorrectDescription>The number of wolves in the wolf population</CorrectDescription>
-      <Plan>said to both increase and decrease</Plan>
-      <Order>1</Order>
-      <Inputs>
-        <Name>wolf births</Name>
-        <Name>wolf deaths</Name>
-      </Inputs>
-      <Outputs>
-        <Node name="wolf births"/>
-        <Node name="wolf deaths"/>
-        <Node name="moose death rate"/>
-      </Outputs>
-      <Equation>wolf births - wolf deaths</Equation>
-      <InitialValue>10.0</InitialValue>
-    </Node><Node type="flow" name="moose births" extra="no">
+  
+  <GivenModel>
+      <Node type="flow" name="moose births" extra="no">
       <CorrectDescription>The number of moose born each year</CorrectDescription>
       <Plan>proportional to accumulator and input</Plan>
       <Inputs>
+        <Name>moose population</Name>
         <Name>moose birth rate</Name>
-        <Name>moose population</Name>
       </Inputs>
       <Outputs>
-        <Node name="moose population"/>
+          <Name>moose population</Name>
       </Outputs>
-      <Equation>moose birth rate * moose population</Equation>
+      <Equation>moose population * moose birth rate</Equation>
       <InitialValue>0.0</InitialValue>
     </Node>
-    <Node type="stock" name="moose population" extra="no">
-      <CorrectDescription>The number of moose in the population</CorrectDescription>
-      <Plan>proportional to accumulator and input</Plan>
-      <Inputs>
-        <Name>moose births</Name>
-        <Name>moose deaths</Name>
-      </Inputs>
-      <Outputs>
-        <Node name="moose births"/>
-        <Node name="wolf birth rate"/>
-        <Node name="moose deaths"/>
-      </Outputs>
-      <Equation>moose births - moose deaths</Equation>
-      <InitialValue>500.0</InitialValue>
-    </Node>
-    <Node type="constant" name="moose birth rate" extra="no">
-      <CorrectDescription>The ratio of moose born each year to the moose population</CorrectDescription>
-      <Plan>fixed value</Plan>
-      <Inputs/>
-      <Outputs>
-        <Node name="moose births"/>
-      </Outputs>
-      <Equation>0.1</Equation>
-      <InitialValue>0.1</InitialValue>
-    </Node>
-    <Node type="constant" name="moose death rate" extra="no">
-      <CorrectDescription>The ratio of moose that die each year to the moose population</CorrectDescription>
-      <Plan>fixed value</Plan>
-      <Inputs/>
-      <Outputs>
-        <Node name="moose deaths"/>
-      </Outputs>
-      <Equation>0.2</Equation>
-      <InitialValue>0.2</InitialValue>
-    </Node>
-    <Node type="constant" name="wolf death rate" extra="no">
-      <CorrectDescription>The ratio of wolves that die each year to the wolf population</CorrectDescription>
-      <Plan>fixed value</Plan>
-      <Inputs/>
-      <Outputs>
-        <Node name="wolf deaths"/>
-      </Outputs>
-      <Equation>0.67</Equation>
-      <InitialValue>0.67</InitialValue>
-    </Node>
-    <Node type="flow" name="wolf deaths" extra="no">
-      <CorrectDescription>The number of wolves that die each year</CorrectDescription>
-      <Plan>proportional to accumulator and input</Plan>
-      <Inputs>
-        <Name>wolf death rate</Name>
-        <Name>wolf population</Name>
-      </Inputs>
-      <Outputs>
-        <Node name="wolf population"/>
-      </Outputs>
-      <Equation>wolf death rate * wolf population</Equation>
-      <InitialValue>0.0</InitialValue>
-    </Node>
-    <Node type="constant" name="wolf birth rate" extra="no">
-      <CorrectDescription>The ratio of wolves that are born each year to the wolf population</CorrectDescription>
-      <Plan>fixed value</Plan>
-      <Inputs/>
-      <Outputs>
-        <Node name="wolf births"/>
-      </Outputs>
-      <Equation>0.65</Equation>
-      <InitialValue>0.65</InitialValue>
-    </Node>
-    <Node type="flow" name="wolf births" extra="no">
-      <CorrectDescription>The number of wolves born each year</CorrectDescription>
-      <Plan>proportional to accumulator and input</Plan>
-      <Inputs>
-        <Name>wolf population</Name>
-        <Name>wolf birth rate</Name>
-      </Inputs>
-      <Outputs>
-        <Node name="wolf population"/>
-      </Outputs>
-      <Equation>wolf population * wolf birth rate</Equation>
-      <InitialValue>0.0</InitialValue>
-    </Node>
-    <Node type="flow" name="moose deaths" extra="no">
-      <CorrectDescription>The number of moose that die each year</CorrectDescription>
-      <Plan>proportional to accumulator and input</Plan>
-      <Inputs>
-        <Name>moose death rate</Name>
-        <Name>moose population</Name>
-      </Inputs>
-      <Outputs>
-        <Node name="moose population"/>
-      </Outputs>
-      <Equation>moose death rate * moose population</Equation>
-      <InitialValue>0.0</InitialValue>
-    </Node></GivenModel>
+      <Node type="stock" name="moose population" extra="no">
+        <CorrectDescription>The number of moose in the population</CorrectDescription>
+        <Plan>said to both increase and decrease</Plan>
+        <Order>1</Order>
+        <Inputs>
+          <Name>moose births</Name>
+          <Name>moose deaths</Name>
+        </Inputs>
+        <Outputs>
+            <Name>moose births</Name>
+            <Name>moose deaths</Name>
+        </Outputs>
+        <Equation>moose births-moose deaths</Equation>
+        <InitialValue>20.0</InitialValue>
+      </Node>
+      <Node type="flow" name="moose deaths" extra="no">
+        <CorrectDescription>The number of moose that die each year</CorrectDescription>
+        <Plan>proportional to accumulator and input</Plan>
+        <Inputs>
+          <Name>moose population</Name>
+          <Name>moose death rate</Name>
+        </Inputs>
+        <Outputs>
+            <Name>moose population</Name>
+        </Outputs>
+        <Equation>moose population * moose death rate</Equation>
+        <InitialValue>0.0</InitialValue>
+      </Node>
+      <Node type="constant" name="moose death rate" extra="no">
+        <CorrectDescription>The ratio of moose that die each year to the moose population</CorrectDescription>
+        <Plan>proportional to accumulator and input</Plan>
+        <Inputs/>
+        <Outputs>
+          <Name>moose births</Name>
+        </Outputs>
+        <Equation>0.05</Equation>
+        <InitialValue>0.05</InitialValue>
+      </Node>
+      <Node type="constant" name="moose birth rate" extra="no">
+        <CorrectDescription>The ratio of moose born each year to the moose population</CorrectDescription>
+        <Plan>fixed value</Plan>
+        <Inputs/>
+        <Outputs>
+          <Name>moose births</Name>
+        </Outputs>
+        <Equation>0.1</Equation>
+        <InitialValue>0.1</InitialValue>
+      </Node>
+
+      <Node type="stock" name="wolf population" extra="no">
+        <CorrectDescription>The number of wolves in the population</CorrectDescription>
+        <Plan>said to both increase and decrease</Plan>
+        <Order>1</Order>
+        <Inputs>
+          <Name>wolf births</Name>
+          <Name>wolf deaths</Name>
+        </Inputs>
+        <Outputs>
+          <Node name="wolf births"/>
+          <Node name="wolf deaths"/>
+        </Outputs>
+        <Equation>wolf births - wolf deaths</Equation>
+        <InitialValue>2.0</InitialValue>
+      </Node>
+      <Node type="flow" name="wolf births" extra="no">
+        <CorrectDescription>The number of wolves born each year</CorrectDescription>
+        <Plan>proportional to accumulator and input</Plan>
+        <Inputs>
+          <Name>wolf population</Name>
+          <Name>wolf birth rate</Name>
+        </Inputs>
+        <Outputs>
+          <Node name="wolf population"/>
+        </Outputs>
+        <Equation>wolf population * wolf birth rate</Equation>
+        <InitialValue>0.0</InitialValue>
+      </Node>
+      <Node type="constant" name="wolf birth rate" extra="no">
+        <CorrectDescription>The ratio of wolves born each year to the wolf population</CorrectDescription>
+        <Plan>proportional to accumulator and input</Plan>
+        <Inputs/>
+        <Outputs>
+          <Node name="wolf births"/>
+        </Outputs>
+        <Equation>0.75</Equation>
+        <InitialValue>0.75</InitialValue>
+      </Node>
+      <Node type="flow" name="wolf deaths" extra="no">
+        <CorrectDescription>The number of wolves that die each year</CorrectDescription>
+        <Plan>proportional to accumulator and input</Plan>
+        <Inputs>
+          <Name>wolf population</Name>
+          <Name>wolf death rate</Name>
+        </Inputs>
+        <Outputs>
+          <Node name="wolf population"/>
+        </Outputs>
+        <Equation>wolf population * wolf death rate</Equation>
+        <InitialValue>0.0</InitialValue>
+      </Node>
+      <Node type="constant" name="wolf death rate" extra="no">
+        <CorrectDescription>The ratio of wolves that die each year to the wolf population</CorrectDescription>
+        <Plan>fixed value</Plan>
+        <Inputs/>
+        <Outputs>
+          <Node name="wolf deaths"/>
+        </Outputs>
+        <Equation>0.67</Equation>
+        <InitialValue>0.67</InitialValue>
+      </Node>
+  </GivenModel>
+  
   <DescriptionTree>    
     <Node level="root">
       <Description>The number of moose</Description>            
@@ -346,7 +367,7 @@
           <NodeName>wolf population</NodeName>
         </Node>
     </Node>
-	<Node level="root">
+    <Node level="root">
       <Description>The ratio of wolves</Description>      
       <Node level="intermediate">
         <Description>born each year</Description>            
@@ -376,14 +397,14 @@
 	  </Node>
     </Node>
     <Node level="root">
-      <Description>The effect of predation</Description>            
+      <Description>The effect of</Description>            
         <Node level="leaf">
-          <Description>on the moose death rate</Description>
-          <NodeName>effect of predation on mdr</NodeName>
+          <Description>wolves on the moose population</Description>
+          <NodeName>effect of wolves on moose</NodeName>
         </Node>
         <Node level="leaf">
-          <Description>on the wolf birth rate</Description>
-          <NodeName>effect of predation on wbr</NodeName>
+          <Description>moose on the wolf population</Description>
+          <NodeName>effect of moose on wolves</NodeName>
         </Node>
     </Node>
     
