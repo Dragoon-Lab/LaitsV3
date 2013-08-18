@@ -1,7 +1,6 @@
-## Major Modes ##
+# Major Modes #
 
-We are in the danger of a proliferation of modes.  I would suggest that we
-stick with the four major modes:
+I would suggest that we stick with the four major modes:
 * COACHED
 * STUDENT
 * AUTHOR
@@ -9,7 +8,7 @@ stick with the four major modes:
 And then do any section-specific customization on top of that.  This document lists properties
 of these modes and possible section-specific customizations.
 
-### All modes ###
+## All modes ##
 
 **This needs to be moded ** 
 The Show Graph button colors the "g" 
@@ -19,7 +18,7 @@ then the "g" indicator is green.
 As soon as the user makes any change to the model, the "g" indicators on every node 
 turn white (unchecked).
 
-### COACHED mode ###
+## COACHED mode ##
 
 A section specific customization would be to turn on help bubbles:
 UCLA teachers didn't want bubbles:  they will go through the first problems
@@ -28,11 +27,11 @@ However, not all users will necessarily be in a class and not all instructors
 will want to use up class time to go through the introduction.
 See [Bug #2156](http://www.andestutor.org/bugzilla/show_bug.cgi?id=2156).
 
-### STUDENT mode ###
+## STUDENT mode ##
 
-### AUTHOR mode ###
+## AUTHOR mode ##
 
-### TEST mode ###
+## TEST mode ##
 
 UCLA teacher asked for mode where it only gives `Check` and `Demo` feedback
 in only two places:  the Description tab of the node editor and on the 
