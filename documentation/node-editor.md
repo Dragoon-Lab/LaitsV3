@@ -19,8 +19,8 @@ is to deviate as little as possible from the existing design.  The tab would
 let the student choose from the following 3:
 > The `<quantity>` is a ...  
 > * Parameter (a constant whose value is specified in the problem)  
-> * Function (a quantity that depends on its inputs alone)  
-> * Accumulator (a quantity whose new value depends on its old value and its inputs)
+> * Accumulator (a quantity whose new value depends on its old value and its inputs)  
+> * Function (a quantity that depends on its inputs alone)   
 
 where `<quantity>` is the name of the quantity.
 
