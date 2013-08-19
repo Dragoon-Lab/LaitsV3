@@ -244,7 +244,7 @@ public class InputsPanelView extends javax.swing.JPanel implements ItemListener 
             }
             inputNodesSelectionOptionButton.setSelected(true);
             this.displayCurrentInputsPanel(true);
-            nodeEditor.getCurrentVertex().setVertexType(VertexType.DEFAULT);
+        //    nodeEditor.getCurrentVertex().setVertexType(VertexType.DEFAULT);
         }
 
         setInputsTypeBackground(Color.YELLOW);
@@ -407,7 +407,7 @@ public class InputsPanelView extends javax.swing.JPanel implements ItemListener 
                 nodeEditor.getCurrentVertex().getName());
         
         this.displayCurrentInputsPanel(true);
-        nodeEditor.getCurrentVertex().setVertexType(Vertex.VertexType.DEFAULT);
+     //   nodeEditor.getCurrentVertex().setVertexType(Vertex.VertexType.DEFAULT);
         nodeEditor.getGraphPane().getLayoutCache().reload();
         nodeEditor.getGraphPane().repaint();
         inputNodesSelectionOptionButton.setSelected(true);        

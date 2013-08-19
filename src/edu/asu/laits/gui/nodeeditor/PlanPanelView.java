@@ -35,6 +35,7 @@ import javax.swing.table.TableCellEditor;
 import javax.swing.table.TableCellRenderer;
 import javax.swing.table.TableModel;
 import org.apache.log4j.Logger;
+import edu.asu.laits.model.Vertex.VertexType;
 
 public class PlanPanelView extends JPanel {
 
@@ -121,6 +122,7 @@ public class PlanPanelView extends JPanel {
 
         if (rowIndex >= 0) {
             nodeEditor.getCurrentVertex().setPlan(getSelectedPlan());
+            setPlanType(getSelectedPlan());
         } else {
             nodeEditor.setEditorMessage("Please select a plan for this node.", true);
             return false;
@@ -173,6 +175,20 @@ public class PlanPanelView extends JPanel {
         }
     }
 
+    public void setPlanType(Vertex.Plan plan){
+        System.out.println("setting plan type");
+        if(plan.compareTo(Vertex.Plan.FIXED) == 0){
+            nodeEditor.getCurrentVertex().setVertexType(VertexType.CONSTANT);
+        System.out.println("setting plan type constant");
+        } else if(plan.compareTo(Vertex.Plan.DECREASE) == 0 || plan.compareTo(Vertex.Plan.INCREASE) == 0 || plan.compareTo(Vertex.Plan.INCREASE_AND_DECREASE) == 0){
+            nodeEditor.getCurrentVertex().setVertexType(VertexType.STOCK);
+        System.out.println("setting plan type stock");  
+        } else if(plan.compareTo(Vertex.Plan.DIFFERENCE) == 0 || plan.compareTo(Vertex.Plan.RATIO) == 0 || plan.compareTo(Vertex.Plan.PROPORTIONAL) == 0) {
+             nodeEditor.getCurrentVertex().setVertexType(VertexType.FLOW);
+        System.out.println("setting plan type flow"); 
+        }
+    }
+    
     public boolean isViewEnabled() {
         if (nodeEditor.getCurrentVertex().getDescriptionStatus().equals(Vertex.DescriptionStatus.CORRECT)
                 || nodeEditor.getCurrentVertex().getDescriptionStatus().equals(Vertex.DescriptionStatus.GAVEUP)) {

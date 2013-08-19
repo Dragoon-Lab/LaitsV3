@@ -120,20 +120,20 @@ public class FlowVertexRenderComponent extends VertexRenderComponent {
     public void drawVertex(Graphics g) {
         Graphics2D g2 = (Graphics2D) g;
         boolean isCorrect = false;
-        if(currentVertex.getInputsStatus().equals(Vertex.InputsStatus.CORRECT) && 
+        if(currentVertex.getPlanStatus().equals(Vertex.PlanStatus.CORRECT) && 
                 currentVertex.getCalculationsStatus().equals(Vertex.CalculationsStatus.CORRECT)){
             g2.setColor(Color.BLUE);
             isCorrect = true;
-        }else if(currentVertex.getInputsStatus().equals(Vertex.InputsStatus.GAVEUP) && 
+        }else if(currentVertex.getPlanStatus().equals(Vertex.PlanStatus.GAVEUP) && 
                 currentVertex.getCalculationsStatus().equals(Vertex.CalculationsStatus.GAVEUP)){
             g2.setColor(Color.BLUE);
             isCorrect = true;
-        }else if(currentVertex.getInputsStatus().equals(Vertex.InputsStatus.CORRECT) && 
+        }else if(currentVertex.getPlanStatus().equals(Vertex.PlanStatus.CORRECT) && 
                 currentVertex.getCalculationsStatus().equals(Vertex.CalculationsStatus.GAVEUP)){
             g2.setColor(Color.BLUE);
             isCorrect = true;
         }
-        else if(currentVertex.getInputsStatus().equals(Vertex.InputsStatus.GAVEUP) && 
+        else if(currentVertex.getPlanStatus().equals(Vertex.PlanStatus.GAVEUP) && 
                 currentVertex.getCalculationsStatus().equals(Vertex.CalculationsStatus.CORRECT)){
             g2.setColor(Color.BLUE);
             isCorrect = true;

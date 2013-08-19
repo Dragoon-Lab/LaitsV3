@@ -325,7 +325,7 @@ public class TaskSolution {
             }
 
             if (correctNode.getNodeType().equals(Vertex.VertexType.STOCK)) {
-                return checkNodeEquation(correctNode.getNodeEquation(), studentNode.getEquation());
+                return checkNodeEquation(correctNode.getNodeEquation(), studentNode.getEquation().trim());
             }
 
         } else if (correctNode.getNodeType().equals(Vertex.VertexType.FLOW)) {

@@ -81,7 +81,7 @@ public class ModelEvaluator {
         Vertex thisVertex;
         while(allVertices.hasNext()){
             thisVertex = allVertices.next();
-            if(thisVertex.getInputsStatus().equals(Vertex.InputsStatus.UNDEFINED) ||
+            if(thisVertex.getPlanStatus().equals(Vertex.InputsStatus.UNDEFINED) ||
                     thisVertex.getCalculationsStatus().equals(Vertex.CalculationsStatus.UNDEFINED)){
                 return false;
             }            
