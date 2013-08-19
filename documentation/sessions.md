@@ -11,8 +11,8 @@ Along with this, we distinguish between the LMS and the tutor:
 
 * __tutor__ is the Java code for Dragoon/Laits.  It is invoked
 via JNLP or a java command if it is being run locally.  On startup, 
-the tutor is given the user name, section, problem
-name, and major mode.
+the tutor is given the major mode, user name, section, problem
+name, and (optionally) the problem author. 
 *  __LMS__ or Learning Management System refers to the "outer loop" that
 invokes the tutor system for a particular user, group, and problem. 
 It could be a full LMS like Moodle, or a simple web page like 
@@ -23,34 +23,52 @@ the tutor (aside from Netbeans, this doesn't exist yet).
 Also, there are two classes of problem solution graphs:
 
 * __published__ or __static__ problems provided by the tutoring system.  
-These are stored as files in `www/problems/`  They are available to all users
+These are stored as files in `www/problems/` and are uniquely identified by
+their name.  They are available to all users
 (no section restrictions), and one can assume that the LMS has a list of
-these problems.  Students select published problems only via the LMS. 
+these problems.  Students select published problems via the LMS. 
 If the tutor is being run locally, these problems are 
 stored along side the java code (this doesn't exist yet).
 
 * __custom__ or __dynamic__ problems are authored
-by users.  On the server, the solutions are stored in the `solutions` table.  
-Problems are marked by author name, section, problem name, and a "share" bit.   
-If the tutor is run locally, these would be stored
+by users.  If the tutor is run locally, these would be stored
 in a location on the file system, tagged only by the problem name (doesn't
 exist yet).
 
-    The share bit determines whether a custom problem can be viewed,
-in either author or student mode, by other members of a section. 
+## Open and Managed access modes ##
+
+[Some notes from Kurt](Dragoon_model_storage_use_cases_13_08_12.docx) on 
+session management.  In this design, all custom problem solutions
+are stored on the student's computer.  The only *functionality* missing
+in the following specification is the case where a student needs to share their 
+solution to a problem solved in student mode ("Open access mode," first use case).
+
+## Database tables ##
+
+* `autosave_table` stored student work on a problem.  This table
+has columns for user name, section, problem name, time stamp, the graph xml
+(text format), and (optionally) the author name.  It also has a flag for
+published versus custom problems.  The author name is ignored for published
+problems.
+
+* `solutions` table stores solution graphs for custom problems.
+This table has columns for author name, section, problem name, and a "share" bit,
+a timestamp and the problem xml (text). 
+
+    The share bit determines whether a custom problem can be viewed --
+in either author or student mode -- by other members of a section. 
 If `false`, then only the author may view the problem.  If `true`, then
 all students in a section may view that problem.  Custom problems cannot
 be viewed by users outside of a section.
 
-## Solution graph Storage for custom problems ##
+## Access to the Solution graph custom problems ##
 
 Currently, in author mode, the user can explicitly save a problem solution graph
 on the local machine via a menu selection.  Any sharing with other students
 is done outside the system.  There is no autosave.
 
-Custom problem solution graphs are stored in the `solutions` table.
 To retrieve custom problems, the script `task_fetcher.php`
-looks for a matching problem in the solutions table, then attempts
+looks for a matching problem in the `solutions` table, then attempts
 to find a matching published problem. 
 Calls to `task_fetcher.php` use the GET method and must include a problem name, and may
 include an author name and section name.  Author name and section are
@@ -66,48 +84,46 @@ where the `autosave.php` is invoked in student mode.
 
 ## Custom Problem Selection ##
 
-Neither the LMS nor the tutor has any way to determine which custom problems
-are available to a given student.  We need to write a server script which, 
-given the student's user name and
-section, provides a list (in xml or json format) of the custom problems
-that may be read by that student.  The script returns a list of 
-user name, problem name pairs.
+The server script `available_problems.php` retrieves all problems available
+to the student in the form of author, problem name pairs (in xml or json format).  
+It it called using the GET method with the user name and section supplied.
 
 Either the LMS or the tutor itself can request this list.
 Note that the response includes a list of all problems that the
 user has previously worked on, either as a student or as an author.
 
-There are two possible mechanisms for students to select a custom
-problem:  (I am not sure which we should implement.)
-
-* __In the LMS__  In this case, the LMS presents the student with a list
-of available problems, the student selects one or more problems.
-A list of author name, problem name pairs is sent to the tutor.
-
-* __In the tutor__ If the tutor is not supplied with a problem name
-(or an empty problem name) when it is invoked, then the tutor retrieves
-a list of available problems from the server and the list of
-problems is shown to the user.
-
-In either case, the student 
+In the LMS, the student may be supplied with a list of 
+available custom problems via a call to `available_problems.php`.  
+The student may choose one of
+the existing problems, or, if they are in author mode, they
+may choose a new problem name.
 
 ## Student Mode ##
 
-In this mode the user only modifies the student model. The student may:
+In this mode the user only modifies the student model.   This mode
+is pretty restrictive: the student may not rename a problem or merge other
+solutions with their solution or share their solution with other students.
 
-* Select a single published problem in the LMS.  If a problem with the same
-  name exists in the custom problems, that is opened instead.   Any work they 
- do is saved as a custom problem with the same name. (This is 
-  the current behavior).
-
-* Select a single custom problem in the LMS.  If they are not the author,
-  the any work the student does is saved as a custom problem with the same
-  problem name.  We would have to modify our script slightly to do this.)
+If the student wants to "start over" on a problem, they may erase
+all their current work on that problem.  For convenience, we may provide
+a button in the tutor for this purpose.  For instance, the tutor could prompt
+the student when a problem is opened.
 
 ## Author Mode ##
 
-[Some notes from Kurt](Dragoon_model_storage_use_cases_13_08_12.docx) on 
-session storage, especially for local disk.
+In author mode, the tutor provides a menu where a student may
+**merge** an existing solution with their solution.  The solutions
+are provided by the `available_problems.php`.  Also, the tutor UI
+has a switch that allows the user to change the share bit.
+
+The mechanism for "forking" an existing problem is, in the LMS, for the student
+to new problem name.  This opens a new empty problem.  They then use the **merge**
+menu to load the existing problem of interest.  This creates a copy of
+an existing problem with a new name.
+
+Finally, the tutor needs a method for allowing the author to
+create the "predefined" nodes for a problem.
+
 
 
 
