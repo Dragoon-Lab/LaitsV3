@@ -141,6 +141,7 @@ public class ModelEvaluator {
             // Calculating Initial Flow for i =0
             for (int j = constantVertices; j < vertexList.size(); j++) {
                 currentVertex = vertexList.get(j);
+                logs.debug("evaluating vertex " + currentVertex.getName());
                 if (currentVertex.getVertexType().equals(Vertex.VertexType.FLOW)) {
                     currentVertex.getCorrectValues().add(calculateFlow(vertexList, currentVertex, 0));
                 }

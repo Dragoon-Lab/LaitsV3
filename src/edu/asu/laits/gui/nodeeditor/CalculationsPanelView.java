@@ -366,7 +366,7 @@ public class CalculationsPanelView extends javax.swing.JPanel {
         } 
         
         if (currentVertex.getVertexType().equals(Vertex.VertexType.STOCK)) {
-            fixedValueInputBox.setText(String.valueOf(correctNode.getInitialValue()));
+            accumulatorInitialValueBox.setText(String.valueOf(correctNode.getInitialValue()));
         } else if (currentVertex.getVertexType().equals(Vertex.VertexType.FLOW)) {
             fixedValueInputBox.setEditable(false);
         }
@@ -388,11 +388,14 @@ public class CalculationsPanelView extends javax.swing.JPanel {
                 nodeEditor.setEditorMessage("Please define all the Nodes before using Demo.", true);
                 return false;
             }
+            for(String input: correctInputs){
+                addEdge(ApplicationContext.getGraphEditorPane().getModelGraph().getVertexByName(input), currentVertex);
+            }
+            
             reloadGraphPane();
             formulaInputArea.setText(correctNode.getNodeEquation());
             formulaInputArea.setBackground(Color.YELLOW);
         }
-        
         
         return true;
         
@@ -730,7 +733,7 @@ public class CalculationsPanelView extends javax.swing.JPanel {
         if(!graph.containsEdge(connectedVertex, currentVertex)){
             addEdge(connectedVertex, currentVertex);
         }
-        availableInputsJList.setSelectedValue("<html><b>" + availableInputsJList.getSelectedValue() + "</b></html>", true);
+        availableInputsJList.setSelectedValue("* " + availableInputsJList.getSelectedValue(), true);
 }//GEN-LAST:event_availableInputsJListMouseClicked
         
     private void fixedValueInputBoxKeyReleased(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_fixedValueInputBoxKeyReleased
