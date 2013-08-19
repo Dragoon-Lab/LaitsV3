@@ -2,10 +2,15 @@
 
 <Task phase="" type="">
   <TaskName>Isle Royale - Moose population 2</TaskName>
-  <TaskDescription>This model makes 3 assumptions:  NEWLINE   *The moose population is 20 in the first year. NEWLINE   *Births are the only change in population. NEWLINE   *The number of births each year is 10% of the moose population.</TaskDescription>
+  <TaskDescription>
+      Assumptions: NEWLINE   
+      * The moose population is 20 in the first year (1900). NEWLINE   
+      * Births are the only change in the population.  Deaths, immigration and emigration do not occur. NEWLINE   
+      * The number of moose births each year is 20% of the moose population.
+  </TaskDescription>
   <URL>images/moose_60.png</URL>
   <StartTime>1900</StartTime>
-  <EndTime>1950</EndTime>
+  <EndTime>1920</EndTime>
   <Units>Years</Units>
   <NodeCount>3</NodeCount>
   <Nodes>
@@ -29,8 +34,8 @@
       <Outputs>
         <Name>moose births</Name>
       </Outputs>
-      <Equation>0.1</Equation>
-      <InitialValue>0.1</InitialValue>
+      <Equation>0.2</Equation>
+      <InitialValue>0.2</InitialValue>
     </Node>
     <Node type="flow" name="moose births" extra="no">
       <CorrectDescription>The number of moose born each year</CorrectDescription>
