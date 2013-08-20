@@ -78,6 +78,9 @@ public class CalculationsPanelView extends javax.swing.JPanel {
     public void initPanel() {
         logs.debug("Initializing Calculations Panel for Node ");
         initializeAvailableInputNodes();
+        if((currentVertex.getCalculationsStatus().equals(Vertex.CalculationsStatus.CORRECT) || currentVertex.getCalculationsStatus().equals(Vertex.CalculationsStatus.GAVEUP)) && !ApplicationContext.getAppMode().equalsIgnoreCase("AUTHOR")) {
+            setEditableCalculations(false);
+        }
         
         if (currentVertex.getVertexType().equals(VertexType.CONSTANT)) {
             preparePanelForFixedValue();
@@ -821,6 +824,7 @@ public class CalculationsPanelView extends javax.swing.JPanel {
         fixedValueInputBox.setEnabled(b);
         availableInputsJList.setEnabled(b);
         formulaInputArea.setEnabled(b);
+        accumulatorInitialValueBox.setEnabled(b);
         setCreateButtonEnabled();
     }
     

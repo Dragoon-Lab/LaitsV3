@@ -351,19 +351,19 @@ public class NodeEditor extends javax.swing.JDialog {
             
             switch(selectedTab){
             case DESCRIPTION:
-               if (currentVertex.getDescriptionStatus().equals(Vertex.DescriptionStatus.GAVEUP)) {
+               if (currentVertex.getDescriptionStatus().equals(Vertex.DescriptionStatus.GAVEUP)|| currentVertex.getDescriptionStatus().equals(Vertex.DescriptionStatus.CORRECT)) {
                    giveUpButton.setEnabled(false);
                    checkButton.setEnabled(false);
                }
                break;
             case PLAN:
-                if (currentVertex.getPlanStatus().equals(Vertex.PlanStatus.GAVEUP)) {
+                if (currentVertex.getPlanStatus().equals(Vertex.PlanStatus.GAVEUP) || currentVertex.getPlanStatus().equals(Vertex.PlanStatus.CORRECT)) {
                     giveUpButton.setEnabled(false);
                     checkButton.setEnabled(false);
                 }
                 break;
             case CALCULATIONS:
-                if (currentVertex.getCalculationsStatus().equals(Vertex.CalculationsStatus.GAVEUP)) {
+                if (currentVertex.getCalculationsStatus().equals(Vertex.CalculationsStatus.GAVEUP) || currentVertex.getCalculationsStatus().equals(Vertex.CalculationsStatus.CORRECT)) {
                     giveUpButton.setEnabled(false);
                     checkButton.setEnabled(false);
                 }

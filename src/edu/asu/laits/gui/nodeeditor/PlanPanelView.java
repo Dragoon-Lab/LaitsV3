@@ -85,7 +85,10 @@ public class PlanPanelView extends JPanel {
             @Override
             public void mousePressed(MouseEvent e) {
                 table.setSelectionBackground(new Color(201, 197, 199));
-                nodeEditor.checkPlanPanel(ApplicationContext.getCorrectSolution());
+                if(!nodeEditor.getCurrentVertex().getPlanStatus().equals(Vertex.PlanStatus.CORRECT) && !nodeEditor.getCurrentVertex().getPlanStatus().equals(Vertex.PlanStatus.GAVEUP)) {
+                    nodeEditor.checkPlanPanel(ApplicationContext.getCorrectSolution());
+                }
+                
             }
         });
 
@@ -98,7 +101,10 @@ public class PlanPanelView extends JPanel {
         tableModel.add(new TableEntry(secondOption[0], secondOption[1], secondOption[2]));
         tableModel.add(new TableEntry(thirdOption[0], thirdOption[1], thirdOption[2]));
 
-        setSelectedPlan(nodeEditor.getCurrentVertex().getPlan());
+        //(nodeEditor.getCurrentVertex().getPlan());
+        if((nodeEditor.getCurrentVertex().getPlanStatus().equals(Vertex.PlanStatus.CORRECT) || nodeEditor.getCurrentVertex().getPlanStatus().equals(Vertex.PlanStatus.GAVEUP)) && !ApplicationContext.getAppMode().equalsIgnoreCase("AUTHOR")){
+            setEditableRadio(false);
+        }
     }
 
     public void initPanelForNewNode() {

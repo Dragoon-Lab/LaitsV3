@@ -77,7 +77,10 @@ public class DescriptionPanelView extends JPanel {
 
         Vertex currentVertex = this.nodeEditor.getCurrentVertex();
         this.nodeNameTextField.setText(currentVertex.getName());
-        this.quantityDescriptionTextField.setText(currentVertex.getCorrectDescription());             
+        this.quantityDescriptionTextField.setText(currentVertex.getCorrectDescription());
+        if((currentVertex.getDescriptionStatus().equals(Vertex.DescriptionStatus.CORRECT) || currentVertex.getDescriptionStatus().equals(Vertex.DescriptionStatus.GAVEUP)) && !ApplicationContext.getAppMode().equalsIgnoreCase("AUTHOR")) {
+            setEditableTree(false);
+        }
     }
 
     private void initTree() {
@@ -403,6 +406,8 @@ public class DescriptionPanelView extends JPanel {
     public void setEditableTree(boolean b) {
         decisionTree.setEditable(b);
         decisionTree.setEnabled(b);
+        nodeNameTextField.setEditable(b);
+        nodeNameTextField.setEnabled(b);
     }
 
     public JLabel getTopDescriptionLabel() {
