@@ -85,6 +85,7 @@ public class PlanPanelView extends JPanel {
             @Override
             public void mousePressed(MouseEvent e) {
                 table.setSelectionBackground(new Color(201, 197, 199));
+                nodeEditor.checkPlanPanel(ApplicationContext.getCorrectSolution());
             }
         });
 
@@ -191,7 +192,12 @@ public class PlanPanelView extends JPanel {
                 nodeEditor.getCurrentVertex().getName()).getNodePlan();
         System.out.println("Found Correct Plan as : " + correctPlan);
         setSelectedPlan(correctPlan);
-        setSelectedPlanBackground(Color.YELLOW);
+        if(nodeEditor.getCurrentVertex().getPlanStatus().equals(Vertex.PlanStatus.MISSEDFIRST)){
+//            setSelectedPlanBackground(Color.RED);
+        }
+        else {
+            setSelectedPlanBackground(Color.YELLOW);
+        }
     }
 
     public String printPlanPanel() {

@@ -148,7 +148,7 @@ public class VertexRenderComponent extends VertexRenderer implements
         }else if(currentVertex.getPlanStatus() == Vertex.PlanStatus.CORRECT){
             paintIcon(g, ImageLoader.getInstance().getPlanCorrectIcon(), 0); 
         
-        }else if(currentVertex.getPlanStatus() == Vertex.PlanStatus.INCORRECT){
+        }else if(currentVertex.getPlanStatus() == Vertex.PlanStatus.INCORRECT || currentVertex.getPlanStatus() == Vertex.PlanStatus.MISSEDFIRST ){
             paintIcon(g, ImageLoader.getInstance().getPlanInCorrectIcon(), 0); 
         }
         else if(currentVertex.getPlanStatus() == Vertex.PlanStatus.GAVEUP){
