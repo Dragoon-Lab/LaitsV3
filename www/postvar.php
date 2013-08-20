@@ -12,7 +12,7 @@
     $id = mysqli_real_escape_string($mysqli, $_POST['id']);
     $section = mysqli_real_escape_string($mysqli, $_POST['section']);
     $problemNum = mysqli_real_escape_string($mysqli, $_POST['problem']);
-    $saveData = mysqli_real_escape_string($mysqli, $_POST['saveData']);
+    $saveData = $_POST['saveData'];
     
     //process request
     if(strcmp($action, "save") == 0){
