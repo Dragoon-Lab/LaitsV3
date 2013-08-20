@@ -185,7 +185,7 @@ public class CalculationsPanelView extends javax.swing.JPanel {
         calculatorPanel.setVisible(true);
         accumulatorPanel.setVisible(true);
         formulaInputArea.setText("");
-        accumulatorInitialValueBox.setText("");
+  //      accumulatorInitialValueBox.setText("");
         valuesLabel.setText("Next Value = Current Value + ");
     }
     
@@ -770,6 +770,9 @@ public class CalculationsPanelView extends javax.swing.JPanel {
         // TODO add your handling code here:
         // Process Cancel Action for all the Tabs
         activityLogs.debug("User pressed Create node button on inputs tab for Node " + nodeEditor.getCurrentVertex().getName());
+        if(currentVertex.getVertexType()==Vertex.VertexType.STOCK){
+            currentVertex.setInitialValue(Double.valueOf(accumulatorInitialValueBox.getText()));
+        }
         Vertex v = new Vertex();
         v.setVertexIndex(nodeEditor.getGraphPane().getModelGraph().getNextAvailableIndex());
         nodeEditor.getGraphPane().addVertex(v);
