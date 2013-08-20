@@ -19,8 +19,8 @@ is to deviate as little as possible from the existing design.  The tab would
 let the student choose from the following 3:
 > The `<quantity>` is a ...  
 > * Parameter (a constant whose value is specified in the problem)  
-> * Function (a quantity that depends on its inputs alone)  
-> * Accumulator (a quantity whose new value depends on its old value and its inputs)
+> * Accumulator (a quantity whose new value depends on its old value and its inputs)  
+> * Function (a quantity that depends on its inputs alone)   
 
 where `<quantity>` is the name of the quantity.
 
@@ -85,28 +85,18 @@ presence of any quantity names, normalizing capitalization and whitespace, makin
 in the equation quantities list are shown in **boldface**.  Note that we want to 
 boldface quantities even if the parsing fails.
 
-* For accumulators, there is some question of how to express the "change
-in quantity."  Currently, we have
+* For accumulators, we currently have:
 
-        New value = old value +
+    > New value = old value +
 
     Which does not instantiate the variable name and is confusing when the expression
-in the equation box starts with a `-`.  More correctly, we could have
+in the equation box starts with a `-`.  We will use the following:
 
-        Change in <quantity> per <unit time> =
+    > Change in `<quantity>` per `<unit time>` =
 
     where `<quantity>` is the name of the quantity and `<unit time>` is `seconds`,
 `hours`, *et cetera*, depending on the time unit chosen for this problem.
 
-    Another format proposed at the UCLA visit is:
-
-        New <quantity> = old <quantity> 
-        +
-
-    with the `+` appearing as the first character in the equation box.
-But this wording is incorrect with respect to units and would require special 
-diagnosis/handlers for cases the student erases the plus (incorrect) or changes it 
-into a minus (may be correct or incorrect).
 
 ### Possible Improvements to the Calculation tab ###
 
@@ -133,3 +123,15 @@ Otherwise
 >Press the `<create node>` button to create a node for this quantity.
 
 This latter hint is way too long.
+
+#### Alternative text for the equation box for accumulators  ####
+Another format proposed at the UCLA visit is:
+
+>  New `<quantity>` = old `<quantity>`   
+>  +
+
+with the `+` appearing as the first character in the equation box.
+This form has the advantage that it matches the introductory materials better.
+However, units are inconsistant and this form would require special 
+diagnosis/handlers for cases the student erases the plus (incorrect) or changes it 
+into a minus (may be correct or incorrect).

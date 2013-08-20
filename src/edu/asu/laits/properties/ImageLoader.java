@@ -43,6 +43,27 @@ public class ImageLoader {
     private Image graphsInCorrect;
     private Image graphsGaveUp;
     
+    private Image planNoStatus;
+    private Image planCorrect;
+
+    public Image getPlanNoStatusIcon() {
+        return planNoStatus;
+    }
+
+    public Image getPlanCorrectIcon() {
+        return planCorrect;
+    }
+
+    public Image getPlanInCorrectIcon() {
+        return planInCorrect;
+    }
+
+    public Image getPlanGaveUpIcon() {
+        return planGaveUp;
+    }
+    private Image planInCorrect;
+    private Image planGaveUp;
+    
     public static final int statusIconHeight = 20;
     public static final int statusIconWidth = 20;
     
@@ -84,6 +105,14 @@ public class ImageLoader {
         graphsGaveUp = new ImageIcon(getClass().getResource(
                 "/resources/icons/GraphsGaveUpStatus.png")).getImage();
         
+        planNoStatus = new ImageIcon(getClass().getResource(
+                "/resources/icons/PlanNoStatus.png")).getImage();
+        planCorrect = new ImageIcon(getClass().getResource(
+                "/resources/icons/PlanCorrectStatus.png")).getImage();
+        planInCorrect = new ImageIcon(getClass().getResource(
+                "/resources/icons/PlanWrongStatus.png")).getImage();
+        planGaveUp = new ImageIcon(getClass().getResource(
+                "/resources/icons/PlanGaveUpStatus.png")).getImage(); 
     }
     
     public Image getInputsNoStatusIcon(){

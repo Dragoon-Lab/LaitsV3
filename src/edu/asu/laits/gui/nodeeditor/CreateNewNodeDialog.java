@@ -264,13 +264,14 @@ public class CreateNewNodeDialog extends javax.swing.JDialog {
         System.out.println("closing");
         if (currentVertex.getName().equals("")) {
             ne.getGraphPane().removeSelected();
-        } else {
-            ne.getInputsPanel().initPanel();
+        } 
+        else {
+            ne.getCalculationsPanel().initPanel();
            // ne.getGraphPane().setSelectionCell(ne.getCurrentVertex());
             ne.refreshInputs();
         }
 
-        ne.getInputsPanel().setCreateButtonEnabled();
+//        ne.getInputsPanel().setCreateButtonEnabled();
         this.dispose();
         ne.addHelpBalloon(currentVertex.getName(), "newNodeClosed", "INPUTS");
         
