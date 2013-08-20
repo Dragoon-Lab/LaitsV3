@@ -139,10 +139,7 @@ public class CalculationsPanelView extends javax.swing.JPanel {
     public void showThatJListModelHasNoInputs() {
         availableInputJListModel.clear();
         availableInputJListModel.add(0, "This node does not have any inputs defined yet,");
-        availableInputJListModel.add(1, "please go back to the Inputs Tab and choose ");
-        availableInputJListModel.add(2, "at least one input, if there are not inputs ");
-        availableInputJListModel.add(3, "available, please exit this node and create ");
-        availableInputJListModel.add(4, "the needed nodes using the \"New node\" button.");
+        availableInputJListModel.add(1, "create one using Create Node button. ");
     }
     
     public String getFixedValue() {
@@ -186,7 +183,7 @@ public class CalculationsPanelView extends javax.swing.JPanel {
         accumulatorPanel.setVisible(true);
         formulaInputArea.setText("");
   //      accumulatorInitialValueBox.setText("");
-        valuesLabel.setText("Next Value = Current Value + ");
+        valuesLabel.setText("Change in " + currentVertex.getName() + " per " + ApplicationContext.getCorrectSolution().getGraphUnits() + " = ");
     }
     
     public void preparePanelForStockOrFlow() {
@@ -289,7 +286,11 @@ public class CalculationsPanelView extends javax.swing.JPanel {
         List<String> usedVariables = eval.getAllVariables();
         
         for (int i = 0; i < availableInputJListModel.getSize(); i++) {
-            availableVariables.add(String.valueOf(availableInputJListModel.get(i)));            
+            String s = availableInputJListModel.get(i).toString();
+            s = s.replace("<html><strong>", "");
+            s = s.replace("</strong></html>", "");
+
+            availableVariables.add(s);            
         }
 
         // Check if this equation uses all the inputs
@@ -724,6 +725,11 @@ public class CalculationsPanelView extends javax.swing.JPanel {
      * disabled.
      */
     private void availableInputsJListMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_availableInputsJListMouseClicked
+        int i = availableInputsJList.getSelectedIndex();
+        
+        availableInputJListModel.set(i, availableInputJListModel.get(i).toString().replace("<html><strong>", ""));
+        availableInputJListModel.set(i, availableInputJListModel.get(i).toString().replace("</strong></html>", ""));
+
         formulaInputArea.setText(formulaInputArea.getText() + " "
                 + availableInputsJList.getSelectedValue().toString());
         activityLogs.debug("User selected input "+availableInputsJList.getSelectedValue().toString()+
@@ -733,7 +739,8 @@ public class CalculationsPanelView extends javax.swing.JPanel {
         if(!graph.containsEdge(connectedVertex, currentVertex)){
             addEdge(connectedVertex, currentVertex);
         }
-        availableInputsJList.setSelectedValue("* " + availableInputsJList.getSelectedValue(), true);
+       
+        availableInputJListModel.set(i, "<html><strong>" + availableInputsJList.getSelectedValue().toString() + "</strong></html>");
 }//GEN-LAST:event_availableInputsJListMouseClicked
         
     private void fixedValueInputBoxKeyReleased(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_fixedValueInputBoxKeyReleased
