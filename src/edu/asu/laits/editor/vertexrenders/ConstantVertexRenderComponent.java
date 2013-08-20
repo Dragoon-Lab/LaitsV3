@@ -168,8 +168,14 @@ public class ConstantVertexRenderComponent   extends VertexRenderComponent {
     public void drawVertex(Graphics g) {
         Graphics2D g2 = (Graphics2D) g;
         boolean isCorrect = false;
-        if(currentVertex.getPlanStatus().equals(Vertex.PlanStatus.CORRECT) && 
-                currentVertex.getCalculationsStatus().equals(Vertex.CalculationsStatus.CORRECT)){
+        if(currentVertex.getDescriptionStatus().equals(Vertex.DescriptionStatus.CORRECT)){
+            g2.setColor(Color.GREEN);
+            isCorrect = true;           
+        }else if(currentVertex.getDescriptionStatus().equals(Vertex.DescriptionStatus.GAVEUP)){
+            g2.setColor(new Color(0x90, 0x90, 0x00));
+            isCorrect = true;           
+        }else if(currentVertex.getPlanStatus().equals(Vertex.PlanStatus.CORRECT) && 
+            currentVertex.getCalculationsStatus().equals(Vertex.CalculationsStatus.CORRECT)){
             g2.setColor(Color.BLUE);
             isCorrect = true;
         }else if(currentVertex.getPlanStatus().equals(Vertex.PlanStatus.GAVEUP) && 

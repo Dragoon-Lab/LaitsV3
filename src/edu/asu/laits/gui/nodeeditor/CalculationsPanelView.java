@@ -821,6 +821,28 @@ public class CalculationsPanelView extends javax.swing.JPanel {
         fixedValueInputBox.setEnabled(b);
         availableInputsJList.setEnabled(b);
         formulaInputArea.setEnabled(b);
+        setCreateButtonEnabled();
+    }
+    
+    public void setCreateButtonEnabled(){
+        if(ApplicationContext.getAppMode().equalsIgnoreCase("COACHED")){
+            SolutionNode node = ApplicationContext.getCorrectSolution().getNodeByName(currentVertex.getName());
+            List<String> correctInputs = node.getInputNodes();
+            boolean enabled = false;
+            for(String input : correctInputs){
+                boolean included = false;
+                for(int i=0; i < availableInputJListModel.getSize(); i++){
+                       if(availableInputJListModel.get(i).toString().equalsIgnoreCase(input)){
+                           included = true;
+                       }
+                }
+                if(!included){
+                    enabled = true;
+                    break;
+                }
+            }
+            buttonCreateNodeInputTab.setEnabled(enabled);
+        }
     }
     
     private String addBoldtoListItem(String s){
