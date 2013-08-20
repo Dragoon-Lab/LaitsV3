@@ -267,9 +267,9 @@ public class TaskSolution {
 
     }
 
-    public boolean checkNodePlan(String nodeName, Vertex.Plan plan) {
+    public boolean checkNodePlan(String nodeName, Vertex.VertexType plan) {
         logs.info("Checking Plan for Node : " + nodeName + "  " + "selected plan: " + plan);
-        if (getNodeByName(nodeName).getNodePlan().compareTo(plan) == 0) {
+        if (getNodeByName(nodeName).getNodeType().compareTo(plan) == 0) {
             return true;
         } else {
             return false;
@@ -325,7 +325,7 @@ public class TaskSolution {
             }
 
             if (correctNode.getNodeType().equals(Vertex.VertexType.STOCK)) {
-                return checkNodeEquation(correctNode.getNodeEquation(), studentNode.getEquation());
+                return checkNodeEquation(correctNode.getNodeEquation(), studentNode.getEquation().trim());
             }
 
         } else if (correctNode.getNodeType().equals(Vertex.VertexType.FLOW)) {
