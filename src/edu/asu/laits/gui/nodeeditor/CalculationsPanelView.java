@@ -293,8 +293,8 @@ public class CalculationsPanelView extends javax.swing.JPanel {
 
         // Check if this equation uses all the inputs
         
-        for (String s : availableVariables) {
-            if (!usedVariables.contains(s)) {
+        for (String s : usedVariables) {
+            if (!availableVariables.contains(s)) {
                 nodeEditor.setEditorMessage("Input node " + s + " is not used in the equation.", true);
                 activityLogs.debug("User entered incorrect equation - "+
                         "Input node " + s + " is not used in the equation.");

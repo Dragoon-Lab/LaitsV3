@@ -459,7 +459,7 @@ public class NodeEditor extends javax.swing.JDialog {
     public void checkPlanPanel(TaskSolution correctSolution) {
         logs.debug("Checking Plan Panel");
         if (correctSolution.checkNodePlan(dPanel.getNodeName(), pPanel.getSelectedPlan())) {
-            if(currentVertex.getPlanStatus().equals(PlanStatus.UNDEFINED)){
+            if(currentVertex.getPlanStatus().equals(PlanStatus.UNDEFINED) || currentVertex.getPlanStatus().equals(PlanStatus.INCORRECT) ){
                 pPanel.setSelectedPlanBackground(Color.GREEN);
                 currentVertex.setPlanStatus(PlanStatus.CORRECT);
 //            } else if(currentVertex.getPlanStatus().equals(PlanStatus.MISSEDFIRST)) {
