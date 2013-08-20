@@ -40,15 +40,15 @@ import edu.asu.laits.model.Vertex.VertexType;
 public class PlanPanelView extends JPanel {
 
     private static final String[] COLUMN_NAMES = {
-        "<html><h3>The Node's value is...", "<html><h3>Node Type", "<html><h3>Calculations"};
+        "<html><h3>The Node's value is...", "<html><h3>Node Type"};
     private MyTableModel tableModel;
     private JTable table;
     private String selectedPlan;
     private boolean isViewEnabled = false;
     private NodeEditor nodeEditor;
-    private static String[] firstOption = {"<html>a constant whose value is <br />defined in the problem</html>", "parameter", "the number"};
-    private static String[] secondOption = {"<html>a quantity whose new value depends <br />on its old value and its inputs</html>", "accumulator", "initial value +/- input"};
-    private static String[] thirdOption = {"a quantity that depends on its inputs alone", "function", "input 1 * input 2"};
+    private static String[] firstOption = {"<html>a constant whose value is <br />defined in the problem</html>", "parameter"};
+    private static String[] secondOption = {"<html>a quantity whose new value depends <br />on its old value and its inputs</html>", "accumulator"};
+    private static String[] thirdOption = {"a quantity that depends on its inputs alone", "function"};
 
     /**
      * Logger
@@ -74,13 +74,11 @@ public class PlanPanelView extends JPanel {
         table.setDefaultRenderer(String.class, new StatusRenderer());
 
         table.setRowHeight(36);
-        table.getColumnModel().getColumn(0).setPreferredWidth(280);
-        table.getColumnModel().getColumn(1).setPreferredWidth(140);
-        table.getColumnModel().getColumn(2).setPreferredWidth(160);
+        table.getColumnModel().getColumn(0).setPreferredWidth(360);
+        table.getColumnModel().getColumn(1).setPreferredWidth(220);
 
         table.getColumnModel().getColumn(0).setResizable(false);
         table.getColumnModel().getColumn(1).setResizable(false);
-        table.getColumnModel().getColumn(2).setResizable(false);
         table.addMouseListener(new MouseAdapter() {
             @Override
             public void mousePressed(MouseEvent e) {
@@ -97,9 +95,9 @@ public class PlanPanelView extends JPanel {
         scroll.setMinimumSize(new Dimension(577, 335));
 
         add(scroll, BorderLayout.CENTER);
-        tableModel.add(new TableEntry(firstOption[0], firstOption[1], firstOption[2]));
-        tableModel.add(new TableEntry(secondOption[0], secondOption[1], secondOption[2]));
-        tableModel.add(new TableEntry(thirdOption[0], thirdOption[1], thirdOption[2]));
+        tableModel.add(new TableEntry(firstOption[0], firstOption[1]));
+        tableModel.add(new TableEntry(secondOption[0], secondOption[1]));
+        tableModel.add(new TableEntry(thirdOption[0], thirdOption[1]));
 
         //(nodeEditor.getCurrentVertex().getPlan());
         if((nodeEditor.getCurrentVertex().getPlanStatus().equals(Vertex.PlanStatus.CORRECT) || nodeEditor.getCurrentVertex().getPlanStatus().equals(Vertex.PlanStatus.GAVEUP)) && !ApplicationContext.getAppMode().equalsIgnoreCase("AUTHOR")){
@@ -244,12 +242,10 @@ public class PlanPanelView extends JPanel {
 
         private String valueType;
         private String nodeType;
-        private String nodeEquation;
 
-        TableEntry(String vt, String nt, String ne) {
+        TableEntry(String vt, String nt) {
             valueType = vt;
             nodeType = nt;
-            nodeEquation = ne;
         }
 
         public String getNodeType() {
@@ -268,13 +264,6 @@ public class PlanPanelView extends JPanel {
             valueType = s;
         }
 
-        public String getNodeEquation() {
-            return nodeEquation;
-        }
-
-        public void setNodeEquation(String s) {
-            nodeEquation = s;
-        }
     }
 
     private class MyTableModel extends AbstractTableModel {
@@ -320,7 +309,7 @@ public class PlanPanelView extends JPanel {
 
         @Override
         public int getColumnCount() {
-            return 3;
+            return 2;
         }
 
         @Override
@@ -331,8 +320,6 @@ public class PlanPanelView extends JPanel {
                     return entry.getValueType();
                 case 1:
                     return entry.getNodeType();
-                case 2:
-                    return entry.getNodeEquation();
             }
             return null;
         }
