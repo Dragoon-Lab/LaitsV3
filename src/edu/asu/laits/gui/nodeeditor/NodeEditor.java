@@ -1007,7 +1007,7 @@ public class NodeEditor extends javax.swing.JDialog {
             
         case CALCULATIONS:
             activityLogs.debug("Giveup button pressed for Calculations Panel");
-            cPanel.setCheckedBackground(new Color(240, 240, 240));
+          //  cPanel.setCheckedBackground(new Color(240, 240, 240));
             if (cPanel.giveUpCalculationsPanel()) {
                 cPanel.processCalculationsPanel();
                 currentVertex.setCalculationsStatus(Vertex.CalculationsStatus.GAVEUP);
