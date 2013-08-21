@@ -309,7 +309,7 @@ public class Vertex {
      * An enumeration with the possible Status of Inputs of a vertex
     */
     public enum PlanStatus{
-        UNDEFINED, CORRECT, INCORRECT, GAVEUP
+        UNDEFINED, MISSEDFIRST, CORRECT, INCORRECT, GAVEUP
     }
     
     /**

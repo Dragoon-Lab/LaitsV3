@@ -204,6 +204,8 @@ public class CreateNewNodeDialog extends javax.swing.JDialog {
                 currentVertex.setDescriptionStatus(Vertex.DescriptionStatus.CORRECT);
                 setEditorMessage("", false);
                 dPanel.setTextFieldBackground(Color.GREEN);
+                checkButton.setEnabled(false);
+                giveUpButton.setEnabled(false);
                 activityLogs.debug("User entered correct description");
                 dPanel.setEditableTree(false);
 
@@ -231,6 +233,8 @@ public class CreateNewNodeDialog extends javax.swing.JDialog {
             //graphPane.getMainFrame().getMainMenu().getModelMenu().addDeleteNodeMenu();
             setEditorMessage("", false);
             dPanel.setTextFieldBackground(Color.GREEN);
+            checkButton.setEnabled(false);
+            giveUpButton.setEnabled(false);
             activityLogs.debug("User entered correct description");
             dPanel.setEditableTree(false);
             //ApplicationContext.nextCurrentOrder();
@@ -260,13 +264,14 @@ public class CreateNewNodeDialog extends javax.swing.JDialog {
         System.out.println("closing");
         if (currentVertex.getName().equals("")) {
             ne.getGraphPane().removeSelected();
-        } else {
-            ne.getInputsPanel().initPanel();
+        } 
+        else {
+            ne.getCalculationsPanel().initPanel();
            // ne.getGraphPane().setSelectionCell(ne.getCurrentVertex());
             ne.refreshInputs();
         }
 
-        ne.getInputsPanel().setCreateButtonEnabled();
+        ne.getCalculationsPanel().setCreateButtonEnabled();
         this.dispose();
         ne.addHelpBalloon(currentVertex.getName(), "newNodeClosed", "INPUTS");
         

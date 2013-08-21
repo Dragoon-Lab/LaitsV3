@@ -2,10 +2,12 @@
 
 <Task phase="Intro" type="Debug">
   <TaskName>Jared's weight</TaskName>
-  <TaskDescription>Jared is on a diet and loses 2.5 pounds each week. He started NEWLINE
-  the diet weighing 200 pounds. A node defining Jared's weekly NEWLINE
-  weight loss as a function of time has been given.  Construct NEWLINE
-  a model for Jared's weight as a function of time.</TaskDescription>
+  <TaskDescription>
+      Jared is on a diet and loses 2.5 pounds each week. He started NEWLINE
+      the diet weighing 200 pounds. A node defining Jared's weekly NEWLINE
+      weight loss as a function of time has been given.  Construct NEWLINE
+      a model for Jared's weight as a function of time.
+  </TaskDescription>
   <URL>images/weighing-scales2.jpg</URL>
   <StartTime>0</StartTime>
   <EndTime>10</EndTime>
@@ -19,7 +21,7 @@
       <Outputs>
         <Name>Jared weight</Name>
       </Outputs>
-      <Equation></Equation>
+      <Equation>2.5</Equation>
       <InitialValue>2.5</InitialValue>
     </Node>
     <Node type="stock" name="Jared weight" extra="no">

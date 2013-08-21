@@ -244,7 +244,7 @@ public class InputsPanelView extends javax.swing.JPanel implements ItemListener 
             }
             inputNodesSelectionOptionButton.setSelected(true);
             this.displayCurrentInputsPanel(true);
-            nodeEditor.getCurrentVertex().setVertexType(VertexType.DEFAULT);
+        //    nodeEditor.getCurrentVertex().setVertexType(VertexType.DEFAULT);
         }
 
         setInputsTypeBackground(Color.YELLOW);
@@ -394,17 +394,12 @@ public class InputsPanelView extends javax.swing.JPanel implements ItemListener 
         // TODO add your handling code here:
         // Process Cancel Action for all the Tabs
         activityLogs.debug("User pressed Create node button on inputs tab for Node " + nodeEditor.getCurrentVertex().getName());
-        if (nodeEditor.getGraphPane().getMainFrame().getMainMenu().getModelMenu().notAllNodesDefined()) {
-            Vertex v = new Vertex();
+           Vertex v = new Vertex();
             v.setVertexIndex(nodeEditor.getGraphPane().getModelGraph().getNextAvailableIndex());
             nodeEditor.getGraphPane().addVertex(v);
 
             CreateNewNodeDialog newNodeDialog = new CreateNewNodeDialog(nodeEditor, v);
 
-        } else {
-            activityLogs.debug("User was not allowed to create new node as all the nodes were already present");
-            JOptionPane.showMessageDialog(this, "The model is already using all the correct nodes.");
-        }
     }//GEN-LAST:event_buttonCreateNodeInputTabActionPerformed
 
     public void refreshInputs(){
@@ -412,7 +407,7 @@ public class InputsPanelView extends javax.swing.JPanel implements ItemListener 
                 nodeEditor.getCurrentVertex().getName());
         
         this.displayCurrentInputsPanel(true);
-        nodeEditor.getCurrentVertex().setVertexType(Vertex.VertexType.DEFAULT);
+     //   nodeEditor.getCurrentVertex().setVertexType(Vertex.VertexType.DEFAULT);
         nodeEditor.getGraphPane().getLayoutCache().reload();
         nodeEditor.getGraphPane().repaint();
         inputNodesSelectionOptionButton.setSelected(true);        

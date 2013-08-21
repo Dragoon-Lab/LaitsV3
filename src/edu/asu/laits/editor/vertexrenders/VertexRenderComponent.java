@@ -135,24 +135,24 @@ public class VertexRenderComponent extends VertexRenderer implements
     }
     
     protected void paintVertexStatusIcons(Graphics g, Vertex v){
-        paintInputIcons(g, v);
+        paintPlanIcons(g, v);
         paintCalculationsIcons(g, v);
         paintGraphsIcons(g, v);
     }
     
-    private void paintInputIcons(Graphics g, Vertex currentVertex){
+    private void paintPlanIcons(Graphics g, Vertex currentVertex){
         
-        if(currentVertex.getInputsStatus() == Vertex.InputsStatus.UNDEFINED){
-            paintIcon(g, ImageLoader.getInstance().getInputsNoStatusIcon(), 0); 
+        if(currentVertex.getPlanStatus() == Vertex.PlanStatus.UNDEFINED){
+            paintIcon(g, ImageLoader.getInstance().getPlanNoStatusIcon(), 0); 
         
-        }else if(currentVertex.getInputsStatus() == Vertex.InputsStatus.CORRECT){
-            paintIcon(g, ImageLoader.getInstance().getInputsCorrectIcon(), 0); 
+        }else if(currentVertex.getPlanStatus() == Vertex.PlanStatus.CORRECT){
+            paintIcon(g, ImageLoader.getInstance().getPlanCorrectIcon(), 0); 
         
-        }else if(currentVertex.getInputsStatus() == Vertex.InputsStatus.INCORRECT){
-            paintIcon(g, ImageLoader.getInstance().getInputsInCorrectIcon(), 0); 
+        }else if(currentVertex.getPlanStatus() == Vertex.PlanStatus.INCORRECT || currentVertex.getPlanStatus() == Vertex.PlanStatus.MISSEDFIRST ){
+            paintIcon(g, ImageLoader.getInstance().getPlanInCorrectIcon(), 0); 
         }
-        else if(currentVertex.getInputsStatus() == Vertex.InputsStatus.GAVEUP){
-            paintIcon(g, ImageLoader.getInstance().getInputsGaveUpIcon(), 0); 
+        else if(currentVertex.getPlanStatus() == Vertex.PlanStatus.GAVEUP){
+            paintIcon(g, ImageLoader.getInstance().getPlanGaveUpIcon(), 0); 
         }
     }
     
