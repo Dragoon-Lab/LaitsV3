@@ -57,13 +57,13 @@ public class CalculationsPanelView extends javax.swing.JPanel {
     
     private DefaultListModel availableInputJListModel = new DefaultListModel();
     private final DecimalFormat inputDecimalFormat = new DecimalFormat("###0.000000##");
-    private NodeEditor nodeEditor;
+    private NodeEditorView nodeEditor;
     private Vertex currentVertex;
     
     private static Logger logs = Logger.getLogger("DevLogs");
     private static Logger activityLogs = Logger.getLogger("ActivityLogs");
     
-    public CalculationsPanelView(NodeEditor ne) {
+    public CalculationsPanelView(NodeEditorView ne) {
         initComponents();
         nodeEditor = ne;
         currentVertex = ne.getCurrentVertex();
@@ -387,7 +387,7 @@ public class CalculationsPanelView extends javax.swing.JPanel {
     }
     
     private void addHelpBalloon(String timing){
-        if(ApplicationContext.getAppMode().equalsIgnoreCase("COACHED")){
+        if(ApplicationContext.isCoachedMode()){
              List<HelpBubble> bubbles = ApplicationContext.getHelp(currentVertex.getName(), "Calculations", timing);
                 if(!bubbles.isEmpty()){
                     for(HelpBubble bubble : bubbles){

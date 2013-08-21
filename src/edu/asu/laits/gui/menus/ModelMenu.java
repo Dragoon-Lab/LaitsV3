@@ -23,7 +23,7 @@ import edu.asu.laits.editor.GraphRangeEditor;
 import edu.asu.laits.gui.ForumViewPanel;
 import edu.asu.laits.gui.GraphViewPanel;
 import edu.asu.laits.gui.MainWindow;
-import edu.asu.laits.gui.nodeeditor.NodeEditor;
+import edu.asu.laits.gui.nodeeditor.NodeEditorView;
 import edu.asu.laits.model.Graph;
 import edu.asu.laits.model.GraphSaver;
 import edu.asu.laits.model.LaitsSolutionExporter;
@@ -97,7 +97,7 @@ public class ModelMenu extends JMenu {
         this.add(getShowGraphMenuItem());
         this.add(getshowForumMenuItem());
         
-        if(ApplicationContext.getAppMode().equalsIgnoreCase("AUTHOR")){
+        if(ApplicationContext.isAuthorMode()){
             this.add(getExportSolutionMenuItem());
             this.add(getEditTimeRangeMenuItem());
         }
@@ -228,8 +228,7 @@ public class ModelMenu extends JMenu {
                 try {
                     me.run();
 
-                    if (ApplicationContext.getAppMode().equalsIgnoreCase("STUDENT") || 
-                            ApplicationContext.getAppMode().equalsIgnoreCase("COACHED")) {
+                    if (ApplicationContext.isStudentMode() || ApplicationContext.isCoachedMode()) {
                         me.validateStudentGraph();
                     }
 
@@ -313,7 +312,7 @@ public class ModelMenu extends JMenu {
             }
 
             graphPane.repaint();
-            NodeEditor editor = new NodeEditor(graphPane, v);
+            NodeEditorView editor = new NodeEditorView(graphPane, v);
             
         } else {
             activityLogs.debug("User was not allowed to create new node as all the nodes were already present");
@@ -421,7 +420,7 @@ public class ModelMenu extends JMenu {
     }
 
     public boolean newNodeAllowed() {
-        if (ApplicationContext.getAppMode().equalsIgnoreCase("AUTHOR")) {
+        if (ApplicationContext.isAuthorMode()) {
             return true;
         }
 

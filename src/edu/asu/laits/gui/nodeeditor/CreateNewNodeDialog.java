@@ -22,7 +22,7 @@ import org.apache.log4j.Logger;
 public class CreateNewNodeDialog extends javax.swing.JDialog {
 
     private NewNodeDescPanel dPanel;
-    private NodeEditor ne;
+    private NodeEditorView ne;
     private Vertex currentVertex;
     private static Logger logs = Logger.getLogger("DevLogs");
     private static Logger activityLogs = Logger.getLogger("ActivityLogs");
@@ -31,7 +31,7 @@ public class CreateNewNodeDialog extends javax.swing.JDialog {
         super(parent, true);
 
         initComponents();
-        ne = (NodeEditor) parent;
+        ne = (NodeEditorView) parent;
         currentVertex = v;
 
         initPanel();
@@ -163,7 +163,7 @@ public class CreateNewNodeDialog extends javax.swing.JDialog {
         // Action for Check Button
         logs.debug("Handling Check Action");
         TaskSolution correctSolution = ApplicationContext.getCorrectSolution();
-        if(ApplicationContext.getAppMode().equalsIgnoreCase("COACHED")){
+        if(ApplicationContext.isCoachedMode()){
             
             checkDescriptionPanelCoached(correctSolution);
         }else {

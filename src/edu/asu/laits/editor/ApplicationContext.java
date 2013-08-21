@@ -32,7 +32,7 @@ import java.util.List;
  */
 public class ApplicationContext {
   private static String userId;
-  private static String appMode;
+  private static AppMode appMode;
   private static String section;
   private static String rootURL;
   
@@ -86,7 +86,7 @@ public class ApplicationContext {
   }
 
   
-  private static ApplicationEnvironment applicationEnvironment;
+  private static ApplicationContext.ApplicationEnvironment applicationEnvironment;
   
   public enum ApplicationEnvironment{
         DEV, TEST, PROD
@@ -145,12 +145,8 @@ public class ApplicationContext {
     isValid = input;
   }
   
-  public static String getAppMode(){
-      return appMode;
-  }
-  
-  public static void setAppMode(String s){
-      appMode = s;
+  public static void setAppMode(String mode){
+      appMode = AppMode.getEnum(mode);
   }
   
   public static void setCorrectSolution(TaskSolution sol){
@@ -190,11 +186,27 @@ public class ApplicationContext {
       return graphPane;
   }
   
-  public static ApplicationEnvironment getApplicationEnvironment(){
+  public static ApplicationContext.ApplicationEnvironment getApplicationEnvironment(){
     return applicationEnvironment;
   }
   
-  public static void setApplicationEnvironment(ApplicationEnvironment en){
+  public static void setApplicationEnvironment(ApplicationContext.ApplicationEnvironment en){
       applicationEnvironment = en;
+  }
+  
+  public static boolean isAuthorMode(){
+      return (appMode.equals(AppMode.AUTHOR));
+  }
+
+  public static boolean isStudentMode(){
+      return (appMode.equals(AppMode.STUDENT));
+  }
+  
+  public static boolean isCoachedMode(){
+      return (appMode.equals(AppMode.COACHED));
+  }
+  
+  public static AppMode getAppMode(){
+      return appMode;
   }
 }

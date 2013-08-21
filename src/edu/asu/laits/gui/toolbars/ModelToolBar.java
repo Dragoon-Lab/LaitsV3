@@ -62,12 +62,11 @@ public class ModelToolBar extends JToolBar {
         add(getDeleteNodeButton());
         add(Box.createHorizontalStrut(5)); 
         add(getshowGraphButton());
-        if(ApplicationContext.getAppMode().equalsIgnoreCase("STUDENT") || 
-                ApplicationContext.getAppMode().equalsIgnoreCase("COACHED")){
+        if(ApplicationContext.isStudentMode() || ApplicationContext.isCoachedMode()){
             add(Box.createHorizontalStrut(5));
             add(getDoneButton());
         }
-        if(ApplicationContext.getAppMode().equalsIgnoreCase("COACHED")){
+        if(ApplicationContext.isCoachedMode()){
             disableDeleteNodeButton();
         }
         add(Box.createHorizontalStrut(5)); 
@@ -152,7 +151,7 @@ public class ModelToolBar extends JToolBar {
             doneButton
                     .addActionListener(new java.awt.event.ActionListener() {
                 public void actionPerformed(java.awt.event.ActionEvent e) {
-                    if (ApplicationContext.getAppMode().equalsIgnoreCase("AUTHOR")) {
+                    if (ApplicationContext.isAuthorMode()) {
                         return;
                     }
                     modelMenu.doneButtonAction();

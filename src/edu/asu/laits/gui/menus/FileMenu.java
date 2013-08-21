@@ -27,7 +27,7 @@ import edu.asu.laits.editor.listeners.GraphChangeListener;
 import edu.asu.laits.editor.listeners.GraphPropertiesChangeListener;
 import edu.asu.laits.editor.listeners.GraphSaveListener;
 import edu.asu.laits.gui.MainWindow;
-import edu.asu.laits.gui.nodeeditor.NodeEditor;
+import edu.asu.laits.gui.nodeeditor.NodeEditorView;
 import edu.asu.laits.logger.HttpAppender;
 import edu.asu.laits.model.SolutionNode;
 import edu.asu.laits.model.TaskSolution;
@@ -105,7 +105,7 @@ public class FileMenu extends JMenu {
         this.mainWindow = mainWindow;
         graphPane = pane;
 
-        if (ApplicationContext.getAppMode().equalsIgnoreCase("STUDENT")) {
+        if (ApplicationContext.isStudentMode()) {
             initializeTutorMenu();
         } else {
             initializeAuthorMenu();

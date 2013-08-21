@@ -79,14 +79,13 @@ public class NewNodeDescPanel extends JPanel{
     nodeEditor = ne;
     currentVertex = v;
     initPanel();
-    if(ApplicationContext.getAppMode().equalsIgnoreCase("COACHED")){
+    if(ApplicationContext.isCoachedMode()){
         addHelpBalloon(ApplicationContext.getFirstNextNode(), "onLoad", "InputNewNode");
   
     }
   }
   public void initPanel(){
-      if(ApplicationContext.getAppMode().equalsIgnoreCase("STUDENT") || 
-              ApplicationContext.getAppMode().equalsIgnoreCase("COACHED")){
+      if(ApplicationContext.isStudentMode() || ApplicationContext.isCoachedMode()){
           this.nodeNameTextField.setEditable(false);
           this.quantityDescriptionTextField.setEditable(false);
           initTree();
@@ -247,7 +246,7 @@ public class NewNodeDescPanel extends JPanel{
            this.quantityDescriptionTextField.setText(sb.toString().trim());
            this.nodeNameTextField.setText(node.getNodeName());
            this.repaint();
-        if(ApplicationContext.getAppMode().equalsIgnoreCase("COACHED") && ApplicationContext.getFirstNextNode() != null){
+        if(ApplicationContext.isCoachedMode() && ApplicationContext.getFirstNextNode() != null){
              addHelpBalloon(ApplicationContext.getFirstNextNode(), "descFilled", "InputNewNode");
        }
        }
@@ -349,7 +348,7 @@ public class NewNodeDescPanel extends JPanel{
       List<SolutionNode> correctNodeNames = solution.getSolutionNodes();
       
       String giveupNode = null;
-      if(ApplicationContext.getAppMode().equalsIgnoreCase("COACHED")){
+      if(ApplicationContext.isCoachedMode()){
           for(SolutionNode name : correctNodeNames){
              if(name.getNodeName().equalsIgnoreCase(ApplicationContext.getFirstNextNode())){
                   giveupNode = name.getNodeName();
@@ -423,7 +422,7 @@ public JComponent getLabel(String label){
 }
 
    private void addHelpBalloon(String name, String timing, String panel) {
-        if (ApplicationContext.getAppMode().equalsIgnoreCase("COACHED")) {
+        if (ApplicationContext.isCoachedMode()) {
            List<HelpBubble> bubbles = ApplicationContext.getHelp(name, panel, timing);
                 if(!bubbles.isEmpty()){
                     for(HelpBubble bubble : bubbles){ 

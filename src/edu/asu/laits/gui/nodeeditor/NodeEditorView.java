@@ -18,6 +18,7 @@
 package edu.asu.laits.gui.nodeeditor;
 
 import edu.asu.laits.editor.ApplicationContext;
+import edu.asu.laits.editor.ControllerFactory;
 import edu.asu.laits.editor.GraphEditorPane;
 import edu.asu.laits.gui.BlockingToolTip;
 import edu.asu.laits.model.HelpBubble;
@@ -29,7 +30,9 @@ import java.awt.Insets;
 import java.util.HashMap; 
 import java.util.List;
 import java.util.Map;
+import javax.swing.JButton;
 import javax.swing.JComponent;
+import javax.swing.JTabbedPane;
 import javax.swing.UIManager;
 import javax.swing.event.ChangeEvent;
 import javax.swing.event.ChangeListener;
@@ -39,7 +42,7 @@ import org.apache.log4j.Logger;
  *
  * @author ramayantiwari
  */
-public class NodeEditor extends javax.swing.JDialog {
+public class NodeEditorView extends javax.swing.JDialog {
 
     private DescriptionPanelView dPanel;
     private PlanPanelView pPanel;
@@ -54,6 +57,8 @@ public class NodeEditor extends javax.swing.JDialog {
     private int selectedTab;
     private GraphEditorPane graphPane;
     private Vertex currentVertex;
+    
+    private NodeEditorController _controller;
     /**
      * Logger
      */
@@ -62,15 +67,25 @@ public class NodeEditor extends javax.swing.JDialog {
     /**
      * Creates new form NodeEditor2
      */
-    public NodeEditor(GraphEditorPane editorPane, Vertex selected) {
+    public NodeEditorView(GraphEditorPane editorPane, Vertex selected) {
         super(editorPane.getMainFrame(), true);
         graphPane = editorPane;
         currentVertex = selected;
+        
+        try{
+            init();
+        }catch(NodeEditorException ex){
+            logs.fatal("Node Editor could not be initialized");
+        }   
+    }
+
+    private void init() throws NodeEditorException{
+        _controller = ControllerFactory.getNodeEditorController(this, currentVertex);
         initComponents();
         UIManager.getDefaults().put("TabbedPane.contentBorderInsets", new Insets(2, 0, -1, 0));
         setTabListener();
         initNodeEditor();
-        if(ApplicationContext.getAppMode().equalsIgnoreCase("COACHED")){
+        if(ApplicationContext.isCoachedMode()){
             if(currentVertex.getName().equalsIgnoreCase(""))
             {
                 addHelpBalloon(ApplicationContext.getFirstNextNode(), "onLoad", getTabName(selectedTab));
@@ -78,39 +93,29 @@ public class NodeEditor extends javax.swing.JDialog {
                 addHelpBalloon(currentVertex.getName(), "onLoad", getTabName(selectedTab));
                 
             }
-        }       
+        }    
     }
-
+    
+    
     private void initNodeEditor() {
         logs.debug("Initializing NodeEditor");
         activityLogs.debug("NodeEditor opened for Node '" + currentVertex.getName() + "'");
-        displayEnterButton();
+        
+        _controller.initActionButtons();
+        
         initTabs();
-        setTitle(getNodeEditorTitle());
+        
         setEditorMessage("", true);
         prepareNodeEditorDisplay();
-        if (ApplicationContext.getAppMode().equalsIgnoreCase("COACHED")) {
-            buttonCancel.setEnabled(false);
-        }
+        
         this.addWindowListener(new java.awt.event.WindowAdapter() {
             public void windowClosing(java.awt.event.WindowEvent e) {
-                closeNodeEditor();
+                _controller.processCancelAction();
             }
         });
         
     }
     
-    private String getNodeEditorTitle() {
-        String title = "Node Editor - ";
-        if (currentVertex.getName().equals("")) {
-            title += "New Node";
-        } else {
-            title += currentVertex.getName();
-        }
-
-        return title;
-    }
-
     private void prepareNodeEditorDisplay() {
         logs.debug("Preparing Node Editor Display");
         setLocationRelativeTo(null);
@@ -119,7 +124,7 @@ public class NodeEditor extends javax.swing.JDialog {
         setVisible(true);
         setResizable(false);
 
-        if (ApplicationContext.getAppMode().equalsIgnoreCase("COACHED")) {
+        if (ApplicationContext.isCoachedMode()) {
             if (!currentVertex.getPlanStatus().equals(Vertex.PlanStatus.CORRECT)
                     && !currentVertex.getPlanStatus().equals(Vertex.PlanStatus.GAVEUP)) {
                 tabPane.setEnabledAt(INPUTS, false);
@@ -182,7 +187,7 @@ public class NodeEditor extends javax.swing.JDialog {
             tabPane.setSelectedIndex(INPUTS);
         } else if (!currentVertex.getDescriptionStatus().equals(Vertex.DescriptionStatus.UNDEFINED)
                 && !currentVertex.getDescriptionStatus().equals(Vertex.DescriptionStatus.INCORRECT)) {
-            System.out.println("Setting Plan as current");
+            
             logs.debug("Setting Plan Panel as Current");
             activityLogs.debug("Node Editor is opend with Plan Tab for Node: " + currentVertex.getName());
             selectedTab = PLAN;
@@ -194,9 +199,7 @@ public class NodeEditor extends javax.swing.JDialog {
             tabPane.setSelectedIndex(DESCRIPTION);
         }
 
-
-        setCheckGiveupButtons();
-
+        _controller.initActionButtons();
     }
 
     private void setTabListener() {
@@ -220,10 +223,10 @@ public class NodeEditor extends javax.swing.JDialog {
                     return;
                 }
 
-                if (ApplicationContext.getAppMode().equalsIgnoreCase("AUTHOR")) {
+                if (ApplicationContext.isAuthorMode()) {
                     processEditorInput();
                 } else {
-                    if (!isCurrentPanelChecked() && ApplicationContext.getAppMode().equalsIgnoreCase("COACHED")) {
+                    if (!isCurrentPanelChecked() && ApplicationContext.isCoachedMode()) {
                         activityLogs.debug("User tried switching Tab without using Check or Giveup ");
                         // Need variables with button name text; see Bug #2104.
                         setEditorMessage("Please use Check or Demo buttons before proceeding.", true);
@@ -296,7 +299,8 @@ public class NodeEditor extends javax.swing.JDialog {
                     }
                     break;
                 }
-                setCheckGiveupButtons();
+                _controller.initActionButtons();
+                
                 logs.debug("Tab Stage Changed Action - Ends");
             }
         });
@@ -379,60 +383,7 @@ public class NodeEditor extends javax.swing.JDialog {
         return true;
     }
 
-    /**
-     * Method responsible for Enabling and Disabling Check/Giveup buttons based
-     * on the use case
-     */
-    private void setCheckGiveupButtons() {
-        logs.debug("Setting Check and Giveup Button for Tab " + getTabName(selectedTab));
-
-        if ((ApplicationContext.getAppMode().equalsIgnoreCase("STUDENT") || 
-                ApplicationContext.getAppMode().equalsIgnoreCase("COACHED"))) {
-            logs.debug("Enabling Check and Giveup");
-            this.checkButton.setEnabled(true);
-            this.giveUpButton.setEnabled(true);
-              
-            String taskPhase = ApplicationContext.getCorrectSolution().getPhase();
-
-            // Disable Giveup in Challege tasks
-            if (taskPhase.equalsIgnoreCase("Challenge")) {
-                this.giveUpButton.setEnabled(false);
-            }
-            
-            switch(selectedTab){
-            case DESCRIPTION:
-               if (currentVertex.getDescriptionStatus().equals(Vertex.DescriptionStatus.GAVEUP)) {
-                   giveUpButton.setEnabled(false);
-                   checkButton.setEnabled(false);
-               }
-               break;
-            case PLAN:
-                if (currentVertex.getPlanStatus().equals(Vertex.PlanStatus.GAVEUP)) {
-                    giveUpButton.setEnabled(false);
-                    checkButton.setEnabled(false);
-                }
-                break;
-            case INPUTS:
-                if (currentVertex.getInputsStatus().equals(Vertex.InputsStatus.GAVEUP)) {
-                    giveUpButton.setEnabled(false);
-                    checkButton.setEnabled(false);
-                }
-                break;
-            case CALCULATIONS:
-                if (currentVertex.getCalculationsStatus().equals(Vertex.CalculationsStatus.GAVEUP)) {
-                    giveUpButton.setEnabled(false);
-                    checkButton.setEnabled(false);
-                }
-                break;
-            }
-
-        } else {
-            logs.debug("Disabling Check and Giveup");
-            this.checkButton.setEnabled(false);
-            this.giveUpButton.setEnabled(false);
-        }
-    }
-
+    
     public void setEditorMessage(String msg, boolean err) {
         editorMsgLabel.setText(msg);
         if (err) {
@@ -478,13 +429,12 @@ public class NodeEditor extends javax.swing.JDialog {
         int solutionCheck = correctSolution.checkNodeNameOrdered(dPanel.getNodeName());
         if (solutionCheck == 1) {
             currentVertex.setDescriptionStatus(Vertex.DescriptionStatus.CORRECT);
-            //graphPane.getMainFrame().getMainMenu().getModelMenu().addDeleteNodeMenu();
+            
             setEditorMessage("", false);
             dPanel.setTextFieldBackground(Color.GREEN);
             activityLogs.debug("User entered correct description");
             dPanel.setEditableTree(false);
-            //ApplicationContext.nextCurrentOrder();
-            //ApplicationContext.removeNextNodes(currentVertex.getName());
+            
             ApplicationContext.setNextNodes(currentVertex.getName());
             tabPane.setEnabledAt(PLAN, true);
             tabPane.setForegroundAt(PLAN, Color.BLACK);
@@ -519,7 +469,7 @@ public class NodeEditor extends javax.swing.JDialog {
             pPanel.setEditableRadio(false);
             tabPane.setEnabledAt(INPUTS, true);
             tabPane.setForegroundAt(INPUTS, Color.BLACK);
-            if (ApplicationContext.getAppMode().equalsIgnoreCase("COACHED")) {
+            if (ApplicationContext.isCoachedMode()) {
                 addHelpBalloon(currentVertex.getName(), "descCheckDemo", "PLAN");
             }
         } else {
@@ -561,7 +511,7 @@ public class NodeEditor extends javax.swing.JDialog {
             iPanel.setEditableInputs(false);
             tabPane.setEnabledAt(CALCULATIONS, true);
             tabPane.setForegroundAt(CALCULATIONS, Color.BLACK);
-            if (ApplicationContext.getAppMode().equalsIgnoreCase("COACHED")) {
+            if (ApplicationContext.isCoachedMode()) {
                 addHelpBalloon(currentVertex.getName(), "descCheckDemo", "INPUTS");
             }
         } else {
@@ -598,7 +548,7 @@ public class NodeEditor extends javax.swing.JDialog {
             currentVertex.setCalculationsStatus(Vertex.CalculationsStatus.CORRECT);
             cPanel.setEditableCalculations(false);
             buttonCancel.setEnabled(true);
-            if (ApplicationContext.getAppMode().equalsIgnoreCase("COACHED")) {
+            if (ApplicationContext.isCoachedMode()) {
                 addHelpBalloon(currentVertex.getName(), "descCheckDemo", "CALCULATIONS");
             }
         } else {
@@ -643,44 +593,7 @@ public class NodeEditor extends javax.swing.JDialog {
         }
     }
 
-    private void processTutorModeOKAction() {
-        logs.debug("Processing Tutor Mode OK Button Action");
-        if (!isCheckGiveupButtonUsed()) {
-            activityLogs.debug("User pressed OK without using Check or Giveup button");
-            return;
-        }
-        activityLogs.debug("Closing NodeEditor because of OK action.");
-        this.dispose();
-    }
-
-    private boolean isCheckGiveupButtonUsed() {
-        logs.debug("Verifying if Check or Giveup button was used");
-
-        if (tabPane.getSelectedIndex() == DESCRIPTION
-                && currentVertex.getDescriptionStatus().equals(Vertex.DescriptionStatus.UNDEFINED)) {
-            showUndefinedTabErr();
-            return false;
-        } else if (tabPane.getSelectedIndex() == PLAN
-                && currentVertex.getPlanStatus().equals(Vertex.PlanStatus.UNDEFINED)) {
-            showUndefinedTabErr();
-            return false;
-        } else if (tabPane.getSelectedIndex() == INPUTS
-                && currentVertex.getInputsStatus().equals(Vertex.InputsStatus.UNDEFINED)) {
-            showUndefinedTabErr();
-            return false;
-        } else if (tabPane.getSelectedIndex() == CALCULATIONS
-                && currentVertex.getCalculationsStatus().equals(Vertex.CalculationsStatus.UNDEFINED)) {
-            showUndefinedTabErr();
-            return false;
-        }
-
-        return true;
-    }
-
-    private void showUndefinedTabErr() {
-        this.editorMsgLabel.setText("Please use Check or Giveup buttons before exiting");
-    }
-
+    
     public Vertex getCurrentVertex() {
         return currentVertex;
     }
@@ -709,41 +622,12 @@ public class NodeEditor extends javax.swing.JDialog {
     /**
      * Make necessary clean up and save graph session when NodeEditor closes
      */
-    private void closeNodeEditor() {
+    
 
-        activityLogs.debug("User pressed Close button for Node " + currentVertex.getName());
-        // Delete this vertex if its not defined and user hits Cancel
-        if (currentVertex.getDescriptionStatus().equals(Vertex.DescriptionStatus.UNDEFINED)
-                || currentVertex.getDescriptionStatus().equals(Vertex.DescriptionStatus.INCORRECT)) {
-            graphPane.setSelectionCell(currentVertex.getJGraphVertex());
-            graphPane.removeSelected();
-        }
-
-        activityLogs.debug("Closing NodeEditor because of Close action.");
-        if (!ApplicationContext.getAppMode().equalsIgnoreCase("COACHED")) {
-            graphPane.getMainFrame().getModelToolBar().enableDeleteNodeButton();
-            graphPane.getMainFrame().getMainMenu().getModelMenu().enableDeleteNodeMenu();
-        }
-
-        // Save Student's session to server
-        PersistenceManager.saveSession();
-
-        graphPane.getMainFrame().addHelpBalloon(currentVertex.getName(), "nodeEditorClose");
-        this.dispose();
-    }
-
-    private void displayEnterButton() {
-        if (ApplicationContext.getAppMode().equalsIgnoreCase("STUDENT") || 
-                ApplicationContext.getAppMode().equalsIgnoreCase("COACHED")) {
-            buttonOK.hide();
-        } else {
-            buttonOK.show();
-        }
-    }
     
     public void addHelpBalloon(String name, String timing, String panel) {
         logs.debug("Adding Help Bubble for "+panel);
-        if (ApplicationContext.getAppMode().equalsIgnoreCase("COACHED")) {
+        if (ApplicationContext.isCoachedMode()) {
             System.out.println("addhelpballoon passing in " + name);
             List<HelpBubble> bubbles = ApplicationContext.getHelp(name, panel, timing);
             if (!bubbles.isEmpty()) {
@@ -985,7 +869,7 @@ public class NodeEditor extends javax.swing.JDialog {
         switch(tabPane.getSelectedIndex()) {
         case DESCRIPTION:
             activityLogs.debug("Check button pressed for Description Panel");
-            if (ApplicationContext.getAppMode().equalsIgnoreCase("COACHED")) {
+            if (ApplicationContext.isCoachedMode()) {
                 checkDescriptionPanelCoached(correctSolution);
             } else {
 
@@ -1135,7 +1019,7 @@ public class NodeEditor extends javax.swing.JDialog {
     }
 
     private void buttonCancelActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_buttonCancelActionPerformed
-        closeNodeEditor();
+        _controller.processCancelAction();
     }//GEN-LAST:event_buttonCancelActionPerformed
 
     private void buttonOKActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_buttonOKActionPerformed
@@ -1149,6 +1033,26 @@ public class NodeEditor extends javax.swing.JDialog {
 
     }//GEN-LAST:event_buttonOKActionPerformed
 
+    public JButton getCancelButton(){
+        return buttonCancel;
+    }
+    
+    public JButton getCheckButton(){
+        return checkButton;
+    }
+    
+    public JButton getDemoButton(){
+        return giveUpButton;
+    }
+    
+    public JButton getOKButton(){
+        return buttonOK;
+    }
+    
+    public JTabbedPane getTabbedPane(){
+        return tabPane;
+    }
+    
     private void tabPaneMouseDragged(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_tabPaneMouseDragged
     }//GEN-LAST:event_tabPaneMouseDragged
 

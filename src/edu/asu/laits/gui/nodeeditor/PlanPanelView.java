@@ -44,7 +44,7 @@ public class PlanPanelView extends JPanel {
     private JTable table;
     private String selectedPlan;
     private boolean isViewEnabled = false;
-    private NodeEditor nodeEditor;
+    private NodeEditorView nodeEditor;
     private static String[] firstOption = {"a fixed, given number", "fixed value", "the number"};
     private static String[] secondOption = {"<html>proportional to the value of the <BR/> accumulator that it is input to", "function", "accumulator * proportion"};
     private static String[] thirdOption = {"said to increase", "accumulator", "increase"};
@@ -60,7 +60,7 @@ public class PlanPanelView extends JPanel {
     private static Logger activityLogs = Logger.getLogger("ActivityLogs");
     private JScrollPane scroll;
     
-    public PlanPanelView(NodeEditor ne) {
+    public PlanPanelView(NodeEditorView ne) {
         super(new BorderLayout(0, 5));
 
         nodeEditor = ne;
