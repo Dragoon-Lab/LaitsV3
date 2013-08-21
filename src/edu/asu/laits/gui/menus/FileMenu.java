@@ -217,7 +217,15 @@ public class FileMenu extends JMenu {
             v.setCorrectDescription(node.getCorrectDescription());
             v.setPlan(node.getNodePlan());
             v.setDescriptionStatus(Vertex.DescriptionStatus.CORRECT);
-            v.setPlanStatus(Vertex.PlanStatus.CORRECT);
+            boolean plan = solution.checkNodePlan(node.getNodeName(), node.getNodeType());
+            if(plan){
+             
+            v.setPlanStatus(Vertex.PlanStatus.CORRECT);   
+            } else{
+                
+            v.setPlanStatus(Vertex.PlanStatus.INCORRECT);
+            }
+                
             v.setEquation(node.getNodeEquation());
             v.setInitialValue(node.getInitialValue());
 

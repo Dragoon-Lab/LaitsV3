@@ -78,6 +78,9 @@ public class CalculationsPanelView extends javax.swing.JPanel {
     public void initPanel() {
         logs.debug("Initializing Calculations Panel for Node ");
         initializeAvailableInputNodes();
+        if((currentVertex.getCalculationsStatus().equals(Vertex.CalculationsStatus.CORRECT) || currentVertex.getCalculationsStatus().equals(Vertex.CalculationsStatus.GAVEUP)) && !ApplicationContext.getAppMode().equalsIgnoreCase("AUTHOR")) {
+            setEditableCalculations(false);
+        }
         
         if (currentVertex.getVertexType().equals(VertexType.CONSTANT)) {
             preparePanelForFixedValue();
@@ -139,10 +142,7 @@ public class CalculationsPanelView extends javax.swing.JPanel {
     public void showThatJListModelHasNoInputs() {
         availableInputJListModel.clear();
         availableInputJListModel.add(0, "This node does not have any inputs defined yet,");
-        availableInputJListModel.add(1, "please go back to the Inputs Tab and choose ");
-        availableInputJListModel.add(2, "at least one input, if there are not inputs ");
-        availableInputJListModel.add(3, "available, please exit this node and create ");
-        availableInputJListModel.add(4, "the needed nodes using the \"New node\" button.");
+        availableInputJListModel.add(1, "create one using Create Node button. ");
     }
     
     public String getFixedValue() {
@@ -185,8 +185,8 @@ public class CalculationsPanelView extends javax.swing.JPanel {
         calculatorPanel.setVisible(true);
         accumulatorPanel.setVisible(true);
         formulaInputArea.setText("");
-        accumulatorInitialValueBox.setText("");
-        valuesLabel.setText("Next Value = Current Value + ");
+  //      accumulatorInitialValueBox.setText("");
+        valuesLabel.setText("Change in " + currentVertex.getName() + " per " + ApplicationContext.getCorrectSolution().getGraphUnits() + " = ");
     }
     
     public void preparePanelForStockOrFlow() {
@@ -289,13 +289,15 @@ public class CalculationsPanelView extends javax.swing.JPanel {
         List<String> usedVariables = eval.getAllVariables();
         
         for (int i = 0; i < availableInputJListModel.getSize(); i++) {
-            availableVariables.add(String.valueOf(availableInputJListModel.get(i)));            
+            String s = availableInputJListModel.get(i).toString();
+            s = removeBoldfromListItem(s);
+            availableVariables.add(s);            
         }
 
         // Check if this equation uses all the inputs
         
-        for (String s : availableVariables) {
-            if (!usedVariables.contains(s)) {
+        for (String s : usedVariables) {
+            if (!availableVariables.contains(s)) {
                 nodeEditor.setEditorMessage("Input node " + s + " is not used in the equation.", true);
                 activityLogs.debug("User entered incorrect equation - "+
                         "Input node " + s + " is not used in the equation.");
@@ -335,14 +337,20 @@ public class CalculationsPanelView extends javax.swing.JPanel {
     
     public void setCheckedBackground(Color c) {
         
-        if (currentVertex.getVertexType().equals(Vertex.VertexType.CONSTANT)
-                || currentVertex.getVertexType().equals(Vertex.VertexType.STOCK)) {
+        if (currentVertex.getVertexType().equals(Vertex.VertexType.CONSTANT)) {
             fixedValueInputBox.setBackground(c);            
+        }
+        
+        if(currentVertex.getVertexType().equals(Vertex.VertexType.STOCK)) {
+            accumulatorInitialValueBox.setBackground(c);
         }
         
         if (currentVertex.getVertexType().equals(Vertex.VertexType.FLOW)
                 || currentVertex.getVertexType().equals(Vertex.VertexType.STOCK)) {
             formulaInputArea.setBackground(c);
+//            if(availableInputsJList.getBackground() != Color.YELLOW) {
+                availableInputsJList.setBackground(c);
+//            }
         }
     }
     
@@ -359,17 +367,8 @@ public class CalculationsPanelView extends javax.swing.JPanel {
         if (currentVertex.getVertexType().equals(Vertex.VertexType.CONSTANT)) {
             logs.debug("Setting Constant Value as " + correctNode.getNodeEquation());
             fixedValueInputBox.setText(correctNode.getNodeEquation());
-            fixedValueInputBox.setBackground(Color.YELLOW);
             reloadGraphPane();            
-        } else{
-            currentVertex.setVertexType(correctNode.getNodeType());            
         } 
-        
-        if (currentVertex.getVertexType().equals(Vertex.VertexType.STOCK)) {
-            accumulatorInitialValueBox.setText(String.valueOf(correctNode.getInitialValue()));
-        } else if (currentVertex.getVertexType().equals(Vertex.VertexType.FLOW)) {
-            fixedValueInputBox.setEditable(false);
-        }
         
         if (currentVertex.getVertexType().equals(Vertex.VertexType.FLOW)
                 || currentVertex.getVertexType().equals(Vertex.VertexType.STOCK)) {
@@ -391,10 +390,13 @@ public class CalculationsPanelView extends javax.swing.JPanel {
             for(String input: correctInputs){
                 addEdge(ApplicationContext.getGraphEditorPane().getModelGraph().getVertexByName(input), currentVertex);
             }
+            if (currentVertex.getVertexType().equals(Vertex.VertexType.STOCK)) {
+                accumulatorInitialValueBox.setText(String.valueOf(correctNode.getInitialValue()));
+           } 
             
             reloadGraphPane();
             formulaInputArea.setText(correctNode.getNodeEquation());
-            formulaInputArea.setBackground(Color.YELLOW);
+            setCheckedBackground(Color.YELLOW);
         }
         
         return true;
@@ -496,6 +498,11 @@ public class CalculationsPanelView extends javax.swing.JPanel {
         formulaInputArea.setRows(5);
         formulaInputArea.setToolTipText("Node Equation");
         formulaInputArea.setDisabledTextColor(new java.awt.Color(102, 102, 102));
+        formulaInputArea.addKeyListener(new java.awt.event.KeyAdapter() {
+            public void keyTyped(java.awt.event.KeyEvent evt) {
+                formulaInputAreaKeyTyped(evt);
+            }
+        });
         jScrollPane1.setViewportView(formulaInputArea);
 
         availableInputsLabel.setFont(new java.awt.Font("Lucida Grande", 1, 13)); // NOI18N
@@ -724,6 +731,10 @@ public class CalculationsPanelView extends javax.swing.JPanel {
      * disabled.
      */
     private void availableInputsJListMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_availableInputsJListMouseClicked
+        int i = availableInputsJList.getSelectedIndex();
+        
+        availableInputJListModel.set(i, removeBoldfromListItem(availableInputJListModel.get(i).toString()));
+
         formulaInputArea.setText(formulaInputArea.getText() + " "
                 + availableInputsJList.getSelectedValue().toString());
         activityLogs.debug("User selected input "+availableInputsJList.getSelectedValue().toString()+
@@ -733,7 +744,8 @@ public class CalculationsPanelView extends javax.swing.JPanel {
         if(!graph.containsEdge(connectedVertex, currentVertex)){
             addEdge(connectedVertex, currentVertex);
         }
-        availableInputsJList.setSelectedValue("* " + availableInputsJList.getSelectedValue(), true);
+       
+        availableInputJListModel.set(i, addBoldtoListItem(availableInputsJList.getSelectedValue().toString()));
 }//GEN-LAST:event_availableInputsJListMouseClicked
         
     private void fixedValueInputBoxKeyReleased(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_fixedValueInputBoxKeyReleased
@@ -770,6 +782,9 @@ public class CalculationsPanelView extends javax.swing.JPanel {
         // TODO add your handling code here:
         // Process Cancel Action for all the Tabs
         activityLogs.debug("User pressed Create node button on inputs tab for Node " + nodeEditor.getCurrentVertex().getName());
+        if(currentVertex.getVertexType()==Vertex.VertexType.STOCK){
+            currentVertex.setInitialValue(Double.valueOf(accumulatorInitialValueBox.getText()));
+        }
         Vertex v = new Vertex();
         v.setVertexIndex(nodeEditor.getGraphPane().getModelGraph().getNextAvailableIndex());
         nodeEditor.getGraphPane().addVertex(v);
@@ -788,6 +803,18 @@ public class CalculationsPanelView extends javax.swing.JPanel {
     private void accumulatorInitialValueBoxKeyReleased(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_accumulatorInitialValueBoxKeyReleased
         // TODO add your handling code here:
     }//GEN-LAST:event_accumulatorInitialValueBoxKeyReleased
+
+    private void formulaInputAreaKeyTyped(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_formulaInputAreaKeyTyped
+        // TODO add your handling code here:
+        for (int i = 0; i < availableInputJListModel.getSize(); i++) {
+            String s = removeBoldfromListItem(availableInputJListModel.get(i).toString());
+            availableInputJListModel.set(i, s);
+            if(formulaInputArea.getText().trim().contains(s)){
+               availableInputJListModel.set(i, addBoldtoListItem(s)); 
+            }
+        }
+        
+    }//GEN-LAST:event_formulaInputAreaKeyTyped
     
     public JTextArea getFormulaInputArea() {
         return formulaInputArea;
@@ -797,6 +824,39 @@ public class CalculationsPanelView extends javax.swing.JPanel {
         fixedValueInputBox.setEnabled(b);
         availableInputsJList.setEnabled(b);
         formulaInputArea.setEnabled(b);
+        accumulatorInitialValueBox.setEnabled(b);
+        setCreateButtonEnabled();
+    }
+    
+    public void setCreateButtonEnabled(){
+        if(ApplicationContext.getAppMode().equalsIgnoreCase("COACHED")){
+            SolutionNode node = ApplicationContext.getCorrectSolution().getNodeByName(currentVertex.getName());
+            List<String> correctInputs = node.getInputNodes();
+            boolean enabled = false;
+            for(String input : correctInputs){
+                boolean included = false;
+                for(int i=0; i < availableInputJListModel.getSize(); i++){
+                       if(availableInputJListModel.get(i).toString().equalsIgnoreCase(input)){
+                           included = true;
+                       }
+                }
+                if(!included){
+                    enabled = true;
+                    break;
+                }
+            }
+            buttonCreateNodeInputTab.setEnabled(enabled);
+        }
+    }
+    
+    private String addBoldtoListItem(String s){
+        return "<html><strong>" + s + "</strong></html>";
+    }
+    
+    private String removeBoldfromListItem(String s){
+        s = s.replace("<html><strong>", "");
+        s = s.replace("</strong></html>", "");
+        return s;
     }
     
     // Variables declaration - do not modify//GEN-BEGIN:variables

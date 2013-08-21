@@ -24,6 +24,7 @@ import edu.asu.laits.model.HelpBubble;
 import edu.asu.laits.model.PersistenceManager;
 import edu.asu.laits.model.TaskSolution;
 import edu.asu.laits.model.Vertex;
+import edu.asu.laits.model.Vertex.PlanStatus;
 import java.awt.Color;
 import java.awt.Insets;
 import java.util.HashMap; 
@@ -336,7 +337,7 @@ public class NodeEditor extends javax.swing.JDialog {
         logs.debug("Setting Check and Giveup Button for Tab " + getTabName(selectedTab));
 
         if ((ApplicationContext.getAppMode().equalsIgnoreCase("STUDENT") || 
-                ApplicationContext.getAppMode().equalsIgnoreCase("COACHED"))) {
+                ApplicationContext.getAppMode().equalsIgnoreCase("COACHED")) && selectedTab != PLAN) {
             logs.debug("Enabling Check and Giveup");
             this.checkButton.setEnabled(true);
             this.giveUpButton.setEnabled(true);
@@ -350,19 +351,19 @@ public class NodeEditor extends javax.swing.JDialog {
             
             switch(selectedTab){
             case DESCRIPTION:
-               if (currentVertex.getDescriptionStatus().equals(Vertex.DescriptionStatus.GAVEUP)) {
+               if (currentVertex.getDescriptionStatus().equals(Vertex.DescriptionStatus.GAVEUP)|| currentVertex.getDescriptionStatus().equals(Vertex.DescriptionStatus.CORRECT)) {
                    giveUpButton.setEnabled(false);
                    checkButton.setEnabled(false);
                }
                break;
             case PLAN:
-                if (currentVertex.getPlanStatus().equals(Vertex.PlanStatus.GAVEUP)) {
+                if (currentVertex.getPlanStatus().equals(Vertex.PlanStatus.GAVEUP) || currentVertex.getPlanStatus().equals(Vertex.PlanStatus.CORRECT)) {
                     giveUpButton.setEnabled(false);
                     checkButton.setEnabled(false);
                 }
                 break;
             case CALCULATIONS:
-                if (currentVertex.getCalculationsStatus().equals(Vertex.CalculationsStatus.GAVEUP)) {
+                if (currentVertex.getCalculationsStatus().equals(Vertex.CalculationsStatus.GAVEUP) || currentVertex.getCalculationsStatus().equals(Vertex.CalculationsStatus.CORRECT)) {
                     giveUpButton.setEnabled(false);
                     checkButton.setEnabled(false);
                 }
@@ -455,14 +456,20 @@ public class NodeEditor extends javax.swing.JDialog {
         repaint();
     }
 
-    private void checkPlanPanel(TaskSolution correctSolution) {
+    public void checkPlanPanel(TaskSolution correctSolution) {
         logs.debug("Checking Plan Panel");
         if (correctSolution.checkNodePlan(dPanel.getNodeName(), pPanel.getSelectedPlan())) {
-            pPanel.setSelectedPlanBackground(Color.GREEN);
+            if(currentVertex.getPlanStatus().equals(PlanStatus.UNDEFINED) || currentVertex.getPlanStatus().equals(PlanStatus.INCORRECT) ){
+                pPanel.setSelectedPlanBackground(Color.GREEN);
+                currentVertex.setPlanStatus(PlanStatus.CORRECT);
+//            } else if(currentVertex.getPlanStatus().equals(PlanStatus.MISSEDFIRST)) {
+//                pPanel.setSelectedPlanBackground(Color.YELLOW);
+//                currentVertex.setPlanStatus(PlanStatus.GAVEUP);
+//                
+            }
             checkButton.setEnabled(false);
             giveUpButton.setEnabled(false);
             setEditorMessage("", false);
-            currentVertex.setPlanStatus(Vertex.PlanStatus.CORRECT);
             activityLogs.debug("User entered correct Plan");
             pPanel.setEditableRadio(false);
             tabPane.setEnabledAt(CALCULATIONS, true);
@@ -471,10 +478,22 @@ public class NodeEditor extends javax.swing.JDialog {
                 addHelpBalloon(currentVertex.getName(), "descCheckDemo", "PLAN");
             }
         } else {
-            pPanel.setSelectedPlanBackground(Color.RED);
-            setEditorMessage("You have selected incorrect Plan for this Node.", true);
+//            pPanel.setSelectedPlanBackground(Color.RED);
+           // pPanel.setSelectedPlanBackground(Color.YELLOW);
+            setEditorMessage("You have selected incorrect Plan for this Node. Correct plan has been selected for you", true);
             activityLogs.debug("User entered incorrect Plan");
-            currentVertex.setPlanStatus(Vertex.PlanStatus.INCORRECT);
+//            if(currentVertex.getPlanStatus().equals(PlanStatus.UNDEFINED)){
+//               currentVertex.setPlanStatus(PlanStatus.MISSEDFIRST);
+//            } else {
+                pPanel.giveUpPlanPanel();
+                pPanel.processPlanPanel();
+                currentVertex.setPlanStatus(PlanStatus.GAVEUP);
+                checkButton.setEnabled(false);
+                giveUpButton.setEnabled(false);
+                pPanel.setEditableRadio(false);
+                tabPane.setEnabledAt(CALCULATIONS, true);
+                tabPane.setForegroundAt(CALCULATIONS, Color.BLACK);
+//            }
         }
         // Save Selected Plan to the Vertex Object
         pPanel.processPlanPanel();
@@ -988,7 +1007,7 @@ public class NodeEditor extends javax.swing.JDialog {
             
         case CALCULATIONS:
             activityLogs.debug("Giveup button pressed for Calculations Panel");
-            cPanel.setCheckedBackground(new Color(240, 240, 240));
+          //  cPanel.setCheckedBackground(new Color(240, 240, 240));
             if (cPanel.giveUpCalculationsPanel()) {
                 cPanel.processCalculationsPanel();
                 currentVertex.setCalculationsStatus(Vertex.CalculationsStatus.GAVEUP);
