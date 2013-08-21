@@ -1,3 +1,21 @@
+/**
+ * (c) 2013, Arizona Board of Regents for and on behalf of Arizona State
+ * University. This file is part of LAITS.
+ *
+ * LAITS is free software: you can redistribute it and/or modify it under the
+ * terms of the GNU Lesser General Public License as published by the Free
+ * Software Foundation, either version 3 of the License, or (at your option) any
+ * later version.
+ *
+ * LAITS is distributed in the hope that it will be useful, but WITHOUT ANY
+ * WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS FOR
+ * A PARTICULAR PURPOSE. See the GNU Lesser General Public License for more
+ * details.
+ *
+ * You should have received a copy of the GNU Lesser General Public License
+ * along with LAITS. If not, see <http://www.gnu.org/licenses/>.
+ */
+
 package edu.asu.laits.editor;
 
 import java.awt.Color;
@@ -22,12 +40,12 @@ import edu.asu.laits.editor.listeners.GraphPropertiesChangeListener;
 import edu.asu.laits.editor.listeners.InsertModeChangeListener;
 import edu.asu.laits.editor.listeners.UndoAndRedoAbleListener;
 import edu.asu.laits.gui.MainWindow;
+import edu.asu.laits.gui.menus.FileMenu;
+import edu.asu.laits.logger.HttpAppender;
+import edu.asu.laits.model.GraphLoader;
 import edu.asu.laits.properties.GlobalProperties;
 import edu.asu.laits.properties.GraphProperties;
-import java.awt.BorderLayout;
-import java.awt.Component;
-import java.awt.ComponentOrientation;
-import javax.swing.JLabel;
+import java.util.logging.Level;
 import javax.swing.SwingConstants;
 import org.apache.log4j.Logger;
 import org.jgraph.JGraph;
@@ -126,24 +144,27 @@ public class GraphEditorPane extends JGraph {
         this.addMouseMotionListener(mouseListener);
         this.setDisconnectable(false);
         this.setPortsVisible(false);
-
+        
         init();
+        
         setGridProps();
-        //setEditClickCount(20);
-
         Color background = this.getBackground();
         Color marqueeColor = new Color(255 - background.getRed(), 255 - background.getGreen(), 255 - background.getBlue());
-        this.setMarqueeColor(marqueeColor);
-
+        this.setMarqueeColor(marqueeColor);            
     }
 
+    /*
+     * Check for saved state on server.
+    */
+    
+    
+    
     public void setGridProps() {
         GlobalProperties prop = GlobalProperties.getInstance();
         setGridEnabled(prop.isGridEnabled());
         setGridVisible((prop.isGridEnabled() ? prop.isGridVisable() : false));
         setGridMode(prop.getGridMode());
         setGridSize(prop.getGridSize());
-
     }
 
     /**
@@ -703,4 +724,5 @@ public class GraphEditorPane extends JGraph {
     public void resetModelGraph() {
         init();
     }
+    
 }

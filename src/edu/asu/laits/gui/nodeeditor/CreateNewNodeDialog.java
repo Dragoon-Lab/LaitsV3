@@ -204,6 +204,8 @@ public class CreateNewNodeDialog extends javax.swing.JDialog {
                 currentVertex.setDescriptionStatus(Vertex.DescriptionStatus.CORRECT);
                 setEditorMessage("", false);
                 dPanel.setTextFieldBackground(Color.GREEN);
+                checkButton.setEnabled(false);
+                giveUpButton.setEnabled(false);
                 activityLogs.debug("User entered correct description");
                 dPanel.setEditableTree(false);
 
@@ -225,16 +227,21 @@ public class CreateNewNodeDialog extends javax.swing.JDialog {
             return;
         }  
         
-        int solutionCheck = correctSolution.checkNodeNameOrdered(dPanel.getNodeName(),ApplicationContext.getCurrentOrder());
+        int solutionCheck = correctSolution.checkNodeNameOrdered(dPanel.getNodeName());
         if (solutionCheck == 1) {
             currentVertex.setDescriptionStatus(Vertex.DescriptionStatus.CORRECT);
             //graphPane.getMainFrame().getMainMenu().getModelMenu().addDeleteNodeMenu();
             setEditorMessage("", false);
             dPanel.setTextFieldBackground(Color.GREEN);
+            checkButton.setEnabled(false);
+            giveUpButton.setEnabled(false);
             activityLogs.debug("User entered correct description");
             dPanel.setEditableTree(false);
-            ApplicationContext.nextCurrentOrder();
+            //ApplicationContext.nextCurrentOrder();
+            //ApplicationContext.removeNextNodes(currentVertex.getName());
+            ApplicationContext.setNextNodes(currentVertex.getName());            
             giveUpButton.setEnabled(false);
+            
             
         } else if(solutionCheck == 2){
             dPanel.setTextFieldBackground(Color.CYAN);
@@ -257,14 +264,17 @@ public class CreateNewNodeDialog extends javax.swing.JDialog {
         System.out.println("closing");
         if (currentVertex.getName().equals("")) {
             ne.getGraphPane().removeSelected();
-        } else {
-            ne.getInputsPanel().initPanel();
-            ne.getGraphPane().setSelectionCell(ne.getCurrentVertex());
+        } 
+        else {
+            ne.getCalculationsPanel().initPanel();
+           // ne.getGraphPane().setSelectionCell(ne.getCurrentVertex());
             ne.refreshInputs();
         }
 
-
+//        ne.getInputsPanel().setCreateButtonEnabled();
         this.dispose();
+        ne.addHelpBalloon(currentVertex.getName(), "newNodeClosed", "INPUTS");
+        
     }
 
     public void setEditorMessage(String msg, boolean err) {

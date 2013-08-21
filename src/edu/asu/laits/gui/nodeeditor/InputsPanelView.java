@@ -1,4 +1,4 @@
-/*
+/**
  * LAITS Project
  * Arizona State University
  * LAITS is free software: you can redistribute it and/or modify
@@ -35,6 +35,7 @@ import java.util.LinkedList;
 import java.util.Set;
 import java.util.Stack;
 import java.util.List;
+import java.util.Map;
 import javax.swing.*;
 import org.apache.log4j.Logger;
 import org.jgraph.graph.DefaultPort;
@@ -71,6 +72,7 @@ public class InputsPanelView extends javax.swing.JPanel implements ItemListener 
         Set<Vertex> vertexes = graph.vertexSet();
         Vertex currentV = this.nodeEditor.getCurrentVertex();
         descriptionTextArea.setText(currentV.getCorrectDescription());
+        descriptionTextArea.setLineWrap(true);
         checkboxList.clear();
         availableInputNodesPanels.removeAll();
         
@@ -98,7 +100,6 @@ public class InputsPanelView extends javax.swing.JPanel implements ItemListener 
             checkboxList.add(box);
             availableInputNodesPanels.add(box);
         }
-
         if (currentV.getVertexType() == VertexType.CONSTANT) {
             fixedValueOptionButton.setSelected(true);
         } else if (currentV.getVertexType() == VertexType.FLOW || currentV.getVertexType() == VertexType.STOCK) {
@@ -230,7 +231,8 @@ public class InputsPanelView extends javax.swing.JPanel implements ItemListener 
             availableInputs.remove(nodeEditor.getCurrentVertex().getName());
 
             if (!availableInputs.containsAll(correctInputs)) {
-                nodeEditor.setEditorMessage("Please define all the Nodes before using Giveup.", true);
+                // Button name should be a variable;  see Bug #2104
+                nodeEditor.setEditorMessage("Please define all the Nodes before using Demo.", true);
                 return false;
             }
 
@@ -242,10 +244,11 @@ public class InputsPanelView extends javax.swing.JPanel implements ItemListener 
             }
             inputNodesSelectionOptionButton.setSelected(true);
             this.displayCurrentInputsPanel(true);
-            nodeEditor.getCurrentVertex().setVertexType(VertexType.DEFAULT);
+        //    nodeEditor.getCurrentVertex().setVertexType(VertexType.DEFAULT);
         }
 
-        setOptionPanelBackground(Color.YELLOW);
+        setInputsTypeBackground(Color.YELLOW);
+        setInputValuesBackground(Color.YELLOW);
         nodeEditor.getGraphPane().getLayoutCache().reload();
         nodeEditor.getGraphPane().repaint();
         return true;
@@ -271,10 +274,13 @@ public class InputsPanelView extends javax.swing.JPanel implements ItemListener 
         jScrollPane2 = new javax.swing.JScrollPane();
         checkBoxScrollPane = new javax.swing.JScrollPane();
         availableInputNodesPanels = new javax.swing.JPanel();
+        buttonCreateNodeInputTab = new javax.swing.JButton();
 
         setLayout(new org.netbeans.lib.awtextra.AbsoluteLayout());
 
         contentPanel.setLayout(new org.netbeans.lib.awtextra.AbsoluteLayout());
+
+        radioPanel.setBorder(javax.swing.BorderFactory.createLineBorder(new java.awt.Color(0, 0, 0)));
 
         buttonGroup1.add(inputNodesSelectionOptionButton);
         inputNodesSelectionOptionButton.setText("Inputs:");
@@ -300,7 +306,7 @@ public class InputsPanelView extends javax.swing.JPanel implements ItemListener 
                 .addGroup(radioPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addComponent(fixedValueOptionButton)
                     .addComponent(inputNodesSelectionOptionButton))
-                .addContainerGap(76, Short.MAX_VALUE))
+                .addContainerGap(74, Short.MAX_VALUE))
         );
         radioPanelLayout.setVerticalGroup(
             radioPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -335,11 +341,11 @@ public class InputsPanelView extends javax.swing.JPanel implements ItemListener 
         availableInputNodesPanels.setLayout(availableInputNodesPanelsLayout);
         availableInputNodesPanelsLayout.setHorizontalGroup(
             availableInputNodesPanelsLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 292, Short.MAX_VALUE)
+            .addGap(0, 296, Short.MAX_VALUE)
         );
         availableInputNodesPanelsLayout.setVerticalGroup(
             availableInputNodesPanelsLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 242, Short.MAX_VALUE)
+            .addGap(0, 246, Short.MAX_VALUE)
         );
 
         checkBoxScrollPane.setViewportView(availableInputNodesPanels);
@@ -347,6 +353,15 @@ public class InputsPanelView extends javax.swing.JPanel implements ItemListener 
         jScrollPane2.setViewportView(checkBoxScrollPane);
 
         contentPanel.add(jScrollPane2, new org.netbeans.lib.awtextra.AbsoluteConstraints(10, 110, 300, 250));
+
+        buttonCreateNodeInputTab.setText("Create Node");
+        buttonCreateNodeInputTab.setHorizontalTextPosition(javax.swing.SwingConstants.CENTER);
+        buttonCreateNodeInputTab.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                buttonCreateNodeInputTabActionPerformed(evt);
+            }
+        });
+        contentPanel.add(buttonCreateNodeInputTab, new org.netbeans.lib.awtextra.AbsoluteConstraints(420, 440, -1, -1));
 
         add(contentPanel, new org.netbeans.lib.awtextra.AbsoluteConstraints(0, 6, 560, 480));
     }// </editor-fold>//GEN-END:initComponents
@@ -375,12 +390,24 @@ public class InputsPanelView extends javax.swing.JPanel implements ItemListener 
         refreshInputs();
     }//GEN-LAST:event_inputNodesSelectionOptionButtonActionPerformed
 
+    private void buttonCreateNodeInputTabActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_buttonCreateNodeInputTabActionPerformed
+        // TODO add your handling code here:
+        // Process Cancel Action for all the Tabs
+        activityLogs.debug("User pressed Create node button on inputs tab for Node " + nodeEditor.getCurrentVertex().getName());
+           Vertex v = new Vertex();
+            v.setVertexIndex(nodeEditor.getGraphPane().getModelGraph().getNextAvailableIndex());
+            nodeEditor.getGraphPane().addVertex(v);
+
+            CreateNewNodeDialog newNodeDialog = new CreateNewNodeDialog(nodeEditor, v);
+
+    }//GEN-LAST:event_buttonCreateNodeInputTabActionPerformed
+
     public void refreshInputs(){
         activityLogs.debug("Inputs Panel : User selected node type as INPUTS for Node "+
                 nodeEditor.getCurrentVertex().getName());
         
         this.displayCurrentInputsPanel(true);
-        nodeEditor.getCurrentVertex().setVertexType(Vertex.VertexType.DEFAULT);
+     //   nodeEditor.getCurrentVertex().setVertexType(Vertex.VertexType.DEFAULT);
         nodeEditor.getGraphPane().getLayoutCache().reload();
         nodeEditor.getGraphPane().repaint();
         inputNodesSelectionOptionButton.setSelected(true);        
@@ -436,18 +463,25 @@ public class InputsPanelView extends javax.swing.JPanel implements ItemListener 
         return false;
     }
 
-    public void setOptionPanelBackground(Color c) {
-        //radioPanel.setBackground(c);
-        if(this.getValueButtonSelected())
-            fixedValueOptionButton.setBackground(c);
-        else if(this.getInputsButtonSelected()){
-            inputNodesSelectionOptionButton.setBackground(c);
-            availableInputNodesPanels.setBackground(c);
-        }
+//    public void setOptionPanelBackground(Color c, boolean paintBoth) {
+//        setInputsTypeBackground(c);
+//        if(paintBoth){
+//            setInputValuesBackground(c);
+//        }
+//    }
+    
+    public void setInputsTypeBackground(Color c){
+        radioPanel.setBackground(c);
+        inputNodesSelectionOptionButton.setBackground(c);
+        fixedValueOptionButton.setBackground(c);
+    }
+    
+    public void setInputValuesBackground(Color c){
+        availableInputNodesPanels.setBackground(c);
     }
 
     public void resetOptionPanelBackground() {
-        //radioPanel.setBackground(new Color(238, 238, 238));
+        radioPanel.setBackground(new Color(238, 238, 238));
         inputNodesSelectionOptionButton.setBackground(new Color(238, 238, 238));
         fixedValueOptionButton.setBackground(new Color(238, 238, 238));
         availableInputNodesPanels.setBackground(new Color(238, 238, 238));
@@ -477,17 +511,58 @@ public class InputsPanelView extends javax.swing.JPanel implements ItemListener 
             sb.append("UNDEFINED");
         
         return sb.toString();
+        
     }
+    
+    public JComponent getLabel(String label){
+ 
+    Map<String, JComponent> map = new HashMap<String, JComponent>();
+    map.put("radioPanel", radioPanel);
+    map.put("jScrollPane1", jScrollPane1);
+    map.put("jScrollPane2", jScrollPane2);
+    map.put("buttonCreateNodeInputTab", buttonCreateNodeInputTab);
+    if(map.containsKey(label)){
+        return map.get(label);
+    }
+    else {
+        return null;
+    }
+}
     
     public void setEditableInputs(Boolean b){
         fixedValueOptionButton.setEnabled(b);
         inputNodesSelectionOptionButton.setEnabled(b);
         availableInputNodesPanels.setEnabled(b);
+        for(JCheckBox J : checkboxList){
+            J.setEnabled(b);
+        }
+        buttonCreateNodeInputTab.setEnabled(b);
     }
     
+    public void setCreateButtonEnabled() {
+        boolean showCreateButton = false;
+        boolean isInputListed = false;
+        List<String> inputNodes = ApplicationContext.getCorrectSolution().getNodeByName(nodeEditor.getCurrentVertex().getName()).getInputNodes();
+        for(String node : inputNodes) {
+            isInputListed = false;
+            for(JCheckBox J : checkboxList){
+                if(J.getText().equalsIgnoreCase(node)) { 
+                    isInputListed = true;
+                    break;
+                   }
+                }
+            if(!isInputListed){
+                showCreateButton = true; 
+            }
+
+        }
+        buttonCreateNodeInputTab.setEnabled(showCreateButton);
+        
+    }
     
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JPanel availableInputNodesPanels;
+    private javax.swing.JButton buttonCreateNodeInputTab;
     private javax.swing.ButtonGroup buttonGroup1;
     private javax.swing.JScrollPane checkBoxScrollPane;
     private javax.swing.JPanel contentPanel;

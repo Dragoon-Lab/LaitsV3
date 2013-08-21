@@ -49,4 +49,5 @@ public class SolutionDTreeNode extends DefaultMutableTreeNode{
     public String getNodeDescription(){
         return description;
     }
+    
 }

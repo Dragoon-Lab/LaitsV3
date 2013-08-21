@@ -5,6 +5,8 @@
 package edu.asu.laits.gui.nodeeditor;
 
 import edu.asu.laits.editor.ApplicationContext;
+import edu.asu.laits.gui.BlockingToolTip;
+import edu.asu.laits.model.HelpBubble;
 import edu.asu.laits.model.TaskSolution;
 import edu.asu.laits.model.Vertex;
 import java.awt.BorderLayout;
@@ -14,11 +16,16 @@ import java.awt.Dimension;
 import java.awt.GridLayout;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.Map;
 import java.util.Vector;
 import javax.swing.AbstractCellEditor;
 import javax.swing.BorderFactory;
 
 import javax.swing.ButtonGroup;
+import javax.swing.CellRendererPane;
+import javax.swing.JComponent;
 import javax.swing.JPanel;
 import javax.swing.JRadioButton;
 import javax.swing.JScrollPane;
@@ -26,6 +33,9 @@ import javax.swing.JTable;
 import javax.swing.table.AbstractTableModel;
 import javax.swing.table.TableCellEditor;
 import javax.swing.table.TableCellRenderer;
+import javax.swing.table.TableModel;
+import org.apache.log4j.Logger;
+import edu.asu.laits.model.Vertex.VertexType;
 
 public class PlanPanelView extends JPanel {
 
@@ -36,14 +46,16 @@ public class PlanPanelView extends JPanel {
     private String selectedPlan;
     private boolean isViewEnabled = false;
     private NodeEditor nodeEditor;
-    private static String[] firstOption = {"a fixed, given number", "fixed value", "the number"};
-    private static String[] secondOption = {"<html>proportional to the value of the <BR/> accumulator that it is input to", "function", "accumulator * proportion"};
-    private static String[] thirdOption = {"said to increase", "accumulator", "increase"};
-    private static String[] fourthOption = {"said to decrease", "accumulator", "- decrease"};
-    private static String[] fifthOption = {"said to both increase and decrease", "accumulator", "increase - decrease"};
-    private static String[] sixedOption = {"the difference of two quantities", "function", "quantity1 - quantity2"};
-    private static String[] seventhOption = {"the ratio of two quantities", "function", "quantity1 / quantity2"};
+    private static String[] firstOption = {"<html>a constant whose value is <br />defined in the problem</html>", "parameter", "the number"};
+    private static String[] secondOption = {"<html>a quantity whose new value depends <br />on its old value and its inputs</html>", "accumulator", "initial value +/- input"};
+    private static String[] thirdOption = {"a quantity that depends on its inputs alone", "function", "input 1 * input 2"};
 
+    /**
+     * Logger
+     */
+    private static Logger logs = Logger.getLogger("DevLogs");
+    private static Logger activityLogs = Logger.getLogger("ActivityLogs");
+    private JScrollPane scroll;
     
     public PlanPanelView(NodeEditor ne) {
         super(new BorderLayout(0, 5));
@@ -51,9 +63,9 @@ public class PlanPanelView extends JPanel {
         nodeEditor = ne;
         initPanel();
     }
-    
+
     public void initPanel() {
-        System.out.println("Initializing Plan Panel");
+        logs.debug("Initializing Plan Panel");
         setBorder(BorderFactory.createEmptyBorder(5, 5, 5, 5));
         tableModel = new MyTableModel();
         table = new JTable(tableModel);
@@ -62,23 +74,21 @@ public class PlanPanelView extends JPanel {
         table.setDefaultRenderer(String.class, new StatusRenderer());
 
         table.setRowHeight(36);
-        table.getColumnModel().getColumn(0).setPreferredWidth(260);
-        table.getColumnModel().getColumn(1).setPreferredWidth(150);
-        table.getColumnModel().getColumn(2).setPreferredWidth(170);
+        table.getColumnModel().getColumn(0).setPreferredWidth(280);
+        table.getColumnModel().getColumn(1).setPreferredWidth(140);
+        table.getColumnModel().getColumn(2).setPreferredWidth(160);
 
         table.getColumnModel().getColumn(0).setResizable(false);
         table.getColumnModel().getColumn(1).setResizable(false);
         table.getColumnModel().getColumn(2).setResizable(false);
         table.addMouseListener(new MouseAdapter() {
-             @Override
-                public void mousePressed(MouseEvent e)
-                {
-                    table.setSelectionBackground(new Color(201, 197, 199));
-                }
-                
+            @Override
+            public void mousePressed(MouseEvent e) {
+                table.setSelectionBackground(new Color(201, 197, 199));
+            }
         });
 
-        JScrollPane scroll = new JScrollPane(table);
+        scroll = new JScrollPane(table);
         scroll.setPreferredSize(new Dimension(577, 335));
         scroll.setMinimumSize(new Dimension(577, 335));
 
@@ -86,15 +96,10 @@ public class PlanPanelView extends JPanel {
         tableModel.add(new TableEntry(firstOption[0], firstOption[1], firstOption[2]));
         tableModel.add(new TableEntry(secondOption[0], secondOption[1], secondOption[2]));
         tableModel.add(new TableEntry(thirdOption[0], thirdOption[1], thirdOption[2]));
-        tableModel.add(new TableEntry(fourthOption[0], fourthOption[1], fourthOption[2]));
-        tableModel.add(new TableEntry(fifthOption[0], fifthOption[1], fifthOption[2]));
-        tableModel.add(new TableEntry(sixedOption[0], sixedOption[1], sixedOption[2]));
-        tableModel.add(new TableEntry(seventhOption[0], seventhOption[1], seventhOption[2]));
-        
+
         setSelectedPlan(nodeEditor.getCurrentVertex().getPlan());
     }
 
-    
     public void initPanelForNewNode() {
 
         resetPlanPanel();
@@ -102,15 +107,14 @@ public class PlanPanelView extends JPanel {
 
     private void resetPlanPanel() {
         isViewEnabled = false;
-
-
     }
 
     public boolean processPlanPanel() {
         int rowIndex = table.getSelectedRow();
-        
+
         if (rowIndex >= 0) {
-            nodeEditor.getCurrentVertex().setPlan(getSelectedPlan());
+            nodeEditor.getCurrentVertex().setVertexType(getSelectedPlan());
+            //setPlanType(getSelectedPlan());
         } else {
             nodeEditor.setEditorMessage("Please select a plan for this node.", true);
             return false;
@@ -122,59 +126,58 @@ public class PlanPanelView extends JPanel {
      * Method to set the initialize the selected plan radio button
      */
     private void setSelectedPlan(Vertex.Plan plan) {
-        System.out.println("Setting Selected plan to : "+plan);
-        
+        logs.debug("Setting Selected plan to : " + plan);
+
         if (plan.equals(Vertex.Plan.FIXED)) {
-            table.getSelectionModel().setSelectionInterval(0, 0);            
-        } else if (plan.equals(Vertex.Plan.DECREASE)) {
-            table.getSelectionModel().setSelectionInterval(3, 3);
-        } else if (plan.equals(Vertex.Plan.INCREASE)) {
-            table.getSelectionModel().setSelectionInterval(2, 2);            
-        } else if (plan.equals(Vertex.Plan.INCREASE_AND_DECREASE)) {
-            table.getSelectionModel().setSelectionInterval(4, 4);
-        } else if (plan.equals(Vertex.Plan.PROPORTIONAL)) {
+            table.getSelectionModel().setSelectionInterval(0, 0);
+        } else if (plan.equals(Vertex.Plan.DECREASE) || plan.equals(Vertex.Plan.INCREASE) || plan.equals(Vertex.Plan.INCREASE_AND_DECREASE)) {
             table.getSelectionModel().setSelectionInterval(1, 1);
-        } else if (plan.equals(Vertex.Plan.RATIO)) {
-            table.getSelectionModel().setSelectionInterval(6, 6);
-        } else if (plan.equals(Vertex.Plan.DIFFERENCE)) {
-            table.getSelectionModel().setSelectionInterval(5, 5);
+        } else if (plan.equals(Vertex.Plan.PROPORTIONAL) || plan.equals(Vertex.Plan.RATIO) || plan.equals(Vertex.Plan.DIFFERENCE)) {
+            table.getSelectionModel().setSelectionInterval(2, 2);
         } else {
             table.getSelectionModel().clearSelection();
         }
     }
 
-    public Vertex.Plan getSelectedPlan() {
-        if(table.getSelectedRow() == 0){
-            return Vertex.Plan.FIXED;
-        }else if(table.getSelectedRow() == 3){
-            return Vertex.Plan.DECREASE;
-        }else if(table.getSelectedRow() == 5){
-            return Vertex.Plan.DIFFERENCE;
-        }else if(table.getSelectedRow() == 2){
-            return Vertex.Plan.INCREASE;
-        }else if(table.getSelectedRow() == 4){
-            return Vertex.Plan.INCREASE_AND_DECREASE;
-        }else if(table.getSelectedRow() == 6){
-            return Vertex.Plan.RATIO;
-        }else if(table.getSelectedRow() == 1){
-            return Vertex.Plan.PROPORTIONAL;
-        }else{
-            return Vertex.Plan.UNDEFINED;
+    public Vertex.VertexType getSelectedPlan() {
+        if (table.getSelectedRow() == 0) {
+            return Vertex.VertexType.CONSTANT;
+        } else if (table.getSelectedRow() == 1) {
+            return Vertex.VertexType.STOCK;
+        } else if (table.getSelectedRow() == 2) {
+            return Vertex.VertexType.FLOW;
+        } else {
+            return VertexType.DEFAULT;
         }
     }
 
+    public void setPlanType(Vertex.Plan plan){
+        System.out.println("setting plan type");
+        if(plan.compareTo(Vertex.Plan.FIXED) == 0){
+            nodeEditor.getCurrentVertex().setVertexType(VertexType.CONSTANT);
+        System.out.println("setting plan type constant");
+        } else if(plan.compareTo(Vertex.Plan.DECREASE) == 0 || plan.compareTo(Vertex.Plan.INCREASE) == 0 || plan.compareTo(Vertex.Plan.INCREASE_AND_DECREASE) == 0){
+            nodeEditor.getCurrentVertex().setVertexType(VertexType.STOCK);
+        System.out.println("setting plan type stock");  
+        } else if(plan.compareTo(Vertex.Plan.DIFFERENCE) == 0 || plan.compareTo(Vertex.Plan.RATIO) == 0 || plan.compareTo(Vertex.Plan.PROPORTIONAL) == 0) {
+             nodeEditor.getCurrentVertex().setVertexType(VertexType.FLOW);
+        System.out.println("setting plan type flow"); 
+        }
+    }
+    
     public boolean isViewEnabled() {
-        if(nodeEditor.getCurrentVertex().getDescriptionStatus().equals(Vertex.DescriptionStatus.CORRECT) ||
-                nodeEditor.getCurrentVertex().getDescriptionStatus().equals(Vertex.DescriptionStatus.GAVEUP))
+        if (nodeEditor.getCurrentVertex().getDescriptionStatus().equals(Vertex.DescriptionStatus.CORRECT)
+                || nodeEditor.getCurrentVertex().getDescriptionStatus().equals(Vertex.DescriptionStatus.GAVEUP)) {
             return true;
-        else 
+        } else {
             return false;
+        }
     }
 
     public void setSelectedPlanBackground(Color c) {
         table.setSelectionBackground(c);
-        StatusEditor s = (StatusEditor)table.getCellEditor(table.getSelectedRow(), 0);
-        
+        StatusEditor s = (StatusEditor) table.getCellEditor(table.getSelectedRow(), 0);
+
         s.setStatusPanelBackgound(c);
     }
 
@@ -186,7 +189,7 @@ public class PlanPanelView extends JPanel {
         TaskSolution solution = ApplicationContext.getCorrectSolution();
         Vertex.Plan correctPlan = solution.getNodeByName(
                 nodeEditor.getCurrentVertex().getName()).getNodePlan();
-        System.out.println("Found Correct Plan as : "+correctPlan);
+        System.out.println("Found Correct Plan as : " + correctPlan);
         setSelectedPlan(correctPlan);
         setSelectedPlanBackground(Color.YELLOW);
     }
@@ -197,22 +200,14 @@ public class PlanPanelView extends JPanel {
         sb.append(planToString(getSelectedPlan()) + "'");
         return sb.toString();
     }
-
-    private String planToString(Vertex.Plan p) {
-        if (p.equals(Vertex.Plan.DECREASE)) {
-            return "Decrease";
-        } else if (p.equals(Vertex.Plan.INCREASE)) {
-            return "Increase";
-        } else if (p.equals(Vertex.Plan.DIFFERENCE)) {
-            return "Difference";
-        } else if (p.equals(Vertex.Plan.FIXED)) {
-            return "Fixed";
-        } else if (p.equals(Vertex.Plan.INCREASE_AND_DECREASE)) {
-            return "Increase and Decrease";
-        } else if (p.equals(Vertex.Plan.PROPORTIONAL)) {
-            return "Proportional";
-        } else if (p.equals(Vertex.Plan.RATIO)) {
-            return "Ratio";
+    
+    private String planToString(Vertex.VertexType p) {
+        if (p.equals(Vertex.VertexType.CONSTANT)) {
+            return "Parameter";
+        } else if (p.equals(Vertex.VertexType.STOCK)) {
+            return "Accumulator";
+        } else if (p.equals(Vertex.VertexType.FLOW)) {
+            return "Function";
         } else {
             return "Undefined";
         }
@@ -220,6 +215,17 @@ public class PlanPanelView extends JPanel {
 
     public void setEditableRadio(Boolean b) {
         table.setEnabled(b);
+    }
+
+    public JComponent getLabel(String label) {
+          Map<String, JComponent> map = new HashMap<String, JComponent>();
+        map.put("table", table.getTableHeader());
+        if (map.containsKey(label)) {
+            return map.get(label);
+        } else {
+            return null;
+        }
+        
     }
 
     private class TableEntry {
@@ -292,7 +298,6 @@ public class PlanPanelView extends JPanel {
             return Object.class;
         }
 
-        
         @Override
         public boolean isCellEditable(int rowIndex, int columnIndex) {
             if (columnIndex == 0) {
@@ -329,8 +334,7 @@ public class PlanPanelView extends JPanel {
         StatusPanel() {
             super(new GridLayout(0, 1));
             setOpaque(true);
-            theSingleOption = createRadio("");
-
+            theSingleOption = createRadio("");            
         }
 
         private JRadioButton createRadio(String status) {
@@ -348,8 +352,6 @@ public class PlanPanelView extends JPanel {
         public String getLabel() {
             return theSingleOption.getText();
         }
-        
-        
     }
 
     private class StatusEditor extends AbstractCellEditor implements TableCellEditor {
@@ -376,9 +378,9 @@ public class PlanPanelView extends JPanel {
             }
             return theStatusPanel;
         }
-        
-        public void setStatusPanelBackgound(Color c){
-            theStatusPanel.setBackground(c);            
+
+        public void setStatusPanelBackgound(Color c) {
+            theStatusPanel.setBackground(c);
         }
     }
 
@@ -388,7 +390,7 @@ public class PlanPanelView extends JPanel {
         public Component getTableCellRendererComponent(JTable table, Object value,
                 boolean isSelected, boolean hasFocus, int row, int column) {
             setLabel((String) value);
-            
+
             if (isSelected) {
                 setBackground(new Color(201, 197, 199));
             } else {
@@ -398,6 +400,4 @@ public class PlanPanelView extends JPanel {
             return this;
         }
     }
-
-    
 }

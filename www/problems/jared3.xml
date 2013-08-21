@@ -1,0 +1,92 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<Task phase="Intro" type="Construct">
+<TaskName>Jared and Oprah with difference</TaskName>
+<TaskDescription>Create a model with four nodes: NEWLINE
+    *Jared weight:  Jared always weighs a certain amount more than Oprah. NEWLINE
+    *Jared extra weight:  This is 50 pounds, which is how much more he weighs than Oprah. NEWLINE
+    *Oprah weight:  She starts at 140 pounds and decreases by a certain amount a week.NEWLINE
+    *Oprah weight loss:  She loses 1.5 pounds a week.</TaskDescription>
+  <URL>images/jared-and-oprah.jpg</URL>
+  <StartTime>0</StartTime>
+  <EndTime>10</EndTime>
+  <Units>Days</Units>
+  <NodeCount>4</NodeCount>
+  <Nodes>
+    <Node type="constant" name="Jared extra weight" extra="no">
+      <CorrectDescription>How much Jared weighs more than Oprah</CorrectDescription>
+      <Plan>fixed value</Plan>
+      <Inputs/>
+      <Outputs>
+        <Name>Jared weight</Name>
+      </Outputs>
+      <Equation>50.0</Equation>
+      <InitialValue>50.0</InitialValue>
+    </Node>
+    <Node type="stock" name="Oprah weight" extra="no">
+      <CorrectDescription>How much Oprah weighs at the end of the week</CorrectDescription>
+      <Plan>said to decrease</Plan>
+      <Inputs>
+       <Name>Oprah weight loss</Name>
+      </Inputs>
+      <Outputs>
+        <Name>Jared weight</Name>
+      </Outputs>
+      <Equation>- Oprah weight loss</Equation>
+      <InitialValue>140.0</InitialValue>
+    </Node>
+    <Node type="constant" name="Oprah weight loss" extra="no">
+      <CorrectDescription>How much Oprah loses each week</CorrectDescription>
+      <Plan>fixed value</Plan>
+      <Inputs/>
+      <Outputs>
+        <Name>Oprah weight</Name>
+      </Outputs>
+      <Equation>1.5</Equation>
+      <InitialValue>1.5</InitialValue>
+    </Node>
+    <Node type="flow" name="Jared weight" extra="no">
+      <CorrectDescription>How much Jared weighs at the end of the week</CorrectDescription>
+      <Plan>the difference of two quantities</Plan>
+      <Order>1</Order>
+      <Inputs>
+        <Name>Oprah weight</Name>
+        <Name>Jared extra weight</Name>
+      </Inputs>
+      <Outputs/>
+      <Equation>Oprah weight + Jared extra weight</Equation>
+      <InitialValue>0.0</InitialValue>
+    </Node>
+  </Nodes>
+  <DescriptionTree>     
+   <Node level="root">
+      <Description>How much Jared</Description>           
+        <Node level="leaf">
+          <Description>weighs more than Oprah</Description>
+          <NodeName>Jared extra weight</NodeName>
+        </Node>
+        <Node level="leaf">
+          <Description>weighs at the end of each week</Description>
+          <NodeName>Jared weight</NodeName>
+        </Node>
+        <Node level="leaf">
+          <Description>lose each week</Description>
+          <NodeName>Jared weight loss</NodeName>
+        </Node>
+    </Node>
+    <Node level="root">
+      <Description>How much does Oprah</Description>             
+        <Node level="leaf">
+          <Description>weigh at the end of each week</Description>
+          <NodeName>Oprah weight</NodeName>
+        </Node>
+        <Node level="leaf">
+          <Description>lose each week</Description>
+          <NodeName>Oprah weight loss</NodeName>
+        </Node>
+        <Node level="leaf">
+          <Description>earn each week</Description>
+          <NodeName>Oprah salary</NodeName>
+        </Node>
+    </Node></DescriptionTree>
+</Task>

@@ -6,13 +6,13 @@
 
     <script>
         function reset_options(){
-            document.getElementById('mode').options.length=0;
-            document.getElementById('problem_category').options.length=0;
+            //document.getElementById('mode').options.length=0;
+            //document.getElementById('problem_category').options.length=0;
             $('#problem_category').prop('disabled', false);
             $('#problem_id').prop('disabled', false);
             return true;
         }
-    </script>
+    </script> 
 
     <title>LAITS Demo</title>
 
@@ -129,7 +129,7 @@
                     username: "Please enter your Username.",
                 },
                 submitHandler: function(form) {
-                    form.submit();
+                    form.submit();                   
                 }
             });
 
@@ -141,7 +141,7 @@
                 if($("#mode").val() == "STUDENT"){
                     $('#problem_category').prop('disabled', false);
                     $('#problem_id').prop('disabled', false);
-                    location.reload(); 
+                    //location.reload(); //reloads page to reset values; enable if issue with problems resetting when user goes back to "Student" mode
                 }else if($("#mode").val() == "AUTHOR"){
                     $('#problem_category').prop('disabled', true);
                     $('#problem_id').prop('disabled', true);
@@ -152,8 +152,6 @@
                 }else{
                     $('#problem_category').prop('disabled', false);
                     $('#problem_id').prop('disabled', false);
-
-
                 }
             });
         });
@@ -184,7 +182,8 @@
     </script>
 
 </head>
-<body onbeforeunload='reset_options()'>
+<body>
+    <!-- Removed "onbeforeunload='reset_options()'" from body tag to correct form reset problems after download-->
 <div id="page-wrap">
 
     <div id="content">
@@ -224,12 +223,7 @@
 
                     <div class="fieldgroup">
                         <label for="problem_id">Problem: </label>
-                        <select id="problem_id" name="problem_id">
-                            <option value="105">Intro Problem 1</option>
-                            <option value="106">Intro Problem 2</option>
-                            <option value="107">Intro Problem 3</option>
-                            <option value="108">Intro Problem 4</option>
-                        </select>
+                        <input id="problem_id" type="text" name="problem_id" placeholder="Enter problem ID" onChange="javascript:this.value=this.value.toLowerCase();"/>
                     </div>
 
                     <div class="fieldgroup">
@@ -241,6 +235,7 @@
                         <p class="right">By clicking Continue, you agree to our <a target="_blank"
                                                                                   href="">policy</a>.</p>
                         <input type="submit" value="Continue" class="submit">
+                        
                     </div>
 
                 </fieldset>

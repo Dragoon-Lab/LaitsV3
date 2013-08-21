@@ -1,28 +1,17 @@
 <?php
 
 $problem = $_GET['taskid'];
-$section = $_GET['section'];
 
-if($section)
+if(isset($_GET['section']))
   {
     /*
       If section is given as argument, then look for 
       section-authored problems stored in database.
     */
+    $section=$_GET['section'];
     $user = $_GET['user'];
-    
-    // To log into database, create file db_user_password
-    // with user name and password.  then "chmod 600 db_user_password"
-    $myFile = "../db_user_password";
-    $fh = fopen($myFile, 'r') or die("Could not find password file");
-    $dbuser = chop(fgets($fh));
-    $dbpass = chop(fgets($fh));
-    $dbname = chop(fgets($fh));
-    if(strlen($dbname)==0){
-      $dbname='laitsad_laitsdb';
-    }
-    fclose($fh);
-    
+
+    require "db-login.php";
     $con = new mysqli("localhost", $dbuser, $dbpass,$dbname);
     if ($con->connect_errno) {
       echo "Failed to connect to MySQL: (" . $con->connect_errno . ") " . $con->connect_error;

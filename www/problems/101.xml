@@ -3,31 +3,45 @@
   <TaskName>ASU Commuters</TaskName>
   <URL>http://www.statepress.com/wp-content/uploads/2011/04/4.21-Upass.jpg</URL>
   <TaskDescription>
-  Problem: Currently, 24,000 commuters purchase and use parking permits at ASU Tempe campus for their private motor vehicles. On the other hand approximately 14,000 commuters purchases and use ASU's U-pass, which allows for unlimited access to local busses, shuttles and Light Rail. So the difference is 10,000 more parking permits are sold than the total number of U-passes purchased in the first year. In addition to the motor vehicles used at the Tempe campus there are more than 17,000 students using bicycles each day. Transportation planners are considering raising the parking fees and adding more public and alternative forms of transportation to help increase the number of commuters using public transportation each year. 
-They estimate that doing this would increase the number of commuters purchasing and using U-passes by about 4% per year.  As more commuters use public transportation the number of private commuters will decrease each year. This would also decrease the number of commuters using private motor vehicles by about 2% a year. In 10 years, they hope the difference will become close to zero or maybe even go negative.
-Goal: Graph the annual difference between the number of commuters using private vehicles and those taking public transportation over 10 years.</TaskDescription>
-  <ShortDescription>Function: difference between private and public commuters= private commuters  public commuters Accumulator: private commuters = private commuters  number of private commuters lost annuallyinitial value = 24000\n Function: number of private commuters lost annually = private commuters * proportion of private commuters lost annually\n Given: proportion of private commuters lost annually = 0.02\n Accumulator: public commuters = public commuters + number of public commuters added annuallyinitial value = 14000\n Function: number of public commuters added annually = public commuters * proportion of public commuters added annually Given: proportion of public commuters added annually = 0.04 Given: bicycle commuters = 17000</ShortDescription>
+      Problem: Currently, 24,000 drivers purchase and use parking permits at ASU's Tempe campus for their NEWLINE
+      private motor vehicles. On the other hand approximately 14,000 commuters purchase and use ASU's NEWLINE
+      U-pass, which allows for unlimited access to local busses, shuttles and the Light Rail. So the difference NEWLINE
+      is 10,000 more parking permits are sold than the total number of U-passes purchased in the first year. NEWLINE
+      In addition to the motor vehicles used at the Tempe campus there are more than 17,000 students using NEWLINE
+      bicycles each day. Transportation planners are considering raising the parking fees and adding more NEWLINE
+      public and alternative forms of transportation to help increase the number of commuters using public NEWLINE
+      transportation each year. They estimate that doing this would increase the number of commuters NEWLINE
+      purchasing and using U-passes by about 4% per year.  As more commuters use public transportation the NEWLINE
+      number of private drivers will decrease each year. This would decrease the number of drivers using NEWLINE
+      private motor vehicles by about 2% a year. In 10 years, they hope the difference will become close NEWLINE
+      to zero or maybe even go negative. NEWLINE NEWLINE
+      Goal: Graph the annual difference between the number of drivers using private vehicles and commuters NEWLINE
+      using public transportation over 10 years. For this model we will generally refer to those driving private NEWLINE
+      vehicles as drivers and to those using public transportation as commuters.
+  </TaskDescription>
+  <ShortDescription>Function: driver commuter diff.= private drivers  public commuters Accumulator: private drivers = private drivers  number of drivers lost annuallyinitial value = 24000\n Function: number of private drivers lost annually = private drivers * drivers lost prop. annually\n Given: drivers lost prop. annually = 0.02\n Accumulator: public commuters = public commuters + number of public commuters added annuallyinitial value = 14000\n Function: number of public commuters added annually = public commuters * proportion of public commuters added annually Given: proportion of public commuters added annually = 0.04 Given: bicycle users = 17000</ShortDescription>
   <StartTime>0</StartTime>
   <EndTime>10</EndTime>
   <Units>years</Units>
-  <Vertexes>
-    <VertexLabel>proportion of public commuters added</VertexLabel>
-    <VertexLabel>public commuters added</VertexLabel>
-    <VertexLabel>public commuters</VertexLabel>
-    <VertexLabel>private commuters</VertexLabel>
-    <VertexLabel>private commuters lost</VertexLabel>
-    <VertexLabel>proportion of private commuters lost</VertexLabel>
-    <VertexLabel>difference between private and public commuters</VertexLabel>
-    <VertexLabel>bicycle commuters</VertexLabel>
-  </Vertexes>
   
-    <NodeCount>8</NodeCount>
+  <Vertexes>
+    <VertexLabel>new commuter prop.</VertexLabel>
+    <VertexLabel>commuters added</VertexLabel>
+    <VertexLabel>public commuters</VertexLabel>
+    <VertexLabel>private drivers</VertexLabel>
+    <VertexLabel>drivers lost</VertexLabel>
+    <VertexLabel>drivers lost prop.</VertexLabel>
+    <VertexLabel>driver commuter diff.</VertexLabel>
+    <VertexLabel>bicycle users</VertexLabel>
+  </Vertexes>
 
-  <ProblemSeeking>difference between private and public commuters</ProblemSeeking>
+  <NodeCount>8</NodeCount>
+
+  <ProblemSeeking>driver commuter diff.</ProblemSeeking>
   <CorrespondingSentence>Graph the annual difference between the number of commuters using private vehicles and those taking public transportation over 10 years.</CorrespondingSentence>
   
   <Nodes>
-    <Node type="constant" name="bicycle commuters" extra="yes">
+    <Node type="constant" name="bicycle users" extra="yes">
       <Inputs></Inputs>
       <Outputs></Outputs>
       <Equation>17000</Equation>
@@ -35,21 +49,21 @@ Goal: Graph the annual difference between the number of commuters using private 
       <CorrectDescription>The number of commuters that use a bicycle for transportation each day on ASU campus</CorrectDescription>
       <Plan>fixed value</Plan>
     </Node>
-    <Node type="constant" name="proportion of private commuters lost" extra="no">
+    <Node type="constant" name="drivers lost prop." extra="no">
       <Inputs></Inputs>
       <Outputs>
-      	<Node name="private commuters lost"></Node>
+          <Name>drivers lost</Name>
       </Outputs>
       <Equation>.02</Equation>
       <InitialValue>.02</InitialValue>
-      <CorrectDescription>The proportion of private commuters that stop using private transportation to private commuters who continue to use private transportation each year</CorrectDescription>
+      <CorrectDescription>The proportion of private drivers that stop using private transportation to private drivers who continue to use private transportation each year</CorrectDescription>
       <Plan>fixed value</Plan>
     </Node>
 	
-	<Node type="constant" name="proportion of public commuters added" extra="no">
+	<Node type="constant" name="new commuter prop." extra="no">
       <Inputs></Inputs>
       <Outputs>
-      	<Node name="public commuters added"></Node>
+      	<Name>commuters added</Name>
       </Outputs>
       <Equation>.04</Equation>
       <InitialValue>.04</InitialValue>
@@ -59,68 +73,68 @@ Goal: Graph the annual difference between the number of commuters using private 
 	
 	<Node type="stock" name="public commuters" extra="no">
       <Inputs>        
-        <Node name="public commuters added" type="plus"></Node>
+          <Name>commuters added</Name>
       </Inputs>
       <Outputs>
-      	<Node name="public commuters added"></Node>
-      	<Node name="difference between private and public commuters"></Node>
+          <Name>commuters added</Name>
+          <Name>driver commuter diff.</Name>
       </Outputs>
       <InitialValue>14000</InitialValue>
-      <Equation>+public_commuters_added</Equation>
+      <Equation>+commuters added</Equation>
       <CorrectDescription>The number of commuters that use public transportation each year</CorrectDescription>
       <Plan>said to increase</Plan>
     </Node>
 
-	<Node type="stock" name="private commuters" extra="no">
+	<Node type="stock" name="private drivers" extra="no">
       <Inputs>
-      	<Node name="private commuters lost" type="minus"></Node>
+          <Name>drivers lost</Name>
       </Inputs>
       <Outputs>
-		<Node name="private commuters lost"></Node>
-		<Node name="difference between private and public commuters"></Node>
-	  </Outputs>
+          <Name>drivers lost</Name>
+          <Name>driver commuter diff.</Name>
+      </Outputs>
       <InitialValue>24000</InitialValue>
-      <Equation>-private_commuters_lost</Equation>
+      <Equation>-drivers lost</Equation>
       <CorrectDescription>The number of commuters that use private transportation each year</CorrectDescription>
       <Plan>said to decrease</Plan>
     </Node>
     
-    <Node type="flow" name="private commuters lost" extra="no">
+    <Node type="flow" name="drivers lost" extra="no">
       <Inputs>        
-        <Node name="proportion of private commuters lost"></Node>
-        <Node name="private commuters"></Node>
+          <Name>drivers lost prop.</Name>
+          <Name>private drivers</Name>
       </Inputs>
       <Outputs>
-      	<Node name="private commuters"></Node>
+          <Name>private drivers</Name>
       </Outputs>
       <InitialValue></InitialValue>
-	  <Equation>private_commuters*proportion_of_private_commuters_lost</Equation>
-      <CorrectDescription>The number of private commuters that stop using private transportation each year</CorrectDescription>
+	  <Equation>private drivers*drivers lost prop.</Equation>
+      <CorrectDescription>The number of private drivers that stop using private transportation each year</CorrectDescription>
       <Plan>proportional to accumulator and input</Plan>
     </Node>
     
-    <Node type="flow" name="difference between private and public commuters" extra="no">
+    <Node type="flow" name="driver commuter diff." extra="no">
       <Inputs>        
-        <Node name="private commuters"></Node>
-        <Node name="public commuters"></Node>
+          <Name>private drivers</Name>
+          <Name>public commuters</Name>
       </Inputs>
       <Outputs></Outputs>
       <InitialValue></InitialValue>
-      <Equation>private_commuters-public_commuters</Equation>
-      <CorrectDescription>The number of private commuters minus the number of public commuters each year</CorrectDescription>
-      <Plan>difference of two quantities</Plan>
+      <Equation>private drivers-public commuters</Equation>
+      <CorrectDescription>The number of private drivers minus the number of public commuters each year</CorrectDescription>
+      <Plan>the difference of two quantities</Plan>
     </Node>
 	
-    <Node type="flow" name="public commuters added" extra="no">
+    <Node type="flow" name="commuters added" extra="no">
       <Inputs>        
-        <Node name="proportion of public commuters added"></Node>
-        <Node name="public commuters"></Node>
+          <Name>new commuter prop.</Name>
+          <Name>public commuters</Name>
       </Inputs>
       <Outputs>
-      	<Node name="public commuters"></Node>
+          <Name>public commuters</Name>
       </Outputs>
       <InitialValue></InitialValue>
-      <Equation>public_commuters*proportion_of_public_commuters_added</Equation>
+      <Equation>public commuters*new commuter prop.</Equation>
       <CorrectDescription>The number of commuters that start using public transportation each year</CorrectDescription>
       <Plan>proportional to accumulator and input</Plan>
     </Node>
@@ -133,23 +147,23 @@ Goal: Graph the annual difference between the number of commuters using private 
       <Node level="intermediate">
         <Description>private</Description>            
         <Node level="leaf">
-          <Description>commuters minus the number of public commuters each year</Description>
-          <NodeName>difference between private and public commuters</NodeName>
+          <Description>drivers minus the number of public commuters each year</Description>
+          <NodeName>driver commuter diff.</NodeName>
         </Node>
         <Node level="leaf">
-          <Description>commuters that stop using private transportation each year</Description>
-          <NodeName>private commuters lost</NodeName>
+          <Description>drivers that stop using private transportation each year</Description>
+          <NodeName>drivers lost</NodeName>
         </Node>
-	  </Node>
+      </Node>
       <Node level="intermediate">
         <Description>commuters that start using</Description>            
         <Node level="leaf">
           <Description>public transportation each year</Description>
-          <NodeName>public commuters added</NodeName>
+          <NodeName>commuters added</NodeName>
         </Node>
         <Node level="leaf">
           <Description>private transportation each year</Description>
-          <NodeName>private commuters added</NodeName>
+          <NodeName>private drivers added</NodeName>
         </Node>
 	  </Node>
       <Node level="intermediate">
@@ -160,11 +174,11 @@ Goal: Graph the annual difference between the number of commuters using private 
         </Node>
         <Node level="leaf">
           <Description>private transportation each year</Description>
-          <NodeName>private commuters</NodeName>
+          <NodeName>private drivers</NodeName>
         </Node>
         <Node level="leaf">
           <Description>a bicycle for transportation each day on ASU campus</Description>
-          <NodeName>bicycle commuters</NodeName>
+          <NodeName>bicycle users</NodeName>
         </Node>
 	  </Node>
     </Node>
@@ -174,11 +188,11 @@ Goal: Graph the annual difference between the number of commuters using private 
         <Description></Description>            
         <Node level="leaf">
           <Description>new public commuters that start taking public transportation to public commuters who already are using public transportation each year</Description>
-          <NodeName>proportion of public commuters added</NodeName>
+          <NodeName>new commuter prop.</NodeName>
         </Node>
         <Node level="leaf">
-          <Description>private commuters that stop using private transportation to private commuters who continue to use private transportation each year</Description>
-          <NodeName>proportion of private commuters lost</NodeName>
+          <Description>private drivers that stop using private transportation to private drivers who continue to use private transportation each year</Description>
+          <NodeName>drivers lost prop.</NodeName>
         </Node>
 	  </Node>
     </Node>

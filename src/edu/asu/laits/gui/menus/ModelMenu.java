@@ -1,28 +1,32 @@
-/** (c) 2013, Arizona Board of Regents for and on behalf of Arizona State University.
- * This file is part of LAITS.
+/**
+ * (c) 2013, Arizona Board of Regents for and on behalf of Arizona State
+ * University. This file is part of LAITS.
  *
- * LAITS is free software: you can redistribute it and/or modify
- * it under the terms of the GNU Lesser General Public License as published by
- * the Free Software Foundation, either version 3 of the License, or
- * (at your option) any later version.
+ * LAITS is free software: you can redistribute it and/or modify it under the
+ * terms of the GNU Lesser General Public License as published by the Free
+ * Software Foundation, either version 3 of the License, or (at your option) any
+ * later version.
  *
- * LAITS is distributed in the hope that it will be useful,
- * but WITHOUT ANY WARRANTY; without even the implied warranty of
- * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
- * GNU Lesser General Public License for more details.
-
+ * LAITS is distributed in the hope that it will be useful, but WITHOUT ANY
+ * WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS FOR
+ * A PARTICULAR PURPOSE. See the GNU Lesser General Public License for more
+ * details.
+ *
  * You should have received a copy of the GNU Lesser General Public License
- * along with LAITS.  If not, see <http://www.gnu.org/licenses/>.
+ * along with LAITS. If not, see <http://www.gnu.org/licenses/>.
  */
-
 package edu.asu.laits.gui.menus;
 
 import edu.asu.laits.editor.ApplicationContext;
 import edu.asu.laits.editor.GraphEditorPane;
 import edu.asu.laits.editor.GraphRangeEditor;
+import edu.asu.laits.gui.ForumViewPanel;
+import edu.asu.laits.gui.GraphViewPanel;
 import edu.asu.laits.gui.MainWindow;
 import edu.asu.laits.gui.nodeeditor.NodeEditor;
 import edu.asu.laits.model.Graph;
+import edu.asu.laits.model.GraphSaver;
+import edu.asu.laits.model.LaitsSolutionExporter;
 import edu.asu.laits.model.ModelEvaluationException;
 import edu.asu.laits.model.ModelEvaluator;
 import edu.asu.laits.model.SolutionNode;
@@ -31,13 +35,21 @@ import edu.asu.laits.model.TaskSolutionReader;
 import edu.asu.laits.model.Vertex;
 import java.awt.event.ActionEvent;
 import java.awt.event.KeyEvent;
+import java.io.File;
+import java.io.FileWriter;
+import java.io.IOException;
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Iterator;
 import java.util.List;
+import javax.swing.JDialog;
+import javax.swing.JFileChooser;
 import javax.swing.JMenu;
 import javax.swing.JMenuItem;
 import javax.swing.JOptionPane;
+import javax.swing.filechooser.FileFilter;
 import org.apache.log4j.Logger;
+import org.jgraph.graph.CellView;
 import org.jgraph.graph.DefaultGraphCell;
 import org.jgraph.graph.DefaultPort;
 
@@ -51,16 +63,17 @@ import org.jgraph.graph.DefaultPort;
 public class ModelMenu extends JMenu {
 
     private JMenuItem addNodeMenuItem = null;
-    private JMenuItem runModelMenuItem = null;
     private JMenuItem editTimeRangeMenuItem = null;
     private JMenuItem exportSolutionMenuItem = null;
-    private JMenu deleteNodeMenu= null;
+    private JMenuItem showForumMenuItem = null;
+    private JMenu deleteNodeMenu = null;
+    private JMenuItem showGraphMenuItem = null;
     private GraphEditorPane graphPane;
     private MainWindow mainWindow;
     private static Logger logs = Logger.getLogger("DevLogs");
     private static Logger activityLogs = Logger.getLogger("ActivityLogs");
-    private HashMap<String,JMenuItem> menuMap = new HashMap<String,JMenuItem>();
-
+    private HashMap<String, JMenuItem> menuMap = new HashMap<String, JMenuItem>();
+    private JFileChooser saveAsFileChooser = null;
     /**
      * This method initializes
      *
@@ -81,10 +94,15 @@ public class ModelMenu extends JMenu {
         this.setMnemonic(KeyEvent.VK_M);
         this.add(getAddNodeMenuItem());
         this.add(getDeleteNodeMenu());
-        this.add(getRunModelMenuItem());
-        this.add(getEditTimeRangeMenuItem());
-        this.add(getExportSolutionMenuItem());
-
+        this.add(getShowGraphMenuItem());
+        this.add(getshowForumMenuItem());
+        
+        if(ApplicationContext.getAppMode().equalsIgnoreCase("AUTHOR")){
+            this.add(getExportSolutionMenuItem());
+            this.add(getEditTimeRangeMenuItem());
+        }
+        disableShowGraphMenu();
+        disableDeleteNodeMenu();
     }
 
     /**
@@ -105,15 +123,13 @@ public class ModelMenu extends JMenu {
         }
         return addNodeMenuItem;
     }
-    
-    private JMenu getDeleteNodeMenu()
-    {
-        if (deleteNodeMenu == null) 
-        {
+
+    private JMenu getDeleteNodeMenu() {
+        if (deleteNodeMenu == null) {
             deleteNodeMenu = new JMenu("Delete Node");
-            
+
         }
-        
+
         return deleteNodeMenu;
     }
 
@@ -121,21 +137,40 @@ public class ModelMenu extends JMenu {
      * This method initializes runModelMenuItem
      *
      */
-    private JMenuItem getRunModelMenuItem() {
-        if (runModelMenuItem == null) {
-            runModelMenuItem = new JMenuItem();
-            runModelMenuItem.setText("Run Model ");
-            runModelMenuItem
+    private JMenuItem getShowGraphMenuItem() {
+        if (showGraphMenuItem == null) {
+            showGraphMenuItem = new JMenuItem();
+            showGraphMenuItem.setText("Show Graph");
+            showGraphMenuItem
                     .addActionListener(new java.awt.event.ActionListener() {
                 public void actionPerformed(java.awt.event.ActionEvent e) {
                     activityLogs.debug("User pressed Run Model Button.");
-                    runModelAction();
+                    showNodeGraph();
                 }
             });
         }
-        return runModelMenuItem;
+        return showGraphMenuItem;
     }
 
+    
+    /**
+     * This method initializes selectOtherSelectionMenuItem
+     */
+    private JMenuItem getExportSolutionMenuItem() {
+        if (exportSolutionMenuItem == null) {
+            exportSolutionMenuItem = new JMenuItem();
+            exportSolutionMenuItem.setText("Export Solution");
+            exportSolutionMenuItem
+                    .addActionListener(new java.awt.event.ActionListener() {
+                public void actionPerformed(java.awt.event.ActionEvent e) {
+                    activityLogs.debug("User pressed Export Solution Button.");
+                    exportSolution();
+                }
+            });
+        }
+        return exportSolutionMenuItem;
+    }
+    
     /**
      * This method initializes selectNeighbourSelectionMenuItem
      *
@@ -158,18 +193,96 @@ public class ModelMenu extends JMenu {
     /**
      * This method initializes selectOtherSelectionMenuItem
      */
-    private JMenuItem getExportSolutionMenuItem() {
-        if (exportSolutionMenuItem == null) {
-            exportSolutionMenuItem = new JMenuItem();
-            exportSolutionMenuItem.setText("Export Solution");
-            exportSolutionMenuItem
+    private JMenuItem getshowForumMenuItem() {
+        if (showForumMenuItem == null) {
+            showForumMenuItem = new JMenuItem();
+            showForumMenuItem.setText("Show Forum");
+            showForumMenuItem
                     .addActionListener(new java.awt.event.ActionListener() {
                 public void actionPerformed(java.awt.event.ActionEvent e) {
-                    activityLogs.debug("User pressed Export Solution Button.");
+                    showForumButtonAction();
                 }
             });
         }
-        return exportSolutionMenuItem;
+        return showForumMenuItem;
+    }
+
+    public void showNodeGraph() {
+        activityLogs.debug("User pressed Run Model button.");
+
+        if (runModel()) {
+            showChartDialog();
+        }
+    }
+
+    public boolean runModel() {
+        // Check if Model has already been executed and is still valid
+        if (isGraphPrepared()) {
+            return true;
+        }
+
+        ModelEvaluator me = new ModelEvaluator((Graph) graphPane.getModelGraph());
+        MainWindow window = (MainWindow) graphPane.getMainFrame();
+        if (me.isModelComplete()) {
+            if (!me.hasExtraNodes()) {
+                try {
+                    me.run();
+
+                    if (ApplicationContext.getAppMode().equalsIgnoreCase("STUDENT") || 
+                            ApplicationContext.getAppMode().equalsIgnoreCase("COACHED")) {
+                        me.validateStudentGraph();
+                    }
+
+                    window.getStatusBarPanel().setStatusMessage("", true);
+                    activityLogs.debug("Model ran successfully.");
+
+                    // Enable Done Button
+                    if (ApplicationContext.isProblemSolved()) {
+                        mainWindow.getModelToolBar().enableDoneButton();
+                    }
+
+                } catch (ModelEvaluationException ex) {
+                    window.getStatusBarPanel().setStatusMessage(ex.getMessage(), false);
+                }
+                graphPane.repaint();
+            } else {
+                activityLogs.debug("Model had extra nodes, so user could not run the model.");
+                JOptionPane.showMessageDialog(window, "Model has extra nodes in it, please remove them before running the model.");
+            }
+
+            return true;
+        } else {
+            activityLogs.debug("Model was incomplete, so user could not run the model.");
+            JOptionPane.showMessageDialog(window, "The model is incomplete, please complete all the nodes before running Model");
+            window.getStatusBarPanel().setStatusMessage("Please complete all the nodes before running Model", false);
+            return false;
+        }
+    }
+
+    private boolean isGraphPrepared() {
+        boolean isEnable = true;
+
+        Iterator<Vertex> allVertices = graphPane.getModelGraph().vertexSet().iterator();
+        while (allVertices.hasNext()) {
+            Vertex v = allVertices.next();
+            if (v.getGraphsStatus().equals(Vertex.GraphsStatus.UNDEFINED)) {
+                isEnable = false;
+                break;
+            }
+        }
+
+        return isEnable;
+    }
+
+    private void showChartDialog() {
+        JDialog graphValuesDialog = new JDialog(graphPane.getMainFrame(), true);
+        GraphViewPanel gPanel = new GraphViewPanel(graphPane.getModelGraph(), graphValuesDialog);
+        graphValuesDialog.setTitle("Model Graph");
+        graphValuesDialog.setSize(610, 530);
+        graphValuesDialog.setLocationRelativeTo(null);
+
+        graphValuesDialog.setResizable(false);
+        graphValuesDialog.setVisible(true);
     }
 
     public void menuSelectionChanged(boolean value) {
@@ -178,18 +291,15 @@ public class ModelMenu extends JMenu {
             Object[] selectedVertices = graphPane.getSelectionCells(graphPane
                     .getGraphLayoutCache().getCells(false, true, false, false));
 
-            boolean verticesSelected = !((selectedVertices == null)
-                    || (selectedVertices.length == 0));
-
             getEditTimeRangeMenuItem().setEnabled(true);
-            getExportSolutionMenuItem().setEnabled(verticesSelected);
+
         }
     }
 
     public void newNodeAction() {
         activityLogs.debug("User Pressed Create Node Button");
         MainWindow window = (MainWindow) graphPane.getMainFrame();
-        if (newNodeAllowed()) {
+        if (notAllNodesDefined()) {
             activityLogs.debug("User is allowed to create a new node");
             Vertex v = new Vertex();
             v.setVertexIndex(graphPane.getModelGraph().getNextAvailableIndex());
@@ -203,224 +313,155 @@ public class ModelMenu extends JMenu {
             }
 
             graphPane.repaint();
-            NodeEditor editor = new NodeEditor(graphPane, true);
+            NodeEditor editor = new NodeEditor(graphPane, v);
+            
         } else {
             activityLogs.debug("User was not allowed to create new node as all the nodes were already present");
-            JOptionPane.showMessageDialog(window, "The model is already using all the correct nodes.");            
+            JOptionPane.showMessageDialog(window, "The model is already using all the correct nodes.");
         }
 
     }
-    
-    public void deleteNodeAction()
-    {
-        
+
+    public void deleteNodeAction() {
+
         Object[] cells = graphPane.getSelectionCells();
-        for(Object obj:cells)
-        {
-            DefaultGraphCell cell = (DefaultGraphCell)obj;
-            Vertex v = (Vertex)cell.getUserObject();
-            if(v!=null)
-            {
-                activityLogs.debug("User pressed Delete button for Node "+v.getName());
-                
-                if(menuMap.get(v.getName())!=null)
-                {
+        for (Object obj : cells) {
+            DefaultGraphCell cell = (DefaultGraphCell) obj;
+            Vertex v = (Vertex) cell.getUserObject();
+            if (v != null) {
+                activityLogs.debug("User pressed Delete button for Node " + v.getName());
+
+                if (menuMap.get(v.getName()) != null) {
                     deleteNodeMenu.remove(menuMap.get(v.getName()));
                 }
-                
+
             }
-            
+
         }
-        
-        //DefaultGraphCell cell = (DefaultGraphCell)graphPane.getSelectionCell();
-        //Vertex currentVertex = (Vertex)cell.getUserObject();
-        
-        
+
         graphPane.removeSelected();
 
-        Iterator it = graphPane.getModelGraph().vertexSet().iterator();
+        Iterator<Vertex> it = graphPane.getModelGraph().vertexSet().iterator();
         Vertex v;
         while (it.hasNext()) {
-            v = (Vertex) it.next();
-            v.getCorrectValues().clear();
+            v =  it.next();
+            //v.getCorrectValues().clear();
             v.setGraphsStatus(Vertex.GraphsStatus.UNDEFINED);
         }
 
         activityLogs.debug("Closing NodeEditor because of Delete action.");
-        
-
     }
     
-    public void addDeleteNodeMenu()
-    {
-        DefaultGraphCell cell = (DefaultGraphCell)graphPane.getSelectionCell();
-        Vertex currentVertex = (Vertex)cell.getUserObject();
+    public void showForumButtonAction(){
+        JDialog forumDialog = new JDialog(graphPane.getMainFrame(), true);
+        new ForumViewPanel(forumDialog);
+        forumDialog.setTitle("Discussion Forum");
+        forumDialog.setSize(610, 540);
+        forumDialog.setLocationRelativeTo(null);
+
+        forumDialog.setResizable(false);
+        forumDialog.setVisible(true);
         
+//        CellView[] test = graphPane.getGraphLayoutCache().getAllViews();
+//        for(CellView v : test)
+//            System.out.println("V : "+v);
+    }
+
+    public void addDeleteNodeMenu() {
+        DefaultGraphCell cell = (DefaultGraphCell) graphPane.getSelectionCell();
+        Vertex currentVertex = (Vertex) cell.getUserObject();
+
         JMenuItem menu = new JMenuItem(currentVertex.getName());
         menuMap.put(currentVertex.getName(), menu);
-        
-        
-     
-        
-        
-     menu.addActionListener(new java.awt.event.ActionListener() {
 
-         
+        menu.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(ActionEvent e) {
-                
-                JMenuItem m = (JMenuItem)e.getSource();
-                
+
+                JMenuItem m = (JMenuItem) e.getSource();
+
                 Object[] cells = graphPane.getGraphLayoutCache().getCells(true, true, true, true);
-                for(Object obj:cells)
-                {
-                    DefaultGraphCell cell = (DefaultGraphCell)obj;
-                    Vertex v = (Vertex)cell.getUserObject();
-                    
-                    if(v!=null)
-                    {
+                for (Object obj : cells) {
+                    DefaultGraphCell cell = (DefaultGraphCell) obj;
+                    Vertex v = (Vertex) cell.getUserObject();
+
+                    if (v != null) {
                         //JMenuItem m = (JMenuItem)e.getSource();
-                        if(v.getName() == m.getText())
-                        {
+                        if (v.getName() == m.getText()) {
                             graphPane.setSelectionCell(obj);
                             graphPane.removeSelected();
                             deleteNodeMenu.remove(menuMap.get(v.getName()));
                         }
-                            
+
                     }
                 }
             }
         });
         deleteNodeMenu.add(menu);
-        
+
     }
-    
-    public void removeAllDeleteMenu()
-    {
+
+    public void removeAllDeleteMenu() {
         deleteNodeMenu.removeAll();
     }
-    
-    public void enableDeleteNodeMenu()
-    {
+
+    public void enableDeleteNodeMenu() {
         deleteNodeMenu.setEnabled(true);
     }
-    
-    public void disableDeleteNodeMenu()
-    {
+
+    public void disableDeleteNodeMenu() {
         deleteNodeMenu.setEnabled(false);
     }
 
-    public boolean newNodeAllowed() {
-        if(ApplicationContext.getAppMode().equals("AUTHOR"))
+    public void enableShowGraphMenu() {
+        showGraphMenuItem.setEnabled(true);
+    }
+
+    public void disableShowGraphMenu() {
+        showGraphMenuItem.setEnabled(false);
+    }
+
+    // This is really a property of the student graph
+    // and doesn't have anything to do with the menus.
+    // It should be moved elsewhere; Bug #2160  
+    public boolean notAllNodesDefined() {
+        if (ApplicationContext.getAppMode().equalsIgnoreCase("AUTHOR")) {
             return true;
-        
+        }
+
+        // Go through the solution graph and find any vertices that
+        // don't have a match in the student graph.
         TaskSolution solution = ApplicationContext.getCorrectSolution();
-        if (graphPane.getModelGraph().vertexSet().size()
-                < solution.getSolutionNodes().size()) {
-            return true;
-        }
-
-        return false;
-    }
-
-    public void runModelAction() {
-        activityLogs.debug("User pressed Run Model button.");
-        ModelEvaluator me = new ModelEvaluator((Graph) graphPane.getModelGraph());
-        MainWindow window = (MainWindow) graphPane.getMainFrame();
-        if (me.isModelComplete()) {
-            if (!me.hasExtraNodes()) {
-                try {
-                    me.run();
-
-                    if (ApplicationContext.getAppMode().equals("STUDENT") || ApplicationContext.getAppMode().equals("COACHED")) {
-                        me.validateStudentGraph();
-                    }
-
-                    window.getStatusBarPanel().setStatusMessage("", true);
-                    JOptionPane.showMessageDialog(MainWindow.getFrames()[0],
-                            "Run Model Complete.",
-                            "Success", JOptionPane.INFORMATION_MESSAGE);
-                    activityLogs.debug("Model ran successfully.");
-                    
-                    // Enable Done Button
-                    if(ApplicationContext.isProblemSolved()){
-                        mainWindow.getModelToolBar().enableDoneButton();
-                    }
-                    
-                } catch (ModelEvaluationException ex) {
-                    window.getStatusBarPanel().setStatusMessage(ex.getMessage(), false);
-                }
-                graphPane.repaint();
-            } else {
-                activityLogs.debug("Model had extra nodes, so user could not run the model.");
-                JOptionPane.showMessageDialog(window, "Model has extra nodes in it, please remove them before running the model.");
+        boolean noMatch = false;
+        List<String> names= solution.getCorrectNodeNames();
+        for(String n : names){
+            if(graphPane.getModelGraph().getVertexByName(n) == null){
+                noMatch = true;
+                break;
             }
-        } else {
-            activityLogs.debug("Model was incomplete, so user could not run the model.");
-            JOptionPane.showMessageDialog(window, "The model is incomplete, please complete all the nodes before running Model");
-            window.getStatusBarPanel().setStatusMessage("Please complete all the nodes before running Model", false);
         }
-    }
 
+        return noMatch;
+    }
+  
     public void editTimeRangeAction() {
         activityLogs.debug("User pressed EditTimeRange Menu Item.");
         GraphRangeEditor ed = new GraphRangeEditor(graphPane, true);
         ed.setVisible(true);
     }
-    
-    public void doneButtonAction(){
-        activityLogs.debug("User Pressed Done button with current task as "+ApplicationContext.getCurrentTaskID());
-        
-        
+
+    public void doneButtonAction() {
+        activityLogs.debug("User Pressed Done button with current task as " + ApplicationContext.getCurrentTaskID());
         writeResultToServer();
-        
-//        String currentTaskLevel = ApplicationContext.getTaskIdNameMap()
-//                .get(ApplicationContext.getCurrentTaskID()).getTaskLevel();
-//        int level = Integer.parseInt(currentTaskLevel);
-//        level++;
-//        
-//        String nextLevel = String.valueOf(level);
-//        Iterator<TaskMenuItem> it = ApplicationContext.getTaskIdNameMap().values().iterator();
-//        String nextTaskID = null;
-//        
-//        while(it.hasNext()){
-//            TaskMenuItem item = it.next();
-//            if(item.getTaskLevel().equals(nextLevel)){
-//                nextTaskID = item.getTaskId();
-//                break;
-//            }    
-//        }
-//        activityLogs.debug("User is being given the next task "+nextTaskID);
-//        ApplicationContext.setCurrentTaskID(nextTaskID);
-//        TaskSolutionReader solutionReader = new TaskSolutionReader();
-//        try{
-//            TaskSolution solution = solutionReader.loadSolution(nextTaskID);
-//            ApplicationContext.setCorrectSolution(solution);
-//            
-//            mainWindow.loadTaskDescription(ApplicationContext.getTaskIdNameMap().get(nextTaskID).getTaskName(),
-//                    solution.getTaskDescription(), 
-//                    solution.getImageURL());
-//            
-//            mainWindow.getGraphEditorPane().resetModelGraph();
-//            if(solution.getTaskType().equalsIgnoreCase("debug")){
-//                createGivenModel(solution, graphPane);
-//            }
-//            
-//            mainWindow.switchTutorModelPanels(true);
-//        }catch(Exception e){
-//            e.printStackTrace();
-//        }
-//        
-//        mainWindow.getModelToolBar().disableDoneButton();
         System.exit(0);
     }
-    
-    private void createGivenModel(TaskSolution solution, GraphEditorPane editorPane){
+
+    private void createGivenModel(TaskSolution solution, GraphEditorPane editorPane) {
         List<SolutionNode> givenNodes = solution.getGivenNodes();
-        
-        for(SolutionNode node : givenNodes){
+
+        for (SolutionNode node : givenNodes) {
             Vertex v = new Vertex();
             v.setVertexIndex(graphPane.getModelGraph().getNextAvailableIndex());
-            
+
             v.setName(node.getNodeName());
             v.setCorrectDescription(node.getCorrectDescription());
             v.setPlan(node.getNodePlan());
@@ -428,41 +469,115 @@ public class ModelMenu extends JMenu {
             v.setPlanStatus(Vertex.PlanStatus.CORRECT);
             v.setEquation(node.getNodeEquation());
             v.setInitialValue(node.getInitialValue());
-            
+
             v.setVertexType(node.getNodeType());
-            
-            if(solution.checkNodeInputs(node.getNodeName(), node.getInputNodes()))
+
+            if (solution.checkNodeInputs(node.getNodeName(), node.getInputNodes()) == 0) {
                 v.setInputsStatus(Vertex.InputsStatus.CORRECT);
-            else 
+            } else {
                 v.setInputsStatus(Vertex.InputsStatus.INCORRECT);
-            
-            if(solution.checkNodeCalculations(v))
+            }
+
+            if (solution.checkNodeCalculations(v)) {
                 v.setCalculationsStatus(Vertex.CalculationsStatus.CORRECT);
-            else 
+            } else {
                 v.setCalculationsStatus(Vertex.CalculationsStatus.INCORRECT);
-            
+            }
+
             editorPane.addVertex(v);
         }
-        
-        for(SolutionNode node : givenNodes){
+
+        for (SolutionNode node : givenNodes) {
             List<String> inputVertices = node.getInputNodes();
-            for(String vertexName : inputVertices){
+            for (String vertexName : inputVertices) {
                 Vertex v1 = editorPane.getModelGraph().getVertexByName(node.getNodeName());
                 Vertex v2 = editorPane.getModelGraph().getVertexByName(vertexName);
-                
+
                 DefaultPort p1 = editorPane.getJGraphTModelAdapter().getVertexPort(v1);
                 DefaultPort p2 = editorPane.getJGraphTModelAdapter().getVertexPort(v2);
-                
+
                 editorPane.insertEdge(p2, p1);
-            }            
+            }
+        }
+    }
+
+    private void writeResultToServer() {
+        logs.debug("Student " + ApplicationContext.getUserID() + " Completed Task: " + ApplicationContext.getCurrentTaskID());
+    }
+
+    public MainWindow getMainWindow() {
+        return mainWindow;
+    }
+    
+    /**
+     * Export Author's Graph as a LAITS Solution File
+     */ 
+    private void exportSolution(){
+        int returnVal = getSaveAsFileChooser().showSaveDialog(getRootPane());
+        if (returnVal == JFileChooser.APPROVE_OPTION) {
+
+            File selectedFile = getSaveAsFileChooser().getSelectedFile();
+
+            if (!selectedFile.getName().matches("(.*)(\\.xml)")) {
+
+                if (selectedFile.getName().matches("\".*\"")) {
+                    if (selectedFile.getName().length() < 3) {
+                        JOptionPane
+                                .showMessageDialog(
+                                getRootPane(),
+                                "Can not save to file "
+                                + selectedFile
+                                .getAbsolutePath()
+                                + "\nBecause of the following reason:\n"
+                                + "File name is too short.",
+                                "Unable to save file",
+                                JOptionPane.ERROR_MESSAGE);
+                        return;
+                    } else {
+                        selectedFile = new File(selectedFile.getParent()
+                                + File.separator
+                                + selectedFile.getName()
+                                .substring(
+                                1,
+                                (int) (selectedFile.getName()
+                                .length() - 2)));
+                    }
+                } else {
+                    selectedFile = new File(selectedFile.getAbsoluteFile()
+                            + ".xml");
+                }
+            }
+            
+            saveToFile(selectedFile);
         }
     }
     
-    private void writeResultToServer(){
-      logs.debug("Student "+ApplicationContext.getUserID()+" Completed Task: "+ApplicationContext.getCurrentTaskID());
+    /**
+     * Tries to save to the specified file
+     */
+    private void saveToFile(File file) {
+        LaitsSolutionExporter exporter = new LaitsSolutionExporter(graphPane.getModelGraph(), file);
+        exporter.export();
     }
     
-    public MainWindow getMainWindow(){
-        return mainWindow;
+    private JFileChooser getSaveAsFileChooser() {
+        if (saveAsFileChooser == null) {
+            saveAsFileChooser = new JFileChooser();
+            saveAsFileChooser.setDialogTitle("Export Model as LAITS Solution...");
+            saveAsFileChooser.setAcceptAllFileFilterUsed(true);
+            saveAsFileChooser.addChoosableFileFilter(new FileFilter() {
+                @Override
+                public boolean accept(File f) {
+                    return f.getName().matches(".*.xml");
+                }
+
+                @Override
+                public String getDescription() {
+                    return "Laits Solution Files (*.xml)";
+                }
+            });
+        }
+        return saveAsFileChooser;
     }
-}
+    
+}    

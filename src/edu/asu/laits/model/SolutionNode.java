@@ -77,8 +77,8 @@ public class SolutionNode {
             nodePlan = Plan.INCREASE;
         else if(planText.equalsIgnoreCase("said to decrease"))
             nodePlan = Plan.DECREASE;
-        else if(planText.equalsIgnoreCase("said to both increase and decrease"))
-            nodePlan = Plan.INCREASE_AND_DECREASE;
+        else if(planText.equalsIgnoreCase("the difference of two quantities"))
+            nodePlan = Plan.DIFFERENCE;
     }
     
     public void setInputNodes(List<String> nodeList){

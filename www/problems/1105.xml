@@ -1,0 +1,111 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<Task phase="Intro" type="Construct">
+  <TaskName>Intro Problem 1 Coached</TaskName>
+  <TaskDescription>
+  Problem: By weight, potato chips are 35% fat. NEWLINE NEWLINE
+      Hint: You always have to convert percentages to decimals. NEWLINE NEWLINE
+      Goal: Graph the proportion of weight of fat per potato chips over the next 10 months.</TaskDescription>
+  <URL>http://amt.javiergs.com/images/tasks/intro-2.png</URL>
+  <ShortDescription>
+ Given: fat content = 0.35</ShortDescription>
+  <StartTime>0</StartTime>
+  <EndTime>10</EndTime>
+  <Units>months</Units>
+  
+  <NodeCount>1</NodeCount>
+
+  <Nodes>
+    <Node type="constant" name="fat content" extra="no">
+<Order>1</Order>
+      <Inputs></Inputs>
+      <Outputs></Outputs>
+      <Equation>.35</Equation>
+      <InitialValue>.35</InitialValue>
+      <CorrectDescription>The ratio of the weight of the fat in a potato chip to the weight of the potato chip</CorrectDescription>
+      <Plan>fixed value</Plan>
+    </Node>
+  </Nodes>  
+
+<HelpBubbles>
+	<Bubble>
+		<Timing>Description</Timing>
+		<nodeName>1</nodeName>
+		<attachedTo>evenMorePreciseLabel</attachedTo>
+		<Event>onLoad</Event>
+		<Message>&lt;html&gt;Use the decision tree to create the correct description of the problem: &lt;br /&gt;"The ratio of the weight of the fat in a potato chip to the weight of the potato chip"&lt;/html&gt;</Message>
+	</Bubble>
+	<Bubble>
+		<Timing>Description</Timing>
+		<nodeName>1</nodeName>
+		<attachedTo>referencesLabel</attachedTo>
+		<Event>descFilled</Event>
+		<Message>Click the Check button to verify your description.</Message>
+	</Bubble>
+	<Bubble>
+		<Timing>Description</Timing>
+		<nodeName>1</nodeName>
+		<attachedTo>evenMorePreciseLabel</attachedTo>
+		<Event>descCheckDemo</Event>
+		<Message>Click on the Plan tab to continue.</Message>
+	</Bubble>
+
+	<Bubble>
+		<Timing>Plan</Timing>
+		<nodeName>1</nodeName>
+		<attachedTo>radioPanel</attachedTo>
+		<Event>onLoad</Event>
+		<Message>&lt;html&gt;This value is a fixed constant -- it does not rely on&lt;br /&gt;on other inputs.  Select "Value is fixed, so no inputs"&lt;/html&gt;</Message>
+	</Bubble>
+</HelpBubbles>
+     
+  <DescriptionTree>
+    <Node level="root">
+      <Description>The number of </Description>      
+      <Node level="intermediate">
+        <Description>potato chips</Description>            
+        <Node level="leaf">
+          <Description>in a large bag</Description>
+          <NodeName>large bag chip count</NodeName>
+        </Node>
+        <Node level="leaf">
+          <Description>in a small bag</Description>
+          <NodeName>small bag chip count</NodeName>
+        </Node>
+  </Node>
+      <Node level="intermediate">
+        <Description>grams of fat</Description>            
+        <Node level="leaf">
+          <Description>in a potato chip</Description>
+          <NodeName>potato chip fat</NodeName>
+        </Node>
+        <Node level="leaf">
+          <Description>in a strip of bacon</Description>
+          <NodeName>bacon fat</NodeName>
+        </Node>
+      </Node>
+    </Node>
+    <Node level="root">
+      <Description>The ratio of</Description>        
+  <Node level="intermediate">
+        <Description>the weight of the fat in a potato chip to</Description>            
+        <Node level="leaf">
+          <Description>the weight of the potato chip</Description>
+          <NodeName>fat content</NodeName>
+        </Node>
+        <Node level="leaf">
+          <Description>the weight of fat in a tortilla chip</Description>
+          <NodeName>tortilla chip fat content</NodeName>
+        </Node>
+  </Node>
+      <Node level="intermediate">
+        <Description>the weight of a potato chip to</Description>            
+        <Node level="leaf">
+          <Description>the weight of a tortilla chip</Description>
+          <NodeName>chip weight ratio</NodeName>
+        </Node>
+      </Node>
+    </Node>
+  </DescriptionTree>
+    
+</Task>

@@ -64,13 +64,17 @@ public class Vertex {
         equation = "";        
     }
     
+    public int getVertexIndex(){
+        return vertexIndex;
+    }
+    
     public void setVertexIndex(int index){
         vertexIndex = index;
         
         //xPosition = 200 * (vertexIndex % 6) + 80;
         //yPosition = 200 * (vertexIndex / 6) + 60 ;
         xPosition = 200 * (vertexIndex % 4) + 480;
-        yPosition = 200 * (vertexIndex / 6) + 60 ;
+        yPosition = 200 * (vertexIndex / 4) + 60 ;
     }
     
     public String getName() {
@@ -218,9 +222,7 @@ public class Vertex {
         return vertexInfoClone;
     }
 
-    public int getVertexIndex() {
-        return vertexIndex;
-    }
+    
 
     public DefaultGraphCell getJGraphVertex() {
         return jGraphVertex;

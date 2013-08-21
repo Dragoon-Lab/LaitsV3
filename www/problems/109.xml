@@ -2,15 +2,19 @@
 <Task phase="Challenge" type="Construct">
   <TaskName>Giardia Bacteria</TaskName>
   <URL>http://www.cdc.gov/parasites/images/giardia/Giardia_trophs.jpg</URL>
-  <TaskDescription>Problem: Giardia are microscopic single-cell organisms that live in streams and lakes. It mutiplies quickly. Suppose a hiker's water bottle initially holds 100 Giardia. On average, 40% of the Giardia reproduce each hour, each producing a new Giardia. Thus, after the first hour, there are 140 Giardia in the bottle, after the second hour there are 196 in the bottle, and so on. 
-  Goal: Graph the number of Giardia in the bottle over 8 hours.</TaskDescription>
+  <TaskDescription>
+      Problem: Giardia is a microscopic single-cell organism that lives in streams and lakes. It can multiply  NEWLINE
+      quickly. Suppose a hiker's water bottle initially holds 100 Giardia. On average, 40% of the Giardia NEWLINE
+      reproduce each hour, each producing a new Giardia. Thus, after the first hour, there are 140 Giardia in NEWLINE
+      the bottle, after the second hour there are 196 in the bottle, and so on. NEWLINE NEWLINE
+      Goal: Graph the number of Giardia in the bottle over 8 hours.</TaskDescription>
   <ShortDescription>
   \n Accumulator: population = population + births; initial population = 100
   \n Function: births = growth rate * population 
   \n Given: growth rate = 0.40</ShortDescription>
-  \n Given: population_first_hour = 140
-  \n Given: initial_population = 100
-  \n Given: population_second_hour = 196
+  \n Given: population 1st hour = 140
+  \n Given: initial population = 100
+  \n Given: population 2nd hour = 196
   <StartTime>0</StartTime>
   <EndTime>8</EndTime>
   <Units>hours</Units>
@@ -19,8 +23,8 @@
     <VertexLabel>births</VertexLabel>
     <VertexLabel>growth rate</VertexLabel>
 	<VertexLabel>initial population</VertexLabel>
-    <VertexLabel>population first hour</VertexLabel>
-    <VertexLabel>population second hour</VertexLabel>
+    <VertexLabel>population 1st hour</VertexLabel>
+    <VertexLabel>population 2nd hour</VertexLabel>
   </Vertexes>
   
   <NodeCount>6</NodeCount>
@@ -37,7 +41,7 @@
       <Plan>fixed value</Plan>
     </Node>
     
-    <Node type="constant" name="population second hour" extra="yes">
+    <Node type="constant" name="population 2nd hour" extra="yes">
       <Inputs></Inputs>
       <Outputs></Outputs>
       <Equation>196</Equation>
@@ -46,7 +50,7 @@
       <Plan>fixed value</Plan>
     </Node>
     
-    <Node type="constant" name="population first hour" extra="yes">
+    <Node type="constant" name="population 1st hour" extra="yes">
       <Inputs></Inputs>
       <Outputs></Outputs>
       <Equation>140</Equation>
@@ -58,8 +62,8 @@
     <Node type="constant" name="growth rate" extra="no">
       <Inputs></Inputs>
       <Outputs>
-        <Node name="births"></Node>
-		</Outputs>
+          <Name>births</Name>
+      </Outputs>
       <Equation>.40</Equation>
       <InitialValue>.40</InitialValue>
       <CorrectDescription>The rate that Giardia reproduce</CorrectDescription>
@@ -68,10 +72,10 @@
     
     <Node type="stock" name="population" extra="no">
       <Inputs>        
-        <Node name="births" type="plus"></Node>
+        <Name>births</Name>
       </Inputs>
       <Outputs>
-      	<Node name="births"></Node>
+          <Name>births</Name>
       </Outputs>
       <InitialValue>100</InitialValue>
       <Equation>+births</Equation>
@@ -81,14 +85,14 @@
     
     <Node type="flow" name="births" extra="no">
       <Inputs>        
-        <Node name="population"></Node>
-        <Node name="growth rate"></Node>
+        <Name>population</Name>
+        <Name>growth rate</Name>
       </Inputs>
       <Outputs>
-      	<Node name="population"></Node>
+          <Name>population</Name>
       </Outputs>
-      <InitialValue>100</InitialValue>
-      <Equation>population*growth_rate</Equation>
+      <InitialValue></InitialValue>
+      <Equation>population*growth rate</Equation>
       <CorrectDescription>The number of Giardia born each hour</CorrectDescription>
       <Plan>proportional to accumulator and input</Plan>
     </Node>
@@ -105,11 +109,11 @@
         </Node>
         <Node level="leaf">
           <Description>during the first hour</Description>
-          <NodeName>population first hour</NodeName>
+          <NodeName>population 1st hour</NodeName>
         </Node>
         <Node level="leaf">
           <Description>during the second hour</Description>
-          <NodeName>population second hour</NodeName>
+          <NodeName>population 2nd hour</NodeName>
         </Node>
         <Node level="leaf">
           <Description>each hour</Description>

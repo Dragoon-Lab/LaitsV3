@@ -1,24 +1,23 @@
 /**
- * LAITS Project Arizona State University
- * (c) 2013, Arizona Board of Regents for and on behalf of Arizona State University.
- * This file is part of LAITS.
+ * LAITS Project Arizona State University (c) 2013, Arizona Board of Regents for
+ * and on behalf of Arizona State University. This file is part of LAITS.
  *
- * LAITS is free software: you can redistribute it and/or modify
- * it under the terms of the GNU Lesser General Public License as published by
- * the Free Software Foundation, either version 3 of the License, or
- * (at your option) any later version.
+ * LAITS is free software: you can redistribute it and/or modify it under the
+ * terms of the GNU Lesser General Public License as published by the Free
+ * Software Foundation, either version 3 of the License, or (at your option) any
+ * later version.ß
  *
- * LAITS is distributed in the hope that it will be useful,
- * but WITHOUT ANY WARRANTY; without even the implied warranty of
- * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
- * GNU Lesser General Public License for more details.
-
+ * LAITS is distributed in the hope that it will be useful, but WITHOUT ANY
+ * WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS FOR
+ * A PARTICULAR PURPOSE. See the GNU Lesser General Public License for more
+ * details.
+ *
  * You should have received a copy of the GNU Lesser General Public License
- * along with LAITS.  If not, see <http://www.gnu.org/licenses/>.
+ * along with LAITS. If not, see <http://www.gnu.org/licenses/>.
  */
-
 package edu.asu.laits.logger;
 
+import edu.asu.laits.editor.ApplicationContext;
 import java.io.UnsupportedEncodingException;
 import java.util.ArrayList;
 import java.util.List;
@@ -36,7 +35,15 @@ import org.apache.log4j.AppenderSkeleton;
 import org.apache.log4j.spi.LoggingEvent;
 import java.net.HttpURLConnection;
 import java.net.URL;
-
+import java.io.BufferedReader;
+import java.io.BufferedWriter;
+import java.io.DataOutputStream;
+import java.io.InputStream;
+import java.io.InputStreamReader;
+import java.io.OutputStream;
+import java.io.OutputStreamWriter;
+import java.net.URLEncoder;
+import java.sql.Timestamp;
 
 public class HttpAppender extends AppenderSkeleton {
 
@@ -69,19 +76,27 @@ public class HttpAppender extends AppenderSkeleton {
             return;
         }
 
+        if (ApplicationContext.getApplicationEnvironment()
+                .equals(ApplicationContext.ApplicationEnvironment.DEV)) {
+
+            System.out.println(prepareDevLogMessage(paramLoggingEvent));
+            return;
+        }
+
         HttpUriRequest httpMethod = null;
         DefaultHttpClient httpClient = new DefaultHttpClient();
 
         HttpParams params = httpClient.getParams();
         HttpConnectionParams.setConnectionTimeout(params, timeOut);
         HttpConnectionParams.setSoTimeout(params, timeOut);
-
         String message = this.getLayout().format(paramLoggingEvent);
+        logURL = ApplicationContext.getRootURL()+"/logger.php";
         
         try {
             if (this.HttpMethodBase.equalsIgnoreCase(METHOD_GET)) {
                 StringBuffer sb = new StringBuffer(this.logURL);
                 sb.append(message);
+                System.out.println("test : "+sb.toString());
                 httpMethod = new HttpGet(sb.toString());
             } else {
                 if (this.postMethod.equalsIgnoreCase(POST_PARAMETERS)) {
@@ -117,11 +132,82 @@ public class HttpAppender extends AppenderSkeleton {
         }
     }
     
-    public static void sendHttpRequest(String address) throws Exception{
+    public static String saveGetSession(String action, String address, String id, String section, String problem, String data) throws Exception {
+        //open connection
         URL url = new URL(address);
-        HttpURLConnection connect = (HttpURLConnection) url.openConnection();
-        //connect.setRequestMethod("GET");
-        connect.disconnect();        
+        HttpURLConnection connect = (HttpURLConnection) url.openConnection();       
+        
+        //sets POST and adds POST data type as URLENCODED
+        connect.setRequestMethod("POST");
+        connect.setRequestProperty("Content-Type","application/x-www-form-urlencoded");
+        
+        //sets mode as output and disables cache
+        connect.setUseCaches (false);
+        connect.setDoInput(true);
+        connect.setDoOutput(true);
+        
+        //add variables to send
+        List<NameValuePair> postVariable = new ArrayList<NameValuePair>();
+        StringBuilder sb = new StringBuilder();
+        postVariable.add(new BasicNameValuePair("action", action));
+        postVariable.add(new BasicNameValuePair("id", id));
+        postVariable.add(new BasicNameValuePair("section", section));
+        postVariable.add(new BasicNameValuePair("problem", problem));
+        if(action.equals("save")){
+            postVariable.add(new BasicNameValuePair("saveData", data));           
+        }
+        
+        //sends request
+        OutputStream stream = new DataOutputStream (connect.getOutputStream ());
+        BufferedWriter writer = new BufferedWriter(new OutputStreamWriter(stream, "UTF-8"));
+        writer.write(getQuery(postVariable));
+        writer.close();
+        stream.flush ();
+        stream.close ();
+        
+        // If action = 'save' gets and returns response code. 200 is ok.       
+        if(action.equals("save")){
+            int response = connect.getResponseCode();
+            connect.disconnect();
+            return Integer.toString(response);
+        }
+        
+        // If action = 'load' returns string with loaded problem.
+        else if(action.equals("load")){
+            StringBuilder returnString = new StringBuilder();
+            BufferedReader in = new BufferedReader(new InputStreamReader(
+                    connect.getInputStream()));        
+            String line = "";        
+            while((line = in.readLine()) != null){
+                returnString.append(line);
+                returnString.append("\n");
+            }
+            in.close();
+            connect.disconnect();
+            return returnString.toString();
+        }
+        connect.disconnect();
+        return null;
+    }
+    
+    private static String getQuery(List<NameValuePair> params) throws UnsupportedEncodingException{
+        StringBuilder result = new StringBuilder();
+        boolean first = true;
+
+        for (NameValuePair pair : params)
+        {
+            if (first){
+                first = false;
+            }else{
+                result.append("&");           
+            }
+            
+            result.append(pair.getName());
+            result.append("=");
+            result.append(pair.getValue());
+        }
+
+        return result.toString();
     }
 
     /*
@@ -145,5 +231,24 @@ public class HttpAppender extends AppenderSkeleton {
 
     public void setTimeout(int to) {
         this.timeOut = to;
+    }
+
+    private String prepareDevLogMessage(LoggingEvent paramLoggingEvent) {
+        StringBuilder sb = new StringBuilder();
+        Timestamp time = new Timestamp(paramLoggingEvent.getTimeStamp());
+
+        sb.append(time.toString() + "  ");
+        sb.append(paramLoggingEvent.getLoggerName() + "  ");
+        sb.append(paramLoggingEvent.getLevel().toString() + "  ");
+
+        String info = paramLoggingEvent.getLocationInformation().getFileName() + "-"
+                + paramLoggingEvent.getLocationInformation().getMethodName() + ":"
+                + paramLoggingEvent.getLocationInformation().getLineNumber();
+
+        sb.append(info + "  ");
+        sb.append(paramLoggingEvent.getMessage().toString() + "  ");
+
+
+        return sb.toString();
     }
 }

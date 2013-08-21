@@ -1,36 +1,21 @@
 <?php
 
-  // To log into database, create file db_user_password
-  // with user name and password.  then "chmod 600 db_user_password"
-$myFile = "../db_user_password";
-$fh = fopen($myFile, 'r') or die("Could not access password file.");
-$dbuser = chop(fgets($fh));
-$dbpass = chop(fgets($fh));
-$dbname = chop(fgets($fh));
-if(strlen($dbname)==0){
-  $dbname='laitsad_laitsdb';
-}
-fclose($fh);
+require "db-login.php";
 
-    $con = mysql_pconnect("localhost",$dbuser, $dbpass) or
-        die('Could not connect: ' . mysql_error());
-
-    mysql_select_db($dbname, $con) or die("Could not find database");
+$mysqli = mysqli_connect("localhost", $dbuser, $dbpass, $dbname)
+        or die('Could not connect to database.');
      
-    $user = urldecode($_GET['user']);
-    $date = urldecode($_GET['date']);
-    $logger = urldecode($_GET['logger']);
-    $level = urldecode($_GET['level']);
-    $msg = urldecode($_GET['msg']);
-    $location = urldecode($_GET['location']);
+$user = mysqli_real_escape_string($mysqli, $_GET['user']);
+$date = mysqli_real_escape_string($mysqli, $_GET['date']);
+$logger = mysqli_real_escape_string($mysqli, $_GET['logger']);
+$level = mysqli_real_escape_string($mysqli, $_GET['level']);
+$msg = mysqli_real_escape_string($mysqli, $_GET['msg']);
 
-    $query = "";
-    if($logger == "DevLogs"){
-        $query = "INSERT INTO dev_logs VALUES ('$user','$date','$location','$level','$msg')";
-    }else{
-        $query = "INSERT INTO activity_logs VALUES ('$user','$date','$level','$msg')";
-    }
-    
-    mysql_query($query);
+if($logger == "DevLogs"){
+  $location = mysqli_real_escape_string($mysqli, $_GET['location']);
+  $mysqli->query("INSERT INTO dev_logs VALUES ('$user','$date','$location','$level','$msg')");
+}else{
+  $mysqli->query("INSERT INTO activity_logs VALUES ('$user','$date','$level','$msg')");
+}
 
 ?>

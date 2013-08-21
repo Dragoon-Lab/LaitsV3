@@ -14,6 +14,7 @@ import org.jgrapht.ListenableGraph;
 
 import com.thoughtworks.xstream.XStream;
 import com.thoughtworks.xstream.io.xml.DomDriver;
+import java.io.IOException;
 
 /**
  * Objects of this class saves a graphs from a GraphEditorPanee to a xml-file
@@ -31,6 +32,7 @@ public class GraphSaver {
     /*
      * The graph pane that this saver can save to
      */
+    private ListenableGraph<Vertex, Edge> modelGraph;
     private GraphEditorPane paneToSave;
 
     /**
@@ -38,6 +40,7 @@ public class GraphSaver {
      */
     public GraphSaver(GraphEditorPane paneToSave) {
         this.paneToSave = paneToSave;
+        modelGraph = paneToSave.getModelGraph();
     }
 
     /**
@@ -45,75 +48,36 @@ public class GraphSaver {
      *
      * @param writer
      */
-    public void write(Writer writer) {
-        // Used to convert objects to xml
-        XStream xstream = new XStream();
-
-        ListenableGraph<Vertex, Edge> graph = paneToSave
-                .getModelGraph();
-
-        // Start to write the vertices
-        Set<Vertex> vertexSet = graph.vertexSet();
-        LinkedList<Vertex> vertexList = new LinkedList<Vertex>(
-                vertexSet);
-
-        for (Vertex vertex : vertexList) {
-            try {
-                vertex.fetchInformationFromJGraph();
-            } catch (VertexReaderException e) {
-                // TODO Auto-generated catch block
-                e.printStackTrace();
-            }
-        }
-        /*
-         * Save the vertex set
-         */
-
-        xstream.alias("vertex", Vertex.class);
-
-        // Write the edges
-        Set<Edge> edgeSet = graph.edgeSet();
-        LinkedList<Edge> edgeList = new LinkedList<Edge>(
-                edgeSet);
-
-        for (Edge edge : edgeList) {
-            try {
-                edge.fetchInformationFromJGraphT(graph);
-            } catch (ErrorReaderException e) {
-                // TODO Auto-generated catch block
-                e.printStackTrace();
-            }
-        }
-        /*
-         * Save the edge set
-         */
-
-        xstream.alias("edge", Edge.class);
-
-        GraphFile file = new GraphFile();
-        file.setProperties(paneToSave.getGraphProperties());
-        file.setVertexList(vertexList);
-        file.setEdgeList(edgeList);
-        
-        xstream.alias("task", Task.class);
-        Graph g = (Graph)graph;
-        file.setTask(g.getCurrentTask());
-
-        xstream.alias("graph", GraphFile.class);
-        xstream.toXML(file, writer);
+    public void write(Writer writer) throws IOException{
+        String data = getSerializedGraphInXML();
+        writer.write(data);
     }
     
-    //returns string of what would be written to xml file 
-    //to save to the database
-    public String getString(Writer writer) {
-        // Used to convert objects to xml
+    public String getSerializedGraphInXML(){
         XStream xstream = new XStream();
 
-        ListenableGraph<Vertex, Edge> graph = paneToSave
-                .getModelGraph();
+        List<Vertex> vertexList = fetchVertexInformation();
+        xstream.alias("vertex", Vertex.class);
 
-        // Start to write the vertices
-        Set<Vertex> vertexSet = graph.vertexSet();
+        List<Edge> edgeList = fetchEdgeInformation();
+        xstream.alias("edge", Edge.class);
+
+        GraphFile file = new GraphFile();
+        file.setProperties(paneToSave.getGraphProperties());
+        file.setVertexList(vertexList);
+        file.setEdgeList(edgeList);
+        
+        xstream.alias("task", Task.class);
+        Graph g = (Graph)modelGraph;
+        file.setTask(g.getCurrentTask());
+
+        xstream.alias("graph", GraphFile.class);
+        
+        return xstream.toXML(file);
+    }
+    
+    private List<Vertex> fetchVertexInformation(){
+        Set<Vertex> vertexSet = modelGraph.vertexSet();
         LinkedList<Vertex> vertexList = new LinkedList<Vertex>(
                 vertexSet);
 
@@ -125,41 +89,22 @@ public class GraphSaver {
                 e.printStackTrace();
             }
         }
-        /*
-         * Save the vertex set
-         */
-
-        xstream.alias("vertex", Vertex.class);
-
-        // Write the edges
-        Set<Edge> edgeSet = graph.edgeSet();
+        
+        return vertexList;
+    }
+    
+    private List<Edge> fetchEdgeInformation(){
+        Set<Edge> edgeSet = modelGraph.edgeSet();
         LinkedList<Edge> edgeList = new LinkedList<Edge>(
                 edgeSet);
 
         for (Edge edge : edgeList) {
             try {
-                edge.fetchInformationFromJGraphT(graph);
+                edge.fetchInformationFromJGraphT(modelGraph);
             } catch (ErrorReaderException e) {
-                // TODO Auto-generated catch block
                 e.printStackTrace();
             }
         }
-        /*
-         * Save the edge set
-         */
-
-        xstream.alias("edge", Edge.class);
-
-        GraphFile file = new GraphFile();
-        file.setProperties(paneToSave.getGraphProperties());
-        file.setVertexList(vertexList);
-        file.setEdgeList(edgeList);
-        
-        xstream.alias("task", Task.class);
-        Graph g = (Graph)graph;
-        file.setTask(g.getCurrentTask());
-
-        xstream.alias("graph", GraphFile.class);
-        return xstream.toString();
+        return edgeList;
     }
 }

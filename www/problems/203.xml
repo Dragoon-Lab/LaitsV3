@@ -41,13 +41,13 @@
   <Nodes>
       <Node type="flow" name="proportion of unutilized K" extra="no">
       <Inputs>
-          <Node name="utilized K"></Node>
-          <Node name="carrying capacity"></Node>
+          <Name>utilized K</Name>
+          <Name>carrying capacity</Name>
       </Inputs>
       <Outputs>
-      	<Node name="population growth rate"></Node>        
+          <Name>population growth rate</Name>    
       </Outputs>
-      <Equation>utilized_K/carrying_capacity</Equation>
+      <Equation>utilized K/carrying capacity</Equation>
       <InitialValue></InitialValue>
       <CorrectDescription>The proportion of the carrying capacity not utilized by the water fowl</CorrectDescription>
       <Plan>proportional to accumulator and input</Plan>
@@ -56,8 +56,8 @@
       <Node type="constant" name="carrying capacity" extra="no">
       <Inputs></Inputs>
       <Outputs>
-          <Node name="proportion of unutilized K"></Node>
-          <Node name="utilized K"></Node>
+          <Name>proportion of unutilized K</Name>
+          <Name>utilized K</Name>
       </Outputs>
       <Equation>50.0</Equation>
       <InitialValue>50.0</InitialValue>
@@ -67,13 +67,13 @@
 	  
 	  <Node type="flow" name="utilized K" extra="no">
       <Inputs>
-          <Node name="carrying capacity"></Node>
-          <Node name="water fowl"></Node>
+          <Name>carrying capacity</Name>
+          <Name>water fowl</Name>
       </Inputs>
       <Outputs>
-        <Node name="proportion of unutilized K"></Node>
+          <Name>proportion of unutilized K</Name>
       </Outputs>
-      <Equation>carrying_capacity-water_fowl</Equation>
+      <Equation>carrying capacity-water fowl</Equation>
       <InitialValue></InitialValue>
       <CorrectDescription>The amount of carrying capacity utilized by the water fowl population</CorrectDescription>
       <Plan>proportional to accumulator and input</Plan>
@@ -81,14 +81,14 @@
 	  
 	  <Node type="flow" name="population growth rate" extra="no">
       <Inputs>
-          <Node name="proportion of unutilized K"></Node>
-          <Node name="growth rate coefficient"></Node>
-          <Node name="water fowl"></Node>
+          <Name>proportion of unutilized K</Name>
+          <Name>growth rate coefficient</Name>
+          <Name>water fowl</Name>
       </Inputs>
       <Outputs>
-          <Node name="water fowl"></Node>
+          <Name>water fowl</Name>
       </Outputs>
-      <Equation>proportion_of_unutilized_K*growth_rate_coefficient*water_fowl</Equation>
+      <Equation>proportion of unutilized K*growth rate coefficient*water fowl</Equation>
       <InitialValue></InitialValue>
       <CorrectDescription>The amount of water fowl added per day</CorrectDescription>
       <Plan>proportional to accumulator and input</Plan>
@@ -97,7 +97,7 @@
 	  <Node type="constant" name="growth rate coefficient" extra="no">
       <Inputs></Inputs>
       <Outputs>
-          <Node name="population growth rate"></Node>
+          <Name>population growth rate</Name>
       </Outputs>
       <Equation>0.001</Equation>
       <InitialValue>0.001</InitialValue>
@@ -107,13 +107,13 @@
 	  
 	  <Node type="stock" name="water fowl" extra="no">
       <Inputs>
-        <Node name="population growth rate" type="plus"></Node>
+          <Name>population growth rate</Name>
       </Inputs>
       <Outputs>
-        <Node name="population growth rate"></Node>  
-        <Node name="utilized K"></Node>  
-	  </Outputs>
-      <Equation>+population_growth_rate</Equation>
+        <Name>population growth rate</Name>
+        <Name>utilized K</Name>
+      </Outputs>
+      <Equation>+population growth rate</Equation>
       <InitialValue>10.0</InitialValue>
       <CorrectDescription>The size of water fowl population</CorrectDescription>
       <Plan>said to both increase and decrease</Plan>
@@ -126,13 +126,13 @@
   <GivenModel>
       <Node type="flow" name="proportion of unutilized K" extra="no">
       <Inputs>
-          <Node name="utilized K"></Node>
-          <Node name="carrying capacity"></Node>
+          <Name>utilized K</Name>
+          <Name>carrying capacity</Name>
       </Inputs>
       <Outputs>
-      	<Node name="population growth rate"></Node>        
+          <Name>population growth rate</Name>
       </Outputs>
-      <Equation>utilized_K/carrying_capacity</Equation>
+      <Equation>utilized K/carrying capacity</Equation>
       <InitialValue></InitialValue>
       <CorrectDescription>The proportion of the carrying capacity not utilized by the water fowl</CorrectDescription>
       <Plan>proportional to accumulator and input</Plan>
@@ -141,8 +141,8 @@
       <Node type="constant" name="carrying capacity" extra="no">
       <Inputs></Inputs>
       <Outputs>
-          <Node name="proportion of unutilized K"></Node>
-          <Node name="utilized K"></Node>
+          <Name>proportion of unutilized K</Name>
+          <Name>utilized K</Name>
       </Outputs>
       <Equation>50.0</Equation>
       <InitialValue>50.0</InitialValue>
@@ -152,12 +152,12 @@
 	  
 	  <Node type="flow" name="utilized K" extra="no">
       <Inputs>
-          <Node name="carrying capacity"></Node>          
+          <Name>carrying capacity</Name>
       </Inputs>
       <Outputs>
-        <Node name="proportion of unutilized K"></Node>
+          <Name>proportion of unutilized K</Name>
       </Outputs>
-      <Equation>carrying_capacity</Equation>
+      <Equation>carrying capacity</Equation>
       <InitialValue></InitialValue>
       <CorrectDescription>The amount of carrying capacity utilized by the water fowl population</CorrectDescription>
       <Plan>proportional to accumulator and input</Plan>
@@ -165,14 +165,14 @@
 	  
 	  <Node type="flow" name="population growth rate" extra="no">
       <Inputs>
-          <Node name="proportion of unutilized K"></Node>
-          <Node name="growth rate coefficient"></Node>
-          <Node name="water fowl"></Node>
+          <Name>proportion of unutilized K</Name>
+          <Name>growth rate coefficient</Name>
+          <Name>water fowl</Name>
       </Inputs>
       <Outputs>
-          <Node name="water fowl"></Node>
+          <Name>water fowl</Name>
       </Outputs>
-      <Equation>proportion_of_unutilized_K*growth_rate_coefficient*water_fowl</Equation>
+      <Equation>proportion of unutilized K*growth rate coefficient*water fowl</Equation>
       <InitialValue></InitialValue>
       <CorrectDescription>The amount of water fowl added per day</CorrectDescription>
       <Plan>proportional to accumulator and input</Plan>
@@ -181,7 +181,7 @@
 	  <Node type="constant" name="growth rate coefficient" extra="no">
       <Inputs></Inputs>
       <Outputs>
-          <Node name="population growth rate"></Node>
+          <Name>population growth rate</Name>
       </Outputs>
       <Equation>0.001</Equation>
       <InitialValue>0.001</InitialValue>
@@ -191,12 +191,12 @@
 	  
 	  <Node type="stock" name="water fowl" extra="no">
       <Inputs>
-        <Node name="population growth rate" type="plus"></Node>
+          <Name>population growth rate</Name>
       </Inputs>
       <Outputs>
-        <Node name="population growth rate"></Node>         
-	  </Outputs>
-      <Equation>-population_growth_rate</Equation>
+          <Name>population growth rate</Name>
+      </Outputs>
+      <Equation>-population growth rate</Equation>
       <InitialValue>10.0</InitialValue>
       <CorrectDescription>The size of water fowl population</CorrectDescription>
       <Plan>said to both increase and decrease</Plan>

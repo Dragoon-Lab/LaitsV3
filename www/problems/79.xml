@@ -2,33 +2,41 @@
 <Task phase="Challenge" type="Construct">
   <TaskName>Hardwood Forest</TaskName>
   <TaskDescription>
-  Problem: Today, approximately 500,000 trees stand tall in Hardwood Forest. Due to careful forestry management, 99% of the trees are hardwood trees.  The rest are softwood trees.  Thus, Hardwood Forest is very valuable, because the market price of a softwood tree is only 33% of the market price of a hardwood tree. Hardwood is currently sold at $9.00 per square foot. With this price of hardwood, softwood would be $3.0 per square foot. Lumber companies are strongly constrained by government regulations. The number of trees they can harvest each year is only 5% of the total number of trees in the forest that year.  An environmental group is worried that the forest will be entirely destroyed, so they plant 10,000 new trees each year. 
-  Goal: Graph the total number of trees in the forest over a 30-year period.</TaskDescription>
+      Problem: Today, approximately 500,000 trees stand tall in Hardwood Forest. Due to careful NEWLINE
+      forestry management, 99% of the trees are hardwood trees.  The rest are softwood trees.  Thus, NEWLINE
+      Hardwood Forest is very valuable, because the market price of a softwood tree is only 33% of NEWLINE
+      the market price of a hardwood tree. Hardwood is currently sold at $9.00 per square foot. With NEWLINE
+      this price of hardwood, softwood would be $3.0 per square foot. Lumber companies are strongly NEWLINE
+      constrained by government regulations. The number of trees they can harvest each year is only NEWLINE
+      5% of the total number of trees in the forest that year.  An environmental group is worried that NEWLINE
+      the forest will be entirely destroyed, so they plant 10,000 new trees each year. NEWLINE NEWLINE
+      Goal: Graph the total number of trees in the forest over a 30-year period.
+  </TaskDescription>
   <URL>http://www.poweranimalsunleashed.com/images/forest-light-900.jpg</URL>
   <ShortDescription>the number of trees in the hardwood forest at the end of this year =
-\n     the number of trees in the forest at the end of the previous year
-\n     - the number of trees harvested this year 
-\n     + the number of trees planted this year.
-\n     The initial number of trees in the forest is 500,000.
-\nthe number of trees harvested each year =
-\n     the number of trees in the forest at the beginning of the year
-\n     * the proportion of trees harvested this year.
-\nThe proportion of trees harvested each year is given as 0.05.
-\nthe number of trees planted each year is given as 10,000.
-\n The proportion of the forest that is hardwood trees is given as 0.99.
-\n The market price of a softwood tree =
- \n the ratio of the price of a softwood tree to a hardwood tree
- \n * the market price of a hardwood tree.
-\n The ratio of the price of a softwood tree to a hardwood tree is given as 0.33.
-\n The cost of hardwood lumber per square foot in the current market is given as 9</ShortDescription>
+        \n     the number of trees in the forest at the end of the previous year
+        \n     - the number of trees harvested this year 
+        \n     + the number of trees planted this year.
+        \n     The initial number of trees in the forest is 500,000.
+        \nthe number of trees harvested each year =
+        \n     the number of trees in the forest at the beginning of the year
+        \n     * the proportion of trees harvested this year.
+        \nThe proportion of trees harvested each year is given as 0.05.
+        \nthe number of trees planted each year is given as 10,000.
+        \n The proportion of the forest that is hardwood trees is given as 0.99.
+        \n The market price of a softwood tree =
+        \n the ratio of the price of a softwood tree to a hardwood tree
+        \n * the market price of a hardwood tree.
+        \n The ratio of the price of a softwood tree to a hardwood tree is given as 0.33.
+        \n The cost of hardwood lumber per square foot in the current market is given as 9</ShortDescription>
   <StartTime>0</StartTime>
   <EndTime>30</EndTime>
   <Units>years</Units>
   <Vertexes>
-    <VertexLabel>proportion of trees that are harvested</VertexLabel>
-    <VertexLabel>ratio of market prices</VertexLabel>
-    <VertexLabel>market price of hardwood</VertexLabel>
-    <VertexLabel>market price of softwood</VertexLabel>
+    <VertexLabel>proportion harvested</VertexLabel>
+    <VertexLabel>market price ratio</VertexLabel>
+    <VertexLabel>hardwood price</VertexLabel>
+    <VertexLabel>softwood price</VertexLabel>
     <VertexLabel>trees planted</VertexLabel>
     <VertexLabel>proportion hardwood</VertexLabel>
     <VertexLabel>trees harvested</VertexLabel>
@@ -40,10 +48,10 @@
   <ProblemSeeking>trees in the forest</ProblemSeeking>
   <CorrespondingSentence>Graph the total number of trees in the forest over a 30-year period.</CorrespondingSentence>
   <Nodes>
-    <Node type="constant" name="proportion of trees that are harvested" extra="no">
+    <Node type="constant" name="proportion harvested" extra="no">
       <Inputs></Inputs>
       <Outputs>
-      	<Node name="trees harvested"></Node>
+          <Name>trees harvested</Name>
       </Outputs>
       <Equation>.05</Equation>
       <InitialValue>.05</InitialValue>
@@ -51,7 +59,7 @@
       <Plan>fixed value</Plan>
     </Node>
 	
-    <Node type="constant" name="ratio of market prices" extra="yes">
+    <Node type="constant" name="market price ratio" extra="yes">
       <Inputs></Inputs>
       <Outputs></Outputs>
       <Equation>0.33</Equation>
@@ -59,7 +67,7 @@
       <CorrectDescription>The proportion of the price of softwood each year to the price of hardwood each year</CorrectDescription>
       <Plan>fixed value</Plan>
     </Node>
-    <Node type="constant" name="market price of softwood" extra="yes">
+    <Node type="constant" name="softwood price" extra="yes">
       <Inputs></Inputs>
       <Outputs></Outputs>
       <Equation>3</Equation>
@@ -67,7 +75,7 @@
       <CorrectDescription>The value of softwood in the market each year</CorrectDescription>
       <Plan>fixed value</Plan>
     </Node>
-	<Node type="constant" name="market price of hardwood" extra="yes">
+	<Node type="constant" name="hardwood price" extra="yes">
       <Inputs></Inputs>
       <Outputs></Outputs>
       <Equation>9</Equation>
@@ -79,7 +87,7 @@
     <Node type="constant" name="trees planted" extra="no">
       <Inputs></Inputs>
       <Outputs>
-      	<Node name="trees in the forest"></Node>
+      	<Name>trees in the forest</Name>
       </Outputs>
       <Equation>10000</Equation>
       <InitialValue>10000</InitialValue>
@@ -98,28 +106,28 @@
 
     <Node type="stock" name="trees in the forest" extra="no">
       <Inputs>
-        <Node name="trees planted" type="plus"></Node>
-        <Node name="trees harvested" type="minus"></Node>
+        <Name>trees planted</Name>
+        <Name>trees harvested</Name>
       </Inputs>
       <Outputs>
-        <Node name="trees harvested"></Node>
-	  </Outputs>
+          <Name>trees harvested</Name>
+      </Outputs>
       <InitialValue>500000</InitialValue>
-      <Equation>+trees_planted-trees_harvested</Equation>
+      <Equation>+trees planted-trees harvested</Equation>
       <CorrectDescription>The number of trees in the forest each year</CorrectDescription>
       <Plan>said to both increase and decrease</Plan>
     </Node>
     
     <Node type="flow" name="trees harvested" extra="no">
       <Inputs>        
-        <Node name="trees in the forest"></Node>
-        <Node name="proportion of trees that are harvested"></Node>
+          <Name>trees in the forest</Name>
+          <Name>proportion harvested</Name>
       </Inputs>
       <Outputs>
-      	<Node name="trees in the forest"></Node>
+          <Name>trees in the forest</Name>
       </Outputs>
       <InitialValue></InitialValue>
-      <Equation>trees_in_the_forest*proportion_of_trees_that_are_harvested</Equation>
+      <Equation>trees in the forest*proportion harvested</Equation>
       <CorrectDescription>The number of trees harvested each year from the forest</CorrectDescription>
       <Plan>proportional to accumulator and input</Plan>
     </Node>
@@ -134,11 +142,11 @@
         <Description></Description>            
         <Node level="leaf">
           <Description>the number of trees that are harvested to the number of trees that are in the forest each year</Description>
-          <NodeName>proportion of trees that are harvested</NodeName>
+          <NodeName>proportion harvested</NodeName>
         </Node>
         <Node level="leaf">
           <Description>the price of softwood each year to the price of hardwood each year</Description>
-          <NodeName>ratio of market prices</NodeName>
+          <NodeName>market price ratio</NodeName>
         </Node>
         <Node level="leaf">
           <Description>hardwood trees in the forest to total number of trees in the forest each year</Description>
@@ -152,11 +160,11 @@
         <Description></Description>            
         <Node level="leaf">
           <Description>hardwood in the market each year</Description>
-          <NodeName>market price of hardwood</NodeName>
+          <NodeName>hardwood price</NodeName>
         </Node>
         <Node level="leaf">
           <Description>softwood in the market each year</Description>
-          <NodeName>market price of softwood</NodeName>
+          <NodeName>softwood price</NodeName>
         </Node>
 	  </Node>
     </Node>

@@ -61,6 +61,7 @@ public class TaskSolutionReader {
             
             //Read Given Nodes for Debug problem
             if(solution.getTaskType().equalsIgnoreCase("debug")){
+                
                 Element givenNodes = taskNode.element("GivenModel");
                 fillGivenNodes(solution, givenNodes);
             }
@@ -69,9 +70,12 @@ public class TaskSolutionReader {
             fillDescriptionTree(solution, descriptionTree);
             
             //Read in help bubbles
-            Element bubbles = taskNode.element("HelpBubbles");
-            fillHelpBubbles(solution, bubbles);
-                
+            if(ApplicationContext.getAppMode().equalsIgnoreCase("COACHED") && ApplicationContext.isHelpBubbles()){
+                Element bubbles = taskNode.element("HelpBubbles");
+                if(bubbles != null){
+                    fillHelpBubbles(solution, bubbles);
+                }
+            }    
         } catch (Exception e) {
             // Could not read the XML file
             e.printStackTrace();
@@ -89,7 +93,7 @@ public class TaskSolutionReader {
         //File file = new File(solutionFilePath);
         //document = reader.read(in);
         String resourceURL = ApplicationContext.taskLoaderURL + taskId;
-        
+        System.out.println("Resource URL "+resourceURL);
         logs.info("Task URL : "+resourceURL);
         document = reader.read(new URL(resourceURL));
         
@@ -160,16 +164,21 @@ public class TaskSolutionReader {
         
         for(Element node : allNodes){
             SolutionNode newNode = new SolutionNode();
+            int order = 0;
             
             newNode.setNodeName(node.attributeValue("name"));
             newNode.setNodeType(node.attributeValue("type"));
             newNode.setIsExtra(node.attributeValue("extra"));
+            if(node.elementTextTrim("Order") != null){
+                order = Integer.parseInt(node.elementTextTrim("Order"));
+            }
             
             // Read all the Input Nodes of this node
-            if(ApplicationContext.getAppMode().equals("COACHED") && node.elementTextTrim("Order") != null){
-              newNode.setNodeOrder(Integer.parseInt(node.elementTextTrim("Order")));
-              logs.debug("Added element" + node.elementTextTrim("Order") + " " + node.elementTextTrim("CorrectDescription"));
-         }
+             if(ApplicationContext.getAppMode().equals("COACHED") && order == 1 && ApplicationContext.getNextNodes().isEmpty()){
+//              newNode.setNodeOrder(Integer.parseInt(node.elementTextTrim("Order")));
+//              System.out.println("Added element" + node.elementTextTrim("Order") + " " + node.elementTextTrim("CorrectDescription"));
+                ApplicationContext.addNextNodes(node.attributeValue("name"));
+            }
             
             Element nodeInput = node.element("Inputs");
             List<Element> allInputNodes = nodeInput.elements("Name");
@@ -188,7 +197,9 @@ public class TaskSolutionReader {
             newNode.setNodePlan(node.elementTextTrim("Plan"));
 
             list.add(newNode);
+            
         }
+        
     }
     //Read in help bubble info
     private void fillHelpBubbles(TaskSolution solution, Element bubbles){
@@ -200,8 +211,17 @@ public class TaskSolutionReader {
             newBubble.setNodeName(bubble.elementTextTrim("nodeName"));
             newBubble.setAttachedTo(bubble.elementTextTrim("attachedTo"));
             newBubble.setEvent(bubble.elementTextTrim("Event"));
+            if(bubble.elementTextTrim("xValue")!= null){
+                newBubble.setX(Integer.parseInt(bubble.elementTextTrim("xValue")));
+            } 
+            if(bubble.elementTextTrim("yValue")!= null){
+                newBubble.setY(Integer.parseInt(bubble.elementTextTrim("yValue")));
+            }  
+            if(bubble.elementTextTrim("Orient")!= null){
+                newBubble.setOrientation(bubble.elementTextTrim("Orient"));
+            }    
             newBubble.setMessage(bubble.elementTextTrim("Message"));
-            
+        
         //    logs.debug(" " + bubble.elementTextTrim("Message") + " " + bubble.elementTextTrim("Timing") + " " + bubble.elementTextTrim("nodeName") + " " + bubble.elementTextTrim("attachedTo") + " " + bubble.elementTextTrim("Event"));
 
             solution.addHelpBubble(newBubble);

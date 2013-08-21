@@ -23,15 +23,20 @@ package edu.asu.laits.gui.nodeeditor;
 
 import edu.asu.laits.editor.ApplicationContext;
 import edu.asu.laits.editor.GraphEditorPane;
+import edu.asu.laits.gui.BlockingToolTip;
 import edu.asu.laits.model.Graph;
+import edu.asu.laits.model.HelpBubble;
 import edu.asu.laits.model.SolutionDTreeNode;
 import edu.asu.laits.model.SolutionNode;
 import edu.asu.laits.model.TaskSolution;
 import edu.asu.laits.model.Vertex;
 import java.awt.Color;
 import java.util.Enumeration;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 import javax.swing.ImageIcon;
+import javax.swing.JComponent;
 import javax.swing.JPanel;
 import javax.swing.JTree;
 import javax.swing.tree.*;
@@ -73,11 +78,15 @@ public class NewNodeDescPanel extends JPanel{
     initComponents();
     nodeEditor = ne;
     currentVertex = v;
-    initPanel();    
-  }
+    initPanel();
+    if(ApplicationContext.getAppMode().equalsIgnoreCase("COACHED")){
+        addHelpBalloon(ApplicationContext.getFirstNextNode(), "onLoad", "InputNewNode");
   
+    }
+  }
   public void initPanel(){
-      if(ApplicationContext.getAppMode().equals("STUDENT") || ApplicationContext.getAppMode().equals("COACHED")){
+      if(ApplicationContext.getAppMode().equalsIgnoreCase("STUDENT") || 
+              ApplicationContext.getAppMode().equalsIgnoreCase("COACHED")){
           this.nodeNameTextField.setEditable(false);
           this.quantityDescriptionTextField.setEditable(false);
           initTree();
@@ -238,6 +247,9 @@ public class NewNodeDescPanel extends JPanel{
            this.quantityDescriptionTextField.setText(sb.toString().trim());
            this.nodeNameTextField.setText(node.getNodeName());
            this.repaint();
+        if(ApplicationContext.getAppMode().equalsIgnoreCase("COACHED") && ApplicationContext.getFirstNextNode() != null){
+             addHelpBalloon(ApplicationContext.getFirstNextNode(), "descFilled", "InputNewNode");
+       }
        }
        
     }//GEN-LAST:event_decisionTreeValueChanged
@@ -339,9 +351,11 @@ public class NewNodeDescPanel extends JPanel{
       String giveupNode = null;
       if(ApplicationContext.getAppMode().equalsIgnoreCase("COACHED")){
           for(SolutionNode name : correctNodeNames){
-             if(name.getNodeOrder() == ApplicationContext.getCurrentOrder()){
+             if(name.getNodeName().equalsIgnoreCase(ApplicationContext.getFirstNextNode())){
                   giveupNode = name.getNodeName();
-                  ApplicationContext.nextCurrentOrder();
+                  //ApplicationContext.nextCurrentOrder();
+                  //ApplicationContext.removeNextNodes(name.getNodeName());
+                  ApplicationContext.setNextNodes(name.getNodeName());
                   break;
              } 
           }
@@ -390,6 +404,35 @@ public void setEditableTree(boolean b){
       decisionTree.setEditable(b);
       decisionTree.setEnabled(b);
 }
+
+
+public JComponent getLabel(String label){
+ 
+    Map<String, JComponent> map = new HashMap<String, JComponent>();
+    map.put("evenMorePreciseLabel", evenMorePreciseLabel);
+    map.put("referencesLabel", referencesLabel);
+    map.put("NodeNameLabel", NodeNameLabel);
+    map.put("jScrollPane1", jScrollPane1);
+    map.put("jScrollPane2", jScrollPane2);
+    if(map.containsKey(label)){
+        return map.get(label);
+    }
+    else {
+        return null;
+    }
+}
+
+   private void addHelpBalloon(String name, String timing, String panel) {
+        if (ApplicationContext.getAppMode().equalsIgnoreCase("COACHED")) {
+           List<HelpBubble> bubbles = ApplicationContext.getHelp(name, panel, timing);
+                if(!bubbles.isEmpty()){
+                    for(HelpBubble bubble : bubbles){ 
+                        new BlockingToolTip(this.nodeEditor, bubble, getLabel(bubble.getAttachedTo()));
+          //      new BlockingToolTip(this, bubble.getMessage(), dPanel.getLabel(bubble.getAttachedTo()), 0, 0);
+            }
+        }
+   }
+   }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JLabel NodeNameLabel;

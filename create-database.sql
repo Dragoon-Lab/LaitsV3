@@ -47,6 +47,23 @@ CREATE TABLE `dev_logs` (
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
+-- Table structure for table `autosave_table`
+--
+
+DROP TABLE IF EXISTS `autosave_table`;
+/*!40101 SET @saved_cs_client     = @@character_set_client */;
+/*!40101 SET character_set_client = utf8 */;
+CREATE TABLE `autosave_table` (
+  `id` varchar(20) NOT NULL,
+  `section` varchar(20) NOT NULL,
+  `problemNum` varchar(20) NOT NULL,
+  `saveData` text NOT NULL,
+  `date` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP, 
+  primary key(id, section, problemNum)
+) ENGINE=MyISAM DEFAULT CHARSET=latin1;
+/*!40101 SET character_set_client = @saved_cs_client */;
+
+--
 -- Table structure for table `tasks`
 --
 

@@ -1,5 +1,6 @@
 package edu.asu.laits.gui.menus;
 
+
 import edu.asu.laits.editor.ApplicationContext;
 import javax.swing.JMenu;
 
@@ -27,6 +28,7 @@ import edu.asu.laits.editor.listeners.GraphPropertiesChangeListener;
 import edu.asu.laits.editor.listeners.GraphSaveListener;
 import edu.asu.laits.gui.MainWindow;
 import edu.asu.laits.gui.nodeeditor.NodeEditor;
+import edu.asu.laits.logger.HttpAppender;
 import edu.asu.laits.model.SolutionNode;
 import edu.asu.laits.model.TaskSolution;
 import edu.asu.laits.model.TaskSolutionReader;
@@ -39,7 +41,9 @@ import java.io.FileOutputStream;
 import java.io.InputStream;
 import java.io.OutputStream;
 import java.util.HashMap;
+import java.util.Iterator;
 import java.util.LinkedList;
+import java.util.logging.Level;
 
 import javax.swing.JFileChooser;
 import javax.swing.filechooser.FileFilter;
@@ -73,8 +77,7 @@ public class FileMenu extends JMenu {
     private ActionListener openAction;
     private ActionListener saveAction;
     GlobalProperties globalProperties = GlobalProperties.getInstance();
-    private JMenu taskListMenu = null;
-    private JMenu tempTaskMenu = null;
+    
     /*
      * Indicate if the current graph is associated with a file
      */
@@ -102,7 +105,7 @@ public class FileMenu extends JMenu {
         this.mainWindow = mainWindow;
         graphPane = pane;
 
-        if (ApplicationContext.getAppMode().equals("STUDENT")) {
+        if (ApplicationContext.getAppMode().equalsIgnoreCase("STUDENT")) {
             initializeTutorMenu();
         } else {
             initializeAuthorMenu();
@@ -168,7 +171,7 @@ public class FileMenu extends JMenu {
     /**
      * Method to open a new Task in Tutor Mode
      */
-    private void openTaskById(String id) {
+    public void openTaskById(String id) {
         TaskSolutionReader solutionReader = new TaskSolutionReader();
         try {
             TaskSolution solution = solutionReader.loadSolution(id);
@@ -181,7 +184,6 @@ public class FileMenu extends JMenu {
                     solution.getTaskDescription(),
                     solution.getImageURL());
 
-            mainWindow.getGraphEditorPane().resetModelGraph();
             if (solution.getTaskType().equalsIgnoreCase("debug")) {
                 createGivenModel(solution, graphPane);
             }
@@ -193,9 +195,21 @@ public class FileMenu extends JMenu {
     }
 
     private void createGivenModel(TaskSolution solution, GraphEditorPane editorPane) {
+        logs.debug("Building Given Model for Task : "+solution.getTaskName());
         List<SolutionNode> givenNodes = solution.getGivenNodes();
-
+        logs.debug("Graph Presently Contains");
+        Iterator<Vertex> it = graphPane.getModelGraph().vertexSet().iterator();
+        while(it.hasNext()){
+            logs.debug(it.next().getName());
+        }
+        
         for (SolutionNode node : givenNodes) {
+            logs.info("Processing Node "+node.getNodeName());
+            if(editorPane.getModelGraph().getVertexByName(node.getNodeName()) != null){
+                logs.info("Node "+node.getNodeName()+" was loaded from session. Skipping in GivenModelCreation.");
+               continue;
+            }
+            
             Vertex v = new Vertex();
             v.setVertexIndex(graphPane.getModelGraph().getNextAvailableIndex());
             
@@ -208,8 +222,9 @@ public class FileMenu extends JMenu {
             v.setInitialValue(node.getInitialValue());
 
             v.setVertexType(node.getNodeType());
-
-            if (solution.checkNodeInputs(node.getNodeName(), node.getInputNodes())) {
+            
+            int inputCheck = solution.checkNodeInputs(node.getNodeName(), node.getInputNodes());
+            if (inputCheck == 0 || inputCheck == 3) {
                 v.setInputsStatus(Vertex.InputsStatus.CORRECT);
             } else {
                 v.setInputsStatus(Vertex.InputsStatus.INCORRECT);
@@ -222,6 +237,8 @@ public class FileMenu extends JMenu {
             }
 
             editorPane.addVertex(v);
+            ApplicationContext.setNextNodes(node.getNodeName());
+            logs.debug("Added Node "+v.getName()+" in the Given Model.");
         }
 
         for (SolutionNode node : givenNodes) {
@@ -287,7 +304,7 @@ public class FileMenu extends JMenu {
                     "/resources/icons/16x16/fileopen.png")));
             openAction = new java.awt.event.ActionListener() {
                 public void actionPerformed(java.awt.event.ActionEvent e) {
-                    activityLogs.debug("User Pressed Open File Menu");
+                    activityLogs.debug("User Pressed Open File Menu");                   
                     open();
                 }
             };

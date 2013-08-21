@@ -37,6 +37,18 @@ public class Graph<V, E> extends ListenableDirectedGraph<V, E> implements
             return null;
         }
         
+        public Vertex getVertexById(int id){
+            Iterator it = this.vertexSet().iterator();
+            Vertex v;
+            while(it.hasNext())
+            {
+                v=(Vertex)it.next();
+                if(v.getVertexIndex() == id)
+                    return v;
+            }
+            return null;
+        }
+        
         public Task getCurrentTask(){
             return currentTask;
         }

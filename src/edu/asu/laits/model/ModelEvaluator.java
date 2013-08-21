@@ -50,7 +50,8 @@ public class ModelEvaluator {
 
     public ModelEvaluator(Graph inputGraph) {
         currentGraph = inputGraph;
-        if(ApplicationContext.getAppMode().equals("STUDENT") || ApplicationContext.getAppMode().equals("COACHED")){
+        if(ApplicationContext.getAppMode().equalsIgnoreCase("STUDENT") || 
+                ApplicationContext.getAppMode().equalsIgnoreCase("COACHED")){
             startTime = ApplicationContext.getCorrectSolution().getStartTime();
             endTime = ApplicationContext.getCorrectSolution().getEndTime();
             
@@ -71,7 +72,8 @@ public class ModelEvaluator {
         Iterator<Vertex> allVertices = currentGraph.vertexSet().iterator();
         
         // In STUDENT Mode Verify if all the correct nodes are defined
-        if(ApplicationContext.getAppMode().equals("STUDENT") || ApplicationContext.getAppMode().equals("COACHED")){
+        if(ApplicationContext.getAppMode().equalsIgnoreCase("STUDENT") || 
+                ApplicationContext.getAppMode().equalsIgnoreCase("COACHED")){
             if(!correctNodesDefined())
                 return false;
         }
@@ -79,20 +81,17 @@ public class ModelEvaluator {
         Vertex thisVertex;
         while(allVertices.hasNext()){
             thisVertex = allVertices.next();
-            if(thisVertex.getInputsStatus().equals(Vertex.InputsStatus.UNDEFINED) ||
+            if(thisVertex.getPlanStatus().equals(Vertex.InputsStatus.UNDEFINED) ||
                     thisVertex.getCalculationsStatus().equals(Vertex.CalculationsStatus.UNDEFINED)){
                 return false;
-            }
-            /*if(thisVertex.getInputsStatus().equals(Vertex.InputsStatus.INCORRECT) ||
-                  eturn false;
-            }   */ 
+            }            
         }
        
         return true;
     }
     
     public boolean hasExtraNodes(){
-        if (ApplicationContext.getAppMode().equals("AUTHOR")) {
+        if (ApplicationContext.getAppMode().equalsIgnoreCase("AUTHOR")) {
             return false;
         }
         
@@ -134,7 +133,7 @@ public class ModelEvaluator {
         logs.debug("Arranged Vertex List "+vertexList.toString());
         Vertex currentVertex = null;
         try{
-            int totalPoints = endTime - startTime;
+            int totalPoints = endTime - startTime + 1;
             constructFinalEquations(vertexList);
             logs.debug("Final Operands   "+finalOperands.toString());
             logs.debug("Constant Vertices : "+constantVertices);
@@ -142,6 +141,7 @@ public class ModelEvaluator {
             // Calculating Initial Flow for i =0
             for (int j = constantVertices; j < vertexList.size(); j++) {
                 currentVertex = vertexList.get(j);
+                logs.debug("evaluating vertex " + currentVertex.getName());
                 if (currentVertex.getVertexType().equals(Vertex.VertexType.FLOW)) {
                     currentVertex.getCorrectValues().add(calculateFlow(vertexList, currentVertex, 0));
                 }
@@ -205,7 +205,7 @@ public class ModelEvaluator {
         List<Vertex> constantList = new ArrayList<Vertex>();
         List<Vertex> flowList = new ArrayList<Vertex>();
         List<Vertex> stockList = new ArrayList<Vertex>();
-        int totalPoints = endTime - startTime;
+        int totalPoints = endTime - startTime +1;
 
         Iterator<Vertex> it = currentGraph.vertexSet().iterator();
         logs.debug("Total Vertex : "+currentGraph.vertexSet().size());

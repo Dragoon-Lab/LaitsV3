@@ -34,9 +34,10 @@ NEWLINE NEWLINEGoal: Graph the number of assignments on the task list over the 1
     </Node>
     
     <Node type="stock" name="task list" extra="no">
+      <Order>1</Order>
       <Inputs>        
         <Name>assignments added</Name>
-    	<Name>assignments removed</Name> 
+    <Name>assignments removed</Name> 
       </Inputs>
       <Outputs></Outputs>
       <InitialValue>2</InitialValue>
@@ -83,7 +84,7 @@ NEWLINE NEWLINEGoal: Graph the number of assignments on the task list over the 1
           <Description>completed and removed from the task list each week</Description>
           <NodeName>assignments removed</NodeName>
         </Node>
-	  </Node>
+  </Node>
     </Node>
   </DescriptionTree>
   
