@@ -136,7 +136,6 @@
 
         function set_problems(mode,category){
              var map = {
-             // This should be an associative array!
              'Introduction' : {
 	          105:'Intro problem 1',106:'Intro problem 2',
                   107:'Intro problem 3',108:'Intro problem 4'
@@ -157,7 +156,15 @@
                   // on August 6, 2013:
                   // ,100:'Oil Tanker',79:'Hardwood Forest',
                   // 101:'ASU Commuters',113:'Busy Hospital',
-                  // 115:'Widget Stocking',114:'ObscureFlix'
+                  // 115:'Widget Stocking',114:'ObscureFlix',
+             },
+	     'Isle Royale': {
+                  'isle1' : 'Moose population 1',
+                  'isle2' : 'Moose population 2',
+                  'isle3' : 'Moose population 3',
+                  'isle4' : 'Moose population 4',
+                  'isle5' : 'Wolves',
+                  'isle6' : 'Moose and Wolves'
              }};
 	
 	     var newList='';
@@ -199,16 +206,19 @@
                     <div class="fieldgroup">
                         <label for="problem_category">Problem Category: </label>
                         <select id="problem_category" name="problem_category">
+                           <!-- These should be filled dynamially from map, Bug #2183 --> 
                             <option>Introduction</option>
                             <option>Training</option>
                             <option>Challenge</option>
+			    <option>Isle Royale</option>
                         </select>
                     </div>
 
                     <div class="fieldgroup">
                         <label for="problem_id">Problem: </label>
                         <select id="problem_id" name="problem_id">
-                            <option value="105">Intro Problem 1</option>
+                           <!-- These should be filled dynamially from map, Bug #2183 --> 
+                           <option value="105">Intro Problem 1</option>
                             <option value="106">Intro Problem 2</option>
                             <option value="107">Intro Problem 3</option>
                             <option value="108">Intro Problem 4</option>
