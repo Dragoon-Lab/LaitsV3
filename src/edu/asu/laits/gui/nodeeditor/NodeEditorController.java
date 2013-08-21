@@ -29,6 +29,8 @@ public abstract class NodeEditorController{
     
     public abstract void initActionButtons();
     
+    public abstract void initOnLoadBalloonTip();
+    
     protected void initCheckButton(){
     
     }
@@ -39,8 +41,9 @@ public abstract class NodeEditorController{
         // Disable Giveup in Challege tasks
         if (taskPhase.equalsIgnoreCase("Challenge")) {
             view.getDemoButton().setEnabled(false);            
+            return;
         }
-        
+        resetActionButtonAfterDemoUsed();
     }
     
     

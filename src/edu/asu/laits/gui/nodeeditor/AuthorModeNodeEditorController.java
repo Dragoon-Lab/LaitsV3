@@ -61,4 +61,8 @@ public class AuthorModeNodeEditorController extends NodeEditorController{
         view.getGraphPane().getMainFrame().getModelToolBar().enableDeleteNodeButton();
         view.getGraphPane().getMainFrame().getMainMenu().getModelMenu().enableDeleteNodeMenu();
     }
+    
+    public void initOnLoadBalloonTip(){
+    
+    }
 }

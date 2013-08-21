@@ -6,6 +6,7 @@
 package edu.asu.laits.gui.nodeeditor;
 
 import edu.asu.laits.model.Vertex;
+import org.apache.log4j.Logger;
 
 /**
  * Implements functionalities of NodeEditor for Student Mode
@@ -14,6 +15,9 @@ import edu.asu.laits.model.Vertex;
 public class StudentModeNodeEditorController extends NodeEditorController{
     private NodeEditorView view;
     private Vertex openVertex;
+    
+    private static Logger logs = Logger.getLogger("DevLogs");
+    private static Logger activityLogs = Logger.getLogger("ActivityLogs");
     
     public StudentModeNodeEditorController(NodeEditorView view, Vertex openVertex){
         super(view,openVertex);
@@ -34,7 +38,7 @@ public class StudentModeNodeEditorController extends NodeEditorController{
     }
     
     public void initDemoButton(){
-        
+        super.initDemoButton();
     }
     
     public void initOkButton(){
@@ -57,5 +61,9 @@ public class StudentModeNodeEditorController extends NodeEditorController{
         super.processCancelAction();
         view.getGraphPane().getMainFrame().getModelToolBar().enableDeleteNodeButton();
         view.getGraphPane().getMainFrame().getMainMenu().getModelMenu().enableDeleteNodeMenu();
+    }
+    
+    public void initOnLoadBalloonTip(){
+    
     }
 }

@@ -85,15 +85,7 @@ public class NodeEditorView extends javax.swing.JDialog {
         UIManager.getDefaults().put("TabbedPane.contentBorderInsets", new Insets(2, 0, -1, 0));
         setTabListener();
         initNodeEditor();
-        if(ApplicationContext.isCoachedMode()){
-            if(currentVertex.getName().equalsIgnoreCase(""))
-            {
-                addHelpBalloon(ApplicationContext.getFirstNextNode(), "onLoad", getTabName(selectedTab));
-            } else{
-                addHelpBalloon(currentVertex.getName(), "onLoad", getTabName(selectedTab));
-                
-            }
-        }    
+        _controller.initOnLoadBalloonTip();            
     }
     
     
@@ -622,37 +614,6 @@ public class NodeEditorView extends javax.swing.JDialog {
     /**
      * Make necessary clean up and save graph session when NodeEditor closes
      */
-    
-
-    
-    public void addHelpBalloon(String name, String timing, String panel) {
-        logs.debug("Adding Help Bubble for "+panel);
-        if (ApplicationContext.isCoachedMode()) {
-            System.out.println("addhelpballoon passing in " + name);
-            List<HelpBubble> bubbles = ApplicationContext.getHelp(name, panel, timing);
-            if (!bubbles.isEmpty()) {
-                for (HelpBubble bubble : bubbles) {
-                    try{
-                        if (panel.equalsIgnoreCase("description")) {
-                            new BlockingToolTip(this, bubble, getLabel("dPanel", bubble.getAttachedTo()));
-                        } else if (panel.equalsIgnoreCase("plan")) {
-                            System.out.println("Trying to add help in Plan. Msg: " + bubble.getMessage() + "  " + bubble.getAttachedTo());
-                            System.out.println("comp: " + pPanel.getLabel(bubble.getAttachedTo()));
-                            new BlockingToolTip(this, bubble, getLabel("pPanel", bubble.getAttachedTo()));
-                        } else if (panel.equalsIgnoreCase("inputs")) {
-                            new BlockingToolTip(this, bubble, getLabel("iPanel", bubble.getAttachedTo()));
-                        } else if (panel.equalsIgnoreCase("calculations")) {
-                            new BlockingToolTip(this, bubble, getLabel("cPanel", bubble.getAttachedTo()));
-                        }
-                    }
-                    catch(IllegalArgumentException e){
-                        System.err.println("Error creating bubble: " + e.getMessage());
-                    }
-                }
-            }
-        }
-    }
-
     public JComponent getLabel(String panel, String attachedTo) {
         JComponent rPanel = null;
         if (panel.equalsIgnoreCase("dPanel")) {
@@ -899,7 +860,7 @@ public class NodeEditorView extends javax.swing.JDialog {
 
     // This is string name of tab used in problem xml to
     // specify help bubbles and used in logging
-    private String getTabName(int id) {
+    public String getTabName(int id) {
         switch(id) {
         case DESCRIPTION:
             return "DESCRIPTION";
@@ -1051,6 +1012,9 @@ public class NodeEditorView extends javax.swing.JDialog {
     
     public JTabbedPane getTabbedPane(){
         return tabPane;
+    }
+    public PlanPanelView getPlanPanel(){
+        return pPanel;
     }
     
     private void tabPaneMouseDragged(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_tabPaneMouseDragged
