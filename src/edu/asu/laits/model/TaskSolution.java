@@ -471,7 +471,7 @@ public class TaskSolution {
         // Add all the Edges in the Graph
         for (SolutionNode node : solutionNodes) {
             List<String> inputVertices = node.getInputNodes();
-            for (String vertexName : inputVertices) {
+            for (String vertexName : inputVertices) {                
                 solutionGraph.addEdge(solutionGraph.getVertexByName(vertexName),
                         solutionGraph.getVertexByName(node.getNodeName()));
             }
