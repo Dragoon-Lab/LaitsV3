@@ -35,7 +35,7 @@ Since these are both true-false selections, there is no need for
 the `Check` or `Demo` buttons: immediate feedback can be given to the 
 student at each step.  Thus, ending colors would be either green or 
 yellow for parameters, and a combination of green and yellow 
-for functions and accumulators.  It would look like this:  
+for functions and accumulators.  It would look like this:    
 ![plan1](plan1.png)
 ![plan2](plan2.png)
 ![plan3](plan3.png)  
@@ -47,11 +47,11 @@ Allow for further classification of a quantity based on the
 types as a top-level categorization.  For instance, one could have
 the following sub-choices:
 > * Parameter
-* Function
 * Accumulator
     + Diverges (goes to infinity)
     + Converges (goes to zero)
     + Oscillates
+* Function
 
 This change probably should wait until an instructor requests it.
 
@@ -63,7 +63,7 @@ possible later improvements/extensions.  The intent of the Aug. 21 design
 is to deviate as little as possible from the existing design.  The Aug. 21 
 design will continue using the Netbeans default layout manager, rather than 
 [a more modern layout manager](https://trello.com/c/IUjqQa5f/100-layout-with-swing-sucks), 
-so there is no point in improving the layout.
+so there is no point in improving the layout.   
 ![for parameters](Screen_Shot_2013-08-16_at_11.46.13_AM.png)
 ![for functions](Screen_Shot_2013-08-16_at_11.45.51_AM.png)
 ![for accumulators](Screen_Shot_2013-08-16_at_11.44.57_AM.png)     
@@ -111,7 +111,7 @@ Brian Eno requested the special functions.
 When a student enters an equation which outputs the correct numerical value
 (for test values of the inputs) but the equation quantities list (see above) is still 
 missing parameters, then one can assume that the 
-student has substuted in a numerical value for that parameter.
+student has substituted in a numerical value for that parameter.
 (Alternatively, one can search the equation parse tree for numerical values that
 correspond to problem parameters.)  If this happens, the student should be given 
 a special hint.  If the parameter has been defined:  
@@ -132,6 +132,6 @@ Another format proposed at the UCLA visit is:
 
 with the `+` appearing as the first character in the equation box.
 This form has the advantage that it matches the introductory materials better.
-However, units are inconsistant and this form would require special 
+However, units are inconsistent and this form would require special 
 diagnosis/handlers for cases the student erases the plus (incorrect) or changes it 
 into a minus (may be correct or incorrect).
