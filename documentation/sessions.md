@@ -39,7 +39,7 @@ exist yet).
 
 [Some notes from Kurt](Dragoon_model_storage_use_cases_13_08_12.docx) on 
 session management.  In this design, all custom problem solutions
-are stored on the student's computer.  The only *functionality* missing
+are stored on the student's computer. The only *functionality* missing
 in the following specification is the case where a student needs to share their 
 solution to a problem solved in student mode ("Open access mode," first use case).
 
@@ -47,13 +47,17 @@ solution to a problem solved in student mode ("Open access mode," first use case
 
 * `autosave_table` stored student work on a problem.  This table
 has columns for user name, section, problem name, time stamp, the graph xml
-(text format), and (optionally) the author name.  It also has a flag for
-published versus custom problems.  The author name is ignored for published
-problems.
+(text format), and the author name (default, empty string). 
+For published problems, the author name is an empty string.  The primary key 
+for the table should consist of:  section, user name, problem name, and author name.
+It is important that section is listed first.
 
 * `solutions` table stores solution graphs for custom problems.
-This table has columns for author name, section, problem name, and a "share" bit,
-a timestamp and the problem xml (text). 
+This table has columns for author name, section, problem name, and a "share" bit
+(default zero), a timestamp and the problem xml (text). The primary key for the table 
+should consist of: 
+ section, problem name, and author name.  It is important that section is
+listed first.
 
     The share bit determines whether a custom problem can be viewed --
 in either author or student mode -- by other members of a section. 
