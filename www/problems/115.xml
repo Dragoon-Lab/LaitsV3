@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<Task phase="Challenge" type="Whole">
+<Task phase="Challenge" type="Construct">
   <TaskName>Widget Stocking</TaskName>
   <URL>http://img.shopstyle.com/uim/y2010/d345/51/5135f69e005364825c125b1c914e468c.jpg</URL>
   
@@ -72,15 +72,6 @@
       <Plan>fixed value</Plan>
     </Node>
     
-    <Node type="constant" name="target sell" extra="yes">
-      <Inputs></Inputs>
-      <Outputs></Outputs>
-      <Equation>25</Equation>
-      <InitialValue>25</InitialValue>
-      <CorrectDescription>The number of widgets that Shaunna should sell each week</CorrectDescription>
-      <Plan>fixed value</Plan>
-    </Node>
-    
     <Node type="constant" name="proportion sold" extra="no">
       <Inputs></Inputs>
       <Outputs>
@@ -103,7 +94,16 @@
       <Plan>fixed value</Plan>
     </Node>
     
-	<Node type="constant" name="initial reorder" extra="yes">
+    <Node type="constant" name="target sell" extra="yes">
+      <Inputs></Inputs>
+      <Outputs></Outputs>
+      <Equation>25</Equation>
+      <InitialValue>25</InitialValue>
+      <CorrectDescription>The number of widgets that Shaunna should sell each week</CorrectDescription>
+      <Plan>fixed value</Plan>
+    </Node>
+    
+    <Node type="constant" name="initial reorder" extra="yes">
       <Inputs></Inputs>
       <Outputs></Outputs>
       <Equation>75</Equation>
