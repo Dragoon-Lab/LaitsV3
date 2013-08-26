@@ -409,6 +409,7 @@ public class TaskSolution {
     public boolean checkNodeGraph(Vertex studentVertex) {
         if (solutionGraph == null) {
             createSolutionGraph();
+            System.out.println("**\nIn checkNodeGraph()");
             ModelEvaluator evaluator = new ModelEvaluator(solutionGraph);
 
             try {
@@ -471,9 +472,11 @@ public class TaskSolution {
         // Add all the Edges in the Graph
         for (SolutionNode node : solutionNodes) {
             List<String> inputVertices = node.getInputNodes();
-            for (String vertexName : inputVertices) {                
-                solutionGraph.addEdge(solutionGraph.getVertexByName(vertexName),
-                        solutionGraph.getVertexByName(node.getNodeName()));
+            for (String vertexName : inputVertices) {
+                if(!node.isExtra()){
+                    solutionGraph.addEdge(solutionGraph.getVertexByName(vertexName),
+                            solutionGraph.getVertexByName(node.getNodeName()));
+                }
             }
         }
 
