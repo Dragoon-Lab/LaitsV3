@@ -1,24 +1,25 @@
 # Sessions #
 
-First, some definitions.  We distinguish between two usage modes:
+First, some definitions.  We distinguish between the LMS and the tutor:
+
+* __tutor__ is the Java code for Dragoon/Laits.  It is invoked
+via JNLP or a java command if it is being run locally.  On startup, 
+the tutor is given the [major mode](major-modes.md), user name, section, problem
+name, (optionally) the problem author, and (optionally) the user role. 
+The role can be `student` or `instructor`, default `student`. 
+*  __LMS__ or Learning Management System refers to the "outer loop" that
+invokes the tutor system for a particular user, group, problem, author, and role.
+It could be a full LMS like Moodle, or a simple web page like 
+[More problems](http://dragoon.asu.edu/demo/public-login.html).
+If the tutor is being run locally, then this would be a script to invoke
+the tutor (aside from Netbeans, this doesn't exist yet).  
+
+For the tutor, we distinguish between two usage modes:
 
 * __student__ which includes [major modes](major-modes.md) COACHED, STUDENT, and TEST.
 In this usage mode, a user modifies only the student graph.
 * __author__ which corresponds to the AUTHOR major mode.  In this mode,
 a user modifies only the solution graph.
-
-Along with this, we distinguish between the LMS and the tutor:
-
-* __tutor__ is the Java code for Dragoon/Laits.  It is invoked
-via JNLP or a java command if it is being run locally.  On startup, 
-the tutor is given the major mode, user name, section, problem
-name, and (optionally) the problem author. 
-*  __LMS__ or Learning Management System refers to the "outer loop" that
-invokes the tutor system for a particular user, group, and problem. 
-It could be a full LMS like Moodle, or a simple web page like 
-[More problems](http://dragoon.asu.edu/demo/public-login.html).
-If the tutor is being run locally, then this would be a script to invoke
-the tutor (aside from Netbeans, this doesn't exist yet).
 
 Also, there are two classes of problem solution graphs:
 
@@ -29,7 +30,6 @@ their name.  They are available to all users
 these problems.  Students select published problems via the LMS. 
 If the tutor is being run locally, these problems are 
 stored along side the java code (this doesn't exist yet).
-
 * __custom__ or __dynamic__ problems are authored
 by users.  If the tutor is run locally, these would be stored
 in a location on the file system, tagged only by the problem name (doesn't
@@ -51,11 +51,10 @@ has columns for user name, section, problem name, time stamp, the graph xml
 For published problems, the author name is an empty string.  The primary key 
 for the table should consist of:  section, user name, problem name, and author name.
 It is important that section is listed first.
-
 * `solutions` table stores solution graphs for custom problems.
-This table has columns for author name, section, problem name, and a "share" bit
-(default zero), a timestamp and the problem xml (text). The primary key for the table 
-should consist of: 
+This table has columns for author name, section, problem name, a "share" bit
+(default zero), a "deleted" bit (default zero), a timestamp and the problem xml (text). 
+The primary key for the table should consist of: 
  section, problem name, and author name.  It is important that section is
 listed first.
 
@@ -65,7 +64,7 @@ If `false`, then only the author may view the problem.  If `true`, then
 all students in a section may view that problem.  Custom problems cannot
 be viewed by users outside of a section.
 
-## Access to the Solution graph custom problems ##
+## Access to the custom problem solution graphs ##
 
 Currently, in author mode, the user can explicitly save a problem solution graph
 on the local machine via a menu selection.  Any sharing with other students
@@ -102,6 +101,13 @@ The student may choose one of
 the existing problems, or, if they are in author mode, they
 may choose a new problem name.
 
+## Student graph Selection ##
+
+The server script `student_graphs.php` retrieves all matching student solution graphs 
+available in the `autosave_table`. 
+It is called using the GET method with arguments:  section, problem, and (optionally) author.
+It returns list of user, author pairs (in json or xml format).  
+
 ## Student Mode ##
 
 In this mode the user only modifies the student model.   This mode
@@ -115,19 +121,48 @@ the student when a problem is opened.
 
 ## Author Mode ##
 
+In author mode, the LMS *may* choose to display only problems that the user
+has themselves authored, along with the ability to create a new
+problem name.  This would discourage students from creating problems
+that share a name with an existing published or custom problem.
+
 In author mode, the tutor provides a menu where a student may
 **merge** an existing solution with their solution.  The solutions
 are provided by the `available_problems.php`.  Also, the tutor UI
 has a switch that allows the user to change the share bit.
 
-The mechanism for "forking" an existing problem is, in the LMS, for the student
-to new problem name.  This opens a new empty problem.  They then use the **merge**
-menu to load the existing problem of interest.  This creates a copy of
-an existing problem with a new name.
+The mechanism for a user to "fork" an existing problem that they have authored is, 
+in the LMS, for the student to choose a new problem name.  This opens a new empty problem. 
+They then use the **merge** menu to load the existing problem of interest.  
+This creates a copy of
+an existing problem with a new name.  If student *A* chooses to open a
+problem authored by student *B*, then that creates an identical problem
+(with the same name) owned by student *A*.
 
 Finally, the tutor needs a method for allowing the author to
-create the "predefined" nodes for a problem.
+create the "predefined" nodes for a problem.  This would be some
+sort of switch in the UI?
 
+## Read-only access for instructors and authors ##
 
+We have the use cases:
 
+* Instructors need to be able to view solution graphs for all problems in
+a section, not just ones marked "shared".
+* Instructors need to be able to view student graphs for all members of the section.
+* Authors need to be able to view student graphs associated with all problems
+that they have authored.
 
+This is accomplished in the tutor using the `student_graphs.php` script.
+We need to decide on the behavior of the tutor for this:
+
+* Does it open a separate window or is it shown in the main window?
+* Is this available in student mode, author mode or both?
+* What happens to any currently loaded student graph for this problem?
+* Is there some mechanism for closing the problem?
+* If it is "Read-only" does that mean that student graph is frozen,
+or that changes are not logged on the server?
+* What, precisely, gets logged?
+
+In all cases, the author/instructor must be able to open the
+discussion tab for all nodes and add to the discussions.
