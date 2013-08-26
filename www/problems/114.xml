@@ -1,50 +1,45 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<Task phase="Challenge" type="Construct">
+<Task phase="Challenge" type="Whole">
   <TaskName>ObscureFlix</TaskName>
   <URL>http://fc03.deviantart.net/fs70/f/2010/069/1/1/Gorosaurus_pinup_by_KaijuSamurai.jpg</URL>
   
   <TaskDescription>
-      Problem: Mark enjoys watching obscure, barely known movies so he NEWLINE
-      subscribes to ObscureFlix.  He can watch all the movies he wants, NEWLINE
-      although he has to pay $2.5 per movie.  However, the good people at NEWLINE
-      ObscureFlix only have an average of 5 copies of each movie, so they NEWLINE
-      often have to wait for movies to be returned before they can ship NEWLINE
-      them out again. On average ObscureFlix can only ship half of the NEWLINE
-      movies in Mark’s movie queue each week, which of course removes NEWLINE
-      them from the queue.  After an initial frenzy where he started up his NEWLINE
-      queue by putting 30 really rare movies in it, the number of movies NEWLINE
-      Mark adds to his queue each week is about 20% of the number of NEWLINE
-      movies already on the queue. NEWLINE NEWLINE
-      Goal: Make a graph that shows how many movies he has in his NEWLINE
-      queue over the space of 12 weeks.
+      Problem: Mark enjoys watching obscure, barely known movies so he subscribes to ObscureFlix.  He can NEWLINE
+      watch all the movies he wants, although he has to pay $2.5 per movie.  However, the good people at NEWLINE
+      ObscureFlix only have an average of 5 copies of each movie, so they often have to wait for movies to NEWLINE
+      be returned before they can ship them out again. On average ObscureFlix can only ship half of the NEWLINE
+      movies on Mark’s movie queue each week, which of course removes them from the queue.  After an NEWLINE
+      initial frenzy where he started up his queue by putting 30 really rare movies on it, the number of NEWLINE
+      movies Mark adds to his queue each week is about 20% of the number of movies already on the queue. NEWLINE NEWLINE
+      Goal: Make a graph that shows how many movies he has in his queue over the space of 12 weeks.
   </TaskDescription>
 
   <ShortDescription>
-        The number of movies in the queue at the end of this week =
-        \n     the number of movies in Mark’s queue at the end of the previous week
+        The number of movies on the queue at the end of this week =
+        \n     the number of movies on Mark’s queue at the end of the previous week
         \n     + the number movies Mark adds to the queue this week
         \n     - the number of movies  removed from the queue this week.
         \n     Initially, the number of movies in the queue is 30.
         \nThe number of movies removed from the queue each week =
-        \n     the number of movies in the queue at the beginning of the week
+        \n     the number of movies on the queue at the beginning of the week
         \n     - The number of movies shipped to Mark each week.
         \nThe number of movies shipped to Mark each week =
-        \n     the number of movies in the queue at the beginning of the week
+        \n     the number of movies on the queue at the beginning of the week
         \n     * The proportion of movies from the queue shipped each week.
         \nThe number of movies Mark adds to the queue each week =
-        \n     the number of movies in the queue at the beginning of the week
+        \n     the number of movies on the queue at the beginning of the week
         \n     * the proportion of movies that Mark adds to the queue this week
         \nThe proportion of movies that Marks adds to the queue each week is given as 0.20.
         \nThe proportion of movies from the queue shipped each week is given as 0.5.
         \nThe amount of money Marks spends per movie in dollars is given as 2.5.
         \nThe amount of copies of a movie on average is given as 5.
-        \nThe number of movies in the queue initially is given as 30.
+        \nThe number of movies on the queue initially is given as 30.
   </ShortDescription>
   <StartTime>0</StartTime>
   <EndTime>10</EndTime>
   <Units>weeks</Units>
   <Vertexes>
-    <VertexLabel>movies in queue</VertexLabel>
+    <VertexLabel>movies on queue</VertexLabel>
     <VertexLabel>movies shipped weekly</VertexLabel>
     <VertexLabel>proportion of movies shipped</VertexLabel>
     <VertexLabel>movies added weekly</VertexLabel>
@@ -52,12 +47,12 @@
     <VertexLabel>price per movie</VertexLabel>
     <VertexLabel>price paid per week</VertexLabel>
     <VertexLabel>copies per movie</VertexLabel>
-    <VertexLabel>movies in queue initially</VertexLabel>
+    <VertexLabel>movies on queue initially</VertexLabel>
   </Vertexes>
   
   <NodeCount>9</NodeCount>
 
-  <ProblemSeeking>movies in queue</ProblemSeeking>
+  <ProblemSeeking>movies on queue</ProblemSeeking>
   <CorrespondingSentence>Make a graph that shows how many movies he has in his queue over the space of 12 weeks.</CorrespondingSentence>
 
   <Nodes>
@@ -101,27 +96,27 @@
         <Plan>fixed value</Plan>
       </Node>
 
-      <Node type="constant" name="movies in queue initially" extra="yes">
+      <Node type="constant" name="movies on queue initially" extra="yes">
         <Inputs></Inputs>
         <Outputs></Outputs>
         <Equation>30</Equation>
         <InitialValue>30</InitialValue>
-        <CorrectDescription>The number of movies in the queue initially</CorrectDescription>
+        <CorrectDescription>The number of movies on the queue initially</CorrectDescription>
         <Plan>fixed value</Plan>
       </Node>
 
-      <Node type="stock" name="movies in queue" extra="no">
+      <Node type="stock" name="movies on queue" extra="no">
         <Inputs>
             <Name>movies added weekly</Name>
             <Name>movies shipped weekly</Name>
-        </Inputs>
+            </Inputs>
         <Outputs>
             <Name>movies shipped weekly</Name>
             <Name>movies added weekly</Name>
         </Outputs>
         <Equation>+movies added weekly-movies shipped weekly</Equation>
         <InitialValue>30</InitialValue>
-        <CorrectDescription>The number of movies in the queue each week</CorrectDescription>
+        <CorrectDescription>The number of movies on the queue each week</CorrectDescription>
         <Plan>said to both increase and decrease</Plan>
       </Node>
       
@@ -139,11 +134,11 @@
       
       <Node type="flow" name="movies shipped weekly" extra="no">
         <Inputs>
-            <Name>movies in queue</Name>
+            <Name>movies on queue</Name>
             <Name>proportion of movies shipped</Name>
         </Inputs>
         <Outputs></Outputs>
-        <Equation>movies in queue*proportion of movies shipped</Equation>
+        <Equation>movies on queue*proportion of movies shipped</Equation>
         <InitialValue></InitialValue>
         <CorrectDescription>The number of movies shipped to Mark each week</CorrectDescription>
         <Plan>proportional to accumulator and input</Plan>
@@ -152,12 +147,12 @@
       <Node type="flow" name="movies added weekly" extra="no">
         <Inputs>
             <Name>proportion of movies added</Name>
-            <Name>movies in queue</Name>
+            <Name>movies on queue</Name>
             </Inputs>
         <Outputs>
-            <Name>movies in queue</Name>
+            <Name>movies on queue</Name>
         </Outputs>
-        <Equation>movies in queue*proportion of movies added</Equation>
+        <Equation>movies on queue*proportion of movies added</Equation>
         <InitialValue></InitialValue>
         <CorrectDescription>The number of movies Mark adds to the queue each week</CorrectDescription>
         <Plan>proportional to accumulator and input</Plan>
@@ -168,14 +163,14 @@
     <Node level="root">
       <Description>The number of</Description>      
       <Node level="intermediate">
-        <Description>movies in the queue</Description>            
+        <Description>movies on the queue</Description>            
         <Node level="leaf">
           <Description>initially</Description>
-          <NodeName>movies in queue initially</NodeName>
+          <NodeName>movies on queue initially</NodeName>
         </Node>
         <Node level="leaf">
           <Description>each week</Description>
-          <NodeName>movies in queue</NodeName>
+          <NodeName>movies on queue</NodeName>
         </Node>
 	  </Node>
       <Node level="intermediate">
