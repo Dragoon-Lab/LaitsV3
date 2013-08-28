@@ -230,6 +230,7 @@ public class NodeEditor extends javax.swing.JDialog {
                         activityLogs.debug("User Is in the Plan Tab ");
                         setEditorMessage("", true);
                         selectedTab = PLAN;
+                        pPanel.refreshPanel();
                         if (currentVertex.getPlanStatus().equals(Vertex.PlanStatus.CORRECT)
                                 || currentVertex.getPlanStatus().equals(Vertex.PlanStatus.GAVEUP)) {
                             pPanel.setEditableRadio(false);
@@ -712,7 +713,7 @@ public class NodeEditor extends javax.swing.JDialog {
                             new BlockingToolTip(this, bubble, getLabel("dPanel", bubble.getAttachedTo()));
                         } else if (panel.equalsIgnoreCase("plan")) {
                             System.out.println("Trying to add help in Plan. Msg: " + bubble.getMessage() + "  " + bubble.getAttachedTo());
-                            System.out.println("comp: " + pPanel.getLabel(bubble.getAttachedTo()));
+                   //         System.out.println("comp: " + pPanel.getLabel(bubble.getAttachedTo()));
                             new BlockingToolTip(this, bubble, getLabel("pPanel", bubble.getAttachedTo()));
                         } else if (panel.equalsIgnoreCase("calculations")) {
                             new BlockingToolTip(this, bubble, getLabel("cPanel", bubble.getAttachedTo()));
@@ -734,7 +735,7 @@ public class NodeEditor extends javax.swing.JDialog {
         if (panel.equalsIgnoreCase("dPanel")) {
             rPanel = dPanel.getLabel(attachedTo);
         } else if (panel.equalsIgnoreCase("pPanel")) {
-            rPanel = pPanel.getLabel(attachedTo);
+      //      rPanel = pPanel.getLabel(attachedTo);
         } else if (panel.equalsIgnoreCase("cPanel")) {
             rPanel = cPanel.getLabel(attachedTo);
         }

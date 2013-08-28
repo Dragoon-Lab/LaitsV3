@@ -69,6 +69,12 @@ public class TaskSolutionReader {
             Element descriptionTree = taskNode.element("DescriptionTree");
             fillDescriptionTree(solution, descriptionTree);
             
+            Element subPlans = taskNode.element("SubPlans");
+            if(subPlans != null){
+                fillSubPlans(solution, subPlans);
+            }
+            
+            
             //Read in help bubbles
             if(ApplicationContext.getAppMode().equalsIgnoreCase("COACHED") && ApplicationContext.isHelpBubbles()){
                 Element bubbles = taskNode.element("HelpBubbles");
@@ -200,6 +206,20 @@ public class TaskSolutionReader {
             
         }
         
+    }
+    
+    private void fillSubPlans(TaskSolution solution, Element subPlans){
+        
+        List<Element> allSubPlans = subPlans.elements("SubPlan");
+        for(Element subPlan : allSubPlans){
+            if(subPlan.attributeValue("primary").equals("parameter")){
+                solution.addParameterSubPlans(subPlan.getTextTrim());
+            } else if(subPlan.attributeValue("primary").equals("accumulator")){
+                solution.addAccumulatorSubPlans(subPlan.getTextTrim());
+            }else if(subPlan.attributeValue("primary").equals("function")){
+                solution.addFunctionSubPlans(subPlan.getTextTrim());
+            }
+        }
     }
     //Read in help bubble info
     private void fillHelpBubbles(TaskSolution solution, Element bubbles){

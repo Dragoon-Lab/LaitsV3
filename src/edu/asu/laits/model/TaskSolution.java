@@ -50,6 +50,9 @@ public class TaskSolution {
     private List<HelpBubble> helpBubbles;
     private SolutionDTreeNode dTreeNode;
     private Graph solutionGraph = null;
+    private List<String> parameterSubPlans;
+    private List<String> accumulatorSubPlans;
+    private List<String> functionSubPlans;
     private static Logger logs = Logger.getLogger("DevLogs");
 
     public TaskSolution() {
@@ -133,6 +136,40 @@ public class TaskSolution {
         }
     }
 
+    public List<String> getParameterSubPlans() {
+        return parameterSubPlans;
+    }
+
+    public List<String> getAccumulatorSubPlans() {
+        return accumulatorSubPlans;
+    }
+
+    public List<String> getFunctionSubPlans() {
+        return functionSubPlans;
+    }
+
+    public void setParameterSubPlans(List<String> parameterSubPlans) {
+        this.parameterSubPlans = parameterSubPlans;
+    }
+
+    public void setAccumulatorSubPlans(List<String> accumulatorSubPlans) {
+        this.accumulatorSubPlans = accumulatorSubPlans;
+    }
+
+    public void setFunctionSubPlans(List<String> functionSubPlans) {
+        this.functionSubPlans = functionSubPlans;
+    }
+    public void addParameterSubPlans(String parameterSubPlan) {
+        this.parameterSubPlans.add(parameterSubPlan);
+    }
+
+    public void addAccumulatorSubPlans(String accumulatorSubPlan) {
+        this.accumulatorSubPlans.add(accumulatorSubPlan);
+    }
+
+    public void addFunctionSubPlans(String functionSubPlan) {
+        this.functionSubPlans.add(functionSubPlan);
+    }
     /**
      * @return the startTime
      */
