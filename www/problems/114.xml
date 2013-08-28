@@ -111,6 +111,7 @@
       </Node>
 
       <Node type="stock" name="movies in queue" extra="no">
+        <Order>1</Order>
         <Inputs>
             <Name>movies added weekly</Name>
             <Name>movies shipped weekly</Name>
