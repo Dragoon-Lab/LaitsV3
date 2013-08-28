@@ -1,6 +1,6 @@
 package edu.asu.laits.editor;
 
-import edu.asu.laits.gui.nodeeditor.NodeEditor;
+import edu.asu.laits.gui.nodeeditor.NodeEditorView;
 import edu.asu.laits.model.Vertex;
 import java.awt.event.MouseEvent;
 import java.awt.event.MouseListener;

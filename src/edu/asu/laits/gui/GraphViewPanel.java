@@ -58,7 +58,7 @@ public class GraphViewPanel{
     
     private void addCharts(){
         Task t = null;
-        if(!ApplicationContext.getAppMode().equalsIgnoreCase("AUTHOR")){
+        if(!ApplicationContext.isAuthorMode()){
             t = new Task(ApplicationContext.getCorrectSolution().getStartTime(), 
                     ApplicationContext.getCorrectSolution().getEndTime(), 
                     ApplicationContext.getCorrectSolution().getGraphUnits());
