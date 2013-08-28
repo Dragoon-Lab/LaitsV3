@@ -123,17 +123,18 @@
       </Node>
 
       <Node type="flow" name="doctors" extra="no">
-        <Inputs>
+          <Order>1</Order>
+          <Inputs>
             <Name>doctor patient ratio</Name>
             <Name>patients</Name>
-        </Inputs>
-        <Outputs>
+          </Inputs>
+          <Outputs>
             <Name>patients discharged</Name>
-        </Outputs>
-        <Equation>patients*doctor patient ratio</Equation>
-        <InitialValue></InitialValue>
-        <CorrectDescription>The number of doctors in the hospital each hour</CorrectDescription>
-        <Plan>proportional to accumulator and input</Plan>
+          </Outputs>
+          <Equation>patients*doctor patient ratio</Equation>
+          <InitialValue></InitialValue>
+          <CorrectDescription>The number of doctors in the hospital each hour</CorrectDescription>
+          <Plan>proportional to accumulator and input</Plan>
       </Node>
 
       <Node type="flow" name="patients discharged" extra="no">

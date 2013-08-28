@@ -114,15 +114,16 @@
     </Node>
     
     <Node type="flow" name="driver commuter diff." extra="no">
-      <Inputs>        
-          <Name>private drivers</Name>
-          <Name>public commuters</Name>
-      </Inputs>
-      <Outputs></Outputs>
-      <InitialValue></InitialValue>
-      <Equation>private drivers-public commuters</Equation>
-      <CorrectDescription>The number of private drivers minus the number of public commuters each year</CorrectDescription>
-      <Plan>the difference of two quantities</Plan>
+        <Order>1</Order>
+        <Inputs>        
+            <Name>private drivers</Name>
+            <Name>public commuters</Name>
+        </Inputs>
+        <Outputs></Outputs>
+        <InitialValue></InitialValue>
+        <Equation>private drivers-public commuters</Equation>
+        <CorrectDescription>The number of private drivers minus the number of public commuters each year</CorrectDescription>
+        <Plan>the difference of two quantities</Plan>
     </Node>
 	
     <Node type="flow" name="commuters added" extra="no">
