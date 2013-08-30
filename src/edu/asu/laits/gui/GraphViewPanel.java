@@ -29,7 +29,11 @@ import edu.asu.laits.model.Task;
 import edu.asu.laits.model.Vertex;
 import java.awt.Color;
 import javax.swing.JDialog;
+import javax.swing.JLabel;
+import javax.swing.JSlider;
+import javax.swing.JFormattedTextField;
 import javax.swing.JScrollPane;
+import javax.swing.JComponent;
 import org.jdesktop.swingx.JXTaskPane;
 import org.jdesktop.swingx.JXTaskPaneContainer;
 
@@ -41,6 +45,7 @@ public class GraphViewPanel{
     private Graph<Vertex, Edge> currentGraph;
     JXTaskPaneContainer chartContainer;
     JDialog parent;
+    JSlider testSlider;
     
     public GraphViewPanel(Graph<Vertex, Edge> graph, JDialog parent){
         currentGraph = graph;
@@ -54,6 +59,36 @@ public class GraphViewPanel{
     
     private void initializeComponents(){
         chartContainer = new JXTaskPaneContainer();
+        addSliders();
+    }
+    
+    private void addSliders() {
+        Task t = null;
+        DoubleJSlider newSlider;
+        JLabel sliderLabel;
+        JFormattedTextField sliderAmount;
+        if(!ApplicationContext.isAuthorMode()){
+            t = new Task(ApplicationContext.getCorrectSolution().getStartTime(), 
+                    ApplicationContext.getCorrectSolution().getEndTime(), 
+                    ApplicationContext.getCorrectSolution().getGraphUnits());
+        }
+        for(Vertex currentVertex : currentGraph.vertexSet()) {
+            if(currentVertex.getVertexType().equals(Vertex.VertexType.CONSTANT)) {
+                newSlider = addSlider(currentVertex, t);
+                newSlider.setPaintTicks(true);
+                newSlider.setPaintLabels(true);
+                chartContainer.add(newSlider);
+                sliderLabel = new JLabel(currentVertex.getName());
+                chartContainer.add(sliderLabel);
+                sliderAmount = new JFormattedTextField();
+                sliderAmount.setText(String.valueOf(newSlider.getDoubleValue()));
+                chartContainer.add(sliderAmount);
+            }
+        }
+    }
+    
+    private DoubleJSlider addSlider(Vertex vertex, Task task){
+        return new DoubleJSlider(0, 5*vertex.getInitialValue(), vertex.getInitialValue());
     }
     
     private void addCharts(){
@@ -64,7 +99,11 @@ public class GraphViewPanel{
                     ApplicationContext.getCorrectSolution().getGraphUnits());
         }
         for(Vertex currentVertex : currentGraph.vertexSet()){
-            chartContainer.add(addChart(currentVertex, t));
+            System.out.println("Attempting to add chart for " + currentVertex.getName());
+            JXTaskPane plotPanel = addChart(currentVertex, t);
+            if(plotPanel != null){
+                chartContainer.add(plotPanel);
+            }
         }        
     }
     
@@ -73,7 +112,7 @@ public class GraphViewPanel{
         if(task == null){
             plotPanel = new PlotPanel(vertex, currentGraph.getCurrentTask().getStartTime(), 
                     currentGraph.getCurrentTask().getUnits());
-        }else{
+        }else if(!vertex.getVertexType().equals(Vertex.VertexType.CONSTANT)){
              plotPanel = new PlotPanel(vertex, task.getStartTime(), task.getUnits()); 
         }
         return plotPanel;
