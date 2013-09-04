@@ -72,8 +72,7 @@ public class ModelEvaluator {
         Iterator<Vertex> allVertices = currentGraph.vertexSet().iterator();
         
         // In STUDENT Mode Verify if all the correct nodes are defined
-        if(ApplicationContext.getAppMode().equalsIgnoreCase("STUDENT") || 
-                ApplicationContext.getAppMode().equalsIgnoreCase("COACHED")){
+        if(ApplicationContext.getAppMode().equalsIgnoreCase("COACHED")){
             if(!correctNodesDefined())
                 return false;
         }
