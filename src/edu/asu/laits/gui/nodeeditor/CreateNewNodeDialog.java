@@ -263,6 +263,8 @@ public class CreateNewNodeDialog extends javax.swing.JDialog {
     private void close() {
         System.out.println("closing");
         if (currentVertex.getName().equals("")) {
+           // ne.getGraphPane().removeSelected();
+            ne.getGraphPane().setSelectionCell(currentVertex.getJGraphVertex());
             ne.getGraphPane().removeSelected();
         } 
         else {
