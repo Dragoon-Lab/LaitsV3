@@ -316,8 +316,14 @@ public class ModelMenu extends JMenu {
             NodeEditor editor = new NodeEditor(graphPane, v);
             
         } else {
-            activityLogs.debug("User was not allowed to create new node as all the nodes were already present");
-            JOptionPane.showMessageDialog(window, "The model is already using all the correct nodes.");
+            if(ApplicationContext.getAppMode().equals("COACHED") && !isGraphEmpty()) {
+                activityLogs.debug("User was not allowed to create new node as app is in COACHED mode and nodes already present");
+                JOptionPane.showMessageDialog(window, "Create new nodes inside the Calculations tab of existing nodes");
+            } else {
+               activityLogs.debug("User was not allowed to create new node as all the nodes were already present");
+               JOptionPane.showMessageDialog(window, "The model is already using all the correct nodes.");
+            }
+            
         }
 
     }
@@ -432,6 +438,11 @@ public class ModelMenu extends JMenu {
         // don't have a match in the student graph.
         TaskSolution solution = ApplicationContext.getCorrectSolution();
         boolean noMatch = false;
+        if(ApplicationContext.getAppMode().equals("COACHED")){
+            if (!isGraphEmpty()) {
+                return noMatch;
+            }
+        }
         List<String> names= solution.getCorrectNodeNames();
         for(String n : names){
             if(graphPane.getModelGraph().getVertexByName(n) == null){
@@ -441,6 +452,15 @@ public class ModelMenu extends JMenu {
         }
 
         return noMatch;
+    }
+    
+    public boolean isGraphEmpty() {
+        if (graphPane.getModelGraph().isEmpty()) {
+                return true;
+            } else{
+            return false;
+        }
+            
     }
   
     public void editTimeRangeAction() {

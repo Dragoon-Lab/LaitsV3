@@ -86,4 +86,12 @@ public class Graph<V, E> extends ListenableDirectedGraph<V, E> implements
             
             return max;
         }
+        
+        public boolean isEmpty(){
+             if(this.vertexSet().isEmpty()){
+                 return true;
+             } else{
+                 return false;
+             }
+        }
 }
