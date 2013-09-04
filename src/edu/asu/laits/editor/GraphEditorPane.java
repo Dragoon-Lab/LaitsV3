@@ -474,12 +474,9 @@ public class GraphEditorPane extends JGraph {
                         }
                     }
                 }
-            }
-            
-            getGraphLayoutCache().remove(cells);
-            
+            }            
+            getGraphLayoutCache().remove(cells);            
         }
-
     }
 
     /**
