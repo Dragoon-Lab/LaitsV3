@@ -116,7 +116,7 @@ ant compile
 ant jar  
 ant unsign  
 cd www  
->java -jar Laitsv3.jar username mode problemid
+>java -jar Laits.jar username mode problemid
 
 
 ### Run on local server ###
