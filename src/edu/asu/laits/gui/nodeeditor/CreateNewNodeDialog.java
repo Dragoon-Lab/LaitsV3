@@ -64,6 +64,9 @@ public class CreateNewNodeDialog extends javax.swing.JDialog {
         pack();
 
         editorMsgLabel.setVisible(false);
+        if(ApplicationContext.getAppMode().equals("COACHED")){
+            buttonCancel.setEnabled(false);
+        }
         setVisible(true);
         setResizable(false);
     }
@@ -186,6 +189,7 @@ public class CreateNewNodeDialog extends javax.swing.JDialog {
         dPanel.setEditableTree(false);
         this.checkButton.setEnabled(false);
         this.giveUpButton.setEnabled(false);
+        this.buttonCancel.setEnabled(true);
 
     }//GEN-LAST:event_giveUpButtonActionPerformed
 
@@ -206,6 +210,7 @@ public class CreateNewNodeDialog extends javax.swing.JDialog {
                 dPanel.setTextFieldBackground(Color.GREEN);
                 checkButton.setEnabled(false);
                 giveUpButton.setEnabled(false);
+                buttonCancel.setEnabled(true);
                 activityLogs.debug("User entered correct description");
                 dPanel.setEditableTree(false);
 
@@ -235,6 +240,7 @@ public class CreateNewNodeDialog extends javax.swing.JDialog {
             dPanel.setTextFieldBackground(Color.GREEN);
             checkButton.setEnabled(false);
             giveUpButton.setEnabled(false);
+            buttonCancel.setEnabled(true);
             activityLogs.debug("User entered correct description");
             dPanel.setEditableTree(false);
             //ApplicationContext.nextCurrentOrder();

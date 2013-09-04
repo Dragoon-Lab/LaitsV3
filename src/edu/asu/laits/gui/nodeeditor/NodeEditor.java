@@ -88,9 +88,6 @@ public class NodeEditor extends javax.swing.JDialog {
         setTitle(getNodeEditorTitle());
         setEditorMessage("", true);
         prepareNodeEditorDisplay();
-        if (ApplicationContext.getAppMode().equalsIgnoreCase("COACHED")) {
-            buttonCancel.setEnabled(false);
-        }
         this.addWindowListener(new java.awt.event.WindowAdapter() {
             public void windowClosing(java.awt.event.WindowEvent e) {
                 closeNodeEditor();
@@ -115,16 +112,20 @@ public class NodeEditor extends javax.swing.JDialog {
         setLocationRelativeTo(null);
         pack();
 
-        setVisible(true);
-        setResizable(false);
 
         if (ApplicationContext.getAppMode().equalsIgnoreCase("COACHED")) {
+            System.out.println("button SHOULD BE disabled");
+            buttonCancel.setEnabled(false);
             if (!currentVertex.getPlanStatus().equals(Vertex.PlanStatus.CORRECT)
                     && !currentVertex.getPlanStatus().equals(Vertex.PlanStatus.GAVEUP)) {
                 tabPane.setEnabledAt(CALCULATIONS, false);
                 tabPane.setForegroundAt(CALCULATIONS, Color.GRAY);
             }
         }
+        
+        
+        setVisible(true);
+        setResizable(false);
         
     }
 
