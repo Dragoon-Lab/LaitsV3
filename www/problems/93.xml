@@ -8,8 +8,8 @@
       NEWLINE proves to be quite popular and many new people start riding the commuter rail line each year. The ridership grows by 10% each year. 
   
       NEWLINE NEWLINE Goal: Graph the spare capacity of the rail line over 10 years.
-  NEWLINE A model has been provided for you and run. As you can tell from the G indicators, some of the graphs are wrong. You will need to fix the model. 
-  NEWLINE NEWLINE Hint: Although calculations are often a source of errors, another common error is that the model is missing nodes and/or links.</TaskDescription>
+      NEWLINE A model has been provided for you and run. As you can tell from the 'C' indicators, not all of the nodes are correct. You will need to fix the model. 
+      NEWLINE NEWLINE Hint: Although calculations are often a source of errors, another common error is that the model is missing nodes and/or links.</TaskDescription>
   
   <StartTime>0</StartTime>
   <EndTime>10</EndTime>
