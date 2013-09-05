@@ -47,7 +47,7 @@ public class InputsPanelView extends javax.swing.JPanel implements ItemListener 
     boolean undoFlag = false;
     public String itemChanged;
     public boolean correctinput = false;
-    NodeEditor nodeEditor;
+    NodeEditorView nodeEditor;
     public HashMap<Vertex, Boolean> initialSelection = new HashMap<Vertex, Boolean>();
     /**
      * Logger *
@@ -60,7 +60,7 @@ public class InputsPanelView extends javax.swing.JPanel implements ItemListener 
      *
      * @param gc : GraphCanvas of LAITS Application.
      */
-    public InputsPanelView(NodeEditor ne) {
+    public InputsPanelView(NodeEditorView ne) {
         initComponents();
         nodeEditor = ne;
         checkboxList = new LinkedList<JCheckBox>();

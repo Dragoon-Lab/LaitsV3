@@ -1,33 +1,22 @@
 # Major Modes #
 
-I would suggest that we stick with the four major modes:
+I suggest that we stick with the four major modes:
+
 * COACHED
 * STUDENT
 * AUTHOR
 * TEST
-And then do any section-specific customization on top of that.  This document lists properties
-of these modes and possible section-specific customizations.
 
-## All modes ##
-
-**This needs to be moded ** 
-The Show Graph button colors the "g" 
-indicators (I'm not sure if it does this now).  If the target graph does not match the 
-model's graph, then the "g" indicator on the node turns red.  If they do match, 
-then the "g" indicator is green.    
-As soon as the user makes any change to the model, the "g" indicators on every node 
-turn white (unchecked).
+Any section-specific customizations are modifications to a major mode.  This 
+document lists properties of these modes and possible section-specific customizations.
 
 ## COACHED mode ##
 
 We need a mode that requires the student to follow the TNS (target node strategy) as described in the last section of the slides.  When the coached mode is on:
 
 * the create node button in the menu bar is disabled.  Every model starts with a single node that is not yet been given a description. Thus, the only way a user can create nodes is via the "create a new node" button on the inputs tab (there is a separate card for adding this button).
-
 * the only way a user can exit a tab is when it is green or yellow. 
-
 * a user cannot close or delete a node until its calculation is green. 
-
 * on the description tab (including the one that pops up when the user clicks on the create a new node button on the calculations tab), if the user selects a description that would normally turn green but is not one of the right nodes to define right now according to the TNS, then the background of the tab turns cyan and a message says, "This quantity is legal, but now is not the time to define it." 
 
 ### Help Bubbles ###
