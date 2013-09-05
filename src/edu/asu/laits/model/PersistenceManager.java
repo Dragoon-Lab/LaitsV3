@@ -66,7 +66,7 @@ public class PersistenceManager implements Runnable {
             if (ApplicationContext.getAppMode().equalsIgnoreCase("AUTHOR")) {
                 String sendSession = sessionSaver.saveGetSession("author_save", ApplicationContext.getRootURL().concat("/save_solution.php"),
                         ApplicationContext.getUserID(), ApplicationContext.getSection(), ApplicationContext.getCurrentTaskID(),
-                        ModelMenu.graph, "");
+                        ModelMenu.graph, "0");
                 statusCode = Integer.parseInt(sendSession);
                 if (statusCode == 200) {
                     logs.info("Successfully saved author's solution to server using " + ApplicationContext.getRootURL().concat("/save_solution.php"));

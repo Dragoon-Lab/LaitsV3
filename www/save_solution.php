@@ -21,9 +21,11 @@
         $num_rows = $result->num_rows;
 
         if ($num_rows == 0) {
-            $mysqli->query("INSERT INTO solutions(author,section,problemName,solutionGraph,share) VALUES ('$author','$section','$problemName','$solutionGraph','$share')");
+            $mysqli->query("INSERT INTO solutions(author,section,problemName,solutionGraph,share) 
+                VALUES ('$author','$section','$problemName','$solutionGraph','$share')");
         } else {
-            $mysqli->query("UPDATE solutions SET solutionGraph='$solutionGraph', share='$share', time = CURRENT_TIMESTAMP WHERE author='$author' AND section='$section' AND problemName='$problemName'");
+            $mysqli->query("UPDATE solutions SET solutionGraph='$solutionGraph', share='$share', 
+                time = CURRENT_TIMESTAMP WHERE author='$author' AND section='$section' AND problemName='$problemName'");
         }
     }elseif(strcmp($action, "author_load") == 0){
         $result = $mysqli->query("SELECT solutionGraph FROM solutions WHERE author='$author' AND section='$section' AND problemName='$problemName'");

@@ -75,8 +75,8 @@ CREATE TABLE `solutions` (
     `section` VARCHAR(30) NOT NULL, 
     `problemName` VARCHAR(30) NOT NULL,  
     `author` VARCHAR(30) NOT NULL, 
-    `share` CHAR NOT NULL DEFAULT 0, 
-    `deleted` CHAR NOT NULL DEFAULT 0, 
+    `share` BOOL NOT NULL DEFAULT 0, 
+    `deleted` BOOL NOT NULL DEFAULT 0, 
     `time` TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP, 
     `solutionGraph` TEXT NOT NULL, 
     PRIMARY KEY(section, problemName, author)
