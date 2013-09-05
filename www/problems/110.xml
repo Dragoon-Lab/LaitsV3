@@ -13,14 +13,14 @@
 	<NodeCount>6</NodeCount>
 	<Nodes>
 		<Node type="flow" name="annual tree deaths" extra="no">
-			<Inputs>
-				<Name>death rate</Name>
-				<Name>live trees</Name>
-			</Inputs>
-			<InitialValue/>
-			<Equation>death rate * live trees</Equation>
-			<CorrectDescription>The number of trees that died each year</CorrectDescription>
-			<Plan>proportional to accumulator and input</Plan>
+                    <Inputs>
+                        <Name>death rate</Name>
+                        <Name>live trees</Name>
+                    </Inputs>
+                    <InitialValue/>
+                    <Equation>death rate * live trees</Equation>
+                    <CorrectDescription>The number of trees that died each year</CorrectDescription>
+                    <Plan>proportional to accumulator and input</Plan>
 		</Node>
 		<Node type="constant" name="initial population" extra="yes">
 			<Inputs/>
@@ -51,13 +51,14 @@
 			<Plan>fixed value</Plan>
 		</Node>
 		<Node type="stock" name="live trees" extra="no">
-			<Inputs>
-				<Name>annual tree deaths</Name>
-			</Inputs>
-			<InitialValue>4000</InitialValue>
-			<Equation>-annual tree deaths</Equation>
-			<CorrectDescription>The number of trees alive in the forest each year</CorrectDescription>
-			<Plan>said to decrease</Plan>
+                    <Order>1</Order>
+                    <Inputs>
+                            <Name>annual tree deaths</Name>
+                    </Inputs>
+                    <InitialValue>4000</InitialValue>
+                    <Equation>-annual tree deaths</Equation>
+                    <CorrectDescription>The number of trees alive in the forest each year</CorrectDescription>
+                    <Plan>said to decrease</Plan>
 		</Node>
 	</Nodes>
 	<DescriptionTree>

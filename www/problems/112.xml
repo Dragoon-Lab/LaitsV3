@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<Task phase="Challenge" type="Whole">
+<Task phase="" type="Whole">
   <TaskName>Blood Glucose</TaskName>
   <URL>http://lh6.ggpht.com/_9F9_RUESS2E/SqpDdiLBcII/AAAAAAAABEE/ZNVbA8UwO1k/s800/Looking-at-the-World-through-a-Microscope-red-blood-cells3.jpg</URL>
   
@@ -94,17 +94,18 @@
     </Node>
     
     <Node type="stock" name="glucose in the blood" extra="no">
-      <Inputs>
-        <Name>glucose added</Name>
-        <Name>glucose removed</Name>
-	  </Inputs>
-      <Outputs>
+        <Order>1</Order>
+        <Inputs>
+          <Name>glucose added</Name>
           <Name>glucose removed</Name>
-      </Outputs>
-      <Equation>+glucose added-glucose removed</Equation>
-      <InitialValue>10</InitialValue>
-      <CorrectDescription>The amount of glucose in the blood at the end of each hour and it varies from hour to hour</CorrectDescription>
-      <Plan>said to both increase and decrease</Plan>
+        </Inputs>
+        <Outputs>
+            <Name>glucose removed</Name>
+        </Outputs>
+        <Equation>+glucose added-glucose removed</Equation>
+        <InitialValue>10</InitialValue>
+        <CorrectDescription>The amount of glucose in the blood at the end of each hour and it varies from hour to hour</CorrectDescription>
+        <Plan>said to both increase and decrease</Plan>
     </Node>
   </Nodes>
        

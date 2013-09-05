@@ -90,13 +90,13 @@ public class HttpAppender extends AppenderSkeleton {
         HttpConnectionParams.setConnectionTimeout(params, timeOut);
         HttpConnectionParams.setSoTimeout(params, timeOut);
         String message = this.getLayout().format(paramLoggingEvent);
-        logURL = ApplicationContext.getRootURL()+"/logger.php";
-        
+        logURL = ApplicationContext.getRootURL() + "/logger.php";
+
         try {
             if (this.HttpMethodBase.equalsIgnoreCase(METHOD_GET)) {
                 StringBuffer sb = new StringBuffer(this.logURL);
                 sb.append(message);
-                System.out.println("test : "+sb.toString());
+                System.out.println("test : " + sb.toString());
                 httpMethod = new HttpGet(sb.toString());
             } else {
                 if (this.postMethod.equalsIgnoreCase(POST_PARAMETERS)) {
@@ -131,21 +131,21 @@ public class HttpAppender extends AppenderSkeleton {
         } catch (UnsupportedEncodingException ex) {
         }
     }
-    
-    public static String saveGetSession(String action, String address, String id, String section, String problem, String data) throws Exception {
+
+    public static String saveGetSession(String action, String address, String id, String section, String problem, String data, String share) throws Exception {
         //open connection
         URL url = new URL(address);
-        HttpURLConnection connect = (HttpURLConnection) url.openConnection();       
-        
+        HttpURLConnection connect = (HttpURLConnection) url.openConnection();
+
         //sets POST and adds POST data type as URLENCODED
         connect.setRequestMethod("POST");
-        connect.setRequestProperty("Content-Type","application/x-www-form-urlencoded");
-        
+        connect.setRequestProperty("Content-Type", "application/x-www-form-urlencoded");
+
         //sets mode as output and disables cache
-        connect.setUseCaches (false);
+        connect.setUseCaches(false);
         connect.setDoInput(true);
         connect.setDoOutput(true);
-        
+
         //add variables to send
         List<NameValuePair> postVariable = new ArrayList<NameValuePair>();
         StringBuilder sb = new StringBuilder();
@@ -153,32 +153,33 @@ public class HttpAppender extends AppenderSkeleton {
         postVariable.add(new BasicNameValuePair("id", id));
         postVariable.add(new BasicNameValuePair("section", section));
         postVariable.add(new BasicNameValuePair("problem", problem));
-        if(action.equals("save")){
-            postVariable.add(new BasicNameValuePair("saveData", data));           
+        if (action.equals("save") || action.equals("author_save")) {
+            postVariable.add(new BasicNameValuePair("saveData", data));
         }
-        
+        if (action.equals("author_save")) {
+            postVariable.add(new BasicNameValuePair("share", share));
+        }
+
         //sends request
-        OutputStream stream = new DataOutputStream (connect.getOutputStream ());
+        OutputStream stream = new DataOutputStream(connect.getOutputStream());
         BufferedWriter writer = new BufferedWriter(new OutputStreamWriter(stream, "UTF-8"));
         writer.write(getQuery(postVariable));
         writer.close();
-        stream.flush ();
-        stream.close ();
-        
-        // If action = 'save' gets and returns response code. 200 is ok.       
-        if(action.equals("save")){
+        stream.flush();
+        stream.close();
+
+        // If action = 'save' or 'author_save', gets and returns response code. 200 is ok.       
+        if (action.equals("save") || action.equals("author_save")) {
             int response = connect.getResponseCode();
             connect.disconnect();
             return Integer.toString(response);
-        }
-        
-        // If action = 'load' returns string with loaded problem.
-        else if(action.equals("load")){
+        } // If action = 'load' or 'author_load', returns string with loaded problem.
+        else if (action.equals("load") || action.equals("author_load")) {
             StringBuilder returnString = new StringBuilder();
             BufferedReader in = new BufferedReader(new InputStreamReader(
-                    connect.getInputStream()));        
-            String line = "";        
-            while((line = in.readLine()) != null){
+                    connect.getInputStream()));
+            String line = "";
+            while ((line = in.readLine()) != null) {
                 returnString.append(line);
                 returnString.append("\n");
             }
@@ -189,19 +190,18 @@ public class HttpAppender extends AppenderSkeleton {
         connect.disconnect();
         return null;
     }
-    
-    private static String getQuery(List<NameValuePair> params) throws UnsupportedEncodingException{
+
+    private static String getQuery(List<NameValuePair> params) throws UnsupportedEncodingException {
         StringBuilder result = new StringBuilder();
         boolean first = true;
 
-        for (NameValuePair pair : params)
-        {
-            if (first){
+        for (NameValuePair pair : params) {
+            if (first) {
                 first = false;
-            }else{
-                result.append("&");           
+            } else {
+                result.append("&");
             }
-            
+
             result.append(pair.getName());
             result.append("=");
             result.append(pair.getValue());

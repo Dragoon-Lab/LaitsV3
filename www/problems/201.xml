@@ -3,12 +3,13 @@
   <TaskName>Population Model 1</TaskName>
   <URL>http://laits.engineering.asu.edu/laits_images/1.jpg</URL>
   
-  <TaskDescription>Problem: You are interested in a population of a water fowl 
+  <TaskDescription>
+      Problem: You are interested in a population of a water fowl NEWLINE
       and how fast it will grow in a newly created urban lake. NEWLINE
-Suppose the urban lake starts with a population of 10 birds and each year (365 days) 
-      the population size grows by 40%. NEWLINE NEWLINE
-  Goal: Graph the water fowl population over 3650 days.NEWLINE NEWLINE
-  Hint: 1. Only use up to the thousandth decimal place.
+      Suppose the urban lake starts with a population of 10 birds NEWLINE
+      and each year (365 days) the population size grows by 40%. NEWLINE NEWLINE
+      Goal: Graph the water fowl population over 3650 days. NEWLINE NEWLINE
+      Hint: 1. Only use up to the thousandth decimal place.
   </TaskDescription>
   
   <StartTime>0</StartTime>
@@ -38,6 +39,7 @@ Suppose the urban lake starts with a population of 10 birds and each year (365 d
     </Node>
     
     <Node type="stock" name="water fowl" extra="no">
+      <Order>1</Order>
       <Inputs>
           <Name>population grow rate</Name>
       </Inputs>

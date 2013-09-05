@@ -68,12 +68,14 @@ public class ModelMenu extends JMenu {
     private JMenuItem showForumMenuItem = null;
     private JMenu deleteNodeMenu = null;
     private JMenuItem showGraphMenuItem = null;
-    private GraphEditorPane graphPane;
-    private MainWindow mainWindow;
+    private static GraphEditorPane graphPane;
+    private static MainWindow mainWindow;
     private static Logger logs = Logger.getLogger("DevLogs");
     private static Logger activityLogs = Logger.getLogger("ActivityLogs");
     private HashMap<String, JMenuItem> menuMap = new HashMap<String, JMenuItem>();
     private JFileChooser saveAsFileChooser = null;
+    public static String graph;
+
     /**
      * This method initializes
      *
@@ -96,10 +98,11 @@ public class ModelMenu extends JMenu {
         this.add(getDeleteNodeMenu());
         this.add(getShowGraphMenuItem());
         this.add(getshowForumMenuItem());
-        
-        if(ApplicationContext.getAppMode().equalsIgnoreCase("AUTHOR")){
+
+        if (ApplicationContext.getAppMode().equalsIgnoreCase("AUTHOR")) {
             this.add(getExportSolutionMenuItem());
             this.add(getEditTimeRangeMenuItem());
+            this.setGraph();
         }
         disableShowGraphMenu();
         disableDeleteNodeMenu();
@@ -152,7 +155,6 @@ public class ModelMenu extends JMenu {
         return showGraphMenuItem;
     }
 
-    
     /**
      * This method initializes selectOtherSelectionMenuItem
      */
@@ -170,7 +172,7 @@ public class ModelMenu extends JMenu {
         }
         return exportSolutionMenuItem;
     }
-    
+
     /**
      * This method initializes selectNeighbourSelectionMenuItem
      *
@@ -228,8 +230,8 @@ public class ModelMenu extends JMenu {
                 try {
                     me.run();
 
-                    if (ApplicationContext.getAppMode().equalsIgnoreCase("STUDENT") || 
-                            ApplicationContext.getAppMode().equalsIgnoreCase("COACHED")) {
+                    if (ApplicationContext.getAppMode().equalsIgnoreCase("STUDENT")
+                            || ApplicationContext.getAppMode().equalsIgnoreCase("COACHED")) {
                         me.validateStudentGraph();
                     }
 
@@ -308,13 +310,13 @@ public class ModelMenu extends JMenu {
             disableDeleteNodeMenu();
 
             if (graphPane.getMainFrame().isSituationSelected()) {
-                logs.debug("Switing to Model Design Panel");
+                logs.debug("Switching to Model Design Panel");
                 graphPane.getMainFrame().switchTutorModelPanels(false);
             }
 
             graphPane.repaint();
             NodeEditor editor = new NodeEditor(graphPane, v);
-            
+
         } else {
             if(ApplicationContext.getAppMode().equals("COACHED") && !isGraphEmpty()) {
                 activityLogs.debug("User was not allowed to create new node as app is in COACHED mode and nodes already present");
@@ -325,7 +327,6 @@ public class ModelMenu extends JMenu {
             }
             
         }
-
     }
 
     public void deleteNodeAction() {
@@ -350,15 +351,15 @@ public class ModelMenu extends JMenu {
         Iterator<Vertex> it = graphPane.getModelGraph().vertexSet().iterator();
         Vertex v;
         while (it.hasNext()) {
-            v =  it.next();
+            v = it.next();
             //v.getCorrectValues().clear();
             v.setGraphsStatus(Vertex.GraphsStatus.UNDEFINED);
         }
 
         activityLogs.debug("Closing NodeEditor because of Delete action.");
     }
-    
-    public void showForumButtonAction(){
+
+    public void showForumButtonAction() {
         JDialog forumDialog = new JDialog(graphPane.getMainFrame(), true);
         new ForumViewPanel(forumDialog);
         forumDialog.setTitle("Discussion Forum");
@@ -367,7 +368,7 @@ public class ModelMenu extends JMenu {
 
         forumDialog.setResizable(false);
         forumDialog.setVisible(true);
-        
+
 //        CellView[] test = graphPane.getGraphLayoutCache().getAllViews();
 //        for(CellView v : test)
 //            System.out.println("V : "+v);
@@ -403,7 +404,6 @@ public class ModelMenu extends JMenu {
             }
         });
         deleteNodeMenu.add(menu);
-
     }
 
     public void removeAllDeleteMenu() {
@@ -528,11 +528,11 @@ public class ModelMenu extends JMenu {
     public MainWindow getMainWindow() {
         return mainWindow;
     }
-    
+
     /**
      * Export Author's Graph as a LAITS Solution File
-     */ 
-    private void exportSolution(){
+     */
+    private void exportSolution() {
         int returnVal = getSaveAsFileChooser().showSaveDialog(getRootPane());
         if (returnVal == JFileChooser.APPROVE_OPTION) {
 
@@ -567,11 +567,11 @@ public class ModelMenu extends JMenu {
                             + ".xml");
                 }
             }
-            
+
             saveToFile(selectedFile);
         }
     }
-    
+
     /**
      * Tries to save to the specified file
      */
@@ -579,7 +579,23 @@ public class ModelMenu extends JMenu {
         LaitsSolutionExporter exporter = new LaitsSolutionExporter(graphPane.getModelGraph(), file);
         exporter.export();
     }
-    
+
+    /**
+     * Updates graph String (used for saving authored problems to the server)
+     */
+    public static void updateGraph() {
+        ModelMenu mm = new ModelMenu(graphPane, mainWindow);
+        mm.setGraph();
+    }
+
+    /**
+     * Retrieves graph String (used for saving authored problems to the server)
+     */
+    private void setGraph() {
+        LaitsSolutionExporter graphBuilder = new LaitsSolutionExporter(graphPane.getModelGraph(), null);
+        graph = graphBuilder.getXML();
+    }
+
     private JFileChooser getSaveAsFileChooser() {
         if (saveAsFileChooser == null) {
             saveAsFileChooser = new JFileChooser();
@@ -599,5 +615,4 @@ public class ModelMenu extends JMenu {
         }
         return saveAsFileChooser;
     }
-    
-}    
+}
