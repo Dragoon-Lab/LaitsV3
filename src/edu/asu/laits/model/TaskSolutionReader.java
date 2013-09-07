@@ -76,7 +76,7 @@ public class TaskSolutionReader {
             
             
             //Read in help bubbles
-            if(ApplicationContext.getAppMode().equalsIgnoreCase("COACHED") && ApplicationContext.isHelpBubbles()){
+            if(ApplicationContext.isCoachedMode()){
                 Element bubbles = taskNode.element("HelpBubbles");
                 if(bubbles != null){
                     fillHelpBubbles(solution, bubbles);

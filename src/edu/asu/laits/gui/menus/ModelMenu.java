@@ -23,7 +23,7 @@ import edu.asu.laits.editor.GraphRangeEditor;
 import edu.asu.laits.gui.ForumViewPanel;
 import edu.asu.laits.gui.GraphViewPanel;
 import edu.asu.laits.gui.MainWindow;
-import edu.asu.laits.gui.nodeeditor.NodeEditor;
+import edu.asu.laits.gui.nodeeditor.NodeEditorView;
 import edu.asu.laits.model.Graph;
 import edu.asu.laits.model.GraphSaver;
 import edu.asu.laits.model.LaitsSolutionExporter;
@@ -99,7 +99,7 @@ public class ModelMenu extends JMenu {
         this.add(getShowGraphMenuItem());
         this.add(getshowForumMenuItem());
 
-        if (ApplicationContext.getAppMode().equalsIgnoreCase("AUTHOR")) {
+        if (ApplicationContext.isAuthorMode()) {
             this.add(getExportSolutionMenuItem());
             this.add(getEditTimeRangeMenuItem());
             this.setGraph();
@@ -230,8 +230,8 @@ public class ModelMenu extends JMenu {
                 try {
                     me.run();
 
-                    if (ApplicationContext.getAppMode().equalsIgnoreCase("STUDENT")
-                            || ApplicationContext.getAppMode().equalsIgnoreCase("COACHED")) {
+                    if (ApplicationContext.isStudentMode()
+                            || ApplicationContext.isCoachedMode()) {
                         me.validateStudentGraph();
                     }
 
@@ -315,7 +315,7 @@ public class ModelMenu extends JMenu {
             }
 
             graphPane.repaint();
-            NodeEditor editor = new NodeEditor(graphPane, v);
+            NodeEditorView editor = new NodeEditorView(graphPane, v);
 
         } else {
             if(ApplicationContext.getAppMode().equals("COACHED") && !isGraphEmpty()) {
@@ -430,7 +430,7 @@ public class ModelMenu extends JMenu {
     // and doesn't have anything to do with the menus.
     // It should be moved elsewhere; Bug #2160  
     public boolean notAllNodesDefined() {
-        if (ApplicationContext.getAppMode().equalsIgnoreCase("AUTHOR")) {
+        if (ApplicationContext.isAuthorMode()) {
             return true;
         }
 

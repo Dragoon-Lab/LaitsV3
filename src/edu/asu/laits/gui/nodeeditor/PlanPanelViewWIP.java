@@ -45,14 +45,14 @@ public class PlanPanelViewWIP extends javax.swing.JPanel {
 
     private String selectedPlan;
     private boolean isViewEnabled = false;
-    private NodeEditor nodeEditor;
+    private NodeEditorView nodeEditor;
     
     private static Logger logs = Logger.getLogger("DevLogs");
     private static Logger activityLogs = Logger.getLogger("ActivityLogs");
     private JScrollPane scroll;
     private Vertex currentVertex;
     
-    public PlanPanelViewWIP(NodeEditor ne) {
+    public PlanPanelViewWIP(NodeEditorView ne) {
         super(new BorderLayout(0, 5));
 
         nodeEditor = ne;

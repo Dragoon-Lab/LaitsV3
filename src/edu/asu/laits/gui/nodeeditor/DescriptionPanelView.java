@@ -52,12 +52,12 @@ public class DescriptionPanelView extends JPanel {
     DefaultTreeModel model = null;
     private boolean triedDuplicate = false;
     private static DescriptionPanelView descView;
-    private NodeEditor nodeEditor;
+    private NodeEditorView nodeEditor;
     private static Logger logs = Logger.getLogger("DevLogs");
     private static Logger activityLogs = Logger.getLogger("ActivityLogs");
     private Vertex currentVertex;
 
-    public DescriptionPanelView(NodeEditor ne) {
+    public DescriptionPanelView(NodeEditorView ne) {
         logs.debug("Initializing Description Panel View");
         initComponents();
         nodeEditor = ne;
@@ -66,8 +66,8 @@ public class DescriptionPanelView extends JPanel {
 
     public void initPanel() {
         logs.info("Initializing Description Panel");
-        if (ApplicationContext.getAppMode().equalsIgnoreCase("STUDENT") || 
-                ApplicationContext.getAppMode().equalsIgnoreCase("COACHED")) {
+        if (ApplicationContext.isStudentMode() || 
+                ApplicationContext.isCoachedMode()) {
             this.nodeNameTextField.setEditable(false);
             this.quantityDescriptionTextField.setEditable(false);
             initTree();
@@ -78,7 +78,7 @@ public class DescriptionPanelView extends JPanel {
         Vertex currentVertex = this.nodeEditor.getCurrentVertex();
         this.nodeNameTextField.setText(currentVertex.getName());
         this.quantityDescriptionTextField.setText(currentVertex.getCorrectDescription());
-        if((currentVertex.getDescriptionStatus().equals(Vertex.DescriptionStatus.CORRECT) || currentVertex.getDescriptionStatus().equals(Vertex.DescriptionStatus.GAVEUP)) && !ApplicationContext.getAppMode().equalsIgnoreCase("AUTHOR")) {
+        if((currentVertex.getDescriptionStatus().equals(Vertex.DescriptionStatus.CORRECT) || currentVertex.getDescriptionStatus().equals(Vertex.DescriptionStatus.GAVEUP)) && !ApplicationContext.isAuthorMode()) {
             setEditableTree(false);
         }
     }
@@ -226,7 +226,7 @@ public class DescriptionPanelView extends JPanel {
             this.quantityDescriptionTextField.setText(sb.toString().trim());
             this.nodeNameTextField.setText(node.getNodeName());
             this.repaint();
-            if (ApplicationContext.getAppMode().equalsIgnoreCase("COACHED")) {
+            if (ApplicationContext.isCoachedMode()) {
                 addHelpBalloon(ApplicationContext.getFirstNextNode(), "descFilled");
             }
 
@@ -353,7 +353,7 @@ public class DescriptionPanelView extends JPanel {
         List<SolutionNode> correctNodeNames = solution.getSolutionNodes();
 
         String giveupNode = null;
-        if (ApplicationContext.getAppMode().equalsIgnoreCase("COACHED")) {
+        if (ApplicationContext.isCoachedMode()) {
             for (SolutionNode name : correctNodeNames) {
                 if (name.getNodeName().equalsIgnoreCase(ApplicationContext.getFirstNextNode())) {
                     giveupNode = name.getNodeName();

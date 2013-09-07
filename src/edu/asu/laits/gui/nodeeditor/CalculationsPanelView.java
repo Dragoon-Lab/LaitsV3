@@ -60,14 +60,14 @@ public class CalculationsPanelView extends javax.swing.JPanel {
     
     private DefaultListModel availableInputJListModel = new DefaultListModel();
     private final DecimalFormat inputDecimalFormat = new DecimalFormat("###0.000000##");
-    private NodeEditor nodeEditor;
+    private NodeEditorView nodeEditor;
     private Vertex currentVertex;
     private LinkedList<String> inputNodesList;
     
     private static Logger logs = Logger.getLogger("DevLogs");
     private static Logger activityLogs = Logger.getLogger("ActivityLogs");
     
-    public CalculationsPanelView(NodeEditor ne) {
+    public CalculationsPanelView(NodeEditorView ne) {
         initComponents();
         nodeEditor = ne;
         currentVertex = ne.getCurrentVertex();
@@ -78,7 +78,7 @@ public class CalculationsPanelView extends javax.swing.JPanel {
     public void initPanel() {
         logs.debug("Initializing Calculations Panel for Node ");
         initializeAvailableInputNodes();
-        if((currentVertex.getCalculationsStatus().equals(Vertex.CalculationsStatus.CORRECT) || currentVertex.getCalculationsStatus().equals(Vertex.CalculationsStatus.GAVEUP)) && !ApplicationContext.getAppMode().equalsIgnoreCase("AUTHOR")) {
+        if((currentVertex.getCalculationsStatus().equals(Vertex.CalculationsStatus.CORRECT) || currentVertex.getCalculationsStatus().equals(Vertex.CalculationsStatus.GAVEUP)) && !ApplicationContext.isAuthorMode()) {
             setEditableCalculations(false);
         }
         
@@ -409,7 +409,7 @@ public class CalculationsPanelView extends javax.swing.JPanel {
     }
     
     private void addHelpBalloon(String timing){
-        if(ApplicationContext.getAppMode().equalsIgnoreCase("COACHED")){
+        if(ApplicationContext.isCoachedMode()){
              List<HelpBubble> bubbles = ApplicationContext.getHelp(currentVertex.getName(), "Calculations", timing);
                 if(!bubbles.isEmpty()){
                     for(HelpBubble bubble : bubbles){
@@ -829,7 +829,7 @@ public class CalculationsPanelView extends javax.swing.JPanel {
     }
     
     public void setCreateButtonEnabled(){
-        if(ApplicationContext.getAppMode().equalsIgnoreCase("COACHED")){
+        if(ApplicationContext.isCoachedMode()){
             SolutionNode node = ApplicationContext.getCorrectSolution().getNodeByName(currentVertex.getName());
             List<String> correctInputs = node.getInputNodes();
             boolean enabled = false;

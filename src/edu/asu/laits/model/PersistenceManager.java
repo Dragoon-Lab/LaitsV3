@@ -63,7 +63,7 @@ public class PersistenceManager implements Runnable {
         try {
             ModelMenu.updateGraph();
             //if user is in AUTHOR mode save solution in server
-            if (ApplicationContext.getAppMode().equalsIgnoreCase("AUTHOR")) {
+            if (ApplicationContext.isAuthorMode()) {
                 String sendSession = sessionSaver.saveGetSession("author_save", ApplicationContext.getRootURL().concat("/save_solution.php"),
                         ApplicationContext.getUserID(), ApplicationContext.getSection(), ApplicationContext.getCurrentTaskID(),
                         ModelMenu.graph, "0");

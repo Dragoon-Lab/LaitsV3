@@ -45,7 +45,7 @@ public class PlanPanelViewOld extends JPanel {
     private JTable table;
     private String selectedPlan;
     private boolean isViewEnabled = false;
-    private NodeEditor nodeEditor;
+    private NodeEditorView nodeEditor;
     private static String[] firstOption = {"<html>a constant whose value is <br />defined in the problem</html>", "parameter"};
     private static String[] secondOption = {"<html>a quantity whose new value depends <br />on its old value and its inputs</html>", "accumulator"};
     private static String[] thirdOption = {"a quantity that depends on its inputs alone", "function"};
@@ -57,7 +57,7 @@ public class PlanPanelViewOld extends JPanel {
     private static Logger activityLogs = Logger.getLogger("ActivityLogs");
     private JScrollPane scroll;
     
-    public PlanPanelViewOld(NodeEditor ne) {
+    public PlanPanelViewOld(NodeEditorView ne) {
         super(new BorderLayout(0, 5));
 
         nodeEditor = ne;
@@ -100,7 +100,7 @@ public class PlanPanelViewOld extends JPanel {
         tableModel.add(new TableEntry(thirdOption[0], thirdOption[1]));
 
         //(nodeEditor.getCurrentVertex().getPlan());
-        if((nodeEditor.getCurrentVertex().getPlanStatus().equals(Vertex.PlanStatus.CORRECT) || nodeEditor.getCurrentVertex().getPlanStatus().equals(Vertex.PlanStatus.GAVEUP)) && !ApplicationContext.getAppMode().equalsIgnoreCase("AUTHOR")){
+        if((nodeEditor.getCurrentVertex().getPlanStatus().equals(Vertex.PlanStatus.CORRECT) || nodeEditor.getCurrentVertex().getPlanStatus().equals(Vertex.PlanStatus.GAVEUP)) && !ApplicationContext.isAuthorMode()){
             setEditableRadio(false);
         }
     }

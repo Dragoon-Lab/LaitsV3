@@ -19,7 +19,7 @@
 
 package edu.asu.laits.editor;
 
-import edu.asu.laits.gui.nodeeditor.NodeEditor;
+import edu.asu.laits.gui.nodeeditor.NodeEditorView;
 import edu.asu.laits.model.Vertex;
 import java.awt.Component;
 import java.awt.Dimension;
@@ -51,7 +51,7 @@ public class CellEditor extends BasicGraphUI {
         GraphEditorPane g = (GraphEditorPane) graph;
         DefaultGraphCell gc = (DefaultGraphCell) g.getSelectionCell();
         Vertex v = (Vertex) gc.getUserObject();
-        new NodeEditor(g, v);
+        new NodeEditorView(g, v);
     }
 
     /**

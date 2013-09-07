@@ -17,7 +17,6 @@
   </Properties>
   <SyntheticProperties>
     <SyntheticProperty name="formSizePolicy" type="int" value="1"/>
-    <SyntheticProperty name="generateCenter" type="boolean" value="false"/>
   </SyntheticProperties>
   <AuxValues>
     <AuxValue name="FormSettings_autoResourcing" type="java.lang.Integer" value="0"/>
@@ -51,7 +50,7 @@
                           <EmptySpace min="-2" pref="35" max="-2" attributes="0"/>
                           <Component id="checkButton" min="-2" max="-2" attributes="0"/>
                           <EmptySpace type="separate" max="-2" attributes="0"/>
-                          <Component id="giveUpButton" min="-2" max="-2" attributes="0"/>
+                          <Component id="demoButton" min="-2" max="-2" attributes="0"/>
                           <EmptySpace max="32767" attributes="0"/>
                           <Component id="buttonOK" min="-2" max="-2" attributes="0"/>
                           <EmptySpace type="separate" max="-2" attributes="0"/>
@@ -86,7 +85,7 @@
               <Group type="103" groupAlignment="0" max="-2" attributes="0">
                   <Group type="103" alignment="0" groupAlignment="3" attributes="0">
                       <Component id="checkButton" alignment="3" max="32767" attributes="0"/>
-                      <Component id="giveUpButton" alignment="3" min="-2" max="-2" attributes="0"/>
+                      <Component id="demoButton" alignment="3" min="-2" max="-2" attributes="0"/>
                   </Group>
                   <Component id="buttonCancel" alignment="0" max="32767" attributes="0"/>
                   <Component id="buttonOK" alignment="0" min="-2" max="-2" attributes="0"/>
@@ -202,14 +201,14 @@
         <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="checkButtonActionPerformed"/>
       </Events>
     </Component>
-    <Component class="javax.swing.JButton" name="giveUpButton">
+    <Component class="javax.swing.JButton" name="demoButton">
       <Properties>
         <Property name="text" type="java.lang.String" value="Demo"/>
         <Property name="actionCommand" type="java.lang.String" value="Give Up"/>
         <Property name="enabled" type="boolean" value="false"/>
       </Properties>
       <Events>
-        <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="giveUpButtonActionPerformed"/>
+        <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="demoButtonActionPerformed"/>
       </Events>
     </Component>
     <Component class="javax.swing.JButton" name="buttonCancel">

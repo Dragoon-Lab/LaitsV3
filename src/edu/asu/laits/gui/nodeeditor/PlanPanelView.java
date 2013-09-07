@@ -59,7 +59,7 @@ public class PlanPanelView extends javax.swing.JPanel {
     private List<String> parameterSubPlans;
     private List<String> accumulatorSubPlans;
     private List<String> functionSubPlans;
-    private NodeEditor nodeEditor;
+    private NodeEditorView nodeEditor;
     private TaskSolution solution;
     private Vertex currentVertex;
     private JPanel panel;
@@ -71,7 +71,7 @@ public class PlanPanelView extends javax.swing.JPanel {
     private JRadioButton accumulatorSelection;
     private JRadioButton functionSelection;
    
-    public PlanPanelView(NodeEditor ne) {
+    public PlanPanelView(NodeEditorView ne) {
         nodeEditor = ne;
         currentVertex = ne.getCurrentVertex();
 

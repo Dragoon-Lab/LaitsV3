@@ -78,7 +78,7 @@ public class GraphViewPanel{
         DoubleJSlider newSlider;
         JLabel sliderLabel;
         JFormattedTextField sliderAmount;
-        if(!ApplicationContext.getAppMode().equalsIgnoreCase("AUTHOR")){
+        if(!ApplicationContext.isAuthorMode()){
             t = new Task(ApplicationContext.getCorrectSolution().getStartTime(), 
                     ApplicationContext.getCorrectSolution().getEndTime(), 
                     ApplicationContext.getCorrectSolution().getGraphUnits());
@@ -105,7 +105,7 @@ public class GraphViewPanel{
     
     private void addCharts(){
         Task t = null;
-        if(!ApplicationContext.getAppMode().equalsIgnoreCase("AUTHOR")){
+        if(!ApplicationContext.isAuthorMode()){
             t = new Task(ApplicationContext.getCorrectSolution().getStartTime(), 
                     ApplicationContext.getCorrectSolution().getEndTime(), 
                     ApplicationContext.getCorrectSolution().getGraphUnits());
@@ -133,7 +133,7 @@ public class GraphViewPanel{
     
     public void repaintCharts(){
         Component[] components = chartContainer.getComponents();
-        List<Vertex> vertices = new ArrayList<>();
+        List<Vertex> vertices = new ArrayList<Vertex>();
         PlotPanel plotPanel;
         for(Component c : components){
             if(c instanceof JXTaskPane){
