@@ -71,6 +71,7 @@
     </Node>
     
     <Node type="stock" name="population" extra="no">
+      <Order>1</Order>
       <Inputs>        
         <Name>births</Name>
       </Inputs>
@@ -83,18 +84,18 @@
       <Plan>said to increase</Plan>
     </Node>
     
-    <Node type="flow" name="births" extra="no">
-      <Inputs>        
-        <Name>population</Name>
-        <Name>growth rate</Name>
-      </Inputs>
-      <Outputs>
+    <Node type="flow" name="births" extra="no">        
+        <Inputs>        
           <Name>population</Name>
-      </Outputs>
-      <InitialValue></InitialValue>
-      <Equation>population*growth rate</Equation>
-      <CorrectDescription>The number of Giardia born each hour</CorrectDescription>
-      <Plan>proportional to accumulator and input</Plan>
+          <Name>growth rate</Name>
+        </Inputs>
+        <Outputs>
+            <Name>population</Name>
+        </Outputs>
+        <InitialValue></InitialValue>
+        <Equation>population*growth rate</Equation>
+        <CorrectDescription>The number of Giardia born each hour</CorrectDescription>
+        <Plan>proportional to accumulator and input</Plan>
     </Node>
   </Nodes>  
        

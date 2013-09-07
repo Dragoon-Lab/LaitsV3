@@ -36,6 +36,7 @@
     </Node>
     
     <Node type="stock" name="books" extra="no">
+        <Order>1</Order>
       <Inputs>        
           <Name>weekly books bought</Name>
       </Inputs>
