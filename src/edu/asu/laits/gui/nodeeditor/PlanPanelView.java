@@ -163,7 +163,7 @@ public class PlanPanelView extends javax.swing.JPanel {
     }
     public boolean isViewEnabled() {
         if (nodeEditor.getCurrentVertex().getDescriptionStatus().equals(Vertex.DescriptionStatus.CORRECT)
-                || nodeEditor.getCurrentVertex().getDescriptionStatus().equals(Vertex.DescriptionStatus.GAVEUP)) {
+            || nodeEditor.getCurrentVertex().getDescriptionStatus().equals(Vertex.DescriptionStatus.GAVEUP)) {
             return true;
         } else {
             return false;
@@ -227,7 +227,7 @@ public class PlanPanelView extends javax.swing.JPanel {
             functionSelection.setSelected(true);
         } 
         if(nodeEditor.getCurrentVertex().getPlanStatus().equals(Vertex.PlanStatus.MISSEDFIRST)){
-//            setSelectedPlanBackground(Color.RED);
+            //            setSelectedPlanBackground(Color.RED);
         }
         else {
             setSelectedPlanBackground(Color.YELLOW);
