@@ -252,7 +252,7 @@ public class NewNodeDescPanel extends JPanel{
        }
        }
        
-    }//GEN-LAST:event_decisionTreeValueChanged
+    }                                         
 
   // returns the value held by triedDuplicate
   public boolean getTriedDuplicate() {
@@ -431,188 +431,12 @@ public JComponent getLabel(String label){
           //      new BlockingToolTip(this, bubble.getMessage(), dPanel.getLabel(bubble.getAttachedTo()), 0, 0);
             }
         }
+        }
+
         
     }//GEN-LAST:event_decisionTreeValueChanged
     
-    // returns the value held by triedDuplicate
-    public boolean getTriedDuplicate() {
-        return triedDuplicate;
-    }
-    
-    
-    
-    public void collapseAll(javax.swing.JTree tree) {
-        int row = tree.getRowCount() - 1;
-        while (row >= 1) {
-            tree.collapseRow(row);
-            row--;
-        }
-    }
-    
-    public void expandTreePath(javax.swing.JTree tree, TreePath treepath) {
-        collapseAll(tree);
-        decisionTree.scrollPathToVisible(treepath);
-        decisionTree.setSelectionPath(treepath);
-    }
-    protected static ImageIcon createImageIcon(String path) {
-        java.net.URL imgURL = NewNodeDescPanel.class.getResource(path);
-        if (imgURL != null) {
-            return new ImageIcon(imgURL);
-        } else {
-            System.err.println("Couldn't find file: " + path);
-            return null;
-        }
-    }
-    
-    
-    public boolean processDescriptionPanel(){
-        if(getNodeName().trim().length() == 0){
-            nodeEditor.setEditorMessage("Node Name can not be empty.", true);
-            return false;
-        }
-        
-        if (!currentVertex.getName().equals(getNodeName())) {
-            
-            if (!duplicatedNode(getNodeName()))
-            {
-                try {
-                    currentVertex.setName(getNodeName().trim());
-                } catch (Exception ex) {
-                    nodeEditor.setEditorMessage(ex.getMessage(), true);
-                    setTextFieldBackground(Color.RED);
-                    activityLogs.debug(ex.getMessage());
-                    return false;
-                }
-            } else {
-                nodeEditor.setEditorMessage("The node name is already used by another node. Please choose a new name for this node.", true);
-                setTextFieldBackground(Color.RED);
-                activityLogs.debug("User entered duplicate node name");
-                return false;
-            }
-        }
-        
-        if (getNodeDesc().trim().isEmpty()) {
-            nodeEditor.setEditorMessage("Please provide correct description for this node.", true);
-            setTextFieldBackground(Color.RED);
-            activityLogs.debug("User entered incorrect description");
-            return false;
-        }
-        
-        currentVertex.setCorrectDescription(getNodeDesc().trim());
-        return true;
-    }
-    
-    private boolean duplicatedNode(String nodeName) {
-        
-        Graph graph = nodeEditor.getGraphPane().getModelGraph();
-        
-        if(graph.getVertexByName(nodeName)!=null && currentVertex.getName()!=nodeName)
-            return true;
-        else
-            return false;
-    }
-    
-    public void setTextFieldBackground(Color c){
-        nodeNameTextField.setBackground(c);
-        quantityDescriptionTextField.setBackground(c);
-    }
-    
-    public void resetTextFieldBackground(){
-        nodeNameTextField.setBackground(Color.white);
-        quantityDescriptionTextField.setBackground(Color.white);
-    }
-    
-    public void giveUpDescriptionPanel(){
-        // Get a correct Node Name
-        TaskSolution solution = ApplicationContext.getCorrectSolution();
-        //List<String> correctNodeNames = solution.getCorrectNodeNames();
-        List<SolutionNode> correctNodeNames = solution.getSolutionNodes();
-        
-        String giveupNode = null;
-        if(ApplicationContext.isCoachedMode()){
-            for(SolutionNode name : correctNodeNames){
-                if(name.getNodeName().equalsIgnoreCase(ApplicationContext.getFirstNextNode())){
-                    giveupNode = name.getNodeName();
-                    //ApplicationContext.nextCurrentOrder();
-                    //ApplicationContext.removeNextNodes(name.getNodeName());
-                    ApplicationContext.setNextNodes(name.getNodeName());
-                    break;
-                }
-            }
-        }  else {
-            for(SolutionNode name : correctNodeNames){
-                if(nodeEditor.getGraphPane().getModelGraph().getVertexByName(name.getNodeName()) == null){
-                    giveupNode = name.getNodeName();
-                    break;
-                }
-            }
-        }
-        if(giveupNode == null){
-            nodeEditor.setEditorMessage("All Nodes are already being used in the Model.", true);
-            return ;
-        }
-        
-        logs.debug("Found Giveup Node as : "+giveupNode);
-        
-        setDescriptionTreeNode(giveupNode);
-        setTextFieldBackground(Color.YELLOW);
-    }
-    
-    private void setDescriptionTreeNode(String nodeName){
-        Enumeration<SolutionDTreeNode> allNodes = root.breadthFirstEnumeration();
-        while(allNodes.hasMoreElements()){
-            SolutionDTreeNode node = allNodes.nextElement();
-            
-            if(node.isLeaf() && node.getNodeName().equals(nodeName)){
-                TreePath path = new TreePath(node.getPath());
-                decisionTree.setSelectionPath(path);
-            }
-        }
-    }
-    
-    public String printDescriptionPanelDetails(){
-        StringBuilder sb = new StringBuilder();
-        sb.append("Node Name = '");
-        sb.append(nodeNameTextField.getText()+"'");
-        sb.append("  Description = '");
-        sb.append(quantityDescriptionTextField.getText()+"'");
-        return sb.toString();
-    }
-    
-    
-    public void setEditableTree(boolean b){
-        decisionTree.setEditable(b);
-        decisionTree.setEnabled(b);
-    }
-    
-    
-    public JComponent getLabel(String label){
-        
-        Map<String, JComponent> map = new HashMap<String, JComponent>();
-        map.put("evenMorePreciseLabel", evenMorePreciseLabel);
-        map.put("referencesLabel", referencesLabel);
-        map.put("NodeNameLabel", NodeNameLabel);
-        map.put("jScrollPane1", jScrollPane1);
-        map.put("jScrollPane2", jScrollPane2);
-        if(map.containsKey(label)){
-            return map.get(label);
-        }
-        else {
-            return null;
-        }
-    }
-    
-    private void addHelpBalloon(String name, String timing, String panel) {
-        if (ApplicationContext.isCoachedMode()) {
-            List<HelpBubble> bubbles = ApplicationContext.getHelp(name, panel, timing);
-            if(!bubbles.isEmpty()){
-                for(HelpBubble bubble : bubbles){ 
-                    new BlockingToolTip(this.nodeEditor, bubble, getLabel(bubble.getAttachedTo()));
-                    //      new BlockingToolTip(this, bubble.getMessage(), dPanel.getLabel(bubble.getAttachedTo()), 0, 0);
-                }
-            }
-        }
-    }
+
     
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JLabel NodeNameLabel;
