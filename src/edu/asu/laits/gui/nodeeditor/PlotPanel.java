@@ -63,7 +63,8 @@ public class PlotPanel extends JXTaskPane {
         v.add(vertex);
         this.units = units;
 
-        if (ApplicationContext.isStudentMode() || ApplicationContext.isCoachedMode()) {
+        if (ApplicationContext.isStudentMode() || 
+                ApplicationContext.isCoachedMode()) {
             Vertex correctVertex = ApplicationContext.getCorrectSolution()
                     .getSolutionGraph().getVertexByName(vertex.getName());
             v.add(correctVertex);

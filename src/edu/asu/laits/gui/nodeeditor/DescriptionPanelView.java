@@ -56,7 +56,7 @@ public class DescriptionPanelView extends JPanel {
     private static Logger logs = Logger.getLogger("DevLogs");
     private static Logger activityLogs = Logger.getLogger("ActivityLogs");
     private Vertex currentVertex;
-    
+
     public DescriptionPanelView(NodeEditorView ne) {
         logs.debug("Initializing Description Panel View");
         initComponents();
@@ -66,7 +66,8 @@ public class DescriptionPanelView extends JPanel {
     
     public void initPanel() {
         logs.info("Initializing Description Panel");
-        if (ApplicationContext.isStudentMode() || ApplicationContext.isCoachedMode()) {
+        if (ApplicationContext.isStudentMode() || 
+                ApplicationContext.isCoachedMode()) {
             this.nodeNameTextField.setEditable(false);
             this.quantityDescriptionTextField.setEditable(false);
             initTree();

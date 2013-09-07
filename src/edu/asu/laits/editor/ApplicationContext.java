@@ -74,7 +74,9 @@ public class ApplicationContext {
   
   public static void removeNextNodes(String nextNode){
       int index = nextNodes.indexOf(nextNode);
-      nextNodes.remove(index);
+      if(index != -1){
+        nextNodes.remove(index);
+      }
   }
   
   public static String getFirstNextNode(){

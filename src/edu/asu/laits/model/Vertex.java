@@ -33,7 +33,7 @@ public class Vertex {
     
     private String name = "";
     private String correctDescription = "";
-    private Plan plan = Plan.UNDEFINED;
+    private String plan = "";
     
     // Status of All the Tabs
     private DescriptionStatus descriptionStatus = DescriptionStatus.UNDEFINED;
@@ -100,11 +100,11 @@ public class Vertex {
         this.correctDescription = desc;
     }
     
-    public Plan getPlan(){
+    public String getPlan(){
         return plan;
     }
     
-    public void setPlan(Plan plan){
+    public void setPlan(String plan){
         this.plan = plan;
     }    
 

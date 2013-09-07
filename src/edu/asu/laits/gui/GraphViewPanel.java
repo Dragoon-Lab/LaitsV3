@@ -36,6 +36,13 @@ import javax.swing.JScrollPane;
 import javax.swing.JComponent;
 import org.jdesktop.swingx.JXTaskPane;
 import org.jdesktop.swingx.JXTaskPaneContainer;
+import java.awt.*;
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.Map;
+import java.util.List;
+import javax.swing.event.ChangeEvent;
+import javax.swing.event.ChangeListener;
 
 /**
  *
@@ -43,15 +50,17 @@ import org.jdesktop.swingx.JXTaskPaneContainer;
  */
 public class GraphViewPanel{
     private Graph<Vertex, Edge> currentGraph;
-    JXTaskPaneContainer chartContainer;
-    JDialog parent;
-    JSlider testSlider;
+    private JXTaskPaneContainer chartContainer;
+    private JDialog parent;
+    private JSlider testSlider;
+    
+    
+    Map<JComponent, Vertex> map = new HashMap<JComponent, Vertex>();
     
     public GraphViewPanel(Graph<Vertex, Edge> graph, JDialog parent){
         currentGraph = graph;
         this.parent = parent;
         initializeComponents();
-        addCharts();
 
         JScrollPane panelScroll = new JScrollPane(chartContainer);
         parent.add(panelScroll);
@@ -59,6 +68,8 @@ public class GraphViewPanel{
     
     private void initializeComponents(){
         chartContainer = new JXTaskPaneContainer();
+        
+        addCharts();
         addSliders();
     }
     
@@ -83,6 +94,7 @@ public class GraphViewPanel{
                 sliderAmount = new JFormattedTextField();
                 sliderAmount.setText(String.valueOf(newSlider.getDoubleValue()));
                 chartContainer.add(sliderAmount);
+                newSlider.addChangeListener(new SliderListener(sliderAmount, currentVertex, this));
             }
         }
     }
@@ -103,6 +115,7 @@ public class GraphViewPanel{
             JXTaskPane plotPanel = addChart(currentVertex, t);
             if(plotPanel != null){
                 chartContainer.add(plotPanel);
+                map.put(plotPanel, currentVertex);
             }
         }        
     }
@@ -116,5 +129,46 @@ public class GraphViewPanel{
              plotPanel = new PlotPanel(vertex, task.getStartTime(), task.getUnits()); 
         }
         return plotPanel;
+    }
+    
+    public void repaintCharts(){
+        Component[] components = chartContainer.getComponents();
+        List<Vertex> vertices = new ArrayList<Vertex>();
+        PlotPanel plotPanel;
+        for(Component c : components){
+            if(c instanceof JXTaskPane){
+                System.out.println("repaint check succeeded, attempting to repaint " + map.get(c).getName());
+                vertices.add(map.get(c));
+                chartContainer.remove(c);
+                map.remove(c);
+          //      chartContainer.add(new PlotPanel(map.get(c), currentGraph.getCurrentTask().getStartTime(), currentGraph.getCurrentTask().getUnits()));
+            }
+        }
+        
+        for(Vertex v : vertices){
+            plotPanel = new PlotPanel(v, currentGraph.getCurrentTask().getStartTime(), currentGraph.getCurrentTask().getUnits());
+            chartContainer.add(plotPanel);
+            map.put(plotPanel, v);
+        }
+    }
+
+    private static class SliderListener implements ChangeListener {
+        
+        private JFormattedTextField textSource;
+        private Vertex vertex;
+        private GraphViewPanel panel;
+        public SliderListener(JFormattedTextField amount, Vertex v, GraphViewPanel g) {
+            textSource = amount;
+            vertex = v;
+            panel = g;
+        } 
+
+        @Override
+        public void stateChanged(ChangeEvent e) {
+            DoubleJSlider source = (DoubleJSlider)e.getSource();
+            textSource.setText(String.valueOf(source.getDoubleValue()));
+            vertex.setInitialValue(source.getDoubleValue());
+            panel.repaintCharts();
+        }
     }
 }
