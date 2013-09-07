@@ -268,12 +268,11 @@ public class CreateNewNodeDialog extends javax.swing.JDialog {
 
     private void close() {
         System.out.println("closing");
-        if (currentVertex.getName().equals("")) {
+        if (currentVertex.getName().equals("") || currentVertex.getDescriptionStatus().equals(Vertex.DescriptionStatus.INCORRECT)) {
            // ne.getGraphPane().removeSelected();
             ne.getGraphPane().setSelectionCell(currentVertex.getJGraphVertex());
             ne.getGraphPane().removeSelected();
-        } 
-        else {
+        } else {
             ne.getCalculationsPanel().initPanel();
            // ne.getGraphPane().setSelectionCell(ne.getCurrentVertex());
             ne.refreshInputs();
