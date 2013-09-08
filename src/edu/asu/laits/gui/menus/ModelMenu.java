@@ -309,7 +309,7 @@ public class ModelMenu extends JMenu {
             }
 
             graphPane.repaint();
-            NodeEditorView editor = new NodeEditorView(graphPane, v);
+            NodeEditorView editor = new NodeEditorView(v);
 
         } else {
             if(ApplicationContext.getAppMode().equals("COACHED") && !isGraphEmpty()) {

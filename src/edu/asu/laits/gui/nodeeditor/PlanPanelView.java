@@ -38,9 +38,11 @@ import net.miginfocom.swing.MigLayout;
  */
 public class PlanPanelView extends JPanel {
     
+    // This is hardcoded for now, but should be modiefied to be read from XML
     private String[] parameterPlan = new String[]{"Parameter", "A constant whose value is defined in the problem"};
-    private String[] accumulatorPlan = new String[]{"Accumulator", "test1"};
-    private String[] functionPlan = new String[]{"Function", "test2"};
+    private String[] accumulatorPlan = new String[]{"Accumulator", "Accumulator Description"};
+    private String[] functionPlan = new String[]{"Function", "Function Description"};
+   
     private Dimension rowSize = new Dimension(560, 65);
     private List<String> parameterSubPlans;
     private List<String> accumulatorSubPlans;
@@ -69,7 +71,7 @@ public class PlanPanelView extends JPanel {
         planButtonGroup = new ButtonGroup();
         parameterSelection = DragoonUIUtils.createRadioButton(parameterPlan[0], planButtonGroup);
         accumulatorSelection = DragoonUIUtils.createRadioButton(accumulatorPlan[0], planButtonGroup);
-        functionSelection = DragoonUIUtils.createRadioButton(accumulatorPlan[0], planButtonGroup);
+        functionSelection = DragoonUIUtils.createRadioButton(functionPlan[0], planButtonGroup);
         
         DragoonUIUtils.addSeparator(this, "Node " + currentVertex.getName() + " is a ...");
         
@@ -78,10 +80,7 @@ public class PlanPanelView extends JPanel {
         add(accumulatorSelection, "skip");
         add(DragoonUIUtils.createLabel(accumulatorPlan[1]), "span, gapleft 30");
         add(functionSelection, "skip");
-        add(DragoonUIUtils.createLabel(functionPlan[1]), "wrap, gapleft 30");
-        
-        parameterSelection.setSelected(true);
-        setSelectedPlanBackground(Color.red);
+        add(DragoonUIUtils.createLabel(functionPlan[1]), "wrap, gapleft 30");       
     }
     
     public boolean isViewEnabled() {

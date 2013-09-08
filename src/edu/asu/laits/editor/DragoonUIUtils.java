@@ -28,7 +28,7 @@ import javax.swing.JTextField;
 import javax.swing.SwingConstants;
 
 /**
- *
+ * Utility to create Swing Components
  * @author ramayantiwari
  */
 public class DragoonUIUtils {
@@ -72,6 +72,8 @@ public class DragoonUIUtils {
         group.add(radioButton);
         return radioButton;
     }
+    
+    
     
     public static final Color LABEL_COLOR = new Color(0, 70, 213);
 }

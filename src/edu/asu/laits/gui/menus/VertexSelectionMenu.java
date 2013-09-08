@@ -120,7 +120,7 @@ public class VertexSelectionMenu extends JPopupMenu {
                 public void actionPerformed(java.awt.event.ActionEvent e) {
                     DefaultGraphCell gc = (DefaultGraphCell) graphPane.getSelectionCell();
                     Vertex v = (Vertex) gc.getUserObject();
-                    new NodeEditorView(graphPane, v);
+                    new NodeEditorView(v);
                 }
             });
         }
