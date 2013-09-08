@@ -64,14 +64,14 @@ public class PersistenceManager implements Runnable {
             ModelMenu.updateGraph();
             //if user is in AUTHOR mode save solution in server
             if (ApplicationContext.isAuthorMode()) {
-                String sendSession = sessionSaver.saveGetSession("author_save", ApplicationContext.getRootURL().concat("/save_solution.php"),
+                String sendSession = sessionSaver.saveGetSession("author_save", ApplicationContext.getRootURL().concat("/postvar.php"),
                         ApplicationContext.getUserID(), ApplicationContext.getSection(), ApplicationContext.getCurrentTaskID(),
                         ModelMenu.graph, "0");
                 statusCode = Integer.parseInt(sendSession);
                 if (statusCode == 200) {
-                    logs.info("Successfully saved author's solution to server using " + ApplicationContext.getRootURL().concat("/save_solution.php"));
+                    logs.info("Successfully saved author's solution to server using " + ApplicationContext.getRootURL().concat("/postvar.php"));
                 } else {
-                    logs.error("Error: URL " + ApplicationContext.getRootURL().concat("/save_solution.php")
+                    logs.error("Error: URL " + ApplicationContext.getRootURL().concat("/postvar.php")
                             + " returned status code " + statusCode);
                 }
             }

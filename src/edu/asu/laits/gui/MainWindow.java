@@ -80,12 +80,26 @@ public class MainWindow extends JFrame {
      */
     private static Logger logs = Logger.getLogger("DevLogs");
     private static Logger activityLogs = Logger.getLogger("ActivityLogs");
-
+    private static MainWindow _instance;
+    
+    public static MainWindow getInstance(){
+        if(_instance == null){
+            _instance = new MainWindow();
+        }
+        return _instance;
+    }
+    
+    public static void launch(){
+        MainWindow window = getInstance();
+        window.pack();
+        window.setVisible(true);       
+    }
+    
     /**
      * This method initializes
      *
      */
-    public MainWindow() {
+    private MainWindow() {
         super();
         initializeFrameElements();
 
@@ -103,13 +117,6 @@ public class MainWindow extends JFrame {
         setExtendedState(MAXIMIZED_BOTH);
         setDefaultCloseOperation(DO_NOTHING_ON_CLOSE);
         windowCount++;
-
-        pack();
-        setVisible(true);
-        if (ApplicationContext.isCoachedMode()) {
-            addHelpBalloon(ApplicationContext.getFirstNextNode(), "onLoad");
-        }
-
     }
 
     public void addHelpBalloon(String node, String timing) {
@@ -508,7 +515,7 @@ public class MainWindow extends JFrame {
         try {
             //if user is in AUTHOR mode save solution in server
             if (ApplicationContext.isAuthorMode()) {
-                String xmlAuthorString = sessionLoader.saveGetSession("author_load", ApplicationContext.getRootURL().concat("/save_solution.php"),
+                String xmlAuthorString = sessionLoader.saveGetSession("author_load", ApplicationContext.getRootURL().concat("/postvar.php"),
                         ApplicationContext.getUserID(), ApplicationContext.getSection(), ApplicationContext.getCurrentTaskID(), "", "");
                 ModelMenu.graph = xmlAuthorString;
                 if (!xmlAuthorString.trim().isEmpty()) {

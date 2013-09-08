@@ -54,7 +54,7 @@ public class Application extends JApplet {
                 }
 
                 // Main application window of LAITS
-                MainWindow window = new MainWindow();
+                MainWindow.launch();
 
             } catch (Exception e) {
                 JOptionPane.showMessageDialog(null, e.getMessage(),
