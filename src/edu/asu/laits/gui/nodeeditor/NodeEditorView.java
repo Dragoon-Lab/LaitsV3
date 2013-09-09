@@ -116,12 +116,15 @@ public class NodeEditorView extends javax.swing.JDialog {
 
 
         if (ApplicationContext.isCoachedMode()) {
-            System.out.println("button SHOULD BE disabled");
             buttonCancel.setEnabled(false);
             if (!currentVertex.getPlanStatus().equals(Vertex.PlanStatus.CORRECT)
                     && !currentVertex.getPlanStatus().equals(Vertex.PlanStatus.GAVEUP)) {
                 tabPane.setEnabledAt(CALCULATIONS, false);
                 tabPane.setForegroundAt(CALCULATIONS, Color.GRAY);
+            }
+            if (!currentVertex.getCalculationsStatus().equals(Vertex.CalculationsStatus.CORRECT)
+                    && !currentVertex.getCalculationsStatus().equals(Vertex.CalculationsStatus.GAVEUP)) {
+                buttonCancel.setEnabled(true);
             }
         }
         
