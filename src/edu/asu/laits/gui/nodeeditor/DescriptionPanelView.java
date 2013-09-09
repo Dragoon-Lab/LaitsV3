@@ -75,7 +75,7 @@ public class DescriptionPanelView extends JPanel {
             decisionTree.setVisible(false);
         }
         
-        Vertex currentVertex = this.nodeEditor.getCurrentVertex();
+        Vertex currentVertex = this.nodeEditor.getOpenVertex();
         this.nodeNameTextField.setText(currentVertex.getName());
         this.quantityDescriptionTextField.setText(currentVertex.getCorrectDescription());
         if((currentVertex.getDescriptionStatus().equals(Vertex.DescriptionStatus.CORRECT)
@@ -294,13 +294,8 @@ public class DescriptionPanelView extends JPanel {
             return false;
         }
         
-        Vertex currentVertex = nodeEditor.getCurrentVertex();
+        Vertex currentVertex = nodeEditor.getOpenVertex();
         if (!currentVertex.getName().equals(getNodeName())) {
-            /*if(getNodeName().trim().length() > 20)
-             {
-             nodeEditor.setEditorMessage("Node Name can not be larger than 20 characters.", true);
-             return false;
-             }*/
             if (!duplicatedNode(getNodeName())) {
                 try {
                     currentVertex.setName(getNodeName().trim());
@@ -327,13 +322,12 @@ public class DescriptionPanelView extends JPanel {
         
         currentVertex.setCorrectDescription(getNodeDesc().trim());
         return true;
-        
     }
     
     private boolean duplicatedNode(String nodeName) {
         
         Graph graph = nodeEditor.getGraphPane().getModelGraph();
-        if (graph.getVertexByName(nodeName) != null && this.nodeEditor.getCurrentVertex().getName() != nodeName) {
+        if (graph.getVertexByName(nodeName) != null && this.nodeEditor.getOpenVertex().getName() != nodeName) {
             return true;
         } else {
             return false;

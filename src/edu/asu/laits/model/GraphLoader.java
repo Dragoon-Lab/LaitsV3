@@ -114,12 +114,12 @@ public class GraphLoader {
                 graphPane.addVertex(vertex);
                 System.out.println("Added " + vertex.getName() + "  "+vertex.getVertexIndex());
                 vertexHash.put(vertex.getVertexIndex(), vertex);
-                        System.out.println("removing from next nodes  " + vertex.getName() + "  "+vertex.getVertexIndex());
+                logs.debug("removing from next nodes  " + vertex.getName() + "  "+vertex.getVertexIndex());
                 ApplicationContext.setNextNodes(vertex.getName());
             }
             catch (Exception e){
-                System.err.println("Could not load node:  "+e.getMessage());
-
+                logs.debug("Could not load node:  "+e.getMessage());
+                e.printStackTrace();
             }
         }
 

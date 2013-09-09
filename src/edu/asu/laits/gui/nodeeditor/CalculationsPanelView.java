@@ -62,44 +62,43 @@ public class CalculationsPanelView extends javax.swing.JPanel {
     private DefaultListModel availableInputJListModel = new DefaultListModel();
     private final DecimalFormat inputDecimalFormat = new DecimalFormat("###0.000000##");
     private NodeEditorView nodeEditor;
-    private Vertex currentVertex;
-    private LinkedList<String> inputNodesList;
-    
+    private Vertex openVertex;
+        
     private static Logger logs = Logger.getLogger("DevLogs");
     private static Logger activityLogs = Logger.getLogger("ActivityLogs");
     
     public CalculationsPanelView(NodeEditorView ne) {
         initComponents();
         nodeEditor = ne;
-        currentVertex = ne.getCurrentVertex();
-        inputNodesList = new LinkedList<String>();
+        openVertex = ne.getOpenVertex();
         initPanel();
     }
     
     public void initPanel() {
-        logs.debug("Initializing Calculations Panel for Node ");
+        logs.debug("Initializing Calculations Panel for Node "+openVertex.getName());
+        
         initializeAvailableInputNodes();
-        if((currentVertex.getCalculationsStatus().equals(Vertex.CalculationsStatus.CORRECT) ||
-            currentVertex.getCalculationsStatus().equals(Vertex.CalculationsStatus.GAVEUP))
+        
+        if((openVertex.getCalculationsStatus().equals(Vertex.CalculationsStatus.CORRECT) ||
+            openVertex.getCalculationsStatus().equals(Vertex.CalculationsStatus.GAVEUP))
            && !ApplicationContext.isAuthorMode()) {
             setEditableCalculations(false);
         }
         
-        if (currentVertex.getVertexType().equals(VertexType.CONSTANT)) {
+        if (openVertex.getVertexType().equals(VertexType.CONSTANT)) {
             preparePanelForFixedValue();
-            fixedValueInputBox.setText(String.valueOf(currentVertex.getInitialValue()));
+            fixedValueInputBox.setText(String.valueOf(openVertex.getInitialValue()));
             return;
         }
         
-        preparePanelForStockOrFlow();
-        
-        if (currentVertex.getVertexType().equals(VertexType.STOCK)) {
+        if (openVertex.getVertexType().equals(VertexType.STOCK)) {
+            
             preparePanelForStock();
-            fixedValueInputBox.setText(String.valueOf(currentVertex.getInitialValue()));
-            formulaInputArea.setText(currentVertex.getEquation());
-        } else if (currentVertex.getVertexType().equals(VertexType.FLOW)) {
+            fixedValueInputBox.setText(String.valueOf(openVertex.getInitialValue()));
+            formulaInputArea.setText(openVertex.getEquation());
+        } else if (openVertex.getVertexType().equals(VertexType.FLOW)) {
             preparePanelForFlow();
-            formulaInputArea.setText(currentVertex.getEquation());
+            formulaInputArea.setText(openVertex.getEquation());
         }
         
     }
@@ -111,21 +110,16 @@ public class CalculationsPanelView extends javax.swing.JPanel {
         logs.debug("Initializing Available Input Nodes in jList Panel");
         
         availableInputJListModel.clear();
-        if(nodeEditor.getCurrentVertex().getDescriptionStatus().equals(
-                                                                       Vertex.DescriptionStatus.UNDEFINED))
+        if(nodeEditor.getOpenVertex().getDescriptionStatus().equals(Vertex.DescriptionStatus.UNDEFINED))
             return;
         
         if(nodeEditor.getGraphPane().getModelGraph().vertexSet().size() <= 1)
             return;
         
-        Vertex currentVertex = nodeEditor.getCurrentVertex();
+        Vertex currentVertex = nodeEditor.getOpenVertex();
         Graph graph = (Graph) nodeEditor.getGraphPane().getModelGraph();
         Iterator<Edge> inEdges = graph.incomingEdgesOf(currentVertex).iterator();
-        //
-        //        if (!inEdges.hasNext()) {
-        //            showThatJListModelHasNoInputs();
-        //            return;
-        //        }
+        
         Set<Vertex> vertexes = graph.vertexSet();
         for(Vertex v : vertexes) {
             if(v.getName().equalsIgnoreCase(currentVertex.getName())){
@@ -133,12 +127,6 @@ public class CalculationsPanelView extends javax.swing.JPanel {
             }
             availableInputJListModel.addElement(v.getName());
         }
-        //        while (inEdges.hasNext()) {
-        //            v = (Vertex) graph.getEdgeSource(inEdges.next());
-        //            availableInputJListModel.addElement(v.getName());
-        //        }
-        
-        
         availableInputsJList.repaint();
     }
     
@@ -149,9 +137,9 @@ public class CalculationsPanelView extends javax.swing.JPanel {
     }
     
     public String getFixedValue() {
-        if(currentVertex.getVertexType().equals(VertexType.CONSTANT)){
+        if(openVertex.getVertexType().equals(VertexType.CONSTANT)){
             return fixedValueInputBox.getText();
-        } else if(currentVertex.getVertexType().equals(VertexType.STOCK)){
+        } else if(openVertex.getVertexType().equals(VertexType.STOCK)){
             return fixedValueInputBox.getText();
         } else {
             return "";
@@ -167,7 +155,7 @@ public class CalculationsPanelView extends javax.swing.JPanel {
         fixedValueInputBox.setEnabled(true);
         fixedValueInputBox.setVisible(true);
         fixedValueLabel.setVisible(true);
-        fixedValueLabel.setText(currentVertex.getName() + " =");
+        fixedValueLabel.setText(openVertex.getName() + " =");
         calculatorPanel.setVisible(false);
     }
     
@@ -176,33 +164,26 @@ public class CalculationsPanelView extends javax.swing.JPanel {
         fixedValueLabel.setVisible(false);
         calculatorPanel.setVisible(true);
         formulaInputArea.setText("");
-        valuesLabel.setText(currentVertex.getName() + " =");
+        valuesLabel.setText(openVertex.getName() + " =");
     }
     
     public void preparePanelForStock() {
         
-        fixedValueInputBox.setVisible(false);
-        fixedValueLabel.setVisible(false);
+        fixedValueInputBox.setVisible(true);
+        fixedValueLabel.setVisible(true);
         calculatorPanel.setVisible(true);
         formulaInputArea.setText("");
+        
         if(!ApplicationContext.isAuthorMode())
-            valuesLabel.setText("Change in " + currentVertex.getName() + " per " + ApplicationContext.getCorrectSolution().getGraphUnits() + " = ");
-    }
-    
-    public void preparePanelForStockOrFlow() {
-        buttonGroup1.clearSelection();
-        
-        formulaInputArea.setText("");
-        
-        calculatorPanel.setEnabled(true);
+            valuesLabel.setText("Change in " + openVertex.getName() + " per " + ApplicationContext.getCorrectSolution().getGraphUnits() + " = ");
     }
     
     public boolean processCalculationsPanel() {
-        if (currentVertex.getVertexType().equals(Vertex.VertexType.CONSTANT)) {
+        if (openVertex.getVertexType().equals(Vertex.VertexType.CONSTANT)) {
             return processConstantVertex();
-        } else if (currentVertex.getVertexType().equals(Vertex.VertexType.STOCK)) {
+        } else if (openVertex.getVertexType().equals(Vertex.VertexType.STOCK)) {
             return processStockVertex();
-        } else if (currentVertex.getVertexType().equals(Vertex.VertexType.FLOW)) {
+        } else if (openVertex.getVertexType().equals(Vertex.VertexType.FLOW)) {
             return processFlowVertex();
         } else {
             nodeEditor.setEditorMessage("Please Select Node Type in Calculation.", true);
@@ -217,10 +198,10 @@ public class CalculationsPanelView extends javax.swing.JPanel {
         } else {
             // Check if value is getting changed - disable Graph
             Double newValue = Double.valueOf(fixedValueInputBox.getText());
-            if (currentVertex.getInitialValue() != newValue) {
+            if (openVertex.getInitialValue() != newValue) {
                 disableAllGraphs();
             }
-            currentVertex.setInitialValue(newValue);
+            openVertex.setInitialValue(newValue);
             return true;
         }
     }
@@ -232,10 +213,10 @@ public class CalculationsPanelView extends javax.swing.JPanel {
         } else {
             // Check if value is getting changed - disable Graph
             Double newValue = Double.valueOf(fixedValueInputBox.getText());
-            if (currentVertex.getInitialValue() != newValue) {
+            if (openVertex.getInitialValue() != newValue) {
                 disableAllGraphs();
             }
-            currentVertex.setInitialValue(newValue);
+            openVertex.setInitialValue(newValue);
             return true;
         }
     }
@@ -244,11 +225,11 @@ public class CalculationsPanelView extends javax.swing.JPanel {
         
         if (processStockInitialValue() && validateEquation()) {
             // Check if equation is changed - disable graph
-            if (!currentVertex.getEquation().equals(formulaInputArea.getText().trim())) {
+            if (!openVertex.getEquation().equals(formulaInputArea.getText().trim())) {
                 disableAllGraphs();
             }
             
-            currentVertex.setEquation(formulaInputArea.getText().trim());
+            openVertex.setEquation(formulaInputArea.getText().trim());
             return true;
         } else {
             return false;
@@ -257,11 +238,11 @@ public class CalculationsPanelView extends javax.swing.JPanel {
     
     private boolean processFlowVertex() {
         if (validateEquation()) {
-            if (!currentVertex.getEquation().equals(formulaInputArea.getText().trim())) {
+            if (!openVertex.getEquation().equals(formulaInputArea.getText().trim())) {
                 disableAllGraphs();
             }
             
-            currentVertex.setEquation(formulaInputArea.getText().trim());
+            openVertex.setEquation(formulaInputArea.getText().trim());
             return true;
         } else {
             return false;
@@ -319,8 +300,8 @@ public class CalculationsPanelView extends javax.swing.JPanel {
     }
     
     public boolean isViewEnabled() {
-        if(nodeEditor.getCurrentVertex().getPlanStatus().equals(Vertex.PlanStatus.CORRECT) ||
-           nodeEditor.getCurrentVertex().getPlanStatus().equals(Vertex.PlanStatus.GAVEUP))
+        if(nodeEditor.getOpenVertex().getPlanStatus().equals(Vertex.PlanStatus.CORRECT) ||
+           nodeEditor.getOpenVertex().getPlanStatus().equals(Vertex.PlanStatus.GAVEUP))
             return true;
         else
             return false;
@@ -337,16 +318,16 @@ public class CalculationsPanelView extends javax.swing.JPanel {
     
     public void setCheckedBackground(Color c) {
         
-        if (currentVertex.getVertexType().equals(Vertex.VertexType.CONSTANT)) {
+        if (openVertex.getVertexType().equals(Vertex.VertexType.CONSTANT)) {
             fixedValueInputBox.setBackground(c);
         }
         
-        if(currentVertex.getVertexType().equals(Vertex.VertexType.STOCK)) {
+        if(openVertex.getVertexType().equals(Vertex.VertexType.STOCK)) {
             fixedValueInputBox.setBackground(c);
         }
         
-        if (currentVertex.getVertexType().equals(Vertex.VertexType.FLOW)
-            || currentVertex.getVertexType().equals(Vertex.VertexType.STOCK)) {
+        if (openVertex.getVertexType().equals(Vertex.VertexType.FLOW)
+            || openVertex.getVertexType().equals(Vertex.VertexType.STOCK)) {
             formulaInputArea.setBackground(c);            
             availableInputsJList.setBackground(c);            
         }
@@ -359,9 +340,9 @@ public class CalculationsPanelView extends javax.swing.JPanel {
     public boolean giveUpCalculationsPanel() {
         TaskSolution solution = ApplicationContext.getCorrectSolution();
         SolutionNode correctNode = solution.getNodeByName(
-                                                          nodeEditor.getCurrentVertex().getName());
+                                                          nodeEditor.getOpenVertex().getName());
         
-        Vertex currentVertex = nodeEditor.getCurrentVertex();
+        Vertex currentVertex = nodeEditor.getOpenVertex();
         if (currentVertex.getVertexType().equals(Vertex.VertexType.CONSTANT)) {
             logs.debug("Setting Constant Value as " + correctNode.getNodeEquation());
             fixedValueInputBox.setText(correctNode.getNodeEquation());
@@ -378,7 +359,7 @@ public class CalculationsPanelView extends javax.swing.JPanel {
                 availableInputs.add(v.getName());
             }
             
-            availableInputs.remove(nodeEditor.getCurrentVertex().getName());
+            availableInputs.remove(nodeEditor.getOpenVertex().getName());
             
             if (!availableInputs.containsAll(correctInputs)) {
                 // Button name should be a variable;  see Bug #2104
@@ -408,7 +389,7 @@ public class CalculationsPanelView extends javax.swing.JPanel {
     
     private void addHelpBalloon(String timing){
         if(ApplicationContext.isCoachedMode()){
-            List<HelpBubble> bubbles = ApplicationContext.getHelp(currentVertex.getName(), "Calculations", timing);
+            List<HelpBubble> bubbles = ApplicationContext.getHelp(openVertex.getName(), "Calculations", timing);
             if(!bubbles.isEmpty()){
                 for(HelpBubble bubble : bubbles){
                     
@@ -427,9 +408,6 @@ public class CalculationsPanelView extends javax.swing.JPanel {
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
     private void initComponents() {
 
-        buttonGroup1 = new javax.swing.ButtonGroup();
-        jScrollPane3 = new javax.swing.JScrollPane();
-        jEditorPane1 = new javax.swing.JEditorPane();
         contentPanel = new javax.swing.JPanel();
         fixedValueLabel = new javax.swing.JLabel();
         //Code commented by Josh 011912 -- starts here
@@ -450,8 +428,6 @@ public class CalculationsPanelView extends javax.swing.JPanel {
         buttonMultiply = new javax.swing.JButton();
         buttonDivide = new javax.swing.JButton();
         buttonCreateNodeInputTab = new javax.swing.JButton();
-
-        jScrollPane3.setViewportView(jEditorPane1);
 
         setLayout(new org.netbeans.lib.awtextra.AbsoluteLayout());
 
@@ -614,18 +590,18 @@ public class CalculationsPanelView extends javax.swing.JPanel {
     public String printCalculationPanel(){
         StringBuilder sb = new StringBuilder();
         sb.append("Node Type: '");
-        if(currentVertex.getVertexType().equals(Vertex.VertexType.FLOW)){
+        if(openVertex.getVertexType().equals(Vertex.VertexType.FLOW)){
             sb.append("FLOW");
-            sb.append("'  Calculations: '"+currentVertex.getEquation()+"'");
+            sb.append("'  Calculations: '"+openVertex.getEquation()+"'");
         }
-        else if(currentVertex.getVertexType().equals(Vertex.VertexType.STOCK)){
+        else if(openVertex.getVertexType().equals(Vertex.VertexType.STOCK)){
             sb.append("STOCK");
-            sb.append("'  Initial Value: '"+currentVertex.getInitialValue()+"'");
-            sb.append("'  Calculations: '"+currentVertex.getEquation()+"'");
+            sb.append("'  Initial Value: '"+openVertex.getInitialValue()+"'");
+            sb.append("'  Calculations: '"+openVertex.getEquation()+"'");
         }
-        else if(currentVertex.getVertexType().equals(Vertex.VertexType.CONSTANT)){
+        else if(openVertex.getVertexType().equals(Vertex.VertexType.CONSTANT)){
             sb.append("CONSTANT");
-            sb.append("'  Initial Value: '"+currentVertex.getInitialValue()+"'");
+            sb.append("'  Initial Value: '"+openVertex.getInitialValue()+"'");
         }
         else
             sb.append("UNDEFINED");
@@ -635,9 +611,9 @@ public class CalculationsPanelView extends javax.swing.JPanel {
     }
     public void refreshInputs(){
         activityLogs.debug("Inputs Panel : User selected node type as INPUTS for Node "+
-                           nodeEditor.getCurrentVertex().getName());
+                           nodeEditor.getOpenVertex().getName());
         
-        //   nodeEditor.getCurrentVertex().setVertexType(Vertex.VertexType.DEFAULT);
+        //   nodeEditor.getOpenVertex().setVertexType(Vertex.VertexType.DEFAULT);
         nodeEditor.getGraphPane().getLayoutCache().reload();
         nodeEditor.getGraphPane().repaint();
     }
@@ -663,10 +639,7 @@ public class CalculationsPanelView extends javax.swing.JPanel {
      *
      * @param nodeName : index of the node to be removed
      */
-    private void removeAvailableInputNode(int nodeIndex) {
-        availableInputJListModel.remove(nodeIndex);
-    }
-    
+        
     private void addEdge(Vertex v1, Vertex v2) {
         DefaultPort p1 = nodeEditor.getGraphPane().getJGraphTModelAdapter().getVertexPort(v1);
         DefaultPort p2 = nodeEditor.getGraphPane().getJGraphTModelAdapter().getVertexPort(v2);
@@ -688,11 +661,11 @@ public class CalculationsPanelView extends javax.swing.JPanel {
         formulaInputArea.setText(formulaInputArea.getText() + " "
                                  + availableInputsJList.getSelectedValue().toString());
         activityLogs.debug("User selected input "+availableInputsJList.getSelectedValue().toString()+
-                           " for the Calculations of Node "+currentVertex.getName());
+                           " for the Calculations of Node "+openVertex.getName());
         Graph graph = (Graph) this.nodeEditor.getGraphPane().getModelGraph();
         Vertex connectedVertex = graph.getVertexByName(availableInputsJList.getSelectedValue().toString());
-        if(!graph.containsEdge(connectedVertex, currentVertex)){
-            addEdge(connectedVertex, currentVertex);
+        if(!graph.containsEdge(connectedVertex, openVertex)){
+            addEdge(connectedVertex, openVertex);
         }
         
         availableInputJListModel.set(i, addBoldtoListItem(availableInputsJList.getSelectedValue().toString()));
@@ -711,9 +684,9 @@ public class CalculationsPanelView extends javax.swing.JPanel {
     private void buttonCreateNodeInputTabActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_buttonCreateNodeInputTabActionPerformed
         // TODO add your handling code here:
         // Process Cancel Action for all the Tabs
-        activityLogs.debug("User pressed Create node button on inputs tab for Node " + nodeEditor.getCurrentVertex().getName());
-        if(currentVertex.getVertexType()==Vertex.VertexType.STOCK){
-            currentVertex.setInitialValue(Double.valueOf(fixedValueInputBox.getText()));
+        activityLogs.debug("User pressed Create node button on inputs tab for Node " + nodeEditor.getOpenVertex().getName());
+        if(openVertex.getVertexType()==Vertex.VertexType.STOCK){
+            openVertex.setInitialValue(Double.valueOf(fixedValueInputBox.getText()));
         }
         Vertex v = new Vertex();
         v.setVertexIndex(nodeEditor.getGraphPane().getModelGraph().getNextAvailableIndex());
@@ -772,7 +745,7 @@ public class CalculationsPanelView extends javax.swing.JPanel {
     
     public void setCreateButtonEnabled(){
         if(ApplicationContext.isCoachedMode()){
-            SolutionNode node = ApplicationContext.getCorrectSolution().getNodeByName(currentVertex.getName());
+            SolutionNode node = ApplicationContext.getCorrectSolution().getNodeByName(openVertex.getName());
             List<String> correctInputs = node.getInputNodes();
             boolean enabled = false;
             for(String input : correctInputs){
@@ -807,7 +780,6 @@ public class CalculationsPanelView extends javax.swing.JPanel {
     private javax.swing.JButton buttonAdd;
     private javax.swing.JButton buttonCreateNodeInputTab;
     private javax.swing.JButton buttonDivide;
-    private javax.swing.ButtonGroup buttonGroup1;
     private javax.swing.JButton buttonMultiply;
     private javax.swing.JButton buttonSubtract;
     private javax.swing.JPanel calculatorPanel;
@@ -815,10 +787,8 @@ public class CalculationsPanelView extends javax.swing.JPanel {
     private javax.swing.JFormattedTextField fixedValueInputBox;
     private javax.swing.JLabel fixedValueLabel;
     private javax.swing.JTextArea formulaInputArea;
-    private javax.swing.JEditorPane jEditorPane1;
     private javax.swing.JScrollPane jScrollPane1;
     private javax.swing.JScrollPane jScrollPane2;
-    private javax.swing.JScrollPane jScrollPane3;
     private javax.swing.JScrollPane jScrollPane4;
     private javax.swing.JLabel needInputLabel;
     private javax.swing.JLabel valuesLabel;

@@ -70,9 +70,7 @@ public class Vertex {
     
     public void setVertexIndex(int index){
         vertexIndex = index;
-        
-        //xPosition = 200 * (vertexIndex % 6) + 80;
-        //yPosition = 200 * (vertexIndex / 6) + 60 ;
+       
         xPosition = 200 * (vertexIndex % 4) + 480;
         yPosition = 200 * (vertexIndex / 4) + 60 ;
     }

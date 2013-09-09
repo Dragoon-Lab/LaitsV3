@@ -497,4 +497,10 @@ public class MainWindow extends JFrame {
             switchTutorModelPanels(false);
         }
     }
+    
+    public static void refreshGraph(){
+        getInstance().getGraphEditorPane().repaint();
+        getInstance().validate();
+        getInstance().repaint();
+    }
 }
