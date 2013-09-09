@@ -340,7 +340,9 @@ public class MainWindow extends JFrame {
             graphEditorPane.setAntiAliased(GlobalProperties.getInstance()
                     .isAntialiasing());
             graphEditorPane.setDoubleBuffered(GlobalProperties.getInstance()
-                    .isDoubleBuffering());            
+                    .isDoubleBuffering());      
+            ApplicationContext.setGraphEditorPane(graphEditorPane);
+
         }
         graphEditorPane.setBackgroundComponent(situationLabel);
         return graphEditorPane;

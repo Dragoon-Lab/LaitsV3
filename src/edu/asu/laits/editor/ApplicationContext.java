@@ -41,6 +41,7 @@ public class ApplicationContext {
     private static int currentOrder = 1;
     private static List<String> nextNodes = new ArrayList<String>();
     private static boolean helpBubbles = false;
+    private static GraphEditorPane graphPane;
 
     public static boolean isHelpBubbles() {
         return helpBubbles;
@@ -52,7 +53,7 @@ public class ApplicationContext {
         for (String childNode : childNodes) {
             System.out.println("checking " + childNode);
 
-            if (MainWindow.getInstance().getGraphEditorPane().getModelGraph().getVertexByName(childNode) == null) {
+            if (graphPane.getModelGraph().getVertexByName(childNode) == null) {
                 addNextNodes(childNode);
                 System.out.println("added " + childNode);
             }
@@ -202,4 +203,13 @@ public class ApplicationContext {
     public static AppMode getAppMode() {
         return appMode;
     }
+    
+  public static void setGraphEditorPane(GraphEditorPane gp){
+      graphPane = gp;
+  }
+  
+  public static GraphEditorPane getGraphEditorPane(){
+      return graphPane;
+  }
+  
 }

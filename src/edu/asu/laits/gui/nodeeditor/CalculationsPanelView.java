@@ -685,7 +685,7 @@ public class CalculationsPanelView extends javax.swing.JPanel {
         // TODO add your handling code here:
         // Process Cancel Action for all the Tabs
         activityLogs.debug("User pressed Create node button on inputs tab for Node " + nodeEditor.getOpenVertex().getName());
-        if(openVertex.getVertexType()==Vertex.VertexType.STOCK){
+        if(openVertex.getVertexType()==Vertex.VertexType.STOCK && !fixedValueInputBox.getText().isEmpty()){
             openVertex.setInitialValue(Double.valueOf(fixedValueInputBox.getText()));
         }
         Vertex v = new Vertex();
