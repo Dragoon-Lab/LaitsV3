@@ -20,6 +20,8 @@ package edu.asu.laits.gui.nodeeditor;
 
 import edu.asu.laits.model.PersistenceManager;
 import edu.asu.laits.model.Vertex;
+import javax.swing.event.ChangeEvent;
+import javax.swing.event.ChangeListener;
 import org.apache.log4j.Logger;
 
 /**
@@ -48,6 +50,32 @@ public class AuthorModeNodeEditorController extends NodeEditorController{
         initCloseButton();
         initCheckButton();
         initDemoButton();
+    }
+    
+    /**
+     * Handle Tab Change event for Author Mode. 
+     * New Tab needs to be initialized as per the input from previous tab
+     * @param oldTab
+     * @param newTab
+     * @return : New Tab Index
+     */
+    public int processTabChange(int oldTab, int newTab){
+        logs.info("Processing Tab Change - Old "+oldTab+" New "+newTab);
+        // Process Old Tab to store info in Vertex
+        if(oldTab == NodeEditorView.DESCRIPTION){
+            view.getDescriptionPanel().processDescriptionPanel();
+        }else if(oldTab == NodeEditorView.PLAN){
+            view.getPlanPanel().processPlanPanel();
+        }else if(oldTab == NodeEditorView.CALCULATIONS){
+            view.getCalculationsPanel().processCalculationsPanel();
+        }
+        
+        // Prepare New Tab if it's initilization is dependent on old tab
+        if(newTab == NodeEditorView.CALCULATIONS){
+            view.getCalculationsPanel().initPanel();
+        }
+        
+        return newTab;
     }
     
     public void initCheckButton(){

@@ -544,7 +544,7 @@ public class FileMenu extends JMenu {
      * Tries to save to the specified file
      */
     private void saveToFile(File file) {
-        GraphSaver saver = new GraphSaver(graphPane);
+        GraphSaver saver = new GraphSaver();
         try {
             FileWriter writer = new FileWriter(file);
             saver.write(writer);

@@ -80,7 +80,9 @@ public class PlanPanelView extends JPanel {
         add(accumulatorSelection, "skip");
         add(DragoonUIUtils.createLabel(accumulatorPlan[1]), "span, gapleft 30");
         add(functionSelection, "skip");
-        add(DragoonUIUtils.createLabel(functionPlan[1]), "wrap, gapleft 30");       
+        add(DragoonUIUtils.createLabel(functionPlan[1]), "wrap, gapleft 30");  
+        
+        setSelectedPlan(currentVertex.getPlan());
     }
     
     public boolean isViewEnabled() {

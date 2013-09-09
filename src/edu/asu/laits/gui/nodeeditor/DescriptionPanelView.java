@@ -101,7 +101,7 @@ public class DescriptionPanelView extends JPanel {
     @SuppressWarnings("unchecked")
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
     private void initComponents() {
-        
+
         buttonGroup1 = new javax.swing.ButtonGroup();
         contentPanel = new javax.swing.JPanel();
         jScrollPane2 = new javax.swing.JScrollPane();
@@ -112,9 +112,9 @@ public class DescriptionPanelView extends JPanel {
         referencesLabel = new javax.swing.JLabel();
         nodeNameTextField = new javax.swing.JTextField();
         NodeNameLabel = new javax.swing.JLabel();
-        
+
         contentPanel.setLayout(new org.netbeans.lib.awtextra.AbsoluteLayout());
-        
+
         decisionTree.setFont(new java.awt.Font("Lucida Grande", 0, 18)); // NOI18N
         javax.swing.tree.DefaultMutableTreeNode treeNode1 = new javax.swing.tree.DefaultMutableTreeNode("root");
         javax.swing.tree.DefaultMutableTreeNode treeNode2 = new javax.swing.tree.DefaultMutableTreeNode("A count of");
@@ -170,13 +170,13 @@ public class DescriptionPanelView extends JPanel {
             }
         });
         jScrollPane2.setViewportView(decisionTree);
-        
-        contentPanel.add(jScrollPane2, new org.netbeans.lib.awtextra.AbsoluteConstraints(6, 28, 580, 285));
-        
+
+        contentPanel.add(jScrollPane2, new org.netbeans.lib.awtextra.AbsoluteConstraints(6, 28, 470, 285));
+
         evenMorePreciseLabel.setFont(new java.awt.Font("Lucida Grande", 1, 13)); // NOI18N
         evenMorePreciseLabel.setText("Select a Description for this Quantity (then click \"Check\")");
         contentPanel.add(evenMorePreciseLabel, new org.netbeans.lib.awtextra.AbsoluteConstraints(6, 6, 390, -1));
-        
+
         quantityDescriptionTextField.setWrapStyleWord(true);
         quantityDescriptionTextField.setColumns(20);
         quantityDescriptionTextField.setFont(new java.awt.Font("Lucida Grande", 0, 18)); // NOI18N
@@ -185,30 +185,32 @@ public class DescriptionPanelView extends JPanel {
         quantityDescriptionTextField.setDisabledTextColor(new java.awt.Color(102, 102, 102));
         quantityDescriptionTextField.setMargin(new java.awt.Insets(2, 3, 2, 3));
         jScrollPane1.setViewportView(quantityDescriptionTextField);
-        
-        contentPanel.add(jScrollPane1, new org.netbeans.lib.awtextra.AbsoluteConstraints(10, 450, 580, -1));
-        
+
+        contentPanel.add(jScrollPane1, new org.netbeans.lib.awtextra.AbsoluteConstraints(10, 390, 470, -1));
+
         referencesLabel.setFont(new java.awt.Font("Lucida Grande", 1, 13)); // NOI18N
         referencesLabel.setText("Precise description of the quantity:");
-        contentPanel.add(referencesLabel, new org.netbeans.lib.awtextra.AbsoluteConstraints(10, 430, 572, -1));
-        
+        contentPanel.add(referencesLabel, new org.netbeans.lib.awtextra.AbsoluteConstraints(10, 370, 460, -1));
+
         nodeNameTextField.setDisabledTextColor(new java.awt.Color(102, 102, 102));
-        contentPanel.add(nodeNameTextField, new org.netbeans.lib.awtextra.AbsoluteConstraints(100, 380, 490, -1));
-        
+        contentPanel.add(nodeNameTextField, new org.netbeans.lib.awtextra.AbsoluteConstraints(100, 330, 380, -1));
+
         NodeNameLabel.setFont(new java.awt.Font("Lucida Grande", 1, 13)); // NOI18N
         NodeNameLabel.setText("Node Name:");
-        contentPanel.add(NodeNameLabel, new org.netbeans.lib.awtextra.AbsoluteConstraints(10, 390, -1, -1));
-        
+        contentPanel.add(NodeNameLabel, new org.netbeans.lib.awtextra.AbsoluteConstraints(10, 340, -1, -1));
+
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(this);
         this.setLayout(layout);
         layout.setHorizontalGroup(
-                                  layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                                  .addComponent(contentPanel, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                  );
+            layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addComponent(contentPanel, javax.swing.GroupLayout.PREFERRED_SIZE, 486, javax.swing.GroupLayout.PREFERRED_SIZE)
+        );
         layout.setVerticalGroup(
-                                layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                                .addComponent(contentPanel, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                );
+            layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(layout.createSequentialGroup()
+                .addComponent(contentPanel, javax.swing.GroupLayout.DEFAULT_SIZE, 452, Short.MAX_VALUE)
+                .addContainerGap())
+        );
     }// </editor-fold>//GEN-END:initComponents
     
     private void decisionTreeValueChanged(javax.swing.event.TreeSelectionEvent evt) {//GEN-FIRST:event_decisionTreeValueChanged

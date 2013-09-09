@@ -8,6 +8,8 @@ import edu.asu.laits.gui.BlockingToolTip;
 import edu.asu.laits.model.HelpBubble;
 import edu.asu.laits.model.Vertex;
 import java.util.List;
+import javax.swing.event.ChangeEvent;
+import javax.swing.event.ChangeListener;
 import org.apache.log4j.Logger;
 
 /**
@@ -36,6 +38,10 @@ public class CoachedModeNodeEditorController extends NodeEditorController {
         super.resetActionButtonAfterDemoUsed();
     }
 
+    public int processTabChange(int oldTab, int newTab){
+        return newTab;
+    }
+    
     public void initDescriptionPanelView(DescriptionPanelView dPanelView){
     
     }

@@ -50,9 +50,10 @@ public class NodeEditorView extends javax.swing.JDialog {
     private PlanPanelView pPanel;
     private CalculationsPanelView cPanel;
     //Tab Pane Indexes
-    private final int DESCRIPTION = 0;
-    private final int PLAN = 1;
-    private final int CALCULATIONS = 2;
+    static final int DESCRIPTION = 0;
+    static final int PLAN = 1;
+    static final int CALCULATIONS = 2;
+    
     private boolean extraTabEvent;
     private int selectedTab;
     private GraphEditorPane graphPane;
@@ -69,8 +70,8 @@ public class NodeEditorView extends javax.swing.JDialog {
         graphPane = MainWindow.getInstance().getGraphEditorPane();
         logs.info("Initializing Node Editor view for Vertex " + selected.getName());
         openVertex = selected;
-        initComponents();
         _controller = ControllerFactory.getNodeEditorController(this, openVertex);
+        initComponents();
         configureAndRenderUI();
     }
 
@@ -87,8 +88,8 @@ public class NodeEditorView extends javax.swing.JDialog {
             }
         });
         _controller.initOnLoadBalloonTip();
-        UIManager.getDefaults().put("TabbedPane.contentBorderInsets",
-                new Insets(2, 0, -1, 0));
+        _controller.initActionButtons();
+        UIManager.getDefaults().put("TabbedPane.contentBorderInsets",new Insets(2, 0, -1, 0));
         prepareNodeEditorDisplay();
     }
 
@@ -137,7 +138,7 @@ public class NodeEditorView extends javax.swing.JDialog {
         calculationPanel.add(cPanel);
 
         setSelectedPanel();
-
+        //setTabListener();
         logs.debug("Initializing NodeEditor Tabs - End");
     }
 
@@ -672,9 +673,7 @@ public class NodeEditorView extends javax.swing.JDialog {
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
     private void initComponents() {
 
-        jLayeredPane1 = new javax.swing.JLayeredPane();
-        jRadioButton1 = new javax.swing.JRadioButton();
-        tabPane = new javax.swing.JTabbedPane();
+        tabPane = new NodeEditorTabbedPane(_controller);
         descriptionPanel = new javax.swing.JPanel();
         planPanel = new javax.swing.JPanel();
         calculationPanel = new javax.swing.JPanel();
@@ -686,11 +685,10 @@ public class NodeEditorView extends javax.swing.JDialog {
         bottomSpacer = new javax.swing.JLabel();
         tabPanel = new javax.swing.JLabel();
 
-        jRadioButton1.setText("jRadioButton1");
-
         setDefaultCloseOperation(javax.swing.WindowConstants.DO_NOTHING_ON_CLOSE);
 
         tabPane.setCursor(new java.awt.Cursor(java.awt.Cursor.DEFAULT_CURSOR));
+        tabPane.setMaximumSize(new java.awt.Dimension(500, 400));
         tabPane.setMinimumSize(new java.awt.Dimension(500, 500));
         tabPane.setOpaque(true);
         tabPane.setPreferredSize(new java.awt.Dimension(500, 400));
@@ -716,11 +714,11 @@ public class NodeEditorView extends javax.swing.JDialog {
         planPanel.setLayout(planPanelLayout);
         planPanelLayout.setHorizontalGroup(
             planPanelLayout.createParallelGroup(org.jdesktop.layout.GroupLayout.LEADING)
-            .add(0, 601, Short.MAX_VALUE)
+            .add(0, 494, Short.MAX_VALUE)
         );
         planPanelLayout.setVerticalGroup(
             planPanelLayout.createParallelGroup(org.jdesktop.layout.GroupLayout.LEADING)
-            .add(0, 562, Short.MAX_VALUE)
+            .add(0, 454, Short.MAX_VALUE)
         );
 
         tabPane.addTab("Plan", planPanel);
@@ -729,11 +727,11 @@ public class NodeEditorView extends javax.swing.JDialog {
         calculationPanel.setLayout(calculationPanelLayout);
         calculationPanelLayout.setHorizontalGroup(
             calculationPanelLayout.createParallelGroup(org.jdesktop.layout.GroupLayout.LEADING)
-            .add(0, 601, Short.MAX_VALUE)
+            .add(0, 494, Short.MAX_VALUE)
         );
         calculationPanelLayout.setVerticalGroup(
             calculationPanelLayout.createParallelGroup(org.jdesktop.layout.GroupLayout.LEADING)
-            .add(0, 562, Short.MAX_VALUE)
+            .add(0, 454, Short.MAX_VALUE)
         );
 
         tabPane.addTab("Calculations", calculationPanel);
@@ -781,56 +779,53 @@ public class NodeEditorView extends javax.swing.JDialog {
         layout.setHorizontalGroup(
             layout.createParallelGroup(org.jdesktop.layout.GroupLayout.LEADING)
             .add(layout.createSequentialGroup()
-                .add(302, 302, 302)
-                .add(tabPanel)
-                .addContainerGap(org.jdesktop.layout.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
-            .add(org.jdesktop.layout.GroupLayout.TRAILING, layout.createSequentialGroup()
-                .add(layout.createParallelGroup(org.jdesktop.layout.GroupLayout.TRAILING)
+                .add(layout.createParallelGroup(org.jdesktop.layout.GroupLayout.LEADING)
                     .add(layout.createSequentialGroup()
-                        .add(32, 32, 32)
-                        .add(editorMsgLabel, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE, 601, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE)
-                        .add(14, 14, 14))
-                    .add(layout.createParallelGroup(org.jdesktop.layout.GroupLayout.LEADING)
-                        .add(layout.createSequentialGroup()
-                            .add(35, 35, 35)
-                            .add(checkButton)
-                            .add(18, 18, 18)
-                            .add(demoButton)
-                            .addPreferredGap(org.jdesktop.layout.LayoutStyle.RELATED, org.jdesktop.layout.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                            .add(buttonOK)
-                            .add(18, 18, 18)
-                            .add(buttonCancel))
-                        .add(org.jdesktop.layout.GroupLayout.TRAILING, layout.createSequentialGroup()
-                            .addContainerGap()
-                            .add(tabPane, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE, 622, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE))))
-                .addContainerGap())
+                        .addContainerGap()
+                        .add(tabPane, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE, 515, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE)
+                        .addPreferredGap(org.jdesktop.layout.LayoutStyle.RELATED)
+                        .add(tabPanel, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE, 7, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE))
+                    .add(layout.createSequentialGroup()
+                        .addContainerGap()
+                        .add(checkButton)
+                        .add(18, 18, 18)
+                        .add(demoButton)
+                        .add(142, 142, 142)
+                        .add(buttonOK)
+                        .add(18, 18, 18)
+                        .add(buttonCancel))
+                    .add(layout.createSequentialGroup()
+                        .add(12, 12, 12)
+                        .add(editorMsgLabel, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE, 500, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE)))
+                .addContainerGap(org.jdesktop.layout.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
             .add(layout.createParallelGroup(org.jdesktop.layout.GroupLayout.LEADING)
                 .add(layout.createSequentialGroup()
-                    .add(10, 27, Short.MAX_VALUE)
+                    .addContainerGap(org.jdesktop.layout.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                     .add(bottomSpacer, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE, 30, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE)
-                    .add(0, 596, Short.MAX_VALUE)))
+                    .add(0, 504, Short.MAX_VALUE)))
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(org.jdesktop.layout.GroupLayout.LEADING)
             .add(org.jdesktop.layout.GroupLayout.TRAILING, layout.createSequentialGroup()
-                .add(tabPanel)
-                .addPreferredGap(org.jdesktop.layout.LayoutStyle.RELATED)
-                .add(tabPane, org.jdesktop.layout.GroupLayout.DEFAULT_SIZE, 608, Short.MAX_VALUE)
-                .addPreferredGap(org.jdesktop.layout.LayoutStyle.RELATED)
+                .add(layout.createParallelGroup(org.jdesktop.layout.GroupLayout.LEADING)
+                    .add(tabPanel)
+                    .add(layout.createSequentialGroup()
+                        .addContainerGap()
+                        .add(tabPane, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE, 500, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE)))
+                .addPreferredGap(org.jdesktop.layout.LayoutStyle.RELATED, org.jdesktop.layout.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                 .add(editorMsgLabel, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE, 21, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE)
                 .addPreferredGap(org.jdesktop.layout.LayoutStyle.RELATED)
-                .add(layout.createParallelGroup(org.jdesktop.layout.GroupLayout.LEADING, false)
-                    .add(layout.createParallelGroup(org.jdesktop.layout.GroupLayout.BASELINE)
-                        .add(checkButton, org.jdesktop.layout.GroupLayout.DEFAULT_SIZE, org.jdesktop.layout.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                        .add(demoButton))
-                    .add(buttonCancel, org.jdesktop.layout.GroupLayout.DEFAULT_SIZE, org.jdesktop.layout.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                    .add(buttonOK))
-                .addContainerGap())
+                .add(layout.createParallelGroup(org.jdesktop.layout.GroupLayout.BASELINE)
+                    .add(checkButton)
+                    .add(demoButton)
+                    .add(buttonOK)
+                    .add(buttonCancel, org.jdesktop.layout.GroupLayout.DEFAULT_SIZE, org.jdesktop.layout.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                .add(12, 12, 12))
             .add(layout.createParallelGroup(org.jdesktop.layout.GroupLayout.LEADING)
                 .add(layout.createSequentialGroup()
-                    .add(0, 649, Short.MAX_VALUE)
+                    .add(0, 567, Short.MAX_VALUE)
                     .add(bottomSpacer, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE, 10, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE)
-                    .add(0, 39, Short.MAX_VALUE)))
+                    .add(0, 3, Short.MAX_VALUE)))
         );
 
         pack();
@@ -1030,8 +1025,6 @@ public class NodeEditorView extends javax.swing.JDialog {
     private javax.swing.JButton demoButton;
     private javax.swing.JPanel descriptionPanel;
     private javax.swing.JLabel editorMsgLabel;
-    private javax.swing.JLayeredPane jLayeredPane1;
-    private javax.swing.JRadioButton jRadioButton1;
     private javax.swing.JPanel planPanel;
     private javax.swing.JTabbedPane tabPane;
     private javax.swing.JLabel tabPanel;

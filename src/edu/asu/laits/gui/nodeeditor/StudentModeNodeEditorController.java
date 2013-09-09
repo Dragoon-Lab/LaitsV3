@@ -19,6 +19,8 @@
 package edu.asu.laits.gui.nodeeditor;
 
 import edu.asu.laits.model.Vertex;
+import javax.swing.event.ChangeEvent;
+import javax.swing.event.ChangeListener;
 import org.apache.log4j.Logger;
 
 /**
@@ -36,6 +38,10 @@ public class StudentModeNodeEditorController extends NodeEditorController{
         super(view,openVertex);
         this.view = view;
         this.openVertex = openVertex;
+    }
+    
+    public int processTabChange(int oldTab, int newTab){
+        return newTab;
     }
     
     public void initDescriptionPanelView(DescriptionPanelView dPanelView){
