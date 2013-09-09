@@ -91,6 +91,11 @@ public class PlanPanelView extends JPanel {
                 @Override
                 public void actionPerformed(ActionEvent e) {
                     processPlanPanel();
+                    
+                    if(!ApplicationContext.isAuthorMode()){
+                        TaskSolution solution = ApplicationContext.getCorrectSolution();
+                        nodeEditor.checkPlanPanel(solution);
+                    }
                     MainWindow.refreshGraph();
                 }
             });
@@ -170,6 +175,7 @@ public class PlanPanelView extends JPanel {
         } else if (correctPlan.equalsIgnoreCase(functionPlan[0])) {
             functionSelection.setSelected(true);
         }    
+        setSelectedPlanBackground(Color.YELLOW);
     }
     
     public String printPlanPanel() {

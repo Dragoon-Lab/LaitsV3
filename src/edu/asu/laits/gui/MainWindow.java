@@ -334,6 +334,7 @@ public class MainWindow extends JFrame {
      */
     public GraphEditorPane getGraphEditorPane() {
         if (graphEditorPane == null) {
+            logs.debug("making new graph editor pane");
             graphEditorPane = new GraphEditorPane(this, getStatusBarPanel());
             //getStatusBarPanel().setGraphPane(graphEditorPane);
             graphEditorPane.setAntiAliased(GlobalProperties.getInstance()
