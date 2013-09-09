@@ -136,22 +136,32 @@
 
         function set_problems(mode,category){
              var map = {
-             // This should be an associative array!
-             'Introduction' : {
+             'Easy' : {
 	          105:'Intro problem 1',106:'Intro problem 2',
                   107:'Intro problem 3',108:'Intro problem 4'
 	     },
              'Training': {
                   74:'Dying orchard',92:'Bilge water',94:'Rust',
-                  95:'Bus Fleet',110:'Chestnut blight',93:'Rider gap',
+                  110:'Chestnut blight',95:'Bus Fleet',93:'Rider gap',
                   96:'Capacity utilization',97:'Bank Account',
                   98:'Merchant Marine',80:'Metro Singles Club'
              },
              'Challenge': {
                   111:'Bookworm',99:'Venice',109:'Giardia Bacteria',
-                  112:'Blood Glucose',100:'Oil Tanker',79:'Hardwood Forest',
-                  101:'ASU Commuters',113:'Busy Hospital',
-                  115:'Widget Stocking',114:'ObscureFlix'
+                  112:'Blood Glucose',100:'Oil Tanker',
+                  79:'Hardwood Forest',101:'ASU Commuters'
+                  // The following problems not working 
+                  // on August 21, 2013:
+                  // ,113:'Busy Hospital',
+                  // 115:'Widget Stocking',114:'ObscureFlix',
+             },
+	     'Isle Royale': {
+                  'isle1' : 'Moose population 1',
+                  'isle2' : 'Moose population 2',
+                  'isle3' : 'Moose population 3',
+                  'isle4' : 'Moose population 4',
+                  'isle5' : 'Wolves',
+                  'isle6' : 'Moose and Wolves'
              }};
 	
 	     var newList='';
@@ -193,19 +203,25 @@
                     <div class="fieldgroup">
                         <label for="problem_category">Problem Category: </label>
                         <select id="problem_category" name="problem_category">
-                            <option>Introduction</option>
-                            <option>Training</option>
-                            <option>Challenge</option>
+                           <!-- These should be filled dynamically from map, Bug #2183 --> 
+                           <option>Isle Royale</option> 
+                           <option>Easy</option>
+                           <option>Training</option>
+                           <option>Challenge</option>
+			    
                         </select>
                     </div>
 
                     <div class="fieldgroup">
                         <label for="problem_id">Problem: </label>
                         <select id="problem_id" name="problem_id">
-                            <option value="105">Intro Problem 1</option>
-                            <option value="106">Intro Problem 2</option>
-                            <option value="107">Intro Problem 3</option>
-                            <option value="108">Intro Problem 4</option>
+                           <!-- These should be filled dynamially from map, Bug #2183 --> 
+                            <option value="isle1">Moose population 1</option>
+                            <option value="isle2">Moose population 2</option>
+                            <option value="isle3">Moose population 3</option>
+                            <option value="isle4">Moose population 4</option>
+                            <option value="isle5">Wolves</option>
+                            <option value="isle6">Moose and Wolves</option>                            
                         </select>
                     </div>
 
