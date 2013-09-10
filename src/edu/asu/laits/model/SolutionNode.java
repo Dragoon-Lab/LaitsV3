@@ -32,7 +32,7 @@ public class SolutionNode {
     private String nodeName;
     private String nodeEquation;
     private String correctDescription;
-    private Plan nodePlan;
+    private String nodePlan;
     private List<String> inputNodes;
     private boolean isExtra;
     private double initialValue;
@@ -65,20 +65,7 @@ public class SolutionNode {
     }
     
     public void setNodePlan(String planText){
-        if(planText.equalsIgnoreCase("said to both increase and decrease"))
-            nodePlan = Plan.INCREASE_AND_DECREASE;
-        else if(planText.equalsIgnoreCase("proportional to accumulator and input"))
-            nodePlan = Plan.PROPORTIONAL;
-        else if(planText.equalsIgnoreCase("fixed value"))
-            nodePlan = Plan.FIXED;
-        else if(planText.equalsIgnoreCase("ratio of two quantities"))
-            nodePlan = Plan.RATIO;
-        else if(planText.equalsIgnoreCase("said to increase"))
-            nodePlan = Plan.INCREASE;
-        else if(planText.equalsIgnoreCase("said to decrease"))
-            nodePlan = Plan.DECREASE;
-        else if(planText.equalsIgnoreCase("the difference of two quantities"))
-            nodePlan = Plan.DIFFERENCE;
+        nodePlan = planText;
     }
     
     public void setInputNodes(List<String> nodeList){
@@ -120,7 +107,7 @@ public class SolutionNode {
         return nodeType;
     }
     
-    public Plan getNodePlan(){
+    public String getNodePlan(){
         return nodePlan;
     }
     

@@ -46,7 +46,7 @@ import javax.swing.JLabel;
  * @author ramayantiwari
  */
 public class DescriptionPanelView extends JPanel {
-
+    
     TreePath[] decisionTreePaths;
     SolutionDTreeNode root = null;
     DefaultTreeModel model = null;
@@ -63,22 +63,28 @@ public class DescriptionPanelView extends JPanel {
         nodeEditor = ne;
         initPanel();
     }
-
+    
     public void initPanel() {
         logs.info("Initializing Description Panel");
-        if (ApplicationContext.isStudentMode() || ApplicationContext.isCoachedMode()) {
+        if (ApplicationContext.isStudentMode() || 
+                ApplicationContext.isCoachedMode()) {
             this.nodeNameTextField.setEditable(false);
             this.quantityDescriptionTextField.setEditable(false);
             initTree();
         } else {
             decisionTree.setVisible(false);
         }
-
-        Vertex currentVertex = this.nodeEditor.getCurrentVertex();
+        
+        Vertex currentVertex = this.nodeEditor.getOpenVertex();
         this.nodeNameTextField.setText(currentVertex.getName());
-        this.quantityDescriptionTextField.setText(currentVertex.getCorrectDescription());             
+        this.quantityDescriptionTextField.setText(currentVertex.getCorrectDescription());
+        if((currentVertex.getDescriptionStatus().equals(Vertex.DescriptionStatus.CORRECT)
+            || currentVertex.getDescriptionStatus().equals(Vertex.DescriptionStatus.GAVEUP))
+           && !ApplicationContext.isAuthorMode()) {
+            setEditableTree(false);
+        }
     }
-
+    
     private void initTree() {
         logs.debug("Initializing Description Tree");
         root = ApplicationContext.getCorrectSolution().getdTreeNode();
@@ -86,7 +92,7 @@ public class DescriptionPanelView extends JPanel {
         decisionTree.setModel(model);
         jScrollPane2.setViewportView(decisionTree);
     }
-
+    
     /**
      * This method is called from within the constructor to initialize the form.
      * WARNING: Do NOT modify this code. The content of this method is always
@@ -165,7 +171,7 @@ public class DescriptionPanelView extends JPanel {
         });
         jScrollPane2.setViewportView(decisionTree);
 
-        contentPanel.add(jScrollPane2, new org.netbeans.lib.awtextra.AbsoluteConstraints(6, 28, 580, 285));
+        contentPanel.add(jScrollPane2, new org.netbeans.lib.awtextra.AbsoluteConstraints(6, 28, 470, 285));
 
         evenMorePreciseLabel.setFont(new java.awt.Font("Lucida Grande", 1, 13)); // NOI18N
         evenMorePreciseLabel.setText("Select a Description for this Quantity (then click \"Check\")");
@@ -180,56 +186,58 @@ public class DescriptionPanelView extends JPanel {
         quantityDescriptionTextField.setMargin(new java.awt.Insets(2, 3, 2, 3));
         jScrollPane1.setViewportView(quantityDescriptionTextField);
 
-        contentPanel.add(jScrollPane1, new org.netbeans.lib.awtextra.AbsoluteConstraints(10, 450, 580, -1));
+        contentPanel.add(jScrollPane1, new org.netbeans.lib.awtextra.AbsoluteConstraints(10, 390, 470, -1));
 
         referencesLabel.setFont(new java.awt.Font("Lucida Grande", 1, 13)); // NOI18N
         referencesLabel.setText("Precise description of the quantity:");
-        contentPanel.add(referencesLabel, new org.netbeans.lib.awtextra.AbsoluteConstraints(10, 430, 572, -1));
+        contentPanel.add(referencesLabel, new org.netbeans.lib.awtextra.AbsoluteConstraints(10, 370, 460, -1));
 
         nodeNameTextField.setDisabledTextColor(new java.awt.Color(102, 102, 102));
-        contentPanel.add(nodeNameTextField, new org.netbeans.lib.awtextra.AbsoluteConstraints(100, 380, 490, -1));
+        contentPanel.add(nodeNameTextField, new org.netbeans.lib.awtextra.AbsoluteConstraints(100, 330, 380, -1));
 
         NodeNameLabel.setFont(new java.awt.Font("Lucida Grande", 1, 13)); // NOI18N
         NodeNameLabel.setText("Node Name:");
-        contentPanel.add(NodeNameLabel, new org.netbeans.lib.awtextra.AbsoluteConstraints(10, 390, -1, -1));
+        contentPanel.add(NodeNameLabel, new org.netbeans.lib.awtextra.AbsoluteConstraints(10, 340, -1, -1));
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(this);
         this.setLayout(layout);
         layout.setHorizontalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addComponent(contentPanel, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+            .addComponent(contentPanel, javax.swing.GroupLayout.PREFERRED_SIZE, 486, javax.swing.GroupLayout.PREFERRED_SIZE)
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addComponent(contentPanel, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+            .addGroup(layout.createSequentialGroup()
+                .addComponent(contentPanel, javax.swing.GroupLayout.DEFAULT_SIZE, 452, Short.MAX_VALUE)
+                .addContainerGap())
         );
     }// </editor-fold>//GEN-END:initComponents
-
+    
     private void decisionTreeValueChanged(javax.swing.event.TreeSelectionEvent evt) {//GEN-FIRST:event_decisionTreeValueChanged
         resetTextFieldBackground();
         SolutionDTreeNode node = (SolutionDTreeNode) decisionTree.getLastSelectedPathComponent();
         TreeNode[] treeNodes;
         StringBuilder sb = new StringBuilder();
-
+        
         if (node.isLeaf()) {
             treeNodes = node.getPath();
-
+            
             for (int i = 1; i < treeNodes.length; i++) {
                 sb.append(treeNodes[i].toString().trim());
                 sb.append(" ");
             }
-
+            
             this.quantityDescriptionTextField.setText(sb.toString().trim());
             this.nodeNameTextField.setText(node.getNodeName());
             this.repaint();
             if (ApplicationContext.isCoachedMode()) {
                 addHelpBalloon(ApplicationContext.getFirstNextNode(), "descFilled");
             }
-
+            
         }
-
+        
     }//GEN-LAST:event_decisionTreeValueChanged
-
+    
     private void addHelpBalloon(String node, String timing) {
         List<HelpBubble> bubbles = ApplicationContext.getHelp(node, "DESCRIPTION", timing);
         if (!bubbles.isEmpty()) {
@@ -239,11 +247,11 @@ public class DescriptionPanelView extends JPanel {
         }
     }
     // returns the value held by triedDuplicate
-
+    
     public boolean getTriedDuplicate() {
         return triedDuplicate;
     }
-
+    
     public void collapseAll(javax.swing.JTree tree) {
         int row = tree.getRowCount() - 1;
         while (row >= 1) {
@@ -251,13 +259,13 @@ public class DescriptionPanelView extends JPanel {
             row--;
         }
     }
-
+    
     public void expandTreePath(javax.swing.JTree tree, TreePath treepath) {
         collapseAll(tree);
         decisionTree.scrollPathToVisible(treepath);
         decisionTree.setSelectionPath(treepath);
     }
-
+    
     protected static ImageIcon createImageIcon(String path) {
         java.net.URL imgURL = DescriptionPanelView.class.getResource(path);
         if (imgURL != null) {
@@ -267,7 +275,7 @@ public class DescriptionPanelView extends JPanel {
             return null;
         }
     }
-
+    
     private void expandAll(JTree tree, TreePath parent) {
         TreeNode node = (TreeNode) parent.getLastPathComponent();
         if (node.getChildCount() >= 0) {
@@ -279,20 +287,15 @@ public class DescriptionPanelView extends JPanel {
         }
         tree.expandPath(parent);
     }
-
+    
     public boolean processDescriptionPanel() {
         if (getNodeName().trim().length() == 0) {
             nodeEditor.setEditorMessage("Node Name can not be empty.", true);
             return false;
         }
-
-        Vertex currentVertex = nodeEditor.getCurrentVertex();
+        
+        Vertex currentVertex = nodeEditor.getOpenVertex();
         if (!currentVertex.getName().equals(getNodeName())) {
-            /*if(getNodeName().trim().length() > 20)
-             {
-             nodeEditor.setEditorMessage("Node Name can not be larger than 20 characters.", true);
-             return false;
-             }*/
             if (!duplicatedNode(getNodeName())) {
                 try {
                     currentVertex.setName(getNodeName().trim());
@@ -309,45 +312,44 @@ public class DescriptionPanelView extends JPanel {
                 return false;
             }
         }
-
+        
         if (getNodeDesc().trim().isEmpty()) {
             nodeEditor.setEditorMessage("Please provide correct description for this node.", true);
             setTextFieldBackground(Color.RED);
             activityLogs.debug("User entered incorrect description");
             return false;
         }
-
+        
         currentVertex.setCorrectDescription(getNodeDesc().trim());
         return true;
-
     }
-
+    
     private boolean duplicatedNode(String nodeName) {
-
+        
         Graph graph = nodeEditor.getGraphPane().getModelGraph();
-        if (graph.getVertexByName(nodeName) != null && this.nodeEditor.getCurrentVertex().getName() != nodeName) {
+        if (graph.getVertexByName(nodeName) != null && this.nodeEditor.getOpenVertex().getName() != nodeName) {
             return true;
         } else {
             return false;
         }
     }
-
+    
     public void setTextFieldBackground(Color c) {
         nodeNameTextField.setBackground(c);
         quantityDescriptionTextField.setBackground(c);
     }
-
+    
     public void resetTextFieldBackground() {
         nodeNameTextField.setBackground(Color.white);
         quantityDescriptionTextField.setBackground(Color.white);
     }
-
+    
     public void giveUpDescriptionPanel() {
         // Get a correct Node Name
         TaskSolution solution = ApplicationContext.getCorrectSolution();
         //List<String> correctNodeNames = solution.getCorrectNodeNames();
         List<SolutionNode> correctNodeNames = solution.getSolutionNodes();
-
+        
         String giveupNode = null;
         if (ApplicationContext.isCoachedMode()) {
             for (SolutionNode name : correctNodeNames) {
@@ -355,7 +357,7 @@ public class DescriptionPanelView extends JPanel {
                     giveupNode = name.getNodeName();
                     //ApplicationContext.removeNextNodes(name.getNodeName());
                     ApplicationContext.setNextNodes(name.getNodeName());
-//                  ApplicationContext.nextCurrentOrder();
+                    //                  ApplicationContext.nextCurrentOrder();
                     break;
                 }
             }
@@ -371,25 +373,25 @@ public class DescriptionPanelView extends JPanel {
             nodeEditor.setEditorMessage("All Nodes are already being used in the Model.", true);
             return;
         }
-
+        
         logs.debug("Found Giveup Node as : " + giveupNode);
-
+        
         setDescriptionTreeNode(giveupNode);
         setTextFieldBackground(Color.YELLOW);
     }
-
+    
     private void setDescriptionTreeNode(String nodeName) {
         Enumeration<SolutionDTreeNode> allNodes = root.breadthFirstEnumeration();
         while (allNodes.hasMoreElements()) {
             SolutionDTreeNode node = allNodes.nextElement();
-
+            
             if (node.isLeaf() && node.getNodeName().equals(nodeName)) {
                 TreePath path = new TreePath(node.getPath());
                 decisionTree.setSelectionPath(path);
             }
         }
     }
-
+    
     public String printDescriptionPanelDetails() {
         StringBuilder sb = new StringBuilder();
         sb.append("Node Name = '");
@@ -398,18 +400,20 @@ public class DescriptionPanelView extends JPanel {
         sb.append(quantityDescriptionTextField.getText() + "'");
         return sb.toString();
     }
-
+    
     public void setEditableTree(boolean b) {
         decisionTree.setEditable(b);
         decisionTree.setEnabled(b);
+        nodeNameTextField.setEditable(b);
+        nodeNameTextField.setEnabled(b);
     }
-
+    
     public JLabel getTopDescriptionLabel() {
         return evenMorePreciseLabel;
     }
-
+    
     public JComponent getLabel(String label) {
-
+        
         Map<String, JComponent> map = new HashMap<String, JComponent>();
         map.put("evenMorePreciseLabel", evenMorePreciseLabel);
         map.put("referencesLabel", referencesLabel);
@@ -422,11 +426,11 @@ public class DescriptionPanelView extends JPanel {
             return nodeEditor.getLabel(label);
         }
     }
-
+    
     public String getNodeName() {
         return this.nodeNameTextField.getText();
     }
-
+    
     public String getNodeDesc() {
         return this.quantityDescriptionTextField.getText();
     }

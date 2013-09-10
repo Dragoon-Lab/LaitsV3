@@ -1,6 +1,19 @@
 /**
- * LAITS Project
- * Arizona State University
+ * (c) 2013, Arizona Board of Regents for and on behalf of Arizona State
+ * University. This file is part of LAITS.
+ *
+ * LAITS is free software: you can redistribute it and/or modify it under the
+ * terms of the GNU Lesser General Public License as published by the Free
+ * Software Foundation, either version 3 of the License, or (at your option) any
+ * later version.
+ *
+ * LAITS is distributed in the hope that it will be useful, but WITHOUT ANY
+ * WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS FOR
+ * A PARTICULAR PURPOSE. See the GNU Lesser General Public License for more
+ * details.
+ *
+ * You should have received a copy of the GNU Lesser General Public License
+ * along with LAITS. If not, see <http://www.gnu.org/licenses/>.
  */
 
 package edu.asu.laits.gui.nodeeditor;
@@ -29,7 +42,11 @@ public abstract class NodeEditorController{
     
     public abstract void initActionButtons();
     
+    public abstract int processTabChange(int oldTab, int newTab);
+    
     public abstract void initOnLoadBalloonTip();
+    
+    public abstract void initDescriptionPanelView(DescriptionPanelView dPanelView);
     
     protected void initCheckButton(){
     
@@ -84,12 +101,31 @@ public abstract class NodeEditorController{
         view.getCheckButton().setEnabled(isEnabled);
     }
     
-    public void processCheckAction(){
+    public void processCheckAction() throws NodeEditorException{
     
     }
     
-    public void processDemoAction(){
+    public void processDemoAction() throws NodeEditorException{
     
+    }
+    
+    public void processOKAction() throws NodeEditorException{
+        
+    }
+    
+    public void processCancelAction() throws NodeEditorException{
+        activityLogs.debug("User pressed Close button for Node " + openVertex.getName());
+        
+        // Delete this vertex if its not defined and user hits Cancel
+        if (openVertex.getDescriptionStatus().equals(Vertex.DescriptionStatus.UNDEFINED)
+                || openVertex.getDescriptionStatus().equals(Vertex.DescriptionStatus.INCORRECT)) {
+            
+        }
+
+        // Save Student's session to server
+        PersistenceManager.saveSession();
+
+        view.dispose();
     }
     
     private String getNodeEditorTitle(){
@@ -101,28 +137,6 @@ public abstract class NodeEditorController{
         }
 
         return title;
-    }
-    
-    
-    public void processCancelAction(){
-        activityLogs.debug("User pressed Close button for Node " + openVertex.getName());
-        // Delete this vertex if its not defined and user hits Cancel
-        if (openVertex.getDescriptionStatus().equals(Vertex.DescriptionStatus.UNDEFINED)
-                || openVertex.getDescriptionStatus().equals(Vertex.DescriptionStatus.INCORRECT)) {
-            view.getGraphPane().setSelectionCell(openVertex.getJGraphVertex());
-            view.getGraphPane().removeSelected();
-        }
-
-        activityLogs.debug("Closing NodeEditor because of Close action.");
-        if (!ApplicationContext.isCoachedMode()) {
-            
-        }
-
-        // Save Student's session to server
-        PersistenceManager.saveSession();
-
-        view.getGraphPane().getMainFrame().addHelpBalloon(openVertex.getName(), "nodeEditorClose");
-        view.dispose();
     }
     
 }

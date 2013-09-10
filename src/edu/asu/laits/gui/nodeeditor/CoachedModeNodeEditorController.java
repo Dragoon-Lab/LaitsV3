@@ -8,6 +8,8 @@ import edu.asu.laits.gui.BlockingToolTip;
 import edu.asu.laits.model.HelpBubble;
 import edu.asu.laits.model.Vertex;
 import java.util.List;
+import javax.swing.event.ChangeEvent;
+import javax.swing.event.ChangeListener;
 import org.apache.log4j.Logger;
 
 /**
@@ -36,6 +38,14 @@ public class CoachedModeNodeEditorController extends NodeEditorController {
         super.resetActionButtonAfterDemoUsed();
     }
 
+    public int processTabChange(int oldTab, int newTab){
+        return newTab;
+    }
+    
+    public void initDescriptionPanelView(DescriptionPanelView dPanelView){
+    
+    }
+    
     public void initCheckButton() {
     }
 
@@ -50,53 +60,23 @@ public class CoachedModeNodeEditorController extends NodeEditorController {
     public void initCloseButton() {
     }
 
-    public void processCheckAction() {
+    public void processCheckAction() throws NodeEditorException{
+    
     }
-
-    public void processDemoAction() {
+    
+    public void processDemoAction() throws NodeEditorException{
+    
     }
-
-    public void processCancelAction() {
+    
+    public void processCancelAction() throws NodeEditorException{
         view.getCancelButton().setEnabled(false);
     }
 
     public void initOnLoadBalloonTip() {
-        if (openVertex.getName().equals("")) {
-            addHelpBalloon(ApplicationContext.getFirstNextNode(), "onLoad", 
-                    view.getTabName(view.getTabbedPane().getSelectedIndex()));
-        } else {
-            addHelpBalloon(openVertex.getName(), "onLoad", 
-                    view.getTabName(view.getTabbedPane().getSelectedIndex()));
-
-        }
-
+        
     }
 
     private void addHelpBalloon(String name, String timing, String panel) {
-        logs.debug("Adding Help Bubble for " + panel);
-        if (ApplicationContext.isCoachedMode()) {
-            System.out.println("addhelpballoon passing in " + name);
-            List<HelpBubble> bubbles = ApplicationContext.getHelp(name, panel, timing);
-
-            if (!bubbles.isEmpty()) {
-                for (HelpBubble bubble : bubbles) {
-                    try {
-                        if (panel.equalsIgnoreCase("description")) {
-                            new BlockingToolTip(view, bubble, view.getLabel("dPanel", bubble.getAttachedTo()));
-                        } else if (panel.equalsIgnoreCase("plan")) {
-                            logs.info("Trying to add help in Plan. Msg: " + bubble.getMessage() + "  " + bubble.getAttachedTo());
-                            logs.info("comp: " + view.getPlanPanel().getLabel(bubble.getAttachedTo()));
-                            new BlockingToolTip(view, bubble, view.getLabel("pPanel", bubble.getAttachedTo()));
-                        } else if (panel.equalsIgnoreCase("inputs")) {
-                            new BlockingToolTip(view, bubble, view.getLabel("iPanel", bubble.getAttachedTo()));
-                        } else if (panel.equalsIgnoreCase("calculations")) {
-                            new BlockingToolTip(view, bubble, view.getLabel("cPanel", bubble.getAttachedTo()));
-                        }
-                    } catch (IllegalArgumentException e) {
-                        logs.fatal("Error creating bubble: " + e.getMessage());
-                    }
-                }
-            }
-        }
+        logs.debug("Adding Help Bubble for " + panel);        
     }
 }

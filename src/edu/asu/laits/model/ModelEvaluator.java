@@ -50,7 +50,8 @@ public class ModelEvaluator {
 
     public ModelEvaluator(Graph inputGraph) {
         currentGraph = inputGraph;
-        if(ApplicationContext.isStudentMode() || ApplicationContext.isCoachedMode()){
+        if(ApplicationContext.isStudentMode() || 
+                ApplicationContext.isCoachedMode()){
             startTime = ApplicationContext.getCorrectSolution().getStartTime();
             endTime = ApplicationContext.getCorrectSolution().getEndTime();
             
@@ -71,7 +72,7 @@ public class ModelEvaluator {
         Iterator<Vertex> allVertices = currentGraph.vertexSet().iterator();
         
         // In STUDENT Mode Verify if all the correct nodes are defined
-        if(ApplicationContext.isStudentMode() || ApplicationContext.isCoachedMode()){
+        if(ApplicationContext.isCoachedMode()){
             if(!correctNodesDefined())
                 return false;
         }
@@ -79,7 +80,7 @@ public class ModelEvaluator {
         Vertex thisVertex;
         while(allVertices.hasNext()){
             thisVertex = allVertices.next();
-            if(thisVertex.getInputsStatus().equals(Vertex.InputsStatus.UNDEFINED) ||
+            if(thisVertex.getPlanStatus().equals(Vertex.InputsStatus.UNDEFINED) ||
                     thisVertex.getCalculationsStatus().equals(Vertex.CalculationsStatus.UNDEFINED)){
                 return false;
             }            
@@ -139,6 +140,7 @@ public class ModelEvaluator {
             // Calculating Initial Flow for i =0
             for (int j = constantVertices; j < vertexList.size(); j++) {
                 currentVertex = vertexList.get(j);
+                logs.debug("evaluating vertex " + currentVertex.getName());
                 if (currentVertex.getVertexType().equals(Vertex.VertexType.FLOW)) {
                     currentVertex.getCorrectValues().add(calculateFlow(vertexList, currentVertex, 0));
                 }

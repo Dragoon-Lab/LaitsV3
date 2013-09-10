@@ -69,6 +69,12 @@ public class TaskSolutionReader {
             Element descriptionTree = taskNode.element("DescriptionTree");
             fillDescriptionTree(solution, descriptionTree);
             
+            Element subPlans = taskNode.element("SubPlans");
+            if(subPlans != null){
+                fillSubPlans(solution, subPlans);
+            }
+            
+            
             //Read in help bubbles
             if(ApplicationContext.isCoachedMode()){
                 Element bubbles = taskNode.element("HelpBubbles");
@@ -174,8 +180,7 @@ public class TaskSolutionReader {
             }
             
             // Read all the Input Nodes of this node
-            if(ApplicationContext.getAppMode().equals("COACHED") && order == 1){
-                System.out.println("attempting to add first next node " + node.attributeValue("name"));
+             if(ApplicationContext.isCoachedMode() && order == 1 && ApplicationContext.getNextNodes().isEmpty()){
 //              newNode.setNodeOrder(Integer.parseInt(node.elementTextTrim("Order")));
 //              System.out.println("Added element" + node.elementTextTrim("Order") + " " + node.elementTextTrim("CorrectDescription"));
                 ApplicationContext.addNextNodes(node.attributeValue("name"));
@@ -201,6 +206,20 @@ public class TaskSolutionReader {
             
         }
         
+    }
+    
+    private void fillSubPlans(TaskSolution solution, Element subPlans){
+        
+        List<Element> allSubPlans = subPlans.elements("SubPlan");
+        for(Element subPlan : allSubPlans){
+            if(subPlan.attributeValue("primary").equals("parameter")){
+                solution.addParameterSubPlans(subPlan.getTextTrim());
+            } else if(subPlan.attributeValue("primary").equals("accumulator")){
+                solution.addAccumulatorSubPlans(subPlan.getTextTrim());
+            }else if(subPlan.attributeValue("primary").equals("function")){
+                solution.addFunctionSubPlans(subPlan.getTextTrim());
+            }
+        }
     }
     //Read in help bubble info
     private void fillHelpBubbles(TaskSolution solution, Element bubbles){

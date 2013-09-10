@@ -62,7 +62,8 @@ public class ModelToolBar extends JToolBar {
         add(getDeleteNodeButton());
         add(Box.createHorizontalStrut(5)); 
         add(getshowGraphButton());
-        if(ApplicationContext.isStudentMode() || ApplicationContext.isCoachedMode()){
+        if(ApplicationContext.isStudentMode() || 
+                ApplicationContext.isCoachedMode()){
             add(Box.createHorizontalStrut(5));
             add(getDoneButton());
         }

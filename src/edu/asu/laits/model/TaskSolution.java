@@ -30,7 +30,7 @@ import org.apache.log4j.Logger;
 import org.jgraph.graph.DefaultPort;
 
 /**
- *
+ * Represents Solutions of Dragoon Problem
  * @author ramayantiwari
  */
 public class TaskSolution {
@@ -50,6 +50,9 @@ public class TaskSolution {
     private List<HelpBubble> helpBubbles;
     private SolutionDTreeNode dTreeNode;
     private Graph solutionGraph = null;
+    private List<String> parameterSubPlans;
+    private List<String> accumulatorSubPlans;
+    private List<String> functionSubPlans;
     private static Logger logs = Logger.getLogger("DevLogs");
 
     public TaskSolution() {
@@ -133,6 +136,40 @@ public class TaskSolution {
         }
     }
 
+    public List<String> getParameterSubPlans() {
+        return parameterSubPlans;
+    }
+
+    public List<String> getAccumulatorSubPlans() {
+        return accumulatorSubPlans;
+    }
+
+    public List<String> getFunctionSubPlans() {
+        return functionSubPlans;
+    }
+
+    public void setParameterSubPlans(List<String> parameterSubPlans) {
+        this.parameterSubPlans = parameterSubPlans;
+    }
+
+    public void setAccumulatorSubPlans(List<String> accumulatorSubPlans) {
+        this.accumulatorSubPlans = accumulatorSubPlans;
+    }
+
+    public void setFunctionSubPlans(List<String> functionSubPlans) {
+        this.functionSubPlans = functionSubPlans;
+    }
+    public void addParameterSubPlans(String parameterSubPlan) {
+        this.parameterSubPlans.add(parameterSubPlan);
+    }
+
+    public void addAccumulatorSubPlans(String accumulatorSubPlan) {
+        this.accumulatorSubPlans.add(accumulatorSubPlan);
+    }
+
+    public void addFunctionSubPlans(String functionSubPlan) {
+        this.functionSubPlans.add(functionSubPlan);
+    }
     /**
      * @return the startTime
      */
@@ -267,9 +304,9 @@ public class TaskSolution {
 
     }
 
-    public boolean checkNodePlan(String nodeName, Vertex.Plan plan) {
+    public boolean checkNodePlan(String nodeName, Vertex.VertexType plan) {
         logs.info("Checking Plan for Node : " + nodeName + "  " + "selected plan: " + plan);
-        if (getNodeByName(nodeName).getNodePlan().compareTo(plan) == 0) {
+        if (getNodeByName(nodeName).getNodeType().compareTo(plan) == 0) {
             return true;
         } else {
             return false;
@@ -325,7 +362,7 @@ public class TaskSolution {
             }
 
             if (correctNode.getNodeType().equals(Vertex.VertexType.STOCK)) {
-                return checkNodeEquation(correctNode.getNodeEquation(), studentNode.getEquation());
+                return checkNodeEquation(correctNode.getNodeEquation(), studentNode.getEquation().trim());
             }
 
         } else if (correctNode.getNodeType().equals(Vertex.VertexType.FLOW)) {
@@ -357,9 +394,9 @@ public class TaskSolution {
             }
 
             for (int i = 0; i < 5; i++) {
+                    Random rand = new Random(123);
 
                 for (String var : studentVariables) {
-                    Random rand = new Random(123);
                     int r = rand.nextInt(100);
 
                     double value = (r + rand.nextDouble()) % 150;
@@ -409,6 +446,7 @@ public class TaskSolution {
     public boolean checkNodeGraph(Vertex studentVertex) {
         if (solutionGraph == null) {
             createSolutionGraph();
+            System.out.println("**\nIn checkNodeGraph()");
             ModelEvaluator evaluator = new ModelEvaluator(solutionGraph);
 
             try {
@@ -472,8 +510,10 @@ public class TaskSolution {
         for (SolutionNode node : solutionNodes) {
             List<String> inputVertices = node.getInputNodes();
             for (String vertexName : inputVertices) {
-                solutionGraph.addEdge(solutionGraph.getVertexByName(vertexName),
-                        solutionGraph.getVertexByName(node.getNodeName()));
+                if(!node.isExtra()){
+                    solutionGraph.addEdge(solutionGraph.getVertexByName(vertexName),
+                            solutionGraph.getVertexByName(node.getNodeName()));
+                }
             }
         }
 
