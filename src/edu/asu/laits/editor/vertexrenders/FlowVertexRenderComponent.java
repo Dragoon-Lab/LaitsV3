@@ -47,8 +47,7 @@ public class FlowVertexRenderComponent extends VertexRenderComponent {
      * Logger
      */
     private static Logger logs = Logger.getLogger("DevLogs");
-    private static Logger activityLogs = Logger.getLogger("ActivityLogs");
-
+    
     /**
      * @param defaultVertexRenderComponent
      */
@@ -114,40 +113,28 @@ public class FlowVertexRenderComponent extends VertexRenderComponent {
     protected void paintComponent(Graphics g) {
         super.paintComponent(g);
         drawVertex(g);
-
     }
 
     public void drawVertex(Graphics g) {
         Graphics2D g2 = (Graphics2D) g;
         boolean isCorrect = false;
-        if(currentVertex.getDescriptionStatus().equals(Vertex.DescriptionStatus.CORRECT)){
-            g2.setColor(Color.GREEN);
-            isCorrect = true;           
-        }else if(currentVertex.getDescriptionStatus().equals(Vertex.DescriptionStatus.GAVEUP)){
-            g2.setColor(new Color(0x90, 0x90, 0x00));
-            isCorrect = true;           
-        }else if(currentVertex.getPlanStatus().equals(Vertex.PlanStatus.CORRECT) && 
-            currentVertex.getCalculationsStatus().equals(Vertex.CalculationsStatus.CORRECT)){
-            g2.setColor(Color.BLUE);
-            isCorrect = true;
-        }else if(currentVertex.getPlanStatus().equals(Vertex.PlanStatus.GAVEUP) && 
-                currentVertex.getCalculationsStatus().equals(Vertex.CalculationsStatus.GAVEUP)){
-            g2.setColor(Color.BLUE);
-            isCorrect = true;
-        }else if(currentVertex.getPlanStatus().equals(Vertex.PlanStatus.CORRECT) && 
-                currentVertex.getCalculationsStatus().equals(Vertex.CalculationsStatus.GAVEUP)){
-            g2.setColor(Color.BLUE);
-            isCorrect = true;
-        }
-        else if(currentVertex.getPlanStatus().equals(Vertex.PlanStatus.GAVEUP) && 
-                currentVertex.getCalculationsStatus().equals(Vertex.CalculationsStatus.CORRECT)){
-            g2.setColor(Color.BLUE);
-            isCorrect = true;
-        }
-        else{
+        
+        // If Vertex has Defined Description, Plan and Calculations - set color to green else use Gray
+        
+        if(currentVertex.getDescriptionStatus().equals(Vertex.DescriptionStatus.CORRECT) || 
+                currentVertex.getDescriptionStatus().equals(Vertex.DescriptionStatus.GAVEUP)){
+            if(currentVertex.getPlanStatus().equals(Vertex.PlanStatus.CORRECT) || 
+                    currentVertex.getPlanStatus().equals(Vertex.PlanStatus.GAVEUP)){
+                if(currentVertex.getCalculationsStatus().equals(Vertex.CalculationsStatus.CORRECT) || 
+                    currentVertex.getCalculationsStatus().equals(Vertex.CalculationsStatus.GAVEUP)){
+                    g2.setColor(new Color(0x90, 0x90, 0x00));
+                    isCorrect = true;
+                }
+            }
+        }else{
             g2.setColor(foreground);
-        }
-            
+        }    
+                   
         if(selected && !(isCorrect)){
             g2.setColor(Color.GRAY);
             g2.setStroke(new BasicStroke(2));
@@ -159,7 +146,7 @@ public class FlowVertexRenderComponent extends VertexRenderComponent {
         int b = getHeight() / 2;
         int m = Math.min(a, b);
         int r = 4 * m / 5;
-        int r2 = Math.abs(m - r) / 2;
+        
         g2.drawOval(a - r, b - r - 7, 2 * r, 2 * r);
         
         String vertexName = currentVertex.getName();

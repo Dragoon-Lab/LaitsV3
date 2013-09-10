@@ -83,6 +83,9 @@ public class PlanPanelView extends JPanel {
         attachChangeListener();
     }
     
+    /**
+     * Associates Event handler for Click events in Plan Panel Radio Buttons
+     */
     private void attachChangeListener(){
         JRadioButton buttonList[] = {parameterSelection,accumulatorSelection,functionSelection};
         for(JRadioButton button : buttonList){
@@ -113,10 +116,20 @@ public class PlanPanelView extends JPanel {
         }
     }
     
+    /**
+     * Save selected plan in the Vertex and update Vertex type as per the plan.
+     * This updated vertex type will be used to initialize Calculations Panel
+     * @return : boolean to indicate if Plan Panel processing was successful
+     */
     public boolean processPlanPanel() {
         if (planButtonGroup.getSelection() != null) {
             openVertex.setPlan(planToString(getSelectedPlan()));
             openVertex.setVertexType(getSelectedPlan());
+            
+            System.out.println("Updating Vertex Type");
+            // Update Current Node's shape as per selected plan
+            MainWindow.refreshGraph();
+            
             logs.info("Plan Set to "+openVertex.getPlan() + "Vetex Type set to "+openVertex.getVertexType());
         } else {
             nodeEditor.setEditorMessage("Please select a plan for this node.", true);

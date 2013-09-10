@@ -158,7 +158,7 @@ public class NodeEditorView extends javax.swing.JDialog {
             
             tabPane.setSelectedIndex(DESCRIPTION);
         }
-
+        
         setCheckGiveupButtons();
     }
 
