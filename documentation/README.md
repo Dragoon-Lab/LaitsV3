@@ -34,7 +34,7 @@ feel the need.
 
 ## Install Documentation ##
 
-Place a link to the `documentation` directory in your webserver root directory.  
+Place a link to the `documentation` directory in your webserver root directory. 
 For the sever to properly translate the markdown, download a 
 [markdown handler](https://github.com/alue/markdown-handler), 
 edit the path in the provided `.htaccess` file, and install the files your the web 
