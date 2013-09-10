@@ -80,6 +80,7 @@ public class MainWindow extends JFrame {
      */
     private static Logger logs = Logger.getLogger("DevLogs");
     private static Logger activityLogs = Logger.getLogger("ActivityLogs");
+    private static MainWindow _instance;
 
     /**
      * This method initializes
@@ -535,5 +536,18 @@ public class MainWindow extends JFrame {
             }
             switchTutorModelPanels(false);
         }
+    }
+    
+    public static void refreshGraph(){
+        getInstance().getGraphEditorPane().repaint();
+        getInstance().validate();
+        getInstance().repaint();
+    }
+    
+    public static MainWindow getInstance(){
+        if(_instance == null){
+            _instance = new MainWindow();
+        }
+        return _instance;
     }
 }

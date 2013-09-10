@@ -188,7 +188,9 @@ public class CalculationsPanelView extends javax.swing.JPanel {
         accumulatorPanel.setVisible(true);
         formulaInputArea.setText("");
         //      accumulatorInitialValueBox.setText("");
-        valuesLabel.setText("Change in " + currentVertex.getName() + " per " + ApplicationContext.getCorrectSolution().getGraphUnits() + " = ");
+        if(!ApplicationContext.isAuthorMode()){
+            valuesLabel.setText("Change in " + currentVertex.getName() + " per " + ApplicationContext.getCorrectSolution().getGraphUnits() + " = ");         
+        }
     }
     
     public void preparePanelForStockOrFlow() {
@@ -784,7 +786,7 @@ public class CalculationsPanelView extends javax.swing.JPanel {
         // TODO add your handling code here:
         // Process Cancel Action for all the Tabs
         activityLogs.debug("User pressed Create node button on inputs tab for Node " + nodeEditor.getCurrentVertex().getName());
-        if(currentVertex.getVertexType()==Vertex.VertexType.STOCK){
+        if(currentVertex.getVertexType()==Vertex.VertexType.STOCK && !accumulatorInitialValueBox.getText().isEmpty()){
             currentVertex.setInitialValue(Double.valueOf(accumulatorInitialValueBox.getText()));
         }
         Vertex v = new Vertex();

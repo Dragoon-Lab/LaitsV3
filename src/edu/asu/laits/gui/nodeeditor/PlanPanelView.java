@@ -5,6 +5,7 @@
 package edu.asu.laits.gui.nodeeditor;
 
 import edu.asu.laits.editor.ApplicationContext;
+import edu.asu.laits.gui.MainWindow;
 import edu.asu.laits.gui.BlockingToolTip;
 import edu.asu.laits.model.HelpBubble;
 import edu.asu.laits.model.TaskSolution;
@@ -37,6 +38,7 @@ import javax.swing.table.TableModel;
 import org.apache.log4j.Logger;
 import edu.asu.laits.model.Vertex.VertexType;
 import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
 import java.util.Enumeration;
 import java.util.List;
 import javax.swing.AbstractButton;
@@ -50,11 +52,16 @@ import net.miginfocom.swing.MigLayout;
  */
 public class PlanPanelView extends javax.swing.JPanel {
 
-    private MigLayout PlanLayout = new MigLayout("debug, filly, wrap", "[95%]","");
-    private MigLayout rowLayout = new MigLayout("debug, wrap", "[]15[]", "15[]15");
+    private MigLayout PlanLayout = new MigLayout("filly, wrap", "[95%]","");
+    private String rowString1 = "wrap";
+    private String rowString2 = "[20%]15[]";
+    private String rowString3 = "15[]15";
+    private MigLayout rowLayout = new MigLayout(rowString1, rowString2, rowString3);
+    private MigLayout rowLayout2 = new MigLayout(rowString1, rowString2, rowString3);
+    private MigLayout rowLayout3 = new MigLayout(rowString1, rowString2, rowString3);
     private String[] parameterPlan = new String[] {"Parameter", "A constant whose value is defined in the problem"};
-    private String[] accumulatorPlan = new String[] {"Accumulator", "test1"};
-    private String[] functionPlan = new String[] {"Function", "test2"};
+    private String[] accumulatorPlan = new String[] {"Accumulator", "a quantity whose new value depends on its old value and its inputs"};
+    private String[] functionPlan = new String[] {"Function", "a quantity that depends on its inputs alone"};
     private Dimension rowSize = new Dimension(560, 65);
     private List<String> parameterSubPlans;
     private List<String> accumulatorSubPlans;
@@ -89,35 +96,15 @@ public class PlanPanelView extends javax.swing.JPanel {
         primarySelections.add(parameterSelection);
         primarySelections.add(accumulatorSelection);
         primarySelections.add(functionSelection);
-        parameterSelection.addActionListener(new java.awt.event.ActionListener() {
-
-            @Override
-            public void actionPerformed(ActionEvent e) {
-                processPlanPanel();  
-                nodeEditor.checkPlanPanel(solution);
-            }
-        });
-        accumulatorSelection.addActionListener(new java.awt.event.ActionListener() {
-
-            @Override
-            public void actionPerformed(ActionEvent e) {
-                processPlanPanel();
-                nodeEditor.checkPlanPanel(solution);
-            }
-        });
-        functionSelection.addActionListener(new java.awt.event.ActionListener() {
-
-            @Override
-            public void actionPerformed(ActionEvent e) {
-                processPlanPanel();
-            nodeEditor.checkPlanPanel(solution);
-            }
-        });
-        parameterSubPlans = solution.getParameterSubPlans();
-        accumulatorSubPlans = solution.getAccumulatorSubPlans();
-        functionSubPlans = solution.getFunctionSubPlans();
+        
+        if(!ApplicationContext.isAuthorMode()){
+            parameterSubPlans = solution.getParameterSubPlans();
+            accumulatorSubPlans = solution.getAccumulatorSubPlans();
+            functionSubPlans = solution.getFunctionSubPlans();
+        }
+        
         panel = new JPanel(PlanLayout);
-        panel.setBackground(Color.BLUE);
+        panel.setBackground(Color.WHITE);
         panel.add(new JLabel(currentVertex.getName() + " is a ..."), "");
         paraPanel = new JPanel(rowLayout);
         paraPanel.add(parameterSelection, "");
@@ -125,26 +112,18 @@ public class PlanPanelView extends javax.swing.JPanel {
      //   paraPanel.setMinimumSize(rowSize);
         paraPanel.setBackground(Color.WHITE);
         panel.add(paraPanel, "wrap");
-        accPanel = new JPanel(rowLayout);
+        accPanel = new JPanel(rowLayout2);
         accPanel.add(accumulatorSelection, "");
         accPanel.add(new JLabel(accumulatorPlan[1]), "");
    //     accPanel.setMinimumSize(rowSize);
         accPanel.setBackground(Color.WHITE);
         panel.add(accPanel, "");
-        funPanel = new JPanel(rowLayout);
+        funPanel = new JPanel(rowLayout3);
         funPanel.add(functionSelection, "");
         funPanel.add(new JLabel(functionPlan[1]), "");
      //   funPanel.setMinimumSize(rowSize);
         funPanel.setBackground(Color.WHITE);
         panel.add(funPanel, "");
-
-        
-        
-        
-//        panel.add(accumulatorSelection);
-//        panel.add(new JLabel(accumulatorPlan[1]));        
-//        panel.add(functionSelection);
-//        panel.add(new JLabel(functionPlan[1]));
         
         add(panel, "growx, growy");
         if(currentVertex.getPlanStatus().equals(Vertex.PlanStatus.CORRECT)){
@@ -159,6 +138,8 @@ public class PlanPanelView extends javax.swing.JPanel {
         panel.revalidate();
         panel.repaint();
         panel.setVisible(true);
+        
+        attachChangeListener();
         
     }
     public boolean isViewEnabled() {
@@ -283,6 +264,25 @@ public class PlanPanelView extends javax.swing.JPanel {
         }
 
         return null;
+    }
+    
+    private void attachChangeListener(){
+        JRadioButton buttonList[] = {parameterSelection,accumulatorSelection,functionSelection};
+        for(JRadioButton button : buttonList){
+            button.addActionListener(new ActionListener() {
+
+                @Override
+                public void actionPerformed(ActionEvent e) {
+                    processPlanPanel();
+                    
+                    if(!ApplicationContext.isAuthorMode()){
+                        TaskSolution solution = ApplicationContext.getCorrectSolution();
+                        nodeEditor.checkPlanPanel(solution);
+                    }
+                //    MainWindow.refreshGraph();
+                }
+            });
+        }       
     }
     /**
      * This method is called from within the constructor to initialize the form.
