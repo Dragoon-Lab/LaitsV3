@@ -87,36 +87,36 @@ uncheck "compile on save" option.
 
 ### Build the project using Ant ###
 
-1. 	Download apache ant
+1.   Download apache ant  
 	http://ant.apache.org/bindownload.cgi
 
-2.	set ANT_HOME and JAVA_HOME environment variables on the system. If these are not present in the environment variables, create new environment variables with these names.
-e.g. :
-ANT_HOME : C:\apache-ant-1.9.2
+2.	set ANT\_HOME and JAVA\_HOME environment variables on the system. If these are not present in the environment variables, create new environment variables with these names.  
+e.g. :  
+ANT_HOME : C:\apache-ant-1.9.2  
 JAVA_HOME : C:\Program Files\Java\jdk1.7.0_03
 
-3.	Add bin directories to 'path' user environment variable.
-e.g. : add  ;C:\apache-ant-1.9.2\bin;C:\Program Files\Java\jdk1.7.0_03\bin
-If the 'path' variable is not already present in the user environment variables then create a new one with name 'path' and value as paths to the bin folders.  e.g. : C:\apache-ant-1.9.2\bin;C:\Program Files\Java\jdk1.7.0_03\bin
+3.	Add bin directories to 'path' user environment variable.  
+e.g. : add  ;C:\apache-ant-1.9.2\bin;C:\Program Files\Java\jdk1.7.0_03\bin  
+If the 'path' variable is not already present in the user environment variables then create a new one with name 'path' and value as paths to the bin folders.  
+e.g. : C:\apache-ant-1.9.2\bin;C:\Program Files\Java\jdk1.7.0_03\bin
 
-4.	download apache ivy
-	http://ant.apache.org/ivy/download.cgi
+4.	download apache ivy  
+	http://ant.apache.org/ivy/download.cgi  
 copy the jar file(ivy-2.3.0.jar) inside the downloaded folder into the lib directory of your Ant download.
 
-5.	Download apache contrib :
-	http://sourceforge.net/projects/ant-contrib/files/ant-contrib/ant-contrib-1.0b2/
-download the bin.zip folder
-copy the ant-contrib.jar inside downloaded folder to the lib directory of your Ant download.
+5.	Download apache contrib :  	http://sourceforge.net/projects/ant-contrib/files/ant-contrib/ant-contrib-1.0b2/  
+download the bin.zip folder  
+copy the ant-contrib-0.3.jar inside downloaded folder to the lib directory of your Ant download.
 
-6.	For usage through command-line :
-open terminal
-go to project directory. ==> e.g. : C:\laitsv3
-run following commands in the same order :
-ant compile
-ant jar
-ant unsign
-cd www
-java -jar Laitsv3.jar <studentName> <mode> <problemNumber>
+6.	For usage through command-line :  
+open terminal  
+go to project directory. ==> e.g. : C:\laitsv3  
+run following commands in the same order :  
+ant compile  
+ant jar  
+ant unsign  
+cd www  
+>java -jar Laits.jar username mode problemid
 
 
 ### Run on local server ###
