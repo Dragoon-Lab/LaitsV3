@@ -3,10 +3,12 @@
 <Task phase="Intro" type="Construct">
   <TaskName/>
   <TaskDescription>
-      An object starts from a position of rest and falls from a building NEWLINE
-      that is 100 meters tall and falls under the influence of gravity. NEWLINE NEWLINE
-      Graph its speed and the distance traveled from 0 seconds to 5 seconds. NEWLINE 
-      Remember that acceleration due to gravity is 9.81 m/second squared.
+      A stone is thrown vertically upward with a speed of 18.0 m/s. Graph NEWLINE
+      its speed and the distance traveled from 0 seconds to 5 seconds. NEWLINE NEWLINE
+      How fast is it moving when it reaches a height of 11.0m? How long is NEWLINE
+      required to reach this height? Explain why there are two answers.  NEWLINE NEWLINE
+      Because the stone is moving against gravity we will set acceleration  NEWLINE
+      due to gravity at -9.81 m/second squared.
   </TaskDescription>
   <URL/>
   <StartTime>0</StartTime>
@@ -22,8 +24,8 @@
       <Outputs>
           <Name>Acceleration</Name>
       </Outputs>
-      <Equation>9.81</Equation>
-      <InitialValue>9.81</InitialValue>
+      <Equation>-9.81</Equation>
+      <InitialValue>-9.81</InitialValue>
     </Node>
     
     <Node type="stock" name="Speed" extra="no">
@@ -36,7 +38,7 @@
           <Name>Acceleration</Name>
       </Outputs>
       <Equation>Acceleration</Equation>
-      <InitialValue>0.0</InitialValue>
+      <InitialValue>18.0</InitialValue>
     </Node>
     
     <Node type="stock" name="Distance" extra="no">

@@ -3,13 +3,17 @@
 <Task phase="Intro" type="Construct">
   <TaskName/>
   <TaskDescription>
-      An object starts from a position of rest and falls from a building NEWLINE
-      that is 100 meters tall and falls under the influence of gravity. NEWLINE NEWLINE
-      Graph its velocity and position from 0s to 5s.
+      A stone is thrown vertically upward with a speed of 12.0 m/s from the NEWLINE
+      edge of a cliff 70.0m high. Graph its speed and the distance traveled NEWLINE
+      from 0 seconds to 6 seconds. NEWLINE NEWLINE
+      How much later does it reach the bottom of the cliff? What is its NEWLINE
+      speed just before hitting? What total distance did it travel? NEWLINE NEWLINE
+      Because the stone is moving against gravity we will set acceleration  NEWLINE
+      due to gravity at -9.81 m/second squared.
   </TaskDescription>
   <URL/>
   <StartTime>0</StartTime>
-  <EndTime>5</EndTime>
+  <EndTime>6</EndTime>
   <Units>Seconds</Units>
   <NodeCount>3</NodeCount>
   <Nodes>
@@ -21,12 +25,12 @@
       <Outputs>
           <Name>Acceleration</Name>
       </Outputs>
-      <Equation>9.81</Equation>
-      <InitialValue>9.81</InitialValue>
+      <Equation>-9.81</Equation>
+      <InitialValue>-9.81</InitialValue>
     </Node>
     
-    <Node type="stock" name="Velocity" extra="no">
-      <CorrectDescription>The velocity of the falling object</CorrectDescription>
+    <Node type="stock" name="Speed" extra="no">
+      <CorrectDescription>The speed of the falling object</CorrectDescription>
       <Plan>said to increase</Plan>
       <Inputs>
         <Name>Acceleration</Name>
@@ -35,36 +39,36 @@
           <Name>Acceleration</Name>
       </Outputs>
       <Equation>Acceleration</Equation>
-      <InitialValue>0.0</InitialValue>
+      <InitialValue>12.0</InitialValue>
     </Node>
     
-    <Node type="stock" name="Position" extra="no">
-      <CorrectDescription>The position of the falling object</CorrectDescription>
-      <Plan>said to decrease</Plan>
+    <Node type="stock" name="Distance" extra="no">
+      <CorrectDescription>The distance the falling object has traveled</CorrectDescription>
+      <Plan>said to increase</Plan>
       <Inputs>
-        <Name>Velocity</Name>
+        <Name>Speed</Name>
       </Inputs>
       <Outputs/>
-      <Equation>-Velocity</Equation>
-      <InitialValue>100</InitialValue>
+      <Equation>Speed</Equation>
+      <InitialValue>70</InitialValue>
     </Node>
     
   </Nodes>
   
   <DescriptionTree>
       <Node level="root">
-          <Description>The position </Description>
+          <Description>The distance </Description>
           <Node level="leaf">
-              <Description>of the falling object</Description>
-              <NodeName>Position</NodeName>
+              <Description>the falling object has traveled</Description>
+              <NodeName>Distance</NodeName>
           </Node>
       </Node>
       
       <Node level="root">
-          <Description>The velocity </Description>
+          <Description>The speed </Description>
           <Node level="leaf">
               <Description>of the falling object</Description>
-              <NodeName>Velocity</NodeName>
+              <NodeName>Speed</NodeName>
           </Node>          
       </Node>
       

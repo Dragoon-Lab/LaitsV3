@@ -5,8 +5,9 @@
   <TaskDescription>
       An object starts from a position of rest and falls from a building NEWLINE
       that is 100 meters tall and falls under the influence of gravity. NEWLINE NEWLINE
-      Graph its speed and the distance traveled from 0 seconds to 5 seconds. NEWLINE 
-      Remember that acceleration due to gravity is 9.81 m/second squared.
+      For an object falling freely from rest, show that the distance  NEWLINE
+      traveled during each successive second increases in the ratio of  NEWLINE
+      successive odd integers (1, 3, 5, etc.).
   </TaskDescription>
   <URL/>
   <StartTime>0</StartTime>
@@ -26,8 +27,8 @@
       <InitialValue>9.81</InitialValue>
     </Node>
     
-    <Node type="stock" name="Speed" extra="no">
-      <CorrectDescription>The speed of the falling object</CorrectDescription>
+    <Node type="stock" name="Velocity" extra="no">
+      <CorrectDescription>The velocity of the falling object</CorrectDescription>
       <Plan>said to increase</Plan>
       <Inputs>
         <Name>Acceleration</Name>
@@ -39,33 +40,33 @@
       <InitialValue>0.0</InitialValue>
     </Node>
     
-    <Node type="stock" name="Distance" extra="no">
-      <CorrectDescription>The distance the falling object has traveled</CorrectDescription>
-      <Plan>said to increase</Plan>
+    <Node type="stock" name="Position" extra="no">
+      <CorrectDescription>The position of the falling object</CorrectDescription>
+      <Plan>said to decrease</Plan>
       <Inputs>
-        <Name>Speed</Name>
+        <Name>Velocity</Name>
       </Inputs>
       <Outputs/>
-      <Equation>Speed</Equation>
-      <InitialValue>0</InitialValue>
+      <Equation>-Velocity</Equation>
+      <InitialValue>100</InitialValue>
     </Node>
     
   </Nodes>
   
   <DescriptionTree>
       <Node level="root">
-          <Description>The distance </Description>
+          <Description>The position </Description>
           <Node level="leaf">
-              <Description>the falling object has traveled</Description>
-              <NodeName>Distance</NodeName>
+              <Description>of the falling object</Description>
+              <NodeName>Position</NodeName>
           </Node>
       </Node>
       
       <Node level="root">
-          <Description>The speed </Description>
+          <Description>The velocity </Description>
           <Node level="leaf">
               <Description>of the falling object</Description>
-              <NodeName>Speed</NodeName>
+              <NodeName>Velocity</NodeName>
           </Node>          
       </Node>
       
