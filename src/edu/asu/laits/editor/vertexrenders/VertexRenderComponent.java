@@ -34,9 +34,7 @@ public class VertexRenderComponent extends VertexRenderer implements
     VertexType shape;
     private boolean selectable;
     private boolean selected;
-    private boolean focus;
     private boolean preview;
-    private Color background;
     
     static VertexRenderComponent defaultRender = new VertexRenderComponent();
     
@@ -51,7 +49,6 @@ public class VertexRenderComponent extends VertexRenderer implements
     
     /** Logger */
     private static Logger logs = Logger.getLogger("DevLogs");
-    private static Logger activityLogs = Logger.getLogger("ActivityLogs");
 
     public Component getRendererComponent(JGraph graph, CellView view,
             boolean sel, boolean focus, boolean preview) {
@@ -81,26 +78,6 @@ public class VertexRenderComponent extends VertexRenderer implements
         } 
         else {
             return super.getRendererComponent(graph, view, sel, focus, preview);
-        }
-    }
-
-    public CellViewRenderer getRenderer(GraphEditorVertexView view, JGraph graph) {
-       logs.debug("Getting Renderer");
-        Map<Object, Object> atributes = view.getAllAttributes();
-
-        DefaultGraphCell cell = (DefaultGraphCell) view.getCell();
-        Vertex currentVertex = (Vertex)cell.getUserObject();
-        
-        VertexType shape = currentVertex.getVertexType();
-
-        if (shape == VertexType.DEFAULT) {
-            return defaultVertexComponent;
-        }else if (shape == VertexType.FLOW) {
-            return flowVertexRenderComponent;
-        } else if (shape == VertexType.STOCK) {
-            return stockVertexRenderComponent;
-        } else {
-            return this;
         }
     }
 

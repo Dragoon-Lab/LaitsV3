@@ -539,6 +539,7 @@ public class MainWindow extends JFrame {
     }
     
     public static void refreshGraph(){
+        getInstance().getGraphEditorPane().getLayoutCache().reload();
         getInstance().getGraphEditorPane().repaint();
         getInstance().validate();
         getInstance().repaint();

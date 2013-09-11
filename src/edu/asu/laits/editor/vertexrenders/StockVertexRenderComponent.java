@@ -80,8 +80,6 @@ public class StockVertexRenderComponent extends VertexRenderComponent {
 
         if (graph != null) {
             VertexType shape = GraphEditorConstants.getShape(atributes);
-            GraphEditorPane graphPane = (GraphEditorPane) graph;
-
             if (view instanceof GraphEditorVertexView) {
                 GraphEditorVertexView graphVertexView = (GraphEditorVertexView) view;
                 graphVertexView.setLocalRenderer(this);

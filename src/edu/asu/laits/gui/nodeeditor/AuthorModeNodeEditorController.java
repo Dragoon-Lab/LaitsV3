@@ -86,4 +86,5 @@ public class AuthorModeNodeEditorController extends NodeEditorController{
     public void initOnLoadBalloonTip(){
     
     }
+    
 }
