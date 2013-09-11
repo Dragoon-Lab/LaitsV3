@@ -65,8 +65,7 @@
         <property name="ivy-publish.forcedeliver" value="true"/>
         <property name="ivy-publish.resolver" value="local"/>
         <property name="ivy-publish.overwrite" value="true"/>
-        <!--<property name="ivy-publish.artifacts.pattern" value="${basedir}/${dist.dir}/[artifact].[ext]"/>-->
-		<property name="ivy-publish.artifacts.pattern" value="${basedir}/${www.dir}/[artifact].[ext]"/>
+	<property name="ivy-publish.artifacts.pattern" value="${basedir}/${www.dir}/[artifact].[ext]"/>
     </target>
     <target name="-lib-path-init">
         <echo level="debug" message="$${lib.dir} : ${lib.dir}"/>
