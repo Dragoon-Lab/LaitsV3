@@ -51,23 +51,24 @@ import net.miginfocom.swing.MigLayout;
  */
 public class PlanPanelView extends javax.swing.JPanel {
 
-    private MigLayout PlanLayout = new MigLayout("filly, wrap", "[95%]","");
+    private MigLayout PlanLayout = new MigLayout("filly, wrap", "[95%]","15[]15[]15[]15[]");
     private String rowString1 = "wrap";
     private String rowString2 = "[20%]15[]";
     private String rowString3 = "15[]15";
+    private String labelHtml = "<html><body style='width: 275px'>";
     private MigLayout rowLayout = new MigLayout(rowString1, rowString2, rowString3);
     private MigLayout rowLayout2 = new MigLayout(rowString1, rowString2, rowString3);
     private MigLayout rowLayout3 = new MigLayout(rowString1, rowString2, rowString3);
     private String[] parameterPlan = new String[] {"Parameter", "A constant whose value is defined in the problem"};
     private String[] accumulatorPlan = new String[] {"Accumulator", "a quantity whose new value depends on its old value and its inputs"};
     private String[] functionPlan = new String[] {"Function", "a quantity that depends on its inputs alone"};
-    private Dimension rowSize = new Dimension(560, 65);
+    private Dimension rowSize = new Dimension(465, 65);
     private List<String> parameterSubPlans;
     private List<String> accumulatorSubPlans;
     private List<String> functionSubPlans;
     private NodeEditorView nodeEditor;
     private TaskSolution solution;
-    private Vertex currentVertex;
+    private Vertex openVertex;
     private JPanel panel;
     private JPanel paraPanel;
     private JPanel accPanel;
@@ -84,7 +85,6 @@ public class PlanPanelView extends javax.swing.JPanel {
     }
     
     private void initPanel(){
-        
         
         solution = ApplicationContext.getCorrectSolution();
         parameterSelection = new JRadioButton(parameterPlan[0]);
@@ -103,33 +103,33 @@ public class PlanPanelView extends javax.swing.JPanel {
         
         panel = new JPanel(PlanLayout);
         panel.setBackground(Color.WHITE);
-        panel.add(new JLabel(currentVertex.getName() + " is a ..."), "");
+        panel.add(new JLabel(openVertex.getName() + " is a ..."), "");
         paraPanel = new JPanel(rowLayout);
         paraPanel.add(parameterSelection, "");
-        paraPanel.add(new JLabel(parameterPlan[1]), "");
+        paraPanel.add(new JLabel(labelHtml + parameterPlan[1]), "");
      //   paraPanel.setMinimumSize(rowSize);
         paraPanel.setBackground(Color.WHITE);
         panel.add(paraPanel, "wrap");
         accPanel = new JPanel(rowLayout2);
         accPanel.add(accumulatorSelection, "");
-        accPanel.add(new JLabel(accumulatorPlan[1]), "");
+        accPanel.add(new JLabel(labelHtml + accumulatorPlan[1]), "");
    //     accPanel.setMinimumSize(rowSize);
         accPanel.setBackground(Color.WHITE);
         panel.add(accPanel, "");
         funPanel = new JPanel(rowLayout3);
         funPanel.add(functionSelection, "");
-        funPanel.add(new JLabel(functionPlan[1]), "");
+        funPanel.add(new JLabel(labelHtml + functionPlan[1]), "");
      //   funPanel.setMinimumSize(rowSize);
         funPanel.setBackground(Color.WHITE);
         panel.add(funPanel, "");
         
         add(panel, "growx, growy");
-        if(currentVertex.getPlanStatus().equals(Vertex.PlanStatus.CORRECT)){
-            setSelectedPlan(planToString(currentVertex.getVertexType()));
+        if(openVertex.getPlanStatus().equals(Vertex.PlanStatus.CORRECT)){
+            setSelectedPlan(planToString(openVertex.getVertexType()));
             setSelectedPlanBackground(Color.GREEN);
             setEditableRadio(false);
-        } else if(currentVertex.getPlanStatus().equals(Vertex.PlanStatus.GAVEUP)){
-            setSelectedPlan(planToString(currentVertex.getVertexType()));
+        } else if(openVertex.getPlanStatus().equals(Vertex.PlanStatus.GAVEUP)){
+            setSelectedPlan(planToString(openVertex.getVertexType()));
             setSelectedPlanBackground(Color.YELLOW);
             setEditableRadio(false);
         }
@@ -152,6 +152,10 @@ public class PlanPanelView extends javax.swing.JPanel {
                 @Override
                 public void actionPerformed(ActionEvent e) {
                     processPlanPanel();
+                    if(!ApplicationContext.isAuthorMode()){
+                        TaskSolution solution = ApplicationContext.getCorrectSolution();
+                        nodeEditor.checkPlanPanel(solution);
+                    }
                     MainWindow.refreshGraph();
                 }
             });
@@ -168,7 +172,7 @@ public class PlanPanelView extends javax.swing.JPanel {
     }
     
     public void setEditableRadio(Boolean b) {
-        for (Enumeration<AbstractButton> buttons = planButtonGroup.getElements(); buttons.hasMoreElements();) {
+        for (Enumeration<AbstractButton> buttons = primarySelections.getElements(); buttons.hasMoreElements();) {
             AbstractButton button = buttons.nextElement();
             button.setEnabled(b);
         }
@@ -180,7 +184,7 @@ public class PlanPanelView extends javax.swing.JPanel {
      * @return : boolean to indicate if Plan Panel processing was successful
      */
     public boolean processPlanPanel() {
-        if (planButtonGroup.getSelection() != null) {
+        if (primarySelections.getSelection() != null) {
             openVertex.setPlan(planToString(getSelectedPlan()));
             openVertex.setVertexType(getSelectedPlan());
             
@@ -188,7 +192,7 @@ public class PlanPanelView extends javax.swing.JPanel {
             // Update Current Node's shape as per selected plan
             MainWindow.refreshGraph();
             
-            logs.info("Plan Set to "+openVertex.getPlan() + "Vetex Type set to "+openVertex.getVertexType());
+        //    logs.info("Plan Set to "+openVertex.getPlan() + "Vetex Type set to "+openVertex.getVertexType());
         } else {
             nodeEditor.setEditorMessage("Please select a plan for this node.", true);
             return false;
@@ -259,8 +263,8 @@ public class PlanPanelView extends javax.swing.JPanel {
     }
     
     public void setSelectedPlan(String plan) {
-        logs.info("Setting Plan to "+plan);
-        for (Enumeration<AbstractButton> buttons = planButtonGroup.getElements(); buttons.hasMoreElements();) {
+      //  logs.info("Setting Plan to "+plan);
+        for (Enumeration<AbstractButton> buttons = primarySelections.getElements(); buttons.hasMoreElements();) {
             AbstractButton button = buttons.nextElement();
             if(button.getText().equalsIgnoreCase(plan)) {
                 button.setSelected(true);
@@ -269,7 +273,7 @@ public class PlanPanelView extends javax.swing.JPanel {
     }
     
     public String getSelected() {
-        return getSelectedButtonText(planButtonGroup);
+        return getSelectedButtonText(primarySelections);
     }
     
     public String getSelectedButtonText(ButtonGroup buttonGroup) {

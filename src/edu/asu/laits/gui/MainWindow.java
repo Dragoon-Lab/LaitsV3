@@ -85,6 +85,7 @@ public class MainWindow extends JFrame {
     public static MainWindow getInstance(){
         if(_instance == null){
             _instance = new MainWindow();
+            _instance.loadSession();
         }
         return _instance;
     }
@@ -106,7 +107,7 @@ public class MainWindow extends JFrame {
         if (!ApplicationContext.isAuthorMode()) {
             loadTask();
         }
-        loadSession();
+       // loadSession();
         setFrameTitle();
 
         GraphPropertiesChangeListener l = new MainGraphPropertiesChangeListener();

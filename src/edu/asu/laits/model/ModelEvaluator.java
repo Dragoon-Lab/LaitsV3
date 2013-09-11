@@ -151,9 +151,10 @@ public class ModelEvaluator {
 
                 for (int j = constantVertices; j < vertexList.size(); j++) {
                     currentVertex = vertexList.get(j);
-
+                    logs.debug("evaluating vertex " + currentVertex.getName() + " time point " + i);
                     if (currentVertex.getVertexType().equals(Vertex.VertexType.STOCK)) {
                         currentVertex.getCorrectValues().add(calculateStock(vertexList, currentVertex, i));
+                        logs.debug(calculateStock(vertexList, currentVertex, i));
                     } else if (currentVertex.getVertexType().equals(Vertex.VertexType.FLOW)) {
                         currentVertex.getCorrectValues().add(calculateFlow(vertexList, currentVertex, i));
                     }

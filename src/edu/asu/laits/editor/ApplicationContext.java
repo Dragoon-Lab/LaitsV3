@@ -32,8 +32,6 @@ public class ApplicationContext {
   private static AppMode appMode;
   private static String section;
   private static String rootURL;
-  
-  private static GraphEditorPane graphPane;
   private static boolean isValid = false;
   private static TaskSolution correctSolution;
   private static String currentTaskID;
@@ -46,18 +44,6 @@ public class ApplicationContext {
     public static boolean isHelpBubbles() {
         return helpBubbles;
     }
-
-    private static String userId;
-    private static AppMode appMode;
-    private static String section;
-    private static String rootURL;
-    private static boolean isValid = false;
-    private static TaskSolution correctSolution;
-    private static String currentTaskID;
-    private static boolean isProblemSolved = false;
-    public static String taskLoaderURL;
-    private static int currentOrder = 1;
-    private static List<String> nextNodes = new ArrayList<String>();
 
     public static void setNextNodes(String parentNode) {
         List<String> childNodes = new ArrayList<String>();
