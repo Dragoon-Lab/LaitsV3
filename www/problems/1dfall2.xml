@@ -5,7 +5,7 @@
   <TaskDescription>
       An object starts from a position of rest and falls from a building NEWLINE
       that is 100 meters tall and falls under the influence of gravity. NEWLINE NEWLINE
-      Graph its speed and the distance traveled from 0 seconds to 5 seconds. NEWLINE 
+      Graph its velocity and the distance traveled from 0 seconds to 5 seconds. NEWLINE 
       Assume that acceleration due to gravity is 9.81 m/s&lt;sup&gt;2&lt;/sup&gt;. NEWLINE
             Choose coordinates so that the top of the building is at zero.
   </TaskDescription>
@@ -27,8 +27,8 @@
       <InitialValue>9.81</InitialValue>
     </Node>
     
-    <Node type="stock" name="Speed" extra="no">
-      <CorrectDescription>The speed of the falling object</CorrectDescription>
+    <Node type="stock" name="Velocity" extra="no">
+      <CorrectDescription>The velocity of the falling object</CorrectDescription>
       <Plan>said to increase</Plan>
       <Inputs>
         <Name>Acceleration</Name>
@@ -44,10 +44,10 @@
       <CorrectDescription>The distance the falling object has traveled</CorrectDescription>
       <Plan>said to increase</Plan>
       <Inputs>
-        <Name>Speed</Name>
+        <Name>Velocity</Name>
       </Inputs>
       <Outputs/>
-      <Equation>Speed</Equation>
+      <Equation>Velocity</Equation>
       <InitialValue>0</InitialValue>
     </Node>
     
@@ -63,10 +63,10 @@
       </Node>
       
       <Node level="root">
-          <Description>The speed </Description>
+          <Description>The velocity </Description>
           <Node level="leaf">
               <Description>of the falling object</Description>
-              <NodeName>Speed</NodeName>
+              <NodeName>Velocity</NodeName>
           </Node>          
       </Node>
       
