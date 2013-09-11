@@ -22,12 +22,30 @@ import edu.asu.laits.model.TaskSolution;
 import edu.asu.laits.model.HelpBubble;
 import java.util.ArrayList;
 import java.util.List;
-
+ 
 /**
  *
  * @author ramayantiwari
  */
 public class ApplicationContext {
+  private static String userId;
+  private static AppMode appMode;
+  private static String section;
+  private static String rootURL;
+  
+  private static GraphEditorPane graphPane;
+  private static boolean isValid = false;
+  private static TaskSolution correctSolution;
+  private static String currentTaskID;
+  private static boolean isProblemSolved = false;
+  public static String taskLoaderURL;
+  private static int currentOrder = 1;
+  private static List<String> nextNodes = new ArrayList<String>();
+  private static boolean helpBubbles = false;
+
+    public static boolean isHelpBubbles() {
+        return helpBubbles;
+    }
 
     private static String userId;
     private static AppMode appMode;

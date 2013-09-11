@@ -1,224 +1,225 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <Task phase="Training" type="Whole">
-  <TaskName>Metro Singles Club</TaskName>
-  <TaskDescription>
-  Problem: Ever since the Metro Singles Club replaced their open mic karaoke night with cover bands at its parties, the membership in the club has been dropping steadily.  That is having an impact on the all-important female/male ratio, which is defined as the number of women in the club divided by the number of men in the club.  There are currently 100 men and 125 women in the club, so the total membership is initially 225 and the initial female/male ratio is 1.25.  However, 6% of the men leave the club each month and 10% of the women leave the club each month.  That is, although some men leave each month, even more women leave, at least initially.  
-  Goal: Graph the female/male ratio over a 12-month period.</TaskDescription>
-  <URL>http://www.hongkonghustle.com/wp-content/photos/Billion_club_Hong_Kong_HK_O.jpg</URL>
-  <ShortDescription>\n Function: female/male ratio = women/men
-\n Accumulator: men = men – men leaving ; initially men = 100.
-\n Function: men leaving = men * proportion men leaving
-\n Accumulator : women = women – women leaving; initial women = 125.
-\n Function:  women leaving  = women * proportion women leaving
-\n Given: proportion men leaving = 0.06
-\n Given: proportion women leaving = 0.10
-\n Given: initial club membership = 225
-\n Given: initial female/male ratio = 1.25. 
-</ShortDescription>
-  <StartTime>0</StartTime>
-  <EndTime>10</EndTime>
-  <Units>months</Units>
-  <Vertexes>
-    <VertexLabel>initial club membership</VertexLabel>
-    <VertexLabel>proportion women leaving</VertexLabel>
-    <VertexLabel>initial female/male ratio</VertexLabel>
-    <VertexLabel>proportion men leaving</VertexLabel>
-    <VertexLabel>female/male ratio</VertexLabel>
-    <VertexLabel>women leaving</VertexLabel>
-    <VertexLabel>men leaving</VertexLabel>
-    <VertexLabel>men</VertexLabel>
-    <VertexLabel>women</VertexLabel>
-  </Vertexes>
+    <TaskName>Metro Singles Club</TaskName>
+    <TaskDescription>
+        Problem: Ever since the Metro Singles Club replaced their open mic karaoke NEWLINE
+        night with cover bands at its parties, the membership in the club has been NEWLINE
+        dropping steadily.  That is having an impact on the all-important female to NEWLINE
+        male ratio, which is defined as the number of women in the club divided by NEWLINE
+        the number of men in the club.  There are currently 100 men and 125 women NEWLINE
+        in the club, so the total membership is initially 225 and the initial female toNEWLINE
+        male ratio is 1.25.  However, 6% of the men leave the club each month and NEWLINE
+        10% of the women leave the club each month.  That is, although some men NEWLINE
+        leave each month, even more women leave, at least initially. NEWLINE NEWLINE
+        Goal: Graph the female to male ratio over a 12-month period.</TaskDescription>
+    <URL>http://www.hongkonghustle.com/wp-content/photos/Billion_club_Hong_Kong_HK_O.jpg</URL>
   
-  <NodeCount>9</NodeCount>
+    <StartTime>0</StartTime>
+    <EndTime>10</EndTime>
+    <Units>months</Units>
+    <Vertexes>
+        <VertexLabel>initial club membership</VertexLabel>
+        <VertexLabel>proportion women leaving</VertexLabel>
+        <VertexLabel>initial female to male ratio</VertexLabel>
+        <VertexLabel>proportion men leaving</VertexLabel>
+        <VertexLabel>female to male ratio</VertexLabel>
+        <VertexLabel>women leaving</VertexLabel>
+        <VertexLabel>men leaving</VertexLabel>
+        <VertexLabel>men</VertexLabel>
+        <VertexLabel>women</VertexLabel>
+    </Vertexes>
 
-  <ProblemSeeking>female/male ratio</ProblemSeeking>
-  <CorrespondingSentence>Graph the female/male ratio over a 12-month period.</CorrespondingSentence>
-  
-  <Nodes>
-    <Node type="constant" name="proportion women leaving" extra="no">
-      <Inputs></Inputs>
-      <Outputs>
-      	<Node name="women leaving"></Node>
-      </Outputs>
-      <Equation>proportion_women_leaving</Equation>
-      <InitialValue>.1</InitialValue>
-      <CorrectDescription>The ratio of women leaving the club to women in the club</CorrectDescription>
-      <Plan>fixed value</Plan>
-    </Node>
-    
-    <Node type="constant" name="proportion men leaving" extra="no">
-      <Inputs></Inputs>
-      <Outputs>
-      	<Node name="men leaving"></Node>
-      </Outputs>
-      <Equation>proportion_men_leaving</Equation>
-      <InitialValue>.06</InitialValue>
-      <CorrectDescription>The ratio of men leaving the club to men in the club</CorrectDescription>
-      <Plan>fixed value</Plan>
-    </Node>
-    
-    <Node type="constant" name="initial club membership" extra="yes">
-      <Inputs></Inputs>
-      <Outputs></Outputs>
-      <Equation>initial_club_membership</Equation>
-      <InitialValue>225</InitialValue>
-      <CorrectDescription>The number of people in the club the first month</CorrectDescription>
-      <Plan>fixed value</Plan>
-    </Node>
-    
-    <Node type="constant" name="initial female/male ratio" extra="yes">
-      <Inputs></Inputs>
-      <Outputs></Outputs>
-      <Equation>initial_female/male_ratio</Equation>
-      <InitialValue>1.25</InitialValue>
-      <CorrectDescription>The ratio of women in the club to men in the club the first month</CorrectDescription>
-      <Plan>fixed value</Plan>
-    </Node>
+    <NodeCount>9</NodeCount>
 
-    <Node type="stock" name="men" extra="no">
-      <Inputs>
-      	<Node name="men leaving" type="minus"></Node>
-      </Inputs>
-      <Outputs>
-        <Node name="men leaving"></Node>
-        <Node name="female/male ratio"></Node>
-	  </Outputs>
-      <InitialValue>100</InitialValue>
-      <Equation>-men_leaving</Equation>
-      <CorrectDescription>The number of men in the club each month</CorrectDescription>
-      <Plan>said to decrease</Plan>
-    </Node>
+    <ProblemSeeking>female to male ratio</ProblemSeeking>
+    <CorrespondingSentence>Graph the female to male ratio over a 12-month period.</CorrespondingSentence>
+
+    <Nodes>
+        <Node type="constant" name="proportion women leaving" extra="no">
+            <Inputs></Inputs>
+            <Outputs>
+                <Name>women leaving</Name>
+            </Outputs>
+            <Equation>.1</Equation>
+            <InitialValue>.1</InitialValue>
+            <CorrectDescription>The ratio of women leaving the club to women in the club</CorrectDescription>
+            <Plan>fixed value</Plan>
+        </Node>
+
+        <Node type="constant" name="proportion men leaving" extra="no">
+            <Inputs></Inputs>
+            <Outputs>
+                <Name>men leaving</Name>
+            </Outputs>
+            <Equation>.06</Equation>
+            <InitialValue>.06</InitialValue>
+            <CorrectDescription>The ratio of men leaving the club to men in the club</CorrectDescription>
+            <Plan>fixed value</Plan>
+        </Node>
+
+        <Node type="constant" name="initial club membership" extra="yes">
+            <Inputs></Inputs>
+            <Outputs></Outputs>
+            <Equation>225</Equation>
+            <InitialValue>225</InitialValue>
+            <CorrectDescription>The number of people in the club the first month</CorrectDescription>
+            <Plan>fixed value</Plan>
+        </Node>
+
+        <Node type="constant" name="initial female to male ratio" extra="yes">
+            <Inputs></Inputs>
+            <Outputs></Outputs>
+            <Equation>1.25</Equation>
+            <InitialValue>1.25</InitialValue>
+            <CorrectDescription>The ratio of women in the club to men in the club the first month</CorrectDescription>
+            <Plan>fixed value</Plan>
+        </Node>
+
+        <Node type="stock" name="men" extra="no">
+            <Inputs>
+                <Name>men leaving</Name>
+            </Inputs>
+            <Outputs>
+                <Name>men leaving</Name>
+                <Name>female to male ratio</Name>
+            </Outputs>
+            <InitialValue>100</InitialValue>
+            <Equation>-men leaving</Equation>
+            <CorrectDescription>The number of men in the club each month</CorrectDescription>
+            <Plan>said to decrease</Plan>
+        </Node>
+
+        <Node type="stock" name="women" extra="no">
+            <Inputs>
+                <Name>women leaving</Name>
+            </Inputs>
+            <Outputs>
+                <Name>women leaving</Name>
+                <Name>female to male ratio</Name>
+            </Outputs>
+            <InitialValue>125</InitialValue>
+            <Equation>-women leaving</Equation>
+            <CorrectDescription>The number of women in the club each month</CorrectDescription>
+            <Plan>said to decrease</Plan>
+        </Node>
+
+        <Node type="flow" name="women leaving" extra="no">
+            <Inputs>
+                <Name>proportion women leaving</Name>
+                <Name>women</Name>
+            </Inputs>
+            <Outputs>
+                <Name>women</Name>
+            </Outputs>
+            <InitialValue></InitialValue>
+            <Equation>women*proportion women leaving</Equation>
+            <CorrectDescription>The number of women leaving the club each month</CorrectDescription>
+            <Plan>proportional to accumulator and input</Plan>
+        </Node>
     
-    <Node type="stock" name="women" extra="no">
-      <Inputs>
-      	<Node name="women leaving" type="minus"></Node>
-      </Inputs>
-      <Outputs>
-		<Node name="women leaving"></Node>
-		<Node name="female/male ratio"></Node>
-	  </Outputs>
-      <InitialValue>125</InitialValue>
-      <Equation>-women_leaving</Equation>
-      <CorrectDescription>The number of women in the club each month</CorrectDescription>
-      <Plan>said to decrease</Plan>
-    </Node>
-    
-    <Node type="flow" name="women leaving" extra="no">
-      <Inputs>        
-        <Node name="proportion women leaving"></Node>
-        <Node name="women"></Node>
-      </Inputs>
-      <Outputs>
-      	<Node name="women"></Node>
-      </Outputs>
-      <InitialValue></InitialValue>
-      <Equation>women*proportion_women_leaving</Equation>
-      <CorrectDescription>The number of women leaving the club each month</CorrectDescription>
-      <Plan>proportional to accumulator and input</Plan>
-    </Node>
-    
-    <Node type="flow" name="men leaving" extra="no">
-      <Inputs>        
-        <Node name="proportion men leaving"></Node>
-        <Node name="men"></Node>
-      </Inputs>
-      <Outputs>
-      	<Node name="men"></Node>
-      </Outputs>
-      <InitialValue></InitialValue>
-      <Equation>men*proportion_men_leaving</Equation>
-      <CorrectDescription>The number of men leaving the club each month</CorrectDescription>
-      <Plan>proportional to accumulator and input</Plan>
-    </Node>
-	
-    <Node type="flow" name="female/male ratio" extra="no">
-      <Inputs>        
-        <Node name="men"></Node>
-        <Node name="women"></Node>
-      </Inputs>
-      <Outputs></Outputs>
-      <InitialValue></InitialValue>
-      <Equation>women/men</Equation>
-      <CorrectDescription>The ratio of women in the club to men in the club</CorrectDescription>
-      <Plan>ratio of two quantities</Plan>
-    </Node>
-  </Nodes>  
-     
-  <DescriptionTree>
-    <Node level="root">
-      <Description>The number of</Description>      
-      <Node level="intermediate">
-        <Description>men</Description>            
-        <Node level="leaf">
-          <Description>in the club each month</Description>
-          <NodeName>men</NodeName>
+        <Node type="flow" name="men leaving" extra="no">
+            <Inputs>
+                <Name>proportion men leaving</Name>
+                <Name>men</Name>
+            </Inputs>
+            <Outputs>
+                <Name>men</Name>
+            </Outputs>
+            <InitialValue></InitialValue>
+            <Equation>men*proportion men leaving</Equation>
+            <CorrectDescription>The number of men leaving the club each month</CorrectDescription>
+            <Plan>proportional to accumulator and input</Plan>
         </Node>
-        <Node level="leaf">
-          <Description>leaving the club each month</Description>
-          <NodeName>men leaving</NodeName>
+
+        <Node type="flow" name="female to male ratio" extra="no">
+            <Order>1</Order>
+            <Inputs>
+                <Name>men</Name>
+                <Name>women</Name>
+            </Inputs>
+            <Outputs></Outputs>
+            <InitialValue></InitialValue>
+            <Equation>women/men</Equation>
+            <CorrectDescription>The ratio of women in the club to men in the club</CorrectDescription>
+            <Plan>ratio of two quantities</Plan>
         </Node>
-        <Node level="leaf">
-          <Description>joining the club each month</Description>
-          <NodeName>men joining</NodeName>
+    </Nodes>
+
+    <DescriptionTree>
+        <Node level="root">
+            <Description>The number of</Description>
+            <Node level="intermediate">
+                <Description>men</Description>
+                <Node level="leaf">
+                    <Description>in the club each month</Description>
+                    <NodeName>men</NodeName>
+                </Node>
+                <Node level="leaf">
+                    <Description>leaving the club each month</Description>
+                    <NodeName>men leaving</NodeName>
+                </Node>
+                <Node level="leaf">
+                    <Description>joining the club each month</Description>
+                    <NodeName>men joining</NodeName>
+                </Node>
+            </Node>
+            <Node level="intermediate">
+                <Description>women</Description>
+                <Node level="leaf">
+                    <Description>in the club each month</Description>
+                    <NodeName>women</NodeName>
+                </Node>
+                <Node level="leaf">
+                    <Description>leaving the club each month</Description>
+                    <NodeName>women leaving</NodeName>
+                </Node>
+                <Node level="leaf">
+                    <Description>joining the club each month</Description>
+                    <NodeName>women joining</NodeName>
+                </Node>
+            </Node>
+            <Node level="intermediate">
+                <Description>people</Description>
+                <Node level="leaf">
+                    <Description>in the club the first month</Description>
+                    <NodeName>initial club membership</NodeName>
+                </Node>
+                <Node level="leaf">
+                    <Description>in the club each month</Description>
+                    <NodeName>club membership</NodeName>
+                </Node>
+            </Node>
         </Node>
-	  </Node>
-      <Node level="intermediate">
-        <Description>women</Description>            
-        <Node level="leaf">
-          <Description>in the club each month</Description>
-          <NodeName>women</NodeName>
+        <Node level="root">
+            <Description>The ratio</Description>
+            <Node level="intermediate">
+                <Description>of men</Description>
+                <Node level="leaf">
+                    <Description>leaving the club to men in the club</Description>
+                    <NodeName>proportion men leaving</NodeName>
+                </Node>
+                <Node level="leaf">
+                    <Description>in the club to women in the club</Description>
+                    <NodeName>male/female ratio</NodeName>
+                </Node>
+            </Node>
+            <Node level="intermediate">
+                <Description>of women</Description>
+                <Node level="leaf">
+                    <Description>in the club to men in the club</Description>
+                    <NodeName>female to male ratio</NodeName>
+                </Node>
+                <Node level="leaf">
+                    <Description>leaving the club to women in the club</Description>
+                    <NodeName>proportion women leaving</NodeName>
+                </Node>
+                <Node level="leaf">
+                    <Description>in the club to men in the club the first month</Description>
+                    <NodeName>initial female to male ratio</NodeName>
+                </Node>
+            </Node>
         </Node>
-        <Node level="leaf">
-          <Description>leaving the club each month</Description>
-          <NodeName>women leaving</NodeName>
-        </Node>
-        <Node level="leaf">
-          <Description>joining the club each month</Description>
-          <NodeName>women joining</NodeName>
-        </Node>
-	  </Node>
-      <Node level="intermediate">
-        <Description>people</Description>            
-        <Node level="leaf">
-          <Description>in the club the first month</Description>
-          <NodeName>initial club membership</NodeName>
-        </Node>
-        <Node level="leaf">
-          <Description>in the club each month</Description>
-          <NodeName>club membership</NodeName>
-        </Node>
-	  </Node>
-    </Node>
-    <Node level="root">
-      <Description>The ratio</Description>      
-      <Node level="intermediate">
-        <Description>of men</Description>            
-        <Node level="leaf">
-          <Description>leaving the club to men in the club</Description>
-          <NodeName>proportion men leaving</NodeName>
-        </Node>
-        <Node level="leaf">
-          <Description>in the club to women in the club</Description>
-          <NodeName>male/female ratio</NodeName>
-        </Node>
-	  </Node>
-      <Node level="intermediate">
-        <Description>of women</Description>            
-        <Node level="leaf">
-          <Description>in the club to men in the club</Description>
-          <NodeName>female/male ratio</NodeName>
-        </Node>
-        <Node level="leaf">
-          <Description>leaving the club to women in the club</Description>
-          <NodeName>proportion women leaving</NodeName>
-        </Node>
-        <Node level="leaf">
-          <Description>in the club to men in the club the first month</Description>
-          <NodeName>initial female/male ratio</NodeName>
-        </Node>
-	  </Node>
-    </Node>
-  </DescriptionTree>
-       
+    </DescriptionTree>
+
 </Task>
+

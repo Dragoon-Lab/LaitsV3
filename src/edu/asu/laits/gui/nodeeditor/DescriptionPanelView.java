@@ -101,7 +101,7 @@ public class DescriptionPanelView extends JPanel {
     @SuppressWarnings("unchecked")
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
     private void initComponents() {
-
+        
         buttonGroup1 = new javax.swing.ButtonGroup();
         contentPanel = new javax.swing.JPanel();
         jScrollPane2 = new javax.swing.JScrollPane();
@@ -112,9 +112,9 @@ public class DescriptionPanelView extends JPanel {
         referencesLabel = new javax.swing.JLabel();
         nodeNameTextField = new javax.swing.JTextField();
         NodeNameLabel = new javax.swing.JLabel();
-
+        
         contentPanel.setLayout(new org.netbeans.lib.awtextra.AbsoluteLayout());
-
+        
         decisionTree.setFont(new java.awt.Font("Lucida Grande", 0, 18)); // NOI18N
         javax.swing.tree.DefaultMutableTreeNode treeNode1 = new javax.swing.tree.DefaultMutableTreeNode("root");
         javax.swing.tree.DefaultMutableTreeNode treeNode2 = new javax.swing.tree.DefaultMutableTreeNode("A count of");
@@ -176,7 +176,7 @@ public class DescriptionPanelView extends JPanel {
         evenMorePreciseLabel.setFont(new java.awt.Font("Lucida Grande", 1, 13)); // NOI18N
         evenMorePreciseLabel.setText("Select a Description for this Quantity (then click \"Check\")");
         contentPanel.add(evenMorePreciseLabel, new org.netbeans.lib.awtextra.AbsoluteConstraints(6, 6, 390, -1));
-
+        
         quantityDescriptionTextField.setWrapStyleWord(true);
         quantityDescriptionTextField.setColumns(20);
         quantityDescriptionTextField.setFont(new java.awt.Font("Lucida Grande", 0, 18)); // NOI18N

@@ -27,15 +27,16 @@
     <Node type="constant" name="weekly books bought" extra="no">
       <Inputs></Inputs>
       <Outputs>
-      	<Node name="books"></Node>
+          <Name>books</Name>
       </Outputs>
-      <Equation>weekly_books_bought</Equation>
+      <Equation>weekly books bought</Equation>
       <InitialValue>2</InitialValue>
       <CorrectDescription>The number of books Rod buys each week</CorrectDescription>
       <Plan>fixed value</Plan>
     </Node>
     
     <Node type="stock" name="books" extra="no">
+        <Order>1</Order>
       <Inputs>        
           <Name>weekly books bought</Name>
       </Inputs>

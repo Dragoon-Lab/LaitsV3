@@ -6,7 +6,8 @@
       Hint: You always have to convert percentages to decimals. NEWLINE NEWLINE
       Goal: Graph the proportion of weight of fat per potato chips over the next 10 months.</TaskDescription>
   <URL>http://amt.javiergs.com/images/tasks/intro-2.png</URL>
-  <ShortDescription>\n Given: fat content = 0.35</ShortDescription>
+  <ShortDescription>
+ Given: fat content = 0.35</ShortDescription>
   <StartTime>0</StartTime>
   <EndTime>10</EndTime>
   <Units>months</Units>
@@ -15,6 +16,7 @@
 
   <Nodes>
     <Node type="constant" name="fat content" extra="no">
+<Order>1</Order>
       <Inputs></Inputs>
       <Outputs></Outputs>
       <Equation>.35</Equation>
@@ -37,7 +39,7 @@
           <Description>in a small bag</Description>
           <NodeName>small bag chip count</NodeName>
         </Node>
-	  </Node>
+  </Node>
       <Node level="intermediate">
         <Description>grams of fat</Description>            
         <Node level="leaf">
@@ -52,7 +54,7 @@
     </Node>
     <Node level="root">
       <Description>The ratio of</Description>        
-	  <Node level="intermediate">
+  <Node level="intermediate">
         <Description>the weight of the fat in a potato chip to</Description>            
         <Node level="leaf">
           <Description>the weight of the potato chip</Description>
@@ -62,7 +64,7 @@
           <Description>the weight of fat in a tortilla chip</Description>
           <NodeName>tortilla chip fat content</NodeName>
         </Node>
-	  </Node>
+  </Node>
       <Node level="intermediate">
         <Description>the weight of a potato chip to</Description>            
         <Node level="leaf">
@@ -71,7 +73,6 @@
         </Node>
       </Node>
     </Node>
-	
   </DescriptionTree>
-    
+
 </Task>
