@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <ivy-module version="2.0">
-    <info module="LaitsV3" organisation="LaitsV3" revision="1.0"/>
+    <info module="Laits" organisation="Laits" revision="1.0"/>
     <configurations>
         <conf name="compile"/>
         <conf name="runtime"/>
