@@ -7,7 +7,9 @@
       that is 100 meters tall and falls under the influence of gravity. NEWLINE NEWLINE
       For an object falling freely from rest, show that the distance  NEWLINE
       traveled during each successive second increases in the ratio of  NEWLINE
-      successive odd integers (1, 3, 5, etc.).
+      successive odd integers (1, 3, 5, etc.).  NEWLINE NEWLINE
+      Assume that acceleration due to gravity is 9.81 m/s&lt;sup&gt;2&lt;/sup&gt;. NEWLINE
+      Choose coordinates so that the top of the building is at zero.
   </TaskDescription>
   <URL/>
   <StartTime>0</StartTime>

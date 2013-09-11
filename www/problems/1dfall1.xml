@@ -6,7 +6,8 @@
       An object starts from a position of rest and falls from a building NEWLINE
       that is 100 meters tall and falls under the influence of gravity. NEWLINE NEWLINE
       Graph its velocity and position from 0 seconds to 5 seconds. Remember NEWLINE
-      that acceleration due to gravity is 9.81 m/second squared.
+      that acceleration due to gravity is 9.81 m/s&lt;sup&gt;2&lt;/sup&gt;. NEWLINE
+      Choose coordinates so that the top of the building is at zero.
   </TaskDescription>
   <URL/>
   <StartTime>0</StartTime>

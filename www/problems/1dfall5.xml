@@ -4,12 +4,13 @@
   <TaskName/>
   <TaskDescription>
       A stone is thrown vertically upward with a speed of 12.0 m/s from the NEWLINE
-      edge of a cliff 70.0m high. Graph its speed and the distance traveled NEWLINE
+      edge of a cliff 70.0 m high. Graph its speed and displacement NEWLINE
       from 0 seconds to 6 seconds. NEWLINE NEWLINE
       How much later does it reach the bottom of the cliff? What is its NEWLINE
       speed just before hitting? What total distance did it travel? NEWLINE NEWLINE
       Because the stone is moving against gravity we will set acceleration  NEWLINE
-      due to gravity at -9.81 m/second squared.
+      due to gravity at -9.81 m/ss&lt;sup&gt;2&lt;/sup&gt;. NEWLINE
+      Choose coordinates so that the bottom of the cliff is at zero.
   </TaskDescription>
   <URL/>
   <StartTime>0</StartTime>
@@ -43,7 +44,7 @@
     </Node>
     
     <Node type="stock" name="Distance" extra="no">
-      <CorrectDescription>The distance the falling object has traveled</CorrectDescription>
+      <CorrectDescription>The diplacement of the object</CorrectDescription>
       <Plan>said to increase</Plan>
       <Inputs>
         <Name>Speed</Name>
@@ -55,12 +56,11 @@
     
   </Nodes>
   
-  <DescriptionTree>
       <Node level="root">
-          <Description>The distance </Description>
+          <Description>The displacement </Description>
           <Node level="leaf">
-              <Description>the falling object has traveled</Description>
-              <NodeName>Distance</NodeName>
+              <Description>of the falling object</Description>
+              <NodeName>Displacement</NodeName>
           </Node>
       </Node>
       
