@@ -170,6 +170,7 @@
     </Node>
     
     <Node type="stock" name="widgets in stock" extra="no">
+        <Order>1</Order>
       <Inputs>
           <Name>widgets added</Name>
           <Name>widgets sold</Name>
