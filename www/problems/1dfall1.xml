@@ -3,10 +3,9 @@
 <Task phase="Intro" type="Construct">
     <TaskName/>
     <TaskDescription>
-        An object starts from a position of rest and falls from a building NEWLINE
-        that is 56 meters tall. NEWLINE NEWLINE
+        An object starts at rest and falls from a building that is 56 meters tall. NEWLINE NEWLINE
         Graph its velocity and position from 0 seconds to 4 seconds. NEWLINE
-        Remember that acceleration due to gravity is 9.81 m/s&lt;sup&gt;2&lt;/sup&gt;. NEWLINE
+        Use 9.81 m/s&lt;sup&gt;2&lt;/sup&gt; for the acceleration due to gravity. NEWLINE
         Choose coordinates so that the ground is at zero.
     </TaskDescription>
     <URL>images/Leaning_Tower_of_Pisa.jpg</URL>
