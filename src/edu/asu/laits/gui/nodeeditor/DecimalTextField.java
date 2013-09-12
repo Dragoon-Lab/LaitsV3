@@ -17,7 +17,7 @@ import javax.swing.JFormattedTextField;
 public class DecimalTextField extends JFormattedTextField {
 
     // after it was decided that a comma should be allowed as input, it was added to this list
-    private final static String goodChars = "0123456789.,\b"; //allowable input
+    private final static String goodChars = "0123456789.,-\b"; //allowable input
     
     //constructors- do the same thing as the parent class
     public DecimalTextField(){
@@ -60,6 +60,10 @@ public class DecimalTextField extends JFormattedTextField {
         }
         //if the character is a decimal, consume ONLY IF a decimal has already been entered.
         if (c == '.' && getText().indexOf(c) > -1)
+        {
+          ev.consume();
+          return;
+        } else if (c == '-' && getText().indexOf(c) > -1)
         {
           ev.consume();
           return;
