@@ -176,9 +176,6 @@ public class UserRegistration extends javax.swing.JDialog {
           ApplicationContext.setUserID(asuId);
           ApplicationContext.setAppMode(appMode);
 
-          // Update this User record in database
-          final String WEB = "http://laits.engineering.asu.edu/updateprob.php";
-
           try {
               ApplicationContext.setUserValid(true);
               this.dispose();

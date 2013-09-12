@@ -63,8 +63,8 @@ public class PlotPanel extends JXTaskPane {
         v.add(vertex);
         this.units = units;
 
-        if (ApplicationContext.getAppMode().equalsIgnoreCase("STUDENT") || 
-                ApplicationContext.getAppMode().equalsIgnoreCase("COACHED")) {
+        if (ApplicationContext.isStudentMode() || 
+                ApplicationContext.isCoachedMode()) {
             Vertex correctVertex = ApplicationContext.getCorrectSolution()
                     .getSolutionGraph().getVertexByName(vertex.getName());
             v.add(correctVertex);
@@ -115,7 +115,7 @@ public class PlotPanel extends JXTaskPane {
         legends[0] = "Your Graph";
         legends[1] = "Target Graph";
 
-        if (ApplicationContext.getAppMode().equalsIgnoreCase("AUTHOR")) {
+        if (ApplicationContext.isAuthorMode()) {
             legends[0] = "Author's Graph";
         }
         int legendIndex = 0;

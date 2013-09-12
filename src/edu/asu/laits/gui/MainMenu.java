@@ -76,7 +76,6 @@ public class MainMenu extends JMenuBar {
         return editMenu;
     }
 
-   
     /**
      * This method initializes viewMenu
      *
@@ -87,11 +86,10 @@ public class MainMenu extends JMenuBar {
         }
         return viewMenu;
     }
-    
+
     /**
-     *  This method initializes the ModelMenu
+     * This method initializes the ModelMenu
      */
-    
     public ModelMenu getModelMenu() {
         if (modelMenu == null) {
             modelMenu = new ModelMenu(graphPane, mainFrame);

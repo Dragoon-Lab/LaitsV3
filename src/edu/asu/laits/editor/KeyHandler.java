@@ -31,7 +31,7 @@ public class KeyHandler extends KeyAdapter {
     private static boolean startPress = false;
 
     /**
-     * Is called when a key is pressed in the asociated graph pane
+     * Is called when a key is pressed in the associated graph pane
      *
      * @see java.awt.event.KeyAdapter#keyReleased(java.awt.event.KeyEvent)
      */
@@ -39,7 +39,7 @@ public class KeyHandler extends KeyAdapter {
     public void keyReleased(KeyEvent e) {
 
         if ((e.getKeyCode() == KeyEvent.VK_DELETE
-                || e.getKeyCode() == KeyEvent.VK_BACK_SPACE) && !ApplicationContext.getAppMode().equalsIgnoreCase("COACHED")) {
+                || e.getKeyCode() == KeyEvent.VK_BACK_SPACE) && !ApplicationContext.isCoachedMode()) {
             /*
              * If it is the delete key the selected objects in the graph shall
              * be removed.

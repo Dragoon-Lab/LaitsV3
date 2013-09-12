@@ -15,15 +15,19 @@
  * You should have received a copy of the GNU Lesser General Public License
  * along with LAITS. If not, see <http://www.gnu.org/licenses/>.
  */
-
 package edu.asu.laits.model;
 
 import edu.asu.laits.editor.ApplicationContext;
+import edu.asu.laits.logger.HttpAppender;
+import edu.asu.laits.editor.GraphEditorPane;
+import edu.asu.laits.gui.menus.ModelMenu;
+import edu.asu.laits.model.LaitsSolutionExporter;
 import java.io.IOException;
 import java.io.UnsupportedEncodingException;
 import java.net.URLEncoder;
 import java.util.HashMap;
 import java.util.Map;
+import java.util.logging.Level;
 import org.apache.http.HttpResponse;
 import org.apache.http.HttpStatus;
 import org.apache.http.client.methods.HttpGet;
@@ -34,77 +38,59 @@ import org.apache.log4j.Logger;
  * Class responsible for writing student's working solution at the server
  * Student will be able to restore half finished models using same userid
  *
- * @author ramayantiwari
+ * @author ramayantiwari, brandonstrong
  */
 public class PersistenceManager implements Runnable {
 
-    
-    private static String URL = ApplicationContext.getRootURL().concat("/save_session.php?");
-    
     private GraphSaver graphSaver;
-    private Map<String, String> parameters = null;
-    
     private static Logger logs = Logger.getLogger("DevLogs");
-    private static Logger activityLogs = Logger.getLogger("ActivityLogs");
-    
+
     private PersistenceManager(GraphSaver gs) {
         graphSaver = gs;
     }
-    
-    public static void saveSession(){
+
+    public static void saveSession() {
         PersistenceManager persistanceManager = new PersistenceManager(new GraphSaver(ApplicationContext.getGraphEditorPane()));
-        
         Thread t = new Thread(persistanceManager);
         t.start();
     }
-    
+
     public void run() {
         int statusCode = 0;
 
+        HttpAppender sessionSaver = new HttpAppender();
+
         try {
-            DefaultHttpClient httpClient = new DefaultHttpClient();
-            //  Should use post method!  Bug #2106 
-            HttpGet httpMethod = new HttpGet(prepareHttpGetRequest());
-            HttpResponse response = httpClient.execute(httpMethod);
-            statusCode = response.getStatusLine().getStatusCode();
-
-            if (statusCode != HttpStatus.SC_OK) {
-                logs.error("Error Server URL " + httpMethod.getURI() + " return status code " + statusCode);
+            ModelMenu.updateGraph();
+            //if user is in AUTHOR mode save solution in server
+            if (ApplicationContext.isAuthorMode()) {
+                String sendSession = sessionSaver.saveGetSession("author_save", ApplicationContext.getRootURL().concat("/save_solution.php"),
+                        ApplicationContext.getUserID(), ApplicationContext.getSection(), ApplicationContext.getCurrentTaskID(),
+                        ModelMenu.graph, "0");
+                statusCode = Integer.parseInt(sendSession);
+                if (statusCode == 200) {
+                    logs.info("Successfully saved author's solution to server using " + ApplicationContext.getRootURL().concat("/save_solution.php"));
+                } else {
+                    logs.error("Error: URL " + ApplicationContext.getRootURL().concat("/save_solution.php")
+                            + " returned status code " + statusCode);
+                }
             }
-               
-            logs.info("Successfully Written Session to Server at "+httpMethod.getURI());
-        } catch (UnsupportedEncodingException ex) {
-            ex.printStackTrace();
-        } catch (IOException e) {
-            logs.error("Io error in sending request to server: returned: " + statusCode);
-        } 
-    }
+            //save current session in server (all modes, including author, so that user can restart session.
+            String sendSession = sessionSaver.saveGetSession("save", ApplicationContext.getRootURL().concat("/postvar.php"),
+                    ApplicationContext.getUserID(), ApplicationContext.getSection(), ApplicationContext.getCurrentTaskID(),
+                    URLEncoder.encode(graphSaver.getSerializedGraphInXML(), "UTF-8"), "");
+            statusCode = Integer.parseInt(sendSession);
 
-    
-    private String prepareHttpGetRequest() throws UnsupportedEncodingException {
-        StringBuilder sb = new StringBuilder(URL);
-
-        Map<String, String> map = prepareMessageMap();
-        for (Map.Entry<String, String> entry : map.entrySet()) {
-            sb.append(entry.getKey());
-            sb.append("=");
-            sb.append(entry.getValue());
-            sb.append("&");
+            if (statusCode == 200) {
+                logs.info("Successfully wrote session to server using " + ApplicationContext.getRootURL().concat("/postvar.php"));
+            } else {
+                logs.error("Error: URL " + ApplicationContext.getRootURL().concat("/postvar.php")
+                        + " returned status code " + statusCode);
+            }
+        } catch (Exception ex) {
+            java.util.logging.Logger.getLogger(PersistenceManager.class.getName()).log(Level.SEVERE, null, ex);
+            logs.error("Exception caught while attempting to write to server. File: PersistenceManager.java.");
+            logs.error("Error in sending request to server: returned: " + statusCode);
         }
-
-        sb.deleteCharAt(sb.length() - 1);
-        return sb.toString();
-    }
-
-    private Map<String, String> prepareMessageMap() throws UnsupportedEncodingException {
-        if (parameters == null) {
-            parameters = new HashMap<String, String>();
-            parameters.put("id", ApplicationContext.getUserID());
-            parameters.put("section", ApplicationContext.getSection());
-            parameters.put("problemNum", ApplicationContext.getCurrentTaskID());
-        }
-        parameters.put("saveData", URLEncoder.encode(graphSaver.getSerializedGraphInXML(), "UTF-8"));
-        
-        return parameters;
     }
 }

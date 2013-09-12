@@ -29,6 +29,7 @@ public class Task {
     private String taskDescription;
     private String imageURL;
     private int startTime, endTime;
+    private double timeStep;
     private String units;
     
     public Task(){
@@ -37,12 +38,14 @@ public class Task {
         imageURL = "";
         startTime = 0;
         endTime = 10;
+        timeStep = .1;
         units = "Days";
     }
     
-    public Task(int s, int e, String u){
+    public Task(int s, int e, double step, String u){
         this.startTime = s;
         this.endTime = e;
+        this.timeStep = step;
         this.units = u;
     }
     
@@ -60,6 +63,14 @@ public class Task {
     
     public void setEndTime(int s){
         endTime = s;
+    }
+    
+    public double getTimeStep(){
+        return timeStep;
+    }
+    
+    public void setTimeStep(double s){
+        timeStep = s;
     }
     
     public String getUnits(){

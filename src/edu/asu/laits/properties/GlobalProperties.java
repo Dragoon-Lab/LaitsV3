@@ -127,20 +127,20 @@ public class GlobalProperties {
      */
     private void createHelpSet(String helpSetName) {    
 
-        ClassLoader loader = this.getClass().getClassLoader();
-        URL url;
-        try {
-            url = HelpSet.findHelpSet(loader, helpSetName);
-            HelpSet helpSet = new HelpSet(loader, url);
-            
-            helpBroker = helpSet.createHelpBroker();
-            helpBroker.setSize(new Dimension(830, 680));     
-            helpBroker.setLocation(new Point(300,100));
-            
-        } catch (Exception e) {
-            e.printStackTrace();
-            return;
-        }
+//        ClassLoader loader = this.getClass().getClassLoader();
+//        URL url;
+//        try {
+//            url = HelpSet.findHelpSet(loader, helpSetName);
+//            HelpSet helpSet = new HelpSet(loader, url);
+//            
+//            helpBroker = helpSet.createHelpBroker();
+//            helpBroker.setSize(new Dimension(830, 680));     
+//            helpBroker.setLocation(new Point(300,100));
+//            
+//        } catch (Exception e) {
+//            e.printStackTrace();
+//            return;
+//        }
 
     }
 

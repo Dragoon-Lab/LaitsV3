@@ -33,7 +33,7 @@ public class Vertex {
     
     private String name = "";
     private String correctDescription = "";
-    private Plan plan = Plan.UNDEFINED;
+    private String plan = "";
     
     // Status of All the Tabs
     private DescriptionStatus descriptionStatus = DescriptionStatus.UNDEFINED;
@@ -100,11 +100,11 @@ public class Vertex {
         this.correctDescription = desc;
     }
     
-    public Plan getPlan(){
+    public String getPlan(){
         return plan;
     }
     
-    public void setPlan(Plan plan){
+    public void setPlan(String plan){
         this.plan = plan;
     }    
 
@@ -309,7 +309,7 @@ public class Vertex {
      * An enumeration with the possible Status of Inputs of a vertex
     */
     public enum PlanStatus{
-        UNDEFINED, CORRECT, INCORRECT, GAVEUP
+        UNDEFINED, MISSEDFIRST, CORRECT, INCORRECT, GAVEUP
     }
     
     /**

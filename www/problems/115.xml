@@ -1,41 +1,44 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<Task phase="Challenge" type="Whole">
+<Task phase="Challenge" type="Construct">
   <TaskName>Widget Stocking</TaskName>
   <URL>http://img.shopstyle.com/uim/y2010/d345/51/5135f69e005364825c125b1c914e468c.jpg</URL>
   
   <TaskDescription>
-      Problem: Shane and Shawn manage a widget store.  Shawn is the saleperson, and she is very good.  NEWLINE
-      However many widgets are in stock, she manages to sell 25% of them each week.  It's Shane's job to NEWLINE
-      make sure the number of widgets in stock is around 100, which means Shawn would sell about 25 NEWLINE
-      widgets a week.  However, while Shane was sick, the widget stock dropped to 25 widgets.  Although NEWLINE
-      the current widget deficit is 75, and Shawn wants him to order that many, Shane is conservative.  He NEWLINE
-      decides the number of widgets he will order and add to stock each week will be 30% of the deficit NEWLINE
-      each week until the deficit is gone. NEWLINE NEWLINE
+      Problem: Shane and Shaunna manage a widget store.  Shaunna is the NEWLINE
+      saleperson, and she is very good. However many widgets are in stock, NEWLINE
+      she manages to sell 25% of them each week.  It's Shane's job to make NEWLINE
+      sure the number of widgets in stock is around 100, which means NEWLINE
+      Shaunna would sell about 25 widgets a week.  However, while Shane was NEWLINE
+      sick, the widget stock dropped to 25 widgets.  Although the current NEWLINE
+      widget deficit is 75, and Shaunna wants him to order that many, Shane is NEWLINE
+      conservative. He decides the number of widgets he will order and add to NEWLINE
+      stock each week will be 30% of the deficit each week until the deficit is NEWLINE 
+      gone. NEWLINE NEWLINE
       Goal: Graph the number of widgets in stock for 20 weeks.
   </TaskDescription>
+  
   <ShortDescription>
-  The number of widgets in stock at the end of the week =
-\n     the number of widgets in stock at the end of the previous week 
-\n     + the number of widgets added to stock this week
-\n     - the number of widgets removed from stock this week.
-\n     Initially, the number of widgets in stock is 25.
-\nthe number of widgets removed from stock each week =
-\n     the proportion of the stock sold during the week
-\n     * the number of widget in stock at the beginning of the week.
-\nthe proportion of the stock sold during each week is given at 0.25.
-\nThe number of widgets added to stock each week =
-\n     the proportion of the stock deficit added each week
-\n     * the stock deficit this week.
-\nthe proportion of the stock deficit added each week is given at 0.3.
-\nthe stock deficit each week =
-\n     the number of widgets that should be in stock this week
-\n     - the number of widgets in stock this week
-\nthe number of widgets that should be in stock each week is given as 100.
-\nthe number of widgets that Shawn should sell a week is given as 25 (extra)
-\nthe number of widgets in the stock after Shane was sick is given as 25 (extra)
-\the number of widget deficit on the first week is given as 75 (extra)
-\the number of widget Shawn wants Shane to reorder on the first week is given as 75 (extra)
-
+        The number of widgets in stock at the end of the week =
+      \n     the number of widgets in stock at the end of the previous week 
+      \n     + the number of widgets added to stock this week
+      \n     - the number of widgets removed from stock this week.
+      \n     Initially, the number of widgets in stock is 25.
+      \nthe number of widgets removed from stock each week =
+      \n     the proportion of the stock sold during the week
+      \n     * the number of widget in stock at the beginning of the week.
+      \nthe proportion of the stock sold during each week is given at 0.25.
+      \nThe number of widgets added to stock each week =
+      \n     the proportion of the stock deficit added each week
+      \n     * the stock deficit this week.
+      \nthe proportion of the stock deficit added each week is given at 0.3.
+      \nthe stock deficit each week =
+      \n     the number of widgets that should be in stock this week
+      \n     - the number of widgets in stock this week
+      \nthe number of widgets that should be in stock each week is given as 100.
+      \nthe number of widgets that Shaunna should sell a week is given as 25 (extra)
+      \nthe number of widgets in the stock after Shane was sick is given as 25 (extra)
+      \the number of widget deficit on the first week is given as 75 (extra)
+      \the number of widget Shaunna wants Shane to reorder on the first week is given as 75 (extra)
 </ShortDescription>
 
   <StartTime>0</StartTime>
@@ -45,14 +48,14 @@
     <VertexLabel>widgets in stock</VertexLabel>
     <VertexLabel>widgets added</VertexLabel>
     <VertexLabel>widgets sold</VertexLabel>
-    <VertexLabel>proportion of stock sold</VertexLabel>
-    <VertexLabel>proportion of stock deficit added</VertexLabel>
+    <VertexLabel>proportion sold</VertexLabel>
+    <VertexLabel>deficit prop to order</VertexLabel>
     <VertexLabel>widget deficit</VertexLabel>
     <VertexLabel>target stock</VertexLabel>
     <VertexLabel>target sell</VertexLabel>
-    <VertexLabel>widgets in stock initially</VertexLabel>
-    <VertexLabel>widget deficit initially</VertexLabel>
-    <VertexLabel>widgets reordered intially</VertexLabel>
+    <VertexLabel>initial stock</VertexLabel>
+    <VertexLabel>initial deficit</VertexLabel>
+    <VertexLabel>initial reorder</VertexLabel>
   </Vertexes>
   
   <NodeCount>11</NodeCount>
@@ -64,11 +67,33 @@
     <Node type="constant" name="target stock" extra="no">
       <Inputs></Inputs>
       <Outputs>
-      	<Node name="widget deficit"></Node>
+          <Name>widget deficit</Name>
       </Outputs>
       <Equation>100</Equation>
       <InitialValue>100</InitialValue>
       <CorrectDescription>The number of widgets that should be in stock each week</CorrectDescription>
+      <Plan>fixed value</Plan>
+    </Node>
+    
+    <Node type="constant" name="proportion sold" extra="no">
+      <Inputs></Inputs>
+      <Outputs>
+          <Name>widgets sold</Name>
+      </Outputs>
+      <Equation>0.25</Equation>
+      <InitialValue>0.25</InitialValue>
+      <CorrectDescription>The proportion of the stock sold each week</CorrectDescription>
+      <Plan>fixed value</Plan>
+    </Node>
+    
+    <Node type="constant" name="deficit prop to order" extra="no">
+      <Inputs></Inputs>
+      <Outputs>
+          <Name>widgets added</Name>
+      </Outputs>
+      <Equation>0.3</Equation>
+      <InitialValue>0.3</InitialValue>
+      <CorrectDescription>The proportion of the stock deficit added each week</CorrectDescription>
       <Plan>fixed value</Plan>
     </Node>
     
@@ -77,42 +102,20 @@
       <Outputs></Outputs>
       <Equation>25</Equation>
       <InitialValue>25</InitialValue>
-      <CorrectDescription>The number of widgets that Shawn should sell each week</CorrectDescription>
+      <CorrectDescription>The number of widgets that Shaunna should sell each week</CorrectDescription>
       <Plan>fixed value</Plan>
     </Node>
     
-    <Node type="constant" name="proportion of stock sold" extra="no">
-      <Inputs></Inputs>
-      <Outputs>
-      	<Node name="widgets sold"></Node>
-      </Outputs>
-      <Equation>0.25</Equation>
-      <InitialValue>0.25</InitialValue>
-      <CorrectDescription>The proportion of the stock sold each week</CorrectDescription>
-      <Plan>fixed value</Plan>
-    </Node>
-    
-    <Node type="constant" name="proportion of stock deficit added" extra="no">
-      <Inputs></Inputs>
-      <Outputs>
-      	<Node name="widgets added"></Node>
-      </Outputs>
-      <Equation>0.3</Equation>
-      <InitialValue>0.3</InitialValue>
-      <CorrectDescription>The proportion of the stock deficit added each week</CorrectDescription>
-      <Plan>fixed value</Plan>
-    </Node>
-    
-	<Node type="constant" name="widgets reordered initially" extra="yes">
+    <Node type="constant" name="initial reorder" extra="yes">
       <Inputs></Inputs>
       <Outputs></Outputs>
       <Equation>75</Equation>
       <InitialValue>75</InitialValue>
-      <CorrectDescription>The number of widgets that Shawn wants Shane to reorder on the first week</CorrectDescription>
+      <CorrectDescription>The number of widgets that Shaunna wants Shane to reorder on the first week</CorrectDescription>
       <Plan>fixed value</Plan>
     </Node>
     
-    <Node type="constant" name="widgets in stock initially" extra="yes">
+    <Node type="constant" name="initial stock" extra="yes">
       <Inputs></Inputs>
       <Outputs></Outputs>
       <Equation>25</Equation>
@@ -121,7 +124,7 @@
       <Plan>fixed value</Plan>
     </Node>
     
-    <Node type="constant" name="widget deficit initially" extra="yes">
+    <Node type="constant" name="initial deficit" extra="yes">
       <Inputs></Inputs>
       <Outputs></Outputs>
       <Equation>75</Equation>
@@ -132,23 +135,23 @@
     
     <Node type="flow" name="widget deficit" extra="no">
       <Inputs>
-		<Node name="target stock"></Node>
-		<Node name="widgets in stock"></Node>
-	  </Inputs>
+          <Name>target stock</Name>
+          <Name>widgets in stock</Name>
+      </Inputs>
       <Outputs></Outputs>
-      <Equation>target_stock-widgets_in_stock</Equation>
+      <Equation>target stock-widgets in stock</Equation>
       <InitialValue></InitialValue>
       <CorrectDescription>The number of widget deficit each week</CorrectDescription>
-      <Plan>difference of two quantities</Plan>
+      <Plan>the difference of two quantities</Plan>
     </Node>
     
     <Node type="flow" name="widgets sold" extra="no">
       <Inputs>
-		<Node name="proportion of stock sold"></Node>
-        <Node name="widgets in stock"></Node>
-	  </Inputs>
+          <Name>proportion sold</Name>
+          <Name>widgets in stock</Name>
+      </Inputs>
       <Outputs></Outputs>
-      <Equation>proportion_of_stock_sold*widgets_in_stock</Equation>
+      <Equation>proportion sold*widgets in stock</Equation>
       <InitialValue></InitialValue>
       <CorrectDescription>The number of widgets removed from stock each week</CorrectDescription>
       <Plan>proportional to accumulator and input</Plan>
@@ -156,25 +159,26 @@
     
     <Node type="flow" name="widgets added" extra="no">
       <Inputs>
-		<Node name="proportion of stock deficit added"></Node>
-		<Node name="widget deficit"></Node>
-	  </Inputs>
+          <Name>deficit prop to order</Name>
+          <Name>widget deficit</Name>
+      </Inputs>
       <Outputs></Outputs>
-      <Equation>proportion_of_stock_deficit_added*widget_deficit</Equation>
+      <Equation>deficit prop to order*widget deficit</Equation>
       <InitialValue></InitialValue>
       <CorrectDescription>The number of widgets added to stock each week</CorrectDescription>
       <Plan>proportional to accumulator and input</Plan>
     </Node>
     
     <Node type="stock" name="widgets in stock" extra="no">
+        <Order>1</Order>
       <Inputs>
-        <Node name="widgets added" type="plus"></Node>
-        <Node name="widgets sold" type="minus"></Node>
-	  </Inputs>
+          <Name>widgets added</Name>
+          <Name>widgets sold</Name>
+      </Inputs>
       <Outputs>
-        <Node name="widgets sold"></Node>
+          <Name>widgets sold</Name>
 	  </Outputs>
-      <Equation>+widgets_added-widgets_sold</Equation>
+      <Equation>+widgets added-widgets sold</Equation>
       <InitialValue>25</InitialValue>
       <CorrectDescription>The number of widgets in the stock each week</CorrectDescription>
       <Plan>said to both increase and decrease</Plan>
@@ -188,66 +192,66 @@
         <Description>widgets added to stock</Description>            
         <Node level="leaf">
           <Description>each week</Description>
-          <NodeName>widgets_added</NodeName>
+          <NodeName>widgets added</NodeName>
         </Node>
         <Node level="leaf">
           <Description>initially</Description>
-          <NodeName>widgets_added_initially</NodeName>
+          <NodeName>widgets added initially</NodeName>
         </Node>
 	  </Node>
       <Node level="intermediate">
         <Description>widgets removed from stock</Description>            
         <Node level="leaf">
           <Description>each week</Description>
-          <NodeName>widgets_sold</NodeName>
+          <NodeName>widgets sold</NodeName>
         </Node>
         <Node level="leaf">
           <Description>initially</Description>
-          <NodeName>widgets_sold_initially</NodeName>
+          <NodeName>widgets sold initially</NodeName>
         </Node>
 	  </Node>
       <Node level="intermediate">
         <Description>widgets that should be in stock</Description>            
         <Node level="leaf">
           <Description>each week</Description>
-          <NodeName>target_stock</NodeName>
+          <NodeName>target stock</NodeName>
         </Node>
         <Node level="leaf">
           <Description>initially</Description>
-          <NodeName>target_stock_initially</NodeName>
+          <NodeName>target stock initially</NodeName>
         </Node>
 	  </Node>
       <Node level="intermediate">
-        <Description>widgets that Shawn</Description>            
+        <Description>widgets that Shaunna</Description>            
         <Node level="leaf">
           <Description>should sell each week</Description>
-          <NodeName>target_sell</NodeName>
+          <NodeName>target sell</NodeName>
         </Node>
         <Node level="leaf">
           <Description>wants Shane to reorder on the first week</Description>
-          <NodeName>widgets_reordered_initially</NodeName>
+          <NodeName>initial reorder</NodeName>
         </Node>
 	  </Node>
       <Node level="intermediate">
         <Description>widgets in the stock</Description>            
         <Node level="leaf">
           <Description>each week</Description>
-          <NodeName>widgets_in_stock</NodeName>
+          <NodeName>widgets in stock</NodeName>
         </Node>
         <Node level="leaf">
           <Description>after Shane was sick</Description>
-          <NodeName>widgets_in_stock_initially</NodeName>
+          <NodeName>initial stock</NodeName>
         </Node>
 	  </Node>
       <Node level="intermediate">
         <Description>widget deficit</Description>            
         <Node level="leaf">
           <Description>each week</Description>
-          <NodeName>widget_deficit</NodeName>
+          <NodeName>widget deficit</NodeName>
         </Node>
         <Node level="leaf">
           <Description>initially</Description>
-          <NodeName>widget_deficit_initially</NodeName>
+          <NodeName>initial deficit</NodeName>
         </Node>
 	  </Node>
     </Node>
@@ -257,22 +261,22 @@
         <Description>the stock sold</Description>            
         <Node level="leaf">
           <Description>each week</Description>
-          <NodeName>proportion_of_stock_sold</NodeName>
+          <NodeName>proportion sold</NodeName>
         </Node>
         <Node level="leaf">
           <Description>initially</Description>
-          <NodeName>proportion_of_stock_sold_initially</NodeName>
+          <NodeName>proportion of stock sold initially</NodeName>
         </Node>
 	  </Node>
       <Node level="intermediate">
         <Description>the stock deficit added</Description>            
         <Node level="leaf">
           <Description>each week</Description>
-          <NodeName>proportion_of_stock_deficit_added</NodeName>
+          <NodeName>deficit prop to order</NodeName>
         </Node>
         <Node level="leaf">
           <Description>initially</Description>
-          <NodeName>proportion_of_stock_deficit_initially</NodeName>
+          <NodeName>proportion of stock deficit initially</NodeName>
         </Node>
 	  </Node>
     </Node>
