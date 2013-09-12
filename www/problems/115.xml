@@ -4,13 +4,16 @@
   <URL>http://img.shopstyle.com/uim/y2010/d345/51/5135f69e005364825c125b1c914e468c.jpg</URL>
   
   <TaskDescription>
-      Problem: Shane and Shaunna manage a widget store.  Shaunna is the saleperson, and she is very good.  NEWLINE
-      However many widgets are in stock, she manages to sell 25% of them each week.  It's Shane's job to NEWLINE
-      make sure the number of widgets in stock is around 100, which means Shaunna would sell about 25 NEWLINE
-      widgets a week.  However, while Shane was sick, the widget stock dropped to 25 widgets.  Although NEWLINE
-      the current widget deficit is 75, and Shaunna wants him to order that many, Shane is conservative.  He NEWLINE
-      decides the number of widgets he will order and add to stock each week will be 30% of the deficit NEWLINE
-      each week until the deficit is gone. NEWLINE NEWLINE
+      Problem: Shane and Shaunna manage a widget store.  Shaunna is the NEWLINE
+      saleperson, and she is very good. However many widgets are in stock, NEWLINE
+      she manages to sell 25% of them each week.  It's Shane's job to make NEWLINE
+      sure the number of widgets in stock is around 100, which means NEWLINE
+      Shaunna would sell about 25 widgets a week.  However, while Shane was NEWLINE
+      sick, the widget stock dropped to 25 widgets.  Although the current NEWLINE
+      widget deficit is 75, and Shaunna wants him to order that many, Shane is NEWLINE
+      conservative. He decides the number of widgets he will order and add to NEWLINE
+      stock each week will be 30% of the deficit each week until the deficit is NEWLINE 
+      gone. NEWLINE NEWLINE
       Goal: Graph the number of widgets in stock for 20 weeks.
   </TaskDescription>
   
@@ -167,6 +170,7 @@
     </Node>
     
     <Node type="stock" name="widgets in stock" extra="no">
+        <Order>1</Order>
       <Inputs>
           <Name>widgets added</Name>
           <Name>widgets sold</Name>
@@ -225,7 +229,7 @@
         </Node>
         <Node level="leaf">
           <Description>wants Shane to reorder on the first week</Description>
-          <NodeName>widgets reordered initially</NodeName>
+          <NodeName>initial reorder</NodeName>
         </Node>
 	  </Node>
       <Node level="intermediate">

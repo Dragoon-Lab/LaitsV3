@@ -13,10 +13,10 @@
  * but WITHOUT ANY WARRANTY; without even the implied warranty of
  * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
  * GNU Lesser General Public License for more details.
-
+ 
  * You should have received a copy of the GNU Lesser General Public License
  * along with LAITS.  If not, see <http://www.gnu.org/licenses/>.
- * 
+ *
  */
 
 package edu.asu.laits.gui.nodeeditor;
@@ -79,14 +79,14 @@ public class NewNodeDescPanel extends JPanel{
     nodeEditor = ne;
     currentVertex = v;
     initPanel();
-    if(ApplicationContext.getAppMode().equalsIgnoreCase("COACHED")){
+    if(ApplicationContext.isCoachedMode()){
         addHelpBalloon(ApplicationContext.getFirstNextNode(), "onLoad", "InputNewNode");
   
     }
   }
   public void initPanel(){
-      if(ApplicationContext.getAppMode().equalsIgnoreCase("STUDENT") || 
-              ApplicationContext.getAppMode().equalsIgnoreCase("COACHED")){
+      if(ApplicationContext.isStudentMode() || 
+              ApplicationContext.isCoachedMode()){
           this.nodeNameTextField.setEditable(false);
           this.quantityDescriptionTextField.setEditable(false);
           initTree();
@@ -118,7 +118,7 @@ public class NewNodeDescPanel extends JPanel{
   @SuppressWarnings("unchecked")
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
     private void initComponents() {
-
+        
         buttonGroup1 = new javax.swing.ButtonGroup();
         contentPanel = new javax.swing.JPanel();
         jScrollPane2 = new javax.swing.JScrollPane();
@@ -129,9 +129,9 @@ public class NewNodeDescPanel extends JPanel{
         referencesLabel = new javax.swing.JLabel();
         nodeNameTextField = new javax.swing.JTextField();
         NodeNameLabel = new javax.swing.JLabel();
-
+        
         contentPanel.setLayout(new org.netbeans.lib.awtextra.AbsoluteLayout());
-
+        
         decisionTree.setFont(new java.awt.Font("Lucida Grande", 0, 18)); // NOI18N
         javax.swing.tree.DefaultMutableTreeNode treeNode1 = new javax.swing.tree.DefaultMutableTreeNode("root");
         javax.swing.tree.DefaultMutableTreeNode treeNode2 = new javax.swing.tree.DefaultMutableTreeNode("A count of");
@@ -187,13 +187,13 @@ public class NewNodeDescPanel extends JPanel{
             }
         });
         jScrollPane2.setViewportView(decisionTree);
-
+        
         contentPanel.add(jScrollPane2, new org.netbeans.lib.awtextra.AbsoluteConstraints(6, 28, 595, 285));
-
+        
         evenMorePreciseLabel.setFont(new java.awt.Font("Lucida Grande", 1, 13)); // NOI18N
         evenMorePreciseLabel.setText("Description Tree of the Problem");
         contentPanel.add(evenMorePreciseLabel, new org.netbeans.lib.awtextra.AbsoluteConstraints(6, 6, 363, -1));
-
+        
         quantityDescriptionTextField.setWrapStyleWord(true);
         quantityDescriptionTextField.setColumns(20);
         quantityDescriptionTextField.setFont(new java.awt.Font("Lucida Grande", 0, 18)); // NOI18N
@@ -202,34 +202,34 @@ public class NewNodeDescPanel extends JPanel{
         quantityDescriptionTextField.setDisabledTextColor(new java.awt.Color(102, 102, 102));
         quantityDescriptionTextField.setMargin(new java.awt.Insets(2, 3, 2, 3));
         jScrollPane1.setViewportView(quantityDescriptionTextField);
-
+        
         contentPanel.add(jScrollPane1, new org.netbeans.lib.awtextra.AbsoluteConstraints(6, 457, 595, -1));
-
+        
         referencesLabel.setFont(new java.awt.Font("Lucida Grande", 1, 13)); // NOI18N
         referencesLabel.setText("Precise description of the quantity:");
         contentPanel.add(referencesLabel, new org.netbeans.lib.awtextra.AbsoluteConstraints(6, 435, 572, -1));
-
+        
         nodeNameTextField.setDisabledTextColor(new java.awt.Color(102, 102, 102));
         contentPanel.add(nodeNameTextField, new org.netbeans.lib.awtextra.AbsoluteConstraints(105, 389, 496, -1));
-
+        
         NodeNameLabel.setFont(new java.awt.Font("Lucida Grande", 1, 13)); // NOI18N
         NodeNameLabel.setText("Node Name:");
         contentPanel.add(NodeNameLabel, new org.netbeans.lib.awtextra.AbsoluteConstraints(6, 395, -1, -1));
-
+        
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(this);
         this.setLayout(layout);
         layout.setHorizontalGroup(
-            layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(layout.createSequentialGroup()
-                .addComponent(contentPanel, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(0, 30, Short.MAX_VALUE))
-        );
+                                  layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                                  .addGroup(layout.createSequentialGroup()
+                                            .addComponent(contentPanel, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                            .addGap(0, 30, Short.MAX_VALUE))
+                                  );
         layout.setVerticalGroup(
-            layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addComponent(contentPanel, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-        );
+                                layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                                .addComponent(contentPanel, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                );
     }// </editor-fold>//GEN-END:initComponents
-
+    
     private void decisionTreeValueChanged(javax.swing.event.TreeSelectionEvent evt) {//GEN-FIRST:event_decisionTreeValueChanged
        resetTextFieldBackground();
        SolutionDTreeNode node = (SolutionDTreeNode) decisionTree.getLastSelectedPathComponent();
@@ -247,12 +247,12 @@ public class NewNodeDescPanel extends JPanel{
            this.quantityDescriptionTextField.setText(sb.toString().trim());
            this.nodeNameTextField.setText(node.getNodeName());
            this.repaint();
-        if(ApplicationContext.getAppMode().equalsIgnoreCase("COACHED") && ApplicationContext.getFirstNextNode() != null){
+        if(ApplicationContext.isCoachedMode() && ApplicationContext.getFirstNextNode() != null){
              addHelpBalloon(ApplicationContext.getFirstNextNode(), "descFilled", "InputNewNode");
        }
        }
        
-    }//GEN-LAST:event_decisionTreeValueChanged
+    }                                         
 
   // returns the value held by triedDuplicate
   public boolean getTriedDuplicate() {
@@ -349,7 +349,7 @@ public class NewNodeDescPanel extends JPanel{
       List<SolutionNode> correctNodeNames = solution.getSolutionNodes();
       
       String giveupNode = null;
-      if(ApplicationContext.getAppMode().equalsIgnoreCase("COACHED")){
+      if(ApplicationContext.isCoachedMode()){
           for(SolutionNode name : correctNodeNames){
              if(name.getNodeName().equalsIgnoreCase(ApplicationContext.getFirstNextNode())){
                   giveupNode = name.getNodeName();
@@ -423,7 +423,7 @@ public JComponent getLabel(String label){
 }
 
    private void addHelpBalloon(String name, String timing, String panel) {
-        if (ApplicationContext.getAppMode().equalsIgnoreCase("COACHED")) {
+        if (ApplicationContext.isCoachedMode()) {
            List<HelpBubble> bubbles = ApplicationContext.getHelp(name, panel, timing);
                 if(!bubbles.isEmpty()){
                     for(HelpBubble bubble : bubbles){ 
@@ -431,9 +431,13 @@ public JComponent getLabel(String label){
           //      new BlockingToolTip(this, bubble.getMessage(), dPanel.getLabel(bubble.getAttachedTo()), 0, 0);
             }
         }
-   }
-   }
+        }
 
+        
+    }//GEN-LAST:event_decisionTreeValueChanged
+    
+
+    
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JLabel NodeNameLabel;
     private javax.swing.ButtonGroup buttonGroup1;
@@ -446,8 +450,8 @@ public JComponent getLabel(String label){
     private javax.swing.JTextArea quantityDescriptionTextField;
     private javax.swing.JLabel referencesLabel;
     // End of variables declaration//GEN-END:variables
-
     
-  
+    
+    
 }
 

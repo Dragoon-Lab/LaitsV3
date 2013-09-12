@@ -47,7 +47,6 @@ public class FlowVertexRenderComponent extends VertexRenderComponent {
      * Logger
      */
     private static Logger logs = Logger.getLogger("DevLogs");
-    private static Logger activityLogs = Logger.getLogger("ActivityLogs");
 
     /**
      * @param defaultVertexRenderComponent
@@ -114,7 +113,6 @@ public class FlowVertexRenderComponent extends VertexRenderComponent {
     protected void paintComponent(Graphics g) {
         super.paintComponent(g);
         drawVertex(g);
-
     }
 
     public void drawVertex(Graphics g) {
@@ -159,7 +157,6 @@ public class FlowVertexRenderComponent extends VertexRenderComponent {
         int b = getHeight() / 2;
         int m = Math.min(a, b);
         int r = 4 * m / 5;
-        int r2 = Math.abs(m - r) / 2;
         g2.drawOval(a - r, b - r - 7, 2 * r, 2 * r);
         
         String vertexName = currentVertex.getName();

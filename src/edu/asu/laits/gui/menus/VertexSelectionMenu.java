@@ -22,7 +22,7 @@ import edu.asu.laits.editor.GraphEditorPane;
 import edu.asu.laits.editor.listeners.InsertModeChangeListener;
 import edu.asu.laits.gui.GraphViewPanel;
 import edu.asu.laits.gui.nodeeditor.GraphValuesDialog;
-import edu.asu.laits.gui.nodeeditor.NodeEditor;
+import edu.asu.laits.gui.nodeeditor.NodeEditorView;
 import edu.asu.laits.model.Vertex;
 import java.util.ArrayList;
 import javax.swing.JDialog;
@@ -62,7 +62,7 @@ public class VertexSelectionMenu extends JPopupMenu {
      */
     private void initialize() {
         add(getEditItem());
-        if(!ApplicationContext.getAppMode().equalsIgnoreCase("COACHED")){
+        if(!ApplicationContext.isCoachedMode()){
            add(getDeleteItem());    
         }
         add(getGraphDataItem());        
@@ -119,7 +119,7 @@ public class VertexSelectionMenu extends JPopupMenu {
                 public void actionPerformed(java.awt.event.ActionEvent e) {
                     DefaultGraphCell gc = (DefaultGraphCell) graphPane.getSelectionCell();
                     Vertex v = (Vertex) gc.getUserObject();
-                    new NodeEditor(graphPane, v);
+                    new NodeEditorView(graphPane, v);
                 }
             });
         }
