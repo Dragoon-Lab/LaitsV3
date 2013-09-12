@@ -31,12 +31,13 @@ public class GraphRangeEditor extends javax.swing.JDialog {
         this.editorPane = editorPane;
         this.graph = editorPane.getModelGraph();
         initComponents();
-        labelErrorFinal.setVisible(false);
+        labelErrorTimeStep.setVisible(false);
         labelErrorInitial.setVisible(false);
         try{
             //System.out.println("Initializing Range Editor "+ "Unit time : "+graph.getCurrentTask().getUnits());
             textIntialValue.setText(String.valueOf(graph.getCurrentTask().getStartTime()));
             textFinalValue.setText(String.valueOf(graph.getCurrentTask().getEndTime()));
+            textTimeStep.setText(String.valueOf(graph.getCurrentTask().getTimeStep()));
             comboUnits.setSelectedItem(graph.getCurrentTask().getUnits());
 
         }catch(Exception e){
@@ -64,6 +65,9 @@ public class GraphRangeEditor extends javax.swing.JDialog {
         comboUnits = new javax.swing.JComboBox();
         graphPanelHeading = new javax.swing.JLabel();
         labelErrorInitial = new javax.swing.JLabel();
+        labelErrorTimeStep = new javax.swing.JLabel();
+        labelFinalValue1 = new javax.swing.JLabel();
+        textTimeStep = new javax.swing.JTextField();
         labelErrorFinal = new javax.swing.JLabel();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.DISPOSE_ON_CLOSE);
@@ -135,10 +139,30 @@ public class GraphRangeEditor extends javax.swing.JDialog {
         labelErrorInitial.setText("Intial Value can not be empty !");
         labelErrorInitial.setFocusable(false);
 
+        labelErrorTimeStep.setFont(new java.awt.Font("Tahoma", 1, 11)); // NOI18N
+        labelErrorTimeStep.setForeground(new java.awt.Color(255, 0, 0));
+        labelErrorTimeStep.setHorizontalAlignment(javax.swing.SwingConstants.TRAILING);
+        labelErrorTimeStep.setText("Time Step can not be empty !");
+        labelErrorTimeStep.setFocusable(false);
+
+        labelFinalValue1.setFont(new java.awt.Font("Tahoma", 1, 11)); // NOI18N
+        labelFinalValue1.setText("Time Step");
+        labelFinalValue1.setFocusable(false);
+
+        textTimeStep.setHorizontalAlignment(javax.swing.JTextField.RIGHT);
+        textTimeStep.addFocusListener(new java.awt.event.FocusAdapter() {
+            public void focusGained(java.awt.event.FocusEvent evt) {
+                textTimeStepFocusGained(evt);
+            }
+            public void focusLost(java.awt.event.FocusEvent evt) {
+                textTimeStepFocusLost(evt);
+            }
+        });
+
         labelErrorFinal.setFont(new java.awt.Font("Tahoma", 1, 11)); // NOI18N
         labelErrorFinal.setForeground(new java.awt.Color(255, 0, 0));
         labelErrorFinal.setHorizontalAlignment(javax.swing.SwingConstants.TRAILING);
-        labelErrorFinal.setText("Final Value can not be empty !");
+        labelErrorFinal.setText("Time Step can not be empty !");
         labelErrorFinal.setFocusable(false);
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
@@ -150,33 +174,50 @@ public class GraphRangeEditor extends javax.swing.JDialog {
                     .addGroup(javax.swing.GroupLayout.Alignment.LEADING, layout.createSequentialGroup()
                         .addGap(73, 73, 73)
                         .addComponent(graphPanelHeading))
-                    .addGroup(javax.swing.GroupLayout.Alignment.LEADING, layout.createSequentialGroup()
-                        .addGap(49, 49, 49)
+                    .addGroup(layout.createSequentialGroup()
                         .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addComponent(labelUnits, javax.swing.GroupLayout.PREFERRED_SIZE, 80, javax.swing.GroupLayout.PREFERRED_SIZE)
-                            .addComponent(labelFinalValue, javax.swing.GroupLayout.PREFERRED_SIZE, 80, javax.swing.GroupLayout.PREFERRED_SIZE)
-                            .addComponent(labelIntialValue, javax.swing.GroupLayout.PREFERRED_SIZE, 80, javax.swing.GroupLayout.PREFERRED_SIZE))
-                        .addGap(29, 29, 29)
+                            .addGroup(layout.createSequentialGroup()
+                                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                                    .addGroup(layout.createSequentialGroup()
+                                        .addGap(49, 49, 49)
+                                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                                            .addComponent(labelFinalValue, javax.swing.GroupLayout.PREFERRED_SIZE, 80, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                            .addComponent(labelIntialValue, javax.swing.GroupLayout.PREFERRED_SIZE, 80, javax.swing.GroupLayout.PREFERRED_SIZE))
+                                        .addGap(29, 29, 29))
+                                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
+                                        .addGap(16, 16, 16)
+                                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
+                                            .addComponent(labelUnits, javax.swing.GroupLayout.PREFERRED_SIZE, 80, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                            .addComponent(buttonSave))
+                                        .addGap(18, 18, 18)))
+                                .addGap(0, 8, Short.MAX_VALUE))
+                            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
+                                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                                .addComponent(labelFinalValue1, javax.swing.GroupLayout.PREFERRED_SIZE, 80, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                .addGap(31, 31, 31)))
                         .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addComponent(textIntialValue, javax.swing.GroupLayout.DEFAULT_SIZE, 134, Short.MAX_VALUE)
-                            .addComponent(textFinalValue)
+                            .addComponent(textIntialValue)
                             .addGroup(layout.createSequentialGroup()
                                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                                     .addComponent(buttonCancel)
                                     .addComponent(comboUnits, javax.swing.GroupLayout.PREFERRED_SIZE, 112, javax.swing.GroupLayout.PREFERRED_SIZE))
-                                .addGap(0, 0, Short.MAX_VALUE)))))
-                .addGap(57, 57, 57))
+                                .addGap(0, 0, Short.MAX_VALUE))
+                            .addComponent(textTimeStep)
+                            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                                .addComponent(textFinalValue, javax.swing.GroupLayout.PREFERRED_SIZE, 130, javax.swing.GroupLayout.PREFERRED_SIZE))
+                            .addGroup(layout.createSequentialGroup()
+                                .addGap(6, 6, 6)
+                                .addComponent(labelErrorFinal, javax.swing.GroupLayout.DEFAULT_SIZE, 166, Short.MAX_VALUE)))))
+                .addGap(18, 18, 18))
             .addGroup(layout.createSequentialGroup()
                 .addGap(69, 69, 69)
                 .addComponent(labelErrorInitial, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                 .addContainerGap())
             .addGroup(layout.createSequentialGroup()
-                .addComponent(labelErrorFinal, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                .addGap(92, 92, 92)
+                .addComponent(labelErrorTimeStep, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                 .addContainerGap())
-            .addGroup(layout.createSequentialGroup()
-                .addGap(63, 63, 63)
-                .addComponent(buttonSave)
-                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -192,17 +233,23 @@ public class GraphRangeEditor extends javax.swing.JDialog {
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(labelFinalValue)
                     .addComponent(textFinalValue, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addGap(2, 2, 2)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(labelErrorFinal)
-                .addGap(2, 2, 2)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(labelUnits)
-                    .addComponent(comboUnits, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addGap(40, 40, 40)
+                    .addComponent(labelFinalValue1)
+                    .addComponent(textTimeStep, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addGap(6, 6, 6)
+                .addComponent(labelErrorTimeStep)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(buttonSave)
-                    .addComponent(buttonCancel))
-                .addContainerGap(47, Short.MAX_VALUE))
+                    .addComponent(comboUnits, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(labelUnits))
+                .addGap(15, 15, 15)
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(buttonCancel)
+                    .addComponent(buttonSave))
+                .addGap(18, 18, 18))
         );
 
         pack();
@@ -212,26 +259,32 @@ public class GraphRangeEditor extends javax.swing.JDialog {
         // Validating user input
         boolean isInputValid = true;
         labelErrorInitial.setVisible(false);
-        labelErrorFinal.setVisible(false);
+        labelErrorTimeStep.setVisible(false);
         if(textIntialValue.getText().isEmpty()){
             labelErrorInitial.setVisible(true);
             textIntialValue.requestFocus();
             isInputValid = false;
         }
         if(textFinalValue.getText().isEmpty()){
-            labelErrorFinal.setVisible(true);
+            labelErrorTimeStep.setVisible(true);
             textFinalValue.requestFocus();
+            isInputValid = false;
+        }
+        if(textTimeStep.getText().isEmpty()){
+            labelErrorTimeStep.setVisible(true);
+            textTimeStep.requestFocus();
             isInputValid = false;
         }
         if(isInputValid){
             // Saving User's input in the Server Task object
             int startTime = Integer.parseInt(textIntialValue.getText());
             int endTime = Integer.parseInt(textFinalValue.getText());
+            double timeStep = Double.parseDouble(textTimeStep.getText());
 
             //Checking if end time is less than start time
             if(endTime<startTime){
-                labelErrorFinal.setText("End Time can not be less than Start Time");
-                labelErrorFinal.setVisible(true);
+                labelErrorTimeStep.setText("End Time can not be less than Start Time");
+                labelErrorTimeStep.setVisible(true);
                 textFinalValue.requestFocus();
                 return;
             }
@@ -240,7 +293,8 @@ public class GraphRangeEditor extends javax.swing.JDialog {
             try{
                 graph.getCurrentTask().setStartTime(startTime);
                 graph.getCurrentTask().setEndTime(endTime);
-                graph.getCurrentTask().setUnits(units);
+                graph.getCurrentTask().setTimeStep(timeStep);
+               graph.getCurrentTask().setUnits(units);
                 
                 Iterator<Vertex> vertices = editorPane.getModelGraph().vertexSet().iterator();
                 while(vertices.hasNext()){
@@ -286,6 +340,14 @@ public class GraphRangeEditor extends javax.swing.JDialog {
         // TODO add your handling code here:
     }//GEN-LAST:event_comboUnitsActionPerformed
 
+    private void textTimeStepFocusGained(java.awt.event.FocusEvent evt) {//GEN-FIRST:event_textTimeStepFocusGained
+        // TODO add your handling code here:
+    }//GEN-LAST:event_textTimeStepFocusGained
+
+    private void textTimeStepFocusLost(java.awt.event.FocusEvent evt) {//GEN-FIRST:event_textTimeStepFocusLost
+        // TODO add your handling code here:
+    }//GEN-LAST:event_textTimeStepFocusLost
+
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton buttonCancel;
@@ -294,10 +356,13 @@ public class GraphRangeEditor extends javax.swing.JDialog {
     private javax.swing.JLabel graphPanelHeading;
     private javax.swing.JLabel labelErrorFinal;
     private javax.swing.JLabel labelErrorInitial;
+    private javax.swing.JLabel labelErrorTimeStep;
     private javax.swing.JLabel labelFinalValue;
+    private javax.swing.JLabel labelFinalValue1;
     private javax.swing.JLabel labelIntialValue;
     private javax.swing.JLabel labelUnits;
     private javax.swing.JTextField textFinalValue;
     private javax.swing.JTextField textIntialValue;
+    private javax.swing.JTextField textTimeStep;
     // End of variables declaration//GEN-END:variables
 }

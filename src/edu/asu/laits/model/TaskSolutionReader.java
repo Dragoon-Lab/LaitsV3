@@ -113,6 +113,7 @@ public class TaskSolutionReader {
         solution.setImageURL(rootNode.elementText("URL"));
         solution.setStartTime(Integer.parseInt(rootNode.elementTextTrim("StartTime")));
         solution.setEndTime(Integer.parseInt(rootNode.elementTextTrim("EndTime")));
+        solution.setTimeStep(Double.parseDouble(rootNode.elementTextTrim("TimeStep")));
         solution.setGraphUnits(rootNode.elementTextTrim("Units"));
         solution.setNodeCount(Integer.parseInt(rootNode.elementTextTrim("NodeCount")));
     }

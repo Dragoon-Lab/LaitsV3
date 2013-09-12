@@ -80,7 +80,8 @@ public class GraphViewPanel{
         JFormattedTextField sliderAmount;
         if(!ApplicationContext.isAuthorMode()){
             t = new Task(ApplicationContext.getCorrectSolution().getStartTime(), 
-                    ApplicationContext.getCorrectSolution().getEndTime(), 
+                    ApplicationContext.getCorrectSolution().getEndTime(),
+                    ApplicationContext.getCorrectSolution().getTimeStep(),
                     ApplicationContext.getCorrectSolution().getGraphUnits());
         }
         for(Vertex currentVertex : currentGraph.vertexSet()) {
@@ -108,6 +109,7 @@ public class GraphViewPanel{
         if(!ApplicationContext.isAuthorMode()){
             t = new Task(ApplicationContext.getCorrectSolution().getStartTime(), 
                     ApplicationContext.getCorrectSolution().getEndTime(), 
+                    ApplicationContext.getCorrectSolution().getTimeStep(),
                     ApplicationContext.getCorrectSolution().getGraphUnits());
         }
         for(Vertex currentVertex : currentGraph.vertexSet()){

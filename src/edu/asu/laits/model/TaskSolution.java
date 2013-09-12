@@ -42,6 +42,7 @@ public class TaskSolution {
     private String imageURL;
     private int startTime;
     private int endTime;
+    private double timeStep;
     private String graphUnits;
     private int nodeCount;
     private List<SolutionNode> solutionNodes;
@@ -196,6 +197,20 @@ public class TaskSolution {
      */
     public void setEndTime(int endTime) {
         this.endTime = endTime;
+    }
+
+        /**
+     * @return the timeStep
+     */
+    public double getTimeStep() {
+        return endTime;
+    }
+
+    /**
+     * @param timeStep the timeStep to set
+     */
+    public void setTimeStep(double timeStep) {
+        this.timeStep = timeStep;
     }
 
     /**

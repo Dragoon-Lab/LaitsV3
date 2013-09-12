@@ -44,6 +44,7 @@ public class ModelEvaluator {
     int constantVertices;
     int startTime;
     int endTime;
+    double timeStep;
     Map<String, List<String>> finalOperands;
     private static Logger logs = Logger.getLogger("DevLogs");
     private static Logger activityLogs = Logger.getLogger("ActivityLogs");
@@ -54,12 +55,15 @@ public class ModelEvaluator {
                 ApplicationContext.isCoachedMode()){
             startTime = ApplicationContext.getCorrectSolution().getStartTime();
             endTime = ApplicationContext.getCorrectSolution().getEndTime();
+            timeStep = ApplicationContext.getCorrectSolution().getTimeStep();
+  
             
             logs.debug("Getting Start Time and End Time from AppContext. "+
-                    startTime+"  "+endTime);            
+                    startTime+"  "+endTime+"  dt="+timeStep);            
         }else{
             startTime = currentGraph.getCurrentTask().getStartTime();
             endTime = currentGraph.getCurrentTask().getEndTime();
+            timeStep = currentGraph.getCurrentTask().getTimeStep();
         }
         finalOperands = new HashMap<String, List<String>>();
     }
@@ -132,7 +136,7 @@ public class ModelEvaluator {
         logs.debug("Arranged Vertex List "+vertexList.toString());
         Vertex currentVertex = null;
         try{
-            int totalPoints = endTime - startTime + 1;
+            int totalPoints = (int) ((endTime - startTime + 1)/timeStep);
             constructFinalEquations(vertexList);
             logs.debug("Final Operands   "+finalOperands.toString());
             logs.debug("Constant Vertices : "+constantVertices);
@@ -148,7 +152,6 @@ public class ModelEvaluator {
 
             // Calculating all the points from 1 to totalpoints-1
             for (int i = 1; i < totalPoints; i++) {
-
                 for (int j = constantVertices; j < vertexList.size(); j++) {
                     currentVertex = vertexList.get(j);
 
@@ -157,7 +160,7 @@ public class ModelEvaluator {
                     } else if (currentVertex.getVertexType().equals(Vertex.VertexType.FLOW)) {
                         currentVertex.getCorrectValues().add(calculateFlow(vertexList, currentVertex, i));
                     }
-                    
+                        
                     currentVertex.setGraphsStatus(Vertex.GraphsStatus.CORRECT);
                 }
             }
@@ -204,7 +207,7 @@ public class ModelEvaluator {
         List<Vertex> constantList = new ArrayList<Vertex>();
         List<Vertex> flowList = new ArrayList<Vertex>();
         List<Vertex> stockList = new ArrayList<Vertex>();
-        int totalPoints = endTime - startTime +1;
+        int totalPoints = (int) ((endTime - startTime +1)/timeStep);
 
         Iterator<Vertex> it = currentGraph.vertexSet().iterator();
         logs.debug("Total Vertex : "+currentGraph.vertexSet().size());
@@ -325,7 +328,7 @@ public class ModelEvaluator {
             eval.putVariable(name, value);
         }
 
-        double result = Double.valueOf(eval.evaluate()) + currentVertex.getCorrectValues().get(pointNumber - 1);
+        double result = timeStep*Double.valueOf(eval.evaluate()) + currentVertex.getCorrectValues().get(pointNumber - 1);
         return result;
     }
     
