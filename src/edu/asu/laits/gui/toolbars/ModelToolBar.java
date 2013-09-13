@@ -22,6 +22,7 @@ import edu.asu.laits.gui.menus.ModelMenu;
 import javax.swing.JToolBar;
 import javax.swing.JButton;
 import java.awt.Font;
+import java.awt.event.ActionEvent;
 import javax.swing.Box;
 import org.jgraph.graph.CellView;
 
@@ -39,6 +40,7 @@ public class ModelToolBar extends JToolBar {
     private JButton showForumButton = null;
     private JButton doneButton = null;
     private JButton showGraphButton = null;
+    private JButton showTableButton = null;
     private ModelMenu modelMenu;
 
     /**
@@ -71,6 +73,7 @@ public class ModelToolBar extends JToolBar {
             disableDeleteNodeButton();
         }
         add(Box.createHorizontalStrut(5)); 
+        add(getShowTableButton());
         //add(getShowForumButton());
     }
 
@@ -114,7 +117,28 @@ public class ModelToolBar extends JToolBar {
         return deleteNodeButton;
     }
 
-    
+    /*
+     * This method is used to get 'Show Table' button on
+     * model toolbar
+     */
+    private JButton getShowTableButton()
+    {
+      if(showTableButton == null)
+      {
+          showTableButton  = new JButton();
+          showTableButton.setText("Show Table");
+          showTableButton.setToolTipText("Display Tabular output");
+          showTableButton.setFont(new Font(showGraphButton.getFont().getName(),
+                                   Font.BOLD,
+                                   showGraphButton.getFont().getSize() - 1));
+          showTableButton.addActionListener(new java.awt.event.ActionListener() {
+              public void actionPerformed(ActionEvent e) {
+                 modelMenu.showNodeTable();
+              }
+          });
+      }
+        return showTableButton;
+    }
     /**
      * This method initializes Done Button on ToolBar
      */
