@@ -18,13 +18,9 @@
 package edu.asu.laits.model;
 
 import edu.asu.laits.editor.ApplicationContext;
-import edu.asu.laits.model.Vertex;
-import edu.asu.laits.model.Times;
 import java.awt.Color;
 import java.awt.Dimension;
 import java.awt.Font;
-import java.awt.Graphics2D;
-import java.awt.geom.Rectangle2D;
 import java.util.ArrayList;
 import java.util.List;
 import org.apache.log4j.Logger;
@@ -32,17 +28,10 @@ import org.jdesktop.swingx.JXTaskPane;
 import org.jfree.chart.ChartFactory;
 import org.jfree.chart.ChartPanel;
 import org.jfree.chart.JFreeChart;
-import org.jfree.chart.LegendItem;
 import org.jfree.chart.axis.NumberAxis;
-import org.jfree.chart.axis.NumberTickUnit;
-import org.jfree.chart.axis.ValueAxis;
-import org.jfree.chart.entity.EntityCollection;
-import org.jfree.chart.plot.CrosshairState;
 import org.jfree.chart.plot.PlotOrientation;
-import org.jfree.chart.plot.PlotRenderingInfo;
 import org.jfree.chart.plot.XYPlot;
 import org.jfree.chart.renderer.xy.XYItemRenderer;
-import org.jfree.chart.renderer.xy.XYItemRendererState;
 import org.jfree.chart.renderer.xy.XYLineAndShapeRenderer;
 import org.jfree.data.xy.XYDataset;
 import org.jfree.data.xy.XYSeries;
@@ -125,6 +114,9 @@ public class PlotPanel extends JXTaskPane {
             // Limit number of points that are plotted.
             double t=times.getStartTime();
             int di = (int) (times.getNumberSteps()/20);
+            if(di < 1){
+                di = 1;
+            }
             logs.info("Gathering plot data with step size="+di+" from "+
                     correctValues.size()+" data points.");
             
