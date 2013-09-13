@@ -96,6 +96,7 @@ public class GraphLoader {
         } catch (BaseException e) {
             // Could not read the XML file
             logs.debug(e.getMessage());
+            logs.debug(xmlString);
             throw new IncorcectGraphXMLFileException();
         }
         getGraph(graphFile, null);
