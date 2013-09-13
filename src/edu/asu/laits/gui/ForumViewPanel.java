@@ -6,7 +6,7 @@
 package edu.asu.laits.gui;
 
 import edu.asu.laits.editor.ApplicationContext;
-import edu.asu.laits.gui.nodeeditor.PlotPanel;
+import edu.asu.laits.model.PlotPanel;
 import edu.asu.laits.model.Edge;
 import edu.asu.laits.model.Graph;
 import edu.asu.laits.model.Task;

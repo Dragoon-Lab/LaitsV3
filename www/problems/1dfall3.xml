@@ -15,6 +15,7 @@
     <URL>images/Henninger_Turm-2005-05-01.jpg</URL>
   <StartTime>0</StartTime>
   <EndTime>5</EndTime>
+  <TimeStep>0.1</TimeStep>
   <Units>Seconds</Units>
   <NodeCount>3</NodeCount>
   <Nodes>
