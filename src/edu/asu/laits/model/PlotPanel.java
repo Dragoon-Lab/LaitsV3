@@ -15,15 +15,12 @@
  * You should have received a copy of the GNU Lesser General Public License
  * along with LAITS. If not, see <http://www.gnu.org/licenses/>.
  */
-package edu.asu.laits.gui.nodeeditor;
+package edu.asu.laits.model;
 
 import edu.asu.laits.editor.ApplicationContext;
-import edu.asu.laits.model.Vertex;
 import java.awt.Color;
 import java.awt.Dimension;
 import java.awt.Font;
-import java.awt.Graphics2D;
-import java.awt.geom.Rectangle2D;
 import java.util.ArrayList;
 import java.util.List;
 import org.apache.log4j.Logger;
@@ -31,17 +28,10 @@ import org.jdesktop.swingx.JXTaskPane;
 import org.jfree.chart.ChartFactory;
 import org.jfree.chart.ChartPanel;
 import org.jfree.chart.JFreeChart;
-import org.jfree.chart.LegendItem;
 import org.jfree.chart.axis.NumberAxis;
-import org.jfree.chart.axis.NumberTickUnit;
-import org.jfree.chart.axis.ValueAxis;
-import org.jfree.chart.entity.EntityCollection;
-import org.jfree.chart.plot.CrosshairState;
 import org.jfree.chart.plot.PlotOrientation;
-import org.jfree.chart.plot.PlotRenderingInfo;
 import org.jfree.chart.plot.XYPlot;
 import org.jfree.chart.renderer.xy.XYItemRenderer;
-import org.jfree.chart.renderer.xy.XYItemRendererState;
 import org.jfree.chart.renderer.xy.XYLineAndShapeRenderer;
 import org.jfree.data.xy.XYDataset;
 import org.jfree.data.xy.XYSeries;
@@ -56,9 +46,9 @@ public class PlotPanel extends JXTaskPane {
     private static Logger activityLogs = Logger.getLogger("ActivityLogs");
     private static Color transparent = new Color(0, 0, 0, 0);
 
-    public PlotPanel(Vertex vertex, int x0, String units) {
+    public PlotPanel(Vertex vertex, Times times, String units) {
         logs.info("Initializing Plot Panel. Vertex: "+vertex.getName()+
-                "  Initial Point: "+x0+" Units: "+units);
+                " Units: "+units);
         List<Vertex> v = new ArrayList<Vertex>();
         v.add(vertex);
         this.units = units;
@@ -71,20 +61,17 @@ public class PlotPanel extends JXTaskPane {
         }
 
         Dimension d = new Dimension(575, 190);
-        init(v, x0, d);
+        init(v, times, d);
     }
 
-    private void init(List<Vertex> vertices, int x0, Dimension d) {
+    private void init(List<Vertex> vertices, Times times, Dimension d) {
         this.setTitle(vertices.get(0).getName());
         this.setBackground(transparent);
         this.setOpaque(false);
 
-        XYDataset dataset = createSolutionDataset(vertices, x0);
-        double start = x0;
-        double end = vertices.get(0).getCorrectValues().size() + start - 1;
-        double tick = (end - start) / 20;
-        tick = Math.ceil(tick);
-        JFreeChart chart = createChart(dataset, vertices.get(0).getName(), start, end, tick);
+        XYDataset dataset = createSolutionDataset(vertices, times);
+        JFreeChart chart = createChart(dataset, vertices.get(0).getName(), 
+                times.getStartTime(), times.getEndTime());
         ChartPanel chartPanel = new ChartPanel(chart);
         chartPanel.setFillZoomRectangle(true);
         chartPanel.setMouseWheelEnabled(true);
@@ -108,7 +95,7 @@ public class PlotPanel extends JXTaskPane {
      * @param taskName
      * @return
      */
-    private XYDataset createSolutionDataset(List<Vertex> vertices, int x0) {
+    private XYDataset createSolutionDataset(List<Vertex> vertices, Times times) {
         logs.info("Creating Solution Dataset for PlotPanel");
         XYSeriesCollection dataset = new XYSeriesCollection();
         String legends[] = new String[2];
@@ -121,18 +108,21 @@ public class PlotPanel extends JXTaskPane {
         int legendIndex = 0;
 
         for (Vertex v : vertices) {
-            int start = x0;
             XYSeries series = new XYSeries(legends[legendIndex++]);
             List<Double> correctValues = v.getCorrectValues();
 
-
-            double end = correctValues.size() + start - 1;
-            double tick = (end - start) / 20;
-            tick = Math.ceil(tick);
+            // Limit number of points that are plotted.
+            double t=times.getStartTime();
+            int di = (int) (times.getNumberSteps()/20);
+            if(di < 1){
+                di = 1;
+            }
+            logs.info("Gathering plot data with step size="+di+" from "+
+                    correctValues.size()+" data points.");
             
-            for (int i = 0; i < correctValues.size(); i += tick) {
-                series.add(start, correctValues.get(i));
-                start += tick;
+            for (int i = 0; i < correctValues.size(); i += di) {
+                series.add(t, correctValues.get(i));
+                t += di*times.getTimeStep();
             }
 
             dataset.addSeries(series);
@@ -141,7 +131,8 @@ public class PlotPanel extends JXTaskPane {
         return dataset;
     }
 
-    private JFreeChart createChart(final XYDataset dataset, String vertex, double start, double end, double tick) {
+    private JFreeChart createChart(final XYDataset dataset, String vertex, 
+                                    double start, double end) {
 
         JFreeChart chart = ChartFactory.createXYLineChart(
                 vertex, // chart title
@@ -165,9 +156,15 @@ public class PlotPanel extends JXTaskPane {
         plot.setRangeCrosshairVisible(true);
 
         NumberAxis domain = (NumberAxis) plot.getDomainAxis();
+        // Don't want any padding on left or right.
         domain.setRange(start, end);
-        domain.setTickUnit(new NumberTickUnit(tick));
-        domain.setVerticalTickLabels(true);
+        // Rotate ticks if numbers are large (years, for instance)
+        if(Math.max(Math.abs(start),Math.abs(end))>1000){
+            domain.setVerticalTickLabels(true);
+            // We may have to adjust ticks spacing?
+            // double tick = Math.abs(end-start)/20;
+            // domain.setTickUnit(new NumberTickUnit(tick));
+        }
 
         XYItemRenderer r = plot.getRenderer();
         if (r instanceof XYLineAndShapeRenderer) {
