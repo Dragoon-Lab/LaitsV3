@@ -41,8 +41,6 @@ public class ModelEvaluator {
     Graph<Vertex, Edge> currentGraph;
     int constantVertices;
     Times times;
-    int startTime;
-    int endTime;
     double timeStep;
     List<Vertex> arrangedVertexList;
     Map<String, List<String>> finalOperands;
@@ -63,16 +61,6 @@ public class ModelEvaluator {
         finalOperands = new HashMap<String, List<String>>();
     }
 
-    /*
-     * interface for getting start and end time
-     */
-    public int getStartTime() {
-        return startTime;
-    }
-
-    public int getEndTime() {
-        return endTime;
-    }
 
     public int getConstantVertices() {
         return constantVertices;
@@ -82,7 +70,7 @@ public class ModelEvaluator {
         return arrangedVertexList;
     }
 
-    public Times getTimeStep() {
+    public Times getTimes() {
         return times;
     }
 
