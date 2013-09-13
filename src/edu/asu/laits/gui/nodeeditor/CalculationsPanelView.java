@@ -738,6 +738,10 @@ public class CalculationsPanelView extends javax.swing.JPanel {
         availableInputsJList.setEnabled(b);
         formulaInputArea.setEnabled(b);
         fixedValueInputBox.setEnabled(b);
+        buttonAdd.setEnabled(b);
+        buttonSubtract.setEnabled(b);
+        buttonMultiply.setEnabled(b);
+        buttonDivide.setEnabled(b);
         setCreateButtonEnabled();
     }
     
