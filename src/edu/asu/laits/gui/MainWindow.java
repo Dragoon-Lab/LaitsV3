@@ -85,6 +85,7 @@ public class MainWindow extends JFrame {
     public static MainWindow getInstance(){
         if(_instance == null){
             _instance = new MainWindow();
+            _instance.loadSession();
         }
         return _instance;
     }
@@ -106,7 +107,7 @@ public class MainWindow extends JFrame {
         if (!ApplicationContext.isAuthorMode()) {
             loadTask();
         }
-        loadSession();
+       // loadSession();
         setFrameTitle();
 
         GraphPropertiesChangeListener l = new MainGraphPropertiesChangeListener();
@@ -340,9 +341,7 @@ public class MainWindow extends JFrame {
             graphEditorPane.setAntiAliased(GlobalProperties.getInstance()
                     .isAntialiasing());
             graphEditorPane.setDoubleBuffered(GlobalProperties.getInstance()
-                    .isDoubleBuffering());      
-            ApplicationContext.setGraphEditorPane(graphEditorPane);
-
+                    .isDoubleBuffering());            
         }
         graphEditorPane.setBackgroundComponent(situationLabel);
         return graphEditorPane;
@@ -502,6 +501,7 @@ public class MainWindow extends JFrame {
     }
     
     public static void refreshGraph(){
+        getInstance().getGraphEditorPane().getLayoutCache().reload();
         getInstance().getGraphEditorPane().repaint();
         getInstance().validate();
         getInstance().repaint();

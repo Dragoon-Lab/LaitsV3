@@ -13,3 +13,10 @@ appear for parameters and for accumulators, so the initial value can be adjusted
 
 In the case where the limits have the same sign, should allow for the sliders to work on a 
 logarithmic scale.  In author mode, there should be a checkbox for this.
+
+For some nice sliders, see: 
+
+* [ScyDynamics](http://modeldrawing.eu/our-software/scydynamics/) or
+  [other site](http://www.scy-lab.eu/scysnippets/scydynamics/)
+* [PhET simulations](https://phet.colorado.edu), especially in 
+  [mechanics](https://phet.colorado.edu/en/simulations/category/physics/motion)

@@ -28,20 +28,18 @@ import java.util.List;
  * @author ramayantiwari
  */
 public class ApplicationContext {
-
-    private static String userId;
-    private static AppMode appMode;
-    private static String section;
-    private static String rootURL;
-    private static boolean isValid = false;
-    private static TaskSolution correctSolution;
-    private static String currentTaskID;
-    private static boolean isProblemSolved = false;
-    public static String taskLoaderURL;
-    private static int currentOrder = 1;
-    private static List<String> nextNodes = new ArrayList<String>();
-    private static boolean helpBubbles = false;
-    private static GraphEditorPane graphPane;
+  private static String userId;
+  private static AppMode appMode;
+  private static String section;
+  private static String rootURL;
+  private static boolean isValid = false;
+  private static TaskSolution correctSolution;
+  private static String currentTaskID;
+  private static boolean isProblemSolved = false;
+  public static String taskLoaderURL;
+  private static int currentOrder = 1;
+  private static List<String> nextNodes = new ArrayList<String>();
+  private static boolean helpBubbles = false;
 
     public static boolean isHelpBubbles() {
         return helpBubbles;
@@ -53,7 +51,7 @@ public class ApplicationContext {
         for (String childNode : childNodes) {
             System.out.println("checking " + childNode);
 
-            if (graphPane.getModelGraph().getVertexByName(childNode) == null) {
+            if (MainWindow.getInstance().getGraphEditorPane().getModelGraph().getVertexByName(childNode) == null) {
                 addNextNodes(childNode);
                 System.out.println("added " + childNode);
             }
@@ -203,13 +201,4 @@ public class ApplicationContext {
     public static AppMode getAppMode() {
         return appMode;
     }
-    
-  public static void setGraphEditorPane(GraphEditorPane gp){
-      graphPane = gp;
-  }
-  
-  public static GraphEditorPane getGraphEditorPane(){
-      return graphPane;
-  }
-  
 }

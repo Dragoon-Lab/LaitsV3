@@ -1,0 +1,86 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<Task phase="Intro" type="Construct">
+    <TaskName/>
+    <TaskDescription>
+        A weight is thrown vertically upward with a velocity of 8.5 m/s
+        from an initial height of 1.2 m. Graph NEWLINE
+        its velocity and height from 0 seconds to 3 seconds. NEWLINE NEWLINE
+        How fast is it moving when it reaches a height of 4.0m? How long is NEWLINE
+        required to reach this height? Explain why there are two answers.  NEWLINE NEWLINE
+        Use -9.81 m/s&lt;sup&gt;2&lt;/sup&gt; as the gravitational acceleration.
+    </TaskDescription>
+    <URL>images/weight-toss.jpg</URL>
+    <StartTime>0</StartTime>
+    <EndTime>3</EndTime>
+    <TimeStep>0.1</TimeStep>
+    <Units>Seconds</Units>
+    <NodeCount>3</NodeCount>
+    <Nodes>
+      
+        <Node type="constant" name="Acceleration" extra="no">
+            <CorrectDescription>The acceleration of the weight due to gravity</CorrectDescription>
+            <Plan>fixed value</Plan>
+            <Inputs/>
+            <Outputs>
+                <Name>Acceleration</Name>
+            </Outputs>
+            <Equation>-9.81</Equation>
+            <InitialValue>-9.81</InitialValue>
+        </Node>
+    
+        <Node type="stock" name="Velocity" extra="no">
+            <CorrectDescription>The velocity of the weight</CorrectDescription>
+            <Plan>said to increase</Plan>
+            <Inputs>
+                <Name>Acceleration</Name>
+            </Inputs>
+            <Outputs>
+                <Name>Acceleration</Name>
+            </Outputs>
+            <Equation>Acceleration</Equation>
+            <InitialValue>8.5</InitialValue>
+        </Node>
+    
+        <Node type="stock" name="Height" extra="no">
+            <Order>1</Order>
+            <CorrectDescription>The height of the weight</CorrectDescription>
+            <Plan>said to increase</Plan>
+            <Inputs>
+                <Name>Velocity</Name>
+            </Inputs>
+            <Outputs/>
+            <Equation>Velocity</Equation>
+            <InitialValue>1.2</InitialValue>
+        </Node>
+    
+    </Nodes>
+  
+    <DescriptionTree>
+        <Node level="root">
+            <Description>The height </Description>
+            <Node level="leaf">
+                <Description>of the the weight</Description>
+                <NodeName>Height</NodeName>
+            </Node>
+        </Node>
+      
+        <Node level="root">
+            <Description>The velocity </Description>
+            <Node level="leaf">
+                <Description>of the weight</Description>
+                <NodeName>Velocity</NodeName>
+            </Node>          
+        </Node>
+      
+        <Node level="root">
+            <Description>The acceleration </Description>
+            <Node level="leaf">
+                <Description>of the weight due to gravity</Description>
+                <NodeName>Acceleration</NodeName>
+            </Node>
+        </Node>
+      
+      
+    </DescriptionTree>
+</Task>

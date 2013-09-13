@@ -13,6 +13,7 @@
   </Properties>
   <SyntheticProperties>
     <SyntheticProperty name="formSizePolicy" type="int" value="1"/>
+    <SyntheticProperty name="generateCenter" type="boolean" value="false"/>
   </SyntheticProperties>
   <AuxValues>
     <AuxValue name="FormSettings_autoResourcing" type="java.lang.Integer" value="0"/>
@@ -35,28 +36,57 @@
                       <EmptySpace min="-2" pref="73" max="-2" attributes="0"/>
                       <Component id="graphPanelHeading" min="-2" max="-2" attributes="0"/>
                   </Group>
-                  <Group type="102" alignment="0" attributes="0">
-                      <EmptySpace min="-2" pref="49" max="-2" attributes="0"/>
+                  <Group type="102" attributes="0">
                       <Group type="103" groupAlignment="0" attributes="0">
-                          <Component id="labelUnits" alignment="0" min="-2" pref="80" max="-2" attributes="0"/>
-                          <Component id="labelFinalValue" alignment="0" min="-2" pref="80" max="-2" attributes="0"/>
-                          <Component id="labelIntialValue" alignment="0" min="-2" pref="80" max="-2" attributes="0"/>
+                          <Group type="102" alignment="0" attributes="0">
+                              <Group type="103" groupAlignment="0" attributes="0">
+                                  <Group type="102" attributes="0">
+                                      <EmptySpace min="-2" pref="49" max="-2" attributes="0"/>
+                                      <Group type="103" groupAlignment="0" attributes="0">
+                                          <Component id="labelFinalValue" alignment="0" min="-2" pref="80" max="-2" attributes="0"/>
+                                          <Component id="labelIntialValue" alignment="0" min="-2" pref="80" max="-2" attributes="0"/>
+                                      </Group>
+                                      <EmptySpace min="-2" pref="29" max="-2" attributes="0"/>
+                                  </Group>
+                                  <Group type="102" alignment="1" attributes="0">
+                                      <EmptySpace min="-2" pref="16" max="-2" attributes="0"/>
+                                      <Group type="103" groupAlignment="1" attributes="0">
+                                          <Component id="labelUnits" min="-2" pref="80" max="-2" attributes="0"/>
+                                          <Component id="buttonSave" min="-2" max="-2" attributes="0"/>
+                                      </Group>
+                                      <EmptySpace type="separate" max="-2" attributes="0"/>
+                                  </Group>
+                              </Group>
+                              <EmptySpace min="0" pref="8" max="32767" attributes="0"/>
+                          </Group>
+                          <Group type="102" alignment="1" attributes="0">
+                              <EmptySpace max="32767" attributes="0"/>
+                              <Component id="labelFinalValue1" min="-2" pref="80" max="-2" attributes="0"/>
+                              <EmptySpace min="-2" pref="31" max="-2" attributes="0"/>
+                          </Group>
                       </Group>
-                      <EmptySpace min="-2" pref="29" max="-2" attributes="0"/>
                       <Group type="103" groupAlignment="0" attributes="0">
-                          <Component id="textIntialValue" alignment="0" pref="134" max="32767" attributes="0"/>
-                          <Component id="textFinalValue" alignment="0" max="32767" attributes="0"/>
+                          <Component id="textIntialValue" alignment="0" max="32767" attributes="0"/>
                           <Group type="102" attributes="0">
                               <Group type="103" groupAlignment="0" attributes="0">
                                   <Component id="buttonCancel" alignment="0" min="-2" max="-2" attributes="0"/>
-                                  <Component id="comboUnits" alignment="0" min="-2" pref="112" max="-2" attributes="0"/>
+                                  <Component id="comboUnits" min="-2" pref="112" max="-2" attributes="0"/>
                               </Group>
                               <EmptySpace min="0" pref="0" max="32767" attributes="0"/>
+                          </Group>
+                          <Component id="textTimeStep" max="32767" attributes="0"/>
+                          <Group type="102" alignment="1" attributes="0">
+                              <EmptySpace max="32767" attributes="0"/>
+                              <Component id="textFinalValue" min="-2" pref="130" max="-2" attributes="0"/>
+                          </Group>
+                          <Group type="102" alignment="0" attributes="0">
+                              <EmptySpace min="-2" pref="6" max="-2" attributes="0"/>
+                              <Component id="labelErrorFinal" pref="166" max="32767" attributes="0"/>
                           </Group>
                       </Group>
                   </Group>
               </Group>
-              <EmptySpace min="-2" pref="57" max="-2" attributes="0"/>
+              <EmptySpace min="-2" pref="18" max="-2" attributes="0"/>
           </Group>
           <Group type="102" alignment="0" attributes="0">
               <EmptySpace min="69" pref="69" max="69" attributes="0"/>
@@ -64,13 +94,9 @@
               <EmptySpace max="-2" attributes="0"/>
           </Group>
           <Group type="102" alignment="0" attributes="0">
-              <Component id="labelErrorFinal" max="32767" attributes="0"/>
+              <EmptySpace min="-2" pref="92" max="-2" attributes="0"/>
+              <Component id="labelErrorTimeStep" max="32767" attributes="0"/>
               <EmptySpace max="-2" attributes="0"/>
-          </Group>
-          <Group type="102" alignment="0" attributes="0">
-              <EmptySpace min="-2" pref="63" max="-2" attributes="0"/>
-              <Component id="buttonSave" min="-2" max="-2" attributes="0"/>
-              <EmptySpace max="32767" attributes="0"/>
           </Group>
       </Group>
     </DimensionLayout>
@@ -90,19 +116,26 @@
                   <Component id="labelFinalValue" alignment="3" min="-2" max="-2" attributes="0"/>
                   <Component id="textFinalValue" alignment="3" min="-2" max="-2" attributes="0"/>
               </Group>
-              <EmptySpace min="-2" pref="2" max="-2" attributes="0"/>
+              <EmptySpace max="-2" attributes="0"/>
               <Component id="labelErrorFinal" min="-2" max="-2" attributes="0"/>
-              <EmptySpace min="-2" pref="2" max="-2" attributes="0"/>
+              <EmptySpace max="32767" attributes="0"/>
               <Group type="103" groupAlignment="3" attributes="0">
-                  <Component id="labelUnits" alignment="3" min="-2" max="-2" attributes="0"/>
+                  <Component id="labelFinalValue1" alignment="3" min="-2" max="-2" attributes="0"/>
+                  <Component id="textTimeStep" alignment="3" min="-2" max="-2" attributes="0"/>
+              </Group>
+              <EmptySpace min="-2" pref="6" max="-2" attributes="0"/>
+              <Component id="labelErrorTimeStep" min="-2" max="-2" attributes="0"/>
+              <EmptySpace max="-2" attributes="0"/>
+              <Group type="103" groupAlignment="3" attributes="0">
                   <Component id="comboUnits" alignment="3" min="-2" max="-2" attributes="0"/>
+                  <Component id="labelUnits" alignment="3" min="-2" max="-2" attributes="0"/>
               </Group>
-              <EmptySpace min="-2" pref="40" max="-2" attributes="0"/>
+              <EmptySpace min="-2" pref="15" max="-2" attributes="0"/>
               <Group type="103" groupAlignment="3" attributes="0">
-                  <Component id="buttonSave" alignment="3" min="-2" max="-2" attributes="0"/>
                   <Component id="buttonCancel" alignment="3" min="-2" max="-2" attributes="0"/>
+                  <Component id="buttonSave" alignment="3" min="-2" max="-2" attributes="0"/>
               </Group>
-              <EmptySpace pref="47" max="32767" attributes="0"/>
+              <EmptySpace min="-2" pref="18" max="-2" attributes="0"/>
           </Group>
       </Group>
     </DimensionLayout>
@@ -206,6 +239,37 @@
         <Property name="focusable" type="boolean" value="false"/>
       </Properties>
     </Component>
+    <Component class="javax.swing.JLabel" name="labelErrorTimeStep">
+      <Properties>
+        <Property name="font" type="java.awt.Font" editor="org.netbeans.beaninfo.editors.FontEditor">
+          <Font name="Tahoma" size="11" style="1"/>
+        </Property>
+        <Property name="foreground" type="java.awt.Color" editor="org.netbeans.beaninfo.editors.ColorEditor">
+          <Color blue="0" green="0" red="ff" type="rgb"/>
+        </Property>
+        <Property name="horizontalAlignment" type="int" value="11"/>
+        <Property name="text" type="java.lang.String" value="Time Step can not be empty !"/>
+        <Property name="focusable" type="boolean" value="false"/>
+      </Properties>
+    </Component>
+    <Component class="javax.swing.JLabel" name="labelFinalValue1">
+      <Properties>
+        <Property name="font" type="java.awt.Font" editor="org.netbeans.beaninfo.editors.FontEditor">
+          <Font name="Tahoma" size="11" style="1"/>
+        </Property>
+        <Property name="text" type="java.lang.String" value="Time Step"/>
+        <Property name="focusable" type="boolean" value="false"/>
+      </Properties>
+    </Component>
+    <Component class="javax.swing.JTextField" name="textTimeStep">
+      <Properties>
+        <Property name="horizontalAlignment" type="int" value="4"/>
+      </Properties>
+      <Events>
+        <EventHandler event="focusGained" listener="java.awt.event.FocusListener" parameters="java.awt.event.FocusEvent" handler="textTimeStepFocusGained"/>
+        <EventHandler event="focusLost" listener="java.awt.event.FocusListener" parameters="java.awt.event.FocusEvent" handler="textTimeStepFocusLost"/>
+      </Events>
+    </Component>
     <Component class="javax.swing.JLabel" name="labelErrorFinal">
       <Properties>
         <Property name="font" type="java.awt.Font" editor="org.netbeans.beaninfo.editors.FontEditor">
@@ -215,7 +279,7 @@
           <Color blue="0" green="0" red="ff" type="rgb"/>
         </Property>
         <Property name="horizontalAlignment" type="int" value="11"/>
-        <Property name="text" type="java.lang.String" value="Final Value can not be empty !"/>
+        <Property name="text" type="java.lang.String" value="Time Step can not be empty !"/>
         <Property name="focusable" type="boolean" value="false"/>
       </Properties>
     </Component>

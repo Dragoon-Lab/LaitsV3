@@ -96,6 +96,7 @@ public class GraphLoader {
         } catch (BaseException e) {
             // Could not read the XML file
             logs.debug(e.getMessage());
+            logs.debug(xmlString);
             throw new IncorcectGraphXMLFileException();
         }
         getGraph(graphFile, null);
@@ -115,6 +116,7 @@ public class GraphLoader {
                 System.out.println("Added " + vertex.getName() + "  "+vertex.getVertexIndex());
                 vertexHash.put(vertex.getVertexIndex(), vertex);
                 logs.debug("removing from next nodes  " + vertex.getName() + "  "+vertex.getVertexIndex());
+                if(!ApplicationContext.isAuthorMode())
                 ApplicationContext.setNextNodes(vertex.getName());
             }
             catch (Exception e){

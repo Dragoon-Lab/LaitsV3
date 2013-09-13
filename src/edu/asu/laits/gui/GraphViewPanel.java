@@ -22,7 +22,7 @@
 package edu.asu.laits.gui;
 
 import edu.asu.laits.editor.ApplicationContext;
-import edu.asu.laits.gui.nodeeditor.PlotPanel;
+import edu.asu.laits.model.PlotPanel;
 import edu.asu.laits.model.Edge;
 import edu.asu.laits.model.Graph;
 import edu.asu.laits.model.Task;
@@ -70,7 +70,7 @@ public class GraphViewPanel{
         chartContainer = new JXTaskPaneContainer();
         
         addCharts();
-        addSliders();
+      //  addSliders();
     }
     
     private void addSliders() {
@@ -79,9 +79,8 @@ public class GraphViewPanel{
         JLabel sliderLabel;
         JFormattedTextField sliderAmount;
         if(!ApplicationContext.isAuthorMode()){
-            t = new Task(ApplicationContext.getCorrectSolution().getStartTime(), 
-                    ApplicationContext.getCorrectSolution().getEndTime(), 
-                    ApplicationContext.getCorrectSolution().getGraphUnits());
+            t = new Task(ApplicationContext.getCorrectSolution().getTimes(),
+                         ApplicationContext.getCorrectSolution().getGraphUnits());
         }
         for(Vertex currentVertex : currentGraph.vertexSet()) {
             if(currentVertex.getVertexType().equals(Vertex.VertexType.CONSTANT)) {
@@ -106,9 +105,8 @@ public class GraphViewPanel{
     private void addCharts(){
         Task t = null;
         if(!ApplicationContext.isAuthorMode()){
-            t = new Task(ApplicationContext.getCorrectSolution().getStartTime(), 
-                    ApplicationContext.getCorrectSolution().getEndTime(), 
-                    ApplicationContext.getCorrectSolution().getGraphUnits());
+            t = new Task(ApplicationContext.getCorrectSolution().getTimes(),
+                         ApplicationContext.getCorrectSolution().getGraphUnits());
         }
         for(Vertex currentVertex : currentGraph.vertexSet()){
             System.out.println("Attempting to add chart for " + currentVertex.getName());
@@ -123,10 +121,10 @@ public class GraphViewPanel{
     private JXTaskPane addChart(Vertex vertex, Task task){
         PlotPanel plotPanel = null;
         if(task == null){
-            plotPanel = new PlotPanel(vertex, currentGraph.getCurrentTask().getStartTime(), 
+            plotPanel = new PlotPanel(vertex, currentGraph.getCurrentTask().getTimes(), 
                     currentGraph.getCurrentTask().getUnits());
         }else if(!vertex.getVertexType().equals(Vertex.VertexType.CONSTANT)){
-             plotPanel = new PlotPanel(vertex, task.getStartTime(), task.getUnits()); 
+             plotPanel = new PlotPanel(vertex, task.getTimes(), task.getUnits()); 
         }
         return plotPanel;
     }
@@ -146,7 +144,7 @@ public class GraphViewPanel{
         }
         
         for(Vertex v : vertices){
-            plotPanel = new PlotPanel(v, currentGraph.getCurrentTask().getStartTime(), currentGraph.getCurrentTask().getUnits());
+            plotPanel = new PlotPanel(v, currentGraph.getCurrentTask().getTimes(), currentGraph.getCurrentTask().getUnits());
             chartContainer.add(plotPanel);
             map.put(plotPanel, v);
         }

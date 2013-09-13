@@ -59,6 +59,55 @@ public class AuthorModeNodeEditorController extends NodeEditorController{
     public int processTabChange(int oldTab, int newTab){
         logs.info("Processing Tab Change - Old "+oldTab+" New "+newTab);
         // Process Old Tab to store info in Vertex - Plan Panel info is updated at change event
+        int targetTab = oldTab;
+        
+        if(oldTab == NodeEditorView.DESCRIPTION){
+            if(view.getDescriptionPanel().processDescriptionPanel()){
+                openVertex.setDescriptionStatus(Vertex.DescriptionStatus.CORRECT);
+                targetTab = newTab;
+            }else{
+                openVertex.setDescriptionStatus(Vertex.DescriptionStatus.UNDEFINED);
+                targetTab = oldTab;
+            }
+        }else if(oldTab == NodeEditorView.PLAN && newTab == NodeEditorView.CALCULATIONS){
+            if(view.getPlanPanel().processPlanPanel()){
+                openVertex.setPlanStatus(Vertex.PlanStatus.CORRECT);
+                targetTab = newTab;
+            }else{
+                openVertex.setPlanStatus(Vertex.PlanStatus.UNDEFINED);
+                targetTab = oldTab;
+            }
+        }
+        else if(oldTab == NodeEditorView.CALCULATIONS){
+            if(view.getCalculationsPanel().processCalculationsPanel()){
+                openVertex.setCalculationsStatus(Vertex.CalculationsStatus.CORRECT);
+            }else{
+                openVertex.setCalculationsStatus(Vertex.CalculationsStatus.UNDEFINED);
+            }
+            targetTab = newTab;
+        }
+        
+        // Reflect changes in graph to UI
+        MainWindow.refreshGraph();
+        
+        // Prepare New Tab if it's initilization is dependent on old tab
+        if(newTab == NodeEditorView.CALCULATIONS){
+            view.getCalculationsPanel().initPanel();
+        }
+        
+        return targetTab;
+    }
+    
+    /**
+     * Handle Tab Change event for Author Mode. 
+     * New Tab needs to be initialized as per the input from previous tab
+     * @param oldTab
+     * @param newTab
+     * @return : New Tab Index
+     */
+    public int processTabChange(int oldTab, int newTab){
+        logs.info("Processing Tab Change - Old "+oldTab+" New "+newTab);
+        // Process Old Tab to store info in Vertex - Plan Panel info is updated at change event
         if(oldTab == NodeEditorView.DESCRIPTION){
             if(view.getDescriptionPanel().processDescriptionPanel()){
                 openVertex.setDescriptionStatus(Vertex.DescriptionStatus.CORRECT);
@@ -119,5 +168,12 @@ public class AuthorModeNodeEditorController extends NodeEditorController{
     
     public void initOnLoadBalloonTip(){
     
+    }
+    
+    public String  demoDescriptionPanel(){
+        return null;
+    }
+    
+    public void planPanelRadioClicked(){
     }
 }

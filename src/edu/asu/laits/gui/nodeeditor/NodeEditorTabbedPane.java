@@ -38,7 +38,12 @@ public class NodeEditorTabbedPane extends JTabbedPane {
     public void setSelectedIndex(int newIndex) {
         int currentIndex = getSelectedIndex();
         logs.info("Current Index "+currentIndex+" New Index:"+newIndex);
-        if(newIndex >= 0 && newIndex <= MAX_TAB_INDEX){
+        
+        // If Old Index was not initialized return 0 as New Tab
+        if(currentIndex == -1)
+            super.setSelectedIndex(0);
+        
+        else if(newIndex >= 0 && newIndex <= MAX_TAB_INDEX){
             if(currentIndex != newIndex){
                 int res = _controller.processTabChange(currentIndex, newIndex);
                 super.setSelectedIndex(res);
