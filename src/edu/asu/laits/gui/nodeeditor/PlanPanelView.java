@@ -152,10 +152,7 @@ public class PlanPanelView extends javax.swing.JPanel {
                 @Override
                 public void actionPerformed(ActionEvent e) {
                     processPlanPanel();
-                    if(!ApplicationContext.isAuthorMode()){
-                        TaskSolution solution = ApplicationContext.getCorrectSolution();
-                        nodeEditor.checkPlanPanel(solution);
-                    }
+                    nodeEditor.getController().planPanelRadioClicked();
                     MainWindow.refreshGraph();
                 }
             });

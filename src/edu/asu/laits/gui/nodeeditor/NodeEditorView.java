@@ -826,6 +826,10 @@ public class NodeEditorView extends javax.swing.JDialog {
     public void resetEditorMessage() {
         editorMsgLabel.setText("");
     }
+    
+    public NodeEditorController getController(){
+        return _controller;
+    }
    
     private void tabPaneMouseDragged(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_tabPaneMouseDragged
     }//GEN-LAST:event_tabPaneMouseDragged

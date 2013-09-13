@@ -48,6 +48,10 @@ public abstract class NodeEditorController{
     
     public abstract void initDescriptionPanelView(DescriptionPanelView dPanelView);
     
+    public abstract String demoDescriptionPanel();
+    
+    public abstract void planPanelRadioClicked();
+    
     protected void initCheckButton(){
     
     }
@@ -133,5 +137,6 @@ public abstract class NodeEditorController{
 
         return title;
     }
+    
     
 }

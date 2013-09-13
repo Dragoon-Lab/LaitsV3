@@ -17,7 +17,12 @@
  */
 package edu.asu.laits.gui.nodeeditor;
 
+import edu.asu.laits.editor.ApplicationContext;
+import edu.asu.laits.model.SolutionNode;
+import edu.asu.laits.model.TaskSolution;
 import edu.asu.laits.model.Vertex;
+import java.awt.Color;
+import java.util.List;
 import org.apache.log4j.Logger;
 
 /**
@@ -109,5 +114,34 @@ public class StudentModeNodeEditorController extends NodeEditorController {
     }
 
     public void initOnLoadBalloonTip() {
+    }
+    
+    public String demoDescriptionPanel(){
+        // Get a correct Node Name
+        TaskSolution solution = ApplicationContext.getCorrectSolution();
+        //List<String> correctNodeNames = solution.getCorrectNodeNames();
+        List<SolutionNode> correctNodeNames = solution.getSolutionNodes();
+        
+        String giveupNode = null;
+
+            for (SolutionNode name : correctNodeNames) {
+                if (view.getGraphPane().getModelGraph().getVertexByName(name.getNodeName()) == null) {
+                    giveupNode = name.getNodeName();
+                    break;
+                }
+            }
+        
+        if (giveupNode == null) {
+            view.setEditorMessage("All Nodes are already being used in the Model.", true);
+            return null;
+        }
+        
+        logs.debug("Found Giveup Node as : " + giveupNode);
+        return giveupNode;
+    }
+    
+    public void planPanelRadioClicked(){
+        TaskSolution solution = ApplicationContext.getCorrectSolution();
+        view.checkPlanPanel(solution);
     }
 }

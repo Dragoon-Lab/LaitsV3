@@ -134,4 +134,11 @@ public class AuthorModeNodeEditorController extends NodeEditorController{
     public void initOnLoadBalloonTip(){
     
     }
+    
+    public String  demoDescriptionPanel(){
+        return null;
+    }
+    
+    public void planPanelRadioClicked(){
+    }
 }
