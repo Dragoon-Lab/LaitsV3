@@ -41,16 +41,13 @@ import java.awt.event.ActionListener;
 import java.util.Enumeration;
 import java.util.List;
 import javax.swing.AbstractButton;
-import javax.swing.ButtonGroup;
+import javax.swing.ButtonModel;
 import javax.swing.JLabel;
-import javax.swing.JPanel;
-import javax.swing.JRadioButton;
+import javax.swing.border.Border;
 import net.miginfocom.swing.MigLayout;
-import org.apache.log4j.Logger;
-
 /**
  *
- * @author ramayantiwari
+ * @author rjoiner1
  */
 public class PlanPanelView extends javax.swing.JPanel {
 
@@ -80,12 +77,8 @@ public class PlanPanelView extends javax.swing.JPanel {
     private JRadioButton parameterSelection;
     private JRadioButton accumulatorSelection;
     private JRadioButton functionSelection;
-    
-    private static Logger logs = Logger.getLogger("DevLogs");
-    private static Logger activityLogs = Logger.getLogger("ActivityLogs");
-    
-    public PlanPanelView(NodeEditorView ne) {        
-        super(new MigLayout());
+   
+    public PlanPanelView(NodeEditorView ne) {
         nodeEditor = ne;
         openVertex = ne.getOpenVertex();
         initPanel();        
@@ -218,22 +211,13 @@ public class PlanPanelView extends javax.swing.JPanel {
     public void setSelectedPlanBackground(Color c) {
         for (Enumeration<AbstractButton> buttons = primarySelections.getElements(); buttons.hasMoreElements();) {
             AbstractButton button = buttons.nextElement();
-            
+
             if (button.isSelected()) {
-                button.setForeground(c);
-                
-                Component[] comp = getComponents();
-                int count = 0;
-                for (Component cc : comp) {
-                    if (cc.equals(button)) {
-                        break;
-                    }
-                    ++count;
-                }
-                comp[++count].setForeground(c);
+                button.getParent().setBackground(c);
+               
             }
-            
         }
+
     }
     
     public void giveUpPlanPanel() {
