@@ -18,32 +18,20 @@
 package edu.asu.laits.gui.nodeeditor;
 
 import edu.asu.laits.editor.ApplicationContext;
-import edu.asu.laits.editor.DragoonUIUtils;
 import edu.asu.laits.gui.MainWindow;
 import edu.asu.laits.model.TaskSolution;
 import edu.asu.laits.model.Vertex;
 import java.awt.Color;
-import java.awt.Component;
 import java.awt.Dimension;
-import java.awt.event.ActionEvent;
-import java.awt.event.ActionListener;
-import java.util.Enumeration;
-import java.util.List;
-import javax.swing.AbstractButton;
 import javax.swing.ButtonGroup;
 import javax.swing.JPanel;
 import javax.swing.JRadioButton;
-import net.miginfocom.swing.MigLayout;
-import org.apache.log4j.Logger;
-import edu.asu.laits.model.Vertex.VertexType;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.util.Enumeration;
 import java.util.List;
 import javax.swing.AbstractButton;
-import javax.swing.ButtonModel;
 import javax.swing.JLabel;
-import javax.swing.border.Border;
 import net.miginfocom.swing.MigLayout;
 /**
  *
