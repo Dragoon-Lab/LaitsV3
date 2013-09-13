@@ -100,12 +100,11 @@ public class NodeEditorView extends javax.swing.JDialog {
         pack();
 
         if (ApplicationContext.isCoachedMode()) {
-            System.out.println("button SHOULD BE disabled");
             buttonCancel.setEnabled(false);
-            if (!openVertex.getPlanStatus().equals(Vertex.PlanStatus.CORRECT)
-                    && !openVertex.getPlanStatus().equals(Vertex.PlanStatus.GAVEUP)) {
+            if (openVertex.isPlanDone()) {
                 tabPane.setEnabledAt(CALCULATIONS, false);
                 tabPane.setForegroundAt(CALCULATIONS, Color.GRAY);
+                buttonCancel.setEnabled(true);
             }
         }
 
@@ -184,19 +183,19 @@ public class NodeEditorView extends javax.swing.JDialog {
 
             switch (tabPane.getSelectedIndex()) {
                 case DESCRIPTION:
-                    if (openVertex.getDescriptionStatus().equals(Vertex.DescriptionStatus.GAVEUP) || openVertex.getDescriptionStatus().equals(Vertex.DescriptionStatus.CORRECT)) {
+                    if (openVertex.isDescriptionDone()) {
                         demoButton.setEnabled(false);
                         checkButton.setEnabled(false);
                     }
                     break;
                 case PLAN:
-                    if (openVertex.getPlanStatus().equals(Vertex.PlanStatus.GAVEUP) || openVertex.getPlanStatus().equals(Vertex.PlanStatus.CORRECT)) {
+                    if (openVertex.isPlanDone()) {
                         demoButton.setEnabled(false);
                         checkButton.setEnabled(false);
                     }
                     break;
                 case CALCULATIONS:
-                    if (openVertex.getCalculationsStatus().equals(Vertex.CalculationsStatus.GAVEUP) || openVertex.getCalculationsStatus().equals(Vertex.CalculationsStatus.CORRECT)) {
+                    if (openVertex.isCalculationsDone()) {
                         demoButton.setEnabled(false);
                         checkButton.setEnabled(false);
                     }

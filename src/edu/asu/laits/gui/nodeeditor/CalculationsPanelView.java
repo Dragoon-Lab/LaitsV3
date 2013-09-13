@@ -78,8 +78,7 @@ public class CalculationsPanelView extends javax.swing.JPanel {
         logs.debug("Initializing Calculations Panel for Node "+openVertex.getName());
         
         initializeAvailableInputNodes();
-        if((openVertex.getCalculationsStatus().equals(Vertex.CalculationsStatus.CORRECT) ||
-            openVertex.getCalculationsStatus().equals(Vertex.CalculationsStatus.GAVEUP))
+        if(openVertex.isCalculationsDone()
            && !ApplicationContext.isAuthorMode()) {
             setEditableCalculations(false);
         }
@@ -300,8 +299,7 @@ public class CalculationsPanelView extends javax.swing.JPanel {
     }
     
     public boolean isViewEnabled() {
-        if(nodeEditor.getOpenVertex().getPlanStatus().equals(Vertex.PlanStatus.CORRECT) ||
-           nodeEditor.getOpenVertex().getPlanStatus().equals(Vertex.PlanStatus.GAVEUP))
+        if(openVertex.isPlanDone())
             return true;
         else
             return false;

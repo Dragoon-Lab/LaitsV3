@@ -76,17 +76,17 @@ public abstract class NodeEditorController{
         boolean isEnabled = true;
         switch(view.getTabbedPane().getSelectedIndex()){
             case 0:
-               if (openVertex.getDescriptionStatus().equals(Vertex.DescriptionStatus.GAVEUP) || openVertex.getDescriptionStatus().equals(Vertex.DescriptionStatus.CORRECT)) {
+               if (openVertex.isDescriptionDone()) {
                    isEnabled = false;
                }
                break;
             case 1:
-                if (openVertex.getPlanStatus().equals(Vertex.PlanStatus.GAVEUP) || openVertex.getPlanStatus().equals(Vertex.PlanStatus.CORRECT)) {
+                if (openVertex.isPlanDone()) {
                     isEnabled = false;
                 }
                 break;
             case 2:
-                if (openVertex.getInputsStatus().equals(Vertex.CalculationsStatus.GAVEUP) || openVertex.getCalculationsStatus().equals(Vertex.CalculationsStatus.CORRECT)) {
+                if (openVertex.isCalculationsDone()) {
                     isEnabled = false;
                 }
                 break;

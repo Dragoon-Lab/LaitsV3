@@ -163,8 +163,7 @@ public class PlanPanelView extends javax.swing.JPanel {
     }
     
     public boolean isViewEnabled() {
-        if (nodeEditor.getOpenVertex().getDescriptionStatus().equals(Vertex.DescriptionStatus.CORRECT)
-            || nodeEditor.getOpenVertex().getDescriptionStatus().equals(Vertex.DescriptionStatus.GAVEUP)) {
+        if (openVertex.isDescriptionDone()) {
             return true;
         } else {
             return false;

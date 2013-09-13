@@ -49,8 +49,7 @@ public class StudentModeNodeEditorController extends NodeEditorController {
         view.setEditorMessage("", true);
 
         if (oldTab == NodeEditorView.DESCRIPTION) {
-            if (openVertex.getDescriptionStatus().equals(Vertex.DescriptionStatus.CORRECT)
-                    || openVertex.getDescriptionStatus().equals(Vertex.DescriptionStatus.GAVEUP)) {
+            if (openVertex.isDescriptionDone()) {
                 view.getDescriptionPanel().setEditableTree(false);
                 return newTab;
             } else {
@@ -58,16 +57,14 @@ public class StudentModeNodeEditorController extends NodeEditorController {
             }
         } else if (oldTab == NodeEditorView.PLAN) {
             view.getPlanPanel().refreshPanel();
-            if (openVertex.getPlanStatus().equals(Vertex.PlanStatus.CORRECT)
-                    || openVertex.getPlanStatus().equals(Vertex.PlanStatus.GAVEUP)) {
+            if (openVertex.isPlanDone()) {
                 view.getPlanPanel().setEditableRadio(false);
                 return newTab;
             } else {
                 return oldTab;
             }
         } else {
-            if (openVertex.getCalculationsStatus().equals(Vertex.CalculationsStatus.CORRECT)
-                    || openVertex.getCalculationsStatus().equals(Vertex.CalculationsStatus.GAVEUP)) {
+            if (openVertex.isCalculationsDone()) {
                 view.getCalculationsPanel().setEditableCalculations(false);
                 return newTab;
             } else {

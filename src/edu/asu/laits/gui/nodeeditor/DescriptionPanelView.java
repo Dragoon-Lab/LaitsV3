@@ -78,9 +78,7 @@ public class DescriptionPanelView extends JPanel {
         Vertex currentVertex = this.nodeEditor.getOpenVertex();
         this.nodeNameTextField.setText(currentVertex.getName());
         this.quantityDescriptionTextField.setText(currentVertex.getCorrectDescription());
-        if((currentVertex.getDescriptionStatus().equals(Vertex.DescriptionStatus.CORRECT)
-            || currentVertex.getDescriptionStatus().equals(Vertex.DescriptionStatus.GAVEUP))
-           && !ApplicationContext.isAuthorMode()) {
+        if(currentVertex.isDescriptionDone()  && !ApplicationContext.isAuthorMode()) {
             setEditableTree(false);
         }
     }

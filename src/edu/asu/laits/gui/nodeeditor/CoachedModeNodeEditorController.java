@@ -40,7 +40,12 @@ public class CoachedModeNodeEditorController extends NodeEditorController {
 
     public int processTabChange(int oldTab, int newTab){
         if(newTab == 2){
-            view.getDemoButton().setEnabled(true);
+            view.getCalculationsPanel().initPanel();
+            if(!openVertex.isCalculationsDone()){
+                view.getCheckButton().setEnabled(true);
+                view.getDemoButton().setEnabled(true);
+            }
+            
         }
         return newTab;
     }
