@@ -23,56 +23,32 @@ package edu.asu.laits.model;
 /**
  *
  * @author ramayantiwari
+ * This class is slated to be merged with TaskSolution
  */
 public class Task {
     private String taskName;
     private String taskDescription;
     private String imageURL;
-    private int startTime, endTime;
-    private double timeStep;
     private String units;
-    
+    private Times times;
+     
     public Task(){
         taskName = "";
         taskDescription = "";
         imageURL = "";
-        startTime = 0;
-        endTime = 10;
-        timeStep = .1;
         units = "Days";
+        times = new Times();
     }
     
-    public Task(int s, int e, double step, String u){
-        this.startTime = s;
-        this.endTime = e;
-        this.timeStep = step;
+    public Task(Times times, String u){
+        this.times = times;
         this.units = u;
     }
     
-    public int getStartTime(){
-        return startTime;
+    public Times getTimes() {
+        return this.times;
     }
-    
-    public void setStartTime(int s){
-        startTime = s;
-    }
-    
-    public int getEndTime(){
-        return endTime;
-    }
-    
-    public void setEndTime(int s){
-        endTime = s;
-    }
-    
-    public double getTimeStep(){
-        return timeStep;
-    }
-    
-    public void setTimeStep(double s){
-        timeStep = s;
-    }
-    
+
     public String getUnits(){
         return units;
     }   

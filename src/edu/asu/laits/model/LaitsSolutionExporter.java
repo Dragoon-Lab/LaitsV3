@@ -82,13 +82,13 @@ public class LaitsSolutionExporter {
 
 
         Element startTime = task.addElement("StartTime");
-        startTime.setText(String.valueOf(graph.getCurrentTask().getStartTime()));
+        startTime.setText(String.valueOf(graph.getCurrentTask().getTimes().getStartTime()));
 
         Element endTime = task.addElement("EndTime");
-        endTime.setText(String.valueOf(graph.getCurrentTask().getEndTime()));
+        endTime.setText(String.valueOf(graph.getCurrentTask().getTimes().getEndTime()));
 
         Element timeStep = task.addElement("TimeStep");
-        endTime.setText(String.valueOf(graph.getCurrentTask().getTimeStep()));
+        endTime.setText(String.valueOf(graph.getCurrentTask().getTimes().getTimeStep()));
 
         Element units = task.addElement("Units");
         units.setText(graph.getCurrentTask().getUnits());

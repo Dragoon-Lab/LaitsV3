@@ -35,9 +35,9 @@ public class GraphRangeEditor extends javax.swing.JDialog {
         labelErrorInitial.setVisible(false);
         try{
             //System.out.println("Initializing Range Editor "+ "Unit time : "+graph.getCurrentTask().getUnits());
-            textIntialValue.setText(String.valueOf(graph.getCurrentTask().getStartTime()));
-            textFinalValue.setText(String.valueOf(graph.getCurrentTask().getEndTime()));
-            textTimeStep.setText(String.valueOf(graph.getCurrentTask().getTimeStep()));
+            textIntialValue.setText(String.valueOf(graph.getCurrentTask().getTimes().getStartTime()));
+            textFinalValue.setText(String.valueOf(graph.getCurrentTask().getTimes().getEndTime()));
+            textTimeStep.setText(String.valueOf(graph.getCurrentTask().getTimes().getTimeStep()));
             comboUnits.setSelectedItem(graph.getCurrentTask().getUnits());
 
         }catch(Exception e){
@@ -277,12 +277,12 @@ public class GraphRangeEditor extends javax.swing.JDialog {
         }
         if(isInputValid){
             // Saving User's input in the Server Task object
-            int startTime = Integer.parseInt(textIntialValue.getText());
-            int endTime = Integer.parseInt(textFinalValue.getText());
+            double startTime = Double.parseDouble(textIntialValue.getText());
+            double endTime = Double.parseDouble(textFinalValue.getText());
             double timeStep = Double.parseDouble(textTimeStep.getText());
 
             //Checking if end time is less than start time
-            if(endTime<startTime){
+            if((endTime-startTime)*timeStep<0){
                 labelErrorTimeStep.setText("End Time can not be less than Start Time");
                 labelErrorTimeStep.setVisible(true);
                 textFinalValue.requestFocus();
@@ -291,10 +291,8 @@ public class GraphRangeEditor extends javax.swing.JDialog {
 
             String units = String.valueOf(comboUnits.getSelectedItem());
             try{
-                graph.getCurrentTask().setStartTime(startTime);
-                graph.getCurrentTask().setEndTime(endTime);
-                graph.getCurrentTask().setTimeStep(timeStep);
-               graph.getCurrentTask().setUnits(units);
+                graph.getCurrentTask().getTimes().setTimes(startTime,endTime,timeStep);
+                graph.getCurrentTask().setUnits(units);
                 
                 Iterator<Vertex> vertices = editorPane.getModelGraph().vertexSet().iterator();
                 while(vertices.hasNext()){

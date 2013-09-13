@@ -13,6 +13,7 @@
     <URL>images/weight-toss.jpg</URL>
     <StartTime>0</StartTime>
     <EndTime>3</EndTime>
+    <TimeStep>0.1</TimeStep>
     <Units>Seconds</Units>
     <NodeCount>3</NodeCount>
     <Nodes>

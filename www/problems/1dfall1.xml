@@ -11,6 +11,7 @@
     <URL>images/Leaning_Tower_of_Pisa.jpg</URL>
     <StartTime>0</StartTime>
     <EndTime>4</EndTime>
+    <TimeStep>0.1</TimeStep>
     <Units>Seconds</Units>
     <NodeCount>3</NodeCount>
     <Nodes>

@@ -55,8 +55,8 @@ public class Graph<V, E> extends ListenableDirectedGraph<V, E> implements
         
         public void setCurrentTask(Task task){
             logs.debug("Setting new Task in the Graph with Start = "+
-                    task.getStartTime()+" End = "+task.getEndTime()+
-                    "  dt="+task.getTimeStep());
+                    task.getTimes().getStartTime()+" End = "+task.getTimes().getEndTime()+
+                    "  dt="+task.getTimes().getTimeStep());
             
             if(task == null){
                 currentTask = new Task();

@@ -42,9 +42,7 @@ public class ModelEvaluator {
 
     Graph<Vertex, Edge> currentGraph;
     int constantVertices;
-    int startTime;
-    int endTime;
-    double timeStep;
+    Times times;
     Map<String, List<String>> finalOperands;
     private static Logger logs = Logger.getLogger("DevLogs");
     private static Logger activityLogs = Logger.getLogger("ActivityLogs");
@@ -53,17 +51,12 @@ public class ModelEvaluator {
         currentGraph = inputGraph;
         if(ApplicationContext.isStudentMode() || 
                 ApplicationContext.isCoachedMode()){
-            startTime = ApplicationContext.getCorrectSolution().getStartTime();
-            endTime = ApplicationContext.getCorrectSolution().getEndTime();
-            timeStep = ApplicationContext.getCorrectSolution().getTimeStep();
-  
+            times = ApplicationContext.getCorrectSolution().getTimes(); 
             
             logs.debug("Getting Start Time and End Time from AppContext. "+
-                    startTime+"  "+endTime+"  dt="+timeStep);            
+                    times.getStartTime()+"  "+times.getEndTime()+"  dt="+times.getTimeStep());            
         }else{
-            startTime = currentGraph.getCurrentTask().getStartTime();
-            endTime = currentGraph.getCurrentTask().getEndTime();
-            timeStep = currentGraph.getCurrentTask().getTimeStep();
+            times = currentGraph.getCurrentTask().getTimes();
         }
         finalOperands = new HashMap<String, List<String>>();
     }
@@ -136,12 +129,11 @@ public class ModelEvaluator {
         logs.debug("Arranged Vertex List "+vertexList.toString());
         Vertex currentVertex = null;
         try{
-            int totalPoints = (int) ((endTime - startTime + 1)/timeStep);
             constructFinalEquations(vertexList);
             logs.debug("Final Operands   "+finalOperands.toString());
             logs.debug("Constant Vertices : "+constantVertices);
             
-            // Calculating Initial Flow for i =0
+            // Calculating Initial Flow for i=0
             for (int j = constantVertices; j < vertexList.size(); j++) {
                 currentVertex = vertexList.get(j);
                 logs.debug("evaluating vertex " + currentVertex.getName());
@@ -151,7 +143,7 @@ public class ModelEvaluator {
             }
 
             // Calculating all the points from 1 to totalpoints-1
-            for (int i = 1; i < totalPoints; i++) {
+            for (int i = 1; i < times.getNumberSteps(); i++) {
                 for (int j = constantVertices; j < vertexList.size(); j++) {
                     currentVertex = vertexList.get(j);
 
@@ -207,7 +199,6 @@ public class ModelEvaluator {
         List<Vertex> constantList = new ArrayList<Vertex>();
         List<Vertex> flowList = new ArrayList<Vertex>();
         List<Vertex> stockList = new ArrayList<Vertex>();
-        int totalPoints = (int) ((endTime - startTime +1)/timeStep);
 
         Iterator<Vertex> it = currentGraph.vertexSet().iterator();
         logs.debug("Total Vertex : "+currentGraph.vertexSet().size());
@@ -218,7 +209,7 @@ public class ModelEvaluator {
 
             if (thisVertex.getVertexType().equals(Vertex.VertexType.CONSTANT)) {
                 // Initialize constant values
-                for (int i = 0; i < totalPoints; i++) {
+                for (int i = 0; i < times.getNumberSteps(); i++) {
                     thisVertex.getCorrectValues().add(thisVertex.getInitialValue());
                 }
                 thisVertex.setGraphsStatus(Vertex.GraphsStatus.CORRECT);
@@ -328,7 +319,8 @@ public class ModelEvaluator {
             eval.putVariable(name, value);
         }
 
-        double result = timeStep*Double.valueOf(eval.evaluate()) + currentVertex.getCorrectValues().get(pointNumber - 1);
+        double result = times.getTimeStep()*Double.valueOf(eval.evaluate()) + 
+                        currentVertex.getCorrectValues().get(pointNumber - 1);
         return result;
     }
     

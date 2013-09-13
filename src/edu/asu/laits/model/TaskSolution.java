@@ -40,9 +40,7 @@ public class TaskSolution {
     private String taskType;
     private String taskDescription;
     private String imageURL;
-    private int startTime;
-    private int endTime;
-    private double timeStep;
+    private Times times;
     private String graphUnits;
     private int nodeCount;
     private List<SolutionNode> solutionNodes;
@@ -61,6 +59,7 @@ public class TaskSolution {
         givenNodes = new ArrayList<SolutionNode>();
         correctNodeNames = new ArrayList<String>();
         helpBubbles = new ArrayList<HelpBubble>();
+        times = new Times();
     }
 
     /**
@@ -172,45 +171,10 @@ public class TaskSolution {
         this.functionSubPlans.add(functionSubPlan);
     }
     /**
-     * @return the startTime
-     */
-    public int getStartTime() {
-        return startTime;
-    }
-
-    /**
-     * @param startTime the startTime to set
-     */
-    public void setStartTime(int startTime) {
-        this.startTime = startTime;
-    }
-
-    /**
-     * @return the endTime
-     */
-    public int getEndTime() {
-        return endTime;
-    }
-
-    /**
-     * @param endTime the endTime to set
-     */
-    public void setEndTime(int endTime) {
-        this.endTime = endTime;
-    }
-
-        /**
      * @return the timeStep
      */
-    public double getTimeStep() {
-        return endTime;
-    }
-
-    /**
-     * @param timeStep the timeStep to set
-     */
-    public void setTimeStep(double timeStep) {
-        this.timeStep = timeStep;
+    public Times getTimes() {
+        return this.times;
     }
 
     /**
