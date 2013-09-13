@@ -419,8 +419,7 @@ public class NodeEditorView extends javax.swing.JDialog {
 
         activityLogs.debug("User pressed Close button for Node " + openVertex.getName());
         // Delete this vertex if its not defined and user hits Cancel
-        if (openVertex.getDescriptionStatus().equals(Vertex.DescriptionStatus.UNDEFINED)
-                || openVertex.getDescriptionStatus().equals(Vertex.DescriptionStatus.INCORRECT)) {
+        if (!openVertex.isDescriptionDone()) {
             graphPane.setSelectionCell(openVertex.getJGraphVertex());
             graphPane.removeSelected();
         }
