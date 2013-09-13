@@ -42,6 +42,7 @@ import java.util.Enumeration;
 import java.util.List;
 import javax.swing.AbstractButton;
 import javax.swing.ButtonGroup;
+import javax.swing.JLabel;
 import javax.swing.JPanel;
 import javax.swing.JRadioButton;
 import net.miginfocom.swing.MigLayout;
@@ -174,7 +175,7 @@ public class PlanPanelView extends javax.swing.JPanel {
     }
     
     public void setEditableRadio(Boolean b) {
-        for (Enumeration<AbstractButton> buttons = planButtonGroup.getElements(); buttons.hasMoreElements();) {
+        for (Enumeration<AbstractButton> buttons = primarySelections.getElements(); buttons.hasMoreElements();) {
             AbstractButton button = buttons.nextElement();
             button.setEnabled(b);
         }
@@ -215,7 +216,7 @@ public class PlanPanelView extends javax.swing.JPanel {
     }
     
     public void setSelectedPlanBackground(Color c) {
-        for (Enumeration<AbstractButton> buttons = planButtonGroup.getElements(); buttons.hasMoreElements();) {
+        for (Enumeration<AbstractButton> buttons = primarySelections.getElements(); buttons.hasMoreElements();) {
             AbstractButton button = buttons.nextElement();
             
             if (button.isSelected()) {
