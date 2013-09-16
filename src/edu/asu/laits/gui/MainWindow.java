@@ -82,6 +82,10 @@ public class MainWindow extends JFrame {
     private static Logger activityLogs = Logger.getLogger("ActivityLogs");
     private static MainWindow _instance;
     
+    /**
+     * Method to get static instance of Main Application Window
+     * @return 
+     */
     public static MainWindow getInstance(){
         if(_instance == null){
             _instance = new MainWindow();
@@ -89,6 +93,9 @@ public class MainWindow extends JFrame {
         return _instance;
     }
     
+    /**
+     * Method to Launch the Application - called from main method
+     */
     public static void launch(){
         MainWindow window = getInstance();
         window.pack();
@@ -96,8 +103,7 @@ public class MainWindow extends JFrame {
     }
     
     /**
-     * This method initializes
-     *
+     * Private Constructor to implement Singleton
      */
     private MainWindow() {
         super();

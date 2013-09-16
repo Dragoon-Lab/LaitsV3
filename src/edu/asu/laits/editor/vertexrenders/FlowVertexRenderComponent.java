@@ -123,8 +123,10 @@ public class FlowVertexRenderComponent extends VertexRenderComponent {
         
         if(currentVertex.getDescriptionStatus().equals(Vertex.DescriptionStatus.CORRECT) || 
                 currentVertex.getDescriptionStatus().equals(Vertex.DescriptionStatus.GAVEUP)){
+            
             if(currentVertex.getPlanStatus().equals(Vertex.PlanStatus.CORRECT) || 
                     currentVertex.getPlanStatus().equals(Vertex.PlanStatus.GAVEUP)){
+                
                 if(currentVertex.getCalculationsStatus().equals(Vertex.CalculationsStatus.CORRECT) || 
                     currentVertex.getCalculationsStatus().equals(Vertex.CalculationsStatus.GAVEUP)){
                     g2.setColor(new Color(0x90, 0x90, 0x00));

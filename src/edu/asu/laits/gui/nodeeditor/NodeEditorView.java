@@ -220,6 +220,11 @@ public class NodeEditorView extends javax.swing.JDialog {
         editorMsgLabel.setVisible(true);
     }
 
+    public void clearEditorMessage(){
+        editorMsgLabel.setText("");
+        editorMsgLabel.setVisible(false);
+    }
+    
     private void checkDescriptionPanel(TaskSolution correctSolution) {
         // Save Description Panel Information in the Vertex Object
         if (!dPanel.processDescriptionPanel()) {
