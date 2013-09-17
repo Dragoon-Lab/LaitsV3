@@ -141,41 +141,13 @@ public class GraphViewPanel{
     public void repaintCharts(){
         Component[] components = chartContainer.getComponents();
         List<Vertex> vertices = new ArrayList<Vertex>();
-        PlotPanel plotPanel;
         for(Component c : components){
             if(c instanceof PlotPanel){
                 System.out.println("repaint check succeeded, attempting to repaint " + map.get(c).getName());
                 vertices.add(map.get(c));
-                
-                //pradeep
-               // chartContainer.remove(c);
-                //map.remove(c);
-                
-                //***********
-                
-                PlotPanel p = (PlotPanel) c;
-                p.updateChartAfterSliderChange(currentGraph,map.get(c),ApplicationContext.getCorrectSolution().getTimes());
-                
-                
-                
-//                vList.add(map.get(c));
-//                if(ApplicationContext.isStudentMode()||ApplicationContext.isCoachedMode()){
-//                 Vertex correctVertex = ApplicationContext.getCorrectSolution().getSolutionGraph().getVertexByName(map.get(c).getName());
-//                 vList.add(correctVertex);
-//                                
-//                }
-
-//                p.up
-               
-       
+                ((PlotPanel)c).updateChartAfterSliderChange(currentGraph,map.get(c),ApplicationContext.getCorrectSolution().getTimes());
             }
         }
-        
-//        for(Vertex v : vertices){
-//            plotPanel = new PlotPanel(v, currentGraph.getCurrentTask().getTimes(), currentGraph.getCurrentTask().getUnits());
-//            chartContainer.add(plotPanel);
-//            map.put(plotPanel, v);
-//        }       
    }
     private static class SliderListener implements ChangeListener {
         
@@ -194,7 +166,6 @@ public class GraphViewPanel{
             textSource.setText(String.valueOf(source.getDoubleValue()));
             vertex.setInitialValue(source.getDoubleValue());
             panel.repaintCharts();
-//              panel.repaintCharts(vertex);
         }
     }
 }
