@@ -15,70 +15,133 @@
  * You should have received a copy of the GNU Lesser General Public License
  * along with LAITS. If not, see <http://www.gnu.org/licenses/>.
  */
-
 package edu.asu.laits.gui.nodeeditor;
 
+import edu.asu.laits.editor.ApplicationContext;
+import edu.asu.laits.model.SolutionNode;
+import edu.asu.laits.model.TaskSolution;
 import edu.asu.laits.model.Vertex;
+import java.awt.Color;
+import java.util.List;
 import org.apache.log4j.Logger;
 
 /**
  * Implements functionalities of NodeEditor for Student Mode
+ *
  * @author ramayantiwari
  */
-public class StudentModeNodeEditorController extends NodeEditorController{
+public class StudentModeNodeEditorController extends NodeEditorController {
+
     private NodeEditorView view;
     private Vertex openVertex;
-    
     private static Logger logs = Logger.getLogger("DevLogs");
     private static Logger activityLogs = Logger.getLogger("ActivityLogs");
-    
-    public StudentModeNodeEditorController(NodeEditorView view, Vertex openVertex){
-        super(view,openVertex);
+
+    public StudentModeNodeEditorController(NodeEditorView view, Vertex openVertex) {
+        super(view, openVertex);
         this.view = view;
         this.openVertex = openVertex;
     }
-    
-    public void initDescriptionPanelView(DescriptionPanelView dPanelView){
-    
+
+    /**
+     * Handle Tab Change Event
+     *
+     * @param oldTab
+     * @param newTab
+     * @return new tab id
+     */
+    public int processTabChange(int oldTab, int newTab) {
+        view.setEditorMessage("", true);
+
+        if (oldTab == NodeEditorView.DESCRIPTION) {
+            if (openVertex.isDescriptionDone()) {
+                view.getDescriptionPanel().setEditableTree(false);
+                return newTab;
+            } else {
+                return oldTab;
+            }
+        } else if (oldTab == NodeEditorView.PLAN) {
+            view.getPlanPanel().refreshPanel();
+            if (openVertex.isPlanDone()) {
+                view.getPlanPanel().setEditableRadio(false);
+                return newTab;
+            } else {
+                return oldTab;
+            }
+        } else {
+            if (openVertex.isCalculationsDone()) {
+                view.getCalculationsPanel().setEditableCalculations(false);
+                return newTab;
+            } else {
+                return oldTab;
+            }
+        }
     }
-    
-    public void initActionButtons(){
+
+    public void initDescriptionPanelView(DescriptionPanelView dPanelView) {
+    }
+
+    public void initActionButtons() {
         initOkButton();
         initCloseButton();
         initCheckButton();
         initDemoButton();
         super.resetActionButtonAfterDemoUsed();
     }
-    
-    public void initCheckButton(){
-        
+
+    public void initCheckButton() {
     }
-    
-    public void initDemoButton(){
+
+    public void initDemoButton() {
         super.initDemoButton();
     }
-    
-    public void initOkButton(){
+
+    public void initOkButton() {
         view.getOKButton().setVisible(false);
     }
-    
-    public void initCloseButton(){
-    
+
+    public void initCloseButton() {
+    }
+
+    public void processCheckAction() {
+    }
+
+    public void processDemoAction() {
+    }
+
+    public void processCancelAction() throws NodeEditorException {
+        super.processCancelAction();
+    }
+
+    public void initOnLoadBalloonTip() {
     }
     
-    public void processCheckAction(){
-    
+    public String demoDescriptionPanel(){
+        // Get a correct Node Name
+        TaskSolution solution = ApplicationContext.getCorrectSolution();
+        //List<String> correctNodeNames = solution.getCorrectNodeNames();
+        List<SolutionNode> correctNodeNames = solution.getSolutionNodes();
+        
+        String giveupNode = null;
+
+            for (SolutionNode name : correctNodeNames) {
+                if (view.getGraphPane().getModelGraph().getVertexByName(name.getNodeName()) == null) {
+                    giveupNode = name.getNodeName();
+                    break;
+                }
+            }
+        
+        if (giveupNode == null) {
+            view.setEditorMessage("All Nodes are already being used in the Model.", true);
+            return null;
+        }
+        
+        logs.debug("Found Giveup Node as : " + giveupNode);
+        return giveupNode;
     }
     
-    public void processDemoAction(){
-    
-    }
-    
-    public void processCancelAction() throws NodeEditorException{
-        super.processCancelAction();        
-    }
-    
-    public void initOnLoadBalloonTip(){
-    
+    public void planPanelRadioClicked(){
+        TaskSolution solution = ApplicationContext.getCorrectSolution();
+        view.checkPlanPanel(solution);
     }
 }

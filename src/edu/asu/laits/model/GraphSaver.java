@@ -14,6 +14,7 @@ import org.jgrapht.ListenableGraph;
 
 import com.thoughtworks.xstream.XStream;
 import com.thoughtworks.xstream.io.xml.DomDriver;
+import edu.asu.laits.gui.MainWindow;
 import java.io.IOException;
 
 /**
@@ -38,8 +39,8 @@ public class GraphSaver {
     /**
      * @param paneToSave
      */
-    public GraphSaver(GraphEditorPane paneToSave) {
-        this.paneToSave = paneToSave;
+    public GraphSaver() {
+        this.paneToSave = MainWindow.getInstance().getGraphEditorPane();
         modelGraph = paneToSave.getModelGraph();
     }
 

@@ -40,12 +40,8 @@ import edu.asu.laits.editor.listeners.GraphPropertiesChangeListener;
 import edu.asu.laits.editor.listeners.InsertModeChangeListener;
 import edu.asu.laits.editor.listeners.UndoAndRedoAbleListener;
 import edu.asu.laits.gui.MainWindow;
-import edu.asu.laits.gui.menus.FileMenu;
-import edu.asu.laits.logger.HttpAppender;
-import edu.asu.laits.model.GraphLoader;
 import edu.asu.laits.properties.GlobalProperties;
 import edu.asu.laits.properties.GraphProperties;
-import java.util.logging.Level;
 import javax.swing.SwingConstants;
 import org.apache.log4j.Logger;
 import org.jgraph.JGraph;
@@ -101,7 +97,7 @@ public class GraphEditorPane extends JGraph {
     private List<InsertModeChangeListener> insertModeListeners = new LinkedList<InsertModeChangeListener>();
     private Graph<Vertex, Edge> graph;
     private MouseAndMotionListener mouseListener;
-    private MainWindow mainFrame;
+    
     private InformationPane informationPane;
     private MessageProvider currentStatusMessageProvider =
             new MessageProvider("");
@@ -134,7 +130,6 @@ public class GraphEditorPane extends JGraph {
         this.informationPane = informationPane;
         informationPane.putMessage(currentStatusMessageProvider);
         graphOperationHelper = new GraphOperationHelper(this, informationPane);
-        this.mainFrame = mainFrame;
         MouseListener ml = getMouseListeners()[0];
         MouseMotionListener mml = getMouseMotionListeners()[0];
         mouseListener = new MouseAndMotionListener(this, ml, mml);
@@ -597,13 +592,6 @@ public class GraphEditorPane extends JGraph {
         Rectangle2D rec = getCellBounds(vertices);
 
         return new Point2D.Double(rec.getCenterX(), rec.getCenterY());
-    }
-
-    /**
-     * @return the mainFrame
-     */
-    public MainWindow getMainFrame() {
-        return mainFrame;
     }
 
     /**

@@ -70,9 +70,7 @@ public class Vertex {
     
     public void setVertexIndex(int index){
         vertexIndex = index;
-        
-        //xPosition = 200 * (vertexIndex % 6) + 80;
-        //yPosition = 200 * (vertexIndex / 6) + 60 ;
+       
         xPosition = 200 * (vertexIndex % 4) + 480;
         yPosition = 200 * (vertexIndex / 4) + 60 ;
     }
@@ -333,5 +331,28 @@ public class Vertex {
         UNDEFINED, CORRECT, INCORRECT, GAVEUP
     }
     
+    public boolean isDescriptionDone(){
+        if(descriptionStatus.equals(Vertex.DescriptionStatus.CORRECT) || descriptionStatus.equals(Vertex.DescriptionStatus.GAVEUP)){
+            return true;
+        } else {
+            return false;
+        }
+    }
+        
+    public boolean isPlanDone(){
+        if(planStatus.equals(Vertex.PlanStatus.CORRECT) || planStatus.equals(Vertex.PlanStatus.GAVEUP)){
+            return true;
+        } else {
+            return false;
+        }
+    }
+        
+    public boolean isCalculationsDone(){
+        if(calculationsStatus.equals(Vertex.CalculationsStatus.CORRECT) || calculationsStatus.equals(Vertex.CalculationsStatus.GAVEUP)){
+            return true;
+        } else {
+            return false;
+        }
+    }
     
 }

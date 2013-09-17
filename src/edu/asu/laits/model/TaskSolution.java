@@ -30,7 +30,7 @@ import org.apache.log4j.Logger;
 import org.jgraph.graph.DefaultPort;
 
 /**
- *
+ * Represents Solutions of Dragoon Problem
  * @author ramayantiwari
  */
 public class TaskSolution {

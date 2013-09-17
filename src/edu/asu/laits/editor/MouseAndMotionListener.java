@@ -1,19 +1,13 @@
 package edu.asu.laits.editor;
 
-import edu.asu.laits.gui.nodeeditor.NodeEditorView;
-import edu.asu.laits.model.Vertex;
+import edu.asu.laits.gui.MainWindow;
 import java.awt.event.MouseEvent;
 import java.awt.event.MouseListener;
 import java.awt.event.MouseMotionListener;
-import java.util.LinkedList;
-import java.util.List;
-import java.util.TreeSet;
 import org.apache.log4j.Logger;
 
 import org.jgraph.graph.DefaultEdge;
 import org.jgraph.graph.DefaultGraphCell;
-import org.jgraph.graph.DefaultPort;
-import org.jgraph.graph.Port;
 import org.jgraph.graph.PortView;
 
 /**
@@ -48,7 +42,7 @@ public class MouseAndMotionListener implements MouseListener,
 
     
     public void mouseClicked(MouseEvent e) {
-        graphPane.getMainFrame().repaint();
+        MainWindow.getInstance().repaint();
         orginalMouseListener.mouseClicked(e);
     }
 
@@ -83,7 +77,7 @@ public class MouseAndMotionListener implements MouseListener,
                 movingPortView = result;
             }
         }
-        graphPane.getMainFrame().repaint();
+        MainWindow.getInstance().repaint();
         orginalMouseListener.mousePressed(e);
     }
 
@@ -91,7 +85,7 @@ public class MouseAndMotionListener implements MouseListener,
     public void mouseReleased(MouseEvent e) {
         // What is at the current position?
         cellMoving = false;
-        graphPane.getMainFrame().repaint();
+        MainWindow.getInstance().repaint();
         orginalMouseListener.mouseReleased(e);
     }
 

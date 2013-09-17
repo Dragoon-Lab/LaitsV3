@@ -4,10 +4,12 @@
 package edu.asu.laits.gui.nodeeditor;
 
 import edu.asu.laits.editor.ApplicationContext;
-import edu.asu.laits.gui.BlockingToolTip;
-import edu.asu.laits.model.HelpBubble;
+import edu.asu.laits.model.SolutionNode;
+import edu.asu.laits.model.TaskSolution;
 import edu.asu.laits.model.Vertex;
 import java.util.List;
+import javax.swing.event.ChangeEvent;
+import javax.swing.event.ChangeListener;
 import org.apache.log4j.Logger;
 
 /**
@@ -36,6 +38,18 @@ public class CoachedModeNodeEditorController extends NodeEditorController {
         super.resetActionButtonAfterDemoUsed();
     }
 
+    public int processTabChange(int oldTab, int newTab){
+        if(newTab == 2){
+            view.getCalculationsPanel().initPanel();
+            if(!openVertex.isCalculationsDone()){
+                view.getCheckButton().setEnabled(true);
+                view.getDemoButton().setEnabled(true);
+            }
+            
+        }
+        return newTab;
+    }
+    
     public void initDescriptionPanelView(DescriptionPanelView dPanelView){
     
     }
@@ -72,5 +86,35 @@ public class CoachedModeNodeEditorController extends NodeEditorController {
 
     private void addHelpBalloon(String name, String timing, String panel) {
         logs.debug("Adding Help Bubble for " + panel);        
+    }
+    
+    public String demoDescriptionPanel(){
+        // Get a correct Node Name
+        TaskSolution solution = ApplicationContext.getCorrectSolution();
+        //List<String> correctNodeNames = solution.getCorrectNodeNames();
+        List<SolutionNode> correctNodeNames = solution.getSolutionNodes();
+        
+        String giveupNode = null;
+        for (SolutionNode name : correctNodeNames) {
+            if (name.getNodeName().equalsIgnoreCase(ApplicationContext.getFirstNextNode())) {
+                giveupNode = name.getNodeName();
+                ApplicationContext.setNextNodes(name.getNodeName());
+                    //                  ApplicationContext.nextCurrentOrder()
+                break;
+            }
+        }
+        if (giveupNode == null) {
+            view.setEditorMessage("All Nodes are already being used in the Model.", true);
+            return null;
+        }
+        
+        logs.debug("Found Giveup Node as : " + giveupNode);
+        return giveupNode;
+        
+    }
+    
+    public void planPanelRadioClicked(){
+        TaskSolution solution = ApplicationContext.getCorrectSolution();
+        view.checkPlanPanel(solution);
     }
 }
