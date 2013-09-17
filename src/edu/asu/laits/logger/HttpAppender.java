@@ -102,7 +102,6 @@ public class HttpAppender extends AppenderSkeleton {
             if (this.HttpMethodBase.equalsIgnoreCase(METHOD_GET)) {
                 StringBuffer sb = new StringBuffer(this.logURL);
                 sb.append(message);
-                logs.debug("GET URL : " + sb.toString());
                 httpMethod = new HttpGet(sb.toString());
             } else {
                 if (this.postMethod.equalsIgnoreCase(POST_PARAMETERS)) {
@@ -160,6 +159,7 @@ public class HttpAppender extends AppenderSkeleton {
         postVariable.add(new BasicNameValuePair("id", id));
         postVariable.add(new BasicNameValuePair("section", section));
         postVariable.add(new BasicNameValuePair("problem", problem));
+        logs.debug("Post Variables sending: "+postVariable);
         
         if (action.equals("save") || action.equals("author_save")) {
             postVariable.add(new BasicNameValuePair("saveData", data));
@@ -168,7 +168,6 @@ public class HttpAppender extends AppenderSkeleton {
             postVariable.add(new BasicNameValuePair("share", share));
         }
 
-        logs.debug("Post Variables sending: "+postVariable);
         //sends request
         OutputStream stream = new DataOutputStream(connect.getOutputStream());
         BufferedWriter writer = new BufferedWriter(new OutputStreamWriter(stream, "UTF-8"));
