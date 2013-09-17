@@ -105,8 +105,8 @@ public class NodeEditorView extends javax.swing.JDialog {
                 tabPane.setEnabledAt(CALCULATIONS, false);
                 tabPane.setForegroundAt(CALCULATIONS, Color.GRAY);
             }
-            if (currentVertex.getCalculationsStatus().equals(Vertex.CalculationsStatus.CORRECT)
-                    || currentVertex.getCalculationsStatus().equals(Vertex.CalculationsStatus.GAVEUP)) {
+            if (openVertex.getCalculationsStatus().equals(Vertex.CalculationsStatus.CORRECT)
+                    || openVertex.getCalculationsStatus().equals(Vertex.CalculationsStatus.GAVEUP)) {
                 System.out.println("Should be enabled on close");
                 buttonCancel.setEnabled(true);
             }

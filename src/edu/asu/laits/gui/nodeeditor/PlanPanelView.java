@@ -91,7 +91,7 @@ public class PlanPanelView extends javax.swing.JPanel {
         
         panel = new JPanel(PlanLayout);
         panel.setBackground(Color.WHITE);
-        panel.add(new JLabel(openVertex.getName() + " is a ..."), "");
+        panel.add(new JLabel(openVertex.getName() + " is a ..."), "align center");
         paraPanel = new JPanel(rowLayout);
         paraPanel.add(parameterSelection, "");
         paraPanel.add(new JLabel(labelHtml + parameterPlan[1]), "");
