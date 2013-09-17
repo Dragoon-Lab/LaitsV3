@@ -44,6 +44,7 @@ import java.io.OutputStream;
 import java.io.OutputStreamWriter;
 import java.net.URLEncoder;
 import java.sql.Timestamp;
+import org.apache.log4j.Logger;
 
 public class HttpAppender extends AppenderSkeleton {
 
@@ -61,6 +62,11 @@ public class HttpAppender extends AppenderSkeleton {
     private String postMethod = POST_DEFAULT;
     private boolean thread = THREAD_DEFAULT;
 
+    /**
+     * Logger
+     */
+    private static Logger logs = Logger.getLogger("DevLogs");
+    
     public void close() {
     }
 
@@ -96,7 +102,7 @@ public class HttpAppender extends AppenderSkeleton {
             if (this.HttpMethodBase.equalsIgnoreCase(METHOD_GET)) {
                 StringBuffer sb = new StringBuffer(this.logURL);
                 sb.append(message);
-                System.out.println("test : " + sb.toString());
+                logs.debug("GET URL : " + sb.toString());
                 httpMethod = new HttpGet(sb.toString());
             } else {
                 if (this.postMethod.equalsIgnoreCase(POST_PARAMETERS)) {
@@ -134,6 +140,7 @@ public class HttpAppender extends AppenderSkeleton {
 
     public static String saveGetSession(String action, String address, String id, String section, String problem, String data, String share) throws Exception {
         //open connection
+        logs.debug("Opening Connection with URL: "+address);
         URL url = new URL(address);
         HttpURLConnection connect = (HttpURLConnection) url.openConnection();
 
@@ -148,11 +155,12 @@ public class HttpAppender extends AppenderSkeleton {
 
         //add variables to send
         List<NameValuePair> postVariable = new ArrayList<NameValuePair>();
-        StringBuilder sb = new StringBuilder();
+        
         postVariable.add(new BasicNameValuePair("action", action));
         postVariable.add(new BasicNameValuePair("id", id));
         postVariable.add(new BasicNameValuePair("section", section));
         postVariable.add(new BasicNameValuePair("problem", problem));
+        
         if (action.equals("save") || action.equals("author_save")) {
             postVariable.add(new BasicNameValuePair("saveData", data));
         }
@@ -160,6 +168,7 @@ public class HttpAppender extends AppenderSkeleton {
             postVariable.add(new BasicNameValuePair("share", share));
         }
 
+        logs.debug("Post Variables sending: "+postVariable);
         //sends request
         OutputStream stream = new DataOutputStream(connect.getOutputStream());
         BufferedWriter writer = new BufferedWriter(new OutputStreamWriter(stream, "UTF-8"));
@@ -185,6 +194,7 @@ public class HttpAppender extends AppenderSkeleton {
             }
             in.close();
             connect.disconnect();
+            //logs.debug("Server Returned: "+returnString.toString());
             return returnString.toString();
         }
         connect.disconnect();

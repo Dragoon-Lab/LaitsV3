@@ -499,7 +499,7 @@ public class TaskSolution {
 
                 v.setVertexType(node.getNodeType());
 
-                v.setInputsStatus(Vertex.InputsStatus.CORRECT);
+                //v.setInputsStatus(Vertex.InputsStatus.CORRECT);
                 v.setCalculationsStatus(Vertex.CalculationsStatus.CORRECT);
 
                 solutionGraph.addVertex(v);

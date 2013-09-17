@@ -36,12 +36,10 @@ public class Vertex {
     private String plan = "";
     
     // Status of All the Tabs
-    private DescriptionStatus descriptionStatus = DescriptionStatus.UNDEFINED;
-    private PlanStatus planStatus = PlanStatus.UNDEFINED;
-    private InputsStatus inputsStatus = InputsStatus.UNDEFINED;
-    private CalculationsStatus calculationsStatus = 
-            CalculationsStatus.UNDEFINED;
-    private GraphsStatus graphsStatus = GraphsStatus.UNDEFINED;
+    private DescriptionStatus descriptionStatus;
+    private PlanStatus planStatus;
+    private CalculationsStatus calculationsStatus;
+    private GraphsStatus graphsStatus;
     
     private double initialValue;
     private String equation;
@@ -59,7 +57,10 @@ public class Vertex {
      *
      */
     public Vertex() {
-        //name = "Node"+vertexIndex;
+        descriptionStatus = DescriptionStatus.UNDEFINED;
+        planStatus = PlanStatus.UNDEFINED;
+        calculationsStatus = CalculationsStatus.UNDEFINED;
+        graphsStatus = GraphsStatus.UNDEFINED;
         correctValues = new ArrayList<Double>();
         equation = "";        
     }
@@ -136,14 +137,6 @@ public class Vertex {
     
     public void setPlanStatus(PlanStatus status){
         this.planStatus = status;
-    }
-    
-    public InputsStatus getInputsStatus(){
-        return inputsStatus;
-    }
-    
-    public void setInputsStatus(InputsStatus status){
-        this.inputsStatus = status;
     }
     
     public CalculationsStatus getCalculationsStatus(){

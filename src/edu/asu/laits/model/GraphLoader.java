@@ -112,7 +112,7 @@ public class GraphLoader {
             try {
                 vertex.setGraphsStatus(Vertex.GraphsStatus.UNDEFINED);
                 graphPane.addVertex(vertex);
-                System.out.println("Added " + vertex.getName() + "  "+vertex.getVertexIndex());
+                //System.out.println("Added " + vertex.getName() + "  "+vertex.getVertexIndex());
                 vertexHash.put(vertex.getVertexIndex(), vertex);
                 logs.debug("removing from next nodes  " + vertex.getName() + "  "+vertex.getVertexIndex());
                 if(!ApplicationContext.isAuthorMode())
@@ -130,7 +130,7 @@ public class GraphLoader {
         List<Edge> edgeList = graphFile.getEdgeList();
 
         for (Edge edge : edgeList) {
-            System.out.println("Edge From: "+edge.getSourceVertexId()+"   To: "+edge.getTargetVertexId());
+            //System.out.println("Edge From: "+edge.getSourceVertexId()+"   To: "+edge.getTargetVertexId());
             Vertex sInfo = vertexHash.get(edge.getSourceVertexId());
             Vertex tInfo = vertexHash.get(edge.getTargetVertexId());
 

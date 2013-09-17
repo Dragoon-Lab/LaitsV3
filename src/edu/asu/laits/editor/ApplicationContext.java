@@ -49,7 +49,7 @@ public class ApplicationContext {
 
             if (MainWindow.getInstance().getGraphEditorPane().getModelGraph().getVertexByName(childNode) == null) {
                 addNextNodes(childNode);
-                System.out.println("added " + childNode);
+                //System.out.println("added " + childNode);
             }
         }
         removeNextNodes(parentNode);

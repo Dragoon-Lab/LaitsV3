@@ -486,11 +486,11 @@ public class ModelMenu extends JMenu {
 
             v.setVertexType(node.getNodeType());
 
-            if (solution.checkNodeInputs(node.getNodeName(), node.getInputNodes()) == 0) {
-                v.setInputsStatus(Vertex.InputsStatus.CORRECT);
-            } else {
-                v.setInputsStatus(Vertex.InputsStatus.INCORRECT);
-            }
+//            if (solution.checkNodeInputs(node.getNodeName(), node.getInputNodes()) == 0) {
+//                v.setInputsStatus(Vertex.InputsStatus.CORRECT);
+//            } else {
+//                v.setInputsStatus(Vertex.InputsStatus.INCORRECT);
+//            }
 
             if (solution.checkNodeCalculations(v)) {
                 v.setCalculationsStatus(Vertex.CalculationsStatus.CORRECT);

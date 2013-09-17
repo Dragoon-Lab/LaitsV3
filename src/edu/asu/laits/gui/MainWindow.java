@@ -111,7 +111,8 @@ public class MainWindow extends JFrame {
 
         if (!ApplicationContext.isAuthorMode()) {
             loadTask();
-        }
+        }   
+        
         loadSession();
         setFrameTitle();
 
@@ -475,18 +476,29 @@ public class MainWindow extends JFrame {
         try {
             //if user is in AUTHOR mode save solution in server
             if (ApplicationContext.isAuthorMode()) {
-                String xmlAuthorString = sessionLoader.saveGetSession("author_load", ApplicationContext.getRootURL().concat("/postvar.php"),
-                        ApplicationContext.getUserID(), ApplicationContext.getSection(), ApplicationContext.getCurrentTaskID(), "", "");
-                ModelMenu.graph = xmlAuthorString;
-                if (!xmlAuthorString.trim().isEmpty()) {
+                xmlString = sessionLoader.saveGetSession("author_load", 
+                        ApplicationContext.getRootURL().concat("/postvar.php"),
+                        ApplicationContext.getUserID(), 
+                        ApplicationContext.getSection(), 
+                        ApplicationContext.getCurrentTaskID(), 
+                        "", 
+                        "");
+                
+                ModelMenu.graph = xmlString;
+                
+                if (!xmlString.trim().isEmpty()) {
                     logs.debug("Previously authored graph found. User: " + user + " Section: " + section + " Prob: " + probNum);
                 }
+            }else{
+                xmlString = sessionLoader.saveGetSession("load", 
+                        ApplicationContext.getRootURL().concat("/postvar.php"),
+                        ApplicationContext.getUserID(), 
+                        ApplicationContext.getSection(), 
+                        ApplicationContext.getCurrentTaskID(), 
+                        "", 
+                        "");
             }
-            xmlString = sessionLoader.saveGetSession("load", ApplicationContext.getRootURL().concat("/postvar.php"),
-                    ApplicationContext.getUserID(), ApplicationContext.getSection(), ApplicationContext.getCurrentTaskID(), "", "");
-
         } catch (Exception ex) {
-            java.util.logging.Logger.getLogger(GraphLoader.class.getName()).log(Level.SEVERE, null, ex);
             logs.error("Problem loading session from database. " + ex.getMessage());
         }
 

@@ -464,7 +464,7 @@ public class GraphEditorPane extends JGraph {
                             Vertex target = graph.getEdgeTarget(e);
                             logs.debug("Updating Target "+target.getName());
                             
-                            target.setInputsStatus(Vertex.InputsStatus.UNDEFINED);
+                            //target.setInputsStatus(Vertex.InputsStatus.UNDEFINED);
                             target.setCalculationsStatus(Vertex.CalculationsStatus.UNDEFINED);
                         }
                     }

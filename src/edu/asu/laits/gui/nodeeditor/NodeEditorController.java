@@ -85,12 +85,8 @@ public abstract class NodeEditorController{
                     isEnabled = false;
                 }
                 break;
+            
             case 2:
-                if (openVertex.getInputsStatus().equals(Vertex.InputsStatus.GAVEUP)) {
-                    isEnabled = false;
-                }
-                break;
-            case 3:
                 if (openVertex.getCalculationsStatus().equals(Vertex.CalculationsStatus.GAVEUP)) {
                     isEnabled = false;
                 }
