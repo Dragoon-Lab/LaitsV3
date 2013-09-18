@@ -70,9 +70,9 @@ public class GraphLoader {
         GraphFile graphFile = null;
         try {
             graphFile = (GraphFile) xstream.fromXML(reader);
-        } catch (BaseException e) {
+        } catch (Exception ex) {
             // Could not read the XML file
-            logs.debug(e.getMessage());
+            logs.debug(ex.getMessage());
             throw new IncorcectGraphXMLFileException();
         }
 
@@ -93,10 +93,11 @@ public class GraphLoader {
         GraphFile graphFile = null;
         try {
             graphFile = (GraphFile) xstream.fromXML(xmlString);
-        } catch (BaseException e) {
+        } catch (Exception ex) {
             // Could not read the XML file
-            logs.debug(e.getMessage());
+            logs.debug(ex.getMessage());
             logs.debug(xmlString);
+            ex.printStackTrace();
             throw new IncorcectGraphXMLFileException();
         }
         getGraph(graphFile, null);
