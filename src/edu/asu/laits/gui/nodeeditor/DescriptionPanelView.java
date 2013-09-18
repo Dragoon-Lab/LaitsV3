@@ -78,9 +78,7 @@ public class DescriptionPanelView extends JPanel {
         Vertex currentVertex = this.nodeEditor.getOpenVertex();
         this.nodeNameTextField.setText(currentVertex.getName());
         this.quantityDescriptionTextField.setText(currentVertex.getCorrectDescription());
-        if((currentVertex.getDescriptionStatus().equals(Vertex.DescriptionStatus.CORRECT)
-            || currentVertex.getDescriptionStatus().equals(Vertex.DescriptionStatus.GAVEUP))
-           && !ApplicationContext.isAuthorMode()) {
+        if(currentVertex.isDescriptionDone()  && !ApplicationContext.isAuthorMode()) {
             setEditableTree(false);
         }
     }
@@ -345,37 +343,8 @@ public class DescriptionPanelView extends JPanel {
     }
     
     public void giveUpDescriptionPanel() {
-        // Get a correct Node Name
-        TaskSolution solution = ApplicationContext.getCorrectSolution();
-        //List<String> correctNodeNames = solution.getCorrectNodeNames();
-        List<SolutionNode> correctNodeNames = solution.getSolutionNodes();
-        
         String giveupNode = null;
-        if (ApplicationContext.isCoachedMode()) {
-            for (SolutionNode name : correctNodeNames) {
-                if (name.getNodeName().equalsIgnoreCase(ApplicationContext.getFirstNextNode())) {
-                    giveupNode = name.getNodeName();
-                    //ApplicationContext.removeNextNodes(name.getNodeName());
-                    ApplicationContext.setNextNodes(name.getNodeName());
-                    //                  ApplicationContext.nextCurrentOrder();
-                    break;
-                }
-            }
-        } else {
-            for (SolutionNode name : correctNodeNames) {
-                if (nodeEditor.getGraphPane().getModelGraph().getVertexByName(name.getNodeName()) == null) {
-                    giveupNode = name.getNodeName();
-                    break;
-                }
-            }
-        }
-        if (giveupNode == null) {
-            nodeEditor.setEditorMessage("All Nodes are already being used in the Model.", true);
-            return;
-        }
-        
-        logs.debug("Found Giveup Node as : " + giveupNode);
-        
+        giveupNode = nodeEditor.getController().demoDescriptionPanel();
         setDescriptionTreeNode(giveupNode);
         setTextFieldBackground(Color.YELLOW);
     }

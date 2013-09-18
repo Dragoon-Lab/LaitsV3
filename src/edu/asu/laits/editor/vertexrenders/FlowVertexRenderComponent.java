@@ -119,16 +119,10 @@ public class FlowVertexRenderComponent extends VertexRenderComponent {
         Graphics2D g2 = (Graphics2D) g;
         boolean isCorrect = false;
         
-        // If Vertex has Defined Description, Plan and Calculations - set color to green else use Gray
-        
-        if(currentVertex.getDescriptionStatus().equals(Vertex.DescriptionStatus.CORRECT) || 
-                currentVertex.getDescriptionStatus().equals(Vertex.DescriptionStatus.GAVEUP)){
-            
-            if(currentVertex.getPlanStatus().equals(Vertex.PlanStatus.CORRECT) || 
-                    currentVertex.getPlanStatus().equals(Vertex.PlanStatus.GAVEUP)){
-                
-                if(currentVertex.getCalculationsStatus().equals(Vertex.CalculationsStatus.CORRECT) || 
-                    currentVertex.getCalculationsStatus().equals(Vertex.CalculationsStatus.GAVEUP)){
+        // If Vertex has Defined Description, Plan and Calculations - set color to green else use Gray        
+        if(currentVertex.isDescriptionDone()){
+            if(currentVertex.isPlanDone()){
+                if(currentVertex.isCalculationsDone()){
                     g2.setColor(new Color(0x90, 0x90, 0x00));
                     isCorrect = true;
                 }

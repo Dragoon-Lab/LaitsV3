@@ -78,9 +78,7 @@ public class CalculationsPanelView extends javax.swing.JPanel {
         logs.debug("Initializing Calculations Panel for Node "+openVertex.getName());
         
         initializeAvailableInputNodes();
-        
-        if((openVertex.getCalculationsStatus().equals(Vertex.CalculationsStatus.CORRECT) ||
-            openVertex.getCalculationsStatus().equals(Vertex.CalculationsStatus.GAVEUP))
+        if(openVertex.isCalculationsDone()
            && !ApplicationContext.isAuthorMode()) {
             setEditableCalculations(false);
         }
@@ -163,6 +161,7 @@ public class CalculationsPanelView extends javax.swing.JPanel {
         fixedValueInputBox.setVisible(false);
         fixedValueLabel.setVisible(false);
         calculatorPanel.setVisible(true);
+   //     accumulatorPanel.setVisible(false);
         formulaInputArea.setText("");
         valuesLabel.setText(openVertex.getName() + " =");
     }
@@ -220,7 +219,7 @@ public class CalculationsPanelView extends javax.swing.JPanel {
             return true;
         }
     }
-    
+
     private boolean processStockVertex() {
         
         if (processStockInitialValue() && validateEquation()) {
@@ -300,8 +299,7 @@ public class CalculationsPanelView extends javax.swing.JPanel {
     }
     
     public boolean isViewEnabled() {
-        if(nodeEditor.getOpenVertex().getPlanStatus().equals(Vertex.PlanStatus.CORRECT) ||
-           nodeEditor.getOpenVertex().getPlanStatus().equals(Vertex.PlanStatus.GAVEUP))
+        if(openVertex.isPlanDone())
             return true;
         else
             return false;
@@ -555,7 +553,7 @@ public class CalculationsPanelView extends javax.swing.JPanel {
                     .addGroup(calculatorPanelLayout.createSequentialGroup()
                         .addContainerGap()
                         .addComponent(buttonCreateNodeInputTab)))
-                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                .addGap(0, 4, Short.MAX_VALUE))
         );
         calculatorPanelLayout.setVerticalGroup(
             calculatorPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -685,7 +683,7 @@ public class CalculationsPanelView extends javax.swing.JPanel {
         // TODO add your handling code here:
         // Process Cancel Action for all the Tabs
         activityLogs.debug("User pressed Create node button on inputs tab for Node " + nodeEditor.getOpenVertex().getName());
-        if(openVertex.getVertexType()==Vertex.VertexType.STOCK){
+        if(openVertex.getVertexType()==Vertex.VertexType.STOCK  && !fixedValueInputBox.getText().isEmpty()){
             openVertex.setInitialValue(Double.valueOf(fixedValueInputBox.getText()));
         }
         Vertex v = new Vertex();
@@ -740,6 +738,10 @@ public class CalculationsPanelView extends javax.swing.JPanel {
         availableInputsJList.setEnabled(b);
         formulaInputArea.setEnabled(b);
         fixedValueInputBox.setEnabled(b);
+        buttonAdd.setEnabled(b);
+        buttonSubtract.setEnabled(b);
+        buttonMultiply.setEnabled(b);
+        buttonDivide.setEnabled(b);
         setCreateButtonEnabled();
     }
     

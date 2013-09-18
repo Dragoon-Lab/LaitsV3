@@ -48,6 +48,10 @@ public abstract class NodeEditorController{
     
     public abstract void initDescriptionPanelView(DescriptionPanelView dPanelView);
     
+    public abstract String demoDescriptionPanel();
+    
+    public abstract void planPanelRadioClicked();
+    
     protected void initCheckButton(){
     
     }
@@ -76,18 +80,18 @@ public abstract class NodeEditorController{
         boolean isEnabled = true;
         switch(view.getTabbedPane().getSelectedIndex()){
             case 0:
-               if (openVertex.getDescriptionStatus().equals(Vertex.DescriptionStatus.GAVEUP)) {
+               if (openVertex.isDescriptionDone()) {
                    isEnabled = false;
                }
                break;
             case 1:
-                if (openVertex.getPlanStatus().equals(Vertex.PlanStatus.GAVEUP)) {
+                if (openVertex.isPlanDone()) {
                     isEnabled = false;
                 }
                 break;
             
             case 2:
-                if (openVertex.getCalculationsStatus().equals(Vertex.CalculationsStatus.GAVEUP)) {
+                if (openVertex.isCalculationsDone()) {
                     isEnabled = false;
                 }
                 break;
@@ -134,5 +138,6 @@ public abstract class NodeEditorController{
 
         return title;
     }
+    
     
 }

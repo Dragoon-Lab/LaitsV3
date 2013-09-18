@@ -100,12 +100,15 @@ public class NodeEditorView extends javax.swing.JDialog {
         pack();
 
         if (ApplicationContext.isCoachedMode()) {
-            System.out.println("button SHOULD BE disabled");
             buttonCancel.setEnabled(false);
-            if (!openVertex.getPlanStatus().equals(Vertex.PlanStatus.CORRECT)
-                    && !openVertex.getPlanStatus().equals(Vertex.PlanStatus.GAVEUP)) {
+            if (openVertex.isPlanDone()) {
                 tabPane.setEnabledAt(CALCULATIONS, false);
                 tabPane.setForegroundAt(CALCULATIONS, Color.GRAY);
+            }
+            if (openVertex.getCalculationsStatus().equals(Vertex.CalculationsStatus.CORRECT)
+                    || openVertex.getCalculationsStatus().equals(Vertex.CalculationsStatus.GAVEUP)) {
+                System.out.println("Should be enabled on close");
+                buttonCancel.setEnabled(true);
             }
         }
 
@@ -184,19 +187,19 @@ public class NodeEditorView extends javax.swing.JDialog {
 
             switch (tabPane.getSelectedIndex()) {
                 case DESCRIPTION:
-                    if (openVertex.getDescriptionStatus().equals(Vertex.DescriptionStatus.GAVEUP) || openVertex.getDescriptionStatus().equals(Vertex.DescriptionStatus.CORRECT)) {
+                    if (openVertex.isDescriptionDone()) {
                         demoButton.setEnabled(false);
                         checkButton.setEnabled(false);
                     }
                     break;
                 case PLAN:
-                    if (openVertex.getPlanStatus().equals(Vertex.PlanStatus.GAVEUP) || openVertex.getPlanStatus().equals(Vertex.PlanStatus.CORRECT)) {
+                    if (openVertex.isPlanDone()) {
                         demoButton.setEnabled(false);
                         checkButton.setEnabled(false);
                     }
                     break;
                 case CALCULATIONS:
-                    if (openVertex.getCalculationsStatus().equals(Vertex.CalculationsStatus.GAVEUP) || openVertex.getCalculationsStatus().equals(Vertex.CalculationsStatus.CORRECT)) {
+                    if (openVertex.isCalculationsDone()) {
                         demoButton.setEnabled(false);
                         checkButton.setEnabled(false);
                     }
@@ -425,8 +428,7 @@ public class NodeEditorView extends javax.swing.JDialog {
 
         activityLogs.debug("User pressed Close button for Node " + openVertex.getName());
         // Delete this vertex if its not defined and user hits Cancel
-        if (openVertex.getDescriptionStatus().equals(Vertex.DescriptionStatus.UNDEFINED)
-                || openVertex.getDescriptionStatus().equals(Vertex.DescriptionStatus.INCORRECT)) {
+        if (!openVertex.isDescriptionDone()) {
             graphPane.setSelectionCell(openVertex.getJGraphVertex());
             graphPane.removeSelected();
         }
@@ -831,6 +833,10 @@ public class NodeEditorView extends javax.swing.JDialog {
 
     public void resetEditorMessage() {
         editorMsgLabel.setText("");
+    }
+    
+    public NodeEditorController getController(){
+        return _controller;
     }
    
     private void tabPaneMouseDragged(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_tabPaneMouseDragged

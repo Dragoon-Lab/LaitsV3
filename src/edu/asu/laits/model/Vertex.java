@@ -324,5 +324,28 @@ public class Vertex {
         UNDEFINED, CORRECT, INCORRECT, GAVEUP
     }
     
+    public boolean isDescriptionDone(){
+        if(descriptionStatus.equals(Vertex.DescriptionStatus.CORRECT) || descriptionStatus.equals(Vertex.DescriptionStatus.GAVEUP)){
+            return true;
+        } else {
+            return false;
+        }
+    }
+        
+    public boolean isPlanDone(){
+        if(planStatus.equals(Vertex.PlanStatus.CORRECT) || planStatus.equals(Vertex.PlanStatus.GAVEUP)){
+            return true;
+        } else {
+            return false;
+        }
+    }
+        
+    public boolean isCalculationsDone(){
+        if(calculationsStatus.equals(Vertex.CalculationsStatus.CORRECT) || calculationsStatus.equals(Vertex.CalculationsStatus.GAVEUP)){
+            return true;
+        } else {
+            return false;
+        }
+    }
     
 }

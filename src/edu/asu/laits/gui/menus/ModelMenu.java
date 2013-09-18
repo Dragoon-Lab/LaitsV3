@@ -31,6 +31,7 @@ import edu.asu.laits.model.ModelEvaluator;
 import edu.asu.laits.model.SolutionNode;
 import edu.asu.laits.model.TaskSolution;
 import edu.asu.laits.model.Vertex;
+import java.awt.BorderLayout;
 import java.awt.event.ActionEvent;
 import java.awt.event.KeyEvent;
 import java.io.File;
@@ -39,9 +40,13 @@ import java.util.Iterator;
 import java.util.List;
 import javax.swing.JDialog;
 import javax.swing.JFileChooser;
+import javax.swing.JFrame;
 import javax.swing.JMenu;
 import javax.swing.JMenuItem;
 import javax.swing.JOptionPane;
+import javax.swing.JPanel;
+import javax.swing.JScrollPane;
+import javax.swing.JTable;
 import javax.swing.filechooser.FileFilter;
 import org.apache.log4j.Logger;
 import org.jgraph.graph.DefaultGraphCell;
@@ -68,6 +73,8 @@ public class ModelMenu extends JMenu {
     private static Logger activityLogs = Logger.getLogger("ActivityLogs");
     private HashMap<String, JMenuItem> menuMap = new HashMap<String, JMenuItem>();
     private JFileChooser saveAsFileChooser = null;
+    private Object[][] data;
+    private String[] columnNames;
     public static String graph;
 
     /**
@@ -211,6 +218,53 @@ public class ModelMenu extends JMenu {
         }
     }
 
+    public void showNodeTable() {
+        activityLogs.debug("User pressed Show Tale button.");
+
+        if (runModel()) {
+            showTableDialog();
+        }
+    }
+
+    private void dumpTableValues(ModelEvaluator me) {
+        try {
+            double startTime = me.getTimes().getStartTime();
+            double timeStep=me.getTimes().getTimeStep();
+            int totalPoints = me.getTimes().getNumberSteps();
+            int constantVertices = me.getConstantVertices();
+            Vertex currentVertex = null;
+
+            List<Vertex> vertexList = me.returnArrangedVertexList();
+
+            columnNames = new String[vertexList.size() - constantVertices + 1];
+
+            columnNames[0] = "Time";
+            int index = 1;
+            for (int i = constantVertices; i < vertexList.size(); i++) {
+                columnNames[index] = vertexList.get(i).getName();
+                index++;
+            }
+
+            data = new Object[totalPoints][vertexList.size() - constantVertices + 1];
+
+            double time=startTime;
+            for (int i = 0; i < totalPoints; i++,time+=timeStep) {
+                // data[i][0] will always correspond to timestamp
+                // Set timestamp value (i) if j=0
+                data[i][0] = time;
+                index = 1;
+                for (int j = constantVertices; j < vertexList.size(); j++) {
+                    currentVertex = vertexList.get(j);
+
+                    data[i][index] = currentVertex.getCorrectValues().get(i);
+                    index++;
+                }
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+    }
+
     public boolean runModel() {
         // Check if Model has already been executed and is still valid
         if (isGraphPrepared()) {
@@ -223,6 +277,7 @@ public class ModelMenu extends JMenu {
             if (!me.hasExtraNodes()) {
                 try {
                     me.run();
+                    dumpTableValues(me);
 
                     if (ApplicationContext.isStudentMode()
                             || ApplicationContext.isCoachedMode()) {
@@ -270,6 +325,32 @@ public class ModelMenu extends JMenu {
         return isEnable;
     }
 
+    /*
+     *  This method is used to display table after
+     *  running the model
+     */
+    private void showTableDialog() {
+        try {
+            JFrame tableValuesFrame = new JFrame("Node Table display");
+            JPanel tableValuesPanel = new JPanel();
+            tableValuesPanel.setLayout(new BorderLayout());
+
+
+
+            JTable tableValuesTable = new JTable(data, columnNames);
+            JScrollPane tableValuesContainer = new JScrollPane(tableValuesTable);
+
+            tableValuesPanel.add(tableValuesContainer, BorderLayout.CENTER);
+            tableValuesFrame.getContentPane().add(tableValuesPanel);
+
+            tableValuesFrame.pack();
+            tableValuesFrame.setVisible(true);
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+
+    }
+
     private void showChartDialog() {
         JDialog graphValuesDialog = new JDialog(MainWindow.getInstance(), true);
         GraphViewPanel gPanel = new GraphViewPanel(graphPane.getModelGraph(), graphValuesDialog);
@@ -312,14 +393,14 @@ public class ModelMenu extends JMenu {
             NodeEditorView editor = new NodeEditorView(v);
 
         } else {
-            if(ApplicationContext.getAppMode().equals("COACHED") && !isGraphEmpty()) {
+            if (ApplicationContext.getAppMode().equals("COACHED") && !isGraphEmpty()) {
                 activityLogs.debug("User was not allowed to create new node as app is in COACHED mode and nodes already present");
                 JOptionPane.showMessageDialog(window, "Create new nodes inside the Calculations tab of existing nodes");
             } else {
-               activityLogs.debug("User was not allowed to create new node as all the nodes were already present");
-               JOptionPane.showMessageDialog(window, "The model is already using all the correct nodes.");
+                activityLogs.debug("User was not allowed to create new node as all the nodes were already present");
+                JOptionPane.showMessageDialog(window, "The model is already using all the correct nodes.");
             }
-            
+
         }
     }
 
@@ -432,14 +513,14 @@ public class ModelMenu extends JMenu {
         // don't have a match in the student graph.
         TaskSolution solution = ApplicationContext.getCorrectSolution();
         boolean noMatch = false;
-        if(ApplicationContext.getAppMode().equals("COACHED")){
+        if (ApplicationContext.getAppMode().equals("COACHED")) {
             if (!isGraphEmpty()) {
                 return noMatch;
             }
         }
-        List<String> names= solution.getCorrectNodeNames();
-        for(String n : names){
-            if(graphPane.getModelGraph().getVertexByName(n) == null){
+        List<String> names = solution.getCorrectNodeNames();
+        for (String n : names) {
+            if (graphPane.getModelGraph().getVertexByName(n) == null) {
                 noMatch = true;
                 break;
             }
@@ -447,16 +528,16 @@ public class ModelMenu extends JMenu {
 
         return noMatch;
     }
-    
+
     public boolean isGraphEmpty() {
         if (graphPane.getModelGraph().isEmpty()) {
-                return true;
-            } else{
+            return true;
+        } else {
             return false;
         }
-            
+
     }
-  
+
     public void editTimeRangeAction() {
         activityLogs.debug("User pressed EditTimeRange Menu Item.");
         GraphRangeEditor ed = new GraphRangeEditor(graphPane, true);

@@ -76,7 +76,7 @@ public class TaskSolutionReader {
             
             
             //Read in help bubbles
-            if(ApplicationContext.isCoachedMode()){
+            if(ApplicationContext.isCoachedMode() && ApplicationContext.isHelpBubbles()){
                 Element bubbles = taskNode.element("HelpBubbles");
                 if(bubbles != null){
                     fillHelpBubbles(solution, bubbles);
@@ -111,8 +111,17 @@ public class TaskSolutionReader {
         solution.setTaskName(rootNode.elementTextTrim("TaskName"));
         solution.setTaskDescription(rootNode.elementTextTrim("TaskDescription"));
         solution.setImageURL(rootNode.elementText("URL"));
-        solution.setStartTime(Integer.parseInt(rootNode.elementTextTrim("StartTime")));
-        solution.setEndTime(Integer.parseInt(rootNode.elementTextTrim("EndTime")));
+        // TimeStep is optional, default 1
+        String ts=rootNode.elementTextTrim("TimeStep");
+        logs.info("Times: "+rootNode.elementTextTrim("StartTime")+" "+
+                rootNode.elementTextTrim("EndTime")+" "+ts);
+        logs.info("Resulting in: "+Double.parseDouble(rootNode.elementTextTrim("StartTime"))+
+                " "+Double.parseDouble(rootNode.elementTextTrim("EndTime"))+" "+
+                (ts!=null?Double.parseDouble(ts):1.0));
+        solution.getTimes().setTimes(
+                Double.parseDouble(rootNode.elementTextTrim("StartTime")),
+                Double.parseDouble(rootNode.elementTextTrim("EndTime")),
+                ((ts!=null)?Double.parseDouble(ts):1.0));
         solution.setGraphUnits(rootNode.elementTextTrim("Units"));
         solution.setNodeCount(Integer.parseInt(rootNode.elementTextTrim("NodeCount")));
     }
@@ -180,7 +189,8 @@ public class TaskSolutionReader {
             }
             
             // Read all the Input Nodes of this node
-             if(ApplicationContext.isCoachedMode() && order == 1 && ApplicationContext.getNextNodes().isEmpty()){
+             if(ApplicationContext.isCoachedMode() && order == 1 && 
+                     ApplicationContext.getNextNodes().isEmpty()){
 //              newNode.setNodeOrder(Integer.parseInt(node.elementTextTrim("Order")));
 //              System.out.println("Added element" + node.elementTextTrim("Order") + " " + node.elementTextTrim("CorrectDescription"));
                 ApplicationContext.addNextNodes(node.attributeValue("name"));

@@ -89,6 +89,7 @@ public class MainWindow extends JFrame {
     public static MainWindow getInstance(){
         if(_instance == null){
             _instance = new MainWindow();
+            _instance.loadSession();
         }
         return _instance;
     }
@@ -341,6 +342,7 @@ public class MainWindow extends JFrame {
      */
     public GraphEditorPane getGraphEditorPane() {
         if (graphEditorPane == null) {
+            logs.debug("making new graph editor pane");
             graphEditorPane = new GraphEditorPane(this, getStatusBarPanel());
             //getStatusBarPanel().setGraphPane(graphEditorPane);
             graphEditorPane.setAntiAliased(GlobalProperties.getInstance()
