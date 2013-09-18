@@ -89,6 +89,7 @@ public abstract class NodeEditorController{
                     isEnabled = false;
                 }
                 break;
+            
             case 2:
                 if (openVertex.isCalculationsDone()) {
                     isEnabled = false;

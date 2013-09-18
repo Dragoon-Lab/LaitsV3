@@ -114,7 +114,6 @@ public class ConstantVertexRenderComponent   extends VertexRenderComponent {
     protected void paintComponent(Graphics g) {
         super.paintComponent(g);
         drawVertex(g);
-
     }
 
     @Override
@@ -170,7 +169,6 @@ public class ConstantVertexRenderComponent   extends VertexRenderComponent {
         boolean isCorrect = false;
         
         // If Vertex has Defined Description, Plan and Calculations - set color to green else use Gray
-        
         if(currentVertex.isDescriptionDone()){
             if(currentVertex.isPlanDone()){
                 if(currentVertex.isCalculationsDone()){

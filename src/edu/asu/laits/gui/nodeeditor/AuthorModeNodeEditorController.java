@@ -81,6 +81,10 @@ public class AuthorModeNodeEditorController extends NodeEditorController{
             view.getCalculationsPanel().initPanel();
         }
         
+        // Clear NodeEditor Status Message if Tab is getting changed
+        if(newTab != oldTab)
+            view.clearEditorMessage();;
+        
         return newTab;
     }
     
