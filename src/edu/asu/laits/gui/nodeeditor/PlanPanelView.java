@@ -220,6 +220,7 @@ public class PlanPanelView extends javax.swing.JPanel {
         } else if (correctPlan.equalsIgnoreCase(functionPlan[0])) {
             functionSelection.setSelected(true);
         }    
+        setSelectedPlanBackground(Color.YELLOW);
     }
     
     public String printPlanPanel() {
