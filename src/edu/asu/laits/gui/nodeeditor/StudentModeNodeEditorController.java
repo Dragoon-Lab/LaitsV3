@@ -63,7 +63,12 @@ public class StudentModeNodeEditorController extends NodeEditorController {
         } else if (oldTab == NodeEditorView.PLAN) {
             view.getPlanPanel().refreshPanel();
             if (openVertex.isPlanDone()) {
+                view.getCalculationsPanel().initPanel();
                 view.getPlanPanel().setEditableRadio(false);
+                if(!openVertex.isCalculationsDone()){
+                  view.getCheckButton().setEnabled(true);
+                  view.getDemoButton().setEnabled(true);
+                }
                 return newTab;
             } else {
                 return oldTab;

@@ -721,10 +721,23 @@ public class CalculationsPanelView extends javax.swing.JPanel {
         // TODO add your handling code here:
         for (int i = 0; i < availableInputJListModel.getSize(); i++) {
             String s = removeBoldfromListItem(availableInputJListModel.get(i).toString());
+            Graph graph = (Graph) this.nodeEditor.getGraphPane().getModelGraph();
+            Set<Vertex> vertices = graph.vertexSet();
+            for(Vertex v: vertices){
+                if(graph.getEdge(v, openVertex) != null){
+                    graph.removeEdge(v, openVertex);
+                }
+            }
             availableInputJListModel.set(i, s);
             if(formulaInputArea.getText().trim().contains(s)){
                 availableInputJListModel.set(i, addBoldtoListItem(s));
+                Vertex connectedVertex = graph.getVertexByName(s);
+                if(!graph.containsEdge(connectedVertex, openVertex)){
+                    addEdge(connectedVertex, openVertex);
+                }
             }
+                
+            
         }
 
     }//GEN-LAST:event_formulaInputAreaKeyTyped
