@@ -56,6 +56,7 @@ public class StudentModeNodeEditorController extends NodeEditorController {
         if (oldTab == NodeEditorView.DESCRIPTION) {
             if (openVertex.isDescriptionDone()) {
                 view.getDescriptionPanel().setEditableTree(false);
+                view.getPlanPanel().refreshPanel();
                 return newTab;
             } else {
                 return oldTab;
@@ -70,7 +71,9 @@ public class StudentModeNodeEditorController extends NodeEditorController {
                   view.getDemoButton().setEnabled(true);
                 }
                 return newTab;
-            } else {
+            } else if (newTab == NodeEditorView.DESCRIPTION){
+                return newTab;
+            }else{
                 return oldTab;
             }
         } else {

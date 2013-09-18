@@ -39,7 +39,21 @@ public class CoachedModeNodeEditorController extends NodeEditorController {
     }
 
     public int processTabChange(int oldTab, int newTab){
-        if(newTab == 2){
+        if (oldTab == NodeEditorView.DESCRIPTION) {
+            if (openVertex.isDescriptionDone()) {
+                view.getDescriptionPanel().setEditableTree(false);
+                view.getPlanPanel().refreshPanel();
+                if((openVertex.isPlanDone() && newTab == NodeEditorView.CALCULATIONS)|| (!openVertex.isPlanDone() && newTab == NodeEditorView.PLAN)){
+                    
+                    return newTab;
+                } else{
+                    return oldTab;
+                    
+                }
+            } else {
+                return oldTab;
+            }
+        } else if(newTab == 2){
             view.getCalculationsPanel().initPanel();
             if(!openVertex.isCalculationsDone()){
                 view.getCheckButton().setEnabled(true);
