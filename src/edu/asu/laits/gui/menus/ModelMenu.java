@@ -234,9 +234,9 @@ public class ModelMenu extends JMenu {
 
     private void dumpTableValues(ModelEvaluator me) {
         try {
-            int startTime = me.getStartTime();
-            int endTime = me.getEndTime();
-            int totalPoints = me.getTimeStep().getNumberSteps();
+            double startTime = me.getTimes().getStartTime();
+            double timeStep=me.getTimes().getTimeStep();
+            int totalPoints = me.getTimes().getNumberSteps();
             int constantVertices = me.getConstantVertices();
             Vertex currentVertex = null;
 
@@ -253,10 +253,11 @@ public class ModelMenu extends JMenu {
 
             data = new Object[totalPoints][vertexList.size() - constantVertices + 1];
 
-            for (int i = 0; i < totalPoints; i++) {
+            double time=startTime;
+            for (int i = 0; i < totalPoints; i++,time+=timeStep) {
                 // data[i][0] will always correspond to timestamp
                 // Set timestamp value (i) if j=0
-                data[i][0] = i+startTime;
+                data[i][0] = time;
                 index = 1;
                 for (int j = constantVertices; j < vertexList.size(); j++) {
                     currentVertex = vertexList.get(j);
