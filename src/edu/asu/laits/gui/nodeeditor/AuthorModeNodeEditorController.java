@@ -82,10 +82,10 @@ public class AuthorModeNodeEditorController extends NodeEditorController{
         }
         
         // Clear NodeEditor Status Message if Tab is getting changed
-        if(targetTab != oldTab)
+        if(newTab != oldTab)
             view.clearEditorMessage();;
         
-        return targetTab;
+        return newTab;
     }
     
     public void initCheckButton(){
