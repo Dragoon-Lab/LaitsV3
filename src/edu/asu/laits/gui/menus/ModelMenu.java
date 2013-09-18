@@ -225,7 +225,7 @@ public class ModelMenu extends JMenu {
     }
 
     public void showNodeTable() {
-        activityLogs.debug("User pressed Show Tale button.");
+        activityLogs.debug("User pressed Show Table button.");
 
         if (runModel()) {
             showTableDialog();
@@ -340,16 +340,17 @@ public class ModelMenu extends JMenu {
             JPanel tableValuesPanel = new JPanel();
             tableValuesPanel.setLayout(new BorderLayout());
 
+            if(data!=null && columnNames!=null)
+            {
+                JTable tableValuesTable = new JTable(data, columnNames);
+                JScrollPane tableValuesContainer = new JScrollPane(tableValuesTable);
 
+                tableValuesPanel.add(tableValuesContainer, BorderLayout.CENTER);
+                tableValuesFrame.getContentPane().add(tableValuesPanel);
 
-            JTable tableValuesTable = new JTable(data, columnNames);
-            JScrollPane tableValuesContainer = new JScrollPane(tableValuesTable);
-
-            tableValuesPanel.add(tableValuesContainer, BorderLayout.CENTER);
-            tableValuesFrame.getContentPane().add(tableValuesPanel);
-
-            tableValuesFrame.pack();
-            tableValuesFrame.setVisible(true);
+                tableValuesFrame.pack();
+                tableValuesFrame.setVisible(true);
+            }
         } catch (Exception e) {
             e.printStackTrace();
         }
