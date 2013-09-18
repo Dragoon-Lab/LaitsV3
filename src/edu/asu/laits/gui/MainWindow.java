@@ -73,6 +73,7 @@ public class MainWindow extends JFrame {
     private List<JToolBar> toolBars = new LinkedList<JToolBar>();
     private StatusBarPanel statusBarPanel = null;
     private boolean isSituationTabSelected = true;
+   
     // Label to Display Tasks
     JLabel situationLabel;
     /**
@@ -367,7 +368,7 @@ public class MainWindow extends JFrame {
             // Save session in Server when graph changes
             prop.addGraphChangeListener(new GraphChangeListener() {
                 public void graphChanged() {
-                    PersistenceManager.saveSession();
+                    //PersistenceManager.saveSession();     
                 }
             });
         }
@@ -501,7 +502,8 @@ public class MainWindow extends JFrame {
                         "");
             }
         } catch (Exception ex) {
-            logs.error("Problem loading session from database. " + ex.getMessage());
+            logs.error("Error loading session from database. " + ex.getMessage());
+            ex.printStackTrace();
         }
 
         if (!xmlString.trim().isEmpty()) {
