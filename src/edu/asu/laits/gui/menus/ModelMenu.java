@@ -39,6 +39,7 @@ import java.awt.event.KeyEvent;
 import java.io.File;
 import java.io.FileWriter;
 import java.io.IOException;
+import java.text.DecimalFormat;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Iterator;
@@ -239,6 +240,7 @@ public class ModelMenu extends JMenu {
             int totalPoints = me.getTimes().getNumberSteps();
             int constantVertices = me.getConstantVertices();
             Vertex currentVertex = null;
+            DecimalFormat decimalFormat = new DecimalFormat("#.##"); 
 
             List<Vertex> vertexList = me.returnArrangedVertexList();
 
@@ -257,12 +259,12 @@ public class ModelMenu extends JMenu {
             for (int i = 0; i < totalPoints; i++,time+=timeStep) {
                 // data[i][0] will always correspond to timestamp
                 // Set timestamp value (i) if j=0
-                data[i][0] = time;
+                data[i][0] = decimalFormat.format(time);
                 index = 1;
                 for (int j = constantVertices; j < vertexList.size(); j++) {
                     currentVertex = vertexList.get(j);
 
-                    data[i][index] = currentVertex.getCorrectValues().get(i);
+                    data[i][index] = decimalFormat.format(currentVertex.getCorrectValues().get(i));
                     index++;
                 }
             }
