@@ -21,14 +21,12 @@
 
 package edu.asu.laits.gui;
 
-import com.rits.cloning.Cloner;
 import edu.asu.laits.editor.ApplicationContext;
 import edu.asu.laits.model.PlotPanel;
 import edu.asu.laits.model.Edge;
 import edu.asu.laits.model.Graph;
 import edu.asu.laits.model.Task;
 import edu.asu.laits.model.Vertex;
-import java.awt.Color;
 import javax.swing.JDialog;
 import javax.swing.JLabel;
 import javax.swing.JSlider;
