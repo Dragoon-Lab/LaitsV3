@@ -21,6 +21,7 @@
 
 package edu.asu.laits.gui;
 
+import com.rits.cloning.Cloner;
 import edu.asu.laits.editor.ApplicationContext;
 import edu.asu.laits.model.PlotPanel;
 import edu.asu.laits.model.Edge;
@@ -60,6 +61,7 @@ public class GraphViewPanel{
     private JXTaskPaneContainer chartContainer;
     private JDialog parent;
     private JSlider testSlider;
+    private Map<String,Double> vertexValues; //Store vertex and old values
     
     
     Map<JComponent, Vertex> map = new HashMap<JComponent, Vertex>();
@@ -67,6 +69,7 @@ public class GraphViewPanel{
     public GraphViewPanel(Graph<Vertex, Edge> graph, JDialog parent){
         currentGraph = graph;
         this.parent = parent;
+        this.vertexValues = new HashMap<String,Double>();
         initializeComponents();
 
         JScrollPane panelScroll = new JScrollPane(chartContainer);
@@ -145,11 +148,13 @@ public class GraphViewPanel{
             if(c instanceof PlotPanel){
                 System.out.println("repaint check succeeded, attempting to repaint " + map.get(c).getName());
                 vertices.add(map.get(c));
-                ((PlotPanel)c).updateChartAfterSliderChange(currentGraph,map.get(c),ApplicationContext.getCorrectSolution().getTimes());
+             ((PlotPanel)c).updateChartAfterSliderChange(currentGraph,map.get(c),ApplicationContext.getCorrectSolution().getTimes(),vertexValues);
             }
         }
+        //restore oringal 
+        PlotPanel.restoreOrignalChart(currentGraph, vertexValues);
    }
-    private static class SliderListener implements ChangeListener {
+    private class SliderListener implements ChangeListener {
         
         private JFormattedTextField textSource;
         private Vertex vertex;
@@ -165,6 +170,9 @@ public class GraphViewPanel{
             DoubleJSlider source = (DoubleJSlider)e.getSource();
             textSource.setText(String.valueOf(source.getDoubleValue()));
             vertex.setInitialValue(source.getDoubleValue());
+            //copy vertexvalue first time
+            if(!vertexValues.containsKey(vertex.getName()))
+                vertexValues.put(vertex.getName(), vertex.getInitialValue());
             panel.repaintCharts();
         }
     }

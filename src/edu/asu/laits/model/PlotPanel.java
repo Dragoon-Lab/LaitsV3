@@ -22,7 +22,9 @@ import java.awt.Color;
 import java.awt.Dimension;
 import java.awt.Font;
 import java.util.ArrayList;
+import java.util.Iterator;
 import java.util.List;
+import java.util.Map;
 import java.util.logging.Level;
 import javax.swing.event.ChangeEvent;
 import javax.swing.event.ChangeListener;
@@ -197,15 +199,18 @@ public class PlotPanel extends JXTaskPane {
         return chart;
     }
     
-    public void updateChartAfterSliderChange(Graph graph,Vertex vertex, Times times ){
+    public void updateChartAfterSliderChange(Graph graph,Vertex vertex, Times times,Map<String,Double> vertexValues ){
         logs.info("updating chart for new values from slider");
         
         XYSeries series = new XYSeries("New Value Graph");
-             
-
-          ModelEvaluator modelEvaluator = new ModelEvaluator(graph);
+           
+        //remove last slider value series
+        for (int i = 2; i < xydataset.getSeriesCount(); i++) {
+            ((XYSeriesCollection)xydataset).removeSeries(i);
+        }
+        
         try {
-            modelEvaluator.run();
+           new ModelEvaluator(graph).run();
         } catch (ModelEvaluationException ex) {
             //handle this exception
         }
@@ -222,16 +227,28 @@ public class PlotPanel extends JXTaskPane {
            
             System.out.println("Corrected values are ");
             for (int i = 0; i < correctValues.size(); i += di) {
-                System.out.print(correctValues.get(i)+" ");
+                logs.debug(correctValues.get(i)+" ");
                 series.add(t, correctValues.get(i));
                 t += di*times.getTimeStep();
             }
-
-            //for testing removing all
-            ((XYSeriesCollection)xydataset).removeAllSeries();
                 
             ((XYSeriesCollection)xydataset).addSeries(series);
-            jfreeChart.fireChartChanged();
+            jfreeChart.fireChartChanged(); 
+    }
+    
+    public static void restoreOrignalChart(Graph graph, Map<String,Double> vertexValues){
+        //restore graph values
+            Iterator iterator = vertexValues.entrySet().iterator();
+            while(iterator.hasNext()){
+                Map.Entry<String,Double> entry =  (Map.Entry)iterator.next();
+                graph.getVertexByName(entry.getKey()).setInitialValue(entry.getValue());
+            }
+    
+            try {
+                new ModelEvaluator(graph).run();
+            } catch (ModelEvaluationException ex) {
+            //handle this exception
+            }
     }
     
 }
