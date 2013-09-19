@@ -468,6 +468,9 @@ public class CalculationsPanelView extends javax.swing.JPanel {
             public void keyTyped(java.awt.event.KeyEvent evt) {
                 formulaInputAreaKeyTyped(evt);
             }
+            public void keyReleased(java.awt.event.KeyEvent evt) {
+                formulaInputAreaKeyReleased(evt);
+            }
         });
         jScrollPane1.setViewportView(formulaInputArea);
 
@@ -719,7 +722,12 @@ public class CalculationsPanelView extends javax.swing.JPanel {
 
     private void formulaInputAreaKeyTyped(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_formulaInputAreaKeyTyped
         // TODO add your handling code here:
-        for (int i = 0; i < availableInputJListModel.getSize(); i++) {
+
+    }//GEN-LAST:event_formulaInputAreaKeyTyped
+
+    private void formulaInputAreaKeyReleased(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_formulaInputAreaKeyReleased
+        // TODO add your handling code here:
+         for (int i = 0; i < availableInputJListModel.getSize(); i++) {
             String s = removeBoldfromListItem(availableInputJListModel.get(i).toString());
             Graph graph = (Graph) this.nodeEditor.getGraphPane().getModelGraph();
             Set<Vertex> vertices = graph.vertexSet();
@@ -740,7 +748,7 @@ public class CalculationsPanelView extends javax.swing.JPanel {
             
         }
 
-    }//GEN-LAST:event_formulaInputAreaKeyTyped
+    }//GEN-LAST:event_formulaInputAreaKeyReleased
                                         
     public JTextArea getFormulaInputArea() {
         return formulaInputArea;
