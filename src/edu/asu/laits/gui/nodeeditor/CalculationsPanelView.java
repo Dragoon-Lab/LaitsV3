@@ -644,7 +644,7 @@ public class CalculationsPanelView extends javax.swing.JPanel {
     private void addEdge(Vertex v1, Vertex v2) {
         DefaultPort p1 = nodeEditor.getGraphPane().getJGraphTModelAdapter().getVertexPort(v1);
         DefaultPort p2 = nodeEditor.getGraphPane().getJGraphTModelAdapter().getVertexPort(v2);
-        
+        logs.debug("Adding edge between " + v1.getName() + " and " + v2.getName());
         nodeEditor.getGraphPane().insertEdge(p1, p2);
     }
     
@@ -727,24 +727,18 @@ public class CalculationsPanelView extends javax.swing.JPanel {
 
     private void formulaInputAreaKeyReleased(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_formulaInputAreaKeyReleased
         // TODO add your handling code here:
-         for (int i = 0; i < availableInputJListModel.getSize(); i++) {
+         Graph graph = (Graph) this.nodeEditor.getGraphPane().getModelGraph();
+            for (int i = 0; i < availableInputJListModel.getSize(); i++) {
             String s = removeBoldfromListItem(availableInputJListModel.get(i).toString());
-            Graph graph = (Graph) this.nodeEditor.getGraphPane().getModelGraph();
-            Set<Vertex> vertices = graph.vertexSet();
-            for(Vertex v: vertices){
-                if(graph.getEdge(v, openVertex) != null){
-                    graph.removeEdge(v, openVertex);
-                }
-            }
             availableInputJListModel.set(i, s);
             if(formulaInputArea.getText().trim().contains(s)){
                 availableInputJListModel.set(i, addBoldtoListItem(s));
                 Vertex connectedVertex = graph.getVertexByName(s);
-                if(!graph.containsEdge(connectedVertex, openVertex)){
-                    addEdge(connectedVertex, openVertex);
-                }
+                addEdge(connectedVertex, openVertex);
             }
-                
+            if(!formulaInputArea.getText().trim().contains(s)){
+                graph.removeEdge(graph.getVertexByName(s), openVertex);
+            }  
             
         }
 
