@@ -47,6 +47,7 @@ public class NodeEditorTabbedPane extends JTabbedPane {
             if(currentIndex != newIndex){
                 int res = _controller.processTabChange(currentIndex, newIndex);
                 super.setSelectedIndex(res);
+                _controller.initActionButtons();
             }else{
                 super.setSelectedIndex(newIndex);
             }

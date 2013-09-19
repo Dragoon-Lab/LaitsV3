@@ -101,7 +101,7 @@ public class NodeEditorView extends javax.swing.JDialog {
 
         if (ApplicationContext.isCoachedMode()) {
             buttonCancel.setEnabled(false);
-            if (openVertex.isPlanDone()) {
+            if (!openVertex.isPlanDone()) {
                 tabPane.setEnabledAt(CALCULATIONS, false);
                 tabPane.setForegroundAt(CALCULATIONS, Color.GRAY);
             }
