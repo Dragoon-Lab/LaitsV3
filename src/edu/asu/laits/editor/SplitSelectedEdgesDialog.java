@@ -1,5 +1,6 @@
 package edu.asu.laits.editor;
 
+import edu.asu.laits.gui.MainWindow;
 import java.awt.Frame;
 
 import javax.swing.Box;
@@ -34,7 +35,7 @@ public class SplitSelectedEdgesDialog extends JDialog {
     private JButton jButton1 = null;
 
     private SplitSelectedEdgesDialog(GraphEditorPane graphPane) {
-        super(graphPane.getMainFrame());
+        super(MainWindow.getInstance());
         initialize();
         this.graphPane = graphPane;
     }

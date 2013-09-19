@@ -18,7 +18,7 @@
 
 package edu.asu.laits.gui.nodeeditor;
 
-import edu.asu.laits.model.PersistenceManager;
+import edu.asu.laits.gui.MainWindow;
 import edu.asu.laits.model.Vertex;
 import org.apache.log4j.Logger;
 
@@ -31,8 +31,7 @@ public class AuthorModeNodeEditorController extends NodeEditorController{
     private Vertex openVertex;
     
     private static Logger logs = Logger.getLogger("DevLogs");
-    private static Logger activityLogs = Logger.getLogger("ActivityLogs");
-    
+        
     public AuthorModeNodeEditorController(NodeEditorView view, Vertex openVertex){
         super(view,openVertex);
         this.view = view;
@@ -48,6 +47,45 @@ public class AuthorModeNodeEditorController extends NodeEditorController{
         initCloseButton();
         initCheckButton();
         initDemoButton();
+    }
+   
+    /**
+     * Handle Tab Change event for Author Mode. 
+     * New Tab needs to be initialized as per the input from previous tab
+     * @param oldTab
+     * @param newTab
+     * @return : New Tab Index
+     */
+    public int processTabChange(int oldTab, int newTab){
+        logs.info("Processing Tab Change - Old "+oldTab+" New "+newTab);
+        // Process Old Tab to store info in Vertex - Plan Panel info is updated at change event
+        if(oldTab == NodeEditorView.DESCRIPTION){
+            if(view.getDescriptionPanel().processDescriptionPanel()){
+                openVertex.setDescriptionStatus(Vertex.DescriptionStatus.CORRECT);
+            }else{
+                openVertex.setDescriptionStatus(Vertex.DescriptionStatus.UNDEFINED);
+            }
+        }else if(oldTab == NodeEditorView.CALCULATIONS){
+            if(view.getCalculationsPanel().processCalculationsPanel()){
+                openVertex.setCalculationsStatus(Vertex.CalculationsStatus.CORRECT);
+            }else{
+                openVertex.setCalculationsStatus(Vertex.CalculationsStatus.UNDEFINED);
+            }
+        }
+        
+        // Reflect changes in graph to UI
+        MainWindow.refreshGraph();
+        
+        // Prepare New Tab if it's initilization is dependent on old tab
+        if(newTab == NodeEditorView.CALCULATIONS){
+            view.getCalculationsPanel().initPanel();
+        }
+        
+        // Clear NodeEditor Status Message if Tab is getting changed
+        if(newTab != oldTab)
+            view.clearEditorMessage();;
+        
+        return newTab;
     }
     
     public void initCheckButton(){
@@ -87,4 +125,10 @@ public class AuthorModeNodeEditorController extends NodeEditorController{
     
     }
     
+    public String  demoDescriptionPanel(){
+        return null;
+    }
+    
+    public void planPanelRadioClicked(){
+    }
 }

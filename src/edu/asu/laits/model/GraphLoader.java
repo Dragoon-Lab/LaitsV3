@@ -113,14 +113,15 @@ public class GraphLoader {
             try {
                 vertex.setGraphsStatus(Vertex.GraphsStatus.UNDEFINED);
                 graphPane.addVertex(vertex);
-                System.out.println("Added " + vertex.getName() + "  "+vertex.getVertexIndex());
+                //System.out.println("Added " + vertex.getName() + "  "+vertex.getVertexIndex());
                 vertexHash.put(vertex.getVertexIndex(), vertex);
-                        System.out.println("removing from next nodes  " + vertex.getName() + "  "+vertex.getVertexIndex());
+                logs.debug("removing from next nodes  " + vertex.getName() + "  "+vertex.getVertexIndex());
+                if(!ApplicationContext.isAuthorMode())
                 ApplicationContext.setNextNodes(vertex.getName());
             }
             catch (Exception e){
-                System.err.println("Could not load node:  "+e.getMessage());
-
+                logs.debug("Could not load node:  "+e.getMessage());
+                e.printStackTrace();
             }
         }
 
@@ -130,7 +131,7 @@ public class GraphLoader {
         List<Edge> edgeList = graphFile.getEdgeList();
 
         for (Edge edge : edgeList) {
-            System.out.println("Edge From: "+edge.getSourceVertexId()+"   To: "+edge.getTargetVertexId());
+            //System.out.println("Edge From: "+edge.getSourceVertexId()+"   To: "+edge.getTargetVertexId());
             Vertex sInfo = vertexHash.get(edge.getSourceVertexId());
             Vertex tInfo = vertexHash.get(edge.getTargetVertexId());
 

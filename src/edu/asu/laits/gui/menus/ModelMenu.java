@@ -25,13 +25,11 @@ import edu.asu.laits.gui.GraphViewPanel;
 import edu.asu.laits.gui.MainWindow;
 import edu.asu.laits.gui.nodeeditor.NodeEditorView;
 import edu.asu.laits.model.Graph;
-import edu.asu.laits.model.GraphSaver;
 import edu.asu.laits.model.LaitsSolutionExporter;
 import edu.asu.laits.model.ModelEvaluationException;
 import edu.asu.laits.model.ModelEvaluator;
 import edu.asu.laits.model.SolutionNode;
 import edu.asu.laits.model.TaskSolution;
-import edu.asu.laits.model.TaskSolutionReader;
 import edu.asu.laits.model.Vertex;
 import java.awt.BorderLayout;
 import java.awt.event.ActionEvent;
@@ -55,7 +53,6 @@ import javax.swing.JScrollPane;
 import javax.swing.JTable;
 import javax.swing.filechooser.FileFilter;
 import org.apache.log4j.Logger;
-import org.jgraph.graph.CellView;
 import org.jgraph.graph.DefaultGraphCell;
 import org.jgraph.graph.DefaultPort;
 
@@ -255,16 +252,17 @@ public class ModelMenu extends JMenu {
 
             data = new Object[totalPoints][vertexList.size() - constantVertices + 1];
 
-            double time=startTime;
+            double time=startTime,temp;
             for (int i = 0; i < totalPoints; i++,time+=timeStep) {
                 // data[i][0] will always correspond to timestamp
                 // Set timestamp value (i) if j=0
-                data[i][0] = decimalFormat.format(time);
+                data[i][0] = (float) time;
                 index = 1;
                 for (int j = constantVertices; j < vertexList.size(); j++) {
                     currentVertex = vertexList.get(j);
 
-                    data[i][index] = decimalFormat.format(currentVertex.getCorrectValues().get(i));
+                     temp=currentVertex.getCorrectValues().get(i);
+                     data[i][index] = (float) temp;
                     index++;
                 }
             }
@@ -280,7 +278,7 @@ public class ModelMenu extends JMenu {
         }
 
         ModelEvaluator me = new ModelEvaluator((Graph) graphPane.getModelGraph());
-        MainWindow window = (MainWindow) graphPane.getMainFrame();
+        MainWindow window = MainWindow.getInstance();
         if (me.isModelComplete()) {
             if (!me.hasExtraNodes()) {
                 try {
@@ -361,7 +359,7 @@ public class ModelMenu extends JMenu {
     }
 
     private void showChartDialog() {
-        JDialog graphValuesDialog = new JDialog(graphPane.getMainFrame(), true);
+        JDialog graphValuesDialog = new JDialog(MainWindow.getInstance(), true);
         GraphViewPanel gPanel = new GraphViewPanel(graphPane.getModelGraph(), graphValuesDialog);
         graphValuesDialog.setTitle("Model Graph");
         graphValuesDialog.setSize(610, 530);
@@ -384,22 +382,22 @@ public class ModelMenu extends JMenu {
 
     public void newNodeAction() {
         activityLogs.debug("User Pressed Create Node Button");
-        MainWindow window = (MainWindow) graphPane.getMainFrame();
+        MainWindow window = MainWindow.getInstance();
         if (notAllNodesDefined()) {
             activityLogs.debug("User is allowed to create a new node");
             Vertex v = new Vertex();
             v.setVertexIndex(graphPane.getModelGraph().getNextAvailableIndex());
             graphPane.addVertex(v);
-            graphPane.getMainFrame().getModelToolBar().disableDeleteNodeButton();
+            MainWindow.getInstance().getModelToolBar().disableDeleteNodeButton();
             disableDeleteNodeMenu();
 
-            if (graphPane.getMainFrame().isSituationSelected()) {
+            if (MainWindow.getInstance().isSituationSelected()) {
                 logs.debug("Switching to Model Design Panel");
-                graphPane.getMainFrame().switchTutorModelPanels(false);
+                MainWindow.getInstance().switchTutorModelPanels(false);
             }
 
             graphPane.repaint();
-            NodeEditorView editor = new NodeEditorView(graphPane, v);
+            NodeEditorView editor = new NodeEditorView(v);
 
         } else {
             if (ApplicationContext.getAppMode().equals("COACHED") && !isGraphEmpty()) {
@@ -444,7 +442,7 @@ public class ModelMenu extends JMenu {
     }
 
     public void showForumButtonAction() {
-        JDialog forumDialog = new JDialog(graphPane.getMainFrame(), true);
+        JDialog forumDialog = new JDialog(MainWindow.getInstance(), true);
         new ForumViewPanel(forumDialog);
         forumDialog.setTitle("Discussion Forum");
         forumDialog.setSize(610, 540);
@@ -576,11 +574,11 @@ public class ModelMenu extends JMenu {
 
             v.setVertexType(node.getNodeType());
 
-            if (solution.checkNodeInputs(node.getNodeName(), node.getInputNodes()) == 0) {
-                v.setInputsStatus(Vertex.InputsStatus.CORRECT);
-            } else {
-                v.setInputsStatus(Vertex.InputsStatus.INCORRECT);
-            }
+//            if (solution.checkNodeInputs(node.getNodeName(), node.getInputNodes()) == 0) {
+//                v.setInputsStatus(Vertex.InputsStatus.CORRECT);
+//            } else {
+//                v.setInputsStatus(Vertex.InputsStatus.INCORRECT);
+//            }
 
             if (solution.checkNodeCalculations(v)) {
                 v.setCalculationsStatus(Vertex.CalculationsStatus.CORRECT);

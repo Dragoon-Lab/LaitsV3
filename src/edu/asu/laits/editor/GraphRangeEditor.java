@@ -10,6 +10,7 @@
  */
 package edu.asu.laits.editor;
 
+import edu.asu.laits.gui.MainWindow;
 import edu.asu.laits.model.Task;
 import edu.asu.laits.model.Vertex;
 import edu.asu.laits.model.Graph;
@@ -27,7 +28,7 @@ public class GraphRangeEditor extends javax.swing.JDialog {
     
     /** Creates new form GraphRangeEditor */
     public GraphRangeEditor(GraphEditorPane editorPane, boolean modal) {
-        super(editorPane.getMainFrame(), modal);
+        super(MainWindow.getInstance(), modal);
         this.editorPane = editorPane;
         this.graph = editorPane.getModelGraph();
         initComponents();

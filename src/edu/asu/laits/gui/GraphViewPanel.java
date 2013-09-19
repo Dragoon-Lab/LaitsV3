@@ -70,7 +70,8 @@ public class GraphViewPanel{
         chartContainer = new JXTaskPaneContainer();
         
         addCharts();
-      //  addSliders();
+        // Disabling Sliders until they are ready
+        //addSliders();
     }
     
     private void addSliders() {

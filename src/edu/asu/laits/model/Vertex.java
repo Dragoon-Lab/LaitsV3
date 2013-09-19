@@ -36,12 +36,10 @@ public class Vertex {
     private String plan = "";
     
     // Status of All the Tabs
-    private DescriptionStatus descriptionStatus = DescriptionStatus.UNDEFINED;
-    private PlanStatus planStatus = PlanStatus.UNDEFINED;
-    private InputsStatus inputsStatus = InputsStatus.UNDEFINED;
-    private CalculationsStatus calculationsStatus = 
-            CalculationsStatus.UNDEFINED;
-    private GraphsStatus graphsStatus = GraphsStatus.UNDEFINED;
+    private DescriptionStatus descriptionStatus;
+    private PlanStatus planStatus;
+    private CalculationsStatus calculationsStatus;
+    private GraphsStatus graphsStatus;
     
     private double initialValue;
     private String equation;
@@ -59,7 +57,10 @@ public class Vertex {
      *
      */
     public Vertex() {
-        //name = "Node"+vertexIndex;
+        descriptionStatus = DescriptionStatus.UNDEFINED;
+        planStatus = PlanStatus.UNDEFINED;
+        calculationsStatus = CalculationsStatus.UNDEFINED;
+        graphsStatus = GraphsStatus.UNDEFINED;
         correctValues = new ArrayList<Double>();
         equation = "";        
     }
@@ -70,9 +71,7 @@ public class Vertex {
     
     public void setVertexIndex(int index){
         vertexIndex = index;
-        
-        //xPosition = 200 * (vertexIndex % 6) + 80;
-        //yPosition = 200 * (vertexIndex / 6) + 60 ;
+       
         xPosition = 200 * (vertexIndex % 4) + 480;
         yPosition = 200 * (vertexIndex / 4) + 60 ;
     }
@@ -138,14 +137,6 @@ public class Vertex {
     
     public void setPlanStatus(PlanStatus status){
         this.planStatus = status;
-    }
-    
-    public InputsStatus getInputsStatus(){
-        return inputsStatus;
-    }
-    
-    public void setInputsStatus(InputsStatus status){
-        this.inputsStatus = status;
     }
     
     public CalculationsStatus getCalculationsStatus(){
@@ -333,5 +324,28 @@ public class Vertex {
         UNDEFINED, CORRECT, INCORRECT, GAVEUP
     }
     
+    public boolean isDescriptionDone(){
+        if(descriptionStatus.equals(Vertex.DescriptionStatus.CORRECT) || descriptionStatus.equals(Vertex.DescriptionStatus.GAVEUP)){
+            return true;
+        } else {
+            return false;
+        }
+    }
+        
+    public boolean isPlanDone(){
+        if(planStatus.equals(Vertex.PlanStatus.CORRECT) || planStatus.equals(Vertex.PlanStatus.GAVEUP)){
+            return true;
+        } else {
+            return false;
+        }
+    }
+        
+    public boolean isCalculationsDone(){
+        if(calculationsStatus.equals(Vertex.CalculationsStatus.CORRECT) || calculationsStatus.equals(Vertex.CalculationsStatus.GAVEUP)){
+            return true;
+        } else {
+            return false;
+        }
+    }
     
 }

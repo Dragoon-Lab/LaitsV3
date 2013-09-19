@@ -1,5 +1,22 @@
-package edu.asu.laits.gui.menus;
+/**
+ * (c) 2013, Arizona Board of Regents for and on behalf of Arizona State
+ * University. This file is part of LAITS.
+ *
+ * LAITS is free software: you can redistribute it and/or modify it under the
+ * terms of the GNU Lesser General Public License as published by the Free
+ * Software Foundation, either version 3 of the License, or (at your option) any
+ * later version.
+ *
+ * LAITS is distributed in the hope that it will be useful, but WITHOUT ANY
+ * WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS FOR
+ * A PARTICULAR PURPOSE. See the GNU Lesser General Public License for more
+ * details.
+ *
+ * You should have received a copy of the GNU Lesser General Public License
+ * along with LAITS. If not, see <http://www.gnu.org/licenses/>.
+ */
 
+package edu.asu.laits.gui.menus;
 
 import edu.asu.laits.editor.ApplicationContext;
 import javax.swing.JMenu;
@@ -27,8 +44,6 @@ import edu.asu.laits.editor.listeners.GraphChangeListener;
 import edu.asu.laits.editor.listeners.GraphPropertiesChangeListener;
 import edu.asu.laits.editor.listeners.GraphSaveListener;
 import edu.asu.laits.gui.MainWindow;
-import edu.asu.laits.gui.nodeeditor.NodeEditorView;
-import edu.asu.laits.logger.HttpAppender;
 import edu.asu.laits.model.SolutionNode;
 import edu.asu.laits.model.TaskSolution;
 import edu.asu.laits.model.TaskSolutionReader;
@@ -36,14 +51,10 @@ import edu.asu.laits.model.Vertex;
 import edu.asu.laits.properties.GlobalProperties;
 import edu.asu.laits.properties.GraphProperties;
 import edu.asu.laits.properties.LatestFilesPropertyChangeListener;
-import java.awt.Window;
 import java.io.FileOutputStream;
 import java.io.InputStream;
 import java.io.OutputStream;
-import java.util.HashMap;
 import java.util.Iterator;
-import java.util.LinkedList;
-import java.util.logging.Level;
 
 import javax.swing.JFileChooser;
 import javax.swing.filechooser.FileFilter;
@@ -231,12 +242,12 @@ public class FileMenu extends JMenu {
 
             v.setVertexType(node.getNodeType());
             
-            int inputCheck = solution.checkNodeInputs(node.getNodeName(), node.getInputNodes());
-            if (inputCheck == 0 || inputCheck == 3) {
-                v.setInputsStatus(Vertex.InputsStatus.CORRECT);
-            } else {
-                v.setInputsStatus(Vertex.InputsStatus.INCORRECT);
-            }
+//            int inputCheck = solution.checkNodeInputs(node.getNodeName(), node.getInputNodes());
+//            if (inputCheck == 0 || inputCheck == 3) {
+//                v.setInputsStatus(Vertex.InputsStatus.CORRECT);
+//            } else {
+//                v.setInputsStatus(Vertex.InputsStatus.INCORRECT);
+//            }
 
             if (solution.checkNodeCalculations(v)) {
                 v.setCalculationsStatus(Vertex.CalculationsStatus.CORRECT);
@@ -278,8 +289,7 @@ public class FileMenu extends JMenu {
                 public void actionPerformed(java.awt.event.ActionEvent e) {
                     // If new is called a new main window is created
                     activityLogs.debug("User Pressed New File Menu");
-                    MainWindow newWindow = new MainWindow();
-                    newWindow.setVisible(true);
+                    MainWindow.launch();
                 }
             };
             newFileMenuItem.addActionListener(newAction);
@@ -534,7 +544,7 @@ public class FileMenu extends JMenu {
      * Tries to save to the specified file
      */
     private void saveToFile(File file) {
-        GraphSaver saver = new GraphSaver(graphPane);
+        GraphSaver saver = new GraphSaver();
         try {
             FileWriter writer = new FileWriter(file);
             saver.write(writer);

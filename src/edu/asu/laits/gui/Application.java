@@ -54,7 +54,7 @@ public class Application extends JApplet {
                 }
 
                 // Main application window of LAITS
-                MainWindow window = new MainWindow();
+                MainWindow.launch();
 
             } catch (Exception e) {
                 JOptionPane.showMessageDialog(null, e.getMessage(),
@@ -94,7 +94,7 @@ public class Application extends JApplet {
         ApplicationContext.setSection(System.getProperty("jnlp.section","testing"));
         
         System.out.println("Application is Running in : "+ApplicationContext.getApplicationEnvironment()
-                +" Environment and "+ApplicationContext.getAppMode()+" Mode");
+                +" Environment and "+ApplicationContext.getAppMode().toString()+" Mode");
         ApplicationContext.setUserValid(true);
     }
 }

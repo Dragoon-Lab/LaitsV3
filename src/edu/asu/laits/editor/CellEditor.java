@@ -51,7 +51,7 @@ public class CellEditor extends BasicGraphUI {
         GraphEditorPane g = (GraphEditorPane) graph;
         DefaultGraphCell gc = (DefaultGraphCell) g.getSelectionCell();
         Vertex v = (Vertex) gc.getUserObject();
-        new NodeEditorView(g, v);
+        new NodeEditorView(v);
     }
 
     /**
