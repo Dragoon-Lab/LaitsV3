@@ -757,7 +757,7 @@ public class CalculationsPanelView extends javax.swing.JPanel {
         buttonSubtract.setEnabled(b);
         buttonMultiply.setEnabled(b);
         buttonDivide.setEnabled(b);
-        setCreateButtonEnabled();
+        buttonCreateNodeInputTab.setEnabled(b);
     }
     
     public void setCreateButtonEnabled(){
