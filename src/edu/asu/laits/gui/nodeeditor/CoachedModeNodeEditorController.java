@@ -43,23 +43,22 @@ public class CoachedModeNodeEditorController extends NodeEditorController {
             if (openVertex.isDescriptionDone()) {
                 view.getDescriptionPanel().setEditableTree(false);
                 view.getPlanPanel().refreshPanel();
-                if((openVertex.isPlanDone() && newTab == NodeEditorView.CALCULATIONS)|| (!openVertex.isPlanDone() && newTab == NodeEditorView.PLAN)){
-                    
+                if(openVertex.isPlanDone() && newTab == NodeEditorView.CALCULATIONS){
                     return newTab;
-                } else{
+                } else if(!openVertex.isPlanDone() && newTab == NodeEditorView.CALCULATIONS){
                     return oldTab;
                     
                 }
             } else {
                 return oldTab;
             }
-        } else if(newTab == 2){
-            view.getCalculationsPanel().initPanel();
-            if(!openVertex.isCalculationsDone()){
-                view.getCheckButton().setEnabled(true);
-                view.getDemoButton().setEnabled(true);
+        }else if (oldTab == NodeEditorView.PLAN){
+            if(openVertex.isPlanDone()){
+                view.getCalculationsPanel().initPanel();
+                return newTab;
+            } else if(newTab!=NodeEditorView.DESCRIPTION){
+                return oldTab;
             }
-            
         }
         return newTab;
     }
@@ -69,10 +68,39 @@ public class CoachedModeNodeEditorController extends NodeEditorController {
     }
     
     public void initCheckButton() {
+        if(view.getTabbedPane().getSelectedIndex() == NodeEditorView.PLAN){
+            view.getCheckButton().setEnabled(false);
+        }else if(view.getTabbedPane().getSelectedIndex() == NodeEditorView.DESCRIPTION){
+            if(openVertex.isDescriptionDone()){
+                view.getCheckButton().setEnabled(false);
+            } else{
+                view.getCheckButton().setEnabled(true);
+            }
+        }else if(view.getTabbedPane().getSelectedIndex() == NodeEditorView.CALCULATIONS){
+            if(openVertex.isCalculationsDone()){
+                view.getCheckButton().setEnabled(false);
+            } else{
+                view.getCheckButton().setEnabled(true);
+            }
+        }
     }
 
     public void initDemoButton() {
-        super.initDemoButton();
+        if(view.getTabbedPane().getSelectedIndex() == NodeEditorView.PLAN){
+            view.getDemoButton().setEnabled(false);
+        }else if(view.getTabbedPane().getSelectedIndex() == NodeEditorView.DESCRIPTION){
+            if(openVertex.isDescriptionDone()){
+                view.getDemoButton().setEnabled(false);
+            } else{
+                view.getDemoButton().setEnabled(true);
+            }
+        }else if(view.getTabbedPane().getSelectedIndex() == NodeEditorView.CALCULATIONS){
+            if(openVertex.isCalculationsDone()){
+                view.getDemoButton().setEnabled(false);
+            } else{
+                view.getDemoButton().setEnabled(true);
+            }
+        }
     }
 
     public void initOkButton() {
