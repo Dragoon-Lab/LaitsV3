@@ -173,7 +173,9 @@ public class PlotPanel extends JXTaskPane {
         plot.setAxisOffset(new RectangleInsets(5.0, 5.0, 5.0, 5.0));
         plot.setDomainCrosshairVisible(true);
         plot.setRangeCrosshairVisible(true);
-
+        
+        plot.getRangeAxis().setRange(((XYSeriesCollection)xydataset).getRangeLowerBound(true), ((XYSeriesCollection)xydataset).getRangeUpperBound(true));
+       
         NumberAxis domain = (NumberAxis) plot.getDomainAxis();
         // Don't want any padding on left or right.
         domain.setRange(start, end);
@@ -233,6 +235,7 @@ public class PlotPanel extends JXTaskPane {
             }
                 
             ((XYSeriesCollection)xydataset).addSeries(series);
+            ((XYPlot)jfreeChart.getPlot()).getRangeAxis().setRange(((XYSeriesCollection)xydataset).getRangeLowerBound(true), ((XYSeriesCollection)xydataset).getRangeUpperBound(true));
             jfreeChart.fireChartChanged(); 
     }
     

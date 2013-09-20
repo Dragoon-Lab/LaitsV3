@@ -106,7 +106,12 @@ public class GraphViewPanel{
     }
     
     private DoubleJSlider addSlider(Vertex vertex, Task task){
-        return new DoubleJSlider(0, 5*vertex.getInitialValue(), vertex.getInitialValue());
+        //handle negative values
+        if(vertex.getInitialValue() > 0)
+            return new DoubleJSlider(0, 5*vertex.getInitialValue(), vertex.getInitialValue());
+        else
+            return new DoubleJSlider(vertex.getInitialValue()-1 , -5*vertex.getInitialValue(), vertex.getInitialValue());
+            
     }
     
     private void addCharts(){
