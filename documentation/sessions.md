@@ -45,7 +45,8 @@ has columns for user name, section, problem name, time stamp, the student
 graph xml (text format), and the author name (default, empty string). 
 For published problems, the author name is an empty string. The primary key 
 for the table should consist of:  section, user name, problem name, and author name.
-It is important that section is listed first.
+It is important that section is listed first. 
+This table is accessed via the script `postvar.php`.
 * `solutions` table stores solution graphs for custom problems.
 This table has columns for author name, section, problem name, a "share" bit
 (default zero), a "deleted" bit (default zero), a timestamp and the 
@@ -61,6 +62,7 @@ all students in a section may view that problem. Custom problems cannot
 be viewed by users outside of a section.
 
 ## Access to the custom problem solution graphs ##
+
 
 Currently, in author mode, the user can explicitly save a problem solution graph
 on the local machine via a menu selection. Any sharing with other students
@@ -79,7 +81,8 @@ set the "share" bit. It *may* overwrite any existing entry with matching author,
 section, and problem.
 
 If the user is in author mode, `save_solution.php` is called at all instances
-where the `autosave.php` is invoked in student mode.
+where the `postvar.php` is invoked in student mode.
+
 
 ## Custom Problem Selection ##
 
