@@ -270,6 +270,9 @@ public class CreateNewNodeDialog extends javax.swing.JDialog {
     
     private void close() {
         System.out.println("closing");
+        if(ApplicationContext.isAuthorMode()){
+            dPanel.processDescriptionPanel();
+        }
         if (currentVertex.getName().equals("") || currentVertex.getDescriptionStatus().equals(Vertex.DescriptionStatus.INCORRECT)) {
            // ne.getGraphPane().removeSelected();
             ne.getGraphPane().setSelectionCell(currentVertex.getJGraphVertex());
@@ -283,6 +286,7 @@ public class CreateNewNodeDialog extends javax.swing.JDialog {
         ne.getCalculationsPanel().setCreateButtonEnabled();
         this.dispose();
         ne.addHelpBalloon(currentVertex.getName(), "newNodeClosed", "INPUTS");
+       
         
     }
     
