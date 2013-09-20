@@ -19,19 +19,9 @@ package edu.asu.laits.model;
 
 import edu.asu.laits.editor.ApplicationContext;
 import edu.asu.laits.logger.HttpAppender;
-import edu.asu.laits.editor.GraphEditorPane;
 import edu.asu.laits.gui.menus.ModelMenu;
-import edu.asu.laits.model.LaitsSolutionExporter;
-import java.io.IOException;
-import java.io.UnsupportedEncodingException;
 import java.net.URLEncoder;
-import java.util.HashMap;
-import java.util.Map;
 import java.util.logging.Level;
-import org.apache.http.HttpResponse;
-import org.apache.http.HttpStatus;
-import org.apache.http.client.methods.HttpGet;
-import org.apache.http.impl.client.DefaultHttpClient;
 import org.apache.log4j.Logger;
 
 /**
@@ -50,7 +40,7 @@ public class PersistenceManager implements Runnable {
     }
 
     public static void saveSession() {
-        PersistenceManager persistanceManager = new PersistenceManager(new GraphSaver(ApplicationContext.getGraphEditorPane()));
+        PersistenceManager persistanceManager = new PersistenceManager(new GraphSaver());
         Thread t = new Thread(persistanceManager);
         t.start();
     }
@@ -64,14 +54,14 @@ public class PersistenceManager implements Runnable {
             ModelMenu.updateGraph();
             //if user is in AUTHOR mode save solution in server
             if (ApplicationContext.isAuthorMode()) {
-                String sendSession = sessionSaver.saveGetSession("author_save", ApplicationContext.getRootURL().concat("/save_solution.php"),
+                String sendSession = sessionSaver.saveGetSession("author_save", ApplicationContext.getRootURL().concat("/postvar.php"),
                         ApplicationContext.getUserID(), ApplicationContext.getSection(), ApplicationContext.getCurrentTaskID(),
                         ModelMenu.graph, "0");
                 statusCode = Integer.parseInt(sendSession);
                 if (statusCode == 200) {
-                    logs.info("Successfully saved author's solution to server using " + ApplicationContext.getRootURL().concat("/save_solution.php"));
+                    logs.info("Successfully saved author's solution to server using " + ApplicationContext.getRootURL().concat("/postvar.php"));
                 } else {
-                    logs.error("Error: URL " + ApplicationContext.getRootURL().concat("/save_solution.php")
+                    logs.error("Error: URL " + ApplicationContext.getRootURL().concat("/postvar.php")
                             + " returned status code " + statusCode);
                 }
             }

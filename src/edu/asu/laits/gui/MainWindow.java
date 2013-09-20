@@ -73,6 +73,7 @@ public class MainWindow extends JFrame {
     private List<JToolBar> toolBars = new LinkedList<JToolBar>();
     private StatusBarPanel statusBarPanel = null;
     private boolean isSituationTabSelected = true;
+   
     // Label to Display Tasks
     JLabel situationLabel;
     /**
@@ -81,20 +82,39 @@ public class MainWindow extends JFrame {
     private static Logger logs = Logger.getLogger("DevLogs");
     private static Logger activityLogs = Logger.getLogger("ActivityLogs");
     private static MainWindow _instance;
-
+    
     /**
-     * This method initializes
-     *
+     * Method to get static instance of Main Application Window
+     * @return 
      */
-    public MainWindow() {
+    public static MainWindow getInstance(){
+        if(_instance == null){
+            _instance = new MainWindow();
+            if(!ApplicationContext.isAuthorMode()){
+                 _instance.loadTask();    
+            }
+            _instance.loadSession();
+            _instance.setFrameTitle();
+        }
+        return _instance;
+    }
+    
+    /**
+     * Method to Launch the Application - called from main method
+     */
+    public static void launch(){
+        MainWindow window = getInstance();
+        window.pack();
+        window.setVisible(true);       
+    }
+    
+    /**
+     * Private Constructor to implement Singleton
+     */
+    private MainWindow() {
         super();
         initializeFrameElements();
-
-        if (!ApplicationContext.isAuthorMode()) {
-            loadTask();
-        }
-        loadSession();
-        setFrameTitle();
+      //  setFrameTitle();
 
         GraphPropertiesChangeListener l = new MainGraphPropertiesChangeListener();
         l.graphPropertiesChanged();
@@ -104,13 +124,6 @@ public class MainWindow extends JFrame {
         setExtendedState(MAXIMIZED_BOTH);
         setDefaultCloseOperation(DO_NOTHING_ON_CLOSE);
         windowCount++;
-
-        pack();
-        setVisible(true);
-        if (ApplicationContext.isCoachedMode()) {
-            addHelpBalloon(ApplicationContext.getFirstNextNode(), "onLoad");
-        }
-
     }
 
     public void addHelpBalloon(String node, String timing) {
@@ -328,14 +341,13 @@ public class MainWindow extends JFrame {
      */
     public GraphEditorPane getGraphEditorPane() {
         if (graphEditorPane == null) {
+            logs.debug("making new graph editor pane");
             graphEditorPane = new GraphEditorPane(this, getStatusBarPanel());
             //getStatusBarPanel().setGraphPane(graphEditorPane);
             graphEditorPane.setAntiAliased(GlobalProperties.getInstance()
                     .isAntialiasing());
             graphEditorPane.setDoubleBuffered(GlobalProperties.getInstance()
-                    .isDoubleBuffering());
-            // Set GraphEditorPane in ApplicationContext to make is visible to whole app
-            ApplicationContext.setGraphEditorPane(graphEditorPane);
+                    .isDoubleBuffering());            
         }
         graphEditorPane.setBackgroundComponent(situationLabel);
         return graphEditorPane;
@@ -354,16 +366,9 @@ public class MainWindow extends JFrame {
             // Save session in Server when graph changes
             prop.addGraphChangeListener(new GraphChangeListener() {
                 public void graphChanged() {
-                    PersistenceManager.saveSession();
+                    //PersistenceManager.saveSession();     
                 }
             });
-
-//            prop.addSaveListener(new GraphSaveListener() {
-//                public void graphSaved() {
-//                    setTitle(prop.getSavedAs().getName() + " - "
-//                            + GlobalProperties.PROGRAM_NAME);
-//                }
-//            });
         }
     }
 
@@ -376,43 +381,6 @@ public class MainWindow extends JFrame {
 
     public void exitWindow() {
         activityLogs.info("User exited LAITS....");
-
-        /*GlobalProperties.getInstance().saveToPropertiesFile();
-        
-         //        if (getGraphEditorPane().getGraphProperties().isChanged()) {
-         //            int answear = JOptionPane
-         //                    .showConfirmDialog(
-         //                    getRootPane(),
-         //                    "The graph has been changed.\nDo you want to save changes before exit?",
-         //                    "Save before exit?",
-         //                    JOptionPane.YES_NO_CANCEL_OPTION);
-         //            switch (answear) {
-         //                case JOptionPane.YES_OPTION:
-         //                    getMainMenu().getFileMenu().save();
-         //                    break;
-         //                case JOptionPane.NO_OPTION:
-         //
-         //                    break;
-         //                case JOptionPane.CANCEL_OPTION:
-         //                    // Dont close window and return
-         //                    return;
-         //
-         //            }
-         //        }
-         int answear = JOptionPane
-         .showConfirmDialog(
-         getRootPane(),
-         "Are you sure you want to exit?",
-         "Exit Application?",
-         JOptionPane.YES_NO_OPTION);
-         switch (answear) {
-         case JOptionPane.YES_OPTION:
-         break;
-         case JOptionPane.NO_OPTION:
-
-         return;
-         }
-         }*/
 
         windowCount--;
         if (windowCount == 0) {
@@ -509,19 +477,31 @@ public class MainWindow extends JFrame {
         try {
             //if user is in AUTHOR mode save solution in server
             if (ApplicationContext.isAuthorMode()) {
-                String xmlAuthorString = sessionLoader.saveGetSession("author_load", ApplicationContext.getRootURL().concat("/save_solution.php"),
-                        ApplicationContext.getUserID(), ApplicationContext.getSection(), ApplicationContext.getCurrentTaskID(), "", "");
-                ModelMenu.graph = xmlAuthorString;
-                if (!xmlAuthorString.trim().isEmpty()) {
+                xmlString = sessionLoader.saveGetSession("author_load", 
+                        ApplicationContext.getRootURL().concat("/postvar.php"),
+                        ApplicationContext.getUserID(), 
+                        ApplicationContext.getSection(), 
+                        ApplicationContext.getCurrentTaskID(), 
+                        "", 
+                        "");
+                
+                ModelMenu.graph = xmlString;
+                
+                if (!xmlString.trim().isEmpty()) {
                     logs.debug("Previously authored graph found. User: " + user + " Section: " + section + " Prob: " + probNum);
                 }
+            }else{
+                xmlString = sessionLoader.saveGetSession("load", 
+                        ApplicationContext.getRootURL().concat("/postvar.php"),
+                        ApplicationContext.getUserID(), 
+                        ApplicationContext.getSection(), 
+                        ApplicationContext.getCurrentTaskID(), 
+                        "", 
+                        "");
             }
-            xmlString = sessionLoader.saveGetSession("load", ApplicationContext.getRootURL().concat("/postvar.php"),
-                    ApplicationContext.getUserID(), ApplicationContext.getSection(), ApplicationContext.getCurrentTaskID(), "", "");
-
         } catch (Exception ex) {
-            java.util.logging.Logger.getLogger(GraphLoader.class.getName()).log(Level.SEVERE, null, ex);
-            logs.error("Problem loading session from database. " + ex.getMessage());
+            logs.error("Error loading session from database. " + ex.getMessage());
+            ex.printStackTrace();
         }
 
         if (!xmlString.trim().isEmpty()) {
@@ -543,12 +523,5 @@ public class MainWindow extends JFrame {
         getInstance().getGraphEditorPane().repaint();
         getInstance().validate();
         getInstance().repaint();
-    }
-    
-    public static MainWindow getInstance(){
-        if(_instance == null){
-            _instance = new MainWindow();
-        }
-        return _instance;
     }
 }

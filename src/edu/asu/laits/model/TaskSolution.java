@@ -30,7 +30,7 @@ import org.apache.log4j.Logger;
 import org.jgraph.graph.DefaultPort;
 
 /**
- *
+ * Represents Solutions of Dragoon Problem
  * @author ramayantiwari
  */
 public class TaskSolution {
@@ -40,8 +40,7 @@ public class TaskSolution {
     private String taskType;
     private String taskDescription;
     private String imageURL;
-    private int startTime;
-    private int endTime;
+    private Times times;
     private String graphUnits;
     private int nodeCount;
     private List<SolutionNode> solutionNodes;
@@ -60,6 +59,7 @@ public class TaskSolution {
         givenNodes = new ArrayList<SolutionNode>();
         correctNodeNames = new ArrayList<String>();
         helpBubbles = new ArrayList<HelpBubble>();
+        times = new Times();
     }
 
     /**
@@ -171,31 +171,10 @@ public class TaskSolution {
         this.functionSubPlans.add(functionSubPlan);
     }
     /**
-     * @return the startTime
+     * @return the timeStep
      */
-    public int getStartTime() {
-        return startTime;
-    }
-
-    /**
-     * @param startTime the startTime to set
-     */
-    public void setStartTime(int startTime) {
-        this.startTime = startTime;
-    }
-
-    /**
-     * @return the endTime
-     */
-    public int getEndTime() {
-        return endTime;
-    }
-
-    /**
-     * @param endTime the endTime to set
-     */
-    public void setEndTime(int endTime) {
-        this.endTime = endTime;
+    public Times getTimes() {
+        return this.times;
     }
 
     /**
@@ -499,7 +478,7 @@ public class TaskSolution {
 
                 v.setVertexType(node.getNodeType());
 
-                v.setInputsStatus(Vertex.InputsStatus.CORRECT);
+                //v.setInputsStatus(Vertex.InputsStatus.CORRECT);
                 v.setCalculationsStatus(Vertex.CalculationsStatus.CORRECT);
 
                 solutionGraph.addVertex(v);
