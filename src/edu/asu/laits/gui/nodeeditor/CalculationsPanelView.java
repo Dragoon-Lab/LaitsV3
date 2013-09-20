@@ -98,6 +98,11 @@ public class CalculationsPanelView extends javax.swing.JPanel {
             preparePanelForFlow();
             formulaInputArea.setText(openVertex.getEquation());
         }
+        if(openVertex.getCalculationsStatus().equals(Vertex.CalculationsStatus.CORRECT)){
+            setCheckedBackground(Color.GREEN);
+        }else if(openVertex.getCalculationsStatus().equals(Vertex.CalculationsStatus.GAVEUP)){
+            setCheckedBackground(Color.YELLOW);
+        }
         
     }
     
@@ -316,11 +321,7 @@ public class CalculationsPanelView extends javax.swing.JPanel {
     
     public void setCheckedBackground(Color c) {
         
-        if (openVertex.getVertexType().equals(Vertex.VertexType.CONSTANT)) {
-            fixedValueInputBox.setBackground(c);
-        }
-        
-        if(openVertex.getVertexType().equals(Vertex.VertexType.STOCK)) {
+        if (openVertex.getVertexType().equals(Vertex.VertexType.CONSTANT) || openVertex.getVertexType().equals(Vertex.VertexType.STOCK)) {
             fixedValueInputBox.setBackground(c);
         }
         
@@ -652,21 +653,23 @@ public class CalculationsPanelView extends javax.swing.JPanel {
      * disabled.
      */
     private void availableInputsJListMouseClicked(java.awt.event.MouseEvent evt) {
-        int i = availableInputsJList.getSelectedIndex();
-        
-        availableInputJListModel.set(i, removeBoldfromListItem(availableInputJListModel.get(i).toString()));
-        
-        formulaInputArea.setText(formulaInputArea.getText() + " "
-                                 + availableInputsJList.getSelectedValue().toString());
-        activityLogs.debug("User selected input "+availableInputsJList.getSelectedValue().toString()+
-                           " for the Calculations of Node "+openVertex.getName());
-        Graph graph = (Graph) this.nodeEditor.getGraphPane().getModelGraph();
-        Vertex connectedVertex = graph.getVertexByName(availableInputsJList.getSelectedValue().toString());
-        if(!graph.containsEdge(connectedVertex, openVertex)){
-            addEdge(connectedVertex, openVertex);
+        if(!openVertex.isCalculationsDone()){
+            int i = availableInputsJList.getSelectedIndex();
+
+            availableInputJListModel.set(i, removeBoldfromListItem(availableInputJListModel.get(i).toString()));
+
+            formulaInputArea.setText(formulaInputArea.getText() + " "
+                                     + availableInputsJList.getSelectedValue().toString());
+            activityLogs.debug("User selected input "+availableInputsJList.getSelectedValue().toString()+
+                               " for the Calculations of Node "+openVertex.getName());
+            Graph graph = (Graph) this.nodeEditor.getGraphPane().getModelGraph();
+            Vertex connectedVertex = graph.getVertexByName(availableInputsJList.getSelectedValue().toString());
+            if(!graph.containsEdge(connectedVertex, openVertex)){
+                addEdge(connectedVertex, openVertex);
+            }
+
+            availableInputJListModel.set(i, addBoldtoListItem(availableInputsJList.getSelectedValue().toString()));
         }
-        
-        availableInputJListModel.set(i, addBoldtoListItem(availableInputsJList.getSelectedValue().toString()));
     }
    
     private void fixedValueInputBoxKeyReleased(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_fixedValueInputBoxKeyReleased
