@@ -67,6 +67,7 @@ public class CoachedModeNodeEditorController extends NodeEditorController {
     
     }
     
+    // Duplicates code in initDemoButton
     public void initCheckButton() {
         if(view.getTabbedPane().getSelectedIndex() == NodeEditorView.PLAN){
             view.getCheckButton().setEnabled(false);
@@ -85,6 +86,7 @@ public class CoachedModeNodeEditorController extends NodeEditorController {
         }
     }
 
+    // Duplicates code in initCheckButton 
     public void initDemoButton() {
         if(view.getTabbedPane().getSelectedIndex() == NodeEditorView.PLAN){
             view.getDemoButton().setEnabled(false);
