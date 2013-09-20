@@ -465,9 +465,6 @@ public class CalculationsPanelView extends javax.swing.JPanel {
         formulaInputArea.setToolTipText("Node Equation");
         formulaInputArea.setDisabledTextColor(new java.awt.Color(102, 102, 102));
         formulaInputArea.addKeyListener(new java.awt.event.KeyAdapter() {
-            public void keyTyped(java.awt.event.KeyEvent evt) {
-                formulaInputAreaKeyTyped(evt);
-            }
             public void keyReleased(java.awt.event.KeyEvent evt) {
                 formulaInputAreaKeyReleased(evt);
             }
@@ -577,7 +574,7 @@ public class CalculationsPanelView extends javax.swing.JPanel {
                         .addGroup(calculatorPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                             .addComponent(buttonDivide)
                             .addComponent(buttonMultiply))
-                        .addGap(0, 0, Short.MAX_VALUE))
+                        .addGap(0, 94, Short.MAX_VALUE))
                     .addComponent(jScrollPane4, javax.swing.GroupLayout.DEFAULT_SIZE, 315, Short.MAX_VALUE))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(buttonCreateNodeInputTab))
@@ -719,11 +716,6 @@ public class CalculationsPanelView extends javax.swing.JPanel {
 //GEN-FIRST:event_availableInputsJListMouseClicked
  
 //GEN-LAST:event_availableInputsJListMouseClicked
-
-    private void formulaInputAreaKeyTyped(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_formulaInputAreaKeyTyped
-        // TODO add your handling code here:
-
-    }//GEN-LAST:event_formulaInputAreaKeyTyped
 
     private void formulaInputAreaKeyReleased(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_formulaInputAreaKeyReleased
         // TODO add your handling code here:
