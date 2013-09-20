@@ -160,13 +160,14 @@ public class CalculationsPanelView extends javax.swing.JPanel {
         fixedValueLabel.setVisible(true);
         fixedValueLabel.setText(openVertex.getName() + " =");
         calculatorPanel.setVisible(false);
+        
     }
     
     public void preparePanelForFlow() {
         fixedValueInputBox.setVisible(false);
         fixedValueLabel.setVisible(false);
         calculatorPanel.setVisible(true);
-   //     accumulatorPanel.setVisible(false);
+        accumulatorTimeLabel.setVisible(false);
         formulaInputArea.setText("");
         valuesLabel.setText(openVertex.getName() + " =");
     }
@@ -176,10 +177,12 @@ public class CalculationsPanelView extends javax.swing.JPanel {
         fixedValueInputBox.setVisible(true);
         fixedValueLabel.setVisible(true);
         calculatorPanel.setVisible(true);
+        accumulatorTimeLabel.setVisible(true);
         formulaInputArea.setText("");
         
         if(!ApplicationContext.isAuthorMode())
-            valuesLabel.setText("Change in " + openVertex.getName() + " per " + ApplicationContext.getCorrectSolution().getGraphUnits() + " = ");
+            //valuesLabel.setText("Change in " + openVertex.getName() + " per " + ApplicationContext.getCorrectSolution().getGraphUnits() + " = ");
+            valuesLabel.setText("<html><body style='width: 275px'>New " + openVertex.getName() + "= <br />Old " + openVertex.getName() + " +</body></html>");
     }
     
     public boolean processCalculationsPanel() {
@@ -427,6 +430,7 @@ public class CalculationsPanelView extends javax.swing.JPanel {
         buttonMultiply = new javax.swing.JButton();
         buttonDivide = new javax.swing.JButton();
         buttonCreateNodeInputTab = new javax.swing.JButton();
+        accumulatorTimeLabel = new javax.swing.JLabel();
 
         setLayout(new org.netbeans.lib.awtextra.AbsoluteLayout());
 
@@ -525,6 +529,9 @@ public class CalculationsPanelView extends javax.swing.JPanel {
             }
         });
 
+        accumulatorTimeLabel.setFont(new java.awt.Font("Lucida Grande", 1, 13)); // NOI18N
+        accumulatorTimeLabel.setText("* Change in Time");
+
         javax.swing.GroupLayout calculatorPanelLayout = new javax.swing.GroupLayout(calculatorPanel);
         calculatorPanel.setLayout(calculatorPanelLayout);
         calculatorPanelLayout.setHorizontalGroup(
@@ -536,21 +543,19 @@ public class CalculationsPanelView extends javax.swing.JPanel {
                             .addComponent(availableInputsLabel)
                             .addComponent(jScrollPane4, javax.swing.GroupLayout.PREFERRED_SIZE, 229, javax.swing.GroupLayout.PREFERRED_SIZE))
                         .addGap(18, 18, 18)
-                        .addGroup(calculatorPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                        .addGroup(calculatorPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                            .addComponent(jScrollPane1, javax.swing.GroupLayout.DEFAULT_SIZE, 219, Short.MAX_VALUE)
                             .addGroup(calculatorPanelLayout.createSequentialGroup()
-                                .addGap(12, 12, 12)
-                                .addComponent(valuesLabel))
-                            .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 219, javax.swing.GroupLayout.PREFERRED_SIZE)
-                            .addGroup(calculatorPanelLayout.createSequentialGroup()
-                                .addGroup(calculatorPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                                    .addComponent(buttonAdd, javax.swing.GroupLayout.PREFERRED_SIZE, 54, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                    .addGroup(calculatorPanelLayout.createSequentialGroup()
-                                        .addGap(6, 6, 6)
-                                        .addComponent(buttonDivide, javax.swing.GroupLayout.PREFERRED_SIZE, 55, javax.swing.GroupLayout.PREFERRED_SIZE)))
-                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                                .addGroup(calculatorPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                                .addGap(38, 38, 38)
+                                .addGroup(calculatorPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
                                     .addComponent(buttonMultiply, javax.swing.GroupLayout.PREFERRED_SIZE, 53, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                    .addComponent(buttonSubtract, javax.swing.GroupLayout.PREFERRED_SIZE, 55, javax.swing.GroupLayout.PREFERRED_SIZE)))))
+                                    .addComponent(buttonAdd, javax.swing.GroupLayout.PREFERRED_SIZE, 54, javax.swing.GroupLayout.PREFERRED_SIZE))
+                                .addGap(18, 18, 18)
+                                .addGroup(calculatorPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                                    .addComponent(buttonSubtract, javax.swing.GroupLayout.PREFERRED_SIZE, 55, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                    .addComponent(buttonDivide, javax.swing.GroupLayout.PREFERRED_SIZE, 55, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                            .addComponent(accumulatorTimeLabel)
+                            .addComponent(valuesLabel, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)))
                     .addGroup(calculatorPanelLayout.createSequentialGroup()
                         .addContainerGap()
                         .addComponent(buttonCreateNodeInputTab)))
@@ -558,27 +563,31 @@ public class CalculationsPanelView extends javax.swing.JPanel {
         );
         calculatorPanelLayout.setVerticalGroup(
             calculatorPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, calculatorPanelLayout.createSequentialGroup()
+            .addGroup(calculatorPanelLayout.createSequentialGroup()
                 .addContainerGap()
                 .addGroup(calculatorPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addComponent(availableInputsLabel)
-                    .addComponent(valuesLabel, javax.swing.GroupLayout.PREFERRED_SIZE, 16, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addGap(18, 18, 18)
-                .addGroup(calculatorPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, calculatorPanelLayout.createSequentialGroup()
+                        .addComponent(availableInputsLabel)
+                        .addGap(18, 18, 18)
+                        .addComponent(jScrollPane4, javax.swing.GroupLayout.DEFAULT_SIZE, 315, Short.MAX_VALUE)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                        .addComponent(buttonCreateNodeInputTab))
                     .addGroup(calculatorPanelLayout.createSequentialGroup()
+                        .addGap(44, 44, 44)
+                        .addComponent(valuesLabel, javax.swing.GroupLayout.PREFERRED_SIZE, 43, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                         .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 141, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addGap(18, 18, 18)
+                        .addComponent(accumulatorTimeLabel)
                         .addGap(18, 18, 18)
                         .addGroup(calculatorPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                             .addComponent(buttonAdd, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                             .addComponent(buttonSubtract))
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                         .addGroup(calculatorPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                            .addComponent(buttonDivide)
-                            .addComponent(buttonMultiply))
-                        .addGap(0, 94, Short.MAX_VALUE))
-                    .addComponent(jScrollPane4, javax.swing.GroupLayout.DEFAULT_SIZE, 315, Short.MAX_VALUE))
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(buttonCreateNodeInputTab))
+                            .addComponent(buttonMultiply)
+                            .addComponent(buttonDivide))
+                        .addGap(0, 0, Short.MAX_VALUE))))
         );
 
         contentPanel.add(calculatorPanel, new org.netbeans.lib.awtextra.AbsoluteConstraints(10, 30, 470, 390));
@@ -787,6 +796,7 @@ public class CalculationsPanelView extends javax.swing.JPanel {
     }
     
     // Variables declaration - do not modify//GEN-BEGIN:variables
+    private javax.swing.JLabel accumulatorTimeLabel;
     private javax.swing.JList availableInputsJList;
     private javax.swing.JLabel availableInputsLabel;
     private javax.swing.JButton buttonAdd;
