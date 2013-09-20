@@ -251,8 +251,10 @@ public class CreateNewNodeDialog extends javax.swing.JDialog {
             
         } else if(solutionCheck == 2){
             dPanel.setTextFieldBackground(Color.CYAN);
+            currentVertex.setDescriptionStatus(Vertex.DescriptionStatus.INCORRECT);
             setEditorMessage("Quantity is used in model, but is not ready to be defined. Please try another description.", true);
             activityLogs.debug("User entered description out of order");
+            
         } else {
             currentVertex.setDescriptionStatus(Vertex.DescriptionStatus.INCORRECT);
             dPanel.setTextFieldBackground(Color.RED);
@@ -268,6 +270,9 @@ public class CreateNewNodeDialog extends javax.swing.JDialog {
     
     private void close() {
         System.out.println("closing");
+        if(ApplicationContext.isAuthorMode()){
+            dPanel.processDescriptionPanel();
+        }
         if (currentVertex.getName().equals("") || currentVertex.getDescriptionStatus().equals(Vertex.DescriptionStatus.INCORRECT)) {
            // ne.getGraphPane().removeSelected();
             ne.getGraphPane().setSelectionCell(currentVertex.getJGraphVertex());
@@ -281,6 +286,7 @@ public class CreateNewNodeDialog extends javax.swing.JDialog {
         ne.getCalculationsPanel().setCreateButtonEnabled();
         this.dispose();
         ne.addHelpBalloon(currentVertex.getName(), "newNodeClosed", "INPUTS");
+       
         
     }
     

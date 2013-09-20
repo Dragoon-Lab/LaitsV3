@@ -74,6 +74,10 @@ public class DecimalTextField extends JFormattedTextField {
         {      
           super.processKeyEvent(ev);
         }
+        if(getText().contains("-")){
+            super.setText(getText().replace("-", ""));
+            super.setText("-" + getText());
+        }
       }
    }
     

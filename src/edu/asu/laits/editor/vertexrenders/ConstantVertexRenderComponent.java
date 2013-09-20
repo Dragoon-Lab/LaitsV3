@@ -114,7 +114,6 @@ public class ConstantVertexRenderComponent   extends VertexRenderComponent {
     protected void paintComponent(Graphics g) {
         super.paintComponent(g);
         drawVertex(g);
-
     }
 
     @Override
@@ -168,33 +167,18 @@ public class ConstantVertexRenderComponent   extends VertexRenderComponent {
     public void drawVertex(Graphics g) {
         Graphics2D g2 = (Graphics2D) g;
         boolean isCorrect = false;
-        if(currentVertex.getDescriptionStatus().equals(Vertex.DescriptionStatus.CORRECT)){
-            g2.setColor(Color.GREEN);
-            isCorrect = true;           
-        }else if(currentVertex.getDescriptionStatus().equals(Vertex.DescriptionStatus.GAVEUP)){
-            g2.setColor(new Color(0x90, 0x90, 0x00));
-            isCorrect = true;           
-        }else if(currentVertex.getPlanStatus().equals(Vertex.PlanStatus.CORRECT) && 
-            currentVertex.getCalculationsStatus().equals(Vertex.CalculationsStatus.CORRECT)){
-            g2.setColor(Color.BLUE);
-            isCorrect = true;
-        }else if(currentVertex.getPlanStatus().equals(Vertex.PlanStatus.GAVEUP) && 
-                currentVertex.getCalculationsStatus().equals(Vertex.CalculationsStatus.GAVEUP)){
-            g2.setColor(Color.BLUE);
-            isCorrect = true;
-        }else if(currentVertex.getPlanStatus().equals(Vertex.PlanStatus.CORRECT) && 
-                currentVertex.getCalculationsStatus().equals(Vertex.CalculationsStatus.GAVEUP)){
-            g2.setColor(Color.BLUE);
-            isCorrect = true;
-        }
-        else if(currentVertex.getPlanStatus().equals(Vertex.PlanStatus.GAVEUP) && 
-                currentVertex.getCalculationsStatus().equals(Vertex.CalculationsStatus.CORRECT)){
-            g2.setColor(Color.BLUE);
-            isCorrect = true;
-        }
-        else{
+        
+        // If Vertex has Defined Description, Plan and Calculations - set color to green else use Gray
+        if(currentVertex.isDescriptionDone()){
+            if(currentVertex.isPlanDone()){
+                if(currentVertex.isCalculationsDone()){
+                    g2.setColor(new Color(0x90, 0x90, 0x00));
+                    isCorrect = true;
+                }
+            }
+        }else{
             g2.setColor(foreground);
-        }
+        }    
         
         int[] xpoints = {0, 60, 119, 60};
         int[] ypoints = {31, 1, 31, 62};

@@ -30,7 +30,7 @@ import org.apache.log4j.Logger;
 import org.jgraph.graph.DefaultPort;
 
 /**
- *
+ * Represents Solutions of Dragoon Problem
  * @author ramayantiwari
  */
 public class TaskSolution {
@@ -478,7 +478,7 @@ public class TaskSolution {
 
                 v.setVertexType(node.getNodeType());
 
-                v.setInputsStatus(Vertex.InputsStatus.CORRECT);
+                //v.setInputsStatus(Vertex.InputsStatus.CORRECT);
                 v.setCalculationsStatus(Vertex.CalculationsStatus.CORRECT);
 
                 solutionGraph.addVertex(v);
