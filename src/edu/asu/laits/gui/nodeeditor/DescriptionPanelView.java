@@ -81,6 +81,13 @@ public class DescriptionPanelView extends JPanel {
         if(currentVertex.isDescriptionDone()  && !ApplicationContext.isAuthorMode()) {
             setEditableTree(false);
         }
+        if(currentVertex.getDescriptionStatus().equals(Vertex.DescriptionStatus.CORRECT)){
+            setTextFieldBackground(Color.GREEN);
+        }else if(currentVertex.getDescriptionStatus().equals(Vertex.DescriptionStatus.GAVEUP)){
+            setTextFieldBackground(Color.YELLOW);
+        }else if(currentVertex.getDescriptionStatus().equals(Vertex.DescriptionStatus.INCORRECT)){
+            setTextFieldBackground(Color.RED);
+        }
     }
     
     private void initTree() {
