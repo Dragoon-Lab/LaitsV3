@@ -251,8 +251,10 @@ public class CreateNewNodeDialog extends javax.swing.JDialog {
             
         } else if(solutionCheck == 2){
             dPanel.setTextFieldBackground(Color.CYAN);
+            currentVertex.setDescriptionStatus(Vertex.DescriptionStatus.INCORRECT);
             setEditorMessage("Quantity is used in model, but is not ready to be defined. Please try another description.", true);
             activityLogs.debug("User entered description out of order");
+            
         } else {
             currentVertex.setDescriptionStatus(Vertex.DescriptionStatus.INCORRECT);
             dPanel.setTextFieldBackground(Color.RED);
