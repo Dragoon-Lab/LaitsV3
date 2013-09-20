@@ -85,7 +85,6 @@ public class NodeEditorView extends javax.swing.JDialog {
             }
         });
         _controller.initOnLoadBalloonTip();
-        _controller.initActionButtons();
         UIManager.getDefaults().put("TabbedPane.contentBorderInsets",new Insets(2, 0, -1, 0));
         prepareNodeEditorDisplay();
     }
@@ -105,8 +104,7 @@ public class NodeEditorView extends javax.swing.JDialog {
                 tabPane.setEnabledAt(CALCULATIONS, false);
                 tabPane.setForegroundAt(CALCULATIONS, Color.GRAY);
             }
-            if (openVertex.getCalculationsStatus().equals(Vertex.CalculationsStatus.CORRECT)
-                    || openVertex.getCalculationsStatus().equals(Vertex.CalculationsStatus.GAVEUP)) {
+            if (openVertex.isCalculationsDone()) {
                 System.out.println("Should be enabled on close");
                 buttonCancel.setEnabled(true);
             }
@@ -139,6 +137,8 @@ public class NodeEditorView extends javax.swing.JDialog {
 
         setSelectedPanel();
         //setTabListener();
+        
+        _controller.initActionButtons();
         logs.debug("Initializing NodeEditor Tabs - End");
     }
 

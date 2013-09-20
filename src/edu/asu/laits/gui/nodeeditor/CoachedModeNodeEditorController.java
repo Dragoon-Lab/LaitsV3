@@ -35,7 +35,6 @@ public class CoachedModeNodeEditorController extends NodeEditorController {
         initCloseButton();
         initCheckButton();
         initDemoButton();
-        super.resetActionButtonAfterDemoUsed();
     }
 
     public int processTabChange(int oldTab, int newTab){
