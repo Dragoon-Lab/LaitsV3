@@ -102,6 +102,8 @@ public class CalculationsPanelView extends javax.swing.JPanel {
             setCheckedBackground(Color.GREEN);
         }else if(openVertex.getCalculationsStatus().equals(Vertex.CalculationsStatus.GAVEUP)){
             setCheckedBackground(Color.YELLOW);
+        }else if(openVertex.getCalculationsStatus().equals(Vertex.CalculationsStatus.INCORRECT)){
+            setCheckedBackground(Color.RED);
         }
         
     }
