@@ -383,12 +383,12 @@ public class ModelMenu extends JMenu {
     public void newNodeAction() {
         activityLogs.debug("User Pressed Create Node Button");
         MainWindow window = MainWindow.getInstance();
-        if(ApplicationContext.isCoachedMode() && !isGraphEmpty()){
-            activityLogs.debug("User was not allowed to create new node as app is in COACHED mode and nodes already present");
-            JOptionPane.showMessageDialog(window, "Create new nodes inside the Calculations tab of existing nodes");
-            return;
-            
-        }
+//        if(ApplicationContext.isCoachedMode() && !isGraphEmpty()){
+//            activityLogs.debug("User was not allowed to create new node as app is in COACHED mode and nodes already present");
+//            JOptionPane.showMessageDialog(window, "Create new nodes inside the Calculations tab of existing nodes");
+//            return;
+//            
+//        }
         if (notAllNodesDefined()) {
             activityLogs.debug("User is allowed to create a new node");
             Vertex v = new Vertex();
