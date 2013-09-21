@@ -59,7 +59,16 @@ public class GraphViewPanel{
     private Mode mode;
 
     private void repaintTable() {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+        
+        Component[] components = chartContainer.getComponents();
+//        List<Vertex> vertices = new ArrayList<Vertex>();
+        for(Component c : components){
+            if(c instanceof TablePanel){
+                System.out.println("updating table ");
+                ((TablePanel)c).updateTableData(currentGraph);
+            }
+        }
+        PlotPanel.restoreOrignal(currentGraph, vertexValues);
     }
     
     public enum Mode{
@@ -167,16 +176,16 @@ public class GraphViewPanel{
             
     public void repaintCharts(){
         Component[] components = chartContainer.getComponents();
-        List<Vertex> vertices = new ArrayList<Vertex>();
+//        List<Vertex> vertices = new ArrayList<Vertex>();
         for(Component c : components){
             if(c instanceof PlotPanel){
                 System.out.println("repaint check succeeded, attempting to repaint " + map.get(c).getName());
-                vertices.add(map.get(c));
+//                vertices.add(map.get(c));
              ((PlotPanel)c).updateChartAfterSliderChange(currentGraph,map.get(c),ApplicationContext.getCorrectSolution().getTimes(),vertexValues);
             }
         }
         //restore oringal 
-        PlotPanel.restoreOrignalChart(currentGraph, vertexValues);
+        PlotPanel.restoreOrignal(currentGraph, vertexValues);
    }
     private class SliderListener implements ChangeListener {
         
