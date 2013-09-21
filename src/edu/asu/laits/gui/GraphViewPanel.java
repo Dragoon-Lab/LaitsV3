@@ -25,6 +25,7 @@ import edu.asu.laits.editor.ApplicationContext;
 import edu.asu.laits.model.PlotPanel;
 import edu.asu.laits.model.Edge;
 import edu.asu.laits.model.Graph;
+import edu.asu.laits.model.TablePanel;
 import edu.asu.laits.model.Task;
 import edu.asu.laits.model.Vertex;
 import javax.swing.JDialog;
@@ -43,11 +44,6 @@ import java.util.Map;
 import java.util.List;
 import javax.swing.event.ChangeEvent;
 import javax.swing.event.ChangeListener;
-import org.apache.commons.net.ntp.TimeStamp;
-import org.jfree.data.xy.XYDataset;
-import org.jfree.data.xy.XYSeries;
-import org.jfree.data.xy.XYSeriesCollection;
-
 
 /**
  *
@@ -60,13 +56,24 @@ public class GraphViewPanel{
     private JDialog parent;
     private JSlider testSlider;
     private Map<String,Double> vertexValues; //Store vertex and old values
+    private Mode mode;
+
+    private void repaintTable() {
+        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+    }
+    
+    public enum Mode{
+        Graph,
+        Table
+    }
     
     
     Map<JComponent, Vertex> map = new HashMap<JComponent, Vertex>();
     
-    public GraphViewPanel(Graph<Vertex, Edge> graph, JDialog parent){
+    public GraphViewPanel(Graph<Vertex, Edge> graph, JDialog parent, Mode mode){
         currentGraph = graph;
         this.parent = parent;
+        this.mode = mode;
         this.vertexValues = new HashMap<String,Double>();
         initializeComponents();
 
@@ -120,6 +127,8 @@ public class GraphViewPanel{
             t = new Task(ApplicationContext.getCorrectSolution().getTimes(),
                          ApplicationContext.getCorrectSolution().getGraphUnits());
         }
+        //if Mode is Graph Mode, Plot Graph against each not constant node
+        if(mode.equals(Mode.Graph)){
         for(Vertex currentVertex : currentGraph.vertexSet()){
             System.out.println("Attempting to add chart for " + currentVertex.getName());
             JXTaskPane plotPanel = addChart(currentVertex, t);
@@ -127,7 +136,19 @@ public class GraphViewPanel{
                 chartContainer.add(plotPanel);
                 map.put(plotPanel, currentVertex);
             }
+        }
+        }else{
+           System.out.println("Attempting to plot table for given graph");
+           JXTaskPane tablePanel = addTable(currentGraph);
+           if(tablePanel != null){
+               chartContainer.add(tablePanel);
+           }
         }        
+    }
+    
+    private JXTaskPane addTable(Graph currentGraph){
+        TablePanel tablePanel = new TablePanel(currentGraph);
+        return tablePanel;
     }
     
     private JXTaskPane addChart(Vertex vertex, Task task){
@@ -176,7 +197,10 @@ public class GraphViewPanel{
             //copy vertexvalue first time
             if(!vertexValues.containsKey(vertex.getName()))
                 vertexValues.put(vertex.getName(), vertex.getInitialValue());
-            panel.repaintCharts();
+            if(mode.equals(Mode.Graph))
+                panel.repaintCharts();
+            else
+                panel.repaintTable();
         }
     }
 }

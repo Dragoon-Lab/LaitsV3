@@ -22,6 +22,7 @@ import edu.asu.laits.editor.GraphEditorPane;
 import edu.asu.laits.editor.GraphRangeEditor;
 import edu.asu.laits.gui.ForumViewPanel;
 import edu.asu.laits.gui.GraphViewPanel;
+import edu.asu.laits.gui.GraphViewPanel.Mode;
 import edu.asu.laits.gui.MainWindow;
 import edu.asu.laits.gui.nodeeditor.NodeEditorView;
 import edu.asu.laits.model.Graph;
@@ -77,8 +78,10 @@ public class ModelMenu extends JMenu {
     private static Logger activityLogs = Logger.getLogger("ActivityLogs");
     private HashMap<String, JMenuItem> menuMap = new HashMap<String, JMenuItem>();
     private JFileChooser saveAsFileChooser = null;
+    //delete 
     private Object[][] data;
     private String[] columnNames;
+    //delete above
     public static String graph;
 
     /**
@@ -218,7 +221,7 @@ public class ModelMenu extends JMenu {
         activityLogs.debug("User pressed Run Model button.");
 
         if (runModel()) {
-            showChartDialog();
+            showChartDialog(Mode.Graph);
         }
     }
 
@@ -226,7 +229,8 @@ public class ModelMenu extends JMenu {
         activityLogs.debug("User pressed Show Table button.");
 
         if (runModel()) {
-            showTableDialog();
+            showChartDialog(Mode.Table);
+//            showTableDialog();
         }
     }
 
@@ -336,6 +340,7 @@ public class ModelMenu extends JMenu {
      *  running the model
      */
     private void showTableDialog() {
+        /*
         try {
             JFrame tableValuesFrame = new JFrame("Node Table display");
             JPanel tableValuesPanel = new JPanel();
@@ -354,13 +359,13 @@ public class ModelMenu extends JMenu {
             }
         } catch (Exception e) {
             e.printStackTrace();
-        }
+        }*/
 
     }
 
-    private void showChartDialog() {
+    private void showChartDialog(Mode mode) {
         JDialog graphValuesDialog = new JDialog(MainWindow.getInstance(), true);
-        GraphViewPanel gPanel = new GraphViewPanel(graphPane.getModelGraph(), graphValuesDialog);
+        GraphViewPanel gPanel = new GraphViewPanel(graphPane.getModelGraph(), graphValuesDialog,mode);
         graphValuesDialog.setTitle("Model Graph");
         graphValuesDialog.setSize(610, 530);
         graphValuesDialog.setLocationRelativeTo(null);
