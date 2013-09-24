@@ -13,6 +13,25 @@ Documentation can be in any convenient format (word, html, *et cetera*) with gen
 [markdown](http://en.wikipedia.org/wiki/Markdown) being the default choice.  Any
 document should have an associated link in this file.  
 
+## Support Issues ##
+
+In class support in case Java is not working:
+
+1. Zip Laits.jar and lib folder to something like laits.zip and put it to demo server. 
+You should then be able to download the zip using: `http://dragoon.asu.edu/laits.zip`.
+
+2. If JNLP does not work, download the zip file, unzip it. Go inside the laits 
+directory and launch the jar either by double clicking or from command prompt:
+   `java -jar Laits.jar`.
+
+3. In case of any issues, if you want to look at the debugging info.
+   a) Enable JNLP debugger or
+   b) Lanuch Laits.jar from terminal and look at console output.
+4. To see if java is installed and what version they are running, use:
+    `java -version`.
+
+
+
 ## Code Review process ##
 
 We use a "[Shared Repository Model](https://help.github.com/articles/using-pull-requests#shared-repository-model)."
@@ -34,7 +53,7 @@ feel the need.
 
 ## Install Documentation ##
 
-Place a link to the `documentation` directory in your webserver root directory.  
+Place a link to the `documentation` directory in your webserver root directory. 
 For the sever to properly translate the markdown, download a 
 [markdown handler](https://github.com/alue/markdown-handler), 
 edit the path in the provided `.htaccess` file, and install the files your the web 

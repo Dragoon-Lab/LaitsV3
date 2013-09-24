@@ -15,21 +15,13 @@
  * You should have received a copy of the GNU Lesser General Public License
  * along with LAITS. If not, see <http://www.gnu.org/licenses/>.
  */
-
 package edu.asu.laits.model;
 
 import edu.asu.laits.editor.ApplicationContext;
 import edu.asu.laits.logger.HttpAppender;
-import java.io.IOException;
-import java.io.UnsupportedEncodingException;
+import edu.asu.laits.gui.menus.ModelMenu;
 import java.net.URLEncoder;
-import java.util.HashMap;
-import java.util.Map;
 import java.util.logging.Level;
-import org.apache.http.HttpResponse;
-import org.apache.http.HttpStatus;
-import org.apache.http.client.methods.HttpGet;
-import org.apache.http.impl.client.DefaultHttpClient;
 import org.apache.log4j.Logger;
 
 /**
@@ -39,31 +31,49 @@ import org.apache.log4j.Logger;
  * @author ramayantiwari, brandonstrong
  */
 public class PersistenceManager implements Runnable {
-   
+
     private GraphSaver graphSaver;
     private static Logger logs = Logger.getLogger("DevLogs");
+
     private PersistenceManager(GraphSaver gs) {
         graphSaver = gs;
     }
-    
-    public static void saveSession(){
-        PersistenceManager persistanceManager = new PersistenceManager(new GraphSaver(ApplicationContext.getGraphEditorPane()));
+
+    public static void saveSession() {
+        PersistenceManager persistanceManager = new PersistenceManager(new GraphSaver());
         Thread t = new Thread(persistanceManager);
         t.start();
     }
-    
+
     public void run() {
         int statusCode = 0;
-        
+
         HttpAppender sessionSaver = new HttpAppender();
+
         try {
-            String sendSession = sessionSaver.saveGetSession("save", ApplicationContext.getRootURL().concat("/postvar.php"), 
-                    ApplicationContext.getUserID(), ApplicationContext.getSection(), ApplicationContext.getCurrentTaskID(), 
-                    URLEncoder.encode(graphSaver.getSerializedGraphInXML(), "UTF-8"));
+            ModelMenu.updateGraph();
+            //if user is in AUTHOR mode save solution in server
+            if (ApplicationContext.isAuthorMode()) {
+                String sendSession = sessionSaver.saveGetSession("author_save", ApplicationContext.getRootURL().concat("/postvar.php"),
+                        ApplicationContext.getUserID(), ApplicationContext.getSection(), ApplicationContext.getCurrentTaskID(),
+                        ModelMenu.graph, "0");
+                statusCode = Integer.parseInt(sendSession);
+                if (statusCode == 200) {
+                    logs.info("Successfully saved author's solution to server using " + ApplicationContext.getRootURL().concat("/postvar.php"));
+                } else {
+                    logs.error("Error: URL " + ApplicationContext.getRootURL().concat("/postvar.php")
+                            + " returned status code " + statusCode);
+                }
+            }
+            //save current session in server (all modes, including author, so that user can restart session.
+            String sendSession = sessionSaver.saveGetSession("save", ApplicationContext.getRootURL().concat("/postvar.php"),
+                    ApplicationContext.getUserID(), ApplicationContext.getSection(), ApplicationContext.getCurrentTaskID(),
+                    URLEncoder.encode(graphSaver.getSerializedGraphInXML(), "UTF-8"), "");
             statusCode = Integer.parseInt(sendSession);
-            if(statusCode == 200){
-                logs.info("Successfully wrote session to server at "+ApplicationContext.getRootURL().concat("/postvar.php"));
-            }else{
+
+            if (statusCode == 200) {
+                logs.info("Successfully wrote session to server using " + ApplicationContext.getRootURL().concat("/postvar.php"));
+            } else {
                 logs.error("Error: URL " + ApplicationContext.getRootURL().concat("/postvar.php")
                         + " returned status code " + statusCode);
             }
@@ -73,5 +83,4 @@ public class PersistenceManager implements Runnable {
             logs.error("Error in sending request to server: returned: " + statusCode);
         }
     }
-    
 }

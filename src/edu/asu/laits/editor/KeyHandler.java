@@ -31,7 +31,7 @@ public class KeyHandler extends KeyAdapter {
     private static boolean startPress = false;
 
     /**
-     * Is called when a key is pressed in the asociated graph pane
+     * Is called when a key is pressed in the associated graph pane
      *
      * @see java.awt.event.KeyAdapter#keyReleased(java.awt.event.KeyEvent)
      */

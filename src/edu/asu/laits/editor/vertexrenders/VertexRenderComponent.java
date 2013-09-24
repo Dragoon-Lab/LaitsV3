@@ -20,7 +20,7 @@ import org.jgraph.JGraph;
 import org.jgraph.graph.CellView;
 import org.jgraph.graph.CellViewRenderer;
 import org.jgraph.graph.DefaultGraphCell;
-import org.jgraph.graph.VertexRenderer; 
+import org.jgraph.graph.VertexRenderer;
 
 /**
  * This class extends the class VertexRender in the JGraph components to be a
@@ -34,13 +34,10 @@ public class VertexRenderComponent extends VertexRenderer implements
     VertexType shape;
     private boolean selectable;
     private boolean selected;
-    private boolean focus;
     private boolean preview;
-    private Color background;
-    
+   
     static VertexRenderComponent defaultRender = new VertexRenderComponent();
-    
-    private  static FlowVertexRenderComponent flowVertexRenderComponent =
+    private static FlowVertexRenderComponent flowVertexRenderComponent =
             new FlowVertexRenderComponent(defaultRender);
     private static StockVertexRenderComponent stockVertexRenderComponent =
             new StockVertexRenderComponent(defaultRender);
@@ -48,59 +45,32 @@ public class VertexRenderComponent extends VertexRenderer implements
             new ConstantVertexRenderComponent(defaultRender);
     private static DefaultVertexRenderComponent defaultVertexComponent =
             new DefaultVertexRenderComponent(defaultRender);
-    
-    /** Logger */
+    /**
+     * Logger
+     */
     private static Logger logs = Logger.getLogger("DevLogs");
-    private static Logger activityLogs = Logger.getLogger("ActivityLogs");
-
+   
     public Component getRendererComponent(JGraph graph, CellView view,
             boolean sel, boolean focus, boolean preview) {
-        Map<Object, Object> attributes = ((DefaultGraphCell) view.getCell())
-                .getAttributes();
-
         DefaultGraphCell cell = (DefaultGraphCell) view.getCell();
-        Vertex currentVertex = (Vertex)cell.getUserObject();
-        
+        Vertex currentVertex = (Vertex) cell.getUserObject();
+
         VertexType shape = currentVertex.getVertexType();
-        
+
         if (shape == VertexType.DEFAULT) {
             return defaultVertexComponent.getRendererComponent(graph,
                     view, sel, focus, preview);
-        }
-        else if (shape == VertexType.FLOW) {
+        } else if (shape == VertexType.FLOW) {
             return flowVertexRenderComponent.getRendererComponent(graph,
                     view, sel, focus, preview);
-        } 
-        else if (shape == VertexType.STOCK) {
+        } else if (shape == VertexType.STOCK) {
             return stockVertexRenderComponent.getRendererComponent(graph,
                     view, sel, focus, preview);
-        } 
-        else if (shape == VertexType.CONSTANT) {
+        } else if (shape == VertexType.CONSTANT) {
             return constantVertexComponent.getRendererComponent(graph,
                     view, sel, focus, preview);
-        } 
-        else {
-            return super.getRendererComponent(graph, view, sel, focus, preview);
-        }
-    }
-
-    public CellViewRenderer getRenderer(GraphEditorVertexView view, JGraph graph) {
-       logs.debug("Getting Renderer");
-        Map<Object, Object> atributes = view.getAllAttributes();
-
-        DefaultGraphCell cell = (DefaultGraphCell) view.getCell();
-        Vertex currentVertex = (Vertex)cell.getUserObject();
-        
-        VertexType shape = currentVertex.getVertexType();
-
-        if (shape == VertexType.DEFAULT) {
-            return defaultVertexComponent;
-        }else if (shape == VertexType.FLOW) {
-            return flowVertexRenderComponent;
-        } else if (shape == VertexType.STOCK) {
-            return stockVertexRenderComponent;
         } else {
-            return this;
+            return super.getRendererComponent(graph, view, sel, focus, preview);
         }
     }
 
@@ -127,79 +97,79 @@ public class VertexRenderComponent extends VertexRenderer implements
 
             g2.drawLine(width, 0, 0, height);
         }
-
     }
 
     public void drawVertex(Graphics g) {
-        paintComponent(g);        
+        paintComponent(g);
     }
-    
-    protected void paintVertexStatusIcons(Graphics g, Vertex v){
+
+    protected void paintVertexStatusIcons(Graphics g, Vertex v) {
         paintPlanIcons(g, v);
         paintCalculationsIcons(g, v);
         paintGraphsIcons(g, v);
     }
-    
-    private void paintPlanIcons(Graphics g, Vertex currentVertex){
-        
-        if(currentVertex.getPlanStatus() == Vertex.PlanStatus.UNDEFINED){
-            paintIcon(g, ImageLoader.getInstance().getPlanNoStatusIcon(), 0); 
-        
-        }else if(currentVertex.getPlanStatus() == Vertex.PlanStatus.CORRECT){
-            paintIcon(g, ImageLoader.getInstance().getPlanCorrectIcon(), 0); 
-        
-        }else if(currentVertex.getPlanStatus() == Vertex.PlanStatus.INCORRECT || currentVertex.getPlanStatus() == Vertex.PlanStatus.MISSEDFIRST ){
-            paintIcon(g, ImageLoader.getInstance().getPlanInCorrectIcon(), 0); 
-        }
-        else if(currentVertex.getPlanStatus() == Vertex.PlanStatus.GAVEUP){
-            paintIcon(g, ImageLoader.getInstance().getPlanGaveUpIcon(), 0); 
-        }
-    }
-    
-    private void paintCalculationsIcons(Graphics g, Vertex currentVertex){
-        if(currentVertex.getCalculationsStatus() == Vertex.CalculationsStatus.UNDEFINED){
-            paintIcon(g, ImageLoader.getInstance().getCalculationsNoStatusIcon(), 30); 
-            
-        }else if(currentVertex.getCalculationsStatus() == Vertex.CalculationsStatus.CORRECT){
-            paintIcon(g, ImageLoader.getInstance().getCalculationsCorrectIcon(), 30); 
-            
-        }else if(currentVertex.getCalculationsStatus() == Vertex.CalculationsStatus.INCORRECT){
-            paintIcon(g, ImageLoader.getInstance().getCalculationsInCorrectIcon(), 30);            
-        }else if(currentVertex.getCalculationsStatus() == Vertex.CalculationsStatus.GAVEUP){
-            paintIcon(g, ImageLoader.getInstance().getCalculationsGaveUpIcon(), 30);            
+
+    private void paintPlanIcons(Graphics g, Vertex currentVertex) {
+
+        if (currentVertex.getPlanStatus() == Vertex.PlanStatus.UNDEFINED) {
+            paintIcon(g, ImageLoader.getInstance().getPlanNoStatusIcon(), 0);
+
+        } else if (currentVertex.getPlanStatus() == Vertex.PlanStatus.CORRECT) {
+            paintIcon(g, ImageLoader.getInstance().getPlanCorrectIcon(), 0);
+
+        } else if (currentVertex.getPlanStatus() == Vertex.PlanStatus.INCORRECT || currentVertex.getPlanStatus() == Vertex.PlanStatus.MISSEDFIRST) {
+            paintIcon(g, ImageLoader.getInstance().getPlanInCorrectIcon(), 0);
+        } else if (currentVertex.getPlanStatus() == Vertex.PlanStatus.GAVEUP) {
+            paintIcon(g, ImageLoader.getInstance().getPlanGaveUpIcon(), 0);
         }
     }
-    
-    private void paintGraphsIcons(Graphics g, Vertex currentVertex){
-       if(currentVertex.getGraphsStatus() == Vertex.GraphsStatus.UNDEFINED){
-           paintIcon(g, ImageLoader.getInstance().getGraphsNoStatusIcon(), 60);
-        
-       }else if(currentVertex.getGraphsStatus() == Vertex.GraphsStatus.CORRECT){
-           paintIcon(g, ImageLoader.getInstance().getGraphsCorrectIcon(), 60);
-        
-       }else if(currentVertex.getGraphsStatus() == Vertex.GraphsStatus.INCORRECT){
+
+    private void paintCalculationsIcons(Graphics g, Vertex currentVertex) {
+        if (currentVertex.getCalculationsStatus() == Vertex.CalculationsStatus.UNDEFINED) {
+            paintIcon(g, ImageLoader.getInstance().getCalculationsNoStatusIcon(), 30);
+
+        } else if (currentVertex.getCalculationsStatus() == Vertex.CalculationsStatus.CORRECT) {
+            paintIcon(g, ImageLoader.getInstance().getCalculationsCorrectIcon(), 30);
+
+        } else if (currentVertex.getCalculationsStatus() == Vertex.CalculationsStatus.INCORRECT) {
+            paintIcon(g, ImageLoader.getInstance().getCalculationsInCorrectIcon(), 30);
+        } else if (currentVertex.getCalculationsStatus() == Vertex.CalculationsStatus.GAVEUP) {
+            paintIcon(g, ImageLoader.getInstance().getCalculationsGaveUpIcon(), 30);
+        }
+    }
+
+    private void paintGraphsIcons(Graphics g, Vertex currentVertex) {
+        if (currentVertex.getGraphsStatus() == Vertex.GraphsStatus.UNDEFINED) {
+            paintIcon(g, ImageLoader.getInstance().getGraphsNoStatusIcon(), 60);
+
+        } else if (currentVertex.getGraphsStatus() == Vertex.GraphsStatus.CORRECT) {
+            paintIcon(g, ImageLoader.getInstance().getGraphsCorrectIcon(), 60);
+
+        } else if (currentVertex.getGraphsStatus() == Vertex.GraphsStatus.INCORRECT) {
             paintIcon(g, ImageLoader.getInstance().getGraphsInCorrectIcon(), 60);
-       }else if(currentVertex.getGraphsStatus() == Vertex.GraphsStatus.GAVEUP){
+        } else if (currentVertex.getGraphsStatus() == Vertex.GraphsStatus.GAVEUP) {
             paintIcon(g, ImageLoader.getInstance().getGraphsGaveUpIcon(), 60);
-       }  
+        }
     }
-    
-    private void paintIcon(Graphics g, Image iconImage, int displacement){
-        g.drawImage(iconImage, 
-                    getWidth()/2 - 40 + displacement, 
-                    22, 
-                    ImageLoader.statusIconWidth, 
-                    ImageLoader.statusIconWidth, 
-                    this);
+
+    private void paintIcon(Graphics g, Image iconImage, int displacement) {
+        g.drawImage(iconImage,
+                getWidth() / 2 - 40 + displacement,
+                22,
+                ImageLoader.statusIconWidth,
+                ImageLoader.statusIconWidth,
+                this);
     }
-    
-    protected String truncateNodeName(String name){
-        if(name == null || name.trim().length() == 0)
+
+    protected String truncateNodeName(String name) {
+        if (name == null || name.trim().length() == 0) {
             return "";
-        
-        if(name.length() < 20)
+        }
+
+        if (name.length() < 20) {
             return name;
-        
+        }
+
         String newName = name.substring(0, 17);
         newName += "...";
         return newName;

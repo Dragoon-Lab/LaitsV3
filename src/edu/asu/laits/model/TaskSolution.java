@@ -30,7 +30,7 @@ import org.apache.log4j.Logger;
 import org.jgraph.graph.DefaultPort;
 
 /**
- *
+ * Represents Solutions of Dragoon Problem
  * @author ramayantiwari
  */
 public class TaskSolution {
@@ -40,8 +40,7 @@ public class TaskSolution {
     private String taskType;
     private String taskDescription;
     private String imageURL;
-    private int startTime;
-    private int endTime;
+    private Times times;
     private String graphUnits;
     private int nodeCount;
     private List<SolutionNode> solutionNodes;
@@ -50,6 +49,9 @@ public class TaskSolution {
     private List<HelpBubble> helpBubbles;
     private SolutionDTreeNode dTreeNode;
     private Graph solutionGraph = null;
+    private List<String> parameterSubPlans;
+    private List<String> accumulatorSubPlans;
+    private List<String> functionSubPlans;
     private static Logger logs = Logger.getLogger("DevLogs");
 
     public TaskSolution() {
@@ -57,6 +59,7 @@ public class TaskSolution {
         givenNodes = new ArrayList<SolutionNode>();
         correctNodeNames = new ArrayList<String>();
         helpBubbles = new ArrayList<HelpBubble>();
+        times = new Times();
     }
 
     /**
@@ -133,32 +136,45 @@ public class TaskSolution {
         }
     }
 
-    /**
-     * @return the startTime
-     */
-    public int getStartTime() {
-        return startTime;
+    public List<String> getParameterSubPlans() {
+        return parameterSubPlans;
     }
 
-    /**
-     * @param startTime the startTime to set
-     */
-    public void setStartTime(int startTime) {
-        this.startTime = startTime;
+    public List<String> getAccumulatorSubPlans() {
+        return accumulatorSubPlans;
     }
 
-    /**
-     * @return the endTime
-     */
-    public int getEndTime() {
-        return endTime;
+    public List<String> getFunctionSubPlans() {
+        return functionSubPlans;
     }
 
+    public void setParameterSubPlans(List<String> parameterSubPlans) {
+        this.parameterSubPlans = parameterSubPlans;
+    }
+
+    public void setAccumulatorSubPlans(List<String> accumulatorSubPlans) {
+        this.accumulatorSubPlans = accumulatorSubPlans;
+    }
+
+    public void setFunctionSubPlans(List<String> functionSubPlans) {
+        this.functionSubPlans = functionSubPlans;
+    }
+    public void addParameterSubPlans(String parameterSubPlan) {
+        this.parameterSubPlans.add(parameterSubPlan);
+    }
+
+    public void addAccumulatorSubPlans(String accumulatorSubPlan) {
+        this.accumulatorSubPlans.add(accumulatorSubPlan);
+    }
+
+    public void addFunctionSubPlans(String functionSubPlan) {
+        this.functionSubPlans.add(functionSubPlan);
+    }
     /**
-     * @param endTime the endTime to set
+     * @return the timeStep
      */
-    public void setEndTime(int endTime) {
-        this.endTime = endTime;
+    public Times getTimes() {
+        return this.times;
     }
 
     /**
@@ -462,7 +478,7 @@ public class TaskSolution {
 
                 v.setVertexType(node.getNodeType());
 
-                v.setInputsStatus(Vertex.InputsStatus.CORRECT);
+                //v.setInputsStatus(Vertex.InputsStatus.CORRECT);
                 v.setCalculationsStatus(Vertex.CalculationsStatus.CORRECT);
 
                 solutionGraph.addVertex(v);

@@ -1,0 +1,88 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<Task phase="Intro" type="Construct">
+  <TaskName/>
+  <TaskDescription>
+      An object starts at rest and falls from  the top of a silo NEWLINE 
+      that is 120 meters tall. NEWLINE NEWLINE
+      For an object falling freely from rest, show that the distance NEWLINE
+      traveled during each successive second increases in the ratio of NEWLINE
+      successive odd integers (1, 3, 5, etc.).  NEWLINE NEWLINE
+      Assume that acceleration due to gravity is 9.81 m/s&lt;sup&gt;2&lt;/sup&gt;. NEWLINE
+      Choose coordinates so that the top of the building is at zero and NEWLINE
+      acceleration is positive.
+  </TaskDescription>
+    <URL>images/Henninger_Turm-2005-05-01.jpg</URL>
+  <StartTime>0</StartTime>
+  <EndTime>5</EndTime>
+  <TimeStep>0.1</TimeStep>
+  <Units>Seconds</Units>
+  <NodeCount>3</NodeCount>
+  <Nodes>
+      
+        <Node type="constant" name="Acceleration" extra="no">
+            <CorrectDescription>The acceleration of the object due to gravity</CorrectDescription>
+            <Plan>fixed value</Plan>
+            <Inputs/>
+            <Outputs>
+                <Name>Acceleration</Name>
+            </Outputs>
+            <Equation>9.81</Equation>
+            <InitialValue>9.81</InitialValue>
+        </Node>
+    
+        <Node type="stock" name="Velocity" extra="no">
+            <CorrectDescription>The velocity of the falling object</CorrectDescription>
+            <Plan>said to increase</Plan>
+            <Inputs>
+                <Name>Acceleration</Name>
+            </Inputs>
+            <Outputs>
+                <Name>Acceleration</Name>
+            </Outputs>
+            <Equation>Acceleration</Equation>
+            <InitialValue>0.0</InitialValue>
+        </Node>
+    
+    <Node type="stock" name="Position" extra="no">
+      <Order>1</Order>
+      <CorrectDescription>The position of the falling object</CorrectDescription>
+      <Plan>said to decrease</Plan>
+      <Inputs>
+        <Name>Velocity</Name>
+      </Inputs>
+      <Outputs/>
+      <Equation>Velocity</Equation>
+      <InitialValue>0</InitialValue>
+    </Node>
+    
+    </Nodes>
+  
+    <DescriptionTree>
+        <Node level="root">
+            <Description>The position </Description>
+            <Node level="leaf">
+                <Description>of the falling object</Description>
+                <NodeName>Position</NodeName>
+            </Node>
+        </Node>
+      
+        <Node level="root">
+            <Description>The velocity </Description>
+            <Node level="leaf">
+                <Description>of the falling object</Description>
+                <NodeName>Velocity</NodeName>
+            </Node>          
+        </Node>
+      
+        <Node level="root">
+            <Description>The acceleration </Description>
+            <Node level="leaf">
+                <Description>of the object due to gravity</Description>
+                <NodeName>Acceleration</NodeName>
+            </Node>
+        </Node>
+      
+      
+    </DescriptionTree>
+</Task>
