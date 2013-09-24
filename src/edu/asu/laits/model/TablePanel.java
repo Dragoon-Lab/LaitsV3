@@ -109,7 +109,8 @@ public class TablePanel extends JXTaskPane {
                 index = 1;
                 for (int j = constantVertices; j < vertexList.size(); j++) {
                     currentVertex = vertexList.get(j);
-                    temp = currentVertex.getCorrectValues().get(i);
+                    List<Double> values = currentVertex.getCorrectValues();
+                    temp = values.get(i);
                     data[i][index] = (float) temp;
                     index++;
                 }
