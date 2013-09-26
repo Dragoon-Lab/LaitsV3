@@ -23,9 +23,11 @@ package edu.asu.laits.model;
 import java.awt.BorderLayout;
 import java.text.DecimalFormat;
 import java.util.List;
+import java.util.logging.Level;
 import javax.swing.JPanel;
 import javax.swing.JScrollPane;
 import javax.swing.JTable;
+import javax.swing.table.DefaultTableModel;
 import org.apache.log4j.Logger;
 import org.jdesktop.swingx.JXTaskPane;
 
@@ -35,24 +37,29 @@ import org.jdesktop.swingx.JXTaskPane;
  */
 public class TablePanel extends JXTaskPane {
 
-    private Object[][] data;
-    private String[] columnNames;
-    private Graph<Vertex, Edge> currentGraph;
-    private static Logger logs = Logger.getLogger("DevLogs");
-    private static Logger activityLogs = Logger.getLogger("ActivityLogs");
+    private  Object[][] data;
+    private  String[] columnNames;
+    private  JTable tableValuesTable;
+    private  Graph<Vertex, Edge> currentGraph;
+    private  Logger logs = Logger.getLogger("DevLogs");
+    private  Logger activityLogs = Logger.getLogger("ActivityLogs");
 
     public TablePanel(Graph<Vertex, Edge> graph) {
         this.currentGraph = graph;
         init();
     }
-
+    
+    
+    
     private void init() {
         JPanel tableValuesPanel = new JPanel();
         tableValuesPanel.setLayout(new BorderLayout());
         createTableValues(new ModelEvaluator(currentGraph));
 
         if (data != null && columnNames != null) {
-            JTable tableValuesTable = new JTable(data, columnNames);
+            tableValuesTable = new JTable();
+            tableValuesTable.setModel(new DefaultTableModel(data, columnNames));
+
             JScrollPane tableValuesContainer = new JScrollPane(tableValuesTable);
 
             tableValuesPanel.add(tableValuesContainer, BorderLayout.CENTER);
@@ -65,16 +72,23 @@ public class TablePanel extends JXTaskPane {
         }
     }
 
-    private void createTableValues(ModelEvaluator me) {
+    private void createTableValues(ModelEvaluator modelEvaluator) {
         try {
-            double startTime = me.getTimes().getStartTime();
-            double timeStep = me.getTimes().getTimeStep();
-            int totalPoints = me.getTimes().getNumberSteps();
-            int constantVertices = me.getConstantVertices();
+            modelEvaluator.run(); //get values
+        } catch (ModelEvaluationException ex) {
+              //handle these exceptions
+        }
+                   
+        
+        try {
+            double startTime = modelEvaluator.getTimes().getStartTime();
+            double timeStep = modelEvaluator.getTimes().getTimeStep();
+            int totalPoints = modelEvaluator.getTimes().getNumberSteps();
+            int constantVertices = modelEvaluator.getConstantVertices();
             Vertex currentVertex = null;
             DecimalFormat decimalFormat = new DecimalFormat("#.##");
 
-            List<Vertex> vertexList = me.getArrangedVertexList();
+            List<Vertex> vertexList = modelEvaluator.returnArrangedVertexList();
 
             columnNames = new String[vertexList.size() - constantVertices + 1];
 
@@ -95,7 +109,8 @@ public class TablePanel extends JXTaskPane {
                 index = 1;
                 for (int j = constantVertices; j < vertexList.size(); j++) {
                     currentVertex = vertexList.get(j);
-                    temp = currentVertex.getCorrectValues().get(i);
+                    List<Double> values = currentVertex.getCorrectValues();
+                    temp = values.get(i);
                     data[i][index] = (float) temp;
                     index++;
                 }
@@ -104,4 +119,12 @@ public class TablePanel extends JXTaskPane {
             e.printStackTrace();
         }
     }
+    
+    public void updateTableData(Graph graph){
+        DefaultTableModel tableModel = (DefaultTableModel) tableValuesTable.getModel();
+        createTableValues(new ModelEvaluator((graph)));
+        tableModel.setDataVector(data, columnNames);
+        tableModel.fireTableDataChanged();
+    }
+    
 }

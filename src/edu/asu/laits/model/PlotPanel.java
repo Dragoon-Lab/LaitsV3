@@ -239,7 +239,7 @@ public class PlotPanel extends JXTaskPane {
             jfreeChart.fireChartChanged(); 
     }
     
-    public static void restoreOrignalChart(Graph graph, Map<String,Double> vertexValues){
+    public static void restoreOrignal(Graph graph, Map<String,Double> vertexValues){
         //restore graph values
             Iterator iterator = vertexValues.entrySet().iterator();
             while(iterator.hasNext()){
