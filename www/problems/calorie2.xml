@@ -1,0 +1,232 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<Task phase="" type="">
+    <TaskName>Basal Metabolic Rate</TaskName>
+    <TaskDescription/>
+    <URL/>
+    <StartTime>0.0</StartTime>
+    <EndTime>10.0</EndTime>
+    <Units>Days</Units>
+    <NodeCount>16</NodeCount>
+    <Nodes>
+        <Node type="flow" name="bmr" extra="no">
+            <CorrectDescription>Basal Metabolic Rate: wom=655+( 4.35*weight)+( 4.7*height)-(4.7*age) men=66+(6.23*weight)+(12.7*height)-(6.8*age)</CorrectDescription>
+            <Plan>proportional to accumulator and input</Plan>
+            <Inputs>
+                <Name>weight</Name>
+                <Name>male wt. factor 6.23</Name>
+                <Name>fem. wt. factor 4.35</Name>
+                <Name>weight</Name>
+                <Name>male ht. factor 12.7</Name>
+                <Name>fem. ht. factor 4.7</Name>
+                <Name>height</Name>
+                <Name>male age factor 6.8</Name>
+                <Name>fem. age factor 4.7</Name>
+                <Name>age</Name>
+                <Name>male bmr operand 66</Name>
+                <Name>fem. bmr operand 655</Name>
+            </Inputs>
+            <Outputs>
+                <Node name="harris benedict formula"/>
+            </Outputs>
+            <Equation>fem. bmr operand 655 + fem. wt. factor 4.35 * weight + fem. ht. factor 4.7 * height + age * fem. age factor 4.7</Equation>
+            <InitialValue>0.0</InitialValue>
+        </Node>
+        <Node type="constant" name="age" extra="no">
+            <CorrectDescription>your age</CorrectDescription>
+            <Plan>fixed value</Plan>
+            <Inputs/>
+            <Outputs>
+                <Node name="bmr"/>
+            </Outputs>
+            <Equation>20.0</Equation>
+            <InitialValue>20.0</InitialValue>
+        </Node>
+        <Node type="constant" name="male wt. factor 6.23" extra="no">
+            <CorrectDescription>factor to multiply male weight by</CorrectDescription>
+            <Plan>fixed value</Plan>
+            <Inputs/>
+            <Outputs>
+                <Node name="bmr"/>
+            </Outputs>
+            <Equation>6.23</Equation>
+            <InitialValue>6.23</InitialValue>
+        </Node>
+        <Node type="constant" name="fem. wt. factor 4.35" extra="no">
+            <CorrectDescription>factor to multiply female weight by</CorrectDescription>
+            <Plan>fixed value</Plan>
+            <Inputs/>
+            <Outputs>
+                <Node name="bmr"/>
+            </Outputs>
+            <Equation>4.35</Equation>
+            <InitialValue>4.35</InitialValue>
+        </Node>
+        <Node type="constant" name="male ht. factor 12.7" extra="no">
+            <CorrectDescription>factor to multiply male height by</CorrectDescription>
+            <Plan>fixed value</Plan>
+            <Inputs/>
+            <Outputs>
+                <Node name="bmr"/>
+            </Outputs>
+            <Equation>12.7</Equation>
+            <InitialValue>12.7</InitialValue>
+        </Node>
+        <Node type="constant" name="fem. ht. factor 4.7" extra="no">
+            <CorrectDescription>factor to multiply female height by</CorrectDescription>
+            <Plan>fixed value</Plan>
+            <Inputs/>
+            <Outputs>
+                <Node name="bmr"/>
+            </Outputs>
+            <Equation>4.7</Equation>
+            <InitialValue>4.7</InitialValue>
+        </Node>
+        <Node type="constant" name="male age factor 6.8" extra="no">
+            <CorrectDescription>factor to multiply male age by</CorrectDescription>
+            <Plan>fixed value</Plan>
+            <Inputs/>
+            <Outputs>
+                <Node name="bmr"/>
+            </Outputs>
+            <Equation>6.8</Equation>
+            <InitialValue>6.8</InitialValue>
+        </Node>
+        <Node type="constant" name="fem. age factor 4.7" extra="no">
+            <CorrectDescription>factor to multiply female age by</CorrectDescription>
+            <Plan>fixed value</Plan>
+            <Inputs/>
+            <Outputs>
+                <Node name="bmr"/>
+            </Outputs>
+            <Equation>4.7</Equation>
+            <InitialValue>4.7</InitialValue>
+        </Node>
+        <Node type="constant" name="male bmr operand 66" extra="no">
+            <CorrectDescription>number to add to male bmr equation</CorrectDescription>
+            <Plan>fixed value</Plan>
+            <Inputs/>
+            <Outputs>
+                <Node name="bmr"/>
+            </Outputs>
+            <Equation>66.0</Equation>
+            <InitialValue>66.0</InitialValue>
+        </Node>
+        <Node type="constant" name="fem. bmr operand 655" extra="no">
+            <CorrectDescription>number to add to female bmr equation</CorrectDescription>
+            <Plan>fixed value</Plan>
+            <Inputs/>
+            <Outputs>
+                <Node name="bmr"/>
+            </Outputs>
+            <Equation>655.0</Equation>
+            <InitialValue>655.0</InitialValue>
+        </Node>
+        <Node type="flow" name="harris benedict formula" extra="no">
+            <CorrectDescription>Harris Benedict Formula: bmr * harris benedict factor</CorrectDescription>
+            <Plan>proportional to accumulator and input</Plan>
+            <Inputs>
+                <Name>bmr</Name>
+                <Name>hb factor</Name>
+            </Inputs>
+            <Outputs/>
+            <Equation>bmr * hb factor</Equation>
+            <InitialValue>0.0</InitialValue>
+        </Node>
+        <Node type="flow" name="weight change" extra="no">
+            <CorrectDescription>calculates the change in weight (number of extra calories/3500)</CorrectDescription>
+            <Plan>proportional to accumulator and input</Plan>
+            <Inputs>
+                <Name>calorie difference</Name>
+            </Inputs>
+            <Outputs>
+                <Node name="weight"/>
+            </Outputs>
+            <Equation>calorie difference / 3500</Equation>
+            <InitialValue>0.0</InitialValue>
+        </Node>
+        <Node type="constant" name="calorie difference" extra="no">
+            <CorrectDescription>number of missing (negative number) or extra (positive number) calories</CorrectDescription>
+            <Plan>fixed value</Plan>
+            <Inputs/>
+            <Outputs>
+                <Node name="weight change"/>
+            </Outputs>
+            <Equation>-500.0</Equation>
+            <InitialValue>-500.0</InitialValue>
+        </Node>
+        <Node type="constant" name="height" extra="no">
+            <CorrectDescription>your height</CorrectDescription>
+            <Plan>fixed value</Plan>
+            <Inputs/>
+            <Outputs>
+                <Node name="bmr"/>
+            </Outputs>
+            <Equation>68.0</Equation>
+            <InitialValue>68.0</InitialValue>
+        </Node>
+        <Node type="stock" name="weight" extra="no">
+            <CorrectDescription>your weight</CorrectDescription>
+            <Plan>said to both increase and decrease</Plan>
+            <Inputs>
+                <Name>weight change</Name>
+            </Inputs>
+            <Outputs>
+                <Node name="bmr"/>
+            </Outputs>
+            <Equation>weight change</Equation>
+            <InitialValue>150.0</InitialValue>
+        </Node>
+        <Node type="constant" name="hb factor" extra="no">
+            <CorrectDescription>Harris Benedict Factor: goes into the formula to take activity level into consideration. See activity sheet for the number.</CorrectDescription>
+            <Plan>fixed value</Plan>
+            <Inputs/>
+            <Outputs>
+                <Node name="harris benedict formula"/>
+            </Outputs>
+            <Equation>1.55</Equation>
+            <InitialValue>1.55</InitialValue>
+        </Node>
+    </Nodes>
+    <DescriptionTree>
+        <Node level="root">
+            <Description>The formula to determine the</Description>            
+            <Node level="leaf">
+                <Description>Basal Metabolic Rate</Description>
+                <NodeName>bmr</NodeName>
+            </Node>
+            <Node level="leaf">
+                <Description>bmr plus activity</Description>
+                <NodeName>harris benedict formula</NodeName>
+            </Node>
+        </Node>
+    </DescriptionTree>
+    <DescriptionTree>
+        <Node level="root">
+            <Description>The formula to determine the</Description>            
+            <Node level="leaf">
+                <Description>Basal Metabolic Rate</Description>
+                <NodeName>bmr</NodeName>
+            </Node>
+            <Node level="leaf">
+                <Description>bmr plus activity</Description>
+                <NodeName>harris benedict formula</NodeName>
+            </Node>
+        </Node>
+        <Node level="root">
+            <Description>What is your</Description>            
+            <Node level="leaf">
+                <Description>height (inches)</Description>
+                <NodeName>height</NodeName>
+            </Node>
+            <Node level="leaf">
+                <Description>weight (pounds)</Description>
+                <NodeName>weight</NodeName>
+            </Node>
+            <Node level="leaf">
+                <Description>age (years)</Description>
+                <NodeName>age</NodeName>
+            </Node>
+        </Node>
+    </DescriptionTree>
+</Task>
