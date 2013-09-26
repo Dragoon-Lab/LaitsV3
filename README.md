@@ -24,9 +24,8 @@ database name.
 
 ### Command Line arguements ###
 
-To run Dragoon locally, need to supply command line arguments.
-Requires command line arguments in to run locally.  To set up command
-line arguments in NetBeans, right-click the project, select
+To run Dragoon locally, you need to supply command line arguments.
+To set up command line arguments in NetBeans, right-click the project, select
 "Configuration" > "Customize", select the "Run" category, and enter
 into the "Arguments" line in this format:
 
