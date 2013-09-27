@@ -395,6 +395,7 @@ public class TaskSolution {
             }
 
         } catch (EvaluationException ex) {
+            ex.printStackTrace();
             logs.debug("Error in Evaluating Student's Equation");
             return false;
         } catch (Exception ex) {
@@ -431,6 +432,7 @@ public class TaskSolution {
             try {
                 evaluator.run();
             } catch (ModelEvaluationException ex) {
+                ex.printStackTrace();
                 logs.fatal("Error in Evaluating Correct Solution Graph.");
                 JOptionPane.showMessageDialog(MainWindow.getFrames()[0],
                         "Internal LAITS Error in Solution File - System will exit.",

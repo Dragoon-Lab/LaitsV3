@@ -54,6 +54,7 @@ public class TaskMenuReader {
             
         } catch (Exception e) {
             // Could not read the XML file
+            e.printStackTrace();
             logs.debug(e.getMessage());
             throw new Exception("Incorrect XML for Task List");
         }

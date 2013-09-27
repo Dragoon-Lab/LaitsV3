@@ -85,6 +85,7 @@ public class Vertex {
         try{
             eval.isValidName(label);
         }catch(IllegalArgumentException e){
+            e.printStackTrace();
             logs.debug(e.getMessage());
             throw new IllegalArgumentException(e.getMessage());            
         }
@@ -238,6 +239,7 @@ public class Vertex {
             equation = getEquation();           
 
         } catch (Exception e) {
+            e.printStackTrace();
             throw new VertexReaderException();
         }
 

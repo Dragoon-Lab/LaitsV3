@@ -94,6 +94,7 @@ public class GlobalProperties {
             instance = (GlobalProperties) xstream.fromXML(reader);
             reader.close();
         } catch (Exception e) {
+            e.printStackTrace();
             System.err.println("Not possible to read properties file, because of the following reason:"
                     + e.getMessage());
             return false;
@@ -231,6 +232,7 @@ public class GlobalProperties {
             xstream.toXML(getInstance(), writer);
             writer.close();
         } catch (Exception e) {
+            e.printStackTrace();
             System.err
                     .println("Not possible to write properties file, because of the following reason:"
                     + e.getMessage());

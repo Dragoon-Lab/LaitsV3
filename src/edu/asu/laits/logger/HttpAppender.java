@@ -38,6 +38,7 @@ import java.net.URL;
 import java.io.BufferedReader;
 import java.io.BufferedWriter;
 import java.io.DataOutputStream;
+import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.io.OutputStream;
@@ -82,6 +83,7 @@ public class HttpAppender extends AppenderSkeleton {
             return;
         }
 
+        // If Application is Running in Dev Mode - Do not send logs to server
         if (ApplicationContext.getApplicationEnvironment()
                 .equals(ApplicationContext.ApplicationEnvironment.DEV)) {
 
@@ -134,10 +136,11 @@ public class HttpAppender extends AppenderSkeleton {
                 httpThread.run();
             }
         } catch (UnsupportedEncodingException ex) {
+            ex.printStackTrace();
         }
     }
 
-    public static String saveGetSession(String action, String address, String id, String section, String problem, String data, String share) throws Exception {
+    public static String saveGetSession(String action, String address, String id, String section, String problem, String data, String share) throws IOException {
         //open connection
         logs.debug("Opening Connection with URL: "+address);
         URL url = new URL(address);
@@ -193,7 +196,6 @@ public class HttpAppender extends AppenderSkeleton {
             }
             in.close();
             connect.disconnect();
-            //logs.debug("Server Returned: "+returnString.toString());
             return returnString.toString();
         }
         connect.disconnect();

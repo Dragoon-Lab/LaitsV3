@@ -105,24 +105,18 @@ public class GraphLoader {
 
     public void getGraph(GraphFile graphFile, File file)
             throws IncorcectGraphXMLFileException {
-
         // An hash which makes it fast to find vertices
         HashMap<Integer, Vertex> vertexHash = new HashMap<Integer, Vertex>();
 
         List<Vertex> vertexList = graphFile.getVertexList();
         for (Vertex vertex : vertexList) {
-            try {
-                vertex.setGraphsStatus(Vertex.GraphsStatus.UNDEFINED);
-                graphPane.addVertex(vertex);
-                //System.out.println("Added " + vertex.getName() + "  "+vertex.getVertexIndex());
-                vertexHash.put(vertex.getVertexIndex(), vertex);
-                logs.debug("removing from next nodes  " + vertex.getName() + "  "+vertex.getVertexIndex());
-                if(!ApplicationContext.isAuthorMode())
+            vertex.setGraphsStatus(Vertex.GraphsStatus.UNDEFINED);
+            graphPane.addVertex(vertex);
+            vertexHash.put(vertex.getVertexIndex(), vertex);
+            logs.debug("Adding Vertex:  " + vertex.getName() + " at Index: " + vertex.getVertexIndex() + " to the GraphPane");
+            
+            if (!ApplicationContext.isAuthorMode()) {
                 ApplicationContext.setNextNodes(vertex.getName());
-            }
-            catch (Exception e){
-                logs.debug("Could not load node:  "+e.getMessage());
-                e.printStackTrace();
             }
         }
 
@@ -132,7 +126,6 @@ public class GraphLoader {
         List<Edge> edgeList = graphFile.getEdgeList();
 
         for (Edge edge : edgeList) {
-            //System.out.println("Edge From: "+edge.getSourceVertexId()+"   To: "+edge.getTargetVertexId());
             Vertex sInfo = vertexHash.get(edge.getSourceVertexId());
             Vertex tInfo = vertexHash.get(edge.getTargetVertexId());
 
@@ -141,11 +134,6 @@ public class GraphLoader {
 
             graphPane.insertEdge(p1, p2);
         }
-//        int index = 0;
-//        for (Vertex vertex : vertexList) {
-//            vertex.setVertexIndex(index);
-//            index++;
-//        }
 
         GraphProperties prop = graphFile.getProperties();
         prop.initializeNotSerializeFeelds();
@@ -153,10 +141,10 @@ public class GraphLoader {
         graphPane.setScale(prop.getZoomLevel());
         graphPane.setBackground(prop.getBackgroundColor());
         graphPane.setGraphProperties(prop);
-        
+
         graphPane.validate();
         graphPane.repaint();
-        
+
         Graph graph = (Graph) graphPane.getModelGraph();
         graph.setCurrentTask(graphFile.getTask());
 
