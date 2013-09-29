@@ -21,6 +21,7 @@
 
 package edu.asu.laits.gui;
 
+import com.esotericsoftware.kryo.Kryo;
 import edu.asu.laits.editor.ApplicationContext;
 import edu.asu.laits.model.PlotPanel;
 import edu.asu.laits.model.Edge;
@@ -44,6 +45,7 @@ import java.util.Map;
 import java.util.List;
 import javax.swing.event.ChangeEvent;
 import javax.swing.event.ChangeListener;
+import org.objenesis.strategy.StdInstantiatorStrategy;
 
 /**
  *
@@ -55,20 +57,20 @@ public class GraphViewPanel{
     private JXTaskPaneContainer chartContainer;
     private JDialog parent;
     private JSlider testSlider;
-    private Map<String,Double> vertexValues; //Store vertex and old values
+ //   private Map<String,Double> vertexValues; //Store vertex and old values
     private Mode mode;
 
-    private void repaintTable() {
+    private void repaintTable(Graph<Vertex,Edge> clonnedGraph) {
         
         Component[] components = chartContainer.getComponents();
 //        List<Vertex> vertices = new ArrayList<Vertex>();
         for(Component c : components){
             if(c instanceof TablePanel){
                 System.out.println("updating table ");
-                ((TablePanel)c).updateTableData(currentGraph);
+                ((TablePanel)c).updateTableData(clonnedGraph);
             }
         }
-        PlotPanel.restoreOrignal(currentGraph, vertexValues);
+        //PlotPanel.restoreOrignal(currentGraph, vertexValues);
     }
     
     public enum Mode{
@@ -83,7 +85,7 @@ public class GraphViewPanel{
         currentGraph = graph;
         this.parent = parent;
         this.mode = mode;
-        this.vertexValues = new HashMap<String,Double>();
+//        this.vertexValues = new HashMap<String,Double>();
         initializeComponents();
 
         JScrollPane panelScroll = new JScrollPane(chartContainer);
@@ -174,18 +176,18 @@ public class GraphViewPanel{
     int count1 = 0;
     int count2 = 0;
             
-    public void repaintCharts(){
+    public void repaintCharts(Graph<Vertex,Edge> clonnedGraph){
         Component[] components = chartContainer.getComponents();
 //        List<Vertex> vertices = new ArrayList<Vertex>();
         for(Component c : components){
             if(c instanceof PlotPanel){
                 System.out.println("repaint check succeeded, attempting to repaint " + map.get(c).getName());
 //                vertices.add(map.get(c));
-             ((PlotPanel)c).updateChartAfterSliderChange(currentGraph,map.get(c),ApplicationContext.getCorrectSolution().getTimes(),vertexValues);
+             ((PlotPanel)c).updateChartAfterSliderChange(clonnedGraph,map.get(c),ApplicationContext.getCorrectSolution().getTimes());
             }
         }
         //restore oringal 
-        PlotPanel.restoreOrignal(currentGraph, vertexValues);
+       // PlotPanel.restoreOrignal(currentGraph, vertexValues);
    }
     private class SliderListener implements ChangeListener {
         
@@ -202,14 +204,25 @@ public class GraphViewPanel{
         public void stateChanged(ChangeEvent e) {
             DoubleJSlider source = (DoubleJSlider)e.getSource();
             textSource.setText(String.valueOf(source.getDoubleValue()));
-            vertex.setInitialValue(source.getDoubleValue());
-            //copy vertexvalue first time
-            if(!vertexValues.containsKey(vertex.getName()))
-                vertexValues.put(vertex.getName(), vertex.getInitialValue());
+//            vertex.setInitialValue(source.getDoubleValue());
+             //clone it
+            
+            /*Kryo kryo = new Kryo();
+            kryo.setInstantiatorStrategy(new StdInstantiatorStrategy());
+            kryo.register(Vertex.class);
+            kryo.register(Edge.class);*/
+//            Graph<Vertex,Edge> clonnedGraph = kryo.copy(currentGraph);
+            Graph<Vertex,Edge> clonnedGraph = (Graph<Vertex,Edge>) currentGraph.clone();
+            //modify value in new vertex
+            clonnedGraph.getVertexByName(vertex.getName()).setInitialValue(source.getDoubleValue());
+            
+      //      if(!vertexValues.containsKey(vertex.getName()))
+       //         vertexValues.put(vertex.getName(), vertex.getInitialValue());
+            
             if(mode.equals(Mode.Graph))
-                panel.repaintCharts();
+                panel.repaintCharts(clonnedGraph);
             else
-                panel.repaintTable();
+                panel.repaintTable(clonnedGraph);
         }
     }
 }

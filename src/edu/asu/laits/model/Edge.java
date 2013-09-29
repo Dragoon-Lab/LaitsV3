@@ -77,6 +77,10 @@ public class Edge {
         Edge cloneEdge = new Edge();
         cloneEdge.setSourceVertexId(sourceVertexId);
         cloneEdge.setTargetVertexId(targetVertexId);
+        DefaultEdge jedge = new DefaultEdge();
+        jedge.setSource(sourceVertexId);
+        jedge.setTarget(targetVertexId);
+        cloneEdge.setJGraphEdge(jedge);
         return cloneEdge;
     }
 

@@ -201,7 +201,7 @@ public class PlotPanel extends JXTaskPane {
         return chart;
     }
     
-    public void updateChartAfterSliderChange(Graph graph,Vertex vertex, Times times,Map<String,Double> vertexValues ){
+    public void updateChartAfterSliderChange(Graph graph,Vertex vertex, Times times){
         logs.info("updating chart for new values from slider");
         
         XYSeries series = new XYSeries("New Value Graph");
@@ -239,6 +239,7 @@ public class PlotPanel extends JXTaskPane {
             jfreeChart.fireChartChanged(); 
     }
     
+    //delete this
     public static void restoreOrignal(Graph graph, Map<String,Double> vertexValues){
         //restore graph values
             Iterator iterator = vertexValues.entrySet().iterator();

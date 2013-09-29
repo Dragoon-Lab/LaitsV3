@@ -209,7 +209,7 @@ public class Vertex {
         vertexInfoClone.setName(new String(name));
         vertexInfoClone.setVertexType(type);
         vertexInfoClone.setEquation(equation);
-
+        vertexInfoClone.correctValues.addAll(correctValues);
         return vertexInfoClone;
     }
 
