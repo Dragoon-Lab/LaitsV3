@@ -99,18 +99,21 @@ public class Graph<V, E> extends ListenableDirectedGraph<V, E> implements
 
     @Override
     public Object clone() {
-        
+        Graph currentGraph = this;
         Graph<Vertex,Edge> graph = new Graph(Edge.class);
         Iterator<Vertex> itVertex = (Iterator<Vertex>) this.vertexSet().iterator();
         while (itVertex.hasNext()) {
             Vertex vertex = itVertex.next();
             graph.addVertex((Vertex)vertex.clone());
         }
+     
         Iterator<Edge> itEdge = (Iterator<Edge>) this.edgeSet().iterator();
         while (itEdge.hasNext()) {
             Edge edge = itEdge.next();
-            Edge clonedEdge = (Edge) edge.clone();
-            graph.addEdge(graph.getVertexById(clonedEdge.getSourceVertexId()), graph.getVertexById(clonedEdge.getTargetVertexId()),clonedEdge);
+            // graph.addEdge(graph.getVertexById(clonedEdge.getSourceVertexId()), graph.getVertexById(clonedEdge.getTargetVertexId()),clonedEdge);
+            Vertex sourceVertex = (Vertex) currentGraph.getEdgeSource(edge);
+            Vertex targetVertex = (Vertex) currentGraph.getEdgeTarget(edge);
+            graph.addEdge(graph.getVertexById(sourceVertex.getVertexIndex()), graph.getVertexById(targetVertex.getVertexIndex()));
         }
         graph.setCurrentTask(currentTask);
         

@@ -238,21 +238,5 @@ public class PlotPanel extends JXTaskPane {
             ((XYPlot)jfreeChart.getPlot()).getRangeAxis().setRange(((XYSeriesCollection)xydataset).getRangeLowerBound(true), ((XYSeriesCollection)xydataset).getRangeUpperBound(true));
             jfreeChart.fireChartChanged(); 
     }
-    
-    //delete this
-    public static void restoreOrignal(Graph graph, Map<String,Double> vertexValues){
-        //restore graph values
-            Iterator iterator = vertexValues.entrySet().iterator();
-            while(iterator.hasNext()){
-                Map.Entry<String,Double> entry =  (Map.Entry)iterator.next();
-                graph.getVertexByName(entry.getKey()).setInitialValue(entry.getValue());
-            }
-    
-            try {
-                new ModelEvaluator(graph).run();
-            } catch (ModelEvaluationException ex) {
-            //handle this exception
-            }
-    }
-    
+  
 }

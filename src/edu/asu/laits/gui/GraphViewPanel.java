@@ -21,7 +21,6 @@
 
 package edu.asu.laits.gui;
 
-import com.esotericsoftware.kryo.Kryo;
 import edu.asu.laits.editor.ApplicationContext;
 import edu.asu.laits.model.PlotPanel;
 import edu.asu.laits.model.Edge;
@@ -45,7 +44,6 @@ import java.util.Map;
 import java.util.List;
 import javax.swing.event.ChangeEvent;
 import javax.swing.event.ChangeListener;
-import org.objenesis.strategy.StdInstantiatorStrategy;
 
 /**
  *
@@ -204,20 +202,9 @@ public class GraphViewPanel{
         public void stateChanged(ChangeEvent e) {
             DoubleJSlider source = (DoubleJSlider)e.getSource();
             textSource.setText(String.valueOf(source.getDoubleValue()));
-//            vertex.setInitialValue(source.getDoubleValue());
-             //clone it
-            
-            /*Kryo kryo = new Kryo();
-            kryo.setInstantiatorStrategy(new StdInstantiatorStrategy());
-            kryo.register(Vertex.class);
-            kryo.register(Edge.class);*/
-//            Graph<Vertex,Edge> clonnedGraph = kryo.copy(currentGraph);
             Graph<Vertex,Edge> clonnedGraph = (Graph<Vertex,Edge>) currentGraph.clone();
             //modify value in new vertex
             clonnedGraph.getVertexByName(vertex.getName()).setInitialValue(source.getDoubleValue());
-            
-      //      if(!vertexValues.containsKey(vertex.getName()))
-       //         vertexValues.put(vertex.getName(), vertex.getInitialValue());
             
             if(mode.equals(Mode.Graph))
                 panel.repaintCharts(clonnedGraph);
