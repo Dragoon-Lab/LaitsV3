@@ -22,7 +22,12 @@ import java.awt.Color;
 import java.awt.Dimension;
 import java.awt.Font;
 import java.util.ArrayList;
+import java.util.Iterator;
 import java.util.List;
+import java.util.Map;
+import java.util.logging.Level;
+import javax.swing.event.ChangeEvent;
+import javax.swing.event.ChangeListener;
 import org.apache.log4j.Logger;
 import org.jdesktop.swingx.JXTaskPane;
 import org.jfree.chart.ChartFactory;
@@ -45,6 +50,10 @@ public class PlotPanel extends JXTaskPane {
     private static Logger logs = Logger.getLogger("DevLogs");
     private static Logger activityLogs = Logger.getLogger("ActivityLogs");
     private static Color transparent = new Color(0, 0, 0, 0);
+    
+    //Dataset per Graph
+    private XYDataset xydataset;
+    private JFreeChart jfreeChart;
 
     public PlotPanel(Vertex vertex, Times times, String units) {
         logs.info("Initializing Plot Panel. Vertex: "+vertex.getName()+
@@ -59,7 +68,7 @@ public class PlotPanel extends JXTaskPane {
                     .getSolutionGraph().getVertexByName(vertex.getName());
             v.add(correctVertex);
         }
-
+        
         Dimension d = new Dimension(575, 190);
         init(v, times, d);
     }
@@ -70,13 +79,18 @@ public class PlotPanel extends JXTaskPane {
         this.setOpaque(false);
 
         XYDataset dataset = createSolutionDataset(vertices, times);
+        this.xydataset = dataset;
         JFreeChart chart = createChart(dataset, vertices.get(0).getName(), 
                 times.getStartTime(), times.getEndTime());
+        
+        this.jfreeChart = chart;
+        
+        
         ChartPanel chartPanel = new ChartPanel(chart);
         chartPanel.setFillZoomRectangle(true);
         chartPanel.setMouseWheelEnabled(true);
-        chartPanel.setDomainZoomable(false);
-        chartPanel.setRangeZoomable(false);
+        chartPanel.setDomainZoomable(true);
+        chartPanel.setRangeZoomable(true);
         chart.getTitle().setFont(new Font("Arial", Font.BOLD, 14));
 
         // The size of the panel depends on the size of the GraphDialog panel
@@ -86,7 +100,9 @@ public class PlotPanel extends JXTaskPane {
         chartPanel.setMinimumSize(d);
 
         add(chartPanel);
-
+        
+        
+       
     }
 
     /**
@@ -98,6 +114,7 @@ public class PlotPanel extends JXTaskPane {
     private XYDataset createSolutionDataset(List<Vertex> vertices, Times times) {
         logs.info("Creating Solution Dataset for PlotPanel");
         XYSeriesCollection dataset = new XYSeriesCollection();
+        
         String legends[] = new String[2];
         legends[0] = "Your Graph";
         legends[1] = "Target Graph";
@@ -127,7 +144,7 @@ public class PlotPanel extends JXTaskPane {
 
             dataset.addSeries(series);
         }
-
+        
         return dataset;
     }
 
@@ -144,9 +161,11 @@ public class PlotPanel extends JXTaskPane {
                 true, // tooltips
                 false // urls
                 );
-
+        
+        
         chart.setBackgroundPaint(Color.white);
-
+        
+        
         XYPlot plot = (XYPlot) chart.getPlot();
         plot.setBackgroundPaint(Color.lightGray);
         plot.setDomainGridlinePaint(Color.white);
@@ -154,7 +173,9 @@ public class PlotPanel extends JXTaskPane {
         plot.setAxisOffset(new RectangleInsets(5.0, 5.0, 5.0, 5.0));
         plot.setDomainCrosshairVisible(true);
         plot.setRangeCrosshairVisible(true);
-
+        
+        plot.getRangeAxis().setRange(((XYSeriesCollection)xydataset).getRangeLowerBound(true), ((XYSeriesCollection)xydataset).getRangeUpperBound(true));
+       
         NumberAxis domain = (NumberAxis) plot.getDomainAxis();
         // Don't want any padding on left or right.
         domain.setRange(start, end);
@@ -176,7 +197,46 @@ public class PlotPanel extends JXTaskPane {
             renderer.setSeriesShape(0, ShapeUtilities.createDownTriangle(3.5f));
             renderer.setSeriesShape(1, ShapeUtilities.createUpTriangle(3.5f));
         }
-
+       
         return chart;
     }
+    
+    public void updateChartAfterSliderChange(Graph graph,Vertex vertex, Times times){
+        logs.info("updating chart for new values from slider");
+        
+        XYSeries series = new XYSeries("New Value Graph");
+           
+        //remove last slider value series
+        for (int i = 2; i < xydataset.getSeriesCount(); i++) {
+            ((XYSeriesCollection)xydataset).removeSeries(i);
+        }
+        
+        try {
+           new ModelEvaluator(graph).run();
+        } catch (ModelEvaluationException ex) {
+            //handle this exception
+        }
+            List<Double> correctValues = graph.getVertexByName(vertex.getName()).getCorrectValues();        
+             
+            // Limit number of points that are plotted.
+            double t=times.getStartTime();
+            int di = (int) (times.getNumberSteps()/20);
+            if(di < 1){
+                di = 1;
+            }
+            logs.info("Gathering plot data with step size="+di+" from "+
+                    correctValues.size()+" data points.");
+           
+            System.out.println("Corrected values are ");
+            for (int i = 0; i < correctValues.size(); i += di) {
+                logs.debug(correctValues.get(i)+" ");
+                series.add(t, correctValues.get(i));
+                t += di*times.getTimeStep();
+            }
+                
+            ((XYSeriesCollection)xydataset).addSeries(series);
+            ((XYPlot)jfreeChart.getPlot()).getRangeAxis().setRange(((XYSeriesCollection)xydataset).getRangeLowerBound(true), ((XYSeriesCollection)xydataset).getRangeUpperBound(true));
+            jfreeChart.fireChartChanged(); 
+    }
+  
 }
