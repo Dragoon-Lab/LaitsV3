@@ -10,9 +10,12 @@ import java.util.TreeMap;
 import java.util.Map.Entry;
 
 import edu.asu.laits.editor.GraphEditorConstants;
+import edu.asu.laits.gui.MainWindow;
 import edu.asu.laits.model.Edge.ErrorReaderException;
 import java.util.ArrayList;
+import java.util.Iterator;
 import java.util.List;
+import java.util.concurrent.ConcurrentHashMap;
 import net.sourceforge.jeval.Evaluator;
 import org.apache.log4j.Logger;
 import org.jgraph.graph.DefaultGraphCell;
@@ -121,6 +124,15 @@ public class Vertex {
     }
 
     public void setVertexType(VertexType shape) {
+        // If vertex type is changed to constant - remove all the incoming edges
+        if(shape.equals(VertexType.CONSTANT)){
+            Graph graph = MainWindow.getInstance().getGraphEditorPane().getModelGraph();
+            Set edgeSet = graph.incomingEdgesOf(this);
+            ArrayList ee = new ArrayList<>(edgeSet);
+            for(Object e : ee){
+                graph.removeEdge(e);
+            }
+        }
         this.type = shape;
     }
 

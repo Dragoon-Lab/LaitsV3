@@ -33,6 +33,7 @@ import java.util.List;
 import javax.swing.AbstractButton;
 import javax.swing.JLabel;
 import net.miginfocom.swing.MigLayout;
+import org.apache.log4j.Logger;
 /**
  *
  * @author rjoiner1
@@ -66,6 +67,12 @@ public class PlanPanelView extends javax.swing.JPanel {
     private JRadioButton accumulatorSelection;
     private JRadioButton functionSelection;
    
+    /**
+     * Logger
+     */
+    private static Logger logs = Logger.getLogger("DevLogs");
+    private static Logger activityLogs = Logger.getLogger("ActivityLogs");
+    
     public PlanPanelView(NodeEditorView ne) {
         nodeEditor = ne;
         openVertex = ne.getOpenVertex();
@@ -121,12 +128,18 @@ public class PlanPanelView extends javax.swing.JPanel {
             setSelectedPlanBackground(Color.YELLOW);
             setEditableRadio(false);
         }
+        
+        // Temporary hack - initializatin should happen in appropriate controllers
+        if(ApplicationContext.isAuthorMode()){
+            setSelectedPlanBackground(Color.WHITE);
+            setEditableRadio(true);
+        }
+        
         panel.revalidate();
         panel.repaint();
         panel.setVisible(true);
         
-        attachChangeListener();
-        
+        attachChangeListener();        
     }
     
     /**
@@ -134,9 +147,9 @@ public class PlanPanelView extends javax.swing.JPanel {
      */
     private void attachChangeListener(){
         JRadioButton buttonList[] = {parameterSelection,accumulatorSelection,functionSelection};
+        
         for(JRadioButton button : buttonList){
             button.addActionListener(new ActionListener() {
-
                 @Override
                 public void actionPerformed(ActionEvent e) {
                     processPlanPanel();
@@ -170,13 +183,8 @@ public class PlanPanelView extends javax.swing.JPanel {
     public boolean processPlanPanel() {
         if (primarySelections.getSelection() != null) {
             openVertex.setPlan(planToString(getSelectedPlan()));
-            openVertex.setVertexType(getSelectedPlan());
-            
-            System.out.println("Updating Vertex Type");
-            // Update Current Node's shape as per selected plan
-            MainWindow.refreshGraph();
-            
-        //    logs.info("Plan Set to "+openVertex.getPlan() + "Vetex Type set to "+openVertex.getVertexType());
+            openVertex.setVertexType(getSelectedPlan());              
+            logs.info("Plan Set to "+openVertex.getPlan() + "Vetex Type set to "+openVertex.getVertexType());
         } else {
             nodeEditor.setEditorMessage("Please select a plan for this node.", true);
             return false;
@@ -201,11 +209,9 @@ public class PlanPanelView extends javax.swing.JPanel {
             AbstractButton button = buttons.nextElement();
 
             if (button.isSelected()) {
-                button.getParent().setBackground(c);
-               
+                button.getParent().setBackground(c);               
             }
         }
-
     }
     
     public void giveUpPlanPanel() {
@@ -248,7 +254,7 @@ public class PlanPanelView extends javax.swing.JPanel {
     }
     
     public void setSelectedPlan(String plan) {
-      //  logs.info("Setting Plan to "+plan);
+        logs.info("Setting Plan to "+plan);
         for (Enumeration<AbstractButton> buttons = primarySelections.getElements(); buttons.hasMoreElements();) {
             AbstractButton button = buttons.nextElement();
             if(button.getText().equalsIgnoreCase(plan)) {

@@ -56,6 +56,7 @@ public class NodeEditorView extends javax.swing.JDialog {
     private GraphEditorPane graphPane;
     private Vertex openVertex;
     private NodeEditorController _controller;
+    
     /**
      * Logger
      */
@@ -252,7 +253,7 @@ public class NodeEditorView extends javax.swing.JDialog {
             activityLogs.debug("User entered incorrect description");
         }
 
-        setTitle(openVertex.getName());
+        setTitle("Node Editor - "+openVertex.getName());
         validate();
         repaint();
     }
@@ -272,8 +273,6 @@ public class NodeEditorView extends javax.swing.JDialog {
             demoButton.setEnabled(false);
             activityLogs.debug("User entered correct description");
             dPanel.setEditableTree(false);
-            //ApplicationContext.nextCurrentOrder();
-            //ApplicationContext.removeNextNodes(currentVertex.getName());
             ApplicationContext.setNextNodes(openVertex.getName());
             tabPane.setEnabledAt(PLAN, true);
             tabPane.setForegroundAt(PLAN, Color.BLACK);
@@ -291,7 +290,7 @@ public class NodeEditorView extends javax.swing.JDialog {
 
         }
 
-        setTitle(openVertex.getName());
+        setTitle("Node Editor - "+openVertex.getName());
         validate();
         repaint();
     }

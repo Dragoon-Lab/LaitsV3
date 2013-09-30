@@ -98,7 +98,13 @@ public class CalculationsPanelView extends javax.swing.JPanel {
         } else if (openVertex.getVertexType().equals(VertexType.FLOW)) {
             preparePanelForFlow();
             formulaInputArea.setText(openVertex.getEquation());
+        }        
+        if(!ApplicationContext.isAuthorMode()){
+            setBackGroundColor();
         }
+    }
+    
+    private void setBackGroundColor(){
         if(openVertex.getCalculationsStatus().equals(Vertex.CalculationsStatus.CORRECT)){
             setCheckedBackground(Color.GREEN);
         }else if(openVertex.getCalculationsStatus().equals(Vertex.CalculationsStatus.GAVEUP)){
@@ -106,7 +112,6 @@ public class CalculationsPanelView extends javax.swing.JPanel {
         }else if(openVertex.getCalculationsStatus().equals(Vertex.CalculationsStatus.INCORRECT)){
             setCheckedBackground(Color.RED);
         }
-        
     }
     
     /**
@@ -735,8 +740,9 @@ public class CalculationsPanelView extends javax.swing.JPanel {
 
     private void formulaInputAreaKeyReleased(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_formulaInputAreaKeyReleased
         // TODO add your handling code here:
-         Graph graph = (Graph) this.nodeEditor.getGraphPane().getModelGraph();
-            for (int i = 0; i < availableInputJListModel.getSize(); i++) {
+         Graph graph = this.nodeEditor.getGraphPane().getModelGraph();
+         
+         for (int i = 0; i < availableInputJListModel.getSize(); i++) {
             String s = removeBoldfromListItem(availableInputJListModel.get(i).toString());
             availableInputJListModel.set(i, s);
             if(formulaInputArea.getText().trim().contains(s)){
@@ -746,10 +752,8 @@ public class CalculationsPanelView extends javax.swing.JPanel {
             }
             if(!formulaInputArea.getText().trim().contains(s)){
                 graph.removeEdge(graph.getVertexByName(s), openVertex);
-            }  
-            
+            }              
         }
-
     }//GEN-LAST:event_formulaInputAreaKeyReleased
                                         
     public JTextArea getFormulaInputArea() {

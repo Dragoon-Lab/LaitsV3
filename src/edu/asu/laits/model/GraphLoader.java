@@ -112,7 +112,7 @@ public class GraphLoader {
             throws IncorcectGraphXMLFileException {
         // An hash which makes it fast to find vertices
         HashMap<Integer, Vertex> vertexHash = new HashMap<Integer, Vertex>();
-        
+
         List<Vertex> vertexList = graphFile.getVertexList();
         for (Vertex vertex : vertexList) {
             vertex.setGraphsStatus(Vertex.GraphsStatus.UNDEFINED);
@@ -173,58 +173,39 @@ public class GraphLoader {
 
         String equation = currentVertex.getEquation();
 
-        if (currentVertex.getVertexType().equals(Vertex.VertexType.CONSTANT)) {
-            return validateFixedNode(equation);
-        } else {
-            return validateFlowStockNodes(equation);
-        }
-    }
-
-    private boolean validateFixedNode(String equation) {
-        // For fixed vertices check if value can be converted to double
-        try {
-            Double.parseDouble(equation);
-            return true;
-        } catch (NumberFormatException ex) {
-            ex.printStackTrace();
-            logs.error("Error in evaluting expression " + ex.getMessage());
-            return false;
-        }
-    }
-
-    private boolean validateFlowStockNodes(String equation) {
-        if (equation.isEmpty()) {
-            return false;
-        }
-
-
-        // Check Syantax of this equation
-        Evaluator eval = new Evaluator();
-        try {
-            eval.parse(equation);
-        } catch (EvaluationException ex) {
-            ex.printStackTrace();
-            return false;
-        }
-
-        List<String> availableVariables = graphPane.getModelGraph().getVerticesByName();
-        List<String> usedVariables = eval.getAllVariables();
-
-        // Check if this equation uses all the inputs
-        for (String s : usedVariables) {
-            if (!availableVariables.contains(s)) {
+        if (!currentVertex.getVertexType().equals(Vertex.VertexType.CONSTANT)) {
+            if (equation.isEmpty()) {
                 return false;
             }
-            eval.putVariable(s, String.valueOf(Math.random()));
-        }
 
-        // Check Sematics of the equation
-        try {
-            eval.evaluate();
-        } catch (EvaluationException ex) {
-            ex.printStackTrace();
-            logs.error("Error in evaluting expression " + ex.getMessage());
-            return false;
+            // Check Syantax of this equation
+            Evaluator eval = new Evaluator();
+            try {
+                eval.parse(equation);
+            } catch (EvaluationException ex) {
+                ex.printStackTrace();
+                return false;
+            }
+
+            List<String> availableVariables = graphPane.getModelGraph().getVerticesByName();
+            List<String> usedVariables = eval.getAllVariables();
+
+            // Check if this equation uses all the inputs
+            for (String s : usedVariables) {
+                if (!availableVariables.contains(s)) {
+                    return false;
+                }
+                eval.putVariable(s, String.valueOf(Math.random()));
+            }
+
+            // Check Sematics of the equation
+            try {
+                eval.evaluate();
+            } catch (EvaluationException ex) {
+                ex.printStackTrace();
+                logs.error("Error in evaluting expression " + ex.getMessage());
+                return false;
+            }            
         }
         return true;
     }
