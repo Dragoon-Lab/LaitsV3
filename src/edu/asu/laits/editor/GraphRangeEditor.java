@@ -307,13 +307,9 @@ public class GraphRangeEditor extends javax.swing.JDialog {
                 }
                 editorPane.repaint();
             
-            
             }catch(Exception e){
                 e.printStackTrace();
             }
-            
-            
-            
             
             this.dispose();
         }

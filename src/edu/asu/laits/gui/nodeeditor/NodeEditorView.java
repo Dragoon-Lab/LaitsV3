@@ -105,7 +105,7 @@ public class NodeEditorView extends javax.swing.JDialog {
                 tabPane.setForegroundAt(CALCULATIONS, Color.GRAY);
             }
             if (openVertex.isCalculationsDone()) {
-                System.out.println("Should be enabled on close");
+                logs.debug("Should be enabled on close");
                 buttonCancel.setEnabled(true);
             }
         }
@@ -151,7 +151,7 @@ public class NodeEditorView extends javax.swing.JDialog {
             tabPane.setSelectedIndex(CALCULATIONS);
         } else if (!openVertex.getDescriptionStatus().equals(Vertex.DescriptionStatus.UNDEFINED)
                 && !openVertex.getDescriptionStatus().equals(Vertex.DescriptionStatus.INCORRECT)) {
-            System.out.println("Setting Plan as current");
+            logs.debug("Setting Plan as current");
             logs.debug("Setting Plan Panel as Current");
             activityLogs.debug("Node Editor is opend with Plan Tab for Node: " + openVertex.getName());
             tabPane.setSelectedIndex(PLAN);
@@ -166,7 +166,7 @@ public class NodeEditorView extends javax.swing.JDialog {
     }
 
     /**
-     * Method responsible for Enabling and Disabling Check/Giveup buttons based
+     * Method responsible for Enabling and Disabling Check/Demo buttons based
      * on the use case
      */
     private void setCheckGiveupButtons() {
@@ -468,10 +468,6 @@ public class NodeEditorView extends javax.swing.JDialog {
                 }
             }
         }
-    }
-
-    public void refreshInputs() {
-        cPanel.refreshInputs();
     }
 
     public JComponent getLabel(String panel, String attachedTo) {

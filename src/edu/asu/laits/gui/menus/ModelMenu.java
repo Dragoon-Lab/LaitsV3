@@ -35,10 +35,7 @@ import java.awt.BorderLayout;
 import java.awt.event.ActionEvent;
 import java.awt.event.KeyEvent;
 import java.io.File;
-import java.io.FileWriter;
-import java.io.IOException;
 import java.text.DecimalFormat;
-import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Iterator;
 import java.util.List;
@@ -57,8 +54,8 @@ import org.jgraph.graph.DefaultGraphCell;
 import org.jgraph.graph.DefaultPort;
 
 /**
- * Menu for all Model Functionalities. Contains Menu Items for Run Model,
- * TimeRangeEditor and Solution File Generation.
+ * Menu for all Model Functionalities. 
+ * Contains Menu Items for Run Model, TimeRangeEditor and Solution File Generation.
  *
  * @author rptiwari
  *
@@ -79,8 +76,7 @@ public class ModelMenu extends JMenu {
     private JFileChooser saveAsFileChooser = null;
     private Object[][] data;
     private String[] columnNames;
-    public static String graph;
-
+    
     /**
      * This method initializes
      *
@@ -107,7 +103,6 @@ public class ModelMenu extends JMenu {
         if (ApplicationContext.isAuthorMode()) {
             this.add(getExportSolutionMenuItem());
             this.add(getEditTimeRangeMenuItem());
-            this.setGraph();
         }
         disableShowGraphMenu();
         disableDeleteNodeMenu();
@@ -115,7 +110,6 @@ public class ModelMenu extends JMenu {
 
     /**
      * This method initializes addNodeMenuItem
-     *
      */
     private JMenuItem getAddNodeMenuItem() {
         if (addNodeMenuItem == null) {
@@ -662,22 +656,6 @@ public class ModelMenu extends JMenu {
     private void saveToFile(File file) {
         LaitsSolutionExporter exporter = new LaitsSolutionExporter(graphPane.getModelGraph(), file);
         exporter.export();
-    }
-
-    /**
-     * Updates graph String (used for saving authored problems to the server)
-     */
-    public static void updateGraph() {
-        ModelMenu mm = new ModelMenu(graphPane, mainWindow);
-        mm.setGraph();
-    }
-
-    /**
-     * Retrieves graph String (used for saving authored problems to the server)
-     */
-    private void setGraph() {
-        LaitsSolutionExporter graphBuilder = new LaitsSolutionExporter(graphPane.getModelGraph(), null);
-        graph = graphBuilder.getXML();
     }
 
     private JFileChooser getSaveAsFileChooser() {

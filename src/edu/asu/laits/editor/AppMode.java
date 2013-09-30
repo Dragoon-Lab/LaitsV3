@@ -28,6 +28,7 @@ public enum AppMode {
     AUTHOR("Author"),
     STUDENT("Student"),
     COACHED("Coached"),
+    TEST("Test"),
     UNDEFINED("Undefined");
     
     private String value;

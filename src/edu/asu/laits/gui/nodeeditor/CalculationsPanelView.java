@@ -46,6 +46,8 @@ import javax.swing.text.DefaultFormatter;
 import net.sourceforge.jeval.EvaluationException;
 import net.sourceforge.jeval.Evaluator;
 import edu.asu.laits.model.Vertex.VertexType;
+import java.util.Collections;
+import java.util.Comparator;
 import java.util.LinkedList;
 
 
@@ -89,8 +91,7 @@ public class CalculationsPanelView extends javax.swing.JPanel {
             return;
         }
         
-        if (openVertex.getVertexType().equals(VertexType.STOCK)) {
-            
+        if (openVertex.getVertexType().equals(VertexType.STOCK)) {            
             preparePanelForStock();
             fixedValueInputBox.setText(String.valueOf(openVertex.getInitialValue()));
             formulaInputArea.setText(openVertex.getEquation());
@@ -121,17 +122,15 @@ public class CalculationsPanelView extends javax.swing.JPanel {
         if(nodeEditor.getGraphPane().getModelGraph().vertexSet().size() <= 1)
             return;
         
-        Vertex currentVertex = nodeEditor.getOpenVertex();
-        Graph graph = (Graph) nodeEditor.getGraphPane().getModelGraph();
-        Iterator<Edge> inEdges = graph.incomingEdgesOf(currentVertex).iterator();
         
-        Set<Vertex> vertexes = graph.vertexSet();
-        for(Vertex v : vertexes) {
-            if(v.getName().equalsIgnoreCase(currentVertex.getName())){
-                continue;
-            }
-            availableInputJListModel.addElement(v.getName());
-        }
+        Graph graph = nodeEditor.getGraphPane().getModelGraph();
+        List<String> vertices = graph.getVerticesByName();
+        vertices.remove(nodeEditor.getOpenVertex().getName());
+        Collections.sort(vertices, new SortIgnoreCase());
+        for(String vertexName : vertices) {
+            availableInputJListModel.addElement(vertexName);
+        }        
+        
         availableInputsJList.repaint();
     }
     
@@ -174,16 +173,14 @@ public class CalculationsPanelView extends javax.swing.JPanel {
         valuesLabel.setText(openVertex.getName() + " =");
     }
     
-    public void preparePanelForStock() {
-        
+    public void preparePanelForStock() {        
         fixedValueInputBox.setVisible(true);
         fixedValueLabel.setVisible(true);
         calculatorPanel.setVisible(true);
         accumulatorTimeLabel.setVisible(true);
         formulaInputArea.setText("");
         
-        if(!ApplicationContext.isAuthorMode())
-            //valuesLabel.setText("Change in " + openVertex.getName() + " per " + ApplicationContext.getCorrectSolution().getGraphUnits() + " = ");
+        if(!ApplicationContext.isAuthorMode())            
             valuesLabel.setText("<html><body style='width: 275px'>New " + openVertex.getName() + "= <br />Old " + openVertex.getName() + " +</body></html>");
     }
     
@@ -403,6 +400,13 @@ public class CalculationsPanelView extends javax.swing.JPanel {
         }
     }
     
+    private class SortIgnoreCase implements Comparator <Object> {
+        public int compare(Object o1, Object o2) {
+            String s1 = (String) o1;
+            String s2 = (String) o2;
+            return s1.toLowerCase().compareTo(s2.toLowerCase());
+        }
+    }
     /**
      * This method is called from within the constructor to initialize the form.
      * WARNING: Do NOT modify this code. The content of this method is always
@@ -620,12 +624,10 @@ public class CalculationsPanelView extends javax.swing.JPanel {
         return sb.toString();
     }
     public void refreshInputs(){
-        activityLogs.debug("Inputs Panel : User selected node type as INPUTS for Node "+
+        activityLogs.debug("Refreshing Calculations Panel Inputs for Node: "+
                            nodeEditor.getOpenVertex().getName());
-        
-        //   nodeEditor.getOpenVertex().setVertexType(Vertex.VertexType.DEFAULT);
-        nodeEditor.getGraphPane().getLayoutCache().reload();
-        nodeEditor.getGraphPane().repaint();
+        initializeAvailableInputNodes();
+        MainWindow.refreshGraph(); // Why ??
     }
     
     public JComponent getLabel(String label){

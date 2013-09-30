@@ -197,6 +197,10 @@ public class ApplicationContext {
     public static boolean isCoachedMode() {
         return (appMode.equals(AppMode.COACHED));
     }
+    
+    public static boolean isTestMode(){
+        return (appMode.equals(AppMode.TEST));
+    }
 
     public static AppMode getAppMode() {
         return appMode;

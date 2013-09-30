@@ -190,6 +190,12 @@ public class GraphEditorPane extends JGraph {
         this.removeKeyListener(this.getKeyListeners()[0]);
         this.addKeyListener(new KeyHandler(this));
 
+        if(ApplicationContext.getApplicationEnvironment().equals(ApplicationContext.ApplicationEnvironment.DEV)){
+            attachGraphStatusNotifier();
+        }
+    }
+
+    private void attachGraphStatusNotifier(){
         final Action statusUpdateAction = new AbstractAction() {
             public void actionPerformed(ActionEvent e) {
                 // Show new graph information...
@@ -221,10 +227,10 @@ public class GraphEditorPane extends JGraph {
                  *  Code removed to fix bug 1983
                  * Description: Removing message on status bar
                  */
-                /*
+                
                  currentStatusMessageProvider.setMessage("Nodes: " + vertices + ", Edges: " + edges
                  + ", Selected Nodes:  " + selectedVertices + ", Selected Edges: "
-                 + selectedEdges);*/
+                 + selectedEdges);
 
             }
         };
@@ -244,9 +250,7 @@ public class GraphEditorPane extends JGraph {
 
             }
         });
-
     }
-
     /**
      * Adds a vertex at the specified position (x, y). Uses the GraphProperties
      * object for the graph to associate the vertex with the default properties

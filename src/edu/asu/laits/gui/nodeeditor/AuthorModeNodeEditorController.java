@@ -145,4 +145,16 @@ public class AuthorModeNodeEditorController extends NodeEditorController{
     
     public void planPanelRadioClicked(){
     }
+    
+    /**
+     * Initialize CreateNewNodeDialog for Author Mode.
+     * In Author Mode Check and Demo buttons are disabled. There is Create button
+     * to create a new node.
+     * @param dialog 
+     */
+    public void initializeCreateNewNodeDialog(CreateNewNodeDialog dialog){
+        dialog.getCheckButton().setEnabled(false);
+        dialog.getDemoButton().setEnabled(false);
+        dialog.getCancelButton().setText("Create");
+    }
 }

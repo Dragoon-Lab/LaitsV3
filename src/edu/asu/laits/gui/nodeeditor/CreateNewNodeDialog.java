@@ -6,11 +6,13 @@ package edu.asu.laits.gui.nodeeditor;
 
 import edu.asu.laits.editor.ApplicationContext;
 import edu.asu.laits.editor.GraphEditorPane;
+import edu.asu.laits.gui.MainWindow;
 import edu.asu.laits.model.TaskSolution;
 import edu.asu.laits.model.Vertex;
 import java.awt.Color;
 import java.awt.Dimension;
 import java.awt.Toolkit;
+import javax.swing.JButton;
 import javax.swing.JDialog;
 import javax.swing.JPanel;
 import org.apache.log4j.Logger;
@@ -22,7 +24,7 @@ import org.apache.log4j.Logger;
 public class CreateNewNodeDialog extends javax.swing.JDialog {
     
     private NewNodeDescPanel dPanel;
-    private NodeEditorView ne;
+    private NodeEditorView nodeEditorView;
     private Vertex currentVertex;
     private static Logger logs = Logger.getLogger("DevLogs");
     private static Logger activityLogs = Logger.getLogger("ActivityLogs");
@@ -31,7 +33,7 @@ public class CreateNewNodeDialog extends javax.swing.JDialog {
         super(parent, true);
         
         initComponents();
-        ne = (NodeEditorView) parent;
+        nodeEditorView = (NodeEditorView) parent;
         currentVertex = v;
         
         initPanel();
@@ -42,7 +44,7 @@ public class CreateNewNodeDialog extends javax.swing.JDialog {
         dPanel = new NewNodeDescPanel(this, currentVertex);
         descriptionPanel.setLayout(new java.awt.GridLayout(1, 1));
         descriptionPanel.add(dPanel);
-        
+        nodeEditorView.getController().initializeCreateNewNodeDialog(this);
         
         this.addWindowListener(new java.awt.event.WindowAdapter() {
             public void windowClosing(java.awt.event.WindowEvent e) {
@@ -65,14 +67,10 @@ public class CreateNewNodeDialog extends javax.swing.JDialog {
         
         editorMsgLabel.setVisible(false);
         if(ApplicationContext.getAppMode().equals("COACHED")){
-            buttonCancel.setEnabled(false);
+            cancelButton.setEnabled(false);
         }
         setVisible(true);
         setResizable(false);
-    }
-    
-    public GraphEditorPane getGraphPane() {
-        return ne.getGraphPane();
     }
     
     /**
@@ -83,82 +81,82 @@ public class CreateNewNodeDialog extends javax.swing.JDialog {
     @SuppressWarnings("unchecked")
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
     private void initComponents() {
-        
+
         descriptionPanel = new javax.swing.JPanel();
         editorMsgLabel = new javax.swing.JLabel();
         checkButton = new javax.swing.JButton();
-        giveUpButton = new javax.swing.JButton();
-        buttonCancel = new javax.swing.JButton();
-        
+        demoButton = new javax.swing.JButton();
+        cancelButton = new javax.swing.JButton();
+
         setDefaultCloseOperation(javax.swing.WindowConstants.DISPOSE_ON_CLOSE);
-        
+
         descriptionPanel.setCursor(new java.awt.Cursor(java.awt.Cursor.DEFAULT_CURSOR));
         descriptionPanel.setFocusable(false);
         descriptionPanel.setPreferredSize(new java.awt.Dimension(506, 615));
         descriptionPanel.setLayout(new org.netbeans.lib.awtextra.AbsoluteLayout());
-        
+
         editorMsgLabel.setFont(new java.awt.Font("Lucida Grande", 0, 12)); // NOI18N
         editorMsgLabel.setForeground(new java.awt.Color(255, 0, 0));
         editorMsgLabel.setText("jLabel1");
-        
+
         checkButton.setText("Check");
         checkButton.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 checkButtonActionPerformed(evt);
             }
         });
-        
-        giveUpButton.setText("Demo");
-        giveUpButton.setActionCommand("Give Up");
-        giveUpButton.addActionListener(new java.awt.event.ActionListener() {
+
+        demoButton.setText("Demo");
+        demoButton.setActionCommand("Give Up");
+        demoButton.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                giveUpButtonActionPerformed(evt);
+                demoButtonActionPerformed(evt);
             }
         });
-        
-        buttonCancel.setText("Close");
-        buttonCancel.addActionListener(new java.awt.event.ActionListener() {
+
+        cancelButton.setText("Close");
+        cancelButton.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                buttonCancelActionPerformed(evt);
+                cancelButtonActionPerformed(evt);
             }
         });
-        
+
         org.jdesktop.layout.GroupLayout layout = new org.jdesktop.layout.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
         layout.setHorizontalGroup(
-                                  layout.createParallelGroup(org.jdesktop.layout.GroupLayout.LEADING)
-                                  .add(layout.createSequentialGroup()
-                                       .addContainerGap()
-                                       .add(layout.createParallelGroup(org.jdesktop.layout.GroupLayout.LEADING)
-                                            .add(org.jdesktop.layout.GroupLayout.TRAILING, layout.createSequentialGroup()
-                                                 .add(0, 0, Short.MAX_VALUE)
-                                                 .add(descriptionPanel, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE, 601, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE))
-                                            .add(layout.createSequentialGroup()
-                                                 .add(editorMsgLabel, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE, 601, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE)
-                                                 .add(15, 15, 15))
-                                            .add(layout.createSequentialGroup()
-                                                 .add(9, 9, 9)
-                                                 .add(checkButton, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE, 82, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE)
-                                                 .add(18, 18, 18)
-                                                 .add(giveUpButton, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE, 78, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE)
-                                                 .addPreferredGap(org.jdesktop.layout.LayoutStyle.RELATED, org.jdesktop.layout.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                                                 .add(buttonCancel, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE, 78, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE)))
-                                       .addContainerGap())
-                                  );
+            layout.createParallelGroup(org.jdesktop.layout.GroupLayout.LEADING)
+            .add(layout.createSequentialGroup()
+                .addContainerGap()
+                .add(layout.createParallelGroup(org.jdesktop.layout.GroupLayout.LEADING)
+                    .add(org.jdesktop.layout.GroupLayout.TRAILING, layout.createSequentialGroup()
+                        .add(0, 0, Short.MAX_VALUE)
+                        .add(descriptionPanel, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE, 601, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE))
+                    .add(layout.createSequentialGroup()
+                        .add(editorMsgLabel, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE, 601, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE)
+                        .add(15, 15, 15))
+                    .add(layout.createSequentialGroup()
+                        .add(9, 9, 9)
+                        .add(checkButton, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE, 82, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE)
+                        .add(18, 18, 18)
+                        .add(demoButton, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE, 78, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE)
+                        .addPreferredGap(org.jdesktop.layout.LayoutStyle.RELATED, org.jdesktop.layout.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                        .add(cancelButton, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE, 78, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE)))
+                .addContainerGap())
+        );
         layout.setVerticalGroup(
-                                layout.createParallelGroup(org.jdesktop.layout.GroupLayout.LEADING)
-                                .add(layout.createSequentialGroup()
-                                     .add(19, 19, 19)
-                                     .add(descriptionPanel, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE, 506, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE)
-                                     .addPreferredGap(org.jdesktop.layout.LayoutStyle.RELATED, org.jdesktop.layout.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                                     .add(editorMsgLabel, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE, 21, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE)
-                                     .addPreferredGap(org.jdesktop.layout.LayoutStyle.RELATED)
-                                     .add(layout.createParallelGroup(org.jdesktop.layout.GroupLayout.LEADING, false)
-                                          .add(checkButton, org.jdesktop.layout.GroupLayout.DEFAULT_SIZE, 41, Short.MAX_VALUE)
-                                          .add(giveUpButton, org.jdesktop.layout.GroupLayout.DEFAULT_SIZE, org.jdesktop.layout.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                                          .add(buttonCancel, org.jdesktop.layout.GroupLayout.DEFAULT_SIZE, org.jdesktop.layout.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)))
-                                );
-        
+            layout.createParallelGroup(org.jdesktop.layout.GroupLayout.LEADING)
+            .add(layout.createSequentialGroup()
+                .add(19, 19, 19)
+                .add(descriptionPanel, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE, 506, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE)
+                .addPreferredGap(org.jdesktop.layout.LayoutStyle.RELATED, org.jdesktop.layout.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                .add(editorMsgLabel, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE, 21, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE)
+                .addPreferredGap(org.jdesktop.layout.LayoutStyle.RELATED)
+                .add(layout.createParallelGroup(org.jdesktop.layout.GroupLayout.LEADING, false)
+                    .add(checkButton, org.jdesktop.layout.GroupLayout.DEFAULT_SIZE, 41, Short.MAX_VALUE)
+                    .add(demoButton, org.jdesktop.layout.GroupLayout.DEFAULT_SIZE, org.jdesktop.layout.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                    .add(cancelButton, org.jdesktop.layout.GroupLayout.DEFAULT_SIZE, org.jdesktop.layout.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)))
+        );
+
         pack();
     }// </editor-fold>//GEN-END:initComponents
     
@@ -175,7 +173,7 @@ public class CreateNewNodeDialog extends javax.swing.JDialog {
         
     }//GEN-LAST:event_checkButtonActionPerformed
     
-    private void giveUpButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_giveUpButtonActionPerformed
+    private void demoButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_demoButtonActionPerformed
         // Action for Giveup Button
         activityLogs.debug("Giveup button pressed for Description Panel");
         dPanel.giveUpDescriptionPanel();
@@ -188,15 +186,15 @@ public class CreateNewNodeDialog extends javax.swing.JDialog {
         currentVertex.setDescriptionStatus(Vertex.DescriptionStatus.GAVEUP);
         dPanel.setEditableTree(false);
         this.checkButton.setEnabled(false);
-        this.giveUpButton.setEnabled(false);
-        this.buttonCancel.setEnabled(true);
+        this.demoButton.setEnabled(false);
+        this.cancelButton.setEnabled(true);
 
-    }//GEN-LAST:event_giveUpButtonActionPerformed
+    }//GEN-LAST:event_demoButtonActionPerformed
     
-    private void buttonCancelActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_buttonCancelActionPerformed
+    private void cancelButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_cancelButtonActionPerformed
         // Process Cancel Action for all the Tabs
         close();
-    }//GEN-LAST:event_buttonCancelActionPerformed
+    }//GEN-LAST:event_cancelButtonActionPerformed
     
     private void checkDescriptionPanel(TaskSolution correctSolution) {
         // Save Description Panel Information in the Vertex Object
@@ -209,8 +207,8 @@ public class CreateNewNodeDialog extends javax.swing.JDialog {
                 setEditorMessage("", false);
                 dPanel.setTextFieldBackground(Color.GREEN);
                 checkButton.setEnabled(false);
-                giveUpButton.setEnabled(false);
-                buttonCancel.setEnabled(true);
+                demoButton.setEnabled(false);
+                cancelButton.setEnabled(true);
                 activityLogs.debug("User entered correct description");
                 dPanel.setEditableTree(false);
 
@@ -235,18 +233,15 @@ public class CreateNewNodeDialog extends javax.swing.JDialog {
         int solutionCheck = correctSolution.checkNodeNameOrdered(dPanel.getNodeName());
         if (solutionCheck == 1) {
             currentVertex.setDescriptionStatus(Vertex.DescriptionStatus.CORRECT);
-            //graphPane.getMainFrame().getMainMenu().getModelMenu().addDeleteNodeMenu();
             setEditorMessage("", false);
             dPanel.setTextFieldBackground(Color.GREEN);
             checkButton.setEnabled(false);
-            giveUpButton.setEnabled(false);
-            buttonCancel.setEnabled(true);
+            demoButton.setEnabled(false);
+            cancelButton.setEnabled(true);
             activityLogs.debug("User entered correct description");
             dPanel.setEditableTree(false);
-            //ApplicationContext.nextCurrentOrder();
-            //ApplicationContext.removeNextNodes(currentVertex.getName());
             ApplicationContext.setNextNodes(currentVertex.getName());
-            giveUpButton.setEnabled(false);
+            demoButton.setEnabled(false);
             
             
         } else if(solutionCheck == 2){
@@ -269,25 +264,28 @@ public class CreateNewNodeDialog extends javax.swing.JDialog {
     }
     
     private void close() {
-        System.out.println("closing");
+        logs.debug("Closing Create New Node Dialog");
         if(ApplicationContext.isAuthorMode()){
             dPanel.processDescriptionPanel();
         }
+        
+        // This if statement seems problematic 
         if (currentVertex.getName().equals("") || currentVertex.getDescriptionStatus().equals(Vertex.DescriptionStatus.INCORRECT)) {
-           // ne.getGraphPane().removeSelected();
-            ne.getGraphPane().setSelectionCell(currentVertex.getJGraphVertex());
-            ne.getGraphPane().removeSelected();
+            nodeEditorView.getGraphPane().setSelectionCell(currentVertex.getJGraphVertex());
+            nodeEditorView.getGraphPane().removeSelected();
         } else {
-            ne.getCalculationsPanel().initPanel();
-            // ne.getGraphPane().setSelectionCell(ne.getCurrentVertex());
-            ne.refreshInputs();
+            // Initializing Calculations Panel again doesn't see necessary
+            //ne.getCalculationsPanel().initPanel();
+            nodeEditorView.getCalculationsPanel().refreshInputs();       
         }
         
-        ne.getCalculationsPanel().setCreateButtonEnabled();
-        this.dispose();
-        ne.addHelpBalloon(currentVertex.getName(), "newNodeClosed", "INPUTS");
-       
+        nodeEditorView.getCalculationsPanel().setCreateButtonEnabled();
+        // Refresh MainWidow to show the changes
+        MainWindow.refreshGraph();
         
+        this.dispose();
+        // Why this is done after dispose ???
+        nodeEditorView.addHelpBalloon(currentVertex.getName(), "newNodeClosed", "INPUTS");                
     }
     
     public void setEditorMessage(String msg, boolean err) {
@@ -299,11 +297,24 @@ public class CreateNewNodeDialog extends javax.swing.JDialog {
         }
         editorMsgLabel.setVisible(true);
     }
+    
+    // Getter for UI Elements
+    public JButton getCancelButton(){
+        return cancelButton;
+    }
+    
+    public JButton getDemoButton(){
+        return demoButton;
+    }
+    
+    public JButton getCheckButton(){
+        return checkButton;
+    }
     // Variables declaration - do not modify//GEN-BEGIN:variables
-    private javax.swing.JButton buttonCancel;
+    private javax.swing.JButton cancelButton;
     private javax.swing.JButton checkButton;
+    private javax.swing.JButton demoButton;
     private javax.swing.JPanel descriptionPanel;
     private javax.swing.JLabel editorMsgLabel;
-    private javax.swing.JButton giveUpButton;
     // End of variables declaration//GEN-END:variables
 }

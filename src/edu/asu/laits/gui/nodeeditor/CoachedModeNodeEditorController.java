@@ -160,4 +160,12 @@ public class CoachedModeNodeEditorController extends NodeEditorController {
         TaskSolution solution = ApplicationContext.getCorrectSolution();
         view.checkPlanPanel(solution);
     }
+    
+    /**
+     * Initialize CreateNewNodeDialog for Coached Mode.
+     * @param dialog 
+     */
+    public void initializeCreateNewNodeDialog(CreateNewNodeDialog dialog){
+        // Needs specific implementation for this mode
+    }
 }

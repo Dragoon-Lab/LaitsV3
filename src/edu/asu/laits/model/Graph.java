@@ -1,8 +1,10 @@
 
 package edu.asu.laits.model;
 
+import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.Iterator;
+import java.util.List;
 import org.apache.log4j.Logger;
 import org.jgrapht.DirectedGraph;
 import org.jgrapht.graph.DirectedMultigraph;
@@ -94,5 +96,15 @@ public class Graph<V, E> extends ListenableDirectedGraph<V, E> implements
              } else{
                  return false;
              }
+        }
+        
+        public List<String> getVerticesByName(){
+            List<String> vertices = new ArrayList<String>();
+            Set<V> allV = vertexSet();
+            for(V v : allV){
+                Vertex vertex = (Vertex)v;
+                vertices.add(vertex.getName());
+            }
+            return vertices;
         }
 }

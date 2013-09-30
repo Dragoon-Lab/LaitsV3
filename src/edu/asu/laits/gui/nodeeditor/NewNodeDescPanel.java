@@ -24,6 +24,7 @@ package edu.asu.laits.gui.nodeeditor;
 import edu.asu.laits.editor.ApplicationContext;
 import edu.asu.laits.editor.GraphEditorPane;
 import edu.asu.laits.gui.BlockingToolTip;
+import edu.asu.laits.gui.MainWindow;
 import edu.asu.laits.model.Graph;
 import edu.asu.laits.model.HelpBubble;
 import edu.asu.laits.model.SolutionDTreeNode;
@@ -45,7 +46,10 @@ import org.apache.log4j.Logger;
 
 
 /**
- *
+ * JPanel used as DesciptionPanel for CreateNewNodeDialog.
+ * This class needs refactoring a there is a lot of duplicate code from Description 
+ * panel of NodeEditor
+ * 
  * @author ramayantiwari
  */
 public class NewNodeDescPanel extends JPanel{
@@ -324,7 +328,7 @@ public class NewNodeDescPanel extends JPanel{
   
   private boolean duplicatedNode(String nodeName) {
       
-      Graph graph = nodeEditor.getGraphPane().getModelGraph();
+      Graph graph = MainWindow.getInstance().getGraphEditorPane().getModelGraph();
       
       if(graph.getVertexByName(nodeName)!=null && currentVertex.getName()!=nodeName)
           return true;
@@ -361,7 +365,7 @@ public class NewNodeDescPanel extends JPanel{
           }
       }  else {
            for(SolutionNode name : correctNodeNames){
-            if(nodeEditor.getGraphPane().getModelGraph().getVertexByName(name.getNodeName()) == null){
+            if(MainWindow.getInstance().getGraphEditorPane().getModelGraph().getVertexByName(name.getNodeName()) == null){
                  giveupNode = name.getNodeName();
                  break;
               }

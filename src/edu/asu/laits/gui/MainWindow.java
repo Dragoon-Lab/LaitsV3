@@ -85,7 +85,7 @@ public class MainWindow extends JFrame {
     /**
      * Method to get static instance of Main Application Window
      *
-     * @return
+     * @return Instance of MainWindow
      */
     public static MainWindow getInstance() {
         if (_instance == null) {
@@ -93,7 +93,7 @@ public class MainWindow extends JFrame {
             if (!ApplicationContext.isAuthorMode()) {
                 _instance.loadTask();
             }
-            _instance.loadSession();
+            _instance.loadSavedSession();
             _instance.attachGraphChangeListener();
         }
         return _instance;
@@ -120,13 +120,13 @@ public class MainWindow extends JFrame {
         windowCount++;
     }
 
-    private void attachGraphChangeListener(){
+    private void attachGraphChangeListener() {
         logs.debug("Attached Graph Change Listener");
         GraphPropertiesChangeListener l = new MainGraphPropertiesChangeListener();
         l.graphPropertiesChanged();
         getGraphEditorPane().addGraphPropertiesChangeListener(l);
     }
-    
+
     public void addHelpBalloon(String node, String timing) {
         if (ApplicationContext.isCoachedMode()) {
             List<HelpBubble> bubbles = ApplicationContext.getHelp(node, "MainWindow", timing);
@@ -338,7 +338,6 @@ public class MainWindow extends JFrame {
         if (graphEditorPane == null) {
             logs.debug("making new graph editor pane");
             graphEditorPane = new GraphEditorPane(this, getStatusBarPanel());
-            //getStatusBarPanel().setGraphPane(graphEditorPane);
             graphEditorPane.setAntiAliased(GlobalProperties.getInstance()
                     .isAntialiasing());
             graphEditorPane.setDoubleBuffered(GlobalProperties.getInstance()
@@ -462,45 +461,16 @@ public class MainWindow extends JFrame {
      * Method to Load user session form Server It will load previously saved
      * Graph from the last session of user
      */
-    private void loadSession() {
-        String user = ApplicationContext.getUserID();
-        String section = ApplicationContext.getSection();
-        String probNum = ApplicationContext.getCurrentTaskID();
-
-        String xmlString = "";
-        HttpAppender sessionLoader = new HttpAppender();
+    private void loadSavedSession() {
         try {
-            //if user is in AUTHOR mode save solution in server
-            if (ApplicationContext.isAuthorMode()) {
-                xmlString = sessionLoader.saveGetSession("author_load",
-                        ApplicationContext.getRootURL().concat("/postvar.php"),
-                        ApplicationContext.getUserID(),
-                        ApplicationContext.getSection(),
-                        ApplicationContext.getCurrentTaskID(),
-                        "",
-                        "");
+            String graphXML = PersistenceManager.loadSession();
 
-                ModelMenu.graph = xmlString;
-            } else {
-                xmlString = sessionLoader.saveGetSession("load",
-                        ApplicationContext.getRootURL().concat("/postvar.php"),
-                        ApplicationContext.getUserID(),
-                        ApplicationContext.getSection(),
-                        ApplicationContext.getCurrentTaskID(),
-                        "",
-                        "");
-            }
-
-            if (!xmlString.trim().isEmpty()) {
-                logs.debug("Previous session found. User: " + user + " Section: " + section + " Prob: " + probNum);
+            if (!graphXML.trim().isEmpty()) {
                 getGraphEditorPane().resetModelGraph();
-
                 GraphLoader loader = new GraphLoader(getGraphEditorPane());
-                loader.loadFromServer(xmlString);
-
+                loader.loadFromServer(graphXML);
                 switchTutorModelPanels(false);
             }
-
         } catch (IOException ex) {
             logs.error("Error loading session from database. " + ex.getMessage());
             ex.printStackTrace();

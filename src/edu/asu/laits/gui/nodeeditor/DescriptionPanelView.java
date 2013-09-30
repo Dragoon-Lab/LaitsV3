@@ -304,6 +304,8 @@ public class DescriptionPanelView extends JPanel {
             if (!duplicatedNode(getNodeName())) {
                 try {
                     currentVertex.setName(getNodeName().trim());
+                    // Set title of NodeEditor to the New Name
+                    nodeEditor.setTitle("Node Editor - " + currentVertex.getName());
                 } catch (Exception ex) {
                     nodeEditor.setEditorMessage(ex.getMessage(), true);
                     setTextFieldBackground(Color.RED);
