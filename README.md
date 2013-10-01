@@ -9,10 +9,14 @@ available.
 
 ## Dragoon Install ##
 
-Instructions for setting up a dragoon server and for
+This document contains instructions for setting up a dragoon server and for
 setting up a development environment for dragoon.  We use
 Netbeans for java code development, but none of the code
 is Netbean-specific.
+
+You should have JDK 1.6 installed on your development platform.
+Although Dragoon runs fine in Java 1.7, many computers in the
+schools (as of Fall 2013) do not have Java 1.7 installed.
 
 ### Database Setup ###
 
@@ -22,7 +26,7 @@ containing three lines containing the username, password, and
 database name.
 
 
-### Command Line arguements ###
+### Command Line arguments ###
 
 To run Dragoon locally, you need to supply command line arguments.
 To set up command line arguments in NetBeans, right-click the project, select
