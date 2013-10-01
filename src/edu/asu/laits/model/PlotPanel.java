@@ -22,12 +22,7 @@ import java.awt.Color;
 import java.awt.Dimension;
 import java.awt.Font;
 import java.util.ArrayList;
-import java.util.Iterator;
 import java.util.List;
-import java.util.Map;
-import java.util.logging.Level;
-import javax.swing.event.ChangeEvent;
-import javax.swing.event.ChangeListener;
 import org.apache.log4j.Logger;
 import org.jdesktop.swingx.JXTaskPane;
 import org.jfree.chart.ChartFactory;
@@ -83,8 +78,7 @@ public class PlotPanel extends JXTaskPane {
         JFreeChart chart = createChart(dataset, vertices.get(0).getName(), 
                 times.getStartTime(), times.getEndTime());
         
-        this.jfreeChart = chart;
-        
+        this.jfreeChart = chart;        
         
         ChartPanel chartPanel = new ChartPanel(chart);
         chartPanel.setFillZoomRectangle(true);
@@ -94,15 +88,11 @@ public class PlotPanel extends JXTaskPane {
         chart.getTitle().setFont(new Font("Arial", Font.BOLD, 14));
 
         // The size of the panel depends on the size of the GraphDialog panel
-
         chartPanel.setPreferredSize(d);
         chartPanel.setSize(d);
         chartPanel.setMinimumSize(d);
 
         add(chartPanel);
-        
-        
-       
     }
 
     /**
@@ -129,13 +119,13 @@ public class PlotPanel extends JXTaskPane {
             List<Double> correctValues = v.getCorrectValues();
 
             // Limit number of points that are plotted.
-            double t=times.getStartTime();
+            double t = times.getStartTime();
             int di = (int) (times.getNumberSteps()/20);
             if(di < 1){
                 di = 1;
             }
-            logs.info("Gathering plot data with step size="+di+" from "+
-                    correctValues.size()+" data points.");
+            logs.info("Gathering plot data with step size = " + di + " from "+
+                    correctValues.size() + " data points.");
             
             for (int i = 0; i < correctValues.size(); i += di) {
                 series.add(t, correctValues.get(i));
@@ -164,8 +154,7 @@ public class PlotPanel extends JXTaskPane {
         
         
         chart.setBackgroundPaint(Color.white);
-        
-        
+                
         XYPlot plot = (XYPlot) chart.getPlot();
         plot.setBackgroundPaint(Color.lightGray);
         plot.setDomainGridlinePaint(Color.white);

@@ -131,4 +131,16 @@ public class Graph<V, E> extends ListenableDirectedGraph<V, E> implements
         }
         return vertices;
     }
+    
+    /**
+     * Removes all the incoming edges of this vertex
+     * @param vertex 
+     */
+    public void removeIncomingEdgesOf(V vertex){
+        Set<E> edgeSet = incomingEdgesOf(vertex);
+        ArrayList<E> ee = new ArrayList<>(edgeSet);
+        for(E e : ee){
+            removeEdge(e);
+        }
+    }
 }

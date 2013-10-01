@@ -12,10 +12,8 @@ import java.util.Timer;
 import java.util.TimerTask;
 
 import javax.swing.SwingUtilities;
-import org.apache.log4j.Logger;
 
 import org.jgraph.graph.BasicMarqueeHandler;
-import org.jgraph.graph.DefaultGraphCell;
 import org.jgraph.graph.GraphConstants;
 import org.jgraph.graph.Port;
 import org.jgraph.graph.PortView;
@@ -27,8 +25,10 @@ import org.jgraph.graph.PortView;
  *
  * An object of this class is added as a MarqueeListener to the JGraph pane to
  * add functionality to be able to draw deges between ports when not in insert
- * mode as well as displaing popup menus when the user click with the right
+ * mode as well as displaying popup menus when the user click with the right
  * button of the mouse.
+ * 
+ * This needs a lot of refactoring
  */
 public class MarqueeHandler extends BasicMarqueeHandler {
 
@@ -159,13 +159,10 @@ public class MarqueeHandler extends BasicMarqueeHandler {
 
     public PortView getSourcePortAt(Point2D point) {
         // Disable jumping
-        if (graph.isInsertMode()) {
-            graph.setTolerance(5);
-            graph.setJumpToDefaultPort(true);
-        } else {
+        
             graph.setTolerance(4);
             graph.setJumpToDefaultPort(false);
-        }
+        
 
         PortView result;
         try {
@@ -188,72 +185,6 @@ public class MarqueeHandler extends BasicMarqueeHandler {
         // UGLY FIX BECOUSE OF DEFAULT KEY HANDLER
         if (e == null) {
             return;
-        }
-        if (!dragging && graph.isInsertMode()
-                && (e.getButton() == MouseEvent.BUTTON1)) {
-            /*
-             * If it is insert mode and the user clicks where no vertices is
-             * lookated then a new vertex shall be inserted.
-             * 
-             */
-
-            if (getSourcePortAt(e.getPoint()) == null) {
-                if (graph.isGridEnabled()) {
-                    double gridSize = graph.getGridSize() * graph.getScale();
-                    double overLeft = e.getX() % gridSize;
-                    double overTop = e.getY() % gridSize;
-                    double x = e.getX(), y = e.getY();
-                    if (overLeft > (gridSize / 2)) {
-                        x = x - overLeft + gridSize;
-                    } else {
-                        x = x - overLeft;
-                    }
-
-                    if (overTop > (gridSize / 2)) {
-                        y = y - overTop + gridSize;
-                    } else {
-                        y = y - overTop;
-                    }
-
-                    graph.addDefaultVertexAt(x, y);
-                } else {
-                    graph.addDefaultVertexAt(e.getX(), e.getY());
-                }
-            }
-        }
-        if (dragging && graph.isInsertMode()
-                && (e.getButton() == MouseEvent.BUTTON1)) {
-            if (getSourcePortAt(e.getPoint()) == null) {
-                if (firstPort != null && start != null && current != null) {
-                    DefaultGraphCell cell = null;
-                    if (graph.isGridEnabled()) {
-                        double gridSize = graph.getGridSize() * graph.getScale();
-                        double overLeft = e.getX() % gridSize;
-                        double overTop = e.getY() % gridSize;
-                        double x = e.getX(), y = e.getY();
-                        if (overLeft > (gridSize / 2)) {
-                            x = x - overLeft + gridSize;
-                        } else {
-                            x = x - overLeft;
-                        }
-
-                        if (overTop > (gridSize / 2)) {
-                            y = y - overTop + gridSize;
-                        } else {
-                            y = y - overTop;
-                        }
-
-                        cell = graph.addDefaultVertexAt(x, y);
-                    } else {
-                        cell = graph.addDefaultVertexAt(e.getX(), e.getY());
-                    }
-
-                    Rectangle2D bounds = GraphEditorConstants.getBounds(cell
-                            .getAttributes());
-                    port = graph.getPortViewAt(bounds.getCenterX(), bounds
-                            .getCenterY(), 3);
-                }
-            }
         }
         dragging = false;
         // If Valid Event, Current and First Port

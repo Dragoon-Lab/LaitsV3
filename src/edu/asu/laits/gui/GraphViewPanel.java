@@ -44,6 +44,7 @@ import java.util.Map;
 import java.util.List;
 import javax.swing.event.ChangeEvent;
 import javax.swing.event.ChangeListener;
+import org.apache.log4j.Logger;
 
 /**
  *
@@ -55,27 +56,24 @@ public class GraphViewPanel{
     private JXTaskPaneContainer chartContainer;
     private JDialog parent;
     private JSlider testSlider;
- //   private Map<String,Double> vertexValues; //Store vertex and old values
     private Mode mode;
-
+    private static Logger logs = Logger.getLogger("DevLogs");
+    
     private void repaintTable(Graph<Vertex,Edge> clonnedGraph) {
         
         Component[] components = chartContainer.getComponents();
-//        List<Vertex> vertices = new ArrayList<Vertex>();
         for(Component c : components){
             if(c instanceof TablePanel){
                 System.out.println("updating table ");
                 ((TablePanel)c).updateTableData(clonnedGraph);
             }
         }
-        //PlotPanel.restoreOrignal(currentGraph, vertexValues);
     }
     
     public enum Mode{
         Graph,
         Table
-    }
-    
+    }    
     
     Map<JComponent, Vertex> map = new HashMap<JComponent, Vertex>();
     
@@ -83,7 +81,6 @@ public class GraphViewPanel{
         currentGraph = graph;
         this.parent = parent;
         this.mode = mode;
-//        this.vertexValues = new HashMap<String,Double>();
         initializeComponents();
 
         JScrollPane panelScroll = new JScrollPane(chartContainer);
@@ -139,7 +136,7 @@ public class GraphViewPanel{
         //if Mode is Graph Mode, Plot Graph against each not constant node
         if(mode.equals(Mode.Graph)){
         for(Vertex currentVertex : currentGraph.vertexSet()){
-            System.out.println("Attempting to add chart for " + currentVertex.getName());
+            logs.debug("Attempting to add chart for " + currentVertex.getName());
             JXTaskPane plotPanel = addChart(currentVertex, t);
             if(plotPanel != null){
                 chartContainer.add(plotPanel);
@@ -147,7 +144,7 @@ public class GraphViewPanel{
             }
         }
         }else{
-           System.out.println("Attempting to plot table for given graph");
+           logs.debug("Attempting to plot table for given graph");
            JXTaskPane tablePanel = addTable(currentGraph);
            if(tablePanel != null){
                chartContainer.add(tablePanel);
@@ -176,11 +173,9 @@ public class GraphViewPanel{
             
     public void repaintCharts(Graph<Vertex,Edge> clonnedGraph){
         Component[] components = chartContainer.getComponents();
-//        List<Vertex> vertices = new ArrayList<Vertex>();
         for(Component c : components){
             if(c instanceof PlotPanel){
                 System.out.println("repaint check succeeded, attempting to repaint " + map.get(c).getName());
-//                vertices.add(map.get(c));
              ((PlotPanel)c).updateChartAfterSliderChange(clonnedGraph,map.get(c),ApplicationContext.getCorrectSolution().getTimes());
             }
         }

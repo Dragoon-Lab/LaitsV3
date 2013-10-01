@@ -123,15 +123,18 @@ public class Vertex {
         return type;
     }
 
+    /**
+     * Method to change VertexType.
+     * It also removes all the incoming edges and resets the equation.
+     * Also set initial value to default value (0.0)
+     * @param shape 
+     */
     public void setVertexType(VertexType shape) {
         // If vertex type is changed to constant - remove all the incoming edges
         if(shape.equals(VertexType.CONSTANT)){
-            Graph graph = MainWindow.getInstance().getGraphEditorPane().getModelGraph();
-            Set edgeSet = graph.incomingEdgesOf(this);
-            ArrayList ee = new ArrayList<>(edgeSet);
-            for(Object e : ee){
-                graph.removeEdge(e);
-            }
+            MainWindow.getInstance().getGraphEditorPane().getModelGraph().removeIncomingEdgesOf(this);
+            setEquation("");
+            setInitialValue(0.0);
         }
         this.type = shape;
     }

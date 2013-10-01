@@ -28,7 +28,7 @@ public class Times {
     private double timeStep;
 
     public int getNumberSteps(){
-        return (int) ((endTime-startTime)/timeStep)+1;
+        return (int) ((endTime - startTime) / timeStep) + 1;
     }
     
     /*
@@ -36,9 +36,9 @@ public class Times {
      */
     
     public void setTimes(double startTime, double stopTime, double timeStep) {
-        this.startTime=startTime;
-        this.endTime=stopTime;
-        this.timeStep=timeStep;
+        this.startTime = startTime;
+        this.endTime = stopTime;
+        this.timeStep = timeStep;
     }
 
     public double getStartTime() {

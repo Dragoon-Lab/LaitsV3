@@ -55,6 +55,8 @@ import org.apache.log4j.Logger;
  * The main window in the program. This can be opened both with an empty graph
  * and with the method openWindowWithFile which opens a new window and loads a
  * graph file into it.
+ * 
+ * @author ramayantiwari
  */
 public class MainWindow extends JFrame {
 
@@ -64,6 +66,7 @@ public class MainWindow extends JFrame {
     private JPanel toolBarPanel = null;
     private JScrollPane graphPaneScrollPane = null;
     private GraphEditorPane graphEditorPane = null;
+    
     // Number of windows opened
     private static int windowCount;
     private FileToolBar fileToolBar = null;
@@ -73,8 +76,10 @@ public class MainWindow extends JFrame {
     private List<JToolBar> toolBars = new LinkedList<JToolBar>();
     private StatusBarPanel statusBarPanel = null;
     private boolean isSituationTabSelected = true;
+    
     // Label to Display Tasks
-    JLabel situationLabel;
+    JLabel situationLabel;    
+            
     /**
      * Logger
      */
@@ -120,13 +125,13 @@ public class MainWindow extends JFrame {
         windowCount++;
     }
 
-    private void attachGraphChangeListener() {
+    public void attachGraphChangeListener() {
         logs.debug("Attached Graph Change Listener");
         GraphPropertiesChangeListener l = new MainGraphPropertiesChangeListener();
         l.graphPropertiesChanged();
         getGraphEditorPane().addGraphPropertiesChangeListener(l);
     }
-
+    
     public void addHelpBalloon(String node, String timing) {
         if (ApplicationContext.isCoachedMode()) {
             List<HelpBubble> bubbles = ApplicationContext.getHelp(node, "MainWindow", timing);
@@ -349,7 +354,6 @@ public class MainWindow extends JFrame {
 
     private class MainGraphPropertiesChangeListener implements
             GraphPropertiesChangeListener {
-
         /**
          * This shall happen when the properties of a graph is changed
          */

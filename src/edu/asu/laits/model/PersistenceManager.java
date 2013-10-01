@@ -53,13 +53,13 @@ public class PersistenceManager implements Runnable {
         graphSaver = gs;
     }
 
-    public static void saveSession() {
+    public static synchronized void saveSession() {
         PersistenceManager persistanceManager = new PersistenceManager(new GraphSaver());
         Thread t = new Thread(persistanceManager);
         t.start();
     }
 
-    public static String loadSession() throws IOException{
+    public static synchronized String loadSession() throws IOException{
         String action = ApplicationContext.isAuthorMode() ? "author_load" : "load";
         String serviceURL = ApplicationContext.getRootURL().concat("/postvar.php");
         
@@ -68,7 +68,8 @@ public class PersistenceManager implements Runnable {
     
     public void run() {
         int statusCode = 0;
-        String action = ApplicationContext.isAuthorMode() ? "author_save" : "save";
+        //String action = ApplicationContext.isAuthorMode() ? "author_save" : "save";
+        String action = "save";
         String serviceURL = ApplicationContext.getRootURL().concat("/postvar.php");
         
         try {
