@@ -7,19 +7,19 @@
         Let's include even more specific information on how population NEWLINE
         dynamics can be constraint by environmental factors. NEWLINE NEWLINE
 
-        The urban lake starts with a population of 10 water fowl and each NEWLINE
-        year (365 days) the population can grow by 40%. The maximum NEWLINE
+        The urban lake starts with a population of 10 water fowl and the NEWLINE
+        population growth rate is 40% per year. The maximum NEWLINE
         number of water fowl that the urban lake can support (K) now NEWLINE
         depends directly on the quantity of the renewable resource (e.g. if NEWLINE
         there is only 20 hg of the resource, then the lake can only support NEWLINE
         a maximum of 20 individual water fowl). NEWLINE NEWLINE
 
-        The quantity of the renewable resource starts out at 100 hg is NEWLINE
-        renewed by 60% per year (365 days) and 2% of the resource is NEWLINE
-        consumed by each water fowl per year (365 days). NEWLINE NEWLINE
+        The quantity of the renewable resource starts out at 100 hg and NEWLINE
+        is renewed by 60% per year and 2% of the resource is NEWLINE
+        consumed by each water fowl per year. NEWLINE NEWLINE
 
         Goal: Graph the water fowl population and quantity of the resource NEWLINE
-        over 3650 days. NEWLINE NEWLINE
+        over 10 years. NEWLINE NEWLINE
 
         Hint: Enter constant to the Hundred Thousandth decimal place. NEWLINE
         Use the logistic equation form (K-N)/K to calculate environmental NEWLINE
@@ -32,14 +32,15 @@
     </ShortDescription>
   
     <StartTime>0</StartTime>
-    <EndTime>3650</EndTime>
-    <Units>days</Units>
+    <EndTime>10</EndTime>
+    <TimeStep>0.1</TimeStep>
+    <Units>years</Units>
   
     <Vertexes>
-        <VertexLabel>births per day</VertexLabel>
+        <VertexLabel>births per year</VertexLabel>
         <VertexLabel>proportion capacity remaining</VertexLabel>
-        <VertexLabel>renew per day</VertexLabel>
-        <VertexLabel>consump per day</VertexLabel>
+        <VertexLabel>renew per year</VertexLabel>
+        <VertexLabel>consump per year</VertexLabel>
         <VertexLabel>capacity remaining</VertexLabel>
         <VertexLabel>water fowl</VertexLabel>
         <VertexLabel>resource</VertexLabel>
@@ -51,10 +52,10 @@
     <NodeCount>10</NodeCount>
 
     <ProblemSeeking>water fowl</ProblemSeeking>
-    <CorrespondingSentence>Graph the water fowl population over 3650 days.</CorrespondingSentence>
+    <CorrespondingSentence>Graph the water fowl population over 10 years.</CorrespondingSentence>
 
     <Nodes>
-        <Node type="flow" name="births per day" extra="no">
+        <Node type="flow" name="births per year" extra="no">
             <Inputs>
                 <Name>water fowl</Name>
                 <Name>birth rate</Name>
@@ -65,7 +66,7 @@
             </Outputs>
             <Equation>water fowl*birth rate*proportion capacity remaining</Equation>
             <InitialValue></InitialValue>
-            <CorrectDescription>The number of new water fowl added to the population each day</CorrectDescription>
+            <CorrectDescription>The number of new water fowl added to the population each year</CorrectDescription>
             <Plan>proportional to accumulator and input</Plan>
         </Node>
 	  
@@ -75,7 +76,7 @@
                 <Name>resource</Name>
             </Inputs>
             <Outputs>
-                <Name>births per day</Name>
+                <Name>births per year</Name>
             </Outputs>
             <Equation>capacity remaining/resource</Equation>
             <InitialValue></InitialValue>
@@ -83,7 +84,7 @@
             <Plan>proportional to accumulator and input</Plan>
         </Node>
 	  
-        <Node type="flow" name="renew per day" extra="no">
+        <Node type="flow" name="renew per year" extra="no">
             <Inputs>
                 <Name>resource</Name>
                 <Name>renew rate</Name>
@@ -93,11 +94,11 @@
             </Outputs>
             <Equation>resource*renew rate</Equation>
             <InitialValue></InitialValue>
-            <CorrectDescription>The number of new resources added to the resource pool each day</CorrectDescription>
+            <CorrectDescription>The number of new resources added to the resource pool each year</CorrectDescription>
             <Plan>proportional to accumulator and input</Plan>
         </Node>
 	  
-        <Node type="flow" name="consump per day" extra="no">
+        <Node type="flow" name="consump per year" extra="no">
             <Inputs>
                 <Name>consump rate</Name>
                 <Name>water fowl</Name>
@@ -108,7 +109,7 @@
             </Outputs>
             <Equation>consump rate*water fowl*resource</Equation>
             <InitialValue></InitialValue>
-            <CorrectDescription>The number of resources consumed each day</CorrectDescription>
+            <CorrectDescription>The number of resources consumed each year</CorrectDescription>
             <Plan>proportional to accumulator and input</Plan>
         </Node>
 	  
@@ -129,14 +130,14 @@
         <Node type="stock" name="water fowl" extra="no">
             <Order>1</Order>
             <Inputs>
-                <Name>births per day</Name>
+                <Name>births per year</Name>
             </Inputs>
             <Outputs>
-                <Name>births per day</Name>
-                <Name>consump per day</Name>
+                <Name>births per year</Name>
+                <Name>consump per year</Name>
                 <Name>capacity remaining</Name>
             </Outputs>
-            <Equation>births per day</Equation>
+            <Equation>births per year</Equation>
             <InitialValue>10.0</InitialValue>
             <CorrectDescription>The water fowl population size</CorrectDescription>
             <Plan>said to increase</Plan>
@@ -144,16 +145,16 @@
       
         <Node type="stock" name="resource" extra="no">
             <Inputs>
-                <Name>renew per day</Name>
-                <Name>consump per day</Name>
+                <Name>renew per year</Name>
+                <Name>consump per year</Name>
             </Inputs>
             <Outputs> 
                 <Name>proportion capacity remaining</Name>
-                <Name>renew per day</Name>
-                <Name>consump per day</Name>
+                <Name>renew per year</Name>
+                <Name>consump per year</Name>
                 <Name>capacity remaining</Name>
             </Outputs>
-            <Equation>renew per day-consump per day</Equation>
+            <Equation>renew per year-consump per year</Equation>
             <InitialValue>100.0</InitialValue>
             <CorrectDescription>The size of the resource pool (hg) available to the water fowl</CorrectDescription>
             <Plan>said to increase</Plan>
@@ -163,10 +164,10 @@
             <Inputs></Inputs>
             <Outputs>
                 <Name>water fowl</Name>
-                <Name>births per day</Name>
+                <Name>births per year</Name>
             </Outputs>
-            <Equation>0.0010</Equation>
-            <InitialValue>0.0010</InitialValue>
+            <Equation>0.4</Equation>
+            <InitialValue>0.4</InitialValue>
             <CorrectDescription>The maximum rate of birth of water fowl</CorrectDescription>
             <Plan>fixed value</Plan>
         </Node>
@@ -175,10 +176,10 @@
             <Inputs></Inputs>
             <Outputs>
                 <Name>population growth rate</Name>
-                <Name>renew per day</Name>
+                <Name>renew per year</Name>
             </Outputs>
-            <Equation>0.0020</Equation>
-            <InitialValue>0.0020</InitialValue>
+            <Equation>0.6</Equation>
+            <InitialValue>0.6</InitialValue>
             <CorrectDescription>The maximum rate that the resource is renewed</CorrectDescription>
             <Plan>fixed value</Plan>
         </Node>
@@ -186,10 +187,10 @@
         <Node type="constant" name="consump rate" extra="no">
             <Inputs></Inputs>
             <Outputs>
-                <Name>consump per day</Name>    
+                <Name>consump per year</Name>    
             </Outputs>
-            <Equation>0.0010</Equation>
-            <InitialValue>0.0010</InitialValue>
+            <Equation>0.02</Equation>
+            <InitialValue>0.02</InitialValue>
             <CorrectDescription>The maximum rate that the resource is consumed</CorrectDescription>
             <Plan>fixed value</Plan>
         </Node>
@@ -236,46 +237,46 @@
             <Node level="intermediate">
                 <Description>new water fowl added to the population</Description>            
                 <Node level="leaf">
-                    <Description>each day</Description>
-                    <NodeName>births per day</NodeName>
+                    <Description>each year</Description>
+                    <NodeName>births per year</NodeName>
                 </Node>
                 <Node level="leaf">
                     <Description>each week</Description>
                     <NodeName>births per week</NodeName>
                 </Node>
                 <Node level="leaf">
-                    <Description>each season</Description>
-                    <NodeName>births per season</NodeName>
+                    <Description>each day</Description>
+                    <NodeName>births per day</NodeName>
                 </Node>
             </Node>
             <Node level="intermediate">
                 <Description>new resources added to the resource pool</Description>            
                 <Node level="leaf">
-                    <Description>each day</Description>
-                    <NodeName>renew per day</NodeName>
+                    <Description>each year</Description>
+                    <NodeName>renew per year</NodeName>
                 </Node>
                 <Node level="leaf">
                     <Description>each week</Description>
                     <NodeName>renew per week</NodeName>
                 </Node>
                 <Node level="leaf">
-                    <Description>each season</Description>
-                    <NodeName>renew per season</NodeName>
+                    <Description>each day</Description>
+                    <NodeName>renew per day</NodeName>
                 </Node>
             </Node>
             <Node level="intermediate">
                 <Description>resources consumed</Description>            
                 <Node level="leaf">
-                    <Description>each day</Description>
-                    <NodeName>consump per day</NodeName>
+                    <Description>each year</Description>
+                    <NodeName>consump per year</NodeName>
                 </Node>
                 <Node level="leaf">
                     <Description>each week</Description>
                     <NodeName>consump per week</NodeName>
                 </Node>
                 <Node level="leaf">
-                    <Description>each season</Description>
-                    <NodeName>consump per season</NodeName>
+                    <Description>each day</Description>
+                    <NodeName>consump per day</NodeName>
                 </Node>
             </Node>
         </Node>
