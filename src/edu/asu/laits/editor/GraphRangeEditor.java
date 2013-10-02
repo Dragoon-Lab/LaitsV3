@@ -14,6 +14,7 @@ import edu.asu.laits.gui.MainWindow;
 import edu.asu.laits.model.Task;
 import edu.asu.laits.model.Vertex;
 import edu.asu.laits.model.Graph;
+import edu.asu.laits.model.Times;
 import java.awt.Color;
 import java.util.Iterator;
 import org.apache.log4j.Logger;
@@ -38,11 +39,11 @@ public class GraphRangeEditor extends javax.swing.JDialog {
         labelErrorInitial.setVisible(false);
         labelErrorFinal.setVisible(false);
         try{
-            logs.debug("Initializing Range Editor "+ "Unit time : "+graph.getCurrentTask().getUnits());
-            textIntialValue.setText(String.valueOf(graph.getCurrentTask().getTimes().getStartTime()));
-            textFinalValue.setText(String.valueOf(graph.getCurrentTask().getTimes().getEndTime()));
-            textTimeStep.setText(String.valueOf(graph.getCurrentTask().getTimes().getTimeStep()));
-            comboUnits.setSelectedItem(graph.getCurrentTask().getUnits());
+            logs.debug("Initializing Range Editor "+ "Unit time : " + ApplicationContext.getCurrentTask().getChartUnits());
+            textIntialValue.setText(String.valueOf(ApplicationContext.getCurrentTask().getTimes().getStartTime()));
+            textFinalValue.setText(String.valueOf(ApplicationContext.getCurrentTask().getTimes().getEndTime()));
+            textTimeStep.setText(String.valueOf(ApplicationContext.getCurrentTask().getTimes().getTimeStep()));
+            comboUnits.setSelectedItem(ApplicationContext.getCurrentTask().getChartUnits());
 
         }catch(Exception e){
             e.printStackTrace();
@@ -298,8 +299,8 @@ public class GraphRangeEditor extends javax.swing.JDialog {
 
             String units = String.valueOf(comboUnits.getSelectedItem());
             try{
-                graph.getCurrentTask().getTimes().setTimes(startTime,endTime,timeStep);
-                graph.getCurrentTask().setUnits(units);
+                ApplicationContext.getCurrentTask().setTimes(new Times(startTime,endTime,timeStep));
+                ApplicationContext.getCurrentTask().setChartUnits(units);
                 
                 Iterator<Vertex> vertices = editorPane.getModelGraph().vertexSet().iterator();
                 while(vertices.hasNext()){

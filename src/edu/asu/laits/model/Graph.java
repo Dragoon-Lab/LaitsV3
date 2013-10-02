@@ -18,12 +18,10 @@ public class Graph<V, E> extends ListenableDirectedGraph<V, E> implements
         DirectedGraph<V, E> {
 
     private static final long serialVersionUID = 1L;
-    private Task currentTask;
     private static Logger logs = Logger.getLogger("DevLogs");
 
     public Graph(Class<E> edgeClass) {
-        super(new DirectedMultigraph<V, E>(edgeClass));
-        currentTask = new Task();
+        super(new DirectedMultigraph<V, E>(edgeClass));        
     }
 
     public Vertex getVertexByName(String name) {
@@ -48,22 +46,6 @@ public class Graph<V, E> extends ListenableDirectedGraph<V, E> implements
             }
         }
         return null;
-    }
-
-    public Task getCurrentTask() {
-        return currentTask;
-    }
-
-    public void setCurrentTask(Task task) {
-        logs.debug("Setting new Task in the Graph with Start = "
-                + task.getTimes().getStartTime() + " End = " + task.getTimes().getEndTime()
-                + "  dt=" + task.getTimes().getTimeStep());
-
-        if (task == null) {
-            currentTask = new Task();
-        } else {
-            currentTask = task;
-        }
     }
 
     public synchronized void removeAll() {
@@ -112,13 +94,11 @@ public class Graph<V, E> extends ListenableDirectedGraph<V, E> implements
         Iterator<Edge> itEdge = (Iterator<Edge>) this.edgeSet().iterator();
         while (itEdge.hasNext()) {
             Edge edge = itEdge.next();
-            // graph.addEdge(graph.getVertexById(clonedEdge.getSourceVertexId()), graph.getVertexById(clonedEdge.getTargetVertexId()),clonedEdge);
             Vertex sourceVertex = (Vertex) currentGraph.getEdgeSource(edge);
             Vertex targetVertex = (Vertex) currentGraph.getEdgeTarget(edge);
             graph.addEdge(graph.getVertexById(sourceVertex.getVertexIndex()), graph.getVertexById(targetVertex.getVertexIndex()));
         }
-        graph.setCurrentTask(currentTask);
-
+        
         return graph; //To change body of generated methods, choose Tools | Templates.
     }
 

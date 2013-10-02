@@ -61,7 +61,7 @@ public abstract class NodeEditorController{
     }
     
     protected void initDemoButton(){
-        String taskPhase = ApplicationContext.getCorrectSolution().getPhase();
+        String taskPhase = ApplicationContext.getCurrentTask().getPhase();
 
         // Disable Giveup in Challege tasks
         if (taskPhase.equalsIgnoreCase("Challenge")) {

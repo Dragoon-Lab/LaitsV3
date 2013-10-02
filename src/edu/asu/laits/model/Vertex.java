@@ -124,18 +124,10 @@ public class Vertex {
     }
 
     /**
-     * Method to change VertexType.
-     * It also removes all the incoming edges and resets the equation.
-     * Also set initial value to default value (0.0)
+     * Method to change VertexType.     
      * @param shape 
      */
     public void setVertexType(VertexType shape) {
-        // If vertex type is changed to constant - remove all the incoming edges
-        if(shape.equals(VertexType.CONSTANT)){
-            MainWindow.getInstance().getGraphEditorPane().getModelGraph().removeIncomingEdgesOf(this);
-            setEquation("");
-            setInitialValue(0.0);
-        }
         this.type = shape;
     }
 

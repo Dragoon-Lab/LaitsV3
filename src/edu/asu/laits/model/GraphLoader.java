@@ -158,9 +158,10 @@ public class GraphLoader {
         graphPane.validate();
         graphPane.repaint();
 
-        Graph graph = graphPane.getModelGraph();
-        graph.setCurrentTask(graphFile.getTask());
-
+        //Graph graph = graphPane.getModelGraph();
+        //graph.setCurrentTask(graphFile.getTask());
+        ApplicationContext.setCurrentTask(graphFile.getTask());
+        
         prop.setSavedAs(file);
     }
 

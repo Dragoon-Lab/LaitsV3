@@ -179,7 +179,7 @@ public class NodeEditorView extends javax.swing.JDialog {
             this.checkButton.setEnabled(true);
             this.demoButton.setEnabled(true);
 
-            String taskPhase = ApplicationContext.getCorrectSolution().getPhase();
+            String taskPhase = ApplicationContext.getCurrentTask().getPhase();
 
             // Disable Giveup in Challege tasks
             if (taskPhase.equalsIgnoreCase("Challenge")) {

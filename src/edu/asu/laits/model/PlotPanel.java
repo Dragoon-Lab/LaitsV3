@@ -29,6 +29,7 @@ import org.jfree.chart.ChartFactory;
 import org.jfree.chart.ChartPanel;
 import org.jfree.chart.JFreeChart;
 import org.jfree.chart.axis.NumberAxis;
+import org.jfree.chart.axis.NumberTickUnit;
 import org.jfree.chart.plot.PlotOrientation;
 import org.jfree.chart.plot.XYPlot;
 import org.jfree.chart.renderer.xy.XYItemRenderer;
@@ -50,7 +51,7 @@ public class PlotPanel extends JXTaskPane {
     private XYDataset xydataset;
     private JFreeChart jfreeChart;
 
-    public PlotPanel(Vertex vertex, Times times, String units) {
+    public PlotPanel(Vertex vertex) {
         logs.info("Initializing Plot Panel. Vertex: "+vertex.getName()+
                 " Units: "+units);
         List<Vertex> v = new ArrayList<Vertex>();
@@ -58,21 +59,21 @@ public class PlotPanel extends JXTaskPane {
         this.units = units;
 
         if (ApplicationContext.isStudentMode() || 
-                ApplicationContext.isCoachedMode()) {
-            Vertex correctVertex = ApplicationContext.getCorrectSolution()
+                ApplicationContext.isCoachedMode()) { 
+           Vertex correctVertex = ApplicationContext.getCorrectSolution()
                     .getSolutionGraph().getVertexByName(vertex.getName());
             v.add(correctVertex);
         }
         
         Dimension d = new Dimension(575, 190);
-        init(v, times, d);
+        init(v, d);
     }
 
-    private void init(List<Vertex> vertices, Times times, Dimension d) {
+    private void init(List<Vertex> vertices, Dimension d) {
         this.setTitle(vertices.get(0).getName());
         this.setBackground(transparent);
         this.setOpaque(false);
-
+        Times times = ApplicationContext.getCurrentTask().getTimes();
         XYDataset dataset = createSolutionDataset(vertices, times);
         this.xydataset = dataset;
         JFreeChart chart = createChart(dataset, vertices.get(0).getName(), 
@@ -103,6 +104,7 @@ public class PlotPanel extends JXTaskPane {
      */
     private XYDataset createSolutionDataset(List<Vertex> vertices, Times times) {
         logs.info("Creating Solution Dataset for PlotPanel");
+        logs.debug("Times "+times.toString());
         XYSeriesCollection dataset = new XYSeriesCollection();
         
         String legends[] = new String[2];
@@ -119,21 +121,21 @@ public class PlotPanel extends JXTaskPane {
             List<Double> correctValues = v.getCorrectValues();
 
             // Limit number of points that are plotted.
-            double t = times.getStartTime();
-            int di = (int) (times.getNumberSteps()/20);
-            if(di < 1){
-                di = 1;
+            double startTime = times.getStartTime();
+            int stepSize = (int) (times.getNumberSteps()/20);
+            if(stepSize < 1){
+                stepSize = 1;
             }
-            logs.info("Gathering plot data with step size = " + di + " from "+
+            logs.info("Gathering plot data with step size = " + stepSize + " from "+
                     correctValues.size() + " data points.");
             
-            for (int i = 0; i < correctValues.size(); i += di) {
-                series.add(t, correctValues.get(i));
-                t += di*times.getTimeStep();
+            for (int i = 0; i < correctValues.size(); i += stepSize) {
+                series.add(startTime, correctValues.get(i));
+                startTime += stepSize*times.getTimeStep();
             }
 
             dataset.addSeries(series);
-        }
+        } 
         
         return dataset;
     }
@@ -163,18 +165,20 @@ public class PlotPanel extends JXTaskPane {
         plot.setDomainCrosshairVisible(true);
         plot.setRangeCrosshairVisible(true);
         
-        plot.getRangeAxis().setRange(((XYSeriesCollection)xydataset).getRangeLowerBound(true), ((XYSeriesCollection)xydataset).getRangeUpperBound(true));
+        //plot.getRangeAxis().setRange(((XYSeriesCollection)xydataset).getRangeLowerBound(true), ((XYSeriesCollection)xydataset).getRangeUpperBound(true));
        
         NumberAxis domain = (NumberAxis) plot.getDomainAxis();
-        // Don't want any padding on left or right.
         domain.setRange(start, end);
+        double tick = Math.abs(end-start)/20;
+        domain.setTickUnit(new NumberTickUnit(tick));
+        domain.setVerticalTickLabels(true);
         // Rotate ticks if numbers are large (years, for instance)
-        if(Math.max(Math.abs(start),Math.abs(end))>1000){
+        /*if(Math.max(Math.abs(start),Math.abs(end))>1000){
             domain.setVerticalTickLabels(true);
             // We may have to adjust ticks spacing?
-            // double tick = Math.abs(end-start)/20;
-            // domain.setTickUnit(new NumberTickUnit(tick));
-        }
+             double tick = Math.abs(end-start)/20;
+             domain.setTickUnit(new NumberTickUnit(tick));
+        }*/
 
         XYItemRenderer r = plot.getRenderer();
         if (r instanceof XYLineAndShapeRenderer) {
@@ -190,9 +194,9 @@ public class PlotPanel extends JXTaskPane {
         return chart;
     }
     
-    public void updateChartAfterSliderChange(Graph graph,Vertex vertex, Times times){
+    public void updateChartAfterSliderChange(Graph graph,Vertex vertex){
         logs.info("updating chart for new values from slider");
-        
+        Times times = ApplicationContext.getCurrentTask().getTimes();
         XYSeries series = new XYSeries("New Value Graph");
            
         //remove last slider value series

@@ -57,25 +57,8 @@ public class GraphViewPanel{
     private JDialog parent;
     private JSlider testSlider;
     private Mode mode;
+    
     private static Logger logs = Logger.getLogger("DevLogs");
-    
-    private void repaintTable(Graph<Vertex,Edge> clonnedGraph) {
-        
-        Component[] components = chartContainer.getComponents();
-        for(Component c : components){
-            if(c instanceof TablePanel){
-                System.out.println("updating table ");
-                ((TablePanel)c).updateTableData(clonnedGraph);
-            }
-        }
-    }
-    
-    public enum Mode{
-        Graph,
-        Table
-    }    
-    
-    Map<JComponent, Vertex> map = new HashMap<JComponent, Vertex>();
     
     public GraphViewPanel(Graph<Vertex, Edge> graph, JDialog parent, Mode mode){
         currentGraph = graph;
@@ -86,7 +69,7 @@ public class GraphViewPanel{
         JScrollPane panelScroll = new JScrollPane(chartContainer);
         parent.add(panelScroll);
     }
-       
+     
     private void initializeComponents(){
         chartContainer = new JXTaskPaneContainer();
         addCharts();
@@ -94,17 +77,14 @@ public class GraphViewPanel{
     }
     
     private void addSliders() {
-        Task t = null;
+        Task t = ApplicationContext.getCurrentTask();
         DoubleJSlider newSlider;
         JLabel sliderLabel;
         JFormattedTextField sliderAmount;
-        if(!ApplicationContext.isAuthorMode()){
-            t = new Task(ApplicationContext.getCorrectSolution().getTimes(),
-                         ApplicationContext.getCorrectSolution().getGraphUnits());
-        }
+        
         for(Vertex currentVertex : currentGraph.vertexSet()) {
             if(currentVertex.getVertexType().equals(Vertex.VertexType.CONSTANT)) {
-                newSlider = addSlider(currentVertex, t);
+                newSlider = addSlider(currentVertex);
                 newSlider.setPaintTicks(true);
                 newSlider.setPaintLabels(true);
                 chartContainer.add(newSlider);
@@ -118,7 +98,7 @@ public class GraphViewPanel{
         }
     }
     
-    private DoubleJSlider addSlider(Vertex vertex, Task task){
+    private DoubleJSlider addSlider(Vertex vertex){
         //handle negative values
         if(vertex.getInitialValue() > 0)
             return new DoubleJSlider(0, 5*vertex.getInitialValue(), vertex.getInitialValue());
@@ -128,21 +108,18 @@ public class GraphViewPanel{
     }
     
     private void addCharts(){
-        Task t = null;
-        if(!ApplicationContext.isAuthorMode()){
-            t = new Task(ApplicationContext.getCorrectSolution().getTimes(),
-                         ApplicationContext.getCorrectSolution().getGraphUnits());
-        }
+        Task t = ApplicationContext.getCurrentTask();
+        
         //if Mode is Graph Mode, Plot Graph against each not constant node
         if(mode.equals(Mode.Graph)){
-        for(Vertex currentVertex : currentGraph.vertexSet()){
-            logs.debug("Attempting to add chart for " + currentVertex.getName());
-            JXTaskPane plotPanel = addChart(currentVertex, t);
-            if(plotPanel != null){
-                chartContainer.add(plotPanel);
-                map.put(plotPanel, currentVertex);
+            for(Vertex currentVertex : currentGraph.vertexSet()){
+                logs.debug("Attempting to add chart for " + currentVertex.getName());
+                JXTaskPane plotPanel = addChart(currentVertex);
+                if(plotPanel != null){
+                    chartContainer.add(plotPanel);
+                    map.put(plotPanel, currentVertex);
+                }
             }
-        }
         }else{
            logs.debug("Attempting to plot table for given graph");
            JXTaskPane tablePanel = addTable(currentGraph);
@@ -157,17 +134,17 @@ public class GraphViewPanel{
         return tablePanel;
     }
     
-    private JXTaskPane addChart(Vertex vertex, Task task){
+    private JXTaskPane addChart(Vertex vertex){
         PlotPanel plotPanel = null;
-        if(task == null){
-            plotPanel = new PlotPanel(vertex, currentGraph.getCurrentTask().getTimes(), 
-                    currentGraph.getCurrentTask().getUnits());
-        }else if(!vertex.getVertexType().equals(Vertex.VertexType.CONSTANT)){
-             plotPanel = new PlotPanel(vertex, task.getTimes(), task.getUnits()); 
+        
+        if(!vertex.getVertexType().equals(Vertex.VertexType.CONSTANT)){
+            plotPanel = new PlotPanel(vertex);
         }
+        
         return plotPanel;
     }
       
+    // What are these used for ???
     int count1 = 0;
     int count2 = 0;
             
@@ -175,18 +152,38 @@ public class GraphViewPanel{
         Component[] components = chartContainer.getComponents();
         for(Component c : components){
             if(c instanceof PlotPanel){
-                System.out.println("repaint check succeeded, attempting to repaint " + map.get(c).getName());
-             ((PlotPanel)c).updateChartAfterSliderChange(clonnedGraph,map.get(c),ApplicationContext.getCorrectSolution().getTimes());
+                logs.info("repaint check succeeded, attempting to repaint " + map.get(c).getName());
+             ((PlotPanel)c).updateChartAfterSliderChange(clonnedGraph,map.get(c));
             }
         }
         //restore oringal 
        // PlotPanel.restoreOrignal(currentGraph, vertexValues);
    }
-    private class SliderListener implements ChangeListener {
-        
+    
+    private void repaintTable(Graph<Vertex,Edge> clonnedGraph) {        
+        Component[] components = chartContainer.getComponents();
+        for(Component c : components){
+            if(c instanceof TablePanel){
+                logs.debug("updating table ");
+                ((TablePanel)c).updateTableData(clonnedGraph);
+            }
+        }
+    }
+    
+    public enum Mode{
+        Graph,
+        Table
+    }    
+    
+    Map<JComponent, Vertex> map = new HashMap<JComponent, Vertex>();
+    /**
+     * Custom Listener for Slider Change event
+     */
+    private class SliderListener implements ChangeListener {        
         private JFormattedTextField textSource;
         private Vertex vertex;
         private GraphViewPanel panel;
+        
         public SliderListener(JFormattedTextField amount, Vertex v, GraphViewPanel g) {
             textSource = amount;
             vertex = v;

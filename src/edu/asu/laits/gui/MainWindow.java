@@ -34,20 +34,17 @@ import edu.asu.laits.model.GraphLoader;
 import edu.asu.laits.model.GraphLoader.IncorcectGraphXMLFileException;
 import edu.asu.laits.editor.listeners.GraphChangeListener;
 import edu.asu.laits.editor.listeners.GraphPropertiesChangeListener;
-import edu.asu.laits.gui.menus.ModelMenu;
 
 import javax.swing.JScrollPane;
 import edu.asu.laits.gui.toolbars.FileToolBar;
 import edu.asu.laits.gui.toolbars.EditToolBar;
 import edu.asu.laits.gui.toolbars.ModelToolBar;
 import edu.asu.laits.gui.toolbars.ViewToolBar;
-import edu.asu.laits.logger.HttpAppender;
 import edu.asu.laits.model.HelpBubble;
 import edu.asu.laits.model.PersistenceManager;
 import edu.asu.laits.properties.GlobalProperties;
 import edu.asu.laits.properties.GraphProperties;
 import java.awt.Color;
-import java.util.logging.Level;
 import javax.swing.*;
 import org.apache.log4j.Logger;
 
@@ -100,6 +97,7 @@ public class MainWindow extends JFrame {
             }
             _instance.loadSavedSession();
             _instance.attachGraphChangeListener();
+            _instance.setFrameTitle();
         }
         return _instance;
     }
@@ -118,8 +116,7 @@ public class MainWindow extends JFrame {
      */
     private MainWindow() {
         super();
-        initializeFrameElements();
-        setFrameTitle();
+        initializeFrameElements();        
         setExtendedState(MAXIMIZED_BOTH);
         setDefaultCloseOperation(DO_NOTHING_ON_CLOSE);
         windowCount++;
@@ -184,7 +181,7 @@ public class MainWindow extends JFrame {
         if (ApplicationContext.isAuthorMode()) {
             title += " : " + ApplicationContext.getCurrentTaskID();
         } else {
-            title += " : " + ApplicationContext.getCorrectSolution().getTaskName();
+            title += " : " + ApplicationContext.getCurrentTask().getTaskName();
         }
 
         this.setTitle(title);

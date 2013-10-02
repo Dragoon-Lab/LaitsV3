@@ -183,6 +183,18 @@ public class PlanPanelView extends javax.swing.JPanel {
     public boolean processPlanPanel() {
         if (primarySelections.getSelection() != null) {
             openVertex.setPlan(planToString(getSelectedPlan()));
+            
+            Vertex.VertexType old = openVertex.getVertexType();
+            Vertex.VertexType newType = getSelectedPlan();
+            
+            // If vertex type is changed to constant and - remove all the incoming edges
+            if((old.equals(Vertex.VertexType.FLOW) || old.equals(Vertex.VertexType.FLOW))
+                && newType.equals(Vertex.VertexType.CONSTANT)){
+                    MainWindow.getInstance().getGraphEditorPane().getModelGraph().removeIncomingEdgesOf(this);
+                    openVertex.setEquation("");
+                    openVertex.setInitialValue(0.0);
+            }             
+            
             openVertex.setVertexType(getSelectedPlan());              
             logs.info("Plan Set to "+openVertex.getPlan() + "Vetex Type set to "+openVertex.getVertexType());
         } else {

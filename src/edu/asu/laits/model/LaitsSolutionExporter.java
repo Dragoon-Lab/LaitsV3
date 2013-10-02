@@ -17,6 +17,7 @@
  */
 package edu.asu.laits.model;
 
+import edu.asu.laits.editor.ApplicationContext;
 import java.io.File;
 import java.io.FileWriter;
 import java.io.IOException;
@@ -82,16 +83,16 @@ public class LaitsSolutionExporter {
 
 
         Element startTime = task.addElement("StartTime");
-        startTime.setText(String.valueOf(graph.getCurrentTask().getTimes().getStartTime()));
+        startTime.setText(String.valueOf(ApplicationContext.getCurrentTask().getTimes().getStartTime()));
 
         Element endTime = task.addElement("EndTime");
-        endTime.setText(String.valueOf(graph.getCurrentTask().getTimes().getEndTime()));
+        endTime.setText(String.valueOf(ApplicationContext.getCurrentTask().getTimes().getEndTime()));
 
         Element timeStep = task.addElement("TimeStep");
-        endTime.setText(String.valueOf(graph.getCurrentTask().getTimes().getTimeStep()));
+        timeStep.setText(String.valueOf(ApplicationContext.getCurrentTask().getTimes().getTimeStep()));
 
         Element units = task.addElement("Units");
-        units.setText(graph.getCurrentTask().getUnits());
+        units.setText(ApplicationContext.getCurrentTask().getChartUnits());
     }
 
     private void addAllNodes(Element task) {
