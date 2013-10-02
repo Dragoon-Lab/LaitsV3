@@ -7,7 +7,7 @@
       Problem: You are interested in a population of a water fowl NEWLINE
       and how fast it will grow in a newly created urban lake. NEWLINE
       Suppose the urban lake starts with a population of 10 birds NEWLINE
-      and the growth rate is 40% per year. NEWLINE NEWLINE
+      and the population growth rate is 40% per year. NEWLINE NEWLINE
       Goal: Graph the water fowl population over 10 years. NEWLINE NEWLINE
       Hint: 1. Only use up to the thousandth decimal place.
   </TaskDescription>
