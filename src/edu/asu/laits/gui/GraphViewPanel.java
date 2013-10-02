@@ -55,6 +55,7 @@ public class GraphViewPanel{
     private JXTaskPaneContainer chartContainer;
     private JDialog parent;
     private JSlider testSlider;
+    Graph<Vertex,Edge> clonnedGraph;
  //   private Map<String,Double> vertexValues; //Store vertex and old values
     private Mode mode;
 
@@ -126,7 +127,7 @@ public class GraphViewPanel{
         if(vertex.getInitialValue() > 0)
             return new DoubleJSlider(0, 5*vertex.getInitialValue(), vertex.getInitialValue());
         else
-            return new DoubleJSlider(vertex.getInitialValue()-1 , -5*vertex.getInitialValue(), vertex.getInitialValue());
+            return new DoubleJSlider(-5*vertex.getInitialValue() , 0, vertex.getInitialValue());
             
     }
     
@@ -202,7 +203,8 @@ public class GraphViewPanel{
         public void stateChanged(ChangeEvent e) {
             DoubleJSlider source = (DoubleJSlider)e.getSource();
             textSource.setText(String.valueOf(source.getDoubleValue()));
-            Graph<Vertex,Edge> clonnedGraph = (Graph<Vertex,Edge>) currentGraph.clone();
+            if(clonnedGraph==null)
+                clonnedGraph = (Graph<Vertex,Edge>) currentGraph.clone();   
             //modify value in new vertex
             clonnedGraph.getVertexByName(vertex.getName()).setInitialValue(source.getDoubleValue());
             
