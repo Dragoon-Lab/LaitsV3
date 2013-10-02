@@ -298,7 +298,7 @@ public class ModelMenu extends JMenu {
                 } catch (ModelEvaluationException ex) {
                     window.getStatusBarPanel().setStatusMessage(ex.getMessage(), false);
                 }
-                graphPane.repaint();
+                MainWindow.refreshGraph();
             } else {
                 activityLogs.debug("Model had extra nodes, so user could not run the model.");
                 JOptionPane.showMessageDialog(window, "Model has extra nodes in it, please remove them before running the model.");

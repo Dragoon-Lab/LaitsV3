@@ -255,7 +255,7 @@ public class NodeEditorView extends javax.swing.JDialog {
 
         setTitle("Node Editor - "+openVertex.getName());
         validate();
-        repaint();
+        repaint();      
     }
 
     private void checkDescriptionPanelCoached(TaskSolution correctSolution) {
@@ -292,7 +292,7 @@ public class NodeEditorView extends javax.swing.JDialog {
 
         setTitle("Node Editor - "+openVertex.getName());
         validate();
-        repaint();
+        repaint();        
     }
 
     public void checkPlanPanel(TaskSolution correctSolution) {
@@ -326,12 +326,10 @@ public class NodeEditorView extends javax.swing.JDialog {
             pPanel.setEditableRadio(false);
             tabPane.setEnabledAt(CALCULATIONS, true);
             tabPane.setForegroundAt(CALCULATIONS, Color.BLACK);
-
         }
         // Save Selected Plan to the Vertex Object
         pPanel.processPlanPanel();
-        activityLogs.debug("User checked plan panel with node plan as " + pPanel.getSelectedPlan());
-
+        activityLogs.debug("User checked plan panel with node plan as " + pPanel.getSelectedPlan());       
     }
 
     private void checkCalculationsPanel(TaskSolution correctSolution) {
@@ -357,7 +355,7 @@ public class NodeEditorView extends javax.swing.JDialog {
             activityLogs.debug("User entered incorrect Calculations.");
             openVertex.setCalculationsStatus(Vertex.CalculationsStatus.INCORRECT);
         }
-
+        
         activityLogs.debug("User checked calculations panel with Nodetype: " + openVertex.getVertexType()
                 + " Initial Value : " + openVertex.getInitialValue() + " Calculations as " + openVertex.getEquation());
     }
@@ -382,7 +380,7 @@ public class NodeEditorView extends javax.swing.JDialog {
             // Save Student's session to server
             PersistenceManager.saveSession();
 
-            graphPane.repaint();
+            MainWindow.refreshGraph();
             this.dispose();
         }
     }
@@ -416,8 +414,7 @@ public class NodeEditorView extends javax.swing.JDialog {
     }
 
     private void refreshGraphPane() {
-        MainWindow.getInstance().validate();
-        MainWindow.getInstance().repaint();
+        MainWindow.refreshGraph();
     }
 
     /**
