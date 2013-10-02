@@ -107,7 +107,7 @@ public class GraphViewPanel{
                          ApplicationContext.getCorrectSolution().getGraphUnits());
         }
         for(Vertex currentVertex : currentGraph.vertexSet()) {
-            if(currentVertex.getVertexType().equals(Vertex.VertexType.CONSTANT)) {
+            if(!currentVertex.getVertexType().equals(Vertex.VertexType.FLOW)) {
                 newSlider = addSlider(currentVertex, t);
                 newSlider.setPaintTicks(true);
                 newSlider.setPaintLabels(true);
@@ -127,7 +127,7 @@ public class GraphViewPanel{
         if(vertex.getInitialValue() > 0)
             return new DoubleJSlider(0, 5*vertex.getInitialValue(), vertex.getInitialValue());
         else
-            return new DoubleJSlider(-5*vertex.getInitialValue() , 0, vertex.getInitialValue());
+            return new DoubleJSlider(5*vertex.getInitialValue() , 0, vertex.getInitialValue());
             
     }
     
