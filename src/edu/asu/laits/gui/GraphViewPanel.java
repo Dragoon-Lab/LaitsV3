@@ -55,6 +55,7 @@ public class GraphViewPanel{
     private JXTaskPaneContainer chartContainer;
     private JDialog parent;
     private JSlider testSlider;
+    Graph<Vertex,Edge> clonnedGraph;
  //   private Map<String,Double> vertexValues; //Store vertex and old values
     private Mode mode;
 
@@ -124,9 +125,11 @@ public class GraphViewPanel{
     private DoubleJSlider addSlider(Vertex vertex, Task task){
         //handle negative values
         if(vertex.getInitialValue() > 0)
-            return new DoubleJSlider(0, 5*vertex.getInitialValue(), vertex.getInitialValue());
+            return new DoubleJSlider(0, 2*vertex.getInitialValue(), vertex.getInitialValue());
+        else if(vertex.getInitialValue() < 0)
+            return new DoubleJSlider(2*vertex.getInitialValue() , 0, vertex.getInitialValue());
         else
-            return new DoubleJSlider(vertex.getInitialValue()-1 , -5*vertex.getInitialValue(), vertex.getInitialValue());
+            return new DoubleJSlider(-1 , 1, vertex.getInitialValue());
             
     }
     
@@ -181,7 +184,14 @@ public class GraphViewPanel{
             if(c instanceof PlotPanel){
                 System.out.println("repaint check succeeded, attempting to repaint " + map.get(c).getName());
 //                vertices.add(map.get(c));
-             ((PlotPanel)c).updateChartAfterSliderChange(clonnedGraph,map.get(c),ApplicationContext.getCorrectSolution().getTimes());
+                
+                Task t = null;
+                 if(!ApplicationContext.isAuthorMode())
+                        t = new Task(ApplicationContext.getCorrectSolution().getTimes(),ApplicationContext.getCorrectSolution().getGraphUnits());
+                 else
+                       t = new Task();
+                
+             ((PlotPanel)c).updateChartAfterSliderChange(clonnedGraph,map.get(c),t.getTimes());
             }
         }
         //restore oringal 
@@ -202,7 +212,8 @@ public class GraphViewPanel{
         public void stateChanged(ChangeEvent e) {
             DoubleJSlider source = (DoubleJSlider)e.getSource();
             textSource.setText(String.valueOf(source.getDoubleValue()));
-            Graph<Vertex,Edge> clonnedGraph = (Graph<Vertex,Edge>) currentGraph.clone();
+            if(clonnedGraph==null)
+                clonnedGraph = (Graph<Vertex,Edge>) currentGraph.clone();   
             //modify value in new vertex
             clonnedGraph.getVertexByName(vertex.getName()).setInitialValue(source.getDoubleValue());
             
