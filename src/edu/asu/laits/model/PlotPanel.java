@@ -174,11 +174,23 @@ public class PlotPanel extends JXTaskPane {
         plot.setDomainCrosshairVisible(true);
         plot.setRangeCrosshairVisible(true);
         
+        
+        System.out.println(" Low Bound  Range/ Y "+((XYSeriesCollection)xydataset).getRangeLowerBound(true)+" \" Upper Bound  Range/ Y \" "+ ((XYSeriesCollection)xydataset).getRangeUpperBound(true));
+        System.out.println(" Low Bound  Domain/X "+start+" \" Upper Bound  Domain/X \" "+ end);
+       
         plot.getRangeAxis().setRange(((XYSeriesCollection)xydataset).getRangeLowerBound(true), ((XYSeriesCollection)xydataset).getRangeUpperBound(true));
        
         NumberAxis domain = (NumberAxis) plot.getDomainAxis();
         // Don't want any padding on left or right.
+        
+        //fix for author mode, without looking at ram
+        if(start < end || start == end)
+            end=10.0;
+        
         domain.setRange(start, end);
+        
+        
+        
         // Rotate ticks if numbers are large (years, for instance)
         if(Math.max(Math.abs(start),Math.abs(end))>1000){
             domain.setVerticalTickLabels(true);
@@ -207,7 +219,11 @@ public class PlotPanel extends JXTaskPane {
         XYSeries series = new XYSeries("New Value Graph");
            
         //remove last slider value series
-        for (int i = 2; i < xydataset.getSeriesCount(); i++) {
+        int index=2;
+        if(ApplicationContext.isAuthorMode())
+          index = 1;
+        
+        for (int i = index; i < xydataset.getSeriesCount(); i++) {
             ((XYSeriesCollection)xydataset).removeSeries(i);
         }
         
@@ -231,7 +247,7 @@ public class PlotPanel extends JXTaskPane {
             for (int i = 0; i < correctValues.size(); i += di) {
                 logs.debug(correctValues.get(i)+" ");
                 series.add(t, correctValues.get(i));
-                t += di*times.getTimeStep();
+                t += di*(times.getTimeStep()==0?1:times.getTimeStep());
             }
                 
             ((XYSeriesCollection)xydataset).addSeries(series);

@@ -25,12 +25,14 @@ import edu.asu.laits.gui.GraphViewPanel;
 import edu.asu.laits.gui.GraphViewPanel.Mode;
 import edu.asu.laits.gui.MainWindow;
 import edu.asu.laits.gui.nodeeditor.NodeEditorView;
+import edu.asu.laits.model.Edge;
 import edu.asu.laits.model.Graph;
 import edu.asu.laits.model.LaitsSolutionExporter;
 import edu.asu.laits.model.ModelEvaluationException;
 import edu.asu.laits.model.ModelEvaluator;
 import edu.asu.laits.model.SolutionNode;
 import edu.asu.laits.model.TaskSolution;
+import edu.asu.laits.model.Times;
 import edu.asu.laits.model.Vertex;
 import java.awt.BorderLayout;
 import java.awt.event.ActionEvent;
@@ -217,21 +219,35 @@ public class ModelMenu extends JMenu {
         return showForumMenuItem;
     }
 
+    public boolean isGraphable(){
+        Graph<Vertex,Edge> graph = (Graph) graphPane.getModelGraph();
+        boolean isGraphable = false;
+        for(Vertex currentVertex : graph.vertexSet()) {
+            if(!currentVertex.getVertexType().equals(Vertex.VertexType.CONSTANT)) {
+                isGraphable=true;
+                return isGraphable;
+            }
+    }
+        return isGraphable;
+   }
     public void showNodeGraph() {
         activityLogs.debug("User pressed Run Model button.");
 
         if (runModel()) {
-            showChartDialog(Mode.Graph);
+            if(isGraphable())
+                showChartDialog(Mode.Graph);
+            else
+                JOptionPane.showMessageDialog(MainWindow.getInstance(), "This model does not contain any functions or accumulators. There is nothing to graph yet");
         }
     }
 
     public void showNodeTable() {
         activityLogs.debug("User pressed Show Table button.");
 
-        if (runModel()) {
-            showChartDialog(Mode.Table);
-//            showTableDialog();
-        }
+        if(isGraphable())
+                showChartDialog(Mode.Table);
+            else
+                JOptionPane.showMessageDialog(MainWindow.getInstance(), "This model does not contain any functions or accumulators. There is nothing to graph yet");
     }
 
     private void dumpTableValues(ModelEvaluator me) {
@@ -281,6 +297,14 @@ public class ModelMenu extends JMenu {
             return true;
         }
 
+        //Check if author mode , add default time steps
+        if(ApplicationContext.isAuthorMode()){
+                Graph graph = graphPane.getModelGraph();
+                 Times times = graph.getCurrentTask().getTimes();
+                 if(times.getStartTime()==times.getEndTime())
+                     times.setTimes(0, 10, 1);
+          }
+        
         ModelEvaluator me = new ModelEvaluator((Graph) graphPane.getModelGraph());
         MainWindow window = MainWindow.getInstance();
         if (me.isModelComplete()) {
