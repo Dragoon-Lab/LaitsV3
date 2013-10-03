@@ -370,7 +370,7 @@ public class ModelMenu extends JMenu {
         graphValuesDialog.setSize(610, 530);
         graphValuesDialog.setLocationRelativeTo(null);
 
-        graphValuesDialog.setResizable(false);
+        graphValuesDialog.setResizable(true);
         graphValuesDialog.setVisible(true);
     }
 

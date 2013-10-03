@@ -1,29 +1,29 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <Task phase="Challenge" type="Whole">
-    <TaskName>Waterfowl 4</TaskName>
-    <URL>http://laits.engineering.asu.edu/laits_images/1.jpg</URL>
+    <TaskName>Waterfowl &amp; cats</TaskName>
+    <URL>http://laits.engineering.asu.edu/laits_images/2.jpg</URL>
   
     <TaskDescription>
-        Let's include even more specific information on how population NEWLINE
-        dynamics can be constraint by environmental factors. NEWLINE NEWLINE
+        The urban lake is home to two interacting populations: the water fowl NEWLINE 
+        and domestic cat. The urban lake starts with a population of 10 water NEWLINE 
+        fowl and 2 domestic cats.  The water fowl birth rate is 2 per year NEWLINE 
+        per bird and deaths can decrease the population NEWLINE 
+        size by 30% per cat per year. Similarly, domestic cat births can increase the NEWLINE 
+        cat population size by 9% per bird per year and deaths can decrease the population size NEWLINE 
+        at a rate of 1 per year per cat. NEWLINE NEWLINE
+              
+        The water fowl population also serves as a resource (i.e. food) for the NEWLINE 
+        domestic cats. Hence, the size of the cat population directly affects NEWLINE 
+        the number of birds that die each year (e.g. doubling the cat population NEWLINE 
+        doubles the number of birds that die each year). NEWLINE NEWLINE 
+        The water fowl population is an important supplementary source of food NEWLINE 
+        needed to support a larger cat population. The size of the water fowl NEWLINE 
+        population also directly affects the number of cats that are born each NEWLINE 
+        year. NEWLINE NEWLINE 
 
-        The urban lake starts with a population of 10 water fowl and the NEWLINE
-        population growth rate is 40% per year. The maximum NEWLINE
-        number of water fowl that the urban lake can support (K) now NEWLINE
-        depends directly on the quantity of the renewable resource (e.g. if NEWLINE
-        there is only 20 hg of the resource, then the lake can only support NEWLINE
-        a maximum of 20 individual water fowl). NEWLINE NEWLINE
-
-        The quantity of the renewable resource starts out at 100 hg and NEWLINE
-        is renewed by 60% per year and 2% of the resource is NEWLINE
-        consumed by each water fowl per year. NEWLINE NEWLINE
-
-        Goal: Graph the water fowl population and quantity of the resource NEWLINE
-        over 10 years. NEWLINE NEWLINE
-
-        Hint: Enter constant to the Hundred Thousandth decimal place. NEWLINE
-        Use the logistic equation form (K-N)/K to calculate environmental NEWLINE
-        resistance, p. 242
+        Goal: Graph the water fowl and domestic cat populations over 10 years. NEWLINE 
+        Explore how changing initial population size, birth rate, and death rate NEWLINE 
+        of the two populations affect population dynamics.
       
     </TaskDescription>
 
@@ -33,20 +33,20 @@
   
     <StartTime>0</StartTime>
     <EndTime>10</EndTime>
-    <TimeStep>0.1</TimeStep>
+    <TimeStep>0.05</TimeStep>
     <Units>years</Units>
   
     <Vertexes>
-        <VertexLabel>births per year</VertexLabel>
-        <VertexLabel>proportion capacity remaining</VertexLabel>
-        <VertexLabel>renew per year</VertexLabel>
-        <VertexLabel>consump per year</VertexLabel>
-        <VertexLabel>capacity remaining</VertexLabel>
-        <VertexLabel>water fowl</VertexLabel>
-        <VertexLabel>resource</VertexLabel>
-        <VertexLabel>birth rate</VertexLabel>
-        <VertexLabel>renew rate</VertexLabel>
-        <VertexLabel>consump rate</VertexLabel>
+        <VertexLabel>Bird Births Per Year</VertexLabel>
+        <VertexLabel>Bird Deaths Per Year</VertexLabel>
+        <VertexLabel>Cat Births Per Year</VertexLabel>
+        <VertexLabel>Cat Deaths Per Year</VertexLabel>
+        <VertexLabel>Water Fowl</VertexLabel>
+        <VertexLabel>Domestic Cats</VertexLabel>
+        <VertexLabel>Bird Birth Rate</VertexLabel>
+        <VertexLabel>Bird Death Rate</VertexLabel>
+        <VertexLabel>Cat Birth Rate</VertexLabel>
+        <VertexLabel>Cat Death Rate</VertexLabel>
     </Vertexes>
   
     <NodeCount>10</NodeCount>
@@ -55,143 +55,138 @@
     <CorrespondingSentence>Graph the water fowl population over 10 years.</CorrespondingSentence>
 
     <Nodes>
-        <Node type="flow" name="births per year" extra="no">
+        <Node type="flow" name="Bird Births Per Year" extra="no">
             <Inputs>
-                <Name>water fowl</Name>
-                <Name>birth rate</Name>
-                <Name>proportion capacity remaining</Name>
+                <Name>Water Fowl</Name>
+                <Name>Bird Birth Rate</Name>
             </Inputs>
             <Outputs>
-                <Name>water fowl</Name>
+                <Name>Water Fowl</Name>
             </Outputs>
-            <Equation>water fowl*birth rate*proportion capacity remaining</Equation>
+            <Equation>Water Fowl*Bird Birth Rate</Equation>
             <InitialValue></InitialValue>
             <CorrectDescription>The number of new water fowl added to the population each year</CorrectDescription>
             <Plan>proportional to accumulator and input</Plan>
         </Node>
 	  
-        <Node type="flow" name="proportion capacity remaining" extra="no">
+        <Node type="flow" name="Bird Deaths Per Year" extra="no">
             <Inputs>
-                <Name>capacity remaining</Name>
-                <Name>resource</Name>
-            </Inputs>
-            <Outputs>
-                <Name>births per year</Name>
-            </Outputs>
-            <Equation>capacity remaining/resource</Equation>
-            <InitialValue></InitialValue>
-            <CorrectDescription>The proportion of the unutilized ecosystem carrying capacity</CorrectDescription>
-            <Plan>proportional to accumulator and input</Plan>
-        </Node>
-	  
-        <Node type="flow" name="renew per year" extra="no">
-            <Inputs>
-                <Name>resource</Name>
-                <Name>renew rate</Name>
+                <Name>Water Fowl</Name>
+                <Name>Bird Death Rate</Name>
+                <Name>Domestic Cats</Name>
             </Inputs>
             <Outputs> 
-                <Name>resource</Name>
+                <Name>Water Fowl</Name>
             </Outputs>
-            <Equation>resource*renew rate</Equation>
+            <Equation>Water Fowl*Bird Death Rate*Domestic Cats</Equation>
             <InitialValue></InitialValue>
-            <CorrectDescription>The number of new resources added to the resource pool each year</CorrectDescription>
+            <CorrectDescription>The number of water fowl removed from the population each year</CorrectDescription>
             <Plan>proportional to accumulator and input</Plan>
         </Node>
 	  
-        <Node type="flow" name="consump per year" extra="no">
+        <Node type="flow" name="Cat Births Per Year" extra="no">
             <Inputs>
-                <Name>consump rate</Name>
-                <Name>water fowl</Name>
-                <Name>resource</Name>
+                <Name>Water Fowl</Name>
+                <Name>Cat Birth Rate</Name>
+                <Name>Domestic Cats</Name>
             </Inputs>
             <Outputs>
-                <Name>resource</Name>
+                <Name>Domestic Cats</Name>
             </Outputs>
-            <Equation>consump rate*water fowl*resource</Equation>
+            <Equation>Water Fowl*Cat Birth Rate*Domestic Cats</Equation>
             <InitialValue></InitialValue>
-            <CorrectDescription>The number of resources consumed each year</CorrectDescription>
+            <CorrectDescription>The number of new cats added to the population each year</CorrectDescription>
             <Plan>proportional to accumulator and input</Plan>
         </Node>
 	  
-        <Node type="flow" name="capacity remaining" extra="no">
+        <Node type="flow" name="Cat Deaths Per Year" extra="no">
             <Inputs>
-                <Name>water fowl</Name>
-                <Name>resource</Name>
+                <Name>Cat Death Rate</Name>
+                <Name>Domestic Cats</Name>
             </Inputs>
             <Outputs>
-                <Name>proportion capacity remaining</Name>
+                <Name>Domestic Cats</Name>
             </Outputs>
-            <Equation>resource-water fowl</Equation>
+            <Equation>Domestic Cats*Cat Death Rate</Equation>
             <InitialValue></InitialValue>
-            <CorrectDescription>The amount of the ecosystem carrying capacity not utilized by the water fowl population</CorrectDescription>
+            <CorrectDescription>The number of cats removed from the population each year</CorrectDescription>
             <Plan>fixed value</Plan>
         </Node>
 	  
-        <Node type="stock" name="water fowl" extra="no">
+        <Node type="stock" name="Water Fowl" extra="no">
             <Order>1</Order>
             <Inputs>
-                <Name>births per year</Name>
+                <Name>Bird Births Per Year</Name>
+                <Name>Bird Deaths Per Year</Name>
             </Inputs>
             <Outputs>
-                <Name>births per year</Name>
-                <Name>consump per year</Name>
-                <Name>capacity remaining</Name>
+                <Name>Bird Deaths Per Year</Name>
+                <Name>Cat Births Per Year</Name>
             </Outputs>
-            <Equation>births per year</Equation>
-            <InitialValue>10.0</InitialValue>
-            <CorrectDescription>The water fowl population size</CorrectDescription>
+            <Equation>Bird Births Per Year-Bird Deaths Per Year</Equation>
+            <InitialValue>10</InitialValue>
+            <CorrectDescription>The population size of the water fowl</CorrectDescription>
             <Plan>said to increase</Plan>
         </Node>
       
-        <Node type="stock" name="resource" extra="no">
+        <Node type="stock" name="Domestic Cats" extra="no">
             <Inputs>
-                <Name>renew per year</Name>
-                <Name>consump per year</Name>
+                <Name>Cat Births Per Year</Name>
+                <Name>Cat Deaths Per Year</Name>
+            </Inputs>
+            <Outputs>
+                <Name>Bird Deaths Per Year</Name>
+                <Name>Cat Births Per Year</Name>
+                <Name>Cat Deaths Per Year</Name>
+            </Outputs>
+            <Equation>Cat Births Per Year-Cat Deaths Per Year</Equation>
+            <InitialValue>2</InitialValue>
+            <CorrectDescription>The population size of the domestic cats</CorrectDescription>
+            <Plan>fixed value</Plan>
+        </Node>
+      
+        <Node type="constant" name="Bird Birth Rate" extra="no">
+            <Inputs>
             </Inputs>
             <Outputs> 
-                <Name>proportion capacity remaining</Name>
-                <Name>renew per year</Name>
-                <Name>consump per year</Name>
-                <Name>capacity remaining</Name>
+                <Name>Bird Death Per Year</Name>
             </Outputs>
-            <Equation>renew per year-consump per year</Equation>
-            <InitialValue>100.0</InitialValue>
-            <CorrectDescription>The size of the resource pool (hg) available to the water fowl</CorrectDescription>
+            <Equation>2.0</Equation>
+            <InitialValue>2.0</InitialValue>
+            <CorrectDescription>The birth rate coefficient for the water fowl population</CorrectDescription>
             <Plan>said to increase</Plan>
         </Node>
 	  
-        <Node type="constant" name="birth rate" extra="no">
+        <Node type="constant" name="Bird Death Rate" extra="no">
             <Inputs></Inputs>
             <Outputs>
-                <Name>water fowl</Name>
-                <Name>births per year</Name>
+                <Name>Bird Births Per Year</Name>
             </Outputs>
-            <Equation>0.4</Equation>
-            <InitialValue>0.4</InitialValue>
-            <CorrectDescription>The maximum rate of birth of water fowl</CorrectDescription>
+            <Equation>0.3</Equation>
+            <InitialValue>0.3</InitialValue>
+            <CorrectDescription>The death rate coefficient for the water fowl population</CorrectDescription>
             <Plan>fixed value</Plan>
         </Node>
 	  
-        <Node type="constant" name="renew rate" extra="no">
+        <Node type="constant" name="Cat Birth Rate" extra="no">
             <Inputs></Inputs>
             <Outputs>
-                <Name>population growth rate</Name>
-                <Name>renew per year</Name>
+                <Name>Cat Births Per Year</Name>
             </Outputs>
-            <Equation>0.6</Equation>
-            <InitialValue>0.6</InitialValue>
-            <CorrectDescription>The maximum rate that the resource is renewed</CorrectDescription>
+            <Equation>0.09</Equation>
+            <InitialValue>0.09</InitialValue>
+            <CorrectDescription>The birth rate coefficient for the cat population</CorrectDescription>
             <Plan>fixed value</Plan>
         </Node>
 	  
-        <Node type="constant" name="consump rate" extra="no">
+        <Node type="constant" name="Cat Death Rate" extra="no">
             <Inputs></Inputs>
             <Outputs>
-                <Name>consump per year</Name>    
+                <Name>Cat Deaths Per Year</Name>
             </Outputs>
-            <Equation>0.02</Equation>
-            <InitialValue>0.02</InitialValue>
-            <CorrectDescription>The maximum rate that the resource is consumed</CorrectDescription>
+            <Equation>1</Equation>
+            <InitialValue>1</InitialValue>
+            <CorrectDescription>The death rate coefficient for the cat population</CorrectDescription>
             <Plan>fixed value</Plan>
         </Node>
      
@@ -199,164 +194,146 @@
 
 
     <DescriptionTree>
-        <Node level="root">
-            <Description>The maximum rate</Description>      
-            <Node level="intermediate">
-                <Description></Description>            
-                <Node level="leaf">
-                    <Description>of urban lake turnover</Description>
-                    <NodeName>urban rate</NodeName>
-                </Node>
-                <Node level="leaf">
-                    <Description>of birth of water fowl</Description>
-                    <NodeName>birth rate</NodeName>
-                </Node>
-                <Node level="leaf">
-                    <Description>that predators eat water fowl</Description>
-                    <NodeName>predator rate</NodeName>
-                </Node>
-            </Node>  
-            <Node level="intermediate">
-                <Description></Description>            
-                <Node level="leaf">
-                    <Description>that the resource is renewed</Description>
-                    <NodeName>renew rate</NodeName>
-                </Node>
-            </Node>
-            <Node level="intermediate">
-                <Description></Description>            
-                <Node level="leaf">
-                    <Description>that the resource is consumed</Description>
-                    <NodeName>consump rate</NodeName>
-                </Node>
-            </Node>      
-        </Node>
     
         <Node level="root">
-            <Description>The number of</Description>      
+            <Description>The number of</Description>  
+      
             <Node level="intermediate">
                 <Description>new water fowl added to the population</Description>            
                 <Node level="leaf">
                     <Description>each year</Description>
-                    <NodeName>births per year</NodeName>
+                    <NodeName>Bird Births Per Year</NodeName>
                 </Node>
                 <Node level="leaf">
                     <Description>each week</Description>
-                    <NodeName>births per week</NodeName>
+                    <NodeName>Bird Births Per Week</NodeName>
                 </Node>
                 <Node level="leaf">
                     <Description>each day</Description>
-                    <NodeName>births per day</NodeName>
+                    <NodeName>Bird Births Per Day</NodeName>
                 </Node>
             </Node>
+        
             <Node level="intermediate">
-                <Description>new resources added to the resource pool</Description>            
+                <Description>water fowl removed from the population</Description>            
                 <Node level="leaf">
                     <Description>each year</Description>
-                    <NodeName>renew per year</NodeName>
+                    <NodeName>Bird Deaths Per Year</NodeName>
                 </Node>
                 <Node level="leaf">
                     <Description>each week</Description>
-                    <NodeName>renew per week</NodeName>
+                    <NodeName>Bird Deaths Per Week</NodeName>
                 </Node>
                 <Node level="leaf">
                     <Description>each day</Description>
-                    <NodeName>renew per day</NodeName>
+                    <NodeName>Bird Deaths Per Day</NodeName>
                 </Node>
             </Node>
+          
             <Node level="intermediate">
-                <Description>resources consumed</Description>            
+                <Description>cats removed from the population</Description>            
                 <Node level="leaf">
                     <Description>each year</Description>
-                    <NodeName>consump per year</NodeName>
+                    <NodeName>Cat Deaths Per Year</NodeName>
                 </Node>
                 <Node level="leaf">
                     <Description>each week</Description>
-                    <NodeName>consump per week</NodeName>
+                    <NodeName>Cat Deaths Per Week</NodeName>
                 </Node>
                 <Node level="leaf">
                     <Description>each day</Description>
-                    <NodeName>consump per day</NodeName>
+                    <NodeName>Cat Deaths Per Day</NodeName>
                 </Node>
             </Node>
-        </Node>
-    
-        <Node level="root">
-            <Description>The water fowl</Description>      
+      
             <Node level="intermediate">
-                <Description></Description>            
-        
+                <Description>new cats added to the population</Description>            
                 <Node level="leaf">
-                    <Description>population size</Description>
-                    <NodeName>water fowl</NodeName>
+                    <Description>each year</Description>
+                    <NodeName>Cat Births Per Year</NodeName>
                 </Node>
-        
                 <Node level="leaf">
-                    <Description>migration pattern</Description>
-                    <NodeName>water fowl mig</NodeName>
+                    <Description>each week</Description>
+                    <NodeName>Cat Births Per Week</NodeName>
                 </Node>
-        
                 <Node level="leaf">
-                    <Description>population that get eaten by predators</Description>
-                    <NodeName>water fowl eaten</NodeName>
+                    <Description>each day</Description>
+                    <NodeName>Cat Births Per Day</NodeName>
                 </Node>
             </Node>
       
         </Node>
     
+    
         <Node level="root">
-            <Description>The amount of the</Description>  
-            <Node level="intermediate">
-                <Description>ecosystem carrying capacity not utilized by</Description>            
-                <Node level="leaf">
-                    <Description>the water fowl population</Description>
-                    <NodeName>capacity remaining</NodeName>
-                </Node>
-                <Node level="leaf">
-                    <Description>the lake's fish population</Description>
-                    <NodeName>fish remaining</NodeName>
-                </Node>
-                <Node level="leaf">
-                    <Description>the lake's microbial population</Description>
-                    <NodeName>microbial remaining</NodeName>
-                </Node>        
-            </Node>
-        </Node>
-   
-        <Node level="root">
-            <Description>The proportion of the</Description>  
+            <Description>The population size of</Description>  
             <Node level="intermediate">
                 <Description></Description>            
                 <Node level="leaf">
-                    <Description>unutilized ecosystem carrying capacity</Description>
-                    <NodeName>proportion capacity remaining</NodeName>
+                    <Description>the water fowl</Description>
+                    <NodeName>Water Fowl</NodeName>
                 </Node>
                 <Node level="leaf">
-                    <Description>unutilized water fowl's capacity to swim away from predators</Description>
-                    <NodeName>proportion capacity swim</NodeName>
-                </Node>               
-            </Node>
-        </Node>
-   
-        <Node level="root">
-            <Description>The size of the resource pool (hg)</Description>  
-            <Node level="intermediate">
-                <Description></Description>            
-                <Node level="leaf">
-                    <Description>available to the water fowl</Description>
-                    <NodeName>resource</NodeName>
+                    <Description>the human that live near the park</Description>
+                    <NodeName>Human Population</NodeName>
                 </Node>
                 <Node level="leaf">
-                    <Description>unavailable to the water fowl</Description>
-                    <NodeName>unavl resource</NodeName>
+                    <Description>the lizards</Description>
+                    <NodeName>Lizards Population</NodeName>
                 </Node>
                 <Node level="leaf">
-                    <Description>available to the fish population</Description>
-                    <NodeName>fish resource</NodeName>
-                </Node>               
+                    <Description>the domestic cats</Description>
+                    <NodeName>Domestic Cats</NodeName>
+                </Node>                       
             </Node>
         </Node> 
     
+        <Node level="root">
+            <Description>The Death Rate Coefficient</Description>  
+            <Node level="intermediate">
+                <Description></Description>            
+                <Node level="leaf">
+                    <Description>for the cat population</Description>
+                    <NodeName>Cat Death Rate</NodeName>
+                </Node>
+                <Node level="leaf">
+                    <Description>for the new cat population</Description>
+                    <NodeName>New Cat Death Rate</NodeName>
+                </Node> 
+                <Node level="leaf">
+                    <Description>for the Water Fowl population</Description>
+                    <NodeName>Bird Death Rate</NodeName>
+                </Node>
+                <Node level="leaf">
+                    <Description>for the Lizard population</Description>
+                    <NodeName>Lizard Death Rate</NodeName>
+                </Node>                      
+            </Node>
+        </Node>
+    
+    
+        <Node level="root">
+            <Description>The Birth Rate Coefficient</Description>  
+            <Node level="intermediate">
+                <Description></Description>            
+                <Node level="leaf">
+                    <Description>for the cat population</Description>
+                    <NodeName>Cat Birth Rate</NodeName>
+                </Node>
+                <Node level="leaf">
+                    <Description>for the new cat population</Description>
+                    <NodeName>New Cat Birth Rate</NodeName>
+                </Node>       
+                <Node level="leaf">
+                    <Description>for the water fowl population</Description>
+                    <NodeName>Bird Birth Rate</NodeName>
+                </Node>
+                <Node level="leaf">
+                    <Description>for the lizard population</Description>
+                    <NodeName>Lizard Birth Rate</NodeName>
+                </Node>                
+            </Node>
+        </Node>
     </DescriptionTree>
 
   
