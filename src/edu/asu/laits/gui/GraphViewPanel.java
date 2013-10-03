@@ -125,9 +125,11 @@ public class GraphViewPanel{
     private DoubleJSlider addSlider(Vertex vertex, Task task){
         //handle negative values
         if(vertex.getInitialValue() > 0)
-            return new DoubleJSlider(0, 5*vertex.getInitialValue(), vertex.getInitialValue());
+            return new DoubleJSlider(0, 2*vertex.getInitialValue(), vertex.getInitialValue());
+        else if(vertex.getInitialValue() < 0)
+            return new DoubleJSlider(2*vertex.getInitialValue() , 0, vertex.getInitialValue());
         else
-            return new DoubleJSlider(5*vertex.getInitialValue() , 0, vertex.getInitialValue());
+            return new DoubleJSlider(-1 , 1, vertex.getInitialValue());
             
     }
     
