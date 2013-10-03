@@ -174,11 +174,23 @@ public class PlotPanel extends JXTaskPane {
         plot.setDomainCrosshairVisible(true);
         plot.setRangeCrosshairVisible(true);
         
+        
+        System.out.println(" Low Bound  Range/ Y "+((XYSeriesCollection)xydataset).getRangeLowerBound(true)+" \" Upper Bound  Range/ Y \" "+ ((XYSeriesCollection)xydataset).getRangeUpperBound(true));
+        System.out.println(" Low Bound  Domain/X "+start+" \" Upper Bound  Domain/X \" "+ end);
+       
         plot.getRangeAxis().setRange(((XYSeriesCollection)xydataset).getRangeLowerBound(true), ((XYSeriesCollection)xydataset).getRangeUpperBound(true));
        
         NumberAxis domain = (NumberAxis) plot.getDomainAxis();
         // Don't want any padding on left or right.
+        
+        //fix for author mode, without looking at ram
+        if(start < end || start == end)
+            end=10.0;
+        
         domain.setRange(start, end);
+        
+        
+        
         // Rotate ticks if numbers are large (years, for instance)
         if(Math.max(Math.abs(start),Math.abs(end))>1000){
             domain.setVerticalTickLabels(true);

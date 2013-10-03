@@ -25,6 +25,7 @@ import edu.asu.laits.gui.GraphViewPanel;
 import edu.asu.laits.gui.GraphViewPanel.Mode;
 import edu.asu.laits.gui.MainWindow;
 import edu.asu.laits.gui.nodeeditor.NodeEditorView;
+import edu.asu.laits.model.Edge;
 import edu.asu.laits.model.Graph;
 import edu.asu.laits.model.LaitsSolutionExporter;
 import edu.asu.laits.model.ModelEvaluationException;
@@ -217,21 +218,35 @@ public class ModelMenu extends JMenu {
         return showForumMenuItem;
     }
 
+    public boolean isGraphable(){
+        Graph<Vertex,Edge> graph = (Graph) graphPane.getModelGraph();
+        boolean isGraphable = false;
+        for(Vertex currentVertex : graph.vertexSet()) {
+            if(!currentVertex.getVertexType().equals(Vertex.VertexType.CONSTANT)) {
+                isGraphable=true;
+                return isGraphable;
+            }
+    }
+        return isGraphable;
+   }
     public void showNodeGraph() {
         activityLogs.debug("User pressed Run Model button.");
 
         if (runModel()) {
-            showChartDialog(Mode.Graph);
+            if(isGraphable())
+                showChartDialog(Mode.Graph);
+            else
+                JOptionPane.showMessageDialog(MainWindow.getInstance(), "This model does not contain any functions or accumulators. There is nothing to graph yet");
         }
     }
 
     public void showNodeTable() {
         activityLogs.debug("User pressed Show Table button.");
 
-        if (runModel()) {
-            showChartDialog(Mode.Table);
-//            showTableDialog();
-        }
+        if(isGraphable())
+                showChartDialog(Mode.Table);
+            else
+                JOptionPane.showMessageDialog(MainWindow.getInstance(), "This model does not contain any functions or accumulators. There is nothing to graph yet");
     }
 
     private void dumpTableValues(ModelEvaluator me) {
