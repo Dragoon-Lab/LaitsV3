@@ -12,6 +12,7 @@
     <URL>images/moose_60.png</URL>
     <StartTime>1900</StartTime>
     <EndTime>1949</EndTime>
+    <TimeStep>.5</TimeStep>
     <Units>Years</Units>
     <NodeCount>5</NodeCount>
     <Nodes>
