@@ -106,7 +106,7 @@ public class GraphViewPanel{
                          ApplicationContext.getCorrectSolution().getGraphUnits());
         }
         for(Vertex currentVertex : currentGraph.vertexSet()) {
-            if(currentVertex.getVertexType().equals(Vertex.VertexType.CONSTANT)) {
+            if(!currentVertex.getVertexType().equals(Vertex.VertexType.FLOW)) {
                 newSlider = addSlider(currentVertex, t);
                 newSlider.setPaintTicks(true);
                 newSlider.setPaintLabels(true);
