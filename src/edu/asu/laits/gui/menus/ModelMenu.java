@@ -32,6 +32,7 @@ import edu.asu.laits.model.ModelEvaluationException;
 import edu.asu.laits.model.ModelEvaluator;
 import edu.asu.laits.model.SolutionNode;
 import edu.asu.laits.model.TaskSolution;
+import edu.asu.laits.model.Times;
 import edu.asu.laits.model.Vertex;
 import java.awt.BorderLayout;
 import java.awt.event.ActionEvent;
@@ -296,6 +297,14 @@ public class ModelMenu extends JMenu {
             return true;
         }
 
+        //Check if author mode , add default time steps
+        if(ApplicationContext.isAuthorMode()){
+                Graph graph = graphPane.getModelGraph();
+                 Times times = graph.getCurrentTask().getTimes();
+                 if(times.getStartTime()==times.getEndTime())
+                     times.setTimes(0, 10, 1);
+          }
+        
         ModelEvaluator me = new ModelEvaluator((Graph) graphPane.getModelGraph());
         MainWindow window = MainWindow.getInstance();
         if (me.isModelComplete()) {

@@ -182,7 +182,14 @@ public class GraphViewPanel{
             if(c instanceof PlotPanel){
                 System.out.println("repaint check succeeded, attempting to repaint " + map.get(c).getName());
 //                vertices.add(map.get(c));
-             ((PlotPanel)c).updateChartAfterSliderChange(clonnedGraph,map.get(c),ApplicationContext.getCorrectSolution().getTimes());
+                
+                Task t = null;
+                 if(!ApplicationContext.isAuthorMode())
+                        t = new Task(ApplicationContext.getCorrectSolution().getTimes(),ApplicationContext.getCorrectSolution().getGraphUnits());
+                 else
+                       t = new Task();
+                
+             ((PlotPanel)c).updateChartAfterSliderChange(clonnedGraph,map.get(c),t.getTimes());
             }
         }
         //restore oringal 

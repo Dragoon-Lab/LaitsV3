@@ -219,7 +219,11 @@ public class PlotPanel extends JXTaskPane {
         XYSeries series = new XYSeries("New Value Graph");
            
         //remove last slider value series
-        for (int i = 2; i < xydataset.getSeriesCount(); i++) {
+        int index=2;
+        if(ApplicationContext.isAuthorMode())
+          index = 1;
+        
+        for (int i = index; i < xydataset.getSeriesCount(); i++) {
             ((XYSeriesCollection)xydataset).removeSeries(i);
         }
         
@@ -243,7 +247,7 @@ public class PlotPanel extends JXTaskPane {
             for (int i = 0; i < correctValues.size(); i += di) {
                 logs.debug(correctValues.get(i)+" ");
                 series.add(t, correctValues.get(i));
-                t += di*times.getTimeStep();
+                t += di*(times.getTimeStep()==0?1:times.getTimeStep());
             }
                 
             ((XYSeriesCollection)xydataset).addSeries(series);
