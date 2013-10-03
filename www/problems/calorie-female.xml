@@ -6,7 +6,7 @@
     <TaskDescription>
         &lt;strong&gt;Goal: &lt;/strong&gt;Read the information given by your instructor. Construct a model NEWLINE
         for a 20 year old woman who weighs 150 pounds, is 68 inches tall, and is NEWLINE
-        moderately active (HB Factor = 1.55). Show her weight change if she NEWLINE
+        lightly active (HB Factor = 1.375). Show her weight change if she NEWLINE
         consumes 500 less calories than she burns each day. After constructing NEWLINE
         the model click "Show Graph" or "Show Table" to enter your own values. NEWLINE
         Then complete the worksheet. NEWLINE NEWLINE
@@ -116,8 +116,8 @@
             <Outputs>
                 <Node name="harris benedict formula"/>
             </Outputs>
-            <Equation>1.55</Equation>
-            <InitialValue>1.55</InitialValue>
+            <Equation>1.375</Equation>
+            <InitialValue>1.375</InitialValue>
         </Node>
     </Nodes>
     
