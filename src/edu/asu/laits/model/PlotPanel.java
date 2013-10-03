@@ -184,7 +184,7 @@ public class PlotPanel extends JXTaskPane {
         // Don't want any padding on left or right.
         
         //fix for author mode, without looking at ram
-        if(start < end || start == end)
+        if(end < start || start == end)
             end=10.0;
         
         domain.setRange(start, end);
