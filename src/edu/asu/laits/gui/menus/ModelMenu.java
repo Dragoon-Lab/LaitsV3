@@ -302,7 +302,7 @@ public class ModelMenu extends JMenu {
                 Graph graph = graphPane.getModelGraph();
                  Times times = graph.getCurrentTask().getTimes();
                  if(times.getStartTime()==times.getEndTime())
-                     times.setTimes(0, 10, 1);
+                     times.setTimes(0, 3650, 10);
           }
         
         ModelEvaluator me = new ModelEvaluator((Graph) graphPane.getModelGraph());
