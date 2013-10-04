@@ -35,7 +35,7 @@
                 <Name>moose population</Name>
             </Inputs>
             <Outputs>
-                <Name>moose population </Name>
+                <Name>moose population</Name>
             </Outputs>
             <Equation>moose birth rate * moose population</Equation>
             <InitialValue>0.0</InitialValue>
@@ -43,6 +43,7 @@
         <Node type="stock" name="moose population" extra="no">
             <CorrectDescription>The number of moose in the population</CorrectDescription>
             <Plan>proportional to accumulator and input</Plan>
+	    <Order>1</Order>
             <Inputs>
                 <Name>moose births</Name>
                 <Name>moose deaths</Name>
@@ -163,14 +164,15 @@
         <Node type="stock" name="wolf population" extra="no">
             <CorrectDescription>The number of wolves in the population</CorrectDescription>
             <Plan>proportional to accumulator and input</Plan>
+	    <Order>1</Order>
             <Inputs>
                 <Name>wolf births</Name>
                 <Name>wolf deaths</Name>
             </Inputs>
             <Outputs>
-                <Name>wolf births </Name>
-                <Name>wolf deaths </Name>
-                <Name>moose death rate </Name>
+                <Name>wolf births</Name>
+                <Name>wolf deaths</Name>
+                <Name>moose death rate</Name>
             </Outputs>
             <Equation>wolf births - wolf deaths</Equation>
             <InitialValue>20</InitialValue>
