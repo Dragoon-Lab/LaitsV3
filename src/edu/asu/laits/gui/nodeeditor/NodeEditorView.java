@@ -354,7 +354,7 @@ public class NodeEditorView extends javax.swing.JDialog {
             }
         } else {
             cPanel.setCheckedBackground(Color.RED);
-            setEditorMessage("You Calculations are Incorrect.", true);
+            setEditorMessage("Your Calculations are Incorrect.", true);
             activityLogs.debug("User entered incorrect Calculations.");
             openVertex.setCalculationsStatus(Vertex.CalculationsStatus.INCORRECT);
         }

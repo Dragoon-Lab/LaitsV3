@@ -22,14 +22,17 @@ import edu.asu.laits.editor.GraphEditorPane;
 import edu.asu.laits.editor.GraphRangeEditor;
 import edu.asu.laits.gui.ForumViewPanel;
 import edu.asu.laits.gui.GraphViewPanel;
+import edu.asu.laits.gui.GraphViewPanel.Mode;
 import edu.asu.laits.gui.MainWindow;
 import edu.asu.laits.gui.nodeeditor.NodeEditorView;
+import edu.asu.laits.model.Edge;
 import edu.asu.laits.model.Graph;
 import edu.asu.laits.model.LaitsSolutionExporter;
 import edu.asu.laits.model.ModelEvaluationException;
 import edu.asu.laits.model.ModelEvaluator;
 import edu.asu.laits.model.SolutionNode;
 import edu.asu.laits.model.TaskSolution;
+import edu.asu.laits.model.Times;
 import edu.asu.laits.model.Vertex;
 import java.awt.BorderLayout;
 import java.awt.event.ActionEvent;
@@ -77,8 +80,10 @@ public class ModelMenu extends JMenu {
     private static Logger activityLogs = Logger.getLogger("ActivityLogs");
     private HashMap<String, JMenuItem> menuMap = new HashMap<String, JMenuItem>();
     private JFileChooser saveAsFileChooser = null;
+    //delete 
     private Object[][] data;
     private String[] columnNames;
+    //delete above
     public static String graph;
 
     /**
@@ -214,20 +219,35 @@ public class ModelMenu extends JMenu {
         return showForumMenuItem;
     }
 
+    public boolean isGraphable(){
+        Graph<Vertex,Edge> graph = (Graph) graphPane.getModelGraph();
+        boolean isGraphable = false;
+        for(Vertex currentVertex : graph.vertexSet()) {
+            if(!currentVertex.getVertexType().equals(Vertex.VertexType.CONSTANT)) {
+                isGraphable=true;
+                return isGraphable;
+            }
+    }
+        return isGraphable;
+   }
     public void showNodeGraph() {
         activityLogs.debug("User pressed Run Model button.");
 
         if (runModel()) {
-            showChartDialog();
+            if(isGraphable())
+                showChartDialog(Mode.Graph);
+            else
+                JOptionPane.showMessageDialog(MainWindow.getInstance(), "This model does not contain any functions or accumulators. There is nothing to graph yet");
         }
     }
 
     public void showNodeTable() {
         activityLogs.debug("User pressed Show Table button.");
 
-        if (runModel()) {
-            showTableDialog();
-        }
+        if(isGraphable())
+                showChartDialog(Mode.Table);
+            else
+                JOptionPane.showMessageDialog(MainWindow.getInstance(), "This model does not contain any functions or accumulators. There is nothing to graph yet");
     }
 
     private void dumpTableValues(ModelEvaluator me) {
@@ -277,6 +297,14 @@ public class ModelMenu extends JMenu {
             return true;
         }
 
+        //Check if author mode , add default time steps
+        if(ApplicationContext.isAuthorMode()){
+                Graph graph = graphPane.getModelGraph();
+                 Times times = graph.getCurrentTask().getTimes();
+                 if(times.getStartTime()==times.getEndTime())
+                     times.setTimes(0, 3650, 10);
+          }
+        
         ModelEvaluator me = new ModelEvaluator((Graph) graphPane.getModelGraph());
         MainWindow window = MainWindow.getInstance();
         if (me.isModelComplete()) {
@@ -336,6 +364,7 @@ public class ModelMenu extends JMenu {
      *  running the model
      */
     private void showTableDialog() {
+        /*
         try {
             JFrame tableValuesFrame = new JFrame("Node Table display");
             JPanel tableValuesPanel = new JPanel();
@@ -354,18 +383,18 @@ public class ModelMenu extends JMenu {
             }
         } catch (Exception e) {
             e.printStackTrace();
-        }
+        }*/
 
     }
 
-    private void showChartDialog() {
+    private void showChartDialog(Mode mode) {
         JDialog graphValuesDialog = new JDialog(MainWindow.getInstance(), true);
-        GraphViewPanel gPanel = new GraphViewPanel(graphPane.getModelGraph(), graphValuesDialog);
+        GraphViewPanel gPanel = new GraphViewPanel(graphPane.getModelGraph(), graphValuesDialog,mode);
         graphValuesDialog.setTitle("Model Graph");
         graphValuesDialog.setSize(610, 530);
         graphValuesDialog.setLocationRelativeTo(null);
 
-        graphValuesDialog.setResizable(false);
+        graphValuesDialog.setResizable(true);
         graphValuesDialog.setVisible(true);
     }
 
@@ -383,12 +412,13 @@ public class ModelMenu extends JMenu {
     public void newNodeAction() {
         activityLogs.debug("User Pressed Create Node Button");
         MainWindow window = MainWindow.getInstance();
-//        if(ApplicationContext.isCoachedMode() && !isGraphEmpty()){
-//            activityLogs.debug("User was not allowed to create new node as app is in COACHED mode and nodes already present");
-//            JOptionPane.showMessageDialog(window, "Create new nodes inside the Calculations tab of existing nodes");
-//            return;
-//            
-//        }
+        // Disable test as work-around for Bug #2218
+        if(false && ApplicationContext.isCoachedMode() && !isGraphEmpty()){
+            activityLogs.debug("User was not allowed to create new node as app is in COACHED mode and nodes already present");
+            JOptionPane.showMessageDialog(window, "Create new nodes inside the Calculations tab of existing nodes");
+            return;
+            
+        }
         if (notAllNodesDefined()) {
             activityLogs.debug("User is allowed to create a new node");
             Vertex v = new Vertex();

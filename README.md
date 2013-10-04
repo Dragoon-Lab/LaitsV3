@@ -7,12 +7,22 @@ tutorial to get you started using dragoon.
 [Documentation and design documents](documentation/README.md) are
 available.
 
-## Dragoon Install ##
+## Dragoon Install and Netbeans ##
 
-Instructions for setting up a dragoon server and for
+This document contains instructions for setting up a dragoon server and for
 setting up a development environment for dragoon.  We use
 Netbeans for java code development, but none of the code
 is Netbean-specific.
+
+We are using JDK 1.6 for production builds of Dragoon.
+Although Dragoon runs fine in Java 1.7, many computers in the
+schools (as of Fall 2013) do not have Java 1.7 installed.
+
+If you are having trouble with Netbeans, especially going between
+branches with inconsistent Netbeans config files, try closing
+Netbeans and deleting the file `nbproject/build-impl.xml`.
+See [documentation on Netbeans and source 
+control](https://netbeans.org/kb/docs/java/import-eclipse.html#versioning).
 
 ### Database Setup ###
 
@@ -22,11 +32,10 @@ containing three lines containing the username, password, and
 database name.
 
 
-### Command Line arguements ###
+### Command Line arguments ###
 
-To run Dragoon locally, need to supply command line arguments.
-Requires command line arguments in to run locally.  To set up command
-line arguments in NetBeans, right-click the project, select
+To run Dragoon locally, you need to supply command line arguments.
+To set up command line arguments in NetBeans, right-click the project, select
 "Configuration" > "Customize", select the "Run" category, and enter
 into the "Arguments" line in this format:
 

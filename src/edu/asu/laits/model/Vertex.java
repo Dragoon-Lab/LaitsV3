@@ -200,7 +200,7 @@ public class Vertex {
     }
 
     public Object clone() {
-        Vertex vertexInfoClone = new Vertex();
+       Vertex vertexInfoClone = new Vertex();
         vertexInfoClone.setXPosition(xPosition);
         vertexInfoClone.setYPosition(yPosition);
         vertexInfoClone.setForegroundColor(new Color(foregroundColor.getRGB()));
@@ -209,6 +209,15 @@ public class Vertex {
         vertexInfoClone.setName(new String(name));
         vertexInfoClone.setVertexType(type);
         vertexInfoClone.setEquation(equation);
+        vertexInfoClone.setInitialValue(initialValue);
+        vertexInfoClone.setVertexIndex(vertexIndex);
+        vertexInfoClone.correctValues.addAll(correctValues);
+        vertexInfoClone.setCorrectDescription(correctDescription);
+        vertexInfoClone.setPlan(plan);
+        vertexInfoClone.setDescriptionStatus(descriptionStatus);
+        vertexInfoClone.setPlanStatus(planStatus);
+        vertexInfoClone.setCalculationsStatus(calculationsStatus);
+        vertexInfoClone.setGraphsStatus(graphsStatus); 
 
         return vertexInfoClone;
     }
