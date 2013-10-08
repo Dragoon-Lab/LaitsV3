@@ -32,10 +32,10 @@ the population growth rate is 40% per year, but the lake can only support
     <Nodes>
         <Node type="flow" name="unutilized K prop" extra="no">
             <Inputs>
-                <Name>utilized K</Name>
+                <Name>unutilized K</Name>
                 <Name>carrying capacity</Name>
             </Inputs>
-            <Equation>utilized K / carrying capacity</Equation>
+            <Equation>unutilized K / carrying capacity</Equation>
             <InitialValue></InitialValue>
             <CorrectDescription>The proportion of the carrying capacity not utilized by the water fowl</CorrectDescription>
             <Plan>proportional to accumulator and input</Plan>
@@ -49,7 +49,7 @@ the population growth rate is 40% per year, but the lake can only support
             <Plan>fixed value</Plan>
         </Node>
 	  
-        <Node type="flow" name="utilized K" extra="no">
+        <Node type="flow" name="unutilized K" extra="no">
             <Inputs>
                 <Name>carrying capacity</Name>
                 <Name>water fowl</Name>
@@ -141,7 +141,7 @@ the population growth rate is 40% per year, but the lake can only support
                 </Node>
                 <Node level="leaf">
                     <Description>by the water fowl population</Description>
-                    <NodeName>utilized K</NodeName>
+                    <NodeName>unutilized K</NodeName>
                 </Node>
                 <Node level="leaf">
                     <Description>by the microbial population</Description>

@@ -8,11 +8,11 @@
         dynamics can be constraint by environmental factors. NEWLINE NEWLINE
 
         The urban lake starts with a population of 10 water fowl and the NEWLINE
-        population growth rate is 40% per year. The maximum NEWLINE
-        number of water fowl that the urban lake can support (K) now NEWLINE
-        depends directly on the quantity of the renewable resource (e.g. if NEWLINE
-        there is only 20 hg of the resource, then the lake can only support NEWLINE
-        a maximum of 20 individual water fowl). NEWLINE NEWLINE
+        population growth rate is the birth rate (40% per year) minus the NEWLINE
+        death rate (17% per year). The maximum number of water fowl that the NEWLINE
+        urban lake can support (K) now depends directly on the quantity of the NEWLINE
+        renewable resource (e.g. if there is only 20 hg of the resource, then NEWLINE
+        the lake can only support a maximum of 20 individual water fowl). NEWLINE NEWLINE
 
         The quantity of the renewable resource starts out at 100 hg and NEWLINE
         is renewed by 60% per year and 2% of the resource is NEWLINE
@@ -131,16 +131,43 @@
             <Order>1</Order>
             <Inputs>
                 <Name>births per year</Name>
+                <Name>deaths per year</Name>
             </Inputs>
             <Outputs>
                 <Name>births per year</Name>
                 <Name>consump per year</Name>
                 <Name>capacity remaining</Name>
             </Outputs>
-            <Equation>births per year</Equation>
+            <Equation>births per year-deaths per year</Equation>
             <InitialValue>10.0</InitialValue>
             <CorrectDescription>The water fowl population size</CorrectDescription>
             <Plan>said to increase</Plan>
+        </Node>
+        
+        <Node type="flow" name="deaths per year" extra="no">
+            <Inputs>
+                <Name>water fowl</Name>
+                <Name>death rate</Name>
+            </Inputs>
+            <Outputs>
+                <Name>water fowl</Name>
+            </Outputs>
+            <Equation>death rate*water fowl</Equation>
+            <InitialValue></InitialValue>
+            <CorrectDescription>The number of water fowl removed from the population each year</CorrectDescription>
+            <Plan>said to increase</Plan>
+        </Node>
+        
+        <Node type="constant" name="death rate" extra="no">
+            <Inputs>
+            </Inputs>
+            <Outputs>
+                <Name>deaths</Name>
+            </Outputs>
+            <Equation>0.17</Equation>
+            <InitialValue>0.17</InitialValue>
+            <CorrectDescription>The maximum rate of death of water fowl</CorrectDescription>
+            <Plan>fixed value</Plan>
         </Node>
       
         <Node type="stock" name="resource" extra="no">
@@ -212,6 +239,10 @@
                     <NodeName>birth rate</NodeName>
                 </Node>
                 <Node level="leaf">
+                    <Description>of death of water fowl</Description>
+                    <NodeName>death rate</NodeName>
+                </Node>
+                <Node level="leaf">
                     <Description>that predators eat water fowl</Description>
                     <NodeName>predator rate</NodeName>
                 </Node>
@@ -247,6 +278,21 @@
                 <Node level="leaf">
                     <Description>each day</Description>
                     <NodeName>births per day</NodeName>
+                </Node>
+            </Node>
+            <Node level="intermediate">
+                <Description>water fowl removed from the population</Description>            
+                <Node level="leaf">
+                    <Description>each year</Description>
+                    <NodeName>deaths per year</NodeName>
+                </Node>
+                <Node level="leaf">
+                    <Description>each week</Description>
+                    <NodeName>deaths per week</NodeName>
+                </Node>
+                <Node level="leaf">
+                    <Description>each day</Description>
+                    <NodeName>deaths per day</NodeName>
                 </Node>
             </Node>
             <Node level="intermediate">
