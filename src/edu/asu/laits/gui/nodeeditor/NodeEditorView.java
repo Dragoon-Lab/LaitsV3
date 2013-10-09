@@ -71,14 +71,14 @@ public class NodeEditorView extends javax.swing.JDialog {
         _controller = ControllerFactory.getNodeEditorController(this, openVertex);
         initComponents();
         configureAndRenderUI();
+        
     }
 
     private void configureAndRenderUI() {
         logs.debug("Initializing NodeEditor");
         activityLogs.debug("NodeEditor opened for Node '" + openVertex.getName() + "'");
-        
+        resetEditorMessage();
         initTabs();
-        setEditorMessage("", true);
         
         this.addWindowListener(new java.awt.event.WindowAdapter() {
             public void windowClosing(java.awt.event.WindowEvent e) {
@@ -109,8 +109,7 @@ public class NodeEditorView extends javax.swing.JDialog {
                 logs.debug("Should be enabled on close");
                 buttonCancel.setEnabled(true);
             }
-        }
-
+        }        
         setVisible(true);
         setResizable(false);
     }
@@ -215,13 +214,16 @@ public class NodeEditorView extends javax.swing.JDialog {
     }
 
     public void setEditorMessage(String msg, boolean err) {
-        editorMsgLabel.setText(msg);
+        logs.debug("Setting NE Statues message to "+msg);
         if (err) {
             editorMsgLabel.setForeground(Color.RED);
         } else {
             editorMsgLabel.setForeground(Color.BLUE);
         }
+        editorMsgLabel.setText(msg);
         editorMsgLabel.setVisible(true);
+        validate();
+        repaint();
     }
 
     public void clearEditorMessage(){
@@ -590,7 +592,7 @@ public class NodeEditorView extends javax.swing.JDialog {
 
         editorMsgLabel.setFont(new java.awt.Font("Lucida Grande", 0, 12)); // NOI18N
         editorMsgLabel.setForeground(new java.awt.Color(255, 0, 0));
-        editorMsgLabel.setText("jLabel1");
+        editorMsgLabel.setText("Status Message");
 
         tabPanel.setForeground(new java.awt.Color(238, 238, 238));
         tabPanel.setText("Node Editor");
@@ -820,10 +822,12 @@ public class NodeEditorView extends javax.swing.JDialog {
     }
 
     public void setEditorMessage(String message) {
+        logs.debug("Setting Editor Message to "+message);
         editorMsgLabel.setText(message);
     }
 
     public void resetEditorMessage() {
+        logs.debug("ReSetting Editor Message to ");
         editorMsgLabel.setText("");
     }
     

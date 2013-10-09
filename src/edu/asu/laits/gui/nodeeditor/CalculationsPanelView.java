@@ -73,13 +73,14 @@ public class CalculationsPanelView extends javax.swing.JPanel {
         nodeEditor = ne;
         openVertex = ne.getOpenVertex();
         modelGraph = ne.getGraphPane().getModelGraph();
-        initPanel();
+        initPanel();        
     }
     
     public void initPanel() {
         logs.debug("Initializing Calculations Panel for Node "+openVertex.getName());
-        
+        // Initializing available input nodes on the avaialable input jListBox
         initializeAvailableInputNodes();
+        
         if(openVertex.isCalculationsDone()
            && !ApplicationContext.isAuthorMode()) {
             setEditableCalculations(false);
@@ -101,7 +102,7 @@ public class CalculationsPanelView extends javax.swing.JPanel {
         }        
         if(!ApplicationContext.isAuthorMode()){
             setBackGroundColor();
-        }
+        }        
     }
     
     private void setBackGroundColor(){
@@ -130,10 +131,27 @@ public class CalculationsPanelView extends javax.swing.JPanel {
         List<String> vertices = modelGraph.getVerticesByName();
         vertices.remove(nodeEditor.getOpenVertex().getName());
         Collections.sort(vertices, new SortIgnoreCase());
-        for(String vertexName : vertices) {
-            availableInputJListModel.addElement(vertexName);
-        }        
         
+        String nodeEquation = openVertex.getEquation().trim();
+        Evaluator eval = new Evaluator();
+        try {
+            eval.parse(nodeEquation);
+        } catch (EvaluationException ex) {
+            logs.debug("Incorrect Node Equation...");
+            nodeEditor.setEditorMessage("Incorrect Node Equation", true);
+            return;
+        }
+        
+        List<String> usedVariables = eval.getAllVariables();
+
+        for(String vertexName : vertices) {
+            if(usedVariables.contains(vertexName)){
+                availableInputJListModel.addElement(addBoldtoListItem(vertexName));
+            }else{
+                availableInputJListModel.addElement(vertexName);
+            }
+        }        
+
         availableInputsJList.repaint();
     }
     
@@ -163,8 +181,7 @@ public class CalculationsPanelView extends javax.swing.JPanel {
         fixedValueInputBox.setVisible(true);
         fixedValueLabel.setVisible(true);
         fixedValueLabel.setText(openVertex.getName() + " =");
-        calculatorPanel.setVisible(false);
-        
+        calculatorPanel.setVisible(false);        
     }
     
     public void preparePanelForFlow() {
@@ -230,15 +247,15 @@ public class CalculationsPanelView extends javax.swing.JPanel {
         }
     }
 
-    private boolean processStockVertex() {
-        
-        if (processStockInitialValue() && validateEquation()) {
+    private boolean processStockVertex() {        
+        if (processStockInitialValue() && validateEquation(formulaInputArea.getText().trim())) {
             // Check if equation is changed - disable graph
             if (!openVertex.getEquation().equals(formulaInputArea.getText().trim())) {
                 disableAllGraphs();
-            }
-            
-            openVertex.setEquation(formulaInputArea.getText().trim());
+            }            
+            // Process the equation to create links
+            processNodeEquation();
+            //openVertex.setEquation(formulaInputArea.getText().trim());
             return true;
         } else {
             return false;
@@ -246,20 +263,20 @@ public class CalculationsPanelView extends javax.swing.JPanel {
     }
     
     private boolean processFlowVertex() {
-        if (validateEquation()) {
+        if (validateEquation(formulaInputArea.getText().trim())) {
             if (!openVertex.getEquation().equals(formulaInputArea.getText().trim())) {
                 disableAllGraphs();
-            }
-            
-            openVertex.setEquation(formulaInputArea.getText().trim());
+            }            
+            // Process the equation to create links
+            processNodeEquation();
+            //openVertex.setEquation(formulaInputArea.getText().trim());
             return true;
         } else {
             return false;
         }
     }
     
-    private boolean validateEquation() {
-        String equation = formulaInputArea.getText().trim();
+    private boolean validateEquation(String equation) {
         
         if (equation.isEmpty()) {
             nodeEditor.setEditorMessage("Please provide an equation for this node.", true);
@@ -275,26 +292,19 @@ public class CalculationsPanelView extends javax.swing.JPanel {
             return false;
         }
         
-        List<String> availableVariables = new ArrayList<String>();
         List<String> usedVariables = eval.getAllVariables();
+        List<String> availableVariables = modelGraph.getVerticesByName();
         
-        for (int i = 0; i < availableInputJListModel.getSize(); i++) {
-            String s = availableInputJListModel.get(i).toString();
-            s = removeBoldfromListItem(s);
-            availableVariables.add(s);
-        }
-        
-        // Check if this equation uses all the inputs        
+        // Assign random values to variables to test if equation can be evaluated
         for (String s : usedVariables) {
             if (!availableVariables.contains(s)) {
-                nodeEditor.setEditorMessage("Input node " + s + " is not used in the equation.", true);
+                nodeEditor.setEditorMessage("Input node " + s + " is not availabe.", true);
                 activityLogs.debug("User entered incorrect equation - "+
-                                   "Input node " + s + " is not used in the equation.");
+                                   "Input node " + s + " is not present.");
                 return false;
             }
             eval.putVariable(s, String.valueOf(Math.random()));
-        }
-        
+        }        
         
         // Check Sematics of the equation
         try {
@@ -304,6 +314,7 @@ public class CalculationsPanelView extends javax.swing.JPanel {
             nodeEditor.setEditorMessage(ex.getMessage(), true);
             return false;
         }
+        
         return true;
     }
     
@@ -353,12 +364,7 @@ public class CalculationsPanelView extends javax.swing.JPanel {
         if (currentVertex.getVertexType().equals(Vertex.VertexType.FLOW)
             || currentVertex.getVertexType().equals(Vertex.VertexType.STOCK)) {
             List<String> correctInputs = correctNode.getInputNodes();
-            List<String> availableInputs = new ArrayList<String>();
-            
-            Set<Vertex> vertices = nodeEditor.getGraphPane().getModelGraph().vertexSet();
-            for (Vertex v : vertices) {
-                availableInputs.add(v.getName());
-            }
+            List<String> availableInputs = nodeEditor.getGraphPane().getModelGraph().getVerticesByName();
             
             availableInputs.remove(nodeEditor.getOpenVertex().getName());
             
@@ -367,16 +373,17 @@ public class CalculationsPanelView extends javax.swing.JPanel {
                 nodeEditor.setEditorMessage("Please define all the Nodes before using Demo.", true);
                 return false;
             }
-            for(String input: correctInputs){
-                nodeEditor.getGraphPane().addEdge(modelGraph.getVertexByName(input), currentVertex);
-            }
+            
+            // Enter the correct equation in textarea and process the equation to create edges
+            formulaInputArea.setText(correctNode.getNodeEquation());
+            processNodeEquation();
+            
             if (currentVertex.getVertexType().equals(Vertex.VertexType.STOCK)) {
                 fixedValueInputBox.setText(String.valueOf(correctNode.getInitialValue()));
             }
-            
-            reloadGraphPane();
-            formulaInputArea.setText(correctNode.getNodeEquation());
+                                    
             setCheckedBackground(Color.YELLOW);
+            MainWindow.refreshGraph();
         }
         
         return true;
@@ -642,21 +649,22 @@ public class CalculationsPanelView extends javax.swing.JPanel {
      */
     private void availableInputsJListMouseClicked(java.awt.event.MouseEvent evt) {
         if(ApplicationContext.isAuthorMode() || !openVertex.isCalculationsDone()){
-            int i = availableInputsJList.getSelectedIndex();
             String selectedVertexName = availableInputsJList.getSelectedValue().toString();
-            formulaInputArea.setText(formulaInputArea.getText() + " " + selectedVertexName);
+            selectedVertexName = removeBoldfromListItem(selectedVertexName);
+            
+            if(formulaInputArea.getText().contains(selectedVertexName)){
+                formulaInputArea.setText(formulaInputArea.getText().replaceAll(selectedVertexName, ""));                
+            }else{
+                formulaInputArea.setText(formulaInputArea.getText() + selectedVertexName);    
+            }
+            
+            // This can be improved to set/reset selection in if-else
+            setSelectedNodesOnJList();
+            
             activityLogs.debug("User selected input '" + selectedVertexName + 
                     "' for the Calculations of Node '" + openVertex.getName() + "'");
             
-            Vertex connectedVertex = modelGraph.getVertexByName(selectedVertexName);
-            
-            if(! modelGraph.containsEdge(connectedVertex, openVertex)){
-                nodeEditor.getGraphPane().addEdge(connectedVertex, openVertex);
-                availableInputJListModel.set(i, addBoldtoListItem(selectedVertexName));
-            } else {
-                modelGraph.removeEdge(connectedVertex, openVertex);
-                availableInputJListModel.set(i, removeBoldfromListItem(selectedVertexName));
-            }
+            availableInputsJList.removeSelectionInterval(0, availableInputJListModel.getSize());
         }
     }
            
@@ -696,10 +704,44 @@ public class CalculationsPanelView extends javax.swing.JPanel {
 //GEN-LAST:event_availableInputsJListMouseClicked
 
     private void formulaInputAreaKeyReleased(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_formulaInputAreaKeyReleased
+        // This method should only make the node names bold/unbold as they are 
+        // typed or removed from the formula text box
+        
         // If keypressed is an action key - Do nothing
         if(evt.isActionKey())
             return;
+         
+        setSelectedNodesOnJList();
         
+        // Refresh List to show/hide bold node name
+        availableInputsJList.removeSelectionInterval(0, availableInputJListModel.getSize());
+    }//GEN-LAST:event_formulaInputAreaKeyReleased
+     
+    private void setSelectedNodesOnJList(){
+        logs.debug("Setting NodeSelection on jListBox");
+        Evaluator eval = new Evaluator();
+        try{
+            eval.parse(formulaInputArea.getText().trim());
+            List<String> equationNodes = eval.getAllVariables();
+            List<String> availableVariables = modelGraph.getVerticesByName();
+            availableVariables.remove(openVertex.getName());
+            Collections.sort(availableVariables, new SortIgnoreCase());
+            
+            availableInputJListModel.clear();
+            for(String nodeName : availableVariables){
+                if(equationNodes.contains(nodeName)){
+                    availableInputJListModel.addElement(addBoldtoListItem(nodeName));
+                }else{
+                    availableInputJListModel.addElement(nodeName);
+                }
+            }
+        }catch(Exception ex){
+            logs.error("Could not parse the equation entered for node '" + openVertex.getName() +"'");
+        }
+    }
+    
+    private void processNodeEquation(){
+        logs.debug("Processing NodeEquation to create edges");
         // Neglect spaces typed before or after the equation
         if (formulaInputArea.getText().trim().equals(openVertex.getEquation())) {
             return;
@@ -719,13 +761,11 @@ public class CalculationsPanelView extends javax.swing.JPanel {
             
             if (!oldNodes.equals(newNodes)) {
                 logs.info("Node Equation Changed");
-                
                 // Remove deleted nodes
                 oldNodes.removeAll(newNodes);
                 for(String node : oldNodes){
                     logs.info("Removing Edge from Node '" + node + "'");
-                    modelGraph.removeEdge(modelGraph.getVertexByName(node),openVertex);
-                    removeBoldfromListItem(node);
+                    modelGraph.removeEdge(modelGraph.getVertexByName(node),openVertex);                    
                 }
                 
                 // Add newly created nodes
@@ -737,20 +777,20 @@ public class CalculationsPanelView extends javax.swing.JPanel {
                     if(availableVariables.contains(node)){
                         logs.info("Adding Edge from Node '" + node + "'");
                         Vertex source = modelGraph.getVertexByName(node);
-                        nodeEditor.getGraphPane().addEdge(source, openVertex);
-                        addBoldtoListItem(node);
+                        nodeEditor.getGraphPane().addEdge(source, openVertex);                                          
                     }                    
                 }
                 
                 // Save new equation in the Node
-                openVertex.setEquation(formulaInputArea.getText().trim());                
+                openVertex.setEquation(formulaInputArea.getText().trim());                                                
             }
         } catch (EvaluationException ex) {
             logs.error("Could not parse the equation entered for node '" + openVertex.getName() +"'");
             // Do nothing if equation parsing fails
         }
-    }//GEN-LAST:event_formulaInputAreaKeyReleased
-                                        
+    }
+    
+    
     public JTextArea getFormulaInputArea() {
         return formulaInputArea;
     }
@@ -789,7 +829,9 @@ public class CalculationsPanelView extends javax.swing.JPanel {
     }
     
     private String addBoldtoListItem(String vertexName){
-        return "<html><strong>" + vertexName + "</strong></html>";
+        // Make sure that its not already bold
+        String result = removeBoldfromListItem(vertexName);
+        return "<html><strong>" + result + "</strong></html>";
     }
     
     private String removeBoldfromListItem(String vertexName){
