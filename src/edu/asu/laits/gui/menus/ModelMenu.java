@@ -20,7 +20,7 @@ package edu.asu.laits.gui.menus;
 import edu.asu.laits.editor.ApplicationContext;
 import edu.asu.laits.editor.GraphEditorPane;
 import edu.asu.laits.editor.GraphRangeEditor;
-import edu.asu.laits.gui.ForumViewPanel;
+import edu.asu.laits.gui.ExportSolutionPanel;
 import edu.asu.laits.gui.GraphViewPanel;
 import edu.asu.laits.gui.GraphViewPanel.ChartDialogMode;
 import edu.asu.laits.gui.MainWindow;
@@ -33,10 +33,13 @@ import edu.asu.laits.model.SolutionNode;
 import edu.asu.laits.model.TaskSolution;
 import edu.asu.laits.model.Vertex;
 import java.awt.BorderLayout;
+import java.awt.Desktop;
 import java.awt.event.ActionEvent;
 import java.awt.event.KeyEvent;
 import java.io.File;
 import java.io.IOException;
+import java.net.URI;
+import java.net.URL;
 import java.text.DecimalFormat;
 import java.util.HashMap;
 import java.util.Iterator;
@@ -439,28 +442,13 @@ public class ModelMenu extends JMenu {
     }
 
     public void showForumButtonAction() {
-        JEditorPane jep = new JEditorPane();
-        //jep.setEditable(false);   
-
+        String FORUMURL = "https://www.phpbb.com";
+        
         try {
-          jep.setPage("http://www.google.com");
-        }catch (IOException e) {
-          jep.setContentType("text/html");
-          jep.setText("<html>Could not load</html>");
-        } 
-
-        JScrollPane scrollPane = new JScrollPane(jep);     
-        JDialog forumDialog = new JDialog(MainWindow.getInstance(), true);
-        //new ForumViewPanel(forumDialog);
-        forumDialog.getContentPane().add(scrollPane);
-        forumDialog.setTitle("Discussion Forum");
-        forumDialog.setSize(610, 540);
-        forumDialog.setLocationRelativeTo(null);
-
-        forumDialog.setResizable(false);
-        forumDialog.setVisible(true);
-
-
+            Desktop.getDesktop().browse(new URL(FORUMURL).toURI());
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
     }
 
     public void deleteNodeAction(){
@@ -543,43 +531,56 @@ public class ModelMenu extends JMenu {
      * Export Author's Graph as a LAITS Solution File
      */
     private void exportSolution() {
-        int returnVal = getSaveAsFileChooser().showSaveDialog(getRootPane());
-        if (returnVal == JFileChooser.APPROVE_OPTION) {
+        JDialog exportSolutionDialog = new JDialog(MainWindow.getInstance(), true);
+        exportSolutionDialog.setTitle("Export Laits Solution");
+        
+        new ExportSolutionPanel(exportSolutionDialog);
+        
+        exportSolutionDialog.setSize(610, 540);
+        exportSolutionDialog.setLocationRelativeTo(null);
 
-            File selectedFile = getSaveAsFileChooser().getSelectedFile();
+        exportSolutionDialog.setResizable(false);
+        exportSolutionDialog.setVisible(true);
 
-            if (!selectedFile.getName().matches("(.*)(\\.xml)")) {
-
-                if (selectedFile.getName().matches("\".*\"")) {
-                    if (selectedFile.getName().length() < 3) {
-                        JOptionPane
-                                .showMessageDialog(
-                                getRootPane(),
-                                "Can not save to file "
-                                + selectedFile
-                                .getAbsolutePath()
-                                + "\nBecause of the following reason:\n"
-                                + "File name is too short.",
-                                "Unable to save file",
-                                JOptionPane.ERROR_MESSAGE);
-                        return;
-                    } else {
-                        selectedFile = new File(selectedFile.getParent()
-                                + File.separator
-                                + selectedFile.getName()
-                                .substring(
-                                1,
-                                (int) (selectedFile.getName()
-                                .length() - 2)));
-                    }
-                } else {
-                    selectedFile = new File(selectedFile.getAbsoluteFile()
-                            + ".xml");
-                }
-            }
-
-            saveToFile(selectedFile);
-        }
+        
+//        int returnVal = getSaveAsFileChooser().showSaveDialog(getRootPane());
+//        if (returnVal == JFileChooser.APPROVE_OPTION) {
+//
+//            File selectedFile = getSaveAsFileChooser().getSelectedFile();
+//
+//            if (!selectedFile.getName().matches("(.*)(\\.xml)")) {
+//
+//                if (selectedFile.getName().matches("\".*\"")) {
+//                    if (selectedFile.getName().length() < 3) {
+//                        JOptionPane
+//                                .showMessageDialog(
+//                                getRootPane(),
+//                                "Can not save to file "
+//                                + selectedFile
+//                                .getAbsolutePath()
+//                                + "\nBecause of the following reason:\n"
+//                                + "File name is too short.",
+//                                "Unable to save file",
+//                                JOptionPane.ERROR_MESSAGE);
+//                        return;
+//                    } else {
+//                        selectedFile = new File(selectedFile.getParent()
+//                                + File.separator
+//                                + selectedFile.getName()
+//                                .substring(
+//                                1,
+//                                (int) (selectedFile.getName()
+//                                .length() - 2)));
+//                    }
+//                } else {
+//                    selectedFile = new File(selectedFile.getAbsoluteFile()
+//                            + ".xml");
+//                }
+//            }
+//
+//            saveToFile(selectedFile);
+//        }
+        
     }
 
     /**

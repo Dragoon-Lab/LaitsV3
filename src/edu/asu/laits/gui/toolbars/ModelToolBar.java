@@ -79,6 +79,7 @@ public class ModelToolBar extends JToolBar {
         
         add(Box.createHorizontalStrut(5)); 
         add(getShowTableButton());
+        add(Box.createHorizontalStrut(5)); 
         add(getShowForumButton());
     }
 
