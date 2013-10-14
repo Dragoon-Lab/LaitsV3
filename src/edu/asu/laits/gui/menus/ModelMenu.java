@@ -25,6 +25,7 @@ import edu.asu.laits.gui.GraphViewPanel;
 import edu.asu.laits.gui.GraphViewPanel.ChartDialogMode;
 import edu.asu.laits.gui.MainWindow;
 import edu.asu.laits.gui.nodeeditor.NodeEditorView;
+import edu.asu.laits.model.Edge;
 import edu.asu.laits.model.Graph;
 import edu.asu.laits.model.LaitsSolutionExporter;
 import edu.asu.laits.model.ModelEvaluationException;
@@ -243,11 +244,32 @@ public class ModelMenu extends JMenu {
         return showForumMenuItem;
     }
 
+    public boolean isGraphable() {
+        if (!ApplicationContext.isAuthorMode()) {
+            if (ApplicationContext.getCorrectSolution().getNodeCount() == 1) {
+                return true;
+            }
+        }
+
+        Graph<Vertex, Edge> graph = (Graph) graphPane.getModelGraph();
+        boolean isGraphable = false;
+        for (Vertex currentVertex : graph.vertexSet()) {
+            if (!currentVertex.getVertexType().equals(Vertex.VertexType.CONSTANT)) {
+                isGraphable = true;
+                return isGraphable;
+            }
+        }
+        return isGraphable;
+    }
+    
     public void showNodeGraph() {
         activityLogs.debug("User pressed Show Graph button.");
 
         if (runModel()) {
-            showChartDialog(ChartDialogMode.Graph);
+            if(isGraphable())
+                showChartDialog(ChartDialogMode.Graph);
+            else
+                JOptionPane.showMessageDialog(MainWindow.getInstance(), "This model does not contain any functions or accumulators. There is nothing to graph yet");
         }
     }
 
