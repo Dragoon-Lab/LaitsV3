@@ -147,7 +147,7 @@ public class CoachedModeNodeEditorController extends NodeEditorController {
             }
         }
         if (giveupNode == null) {
-            view.setEditorMessage("All Nodes are already being used in the Model.", true);
+            view.setEditorMessage("All Nodes are already being used in the Model.");
             return null;
         }
         

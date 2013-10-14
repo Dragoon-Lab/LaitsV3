@@ -64,7 +64,6 @@ public class GlobalProperties {
     }
 
     public static GlobalProperties getInstance() {
-
         if (instance == null) {
             if (!createInstanceFromFile()) {
                 instance = new GlobalProperties();
@@ -120,28 +119,25 @@ public class GlobalProperties {
     }
 
     /**
-     * Create a help set to use as help information in this application
-     *
-     * The code is influenced from the demo code that follows with the Jave Help
-     * system distribution.
-     *
+     * Create a help set to use as help information in this application.     
+     * The code is influenced from the demo code that follows with the Java Help
+     * system distribution.     
      */
     private void createHelpSet(String helpSetName) {    
-
-//        ClassLoader loader = this.getClass().getClassLoader();
-//        URL url;
-//        try {
-//            url = HelpSet.findHelpSet(loader, helpSetName);
-//            HelpSet helpSet = new HelpSet(loader, url);
-//            
-//            helpBroker = helpSet.createHelpBroker();
-//            helpBroker.setSize(new Dimension(830, 680));     
-//            helpBroker.setLocation(new Point(300,100));
-//            
-//        } catch (Exception e) {
-//            e.printStackTrace();
-//            return;
-//        }
+        ClassLoader loader = this.getClass().getClassLoader();
+        URL url;
+        try {
+            url = HelpSet.findHelpSet(loader, helpSetName);
+            HelpSet helpSet = new HelpSet(loader, url);
+            
+            helpBroker = helpSet.createHelpBroker();
+            helpBroker.setSize(new Dimension(830, 680));     
+            helpBroker.setLocation(new Point(300,100));
+            
+        } catch (Exception e) {
+            e.printStackTrace();
+            return;
+        }
 
     }
 

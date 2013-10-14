@@ -42,6 +42,8 @@ import edu.asu.laits.editor.listeners.UndoAndRedoAbleListener;
 import edu.asu.laits.gui.MainWindow;
 import edu.asu.laits.properties.GlobalProperties;
 import edu.asu.laits.properties.GraphProperties;
+import java.util.ArrayList;
+import java.util.Iterator;
 import javax.swing.SwingConstants;
 import org.apache.log4j.Logger;
 import org.jgraph.JGraph;
@@ -187,7 +189,6 @@ public class GraphEditorPane extends JGraph {
         final Action statusUpdateAction = new AbstractAction() {
             public void actionPerformed(ActionEvent e) {
                 // Show new graph information...
-
                 if (!isReadyForOperation()) {
                     return;
                 }
@@ -204,15 +205,19 @@ public class GraphEditorPane extends JGraph {
                     return;
                 }
                 Object[] selectedVertexObjects = getSelectionCells(vertexObjects);
-                Object[] selectedEdgeObjects = getSelectionCells(edgeObjects);
+                //Object[] selectedEdgeObjects = getSelectionCells(edgeObjects);
                 int vertices = vertexObjects.length;
                 int edges = edgeObjects.length;
                 int selectedVertices = selectedVertexObjects.length;
-                int selectedEdges = selectedEdgeObjects.length;
+                //int selectedEdges = selectedEdgeObjects.length;
 
+                if(selectedVertices > 0){
+                    MainWindow.getInstance().getModelToolBar().enableDeleteNodeButton();
+                } else {
+                    MainWindow.getInstance().getModelToolBar().disableDeleteNodeButton();
+                }
                  currentStatusMessageProvider.setMessage("Nodes: " + vertices + ", Edges: " + edges
-                 + ", Selected Nodes:  " + selectedVertices + ", Selected Edges: "
-                 + selectedEdges);
+                 + ", Selected Nodes:  " + selectedVertices );
             }
         };
 
@@ -228,7 +233,6 @@ public class GraphEditorPane extends JGraph {
             public void valueChanged(GraphSelectionEvent e) {
                 statusUpdateAction.actionPerformed(new ActionEvent(
                         "model changed", 0, "modelChange"));
-
             }
         });
     }
@@ -324,6 +328,35 @@ public class GraphEditorPane extends JGraph {
         modelAdapter.edit(cellAttr, null, null, null);
     }
 
+    /**
+     * Method to delete selected node form GraphEditorPane
+     */
+    public void deleteSelectedNodes() {
+        Object[] cells = this.getSelectionCells();
+        logs.debug("Deleting selected nodes from Graph. Count: "+cells.length);
+        List<String> selectedNodes = new ArrayList<String>();
+        
+        for (Object obj : cells) {
+            DefaultGraphCell cell = (DefaultGraphCell) obj;
+            Vertex v = (Vertex) cell.getUserObject();
+            if (v != null) {
+                selectedNodes.add(v.getName());
+            }
+        }
+
+        this.removeSelected();
+
+        Iterator<Vertex> it = graph.vertexSet().iterator();
+        Vertex v;
+        while (it.hasNext()) {
+            v = it.next();
+            //v.getCorrectValues().clear();
+            v.setGraphsStatus(Vertex.GraphsStatus.UNDEFINED);
+        }
+
+        activityLogs.debug("Deleted Selected Nodes: " + selectedNodes);
+    }
+    
     public void addEdge(Vertex sourceVeretx, Vertex targetVertex){
         logs.debug("Adding edge between " + sourceVeretx.getName() + " and " + targetVertex.getName());
         DefaultPort p1 = getJGraphTModelAdapter().getVertexPort(sourceVeretx);

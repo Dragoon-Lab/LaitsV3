@@ -18,6 +18,8 @@
 package edu.asu.laits.gui.toolbars;
 
 import edu.asu.laits.editor.ApplicationContext;
+import edu.asu.laits.gui.MainMenu;
+import edu.asu.laits.gui.MainWindow;
 import edu.asu.laits.gui.menus.ModelMenu;
 import javax.swing.JToolBar;
 import javax.swing.JButton;
@@ -64,17 +66,20 @@ public class ModelToolBar extends JToolBar {
         add(getDeleteNodeButton());
         add(Box.createHorizontalStrut(5)); 
         add(getshowGraphButton());
+        
         if(ApplicationContext.isStudentMode() || 
                 ApplicationContext.isCoachedMode()){
             add(Box.createHorizontalStrut(5));
             add(getDoneButton());
         }
-        if(ApplicationContext.isCoachedMode()){
-            disableDeleteNodeButton();
-        }
+        // Disable Delete Node button for all the modes. Delete Node button from
+        // Menu and Toolbar will be enabled and disabled at the same time based on
+        // Vertex selection listeners.
+        disableDeleteNodeButton();
+        
         add(Box.createHorizontalStrut(5)); 
         add(getShowTableButton());
-        //add(getShowForumButton());
+        add(getShowForumButton());
     }
 
     /**
@@ -121,26 +126,28 @@ public class ModelToolBar extends JToolBar {
      * This method is used to get 'Show Table' button on
      * model toolbar
      */
-    private JButton getShowTableButton()
-    {
-      if(showTableButton == null)
-      {
+    private JButton getShowTableButton() {
+      if(showTableButton == null) {
           showTableButton  = new JButton();
           showTableButton.setText("Show Table");
           showTableButton.setToolTipText("Display Tabular output");
-          showTableButton.setFont(new Font(showGraphButton.getFont().getName(),
+          showTableButton.setFont(new Font(showTableButton.getFont().getName(),
                                    Font.BOLD,
-                                   showGraphButton.getFont().getSize() - 1));
+                                   showTableButton.getFont().getSize() - 1));
           showTableButton.addActionListener(new java.awt.event.ActionListener() {
               public void actionPerformed(ActionEvent e) {
                  modelMenu.showNodeTable();
               }
           });
       }
-        return showTableButton;
+      
+      return showTableButton;
     }
+    
     /**
-     * This method initializes Done Button on ToolBar
+     * This method initializes Done Button on ToolBar. 
+     * Done button is used in non-author mode to indicate that student has finished 
+     * solving the assigned problem
      */
     private JButton getshowGraphButton() {
         if (showGraphButton == null) {
@@ -209,8 +216,7 @@ public class ModelToolBar extends JToolBar {
         return showForumButton;
     }
     
-    
-    
+    // Public methods used by selection listeners to enable/disable menu and toolbar items
     public void enableDoneButton(){
         doneButton.setEnabled(true);
     }
@@ -219,20 +225,22 @@ public class ModelToolBar extends JToolBar {
         doneButton.setEnabled(false);
     }
     
-    public void enableDeleteNodeButton()
-    {
+    public void enableDeleteNodeButton(){
         deleteNodeButton.setEnabled(true);
+        modelMenu.enableDeleteNodeMenu();
     }
     
-    public void disableDeleteNodeButton()
-    {
+    public void disableDeleteNodeButton(){
         deleteNodeButton.setEnabled(false);
+        modelMenu.disableDeleteNodeMenu();
     }
     public void enableShowGraphMenu() {
         showGraphButton.setEnabled(true);
+        modelMenu.enableShowGraphMenu();
     }
 
     public void disableShowGraphMenu() {
         showGraphButton.setEnabled(false);
+        modelMenu.disableShowGraphMenu();
     }
 }

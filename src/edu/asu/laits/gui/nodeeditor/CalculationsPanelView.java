@@ -138,7 +138,7 @@ public class CalculationsPanelView extends javax.swing.JPanel {
             eval.parse(nodeEquation);
         } catch (EvaluationException ex) {
             logs.debug("Incorrect Node Equation...");
-            nodeEditor.setEditorMessage("Incorrect Node Equation", true);
+            nodeEditor.setEditorMessage("Incorrect Node Equation");
             return;
         }
         
@@ -212,14 +212,14 @@ public class CalculationsPanelView extends javax.swing.JPanel {
         } else if (openVertex.getVertexType().equals(Vertex.VertexType.FLOW)) {
             return processFlowVertex();
         } else {
-            nodeEditor.setEditorMessage("Please Select Node Type in Calculation.", true);
+            nodeEditor.setEditorMessage("Please Select Node Type in Calculation.");
             return false;
         }
     }
     
     private boolean processConstantVertex() {
         if (fixedValueInputBox.getText().isEmpty()) {
-            nodeEditor.setEditorMessage("Please provide fixed value for this node.", true);
+            nodeEditor.setEditorMessage("Please provide fixed value for this node.");
             return false;
         } else {
             // Check if value is getting changed - disable Graph
@@ -234,7 +234,7 @@ public class CalculationsPanelView extends javax.swing.JPanel {
     
     private boolean processStockInitialValue() {
         if (fixedValueInputBox.getText().isEmpty()) {
-            nodeEditor.setEditorMessage("Please provide fixed value for this node.", true);
+            nodeEditor.setEditorMessage("Please provide fixed value for this node.");
             return false;
         } else {
             // Check if value is getting changed - disable Graph
@@ -279,7 +279,7 @@ public class CalculationsPanelView extends javax.swing.JPanel {
     private boolean validateEquation(String equation) {
         
         if (equation.isEmpty()) {
-            nodeEditor.setEditorMessage("Please provide an equation for this node.", true);
+            nodeEditor.setEditorMessage("Please provide an equation for this node.");
             return false;
         }
         
@@ -288,7 +288,7 @@ public class CalculationsPanelView extends javax.swing.JPanel {
         try {
             eval.parse(equation);
         } catch (EvaluationException ex) {
-            nodeEditor.setEditorMessage(ex.getMessage(), true);
+            nodeEditor.setEditorMessage(ex.getMessage());
             return false;
         }
         
@@ -298,7 +298,7 @@ public class CalculationsPanelView extends javax.swing.JPanel {
         // Assign random values to variables to test if equation can be evaluated
         for (String s : usedVariables) {
             if (!availableVariables.contains(s)) {
-                nodeEditor.setEditorMessage("Input node " + s + " is not availabe.", true);
+                nodeEditor.setEditorMessage("Input node " + s + " is not availabe.");
                 activityLogs.debug("User entered incorrect equation - "+
                                    "Input node " + s + " is not present.");
                 return false;
@@ -311,7 +311,7 @@ public class CalculationsPanelView extends javax.swing.JPanel {
             eval.evaluate();
         } catch (EvaluationException ex) {
             logs.error(ex.getMessage());
-            nodeEditor.setEditorMessage(ex.getMessage(), true);
+            nodeEditor.setEditorMessage(ex.getMessage());
             return false;
         }
         
@@ -370,7 +370,7 @@ public class CalculationsPanelView extends javax.swing.JPanel {
             
             if (!availableInputs.containsAll(correctInputs)) {
                 // Button name should be a variable;  see Bug #2104
-                nodeEditor.setEditorMessage("Please define all the Nodes before using Demo.", true);
+                nodeEditor.setEditorMessage("Please define all the Nodes before using Demo.");
                 return false;
             }
             

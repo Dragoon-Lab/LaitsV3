@@ -198,7 +198,6 @@ public class PlanPanelView extends javax.swing.JPanel {
             openVertex.setVertexType(getSelectedPlan());              
             logs.info("Plan Set to "+openVertex.getPlan() + "Vetex Type set to "+openVertex.getVertexType());
         } else {
-            nodeEditor.setEditorMessage("Please select a plan for this node.", true);
             return false;
         }
         return true;

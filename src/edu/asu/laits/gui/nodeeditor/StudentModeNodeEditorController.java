@@ -51,8 +51,6 @@ public class StudentModeNodeEditorController extends NodeEditorController {
      * @return new tab id
      */
     public int processTabChange(int oldTab, int newTab) {
-        view.setEditorMessage("", true);
-
         if (oldTab == NodeEditorView.DESCRIPTION) {
             if (openVertex.isDescriptionDone()) {
                 view.getDescriptionPanel().setEditableTree(false);
@@ -140,7 +138,7 @@ public class StudentModeNodeEditorController extends NodeEditorController {
             }
         
         if (giveupNode == null) {
-            view.setEditorMessage("All Nodes are already being used in the Model.", true);
+            view.setEditorMessage("All Nodes are already being used in the Model.");
             return null;
         }
         

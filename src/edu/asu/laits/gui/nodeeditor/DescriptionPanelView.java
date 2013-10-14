@@ -303,7 +303,8 @@ public class DescriptionPanelView extends JPanel {
     
     public boolean processDescriptionPanel() {
         if (getNodeName().trim().length() == 0) {
-            nodeEditor.setEditorMessage("Node Name can not be empty.", true);
+            activityLogs.error("User entered empty node name.");
+            nodeEditor.setEditorMessage("Node Name can not be empty.");
             return false;
         }
         
@@ -315,13 +316,13 @@ public class DescriptionPanelView extends JPanel {
                     // Set title of NodeEditor to the New Name
                     nodeEditor.setTitle("Node Editor - " + currentVertex.getName());
                 } catch (Exception ex) {
-                    nodeEditor.setEditorMessage(ex.getMessage(), true);
+                    nodeEditor.setEditorMessage(ex.getMessage());
                     setTextFieldBackground(Color.RED);
                     activityLogs.debug(ex.getMessage());
                     return false;
                 }
             } else {
-                nodeEditor.setEditorMessage("The node name is already used by another node. Please choose a new name for this node.", true);
+                nodeEditor.setEditorMessage("The node name is already used by another node. Please choose a new name for this node.");
                 setTextFieldBackground(Color.RED);
                 activityLogs.debug("User entered duplicate node name");
                 return false;
@@ -329,7 +330,7 @@ public class DescriptionPanelView extends JPanel {
         }
         
         if (getNodeDesc().trim().isEmpty()) {
-            nodeEditor.setEditorMessage("Please provide correct description for this node.", true);
+            nodeEditor.setEditorMessage("Please provide correct description for this node.");
             setTextFieldBackground(Color.RED);
             activityLogs.debug("User entered incorrect description");
             return false;
@@ -350,11 +351,15 @@ public class DescriptionPanelView extends JPanel {
     }
     
     public void setTextFieldBackground(Color c) {
+        if(ApplicationContext.isAuthorMode())
+            return;
         nodeNameTextField.setBackground(c);
         quantityDescriptionTextField.setBackground(c);
     }
     
     public void resetTextFieldBackground() {
+        if(ApplicationContext.isAuthorMode())
+            return;
         nodeNameTextField.setBackground(Color.white);
         quantityDescriptionTextField.setBackground(Color.white);
     }

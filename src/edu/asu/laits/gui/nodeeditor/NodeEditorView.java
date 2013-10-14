@@ -34,6 +34,7 @@ import java.util.List;
 import java.util.Map;
 import javax.swing.JButton;
 import javax.swing.JComponent;
+import javax.swing.JOptionPane;
 import javax.swing.JTabbedPane;
 import javax.swing.UIManager;
 import org.apache.log4j.Logger;
@@ -77,7 +78,6 @@ public class NodeEditorView extends javax.swing.JDialog {
     private void configureAndRenderUI() {
         logs.debug("Initializing NodeEditor");
         activityLogs.debug("NodeEditor opened for Node '" + openVertex.getName() + "'");
-        resetEditorMessage();
         initTabs();
         
         this.addWindowListener(new java.awt.event.WindowAdapter() {
@@ -213,24 +213,11 @@ public class NodeEditorView extends javax.swing.JDialog {
         }
     }
 
-    public void setEditorMessage(String msg, boolean err) {
-        logs.debug("Setting NE Statues message to "+msg);
-        if (err) {
-            editorMsgLabel.setForeground(Color.RED);
-        } else {
-            editorMsgLabel.setForeground(Color.BLUE);
-        }
-        editorMsgLabel.setText(msg);
-        editorMsgLabel.setVisible(true);
-        validate();
-        repaint();
+    public void setEditorMessage(String msg) {
+        logs.debug("Setting NE Statues message to " + msg);
+        JOptionPane.showMessageDialog(this, msg, "Node Editor Error", JOptionPane.ERROR_MESSAGE);                            
     }
 
-    public void clearEditorMessage(){
-        editorMsgLabel.setText("");
-        editorMsgLabel.setVisible(false);
-    }
-    
     private void checkDescriptionPanel(TaskSolution correctSolution) {
         // Save Description Panel Information in the Vertex Object
         if (!dPanel.processDescriptionPanel()) {
@@ -240,7 +227,6 @@ public class NodeEditorView extends javax.swing.JDialog {
         if (correctSolution.checkNodeName(dPanel.getNodeName())) {
             openVertex.setDescriptionStatus(Vertex.DescriptionStatus.CORRECT);
             //graphPane.getMainFrame().getMainMenu().getModelMenu().addDeleteNodeMenu();
-            setEditorMessage("", false);
             dPanel.setTextFieldBackground(Color.GREEN);
             checkButton.setEnabled(false);
             demoButton.setEnabled(false);
@@ -251,7 +237,7 @@ public class NodeEditorView extends javax.swing.JDialog {
         } else {
             openVertex.setDescriptionStatus(Vertex.DescriptionStatus.INCORRECT);
             dPanel.setTextFieldBackground(Color.RED);
-            setEditorMessage("That quantity is not used in the correct model. Please select another description.", true);
+            setEditorMessage("That quantity is not used in the correct model. Please select another description.");
             activityLogs.debug("User entered incorrect description");
         }
 
@@ -269,7 +255,6 @@ public class NodeEditorView extends javax.swing.JDialog {
         if (solutionCheck == 1) {
             openVertex.setDescriptionStatus(Vertex.DescriptionStatus.CORRECT);
             //graphPane.getMainFrame().getMainMenu().getModelMenu().addDeleteNodeMenu();
-            setEditorMessage("", false);
             dPanel.setTextFieldBackground(Color.GREEN);
             checkButton.setEnabled(false);
             demoButton.setEnabled(false);
@@ -281,13 +266,13 @@ public class NodeEditorView extends javax.swing.JDialog {
             addHelpBalloon(openVertex.getName(), "descCheckDemo", "DESCRIPTION");
         } else if (solutionCheck == 2) {
             dPanel.setTextFieldBackground(Color.CYAN);
-            setEditorMessage("That quantity used in this model, but now is not the right time to define it. Please select another description.", true);
+            setEditorMessage("That quantity used in this model, but now is not the right time to define it. Please select another description.");
             activityLogs.debug("User entered description out of order");
             addHelpBalloon(ApplicationContext.getFirstNextNode(), "onLoad", "DESCRIPTION");
         } else {
             openVertex.setDescriptionStatus(Vertex.DescriptionStatus.INCORRECT);
             dPanel.setTextFieldBackground(Color.RED);
-            setEditorMessage("That quantity is not used in the correct model. Please select another description.", true);
+            setEditorMessage("That quantity is not used in the correct model. Please select another description.");
             activityLogs.debug("User entered incorrect description");
 
         }
@@ -307,7 +292,6 @@ public class NodeEditorView extends javax.swing.JDialog {
             }
             checkButton.setEnabled(false);
             demoButton.setEnabled(false);
-            setEditorMessage("", false);
             activityLogs.debug("User entered correct Plan");
             pPanel.setEditableRadio(false);
             tabPane.setEnabledAt(CALCULATIONS, true);
@@ -316,8 +300,7 @@ public class NodeEditorView extends javax.swing.JDialog {
                 addHelpBalloon(openVertex.getName(), "descCheckDemo", "PLAN");
             }
         } else {
-
-            setEditorMessage("You have selected incorrect Plan for this Node. Correct plan has been selected for you", true);
+            setEditorMessage("You have selected incorrect Plan for this Node. Correct plan has been selected for you.");
             activityLogs.debug("User entered incorrect Plan");
 
             pPanel.giveUpPlanPanel();
@@ -343,7 +326,7 @@ public class NodeEditorView extends javax.swing.JDialog {
             cPanel.setCheckedBackground(Color.GREEN);
             checkButton.setEnabled(false);
             demoButton.setEnabled(false);
-            setEditorMessage("", false);
+            
             activityLogs.debug("User entered correct Calculations.");
             openVertex.setCalculationsStatus(Vertex.CalculationsStatus.CORRECT);
             cPanel.setEditableCalculations(false);
@@ -353,7 +336,7 @@ public class NodeEditorView extends javax.swing.JDialog {
             }
         } else {
             cPanel.setCheckedBackground(Color.RED);
-            setEditorMessage("Your Calculations are Incorrect.", true);
+            setEditorMessage("Your Calculations are Incorrect.");
             activityLogs.debug("User entered incorrect Calculations.");
             openVertex.setCalculationsStatus(Vertex.CalculationsStatus.INCORRECT);
         }
@@ -362,61 +345,8 @@ public class NodeEditorView extends javax.swing.JDialog {
                 + " Initial Value : " + openVertex.getInitialValue() + " Calculations as " + openVertex.getEquation());
     }
 
-    private void processAuthorModeOKAction() {
-        logs.debug("Processing Author Mode OK Button Action");
-        if (dPanel.processDescriptionPanel()) {
-            openVertex.setDescriptionStatus(Vertex.DescriptionStatus.CORRECT);
-            activityLogs.debug(dPanel.printDescriptionPanelDetails());
-            if (pPanel.processPlanPanel()) {
-                openVertex.setPlanStatus(Vertex.PlanStatus.CORRECT);
-                activityLogs.debug(pPanel.printPlanPanel());
-
-                if (cPanel.processCalculationsPanel()) {
-                    openVertex.setCalculationsStatus(Vertex.CalculationsStatus.CORRECT);
-                } else {
-                    openVertex.setCalculationsStatus(Vertex.CalculationsStatus.INCORRECT);
-                }
-                activityLogs.debug(cPanel.printCalculationPanel());
-
-            }
-            // Save Student's session to server
-            PersistenceManager.saveSession();
-
-            MainWindow.refreshGraph();
-            this.dispose();
-        }
-    }
-
-    private boolean isCheckGiveupButtonUsed() {
-        logs.debug("Verifying if Check or Giveup button was used");
-
-        if (tabPane.getSelectedIndex() == DESCRIPTION
-                && openVertex.getDescriptionStatus().equals(Vertex.DescriptionStatus.UNDEFINED)) {
-            showUndefinedTabErr();
-            return false;
-        } else if (tabPane.getSelectedIndex() == PLAN
-                && openVertex.getPlanStatus().equals(Vertex.PlanStatus.UNDEFINED)) {
-            showUndefinedTabErr();
-            return false;
-        } else if (tabPane.getSelectedIndex() == CALCULATIONS
-                && openVertex.getCalculationsStatus().equals(Vertex.CalculationsStatus.UNDEFINED)) {
-            showUndefinedTabErr();
-            return false;
-        }
-
-        return true;
-    }
-
-    private void showUndefinedTabErr() {
-        this.editorMsgLabel.setText("Please use Check or Giveup buttons before exiting");
-    }
-
     public GraphEditorPane getGraphPane() {
         return graphPane;
-    }
-
-    private void refreshGraphPane() {
-        MainWindow.refreshGraph();
     }
 
     /**
@@ -432,10 +362,10 @@ public class NodeEditorView extends javax.swing.JDialog {
         }
 
         activityLogs.debug("Closing NodeEditor because of Close action.");
-        if (!ApplicationContext.isCoachedMode()) {
-            MainWindow.getInstance().getModelToolBar().enableDeleteNodeButton();
-            MainWindow.getInstance().getMainMenu().getModelMenu().enableDeleteNodeMenu();
-        }
+//        if (!ApplicationContext.isCoachedMode()) {
+//            MainWindow.getInstance().getModelToolBar().enableDeleteNodeButton();
+//            MainWindow.getInstance().getMainMenu().getModelMenu().enableDeleteNodeMenu();
+//        }
 
         // Save Student's session to server
         PersistenceManager.saveSession();
@@ -504,8 +434,6 @@ public class NodeEditorView extends javax.swing.JDialog {
         demoButton = new javax.swing.JButton();
         buttonCancel = new javax.swing.JButton();
         buttonOK = new javax.swing.JButton();
-        editorMsgLabel = new javax.swing.JLabel();
-        bottomSpacer = new javax.swing.JLabel();
         tabPanel = new javax.swing.JLabel();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.DO_NOTHING_ON_CLOSE);
@@ -590,10 +518,6 @@ public class NodeEditorView extends javax.swing.JDialog {
             }
         });
 
-        editorMsgLabel.setFont(new java.awt.Font("Lucida Grande", 0, 12)); // NOI18N
-        editorMsgLabel.setForeground(new java.awt.Color(255, 0, 0));
-        editorMsgLabel.setText("Status Message");
-
         tabPanel.setForeground(new java.awt.Color(238, 238, 238));
         tabPanel.setText("Node Editor");
 
@@ -602,53 +526,37 @@ public class NodeEditorView extends javax.swing.JDialog {
         layout.setHorizontalGroup(
             layout.createParallelGroup(org.jdesktop.layout.GroupLayout.LEADING)
             .add(layout.createSequentialGroup()
+                .addContainerGap()
                 .add(layout.createParallelGroup(org.jdesktop.layout.GroupLayout.LEADING)
                     .add(layout.createSequentialGroup()
-                        .addContainerGap()
                         .add(tabPane, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE, 515, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE)
                         .addPreferredGap(org.jdesktop.layout.LayoutStyle.RELATED)
-                        .add(tabPanel, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE, 7, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE))
+                        .add(tabPanel, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE, 7, Short.MAX_VALUE))
                     .add(layout.createSequentialGroup()
-                        .addContainerGap()
                         .add(checkButton)
                         .add(18, 18, 18)
                         .add(demoButton)
                         .add(142, 142, 142)
                         .add(buttonOK)
                         .add(18, 18, 18)
-                        .add(buttonCancel))
-                    .add(layout.createSequentialGroup()
-                        .add(12, 12, 12)
-                        .add(editorMsgLabel, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE, 500, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE)))
-                .addContainerGap(org.jdesktop.layout.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
-            .add(layout.createParallelGroup(org.jdesktop.layout.GroupLayout.LEADING)
-                .add(layout.createSequentialGroup()
-                    .addContainerGap(org.jdesktop.layout.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                    .add(bottomSpacer, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE, 30, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE)
-                    .add(0, 504, Short.MAX_VALUE)))
+                        .add(buttonCancel)
+                        .add(0, 0, Short.MAX_VALUE)))
+                .addContainerGap())
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(org.jdesktop.layout.GroupLayout.LEADING)
             .add(org.jdesktop.layout.GroupLayout.TRAILING, layout.createSequentialGroup()
                 .add(layout.createParallelGroup(org.jdesktop.layout.GroupLayout.LEADING)
-                    .add(tabPanel)
                     .add(layout.createSequentialGroup()
                         .addContainerGap()
-                        .add(tabPane, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE, 500, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE)))
-                .addPreferredGap(org.jdesktop.layout.LayoutStyle.RELATED, org.jdesktop.layout.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                .add(editorMsgLabel, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE, 21, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE)
+                        .add(tabPane, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE, 500, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE))
+                    .add(tabPanel, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE, 16, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE))
                 .addPreferredGap(org.jdesktop.layout.LayoutStyle.RELATED)
                 .add(layout.createParallelGroup(org.jdesktop.layout.GroupLayout.BASELINE)
                     .add(checkButton)
                     .add(demoButton)
                     .add(buttonOK)
-                    .add(buttonCancel, org.jdesktop.layout.GroupLayout.DEFAULT_SIZE, org.jdesktop.layout.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
-                .add(12, 12, 12))
-            .add(layout.createParallelGroup(org.jdesktop.layout.GroupLayout.LEADING)
-                .add(layout.createSequentialGroup()
-                    .add(0, 567, Short.MAX_VALUE)
-                    .add(bottomSpacer, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE, 10, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE)
-                    .add(0, 3, Short.MAX_VALUE)))
+                    .add(buttonCancel, org.jdesktop.layout.GroupLayout.DEFAULT_SIZE, org.jdesktop.layout.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)))
         );
 
         pack();
@@ -681,7 +589,7 @@ public class NodeEditorView extends javax.swing.JDialog {
         }
 
         // Refreshing Graph
-        refreshGraphPane();
+        MainWindow.refreshGraph();
     }//GEN-LAST:event_checkButtonActionPerformed
 
     // This is string name of tab used in problem xml to
@@ -700,7 +608,6 @@ public class NodeEditorView extends javax.swing.JDialog {
 
     private void demoButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_demoButtonActionPerformed
         // Action for Giveup Button
-        editorMsgLabel.setText("");
         switch (tabPane.getSelectedIndex()) {
             case DESCRIPTION:
                 activityLogs.debug("Giveup button pressed for Description Panel");
@@ -758,7 +665,7 @@ public class NodeEditorView extends javax.swing.JDialog {
                 break;
 
         }
-        refreshGraphPane();
+        MainWindow.refreshGraph();
     }//GEN-LAST:event_demoButtonActionPerformed
     public JComponent getLabel(String label) {
         // Hash table should be created earlier; See Bug #2085
@@ -767,7 +674,7 @@ public class NodeEditorView extends javax.swing.JDialog {
         map.put("checkButton", checkButton);
         map.put("giveUpButton", demoButton);
         map.put("buttonCancel", buttonCancel);
-        map.put("editorMsgLabel", editorMsgLabel);
+        //map.put("editorMsgLabel", editorMsgLabel);
         map.put("tabPanel", tabPanel);
         if (map.containsKey(label)) {
             return map.get(label);
@@ -782,7 +689,12 @@ public class NodeEditorView extends javax.swing.JDialog {
 
     private void buttonOKActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_buttonOKActionPerformed
         activityLogs.debug("User pressed Enter button for Node '" + openVertex.getName() + "'");
-        processAuthorModeOKAction();        
+        try{
+            _controller.processOKAction();      
+        } catch (NodeEditorException ex){
+            ex.printStackTrace();
+            logs.error(ex.getMessage());
+        }
     }//GEN-LAST:event_buttonOKActionPerformed
 
     public Vertex getOpenVertex() {
@@ -821,16 +733,6 @@ public class NodeEditorView extends javax.swing.JDialog {
         return demoButton;
     }
 
-    public void setEditorMessage(String message) {
-        logs.debug("Setting Editor Message to "+message);
-        editorMsgLabel.setText(message);
-    }
-
-    public void resetEditorMessage() {
-        logs.debug("ReSetting Editor Message to ");
-        editorMsgLabel.setText("");
-    }
-    
     public NodeEditorController getController(){
         return _controller;
     }
@@ -841,14 +743,12 @@ public class NodeEditorView extends javax.swing.JDialog {
     private void tabPaneMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_tabPaneMouseClicked
     }//GEN-LAST:event_tabPaneMouseClicked
     // Variables declaration - do not modify//GEN-BEGIN:variables
-    private javax.swing.JLabel bottomSpacer;
     private javax.swing.JButton buttonCancel;
     private javax.swing.JButton buttonOK;
     private javax.swing.JPanel calculationPanel;
     private javax.swing.JButton checkButton;
     private javax.swing.JButton demoButton;
     private javax.swing.JPanel descriptionPanel;
-    private javax.swing.JLabel editorMsgLabel;
     private javax.swing.JPanel planPanel;
     private javax.swing.JTabbedPane tabPane;
     private javax.swing.JLabel tabPanel;

@@ -25,6 +25,8 @@ import edu.asu.laits.editor.ApplicationContext;
 import edu.asu.laits.model.PlotPanel;
 import edu.asu.laits.model.Edge;
 import edu.asu.laits.model.Graph;
+import edu.asu.laits.model.ModelEvaluationException;
+import edu.asu.laits.model.ModelEvaluator;
 import edu.asu.laits.model.TablePanel;
 import edu.asu.laits.model.Task;
 import edu.asu.laits.model.Vertex;
@@ -42,8 +44,12 @@ import java.util.Date;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.List;
+import javax.swing.JPanel;
+import javax.swing.JTextField;
+import javax.swing.border.BevelBorder;
 import javax.swing.event.ChangeEvent;
 import javax.swing.event.ChangeListener;
+import net.miginfocom.swing.MigLayout;
 import org.apache.log4j.Logger;
 
 /**
@@ -56,11 +62,12 @@ public class GraphViewPanel{
     private JXTaskPaneContainer chartContainer;
     private JDialog parent;
     private JSlider testSlider;
-    private Mode mode;
+    private ChartDialogMode mode;
+    private JPanel sliderPanel;
     
     private static Logger logs = Logger.getLogger("DevLogs");
     
-    public GraphViewPanel(Graph<Vertex, Edge> graph, JDialog parent, Mode mode){
+    public GraphViewPanel(Graph<Vertex, Edge> graph, JDialog parent, ChartDialogMode mode){
         currentGraph = graph;
         this.parent = parent;
         this.mode = mode;
@@ -72,36 +79,45 @@ public class GraphViewPanel{
      
     private void initializeComponents(){
         chartContainer = new JXTaskPaneContainer();
+        sliderPanel =  new JPanel(new MigLayout());
         addCharts();
         addSliders();
+        chartContainer.add(sliderPanel);
     }
     
     private void addSliders() {
-        Task t = ApplicationContext.getCurrentTask();
+        logs.debug("Adding Sliders in Chart Dialog.");
+        
         DoubleJSlider newSlider;
         JLabel sliderLabel;
-        JFormattedTextField sliderAmount;
+        JTextField sliderAmount;
         
         for(Vertex currentVertex : currentGraph.vertexSet()) {
             if(currentVertex.getVertexType().equals(Vertex.VertexType.CONSTANT)) {
                 newSlider = addSlider(currentVertex);
                 newSlider.setPaintTicks(true);
                 newSlider.setPaintLabels(true);
-                chartContainer.add(newSlider);
+                
                 sliderLabel = new JLabel(currentVertex.getName());
-                chartContainer.add(sliderLabel);
-                sliderAmount = new JFormattedTextField();
+                sliderPanel.add(sliderLabel, "skip");
+                sliderPanel.add(newSlider, "right, width min:340:380");
+                //chartContainer.add(sliderLabel);
+                
+                sliderAmount = new JTextField(8);
                 sliderAmount.setText(String.valueOf(newSlider.getDoubleValue()));
-                chartContainer.add(sliderAmount);
+                sliderAmount.setEditable(false);
+                sliderPanel.add(sliderAmount, "wrap");
+                
                 newSlider.addChangeListener(new SliderListener(sliderAmount, currentVertex, this));
             }
         }
     }
     
     private DoubleJSlider addSlider(Vertex vertex){
+        logs.debug("Adding Slider in Chart Dialog for Vertex : " + vertex.getName());
         //handle negative values
         if(vertex.getInitialValue() > 0)
-            return new DoubleJSlider(0, 5*vertex.getInitialValue(), vertex.getInitialValue());
+            return new DoubleJSlider(0, 5 * vertex.getInitialValue(), vertex.getInitialValue());
         else
             return new DoubleJSlider(vertex.getInitialValue()-1 , -5*vertex.getInitialValue(), vertex.getInitialValue());
             
@@ -111,7 +127,7 @@ public class GraphViewPanel{
         Task t = ApplicationContext.getCurrentTask();
         
         //if Mode is Graph Mode, Plot Graph against each not constant node
-        if(mode.equals(Mode.Graph)){
+        if(mode.equals(ChartDialogMode.Graph)){
             for(Vertex currentVertex : currentGraph.vertexSet()){
                 logs.debug("Attempting to add chart for " + currentVertex.getName());
                 JXTaskPane plotPanel = addChart(currentVertex);
@@ -147,14 +163,23 @@ public class GraphViewPanel{
     // What are these used for ???
     int count1 = 0;
     int count2 = 0;
-            
+       
     public void repaintCharts(Graph<Vertex,Edge> clonnedGraph){
+        logs.debug("Repainting Chart with Cloned Vertex");
         Component[] components = chartContainer.getComponents();
-        for(Component c : components){
-            if(c instanceof PlotPanel){
-                logs.info("repaint check succeeded, attempting to repaint " + map.get(c).getName());
-             ((PlotPanel)c).updateChartAfterSliderChange(clonnedGraph,map.get(c));
+        try {
+            logs.debug("Evaluating Cloned Graph");
+            new ModelEvaluator(clonnedGraph).run();
+            
+            for(Component c : components){
+                if(c instanceof PlotPanel){
+                    logs.info("repaint check succeeded, attempting to repaint " + map.get(c).getName());
+                    ((PlotPanel)c).updateChartAfterSliderChange(clonnedGraph, map.get(c));
+                }
             }
+        } catch (ModelEvaluationException ex) {
+            ex.printStackTrace();
+            logs.error(ex.getMessage());
         }
         //restore oringal 
        // PlotPanel.restoreOrignal(currentGraph, vertexValues);
@@ -170,7 +195,7 @@ public class GraphViewPanel{
         }
     }
     
-    public enum Mode{
+    public enum ChartDialogMode{
         Graph,
         Table
     }    
@@ -180,11 +205,11 @@ public class GraphViewPanel{
      * Custom Listener for Slider Change event
      */
     private class SliderListener implements ChangeListener {        
-        private JFormattedTextField textSource;
+        private JTextField textSource;
         private Vertex vertex;
         private GraphViewPanel panel;
         
-        public SliderListener(JFormattedTextField amount, Vertex v, GraphViewPanel g) {
+        public SliderListener(JTextField amount, Vertex v, GraphViewPanel g) {
             textSource = amount;
             vertex = v;
             panel = g;
@@ -198,7 +223,7 @@ public class GraphViewPanel{
             //modify value in new vertex
             clonnedGraph.getVertexByName(vertex.getName()).setInitialValue(source.getDoubleValue());
             
-            if(mode.equals(Mode.Graph))
+            if(mode.equals(ChartDialogMode.Graph))
                 panel.repaintCharts(clonnedGraph);
             else
                 panel.repaintTable(clonnedGraph);
