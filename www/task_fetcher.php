@@ -24,7 +24,9 @@ if(isset($_GET['section']))
        Since searching may be by name, include a copy of the problem name 
        outside the xml.
      */
-    $query = "SELECT task_name,task_details FROM tasks WHERE task_id='$problem'";
+    
+    //Commented out for bug 2172
+    //$query = "SELECT task_name,task_details FROM tasks WHERE task_id='$problem'";
     
     //echo $query;
     

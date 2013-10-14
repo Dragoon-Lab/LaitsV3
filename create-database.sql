@@ -82,23 +82,6 @@ CREATE TABLE `solutions` (
     PRIMARY KEY(section, problemName, author)
     ) ENGINE=MyISAM DEFAULT CHARSET=latin1;
 /*!40101 SET character_set_client = @saved_cs_client */;
-
-
---
--- Table structure for table `tasks`
---
-
-DROP TABLE IF EXISTS `tasks`;
-/*!40101 SET @saved_cs_client     = @@character_set_client */;
-/*!40101 SET character_set_client = utf8 */;
-CREATE TABLE `tasks` (
-  `task_id` int(4) NOT NULL,
-  `task_name` varchar(50) NOT NULL,
-  `task_phase` varchar(30) NOT NULL,
-  `task_details` text NOT NULL,
-  PRIMARY KEY (`task_id`)
-) ENGINE=MyISAM DEFAULT CHARSET=latin1;
-/*!40101 SET character_set_client = @saved_cs_client */;
 /*!40103 SET TIME_ZONE=@OLD_TIME_ZONE */;
 
 /*!40101 SET SQL_MODE=@OLD_SQL_MODE */;
