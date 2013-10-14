@@ -237,7 +237,7 @@ public class ModelMenu extends JMenu {
             if(isGraphable())
                 showChartDialog(Mode.Graph);
             else
-                JOptionPane.showMessageDialog(MainWindow.getInstance(), "This model does not contain any functions or accumulators. There is nothing to graph yet");
+                JOptionPane.showMessageDialog(MainWindow.getInstance(), "This model does not contain any functions or accumulators. There is nothing to graph yet.");
         }
     }
 
@@ -247,7 +247,7 @@ public class ModelMenu extends JMenu {
         if(isGraphable())
                 showChartDialog(Mode.Table);
             else
-                JOptionPane.showMessageDialog(MainWindow.getInstance(), "This model does not contain any functions or accumulators. There is nothing to graph yet");
+                JOptionPane.showMessageDialog(MainWindow.getInstance(), "This model does not contain any functions or accumulators. There is nothing to show yet.");
     }
 
     private void dumpTableValues(ModelEvaluator me) {
