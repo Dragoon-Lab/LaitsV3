@@ -32,6 +32,7 @@ import edu.asu.laits.model.ModelEvaluationException;
 import edu.asu.laits.model.ModelEvaluator;
 import edu.asu.laits.model.SolutionNode;
 import edu.asu.laits.model.TaskSolution;
+import edu.asu.laits.model.Times;
 import edu.asu.laits.model.Vertex;
 import java.awt.BorderLayout;
 import java.awt.Desktop;
@@ -261,7 +262,7 @@ public class ModelMenu extends JMenu {
         }
         return isGraphable;
     }
-    
+
     public void showNodeGraph() {
         activityLogs.debug("User pressed Show Graph button.");
 
@@ -276,10 +277,10 @@ public class ModelMenu extends JMenu {
     public void showNodeTable() {
         activityLogs.debug("User pressed Show Table button.");
 
-        if (runModel()) {
-            showChartDialog(ChartDialogMode.Table);
-//            showTableDialog();
-        }
+        if(isGraphable())
+                showChartDialog(ChartDialogMode.Table);
+            else
+                JOptionPane.showMessageDialog(MainWindow.getInstance(), "This model does not contain any functions or accumulators. There is nothing to show yet.");
     }
 
     private void dumpTableValues(ModelEvaluator me) {
@@ -383,34 +384,6 @@ public class ModelMenu extends JMenu {
         return isEnable;
     }
 
-    /*
-     *  This method is used to display table after
-     *  running the model
-     */
-    private void showTableDialog() {
-        /*
-        try {
-            JFrame tableValuesFrame = new JFrame("Node Table display");
-            JPanel tableValuesPanel = new JPanel();
-            tableValuesPanel.setLayout(new BorderLayout());
-
-            if(data!=null && columnNames!=null)
-            {
-                JTable tableValuesTable = new JTable(data, columnNames);
-                JScrollPane tableValuesContainer = new JScrollPane(tableValuesTable);
-
-                tableValuesPanel.add(tableValuesContainer, BorderLayout.CENTER);
-                tableValuesFrame.getContentPane().add(tableValuesPanel);
-
-                tableValuesFrame.pack();
-                tableValuesFrame.setVisible(true);
-            }
-        } catch (Exception e) {
-            e.printStackTrace();
-        }*/
-
-    }
-
     private void showChartDialog(ChartDialogMode mode) {
         logs.debug("Showing Chart dialog with Mode : " + mode);
         JDialog graphValuesDialog = new JDialog(MainWindow.getInstance(), true);
@@ -418,7 +391,6 @@ public class ModelMenu extends JMenu {
         graphValuesDialog.setTitle("Model Graph");
         graphValuesDialog.setSize(610, 530);
         graphValuesDialog.setLocationRelativeTo(null);
-
         graphValuesDialog.setVisible(true);
     }
 
@@ -555,10 +527,10 @@ public class ModelMenu extends JMenu {
     private void exportSolution() {
         JDialog exportSolutionDialog = new JDialog(MainWindow.getInstance(), true);
         exportSolutionDialog.setTitle("Export Laits Solution");
+        JScrollPane panelScroll = new JScrollPane(new ExportSolutionPanel());
+        exportSolutionDialog.getContentPane().add(panelScroll);
         
-        new ExportSolutionPanel(exportSolutionDialog);
-        
-        exportSolutionDialog.setSize(610, 540);
+        exportSolutionDialog.setSize(630, 700);
         exportSolutionDialog.setLocationRelativeTo(null);
 
         exportSolutionDialog.setResizable(false);

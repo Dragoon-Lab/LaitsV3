@@ -12,6 +12,7 @@
   <URL>images/moose_wolves.png</URL>
   <StartTime>1949</StartTime>
   <EndTime>2009</EndTime>
+  <TimeStep>.5</TimeStep>
   <Units>Years</Units>
   <NodeCount>5</NodeCount>
   <Nodes>

@@ -7,16 +7,22 @@ tutorial to get you started using dragoon.
 [Documentation and design documents](documentation/README.md) are
 available.
 
-## Dragoon Install ##
+## Dragoon Install and Netbeans ##
 
 This document contains instructions for setting up a dragoon server and for
 setting up a development environment for dragoon.  We use
 Netbeans for java code development, but none of the code
 is Netbean-specific.
 
-You should have JDK 1.6 installed on your development platform.
+We are using JDK 1.6 for production builds of Dragoon.
 Although Dragoon runs fine in Java 1.7, many computers in the
 schools (as of Fall 2013) do not have Java 1.7 installed.
+
+If you are having trouble with Netbeans, especially going between
+branches with inconsistent Netbeans config files, try closing
+Netbeans and deleting the file `nbproject/build-impl.xml`.
+See [documentation on Netbeans and source 
+control](https://netbeans.org/kb/docs/java/import-eclipse.html#versioning).
 
 ### Database Setup ###
 

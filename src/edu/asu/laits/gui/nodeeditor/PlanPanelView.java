@@ -102,19 +102,19 @@ public class PlanPanelView extends javax.swing.JPanel {
         paraPanel = new JPanel(rowLayout);
         paraPanel.add(parameterSelection, "");
         paraPanel.add(new JLabel(labelHtml + parameterPlan[1]), "");
-     //   paraPanel.setMinimumSize(rowSize);
+     
         paraPanel.setBackground(Color.WHITE);
         panel.add(paraPanel, "wrap");
         accPanel = new JPanel(rowLayout2);
         accPanel.add(accumulatorSelection, "");
         accPanel.add(new JLabel(labelHtml + accumulatorPlan[1]), "");
-   //     accPanel.setMinimumSize(rowSize);
+   
         accPanel.setBackground(Color.WHITE);
         panel.add(accPanel, "");
         funPanel = new JPanel(rowLayout3);
         funPanel.add(functionSelection, "");
         funPanel.add(new JLabel(labelHtml + functionPlan[1]), "");
-     //   funPanel.setMinimumSize(rowSize);
+     
         funPanel.setBackground(Color.WHITE);
         panel.add(funPanel, "");
         
