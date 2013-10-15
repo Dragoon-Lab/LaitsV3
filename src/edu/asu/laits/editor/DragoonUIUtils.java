@@ -89,7 +89,7 @@ public class DragoonUIUtils {
     }
     
     public static JComboBox createComboBox(String[] listElements){
-        JComboBox<String> comboBox = new JComboBox<String>(listElements);
+        JComboBox comboBox = new JComboBox(listElements);
         return comboBox;
     }
     
