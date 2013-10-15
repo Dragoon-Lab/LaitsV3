@@ -1,0 +1,35 @@
+<!DOCTYPE html>
+<html>
+<head>
+
+<link rel="stylesheet" href="./dijit/themes/claro/claro.css">
+<meta charset="utf-8">
+<title>Dojo Charting Example</title>
+<script>dojoConfig = {parseOnLoad: true}</script>
+<script src='./dojo/dojo.js'></script>
+
+<script>
+require(["laits/pedagogical_module/pedagogical_module","dojo/on","dojo/dom","dojo/parser", "dojo/domReady!"], function(pm,on,dom,parser){
+
+	parser.parse();
+
+	//true array values from function on which current rule depends
+	var arr_true = [true, true, true];
+	//false array values from function on which current rule depends
+	var arr_false = [false, false, false];
+
+	//Create a rule
+	var PM_example = new pm("x",arr_true,arr_false	);
+	var res = PM_example.makeRule();
+	//Display result on console
+	console.debug("Result from function is "+res);
+	
+
+});
+	</script>
+</head>
+<body class="claro">
+
+</body>
+
+</html>
