@@ -527,10 +527,10 @@ public class ModelMenu extends JMenu {
     private void exportSolution() {
         JDialog exportSolutionDialog = new JDialog(MainWindow.getInstance(), true);
         exportSolutionDialog.setTitle("Export Laits Solution");
+        JScrollPane panelScroll = new JScrollPane(new ExportSolutionPanel());
+        exportSolutionDialog.getContentPane().add(panelScroll);
         
-        new ExportSolutionPanel(exportSolutionDialog);
-        
-        exportSolutionDialog.setSize(610, 540);
+        exportSolutionDialog.setSize(630, 700);
         exportSolutionDialog.setLocationRelativeTo(null);
 
         exportSolutionDialog.setResizable(false);

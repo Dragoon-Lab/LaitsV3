@@ -21,7 +21,7 @@ import org.apache.log4j.Logger;
 
 /**
  *
- * @author Ram
+ * @author rptiwari
  */
 public class GraphRangeEditor extends javax.swing.JDialog {
 
