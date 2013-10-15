@@ -34,18 +34,14 @@
             <Plan>proportional to accumulator and input</Plan>
             <Inputs>
                 <Name>weight</Name>
-                <Name>weight factor</Name>
                 <Name>weight</Name>
-                <Name>height factor</Name>
                 <Name>height</Name>
-                <Name>age factor</Name>
                 <Name>age</Name>
-                <Name>gender calories</Name>
             </Inputs>
             <Outputs>
                 <Node name="harris benedict formula"/>
             </Outputs>
-            <Equation>gender calories + weight factor * weight + height factor * height - age * age factor</Equation>
+            <Equation>655 + 4.35 * weight + 4.7 * height - age * 4.7</Equation>
             <InitialValue>0.0</InitialValue>
         </Node>
         <Node type="constant" name="age" extra="no">
@@ -80,69 +76,17 @@
             <Equation>weight change</Equation>
             <InitialValue>150.0</InitialValue>
         </Node>
-        <Node type="constant" name="age factor" extra="no">
-            <CorrectDescription>Factor to multiply age by</CorrectDescription>
-            <Plan>fixed value</Plan>
-            <Inputs/>
-            <Outputs>
-                <Node name="bmr"/>
-            </Outputs>
-            <Equation>4.7</Equation>
-            <InitialValue>4.7</InitialValue>
-        </Node>
-        <Node type="constant" name="height factor" extra="no">
-            <CorrectDescription>Factor to multiply height by</CorrectDescription>
-            <Plan>fixed value</Plan>
-            <Inputs/>
-            <Outputs>
-                <Node name="bmr"/>
-            </Outputs>
-            <Equation>4.7</Equation>
-            <InitialValue>4.7</InitialValue>
-        </Node>
-        <Node type="constant" name="weight factor" extra="no">
-            <CorrectDescription>Factor to multiply weight by</CorrectDescription>
-            <Plan>fixed value</Plan>
-            <Inputs/>
-            <Outputs>
-                <Node name="bmr"/>
-            </Outputs>
-            <Equation>4.35</Equation>
-            <InitialValue>4.35</InitialValue>
-        </Node>
-        <Node type="constant" name="gender calories" extra="no">
-            <CorrectDescription>Additional calories based on gender</CorrectDescription>
-            <Plan>fixed value</Plan>
-            <Inputs/>
-            <Outputs>
-                <Node name="bmr"/>
-            </Outputs>
-            <Equation>655</Equation>
-            <InitialValue>655</InitialValue>
-        </Node>
         <Node type="flow" name="weight change" extra="no">
             <CorrectDescription>Change in weight (calorie difference / calories per lb)</CorrectDescription>
             <Plan>proportional to accumulator and input</Plan>
             <Inputs>
                 <Name>calorie difference</Name>
-                <Name>calories per lb</Name>
             </Inputs>
             <Outputs>
                 <Node name="weight"/>
             </Outputs>
-            <Equation>calorie difference / calories per lb</Equation>
+            <Equation>calorie difference / 3500</Equation>
             <InitialValue>0.0</InitialValue>
-        </Node>
-        <Node type="constant" name="calories per lb" extra="no">
-            <CorrectDescription>Given number of calories in a pound</CorrectDescription>
-            <Plan>fixed value</Plan>
-            <Inputs>
-            </Inputs>
-            <Outputs>
-                <Node name="weight change"/>
-            </Outputs>
-            <Equation>3500</Equation>
-            <InitialValue>3500</InitialValue>
         </Node>
         <Node type="constant" name="calorie difference" extra="no">
             <CorrectDescription>number of missing (negative number) or extra (positive number) calories</CorrectDescription>

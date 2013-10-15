@@ -163,22 +163,17 @@ public class PlotPanel extends JXTaskPane {
         plot.setAxisOffset(new RectangleInsets(5.0, 5.0, 5.0, 5.0));
         plot.setDomainCrosshairVisible(true);
         plot.setRangeCrosshairVisible(true);
-
-        //plot.getRangeAxis().setRange(((XYSeriesCollection)xydataset).getRangeLowerBound(true), ((XYSeriesCollection)xydataset).getRangeUpperBound(true));
-
+        plot.getRangeAxis().setRange(((XYSeriesCollection)xydataset).getRangeLowerBound(true), ((XYSeriesCollection)xydataset).getRangeUpperBound(true));
+       
         NumberAxis domain = (NumberAxis) plot.getDomainAxis();
+        // Don't want any padding on left or right.
+        
+        //fix for author mode, without looking at ram
+        if(end < start || start == end)
+            end=10.0;
+        
         domain.setRange(start, end);
-        double tick = Math.abs(end - start) / 20;
-        domain.setTickUnit(new NumberTickUnit(tick));
-        domain.setVerticalTickLabels(true);
-        // Rotate ticks if numbers are large (years, for instance)
-        /*if(Math.max(Math.abs(start),Math.abs(end))>1000){
-         domain.setVerticalTickLabels(true);
-         // We may have to adjust ticks spacing?
-         double tick = Math.abs(end-start)/20;
-         domain.setTickUnit(new NumberTickUnit(tick));
-         }*/
-
+        
         XYItemRenderer r = plot.getRenderer();
         if (r instanceof XYLineAndShapeRenderer) {
             XYLineAndShapeRenderer renderer = (XYLineAndShapeRenderer) r;
@@ -197,6 +192,7 @@ public class PlotPanel extends JXTaskPane {
         logs.info("Updating chart for new values from slider for Vertex : " + vertex.getName());
 
         //remove last slider value series
+
         int seriesIndexToRemove = (ApplicationContext.isAuthorMode() ? 1 : 2);
         for (int i = seriesIndexToRemove; i < xydataset.getSeriesCount(); i++) {
             ((XYSeriesCollection) xydataset).removeSeries(i);            
@@ -219,9 +215,8 @@ public class PlotPanel extends JXTaskPane {
         
         for (int i = 0; i < correctValues.size(); i += di) {            
             newChartSeries.add(t, correctValues.get(i));
-            t += di * times.getTimeStep();
+            t += di * (times.getTimeStep() == 0 ? 1 : times.getTimeStep());
         }
-
         ((XYSeriesCollection) xydataset).addSeries(newChartSeries);
         ((XYPlot) jfreeChart.getPlot()).getRangeAxis().setRange(((XYSeriesCollection) xydataset).getRangeLowerBound(true), ((XYSeriesCollection) xydataset).getRangeUpperBound(true));
         jfreeChart.fireChartChanged();

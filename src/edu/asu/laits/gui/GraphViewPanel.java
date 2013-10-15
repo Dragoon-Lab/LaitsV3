@@ -93,8 +93,10 @@ public class GraphViewPanel{
         JTextField sliderAmount;
         
         for(Vertex currentVertex : currentGraph.vertexSet()) {
+
             if(currentVertex.getVertexType().equals(Vertex.VertexType.CONSTANT)) {
                 newSlider = addSlider(currentVertex);
+
                 newSlider.setPaintTicks(true);
                 newSlider.setPaintLabels(true);
                 
@@ -119,8 +121,7 @@ public class GraphViewPanel{
         if(vertex.getInitialValue() > 0)
             return new DoubleJSlider(0, 5 * vertex.getInitialValue(), vertex.getInitialValue());
         else
-            return new DoubleJSlider(vertex.getInitialValue()-1 , -5*vertex.getInitialValue(), vertex.getInitialValue());
-            
+            return new DoubleJSlider(-1 , 1, vertex.getInitialValue());            
     }
     
     private void addCharts(){
@@ -160,13 +161,10 @@ public class GraphViewPanel{
         return plotPanel;
     }
       
-    // What are these used for ???
-    int count1 = 0;
-    int count2 = 0;
-       
     public void repaintCharts(Graph<Vertex,Edge> clonnedGraph){
         logs.debug("Repainting Chart with Cloned Vertex");
         Component[] components = chartContainer.getComponents();
+
         try {
             logs.debug("Evaluating Cloned Graph");
             new ModelEvaluator(clonnedGraph).run();
@@ -181,8 +179,6 @@ public class GraphViewPanel{
             ex.printStackTrace();
             logs.error(ex.getMessage());
         }
-        //restore oringal 
-       // PlotPanel.restoreOrignal(currentGraph, vertexValues);
    }
     
     private void repaintTable(Graph<Vertex,Edge> clonnedGraph) {        
