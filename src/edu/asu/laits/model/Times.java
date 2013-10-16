@@ -27,20 +27,22 @@ public class Times {
     private double endTime;
     private double timeStep;
 
-    public int getNumberSteps(){
-        return (int) ((endTime-startTime)/timeStep)+1;
+    public Times(){
+        startTime = 0;
+        endTime = 10;
+        timeStep = 1;
     }
     
-    /*
-     *  Generally, we set all three at once.
-     */
-    
-    public void setTimes(double startTime, double stopTime, double timeStep) {
-        this.startTime=startTime;
-        this.endTime=stopTime;
-        this.timeStep=timeStep;
+    public Times(double startTime, double stopTime, double timeStep) {
+        this.startTime = startTime;
+        this.endTime = stopTime;
+        this.timeStep = timeStep;
     }
 
+    public int getNumberSteps(){
+        return (int) ((endTime - startTime) / timeStep) + 1;
+    }
+    
     public double getStartTime() {
         return startTime;
     }
@@ -53,4 +55,8 @@ public class Times {
         return timeStep;
     }
     
+    @Override
+    public String toString(){
+        return "StartTime: "+startTime+" EndTime: "+endTime + " TimeStep: "+timeStep;
+    }
 }

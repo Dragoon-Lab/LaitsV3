@@ -4,16 +4,14 @@ import java.io.Writer;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.Set;
-import java.util.TreeMap;
 
 import edu.asu.laits.editor.GraphEditorPane;
 import edu.asu.laits.model.Edge.ErrorReaderException;
 import edu.asu.laits.model.Vertex.VertexReaderException;
-import org.jgrapht.DirectedGraph;
 import org.jgrapht.ListenableGraph;
 
 import com.thoughtworks.xstream.XStream;
-import com.thoughtworks.xstream.io.xml.DomDriver;
+import edu.asu.laits.editor.ApplicationContext;
 import edu.asu.laits.gui.MainWindow;
 import java.io.IOException;
 
@@ -68,9 +66,8 @@ public class GraphSaver {
         file.setVertexList(vertexList);
         file.setEdgeList(edgeList);
         
-        xstream.alias("task", Task.class);
-        Graph g = (Graph)modelGraph;
-        file.setTask(g.getCurrentTask());
+        xstream.alias("task", Task.class);       
+        file.setTask(ApplicationContext.getCurrentTask());
 
         xstream.alias("graph", GraphFile.class);
         

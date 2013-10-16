@@ -20,6 +20,8 @@
 
 package edu.asu.laits.model;
 
+import edu.asu.laits.editor.ApplicationContext;
+
 /**
  *
  * @author ramayantiwari
@@ -31,6 +33,8 @@ public class Task {
     private String imageURL;
     private String units;
     private Times times;
+    private String phase;
+    private String taskType;
      
     public Task(){
         taskName = "";
@@ -49,11 +53,15 @@ public class Task {
         return this.times;
     }
 
-    public String getUnits(){
+    public void setTimes(Times definedTimes){
+        times = definedTimes;
+    }
+    
+    public String getChartUnits(){
         return units;
     }   
     
-    public void setUnits(String inputUnits){
+    public void setChartUnits(String inputUnits){
         units = inputUnits;
     }
     
@@ -77,8 +85,47 @@ public class Task {
         return imageURL;
     }
     
-    public void setImageURL(String input){
-        imageURL = input;
-    }    
+    public void setImageURL(String imageURL) {
+        if(imageURL.startsWith("http")){
+            this.imageURL = imageURL;
+        } else {
+            this.imageURL = ApplicationContext.getRootURL() + "/" + imageURL;
+        }
+    } 
     
+    /**
+     * @return the phase
+     */
+    public String getPhase() {
+        return phase;
+    }
+
+    /**
+     * @param phase the phase to set
+     */
+    public void setPhase(String phase) {
+        this.phase = phase;
+    }
+
+    /**
+     * @return the phase
+     */
+    public String getTaskType() {
+        return taskType;
+    }
+
+    /**
+     * @param phase the phase to set
+     */
+    public void setTaskType(String type) {
+        this.taskType = type;
+    }
+    
+    public String toString(){
+        return "Task Details: "+"Name : "+taskName + 
+                " Type: " + taskType + 
+                " Phase: " + phase + 
+                " Image URL: " + imageURL + 
+                " Times: " + times.toString() ;        
+    }
 }

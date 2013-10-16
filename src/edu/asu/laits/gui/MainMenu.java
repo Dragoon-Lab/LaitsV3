@@ -12,8 +12,8 @@ import javax.swing.JToolBar;
 import java.util.List;
 
 /**
- * This is the main menu in the program. It contains a lot of submenus to let
- * the user select what he/she wants to do with the program.
+ * This is the main menu in the program. 
+ * It contains a lot of sub menus to let the user select what he/she wants to do with the program.
  *
  * @author kjellw
  *

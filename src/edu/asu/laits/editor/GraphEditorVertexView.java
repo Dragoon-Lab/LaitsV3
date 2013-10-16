@@ -30,6 +30,7 @@ public class GraphEditorVertexView extends VertexView {
         try {
             renderer = new VertexRenderComponent();            
         } catch (Error e) {
+            e.printStackTrace();
             // No vertex renderer
         }
     }

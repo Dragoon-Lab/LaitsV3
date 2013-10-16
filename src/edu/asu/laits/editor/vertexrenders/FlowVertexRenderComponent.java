@@ -117,26 +117,23 @@ public class FlowVertexRenderComponent extends VertexRenderComponent {
 
     public void drawVertex(Graphics g) {
         Graphics2D g2 = (Graphics2D) g;
-        boolean isCorrect = false;
         
         // If Vertex has Defined Description, Plan and Calculations - set color to green else use Gray        
         if(currentVertex.isDescriptionDone()){
             if(currentVertex.isPlanDone()){
                 if(currentVertex.isCalculationsDone()){
-                    g2.setColor(new Color(0x90, 0x90, 0x00));
-                    isCorrect = true;
+                    g2.setColor(new Color(0x90, 0x90, 0x00));                   
                 }
             }
         }else{
             g2.setColor(foreground);
         }    
-                   
-        if(selected && !(isCorrect)){
-            g2.setColor(Color.GRAY);
-            g2.setStroke(new BasicStroke(2));
+         
+        if(selected){
+            g2.setStroke(new BasicStroke(3.5f));
         }
         else
-            g2.setStroke(new BasicStroke(3));
+            g2.setStroke(new BasicStroke(2));
         
         int a = getWidth() / 2;
         int b = getHeight() / 2;

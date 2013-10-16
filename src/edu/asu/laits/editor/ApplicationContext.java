@@ -20,6 +20,7 @@ package edu.asu.laits.editor;
 import edu.asu.laits.gui.MainWindow;
 import edu.asu.laits.model.TaskSolution;
 import edu.asu.laits.model.HelpBubble;
+import edu.asu.laits.model.Task;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -28,18 +29,22 @@ import java.util.List;
  * @author ramayantiwari
  */
 public class ApplicationContext {
-  private static String userId;
-  private static AppMode appMode;
-  private static String section;
-  private static String rootURL;
-  private static boolean isValid = false;
-  private static TaskSolution correctSolution;
-  private static String currentTaskID;
-  private static boolean isProblemSolved = false;
-  public static String taskLoaderURL;
-  private static int currentOrder = 1;
-  private static List<String> nextNodes = new ArrayList<String>();
-  private static boolean helpBubbles = false;
+
+    private static String userId;
+    private static AppMode appMode;
+    private static String section;
+    private static String rootURL;
+    private static boolean isValid = false;
+    private static TaskSolution correctSolution;
+    private static String currentTaskID;
+    private static boolean isProblemSolved = false;
+    public static String taskLoaderURL;
+    private static int currentOrder = 1;
+    private static List<String> nextNodes = new ArrayList<String>();
+    private static boolean helpBubbles = false;
+    
+    // Task is used at many places in the application. It should be same for all the uses
+    private static Task task;
 
     public static boolean isHelpBubbles() {
         return helpBubbles;
@@ -198,7 +203,35 @@ public class ApplicationContext {
         return (appMode.equals(AppMode.COACHED));
     }
 
+    public static boolean isTestMode() {
+        return (appMode.equals(AppMode.TEST));
+    }
+
     public static AppMode getAppMode() {
         return appMode;
+    }
+    
+    /**
+     * This method returns current Task.
+     * For Author Mode - task should be created only once with default values.
+     * For all other modes - Task object is already created and stored in TaskSolution
+     * @return 
+     */
+    public static Task getCurrentTask(){
+        if(task == null){
+            // initialize task for different modes
+            if(isAuthorMode()){
+                task = new Task();
+            }else{
+                task = correctSolution.getTaskDetails();
+            }
+        }
+        
+        return task;
+    }
+    
+    public static void setCurrentTask(Task predefinedTask){
+        System.out.println("Setting Current Task to: " + predefinedTask.toString());
+        task = predefinedTask;
     }
 }

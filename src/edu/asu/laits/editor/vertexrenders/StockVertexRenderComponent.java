@@ -115,29 +115,28 @@ public class StockVertexRenderComponent extends VertexRenderComponent {
 
     public void drawVertex(Graphics g) {
         Graphics2D g2 = (Graphics2D) g;
-        boolean isCorrect = false;
-        // If Vertex has Defined Description, Plan and Calculations - set color to green else use Gray
         
+        // If Vertex has Defined Description, Plan and Calculations - set color to green else use Gray
         if(currentVertex.getDescriptionStatus().equals(Vertex.DescriptionStatus.CORRECT) || 
                 currentVertex.getDescriptionStatus().equals(Vertex.DescriptionStatus.GAVEUP)){
             if(currentVertex.getPlanStatus().equals(Vertex.PlanStatus.CORRECT) || 
                     currentVertex.getPlanStatus().equals(Vertex.PlanStatus.GAVEUP)){
                 if(currentVertex.getCalculationsStatus().equals(Vertex.CalculationsStatus.CORRECT) || 
                     currentVertex.getCalculationsStatus().equals(Vertex.CalculationsStatus.GAVEUP)){
-                    g2.setColor(new Color(0x90, 0x90, 0x00));
-                    isCorrect = true;
+                    g2.setColor(new Color(0x90, 0x90, 0x00));        
                 }
             }
         }else{
             g2.setColor(foreground);
         }    
         
-        if(selected && !(isCorrect)){
-           g2.setColor(Color.GRAY);
-           g2.setStroke(new BasicStroke(2));           
+        if(selected){           
+           g2.setStroke(new BasicStroke(3.5f));           
         }
-        else
-            g2.setStroke(new BasicStroke(3));
+        else {
+            g2.setStroke(new BasicStroke(2));
+        }
+        
         g2.drawRect(0, 0, getWidth() - 1, getHeight() - 18); 
         
         String vertexName = currentVertex.getName();
@@ -147,6 +146,5 @@ public class StockVertexRenderComponent extends VertexRenderComponent {
         g2.drawString(vertexName, (int)x, getHeight() - 2);
         paintVertexStatusIcons(g, currentVertex);
         paintSelectable(g);
-
     }
 }

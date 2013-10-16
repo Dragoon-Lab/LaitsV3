@@ -188,22 +188,6 @@ public class StatusBarPanel extends JPanel implements InformationPane {
         }
     }
 
-//    public void setGraphPane(GraphEditorPane graphPane) {
-//        this.graphPane = graphPane;
-//        InsertModeChangeListener l = new InsertModeChangeListener() {
-//            public void newInsertModeEvent(boolean insertMode) {
-//                if (insertMode) {
-//                    insertModeStatusLabel.setText("Insert mode: ON ");
-//                } else {
-//                    insertModeStatusLabel.setText("Insert mode: OFF");
-//                }
-//
-//            }
-//        };
-//        graphPane.addInsertModeChangeListener(l);
-//        l.newInsertModeEvent(graphPane.isInsertMode());
-//    }
-    
     public void setStatusMessage(String message, boolean errType){
         if(errType){
             insertModeStatusLabel.setForeground(Color.BLUE);

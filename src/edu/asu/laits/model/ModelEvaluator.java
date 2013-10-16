@@ -49,15 +49,10 @@ public class ModelEvaluator {
 
     public ModelEvaluator(Graph inputGraph) {
         currentGraph = inputGraph;
-        if (ApplicationContext.isStudentMode()
-                || ApplicationContext.isCoachedMode()) {
-            times = ApplicationContext.getCorrectSolution().getTimes();
-
-            logs.debug("Getting Start Time and End Time from AppContext. "
+        times = ApplicationContext.getCurrentTask().getTimes();
+        
+        logs.debug("Getting Start Time and End Time from AppContext. "
                     + times.getStartTime() + "  " + times.getEndTime() + "  dt=" + times.getTimeStep());
-        } else {
-            times = currentGraph.getCurrentTask().getTimes();
-        }
         finalOperands = new HashMap<String, List<String>>();
     }
 

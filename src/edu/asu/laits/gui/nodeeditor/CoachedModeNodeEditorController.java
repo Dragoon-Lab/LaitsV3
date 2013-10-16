@@ -147,7 +147,7 @@ public class CoachedModeNodeEditorController extends NodeEditorController {
             }
         }
         if (giveupNode == null) {
-            view.setEditorMessage("All Nodes are already being used in the Model.", true);
+            view.setEditorMessage("All Nodes are already being used in the Model.");
             return null;
         }
         
@@ -159,5 +159,13 @@ public class CoachedModeNodeEditorController extends NodeEditorController {
     public void planPanelRadioClicked(){
         TaskSolution solution = ApplicationContext.getCorrectSolution();
         view.checkPlanPanel(solution);
+    }
+    
+    /**
+     * Initialize CreateNewNodeDialog for Coached Mode.
+     * @param dialog 
+     */
+    public void initializeCreateNewNodeDialog(CreateNewNodeDialog dialog){
+        // Needs specific implementation for this mode
     }
 }
