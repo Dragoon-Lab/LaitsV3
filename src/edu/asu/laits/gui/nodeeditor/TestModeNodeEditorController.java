@@ -28,16 +28,16 @@ import org.apache.log4j.Logger;
 /**
  * Implements functionalities of NodeEditor for Student Mode
  *
- * @author ramayantiwari
+ * @author meghatiwari
  */
-public class StudentModeNodeEditorController extends NodeEditorController {
+public class TestModeNodeEditorController extends NodeEditorController {
 
     private NodeEditorView view;
     private Vertex openVertex;
     private static Logger logs = Logger.getLogger("DevLogs");
     private static Logger activityLogs = Logger.getLogger("ActivityLogs");
 
-    public StudentModeNodeEditorController(NodeEditorView view, Vertex openVertex) {
+    public TestModeNodeEditorController(NodeEditorView view, Vertex openVertex) {
         super(view, openVertex);
         this.view = view;
         this.openVertex = openVertex;
@@ -96,14 +96,17 @@ public class StudentModeNodeEditorController extends NodeEditorController {
     }
 
     public void initCheckButton() {
+        view.getCheckButton().setVisible(false);
     }
 
     public void initDemoButton() {
         super.initDemoButton();
+        view.getDemoButton().setVisible(false);
+        
     }
 
     public void initOkButton() {
-        view.getOKButton().setVisible(false);
+        //view.getOKButton().setVisible();
     }
 
     public void initCloseButton() {
@@ -151,11 +154,8 @@ public class StudentModeNodeEditorController extends NodeEditorController {
         view.checkPlanPanel(solution);
     }
     
-    /**
-     * Initialize CreateNewNodeDialog for Coached Mode.
-     * @param dialog 
-     */
     public void initializeCreateNewNodeDialog(CreateNewNodeDialog dialog){
-        // Needs specific implementation for this mode
+        dialog.getCheckButton().setEnabled(false);
+        dialog.getDemoButton().setEnabled(false);
     }
 }

@@ -147,8 +147,8 @@ public class FileMenu extends JMenu {
     private void initializeAuthorMenu() {
         this.setText("File");
         this.setMnemonic(KeyEvent.VK_F);
-        this.add(getNewFileMenuItem());
-        this.add(getJSeparator());
+ //       this.add(getNewFileMenuItem());
+ //       this.add(getJSeparator());
         this.add(getOpenFileMenuItem());
         this.add(getOpenLatestFileMenu());
         this.add(getJSeparator1());
@@ -189,13 +189,13 @@ public class FileMenu extends JMenu {
             ApplicationContext.setCorrectSolution(solution);
 
             activityLogs.debug("Student opened a new task ID: " + id + " - "
-                + solution.getTaskName());
+                + ApplicationContext.getCurrentTask().getTaskName());
             
-            mainWindow.loadTaskDescription(solution.getTaskName(),
-                    solution.getTaskDescription(),
-                    solution.getImageURL());
+            mainWindow.loadTaskDescription(ApplicationContext.getCurrentTask().getTaskName(),
+                    ApplicationContext.getCurrentTask().getTaskDescription(),
+                    ApplicationContext.getCurrentTask().getImageURL());
 
-            if (solution.getTaskType().equalsIgnoreCase("debug")) {
+            if (ApplicationContext.getCurrentTask().getTaskType().equalsIgnoreCase("debug")) {
                 createGivenModel(solution, graphPane);
             }
 
@@ -206,7 +206,7 @@ public class FileMenu extends JMenu {
     }
 
     private void createGivenModel(TaskSolution solution, GraphEditorPane editorPane) {
-        logs.debug("Building Given Model for Task : "+solution.getTaskName());
+        logs.debug("Building Given Model for Task : "+ApplicationContext.getCurrentTask().getTaskName());
         List<SolutionNode> givenNodes = solution.getGivenNodes();
         logs.debug("Graph Presently Contains");
         Iterator<Vertex> it = graphPane.getModelGraph().vertexSet().iterator();

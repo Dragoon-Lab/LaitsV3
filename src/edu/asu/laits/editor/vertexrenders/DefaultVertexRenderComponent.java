@@ -113,12 +113,14 @@ public class DefaultVertexRenderComponent extends VertexRenderComponent {
    
     public void drawVertex(Graphics g) {
         Graphics2D g2 = (Graphics2D) g;
-        
         g2.setColor(foreground);
-        if(selected){
-            g2.setColor(Color.GRAY);           
+        
+        if(selected){            
+            g2.setStroke(new BasicStroke(3.5f, BasicStroke.CAP_BUTT, BasicStroke.JOIN_BEVEL, 0, new float[]{9}, 0));
+        }else {            
+            g2.setStroke(new BasicStroke(2, BasicStroke.CAP_BUTT, BasicStroke.JOIN_BEVEL, 0, new float[]{9}, 0));
         }
-        g2.setStroke(new BasicStroke(3, BasicStroke.CAP_BUTT, BasicStroke.JOIN_BEVEL, 0, new float[]{9}, 0));
+        
         g2.drawRect(0, 0, getWidth() - 1, getHeight() - 18); 
         
         String vertexName = truncateNodeName(currentVertex.getName());

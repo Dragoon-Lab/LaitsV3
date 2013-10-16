@@ -55,8 +55,7 @@ public class DescriptionPanelView extends JPanel {
     private NodeEditorView nodeEditor;
     private static Logger logs = Logger.getLogger("DevLogs");
     private static Logger activityLogs = Logger.getLogger("ActivityLogs");
-    private Vertex currentVertex;
-
+    
     public DescriptionPanelView(NodeEditorView ne) {
         logs.debug("Initializing Description Panel View");
         initComponents();
@@ -81,6 +80,15 @@ public class DescriptionPanelView extends JPanel {
         if(currentVertex.isDescriptionDone()  && !ApplicationContext.isAuthorMode()) {
             setEditableTree(false);
         }
+        
+        if(!ApplicationContext.isAuthorMode()){
+            setBackGroundColor();
+        }                
+    }
+    
+    private void setBackGroundColor(){
+        Vertex currentVertex = this.nodeEditor.getOpenVertex();
+        
         if(currentVertex.getDescriptionStatus().equals(Vertex.DescriptionStatus.CORRECT)){
             setTextFieldBackground(Color.GREEN);
         }else if(currentVertex.getDescriptionStatus().equals(Vertex.DescriptionStatus.GAVEUP)){
@@ -191,18 +199,18 @@ public class DescriptionPanelView extends JPanel {
         quantityDescriptionTextField.setMargin(new java.awt.Insets(2, 3, 2, 3));
         jScrollPane1.setViewportView(quantityDescriptionTextField);
 
-        contentPanel.add(jScrollPane1, new org.netbeans.lib.awtextra.AbsoluteConstraints(10, 390, 470, -1));
+        contentPanel.add(jScrollPane1, new org.netbeans.lib.awtextra.AbsoluteConstraints(10, 380, 470, -1));
 
         referencesLabel.setFont(new java.awt.Font("Lucida Grande", 1, 13)); // NOI18N
         referencesLabel.setText("Precise description of the quantity:");
-        contentPanel.add(referencesLabel, new org.netbeans.lib.awtextra.AbsoluteConstraints(10, 370, 460, -1));
+        contentPanel.add(referencesLabel, new org.netbeans.lib.awtextra.AbsoluteConstraints(10, 360, 460, -1));
 
         nodeNameTextField.setDisabledTextColor(new java.awt.Color(102, 102, 102));
-        contentPanel.add(nodeNameTextField, new org.netbeans.lib.awtextra.AbsoluteConstraints(100, 330, 380, -1));
+        contentPanel.add(nodeNameTextField, new org.netbeans.lib.awtextra.AbsoluteConstraints(100, 320, 380, -1));
 
         NodeNameLabel.setFont(new java.awt.Font("Lucida Grande", 1, 13)); // NOI18N
         NodeNameLabel.setText("Node Name:");
-        contentPanel.add(NodeNameLabel, new org.netbeans.lib.awtextra.AbsoluteConstraints(10, 340, -1, -1));
+        contentPanel.add(NodeNameLabel, new org.netbeans.lib.awtextra.AbsoluteConstraints(10, 330, -1, -1));
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(this);
         this.setLayout(layout);
@@ -295,7 +303,8 @@ public class DescriptionPanelView extends JPanel {
     
     public boolean processDescriptionPanel() {
         if (getNodeName().trim().length() == 0) {
-            nodeEditor.setEditorMessage("Node Name can not be empty.", true);
+            activityLogs.error("User entered empty node name.");
+            nodeEditor.setEditorMessage("Node Name can not be empty.");
             return false;
         }
         
@@ -304,14 +313,16 @@ public class DescriptionPanelView extends JPanel {
             if (!duplicatedNode(getNodeName())) {
                 try {
                     currentVertex.setName(getNodeName().trim());
+                    // Set title of NodeEditor to the New Name
+                    nodeEditor.setTitle("Node Editor - " + currentVertex.getName());
                 } catch (Exception ex) {
-                    nodeEditor.setEditorMessage(ex.getMessage(), true);
+                    nodeEditor.setEditorMessage(ex.getMessage());
                     setTextFieldBackground(Color.RED);
                     activityLogs.debug(ex.getMessage());
                     return false;
                 }
             } else {
-                nodeEditor.setEditorMessage("The node name is already used by another node. Please choose a new name for this node.", true);
+                nodeEditor.setEditorMessage("The node name is already used by another node. Please choose a new name for this node.");
                 setTextFieldBackground(Color.RED);
                 activityLogs.debug("User entered duplicate node name");
                 return false;
@@ -319,7 +330,7 @@ public class DescriptionPanelView extends JPanel {
         }
         
         if (getNodeDesc().trim().isEmpty()) {
-            nodeEditor.setEditorMessage("Please provide correct description for this node.", true);
+            nodeEditor.setEditorMessage("Please provide correct description for this node.");
             setTextFieldBackground(Color.RED);
             activityLogs.debug("User entered incorrect description");
             return false;
@@ -340,11 +351,15 @@ public class DescriptionPanelView extends JPanel {
     }
     
     public void setTextFieldBackground(Color c) {
+        if(ApplicationContext.isAuthorMode())
+            return;
         nodeNameTextField.setBackground(c);
         quantityDescriptionTextField.setBackground(c);
     }
     
     public void resetTextFieldBackground() {
+        if(ApplicationContext.isAuthorMode())
+            return;
         nodeNameTextField.setBackground(Color.white);
         quantityDescriptionTextField.setBackground(Color.white);
     }
