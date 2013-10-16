@@ -1,0 +1,26 @@
+<?xml version="1.0"?>
+<!--
+To change this template, choose Tools | Templates
+and open the template in the editor.
+-->
+
+<xs:schema version="1.0"
+           xmlns:xs="http://www.w3.org/2001/XMLSchema"
+           elementFormDefault="qualified">
+
+</xs:schema>
+
+<xs:annotation>
+    <xs:documentation xml:lang="en">
+        This XML Schema defines the XML used to define problems for the Dragoon
+        Intelligent Authoring System. 
+        Visit https://github.com/rptiwari/LaitsV3/blob/master/documentation/xml-style.md
+        for further documentation. Authored by Brandon Strong.
+    </xs:documentation>
+</xs:annotation>
+
+<xs:complexType name="Task">
+    <xs:sequence>
+        
+    </xs:sequence>        
+</xs:complexType>

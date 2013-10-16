@@ -151,7 +151,8 @@ can then be colored appropriately by the program.
 ## Example of a Complete XML Document ##
 
 The following code shows how the new XML specification will appear in an XML 
-document.
+document. It shows the problem partially completed by the student, with one node
+completed and a second node partially completed.
 
     <?xml version="1.0" encoding="UTF-8"?>
 
