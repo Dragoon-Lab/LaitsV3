@@ -1,5 +1,6 @@
 package edu.asu.laits.gui.toolbars;
 
+import edu.asu.laits.editor.ApplicationContext;
 import javax.swing.JToolBar;
 import javax.swing.JButton;
 import javax.swing.ImageIcon;
@@ -10,7 +11,7 @@ import edu.asu.laits.gui.menus.EditMenu;
 import javax.swing.Box;
 
 /**
- * A toolbar with quick buttons to perform some edit operations.
+ * A tool bar with quick buttons to perform some edit operations.
  */
 public class EditToolBar extends JToolBar {
 
@@ -28,28 +29,7 @@ public class EditToolBar extends JToolBar {
         this.graphPane = graphPane;
         this.editMenu = editMenu;
         initialize();
-        graphPane.addUndoAndRedoAbleListener(new UndoAndRedoAbleListener() {
-            public void canNotRedo() {
-                getRedoButton().setEnabled(false);
-
-            }
-
-            public void canNotUndo() {
-                getUndoButton().setEnabled(false);
-
-            }
-
-            public void canRedo() {
-                getRedoButton().setEnabled(true);
-
-            }
-
-            public void canUndo() {
-                getUndoButton().setEnabled(true);
-
-            }
-        });
-
+        configureEditMenuForModes();
     }
 
     /**
@@ -63,6 +43,35 @@ public class EditToolBar extends JToolBar {
         this.add(getRedoButton());
     }
 
+    /**
+     * Configures EditToolBar for different modes.
+     * Ideally this should be done in Controller for different modes.
+     */
+    private void configureEditMenuForModes(){
+        if (ApplicationContext.isCoachedMode() || ApplicationContext.isTestMode()) {
+            undoButton.setEnabled(false);
+            redoButton.setEnabled(false);            
+        } else {
+            graphPane.addUndoAndRedoAbleListener(new UndoAndRedoAbleListener() {
+                public void canNotRedo() {
+                    getRedoButton().setEnabled(false);
+                }
+
+                public void canNotUndo() {
+                    getUndoButton().setEnabled(false);
+                }
+
+                public void canRedo() {
+                    getRedoButton().setEnabled(true);
+                }
+
+                public void canUndo() {
+                    getUndoButton().setEnabled(true);
+                }
+            });
+        }
+    }
+    
     /**
      * This method initializes undoButton
      */

@@ -14,6 +14,7 @@ import java.awt.Dimension;
 import java.awt.Toolkit;
 import javax.swing.JButton;
 import javax.swing.JDialog;
+import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import org.apache.log4j.Logger;
 
@@ -66,7 +67,10 @@ public class CreateNewNodeDialog extends javax.swing.JDialog {
         editorMsgLabel.setVisible(false);
         if(ApplicationContext.getAppMode().equals("COACHED")){
             cancelButton.setEnabled(false);
+        } if(ApplicationContext.isAuthorMode() || ApplicationContext.isTestMode()) {
+            cancelButton.setText("Enter");
         }
+        
         setVisible(true);
         setResizable(false);
     }
@@ -264,14 +268,14 @@ public class CreateNewNodeDialog extends javax.swing.JDialog {
     
     private void close() {
         logs.debug("Closing Create New Node Dialog");
-        if(ApplicationContext.isAuthorMode()){
+        if(ApplicationContext.isAuthorMode() || ApplicationContext.isTestMode()){
             dPanel.processDescriptionPanel();
         }
         
         // This if statement seems problematic 
         if (currentVertex.getName().equals("") || currentVertex.getDescriptionStatus().equals(Vertex.DescriptionStatus.INCORRECT)) {
-            nodeEditorView.getGraphPane().setSelectionCell(currentVertex.getJGraphVertex());
-            nodeEditorView.getGraphPane().removeSelected();
+            MainWindow.getInstance().getGraphEditorPane().setSelectionCell(currentVertex.getJGraphVertex());
+            MainWindow.getInstance().getGraphEditorPane().removeSelected();
         } else {
             // Initializing Calculations Panel again doesn't see necessary
             //ne.getCalculationsPanel().initPanel();
@@ -288,13 +292,8 @@ public class CreateNewNodeDialog extends javax.swing.JDialog {
     }
     
     public void setEditorMessage(String msg, boolean err) {
-        editorMsgLabel.setText(msg);
-        if (err) {
-            editorMsgLabel.setForeground(Color.RED);
-        } else {
-            editorMsgLabel.setForeground(Color.BLUE);
-        }
-        editorMsgLabel.setVisible(true);
+        logs.debug("Setting NE Statues message to " + msg);
+        JOptionPane.showMessageDialog(this, msg, "Node Editor Error", JOptionPane.ERROR_MESSAGE);                            
     }
     
     // Getter for UI Elements
