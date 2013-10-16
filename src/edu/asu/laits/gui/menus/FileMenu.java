@@ -147,8 +147,8 @@ public class FileMenu extends JMenu {
     private void initializeAuthorMenu() {
         this.setText("File");
         this.setMnemonic(KeyEvent.VK_F);
-        this.add(getNewFileMenuItem());
-        this.add(getJSeparator());
+ //       this.add(getNewFileMenuItem());
+ //       this.add(getJSeparator());
         this.add(getOpenFileMenuItem());
         this.add(getOpenLatestFileMenu());
         this.add(getJSeparator1());
