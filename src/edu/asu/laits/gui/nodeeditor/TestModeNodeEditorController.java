@@ -25,6 +25,7 @@ import edu.asu.laits.model.TaskSolution;
 import edu.asu.laits.model.Vertex;
 import java.awt.Color;
 import java.util.List;
+import javax.swing.JButton;
 import org.apache.log4j.Logger;
 
 /**
@@ -100,8 +101,9 @@ public class TestModeNodeEditorController extends NodeEditorController {
 
             if (tabToReturn == NodeEditorView.CALCULATIONS) {
                 logs.debug("Enabling Ok button for Calculations panel in Test Mode.");
-                view.getOKButton().setEnabled(true);
+                view.getCalculationsPanel().initPanel();                
             }
+            view.getOKButton().setEnabled(true);
         } 
         view.validate();
         view.repaint();
@@ -112,24 +114,25 @@ public class TestModeNodeEditorController extends NodeEditorController {
     }
 
     public void initActionButtons() {
+        logs.info("Initializing Action buttons in Test Mode Controller");
         initOkButton();
         initCloseButton();
         initCheckButton();
         initDemoButton();
-        super.resetActionButtonAfterDemoUsed();
+        //super.resetActionButtonAfterDemoUsed();
     }
 
     public void initCheckButton() {
-        view.getCheckButton().setVisible(true);
+        enableCheckDemoButtons(view.getCheckButton());
     }
 
     public void initDemoButton() {
-        super.initDemoButton();
-        view.getDemoButton().setVisible(true);
+        enableCheckDemoButtons(view.getDemoButton());
+        super.diasableDemoForChanllengeProblems();       
     }
 
     public void initOkButton() {
-        view.getOKButton().setText("Ok");
+        view.getOKButton().setText("Ok");    
         view.getOKButton().setEnabled(false);
     }
 
@@ -185,11 +188,24 @@ public class TestModeNodeEditorController extends NodeEditorController {
 
     public void processOKAction() throws NodeEditorException {
         logs.debug("Processing Test Mode OK Button Action");
-
-        if (view.getCalculationsPanel().processCalculationsPanel()) {
+        
+        if(openVertex.getVertexType().equals(Vertex.VertexType.DEFAULT)) {
+            view.dispose();
+        } 
+        
+        else if (view.getCalculationsPanel().processCalculationsPanel()) {
             PersistenceManager.saveSession();
             MainWindow.refreshGraph();
             view.dispose();
+        }
+    }
+
+    private void enableCheckDemoButtons(JButton button) {
+        if(view.getTabbedPane().getSelectedIndex() == NodeEditorView.DESCRIPTION){
+            if(openVertex.isDescriptionDone())
+                button.setEnabled(false);
+            else 
+                button.setEnabled(true);
         }
     }
 }
