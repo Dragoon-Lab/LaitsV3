@@ -51,7 +51,6 @@ public class MainMenu extends JMenuBar {
         this.add(getViewMenu());
         this.add(getModelMenu());
         this.add(getHelpAboutMenu());
-
     }
 
     /**

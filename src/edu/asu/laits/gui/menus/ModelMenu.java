@@ -338,8 +338,7 @@ public class ModelMenu extends JMenu {
                     me.run();
                     dumpTableValues(me);
 
-                    if (ApplicationContext.isStudentMode()
-                            || ApplicationContext.isCoachedMode()) {
+                    if (!ApplicationContext.isAuthorMode()) {
                         me.validateStudentGraph();
                     }
 
@@ -348,7 +347,7 @@ public class ModelMenu extends JMenu {
 
                     // Enable Done Button
                     if (ApplicationContext.isProblemSolved()) {
-                        mainWindow.getModelToolBar().enableDoneButton();
+                        //mainWindow.getModelToolBar().enableDoneButton();
                     }
 
                 } catch (ModelEvaluationException ex) {

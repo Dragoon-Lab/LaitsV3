@@ -57,8 +57,7 @@ public class PlotPanel extends JXTaskPane {
         v.add(vertex);
         this.units = units;
 
-        if (ApplicationContext.isStudentMode()
-                || ApplicationContext.isCoachedMode()) {
+        if (!ApplicationContext.isAuthorMode()) {
             Vertex correctVertex = ApplicationContext.getCorrectSolution()
                     .getSolutionGraph().getVertexByName(vertex.getName());
             v.add(correctVertex);
@@ -163,17 +162,15 @@ public class PlotPanel extends JXTaskPane {
         plot.setAxisOffset(new RectangleInsets(5.0, 5.0, 5.0, 5.0));
         plot.setDomainCrosshairVisible(true);
         plot.setRangeCrosshairVisible(true);
-        plot.getRangeAxis().setRange(((XYSeriesCollection)xydataset).getRangeLowerBound(true), ((XYSeriesCollection)xydataset).getRangeUpperBound(true));
-       
+
+        //plot.getRangeAxis().setRange(((XYSeriesCollection)xydataset).getRangeLowerBound(true), ((XYSeriesCollection)xydataset).getRangeUpperBound(true));
+
         NumberAxis domain = (NumberAxis) plot.getDomainAxis();
-        // Don't want any padding on left or right.
-        
-        //fix for author mode, without looking at ram
-        if(end < start || start == end)
-            end=10.0;
-        
         domain.setRange(start, end);
-        
+        double tick = Math.abs(end - start) / 20;
+        domain.setTickUnit(new NumberTickUnit(tick));
+        domain.setVerticalTickLabels(true);
+       
         XYItemRenderer r = plot.getRenderer();
         if (r instanceof XYLineAndShapeRenderer) {
             XYLineAndShapeRenderer renderer = (XYLineAndShapeRenderer) r;

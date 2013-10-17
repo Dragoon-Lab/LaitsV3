@@ -20,10 +20,9 @@ package edu.asu.laits.gui.nodeeditor;
 
 import edu.asu.laits.editor.ApplicationContext;
 import edu.asu.laits.gui.BlockingToolTip;
+import edu.asu.laits.gui.MainWindow;
 import edu.asu.laits.model.Graph;
 import edu.asu.laits.model.SolutionDTreeNode;
-import edu.asu.laits.model.SolutionNode;
-import edu.asu.laits.model.TaskSolution;
 import edu.asu.laits.model.Vertex;
 import java.awt.Color;
 import java.util.Enumeration;
@@ -42,7 +41,9 @@ import javax.swing.JComponent;
 import javax.swing.JLabel;
 
 /**
- *
+ * Description panel specifically used in Calculation Panel's create new node button.
+ * This needs refactoring in order to remove duplicate code.
+ * 
  * @author ramayantiwari
  */
 public class DescriptionPanelView extends JPanel {
@@ -53,6 +54,10 @@ public class DescriptionPanelView extends JPanel {
     private boolean triedDuplicate = false;
     private static DescriptionPanelView descView;
     private NodeEditorView nodeEditor;
+    
+    /**
+     * Loggers
+     */
     private static Logger logs = Logger.getLogger("DevLogs");
     private static Logger activityLogs = Logger.getLogger("ActivityLogs");
     
@@ -65,8 +70,7 @@ public class DescriptionPanelView extends JPanel {
     
     public void initPanel() {
         logs.info("Initializing Description Panel");
-        if (ApplicationContext.isStudentMode() || 
-                ApplicationContext.isCoachedMode()) {
+        if (!ApplicationContext.isAuthorMode()) {
             this.nodeNameTextField.setEditable(false);
             this.quantityDescriptionTextField.setEditable(false);
             initTree();
@@ -243,12 +247,11 @@ public class DescriptionPanelView extends JPanel {
             this.quantityDescriptionTextField.setText(sb.toString().trim());
             this.nodeNameTextField.setText(node.getNodeName());
             this.repaint();
+            
             if (ApplicationContext.isCoachedMode()) {
                 addHelpBalloon(ApplicationContext.getFirstNextNode(), "descFilled");
-            }
-            
-        }
-        
+            }            
+        }        
     }//GEN-LAST:event_decisionTreeValueChanged
     
     private void addHelpBalloon(String node, String timing) {
@@ -342,7 +345,7 @@ public class DescriptionPanelView extends JPanel {
     
     private boolean duplicatedNode(String nodeName) {
         
-        Graph graph = nodeEditor.getGraphPane().getModelGraph();
+        Graph graph = MainWindow.getInstance().getGraphEditorPane().getModelGraph();
         if (graph.getVertexByName(nodeName) != null && this.nodeEditor.getOpenVertex().getName() != nodeName) {
             return true;
         } else {

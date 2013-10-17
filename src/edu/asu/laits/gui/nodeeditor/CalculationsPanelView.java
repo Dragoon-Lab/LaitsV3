@@ -46,6 +46,7 @@ import edu.asu.laits.model.Vertex.VertexType;
 import java.util.Collections;
 import java.util.Comparator;
 import java.util.HashSet;
+import javax.swing.JOptionPane;
 
 
 import org.apache.log4j.Logger;
@@ -72,7 +73,7 @@ public class CalculationsPanelView extends javax.swing.JPanel {
         initComponents();
         nodeEditor = ne;
         openVertex = ne.getOpenVertex();
-        modelGraph = ne.getGraphPane().getModelGraph();
+        modelGraph = MainWindow.getInstance().getGraphEditorPane().getModelGraph();
         initPanel();        
     }
     
@@ -329,8 +330,7 @@ public class CalculationsPanelView extends javax.swing.JPanel {
     }
     
     private void disableAllGraphs() {
-        Iterator<Vertex> vertices = nodeEditor.getGraphPane().getModelGraph().
-        vertexSet().iterator();
+        Iterator<Vertex> vertices = modelGraph.vertexSet().iterator();
         
         while (vertices.hasNext()) {
             vertices.next().setGraphsStatus(Vertex.GraphsStatus.UNDEFINED);
@@ -361,13 +361,13 @@ public class CalculationsPanelView extends javax.swing.JPanel {
         if (currentVertex.getVertexType().equals(Vertex.VertexType.CONSTANT)) {
             logs.debug("Setting Constant Value as " + correctNode.getNodeEquation());
             fixedValueInputBox.setText(correctNode.getNodeEquation());
-            reloadGraphPane();
+            MainWindow.refreshGraph();
         }
         
         if (currentVertex.getVertexType().equals(Vertex.VertexType.FLOW)
             || currentVertex.getVertexType().equals(Vertex.VertexType.STOCK)) {
             List<String> correctInputs = correctNode.getInputNodes();
-            List<String> availableInputs = nodeEditor.getGraphPane().getModelGraph().getVerticesByName();
+            List<String> availableInputs = modelGraph.getVerticesByName();
             
             availableInputs.remove(nodeEditor.getOpenVertex().getName());
             
@@ -391,11 +391,6 @@ public class CalculationsPanelView extends javax.swing.JPanel {
         
         return true;
         
-    }
-    
-    private void reloadGraphPane() {
-        nodeEditor.getGraphPane().getLayoutCache().reload();
-        nodeEditor.getGraphPane().repaint();
     }
     
     private void addHelpBalloon(String timing){
@@ -670,18 +665,41 @@ public class CalculationsPanelView extends javax.swing.JPanel {
             availableInputsJList.removeSelectionInterval(0, availableInputJListModel.getSize());
         }
     }
-           
+    
+    private boolean hasCorrectNodesDefined(){
+        List<String> correctNodeNames = ApplicationContext.getCorrectSolution()
+                .getCorrectNodeNames();
+        Iterator<Vertex> allVertices = MainWindow.getInstance().getGraphEditorPane().getModelGraph().vertexSet().iterator();
+        List<String> studentNodeNames = new ArrayList<String>();
+        while (allVertices.hasNext()) {
+            studentNodeNames.add(allVertices.next().getName());
+        }
+        if (studentNodeNames.size() < correctNodeNames.size()) {
+            return false;
+        } else {
+            return true;
+        }
+    }
+    
     private void buttonCreateNodeActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_buttonCreateNodeActionPerformed
         activityLogs.debug("User pressed Create node button on Calculations tab for Node " + openVertex.getName());
-        
+    
+        // Check if Creating new node is allowed in non authot modes
+        if(! ApplicationContext.isAuthorMode()){
+            if(hasCorrectNodesDefined()){
+                JOptionPane.showMessageDialog(nodeEditor, "Correct Nodes are already defined.", "Node Editor Error", JOptionPane.ERROR_MESSAGE);                            
+                return;
+            }
+        }
+            
         if(openVertex.getVertexType().equals(Vertex.VertexType.STOCK)  && !fixedValueInputBox.getText().isEmpty()){
             openVertex.setInitialValue(Double.valueOf(fixedValueInputBox.getText()));
         }
         
         Vertex v = new Vertex();
         // Should Index be set like this ???
-        v.setVertexIndex(nodeEditor.getGraphPane().getModelGraph().getNextAvailableIndex());
-        nodeEditor.getGraphPane().addVertex(v);
+        v.setVertexIndex(modelGraph.getNextAvailableIndex());
+        MainWindow.getInstance().getGraphEditorPane().addVertex(v);
 
         CreateNewNodeDialog newNodeDialog = new CreateNewNodeDialog(nodeEditor, v);
     }//GEN-LAST:event_buttonCreateNodeActionPerformed
@@ -780,7 +798,7 @@ public class CalculationsPanelView extends javax.swing.JPanel {
                     if(availableVariables.contains(node)){
                         logs.info("Adding Edge from Node '" + node + "'");
                         Vertex source = modelGraph.getVertexByName(node);
-                        nodeEditor.getGraphPane().addEdge(source, openVertex);                                          
+                        MainWindow.getInstance().getGraphEditorPane().addEdge(source, openVertex);                                          
                     }                    
                 }
                 

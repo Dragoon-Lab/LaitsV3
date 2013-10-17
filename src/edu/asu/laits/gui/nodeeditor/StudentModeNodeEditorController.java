@@ -18,6 +18,7 @@
 package edu.asu.laits.gui.nodeeditor;
 
 import edu.asu.laits.editor.ApplicationContext;
+import edu.asu.laits.gui.MainWindow;
 import edu.asu.laits.model.SolutionNode;
 import edu.asu.laits.model.TaskSolution;
 import edu.asu.laits.model.Vertex;
@@ -131,7 +132,7 @@ public class StudentModeNodeEditorController extends NodeEditorController {
         String giveupNode = null;
 
             for (SolutionNode name : correctNodeNames) {
-                if (view.getGraphPane().getModelGraph().getVertexByName(name.getNodeName()) == null) {
+                if (MainWindow.getInstance().getGraphEditorPane().getModelGraph().getVertexByName(name.getNodeName()) == null) {
                     giveupNode = name.getNodeName();
                     break;
                 }

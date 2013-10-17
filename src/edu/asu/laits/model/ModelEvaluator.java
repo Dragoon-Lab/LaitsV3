@@ -70,7 +70,7 @@ public class ModelEvaluator {
     }
 
     /**
-     * Test if current model can be run
+     * Test if current model can be run.
      *
      * @return
      */
@@ -78,6 +78,22 @@ public class ModelEvaluator {
         Iterator<Vertex> allVertices = currentGraph.vertexSet().iterator();
 
         // In STUDENT Mode Verify if all the correct nodes are defined
+        boolean correctNodesDefined = correctNodesDefined();
+        if (ApplicationContext.isTestMode() && correctNodesDefined) {
+            Vertex thisVertex;
+            while (allVertices.hasNext()) {
+                thisVertex = allVertices.next();
+                if (thisVertex.getVertexType().equals(Vertex.VertexType.DEFAULT)) {
+                    return false;
+                } else if(!thisVertex.getVertexType().equals(Vertex.VertexType.CONSTANT)) {
+                  if(thisVertex.getEquation().isEmpty()) {
+                      return false;
+                  }  
+                }
+            }
+            return true;
+        }
+        
         if (ApplicationContext.isCoachedMode()) {
             if (!correctNodesDefined()) {
                 return false;
@@ -119,7 +135,23 @@ public class ModelEvaluator {
         Iterator<Vertex> allVertices = currentGraph.vertexSet().iterator();
         List<String> studentNodeNames = new ArrayList<String>();
         while (allVertices.hasNext()) {
-            studentNodeNames.add(allVertices.next().getName());
+            Vertex current = allVertices.next();
+            
+            if(ApplicationContext.isTestMode()){
+                if(ApplicationContext.getCorrectSolution().checkNodePlan(current.getName(), current.getVertexType())){
+                    current.setPlanStatus(Vertex.PlanStatus.CORRECT);
+                }else {
+                    current.setPlanStatus(Vertex.PlanStatus.INCORRECT);
+                }
+                
+                if(ApplicationContext.getCorrectSolution().checkNodeCalculations(current)){
+                    current.setCalculationsStatus(Vertex.CalculationsStatus.CORRECT);
+                }else {
+                    current.setCalculationsStatus(Vertex.CalculationsStatus.INCORRECT);
+                }
+            }
+            
+            studentNodeNames.add(current.getName());
         }
 
         List<String> correctNodeNames = ApplicationContext.getCorrectSolution()
