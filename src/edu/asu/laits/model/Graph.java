@@ -117,6 +117,9 @@ public class Graph<V, E> extends ListenableDirectedGraph<V, E> implements
      * @param vertex 
      */
     public void removeIncomingEdgesOf(V vertex){
+        Vertex v = (Vertex) vertex;
+        logs.debug("Removing all the incoming edges of Vertex : " + v.getName());
+        
         Set<E> edgeSet = incomingEdgesOf(vertex);
         ArrayList<E> ee = new ArrayList<E>(edgeSet);
         for(E e : ee){

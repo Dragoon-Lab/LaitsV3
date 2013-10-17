@@ -122,7 +122,8 @@ public class GraphLoader {
             logs.debug("Adding Vertex:  " + vertex.getName() + " at Index: " + vertex.getVertexIndex() + " to the GraphPane");
 
             if (!ApplicationContext.isAuthorMode()) {
-                ApplicationContext.setNextNodes(vertex.getName());
+                if(vertex.getName() != null && !vertex.getName().isEmpty())
+                    ApplicationContext.setNextNodes(vertex.getName());
             }
         }
 

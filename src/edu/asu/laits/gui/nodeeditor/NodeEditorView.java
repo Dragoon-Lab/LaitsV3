@@ -151,7 +151,6 @@ public class NodeEditorView extends javax.swing.JDialog {
             tabPane.setSelectedIndex(CALCULATIONS);
         } else if (!openVertex.getDescriptionStatus().equals(Vertex.DescriptionStatus.UNDEFINED)
                 && !openVertex.getDescriptionStatus().equals(Vertex.DescriptionStatus.INCORRECT)) {
-            logs.debug("Setting Plan as current");
             logs.debug("Setting Plan Panel as Current");
             activityLogs.debug("Node Editor is opend with Plan Tab for Node: " + openVertex.getName());
             tabPane.setSelectedIndex(PLAN);
@@ -172,10 +171,9 @@ public class NodeEditorView extends javax.swing.JDialog {
     private void setCheckGiveupButtons() {
         logs.debug("Setting Check and Giveup Button for Tab " + getTabName(tabPane.getSelectedIndex()));
 
-        if ((ApplicationContext.isStudentMode()
-                || ApplicationContext.isCoachedMode()) && tabPane.getSelectedIndex() != PLAN) {
+        if (!ApplicationContext.isAuthorMode() && tabPane.getSelectedIndex() != PLAN) {
             logs.debug("Enabling Check and Giveup");
-            this.checkButton.setEnabled(true);
+            this.getCheckButton().setEnabled(true);
             this.demoButton.setEnabled(true);
 
             String taskPhase = ApplicationContext.getCurrentTask().getPhase();
@@ -189,26 +187,26 @@ public class NodeEditorView extends javax.swing.JDialog {
                 case DESCRIPTION:
                     if (openVertex.isDescriptionDone()) {
                         demoButton.setEnabled(false);
-                        checkButton.setEnabled(false);
+                        getCheckButton().setEnabled(false);
                     }
                     break;
                 case PLAN:
                     if (openVertex.isPlanDone()) {
                         demoButton.setEnabled(false);
-                        checkButton.setEnabled(false);
+                        getCheckButton().setEnabled(false);
                     }
                     break;
                 case CALCULATIONS:
                     if (openVertex.isCalculationsDone()) {
                         demoButton.setEnabled(false);
-                        checkButton.setEnabled(false);
+                        getCheckButton().setEnabled(false);
                     }
                     break;
             }
 
         } else {
             logs.debug("Disabling Check and Giveup");
-            this.checkButton.setEnabled(false);
+            this.getCheckButton().setEnabled(false);
             this.demoButton.setEnabled(false);
         }
     }
@@ -228,7 +226,7 @@ public class NodeEditorView extends javax.swing.JDialog {
             openVertex.setDescriptionStatus(Vertex.DescriptionStatus.CORRECT);
             //graphPane.getMainFrame().getMainMenu().getModelMenu().addDeleteNodeMenu();
             dPanel.setTextFieldBackground(Color.GREEN);
-            checkButton.setEnabled(false);
+            getCheckButton().setEnabled(false);
             demoButton.setEnabled(false);
             activityLogs.debug("User entered correct description");
             dPanel.setEditableTree(false);
@@ -256,7 +254,7 @@ public class NodeEditorView extends javax.swing.JDialog {
             openVertex.setDescriptionStatus(Vertex.DescriptionStatus.CORRECT);
             //graphPane.getMainFrame().getMainMenu().getModelMenu().addDeleteNodeMenu();
             dPanel.setTextFieldBackground(Color.GREEN);
-            checkButton.setEnabled(false);
+            getCheckButton().setEnabled(false);
             demoButton.setEnabled(false);
             activityLogs.debug("User entered correct description");
             dPanel.setEditableTree(false);
@@ -290,7 +288,7 @@ public class NodeEditorView extends javax.swing.JDialog {
                 openVertex.setPlanStatus(PlanStatus.CORRECT);
             
             }
-            checkButton.setEnabled(false);
+            getCheckButton().setEnabled(false);
             demoButton.setEnabled(false);
             activityLogs.debug("User entered correct Plan");
             pPanel.setEditableRadio(false);
@@ -306,7 +304,7 @@ public class NodeEditorView extends javax.swing.JDialog {
             pPanel.giveUpPlanPanel();
             pPanel.processPlanPanel();
             openVertex.setPlanStatus(PlanStatus.GAVEUP);
-            checkButton.setEnabled(false);
+            getCheckButton().setEnabled(false);
             demoButton.setEnabled(false);
             pPanel.setEditableRadio(false);
             tabPane.setEnabledAt(CALCULATIONS, true);
@@ -324,7 +322,7 @@ public class NodeEditorView extends javax.swing.JDialog {
         // Check for fixed value
         if (correctSolution.checkNodeCalculations(openVertex)) {
             cPanel.setCheckedBackground(Color.GREEN);
-            checkButton.setEnabled(false);
+            getCheckButton().setEnabled(false);
             demoButton.setEnabled(false);
             
             activityLogs.debug("User entered correct Calculations.");
@@ -345,10 +343,6 @@ public class NodeEditorView extends javax.swing.JDialog {
                 + " Initial Value : " + openVertex.getInitialValue() + " Calculations as " + openVertex.getEquation());
     }
 
-    public GraphEditorPane getGraphPane() {
-        return graphPane;
-    }
-
     /**
      * Make necessary clean up and save graph session when NodeEditor closes
      */
@@ -362,10 +356,6 @@ public class NodeEditorView extends javax.swing.JDialog {
         }
 
         activityLogs.debug("Closing NodeEditor because of Close action.");
-//        if (!ApplicationContext.isCoachedMode()) {
-//            MainWindow.getInstance().getModelToolBar().enableDeleteNodeButton();
-//            MainWindow.getInstance().getMainMenu().getModelMenu().enableDeleteNodeMenu();
-//        }
 
         // Save Student's session to server
         PersistenceManager.saveSession();
@@ -607,6 +597,7 @@ public class NodeEditorView extends javax.swing.JDialog {
     }
 
     private void demoButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_demoButtonActionPerformed
+        logs.debug("Demo Button Action Performed");
         // Action for Giveup Button
         switch (tabPane.getSelectedIndex()) {
             case DESCRIPTION:
@@ -621,11 +612,10 @@ public class NodeEditorView extends javax.swing.JDialog {
                 dPanel.processDescriptionPanel();
                 openVertex.setDescriptionStatus(Vertex.DescriptionStatus.GAVEUP);
                 setTitle(openVertex.getName());
-                //graphPane.getMainFrame().getMainMenu().getModelMenu().addDeleteNodeMenu();
                 validate();
                 repaint();
                 openVertex.setDescriptionStatus(Vertex.DescriptionStatus.GAVEUP);
-                checkButton.setEnabled(false);
+                getCheckButton().setEnabled(false);
                 demoButton.setEnabled(false);
                 dPanel.setEditableTree(false);
                 tabPane.setEnabledAt(PLAN, true);
@@ -638,7 +628,7 @@ public class NodeEditorView extends javax.swing.JDialog {
                 pPanel.giveUpPlanPanel();
                 pPanel.processPlanPanel();
                 openVertex.setPlanStatus(Vertex.PlanStatus.GAVEUP);
-                checkButton.setEnabled(false);
+                getCheckButton().setEnabled(false);
                 demoButton.setEnabled(false);
                 pPanel.setEditableRadio(false);
                 tabPane.setEnabledAt(CALCULATIONS, true);
@@ -653,7 +643,7 @@ public class NodeEditorView extends javax.swing.JDialog {
                     openVertex.setCalculationsStatus(Vertex.CalculationsStatus.GAVEUP);
                     cPanel.setEditableCalculations(false);
                     buttonCancel.setEnabled(true);
-                    checkButton.setEnabled(false);
+                    getCheckButton().setEnabled(false);
                     demoButton.setEnabled(false);
 
                 } else {
@@ -671,7 +661,7 @@ public class NodeEditorView extends javax.swing.JDialog {
         // Hash table should be created earlier; See Bug #2085
         Map<String, JComponent> map = new HashMap<String, JComponent>();
         map.put("tabPane", tabPane);
-        map.put("checkButton", checkButton);
+        map.put("checkButton", getCheckButton());
         map.put("giveUpButton", demoButton);
         map.put("buttonCancel", buttonCancel);
         //map.put("editorMsgLabel", editorMsgLabel);
@@ -718,6 +708,7 @@ public class NodeEditorView extends javax.swing.JDialog {
     }
 
     public JButton getOKButton() {
+        logs.debug("Getting OK Button");
         return buttonOK;
     }
 
@@ -726,10 +717,12 @@ public class NodeEditorView extends javax.swing.JDialog {
     }
 
     public JButton getCheckButton() {
+        logs.debug("Getting Check Button");
         return checkButton;
     }
 
     public JButton getDemoButton() {
+        logs.debug("Getting Demo Button");
         return demoButton;
     }
 

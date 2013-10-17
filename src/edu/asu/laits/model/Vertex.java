@@ -24,7 +24,7 @@ import org.jgraph.graph.GraphConstants;
 /**
  * Class To Hold the information about a Node in the Graph.
  */
-public class Vertex {
+public class Vertex{
     
     private transient DefaultGraphCell jGraphVertex;
 
