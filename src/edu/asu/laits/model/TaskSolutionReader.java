@@ -176,8 +176,7 @@ public class TaskSolutionReader {
             }
             
             // Read all the Input Nodes of this node
-             if(ApplicationContext.isCoachedMode() && order == 1 && 
-                     ApplicationContext.getNextNodes().isEmpty()){
+             if(ApplicationContext.isCoachedMode() && order == 1){
 //              newNode.setNodeOrder(Integer.parseInt(node.elementTextTrim("Order")));
 //              System.out.println("Added element" + node.elementTextTrim("Order") + " " + node.elementTextTrim("CorrectDescription"));
                 ApplicationContext.addNextNodes(node.attributeValue("name"));
