@@ -230,8 +230,6 @@ public class Vertex{
         return vertexInfoClone;
     }
 
-    
-
     public DefaultGraphCell getJGraphVertex() {
         return jGraphVertex;
     }
@@ -258,10 +256,7 @@ public class Vertex{
             e.printStackTrace();
             throw new VertexReaderException();
         }
-
     }
-
-    
 
     public Color getBackgroundColor() {
         return backgroundColor;
@@ -366,4 +361,14 @@ public class Vertex{
         }
     }
     
+    public void printVertexInformation(){
+        System.out.println("NodeName : " + getName());
+        System.out.println("NodeDesc : " + getCorrectDescription());
+        System.out.println("NodeType : " + getVertexType());
+        System.out.println("NodeInitialVal : " + getInitialValue());
+        System.out.println("NodeEquation : " + getEquation());
+        System.out.println("DescStatus : " + getDescriptionStatus());
+        System.out.println("PlanStatus : " + getPlanStatus());
+        System.out.println("CalcStatus : " + getCalculationsStatus());        
+    }
 }

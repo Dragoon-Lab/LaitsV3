@@ -78,12 +78,13 @@ public class CalculationsPanelView extends javax.swing.JPanel {
     }
     
     public void initPanel() {
-        logs.debug("Initializing Calculations Panel for Node "+openVertex.getName());
+        logs.debug("Initializing Calculations Panel for Node " + openVertex.getName() + " Type: " + openVertex.getVertexType());
         // Initializing available input nodes on the avaialable input jListBox
         initializeAvailableInputNodes();
         
         if(openVertex.isCalculationsDone()
            && !ApplicationContext.isAuthorMode()) {
+            logs.debug("Calculations were done so disabling edit on Calculations Panel");
             setEditableCalculations(false);
         }
         
@@ -189,6 +190,7 @@ public class CalculationsPanelView extends javax.swing.JPanel {
         fixedValueInputBox.setVisible(false);
         fixedValueLabel.setVisible(false);
         calculatorPanel.setVisible(true);
+        setEditableCalculations(true);
         accumulatorTimeLabel.setVisible(false);
         formulaInputArea.setText("");
         valuesLabel.setText(openVertex.getName() + " =");
@@ -196,8 +198,10 @@ public class CalculationsPanelView extends javax.swing.JPanel {
     
     public void preparePanelForStock() {        
         fixedValueInputBox.setVisible(true);
+        fixedValueInputBox.setEnabled(true);
         fixedValueLabel.setVisible(true);
         calculatorPanel.setVisible(true);
+        setEditableCalculations(true);
         accumulatorTimeLabel.setVisible(true);
         formulaInputArea.setText("");
         
@@ -219,6 +223,8 @@ public class CalculationsPanelView extends javax.swing.JPanel {
     }
     
     private boolean processConstantVertex() {
+        logs.info("Processing Constant Vertex");
+        
         if (fixedValueInputBox.getText().isEmpty()) {
             nodeEditor.setEditorMessage("Please provide fixed value for this node.");
             return false;
@@ -234,6 +240,8 @@ public class CalculationsPanelView extends javax.swing.JPanel {
     }
     
     private boolean processStockInitialValue() {
+        logs.info("Processing Stock Initial Value");
+        
         if (fixedValueInputBox.getText().isEmpty()) {
             nodeEditor.setEditorMessage("Please provide fixed value for this node.");
             return false;
@@ -248,7 +256,9 @@ public class CalculationsPanelView extends javax.swing.JPanel {
         }
     }
 
-    private boolean processStockVertex() {        
+    private boolean processStockVertex() {   
+        logs.info("Processing Stock Vertex");      
+        
         if (processStockInitialValue() && validateEquation(formulaInputArea.getText().trim())) {
             // Check if equation is changed - disable graph
             if (!openVertex.getEquation().equals(formulaInputArea.getText().trim())) {
@@ -256,7 +266,7 @@ public class CalculationsPanelView extends javax.swing.JPanel {
             }            
             // Process the equation to create links
             processNodeEquation();
-            //openVertex.setEquation(formulaInputArea.getText().trim());
+            openVertex.setEquation(formulaInputArea.getText().trim());
             return true;
         } else {
             return false;
@@ -264,6 +274,7 @@ public class CalculationsPanelView extends javax.swing.JPanel {
     }
     
     private boolean processFlowVertex() {
+        logs.info("Processing Flow Vertex");
         if (validateEquation(formulaInputArea.getText().trim())) {
             if (!openVertex.getEquation().equals(formulaInputArea.getText().trim())) {
                 disableAllGraphs();
@@ -758,7 +769,7 @@ public class CalculationsPanelView extends javax.swing.JPanel {
         }
     }
     
-    private void processNodeEquation(){
+    private void processNodeEquation() {
         logs.debug("Processing NodeEquation to create edges");
         // Neglect spaces typed before or after the equation
         if (formulaInputArea.getText().trim().equals(openVertex.getEquation())) {

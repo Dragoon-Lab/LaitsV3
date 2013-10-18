@@ -61,17 +61,11 @@ public abstract class NodeEditorController{
     }
     
     protected void initDemoButton(){
-        String taskPhase = ApplicationContext.getCurrentTask().getPhase();
-
-        // Disable Giveup in Challege tasks
-        if (taskPhase.equalsIgnoreCase("Challenge")) {
-            view.getDemoButton().setEnabled(false);            
-            return;
-        }
+        diasableDemoForChanllengeProblems();
         resetActionButtonAfterDemoUsed();
     }
     
-    
+   
     protected void initOkButton(){
     
     }
@@ -141,6 +135,14 @@ public abstract class NodeEditorController{
         }
 
         return title;
+    }
+
+    protected void diasableDemoForChanllengeProblems() {
+        String taskPhase = ApplicationContext.getCurrentTask().getPhase();
+        // Disable Giveup in Challege tasks
+        if (taskPhase.equalsIgnoreCase("Challenge")) {
+            view.getDemoButton().setEnabled(false);            
+        }        
     }
     
     

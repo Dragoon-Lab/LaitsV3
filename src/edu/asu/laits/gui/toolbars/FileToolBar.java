@@ -1,5 +1,6 @@
 package edu.asu.laits.gui.toolbars;
 
+import edu.asu.laits.editor.ApplicationContext;
 import javax.swing.JToolBar;
 import javax.swing.JButton;
 import javax.swing.ImageIcon;
@@ -8,6 +9,7 @@ import edu.asu.laits.editor.GraphEditorPane;
 import edu.asu.laits.editor.listeners.GraphChangeListener;
 import edu.asu.laits.editor.listeners.GraphPropertiesChangeListener;
 import edu.asu.laits.editor.listeners.GraphSaveListener;
+import edu.asu.laits.editor.listeners.UndoAndRedoAbleListener;
 import edu.asu.laits.gui.menus.FileMenu;
 import edu.asu.laits.properties.GraphProperties;
 import javax.swing.Box;
@@ -31,10 +33,7 @@ public class FileToolBar extends JToolBar {
         super();
         this.graphPane = graphPane;
         this.fileMenu = fileMenu;
-        initialize();
-        GraphPropertiesChangeListener l = new MainGraphPropertiesChangeListener();
-        l.graphPropertiesChanged();
-        graphPane.addGraphPropertiesChangeListener(l);
+        initialize();        
     }
 
     /**
@@ -48,8 +47,25 @@ public class FileToolBar extends JToolBar {
         this.add(openGraphButton());
         this.add(Box.createHorizontalStrut(3)); 
         this.add(getSaveButton());
+        
+        configureEditMenuForModes();
     }
 
+    /**
+     * Configures EditToolBar for different modes.
+     * Ideally this should be done in Controller for different modes.
+     */
+    private void configureEditMenuForModes(){
+        if (ApplicationContext.isCoachedMode() || ApplicationContext.isTestMode()) {
+            newGraphButton.setEnabled(false);
+            openGraphButton.setEnabled(false);
+            saveGraphButton.setEnabled(false);
+        } else {
+            GraphPropertiesChangeListener l = new MainGraphPropertiesChangeListener();
+            l.graphPropertiesChanged();
+            graphPane.addGraphPropertiesChangeListener(l);
+        }
+    }
     /**
      * This method initializes newGraphButton
      */

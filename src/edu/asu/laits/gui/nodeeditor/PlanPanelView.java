@@ -119,12 +119,11 @@ public class PlanPanelView extends javax.swing.JPanel {
         panel.add(funPanel, "");
         
         add(panel, "growx, growy");
-        if(openVertex.getPlanStatus().equals(Vertex.PlanStatus.CORRECT)){
-            setSelectedPlan(planToString(openVertex.getVertexType()));
+        setSelectedPlan(planToString(openVertex.getVertexType()));
+        if(openVertex.getPlanStatus().equals(Vertex.PlanStatus.CORRECT)){            
             setSelectedPlanBackground(Color.GREEN);
             setEditableRadio(false);
-        } else if(openVertex.getPlanStatus().equals(Vertex.PlanStatus.GAVEUP)){
-            setSelectedPlan(planToString(openVertex.getVertexType()));
+        } else if(openVertex.getPlanStatus().equals(Vertex.PlanStatus.GAVEUP)){            
             setSelectedPlanBackground(Color.YELLOW);
             setEditableRadio(false);
         }
