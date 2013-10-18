@@ -277,10 +277,13 @@ public class ModelMenu extends JMenu {
     public void showNodeTable() {
         activityLogs.debug("User pressed Show Table button.");
 
-        if(isGraphable())
-                showChartDialog(ChartDialogMode.Table);
-            else
-                JOptionPane.showMessageDialog(MainWindow.getInstance(), "This model does not contain any functions or accumulators. There is nothing to show yet.");
+        if (runModel()) {
+            if(isGraphable())
+                    showChartDialog(ChartDialogMode.Table);
+                else
+                    JOptionPane.showMessageDialog(MainWindow.getInstance(), "This model does not contain any functions or accumulators. There is nothing to show yet.");
+
+        }
     }
 
     private void dumpTableValues(ModelEvaluator me) {
