@@ -812,10 +812,11 @@ public class CalculationsPanelView extends javax.swing.JPanel {
                         MainWindow.getInstance().getGraphEditorPane().addEdge(source, openVertex);                                          
                     }                    
                 }
-                
-                // Save new equation in the Node
-                openVertex.setEquation(formulaInputArea.getText().trim());                                                
             }
+
+            // Save new equation in the Node
+            openVertex.setEquation(formulaInputArea.getText().trim());  
+                
         } catch (EvaluationException ex) {
             logs.error("Could not parse the equation entered for node '" + openVertex.getName() +"'");
             // Do nothing if equation parsing fails
