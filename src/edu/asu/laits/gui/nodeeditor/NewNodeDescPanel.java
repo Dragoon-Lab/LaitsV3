@@ -274,50 +274,41 @@ public class NewNodeDescPanel extends JPanel {
     }
 
     public boolean processDescriptionPanel() {
-        if (getNodeName().trim().length() == 0) {
-            newNodeDialog.setEditorMessage("Node Name can not be empty.", true);
+        logs.info("Processing Description Panel");
+        if (getNodeName().trim().isEmpty()) {
+            newNodeDialog.setEditorMessage("Node Name can not be empty.");
             return false;
         }
 
         if (!currentVertex.getName().equals(getNodeName())) {
-
-            if (!duplicatedNode(getNodeName())) {
-                try {
-                    currentVertex.setName(getNodeName().trim());
-                } catch (Exception ex) {
-                    newNodeDialog.setEditorMessage(ex.getMessage(), true);
-                    setTextFieldBackground(Color.RED);
-                    activityLogs.debug(ex.getMessage());
-                    return false;
-                }
-            } else {
-                newNodeDialog.setEditorMessage("The node name is already used by another node. Please choose a new name for this node.", true);
+            if (isduplicatedNode(getNodeName())) {
+                newNodeDialog.setEditorMessage("The node name is already used by another node. Please choose a new name for this node.");
                 setTextFieldBackground(Color.RED);
                 activityLogs.debug("User entered duplicate node name");
                 return false;
-            }
+            } 
         }
 
         if (getNodeDesc().trim().isEmpty()) {
-            newNodeDialog.setEditorMessage("Please provide correct description for this node.", true);
+            newNodeDialog.setEditorMessage("Please provide correct description for this node.");
             setTextFieldBackground(Color.RED);
             activityLogs.debug("User entered incorrect description");
             return false;
         }
 
+        // All good so far, so set name and desc
+        currentVertex.setName(getNodeName().trim());
         currentVertex.setCorrectDescription(getNodeDesc().trim());
-        if (ApplicationContext.isTestMode()) {
-            currentVertex.setDescriptionStatus(Vertex.DescriptionStatus.CORRECT);
-        }
         
         return true;
     }
 
-    private boolean duplicatedNode(String nodeName) {
-
+    private boolean isduplicatedNode(String nodeName) {
+        logs.info("Checking Duplicate Node Name");
         Graph graph = MainWindow.getInstance().getGraphEditorPane().getModelGraph();
 
         if (graph.getVertexByName(nodeName) != null && currentVertex.getName() != nodeName) {
+            System.out.println("here");
             return true;
         } else {
             return false;
@@ -360,7 +351,7 @@ public class NewNodeDescPanel extends JPanel {
             }
         }
         if (giveupNode == null) {
-            newNodeDialog.setEditorMessage("All Nodes are already being used in the Model.", true);
+            newNodeDialog.setEditorMessage("All Nodes are already being used in the Model.");
             return;
         }
 

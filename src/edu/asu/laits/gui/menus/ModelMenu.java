@@ -335,6 +335,11 @@ public class ModelMenu extends JMenu {
         if (me.isModelComplete()) {
             if (!me.hasExtraNodes()) {
                 try {
+                    // Pre process test mode nodes are they were not processed in check/demo
+                    if(ApplicationContext.isTestMode()) {
+                        me.processTestModeNodes();
+                    }
+                    
                     me.run();
                     dumpTableValues(me);
 
@@ -343,12 +348,7 @@ public class ModelMenu extends JMenu {
                     }
 
                     window.getStatusBarPanel().setStatusMessage("", true);
-                    activityLogs.debug("Model ran successfully.");
-
-                    // Enable Done Button
-                    if (ApplicationContext.isProblemSolved()) {
-                        //mainWindow.getModelToolBar().enableDoneButton();
-                    }
+                    activityLogs.debug("Model ran successfully.");                    
 
                 } catch (ModelEvaluationException ex) {
                     window.getStatusBarPanel().setStatusMessage(ex.getMessage(), false);
@@ -369,6 +369,7 @@ public class ModelMenu extends JMenu {
     }
 
     private boolean isGraphPrepared() {
+        logs.info("Checking if Graph has already been prepared.");
         boolean isEnable = true;
 
         Iterator<Vertex> allVertices = graphPane.getModelGraph().vertexSet().iterator();

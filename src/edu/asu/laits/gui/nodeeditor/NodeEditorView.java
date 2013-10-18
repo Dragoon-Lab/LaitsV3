@@ -685,6 +685,8 @@ public class NodeEditorView extends javax.swing.JDialog {
             ex.printStackTrace();
             logs.error(ex.getMessage());
         }
+        
+        openVertex.printVertexInformation();
     }//GEN-LAST:event_buttonOKActionPerformed
 
     public Vertex getOpenVertex() {
@@ -708,7 +710,6 @@ public class NodeEditorView extends javax.swing.JDialog {
     }
 
     public JButton getOKButton() {
-        logs.debug("Getting OK Button");
         return buttonOK;
     }
 
@@ -716,13 +717,11 @@ public class NodeEditorView extends javax.swing.JDialog {
         return buttonCancel;
     }
 
-    public JButton getCheckButton() {
-        logs.debug("Getting Check Button");
+    public JButton getCheckButton() {        
         return checkButton;
     }
 
-    public JButton getDemoButton() {
-        logs.debug("Getting Demo Button");
+    public JButton getDemoButton() {        
         return demoButton;
     }
 

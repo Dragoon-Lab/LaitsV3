@@ -769,7 +769,7 @@ public class CalculationsPanelView extends javax.swing.JPanel {
         }
     }
     
-    private void processNodeEquation(){
+    private void processNodeEquation() {
         logs.debug("Processing NodeEquation to create edges");
         // Neglect spaces typed before or after the equation
         if (formulaInputArea.getText().trim().equals(openVertex.getEquation())) {

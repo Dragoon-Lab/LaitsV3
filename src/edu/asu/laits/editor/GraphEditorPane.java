@@ -45,6 +45,7 @@ import edu.asu.laits.properties.GraphProperties;
 import java.util.ArrayList;
 import java.util.Iterator;
 import javax.swing.SwingConstants;
+import net.sourceforge.jeval.Evaluator;
 import org.apache.log4j.Logger;
 import org.jgraph.JGraph;
 import org.jgraph.event.GraphModelEvent;
@@ -350,7 +351,31 @@ public class GraphEditorPane extends JGraph {
         Vertex v;
         while (it.hasNext()) {
             v = it.next();
-            //v.getCorrectValues().clear();
+            
+            if(v.getVertexType().equals(Vertex.VertexType.FLOW) || v.getVertexType().equals(Vertex.VertexType.STOCK)){
+                // If this not has equation involving deleted nodes, it should be reset
+                Evaluator old = new Evaluator();
+                boolean shouldEquationChange = false;
+                try {
+                    old.parse(v.getEquation());
+                    List<String> variables = old.getAllVariables();
+                    for(String s : variables){
+                        if(selectedNodes.contains(s)) {
+                            shouldEquationChange = true;
+                        }
+                    }
+                    
+                    if(shouldEquationChange)
+                        v.setEquation("");
+                    
+                } catch (Exception e){
+                    e.printStackTrace();
+                }
+            }
+            
+            if(v.getCorrectValues() != null) 
+                v.getCorrectValues().clear();
+            
             v.setGraphsStatus(Vertex.GraphsStatus.UNDEFINED);
         }
 
