@@ -105,6 +105,9 @@ public class CalculationsPanelView extends javax.swing.JPanel {
         if(!ApplicationContext.isAuthorMode()){
             setBackGroundColor();
         }        
+        if(openVertex.isPlanDone()){
+            setCreateButtonEnabled();
+        }
     }
     
     private void setBackGroundColor(){

@@ -1,0 +1,115 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<Task phase="" type="">
+    <TaskName>Toilet tank</TaskName>
+    <TaskDescription>
+    • Most toilets used at home have a tank full of water. There is a float NEWLINE
+    (usually shaped like a ball) on the surface of the water, and it is NEWLINE
+    attached to a valve. The valve lets water into the tank. When the tank is full, NEWLINE
+    the valve is closed. When the toilet is flushed, the tank empties, the water NEWLINE
+    level falls, the float falls and the value opens. The valve eventually refills NEWLINE
+    the tank. However, the water it lets into the tank is proportional to the height NEWLINE
+    of the float. When the float is at its full height of 13 inches, the valve is NEWLINE
+ 	closed. When it is 1 inch below its full height (i.e., float height = 12), NEWLINE
+    then the valve lets in 0.05 inches of water per second. For each inch of float NEWLINE 
+    height, it lets in an additional 0.05 inches of water per second. Thus, when NEWLINE
+    float height = 0, the valve lets in 13*0.05 = 0.65 inches of water per second. NEWLINE
+     Graph the height of the water in the tank over 100 seconds.
+    </TaskDescription>
+    <URL>images/toilettank.jpg</URL>
+    <StartTime>0</StartTime>
+    <EndTime>100</EndTime>
+    <TimeStep>1</TimeStep>
+    <Units>minutes</Units>
+    <NodeCount>5</NodeCount>
+    <Nodes>
+        <Node type="stock" name="float height" extra="no">
+            <CorrectDescription>The height of the water in the toilet tank</CorrectDescription>
+            <Plan>said to increase</Plan>
+            <Order>1</Order>
+            <Inputs>
+                <Name>water flow</Name>
+            </Inputs>
+            <Outputs>
+            	<Name>height difference</Name>
+            </Outputs>
+            <Equation>water flow</Equation>
+            <InitialValue>0.0</InitialValue>
+        </Node>
+        <Node type="flow" name="water flow" extra="no">
+            <CorrectDescription>The amount of water flowing into the tank</CorrectDescription>
+            <Plan>proportional to accumulator and input</Plan>
+            <Inputs>
+            	<Name>flow per inch</Name>
+            	<Name>height difference</Name>
+            </Inputs>
+            <Outputs>
+            	<Name>float height</Name>
+            </Outputs>
+            <Equation>flow per inch * height difference</Equation>
+            <InitialValue></InitialValue>
+        </Node>
+        <Node type="constant" name="full height" extra="no">
+            <CorrectDescription>The height of the water when the tank is full</CorrectDescription>
+            <Plan>fixed value</Plan>
+            <Inputs/>
+            <Outputs>
+                <Name>height difference</Name>
+            </Outputs>
+            <Equation>13</Equation>
+            <InitialValue>13</InitialValue>
+        </Node>
+        <Node type="flow" name="height difference" extra="no">
+            <CorrectDescription>The number of inches below full height of the water</CorrectDescription>
+            <Plan>proportional to accumulator and input</Plan>
+            <Inputs>
+            	<Name>float height</Name>
+            	<Name>full height</Name>
+            </Inputs>
+            <Outputs>
+                <Name>water flow</Name>
+            </Outputs>
+            <Equation>full height - float height</Equation>
+            <InitialValue></InitialValue>
+        </Node>
+        <Node type="constant" name="flow per inch" extra="no">
+            <CorrectDescription>The amount of water flowing into the tank per inch of height difference</CorrectDescription>
+            <Plan>fixed value</Plan>
+            <Inputs>
+            </Inputs>
+            <Outputs>
+                <Name>water flow</Name>
+            </Outputs>
+            <Equation>0.05</Equation>
+            <InitialValue>0.05</InitialValue>
+        </Node>
+    </Nodes>
+    <DescriptionTree>
+        <Node level="root">
+            <Description>The height of the water</Description>            
+            <Node level="leaf">
+                <Description>in the toilet tank</Description>
+                <NodeName>float height</NodeName>
+            </Node>
+            <Node level="leaf">
+                <Description>when the tank is full</Description>
+                <NodeName>full height</NodeName>
+            </Node>
+        </Node>
+        <Node level="root">
+            <Description>The amount of water flowing</Description> 
+			<Node level="leaf">
+          	    <Description>into the tank</Description>            
+       			<NodeName>water flow</NodeName>
+        	</Node>
+        	<Node level="leaf">
+          	    <Description>into the tank per inch of height difference</Description>            
+       			<NodeName>flow per inch</NodeName>
+        	</Node>
+        </Node>
+        <Node level="leaf">
+            <Description>The number of inches below full height of the water</Description>            
+       		<NodeName>height difference</NodeName>
+        </Node>     
+    </DescriptionTree>
+</Task>

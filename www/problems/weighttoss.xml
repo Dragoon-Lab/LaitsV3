@@ -1,0 +1,87 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<Task phase="Intro" type="Construct">
+    <TaskName>Weight Toss</TaskName>
+    <TaskDescription>
+     A weight is thrown vertically upward with a velocity of 8.5m/s NEWLINE
+     from an initial height of 1.2 m. Graph its velocity and its NEWLINE
+     height from 0 seconds to 3 seconds. Use -9.8 m/s/s as the NEWLINE
+     gravitational acceleration. If you haven’t taken physics, you will NEWLINE
+     need to know that the change in height is velocity. That is NEWLINE
+     next(height) = height + velocity. You will also need to know that NEWLINE
+     the change in velocity is acceleration. That is, next(velocity) = velocity + acceleration.”
+    </TaskDescription>
+    <URL>images/weight-toss.jpg</URL>
+    <StartTime>0</StartTime>
+    <EndTime>2</EndTime>
+    <TimeStep>0.1</TimeStep>
+    <Units>Seconds</Units>
+    <NodeCount>3</NodeCount>
+    <Nodes>
+      
+        <Node type="constant" name="Acceleration" extra="no">
+            <CorrectDescription>The acceleration of the weight due to gravity</CorrectDescription>
+            <Plan>fixed value</Plan>
+            <Inputs/>
+            <Outputs>
+                <Name>Acceleration</Name>
+            </Outputs>
+            <Equation>-9.8</Equation>
+            <InitialValue>-9.8</InitialValue>
+        </Node>
+    
+        <Node type="stock" name="Velocity" extra="no">
+            <CorrectDescription>The velocity of the weight</CorrectDescription>
+            <Plan>said to increase</Plan>
+            <Inputs>
+                <Name>Acceleration</Name>
+            </Inputs>
+            <Outputs>
+                <Name>Acceleration</Name>
+            </Outputs>
+            <Equation>Acceleration</Equation>
+            <InitialValue>8.5</InitialValue>
+        </Node>
+    
+        <Node type="stock" name="Height" extra="no">
+            <Order>1</Order>
+            <CorrectDescription>The height of the weight</CorrectDescription>
+            <Plan>said to increase</Plan>
+            <Inputs>
+                <Name>Velocity</Name>
+            </Inputs>
+            <Outputs/>
+            <Equation>Velocity</Equation>
+            <InitialValue>1.2</InitialValue>
+        </Node>
+    
+    </Nodes>
+  
+    <DescriptionTree>
+        <Node level="root">
+            <Description>The height </Description>
+            <Node level="leaf">
+                <Description>of the the weight</Description>
+                <NodeName>Height</NodeName>
+            </Node>
+        </Node>
+      
+        <Node level="root">
+            <Description>The velocity </Description>
+            <Node level="leaf">
+                <Description>of the weight</Description>
+                <NodeName>Velocity</NodeName>
+            </Node>          
+        </Node>
+      
+        <Node level="root">
+            <Description>The acceleration </Description>
+            <Node level="leaf">
+                <Description>of the weight due to gravity</Description>
+                <NodeName>Acceleration</NodeName>
+            </Node>
+        </Node>
+      
+      
+    </DescriptionTree>
+</Task>
