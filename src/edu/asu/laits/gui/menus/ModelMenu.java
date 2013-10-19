@@ -464,6 +464,15 @@ public class ModelMenu extends JMenu {
     public void disableDeleteNodeMenu(){
         deleteNodeMenuItem.setEnabled(false);
     }
+    
+    public void enableShowForumMenuItem() {
+        showForumMenuItem.setEnabled(true);
+    }
+    
+    public void disableShowForumMenuItem() {
+        showForumMenuItem.setEnabled(false);
+    }
+    
     // This is really a property of the student graph
     // and doesn't have anything to do with the menus.
     // It should be moved elsewhere; Bug #2160  
@@ -508,9 +517,11 @@ public class ModelMenu extends JMenu {
     }
 
     public void doneButtonAction() {
-        activityLogs.debug("User Pressed Done button with current task as " + ApplicationContext.getCurrentTaskID());
-        writeResultToServer();
-        System.exit(0);
+        if(ApplicationContext.isProblemSolved()){
+            activityLogs.debug("User Pressed Done button with current task as " + ApplicationContext.getCurrentTaskID());
+            writeResultToServer();
+            System.exit(0);
+        }
     }
 
     private void writeResultToServer() {
