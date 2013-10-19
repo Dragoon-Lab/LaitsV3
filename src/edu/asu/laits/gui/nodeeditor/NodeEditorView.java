@@ -267,7 +267,7 @@ public class NodeEditorView extends javax.swing.JDialog {
             dPanel.setTextFieldBackground(Color.CYAN);
             setEditorMessage("That quantity used in this model, but now is not the right time to define it. Please select another description.");
             activityLogs.debug("User entered description out of order");
-            addHelpBalloon(ApplicationContext.getTargetNodes().getFirstNextNode(), "onLoad", "DESCRIPTION");
+            addHelpBalloon(ApplicationContext.getTargetNodes().getFirstNextNode(openVertex), "onLoad", "DESCRIPTION");
         } else {
             openVertex.setDescriptionStatus(Vertex.DescriptionStatus.INCORRECT);
             dPanel.setTextFieldBackground(Color.RED);
@@ -606,7 +606,7 @@ public class NodeEditorView extends javax.swing.JDialog {
         switch (tabPane.getSelectedIndex()) {
             case DESCRIPTION:
                 activityLogs.debug("Giveup button pressed for Description Panel");
-                List<HelpBubble> bubbles = ApplicationContext.getHelp(ApplicationContext.getTargetNodes().getFirstNextNode(), "DESCRIPTION", "descFilled");
+                List<HelpBubble> bubbles = ApplicationContext.getHelp(ApplicationContext.getTargetNodes().getFirstNextNode(openVertex), "DESCRIPTION", "descFilled");
                 if (!bubbles.isEmpty()) {
                     for (HelpBubble bubble : bubbles) {
                         bubble.setDisplayed(true);

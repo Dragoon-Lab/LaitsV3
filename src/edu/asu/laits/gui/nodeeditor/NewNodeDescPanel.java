@@ -59,6 +59,7 @@ public class NewNodeDescPanel extends JPanel {
     private static Logger logs = Logger.getLogger("DevLogs");
     private static Logger activityLogs = Logger.getLogger("ActivityLogs");
     private Vertex currentVertex;
+    private Vertex parentVertex;
 
     String getNodeName() {
         return this.nodeNameTextField.getText();
@@ -72,9 +73,10 @@ public class NewNodeDescPanel extends JPanel {
         initComponents();
         newNodeDialog = ne;
         currentVertex = v;
+        parentVertex = newNodeDialog.getParentVertex();
         initPanel();
         if (ApplicationContext.isCoachedMode()) {
-            addHelpBalloon(ApplicationContext.getTargetNodes().getFirstNextNode(), "onLoad", "InputNewNode");
+            addHelpBalloon(ApplicationContext.getTargetNodes().getFirstNextNode(parentVertex), "onLoad", "InputNewNode");
 
         }
     }
@@ -237,8 +239,8 @@ public class NewNodeDescPanel extends JPanel {
             this.quantityDescriptionTextField.setText(sb.toString().trim());
             this.nodeNameTextField.setText(node.getNodeName());
             this.repaint();
-            if (ApplicationContext.isCoachedMode() && ApplicationContext.getTargetNodes().getFirstNextNode() != null) {
-                addHelpBalloon(ApplicationContext.getTargetNodes().getFirstNextNode(), "descFilled", "InputNewNode");
+            if (ApplicationContext.isCoachedMode() && ApplicationContext.getTargetNodes().getFirstNextNode(parentVertex) != null) {
+                addHelpBalloon(ApplicationContext.getTargetNodes().getFirstNextNode(parentVertex), "descFilled", "InputNewNode");
             }
         }
 
@@ -334,7 +336,7 @@ public class NewNodeDescPanel extends JPanel {
         String giveupNode = null;
         if (ApplicationContext.isCoachedMode()) {
             for (SolutionNode name : correctNodeNames) {
-                if (name.getNodeName().equalsIgnoreCase(ApplicationContext.getTargetNodes().getFirstNextNode())) {
+                if (name.getNodeName().equalsIgnoreCase(ApplicationContext.getTargetNodes().getFirstNextNode(parentVertex))) {
                     giveupNode = name.getNodeName();
                     //ApplicationContext.nextCurrentOrder();
                     //ApplicationContext.removeNextNodes(name.getNodeName());

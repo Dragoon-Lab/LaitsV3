@@ -249,7 +249,7 @@ public class DescriptionPanelView extends JPanel {
             this.repaint();
             
             if (ApplicationContext.isCoachedMode()) {
-                addHelpBalloon(ApplicationContext.getTargetNodes().getFirstNextNode(), "descFilled");
+                addHelpBalloon(ApplicationContext.getTargetNodes().getFirstNextNode(this.nodeEditor.getOpenVertex()), "descFilled");
             }            
         }        
     }//GEN-LAST:event_decisionTreeValueChanged

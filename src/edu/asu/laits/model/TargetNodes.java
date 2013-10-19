@@ -13,13 +13,16 @@ import org.apache.log4j.Logger;
 /**
  *
  * @author rjoiner1
+ * 
+ * Class that handles Target Node Strategy logic, primarily for COACHED mode
  */
 public class TargetNodes {
     
-    private List<String> nextNodes;
-    private List<String> firstNodes;
+    private List<String> nextNodes;     //nodes that should be next according to TNS
+    private List<String> firstNodes;    //<Order>1</Order> in the XML; these are your target nodes
     private static Logger logs = Logger.getLogger("DevLogs");
 
+//  Fills the firstNodes list after the task solution has been read in
     public void initFirstNodes(){
         logs.debug("initializing first nodes");
         List<SolutionNode> solutionNodes = ApplicationContext.getCorrectSolution().getSolutionNodes();
@@ -31,6 +34,11 @@ public class TargetNodes {
         }
         setNextNodes();
     }
+    
+//  Fills the nextNodes list by starting with the firstNodes; if a firstNode is absent, adds it to be the next node
+//  in the TNS, if the firstNode is present in the graph it parses to see if its inputs are present.
+//  nextNodes is cleared at the start so it will be empty if all nodes are present in the graph.
+//  "parsed" list is to avoid recursion issues in parsing inputs.
     public void setNextNodes() {
         
         nextNodes.clear();
@@ -45,6 +53,10 @@ public class TargetNodes {
         }
     }
     
+//  Recursive function to parse through the nodes present in the graph to determine nextNodes in the TNS.
+//  Checks the inputs for the node that is passed in; if a input is absent, adds it to be the next node
+//  in the TNS, if the input is present in the graph it parses to see if its inputs are present.
+//  "parsed" list is to avoid recursion issues in parsing inputs.
     public void parseNextNode(String node, List<String> parsed){
         parsed.add(node);
         List<String> inputs = ApplicationContext.getCorrectSolution().getNodeByName(node).getInputNodes();
@@ -72,37 +84,35 @@ public class TargetNodes {
     public List<String> getNextNodes() {
         return nextNodes;
     }
-
-    public void addNextNodes(String nextNode) {
-        System.out.println("adding " + nextNode);
-        nextNodes.add(nextNode);
-        for (String nNode : nextNodes) {
-            System.out.println("current next nodes include " + nNode + "   ");
-        }
-    }
-
-    public void removeNextNodes(String nextNode) {
-        int index = nextNodes.indexOf(nextNode);
-        if (index != -1) {
-            nextNodes.remove(index);
-        }
-    }
-
-    public String getFirstNextNode() {
-        if (!nextNodes.isEmpty()) {
-            return nextNodes.get(0);
-        } else {
-            return null;
-        }
-    }
     
-    public String getNameByOrder(int order) {
-        if (ApplicationContext.getCorrectSolution().getNodeByOrder(order) != null) {
-            System.out.println(ApplicationContext.getCorrectSolution().getNodeByOrder(order).getNodeName());
-            return ApplicationContext.getCorrectSolution().getNodeByOrder(order).getNodeName();
-        } else {
-            return null;
+//  Gets the "best" available nextNode for use when Demoing on a Description panel.
+//  If you're in an undefined vertex, will first try to make that vertex an element from firstNodes.
+//  If all firstNodes are already present in the graph, will return the first element in nextNodes.
+//  If you're in a defined vertex, it will return an input of that vertex, or the first
+//  element in nextNodes if all inputs are defined.
+//  Returns null if nextNodes are empty, indicating all nodes present in graph.
+
+    public String getFirstNextNode(Vertex openVertex) {
+        List<String> nodes = MainWindow.getInstance().getGraphEditorPane().getModelGraph().getVerticesByName();
+        if(!nextNodes.isEmpty()){
+            if(openVertex.getName().isEmpty()){
+                for(String fNode : firstNodes){
+                    if(!nodes.contains(fNode)){
+                        return fNode;
+                    }
+                }
+                return nextNodes.get(0);
+            } else{
+               List<String> inputs = ApplicationContext.getCorrectSolution().getNodeByName(openVertex.getName()).getInputNodes();
+               for(String input : inputs){
+                   if(!nodes.contains(input)){
+                       return input;
+                   }
+               }
+               return nextNodes.get(0);
+            }
         }
+        return null;
     }
     
 }

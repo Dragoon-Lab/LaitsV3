@@ -142,9 +142,9 @@ public class CoachedModeNodeEditorController extends NodeEditorController {
         List<SolutionNode> correctNodeNames = solution.getSolutionNodes();
         
         String giveupNode = null;
-        logs.debug("Searching for next node: " + targetNodes.getFirstNextNode());
+        logs.debug("Searching for next node: " + targetNodes.getFirstNextNode(openVertex));
         for (SolutionNode name : correctNodeNames) {
-            if (name.getNodeName().equalsIgnoreCase(targetNodes.getFirstNextNode())) {
+            if (name.getNodeName().equalsIgnoreCase(targetNodes.getFirstNextNode(openVertex))) {
                 giveupNode = name.getNodeName();
                     //                  ApplicationContext.nextCurrentOrder()
                 break;

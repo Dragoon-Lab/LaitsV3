@@ -27,6 +27,7 @@ public class CreateNewNodeDialog extends javax.swing.JDialog {
     private NewNodeDescPanel dPanel;
     private NodeEditorView nodeEditorView;
     private Vertex currentVertex;
+    private Vertex parentVertex;
     private static Logger logs = Logger.getLogger("DevLogs");
     private static Logger activityLogs = Logger.getLogger("ActivityLogs");
 
@@ -36,7 +37,7 @@ public class CreateNewNodeDialog extends javax.swing.JDialog {
         initComponents();
         nodeEditorView = (NodeEditorView) parent;
         currentVertex = v;
-
+        parentVertex = nodeEditorView.getOpenVertex();
         initPanel();
         prepareDisplay();
     }
@@ -292,6 +293,11 @@ public class CreateNewNodeDialog extends javax.swing.JDialog {
 
     public JButton getCheckButton() {
         return checkButton;
+    }
+    
+//  Reid added to help TargetNodes class
+    public Vertex getParentVertex(){
+        return parentVertex;
     }
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton cancelButton;
