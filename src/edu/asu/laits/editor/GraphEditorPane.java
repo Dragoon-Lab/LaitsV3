@@ -212,7 +212,7 @@ public class GraphEditorPane extends JGraph {
                 int selectedVertices = selectedVertexObjects.length;
                 //int selectedEdges = selectedEdgeObjects.length;
 
-                if(selectedVertices > 0 && !ApplicationContext.isCoachedMode()){
+                if(selectedVertices > 0){
                     MainWindow.getInstance().getModelToolBar().enableDeleteNodeButton();
                 } else {
                     MainWindow.getInstance().getModelToolBar().disableDeleteNodeButton();

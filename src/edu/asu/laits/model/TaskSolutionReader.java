@@ -71,11 +71,12 @@ public class TaskSolutionReader {
             
             //Read in help bubbles
             if(ApplicationContext.isCoachedMode() && ApplicationContext.isHelpBubbles()){
-                Element bubbles = taskNode.element("HelpBubbles");
-                if(bubbles != null){
-                    fillHelpBubbles(solution, bubbles);
+                    Element bubbles = taskNode.element("HelpBubbles");
+                    if(bubbles != null){
+                      fillHelpBubbles(solution, bubbles);
+                    }
                 }
-            }    
+                
         } catch (Exception e) {
             // Could not read the XML file
             e.printStackTrace();
@@ -177,9 +178,9 @@ public class TaskSolutionReader {
             
             // Read all the Input Nodes of this node
              if(ApplicationContext.isCoachedMode() && order == 1){
-//              newNode.setNodeOrder(Integer.parseInt(node.elementTextTrim("Order")));
+                newNode.setNodeOrder(Integer.parseInt(node.elementTextTrim("Order")));
 //              System.out.println("Added element" + node.elementTextTrim("Order") + " " + node.elementTextTrim("CorrectDescription"));
-                ApplicationContext.addNextNodes(node.attributeValue("name"));
+                
             }
             
             Element nodeInput = node.element("Inputs");

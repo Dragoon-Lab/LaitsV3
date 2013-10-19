@@ -173,6 +173,7 @@ public class FileMenu extends JMenu {
         try {
             TaskSolution solution = solutionReader.loadSolution(id);
             ApplicationContext.setCorrectSolution(solution);
+            ApplicationContext.getTargetNodes().initFirstNodes();
 
             activityLogs.debug("Student opened a new task ID: " + id + " - "
                 + ApplicationContext.getCurrentTask().getTaskName());
@@ -240,7 +241,7 @@ public class FileMenu extends JMenu {
             }
 
             editorPane.addVertex(v);
-            ApplicationContext.setNextNodes(node.getNodeName());
+            ApplicationContext.getTargetNodes().setNextNodes();
             logs.debug("Added Node "+v.getName()+" in the Given Model.");
         }
 

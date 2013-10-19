@@ -74,7 +74,7 @@ public class NewNodeDescPanel extends JPanel {
         currentVertex = v;
         initPanel();
         if (ApplicationContext.isCoachedMode()) {
-            addHelpBalloon(ApplicationContext.getFirstNextNode(), "onLoad", "InputNewNode");
+            addHelpBalloon(ApplicationContext.getTargetNodes().getFirstNextNode(), "onLoad", "InputNewNode");
 
         }
     }
@@ -237,8 +237,8 @@ public class NewNodeDescPanel extends JPanel {
             this.quantityDescriptionTextField.setText(sb.toString().trim());
             this.nodeNameTextField.setText(node.getNodeName());
             this.repaint();
-            if (ApplicationContext.isCoachedMode() && ApplicationContext.getFirstNextNode() != null) {
-                addHelpBalloon(ApplicationContext.getFirstNextNode(), "descFilled", "InputNewNode");
+            if (ApplicationContext.isCoachedMode() && ApplicationContext.getTargetNodes().getFirstNextNode() != null) {
+                addHelpBalloon(ApplicationContext.getTargetNodes().getFirstNextNode(), "descFilled", "InputNewNode");
             }
         }
 
@@ -334,11 +334,10 @@ public class NewNodeDescPanel extends JPanel {
         String giveupNode = null;
         if (ApplicationContext.isCoachedMode()) {
             for (SolutionNode name : correctNodeNames) {
-                if (name.getNodeName().equalsIgnoreCase(ApplicationContext.getFirstNextNode())) {
+                if (name.getNodeName().equalsIgnoreCase(ApplicationContext.getTargetNodes().getFirstNextNode())) {
                     giveupNode = name.getNodeName();
                     //ApplicationContext.nextCurrentOrder();
                     //ApplicationContext.removeNextNodes(name.getNodeName());
-                    ApplicationContext.setNextNodes(name.getNodeName());
                     break;
                 }
             }

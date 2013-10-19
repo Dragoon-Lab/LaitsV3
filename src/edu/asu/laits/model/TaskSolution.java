@@ -179,8 +179,9 @@ public class TaskSolution {
 
     public int checkNodeNameOrdered(String nodeName) {
         SolutionNode correctNode = getNodeByName(nodeName);
+        TargetNodes targetNodes = ApplicationContext.getTargetNodes();
         if (correctNode != null) {
-            if (ApplicationContext.getNextNodes().contains(nodeName)) {
+            if (targetNodes.getNextNodes().contains(nodeName)) {
                 return 1;
             } else {
                 return 2;

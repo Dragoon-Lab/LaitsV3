@@ -226,7 +226,7 @@ public class CreateNewNodeDialog extends javax.swing.JDialog {
             cancelButton.setEnabled(true);
             activityLogs.debug("User entered correct description");
             dPanel.setEditableTree(false);
-            ApplicationContext.setNextNodes(currentVertex.getName());
+//            ApplicationContext.getTargetNodes().setNextNodes();
             demoButton.setEnabled(false);
         } 
         else if (solutionCheck == 2) {
@@ -266,11 +266,14 @@ public class CreateNewNodeDialog extends javax.swing.JDialog {
         nodeEditorView.getCalculationsPanel().setCreateButtonEnabled();
         // Refresh MainWidow to show the changes
         MainWindow.refreshGraph();
-
+        if(ApplicationContext.isCoachedMode()){
+            nodeEditorView.addHelpBalloon(currentVertex.getName(), "newNodeClosed", "INPUTS");
+            ApplicationContext.getTargetNodes().setNextNodes();
+        }
         this.dispose();
         // Why this is done after dispose ???
-        if(ApplicationContext.isCoachedMode())
-            nodeEditorView.addHelpBalloon(currentVertex.getName(), "newNodeClosed", "INPUTS");
+
+            
     }
 
     public void setEditorMessage(String msg) {
