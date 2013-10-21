@@ -182,17 +182,6 @@
                     <NodeName>interest rate</NodeName>
                 </Node>
             </Node>
-            <Node level="intermediate">
-                <Description>the amount of money added to the amount of money Jack deposited in the first year</Description>
-                <Node level="leaf">
-                    <Description>and it remains the same from year to year</Description>
-                    <NodeName>constant interest rate</NodeName>
-                </Node>
-                <Node level="leaf">
-                    <Description>and it changes from year to year</Description>
-                    <NodeName>interest rate</NodeName>
-                </Node>
-            </Node>
         </Node>
 
     </DescriptionTree>
