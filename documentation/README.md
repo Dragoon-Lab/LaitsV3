@@ -9,6 +9,7 @@ This contains mostly design documents.
 * [Problem and node-specific forum](Forum_Feature_in_Dragoon.docx).  Document written by Ram
   with comments by BvdS.
 * [JavaScript design](javascript.md)
+* [XML format](xml-style.md)
 
 Documentation can be in any convenient format (word, html, *et cetera*) with 
 generic [markdown](http://en.wikipedia.org/wiki/Markdown) being the default 

@@ -18,6 +18,7 @@
 package edu.asu.laits.model;
 
 import edu.asu.laits.editor.ApplicationContext;
+import edu.asu.laits.gui.MainWindow;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.HashSet;
@@ -49,18 +50,12 @@ public class ModelEvaluator {
 
     public ModelEvaluator(Graph inputGraph) {
         currentGraph = inputGraph;
-        if (ApplicationContext.isStudentMode()
-                || ApplicationContext.isCoachedMode()) {
-            times = ApplicationContext.getCorrectSolution().getTimes();
+        times = ApplicationContext.getCurrentTask().getTimes();
 
-            logs.debug("Getting Start Time and End Time from AppContext. "
-                    + times.getStartTime() + "  " + times.getEndTime() + "  dt=" + times.getTimeStep());
-        } else {
-            times = currentGraph.getCurrentTask().getTimes();
-        }
+        logs.debug("Getting Start Time and End Time from AppContext. "
+                + times.getStartTime() + "  " + times.getEndTime() + "  dt=" + times.getTimeStep());
         finalOperands = new HashMap<String, List<String>>();
     }
-
 
     public int getConstantVertices() {
         return constantVertices;
@@ -75,33 +70,74 @@ public class ModelEvaluator {
     }
 
     /**
-     * Test if current model can be run
-     *
-     * @return
+     * Test if current model can be run.
+     * 1. Check if all the nodes are complete - plan, calculations are defined.
+     * 2. All the correct student nodes has to be defined
+     * 
+     * Note: For author mode it only checks if all the nodes in the graph are complete.
+     * 
+     * @return True/False indicating if the current student model is complete
      */
     public boolean isModelComplete() {
+        logs.info("Checking if Model is Complete.");
         Iterator<Vertex> allVertices = currentGraph.vertexSet().iterator();
 
-        // In STUDENT Mode Verify if all the correct nodes are defined
-        if (ApplicationContext.isCoachedMode()) {
-            if (!correctNodesDefined()) {
-                return false;
-            }
-        }
-
-        Vertex thisVertex;
         while (allVertices.hasNext()) {
-            thisVertex = allVertices.next();
-            if (thisVertex.getPlanStatus().equals(Vertex.InputsStatus.UNDEFINED)
-                    || thisVertex.getCalculationsStatus().equals(Vertex.CalculationsStatus.UNDEFINED)) {
-                return false;
+            Vertex thisVertex = allVertices.next();
+            if(!ApplicationContext.isTestMode()){
+                if (thisVertex.getPlanStatus().equals(Vertex.PlanStatus.UNDEFINED)
+                        || thisVertex.getCalculationsStatus().equals(Vertex.CalculationsStatus.UNDEFINED)) {
+                    return false;
+                }
+            } else {
+                if(thisVertex.getVertexType().equals(Vertex.VertexType.DEFAULT) || 
+                        (thisVertex.getEquation().equalsIgnoreCase("") && !thisVertex.getVertexType().equals(Vertex.VertexType.CONSTANT))) {
+                    logs.debug("Vertex returning false for isModelComplete : " + thisVertex.getName());
+                    return false;
+                }
             }
         }
-
+                
+        // Mode Graph can not be executed until all the correct nodes are defined.
+        if (!ApplicationContext.isAuthorMode() && !ApplicationContext.isTestMode()) {            
+            if(!correctNodesDefined())
+                return false;
+        }
+        
         return true;
     }
 
+    /**
+     * Method to pre-process Test Modes Nodes.
+     * Test mode does not give feedback while creating node and providing plan/calculations.
+     * Running a model requires that Description, Plan and Calculations are correct, so we 
+     * need to pre-process all the student nodes and provide CORRECT/INCORRECT status to each node.
+     * 
+     * This is required as Test Mode does not have check and demo button enabled in Plan and Calculations panel.
+     */ 
+    public void processTestModeNodes(){
+        TaskSolution solution = ApplicationContext.getCorrectSolution();
+        
+        Iterator<Vertex> verticesInStudentGraph = currentGraph.vertexSet().iterator();
+        
+        while(verticesInStudentGraph.hasNext()){
+            Vertex current = verticesInStudentGraph.next();
+            if (solution.checkNodePlan(current.getName(), current.getVertexType())) {
+                current.setPlanStatus(Vertex.PlanStatus.CORRECT);
+            } else {
+                current.setPlanStatus(Vertex.PlanStatus.INCORRECT);           
+            }
+
+            if (solution.checkNodeCalculations(current)) {
+                current.setCalculationsStatus(Vertex.CalculationsStatus.CORRECT);
+            } else {                
+                current.setCalculationsStatus(Vertex.CalculationsStatus.INCORRECT);
+            }
+        }
+    }
+    
     public boolean hasExtraNodes() {
+        // Author mode will not have extra nodes.
         if (ApplicationContext.isAuthorMode()) {
             return false;
         }
@@ -121,10 +157,13 @@ public class ModelEvaluator {
     }
 
     private boolean correctNodesDefined() {
+        logs.info("Checking if Correct Nodes are defined");
+
         Iterator<Vertex> allVertices = currentGraph.vertexSet().iterator();
         List<String> studentNodeNames = new ArrayList<String>();
         while (allVertices.hasNext()) {
-            studentNodeNames.add(allVertices.next().getName());
+            Vertex current = allVertices.next();
+            studentNodeNames.add(current.getName());
         }
 
         List<String> correctNodeNames = ApplicationContext.getCorrectSolution()
@@ -155,7 +194,7 @@ public class ModelEvaluator {
             // Calculating Initial Flow for i=0
             for (int j = constantVertices; j < vertexList.size(); j++) {
                 currentVertex = vertexList.get(j);
-             //   logs.debug("evaluating vertex " + currentVertex.getName());
+                //   logs.debug("evaluating vertex " + currentVertex.getName());
                 if (currentVertex.getVertexType().equals(Vertex.VertexType.FLOW)) {
                     currentVertex.getCorrectValues().add(calculateFlow(vertexList, currentVertex, 0));
                 }
@@ -165,10 +204,10 @@ public class ModelEvaluator {
             for (int i = 1; i < times.getNumberSteps(); i++) {
                 for (int j = constantVertices; j < vertexList.size(); j++) {
                     currentVertex = vertexList.get(j);
-              //      logs.debug("evaluating vertex " + currentVertex.getName() + " time point " + i);
+                    //      logs.debug("evaluating vertex " + currentVertex.getName() + " time point " + i);
                     if (currentVertex.getVertexType().equals(Vertex.VertexType.STOCK)) {
                         currentVertex.getCorrectValues().add(calculateStock(vertexList, currentVertex, i));
-                   //     logs.debug(calculateStock(vertexList, currentVertex, i));
+                        //     logs.debug(calculateStock(vertexList, currentVertex, i));
                     } else if (currentVertex.getVertexType().equals(Vertex.VertexType.FLOW)) {
                         currentVertex.getCorrectValues().add(calculateFlow(vertexList, currentVertex, i));
                     }
@@ -182,7 +221,7 @@ public class ModelEvaluator {
             ex.printStackTrace();
             String err = "Error in Model Execution at Node '" + currentVertex.getName() + "'  " + ex.getMessage();
             logs.error(err);
-            currentVertex.setCalculationsStatus(Vertex.CalculationsStatus.INCORRECT);
+            //currentVertex.setCalculationsStatus(Vertex.CalculationsStatus.INCORRECT);
             currentVertex.setGraphsStatus(Vertex.GraphsStatus.INCORRECT);
             throw new ModelEvaluationException(err);
         }
@@ -206,6 +245,7 @@ public class ModelEvaluator {
         if (incorrectVertices == 0) {
             logs.debug("Setting Problem Solved to True");
             ApplicationContext.setProblemSolved(true);
+            MainWindow.getInstance().getModelToolBar().enableDoneButton();
         }
     }
 

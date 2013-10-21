@@ -136,9 +136,15 @@
 
         function set_problems(mode,category){
              var map = {
-             'Easy' : {
+             'Introductory' : {
+	          'jared1' : "Jared's weight",
+	          'jared2' : "Jared &amp Oprah",
+	          'jared3' : "Jared &amp; Oprah +",
+	          'jared4' : "Jared &amp; Oprah *",
+	          'dodos' : "Dodo extinction",
+	          'rabbits' : "Rabbit population",	          
 	          105:'Intro problem 1',106:'Intro problem 2',
-                  107:'Intro problem 3',108:'Intro problem 4'
+                  107:'Intro problem 3',108:'Intro problem 4',
 	     },
              'Training': {
                   74:'Dying orchard',92:'Bilge water',94:'Rust',
@@ -212,6 +218,7 @@
                         <select name="mode" id="mode">
                             <option value="STUDENT">Student</option>
                             <option value="COACHED">Coached</option>
+                            <option value="TEST">Test</option>
                         </select>
                     </div>
 
@@ -223,7 +230,7 @@
                            <option>Kinematics</option> 
                            <option>Calories</option> 
                            <option>Urban Waterfowl</option> 
-                           <option>Easy</option>
+                           <option>Introductory</option>
                            <option>Training</option>
                            <option>Challenge</option>
                         </select>

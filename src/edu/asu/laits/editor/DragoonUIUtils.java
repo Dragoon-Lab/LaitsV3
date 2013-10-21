@@ -19,13 +19,22 @@
 package edu.asu.laits.editor;
 
 import java.awt.Color;
+import java.awt.Dimension;
+import java.util.List;
+import javax.swing.BorderFactory;
 import javax.swing.ButtonGroup;
+import javax.swing.JButton;
+import javax.swing.JComboBox;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
 import javax.swing.JRadioButton;
 import javax.swing.JSeparator;
+import javax.swing.JTextArea;
 import javax.swing.JTextField;
+import javax.swing.JTree;
 import javax.swing.SwingConstants;
+import javax.swing.tree.DefaultMutableTreeNode;
+import javax.swing.tree.DefaultTreeModel;
 
 /**
  * Utility to create Swing Components
@@ -73,7 +82,29 @@ public class DragoonUIUtils {
         return radioButton;
     }
     
+    public static JTextArea createTextArea(int row, int col){
+        final JTextArea textArea = new JTextArea(row, col);
+        textArea.setBorder(BorderFactory.createLineBorder(Color.GRAY));
+        return textArea;
+    }
     
+    public static JComboBox createComboBox(String[] listElements){
+        JComboBox comboBox = new JComboBox(listElements);
+        return comboBox;
+    }
+    
+    public static JButton createButton(String text) {
+        final JButton button = new JButton(text);
+        return button;        
+    }
+    
+    public static JTree createTree(){
+        final JTree decisionTree = new JTree();        
+        decisionTree.setFont(new java.awt.Font("Lucida Grande", 0, 18)); // NOI18N        
+        decisionTree.setEditable(false);
+                
+        return decisionTree;
+    }
     
     public static final Color LABEL_COLOR = new Color(0, 70, 213);
 }

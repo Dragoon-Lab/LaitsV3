@@ -1,0 +1,68 @@
+<!DOCTYPE html>
+<html >
+<head>
+    <title>Dojo Charting Example</title>
+
+	<meta charset="utf-8">
+<!--	<link rel="stylesheet" href="./dijit/themes/claro/claro.css">
+	<script src='./dojo/dojo.js'></script> -->
+  <script
+src="//ajax.googleapis.com/ajax/libs/dojo/1.9.1/dojo/dojo.js"></script>
+
+<link rel="stylesheet" href="//ajax.googleapis.com/ajax/libs/dojo/1.9.1/dijit/themes/claro/claro.css">
+	<script>dojoConfig = {parseOnLoad: true}</script>
+	
+	<script>
+require(["dojo/on","dojo/dom","dojox/charting/Chart", "dojox/charting/axis2d/Default", "dojox/charting/plot2d/Lines" , "dojox/charting/themes/WatersEdge", "dijit/form/HorizontalSlider","dojo/parser","dojo/ready"],
+  function(on,dom,Chart, Default, Lines, WatersEdge, HorizontalSlider, Parser, ready){
+    ready(function(){
+
+    	var constant=1,i;
+
+    	Parser.parse();
+
+    	var c = new Chart("chartOne");
+      	c.addPlot("default", {type: Lines, markers: true});
+        c.addAxis("x", {stroke: "green", majorTick: {color: "red", length: 6}, minorTick: {stroke: "black", length: 3}});
+        c.addAxis("y",{vertical: true, stroke: "green", majorTick: {color: "red", length: 6}, minorTick: {stroke: "black", length: 3}});
+		c.setTheme(WatersEdge);  
+        
+        var slider = new HorizontalSlider({
+            name: "slider",
+            value: 5,
+            minimum: -10,
+            maximum: 10,
+            intermediateChanges: true,
+            style: "width:300px;"
+        }, "slider");
+
+	var sliderNode = dom.byId("slider");
+	
+	var signal = on(sliderNode, "click", function(){
+    	var arr = [];
+    	constant = slider.value;
+		for(i=0;i<11;i++)
+    	{
+
+			arr.push({x:constant, y:constant+2});
+
+				constant++;	
+
+
+    	}
+    	c.addSeries("Series A", arr);
+        c.render();
+	});
+	
+        
+    });
+});
+	</script>
+</head>
+<body class="claro">
+    <div id="chartOne" style="width: 250px; height: 250px; margin: 10px auto 0px auto;"></div>
+  <div id="slider"></div>  
+ <!-- <p><input type="text" id="sliderValue" data-dojo-type="dijit/form/TextBox" /></p> -->     
+</body>
+
+</html>

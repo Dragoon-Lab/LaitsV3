@@ -30,18 +30,12 @@ import org.apache.log4j.Logger;
 import org.jgraph.graph.DefaultPort;
 
 /**
- * Represents Solutions of Dragoon Problem
+ * Represents Solutions of Dragoon Problem.
+ * 
  * @author ramayantiwari
  */
 public class TaskSolution {
-
-    private String taskName;
-    private String phase;
-    private String taskType;
-    private String taskDescription;
-    private String imageURL;
-    private Times times;
-    private String graphUnits;
+    private Task taskForStudents;
     private int nodeCount;
     private List<SolutionNode> solutionNodes;
     private List<SolutionNode> givenNodes;
@@ -53,89 +47,25 @@ public class TaskSolution {
     private List<String> accumulatorSubPlans;
     private List<String> functionSubPlans;
     private static Logger logs = Logger.getLogger("DevLogs");
+    private TargetNodes targetNodes;
 
     public TaskSolution() {
         solutionNodes = new ArrayList<SolutionNode>();
         givenNodes = new ArrayList<SolutionNode>();
         correctNodeNames = new ArrayList<String>();
         helpBubbles = new ArrayList<HelpBubble>();
-        times = new Times();
+        taskForStudents = new Task();
+        targetNodes = new TargetNodes();
     }
 
-    /**
-     * @return the phase
-     */
-    public String getTaskName() {
-        return taskName;
+    public Task getTaskDetails(){
+        return taskForStudents;
     }
-
-    /**
-     * @param phase the phase to set
-     */
-    public void setTaskName(String name) {
-        this.taskName = name;
+    
+    public void setTaskDetails(Task taskDetails){
+        taskForStudents = taskDetails;
     }
-
-    /**
-     * @return the phase
-     */
-    public String getPhase() {
-        return phase;
-    }
-
-    /**
-     * @param phase the phase to set
-     */
-    public void setPhase(String phase) {
-        this.phase = phase;
-    }
-
-    /**
-     * @return the phase
-     */
-    public String getTaskType() {
-        return taskType;
-    }
-
-    /**
-     * @param phase the phase to set
-     */
-    public void setTaskType(String type) {
-        this.taskType = type;
-    }
-
-    /**
-     * @return the taskDescription
-     */
-    public String getTaskDescription() {
-        return taskDescription;
-    }
-
-    /**
-     * @param taskDescription the taskDescription to set
-     */
-    public void setTaskDescription(String taskDescription) {
-        this.taskDescription = taskDescription;
-    }
-
-    /**
-     * @return the imageURL
-     */
-    public String getImageURL() {
-        return imageURL;
-    }
-
-    /**
-     * @param imageURL the imageURL to set
-     */
-    public void setImageURL(String imageURL) {
-        if(imageURL.startsWith("http")){
-            this.imageURL = imageURL;
-        } else {
-            this.imageURL = ApplicationContext.getRootURL() + "/" + imageURL;
-        }
-    }
-
+    
     public List<String> getParameterSubPlans() {
         return parameterSubPlans;
     }
@@ -170,27 +100,14 @@ public class TaskSolution {
     public void addFunctionSubPlans(String functionSubPlan) {
         this.functionSubPlans.add(functionSubPlan);
     }
-    /**
-     * @return the timeStep
-     */
-    public Times getTimes() {
-        return this.times;
+    public TargetNodes getTargetNodes() {
+        return targetNodes;
     }
 
-    /**
-     * @return the graphUnits
-     */
-    public String getGraphUnits() {
-        return graphUnits;
+    public void initTargetNodes() {
+        targetNodes.initFirstNodes(solutionNodes);
     }
-
-    /**
-     * @param graphUnits the graphUnits to set
-     */
-    public void setGraphUnits(String graphUnits) {
-        this.graphUnits = graphUnits;
-    }
-
+    
     /**
      * @return the nodeCount
      */
@@ -271,8 +188,9 @@ public class TaskSolution {
 
     public int checkNodeNameOrdered(String nodeName) {
         SolutionNode correctNode = getNodeByName(nodeName);
+        TargetNodes targetNodes = getTargetNodes();
         if (correctNode != null) {
-            if (ApplicationContext.getNextNodes().contains(nodeName)) {
+            if (targetNodes.getNextNodes().contains(nodeName)) {
                 return 1;
             } else {
                 return 2;
@@ -395,6 +313,7 @@ public class TaskSolution {
             }
 
         } catch (EvaluationException ex) {
+            ex.printStackTrace();
             logs.debug("Error in Evaluating Student's Equation");
             return false;
         } catch (Exception ex) {
@@ -431,6 +350,7 @@ public class TaskSolution {
             try {
                 evaluator.run();
             } catch (ModelEvaluationException ex) {
+                ex.printStackTrace();
                 logs.fatal("Error in Evaluating Correct Solution Graph.");
                 JOptionPane.showMessageDialog(MainWindow.getFrames()[0],
                         "Internal LAITS Error in Solution File - System will exit.",

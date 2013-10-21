@@ -53,11 +53,6 @@
             </Property>
             <Property name="focusCycleRoot" type="boolean" value="true"/>
           </Properties>
-          <Events>
-            <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="fixedValueInputBoxActionPerformed"/>
-            <EventHandler event="keyTyped" listener="java.awt.event.KeyListener" parameters="java.awt.event.KeyEvent" handler="fixedValueInputBoxKeyTyped"/>
-            <EventHandler event="keyReleased" listener="java.awt.event.KeyListener" parameters="java.awt.event.KeyEvent" handler="fixedValueInputBoxKeyReleased"/>
-          </Events>
           <AuxValues>
             <AuxValue name="JavaCodeGenerator_CreateCodeCustom" type="java.lang.String" value="new DecimalTextField()"/>
             <AuxValue name="JavaCodeGenerator_CreateCodePre" type="java.lang.String" value="//Code commented by Josh 011912 -- starts here&#xa;//givenValueTextField = new javax.swing.JFormattedTextField();&#xa;//Code commented by Josh 011912 -- ends here"/>
@@ -114,7 +109,7 @@
                           </Group>
                           <Group type="102" alignment="0" attributes="0">
                               <EmptySpace max="-2" attributes="0"/>
-                              <Component id="buttonCreateNodeInputTab" min="-2" max="-2" attributes="0"/>
+                              <Component id="buttonCreateNode" min="-2" max="-2" attributes="0"/>
                           </Group>
                       </Group>
                       <EmptySpace min="0" pref="4" max="32767" attributes="0"/>
@@ -131,7 +126,7 @@
                               <EmptySpace min="-2" pref="18" max="-2" attributes="0"/>
                               <Component id="jScrollPane4" pref="315" max="32767" attributes="0"/>
                               <EmptySpace max="-2" attributes="0"/>
-                              <Component id="buttonCreateNodeInputTab" min="-2" max="-2" attributes="0"/>
+                              <Component id="buttonCreateNode" min="-2" max="-2" attributes="0"/>
                           </Group>
                           <Group type="102" attributes="0">
                               <EmptySpace min="-2" pref="44" max="-2" attributes="0"/>
@@ -261,13 +256,13 @@
                 <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="buttonDivideActionPerformed"/>
               </Events>
             </Component>
-            <Component class="javax.swing.JButton" name="buttonCreateNodeInputTab">
+            <Component class="javax.swing.JButton" name="buttonCreateNode">
               <Properties>
                 <Property name="text" type="java.lang.String" value="Create Node"/>
                 <Property name="horizontalTextPosition" type="int" value="0"/>
               </Properties>
               <Events>
-                <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="buttonCreateNodeInputTabActionPerformed"/>
+                <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="buttonCreateNodeActionPerformed"/>
               </Events>
             </Component>
             <Component class="javax.swing.JLabel" name="accumulatorTimeLabel">

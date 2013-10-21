@@ -1,0 +1,166 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<Task phase="" type="">
+    <TaskName>Epidemic</TaskName>
+    <TaskDescription>
+        Suppose there are 1001 people on a cruise ship, and 1 of them is infected with a virus. NEWLINE
+        Suppose that the virus is transmitted by an infected person meeting an uninfected person. NEWLINE
+        Suppose they only meet in pairs, and there are 100 random meetings a day. So the chance NEWLINE
+        of one person in the pair being infected is just the number of infected people (which NEWLINE
+        varies) divided by the total number of people (1001). The chance of the other person being NEWLINE
+        uninfected is the number of uninfected people divided by the total number of people. So NEWLINE
+        you can multiply those two numbers together to get the chance that the pair is the right NEWLINE
+        kind of pair for the virus to be transmitted. Graph the number of infected people and NEWLINE
+        uninfected people over 100 days.
+    </TaskDescription>
+    <URL>images/virus.jpg</URL>
+    <StartTime>0</StartTime>
+    <EndTime>100</EndTime>
+    <TimeStep>1</TimeStep>
+    <Units>days</Units>
+    <NodeCount>8</NodeCount>
+    <Nodes>
+        <Node type="stock" name="infected people" extra="no">
+            <CorrectDescription>The number of people infected by the virus</CorrectDescription>
+            <Plan>said to increase</Plan>
+            <Order>1</Order>
+            <Inputs>
+                <Name>infections per day</Name>
+            </Inputs>
+            <Outputs>
+            	<Name>chance of infected</Name>
+            </Outputs>
+            <Equation>infections per day</Equation>
+            <InitialValue>1.0</InitialValue>
+        </Node>
+        <Node type="stock" name="uninfected people" extra="no">
+            <CorrectDescription>The amount of people not infected by the virus</CorrectDescription>
+            <Plan>said to decrease</Plan>
+            <Inputs>
+            	<Name>infections per day</Name>
+            </Inputs>
+            <Outputs>
+            	<Name>chance of uninfected</Name>
+            </Outputs>
+            <Equation>-infections per day</Equation>
+            <InitialValue>1000.0</InitialValue>
+        </Node>
+        <Node type="constant" name="total people" extra="no">
+            <CorrectDescription>The amount of people total on the cruise ship</CorrectDescription>
+            <Plan>fixed value</Plan>
+            <Inputs/>
+            <Outputs>
+                <Name>chance of uninfected</Name>
+                <Name>chance of infected</Name>
+            </Outputs>
+            <Equation>1001</Equation>
+            <InitialValue>1001</InitialValue>
+        </Node>
+        <Node type="flow" name="chance of uninfected" extra="no">
+            <CorrectDescription>The chance an individual is not infected</CorrectDescription>
+            <Plan>proportional to accumulator and input</Plan>
+            <Inputs>
+            	<Name>uninfected people</Name>
+            	<Name>total people</Name>
+            </Inputs>
+            <Outputs>
+                <Name>chance of infectious meeting</Name>
+            </Outputs>
+            <Equation>uninfected people / total people</Equation>
+            <InitialValue></InitialValue>
+        </Node>
+        <Node type="flow" name="chance of infected" extra="no">
+            <CorrectDescription>The chance an individual is infected</CorrectDescription>
+            <Plan>proportional to accumulator and input</Plan>
+            <Inputs>
+            	<Name>infected people</Name>
+            	<Name>total people</Name>
+            </Inputs>
+            <Outputs>
+                <Name>chance of infectious meeting</Name>
+            </Outputs>
+            <Equation>infected people / total people</Equation>
+            <InitialValue></InitialValue>
+        </Node>
+        <Node type="flow" name="chance of infectious meeting" extra="no">
+            <CorrectDescription>The chance an individual who is infected will meet an infected one</CorrectDescription>
+            <Plan>proportional to accumulator and input</Plan>
+            <Inputs>
+            	<Name>chance of infected</Name>
+            	<Name>chance of uninfected</Name>
+            </Inputs>
+            <Outputs>
+                <Name>infections per day</Name>
+            </Outputs>
+            <Equation>chance of infected * chance of uninfected</Equation>
+            <InitialValue></InitialValue>
+        </Node>
+        <Node type="constant" name="meetings per day" extra="no">
+            <CorrectDescription>The number of meetings that occur each day</CorrectDescription>
+            <Plan>fixed value</Plan>
+            <Inputs/>
+            <Outputs>
+                <Name>infections per day</Name>
+            </Outputs>
+            <Equation>100</Equation>
+            <InitialValue>100</InitialValue>
+        </Node>
+        <Node type="flow" name="infections per day" extra="no">
+            <CorrectDescription>The number of infections per day</CorrectDescription>
+            <Plan>proportional to accumulator and input</Plan>
+            <Inputs>
+            	<Name>meetings per day</Name>
+            	<Name>chance of infectious meeting</Name>
+            </Inputs>
+            <Outputs>
+                <Name>infected people</Name>
+                <Name>uninfected people</Name>
+            </Outputs>
+            <Equation>meetings per day * chance of infectious meeting</Equation>
+            <InitialValue></InitialValue>
+        </Node>
+    </Nodes>
+    <DescriptionTree>
+        <Node level="root">
+            <Description>The amount of people</Description>            
+            <Node level="leaf">
+                <Description>infected by the virus</Description>
+                <NodeName>infected people</NodeName>
+            </Node>
+            <Node level="leaf">
+                <Description>not infected by the virus</Description>
+                <NodeName>uninfected people</NodeName>
+            </Node>
+            <Node level="leaf">
+          	    <Description>total on the cruise ship</Description>            
+       			<NodeName>total people</NodeName>
+        	</Node>
+        </Node>
+        <Node level="root">
+            <Description>The number of</Description>            
+            <Node level="leaf">
+                <Description>infections per day</Description>
+                <NodeName>infections per day</NodeName>
+            </Node>
+            <Node level="leaf">
+                <Description>meetings that occur each day</Description>
+                <NodeName>meetings per day</NodeName>
+            </Node>
+        </Node>
+        <Node level="root">
+            <Description>The chance an individual</Description>            
+            <Node level="leaf">
+                <Description>is infected</Description>
+                <NodeName>chance of infected</NodeName>
+            </Node>
+            <Node level="leaf">
+                <Description>is not infected</Description>
+                <NodeName>chance of uninfected</NodeName>
+            </Node>
+            <Node level="leaf">
+          	    <Description>who is infected will meet an infected one</Description>            
+       			<NodeName>chance of infectious meeting</NodeName>
+        	</Node>
+        </Node>
+    </DescriptionTree>
+</Task>

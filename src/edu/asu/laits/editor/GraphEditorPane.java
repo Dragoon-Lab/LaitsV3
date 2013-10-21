@@ -42,7 +42,10 @@ import edu.asu.laits.editor.listeners.UndoAndRedoAbleListener;
 import edu.asu.laits.gui.MainWindow;
 import edu.asu.laits.properties.GlobalProperties;
 import edu.asu.laits.properties.GraphProperties;
+import java.util.ArrayList;
+import java.util.Iterator;
 import javax.swing.SwingConstants;
+import net.sourceforge.jeval.Evaluator;
 import org.apache.log4j.Logger;
 import org.jgraph.JGraph;
 import org.jgraph.event.GraphModelEvent;
@@ -86,11 +89,9 @@ public class GraphEditorPane extends JGraph {
 
     private static final long serialVersionUID = 7610898466035692785L;
     private JGraphModelAdapter modelAdapter;
-    /**
-     * Insert mode is a mode where you can put out vertices just by clicking in
-     * the graph area
-     */
-    private boolean insertMode = false;
+    
+    //Insert mode is a mode where you can put out vertices just by clicking in the graph area
+    //private boolean insertMode = false;
     private GraphEditorUndoManager undoManager;
     private GraphProperties graphProperties = new GraphProperties();
     private List<GraphPropertiesChangeListener> graphPropertiesChangeListeners = new LinkedList<GraphPropertiesChangeListener>();
@@ -148,12 +149,6 @@ public class GraphEditorPane extends JGraph {
         this.setMarqueeColor(marqueeColor);            
     }
 
-    /*
-     * Check for saved state on server.
-    */
-    
-    
-    
     public void setGridProps() {
         GlobalProperties prop = GlobalProperties.getInstance();
         setGridEnabled(prop.isGridEnabled());
@@ -168,8 +163,7 @@ public class GraphEditorPane extends JGraph {
      *
      */
     private void init() {
-        // create a JGraphT graph
-        
+        // create a JGraphT graph        
         graph = new Graph<Vertex, Edge>(Edge.class);
 
         // create a visualization using JGraph, via an adapter
@@ -178,11 +172,8 @@ public class GraphEditorPane extends JGraph {
         layoutCache = new GraphLayoutCache(modelAdapter,
                 new GraphEditorCellViewFactory());
 
-
         setGraphLayoutCache(layoutCache);
-
         this.setModel(modelAdapter);
-
         undoManager = new GraphEditorUndoManager(this);
 
         getModel().addUndoableEditListener(undoManager);
@@ -190,10 +181,13 @@ public class GraphEditorPane extends JGraph {
         this.removeKeyListener(this.getKeyListeners()[0]);
         this.addKeyListener(new KeyHandler(this));
 
+        attachGraphStatusNotifier();
+    }
+
+    private void attachGraphStatusNotifier(){
         final Action statusUpdateAction = new AbstractAction() {
             public void actionPerformed(ActionEvent e) {
                 // Show new graph information...
-
                 if (!isReadyForOperation()) {
                     return;
                 }
@@ -210,22 +204,22 @@ public class GraphEditorPane extends JGraph {
                     return;
                 }
                 Object[] selectedVertexObjects = getSelectionCells(vertexObjects);
-                Object[] selectedEdgeObjects = getSelectionCells(edgeObjects);
+                //Object[] selectedEdgeObjects = getSelectionCells(edgeObjects);
                 int vertices = vertexObjects.length;
                 int edges = edgeObjects.length;
                 int selectedVertices = selectedVertexObjects.length;
-                int selectedEdges = selectedEdgeObjects.length;
+                //int selectedEdges = selectedEdgeObjects.length;
 
-                /*
-                 * Code changed by: Deepak Bhosale
-                 *  Code removed to fix bug 1983
-                 * Description: Removing message on status bar
-                 */
-                /*
-                 currentStatusMessageProvider.setMessage("Nodes: " + vertices + ", Edges: " + edges
-                 + ", Selected Nodes:  " + selectedVertices + ", Selected Edges: "
-                 + selectedEdges);*/
-
+                if(selectedVertices > 0){
+                    MainWindow.getInstance().getModelToolBar().enableDeleteNodeButton();
+                } else {
+                    MainWindow.getInstance().getModelToolBar().disableDeleteNodeButton();
+                }
+                
+                if(ApplicationContext.getApplicationEnvironment().equals(ApplicationContext.ApplicationEnvironment.DEV)){
+                    currentStatusMessageProvider.setMessage("Nodes: " + vertices + ", Edges: " + edges
+                    + ", Selected Nodes:  " + selectedVertices );
+                }                 
             }
         };
 
@@ -241,12 +235,9 @@ public class GraphEditorPane extends JGraph {
             public void valueChanged(GraphSelectionEvent e) {
                 statusUpdateAction.actionPerformed(new ActionEvent(
                         "model changed", 0, "modelChange"));
-
             }
         });
-
     }
-
     /**
      * Adds a vertex at the specified position (x, y). Uses the GraphProperties
      * object for the graph to associate the vertex with the default properties
@@ -321,7 +312,6 @@ public class GraphEditorPane extends JGraph {
         port.setParent(vertexCell);
 
         getGraphLayoutCache().insert(vertexCell);
-
     }
 
     /**
@@ -341,6 +331,67 @@ public class GraphEditorPane extends JGraph {
     }
 
     /**
+     * Method to delete selected node form GraphEditorPane
+     */
+    public void deleteSelectedNodes() {
+        Object[] cells = this.getSelectionCells();
+        logs.debug("Deleting selected nodes from Graph. Count: "+cells.length);
+        List<String> selectedNodes = new ArrayList<String>();
+        
+        for (Object obj : cells) {
+            DefaultGraphCell cell = (DefaultGraphCell) obj;
+            Vertex v = (Vertex) cell.getUserObject();
+            if (v != null) {
+                selectedNodes.add(v.getName());
+            }
+        }
+
+        this.removeSelected();
+
+        Iterator<Vertex> it = graph.vertexSet().iterator();
+        Vertex v;
+        while (it.hasNext()) {
+            v = it.next();
+            
+            if(v.getVertexType().equals(Vertex.VertexType.FLOW) || v.getVertexType().equals(Vertex.VertexType.STOCK)){
+                // If this not has equation involving deleted nodes, it should be reset
+                Evaluator old = new Evaluator();
+                boolean shouldEquationChange = false;
+                try {
+                    old.parse(v.getEquation());
+                    List<String> variables = old.getAllVariables();
+                    for(String s : variables){
+                        if(selectedNodes.contains(s)) {
+                            shouldEquationChange = true;
+                        }
+                    }
+                    
+                    if(shouldEquationChange)
+                        v.setEquation("");
+                    
+                } catch (Exception e){
+                    e.printStackTrace();
+                }
+            }
+            
+            if(v.getCorrectValues() != null) 
+                v.getCorrectValues().clear();
+            
+            v.setGraphsStatus(Vertex.GraphsStatus.UNDEFINED);
+        }
+
+        activityLogs.debug("Deleted Selected Nodes: " + selectedNodes);
+    }
+    
+    public void addEdge(Vertex sourceVeretx, Vertex targetVertex){
+        logs.debug("Adding edge between " + sourceVeretx.getName() + " and " + targetVertex.getName());
+        DefaultPort p1 = getJGraphTModelAdapter().getVertexPort(sourceVeretx);
+        DefaultPort p2 = getJGraphTModelAdapter().getVertexPort(targetVertex);        
+        
+        insertEdge(p1, p2);
+    }
+    
+    /**
      * This method adds l to the list of InsertModeChangeListeners that listens
      * for Input mode change.
      */
@@ -354,13 +405,6 @@ public class GraphEditorPane extends JGraph {
     public void updateUI() {
         setUI(new CellEditor());
         invalidate();
-    }
-
-    /**
-     * @return the insertMode
-     */
-    public boolean isInsertMode() {
-        return insertMode;
     }
 
     public GraphLayoutCache getLayoutCache() {
@@ -432,8 +476,8 @@ public class GraphEditorPane extends JGraph {
         // Add a Line End Attribute
         GraphConstants.setLabelAlongEdge(map, false);
         GraphConstants.setSelectable(map, false);
+        
         // Add a label along edge attribute
-
         int arrow = GraphConstants.ARROW_CLASSIC;
         GraphConstants.setLineEnd(map, arrow);
         GraphConstants.setEndFill(map, true);
@@ -442,10 +486,8 @@ public class GraphEditorPane extends JGraph {
     }
 
     /**
-     * If vertices is selected then remove all selected verteces and edges and
-     * all edges that is asociated with the selected edges. If only edges is
-     * selected then remove all selected edges.
-     *
+     * If vertices is selected then remove all selected vertices and edges and all edges that is associated with the selected edges. 
+     * If only edges is selected then remove all selected edges
      */
     public void removeSelected() {
         if (!isSelectionEmpty()) {
@@ -506,15 +548,11 @@ public class GraphEditorPane extends JGraph {
      * @return the changed
      */
     public boolean isChanged() {
-        /*
-         * If its posible to undo then the graph is changed.
-         */
-        return undoManager.canUndo();
+       return undoManager.canUndo();
     }
 
     /**
-     * Zoom in the graph the amunt that is specified in the
-     * GlobalProperties.SCALE_INTERVALL constant.
+     * Zoom in the graph the amunt that is specified in the GlobalProperties.SCALE_INTERVALL constant.
      */
     public void zoomIn() {
         double scale = getScale() * (1.0 + GlobalProperties.SCALE_INTERVALL);
@@ -524,9 +562,7 @@ public class GraphEditorPane extends JGraph {
     }
 
     /**
-     * Zoom out the graph the amunt that is specified in the
-     * GlobalProperties.SCALE_INTERVALL constant.
-     *
+     * Zoom out the graph the amunt that is specified in the GlobalProperties.SCALE_INTERVALL constant.
      */
     public void zoomOut() {
         double scale = getScale() * (1.0 - GlobalProperties.SCALE_INTERVALL);
@@ -546,7 +582,6 @@ public class GraphEditorPane extends JGraph {
             graphProperties.setZoomLevel(scale);
             graphProperties.fireChangedEvent();
         }
-
     }
 
     /**
@@ -574,10 +609,9 @@ public class GraphEditorPane extends JGraph {
     public void addGraphPropertiesChangeListener(GraphPropertiesChangeListener l) {
         graphPropertiesChangeListeners.add(l);
     }
-
+    
     public void addUndoAndRedoAbleListener(UndoAndRedoAbleListener l) {
         undoManager.addUndoAndRedoAbleListener(l);
-
     }
 
     /**
@@ -587,8 +621,7 @@ public class GraphEditorPane extends JGraph {
      * @return
      */
     public Point2D.Double getGraphCenterPoint() {
-        Object[] vertices = getGraphLayoutCache().getCells(false, true, false,
-                false);
+        Object[] vertices = getGraphLayoutCache().getCells(false, true, false,false);
         Rectangle2D rec = getCellBounds(vertices);
 
         return new Point2D.Double(rec.getCenterX(), rec.getCenterY());
@@ -611,7 +644,6 @@ public class GraphEditorPane extends JGraph {
                         .getRoot();
                 return destVertex;
             }
-
         }
         return null;
     }
@@ -632,7 +664,6 @@ public class GraphEditorPane extends JGraph {
                         .getRoot();
                 return destVertex;
             }
-
         }
         return null;
     }
@@ -659,11 +690,9 @@ public class GraphEditorPane extends JGraph {
 
     /**
      * Places the selected vertices in a circle.
-     *
      */
     public void placeSelectedVerticesInCircle() {
         graphOperationHelper.placeSelectedVerticesInCircle();
-
     }
 
     /**
@@ -680,17 +709,13 @@ public class GraphEditorPane extends JGraph {
      */
     public void mirrorSelectedVerticesHorizontal() {
         graphOperationHelper.mirrorSelectedVerticesHorizontal();
-
     }
 
     /**
-     * This method is used to tell the undo manager to igonore next undoable
-     * edit
-     *
+     * This method is used to tell the undo manager to igonore next undoable edit
      */
     void ignoreUndoableOnNextEdit() {
         undoManager.ignoreUndoableOnNextEdit();
-
     }
 
     public void expandByFactor(double factor) {

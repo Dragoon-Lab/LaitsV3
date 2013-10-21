@@ -40,34 +40,32 @@ public abstract class NodeEditorController{
         view.setTitle(getNodeEditorTitle());
     }
     
-    public abstract void initActionButtons();
-    
-    public abstract int processTabChange(int oldTab, int newTab);
-    
-    public abstract void initOnLoadBalloonTip();
-    
-    public abstract void initDescriptionPanelView(DescriptionPanelView dPanelView);
-    
-    public abstract String demoDescriptionPanel();
-    
+    // Abstract methods to be overridden by all the controllers.
+    public abstract void initActionButtons();    
+    public abstract int processTabChange(int oldTab, int newTab);    
+    public abstract void initOnLoadBalloonTip();    
+    public abstract void initDescriptionPanelView(DescriptionPanelView dPanelView);    
+    public abstract String demoDescriptionPanel();    
     public abstract void planPanelRadioClicked();
     
+    /**
+     * Method to Initialize CreateNewNodeDialog. 
+     * This dialog is used to create new nodes from calculations panel as part of 
+     * Target Node Strategy
+     */
+    public abstract void initializeCreateNewNodeDialog(CreateNewNodeDialog dialog);
+    
+    // Protected methods to be used by Concrete controllers. This is done for reusability.
     protected void initCheckButton(){
     
     }
     
     protected void initDemoButton(){
-        String taskPhase = ApplicationContext.getCorrectSolution().getPhase();
-
-        // Disable Giveup in Challege tasks
-        if (taskPhase.equalsIgnoreCase("Challenge")) {
-            view.getDemoButton().setEnabled(false);            
-            return;
-        }
+        //diasableDemoForChanllengeProblems();
         resetActionButtonAfterDemoUsed();
     }
     
-    
+   
     protected void initOkButton(){
     
     }
@@ -137,6 +135,14 @@ public abstract class NodeEditorController{
         }
 
         return title;
+    }
+
+    protected void diasableDemoForChanllengeProblems() {
+        String taskPhase = ApplicationContext.getCurrentTask().getPhase();
+        // Disable Giveup in Challege tasks
+        if (taskPhase.equalsIgnoreCase("Challenge")) {
+            view.getDemoButton().setEnabled(false);            
+        }        
     }
     
     

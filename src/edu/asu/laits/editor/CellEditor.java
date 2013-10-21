@@ -133,6 +133,7 @@ public class CellEditor extends BasicGraphUI {
                     try {
                         graph.setSelectionCell(cell);
                     } catch (Exception e) {
+                        e.printStackTrace();
                         System.err.println("Editing exception: " + e);
                     }
                     stopEditingInCompleteEditing = true;

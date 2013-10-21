@@ -1,0 +1,40 @@
+<!DOCTYPE html>
+<html>
+<head>
+
+<link rel="stylesheet" href="./dijit/themes/claro/claro.css">
+<meta charset="utf-8">
+<title>Dojo Charting Example</title>
+<script>dojoConfig = {parseOnLoad: true}</script>
+<script src='./dojo/dojo.js'></script>
+
+<script>
+require(["laits/sliders/example_tab_container_class", "dojo/domReady!"], function(example){
+
+    var ex = new example("Tab1","Tab2","Tab1");
+    var ex1 = new example("Tab3","Tab4","Tab2");
+    ex.show();
+    ex.createContent("Dojo1","Deepak");
+    ex.createContent("Dojo2","Reid");
+    ex.createContent("Dojo3","Brett");
+    
+    ex1.createContent("Dojo4","Deepak");
+    ex1.createContent("Dojo5","Reid");
+    ex1.createContent("Dojo6","Brett");
+    
+});
+	</script>
+</head>
+<body class="claro">
+
+<p><div id="Tab1"></div><br><br><br><br><br>
+
+			<p><div id="Tab2"></div>
+
+	
+
+	
+	
+</body>
+
+</html>

@@ -10,9 +10,12 @@ import java.util.TreeMap;
 import java.util.Map.Entry;
 
 import edu.asu.laits.editor.GraphEditorConstants;
+import edu.asu.laits.gui.MainWindow;
 import edu.asu.laits.model.Edge.ErrorReaderException;
 import java.util.ArrayList;
+import java.util.Iterator;
 import java.util.List;
+import java.util.concurrent.ConcurrentHashMap;
 import net.sourceforge.jeval.Evaluator;
 import org.apache.log4j.Logger;
 import org.jgraph.graph.DefaultGraphCell;
@@ -21,7 +24,7 @@ import org.jgraph.graph.GraphConstants;
 /**
  * Class To Hold the information about a Node in the Graph.
  */
-public class Vertex {
+public class Vertex{
     
     private transient DefaultGraphCell jGraphVertex;
 
@@ -85,6 +88,7 @@ public class Vertex {
         try{
             eval.isValidName(label);
         }catch(IllegalArgumentException e){
+            e.printStackTrace();
             logs.debug(e.getMessage());
             throw new IllegalArgumentException(e.getMessage());            
         }
@@ -119,6 +123,10 @@ public class Vertex {
         return type;
     }
 
+    /**
+     * Method to change VertexType.     
+     * @param shape 
+     */
     public void setVertexType(VertexType shape) {
         this.type = shape;
     }
@@ -222,8 +230,6 @@ public class Vertex {
         return vertexInfoClone;
     }
 
-    
-
     public DefaultGraphCell getJGraphVertex() {
         return jGraphVertex;
     }
@@ -247,12 +253,10 @@ public class Vertex {
             equation = getEquation();           
 
         } catch (Exception e) {
+            e.printStackTrace();
             throw new VertexReaderException();
         }
-
     }
-
-    
 
     public Color getBackgroundColor() {
         return backgroundColor;
@@ -357,4 +361,14 @@ public class Vertex {
         }
     }
     
+    public void printVertexInformation(){
+        System.out.println("NodeName : " + getName());
+        System.out.println("NodeDesc : " + getCorrectDescription());
+        System.out.println("NodeType : " + getVertexType());
+        System.out.println("NodeInitialVal : " + getInitialValue());
+        System.out.println("NodeEquation : " + getEquation());
+        System.out.println("DescStatus : " + getDescriptionStatus());
+        System.out.println("PlanStatus : " + getPlanStatus());
+        System.out.println("CalcStatus : " + getCalculationsStatus());        
+    }
 }

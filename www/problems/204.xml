@@ -142,7 +142,7 @@
             <Equation>Cat Births Per Year-Cat Deaths Per Year</Equation>
             <InitialValue>2</InitialValue>
             <CorrectDescription>The population size of the domestic cats</CorrectDescription>
-            <Plan>fixed value</Plan>
+            <Plan>said to increase</Plan>
         </Node>
       
         <Node type="constant" name="Bird Birth Rate" extra="no">
