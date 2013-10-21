@@ -61,7 +61,7 @@ public abstract class NodeEditorController{
     }
     
     protected void initDemoButton(){
-        diasableDemoForChanllengeProblems();
+        //diasableDemoForChanllengeProblems();
         resetActionButtonAfterDemoUsed();
     }
     
