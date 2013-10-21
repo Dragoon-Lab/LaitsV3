@@ -23,9 +23,8 @@ public class TargetNodes {
     private static Logger logs = Logger.getLogger("DevLogs");
 
 //  Fills the firstNodes list after the task solution has been read in
-    public void initFirstNodes(){
+    public void initFirstNodes(List<SolutionNode> solutionNodes){
         logs.debug("initializing first nodes");
-        List<SolutionNode> solutionNodes = ApplicationContext.getCorrectSolution().getSolutionNodes();
         for(SolutionNode solutionNode : solutionNodes){
             if(solutionNode.getNodeOrder() == 1){
                 logs.debug("Adding to First Nodes : " + solutionNode.getNodeName());

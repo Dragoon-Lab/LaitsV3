@@ -101,7 +101,7 @@ public class NodeEditorView extends javax.swing.JDialog {
 
         if (ApplicationContext.isCoachedMode()) {
             buttonCancel.setEnabled(false);
-            ApplicationContext.getTargetNodes().setNextNodes();
+            ApplicationContext.getCorrectSolution().getTargetNodes().setNextNodes();
             if (!openVertex.isPlanDone()) {
                 tabPane.setEnabledAt(CALCULATIONS, false);
                 tabPane.setForegroundAt(CALCULATIONS, Color.GRAY);
@@ -259,7 +259,7 @@ public class NodeEditorView extends javax.swing.JDialog {
             demoButton.setEnabled(false);
             activityLogs.debug("User entered correct description");
             dPanel.setEditableTree(false);
-            ApplicationContext.getTargetNodes().setNextNodes();
+            ApplicationContext.getCorrectSolution().getTargetNodes().setNextNodes();
             tabPane.setEnabledAt(PLAN, true);
             tabPane.setForegroundAt(PLAN, Color.BLACK);
             addHelpBalloon(openVertex.getName(), "descCheckDemo", "DESCRIPTION");
@@ -267,7 +267,7 @@ public class NodeEditorView extends javax.swing.JDialog {
             dPanel.setTextFieldBackground(Color.CYAN);
             setEditorMessage("That quantity used in this model, but now is not the right time to define it. Please select another description.");
             activityLogs.debug("User entered description out of order");
-            addHelpBalloon(ApplicationContext.getTargetNodes().getFirstNextNode(openVertex), "onLoad", "DESCRIPTION");
+            addHelpBalloon(ApplicationContext.getCorrectSolution().getTargetNodes().getFirstNextNode(openVertex), "onLoad", "DESCRIPTION");
         } else {
             openVertex.setDescriptionStatus(Vertex.DescriptionStatus.INCORRECT);
             dPanel.setTextFieldBackground(Color.RED);
@@ -363,7 +363,7 @@ public class NodeEditorView extends javax.swing.JDialog {
 
         MainWindow.getInstance().addHelpBalloon(openVertex.getName(), "nodeEditorClose");
         if(ApplicationContext.isCoachedMode()){
-            ApplicationContext.getTargetNodes().setNextNodes();
+            ApplicationContext.getCorrectSolution().getTargetNodes().setNextNodes();
         }
         this.dispose();
     }
@@ -606,7 +606,7 @@ public class NodeEditorView extends javax.swing.JDialog {
         switch (tabPane.getSelectedIndex()) {
             case DESCRIPTION:
                 activityLogs.debug("Giveup button pressed for Description Panel");
-                List<HelpBubble> bubbles = ApplicationContext.getHelp(ApplicationContext.getTargetNodes().getFirstNextNode(openVertex), "DESCRIPTION", "descFilled");
+                List<HelpBubble> bubbles = ApplicationContext.getHelp(ApplicationContext.getCorrectSolution().getTargetNodes().getFirstNextNode(openVertex), "DESCRIPTION", "descFilled");
                 if (!bubbles.isEmpty()) {
                     for (HelpBubble bubble : bubbles) {
                         bubble.setDisplayed(true);

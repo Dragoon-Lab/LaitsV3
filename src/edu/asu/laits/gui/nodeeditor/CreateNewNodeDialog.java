@@ -269,7 +269,7 @@ public class CreateNewNodeDialog extends javax.swing.JDialog {
         MainWindow.refreshGraph();
         if(ApplicationContext.isCoachedMode()){
             nodeEditorView.addHelpBalloon(currentVertex.getName(), "newNodeClosed", "INPUTS");
-            ApplicationContext.getTargetNodes().setNextNodes();
+            ApplicationContext.getCorrectSolution().getTargetNodes().setNextNodes();
         }
         this.dispose();
         // Why this is done after dispose ???

@@ -30,7 +30,7 @@ public class CoachedModeNodeEditorController extends NodeEditorController {
         super(view, openVertex);
         this.view = view;
         this.openVertex = openVertex;
-        this.targetNodes = ApplicationContext.getTargetNodes();
+        this.targetNodes = ApplicationContext.getCorrectSolution().getTargetNodes();
     }
 
     public void initActionButtons() {

@@ -76,6 +76,8 @@ public class TaskSolutionReader {
                       fillHelpBubbles(solution, bubbles);
                     }
                 }
+            
+            solution.initTargetNodes();
                 
         } catch (Exception e) {
             // Could not read the XML file

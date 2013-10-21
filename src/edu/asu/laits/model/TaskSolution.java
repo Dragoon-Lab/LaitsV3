@@ -47,6 +47,7 @@ public class TaskSolution {
     private List<String> accumulatorSubPlans;
     private List<String> functionSubPlans;
     private static Logger logs = Logger.getLogger("DevLogs");
+    private TargetNodes targetNodes;
 
     public TaskSolution() {
         solutionNodes = new ArrayList<SolutionNode>();
@@ -54,6 +55,7 @@ public class TaskSolution {
         correctNodeNames = new ArrayList<String>();
         helpBubbles = new ArrayList<HelpBubble>();
         taskForStudents = new Task();
+        targetNodes = new TargetNodes();
     }
 
     public Task getTaskDetails(){
@@ -97,6 +99,13 @@ public class TaskSolution {
 
     public void addFunctionSubPlans(String functionSubPlan) {
         this.functionSubPlans.add(functionSubPlan);
+    }
+    public TargetNodes getTargetNodes() {
+        return targetNodes;
+    }
+
+    public void initTargetNodes() {
+        targetNodes.initFirstNodes(solutionNodes);
     }
     
     /**
@@ -179,7 +188,7 @@ public class TaskSolution {
 
     public int checkNodeNameOrdered(String nodeName) {
         SolutionNode correctNode = getNodeByName(nodeName);
-        TargetNodes targetNodes = ApplicationContext.getTargetNodes();
+        TargetNodes targetNodes = getTargetNodes();
         if (correctNode != null) {
             if (targetNodes.getNextNodes().contains(nodeName)) {
                 return 1;

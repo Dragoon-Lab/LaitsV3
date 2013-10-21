@@ -42,7 +42,6 @@ public class ApplicationContext {
     private static boolean isProblemSolved = false;
     public static String taskLoaderURL;
     private static boolean helpBubbles = false;
-    private static TargetNodes targetNodes;
     
     // Task is used at many places in the application. It should be same for all the uses
     private static Task task;
@@ -179,14 +178,5 @@ public class ApplicationContext {
         System.out.println("Setting Current Task to: " + predefinedTask.toString());
         task = predefinedTask;
     }
-    
-
-    public static TargetNodes getTargetNodes() {
-        return targetNodes;
-    }
-
-    public static void initTargetNodes() {
-        targetNodes = new TargetNodes();
-    }
-    
+   
 }

@@ -123,7 +123,7 @@ public class GraphLoader {
 
             if (ApplicationContext.isCoachedMode()) {
                 if(vertex.getName() != null && !vertex.getName().isEmpty())
-                ApplicationContext.getTargetNodes().setNextNodes();
+                ApplicationContext.getCorrectSolution().getTargetNodes().setNextNodes();
             }
         }
 
@@ -162,7 +162,6 @@ public class GraphLoader {
         //Graph graph = graphPane.getModelGraph();
         //graph.setCurrentTask(graphFile.getTask());
         ApplicationContext.setCurrentTask(graphFile.getTask());
-        
         prop.setSavedAs(file);
     }
 
