@@ -128,7 +128,7 @@ public class TestModeNodeEditorController extends NodeEditorController {
 
     public void initDemoButton() {
         enableCheckDemoButtons(view.getDemoButton());
-        super.diasableDemoForChanllengeProblems();       
+        //super.diasableDemoForChanllengeProblems();       
     }
 
     public void initOkButton() {
@@ -184,11 +184,11 @@ public class TestModeNodeEditorController extends NodeEditorController {
     public void initializeCreateNewNodeDialog(CreateNewNodeDialog dialog) {
         dialog.getCheckButton().setEnabled(true);
         dialog.getDemoButton().setEnabled(true);
-        String taskPhase = ApplicationContext.getCurrentTask().getPhase();
+        //String taskPhase = ApplicationContext.getCurrentTask().getPhase();
         // Disable Giveup in Challege tasks
-        if (taskPhase.equalsIgnoreCase("Challenge")) {
-            dialog.getDemoButton().setEnabled(false);            
-        } 
+//        if (taskPhase.equalsIgnoreCase("Challenge")) {
+//            dialog.getDemoButton().setEnabled(false);            
+//        } 
         
         dialog.getCancelButton().setText("Close");
     }

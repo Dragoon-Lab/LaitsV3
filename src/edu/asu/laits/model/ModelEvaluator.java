@@ -18,6 +18,7 @@
 package edu.asu.laits.model;
 
 import edu.asu.laits.editor.ApplicationContext;
+import edu.asu.laits.gui.MainWindow;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.HashSet;
@@ -236,6 +237,7 @@ public class ModelEvaluator {
         if (incorrectVertices == 0) {
             logs.debug("Setting Problem Solved to True");
             ApplicationContext.setProblemSolved(true);
+            MainWindow.getInstance().getModelToolBar().enableDoneButton();
         }
     }
 
