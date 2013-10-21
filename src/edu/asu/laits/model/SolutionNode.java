@@ -36,7 +36,7 @@ public class SolutionNode {
     private List<String> inputNodes;
     private boolean isExtra;
     private double initialValue;
-    private int nodeOrder;
+    private int nodeOrder = 0;
     
     
     public void setNodeName(String name){
