@@ -110,7 +110,7 @@ public class GraphLoader {
 
     public void getGraph(GraphFile graphFile, File file)
             throws IncorcectGraphXMLFileException {
-        // An hash which makes it fast to find vertices
+        // A hash which makes it fast to find vertices
         HashMap<Integer, Vertex> vertexHash = new HashMap<Integer, Vertex>();
 
         List<Vertex> vertexList = graphFile.getVertexList();
@@ -121,7 +121,9 @@ public class GraphLoader {
 
             logs.debug("Adding Vertex:  " + vertex.getName() + " at Index: " + vertex.getVertexIndex() + " to the GraphPane");
 
-            if (ApplicationContext.isCoachedMode()) {
+            // Reid changed this to ApplicationContext.isCoachedMode()
+            // but he can't remember why
+            if (!ApplicationContext.isAuthorMode()) {
                 if(vertex.getName() != null && !vertex.getName().isEmpty())
                 ApplicationContext.getCorrectSolution().getTargetNodes().setNextNodes();
             }
