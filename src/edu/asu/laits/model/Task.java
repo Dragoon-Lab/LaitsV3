@@ -121,6 +121,14 @@ public class Task {
         this.taskType = type;
     }
     
+    public String getUnits() {
+        return this.units;
+    }
+    
+    public void setUnits(String units) {
+        this.units = units;
+    }
+    
     public String toString(){
         return "Task Details: "+"Name : "+taskName + 
                 " Type: " + taskType + 

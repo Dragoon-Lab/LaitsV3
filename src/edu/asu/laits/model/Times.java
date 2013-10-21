@@ -39,6 +39,12 @@ public class Times {
         this.timeStep = timeStep;
     }
 
+    public Times(String startTime, String stopTime, String timeStep) {
+        this.startTime = Double.valueOf(startTime);
+        this.endTime = Double.valueOf(stopTime);
+        this.timeStep = Double.valueOf(timeStep);
+    }
+    
     public int getNumberSteps(){
         return (int) ((endTime - startTime) / timeStep) + 1;
     }

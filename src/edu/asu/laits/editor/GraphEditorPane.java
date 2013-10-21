@@ -181,9 +181,7 @@ public class GraphEditorPane extends JGraph {
         this.removeKeyListener(this.getKeyListeners()[0]);
         this.addKeyListener(new KeyHandler(this));
 
-        if(ApplicationContext.getApplicationEnvironment().equals(ApplicationContext.ApplicationEnvironment.DEV)){
-            attachGraphStatusNotifier();
-        }
+        attachGraphStatusNotifier();
     }
 
     private void attachGraphStatusNotifier(){
@@ -217,8 +215,11 @@ public class GraphEditorPane extends JGraph {
                 } else {
                     MainWindow.getInstance().getModelToolBar().disableDeleteNodeButton();
                 }
-                 currentStatusMessageProvider.setMessage("Nodes: " + vertices + ", Edges: " + edges
-                 + ", Selected Nodes:  " + selectedVertices );
+                
+                if(ApplicationContext.getApplicationEnvironment().equals(ApplicationContext.ApplicationEnvironment.DEV)){
+                    currentStatusMessageProvider.setMessage("Nodes: " + vertices + ", Edges: " + edges
+                    + ", Selected Nodes:  " + selectedVertices );
+                }                 
             }
         };
 
