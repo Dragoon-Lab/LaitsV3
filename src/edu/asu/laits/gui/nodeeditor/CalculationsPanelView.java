@@ -685,11 +685,18 @@ public class CalculationsPanelView extends javax.swing.JPanel {
         while (allVertices.hasNext()) {
             studentNodeNames.add(allVertices.next().getName());
         }
-        if (studentNodeNames.size() < correctNodeNames.size()) {
-            return false;
-        } else {
-            return true;
+        for(String correctNode : correctNodeNames){
+            if(!studentNodeNames.contains(correctNode)){
+                return false;
+            }
         }
+        return true;
+        
+//        if (studentNodeNames.size() < correctNodeNames.size()) {
+//            return false;
+//        } else {
+//            return true;
+//        }
     }
     
     private void buttonCreateNodeActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_buttonCreateNodeActionPerformed
