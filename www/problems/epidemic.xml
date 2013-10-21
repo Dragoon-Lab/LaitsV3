@@ -64,7 +64,7 @@
             	<Name>total people</Name>
             </Inputs>
             <Outputs>
-                <Name>chance of meeting</Name>
+                <Name>chance of infectious meeting</Name>
             </Outputs>
             <Equation>uninfected people / total people</Equation>
             <InitialValue></InitialValue>
@@ -77,12 +77,12 @@
             	<Name>total people</Name>
             </Inputs>
             <Outputs>
-                <Name>chance of meeting</Name>
+                <Name>chance of infectious meeting</Name>
             </Outputs>
             <Equation>infected people / total people</Equation>
             <InitialValue></InitialValue>
         </Node>
-        <Node type="flow" name="chance of meeting" extra="no">
+        <Node type="flow" name="chance of infectious meeting" extra="no">
             <CorrectDescription>The chance an individual who is infected will meet an infected one</CorrectDescription>
             <Plan>proportional to accumulator and input</Plan>
             <Inputs>
@@ -110,13 +110,13 @@
             <Plan>proportional to accumulator and input</Plan>
             <Inputs>
             	<Name>meetings per day</Name>
-            	<Name>chance of meeting</Name>
+            	<Name>chance of infectious meeting</Name>
             </Inputs>
             <Outputs>
                 <Name>infected people</Name>
                 <Name>uninfected people</Name>
             </Outputs>
-            <Equation>meetings per day * chance of meeting</Equation>
+            <Equation>meetings per day * chance of infectious meeting</Equation>
             <InitialValue></InitialValue>
         </Node>
     </Nodes>
@@ -159,7 +159,7 @@
             </Node>
             <Node level="leaf">
           	    <Description>who is infected will meet an infected one</Description>            
-       			<NodeName>chance of meeting</NodeName>
+       			<NodeName>chance of infectious meeting</NodeName>
         	</Node>
         </Node>
     </DescriptionTree>
