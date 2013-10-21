@@ -9,9 +9,9 @@
         and the other is empty.  Thus, water will flow from the full barrel to the NEWLINE
         empty barrel via the hose.  The rate of flow is proportional to the difference NEWLINE
         in the water levels in the the two barrels.  In particular, when both barrels NEWLINE
-        have 50 gallons in them, the flow stops.  The number of gallons that flow through NEWLINE
-        the hose per minute is difference in the number of gallons in the two barrels NEWLINE
-        times 0.03.
+        have the same amount of water in them, the flow stops.  The number of gallons NEWLINE
+        that flow through the hose per minute is difference in the number of gallons NEWLINE
+        in the two barrels times 0.03.
     </TaskDescription>
     <URL>images/barrels.jpg</URL>
     <StartTime>0</StartTime>

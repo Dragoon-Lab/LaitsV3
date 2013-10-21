@@ -128,15 +128,19 @@ public class TestModeNodeEditorController extends NodeEditorController {
 
     public void initDemoButton() {
         enableCheckDemoButtons(view.getDemoButton());
-        super.diasableDemoForChanllengeProblems();       
+        //super.diasableDemoForChanllengeProblems();       
     }
 
     public void initOkButton() {
-        view.getOKButton().setText("Ok");    
-        view.getOKButton().setEnabled(false);
+        view.getOKButton().setText("Ok");
+        if(view.getTabbedPane().getSelectedIndex() == NodeEditorView.CALCULATIONS 
+                && view.getOpenVertex().getCalculationsStatus().equals(Vertex.CalculationsStatus.CORRECT)){
+            view.getOKButton().setEnabled(false);
+        }
     }
 
     public void initCloseButton() {
+        view.getCancelButton().setText("Cancel");
     }
 
     public void processCheckAction() {
@@ -184,11 +188,11 @@ public class TestModeNodeEditorController extends NodeEditorController {
     public void initializeCreateNewNodeDialog(CreateNewNodeDialog dialog) {
         dialog.getCheckButton().setEnabled(true);
         dialog.getDemoButton().setEnabled(true);
-        String taskPhase = ApplicationContext.getCurrentTask().getPhase();
+        //String taskPhase = ApplicationContext.getCurrentTask().getPhase();
         // Disable Giveup in Challege tasks
-        if (taskPhase.equalsIgnoreCase("Challenge")) {
-            dialog.getDemoButton().setEnabled(false);            
-        } 
+//        if (taskPhase.equalsIgnoreCase("Challenge")) {
+//            dialog.getDemoButton().setEnabled(false);            
+//        } 
         
         dialog.getCancelButton().setText("Close");
     }

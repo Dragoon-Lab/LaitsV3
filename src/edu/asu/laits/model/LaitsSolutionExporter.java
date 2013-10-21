@@ -18,6 +18,7 @@
 package edu.asu.laits.model;
 
 import edu.asu.laits.editor.ApplicationContext;
+import edu.asu.laits.gui.MainWindow;
 import java.io.File;
 import java.io.FileWriter;
 import java.io.IOException;
@@ -36,13 +37,13 @@ public class LaitsSolutionExporter {
 
     Graph<Vertex, Edge> graph = null;
     File solutionFileName = null;
-
-    public LaitsSolutionExporter(Graph<Vertex, Edge> g, File name) {
-        this.graph = g;
-        this.solutionFileName = name;
+    
+    public LaitsSolutionExporter(File name) {
+        this.graph = MainWindow.getInstance().getGraphEditorPane().getModelGraph();
+        this.solutionFileName = name;       
     }
 
-    public void export() {
+    public boolean export() {
         try {
             Document document = DocumentHelper.createDocument();
 
@@ -51,9 +52,11 @@ public class LaitsSolutionExporter {
             addAllNodes(task);
             addDescriptionTree(task);
             save(document);
-
+            
+            return true;
         } catch (Exception ex) {
             ex.printStackTrace();
+            return false;
         }
     }
 
@@ -69,30 +72,36 @@ public class LaitsSolutionExporter {
 
     private Element addRootElement(Document document) {
         // Task Root element
+        Task taskToExport = ApplicationContext.getCurrentTask();
         Element task = document.addElement("Task");
-        task.addAttribute("phase", "");
-        task.addAttribute("type", "");
+        task.addAttribute("phase", taskToExport.getPhase());
+        task.addAttribute("type", taskToExport.getTaskType());
 
         return task;
     }
 
     private void addTaskDetails(Element task) {
+        Task taskToExport = ApplicationContext.getCurrentTask();
+        
         Element taskName = task.addElement("TaskName");
+        taskName.setText(taskToExport.getTaskName());
         Element taskDescription = task.addElement("TaskDescription");
+        taskDescription.setText(taskToExport.getTaskDescription());
         Element URL = task.addElement("URL");
+        URL.setText(taskToExport.getImageURL());
 
 
         Element startTime = task.addElement("StartTime");
-        startTime.setText(String.valueOf(ApplicationContext.getCurrentTask().getTimes().getStartTime()));
+        startTime.setText(String.valueOf(taskToExport.getTimes().getStartTime()));
 
         Element endTime = task.addElement("EndTime");
-        endTime.setText(String.valueOf(ApplicationContext.getCurrentTask().getTimes().getEndTime()));
+        endTime.setText(String.valueOf(taskToExport.getTimes().getEndTime()));
 
         Element timeStep = task.addElement("TimeStep");
-        timeStep.setText(String.valueOf(ApplicationContext.getCurrentTask().getTimes().getTimeStep()));
+        timeStep.setText(String.valueOf(taskToExport.getTimes().getTimeStep()));
 
         Element units = task.addElement("Units");
-        units.setText(ApplicationContext.getCurrentTask().getChartUnits());
+        units.setText(taskToExport.getChartUnits());
     }
 
     private void addAllNodes(Element task) {
@@ -143,20 +152,12 @@ public class LaitsSolutionExporter {
     }
 
     private void addPlanDetails(Vertex vertex, Element node) {
-        if (vertex.getPlan().equals(Vertex.Plan.FIXED)) {
+        if (vertex.getVertexType().equals(Vertex.VertexType.CONSTANT)) {
             node.setText("fixed value");
-        } else if (vertex.getPlan().equals(Vertex.Plan.INCREASE_AND_DECREASE)) {
+        } else if (vertex.getVertexType().equals(Vertex.VertexType.STOCK)) {
             node.setText("said to both increase and decrease");
-        } else if (vertex.getPlan().equals(Vertex.Plan.INCREASE)) {
-            node.setText("said to increase");
-        } else if (vertex.getPlan().equals(Vertex.Plan.DECREASE)) {
-            node.setText("said to decrease");
-        } else if (vertex.getPlan().equals(Vertex.Plan.PROPORTIONAL)) {
+        } else if (vertex.getVertexType().equals(Vertex.VertexType.FLOW)) {
             node.setText("proportional to accumulator and input");
-        } else if (vertex.getPlan().equals(Vertex.Plan.RATIO)) {
-            node.setText("ratio of two quantities");
-        } else if (vertex.getPlan().equals(Vertex.Plan.DIFFERENCE)) {
-            node.setText("the difference of two quantities");
         } else {
             node.setText("UNDEFINED");
         }

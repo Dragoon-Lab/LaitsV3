@@ -67,8 +67,7 @@ public class ModelToolBar extends JToolBar {
         add(Box.createHorizontalStrut(5)); 
         add(getshowGraphButton());
         
-        if(ApplicationContext.isStudentMode() || 
-                ApplicationContext.isCoachedMode()){
+        if(!ApplicationContext.isAuthorMode()){
             add(Box.createHorizontalStrut(5));
             add(getDoneButton());
         }
@@ -184,13 +183,10 @@ public class ModelToolBar extends JToolBar {
             doneButton
                     .addActionListener(new java.awt.event.ActionListener() {
                 public void actionPerformed(java.awt.event.ActionEvent e) {
-                    if (ApplicationContext.isAuthorMode()) {
-                        return;
-                    }
                     modelMenu.doneButtonAction();
                 }
             });
-            disableDoneButton();
+            //disableDoneButton();
         }
         return doneButton;
     }
@@ -214,6 +210,9 @@ public class ModelToolBar extends JToolBar {
                 }
             });
         }
+        // Disabling Show Form feature for all the modes - until its ready
+        showForumButton.setEnabled(false);
+        modelMenu.disableShowForumMenuItem();
         return showForumButton;
     }
     
