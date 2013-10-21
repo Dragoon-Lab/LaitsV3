@@ -661,11 +661,11 @@ public class CalculationsPanelView extends javax.swing.JPanel {
             String selectedVertexName = availableInputsJList.getSelectedValue().toString();
             selectedVertexName = removeBoldfromListItem(selectedVertexName);
             
-            if(formulaInputArea.getText().contains(selectedVertexName)){
-                formulaInputArea.setText(formulaInputArea.getText().replaceAll(selectedVertexName, ""));                
-            }else{
+//            if(formulaInputArea.getText().contains(selectedVertexName)){
+//                formulaInputArea.setText(formulaInputArea.getText().replaceAll(selectedVertexName, ""));                
+//            }else{
                 formulaInputArea.setText(formulaInputArea.getText() + selectedVertexName);    
-            }
+//            }
             
             // This can be improved to set/reset selection in if-else
             setSelectedNodesOnJList();
