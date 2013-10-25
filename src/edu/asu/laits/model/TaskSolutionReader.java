@@ -36,12 +36,12 @@ import org.dom4j.io.SAXReader;
 public class TaskSolutionReader {
     private static Logger logs = Logger.getLogger("DevLogs");
     
-    public TaskSolution loadSolution(String taskId) {
+    public TaskSolution loadSolution(String taskId, String author, String group) {
         // Create TaskSolution Object to hold all the information
         TaskSolution solution = new TaskSolution();
         
         try {
-            Document parsedSolution = loadRootDocument(taskId);
+            Document parsedSolution = loadRootDocument(taskId,author,group);
             Element taskNode = parsedSolution.getRootElement();
             solution.getTaskDetails().setTaskType(taskNode.attributeValue("type"));
             solution.getTaskDetails().setPhase(taskNode.attributeValue("phase"));
@@ -87,11 +87,14 @@ public class TaskSolutionReader {
         return solution;
     }
     
-    private Document loadRootDocument(String taskId) throws Exception{
+    private Document loadRootDocument(String taskId, String author, String group) throws Exception{
         Document document = null;
         SAXReader reader = new SAXReader();
         
         String resourceURL = ApplicationContext.taskLoaderURL + taskId;
+            if(author.length()>0 && group.length()>0){
+                resourceURL += "&author=" + author + "&group=" + group;
+            }
         System.out.println("Resource URL "+resourceURL);
         logs.info("Task URL : "+resourceURL);
         document = reader.read(new URL(resourceURL));

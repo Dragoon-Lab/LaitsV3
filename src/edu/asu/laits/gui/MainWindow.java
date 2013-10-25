@@ -452,7 +452,9 @@ public class MainWindow extends JFrame {
     private void loadTask() {
         try {
             String task = ApplicationContext.getCurrentTaskID();
-            mainMenu.getFileMenu().openTaskById(task);
+            String author = ApplicationContext.getAuthor();
+            String section = ApplicationContext.getSection();
+            mainMenu.getFileMenu().openTaskById(task,author,section);
         } catch (Exception e) {
             e.printStackTrace();
         }

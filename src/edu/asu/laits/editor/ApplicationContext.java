@@ -35,6 +35,7 @@ public class ApplicationContext {
     private static String userId;
     private static AppMode appMode;
     private static String section;
+    private static String author;
     private static String rootURL;
     private static boolean isValid = false;
     private static TaskSolution correctSolution;
@@ -76,6 +77,14 @@ public class ApplicationContext {
 
     public static void setUserID(String uid) {
         userId = uid;
+    }
+    
+   public static String getAuthor() {
+        return author;
+    }
+
+    public static void setAuthor(String authorName) {
+        author = authorName;
     }
 
     public static String getSection() {

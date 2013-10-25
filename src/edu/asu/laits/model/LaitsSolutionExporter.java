@@ -18,6 +18,7 @@
 package edu.asu.laits.model;
 
 import edu.asu.laits.editor.ApplicationContext;
+import edu.asu.laits.model.PersistenceManager;
 import edu.asu.laits.gui.MainWindow;
 import java.io.File;
 import java.io.FileWriter;
@@ -28,6 +29,7 @@ import org.dom4j.DocumentHelper;
 import org.dom4j.Element;
 import org.dom4j.io.OutputFormat;
 import org.dom4j.io.XMLWriter;
+import org.apache.log4j.Logger;
 
 /**
  *
@@ -36,23 +38,42 @@ import org.dom4j.io.XMLWriter;
 public class LaitsSolutionExporter {
 
     Graph<Vertex, Edge> graph = null;
-    File solutionFileName = null;
+    private static Logger logs = Logger.getLogger("DevLogs");
+    private static Document document = DocumentHelper.createDocument();
     
-    public LaitsSolutionExporter(File name) {
+    public LaitsSolutionExporter() {
         this.graph = MainWindow.getInstance().getGraphEditorPane().getModelGraph();
-        this.solutionFileName = name;       
     }
 
     public boolean export() {
         try {
-            Document document = DocumentHelper.createDocument();
-
             Element task = addRootElement(document);
             addTaskDetails(task);
             addAllNodes(task);
             addDescriptionTree(task);
-            save(document);
-            
+            String serviceURL = ApplicationContext.getRootURL().concat("/save_solution.php");
+            String response = PersistenceManager.sendHTTPRequest("save_author",serviceURL,document.toString());
+            if (Integer.parseInt(response) == 200) {
+                logs.info("Successfully sent exported solution to server.");
+                return true;
+            } else {
+                logs.info("Solution export to server failed.");
+                return false;
+            }
+        } catch (Exception ex) {
+            logs.info("Solution export to server failed.  Return value: "+response);
+ 
+            ex.printStackTrace();
+            return false;
+        }
+    }
+    
+     public boolean save_file(File solutionFileName) {
+        try {
+            OutputFormat format = OutputFormat.createPrettyPrint();
+            XMLWriter output = new XMLWriter(new FileWriter(solutionFileName), format);
+            output.write(document);
+            output.close();
             return true;
         } catch (Exception ex) {
             ex.printStackTrace();
@@ -191,10 +212,4 @@ public class LaitsSolutionExporter {
         descriptionTree.addText("To Be Filled");
     }
 
-    private void save(Document document) throws IOException {
-        OutputFormat format = OutputFormat.createPrettyPrint();
-        XMLWriter output = new XMLWriter(new FileWriter(solutionFileName), format);
-        output.write(document);
-        output.close();
-    }
 }

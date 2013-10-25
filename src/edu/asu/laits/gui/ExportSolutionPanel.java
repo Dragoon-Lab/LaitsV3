@@ -193,8 +193,18 @@ public class ExportSolutionPanel extends JPanel {
         exportAction.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent e) {
                 // Perform Validation before exporting the task
-                if (validateExportSolutionPanel()) {
-                    setTaskDetails();
+                if (!validateExportSolutionPanel()) return;
+                setTaskDetails();
+
+                // Exporter will read all the information from task object
+                LaitsSolutionExporter exporter = new LaitsSolutionExporter();
+                    
+                if(exporter.export()){
+                    JOptionPane.showMessageDialog(getRootPane(), 
+                            "Solution saved to server.",
+                            "Solution Exported", 
+                            JOptionPane.INFORMATION_MESSAGE);
+                } else {
 
                     logs.info("Exporting Laits Solution File.");
 
@@ -222,32 +232,25 @@ public class ExportSolutionPanel extends JPanel {
                             }
                         }
 
-                        saveToFile(selectedFile);
+                        if(exporter.save_file(selectedFile)){
+                            JOptionPane.showMessageDialog(getRootPane(), 
+                                "Solution saved to file "+selectedFile.toString(),
+                            "Solution Exported", 
+                            JOptionPane.INFORMATION_MESSAGE);
+                       } else {
+                            JOptionPane.showMessageDialog(getRootPane(), 
+                                        "Solution Could not be exported.",
+                                        "Export Error",
+                                        JOptionPane.ERROR_MESSAGE);
+                        }
                     }
                 }
+                // BvdS:  I have no idea where this is supposed to go
+                parent.dispose();
             }
         });
 
         add(exportAction, "right");
-    }
-
-    /**
-     * Tries to save to the specified file
-     */
-    private void saveToFile(File file) {
-        logs.info("Saving LaitsSolution to File: " + file.getAbsolutePath());
-        
-        // Exporter will read all the information from task object
-        LaitsSolutionExporter exporter = new LaitsSolutionExporter(file);
-        if(exporter.export()){
-            JOptionPane.showMessageDialog(getRootPane(), "Solution File Saved at : " + file.getAbsolutePath(),
-                    "Solution File Exported", JOptionPane.INFORMATION_MESSAGE);
-        } else {
-            JOptionPane.showMessageDialog(getRootPane(), "Solution Could not be exported.",
-                    "Export Error", JOptionPane.ERROR_MESSAGE);
-        }
-        
-        parent.dispose();
     }
 
     private boolean validateExportSolutionPanel() {
