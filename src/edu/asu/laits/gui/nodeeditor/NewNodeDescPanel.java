@@ -299,7 +299,7 @@ public class NewNodeDescPanel extends JPanel {
         // All good so far, so set name and desc
         currentVertex.setName(getNodeName().trim());
         currentVertex.setCorrectDescription(getNodeDesc().trim());
-        
+        currentVertex.setDescriptionStatus(Vertex.DescriptionStatus.CORRECT);
         return true;
     }
 
