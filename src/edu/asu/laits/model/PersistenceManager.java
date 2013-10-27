@@ -63,7 +63,7 @@ public class PersistenceManager implements Runnable {
         String action = ApplicationContext.isAuthorMode() ? "author_load" : "load";
         String serviceURL = ApplicationContext.getRootURL().concat("/postvar.php");
         
-        return sendHTTPRequest(action, serviceURL, "", "");
+        return sendHTTPRequest(action, serviceURL, "");
     }
     
     public void run() {
@@ -74,7 +74,7 @@ public class PersistenceManager implements Runnable {
         
         try {
             String sessionData = URLEncoder.encode(graphSaver.getSerializedGraphInXML(), "UTF-8");
-            String response = sendHTTPRequest(action, serviceURL, sessionData, "");
+            String response = sendHTTPRequest(action, serviceURL, sessionData);
             statusCode = Integer.parseInt(response);
             if (statusCode == 200) {
                 logs.info("Successfully wrote session to server using " + ApplicationContext.getRootURL().concat("/postvar.php"));
@@ -89,7 +89,7 @@ public class PersistenceManager implements Runnable {
         }
     }
     
-    private static String sendHTTPRequest(String action, String address, String data, String share) throws IOException {
+    public static String sendHTTPRequest(String action, String address, String data) throws IOException {
         //open connection
         logs.debug("Opening Connection . Action: "+action+" URL: "+address);
         URL url = new URL(address);
@@ -110,7 +110,11 @@ public class PersistenceManager implements Runnable {
         postVariable.add(new BasicNameValuePair("action", action));
         postVariable.add(new BasicNameValuePair("id", ApplicationContext.getUserID()));
         postVariable.add(new BasicNameValuePair("section", ApplicationContext.getSection()));
-        postVariable.add(new BasicNameValuePair("problem", ApplicationContext.getCurrentTaskID()));
+        if (action.equals("author_save")) {
+            postVariable.add(new BasicNameValuePair("problem", ApplicationContext.getCurrentTask().getTaskName()));
+        }else {
+            postVariable.add(new BasicNameValuePair("problem", ApplicationContext.getCurrentTaskID()));
+        }
         logs.debug("Post Variables sending: "+postVariable);
         
         if (action.equals("save") || action.equals("author_save")) {

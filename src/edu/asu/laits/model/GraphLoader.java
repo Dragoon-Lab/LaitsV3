@@ -24,20 +24,19 @@ import java.util.HashMap;
 import edu.asu.laits.editor.GraphEditorPane;
 import edu.asu.laits.editor.ApplicationContext;
 import edu.asu.laits.properties.GraphProperties;
-import edu.asu.laits.logger.HttpAppender;
-import org.jgrapht.ext.JGraphModelAdapter;
 
 import com.thoughtworks.xstream.XStream;
-import com.thoughtworks.xstream.core.BaseException;
 import com.thoughtworks.xstream.io.xml.DomDriver;
-import java.util.ArrayList;
-import java.util.HashSet;
+import java.util.Iterator;
 import java.util.List;
-import java.util.Set;
-import java.util.logging.Level;
+import java.util.Scanner;
 import net.sourceforge.jeval.EvaluationException;
 import net.sourceforge.jeval.Evaluator;
 import org.apache.log4j.Logger;
+import org.dom4j.Document;
+import org.dom4j.DocumentException;
+import org.dom4j.DocumentHelper;
+import org.dom4j.Element;
 import org.jgraph.graph.DefaultPort;
 
 /**
@@ -85,8 +84,9 @@ public class GraphLoader {
     }
 
     public void loadFromServer(String xmlString)
-            throws IncorcectGraphXMLFileException {
-
+            throws IncorcectGraphXMLFileException, DocumentException {
+        String processedXML = preprocessOldVersionXML(xmlString);
+        
         // Used to load objects from xml
         XStream xstream = new XStream(new DomDriver());
 
@@ -97,7 +97,7 @@ public class GraphLoader {
 
         GraphFile graphFile = null;
         try {
-            graphFile = (GraphFile) xstream.fromXML(xmlString);
+            graphFile = (GraphFile) xstream.fromXML(processedXML);
         } catch (Exception ex) {
             // Could not read the XML file
             logs.debug(ex.getMessage());
@@ -106,6 +106,41 @@ public class GraphLoader {
             throw new IncorcectGraphXMLFileException();
         }
         getGraph(graphFile, null);
+    }
+    
+    private String preprocessOldVersionXML(String xmlString) throws DocumentException {
+        logs.info("Processing GraphXML to remove unused elements");
+        
+        Document document = DocumentHelper.parseText(xmlString);
+        Element el = document.getRootElement();
+        Element prop = el.element("properties");
+        if(prop != null) {
+            el.remove(prop);
+        }
+        
+        Element vList = el.element("vertexList");
+        if(vList != null) {
+            Iterator<Element> it = vList.elementIterator();
+            while(it.hasNext()) {
+                Element vertex = it.next();
+                Element useBack = vertex.element("useGraphBackround");
+                if(useBack != null) {
+                    vertex.remove(useBack);
+                }
+                
+                Element back = vertex.element("backgroundColor");
+                if(back != null) {
+                    vertex.remove(back);
+                }
+                
+                Element fore = vertex.element("foregroundColor");
+                if(fore != null) {
+                    vertex.remove(fore);
+                }
+            }
+        }
+        
+        return el.asXML();
     }
 
     public void getGraph(GraphFile graphFile, File file)
@@ -149,21 +184,15 @@ public class GraphLoader {
             }
         }
 
-        GraphProperties prop = graphFile.getProperties();
-        prop.initializeNotSerializeFeelds();
-
-        graphPane.setScale(prop.getZoomLevel());
-        graphPane.setBackground(prop.getBackgroundColor());
-        graphPane.setGraphProperties(prop);
-
         graphPane.validate();
         graphPane.repaint();
 
         //Graph graph = graphPane.getModelGraph();
         //graph.setCurrentTask(graphFile.getTask());
-        ApplicationContext.setCurrentTask(graphFile.getTask());
+        if(ApplicationContext.isAuthorMode())
+            ApplicationContext.setCurrentTask(graphFile.getTask());
         
-        prop.setSavedAs(file);
+        //prop.setSavedAs(file);
     }
 
     private boolean validateNodeEquation(Vertex currentVertex) {

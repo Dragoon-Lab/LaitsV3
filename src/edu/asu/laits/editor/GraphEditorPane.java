@@ -263,13 +263,6 @@ public class GraphEditorPane extends JGraph {
         GraphEditorConstants.setShape(attrs, getGraphProperties()
                 .getDefaultInsertShape());
 
-        GraphEditorConstants.setUseGraphBackground(attrs, getGraphProperties()
-                .isDefaultUseGraphBackground());
-        GraphEditorConstants.setBackground(attrs, getGraphProperties()
-                .getDefaultVertexBackgroundColor());
-        GraphEditorConstants.setForeground(attrs, getGraphProperties()
-                .getDefaultVertexForegroundColor());
-
         Rectangle2D newBounds = new Rectangle2D.Double((x - 9) / getScale(),
                 (y - 9) / getScale(), 120, 75);
         GraphConstants.setBounds(attrs, newBounds);
@@ -298,10 +291,6 @@ public class GraphEditorPane extends JGraph {
         GraphConstants.setSizeable(attrs, false);
         GraphConstants.setBorderColor(attrs, Color.black);
         GraphEditorConstants.setShape(attrs, vertex.getVertexType());
-        GraphEditorConstants.setUseGraphBackground(attrs, vertex
-                .isUseGraphBackround());
-        GraphEditorConstants.setBackground(attrs, vertex.getBackgroundColor());
-        GraphEditorConstants.setForeground(attrs, vertex.getForegroundColor());
         Rectangle2D newBounds = new Rectangle2D.Double(vertex.getXPosition(),
                 vertex.getYPosition(), 120, 75);
 

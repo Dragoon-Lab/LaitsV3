@@ -22,7 +22,11 @@ import edu.asu.laits.gui.MainWindow;
 import java.io.File;
 import java.io.FileWriter;
 import java.io.IOException;
+import java.io.StringWriter;
+import java.util.HashSet;
 import java.util.Iterator;
+import java.util.Set;
+import org.apache.log4j.Logger;
 import org.dom4j.Document;
 import org.dom4j.DocumentHelper;
 import org.dom4j.Element;
@@ -36,14 +40,14 @@ import org.dom4j.io.XMLWriter;
 public class LaitsSolutionExporter {
 
     Graph<Vertex, Edge> graph = null;
-    File solutionFileName = null;
+    private static Logger logs = Logger.getLogger("DevLogs");
     
-    public LaitsSolutionExporter(File name) {
-        this.graph = MainWindow.getInstance().getGraphEditorPane().getModelGraph();
-        this.solutionFileName = name;       
+    public LaitsSolutionExporter() {
+        this.graph = MainWindow.getInstance().getGraphEditorPane().getModelGraph();         
     }
 
     public boolean export() {
+        String httpReponse = "";
         try {
             Document document = DocumentHelper.createDocument();
 
@@ -51,10 +55,19 @@ public class LaitsSolutionExporter {
             addTaskDetails(task);
             addAllNodes(task);
             addDescriptionTree(task);
-            save(document);
             
-            return true;
-        } catch (Exception ex) {
+            String serviceURL = ApplicationContext.getRootURL().concat("/save_solution.php");
+            httpReponse = PersistenceManager.sendHTTPRequest("author_save", serviceURL, document.asXML());
+            
+            if (Integer.parseInt(httpReponse) == 200) {
+                logs.info("Successfully sent exported solution to server.");
+                return true;
+            } else {
+                logs.info("Solution export to server failed: "+httpReponse);
+                return false;
+            }
+        } catch (IOException ex) {
+            logs.error("Error in Exporting Solution. Response: " + httpReponse);
             ex.printStackTrace();
             return false;
         }
@@ -164,10 +177,15 @@ public class LaitsSolutionExporter {
     }
 
     private void addInputDetails(Vertex vertex, Element node) {
+        logs.info("Adding Input Details for Vertex: '" + vertex.getName() + "'");
+        
         // Add Input Nodes
         Iterator<Edge> edges = graph.incomingEdgesOf(vertex).iterator();
         while (edges.hasNext()) {
             Edge e = edges.next();
+            
+            System.out.println("SourceName: " + e.getSourceVertexId());
+            System.out.println("TargetName: " + e.getTargetVertexId());
             Vertex source = graph.getVertexById(e.getSourceVertexId());
             Element el = node.addElement("Name");
             el.addText(source.getName());
@@ -186,15 +204,33 @@ public class LaitsSolutionExporter {
     }
 
     private void addDescriptionTree(Element task) {
-        // Create Description Tree
+        logs.info("Adding Description Tree to Exported Solution");
+        
         Element descriptionTree = task.addElement("DescriptionTree");
-        descriptionTree.addText("To Be Filled");
-    }
-
-    private void save(Document document) throws IOException {
-        OutputFormat format = OutputFormat.createPrettyPrint();
-        XMLWriter output = new XMLWriter(new FileWriter(solutionFileName), format);
-        output.write(document);
-        output.close();
+        
+        Set<Vertex> vertexSet = graph.vertexSet();
+        Set<String> allDescriptions = new HashSet<String>();
+        
+        for(Vertex v : vertexSet){
+            allDescriptions.add(v.getCorrectDescription() + "#" +v.getName());
+            allDescriptions.addAll(v.getFakeDescription());
+            
+            for(String s : allDescriptions) {
+                String[] parts = s.split("#");
+                String description = parts[0].trim();
+                String name = (parts.length > 1)?parts[1].trim():v.getName();
+                
+                Element node = descriptionTree.addElement("Node");
+                node.addAttribute("level", "leaf");
+                
+                Element desc = node.addElement("Description");
+                desc.setText(description);
+                
+                Element nodeName = node.addElement("NodeName");
+                nodeName.setText(name);
+            }
+            
+            allDescriptions.clear();
+        }                        
     }
 }

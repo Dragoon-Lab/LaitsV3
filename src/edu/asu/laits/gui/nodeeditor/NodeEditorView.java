@@ -175,11 +175,11 @@ public class NodeEditorView extends javax.swing.JDialog {
             logs.debug("Enabling Check and Giveup");
             this.getCheckButton().setEnabled(true);
             this.demoButton.setEnabled(true);
-
+            System.out.println("test " + ApplicationContext.getCurrentTask().toString());
             String taskPhase = ApplicationContext.getCurrentTask().getPhase();
 
             // Disable Giveup in Challege tasks
-            if (taskPhase.equalsIgnoreCase("Challenge")) {
+            if (taskPhase != null && taskPhase.equalsIgnoreCase("Challenge")) {
                 this.demoButton.setEnabled(false);
             }
 
@@ -222,7 +222,7 @@ public class NodeEditorView extends javax.swing.JDialog {
             return;
         }
 
-        if (correctSolution.checkNodeName(dPanel.getNodeName())) {
+        if (correctSolution.checkNodeName(dPanel.getNodeName()) && correctSolution.checkNodeDescription(dPanel.getNodeName(), dPanel.getNodeDesc())) {
             openVertex.setDescriptionStatus(Vertex.DescriptionStatus.CORRECT);
             //graphPane.getMainFrame().getMainMenu().getModelMenu().addDeleteNodeMenu();
             dPanel.setTextFieldBackground(Color.GREEN);
@@ -685,8 +685,8 @@ public class NodeEditorView extends javax.swing.JDialog {
             ex.printStackTrace();
             logs.error(ex.getMessage());
         }
-        
-        openVertex.printVertexInformation();
+       
+        logs.info(openVertex.toString());        
     }//GEN-LAST:event_buttonOKActionPerformed
 
     public Vertex getOpenVertex() {

@@ -80,7 +80,7 @@ public class TaskSolutionReader {
             // Could not read the XML file
             e.printStackTrace();
         }
-        
+        logs.info("Task Loaded : " + solution.getTaskDetails().toString());
         return solution;
     }
     
@@ -88,7 +88,8 @@ public class TaskSolutionReader {
         Document document = null;
         SAXReader reader = new SAXReader();
         
-        String resourceURL = ApplicationContext.taskLoaderURL + taskId;
+        String resourceURL = ApplicationContext.taskLoaderURL + taskId + "&section="
+                + ApplicationContext.getSection() + "&user=" + ApplicationContext.getUserID();
         System.out.println("Resource URL "+resourceURL);
         logs.info("Task URL : "+resourceURL);
         document = reader.read(new URL(resourceURL));

@@ -177,6 +177,14 @@ public class TaskSolution {
         }
     }
 
+    public boolean checkNodeDescription(String nodeName, String nodeDesc) {
+        if (getNodeByName(nodeName).getCorrectDescription().equals(nodeDesc)) {
+            return true;
+        } else {
+            return false;
+        }
+    }
+    
     public int checkNodeNameOrdered(String nodeName) {
         SolutionNode correctNode = getNodeByName(nodeName);
         if (correctNode != null) {

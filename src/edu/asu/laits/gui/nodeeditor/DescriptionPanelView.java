@@ -422,11 +422,11 @@ public class DescriptionPanelView extends JPanel {
     }
     
     public String getNodeName() {
-        return this.nodeNameTextField.getText();
+        return this.nodeNameTextField.getText().trim();
     }
     
     public String getNodeDesc() {
-        return this.quantityDescriptionTextField.getText();
+        return this.quantityDescriptionTextField.getText().trim();
     }
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JLabel NodeNameLabel;
