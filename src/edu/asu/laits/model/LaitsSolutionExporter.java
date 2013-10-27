@@ -22,6 +22,7 @@ import edu.asu.laits.model.PersistenceManager;
 import edu.asu.laits.gui.MainWindow;
 import java.io.File;
 import java.io.FileWriter;
+import java.io.StringWriter;
 import java.io.IOException;
 import java.util.Iterator;
 import org.dom4j.Document;
@@ -46,23 +47,28 @@ public class LaitsSolutionExporter {
     }
 
     public boolean export() {
+        String response="";
         try {
             Element task = addRootElement(document);
             addTaskDetails(task);
             addAllNodes(task);
             addDescriptionTree(task);
             String serviceURL = ApplicationContext.getRootURL().concat("/save_solution.php");
-            String response = PersistenceManager.sendHTTPRequest("save_author",serviceURL,document.toString());
+            // Turn the document into a string.
+            StringWriter sw = new StringWriter();  
+            OutputFormat format = OutputFormat.createPrettyPrint();  
+            XMLWriter xw = new XMLWriter(sw, format);  
+            xw.write(document);  
+            response = PersistenceManager.sendHTTPRequest("author_save",serviceURL,sw.toString());
             if (Integer.parseInt(response) == 200) {
                 logs.info("Successfully sent exported solution to server.");
                 return true;
             } else {
-                logs.info("Solution export to server failed.");
+                logs.info("Solution export to server failed: "+response);
                 return false;
             }
         } catch (Exception ex) {
-            logs.info("Solution export to server failed.  Return value: "+response);
- 
+            logs.info("Error exporting solution server: "+response); 
             ex.printStackTrace();
             return false;
         }
