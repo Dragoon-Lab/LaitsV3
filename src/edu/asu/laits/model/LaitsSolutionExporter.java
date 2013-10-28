@@ -49,6 +49,7 @@ public class LaitsSolutionExporter {
     public boolean export() {
         String response="";
         try {
+            document.clearContent();
             Element task = addRootElement(document);
             addTaskDetails(task);
             addAllNodes(task);
