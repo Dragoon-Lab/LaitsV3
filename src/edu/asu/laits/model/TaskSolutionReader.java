@@ -83,7 +83,7 @@ public class TaskSolutionReader {
             // Could not read the XML file
             e.printStackTrace();
         }
-        
+        logs.info("Task Loaded : " + solution.getTaskDetails().toString());
         return solution;
     }
     

@@ -24,7 +24,11 @@ import java.io.File;
 import java.io.FileWriter;
 import java.io.StringWriter;
 import java.io.IOException;
+import java.io.StringWriter;
+import java.util.HashSet;
 import java.util.Iterator;
+import java.util.Set;
+import org.apache.log4j.Logger;
 import org.dom4j.Document;
 import org.dom4j.DocumentHelper;
 import org.dom4j.Element;
@@ -192,10 +196,15 @@ public class LaitsSolutionExporter {
     }
 
     private void addInputDetails(Vertex vertex, Element node) {
+        logs.info("Adding Input Details for Vertex: '" + vertex.getName() + "'");
+        
         // Add Input Nodes
         Iterator<Edge> edges = graph.incomingEdgesOf(vertex).iterator();
         while (edges.hasNext()) {
             Edge e = edges.next();
+            
+            System.out.println("SourceName: " + e.getSourceVertexId());
+            System.out.println("TargetName: " + e.getTargetVertexId());
             Vertex source = graph.getVertexById(e.getSourceVertexId());
             Element el = node.addElement("Name");
             el.addText(source.getName());
@@ -214,9 +223,33 @@ public class LaitsSolutionExporter {
     }
 
     private void addDescriptionTree(Element task) {
-        // Create Description Tree
+        logs.info("Adding Description Tree to Exported Solution");
+        
         Element descriptionTree = task.addElement("DescriptionTree");
-        descriptionTree.addText("To Be Filled");
+        
+        Set<Vertex> vertexSet = graph.vertexSet();
+        Set<String> allDescriptions = new HashSet<String>();
+        
+        for(Vertex v : vertexSet){
+            allDescriptions.add(v.getCorrectDescription() + "#" +v.getName());
+            allDescriptions.addAll(v.getFakeDescription());
+            
+            for(String s : allDescriptions) {
+                String[] parts = s.split("#");
+                String description = parts[0].trim();
+                String name = (parts.length > 1)?parts[1].trim():v.getName();
+                
+                Element node = descriptionTree.addElement("Node");
+                node.addAttribute("level", "leaf");
+                
+                Element desc = node.addElement("Description");
+                desc.setText(description);
+                
+                Element nodeName = node.addElement("NodeName");
+                nodeName.setText(name);
+            }
+            
+            allDescriptions.clear();
+        }                        
     }
-
 }

@@ -11,7 +11,6 @@ import java.util.List;
  */
 public class GraphFile {
 
-    private GraphProperties properties;
     private List<Vertex> vertexList;
     private List<Edge> edgeList;
     private Task task;
@@ -32,14 +31,6 @@ public class GraphFile {
         this.vertexList = vertexList;
     }
 
-    public GraphProperties getProperties() {
-        return properties;
-    }
-
-    public void setProperties(GraphProperties properties) {
-        this.properties = properties;
-    }
-    
     public Task getTask(){
         return task;
     }

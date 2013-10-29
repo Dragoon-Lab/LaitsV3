@@ -73,8 +73,7 @@ public class Application extends JApplet {
             
             ApplicationContext.setUserID(args[0]);
             ApplicationContext.setAppMode(args[1]);
-            ApplicationContext.setCurrentTaskID(args[2]);
-            
+            ApplicationContext.setCurrentTaskID(args[2].replace('_', ' '));            
         }else {
             // Try to Launch application using JNLP for PROD
             String userName = System.getProperty("jnlp.username");
