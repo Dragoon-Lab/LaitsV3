@@ -1,5 +1,6 @@
 <?php
 $username = $_POST['username'];
+$author = $_POST['author'];
 $mode = $_POST['mode'];
 $problem_id = $_POST['problem_id'];
 $section = $_POST['section'];
@@ -45,6 +46,7 @@ foreach (glob("lib/*.jar") as $filename){
 }
 echo "        <property name=\"jnlp.username\" value=\"$username\"/>\n";
 echo "        <property name=\"jnlp.mode\" value=\"$mode\" />\n";
+echo "        <property name=\"jnlp.author\" value=\"$author\"/>\n";
 echo "        <property name=\"jnlp.problem\" value=\"$problem_id\"/>\n";
 echo "        <property name=\"jnlp.section\" value=\"$section\"/>\n";
 echo "        <property name=\"jnlp.server\" value=\"$codebase\"/>\n";
