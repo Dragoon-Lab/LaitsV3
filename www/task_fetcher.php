@@ -2,14 +2,15 @@
 
 $problem = $_GET['taskid'];
 
-if(isset($_GET['section']))
+if(isset($_GET['group']))
   {
     /*
       If section is given as argument, then look for 
       section-authored problems stored in database.
     */
-    $section=$_GET['section'];
-    $user = $_GET['user'];
+    $author=$_GET['author'];
+    $section=$_GET['group'];
+    
 
     require "db-login.php";
     $con = new mysqli("localhost", $dbuser, $dbpass,$dbname);
@@ -26,19 +27,18 @@ if(isset($_GET['section']))
      */
     
     //Commented out for bug 2172
-    //$query = "SELECT task_name,task_details FROM tasks WHERE task_id='$problem'";
+    $query = "SELECT solutionGraph FROM solutions WHERE problemName='$problem' AND author='$author' AND section='$section'";
     
     //echo $query;
     
     $result = $con->query($query);
-    $row = $result->fetch_assoc();
+    if($row = $result->fetch_row()){
     //echo $row['task_details'];
-    $cleanText = iconv('UTF-8','ISO-8859-1//TRANSLIT//IGNORE', $row['task_details']);
-    $content = simplexml_load_string($cleanText);
-    
-    $content->addChild('TaskName', $row['task_name']);
-    header("Content-type: text/xml");
-    print $content ->asXML();
+    		header("Content-type: text/xml");
+    		print $row[0];
+    } else {
+    	//	http_response_code(500);
+  	}
   } 
 else 
   {
