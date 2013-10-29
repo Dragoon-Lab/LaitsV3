@@ -1,0 +1,131 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!--
+To change this template, choose Tools | Templates
+and open the template in the editor.
+-->
+
+<!--version="1.0"
+elementFormDefault="qualified"-->
+
+<xs:schema xmlns:xs="http://www.w3.org/2001/XMLSchema"
+           xmlns:dragoon="http://localhost/laits/js/xml" 
+           targetNamespace="http://localhost/laits/js/xml">
+
+    <xs:annotation>
+        <xs:documentation xml:lang="en">
+            This XML Schema defines the XML used to define problems for the Dragoon
+            Intelligent Authoring System. 
+            Visit https://github.com/rptiwari/LaitsV3/blob/master/documentation/xml-style.md
+            for further documentation. 
+            Schema authored by Brandon Strong.
+        </xs:documentation>
+    </xs:annotation>
+
+    <!--In reading this schema: 
+    When an element has a type that ends in "Type" (e.g. "DragoonProblemType") then
+    the <xs:complexType> tag must be viewed to continue the definition of the 
+    element. Each new element within <xs:complexType> tags will have its own
+    <xs:complexType> tags to define its elements. An element with a type defined as
+    a string, int, etc. has a complete definition.-->
+
+    <xs:element name="DragoonProblem" type="dragoon:DragoonProblemType"/>
+
+    <xs:complexType name="DragoonProblemType">
+        <xs:sequence>
+            <xs:element name="Task" type="dragoon:TaskType"/>
+        </xs:sequence>    
+    </xs:complexType>
+
+    <xs:complexType name="TaskType">       
+        <xs:sequence>
+            <xs:element name="Properties" type="dragoon:PropertiesType"/>
+            <xs:element name="TaskDescription" type="xs:string" minOccurs="0"/>
+            <xs:element name="Nodes" type="dragoon:NodesType"/>
+            <xs:element name="StudentModel" type="dragoon:StudentModelType" minOccurs="0"/>
+        </xs:sequence>
+        <xs:attribute name="phase" type="xs:string"/>
+        <xs:attribute name="type" type="xs:string"/>
+    </xs:complexType>
+
+    <xs:complexType name="PropertiesType">
+        <xs:sequence>
+            <xs:element name="TaskName" type="xs:string"/>
+            <xs:element name="URL" type="xs:anyURI"/>
+            <xs:element name="StartTime" type="xs:int"/>
+            <xs:element name="EndTime" type="xs:int"/>
+            <xs:element name="Units" type="xs:string"/>
+        </xs:sequence>        
+    </xs:complexType>
+
+    <xs:complexType name="NodesType">
+        <xs:sequence>
+            <xs:element name="Node" type="dragoon:NodeType" maxOccurs="unbounded"/>
+        </xs:sequence>    
+    </xs:complexType>
+
+    <xs:complexType name="StudentModelType">
+        <xs:sequence>
+            <xs:element name="Node" type="dragoon:NodeType" maxOccurs="unbounded" minOccurs="0"/>
+        </xs:sequence>    
+    </xs:complexType>
+
+    <xs:complexType name="NodeType">       
+        <xs:sequence>
+            <xs:element name="Order" type="xs:int"/>
+            <xs:element name="Inputs" type="dragoon:InputsType"/>
+            <xs:element name="Position" type="dragoon:PositionType"/>
+            <xs:element name="Initial" type="xs:int"/>
+            <xs:element name="Equation" type="xs:string"/>
+            <xs:element name="CorrectDescription" type="xs:string"/>
+            <xs:element name="AttemptCount" type="dragoon:AttemptCountType" minOccurs="0"/>
+            <xs:element name="Progress" type="dragoon:ProgressType" minOccurs="0"/>
+        </xs:sequence>
+        <xs:attribute name="type" type="xs:string" use="required"/>
+        <xs:attribute name="id" type="xs:int" use="required"/>
+        <xs:attribute name="name" type="xs:string" use="required"/>
+        <xs:attribute name="extra" type="xs:string" default="no"/>
+    </xs:complexType>
+
+    <xs:complexType name="InputsType">
+        <xs:sequence>
+            <xs:element name="Name" type="xs:string" maxOccurs="unbounded" minOccurs="0"/>
+        </xs:sequence>
+    </xs:complexType>
+
+    <xs:complexType name="PositionType">
+        <xs:attribute name="x" type="xs:int"/>
+        <xs:attribute name="y" type="xs:int"/>
+    </xs:complexType>
+
+    <xs:complexType name="AttemptCountType">
+        <xs:attribute name="desc" type="xs:int" default="0"/>
+        <xs:attribute name="plan" type="xs:int" default="0"/>
+        <xs:attribute name="calc" type="xs:int" default="0"/>
+    </xs:complexType>
+
+    <xs:complexType name="ProgressType">
+        <xs:sequence>
+            <xs:element name="Description" type="dragoon:DescriptionType"/>
+            <xs:element name="Plan" type="dragoon:PlanType"/>
+            <xs:element name="Calculation" type="dragoon:CalculationType"/>
+        </xs:sequence>
+    </xs:complexType>
+
+    <xs:complexType name="DescriptionType">
+        <xs:attribute name="status" type="xs:string" use="required"/>
+    </xs:complexType>
+
+    <xs:complexType name="PlanType">
+        <xs:attribute name="status" type="xs:string" use="required"/>
+    </xs:complexType>
+
+    <xs:complexType name="CalculationType">       
+        <xs:sequence>
+            <xs:element name="Inputs" type="dragoon:InputsType"/>
+        </xs:sequence>
+        <xs:attribute name="status" type="xs:string" use="required"/>
+        <xs:attribute name="initial" type="xs:int" use="required"/>
+        <xs:attribute name="equation" type="xs:string" use="required"/>
+    </xs:complexType>
+
+</xs:schema>

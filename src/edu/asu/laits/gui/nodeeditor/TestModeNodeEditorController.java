@@ -132,11 +132,15 @@ public class TestModeNodeEditorController extends NodeEditorController {
     }
 
     public void initOkButton() {
-        view.getOKButton().setText("Ok");    
-        view.getOKButton().setEnabled(false);
+        view.getOKButton().setText("Ok");
+        if(view.getTabbedPane().getSelectedIndex() == NodeEditorView.CALCULATIONS 
+                && view.getOpenVertex().getCalculationsStatus().equals(Vertex.CalculationsStatus.CORRECT)){
+            view.getOKButton().setEnabled(false);
+        }
     }
 
     public void initCloseButton() {
+        view.getCancelButton().setText("Cancel");
     }
 
     public void processCheckAction() {

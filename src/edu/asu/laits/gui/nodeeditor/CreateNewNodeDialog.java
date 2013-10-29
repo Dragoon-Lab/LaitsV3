@@ -27,6 +27,7 @@ public class CreateNewNodeDialog extends javax.swing.JDialog {
     private NewNodeDescPanel dPanel;
     private NodeEditorView nodeEditorView;
     private Vertex currentVertex;
+    private Vertex parentVertex;
     private static Logger logs = Logger.getLogger("DevLogs");
     private static Logger activityLogs = Logger.getLogger("ActivityLogs");
 
@@ -36,7 +37,7 @@ public class CreateNewNodeDialog extends javax.swing.JDialog {
         initComponents();
         nodeEditorView = (NodeEditorView) parent;
         currentVertex = v;
-
+        parentVertex = nodeEditorView.getOpenVertex();
         initPanel();
         prepareDisplay();
     }
@@ -226,7 +227,7 @@ public class CreateNewNodeDialog extends javax.swing.JDialog {
             cancelButton.setEnabled(true);
             activityLogs.debug("User entered correct description");
             dPanel.setEditableTree(false);
-            ApplicationContext.setNextNodes(currentVertex.getName());
+//            ApplicationContext.getTargetNodes().setNextNodes();
             demoButton.setEnabled(false);
         } 
         else if (solutionCheck == 2) {
@@ -266,11 +267,14 @@ public class CreateNewNodeDialog extends javax.swing.JDialog {
         nodeEditorView.getCalculationsPanel().setCreateButtonEnabled();
         // Refresh MainWidow to show the changes
         MainWindow.refreshGraph();
-
+        if(ApplicationContext.isCoachedMode()){
+            nodeEditorView.addHelpBalloon(currentVertex.getName(), "newNodeClosed", "INPUTS");
+            ApplicationContext.getCorrectSolution().getTargetNodes().setNextNodes();
+        }
         this.dispose();
         // Why this is done after dispose ???
-        if(ApplicationContext.isCoachedMode())
-            nodeEditorView.addHelpBalloon(currentVertex.getName(), "newNodeClosed", "INPUTS");
+
+            
     }
 
     public void setEditorMessage(String msg) {
@@ -289,6 +293,11 @@ public class CreateNewNodeDialog extends javax.swing.JDialog {
 
     public JButton getCheckButton() {
         return checkButton;
+    }
+    
+//  Reid added to help TargetNodes class
+    public Vertex getParentVertex(){
+        return parentVertex;
     }
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton cancelButton;

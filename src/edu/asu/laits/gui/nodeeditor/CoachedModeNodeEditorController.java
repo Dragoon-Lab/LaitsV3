@@ -5,6 +5,7 @@ package edu.asu.laits.gui.nodeeditor;
 
 import edu.asu.laits.editor.ApplicationContext;
 import edu.asu.laits.model.SolutionNode;
+import edu.asu.laits.model.TargetNodes;
 import edu.asu.laits.model.TaskSolution;
 import edu.asu.laits.model.Vertex;
 import java.util.List;
@@ -21,6 +22,7 @@ public class CoachedModeNodeEditorController extends NodeEditorController {
 
     private NodeEditorView view;
     private Vertex openVertex;
+    private TargetNodes targetNodes;
     private static Logger logs = Logger.getLogger("DevLogs");
     private static Logger activityLogs = Logger.getLogger("ActivityLogs");
 
@@ -28,6 +30,7 @@ public class CoachedModeNodeEditorController extends NodeEditorController {
         super(view, openVertex);
         this.view = view;
         this.openVertex = openVertex;
+        this.targetNodes = ApplicationContext.getCorrectSolution().getTargetNodes();
     }
 
     public void initActionButtons() {
@@ -42,6 +45,7 @@ public class CoachedModeNodeEditorController extends NodeEditorController {
             if (openVertex.isDescriptionDone()) {
                 view.getDescriptionPanel().setEditableTree(false);
                 view.getPlanPanel().refreshPanel();
+                targetNodes.setNextNodes();
                 if(openVertex.isPlanDone() && newTab == NodeEditorView.CALCULATIONS){
                     return newTab;
                 } else if(!openVertex.isPlanDone() && newTab == NodeEditorView.CALCULATIONS){
@@ -138,10 +142,10 @@ public class CoachedModeNodeEditorController extends NodeEditorController {
         List<SolutionNode> correctNodeNames = solution.getSolutionNodes();
         
         String giveupNode = null;
+        logs.debug("Searching for next node: " + targetNodes.getFirstNextNode(openVertex));
         for (SolutionNode name : correctNodeNames) {
-            if (name.getNodeName().equalsIgnoreCase(ApplicationContext.getFirstNextNode())) {
+            if (name.getNodeName().equalsIgnoreCase(targetNodes.getFirstNextNode(openVertex))) {
                 giveupNode = name.getNodeName();
-                ApplicationContext.setNextNodes(name.getNodeName());
                     //                  ApplicationContext.nextCurrentOrder()
                 break;
             }

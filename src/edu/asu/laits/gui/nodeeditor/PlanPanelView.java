@@ -187,7 +187,7 @@ public class PlanPanelView extends javax.swing.JPanel {
             Vertex.VertexType newType = getSelectedPlan();
             
             // If vertex type is changed to constant and - remove all the incoming edges
-            if((old.equals(Vertex.VertexType.FLOW) || old.equals(Vertex.VertexType.FLOW))
+            if((old.equals(Vertex.VertexType.FLOW) || old.equals(Vertex.VertexType.STOCK))
                 && newType.equals(Vertex.VertexType.CONSTANT)){
                     MainWindow.getInstance().getGraphEditorPane().getModelGraph().removeIncomingEdgesOf(openVertex);
                     openVertex.setEquation("");

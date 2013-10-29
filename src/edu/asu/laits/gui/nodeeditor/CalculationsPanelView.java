@@ -105,6 +105,9 @@ public class CalculationsPanelView extends javax.swing.JPanel {
         if(!ApplicationContext.isAuthorMode()){
             setBackGroundColor();
         }        
+        if(openVertex.isPlanDone()){
+            setCreateButtonEnabled();
+        }
     }
     
     private void setBackGroundColor(){
@@ -660,11 +663,11 @@ public class CalculationsPanelView extends javax.swing.JPanel {
             String selectedVertexName = availableInputsJList.getSelectedValue().toString();
             selectedVertexName = removeBoldfromListItem(selectedVertexName);
             
-            if(formulaInputArea.getText().contains(selectedVertexName)){
-                formulaInputArea.setText(formulaInputArea.getText().replaceAll(selectedVertexName, ""));                
-            }else{
+//            if(formulaInputArea.getText().contains(selectedVertexName)){
+//                formulaInputArea.setText(formulaInputArea.getText().replaceAll(selectedVertexName, ""));                
+//            }else{
                 formulaInputArea.setText(formulaInputArea.getText() + selectedVertexName);    
-            }
+//            }
             
             // This can be improved to set/reset selection in if-else
             setSelectedNodesOnJList();
@@ -684,11 +687,18 @@ public class CalculationsPanelView extends javax.swing.JPanel {
         while (allVertices.hasNext()) {
             studentNodeNames.add(allVertices.next().getName());
         }
-        if (studentNodeNames.size() < correctNodeNames.size()) {
-            return false;
-        } else {
-            return true;
+        for(String correctNode : correctNodeNames){
+            if(!studentNodeNames.contains(correctNode)){
+                return false;
+            }
         }
+        return true;
+        
+//        if (studentNodeNames.size() < correctNodeNames.size()) {
+//            return false;
+//        } else {
+//            return true;
+//        }
     }
     
     private void buttonCreateNodeActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_buttonCreateNodeActionPerformed
@@ -811,10 +821,11 @@ public class CalculationsPanelView extends javax.swing.JPanel {
                         MainWindow.getInstance().getGraphEditorPane().addEdge(source, openVertex);                                          
                     }                    
                 }
-                
-                // Save new equation in the Node
-                openVertex.setEquation(formulaInputArea.getText().trim());                                                
             }
+
+            // Save new equation in the Node
+            openVertex.setEquation(formulaInputArea.getText().trim());  
+                
         } catch (EvaluationException ex) {
             logs.error("Could not parse the equation entered for node '" + openVertex.getName() +"'");
             // Do nothing if equation parsing fails

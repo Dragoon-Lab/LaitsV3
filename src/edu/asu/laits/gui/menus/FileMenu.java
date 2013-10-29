@@ -240,7 +240,7 @@ public class FileMenu extends JMenu {
             }
 
             editorPane.addVertex(v);
-            ApplicationContext.setNextNodes(node.getNodeName());
+            ApplicationContext.getCorrectSolution().getTargetNodes().setNextNodes();
             logs.debug("Added Node "+v.getName()+" in the Given Model.");
         }
 

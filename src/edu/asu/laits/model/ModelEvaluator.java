@@ -84,14 +84,22 @@ public class ModelEvaluator {
 
         while (allVertices.hasNext()) {
             Vertex thisVertex = allVertices.next();
-            if (thisVertex.getPlanStatus().equals(Vertex.PlanStatus.UNDEFINED)
-                    || thisVertex.getCalculationsStatus().equals(Vertex.CalculationsStatus.UNDEFINED)) {
-                return false;
+            if(!ApplicationContext.isTestMode()){
+                if (thisVertex.getPlanStatus().equals(Vertex.PlanStatus.UNDEFINED)
+                        || thisVertex.getCalculationsStatus().equals(Vertex.CalculationsStatus.UNDEFINED)) {
+                    return false;
+                }
+            } else {
+                if(thisVertex.getVertexType().equals(Vertex.VertexType.DEFAULT) || 
+                        (thisVertex.getEquation().equalsIgnoreCase("") && !thisVertex.getVertexType().equals(Vertex.VertexType.CONSTANT))) {
+                    logs.debug("Vertex returning false for isModelComplete : " + thisVertex.getName());
+                    return false;
+                }
             }
         }
                 
         // Mode Graph can not be executed until all the correct nodes are defined.
-        if (!ApplicationContext.isAuthorMode()) {            
+        if (!ApplicationContext.isAuthorMode() && !ApplicationContext.isTestMode()) {            
             if(!correctNodesDefined())
                 return false;
         }

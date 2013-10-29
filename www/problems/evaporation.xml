@@ -1,0 +1,109 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<Task phase="" type="">
+    <TaskName>Accelerating Evaporation</TaskName>
+    <TaskDescription>
+        The sun heats some water, adding 3 units of thermal energy per hour.  NEWLINE
+        The evaporation of water is a function of the thermal energy of the NEWLINE
+        water.  In particular, if the thermal energy of the water is T, then NEWLINE
+        the percentage of water evaporated during an hour is T*1%.  Assuming NEWLINE
+        that the initial thermal energy is 0 and the initial water level is 1000, NEWLINE
+        graph the water level for 20 hours.
+    </TaskDescription>
+    <URL>images/lake.png</URL>
+    <StartTime>0</StartTime>
+    <EndTime>20</EndTime>
+    <TimeStep>1</TimeStep>
+    <Units>hours</Units>
+    <NodeCount>5</NodeCount>
+    <Nodes>
+        <Node type="stock" name="water level" extra="no">
+            <CorrectDescription>The water level</CorrectDescription>
+            <Plan>said to decrease</Plan>
+            <Order>1</Order>
+            <Inputs>
+                <Name>water evaporated</Name>
+            </Inputs>
+            <Outputs/>
+            <Equation>-water evaporated</Equation>
+            <InitialValue>1000.0</InitialValue>
+        </Node>
+        <Node type="stock" name="thermal energy" extra="no">
+            <CorrectDescription>The amount of thermal energy of the water each hour</CorrectDescription>
+            <Plan>said to increase</Plan>
+            <Inputs>
+                <Name>thermal increase</Name>
+            </Inputs>
+            <Outputs>
+                <Name>water evaporated</Name>
+            </Outputs>
+            <Equation>thermal increase</Equation>
+            <InitialValue>0.0</InitialValue>
+        </Node>
+        <Node type="constant" name="thermal increase" extra="no">
+            <CorrectDescription>The amount of thermal energy added to the water per hour</CorrectDescription>
+            <Plan>fixed value</Plan>
+            <Inputs/>
+            <Outputs>
+                <Name>thermal energy</Name>
+            </Outputs>
+            <Equation>3.0</Equation>
+            <InitialValue>3.0</InitialValue>
+        </Node>
+        <Node type="constant" name="energy evaporation factor" extra="no">
+            <CorrectDescription>The evaporation rate (water lost per hour) per unit of thermal energy</CorrectDescription>
+            <Plan>fixed value</Plan>
+            <Inputs/>
+            <Outputs>
+                <Name>water evaporated</Name>
+            </Outputs>
+            <Equation>0.01</Equation>
+            <InitialValue>0.01</InitialValue>
+        </Node>
+        <Node type="flow" name="water evaporated" extra="no">
+            <CorrectDescription>The amount of water evaporated during an hour</CorrectDescription>
+            <Plan>proportional to accumulator and input</Plan>
+            <Inputs>
+                <Name>energy evaporation factor</Name>
+                <Name>thermal energy</Name>
+                <Name>water level</Name>
+            </Inputs>
+            <Outputs>
+                <Name>water level</Name>
+            </Outputs>
+            <Equation>water level * thermal energy * energy evaporation factor</Equation>
+            <InitialValue></InitialValue>
+        </Node>
+    </Nodes>
+    <DescriptionTree>
+        <Node level="root">
+            <Description>The amount of thermal energy</Description>            
+            <Node level="leaf">
+                <Description>of the water each hour</Description>
+                <NodeName>thermal energy</NodeName>
+            </Node>
+            <Node level="leaf">
+                <Description>added to the water per hour</Description>
+                <NodeName>thermal increase</NodeName>
+            </Node>
+        </Node>
+        <Node level="leaf">
+            <Description>The water level</Description>            
+            <NodeName>water level</NodeName>
+        </Node>
+        <Node level="root">
+            <Description>The evaporation rate (water lost per hour)</Description>            
+            <Node level="leaf">
+                <Description>per unit of thermal energy</Description>
+                <NodeName>energy evaporation factor</NodeName>
+            </Node>
+        </Node>
+        <Node level="root">
+            <Description>The amount of water</Description>            
+            <Node level="leaf">
+                <Description>evaporated per hour</Description>
+                <NodeName>water evaporated</NodeName>
+            </Node>
+        </Node>
+    </DescriptionTree>
+</Task>
