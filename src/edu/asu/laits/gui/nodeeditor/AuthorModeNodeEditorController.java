@@ -59,6 +59,7 @@ public class AuthorModeNodeEditorController extends NodeEditorController{
      * @return : New Tab Index
      */
     public int processTabChange(int oldTab, int newTab){
+        activityLogs.info("User tried to switch Tab. Old " + NodeEditorView.getTabName(oldTab) + " New " + NodeEditorView.getTabName(newTab));
         logs.info("Processing Tab Change - Old "+oldTab+" New "+newTab);
         // Process Old Tab to store info in Vertex - Plan Panel info is updated at change event
         int targetTab = oldTab;
@@ -99,7 +100,7 @@ public class AuthorModeNodeEditorController extends NodeEditorController{
         if(targetTab == NodeEditorView.CALCULATIONS){
             view.getCalculationsPanel().initPanel();
         }
-        
+        activityLogs.debug("Tab Changed to " + NodeEditorView.getTabName(targetTab));
         return targetTab;
     }
     
@@ -112,14 +113,14 @@ public class AuthorModeNodeEditorController extends NodeEditorController{
             
             if (view.getPlanPanel().processPlanPanel()) {
                 openVertex.setPlanStatus(Vertex.PlanStatus.CORRECT);
-                activityLogs.debug(view.getPlanPanel().printPlanPanel());
+                activityLogs.debug("Author's Calculation :  " + view.getPlanPanel().printPlanPanel());
 
                 if (view.getCalculationsPanel().processCalculationsPanel()) {
                     openVertex.setCalculationsStatus(Vertex.CalculationsStatus.CORRECT);                    
                 } else {
                     openVertex.setCalculationsStatus(Vertex.CalculationsStatus.INCORRECT);
                 }
-                activityLogs.debug(view.getCalculationsPanel().printCalculationPanel());
+                activityLogs.debug("Author's Calculation :  " + view.getCalculationsPanel().printCalculationPanel());
             }           
         }
         

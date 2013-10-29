@@ -33,6 +33,8 @@ import edu.asu.laits.model.TaskSolution;
 import edu.asu.laits.model.Vertex;
 import java.awt.Desktop;
 import java.awt.event.KeyEvent;
+import java.awt.event.WindowAdapter;
+import java.awt.event.WindowEvent;
 import java.net.URL;
 import java.text.DecimalFormat;
 import java.util.Iterator;
@@ -110,6 +112,7 @@ public class ModelMenu extends JMenu {
             addNodeMenuItem
                     .addActionListener(new java.awt.event.ActionListener() {
                 public void actionPerformed(java.awt.event.ActionEvent e) {
+                    activityLogs.debug("User Pressed 'Create Node' Button from Menu Bar");
                     newNodeAction();
                 }
             });
@@ -128,6 +131,7 @@ public class ModelMenu extends JMenu {
             deleteNodeMenuItem
                     .addActionListener(new java.awt.event.ActionListener() {
                 public void actionPerformed(java.awt.event.ActionEvent e) {
+                    activityLogs.debug("User Pressed 'Delete Node' Button from ModelMenu.");
                     deleteNodeAction();
                 }
             });
@@ -147,7 +151,7 @@ public class ModelMenu extends JMenu {
             showGraphMenuItem
                     .addActionListener(new java.awt.event.ActionListener() {
                 public void actionPerformed(java.awt.event.ActionEvent e) {
-                    activityLogs.debug("User pressed Show Graph Button.");
+                    activityLogs.debug("User pressed 'Show Graph' Button from ModelMenu.");
                     showNodeGraph();
                 }
             });
@@ -166,7 +170,7 @@ public class ModelMenu extends JMenu {
             showGraphTableItem
                     .addActionListener(new java.awt.event.ActionListener() {
                 public void actionPerformed(java.awt.event.ActionEvent e) {
-                    activityLogs.debug("User pressed Show Table Button.");
+                    activityLogs.debug("User pressed 'Show Table' Button from ModelBar.");
                     showNodeTable();
                 }
             });
@@ -184,7 +188,7 @@ public class ModelMenu extends JMenu {
             exportSolutionMenuItem
                     .addActionListener(new java.awt.event.ActionListener() {
                 public void actionPerformed(java.awt.event.ActionEvent e) {
-                    activityLogs.debug("User pressed Export Solution Button.");
+                    activityLogs.debug("User pressed 'Export Solution' Button from ModelMenu.");
                     exportSolution();
                 }
             });
@@ -203,7 +207,7 @@ public class ModelMenu extends JMenu {
             editTimeRangeMenuItem
                     .addActionListener(new java.awt.event.ActionListener() {
                 public void actionPerformed(java.awt.event.ActionEvent e) {
-                    activityLogs.debug("User pressed Edit Time Range Button.");
+                    activityLogs.debug("User pressed 'Edit Time Range' Button from ModelMenu.");
                     editTimeRangeAction();
                 }
             });
@@ -221,6 +225,7 @@ public class ModelMenu extends JMenu {
             showForumMenuItem
                     .addActionListener(new java.awt.event.ActionListener() {
                 public void actionPerformed(java.awt.event.ActionEvent e) {
+                    activityLogs.debug("User pressed 'Show Forum' Button from ModelMenu.");
                     showForumButtonAction();
                 }
             });
@@ -247,8 +252,6 @@ public class ModelMenu extends JMenu {
     }
 
     public void showNodeGraph() {
-        activityLogs.debug("User pressed Show Graph button.");
-
         if (runModel()) {
             if(isGraphable())
                 showChartDialog(ChartDialogMode.Graph);
@@ -258,8 +261,6 @@ public class ModelMenu extends JMenu {
     }
 
     public void showNodeTable() {
-        activityLogs.debug("User pressed Show Table button.");
-
         if (runModel()) {
             if(isGraphable())
                     showChartDialog(ChartDialogMode.Table);
@@ -390,8 +391,7 @@ public class ModelMenu extends JMenu {
         }
     }
 
-    public void newNodeAction() {
-        activityLogs.debug("User Pressed Create Node Button");
+    public void newNodeAction() {        
         MainWindow window = MainWindow.getInstance();
         // Disable test as work-around for Bug #2218
         if(false && ApplicationContext.isCoachedMode() && !isGraphEmpty()){
@@ -497,33 +497,36 @@ public class ModelMenu extends JMenu {
     }
 
     public void editTimeRangeAction() {
-        activityLogs.debug("User pressed EditTimeRange Menu Item.");
         GraphRangeEditor ed = new GraphRangeEditor(graphPane, true);
         ed.setVisible(true);
     }
 
     public void doneButtonAction() {
         if(ApplicationContext.isProblemSolved()){
-            activityLogs.debug("User Pressed Done button with current task as " + ApplicationContext.getCurrentTaskID());
             writeResultToServer();
             System.exit(0);
         }
     }
 
     private void writeResultToServer() {
-        logs.debug("Student " + ApplicationContext.getUserID() + " Completed Task: " + ApplicationContext.getCurrentTaskID());
-    }
-
-    public MainWindow getMainWindow() {
-        return mainWindow;
+        activityLogs.debug("Student '" + ApplicationContext.getUserID() + "' Completed Task: '" + ApplicationContext.getCurrentTaskID() + "'");
     }
 
     /**
-     * Export Author's Graph as a LAITS Solution File
+     * Export Author's Graph as a LAITS Solution File.
+     * Exported solution will be opened in Student Mode.
      */
     private void exportSolution() {
         JDialog exportSolutionDialog = new JDialog(MainWindow.getInstance(), true);
         exportSolutionDialog.setTitle("Export Laits Solution");
+        exportSolutionDialog.addWindowListener(new WindowAdapter() {
+            @Override
+            public void windowClosing(WindowEvent e) {
+                activityLogs.debug("Author Closed Export Solution Dialog");
+                e.getWindow().dispose();
+            }
+        });
+        
         JScrollPane panelScroll = new JScrollPane(new ExportSolutionPanel(exportSolutionDialog));
         exportSolutionDialog.getContentPane().add(panelScroll);
         

@@ -17,7 +17,6 @@
  */
 package edu.asu.laits.model;
 
-import edu.asu.laits.editor.ApplicationContext;
 import edu.asu.laits.gui.MainWindow;
 import java.util.ArrayList;
 import java.util.Iterator;
@@ -27,7 +26,6 @@ import javax.swing.JOptionPane;
 import net.sourceforge.jeval.EvaluationException;
 import net.sourceforge.jeval.Evaluator;
 import org.apache.log4j.Logger;
-import org.jgraph.graph.DefaultPort;
 
 /**
  * Represents Solutions of Dragoon Problem.
