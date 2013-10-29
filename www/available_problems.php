@@ -14,7 +14,7 @@ $mysqli = mysqli_connect("localhost", $dbuser, $dbpass, $dbname)
   or die('Could not connect to database.');
 
 //retrieve POST variables
-$student = mysqli_real_escape_string($mysqli, $_GET['student']);
+$student = isset($_GET['student'])?mysqli_real_escape_string($mysqli, $_GET['student']):'';
 $section = mysqli_real_escape_string($mysqli, $_GET['section']);
 
 $query="SELECT problemname,author FROM solutions WHERE section='$section' AND NOT deleted AND (share OR author='$student')";
