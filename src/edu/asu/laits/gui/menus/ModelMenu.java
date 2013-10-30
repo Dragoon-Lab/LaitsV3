@@ -44,6 +44,7 @@ import javax.swing.JMenu;
 import javax.swing.JMenuItem;
 import javax.swing.JOptionPane;
 import javax.swing.JScrollPane;
+import org.apache.http.message.BasicNameValuePair;
 import org.apache.log4j.Logger;
 
 /**
@@ -422,8 +423,12 @@ public class ModelMenu extends JMenu {
     }
 
     public void showForumButtonAction() {
-        String FORUMURL = "https://www.phpbb.com";
-        
+        String FORUMURL = ApplicationContext.getRootURL()+"/forum/viewtopic.php";
+        // The forum id is sent to the application
+        FORUMURL += "?t=" + ApplicationContext.getForumId();
+         activityLogs.debug("forum URL: "+FORUMURL);
+
+ 
         try {
             Desktop.getDesktop().browse(new URL(FORUMURL).toURI());
         } catch (Exception e) {

@@ -20,10 +20,7 @@ package edu.asu.laits.model;
 import edu.asu.laits.editor.ApplicationContext;
 import edu.asu.laits.gui.MainWindow;
 import edu.asu.laits.model.Edge.ErrorReaderException;
-import java.io.File;
-import java.io.FileWriter;
 import java.io.IOException;
-import java.io.StringWriter;
 import java.util.HashSet;
 import java.util.Iterator;
 import java.util.Set;
@@ -31,8 +28,6 @@ import org.apache.log4j.Logger;
 import org.dom4j.Document;
 import org.dom4j.DocumentHelper;
 import org.dom4j.Element;
-import org.dom4j.io.OutputFormat;
-import org.dom4j.io.XMLWriter;
 
 /**
  *

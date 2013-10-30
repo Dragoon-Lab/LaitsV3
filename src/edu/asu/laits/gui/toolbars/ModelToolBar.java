@@ -220,9 +220,6 @@ public class ModelToolBar extends JToolBar {
                 }
             });
         }
-        // Disabling Show Form feature for all the modes - until its ready
-        showForumButton.setEnabled(false);
-        modelMenu.disableShowForumMenuItem();
         return showForumButton;
     }
     

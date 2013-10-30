@@ -92,7 +92,7 @@ public class ExportSolutionPanel extends JPanel {
         Task currentTask = ApplicationContext.getCurrentTask();
 
         taskName = DragoonUIUtils.createTextField(20);
-        taskName.setText(currentTask.getTaskName());
+        taskName.setText(ApplicationContext.getCurrentTaskID());
 
         taskDesc = DragoonUIUtils.createTextArea(5, 35);
         taskDesc.setLineWrap(true);
