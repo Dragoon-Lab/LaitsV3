@@ -92,7 +92,7 @@ public class Application extends JApplet {
         ApplicationContext.setRootURL(System.getProperty("jnlp.server","http://dragoon.asu.edu/devel"));
         ApplicationContext.setAuthor(System.getProperty("jnlp.author",""));
         ApplicationContext.setSection(System.getProperty("jnlp.section","testing"));
-        ApplicationContext.setForumId(System.getProperty("jnlp.forum","0"));
+        ApplicationContext.setForumURL(System.getProperty("jnlp.forumURL",""));
 
         
         System.out.println("Application is Running in : "+ApplicationContext.getApplicationEnvironment()

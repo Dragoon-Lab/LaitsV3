@@ -157,7 +157,7 @@ public class PersistenceManager implements Runnable {
         return null;
     }
 
-    private static String getQuery(List<NameValuePair> params) throws UnsupportedEncodingException {
+    public static String getQuery(List<NameValuePair> params) throws UnsupportedEncodingException {
         StringBuilder result = new StringBuilder();
         boolean first = true;
 
