@@ -19,6 +19,7 @@ package edu.asu.laits.gui;
 
 import edu.asu.laits.editor.ApplicationContext;
 import edu.asu.laits.editor.DragoonUIUtils;
+import edu.asu.laits.model.Edge.ErrorReaderException;
 import edu.asu.laits.model.Graph;
 import edu.asu.laits.model.LaitsSolutionExporter;
 import edu.asu.laits.model.PersistenceManager;
@@ -32,6 +33,7 @@ import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
+import java.util.logging.Level;
 import javax.swing.JButton;
 import javax.swing.JComboBox;
 import javax.swing.JDialog;
@@ -231,7 +233,11 @@ public class ExportSolutionPanel extends JPanel {
             setTaskDetails();
 
             logs.info("Exporting Laits Solution File.");
-            saveToServer();            
+            try {            
+                saveToServer();
+            } catch (ErrorReaderException ex) {
+                logs.error("Error in reading edge info. Export Solution unsuccessful");
+            }
         }
     }
 
@@ -250,7 +256,7 @@ public class ExportSolutionPanel extends JPanel {
     /**
      * Tries to save to the specified file
      */
-    private void saveToServer() {
+    private void saveToServer() throws ErrorReaderException {
         logs.info("Saving LaitsSolution to Server");
 
         // Exporter will read all the information from task object

@@ -453,7 +453,9 @@ public class MainWindow extends JFrame {
     private void loadTask() {
         try {
             String task = ApplicationContext.getCurrentTaskID();
-            mainMenu.getFileMenu().openTaskById(task);
+            String author = ApplicationContext.getAuthor();
+            String section = ApplicationContext.getSection();
+            mainMenu.getFileMenu().openTaskById(task,author,section);
         } catch (Exception e) {
             e.printStackTrace();
         }
@@ -466,8 +468,9 @@ public class MainWindow extends JFrame {
     private void loadSavedSession() {
         try {
             String graphXML = PersistenceManager.loadSession();
-
+            
             if (!graphXML.trim().isEmpty()) {
+                //System.out.println("saved grapph " + graphXML);
                 getGraphEditorPane().resetModelGraph();
                 GraphLoader loader = new GraphLoader(getGraphEditorPane());
                 loader.loadFromServer(graphXML);

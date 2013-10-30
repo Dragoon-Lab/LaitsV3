@@ -19,6 +19,7 @@ package edu.asu.laits.model;
 
 import edu.asu.laits.editor.ApplicationContext;
 import edu.asu.laits.gui.MainWindow;
+import edu.asu.laits.model.Edge.ErrorReaderException;
 import java.io.File;
 import java.io.FileWriter;
 import java.io.IOException;
@@ -46,7 +47,7 @@ public class LaitsSolutionExporter {
         this.graph = MainWindow.getInstance().getGraphEditorPane().getModelGraph();         
     }
 
-    public boolean export() {
+    public boolean export() throws ErrorReaderException {
         String httpReponse = "";
         try {
             Document document = DocumentHelper.createDocument();
@@ -73,7 +74,7 @@ public class LaitsSolutionExporter {
         }
     }
 
-    public String getXML(){
+    public String getXML() throws ErrorReaderException {
         Document document = DocumentHelper.createDocument();
 
         Element task = addRootElement(document);
@@ -94,6 +95,8 @@ public class LaitsSolutionExporter {
     }
 
     private void addTaskDetails(Element task) {
+        logs.info("Adding Task Details");
+        
         Task taskToExport = ApplicationContext.getCurrentTask();
         
         Element taskName = task.addElement("TaskName");
@@ -117,7 +120,9 @@ public class LaitsSolutionExporter {
         units.setText(taskToExport.getChartUnits());
     }
 
-    private void addAllNodes(Element task) {
+    private void addAllNodes(Element task) throws ErrorReaderException {
+        logs.info("Adding info about all the nodes");
+        
         Element nodeCount = task.addElement("NodeCount");
         nodeCount.setText(String.valueOf(graph.vertexSet().size()));
 
@@ -133,12 +138,20 @@ public class LaitsSolutionExporter {
 
     }
 
-    // Extra NO is hardcoded
-    private void addNodeDetails(Vertex vertex, Element node) {
+    private void addNodeDetails(Vertex vertex, Element node) throws ErrorReaderException {        
+        logs.info("Adding Details for Node: '" + vertex.getName() + "'");
+        
         String s = vertex.getVertexType().name();
         node.addAttribute("type", s.toLowerCase());
         node.addAttribute("name", vertex.getName());
-        node.addAttribute("extra", "no");
+        
+        // Extra can be determined based on no of inputs and outputs.
+        if(graph.incomingEdgesOf(vertex).size() == 0 && graph.outgoingEdgesOf(vertex).size() == 0) {
+            node.addAttribute("extra", "yes");
+        } else {
+            node.addAttribute("extra", "no");
+        }
+        
 
         Element correctDesc = node.addElement("CorrectDescription");
         correctDesc.setText(vertex.getCorrectDescription());
@@ -176,30 +189,35 @@ public class LaitsSolutionExporter {
         }
     }
 
-    private void addInputDetails(Vertex vertex, Element node) {
+    private void addInputDetails(Vertex vertex, Element node) throws ErrorReaderException {
         logs.info("Adding Input Details for Vertex: '" + vertex.getName() + "'");
         
-        // Add Input Nodes
+        // Add Input Nodes       
         Iterator<Edge> edges = graph.incomingEdgesOf(vertex).iterator();
         while (edges.hasNext()) {
             Edge e = edges.next();
-            
-            System.out.println("SourceName: " + e.getSourceVertexId());
-            System.out.println("TargetName: " + e.getTargetVertexId());
+            e.fetchInformationFromJGraphT(graph);
             Vertex source = graph.getVertexById(e.getSourceVertexId());
-            Element el = node.addElement("Name");
-            el.addText(source.getName());
+            // Make sure source is not the same Vertex
+            if (source != null && !source.getName().equals(vertex.getName())) {
+                Element el = node.addElement("Name");
+                el.addText(source.getName());
+            } 
         }
     }
 
-    private void addOutputDetails(Vertex vertex, Element node) {
-        // Add Input Nodes
+    private void addOutputDetails(Vertex vertex, Element node) throws ErrorReaderException {
+        // Add Ouput Nodes
         Iterator<Edge> edges = graph.outgoingEdgesOf(vertex).iterator();
         while (edges.hasNext()) {
             Edge e = edges.next();
+            e.fetchInformationFromJGraphT(graph);
             Vertex source = graph.getVertexById(e.getTargetVertexId());
-            Element el = node.addElement("Node");
-            el.addAttribute("name", source.getName());
+            // Make sure source is not the same Vertex
+            if (source != null && !source.getName().equals(vertex.getName())) {
+                Element el = node.addElement("Name");
+                el.addText(source.getName());
+            } 
         }
     }
 

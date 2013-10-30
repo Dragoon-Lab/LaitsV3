@@ -17,14 +17,11 @@
  */
 package edu.asu.laits.editor;
 
-import edu.asu.laits.gui.MainWindow;
 import edu.asu.laits.model.TaskSolution;
 import edu.asu.laits.model.HelpBubble;
-import edu.asu.laits.model.SolutionNode;
-import edu.asu.laits.model.TargetNodes;
 import edu.asu.laits.model.Task;
-import java.util.ArrayList;
 import java.util.List;
+import org.apache.log4j.Logger;
 
 /**
  *
@@ -35,14 +32,19 @@ public class ApplicationContext {
     private static String userId;
     private static AppMode appMode;
     private static String section;
+    private static String author;
     private static String rootURL;
+    // This is really an integer, but it comes in as a string
+    // and goes out as astring.
+    private static String forumId;
     private static boolean isValid = false;
     private static TaskSolution correctSolution;
     private static String currentTaskID;
     private static boolean isProblemSolved = false;
     public static String taskLoaderURL;
     private static boolean helpBubbles = false;
-    
+    private static Logger logs = Logger.getLogger("DevLogs");
+       
     // Task is used at many places in the application. It should be same for all the uses
     private static Task task;
 
@@ -77,6 +79,14 @@ public class ApplicationContext {
     public static void setUserID(String uid) {
         userId = uid;
     }
+    
+   public static String getAuthor() {
+        return author;
+    }
+
+    public static void setAuthor(String authorName) {
+        author = authorName;
+    }
 
     public static String getSection() {
         return section;
@@ -84,6 +94,14 @@ public class ApplicationContext {
 
     public static void setSection(String theSection) {
         section = theSection;
+    }
+
+    public static String getForumId() {
+        return forumId;
+    }
+
+    public static void setForumId(String theForum) {
+            forumId = theForum;
     }
 
     public static boolean isUserValid() {

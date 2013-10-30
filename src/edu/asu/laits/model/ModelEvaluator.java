@@ -184,7 +184,12 @@ public class ModelEvaluator {
     public void run() throws ModelEvaluationException {
         List<Vertex> vertexList = getArrangedVertexList();
         arrangedVertexList = vertexList;
-        logs.debug("Arranged Vertex List " + vertexList.toString());
+        String arragedVertexNames = "";
+        for (Vertex vertex : vertexList) {
+            arragedVertexNames += vertex.getName() + ", ";
+        }
+        logs.debug("Arranged Vertex List " + arragedVertexNames);
+        
         Vertex currentVertex = null;
         try {
             constructFinalEquations(vertexList);
@@ -194,13 +199,14 @@ public class ModelEvaluator {
             // Calculating Initial Flow for i=0
             for (int j = constantVertices; j < vertexList.size(); j++) {
                 currentVertex = vertexList.get(j);
-                //   logs.debug("evaluating vertex " + currentVertex.getName());
+                logs.debug("evaluating vertex " + currentVertex.getName());
                 if (currentVertex.getVertexType().equals(Vertex.VertexType.FLOW)) {
                     currentVertex.getCorrectValues().add(calculateFlow(vertexList, currentVertex, 0));
                 }
             }
 
-            // Calculating all the points from 1 to totalpoints-1
+            
+            logs.info("Calculating all the points from 1 to totalpoints-1");
             for (int i = 1; i < times.getNumberSteps(); i++) {
                 for (int j = constantVertices; j < vertexList.size(); j++) {
                     currentVertex = vertexList.get(j);

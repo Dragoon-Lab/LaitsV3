@@ -142,13 +142,6 @@ public class TaskSolution {
     }
 
     /**
-     * @param solutionNodes the solutionNodes to set
-     */
-    public void setCorrectNodeNames(List<String> solutionNodeNames) {
-        this.correctNodeNames = solutionNodeNames;
-    }
-
-    /**
      * @return the solutionNodes
      */
     public List<SolutionNode> getGivenNodes() {
@@ -349,11 +342,12 @@ public class TaskSolution {
 
     public boolean checkNodeGraph(Vertex studentVertex) {
         if (solutionGraph == null) {
+            logs.info("Solution graph is not initialized yet.");
             createSolutionGraph();
-            System.out.println("**\nIn checkNodeGraph()");
             ModelEvaluator evaluator = new ModelEvaluator(solutionGraph);
 
             try {
+                logs.info("Running Author's solution first to generate correct solution.");
                 evaluator.run();
             } catch (ModelEvaluationException ex) {
                 ex.printStackTrace();
@@ -392,6 +386,7 @@ public class TaskSolution {
     }
 
     private void createSolutionGraph() {
+        logs.info("Creating Solution Graph");
         solutionGraph = new Graph<Vertex, Edge>(Edge.class);
 
         // Add all the vertices in the Graph
