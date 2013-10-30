@@ -18,3 +18,11 @@ git submodules suck:
 ### Changes to database ###
 
 ### Changes using Administration Control Panel ###
+
+For each class/section, you need to create a new forum and usergroup in PHPBB for that class:
+
+-In the ACP, Click on "Manage Groups" under "Quick Access"
+-Under user-defined groups, create a new group with the SAME NAME as the class/section name.  The default group settings are fine.  Click Submit.
+-In the ACP, click on "Manage Forums" under "Quick Access"
+-Create a new forum using the SAME NAME you used for the usergroup.  Default settings are fine.  You will be taken to the Forum Permissions page.
+-on Forum Permissions, under the "Add Groups" box, highlight the usergroup you created for your class and click Add Permissions.  Select the Standard Access role and click Apply All Permissions.
