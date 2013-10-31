@@ -52,6 +52,8 @@ public class LaitsSolutionExporter {
             addAllNodes(task);
             addDescriptionTree(task);
             
+            System.out.println("Doc: "  + document.asXML());
+            
             String serviceURL = ApplicationContext.getRootURL().concat("/save_solution.php");
             httpReponse = PersistenceManager.sendHTTPRequest("author_save", serviceURL, document.asXML());
             
