@@ -12,7 +12,7 @@
     $author = mysqli_real_escape_string($mysqli, $_POST['id']);
     $section = mysqli_real_escape_string($mysqli, $_POST['section']);
     $problemName = mysqli_real_escape_string($mysqli, $_POST['problem']);
-    $solutionGraph = $_POST['saveData'];
+    $solutionGraph = mysqli_real_escape_string($_POST['saveData']);
     // share is optional, default value 1.
     // Need to see what values client can send
     // Mysql encodes true and false as 1 and 0.

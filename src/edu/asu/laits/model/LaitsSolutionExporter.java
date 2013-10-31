@@ -59,12 +59,14 @@ public class LaitsSolutionExporter {
             addAllNodes(task);
             addDescriptionTree(task);
             String serviceURL = ApplicationContext.getRootURL().concat("/save_solution.php");
-            // Turn the document into a string.
-            StringWriter sw = new StringWriter();  
+            // Turn the document into a string, with pretty printing.
+            // Could use document.asXML() but then there is no formatting.
+            StringWriter stringWriter = new StringWriter();  
             OutputFormat format = OutputFormat.createPrettyPrint();  
-            XMLWriter xw = new XMLWriter(sw, format);  
-            xw.write(document);  
-            response = PersistenceManager.sendHTTPRequest("author_save",serviceURL,sw.toString());
+            XMLWriter xmlwriter = new XMLWriter(stringWriter, format);  
+            xmlwriter.write(document);  
+            response = PersistenceManager.sendHTTPRequest("author_save",
+                    serviceURL,stringWriter.toString());
             if (Integer.parseInt(response) == 200) {
                 logs.info("Successfully sent exported solution to server.");
                 return true;
@@ -72,7 +74,7 @@ public class LaitsSolutionExporter {
                 logs.info("Solution export to server failed: "+response);
                 return false;
             }
-        } catch (Exception ex) {
+        } catch (IOException ex) {
             logs.info("Error exporting solution server: "+response); 
             ex.printStackTrace();
             return false;
