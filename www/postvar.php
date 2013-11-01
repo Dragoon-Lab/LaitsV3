@@ -20,7 +20,7 @@
     $problemName = mysqli_real_escape_string($mysqli, $_POST['problem']);
     $saveData = $_POST['saveData'];
     
-    error_log("action: $action | userid: $userid | section: $section | problem: $problem | author: $author | ");
+    error_log("action: $action | userid: $userid | section: $section | problem: $problemName | author: $author | ");
 
     if (strcmp($action, "save") == 0) {
 
@@ -91,8 +91,8 @@
         return $returnString;
     }
     
-        function loadAuthorGraphXMLfromDatabase($author,$section,$problem,$mysqli){
-        $queryString = "SELECT saveData FROM unsolutions WHERE author='$author' AND section='$section' AND problemName='$problem'";
+        function loadAuthorGraphXMLfromDatabase($author,$section,$problemName,$mysqli){
+        $queryString = "SELECT saveData FROM unsolutions WHERE author='$author' AND section='$section' AND problemName='$problemName'";
         $result = $mysqli->query($queryString);
         $returnString = "";
         $num_rows = $result->num_rows;
