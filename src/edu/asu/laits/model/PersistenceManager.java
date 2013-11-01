@@ -61,7 +61,7 @@ public class PersistenceManager implements Runnable {
 
     public static synchronized String loadSession() throws IOException{
         String action = ApplicationContext.isAuthorMode() ? "author_load" : "load";
-        String serviceURL = ApplicationContext.getRootURL().concat("/postvartest.php");
+        String serviceURL = ApplicationContext.getRootURL().concat("/postvar.php");
         
         return sendHTTPRequest(action, serviceURL, "");
     }
@@ -69,16 +69,16 @@ public class PersistenceManager implements Runnable {
     public void run() {
         int statusCode = 0;
         String action = ApplicationContext.isAuthorMode() ? "author_save" : "save";
-        String serviceURL = ApplicationContext.getRootURL().concat("/postvartest.php");
+        String serviceURL = ApplicationContext.getRootURL().concat("/postvar.php");
         
         try {
             String sessionData = URLEncoder.encode(graphSaver.getSerializedGraphInXML(), "UTF-8");
             String response = sendHTTPRequest(action, serviceURL, sessionData);
             statusCode = Integer.parseInt(response);
             if (statusCode == 200) {
-                logs.info("Successfully wrote session to server using " + ApplicationContext.getRootURL().concat("/postvartest.php"));
+                logs.info("Successfully wrote session to server using " + ApplicationContext.getRootURL().concat("/postvar.php"));
             } else {
-                logs.error("Error: URL " + ApplicationContext.getRootURL().concat("/postvartest.php")
+                logs.error("Error: URL " + ApplicationContext.getRootURL().concat("/postvar.php")
                         + " returned status code " + statusCode);
             }            
         } catch (IOException ex) {
@@ -109,16 +109,14 @@ public class PersistenceManager implements Runnable {
         postVariable.add(new BasicNameValuePair("action", action));
         postVariable.add(new BasicNameValuePair("id", ApplicationContext.getUserID()));
         postVariable.add(new BasicNameValuePair("section", ApplicationContext.getSection()));
-        if(action.equals("author_save")){
+        if(ApplicationContext.isAuthorMode()){
             // Author mode save should also include boolean 'share' variable
             // which determines whether others in section can view solution.
             
-            postVariable.add(new BasicNameValuePair("problem", ApplicationContext.getCurrentTask().getTaskName()));
             postVariable.add(new BasicNameValuePair("author", ApplicationContext.getAuthor()));
-        } else {
-            
-            postVariable.add(new BasicNameValuePair("problem", ApplicationContext.getCurrentTaskID()));
         }
+        postVariable.add(new BasicNameValuePair("problem", ApplicationContext.getCurrentTaskID()));
+        
         logs.debug("Post Variables sending: "+postVariable);
         
         if (action.equals("save") || action.equals("author_save")) {
