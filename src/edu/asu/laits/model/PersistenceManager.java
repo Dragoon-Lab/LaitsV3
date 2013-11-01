@@ -113,11 +113,10 @@ public class PersistenceManager implements Runnable {
         if(action.equals("author_save")){
             // Author mode save should also include boolean 'share' variable
             // which determines whether others in section can view solution.
-            
-            postVariable.add(new BasicNameValuePair("problem", ApplicationContext.getCurrentTask().getTaskName()));
-            postVariable.add(new BasicNameValuePair("author", ApplicationContext.getAuthor()));
-        } else {
-            
+            // In author mode, the auther name is the user name.
+            postVariable.add(new BasicNameValuePair("problem", 
+                    ApplicationContext.getCurrentTask().getTaskName()));
+        } else {            
             postVariable.add(new BasicNameValuePair("problem", ApplicationContext.getCurrentTaskID()));
         }
         logs.debug("Post Variables sending: "+postVariable);
