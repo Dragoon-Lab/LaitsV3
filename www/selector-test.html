@@ -61,7 +61,7 @@ function addProblems(id){
     var widget=registry.byId(id);
     console.log("add connect to ",widget);
     dojo.connect(widget,"onClick",addProblems);
-  }
+  });
 });
 
 </script>
@@ -70,7 +70,8 @@ function addProblems(id){
 <div class="content">
 
 <p> Example html/javascript for getting a set of custom problems from
-  the server, populating a form, and selecting one of those problems.  
+  the server, populating a form, and selecting one of those problems.
+  The section is set to "test".
   
 <form action="startup.php" method="POST" name="author3"
   class="problem-selection-form" 
