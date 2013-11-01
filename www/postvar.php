@@ -32,7 +32,7 @@
 //  This should be removed.  See Bug #2222
     } elseif(strcmp($action, "author_load") == 0){
         // For author_load check if the problem directory contains a defined problem
-        $result = loadGraphXMLfromDatabase($id,$section,$problemName,$mysqli);
+        $result = loadGraphXMLfromDatabase($author,$section,$problemName,$mysqli);
         if($result === "")
             print loadSolutionFileFromServer($problemName);
         else
