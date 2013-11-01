@@ -11,7 +11,7 @@
 
     //retrieve POST variables
     $action = mysqli_real_escape_string($mysqli, $_POST['action']);
-    $userid = mysqli_real_escape_string($mysqli, $_POST['id']);
+    $id = mysqli_real_escape_string($mysqli, $_POST['id']);
     $section = mysqli_real_escape_string($mysqli, $_POST['section']);
     // Needed to identify problem for student mode work on custom problems
     // Do not include for author mode work or for published problems.
@@ -20,7 +20,7 @@
     $problemName = mysqli_real_escape_string($mysqli, $_POST['problem']);
     $saveData = $_POST['saveData'];
     
-    error_log("action: $action | userid: $userid | section: $section | problem: $problemName | author: $author | ");
+  //  error_log("action: $action | userid: $userid | section: $section | problem: $problemName | author: $author | ");
 
     if (strcmp($action, "save") == 0) {
 
