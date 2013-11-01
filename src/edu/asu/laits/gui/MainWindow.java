@@ -464,6 +464,9 @@ public class MainWindow extends JFrame {
     /**
      * Method to Load user session form Server It will load previously saved
      * Graph from the last session of user
+     * Modified by Reid: if in Author mode and retrieving another author's graph to edit, 
+     * sets Author to the current user, effectively creating a new graph that is a 
+     * copy of the other Author's graph
      */
     private void loadSavedSession() {
         try {
@@ -474,6 +477,9 @@ public class MainWindow extends JFrame {
                 GraphLoader loader = new GraphLoader(getGraphEditorPane());
                 loader.loadFromServer(graphXML);
                 switchTutorModelPanels(false);
+                if(ApplicationContext.isAuthorMode()){
+                    ApplicationContext.setAuthor(ApplicationContext.getUserID());
+                }
             }
         } catch (IOException ex) {
             logs.error("Error loading session from database. " + ex.getMessage());

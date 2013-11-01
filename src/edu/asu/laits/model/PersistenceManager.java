@@ -61,25 +61,24 @@ public class PersistenceManager implements Runnable {
 
     public static synchronized String loadSession() throws IOException{
         String action = ApplicationContext.isAuthorMode() ? "author_load" : "load";
-        String serviceURL = ApplicationContext.getRootURL().concat("/postvar.php");
+        String serviceURL = ApplicationContext.getRootURL().concat("/postvartest.php");
         
         return sendHTTPRequest(action, serviceURL, "");
     }
     
     public void run() {
         int statusCode = 0;
-        //String action = ApplicationContext.isAuthorMode() ? "author_save" : "save";
-        String action = "save";
-        String serviceURL = ApplicationContext.getRootURL().concat("/postvar.php");
+        String action = ApplicationContext.isAuthorMode() ? "author_save" : "save";
+        String serviceURL = ApplicationContext.getRootURL().concat("/postvartest.php");
         
         try {
             String sessionData = URLEncoder.encode(graphSaver.getSerializedGraphInXML(), "UTF-8");
             String response = sendHTTPRequest(action, serviceURL, sessionData);
             statusCode = Integer.parseInt(response);
             if (statusCode == 200) {
-                logs.info("Successfully wrote session to server using " + ApplicationContext.getRootURL().concat("/postvar.php"));
+                logs.info("Successfully wrote session to server using " + ApplicationContext.getRootURL().concat("/postvartest.php"));
             } else {
-                logs.error("Error: URL " + ApplicationContext.getRootURL().concat("/postvar.php")
+                logs.error("Error: URL " + ApplicationContext.getRootURL().concat("/postvartest.php")
                         + " returned status code " + statusCode);
             }            
         } catch (IOException ex) {
