@@ -30,23 +30,12 @@ public class GraphProperties {
 
 	// The graphChange listeners that listens for changes in the graph
 	private transient List<GraphChangeListener> graphChangeListeners = new LinkedList<GraphChangeListener>();
-
 	private transient List<GraphSaveListener> graphSaveListeners = new LinkedList<GraphSaveListener>();
 
 	// The current zoom Level
 	private double zoomLevel = 1.0;
-
 	private VertexType defaultShape = VertexType.DEFAULT;
-
 	private VertexType defaultInsertShape = VertexType.DEFAULT;
-
-	private Color backgroundColor = new Color(255, 255, 255);
-
-	private boolean defaultUseGraphBackground = true;
-
-	private Color defaultVertexBackgroundColor = new Color(255, 255, 255);
-
-	private Color defaultVertexForegroundColor = new Color(0, 0, 0);
 
 	/**
 	 * @return the graphChangeListeners
@@ -145,23 +134,6 @@ public class GraphProperties {
 	}
 
 	/**
-	 * @return the backgroundColor
-	 */
-	public Color getBackgroundColor() {
-		return backgroundColor;
-	}
-
-	/**
-	 * @param backgroundColor
-	 *            the backgroundColor to set
-	 */
-	public void setBackgroundColor(Color backgroundColor) {
-		this.backgroundColor = backgroundColor;
-		changed = true;
-		fireChangedEvent();
-	}
-
-	/**
 	 * @return the defaultShape
 	 */
 	public VertexType getDefaultShape() {
@@ -193,58 +165,5 @@ public class GraphProperties {
 		this.defaultInsertShape = defaultInsertShape;
 		changed = true;
 		fireChangedEvent();
-	}
-
-	/**
-	 * @return the defaultUseGraphBackground
-	 */
-	public boolean isDefaultUseGraphBackground() {
-		return defaultUseGraphBackground;
-	}
-
-	/**
-	 * @param defaultUseGraphBackground
-	 *            the defaultUseGraphBackground to set
-	 */
-	public void setDefaultUseGraphBackground(boolean defaultUseGraphBackground) {
-		this.defaultUseGraphBackground = defaultUseGraphBackground;
-		changed = true;
-		fireChangedEvent();
-	}
-
-	/**
-	 * @return the defaultVertexBackgroundColor
-	 */
-	public Color getDefaultVertexBackgroundColor() {
-		return defaultVertexBackgroundColor;
-	}
-
-	/**
-	 * @param defaultVertexBackgroundColor
-	 *            the defaultVertexBackgroundColor to set
-	 */
-	public void setDefaultVertexBackgroundColor(
-			Color defaultVertexBackgroundColor) {
-		this.defaultVertexBackgroundColor = defaultVertexBackgroundColor;
-		changed = true;
-		fireChangedEvent();
-	}
-
-	/**
-	 * @return the defaultVertexForegroundColor
-	 */
-	public Color getDefaultVertexForegroundColor() {
-		return defaultVertexForegroundColor;
-	}
-
-	/**
-	 * @param defaultVertexForegroundColor
-	 *            the defaultVertexForegroundColor to set
-	 */
-	public void setDefaultVertexForegroundColor(
-			Color defaultVertexForegroundColor) {
-		this.defaultVertexForegroundColor = defaultVertexForegroundColor;
-		changed = true;
-		fireChangedEvent();
-	}
+	}	
 }

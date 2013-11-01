@@ -52,7 +52,6 @@ import org.jgraph.event.GraphModelEvent;
 import org.jgraph.event.GraphModelListener;
 import org.jgraph.event.GraphSelectionEvent;
 import org.jgraph.event.GraphSelectionListener;
-import org.jgraph.graph.AttributeMap;
 import org.jgraph.graph.DefaultEdge;
 import org.jgraph.graph.DefaultGraphCell;
 import org.jgraph.graph.DefaultPort;
@@ -263,13 +262,6 @@ public class GraphEditorPane extends JGraph {
         GraphEditorConstants.setShape(attrs, getGraphProperties()
                 .getDefaultInsertShape());
 
-        GraphEditorConstants.setUseGraphBackground(attrs, getGraphProperties()
-                .isDefaultUseGraphBackground());
-        GraphEditorConstants.setBackground(attrs, getGraphProperties()
-                .getDefaultVertexBackgroundColor());
-        GraphEditorConstants.setForeground(attrs, getGraphProperties()
-                .getDefaultVertexForegroundColor());
-
         Rectangle2D newBounds = new Rectangle2D.Double((x - 9) / getScale(),
                 (y - 9) / getScale(), 120, 75);
         GraphConstants.setBounds(attrs, newBounds);
@@ -298,10 +290,6 @@ public class GraphEditorPane extends JGraph {
         GraphConstants.setSizeable(attrs, false);
         GraphConstants.setBorderColor(attrs, Color.black);
         GraphEditorConstants.setShape(attrs, vertex.getVertexType());
-        GraphEditorConstants.setUseGraphBackground(attrs, vertex
-                .isUseGraphBackround());
-        GraphEditorConstants.setBackground(attrs, vertex.getBackgroundColor());
-        GraphEditorConstants.setForeground(attrs, vertex.getForegroundColor());
         Rectangle2D newBounds = new Rectangle2D.Double(vertex.getXPosition(),
                 vertex.getYPosition(), 120, 75);
 
@@ -312,22 +300,6 @@ public class GraphEditorPane extends JGraph {
         port.setParent(vertexCell);
 
         getGraphLayoutCache().insert(vertexCell);
-    }
-
-    /**
-     * The method sets the position on a vertex. It is based on the
-     * JGraphAdapterDemo class in the JGraphT library.
-     */
-    private void positionVertexAt(Vertex vertex, double x, double y) {
-        DefaultGraphCell cell = modelAdapter.getVertexCell(vertex);
-        AttributeMap attr = cell.getAttributes();
-        Rectangle2D newBounds = new Rectangle2D.Double(x, y, 18, 18);
-
-        GraphConstants.setBounds(attr, newBounds);
-
-        AttributeMap cellAttr = new AttributeMap();
-        cellAttr.put(cell, attr);
-        modelAdapter.edit(cellAttr, null, null, null);
     }
 
     /**

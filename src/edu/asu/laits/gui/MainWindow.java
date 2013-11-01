@@ -47,6 +47,7 @@ import edu.asu.laits.properties.GraphProperties;
 import java.awt.Color;
 import javax.swing.*;
 import org.apache.log4j.Logger;
+import org.dom4j.DocumentException;
 
 /**
  * The main window in the program. This can be opened both with an empty graph
@@ -452,7 +453,9 @@ public class MainWindow extends JFrame {
     private void loadTask() {
         try {
             String task = ApplicationContext.getCurrentTaskID();
-            mainMenu.getFileMenu().openTaskById(task);
+            String author = ApplicationContext.getAuthor();
+            String section = ApplicationContext.getSection();
+            mainMenu.getFileMenu().openTaskById(task,author,section);
         } catch (Exception e) {
             e.printStackTrace();
         }
@@ -465,8 +468,9 @@ public class MainWindow extends JFrame {
     private void loadSavedSession() {
         try {
             String graphXML = PersistenceManager.loadSession();
-
+            
             if (!graphXML.trim().isEmpty()) {
+                //System.out.println("saved grapph " + graphXML);
                 getGraphEditorPane().resetModelGraph();
                 GraphLoader loader = new GraphLoader(getGraphEditorPane());
                 loader.loadFromServer(graphXML);
@@ -477,6 +481,9 @@ public class MainWindow extends JFrame {
             ex.printStackTrace();
         } catch (GraphLoader.IncorcectGraphXMLFileException ex) {
             logs.error("Could not Load Graph : Incorrect Graph XML. " + ex.getMessage());
+        }
+        catch (DocumentException ex) {
+            logs.error("XML Document is not parsable." + ex.getMessage());
         }
     }
 

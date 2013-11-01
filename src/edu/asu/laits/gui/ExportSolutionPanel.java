@@ -19,59 +19,48 @@ package edu.asu.laits.gui;
 
 import edu.asu.laits.editor.ApplicationContext;
 import edu.asu.laits.editor.DragoonUIUtils;
-import edu.asu.laits.model.PlotPanel;
-import edu.asu.laits.model.Edge;
+import edu.asu.laits.model.Edge.ErrorReaderException;
 import edu.asu.laits.model.Graph;
 import edu.asu.laits.model.LaitsSolutionExporter;
+import edu.asu.laits.model.PersistenceManager;
 import edu.asu.laits.model.Task;
 import edu.asu.laits.model.Times;
 import edu.asu.laits.model.Vertex;
-import java.awt.BorderLayout;
-import java.awt.Color;
-import java.awt.Component;
 import java.awt.Dimension;
-import java.awt.Font;
-import java.awt.TextArea;
-import java.io.File;
-import java.text.SimpleDateFormat;
-import java.util.Date;
+import java.awt.event.ItemEvent;
+import java.awt.event.ItemListener;
+import java.util.ArrayList;
+import java.util.HashSet;
 import java.util.List;
-import javax.swing.BorderFactory;
-import javax.swing.BoxLayout;
-import javax.swing.ImageIcon;
+import java.util.Set;
+import java.util.logging.Level;
 import javax.swing.JButton;
 import javax.swing.JComboBox;
 import javax.swing.JDialog;
-import javax.swing.JFileChooser;
-import javax.swing.JFrame;
-import javax.swing.JLabel;
 import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.JScrollPane;
-import javax.swing.JSeparator;
 import javax.swing.JTextArea;
 import javax.swing.JTextField;
 import javax.swing.JTree;
-import javax.swing.SwingConstants;
-import javax.swing.filechooser.FileFilter;
 import javax.swing.tree.DefaultMutableTreeNode;
 import javax.swing.tree.DefaultTreeModel;
 import net.miginfocom.swing.MigLayout;
 import org.apache.log4j.Logger;
-import org.jdesktop.swingx.JXTaskPane;
-import org.jdesktop.swingx.JXTaskPaneContainer;
 
 /**
- * Panel to display UI for exporting LAITS solution files in Author Mode. 
- * This panel is built using Mig Layout
+ * Panel to display UI for exporting LAITS solution files in Author Mode. This
+ * panel is built using Mig Layout
  *
  * @author ramayantiwari
  */
 public class ExportSolutionPanel extends JPanel {
 
     JDialog parent = null;
-    private JFileChooser saveAsFileChooser = null;
+    
     private static Logger logs = Logger.getLogger("DevLogs");
+    private static Logger activityLogs = Logger.getLogger("ActivityLogs");
+    
     // UI Components
     private JTextField taskName = null;
     private JTextArea taskDesc = null;
@@ -81,25 +70,32 @@ public class ExportSolutionPanel extends JPanel {
     private JTextField timesteps = null;
     private JComboBox units = null;
     private String[] UNITS = new String[]{"Years", "Months", "Days", "Hours", "Mins"};
+    private Graph modelGraph;
+    private JTree dTree;
+    private JComboBox nodeNamesComboBox;
+    JTextArea fakeDescTextArea;
+    JTextField correctDesc;
 
     public ExportSolutionPanel(JDialog parentFrame) {
         super(new MigLayout());
         this.parent = parentFrame;
+        modelGraph = MainWindow.getInstance().getGraphEditorPane().getModelGraph();
         setMaximumSize(new Dimension(700, 800));
         initializeComponents();
         addProblemDefinitionSection();
         addTimingSection();
         addDescriptionTreeSection();
-        addExportAction();
+        addActions();
     }
 
     private void initializeComponents() {
         Task currentTask = ApplicationContext.getCurrentTask();
 
         taskName = DragoonUIUtils.createTextField(20);
-        taskName.setText(currentTask.getTaskName());
+        taskName.setText(ApplicationContext.getCurrentTaskID());
 
         taskDesc = DragoonUIUtils.createTextArea(5, 35);
+        taskDesc.setLineWrap(true);
         taskDesc.setText(currentTask.getTaskDescription());
 
         imageURL = DragoonUIUtils.createTextField(34);
@@ -124,8 +120,10 @@ public class ExportSolutionPanel extends JPanel {
         add(DragoonUIUtils.createLabel("Problem Name: "), "skip");
         add(taskName, "wrap");
 
+        JScrollPane descScrollPane = new JScrollPane();
+        descScrollPane.setViewportView(taskDesc);
         add(DragoonUIUtils.createLabel("Problem Description: "), "skip");
-        add(taskDesc, "wrap");
+        add(descScrollPane, "wrap");
 
         add(DragoonUIUtils.createLabel("Image URL: "), "skip");
         add(imageURL, "wrap");
@@ -148,111 +146,138 @@ public class ExportSolutionPanel extends JPanel {
     }
 
     private void addDescriptionTreeSection() {
+        logs.info("Adding Description Tree Section");
+        
+        fakeDescTextArea = DragoonUIUtils.createTextArea(5, 35);
+        correctDesc = DragoonUIUtils.createTextField(35);
+
         DragoonUIUtils.addSeparator(this, "Description Tree");
         // Add Nodes
         add(DragoonUIUtils.createLabel("Nodes: "), "skip");
-        
-        List<String> vertexList = MainWindow.getInstance().getGraphEditorPane().getModelGraph().getVerticesByName();
+
+        List<String> vertexList = modelGraph.getVerticesByName();
         String[] nodeNames = vertexList.toArray(new String[vertexList.size()]);
-        
-        add(DragoonUIUtils.createComboBox(nodeNames), "wrap");
-        
+
+        // Add Combo box for Displaying Node names, attach change listener to save the added descriptions
+        nodeNamesComboBox = DragoonUIUtils.createComboBox(nodeNames);        
+        nodeNamesComboBox.addItemListener(new NodeNameChangeListener());                
+        add(nodeNamesComboBox, "wrap");
+
         String desc = "";
-        if(nodeNames != null && nodeNames.length != 0) {
+        
+        if (nodeNames != null && nodeNames.length != 0) {
+            logs.info("Setting correct and fake description for selected node");
             Vertex selectedVertex = MainWindow.getInstance().getGraphEditorPane().getModelGraph().getVertexByName(nodeNames[0]);
             desc = selectedVertex.getCorrectDescription();
+            List<String> fakeDList = selectedVertex.getFakeDescription();
+            fakeDescTextArea.setText(convertFakeDescListtoTextAreaText(fakeDList));
         }
-        
+
         add(DragoonUIUtils.createLabel("Correct Description: "), "skip");
-        JTextField correctDesc = DragoonUIUtils.createTextField(35);
+
         correctDesc.setText(desc);
         add(correctDesc, "wrap");
-        
+
         add(DragoonUIUtils.createLabel("Fake Description: "), "skip");
-        add(DragoonUIUtils.createTextArea(5, 35), "wrap");
+        add(fakeDescTextArea, "wrap");
 
         // Extra Line for space
         add(DragoonUIUtils.createLabel(" "), "skip");
         add(DragoonUIUtils.createLabel(" "), "wrap");
 
-        JScrollPane pane = new JScrollPane();
-        JTree dTree = DragoonUIUtils.createTree();
-        dTree.setModel(getDemoDTreeModel());
-        pane.setViewportView(dTree);
+        JScrollPane dTreeScrollPane = new JScrollPane();
+        dTreeScrollPane.setPreferredSize(new Dimension(400, 250));
+        dTree = DragoonUIUtils.createTree();
+        dTree.setVisibleRowCount(10);
+        dTree.setModel(buildDTreeModel());
+        dTreeScrollPane.setViewportView(dTree);
 
         add(DragoonUIUtils.createLabel("DTree Preview: "), "skip");
-        add(pane, "wrap, wmin 350");
+        add(dTreeScrollPane, "wrap, wmin 350");
     }
 
-    private void addExportAction() {
+    private void addActions() {
+        // Create 2 lines of empty spaces to create spaces above action buttons
         add(DragoonUIUtils.createLabel(" "), "skip");
         add(DragoonUIUtils.createLabel(" "), "wrap");
-        add(DragoonUIUtils.createLabel(" "), "skip");
-        JButton exportAction = DragoonUIUtils.createButton("Export Solution");
 
+        // Preview button to preview decision tree construction
+        JButton dTreePreviewAction = DragoonUIUtils.createButton("DTree Preview");
+        dTreePreviewAction.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent e) {
+                // Build DTree from Correct and Fake Description
+                activityLogs.debug("Author is Previewing Description Tree");
+                dTree.setModel(buildDTreeModel());
+            }
+        });
+        add(dTreePreviewAction, "skip");
+
+        // Export Solution Action
+        JButton exportAction = DragoonUIUtils.createButton("Export Solution");
         exportAction.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent e) {
-                // Perform Validation before exporting the task
-                if (validateExportSolutionPanel()) {
-                    setTaskDetails();
-
-                    logs.info("Exporting Laits Solution File.");
-
-                    int returnVal = getSaveFileChooser().showSaveDialog(getRootPane());
-                    if (returnVal == JFileChooser.APPROVE_OPTION) {
-
-                        File selectedFile = getSaveFileChooser().getSelectedFile();
-
-                        if (!selectedFile.getName().matches("(.*)(\\.xml)")) {
-
-                            if (selectedFile.getName().matches("\".*\"")) {
-                                if (selectedFile.getName().length() < 3) {
-                                    JOptionPane.showMessageDialog(
-                                            getRootPane(), "Can not save to file " + selectedFile.getAbsolutePath()
-                                            + "\nBecause of the following reason:\n" + "File name is too short.",
-                                            "Unable to save file", JOptionPane.ERROR_MESSAGE);
-                                    return;
-                                } else {
-                                    selectedFile = new File(selectedFile.getParent() + File.separator
-                                            + selectedFile.getName().substring(1, (int) (selectedFile.getName().length() - 2)));
-                                }
-                            } else {
-                                selectedFile = new File(selectedFile.getAbsoluteFile()
-                                        + ".xml");
-                            }
-                        }
-
-                        saveToFile(selectedFile);
-                    }
-                }
+                doexportAction();
             }
         });
 
         add(exportAction, "right");
     }
 
+    private void doexportAction() {
+        // Perform Validation before exporting the task
+        logs.info("Exporting Solution");
+        activityLogs.debug("Author is Exporting Solution");
+        
+        if (validateExportSolutionPanel()) {
+            saveSelectedNodeDescription();
+            setTaskDetails();
+
+            logs.info("Exporting Laits Solution File.");
+            try {            
+                saveToServer();
+            } catch (ErrorReaderException ex) {
+                logs.error("Error in reading edge info. Export Solution unsuccessful");
+            }
+        }
+    }
+
+    /**
+     * Save currently visible correct and incorrect description to Vertex before exporting solution.
+     * This is required as change action is not fired for currently visible node. 
+     */
+    private void saveSelectedNodeDescription() {
+        logs.info("saving correct and fake description for currently selected node.");
+        
+        String selectedVertexName = (String)nodeNamesComboBox.getSelectedItem();
+        Vertex v = modelGraph.getVertexByName(selectedVertexName);
+        updateNodeDescription(v);
+    }
+    
     /**
      * Tries to save to the specified file
      */
-    private void saveToFile(File file) {
-        logs.info("Saving LaitsSolution to File: " + file.getAbsolutePath());
-        
+    private void saveToServer() throws ErrorReaderException {
+        logs.info("Saving LaitsSolution to Server");
+
         // Exporter will read all the information from task object
-        LaitsSolutionExporter exporter = new LaitsSolutionExporter(file);
-        if(exporter.export()){
-            JOptionPane.showMessageDialog(getRootPane(), "Solution File Saved at : " + file.getAbsolutePath(),
+        LaitsSolutionExporter exporter = new LaitsSolutionExporter();
+        if (exporter.export()) {
+            activityLogs.debug("Author's solution is exported to server. Problem name: '" + taskName.getText().trim() + "'");
+            JOptionPane.showMessageDialog(getRootPane(), "Solution File Saved to Server.",
                     "Solution File Exported", JOptionPane.INFORMATION_MESSAGE);
         } else {
+            activityLogs.debug("Author's solution could not be exported to server.");
             JOptionPane.showMessageDialog(getRootPane(), "Solution Could not be exported.",
                     "Export Error", JOptionPane.ERROR_MESSAGE);
         }
-        
+
+        PersistenceManager.saveSession();
         parent.dispose();
     }
 
     private boolean validateExportSolutionPanel() {
         logs.info("Validating Inputs in Export Solution Panel");
-        
+
         StringBuilder errorMessage = new StringBuilder();
 
         // Validte Input Fields
@@ -279,7 +304,7 @@ public class ExportSolutionPanel extends JPanel {
         // If there was an error, Show the error string and return false
         if (errorMessage.length() > 0) {
             logs.info("Error in Validation " + errorMessage.toString());
-            
+
             JOptionPane.showMessageDialog(getRootPane(), errorMessage.toString(),
                     "Validation Error", JOptionPane.ERROR_MESSAGE);
             return false;
@@ -288,75 +313,105 @@ public class ExportSolutionPanel extends JPanel {
         return true;
     }
 
+    /**
+     * Set task details for exporting solution file.
+     * These details will be used to create Student Mode Task.
+     */
     private void setTaskDetails() {
         logs.info("Setting Task Details");
-        
+
         Task currentTask = ApplicationContext.getCurrentTask();
 
         currentTask.setTaskName(taskName.getText());
         currentTask.setTaskDescription(taskDesc.getText());
         currentTask.setImageURL(imageURL.getText());
-        currentTask.setTaskType("Challenge");
+        currentTask.setPhase("Challenge");
         currentTask.setTaskType("Whole");
         currentTask.setTimes(new Times(startTime.getText(), endTime.getText(), timesteps.getText()));
     }
 
-    private JFileChooser getSaveFileChooser() {
-        if (saveAsFileChooser == null) {
-            saveAsFileChooser = new JFileChooser();
-            saveAsFileChooser.setDialogTitle("Export Model as LAITS Solution...");
-            saveAsFileChooser.setAcceptAllFileFilterUsed(true);
-            saveAsFileChooser.addChoosableFileFilter(new FileFilter() {
-                @Override
-                public boolean accept(File f) {
-                    return f.getName().matches(".*.xml");
-                }
-
-                @Override
-                public String getDescription() {
-                    return "Laits Solution Files (*.xml)";
-                }
-            });
+    /**
+     * Prepare Description Tree for preview.
+     * 
+     * @return DefaultTreeModel to publish on DTree
+     */
+    private DefaultTreeModel buildDTreeModel() {
+        DefaultMutableTreeNode root = new DefaultMutableTreeNode("root");
+        Set<Vertex> vertexSet = modelGraph.vertexSet();
+        Set<String> allDescriptions = new HashSet<String>();
+        
+        for(Vertex v : vertexSet){
+            allDescriptions.add(v.getCorrectDescription());
+            for(String s : v.getFakeDescription()) {
+                String[] parts = s.split("#");
+                allDescriptions.add(parts[0].trim());
+            }            
         }
-        return saveAsFileChooser;
+        logs.info("All Description Set : " + allDescriptions);
+        
+        for(String s : allDescriptions) {
+            DefaultMutableTreeNode node = new DefaultMutableTreeNode(s);
+            root.add(node);
+        }
+        
+        return new DefaultTreeModel(root);
     }
-
-    private DefaultTreeModel getDemoDTreeModel() {
-        DefaultMutableTreeNode treeNode1 = new DefaultMutableTreeNode("root");
-        DefaultMutableTreeNode treeNode2 = new DefaultMutableTreeNode("A count of");
-        DefaultMutableTreeNode treeNode3 = new DefaultMutableTreeNode("rabbits in the population");
-        DefaultMutableTreeNode treeNode4 = new DefaultMutableTreeNode("at the beginning of the year");
-        DefaultMutableTreeNode treeNode5 = new DefaultMutableTreeNode("and it is constant from year to year");
-        treeNode4.add(treeNode5);
-        treeNode5 = new DefaultMutableTreeNode("and it varies from year to year");
-        treeNode4.add(treeNode5);
-        treeNode3.add(treeNode4);
-        treeNode4 = new DefaultMutableTreeNode("totaled up across all years");
-        treeNode3.add(treeNode4);
-        treeNode4 = new DefaultMutableTreeNode("averaged across all years");
-        treeNode3.add(treeNode4);
-        treeNode2.add(treeNode3);
-        treeNode3 = new DefaultMutableTreeNode("rabbits born into the population");
-        treeNode4 = new DefaultMutableTreeNode("during a year");
-        treeNode5 = new DefaultMutableTreeNode("and it is constant from year to year");
-        treeNode4.add(treeNode5);
-        treeNode5 = new DefaultMutableTreeNode("and it varies from year to year");
-        treeNode4.add(treeNode5);
-        treeNode3.add(treeNode4);
-        treeNode4 = new DefaultMutableTreeNode("across all years");
-        treeNode3.add(treeNode4);
-        treeNode4 = new DefaultMutableTreeNode("per year on average");
-        treeNode3.add(treeNode4);
-        treeNode2.add(treeNode3);
-        treeNode1.add(treeNode2);
-
-        return new DefaultTreeModel(treeNode1);
+    
+    /**
+     * Listener to perform action on change event of nodes of combo box.
+     */
+    class NodeNameChangeListener implements ItemListener {
+        @Override
+        public void itemStateChanged(ItemEvent event) {
+            String selectedName = (String)event.getItem();
+            logs.info("Selected node name : " + selectedName);
+            activityLogs.debug("Author Selected node name : " + selectedName);
+            
+            Vertex v = modelGraph.getVertexByName(selectedName);
+            
+            if (event.getStateChange() == ItemEvent.SELECTED) {
+                List<String> fakeDList = v.getFakeDescription();
+                fakeDescTextArea.setText(convertFakeDescListtoTextAreaText(fakeDList));                
+                correctDesc.setText(v.getCorrectDescription());
+            }
+            if(event.getStateChange() == ItemEvent.DESELECTED) {
+                updateNodeDescription(v);
+            }            
+        }
+    }    
+    
+    private void updateNodeDescription(Vertex vertex) {
+        List<String> updatedfakeDList = convertTextAreaTextToFakeDescList(fakeDescTextArea.getText());
+        vertex.setFakeDescription(updatedfakeDList);
+        vertex.setCorrectDescription(correctDesc.getText().trim());
     }
-//    public static void main(String args[]){
-//        JFrame exportUITester = new JFrame("Export Solution");
-//        JScrollPane panelScroll = new JScrollPane(new ExportSolutionPanel());
-//        exportUITester.getContentPane().add(panelScroll);
-//        exportUITester.setSize(630, 750);
-//        exportUITester.setVisible(true);
-//    }
+    
+    // Helper Methods
+    private String convertFakeDescListtoTextAreaText(List<String> fakeDList) {
+        logs.info("Converting fake description list to TextArea list");
+        
+        String fakeDesc = "";
+        for (int i = 0; i < fakeDList.size() - 1; i++) {
+            fakeDesc += fakeDList.get(i) + "\n";
+        }
+
+        if (fakeDList.size() > 0) {
+            fakeDesc += fakeDList.get(fakeDList.size() - 1);
+        }
+
+        return fakeDesc;
+    }
+    
+    private List<String> convertTextAreaTextToFakeDescList(String text) {
+        logs.info("Converting TextArea list to FakeDescription List");
+        
+        String[] splitText = text.split("\n");
+        List<String> result = new ArrayList<String>();
+        for(String s : splitText){
+            if(s != null && s.trim().length() > 0)
+                result.add(s);
+        }
+        
+        return result;
+    }
 }

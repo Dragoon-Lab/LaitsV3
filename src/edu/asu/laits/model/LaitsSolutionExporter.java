@@ -19,15 +19,15 @@ package edu.asu.laits.model;
 
 import edu.asu.laits.editor.ApplicationContext;
 import edu.asu.laits.gui.MainWindow;
-import java.io.File;
-import java.io.FileWriter;
+import edu.asu.laits.model.Edge.ErrorReaderException;
 import java.io.IOException;
+import java.util.HashSet;
 import java.util.Iterator;
+import java.util.Set;
+import org.apache.log4j.Logger;
 import org.dom4j.Document;
 import org.dom4j.DocumentHelper;
 import org.dom4j.Element;
-import org.dom4j.io.OutputFormat;
-import org.dom4j.io.XMLWriter;
 
 /**
  *
@@ -36,14 +36,14 @@ import org.dom4j.io.XMLWriter;
 public class LaitsSolutionExporter {
 
     Graph<Vertex, Edge> graph = null;
-    File solutionFileName = null;
+    private static Logger logs = Logger.getLogger("DevLogs");
     
-    public LaitsSolutionExporter(File name) {
-        this.graph = MainWindow.getInstance().getGraphEditorPane().getModelGraph();
-        this.solutionFileName = name;       
+    public LaitsSolutionExporter() {
+        this.graph = MainWindow.getInstance().getGraphEditorPane().getModelGraph();         
     }
 
-    public boolean export() {
+    public boolean export() throws ErrorReaderException {
+        String httpReponse = "";
         try {
             Document document = DocumentHelper.createDocument();
 
@@ -51,16 +51,27 @@ public class LaitsSolutionExporter {
             addTaskDetails(task);
             addAllNodes(task);
             addDescriptionTree(task);
-            save(document);
             
-            return true;
-        } catch (Exception ex) {
+            System.out.println("Doc: "  + document.asXML());
+            
+            String serviceURL = ApplicationContext.getRootURL().concat("/save_solution.php");
+            httpReponse = PersistenceManager.sendHTTPRequest("author_save", serviceURL, document.asXML());
+            
+            if (Integer.parseInt(httpReponse) == 200) {
+                logs.info("Successfully sent exported solution to server.");
+                return true;
+            } else {
+                logs.info("Solution export to server failed: "+httpReponse);
+                return false;
+            }
+        } catch (IOException ex) {
+            logs.error("Error in Exporting Solution. Response: " + httpReponse);
             ex.printStackTrace();
             return false;
         }
     }
 
-    public String getXML(){
+    public String getXML() throws ErrorReaderException {
         Document document = DocumentHelper.createDocument();
 
         Element task = addRootElement(document);
@@ -81,6 +92,8 @@ public class LaitsSolutionExporter {
     }
 
     private void addTaskDetails(Element task) {
+        logs.info("Adding Task Details");
+        
         Task taskToExport = ApplicationContext.getCurrentTask();
         
         Element taskName = task.addElement("TaskName");
@@ -104,7 +117,9 @@ public class LaitsSolutionExporter {
         units.setText(taskToExport.getChartUnits());
     }
 
-    private void addAllNodes(Element task) {
+    private void addAllNodes(Element task) throws ErrorReaderException {
+        logs.info("Adding info about all the nodes");
+        
         Element nodeCount = task.addElement("NodeCount");
         nodeCount.setText(String.valueOf(graph.vertexSet().size()));
 
@@ -120,12 +135,20 @@ public class LaitsSolutionExporter {
 
     }
 
-    // Extra NO is hardcoded
-    private void addNodeDetails(Vertex vertex, Element node) {
+    private void addNodeDetails(Vertex vertex, Element node) throws ErrorReaderException {        
+        logs.info("Adding Details for Node: '" + vertex.getName() + "'");
+        
         String s = vertex.getVertexType().name();
         node.addAttribute("type", s.toLowerCase());
         node.addAttribute("name", vertex.getName());
-        node.addAttribute("extra", "no");
+        
+        // Extra can be determined based on no of inputs and outputs.
+        if(graph.incomingEdgesOf(vertex).size() == 0 && graph.outgoingEdgesOf(vertex).size() == 0) {
+            node.addAttribute("extra", "yes");
+        } else {
+            node.addAttribute("extra", "no");
+        }
+        
 
         Element correctDesc = node.addElement("CorrectDescription");
         correctDesc.setText(vertex.getCorrectDescription());
@@ -163,38 +186,66 @@ public class LaitsSolutionExporter {
         }
     }
 
-    private void addInputDetails(Vertex vertex, Element node) {
-        // Add Input Nodes
+    private void addInputDetails(Vertex vertex, Element node) throws ErrorReaderException {
+        logs.info("Adding Input Details for Vertex: '" + vertex.getName() + "'");
+        
+        // Add Input Nodes       
         Iterator<Edge> edges = graph.incomingEdgesOf(vertex).iterator();
         while (edges.hasNext()) {
             Edge e = edges.next();
+            e.fetchInformationFromJGraphT(graph);
             Vertex source = graph.getVertexById(e.getSourceVertexId());
-            Element el = node.addElement("Name");
-            el.addText(source.getName());
+            // Make sure source is not the same Vertex
+            if (source != null && !source.getName().equals(vertex.getName())) {
+                Element el = node.addElement("Name");
+                el.addText(source.getName());
+            } 
         }
     }
 
-    private void addOutputDetails(Vertex vertex, Element node) {
-        // Add Input Nodes
+    private void addOutputDetails(Vertex vertex, Element node) throws ErrorReaderException {
+        // Add Ouput Nodes
         Iterator<Edge> edges = graph.outgoingEdgesOf(vertex).iterator();
         while (edges.hasNext()) {
             Edge e = edges.next();
+            e.fetchInformationFromJGraphT(graph);
             Vertex source = graph.getVertexById(e.getTargetVertexId());
-            Element el = node.addElement("Node");
-            el.addAttribute("name", source.getName());
+            // Make sure source is not the same Vertex
+            if (source != null && !source.getName().equals(vertex.getName())) {
+                Element el = node.addElement("Name");
+                el.addText(source.getName());
+            } 
         }
     }
 
     private void addDescriptionTree(Element task) {
-        // Create Description Tree
+        logs.info("Adding Description Tree to Exported Solution");
+        
         Element descriptionTree = task.addElement("DescriptionTree");
-        descriptionTree.addText("To Be Filled");
-    }
-
-    private void save(Document document) throws IOException {
-        OutputFormat format = OutputFormat.createPrettyPrint();
-        XMLWriter output = new XMLWriter(new FileWriter(solutionFileName), format);
-        output.write(document);
-        output.close();
+        
+        Set<Vertex> vertexSet = graph.vertexSet();
+        Set<String> allDescriptions = new HashSet<String>();
+        
+        for(Vertex v : vertexSet){
+            allDescriptions.add(v.getCorrectDescription() + "#" +v.getName());
+            allDescriptions.addAll(v.getFakeDescription());
+            
+            for(String s : allDescriptions) {
+                String[] parts = s.split("#");
+                String description = parts[0].trim();
+                String name = (parts.length > 1)?parts[1].trim():v.getName();
+                
+                Element node = descriptionTree.addElement("Node");
+                node.addAttribute("level", "leaf");
+                
+                Element desc = node.addElement("Description");
+                desc.setText(description);
+                
+                Element nodeName = node.addElement("NodeName");
+                nodeName.setText(name);
+            }
+            
+            allDescriptions.clear();
+        }                        
     }
 }
