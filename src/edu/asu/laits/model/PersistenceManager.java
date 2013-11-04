@@ -153,5 +153,23 @@ public class PersistenceManager implements Runnable {
         }
 
         return null;        
-    }    
+    }   
+    public static String getQuery(List<NameValuePair> params) throws UnsupportedEncodingException {
+        StringBuilder result = new StringBuilder();
+        boolean first = true;
+
+        for (NameValuePair pair : params) {
+            if (first) {
+                first = false;
+            } else {
+                result.append("&");
+            }
+
+            result.append(pair.getName());
+            result.append("=");
+            result.append(pair.getValue());
+        }
+
+        return result.toString();
+    }
 }
