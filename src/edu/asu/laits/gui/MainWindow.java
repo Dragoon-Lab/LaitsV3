@@ -45,7 +45,6 @@ import edu.asu.laits.model.PersistenceManager;
 import edu.asu.laits.properties.GlobalProperties;
 import edu.asu.laits.properties.GraphProperties;
 import java.awt.Color;
-import java.util.Scanner;
 import javax.swing.*;
 import org.apache.log4j.Logger;
 import org.dom4j.DocumentException;
@@ -449,7 +448,7 @@ public class MainWindow extends JFrame {
             statusBarPanel.setStatusMessage("", true);
         }
         return statusBarPanel;
-        }
+    }
 
     private void loadTask() {
         try {
@@ -472,9 +471,8 @@ public class MainWindow extends JFrame {
     private void loadSavedSession() {
         try {
             String graphXML = PersistenceManager.loadSession();
-            
+
             if (!graphXML.trim().isEmpty()) {
-                //System.out.println("saved grapph " + graphXML);
                 getGraphEditorPane().resetModelGraph();
                 GraphLoader loader = new GraphLoader(getGraphEditorPane());
                 loader.loadFromServer(graphXML);

@@ -17,9 +17,13 @@
  */
 package edu.asu.laits.editor;
 
+import edu.asu.laits.gui.MainWindow;
 import edu.asu.laits.model.TaskSolution;
 import edu.asu.laits.model.HelpBubble;
+import edu.asu.laits.model.SolutionNode;
+import edu.asu.laits.model.TargetNodes;
 import edu.asu.laits.model.Task;
+import java.util.ArrayList;
 import java.util.List;
 import org.apache.log4j.Logger;
 

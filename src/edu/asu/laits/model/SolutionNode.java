@@ -21,6 +21,7 @@
 package edu.asu.laits.model;
 
 import java.util.List;
+import edu.asu.laits.model.Vertex.Plan;
 import edu.asu.laits.model.Vertex.VertexType;
 /**
  *

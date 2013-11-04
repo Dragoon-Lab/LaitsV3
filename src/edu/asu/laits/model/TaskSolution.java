@@ -17,6 +17,7 @@
  */
 package edu.asu.laits.model;
 
+import edu.asu.laits.editor.ApplicationContext;
 import edu.asu.laits.gui.MainWindow;
 import java.util.ArrayList;
 import java.util.Iterator;
@@ -26,6 +27,7 @@ import javax.swing.JOptionPane;
 import net.sourceforge.jeval.EvaluationException;
 import net.sourceforge.jeval.Evaluator;
 import org.apache.log4j.Logger;
+import org.jgraph.graph.DefaultPort;
 
 /**
  * Represents Solutions of Dragoon Problem.
@@ -139,6 +141,13 @@ public class TaskSolution {
      */
     public List<String> getCorrectNodeNames() {
         return correctNodeNames;
+    }
+
+    /**
+     * @param solutionNodes the solutionNodes to set
+     */
+    public void setCorrectNodeNames(List<String> solutionNodeNames) {
+        this.correctNodeNames = solutionNodeNames;
     }
 
     /**
@@ -342,12 +351,11 @@ public class TaskSolution {
 
     public boolean checkNodeGraph(Vertex studentVertex) {
         if (solutionGraph == null) {
-            logs.info("Solution graph is not initialized yet.");
             createSolutionGraph();
+            System.out.println("**\nIn checkNodeGraph()");
             ModelEvaluator evaluator = new ModelEvaluator(solutionGraph);
 
             try {
-                logs.info("Running Author's solution first to generate correct solution.");
                 evaluator.run();
             } catch (ModelEvaluationException ex) {
                 ex.printStackTrace();
@@ -386,7 +394,6 @@ public class TaskSolution {
     }
 
     private void createSolutionGraph() {
-        logs.info("Creating Solution Graph");
         solutionGraph = new Graph<Vertex, Edge>(Edge.class);
 
         // Add all the vertices in the Graph

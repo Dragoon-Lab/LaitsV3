@@ -26,7 +26,6 @@ import javax.swing.JButton;
 import java.awt.Font;
 import java.awt.event.ActionEvent;
 import javax.swing.Box;
-import org.apache.log4j.Logger;
 import org.jgraph.graph.CellView;
 
 /**
@@ -46,9 +45,6 @@ public class ModelToolBar extends JToolBar {
     private JButton showTableButton = null;
     private ModelMenu modelMenu;
 
-    private static Logger logs = Logger.getLogger("DevLogs");
-    private static Logger activityLogs = Logger.getLogger("ActivityLogs");
-    
     /**
      * This method initializes The ToolBar buttons for Model
      *
@@ -99,8 +95,7 @@ public class ModelToolBar extends JToolBar {
                                            addNodeButton.getFont().getSize() - 1));
             addNodeButton
                     .addActionListener(new java.awt.event.ActionListener() {
-                public void actionPerformed(java.awt.event.ActionEvent e) { 
-                    activityLogs.debug("User Pressed 'Create Node' Button from toolbar");
+                public void actionPerformed(java.awt.event.ActionEvent e) {
                     modelMenu.newNodeAction();
                 }
             });
@@ -120,7 +115,6 @@ public class ModelToolBar extends JToolBar {
             deleteNodeButton
                     .addActionListener(new java.awt.event.ActionListener() {
                 public void actionPerformed(java.awt.event.ActionEvent e) {
-                    activityLogs.debug("User Pressed 'Delete Node' Button from Toolbar");
                     modelMenu.deleteNodeAction();
                 }
             });
@@ -142,8 +136,7 @@ public class ModelToolBar extends JToolBar {
                                    showTableButton.getFont().getSize() - 1));
           showTableButton.addActionListener(new java.awt.event.ActionListener() {
               public void actionPerformed(ActionEvent e) {
-                  activityLogs.debug("User Pressed 'Show Table' Button from toolbar");
-                  modelMenu.showNodeTable();
+                 modelMenu.showNodeTable();
               }
           });
       }
@@ -168,7 +161,6 @@ public class ModelToolBar extends JToolBar {
             showGraphButton
                     .addActionListener(new java.awt.event.ActionListener() {
                 public void actionPerformed(java.awt.event.ActionEvent e) {
-                    activityLogs.debug("User Pressed 'Show Graph' Button from toolbar");
                     modelMenu.showNodeGraph();
                 }
             });            
@@ -191,7 +183,6 @@ public class ModelToolBar extends JToolBar {
             doneButton
                     .addActionListener(new java.awt.event.ActionListener() {
                 public void actionPerformed(java.awt.event.ActionEvent e) {
-                    activityLogs.debug("User Pressed 'Done' Button from toolbar");
                     modelMenu.doneButtonAction();
                 }
             });
@@ -215,7 +206,6 @@ public class ModelToolBar extends JToolBar {
             showForumButton
                     .addActionListener(new java.awt.event.ActionListener() {
                 public void actionPerformed(java.awt.event.ActionEvent e) {
-                    activityLogs.debug("User Pressed 'Show Forum' Button from toolbar");
                     modelMenu.showForumButtonAction();                    
                 }
             });
