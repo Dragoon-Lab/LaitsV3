@@ -18,9 +18,10 @@
     $author = isset($_POST['author'])?
       mysqli_real_escape_string($mysqli, $_POST['author']):'';
     $problemName = mysqli_real_escape_string($mysqli, $_POST['problem']);
-    $saveData = $_POST['saveData'];
+    $saveData = isset($_POST['saveData'])?
+      mysqli_real_escape_string($mysqli, $_POST['saveData']):'';
     
-  //  error_log("action: $action | userid: $userid | section: $section | problem: $problemName | author: $author | ");
+ //   error_log("action: $action | userid: $id | section: $section | problem: $problemName | author: $author | ");
 
     if (strcmp($action, "save") == 0) {
 
@@ -32,11 +33,13 @@
 //  This should be removed.  See Bug #2222
     } elseif(strcmp($action, "author_load") == 0){
         // For author_load check if the problem directory contains a defined problem
-        $result = loadGraphXMLfromDatabase($author,$section,$problemName,$mysqli);
+        $result = loadAuthorGraphXMLfromDatabase($author,$section,$problemName,$mysqli);
         if($result === "")
             print loadSolutionFileFromServer($problemName);
-        else
+        else{
+    //    	error_log("about to return result $result");
             print $result;
+            }
     } else {
         print "Unable to process request.";
     }
@@ -69,7 +72,7 @@
             $queryString = "INSERT INTO unsolutions(author,section,problemName,saveData) VALUES ('$author','$section','$problemName','$saveData')";
             $mysqli->query($queryString);
         } else {
-            $queryString = "UPDATE unsolutions SET saveData='$saveData', date = CURRENT_TIMESTAMP WHERE section='$section' AND problemName='$problem' AND author='$author'";
+            $queryString = "UPDATE unsolutions SET saveData='$saveData', date = CURRENT_TIMESTAMP WHERE section='$section' AND problemName='$problemName' AND author='$author'";
             $mysqli->query($queryString);
         }
     }
@@ -92,11 +95,16 @@
     }
     
         function loadAuthorGraphXMLfromDatabase($author,$section,$problemName,$mysqli){
+        
+    //	error_log("loadAuthorGraphXMLfromDatabase section: $section | problem: $problemName | author: $author | ");
         $queryString = "SELECT saveData FROM unsolutions WHERE author='$author' AND section='$section' AND problemName='$problemName'";
-        $result = $mysqli->query($queryString);
+        $result = $mysqli->query($queryString)
+	  or trigger_error("select from unsolutions failed" . 
+			   $mysqli->error);
         $returnString = "";
+        
         $num_rows = $result->num_rows;
-
+	//	error_log("loadAuthorGraphXMLfromDatabase numrows = $num_rows");
         if ($num_rows == 1) {
             while ($row = $result->fetch_row()) {
                 //printf("%s", $row[0]);
