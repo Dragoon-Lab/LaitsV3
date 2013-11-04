@@ -73,8 +73,7 @@ public class PersistenceManager implements Runnable {
     
     public void run() {
         int statusCode = 0;
-        //String action = ApplicationContext.isAuthorMode() ? "author_save" : "save";
-        String action = "save";
+        String action = ApplicationContext.isAuthorMode() ? "author_save" : "save";
         String serviceURL = ApplicationContext.getRootURL().concat("/postvar.php");
         
         try {
@@ -102,6 +101,7 @@ public class PersistenceManager implements Runnable {
         HttpPost httpPost = new HttpPost(address);
         httpPost.addHeader("Content-Type", "application/x-www-form-urlencoded");
         
+
         try {
             //add variables to send
             List<NameValuePair> postVariable = new ArrayList<NameValuePair>();
@@ -122,6 +122,7 @@ public class PersistenceManager implements Runnable {
             if (action.equals("save") || action.equals("author_save")) {                
                 data = URLEncoder.encode(data, "UTF-8");
                 postVariable.add(new BasicNameValuePair("saveData", data));
+
             }
 
             httpPost.setEntity(new UrlEncodedFormEntity(postVariable, "UTF-8"));

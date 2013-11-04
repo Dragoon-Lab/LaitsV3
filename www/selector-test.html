@@ -24,7 +24,7 @@ require(["dojo/parser","dojo/dom","dijit/registry","dijit/form/Select",
 function(parser,dom,registry,Select,xhr,array,domConst,JSON){
     parser.parse();  // Make sure widgets are defined
 
-function addProblems(){
+function addProblems(id){
     xhr("available_problems.php",{
       // Script also wants "student" but we will assume
       // All solutions are shared in this class
@@ -35,7 +35,7 @@ function addProblems(){
       },
       handleAs: "json"
     }).then(function(data){
-        var widget = registry.byId("custom_problems");
+        var widget = registry.byId(id);
         console.log("retrieved problems:  ",data);
         widget.options=[];  // clear any existing options.
         widget.addOption({label:"--choose problem--",value:""});
@@ -53,13 +53,15 @@ function addProblems(){
     });
   };
 
-  // initially populate options on startup
-  addProblems();
+  array.forEach(['custom_problems1','custom_problems2'],function (id){
+    // initially populate options on startup
+    addProblems(id);
 
-  // Update options list which select is selected.
-  var widget=registry.byId("custom_problems");
-  console.log("add connect to ",widget);
-  dojo.connect(widget,"onClick",addProblems);
+    // Update options list which select is selected.
+    var widget=registry.byId(id);
+    console.log("add connect to ",widget);
+    dojo.connect(widget,"onClick",addProblems);
+  });
 });
 
 </script>
@@ -68,17 +70,18 @@ function addProblems(){
 <div class="content">
 
 <p> Example html/javascript for getting a set of custom problems from
-  the server, populating a form, and selecting one of those problems.  
+  the server, populating a form, and selecting one of those problems.
+  The section is set to "test".
   
 <form action="startup.php" method="POST" name="author3"
   class="problem-selection-form" 
-  onsubmit="return validateForm2('author3')">
+  onsubmit="return validateForm('author3')">
   Author a problem:<br>
 
   <input type="hidden" name="section" value="test">
   <input type="hidden" name="mode" value="author">
   
-  <label for="un2">Username: </label>
+  <label for="un2">User name: </label>
   <input id="un2" type="text" name="username"><br>
   
   
@@ -93,21 +96,56 @@ function addProblems(){
 
 <p>
 <div class="claro">
+<h2>Modify an existing problem solution</h2>
+
+  <form action="startup.php" method="POST" name="student4"
+	class="problem-selection-form" 
+	onsubmit="addAuthor('student4');return validateForm('student4')">
+    <input type="hidden" name="mode" value="AUTHOR">
+    <input type="hidden" name="section" value="test">
+    <!-- value will be overwritten by function addAuthor -->
+    <input type="hidden" name="author" value="">
+    <input type="hidden" name="problem_id" value="">
+
+    <label for="u5">User name: </label>
+    <input id="u5" type="text" name="username" ><br>
+
+      <label for="u6">New problem name (optional): </label>
+    <input id="u6" type="text" name="newproblem" value=""
+           onChange="javascript:this.value=this.value.toLowerCase();"><br>
+
+    <!-- Needs to be a dijit for addOption to work -->
+    <select id="custom_problems2" name="problem"
+      data-dojo-type="dijit/form/Select">
+      <!-- This gets overwritten by the javascript -->
+      <option value="">--choose--</option>
+    </select><br>
+
+    <button type="submit" value="Continue" class="submit">
+       Open problem
+     </button>
+
+  </form>                   
+</div>
+
+<h2>Solve a problem</h2>
+<div class="claro">
 Enter your name and select a problem to work on:<br>
 
   <form action="startup.php" method="POST" name="student3"
 	class="problem-selection-form" 
-	onsubmit="addAuthor('student3');return validateForm2('student3')">
+	onsubmit="addAuthor('student3');return validateForm('student3')">
     <input type="hidden" name="mode" value="STUDENT">
     <input type="hidden" name="section" value="test">
     <!-- value will be overwritten by function addAuthor -->
     <input type="hidden" name="author" value="">
+    <input type="hidden" name="problem_id" value="">
 
     <label for="u5">User name: </label>
     <input id="u5" type="text" name="username" ><br>
 
     <!-- Needs to be a dijit for addOption to work -->
-    <select id="custom_problems" name="problem_id"
+    <select id="custom_problems1" name="problem"
       data-dojo-type="dijit/form/Select">
       <!-- This gets overwritten by the javascript -->
       <option value="">--choose--</option>
@@ -126,13 +164,14 @@ Enter your name and select a problem to work on:<br>
 
 function addAuthor(formName){
     var form=document.forms[formName];
-     var id=form["problem_id"].value;
+    var id=form["problem"].value;
     var datum=pid[id];
     form["problem_id"].value=datum.problemname;
     form["author"].value=datum.author;
 }
 
-function validateForm2(form){
+function validateForm(form){
+     console.log("validating form ",form," at ",this);
      var x=document.forms[form]["username"].value;
      if (x==null || x=="")
      {

@@ -31,12 +31,15 @@ import edu.asu.laits.model.ModelEvaluationException;
 import edu.asu.laits.model.ModelEvaluator;
 import edu.asu.laits.model.TaskSolution;
 import edu.asu.laits.model.Vertex;
+import edu.asu.laits.model.PersistenceManager;
 import java.awt.Desktop;
 import java.awt.event.KeyEvent;
 import java.awt.event.WindowAdapter;
 import java.awt.event.WindowEvent;
+import java.io.UnsupportedEncodingException;
 import java.net.URL;
 import java.text.DecimalFormat;
+import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
 import javax.swing.JDialog;
@@ -44,6 +47,7 @@ import javax.swing.JMenu;
 import javax.swing.JMenuItem;
 import javax.swing.JOptionPane;
 import javax.swing.JScrollPane;
+import org.apache.http.NameValuePair;
 import org.apache.http.message.BasicNameValuePair;
 import org.apache.log4j.Logger;
 
@@ -423,14 +427,32 @@ public class ModelMenu extends JMenu {
     }
 
     public void showForumButtonAction() {
-        String FORUMURL = ApplicationContext.getRootURL()+"/forum/viewtopic.php";
         // The forum id is sent to the application
-        FORUMURL += "?t=" + ApplicationContext.getForumId();
-         activityLogs.debug("forum URL: "+FORUMURL);
+        String forumURL = ApplicationContext.getForumURL();
+        
+         //add variables to send
+        List<NameValuePair> postVariable = new ArrayList<NameValuePair>();
+        postVariable.add(new BasicNameValuePair("problem", ApplicationContext.getCurrentTaskID()));
+        // Only include author and section for custom problems
+        // For published problems, only need problem name.
+        if(ApplicationContext.getAuthor().length()>0){
+            postVariable.add(new BasicNameValuePair("section", ApplicationContext.getSection()));
+            postVariable.add(new BasicNameValuePair("author", ApplicationContext.getAuthor()));
+        } 
+        try {
+            // It would be more elegant to use HttpURLConnection
+            // as done in sendHTTPRequest
+           forumURL += "?" + PersistenceManager.getQuery(postVariable);
+       } catch (UnsupportedEncodingException e) {
+            e.printStackTrace();
+        }
+        // Always print to console:
+        System.out.println("forum URL:"+forumURL);
+        activityLogs.debug("forum URL: "+ forumURL);
 
  
         try {
-            Desktop.getDesktop().browse(new URL(FORUMURL).toURI());
+            Desktop.getDesktop().browse(new URL(forumURL).toURI());
         } catch (Exception e) {
             e.printStackTrace();
         }

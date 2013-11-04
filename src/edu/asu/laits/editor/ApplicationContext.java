@@ -34,9 +34,7 @@ public class ApplicationContext {
     private static String section;
     private static String author;
     private static String rootURL;
-    // This is really an integer, but it comes in as a string
-    // and goes out as astring.
-    private static String forumId;
+    private static String forumURL;
     private static boolean isValid = false;
     private static TaskSolution correctSolution;
     private static String currentTaskID;
@@ -96,12 +94,12 @@ public class ApplicationContext {
         section = theSection;
     }
 
-    public static String getForumId() {
-        return forumId;
+    public static String getForumURL() {
+        return forumURL;
     }
 
-    public static void setForumId(String theForum) {
-            forumId = theForum;
+    public static void setForumURL(String theForum) {
+            forumURL = theForum;
     }
 
     public static boolean isUserValid() {
