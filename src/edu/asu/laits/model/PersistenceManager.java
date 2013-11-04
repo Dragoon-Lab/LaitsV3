@@ -18,8 +18,6 @@
 package edu.asu.laits.model;
 
 import edu.asu.laits.editor.ApplicationContext;
-import edu.asu.laits.logger.HttpAppender;
-import edu.asu.laits.gui.menus.ModelMenu;
 import java.io.BufferedReader;
 import java.io.BufferedWriter;
 import java.io.DataOutputStream;
@@ -33,9 +31,16 @@ import java.net.URL;
 import java.net.URLEncoder;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.logging.Level;
+import org.apache.http.HttpEntity;
+import org.apache.http.HttpResponse;
 import org.apache.http.NameValuePair;
+import org.apache.http.client.ClientProtocolException;
+import org.apache.http.client.HttpClient;
+import org.apache.http.client.entity.UrlEncodedFormEntity;
+import org.apache.http.client.methods.HttpPost;
+import org.apache.http.impl.client.DefaultHttpClient;
 import org.apache.http.message.BasicNameValuePair;
+import org.apache.http.util.EntityUtils;
 import org.apache.log4j.Logger;
 
 /**
@@ -73,7 +78,7 @@ public class PersistenceManager implements Runnable {
         String serviceURL = ApplicationContext.getRootURL().concat("/postvar.php");
         
         try {
-            String sessionData = URLEncoder.encode(graphSaver.getSerializedGraphInXML(), "UTF-8");
+            String sessionData = graphSaver.getSerializedGraphInXML();
             String response = sendHTTPRequest(action, serviceURL, sessionData);
             statusCode = Integer.parseInt(response);
             if (statusCode == 200) {
@@ -91,88 +96,61 @@ public class PersistenceManager implements Runnable {
     
     public static String sendHTTPRequest(String action, String address, String data) throws IOException {
         //open connection
-        logs.debug("Opening Connection . Action: "+action+" URL: "+address);
-        URL url = new URL(address);
-        HttpURLConnection connection = (HttpURLConnection) url.openConnection();
+        logs.debug("Opening Connection . Action: " + action + " URL: " + address);
 
-        //sets POST and adds POST data type as URLENCODED
-        connection.setRequestMethod("POST");
-        connection.setRequestProperty("Content-Type", "application/x-www-form-urlencoded");
-
-        //sets mode as output and disables cache
-        connection.setUseCaches(false);
-        connection.setDoInput(true);
-        connection.setDoOutput(true);
-
-        //add variables to send
-        List<NameValuePair> postVariable = new ArrayList<NameValuePair>();
+        HttpClient httpClient = new DefaultHttpClient();         
+        HttpPost httpPost = new HttpPost(address);
+        httpPost.addHeader("Content-Type", "application/x-www-form-urlencoded");
         
-        postVariable.add(new BasicNameValuePair("action", action));
-        postVariable.add(new BasicNameValuePair("id", ApplicationContext.getUserID()));
-        postVariable.add(new BasicNameValuePair("section", ApplicationContext.getSection()));
-        if(action.equals("author_save")){
-            // Author mode save should also include boolean 'share' variable
-            // which determines whether others in section can view solution.
+        try {
+            //add variables to send
+            List<NameValuePair> postVariable = new ArrayList<NameValuePair>();
+
+            postVariable.add(new BasicNameValuePair("action", action));
+            postVariable.add(new BasicNameValuePair("id", ApplicationContext.getUserID()));
+            postVariable.add(new BasicNameValuePair("section", ApplicationContext.getSection()));
             
-            postVariable.add(new BasicNameValuePair("problem", ApplicationContext.getCurrentTask().getTaskName()));
-            postVariable.add(new BasicNameValuePair("author", ApplicationContext.getAuthor()));
-        } else {
-            
-            postVariable.add(new BasicNameValuePair("problem", ApplicationContext.getCurrentTaskID()));
-        }
-        logs.debug("Post Variables sending: "+postVariable);
-        
-        if (action.equals("save") || action.equals("author_save")) {
-            postVariable.add(new BasicNameValuePair("saveData", data));
-        }
-        
-        //sends request
-        OutputStream stream = new DataOutputStream(connection.getOutputStream());
-        BufferedWriter writer = new BufferedWriter(new OutputStreamWriter(stream, "UTF-8"));
-        writer.write(getQuery(postVariable));
-        writer.close();
-        stream.flush();
-        stream.close();
-
-        // If action = 'save' or 'author_save', gets and returns response code. 200 is ok.       
-        if (action.equals("save") || action.equals("author_save")) {
-            int response = connection.getResponseCode();
-            connection.disconnect();
-            return Integer.toString(response);
-        } // If action = 'load' or 'author_load', returns string with loaded problem.
-        else if (action.equals("load") || action.equals("author_load")) {
-            StringBuilder returnString = new StringBuilder();
-            BufferedReader in = new BufferedReader(new InputStreamReader(
-                    connection.getInputStream()));
-            String line = "";
-            while ((line = in.readLine()) != null) {
-                returnString.append(line);
-                returnString.append("\n");
-            }
-            in.close();
-            connection.disconnect();
-            return returnString.toString();
-        }
-        connection.disconnect();
-        return null;
-    }
-
-    private static String getQuery(List<NameValuePair> params) throws UnsupportedEncodingException {
-        StringBuilder result = new StringBuilder();
-        boolean first = true;
-
-        for (NameValuePair pair : params) {
-            if (first) {
-                first = false;
+            if (action.equals("author_save")) {
+                // Author mode save should also include boolean 'share' variable
+                // which determines whether others in section can view solution.            
+                postVariable.add(new BasicNameValuePair("problem", ApplicationContext.getCurrentTask().getTaskName()));
+                postVariable.add(new BasicNameValuePair("author", ApplicationContext.getUserID()));
             } else {
-                result.append("&");
+                postVariable.add(new BasicNameValuePair("problem", ApplicationContext.getCurrentTaskID()));
+            }
+            
+            if (action.equals("save") || action.equals("author_save")) {                
+                data = URLEncoder.encode(data, "UTF-8");
+                postVariable.add(new BasicNameValuePair("saveData", data));
             }
 
-            result.append(pair.getName());
-            result.append("=");
-            result.append(pair.getValue());
+            httpPost.setEntity(new UrlEncodedFormEntity(postVariable, "UTF-8"));
+            
+            HttpResponse response = httpClient.execute(httpPost);
+            
+            if(action.equals("author_save") || action.equals("save")) {
+                String responseCode = String.valueOf(response.getStatusLine().getStatusCode());
+                return responseCode;
+            }
+            
+            HttpEntity respEntity = response.getEntity();
+
+            if (respEntity != null) {
+                String content = EntityUtils.toString(respEntity);                                
+                return content;
+            }
+
+        } catch (UnsupportedEncodingException e) {
+            logs.error("UnsupportedEncodingException in sending HTTP Post " + e.getMessage());
+            e.printStackTrace();
+        } catch (ClientProtocolException e) {
+            logs.error("Client Protocol Exception in sending HTTP Post " + e.getMessage());
+            e.printStackTrace();
+        } catch (IOException e) {
+            logs.error("IOException in sending HTTP Post " + e.getMessage());
+            e.printStackTrace();
         }
 
-        return result.toString();
-    }
+        return null;        
+    }    
 }
