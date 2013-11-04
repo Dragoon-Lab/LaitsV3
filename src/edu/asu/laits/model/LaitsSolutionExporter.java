@@ -25,6 +25,7 @@ import java.io.FileWriter;
 import java.io.StringWriter;
 import java.io.IOException;
 import java.io.StringWriter;
+import java.net.URLEncoder;
 import java.util.HashSet;
 import java.util.Iterator;
 import java.util.Set;
@@ -65,8 +66,9 @@ public class LaitsSolutionExporter {
             OutputFormat format = OutputFormat.createPrettyPrint();  
             XMLWriter xmlwriter = new XMLWriter(stringWriter, format);  
             xmlwriter.write(document);  
+            String sessionData = URLEncoder.encode(stringWriter.toString(), "UTF-8");
             response = PersistenceManager.sendHTTPRequest("author_save",
-                    serviceURL,stringWriter.toString());
+                    serviceURL,sessionData);
             if (Integer.parseInt(response) == 200) {
                 logs.info("Successfully sent exported solution to server.");
                 return true;

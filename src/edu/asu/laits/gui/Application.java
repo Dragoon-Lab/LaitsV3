@@ -94,11 +94,11 @@ public class Application extends JApplet {
         // Get author name if it's in the jnlp; otherwise, use username as the author name
         String author = System.getProperty("jnlp.author","");
         if(author.equals("")){
-            ApplicationContext.setAuthor(System.getProperty("jnlp.username",""));
+            ApplicationContext.setAuthor(ApplicationContext.getUserID());
         } else {
             ApplicationContext.setAuthor(author); 
         }
-        ApplicationContext.setSection(System.getProperty("jnlp.section","testing"));
+        ApplicationContext.setSection(System.getProperty("jnlp.section","test"));
         ApplicationContext.setForumURL(System.getProperty("jnlp.forumURL",""));
 
         
