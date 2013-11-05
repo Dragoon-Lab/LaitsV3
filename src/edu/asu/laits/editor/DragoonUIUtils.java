@@ -100,7 +100,7 @@ public class DragoonUIUtils {
     
     public static JTree createTree(){
         final JTree decisionTree = new JTree();        
-        decisionTree.setFont(new java.awt.Font("Lucida Grande", 0, 18)); // NOI18N        
+        decisionTree.setFont(new java.awt.Font("Lucida Grande", 0, 16)); // NOI18N        
         decisionTree.setEditable(false);
                 
         return decisionTree;

@@ -14,14 +14,16 @@ import com.thoughtworks.xstream.XStream;
 import edu.asu.laits.editor.ApplicationContext;
 import edu.asu.laits.gui.MainWindow;
 import java.io.IOException;
+import org.apache.log4j.Logger;
+
 
 /**
  * Objects of this class saves a graphs from a GraphEditorPanee to a xml-file
  * representation. The file representation consist of first some information
- * about the graph, a number of items represending vertices and then a list of
- * edges that conects vertices. The information of the grap is represented by
+ * about the graph, a number of items representing vertices and then a list of
+ * edges that connects vertices. The information of the graph is represented by
  * GraphProperties, the vertices by VertexInformation and edges by
- * EdgeInformation. The elements represnding the objects EdgeInformation,
+ * EdgeInformation. The elements representing the objects EdgeInformation,
  * VertexInformation and GraphProperties in the xml-file is the non transient
  * fields in the classes.
  *
@@ -34,6 +36,7 @@ public class GraphSaver {
     private ListenableGraph<Vertex, Edge> modelGraph;
     private GraphEditorPane paneToSave;
 
+    private static Logger logs = Logger.getLogger("DevLogs");
     /**
      * @param paneToSave
      */
@@ -62,7 +65,6 @@ public class GraphSaver {
         xstream.alias("edge", Edge.class);
 
         GraphFile file = new GraphFile();
-        file.setProperties(paneToSave.getGraphProperties());
         file.setVertexList(vertexList);
         file.setEdgeList(edgeList);
         
@@ -76,16 +78,15 @@ public class GraphSaver {
     
     private List<Vertex> fetchVertexInformation(){
         Set<Vertex> vertexSet = modelGraph.vertexSet();
-        LinkedList<Vertex> vertexList = new LinkedList<Vertex>(
-                vertexSet);
+        LinkedList<Vertex> vertexList = new LinkedList<Vertex>();
 
-        for (Vertex vertex : vertexList) {
+        for (Vertex vertex : vertexSet) {
             try {
-                vertex.fetchInformationFromJGraph();
-            } catch (VertexReaderException e) {
-                // TODO Auto-generated catch block
-                e.printStackTrace();
+                 vertex.fetchInformationFromJGraph();
+            } catch (VertexReaderException ex) {
+                logs.error("Error in Fetching Vertex Information");
             }
+            vertexList.add(vertex);
         }
         
         return vertexList;

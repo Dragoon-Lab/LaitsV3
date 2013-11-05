@@ -3,6 +3,10 @@ $username = $_POST['username'];
 $mode = $_POST['mode'];
 $problem_id = $_POST['problem_id'];
 $section = $_POST['section'];
+// These are optional
+$author = isset($_POST['author'])?$_POST['author']:0;
+$forum_url = isset($_POST['forumurl'])?$_POST['forumurl']:0;
+$new_problem = isset($_POST['newproblem'])?$_POST['newproblem']:0;
 
 header("Content-Disposition: attachment; filename=\"laits-$problem_id.jnlp\"");
 header('Content-type: application/x-java-jnlp-file');
@@ -48,6 +52,15 @@ echo "        <property name=\"jnlp.mode\" value=\"$mode\" />\n";
 echo "        <property name=\"jnlp.problem\" value=\"$problem_id\"/>\n";
 echo "        <property name=\"jnlp.section\" value=\"$section\"/>\n";
 echo "        <property name=\"jnlp.server\" value=\"$codebase\"/>\n";
+if($author){
+  echo "        <property name=\"jnlp.author\" value=\"$author\"/>\n";
+}
+if($forum_url){
+   echo "        <property name=\"jnlp.forumURL\" value=\"$forum_url\"/>\n";
+}
+if($new_problem){
+   echo "        <property name=\"jnlp.forumURL\" value=\"$new_problem\"/>\n";
+}
 ?>
     </resources>
 
