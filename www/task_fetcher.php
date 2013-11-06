@@ -1,15 +1,13 @@
 <?php
 
 $problem = $_GET['taskid'];
-
-if(isset($_GET['group'])){
+$section = isset($_GET['group'])?$_GET['group']:'';
+if(isset($_GET['author'])){
   /*
     If section is given as argument, then look for 
     section-authored problems stored in database.
   */
   $author=$_GET['author'];
-  $section=$_GET['group'];
-  
   
   require "db-login.php";
   $con = new mysqli("localhost", $dbuser, $dbpass,$dbname)
@@ -35,7 +33,7 @@ if(isset($_GET['group'])){
     header("Content-type: text/xml");
     print $row[0];
   } else {
-    //	http_response_code(500);
+    	http_response_code(500);
   }
 } else {
   /* If section is not supplied, then use published problems. */
