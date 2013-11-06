@@ -78,11 +78,7 @@
                 <Progress>
                     <Description status="demo">The number of rabbits in the population</Description>
                     <Plan status="correct">accumulator</Plan>
-                    <Calculation status="incorrect" initial="10" equation="+ births">
-                        <Inputs>
-                            <Name>births</Name>
-                        </Inputs>
-                    </Calculation>
+                    <Calculation status="incorrect" initial="10">+ births</Calculation>
                 </Progress>
             </Node>
     

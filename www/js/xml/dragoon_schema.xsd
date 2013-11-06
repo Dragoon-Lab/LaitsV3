@@ -74,7 +74,7 @@ elementFormDefault="qualified"-->
             <xs:element name="Order" type="xs:int"/>
             <xs:element name="Inputs" type="dragoon:InputsType"/>
             <xs:element name="Position" type="dragoon:PositionType"/>
-            <xs:element name="Initial" type="xs:int"/>
+            <xs:element name="Initial" type="xs:int" minOccurs="0"/>
             <xs:element name="Equation" type="xs:string"/>
             <xs:element name="CorrectDescription" type="xs:string"/>
             <xs:element name="AttemptCount" type="dragoon:AttemptCountType" minOccurs="0"/>
@@ -112,20 +112,28 @@ elementFormDefault="qualified"-->
     </xs:complexType>
 
     <xs:complexType name="DescriptionType">
-        <xs:attribute name="status" type="xs:string" use="required"/>
+        <xs:simpleContent>
+            <xs:extension base="xs:string">
+                <xs:attribute name="status" type="xs:string" use="required"/>
+            </xs:extension>
+        </xs:simpleContent>
     </xs:complexType>
 
     <xs:complexType name="PlanType">
-        <xs:attribute name="status" type="xs:string" use="required"/>
+        <xs:simpleContent>
+            <xs:extension base="xs:string">
+                <xs:attribute name="status" type="xs:string" use="required"/>
+            </xs:extension>
+        </xs:simpleContent>
     </xs:complexType>
 
-    <xs:complexType name="CalculationType">       
-        <xs:sequence>
-            <xs:element name="Inputs" type="dragoon:InputsType"/>
-        </xs:sequence>
-        <xs:attribute name="status" type="xs:string" use="required"/>
-        <xs:attribute name="initial" type="xs:int" use="required"/>
-        <xs:attribute name="equation" type="xs:string" use="required"/>
+    <xs:complexType name="CalculationType">
+        <xs:simpleContent>
+            <xs:extension base="xs:string">
+                <xs:attribute name="status" type="xs:string" use="required"/>
+                <xs:attribute name="initial" type="xs:int"/>
+            </xs:extension>
+        </xs:simpleContent>
     </xs:complexType>
 
 </xs:schema>
