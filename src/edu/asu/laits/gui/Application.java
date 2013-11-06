@@ -93,7 +93,7 @@ public class Application extends JApplet {
         
         // Get author name if it's in the jnlp; otherwise, use username as the author name
         String author = System.getProperty("jnlp.author","");
-        if(author.equals("")){
+        if(author.equals("") && ApplicationContext.isAuthorMode()){
             ApplicationContext.setAuthor(ApplicationContext.getUserID());
         } else {
             ApplicationContext.setAuthor(author); 
