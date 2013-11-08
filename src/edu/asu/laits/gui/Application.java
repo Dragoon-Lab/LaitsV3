@@ -73,8 +73,7 @@ public class Application extends JApplet {
             
             ApplicationContext.setUserID(args[0]);
             ApplicationContext.setAppMode(args[1]);
-            ApplicationContext.setCurrentTaskID(args[2]);
-            
+            ApplicationContext.setCurrentTaskID(args[2].replace('_', ' '));            
         }else {
             // Try to Launch application using JNLP for PROD
             String userName = System.getProperty("jnlp.username");
@@ -91,7 +90,17 @@ public class Application extends JApplet {
         }
         ApplicationContext.setLoaderURL(System.getProperty("jnlp.server","http://dragoon.asu.edu/devel"));
         ApplicationContext.setRootURL(System.getProperty("jnlp.server","http://dragoon.asu.edu/devel"));
-        ApplicationContext.setSection(System.getProperty("jnlp.section","testing"));
+        
+        // Get author name if it's in the jnlp; otherwise, use username as the author name
+        String author = System.getProperty("jnlp.author","");
+        if(author.equals("") && ApplicationContext.isAuthorMode()){
+            ApplicationContext.setAuthor(ApplicationContext.getUserID());
+        } else {
+            ApplicationContext.setAuthor(author); 
+        }
+        ApplicationContext.setSection(System.getProperty("jnlp.section","test"));
+        ApplicationContext.setForumURL(System.getProperty("jnlp.forumURL",""));
+
         
         System.out.println("Application is Running in : "+ApplicationContext.getApplicationEnvironment()
                 +" Environment and "+ApplicationContext.getAppMode().toString()+" Mode");

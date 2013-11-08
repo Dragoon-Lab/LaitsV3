@@ -1,0 +1,888 @@
+<graph>
+    <properties>
+        <zoomLevel>1.0</zoomLevel>
+        <defaultShape>DEFAULT</defaultShape>
+        <defaultInsertShape>DEFAULT</defaultInsertShape>
+        <backgroundColor>
+            <red>255</red>
+            <green>255</green>
+            <blue>255</blue>
+            <alpha>255</alpha>
+        </backgroundColor>
+        <defaultUseGraphBackground>true</defaultUseGraphBackground>
+        <defaultVertexBackgroundColor>
+            <red>255</red>
+            <green>255</green>
+            <blue>255</blue>
+            <alpha>255</alpha>
+        </defaultVertexBackgroundColor>
+        <defaultVertexForegroundColor>
+            <red>0</red>
+            <green>0</green>
+            <blue>0</blue>
+            <alpha>255</alpha>
+        </defaultVertexForegroundColor>
+    </properties>
+    <vertexList class="linked-list">
+        <vertex>
+            <xPosition>445.0</xPosition>
+            <yPosition>389.0</yPosition>
+            <useGraphBackround>true</useGraphBackround>
+            <backgroundColor>
+                <red>255</red>
+                <green>255</green>
+                <blue>255</blue>
+                <alpha>255</alpha>
+            </backgroundColor>
+            <foregroundColor>
+                <red>0</red>
+                <green>0</green>
+                <blue>0</blue>
+                <alpha>255</alpha>
+            </foregroundColor>
+            <type>STOCK</type>
+            <name>Heat</name>
+            <correctDescription>The thermal energy of the Earth&apos;s surface</correctDescription>
+            <plan>Accumulator</plan>
+            <descriptionStatus>CORRECT</descriptionStatus>
+            <planStatus>CORRECT</planStatus>
+            <calculationsStatus>CORRECT</calculationsStatus>
+            <graphsStatus>UNDEFINED</graphsStatus>
+            <initialValue>1000.0</initialValue>
+            <equation>Heat gain  + Heat returned by GHE-Heat loss without GHE</equation>
+            <vertexIndex>0</vertexIndex>
+        </vertex>
+        <vertex>
+            <xPosition>362.0</xPosition>
+            <yPosition>577.0</yPosition>
+            <useGraphBackround>true</useGraphBackround>
+            <backgroundColor reference="../../vertex/backgroundColor"/>
+            <foregroundColor reference="../../vertex/foregroundColor"/>
+            <type>STOCK</type>
+            <name>Atmospheric CO2</name>
+            <correctDescription>The amount of carbon held in the atmosphere as carbon dioxide, CO2</correctDescription>
+            <plan>Accumulator</plan>
+            <descriptionStatus>CORRECT</descriptionStatus>
+            <planStatus>CORRECT</planStatus>
+            <calculationsStatus>CORRECT</calculationsStatus>
+            <graphsStatus>UNDEFINED</graphsStatus>
+            <initialValue>0.0</initialValue>
+            <equation>combustion - CO2 absorbed by oceans</equation>
+            <vertexIndex>1</vertexIndex>
+        </vertex>
+        <vertex>
+            <xPosition>470.0</xPosition>
+            <yPosition>94.0</yPosition>
+            <useGraphBackround>true</useGraphBackround>
+            <backgroundColor reference="../../vertex/backgroundColor"/>
+            <foregroundColor reference="../../vertex/foregroundColor"/>
+            <type>STOCK</type>
+            <name>Water liquid and vapor</name>
+            <correctDescription>Amount of water in unfrozen form including both liquid water and water vapor</correctDescription>
+            <plan>Accumulator</plan>
+            <descriptionStatus>CORRECT</descriptionStatus>
+            <planStatus>CORRECT</planStatus>
+            <calculationsStatus>CORRECT</calculationsStatus>
+            <graphsStatus>UNDEFINED</graphsStatus>
+            <initialValue>0.0</initialValue>
+            <equation>Annual thaw</equation>
+            <vertexIndex>3</vertexIndex>
+        </vertex>
+        <vertex>
+            <xPosition>293.0</xPosition>
+            <yPosition>178.0</yPosition>
+            <useGraphBackround>true</useGraphBackround>
+            <backgroundColor reference="../../vertex/backgroundColor"/>
+            <foregroundColor reference="../../vertex/foregroundColor"/>
+            <type>STOCK</type>
+            <name>Ice and snow</name>
+            <correctDescription>The amount of water in frozen form</correctDescription>
+            <plan>Accumulator</plan>
+            <descriptionStatus>CORRECT</descriptionStatus>
+            <planStatus>CORRECT</planStatus>
+            <calculationsStatus>CORRECT</calculationsStatus>
+            <graphsStatus>UNDEFINED</graphsStatus>
+            <initialValue>0.0</initialValue>
+            <equation>- Annual thaw</equation>
+            <vertexIndex>2</vertexIndex>
+        </vertex>
+        <vertex>
+            <xPosition>21.0</xPosition>
+            <yPosition>358.0</yPosition>
+            <useGraphBackround>true</useGraphBackround>
+            <backgroundColor reference="../../vertex/backgroundColor"/>
+            <foregroundColor reference="../../vertex/foregroundColor"/>
+            <type>CONSTANT</type>
+            <name>Sunlight</name>
+            <correctDescription>The heat from the sun that strikes the earths atmosphere</correctDescription>
+            <plan>Parameter</plan>
+            <descriptionStatus>CORRECT</descriptionStatus>
+            <planStatus>CORRECT</planStatus>
+            <calculationsStatus>CORRECT</calculationsStatus>
+            <graphsStatus>UNDEFINED</graphsStatus>
+            <initialValue>100.0</initialValue>
+            <equation></equation>
+            <vertexIndex>6</vertexIndex>
+        </vertex>
+        <vertex>
+            <xPosition>280.0</xPosition>
+            <yPosition>390.0</yPosition>
+            <useGraphBackround>true</useGraphBackround>
+            <backgroundColor reference="../../vertex/backgroundColor"/>
+            <foregroundColor reference="../../vertex/foregroundColor"/>
+            <type>FLOW</type>
+            <name>Heat gain</name>
+            <correctDescription>The heating of the earth due to sunlight</correctDescription>
+            <plan>Function</plan>
+            <descriptionStatus>CORRECT</descriptionStatus>
+            <planStatus>CORRECT</planStatus>
+            <calculationsStatus>CORRECT</calculationsStatus>
+            <graphsStatus>UNDEFINED</graphsStatus>
+            <initialValue>0.0</initialValue>
+            <equation>Sunlight - Sunlight reflected</equation>
+            <vertexIndex>7</vertexIndex>
+        </vertex>
+        <vertex>
+            <xPosition>22.0</xPosition>
+            <yPosition>243.0</yPosition>
+            <useGraphBackround>true</useGraphBackround>
+            <backgroundColor reference="../../vertex/backgroundColor"/>
+            <foregroundColor reference="../../vertex/foregroundColor"/>
+            <type>FLOW</type>
+            <name>Total albedo</name>
+            <correctDescription>The total reflectance of sunlight.</correctDescription>
+            <plan>Function</plan>
+            <descriptionStatus>CORRECT</descriptionStatus>
+            <planStatus>CORRECT</planStatus>
+            <calculationsStatus>CORRECT</calculationsStatus>
+            <graphsStatus>UNDEFINED</graphsStatus>
+            <initialValue>0.0</initialValue>
+            <equation>Aerosols albedo + Cloud albedo + Ice and snow albedo</equation>
+            <vertexIndex>8</vertexIndex>
+        </vertex>
+        <vertex>
+            <xPosition>643.0</xPosition>
+            <yPosition>447.0</yPosition>
+            <useGraphBackround>true</useGraphBackround>
+            <backgroundColor reference="../../vertex/backgroundColor"/>
+            <foregroundColor reference="../../vertex/foregroundColor"/>
+            <type>FLOW</type>
+            <name>Heat loss without GHE</name>
+            <correctDescription>Thermal energy that would be lost to space if there were no GHE</correctDescription>
+            <plan>Function</plan>
+            <descriptionStatus>CORRECT</descriptionStatus>
+            <planStatus>CORRECT</planStatus>
+            <calculationsStatus>CORRECT</calculationsStatus>
+            <graphsStatus>UNDEFINED</graphsStatus>
+            <initialValue>0.0</initialValue>
+            <equation>Heat * Heat loss rate without GHE</equation>
+            <vertexIndex>9</vertexIndex>
+        </vertex>
+        <vertex>
+            <xPosition>437.0</xPosition>
+            <yPosition>477.0</yPosition>
+            <useGraphBackround>true</useGraphBackround>
+            <backgroundColor reference="../../vertex/backgroundColor"/>
+            <foregroundColor reference="../../vertex/foregroundColor"/>
+            <type>CONSTANT</type>
+            <name>Heat loss rate without GHE</name>
+            <correctDescription>If there were no greenhouse effect, this is how fast heat would be lost to space</correctDescription>
+            <plan>Parameter</plan>
+            <descriptionStatus>CORRECT</descriptionStatus>
+            <planStatus>CORRECT</planStatus>
+            <calculationsStatus>CORRECT</calculationsStatus>
+            <graphsStatus>UNDEFINED</graphsStatus>
+            <initialValue>0.0</initialValue>
+            <equation></equation>
+            <vertexIndex>10</vertexIndex>
+        </vertex>
+        <vertex>
+            <xPosition>883.0</xPosition>
+            <yPosition>457.0</yPosition>
+            <useGraphBackround>true</useGraphBackround>
+            <backgroundColor reference="../../vertex/backgroundColor"/>
+            <foregroundColor reference="../../vertex/foregroundColor"/>
+            <type>FLOW</type>
+            <name>Total GHE</name>
+            <correctDescription>The greenhouse effect from all sources</correctDescription>
+            <plan>Function</plan>
+            <descriptionStatus>CORRECT</descriptionStatus>
+            <planStatus>CORRECT</planStatus>
+            <calculationsStatus>CORRECT</calculationsStatus>
+            <graphsStatus>UNDEFINED</graphsStatus>
+            <initialValue>0.0</initialValue>
+            <equation>Atmospheric CO2 GHE + Cloud GHE + Methane GHE + Water vapor GHE</equation>
+            <vertexIndex>11</vertexIndex>
+        </vertex>
+        <vertex>
+            <xPosition>534.0</xPosition>
+            <yPosition>557.0</yPosition>
+            <useGraphBackround>true</useGraphBackround>
+            <backgroundColor reference="../../vertex/backgroundColor"/>
+            <foregroundColor reference="../../vertex/foregroundColor"/>
+            <type>FLOW</type>
+            <name>Atmospheric CO2 GHE</name>
+            <correctDescription>The greenhouse effect due to Atmospheric CO2</correctDescription>
+            <plan>Function</plan>
+            <descriptionStatus>CORRECT</descriptionStatus>
+            <planStatus>CORRECT</planStatus>
+            <calculationsStatus>CORRECT</calculationsStatus>
+            <graphsStatus>UNDEFINED</graphsStatus>
+            <initialValue>0.0</initialValue>
+            <equation>Atmospheric CO2 * Convert CO2 to GHE</equation>
+            <vertexIndex>12</vertexIndex>
+        </vertex>
+        <vertex>
+            <xPosition>823.0</xPosition>
+            <yPosition>255.0</yPosition>
+            <useGraphBackround>true</useGraphBackround>
+            <backgroundColor reference="../../vertex/backgroundColor"/>
+            <foregroundColor reference="../../vertex/foregroundColor"/>
+            <type>FLOW</type>
+            <name>Water vapor GHE</name>
+            <correctDescription>The greenhouse effect due to water vapor in the atmosphere</correctDescription>
+            <plan>Function</plan>
+            <descriptionStatus>CORRECT</descriptionStatus>
+            <planStatus>CORRECT</planStatus>
+            <calculationsStatus>CORRECT</calculationsStatus>
+            <graphsStatus>UNDEFINED</graphsStatus>
+            <initialValue>0.0</initialValue>
+            <equation>Water vapor * Convert water vapor to GHE</equation>
+            <vertexIndex>13</vertexIndex>
+        </vertex>
+        <vertex>
+            <xPosition>861.0</xPosition>
+            <yPosition>0.0</yPosition>
+            <useGraphBackround>true</useGraphBackround>
+            <backgroundColor reference="../../vertex/backgroundColor"/>
+            <foregroundColor reference="../../vertex/foregroundColor"/>
+            <type>FLOW</type>
+            <name>Cloud GHE</name>
+            <correctDescription>The greenhouse effect due to clouds</correctDescription>
+            <plan>Function</plan>
+            <descriptionStatus>CORRECT</descriptionStatus>
+            <planStatus>CORRECT</planStatus>
+            <calculationsStatus>CORRECT</calculationsStatus>
+            <graphsStatus>UNDEFINED</graphsStatus>
+            <initialValue>0.0</initialValue>
+            <equation>clouds * Convert Clouds to GHE</equation>
+            <vertexIndex>14</vertexIndex>
+        </vertex>
+        <vertex>
+            <xPosition>846.0</xPosition>
+            <yPosition>582.0</yPosition>
+            <useGraphBackround>true</useGraphBackround>
+            <backgroundColor reference="../../vertex/backgroundColor"/>
+            <foregroundColor reference="../../vertex/foregroundColor"/>
+            <type>CONSTANT</type>
+            <name>Methane GHE</name>
+            <correctDescription>The greenhouse effect due to methane, nitrous oxide and other minor greenhouse gases</correctDescription>
+            <plan>Parameter</plan>
+            <descriptionStatus>CORRECT</descriptionStatus>
+            <planStatus>CORRECT</planStatus>
+            <calculationsStatus>CORRECT</calculationsStatus>
+            <graphsStatus>UNDEFINED</graphsStatus>
+            <initialValue>0.0</initialValue>
+            <equation></equation>
+            <vertexIndex>15</vertexIndex>
+        </vertex>
+        <vertex>
+            <xPosition>0.0</xPosition>
+            <yPosition>100.0</yPosition>
+            <useGraphBackround>true</useGraphBackround>
+            <backgroundColor reference="../../vertex/backgroundColor"/>
+            <foregroundColor reference="../../vertex/foregroundColor"/>
+            <type>CONSTANT</type>
+            <name>Aerosols albedo</name>
+            <correctDescription>Reflectance due to aerosols in the atmosphere</correctDescription>
+            <plan>Parameter</plan>
+            <descriptionStatus>CORRECT</descriptionStatus>
+            <planStatus>CORRECT</planStatus>
+            <calculationsStatus>CORRECT</calculationsStatus>
+            <graphsStatus>UNDEFINED</graphsStatus>
+            <initialValue>0.05</initialValue>
+            <equation></equation>
+            <vertexIndex>16</vertexIndex>
+        </vertex>
+        <vertex>
+            <xPosition>192.0</xPosition>
+            <yPosition>7.0</yPosition>
+            <useGraphBackround>true</useGraphBackround>
+            <backgroundColor reference="../../vertex/backgroundColor"/>
+            <foregroundColor reference="../../vertex/foregroundColor"/>
+            <type>FLOW</type>
+            <name>Cloud albedo</name>
+            <correctDescription>Reflectance due to clouds</correctDescription>
+            <plan>Function</plan>
+            <descriptionStatus>CORRECT</descriptionStatus>
+            <planStatus>CORRECT</planStatus>
+            <calculationsStatus>CORRECT</calculationsStatus>
+            <graphsStatus>UNDEFINED</graphsStatus>
+            <initialValue>0.0</initialValue>
+            <equation>Convert clouds to albedo*clouds</equation>
+            <vertexIndex>17</vertexIndex>
+        </vertex>
+        <vertex>
+            <xPosition>160.0</xPosition>
+            <yPosition>167.0</yPosition>
+            <useGraphBackround>true</useGraphBackround>
+            <backgroundColor reference="../../vertex/backgroundColor"/>
+            <foregroundColor reference="../../vertex/foregroundColor"/>
+            <type>FLOW</type>
+            <name>Ice and snow albedo</name>
+            <correctDescription>Reflectance due to ice and snow</correctDescription>
+            <plan>Function</plan>
+            <descriptionStatus>CORRECT</descriptionStatus>
+            <planStatus>CORRECT</planStatus>
+            <calculationsStatus>CORRECT</calculationsStatus>
+            <graphsStatus>UNDEFINED</graphsStatus>
+            <initialValue>0.0</initialValue>
+            <equation>Ice and snow * Convert ice &amp; snow to albedo</equation>
+            <vertexIndex>18</vertexIndex>
+        </vertex>
+        <vertex>
+            <xPosition>0.0</xPosition>
+            <yPosition>558.0</yPosition>
+            <useGraphBackround>true</useGraphBackround>
+            <backgroundColor reference="../../vertex/backgroundColor"/>
+            <foregroundColor reference="../../vertex/foregroundColor"/>
+            <type>CONSTANT</type>
+            <name>combustion</name>
+            <correctDescription>The emmission of CO2 into the atmosphere by burning fossil fuels and forests</correctDescription>
+            <plan>Parameter</plan>
+            <descriptionStatus>CORRECT</descriptionStatus>
+            <planStatus>CORRECT</planStatus>
+            <calculationsStatus>CORRECT</calculationsStatus>
+            <graphsStatus>UNDEFINED</graphsStatus>
+            <initialValue>1.0</initialValue>
+            <equation></equation>
+            <vertexIndex>19</vertexIndex>
+        </vertex>
+        <vertex>
+            <xPosition>170.0</xPosition>
+            <yPosition>490.0</yPosition>
+            <useGraphBackround>true</useGraphBackround>
+            <backgroundColor reference="../../vertex/backgroundColor"/>
+            <foregroundColor reference="../../vertex/foregroundColor"/>
+            <type>FLOW</type>
+            <name>CO2 absorbed by oceans</name>
+            <correctDescription>The amount of CO2 absorbed by the oceans per year</correctDescription>
+            <plan>Function</plan>
+            <descriptionStatus>CORRECT</descriptionStatus>
+            <planStatus>CORRECT</planStatus>
+            <calculationsStatus>CORRECT</calculationsStatus>
+            <graphsStatus>UNDEFINED</graphsStatus>
+            <initialValue>0.0</initialValue>
+            <equation>Heat effect on CO2 absorption / Heat</equation>
+            <vertexIndex>20</vertexIndex>
+        </vertex>
+        <vertex>
+            <xPosition>0.0</xPosition>
+            <yPosition>474.0</yPosition>
+            <useGraphBackround>true</useGraphBackround>
+            <backgroundColor reference="../../vertex/backgroundColor"/>
+            <foregroundColor reference="../../vertex/foregroundColor"/>
+            <type>CONSTANT</type>
+            <name>Heat effect on CO2 absorption</name>
+            <correctDescription>As the temperature rise, less CO2 is absorbed by the ocean per year</correctDescription>
+            <plan>Parameter</plan>
+            <descriptionStatus>CORRECT</descriptionStatus>
+            <planStatus>CORRECT</planStatus>
+            <calculationsStatus>CORRECT</calculationsStatus>
+            <graphsStatus>UNDEFINED</graphsStatus>
+            <initialValue>0.0</initialValue>
+            <equation></equation>
+            <vertexIndex>21</vertexIndex>
+        </vertex>
+        <vertex>
+            <xPosition>698.0</xPosition>
+            <yPosition>585.0</yPosition>
+            <useGraphBackround>true</useGraphBackround>
+            <backgroundColor reference="../../vertex/backgroundColor"/>
+            <foregroundColor reference="../../vertex/foregroundColor"/>
+            <type>CONSTANT</type>
+            <name>Convert CO2 to GHE</name>
+            <correctDescription>The more CO2 in the atmosphere, the higher the GHE by some factor</correctDescription>
+            <plan>Parameter</plan>
+            <descriptionStatus>CORRECT</descriptionStatus>
+            <planStatus>CORRECT</planStatus>
+            <calculationsStatus>CORRECT</calculationsStatus>
+            <graphsStatus>UNDEFINED</graphsStatus>
+            <initialValue>0.0</initialValue>
+            <equation></equation>
+            <vertexIndex>22</vertexIndex>
+        </vertex>
+        <vertex>
+            <xPosition>349.0</xPosition>
+            <yPosition>38.0</yPosition>
+            <useGraphBackround>true</useGraphBackround>
+            <backgroundColor reference="../../vertex/backgroundColor"/>
+            <foregroundColor reference="../../vertex/foregroundColor"/>
+            <type>CONSTANT</type>
+            <name>Cloud proportion</name>
+            <correctDescription>The proportion of liquid and vaporous water that is in clouds</correctDescription>
+            <plan>Parameter</plan>
+            <descriptionStatus>CORRECT</descriptionStatus>
+            <planStatus>CORRECT</planStatus>
+            <calculationsStatus>CORRECT</calculationsStatus>
+            <graphsStatus>UNDEFINED</graphsStatus>
+            <initialValue>0.0</initialValue>
+            <equation></equation>
+            <vertexIndex>23</vertexIndex>
+        </vertex>
+        <vertex>
+            <xPosition>564.0</xPosition>
+            <yPosition>0.0</yPosition>
+            <useGraphBackround>true</useGraphBackround>
+            <backgroundColor reference="../../vertex/backgroundColor"/>
+            <foregroundColor reference="../../vertex/foregroundColor"/>
+            <type>FLOW</type>
+            <name>clouds</name>
+            <correctDescription>The amount of water in clouds</correctDescription>
+            <plan>Function</plan>
+            <descriptionStatus>CORRECT</descriptionStatus>
+            <planStatus>CORRECT</planStatus>
+            <calculationsStatus>CORRECT</calculationsStatus>
+            <graphsStatus>UNDEFINED</graphsStatus>
+            <initialValue>0.0</initialValue>
+            <equation>Water in Atmosphere * Cloud proportion</equation>
+            <vertexIndex>24</vertexIndex>
+        </vertex>
+        <vertex>
+            <xPosition>728.0</xPosition>
+            <yPosition>50.0</yPosition>
+            <useGraphBackround>true</useGraphBackround>
+            <backgroundColor reference="../../vertex/backgroundColor"/>
+            <foregroundColor reference="../../vertex/foregroundColor"/>
+            <type>CONSTANT</type>
+            <name>Convert Clouds to GHE</name>
+            <correctDescription>the more clouds, the more GHE by this factor</correctDescription>
+            <plan>Parameter</plan>
+            <descriptionStatus>CORRECT</descriptionStatus>
+            <planStatus>CORRECT</planStatus>
+            <calculationsStatus>CORRECT</calculationsStatus>
+            <graphsStatus>UNDEFINED</graphsStatus>
+            <initialValue>0.0</initialValue>
+            <equation></equation>
+            <vertexIndex>25</vertexIndex>
+        </vertex>
+        <vertex>
+            <xPosition>786.0</xPosition>
+            <yPosition>143.0</yPosition>
+            <useGraphBackround>true</useGraphBackround>
+            <backgroundColor reference="../../vertex/backgroundColor"/>
+            <foregroundColor reference="../../vertex/foregroundColor"/>
+            <type>FLOW</type>
+            <name>Water vapor</name>
+            <correctDescription>The amount of water held as water vapor in the atmosphere</correctDescription>
+            <plan>Function</plan>
+            <descriptionStatus>CORRECT</descriptionStatus>
+            <planStatus>CORRECT</planStatus>
+            <calculationsStatus>CORRECT</calculationsStatus>
+            <graphsStatus>UNDEFINED</graphsStatus>
+            <initialValue>0.0</initialValue>
+            <equation>Water in Atmosphere - clouds</equation>
+            <vertexIndex>26</vertexIndex>
+        </vertex>
+        <vertex>
+            <xPosition>782.0</xPosition>
+            <yPosition>343.0</yPosition>
+            <useGraphBackround>true</useGraphBackround>
+            <backgroundColor reference="../../vertex/backgroundColor"/>
+            <foregroundColor reference="../../vertex/foregroundColor"/>
+            <type>CONSTANT</type>
+            <name>Convert water vapor to GHE</name>
+            <correctDescription>A factor for converting the amount of water vapor to the amount of GHE caused by water vapor</correctDescription>
+            <plan>Parameter</plan>
+            <descriptionStatus>CORRECT</descriptionStatus>
+            <planStatus>CORRECT</planStatus>
+            <calculationsStatus>CORRECT</calculationsStatus>
+            <graphsStatus>UNDEFINED</graphsStatus>
+            <initialValue>0.0</initialValue>
+            <equation></equation>
+            <vertexIndex>28</vertexIndex>
+        </vertex>
+        <vertex>
+            <xPosition>33.0</xPosition>
+            <yPosition>19.0</yPosition>
+            <useGraphBackround>true</useGraphBackround>
+            <backgroundColor reference="../../vertex/backgroundColor"/>
+            <foregroundColor reference="../../vertex/foregroundColor"/>
+            <type>CONSTANT</type>
+            <name>Convert clouds to albedo</name>
+            <correctDescription>A factor that converts the amount of clouds to the amont of reflectivity caused by clouds</correctDescription>
+            <plan>Parameter</plan>
+            <descriptionStatus>CORRECT</descriptionStatus>
+            <planStatus>CORRECT</planStatus>
+            <calculationsStatus>CORRECT</calculationsStatus>
+            <graphsStatus>UNDEFINED</graphsStatus>
+            <initialValue>0.0</initialValue>
+            <equation></equation>
+            <vertexIndex>29</vertexIndex>
+        </vertex>
+        <vertex>
+            <xPosition>249.0</xPosition>
+            <yPosition>72.0</yPosition>
+            <useGraphBackround>true</useGraphBackround>
+            <backgroundColor reference="../../vertex/backgroundColor"/>
+            <foregroundColor reference="../../vertex/foregroundColor"/>
+            <type>CONSTANT</type>
+            <name>Convert ice &amp; snow to albedo</name>
+            <correctDescription>A factor that converts the amount of ice and snow to the reflectivity caused by them</correctDescription>
+            <plan>Parameter</plan>
+            <descriptionStatus>CORRECT</descriptionStatus>
+            <planStatus>CORRECT</planStatus>
+            <calculationsStatus>CORRECT</calculationsStatus>
+            <graphsStatus>UNDEFINED</graphsStatus>
+            <initialValue>0.0</initialValue>
+            <equation></equation>
+            <vertexIndex>30</vertexIndex>
+        </vertex>
+        <vertex>
+            <xPosition>192.0</xPosition>
+            <yPosition>301.0</yPosition>
+            <useGraphBackround>true</useGraphBackround>
+            <backgroundColor>
+                <red>255</red>
+                <green>255</green>
+                <blue>255</blue>
+                <alpha>255</alpha>
+            </backgroundColor>
+            <foregroundColor>
+                <red>0</red>
+                <green>0</green>
+                <blue>0</blue>
+                <alpha>255</alpha>
+            </foregroundColor>
+            <type>FLOW</type>
+            <name>Sunlight reflected</name>
+            <correctDescription>Solar thermal energy that is reflected to space by albedo</correctDescription>
+            <plan>Function</plan>
+            <descriptionStatus>CORRECT</descriptionStatus>
+            <planStatus>CORRECT</planStatus>
+            <calculationsStatus>CORRECT</calculationsStatus>
+            <graphsStatus>UNDEFINED</graphsStatus>
+            <initialValue>0.0</initialValue>
+            <equation>Sunlight * Total albedo</equation>
+            <vertexIndex>31</vertexIndex>
+        </vertex>
+        <vertex>
+            <xPosition>630.0</xPosition>
+            <yPosition>124.0</yPosition>
+            <useGraphBackround>true</useGraphBackround>
+            <backgroundColor reference="../../vertex[29]/backgroundColor"/>
+            <foregroundColor reference="../../vertex[29]/foregroundColor"/>
+            <type>FLOW</type>
+            <name>Water in Atmosphere</name>
+            <correctDescription>Water in atmosphere in the form of clouds or water vapor</correctDescription>
+            <plan>Function</plan>
+            <descriptionStatus>CORRECT</descriptionStatus>
+            <planStatus>CORRECT</planStatus>
+            <calculationsStatus>CORRECT</calculationsStatus>
+            <graphsStatus>UNDEFINED</graphsStatus>
+            <initialValue>0.0</initialValue>
+            <equation>Water liquid and vapor * proportion water in atmosphere</equation>
+            <vertexIndex>32</vertexIndex>
+        </vertex>
+        <vertex>
+            <xPosition>550.0</xPosition>
+            <yPosition>277.0</yPosition>
+            <useGraphBackround>true</useGraphBackround>
+            <backgroundColor reference="../../vertex[29]/backgroundColor"/>
+            <foregroundColor reference="../../vertex[29]/foregroundColor"/>
+            <type>FLOW</type>
+            <name>proportion water in atmosphere</name>
+            <correctDescription>Proportion of water in liquid and vaporous form that is in the atmosphere</correctDescription>
+            <plan>Function</plan>
+            <descriptionStatus>CORRECT</descriptionStatus>
+            <planStatus>CORRECT</planStatus>
+            <calculationsStatus>CORRECT</calculationsStatus>
+            <graphsStatus>UNDEFINED</graphsStatus>
+            <initialValue>0.0</initialValue>
+            <equation>Heat * Heat effect on atmospheric water</equation>
+            <vertexIndex>33</vertexIndex>
+        </vertex>
+        <vertex>
+            <xPosition>696.0</xPosition>
+            <yPosition>223.0</yPosition>
+            <useGraphBackround>true</useGraphBackround>
+            <backgroundColor reference="../../vertex[29]/backgroundColor"/>
+            <foregroundColor reference="../../vertex[29]/foregroundColor"/>
+            <type>CONSTANT</type>
+            <name>Heat effect on atmospheric water</name>
+            <correctDescription>The more heat, the more water the atomosphere can hold</correctDescription>
+            <plan>Parameter</plan>
+            <descriptionStatus>CORRECT</descriptionStatus>
+            <planStatus>CORRECT</planStatus>
+            <calculationsStatus>CORRECT</calculationsStatus>
+            <graphsStatus>UNDEFINED</graphsStatus>
+            <initialValue>0.0</initialValue>
+            <equation></equation>
+            <vertexIndex>34</vertexIndex>
+        </vertex>
+        <vertex>
+            <xPosition>641.0</xPosition>
+            <yPosition>322.0</yPosition>
+            <useGraphBackround>true</useGraphBackround>
+            <backgroundColor reference="../../vertex[29]/backgroundColor"/>
+            <foregroundColor reference="../../vertex[29]/foregroundColor"/>
+            <type>FLOW</type>
+            <name>Heat returned by GHE</name>
+            <correctDescription>The heat trapped on earth by GHE</correctDescription>
+            <plan>Function</plan>
+            <descriptionStatus>CORRECT</descriptionStatus>
+            <planStatus>CORRECT</planStatus>
+            <calculationsStatus>CORRECT</calculationsStatus>
+            <graphsStatus>UNDEFINED</graphsStatus>
+            <initialValue>0.0</initialValue>
+            <equation>Heat loss without GHE * Total GHE</equation>
+            <vertexIndex>35</vertexIndex>
+        </vertex>
+        <vertex>
+            <xPosition>456.0</xPosition>
+            <yPosition>218.0</yPosition>
+            <useGraphBackround>true</useGraphBackround>
+            <backgroundColor reference="../../vertex[29]/backgroundColor"/>
+            <foregroundColor reference="../../vertex[29]/foregroundColor"/>
+            <type>FLOW</type>
+            <name>Annual thaw</name>
+            <correctDescription>The amount of ice and snow that melts each year, or freezes if the value is negative</correctDescription>
+            <plan>Function</plan>
+            <descriptionStatus>CORRECT</descriptionStatus>
+            <planStatus>CORRECT</planStatus>
+            <calculationsStatus>CORRECT</calculationsStatus>
+            <graphsStatus>UNDEFINED</graphsStatus>
+            <initialValue>0.0</initialValue>
+            <equation>Convert heat to thawing * Heat</equation>
+            <vertexIndex>36</vertexIndex>
+        </vertex>
+        <vertex>
+            <xPosition>318.0</xPosition>
+            <yPosition>295.0</yPosition>
+            <useGraphBackround>true</useGraphBackround>
+            <backgroundColor reference="../../vertex[29]/backgroundColor"/>
+            <foregroundColor reference="../../vertex[29]/foregroundColor"/>
+            <type>CONSTANT</type>
+            <name>Convert heat to thawing</name>
+            <correctDescription>A factor that when muliplied by Heat equals the amount of melted ice and snow annually</correctDescription>
+            <plan>Parameter</plan>
+            <descriptionStatus>CORRECT</descriptionStatus>
+            <planStatus>CORRECT</planStatus>
+            <calculationsStatus>CORRECT</calculationsStatus>
+            <graphsStatus>UNDEFINED</graphsStatus>
+            <initialValue>0.0</initialValue>
+            <equation></equation>
+            <vertexIndex>4</vertexIndex>
+        </vertex>
+    </vertexList>
+    <edgeList class="linked-list">
+        <edge>
+            <sourceVertexId>6</sourceVertexId>
+            <targetVertexId>7</targetVertexId>
+        </edge>
+        <edge>
+            <sourceVertexId>10</sourceVertexId>
+            <targetVertexId>9</targetVertexId>
+        </edge>
+        <edge>
+            <sourceVertexId>9</sourceVertexId>
+            <targetVertexId>0</targetVertexId>
+        </edge>
+        <edge>
+            <sourceVertexId>7</sourceVertexId>
+            <targetVertexId>0</targetVertexId>
+        </edge>
+        <edge>
+            <sourceVertexId>17</sourceVertexId>
+            <targetVertexId>8</targetVertexId>
+        </edge>
+        <edge>
+            <sourceVertexId>16</sourceVertexId>
+            <targetVertexId>8</targetVertexId>
+        </edge>
+        <edge>
+            <sourceVertexId>18</sourceVertexId>
+            <targetVertexId>8</targetVertexId>
+        </edge>
+        <edge>
+            <sourceVertexId>20</sourceVertexId>
+            <targetVertexId>1</targetVertexId>
+        </edge>
+        <edge>
+            <sourceVertexId>19</sourceVertexId>
+            <targetVertexId>1</targetVertexId>
+        </edge>
+        <edge>
+            <sourceVertexId>0</sourceVertexId>
+            <targetVertexId>20</targetVertexId>
+        </edge>
+        <edge>
+            <sourceVertexId>21</sourceVertexId>
+            <targetVertexId>20</targetVertexId>
+        </edge>
+        <edge>
+            <sourceVertexId>1</sourceVertexId>
+            <targetVertexId>12</targetVertexId>
+        </edge>
+        <edge>
+            <sourceVertexId>22</sourceVertexId>
+            <targetVertexId>12</targetVertexId>
+        </edge>
+        <edge>
+            <sourceVertexId>23</sourceVertexId>
+            <targetVertexId>24</targetVertexId>
+        </edge>
+        <edge>
+            <sourceVertexId>24</sourceVertexId>
+            <targetVertexId>14</targetVertexId>
+        </edge>
+        <edge>
+            <sourceVertexId>25</sourceVertexId>
+            <targetVertexId>14</targetVertexId>
+        </edge>
+        <edge>
+            <sourceVertexId>14</sourceVertexId>
+            <targetVertexId>11</targetVertexId>
+        </edge>
+        <edge>
+            <sourceVertexId>12</sourceVertexId>
+            <targetVertexId>11</targetVertexId>
+        </edge>
+        <edge>
+            <sourceVertexId>13</sourceVertexId>
+            <targetVertexId>11</targetVertexId>
+        </edge>
+        <edge>
+            <sourceVertexId>15</sourceVertexId>
+            <targetVertexId>11</targetVertexId>
+        </edge>
+        <edge>
+            <sourceVertexId>26</sourceVertexId>
+            <targetVertexId>13</targetVertexId>
+        </edge>
+        <edge>
+            <sourceVertexId>28</sourceVertexId>
+            <targetVertexId>13</targetVertexId>
+        </edge>
+        <edge>
+            <sourceVertexId>29</sourceVertexId>
+            <targetVertexId>17</targetVertexId>
+        </edge>
+        <edge>
+            <sourceVertexId>2</sourceVertexId>
+            <targetVertexId>18</targetVertexId>
+        </edge>
+        <edge>
+            <sourceVertexId>30</sourceVertexId>
+            <targetVertexId>18</targetVertexId>
+        </edge>
+        <edge>
+            <sourceVertexId>3</sourceVertexId>
+            <targetVertexId>2</targetVertexId>
+        </edge>
+        <edge>
+            <sourceVertexId>24</sourceVertexId>
+            <targetVertexId>17</targetVertexId>
+        </edge>
+        <edge>
+            <sourceVertexId>31</sourceVertexId>
+            <targetVertexId>7</targetVertexId>
+        </edge>
+        <edge>
+            <sourceVertexId>6</sourceVertexId>
+            <targetVertexId>31</targetVertexId>
+        </edge>
+        <edge>
+            <sourceVertexId>8</sourceVertexId>
+            <targetVertexId>31</targetVertexId>
+        </edge>
+        <edge>
+            <sourceVertexId>33</sourceVertexId>
+            <targetVertexId>32</targetVertexId>
+        </edge>
+        <edge>
+            <sourceVertexId>3</sourceVertexId>
+            <targetVertexId>32</targetVertexId>
+        </edge>
+        <edge>
+            <sourceVertexId>32</sourceVertexId>
+            <targetVertexId>26</targetVertexId>
+        </edge>
+        <edge>
+            <sourceVertexId>32</sourceVertexId>
+            <targetVertexId>24</targetVertexId>
+        </edge>
+        <edge>
+            <sourceVertexId>0</sourceVertexId>
+            <targetVertexId>33</targetVertexId>
+        </edge>
+        <edge>
+            <sourceVertexId>34</sourceVertexId>
+            <targetVertexId>33</targetVertexId>
+        </edge>
+        <edge>
+            <sourceVertexId>9</sourceVertexId>
+            <targetVertexId>35</targetVertexId>
+        </edge>
+        <edge>
+            <sourceVertexId>11</sourceVertexId>
+            <targetVertexId>35</targetVertexId>
+        </edge>
+        <edge>
+            <sourceVertexId>35</sourceVertexId>
+            <targetVertexId>0</targetVertexId>
+        </edge>
+        <edge>
+            <sourceVertexId>0</sourceVertexId>
+            <targetVertexId>9</targetVertexId>
+        </edge>
+        <edge>
+            <sourceVertexId>10</sourceVertexId>
+            <targetVertexId>9</targetVertexId>
+        </edge>
+        <edge>
+            <sourceVertexId>9</sourceVertexId>
+            <targetVertexId>0</targetVertexId>
+        </edge>
+        <edge>
+            <sourceVertexId>9</sourceVertexId>
+            <targetVertexId>35</targetVertexId>
+        </edge>
+        <edge>
+            <sourceVertexId>36</sourceVertexId>
+            <targetVertexId>2</targetVertexId>
+        </edge>
+        <edge>
+            <sourceVertexId>36</sourceVertexId>
+            <targetVertexId>3</targetVertexId>
+        </edge>
+        <edge>
+            <sourceVertexId>0</sourceVertexId>
+            <targetVertexId>36</targetVertexId>
+        </edge>
+        <edge>
+            <sourceVertexId>4</sourceVertexId>
+            <targetVertexId>36</targetVertexId>
+        </edge>
+        <edge>
+            <sourceVertexId>0</sourceVertexId>
+            <targetVertexId>36</targetVertexId>
+        </edge>
+        <edge>
+            <sourceVertexId>24</sourceVertexId>
+            <targetVertexId>26</targetVertexId>
+        </edge>
+    </edgeList>
+    <task>
+        <taskName>Greenhouse 1</taskName>
+        <taskDescription>greenhouse gasses</taskDescription>
+        <imageURL>http://dragoon.asu.edu/devel//</imageURL>
+        <units>Days</units>
+        <times>
+            <startTime>0.0</startTime>
+            <endTime>10.0</endTime>
+            <timeStep>1.0</timeStep>
+        </times>
+        <taskType>Whole</taskType>
+    </task>
+</graph>

@@ -63,18 +63,17 @@ public class PersistenceManager implements Runnable {
         String action = ApplicationContext.isAuthorMode() ? "author_load" : "load";
         String serviceURL = ApplicationContext.getRootURL().concat("/postvar.php");
         
-        return sendHTTPRequest(action, serviceURL, "", "");
+        return sendHTTPRequest(action, serviceURL, "");
     }
     
     public void run() {
         int statusCode = 0;
-        //String action = ApplicationContext.isAuthorMode() ? "author_save" : "save";
-        String action = "save";
+        String action = ApplicationContext.isAuthorMode() ? "author_save" : "save";
         String serviceURL = ApplicationContext.getRootURL().concat("/postvar.php");
         
         try {
             String sessionData = URLEncoder.encode(graphSaver.getSerializedGraphInXML(), "UTF-8");
-            String response = sendHTTPRequest(action, serviceURL, sessionData, "");
+            String response = sendHTTPRequest(action, serviceURL, sessionData);
             statusCode = Integer.parseInt(response);
             if (statusCode == 200) {
                 logs.info("Successfully wrote session to server using " + ApplicationContext.getRootURL().concat("/postvar.php"));
@@ -89,7 +88,7 @@ public class PersistenceManager implements Runnable {
         }
     }
     
-    private static String sendHTTPRequest(String action, String address, String data, String share) throws IOException {
+    public static String sendHTTPRequest(String action, String address, String data) throws IOException {
         //open connection
         logs.debug("Opening Connection . Action: "+action+" URL: "+address);
         URL url = new URL(address);
@@ -110,7 +109,16 @@ public class PersistenceManager implements Runnable {
         postVariable.add(new BasicNameValuePair("action", action));
         postVariable.add(new BasicNameValuePair("id", ApplicationContext.getUserID()));
         postVariable.add(new BasicNameValuePair("section", ApplicationContext.getSection()));
-        postVariable.add(new BasicNameValuePair("problem", ApplicationContext.getCurrentTaskID()));
+        if(ApplicationContext.getCurrentTask().getTaskName().equals("") || !ApplicationContext.isAuthorMode()){
+            // Author mode save should also include boolean 'share' variable
+            // which determines whether others in section can view solution.
+            postVariable.add(new BasicNameValuePair("problem", ApplicationContext.getCurrentTaskID()));
+        } else{
+            postVariable.add(new BasicNameValuePair("problem", ApplicationContext.getCurrentTask().getTaskName()));
+        }
+            
+        postVariable.add(new BasicNameValuePair("author", ApplicationContext.getAuthor()));
+        
         logs.debug("Post Variables sending: "+postVariable);
         
         if (action.equals("save") || action.equals("author_save")) {
@@ -148,7 +156,7 @@ public class PersistenceManager implements Runnable {
         return null;
     }
 
-    private static String getQuery(List<NameValuePair> params) throws UnsupportedEncodingException {
+    public static String getQuery(List<NameValuePair> params) throws UnsupportedEncodingException {
         StringBuilder result = new StringBuilder();
         boolean first = true;
 

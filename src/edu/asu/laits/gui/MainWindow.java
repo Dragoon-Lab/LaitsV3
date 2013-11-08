@@ -47,6 +47,7 @@ import edu.asu.laits.properties.GraphProperties;
 import java.awt.Color;
 import javax.swing.*;
 import org.apache.log4j.Logger;
+import org.dom4j.DocumentException;
 
 /**
  * The main window in the program. This can be opened both with an empty graph
@@ -452,7 +453,9 @@ public class MainWindow extends JFrame {
     private void loadTask() {
         try {
             String task = ApplicationContext.getCurrentTaskID();
-            mainMenu.getFileMenu().openTaskById(task);
+            String author = ApplicationContext.getAuthor();
+            String section = ApplicationContext.getSection();
+            mainMenu.getFileMenu().openTaskById(task,author,section);
         } catch (Exception e) {
             e.printStackTrace();
         }
@@ -461,6 +464,9 @@ public class MainWindow extends JFrame {
     /**
      * Method to Load user session form Server It will load previously saved
      * Graph from the last session of user
+     * Modified by Reid: if in Author mode and retrieving another author's graph to edit, 
+     * sets Author to the current user, effectively creating a new graph that is a 
+     * copy of the other Author's graph
      */
     private void loadSavedSession() {
         try {
@@ -471,12 +477,18 @@ public class MainWindow extends JFrame {
                 GraphLoader loader = new GraphLoader(getGraphEditorPane());
                 loader.loadFromServer(graphXML);
                 switchTutorModelPanels(false);
+                if(ApplicationContext.isAuthorMode()){
+                    ApplicationContext.setAuthor(ApplicationContext.getUserID());
+                }
             }
         } catch (IOException ex) {
             logs.error("Error loading session from database. " + ex.getMessage());
             ex.printStackTrace();
         } catch (GraphLoader.IncorcectGraphXMLFileException ex) {
             logs.error("Could not Load Graph : Incorrect Graph XML. " + ex.getMessage());
+        }
+        catch (DocumentException ex) {
+            logs.error("XML Document is not parsable." + ex.getMessage());
         }
     }
 

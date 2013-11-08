@@ -10,6 +10,7 @@ This contains mostly design documents.
   with comments by BvdS.
 * [JavaScript design](javascript.md)
 * [XML format](xml-style.md)
+* [Forum](forum.md)
 
 Documentation can be in any convenient format (word, html, *et cetera*) with 
 generic [markdown](http://en.wikipedia.org/wiki/Markdown) being the default 

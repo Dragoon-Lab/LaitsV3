@@ -1,0 +1,548 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<Task phase="" type="">
+    <TaskName>Greenhouse 1</TaskName>
+    <TaskDescription></TaskDescription>
+    <URL>http://dragoon.asu.edu/devel//</URL>
+    <StartTime>0.0</StartTime>
+    <EndTime>10.0</EndTime>
+    <TimeStep>1.0</TimeStep>
+    <Units>Days</Units>
+    <NodeCount>31</NodeCount>
+    
+    <Nodes>
+        <Node type="stock" name="Heat" extra="no">
+            <CorrectDescription>The thermal energy of the Earth's surface</CorrectDescription>
+            <Plan>said to both increase and decrease</Plan>
+            <Inputs>
+                <Name>Heat loss</Name>
+                <Name>Heat gain</Name>
+            </Inputs>
+            <Outputs>
+                <Node name="Water liquid and vapor"/>
+                <Node name="CO2 absorbed by oceans"/>
+            </Outputs>
+            <Equation>Heat gain - Heat loss</Equation>
+            <InitialValue>1000.0</InitialValue>
+        </Node>
+        <Node type="stock" name="Atmospheric CO2" extra="no">
+            <CorrectDescription>The amount of carbon held in the atmosphere as carbon dioxide, CO2</CorrectDescription>
+            <Plan>said to both increase and decrease</Plan>
+            <Inputs>
+                <Name>CO2 absorbed by oceans</Name>
+                <Name>combustion</Name>
+            </Inputs>
+            <Outputs>
+                <Node name="Atmospheric CO2 GHE"/>
+            </Outputs>
+            <Equation>combustion - CO2 absorbed by oceans</Equation>
+            <InitialValue>0.0</InitialValue>
+        </Node>
+        <Node type="flow" name="Water liquid and vapor" extra="no">
+            <CorrectDescription>The amount of water in unfrozen form including both liquid water and water vapor</CorrectDescription>
+            <Plan>proportional to accumulator and input</Plan>
+            <Inputs>
+                <Name>Heat effect on water</Name>
+                <Name>Total water</Name>
+                <Name>Heat</Name>
+                <Name>Heat effect on water</Name>
+            </Inputs>
+            <Outputs>
+                <Node name="Ice and snow"/>
+                <Node name="clouds"/>
+                <Node name="Water vapor"/>
+                <Node name="Ice and snow"/>
+            </Outputs>
+            <Equation>Heat * Heat effect on water * Total water</Equation>
+            <InitialValue>0.0</InitialValue>
+        </Node>
+        <Node type="flow" name="Ice and snow" extra="no">
+            <CorrectDescription>The amount of water in frozen form</CorrectDescription>
+            <Plan>proportional to accumulator and input</Plan>
+            <Inputs>
+                <Name>Water liquid and vapor</Name>
+                <Name>Total water</Name>
+                <Name>Water liquid and vapor</Name>
+            </Inputs>
+            <Outputs>
+                <Node name="Ice and snow albedo"/>
+            </Outputs>
+            <Equation>Total water - Water liquid and vapor</Equation>
+            <InitialValue>0.0</InitialValue>
+        </Node>
+        <Node type="constant" name="Heat effect on water" extra="no">
+            <CorrectDescription>The effect of temperature on liquid water to total water</CorrectDescription>
+            <Plan>fixed value</Plan>
+            <Inputs/>
+            <Outputs>
+                <Node name="Water liquid and vapor"/>
+            </Outputs>
+            <Equation>0.0059</Equation>
+            <InitialValue>0.0059</InitialValue>
+        </Node>
+        <Node type="constant" name="Total water" extra="no">
+            <CorrectDescription>The amount of water on earth in both frozen and unfrozen states</CorrectDescription>
+            <Plan>fixed value</Plan>
+            <Inputs/>
+            <Outputs>
+                <Node name="Water liquid and vapor"/>
+                <Node name="Ice and snow"/>
+            </Outputs>
+            <Equation>100.0</Equation>
+            <InitialValue>100.0</InitialValue>
+        </Node>
+        <Node type="constant" name="Sunlight" extra="no">
+            <CorrectDescription>The amount of heat from the sun that strikes the earths atmosphere</CorrectDescription>
+            <Plan>fixed value</Plan>
+            <Inputs/>
+            <Outputs>
+                <Node name="Heat gain"/>
+            </Outputs>
+            <Equation>100.0</Equation>
+            <InitialValue>100.0</InitialValue>
+        </Node>
+        <Node type="flow" name="Heat gain" extra="no">
+            <CorrectDescription>The amount of heat on Earth due to sunlight</CorrectDescription>
+            <Plan>proportional to accumulator and input</Plan>
+            <Inputs>
+                <Name>Sunlight</Name>
+                <Name>Total albedo</Name>
+            </Inputs>
+            <Outputs>
+                <Node name="Heat"/>
+            </Outputs>
+            <Equation>Sunlight - Sunlight * Total albedo</Equation>
+            <InitialValue>0.0</InitialValue>
+        </Node>
+        <Node type="flow" name="Total albedo" extra="no">
+            <CorrectDescription>The reflectance of sunlight (total reflectance)</CorrectDescription>
+            <Plan>proportional to accumulator and input</Plan>
+            <Inputs>
+                <Name>Cloud albedo</Name>
+                <Name>Aerosols albedo</Name>
+                <Name>Ice and snow albedo</Name>
+            </Inputs>
+            <Outputs>
+                <Node name="Heat gain"/>
+            </Outputs>
+            <Equation>Aerosols albedo + Cloud albedo + Ice and snow albedo</Equation>
+            <InitialValue>0.0</InitialValue>
+        </Node>
+        <Node type="flow" name="Heat loss" extra="no">
+            <CorrectDescription>The amount of thermal energy lost to space</CorrectDescription>
+            <Plan>proportional to accumulator and input</Plan>
+            <Inputs>
+                <Name>Total GHE</Name>
+                <Name>Heat loss without GHE</Name>
+            </Inputs>
+            <Outputs>
+                <Node name="Heat"/>
+            </Outputs>
+            <Equation>Heat loss without GHE - Heat loss without GHE * Total GHE</Equation>
+            <InitialValue>0.0</InitialValue>
+        </Node>
+        <Node type="constant" name="Heat loss without GHE" extra="no">
+            <CorrectDescription>The amount of heat loss that would occur without a greenhouse effect</CorrectDescription>
+            <Plan>fixed value</Plan>
+            <Inputs/>
+            <Outputs>
+                <Node name="Heat loss"/>
+            </Outputs>
+            <Equation>0.0</Equation>
+            <InitialValue>0.0</InitialValue>
+        </Node>
+        <Node type="flow" name="Total GHE" extra="no">
+            <CorrectDescription>The greenhouse effect from all sources (total)</CorrectDescription>
+            <Plan>proportional to accumulator and input</Plan>
+            <Inputs>
+                <Name>Cloud GHE</Name>
+                <Name>Atmospheric CO2 GHE</Name>
+                <Name>Water vapor GHE</Name>
+                <Name>Methane GHE</Name>
+            </Inputs>
+            <Outputs>
+                <Node name="Heat loss"/>
+            </Outputs>
+            <Equation>Atmospheric CO2 GHE + Cloud GHE + Methane GHE + Water vapor GHE</Equation>
+            <InitialValue>0.0</InitialValue>
+        </Node>
+        <Node type="flow" name="Atmospheric CO2 GHE" extra="no">
+            <CorrectDescription>The greenhouse effect due to Atmospheric CO2</CorrectDescription>
+            <Plan>proportional to accumulator and input</Plan>
+            <Inputs>
+                <Name>Atmospheric CO2</Name>
+                <Name>Convert CO2 to GHE</Name>
+            </Inputs>
+            <Outputs>
+                <Node name="Total GHE"/>
+            </Outputs>
+            <Equation>Atmospheric CO2 * Convert CO2 to GHE</Equation>
+            <InitialValue>0.0</InitialValue>
+        </Node>
+        <Node type="flow" name="Water vapor GHE" extra="no">
+            <CorrectDescription>The greenhouse effect due to water vapor in the atmosphere</CorrectDescription>
+            <Plan>proportional to accumulator and input</Plan>
+            <Inputs>
+                <Name>Water vapor</Name>
+                <Name>Convert water vapor to GHE</Name>
+            </Inputs>
+            <Outputs>
+                <Node name="Total GHE"/>
+            </Outputs>
+            <Equation>Water vapor * Convert water vapor to GHE</Equation>
+            <InitialValue>0.0</InitialValue>
+        </Node>
+        <Node type="flow" name="Cloud GHE" extra="no">
+            <CorrectDescription>The greenhouse effect due to clouds</CorrectDescription>
+            <Plan>proportional to accumulator and input</Plan>
+            <Inputs>
+                <Name>clouds</Name>
+                <Name>Convert Clouds to GHE</Name>
+            </Inputs>
+            <Outputs>
+                <Node name="Total GHE"/>
+            </Outputs>
+            <Equation>clouds * Convert Clouds to GHE</Equation>
+            <InitialValue>0.0</InitialValue>
+        </Node>
+        <Node type="constant" name="Methane GHE" extra="no">
+            <CorrectDescription>The greenhouse effect due to methane, nitrous oxide and other minor greenhouse gases</CorrectDescription>
+            <Plan>fixed value</Plan>
+            <Inputs/>
+            <Outputs>
+                <Node name="Total GHE"/>
+            </Outputs>
+            <Equation>0.0</Equation>
+            <InitialValue>0.0</InitialValue>
+        </Node>
+        <Node type="constant" name="Aerosols albedo" extra="no">
+            <CorrectDescription>The reflectance due to aerosols in the atmosphere</CorrectDescription>
+            <Plan>fixed value</Plan>
+            <Inputs/>
+            <Outputs>
+                <Node name="Total albedo"/>
+            </Outputs>
+            <Equation>0.05</Equation>
+            <InitialValue>0.05</InitialValue>
+        </Node>
+        <Node type="flow" name="Cloud albedo" extra="no">
+            <CorrectDescription>The reflectance due to clouds</CorrectDescription>
+            <Plan>proportional to accumulator and input</Plan>
+            <Inputs>
+                <Name>Convert clouds to albedo</Name>
+                <Name>clouds</Name>
+            </Inputs>
+            <Outputs>
+                <Node name="Total albedo"/>
+            </Outputs>
+            <Equation>Convert clouds to albedo*clouds</Equation>
+            <InitialValue>0.0</InitialValue>
+        </Node>
+        <Node type="flow" name="Ice and snow albedo" extra="no">
+            <CorrectDescription>The reflectance due to ice and snow</CorrectDescription>
+            <Plan>proportional to accumulator and input</Plan>
+            <Inputs>
+                <Name>Ice and snow</Name>
+                <Name>Convert ice &amp; snow to albedo</Name>
+            </Inputs>
+            <Outputs>
+                <Node name="Total albedo"/>
+            </Outputs>
+            <Equation>Ice and snow * Convert ice &amp; snow to albedo</Equation>
+            <InitialValue>0.0</InitialValue>
+        </Node>
+        <Node type="constant" name="combustion" extra="no">
+            <CorrectDescription>The emmission of CO2 into the atmosphere by burning fossil fuels and forests</CorrectDescription>
+            <Plan>fixed value</Plan>
+            <Inputs/>
+            <Outputs>
+                <Node name="Atmospheric CO2"/>
+            </Outputs>
+            <Equation>1.0</Equation>
+            <InitialValue>1.0</InitialValue>
+        </Node>
+        <Node type="flow" name="CO2 absorbed by oceans" extra="no">
+            <CorrectDescription>The amount of CO2 absorbed by the oceans per year</CorrectDescription>
+            <Plan>proportional to accumulator and input</Plan>
+            <Inputs>
+                <Name>Heat</Name>
+                <Name>Heat effect on CO2 absorption</Name>
+            </Inputs>
+            <Outputs>
+                <Node name="Atmospheric CO2"/>
+            </Outputs>
+            <Equation>Heat effect on CO2 absorption * Heat</Equation>
+            <InitialValue>0.0</InitialValue>
+        </Node>
+        <Node type="constant" name="Heat effect on CO2 absorption" extra="no">
+            <CorrectDescription>The effect of temperature on the CO2 absorption rate of oceans</CorrectDescription>
+            <Plan>fixed value</Plan>
+            <Inputs/>
+            <Outputs>
+                <Node name="CO2 absorbed by oceans"/>
+            </Outputs>
+            <Equation>0.0</Equation>
+            <InitialValue>0.0</InitialValue>
+        </Node>
+        <Node type="constant" name="Convert CO2 to GHE" extra="no">
+            <CorrectDescription>The more CO2 in the atmosphere, the higher the GHE by some factor</CorrectDescription>
+            <Plan>fixed value</Plan>
+            <Inputs/>
+            <Outputs>
+                <Node name="Atmospheric CO2 GHE"/>
+            </Outputs>
+            <Equation>0.0</Equation>
+            <InitialValue>0.0</InitialValue>
+        </Node>
+        <Node type="constant" name="Cloud proportion" extra="no">
+            <CorrectDescription>The proportion of liquid and vaporous water that is in clouds</CorrectDescription>
+            <Plan>fixed value</Plan>
+            <Inputs/>
+            <Outputs>
+                <Node name="clouds"/>
+            </Outputs>
+            <Equation>0.0</Equation>
+            <InitialValue>0.0</InitialValue>
+        </Node>
+        <Node type="flow" name="clouds" extra="no">
+            <CorrectDescription>The amount of water in clouds</CorrectDescription>
+            <Plan>proportional to accumulator and input</Plan>
+            <Inputs>
+                <Name>Cloud proportion</Name>
+                <Name>Water liquid and vapor</Name>
+            </Inputs>
+            <Outputs>
+                <Node name="Cloud GHE"/>
+                <Node name="Cloud albedo"/>
+            </Outputs>
+            <Equation>Water liquid and vapor * Cloud proportion</Equation>
+            <InitialValue>0.0</InitialValue>
+        </Node>
+        <Node type="constant" name="Convert Clouds to GHE" extra="no">
+            <CorrectDescription>The effect of clouds on greenhouse emissions</CorrectDescription>
+            <Plan>fixed value</Plan>
+            <Inputs/>
+            <Outputs>
+                <Node name="Cloud GHE"/>
+            </Outputs>
+            <Equation>0.0</Equation>
+            <InitialValue>0.0</InitialValue>
+        </Node>
+        <Node type="flow" name="Water vapor" extra="no">
+            <CorrectDescription>The amount of water held as water vapor in the atmosphere</CorrectDescription>
+            <Plan>proportional to accumulator and input</Plan>
+            <Inputs>
+                <Name>Water vapor proportion</Name>
+                <Name>Water liquid and vapor</Name>
+            </Inputs>
+            <Outputs>
+                <Node name="Water vapor GHE"/>
+            </Outputs>
+            <Equation>Water liquid and vapor * Water vapor proportion</Equation>
+            <InitialValue>0.0</InitialValue>
+        </Node>
+        <Node type="constant" name="Water vapor proportion" extra="no">
+            <CorrectDescription>The proportion of vaporous and liquid water that is held as water vapor in the atmosphere</CorrectDescription>
+            <Plan>fixed value</Plan>
+            <Inputs/>
+            <Outputs>
+                <Node name="Water vapor"/>
+            </Outputs>
+            <Equation>0.0</Equation>
+            <InitialValue>0.0</InitialValue>
+        </Node>
+        <Node type="constant" name="Convert water vapor to GHE" extra="no">
+            <CorrectDescription>A factor that converts the amount of water vapor to the amount of GHE caused by water vapor</CorrectDescription>
+            <Plan>fixed value</Plan>
+            <Inputs/>
+            <Outputs>
+                <Node name="Water vapor GHE"/>
+            </Outputs>
+            <Equation>0.0</Equation>
+            <InitialValue>0.0</InitialValue>
+        </Node>
+        <Node type="constant" name="Convert clouds to albedo" extra="no">
+            <CorrectDescription>A factor that converts the amount of clouds to the amount of reflectivity caused by clouds</CorrectDescription>
+            <Plan>fixed value</Plan>
+            <Inputs/>
+            <Outputs>
+                <Node name="Cloud albedo"/>
+            </Outputs>
+            <Equation>0.0</Equation>
+            <InitialValue>0.0</InitialValue>
+        </Node>
+        <Node type="constant" name="Convert ice &amp; snow to albedo" extra="no">
+            <CorrectDescription>A factor that converts the amount of ice and snow to the reflectivity caused by them</CorrectDescription>
+            <Plan>fixed value</Plan>
+            <Inputs/>
+            <Outputs>
+                <Node name="Ice and snow albedo"/>
+            </Outputs>
+            <Equation>0.0</Equation>
+            <InitialValue>0.0</InitialValue>
+        </Node>
+    </Nodes>
+    
+    <DescriptionTree>        
+        <Node level="root">
+            <Description>The thermal energy</Description>            
+            <Node level="leaf">
+                <Description>created from a nuclear power plant</Description>
+                <NodeName>Nuclear power</NodeName>
+            </Node>
+            <Node level="leaf">
+                <Description>of the Earth's surface</Description>
+                <NodeName>Heat</NodeName>
+            </Node>
+        </Node>
+        
+        <Node level="root">
+            <Description>The amount of</Description>            
+            <Node level="leaf">
+                <Description>carbon held in the atmosphere as carbon dioxide, CO2</Description>
+                <NodeName>Atmospheric CO2</NodeName>
+            </Node>
+            <Node level="leaf">
+                <Description>heat on Earth due to sunlight</Description>
+                <NodeName>Heat gain</NodeName>
+            </Node>
+            <Node level="leaf">
+                <Description>water in unfrozen form including both liquid water and water vapor</Description>
+                <NodeName>Water liquid and vapor</NodeName>
+            </Node>
+            <Node level="leaf">
+                <Description>water in frozen form</Description>
+                <NodeName>Ice and snow</NodeName>
+            </Node>
+            <Node level="leaf">
+                <Description>water on earth in both frozen and unfrozen states</Description>
+                <NodeName>Total water</NodeName>
+            </Node>
+            <Node level="leaf">
+                <Description>heat from the sun that strikes the earths atmosphere</Description>
+                <NodeName>Sunlight</NodeName>
+            </Node>
+            <Node level="leaf">
+                <Description>thermal energy lost to space</Description>
+                <NodeName>Heat loss</NodeName>
+            </Node>
+            <Node level="leaf">
+                <Description>heat loss that would occur without a greenhouse effect</Description>
+                <NodeName>Heat loss without GHE</NodeName>
+            </Node>
+            <Node level="leaf">
+                <Description>CO2 absorbed by the oceans per year</Description>
+                <NodeName>CO2 absorbed by oceans</NodeName>
+            </Node>
+            <Node level="leaf">
+                <Description>water in clouds</Description>
+                <NodeName>clouds</NodeName>
+            </Node>
+            <Node level="leaf">
+                <Description>water held as water vapor in the atmosphere</Description>
+                <NodeName>Water vapor</NodeName>
+            </Node>            
+        </Node>
+        
+        <Node level="root">
+            <Description>The greenhouse effect</Description>            
+            <Node level="leaf">
+                <Description>from all sources (total)</Description>
+                <NodeName>Total GHE</NodeName>
+            </Node>
+            <Node level="leaf">
+                <Description>due to Atmospheric CO2</Description>
+                <NodeName>Atmospheric CO2 GHE</NodeName>
+            </Node>
+            <Node level="leaf">
+                <Description>due to water vapor in the atmosphere</Description>
+                <NodeName>Water vapor GHE</NodeName>
+            </Node>
+            <Node level="leaf">
+                <Description>due to clouds</Description>
+                <NodeName>Cloud GHE</NodeName>
+            </Node>
+            <Node level="leaf">
+                <Description>due to methane, nitrous oxide and other minor greenhouse gases</Description>
+                <NodeName>Methane GHE</NodeName>
+            </Node>
+        </Node>
+        
+        <Node level="root">
+            <Description>The effect of </Description>            
+            <Node level="leaf">
+                <Description>temperature on liquid water to total water</Description>
+                <NodeName>Heat effect on water</NodeName>
+            </Node>
+            <Node level="leaf">
+                <Description>temperature on the CO2 absorption rate of oceans</Description>
+                <NodeName>Heat effect on CO2 absorption</NodeName>
+            </Node>
+            <Node level="leaf">
+                <Description>CO2 levels in the atmosphere on the Green House Effect</Description>
+                <NodeName>Convert CO2 to GHE</NodeName>
+            </Node>
+            <Node level="leaf">
+                <Description>clouds on greenhouse emissions</Description>
+                <NodeName>Convert Clouds to GHE</NodeName>
+            </Node>
+        </Node>
+        
+        <Node level="root">
+            <Description>A factor that converts the amount</Description>            
+            <Node level="leaf">
+                <Description>of water vapor to the amount of GHE caused by water vapor</Description>
+                <NodeName>Convert water vapor to GHE</NodeName>
+            </Node>
+            <Node level="leaf">
+                <Description>of clouds to the amount of reflectivity caused by clouds</Description>
+                <NodeName>Convert clouds to albedo</NodeName>
+            </Node>
+            <Node level="leaf">
+                <Description>of ice and snow to the reflectivity caused by them</Description>
+                <NodeName>Convert ice &amp; snow to albedo</NodeName>
+            </Node>
+        </Node>
+        
+        <Node level="root">
+            <Description>The proportion of</Description>            
+            <Node level="leaf">
+                <Description>liquid and vaporous water that is in clouds</Description>
+                <NodeName>Cloud proportion</NodeName>
+            </Node>
+            <Node level="leaf">
+                <Description>vaporous and liquid water that is held as water vapor in the atmosphere</Description>
+                <NodeName>Water vapor proportion</NodeName>
+            </Node>
+        </Node>
+        
+        <Node level="root">
+            <Description>The reflectance</Description>            
+            <Node level="leaf">
+                <Description>of sunlight (total reflectance)</Description>
+                <NodeName>Total albedo</NodeName>
+            </Node>
+            <Node level="leaf">
+                <Description>due to aerosols in the atmosphere</Description>
+                <NodeName>Aerosols albedo</NodeName>
+            </Node>
+            <Node level="leaf">
+                <Description>due to clouds</Description>
+                <NodeName>Cloud albedo</NodeName>
+            </Node>
+            <Node level="leaf">
+                <Description>due to ice and snow</Description>
+                <NodeName>Ice and snow albedo</NodeName>
+            </Node>
+        </Node>        
+        
+        <Node level="root">
+            <Description>The emmission of</Description>            
+            <Node level="leaf">
+                <Description>CO2 into the atmosphere by burning fossil fuels and forests</Description>
+                <NodeName>combustion</NodeName>
+            </Node>
+        </Node>        
+    </DescriptionTree>
+    
+</Task>

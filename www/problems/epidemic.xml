@@ -83,7 +83,7 @@
             <InitialValue></InitialValue>
         </Node>
         <Node type="flow" name="chance of infectious meeting" extra="no">
-            <CorrectDescription>The chance an individual who is infected will meet an infected one</CorrectDescription>
+            <CorrectDescription>The chance an individual who is uninfected will meet an infected one</CorrectDescription>
             <Plan>proportional to accumulator and input</Plan>
             <Inputs>
             	<Name>chance of infected</Name>

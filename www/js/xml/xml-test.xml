@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<dragoon_problem xmlns="dragoon.asu.edu"
-                 xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
-                 xsi:schemaLocation="file:///Users/sbstron/NetBeansProjects/LaitsV3/documentation dragoon_schema.xsd">
+<model:DragoonProblem xmlns:model="http://localhost/laits/js/xml"
+                xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+                xsi:schemaLocation="http://localhost/laits/js/xml dragoon_schema.xsd">
 
     <Task phase="Intro" type="Construct">
     
@@ -78,11 +78,7 @@
                 <Progress>
                     <Description status="demo">The number of rabbits in the population</Description>
                     <Plan status="correct">accumulator</Plan>
-                    <Calculation status="incorrect" initial="10" equation="+ births">
-                        <Inputs>
-                            <Name>births</Name>
-                        </Inputs>
-                    </Calculation>
+                    <Calculation status="incorrect" initial="10">+ births</Calculation>
                 </Progress>
             </Node>
     
@@ -107,4 +103,4 @@
         </StudentModel>
     
     </Task>
-</dragoon_problem>
+</model:DragoonProblem>
