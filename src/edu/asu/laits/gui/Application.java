@@ -81,7 +81,10 @@ public class Application extends JApplet {
                 ApplicationContext.setApplicationEnvironment(ApplicationContext.ApplicationEnvironment.PROD);
                 ApplicationContext.setUserID(userName);
                 ApplicationContext.setAppMode(System.getProperty("jnlp.mode"));
-                ApplicationContext.setCurrentTaskID(System.getProperty("jnlp.problem"));                            
+                ApplicationContext.setCurrentTaskID(System.getProperty("jnlp.problem"));
+                if(ApplicationContext.isAuthorMode()){
+                    ApplicationContext.setNewTaskID(System.getProperty("jnlp.newProblem", ""));
+                }
             }else{
                 JOptionPane.showMessageDialog(null, "Incorrect Initialization Parameters",
                         "An error has occured. Contact Support.", JOptionPane.ERROR_MESSAGE);
