@@ -205,9 +205,7 @@ public class TestModeNodeEditorController extends NodeEditorController {
         } 
         
         else if (view.getCalculationsPanel().processCalculationsPanel()) {
-            PersistenceManager.saveSession();
-            MainWindow.refreshGraph();
-            view.dispose();
+            view.closeNodeEditor();
         }
     }
 

@@ -126,9 +126,7 @@ public class AuthorModeNodeEditorController extends NodeEditorController{
         
         if(!openVertex.getCalculationsStatus().equals(Vertex.CalculationsStatus.INCORRECT)){
             // If everything goes right, Save Student's session to server and close NodeEditor
-            PersistenceManager.saveSession();
-            MainWindow.refreshGraph();
-            view.dispose();
+            view.closeNodeEditor();
         }
     }
     

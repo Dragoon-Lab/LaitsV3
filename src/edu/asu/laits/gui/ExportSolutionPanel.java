@@ -257,7 +257,7 @@ public class ExportSolutionPanel extends JPanel {
      * Tries to save to the specified file
      */
     private void saveToServer() throws ErrorReaderException {
-        logs.info("Saving LaitsSolution to Server");
+        logs.info("Exporting Dragoon Solution to Server");
 
         // Exporter will read all the information from task object
         LaitsSolutionExporter exporter = new LaitsSolutionExporter();
@@ -271,6 +271,7 @@ public class ExportSolutionPanel extends JPanel {
                     "Export Error", JOptionPane.ERROR_MESSAGE);
         }
 
+        // This is being done so that newly created dtree, and task details are pushed to server.
         PersistenceManager.saveSession();
         parent.dispose();
     }
