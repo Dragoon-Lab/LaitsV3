@@ -12,13 +12,12 @@
     $id = mysqli_real_escape_string($mysqli, $_POST['id']);
     $section = mysqli_real_escape_string($mysqli, $_POST['section']);
     $problemNum = mysqli_real_escape_string($mysqli, $_POST['problem']);
-    $saveData = $_POST['saveData'];
+    $saveData = urldecode($_POST['saveData']);
 
     if (strcmp($action, "save") == 0) {
         saveGraphXMLtoDatabase($id,$section,$problemNum,$saveData,$mysqli);
     } elseif (strcmp($action, "load") == 0) {
         print loadGraphXMLfromDatabase($id,$section,$problemNum,$mysqli);
-//  This should be removed.  See Bug #2222
     } elseif(strcmp($action, "author_load") == 0){
         // For author_load check if the problem directory contains a defined problem
         $result = loadGraphXMLfromDatabase($id,$section,$problemNum,$mysqli);
@@ -59,9 +58,6 @@
         return $returnString;
     }
     
-
-//  This should be removed.  See Bug #2222
-//  Also, task_fetcher.php shows how to properly do a redirect.
     function loadSolutionFileFromServer($problemNum){
         $host  = $_SERVER['HTTP_HOST'];
         $uri   = rtrim(dirname($_SERVER['PHP_SELF']), '/\\');
