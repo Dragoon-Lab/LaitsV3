@@ -18,8 +18,7 @@
 package edu.asu.laits.model;
 
 import edu.asu.laits.editor.ApplicationContext;
-import edu.asu.laits.logger.HttpAppender;
-import edu.asu.laits.gui.menus.ModelMenu;
+import edu.asu.laits.gui.MainWindow;
 import java.io.BufferedReader;
 import java.io.BufferedWriter;
 import java.io.DataOutputStream;
@@ -33,7 +32,7 @@ import java.net.URL;
 import java.net.URLEncoder;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.logging.Level;
+import javax.swing.JOptionPane;
 import org.apache.http.NameValuePair;
 import org.apache.http.message.BasicNameValuePair;
 import org.apache.log4j.Logger;
@@ -78,6 +77,9 @@ public class PersistenceManager implements Runnable {
             if (statusCode == 200) {
                 logs.info("Successfully wrote session to server using " + ApplicationContext.getRootURL().concat("/postvar.php"));
             } else {
+                JOptionPane.showMessageDialog(MainWindow.getInstance(), 
+                        "Save to server failed. Use File > Save As to save file locally.", "Save Failed...", JOptionPane.ERROR_MESSAGE);  
+                
                 logs.error("Error: URL " + ApplicationContext.getRootURL().concat("/postvar.php")
                         + " returned status code " + statusCode);
             }            
