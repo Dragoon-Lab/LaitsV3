@@ -377,7 +377,7 @@ public class MainWindow extends JFrame {
     }
 
     public void exitWindow() {
-        activityLogs.info("User exited LAITS....");
+        activityLogs.info("User exited Dragoon....");
 
         windowCount--;
         if (windowCount == 0) {

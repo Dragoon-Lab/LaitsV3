@@ -232,7 +232,7 @@ public class ExportSolutionPanel extends JPanel {
             saveSelectedNodeDescription();
             setTaskDetails();
 
-            logs.info("Exporting Laits Solution File.");
+            logs.info("Exporting Dragoon Solution File.");
             try {            
                 saveToServer();
             } catch (ErrorReaderException ex) {
