@@ -1,5 +1,5 @@
 <?php
-$username = $_POST['username'];
+$username = isset($_POST['old_username'])?$_POST['old_username']:$_POST['username'];
 $mode = $_POST['mode'];
 $problem_id = $_POST['problem_id'];
 $section = $_POST['section'];

@@ -42,6 +42,7 @@ public class ApplicationContext {
     private static boolean isValid = false;
     private static TaskSolution correctSolution;
     private static String currentTaskID;
+    private static String newTaskID;
     private static boolean isProblemSolved = false;
     public static String taskLoaderURL;
     private static boolean helpBubbles = false;
@@ -133,6 +134,15 @@ public class ApplicationContext {
     public static void setCurrentTaskID(String uid) {
         currentTaskID = uid;
     }
+
+    public static String getNewTaskID() {
+        return newTaskID;
+    }
+
+    public static void setNewTaskID(String newTaskID) {
+        ApplicationContext.newTaskID = newTaskID;
+    }
+    
 
     public static boolean isProblemSolved() {
         return isProblemSolved;
