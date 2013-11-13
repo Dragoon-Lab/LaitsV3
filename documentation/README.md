@@ -6,11 +6,10 @@ This contains mostly design documents.
 * [Session behavior](sessions.md) which discusses saving, modifying, and sharing problems.
 * [Add sliders to parameters](sliders.md)
 * [Major modes](major-modes.md) (STUDENT COACHED TEST AUTHOR)
-* [Problem and node-specific forum](Forum_Feature_in_Dragoon.docx).  Document written by Ram
-  with comments by BvdS.
 * [JavaScript design](javascript.md)
 * [XML format](xml-style.md)
 * [Forum](forum.md)
+* [Pedagogical Model JavaScript Version](Pedagogical-Model-JavaScript-Version.docx)
 
 Documentation can be in any convenient format (word, html, *et cetera*) with 
 generic [markdown](http://en.wikipedia.org/wiki/Markdown) being the default 

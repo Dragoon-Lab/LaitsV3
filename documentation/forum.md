@@ -1,5 +1,10 @@
 # Forum design#
 
+We are using phpBB to implement the forum feature.
+
+Here is some earlier design work by Ram:
+[Problem and node-specific forum](Forum_Feature_in_Dragoon.docx) with comments by BvdS.
+
 ## Groups and topic structures ##
 
 ### File changes ###
