@@ -335,13 +335,13 @@ public class FileMenu extends JMenu {
     }
 
     private void openTempTask(String name) {
-        String solutionFilePath = name + ".dragoon";
+        String solutionFilePath = name + ".laits";
         activityLogs.debug("Student working on Problem " + name);
         InputStream in = getClass().getResourceAsStream(solutionFilePath);
 
         try {
 
-            File selectedFile = new File("Model.dragoon");
+            File selectedFile = new File("Model.laits");
             OutputStream out = new FileOutputStream(selectedFile);
             IOUtils.getInstance().copyStreams(in, out);
             out.close();
@@ -480,7 +480,7 @@ public class FileMenu extends JMenu {
 
             File selectedFile = getSaveAsFileChooser().getSelectedFile();
 
-            if (!selectedFile.getName().matches("(.*)(\\.dragoon)")) {
+            if (!selectedFile.getName().matches("(.*)(\\.laits)")) {
 
                 if (selectedFile.getName().matches("\".*\"")) {
                     if (selectedFile.getName().length() < 3) {
@@ -506,7 +506,7 @@ public class FileMenu extends JMenu {
                     }
                 } else {
                     selectedFile = new File(selectedFile.getAbsoluteFile()
-                            + ".dragoon");
+                            + ".laits");
                 }
             }
             globalProperties.addFileToLatestFiles(selectedFile);
@@ -581,13 +581,13 @@ public class FileMenu extends JMenu {
             saveAsFileChooser.addChoosableFileFilter(new FileFilter() {
                 @Override
                 public boolean accept(File f) {
-                    return f.getName().matches(".*.dragoon");
+                    return f.getName().matches(".*.laits");
                 }
 
                 @Override
                 public String getDescription() {
 
-                    return "Dragoon files (*.dragoon)";
+                    return "Laits files (*.laits)";
                 }
             });
         }
@@ -607,13 +607,13 @@ public class FileMenu extends JMenu {
             openFileChooser.addChoosableFileFilter(new FileFilter() {
                 @Override
                 public boolean accept(File f) {
-                    return f.getName().matches(".*\\.dragoon");
+                    return f.getName().matches(".*\\.laits");
                 }
 
                 @Override
                 public String getDescription() {
 
-                    return "Dragoon files (*.dragoon)";
+                    return "Laits files (*.laits)";
                 }
             });
         }

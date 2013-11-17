@@ -67,15 +67,13 @@ public class Application extends JApplet {
 
     private static void initializeApplication(String[] args) {
         // Check if application was launched using command line args
-        if(args.length > 0 && args.length <= 4){
+        if(args.length > 0 && args.length <= 3){
             System.out.println("Application was launched from Command Line");
             ApplicationContext.setApplicationEnvironment(ApplicationContext.ApplicationEnvironment.DEV);
             
             ApplicationContext.setUserID(args[0]);
             ApplicationContext.setAppMode(args[1]);
             ApplicationContext.setCurrentTaskID(args[2].replace('_', ' '));            
-            if(!ApplicationContext.isAuthorMode())
-                ApplicationContext.setAuthor(args[3]);
         }else {
             // Try to Launch application using JNLP for PROD
             String userName = System.getProperty("jnlp.username");
@@ -83,19 +81,29 @@ public class Application extends JApplet {
                 ApplicationContext.setApplicationEnvironment(ApplicationContext.ApplicationEnvironment.PROD);
                 ApplicationContext.setUserID(userName);
                 ApplicationContext.setAppMode(System.getProperty("jnlp.mode"));
-                ApplicationContext.setCurrentTaskID(System.getProperty("jnlp.problem"));                
-                ApplicationContext.setAuthor(System.getProperty("jnlp.author",""));                
+                ApplicationContext.setCurrentTaskID(System.getProperty("jnlp.problem"));
+                if(ApplicationContext.isAuthorMode()){
+                    ApplicationContext.setNewTaskID(System.getProperty("jnlp.newProblem", ""));
+                }
             }else{
                 JOptionPane.showMessageDialog(null, "Incorrect Initialization Parameters",
                         "An error has occured. Contact Support.", JOptionPane.ERROR_MESSAGE);
                 System.exit(1);
             }
         }
-
         ApplicationContext.setLoaderURL(System.getProperty("jnlp.server","http://dragoon.asu.edu/devel"));
-        ApplicationContext.setRootURL(System.getProperty("jnlp.server","http://dragoon.asu.edu/devel"));        
-        ApplicationContext.setSection(System.getProperty("jnlp.section","cpi-360"));
-        ApplicationContext.setForumId(System.getProperty("jnlp.forum","0"));
+        ApplicationContext.setRootURL(System.getProperty("jnlp.server","http://dragoon.asu.edu/devel"));
+        
+        // Get author name if it's in the jnlp; otherwise, use username as the author name
+        String author = System.getProperty("jnlp.author","");
+        if(author.equals("") && ApplicationContext.isAuthorMode()){
+            ApplicationContext.setAuthor(ApplicationContext.getUserID());
+        } else {
+            ApplicationContext.setAuthor(author); 
+        }
+        ApplicationContext.setSection(System.getProperty("jnlp.section","test"));
+        ApplicationContext.setForumURL(System.getProperty("jnlp.forumURL",""));
+
         
         System.out.println("Application is Running in : "+ApplicationContext.getApplicationEnvironment()
                 +" Environment and "+ApplicationContext.getAppMode().toString()+" Mode");

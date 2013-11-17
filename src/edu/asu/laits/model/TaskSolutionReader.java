@@ -121,7 +121,6 @@ public class TaskSolutionReader {
     
     private void fillAllCorrectNodes(TaskSolution solution, Element nodes){
         fillNodes(solution.getSolutionNodes(), nodes);
-        
         List<SolutionNode> allNodes = solution.getSolutionNodes();
         for(SolutionNode node : allNodes){
             if(!node.isExtra()){

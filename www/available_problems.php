@@ -11,7 +11,7 @@ require "db-login.php";
 
 // connect to database
 $mysqli = mysqli_connect("localhost", $dbuser, $dbpass, $dbname)
-  or die('Could not connect to database.');
+  or trigger_error('Could not connect to database.',E_USER_ERROR);
 
 //retrieve POST variables
 $student = isset($_GET['student'])?mysqli_real_escape_string($mysqli, $_GET['student']):'';
@@ -26,7 +26,7 @@ if($result = $mysqli->query($query)){
   }
   echo json_encode($json);
 } else {
-    error_log("Query failed:  $query");
+  trigger_error("Query failed:  $query");
 }
 
 ?>

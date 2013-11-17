@@ -17,9 +17,13 @@
  */
 package edu.asu.laits.editor;
 
+import edu.asu.laits.gui.MainWindow;
 import edu.asu.laits.model.TaskSolution;
 import edu.asu.laits.model.HelpBubble;
+import edu.asu.laits.model.SolutionNode;
+import edu.asu.laits.model.TargetNodes;
 import edu.asu.laits.model.Task;
+import java.util.ArrayList;
 import java.util.List;
 import org.apache.log4j.Logger;
 
@@ -34,12 +38,11 @@ public class ApplicationContext {
     private static String section;
     private static String author;
     private static String rootURL;
-    // This is really an integer, but it comes in as a string
-    // and goes out as astring.
-    private static String forumId;
+    private static String forumURL;
     private static boolean isValid = false;
     private static TaskSolution correctSolution;
     private static String currentTaskID;
+    private static String newTaskID;
     private static boolean isProblemSolved = false;
     public static String taskLoaderURL;
     private static boolean helpBubbles = false;
@@ -96,12 +99,12 @@ public class ApplicationContext {
         section = theSection;
     }
 
-    public static String getForumId() {
-        return forumId;
+    public static String getForumURL() {
+        return forumURL;
     }
 
-    public static void setForumId(String theForum) {
-            forumId = theForum;
+    public static void setForumURL(String theForum) {
+            forumURL = theForum;
     }
 
     public static boolean isUserValid() {
@@ -131,6 +134,15 @@ public class ApplicationContext {
     public static void setCurrentTaskID(String uid) {
         currentTaskID = uid;
     }
+
+    public static String getNewTaskID() {
+        return newTaskID;
+    }
+
+    public static void setNewTaskID(String newTaskID) {
+        ApplicationContext.newTaskID = newTaskID;
+    }
+    
 
     public static boolean isProblemSolved() {
         return isProblemSolved;

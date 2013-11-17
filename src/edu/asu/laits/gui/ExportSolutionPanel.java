@@ -19,7 +19,7 @@ package edu.asu.laits.gui;
 
 import edu.asu.laits.editor.ApplicationContext;
 import edu.asu.laits.editor.DragoonUIUtils;
-import edu.asu.laits.model.Edge.ErrorReaderException;
+import edu.asu.laits.model.Edge;
 import edu.asu.laits.model.Graph;
 import edu.asu.laits.model.LaitsSolutionExporter;
 import edu.asu.laits.model.PersistenceManager;
@@ -27,16 +27,18 @@ import edu.asu.laits.model.Task;
 import edu.asu.laits.model.Times;
 import edu.asu.laits.model.Vertex;
 import java.awt.Dimension;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
 import java.awt.event.ItemEvent;
 import java.awt.event.ItemListener;
 import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
-import java.util.logging.Level;
 import javax.swing.JButton;
 import javax.swing.JComboBox;
 import javax.swing.JDialog;
+import javax.swing.JFileChooser;
 import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.JScrollPane;
@@ -57,13 +59,12 @@ import org.apache.log4j.Logger;
 public class ExportSolutionPanel extends JPanel {
 
     JDialog parent = null;
-    
+    private JFileChooser saveAsFileChooser = null;
     private static Logger logs = Logger.getLogger("DevLogs");
-    private static Logger activityLogs = Logger.getLogger("ActivityLogs");
-    
     // UI Components
     private JTextField taskName = null;
     private JTextArea taskDesc = null;
+    private JTextArea fakeDesc = null;
     private JTextField imageURL = null;
     private JTextField startTime = null;
     private JTextField endTime = null;
@@ -158,9 +159,17 @@ public class ExportSolutionPanel extends JPanel {
         List<String> vertexList = modelGraph.getVerticesByName();
         String[] nodeNames = vertexList.toArray(new String[vertexList.size()]);
 
-        // Add Combo box for Displaying Node names, attach change listener to save the added descriptions
-        nodeNamesComboBox = DragoonUIUtils.createComboBox(nodeNames);        
-        nodeNamesComboBox.addItemListener(new NodeNameChangeListener());                
+        nodeNamesComboBox = DragoonUIUtils.createComboBox(nodeNames);
+        
+        nodeNamesComboBox.addItemListener(new ItemChangeListener());
+        
+        nodeNamesComboBox.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                
+            }
+        });
+
         add(nodeNamesComboBox, "wrap");
 
         String desc = "";
@@ -196,77 +205,85 @@ public class ExportSolutionPanel extends JPanel {
         add(dTreeScrollPane, "wrap, wmin 350");
     }
 
+    private String convertFakeDescListtoTextAreaText(List<String> fakeDList) {
+        logs.info("Converting fake description list to TextArea list");
+        
+        String fakeDesc = "";
+        for (int i = 0; i < fakeDList.size() - 1; i++) {
+            fakeDesc += fakeDList.get(i) + "\n";
+        }
+
+        if (fakeDList.size() > 0) {
+            fakeDesc += fakeDList.get(fakeDList.size() - 1);
+        }
+
+        return fakeDesc;
+    }
+    
+    private List<String> convertTextAreaTextToFakeDescList(String text) {
+        logs.info("Converting TextArea list to FakeDescription List");
+        
+        String[] splitText = text.split("\n");
+        List<String> result = new ArrayList<String>();
+        for(String s : splitText){
+            if(s != null && s.trim().length() > 0)
+                result.add(s);
+        }
+        
+        return result;
+    }
+
     private void addActions() {
-        // Create 2 lines of empty spaces to create spaces above action buttons
         add(DragoonUIUtils.createLabel(" "), "skip");
         add(DragoonUIUtils.createLabel(" "), "wrap");
 
-        // Preview button to preview decision tree construction
         JButton dTreePreviewAction = DragoonUIUtils.createButton("DTree Preview");
         dTreePreviewAction.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent e) {
-                // Build DTree from Correct and Fake Description
-                activityLogs.debug("Author is Previewing Description Tree");
+                // Build DTree from Correct and Fake Description - TO DO
                 dTree.setModel(buildDTreeModel());
             }
         });
         add(dTreePreviewAction, "skip");
 
-        // Export Solution Action
         JButton exportAction = DragoonUIUtils.createButton("Export Solution");
+
         exportAction.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent e) {
-                doexportAction();
+                exportAction();
             }
         });
 
         add(exportAction, "right");
     }
 
-    private void doexportAction() {
+    private void exportAction() {
         // Perform Validation before exporting the task
-        logs.info("Exporting Solution");
-        activityLogs.debug("Author is Exporting Solution");
-        
         if (validateExportSolutionPanel()) {
-            saveSelectedNodeDescription();
             setTaskDetails();
 
             logs.info("Exporting Dragoon Solution File.");
             try {            
                 saveToServer();
-            } catch (ErrorReaderException ex) {
+            } catch (Edge.ErrorReaderException ex) {
                 logs.error("Error in reading edge info. Export Solution unsuccessful");
             }
         }
     }
 
     /**
-     * Save currently visible correct and incorrect description to Vertex before exporting solution.
-     * This is required as change action is not fired for currently visible node. 
-     */
-    private void saveSelectedNodeDescription() {
-        logs.info("saving correct and fake description for currently selected node.");
-        
-        String selectedVertexName = (String)nodeNamesComboBox.getSelectedItem();
-        Vertex v = modelGraph.getVertexByName(selectedVertexName);
-        updateNodeDescription(v);
-    }
-    
-    /**
      * Tries to save to the specified file
      */
-    private void saveToServer() throws ErrorReaderException {
+
+    private void saveToServer() throws Edge.ErrorReaderException {
         logs.info("Exporting Dragoon Solution to Server");
 
         // Exporter will read all the information from task object
         LaitsSolutionExporter exporter = new LaitsSolutionExporter();
         if (exporter.export()) {
-            activityLogs.debug("Author's solution is exported to server. Problem name: '" + taskName.getText().trim() + "'");
             JOptionPane.showMessageDialog(getRootPane(), "Solution File Saved to Server.",
                     "Solution File Exported", JOptionPane.INFORMATION_MESSAGE);
         } else {
-            activityLogs.debug("Author's solution could not be exported to server.");
             JOptionPane.showMessageDialog(getRootPane(), "Solution Could not be exported.",
                     "Export Error", JOptionPane.ERROR_MESSAGE);
         }
@@ -314,10 +331,6 @@ public class ExportSolutionPanel extends JPanel {
         return true;
     }
 
-    /**
-     * Set task details for exporting solution file.
-     * These details will be used to create Student Mode Task.
-     */
     private void setTaskDetails() {
         logs.info("Setting Task Details");
 
@@ -331,11 +344,6 @@ public class ExportSolutionPanel extends JPanel {
         currentTask.setTimes(new Times(startTime.getText(), endTime.getText(), timesteps.getText()));
     }
 
-    /**
-     * Prepare Description Tree for preview.
-     * 
-     * @return DefaultTreeModel to publish on DTree
-     */
     private DefaultTreeModel buildDTreeModel() {
         DefaultMutableTreeNode root = new DefaultMutableTreeNode("root");
         Set<Vertex> vertexSet = modelGraph.vertexSet();
@@ -358,16 +366,11 @@ public class ExportSolutionPanel extends JPanel {
         return new DefaultTreeModel(root);
     }
     
-    /**
-     * Listener to perform action on change event of nodes of combo box.
-     */
-    class NodeNameChangeListener implements ItemListener {
+    class ItemChangeListener implements ItemListener {
         @Override
         public void itemStateChanged(ItemEvent event) {
             String selectedName = (String)event.getItem();
             logs.info("Selected node name : " + selectedName);
-            activityLogs.debug("Author Selected node name : " + selectedName);
-            
             Vertex v = modelGraph.getVertexByName(selectedName);
             
             if (event.getStateChange() == ItemEvent.SELECTED) {
@@ -376,43 +379,10 @@ public class ExportSolutionPanel extends JPanel {
                 correctDesc.setText(v.getCorrectDescription());
             }
             if(event.getStateChange() == ItemEvent.DESELECTED) {
-                updateNodeDescription(v);
+                List<String> updatedfakeDList = convertTextAreaTextToFakeDescList(fakeDescTextArea.getText());
+                v.setFakeDescription(updatedfakeDList);
+                v.setCorrectDescription(correctDesc.getText().trim());
             }            
         }
     }    
-    
-    private void updateNodeDescription(Vertex vertex) {
-        List<String> updatedfakeDList = convertTextAreaTextToFakeDescList(fakeDescTextArea.getText());
-        vertex.setFakeDescription(updatedfakeDList);
-        vertex.setCorrectDescription(correctDesc.getText().trim());
-    }
-    
-    // Helper Methods
-    private String convertFakeDescListtoTextAreaText(List<String> fakeDList) {
-        logs.info("Converting fake description list to TextArea list");
-        
-        String fakeDesc = "";
-        for (int i = 0; i < fakeDList.size() - 1; i++) {
-            fakeDesc += fakeDList.get(i) + "\n";
-        }
-
-        if (fakeDList.size() > 0) {
-            fakeDesc += fakeDList.get(fakeDList.size() - 1);
-        }
-
-        return fakeDesc;
-    }
-    
-    private List<String> convertTextAreaTextToFakeDescList(String text) {
-        logs.info("Converting TextArea list to FakeDescription List");
-        
-        String[] splitText = text.split("\n");
-        List<String> result = new ArrayList<String>();
-        for(String s : splitText){
-            if(s != null && s.trim().length() > 0)
-                result.add(s);
-        }
-        
-        return result;
-    }
 }

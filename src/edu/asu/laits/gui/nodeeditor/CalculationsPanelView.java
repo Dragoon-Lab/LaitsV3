@@ -19,8 +19,10 @@
 package edu.asu.laits.gui.nodeeditor;
 
 import edu.asu.laits.editor.ApplicationContext;
+import edu.asu.laits.gui.BlockingToolTip;
 import edu.asu.laits.gui.MainWindow;
 import edu.asu.laits.model.Graph;
+import edu.asu.laits.model.HelpBubble;
 import edu.asu.laits.model.SolutionNode;
 import edu.asu.laits.model.TaskSolution;
 import edu.asu.laits.model.Vertex;
@@ -284,6 +286,7 @@ public class CalculationsPanelView extends javax.swing.JPanel {
             }            
             // Process the equation to create links
             processNodeEquation();
+            //openVertex.setEquation(formulaInputArea.getText().trim());
             return true;
         } else {
             return false;
@@ -401,6 +404,18 @@ public class CalculationsPanelView extends javax.swing.JPanel {
         
         return true;
         
+    }
+    
+    private void addHelpBalloon(String timing){
+        if(ApplicationContext.isCoachedMode()){
+            List<HelpBubble> bubbles = ApplicationContext.getHelp(openVertex.getName(), "Calculations", timing);
+            if(!bubbles.isEmpty()){
+                for(HelpBubble bubble : bubbles){
+                    
+                    new BlockingToolTip(this.nodeEditor, bubble, this.getLabel(bubble.getAttachedTo()));
+                }
+            }
+        }
     }
     
     private class SortIgnoreCase implements Comparator <Object> {
@@ -647,8 +662,12 @@ public class CalculationsPanelView extends javax.swing.JPanel {
         if(ApplicationContext.isAuthorMode() || !openVertex.isCalculationsDone()){
             String selectedVertexName = availableInputsJList.getSelectedValue().toString();
             selectedVertexName = removeBoldfromListItem(selectedVertexName);
-
-            formulaInputArea.setText(formulaInputArea.getText() + selectedVertexName);    
+            
+//            if(formulaInputArea.getText().contains(selectedVertexName)){
+//                formulaInputArea.setText(formulaInputArea.getText().replaceAll(selectedVertexName, ""));                
+//            }else{
+                formulaInputArea.setText(formulaInputArea.getText() + selectedVertexName);    
+//            }
             
             // This can be improved to set/reset selection in if-else
             setSelectedNodesOnJList();
@@ -785,10 +804,9 @@ public class CalculationsPanelView extends javax.swing.JPanel {
                 logs.info("Node Equation Changed");
                 // Remove deleted nodes
                 oldNodes.removeAll(newNodes);
-                for(String node : oldNodes) {
+                for(String node : oldNodes){
                     logs.info("Removing Edge from Node '" + node + "'");
-                    activityLogs.info("Removing Edge from Node '" + node + "' to Node '" + openVertex.getName() +"'");
-                    modelGraph.removeEdge(modelGraph.getVertexByName(node), openVertex);                    
+                    modelGraph.removeEdge(modelGraph.getVertexByName(node),openVertex);                    
                 }
                 
                 // Add newly created nodes
@@ -797,21 +815,19 @@ public class CalculationsPanelView extends javax.swing.JPanel {
                 List<String> availableVariables = modelGraph.getVerticesByName();
                 
                 for(String node : newNodes){
-                    if(availableVariables.contains(node)) {
+                    if(availableVariables.contains(node)){
                         logs.info("Adding Edge from Node '" + node + "'");
-                        activityLogs.info("Adding Edge from Node '" + node + "' to Node '" + openVertex.getName() +"'");
                         Vertex source = modelGraph.getVertexByName(node);
                         MainWindow.getInstance().getGraphEditorPane().addEdge(source, openVertex);                                          
                     }                    
                 }
             }
 
-            // Save new equation in the Node            
+            // Save new equation in the Node
             openVertex.setEquation(formulaInputArea.getText().trim());  
                 
         } catch (EvaluationException ex) {
             logs.error("Could not parse the equation entered for node '" + openVertex.getName() +"'");
-            activityLogs.debug("User's equation '" + formulaInputArea.getText().trim() +"' could not be parsed.");
             // Do nothing if equation parsing fails
         }
     }

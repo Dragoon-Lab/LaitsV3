@@ -189,8 +189,12 @@ public class GraphLoader {
         graphPane.validate();
         graphPane.repaint();
 
+        //Graph graph = graphPane.getModelGraph();
+        //graph.setCurrentTask(graphFile.getTask());
         if(ApplicationContext.isAuthorMode())
-            ApplicationContext.setCurrentTask(graphFile.getTask());        
+            ApplicationContext.setCurrentTask(graphFile.getTask());
+        
+        //prop.setSavedAs(file);
     }
 
     private boolean validateNodeEquation(Vertex currentVertex) {

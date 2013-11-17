@@ -353,7 +353,6 @@ public class NodeEditorView extends javax.swing.JDialog {
         
         // Delete this vertex if its not defined and user hits Cancel
         if (!openVertex.isDescriptionDone()) {
-            activityLogs.debug("New node is deleted because of undefined node description.");
             graphPane.setSelectionCell(openVertex.getJGraphVertex());
             graphPane.removeSelected();
         }
@@ -591,7 +590,7 @@ public class NodeEditorView extends javax.swing.JDialog {
 
     // This is string name of tab used in problem xml to
     // specify help bubbles and used in logging
-    public static String getTabName(int id) {
+    private String getTabName(int id) {
         switch (id) {
             case DESCRIPTION:
                 return "DESCRIPTION";

@@ -38,8 +38,6 @@ public class EditMenu extends JMenu {
      * next time the selected status of the insertModeItem is changed.
      */
     private static Logger logs = Logger.getLogger("DevLogs");
-    private static Logger activityLogs = Logger.getLogger("ActivityLogs");
-    
     /**
      * This method initializes
      *
@@ -106,7 +104,6 @@ public class EditMenu extends JMenu {
                     "/resources/icons/16x16/undo.png")));
             undoAction = new java.awt.event.ActionListener() {
                 public void actionPerformed(java.awt.event.ActionEvent e) {
-                    activityLogs.debug("User pressed 'Undo' button.");
                     graphPane.undo();
                 }
             };
@@ -128,7 +125,6 @@ public class EditMenu extends JMenu {
                     "/resources/icons/16x16/redo.png")));
             redoAction = new java.awt.event.ActionListener() {
                 public void actionPerformed(java.awt.event.ActionEvent e) {
-                    activityLogs.debug("User pressed 'Redo' button.");
                     graphPane.redo();
                 }
             };

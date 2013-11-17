@@ -18,9 +18,14 @@
 package edu.asu.laits.model;
 
 import edu.asu.laits.editor.ApplicationContext;
+import edu.asu.laits.model.PersistenceManager;
 import edu.asu.laits.gui.MainWindow;
-import edu.asu.laits.model.Edge.ErrorReaderException;
+import java.io.File;
+import java.io.FileWriter;
+import java.io.StringWriter;
 import java.io.IOException;
+import java.io.StringWriter;
+import java.net.URLEncoder;
 import java.util.HashSet;
 import java.util.Iterator;
 import java.util.Set;
@@ -28,6 +33,9 @@ import org.apache.log4j.Logger;
 import org.dom4j.Document;
 import org.dom4j.DocumentHelper;
 import org.dom4j.Element;
+import org.dom4j.io.OutputFormat;
+import org.dom4j.io.XMLWriter;
+import org.apache.log4j.Logger;
 
 /**
  *
@@ -37,39 +45,58 @@ public class LaitsSolutionExporter {
 
     Graph<Vertex, Edge> graph = null;
     private static Logger logs = Logger.getLogger("DevLogs");
+    private static Document document = DocumentHelper.createDocument();
     
     public LaitsSolutionExporter() {
-        this.graph = MainWindow.getInstance().getGraphEditorPane().getModelGraph();         
+        this.graph = MainWindow.getInstance().getGraphEditorPane().getModelGraph();
     }
 
-    public boolean export() throws ErrorReaderException {
-        String httpReponse = "";
+    public boolean export() {
+        String response="";
         try {
-            Document document = DocumentHelper.createDocument();
-
+            document.clearContent();
             Element task = addRootElement(document);
             addTaskDetails(task);
             addAllNodes(task);
             addDescriptionTree(task);
-            
             String serviceURL = ApplicationContext.getRootURL().concat("/save_solution.php");
-            httpReponse = PersistenceManager.sendHTTPRequest("author_save", serviceURL, document.asXML());
-            
-            if (Integer.parseInt(httpReponse) == 200) {
+            // Turn the document into a string, with pretty printing.
+            // Could use document.asXML() but then there is no formatting.
+            StringWriter stringWriter = new StringWriter();  
+            OutputFormat format = OutputFormat.createPrettyPrint();  
+            XMLWriter xmlwriter = new XMLWriter(stringWriter, format);  
+            xmlwriter.write(document);  
+            String sessionData = URLEncoder.encode(stringWriter.toString(), "UTF-8");
+            response = PersistenceManager.sendHTTPRequest("author_save",
+                    serviceURL,sessionData);
+            if (Integer.parseInt(response) == 200) {
                 logs.info("Successfully sent exported solution to server.");
                 return true;
             } else {
-                logs.info("Solution export to server failed: "+httpReponse);
+                logs.info("Solution export to server failed: "+response);
                 return false;
             }
         } catch (IOException ex) {
-            logs.error("Error in Exporting Solution. Response: " + httpReponse);
+            logs.info("Error exporting solution server: "+response); 
+            ex.printStackTrace();
+            return false;
+        }
+    }
+    
+     public boolean save_file(File solutionFileName) {
+        try {
+            OutputFormat format = OutputFormat.createPrettyPrint();
+            XMLWriter output = new XMLWriter(new FileWriter(solutionFileName), format);
+            output.write(document);
+            output.close();
+            return true;
+        } catch (Exception ex) {
             ex.printStackTrace();
             return false;
         }
     }
 
-    public String getXML() throws ErrorReaderException {
+    public String getXML(){
         Document document = DocumentHelper.createDocument();
 
         Element task = addRootElement(document);
@@ -90,8 +117,6 @@ public class LaitsSolutionExporter {
     }
 
     private void addTaskDetails(Element task) {
-        logs.info("Adding Task Details");
-        
         Task taskToExport = ApplicationContext.getCurrentTask();
         
         Element taskName = task.addElement("TaskName");
@@ -115,9 +140,7 @@ public class LaitsSolutionExporter {
         units.setText(taskToExport.getChartUnits());
     }
 
-    private void addAllNodes(Element task) throws ErrorReaderException {
-        logs.info("Adding info about all the nodes");
-        
+    private void addAllNodes(Element task) {
         Element nodeCount = task.addElement("NodeCount");
         nodeCount.setText(String.valueOf(graph.vertexSet().size()));
 
@@ -133,20 +156,12 @@ public class LaitsSolutionExporter {
 
     }
 
-    private void addNodeDetails(Vertex vertex, Element node) throws ErrorReaderException {        
-        logs.info("Adding Details for Node: '" + vertex.getName() + "'");
-        
+    // Extra NO is hardcoded
+    private void addNodeDetails(Vertex vertex, Element node) {
         String s = vertex.getVertexType().name();
         node.addAttribute("type", s.toLowerCase());
         node.addAttribute("name", vertex.getName());
-        
-        // Extra can be determined based on no of inputs and outputs.
-        if(graph.incomingEdgesOf(vertex).size() == 0 && graph.outgoingEdgesOf(vertex).size() == 0) {
-            node.addAttribute("extra", "yes");
-        } else {
-            node.addAttribute("extra", "no");
-        }
-        
+        node.addAttribute("extra", "no");
 
         Element correctDesc = node.addElement("CorrectDescription");
         correctDesc.setText(vertex.getCorrectDescription());
@@ -184,35 +199,30 @@ public class LaitsSolutionExporter {
         }
     }
 
-    private void addInputDetails(Vertex vertex, Element node) throws ErrorReaderException {
+    private void addInputDetails(Vertex vertex, Element node) {
         logs.info("Adding Input Details for Vertex: '" + vertex.getName() + "'");
         
-        // Add Input Nodes       
+        // Add Input Nodes
         Iterator<Edge> edges = graph.incomingEdgesOf(vertex).iterator();
         while (edges.hasNext()) {
             Edge e = edges.next();
-            e.fetchInformationFromJGraphT(graph);
+            
+            System.out.println("SourceName: " + e.getSourceVertexId());
+            System.out.println("TargetName: " + e.getTargetVertexId());
             Vertex source = graph.getVertexById(e.getSourceVertexId());
-            // Make sure source is not the same Vertex
-            if (source != null && !source.getName().equals(vertex.getName())) {
-                Element el = node.addElement("Name");
-                el.addText(source.getName());
-            } 
+            Element el = node.addElement("Name");
+            el.addText(source.getName());
         }
     }
 
-    private void addOutputDetails(Vertex vertex, Element node) throws ErrorReaderException {
-        // Add Ouput Nodes
+    private void addOutputDetails(Vertex vertex, Element node) {
+        // Add Input Nodes
         Iterator<Edge> edges = graph.outgoingEdgesOf(vertex).iterator();
         while (edges.hasNext()) {
             Edge e = edges.next();
-            e.fetchInformationFromJGraphT(graph);
             Vertex source = graph.getVertexById(e.getTargetVertexId());
-            // Make sure source is not the same Vertex
-            if (source != null && !source.getName().equals(vertex.getName())) {
-                Element el = node.addElement("Name");
-                el.addText(source.getName());
-            } 
+            Element el = node.addElement("Node");
+            el.addAttribute("name", source.getName());
         }
     }
 

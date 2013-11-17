@@ -1,5 +1,10 @@
 # Forum design#
 
+We are using phpBB to implement the forum feature.
+
+Here is some earlier design work by Ram:
+[Problem and node-specific forum](Forum_Feature_in_Dragoon.docx) with comments by BvdS.
+
 ## Groups and topic structures ##
 
 ### File changes ###
@@ -16,7 +21,6 @@ git submodules suck:
 [Why your company shouldn\u2019t use Git submodules](http://codingkilledthecat.wordpress.com/2012/04/28/).
 
 ### Changes to database ###
-
 ### Changes using Administration Control Panel ###
 
 For each class/section, you need to create a new forum and usergroup in PHPBB for that class:
@@ -30,3 +34,4 @@ For each class/section, you need to create a new forum and usergroup in PHPBB fo
 -Create a new forum using the SAME NAME you used for the usergroup.  Default settings are fine.  You will be taken to the Forum Permissions page.
 
 -On Forum Permissions, under the "Add Groups" box, highlight the usergroup you created for your class and click Add Permissions.  Select the Standard Access role and click Apply All Permissions.
+
