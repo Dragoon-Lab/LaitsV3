@@ -479,7 +479,7 @@ public class MainWindow extends JFrame {
                 switchTutorModelPanels(false);
                 if(ApplicationContext.isAuthorMode()){
                     ApplicationContext.setAuthor(ApplicationContext.getUserID());
-                    if(!ApplicationContext.getNewTaskID().equals("")){
+                    if(ApplicationContext.getNewTaskID() != null && !ApplicationContext.getNewTaskID().equals("")){
                         ApplicationContext.setCurrentTaskID(ApplicationContext.getNewTaskID());
                     }
                 }

@@ -139,7 +139,7 @@ public class StockVertexRenderComponent extends VertexRenderComponent {
         
         g2.drawRect(0, 0, getWidth() - 1, getHeight() - 18); 
         
-        String vertexName = currentVertex.getName();
+        String vertexName = truncateNodeName(currentVertex.getName());
         double x = getWidth()/2 - (vertexName.length() * 3 -1);
         g2.setFont(new Font(null, Font.PLAIN, 10));
         

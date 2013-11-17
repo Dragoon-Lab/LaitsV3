@@ -142,7 +142,7 @@ public class FlowVertexRenderComponent extends VertexRenderComponent {
         
         g2.drawOval(a - r, b - r - 7, 2 * r, 2 * r);
         
-        String vertexName = currentVertex.getName();
+        String vertexName = truncateNodeName(currentVertex.getName());
         double x = getWidth()/2 - (vertexName.length() * 3 -1);
        
         g2.setFont(new Font(null, Font.PLAIN, 10));

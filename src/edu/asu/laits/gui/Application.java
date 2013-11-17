@@ -91,8 +91,8 @@ public class Application extends JApplet {
                 System.exit(1);
             }
         }
-        ApplicationContext.setLoaderURL(System.getProperty("jnlp.server","http://dragoon.asu.edu/devel"));
-        ApplicationContext.setRootURL(System.getProperty("jnlp.server","http://dragoon.asu.edu/devel"));
+        ApplicationContext.setLoaderURL(System.getProperty("jnlp.server","http://dragoon.asu.edu/ram"));
+        ApplicationContext.setRootURL(System.getProperty("jnlp.server","http://dragoon.asu.edu/ram"));
         
         // Get author name if it's in the jnlp; otherwise, use username as the author name
         String author = System.getProperty("jnlp.author","");
@@ -108,5 +108,6 @@ public class Application extends JApplet {
         System.out.println("Application is Running in : "+ApplicationContext.getApplicationEnvironment()
                 +" Environment and "+ApplicationContext.getAppMode().toString()+" Mode");
         ApplicationContext.setUserValid(true);
+        
     }
 }

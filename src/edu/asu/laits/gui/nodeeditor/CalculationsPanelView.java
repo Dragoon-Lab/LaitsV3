@@ -315,9 +315,9 @@ public class CalculationsPanelView extends javax.swing.JPanel {
         // Assign random values to variables to test if equation can be evaluated
         for (String s : usedVariables) {
             if (!availableVariables.contains(s)) {
-                nodeEditor.setEditorMessage("Input node " + s + " is not availabe.");
+                nodeEditor.setEditorMessage("Input node '" + s + "' is not availabe.");
                 activityLogs.debug("User entered incorrect equation - "+
-                                   "Input node " + s + " is not present.");
+                                   "Input node '" + s + "' is not present.");
                 return false;
             }
             eval.putVariable(s, String.valueOf(Math.random()));
@@ -781,8 +781,11 @@ public class CalculationsPanelView extends javax.swing.JPanel {
         }
     }
     
+    /**
+     * Method to create/remove edges when node equation is changed
+     */
     private void processNodeEquation() {
-        logs.debug("Processing NodeEquation to create edges");
+        logs.debug("Processing NodeEquation to create/remvove edges");
         // Neglect spaces typed before or after the equation
         if (formulaInputArea.getText().trim().equals(openVertex.getEquation())) {
             return;

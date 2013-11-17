@@ -31,8 +31,7 @@ public class ConstantVertexRenderComponent   extends VertexRenderComponent {
     private boolean focus;
     private boolean preview;
     private Color background;
-    private Rectangle2D bounds;
-    private static FlowVertexRenderComponent circleVertexRenderComponent = new FlowVertexRenderComponent();
+    private Rectangle2D bounds;    
     private VertexRenderComponent defaultVertexRenderComponent = null;
     private boolean useGraphBackround;
     private Color foreground;
@@ -179,7 +178,7 @@ public class ConstantVertexRenderComponent   extends VertexRenderComponent {
         }
         
         g2.drawPolygon(xpoints, ypoints, 4);
-        String vertexName = currentVertex.getName();
+        String vertexName = truncateNodeName(currentVertex.getName());
         double x = getWidth()/2 - (vertexName.length() * 3 -1);
        
         g2.setFont(new Font(null, Font.PLAIN, 10));
