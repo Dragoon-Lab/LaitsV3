@@ -94,7 +94,6 @@ public class PersistenceManager implements Runnable {
             }            
         } catch (IOException ex) {
             ex.printStackTrace();
-            logs.error("Exception caught while attempting to write to server. File: PersistenceManager.java.");
             logs.error("Error in sending request to server: returned: " + statusCode);
         }
     }
