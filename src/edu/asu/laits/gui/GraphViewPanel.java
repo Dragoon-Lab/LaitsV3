@@ -125,8 +125,6 @@ public class GraphViewPanel{
     }
     
     private void addCharts(){
-        Task t = ApplicationContext.getCurrentTask();
-        
         //if Mode is Graph Mode, Plot Graph against each not constant node
         if(mode.equals(ChartDialogMode.Graph)){
             for(Vertex currentVertex : currentGraph.vertexSet()){

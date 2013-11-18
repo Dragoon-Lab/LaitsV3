@@ -30,8 +30,8 @@ import org.apache.log4j.Logger;
  */
 public class GlobalProperties {
 
-    public static final String PROGRAM_NAME = "LAITS";
-    public static final String PROPERTIES_DIR = ".laits";
+    public static final String PROGRAM_NAME = "Dragoon";
+    public static final String PROPERTIES_DIR = ".dragoon";
     public static final String HELPSET_DESTINATION = "GraphEditor.hs";
     public static final double SCALE_INTERVALL = 0.2;
     private static GlobalProperties instance = null;

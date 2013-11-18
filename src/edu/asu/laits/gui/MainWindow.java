@@ -471,7 +471,7 @@ public class MainWindow extends JFrame {
     private void loadSavedSession() {
         try {
             String graphXML = PersistenceManager.loadSession();
-
+            
             if (!graphXML.trim().isEmpty()) {
                 getGraphEditorPane().resetModelGraph();
                 GraphLoader loader = new GraphLoader(getGraphEditorPane());
