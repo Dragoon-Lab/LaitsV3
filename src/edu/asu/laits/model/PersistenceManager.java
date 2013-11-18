@@ -122,7 +122,6 @@ public class PersistenceManager implements Runnable {
             }
 
             httpPost.setEntity(new UrlEncodedFormEntity(postVariable, "UTF-8"));
-            System.out.println("sending : " + EntityUtils.toString(httpPost.getEntity()));
             
             HttpResponse response = httpClient.execute(httpPost);
             
