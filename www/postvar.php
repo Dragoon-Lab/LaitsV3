@@ -5,148 +5,188 @@
     require "db-login.php";
     require "error-handler.php";
 
-    //connect to database
-    $mysqli = mysqli_connect("localhost", $dbuser, $dbpass, $dbname)
-            or trigger_error('Could not connect to database.' . $mysqli->error, E_USER_ERROR);
+    /*
+     * I am trying to implement error logging to go to file, whenever I use error_log, but error_handler.php is messing this up 
+    ini_set("log_errors", 1);
+    ini_set("error_log", "/tmp/php-error.log"); */
 
-    //retrieve POST variables
-    $action = mysqli_real_escape_string($mysqli, $_REQUEST['action']);
-    $id = mysqli_real_escape_string($mysqli, $_REQUEST['id']);
-    $section = mysqli_real_escape_string($mysqli, $_REQUEST['section']);
-    // Needed to identify problem for student mode work on custom problems
-    // Do not include for author mode work or for published problems.
-    $author = isset($_REQUEST['author']) ?
-            mysqli_real_escape_string($mysqli, $_REQUEST['author']) : '';
-    $problemName = mysqli_real_escape_string($mysqli, $_REQUEST['problem']);
-    $saveData = isset($_REQUEST['saveData']) ?
-            mysqli_real_escape_string($mysqli, $_REQUEST['saveData']) : '';
+    $request_handler = new RequestHandler;
+    $request_handler->process_request();
+    
+    /**
+     * Request Handler class to load and save user/author sessions.
+     * autosave_table and unsolutions tables are used to load/save session for user and authors
+     * 
+     * @author Ramayan Tiwari <rptiwari@asu.edu>
+     */
+    class RequestHandler 
+    {
+        private $id;
+        private $section;
+        private $author;
+        private $problem_name;
+        private $xml_to_save;
+        private $action;
+        private $connection;
+        
+        public function __construct() 
+        {
+            global $dbuser, $dbpass, $dbname;
+            
+            // Connect to db
+            $this->connection = mysqli_connect("localhost", $dbuser, $dbpass, $dbname)
+            or trigger_error('Could not connect to database.');
+            
+            // Initialize Variables for REQUEST
+            $this->action = $_REQUEST['action'];
+            $this->id = isset($_REQUEST['id']) ? mysqli_real_escape_string($this->connection, $_REQUEST['id']) : '';
+            $this->section = isset($_REQUEST['section']) ? mysqli_real_escape_string($this->connection, $_REQUEST['section']) : '';
+            
+            // Needed to identify problem for student mode work on custom problems
+            // Do not include for author mode work or for published problems.
+            $this->author = isset($_REQUEST['author']) ? mysqli_real_escape_string($this->connection, $_REQUEST['author']) : '';
+            $this->problem_name = isset($_REQUEST['problem']) ? mysqli_real_escape_string($this->connection, $_REQUEST['problem']) : '';
+            $this->xml_to_save = isset($_REQUEST['saveData']) ? mysqli_real_escape_string($this->connection, $_REQUEST['saveData']) : '';
 
-    // Save data needs to be URL decoded
-    $saveData = urldecode($saveData);
-    
-    //print_debug_info($id, $action, $problemName, $author, $section, $data);
-    
-    if (strcmp($action, "save") == 0) {
-        saveGraphXMLtoDatabase($id, $author, $section, $problemName, $saveData, $mysqli);
-    } 
-    
-    elseif (strcmp($action, "author_save") == 0) {
-        saveAuthorGraphXMLtoDatabase($author, $section, $problemName, $saveData, $mysqli);
-    }
-    
-    elseif (strcmp($action, "load") == 0) {
-        print loadGraphXMLfromDatabase($id, $author, $section, $problemName, $mysqli);
-    //  This should be removed.  See Bug #2222
-    }
-    
-    elseif (strcmp($action, "author_load") == 0) {
-        // This is trying to load Auhor's saved sessions from unsolutions table. supplied id is used as author
-        $result = loadAuthorGraphXMLfromDatabase($id, $section, $problemName, $mysqli);
-        if ($result === "")
-            print loadSolutionFileFromServer($problemName);
-        else {
-            //    	error_log("about to return result $result");
-            print $result;
+            // Save data needs to be URL decoded
+            $this->xml_to_save = urldecode($this->xml_to_save);  
         }
-    } 
-    else {
-        print "Unable to process request.";
-    }
-
-    function saveGraphXMLtoDatabase($id, $author, $section, $problemName, $saveData, $mysqli) {
-        $queryString = "SELECT saveData FROM autosave_table WHERE id='$id' AND author = '$author' AND section='$section' AND problemNum='$problemName'";
-        $result = $mysqli->query($queryString);
-        $num_rows = $result->num_rows;
-
-        if ($num_rows == 0) {
-            $query = "INSERT INTO autosave_table(id,author,section,problemNum,saveData) VALUES ('$id','$author','$section','$problemName','$saveData')";
-            $mysqli->query($query)
-                    or trigger_error("insert into autosave_table failed" .
-                            $mysqli->error);
-        } else {
-            $queryString = "UPDATE autosave_table SET saveData='$saveData', date = CURRENT_TIMESTAMP WHERE id='$id' AND author='$author' AND section='$section' AND problemNum='$problemName'";
-            $mysqli->query($queryString)
-                    or trigger_error("update autosave_table failed" .
-                            $mysqli->error);
+        
+        public function __destruct() {
+            $this->connection->close();
         }
-    }
+   
+        public function process_request()
+        {
+            switch ($this->action) 
+            {
+                case AvailableActions::LOAD :
+                    $this->load_graph_XML_from_DB();
+                    break;
+                case AvailableActions::SAVE :
+                    $this->save_graph_XML_to_DB();
+                    break;
 
-    function saveAuthorGraphXMLtoDatabase($author, $section, $problemName, $saveData, $mysqli) {
-        $queryString = "SELECT saveData FROM unsolutions WHERE section='$section' AND problemName='$problemName' AND author='$author'";
-        $result = $mysqli->query($queryString);
-        $num_rows = $result->num_rows;
+                case AvailableActions::AUTHOR_LOAD :
+                    $this->handle_author_load();                    
+                    break;
 
-        if ($num_rows == 0) {
-            $queryString = "INSERT INTO unsolutions(author,section,problemName,saveData) VALUES ('$author','$section','$problemName','$saveData')";
-            $mysqli->query($queryString);
-        } else {
-            $queryString = "UPDATE unsolutions SET saveData='$saveData', date = CURRENT_TIMESTAMP WHERE section='$section' AND problemName='$problemName' AND author='$author'";
-            $mysqli->query($queryString);
-        }
-    }
+                case AvailableActions::AUTHOR_SAVE :
+                    $this->save_author_graph_XML_to_DB();
+                    break;
 
-    function loadGraphXMLfromDatabase($id, $author, $section, $problemName, $mysqli) {
-        $queryString = "SELECT saveData FROM autosave_table WHERE id='$id' AND author = '$author' AND section='$section' AND problemNum='$problemName'";
-        $result = $mysqli->query($queryString)
-                or trigger_error("select from autosave_table failed" .
-                        $mysqli->error);
-        $returnString = "";
-        $num_rows = $result->num_rows;
-
-        if ($num_rows == 1) {
-            while ($row = $result->fetch_row()) {
-                //printf("%s", $row[0]);
-                $returnString .= $row[0];
+                default:
+                    //error_log("Unauthorized Request Recived ");
+                    header('HTTP/1.0 401 Unauthorized');                     
             }
         }
-        return $returnString;
-    }
+        
+        private function handle_author_load()
+        {
+            // This is trying to load Auhor's saved sessions from unsolutions table. supplied id is used as author
+            $result = $this->load_author_graph_XML_from_DB();
+            if ($result === "")
+                print $this->load_solution_file_from_server();
+            else 
+            {
+                print $result;
+            }                    
+        }
+        
+        private function save_graph_XML_to_DB() 
+        {
+            $query = "INSERT INTO autosave_table (id, author, section, problemNum, saveData) 
+                    VALUES ('$this->id','$this->author','$this->section','$this->problem_name','$this->xml_to_save') 
+                    ON DUPLICATE KEY UPDATE author=values(author), saveData=values(saveData), date = CURRENT_TIMESTAMP";
+            //error_log("Executing " . $query);
+            $this->connection->query($query) or trigger_error("insert/update to autosave_table failed" .$this->connection->error);            
+        }
 
-    function loadAuthorGraphXMLfromDatabase($author, $section, $problemName, $mysqli) {
+        private function save_author_graph_XML_to_DB() 
+        {
+            $query = "INSERT INTO unsolutions (author, section, problemName, saveData) 
+                    VALUES ('$this->author','$this->section','$this->problem_name','$this->xml_to_save') 
+                    ON DUPLICATE KEY UPDATE saveData=values(saveData), date = CURRENT_TIMESTAMP";
+            //error_log("Executing " . $query);
+            $this->connection->query($query) or trigger_error("insert/update to unsolutions failed" .$this->connection->error);            
+        }
 
-        //	error_log("loadAuthorGraphXMLfromDatabase section: $section | problem: $problemName | author: $author | ");
-        $queryString = "SELECT saveData FROM unsolutions WHERE author='$author' AND section='$section' AND problemName='$problemName'";
-        $result = $mysqli->query($queryString)
-                or trigger_error("select from unsolutions failed" .
-                        $mysqli->error);
-        $returnString = "";
-
-        $num_rows = $result->num_rows;
-        //	error_log("loadAuthorGraphXMLfromDatabase numrows = $num_rows");
-        if ($num_rows == 1) {
-            while ($row = $result->fetch_row()) {
-                //printf("%s", $row[0]);
-                $returnString .= $row[0];
+        private function load_graph_XML_from_DB() 
+        {
+            //error_log("Executing Load Action ");
+            
+            $queryString = "SELECT saveData FROM autosave_table WHERE id=? AND author=? AND section=? AND problemNum=?";
+           
+            if ($stmt = mysqli_prepare($this->connection, $queryString)) {
+                
+                $stmt -> bind_param("ssss", $this->id, $this->author, $this->section, $this->problem_name);
+                
+                $stmt->execute() or trigger_error("select from autosave_table failed" .$this->connection->error);;
+                $stmt->bind_result($save_data);
+                $stmt->fetch();
+                
+                print($save_data);                
             }
         }
-        return $returnString;
-    }
 
-    //  This should be removed.  See Bug #2222
-    //  Also, task_fetcher.php shows how to properly do a redirect.
+        private function load_author_graph_XML_from_DB() 
+        {
+            //error_log("Executing Load Author Action ");
+            
+            $queryString = "SELECT saveData FROM unsolutions WHERE author=? AND section=? AND problemName=?";
+           
+            if ($stmt = mysqli_prepare($this->connection, $queryString)) {
+                
+                $stmt -> bind_param("sss", $this->author, $this->section, $this->problem_name);
+                
+                $stmt->execute() or trigger_error("select from unsolutions failed" .$this->connection->error);;
+                $stmt->bind_result($save_data);
+                $stmt->fetch();
+                
+                print($save_data);                
+            }           
+        }
 
-    function loadSolutionFileFromServer($problemName) {
-        $host = $_SERVER['HTTP_HOST'];
-        $uri = rtrim(dirname($_SERVER['PHP_SELF']), '/\\');
-        $relativeURL = 'problems/' . $problemName . '.xml';
+        //  This should be removed.  See Bug #2222
+        //  Also, task_fetcher.php shows how to properly do a redirect.
 
-        $location = "http://$host$uri/$relativeURL";
+        private function load_solution_file_from_server() 
+        {
+            $host = $_SERVER['HTTP_HOST'];
+            $uri = rtrim(dirname($_SERVER['PHP_SELF']), '/\\');
+            $relativeURL = 'problems/' . $this->problem_name . '.xml';
 
-        $response_xml_data = "";
-        if (($response_xml_data = file_get_contents($location)) === false) {
-            return "";
-        } else {
-            return $response_xml_data;
+            $location = "http://$host$uri/$relativeURL";
+            //error_log("Loading XML from  " . $location);
+            
+            $response_xml_data = "";
+            if (($response_xml_data = file_get_contents($location)) === false) {
+                return "";
+            } else {
+                return $response_xml_data;
+            }
+        }
+
+        private function print_debug_info() 
+        {
+            echo "ID = ".$this->id."<br/>"; 
+            echo "Action = ".$this->action."<br/>"; 
+            echo "Problem Name = ".$this->problem_name."<br/>"; 
+            echo "Author = ".$this->author."<br/>"; 
+            echo "Section = ".$this->section."<br/>"; 
+            echo "XML Data = ".$this->xml_to_save."<br/>"; 
         }
     }
     
-    function print_debug_info($id, $action, $problemNum, $author, $section, $data ) {
-        echo "ID = ".$id."<br/>"; 
-        echo "Action = ".$action."<br/>"; 
-        echo "Problem Num = ".$problemNum."<br/>"; 
-        echo "Author = ".$author."<br/>"; 
-        echo "Section = ".$section."<br/>"; 
-        echo "Data = ".$data."<br/>"; 
+    /**
+     * Class specifying all valid actions that can be request by client.
+     * Used in switch case to call appropriate methods based on action.
+     */
+    class AvailableActions
+    {
+        const SAVE = "save";
+        const AUTHOR_SAVE = "author_save";
+        const LOAD = "load";
+        const AUTHOR_LOAD = "author_load";
     }
-
 ?>

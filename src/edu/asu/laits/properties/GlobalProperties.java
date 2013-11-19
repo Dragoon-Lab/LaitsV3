@@ -56,16 +56,16 @@ public class GlobalProperties {
     private transient HelpSet helpSet;
     private transient HelpBroker helpBroker;
     
-    public static Map<String, String> GENERAL_LABEL_MAP = new HashMap<> ();
-    public static Map<String, String> GENERAL_TOOLTIP_MAP = new HashMap<> ();
-    public static Map<String, String> AUTHOR_LABEL_MAP = new HashMap<> ();
-    public static Map<String, String> AUTHOR_TOOLTIP_MAP = new HashMap<> ();
-    public static Map<String, String> STUDENT_LABEL_MAP = new HashMap<> ();
-    public static Map<String, String> STUDENT_TOOLTIP_MAP = new HashMap<> ();
-    public static Map<String, String> TEST_LABEL_MAP = new HashMap<> ();
-    public static Map<String, String> TEST_TOOLTIP_MAP = new HashMap<> ();
-    public static Map<String, String> COACHED_LABEL_MAP = new HashMap<> ();
-    public static Map<String, String> COACHED_TOOLTIP_MAP = new HashMap<> ();
+    public static Map<String, String> GENERAL_LABEL_MAP = new HashMap<String, String> ();
+    public static Map<String, String> GENERAL_TOOLTIP_MAP = new HashMap<String, String> ();
+    public static Map<String, String> AUTHOR_LABEL_MAP = new HashMap<String, String> ();
+    public static Map<String, String> AUTHOR_TOOLTIP_MAP = new HashMap<String, String> ();
+    public static Map<String, String> STUDENT_LABEL_MAP = new HashMap<String, String> ();
+    public static Map<String, String> STUDENT_TOOLTIP_MAP = new HashMap<String, String> ();
+    public static Map<String, String> TEST_LABEL_MAP = new HashMap<String, String> ();
+    public static Map<String, String> TEST_TOOLTIP_MAP = new HashMap<String, String> ();
+    public static Map<String, String> COACHED_LABEL_MAP = new HashMap<String, String> ();
+    public static Map<String, String> COACHED_TOOLTIP_MAP = new HashMap<String, String> ();
     
     private static Logger logs = Logger.getLogger("DevLogs");
     /**

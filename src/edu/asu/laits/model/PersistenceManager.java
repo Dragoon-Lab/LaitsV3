@@ -67,8 +67,7 @@ public class PersistenceManager implements Runnable {
     
     public void run() {
         int statusCode = 0;
-        //String action = ApplicationContext.isAuthorMode() ? "author_save" : "save";
-        String action = "save";
+        String action = ApplicationContext.isAuthorMode() ? "author_save" : "save";
         String serviceURL = ApplicationContext.getRootURL().concat("/postvar.php");
         
         try {
@@ -104,17 +103,20 @@ public class PersistenceManager implements Runnable {
             List<NameValuePair> postVariable = new ArrayList<NameValuePair>();
 
             postVariable.add(new BasicNameValuePair("action", action));
-            postVariable.add(new BasicNameValuePair("id", ApplicationContext.getUserID()));
+            if(ApplicationContext.isAuthorMode())
+                postVariable.add(new BasicNameValuePair("author", ApplicationContext.getUserID()));
+            else
+                postVariable.add(new BasicNameValuePair("id", ApplicationContext.getUserID()));
+            
             postVariable.add(new BasicNameValuePair("section", ApplicationContext.getSection()));
             
             if (action.equals("author_save")) {
                 // Author mode save should also include boolean 'share' variable
                 // which determines whether others in section can view solution.            
-                postVariable.add(new BasicNameValuePair("problem", ApplicationContext.getCurrentTask().getTaskName()));
                 postVariable.add(new BasicNameValuePair("author", ApplicationContext.getUserID()));
-            } else {
-                postVariable.add(new BasicNameValuePair("problem", ApplicationContext.getCurrentTaskID()));
-            }
+            } 
+            // 'problem' parameter needs to be sent for all the modes - Needs Testing
+            postVariable.add(new BasicNameValuePair("problem", ApplicationContext.getCurrentTaskID()));
             
             if (action.equals("save") || action.equals("author_save")) {                
                 data = URLEncoder.encode(data, "UTF-8");
