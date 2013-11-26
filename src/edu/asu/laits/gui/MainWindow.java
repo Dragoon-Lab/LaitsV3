@@ -34,27 +34,27 @@ import edu.asu.laits.model.GraphLoader;
 import edu.asu.laits.model.GraphLoader.IncorcectGraphXMLFileException;
 import edu.asu.laits.editor.listeners.GraphChangeListener;
 import edu.asu.laits.editor.listeners.GraphPropertiesChangeListener;
-import edu.asu.laits.gui.menus.ModelMenu;
 
 import javax.swing.JScrollPane;
 import edu.asu.laits.gui.toolbars.FileToolBar;
 import edu.asu.laits.gui.toolbars.EditToolBar;
 import edu.asu.laits.gui.toolbars.ModelToolBar;
 import edu.asu.laits.gui.toolbars.ViewToolBar;
-import edu.asu.laits.logger.HttpAppender;
 import edu.asu.laits.model.HelpBubble;
 import edu.asu.laits.model.PersistenceManager;
 import edu.asu.laits.properties.GlobalProperties;
 import edu.asu.laits.properties.GraphProperties;
 import java.awt.Color;
-import java.util.logging.Level;
 import javax.swing.*;
 import org.apache.log4j.Logger;
+import org.dom4j.DocumentException;
 
 /**
  * The main window in the program. This can be opened both with an empty graph
  * and with the method openWindowWithFile which opens a new window and loads a
  * graph file into it.
+ * 
+ * @author ramayantiwari
  */
 public class MainWindow extends JFrame {
 
@@ -64,6 +64,7 @@ public class MainWindow extends JFrame {
     private JPanel toolBarPanel = null;
     private JScrollPane graphPaneScrollPane = null;
     private GraphEditorPane graphEditorPane = null;
+    
     // Number of windows opened
     private static int windowCount;
     private FileToolBar fileToolBar = null;
@@ -73,69 +74,68 @@ public class MainWindow extends JFrame {
     private List<JToolBar> toolBars = new LinkedList<JToolBar>();
     private StatusBarPanel statusBarPanel = null;
     private boolean isSituationTabSelected = true;
-   
+    
     // Label to Display Tasks
-    JLabel situationLabel;
+    JLabel situationLabel;    
+            
     /**
      * Logger
      */
     private static Logger logs = Logger.getLogger("DevLogs");
     private static Logger activityLogs = Logger.getLogger("ActivityLogs");
     private static MainWindow _instance;
-    
+
     /**
      * Method to get static instance of Main Application Window
-     * @return 
+     *
+     * @return Instance of MainWindow
      */
-    public static MainWindow getInstance(){
-        if(_instance == null){
+    public static MainWindow getInstance() {
+        if (_instance == null) {
             _instance = new MainWindow();
-            if(!ApplicationContext.isAuthorMode()){
-                 _instance.loadTask();    
+            if (!ApplicationContext.isAuthorMode()) {
+                _instance.loadTask();
             }
-            _instance.loadSession();
+            _instance.loadSavedSession();
+            _instance.attachGraphChangeListener();
             _instance.setFrameTitle();
         }
         return _instance;
     }
-    
+
     /**
      * Method to Launch the Application - called from main method
      */
-    public static void launch(){
+    public static void launch() {
         MainWindow window = getInstance();
         window.pack();
-        window.setVisible(true);       
+        window.setVisible(true);
     }
-    
+
     /**
      * Private Constructor to implement Singleton
      */
     private MainWindow() {
         super();
-        initializeFrameElements();
-      //  setFrameTitle();
-
-        GraphPropertiesChangeListener l = new MainGraphPropertiesChangeListener();
-        l.graphPropertiesChanged();
-        getGraphEditorPane().addGraphPropertiesChangeListener(l);
-
-
+        initializeFrameElements();        
         setExtendedState(MAXIMIZED_BOTH);
         setDefaultCloseOperation(DO_NOTHING_ON_CLOSE);
         windowCount++;
     }
 
+    public void attachGraphChangeListener() {
+        logs.debug("Attached Graph Change Listener");
+        GraphPropertiesChangeListener l = new MainGraphPropertiesChangeListener();
+        l.graphPropertiesChanged();
+        getGraphEditorPane().addGraphPropertiesChangeListener(l);
+    }
+    
     public void addHelpBalloon(String node, String timing) {
         if (ApplicationContext.isCoachedMode()) {
             List<HelpBubble> bubbles = ApplicationContext.getHelp(node, "MainWindow", timing);
             logs.debug(node + " MainWindow " + timing);
             if (!bubbles.isEmpty()) {
                 for (HelpBubble bubble : bubbles) {
-                    /*BalloonTipStyle style = new MinimalBalloonStyle(Color.WHITE, 0);
-                     BalloonTip myBalloonTip = new BalloonTip(this.evenMorePreciseLabel, new JLabel(bubble.getMessage()),style,Orientation.RIGHT_ABOVE, AttachLocation.ALIGNED, 20, 20, true);
-                     * */
-
                     new BlockingToolTip(this, bubble, modelToolBar.getAddNodeButton());
                 }
             }
@@ -155,10 +155,8 @@ public class MainWindow extends JFrame {
 
             window.setVisible(true);
         } catch (IOException e1) {
-            // TODO Auto-generated catch block
             e1.printStackTrace();
         } catch (IncorcectGraphXMLFileException e) {
-            // TODO Auto-generated catch block
             e.printStackTrace();
         }
     }
@@ -184,7 +182,7 @@ public class MainWindow extends JFrame {
         if (ApplicationContext.isAuthorMode()) {
             title += " : " + ApplicationContext.getCurrentTaskID();
         } else {
-            title += " : " + ApplicationContext.getCorrectSolution().getTaskName();
+            title += " : " + ApplicationContext.getCurrentTask().getTaskName();
         }
 
         this.setTitle(title);
@@ -343,11 +341,10 @@ public class MainWindow extends JFrame {
         if (graphEditorPane == null) {
             logs.debug("making new graph editor pane");
             graphEditorPane = new GraphEditorPane(this, getStatusBarPanel());
-            //getStatusBarPanel().setGraphPane(graphEditorPane);
             graphEditorPane.setAntiAliased(GlobalProperties.getInstance()
                     .isAntialiasing());
             graphEditorPane.setDoubleBuffered(GlobalProperties.getInstance()
-                    .isDoubleBuffering());            
+                    .isDoubleBuffering());
         }
         graphEditorPane.setBackgroundComponent(situationLabel);
         return graphEditorPane;
@@ -355,7 +352,6 @@ public class MainWindow extends JFrame {
 
     private class MainGraphPropertiesChangeListener implements
             GraphPropertiesChangeListener {
-
         /**
          * This shall happen when the properties of a graph is changed
          */
@@ -366,7 +362,7 @@ public class MainWindow extends JFrame {
             // Save session in Server when graph changes
             prop.addGraphChangeListener(new GraphChangeListener() {
                 public void graphChanged() {
-                    //PersistenceManager.saveSession();     
+                    PersistenceManager.saveSession();
                 }
             });
         }
@@ -457,7 +453,9 @@ public class MainWindow extends JFrame {
     private void loadTask() {
         try {
             String task = ApplicationContext.getCurrentTaskID();
-            mainMenu.getFileMenu().openTaskById(task);
+            String author = ApplicationContext.getAuthor();
+            String section = ApplicationContext.getSection();
+            mainMenu.getFileMenu().openTaskById(task,author,section);
         } catch (Exception e) {
             e.printStackTrace();
         }
@@ -466,59 +464,38 @@ public class MainWindow extends JFrame {
     /**
      * Method to Load user session form Server It will load previously saved
      * Graph from the last session of user
+     * Modified by Reid: if in Author mode and retrieving another author's graph to edit, 
+     * sets Author to the current user, effectively creating a new graph that is a 
+     * copy of the other Author's graph
      */
-    private void loadSession() {
-        String user = ApplicationContext.getUserID();
-        String section = ApplicationContext.getSection();
-        String probNum = ApplicationContext.getCurrentTaskID();
-
-        String xmlString = "";
-        HttpAppender sessionLoader = new HttpAppender();
+    private void loadSavedSession() {
         try {
-            //if user is in AUTHOR mode save solution in server
-            if (ApplicationContext.isAuthorMode()) {
-                xmlString = sessionLoader.saveGetSession("author_load", 
-                        ApplicationContext.getRootURL().concat("/postvar.php"),
-                        ApplicationContext.getUserID(), 
-                        ApplicationContext.getSection(), 
-                        ApplicationContext.getCurrentTaskID(), 
-                        "", 
-                        "");
-                
-                ModelMenu.graph = xmlString;
-                
-                if (!xmlString.trim().isEmpty()) {
-                    logs.debug("Previously authored graph found. User: " + user + " Section: " + section + " Prob: " + probNum);
+            String graphXML = PersistenceManager.loadSession();
+
+            if (!graphXML.trim().isEmpty()) {
+                getGraphEditorPane().resetModelGraph();
+                GraphLoader loader = new GraphLoader(getGraphEditorPane());
+                loader.loadFromServer(graphXML);
+                switchTutorModelPanels(false);
+                if(ApplicationContext.isAuthorMode()){
+                    ApplicationContext.setAuthor(ApplicationContext.getUserID());
+                    if(!ApplicationContext.getNewTaskID().equals("")){
+                        ApplicationContext.setCurrentTaskID(ApplicationContext.getNewTaskID());
+                    }
                 }
-            }else{
-                xmlString = sessionLoader.saveGetSession("load", 
-                        ApplicationContext.getRootURL().concat("/postvar.php"),
-                        ApplicationContext.getUserID(), 
-                        ApplicationContext.getSection(), 
-                        ApplicationContext.getCurrentTaskID(), 
-                        "", 
-                        "");
             }
-        } catch (Exception ex) {
+        } catch (IOException ex) {
             logs.error("Error loading session from database. " + ex.getMessage());
             ex.printStackTrace();
+        } catch (GraphLoader.IncorcectGraphXMLFileException ex) {
+            logs.error("Could not Load Graph : Incorrect Graph XML. " + ex.getMessage());
         }
-
-        if (!xmlString.trim().isEmpty()) {
-            logs.debug("Previous session found. User: " + user + " Section: " + section + " Prob: " + probNum);
-            getGraphEditorPane().resetModelGraph();
-            try {
-                GraphLoader loader = new GraphLoader(getGraphEditorPane());
-                loader.loadFromServer(xmlString);
-
-            } catch (GraphLoader.IncorcectGraphXMLFileException ex) {
-                logs.error("Could not Load Graph : Incorrect Graph XML. " + ex.getMessage());
-            }
-            switchTutorModelPanels(false);
+        catch (DocumentException ex) {
+            logs.error("XML Document is not parsable." + ex.getMessage());
         }
     }
-    
-    public static void refreshGraph(){
+
+    public static void refreshGraph() {
         getInstance().getGraphEditorPane().getLayoutCache().reload();
         getInstance().getGraphEditorPane().repaint();
         getInstance().validate();

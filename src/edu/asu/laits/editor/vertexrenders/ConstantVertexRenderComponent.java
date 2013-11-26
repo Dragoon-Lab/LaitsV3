@@ -5,28 +5,19 @@ import java.awt.Component;
 import java.awt.Graphics;
 import java.awt.Graphics2D;
 import java.awt.Rectangle;
-import java.awt.Stroke;
 import java.awt.geom.Point2D;
 import java.awt.geom.Rectangle2D;
 import java.util.Map;
 
 import edu.asu.laits.editor.GraphEditorConstants;
-import edu.asu.laits.editor.GraphEditorPane;
 import edu.asu.laits.editor.GraphEditorVertexView;
 import edu.asu.laits.model.Vertex;
-import edu.asu.laits.model.Vertex.VertexType;
-import edu.asu.laits.properties.ImageLoader;
 import java.awt.BasicStroke;
 import java.awt.Font;
-import java.awt.Image;
-import java.awt.Toolkit;
-import java.net.URL;
-import javax.swing.ImageIcon;
 import org.apache.log4j.Logger;
 import org.jgraph.JGraph;
 import org.jgraph.graph.CellView;
 import org.jgraph.graph.DefaultGraphCell;
-import org.jgraph.graph.VertexRenderer;
 import org.jgraph.graph.VertexView;
 
 /**
@@ -166,14 +157,12 @@ public class ConstantVertexRenderComponent   extends VertexRenderComponent {
 
     public void drawVertex(Graphics g) {
         Graphics2D g2 = (Graphics2D) g;
-        boolean isCorrect = false;
         
         // If Vertex has Defined Description, Plan and Calculations - set color to green else use Gray
         if(currentVertex.isDescriptionDone()){
             if(currentVertex.isPlanDone()){
                 if(currentVertex.isCalculationsDone()){
                     g2.setColor(new Color(0x90, 0x90, 0x00));
-                    isCorrect = true;
                 }
             }
         }else{
@@ -182,32 +171,15 @@ public class ConstantVertexRenderComponent   extends VertexRenderComponent {
         
         int[] xpoints = {0, 60, 119, 60};
         int[] ypoints = {31, 1, 31, 62};
-        if(selected && !(isCorrect)){
-            g2.setStroke(new BasicStroke(2));
-            g2.setColor(Color.GRAY);
-        }else
-            g2.setStroke(new BasicStroke(3));
-
-        if (preview || !selected) {
-            if (!useGraphBackround) {
-                Color prevColor = g2.getColor();
-                g2.setColor(background);
-                g2.fillPolygon(xpoints, ypoints, 3);
-                g2.setColor(prevColor);
-            }
-            g2.drawPolygon(xpoints, ypoints, 4);
-        } else {
-            if (!useGraphBackround) {
-                Color prevColor = g2.getColor();
-                g2.setColor(background);
-                g2.fillPolygon(xpoints, ypoints, 3);
-                g2.setColor(prevColor);
-            }
-
-            g2.drawPolygon(xpoints, ypoints, 4);
-        }
-        String vertexName = currentVertex.getName();
         
+        if(selected){
+            g2.setStroke(new BasicStroke(3.5f));            
+        } else {
+            g2.setStroke(new BasicStroke(2));
+        }
+        
+        g2.drawPolygon(xpoints, ypoints, 4);
+        String vertexName = currentVertex.getName();
         double x = getWidth()/2 - (vertexName.length() * 3 -1);
        
         g2.setFont(new Font(null, Font.PLAIN, 10));
@@ -215,6 +187,5 @@ public class ConstantVertexRenderComponent   extends VertexRenderComponent {
         
         paintVertexStatusIcons(g, currentVertex);
         paintSelectable(g);
-
     }
 }

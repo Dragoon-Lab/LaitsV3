@@ -17,15 +17,25 @@
  */
 package edu.asu.laits.model;
 
+import edu.asu.laits.editor.ApplicationContext;
+import edu.asu.laits.model.PersistenceManager;
+import edu.asu.laits.gui.MainWindow;
 import java.io.File;
 import java.io.FileWriter;
+import java.io.StringWriter;
 import java.io.IOException;
+import java.io.StringWriter;
+import java.net.URLEncoder;
+import java.util.HashSet;
 import java.util.Iterator;
+import java.util.Set;
+import org.apache.log4j.Logger;
 import org.dom4j.Document;
 import org.dom4j.DocumentHelper;
 import org.dom4j.Element;
 import org.dom4j.io.OutputFormat;
 import org.dom4j.io.XMLWriter;
+import org.apache.log4j.Logger;
 
 /**
  *
@@ -34,25 +44,55 @@ import org.dom4j.io.XMLWriter;
 public class LaitsSolutionExporter {
 
     Graph<Vertex, Edge> graph = null;
-    File solutionFileName = null;
-
-    public LaitsSolutionExporter(Graph<Vertex, Edge> g, File name) {
-        this.graph = g;
-        this.solutionFileName = name;
+    private static Logger logs = Logger.getLogger("DevLogs");
+    private static Document document = DocumentHelper.createDocument();
+    
+    public LaitsSolutionExporter() {
+        this.graph = MainWindow.getInstance().getGraphEditorPane().getModelGraph();
     }
 
-    public void export() {
+    public boolean export() {
+        String response="";
         try {
-            Document document = DocumentHelper.createDocument();
-
+            document.clearContent();
             Element task = addRootElement(document);
             addTaskDetails(task);
             addAllNodes(task);
             addDescriptionTree(task);
-            save(document);
-
+            String serviceURL = ApplicationContext.getRootURL().concat("/save_solution.php");
+            // Turn the document into a string, with pretty printing.
+            // Could use document.asXML() but then there is no formatting.
+            StringWriter stringWriter = new StringWriter();  
+            OutputFormat format = OutputFormat.createPrettyPrint();  
+            XMLWriter xmlwriter = new XMLWriter(stringWriter, format);  
+            xmlwriter.write(document);  
+            String sessionData = URLEncoder.encode(stringWriter.toString(), "UTF-8");
+            response = PersistenceManager.sendHTTPRequest("author_save",
+                    serviceURL,sessionData);
+            if (Integer.parseInt(response) == 200) {
+                logs.info("Successfully sent exported solution to server.");
+                return true;
+            } else {
+                logs.info("Solution export to server failed: "+response);
+                return false;
+            }
+        } catch (IOException ex) {
+            logs.info("Error exporting solution server: "+response); 
+            ex.printStackTrace();
+            return false;
+        }
+    }
+    
+     public boolean save_file(File solutionFileName) {
+        try {
+            OutputFormat format = OutputFormat.createPrettyPrint();
+            XMLWriter output = new XMLWriter(new FileWriter(solutionFileName), format);
+            output.write(document);
+            output.close();
+            return true;
         } catch (Exception ex) {
             ex.printStackTrace();
+            return false;
         }
     }
 
@@ -68,30 +108,36 @@ public class LaitsSolutionExporter {
 
     private Element addRootElement(Document document) {
         // Task Root element
+        Task taskToExport = ApplicationContext.getCurrentTask();
         Element task = document.addElement("Task");
-        task.addAttribute("phase", "");
-        task.addAttribute("type", "");
+        task.addAttribute("phase", taskToExport.getPhase());
+        task.addAttribute("type", taskToExport.getTaskType());
 
         return task;
     }
 
     private void addTaskDetails(Element task) {
+        Task taskToExport = ApplicationContext.getCurrentTask();
+        
         Element taskName = task.addElement("TaskName");
+        taskName.setText(taskToExport.getTaskName());
         Element taskDescription = task.addElement("TaskDescription");
+        taskDescription.setText(taskToExport.getTaskDescription());
         Element URL = task.addElement("URL");
+        URL.setText(taskToExport.getImageURL());
 
 
         Element startTime = task.addElement("StartTime");
-        startTime.setText(String.valueOf(graph.getCurrentTask().getTimes().getStartTime()));
+        startTime.setText(String.valueOf(taskToExport.getTimes().getStartTime()));
 
         Element endTime = task.addElement("EndTime");
-        endTime.setText(String.valueOf(graph.getCurrentTask().getTimes().getEndTime()));
+        endTime.setText(String.valueOf(taskToExport.getTimes().getEndTime()));
 
         Element timeStep = task.addElement("TimeStep");
-        endTime.setText(String.valueOf(graph.getCurrentTask().getTimes().getTimeStep()));
+        timeStep.setText(String.valueOf(taskToExport.getTimes().getTimeStep()));
 
         Element units = task.addElement("Units");
-        units.setText(graph.getCurrentTask().getUnits());
+        units.setText(taskToExport.getChartUnits());
     }
 
     private void addAllNodes(Element task) {
@@ -142,30 +188,27 @@ public class LaitsSolutionExporter {
     }
 
     private void addPlanDetails(Vertex vertex, Element node) {
-        if (vertex.getPlan().equals(Vertex.Plan.FIXED)) {
+        if (vertex.getVertexType().equals(Vertex.VertexType.CONSTANT)) {
             node.setText("fixed value");
-        } else if (vertex.getPlan().equals(Vertex.Plan.INCREASE_AND_DECREASE)) {
+        } else if (vertex.getVertexType().equals(Vertex.VertexType.STOCK)) {
             node.setText("said to both increase and decrease");
-        } else if (vertex.getPlan().equals(Vertex.Plan.INCREASE)) {
-            node.setText("said to increase");
-        } else if (vertex.getPlan().equals(Vertex.Plan.DECREASE)) {
-            node.setText("said to decrease");
-        } else if (vertex.getPlan().equals(Vertex.Plan.PROPORTIONAL)) {
+        } else if (vertex.getVertexType().equals(Vertex.VertexType.FLOW)) {
             node.setText("proportional to accumulator and input");
-        } else if (vertex.getPlan().equals(Vertex.Plan.RATIO)) {
-            node.setText("ratio of two quantities");
-        } else if (vertex.getPlan().equals(Vertex.Plan.DIFFERENCE)) {
-            node.setText("the difference of two quantities");
         } else {
             node.setText("UNDEFINED");
         }
     }
 
     private void addInputDetails(Vertex vertex, Element node) {
+        logs.info("Adding Input Details for Vertex: '" + vertex.getName() + "'");
+        
         // Add Input Nodes
         Iterator<Edge> edges = graph.incomingEdgesOf(vertex).iterator();
         while (edges.hasNext()) {
             Edge e = edges.next();
+            
+            System.out.println("SourceName: " + e.getSourceVertexId());
+            System.out.println("TargetName: " + e.getTargetVertexId());
             Vertex source = graph.getVertexById(e.getSourceVertexId());
             Element el = node.addElement("Name");
             el.addText(source.getName());
@@ -184,15 +227,33 @@ public class LaitsSolutionExporter {
     }
 
     private void addDescriptionTree(Element task) {
-        // Create Description Tree
+        logs.info("Adding Description Tree to Exported Solution");
+        
         Element descriptionTree = task.addElement("DescriptionTree");
-        descriptionTree.addText("To Be Filled");
-    }
-
-    private void save(Document document) throws IOException {
-        OutputFormat format = OutputFormat.createPrettyPrint();
-        XMLWriter output = new XMLWriter(new FileWriter(solutionFileName), format);
-        output.write(document);
-        output.close();
+        
+        Set<Vertex> vertexSet = graph.vertexSet();
+        Set<String> allDescriptions = new HashSet<String>();
+        
+        for(Vertex v : vertexSet){
+            allDescriptions.add(v.getCorrectDescription() + "#" +v.getName());
+            allDescriptions.addAll(v.getFakeDescription());
+            
+            for(String s : allDescriptions) {
+                String[] parts = s.split("#");
+                String description = parts[0].trim();
+                String name = (parts.length > 1)?parts[1].trim():v.getName();
+                
+                Element node = descriptionTree.addElement("Node");
+                node.addAttribute("level", "leaf");
+                
+                Element desc = node.addElement("Description");
+                desc.setText(description);
+                
+                Element nodeName = node.addElement("NodeName");
+                nodeName.setText(name);
+            }
+            
+            allDescriptions.clear();
+        }                        
     }
 }

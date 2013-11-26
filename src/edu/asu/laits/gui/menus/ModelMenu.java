@@ -20,45 +20,38 @@ package edu.asu.laits.gui.menus;
 import edu.asu.laits.editor.ApplicationContext;
 import edu.asu.laits.editor.GraphEditorPane;
 import edu.asu.laits.editor.GraphRangeEditor;
-import edu.asu.laits.gui.ForumViewPanel;
+import edu.asu.laits.gui.ExportSolutionPanel;
 import edu.asu.laits.gui.GraphViewPanel;
+import edu.asu.laits.gui.GraphViewPanel.ChartDialogMode;
 import edu.asu.laits.gui.MainWindow;
 import edu.asu.laits.gui.nodeeditor.NodeEditorView;
+import edu.asu.laits.model.Edge;
 import edu.asu.laits.model.Graph;
-import edu.asu.laits.model.LaitsSolutionExporter;
 import edu.asu.laits.model.ModelEvaluationException;
 import edu.asu.laits.model.ModelEvaluator;
-import edu.asu.laits.model.SolutionNode;
 import edu.asu.laits.model.TaskSolution;
 import edu.asu.laits.model.Vertex;
-import java.awt.BorderLayout;
-import java.awt.event.ActionEvent;
+import edu.asu.laits.model.PersistenceManager;
+import java.awt.Desktop;
 import java.awt.event.KeyEvent;
-import java.io.File;
-import java.io.FileWriter;
-import java.io.IOException;
+import java.io.UnsupportedEncodingException;
+import java.net.URL;
 import java.text.DecimalFormat;
 import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.Iterator;
 import java.util.List;
 import javax.swing.JDialog;
-import javax.swing.JFileChooser;
-import javax.swing.JFrame;
 import javax.swing.JMenu;
 import javax.swing.JMenuItem;
 import javax.swing.JOptionPane;
-import javax.swing.JPanel;
 import javax.swing.JScrollPane;
-import javax.swing.JTable;
-import javax.swing.filechooser.FileFilter;
+import org.apache.http.NameValuePair;
+import org.apache.http.message.BasicNameValuePair;
 import org.apache.log4j.Logger;
-import org.jgraph.graph.DefaultGraphCell;
-import org.jgraph.graph.DefaultPort;
 
 /**
- * Menu for all Model Functionalities. Contains Menu Items for Run Model,
- * TimeRangeEditor and Solution File Generation.
+ * Menu for all Model Functionalities. 
+ * Contains Menu Items for Run Model, TimeRangeEditor and Solution File Generation.
  *
  * @author rptiwari
  *
@@ -69,21 +62,21 @@ public class ModelMenu extends JMenu {
     private JMenuItem editTimeRangeMenuItem = null;
     private JMenuItem exportSolutionMenuItem = null;
     private JMenuItem showForumMenuItem = null;
-    private JMenu deleteNodeMenu = null;
+    private JMenuItem deleteNodeMenuItem = null;
     private JMenuItem showGraphMenuItem = null;
+    private JMenuItem showGraphTableItem = null;
     private static GraphEditorPane graphPane;
     private static MainWindow mainWindow;
-    private static Logger logs = Logger.getLogger("DevLogs");
-    private static Logger activityLogs = Logger.getLogger("ActivityLogs");
-    private HashMap<String, JMenuItem> menuMap = new HashMap<String, JMenuItem>();
-    private JFileChooser saveAsFileChooser = null;
+    
+    //delete 
     private Object[][] data;
     private String[] columnNames;
-    public static String graph;
-
+    
+    private static Logger logs = Logger.getLogger("DevLogs");
+    private static Logger activityLogs = Logger.getLogger("ActivityLogs");
+    
     /**
      * This method initializes
-     *
      */
     public ModelMenu(GraphEditorPane pane, MainWindow main) {
         super();
@@ -93,8 +86,7 @@ public class ModelMenu extends JMenu {
     }
 
     /**
-     * This method initializes this
-     *
+     * Initializes all the MenuItems and attaches actions to each menu item
      */
     private void initialize() {
         this.setText("Model");
@@ -102,20 +94,18 @@ public class ModelMenu extends JMenu {
         this.add(getAddNodeMenuItem());
         this.add(getDeleteNodeMenu());
         this.add(getShowGraphMenuItem());
+        this.add(getShowTableMenuItem());
         this.add(getshowForumMenuItem());
 
         if (ApplicationContext.isAuthorMode()) {
             this.add(getExportSolutionMenuItem());
             this.add(getEditTimeRangeMenuItem());
-            this.setGraph();
         }
-        disableShowGraphMenu();
-        disableDeleteNodeMenu();
+        // disableShowGraphMenu();         - why ?
     }
 
     /**
      * This method initializes addNodeMenuItem
-     *
      */
     private JMenuItem getAddNodeMenuItem() {
         if (addNodeMenuItem == null) {
@@ -132,17 +122,27 @@ public class ModelMenu extends JMenu {
         return addNodeMenuItem;
     }
 
-    private JMenu getDeleteNodeMenu() {
-        if (deleteNodeMenu == null) {
-            deleteNodeMenu = new JMenu("Delete Node");
-
+    /**
+     * Provides Delete Node menu items and attaches action listener.
+     * The action is called from GraphEditorPane
+     * @return 
+     */
+    private JMenuItem getDeleteNodeMenu() {
+        if (deleteNodeMenuItem == null) {
+            deleteNodeMenuItem = new JMenuItem("Delete Node");
+            deleteNodeMenuItem
+                    .addActionListener(new java.awt.event.ActionListener() {
+                public void actionPerformed(java.awt.event.ActionEvent e) {
+                    deleteNodeAction();
+                }
+            });
         }
 
-        return deleteNodeMenu;
+        return deleteNodeMenuItem;
     }
 
     /**
-     * This method initializes runModelMenuItem
+     * This method initializes runModelMenuItem.
      *
      */
     private JMenuItem getShowGraphMenuItem() {
@@ -152,12 +152,31 @@ public class ModelMenu extends JMenu {
             showGraphMenuItem
                     .addActionListener(new java.awt.event.ActionListener() {
                 public void actionPerformed(java.awt.event.ActionEvent e) {
-                    activityLogs.debug("User pressed Run Model Button.");
+                    activityLogs.debug("User pressed Show Graph Button.");
                     showNodeGraph();
                 }
             });
         }
         return showGraphMenuItem;
+    }
+    
+    /**
+     * This method initializes Show Table Menu Item in Model Menu and attaches action to it.
+     * The action is defined in this class and is used by ModelToolBar as well.
+     */
+    private JMenuItem getShowTableMenuItem() {
+        if (showGraphTableItem == null) {
+            showGraphTableItem = new JMenuItem();
+            showGraphTableItem.setText("Show Table");
+            showGraphTableItem
+                    .addActionListener(new java.awt.event.ActionListener() {
+                public void actionPerformed(java.awt.event.ActionEvent e) {
+                    activityLogs.debug("User pressed Show Table Button.");
+                    showNodeTable();
+                }
+            });
+        }
+        return showGraphTableItem;
     }
 
     /**
@@ -214,11 +233,32 @@ public class ModelMenu extends JMenu {
         return showForumMenuItem;
     }
 
+    public boolean isGraphable() {
+        if (!ApplicationContext.isAuthorMode()) {
+            if (ApplicationContext.getCorrectSolution().getNodeCount() == 1) {
+                return true;
+            }
+        }
+
+        Graph<Vertex, Edge> graph = (Graph) graphPane.getModelGraph();
+        boolean isGraphable = false;
+        for (Vertex currentVertex : graph.vertexSet()) {
+            if (!currentVertex.getVertexType().equals(Vertex.VertexType.CONSTANT)) {
+                isGraphable = true;
+                return isGraphable;
+            }
+        }
+        return isGraphable;
+    }
+
     public void showNodeGraph() {
-        activityLogs.debug("User pressed Run Model button.");
+        activityLogs.debug("User pressed Show Graph button.");
 
         if (runModel()) {
-            showChartDialog();
+            if(isGraphable())
+                showChartDialog(ChartDialogMode.Graph);
+            else
+                JOptionPane.showMessageDialog(MainWindow.getInstance(), "This model does not contain any functions or accumulators. There is nothing to graph yet");
         }
     }
 
@@ -226,7 +266,11 @@ public class ModelMenu extends JMenu {
         activityLogs.debug("User pressed Show Table button.");
 
         if (runModel()) {
-            showTableDialog();
+            if(isGraphable())
+                    showChartDialog(ChartDialogMode.Table);
+                else
+                    JOptionPane.showMessageDialog(MainWindow.getInstance(), "This model does not contain any functions or accumulators. There is nothing to show yet.");
+
         }
     }
 
@@ -282,26 +326,25 @@ public class ModelMenu extends JMenu {
         if (me.isModelComplete()) {
             if (!me.hasExtraNodes()) {
                 try {
+                    // Pre process test mode nodes are they were not processed in check/demo
+                    if(ApplicationContext.isTestMode()) {
+                        me.processTestModeNodes();
+                    }
+                    
                     me.run();
                     dumpTableValues(me);
 
-                    if (ApplicationContext.isStudentMode()
-                            || ApplicationContext.isCoachedMode()) {
+                    if (!ApplicationContext.isAuthorMode()) {
                         me.validateStudentGraph();
                     }
 
                     window.getStatusBarPanel().setStatusMessage("", true);
-                    activityLogs.debug("Model ran successfully.");
-
-                    // Enable Done Button
-                    if (ApplicationContext.isProblemSolved()) {
-                        mainWindow.getModelToolBar().enableDoneButton();
-                    }
+                    activityLogs.debug("Model ran successfully.");                    
 
                 } catch (ModelEvaluationException ex) {
                     window.getStatusBarPanel().setStatusMessage(ex.getMessage(), false);
                 }
-                graphPane.repaint();
+                MainWindow.refreshGraph();
             } else {
                 activityLogs.debug("Model had extra nodes, so user could not run the model.");
                 JOptionPane.showMessageDialog(window, "Model has extra nodes in it, please remove them before running the model.");
@@ -317,6 +360,7 @@ public class ModelMenu extends JMenu {
     }
 
     private boolean isGraphPrepared() {
+        logs.info("Checking if Graph has already been prepared.");
         boolean isEnable = true;
 
         Iterator<Vertex> allVertices = graphPane.getModelGraph().vertexSet().iterator();
@@ -331,41 +375,13 @@ public class ModelMenu extends JMenu {
         return isEnable;
     }
 
-    /*
-     *  This method is used to display table after
-     *  running the model
-     */
-    private void showTableDialog() {
-        try {
-            JFrame tableValuesFrame = new JFrame("Node Table display");
-            JPanel tableValuesPanel = new JPanel();
-            tableValuesPanel.setLayout(new BorderLayout());
-
-            if(data!=null && columnNames!=null)
-            {
-                JTable tableValuesTable = new JTable(data, columnNames);
-                JScrollPane tableValuesContainer = new JScrollPane(tableValuesTable);
-
-                tableValuesPanel.add(tableValuesContainer, BorderLayout.CENTER);
-                tableValuesFrame.getContentPane().add(tableValuesPanel);
-
-                tableValuesFrame.pack();
-                tableValuesFrame.setVisible(true);
-            }
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
-
-    }
-
-    private void showChartDialog() {
+    private void showChartDialog(ChartDialogMode mode) {
+        logs.debug("Showing Chart dialog with Mode : " + mode);
         JDialog graphValuesDialog = new JDialog(MainWindow.getInstance(), true);
-        GraphViewPanel gPanel = new GraphViewPanel(graphPane.getModelGraph(), graphValuesDialog);
+        GraphViewPanel gPanel = new GraphViewPanel(graphPane.getModelGraph(), graphValuesDialog, mode);
         graphValuesDialog.setTitle("Model Graph");
         graphValuesDialog.setSize(610, 530);
         graphValuesDialog.setLocationRelativeTo(null);
-
-        graphValuesDialog.setResizable(false);
         graphValuesDialog.setVisible(true);
     }
 
@@ -376,7 +392,6 @@ public class ModelMenu extends JMenu {
                     .getGraphLayoutCache().getCells(false, true, false, false));
 
             getEditTimeRangeMenuItem().setEnabled(true);
-
         }
     }
 
@@ -395,9 +410,8 @@ public class ModelMenu extends JMenu {
             Vertex v = new Vertex();
             v.setVertexIndex(graphPane.getModelGraph().getNextAvailableIndex());
             graphPane.addVertex(v);
-            MainWindow.getInstance().getModelToolBar().disableDeleteNodeButton();
-            disableDeleteNodeMenu();
-
+//            MainWindow.getInstance().getModelToolBar().disableDeleteNodeButton();
+            
             if (MainWindow.getInstance().isSituationSelected()) {
                 logs.debug("Switching to Model Design Panel");
                 MainWindow.getInstance().switchTutorModelPanels(false);
@@ -407,99 +421,45 @@ public class ModelMenu extends JMenu {
             NodeEditorView editor = new NodeEditorView(v);
 
         } else {
-                activityLogs.debug("User was not allowed to create new node as all the nodes were already present");
-                JOptionPane.showMessageDialog(window, "The model is already using all the correct nodes.");
-            
+            activityLogs.debug("User was not allowed to create new node as all the nodes were already present");
+            JOptionPane.showMessageDialog(window, "The model is already using all the correct nodes.");            
         }
-    }
-
-    public void deleteNodeAction() {
-
-        Object[] cells = graphPane.getSelectionCells();
-        for (Object obj : cells) {
-            DefaultGraphCell cell = (DefaultGraphCell) obj;
-            Vertex v = (Vertex) cell.getUserObject();
-            if (v != null) {
-                activityLogs.debug("User pressed Delete button for Node " + v.getName());
-
-                if (menuMap.get(v.getName()) != null) {
-                    deleteNodeMenu.remove(menuMap.get(v.getName()));
-                }
-
-            }
-
-        }
-
-        graphPane.removeSelected();
-
-        Iterator<Vertex> it = graphPane.getModelGraph().vertexSet().iterator();
-        Vertex v;
-        while (it.hasNext()) {
-            v = it.next();
-            //v.getCorrectValues().clear();
-            v.setGraphsStatus(Vertex.GraphsStatus.UNDEFINED);
-        }
-
-        activityLogs.debug("Closing NodeEditor because of Delete action.");
     }
 
     public void showForumButtonAction() {
-        JDialog forumDialog = new JDialog(MainWindow.getInstance(), true);
-        new ForumViewPanel(forumDialog);
-        forumDialog.setTitle("Discussion Forum");
-        forumDialog.setSize(610, 540);
-        forumDialog.setLocationRelativeTo(null);
+        // The forum id is sent to the application
+        String forumURL = ApplicationContext.getForumURL();
+        
+         //add variables to send
+        List<NameValuePair> postVariable = new ArrayList<NameValuePair>();
+        postVariable.add(new BasicNameValuePair("problem", ApplicationContext.getCurrentTaskID()));
+        // Only include author and section for custom problems
+        // For published problems, only need problem name.
+        if(ApplicationContext.getAuthor().length()>0){
+            postVariable.add(new BasicNameValuePair("section", ApplicationContext.getSection()));
+            postVariable.add(new BasicNameValuePair("author", ApplicationContext.getAuthor()));
+        } 
+        try {
+            // It would be more elegant to use HttpURLConnection
+            // as done in sendHTTPRequest
+           forumURL += "?" + PersistenceManager.getQuery(postVariable);
+       } catch (UnsupportedEncodingException e) {
+            e.printStackTrace();
+        }
+        // Always print to console:
+        System.out.println("forum URL:"+forumURL);
+        activityLogs.debug("forum URL: "+ forumURL);
 
-        forumDialog.setResizable(false);
-        forumDialog.setVisible(true);
-
-//        CellView[] test = graphPane.getGraphLayoutCache().getAllViews();
-//        for(CellView v : test)
-//            System.out.println("V : "+v);
+ 
+        try {
+            Desktop.getDesktop().browse(new URL(forumURL).toURI());
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
     }
 
-    public void addDeleteNodeMenu() {
-        DefaultGraphCell cell = (DefaultGraphCell) graphPane.getSelectionCell();
-        Vertex currentVertex = (Vertex) cell.getUserObject();
-
-        JMenuItem menu = new JMenuItem(currentVertex.getName());
-        menuMap.put(currentVertex.getName(), menu);
-
-        menu.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(ActionEvent e) {
-
-                JMenuItem m = (JMenuItem) e.getSource();
-
-                Object[] cells = graphPane.getGraphLayoutCache().getCells(true, true, true, true);
-                for (Object obj : cells) {
-                    DefaultGraphCell cell = (DefaultGraphCell) obj;
-                    Vertex v = (Vertex) cell.getUserObject();
-
-                    if (v != null) {
-                        //JMenuItem m = (JMenuItem)e.getSource();
-                        if (v.getName() == m.getText()) {
-                            graphPane.setSelectionCell(obj);
-                            graphPane.removeSelected();
-                            deleteNodeMenu.remove(menuMap.get(v.getName()));
-                        }
-
-                    }
-                }
-            }
-        });
-        deleteNodeMenu.add(menu);
-    }
-
-    public void removeAllDeleteMenu() {
-        deleteNodeMenu.removeAll();
-    }
-
-    public void enableDeleteNodeMenu() {
-        deleteNodeMenu.setEnabled(true);
-    }
-
-    public void disableDeleteNodeMenu() {
-        deleteNodeMenu.setEnabled(false);
+    public void deleteNodeAction(){
+        MainWindow.getInstance().getGraphEditorPane().deleteSelectedNodes();
     }
 
     public void enableShowGraphMenu() {
@@ -510,6 +470,22 @@ public class ModelMenu extends JMenu {
         showGraphMenuItem.setEnabled(false);
     }
 
+    public void enableDeleteNodeMenu(){
+        deleteNodeMenuItem.setEnabled(true);
+    }
+    
+    public void disableDeleteNodeMenu(){
+        deleteNodeMenuItem.setEnabled(false);
+    }
+    
+    public void enableShowForumMenuItem() {
+        showForumMenuItem.setEnabled(true);
+    }
+    
+    public void disableShowForumMenuItem() {
+        showForumMenuItem.setEnabled(false);
+    }
+    
     // This is really a property of the student graph
     // and doesn't have anything to do with the menus.
     // It should be moved elsewhere; Bug #2160  
@@ -554,54 +530,10 @@ public class ModelMenu extends JMenu {
     }
 
     public void doneButtonAction() {
-        activityLogs.debug("User Pressed Done button with current task as " + ApplicationContext.getCurrentTaskID());
-        writeResultToServer();
-        System.exit(0);
-    }
-
-    private void createGivenModel(TaskSolution solution, GraphEditorPane editorPane) {
-        List<SolutionNode> givenNodes = solution.getGivenNodes();
-
-        for (SolutionNode node : givenNodes) {
-            Vertex v = new Vertex();
-            v.setVertexIndex(graphPane.getModelGraph().getNextAvailableIndex());
-
-            v.setName(node.getNodeName());
-            v.setCorrectDescription(node.getCorrectDescription());
-            v.setPlan(node.getNodePlan());
-            v.setDescriptionStatus(Vertex.DescriptionStatus.CORRECT);
-            v.setPlanStatus(Vertex.PlanStatus.CORRECT);
-            v.setEquation(node.getNodeEquation());
-            v.setInitialValue(node.getInitialValue());
-
-            v.setVertexType(node.getNodeType());
-
-//            if (solution.checkNodeInputs(node.getNodeName(), node.getInputNodes()) == 0) {
-//                v.setInputsStatus(Vertex.InputsStatus.CORRECT);
-//            } else {
-//                v.setInputsStatus(Vertex.InputsStatus.INCORRECT);
-//            }
-
-            if (solution.checkNodeCalculations(v)) {
-                v.setCalculationsStatus(Vertex.CalculationsStatus.CORRECT);
-            } else {
-                v.setCalculationsStatus(Vertex.CalculationsStatus.INCORRECT);
-            }
-
-            editorPane.addVertex(v);
-        }
-
-        for (SolutionNode node : givenNodes) {
-            List<String> inputVertices = node.getInputNodes();
-            for (String vertexName : inputVertices) {
-                Vertex v1 = editorPane.getModelGraph().getVertexByName(node.getNodeName());
-                Vertex v2 = editorPane.getModelGraph().getVertexByName(vertexName);
-
-                DefaultPort p1 = editorPane.getJGraphTModelAdapter().getVertexPort(v1);
-                DefaultPort p2 = editorPane.getJGraphTModelAdapter().getVertexPort(v2);
-
-                editorPane.insertEdge(p2, p1);
-            }
+        if(ApplicationContext.isProblemSolved()){
+            activityLogs.debug("User Pressed Done button with current task as " + ApplicationContext.getCurrentTaskID());
+            writeResultToServer();
+            System.exit(0);
         }
     }
 
@@ -617,86 +549,16 @@ public class ModelMenu extends JMenu {
      * Export Author's Graph as a LAITS Solution File
      */
     private void exportSolution() {
-        int returnVal = getSaveAsFileChooser().showSaveDialog(getRootPane());
-        if (returnVal == JFileChooser.APPROVE_OPTION) {
+        JDialog exportSolutionDialog = new JDialog(MainWindow.getInstance(), true);
+        exportSolutionDialog.setTitle("Export Laits Solution");
+        JScrollPane panelScroll = new JScrollPane(new ExportSolutionPanel(exportSolutionDialog));
+        exportSolutionDialog.getContentPane().add(panelScroll);
+        
+        exportSolutionDialog.setSize(630, 700);
+        exportSolutionDialog.setLocationRelativeTo(null);
 
-            File selectedFile = getSaveAsFileChooser().getSelectedFile();
-
-            if (!selectedFile.getName().matches("(.*)(\\.xml)")) {
-
-                if (selectedFile.getName().matches("\".*\"")) {
-                    if (selectedFile.getName().length() < 3) {
-                        JOptionPane
-                                .showMessageDialog(
-                                getRootPane(),
-                                "Can not save to file "
-                                + selectedFile
-                                .getAbsolutePath()
-                                + "\nBecause of the following reason:\n"
-                                + "File name is too short.",
-                                "Unable to save file",
-                                JOptionPane.ERROR_MESSAGE);
-                        return;
-                    } else {
-                        selectedFile = new File(selectedFile.getParent()
-                                + File.separator
-                                + selectedFile.getName()
-                                .substring(
-                                1,
-                                (int) (selectedFile.getName()
-                                .length() - 2)));
-                    }
-                } else {
-                    selectedFile = new File(selectedFile.getAbsoluteFile()
-                            + ".xml");
-                }
-            }
-
-            saveToFile(selectedFile);
-        }
+        exportSolutionDialog.setResizable(false);
+        exportSolutionDialog.setVisible(true);
     }
 
-    /**
-     * Tries to save to the specified file
-     */
-    private void saveToFile(File file) {
-        LaitsSolutionExporter exporter = new LaitsSolutionExporter(graphPane.getModelGraph(), file);
-        exporter.export();
-    }
-
-    /**
-     * Updates graph String (used for saving authored problems to the server)
-     */
-    public static void updateGraph() {
-        ModelMenu mm = new ModelMenu(graphPane, mainWindow);
-        mm.setGraph();
-    }
-
-    /**
-     * Retrieves graph String (used for saving authored problems to the server)
-     */
-    private void setGraph() {
-        LaitsSolutionExporter graphBuilder = new LaitsSolutionExporter(graphPane.getModelGraph(), null);
-        graph = graphBuilder.getXML();
-    }
-
-    private JFileChooser getSaveAsFileChooser() {
-        if (saveAsFileChooser == null) {
-            saveAsFileChooser = new JFileChooser();
-            saveAsFileChooser.setDialogTitle("Export Model as LAITS Solution...");
-            saveAsFileChooser.setAcceptAllFileFilterUsed(true);
-            saveAsFileChooser.addChoosableFileFilter(new FileFilter() {
-                @Override
-                public boolean accept(File f) {
-                    return f.getName().matches(".*.xml");
-                }
-
-                @Override
-                public String getDescription() {
-                    return "Laits Solution Files (*.xml)";
-                }
-            });
-        }
-        return saveAsFileChooser;
-    }
 }

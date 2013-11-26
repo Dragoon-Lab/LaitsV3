@@ -101,22 +101,15 @@ public class FileMenu extends JMenu {
     private File currentGraphsFile;
     private MainWindow mainWindow;
 
-    public FileMenu() {
-        super();
-        initializeAuthorMenu();
-
-    }
-
     /**
-     * This method initializes
-     *
+     * Constructor to initialize FileMenu.
      */
     public FileMenu(GraphEditorPane pane, MainWindow mainWindow) {
         super();
         this.mainWindow = mainWindow;
         graphPane = pane;
 
-        if (ApplicationContext.isStudentMode()) {
+        if (!ApplicationContext.isAuthorMode()) {
             initializeTutorMenu();
         } else {
             initializeAuthorMenu();
@@ -156,7 +149,6 @@ public class FileMenu extends JMenu {
         this.add(getSaveAsFileMenuItem());
         this.add(getJSeparator2());
         this.add(getExitFileMenuItem());
-
     }
 
     /**
@@ -164,38 +156,32 @@ public class FileMenu extends JMenu {
      *
      */
     private void initializeTutorMenu() {
-        this.setText("File");
-        this.setMnemonic(KeyEvent.VK_F);
-        //getNewTaskMenuItem();
-        //this.add(getNewTaskMenuItem());
-        //this.add(getJSeparator());
-        this.add(getOpenFileMenuItem());
-        this.add(getOpenLatestFileMenu());
-        this.add(getJSeparator1());
-        this.add(getSaveFileMenuItem());
-        this.add(getSaveAsFileMenuItem());
-        this.add(getJSeparator2());
-        this.add(getExitFileMenuItem());
+        initializeAuthorMenu();
+        newFileMenuItem.setEnabled(false);
+        openFileMenuItem.setEnabled(false);
+        saveAsFileMenuItem.setEnabled(false);
+        openLatestFileMenu.setEnabled(false);
+        saveFileMenuItem.setEnabled(false);
+        saveAsFileMenuItem.setEnabled(false);
     }
 
-    
     /**
      * Method to open a new Task in Tutor Mode
      */
-    public void openTaskById(String id) {
+    public void openTaskById(String id, String author, String group) {
         TaskSolutionReader solutionReader = new TaskSolutionReader();
         try {
-            TaskSolution solution = solutionReader.loadSolution(id);
+            TaskSolution solution = solutionReader.loadSolution(id,author,group);
             ApplicationContext.setCorrectSolution(solution);
 
             activityLogs.debug("Student opened a new task ID: " + id + " - "
-                + solution.getTaskName());
+                + ApplicationContext.getCurrentTask().getTaskName());
             
-            mainWindow.loadTaskDescription(solution.getTaskName(),
-                    solution.getTaskDescription(),
-                    solution.getImageURL());
+            mainWindow.loadTaskDescription(ApplicationContext.getCurrentTask().getTaskName(),
+                    ApplicationContext.getCurrentTask().getTaskDescription(),
+                    ApplicationContext.getCurrentTask().getImageURL());
 
-            if (solution.getTaskType().equalsIgnoreCase("debug")) {
+            if (ApplicationContext.getCurrentTask().getTaskType().equalsIgnoreCase("debug")) {
                 createGivenModel(solution, graphPane);
             }
 
@@ -205,8 +191,13 @@ public class FileMenu extends JMenu {
         }
     }
 
+    /**
+     * Method to create a given model in non-author mode
+     * @param solution
+     * @param editorPane 
+     */
     private void createGivenModel(TaskSolution solution, GraphEditorPane editorPane) {
-        logs.debug("Building Given Model for Task : "+solution.getTaskName());
+        logs.debug("Building Given Model for Task : "+ApplicationContext.getCurrentTask().getTaskName());
         List<SolutionNode> givenNodes = solution.getGivenNodes();
         logs.debug("Graph Presently Contains");
         Iterator<Vertex> it = graphPane.getModelGraph().vertexSet().iterator();
@@ -242,13 +233,6 @@ public class FileMenu extends JMenu {
 
             v.setVertexType(node.getNodeType());
             
-//            int inputCheck = solution.checkNodeInputs(node.getNodeName(), node.getInputNodes());
-//            if (inputCheck == 0 || inputCheck == 3) {
-//                v.setInputsStatus(Vertex.InputsStatus.CORRECT);
-//            } else {
-//                v.setInputsStatus(Vertex.InputsStatus.INCORRECT);
-//            }
-
             if (solution.checkNodeCalculations(v)) {
                 v.setCalculationsStatus(Vertex.CalculationsStatus.CORRECT);
             } else {
@@ -256,7 +240,7 @@ public class FileMenu extends JMenu {
             }
 
             editorPane.addVertex(v);
-            ApplicationContext.setNextNodes(node.getNodeName());
+            ApplicationContext.getCorrectSolution().getTargetNodes().setNextNodes();
             logs.debug("Added Node "+v.getName()+" in the Given Model.");
         }
 
@@ -336,11 +320,7 @@ public class FileMenu extends JMenu {
      *
      */
     private void open() {
-        /*
-         * Open a save file chooser so the user can choose a file name to save
-         * to
-         */
-
+        //Open a save file chooser so the user can choose a file name to save to         
         int returnVal = getOpenFileChooser().showOpenDialog(getRootPane());
         File selectedFile = null;
         if (returnVal == JFileChooser.APPROVE_OPTION) {
@@ -352,7 +332,6 @@ public class FileMenu extends JMenu {
             }
             openFile(selectedFile);
         }
-
     }
 
     private void openTempTask(String name) {
@@ -371,7 +350,6 @@ public class FileMenu extends JMenu {
         } catch (Exception e) {
             e.printStackTrace();
         }
-
     }
 
     private void openFile(File file) {
@@ -385,11 +363,9 @@ public class FileMenu extends JMenu {
             globalProperties.addFileToLatestFiles(file);
 
         } catch (IOException e1) {
-            // TODO Auto-generated catch block
             e1.printStackTrace();
             mainWindow.getStatusBarPanel().setStatusMessage("Error in Loading Graph File", false);
         } catch (IncorcectGraphXMLFileException e) {
-            // TODO Auto-generated catch block
             mainWindow.getStatusBarPanel().setStatusMessage("Error in Loading Graph File", false);
             e.printStackTrace();
         }
@@ -406,7 +382,6 @@ public class FileMenu extends JMenu {
             openLatestFileMenu.setText("Open latest...");
             openLatestFileMenu.setIcon(new ImageIcon(getClass().getResource(
                     "/resources/icons/16x16/fileopen.png")));
-
         }
 
         return openLatestFileMenu;
@@ -500,7 +475,6 @@ public class FileMenu extends JMenu {
     }
 
     private void saveAs() {
-
         int returnVal = getSaveAsFileChooser().showSaveDialog(getRootPane());
         if (returnVal == JFileChooser.APPROVE_OPTION) {
 
@@ -667,13 +641,15 @@ public class FileMenu extends JMenu {
 
             prop.addGraphChangeListener(new GraphChangeListener() {
                 public void graphChanged() {
-                    getSaveFileMenuItem().setEnabled(true);
+                    if(ApplicationContext.isAuthorMode())
+                        getSaveFileMenuItem().setEnabled(true);
                 }
             });
 
             prop.addSaveListener(new GraphSaveListener() {
                 public void graphSaved() {
-                    getSaveFileMenuItem().setEnabled(false);
+                    if(ApplicationContext.isAuthorMode())
+                        getSaveFileMenuItem().setEnabled(false);
                 }
             });
         }

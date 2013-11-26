@@ -1,16 +1,9 @@
 package edu.asu.laits.model;
 
-import java.awt.Color;
 import java.awt.geom.Rectangle2D;
 import java.util.Map;
-import java.util.Set;
 import java.util.SortedMap;
-import java.util.SortedSet;
 import java.util.TreeMap;
-import java.util.Map.Entry;
-
-import edu.asu.laits.editor.GraphEditorConstants;
-import edu.asu.laits.model.Edge.ErrorReaderException;
 import java.util.ArrayList;
 import java.util.List;
 import net.sourceforge.jeval.Evaluator;
@@ -22,34 +15,29 @@ import org.jgraph.graph.GraphConstants;
  * Class To Hold the information about a Node in the Graph.
  */
 public class Vertex {
-    
-    private transient DefaultGraphCell jGraphVertex;
 
+    private transient DefaultGraphCell jGraphVertex;
     private double xPosition, yPosition;
-    private boolean useGraphBackround = true;
-    private Color backgroundColor = Color.WHITE;
-    private Color foregroundColor = Color.BLACK;
     private VertexType type = VertexType.DEFAULT;
-    
     private String name = "";
     private String correctDescription = "";
     private String plan = "";
-    
     // Status of All the Tabs
     private DescriptionStatus descriptionStatus;
     private PlanStatus planStatus;
     private CalculationsStatus calculationsStatus;
     private GraphsStatus graphsStatus;
-    
     private double initialValue;
     private String equation;
     private transient List<Double> correctValues;
-    
     transient private SortedMap<String, String> properties = new TreeMap<String, String>();
     //transient public static int vertIndexCount = 0;
     private int vertexIndex;
-    
-    /** Logger */
+    // List to store Fake Description List for each vertex
+    private List<String> fakeDescription;
+    /**
+     * Logger
+     */
     private static Logger logs = Logger.getLogger("DevLogs");
     private static Logger activityLogs = Logger.getLogger("ActivityLogs");
 
@@ -62,50 +50,60 @@ public class Vertex {
         calculationsStatus = CalculationsStatus.UNDEFINED;
         graphsStatus = GraphsStatus.UNDEFINED;
         correctValues = new ArrayList<Double>();
-        equation = "";        
+        fakeDescription = new ArrayList<String>();        
+        equation = "";
     }
-    
-    public int getVertexIndex(){
+
+    public int getVertexIndex() {
         return vertexIndex;
     }
-    
-    public void setVertexIndex(int index){
+
+    public void setVertexIndex(int index) {
         vertexIndex = index;
-       
+
         xPosition = 200 * (vertexIndex % 4) + 480;
-        yPosition = 200 * (vertexIndex / 4) + 60 ;
+        yPosition = 200 * (vertexIndex / 4) + 60;
     }
-    
+
     public String getName() {
         return name;
     }
-    
-    public void setName(String label) throws IllegalArgumentException{
+
+    public void setName(String label) throws IllegalArgumentException {
         Evaluator eval = new Evaluator();
-        try{
+        try {
             eval.isValidName(label);
-        }catch(IllegalArgumentException e){
+        } catch (IllegalArgumentException e) {
+            e.printStackTrace();
             logs.debug(e.getMessage());
-            throw new IllegalArgumentException(e.getMessage());            
+            throw new IllegalArgumentException(e.getMessage());
         }
         this.name = label;
     }
-    
-    public String getCorrectDescription(){
+
+    public String getCorrectDescription() {
         return correctDescription;
     }
-    
-    public void setCorrectDescription(String desc){
+
+    public void setCorrectDescription(String desc) {
         this.correctDescription = desc;
     }
-    
-    public String getPlan(){
+
+    public List<String> getFakeDescription() {
+        return fakeDescription;
+    }
+
+    public void setFakeDescription(List<String> description) {
+        this.fakeDescription = description;
+    }
+
+    public String getPlan() {
         return plan;
     }
-    
-    public void setPlan(String plan){
+
+    public void setPlan(String plan) {
         this.plan = plan;
-    }    
+    }
 
     public SortedMap<String, String> getProperties() {
         return properties;
@@ -119,42 +117,47 @@ public class Vertex {
         return type;
     }
 
+    /**
+     * Method to change VertexType.
+     *
+     * @param shape
+     */
     public void setVertexType(VertexType shape) {
         this.type = shape;
     }
 
-    public DescriptionStatus getDescriptionStatus(){
+    public DescriptionStatus getDescriptionStatus() {
         return descriptionStatus;
     }
-    
-    public void setDescriptionStatus(DescriptionStatus status){
+
+    public void setDescriptionStatus(DescriptionStatus status) {
         this.descriptionStatus = status;
     }
-    
-    public PlanStatus getPlanStatus(){
+
+    public PlanStatus getPlanStatus() {
         return planStatus;
     }
-    
-    public void setPlanStatus(PlanStatus status){
+
+    public void setPlanStatus(PlanStatus status) {
         this.planStatus = status;
     }
-    
-    public CalculationsStatus getCalculationsStatus(){
+
+    public CalculationsStatus getCalculationsStatus() {
         return calculationsStatus;
     }
-    
-    public void setCalculationsStatus(CalculationsStatus status){
+
+    public void setCalculationsStatus(CalculationsStatus status) {
         this.calculationsStatus = status;
     }
-           
-    public GraphsStatus getGraphsStatus(){
+
+    public GraphsStatus getGraphsStatus() {
         return graphsStatus;
     }
-    
-    public void setGraphsStatus(GraphsStatus status){
+
+    public void setGraphsStatus(GraphsStatus status) {
         this.graphsStatus = status;
     }
-    
+
     public double getXPosition() {
         return xPosition;
     }
@@ -170,50 +173,53 @@ public class Vertex {
     public void setYPosition(double position) {
         yPosition = position;
     }
-    
-    public List<Double> getCorrectValues(){
+
+    public List<Double> getCorrectValues() {
         return correctValues;
     }
 
-    public void resetCorrectValues(){
+    public void resetCorrectValues() {
         correctValues = new ArrayList<Double>();
     }
-    
-    public double getInitialValue(){
+
+    public double getInitialValue() {
         return initialValue;
     }
-    
-    public void setInitialValue(double input){
+
+    public void setInitialValue(double input) {
         initialValue = input;
     }
-    
-    public String getEquation(){
+
+    public String getEquation() {
         return equation;
-    }    
-    
-    public void setEquation(String input){
-        equation = input;
     }
-    
-    public String toString() {
-        return name;
+
+    public void setEquation(String input) {
+        equation = input;
     }
 
     public Object clone() {
         Vertex vertexInfoClone = new Vertex();
         vertexInfoClone.setXPosition(xPosition);
         vertexInfoClone.setYPosition(yPosition);
-        vertexInfoClone.setForegroundColor(new Color(foregroundColor.getRGB()));
-        vertexInfoClone.setBackgroundColor(new Color(backgroundColor.getRGB()));
-        vertexInfoClone.setUseGraphBackround(useGraphBackround);
         vertexInfoClone.setName(new String(name));
         vertexInfoClone.setVertexType(type);
         vertexInfoClone.setEquation(equation);
+        vertexInfoClone.setInitialValue(initialValue);
+        vertexInfoClone.setVertexIndex(vertexIndex);
+        if(this.correctValues != null)
+            vertexInfoClone.getCorrectValues().addAll(this.correctValues);
+        vertexInfoClone.setCorrectDescription(correctDescription);
+        if(this.fakeDescription != null)
+        vertexInfoClone.getFakeDescription().addAll(this.fakeDescription);
+        vertexInfoClone.setPlan(plan);
+        vertexInfoClone.setDescriptionStatus(descriptionStatus);
+        vertexInfoClone.setPlanStatus(planStatus);
+        vertexInfoClone.setCalculationsStatus(calculationsStatus);
+        vertexInfoClone.setGraphsStatus(graphsStatus);
 
         return vertexInfoClone;
     }
-
-    
 
     public DefaultGraphCell getJGraphVertex() {
         return jGraphVertex;
@@ -230,122 +236,117 @@ public class Vertex {
             Map<Object, Object> map = jGraphVertex.getAttributes();
             Rectangle2D vertexBounds = GraphConstants.getBounds(map);
             type = getVertexType();
-            backgroundColor = GraphEditorConstants.getBackground(map);
-            foregroundColor = GraphEditorConstants.getForeground(map);
-            useGraphBackround = GraphEditorConstants.getUseGraphBackground(map);
             xPosition = vertexBounds.getX();
             yPosition = vertexBounds.getY();
-            equation = getEquation();           
-
+            equation = getEquation();  
+            fakeDescription = getFakeDescription();
         } catch (Exception e) {
+            e.printStackTrace();
             throw new VertexReaderException();
         }
-
     }
 
-    
-
-    public Color getBackgroundColor() {
-        return backgroundColor;
-    }
-
-    public void setBackgroundColor(Color backgroundColor) {
-        this.backgroundColor = backgroundColor;
-    }
-
-    public Color getForegroundColor() {
-        return foregroundColor;
-    }
-
-    public void setForegroundColor(Color foregroundColor) {
-        this.foregroundColor = foregroundColor;
-    }
-
-    public boolean isUseGraphBackround() {
-        return useGraphBackround;
-    }
-
-    public void setUseGraphBackround(boolean useGraphBackround) {
-        this.useGraphBackround = useGraphBackround;
-    }
-    
-    
     public class VertexReaderException extends Exception {
     }
-    
-    
+
     /**
      * An enumeration with the possible shapes of a vertex
      */
     public enum VertexType {
+
         DEFAULT, STOCK, FLOW, CONSTANT
     }
-    
+
     /**
      * An enumeration with the possible Plans of a vertex
-    */
-    public enum Plan{
+     */
+    public enum Plan {
+
         UNDEFINED, FIXED, INCREASE, DECREASE, INCREASE_AND_DECREASE,
-        PROPORTIONAL, DIFFERENCE, RATIO        
+        PROPORTIONAL, DIFFERENCE, RATIO
     }
-    
+
     /**
      * An enumeration with the possible Status of Inputs of a vertex
-    */
-    public enum DescriptionStatus{
+     */
+    public enum DescriptionStatus {
+
         UNDEFINED, CORRECT, INCORRECT, GAVEUP
     }
-    
+
     /**
      * An enumeration with the possible Status of Inputs of a vertex
-    */
-    public enum PlanStatus{
+     */
+    public enum PlanStatus {
+
         UNDEFINED, MISSEDFIRST, CORRECT, INCORRECT, GAVEUP
     }
-    
+
     /**
      * An enumeration with the possible Status of Inputs of a vertex
-    */
-    public enum InputsStatus{
+     */
+    public enum InputsStatus {
+
         UNDEFINED, CORRECT, INCORRECT, GAVEUP
     }
-    
+
     /**
      * An enumeration with the possible Status of Calculations of a vertex
-    */
-    public enum CalculationsStatus{
+     */
+    public enum CalculationsStatus {
+
         UNDEFINED, CORRECT, INCORRECT, GAVEUP
     }
-    
+
     /**
      * An enumeration with the possible Status of Graphs of a vertex
-    */
-    public enum GraphsStatus{
+     */
+    public enum GraphsStatus {
+
         UNDEFINED, CORRECT, INCORRECT, GAVEUP
     }
-    
-    public boolean isDescriptionDone(){
-        if(descriptionStatus.equals(Vertex.DescriptionStatus.CORRECT) || descriptionStatus.equals(Vertex.DescriptionStatus.GAVEUP)){
+
+    public boolean isDescriptionDone() {
+        if (descriptionStatus.equals(Vertex.DescriptionStatus.CORRECT) || descriptionStatus.equals(Vertex.DescriptionStatus.GAVEUP)) {
             return true;
         } else {
             return false;
         }
     }
+
+    public boolean isPlanDone() {
+        if (planStatus.equals(Vertex.PlanStatus.CORRECT) || planStatus.equals(Vertex.PlanStatus.GAVEUP)) {
+            return true;
+        } else {
+            return false;
+        }
+    }
+
+    public boolean isCalculationsDone() {
+        if (calculationsStatus.equals(Vertex.CalculationsStatus.CORRECT) || calculationsStatus.equals(Vertex.CalculationsStatus.GAVEUP)) {
+            return true;
+        } else {
+            return false;
+        }
+    }
+
+    /**
+     * Print Vertex Information for debugging purposes.
+     */
+    @Override
+    public String toString() {
+        StringBuffer sb = new StringBuffer();
         
-    public boolean isPlanDone(){
-        if(planStatus.equals(Vertex.PlanStatus.CORRECT) || planStatus.equals(Vertex.PlanStatus.GAVEUP)){
-            return true;
-        } else {
-            return false;
-        }
-    }
+        sb.append("NodeName : " + getName() + "\n");
+        sb.append("NodeDesc : " + getCorrectDescription() + "\n");
+        sb.append("Fake Desc: " + getFakeDescription() + "\n");
+        sb.append("NodeType : " + getVertexType() + "\n");
+        sb.append("NodeInitialVal : " + getInitialValue() + "\n");
+        sb.append("NodeEquation : " + getEquation() + "\n");
+        sb.append("DescStatus : " + getDescriptionStatus() + "\n");
+        sb.append("PlanStatus : " + getPlanStatus() + "\n");
+        sb.append("CalcStatus : " + getCalculationsStatus() + "\n");        
         
-    public boolean isCalculationsDone(){
-        if(calculationsStatus.equals(Vertex.CalculationsStatus.CORRECT) || calculationsStatus.equals(Vertex.CalculationsStatus.GAVEUP)){
-            return true;
-        } else {
-            return false;
-        }
+        return sb.toString();
     }
-    
 }

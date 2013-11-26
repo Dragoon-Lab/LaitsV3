@@ -5,6 +5,7 @@ package edu.asu.laits.gui.nodeeditor;
 
 import edu.asu.laits.editor.ApplicationContext;
 import edu.asu.laits.model.SolutionNode;
+import edu.asu.laits.model.TargetNodes;
 import edu.asu.laits.model.TaskSolution;
 import edu.asu.laits.model.Vertex;
 import java.util.List;
@@ -21,6 +22,7 @@ public class CoachedModeNodeEditorController extends NodeEditorController {
 
     private NodeEditorView view;
     private Vertex openVertex;
+    private TargetNodes targetNodes;
     private static Logger logs = Logger.getLogger("DevLogs");
     private static Logger activityLogs = Logger.getLogger("ActivityLogs");
 
@@ -28,6 +30,7 @@ public class CoachedModeNodeEditorController extends NodeEditorController {
         super(view, openVertex);
         this.view = view;
         this.openVertex = openVertex;
+        this.targetNodes = ApplicationContext.getCorrectSolution().getTargetNodes();
     }
 
     public void initActionButtons() {
@@ -42,6 +45,7 @@ public class CoachedModeNodeEditorController extends NodeEditorController {
             if (openVertex.isDescriptionDone()) {
                 view.getDescriptionPanel().setEditableTree(false);
                 view.getPlanPanel().refreshPanel();
+                targetNodes.setNextNodes();
                 if(openVertex.isPlanDone() && newTab == NodeEditorView.CALCULATIONS){
                     return newTab;
                 } else if(!openVertex.isPlanDone() && newTab == NodeEditorView.CALCULATIONS){
@@ -138,16 +142,16 @@ public class CoachedModeNodeEditorController extends NodeEditorController {
         List<SolutionNode> correctNodeNames = solution.getSolutionNodes();
         
         String giveupNode = null;
+        logs.debug("Searching for next node: " + targetNodes.getFirstNextNode(openVertex));
         for (SolutionNode name : correctNodeNames) {
-            if (name.getNodeName().equalsIgnoreCase(ApplicationContext.getFirstNextNode())) {
+            if (name.getNodeName().equalsIgnoreCase(targetNodes.getFirstNextNode(openVertex))) {
                 giveupNode = name.getNodeName();
-                ApplicationContext.setNextNodes(name.getNodeName());
                     //                  ApplicationContext.nextCurrentOrder()
                 break;
             }
         }
         if (giveupNode == null) {
-            view.setEditorMessage("All Nodes are already being used in the Model.", true);
+            view.setEditorMessage("All Nodes are already being used in the Model.");
             return null;
         }
         
@@ -159,5 +163,13 @@ public class CoachedModeNodeEditorController extends NodeEditorController {
     public void planPanelRadioClicked(){
         TaskSolution solution = ApplicationContext.getCorrectSolution();
         view.checkPlanPanel(solution);
+    }
+    
+    /**
+     * Initialize CreateNewNodeDialog for Coached Mode.
+     * @param dialog 
+     */
+    public void initializeCreateNewNodeDialog(CreateNewNodeDialog dialog){
+        // Needs specific implementation for this mode
     }
 }

@@ -54,15 +54,25 @@ DROP TABLE IF EXISTS `autosave_table`;
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
 /*!40101 SET character_set_client = utf8 */;
 CREATE TABLE `autosave_table` (
-  `id` varchar(20) NOT NULL,
-  `section` varchar(20) NOT NULL,
-  `problemNum` varchar(20) NOT NULL,
+  `id` varchar(30) NOT NULL,
+  `section` varchar(30) NOT NULL,
+  `problemNum` varchar(30) NOT NULL,
+  `author` VARCHAR(30) DEFAULT NULL COMMENT 'for custom problems',
   `saveData` text NOT NULL,
   `date` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP, 
   primary key(id, section, problemNum)
 ) ENGINE=MyISAM DEFAULT CHARSET=latin1;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
+DROP TABLE IF EXISTS `unsolutions`;
+CREATE TABLE `unsolutions` (
+  `author` varchar(30) NOT NULL,
+  `section` varchar(30) NOT NULL,
+  `problemName` varchar(30) NOT NULL,
+  `saveData` text NOT NULL,
+  `date` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP, 
+  primary key(author, section, problemName)
+) ENGINE=MyISAM DEFAULT CHARSET=latin1 COMMENT 'Work-around for the java version, which has two xml formats.';
 
 --
 -- Table structure for table `solutions`
@@ -81,23 +91,6 @@ CREATE TABLE `solutions` (
     `solutionGraph` TEXT NOT NULL, 
     PRIMARY KEY(section, problemName, author)
     ) ENGINE=MyISAM DEFAULT CHARSET=latin1;
-/*!40101 SET character_set_client = @saved_cs_client */;
-
-
---
--- Table structure for table `tasks`
---
-
-DROP TABLE IF EXISTS `tasks`;
-/*!40101 SET @saved_cs_client     = @@character_set_client */;
-/*!40101 SET character_set_client = utf8 */;
-CREATE TABLE `tasks` (
-  `task_id` int(4) NOT NULL,
-  `task_name` varchar(50) NOT NULL,
-  `task_phase` varchar(30) NOT NULL,
-  `task_details` text NOT NULL,
-  PRIMARY KEY (`task_id`)
-) ENGINE=MyISAM DEFAULT CHARSET=latin1;
 /*!40101 SET character_set_client = @saved_cs_client */;
 /*!40103 SET TIME_ZONE=@OLD_TIME_ZONE */;
 

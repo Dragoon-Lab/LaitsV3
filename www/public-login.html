@@ -136,9 +136,15 @@
 
         function set_problems(mode,category){
              var map = {
-             'Easy' : {
+             'Introductory' : {
+	          'jared1' : "Jared's weight",
+	          'jared2' : "Jared &amp Oprah",
+	          'jared3' : "Jared &amp; Oprah +",
+	          'jared4' : "Jared &amp; Oprah *",
+	          'dodos' : "Dodo extinction",
+	          'rabbits' : "Rabbit population",	          
 	          105:'Intro problem 1',106:'Intro problem 2',
-                  107:'Intro problem 3',108:'Intro problem 4'
+                  107:'Intro problem 3',108:'Intro problem 4',
 	     },
              'Training': {
                   74:'Dying orchard',92:'Bilge water',94:'Rust',
@@ -155,6 +161,12 @@
                   // ,113:'Busy Hospital',
                   // 115:'Widget Stocking',114:'ObscureFlix',
              },
+	     'Urban Waterfowl' : {
+                  '201' : 'Waterfowl 1',
+                  '202' : 'Waterfowl 2',
+                  '203' : 'Waterfowl 3',
+                  '204' : 'Waterfowl & cats'
+	     },
 	     'Isle Royale': {
                   'isle1' : 'Moose population 1',
                   'isle2' : 'Moose population 2',
@@ -162,6 +174,10 @@
                   'isle4' : 'Moose population 4',
                   'isle5' : 'Wolves',
                   'isle6' : 'Moose and Wolves'
+             },
+	     'Calories': {
+                  'calorie-male' : 'Weight and Calories: male',
+                  'calorie-female' : 'Weight and Calories: female'
              },
 	     'Kinematics': {
                   '1dfall1' : 'Fall from building 1',
@@ -204,6 +220,7 @@
                         <select name="mode" id="mode">
                             <option value="STUDENT">Student</option>
                             <option value="COACHED">Coached</option>
+                            <option value="TEST">Test</option>
                         </select>
                     </div>
 
@@ -213,10 +230,11 @@
                            <!-- These should be filled dynamically from map, Bug #2183 --> 
                            <option>Isle Royale</option> 
                            <option>Kinematics</option> 
-                           <option>Easy</option>
+                           <option>Calories</option> 
+                           <option>Urban Waterfowl</option> 
+                           <option>Introductory</option>
                            <option>Training</option>
                            <option>Challenge</option>
-			    
                         </select>
                     </div>
 
@@ -240,12 +258,9 @@
                         Open problem
                         </button>
                     </div>
-
-
         </form>
 
         <form action="startup.php" method="POST" class="problem-selection-form">
-
             <h2>Author a problem</h2>
 
                     <div class="fieldgroup">

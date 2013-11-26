@@ -61,12 +61,49 @@ If `false`, then only the author may view the problem. If `true`, then
 all students in a section may view that problem. Custom problems cannot
 be viewed by users outside of a section.
 
+## Variable names identifying users and problems ##
+
+There are two issues: we might want to specify short
+names for http requests and we may in the future slowly switch over to
+using numerical IDs for some quantities, so that we can abstract away 
+from user, section, and problem names.
+(See the way things are done in phpBB for an example.)
+
+Here is a starting list.  Note that some items should not have an id.  The categories are *name*, *short name*, *id*, *short id*:
+
+- user, u userID, uid
+- section, s, sectionID, sid
+- problem, p, problemID, pid
+- author, au (for custom problems, so pid would be associated ID)
+- newProblem, np, newProblemID, npid
+- solutionXML, sx  (for solution text)
+- action, ac
+- mode, m
+- forumURL, f
+- location (what is this?)
+- logText (for msg)
+- logger
+- level
+- share
+
+This list is not written in stone:  please correct/change/improve as you 
+see fit.  The idea is not to change this all at once, especially in the 
+java code, since we are switching over to Javascript.  However, any 
+Javascript should be consistent with this list.
+
+Date should not be passed to the server.  We should always be
+using server timestamps for absolute time.  The logging json will contain
+a relative time integer in seconds.
+
 ## Access to the custom problem solution graphs ##
 
-
-Currently, in author mode, the user can explicitly save a problem solution graph
-on the local machine via a menu selection. Any sharing with other students
-is done outside the system. There is no autosave.
+In the Java version, the state associated with a problem solution
+has two forms:  an internal form and an exported form.  The java
+client cannot read the exported form in author mode.
+The internal form is stored in the table `unsolutions` and the 
+exported form is stored in the table `solutions`.  In the Javascript
+version, there will be only one form, which will be stored in
+the `solutions` table.
 
 To retrieve custom problems, the script `task_fetcher.php`
 looks for a matching problem in the `solutions` table, then attempts

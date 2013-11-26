@@ -58,7 +58,6 @@ public class Edge {
             throws ErrorReaderException {
         // Fetch the id of the source and target vertex
         try {
-
             sourceVertexId = g.getEdgeSource(this).getVertexIndex();
             targetVertexId = g.getEdgeTarget(this).getVertexIndex();
         } catch (Exception e) {

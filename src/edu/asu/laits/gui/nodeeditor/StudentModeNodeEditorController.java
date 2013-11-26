@@ -18,6 +18,7 @@
 package edu.asu.laits.gui.nodeeditor;
 
 import edu.asu.laits.editor.ApplicationContext;
+import edu.asu.laits.gui.MainWindow;
 import edu.asu.laits.model.SolutionNode;
 import edu.asu.laits.model.TaskSolution;
 import edu.asu.laits.model.Vertex;
@@ -51,8 +52,6 @@ public class StudentModeNodeEditorController extends NodeEditorController {
      * @return new tab id
      */
     public int processTabChange(int oldTab, int newTab) {
-        view.setEditorMessage("", true);
-
         if (oldTab == NodeEditorView.DESCRIPTION) {
             if (openVertex.isDescriptionDone()) {
                 view.getDescriptionPanel().setEditableTree(false);
@@ -133,14 +132,14 @@ public class StudentModeNodeEditorController extends NodeEditorController {
         String giveupNode = null;
 
             for (SolutionNode name : correctNodeNames) {
-                if (view.getGraphPane().getModelGraph().getVertexByName(name.getNodeName()) == null) {
+                if (MainWindow.getInstance().getGraphEditorPane().getModelGraph().getVertexByName(name.getNodeName()) == null) {
                     giveupNode = name.getNodeName();
                     break;
                 }
             }
         
         if (giveupNode == null) {
-            view.setEditorMessage("All Nodes are already being used in the Model.", true);
+            view.setEditorMessage("All Nodes are already being used in the Model.");
             return null;
         }
         
@@ -151,5 +150,13 @@ public class StudentModeNodeEditorController extends NodeEditorController {
     public void planPanelRadioClicked(){
         TaskSolution solution = ApplicationContext.getCorrectSolution();
         view.checkPlanPanel(solution);
+    }
+    
+    /**
+     * Initialize CreateNewNodeDialog for Coached Mode.
+     * @param dialog 
+     */
+    public void initializeCreateNewNodeDialog(CreateNewNodeDialog dialog){
+        // Needs specific implementation for this mode
     }
 }

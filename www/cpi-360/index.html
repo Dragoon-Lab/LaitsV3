@@ -1,0 +1,75 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<html>
+<head>
+    <meta http-equiv="Content-type" content="text/html;charset=UTF-8">
+
+    <title>CPI 360: Informatics and Decision Making</title>
+
+
+
+</head>
+<body>
+<div id="content">
+  <h1>Dragoon Homework</h1>
+
+  <p>Here are some problems to get you started with using Dragoon.&nbsp;
+You can use the <a href="../intro-handout.pdf">handout</a> to help you.<br>
+Enter your name and select a problem to work on:</p>
+
+  <form action="/devel/startup.php" method="POST" name="problem-selection-form" onsubmit="return validateForm()">
+    <!-- This gets overwritten on form submit -->
+    <input type="hidden" name="mode" value="COACHED">
+    <input type="hidden" id="section" name="section" value="cpi-360"/>
+    <p>
+    <label for="username">User name: </label>
+    <input id="username" type="text" name="username" />
+    <p>
+    <select id="problem" name="problem_id">
+      <option  value="jared2">Jared &amp; Oprah</option>
+      <option  value="jared3">Jared &amp; Oprah +</option>
+      <option  value="jared4">Jared &amp; Oprah *</option>
+      <option  value="dodos">Dodo extinction</option>
+      <option  value="rabbits">Rabbit population</option>
+      <option  value="99">Venice</option>
+      <option  value="94">Rust</option>
+      <option  value="parkinglot">Front to back lots</option>
+      <option  value="toilet">Toilet tank</option>
+      <option  value="barrels">Two barrels</option>
+      <option  value="97">Bank account</option>
+      <option  value="92">Bilge water</option>
+      <option  value="80">Meto singles club</option>
+      <option  value="weighttoss">Weight toss</option>
+      <option  value="evaporation">Accelerating evaporation</option>
+      <option  value="epidemic">Infections</option>
+      <option  value="113">Busy hospital</button>
+    </select>
+    <p>
+    <button type="submit" value="Continue" class="submit">
+       Open problem
+     </button>
+
+  </form>                   
+</div>
+
+<script type="text/javascript">
+function validateForm(){
+     var z={'jared1':'COACHED','jared2':'COACHED','jared3':'COACHED','jared4':'COACHED',
+            'dodos':'COACHED','rabbits':'COACHED','99':'TEST','94':'TEST',
+            'parkinglot':'STUDENT','toilet':'STUDENT','barrels':'STUDENT',
+            '97':'STUDENT','92':'TEST','80':'STUDENT','weighttoss':'STUDENT',
+            'evaporation':'STUDENT','epidemic':'STUDENT','113':'TEST'};
+     var p=document.forms["problem-selection-form"]["problem_id"].value;
+     console.log("Setting mode for "+p+" to "+z[p]);
+     document.forms["problem-selection-form"]["mode"].value=z[p];
+
+     var x=document.forms["problem-selection-form"]["username"].value;
+     if (x==null || x=="")
+     {
+         alert("Please enter a name.");
+         return false;
+     }
+ }
+</script>
+
+</body>
+</html>

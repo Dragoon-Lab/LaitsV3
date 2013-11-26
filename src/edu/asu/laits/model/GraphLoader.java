@@ -24,15 +24,19 @@ import java.util.HashMap;
 import edu.asu.laits.editor.GraphEditorPane;
 import edu.asu.laits.editor.ApplicationContext;
 import edu.asu.laits.properties.GraphProperties;
-import edu.asu.laits.logger.HttpAppender;
-import org.jgrapht.ext.JGraphModelAdapter;
 
 import com.thoughtworks.xstream.XStream;
-import com.thoughtworks.xstream.core.BaseException;
 import com.thoughtworks.xstream.io.xml.DomDriver;
+import java.util.Iterator;
 import java.util.List;
-import java.util.logging.Level;
+import java.util.Scanner;
+import net.sourceforge.jeval.EvaluationException;
+import net.sourceforge.jeval.Evaluator;
 import org.apache.log4j.Logger;
+import org.dom4j.Document;
+import org.dom4j.DocumentException;
+import org.dom4j.DocumentHelper;
+import org.dom4j.Element;
 import org.jgraph.graph.DefaultPort;
 
 /**
@@ -80,8 +84,9 @@ public class GraphLoader {
     }
 
     public void loadFromServer(String xmlString)
-            throws IncorcectGraphXMLFileException {
-
+            throws IncorcectGraphXMLFileException, DocumentException {
+        String processedXML = preprocessOldVersionXML(xmlString);
+        
         // Used to load objects from xml
         XStream xstream = new XStream(new DomDriver());
 
@@ -92,7 +97,7 @@ public class GraphLoader {
 
         GraphFile graphFile = null;
         try {
-            graphFile = (GraphFile) xstream.fromXML(xmlString);
+            graphFile = (GraphFile) xstream.fromXML(processedXML);
         } catch (Exception ex) {
             // Could not read the XML file
             logs.debug(ex.getMessage());
@@ -102,27 +107,60 @@ public class GraphLoader {
         }
         getGraph(graphFile, null);
     }
+    
+    private String preprocessOldVersionXML(String xmlString) throws DocumentException {
+        logs.info("Processing GraphXML to remove unused elements");
+        
+        Document document = DocumentHelper.parseText(xmlString);
+        Element el = document.getRootElement();
+        Element prop = el.element("properties");
+        if(prop != null) {
+            el.remove(prop);
+        }
+        
+        Element vList = el.element("vertexList");
+        if(vList != null) {
+            Iterator<Element> it = vList.elementIterator();
+            while(it.hasNext()) {
+                Element vertex = it.next();
+                Element useBack = vertex.element("useGraphBackround");
+                if(useBack != null) {
+                    vertex.remove(useBack);
+                }
+                
+                Element back = vertex.element("backgroundColor");
+                if(back != null) {
+                    vertex.remove(back);
+                }
+                
+                Element fore = vertex.element("foregroundColor");
+                if(fore != null) {
+                    vertex.remove(fore);
+                }
+            }
+        }
+        
+        return el.asXML();
+    }
 
     public void getGraph(GraphFile graphFile, File file)
             throws IncorcectGraphXMLFileException {
-
-        // An hash which makes it fast to find vertices
+        // A hash which makes it fast to find vertices
         HashMap<Integer, Vertex> vertexHash = new HashMap<Integer, Vertex>();
 
         List<Vertex> vertexList = graphFile.getVertexList();
         for (Vertex vertex : vertexList) {
-            try {
-                vertex.setGraphsStatus(Vertex.GraphsStatus.UNDEFINED);
-                graphPane.addVertex(vertex);
-                //System.out.println("Added " + vertex.getName() + "  "+vertex.getVertexIndex());
-                vertexHash.put(vertex.getVertexIndex(), vertex);
-                logs.debug("removing from next nodes  " + vertex.getName() + "  "+vertex.getVertexIndex());
-                if(!ApplicationContext.isAuthorMode())
-                ApplicationContext.setNextNodes(vertex.getName());
-            }
-            catch (Exception e){
-                logs.debug("Could not load node:  "+e.getMessage());
-                e.printStackTrace();
+            vertex.setGraphsStatus(Vertex.GraphsStatus.UNDEFINED);
+            graphPane.addVertex(vertex);
+            vertexHash.put(vertex.getVertexIndex(), vertex);
+
+            logs.debug("Adding Vertex:  " + vertex.getName() + " at Index: " + vertex.getVertexIndex() + " to the GraphPane");
+
+            // Reid changed this to ApplicationContext.isCoachedMode()
+            // but he can't remember why
+            if (!ApplicationContext.isAuthorMode()) {
+                if(vertex.getName() != null && !vertex.getName().isEmpty())
+                ApplicationContext.getCorrectSolution().getTargetNodes().setNextNodes();
             }
         }
 
@@ -132,7 +170,6 @@ public class GraphLoader {
         List<Edge> edgeList = graphFile.getEdgeList();
 
         for (Edge edge : edgeList) {
-            //System.out.println("Edge From: "+edge.getSourceVertexId()+"   To: "+edge.getTargetVertexId());
             Vertex sInfo = vertexHash.get(edge.getSourceVertexId());
             Vertex tInfo = vertexHash.get(edge.getTargetVertexId());
 
@@ -141,25 +178,68 @@ public class GraphLoader {
 
             graphPane.insertEdge(p1, p2);
         }
-//        int index = 0;
-//        for (Vertex vertex : vertexList) {
-//            vertex.setVertexIndex(index);
-//            index++;
-//        }
 
-        GraphProperties prop = graphFile.getProperties();
-        prop.initializeNotSerializeFeelds();
+        // Validate Calculations
+        for (Vertex vertex : vertexList) {
+            if (!validateNodeEquation(vertex)) {
+                vertex.setCalculationsStatus(Vertex.CalculationsStatus.INCORRECT);
+            }
+        }
 
-        graphPane.setScale(prop.getZoomLevel());
-        graphPane.setBackground(prop.getBackgroundColor());
-        graphPane.setGraphProperties(prop);
-        
         graphPane.validate();
         graphPane.repaint();
-        
-        Graph graph = (Graph) graphPane.getModelGraph();
-        graph.setCurrentTask(graphFile.getTask());
 
-        prop.setSavedAs(file);
+        //Graph graph = graphPane.getModelGraph();
+        //graph.setCurrentTask(graphFile.getTask());
+        if(ApplicationContext.isAuthorMode())
+            ApplicationContext.setCurrentTask(graphFile.getTask());
+        
+        //prop.setSavedAs(file);
+    }
+
+    private boolean validateNodeEquation(Vertex currentVertex) {
+        logs.debug("Validating Node Equations for Node : " + currentVertex.getName()
+                + " Equation: " + currentVertex.getEquation());
+        if (currentVertex.getVertexType().equals(Vertex.VertexType.DEFAULT)) {
+            return true;
+        }
+
+        String equation = currentVertex.getEquation();
+
+        if (!currentVertex.getVertexType().equals(Vertex.VertexType.CONSTANT)) {
+            if (equation.isEmpty()) {
+                return false;
+            }
+
+            // Check Syantax of this equation
+            Evaluator eval = new Evaluator();
+            try {
+                eval.parse(equation);
+            } catch (EvaluationException ex) {
+                ex.printStackTrace();
+                return false;
+            }
+
+            List<String> availableVariables = graphPane.getModelGraph().getVerticesByName();
+            List<String> usedVariables = eval.getAllVariables();
+
+            // Check if this equation uses all the inputs
+            for (String s : usedVariables) {
+                if (!availableVariables.contains(s)) {
+                    return false;
+                }
+                eval.putVariable(s, String.valueOf(Math.random()));
+            }
+
+            // Check Sematics of the equation
+            try {
+                eval.evaluate();
+            } catch (EvaluationException ex) {
+                ex.printStackTrace();
+                logs.error("Error in evaluting expression " + ex.getMessage());
+                return false;
+            }            
+        }
+        return true;
     }
 }

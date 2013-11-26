@@ -22,17 +22,12 @@ package edu.asu.laits.model;
 
 import edu.asu.laits.editor.ApplicationContext;
 import java.util.List;
-import java.io.File;
-import java.io.FileReader;
-import java.io.InputStream;
-import java.io.Reader;
 import java.net.URL;
 import java.util.ArrayList;
 import org.apache.log4j.Logger;
 import org.dom4j.Document;
 import org.dom4j.Element;
 import org.dom4j.io.SAXReader;
-
 
 /**
  *
@@ -41,17 +36,16 @@ import org.dom4j.io.SAXReader;
 public class TaskSolutionReader {
     private static Logger logs = Logger.getLogger("DevLogs");
     
-    public TaskSolution loadSolution(String taskId) {
+    public TaskSolution loadSolution(String taskId, String author, String group) {
         // Create TaskSolution Object to hold all the information
         TaskSolution solution = new TaskSolution();
         
         try {
-            Document parsedSolution = loadRootDocument(taskId);
+            Document parsedSolution = loadRootDocument(taskId,author,group);
             Element taskNode = parsedSolution.getRootElement();
-            solution.setTaskType(taskNode.attributeValue("type"));
-            solution.setPhase(taskNode.attributeValue("phase"));
-            
-            
+            solution.getTaskDetails().setTaskType(taskNode.attributeValue("type"));
+            solution.getTaskDetails().setPhase(taskNode.attributeValue("phase"));
+                        
             // Read Task Params
             fillTaskParams(solution, taskNode);
             
@@ -60,7 +54,7 @@ public class TaskSolutionReader {
             fillAllCorrectNodes(solution, allNodes);
             
             //Read Given Nodes for Debug problem
-            if(solution.getTaskType().equalsIgnoreCase("debug")){
+            if(solution.getTaskDetails().getTaskType().equalsIgnoreCase("debug")){
                 
                 Element givenNodes = taskNode.element("GivenModel");
                 fillGivenNodes(solution, givenNodes);
@@ -77,28 +71,30 @@ public class TaskSolutionReader {
             
             //Read in help bubbles
             if(ApplicationContext.isCoachedMode() && ApplicationContext.isHelpBubbles()){
-                Element bubbles = taskNode.element("HelpBubbles");
-                if(bubbles != null){
-                    fillHelpBubbles(solution, bubbles);
+                    Element bubbles = taskNode.element("HelpBubbles");
+                    if(bubbles != null){
+                      fillHelpBubbles(solution, bubbles);
+                    }
                 }
-            }    
+            
+            solution.initTargetNodes();
+                
         } catch (Exception e) {
             // Could not read the XML file
             e.printStackTrace();
         }
-        
+        logs.info("Task Loaded : " + solution.getTaskDetails().toString());
         return solution;
     }
     
-    private Document loadRootDocument(String taskId) throws Exception{
-        String solutionFilePath = "Task/Task"+taskId+".xml";
+    private Document loadRootDocument(String taskId, String author, String group) throws Exception{
         Document document = null;
         SAXReader reader = new SAXReader();
-        InputStream in = getClass().getResourceAsStream(solutionFilePath);
-        //File file = new File(getClass().getResource(solutionFilePath).toURI());
-        //File file = new File(solutionFilePath);
-        //document = reader.read(in);
+        
         String resourceURL = ApplicationContext.taskLoaderURL + taskId;
+            if(author.length()>0 && group.length()>0){
+                resourceURL += "&author=" + author + "&group=" + group;
+            }
         System.out.println("Resource URL "+resourceURL);
         logs.info("Task URL : "+resourceURL);
         document = reader.read(new URL(resourceURL));
@@ -108,21 +104,18 @@ public class TaskSolutionReader {
     
     
     private void fillTaskParams(TaskSolution solution, Element rootNode){
-        solution.setTaskName(rootNode.elementTextTrim("TaskName"));
-        solution.setTaskDescription(rootNode.elementTextTrim("TaskDescription"));
-        solution.setImageURL(rootNode.elementText("URL"));
-        // TimeStep is optional, default 1
-        String ts=rootNode.elementTextTrim("TimeStep");
-        logs.info("Times: "+rootNode.elementTextTrim("StartTime")+" "+
-                rootNode.elementTextTrim("EndTime")+" "+ts);
-        logs.info("Resulting in: "+Double.parseDouble(rootNode.elementTextTrim("StartTime"))+
-                " "+Double.parseDouble(rootNode.elementTextTrim("EndTime"))+" "+
-                (ts!=null?Double.parseDouble(ts):1.0));
-        solution.getTimes().setTimes(
-                Double.parseDouble(rootNode.elementTextTrim("StartTime")),
-                Double.parseDouble(rootNode.elementTextTrim("EndTime")),
-                ((ts!=null)?Double.parseDouble(ts):1.0));
-        solution.setGraphUnits(rootNode.elementTextTrim("Units"));
+        solution.getTaskDetails().setTaskName(rootNode.elementTextTrim("TaskName"));
+        solution.getTaskDetails().setTaskDescription(rootNode.elementTextTrim("TaskDescription"));
+        solution.getTaskDetails().setImageURL(rootNode.elementText("URL"));
+        solution.getTaskDetails().setChartUnits(rootNode.elementTextTrim("Units"));
+        String ts = rootNode.elementTextTrim("TimeStep");
+        Times definedTimes = new Times(Double.parseDouble(rootNode.elementTextTrim("StartTime")),
+                                Double.parseDouble(rootNode.elementTextTrim("EndTime")),
+                                ((ts != null) ? Double.parseDouble(ts) : 1.0));
+        
+        logs.debug("Time is set as : " + definedTimes.toString());
+        solution.getTaskDetails().setTimes(definedTimes);
+        
         solution.setNodeCount(Integer.parseInt(rootNode.elementTextTrim("NodeCount")));
     }
     
@@ -189,11 +182,10 @@ public class TaskSolutionReader {
             }
             
             // Read all the Input Nodes of this node
-             if(ApplicationContext.isCoachedMode() && order == 1 && 
-                     ApplicationContext.getNextNodes().isEmpty()){
-//              newNode.setNodeOrder(Integer.parseInt(node.elementTextTrim("Order")));
+             if(ApplicationContext.isCoachedMode() && order == 1){
+                newNode.setNodeOrder(Integer.parseInt(node.elementTextTrim("Order")));
 //              System.out.println("Added element" + node.elementTextTrim("Order") + " " + node.elementTextTrim("CorrectDescription"));
-                ApplicationContext.addNextNodes(node.attributeValue("name"));
+                
             }
             
             Element nodeInput = node.element("Inputs");
@@ -212,14 +204,11 @@ public class TaskSolutionReader {
             newNode.setCorrectDescription(node.elementTextTrim("CorrectDescription"));
             newNode.setNodePlan(node.elementTextTrim("Plan"));
 
-            list.add(newNode);
-            
-        }
-        
+            list.add(newNode);            
+        }        
     }
     
-    private void fillSubPlans(TaskSolution solution, Element subPlans){
-        
+    private void fillSubPlans(TaskSolution solution, Element subPlans){        
         List<Element> allSubPlans = subPlans.elements("SubPlan");
         for(Element subPlan : allSubPlans){
             if(subPlan.attributeValue("primary").equals("parameter")){
@@ -232,8 +221,7 @@ public class TaskSolutionReader {
         }
     }
     //Read in help bubble info
-    private void fillHelpBubbles(TaskSolution solution, Element bubbles){
-        
+    private void fillHelpBubbles(TaskSolution solution, Element bubbles){        
         List<Element> allBubbles = bubbles.elements("Bubble");
         for(Element bubble : allBubbles){
             HelpBubble newBubble = new HelpBubble();
@@ -252,10 +240,7 @@ public class TaskSolutionReader {
             }    
             newBubble.setMessage(bubble.elementTextTrim("Message"));
         
-        //    logs.debug(" " + bubble.elementTextTrim("Message") + " " + bubble.elementTextTrim("Timing") + " " + bubble.elementTextTrim("nodeName") + " " + bubble.elementTextTrim("attachedTo") + " " + bubble.elementTextTrim("Event"));
-
-            solution.addHelpBubble(newBubble);
-            
+            solution.addHelpBubble(newBubble);            
         }
     }
     

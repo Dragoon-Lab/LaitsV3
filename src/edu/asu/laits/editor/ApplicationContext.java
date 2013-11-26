@@ -20,71 +20,41 @@ package edu.asu.laits.editor;
 import edu.asu.laits.gui.MainWindow;
 import edu.asu.laits.model.TaskSolution;
 import edu.asu.laits.model.HelpBubble;
+import edu.asu.laits.model.SolutionNode;
+import edu.asu.laits.model.TargetNodes;
+import edu.asu.laits.model.Task;
 import java.util.ArrayList;
 import java.util.List;
+import org.apache.log4j.Logger;
 
 /**
  *
  * @author ramayantiwari
  */
 public class ApplicationContext {
-  private static String userId;
-  private static AppMode appMode;
-  private static String section;
-  private static String rootURL;
-  private static boolean isValid = false;
-  private static TaskSolution correctSolution;
-  private static String currentTaskID;
-  private static boolean isProblemSolved = false;
-  public static String taskLoaderURL;
-  private static int currentOrder = 1;
-  private static List<String> nextNodes = new ArrayList<String>();
-  private static boolean helpBubbles = false;
+
+    private static String userId;
+    private static AppMode appMode;
+    private static String section;
+    private static String author;
+    private static String rootURL;
+    private static String forumURL;
+    private static boolean isValid = false;
+    private static TaskSolution correctSolution;
+    private static String currentTaskID;
+    private static String newTaskID;
+    private static boolean isProblemSolved = false;
+    public static String taskLoaderURL;
+    private static boolean helpBubbles = false;
+    private static Logger logs = Logger.getLogger("DevLogs");
+       
+    // Task is used at many places in the application. It should be same for all the uses
+    private static Task task;
 
     public static boolean isHelpBubbles() {
         return helpBubbles;
     }
 
-    public static void setNextNodes(String parentNode) {
-        List<String> childNodes = new ArrayList<String>();
-        childNodes = correctSolution.getNodeByName(parentNode).getInputNodes();
-        for (String childNode : childNodes) {
-            System.out.println("checking " + childNode);
-
-            if (MainWindow.getInstance().getGraphEditorPane().getModelGraph().getVertexByName(childNode) == null) {
-                addNextNodes(childNode);
-                //System.out.println("added " + childNode);
-            }
-        }
-        removeNextNodes(parentNode);
-    }
-
-    public static List<String> getNextNodes() {
-        return nextNodes;
-    }
-
-    public static void addNextNodes(String nextNode) {
-        System.out.println("adding " + nextNode);
-        nextNodes.add(nextNode);
-        for (String nNode : nextNodes) {
-            System.out.println("current next nodes include " + nNode + "   ");
-        }
-    }
-
-    public static void removeNextNodes(String nextNode) {
-        int index = nextNodes.indexOf(nextNode);
-        if (index != -1) {
-            nextNodes.remove(index);
-        }
-    }
-
-    public static String getFirstNextNode() {
-        if (!nextNodes.isEmpty()) {
-            return nextNodes.get(0);
-        } else {
-            return null;
-        }
-    }
     private static ApplicationContext.ApplicationEnvironment applicationEnvironment;
 
     public enum ApplicationEnvironment {
@@ -92,22 +62,6 @@ public class ApplicationContext {
         DEV, TEST, PROD
     }
 
-    public static int getCurrentOrder() {
-        return currentOrder;
-    }
-
-    public static void nextCurrentOrder() {
-        currentOrder++;
-    }
-
-    public static String getNameByOrder(int order) {
-        if (correctSolution.getNodeByOrder(order) != null) {
-            System.out.println(correctSolution.getNodeByOrder(order).getNodeName());
-            return correctSolution.getNodeByOrder(order).getNodeName();
-        } else {
-            return null;
-        }
-    }
 
     public static void setLoaderURL(String baseURL) {
         taskLoaderURL = baseURL.concat("/task_fetcher.php?taskid=");
@@ -128,6 +82,14 @@ public class ApplicationContext {
     public static void setUserID(String uid) {
         userId = uid;
     }
+    
+   public static String getAuthor() {
+        return author;
+    }
+
+    public static void setAuthor(String authorName) {
+        author = authorName;
+    }
 
     public static String getSection() {
         return section;
@@ -135,6 +97,14 @@ public class ApplicationContext {
 
     public static void setSection(String theSection) {
         section = theSection;
+    }
+
+    public static String getForumURL() {
+        return forumURL;
+    }
+
+    public static void setForumURL(String theForum) {
+            forumURL = theForum;
     }
 
     public static boolean isUserValid() {
@@ -164,6 +134,15 @@ public class ApplicationContext {
     public static void setCurrentTaskID(String uid) {
         currentTaskID = uid;
     }
+
+    public static String getNewTaskID() {
+        return newTaskID;
+    }
+
+    public static void setNewTaskID(String newTaskID) {
+        ApplicationContext.newTaskID = newTaskID;
+    }
+    
 
     public static boolean isProblemSolved() {
         return isProblemSolved;
@@ -198,7 +177,36 @@ public class ApplicationContext {
         return (appMode.equals(AppMode.COACHED));
     }
 
+    public static boolean isTestMode() {
+        return (appMode.equals(AppMode.TEST));
+    }
+
     public static AppMode getAppMode() {
         return appMode;
     }
+    
+    /**
+     * This method returns current Task.
+     * For Author Mode - task should be created only once with default values.
+     * For all other modes - Task object is already created and stored in TaskSolution
+     * @return 
+     */
+    public static Task getCurrentTask(){
+        if(task == null){
+            // initialize task for different modes
+            if(isAuthorMode()){
+                task = new Task();
+            }else{
+                task = correctSolution.getTaskDetails();
+            }
+        }
+        
+        return task;
+    }
+    
+    public static void setCurrentTask(Task predefinedTask){
+        System.out.println("Setting Current Task to: " + predefinedTask.toString());
+        task = predefinedTask;
+    }
+   
 }

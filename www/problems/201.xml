@@ -1,39 +1,40 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <Task phase="Challenge" type="Whole">
-  <TaskName>Population Model 1</TaskName>
+  <TaskName>Waterfowl 1</TaskName>
   <URL>http://laits.engineering.asu.edu/laits_images/1.jpg</URL>
   
   <TaskDescription>
       Problem: You are interested in a population of a water fowl NEWLINE
       and how fast it will grow in a newly created urban lake. NEWLINE
       Suppose the urban lake starts with a population of 10 birds NEWLINE
-      and each year (365 days) the population size grows by 40%. NEWLINE NEWLINE
-      Goal: Graph the water fowl population over 3650 days. NEWLINE NEWLINE
+      and the population growth rate is 40% per year. NEWLINE NEWLINE
+      Goal: Graph the water fowl population over 10 years. NEWLINE NEWLINE
       Hint: 1. Only use up to the thousandth decimal place.
   </TaskDescription>
   
   <StartTime>0</StartTime>
-  <EndTime>3650</EndTime>
-  <Units>days</Units>
+  <EndTime>10</EndTime>
+  <TimeStep>0.1</TimeStep>
+  <Units>years</Units>
     
   <NodeCount>3</NodeCount>
 
   <Nodes>
-    <Node type="flow" name="population grow rate" extra="no">
+    <Node type="flow" name="population growth rate" extra="no">
       <Inputs>
           <Name>water fowl</Name>
-          <Name>grow rate coeff</Name>
+          <Name>growth rate coeff</Name>
       </Inputs>
-      <Equation>water fowl*grow rate coeff</Equation>
+      <Equation>water fowl*growth rate coeff</Equation>
       <InitialValue></InitialValue>
-      <CorrectDescription>The number of water fowl added per day</CorrectDescription>
+      <CorrectDescription>The number of water fowl added per year</CorrectDescription>
       <Plan>proportional to accumulator and input</Plan>
     </Node>
     
-    <Node type="constant" name="grow rate coeff" extra="no">
+    <Node type="constant" name="growth rate coeff" extra="no">
       <Inputs></Inputs>
-      <Equation>0.001</Equation>
-      <InitialValue>0.001</InitialValue>
+      <Equation>0.4</Equation>
+      <InitialValue>0.4</InitialValue>
       <CorrectDescription>The proportion that the water fowl population grows</CorrectDescription>
       <Plan>fixed value</Plan>
     </Node>
@@ -41,9 +42,9 @@
     <Node type="stock" name="water fowl" extra="no">
       <Order>1</Order>
       <Inputs>
-          <Name>population grow rate</Name>
+          <Name>population growth rate</Name>
       </Inputs>
-      <Equation>+population grow rate</Equation>
+      <Equation>+population growth rate</Equation>
       <InitialValue>10.0</InitialValue>
       <CorrectDescription>The size of water fowl population</CorrectDescription>
       <Plan>said to both increase and decrease</Plan>
@@ -57,16 +58,16 @@
       <Node level="intermediate">
         <Description></Description>            
         <Node level="leaf">
-          <Description>per day</Description>
-          <NodeName>population grow rate</NodeName>
+          <Description>per year</Description>
+          <NodeName>population growth rate</NodeName>
         </Node>
         <Node level="leaf">
           <Description>per week</Description>
           <NodeName>week growth rate</NodeName>
         </Node>
         <Node level="leaf">
-          <Description>per season</Description>
-          <NodeName>season growth rate</NodeName>
+          <Description>per day</Description>
+          <NodeName>daily growth rate</NodeName>
         </Node>        
 	  </Node>
    </Node> 
@@ -76,7 +77,7 @@
         <Description></Description>            
         <Node level="leaf">
           <Description>the water fowl population grows</Description>
-          <NodeName>grow rate coeff</NodeName>
+          <NodeName>growth rate coeff</NodeName>
         </Node>
         <Node level="leaf">
           <Description>the urban lake changes</Description>

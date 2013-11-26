@@ -15,8 +15,10 @@ import edu.asu.laits.editor.listeners.InsertModeChangeListener;
 import edu.asu.laits.editor.listeners.UndoAndRedoAbleListener;
 
 import com.sun.corba.se.spi.orbutil.fsm.Action;
+import edu.asu.laits.editor.ApplicationContext;
 
 import javax.swing.ImageIcon;
+import org.apache.log4j.Logger;
 
 /**
  * The edit menu that is added to the main menu. There are menu items to undo,
@@ -27,8 +29,7 @@ public class EditMenu extends JMenu {
     private JMenuItem undoEditMenuItem = null;
     private JMenuItem redoEditMenuItem = null;
     private JSeparator jSeparator = null;
-    private JCheckBoxMenuItem insertModeEditCheckBoxMenuItem = null;
-   
+    
     private GraphEditorPane graphPane;
     private ActionListener undoAction;
     private ActionListener redoAction;
@@ -36,8 +37,7 @@ public class EditMenu extends JMenu {
      * Used to indicate that no call to graphPane.setinserMode shall be done the
      * next time the selected status of the insertModeItem is changed.
      */
-    private boolean dontCall = false;
-
+    private static Logger logs = Logger.getLogger("DevLogs");
     /**
      * This method initializes
      *
@@ -45,36 +45,40 @@ public class EditMenu extends JMenu {
     public EditMenu(GraphEditorPane pane) {
         super();
         graphPane = pane;
-
         initialize();
+        configureEditMenuForModes();
+    }
 
-        graphPane.addInsertModeChangeListener(new InsertModeChangeListener() {
-            public void newInsertModeEvent(boolean insertMode) {
-                insertModeEditCheckBoxMenuItem.setSelected(insertMode);
-            }
-        });
+    /**
+     * Configures EditMenu for different modes.
+     * Ideally this should be done in Controller for different modes.
+     */
+    private void configureEditMenuForModes() {
+        if (ApplicationContext.isCoachedMode() || ApplicationContext.isTestMode()) {
+            logs.debug("Disabling Undo and Redo Menu item for Mode : " + ApplicationContext.getAppMode());
+            undoEditMenuItem.setEnabled(false);
+            undoEditMenuItem.setEnabled(false);
+        } else {
+            logs.debug("Enabling Undo and Redo Menu item for Mode : " + ApplicationContext.getAppMode());
+            
+            graphPane.addUndoAndRedoAbleListener(new UndoAndRedoAbleListener() {
+                public void canNotRedo() {
+                    getRedoEditMenuItem().setEnabled(false);
+                }
 
-        graphPane.addUndoAndRedoAbleListener(new UndoAndRedoAbleListener() {
-            public void canNotRedo() {
-                getRedoEditMenuItem().setEnabled(false);
+                public void canNotUndo() {
+                    getUndoEditMenuItem().setEnabled(false);
+                }
 
-            }
+                public void canRedo() {
+                    getRedoEditMenuItem().setEnabled(true);
+                }
 
-            public void canNotUndo() {
-                getUndoEditMenuItem().setEnabled(false);
-
-            }
-
-            public void canRedo() {
-                getRedoEditMenuItem().setEnabled(true);
-
-            }
-
-            public void canUndo() {
-                getUndoEditMenuItem().setEnabled(true);
-
-            }
-        });
+                public void canUndo() {
+                    getUndoEditMenuItem().setEnabled(true);
+                }
+            });
+        }
     }
 
     /**
@@ -86,10 +90,7 @@ public class EditMenu extends JMenu {
         this.setMnemonic(KeyEvent.VK_E);
         this.setActionCommand("");
         this.add(getUndoEditMenuItem());
-        this.add(getRedoEditMenuItem());
-        //this.add(getJSeparator());
-       // this.add(getInsertModeEditCheckBoxMenuItem());
-
+        this.add(getRedoEditMenuItem());        
     }
 
     /**
@@ -142,26 +143,6 @@ public class EditMenu extends JMenu {
         return jSeparator;
     }
 
-    /**
-     * This method initializes insertModeEditCheckBoxMenuItem
-     
-    private JCheckBoxMenuItem getInsertModeEditCheckBoxMenuItem() {
-        if (insertModeEditCheckBoxMenuItem == null) {
-            insertModeEditCheckBoxMenuItem = new JCheckBoxMenuItem();
-            insertModeEditCheckBoxMenuItem.setText("Insert mode");
-            insertModeEditCheckBoxMenuItem.setSelected(true);
-            insertModeEditCheckBoxMenuItem
-                    .addItemListener(new java.awt.event.ItemListener() {
-                public void itemStateChanged(java.awt.event.ItemEvent e) {
-                    graphPane.setInsertMode(((JCheckBoxMenuItem) e
-                            .getSource()).isSelected());
-                }
-            });
-        }
-        return insertModeEditCheckBoxMenuItem;
-    }
-*/
-    
     /**
      * @return the redoAction
      */
