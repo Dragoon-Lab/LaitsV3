@@ -1,0 +1,92 @@
+<!DOCTYPE html>
+<html >
+<head>
+
+	<link rel="stylesheet" href="dijit/themes/claro/claro.css">
+	
+	<script>dojoConfig = {async: true}</script>
+	<script src='dojo/dojo.js'></script>
+	
+	<script>
+require([
+    "dojo/_base/window", "dojo/store/Memory",
+    "dijit/tree/ObjectStoreModel", "dijit/Tree",
+    "dojo/domReady!"
+], function(win, Memory, ObjectStoreModel, Tree){
+
+    // Create test store, adding the getChildren() method required by ObjectStoreModel
+    var myStore = new Memory({
+        data: [
+            { id: 'node', name:'Nodes', type:'planet'},
+           
+            { id: 'NM', name:'Number of Moose', type:'parent', parent: 'node' },
+                { id: 'CN', name:'born each year', type:'parent', parent: 'NM' },
+                { id: 'IN', name:'in the population each year', type:'parent', parent: 'NM' },
+               
+            { id: 'NW', name:'Number of Wolfs', type:'parent', parent: 'node' },
+                { id: 'DE', name:'born each year', type:'parent', parent: 'NW' },
+                { id: 'FR', name:'in the population each year', type:'parent', parent: 'NW' },
+                
+        ],
+        getChildren: function(object){
+            return this.query({parent: object.id});
+        }
+    });
+
+    // Create the model
+    var myModel = new ObjectStoreModel({
+        store: myStore,
+        query: {id: 'node'}
+    });
+    
+    // Create the Tree.
+    var tree = new Tree({
+        model: myModel,
+        onClick : function(item){
+        	if(myStore.getChildren(item).length == 0) {
+        		document.getElementById('txt').value = item.name;
+        	}
+        	else document.getElementById('txt2').value=item.name;
+        	
+        },
+        openOnClick : false,
+        
+    });
+    tree.placeAt('treearea');
+    tree.startup();
+    
+    require(["dijit/form/Textarea", "dojo/domReady!"], function(Textarea){
+        var textarea = new Textarea({
+            name: "myarea",
+            id: "txt",
+            value: " ",
+            style: "width:200px;"
+        }, "myarea").startup();;
+    });
+    require(["dijit/form/Textarea", "dojo/domReady!"], function(Textarea){
+        var textarea = new Textarea({
+            name: "myarea2",
+            id: "txt2",
+            value: " ",
+            style: "width:200px;"
+        }, "myarea2").startup();;
+    });
+    
+});
+	</script>
+	
+	<script type="dojo/method" data-dojo-event="getChildren" data-dojo-args="object">
+         // Supply a getChildren() method to store for the data model where
+         // children objects point to their parent (aka relational model)
+         return this.query({parent: object.id});
+    </script>
+</head>
+<body class="claro">
+	<div id="treearea"></div>
+	<label for="myarea2">node name</label> <br/>
+	<div id="myarea2"></div><br/>
+	<label for="myarea">precise description of the quantity</label><br/>
+	<div id="myarea"></div><br/>
+    
+</body>
+</html>
