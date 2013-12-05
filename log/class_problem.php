@@ -1,7 +1,7 @@
 <html>
 <body>
 <?php
-	require "db-login.php";
+	require "../db-login.php";
 	var $con=mysqli_connect("localhost", $dbuser, $dbpass, $dbname);	
 	
 	if(mysqli_connect_errno()){
