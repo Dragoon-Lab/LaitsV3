@@ -1,7 +1,13 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN"
+   "http://www.w3.org/TR/html4/loose.dtd">
 <html>
+<head>
+<meta http-equiv="Content-type" content="text/html;charset=UTF-8">
+<title>Homework problems for CPI 360</title>
+</head>
 <body>
 <?php
-	require "../db-login.php";
+	require "../www/db-login.php";
 	$mysqli=mysqli_connect("localhost", $dbuser, $dbpass, $dbname) or die("Connection not established. Check the user log file");	
 
 	//author mode queries
@@ -15,7 +21,7 @@
 		$oldName = " ";
 		foreach($authorResult as $author){
 			$newName = $author['author'];
-			$jnlpAuthorURL = "http://dragoon.asu.edu/demo/startup.php?section=cpi-360&problem_id=".$author['problemName']."&mode=AUTHOR&username=".$newName;;
+			$jnlpAuthorURL = "http://dragoon.asu.edu/demo/startup.php?section=cpi-360&amp;problem_id=".$author['problemName']."&amp;mode=AUTHOR&amp;username=".$newName;
 			echo "<tr>";
 				if($newName == $oldName){
 					echo "<td> </td>";
@@ -23,12 +29,12 @@
 					echo "<td>".$newName."</td>";
 				}
 				echo "<td>".$author['problemName']."</td>";
-				echo "<td><a href=".$jnlpAuthorURL.">".$jnlpAuthorURL."</a></td>";
+				echo "<td><a href=\"$jnlpAuthorURL\">$jnlpAuthorURL</a></td>";
 			echo "</tr>";
 		}
 	}
 	echo "</table>";
-	echo "<br/><br/>"
+echo "<br><br>";
 	//student mode queries
 	$studentStatusQuery = "Select id, problemNum, date from autosave_table where date >= '2013-11-06 15:00:00.000000' AND date <= '2013-11-06 16:30:00.000000' AND section='cpi-360' Order By id asc;";
 	$studentResult =  $mysqli->query($studentStatusQuery);
@@ -41,7 +47,7 @@
 		foreach($studentResult as $student){
 			$newStudentName = $student['id'];
 			$problemNumber = $student['problemNum'];
-			$jnlpStudentURL = "http://dragoon.asu.edu/demo/startup.php?section=cpi-360&problem_id=".$problemNumber."&mode=STUDENT&username=".$newStudentName;
+			$jnlpStudentURL = "http://dragoon.asu.edu/demo/startup.php?section=cpi-360&amp;problem_id=".$problemNumber."&amp;mode=STUDENT&amp;username=".$newStudentName;
 			echo "<tr>";
 				if($newStudentName == $oldStudentName){
 					echo "<td> </td>";
@@ -49,7 +55,7 @@
 					echo "<td>".$newStudentName."</td>";
 				}
 				echo "<td>".$student['problemNum']."</td>";
-				echo "<td><a href='".$jnlpStudentURL."'>".$jnlpStudentURL."</a></td>";
+				echo "<td><a href=\"$jnlpStudentURL\">$jnlpStudentURL</a></td>";
 			echo "</tr>";
 		}
 	}
