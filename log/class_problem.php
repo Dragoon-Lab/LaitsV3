@@ -8,58 +8,61 @@
 <body>
 <?php
 	require "../www/db-login.php";
-	$mysqli=mysqli_connect("localhost", $dbuser, $dbpass, $dbname) or die("Connection not established. Check the user log file");	
+	require "../www/error-handler.php";
+	$mysqli=mysqli_connect("localhost", $dbuser, $dbpass, $dbname) or trigger_error('Could not connect to database.' . $mysqli->error, E_USER_ERROR);
+
+
 
 	//author mode queries
 	$authorStatusQuery = "Select author, problemName, date from unsolutions where date >= '2013-11-06 15:00:00.000000' AND date <= '2013-11-06 16:30:00.000000' AND section='cpi-360' Order By author asc;";
 	$authorResult = $mysqli->query($authorStatusQuery);
-	
+	$numRows = $authorResult->num_rows;
 	//creating a table from the results
-	echo "Author Mode Problems";
-	echo "<table border='1'>";
+	echo "Author Mode Problems\n";
+	echo "<table border='1'>\n";
 	if($authorResult != null){
 		$oldName = " ";
-		foreach($authorResult as $author){
+		while($author = $authorResult->fetch_assoc()){
 			$newName = $author['author'];
-			$jnlpAuthorURL = "http://dragoon.asu.edu/demo/startup.php?section=cpi-360&amp;problem_id=".$author['problemName']."&amp;mode=AUTHOR&amp;username=".$newName;
-			echo "<tr>";
+			$jnlpAuthorURL = "http://dragoon.asu.edu/devel/startup.php?section=cpi-360&amp;problem_id=".$author['problemName']."&amp;mode=AUTHOR&amp;username=".$newName;
+			echo "  <tr>";
 				if($newName == $oldName){
-					echo "<td> </td>";
+					echo "<td></td>";
 				} else {
 					echo "<td>".$newName."</td>";
 				}
 				echo "<td>".$author['problemName']."</td>";
-				echo "<td><a href=\"$jnlpAuthorURL\">$jnlpAuthorURL</a></td>";
-			echo "</tr>";
+				echo "<td><a href=\"$jnlpAuthorURL\">\n    $jnlpAuthorURL</a></td>";
+			echo "</tr>\n";
 		}
 	}
-	echo "</table>";
-echo "<br><br>";
+	echo "</table>\n";
+echo "<br /><br />\n";
 	//student mode queries
 	$studentStatusQuery = "Select id, problemNum, date from autosave_table where date >= '2013-11-06 15:00:00.000000' AND date <= '2013-11-06 16:30:00.000000' AND section='cpi-360' Order By id asc;";
 	$studentResult =  $mysqli->query($studentStatusQuery);
 	
 	//creating a table from the results
-	echo "Student Mode Problems";
-	echo '<table border="1">';
+	echo "Student Mode Problems\n";
+	echo '<table border="1">\n';
 	if($studentResult != null){
 		$oldStudentName = " ";
-		foreach($studentResult as $student){
+		while($student = $studentResult->fetch_assoc()){
 			$newStudentName = $student['id'];
 			$problemNumber = $student['problemNum'];
-			$jnlpStudentURL = "http://dragoon.asu.edu/demo/startup.php?section=cpi-360&amp;problem_id=".$problemNumber."&amp;mode=STUDENT&amp;username=".$newStudentName;
-			echo "<tr>";
+			$jnlpStudentURL = "http://dragoon.asu.edu/devel/startup.php?section=cpi-360&amp;problem_id=".$problemNumber."&amp;mode=STUDENT&amp;username=".$newStudentName;
+			echo "  <tr>";
 				if($newStudentName == $oldStudentName){
 					echo "<td> </td>";
 				} else {
 					echo "<td>".$newStudentName."</td>";
 				}
 				echo "<td>".$student['problemNum']."</td>";
-				echo "<td><a href=\"$jnlpStudentURL\">$jnlpStudentURL</a></td>";
-			echo "</tr>";
+				echo "<td><a href=\"$jnlpStudentURL\">\n    $jnlpStudentURL</a></td>";
+			echo "</tr>\n";
 		}
 	}
-	echo "</table>";
+	echo "</table>\n";
 	mysqli_close($mysqli);
 ?>
 </body>
