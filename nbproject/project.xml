@@ -16,5 +16,14 @@
             </source-roots>
             <test-roots/>
         </data>
+        <ivyConfiguration xmlns="http://code.google.com/p/ivybeans/ns/ivy-module/1">
+            <configurationMapping>
+                <scope confs="compile" name="COMPILE"/>
+                <scope confs="compile" name="PROCESSOR"/>
+                <scope confs="compile,runtime" name="RUNTIME"/>
+                <scope confs="compile,compile-test" name="COMPILE_TEST"/>
+                <scope confs="compile,compile-test,runtime,runtime-test" name="RUNTIME_TEST"/>
+            </configurationMapping>
+        </ivyConfiguration>
     </configuration>
 </project>

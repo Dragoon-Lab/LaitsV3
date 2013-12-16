@@ -1,0 +1,148 @@
+
+<html>
+    
+    <head>
+    <style type="text/css">
+    .task-node {
+    position: absolute;
+    top: 130px;
+    left: 50px;
+    width: 140px;
+    height: 50px;
+    margin: 0;
+    border-radius: 10px;
+    z-index: 31;
+    cursor: pointer;
+    text-align: center;
+    color: black;
+    background: #c3eafb;
+    border: 1px solid #b5d9ea;
+    -moz-border-radius: 10px;
+    -webkit-border-radius: 10px;
+    -webkit-box-shadow: rgba(0, 0, 0, 0.5) 2px 2px 2px;
+    -moz-box-shadow: rgba(0, 0, 0, 0.5) 2px 2px 2px;
+    /* FF 3.5+ */
+}
+div.decision-node {
+    position: absolute;
+    top: 240px;
+    left: 340px;
+    cursor: pointer;
+    width: 80px;
+    height: 80px;
+    background: #c3eafb;
+    z-index: 31;
+    -webkit-transform: rotate(-45deg);
+    -moz-transform: rotate(-45deg);
+    -ms-transform: rotate(-45deg);
+    -o-transform: rotate(-45deg);
+    transform: rotate(-45deg);
+    -webkit-box-shadow: rgba(0, 0, 0, 0.5) 2px 2px 2px;
+    -moz-box-shadow: rgba(0, 0, 0, 0.5) 2px 2px 2px;
+    /* FF 3.5+ */
+}
+div.decision-node p {
+    margin: 25% 20%;
+    -webkit-transform: rotate(45deg);
+    -moz-transform: rotate(45deg);
+    -ms-transform: rotate(45deg);
+    -o-transform: rotate(45deg);
+    transform: rotate(45deg);
+}
+</style>
+        <title>Nodes</title>
+        <script type = "text/javascript">
+        $(document).ready(function () {
+
+            // setup some jsPlumb defaults
+            jsPlumb.setRenderMode(jsPlumb.CANVAS);
+            jsPlumb.importDefaults({
+                Endpoint: ["Blank"],
+                HoverPaintStyle: {
+                    strokeStyle: "#232323",
+                    lineWidth: 2
+                }
+            });
+
+            jsPlumb.draggable($(".task-node,.decision-node"));
+
+            // allow decision-node to receive connections
+            jsPlumb.makeTarget(jsPlumb.getSelector(".decision-node"), {
+                dropOptions: {
+                    hoverClass: "dragHover"
+                },
+                anchor: ["Perimeter", {
+                    shape: "rectangle",
+                    rotation: -45
+                }],
+                connectorOverlays: [
+                    ["Arrow", {
+                        foldback: 0.9,
+                        location: 1,
+                        width: 10
+                    }]
+                ]
+            });
+
+            // allow task-node to originate a connection
+            jsPlumb.makeSource($('.ep'), {
+                parent: $('.task-node'),
+                anchor: ["Perimeter", {
+                    shape: "circle"
+                }],
+                connector: "Straight",
+                connectorStyle: {
+                    strokeStyle: "#2323AA",
+                    lineWidth: 2
+                },
+                connectorOverlays: [
+                    ["Arrow", {
+                        foldback: 0.9,
+                        location: 1,
+                        width: 10
+                    }]
+                ],
+                maxConnections: -1
+            });
+
+            // Draw connection
+            jsPlumb.connect({
+                source: 'tnode',
+                target: 'dnode',
+                connectorStyle: {
+                    strokeStyle: '#2323AA',
+                    lineWidth: 2
+                },
+                connector: "Straight",
+                connectorOverlays: [
+                    ["Arrow", {
+                        foldback: 0.9,
+                        location: 1,
+                        width: 10
+                    }]
+                ],
+                overlays: [
+                    ["Arrow", {
+                        foldback: 0.9,
+                        location: 1,
+                        width: 10
+                    }]
+                ]
+            })
+
+        })
+        </script>
+    </head>
+    
+    <body>
+        <div class="container">
+            <div class="task-node" id="tnode">
+                <p>Task</p>
+                <div class="ep"></div>
+            </div>
+            <div class="decision-node" id="dnode">
+                <p>Decision?</p>
+                <div></div>
+    </body>
+
+</html>

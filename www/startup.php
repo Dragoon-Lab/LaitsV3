@@ -1,12 +1,12 @@
 <?php
-$username = isset($_POST['old_username'])?$_POST['old_username']:$_POST['username'];
-$mode = $_POST['mode'];
-$problem_id = $_POST['problem_id'];
-$section = $_POST['section'];
+$username = isset($_REQUEST['old_username'])?$_REQUEST['old_username']:$_REQUEST['username'];
+$mode = $_REQUEST['mode'];
+$problem_id = $_REQUEST['problem_id'];
+$section = $_REQUEST['section'];
 // These are optional
-$author = isset($_POST['author'])?$_POST['author']:0;
-$forum_url = isset($_POST['forumurl'])?$_POST['forumurl']:0;
-$new_problem = isset($_POST['newproblem'])?$_POST['newproblem']:0;
+$author = isset($_REQUEST['author'])?$_REQUEST['author']:0;
+$forum_url = isset($_REQUEST['forumurl'])?$_REQUEST['forumurl']:0;
+$new_problem = isset($_REQUEST['newproblem'])?$_REQUEST['newproblem']:0;
 
 header("Content-Disposition: attachment; filename=\"laits-$problem_id.jnlp\"");
 header('Content-type: application/x-java-jnlp-file');
