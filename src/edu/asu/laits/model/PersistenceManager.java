@@ -174,6 +174,6 @@ public class PersistenceManager implements Runnable {
             result.append(pair.getValue());
         }
 
-        return result.toString();
+        return result.toString().replace(" ", "%20");
     }
 }

@@ -59,7 +59,7 @@ if($forum_url){
    echo "        <property name=\"jnlp.forumURL\" value=\"$forum_url\"/>\n";
 }
 if($new_problem){
-   echo "        <property name=\"jnlp.forumURL\" value=\"$new_problem\"/>\n";
+   echo "        <property name=\"jnlp.newProblem\" value=\"$new_problem\"/>\n";
 }
 ?>
     </resources>
