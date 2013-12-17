@@ -1,0 +1,71 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="utf-8"/>
+<meta http-equiv="X-UA-Compatible" content="IE=edge"/>
+<title>Untitled</title>
+<script type="text/javascript" src="http://ajax.googleapis.com/ajax/libs/dojo/1.9.1/dojo/dojo.js" data-dojo-config="'parseOnLoad':true,'async':true,'packages':[{'name':'gridx','location':'../gridx'},{'name':'clipart','location':'../../clipart'},{'name':'maqettaSamples','location':'../../../samples'},{'name':'maqetta','location':'../../maqetta'},{'name':'shapes','location':'../../shapes'},{'name':'zazl','location':'../../zazl'},{'name':'widgets','location':'../../custom'}],'themeMap':[['Android','',['themes/android/android.css']],['BlackBerry','',['themes/blackberry/blackberry.css']],['iPad','',['themes/ipad/ipad.css']],['iPhone','',['themes/iphone/iphone.css']],['.*','',['themes/iphone/iphone.css']]],'mblThemeFiles':[],'mblLoadCompatPattern':''"></script>
+<script type="text/javascript">
+require([
+  "dijit/dijit",
+  "dojo/parser",
+  "maqetta/space.js",
+  "maqetta/AppStates.js",
+  "dijit/layout/BorderContainer",
+  "dijit/layout/ContentPane",
+  "dijit/form/ComboBox",
+  "dijit/form/Button",
+  "dijit/form/ComboButton",
+  "dijit/Menu",
+  "dijit/MenuItem",
+  "dijit/form/DropDownButton",
+  "dijit/form/TextBox"
+]);
+</script>
+<style>@import "http://ajax.googleapis.com/ajax/libs/dojo/1.9.1/dijit/themes/claro/document.css";@import "http://ajax.googleapis.com/ajax/libs/dojo/1.9.1/dijit/themes/claro/claro.css";@import "app.css";
+</style>
+<script type="text/javascript" src="app.js"></script>
+</head>
+<body data-maq-flow-layout="false" data-maq-comptype="desktop" class="claro" data-maq-ws="collapse" id="myapp" data-maq-appstates="{}">
+ <div data-dojo-type="dijit/layout/BorderContainer" design="sidebar" persist="false" gutters="true" style="min-width: 1em; min-height: 1px; z-index: 0; width: 100%; height: 100%;">
+   <div data-dojo-type="dijit/layout/ContentPane" extractContent="false" preventCache="false" preload="false" refreshOnShow="false" region="top" splitter="true" maxSize="Infinity" style="height: 36px;" doLayout="false">
+<input type="button" data-dojo-type="dijit/form/Button" intermediateChanges="false" label="Description" iconClass="dijitNoIcon"></input>
+  <select data-dojo-type="dijit/form/ComboBox" value="Item 1" intermediateChanges="false" trim="false" uppercase="false" lowercase="false" propercase="false" invalidMessage="$_unset_$" pageSize="Infinity" searchDelay="200" style="position: absolute; z-index: 900; height: 17px; width: 411.109375px; left: 193px; top: 15px;">
+    <option value="Item 1" selected="true">
+      Item 1</option>
+    <option value="Item 2">
+      Item 2</option>
+    <option value="Item 3">
+      Item 3</option>
+  </select>
+</div>
+   <div data-dojo-type="dijit/layout/ContentPane" extractContent="false" preventCache="false" preload="false" refreshOnShow="false" region="center" splitter="false" maxSize="Infinity" doLayout="false">
+     <input type="button" data-dojo-type="dijit/form/Button" intermediateChanges="false" label="Type" iconClass="dijitNoIcon"></input><span data-dojo-type="dijit/form/DropDownButton" intermediateChanges="false" label="Select" iconClass="dijitNoIcon"><span data-dojo-type="dijit/Menu" contextMenuForWindow="false" leftClickToOpen="false" tabIndex="0"><span data-dojo-type="dijit/MenuItem" label="Function" iconClass="dijitNoIcon"></span><span data-dojo-type="dijit/MenuItem" label="Accumulator" iconClass="dijitNoIcon"></span><span data-dojo-type="dijit/MenuItem" label="Parameter" iconClass="dijitNoIcon"></span>
+     </span>
+     </span>
+     <input type="button" data-dojo-type="dijit/form/Button" intermediateChanges="false" label="Initial Value" iconClass="dijitNoIcon"></input>
+     <input type="text" data-dojo-type="dijit/form/TextBox" intermediateChanges="false" trim="false" uppercase="false" lowercase="false" propercase="false" selectOnClick="false"></input>
+     <input type="button" data-dojo-type="dijit/form/Button" intermediateChanges="false" label="Unit" iconClass="dijitNoIcon"></input>
+     <select data-dojo-type="dijit/form/ComboBox" value="Kilometer" intermediateChanges="false" trim="false" uppercase="false" lowercase="false" propercase="false" invalidMessage="$_unset_$" pageSize="Infinity" searchDelay="200">
+       <option value="Kilometer">
+         Kilometer</option>
+       <option value="meters per second">
+         meters per second</option>
+       <option value="meters">
+         meters</option>
+     </select>
+     <div data-dojo-type="dijit/layout/ContentPane" title="Pane" extractContent="false" preventCache="false" preload="false" refreshOnShow="false" style="height: 25px; width: 574px;" doLayout="false">
+       <input type="button" data-dojo-type="dijit/form/Button" intermediateChanges="false" label="Input" iconClass="dijitNoIcon"></input>
+       <input type="text" data-dojo-type="dijit/form/TextBox" intermediateChanges="false" trim="false" uppercase="false" lowercase="false" propercase="false" selectOnClick="false" style="height: 17px; width: 466.109375px;"></input>
+     </div>
+     <div data-dojo-type="dijit/layout/ContentPane" title="Pane" extractContent="false" preventCache="false" preload="false" refreshOnShow="false" style="height: 55px; width: 683px;" doLayout="false">
+       <input type="button" data-dojo-type="dijit/form/Button" intermediateChanges="false" label="Add as input" iconClass="dijitNoIcon"></input>
+       <input type="button" data-dojo-type="dijit/form/Button" intermediateChanges="false" label="Add as input" iconClass="dijitNoIcon" style="position: absolute; z-index: 900; left: 150.5234375px; top: 84.98589992523193px;"></input>
+       <input type="button" data-dojo-type="dijit/form/Button" intermediateChanges="false" label="Add as input" iconClass="dijitNoIcon" style="position: absolute; z-index: 900; left: 283px; top: 84.97027492523193px;"></input>
+       <input type="button" data-dojo-type="dijit/form/Button" intermediateChanges="false" label="No More Inputs" iconClass="dijitNoIcon" style="position: absolute; z-index: 900; left: 413px; top: 84.95464992523193px;"></input>
+       <input type="button" data-dojo-type="dijit/form/Button" intermediateChanges="false" label="Delete From Inputs" iconClass="dijitNoIcon" style="position: absolute; z-index: 900; left: 569.0030498504639px; top: 85.09679985046387px;"></input>
+     </div>
+   </div>
+ </div>
+</body>
+</html>
