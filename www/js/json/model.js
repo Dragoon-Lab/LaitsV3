@@ -7,6 +7,8 @@ define(["dojo/_base/declare", "dojo/_base/json", "/laits/js/json/node", "/laits/
             this.id = 1;
             this.x = 100;
             this.y = 100;
+            this.phase = "";
+            this.type = "";
             this.properties = JSON.parse('{"TaskName" : "' + name + '",\n"URL" : "' + url +
                     '",\n"StartTime" : ' + start + ',\n"EndTime" : ' + end +
                     ',\n"Units" : "' + units + '"}');
@@ -20,7 +22,7 @@ define(["dojo/_base/declare", "dojo/_base/json", "/laits/js/json/node", "/laits/
                     '",\n"Units" : "' + units + '"}');
         },
         updateNodePosition: function() {
-            //need to add code to detect collisions
+//need to add code to detect collisions
             if (this.x + 300 < document.documentElement.clientWidth)
                 this.x += 200;
             else {
@@ -80,23 +82,29 @@ define(["dojo/_base/declare", "dojo/_base/json", "/laits/js/json/node", "/laits/
             console.log(" :-)  :-)  :-)  :-)  :-) ");
             return id;
         },
-        //allows the author to name a node or change a node's name
-        setNodeName: function(id, newName) {
-            for (var i = 0; i < this.nodes.length; i++)
+        
+        //set the node's attributes
+        setNodeAttributes: function(id, name, parent, type, extra, units, initial, equation, correctDesc) {
+            for (var i = 0; i < this.nodes.length; i++) {
                 if (id === this.nodes[i].id) {
-                    this.nodes[i].name = newName;
-                    return true;
+                    if (name !== null)
+                        this.nodes[i].name = name;
+                    if (parent !== null)
+                        this.nodes[i].parent = parent;
+                    if (type !== null)
+                        this.nodes[i].type = type;
+                    if (extra !== null)
+                        this.nodes[i].extra = extra;
+                    if (units !== null)
+                        this.nodes[i].units = units;
+                    if (initial !== null)
+                        this.nodes[i].initial = initial;
+                    if (equation !== null)
+                        this.nodes[i].equation = equation;
+                    if (correctDesc !== null)
+                        this.nodes[i].correctDesc = correctDesc;
                 }
-            return false;
-        },
-        //allows the author to mark the node an initial node (in the tree structure)
-        setInitialNode: function(id, bool) {
-            for (var i = 0; i < this.nodes.length; i++)
-                if (id === this.nodes[i].id) {
-                    this.nodes[i].initialNode = bool;
-                    return true;
-                }
-            return false;
+            }
         },
         //adds a node (input) as an input into the given node (inputInto)
         addNodeInput: function(inputInto, input) {
@@ -132,7 +140,7 @@ define(["dojo/_base/declare", "dojo/_base/json", "/laits/js/json/node", "/laits/
                 if (id === this.nodes[i].id) {
                     this.nodes.splice(this.nodes.indexOf(this.nodes[i]), 1);
                 }
-                //maintains order of nodes during deletion
+//maintains order of nodes during deletion
                 this.nodes[i].order = i + 1;
             }
         },
@@ -254,5 +262,4 @@ define(["dojo/_base/declare", "dojo/_base/json", "/laits/js/json/node", "/laits/
             this.model = JSON.parse(newModel);
         }
     });
-
 });

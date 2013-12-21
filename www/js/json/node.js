@@ -7,8 +7,8 @@ define(["dojo/_base/declare", "dojo/_base/json"]
             this.id = id;
             this.name = "";
             this.type = "";
-            this.initialNode = false;
-            this.extra = "";
+            this.parentNode = false;
+            this.extra = false;
             this.order = order;
             this.units = "";
             this.inputs = new Array();
