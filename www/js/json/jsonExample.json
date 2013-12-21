@@ -79,27 +79,18 @@
             },
             {
                 "Node": {
-                    "Type": "constant",
-                    "ID": 3,
+                    
                     "Name": "birth rate",
-                    "Extra": "no",
-                    "Order": 3,
-                    "Units": "",
+                    "
                     "Position": {
                         "x": 300,
                         "y": 250
                     },
-                    "Equation": ".2",
-                    "CorrectDescription": "The ratio of number of rabbits born in a month to the rabbit population that month",
-                    "AttemptCount": {
-                        "Desc": 0,
-                        "Plan": 0,
-                        "Calc": 0
-                    },
-                    "StudentSolution": {
-                        "Desc": "",
-                        "Plan": "",
-                        "Calc": ""
+                    "StudentSelections": {
+                        "Desc": "The number of rabbits in the population",
+                        "Plan": "accumulator",
+                        "Initial": "10",
+                        "Equation": "+ births"                        
                     }
                 }
             }
