@@ -1,7 +1,10 @@
 <?php
 session_start();
 //********************************************************************************************************************************
-//*********This file is for development to test functionality and is not part of the MVC or the JavaScript implementation
+//*********This file is for development to test functionality and is not part of the MVC or the JavaScript implementation.
+//*********It shows the model's usefulness in loading or building a model.
+//********************************************************************************************************************************
+
 ?>
 
 <!DOCTYPE html>
@@ -28,129 +31,86 @@ session_start();
 
 
         <script>
-            require(["dojo/store/Memory", "/laits/js/json/model"], function(Memory, model) {
-                var newModel = new model("Santa", "google.com", 1, 10, "Days");
-//                newModel.taskDescription = "This is a test";
-//                var id = newModel.addNode();
-//                newModel.setNodeName(id, "apples");
-//                id = newModel.addNode();
-//                newModel.setNodeName(id, "bananas");
-//                id = newModel.addNode();
-//                newModel.setNodeName(id, "carrots");
-//                id = newModel.addNode();
-//                newModel.setNodeName(id, "danger berries");
-//                id = newModel.addNode();
-//                newModel.setNodeName(id, "eggplant");
-////                newModel.addNodeInput("id1", "id2");
-////                newModel.addNodeInput("id1", "id2");
-//                newModel.addNodeInput("id2", "id1");
-//                newModel.addNodeInput("id1", "id3");
-//
-//                newModel.phase = "It works!";
-//                newModel.properties.Units = "Months";
-//
-//
-//
-//                var oldModel = new model("Rudolph", null, null, null, null);
-//                id = oldModel.addNode();
-//                oldModel.setNodeName(id, "figs");
-//                id = oldModel.addStudentModelNode();
-//                oldModel.setStudentModelNodeName(id, "figs");
-////                id = oldModel.addNode();
-////                oldModel.setNodeName(id, "dates");
-////                id = oldModel.addNodeInput("id1", "id2");
-////                id = oldModel.addNodeInput("id2", "id1");
-//
-//                newModel.deleteNode("bananas");
-//                newModel.updateOrder("carrots", 1);
-//                console.log(newModel.nodes);
-//                newModel.buildModel();
-//                oldModel.buildModel();
-//
-//                var string = '{ "Task": {"Phase": "Intro","Type": "Construct","Properties": {"TaskName": \n\
-//                        "Rabbits - Intro Problem","URL": "images/rabbit.jpeg","StartTime": 0,"EndTime": 10,\n\
-//                        "Units": "Years"},"TaskDescription": \n\
-//                        "In this exercise, you will construct a model of how a rabbit population grows when no rabbits die. The first quantity in this model is the population or number of rabbits in the population. Initially, there are 100 rabbits, but the number increases with time. The new population each month is its present value plus the number of births (number of rabbits born each month).  The number of births is equal to the product of the population and the birth rate. The birthrate or the ratio of the number of rabbits born in a month to the rabbit population that month has a fixed value of 0.2.",\n\
-//                        "Nodes": [{"Node": {"Type": "stock","ID": "id1","Name": "population","Extra": "no",\n\
-//                        "Order": 1,"Units": "","Inputs": [{"ID": "id2"}],"Position": {"X": 250,"Y": 150},\n\
-//                        "Initial": 100,"Equation": "+id2","CorrectDescription": "The number of rabbits in the population",\n\
-//                        "AttemptCount": {"Desc": 5,"Plan": 1,"Calc": 2},"StudentSolution": {"Desc": "demo",\n\
-//                        "Plan": "correct","Calc": "incorrect"}}},{"Node": {"Type": "flow","ID": "id2","Name": \n\
-//                        "births","Extra": "no","Order": 2,"Units": "","Inputs": [{"ID": "id1"},{"ID": "id3"}],\n\
-//                        "Position": {"X": 350,"Y": 150},"Equation": "id1 * id3","CorrectDescription": \n\
-//                        "The number of rabbits born each month","AttemptCount": {"Desc": 1,"Plan": 0,"Calc": 0},\n\
-//                        "StudentSolution": {"Desc": "incorrect","Plan": "","Calc": ""}}},{"Node": {"Type": \n\
-//                        "constant","ID": "id3","Name": "birth rate","Extra": "no","Order": 3,"Units": "",\n\
-//                        "Position": {"x": 300,"y": 250},"Equation": ".2","CorrectDescription": \n\
-//                        "The ratio of number of rabbits born in a month to the rabbit population that month",\n\
-//                        "AttemptCount": {"Desc": 0,"Plan": 0,"Calc": 0},"StudentSolution": {"Desc": "","Plan": \n\
-//                        "","Calc": ""}}}],"StudentModel": [{"Node": {"ID": "id1","Name": "population","Inputs": \n\
-//                        [{"ID": "id2"}],"Position": {"X": 250,"Y": 150},"StudentSelections": {"Desc": \n\
-//                        "The number of rabbits in the population","Plan": "accumulator","Initial": "10","Equation": \n\
-//                        "+ id1"}}},{"Node": {"ID": "id2", "Name": "births","Inputs": [{"ID": "id1"},{"ID": "id3"}],\n\
-//                        "Position": {"X": 350,"Y": 150},"StudentSelections": {"Desc": \n\
-//                        "The ratio of rabbits born with super powers to ordinary rabbits","Plan": "","Initial": "","Equation": ""}}}]}}';
-//                //var string = '{"TaskName" : "' + "Johnny" + '",\n"URL" : "' + "url" +
-//                '",\n"StartTime" : ' + 7 + ',\n"EndTime" : ' + 10 +
-//                        ',\n"Units" : "' + "units" + '"}';
-//                newModel.loadModel(string);
-                //alert(newModel.model.Task.TaskDescription);
-//                alert(newModel.model.Task.Nodes[1].Node.Equation);
-//                alert(JSON.stringify(newModel.model, null, 4));
-//                alert("!\n" + newModel.getModel());
-                //console.log(newModel.model);
+            require(["/laits/js/json/model"], function(model) {
 
+                //The next three lines show loading a model from a JSON formated string
+                var loadModel = new model(null, null, null, null, null, null);
+                var string = '{"task": { "phase": "intro", "type": "construct", "properties": { "taskName": "Rabbits - Intro Problem", "URL": "images/rabbit.jpeg", "startTime": 0, "endTime": 10, "timeStep": 1, "units": "years" }, "taskDescription": "In this exercise, you will construct a model of how a rabbit population grows when no rabbits die. The first quantity in this model is the population or number of rabbits in the population. Initially, there are 100 rabbits, but the number increases with time. The new population each month is its present value plus the number of births (number of rabbits born each month). The number of births is equal to the product of the population and the birth rate. The birthrate or the ratio of the number of rabbits born in a month to the rabbit population that month has a fixed value of 0.2.", "givenModelNodes": [ { "ID": "id1", "name": "population", "type": "stock", "parentNode": false, "extra": false, "order": 1, "units": "rabbits", "inputs": [ { "ID": "id2" } ], "position": { "x": 100, "y": 100 }, "initial": 100, "equation": "+ id2", "correctDesc": "The number of rabbits in the population", "attemptCount": { "desc": 2, "plan": 1, "calc": 1 }, "solution": { "desc": "correct", "plan": "demo", "calc": "correct" } }, { "ID": "id2", "name": "births", "type": "flow", "parentNode": true, "extra": false, "order": 2, "units": "births", "inputs": [ { "ID": "id1" }, { "ID": "id3" } ], "position": { "x": 300, "y": 100 }, "initial": "", "equation": "id1 * id3", "correctDesc": "The number of rabbits born each month", "attemptCount": { "desc": 2, "plan": 1, "calc": 3 }, "solution": { "desc": "correct", "plan": "correct", "calc": "demo" } }, { "ID": "id3", "name": "birth rate", "type": "constant", "parentNode": false, "extra": false, "order": 3, "units": "percent", "inputs": [], "position": { "x": 500, "y": 100 }, "initial": "", "equation": ".2", "correctDesc": "The ratio of number of rabbits born in a month to the rabbit population that month", "attemptCount": { "desc": 2, "plan": 1, "calc": 1 }, "solution": { "desc": "correct", "plan": "correct", "calc": "correct" } } ], "studentModelNodes": [ { "ID": "id1", "name": "population", "inGivenModel": true, "inputs": [ { "ID": "id2" } ], "position": { "x": 700, "y": 100 }, "studentSelections": { "desc": "The number of rabbits in the population", "plan": "stock", "units": "rabbits", "initial": 100, "equation": "+ id2" } }, { "ID": "id2", "name": "births", "inGivenModel": true, "inputs": [ { "ID": "id1" }, { "ID": "id3" } ], "position": { "x": 900, "y": 100 }, "studentSelections": { "desc": "The number of rabbits born each month", "plan": "flow", "units": "births", "initial": null, "equation": "id1 * id3" } }, { "ID": "id3", "name": "birth rate", "inGivenModel": true, "inputs": [], "position": { "x": 1100, "y": 100 }, "studentSelections": { "desc": "The ratio of number of rabbits born in a month to the rabbit population that month", "plan": "constant", "units": "percent", "initial": null, "equation": "0.2" } } ] } }';
+                loadModel.loadModel(string);
+                alert(loadModel.model.task.taskDescription);
 
-
-                document.sampleForm.action.value = "save";
-                document.sampleForm.id.value = "JohnnyLingo";
-                document.sampleForm.section.value = "Muhana";
-                document.sampleForm.problem.value = "rabbits";
-                document.sampleForm.saveData.value = JSON.stringify(newModel.model, null, 4);
-                //document.forms["sampleForm"].submit();
-
-
-                // building a model from scratch as an author would (in progress)
-                var rabbits = new model("Rabbits - Intro Problem", "images/rabbit.jpeg", 0, 10, "Years");
+                // The next section builds a model from scratch as would happen as an author creates a problem
+                var rabbits = new model("Rabbits - Intro Problem", "images/rabbit.jpeg", 0, 10, 1, "years");
                 rabbits.taskDescription = "In this exercise, you will construct a model of how a rabbit population grows when no rabbits die. The first quantity in this model is the population or number of rabbits in the population. Initially, there are 100 rabbits, but the number increases with time. The new population each month is its present value plus the number of births (number of rabbits born each month).  The number of births is equal to the product of the population and the birth rate. The birthrate or the ratio of the number of rabbits born in a month to the rabbit population that month has a fixed value of 0.2.";
-                rabbits.phase = "Intro";
-                rabbits.type = "Construct";
+                rabbits.phase = "intro";
+                rabbits.type = "construct";
                 var rabbitId = rabbits.addNode();
-                rabbits.setNodeAttributes(rabbitId, "pop", true, "stock", false, "rabbits", 100, "+id2", "The number of rabbits in the population");
-                rabbits.setNodeAttributes(rabbitId, "population", null, null, null, null, null, null, null);
-                //id, name, parent, type, extra, units, initial, equation, correctDesc
-                
+                rabbits.setNodeAttributes(rabbitId, "population", false, "stock", false, "rabbits", 100, "+ id2", "The number of rabbits in the population");
+                rabbits.addNodeWithAttributes("births", true, "flow", false, "births", null, "id1 * id3", "The number of rabbits born each month");
+                rabbits.addNodeWithAttributes("birth rate", false, "constant", false, "percent", null, ".2", "The ratio of number of rabbits born in a month to the rabbit population that month");
+                rabbits.addNodeInput(rabbits.getNodeIDByName("births"), rabbits.getNodeIDByName("population"));
+                rabbits.addNodeInput(rabbits.getNodeIDByName("population"), rabbits.getNodeIDByName("births"));
+                rabbits.addNodeInput(rabbits.getNodeIDByName("birth rate"), rabbits.getNodeIDByName("births"));
+                rabbits.addStudentNodeWithName("population");
+                rabbits.addStudentNodeWithName("births");
+                rabbits.addStudentNodeWithName("birth rate");
+                rabbits.addStudentNodeInput(rabbits.getNodeIDByName("births"), rabbits.getNodeIDByName("population"));
+                rabbits.addStudentNodeInput(rabbits.getNodeIDByName("population"), rabbits.getNodeIDByName("births"));
+                rabbits.addStudentNodeInput(rabbits.getNodeIDByName("birth rate"), rabbits.getNodeIDByName("births"));
+                rabbits.addAttemptDesc("id1");
+                rabbits.addAttemptDesc("id1");
+                rabbits.addAttemptPlan("id1");
+                rabbits.addAttemptCalc("id1");
+                rabbits.setSolutionDesc("id1", "correct");
+                rabbits.setSolutionPlan("id1", "demo");
+                rabbits.setSolutionCalc("id1", "correct");
+                rabbits.setStudentSeletionsDesc("id1", "The number of rabbits in the population");
+                rabbits.setStudentSeletionsPlan("id1", "stock");
+                rabbits.setStudentSeletionsUnits("id1", "rabbits");
+                rabbits.setStudentSeletionsInitial("id1", 100);
+                rabbits.setStudentSeletionsEquation("id1", "+ id2");
 
-                rabbits.buildModel();
-                alert(JSON.stringify(rabbits.model, null, 4));
-                //alert(rabbits.model.Task.Phase);
+                rabbits.addAttemptDesc("id2");
+                rabbits.addAttemptDesc("id2");
+                rabbits.addAttemptPlan("id2");
+                rabbits.addAttemptCalc("id2");
+                rabbits.addAttemptCalc("id2");
+                rabbits.addAttemptCalc("id2");
+                rabbits.setSolutionDesc("id2", "correct");
+                rabbits.setSolutionPlan("id2", "correct");
+                rabbits.setSolutionCalc("id2", "demo");
+                rabbits.setStudentSeletionsDesc("id2", "The number of rabbits born each month");
+                rabbits.setStudentSeletionsPlan("id2", "flow");
+                rabbits.setStudentSeletionsUnits("id2", "births");
+                rabbits.setStudentSeletionsInitial("id2", null);
+                rabbits.setStudentSeletionsEquation("id2", "id1 * id3");
 
-                //next section saves and loads a JSON formatted string to the database
+                rabbits.addAttemptDesc("id3");
+                rabbits.addAttemptDesc("id3");
+                rabbits.addAttemptPlan("id3");
+                rabbits.addAttemptCalc("id3");
+                rabbits.setSolutionDesc("id3", "correct");
+                rabbits.setSolutionPlan("id3", "correct");
+                rabbits.setSolutionCalc("id3", "correct");
+                rabbits.setStudentSeletionsDesc("id3", "The ratio of number of rabbits born in a month to the rabbit population that month");
+                rabbits.setStudentSeletionsPlan("id3", "constant");
+                rabbits.setStudentSeletionsUnits("id3", "percent");
+                rabbits.setStudentSeletionsInitial("id3", null);
+                rabbits.setStudentSeletionsEquation("id3", "0.2");
+                rabbits.buildModel();     
 
-//                var result;
-//                <?php
-//                    if ($_SESSION['theResults'] == null) {
-//                        echo "alert(\"action value: \" + sampleForm.action.value);";
-//                        echo "document.sampleForm.action.value = \"load\";";
-//                        echo "document.forms[\"sampleForm\"] . submit();";
-//                    } else {
-//                        echo "result = " . $_SESSION['theResults'] . ";";
-//                        //echo "alert('SESSION variable result: ' + JSON.stringify(result, null, 4));";
-//                    }
-//                
-?>
-
-//                if (result !== null) {
-//                    alert("Loaded result: " + JSON.stringify(result, null, 4));
-//                    result = null;
-//                    <?php
-//                        $_SESSION['theResults'] = null;
-//                    
-?>
-//                    var anotherModel = new model("Rudolph", null, null, null, null);
-////                    anotherModel.loadModel(result);
-////                    alert(result);
-//                }
+                //The next section prints the entire model on the screen, and then uses several getters to access the models information
+                document.write("Rabbits Model: \r" + JSON.stringify(rabbits.model, null, 4));
+                alert(rabbits.getPhase());
+                alert(rabbits.getType());
+                alert(rabbits.getTaskName());
+                alert(rabbits.getURL());
+                alert(rabbits.getStartTime());
+                alert(rabbits.getEndTime());
+                alert(rabbits.getTimeStep());
+                alert(rabbits.getUnits());
+                alert(rabbits.getTaskDescription());
+                alert(rabbits.getNodeIDByName("birth rate"));
 
             });
         </script>

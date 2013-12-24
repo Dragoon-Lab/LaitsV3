@@ -1,153 +1,171 @@
 {
-    "Task": {
-        "Phase": "Intro",
-        "Type": "Construct",
-        "Properties": {
-            "TaskName": "Rabbits - Intro Problem",
+    "task": {
+        "phase": "intro",
+        "type": "construct",
+        "properties": {
+            "taskName": "Rabbits - Intro Problem",
             "URL": "images/rabbit.jpeg",
-            "StartTime": 0,
-            "EndTime": 10,
-            "Units": "Years"
+            "startTime": 0,
+            "endTime": 10,
+            "timeStep": 1,
+            "units": "years"
         },
-        "TaskDescription": "In this exercise, you will construct a model of how a rabbit population grows when no rabbits die. The first quantity in this model is the population or number of rabbits in the population. Initially, there are 100 rabbits, but the number increases with time. The new population each month is its present value plus the number of births (number of rabbits born each month).  The number of births is equal to the product of the population and the birth rate. The birthrate or the ratio of the number of rabbits born in a month to the rabbit population that month has a fixed value of 0.2.",
-        "Nodes": [
+        "taskDescription": "In this exercise, you will construct a model of how a rabbit population grows when no rabbits die. The first quantity in this model is the population or number of rabbits in the population. Initially, there are 100 rabbits, but the number increases with time. The new population each month is its present value plus the number of births (number of rabbits born each month). The number of births is equal to the product of the population and the birth rate. The birthrate or the ratio of the number of rabbits born in a month to the rabbit population that month has a fixed value of 0.2.",
+        "givenModelNodes": [
             {
-                "Node": {
-                    "Type": "stock",
-                    "ID": "id1",
-                    "Name": "population",
-                    "Extra": "no",
-                    "Order": 1,
-                    "Units": "",
-                    "Inputs": [
-                        {
-                            "ID": "id2"
-                        }
-                    ],
-                    "Position": {
-                        "X": 250,
-                        "Y": 150
-                    },
-                    "Initial": 100,
-                    "Equation": "+id2",
-                    "CorrectDescription": "The number of rabbits in the population",
-                    "AttemptCount": {
-                        "Desc": 5,
-                        "Plan": 1,
-                        "Calc": 2
-                    },
-                    "StudentSolution": {
-                        "Desc": "demo",
-                        "Plan": "correct",
-                        "Calc": "incorrect"
+                "ID": "id1",
+                "name": "population",
+                "type": "stock",
+                "parentNode": false,
+                "extra": false,
+                "order": 1,
+                "units": "rabbits",
+                "inputs": [
+                    {
+                        "ID": "id2"
                     }
+                ],
+                "position": {
+                    "x": 100,
+                    "y": 100
+                },
+                "initial": 100,
+                "equation": "+ id2",
+                "correctDesc": "The number of rabbits in the population",
+                "attemptCount": {
+                    "desc": 2,
+                    "plan": 1,
+                    "calc": 1
+                },
+                "solution": {
+                    "desc": "correct",
+                    "plan": "demo",
+                    "calc": "correct"
                 }
             },
             {
-                "Node": {
-                    "Type": "flow",
-                    "ID": "id2",
-                    "Name": "births",
-                    "Extra": "no",
-                    "Order": 2,
-                    "Units": "",
-                    "Inputs": [
-                        {
-                            "ID": "id1"
-                        },
-                        {
-                            "ID": "id3"
-                        }
-                    ],
-                    "Position": {
-                        "X": 350,
-                        "Y": 150
+                "ID": "id2",
+                "name": "births",
+                "type": "flow",
+                "parentNode": true,
+                "extra": false,
+                "order": 2,
+                "units": "births",
+                "inputs": [
+                    {
+                        "ID": "id1"
                     },
-                    "Equation": "id1 * id3",
-                    "CorrectDescription": "The number of rabbits born each month",
-                    "AttemptCount": {
-                        "Desc": 1,
-                        "Plan": 0,
-                        "Calc": 0
-                    },
-                    "StudentSolution": {
-                        "Desc": "incorrect",
-                        "Plan": "",
-                        "Calc": ""
+                    {
+                        "ID": "id3"
                     }
+                ],
+                "position": {
+                    "x": 300,
+                    "y": 100
+                },
+                "initial": "",
+                "equation": "id1 * id3",
+                "correctDesc": "The number of rabbits born each month",
+                "attemptCount": {
+                    "desc": 2,
+                    "plan": 1,
+                    "calc": 3
+                },
+                "solution": {
+                    "desc": "correct",
+                    "plan": "correct",
+                    "calc": "demo"
                 }
             },
             {
-                "Node": {
-                    "Type": "constant",
-                    "ID": "id3",
-                    "Name": "birth rate",
-                    "Extra": "no",
-                    "Order": 3,
-                    "Units": "",
-                    "Position": {
-                        "x": 300,
-                        "y": 250
-                    },
-                    "Equation": ".2",
-                    "CorrectDescription": "The ratio of number of rabbits born in a month to the rabbit population that month",
-                    "AttemptCount": {
-                        "Desc": 0,
-                        "Plan": 0,
-                        "Calc": 0
-                    },
-                    "StudentSolution": {
-                        "Desc": "",
-                        "Plan": "",
-                        "Calc": ""
-                    }
+                "ID": "id3",
+                "name": "birth rate",
+                "type": "constant",
+                "parentNode": false,
+                "extra": false,
+                "order": 3,
+                "units": "percent",
+                "inputs": [],
+                "position": {
+                    "x": 500,
+                    "y": 100
+                },
+                "initial": "",
+                "equation": ".2",
+                "correctDesc": "The ratio of number of rabbits born in a month to the rabbit population that month",
+                "attemptCount": {
+                    "desc": 2,
+                    "plan": 1,
+                    "calc": 1
+                },
+                "solution": {
+                    "desc": "correct",
+                    "plan": "correct",
+                    "calc": "correct"
                 }
             }
         ],
-        "StudentModel": [
+        "studentModelNodes": [
             {
-                "Node": {
-                    "ID": "id1",
-                    "Name": "population",
-                    "Inputs": [
-                        {
-                            "ID": "id2"
-                        }
-                    ],
-                    "Position": {
-                        "X": 250,
-                        "Y": 150
-                    },
-                    "StudentSelections": {
-                        "Desc": "The number of rabbits in the population",
-                        "Plan": "accumulator",
-                        "Initial": "10",
-                        "Equation": "+ id1"
+                "ID": "id1",
+                "name": "population",
+                "inGivenModel": true,
+                "inputs": [
+                    {
+                        "ID": "id2"
                     }
+                ],
+                "position": {
+                    "x": 700,
+                    "y": 100
+                },
+                "studentSelections": {
+                    "desc": "The number of rabbits in the population",
+                    "plan": "stock",
+                    "units": "rabbits",
+                    "initial": 100,
+                    "equation": "+ id2"
                 }
             },
             {
-                "Node": {
-                    "ID": "id2",
-                    "Name": "births",
-                    "Inputs": [
-                        {
-                            "ID": "id1"
-                        },
-                        {
-                            "ID": "id3"
-                        }
-                    ],
-                    "Position": {
-                        "X": 350,
-                        "Y": 150
+                "ID": "id2",
+                "name": "births",
+                "inGivenModel": true,
+                "inputs": [
+                    {
+                        "ID": "id1"
                     },
-                    "StudentSelections": {
-                        "Desc": "The ratio of rabbits born with super powers to ordinary rabbits",
-                        "Plan": "",
-                        "Initial": "",
-                        "Equation": ""
+                    {
+                        "ID": "id3"
                     }
+                ],
+                "position": {
+                    "x": 900,
+                    "y": 100
+                },
+                "studentSelections": {
+                    "desc": "The number of rabbits born each month",
+                    "plan": "flow",
+                    "units": "births",
+                    "initial": null,
+                    "equation": "id1 * id3"
+                }
+            },
+            {
+                "ID": "id3",
+                "name": "birth rate",
+                "inGivenModel": true,
+                "inputs": [],
+                "position": {
+                    "x": 1100,
+                    "y": 100
+                },
+                "studentSelections": {
+                    "desc": "The ratio of number of rabbits born in a month to the rabbit population that month",
+                    "plan": "constant",
+                    "units": "percent",
+                    "initial": null,
+                    "equation": "0.2"
                 }
             }
         ]
