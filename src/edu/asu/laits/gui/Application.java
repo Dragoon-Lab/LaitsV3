@@ -107,7 +107,6 @@ public class Application extends JApplet {
         
         System.out.println("Application is Running in : "+ApplicationContext.getApplicationEnvironment()
                 +" Environment and "+ApplicationContext.getAppMode().toString()+" Mode");
-        ApplicationContext.setUserValid(true);
-        
+        ApplicationContext.setUserValid(true);  
     }
 }
