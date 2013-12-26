@@ -157,6 +157,11 @@ public class ConstantVertexRenderComponent   extends VertexRenderComponent {
     public void drawVertex(Graphics g) {
         Graphics2D g2 = (Graphics2D) g;
         
+        int[] xpoints = {0, 60, 119, 60};
+        int[] ypoints = {31, 1, 31, 62};
+        g2.setColor(Color.GREEN);
+        g2.fillPolygon(xpoints, ypoints, 4);
+        
         // If Vertex has Defined Description, Plan and Calculations - set color to green else use Gray
         if(currentVertex.isDescriptionDone()){
             if(currentVertex.isPlanDone()){
@@ -168,16 +173,14 @@ public class ConstantVertexRenderComponent   extends VertexRenderComponent {
             g2.setColor(foreground);
         }    
         
-        int[] xpoints = {0, 60, 119, 60};
-        int[] ypoints = {31, 1, 31, 62};
-        
         if(selected){
             g2.setStroke(new BasicStroke(3.5f));            
         } else {
             g2.setStroke(new BasicStroke(2));
         }
         
-        g2.drawPolygon(xpoints, ypoints, 4);
+        //g2.drawPolygon(xpoints, ypoints, 4);
+        
         String vertexName = truncateNodeName(currentVertex.getName());
         double x = getWidth()/2 - (vertexName.length() * 3 -1);
        

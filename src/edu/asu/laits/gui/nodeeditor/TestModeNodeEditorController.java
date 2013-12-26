@@ -140,7 +140,7 @@ public class TestModeNodeEditorController extends NodeEditorController {
     }
 
     public void initCloseButton() {
-        view.getCancelButton().setText("Cancel");
+        view.getCancelButton().setText("Close");
     }
 
     public void processCheckAction() {
