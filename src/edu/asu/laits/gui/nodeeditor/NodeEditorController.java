@@ -135,5 +135,12 @@ public abstract class NodeEditorController{
         }        
     }
     
-    
+    protected String getNodeDetailLog() {
+        StringBuilder sb = new StringBuilder();
+        sb.append(view.getDescriptionPanel().printDescriptionPanelDetails());
+        sb.append(view.getPlanPanel().printPlanPanel());
+        sb.append(view.getCalculationsPanel().printCalculationPanel());
+        
+        return sb.toString();        
+    }
 }

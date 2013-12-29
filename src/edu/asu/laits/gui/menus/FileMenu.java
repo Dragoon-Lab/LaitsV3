@@ -185,7 +185,7 @@ public class FileMenu extends JMenu {
                 createGivenModel(solution, graphPane);
             }
 
-            mainWindow.switchTutorModelPanels(false);
+            mainWindow.prepareModelDesignPanel();
         } catch (Exception e) {
             e.printStackTrace();
         }

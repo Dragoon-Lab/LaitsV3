@@ -73,7 +73,7 @@ public class MainWindow extends JFrame {
     private ModelToolBar modelToolBar = null;
     private List<JToolBar> toolBars = new LinkedList<JToolBar>();
     private StatusBarPanel statusBarPanel = null;
-    private boolean isSituationTabSelected = true;
+    //private boolean isSituationTabSelected = true;
     
     // Label to Display Tasks
     JLabel situationLabel;    
@@ -278,24 +278,22 @@ public class MainWindow extends JFrame {
     /**
      * This method replaces situation panel with graph panel and vice versa
      */
-    public void switchTutorModelPanels(boolean toSituationPanel) {
-
-        activityLogs.debug("User is viewing Model Design Panel.");
-        logs.debug("Switching to Model Design Panel");
+    public void prepareModelDesignPanel() {
+        logs.debug("Loading Model Design Panel");
 
         mainPanel.removeAll();
         mainPanel.add(getToolBarPanel(), BorderLayout.NORTH);
         mainPanel.add(getGraphPaneScrollPane(), BorderLayout.CENTER);
         mainPanel.add(getStatusBarPanel(), BorderLayout.SOUTH);
-        isSituationTabSelected = false;
+        //isSituationTabSelected = false;
 
         this.validate();
         mainPanel.repaint();
     }
 
-    public boolean isSituationSelected() {
-        return isSituationTabSelected;
-    }
+//    public boolean isSituationSelected() {
+//        return isSituationTabSelected;
+//    }
 
     /**
      * This method initializes toolBarPanel
@@ -476,7 +474,7 @@ public class MainWindow extends JFrame {
                 getGraphEditorPane().resetModelGraph();
                 GraphLoader loader = new GraphLoader(getGraphEditorPane());
                 loader.loadFromServer(graphXML);
-                switchTutorModelPanels(false);
+                prepareModelDesignPanel();
                 if(ApplicationContext.isAuthorMode()){
                     ApplicationContext.setAuthor(ApplicationContext.getUserID());
                     if(ApplicationContext.getNewTaskID() != null && !ApplicationContext.getNewTaskID().equals("")){

@@ -67,7 +67,6 @@ public class NodeEditorView extends javax.swing.JDialog {
     public NodeEditorView(Vertex selected) {
         super(MainWindow.getInstance(), true);
         graphPane = MainWindow.getInstance().getGraphEditorPane();
-        logs.info("Initializing Node Editor view for Vertex " + selected.getName());
         openVertex = selected;
         _controller = ControllerFactory.getNodeEditorController(this, openVertex);
         initComponents();
@@ -78,14 +77,16 @@ public class NodeEditorView extends javax.swing.JDialog {
     private void configureAndRenderUI() {
         logs.debug("Initializing NodeEditor");
         activityLogs.debug("NodeEditor opened for Node '" + openVertex.getName() + "'");
+        
         initTabs();
         
         this.addWindowListener(new java.awt.event.WindowAdapter() {
             public void windowClosing(java.awt.event.WindowEvent e) {
-                activityLogs.debug("User pressed Close button for Node " + openVertex.getName());
+                activityLogs.debug("User pressed Close button for Node '" + openVertex.getName() + "'");
                 closeNodeEditor();
             }
         });
+        
         _controller.initOnLoadBalloonTip();
         UIManager.getDefaults().put("TabbedPane.contentBorderInsets",new Insets(2, 0, -1, 0));
         prepareNodeEditorDisplay();
@@ -100,6 +101,7 @@ public class NodeEditorView extends javax.swing.JDialog {
         positionNodeEditorOnScreen();
         pack();
 
+        // TODO - Move this to specific mode initialization
         if (ApplicationContext.isCoachedMode()) {
             buttonCancel.setEnabled(false);
             ApplicationContext.getCorrectSolution().getTargetNodes().setNextNodes();
@@ -111,7 +113,9 @@ public class NodeEditorView extends javax.swing.JDialog {
                 logs.debug("Should be enabled on close");
                 buttonCancel.setEnabled(true);
             }
-        }        
+        }   
+        
+        activityLogs.debug("Vertex Details before opening node editor " + _controller.getNodeDetailLog());
         setVisible(true);
         setResizable(false);
     }
@@ -123,11 +127,6 @@ public class NodeEditorView extends javax.swing.JDialog {
         pPanel = new PlanPanelView(this);
         cPanel = new CalculationsPanelView(this);
 
-        activityLogs.debug("Vertex Details before opening node editor ");
-        activityLogs.debug(dPanel.printDescriptionPanelDetails());
-        //activityLogs.debug(pPanel.printPlanPanel());
-        activityLogs.debug(cPanel.printCalculationPanel());
-
         descriptionPanel.setLayout(new java.awt.GridLayout(1, 1));
         descriptionPanel.add(dPanel);
 
@@ -138,14 +137,12 @@ public class NodeEditorView extends javax.swing.JDialog {
         calculationPanel.add(cPanel);
 
         setSelectedPanel();
-        //setTabListener();
         
         _controller.initActionButtons();
         logs.debug("Initializing NodeEditor Tabs - End");
     }
 
     private void setSelectedPanel() {
-
         if (!openVertex.getPlanStatus().equals(Vertex.PlanStatus.UNDEFINED)
                 && !openVertex.getPlanStatus().equals(Vertex.PlanStatus.INCORRECT)) {
             logs.debug("setting calc panel as current");
@@ -177,7 +174,6 @@ public class NodeEditorView extends javax.swing.JDialog {
             logs.debug("Enabling Check and Giveup");
             this.getCheckButton().setEnabled(true);
             this.demoButton.setEnabled(true);
-            System.out.println("test " + ApplicationContext.getCurrentTask().toString());
             String taskPhase = ApplicationContext.getCurrentTask().getPhase();
 
             // Disable Giveup in Challege tasks
@@ -226,7 +222,6 @@ public class NodeEditorView extends javax.swing.JDialog {
 
         if (correctSolution.checkNodeName(dPanel.getNodeName()) && correctSolution.checkNodeDescription(dPanel.getNodeName(), dPanel.getNodeDesc())) {
             openVertex.setDescriptionStatus(Vertex.DescriptionStatus.CORRECT);
-            //graphPane.getMainFrame().getMainMenu().getModelMenu().addDeleteNodeMenu();
             dPanel.setTextFieldBackground(Color.GREEN);
             getCheckButton().setEnabled(false);
             demoButton.setEnabled(false);
@@ -241,7 +236,7 @@ public class NodeEditorView extends javax.swing.JDialog {
             activityLogs.debug("User entered incorrect description");
         }
 
-        setTitle("Node Editor - "+openVertex.getName());
+        setTitle("Node Editor - " + openVertex.getName());
         validate();
         repaint();      
     }
@@ -368,6 +363,7 @@ public class NodeEditorView extends javax.swing.JDialog {
         }
         
         this.dispose();
+        activityLogs.debug("Vertex Details after closing node editor " + _controller.getNodeDetailLog());
     }
 
     public void addHelpBalloon(String name, String timing, String panel) {
@@ -692,7 +688,7 @@ public class NodeEditorView extends javax.swing.JDialog {
             logs.error(ex.getMessage());
         }
        
-        logs.info(openVertex.toString());        
+        //logs.info(openVertex.toString());        
     }//GEN-LAST:event_buttonOKActionPerformed
 
     public Vertex getOpenVertex() {

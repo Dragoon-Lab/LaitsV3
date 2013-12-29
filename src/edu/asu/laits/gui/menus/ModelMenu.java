@@ -410,12 +410,11 @@ public class ModelMenu extends JMenu {
             Vertex v = new Vertex();
             v.setVertexIndex(graphPane.getModelGraph().getNextAvailableIndex());
             graphPane.addVertex(v);
-//            MainWindow.getInstance().getModelToolBar().disableDeleteNodeButton();
             
-            if (MainWindow.getInstance().isSituationSelected()) {
-                logs.debug("Switching to Model Design Panel");
-                MainWindow.getInstance().switchTutorModelPanels(false);
-            }
+//            if (MainWindow.getInstance().isSituationSelected()) {
+//                logs.debug("Switching to Model Design Panel");
+//                MainWindow.getInstance().prepareModelDesignPanel();
+//            }
 
             graphPane.repaint();
             NodeEditorView editor = new NodeEditorView(v);

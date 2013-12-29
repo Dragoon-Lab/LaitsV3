@@ -782,15 +782,12 @@ public class CalculationsPanelView extends javax.swing.JPanel {
     }
     
     /**
-     * Method to create/remove edges when node equation is changed
+     * Method to create/remove edges when node equation is changed. 
+     * This method will also ensure that edges exits if equation contains the edge name.
      */
     private void processNodeEquation() {
         logs.debug("Processing NodeEquation to create/remvove edges");
-        // Neglect spaces typed before or after the equation
-        if (formulaInputArea.getText().trim().equals(openVertex.getEquation())) {
-            return;
-        }
-
+        
         // Evaluators will ensure that entered equation is parsable 
         Evaluator old = new Evaluator();
         Evaluator changed = new Evaluator();
@@ -803,6 +800,20 @@ public class CalculationsPanelView extends javax.swing.JPanel {
             Set<String> oldNodes = new HashSet<String>(old.getAllVariables());
             Set<String> newNodes = new HashSet<String>(changed.getAllVariables());
             
+            // Neglect spaces typed before or after the equation
+            if (formulaInputArea.getText().trim().equals(openVertex.getEquation())) {
+                // Make sure that edges exits in the graph if the edge name is used in the equation
+                
+                for(String node : newNodes){
+                    Vertex source = modelGraph.getVertexByName(node);
+                    if(!modelGraph.containsEdge(source, openVertex)){
+                        logs.info("Fixing Edge Error - Adding Edge from Node '" + node + "'");
+                        MainWindow.getInstance().getGraphEditorPane().addEdge(source, openVertex);                                          
+                    }                    
+                }
+                return;
+            }
+        
             if (!oldNodes.equals(newNodes)) {
                 logs.info("Node Equation Changed");
                 // Remove deleted nodes
