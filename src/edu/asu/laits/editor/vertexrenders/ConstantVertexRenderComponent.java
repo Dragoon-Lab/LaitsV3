@@ -1,5 +1,6 @@
 package edu.asu.laits.editor.vertexrenders;
 
+import edu.asu.laits.editor.ApplicationContext;
 import java.awt.Color;
 import java.awt.Component;
 import java.awt.Graphics;
@@ -11,6 +12,7 @@ import java.util.Map;
 
 import edu.asu.laits.editor.GraphEditorConstants;
 import edu.asu.laits.editor.GraphEditorVertexView;
+import edu.asu.laits.model.StatsCollector;
 import edu.asu.laits.model.Vertex;
 import java.awt.BasicStroke;
 import java.awt.Font;
@@ -159,8 +161,12 @@ public class ConstantVertexRenderComponent   extends VertexRenderComponent {
         
         int[] xpoints = {0, 60, 119, 60};
         int[] ypoints = {31, 1, 31, 62};
-        g2.setColor(Color.GREEN);
-        g2.fillPolygon(xpoints, ypoints, 4);
+        
+        // Paint Background of Node 
+        if(isBackGroundPainted(currentVertex)) {
+            g2.setColor(new Color(0, 200, 0));
+            g2.fillPolygon(xpoints, ypoints, 4);
+        }
         
         // If Vertex has Defined Description, Plan and Calculations - set color to green else use Gray
         if(currentVertex.isDescriptionDone()){
@@ -179,7 +185,7 @@ public class ConstantVertexRenderComponent   extends VertexRenderComponent {
             g2.setStroke(new BasicStroke(2));
         }
         
-        //g2.drawPolygon(xpoints, ypoints, 4);
+        g2.drawPolygon(xpoints, ypoints, 4);
         
         String vertexName = truncateNodeName(currentVertex.getName());
         double x = getWidth()/2 - (vertexName.length() * 3 -1);
@@ -189,5 +195,6 @@ public class ConstantVertexRenderComponent   extends VertexRenderComponent {
         
         paintVertexStatusIcons(g, currentVertex);
         paintSelectable(g);
+        
     }
 }

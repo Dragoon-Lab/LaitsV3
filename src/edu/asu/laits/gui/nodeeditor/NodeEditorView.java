@@ -278,6 +278,9 @@ public class NodeEditorView extends javax.swing.JDialog {
     }
 
     public void checkPlanPanel(TaskSolution correctSolution) {
+        // Add Check button used to Stats
+        ApplicationContext.updateCheckUsageStats(PLAN, openVertex.getName());
+                
         logs.debug("Checking Plan Panel");
         if (correctSolution.checkNodePlan(dPanel.getNodeName(), pPanel.getSelectedPlan())) {
             if (openVertex.getPlanStatus().equals(PlanStatus.UNDEFINED) || openVertex.getPlanStatus().equals(PlanStatus.INCORRECT)) {
@@ -306,6 +309,9 @@ public class NodeEditorView extends javax.swing.JDialog {
             pPanel.setEditableRadio(false);
             tabPane.setEnabledAt(CALCULATIONS, true);
             tabPane.setForegroundAt(CALCULATIONS, Color.BLACK);
+            
+            // Add Demo button used to Stats
+            ApplicationContext.updateDemoUsageStats(PLAN, openVertex.getName());
         }
         // Save Selected Plan to the Vertex Object
         pPanel.processPlanPanel();
@@ -314,26 +320,31 @@ public class NodeEditorView extends javax.swing.JDialog {
 
     private void checkCalculationsPanel(TaskSolution correctSolution) {
         // Check Parsing Errors and Set Student's Equation in Vertex
-        cPanel.processCalculationsPanel();
-        cPanel.setCheckedBackground(new Color(240, 240, 240));
-        // Check for fixed value
-        if (correctSolution.checkNodeCalculations(openVertex)) {
-            cPanel.setCheckedBackground(Color.GREEN);
-            getCheckButton().setEnabled(false);
-            demoButton.setEnabled(false);
-            
-            activityLogs.debug("User entered correct Calculations.");
-            openVertex.setCalculationsStatus(Vertex.CalculationsStatus.CORRECT);
-            cPanel.setEditableCalculations(false);
-            buttonCancel.setEnabled(true);
-            if (ApplicationContext.isCoachedMode()) {
-                addHelpBalloon(openVertex.getName(), "descCheckDemo", "CALCULATIONS");
+        //cPanel.setCheckedBackground(new Color(240, 240, 240));
+        
+        // Check if Student Entered a valid calculation
+        if(cPanel.processCalculationsPanel()) {
+            // Check if Student's calculations are correct
+            if (correctSolution.checkNodeCalculations(openVertex)) {
+                cPanel.setCheckedBackground(Color.GREEN);
+                getCheckButton().setEnabled(false);
+                demoButton.setEnabled(false);
+
+                activityLogs.debug("User entered correct Calculations.");
+                openVertex.setCalculationsStatus(Vertex.CalculationsStatus.CORRECT);
+                cPanel.setEditableCalculations(false);
+                buttonCancel.setEnabled(true);
+                if (ApplicationContext.isCoachedMode()) {
+                    addHelpBalloon(openVertex.getName(), "descCheckDemo", "CALCULATIONS");
+                }
+            } else {
+                cPanel.setCheckedBackground(Color.RED);
+                setEditorMessage("Your Calculations are Incorrect.");
+                activityLogs.debug("User entered incorrect Calculations.");
+                openVertex.setCalculationsStatus(Vertex.CalculationsStatus.INCORRECT);
             }
         } else {
             cPanel.setCheckedBackground(Color.RED);
-            setEditorMessage("Your Calculations are Incorrect.");
-            activityLogs.debug("User entered incorrect Calculations.");
-            openVertex.setCalculationsStatus(Vertex.CalculationsStatus.INCORRECT);
         }
         
         activityLogs.debug("User checked calculations panel with Nodetype: " + openVertex.getVertexType()
@@ -565,9 +576,11 @@ public class NodeEditorView extends javax.swing.JDialog {
                 if (ApplicationContext.isCoachedMode()) {
                     checkDescriptionPanelCoached(correctSolution);
                 } else {
-
                     checkDescriptionPanel(correctSolution);
                 }
+                // Add Check button used to Stats
+                ApplicationContext.updateCheckUsageStats(DESCRIPTION, openVertex.getName());
+                
                 break;
 
             case PLAN:
@@ -578,6 +591,9 @@ public class NodeEditorView extends javax.swing.JDialog {
             case CALCULATIONS:
                 activityLogs.debug("Check button pressed for Calculations Panel");
                 checkCalculationsPanel(correctSolution);
+                
+                // Add Check button used to Stats
+                ApplicationContext.updateCheckUsageStats(CALCULATIONS, openVertex.getName());
         }
 
         // Refreshing Graph
@@ -623,6 +639,9 @@ public class NodeEditorView extends javax.swing.JDialog {
                 tabPane.setEnabledAt(PLAN, true);
                 tabPane.setForegroundAt(PLAN, Color.BLACK);
                 addHelpBalloon(openVertex.getName(), "descCheckDemo", "DESCRIPTION");
+                
+                // Add Demo button used to Stats
+                ApplicationContext.updateDemoUsageStats(DESCRIPTION, openVertex.getName());
                 break;
 
             case PLAN:
@@ -654,6 +673,9 @@ public class NodeEditorView extends javax.swing.JDialog {
                     // needs to be able to update entry and check it.
                     openVertex.setCalculationsStatus(Vertex.CalculationsStatus.INCORRECT);
                 }
+                
+                // Add Demo button used to Stats
+                ApplicationContext.updateDemoUsageStats(CALCULATIONS, openVertex.getName());
                 break;
 
         }
@@ -688,7 +710,7 @@ public class NodeEditorView extends javax.swing.JDialog {
             logs.error(ex.getMessage());
         }
        
-        //logs.info(openVertex.toString());        
+        logs.info(openVertex.toString());        
     }//GEN-LAST:event_buttonOKActionPerformed
 
     public Vertex getOpenVertex() {

@@ -19,7 +19,6 @@
 package edu.asu.laits.gui.nodeeditor;
 
 import edu.asu.laits.editor.ApplicationContext;
-import edu.asu.laits.editor.GraphEditorPane;
 import edu.asu.laits.gui.BlockingToolTip;
 import edu.asu.laits.gui.MainWindow;
 import edu.asu.laits.model.Graph;
@@ -36,9 +35,9 @@ import java.util.Map;
 import javax.swing.ImageIcon;
 import javax.swing.JComponent;
 import javax.swing.JPanel;
-import javax.swing.JTree;
-import javax.swing.tree.*;
-
+import javax.swing.tree.DefaultTreeModel;
+import javax.swing.tree.TreeNode;
+import javax.swing.tree.TreePath;
 import org.apache.log4j.Logger;
 
 /**
@@ -54,7 +53,6 @@ public class NewNodeDescPanel extends JPanel {
     SolutionDTreeNode root = null;
     DefaultTreeModel model = null;
     private boolean triedDuplicate = false;
-    private static NewNodeDescPanel descView;
     private CreateNewNodeDialog newNodeDialog;
     private static Logger logs = Logger.getLogger("DevLogs");
     private static Logger activityLogs = Logger.getLogger("ActivityLogs");
@@ -77,7 +75,6 @@ public class NewNodeDescPanel extends JPanel {
         initPanel();
         if (ApplicationContext.isCoachedMode()) {
             addHelpBalloon(ApplicationContext.getCorrectSolution().getTargetNodes().getFirstNextNode(parentVertex), "onLoad", "InputNewNode");
-
         }
     }
 
@@ -98,7 +95,6 @@ public class NewNodeDescPanel extends JPanel {
         root = ApplicationContext.getCorrectSolution().getdTreeNode();
         model = new DefaultTreeModel(root);
         decisionTree.setModel(model);
-
         jScrollPane2.setViewportView(decisionTree);
     }
 

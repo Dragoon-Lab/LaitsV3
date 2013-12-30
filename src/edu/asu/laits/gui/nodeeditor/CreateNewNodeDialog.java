@@ -5,7 +5,6 @@
 package edu.asu.laits.gui.nodeeditor;
 
 import edu.asu.laits.editor.ApplicationContext;
-import edu.asu.laits.editor.GraphEditorPane;
 import edu.asu.laits.gui.MainWindow;
 import edu.asu.laits.model.TaskSolution;
 import edu.asu.laits.model.Vertex;
@@ -26,7 +25,7 @@ public class CreateNewNodeDialog extends javax.swing.JDialog {
 
     private NewNodeDescPanel dPanel;
     private NodeEditorView nodeEditorView;
-    private Vertex currentVertex;
+    private Vertex openVertex;
     private Vertex parentVertex;
     private static Logger logs = Logger.getLogger("DevLogs");
     private static Logger activityLogs = Logger.getLogger("ActivityLogs");
@@ -36,14 +35,14 @@ public class CreateNewNodeDialog extends javax.swing.JDialog {
 
         initComponents();
         nodeEditorView = (NodeEditorView) parent;
-        currentVertex = v;
+        openVertex = v;
         parentVertex = nodeEditorView.getOpenVertex();
         initPanel();
         prepareDisplay();
     }
 
     private void initPanel() {
-        dPanel = new NewNodeDescPanel(this, currentVertex);
+        dPanel = new NewNodeDescPanel(this, openVertex);
         descriptionPanel.setLayout(new java.awt.GridLayout(1, 1));
         descriptionPanel.add(dPanel);
         nodeEditorView.getController().initializeCreateNewNodeDialog(this);
@@ -67,7 +66,7 @@ public class CreateNewNodeDialog extends javax.swing.JDialog {
             cancelButton.setText("Enter");
         }
         setTitle("Create New Node");
-        setBounds((int) currentVertex.getXPosition() + 100,
+        setBounds((int) openVertex.getXPosition() + 100,
                 yPositionNodeEditor / 2,
                 getPreferredSize().width, getPreferredSize().height);
         pack();
@@ -160,6 +159,9 @@ public class CreateNewNodeDialog extends javax.swing.JDialog {
         } else {
             checkDescriptionPanel(correctSolution);
         }
+        
+        // Add Check button used to Stats
+        ApplicationContext.updateCheckUsageStats(0, openVertex.getName());
     }//GEN-LAST:event_checkButtonActionPerformed
 
     private void demoButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_demoButtonActionPerformed
@@ -167,17 +169,18 @@ public class CreateNewNodeDialog extends javax.swing.JDialog {
         activityLogs.debug("Giveup button pressed for Create New Node Description Panel");
         dPanel.giveUpDescriptionPanel();
         dPanel.processDescriptionPanel();
-        currentVertex.setDescriptionStatus(Vertex.DescriptionStatus.GAVEUP);
-        setTitle(currentVertex.getName());
-        //graphPane.getMainFrame().getMainMenu().getModelMenu().addDeleteNodeMenu();
+        openVertex.setDescriptionStatus(Vertex.DescriptionStatus.GAVEUP);
+        setTitle(openVertex.getName());
         validate();
         repaint();
-        currentVertex.setDescriptionStatus(Vertex.DescriptionStatus.GAVEUP);
+        openVertex.setDescriptionStatus(Vertex.DescriptionStatus.GAVEUP);
         dPanel.setEditableTree(false);
         this.checkButton.setEnabled(false);
         this.demoButton.setEnabled(false);
         this.cancelButton.setEnabled(true);
 
+        // Add Demo button used to Stats
+        ApplicationContext.updateDemoUsageStats(0, openVertex.getName());
     }//GEN-LAST:event_demoButtonActionPerformed
 
     private void cancelButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_cancelButtonActionPerformed
@@ -193,7 +196,7 @@ public class CreateNewNodeDialog extends javax.swing.JDialog {
         }
 
         if (correctSolution.checkNodeName(dPanel.getNodeName())) {
-            currentVertex.setDescriptionStatus(Vertex.DescriptionStatus.CORRECT);
+            openVertex.setDescriptionStatus(Vertex.DescriptionStatus.CORRECT);
             dPanel.setTextFieldBackground(Color.GREEN);
             checkButton.setEnabled(false);
             demoButton.setEnabled(false);
@@ -201,13 +204,13 @@ public class CreateNewNodeDialog extends javax.swing.JDialog {
             activityLogs.debug("User entered correct description");
             dPanel.setEditableTree(false);
         } else {
-            currentVertex.setDescriptionStatus(Vertex.DescriptionStatus.INCORRECT);
+            openVertex.setDescriptionStatus(Vertex.DescriptionStatus.INCORRECT);
             dPanel.setTextFieldBackground(Color.RED);
             setEditorMessage("That quantity is not used in the correct model. Please select another description.");
             activityLogs.debug("User entered incorrect description");
         }
 
-        setTitle(currentVertex.getName());
+        setTitle(openVertex.getName());
         validate();
         repaint();
     }
@@ -220,7 +223,7 @@ public class CreateNewNodeDialog extends javax.swing.JDialog {
 
         int solutionCheck = correctSolution.checkNodeNameOrdered(dPanel.getNodeName());
         if (solutionCheck == 1) {
-            currentVertex.setDescriptionStatus(Vertex.DescriptionStatus.CORRECT);
+            openVertex.setDescriptionStatus(Vertex.DescriptionStatus.CORRECT);
             dPanel.setTextFieldBackground(Color.GREEN);
             checkButton.setEnabled(false);
             demoButton.setEnabled(false);
@@ -232,12 +235,12 @@ public class CreateNewNodeDialog extends javax.swing.JDialog {
         } 
         else if (solutionCheck == 2) {
             dPanel.setTextFieldBackground(Color.CYAN);
-            currentVertex.setDescriptionStatus(Vertex.DescriptionStatus.INCORRECT);
+            openVertex.setDescriptionStatus(Vertex.DescriptionStatus.INCORRECT);
             setEditorMessage("Quantity is used in model, but is not ready to be defined. Please try another description.");
             activityLogs.debug("User entered description out of order");
         } 
         else {
-            currentVertex.setDescriptionStatus(Vertex.DescriptionStatus.INCORRECT);
+            openVertex.setDescriptionStatus(Vertex.DescriptionStatus.INCORRECT);
             dPanel.setTextFieldBackground(Color.RED);
             setEditorMessage("That quantity is not used in the correct model. Please select another description.");
             activityLogs.debug("User entered incorrect description");
@@ -255,8 +258,8 @@ public class CreateNewNodeDialog extends javax.swing.JDialog {
         }
 
         // This if statement seems problematic 
-        if (currentVertex.getName().equals("") || currentVertex.getDescriptionStatus().equals(Vertex.DescriptionStatus.INCORRECT)) {
-            MainWindow.getInstance().getGraphEditorPane().setSelectionCell(currentVertex.getJGraphVertex());
+        if (openVertex.getName().equals("") || openVertex.getDescriptionStatus().equals(Vertex.DescriptionStatus.INCORRECT)) {
+            MainWindow.getInstance().getGraphEditorPane().setSelectionCell(openVertex.getJGraphVertex());
             MainWindow.getInstance().getGraphEditorPane().removeSelected();
         } else {
             // Initializing Calculations Panel again doesn't see necessary
@@ -268,7 +271,7 @@ public class CreateNewNodeDialog extends javax.swing.JDialog {
         // Refresh MainWidow to show the changes
         MainWindow.refreshGraph();
         if(ApplicationContext.isCoachedMode()){
-            nodeEditorView.addHelpBalloon(currentVertex.getName(), "newNodeClosed", "INPUTS");
+            nodeEditorView.addHelpBalloon(openVertex.getName(), "newNodeClosed", "INPUTS");
             ApplicationContext.getCorrectSolution().getTargetNodes().setNextNodes();
         }
         this.dispose();

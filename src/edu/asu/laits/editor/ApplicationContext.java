@@ -17,15 +17,13 @@
  */
 package edu.asu.laits.editor;
 
-import edu.asu.laits.gui.MainWindow;
 import edu.asu.laits.model.TaskSolution;
 import edu.asu.laits.model.HelpBubble;
-import edu.asu.laits.model.SolutionNode;
-import edu.asu.laits.model.TargetNodes;
+import edu.asu.laits.model.StatsCollector;
 import edu.asu.laits.model.Task;
-import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
-import org.apache.log4j.Logger;
+import java.util.Map;
 
 /**
  *
@@ -46,8 +44,9 @@ public class ApplicationContext {
     private static boolean isProblemSolved = false;
     public static String taskLoaderURL;
     private static boolean helpBubbles = false;
-    private static Logger logs = Logger.getLogger("DevLogs");
-       
+    
+    public static Map<String, StatsCollector> studentCheckDemoStats = new HashMap<String, StatsCollector> ();
+    
     // Task is used at many places in the application. It should be same for all the uses
     private static Task task;
 
@@ -209,4 +208,53 @@ public class ApplicationContext {
         task = predefinedTask;
     }
    
+    public static void updateCheckUsageStats(int tabId, String nodeName) {
+        if(initStatsMap(nodeName)) {
+            switch(tabId) {
+                case 0:
+                    studentCheckDemoStats.get(nodeName).updateDescriptionPanelCheckCount();
+                    break;
+
+               case 1:
+                    studentCheckDemoStats.get(nodeName).updatePlanPanelCheckCount();
+                    break;
+
+               case 2:
+                    studentCheckDemoStats.get(nodeName).updateCalculationsPanelCheckCount();
+                    break;    
+            }
+        }
+    }
+    
+    public static void updateDemoUsageStats(int tabId, String nodeName) {
+        if(initStatsMap(nodeName)) {
+            switch(tabId) {
+                case 0:
+                    studentCheckDemoStats.get(nodeName).updateDescriptionPanelDemoCount();
+                    break;
+
+               case 1:
+                    studentCheckDemoStats.get(nodeName).updatePlanPanelDemoCount();
+                    break;
+
+               case 2:
+                    studentCheckDemoStats.get(nodeName).updateCalculationsPanelDemoCount();
+                    break;    
+            }
+        }
+    }
+    
+    public static StatsCollector getCheckDemoStats(String nodeName) {
+        return studentCheckDemoStats.get(nodeName);
+    }
+    
+    private static boolean initStatsMap(String nodeName) {
+        if(nodeName == null || nodeName.trim().equals(""))
+            return false;
+                    
+        if(studentCheckDemoStats.get(nodeName) == null)
+            studentCheckDemoStats.put(nodeName, new StatsCollector());
+        
+        return true;
+    }
 }

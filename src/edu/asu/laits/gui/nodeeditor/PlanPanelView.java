@@ -67,6 +67,7 @@ public class PlanPanelView extends javax.swing.JPanel {
     private JRadioButton accumulatorSelection;
     private JRadioButton functionSelection;
    
+    private JLabel lableTitle;
     /**
      * Logger
      */
@@ -98,7 +99,8 @@ public class PlanPanelView extends javax.swing.JPanel {
         
         panel = new JPanel(PlanLayout);
         panel.setBackground(Color.WHITE);
-        panel.add(new JLabel(openVertex.getName() + " is a ..."), "align center");
+        lableTitle = new JLabel("Node '" + openVertex.getName() + "' is a ...");
+        panel.add(lableTitle, "align center");
         paraPanel = new JPanel(rowLayout);
         paraPanel.add(parameterSelection, "");
         paraPanel.add(new JLabel(labelHtml + parameterPlan[1]), "");
@@ -287,5 +289,9 @@ public class PlanPanelView extends javax.swing.JPanel {
         }
         
         return null;
+    }
+    
+    public JLabel getTitleLable() {
+        return lableTitle;
     }
 }
