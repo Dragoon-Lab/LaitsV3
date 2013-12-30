@@ -4,7 +4,6 @@ session_start();
 //*********This file is for development to test functionality and is not part of the MVC or the JavaScript implementation.
 //*********It shows the model's usefulness in loading or building a model.
 //********************************************************************************************************************************
-
 ?>
 
 <!DOCTYPE html>
@@ -97,20 +96,28 @@ session_start();
                 rabbits.setStudentSeletionsUnits("id3", "percent");
                 rabbits.setStudentSeletionsInitial("id3", null);
                 rabbits.setStudentSeletionsEquation("id3", "0.2");
-                rabbits.buildModel();     
+                
+                rabbits.buildModel();
 
                 //The next section prints the entire model on the screen, and then uses several getters to access the models information
+                
+//                alert(rabbits.getPhase());
+//                alert(rabbits.getType());
+//                alert(rabbits.getTaskName());
+//                alert(rabbits.getURL());
+//                alert(rabbits.getStartTime());
+//                alert(rabbits.getEndTime());
+//                alert(rabbits.getTimeStep());
+//                alert(rabbits.getUnits());
+//                alert(rabbits.getTaskDescription());
+//                alert(rabbits.getNodeIDByName("birth rate"));
+
+//                rabbits.deleteNode("id1");
+//                rabbits.deleteNode("id2");
+//                rabbits.deleteNode("id3");
                 document.write("Rabbits Model: \r" + JSON.stringify(rabbits.model, null, 4));
-                alert(rabbits.getPhase());
-                alert(rabbits.getType());
-                alert(rabbits.getTaskName());
-                alert(rabbits.getURL());
-                alert(rabbits.getStartTime());
-                alert(rabbits.getEndTime());
-                alert(rabbits.getTimeStep());
-                alert(rabbits.getUnits());
-                alert(rabbits.getTaskDescription());
-                alert(rabbits.getNodeIDByName("birth rate"));
+                alert(rabbits.model.task.givenModelNodes.length);
+                //alert("Order of " + rabbits.getNodeIDByName("birth rates") + ": " + rabbits.getNodeOrder(rabbits.getNodeIDByName("birth rates")));
 
             });
         </script>

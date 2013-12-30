@@ -291,6 +291,22 @@ define(["dojo/_base/declare", "/laits/js/json/node", "/laits/js/json/student_nod
         },
         //builds a new node and returns the node's unique id
         addNode: function() {
+            this.buildModel();
+
+            var id = "id" + this.ID;
+            var order = this.nodes.length + 1;
+            var xPos = this.x;
+            var yPos = this.y;
+            this.updateNodePosition();
+            this.ID++;
+            var newNode = new Node(id, order, xPos, yPos);
+            this.model.task.givenModelNodes.push(newNode);
+            this.nodes.push(newNode);
+            console.log(" :-)  :-)  :-)  :-)  :-) ");
+            return id;
+        },
+        //builds a new node and returns the node's unique id
+        addNode2: function() {
             var id = "id" + this.ID;
             var order = this.nodes.length + 1;
             var xPos = this.x;
@@ -359,18 +375,41 @@ define(["dojo/_base/declare", "/laits/js/json/node", "/laits/js/json/student_nod
             return false;
         },
         //deletes a node with a given id
-        deleteNode: function(id) {
-            for (var i = 0; i < this.nodes.length; i++) {
-                if (id === this.nodes[i].ID) {
-                    this.nodes.splice(this.nodes.indexOf(this.nodes[i]), 1);
+        deleteNode: function(id) { // in JSON model
+            var deleted = false;
+            for (var i = 0; i < this.model.task.givenModelNodes.length; i++) {
+                if (id === this.model.task.givenModelNodes[i].ID) {
+                    this.model.task.givenModelNodes.splice(this.model.task.givenModelNodes.indexOf(this.model.task.givenModelNodes[i]), 1);
+                    deleted = true;
+                    if (this.model.task.givenModelNodes.length > 0)
+                        this.model.task.givenModelNodes[i].order = this.model.task.givenModelNodes[i].order - 1;
                 }
-                //maintains order of nodes during deletion
-                this.nodes[i].order = i + 1;
+                else if (deleted === true)//maintains order of nodes during deletion                    
+                    this.model.task.givenModelNodes[i].order = this.model.task.givenModelNodes[i].order - 1;
+            }
+            this.deleteStudentModelNode(id);
+        },
+        //deletes a node with a given id from the student model
+        deleteStudentModelNode: function(id) { // in JSON model
+            var deleted = false;
+            for (var i = 0; i < this.model.task.studentModelNodes.length; i++) {
+                if (id === this.model.task.studentModelNodes[i].ID) {
+                    this.model.task.studentModelNodes.splice(this.model.task.studentModelNodes.indexOf(this.model.task.studentModelNodes[i]), 1);
+                    deleted = true;
+                    if (this.model.task.studentModelNodes.length > 0)
+                        this.model.task.studentModelNodes[i].order = this.model.task.studentModelNodes[i].order - 1;
+                }
+                else if (deleted === true)//maintains order of nodes during deletion                    
+                    this.model.task.studentModelNodes[i].order = this.model.task.studentModelNodes[i].order - 1;
             }
         },
-        //returns an array of the node ID's in a model
-        getNodesList: function() {
-            return this.nodes;
+        //returns a JSON object of the nodes in a model
+        getNodesList: function() {// in JSON model
+            return this.model.task.givenModelNodes;
+        },
+        //returns a JSON object of the nodes in the student model
+        getStudentModelNodesList: function() {// in JSON model
+            return this.model.task.studentModelNodes;
         },
         /**
          * Next 3 functions keep track of student attempts
