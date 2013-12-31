@@ -3,7 +3,7 @@ define(["dojo/_base/declare"]
         , function(declare) {
 
     return declare(null, {
-        constructor: function(id, order, xPos, yPos) {
+        constructor: function(id, order) { //(string, int)
             this.ID = id;
             this.name = "";
             this.type = "";
@@ -12,25 +12,24 @@ define(["dojo/_base/declare"]
             this.order = order;
             this.units = "";
             this.inputs = new Array();
-            this.position = JSON.parse('{"x" : ' + xPos + ',\n"y" : ' + yPos + '}');
             this.initial = "";
             this.equation = "";
             this.correctDesc = "";
             this.attemptCount = JSON.parse('{"desc" : ' + 0 + ',\n"plan" : ' + 0 + ',\n"calc" : ' + 0 + '}');
             this.solution = JSON.parse('{"desc" : "' + null + '",\n"plan" : "' + null + '",\n"calc" : "' + null + '"}');
         },
-        addInput: function(id) {
+        addInput: function(id) { //(string)
             var input = JSON.parse('{"ID" : "' + id + '"}');
             this.inputs.push(input);
         },
-        deleteInput: function(id) {
+        deleteInput: function(id) { //(string)
             for (var i = 0; i < this.inputs.length; i++) {
                 if (id === this.inputs[i]) {
                     this.inputs.splice(this.inputs.indexOf(this.inputs[i]), 1);
                 }
             }
         },
-        addAttempt: function(desc, plan, calc) {
+        addAttempt: function(desc, plan, calc) { //(bool, bool, bool)
             if (desc === true)
                 this.attemptCount.desc += 1;
             if (plan === true)
@@ -38,7 +37,7 @@ define(["dojo/_base/declare"]
             if (calc === true)
                 this.attemptCount.calc += 1;
         },
-        addSolution: function(desc, plan, calc) {
+        addSolution: function(desc, plan, calc) { //(bool, bool, bool)
             if (desc !== null)
                 this.solution.desc = desc;
             if (plan !== null)

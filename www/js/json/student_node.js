@@ -2,7 +2,7 @@ define(["dojo/_base/declare"]
         , function(declare) {
 
     return declare(null, {
-        constructor: function(id, xPos, yPos) {
+        constructor: function(id, xPos, yPos) { //(string, int, int)
             this.ID = id;
             this.name = "";
             this.inGivenModel = false;
@@ -11,18 +11,18 @@ define(["dojo/_base/declare"]
             this.studentSelections = JSON.parse('{"desc" : "' + null + '",\n"plan" : "' + null
                     + '",\n"units" : "' + null + '",\n"initial" : ' + null + ',\n"equation" : "' + null + '"}');
         },
-        addInput: function(id) {
+        addInput: function(id) { //(string)
             var input = JSON.parse('{"ID" : "' + id + '"}');
             this.inputs.push(input);
         },
-        deleteInput: function(id) {
+        deleteInput: function(id) { //(string)
             for (var i = 0; i < this.inputs.length; i++) {
                 if (id === this.inputs[i]) {
                     this.inputs.splice(this.inputs.indexOf(this.inputs[i]), 1);
                 }
             }
         },
-        setStudentSeletions: function(desc, plan, units, initial, equation) {
+        setStudentSeletions: function(desc, plan, units, initial, equation) { //(string, string, string, float, string)
             if (desc !== null)
                 this.studentSelections.desc = desc;
             if (plan !== null)
