@@ -1,0 +1,47 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN"
+   "http://www.w3.org/TR/html4/loose.dtd">
+<html>
+<head>
+<meta http-equiv="Content-type" content="text/html;charset=UTF-8">
+<title>Search Dragoon Logs</title>
+</head>
+<body>
+	<h4>Dragoon Logs, time on task, problem solution analysis and checking basic logs.</h4>
+	<form method ="post" action = "/dragoon/dbConnection.php">
+		<label>Section&nbsp;:</label>&nbsp;
+		<select name = "section">
+			<option value="">Select Section</option>
+			<option value="CPI-360">CPI-360</option>
+			<option value="SOS-326">SOS-326</option>
+		</select>
+		<br/>
+		<label>Student Name&nbsp;:</label>&nbsp;<input type ="text" name ="studentName"/> <br/>
+		<label>Problem&nbsp;:</label>&nbsp;<input type = "text" name = "problemName"/> <br/>
+		<label>Date&nbsp;(format YYYY-MM-DD)-&nbsp;From</label>&nbsp;<input type = "datetime" name = "fromDate"/>&nbsp;<label>to&nbsp;-</label>&nbsp;<input type = "datetime" name = "toDate"/> <br/>
+		
+		<label>DB Name&nbsp;:</label>&nbsp;<input type ="text" name ="db_name"/> <br/>
+		<label>DB User&nbsp;:</label>&nbsp;<input type ="text" name ="db_user"/> <br/>
+		<label>Password&nbsp;:</label>&nbsp;<input type ="password" name ="db_password"/><br/>
+		<label>DB Table&nbsp;:</label>&nbsp;<input type = "text" name = "db_table"/> <br/>
+		
+		<p>Functionality from the logs :</p>
+		<input type = "radio" name="logFunctionality"  value="Time-On-Task">Time-on-Task & Solution Verification</input>
+		<input type = "radio" name="logFunctionality"  value="class-problem" checked>Class Problems</input>
+		<input type = "radio" name="logFunctionality"  value="check-logs">Checking Logs</input>
+		<br/>
+		<input type ="submit" value = "Submit" name ="form_submit" />
+		
+	</form>
+	
+	<div>
+		<h4>Help for the above functionalities</h4>
+		<ul>
+			<li>Time On Task & Solution Verification uses section and student name. Student name is for a particular user id that you want to check the solution time for particular user. If you want to check for whole section then select one of the two possible values from the Section Dropdown.</li>
+			<li>In Time-on-Task if you specify then we find the problems that have been worked out during that time by all the users possible. If you specify a particular user, problem and time then we work as per the problems.</li>
+			<li>Class Problems finds all the problems that student have worked in a particular time and gives the JNLP urls to test all the final solutions of the problems. You can specify time / sections as per your need. If no section is specified then all the problems are enlisted for the students in both the sections. It doesnt work to find the problems worked by a single user. If no time is specified then a default time of November 6th, 2013 3 pm to 4 30 pm is used.</li>
+			<li>Check Logs - specify a particular log table that you want to check. It will return all the logs from the table specified in that time. As this can be really heavy if one does not specify the time, so you can see only logs from last 7 days only, if you dont specify the time.</li>
+		</ul>
+	</div>
+	
+</body>
+</html>
