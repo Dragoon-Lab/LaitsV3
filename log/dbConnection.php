@@ -1,8 +1,8 @@
 <html>
 <body>
 <?php
-	//require "../www/db-login.php";
-	//require "../www/error-handler.php";
+	require "../www/db-login.php";
+	require "../www/error-handler.php";
 
 	!empty($_REQUEST["section"])?($section[0] = $_REQUEST["section"]):($section = array("CPI-360", "SOS-326"));
 	$student[0] = $_REQUEST["studentName"];
@@ -15,7 +15,7 @@
 	!empty($_REQUEST["db_user"])?($dbuser = $_REQUEST["db_user"]):'';
 	!empty($_REQUEST["db_name"])?($dbpassword = $_REQUEST["db_name"]):'';
 	
-	$mysqli = mysqli_connect("localhost","sachin", "miatdb211", "laits_devel") or die("Connection not established. Check the user log file");
+	$mysqli = mysqli_connect("localhost", $dbuser, $dbpass, $dbname) or die("Connection not established. Error ->".$mysqli->error, E_USER_ERROR);
 	
 	$al = new AnalyzeLogs($mysqli);
 	if($functionality === "class-problem"){
