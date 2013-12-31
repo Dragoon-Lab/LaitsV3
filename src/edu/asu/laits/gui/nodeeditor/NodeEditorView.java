@@ -320,8 +320,6 @@ public class NodeEditorView extends javax.swing.JDialog {
 
     private void checkCalculationsPanel(TaskSolution correctSolution) {
         // Check Parsing Errors and Set Student's Equation in Vertex
-        //cPanel.setCheckedBackground(new Color(240, 240, 240));
-        
         // Check if Student Entered a valid calculation
         if(cPanel.processCalculationsPanel()) {
             // Check if Student's calculations are correct

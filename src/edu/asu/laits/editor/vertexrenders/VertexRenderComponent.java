@@ -180,12 +180,13 @@ public class VertexRenderComponent extends VertexRenderer implements
     protected boolean isBackGroundPainted(Vertex vertex) {
         // Paint background green if student used check button only once
         if(!ApplicationContext.isAuthorMode()) {
-            //System.out.println("trying2");
             StatsCollector stats = ApplicationContext.getCheckDemoStats(vertex.getName());
-            //System.out.println(stats.getDescriptionPanelCheckCount()+ "  " +stats.getPlanPanelCheckCount()+"  "+stats.getCalculationsPanelCheckCount());
-            if(stats != null && stats.getDescriptionPanelCheckCount() == 1 && stats.getPlanPanelCheckCount() == 1 && stats.getCalculationsPanelCheckCount() == 1
-                    && stats.getDescriptionPanelDemoCount() == 0 && stats.getPlanPanelDemoCount() == 0 && stats.getCalculationsPanelDemoCount() == 0) {
-                return true;
+            
+            if(vertex.isDescriptionDone() && vertex.isPlanDone() && vertex.isCalculationsDone()) {
+                if(stats != null && stats.getDescriptionPanelCheckCount() == 1 && stats.getPlanPanelCheckCount() == 1 && stats.getCalculationsPanelCheckCount() == 1
+                        && stats.getDescriptionPanelDemoCount() == 0 && stats.getPlanPanelDemoCount() == 0 && stats.getCalculationsPanelDemoCount() == 0) {
+                    return true;
+                }
             }
         }
         return false;
