@@ -1,4 +1,10 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN"
+   "http://www.w3.org/TR/html4/loose.dtd">
 <html>
+<head>
+<meta http-equiv="Content-type" content="text/html;charset=UTF-8">
+<title>Log Analysis</title>
+</head>
 <body>
 <?php
 	require "../www/db-login.php";
@@ -20,18 +26,19 @@
 	$al = new AnalyzeLogs($mysqli);
 	if($functionality === "class-problem"){
 		$al->class_problem($section, $student, $problem, $fromDate, $toDate);
-	} elseif($functionality === "check_logs"){
-		$al->show_logs($table, $toDate, $fromDate, $dbname);
+	} elseif($functionality === "check-logs"){
+		$al->show_logs($tableName, $toDate, $fromDate);
 	} elseif($functionality === "Time-On-Task"){
 		$al->solution_check($section, $student, $problem, $fromDate, $toDate);
 	}
+	mysqli_close($mysqli);
 	
 Class AnalyzeLogs{
 	public $sqlConnection;
 	private static $badUsers = array('bvds', 'reid', 'test', 'deepak', 'megha', 'ramayan', 'ram', 'tiwari', 'joiner');
 	private static $goldenRatio = 0.6;//ratio of (number of times give up pressed)/(total number of solution checks)
-	private static $minimumTime = 10; //minimum problem time, usually the time has to be greater than this to be considered. if a problem is done in less than this time then we do not check all the action times.
-	private static $actionTime = 7; //time greater than this then student is not working on the problem.
+	private static $minimumTime = 600; //minimum problem time, usually the time has to be greater than this to be considered. if a problem is done in less than this time then we do not check all the action times.
+	private static $actionTime = 420; //time in seconds greater than this then student is not working on the problem.
 	private static $problemLoadTime = 1; //used for multiple loading times of a problem.
 	
 	function checkBadUsers($user){
@@ -172,11 +179,12 @@ Class AnalyzeLogs{
 			$startTimeStamp = strtotime($problemTime[$i]['startTime']);
 			$endTimeStamp = strtotime($problemTime[$i]['endTime']);
 			
-			$timeDifference = abs($endTimeStamp - $startTimeStamp)/60;//these are the minutes for which a session is running
+			$timeDifference = abs($endTimeStamp - $startTimeStamp);//these are the minutes for which a session is running
+			
 			//time Analysis for the problem time
 			//if the session time is greater than 10 minutes then we check for all the actions if the log difference is greater than min action time
 			if($timeDifference > $minProblemTime){
-				$actionString = "SELECT * FROM dev_logs where USER_ID = '".$user."' AND DATED >='".$problemTime[$i]['startTime']."' AND DATED <= '".$problemTime[$i]['endTime']."';";
+				$actionString = "SELECT * FROM dev_logs where USER_ID = '".$user."' AND DATED >='".$problemTime[$i]['startTime']."' AND DATED <= '".$problemTime[$i]['endTime']."' ORDER BY DATED asc;";
 				$actions = $this->getResults($actionString);
 				$index = 0;
 				
@@ -191,7 +199,7 @@ Class AnalyzeLogs{
 					}
 					$newTime = strtoTime($actionRow['DATED']);
 					
-					$timeDiff = abs($newTime-$oldTime)/60;//minutes difference between two consecutive action during the session.
+					$timeDiff = abs($newTime-$oldTime);//seconds difference between two consecutive action during the session.
 					
 					//checking if the system is idle for more than 5/7 minute. Value kept at the start of the class.
 					if($timeDiff < $minActionTime){
@@ -204,10 +212,10 @@ Class AnalyzeLogs{
 			}
 		}
 		$gaming_system = false;
-		if($totalCheckCount !=0 && $totalGiveUpCount != 0){
-			$gaming_system = (($totalGivUpCount*100)/($totalCheckCount + $totalGiveUpCount));
+		if(($totalCheckCount+$totalGiveUpCount) !=0){
+			$gaming_system = (($totalGiveUpCount*100)/($totalCheckCount + $totalGiveUpCount));
 		} else {
-			$gaming_system = 'N/A'
+			$gaming_system = 'N/A';
 		}
 		
 		$userProblemAnalysis = array('user' => $user, 'problem' => $problem, 'totalTime' => $totalTime, 'giveUpCount' => $totalGiveUpCount, 'totalCheckCount' => $totalCheckCount, 'gamingTheSystem' => $gaming_system);
@@ -234,7 +242,7 @@ Class AnalyzeLogs{
 			echo "<table border = '1'>\n";
 			echo "<tr>\n";
 			echo "<th>Problem Name</th>\n";
-			echo "<th>Total Time (in minutes)</th>\n";
+			echo "<th>Total Time (in seconds)</th>\n";
 			echo "<th>Number of Time Give Up Pressed</th>\n";
 			echo "<th>Check button pressed</th>\n";
 			echo "<th>% of Give Up button pressed</th>\n";
@@ -320,36 +328,41 @@ Class AnalyzeLogs{
 		}
 	}
 	
-	function checkLogs($table, $toDate, $fromDate, $dbname){
+	function show_logs($table, $toDate, $fromDate){
 		date_default_timezone_set('America/Phoenix');
 		$table = !empty($table)?$table:"dev_logs";
 		$startDate = !empty($fromDate)?$fromDate: Date('Y-m-d', strtotime('-7 days'));
 		if($table != 'tasks'){
-			$colQuery = "SELECT COLUMN_NAME FROM information_schema.COLUMNS WHERE TABLE_SCHEMA = '".$dbname."' AND TABLE_NAME = '".$table."' AND DATA_TYPE = 'timestamp' OR DATA_TYPE = 'datetime';";
-			$colName = $this->{getResults($colQuery)};
+			$colQuery = "SELECT COLUMN_NAME FROM information_schema.COLUMNS WHERE TABLE_NAME = '".$table."' AND (DATA_TYPE = 'timestamp' OR DATA_TYPE = 'datetime');";
+			$colName = $this->getResults($colQuery);
 			
-			$toDateString = 'AND '.$colName.' <="'.$toDate.'"';
-			$queryString = "SELECT * from ".$table." Where ".$colName." >= '".$fromDate."' ".!empty($toDate)?$toDateString:"".";";
+			$colRow = $colName->fetch_assoc();
+			$colName = $colRow['COLUMN_NAME'];
+			$toDateString = "AND ".$colName." <='".$toDate."'";
+			$queryString = "SELECT * from ".$table." Where ".$colName." >= '".$startDate."' ".(!empty($toDate)?$toDateString:"").";";
 		} else {
 			$queryString = "SELECT * from ".$table.";";
 		}
-		$result = $this->{getResults($queryString)};
+		$result = $this->getResults($queryString);
 		
-		$columnsQuery = "SELECT COLUMN_NAME FROM information_schema.COLUMNS WHERE TABLE_SCHEMA = '".$dbname."' AND TABLE_NAME = '".$table."';";
-		$columns = $this->{getResults($columnsQuery)};
-		
-		if($result != null){
-			echo '<table border="1">\n';
-			echo '<tr>\n';
+		$columnsQuery = "SELECT COLUMN_NAME FROM information_schema.COLUMNS WHERE TABLE_NAME = '".$table."';";
+		$columns = $this->getResults($columnsQuery);
+	
+		if($result != null && !empty($result)){
+			echo '<table border="1">';
+			echo "<tr>\n";
+			$colNameArray = array();
 			while($columnName = $columns->fetch_assoc()){
-				echo '<th>'.$columnName['COLUMN_NAME'].'</th>\n';
+				echo "<th>".$columnName['COLUMN_NAME']."</th>\n";
+				array_push($colNameArray, $columnName['COLUMN_NAME']);
 			}
-			echo '</tr>\n';
+			echo "</tr>\n";
 			
 			while($row = $result->fetch_assoc()){
 				echo " <tr>\n";
-				while($columnName = $columns->fetch_assoc()){
-					echo "<td>".$row[$columnName['COLUMN_NAME']]."</td>\n";
+				$numberOfColumns = sizeof($colNameArray);
+				for($i = 0; $i<$numberOfColumns; $i++){
+					echo "<td>".$row[$colNameArray[$i]]."</td>\n";
 				}
 				echo "</tr>\n";
 			}
