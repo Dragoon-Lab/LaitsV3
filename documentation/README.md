@@ -10,6 +10,7 @@ This contains mostly design documents.
 * [XML format](xml-style.md)
 * [Forum](forum.md)
 * [Pedagogical Model JavaScript Version](Pedagogical-Model-JavaScript-Version.docx)
+* [Logging JavaScript Version](logs-structure.md)
 
 Documentation can be in any convenient format (word, html, *et cetera*) with 
 generic [markdown](http://en.wikipedia.org/wiki/Markdown) being the default 
