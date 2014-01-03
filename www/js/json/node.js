@@ -1,9 +1,20 @@
+/**
+ * 
+ * Given Model node creation class used by model.js for Dragoon problems
+ * @author: Brandon Strong
+ * 
+ **/
+
+/**
+ * This class is used by model.js and should not be accessed directly by
+ * another part of Dragoon
+ */
 
 define(["dojo/_base/declare"]
         , function(declare) {
 
     return declare(null, {
-        constructor: function(id, order) { //(string, int)
+        constructor: function(/*string*/ id, /*int*/ order) {
             this.ID = id;
             this.name = "";
             this.type = "";
@@ -18,18 +29,18 @@ define(["dojo/_base/declare"]
             this.attemptCount = JSON.parse('{"desc" : ' + 0 + ',\n"plan" : ' + 0 + ',\n"calc" : ' + 0 + '}');
             this.solution = JSON.parse('{"desc" : "' + null + '",\n"plan" : "' + null + '",\n"calc" : "' + null + '"}');
         },
-        addInput: function(id) { //(string)
+        addInput: function(/*string*/ id) {
             var input = JSON.parse('{"ID" : "' + id + '"}');
             this.inputs.push(input);
         },
-        deleteInput: function(id) { //(string)
+        deleteInput: function(/*string*/ id) {
             for (var i = 0; i < this.inputs.length; i++) {
                 if (id === this.inputs[i]) {
                     this.inputs.splice(this.inputs.indexOf(this.inputs[i]), 1);
                 }
             }
         },
-        addAttempt: function(desc, plan, calc) { //(bool, bool, bool)
+        addAttempt: function(/*bool*/ desc, /*bool*/ plan, /*bool*/ calc) {
             if (desc === true)
                 this.attemptCount.desc += 1;
             if (plan === true)
@@ -37,7 +48,7 @@ define(["dojo/_base/declare"]
             if (calc === true)
                 this.attemptCount.calc += 1;
         },
-        addSolution: function(desc, plan, calc) { //(bool, bool, bool)
+        addSolution: function(/*string*/ desc, /*string*/ plan, /*string*/ calc) {
             if (desc !== null)
                 this.solution.desc = desc;
             if (plan !== null)

@@ -1,8 +1,20 @@
+/**
+ * 
+ * Student Model node creation class used by model.js for Dragoon problems
+ * @author: Brandon Strong
+ * 
+ **/
+
+/**
+ * This class is used by model.js and should not be accessed directly by
+ * another part of Dragoon
+ */
+
 define(["dojo/_base/declare"]
         , function(declare) {
 
     return declare(null, {
-        constructor: function(id, xPos, yPos) { //(string, int, int)
+        constructor: function(/*string*/ id, /*int*/ xPos, /*int*/ yPos) {
             this.ID = id;
             this.name = "";
             this.inGivenModel = false;
@@ -11,18 +23,18 @@ define(["dojo/_base/declare"]
             this.studentSelections = JSON.parse('{"desc" : "' + null + '",\n"plan" : "' + null
                     + '",\n"units" : "' + null + '",\n"initial" : ' + null + ',\n"equation" : "' + null + '"}');
         },
-        addInput: function(id) { //(string)
+        addInput: function(/*string*/ id) {
             var input = JSON.parse('{"ID" : "' + id + '"}');
             this.inputs.push(input);
         },
-        deleteInput: function(id) { //(string)
+        deleteInput: function(/*string*/ id) {
             for (var i = 0; i < this.inputs.length; i++) {
                 if (id === this.inputs[i]) {
                     this.inputs.splice(this.inputs.indexOf(this.inputs[i]), 1);
                 }
             }
         },
-        setStudentSeletions: function(desc, plan, units, initial, equation) { //(string, string, string, float, string)
+        setStudentSeletions: function(/*string*/ desc, /*string*/ plan, /*string*/ units, /*float*/ initial, /*string*/ equation) {
             if (desc !== null)
                 this.studentSelections.desc = desc;
             if (plan !== null)
