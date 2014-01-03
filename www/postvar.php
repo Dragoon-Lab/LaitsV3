@@ -21,15 +21,15 @@
     $saveData = isset($_POST['saveData'])?
       mysqli_real_escape_string($mysqli, $_POST['saveData']):'';
     
- //   error_log("action: $action | userid: $id | section: $section | problem: $problemName | author: $author | ");
+    error_log("action: $action | userid: $id | section: $section | problem: $problemName | author: $author | ");
 
     if (strcmp($action, "save") == 0) {
 
-        saveGraphXMLtoDatabase($id,$section,$problemName,$saveData,$mysqli);
+        saveGraphXMLtoDatabase($id,$author,$section,$problemName,$saveData,$mysqli);
     } elseif(strcmp($action, "author_save") == 0) {
       	saveAuthorGraphXMLtoDatabase($author,$section,$problemName,$saveData,$mysqli);
     } elseif (strcmp($action, "load") == 0) {
-        print loadGraphXMLfromDatabase($id,$section,$problemName,$mysqli);
+        print loadGraphXMLfromDatabase($id,$author,$section,$problemName,$mysqli);
 //  This should be removed.  See Bug #2222
     } elseif(strcmp($action, "author_load") == 0){
         // For author_load check if the problem directory contains a defined problem
@@ -45,18 +45,18 @@
     }
 
 
-    function saveGraphXMLtoDatabase($id,$section,$problemName,$saveData,$mysqli){
-        $queryString = "SELECT saveData FROM autosave_table WHERE id='$id' AND section='$section' AND problemNum='$problemName'";
+    function saveGraphXMLtoDatabase($id,$author,$section,$problemName,$saveData,$mysqli){
+        $queryString = "SELECT saveData FROM autosave_table WHERE id='$id' AND author = '$author' AND section='$section' AND problemNum='$problemName'";
         $result = $mysqli->query($queryString);
         $num_rows = $result->num_rows;
 
         if ($num_rows == 0) {
-            $query = "INSERT INTO autosave_table(id,section,problemNum,saveData) VALUES ('$id','$section','$problemName','$saveData')";
+            $query = "INSERT INTO autosave_table(id,author,section,problemNum,saveData) VALUES ('$id','$author','$section','$problemName','$saveData')";
             $mysqli->query($query)
 	      or trigger_error("insert into autosave_table failed" . 
 			       $mysqli->error);
         } else {
-            $queryString = "UPDATE autosave_table SET saveData='$saveData', date = CURRENT_TIMESTAMP WHERE id='$id' AND section='$section' AND problemNum='$problemName'";
+            $queryString = "UPDATE autosave_table SET saveData='$saveData', date = CURRENT_TIMESTAMP WHERE id='$id' AND author='$author' AND section='$section' AND problemNum='$problemName'";
             $mysqli->query($queryString)
 	      or trigger_error("update autosave_table failed" . 
 			       $mysqli->error);
@@ -77,8 +77,8 @@
         }
     }
     
-    function loadGraphXMLfromDatabase($id,$section,$problemName,$mysqli){
-        $queryString = "SELECT saveData FROM autosave_table WHERE id='$id' AND section='$section' AND problemNum='$problemName'";
+    function loadGraphXMLfromDatabase($id,$author,$section,$problemName,$mysqli){
+        $queryString = "SELECT saveData FROM autosave_table WHERE id='$id' AND author = '$author' AND section='$section' AND problemNum='$problemName'";
         $result = $mysqli->query($queryString)
 	  or trigger_error("select from autosave_table failed" . 
 			   $mysqli->error);
@@ -96,7 +96,7 @@
     
         function loadAuthorGraphXMLfromDatabase($author,$section,$problemName,$mysqli){
         
-    //	error_log("loadAuthorGraphXMLfromDatabase section: $section | problem: $problemName | author: $author | ");
+    	error_log("loadAuthorGraphXMLfromDatabase section: $section | problem: $problemName | author: $author | ");
         $queryString = "SELECT saveData FROM unsolutions WHERE author='$author' AND section='$section' AND problemName='$problemName'";
         $result = $mysqli->query($queryString)
 	  or trigger_error("select from unsolutions failed" . 
@@ -104,7 +104,7 @@
         $returnString = "";
         
         $num_rows = $result->num_rows;
-	//	error_log("loadAuthorGraphXMLfromDatabase numrows = $num_rows");
+		error_log("loadAuthorGraphXMLfromDatabase numrows = $num_rows");
         if ($num_rows == 1) {
             while ($row = $result->fetch_row()) {
                 //printf("%s", $row[0]);
