@@ -1,159 +1,161 @@
-{"Task" : {
-	"phase" : "Intro",
-	"type" : "Construct",
-	"Properties" : {
-		"TaskName" : "Rabbits - Intro Problem",
-		"URL" : "images/rabbit.jpeg",
-		"StartTime" : 0,
-		"EndTime" : 10,
-		"Units" : "Years"
-	},
-	"TaskDescription" : 
-		"In this exercise, you will construct a model of how a rabbit population  NEWLINE
-            grows when no rabbits die. The first quantity in this model is the  NEWLINE
-            population or number of rabbits in the population. Initially, there are NEWLINE 
-            100 rabbits, but the number increases with time. The new population each NEWLINE
-            month is its present value plus the number of births (number of rabbits NEWLINE
-            born each month).  The number of births is equal to the product of the NEWLINE
-            population and the birth rate. The birthrate or the ratio of the number NEWLINE
-            of rabbits born in a month to the rabbit population that month has a NEWLINE
-            fixed value of 0.2.",
-	"Nodes" : [
-		{"Node" : {
-			"type" : "stock",
-			"id" : 1,
-			"name" : "population",
-			"extra" : "no",
-			"Order" : 1,
-			"Inputs" : [
-				{"Name" : "births"}
-			],
-			"Position" : {
-				"x" : 250,
-				"y" : 150
-			},
-			"Initial" : 100,
-			"Equation" : "+births",
-			"CorrectDescription" : "The number of rabbits in the population",
-			"AttemptCount" : {
-				"desc" : 5,
-				"plan" : 1,
-				"calc" : 2
-			}
-		}},
-		
-		{"Node" : {
-			"type" : "flow",
-			"id" : 2,
-			"name" : "births",
-			"extra" : "no",
-			"Order" : 2,
-			"Inputs" : [
-				{"Name" : "population"},
-				{"Name" : "birth rate"}
-			],
-			"Position" : {
-				"x" : 350,
-				"y" : 150
-			},			
-			"Equation" : "population * birth rate",
-			"CorrectDescription" : "The number of rabbits born each month",
-			"AttemptCount" : {
-				"desc" : 1,
-				"plan" : 0,
-				"calc" : 0
-			}
-		}},
-
-		{"Node" : {
-			"type" : "constant",
-			"id" : 3,
-			"name" : "birth rate",
-			"extra" : "no",
-			"Order" : 3,			
-			"Position" : {
-				"x" : 300,
-				"y" : 250
-			},			
-			"Equation" : ".2",
-			"CorrectDescription" : "The ratio of number of rabbits born in a month to the rabbit population that month",
-			"AttemptCount" : {
-				"desc" : 0,
-				"plan" : 0,
-				"calc" : 0
-			}
-		}},
-    ]
-
-    "StudentModel" : [
-
-    	{"Node" : {
-			"type" : "stock",
-			"id" : 1,
-			"name" : "population",
-			"extra" : "no",
-			"Order" : 1,
-			"Inputs" : [
-				{"Name" : "births"}
-			],
-			"Position" : {
-				"x" : 250,
-				"y" : 150
-			},
-			"Initial" : 100,
-			"Equation" : "+births",
-			"CorrectDescription" : "The number of rabbits in the population",
-			"Progress" : {
-				"desc" : {
-					"status" : "demo",
-					"value" : "The number of rabbits in the population"
-				}
-				"plan" : {
-					"status" : "correct",
-					"value" : "accumulator",
-				}
-				"calc" : {
-					"status" : "incorrect",
-					"initial" : "10",
-					"value" : "+ births"
-				}
-			}
-		}},
-		
-		{"Node" : {
-			"type" : "flow",
-			"id" : 2,
-			"name" : "births",
-			"extra" : "no",
-			"Order" : 2,
-			"Inputs" : [
-				{"Name" : "population"},
-				{"Name" : "birth rate"}
-			],
-			"Position" : {
-				"x" : 350,
-				"y" : 150
-			},			
-			"Equation" : "population * birth rate",
-			"CorrectDescription" : "The number of rabbits born each month",
-			"Progress" : {
-				"desc" : {
-					"status" : "incorrect",
-					"value" : "The ratio of rabbits born with super powers to ordinary rabbits"
-				}
-				"plan" : {
-					"status" : "",
-					"value" : "",
-				}
-				"calc" : {
-					"status" : "",
-					"initial" : "",
-					"value" : ""
-				}
-			}
-		}},
-
-    ]
-
-
-}}
+{
+    "task": {
+        "phase": "intro",
+        "type": "construct",
+        "properties": {
+            "taskName": "Rabbits - Intro Problem",
+            "URL": "images/rabbit.jpeg",
+            "startTime": 0,
+            "endTime": 10,
+            "timeStep": 1,
+            "units": "years"
+        },
+        "taskDescription": "In this exercise, you will construct a model of how a rabbit population grows when no rabbits die. The first quantity in this model is the population or number of rabbits in the population. Initially, there are 100 rabbits, but the number increases with time. The new population each month is its present value plus the number of births (number of rabbits born each month). The number of births is equal to the product of the population and the birth rate. The birthrate or the ratio of the number of rabbits born in a month to the rabbit population that month has a fixed value of 0.2.",
+        "givenModelNodes": [
+            {
+                "ID": "id1",
+                "name": "population",
+                "type": "stock",
+                "parentNode": false,
+                "extra": false,
+                "order": 1,
+                "units": "rabbits",
+                "inputs": [
+                    {
+                        "ID": "id2"
+                    }
+                ],
+                "initial": 100,
+                "equation": "+ id2",
+                "correctDesc": "The number of rabbits in the population",
+                "attemptCount": {
+                    "desc": 2,
+                    "plan": 1,
+                    "calc": 1
+                },
+                "solution": {
+                    "desc": "correct",
+                    "plan": "demo",
+                    "calc": "correct"
+                }
+            },
+            {
+                "ID": "id2",
+                "name": "births",
+                "type": "flow",
+                "parentNode": true,
+                "extra": false,
+                "order": 2,
+                "units": "births",
+                "inputs": [
+                    {
+                        "ID": "id1"
+                    },
+                    {
+                        "ID": "id3"
+                    }
+                ],
+                "initial": "",
+                "equation": "id1 * id3",
+                "correctDesc": "The number of rabbits born each month",
+                "attemptCount": {
+                    "desc": 2,
+                    "plan": 1,
+                    "calc": 3
+                },
+                "solution": {
+                    "desc": "correct",
+                    "plan": "correct",
+                    "calc": "demo"
+                }
+            },
+            {
+                "ID": "id3",
+                "name": "birth rate",
+                "type": "constant",
+                "parentNode": false,
+                "extra": false,
+                "order": 3,
+                "units": "percent",
+                "inputs": [],
+                "initial": "",
+                "equation": ".2",
+                "correctDesc": "The ratio of number of rabbits born in a month to the rabbit population that month",
+                "attemptCount": {
+                    "desc": 2,
+                    "plan": 1,
+                    "calc": 1
+                },
+                "solution": {
+                    "desc": "correct",
+                    "plan": "correct",
+                    "calc": "correct"
+                }
+            }
+        ],
+        "studentModelNodes": [
+            {
+                "ID": "id1",
+                "name": "population",
+                "inGivenModel": true,
+                "inputs": [
+                    {
+                        "ID": "id2"
+                    }
+                ],
+                "position": {
+                    "x": 100,
+                    "y": 100
+                },
+                "studentSelections": {
+                    "desc": "The number of rabbits in the population",
+                    "plan": "stock",
+                    "units": "rabbits",
+                    "initial": 100,
+                    "equation": "+ id2"
+                }
+            },
+            {
+                "ID": "id2",
+                "name": "births",
+                "inGivenModel": true,
+                "inputs": [
+                    {
+                        "ID": "id1"
+                    },
+                    {
+                        "ID": "id3"
+                    }
+                ],
+                "position": {
+                    "x": 300,
+                    "y": 100
+                },
+                "studentSelections": {
+                    "desc": "The number of rabbits born each month",
+                    "plan": "flow",
+                    "units": "births",
+                    "initial": null,
+                    "equation": "id1 * id3"
+                }
+            },
+            {
+                "ID": "id3",
+                "name": "birth rate",
+                "inGivenModel": true,
+                "inputs": [],
+                "position": {
+                    "x": 500,
+                    "y": 100
+                },
+                "studentSelections": {
+                    "desc": "The ratio of number of rabbits born in a month to the rabbit population that month",
+                    "plan": "constant",
+                    "units": "percent",
+                    "initial": null,
+                    "equation": "0.2"
+                }
+            }
+        ]
+    }
+}
