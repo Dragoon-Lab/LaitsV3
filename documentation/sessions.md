@@ -69,7 +69,8 @@ using numerical IDs for some quantities, so that we can abstract away
 from user, section, and problem names.
 (See the way things are done in phpBB for an example.)
 
-Here is a starting list.  Note that some items should not have an id.  The categories are *name*, *short name*, *id*, *short id*:
+Here is a starting list.  Note that some items should not have an id.
+The categories are *name*, *short name*, *id*, *short id*:
 
 - user, u userID, uid
 - section, s, sectionID, sid
@@ -85,6 +86,9 @@ Here is a starting list.  Note that some items should not have an id.  The categ
 - logger
 - level
 - share
+
+Quantities in  categories *name* and *short name* are strings, while
+*id* and *short id* represent integers.
 
 This list is not written in stone:  please correct/change/improve as you 
 see fit.  The idea is not to change this all at once, especially in the 
