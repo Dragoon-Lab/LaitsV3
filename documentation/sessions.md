@@ -75,11 +75,12 @@ The categories are *name*, *short name*, *id*, *short id*:
 - user, u userID, uid
 - section, s, sectionID, sid
 - problem, p, problemID, pid
-- author, au (for custom problems, so pid would be associated ID)
+- author, au (for custom problems; this is the original author's
+  user name)
 - newProblem, np, newProblemID, npid
 - solutionXML, sx  (for solution text)
 - action, ac
-- mode, m
+- mode, m (value is a [major mode](major-modes.md))
 - forumURL, f
 - location (what is this?)
 - logText (for msg)
