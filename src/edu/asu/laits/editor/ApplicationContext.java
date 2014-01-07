@@ -35,14 +35,12 @@ public class ApplicationContext {
     private static AppMode appMode;
     private static String section;
     private static String author;
-    private static String rootURL;
+    public static String APP_HOST = "http://dragoon.asu.edu/ram";
     private static String forumURL;
-    private static boolean isValid = false;
     private static TaskSolution correctSolution;
     private static String currentTaskID;
     private static String newTaskID;
     private static boolean isProblemSolved = false;
-    public static String taskLoaderURL;
     private static boolean helpBubbles = false;
     
     public static Map<String, StatsCollector> studentCheckDemoStats = new HashMap<String, StatsCollector> ();
@@ -59,19 +57,6 @@ public class ApplicationContext {
     public enum ApplicationEnvironment {
 
         DEV, TEST, PROD
-    }
-
-
-    public static void setLoaderURL(String baseURL) {
-        taskLoaderURL = baseURL.concat("/task_fetcher.php?taskid=");
-    }
-
-    public static String getRootURL() {
-        return rootURL;
-    }
-
-    public static void setRootURL(String baseURL) {
-        rootURL = baseURL;
     }
 
     public static String getUserID() {
@@ -106,14 +91,6 @@ public class ApplicationContext {
             forumURL = theForum;
     }
 
-    public static boolean isUserValid() {
-        return isValid;
-    }
-
-    public static void setUserValid(boolean input) {
-        isValid = input;
-    }
-
     public static void setAppMode(String mode) {
         appMode = AppMode.getEnum(mode);
     }
@@ -142,7 +119,6 @@ public class ApplicationContext {
         ApplicationContext.newTaskID = newTaskID;
     }
     
-
     public static boolean isProblemSolved() {
         return isProblemSolved;
     }

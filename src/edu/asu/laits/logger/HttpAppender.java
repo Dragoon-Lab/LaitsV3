@@ -33,17 +33,6 @@ import org.apache.http.params.HttpConnectionParams;
 import org.apache.http.params.HttpParams;
 import org.apache.log4j.AppenderSkeleton;
 import org.apache.log4j.spi.LoggingEvent;
-import java.net.HttpURLConnection;
-import java.net.URL;
-import java.io.BufferedReader;
-import java.io.BufferedWriter;
-import java.io.DataOutputStream;
-import java.io.IOException;
-import java.io.InputStream;
-import java.io.InputStreamReader;
-import java.io.OutputStream;
-import java.io.OutputStreamWriter;
-import java.net.URLEncoder;
 import java.sql.Timestamp;
 import org.apache.log4j.Logger;
 
@@ -97,7 +86,7 @@ public class HttpAppender extends AppenderSkeleton {
         HttpConnectionParams.setConnectionTimeout(params, timeOut);
         HttpConnectionParams.setSoTimeout(params, timeOut);
         String message = this.getLayout().format(paramLoggingEvent);
-        logURL = ApplicationContext.getRootURL() + "/logger.php";
+        logURL = ApplicationContext.APP_HOST + "/logger.php";
 
         try {
             if (this.HttpMethodBase.equalsIgnoreCase(METHOD_GET)) {
@@ -176,7 +165,6 @@ public class HttpAppender extends AppenderSkeleton {
 
         sb.append(info + "  ");
         sb.append(paramLoggingEvent.getMessage().toString() + "  ");
-
 
         return sb.toString();
     }

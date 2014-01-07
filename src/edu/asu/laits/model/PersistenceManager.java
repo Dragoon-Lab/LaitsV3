@@ -60,7 +60,7 @@ public class PersistenceManager implements Runnable {
 
     public static synchronized String loadSession() throws IOException{
         String action = ApplicationContext.isAuthorMode() ? "author_load" : "load";
-        String serviceURL = ApplicationContext.getRootURL().concat("/postvar.php");
+        String serviceURL = ApplicationContext.APP_HOST.concat("/postvar.php");
         
         return sendHTTPRequest(action, serviceURL, "");
     }
@@ -68,19 +68,19 @@ public class PersistenceManager implements Runnable {
     public void run() {
         int statusCode = 0;
         String action = ApplicationContext.isAuthorMode() ? "author_save" : "save";
-        String serviceURL = ApplicationContext.getRootURL().concat("/postvar.php");
+        String serviceURL = ApplicationContext.APP_HOST.concat("/postvar.php");
         
         try {
             String sessionData = graphSaver.getSerializedGraphInXML();
             String response = sendHTTPRequest(action, serviceURL, sessionData);
             statusCode = Integer.parseInt(response);
             if (statusCode == 200) {
-                logs.info("Successfully wrote session to server using " + ApplicationContext.getRootURL().concat("/postvar.php"));
+                logs.info("Successfully wrote session to server using " + ApplicationContext.APP_HOST.concat("/postvar.php"));
             } else {
                 JOptionPane.showMessageDialog(MainWindow.getInstance(), 
                         "Save to server failed. Use File > Save As to save file locally.", "Save Failed...", JOptionPane.ERROR_MESSAGE);  
                 
-                logs.error("Error: URL " + ApplicationContext.getRootURL().concat("/postvar.php")
+                logs.error("Error: URL " + ApplicationContext.APP_HOST.concat("/postvar.php")
                         + " returned status code " + statusCode);
             }            
         } catch (IOException ex) {

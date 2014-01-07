@@ -3,8 +3,9 @@
     session_start();
 
     require "db-login.php";
-    require "error-handler.php";
-
+    //require "error-handler.php";
+    ini_set("log_errors", 1);
+    ini_set("error_log", "/tmp/php-error-ram.log");
     /*
      * I am trying to implement error logging to go to file, whenever I use error_log, but error_handler.php is messing this up 
     ini_set("log_errors", 1);
@@ -75,6 +76,10 @@
                     $this->save_author_graph_XML_to_DB();
                     break;
 
+                case AvailableActions::SEND_SESSION_DETAILS :
+                    $this->send_session_details();
+                    break;
+                
                 default:
                     //error_log("Unauthorized Request Recived ");
                     header('HTTP/1.0 401 Unauthorized');                     
@@ -146,6 +151,29 @@
                 print($save_data);                
             }           
         }
+        
+        private function send_session_details() 
+        {
+            //error_log("Executing Load Author Action ");
+            $session_id = (isset($_REQUEST['session_id'])) ? $_REQUEST['session_id'] : "";
+            if($session_id != "")
+            {
+                $queryString = "SELECT * FROM session WHERE session_id='$session_id'";
+                $result = $this->connection->query($queryString);
+                $arr = array();
+                
+                while ($row = $result->fetch_assoc()) {
+                    $arr["session_id"] = $row["session_id"];
+                    $arr["mode"] = $row["mode"];
+                    $arr["user"] = $row["user"];
+                    $arr["section"] = $row["section"];
+                    $arr["problem_name"] = $row["problem_name"];
+                }
+                header('Content-Type: application/json');                   
+                echo json_encode($arr);
+            }
+                       
+        }
 
         //  This should be removed.  See Bug #2222
         //  Also, task_fetcher.php shows how to properly do a redirect.
@@ -188,5 +216,6 @@
         const AUTHOR_SAVE = "author_save";
         const LOAD = "load";
         const AUTHOR_LOAD = "author_load";
+        const SEND_SESSION_DETAILS = "get_session_info";
     }
 ?>

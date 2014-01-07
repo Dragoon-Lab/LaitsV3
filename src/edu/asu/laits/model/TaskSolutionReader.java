@@ -91,7 +91,7 @@ public class TaskSolutionReader {
         Document document = null;
         SAXReader reader = new SAXReader();
         
-        String resourceURL = ApplicationContext.taskLoaderURL + taskId;
+        String resourceURL = ApplicationContext.APP_HOST + taskId;
             if(author.length()>0 && group.length()>0){
                 resourceURL += "&author=" + author + "&group=" + group;
             }
