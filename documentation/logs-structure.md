@@ -21,20 +21,20 @@ Following a conversation with the instructors of the classes which have used Dra
 			+ Entered thru Create Node or existing Node
 			+ Which tab Node Editor opens to
 			+ Which Node was opened (if existing)
-		> "Check" pressed
+		-- "Check" pressed
 			Needed info:
 				+Tab that was checked
 				+ Value student entered
 				+ Correct or Incorrect
 				+If incorrect, what was correct value
-		> "Demo" pressed
+		-- "Demo" pressed
 			Needed info:
 				+Tab that was demoed
-		>Calculations panel New Node pressed
+		-- Calculations panel New Node pressed
 			Needed info:
 				+ Same Check/Demo info as default Node Editor
 				+ What node (if any) was created
-		>Close Node Editor
+		-- Close Node Editor
 			Needed info:
 				+Was node completed (i.e. was Calculations panel correct or demoed, indicating node complete?)
 	
