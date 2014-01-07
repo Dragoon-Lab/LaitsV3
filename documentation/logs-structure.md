@@ -15,8 +15,8 @@ Following a conversation with the instructors of the classes which have used Dra
 
 *Start Session
  Needed info: 
-  + Session ID
-	- Enter Node Editor
+   Session ID
+	 Enter Node Editor
 		Needed info:
 			+ Entered thru Create Node or existing Node
 			+ Which tab Node Editor opens to
@@ -38,14 +38,14 @@ Following a conversation with the instructors of the classes which have used Dra
 			Needed info:
 				+Was node completed (i.e. was Calculations panel correct or demoed, indicating node complete?)
 	
-	- Show Graph button
+	 Show Graph button
 		Needed info:
 			+ Was correct or incorrect
 			+ If correct, indicate problem is completed
 	
-	- Show Forum button pressed
+	 Show Forum button pressed
 	
-* End session
+ End session
 		Needed info:
 			+ Was problem completed
 
