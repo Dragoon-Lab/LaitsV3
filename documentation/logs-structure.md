@@ -9,6 +9,46 @@ Associated with each java/javascript instance of Dragoon will be a unique sessio
 The format for the session ID variable `sessionId` will be a string of length 50.
 It is convenient to generate `sessionId` by applying a hash function to the user name and section name and adding a timestamp.  An example javascript implementation can be found in Andes:  see the function `FNV1aHash` and the code that follows it in the file  [`web-UI/andes/startup.js`](https://github.com/bvds/andes/blob/master/web-UI/andes/startup.js).
 
+## Data to be logged##
+
+Following a conversation with the instructors of the classes which have used Dragoon, we've identified specific steps which they need to be able to track and follow through the logs in order to retrieve useful class data.  It must be insured that the following workflow steps are logged along with the needed information with each step:
+
+*Start Session
+ Needed info: 
+  + Session ID
+	- Enter Node Editor
+		Needed info:
+			+ Entered thru Create Node or existing Node
+			+ Which tab Node Editor opens to
+			+ Which Node was opened (if existing)
+		> "Check" pressed
+			Needed info:
+				+Tab that was checked
+				+ Value student entered
+				+ Correct or Incorrect
+				+If incorrect, what was correct value
+		> "Demo" pressed
+			Needed info:
+				+Tab that was demoed
+		>Calculations panel New Node pressed
+			Needed info:
+				+ Same Check/Demo info as default Node Editor
+				+ What node (if any) was created
+		>Close Node Editor
+			Needed info:
+				+Was node completed (i.e. was Calculations panel correct or demoed, indicating node complete?)
+	
+	- Show Graph button
+		Needed info:
+			+ Was correct or incorrect
+			+ If correct, indicate problem is completed
+	
+	- Show Forum button pressed
+	
+* End session
+		Needed info:
+			+ Was problem completed
+
 ## Database Table Structure ##
 
 The logging will use two tables in the database:
