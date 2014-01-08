@@ -27,26 +27,21 @@ import edu.asu.laits.properties.GlobalProperties;
 import java.io.BufferedReader;
 import java.io.InputStreamReader;
 import java.net.URL;
-import javax.swing.JApplet;
 
 /**
  *
  * This is a class that only contain an static main method to start the
  * application. It simply starts the application.
  */
-public class Application extends JApplet {
+public class Application {
 
-    /**
-     * @param args
-     */
     public static void main(String[] args) {
 
-        initializeApplication(args);
-
         try {
+            initializeApplication(args);
             String uiClassName = GlobalProperties.getInstance().getUITheme();
             if (null != uiClassName) {
-                try {   
+                try {
                     UIManager.setLookAndFeel((LookAndFeel) Class.forName(
                             uiClassName).newInstance());
                 } catch (Exception e) {
@@ -67,23 +62,25 @@ public class Application extends JApplet {
 
     }
 
-    private static void initializeApplication(String[] args) {
+    private static void initializeApplication(String[] args) throws Exception {
         // Check if application was launched using command line args. 
         // Currently DEV mode will not perform session handling.
-        if (args.length > 0 && args.length <= 3) {
+        if (args.length > 0) {
             System.out.println("Application was launched from Command Line");
-            ApplicationContext.setApplicationEnvironment(ApplicationContext.ApplicationEnvironment.DEV);
-
-            ApplicationContext.setUserID(args[0]);
-            ApplicationContext.setAppMode(args[1]);
-            ApplicationContext.setCurrentTaskID(args[2].replace('_', ' '));
+            ApplicationContext.setApplicationEnvironment(ApplicationContext.ApplicationEnvironment.PROD);
+            ApplicationContext.setSessionID("testsession");
+            ApplicationContext.setUserID("ramayantiwari");
+            ApplicationContext.setAppMode("student");
+            ApplicationContext.setCurrentTaskID("105");
+            
         } else {
             // Try to Launch application using JNLP for PROD
             String sessionID = System.getProperty("jnlp.session_id");
 
             if (sessionID != null) {
+                ApplicationContext.setSessionID(sessionID);
                 Gson gson = new Gson();
-                String json = readUrl("http://dragoon.asu.edu/ram/postvar.php?action=get_session_info&session_id=" + sessionID);
+                String json = readUrl("http://dragoon.asu.edu/ram/session_manager.php?action=get_session_info&session_id=" + sessionID);
 
                 UserSession userSession = gson.fromJson(json, UserSession.class);
 
@@ -103,26 +100,24 @@ public class Application extends JApplet {
                 + " Environment and " + ApplicationContext.getAppMode().toString() + " Mode");
     }
 
-    private static String readUrl(String urlString) {
+    private static String readUrl(String urlString) throws Exception {
         BufferedReader reader = null;
 
-        try {
-            URL url = new URL(urlString);
-            reader = new BufferedReader(new InputStreamReader(url.openStream()));
-            StringBuffer buffer = new StringBuffer();
-            int read;
-            char[] chars = new char[1024];
-            while ((read = reader.read(chars)) != -1) {
-                buffer.append(chars, 0, read);
-            }
-
-            return buffer.toString();
-        } catch (Exception ex) {
-            ex.printStackTrace();
+        URL url = new URL(urlString);
+        reader = new BufferedReader(new InputStreamReader(url.openStream()));
+        StringBuffer buffer = new StringBuffer();
+        int read;
+        char[] chars = new char[1024];
+        while ((read = reader.read(chars)) != -1) {
+            buffer.append(chars, 0, read);
         }
-        return null;
+
+        return buffer.toString();
     }
 
+    /**
+     * Class to encapsulate user session. Used with JSON reader.
+     */
     private static class UserSession {
         String session_id;
         String username;

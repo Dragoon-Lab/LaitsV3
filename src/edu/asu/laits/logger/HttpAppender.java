@@ -52,11 +52,6 @@ public class HttpAppender extends AppenderSkeleton {
     private String postMethod = POST_DEFAULT;
     private boolean thread = THREAD_DEFAULT;
 
-    /**
-     * Logger
-     */
-    private static Logger logs = Logger.getLogger("DevLogs");
-    
     public void close() {
     }
 
@@ -87,11 +82,12 @@ public class HttpAppender extends AppenderSkeleton {
         HttpConnectionParams.setSoTimeout(params, timeOut);
         String message = this.getLayout().format(paramLoggingEvent);
         logURL = ApplicationContext.APP_HOST + "/logger.php";
-
+        
         try {
             if (this.HttpMethodBase.equalsIgnoreCase(METHOD_GET)) {
                 StringBuffer sb = new StringBuffer(this.logURL);
                 sb.append(message);
+                System.out.println(sb.toString());
                 httpMethod = new HttpGet(sb.toString());
             } else {
                 if (this.postMethod.equalsIgnoreCase(POST_PARAMETERS)) {
@@ -114,6 +110,7 @@ public class HttpAppender extends AppenderSkeleton {
                 }
             }
 
+            
             HttpThread httpThread = new HttpThread(httpClient, errorHandler);
             httpThread.setMethod(httpMethod);
 
@@ -154,7 +151,6 @@ public class HttpAppender extends AppenderSkeleton {
     private String prepareDevLogMessage(LoggingEvent paramLoggingEvent) {
         StringBuilder sb = new StringBuilder();
         Timestamp time = new Timestamp(paramLoggingEvent.getTimeStamp());
-
         sb.append(time.toString() + "  ");
         sb.append(paramLoggingEvent.getLoggerName() + "  ");
         sb.append(paramLoggingEvent.getLevel().toString() + "  ");

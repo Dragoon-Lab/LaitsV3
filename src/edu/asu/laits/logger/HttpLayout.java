@@ -49,25 +49,35 @@ public class HttpLayout extends Layout {
 
     @Override
     public String format(LoggingEvent paramLoggingEvent) {
-        String returnMessage = new String(conversionPattern);
-
-        returnMessage = formatMessage(returnMessage, "userid", ApplicationContext.getUserID());
-        Timestamp time = new Timestamp(paramLoggingEvent.getTimeStamp());
-
-        returnMessage = formatMessage(returnMessage, "datetime", time.toString());
-        returnMessage = formatMessage(returnMessage, "logger", paramLoggingEvent.getLoggerName());
-        returnMessage = formatMessage(returnMessage, "loglevel", paramLoggingEvent.getLevel().toString());
-        returnMessage = formatMessage(returnMessage, "message", paramLoggingEvent.getMessage().toString());
-
-        if (paramLoggingEvent.getLoggerName().equals("DevLogs")) {
+        String activityMessage = "?session_id=%session_id&loglevel=%loglevel&logger=%logger&message=%message&time=%time";
+        String returnMessage = "?session_id=%session_id&loglevel=%loglevel&logger=%logger&location=%location&message=%message";
+        
+        // Build Activity Log Message
+        if (paramLoggingEvent.getLoggerName().equalsIgnoreCase("ActivityLogs")) {
+            //UserActivityLog log = (UserActivityLog) paramLoggingEvent.getMessage();
+            activityMessage = formatMessage(activityMessage, "session_id", ApplicationContext.getSessionID());
+            //activityMessage = formatMessage(activityMessage, "loglevel", log.getMethod());
+            //activityMessage = formatMessage(activityMessage, "message", log.getLogMessage());
+            activityMessage = formatMessage(activityMessage, "loglevel", "activity log test level");
+            activityMessage = formatMessage(activityMessage, "message", "Activity Log Message");
+            activityMessage = formatMessage(activityMessage, "logger", paramLoggingEvent.getLoggerName());
+            long elapsedTimeInMilliSec = (new java.util.Date().getTime() - ApplicationContext.SESSION_START_TIME);
+            int elapsedTimeInSec = Math.round(elapsedTimeInMilliSec / 1000);
+            activityMessage = formatMessage(activityMessage, "time", Integer.toString(elapsedTimeInSec));
+            
+            return activityMessage;
+        } else {
+            returnMessage = formatMessage(returnMessage, "session_id", ApplicationContext.getSessionID());
+            returnMessage = formatMessage(returnMessage, "logger", paramLoggingEvent.getLoggerName());
+            returnMessage = formatMessage(returnMessage, "loglevel", paramLoggingEvent.getLevel().toString());
+            returnMessage = formatMessage(returnMessage, "message", paramLoggingEvent.getMessage().toString());
             String info = paramLoggingEvent.getLocationInformation().getFileName() + "-"
-                    + paramLoggingEvent.getLocationInformation().getMethodName() + ":"
-                    + paramLoggingEvent.getLocationInformation().getLineNumber();
+                + paramLoggingEvent.getLocationInformation().getMethodName() + ":"
+                + paramLoggingEvent.getLocationInformation().getLineNumber();
 
             returnMessage = formatMessage(returnMessage, "location", info);
+            return returnMessage;
         }
-
-        return returnMessage;
     }
 
     @Override
@@ -86,11 +96,9 @@ public class HttpLayout extends Layout {
                 value = URLEncoder.encode(value, encoding);
             } catch (UnsupportedEncodingException e) {
                 LogLog.warn(e.toString());
-
             }
         }
         returnMessage = returnMessage.replace("%" + key, value);
         return returnMessage;
     }
-    
 }

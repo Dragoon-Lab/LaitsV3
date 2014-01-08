@@ -475,6 +475,7 @@ public class MainWindow extends JFrame {
                 GraphLoader loader = new GraphLoader(getGraphEditorPane());
                 loader.loadFromServer(graphXML);
                 prepareModelDesignPanel();
+                
                 if(ApplicationContext.isAuthorMode()){
                     ApplicationContext.setAuthor(ApplicationContext.getUserID());
                     if(ApplicationContext.getNewTaskID() != null && !ApplicationContext.getNewTaskID().equals("")){

@@ -60,7 +60,7 @@ public class PersistenceManager implements Runnable {
 
     public static synchronized String loadSession() throws IOException{
         String action = ApplicationContext.isAuthorMode() ? "author_load" : "load";
-        String serviceURL = ApplicationContext.APP_HOST.concat("/postvar.php");
+        String serviceURL = ApplicationContext.APP_HOST.concat("/session_manager.php");
         
         return sendHTTPRequest(action, serviceURL, "");
     }
@@ -68,19 +68,19 @@ public class PersistenceManager implements Runnable {
     public void run() {
         int statusCode = 0;
         String action = ApplicationContext.isAuthorMode() ? "author_save" : "save";
-        String serviceURL = ApplicationContext.APP_HOST.concat("/postvar.php");
+        String serviceURL = ApplicationContext.APP_HOST.concat("/session_manager.php");
         
         try {
             String sessionData = graphSaver.getSerializedGraphInXML();
             String response = sendHTTPRequest(action, serviceURL, sessionData);
             statusCode = Integer.parseInt(response);
             if (statusCode == 200) {
-                logs.info("Successfully wrote session to server using " + ApplicationContext.APP_HOST.concat("/postvar.php"));
+                logs.info("Successfully wrote session to server using " + ApplicationContext.APP_HOST.concat("/session_manager.php"));
             } else {
                 JOptionPane.showMessageDialog(MainWindow.getInstance(), 
                         "Save to server failed. Use File > Save As to save file locally.", "Save Failed...", JOptionPane.ERROR_MESSAGE);  
                 
-                logs.error("Error: URL " + ApplicationContext.APP_HOST.concat("/postvar.php")
+                logs.error("Error: URL " + ApplicationContext.APP_HOST.concat("/session_manager.php")
                         + " returned status code " + statusCode);
             }            
         } catch (IOException ex) {
@@ -106,25 +106,15 @@ public class PersistenceManager implements Runnable {
             if(ApplicationContext.isAuthorMode())
                 postVariable.add(new BasicNameValuePair("author", ApplicationContext.getUserID()));
             else
-                postVariable.add(new BasicNameValuePair("id", ApplicationContext.getUserID()));
+                postVariable.add(new BasicNameValuePair("session_id", ApplicationContext.getSessionID()));
             
-            postVariable.add(new BasicNameValuePair("section", ApplicationContext.getSection()));
-            
-            if (action.equals("author_save")) {
-                // Author mode save should also include boolean 'share' variable
-                // which determines whether others in section can view solution.            
-                postVariable.add(new BasicNameValuePair("author", ApplicationContext.getUserID()));
-            } 
-            // 'problem' parameter needs to be sent for all the modes - Needs Testing
-            postVariable.add(new BasicNameValuePair("problem", ApplicationContext.getCurrentTaskID()));
             
             if (action.equals("save") || action.equals("author_save")) {                
                 data = URLEncoder.encode(data, "UTF-8");
-                postVariable.add(new BasicNameValuePair("saveData", data));
+                postVariable.add(new BasicNameValuePair("save_data", data));
             }
 
-            httpPost.setEntity(new UrlEncodedFormEntity(postVariable, "UTF-8"));
-            
+            httpPost.setEntity(new UrlEncodedFormEntity(postVariable, "UTF-8"));            
             HttpResponse response = httpClient.execute(httpPost);
             
             if(action.equals("author_save") || action.equals("save")) {

@@ -3,14 +3,10 @@
     session_start();
 
     require "db-login.php";
-    //require "error-handler.php";
+    
     ini_set("log_errors", 1);
     ini_set("error_log", "/tmp/php-error-ram.log");
-    /*
-     * I am trying to implement error logging to go to file, whenever I use error_log, but error_handler.php is messing this up 
-    ini_set("log_errors", 1);
-    ini_set("error_log", "/tmp/php-error.log"); */
-
+    
     $request_handler = new RequestHandler;
     $request_handler->process_request();
     
@@ -22,6 +18,7 @@
      */
     class RequestHandler 
     {
+        private $session_id;
         private $id;
         private $section;
         private $author;
@@ -39,6 +36,7 @@
             or trigger_error('Could not connect to database.');
             
             // Initialize Variables for REQUEST
+            $this->session_id = $_REQUEST['session_id'];
             $this->action = $_REQUEST['action'];
             $this->id = isset($_REQUEST['id']) ? mysqli_real_escape_string($this->connection, $_REQUEST['id']) : '';
             $this->section = isset($_REQUEST['section']) ? mysqli_real_escape_string($this->connection, $_REQUEST['section']) : '';
@@ -47,7 +45,7 @@
             // Do not include for author mode work or for published problems.
             $this->author = isset($_REQUEST['author']) ? mysqli_real_escape_string($this->connection, $_REQUEST['author']) : '';
             $this->problem_name = isset($_REQUEST['problem']) ? mysqli_real_escape_string($this->connection, $_REQUEST['problem']) : '';
-            $this->xml_to_save = isset($_REQUEST['saveData']) ? mysqli_real_escape_string($this->connection, $_REQUEST['saveData']) : '';
+            $this->xml_to_save = isset($_REQUEST['save_data']) ? mysqli_real_escape_string($this->connection, $_REQUEST['save_data']) : '';
 
             // Save data needs to be URL decoded
             $this->xml_to_save = urldecode($this->xml_to_save);  
@@ -100,9 +98,9 @@
         
         private function save_graph_XML_to_DB() 
         {
-            $query = "INSERT INTO autosave_table (id, author, section, problemNum, saveData) 
-                    VALUES ('$this->id','$this->author','$this->section','$this->problem_name','$this->xml_to_save') 
-                    ON DUPLICATE KEY UPDATE author=values(author), saveData=values(saveData), date = CURRENT_TIMESTAMP";
+            $query = "INSERT INTO autosave_table (session_id, save_data) 
+                    VALUES ('$this->session_id','$this->xml_to_save') 
+                    ON DUPLICATE KEY UPDATE save_data=values(save_data), date = CURRENT_TIMESTAMP";
             //error_log("Executing " . $query);
             $this->connection->query($query) or trigger_error("insert/update to autosave_table failed" .$this->connection->error);            
         }
@@ -118,13 +116,11 @@
 
         private function load_graph_XML_from_DB() 
         {
-            //error_log("Executing Load Action ");
-            
-            $queryString = "SELECT saveData FROM autosave_table WHERE id=? AND author=? AND section=? AND problemNum=?";
+            $queryString = "SELECT save_data FROM autosave_table WHERE session_id=?";
            
             if ($stmt = mysqli_prepare($this->connection, $queryString)) {
                 
-                $stmt -> bind_param("ssss", $this->id, $this->author, $this->section, $this->problem_name);
+                $stmt -> bind_param("s", $this->session_id);
                 
                 $stmt->execute() or trigger_error("select from autosave_table failed" .$this->connection->error);;
                 $stmt->bind_result($save_data);

@@ -37,7 +37,9 @@ import javax.swing.JComponent;
 import javax.swing.JOptionPane;
 import javax.swing.JTabbedPane;
 import javax.swing.UIManager;
+import org.apache.log4j.Level;
 import org.apache.log4j.Logger;
+import org.apache.log4j.Priority;
 
 /**
  * View part of MVC Design for NodeEditor
@@ -77,7 +79,7 @@ public class NodeEditorView extends javax.swing.JDialog {
     private void configureAndRenderUI() {
         logs.debug("Initializing NodeEditor");
         activityLogs.debug("NodeEditor opened for Node '" + openVertex.getName() + "'");
-        
+                
         initTabs();
         
         this.addWindowListener(new java.awt.event.WindowAdapter() {

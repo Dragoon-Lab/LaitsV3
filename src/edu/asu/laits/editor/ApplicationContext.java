@@ -21,6 +21,7 @@ import edu.asu.laits.model.TaskSolution;
 import edu.asu.laits.model.HelpBubble;
 import edu.asu.laits.model.StatsCollector;
 import edu.asu.laits.model.Task;
+import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -42,6 +43,8 @@ public class ApplicationContext {
     private static String newTaskID;
     private static boolean isProblemSolved = false;
     private static boolean helpBubbles = false;
+    private static String session_id;
+    public static long SESSION_START_TIME = new Date().getTime();
     
     public static Map<String, StatsCollector> studentCheckDemoStats = new HashMap<String, StatsCollector> ();
     
@@ -117,6 +120,14 @@ public class ApplicationContext {
 
     public static void setNewTaskID(String newTaskID) {
         ApplicationContext.newTaskID = newTaskID;
+    }
+    
+    public static String getSessionID() {
+        return session_id;
+    }
+
+    public static void setSessionID(String sid) {
+        session_id = sid;
     }
     
     public static boolean isProblemSolved() {

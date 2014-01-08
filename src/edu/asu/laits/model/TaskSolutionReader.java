@@ -21,11 +21,14 @@
 package edu.asu.laits.model;
 
 import edu.asu.laits.editor.ApplicationContext;
+import java.net.MalformedURLException;
 import java.util.List;
 import java.net.URL;
 import java.util.ArrayList;
+import javax.swing.JOptionPane;
 import org.apache.log4j.Logger;
 import org.dom4j.Document;
+import org.dom4j.DocumentException;
 import org.dom4j.Element;
 import org.dom4j.io.SAXReader;
 
@@ -79,22 +82,28 @@ public class TaskSolutionReader {
             
             solution.initTargetNodes();
                 
-        } catch (Exception e) {
-            // Could not read the XML file
-            e.printStackTrace();
+        } catch (MalformedURLException e) {
+            logs.error("MalformedURLException in fetching task." + e.getMessage());
+            JOptionPane.showMessageDialog(null, "Task Solution Could not be loaded. Please check Task Name.",
+                    "Error.", JOptionPane.ERROR_MESSAGE);
+        }
+        catch (DocumentException e) {
+            logs.error("DocumentException in fetching task. " + e.getMessage());
+            JOptionPane.showMessageDialog(null, "Task Solution file is not correct. Please check Task Name.",
+                    "Error.", JOptionPane.ERROR_MESSAGE);
         }
         logs.info("Task Loaded : " + solution.getTaskDetails().toString());
         return solution;
     }
     
-    private Document loadRootDocument(String taskId, String author, String group) throws Exception{
+    private Document loadRootDocument(String taskId, String author, String group) throws MalformedURLException, DocumentException{
         Document document = null;
         SAXReader reader = new SAXReader();
         
-        String resourceURL = ApplicationContext.APP_HOST + taskId;
-            if(author.length()>0 && group.length()>0){
-                resourceURL += "&author=" + author + "&group=" + group;
-            }
+        String resourceURL = ApplicationContext.APP_HOST + "/task_fetcher.php?taskid=" + taskId;
+//            if(author.length()>0 && group.length()>0){
+//                resourceURL += "&author=" + author + "&group=" + group;
+//            }
         System.out.println("Resource URL "+resourceURL);
         logs.info("Task URL : "+resourceURL);
         document = reader.read(new URL(resourceURL));
