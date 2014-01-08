@@ -69,22 +69,27 @@ using numerical IDs for some quantities, so that we can abstract away
 from user, section, and problem names.
 (See the way things are done in phpBB for an example.)
 
-Here is a starting list.  Note that some items should not have an id.  The categories are *name*, *short name*, *id*, *short id*:
+Here is a starting list.  Note that some items should not have an id.
+The categories are *name*, *short name*, *id*, *short id*:
 
 - user, u userID, uid
 - section, s, sectionID, sid
 - problem, p, problemID, pid
-- author, au (for custom problems, so pid would be associated ID)
+- author, au (for custom problems; this is the original author's
+  user name)
 - newProblem, np, newProblemID, npid
 - solutionXML, sx  (for solution text)
 - action, ac
-- mode, m
+- mode, m (value is a [major mode](major-modes.md))
 - forumURL, f
 - location (what is this?)
 - logText (for msg)
 - logger
 - level
 - share
+
+Quantities in  categories *name* and *short name* are strings, while
+*id* and *short id* represent integers.
 
 This list is not written in stone:  please correct/change/improve as you 
 see fit.  The idea is not to change this all at once, especially in the 
