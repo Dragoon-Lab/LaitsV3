@@ -12,8 +12,9 @@
     //currently not using GET but plan to add GET functionality for loading data
     if ($_GET["action"] != null) {
         $action = mysqli_real_escape_string($mysqli, $_GET['action']);
+        print $action;
         if($action != "load")
-            exit("Unable to process request.");       
+            exit("We are unable to process your request.");       
         $id = mysqli_real_escape_string($mysqli, $_GET['id']);
         $section = mysqli_real_escape_string($mysqli, $_GET['section']);
         $problemNum = mysqli_real_escape_string($mysqli, $_GET['problem']);       
@@ -46,13 +47,11 @@
             while ($row = $result->fetch_row()) {
                 $_SESSION['theResults'] .= $row[0];
             }
+            print $_SESSION['theResults'];
         }
     } else {
         print $action;
-        print "<br/>Unable to processs request.";
-        print "<br/><a href = 'js/json/object.php'>Click here to return to object.php.</a>";
+        print "\nUnable to processs request.";
     }
-    print $action;
     
-    print "<br/><a href = 'js/json/object.php'>Click here to return to object.php.</a>";
 ?>

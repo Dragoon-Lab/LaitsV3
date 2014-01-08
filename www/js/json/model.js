@@ -1,6 +1,6 @@
 /**
  * 
- * Model controller to build, load, save and modify Dragoon problems
+ * Model controller to build, load, and retrieve Dragoon problems
  * @author: Brandon Strong
  * 
  **/
@@ -177,7 +177,7 @@ define(["dojo/_base/declare", "/laits/js/json/node", "/laits/js/json/student_nod
         },
         getModelAsString: function() {
             // Summary: Returns a JSON object in string format
-            return JSON.stringify(this.model);
+            return JSON.stringify(this.model, null, 4);
             console.log(" :-)  :-)  :-)  :-)  :-) ");
         },
         /**
