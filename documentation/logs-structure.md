@@ -9,45 +9,6 @@ Associated with each java/javascript instance of Dragoon will be a unique sessio
 The format for the session ID variable `sessionId` will be a string of length 50.
 It is convenient to generate `sessionId` by applying a hash function to the user name and section name and adding a timestamp.  An example javascript implementation can be found in Andes:  see the function `FNV1aHash` and the code that follows it in the file  [`web-UI/andes/startup.js`](https://github.com/bvds/andes/blob/master/web-UI/andes/startup.js).
 
-## Data to be logged##
-
-Following a conversation with the instructors of the classes which have used Dragoon, we've identified specific steps which they need to be able to track and follow through the logs in order to retrieve useful class data.  It must be insured that the following workflow steps are logged along with the needed information with each step:
-
-*Start Session
- Needed info: 
-   Session ID
-	 Enter Node Editor
-		Needed info:
-			+ Entered thru Create Node or existing Node
-			+ Which tab Node Editor opens to
-			+ Which Node was opened (if existing)
-		-- "Check" pressed
-			Needed info:
-				+Tab that was checked
-				+ Value student entered
-				+ Correct or Incorrect
-				+If incorrect, what was correct value
-		-- "Demo" pressed
-			Needed info:
-				+Tab that was demoed
-		-- Calculations panel New Node pressed
-			Needed info:
-				+ Same Check/Demo info as default Node Editor
-				+ What node (if any) was created
-		-- Close Node Editor
-			Needed info:
-				+Was node completed (i.e. was Calculations panel correct or demoed, indicating node complete?)
-	
-	 Show Graph button
-		Needed info:
-			+ Was correct or incorrect
-			+ If correct, indicate problem is completed
-	
-	 Show Forum button pressed
-	
- End session
-		Needed info:
-			+ Was problem completed
 
 ## Database Table Structure ##
 
@@ -58,17 +19,20 @@ The logging will use two tables in the database:
 *	`tId` – An auto-incremented integer that uniquely identifies each log event.
 *	`SessionId` – foreign key. 
 *	`method` can be one of the following:
- *	`start-workflow` send session ID to the server as well as the user name and section and major mode.  Normally, it will also send the problem name.  This will create an entry in the `session` table.
- * `open-problem` - Client asks for the problem from the server or opens a local file.  The message will include problem name and possibly section name and author name for custom problems.
- *	`client-message` - java/javascript exceptions and warnings.  Messages associated with the dragoon code itself.
- *	`ui-action` - Actions taken by the user on the interface, such as clicking on a menu or moving a node on the canvas, that are not problem-solving steps.  We will not log keystrokes or mouse events but a level above it. Like switch tabs and open node editor, values added to the node editor *et cetera*.  
+	*	`start-workflow` send session ID to the server as well as the user name and section and major mode.  Normally, it will also include the problem name and the author name for custom problems.  This will create an entry in the `session` table.
+	* `open-problem` - Client asks for the problem from the server or opens a local file.  The message will include problem name and possibly section name and author name for custom problems.
+	*	`client-message` - java/javascript exceptions and warnings.  Messages associated with the dragoon code itself.
+	*	`ui-action` - Actions taken by the user on the interface, such as clicking on a menu or moving a node on the canvas, that are not problem-solving steps.  We will not log keystrokes or mouse events but a level above it. Like switch tabs and open node editor, values added to the node editor *et cetera*.  
  The javascript version will record going in and out of focus.  See [`andes/drawing.js`](https://github.com/bvds/andes/blob/master/web-UI/andes/drawing.js) for an example.
- *	`solution-step`  - Steps that the student takes toward solving the problem.  This will generally be associated with something that could turn red or green.  The log message will contain both the student action and the tutors response, if any.
- * `seek-help` -  Student request for help and the response.  For Dragoon, this includes the "check" button.
- *	`close_problem` - The student has closed the session.  This may be missing if the session was interrupted (e.g. the network connection died).
-*	`message` - A `text`format field that holds actual log message.  The message will be in [JSON](http://json.org/) format and will include a member `time` that contains the number of seconds that have elapsed since the start of the session.
+ *	`solution-step`  - Steps that the student takes toward solving the
+ problem.  This will generally be associated with something that could
+ turn red or green.  The log message will contain both the student
+ action and the tutors response, if any. For Dragoon, this includes the "check" button.
+ * `seek-help` -  Student request for help and the response. For Dragoon, this includes the "Demo" button.
+ *	`close_problem` - The student has closed the session.  This may be missing if the session was interrupted (e.g. the network connection died). 
+*	`message` - A `text` format field that holds actual log message.  The message will be in [JSON](http://json.org/) format and will include a member `time` that contains the number of seconds that have elapsed since the start of the session.
 
-This table is analogous to the table `STEP_TRANSACTION` in Andes; see [create_STEP_TRANSACTION.sql](https://github.com/bvds/andes/blob/master/LogProcessing/database/create_STEP_TRANSACTION.sql).  The Andes table can be used to see how the `step` table should be formatted.
+This table is analogous to the table `STEP_TRANSACTION` in Andes; see [`create_STEP_TRANSACTION.sql`](https://github.com/bvds/andes/blob/master/LogProcessing/database/create_STEP_TRANSACTION.sql).  The Andes table can be used to see how the `step` table should be formatted.
 
 **`session`**: this table lists the sessions.
 
@@ -80,4 +44,43 @@ This table is analogous to the table `STEP_TRANSACTION` in Andes; see [create_ST
 *   `problem` - problem name (string).  May be NULL if `mode` is `author`.
 *	 `author` - For custom problems (string).  Otherwise it will be NULL.
 
-This table similar to the table `PROBLEM_ATTEMPT` in Andes; see [create_PROBLEM_ATTEMPT.sql](https://github.com/bvds/andes/blob/master/LogProcessing/database/create_PROBLEM_ATTEMPT.sql).  The Andes table can be used to see how the `session` table should be formatted.  The column names of this table correspond to the [list of variable names](sessions.md). 
+This table similar to the table `PROBLEM_ATTEMPT` in Andes; see
+[create_PROBLEM_ATTEMPT.sql](https://github.com/bvds/andes/blob/master/LogProcessing/database/create_PROBLEM_ATTEMPT.sql).
+The Andes table can be used to see how the `session` table should be
+formatted.  Note that the column names of this table correspond to the [list of variable names](sessions.md). 
+
+## Data to be logged##
+
+Following a conversation with the instructors of the classes which
+have used Dragoon, we've identified specific information which must be
+included in the logs.  The following list enumerates the
+most important information missing from the present logging:
+ 
+* Enter Node Editor (method `ui-action`) Needed info:
+  + Entered thru Create Node action or existing Node
+  + Which tab Node Editor opens to
+  + Which Node was opened (if existing)
+* **Check** button pressed (method `solution-step`) Needed info:
+  + The node
+  + Tab that was checked
+  + Value student entered
+  + Correct or Incorrect
+  + If incorrect, what was correct value
+* **Demo** button pressed (method `seek-help`) Needed info:
+  + The node
+  + Tab that was demoed
+* Calculations panel button **New Node** pressed (method `ui-action` or `solution-step`?)  Needed info:
+ + Same **Check**/**Demo** info as default Node Editor
+ + What node (if any) was created
+* Close Node Editor (method `ui-action` or `solution-step`?) Needed info:
+ + Was node completed (*i.e.* was Calculations panel correct or demoed, indicating node complete?)
+* **Show Graph** button (method `ui-action`) Needed info:
+  + Was correct or incorrect
+  + If correct, indicate problem is completed
+* **Show Forum** button pressed (method `ui-action`)
+* End session (method `close-problem`) Needed info:
+ + Was problem completed
+
+For many examples, we have found the choice of `method` to be
+ambiguous.  Thus, we need to further clarify the definitions of the
+methods and perhaps merge some of them.
