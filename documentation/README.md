@@ -7,7 +7,7 @@ This contains mostly design documents.
 * [Add sliders to parameters](sliders.md)
 * [Major modes](major-modes.md) (STUDENT COACHED TEST AUTHOR)
 * [JavaScript design](javascript.md)
-* [XML format](xml-style.md)
+* [JSON format](json-format.md)
 * [Forum](forum.md)
 * [Pedagogical Model JavaScript Version](Pedagogical-Model-JavaScript-Version.docx)
 * [Logging format](logs-structure.md)
