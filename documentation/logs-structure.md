@@ -106,22 +106,22 @@ specification of the
 Here is the logging for an example session:
 
 Student opened a new task ID: 105 - Intro Problem 1  
-*  method: `open-problem`  message: `{"time": 1.3, "problem":"105"}`  
+--  method: `open-problem`  message: `{"time": 1.3, "problem":"105"}`  
 For custom problems, it will also include the author and section.
 
 Student pressed the **create node** button.  This might create two messages:
 one for the menu button and one for opening the node editor.  
-* method: `ui-action`  
-* message: `{"time": 21.3, "type": "menu-choice",  
+-- method: `ui-action`  
+-- message: `{"time": 21.3, "type": "menu-choice",  
   "name": "create-node"}`  
-* method: `ui-action`  
-* message: `{"time": 21.3, "type": "open-dialog-box",
+-- method: `ui-action`  
+-- message: `{"time": 21.3, "type": "open-dialog-box",
   "name": "node-editor", "tab": "DESCRIPTION", "node": null}`  
 In the Javascript version, we will use the node id to name the node, so this will never be null.  In the Java version, we use the node name, when it is known.
 
 Possible logging message associated with above  
-* method: `client-message` 
-* message: `{"time": 21.3, "type": "info",
+-- method: `client-message` 
+-- message: `{"time": 21.3, "type": "info",
   "text": "Vertex Details before opening node editor", "data":
   {"node":  "description", "descriptionPanelStatus": null, "selected
   plan": null, "planPanelStatus": null, "nodeType": null}}`  
@@ -130,8 +130,8 @@ well with javascript or other languages.  It is better to use
 camelCase or underscores.
 
 Student chooses a quantity in the description tab.  
-* method: `solution-step`  
-* message: `{"time": 40.2, "node": null, "type": "enter-quantity",
+-- method: `solution-step`  
+-- message: `{"time": 40.2, "node": null, "type": "enter-quantity",
   "name": "fat content", "text": "The ratio of the weight of the fat
   in a potato chip to the weight of the potato chip", "checkResult":
   "CORRECT"}`  
@@ -139,37 +139,51 @@ In the Javascript version, `"node"` is the node id, in the Java
   version, it is either null or the node name `"fat content"`.
 
 Student switches tabs:  
-* method: `ui-action`  
-* message: `{"time": 50.1, "type": "dialog-box-tab",
+-- method: `ui-action`  
+-- message: `{"time": 50.1, "type": "dialog-box-tab",
   "name": "node-editor", "tab": "PLAN", "node": "fat content"}`  
 
 Student chooses node type:  
-* method: `solution-step`  
-* message: `{"time": 53.1, "node": fat content, "type": "quantity-type",
+-- method: `solution-step`  
+-- message: `{"time": 53.1, "node": fat content, "type": "quantity-type",
   "name": "CONSTANT", "checkResult":  "CORRECT"}`
 
 Student switches tabs:  
-* method: `ui-action`  
-* message: `{"time": 57.6, "type": "dialog-box-tab",  
+-- method: `ui-action`  
+-- message: `{"time": 57.6, "type": "dialog-box-tab",  
   "name": "node-editor", "tab": "CALCULATIONS", "node": "fat content"}`  
 
 Student fills out the calculation tab.   
-* method: `solution-step`  
-* message: `{"time": 60.2, "node": "fat content", "type": "quantity-initial-value",
+-- method: `solution-step`  
+-- message: `{"time": 60.2, "node": "fat content", "type": "quantity-initial-value",
   "value": "0.35", "correct-value": "0.35", "checkResult":  "CORRECT"}`  
 For the calculation tab, `solution-step` logging can be broken into several messages, depending on how the
   grading/evaluation is done:  each `solution-step` should something that
   is evaluated (turns red/rgeen) separately.
 
 Student closes node editor:  
-* method: `ui-action`  
-* message: `{"time": 61.6, "type": "close-dialog-box",
+-- method: `ui-action`  
+-- message: `{"time": 61.6, "type": "close-dialog-box",
   "name": "node-editor", "tab": "CALCULATIONS", "node": "fat content"}`  
 Member `"tab"` is optional.
 
 ##### Not done yet, I was following session `4b736807374ba02eaa2131a22523b746` in table `laits_ram` #####
 
-### Accumulator Nodes ###
+### Further Examples ###
+
+Student closes node editor for an accumulator node in the rabbits
+problem:  
+-- method: `ui-action`  
+-- message: `{"time": 61.6, "type": "close-dialog-box",
+  "name": "node-editor", "tab": "CALCULATIONS", "node": "population"}`  
+-- method: `client-message`   
+-- message: `{"time": 61.6, "type": "info",
+  "text": "Node Editor closed. Vertex Details after closing", "data":
+  {"node":  "population", "Description": "The ratio of rabbits born in a month
+to the rabbit population", "DescriptionPanelStatus": "CORRECT ",
+"SelectedPlan": "accumulator", "PlanPanelStatus": "GAVEUP",
+"CalculationPanelStatus": "CORRECT", "InitialValue": "0.2" }}`  
+Member `"tab"` is optional.
 
 For a quantity that is an accumulator, the logging for the calculations
 tab logging contains two actions by the student.  These can be
@@ -178,17 +192,17 @@ with two substeps.
 
 This is the version with two solution steps.  This matches the design
 for the Javascript version better.   
-* method: `solution-step`  
-* message: `{"time": 60.2, "node": "velocity", "type": "quantity-initial-value",
+-- method: `solution-step`  
+-- message: `{"time": 60.2, "node": "velocity", "type": "quantity-initial-value",
   "value": "0.45", "correct-value": "0.65", "checkResult": "INCORRECT"}`  
-* method: `solution-step`   
-* message: `{"time": 60.2, "node": "velocity", "type": "quantity-equation",
+-- method: `solution-step`   
+-- message: `{"time": 60.2, "node": "velocity", "type": "quantity-equation",
   "value": "fish+fowl*2", "correct-value": "fish-fowl", "checkResult":  "CORRECT"}`
 
 This is the version with one solution step.  This better matches the
 behavior of the current Java version where both things turn red/green
 when the **check** button is clicked.  
-* method: `solution-step`  
-* message: `{"time": 60.2, "node": "velocity", "substeps"; [{"type": "quantity-initial-value",
+-- method: `solution-step`  
+-- message: `{"time": 60.2, "node": "velocity", "substeps"; [{"type": "quantity-initial-value",
   "value": "0.45", "correct-value": "0.65"},{"type": "quantity-equation",
   "value": "fish+fowl*2", "correct-value": "fish-fowl"}], "checkResult":  "INCORRECT"}`
