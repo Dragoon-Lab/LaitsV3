@@ -72,15 +72,16 @@ from user, section, and problem names.
 Here is a starting list.  Note that some items should not have an id.
 The categories are *name*, *short name*, *id*, *short id*:
 
-- user, u userID, uid
-- section, s, sectionID, sid
-- problem, p, problemID, pid
+- user, u userId, uid
+- section, s, sectionId, sid
+- problem, p, problemId, pid
 - author, au (for custom problems; this is the original author's
   user name)
-- newProblem, np, newProblemID, npid
+- newProblem, np, newProblemId, npid
 - solutionXML, sx  (for solution text)
 - action, ac
 - mode, m (value is a [major mode](major-modes.md))
+- sessionId, x (see [Logging Format](logs-structure.md))
 - forumURL, f
 - location (what is this?)
 - logText (for msg)
@@ -88,6 +89,8 @@ The categories are *name*, *short name*, *id*, *short id*:
 - level
 - share
 
+For mysql database table column names, we will replace camelCase with
+underscores: sessionId -> session_id, userId -> user_id, *et cetera*.
 Quantities in  categories *name* and *short name* are strings, while
 *id* and *short id* represent integers.
 
