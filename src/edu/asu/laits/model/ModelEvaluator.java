@@ -46,8 +46,7 @@ public class ModelEvaluator {
     List<Vertex> arrangedVertexList;
     Map<String, List<String>> finalOperands;
     private static Logger logs = Logger.getLogger("DevLogs");
-    private static Logger activityLogs = Logger.getLogger("ActivityLogs");
-
+    
     public ModelEvaluator(Graph inputGraph) {
         currentGraph = inputGraph;
         times = ApplicationContext.getCurrentTask().getTimes();

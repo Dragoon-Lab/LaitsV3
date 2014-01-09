@@ -68,10 +68,10 @@ public class Application {
         if (args.length > 0) {
             System.out.println("Application was launched from Command Line");
             ApplicationContext.setApplicationEnvironment(ApplicationContext.ApplicationEnvironment.PROD);
-            ApplicationContext.setSessionID("testsession");
+            ApplicationContext.setSessionID("testsession3");
             ApplicationContext.setUserID("ramayantiwari");
             ApplicationContext.setAppMode("student");
-            ApplicationContext.setCurrentTaskID("105");
+            ApplicationContext.setCurrentTaskID("107");
             
         } else {
             // Try to Launch application using JNLP for PROD

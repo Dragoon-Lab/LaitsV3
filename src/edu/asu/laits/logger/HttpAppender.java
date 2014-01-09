@@ -87,28 +87,8 @@ public class HttpAppender extends AppenderSkeleton {
             if (this.HttpMethodBase.equalsIgnoreCase(METHOD_GET)) {
                 StringBuffer sb = new StringBuffer(this.logURL);
                 sb.append(message);
-                System.out.println(sb.toString());
                 httpMethod = new HttpGet(sb.toString());
-            } else {
-                if (this.postMethod.equalsIgnoreCase(POST_PARAMETERS)) {
-                    httpMethod = new HttpPost(this.logURL);
-                    message = message.substring(1);
-
-                    List<NameValuePair> nvps = new ArrayList<NameValuePair>();
-
-                    for (String attributes : message.split("&")) {
-                        String[] attribute = attributes.split("=");
-                        nvps.add(new BasicNameValuePair(attribute[0], attribute[1]));
-                    }
-
-                    HttpPost post = (HttpPost) httpMethod;
-                    post.setEntity(new UrlEncodedFormEntity(nvps));
-                } else {
-                    StringBuffer sb = new StringBuffer(this.logURL);
-                    sb.append(message);
-                    httpMethod = new HttpPost(sb.toString());
-                }
-            }
+            } 
 
             
             HttpThread httpThread = new HttpThread(httpClient, errorHandler);
@@ -120,7 +100,7 @@ public class HttpAppender extends AppenderSkeleton {
             } else {
                 httpThread.run();
             }
-        } catch (UnsupportedEncodingException ex) {
+        } catch (Exception ex) {
             ex.printStackTrace();
         }
     }

@@ -54,12 +54,10 @@ public class HttpLayout extends Layout {
         
         // Build Activity Log Message
         if (paramLoggingEvent.getLoggerName().equalsIgnoreCase("ActivityLogs")) {
-            //UserActivityLog log = (UserActivityLog) paramLoggingEvent.getMessage();
+            UserActivityLog log = (UserActivityLog) paramLoggingEvent.getMessage();
             activityMessage = formatMessage(activityMessage, "session_id", ApplicationContext.getSessionID());
-            //activityMessage = formatMessage(activityMessage, "loglevel", log.getMethod());
-            //activityMessage = formatMessage(activityMessage, "message", log.getLogMessage());
-            activityMessage = formatMessage(activityMessage, "loglevel", "activity log test level");
-            activityMessage = formatMessage(activityMessage, "message", "Activity Log Message");
+            activityMessage = formatMessage(activityMessage, "loglevel", log.getMethod());
+            activityMessage = formatMessage(activityMessage, "message", log.getLogMessage());
             activityMessage = formatMessage(activityMessage, "logger", paramLoggingEvent.getLoggerName());
             long elapsedTimeInMilliSec = (new java.util.Date().getTime() - ApplicationContext.SESSION_START_TIME);
             int elapsedTimeInSec = Math.round(elapsedTimeInMilliSec / 1000);

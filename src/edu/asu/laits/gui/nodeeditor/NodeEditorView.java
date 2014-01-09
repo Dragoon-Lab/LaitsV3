@@ -22,6 +22,7 @@ import edu.asu.laits.editor.ControllerFactory;
 import edu.asu.laits.editor.GraphEditorPane;
 import edu.asu.laits.gui.BlockingToolTip;
 import edu.asu.laits.gui.MainWindow;
+import edu.asu.laits.logger.UserActivityLog;
 import edu.asu.laits.model.HelpBubble;
 import edu.asu.laits.model.PersistenceManager;
 import edu.asu.laits.model.TaskSolution;
@@ -78,19 +79,22 @@ public class NodeEditorView extends javax.swing.JDialog {
 
     private void configureAndRenderUI() {
         logs.debug("Initializing NodeEditor");
-        activityLogs.debug("NodeEditor opened for Node '" + openVertex.getName() + "'");
-                
+        if(openVertex.getName().equals("")) 
+            activityLogs.debug(new UserActivityLog(UserActivityLog.UI_ACTION, "Node Editor opened using Create Node button")); 
+        else
+            activityLogs.debug(new UserActivityLog(UserActivityLog.UI_ACTION, "Node Editor opened for existing node '" + openVertex.getName() + "'"));
+        
         initTabs();
         
         this.addWindowListener(new java.awt.event.WindowAdapter() {
             public void windowClosing(java.awt.event.WindowEvent e) {
-                activityLogs.debug("User pressed Close button for Node '" + openVertex.getName() + "'");
+                activityLogs.debug(new UserActivityLog(UserActivityLog.UI_ACTION, "Node Editor closed. Vertex Details after closing: " + _controller.getNodeDetailLog()));
                 closeNodeEditor();
             }
         });
         
         _controller.initOnLoadBalloonTip();
-        UIManager.getDefaults().put("TabbedPane.contentBorderInsets",new Insets(2, 0, -1, 0));
+        UIManager.getDefaults().put("TabbedPane.contentBorderInsets", new Insets(2, 0, -1, 0));
         prepareNodeEditorDisplay();
     }
 
@@ -117,7 +121,7 @@ public class NodeEditorView extends javax.swing.JDialog {
             }
         }   
         
-        activityLogs.debug("Vertex Details before opening node editor " + _controller.getNodeDetailLog());
+        activityLogs.debug(new UserActivityLog(UserActivityLog.CLIENT_MESSAGE, "Vertex Details before opening node editor. " + _controller.getNodeDetailLog()));
         setVisible(true);
         setResizable(false);
     }
@@ -145,22 +149,20 @@ public class NodeEditorView extends javax.swing.JDialog {
     }
 
     private void setSelectedPanel() {
+        
         if (!openVertex.getPlanStatus().equals(Vertex.PlanStatus.UNDEFINED)
                 && !openVertex.getPlanStatus().equals(Vertex.PlanStatus.INCORRECT)) {
-            logs.debug("setting calc panel as current");
-            activityLogs.debug("Node Editor is opend with Calculations Tab for Node: " + openVertex.getName());
             tabPane.setSelectedIndex(CALCULATIONS);
         } else if (!openVertex.getDescriptionStatus().equals(Vertex.DescriptionStatus.UNDEFINED)
                 && !openVertex.getDescriptionStatus().equals(Vertex.DescriptionStatus.INCORRECT)) {
-            logs.debug("Setting Plan Panel as Current");
-            activityLogs.debug("Node Editor is opend with Plan Tab for Node: " + openVertex.getName());
             tabPane.setSelectedIndex(PLAN);
         } else {
-            logs.debug("Setting Desc Panel as Current");
-            activityLogs.debug("Node Editor is opend with Description Tab for Node: " + openVertex.getName());
-            
             tabPane.setSelectedIndex(DESCRIPTION);
         }
+        String panel = getTabName(tabPane.getSelectedIndex());
+        logs.debug("setting " + panel + " panel as current");
+        activityLogs.debug(new UserActivityLog(UserActivityLog.UI_ACTION, "Node Editor is opend with "+ panel +" Tab"));
+        
         if(! ApplicationContext.isTestMode())
             setCheckGiveupButtons();
     }
@@ -216,18 +218,18 @@ public class NodeEditorView extends javax.swing.JDialog {
         JOptionPane.showMessageDialog(this, msg, "Node Editor Error", JOptionPane.ERROR_MESSAGE);                            
     }
 
-    private void checkDescriptionPanel(TaskSolution correctSolution) {
+    private void checkDescriptionPanel(TaskSolution correctSolution, StringBuilder log) {
         // Save Description Panel Information in the Vertex Object
         if (!dPanel.processDescriptionPanel()) {
             return;
         }
-
+        log.append(", Student Entered - Node: " + dPanel.getNodeName() + ", Desc: " + dPanel.getNodeDesc());
         if (correctSolution.checkNodeName(dPanel.getNodeName()) && correctSolution.checkNodeDescription(dPanel.getNodeName(), dPanel.getNodeDesc())) {
             openVertex.setDescriptionStatus(Vertex.DescriptionStatus.CORRECT);
             dPanel.setTextFieldBackground(Color.GREEN);
             getCheckButton().setEnabled(false);
             demoButton.setEnabled(false);
-            activityLogs.debug("User entered correct description");
+            log.append(", Check Result: CORRECT ");
             dPanel.setEditableTree(false);
             tabPane.setEnabledAt(PLAN, true);
             tabPane.setForegroundAt(PLAN, Color.BLACK);
@@ -235,7 +237,7 @@ public class NodeEditorView extends javax.swing.JDialog {
             openVertex.setDescriptionStatus(Vertex.DescriptionStatus.INCORRECT);
             dPanel.setTextFieldBackground(Color.RED);
             setEditorMessage("That quantity is not used in the correct model. Please select another description.");
-            activityLogs.debug("User entered incorrect description");
+            log.append(", Check Result: INCORRECT ");
         }
 
         setTitle("Node Editor - " + openVertex.getName());
@@ -243,19 +245,19 @@ public class NodeEditorView extends javax.swing.JDialog {
         repaint();      
     }
 
-    private void checkDescriptionPanelCoached(TaskSolution correctSolution) {
+    private void checkDescriptionPanelCoached(TaskSolution correctSolution, StringBuilder log) {
         // Save Description Panel Information in the Vertex Object
         if (!dPanel.processDescriptionPanel()) {
             return;
         }
+        log.append(", Student Entered - Node: " + dPanel.getNodeName() + ", Desc: " + dPanel.getNodeDesc());
         int solutionCheck = correctSolution.checkNodeNameOrdered(dPanel.getNodeName());
         if (solutionCheck == 1) {
             openVertex.setDescriptionStatus(Vertex.DescriptionStatus.CORRECT);
-            //graphPane.getMainFrame().getMainMenu().getModelMenu().addDeleteNodeMenu();
             dPanel.setTextFieldBackground(Color.GREEN);
             getCheckButton().setEnabled(false);
             demoButton.setEnabled(false);
-            activityLogs.debug("User entered correct description");
+            log.append(", Check Result: CORRECT ");
             dPanel.setEditableTree(false);
             ApplicationContext.getCorrectSolution().getTargetNodes().setNextNodes();
             tabPane.setEnabledAt(PLAN, true);
@@ -264,14 +266,13 @@ public class NodeEditorView extends javax.swing.JDialog {
         } else if (solutionCheck == 2) {
             dPanel.setTextFieldBackground(Color.CYAN);
             setEditorMessage("That quantity used in this model, but now is not the right time to define it. Please select another description.");
-            activityLogs.debug("User entered description out of order");
+            log.append(" ,Check Result: DESC OUT OF ORDER ");
             addHelpBalloon(ApplicationContext.getCorrectSolution().getTargetNodes().getFirstNextNode(openVertex), "onLoad", "DESCRIPTION");
         } else {
             openVertex.setDescriptionStatus(Vertex.DescriptionStatus.INCORRECT);
             dPanel.setTextFieldBackground(Color.RED);
             setEditorMessage("That quantity is not used in the correct model. Please select another description.");
-            activityLogs.debug("User entered incorrect description");
-
+            log.append(" , Check Result: INCORRECT ");
         }
 
         setTitle("Node Editor - "+openVertex.getName());
@@ -279,20 +280,19 @@ public class NodeEditorView extends javax.swing.JDialog {
         repaint();        
     }
 
-    public void checkPlanPanel(TaskSolution correctSolution) {
+    public void checkPlanPanel(TaskSolution correctSolution, StringBuilder log) {
         // Add Check button used to Stats
         ApplicationContext.updateCheckUsageStats(PLAN, openVertex.getName());
-                
+        log.append(", Student Entered - Plan: " + pPanel.getSelectedPlan());        
         logs.debug("Checking Plan Panel");
         if (correctSolution.checkNodePlan(dPanel.getNodeName(), pPanel.getSelectedPlan())) {
             if (openVertex.getPlanStatus().equals(PlanStatus.UNDEFINED) || openVertex.getPlanStatus().equals(PlanStatus.INCORRECT)) {
                 pPanel.setSelectedPlanBackground(Color.GREEN);
-                openVertex.setPlanStatus(PlanStatus.CORRECT);
-            
+                openVertex.setPlanStatus(PlanStatus.CORRECT);                
             }
             getCheckButton().setEnabled(false);
             demoButton.setEnabled(false);
-            activityLogs.debug("User entered correct Plan");
+            log.append(" , Check Result: CORRECT ");
             pPanel.setEditableRadio(false);
             tabPane.setEnabledAt(CALCULATIONS, true);
             tabPane.setForegroundAt(CALCULATIONS, Color.BLACK);
@@ -301,8 +301,8 @@ public class NodeEditorView extends javax.swing.JDialog {
             }
         } else {
             setEditorMessage("You have selected incorrect Plan for this Node. Correct plan has been selected for you.");
-            activityLogs.debug("User entered incorrect Plan");
-
+            log.append(", Check Result: INCORRECT, Correct plan is : " + pPanel.planToString(correctSolution.getNodeByName(openVertex.getName()).getNodeType()) );
+            
             pPanel.giveUpPlanPanel();
             pPanel.processPlanPanel();
             openVertex.setPlanStatus(PlanStatus.GAVEUP);
@@ -316,21 +316,21 @@ public class NodeEditorView extends javax.swing.JDialog {
             ApplicationContext.updateDemoUsageStats(PLAN, openVertex.getName());
         }
         // Save Selected Plan to the Vertex Object
-        pPanel.processPlanPanel();
-        activityLogs.debug("User checked plan panel with node plan as " + pPanel.getSelectedPlan());       
+        pPanel.processPlanPanel();           
     }
 
-    private void checkCalculationsPanel(TaskSolution correctSolution) {
+    private void checkCalculationsPanel(TaskSolution correctSolution, StringBuilder log) {
         // Check Parsing Errors and Set Student's Equation in Vertex
         // Check if Student Entered a valid calculation
         if(cPanel.processCalculationsPanel()) {
+            log.append(", Student Entered - " + cPanel.printCalculationPanel());
             // Check if Student's calculations are correct
             if (correctSolution.checkNodeCalculations(openVertex)) {
                 cPanel.setCheckedBackground(Color.GREEN);
                 getCheckButton().setEnabled(false);
                 demoButton.setEnabled(false);
 
-                activityLogs.debug("User entered correct Calculations.");
+                log.append(" , Check Result: CORRECT ");
                 openVertex.setCalculationsStatus(Vertex.CalculationsStatus.CORRECT);
                 cPanel.setEditableCalculations(false);
                 buttonCancel.setEnabled(true);
@@ -340,23 +340,18 @@ public class NodeEditorView extends javax.swing.JDialog {
             } else {
                 cPanel.setCheckedBackground(Color.RED);
                 setEditorMessage("Your Calculations are Incorrect.");
-                activityLogs.debug("User entered incorrect Calculations.");
+                log.append(" , Check Result: INCORRECT, Correct Calculation: " + correctSolution.getNodeByName(openVertex.getName()).getNodeEquation());
                 openVertex.setCalculationsStatus(Vertex.CalculationsStatus.INCORRECT);
             }
         } else {
             cPanel.setCheckedBackground(Color.RED);
-        }
-        
-        activityLogs.debug("User checked calculations panel with Nodetype: " + openVertex.getVertexType()
-                + " Initial Value : " + openVertex.getInitialValue() + " Calculations as " + openVertex.getEquation());
+        }        
     }
 
     /**
      * Make necessary clean up and save graph session when NodeEditor closes
      */
     public void closeNodeEditor() {
-        activityLogs.debug("Closing NodeEditor because of Close action.");
-        
         // Delete this vertex if its not defined and user hits Cancel
         if (!openVertex.isDescriptionDone()) {
             graphPane.setSelectionCell(openVertex.getJGraphVertex());
@@ -374,7 +369,7 @@ public class NodeEditorView extends javax.swing.JDialog {
         }
         
         this.dispose();
-        activityLogs.debug("Vertex Details after closing node editor " + _controller.getNodeDetailLog());
+        
     }
 
     public void addHelpBalloon(String name, String timing, String panel) {
@@ -569,33 +564,31 @@ public class NodeEditorView extends javax.swing.JDialog {
         // Action for Check Button
         logs.debug("Handling Check Action");
         TaskSolution correctSolution = ApplicationContext.getCorrectSolution();
-
+        StringBuilder log = new StringBuilder("Node : " + openVertex.getName());
+        log.append(", Tab: " + getTabName(tabPane.getSelectedIndex()));
+        
         switch (tabPane.getSelectedIndex()) {
             case DESCRIPTION:
-                activityLogs.debug("Check button pressed for Description Panel");
                 if (ApplicationContext.isCoachedMode()) {
-                    checkDescriptionPanelCoached(correctSolution);
+                    checkDescriptionPanelCoached(correctSolution, log);
                 } else {
-                    checkDescriptionPanel(correctSolution);
+                    checkDescriptionPanel(correctSolution, log);
                 }
                 // Add Check button used to Stats
-                ApplicationContext.updateCheckUsageStats(DESCRIPTION, openVertex.getName());
-                
+                ApplicationContext.updateCheckUsageStats(DESCRIPTION, openVertex.getName());                
                 break;
 
             case PLAN:
-                activityLogs.debug("Check button pressed for Plan Panel");
-                checkPlanPanel(correctSolution);
+                checkPlanPanel(correctSolution, log);
                 break;
 
             case CALCULATIONS:
-                activityLogs.debug("Check button pressed for Calculations Panel");
-                checkCalculationsPanel(correctSolution);
-                
+                checkCalculationsPanel(correctSolution, log);
                 // Add Check button used to Stats
                 ApplicationContext.updateCheckUsageStats(CALCULATIONS, openVertex.getName());
         }
 
+        activityLogs.debug(new UserActivityLog(UserActivityLog.SOLUTION_STEP, log.toString()));
         // Refreshing Graph
         MainWindow.refreshGraph();
     }//GEN-LAST:event_checkButtonActionPerformed
@@ -618,8 +611,7 @@ public class NodeEditorView extends javax.swing.JDialog {
         logs.debug("Demo Button Action Performed");
         // Action for Giveup Button
         switch (tabPane.getSelectedIndex()) {
-            case DESCRIPTION:
-                activityLogs.debug("Giveup button pressed for Description Panel");
+            case DESCRIPTION:                
                 List<HelpBubble> bubbles = ApplicationContext.getHelp(ApplicationContext.getCorrectSolution().getTargetNodes().getFirstNextNode(openVertex), "DESCRIPTION", "descFilled");
                 if (!bubbles.isEmpty()) {
                     for (HelpBubble bubble : bubbles) {
@@ -645,7 +637,6 @@ public class NodeEditorView extends javax.swing.JDialog {
                 break;
 
             case PLAN:
-                activityLogs.debug("Giveup button pressed for Plan Panel");
                 pPanel.giveUpPlanPanel();
                 pPanel.processPlanPanel();
                 openVertex.setPlanStatus(Vertex.PlanStatus.GAVEUP);
@@ -657,8 +648,6 @@ public class NodeEditorView extends javax.swing.JDialog {
                 break;
 
             case CALCULATIONS:
-                activityLogs.debug("Giveup button pressed for Calculations Panel");
-                //  cPanel.setCheckedBackground(new Color(240, 240, 240));
                 if (cPanel.giveUpCalculationsPanel()) {
                     cPanel.processCalculationsPanel();
                     openVertex.setCalculationsStatus(Vertex.CalculationsStatus.GAVEUP);
@@ -677,8 +666,9 @@ public class NodeEditorView extends javax.swing.JDialog {
                 // Add Demo button used to Stats
                 ApplicationContext.updateDemoUsageStats(CALCULATIONS, openVertex.getName());
                 break;
-
         }
+        
+        activityLogs.debug(new UserActivityLog(UserActivityLog.SEEK_HELP, "Giveup button pressed for Node : " + openVertex.getName() + " Tab: " + getTabName(tabPane.getSelectedIndex())));
         MainWindow.refreshGraph();
     }//GEN-LAST:event_demoButtonActionPerformed
     public JComponent getLabel(String label) {
@@ -702,7 +692,7 @@ public class NodeEditorView extends javax.swing.JDialog {
     }//GEN-LAST:event_buttonCancelActionPerformed
 
     private void buttonOKActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_buttonOKActionPerformed
-        activityLogs.debug("User pressed Enter button for Node '" + openVertex.getName() + "'");
+        activityLogs.debug(new UserActivityLog(UserActivityLog.UI_ACTION, "User pressed Enter button for Node '" + openVertex.getName() + "'"));
         try{
             _controller.processOKAction();      
         } catch (NodeEditorException ex){

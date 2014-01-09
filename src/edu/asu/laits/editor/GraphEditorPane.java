@@ -40,6 +40,7 @@ import edu.asu.laits.editor.listeners.GraphPropertiesChangeListener;
 import edu.asu.laits.editor.listeners.InsertModeChangeListener;
 import edu.asu.laits.editor.listeners.UndoAndRedoAbleListener;
 import edu.asu.laits.gui.MainWindow;
+import edu.asu.laits.logger.UserActivityLog;
 import edu.asu.laits.properties.GlobalProperties;
 import edu.asu.laits.properties.GraphProperties;
 import java.util.ArrayList;
@@ -368,8 +369,7 @@ public class GraphEditorPane extends JGraph {
             
             v.setGraphsStatus(Vertex.GraphsStatus.UNDEFINED);
         }
-
-        activityLogs.debug("Deleted Selected Nodes: " + selectedNodes);
+        activityLogs.debug(new UserActivityLog(UserActivityLog.CLIENT_MESSAGE, "Deleted Selected Nodes: " + selectedNodes));        
     }
     
     public void addEdge(Vertex sourceVeretx, Vertex targetVertex){

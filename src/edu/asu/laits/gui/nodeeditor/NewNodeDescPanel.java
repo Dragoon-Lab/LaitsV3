@@ -21,6 +21,7 @@ package edu.asu.laits.gui.nodeeditor;
 import edu.asu.laits.editor.ApplicationContext;
 import edu.asu.laits.gui.BlockingToolTip;
 import edu.asu.laits.gui.MainWindow;
+import edu.asu.laits.logger.UserActivityLog;
 import edu.asu.laits.model.Graph;
 import edu.asu.laits.model.HelpBubble;
 import edu.asu.laits.model.SolutionDTreeNode;
@@ -282,7 +283,7 @@ public class NewNodeDescPanel extends JPanel {
             if (isduplicatedNode(getNodeName())) {
                 newNodeDialog.setEditorMessage("The node name is already used by another node. Please choose a new name for this node.");
                 setTextFieldBackground(Color.RED);
-                activityLogs.debug("User entered duplicate node name");
+                 activityLogs.debug(new UserActivityLog(UserActivityLog.CLIENT_MESSAGE, "User entered duplicate node name"));
                 return false;
             } 
         }
@@ -290,7 +291,7 @@ public class NewNodeDescPanel extends JPanel {
         if (getNodeDesc().trim().isEmpty()) {
             newNodeDialog.setEditorMessage("Please provide correct description for this node.");
             setTextFieldBackground(Color.RED);
-            activityLogs.debug("User entered incorrect description");
+             activityLogs.debug(new UserActivityLog(UserActivityLog.CLIENT_MESSAGE, "User entered empty node name"));
             return false;
         }
 

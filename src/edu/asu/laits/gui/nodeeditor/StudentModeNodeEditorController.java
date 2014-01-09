@@ -19,6 +19,7 @@ package edu.asu.laits.gui.nodeeditor;
 
 import edu.asu.laits.editor.ApplicationContext;
 import edu.asu.laits.gui.MainWindow;
+import edu.asu.laits.logger.UserActivityLog;
 import edu.asu.laits.model.SolutionNode;
 import edu.asu.laits.model.TaskSolution;
 import edu.asu.laits.model.Vertex;
@@ -149,7 +150,9 @@ public class StudentModeNodeEditorController extends NodeEditorController {
     
     public void planPanelRadioClicked(){
         TaskSolution solution = ApplicationContext.getCorrectSolution();
-        view.checkPlanPanel(solution);
+        StringBuilder sb = new StringBuilder("Plan Panel radio button clicked. ");
+        view.checkPlanPanel(solution, sb);
+        activityLogs.debug(new UserActivityLog(UserActivityLog.SOLUTION_STEP, sb.toString()));
     }
     
     /**

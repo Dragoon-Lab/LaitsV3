@@ -62,10 +62,11 @@
                     isset($_REQUEST[self::LOGGER_NAME_PARAM])) {
                
                 // Initialize Variables
-                $this->session_id = mysqli_real_escape_string($this->connection, $_REQUEST[self::SESSION_ID_PARAM]);
+                $this->session_id = mysqli_real_escape_string($this->connection, urldecode($_REQUEST[self::SESSION_ID_PARAM]));
                 $this->log_level = mysqli_real_escape_string($this->connection, $_REQUEST[self::LOG_LEVEL_PARAM]);
                 $this->logger = mysqli_real_escape_string($this->connection, $_REQUEST[self::LOGGER_NAME_PARAM]);
-                $this->message = mysqli_real_escape_string($this->connection, $_REQUEST[self::LOG_MESSAGE_PARAM]);
+                $this->message = mysqli_real_escape_string($this->connection, urldecode($_REQUEST[self::LOG_MESSAGE_PARAM]));
+                
                 return true;
             } 
             return false;

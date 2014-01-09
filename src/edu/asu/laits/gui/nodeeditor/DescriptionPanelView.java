@@ -21,6 +21,7 @@ package edu.asu.laits.gui.nodeeditor;
 import edu.asu.laits.editor.ApplicationContext;
 import edu.asu.laits.gui.BlockingToolTip;
 import edu.asu.laits.gui.MainWindow;
+import edu.asu.laits.logger.UserActivityLog;
 import edu.asu.laits.model.Graph;
 import edu.asu.laits.model.SolutionDTreeNode;
 import edu.asu.laits.model.Vertex;
@@ -306,7 +307,7 @@ public class DescriptionPanelView extends JPanel {
     
     public boolean processDescriptionPanel() {
         if (getNodeName().trim().length() == 0) {
-            activityLogs.error("User entered empty node name.");
+            activityLogs.error(new UserActivityLog(UserActivityLog.CLIENT_MESSAGE, "User entered empty node name."));
             nodeEditor.setEditorMessage("Node Name can not be empty.");
             return false;
         }
@@ -321,13 +322,12 @@ public class DescriptionPanelView extends JPanel {
                 } catch (Exception ex) {
                     nodeEditor.setEditorMessage(ex.getMessage());
                     setTextFieldBackground(Color.RED);
-                    activityLogs.debug(ex.getMessage());
                     return false;
                 }
             } else {
                 nodeEditor.setEditorMessage("The node name is already used by another node. Please choose a new name for this node.");
                 setTextFieldBackground(Color.RED);
-                activityLogs.debug("User entered duplicate node name");
+                activityLogs.debug(new UserActivityLog(UserActivityLog.CLIENT_MESSAGE, "User entered duplicate node name"));
                 return false;
             }
         }
@@ -335,7 +335,7 @@ public class DescriptionPanelView extends JPanel {
         if (getNodeDesc().trim().isEmpty()) {
             nodeEditor.setEditorMessage("Please provide correct description for this node.");
             setTextFieldBackground(Color.RED);
-            activityLogs.debug("User entered incorrect description");
+             activityLogs.debug(new UserActivityLog(UserActivityLog.CLIENT_MESSAGE, "User entered empty node name"));
             return false;
         }
         
@@ -388,10 +388,11 @@ public class DescriptionPanelView extends JPanel {
     
     public String printDescriptionPanelDetails() {
         StringBuilder sb = new StringBuilder();
-        sb.append("Node Name = '");
-        sb.append(nodeNameTextField.getText() + "'");
-        sb.append("  Description = '");
-        sb.append(quantityDescriptionTextField.getText() + "'");
+        sb.append("Node Name : ");
+        sb.append(nodeNameTextField.getText());
+        sb.append(",  Description : ");
+        sb.append(quantityDescriptionTextField.getText());
+        sb.append(", Descrption Panel Status : " + nodeEditor.getOpenVertex().getDescriptionStatus());
         return sb.toString();
     }
     

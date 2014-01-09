@@ -40,6 +40,7 @@ import edu.asu.laits.gui.toolbars.FileToolBar;
 import edu.asu.laits.gui.toolbars.EditToolBar;
 import edu.asu.laits.gui.toolbars.ModelToolBar;
 import edu.asu.laits.gui.toolbars.ViewToolBar;
+import edu.asu.laits.logger.UserActivityLog;
 import edu.asu.laits.model.HelpBubble;
 import edu.asu.laits.model.PersistenceManager;
 import edu.asu.laits.properties.GlobalProperties;
@@ -374,7 +375,7 @@ public class MainWindow extends JFrame {
     }
 
     public void exitWindow() {
-        activityLogs.info("User exited Dragoon....");
+        activityLogs.debug(new UserActivityLog(UserActivityLog.CLOSE_PROBLEM, "User exited Dragoon.... Problem Solved: " + ApplicationContext.isProblemSolved()));
 
         windowCount--;
         if (windowCount == 0) {
@@ -471,6 +472,7 @@ public class MainWindow extends JFrame {
             String graphXML = PersistenceManager.loadSession();
             
             if (!graphXML.trim().isEmpty()) {
+                activityLogs.debug(new UserActivityLog(UserActivityLog.OPEN_PROBLEM, "User's previous session is loaded."));
                 getGraphEditorPane().resetModelGraph();
                 GraphLoader loader = new GraphLoader(getGraphEditorPane());
                 loader.loadFromServer(graphXML);

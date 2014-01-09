@@ -4,6 +4,7 @@
 package edu.asu.laits.gui.nodeeditor;
 
 import edu.asu.laits.editor.ApplicationContext;
+import edu.asu.laits.logger.UserActivityLog;
 import edu.asu.laits.model.SolutionNode;
 import edu.asu.laits.model.TargetNodes;
 import edu.asu.laits.model.TaskSolution;
@@ -23,8 +24,8 @@ public class CoachedModeNodeEditorController extends NodeEditorController {
     private NodeEditorView view;
     private Vertex openVertex;
     private TargetNodes targetNodes;
-    private static Logger logs = Logger.getLogger("DevLogs");
-    private static Logger activityLogs = Logger.getLogger("ActivityLogs");
+    private static Logger logs = Logger.getLogger("DevLogs");   
+    private static Logger activityLogs = Logger.getLogger("ActivityLogs");   
 
     public CoachedModeNodeEditorController(NodeEditorView view, Vertex openVertex) {
         super(view, openVertex);
@@ -162,7 +163,9 @@ public class CoachedModeNodeEditorController extends NodeEditorController {
     
     public void planPanelRadioClicked(){
         TaskSolution solution = ApplicationContext.getCorrectSolution();
-        view.checkPlanPanel(solution);
+        StringBuilder sb = new StringBuilder("Plan Panel radio button clicked. ");
+        view.checkPlanPanel(solution, sb);
+        activityLogs.debug(new UserActivityLog(UserActivityLog.SOLUTION_STEP, sb.toString()));
     }
     
     /**

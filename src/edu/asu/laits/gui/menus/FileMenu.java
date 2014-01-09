@@ -44,6 +44,7 @@ import edu.asu.laits.editor.listeners.GraphChangeListener;
 import edu.asu.laits.editor.listeners.GraphPropertiesChangeListener;
 import edu.asu.laits.editor.listeners.GraphSaveListener;
 import edu.asu.laits.gui.MainWindow;
+import edu.asu.laits.logger.UserActivityLog;
 import edu.asu.laits.model.SolutionNode;
 import edu.asu.laits.model.TaskSolution;
 import edu.asu.laits.model.TaskSolutionReader;
@@ -174,8 +175,8 @@ public class FileMenu extends JMenu {
             TaskSolution solution = solutionReader.loadSolution(id,author,group);
             ApplicationContext.setCorrectSolution(solution);
 
-            activityLogs.debug("Student opened a new task ID: " + id + " - "
-                + ApplicationContext.getCurrentTask().getTaskName());
+            activityLogs.debug(new UserActivityLog(UserActivityLog.OPEN_PROBLEM, "Student opened a new task ID: " + id + " - "
+                + ApplicationContext.getCurrentTask().getTaskName()));
             
             mainWindow.loadTaskDescription(ApplicationContext.getCurrentTask().getTaskName(),
                     ApplicationContext.getCurrentTask().getTaskDescription(),
@@ -272,7 +273,7 @@ public class FileMenu extends JMenu {
             newAction = new java.awt.event.ActionListener() {
                 public void actionPerformed(java.awt.event.ActionEvent e) {
                     // If new is called a new main window is created
-                    activityLogs.debug("User Pressed New File Menu");
+                    activityLogs.debug(new UserActivityLog(UserActivityLog.UI_ACTION, "User Pressed New File Menu"));
                     MainWindow.launch();
                 }
             };
@@ -306,7 +307,7 @@ public class FileMenu extends JMenu {
                     "/resources/icons/16x16/fileopen.png")));
             openAction = new java.awt.event.ActionListener() {
                 public void actionPerformed(java.awt.event.ActionEvent e) {
-                    activityLogs.debug("User Pressed Open File Menu");                   
+                    activityLogs.debug(new UserActivityLog(UserActivityLog.UI_ACTION, "User Pressed Open File Menu"));                   
                     open();
                 }
             };
@@ -417,7 +418,7 @@ public class FileMenu extends JMenu {
             saveFileMenuItem.setEnabled(false);
             saveAction = new java.awt.event.ActionListener() {
                 public void actionPerformed(java.awt.event.ActionEvent e) {
-                    activityLogs.debug("User Pressed Save File Menu");
+                    activityLogs.debug(new UserActivityLog(UserActivityLog.UI_ACTION, "User Pressed Save File Menu"));
                     save();
                 }
             };
@@ -440,7 +441,7 @@ public class FileMenu extends JMenu {
             saveAsFileMenuItem
                     .addActionListener(new java.awt.event.ActionListener() {
                 public void actionPerformed(java.awt.event.ActionEvent e) {
-                    activityLogs.debug("User Pressed Save As File Menu");
+                    activityLogs.debug(new UserActivityLog(UserActivityLog.UI_ACTION, "User Pressed Save As File Menu"));
                     saveAs();
                 }
             });

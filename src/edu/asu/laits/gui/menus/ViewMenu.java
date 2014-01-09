@@ -7,6 +7,7 @@ import javax.swing.JViewport;
 
 import edu.asu.laits.editor.GraphEditorPane;
 import edu.asu.laits.gui.MainWindow;
+import edu.asu.laits.logger.UserActivityLog;
 
 import java.awt.Point;
 import java.awt.event.ActionListener;
@@ -77,7 +78,7 @@ public class ViewMenu extends JMenu {
                     "/resources/icons/16x16/viewmag+.png")));
             zoomInAction = new java.awt.event.ActionListener() {
                 public void actionPerformed(java.awt.event.ActionEvent e) {
-                    activityLogs.debug("User used Zoom In Button");
+                    activityLogs.debug(new UserActivityLog(UserActivityLog.UI_ACTION, "User used Zoom In Button"));
                     graphPane.zoomIn();
                 }
             };
@@ -99,7 +100,7 @@ public class ViewMenu extends JMenu {
                     "/resources/icons/16x16/viewmag-.png")));
             zoomOutAction = new java.awt.event.ActionListener() {
                 public void actionPerformed(java.awt.event.ActionEvent e) {
-                    activityLogs.debug("User used Zoom Out Button");
+                    activityLogs.debug(new UserActivityLog(UserActivityLog.UI_ACTION, "User used Zoom Out Button"));
                     graphPane.zoomOut();
                 }
             };
@@ -132,7 +133,7 @@ public class ViewMenu extends JMenu {
             centerViewMenuItem
                     .addActionListener(new java.awt.event.ActionListener() {
                 public void actionPerformed(java.awt.event.ActionEvent e) {
-                    activityLogs.debug("User used Zoom Original Button");
+                    activityLogs.debug(new UserActivityLog(UserActivityLog.UI_ACTION, "User used Zoom Original Button"));
                     JViewport viewport = mainFrame
                             .getGraphPaneScrollPane().getViewport();
                     viewport.setViewPosition(new Point(

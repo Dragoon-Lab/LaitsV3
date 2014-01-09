@@ -25,6 +25,7 @@ import edu.asu.laits.gui.GraphViewPanel;
 import edu.asu.laits.gui.GraphViewPanel.ChartDialogMode;
 import edu.asu.laits.gui.MainWindow;
 import edu.asu.laits.gui.nodeeditor.NodeEditorView;
+import edu.asu.laits.logger.UserActivityLog;
 import edu.asu.laits.model.Edge;
 import edu.asu.laits.model.Graph;
 import edu.asu.laits.model.ModelEvaluationException;
@@ -152,7 +153,6 @@ public class ModelMenu extends JMenu {
             showGraphMenuItem
                     .addActionListener(new java.awt.event.ActionListener() {
                 public void actionPerformed(java.awt.event.ActionEvent e) {
-                    activityLogs.debug("User pressed Show Graph Button.");
                     showNodeGraph();
                 }
             });
@@ -171,7 +171,7 @@ public class ModelMenu extends JMenu {
             showGraphTableItem
                     .addActionListener(new java.awt.event.ActionListener() {
                 public void actionPerformed(java.awt.event.ActionEvent e) {
-                    activityLogs.debug("User pressed Show Table Button.");
+                    activityLogs.debug(new UserActivityLog(UserActivityLog.UI_ACTION, "User pressed Show Table Button."));
                     showNodeTable();
                 }
             });
@@ -189,7 +189,7 @@ public class ModelMenu extends JMenu {
             exportSolutionMenuItem
                     .addActionListener(new java.awt.event.ActionListener() {
                 public void actionPerformed(java.awt.event.ActionEvent e) {
-                    activityLogs.debug("User pressed Export Solution Button.");
+                    activityLogs.debug(new UserActivityLog(UserActivityLog.UI_ACTION, "User pressed Export Solution Button."));
                     exportSolution();
                 }
             });
@@ -208,7 +208,7 @@ public class ModelMenu extends JMenu {
             editTimeRangeMenuItem
                     .addActionListener(new java.awt.event.ActionListener() {
                 public void actionPerformed(java.awt.event.ActionEvent e) {
-                    activityLogs.debug("User pressed Edit Time Range Button.");
+                    activityLogs.debug(new UserActivityLog(UserActivityLog.UI_ACTION, "User pressed Edit Time Range Button."));
                     editTimeRangeAction();
                 }
             });
@@ -252,18 +252,17 @@ public class ModelMenu extends JMenu {
     }
 
     public void showNodeGraph() {
-        activityLogs.debug("User pressed Show Graph button.");
-
         if (runModel()) {
             if(isGraphable())
                 showChartDialog(ChartDialogMode.Graph);
             else
                 JOptionPane.showMessageDialog(MainWindow.getInstance(), "This model does not contain any functions or accumulators. There is nothing to graph yet");
         }
+        activityLogs.debug(new UserActivityLog(UserActivityLog.UI_ACTION, "User pressed Show Graph Button. Is problem Solved: " + ApplicationContext.isProblemSolved() ));
     }
 
     public void showNodeTable() {
-        activityLogs.debug("User pressed Show Table button.");
+        activityLogs.debug(new UserActivityLog(UserActivityLog.UI_ACTION, "User pressed Show Table button."));
 
         if (runModel()) {
             if(isGraphable())
@@ -339,20 +338,20 @@ public class ModelMenu extends JMenu {
                     }
 
                     window.getStatusBarPanel().setStatusMessage("", true);
-                    activityLogs.debug("Model ran successfully.");                    
+                    activityLogs.debug(new UserActivityLog(UserActivityLog.CLIENT_MESSAGE,"Model ran successfully."));                    
 
                 } catch (ModelEvaluationException ex) {
                     window.getStatusBarPanel().setStatusMessage(ex.getMessage(), false);
                 }
                 MainWindow.refreshGraph();
             } else {
-                activityLogs.debug("Model had extra nodes, so user could not run the model.");
+                activityLogs.debug(new UserActivityLog(UserActivityLog.CLIENT_MESSAGE, "Model had extra nodes, so user could not run the model."));
                 JOptionPane.showMessageDialog(window, "Model has extra nodes in it, please remove them before running the model.");
             }
 
             return true;
         } else {
-            activityLogs.debug("Model was incomplete, so user could not run the model.");
+            activityLogs.debug(new UserActivityLog(UserActivityLog.CLIENT_MESSAGE, "Model was incomplete, so user could not run the model."));
             JOptionPane.showMessageDialog(window, "The model is incomplete, please complete all the nodes before running Model");
             window.getStatusBarPanel().setStatusMessage("Please complete all the nodes before running Model", false);
             return false;
@@ -396,31 +395,23 @@ public class ModelMenu extends JMenu {
     }
 
     public void newNodeAction() {
-        activityLogs.debug("User Pressed Create Node Button");
+        activityLogs.debug(new UserActivityLog(UserActivityLog.UI_ACTION, "User Pressed Create Node Button"));
         MainWindow window = MainWindow.getInstance();
         // Disable test as work-around for Bug #2218
         if(false && ApplicationContext.isCoachedMode() && !isGraphEmpty()){
-            activityLogs.debug("User was not allowed to create new node as app is in COACHED mode and nodes already present");
+            activityLogs.debug(new UserActivityLog(UserActivityLog.CLIENT_MESSAGE, "User was not allowed to create new node as app is in COACHED mode and nodes already present"));
             JOptionPane.showMessageDialog(window, "Create new nodes inside the Calculations tab of existing nodes");
             return;
             
         }
         if (notAllNodesDefined()) {
-            activityLogs.debug("User is allowed to create a new node");
             Vertex v = new Vertex();
             v.setVertexIndex(graphPane.getModelGraph().getNextAvailableIndex());
-            graphPane.addVertex(v);
-            
-//            if (MainWindow.getInstance().isSituationSelected()) {
-//                logs.debug("Switching to Model Design Panel");
-//                MainWindow.getInstance().prepareModelDesignPanel();
-//            }
-
+            graphPane.addVertex(v);            
             graphPane.repaint();
             NodeEditorView editor = new NodeEditorView(v);
-
         } else {
-            activityLogs.debug("User was not allowed to create new node as all the nodes were already present");
+            activityLogs.debug(new UserActivityLog(UserActivityLog.CLIENT_MESSAGE, "User was not allowed to create new node as all the nodes were already present"));            
             JOptionPane.showMessageDialog(window, "The model is already using all the correct nodes.");            
         }
     }
@@ -434,7 +425,7 @@ public class ModelMenu extends JMenu {
         postVariable.add(new BasicNameValuePair("problem", ApplicationContext.getCurrentTaskID()));
         // Only include author and section for custom problems
         // For published problems, only need problem name.
-        if(ApplicationContext.getAuthor().length()>0){
+        if(ApplicationContext.getAuthor() != null && ApplicationContext.getAuthor().length() > 0){
             postVariable.add(new BasicNameValuePair("section", ApplicationContext.getSection()));
             postVariable.add(new BasicNameValuePair("author", ApplicationContext.getAuthor()));
         } 
@@ -447,9 +438,7 @@ public class ModelMenu extends JMenu {
         }
         // Always print to console:
         System.out.println("forum URL:"+forumURL);
-        activityLogs.debug("forum URL: "+ forumURL);
 
- 
         try {
             Desktop.getDesktop().browse(new URL(forumURL).toURI());
         } catch (Exception e) {
@@ -458,6 +447,7 @@ public class ModelMenu extends JMenu {
     }
 
     public void deleteNodeAction(){
+        activityLogs.debug(new UserActivityLog(UserActivityLog.UI_ACTION, "User pressed Delete Node button."));
         MainWindow.getInstance().getGraphEditorPane().deleteSelectedNodes();
     }
 
@@ -523,14 +513,14 @@ public class ModelMenu extends JMenu {
     }
 
     public void editTimeRangeAction() {
-        activityLogs.debug("User pressed EditTimeRange Menu Item.");
+        activityLogs.debug(new UserActivityLog(UserActivityLog.UI_ACTION, "User pressed EditTimeRange Menu Item."));
         GraphRangeEditor ed = new GraphRangeEditor(graphPane, true);
         ed.setVisible(true);
     }
 
     public void doneButtonAction() {
         if(ApplicationContext.isProblemSolved()){
-            activityLogs.debug("User Pressed Done button with current task as " + ApplicationContext.getCurrentTaskID());
+            activityLogs.debug(new UserActivityLog(UserActivityLog.CLOSE_PROBLEM, "Task ' " + ApplicationContext.getCurrentTaskID() + "' is completed" ));
             writeResultToServer();
             System.exit(0);
         }

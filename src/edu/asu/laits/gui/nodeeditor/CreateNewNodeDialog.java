@@ -6,6 +6,7 @@ package edu.asu.laits.gui.nodeeditor;
 
 import edu.asu.laits.editor.ApplicationContext;
 import edu.asu.laits.gui.MainWindow;
+import edu.asu.laits.logger.UserActivityLog;
 import edu.asu.laits.model.TaskSolution;
 import edu.asu.laits.model.Vertex;
 import java.awt.Color;
@@ -166,7 +167,7 @@ public class CreateNewNodeDialog extends javax.swing.JDialog {
 
     private void demoButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_demoButtonActionPerformed
         // Action for Giveup Button
-        activityLogs.debug("Giveup button pressed for Create New Node Description Panel");
+        activityLogs.debug(new UserActivityLog(UserActivityLog.SEEK_HELP, "Demo button pressed for Create New Node Description Panel"));
         dPanel.giveUpDescriptionPanel();
         dPanel.processDescriptionPanel();
         openVertex.setDescriptionStatus(Vertex.DescriptionStatus.GAVEUP);
@@ -184,12 +185,12 @@ public class CreateNewNodeDialog extends javax.swing.JDialog {
     }//GEN-LAST:event_demoButtonActionPerformed
 
     private void cancelButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_cancelButtonActionPerformed
-        activityLogs.debug("Close button pressed for Create New Node Description Panel");
+        activityLogs.debug(new UserActivityLog(UserActivityLog.UI_ACTION, "Close button pressed for Create New Node Description Panel"));
         close();
     }//GEN-LAST:event_cancelButtonActionPerformed
 
     private void checkDescriptionPanel(TaskSolution correctSolution) {
-        activityLogs.debug("Check button pressed for Create New Node Description Panel");
+        activityLogs.debug(new UserActivityLog(UserActivityLog.SOLUTION_STEP, "Check button pressed for Create New Node Description Panel"));
         // Save Description Panel Information in the Vertex Object
         if (!dPanel.processDescriptionPanel()) {
             return;
@@ -201,13 +202,13 @@ public class CreateNewNodeDialog extends javax.swing.JDialog {
             checkButton.setEnabled(false);
             demoButton.setEnabled(false);
             cancelButton.setEnabled(true);
-            activityLogs.debug("User entered correct description");
+            activityLogs.debug(new UserActivityLog(UserActivityLog.SOLUTION_STEP, "User entered correct description"));
             dPanel.setEditableTree(false);
         } else {
             openVertex.setDescriptionStatus(Vertex.DescriptionStatus.INCORRECT);
             dPanel.setTextFieldBackground(Color.RED);
             setEditorMessage("That quantity is not used in the correct model. Please select another description.");
-            activityLogs.debug("User entered incorrect description");
+            activityLogs.debug(new UserActivityLog(UserActivityLog.SOLUTION_STEP, "User entered incorrect description"));
         }
 
         setTitle(openVertex.getName());
@@ -228,7 +229,7 @@ public class CreateNewNodeDialog extends javax.swing.JDialog {
             checkButton.setEnabled(false);
             demoButton.setEnabled(false);
             cancelButton.setEnabled(true);
-            activityLogs.debug("User entered correct description");
+            activityLogs.debug(new UserActivityLog(UserActivityLog.SOLUTION_STEP, "User entered correct description"));
             dPanel.setEditableTree(false);
 //            ApplicationContext.getTargetNodes().setNextNodes();
             demoButton.setEnabled(false);
@@ -237,13 +238,13 @@ public class CreateNewNodeDialog extends javax.swing.JDialog {
             dPanel.setTextFieldBackground(Color.CYAN);
             openVertex.setDescriptionStatus(Vertex.DescriptionStatus.INCORRECT);
             setEditorMessage("Quantity is used in model, but is not ready to be defined. Please try another description.");
-            activityLogs.debug("User entered description out of order");
+            activityLogs.debug(new UserActivityLog(UserActivityLog.SOLUTION_STEP, "User entered description out of order"));
         } 
         else {
             openVertex.setDescriptionStatus(Vertex.DescriptionStatus.INCORRECT);
             dPanel.setTextFieldBackground(Color.RED);
             setEditorMessage("That quantity is not used in the correct model. Please select another description.");
-            activityLogs.debug("User entered incorrect description");
+            activityLogs.debug(new UserActivityLog(UserActivityLog.SOLUTION_STEP, "User entered incorrect description"));
         }
     }
 
