@@ -13,8 +13,10 @@
     if ($_GET["action"] != null) {
         $action = mysqli_real_escape_string($mysqli, $_GET['action']);
         print $action;
-        if($action != "load")
-            exit("We are unable to process your request.");       
+        if($action != "load"){
+            print "\nIncorrect action.\n";
+            exit("We are unable to process your request.");
+        }
         $id = mysqli_real_escape_string($mysqli, $_GET['id']);
         $section = mysqli_real_escape_string($mysqli, $_GET['section']);
         $problemNum = mysqli_real_escape_string($mysqli, $_GET['problem']);       
@@ -50,7 +52,7 @@
             print $_SESSION['theResults'];
         }
     } else {
-        print $action;
+        print "\nNo action.";
         print "\nUnable to processs request.";
     }
     

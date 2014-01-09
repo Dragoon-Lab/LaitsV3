@@ -35,6 +35,12 @@
 //        getNodeCorrectDescription: function(/*string*/ id)
 //        getNodeAttempts: function(/*string*/ id)
 //        getNodeSolutions: function(/*string*/ id)
+//        getNodeAttempts: function(/*string*/ id)
+//        getSolutionDescription: function(/*string*/ id)
+//        getSolutionType: function(/*string*/ id)
+//        getSolutionInitial: function(/*string*/ id)
+//        getSolutionUnits: function(/*string*/ id)
+//        getSolutionEquation: function(/*string*/ id)
 //        isInGivenModel: function(/*string*/ id)
 //        getStudentNodeInputs: function(/*string*/ id)
 //        getStudentNodeX: function(/*string*/ id)
@@ -106,10 +112,9 @@ define(["dojo/_base/declare", "/laits/js/json/node", "/laits/js/json/student_nod
             this.x = 100;
             this.y = 100;
             this.ID = 1;
-            this.phase = "";
-            this.type = "";
-            this.properties = JSON.parse('{"taskName" : "' + name + '",\n"URL" : "' + url +
-                    '",\n"startTime" : ' + start + ',\n"endTime" : ' + end +
+            this.taskName = name;
+            this.properties = JSON.parse('{"phase" : "' + "" + '",\n"type" : "' + "" +
+                    '",\n"URL" : "' + url + '",\n"startTime" : ' + start + ',\n"endTime" : ' + end +
                     ',\n"timeStep" : ' + timeStep + ',\n"units" : "' + units + '"}');
             this.model = JSON.parse('{}');
             this._buildModel();
@@ -124,8 +129,7 @@ define(["dojo/_base/declare", "/laits/js/json/node", "/laits/js/json/student_nod
             //      not used when loading a model; only used by the constructor
             // Tags: private
             var newModel = "{\"task\" : {\n";
-            newModel += "\t\"phase\" : \"" + this.phase + "\",\n";
-            newModel += "\t\"type\" : \"" + this.type + "\",\n";
+            newModel += "\t\"taskName\" : \"" + this.taskName + "\",\n";
             newModel += "\t\"properties\" : " + JSON.stringify(this.properties, null, "\t\t") + ",\n";
             newModel += "\t\"taskDescription\" : \"" + this.taskDescription + "\",\n";
             newModel += "\t\"givenModelNodes\" : [\n],\n";
@@ -181,17 +185,17 @@ define(["dojo/_base/declare", "/laits/js/json/node", "/laits/js/json/student_nod
             console.log(" :-)  :-)  :-)  :-)  :-) ");
         },
         /**
-         * Getters; retrieves specific attributes from a model; node attributes are usually
+         * GETTERS; retrieves specific attributes from a model; node attributes are usually
          * by accessed by the node's ID--if the ID is not known use getNodeIDByName("name");
          */
         getPhase: function() {
-            return this.model.task.phase;
+            return this.model.task.properties.phase;
         },
         getType: function() {
-            return this.model.task.type;
+            return this.model.task.properties.type;
         },
         getTaskName: function() {
-            return this.model.task.properties.taskName;
+            return this.model.task.taskName;
         },
         getURL: function() {
             return this.model.task.properties.URL;
@@ -321,16 +325,55 @@ define(["dojo/_base/declare", "/laits/js/json/node", "/laits/js/json/student_nod
             }
             return null;
         },
-        getNodeSolutions: function(/*string*/ id) {
-            // Summary: returns an array with the solution (correct, incorrect, 
-            //      or demo) of each tab (description, plan, and calculation)
+        /**
+         * Next 5 functions return the progress of the student for a given node
+         */
+        getSolutionDescription: function(/*string*/ id) {
+            // Summary: returns the progress (correct, incorrect, or demo) of 
+            //      the given node's description section
             for (var i = 0; i < this.model.task.givenModelNodes.length; i++) {
                 if (id === this.model.task.givenModelNodes[i].ID) {
-                    var solutions = new Array();
-                    solutions.push(this.model.task.givenModelNodes[i].solution.desc);
-                    solutions.push(this.model.task.givenModelNodes[i].solution.plan);
-                    solutions.push(this.model.task.givenModelNodes[i].solution.calc);
-                    return solutions;
+                    return this.model.task.givenModelNodes[i].solution.description;
+                }
+            }
+            return null;
+        },
+        getSolutionType: function(/*string*/ id) {
+            // Summary: returns the progress (correct, incorrect, or demo) of 
+            //      the given node's type section
+            for (var i = 0; i < this.model.task.givenModelNodes.length; i++) {
+                if (id === this.model.task.givenModelNodes[i].ID) {
+                    return this.model.task.givenModelNodes[i].solution.type;
+                }
+            }
+            return null;
+        },
+        getSolutionInitial: function(/*string*/ id) {
+            // Summary: returns the progress (correct, incorrect, or demo) of 
+            //      the given node's initial section
+            for (var i = 0; i < this.model.task.givenModelNodes.length; i++) {
+                if (id === this.model.task.givenModelNodes[i].ID) {
+                    return this.model.task.givenModelNodes[i].solution.initial;
+                }
+            }
+            return null;
+        },
+        getSolutionUnits: function(/*string*/ id) {
+            // Summary: returns the progress (correct, incorrect, or demo) of 
+            //      the given node's units section
+            for (var i = 0; i < this.model.task.givenModelNodes.length; i++) {
+                if (id === this.model.task.givenModelNodes[i].ID) {
+                    return this.model.task.givenModelNodes[i].solution.units;
+                }
+            }
+            return null;
+        },
+        getSolutionEquation: function(/*string*/ id) {
+            // Summary: returns the progress (correct, incorrect, or demo) of 
+            //      the given node's equation section
+            for (var i = 0; i < this.model.task.givenModelNodes.length; i++) {
+                if (id === this.model.task.givenModelNodes[i].ID) {
+                    return this.model.task.givenModelNodes[i].solution.equation;
                 }
             }
             return null;
@@ -413,10 +456,10 @@ define(["dojo/_base/declare", "/laits/js/json/node", "/laits/js/json/student_nod
             return this.model.task.studentModelNodes;
         },
         /**
-         * Setters
+         * SETTERS
          */
         setTaskName: function(/*string*/ name) {
-            this.model.task.properties.taskName = name;
+            this.model.task.taskName = name;
         },
         setURL: function(/*string*/ url) {
             this.model.task.properties.URL = url;
@@ -435,11 +478,11 @@ define(["dojo/_base/declare", "/laits/js/json/node", "/laits/js/json/student_nod
         },
         setPhase: function(/*string*/ phase) {
             // Summary: set the model's phase
-            this.model.task.phase = phase;
+            this.model.task.properties.phase = phase;
         },
         setType: function(/*string*/ type) {
             // Summary: set the model's type
-            this.model.task.type = type;
+            this.model.task.properties.type = type;
         },
         setTaskDescription: function(/*string*/ description) {
             // Summary: set the task description
@@ -464,7 +507,7 @@ define(["dojo/_base/declare", "/laits/js/json/node", "/laits/js/json/student_nod
             var deleted = false;
             for (var i = 0; i < this.model.task.givenModelNodes.length; i++) {
                 this.deleteNodeInput(this.model.task.givenModelNodes[i].ID, id);
-                if(this.model.task.givenModelNodes[i].equation.indexOf(id) > -1)
+                if (this.model.task.givenModelNodes[i].equation.indexOf(id) > -1)
                     this.model.task.givenModelNodes[i].equation = "";
                 if (id === this.model.task.givenModelNodes[i].ID) {
                     this.model.task.givenModelNodes.splice(this.model.task.givenModelNodes.indexOf(this.model.task.givenModelNodes[i]), 1);
@@ -605,7 +648,7 @@ define(["dojo/_base/declare", "/laits/js/json/node", "/laits/js/json/student_nod
             var deleted = false;
             for (var i = 0; i < this.model.task.studentModelNodes.length; i++) {
                 this.deleteStudentNodeInput(this.model.task.studentModelNodes[i].ID, id);
-                if(this.model.task.studentModelNodes[i].studentSelections.equation.indexOf(id) > -1)
+                if (this.model.task.studentModelNodes[i].studentSelections.equation.indexOf(id) > -1)
                     this.model.task.studentModelNodes[i].studentSelections.equation = "";
                 if (id === this.model.task.studentModelNodes[i].ID) {
                     this.model.task.studentModelNodes.splice(this.model.task.studentModelNodes.indexOf(this.model.task.studentModelNodes[i]), 1);
@@ -690,22 +733,32 @@ define(["dojo/_base/declare", "/laits/js/json/node", "/laits/js/json/student_nod
 
         },
         /**
-         * Next 3 functions keep track of correct, incorrect, or demo'd solutions
+         * Next 5 functions track student progress (correct, incorrect, or demo) on a given node of
          */
-        setSolutionDesc: function(/*string*/ id, /*string*/ solution) {
+        setSolutionDescription: function(/*string*/ id, /*string*/ solution) {
             for (var i = 0; i < this.model.task.givenModelNodes.length; i++)
                 if (id === this.model.task.givenModelNodes[i].ID)
-                    this.model.task.givenModelNodes[i].addSolution(solution, null, null);
+                    this.model.task.givenModelNodes[i].addSolution(solution, null, null, null, null);
         },
-        setSolutionPlan: function(/*string*/ id, /*string*/ solution) {
+        setSolutionType: function(/*string*/ id, /*string*/ solution) {
             for (var i = 0; i < this.model.task.givenModelNodes.length; i++)
                 if (id === this.model.task.givenModelNodes[i].ID)
-                    this.model.task.givenModelNodes[i].addSolution(null, solution, null);
+                    this.model.task.givenModelNodes[i].addSolution(null, solution, null, null, null);
         },
-        setSolutionCalc: function(/*string*/ id, /*string*/ solution) {
+        setSolutionInitial: function(/*string*/ id, /*string*/ solution) {
             for (var i = 0; i < this.model.task.givenModelNodes.length; i++)
                 if (id === this.model.task.givenModelNodes[i].ID)
-                    this.model.task.givenModelNodes[i].addSolution(null, null, solution);
+                    this.model.task.givenModelNodes[i].addSolution(null, null, solution, null, null);
+        },
+        setSolutionUnits: function(/*string*/ id, /*string*/ solution) {
+            for (var i = 0; i < this.model.task.givenModelNodes.length; i++)
+                if (id === this.model.task.givenModelNodes[i].ID)
+                    this.model.task.givenModelNodes[i].addSolution(null, null, null, solution, null);
+        },
+        setSolutionEquation: function(/*string*/ id, /*string*/ solution) {
+            for (var i = 0; i < this.model.task.givenModelNodes.length; i++)
+                if (id === this.model.task.givenModelNodes[i].ID)
+                    this.model.task.givenModelNodes[i].addSolution(null, null, null, null, solution);
         },
         setStudentNodeXY: function(/*string*/ id, /*int*/ xPos, /*int*/ yPos) {
             // Summary: sets the "X" and "Y" values of a node's position
@@ -718,48 +771,103 @@ define(["dojo/_base/declare", "/laits/js/json/node", "/laits/js/json/student_nod
         /**
          * Next 5 functions save student choices in the Student Model
          */
-        setStudentSelectionsDesc: function(/*string*/ id, /*string*/ selection) {
-            for (var i = 0; i < this.model.task.studentModelNodes.length; i++)
-                if (id === this.model.task.studentModelNodes[i].ID)
+        setStudentSelectionsDescription: function(/*string*/ id, /*string*/ selection) {
+            for (var i = 0; i < this.model.task.studentModelNodes.length; i++) {
+                if (id === this.model.task.studentModelNodes[i].ID) {
                     this.model.task.studentModelNodes[i].setStudentSeletions(selection, null, null, null, null);
+                    if (this.model.task.studentModelNodes[i].inGivenModel === true) {                       
+                        if (this.getNodeCorrectDescription(id) === selection){                            
+                            this.setSolutionDescription(id, "correct");}
+                        else
+                            this.setSolutionDescription(id, "incorrect");
+                        this.addAttemptDescription(id);
+                    }
+                }
+            }
         },
-        setStudentSelectionsPlan: function(/*string*/ id, /*string*/ selection) {
-            for (var i = 0; i < this.model.task.studentModelNodes.length; i++)
-                if (id === this.model.task.studentModelNodes[i].ID)
+        setStudentSelectionsType: function(/*string*/ id, /*string*/ selection) {
+            for (var i = 0; i < this.model.task.studentModelNodes.length; i++) {
+                if (id === this.model.task.studentModelNodes[i].ID) {
                     this.model.task.studentModelNodes[i].setStudentSeletions(null, selection, null, null, null);
+                    if (this.model.task.studentModelNodes[i].inGivenModel === true) {
+                        if (this.getNodeType(id) === selection)
+                            this.setSolutionType(id, "correct");
+                        else
+                            this.setSolutionType(id, "incorrect");
+                        this.addAttemptType(id);
+                    }
+                }
+            }
         },
         setStudentSelectionsUnits: function(/*string*/ id, /*string*/ selection) {
-            for (var i = 0; i < this.model.task.studentModelNodes.length; i++)
-                if (id === this.model.task.studentModelNodes[i].ID)
+            for (var i = 0; i < this.model.task.studentModelNodes.length; i++) {
+                if (id === this.model.task.studentModelNodes[i].ID) {
                     this.model.task.studentModelNodes[i].setStudentSeletions(null, null, selection, null, null);
+                    if (this.model.task.studentModelNodes[i].inGivenModel === true) {
+                        if (this.getNodeUnits(id) === selection)
+                            this.setSolutionUnits(id, "correct");
+                        else
+                            this.setSolutionUnits(id, "incorrect");
+                        this.addAttemptUnits(id);
+                    }
+                }
+            }
         },
         setStudentSelectionsInitial: function(/*string*/ id, /*float*/ selection) {
-            for (var i = 0; i < this.model.task.studentModelNodes.length; i++)
-                if (id === this.model.task.studentModelNodes[i].ID)
+            for (var i = 0; i < this.model.task.studentModelNodes.length; i++) {
+                if (id === this.model.task.studentModelNodes[i].ID) {
                     this.model.task.studentModelNodes[i].setStudentSeletions(null, null, null, selection, null);
+                    if (this.model.task.studentModelNodes[i].inGivenModel === true) {
+                        if (this.getNodeInitial(id) === selection)
+                            this.setSolutionInitial(id, "correct");
+                        else
+                            this.setSolutionInitial(id, "incorrect");
+                        this.addAttemptInitial(id);
+                    }
+                }
+            }
         },
         setStudentSelectionsEquation: function(/*string*/ id, /*string | object*/ selection) {
-            for (var i = 0; i < this.model.task.studentModelNodes.length; i++)
-                if (id === this.model.task.studentModelNodes[i].ID)
+            for (var i = 0; i < this.model.task.studentModelNodes.length; i++) {
+                if (id === this.model.task.studentModelNodes[i].ID) {
                     this.model.task.studentModelNodes[i].setStudentSeletions(null, null, null, null, selection);
+                    if (this.model.task.studentModelNodes[i].inGivenModel === true) {
+                        if (this.getNodeEquation(id) === selection)
+                            this.setSolutionEquation(id, "correct");
+                        else
+                            this.setSolutionEquation(id, "incorrect");
+                        this.addAttemptEquation(id);
+                    }
+                }
+            }
         },
         /**
-         * Next 3 functions keep track of student attempts
+         * Next 6 functions keep track of student attempts
          */
-        addAttemptDesc: function(/*string*/ id) {
+        addAttemptDescription: function(/*string*/ id) {
             for (var i = 0; i < this.model.task.givenModelNodes.length; i++)
                 if (id === this.model.task.givenModelNodes[i].ID)
-                    this.model.task.givenModelNodes[i].addAttempt(true, false, false);
+                    this.model.task.givenModelNodes[i].addAttempt(true, false, false, false, false);
         },
-        addAttemptPlan: function(/*string*/ id) {
+        addAttemptType: function(/*string*/ id) {
             for (var i = 0; i < this.model.task.givenModelNodes.length; i++)
                 if (id === this.model.task.givenModelNodes[i].ID)
-                    this.model.task.givenModelNodes[i].addAttempt(false, true, false);
+                    this.model.task.givenModelNodes[i].addAttempt(false, true, false, false, false);
         },
-        addAttemptCalc: function(/*string*/ id) {
+        addAttemptUnits: function(/*string*/ id) {
             for (var i = 0; i < this.model.task.givenModelNodes.length; i++)
                 if (id === this.model.task.givenModelNodes[i].ID)
-                    this.model.task.givenModelNodes[i].addAttempt(false, false, true);
+                    this.model.task.givenModelNodes[i].addAttempt(false, false, true, false, false);
+        },
+        addAttemptInitial: function(/*string*/ id) {
+            for (var i = 0; i < this.model.task.givenModelNodes.length; i++)
+                if (id === this.model.task.givenModelNodes[i].ID)
+                    this.model.task.givenModelNodes[i].addAttempt(false, false, false, true, false);
+        },
+        addAttemptEquation: function(/*string*/ id) {
+            for (var i = 0; i < this.model.task.givenModelNodes.length; i++)
+                if (id === this.model.task.givenModelNodes[i].ID)
+                    this.model.task.givenModelNodes[i].addAttempt(false, false, false, false, true);
         }
     });
 });
