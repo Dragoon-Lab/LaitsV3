@@ -19,7 +19,7 @@ The logging will use two tables in the database:
 *	`tId` – An auto-incremented integer that uniquely identifies each log event.
 *	`SessionId` – foreign key. 
 *	`method` can be one of the following:
-	*	`start-workflow` send session ID to the server as well as the user name and section and major mode.  Normally, it will also include the problem name and the author name for custom problems.  This will create an entry in the `session` table.
+	*	`start-session` send session ID to the server as well as the user name and section and major mode.  Normally, it will also include the problem name and the author name for custom problems.  This will create an entry in the `session` table.
 	* `open-problem` - Client asks for the problem from the server or opens a local file.  The message will include problem name and possibly section name and author name for custom problems.
 	*	`client-message` - java/javascript exceptions and warnings.  Messages associated with the dragoon code itself.
 	*	`ui-action` - Actions taken by the user on the interface, such as clicking on a menu or moving a node on the canvas, that are not problem-solving steps.  We will not log keystrokes or mouse events but a level above it. Like switch tabs and open node editor, values added to the node editor *et cetera*.  
@@ -30,7 +30,7 @@ The logging will use two tables in the database:
  action and the tutors response, if any. For Dragoon, this includes the "check" button.
  * `seek-help` -  Student request for help and the response. For Dragoon, this includes the "Demo" button.
  *	`close_problem` - The student has closed the session.  This may be missing if the session was interrupted (e.g. the network connection died). 
-*	`message` - A `text` format field that holds actual log message.  The message will be in [JSON](http://json.org/) format and will include a member `time` that contains the number of seconds that have elapsed since the start of the session.
+*	`message` - A `text` format field that holds actual log message. The format is specified in the section "Message Format" below.
 
 This table is analogous to the table `STEP_TRANSACTION` in Andes; see [`create_STEP_TRANSACTION.sql`](https://github.com/bvds/andes/blob/master/LogProcessing/database/create_STEP_TRANSACTION.sql).  The Andes table can be used to see how the `step` table should be formatted.
 
@@ -84,3 +84,77 @@ most important information missing from the present logging:
 For many examples, we have found the choice of `method` to be
 ambiguous.  Thus, we need to further clarify the definitions of the
 methods and perhaps merge some of them.
+
+## Message Format ##
+
+The `message` column of the `step` table will be in
+[JSON](http://json.org/) format.  Each log message will include a member `time` that
+contains the number of seconds, according to the client, that have elapsed since the start of
+the session.
+
+We will not write a formal definition of the log message format.  Instead, we will define it via a set of
+examples. We can use the Andes logging as a staring point for creating
+the Dragoon log message format.  See an 
+[annotated session log for Andes](http://gideon.eas.asu.edu/web-UI/Documentation/AsuDocs/nokes-example-json.txt)
+as well as the
+[json-rpc SMD](http://dojotoolkit.org/reference-guide/dojox/rpc/smd.html)
+specification of the
+[Andes logging format](http://gideon.eas.asu.edu/web-UI/andes/andes3.smd).  
+Here is the logging for an example session:
+
+Student opened a new task ID: 105 - Intro Problem 1  
+  method: `open-problem`  message: `{"time": 1.3, "problem":"105"}`  
+For custom problems, it will also include the author and section.
+
+Student pressed the **create node** button.  This might create two messages:
+one for the menu button and one for opening the node editor.  
+  method: `ui-action` message: `{"time": 21.3, "type": "menu-choice",
+  "name": "create-node"}`
+  method: `ui-action` message: `{"time": 21.3, "type": "open-dialog-box",
+  "name": "node-editor", "tab": "DESCRIPTION", "node": null}`  
+In the Javascript version, we will use the node id to name the node, so this will never be null.  In the Java version, we use the node name, when it is known.
+
+Possible logging message associated with above  
+  method: `client-message` message: `{"time": 21.3, "type": "info",
+  "text": "Vertex Details before opening node editor", "data":
+  {"node":  "description", "descriptionPanelStatus": null, "selected
+  plan": null, "planPanelStatus": null, "nodeType": null}}`  
+Note that member names with a space, like `"plan panel"`, do not work
+well with javascript or other languages.  It is better to use
+camelCase or underscores.
+
+Student chooses a quantity in the description tab.  
+  method: `solution-step` message: `{"time": 40.2, "node": null, "type": "enter-quantity",
+  "name": "fat content", "text": "The ratio of the weight of the fat
+  in a potato chip to the weight of the potato chip", "checkResult":
+  "CORRECT"}`
+In the Javascript version, `"node"` is the node id, in the Java
+  version, it is either null or the node name `"fat content"`.
+
+Student switches tabs:  
+  method: `ui-action` message: `{"time": 50.1, "type": "dialog-box-tab",
+  "name": "node-editor", "tab": "PLAN", "node": "fat content"}`  
+
+Student chooses node type:
+  method: `solution-step` message: `{"time": 53.1, "node": fat content, "type": "quantity-type",
+  "name": "CONSTANT", "checkResult":
+  "CORRECT"}`
+
+Student switches tabs:  
+  method: `ui-action` message: `{"time": 57.6, "type": "dialog-box-tab",
+  "name": "node-editor", "tab": "CALCULATIONS", "node": "fat content"}`  
+
+Student fills out the calculation tab.   
+  method: `solution-step` message: `{"time": 60.2, "node": "fat content", "type": "quantity-initial-value",
+  "value": "0.35", "checkResult":  "CORRECT"}`  
+For the calculation tab, `solution-step` logging can be broken into several messages, depending on how the
+  grading/evaluation is done:  each `solution-step` should something that
+  is evaluated (turns red/rgeen) separately.
+
+Student closes node editor:  
+  method: `ui-action` message: `{"time": 61.6, "type": "close-dialog-box",
+  "name": "node-editor", "tab": "CALCULATIONS", "node": "fat content"}`  
+Member `"tab"` is optional.
+
+##### Not done yet, I was following session `4b736807374ba02eaa2131a22523b746` in table `laits_ram` #####
+
