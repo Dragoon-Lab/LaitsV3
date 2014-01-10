@@ -65,7 +65,7 @@ be viewed by users outside of a section.
 
 There are two issues: we might want to specify short
 names for http requests and we may in the future slowly switch over to
-using numerical IDs for some quantities, so that we can abstract away 
+using numerical IDs for some quantities so that we can abstract away 
 from user, section, and problem names.
 (See the way things are done in phpBB for an example.)
 

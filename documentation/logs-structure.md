@@ -191,8 +191,9 @@ to the rabbit population", "DescriptionPanelStatus": "CORRECT ",
 Member `"tab"` is optional.
 
 For a quantity that is an accumulator, the logging for the calculations
-tab logging contains two actions by the student.  These can be
-described using either two solution steps or a single solution step
+tab should contain two actions by the student corresponding to the
+initial value and the equation.  These can be
+described using either two solution step rows or using a single solution step
 with two substeps.
 
 This is the version with two solution steps.  This matches the design
