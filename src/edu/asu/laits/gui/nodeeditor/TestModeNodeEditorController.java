@@ -185,7 +185,7 @@ public class TestModeNodeEditorController extends NodeEditorController {
         //view.checkPlanPanel(solution);
     }
 
-    public void initializeCreateNewNodeDialog(CreateNewNodeDialog dialog) {
+    public void initializeCreateNewNodeDialog(NodeEditorView dialog) {
         dialog.getCheckButton().setEnabled(true);
         dialog.getDemoButton().setEnabled(true);
         //String taskPhase = ApplicationContext.getCurrentTask().getPhase();

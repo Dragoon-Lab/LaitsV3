@@ -172,7 +172,7 @@ public class CoachedModeNodeEditorController extends NodeEditorController {
      * Initialize CreateNewNodeDialog for Coached Mode.
      * @param dialog 
      */
-    public void initializeCreateNewNodeDialog(CreateNewNodeDialog dialog){
+    public void initializeCreateNewNodeDialog(NodeEditorView dialog){
         // Needs specific implementation for this mode
     }
 }

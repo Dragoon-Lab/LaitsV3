@@ -53,7 +53,7 @@ public abstract class NodeEditorController{
      * This dialog is used to create new nodes from calculations panel as part of 
      * Target Node Strategy
      */
-    public abstract void initializeCreateNewNodeDialog(CreateNewNodeDialog dialog);
+    public abstract void initializeCreateNewNodeDialog(NodeEditorView dialog);
     
     // Protected methods to be used by Concrete controllers. This is done for reusability.
     protected void initCheckButton(){

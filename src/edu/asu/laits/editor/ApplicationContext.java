@@ -37,7 +37,7 @@ public class ApplicationContext {
     private static String section;
     private static String author;
     public static String APP_HOST = "http://dragoon.asu.edu/ram";
-    private static String forumURL;
+    private static String forumURL = "http://dragoon.asu.edu/ram";
     private static TaskSolution correctSolution;
     private static String currentTaskID;
     private static String newTaskID;
@@ -229,6 +229,10 @@ public class ApplicationContext {
                     break;    
             }
         }
+    }
+    
+    public static String logCheckDemoStats() {
+        return studentCheckDemoStats.toString();
     }
     
     public static StatsCollector getCheckDemoStats(String nodeName) {

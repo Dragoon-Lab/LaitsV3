@@ -238,7 +238,7 @@ public class MainWindow extends JFrame {
             situationLabel.setHorizontalTextPosition(JLabel.CENTER);
             situationLabel.setVerticalAlignment(JLabel.TOP);
             situationLabel.setHorizontalAlignment(JLabel.CENTER);
-            //situationLabel.setBorder(BorderFactory.createTitledBorder(""));
+            
             situationLabel.setBackground(Color.WHITE);
             situationLabel.setVerticalAlignment(SwingConstants.TOP);
         }
@@ -253,7 +253,7 @@ public class MainWindow extends JFrame {
         StringBuilder sb = new StringBuilder();
         sb.append("<html>");
         sb.append("<BR/><BR/><BR/>");
-        //sb.append("<B><H2>"+name+"</B></H2>");
+        
         sb.append("<B><H2 style='margin-left:150'>" + name + "</B></H2>");
         sb.append("<BR/><BR/>");
         sb.append("<img src='" + imageURL + "' height='300' width='300' hspace='40'> </img>");
@@ -376,7 +376,9 @@ public class MainWindow extends JFrame {
 
     public void exitWindow() {
         activityLogs.debug(new UserActivityLog(UserActivityLog.CLOSE_PROBLEM, "User exited Dragoon.... Problem Solved: " + ApplicationContext.isProblemSolved()));
-
+        if(!ApplicationContext.isAuthorMode()) {
+            activityLogs.debug(new UserActivityLog(UserActivityLog.CLOSE_PROBLEM, "Check and Demo usage statistics: " + ApplicationContext.logCheckDemoStats()));
+        }
         windowCount--;
         if (windowCount == 0) {
             System.exit(0);
@@ -472,7 +474,7 @@ public class MainWindow extends JFrame {
             String graphXML = PersistenceManager.loadSession();
             
             if (!graphXML.trim().isEmpty()) {
-                activityLogs.debug(new UserActivityLog(UserActivityLog.OPEN_PROBLEM, "User's previous session is loaded."));
+                activityLogs.debug(new UserActivityLog(UserActivityLog.OPEN_PROBLEM, "Previous session of Student is loaded. SessionID: " + ApplicationContext.getSessionID()));
                 getGraphEditorPane().resetModelGraph();
                 GraphLoader loader = new GraphLoader(getGraphEditorPane());
                 loader.loadFromServer(graphXML);

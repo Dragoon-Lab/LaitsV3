@@ -178,7 +178,7 @@ public class AuthorModeNodeEditorController extends NodeEditorController{
      * to create a new node.
      * @param dialog 
      */
-    public void initializeCreateNewNodeDialog(CreateNewNodeDialog dialog){
+    public void initializeCreateNewNodeDialog(NodeEditorView dialog){
         dialog.getCheckButton().setEnabled(false);
         dialog.getDemoButton().setEnabled(false);
         dialog.getCancelButton().setText("Create");

@@ -632,6 +632,9 @@ public class CalculationsPanelView extends javax.swing.JPanel {
      * disabled.
      */
     private void availableInputsJListMouseClicked(java.awt.event.MouseEvent evt) {
+        if(availableInputsJList.isSelectionEmpty())
+            return;
+        
         if(ApplicationContext.isAuthorMode() || !openVertex.isCalculationsDone()) {
             String selectedVertexName = availableInputsJList.getSelectedValue().toString();
             selectedVertexName = removeBoldfromListItem(selectedVertexName);
@@ -683,7 +686,8 @@ public class CalculationsPanelView extends javax.swing.JPanel {
         v.setVertexIndex(modelGraph.getNextAvailableIndex());
         MainWindow.getInstance().getGraphEditorPane().addVertex(v);
 
-        CreateNewNodeDialog newNodeDialog = new CreateNewNodeDialog(nodeEditor, v);
+        //CreateNewNodeDialog newNodeDialog = new CreateNewNodeDialog(nodeEditor, v);
+        new NodeEditorView(nodeEditor, v);
     }//GEN-LAST:event_buttonCreateNodeActionPerformed
 
     private void buttonDivideActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_buttonDivideActionPerformed

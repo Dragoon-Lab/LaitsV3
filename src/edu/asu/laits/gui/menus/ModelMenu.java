@@ -252,13 +252,14 @@ public class ModelMenu extends JMenu {
     }
 
     public void showNodeGraph() {
+        activityLogs.debug(new UserActivityLog(UserActivityLog.UI_ACTION, "User pressed Show Graph Button."));
         if (runModel()) {
             if(isGraphable())
                 showChartDialog(ChartDialogMode.Graph);
             else
                 JOptionPane.showMessageDialog(MainWindow.getInstance(), "This model does not contain any functions or accumulators. There is nothing to graph yet");
         }
-        activityLogs.debug(new UserActivityLog(UserActivityLog.UI_ACTION, "User pressed Show Graph Button. Is problem Solved: " + ApplicationContext.isProblemSolved() ));
+        activityLogs.debug(new UserActivityLog(UserActivityLog.UI_ACTION, "Is problem Solved: " + ApplicationContext.isProblemSolved() ));
     }
 
     public void showNodeTable() {
@@ -269,7 +270,6 @@ public class ModelMenu extends JMenu {
                     showChartDialog(ChartDialogMode.Table);
                 else
                     JOptionPane.showMessageDialog(MainWindow.getInstance(), "This model does not contain any functions or accumulators. There is nothing to show yet.");
-
         }
     }
 
@@ -417,6 +417,7 @@ public class ModelMenu extends JMenu {
     }
 
     public void showForumButtonAction() {
+        activityLogs.debug(new UserActivityLog(UserActivityLog.UI_ACTION, "User pressed show forum button."));
         // The forum id is sent to the application
         String forumURL = ApplicationContext.getForumURL();
         
@@ -437,7 +438,7 @@ public class ModelMenu extends JMenu {
             e.printStackTrace();
         }
         // Always print to console:
-        System.out.println("forum URL:"+forumURL);
+        System.out.println("forum URL: "+forumURL);
 
         try {
             Desktop.getDesktop().browse(new URL(forumURL).toURI());
@@ -521,6 +522,8 @@ public class ModelMenu extends JMenu {
     public void doneButtonAction() {
         if(ApplicationContext.isProblemSolved()){
             activityLogs.debug(new UserActivityLog(UserActivityLog.CLOSE_PROBLEM, "Task ' " + ApplicationContext.getCurrentTaskID() + "' is completed" ));
+            activityLogs.debug(new UserActivityLog(UserActivityLog.CLOSE_PROBLEM, "Check and Demo usage statistics: " + ApplicationContext.logCheckDemoStats()));
+        
             writeResultToServer();
             System.exit(0);
         }
