@@ -62,40 +62,25 @@ session_start();
                 rabbits.addStudentNodeInput(rabbits.getNodeIDByName("births"), rabbits.getNodeIDByName("population"));
                 rabbits.addStudentNodeInput(rabbits.getNodeIDByName("population"), rabbits.getNodeIDByName("births"));
                 rabbits.addStudentNodeInput(rabbits.getNodeIDByName("birth rate"), rabbits.getNodeIDByName("births"));
-                rabbits.addAttemptEquation("id1");
-                rabbits.addAttemptEquation("id1");
-                rabbits.addAttemptType("id1");
-                rabbits.addAttemptEquation("id1");
-                rabbits.setStudentSelectionsDescription("id1", "The number of rabbits in the population");
-                rabbits.setStudentSelectionsType("id1", "accumulator");
-                rabbits.setStudentSelectionsUnits("id1", "rabbits");
-                rabbits.setStudentSelectionsInitial("id1", 100);
-                rabbits.setStudentSelectionsEquation("id1", "+ id2");
+                rabbits.setStudentSelection("id1", "description", "The number of rabbits in the population");
+                rabbits.setStudentSelection("id1", "type", "function");
+                rabbits.setStudentSelection("id1", "type", "parameter");
+                rabbits.setToDemo("id1", "type");
+                rabbits.setStudentSelection("id1", "units", "rabbits");
+                rabbits.setStudentSelection("id1", "initial", 100);
+                rabbits.setStudentSelection("id1", "equation", "+ id2");
+                
+                rabbits.setStudentSelection("id2", "description", "The number of rabbits born each month");
+                rabbits.setStudentSelection("id2", "type", "function");
+                rabbits.setStudentSelection("id2", "units", "births");
+                rabbits.setStudentSelection("id2", "initial", null);
+                rabbits.setStudentSelection("id2", "equation", "id1 * id3");
 
-                rabbits.addAttemptDescription("id2");
-                rabbits.addAttemptDescription("id2");
-                rabbits.addAttemptType("id2");
-                rabbits.addAttemptEquation("id2");
-                rabbits.addAttemptEquation("id2");
-                rabbits.addAttemptEquation("id2");
-                rabbits.setStudentSelectionsDescription("id2", "The number of rabbits born each month");
-                rabbits.setStudentSelectionsType("id2", "function");
-                rabbits.setStudentSelectionsUnits("id2", "births");
-                rabbits.setStudentSelectionsInitial("id2", null);
-                rabbits.setStudentSelectionsEquation("id2", "id1 * id3");
-
-                rabbits.addAttemptDescription("id3");
-                rabbits.addAttemptDescription("id3");
-                rabbits.addAttemptType("id3");
-                rabbits.addAttemptType("id3");
-                rabbits.addAttemptDescription("id3", "correct");
-                rabbits.addAttemptType("id3", "correct");
-                rabbits.addAttemptEquation("id3", "correct");
-                rabbits.setStudentSelectionsDescription("id3", "The ratio of number of rabbits born in a month to the rabbit population that month");
-                rabbits.setStudentSelectionsType("id3", "parameter");
-                rabbits.setStudentSelectionsUnits("id3", "percent");
-                rabbits.setStudentSelectionsInitial("id3", null);
-                rabbits.setStudentSelectionsEquation("id3", "0.2");
+                rabbits.setStudentSelection("id3", "description", "The ratio of number of rabbits born in a month to the rabbit population that month");
+                rabbits.setStudentSelection("id3", "type", "parameter");
+                rabbits.setStudentSelection("id3", "units", "percent");
+                rabbits.setStudentSelection("id3", "initial", null);
+                rabbits.setStudentSelection("id3", "equation", "0.2");
 
 
                 //The next section prints the entire model on the screen, and then uses several getters to access the models information
@@ -118,6 +103,7 @@ session_start();
 //                rabbits.deleteNodeInput("id2", "id3");
 //                rabbits.deleteNodeInput("id10", "id3");
                 document.write(JSON.stringify(rabbits.model, null, 4));
+//                alert(rabbits.getNodeAttemptCount("id1", "type"));
 
                 //alert("Order of " + rabbits.getNodeIDByName("birth rates") + ": " + rabbits.getNodeOrder(rabbits.getNodeIDByName("birth rates")));
 
