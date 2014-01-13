@@ -167,6 +167,8 @@ public class MainWindow extends JFrame {
      *
      */
     private void initializeFrameElements() {
+        logs.info("Initializing Frame Elements");
+                
         this.setContentPane(getJPanel());
         this.setJMenuBar(getMainMenu());
         this.addWindowListener(new java.awt.event.WindowAdapter() {
@@ -206,6 +208,7 @@ public class MainWindow extends JFrame {
      * @return javax.swing.JPanel
      */
     private JPanel getJPanel() {
+        logs.info("Initializing Content JPanel");
         if (mainPanel == null) {
             mainPanel = new JPanel();
             mainPanel.setLayout(new BorderLayout());
@@ -232,7 +235,7 @@ public class MainWindow extends JFrame {
             logs.debug("Initializing Situation Panel");
 
             situationPanel = new JScrollPane();
-
+            
             situationLabel = new JLabel("");
             situationLabel.setVerticalTextPosition(JLabel.BOTTOM);
             situationLabel.setHorizontalTextPosition(JLabel.CENTER);
@@ -272,8 +275,6 @@ public class MainWindow extends JFrame {
         sb.append("</DIV>");
         sb.append("</HTML>");
 
-        System.out.println("TEXT : " + sb.toString());
-        
         situationLabel.setText(sb.toString());
         situationLabel.setHorizontalAlignment(javax.swing.SwingConstants.LEFT);
 
@@ -297,15 +298,12 @@ public class MainWindow extends JFrame {
         mainPanel.repaint();
     }
 
-//    public boolean isSituationSelected() {
-//        return isSituationTabSelected;
-//    }
-
     /**
      * This method initializes toolBarPanel
      *
      */
     private JPanel getToolBarPanel() {
+        
         if (toolBarPanel == null) {
             toolBarPanel = new JPanel();
             toolBarPanel.setLayout(new BoxLayout(getToolBarPanel(),
@@ -383,6 +381,10 @@ public class MainWindow extends JFrame {
         activityLogs.debug(new UserActivityLog(UserActivityLog.CLOSE_PROBLEM, "User exited Dragoon.... Problem Solved: " + ApplicationContext.isProblemSolved()));
         if(!ApplicationContext.isAuthorMode()) {
             activityLogs.debug(new UserActivityLog(UserActivityLog.CLOSE_PROBLEM, "Check and Demo usage statistics: " + ApplicationContext.logCheckDemoStats()));
+        }
+        try{
+            Thread.sleep(500);
+        }catch(InterruptedException ex){
         }
         windowCount--;
         if (windowCount == 0) {

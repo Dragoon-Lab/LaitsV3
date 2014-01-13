@@ -520,11 +520,16 @@ public class ModelMenu extends JMenu {
     }
 
     public void doneButtonAction() {
+        logs.debug("Done button action.");
         if(ApplicationContext.isProblemSolved()){
-            activityLogs.debug(new UserActivityLog(UserActivityLog.CLOSE_PROBLEM, "Task ' " + ApplicationContext.getCurrentTaskID() + "' is completed" ));
+            activityLogs.debug(new UserActivityLog(UserActivityLog.CLOSE_PROBLEM, "User pressed Done button. Task:  " + ApplicationContext.getCurrentTaskID() + " is completed" ));
             activityLogs.debug(new UserActivityLog(UserActivityLog.CLOSE_PROBLEM, "Check and Demo usage statistics: " + ApplicationContext.logCheckDemoStats()));
-        
+            
             writeResultToServer();
+            try{
+                Thread.sleep(500);
+            }catch(InterruptedException ex){
+            }
             System.exit(0);
         }
     }

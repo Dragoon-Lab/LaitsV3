@@ -86,4 +86,10 @@ public class StatsCollector {
     public void updateCalculationsPanelDemoCount() {
         calculationsPanelDemoUsed++;
     }
+    
+    public String toString() {
+        return "[DescriptipnPanelCheck: " + descriptionPanelCheckUsed + ", DescriptionPanelDemo: " + descriptionPanelDemoUsed + "  " +
+                "PlanPanelCheck: " + planPanelCheckUsed + ", PlanPanelDemo: " + planPanelDemoUsed + "  " +
+                "CalculationsPanelCheck: " + calculationsPanelCheckUsed + ", CalculationsPanelDemo: " + calculationsPanelDemoUsed + "]";
+    }
 }

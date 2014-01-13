@@ -48,6 +48,7 @@ public class HttpThread implements Runnable {
             if (statusCode != HttpStatus.SC_OK) {
                 errorHandler.error("Error Server URL " + httpMethod.getURI() + " return status code " + statusCode);
             }
+            
         } catch (IOException e) {
             errorHandler.error("Io error in sending request to server: URL: " + httpMethod.getURI() + " returned: " + statusCode);
         } finally {

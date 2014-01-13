@@ -96,7 +96,7 @@ public class HttpAppender extends AppenderSkeleton {
 
             if (thread) {
                 Thread t = new Thread(httpThread);
-                t.start();
+                t.start();                
             } else {
                 httpThread.run();
             }
