@@ -251,24 +251,29 @@ public class MainWindow extends JFrame {
         logs.debug("Loading New Task - " + name);
 
         StringBuilder sb = new StringBuilder();
-        sb.append("<html>");
-        sb.append("<BR/><BR/><BR/>");
+        sb.append("<HTML>");
+        sb.append("<BR/><BR/>");
         
-        sb.append("<B><H2 style='margin-left:150'>" + name + "</B></H2>");
+        sb.append("<DIV style='width: 500px;'>");
+        sb.append("<DIV style='font-weight: bold; font-size: 22; text-align: center'>");
+        sb.append("<SPAN>" + name + "</SPAN>");
         sb.append("<BR/><BR/>");
-        sb.append("<img src='" + imageURL + "' height='300' width='300' hspace='40'> </img>");
-        sb.append("<BR/><BR/>");
+        sb.append("<img src='" + imageURL + "' height='300' width='300'/>");
+        sb.append("</DIV> <BR/><BR/>");
 
+        sb.append("<DIV style='margin-left:20px; width: 480px; text-align:justify; text-justify: inter-word; font-size: 14;'>");
+        
         description = description.replaceFirst("Problem:", "<B>Problem:</B>");
-        description = description.replaceFirst("Goal:", "<B>Goal:</B>");
-        description = description.replaceFirst("Hint:", "<B>Hint:</B>");
+        description = description.replaceFirst("Goal:", "<BR/><BR/><B>Goal:</B>");
+        description = description.replaceFirst("Hint:", "<BR/><BR/><B>Hint:</B>");
 
-        description = description.replaceAll("NEWLINE", "<BR/>");
+        sb.append(description);
+        sb.append("</DIV>");
+        sb.append("</DIV>");
+        sb.append("</HTML>");
 
-        sb.append("<div style='margin-left:10'>" + description + "</div>");
-
-        sb.append("</html>");
-
+        System.out.println("TEXT : " + sb.toString());
+        
         situationLabel.setText(sb.toString());
         situationLabel.setHorizontalAlignment(javax.swing.SwingConstants.LEFT);
 

@@ -3,11 +3,11 @@
     <TaskName>Bilge Water</TaskName>
     <URL>http://upload.wikimedia.org/wikipedia/commons/thumb/c/cd/Bilge_well.jpg/450px-Bilge_well.jpg</URL>
     <TaskDescription>
-        Problem: No matter how well constructed most large ships are, water still leaks into them. They are designed so that water collects in the NEWLINE 
-        lowest part of the ship, called the bilge.  The water there is called bilge water and is nasty, filthy stuff.  Suppose that on a certain ship, NEWLINE 
-        leaks contribute 500 gallons of water to the bilge every hour.  Fortunately, the ship has pumps that can remove 900 gallons an hour, so NEWLINE 
-        normally the bilge doesn't have much water in it.  However, during a particularly severe storm, the bilge pumps fail.  By the time they are repaired, NEWLINE 
-        there are 10,000 gallons of bilge water. The first hour after the repair, there are 9,600 gallons of bilge water remaining. NEWLINE NEWLINE 
+        Problem: No matter how well constructed most large ships are, water still leaks into them. They are designed so that water collects in the  
+        lowest part of the ship, called the bilge.  The water there is called bilge water and is nasty, filthy stuff.  Suppose that on a certain ship,  
+        leaks contribute 500 gallons of water to the bilge every hour.  Fortunately, the ship has pumps that can remove 900 gallons an hour, so  
+        normally the bilge doesn't have much water in it.  However, during a particularly severe storm, the bilge pumps fail.  By the time they are repaired,  
+        there are 10,000 gallons of bilge water. The first hour after the repair, there are 9,600 gallons of bilge water remaining.   
         Goal: With the pumps running at full power and the leaks going at their usual rate, graph the amount of bilge water over 24 hours.
     </TaskDescription>
   
