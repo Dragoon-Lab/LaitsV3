@@ -27,6 +27,7 @@ The logging will use two tables in the database:
 	*	`start-session` send session ID to the server as well as the user name and section and major mode.  Normally, it will also include the problem name and the author name for custom problems.  This will create an entry in the `session` table.
 	* `open-problem` - Client asks for the problem from the server or opens a local file.  The message will include problem name and possibly section name and author name for custom problems.
 	*	`client-message` - java/javascript exceptions and warnings.  Messages associated with the dragoon code itself.
+	*	`student-status` - Informational messages about the status of the student's progress in solving the problem.  
 	*	`ui-action` - Actions taken by the user on the interface, such as clicking on a menu or moving a node on the canvas, that are not problem-solving steps.  We will not log keystrokes or mouse events but a level above it. Like switch tabs and open node editor, values added to the node editor *et cetera*.  
  The javascript version will record going in and out of focus.  See [`andes/drawing.js`](https://github.com/bvds/andes/blob/master/web-UI/andes/drawing.js) for an example.
  *	`solution-step`  - Steps that the student takes toward solving the
@@ -125,7 +126,7 @@ one for the menu button and one for opening the node editor.
 In the Javascript version, we will use the node id to name the node, so this will never be null.  In the Java version, we use the node name, when it is known.
 
 Possible logging message associated with above  
--- method: `client-message` 
+-- method: `student-status` 
 -- message: `{"time": 21.3, "type": "info",
   "text": "Vertex Details before opening node editor", "data":
   {"node":  "description", "descriptionPanelStatus": null, "selected
@@ -181,7 +182,7 @@ problem:
 -- method: `ui-action`  
 -- message: `{"time": 61.6, "type": "close-dialog-box",
   "name": "node-editor", "tab": "CALCULATIONS", "node": "population"}`  
--- method: `client-message`   
+-- method: `student-status`   
 -- message: `{"time": 61.6, "type": "info",
   "text": "Node Editor closed. Vertex Details after closing", "data":
   {"node":  "population", "Description": "The ratio of rabbits born in a month
