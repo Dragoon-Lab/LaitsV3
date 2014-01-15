@@ -756,62 +756,59 @@ define(["dojo/_base/declare", "/laits/js/json/node", "/laits/js/json/student_nod
                     this.model.task.studentModelNodes[i].position.y = yPos;
                 }
         },
-        setStudentSelection: function(/*string*/ id, /*string*/ part, /*string*/ selection) {
-            // Summary: saves student choices in the Student Model
+        setStudentSelection: function(/*string*/ id, /*string*/ part, /*string*/ studInput) {
+            // Summary: saves student choices in the Student Model; 'id' refers to 
+            //      the node ID, 'part' refers the the part of the node, 'studInput'
+            //      refers to the student input
             for (var i = 0; i < this.model.task.studentModelNodes.length; i++) {
                 if (id === this.model.task.studentModelNodes[i].ID) {
 
                     switch (part) {
                         case "description":
-                            this.model.task.studentModelNodes[i].setStudentSeletions(selection, null, null, null, null);
+                            this.model.task.studentModelNodes[i].setStudentSeletions(studInput, null, null, null, null);
                             if (this.model.task.studentModelNodes[i].inGivenModel === true) {
-                                if (this.getNodeCorrectDescription(id) === selection) {
+                                if (this.getNodeCorrectDescription(id) === studInput)
                                     this._setSolution(id, part, "correct");
-                                }
                                 else
                                     this._setSolution(id, part, "incorrect");
                                 this._addAttempt(id, part);
                             }
                             break;
                         case "type":
-                            this.model.task.studentModelNodes[i].setStudentSeletions(null, selection, null, null, null);
+                            this.model.task.studentModelNodes[i].setStudentSeletions(null, studInput, null, null, null);
                             if (this.model.task.studentModelNodes[i].inGivenModel === true) {
-                                if (this.getNodeType(id) === selection) {
+                                if (this.getNodeType(id) === studInput)
                                     this._setSolution(id, part, "correct");
-                                }
                                 else
                                     this._setSolution(id, part, "incorrect");
                                 this._addAttempt(id, part);
                             }
                             break;
                         case "initial":
-                            this.model.task.studentModelNodes[i].setStudentSeletions(null, null, selection, null, null);
+                            this.model.task.studentModelNodes[i].setStudentSeletions(null, null, studInput, null, null);
                             if (this.model.task.studentModelNodes[i].inGivenModel === true) {
-                                if (this.getNodeInitial(id) === selection) {
+                                if (this.getNodeInitial(id) === studInput)
                                     this._setSolution(id, part, "correct");
-                                }
                                 else
                                     this._setSolution(id, part, "incorrect");
                                 this._addAttempt(id, part);
                             }
                             break;
                         case "units":
-                            this.model.task.studentModelNodes[i].setStudentSeletions(null, null, null, selection, null);
+                            this.model.task.studentModelNodes[i].setStudentSeletions(null, null, null, studInput, null);
                             if (this.model.task.studentModelNodes[i].inGivenModel === true) {
-                                if (this.getNodeUnits(id) === selection) {
+                                if (this.getNodeUnits(id) === studInput)
                                     this._setSolution(id, part, "correct");
-                                }
                                 else
                                     this._setSolution(id, part, "incorrect");
                                 this._addAttempt(id, part);
                             }
                             break;
                         case "equation":
-                            this.model.task.studentModelNodes[i].setStudentSeletions(null, null, null, null, selection);
+                            this.model.task.studentModelNodes[i].setStudentSeletions(null, null, null, null, studInput);
                             if (this.model.task.studentModelNodes[i].inGivenModel === true) {
-                                if (this.getNodeEquation(id) === selection) {
+                                if (this.getNodeEquation(id) === studInput)
                                     this._setSolution(id, part, "correct");
-                                }
                                 else
                                     this._setSolution(id, part, "incorrect");
                                 this._addAttempt(id, part);
@@ -822,28 +819,31 @@ define(["dojo/_base/declare", "/laits/js/json/node", "/laits/js/json/student_nod
             }
         },
         setToDemo: function(/*string*/ id, /*string*/ part) {
-            // Summary: sets the given part of the problem to "demo" in the given node,
-            //      intended to be used when the student asks for the answer or attempts 
-            //      the question incorrectly too many times
+            // Summary: sets the given part of the problem to "demo" in the given node
+            //      and puts the correct answer into the studentModelNode; intended to 
+            //      be used when the student asks for the answer or attempts the question 
+            //      incorrectly too many times
             for (var i = 0; i < this.model.task.givenModelNodes.length; i++)
-                if (id === this.model.task.givenModelNodes[i].ID)
+                if (id === this.model.task.givenModelNodes[i].ID) {
                     switch (part) {
                         case "description":
-                            this.model.task.givenModelNodes[i].addSolution("demo", null, null, null, null);
+                            this.model.task.studentModelNodes[i].setStudentSeletions(this.getNodeCorrectDescription(id), null, null, null, null);
                             break;
                         case "type":
-                            this.model.task.givenModelNodes[i].addSolution(null, "demo", null, null, null);
+                            this.model.task.studentModelNodes[i].setStudentSeletions(null, this.getNodeType(id), null, null, null);
                             break;
                         case "initial":
-                            this.model.task.givenModelNodes[i].addSolution(null, null, "demo", null, null);
+                            this.model.task.studentModelNodes[i].setStudentSeletions(null, null, this.getNodeInitial(id), null, null);
                             break;
                         case "units":
-                            this.model.task.givenModelNodes[i].addSolution(null, null, null, "demo", null);
+                            this.model.task.studentModelNodes[i].setStudentSeletions(null, null, null, this.getNodeUnits(id), null);
                             break;
                         case "equation":
-                            this.model.task.givenModelNodes[i].addSolution(null, null, null, null, "demo");
+                            this.model.task.studentModelNodes[i].setStudentSeletions(null, null, null, null, this.getNodeEquation(id));
                             break;
                     }
+                    this._setSolution(id, part, "demo");
+                }
         }
     });
 });

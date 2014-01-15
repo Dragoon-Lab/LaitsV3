@@ -62,25 +62,36 @@ session_start();
                 rabbits.addStudentNodeInput(rabbits.getNodeIDByName("births"), rabbits.getNodeIDByName("population"));
                 rabbits.addStudentNodeInput(rabbits.getNodeIDByName("population"), rabbits.getNodeIDByName("births"));
                 rabbits.addStudentNodeInput(rabbits.getNodeIDByName("birth rate"), rabbits.getNodeIDByName("births"));
+                rabbits.setStudentSelection("id1", "description", "The number of rabbits born each month");
                 rabbits.setStudentSelection("id1", "description", "The number of rabbits in the population");
                 rabbits.setStudentSelection("id1", "type", "function");
-                rabbits.setStudentSelection("id1", "type", "parameter");
                 rabbits.setToDemo("id1", "type");
-                rabbits.setStudentSelection("id1", "units", "rabbits");
+                rabbits.setStudentSelection("id1", "initial", 10);
                 rabbits.setStudentSelection("id1", "initial", 100);
+                rabbits.setStudentSelection("id1", "units", "monkeys");
+                rabbits.setStudentSelection("id1", "units", "cowboys");
+                rabbits.setStudentSelection("id1", "units", "giraffes");
+                rabbits.setStudentSelection("id1", "units", "bunnies");               
+                rabbits.setToDemo("id1", "units");
+                rabbits.setStudentSelection("id1", "equation", "id2");
+                rabbits.setStudentSelection("id1", "equation", "10 + id2");
                 rabbits.setStudentSelection("id1", "equation", "+ id2");
                 
-                rabbits.setStudentSelection("id2", "description", "The number of rabbits born each month");
-                rabbits.setStudentSelection("id2", "type", "function");
+                rabbits.setStudentSelection("id2", "description", "The number of rabbits in the population");
+                rabbits.setStudentSelection("id2", "description", "The ratio of number of rabbits born in a month to the rabbit population that month");
+                rabbits.setToDemo("id2", "description");   
+                rabbits.setStudentSelection("id2", "type", "parameter");
+                rabbits.setToDemo("id2", "type");               
+                rabbits.setStudentSelection("id2", "units", "rabbits");
                 rabbits.setStudentSelection("id2", "units", "births");
-                rabbits.setStudentSelection("id2", "initial", null);
                 rabbits.setStudentSelection("id2", "equation", "id1 * id3");
 
                 rabbits.setStudentSelection("id3", "description", "The ratio of number of rabbits born in a month to the rabbit population that month");
                 rabbits.setStudentSelection("id3", "type", "parameter");
                 rabbits.setStudentSelection("id3", "units", "percent");
-                rabbits.setStudentSelection("id3", "initial", null);
-                rabbits.setStudentSelection("id3", "equation", "0.2");
+                rabbits.setStudentSelection("id3", "equation", "20");
+                rabbits.setStudentSelection("id3", "equation", "2");
+                rabbits.setStudentSelection("id3", "equation", ".2");
 
 
                 //The next section prints the entire model on the screen, and then uses several getters to access the models information

@@ -76,41 +76,46 @@ elements of the nodes in the student model match the non-extra nodes in the
 given model.
 
         "givenModelNodes": [
+            {
+                "ID": "id1",
+                "name": "population",
+                "type": "accumulator",
+                "parentNode": false,
+                "extra": false,
+                "order": 1,
+                "units": "rabbits",
+                "inputs": [
                     {
-                        "ID": "id1",
-                        "name": "population",
-                        "type": "accumulator",
-                        "parentNode": false,
-                        "extra": false,
-                        "order": 1,
-                        "units": "rabbits",
-                        "inputs": [
-                            {
-                                "ID": "id2"
-                            }
-                        ],
-                        "initial": 100,
-                        "equation": "+ id2",
-                        "correctDesc": "The number of rabbits in the population",
-                        "attemptCount": {
-                            "desc": 2,
-                            "plan": 1,
-                            "calc": 1
-                        },
-                        "solution": {
-                            "desc": "correct",
-                            "plan": "demo",
-                            "calc": "correct"
-                        }
-                    },
+                        "ID": "id2"
+                    }
+                ],
+                "initial": 100,
+                "equation": "+ id2",
+                "correctDesc": "The number of rabbits in the population",
+                "attemptCount": {
+                    "description": 2,
+                    "type": 1,
+                    "initial": 2,
+                    "units": 4,
+                    "equation": 3
+                },
+                "solution": {
+                    "description": "correct",
+                    "type": "demo",
+                    "initial": "correct",
+                    "units": "demo",
+                    "equation": "correct"
+                }
+            },
 
-Each node has a unique ID, which is how the node will be referred to in the code.
-This allows the name to be changed without disrupting other nodes that use that
-node as an input. An attempt was made to remove redundant information that could
-be derived from other parts of the node, so old XML attributes and elements like 
-"type" and "Plan" were combined into one element, in this case, "type", which 
-indicates if the node is an accumulator, a function, or a parameter node. This 
-is information similar to what was in the former "Plan" element. 
+Each node has a unique ID, which is how the node will typically be referred to 
+in the code. This allows the name to be changed without disrupting other nodes 
+that use the node as an input. An attempt was made to remove redundant 
+information that could be derived from other parts of the node, so old XML 
+attributes and elements like "type" and "Plan" were combined into one element, 
+in this case, "type", which indicates if the node is an accumulator, a function, 
+or a parameter node. This is information similar to what was in the former 
+"Plan" element. 
 
 Students may benefit from completing nodes in a certain order. For example, if 
 Node A requires Nodes B and C to be completed, by starting with Node A, the 
@@ -151,27 +156,27 @@ complete the model or that the author wants visible when the problem is begun.
 They are visible on the screen.
 
         "studentModelNodes": [
+            {
+                "ID": "id1",
+                "name": "population",
+                "inGivenModel": true,
+                "inputs": [
                     {
-                        "ID": "id1",
-                        "name": "population",
-                        "inGivenModel": true,
-                        "inputs": [
-                            {
-                                "ID": "id2"
-                            }
-                        ],
-                        "position": {
-                            "x": 100,
-                            "y": 100
-                        },
-                        "studentSelections": {
-                            "desc": "The number of rabbits in the population",
-                            "plan": "accumulator",
-                            "units": "rabbits",
-                            "initial": 100,
-                            "equation": "+ id2"
-                        }
-                    },
+                        "ID": "id2"
+                    }
+                ],
+                "position": {
+                    "x": 100,
+                    "y": 100
+                },
+                "studentSelections": {
+                    "desc": "The number of rabbits in the population",
+                    "plan": "accumulator",
+                    "units": 100,
+                    "initial": "rabbits",
+                    "equation": "+ id2"
+                }
+            },
 
 They contain information that identifies the node, positions it, and marks the 
 student's selections. The element "inGivenModel" tells the program if there is 
@@ -193,8 +198,8 @@ in the given model.
 
 ## Example of a Complete JSON Formatted Problem ##
 
-The following code shows how the new specification will appear in a JSON 
-document.
+The following code shows the "rabbits" problem with the new specification in a 
+JSON document.
 
         {
             "task": {
@@ -208,15 +213,7 @@ document.
                     "timeStep": 1,
                     "units": "years"
                 },
-                "taskDescription": "In this exercise, you will construct a model of how a 
-                    rabbit population grows when no rabbits die. The first quantity in this 
-                    model is the population or number of rabbits in the population. Initially, 
-                    there are 100 rabbits, but the number increases with time. The new 
-                    population each month is its present value plus the number of births 
-                    (number of rabbits born each month).  The number of births is equal to the 
-                    product of the population and the birth rate. The birthrate or the ratio 
-                    of the number of rabbits born in a month to the rabbit population that 
-                    month has a fixed value of 0.2.",
+                "taskDescription": "In this exercise, you will construct a model of how a rabbit population grows when no rabbits die. The first quantity in this model is the population or number of rabbits in the population. Initially, there are 100 rabbits, but the number increases with time. The new population each month is its present value plus the number of births (number of rabbits born each month). The number of births is equal to the product of the population and the birth rate. The birthrate or the ratio of the number of rabbits born in a month to the rabbit population that month has a fixed value of 0.2.",
                 "givenModelNodes": [
                     {
                         "ID": "id1",
@@ -235,14 +232,18 @@ document.
                         "equation": "+ id2",
                         "correctDesc": "The number of rabbits in the population",
                         "attemptCount": {
-                            "desc": 2,
-                            "plan": 1,
-                            "calc": 1
+                            "description": 2,
+                            "type": 1,
+                            "initial": 2,
+                            "units": 4,
+                            "equation": 3
                         },
                         "solution": {
-                            "desc": "correct",
-                            "plan": "demo",
-                            "calc": "correct"
+                            "description": "correct",
+                            "type": "demo",
+                            "initial": "correct",
+                            "units": "demo",
+                            "equation": "correct"
                         }
                     },
                     {
@@ -265,14 +266,18 @@ document.
                         "equation": "id1 * id3",
                         "correctDesc": "The number of rabbits born each month",
                         "attemptCount": {
-                            "desc": 2,
-                            "plan": 1,
-                            "calc": 3
+                            "description": 2,
+                            "type": 1,
+                            "initial": 0,
+                            "units": 2,
+                            "equation": 1
                         },
                         "solution": {
-                            "desc": "correct",
-                            "plan": "correct",
-                            "calc": "demo"
+                            "description": "demo",
+                            "type": "demo",
+                            "initial": "null",
+                            "units": "correct",
+                            "equation": "correct"
                         }
                     },
                     {
@@ -288,14 +293,18 @@ document.
                         "equation": ".2",
                         "correctDesc": "The ratio of number of rabbits born in a month to the rabbit population that month",
                         "attemptCount": {
-                            "desc": 2,
-                            "plan": 1,
-                            "calc": 1
+                            "description": 1,
+                            "type": 1,
+                            "initial": 0,
+                            "units": 1,
+                            "equation": 3
                         },
                         "solution": {
-                            "desc": "correct",
-                            "plan": "correct",
-                            "calc": "correct"
+                            "description": "correct",
+                            "type": "correct",
+                            "initial": "null",
+                            "units": "correct",
+                            "equation": "correct"
                         }
                     }
                 ],
@@ -316,8 +325,8 @@ document.
                         "studentSelections": {
                             "desc": "The number of rabbits in the population",
                             "plan": "accumulator",
-                            "units": "rabbits",
-                            "initial": 100,
+                            "units": 100,
+                            "initial": "rabbits",
                             "equation": "+ id2"
                         }
                     },
@@ -340,8 +349,8 @@ document.
                         "studentSelections": {
                             "desc": "The number of rabbits born each month",
                             "plan": "function",
-                            "units": "births",
-                            "initial": null,
+                            "units": "null",
+                            "initial": "births",
                             "equation": "id1 * id3"
                         }
                     },
@@ -357,9 +366,9 @@ document.
                         "studentSelections": {
                             "desc": "The ratio of number of rabbits born in a month to the rabbit population that month",
                             "plan": "parameter",
-                            "units": "percent",
-                            "initial": null,
-                            "equation": "0.2"
+                            "units": "null",
+                            "initial": "percent",
+                            "equation": ".2"
                         }
                     }
                 ]

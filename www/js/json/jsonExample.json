@@ -29,14 +29,18 @@
                 "equation": "+ id2",
                 "correctDesc": "The number of rabbits in the population",
                 "attemptCount": {
-                    "desc": 2,
-                    "plan": 1,
-                    "calc": 1
+                    "description": 2,
+                    "type": 1,
+                    "initial": 2,
+                    "units": 4,
+                    "equation": 3
                 },
                 "solution": {
-                    "desc": "correct",
-                    "plan": "demo",
-                    "calc": "correct"
+                    "description": "correct",
+                    "type": "demo",
+                    "initial": "correct",
+                    "units": "demo",
+                    "equation": "correct"
                 }
             },
             {
@@ -59,14 +63,18 @@
                 "equation": "id1 * id3",
                 "correctDesc": "The number of rabbits born each month",
                 "attemptCount": {
-                    "desc": 2,
-                    "plan": 1,
-                    "calc": 3
+                    "description": 2,
+                    "type": 1,
+                    "initial": 0,
+                    "units": 2,
+                    "equation": 1
                 },
                 "solution": {
-                    "desc": "correct",
-                    "plan": "correct",
-                    "calc": "demo"
+                    "description": "demo",
+                    "type": "demo",
+                    "initial": "null",
+                    "units": "correct",
+                    "equation": "correct"
                 }
             },
             {
@@ -82,14 +90,18 @@
                 "equation": ".2",
                 "correctDesc": "The ratio of number of rabbits born in a month to the rabbit population that month",
                 "attemptCount": {
-                    "desc": 2,
-                    "plan": 1,
-                    "calc": 1
+                    "description": 1,
+                    "type": 1,
+                    "initial": 0,
+                    "units": 1,
+                    "equation": 3
                 },
                 "solution": {
-                    "desc": "correct",
-                    "plan": "correct",
-                    "calc": "correct"
+                    "description": "correct",
+                    "type": "correct",
+                    "initial": "null",
+                    "units": "correct",
+                    "equation": "correct"
                 }
             }
         ],
@@ -110,8 +122,8 @@
                 "studentSelections": {
                     "desc": "The number of rabbits in the population",
                     "plan": "accumulator",
-                    "units": "rabbits",
-                    "initial": 100,
+                    "units": 100,
+                    "initial": "rabbits",
                     "equation": "+ id2"
                 }
             },
@@ -134,8 +146,8 @@
                 "studentSelections": {
                     "desc": "The number of rabbits born each month",
                     "plan": "function",
-                    "units": "births",
-                    "initial": null,
+                    "units": "null",
+                    "initial": "births",
                     "equation": "id1 * id3"
                 }
             },
@@ -151,9 +163,9 @@
                 "studentSelections": {
                     "desc": "The ratio of number of rabbits born in a month to the rabbit population that month",
                     "plan": "parameter",
-                    "units": "percent",
-                    "initial": null,
-                    "equation": "0.2"
+                    "units": "null",
+                    "initial": "percent",
+                    "equation": ".2"
                 }
             }
         ]
