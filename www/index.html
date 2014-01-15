@@ -1,91 +1,66 @@
-<!doctype html>
-<html>
-    <head>        
-        <title>jsPlumb 1.5.4 demo - Dojo</title>
-		<meta http-equiv="content-type" content="text/html;charset=utf-8" />
-		
-	<link rel="stylesheet" href="dijit/themes/claro/claro.css">
-        
-        
-    </head>
-    <body data-demo-id="statemachine" data-library="dojo">
-    <div id="wrapper"></div>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en">
+<head>        
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
+    <title>Dragoon</title>
+    <script type="text/javascript">
+        dojoConfig = {
+	    isDebug:true,
+	    parseOnLoad:true,
+	    async: true,
+            // popup:true,
+	    baseUrl: "./",
+	    packages: [
+		{name: "dojo", location: "dojo"},
+		{name: "dijit", location: "dijit"},
+		{name: "dojox", location: "dojox"},
+		{name: "jsPlumb", location: "jsPlumb"},
+		{name: "dragoon", location: "js"}
+            ]
+	};
+	if(dojoConfig.isDebug){
+	    document.write('<link href="css/dragoon.css" rel="stylesheet" />');
+            document.write('<scr'+'ipt src="dojo/dojo.js"></scr'+'ipt>'); 
+	} else {
+	    document.write('<link href="release/css/dragoon.css" rel="stylesheet" />');
+	    document.write('<scr'+'ipt src="release/dojo/dojo.js"></scr'+'ipt>');
+	};
+    </script>
+    <script type="text/javascript">
+        // This require should include all of the packages
+        // needed by widgets defined in the html below.
+        require([
+	    "dojo/parser",
+            "dijit/MenuBar", "dijit/PopupMenuBarItem",
+            "dijit/layout/BorderContainer", "dijit/MenuItem",
+	    "dijit/form/Button",
+	    "dijit/Menu",
+            "dijit/layout/ContentPane",
+	    "dragoon/menu", // Wire up menus
+	    "dragoon"
+        ]);	
+    </script>
+</head>
 
-            	<button type="button"
-					id="CreateNode">Create Node</button>
-				<button type="button"
-					id="DeleteNode"></button>
-				<button type="button"
-					id="ShowGraph"></button>
-    <script src="dojo/dojo.js"></script>
-		
-    <script>
-        require(["dijit/form/Button", "dojo/dom", "dojo/domReady!"], function(Button, dom){
-            var createButton = new Button({
-                label: "Create Node",
-                onClick: function(){
-                console.log("Create Node clicked");
-            }
-        }, "CreateNode");
-        var deleteButton = new Button({
-            label: "Delete Node",
-            onClick: function(){
-        	console.log("Delete Node clicked");
-            }
-        }, "DeleteNode");
-        var graphButton = new Button({
-            label: "Show Graph",
-            onClick: function(){
-        	console.log("Show Graph clicked");
-            }
-        }, "ShowGraph");
-    });
-    
-    require([
-        "dijit/MenuBar",
-        "dijit/PopupMenuBarItem",
-        "dijit/Menu",
-        "dijit/MenuItem",
-        "dijit/DropDownMenu",
-        "dojo/domReady!"
-    ], function(MenuBar, PopupMenuBarItem, Menu, MenuItem, DropDownMenu){
-        var pMenuBar = new MenuBar({});
-
-        var pSubMenu = new DropDownMenu({});
-        pSubMenu.addChild(new MenuItem({
-            label: "File item #1"
-        }));
-        pSubMenu.addChild(new MenuItem({
-            label: "File item #2"
-        }));
-        pMenuBar.addChild(new PopupMenuBarItem({
-            label: "File",
-            popup: pSubMenu
-        }));
-
-        var pSubMenu2 = new DropDownMenu({});
-        pSubMenu2.addChild(new MenuItem({
-            label: "Cut",
-            iconClass: "dijitEditorIcon dijitEditorIconCut"
-    }));
-    pSubMenu2.addChild(new MenuItem({
-        label: "Copy",
-        iconClass: "dijitEditorIcon dijitEditorIconCopy"
-    }));
-    pSubMenu2.addChild(new MenuItem({
-        label: "Paste",
-        iconClass: "dijitEditorIcon dijitEditorIconPaste"
-    }));
-    pMenuBar.addChild(new PopupMenuBarItem({
-        label: "Edit",
-        popup: pSubMenu2
-    }));
-
-    pMenuBar.placeAt("wrapper");
-    pMenuBar.startup();
-});
-</script>
-		
-		
-    </body>
+<body class="tundra">
+    <div id="main" data-dojo-type="dijit/layout/BorderContainer" gutters="false">
+        <div data-dojo-type="dijit/MenuBar" id="menuBar" region="top" splitter="false">
+             <div data-dojo-type="dijit/form/Button" id="createNodeButton">Create Node</div>
+             <div data-dojo-type="dijit/form/Button" id="graphButton">Graph</div>
+             <div data-dojo-type="dijit/form/Button" id="tableButton">Table</div>
+             <div data-dojo-type="dijit/form/Button" id="forumButton">Forum</div>
+	     <div data-dojo-type="dijit/PopupMenuBarItem">
+                 <span>Help</span>
+		 <div data-dojo-type="dijit/Menu" id="menuHelp">
+		    <div id="menuIntroText" data-dojo-type="dijit/MenuItem">Introduction</div>
+		    <div id="menuIntroVideo" data-dojo-type="dijit/MenuItem">Intro Video</div>                     
+		 </div>
+             </div>
+             <div data-dojo-type="dijit/form/Button" id="doneButton" style="position:absolute; top:0; right:10px; margin:0;">Done</div>
+	</div> <!-- Menubar -->
+        <div id="drawingPane" data-dojo-type="dijit/layout/ContentPane" region="center" >
+	    jsPlumb goes here! 
+	</div>
+    </div>  <!-- main -->			
+</body>
 </html>

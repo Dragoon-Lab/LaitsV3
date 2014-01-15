@@ -164,7 +164,7 @@ Student fills out the calculation tab.
 -- message: `{"time": 60.2, "node": "fat content", "type": "quantity-initial-value",
   "value": "0.35", "correct-value": "0.35", "checkResult":  "CORRECT"}`  
 For the calculation tab, `solution-step` logging can be broken into several messages, depending on how the
-  grading/evaluation is done:  each `solution-step` should something that
+  grading/evaluation is done:  each `solution-step` should be something that
   is evaluated (turns red/rgeen) separately.
 
 Student closes node editor:  
