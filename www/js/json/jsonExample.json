@@ -35,7 +35,7 @@
                     "units": 4,
                     "equation": 3
                 },
-                "solution": {
+                "status": {
                     "description": "correct",
                     "type": "demo",
                     "initial": "correct",
@@ -69,12 +69,12 @@
                     "units": 2,
                     "equation": 1
                 },
-                "solution": {
+                "status": {
                     "description": "demo",
                     "type": "demo",
-                    "initial": "null",
-                    "units": "correct",
-                    "equation": "correct"
+                    "initial": null,
+                    "units": null,
+                    "equation": null
                 }
             },
             {
@@ -96,7 +96,7 @@
                     "units": 1,
                     "equation": 3
                 },
-                "solution": {
+                "status": {
                     "description": "correct",
                     "type": "correct",
                     "initial": "null",
@@ -110,11 +110,7 @@
                 "ID": "id1",
                 "name": "population",
                 "inGivenModel": true,
-                "inputs": [
-                    {
-                        "ID": "id2"
-                    }
-                ],
+                "inputs": [],
                 "position": {
                     "x": 100,
                     "y": 100
@@ -124,31 +120,7 @@
                     "plan": "accumulator",
                     "units": 100,
                     "initial": "rabbits",
-                    "equation": "+ id2"
-                }
-            },
-            {
-                "ID": "id2",
-                "name": "births",
-                "inGivenModel": true,
-                "inputs": [
-                    {
-                        "ID": "id1"
-                    },
-                    {
-                        "ID": "id3"
-                    }
-                ],
-                "position": {
-                    "x": 300,
-                    "y": 100
-                },
-                "studentSelections": {
-                    "desc": "The number of rabbits born each month",
-                    "plan": "function",
-                    "units": "null",
-                    "initial": "births",
-                    "equation": "id1 * id3"
+                    "equation": ""
                 }
             },
             {
@@ -166,6 +138,23 @@
                     "units": "null",
                     "initial": "percent",
                     "equation": ".2"
+                }
+            },
+            {
+                "ID": "id2",
+                "name": "births",
+                "inGivenModel": true,
+                "inputs": [],
+                "position": {
+                    "x": 700,
+                    "y": 100
+                },
+                "studentSelections": {
+                    "desc": "null",
+                    "plan": "null",
+                    "units": "null",
+                    "initial": null,
+                    "equation": "null"
                 }
             }
         ]

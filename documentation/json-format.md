@@ -99,7 +99,7 @@ given model.
                     "units": 4,
                     "equation": 3
                 },
-                "solution": {
+                "status": {
                     "description": "correct",
                     "type": "demo",
                     "initial": "correct",
@@ -140,7 +140,7 @@ equation builds upon, "equation" holds the equation used for the value of the
 node at each time step, and "correctDesc" contains the correct description of 
 the node. 
 
-The elements "attemptCount" and "solution" are used for grading and, as they are 
+The elements "attemptCount" and "status" are used for grading and, as they are 
 in the given model, they cannot be changed by erasing a node and starting over. 
 They keep track of the number of attempts a student uses on a node and how a 
 student arrived at the current solution ("correct" indicates that the student 
@@ -238,7 +238,7 @@ JSON document.
                             "units": 4,
                             "equation": 3
                         },
-                        "solution": {
+                        "status": {
                             "description": "correct",
                             "type": "demo",
                             "initial": "correct",
@@ -272,7 +272,7 @@ JSON document.
                             "units": 2,
                             "equation": 1
                         },
-                        "solution": {
+                        "status": {
                             "description": "demo",
                             "type": "demo",
                             "initial": "null",
@@ -299,7 +299,7 @@ JSON document.
                             "units": 1,
                             "equation": 3
                         },
-                        "solution": {
+                        "status": {
                             "description": "correct",
                             "type": "correct",
                             "initial": "null",

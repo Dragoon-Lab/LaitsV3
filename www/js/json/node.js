@@ -27,7 +27,7 @@ define(["dojo/_base/declare"]
             this.equation = "";
             this.correctDesc = "";
             this.attemptCount = JSON.parse('{"description" : ' + 0 + ',\n"type" : ' + 0 + ',\n"initial" : ' + 0 + ',\n"units" : ' + 0 + ',\n"equation" : ' + 0 + '}');
-            this.solution = JSON.parse('{"description" : "' + null + '",\n"type" : "' + null + '",\n"initial" : "' + null + '",\n"units" : "' + null + '",\n"equation" : "' + null + '"}');
+            this.status = JSON.parse('{"description" : "' + null + '",\n"type" : "' + null + '",\n"initial" : "' + null + '",\n"units" : "' + null + '",\n"equation" : "' + null + '"}');
         },
         addInput: function(/*string*/ id) {
             var input = JSON.parse('{"ID" : "' + id + '"}');
@@ -40,8 +40,8 @@ define(["dojo/_base/declare"]
                 }
             }
         },
-                // **** Need to add counter to check number of times part of equation entered comparied to the 
-                //          number of times it was correct, compared to the inputs (as discussed with Brett)
+        // **** Need to add counter to check number of times part of equation entered comparied to the 
+        //          number of times it was correct, compared to the inputs (as discussed with Brett)
         addAttempt: function(/*bool*/ desc, /*bool*/ typ, /*bool*/ init, /*bool*/ unit, /*bool*/ equat) {
             if (desc === true)
                 this.attemptCount.description += 1;
@@ -54,17 +54,29 @@ define(["dojo/_base/declare"]
             if (equat === true)
                 this.attemptCount.equation += 1;
         },
-        addSolution: function(/*string*/ desc, /*string*/ typ, /*string*/ init, /*string*/ unit, /*string*/ equat) {
-            if (desc !== null && this.solution.desc !== "demo")
-                this.solution.description = desc;
-            if (typ !== null && this.solution.type !== "demo")
-                this.solution.type = typ;
-            if (init !== null && this.solution.initial !== "demo")
-                this.solution.initial = init;
-            if (unit !== null && this.solution.units !== "demo")
-                this.solution.units = unit;
-            if (equat !== null && this.solution.equation !== "demo")
-                this.solution.equation = equat;
+        addStatus: function(/*string*/ desc, /*string*/ typ, /*string*/ init, /*string*/ unit, /*string*/ equat) {
+            if (desc !== null && this.status.description !== "demo")
+                this.status.description = desc;
+            if (typ !== null && this.status.type !== "demo")
+                this.status.type = typ;
+            if (init !== null && this.status.initial !== "demo")
+                this.status.initial = init;
+            if (unit !== null && this.status.units !== "demo")
+                this.status.units = unit;
+            if (equat !== null && this.status.equation !== "demo")
+                this.status.equation = equat;
+        },
+        resetStatus: function() {
+            if (this.status.description !== "demo")
+                this.status.description = null;
+            if (this.status.type !== "demo")
+                this.status.type = null;
+            if (this.status.initial !== "demo")
+                this.status.initial = null;
+            if (this.status.units !== "demo")
+                this.status.units = null;
+            if (this.status.equation !== "demo")
+                this.status.equation = null;
         },
         printInputs: function() {
             return this.inputs;
