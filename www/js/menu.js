@@ -14,24 +14,22 @@ define([
     };
 
     // Connect buttons to handlers
-    // Logging could be put in here or above.
-    // This runs after widgets have been set up.
+    // This must run after widgets have been set up.
     ready(function(){
-	var i=0;
-	  for(var button in buttons){
-              // If I use registry.byId(), then the function is called twice.
-	      var o = dom.byId(button);
-	      if(o){
-                  console.log("wiring up ",button,", widget=",o);
-		  // This is a work-around for getting a button to work inside a MenuBar
-		  // Otherwise, there is an error message.
-		  registry.byId(button)._setSelected = function(arg){
-		      console.log("_setSelected called with ",arg);
-		  };
-		  on(o,"click",buttons[button]);
-	      } else {
-		  console.warn("Can't find menu item ",o);
-	      }
-	  }
-	});
+	for(var button in buttons){
+            // If I use registry.byId(), then the function is called twice.
+	    var o = dom.byId(button);
+	    if(o){
+		console.log("wiring up ",button,", widget=",o);
+		// This is a work-around for getting a button to work inside a MenuBar
+		// Otherwise, there is an error message.
+		registry.byId(button)._setSelected = function(arg){
+		    console.log("_setSelected called with ",arg);
+		};
+		on(o,"click",buttons[button]);
+	    } else {
+		console.warn("Can't find menu item ",o);
+	    }
+	}
+    });
 });

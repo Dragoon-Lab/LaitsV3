@@ -1,18 +1,49 @@
 <!doctype html>
 <html>
     <head>        
-        <title>jsPlumb 1.5.4 demo - Dojo</title>
+        <title>jsPlumb with node editor demo</title>
 		<meta http-equiv="content-type" content="text/html;charset=utf-8" />		
 		<link href="http://netdna.bootstrapcdn.com/font-awesome/4.0.1/css/font-awesome.css" rel="stylesheet">
         <link rel="stylesheet" href="../../jsPlumb/demo/demo-all.css">		
-        <link rel="stylesheet" href="state-machine.css">
-		<script type="text/javascript" src="http://ajax.googleapis.com/ajax/libs/dojo/1.9.1/dojo/dojo.js" data-dojo-config="'parseOnLoad':true,'async':true,'packages':[{'name':'gridx','location':'../gridx'},{'name':'clipart','location':'../../clipart'},{'name':'maqettaSamples','location':'../../../samples'},{'name':'maqetta','location':'../../maqetta'},{'name':'shapes','location':'../../shapes'},{'name':'zazl','location':'../../zazl'},{'name':'widgets','location':'../../custom'}],'themeMap':[['Android','',['themes/android/android.css']],['BlackBerry','',['themes/blackberry/blackberry.css']],['iPad','',['themes/ipad/ipad.css']],['iPhone','',['themes/iphone/iphone.css']],['.*','',['themes/iphone/iphone.css']]],'mblThemeFiles':[],'mblLoadCompatPattern':''"></script>
+        <link rel="stylesheet" href="state-machine1.css">
+	<style>
+            @import "../../dijit/themes/claro/document.css";
+            @import "../../dijit/themes/claro/claro.css";
+            @import "app.css";
+	</style>
+        <script type="text/javascript">
+		dojoConfig = {
+			isDebug:true,
+			parseOnLoad:true,
+		        async: true,
+			 baseUrl: "../../",
+			 packages: [
+			    {name: "dojo", location: "dojo"},
+			    {name: "dijit", location: "dijit"},
+			    {name: "dojox", location: "dojox"},
+			    {name: "jsPlumb", location: "jsPlumb"},
+                            {name: "gridx", location: "../gridx"},
+                            {name: "clipart", location: "../../clipart"},
+                            {name: "maqettaSamples", location: "../../../samples"},
+                            {name: "maqetta", location: "../../maqetta"},
+                            {name: "shapes", location: "../../shapes"},
+                            {name: "zazl", location: "../../zazl"},
+                            {name: "widgets", location: "../../custom"}
+                         ],
+                         themeMap: [["Android","",["themes/android/android.css"]],["BlackBerry","",["themes/blackberry/blackberry.css"]],["iPad","",["themes/ipad/ipad.css"]],["iPhone","",["themes/iphone/iphone.css"]],[".*","",["themes/iphone/iphone.css"]]],
+                         mblThemeFiles: [],
+                         mblLoadCompatPattern: ""
+		};
+	</script>
+        <script src="../../dojo/dojo.js" type="text/javascript"></script>
 		<script type="text/javascript">
 		require([
 		  "dijit/dijit",
 		  "dojo/parser",
-		  "maqetta/space.js",
-		  "maqetta/AppStates.js",
+                  "dijit/Dialog",
+                  // These don't seem to  be needed?
+		  // "maqetta/space",
+		  // "maqetta/AppStates",
 		  "dijit/layout/BorderContainer",
 		  "dijit/layout/ContentPane",
 		  "dijit/form/ComboBox",
@@ -24,36 +55,55 @@
 		  "dijit/form/TextBox"
 		]);
 		</script>
-		<style>@import "http://ajax.googleapis.com/ajax/libs/dojo/1.9.1/dijit/themes/claro/document.css";@import "http://ajax.googleapis.com/ajax/libs/dojo/1.9.1/dijit/themes/claro/claro.css";@import "app.css";
-		</style>
-    </head>
-    <body data-demo-id="statemachine" data-library="dojo">
-        <div id="headerWrapper">
-            <div id="header">
-                <div class="logo"><img src="../../jsPlumb/logo-bw.png"></div>
-                <div class="menu">   
-                    <a href="http://localhost:4567">DOCS</a>
-                    <a href="../../jsPlumb/apidocs/">API</a>
-                    <a href="../../jsPlumb/tests/all-tests.html">TESTS</a>
-                    <a href="mailto:hello@jsplumbtoolkit.com">CONTACT</a>
-                    <a href="http://github.com/sporritt/jsplumb/">GITHUB</a>
-                    <a href="https://groups.google.com/forum/?fromgroups#!forum/jsplumb">DISCUSS</a>
-                    <a href="https://github.com/sporritt/jsPlumb/issues">ISSUES</a>
-                </div>
-            </div>
-        </div>    
 
-        <iframe id="like" src="http://www.facebook.com/widgets/like.php?href=http://jsplumb.com&amp;layout=button_count"></iframe>
+    <script type="text/javascript">
+        // Use AMD to get jsPlumb
+	require([
+	    // support lib for bezier stuff
+	    "jsPlumb/lib/jsBezier-0.6",
+            // jsplumb geom functions
+            "jsPlumb/lib/jsplumb-geom-0.1",
+            // jsplumb util 
+            // "jsPlumb/src/util",
+            // base DOM adapter 
+            "jsPlumb/src/dom-adapter",
+            // main jsplumb engine 
+            "jsPlumb/src/jsPlumb",
+            // endpoint 
+            "jsPlumb/src/endpoint", 
+            // connection 
+            "jsPlumb/src/connection",
+            // anchors 
+            "jsPlumb/src/anchors",
+            // connectors, endpoint and overlays  
+            "jsPlumb/src/defaults",
+            // bezier connectors 
+            // "jsPlumb/src/connectors-bezier",
+            // state machine connectors 
+            "jsPlumb/src/connectors-statemachine",
+            // flowchart connectors 
+            "jsPlumb/src/connectors-flowchart",
+            "jsPlumb/src/connector-editors",
+            // SVG renderer 
+            "jsPlumb/src/renderers-svg",
+            // canvas renderer 
+            "jsPlumb/src/renderers-canvas",
+            // vml renderer 
+            "jsPlumb/src/renderers-vml",            
+            // jquery jsPlumb adapter 
+            "jsPlumb/src/dojo.jsPlumb",
+            // Dojo interface layer
+            "jsPlumb/demo/demo-helper-dojo",
+	    "./state-machine.js"
+        ]);
+    </script>
+	
+</head>
 
-        <div id="retweet_button">
-            <a href="http://twitter.com/share" class="twitter-share-button" data-url="http://jsplumb.org" data-text="jsPlumb - visually connect DOM elements." data-count="horizontal" data-via="jsPlumb">Tweet</a>
-            <script type="text/javascript" src="http://platform.twitter.com/widgets.js"></script>
-        </div>
+<body data-demo-id="statemachine" data-library="dojo">
+
         <div id="main">			
            
-            <div class="explanation">
-                <h4>STATE MACHINE</h4>
-            </div>  
             <div class="demo statemachine-demo" id="statemachine-demo">
                 <div class="w" id="population" onClick="myDialog.show();"></br></br>120</br></br></br></br></br></br>Population</div>
                 <div class="circle" id="growth" onClick="myDialog.show();"></br></br>*</br></br></br></br></br></br>Growth</div>
@@ -61,58 +111,8 @@
             </div>
             
         </div>
-	
-        
-        <!-- for demo dropdown. not a jsplumb dependency -->
-        <!--<script src="http://netdna.bootstrapcdn.com/bootstrap/3.0.0/js/bootstrap.min.js"></script>-->
-				
-		<!-- JS -->
-		<!-- support lib for bezier stuff -->
-		<script src="../../jsPlumb/lib/jsBezier-0.6.js"></script>     
-        <!-- jsplumb geom functions -->   
-        <script src="../../jsPlumb/lib/jsplumb-geom-0.1.js"></script>
-		<!-- jsplumb util -->
-		<script src="../../jsPlumb/src/util.js"></script>
-        <!-- base DOM adapter -->
-		<script src="../../jsPlumb/src/dom-adapter.js"></script>        
-		<!-- main jsplumb engine -->
-		<script src="../../jsPlumb/src/jsPlumb.js"></script>
-        <!-- endpoint -->
-		<script src="../../jsPlumb/src/endpoint.js"></script>                
-        <!-- connection -->
-		<script src="../../jsPlumb/src/connection.js"></script>
-        <!-- anchors -->
-		<script src="../../jsPlumb/src/anchors.js"></script>        
-		<!-- connectors, endpoint and overlays  -->
-		<script src="../../jsPlumb/src/defaults.js"></script>
-        <!-- bezier connectors -->
-        <script src="../../jsPlumb/src/connectors-bezier.js"></script>
-		<!-- state machine connectors -->
-		<script src="../../jsPlumb/src/connectors-statemachine.js"></script>
-        <!-- flowchart connectors -->
-		<script src="../../jsPlumb/src/connectors-flowchart.js"></script>
-        <script src="../../jsPlumb/src/connector-editors.js"></script>
-		<!-- SVG renderer -->
-		<script src="../../jsPlumb/src/renderers-svg.js"></script>
-		<!-- canvas renderer -->
-		<script src="../../jsPlumb/src/renderers-canvas.js"></script>
-		<!-- vml renderer -->
-		<script src="../../jsPlumb/src/renderers-vml.js"></script>
-         <!--<script src="../../src/dojo/dojo.js"></script>-->
-		<!--<script src="http://ajax.googleapis.com/ajax/libs/dojo/1.9.1/dojo/dojo.js"></script>-->
-        
-        <!-- jquery jsPlumb adapter -->
-		<script src="../../jsPlumb/src/dojo.jsPlumb.js"></script>
-		<!-- /JS -->
 		
-		<script src="../../jsPlumb/demo/demo-helper-dojo.js"></script>
-		
-		
-		<!--  demo code -->
-		<script src="state-machine.js"></script>
-        <script src="../../jsPlumb/demo/demo-list.js"></script>
-		
-		<!--Node Editor Code-->
+    <!--Node Editor Code-->
 		<div data-dojo-type="dijit/Dialog" data-dojo-id="myDialog" title="Node Editor" style="width:900px; height:232px;">
 		<div data-maq-flow-layout="false" data-maq-comptype="desktop" class="claro" data-maq-ws="collapse" id="myapp" data-maq-appstates="{}" style="width:900px!important; height:232px!important;">
 		<div data-dojo-type="dijit/layout/BorderContainer" design="sidebar" persist="false" gutters="true" style="min-width: 1em; min-height: 1px; z-index: 0; width:1200px; height:250px;">
