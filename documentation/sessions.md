@@ -2,15 +2,14 @@
 
 First, some definitions. We distinguish between the LMS and the tutor:
 
-* __tutor__ is the Java code for Dragoon/Laits. It is invoked
-via JNLP or a java command if it is being run locally. On startup, 
-the tutor is given the [major mode](major-modes.md), user name, section, 
-problem name, (optionally) the problem author, and (optionally) the user role. 
-The role can be `student` or `instructor` (default `student`). 
+* __tutor__ is the Javascript code for Dragoon. It is invoked
+via the URL `index.html`. On startup, the URL includes name-value pairs
+of the [major mode](major-modes.md), user name, section, 
+problem name, and (optionally) the problem author. 
 *  __LMS__ or Learning Management System refers to the "outer loop" that
-invokes the tutor system for a particular user, group, problem, author, 
-and role. It could be a full LMS like Moodle, or a simple web page like 
-[More problems](http://dragoon.asu.edu/demo/public-login.html).
+invokes the tutor system for a particular user, group, problem, author. 
+It could be a full LMS like Moodle, or a simple web page like 
+`www/login.html`.
 If the tutor is being run locally, then this would be a script to invoke
 the tutor (aside from Netbeans, this doesn't exist yet). 
 
@@ -34,9 +33,7 @@ these problems. Students select published problems via the LMS.
 If the tutor is being run locally, these problems are 
 stored along side the java code (this doesn't exist yet).
 * __custom__ or __dynamic__ problems are authored
-by users. If the tutor is run locally, these would be stored
-in a location on the file system, tagged only by the problem name (doesn't
-exist yet).
+by users. 
 
 ## Database tables ##
 
