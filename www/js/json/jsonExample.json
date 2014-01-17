@@ -72,9 +72,9 @@
                 "status": {
                     "description": "demo",
                     "type": "demo",
-                    "initial": null,
-                    "units": null,
-                    "equation": null
+                    "initial": "null",
+                    "units": "correct",
+                    "equation": "correct"
                 }
             },
             {
@@ -110,17 +110,45 @@
                 "ID": "id1",
                 "name": "population",
                 "inGivenModel": true,
-                "inputs": [],
+                "inputs": [
+                    {
+                        "ID": "id2"
+                    }
+                ],
                 "position": {
                     "x": 100,
                     "y": 100
                 },
                 "studentSelections": {
-                    "desc": "The number of rabbits in the population",
-                    "plan": "accumulator",
-                    "units": 100,
-                    "initial": "rabbits",
-                    "equation": ""
+                    "description": "The number of rabbits in the population",
+                    "type": "accumulator",
+                    "initial": 100,
+                    "units": "rabbits",
+                    "equation": "+ id2"
+                }
+            },
+            {
+                "ID": "id2",
+                "name": "births",
+                "inGivenModel": true,
+                "inputs": [
+                    {
+                        "ID": "id1"
+                    },
+                    {
+                        "ID": "id3"
+                    }
+                ],
+                "position": {
+                    "x": 300,
+                    "y": 100
+                },
+                "studentSelections": {
+                    "description": "The number of rabbits born each month",
+                    "type": "function",
+                    "initial": "null",
+                    "units": "births",
+                    "equation": "id1 * id3"
                 }
             },
             {
@@ -133,28 +161,11 @@
                     "y": 100
                 },
                 "studentSelections": {
-                    "desc": "The ratio of number of rabbits born in a month to the rabbit population that month",
-                    "plan": "parameter",
-                    "units": "null",
-                    "initial": "percent",
+                    "description": "The ratio of number of rabbits born in a month to the rabbit population that month",
+                    "type": "parameter",
+                    "initial": "null",
+                    "units": "percent",
                     "equation": ".2"
-                }
-            },
-            {
-                "ID": "id2",
-                "name": "births",
-                "inGivenModel": true,
-                "inputs": [],
-                "position": {
-                    "x": 700,
-                    "y": 100
-                },
-                "studentSelections": {
-                    "desc": "null",
-                    "plan": "null",
-                    "units": "null",
-                    "initial": null,
-                    "equation": "null"
                 }
             }
         ]

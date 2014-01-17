@@ -42,27 +42,27 @@ define(["dojo/_base/declare"]
         },
         // **** Need to add counter to check number of times part of equation entered comparied to the 
         //          number of times it was correct, compared to the inputs (as discussed with Brett)
-        addAttempt: function(/*bool*/ desc, /*bool*/ typ, /*bool*/ init, /*bool*/ unit, /*bool*/ equat) {
+        addAttempt: function(/*bool*/ desc, /*bool*/ type, /*bool*/ init, /*bool*/ units, /*bool*/ equat) {
             if (desc === true)
                 this.attemptCount.description += 1;
-            if (typ === true)
+            if (type === true)
                 this.attemptCount.type += 1;
             if (init === true)
                 this.attemptCount.initial += 1;
-            if (unit === true)
+            if (units === true)
                 this.attemptCount.units += 1;
             if (equat === true)
                 this.attemptCount.equation += 1;
         },
-        addStatus: function(/*string*/ desc, /*string*/ typ, /*string*/ init, /*string*/ unit, /*string*/ equat) {
+        addStatus: function(/*string*/ desc, /*string*/ type, /*string*/ init, /*string*/ units, /*string*/ equat) {
             if (desc !== null && this.status.description !== "demo")
                 this.status.description = desc;
-            if (typ !== null && this.status.type !== "demo")
-                this.status.type = typ;
+            if (type !== null && this.status.type !== "demo")
+                this.status.type = type;
             if (init !== null && this.status.initial !== "demo")
                 this.status.initial = init;
-            if (unit !== null && this.status.units !== "demo")
-                this.status.units = unit;
+            if (units !== null && this.status.units !== "demo")
+                this.status.units = units;
             if (equat !== null && this.status.equation !== "demo")
                 this.status.equation = equat;
         },

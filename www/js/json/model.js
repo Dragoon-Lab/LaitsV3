@@ -7,7 +7,7 @@
 
 /**
  * 
- * NOTE: this.beginX, this.beginY, this.nodeWidth, and this.nodeHeigth should 
+ * NOTE: this.beginX, this.beginY, this.nodeWidth, and this.nodeHeight should 
  *      be set to match the requirements of the viewer part of the MVC. These 
  *      variables control where the nodes will begin being placed, and tell the
  *      model the size of the nodes to avoid collissions.
@@ -28,7 +28,6 @@
 // *** Private Functions ***
 //        _buildModel: function()
 //        _updateNextXYPosition: function()
-//        _addAttempt: function(/*string*/ id, /*string*/ part)
 //        _setStatus: function(/*string*/ id, /*string*/ part, /*string*/ status)
 // *** Public Functions ***
 //        loadModel: function(/*string*/ jsonString)
@@ -44,12 +43,16 @@
 //        getTaskDescription: function()
 //        getNodeNameByID: function(/*string*/ id)
 //        getNodeIDByName: function(/*string*/ name)
+//        getNodeIDByDescription: function(/*string*/ description)
 //        getNodeType: function(/*string*/ id)
 //        isParentNode: function(/*string*/ id)
 //        isExtraNode: function(/*string*/ id)
 //        getNodeOrder: function(/*string*/ id)
 //        getNodeUnits: function(/*string*/ id)
 //        getNodeInputs: function(/*string*/ id)
+//        isNodeInput: function(/*string*/ mainNodeID, /*string*/ inputID)
+//        isNodeVisible: function(/*string*/ id)
+//        isNodesParentVisible: function(/*string*/ id)
 //        getNodeInitial: function(/*string*/ id)
 //        getNodeEquation: function(/*string*/ id)
 //        getNodeCorrectDescription: function(/*string*/ id)
@@ -98,7 +101,6 @@
 //        setStudentNodeSelection: function(/*string*/ id, /*string*/ part, /*string*/ selection)
 //        setToDemo: function(/*string*/ id, /*string*/ part)
 
-
 define(["dojo/_base/declare", "/laits/js/json/node", "/laits/js/json/student_node"]
         , function(declare, Node, StudentNode) {
 
@@ -112,7 +114,7 @@ define(["dojo/_base/declare", "/laits/js/json/node", "/laits/js/json/student_nod
             this.beginX = 100;
             this.beginY = 100;
             this.nodeWidth = 200;
-            this.nodeHeigth = 200;
+            this.nodeHeight = 200;
             this.x = this.beginX;
             this.y = this.beginY;
             this.ID = 1;
@@ -148,40 +150,21 @@ define(["dojo/_base/declare", "/laits/js/json/node", "/laits/js/json/student_nod
             for (var i = 0; i < this.model.task.studentModelNodes.length; i++) {
                 var x = this.model.task.studentModelNodes[i].position.x;
                 var y = this.model.task.studentModelNodes[i].position.y;
-                while (this.x > x - this.nodeWidth && this.x < x + this.nodeWidth && this.y > y - this.nodeHeigth && this.y < y + this.nodeHeigth) {
+                while (this.x > x - this.nodeWidth && this.x < x + this.nodeWidth &&
+                        this.y > y - this.nodeHeight && this.y < y + this.nodeHeight) {
                     if (this.x + this.nodeWidth < document.documentElement.clientWidth + 100)
                         this.x += this.nodeWidth;
                     else {
                         this.x = this.beginX;
-                        this.y += this.nodeHeigth;
+                        this.y += this.nodeHeight;
                     }
                 }
             }
         },
-        _addAttempt: function(/*string*/ id, /*string*/ part) {
-            // Summary: counts student attempts at given parts of the problem
-            for (var i = 0; i < this.model.task.givenModelNodes.length; i++)
-                if (id === this.model.task.givenModelNodes[i].ID)
-                    switch (part) {
-                        case "description":
-                            this.model.task.givenModelNodes[i].addAttempt(true, false, false, false, false);
-                            break;
-                        case "type":
-                            this.model.task.givenModelNodes[i].addAttempt(false, true, false, false, false);
-                            break;
-                        case "initial":
-                            this.model.task.givenModelNodes[i].addAttempt(false, false, true, false, false);
-                            break;
-                        case "units":
-                            this.model.task.givenModelNodes[i].addAttempt(false, false, false, true, false);
-                            break;
-                        case "equation":
-                            this.model.task.givenModelNodes[i].addAttempt(false, false, false, false, true);
-                            break;
-                    }
-        },
         _setStatus: function(/*string*/ id, /*string*/ part, /*string*/ status) {
-            // Summary: tracks student progress (correct, incorrect) on a given node
+            // Summary: tracks student progress (correct, incorrect) on a given node; 
+            //      used in setStudentNodeSelection() and setToDemo()
+            // Tags: private
             for (var i = 0; i < this.model.task.givenModelNodes.length; i++)
                 if (id === this.model.task.givenModelNodes[i].ID)
                     switch (part) {
@@ -289,6 +272,15 @@ define(["dojo/_base/declare", "/laits/js/json/node", "/laits/js/json/student_nod
             }
             return null; // returns null if the node cannot be found
         },
+        getNodeIDByDescription: function(/*string*/ description) {
+            // Summary: returns the id of a node matching the given description; the given 
+            //      model nodes are searched first, followed by the student model nodes
+            for (var i = 0; i < this.model.task.givenModelNodes.length; i++) {
+                if (description === this.model.task.givenModelNodes[i].correctDesc)
+                    return this.model.task.givenModelNodes[i].ID;
+            }
+            return null; // returns null if the node cannot be found
+        },
         getNodeType: function(/*string*/ id) {
             for (var i = 0; i < this.model.task.givenModelNodes.length; i++) {
                 if (id === this.model.task.givenModelNodes[i].ID)
@@ -338,6 +330,36 @@ define(["dojo/_base/declare", "/laits/js/json/node", "/laits/js/json/student_nod
                 }
             }
             return null;
+        },
+        isNodeInput: function(/*string*/ mainNodeID, /*string*/ inputID) {
+            // Summary: returns true if the node identified by inputID is an 
+            //      input into the mainNodeID 
+            for (var i = 0; i < this.model.task.givenModelNodes.length; i++) {
+                if (mainNodeID === this.model.task.givenModelNodes[i].ID && this.model.task.givenModelNodes[i].inputs.length !== 0) {
+                    i = this.model.task.givenModelNodes.length;
+                    for (var ii = 0; ii < this.model.task.givenModelNodes[i].inputs.length; ii++)
+                        if (inputID === this.model.task.givenModelNodes[i].inputs[ii].ID)
+                            return true;
+                }
+            }
+            return false;
+        },
+        isNodeVisible: function(/*string*/ id) {
+            // Summary: returns true if the node is in the student model
+            for (var i = 0; i < this.model.task.studentModelNodes.length; i++) {
+                if (id === this.model.task.studentModelNodes[i].ID)
+                    return true;
+            }
+            return false;
+        },
+        isNodesParentVisible: function(/*string*/ id) {
+            // Summary: returns true if the node's parent is visible (if the 
+            //      node is an input into another node that is in the student model
+            for (var i = 0; i < this.model.task.studentModelNodes.length; i++)
+                for (var ii = 0; ii < this.model.task.studentModelNodes.length; ii++)
+                    if (id === this.model.task.studentModelNodes[i].inputs[ii])
+                        return true;            
+            return false;
         },
         getNodeInitial: function(/*string*/ id) {
             for (var i = 0; i < this.model.task.givenModelNodes.length; i++) {
@@ -649,8 +671,6 @@ define(["dojo/_base/declare", "/laits/js/json/node", "/laits/js/json/student_nod
                         if (input === this.model.task.givenModelNodes[i].inputs[ii].ID)
                             return false;
                     }
-
-
                     this.model.task.givenModelNodes[i].addInput(inputID);
                     return true;
                 }
@@ -667,7 +687,6 @@ define(["dojo/_base/declare", "/laits/js/json/node", "/laits/js/json/student_nod
                         }
                     }
             }
-
         },
         addStudentNode: function() {
             // Summary: builds a new node in the student model and returns the node's unique ID
@@ -781,7 +800,6 @@ define(["dojo/_base/declare", "/laits/js/json/node", "/laits/js/json/student_nod
                         }
                     }
             }
-
         },
         setStudentNodeXY: function(/*string*/ id, /*int*/ xPos, /*int*/ yPos) {
             // Summary: sets the "X" and "Y" values of a node's position
@@ -806,7 +824,7 @@ define(["dojo/_base/declare", "/laits/js/json/node", "/laits/js/json/student_nod
                                     this._setStatus(id, part, "correct");
                                 else
                                     this._setStatus(id, part, "incorrect");
-                                this._addAttempt(id, part);
+                                this.model.task.givenModelNodes[i].addAttempt(true, false, false, false, false);
                             }
                             break;
                         case "type":
@@ -816,7 +834,7 @@ define(["dojo/_base/declare", "/laits/js/json/node", "/laits/js/json/student_nod
                                     this._setStatus(id, part, "correct");
                                 else
                                     this._setStatus(id, part, "incorrect");
-                                this._addAttempt(id, part);
+                                this.model.task.givenModelNodes[i].addAttempt(false, true, false, false, false);
                             }
                             break;
                         case "initial":
@@ -826,7 +844,7 @@ define(["dojo/_base/declare", "/laits/js/json/node", "/laits/js/json/student_nod
                                     this._setStatus(id, part, "correct");
                                 else
                                     this._setStatus(id, part, "incorrect");
-                                this._addAttempt(id, part);
+                                this.model.task.givenModelNodes[i].addAttempt(false, false, true, false, false);
                             }
                             break;
                         case "units":
@@ -836,7 +854,7 @@ define(["dojo/_base/declare", "/laits/js/json/node", "/laits/js/json/student_nod
                                     this._setStatus(id, part, "correct");
                                 else
                                     this._setStatus(id, part, "incorrect");
-                                this._addAttempt(id, part);
+                                this.model.task.givenModelNodes[i].addAttempt(false, false, false, true, false);
                             }
                             break;
                         case "equation":
@@ -846,7 +864,7 @@ define(["dojo/_base/declare", "/laits/js/json/node", "/laits/js/json/student_nod
                                     this._setStatus(id, part, "correct");
                                 else
                                     this._setStatus(id, part, "incorrect");
-                                this._addAttempt(id, part);
+                                this.model.task.givenModelNodes[i].addAttempt(false, false, false, false, true);
                             }
                             break;
                     }

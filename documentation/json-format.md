@@ -170,10 +170,10 @@ They are visible on the screen.
                     "y": 100
                 },
                 "studentSelections": {
-                    "desc": "The number of rabbits in the population",
-                    "plan": "accumulator",
-                    "units": 100,
-                    "initial": "rabbits",
+                    "description": "The number of rabbits in the population",
+                    "type": "accumulator",
+                    "initial": 100,
+                    "units": "rabbits",
                     "equation": "+ id2"
                 }
             },
@@ -323,10 +323,10 @@ JSON document.
                             "y": 100
                         },
                         "studentSelections": {
-                            "desc": "The number of rabbits in the population",
-                            "plan": "accumulator",
-                            "units": 100,
-                            "initial": "rabbits",
+                            "description": "The number of rabbits in the population",
+                            "type": "accumulator",
+                            "initial": 100,
+                            "units": "rabbits",
                             "equation": "+ id2"
                         }
                     },
@@ -347,10 +347,10 @@ JSON document.
                             "y": 100
                         },
                         "studentSelections": {
-                            "desc": "The number of rabbits born each month",
-                            "plan": "function",
-                            "units": "null",
-                            "initial": "births",
+                            "description": "The number of rabbits born each month",
+                            "type": "function",
+                            "initial": "null",
+                            "units": "births",
                             "equation": "id1 * id3"
                         }
                     },
@@ -364,10 +364,10 @@ JSON document.
                             "y": 100
                         },
                         "studentSelections": {
-                            "desc": "The ratio of number of rabbits born in a month to the rabbit population that month",
-                            "plan": "parameter",
-                            "units": "null",
-                            "initial": "percent",
+                            "description": "The ratio of number of rabbits born in a month to the rabbit population that month",
+                            "type": "parameter",
+                            "initial": "null",
+                            "units": "percent",
                             "equation": ".2"
                         }
                     }
