@@ -22,6 +22,7 @@ import edu.asu.laits.gui.MainWindow;
 import java.io.IOException;
 import java.io.UnsupportedEncodingException;
 import java.net.URLEncoder;
+import java.net.UnknownHostException;
 import java.util.ArrayList;
 import java.util.List;
 import javax.swing.JOptionPane;
@@ -129,7 +130,12 @@ public class PersistenceManager implements Runnable {
                 return content;
             }
 
-        } catch (UnsupportedEncodingException e) {
+        }catch (UnknownHostException e) {
+            logs.error("UnknownHostException in sending HTTP Post " + e.getMessage());
+            JOptionPane.showMessageDialog(null, "Unable to connect to Internet.\nPlease check your connection and try again.", "Network Error", JOptionPane.ERROR_MESSAGE);  
+            System.exit(0);
+        }
+        catch (UnsupportedEncodingException e) {
             logs.error("UnsupportedEncodingException in sending HTTP Post " + e.getMessage());
             e.printStackTrace();
         } catch (ClientProtocolException e) {

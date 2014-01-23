@@ -189,7 +189,7 @@ public class FileMenu extends JMenu {
             }
 
             mainWindow.prepareModelDesignPanel();
-        } catch (Exception e) {
+        } catch (ArithmeticException e) {
             e.printStackTrace();
         }
     }
