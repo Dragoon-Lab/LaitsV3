@@ -149,6 +149,30 @@ not yet solved it correctly, and "demo" indicates that the student asked the
 program to give the correct solution or attempted the problem incorrectly too 
 many times). Once it is marked "demo" this mark will not be changed.
 
+## Extra Descriptions ##
+
+The author may include distraction descriptions which are not part of the given 
+model to further challenge the student. They are included in the 
+"extraDescriptions" array, as in the following example.
+
+        "extraDescriptions": [
+            {
+                "text": "The number of rabbits in the population during the second month",
+                "type": "model"
+            },
+            {
+                "text": "The ratio of rabbits born with superpowers to ordinary rabbits",
+                "type": "extra"
+            }
+        ],
+
+The attribute "description" has the extra description that is not needed to 
+solve the model. The attribute "type" tells the problem if the extra description 
+is a "model" description (meaning it was spoken of in the model but is not 
+needed to solve the problem), or an "extra" description (meaning the model was 
+not mentioned in the model).
+
+
 ## Student Model Nodes ##
 
 Student model nodes are nodes that the student has created while trying to 
@@ -239,7 +263,7 @@ JSON document.
                             "equation": 3
                         },
                         "status": {
-                            "description": "correct",
+                            "description": "incorrect",
                             "type": "demo",
                             "initial": "correct",
                             "units": "demo",
@@ -308,6 +332,16 @@ JSON document.
                         }
                     }
                 ],
+                "extraDescriptions": [
+                    {
+                        "text": "The number of rabbits in the population during the second month",
+                        "type": "model"
+                    },
+                    {
+                        "text": "The ratio of rabbits born with superpowers to ordinary rabbits",
+                        "type": "extra"
+                    }
+                ],
                 "studentModelNodes": [
                     {
                         "ID": "id1",
@@ -323,7 +357,7 @@ JSON document.
                             "y": 100
                         },
                         "studentSelections": {
-                            "description": "The number of rabbits in the population",
+                            "description": "The ratio of number of rabbits born in a month to the rabbit population that month",
                             "type": "accumulator",
                             "initial": 100,
                             "units": "rabbits",
