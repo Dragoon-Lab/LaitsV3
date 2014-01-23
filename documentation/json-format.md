@@ -1,269 +1,376 @@
 # JSON Format #
 
-Proposed JSON format for Dragoon problems.
+## Proposed JSON format for Dragoon problems. ##
 
 The following JSON format is proposed for problem files, for problems in the 
 database (e.g. problems authored for specific sessions), and to store the user's 
-progress in the autosave_table on the database. The JSON format will be standard 
-across all three categories to ensure readability, portability, and ease of use 
-and modification. 
+progress in the autosave_table on the database. This JSON format is proposed to 
+be standard across the three categories just mentioned to ensure readability, 
+portability, and ease of use and modification. 
 
-The format is different from former ITS's (LAITS, Java version of Dragoon) in 
-that they used XML to store their problems. Because Javascript uses JSON 
-naturally we are proposing to use it for the Javascript version of Dragoon. The 
-proposed JSON format is similar to older XML problems in Dragoon to allow easier
-conversion of problems that have previously been defined. It changes the way 
-that the student's progress was being saved to match JSON problems. It also 
-removes redundant and deprecated code, such as removing the old &lt;NodeCount> 
-or the &lt;Output> tags.
+The format is different from former Intelligent Tutoring Systems (LAITS, Java 
+version of Dragoon) in that they used XML to store their problems. Because 
+JavaScript uses JSON naturally we are proposing to use it for the JavaScript 
+version of Dragoon. The proposed JSON format is similar to the format used in 
+older XML problems in Dragoon to allow easierconversion of problems that have 
+previously been defined. It is significantly different than what was being saved 
+in the autosave_table. This is to allow it to match the other problems. This new 
+format also attempts to remove redundant and deprecated code that existed in the 
+XML formats.
 
-The following examples show the conversion of the problem "rabbits.xml" to show 
-how the new JSON document is proposed to be modeled. 
+The following examples show the conversion of the problem "rabbits.xml" into the 
+new JSON format to show how the new format will be modeled. 
 
 ## General Formatting Conventions ##
 
 JSON is a language that defines elements and attributes in name/value pairings.
-For more information see http://www.json.org/. For the Dragoon project, elements
-will be capitalized and written in CamelCase (all words are combined into one 
-word with the first letter of each original word capitalized, such as 
-camel case -> CamelCase) for consistency. 
+For more information see http://www.json.org/. For the JavaScript version of the 
+Dragoon project, elements will begin with a lower-case letter and will be 
+written in camelCase (all words are combined into one word with the first letter 
+of each subsequent word capitalized, such as camel case -> camelCase), except 
+for acronyms such as URL, which will be capitalized. Using camel case is for 
+consistency and to mimic the corresponding variables in the model. 
 
-## Task, Properties, and TaskDescription##
+## Beginning Properties##
 
-The JSON document will begin with the "Task" element, of which all other 
-elements will be attributes.
+The JSON document will begin with the "task" element, of which all other 
+elements will be attributes. It will be followed by the name, properties and 
+description of the task (problem) that is being modeled.
 
-    {"Task" : {
-            "Phase" : "Intro",
-            "Type" : "Construct",
-            "Properties" : {
-                    "TaskName" : "Rabbits - Intro Problem",
-                    "URL" : "images/rabbit.jpeg",
-                    "StartTime" : 0,
-                    "EndTime" : 10,
-                    "Units" : "Years"
+        {
+            "task": {
+                "taskName": "Rabbits - Intro Problem",
+                "properties": {
+                    "phase": "intro",
+                    "type": "construct",
+                    "URL": "images/rabbit.jpeg",
+                    "startTime": 0,
+                    "endTime": 10,
+                    "timeStep": 1,
+                    "units": "years"
+                },
+                "taskDescription": "In this exercise, you will construct a model of how a 
+                    rabbit population grows when no rabbits die. The first quantity in this 
+                    model is the population or number of rabbits in the population. Initially, 
+                    there are 100 rabbits, but the number increases with time. The new 
+                    population each month is its present value plus the number of births 
+                    (number of rabbits born each month).  The number of births is equal to the 
+                    product of the population and the birth rate. The birthrate or the ratio 
+                    of the number of rabbits born in a month to the rabbit population that 
+                    month has a fixed value of 0.2.",
+
+Within the properties element, "phase" and "type" refer to the type of task and 
+let the program know what kind of help the student should receive. The element 
+"URL" gives the location of the picture used for the problem, "startTime", 
+"endTime", and "timeStep" refer to the time frame that the problem is modeling 
+and are self explanatory, and "units" refers to the time that the model spans. 
+The element "taskDescription" gives the student information needed to complete 
+the model.
+
+## Given Model Nodes ##
+
+All of the nodes that are part of the model are contained in "givenModelNodes". 
+They are not visible on the screen unless they are also in the student model, 
+but a student has not correctly solved the model until the corresponding 
+elements of the nodes in the student model match the non-extra nodes in the 
+given model.
+
+        "givenModelNodes": [
+            {
+                "ID": "id1",
+                "name": "population",
+                "type": "accumulator",
+                "parentNode": false,
+                "extra": false,
+                "order": 1,
+                "units": "rabbits",
+                "inputs": [
+                    {
+                        "ID": "id2"
+                    }
+                ],
+                "initial": 100,
+                "equation": "+ id2",
+                "correctDesc": "The number of rabbits in the population",
+                "attemptCount": {
+                    "description": 2,
+                    "type": 1,
+                    "initial": 2,
+                    "units": 4,
+                    "equation": 3
+                },
+                "status": {
+                    "description": "correct",
+                    "type": "demo",
+                    "initial": "correct",
+                    "units": "demo",
+                    "equation": "correct"
+                }
             },
-            "TaskDescription" : 
-                "In this exercise, you will construct a model of how a rabbit population  NEWLINE
-                grows when no rabbits die. The first quantity in this model is the  NEWLINE
-                population or number of rabbits in the population. Initially, there are NEWLINE 
-                100 rabbits, but the number increases with time. The new population each NEWLINE
-                month is its present value plus the number of births (number of rabbits NEWLINE
-                born each month).  The number of births is equal to the product of the NEWLINE
-                population and the birth rate. The birthrate or the ratio of the number NEWLINE
-                of rabbits born in a month to the rabbit population that month has a NEWLINE
-                fixed value of 0.2.",
 
-//Editor's note, I am at this point in the document update.
+Each node has a unique ID, which is how the node will typically be referred to 
+in the code. This allows the name to be changed without disrupting other nodes 
+that use the node as an input. An attempt was made to remove redundant 
+information that could be derived from other parts of the node, so old XML 
+attributes and elements like "type" and "Plan" were combined into one element, 
+in this case, "type", which indicates if the node is an accumulator, a function, 
+or a parameter node. This is information similar to what was in the former 
+"Plan" element. 
 
+Students may benefit from completing nodes in a certain order. For example, if 
+Node A requires Nodes B and C to be completed, by starting with Node A, the 
+student is led to complete Nodes B and C as well. Node A is said to be the first 
+node in a tree. The element "parentNode" allows the author to indicate if a node 
+is a parent node, or the first node in a tree. This affects the order of nodes 
+appearing when the student presses "Demo" to get the correct description and 
+name. If "Demo" is pressed a parent node will be chosen before its children. The 
+element "order" is deprecated with "parentNode" and it currently not being 
+used. It is retained in case it is needed later but can be removed if needed. 
 
-&lt;TaskName> is self-explanatory, &lt;URL> gives the location of the picture used 
-in the model, &lt;StartTime> and &lt;EndTime> are used to define how long the 
-problem will model behavior, and &lt;Units> gives the time measurement unit that
-&lt;StartTime> and &lt;EndTime> follow (in the code above, the behavior will be
-modeled from 0 to 10 years).
+The author can also include nodes that are not necessary for completion to 
+additionally challenge the student. The element "extra" indicates whether or not 
+a node is one of these extra nodes. If it is marked true, it is not required. 
 
-The main changes are grouping the model's properties in the &lt;Properties> tags 
-and removing the redundant &lt;NodeCount> tags.
+The node element "units" differs from the task element units (which refers to 
+time) and signifies the item that the node refers to (in the above example, the 
+unit is rabbits, meaning the number of rabbits in the population). The element 
+"inputs" list other nodes that are required in the node's equation. The element 
+"initial" is used in accumulator nodes to give an initial value that the 
+equation builds upon, "equation" holds the equation used for the value of the 
+node at each time step, and "correctDesc" contains the correct description of 
+the node. 
 
+The elements "attemptCount" and "status" are used for grading and, as they are 
+in the given model, they cannot be changed by erasing a node and starting over. 
+They keep track of the number of attempts a student uses on a node and how a 
+student arrived at the current solution ("correct" indicates that the student 
+solved that portion correctly, "incorrect" or "null" indicates the student has 
+not yet solved it correctly, and "demo" indicates that the student asked the 
+program to give the correct solution or attempted the problem incorrectly too 
+many times). Once it is marked "demo" this mark will not be changed.
 
-## Model Definition ##
+## Student Model Nodes ##
 
-Following the headers and properties is the definition of the model. From this 
-section the program will know what nodes the student should construct to solve 
-the problem.
+Student model nodes are nodes that the student has created while trying to 
+complete the model or that the author wants visible when the problem is begun. 
+They are visible on the screen.
 
-    <Nodes>
-        <Node type="stock" id="1" name="population" extra="no">
-            <Order>1</Order>
-            <Inputs>
-                <Name>births</Name>
-            </Inputs>
-            <Position x="250" y="150"/>
-            <Initial>100</Initial>           
-            <Equation>+births</Equation>
-            <CorrectDescription>The number of rabbits in the population</CorrectDescription>
-            <AttemptCount desc="5" plan="1" calc="2"/>
-        </Node>
-    </Nodes>
+        "studentModelNodes": [
+            {
+                "ID": "id1",
+                "name": "population",
+                "inGivenModel": true,
+                "inputs": [
+                    {
+                        "ID": "id2"
+                    }
+                ],
+                "position": {
+                    "x": 100,
+                    "y": 100
+                },
+                "studentSelections": {
+                    "description": "The number of rabbits in the population",
+                    "type": "accumulator",
+                    "initial": 100,
+                    "units": "rabbits",
+                    "equation": "+ id2"
+                }
+            },
 
-All of the nodes will be contained within the &lt;Nodes> tags, with each 
-individual node surrounded by &lt;Node> tags (note the plural "Nodes" and the 
-singular "Node"). 
+They contain information that identifies the node, positions it, and marks the 
+student's selections. The element "inGivenModel" tells the program if there is 
+a node in the given model to link it with. Other than the ID and the name, the 
+information in the student model may not match information in the given 
+model as the student may or may not select correct information. The student can 
+also generate nodes that are not in the given model and are not part of the 
+solution.
 
-The "type" attribute defines the node as "stock" (accumulator), "flow" 
-(equation), or "constant" (parameter). The attribute "id" assigns an identifier 
-that is unique to the problem, "name" is self-explanatory, "extra" specifies if 
-the node is used in the completed model (extra nodes are allowed to test a 
-student's understanding of the problem).
+Another function of the student model is to allow the author to create a 
+partially completed model that the user will have to correct or complete. Thus 
+an author can build a model and specify which nodes should be present when the 
+user opens the problem for the first time. 
 
-When a problem has multiple nodes the &lt;Order> tag can be used to define the 
-order that nodes should be completed while in "coached" mode. &lt;Inputs> lists the 
-other nodes that help define that node. &lt;Position> allows the author to define 
-where to place the node on the screen, &lt;Initial> is an optional node that is 
-needed for stock (accumulator) nodes. &lt;Equation> gives the equation to compute 
-the node, or lists a number for constant (parameter) nodes. &lt;CorrectDescription> 
-lists the correct definition in the Description tab of the node editor. 
-&lt;AttemptCount> defines how many times the user attempted the Description, 
-Plan, and Calculations tabs before getting a correct answer. 
+When a node is given a name by the student the name will be checked against 
+other nodes in the given model and if a match is found then the element 
+"inGivenModel" will be set to true and the ID will be updated to match the node 
+in the given model.
 
-&lt;AttemptCount> 
-is the only part of the &lt;Nodes> section that will change as the user 
-progresses. It will ensure that the user's attempts are saved if a node is deleted. 
-Thus, when a user loads the problem all attributes (desc, plan, and calc) will 
-be set to "0" and will increment as the user attempts each tab of each node. The 
-student's progress will be saved as an XML string following this format in the 
-autosave_table of Dragoon's MySQL database.
+## Example of a Complete JSON Formatted Problem ##
 
+The following code shows the "rabbits" problem with the new specification in a 
+JSON document.
 
-## Student Model ##
-
-The next section, the student model serves two purposes. First, it allows the 
-author to define nodes he/she would like present when the problem is loaded for 
-the first time (this functionality was in the former &lt;GivenModel> tags). 
-Second, it tracks progress by the student. 
-
-    <StudentModel>        
-        <Node type="stock" id="1" name="population" extra="no">
-            <Order>1</Order>
-            <Inputs>
-                <Name>births</Name>
-            </Inputs>
-            <Position x="208" y="143"/>
-            <Initial>100</Initial>
-            <Equation>+births</Equation>
-            <CorrectDescription>The number of rabbits in the population</CorrectDescription>
-            <Progress>
-                <Description status="demo">The number of rabbits in the population</Description>
-                <Plan status="correct">accumulator</Plan>
-                <Calculation status="incorrect" initial="10">+ births</Calculation>
-            </Progress>
-        </Node>
-    </StudentModel>
-
-The student model is nearly identical to the model definition (inside the 
-&lt;Nodes> tags), except that it records the current location of the node in the 
-&lt;Position> tags, if it has been changed by the instructor or the student. 
-Also, instead of the &lt;AttemptCount> tags, it uses &lt;Progress> tags to show 
-the progress the student has made. The attribute "status" tracks if the 
-student's latest attempt was correct, incorrect, or demo (if the student gave up or 
-attempted too many incorrect answers and was given the correct answer). The node 
-can then be colored appropriately by the program. 
-
-Within the &lt;Calculation> tags the "initial" attribute is optional in the XML
-schema and is used by accumulator nodes. It lists the initial value that is 
-currently entered. The values between the &lt;Description>, &lt;Plan>, and 
-&lt;Calculation> tags also show the currently entered value.
-
-## Example of a Complete XML Document ##
-
-The following code shows how the new XML specification will appear in an XML 
-document. It shows the problem partially completed by the student, with one node
-completed and a second node partially completed.
-
-    <?xml version="1.0" encoding="UTF-8"?>
-    <model:DragoonProblem xmlns:model="http://localhost/laits/js/xml"
-                    xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
-                    xsi:schemaLocation="http://localhost/laits/js/xml dragoon_schema.xsd">
-
-        <Task phase="Intro" type="Construct">
-
-            <Properties>
-                <TaskName>Rabbits - Intro Problem</TaskName>
-                <URL>images/rabbit.jpeg</URL>
-                <StartTime>0</StartTime>
-                <EndTime>10</EndTime>
-                <Units>Years</Units>
-            </Properties>
-
-            <TaskDescription>
-                In this exercise, you will construct a model of how a rabbit population  NEWLINE
-                grows when no rabbits die. The first quantity in this model is the  NEWLINE
-                population or number of rabbits in the population. Initially, there are NEWLINE 
-                100 rabbits, but the number increases with time. The new population each NEWLINE
-                month is its present value plus the number of births (number of rabbits NEWLINE
-                born each month).  The number of births is equal to the product of the NEWLINE
-                population and the birth rate. The birthrate or the ratio of the number NEWLINE
-                of rabbits born in a month to the rabbit population that month has a NEWLINE
-                fixed value of 0.2.        
-            </TaskDescription>
-
-            <Nodes>
-
-                <Node type="stock" id="1" name="population" extra="no">
-                    <Order>1</Order>
-                    <Inputs>
-                        <Name>births</Name>
-                    </Inputs>
-                    <Position x="250" y="150"/>
-                    <Initial>100</Initial>           
-                    <Equation>+births</Equation>
-                    <CorrectDescription>The number of rabbits in the population</CorrectDescription>
-                    <AttemptCount desc="5" plan="1" calc="2"/>
-                </Node>
-
-                <Node type="flow" id="2" name="births" extra="no">
-                    <Order>2</Order>
-                    <Inputs>
-                        <Name>population</Name>
-                        <Name>birth rate</Name>
-                    </Inputs>
-                    <Position x="350" y="150"/>
-                    <Equation>population * birth rate</Equation>
-                    <CorrectDescription>The number of rabbits born each month</CorrectDescription>
-                    <AttemptCount desc="1" plan="0" calc="0"/>
-                </Node>
-
-                <Node type="constant" id="3" name="birth rate" extra="no">
-                    <Order>3</Order>
-                    <Inputs/>
-                    <Position x="400" y="250"/>
-                    <Equation>.2</Equation>
-                    <CorrectDescription>
-                        The ratio of number of rabbits born in a month to the rabbit population that month
-                    </CorrectDescription>
-                    <AttemptCount desc="0" plan="0" calc="0"/>
-                </Node>
-
-            </Nodes>
-
-            <StudentModel>
-
-                <Node type="stock" id="1" name="population" extra="no">
-                    <Order>1</Order>
-                    <Inputs>
-                        <Name>births</Name>
-                    </Inputs>
-                    <Position x="208" y="143"/>
-                    <Initial>100</Initial>
-                    <Equation>+births</Equation>
-                    <CorrectDescription>The number of rabbits in the population</CorrectDescription>
-                    <Progress>
-                        <Description status="demo">The number of rabbits in the population</Description>
-                        <Plan status="correct">accumulator</Plan>
-                        <Calculation status="incorrect" initial="10">+ births</Calculation>
-                    </Progress>
-                </Node>
-
-                <Node type="flow" id="2" name="births" extra="no">
-                    <Order>2</Order>
-                    <Inputs>
-                        <Name>population</Name>
-                        <Name>birth rate</Name>
-                    </Inputs>
-                    <Position x="350" y="150"/>
-                    <Equation>population * birth rate</Equation>
-                    <CorrectDescription>The number of rabbits born each month</CorrectDescription>
-                    <Progress>
-                        <Description status="incorrect">
-                            The ratio of rabbits born with super powers to ordinary rabbits
-                        </Description>
-                        <Plan status=""></Plan>
-                        <Calculation status=""></Calculation>
-                    </Progress>
-                </Node>
-
-            </StudentModel>
-
-        </Task>
-    </model:DragoonProblem>
+        {
+            "task": {
+                "taskName": "Rabbits - Intro Problem",
+                "properties": {
+                    "phase": "intro",
+                    "type": "construct",
+                    "URL": "images/rabbit.jpeg",
+                    "startTime": 0,
+                    "endTime": 10,
+                    "timeStep": 1,
+                    "units": "years"
+                },
+                "taskDescription": "In this exercise, you will construct a model of how a rabbit population grows when no rabbits die. The first quantity in this model is the population or number of rabbits in the population. Initially, there are 100 rabbits, but the number increases with time. The new population each month is its present value plus the number of births (number of rabbits born each month). The number of births is equal to the product of the population and the birth rate. The birthrate or the ratio of the number of rabbits born in a month to the rabbit population that month has a fixed value of 0.2.",
+                "givenModelNodes": [
+                    {
+                        "ID": "id1",
+                        "name": "population",
+                        "type": "accumulator",
+                        "parentNode": false,
+                        "extra": false,
+                        "order": 1,
+                        "units": "rabbits",
+                        "inputs": [
+                            {
+                                "ID": "id2"
+                            }
+                        ],
+                        "initial": 100,
+                        "equation": "+ id2",
+                        "correctDesc": "The number of rabbits in the population",
+                        "attemptCount": {
+                            "description": 2,
+                            "type": 1,
+                            "initial": 2,
+                            "units": 4,
+                            "equation": 3
+                        },
+                        "status": {
+                            "description": "correct",
+                            "type": "demo",
+                            "initial": "correct",
+                            "units": "demo",
+                            "equation": "correct"
+                        }
+                    },
+                    {
+                        "ID": "id2",
+                        "name": "births",
+                        "type": "function",
+                        "parentNode": true,
+                        "extra": false,
+                        "order": 2,
+                        "units": "births",
+                        "inputs": [
+                            {
+                                "ID": "id1"
+                            },
+                            {
+                                "ID": "id3"
+                            }
+                        ],
+                        "initial": null,
+                        "equation": "id1 * id3",
+                        "correctDesc": "The number of rabbits born each month",
+                        "attemptCount": {
+                            "description": 2,
+                            "type": 1,
+                            "initial": 0,
+                            "units": 2,
+                            "equation": 1
+                        },
+                        "status": {
+                            "description": "demo",
+                            "type": "demo",
+                            "initial": "null",
+                            "units": "correct",
+                            "equation": "correct"
+                        }
+                    },
+                    {
+                        "ID": "id3",
+                        "name": "birth rate",
+                        "type": "parameter",
+                        "parentNode": false,
+                        "extra": false,
+                        "order": 3,
+                        "units": "percent",
+                        "inputs": [],
+                        "initial": null,
+                        "equation": ".2",
+                        "correctDesc": "The ratio of number of rabbits born in a month to the rabbit population that month",
+                        "attemptCount": {
+                            "description": 1,
+                            "type": 1,
+                            "initial": 0,
+                            "units": 1,
+                            "equation": 3
+                        },
+                        "status": {
+                            "description": "correct",
+                            "type": "correct",
+                            "initial": "null",
+                            "units": "correct",
+                            "equation": "correct"
+                        }
+                    }
+                ],
+                "studentModelNodes": [
+                    {
+                        "ID": "id1",
+                        "name": "population",
+                        "inGivenModel": true,
+                        "inputs": [
+                            {
+                                "ID": "id2"
+                            }
+                        ],
+                        "position": {
+                            "x": 100,
+                            "y": 100
+                        },
+                        "studentSelections": {
+                            "description": "The number of rabbits in the population",
+                            "type": "accumulator",
+                            "initial": 100,
+                            "units": "rabbits",
+                            "equation": "+ id2"
+                        }
+                    },
+                    {
+                        "ID": "id2",
+                        "name": "births",
+                        "inGivenModel": true,
+                        "inputs": [
+                            {
+                                "ID": "id1"
+                            },
+                            {
+                                "ID": "id3"
+                            }
+                        ],
+                        "position": {
+                            "x": 300,
+                            "y": 100
+                        },
+                        "studentSelections": {
+                            "description": "The number of rabbits born each month",
+                            "type": "function",
+                            "initial": "null",
+                            "units": "births",
+                            "equation": "id1 * id3"
+                        }
+                    },
+                    {
+                        "ID": "id3",
+                        "name": "birth rate",
+                        "inGivenModel": true,
+                        "inputs": [],
+                        "position": {
+                            "x": 500,
+                            "y": 100
+                        },
+                        "studentSelections": {
+                            "description": "The ratio of number of rabbits born in a month to the rabbit population that month",
+                            "type": "parameter",
+                            "initial": "null",
+                            "units": "percent",
+                            "equation": ".2"
+                        }
+                    }
+                ]
+            }
+        }

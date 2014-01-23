@@ -1,0 +1,116 @@
+<!doctype html>
+<html>
+    <head>        
+        <title>jsPlumb with node editor demo</title>
+		<meta http-equiv="content-type" content="text/html;charset=utf-8" />		
+		<link href="http://netdna.bootstrapcdn.com/font-awesome/4.0.1/css/font-awesome.css" rel="stylesheet">
+        <link rel="stylesheet" href="../../jsPlumb/demo/demo-all.css">		
+        <link rel="stylesheet" href="state-machine1.css">
+	<style>
+            @import "../../dijit/themes/claro/document.css";
+            @import "../../dijit/themes/claro/claro.css";
+            @import "app.css";
+	</style>
+        <script type="text/javascript">
+		dojoConfig = {
+			isDebug:true,
+			parseOnLoad:true,
+		        async: true,
+			 baseUrl: "../../",
+			 packages: [
+			    {name: "dojo", location: "dojo"},
+			    {name: "dijit", location: "dijit"},
+			    {name: "dojox", location: "dojox"},
+			    {name: "jsPlumb", location: "jsPlumb"},
+                            {name: "gridx", location: "../gridx"},
+                            {name: "clipart", location: "../../clipart"},
+                            {name: "maqettaSamples", location: "../../../samples"},
+                            {name: "maqetta", location: "../../maqetta"},
+                            {name: "shapes", location: "../../shapes"},
+                            {name: "zazl", location: "../../zazl"},
+                            {name: "widgets", location: "../../custom"}
+                         ],
+                         themeMap: [["Android","",["themes/android/android.css"]],["BlackBerry","",["themes/blackberry/blackberry.css"]],["iPad","",["themes/ipad/ipad.css"]],["iPhone","",["themes/iphone/iphone.css"]],[".*","",["themes/iphone/iphone.css"]]],
+                         mblThemeFiles: [],
+                         mblLoadCompatPattern: ""
+		};
+	</script>
+        <script src="../../dojo/dojo.js" type="text/javascript"></script>
+		<script type="text/javascript">
+		require([
+		  "dijit/dijit",
+		  "dojo/parser",
+                  "dijit/Dialog",
+                  // These don't seem to  be needed?
+		  // "maqetta/space",
+		  // "maqetta/AppStates",
+		  "dijit/layout/BorderContainer",
+		  "dijit/layout/ContentPane",
+		  "dijit/form/ComboBox",
+		  "dijit/form/Button",
+		  "dijit/form/ComboButton",
+		  "dijit/Menu",
+		  "dijit/MenuItem",
+		  "dijit/form/DropDownButton",
+		  "dijit/form/TextBox"
+		]);
+		</script>
+
+    <script type="text/javascript">
+        // Use AMD to get jsPlumb
+	require([
+	    // support lib for bezier stuff
+	    "jsPlumb/lib/jsBezier-0.6",
+            // jsplumb geom functions
+            "jsPlumb/lib/jsplumb-geom-0.1",
+            // jsplumb util 
+            "jsPlumb/src/util",
+            // base DOM adapter 
+            "jsPlumb/src/dom-adapter",
+            // main jsplumb engine 
+            "jsPlumb/src/jsPlumb",
+            // endpoint 
+            "jsPlumb/src/endpoint", 
+            // connection 
+            // "jsPlumb/src/connection",
+            // anchors 
+            "jsPlumb/src/anchors",
+            // connectors, endpoint and overlays  
+            "jsPlumb/src/defaults",
+            // bezier connectors 
+            "jsPlumb/src/connectors-bezier",
+            // state machine connectors 
+            "jsPlumb/src/connectors-statemachine",
+            // flowchart connectors 
+            "jsPlumb/src/connectors-flowchart",
+            "jsPlumb/src/connector-editors",
+            // SVG renderer 
+            "jsPlumb/src/renderers-svg",
+            // canvas renderer 
+            "jsPlumb/src/renderers-canvas",
+            // vml renderer 
+            "jsPlumb/src/renderers-vml",            
+            // jquery jsPlumb adapter 
+            "jsPlumb/src/dojo.jsPlumb",
+            // Dojo interface layer
+            "jsPlumb/demo/demo-helper-dojo",
+	    "./state-machine.js"
+        ]);
+    </script>
+	
+</head>
+
+<body data-demo-id="statemachine" data-library="dojo">
+
+        <div id="main">			
+           
+            <div class="demo statemachine-demo" id="statemachine-demo">
+                <div class="w" id="population" onClick="myDialog.show();"></br></br>120</br></br></br></br></br></br>Population</div>
+                <div class="circle" id="growth" onClick="myDialog.show();"></br></br>*</br></br></br></br></br></br>Growth</div>
+                <div class="diamond" id="grate" onClick="myDialog.show();"><div class="diamond-inner"></br></br>0.3</br></br></br></br></br></br>Growth Rate</label><br/></div></div></div>
+            </div>
+            
+        </div>
+		
+    </body>
+</html>

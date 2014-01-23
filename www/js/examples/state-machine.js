@@ -1,4 +1,7 @@
-;(function() {
+/* global define, jsPlumb */
+define([
+    "jsPlumb/src/jsPlumb"
+],function(){
 	
 	jsPlumb.ready(function() {
 						
@@ -108,4 +111,4 @@
 		});
 	
 	});
-})();
+});
