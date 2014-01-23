@@ -1,10 +1,3 @@
-<?php
-session_start();
-//********************************************************************************************************************************
-//*********This file is for development to test functionality and is not part of the MVC or the JavaScript implementation.
-//*********It shows the model's usefulness in loading or building a model.
-//********************************************************************************************************************************
-?>
 
 <!DOCTYPE html>
 <html>
@@ -36,6 +29,8 @@ session_start();
                 var loadModel = new model(null, null, null, null, null, null);
                 var string = '{ "task": { "taskName": "Rabbits - Intro Problem", "properties": { "phase": "intro", "type": "construct", "URL": "images/rabbit.jpeg", "startTime": 0, "endTime": 10, "timeStep": 1, "units": "years" }, "taskDescription": "In this exercise, you will construct a model of how a rabbit population grows when no rabbits die. The first quantity in this model is the population or number of rabbits in the population. Initially, there are 100 rabbits, but the number increases with time. The new population each month is its present value plus the number of births (number of rabbits born each month). The number of births is equal to the product of the population and the birth rate. The birthrate or the ratio of the number of rabbits born in a month to the rabbit population that month has a fixed value of 0.2.", "givenModelNodes": [ { "ID": "id1", "name": "population", "type": "accumulator", "parentNode": false, "extra": false, "order": 1, "units": "rabbits", "inputs": [ { "ID": "id2" } ], "initial": 100, "equation": "+ id2", "correctDesc": "The number of rabbits in the population", "attemptCount": { "description": 2, "type": 1, "initial": 2, "units": 4, "equation": 3 }, "status": { "description": "correct", "type": "demo", "initial": "correct", "units": "demo", "equation": "correct" } }, { "ID": "id2", "name": "births", "type": "function", "parentNode": true, "extra": false, "order": 2, "units": "births", "inputs": [ { "ID": "id1" }, { "ID": "id3" } ], "initial": null, "equation": "id1 * id3", "correctDesc": "The number of rabbits born each month", "attemptCount": { "description": 2, "type": 1, "initial": 0, "units": 2, "equation": 1 }, "status": { "description": "demo", "type": "demo", "initial": "null", "units": "correct", "equation": "correct" } }, { "ID": "id3", "name": "birth rate", "type": "parameter", "parentNode": false, "extra": false, "order": 3, "units": "percent", "inputs": [], "initial": null, "equation": ".2", "correctDesc": "The ratio of number of rabbits born in a month to the rabbit population that month", "attemptCount": { "description": 1, "type": 1, "initial": 0, "units": 1, "equation": 3 }, "status": { "description": "correct", "type": "correct", "initial": "null", "units": "correct", "equation": "correct" } } ], "studentModelNodes": [ { "ID": "id1", "name": "population", "inGivenModel": true, "inputs": [ { "ID": "id2" } ], "position": { "x": 100, "y": 100 }, "studentSelections": { "description": "The number of rabbits in the population", "type": "accumulator", "initial": 100, "units": "rabbits", "equation": "+ id2" } }, { "ID": "id2", "name": "births", "inGivenModel": true, "inputs": [ { "ID": "id1" }, { "ID": "id3" } ], "position": { "x": 300, "y": 100 }, "studentSelections": { "description": "The number of rabbits born each month", "type": "function", "initial": "null", "units": "births", "equation": "id1 * id3" } }, { "ID": "id3", "name": "birth rate", "inGivenModel": true, "inputs": [], "position": { "x": 500, "y": 100 }, "studentSelections": { "description": "The ratio of number of rabbits born in a month to the rabbit population that month", "type": "parameter", "initial": "null", "units": "percent", "equation": ".2" } } ] } }';
                 loadModel.loadModel(string);
+//                alert(loadModel.getURL());
+                //});
 
                 // The next section builds a model from scratch as would happen as an author creates a problem
                 var rabbits = new model("Rabbits - Intro Problem", "images/rabbit.jpeg", 0, 10, 1, "years");
@@ -56,9 +51,10 @@ session_start();
                 rabbits.addNodeInput(rabbits.getNodeIDByName("births"), rabbits.getNodeIDByName("population"));
                 rabbits.addNodeInput(rabbits.getNodeIDByName("population"), rabbits.getNodeIDByName("births"));
                 rabbits.addNodeInput(rabbits.getNodeIDByName("birth rate"), rabbits.getNodeIDByName("births"));
+                rabbits.setNodeParent("id2", true);
                 
                 var ped = new pm("coached", rabbits);
-                ped.descriptionAction("The number of rabbits in the population");
+                ped.descriptionAction("The number of rabbits born each month");
                 
                 
                 rabbits.addStudentNodeWithName("population");
@@ -89,7 +85,7 @@ session_start();
                 rabbits.setToDemo("id2", "type");
                 rabbits.setStudentNodeSelection("id2", "units", "rabbits");
                 rabbits.setStudentNodeSelection("id2", "units", "births");
-                rabbits.setStudentNodeSelection("id2", "equation", "id1 * id3");
+                rabbits.setStudentNodeSelection("id2", "equation", "id1 * id3");                
 
                 rabbits.setStudentNodeSelection("id3", "description", "The ratio of number of rabbits born in a month to the rabbit population that month");
                 rabbits.setStudentNodeSelection("id3", "type", "parameter");
@@ -97,6 +93,9 @@ session_start();
                 rabbits.setStudentNodeSelection("id3", "equation", "20");
                 rabbits.setStudentNodeSelection("id3", "equation", "2");
                 rabbits.setStudentNodeSelection("id3", "equation", ".2");
+                rabbits.addExtraDescription("The number of rabbits in the population during the second month", "model");
+                rabbits.addExtraDescription("The ratio of rabbits born with superpowers to ordinary rabbits", "extra");
+                //alert(rabbits.getExtraDescriptions(null));
 
 
                 //The next section prints the entire model on the screen, and then uses several getters to access the models information

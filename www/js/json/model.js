@@ -58,6 +58,8 @@
 //        getNodeCorrectDescription: function(/*string*/ id)
 //        getNodeAttemptCount: function(/*string*/ id, /*string*/ part)
 //        getNodeStatus: function(/*string*/ id, /*string*/ part)
+//        getExtraDescriptions: function(/*string*/ type)
+//        isStudentModelEmpty: function()
 //        isInGivenModel: function(/*string*/ id)
 //        getStudentNodeInputs: function(/*string*/ id)
 //        getStudentNodeX: function(/*string*/ id)
@@ -91,6 +93,7 @@
 //        setNodeCorrectDesc: function(/*string*/ id, /*string*/ correctDesc)
 //        addNodeInput: function(/*string*/ input, /*string*/ inputInto)
 //        deleteNodeInput: function(/*string*/ id, /*string*/ inputIDToRemove)
+//        addExtraDescription: function(/*string*/ text, /*string*/ type)
 //        addStudentNode: function()
 //        deleteStudentNode: function(/*string*/ id)
 //        setStudentNodeName: function(/*string*/ id, /*string*/ name)
@@ -139,7 +142,9 @@ define(["dojo/_base/declare", "/laits/js/json/node", "/laits/js/json/student_nod
             newModel += "\t\"properties\" : " + JSON.stringify(this.properties, null, "\t\t") + ",\n";
             newModel += "\t\"taskDescription\" : \"" + this.taskDescription + "\",\n";
             newModel += "\t\"givenModelNodes\" : [\n],\n";
+            newModel += "\t\"extraDescriptions\" : [\n],\n";
             newModel += "\t\"studentModelNodes\" : [\n]\n";
+
             newModel += "}\n}";
             this.model = JSON.parse(newModel);
         },
@@ -358,7 +363,7 @@ define(["dojo/_base/declare", "/laits/js/json/node", "/laits/js/json/student_nod
             for (var i = 0; i < this.model.task.studentModelNodes.length; i++)
                 for (var ii = 0; ii < this.model.task.studentModelNodes.length; ii++)
                     if (id === this.model.task.studentModelNodes[i].inputs[ii])
-                        return true;            
+                        return true;
             return false;
         },
         getNodeInitial: function(/*string*/ id) {
@@ -429,6 +434,25 @@ define(["dojo/_base/declare", "/laits/js/json/node", "/laits/js/json/student_nod
                             break;
                     }
             return null;
+        },
+        getExtraDescriptions: function(/*string*/ type) {
+            // Summary: returns an array of the extra descriptions by type; if 
+            //      type is left blank all of the descriptions will be returned
+            var descriptions = new Array();
+            if (!type)
+                for (var i = 0; i < this.model.task.extraDescriptions.length; i++)
+                    descriptions.push(this.model.task.extraDescriptions[i].text);
+            else
+                for (var i = 0; i < this.model.task.extraDescriptions.length; i++)
+                    if (this.model.task.extraDescriptions[i].type === type)
+                        descriptions.push(this.model.task.extraDescriptions[i].text);
+            return descriptions;
+        },
+        isStudentModelEmpty: function() {
+            // Summary: returns true if the the student model is empty
+            if (this.model.task.studentModelNodes)
+                return true;
+            return false;
         },
         isInGivenModel: function(/*string*/ id) {
             // Summary: returns true if a node in the student model is also found in the given model
@@ -687,6 +711,17 @@ define(["dojo/_base/declare", "/laits/js/json/node", "/laits/js/json/student_nod
                         }
                     }
             }
+        },
+        addExtraDescription: function(/*string*/ text, /*string*/ type) {
+            // Summary: allows author to add extra descriptions that are not
+            //      required in the completed model to further challenge the 
+            //      the student
+            // Note: type should be "model" (meaning the description is 
+            //      referred to in the model's task description but is not 
+            //      required to complete the model) or "extra" (meaning the 
+            //      description is not mentioned in the problem and is not 
+            //      needed to solve the problem)
+            this.model.task.extraDescriptions.push(JSON.parse('{"text": "' + text + '", "type": "' + type + '"}'));
         },
         addStudentNode: function() {
             // Summary: builds a new node in the student model and returns the node's unique ID
