@@ -554,7 +554,7 @@ public class ModelMenu extends JMenu {
         logs.debug("Done button action.");
         Map<String, Object> logMessage = new HashMap<String, Object>();
         logMessage.put("type","menu-choice");
-        logMessage.put("name", "exit");
+        logMessage.put("name", "done");
         logMessage.put("Is Problem Solved", ApplicationContext.isProblemSolved());
             
         if(ApplicationContext.isProblemSolved()){
@@ -569,6 +569,8 @@ public class ModelMenu extends JMenu {
             }catch(InterruptedException ex){
             }
             System.exit(0);
+        } else {
+            JOptionPane.showMessageDialog(MainWindow.getInstance(), "The task is not complete yet.");
         }
         activityLogs.debug(new UserActivityLog(UserActivityLog.UI_ACTION, logMessage));
     }

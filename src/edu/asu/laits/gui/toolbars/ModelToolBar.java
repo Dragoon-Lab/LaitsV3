@@ -18,15 +18,12 @@
 package edu.asu.laits.gui.toolbars;
 
 import edu.asu.laits.editor.ApplicationContext;
-import edu.asu.laits.gui.MainMenu;
-import edu.asu.laits.gui.MainWindow;
 import edu.asu.laits.gui.menus.ModelMenu;
 import javax.swing.JToolBar;
 import javax.swing.JButton;
 import java.awt.Font;
 import java.awt.event.ActionEvent;
 import javax.swing.Box;
-import org.jgraph.graph.CellView;
 
 /**
  * ToolBar for Model functionalities Provides Add Node and Run Model buttons on

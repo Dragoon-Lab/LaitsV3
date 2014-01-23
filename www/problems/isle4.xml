@@ -67,7 +67,7 @@
       <InitialValue>0.0</InitialValue>
     </Node>
     <Node type="stock" name="moose population" extra="no">
-      <CorrectDescription>The number of moose in the population</CorrectDescription>
+      <CorrectDescription>The number of moose in the population each year</CorrectDescription>
       <Plan>proportional to accumulator and input</Plan>
       <Order>1</Order>
       <Inputs>

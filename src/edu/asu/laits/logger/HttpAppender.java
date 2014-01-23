@@ -72,7 +72,7 @@ public class HttpAppender extends AppenderSkeleton {
         HttpConnectionParams.setConnectionTimeout(params, timeOut);
         HttpConnectionParams.setSoTimeout(params, timeOut);
         String message = this.getLayout().format(paramLoggingEvent);
-        logURL = ApplicationContext.APP_HOST + "/logger.php";
+        logURL = ApplicationContext.APP_HOST + "logger.php";
         
         try {
             if (this.HttpMethodBase.equalsIgnoreCase(METHOD_GET)) {

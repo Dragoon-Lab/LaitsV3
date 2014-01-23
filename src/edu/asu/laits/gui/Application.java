@@ -67,13 +67,13 @@ public class Application {
         // Currently DEV mode will not perform session handling.
         if (args.length > 0) {
             System.out.println("Application was launched from Command Line");
-            ApplicationContext.APP_HOST = "http://dragoon.asu.edu/ram";
-            ApplicationContext.forumURL = "http://dragoon.asu.edu/ram";
-            ApplicationContext.setApplicationEnvironment(ApplicationContext.ApplicationEnvironment.PROD);
+            ApplicationContext.APP_HOST = "http://dragoon.asu.edu/ram/";
+            ApplicationContext.forumURL = "http://dragoon.asu.edu/ram/";
+            ApplicationContext.setApplicationEnvironment(ApplicationContext.ApplicationEnvironment.DEV);
             ApplicationContext.setSessionID("testsession4");
             ApplicationContext.setUserID("ramayantiwari");
-            ApplicationContext.setAppMode("coached");
-            ApplicationContext.setCurrentTaskID("rabbits");
+            ApplicationContext.setAppMode("test");
+            ApplicationContext.setCurrentTaskID("isle1");
             
         } else {
             // Try to Launch application using JNLP for PROD
@@ -87,7 +87,7 @@ public class Application {
                 ApplicationContext.forumURL = forumURL;
                 System.out.println("HOST: " + hostURL + " FORUM: " + forumURL);
                 Gson gson = new Gson();
-                String json = readUrl(ApplicationContext.APP_HOST + "/session_manager.php?action=get_session_info&session_id=" + sessionID);
+                String json = readUrl(ApplicationContext.APP_HOST + "session_manager.php?action=get_session_info&session_id=" + sessionID);
 
                 UserSession userSession = gson.fromJson(json, UserSession.class);
 

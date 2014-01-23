@@ -131,6 +131,9 @@ public class TestModeNodeEditorController extends NodeEditorController {
         //super.diasableDemoForChanllengeProblems();       
     }
 
+    /**
+     * In Test Mode OK is supposed to Save values until model is executed   s
+     */
     public void initOkButton() {
         view.getOKButton().setText("Ok");
         if(view.getTabbedPane().getSelectedIndex() == NodeEditorView.CALCULATIONS 
@@ -151,9 +154,6 @@ public class TestModeNodeEditorController extends NodeEditorController {
 
     public void processCancelAction() throws NodeEditorException {
         super.processCancelAction();
-    }
-
-    public void initOnLoadBalloonTip() {
     }
 
     public String demoDescriptionPanel() {
@@ -206,6 +206,11 @@ public class TestModeNodeEditorController extends NodeEditorController {
         
         else if (view.getCalculationsPanel().processCalculationsPanel()) {
             view.closeNodeEditor();
+        }
+        
+        if(view.getTabbedPane().getTabCount() == 1) {
+            view.getParent().getCalculationsPanel().refreshInputs();
+            view.getParent().getCalculationsPanel().setCreateButtonEnabled();
         }
     }
 

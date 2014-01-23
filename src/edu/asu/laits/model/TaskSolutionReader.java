@@ -21,12 +21,9 @@
 package edu.asu.laits.model;
 
 import edu.asu.laits.editor.ApplicationContext;
-import java.io.IOException;
-import java.net.InetAddress;
 import java.net.MalformedURLException;
 import java.util.List;
 import java.net.URL;
-import java.net.UnknownHostException;
 import java.util.ArrayList;
 import javax.swing.JOptionPane;
 import org.apache.log4j.Logger;
@@ -99,20 +96,6 @@ public class TaskSolutionReader {
 //                resourceURL += "&author=" + author + "&group=" + group;
 //            }
         System.out.println("Resource URL "+resourceURL);
-        // Check Internet Connectivity
-        try{
-            boolean hasInternetAccess  = InetAddress.getByName("www.asu.edu").isReachable(1000);
-            if(!hasInternetAccess) {
-                JOptionPane.showMessageDialog(null, "Unable to connect to Internet.\nPlease check your connection and try again.", "Network Error", JOptionPane.ERROR_MESSAGE);  
-                System.exit(0);
-            }
-        }catch(UnknownHostException ex) {
-            ex.printStackTrace();
-            JOptionPane.showMessageDialog(null, "Unable to connect to Internet.\nPlease check your connection and try again.", "Network Error", JOptionPane.ERROR_MESSAGE);  
-            System.exit(0);
-        }catch(IOException ex) {
-            ex.printStackTrace();
-        }
         logs.info("Task URL : "+resourceURL);
         document = reader.read(new URL(resourceURL));
         

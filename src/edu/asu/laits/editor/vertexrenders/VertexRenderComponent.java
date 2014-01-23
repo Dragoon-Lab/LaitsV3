@@ -179,7 +179,7 @@ public class VertexRenderComponent extends VertexRenderer implements
     
     protected boolean isBackGroundPainted(Vertex vertex) {
         // Paint background green if student used check button only once
-        if(!ApplicationContext.isAuthorMode()) {
+        if(!ApplicationContext.isAuthorMode() && !ApplicationContext.isTestMode()) {
             StatsCollector stats = ApplicationContext.getCheckDemoStats(vertex.getName());
             
             if(vertex.isDescriptionDone() && vertex.isPlanDone() && vertex.isCalculationsDone()) {

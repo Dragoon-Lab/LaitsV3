@@ -64,7 +64,6 @@ public class ViewMenu extends JMenu {
         this.add(getDefaultZoomMenuItem());
         this.add(getJSeparator());
         this.add(getCenterViewMenuItem());
-
     }
 
     /**
@@ -143,7 +142,7 @@ public class ViewMenu extends JMenu {
                 public void actionPerformed(java.awt.event.ActionEvent e) {
                     Map<String, Object> logMessage = new HashMap<String, Object>();
                     logMessage.put("type","menu-choice");
-                    logMessage.put("name", "zoom-default");
+                    logMessage.put("name", "center-view");
                     activityLogs.debug(new UserActivityLog(UserActivityLog.UI_ACTION, logMessage));
                     JViewport viewport = mainFrame
                             .getGraphPaneScrollPane().getViewport();
@@ -175,6 +174,10 @@ public class ViewMenu extends JMenu {
                     "/resources/icons/16x16/viewmag1.png")));
             defaultZommLevelAction = new java.awt.event.ActionListener() {
                 public void actionPerformed(java.awt.event.ActionEvent e) {
+                    Map<String, Object> logMessage = new HashMap<String, Object>();
+                    logMessage.put("type","menu-choice");
+                    logMessage.put("name", "zoom-default");
+                    activityLogs.debug(new UserActivityLog(UserActivityLog.UI_ACTION, logMessage));
                     graphPane.setDefaultZoomLevel();
                 }
             };

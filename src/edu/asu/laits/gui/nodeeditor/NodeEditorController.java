@@ -46,7 +46,6 @@ public abstract class NodeEditorController{
     // Abstract methods to be overridden by all the controllers.
     public abstract void initActionButtons();    
     public abstract int processTabChange(int oldTab, int newTab);    
-    public abstract void initOnLoadBalloonTip();    
     public abstract void initDescriptionPanelView(DescriptionPanelView dPanelView);    
     public abstract String demoDescriptionPanel();    
     public abstract void planPanelRadioClicked();

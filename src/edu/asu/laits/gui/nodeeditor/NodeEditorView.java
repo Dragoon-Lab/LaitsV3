@@ -120,7 +120,6 @@ public class NodeEditorView extends javax.swing.JDialog {
             }
         });
         
-        _controller.initOnLoadBalloonTip();
         UIManager.getDefaults().put("TabbedPane.contentBorderInsets", new Insets(2, 0, -1, 0));
         setLocationRelativeTo(null);
         prepareNodeEditorDisplay();
@@ -426,6 +425,10 @@ public class NodeEditorView extends javax.swing.JDialog {
             _parent.getCalculationsPanel().setCreateButtonEnabled();
         }
         this.dispose();       
+    }
+    
+    public NodeEditorView getParent() {
+        return _parent;
     }
 
     /**

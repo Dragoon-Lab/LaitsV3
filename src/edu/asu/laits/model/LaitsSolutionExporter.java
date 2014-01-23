@@ -56,7 +56,7 @@ public class LaitsSolutionExporter {
             addTaskDetails(task);
             addAllNodes(task);
             addDescriptionTree(task);
-            String serviceURL = ApplicationContext.APP_HOST.concat("/save_solution.php");
+            String serviceURL = ApplicationContext.APP_HOST.concat("save_solution.php");
             // Turn the document into a string, with pretty printing.
             // Could use document.asXML() but then there is no formatting.
             StringWriter stringWriter = new StringWriter();  
