@@ -2,10 +2,10 @@
 
 <Task phase="Intro" type="Construct">
 <TaskName>Jared and Oprah with difference</TaskName>
-<TaskDescription>Create a model with four nodes: <BR/>
-    *Jared weight:  Jared always weighs a certain amount more than Oprah. <BR/>
-    *Jared extra weight:  This is 50 pounds, which is how much more he weighs than Oprah. <BR/>
-    *Oprah weight:  She starts at 140 pounds and decreases by a certain amount a week.<BR/>
+<TaskDescription>Create a model with four nodes: &lt;br&gt;
+    *Jared weight:  Jared always weighs a certain amount more than Oprah. &lt;br&gt;
+    *Jared extra weight:  This is 50 pounds, which is how much more he weighs than Oprah. &lt;br&gt;
+    *Oprah weight:  She starts at 140 pounds and decreases by a certain amount a week.&lt;br&gt;
     *Oprah weight loss:  She loses 1.5 pounds a week.</TaskDescription>
   <URL>images/jared-and-oprah.jpg</URL>
   <StartTime>0</StartTime>

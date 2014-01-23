@@ -55,7 +55,9 @@ import edu.asu.laits.properties.LatestFilesPropertyChangeListener;
 import java.io.FileOutputStream;
 import java.io.InputStream;
 import java.io.OutputStream;
+import java.util.HashMap;
 import java.util.Iterator;
+import java.util.Map;
 
 import javax.swing.JFileChooser;
 import javax.swing.filechooser.FileFilter;
@@ -174,9 +176,9 @@ public class FileMenu extends JMenu {
         try {
             TaskSolution solution = solutionReader.loadSolution(id,author,group);
             ApplicationContext.setCorrectSolution(solution);
-
-            activityLogs.debug(new UserActivityLog(UserActivityLog.OPEN_PROBLEM, "Student opened a new task ID: " + id + " - "
-                + ApplicationContext.getCurrentTask().getTaskName()));
+            Map<String, Object> logMessage = new HashMap<String, Object>();
+            logMessage.put("problem",id);            
+            activityLogs.debug(new UserActivityLog(UserActivityLog.OPEN_PROBLEM, logMessage));
             
             mainWindow.loadTaskDescription(ApplicationContext.getCurrentTask().getTaskName(),
                     ApplicationContext.getCurrentTask().getTaskDescription(),
@@ -273,7 +275,10 @@ public class FileMenu extends JMenu {
             newAction = new java.awt.event.ActionListener() {
                 public void actionPerformed(java.awt.event.ActionEvent e) {
                     // If new is called a new main window is created
-                    activityLogs.debug(new UserActivityLog(UserActivityLog.UI_ACTION, "User Pressed New File Menu"));
+                    Map<String, Object> logMessage = new HashMap<String, Object>();
+                    logMessage.put("type","menu-choice");
+                    logMessage.put("name", "new");
+                    activityLogs.debug(new UserActivityLog(UserActivityLog.UI_ACTION, logMessage));
                     MainWindow.launch();
                 }
             };
@@ -307,7 +312,10 @@ public class FileMenu extends JMenu {
                     "/resources/icons/16x16/fileopen.png")));
             openAction = new java.awt.event.ActionListener() {
                 public void actionPerformed(java.awt.event.ActionEvent e) {
-                    activityLogs.debug(new UserActivityLog(UserActivityLog.UI_ACTION, "User Pressed Open File Menu"));                   
+                    Map<String, Object> logMessage = new HashMap<String, Object>();
+                    logMessage.put("type","menu-choice");
+                    logMessage.put("name", "open");
+                    activityLogs.debug(new UserActivityLog(UserActivityLog.UI_ACTION, logMessage));                   
                     open();
                 }
             };
@@ -418,7 +426,10 @@ public class FileMenu extends JMenu {
             saveFileMenuItem.setEnabled(false);
             saveAction = new java.awt.event.ActionListener() {
                 public void actionPerformed(java.awt.event.ActionEvent e) {
-                    activityLogs.debug(new UserActivityLog(UserActivityLog.UI_ACTION, "User Pressed Save File Menu"));
+                    Map<String, Object> logMessage = new HashMap<String, Object>();
+                    logMessage.put("type","menu-choice");
+                    logMessage.put("name", "save");
+                    activityLogs.debug(new UserActivityLog(UserActivityLog.UI_ACTION, logMessage));
                     save();
                 }
             };
@@ -441,7 +452,10 @@ public class FileMenu extends JMenu {
             saveAsFileMenuItem
                     .addActionListener(new java.awt.event.ActionListener() {
                 public void actionPerformed(java.awt.event.ActionEvent e) {
-                    activityLogs.debug(new UserActivityLog(UserActivityLog.UI_ACTION, "User Pressed Save As File Menu"));
+                    Map<String, Object> logMessage = new HashMap<String, Object>();
+                    logMessage.put("type","menu-choice");
+                    logMessage.put("name", "save-as");
+                    activityLogs.debug(new UserActivityLog(UserActivityLog.UI_ACTION, logMessage));
                     saveAs();
                 }
             });

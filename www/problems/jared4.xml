@@ -5,12 +5,13 @@
 <TaskDescription>
     Suppose that Jared always weighs 1.3 times as much as Oprah.  That is, when 
     she weighs 100 pounds, then Jared weighs 130 pounds.  When Oprah weighs 
-    120 pounds, then Jared weight 156 pounds (156 is 1.3*120). <BR/>
-    Note:  Dragoon uses * to denote multiplication.  To save you work, the nodes 
+    120 pounds, then Jared weight 156 pounds (156 is 1.3*120). &lt;br&gt;&lt;br&gt;
+    
+    &lt;strong&gt;Note: &lt;strong&gt; Dragoon uses * to denote multiplication.  To save you work, the nodes 
     for Oprah’s weight and weekly weight loss have been defined already. Thus 
-    you will only have to define two nodes: <BR/>
-    * Jared weight: This is how much Jared weighs at the end of each week. <BR/>
-    * Jared extra weight: This is a factor that is used to convert Oprah’s weight to <BR/>
+    you will only have to define two nodes: &lt;br&gt;
+    * Jared weight: This is how much Jared weighs at the end of each week. &lt;br&gt;
+    * Jared extra weight: This is a factor that is used to convert Oprah’s weight to &lt;br&gt;
     Jared’s weight.
 </TaskDescription>
   <URL>images/jared-and-oprah.jpg</URL>

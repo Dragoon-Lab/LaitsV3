@@ -19,6 +19,9 @@
         private $problem_name;
         private $author; // TODO
         private $connection;
+        private $hostURL;
+        private $forumURL;
+        
         
         // Constants to represent HTML login form params
         const USER_NAME_PARAM = "username";
@@ -33,7 +36,7 @@
             
             // Connect to db
             $this->connection = mysqli_connect("localhost", $dbuser, $dbpass, $dbname)
-            or trigger_error('Could not connect to database.');            
+            or trigger_error('Could not connect to database.'); 
         }
         
         public function start_app()
@@ -42,6 +45,12 @@
             {
                 if($this->validate_param_value())
                 {
+                    $URI = $_SERVER['REQUEST_URI'];
+                    $this->hostURL = "http://" . $_SERVER['SERVER_NAME'] . 
+                    substr($URI, 0, strrpos($URI,'/') + 1);
+            
+                    $this->forumURL = isset($_REQUEST['forumurl']) ? $_REQUEST['forumurl'] : $this->hostURL;
+                    
                     $session_id = $this->generate_and_save_session_to_db();
                     $this->send_jnlp_response($session_id);
                 }
@@ -121,7 +130,7 @@
             
             $jnlp_source =  "<?xml version='1.0' encoding='UTF-8'?>" . 
                     "<jnlp codebase=\"$codebase\" spec=\"1.0+\">"
-                    ."<information><title>Laits</title><vendor>Arizona State University</vendor>"
+                    ."<information><title>Dragoon</title><vendor>Arizona State University</vendor>"
                     ."<homepage href=\"dragoon.asu.edu\"/><description>Dragoon is a System Dynamics Modeling tool developed at the Arizona State University Computer Science department.</description>
                         <description kind=\"short\">Dragoon</description></information><update check=\"always\"/>
                         <security><all-permissions/></security><resources><j2se version=\"1.6+\"/><jar href=\"Laits.jar\" main=\"true\"/>" ;
@@ -130,7 +139,10 @@
                             $jnlp_source .= "        <jar href=\"".$filename."\"/>";
                         }
          
-            $jnlp_source .= "        <property name=\"jnlp.session_id\" value=\"$session_id\"/>";            
+            $jnlp_source .= "        <property name=\"jnlp.session_id\" value=\"$session_id\"/>";    
+            $jnlp_source .= "        <property name=\"jnlp.host_url\" value=\"$this->hostURL\"/>";    
+            $jnlp_source .= "        <property name=\"jnlp.forum_url\" value=\"$this->forumURL\"/>";    
+            
             $jnlp_source .= "</resources><application-desc main-class=\"edu.asu.laits.gui.Application\"/></jnlp>";
             
             // Pretty print JNLP source file

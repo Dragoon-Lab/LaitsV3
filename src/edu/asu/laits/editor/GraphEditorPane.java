@@ -44,6 +44,7 @@ import edu.asu.laits.logger.UserActivityLog;
 import edu.asu.laits.properties.GlobalProperties;
 import edu.asu.laits.properties.GraphProperties;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.Iterator;
 import javax.swing.SwingConstants;
 import net.sourceforge.jeval.Evaluator;
@@ -211,12 +212,13 @@ public class GraphEditorPane extends JGraph {
                 int selectedVertices = selectedVertexObjects.length;
                 //int selectedEdges = selectedEdgeObjects.length;
 
-                if(selectedVertices > 0){
-                    MainWindow.getInstance().getModelToolBar().enableDeleteNodeButton();
-                } else {
-                    MainWindow.getInstance().getModelToolBar().disableDeleteNodeButton();
+                if(!ApplicationContext.isCoachedMode()){
+                    if(selectedVertices > 0){
+                        MainWindow.getInstance().getModelToolBar().enableDeleteNodeButton();
+                    } else {
+                        MainWindow.getInstance().getModelToolBar().disableDeleteNodeButton();
+                    }
                 }
-                
                 if(ApplicationContext.getApplicationEnvironment().equals(ApplicationContext.ApplicationEnvironment.DEV)){
                     currentStatusMessageProvider.setMessage("Nodes: " + vertices + ", Edges: " + edges
                     + ", Selected Nodes:  " + selectedVertices );
@@ -369,7 +371,10 @@ public class GraphEditorPane extends JGraph {
             
             v.setGraphsStatus(Vertex.GraphsStatus.UNDEFINED);
         }
-        activityLogs.debug(new UserActivityLog(UserActivityLog.CLIENT_MESSAGE, "Deleted Selected Nodes: " + selectedNodes));        
+        Map<String, Object> logMessage = new HashMap<String, Object>();
+        logMessage.put("type","delete-action");
+        logMessage.put("deleted-nodes", selectedNodes);
+        activityLogs.debug(new UserActivityLog(UserActivityLog.CLIENT_MESSAGE, logMessage));        
     }
     
     public void addEdge(Vertex sourceVeretx, Vertex targetVertex){

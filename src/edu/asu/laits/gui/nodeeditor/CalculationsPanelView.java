@@ -18,12 +18,11 @@
  */
 package edu.asu.laits.gui.nodeeditor;
 
+import com.google.gson.Gson;
 import edu.asu.laits.editor.ApplicationContext;
-import edu.asu.laits.gui.BlockingToolTip;
 import edu.asu.laits.gui.MainWindow;
 import edu.asu.laits.logger.UserActivityLog;
 import edu.asu.laits.model.Graph;
-import edu.asu.laits.model.HelpBubble;
 import edu.asu.laits.model.SolutionNode;
 import edu.asu.laits.model.TaskSolution;
 import edu.asu.laits.model.Vertex;
@@ -43,7 +42,7 @@ import net.sourceforge.jeval.EvaluationException;
 import net.sourceforge.jeval.Evaluator;
 import edu.asu.laits.model.Vertex.VertexType;
 import java.text.NumberFormat;
-import java.text.ParseException;
+import java.util.Collection;
 import java.util.Collections;
 import java.util.Comparator;
 import java.util.HashSet;
@@ -387,18 +386,6 @@ public class CalculationsPanelView extends javax.swing.JPanel {
         
     }
     
-    private void addHelpBalloon(String timing){
-        if(ApplicationContext.isCoachedMode()){
-            List<HelpBubble> bubbles = ApplicationContext.getHelp(openVertex.getName(), "Calculations", timing);
-            if(!bubbles.isEmpty()){
-                for(HelpBubble bubble : bubbles){
-                    
-                    new BlockingToolTip(this.nodeEditor, bubble, this.getLabel(bubble.getAttachedTo()));
-                }
-            }
-        }
-    }
-    
     private class SortIgnoreCase implements Comparator <Object> {
         public int compare(Object o1, Object o2) {
             String s1 = (String) o1;
@@ -597,8 +584,35 @@ public class CalculationsPanelView extends javax.swing.JPanel {
         else
             sb.append("UNDEFINED");
         
-        //sb.append(" Calculation Panel Status : " + nodeEditor.getOpenVertex().getCalculationsStatus());
         return sb.toString();
+    }
+    
+    public String getCalculationsActivityLog(){
+        Collection collection = new ArrayList();
+        Map<String, Object> equation = new HashMap<>();
+        Map<String, Object> initialValue = new HashMap<>();
+        if(openVertex.getVertexType().equals(Vertex.VertexType.CONSTANT) || openVertex.getVertexType().equals(Vertex.VertexType.STOCK)){
+            initialValue.put("type", "quantity-initial-value");
+            initialValue.put("value", openVertex.getInitialValue());
+            initialValue.put("correct-value", ApplicationContext.getCorrectSolution().getNodeByName(openVertex.getName()).getInitialValue()); 
+            collection.add(initialValue);
+        }
+        
+        if(openVertex.getVertexType().equals(Vertex.VertexType.FLOW) || openVertex.getVertexType().equals(Vertex.VertexType.STOCK)){
+            equation.put("type", "quantity-equation");
+            equation.put("value", openVertex.getEquation());
+            equation.put("correct-value", ApplicationContext.getCorrectSolution().getNodeByName(openVertex.getName()).getNodeEquation());  
+            collection.add(equation);
+        }
+        
+        Gson gson = new Gson();
+        return gson.toJson(collection);
+    }
+    
+    public void setCalculationPanelDetails(Map<String, Object> map) {
+        map.put("node-type", openVertex.getVertexType());
+        map.put("node-initial-value", openVertex.getInitialValue());
+        map.put("node-equation", openVertex.getEquation());
     }
     
     public void refreshInputs(){
@@ -642,9 +656,13 @@ public class CalculationsPanelView extends javax.swing.JPanel {
 
             // This can be improved to set/reset selection in if-else
             setSelectedNodesOnJList();
+            Map<String, Object> logMessage = new HashMap<String, Object>();
+            logMessage.put("type", "input-selection");
+            logMessage.put("name", "calculation-panel");
+            logMessage.put("node", openVertex.getName());
+            logMessage.put("selected-input", selectedVertexName);
             
-            activityLogs.debug(new UserActivityLog(UserActivityLog.UI_ACTION, "User selected input " + selectedVertexName + 
-                    " for the Calculations of Node " + openVertex.getName() + ""));
+            activityLogs.debug(new UserActivityLog(UserActivityLog.UI_ACTION, logMessage));
             
             availableInputsJList.removeSelectionInterval(0, availableInputJListModel.getSize());
         }
@@ -667,7 +685,11 @@ public class CalculationsPanelView extends javax.swing.JPanel {
     }
     
     private void buttonCreateNodeActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_buttonCreateNodeActionPerformed
-        activityLogs.debug(new UserActivityLog(UserActivityLog.UI_ACTION, "User pressed Create node button on Calculations tab for Node " + openVertex.getName()));
+        Map<String, Object> logMessage = new HashMap<String, Object>();
+        logMessage.put("type","create-node");
+        logMessage.put("panel", "calculation");
+        logMessage.put("node", openVertex.getName());
+        activityLogs.debug(new UserActivityLog(UserActivityLog.UI_ACTION, logMessage));
     
         // Check if Creating new node is allowed in non authot modes
         if(! ApplicationContext.isAuthorMode()){

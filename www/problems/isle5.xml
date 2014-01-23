@@ -3,11 +3,11 @@
 <Task phase="" type="">
   <TaskName>Isle Royale - Wolves</TaskName>
   <TaskDescription>
-      Assumptions: <BR/>
-      * The wolf population is 2 in the first year (1949). <BR/>
-      * Births and deaths are the only change in the population.  Immigration and emigration do not occur. <BR/>
-      * The number of wolf deaths each year is 67% of the wolf population. <BR/>
-      * The number of births each year is year is 75% of the wolf population. <BR/>
+      Assumptions: &lt;br&gt;
+      * The wolf population is 2 in the first year (1949). &lt;br&gt;
+      * Births and deaths are the only change in the population.  Immigration and emigration do not occur. &lt;br&gt;
+      * The number of wolf deaths each year is 67% of the wolf population. &lt;br&gt;
+      * The number of births each year is year is 75% of the wolf population. &lt;br&gt;
   </TaskDescription>
   <URL>images/moose_wolves.png</URL>
   <StartTime>1949</StartTime>

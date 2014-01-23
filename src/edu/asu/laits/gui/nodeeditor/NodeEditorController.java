@@ -18,9 +18,12 @@
 
 package edu.asu.laits.gui.nodeeditor;
 
+import com.google.gson.Gson;
 import edu.asu.laits.editor.ApplicationContext;
 import edu.asu.laits.model.PersistenceManager;
 import edu.asu.laits.model.Vertex;
+import java.util.HashMap;
+import java.util.Map;
 import org.apache.log4j.Logger;
 
 /**
@@ -136,11 +139,16 @@ public abstract class NodeEditorController{
     }
     
     protected String getNodeDetailLog() {
-        StringBuilder sb = new StringBuilder();
-        sb.append(view.getDescriptionPanel().printDescriptionPanelDetails());
-        sb.append(" ," + view.getPlanPanel().printPlanPanel());
-        sb.append(" ," + view.getCalculationsPanel().printCalculationPanel());
+        Map<String, Object> equation = new HashMap<>();
+        view.getDescriptionPanel().setDescriptionPanelDetails(equation);
+        view.getPlanPanel().setPlanPanelDetails(equation);
+        view.getCalculationsPanel().setCalculationPanelDetails(equation);
         
-        return sb.toString();        
+        Gson gson = new Gson();
+        return gson.toJson(equation);        
+    }
+    
+    public Vertex getOpenVertex() {
+        return openVertex;
     }
 }

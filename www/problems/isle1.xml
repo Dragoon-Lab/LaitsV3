@@ -3,9 +3,9 @@
 <Task phase="" type="">
     <TaskName>Isle Royale - Moose population 1</TaskName>
     <TaskDescription>
-        Assumptions: <BR/>
-        * The moose population is 20 in the first year (1900). <BR/>   
-        * Births are the only change in population. Deaths, immigration and emigration do not occur.<BR/>   
+        Assumptions: &lt;br&gt;
+        * The moose population is 20 in the first year (1900). &lt;br&gt; 
+        * Births are the only change in population. Deaths, immigration and emigration do not occur.&lt;br&gt; 
         * The number of moose births each year is 2. 
     </TaskDescription>
     <URL>images/moose_20.png</URL>

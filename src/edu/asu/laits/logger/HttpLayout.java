@@ -20,7 +20,6 @@ package edu.asu.laits.logger;
 import edu.asu.laits.editor.ApplicationContext;
 import java.io.UnsupportedEncodingException;
 import java.net.URLEncoder;
-import java.sql.Timestamp;
 
 import org.apache.log4j.Layout;
 import org.apache.log4j.helpers.LogLog;
@@ -49,7 +48,7 @@ public class HttpLayout extends Layout {
 
     @Override
     public String format(LoggingEvent paramLoggingEvent) {
-        String activityMessage = "?session_id=%session_id&loglevel=%loglevel&logger=%logger&message=%message&time=%time";
+        String activityMessage = "?session_id=%session_id&loglevel=%loglevel&logger=%logger&message=%message";
         String returnMessage = "?session_id=%session_id&loglevel=%loglevel&logger=%logger&location=%location&message=%message";
         
         // Build Activity Log Message
@@ -59,9 +58,6 @@ public class HttpLayout extends Layout {
             activityMessage = formatMessage(activityMessage, "loglevel", log.getMethod());
             activityMessage = formatMessage(activityMessage, "message", log.getLogMessage());
             activityMessage = formatMessage(activityMessage, "logger", paramLoggingEvent.getLoggerName());
-            long elapsedTimeInMilliSec = (new java.util.Date().getTime() - ApplicationContext.SESSION_START_TIME);
-            int elapsedTimeInSec = Math.round(elapsedTimeInMilliSec / 1000);
-            activityMessage = formatMessage(activityMessage, "time", Integer.toString(elapsedTimeInSec));
             
             return activityMessage;
         } else {

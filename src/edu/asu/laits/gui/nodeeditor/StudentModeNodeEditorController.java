@@ -24,7 +24,9 @@ import edu.asu.laits.model.SolutionNode;
 import edu.asu.laits.model.TaskSolution;
 import edu.asu.laits.model.Vertex;
 import java.awt.Color;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 import org.apache.log4j.Logger;
 
 /**
@@ -150,9 +152,12 @@ public class StudentModeNodeEditorController extends NodeEditorController {
     
     public void planPanelRadioClicked(){
         TaskSolution solution = ApplicationContext.getCorrectSolution();
-        StringBuilder sb = new StringBuilder("Plan Panel radio button clicked. ");
-        view.checkPlanPanel(solution, sb);
-        activityLogs.debug(new UserActivityLog(UserActivityLog.SOLUTION_STEP, sb.toString()));
+        Map<String, Object> logMessage = new HashMap<String, Object>();
+        logMessage.put("node", openVertex.getName());
+        logMessage.put("type","quantity-type");
+        
+        view.checkPlanPanel(solution, logMessage);
+        activityLogs.debug(new UserActivityLog(UserActivityLog.SOLUTION_STEP, logMessage));
     }
     
     /**

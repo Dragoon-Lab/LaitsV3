@@ -7,16 +7,16 @@
         species, rats. The rats ate essentially all the Dodo eggs as soon as they were laid, so the Dodo birth rate dropped to zero. 
         Meanwhile, the annual Dodo death rate continued to be 20%.  That is, 20% of the Dodos died each year and no Dodos were born.
         Build a model and observe how the Dodo population changed over 20 years. 
-        <BR/>
+        &lt;br&gt;
         You will need: 
-        <BR/>
+        &lt;br&gt;
         * A node called "population" to represent the number of Dodos still alive on Mauritius.  This decreases each year due to deaths. 
-        <BR/>
+        &lt;br&gt;
         * A node called "deaths" to represent the number of Dodos that die each year.   To calculate it, multiple death rate by population. 
-        <BR/>
+        &lt;br&gt;
         * A node called "death rate" to represent the percentage of the Dodo population that die each year. 
-        <BR/> 
-        <BR/>
+        &lt;br&gt; 
+        &lt;br&gt;
         Dragoon doesn’t understand percentages, so always use decimals. For example, use 0.20 instead of 20%. 
     </TaskDescription>
     <URL>images/737px-Frohawk_Dodo.png</URL> <!-- Bug #2065 -->

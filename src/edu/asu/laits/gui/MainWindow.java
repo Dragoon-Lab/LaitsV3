@@ -41,11 +41,12 @@ import edu.asu.laits.gui.toolbars.EditToolBar;
 import edu.asu.laits.gui.toolbars.ModelToolBar;
 import edu.asu.laits.gui.toolbars.ViewToolBar;
 import edu.asu.laits.logger.UserActivityLog;
-import edu.asu.laits.model.HelpBubble;
 import edu.asu.laits.model.PersistenceManager;
 import edu.asu.laits.properties.GlobalProperties;
 import edu.asu.laits.properties.GraphProperties;
 import java.awt.Color;
+import java.util.HashMap;
+import java.util.Map;
 import javax.swing.*;
 import org.apache.log4j.Logger;
 import org.dom4j.DocumentException;
@@ -99,7 +100,7 @@ public class MainWindow extends JFrame {
             }
             _instance.loadSavedSession();
             _instance.attachGraphChangeListener();
-            _instance.setFrameTitle();
+            _instance.setFrameTitle();            
         }
         return _instance;
     }
@@ -131,18 +132,6 @@ public class MainWindow extends JFrame {
         getGraphEditorPane().addGraphPropertiesChangeListener(l);
     }
     
-    public void addHelpBalloon(String node, String timing) {
-        if (ApplicationContext.isCoachedMode()) {
-            List<HelpBubble> bubbles = ApplicationContext.getHelp(node, "MainWindow", timing);
-            logs.debug(node + " MainWindow " + timing);
-            if (!bubbles.isEmpty()) {
-                for (HelpBubble bubble : bubbles) {
-                    new BlockingToolTip(this, bubble, modelToolBar.getAddNodeButton());
-                }
-            }
-        }
-    }
-
     public static void openWindowWithFile(File file) {
         MainWindow window = new MainWindow();
 
@@ -223,6 +212,9 @@ public class MainWindow extends JFrame {
                 mainPanel.add(getSituationPanel());
             }
             mainPanel.add(getStatusBarPanel(), BorderLayout.SOUTH);
+            if(!ApplicationContext.getApplicationEnvironment().equals(ApplicationContext.ApplicationEnvironment.DEV)) {
+                getStatusBarPanel().setVisible(false);
+            }
         }
         return mainPanel;
     }
@@ -378,10 +370,15 @@ public class MainWindow extends JFrame {
     }
 
     public void exitWindow() {
-        activityLogs.debug(new UserActivityLog(UserActivityLog.CLOSE_PROBLEM, "User exited Dragoon.... Problem Solved: " + ApplicationContext.isProblemSolved()));
+        Map<String, Object> logMessage = new HashMap<String, Object>();
+        logMessage.put("type","menu-choice");
+        logMessage.put("name", "exit");
+        logMessage.put("Is Problem Solved", ApplicationContext.isProblemSolved());
+        
         if(!ApplicationContext.isAuthorMode()) {
-            activityLogs.debug(new UserActivityLog(UserActivityLog.CLOSE_PROBLEM, "Check and Demo usage statistics: " + ApplicationContext.logCheckDemoStats()));
+            logMessage.put("check-demo-stats", ApplicationContext.logCheckDemoStats());
         }
+        activityLogs.debug(new UserActivityLog(UserActivityLog.CLOSE_PROBLEM, logMessage));
         try{
             Thread.sleep(500);
         }catch(InterruptedException ex){
@@ -481,7 +478,10 @@ public class MainWindow extends JFrame {
             String graphXML = PersistenceManager.loadSession();
             
             if (!graphXML.trim().isEmpty()) {
-                activityLogs.debug(new UserActivityLog(UserActivityLog.OPEN_PROBLEM, "Previous session of Student is loaded. SessionID: " + ApplicationContext.getSessionID()));
+                Map<String, Object> logMessage = new HashMap<String, Object>();
+                logMessage.put("text","Previous session of Student is loaded");
+                logMessage.put("session-id", ApplicationContext.getSessionID());
+                activityLogs.debug(new UserActivityLog(UserActivityLog.OPEN_PROBLEM, logMessage ));
                 getGraphEditorPane().resetModelGraph();
                 GraphLoader loader = new GraphLoader(getGraphEditorPane());
                 loader.loadFromServer(graphXML);

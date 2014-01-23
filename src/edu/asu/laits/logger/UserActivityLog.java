@@ -18,7 +18,11 @@
 
 package edu.asu.laits.logger;
 
-import com.google.gson.GsonBuilder;
+import com.google.gson.Gson;
+import edu.asu.laits.editor.ApplicationContext;
+import java.text.DecimalFormat;
+import java.util.HashMap;
+import java.util.Map;
 
 /**
  * Class to Encapsulate User Activity Logs.
@@ -33,26 +37,54 @@ public class UserActivityLog{
     public static final String UI_ACTION = "ui-action";
     public static final String SOLUTION_STEP = "solution-step";
     public static final String SEEK_HELP = "seek-help";
-    public static final String CLOSE_PROBLEM = "close-problem";    
+    public static final String CLOSE_PROBLEM = "close-problem";
+    public static final String STUDENT_STATUS = "student-status";
     
     private String method;
-    private String logMessage;
+    private Map<String,Object> logMessage;
     
-    public UserActivityLog(String method, String message) {
-        this.method = method;
-        this.logMessage = message;
+    public UserActivityLog(String method, Map<String,Object> message) {
+        this.method = method;      
+        logMessage = message;
+        logMessage.put("time", getElapsedTime());
     }
+    
+    public UserActivityLog(String method, String infoMessage) {
+        this.method = method;        
+        logMessage = new HashMap<String, Object>();
+        logMessage.put("time", getElapsedTime());
+        logMessage.put("type", "info");
+        logMessage.put("text", infoMessage);
+    }
+    
     
     public String getMethod() {
         return method;
     }
     
+    /**
+     * Build JSON Representation of the message.
+     * This will be used by HttpLayout from Logger
+     * {time:time_spent_so_far, message_param1:value1, message_param2:value2}
+     * @return 
+     */
     public String getLogMessage() {
-        return logMessage;
+        if(logMessage == null || logMessage.isEmpty())
+            return "";
+        Gson gson = new Gson();
+        return gson.toJson(logMessage);
     }
     
     @Override
     public String toString() {
         return "Method: " + method + " Message: " + logMessage;
+    }
+    
+    private String getElapsedTime() {
+        long elapsedTimeInMilliSec = (new java.util.Date().getTime() - ApplicationContext.SESSION_START_TIME);
+        
+        double elapsedTime = ((double)elapsedTimeInMilliSec / 1000);
+        DecimalFormat df = new DecimalFormat("#.0");
+        return df.format(elapsedTime);
     }
 }

@@ -30,6 +30,7 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.util.Enumeration;
 import java.util.List;
+import java.util.Map;
 import javax.swing.AbstractButton;
 import javax.swing.JLabel;
 import net.miginfocom.swing.MigLayout;
@@ -246,6 +247,11 @@ public class PlanPanelView extends javax.swing.JPanel {
         sb.append(planToString(getSelectedPlan()));
         sb.append(", Plan Panel Status : " + nodeEditor.getOpenVertex().getPlanStatus());
         return sb.toString();
+    }
+    
+    public void setPlanPanelDetails(Map<String, Object> map) {
+        map.put("selected-plan", planToString(getSelectedPlan()));
+        map.put("plan-panel-status", nodeEditor.getOpenVertex().getPlanStatus());
     }
     
     public String planToString(Vertex.VertexType p) {

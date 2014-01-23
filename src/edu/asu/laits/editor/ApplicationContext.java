@@ -18,7 +18,6 @@
 package edu.asu.laits.editor;
 
 import edu.asu.laits.model.TaskSolution;
-import edu.asu.laits.model.HelpBubble;
 import edu.asu.laits.model.StatsCollector;
 import edu.asu.laits.model.Task;
 import java.util.Date;
@@ -36,13 +35,12 @@ public class ApplicationContext {
     private static AppMode appMode;
     private static String section;
     private static String author;
-    public static String APP_HOST = "http://dragoon.asu.edu/ram";
-    private static String forumURL = "http://dragoon.asu.edu/ram";
+    public static String APP_HOST;// = "http://dragoon.asu.edu/ram";
+    public static String forumURL;// = "http://dragoon.asu.edu/ram";
     private static TaskSolution correctSolution;
     private static String currentTaskID;
     private static String newTaskID;
     private static boolean isProblemSolved = false;
-    private static boolean helpBubbles = false;
     private static String session_id;
     public static long SESSION_START_TIME = new Date().getTime();
     
@@ -50,10 +48,6 @@ public class ApplicationContext {
     
     // Task is used at many places in the application. It should be same for all the uses
     private static Task task;
-
-    public static boolean isHelpBubbles() {
-        return helpBubbles;
-    }
 
     private static ApplicationContext.ApplicationEnvironment applicationEnvironment;
 
@@ -136,11 +130,6 @@ public class ApplicationContext {
 
     public static void setProblemSolved(boolean input) {
         isProblemSolved = input;
-    }
-
-    public static List<HelpBubble> getHelp(String order, String time, String cevent) {
-        return correctSolution.checkForHelp(order, time, cevent);
-
     }
 
     public static ApplicationContext.ApplicationEnvironment getApplicationEnvironment() {

@@ -62,10 +62,10 @@
                     isset($_REQUEST[self::LOGGER_NAME_PARAM])) {
                
                 // Initialize Variables
-                $this->session_id = mysqli_real_escape_string($this->connection, urldecode($_REQUEST[self::SESSION_ID_PARAM]));
-                $this->log_level = mysqli_real_escape_string($this->connection, $_REQUEST[self::LOG_LEVEL_PARAM]);
-                $this->logger = mysqli_real_escape_string($this->connection, $_REQUEST[self::LOGGER_NAME_PARAM]);
-                $this->message = mysqli_real_escape_string($this->connection, urldecode($_REQUEST[self::LOG_MESSAGE_PARAM]));
+                $this->session_id = urldecode($_REQUEST[self::SESSION_ID_PARAM]);
+                $this->log_level = $_REQUEST[self::LOG_LEVEL_PARAM];
+                $this->logger = $_REQUEST[self::LOGGER_NAME_PARAM];
+                $this->message = urldecode($_REQUEST[self::LOG_MESSAGE_PARAM]);
                 
                 return true;
             } 
@@ -78,12 +78,7 @@
            
             if ($stmt = mysqli_prepare($this->connection, $queryString)) 
             {
-                $time = mysqli_real_escape_string($this->connection, $_REQUEST[self::TIME_PARAM]);
-                $arr = array();
-                $arr["message"] = $this->message;
-                $arr["time"] = $time;
-                
-                $stmt -> bind_param("sss", $this->session_id, $this->log_level, json_encode($arr));                
+                $stmt -> bind_param("sss", $this->session_id, $this->log_level, $this->message);                
                 $stmt->execute() or trigger_error("Insert into table step failed" .$this->connection->error);;                
             }            
         }

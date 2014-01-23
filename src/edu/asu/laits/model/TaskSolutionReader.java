@@ -71,15 +71,6 @@ public class TaskSolutionReader {
                 fillSubPlans(solution, subPlans);
             }
             
-            
-            //Read in help bubbles
-            if(ApplicationContext.isCoachedMode() && ApplicationContext.isHelpBubbles()){
-                    Element bubbles = taskNode.element("HelpBubbles");
-                    if(bubbles != null){
-                      fillHelpBubbles(solution, bubbles);
-                    }
-                }
-            
             solution.initTargetNodes();
                 
         } catch (MalformedURLException e) {
@@ -228,29 +219,5 @@ public class TaskSolutionReader {
                 solution.addFunctionSubPlans(subPlan.getTextTrim());
             }
         }
-    }
-    //Read in help bubble info
-    private void fillHelpBubbles(TaskSolution solution, Element bubbles){        
-        List<Element> allBubbles = bubbles.elements("Bubble");
-        for(Element bubble : allBubbles){
-            HelpBubble newBubble = new HelpBubble();
-            newBubble.setTiming(bubble.elementTextTrim("Timing"));
-            newBubble.setNodeName(bubble.elementTextTrim("nodeName"));
-            newBubble.setAttachedTo(bubble.elementTextTrim("attachedTo"));
-            newBubble.setEvent(bubble.elementTextTrim("Event"));
-            if(bubble.elementTextTrim("xValue")!= null){
-                newBubble.setX(Integer.parseInt(bubble.elementTextTrim("xValue")));
-            } 
-            if(bubble.elementTextTrim("yValue")!= null){
-                newBubble.setY(Integer.parseInt(bubble.elementTextTrim("yValue")));
-            }  
-            if(bubble.elementTextTrim("Orient")!= null){
-                newBubble.setOrientation(bubble.elementTextTrim("Orient"));
-            }    
-            newBubble.setMessage(bubble.elementTextTrim("Message"));
-        
-            solution.addHelpBubble(newBubble);            
-        }
-    }
-    
+    }    
 }

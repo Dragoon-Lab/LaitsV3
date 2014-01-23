@@ -39,8 +39,10 @@ import java.io.UnsupportedEncodingException;
 import java.net.URL;
 import java.text.DecimalFormat;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.Iterator;
 import java.util.List;
+import java.util.Map;
 import javax.swing.JDialog;
 import javax.swing.JMenu;
 import javax.swing.JMenuItem;
@@ -171,7 +173,10 @@ public class ModelMenu extends JMenu {
             showGraphTableItem
                     .addActionListener(new java.awt.event.ActionListener() {
                 public void actionPerformed(java.awt.event.ActionEvent e) {
-                    activityLogs.debug(new UserActivityLog(UserActivityLog.UI_ACTION, "User pressed Show Table Button."));
+                    Map<String, Object> logMessage = new HashMap<String, Object>();
+                    logMessage.put("type","menu-choice");
+                    logMessage.put("name", "show-table");
+                    activityLogs.debug(new UserActivityLog(UserActivityLog.UI_ACTION, logMessage));
                     showNodeTable();
                 }
             });
@@ -189,7 +194,10 @@ public class ModelMenu extends JMenu {
             exportSolutionMenuItem
                     .addActionListener(new java.awt.event.ActionListener() {
                 public void actionPerformed(java.awt.event.ActionEvent e) {
-                    activityLogs.debug(new UserActivityLog(UserActivityLog.UI_ACTION, "User pressed Export Solution Button."));
+                    Map<String, Object> logMessage = new HashMap<String, Object>();
+                    logMessage.put("type","menu-choice");
+                    logMessage.put("name", "export-solution");
+                    activityLogs.debug(new UserActivityLog(UserActivityLog.UI_ACTION, logMessage));
                     exportSolution();
                 }
             });
@@ -208,7 +216,10 @@ public class ModelMenu extends JMenu {
             editTimeRangeMenuItem
                     .addActionListener(new java.awt.event.ActionListener() {
                 public void actionPerformed(java.awt.event.ActionEvent e) {
-                    activityLogs.debug(new UserActivityLog(UserActivityLog.UI_ACTION, "User pressed Edit Time Range Button."));
+                    Map<String, Object> logMessage = new HashMap<String, Object>();
+                    logMessage.put("type","menu-choice");
+                    logMessage.put("name", "edit-time-range");
+                    activityLogs.debug(new UserActivityLog(UserActivityLog.UI_ACTION, logMessage));
                     editTimeRangeAction();
                 }
             });
@@ -252,24 +263,31 @@ public class ModelMenu extends JMenu {
     }
 
     public void showNodeGraph() {
-        activityLogs.debug(new UserActivityLog(UserActivityLog.UI_ACTION, "User pressed Show Graph Button."));
+        Map<String, Object> logMessage = new HashMap<String, Object>();
+        logMessage.put("type","info");
+        logMessage.put("text", "User pressed Show Graph Button.");
+        
         if (runModel()) {
             if(isGraphable())
                 showChartDialog(ChartDialogMode.Graph);
             else
-                JOptionPane.showMessageDialog(MainWindow.getInstance(), "This model does not contain any functions or accumulators. There is nothing to graph yet");
+                JOptionPane.showMessageDialog(MainWindow.getInstance(), "This model does not contain any functions or accumulators.\nThere is nothing to graph yet");
         }
-        activityLogs.debug(new UserActivityLog(UserActivityLog.UI_ACTION, "Is problem Solved: " + ApplicationContext.isProblemSolved() ));
+        logMessage.put("Is Problem Solved", ApplicationContext.isProblemSolved());
+        activityLogs.debug(new UserActivityLog(UserActivityLog.UI_ACTION, logMessage));
     }
 
     public void showNodeTable() {
-        activityLogs.debug(new UserActivityLog(UserActivityLog.UI_ACTION, "User pressed Show Table button."));
+        Map<String, Object> logMessage = new HashMap<String, Object>();
+        logMessage.put("type","menu-choice");
+        logMessage.put("name", "show-table");
+        activityLogs.debug(new UserActivityLog(UserActivityLog.UI_ACTION, logMessage));
 
         if (runModel()) {
             if(isGraphable())
                     showChartDialog(ChartDialogMode.Table);
                 else
-                    JOptionPane.showMessageDialog(MainWindow.getInstance(), "This model does not contain any functions or accumulators. There is nothing to show yet.");
+                    JOptionPane.showMessageDialog(MainWindow.getInstance(), "This model does not contain any functions or accumulators.\nThere is nothing to show yet.");
         }
     }
 
@@ -353,7 +371,7 @@ public class ModelMenu extends JMenu {
         } else {
             activityLogs.debug(new UserActivityLog(UserActivityLog.CLIENT_MESSAGE, "Model was incomplete, so user could not run the model."));
             JOptionPane.showMessageDialog(window, "The model is incomplete, please complete all the nodes before running Model");
-            window.getStatusBarPanel().setStatusMessage("Please complete all the nodes before running Model", false);
+            //window.getStatusBarPanel().setStatusMessage("Please complete all the nodes before running Model", false);
             return false;
         }
     }
@@ -395,11 +413,15 @@ public class ModelMenu extends JMenu {
     }
 
     public void newNodeAction() {
-        activityLogs.debug(new UserActivityLog(UserActivityLog.UI_ACTION, "User Pressed Create Node Button"));
+        Map<String, Object> logMessage = new HashMap<String, Object>();
+        logMessage.put("type","menu-choice");
+        logMessage.put("name", "create-node");
+        activityLogs.debug(new UserActivityLog(UserActivityLog.UI_ACTION, logMessage));
+        
         MainWindow window = MainWindow.getInstance();
         // Disable test as work-around for Bug #2218
         if(false && ApplicationContext.isCoachedMode() && !isGraphEmpty()){
-            activityLogs.debug(new UserActivityLog(UserActivityLog.CLIENT_MESSAGE, "User was not allowed to create new node as app is in COACHED mode and nodes already present"));
+            activityLogs.debug(new UserActivityLog(UserActivityLog.CLIENT_MESSAGE, "User was not allowed to create new node as app is in COACHED mode and all nodes are already present"));
             JOptionPane.showMessageDialog(window, "Create new nodes inside the Calculations tab of existing nodes");
             return;
             
@@ -417,7 +439,10 @@ public class ModelMenu extends JMenu {
     }
 
     public void showForumButtonAction() {
-        activityLogs.debug(new UserActivityLog(UserActivityLog.UI_ACTION, "User pressed show forum button."));
+        Map<String, Object> logMessage = new HashMap<String, Object>();
+        logMessage.put("type","menu-choice");
+        logMessage.put("name", "show-forum");
+        activityLogs.debug(new UserActivityLog(UserActivityLog.UI_ACTION, logMessage));
         // The forum id is sent to the application
         String forumURL = ApplicationContext.getForumURL();
         
@@ -448,7 +473,10 @@ public class ModelMenu extends JMenu {
     }
 
     public void deleteNodeAction(){
-        activityLogs.debug(new UserActivityLog(UserActivityLog.UI_ACTION, "User pressed Delete Node button."));
+        Map<String, Object> logMessage = new HashMap<String, Object>();
+        logMessage.put("type","menu-choice");
+        logMessage.put("name", "delete-node");
+        activityLogs.debug(new UserActivityLog(UserActivityLog.UI_ACTION, logMessage));
         MainWindow.getInstance().getGraphEditorPane().deleteSelectedNodes();
     }
 
@@ -514,17 +542,27 @@ public class ModelMenu extends JMenu {
     }
 
     public void editTimeRangeAction() {
-        activityLogs.debug(new UserActivityLog(UserActivityLog.UI_ACTION, "User pressed EditTimeRange Menu Item."));
+        Map<String, Object> logMessage = new HashMap<String, Object>();
+        logMessage.put("type","menu-choice");
+        logMessage.put("name", "edit-time-range");
+        activityLogs.debug(new UserActivityLog(UserActivityLog.UI_ACTION, logMessage));
         GraphRangeEditor ed = new GraphRangeEditor(graphPane, true);
         ed.setVisible(true);
     }
 
     public void doneButtonAction() {
         logs.debug("Done button action.");
-        if(ApplicationContext.isProblemSolved()){
-            activityLogs.debug(new UserActivityLog(UserActivityLog.CLOSE_PROBLEM, "User pressed Done button. Task:  " + ApplicationContext.getCurrentTaskID() + " is completed" ));
-            activityLogs.debug(new UserActivityLog(UserActivityLog.CLOSE_PROBLEM, "Check and Demo usage statistics: " + ApplicationContext.logCheckDemoStats()));
+        Map<String, Object> logMessage = new HashMap<String, Object>();
+        logMessage.put("type","menu-choice");
+        logMessage.put("name", "exit");
+        logMessage.put("Is Problem Solved", ApplicationContext.isProblemSolved());
             
+        if(ApplicationContext.isProblemSolved()){
+            
+            if(!ApplicationContext.isAuthorMode()) {
+                logMessage.put("check-demo-stats", ApplicationContext.logCheckDemoStats());
+            }
+            activityLogs.debug(new UserActivityLog(UserActivityLog.CLOSE_PROBLEM, logMessage));
             writeResultToServer();
             try{
                 Thread.sleep(500);
@@ -532,6 +570,7 @@ public class ModelMenu extends JMenu {
             }
             System.exit(0);
         }
+        activityLogs.debug(new UserActivityLog(UserActivityLog.UI_ACTION, logMessage));
     }
 
     private void writeResultToServer() {

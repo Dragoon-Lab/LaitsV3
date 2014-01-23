@@ -61,8 +61,8 @@ public class Vertex {
     public void setVertexIndex(int index) {
         vertexIndex = index;
 
-        xPosition = 200 * (vertexIndex % 4) + 480;
-        yPosition = 200 * (vertexIndex / 4) + 60;
+        xPosition = 200 * (vertexIndex % 4) + 500;
+        yPosition = 200 * (vertexIndex / 4) + 80;
     }
 
     public String getName() {

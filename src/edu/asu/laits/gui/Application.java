@@ -68,19 +68,24 @@ public class Application {
         if (args.length > 0) {
             System.out.println("Application was launched from Command Line");
             ApplicationContext.setApplicationEnvironment(ApplicationContext.ApplicationEnvironment.PROD);
-            ApplicationContext.setSessionID("testsession5");
+            ApplicationContext.setSessionID("testsession4");
             ApplicationContext.setUserID("ramayantiwari");
-            ApplicationContext.setAppMode("student");
-            ApplicationContext.setCurrentTaskID("109");
+            ApplicationContext.setAppMode("coached");
+            ApplicationContext.setCurrentTaskID("rabbits");
             
         } else {
             // Try to Launch application using JNLP for PROD
             String sessionID = System.getProperty("jnlp.session_id");
+            String hostURL = System.getProperty("jnlp.host_url");
+            String forumURL = System.getProperty("jnlp.forum_url");
 
-            if (sessionID != null) {
+            if (sessionID != null && hostURL != null && forumURL != null) {
                 ApplicationContext.setSessionID(sessionID);
+                ApplicationContext.APP_HOST = hostURL;
+                ApplicationContext.forumURL = forumURL;
+                System.out.println("HOST: " + hostURL + " FORUM: " + forumURL);
                 Gson gson = new Gson();
-                String json = readUrl("http://dragoon.asu.edu/ram/session_manager.php?action=get_session_info&session_id=" + sessionID);
+                String json = readUrl(ApplicationContext.APP_HOST + "/session_manager.php?action=get_session_info&session_id=" + sessionID);
 
                 UserSession userSession = gson.fromJson(json, UserSession.class);
 
@@ -88,7 +93,7 @@ public class Application {
                 ApplicationContext.setUserID(userSession.username);
                 ApplicationContext.setAppMode(userSession.mode);
                 ApplicationContext.setCurrentTaskID(userSession.problem_name);
-
+                
             } else {
                 JOptionPane.showMessageDialog(null, "Incorrect Initialization Parameters",
                         "An error has occured. Contact Support.", JOptionPane.ERROR_MESSAGE);
