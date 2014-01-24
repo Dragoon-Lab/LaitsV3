@@ -220,7 +220,11 @@ public class CalculationsPanelView extends javax.swing.JPanel {
         String initialValueText = initialValueTextField.getText();
         
         if (initialValueText != null && initialValueTextField.getText().trim().isEmpty()) {
-            nodeEditor.setEditorMessage("Please provide initial value for this node.");
+            if(ApplicationContext.isTestMode()) {
+                nodeEditor.setEditorMessage("The OK button checks for blanks anywhere in the node’s definition.\nFound one: the initial value is missing.");
+            }else{
+                nodeEditor.setEditorMessage("Please provide initial value for this node.");
+            }
             return false;
         } else {
             try {
@@ -277,7 +281,12 @@ public class CalculationsPanelView extends javax.swing.JPanel {
     private boolean validateEquation(String equation) {
         
         if (equation.isEmpty()) {
-            nodeEditor.setEditorMessage("Please provide an equation for this node.");
+            if(ApplicationContext.isTestMode()) {
+                nodeEditor.setEditorMessage("The OK button checks for blanks anywhere in the node’s definition.\nFound one: node equation is missing.");
+            }
+            else{ 
+                nodeEditor.setEditorMessage("Please provide an equation for this node.");
+            }
             return false;
         }
         
@@ -296,7 +305,7 @@ public class CalculationsPanelView extends javax.swing.JPanel {
         // Assign random values to variables to test if equation can be evaluated
         for (String s : usedVariables) {
             if (!availableVariables.contains(s)) {
-                nodeEditor.setEditorMessage("Input node '" + s + "' is not availabe.");
+                nodeEditor.setEditorMessage("'"+ s + "' is not an available input.");
                 activityLogs.debug(new UserActivityLog(UserActivityLog.CLIENT_MESSAGE, "User entered incorrect equation - " + "Input node " + s + " is not present."));
                 return false;
             }
@@ -584,7 +593,7 @@ public class CalculationsPanelView extends javax.swing.JPanel {
         return sb.toString();
     }
     
-    public String getCalculationsActivityLog(){
+    public Object getCalculationsActivityLog(){
         Collection collection = new ArrayList();
         Map<String, Object> equation = new HashMap<>();
         Map<String, Object> initialValue = new HashMap<>();
@@ -601,9 +610,10 @@ public class CalculationsPanelView extends javax.swing.JPanel {
             equation.put("correct-value", ApplicationContext.getCorrectSolution().getNodeByName(openVertex.getName()).getNodeEquation());  
             collection.add(equation);
         }
-        
-        Gson gson = new Gson();
-        return gson.toJson(collection);
+       
+//        Gson gson = new Gson();
+//        return gson.toJson(collection);
+        return collection;
     }
     
     public void setCalculationPanelDetails(Map<String, Object> map) {
@@ -767,7 +777,8 @@ public class CalculationsPanelView extends javax.swing.JPanel {
             // Sets are used for easier comparision of old and new vertices
             Set<String> oldNodes = new HashSet<String>(old.getAllVariables());
             Set<String> newNodes = new HashSet<String>(changed.getAllVariables());
-            
+            System.out.println("Old : " + oldNodes);
+            System.out.println("New : " + newNodes);
             // Neglect spaces typed before or after the equation
             if (formulaInputArea.getText().trim().equals(openVertex.getEquation())) {
                 // Make sure that edges exits in the graph if the edge name is used in the equation

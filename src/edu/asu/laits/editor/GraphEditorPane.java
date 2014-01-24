@@ -45,6 +45,7 @@ import edu.asu.laits.properties.GlobalProperties;
 import edu.asu.laits.properties.GraphProperties;
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.HashSet;
 import java.util.Iterator;
 import javax.swing.SwingConstants;
 import net.sourceforge.jeval.Evaluator;
@@ -339,7 +340,7 @@ public class GraphEditorPane extends JGraph {
         }
 
         this.removeSelected();
-
+        Set<Edge> edgesToRemove = new HashSet<Edge>();
         Iterator<Vertex> it = graph.vertexSet().iterator();
         Vertex v;
         while (it.hasNext()) {
@@ -358,12 +359,23 @@ public class GraphEditorPane extends JGraph {
                         }
                     }
                     
-                    if(shouldEquationChange)
+                    // If equation gets reset, remove all the incoming edges
+                    if(shouldEquationChange){
                         v.setEquation("");
+                        Set<Edge> incomingEdges = graph.incomingEdgesOf(v);
+                        for(Edge e : incomingEdges){
+                            edgesToRemove.add(e);
+                        }
+                    }
                     
                 } catch (Exception e){
                     e.printStackTrace();
                 }
+            }
+            
+            for(Edge e : edgesToRemove) {
+                System.out.println("removing edge");
+                graph.removeEdge(e);
             }
             
             if(v.getCorrectValues() != null) 

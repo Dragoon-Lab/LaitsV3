@@ -307,7 +307,7 @@ public class DescriptionPanelView extends JPanel {
                     return false;
                 }
             } else {
-                nodeEditor.setEditorMessage("The node name is already used by another node. Please choose a new name for this node.");
+                nodeEditor.setEditorMessage("The node name is already used by another node.\nPlease choose a new name for this node.");
                 setTextFieldBackground(Color.RED);
                 activityLogs.debug(new UserActivityLog(UserActivityLog.CLIENT_MESSAGE, "User entered duplicate node name"));
                 return false;

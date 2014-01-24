@@ -348,7 +348,7 @@ public class NodeEditorView extends javax.swing.JDialog {
             tabPane.setEnabledAt(CALCULATIONS, true);
             tabPane.setForegroundAt(CALCULATIONS, Color.BLACK);            
         } else {
-            setEditorMessage("You have selected incorrect Plan for this Node.\nCorrect plan has been selected for you.");
+            setEditorMessage("You have selected the wrong Type for this node.\nThe correct Type will be selected for you.");
             logMessage.put("check-result", "INCORRECT");
             logMessage.put("correct-result", pPanel.planToString(correctSolution.getNodeByName(openVertex.getName()).getNodeType()));
             
@@ -640,10 +640,12 @@ public class NodeEditorView extends javax.swing.JDialog {
                 getCheckButton().setEnabled(false);
                 demoButton.setEnabled(false);
                 dPanel.setEditableTree(false);
-                tabPane.setEnabledAt(PLAN, true);
-                tabPane.setForegroundAt(PLAN, Color.BLACK);
+                
                 if(tabPane.getTabCount() == 1) {
                     buttonCancel.setEnabled(true);
+                } else {
+                    tabPane.setEnabledAt(PLAN, true);
+                    tabPane.setForegroundAt(PLAN, Color.BLACK);
                 }
                 // Add Demo button used to Stats
                 ApplicationContext.updateDemoUsageStats(DESCRIPTION, openVertex.getName());

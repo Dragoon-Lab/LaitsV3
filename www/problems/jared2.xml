@@ -16,7 +16,7 @@
     <NodeCount>3</NodeCount>
     <Nodes>
         <Node type="constant" name="Oprah weight" extra="no">
-            <CorrectDescription>How much Oprah weighs</CorrectDescription>
+            <CorrectDescription>How much Oprah weigh at the end of each week</CorrectDescription>
             <Plan>said to both increase and decrease</Plan>
             <Inputs/>
             <Outputs>
@@ -26,7 +26,7 @@
             <InitialValue>120.0</InitialValue>
         </Node>
         <Node type="flow" name="Jared weight" extra="no">
-            <CorrectDescription>How much Jared weighs</CorrectDescription>
+            <CorrectDescription>How much Jared weigh weigh at the end of each week</CorrectDescription>
             <Plan>the difference of two quantities</Plan>
             <Order>1</Order>
             <Inputs>
@@ -38,7 +38,7 @@
             <InitialValue>0.0</InitialValue>
         </Node>
         <Node type="constant" name="Jared extra weight" extra="no">
-            <CorrectDescription>Jared additional weight</CorrectDescription>
+            <CorrectDescription>How much more Jared weighs than Oprah</CorrectDescription>
             <Plan>fixed value</Plan>
             <Inputs>
             </Inputs>
@@ -49,7 +49,7 @@
     </Nodes>
     <GivenModel>
         <Node type="constant" name="Oprah weight" extra="no">
-            <CorrectDescription>How much Oprah weighs</CorrectDescription>
+            <CorrectDescription>How much does Oprah weigh at the end of each week</CorrectDescription>
             <Plan>said to both increase and decrease</Plan>
             <Inputs/>
             <Outputs>

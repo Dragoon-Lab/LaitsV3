@@ -7,7 +7,7 @@
     she weighs 100 pounds, then Jared weighs 130 pounds.  When Oprah weighs 
     120 pounds, then Jared weight 156 pounds (156 is 1.3*120). &lt;br&gt;&lt;br&gt;
     
-    &lt;strong&gt;Note: &lt;strong&gt; Dragoon uses * to denote multiplication.  To save you work, the nodes 
+    &lt;strong&gt;Note: &lt;/strong&gt; Dragoon uses * to denote multiplication.  To save you work, the nodes 
     for Oprah’s weight and weekly weight loss have been defined already. Thus 
     you will only have to define two nodes: &lt;br&gt;
     * Jared weight: This is how much Jared weighs at the end of each week. &lt;br&gt;
@@ -33,7 +33,7 @@
       <InitialValue>140.0</InitialValue>
     </Node>
     <Node type="constant" name="Oprah weight loss" extra="no">
-      <CorrectDescription>How much Oprah loses each week</CorrectDescription>
+      <CorrectDescription>How much does Oprah lose each week</CorrectDescription>
       <Plan>fixed value</Plan>
       <Inputs/>
       <Outputs>
@@ -43,7 +43,7 @@
       <InitialValue>1.5</InitialValue>
     </Node>
     <Node type="flow" name="Jared weight" extra="no">
-      <CorrectDescription>How much Jared weighs at the end of the week</CorrectDescription>
+      <CorrectDescription>How much Jared weighs at the end of each week</CorrectDescription>
       <Plan>proportional to accumulator and input</Plan>
       <Order>1</Order>
       <Inputs>
@@ -55,7 +55,7 @@
       <InitialValue>0.0</InitialValue>
     </Node>
     <Node type="constant" name="Jared extra weight" extra="no">
-      <CorrectDescription>Jared's extra percent of weight over Oprah's weight.</CorrectDescription>
+      <CorrectDescription>How much Jared weighs more than Oprah (percent)</CorrectDescription>
       <Plan>fixed value</Plan>
       <Inputs>
       </Inputs>
@@ -66,7 +66,7 @@
   </Nodes>
 <GivenModel>
     <Node type="stock" name="Oprah weight" extra="no">
-      <CorrectDescription>How much Oprah weighs at the end of the week</CorrectDescription>
+      <CorrectDescription>How much Jared weighs at the end of the week</CorrectDescription>
       <Plan>said to decrease</Plan>
       <Inputs>
         <Name>Oprah weight loss</Name>
@@ -78,7 +78,7 @@
       <InitialValue>140.0</InitialValue>
     </Node>
     <Node type="constant" name="Oprah weight loss" extra="no">
-      <CorrectDescription>How much Oprah loses each week</CorrectDescription>
+      <CorrectDescription>How much does Oprah lose each week</CorrectDescription>
       <Plan>fixed value</Plan>
       <Inputs/>
       <Outputs>

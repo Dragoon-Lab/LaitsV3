@@ -20,7 +20,6 @@ package edu.asu.laits.gui.nodeeditor;
 
 import com.google.gson.Gson;
 import edu.asu.laits.editor.ApplicationContext;
-import edu.asu.laits.model.PersistenceManager;
 import edu.asu.laits.model.Vertex;
 import java.util.HashMap;
 import java.util.Map;
