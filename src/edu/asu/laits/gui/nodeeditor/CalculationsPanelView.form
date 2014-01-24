@@ -38,7 +38,7 @@
           </Properties>
           <Constraints>
             <Constraint layoutClass="org.netbeans.modules.form.compat2.layouts.DesignAbsoluteLayout" value="org.netbeans.modules.form.compat2.layouts.DesignAbsoluteLayout$AbsoluteConstraintsDescription">
-              <AbsoluteConstraints x="10" y="0" width="100" height="30"/>
+              <AbsoluteConstraints x="10" y="0" width="140" height="30"/>
             </Constraint>
           </Constraints>
         </Component>
@@ -253,7 +253,7 @@
         <Component class="javax.swing.JTextField" name="initialValueTextField">
           <Constraints>
             <Constraint layoutClass="org.netbeans.modules.form.compat2.layouts.DesignAbsoluteLayout" value="org.netbeans.modules.form.compat2.layouts.DesignAbsoluteLayout$AbsoluteConstraintsDescription">
-              <AbsoluteConstraints x="120" y="0" width="160" height="-1"/>
+              <AbsoluteConstraints x="160" y="0" width="160" height="-1"/>
             </Constraint>
           </Constraints>
         </Component>

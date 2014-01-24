@@ -353,8 +353,7 @@ public class CalculationsPanelView extends javax.swing.JPanel {
         Vertex currentVertex = nodeEditor.getOpenVertex();
         if (currentVertex.getVertexType().equals(Vertex.VertexType.CONSTANT)) {
             logs.debug("Setting Constant Value as " + correctNode.getNodeEquation());
-            initialValueTextField.setText(correctNode.getNodeEquation());
-            MainWindow.refreshGraph();
+            initialValueTextField.setText(correctNode.getNodeEquation());            
         }
         
         if (currentVertex.getVertexType().equals(Vertex.VertexType.FLOW)
@@ -377,11 +376,9 @@ public class CalculationsPanelView extends javax.swing.JPanel {
             if (currentVertex.getVertexType().equals(Vertex.VertexType.STOCK)) {
                 initialValueTextField.setText(String.valueOf(correctNode.getInitialValue()));
             }
-                                    
-            setCheckedBackground(Color.YELLOW);
-            MainWindow.refreshGraph();
         }
-        
+        setCheckedBackground(Color.YELLOW);
+        MainWindow.refreshGraph();
         return true;
         
     }
@@ -427,7 +424,7 @@ public class CalculationsPanelView extends javax.swing.JPanel {
 
         fixedValueLabel.setFont(new java.awt.Font("Lucida Grande", 1, 13)); // NOI18N
         fixedValueLabel.setText("<html><b>Initial value = </b></html>");
-        contentPanel.add(fixedValueLabel, new org.netbeans.lib.awtextra.AbsoluteConstraints(10, 0, 100, 30));
+        contentPanel.add(fixedValueLabel, new org.netbeans.lib.awtextra.AbsoluteConstraints(10, 0, 140, 30));
         contentPanel.add(needInputLabel, new org.netbeans.lib.awtextra.AbsoluteConstraints(0, 163, -1, -1));
 
         valuesLabel.setFont(new java.awt.Font("Lucida Grande", 1, 13)); // NOI18N
@@ -560,7 +557,7 @@ public class CalculationsPanelView extends javax.swing.JPanel {
         );
 
         contentPanel.add(calculatorPanel, new org.netbeans.lib.awtextra.AbsoluteConstraints(10, 30, 470, 390));
-        contentPanel.add(initialValueTextField, new org.netbeans.lib.awtextra.AbsoluteConstraints(120, 0, 160, -1));
+        contentPanel.add(initialValueTextField, new org.netbeans.lib.awtextra.AbsoluteConstraints(160, 0, 160, -1));
 
         add(contentPanel, new org.netbeans.lib.awtextra.AbsoluteConstraints(0, 10, 490, 440));
     }// </editor-fold>//GEN-END:initComponents
@@ -620,23 +617,6 @@ public class CalculationsPanelView extends javax.swing.JPanel {
                            nodeEditor.getOpenVertex().getName());
         initializeAvailableInputNodes();
         MainWindow.refreshGraph(); // Why ??
-    }
-    
-    // This method is problematic, why are we creating new map each time ??
-    public JComponent getLabel(String label){        
-        Map<String, JComponent> map = new HashMap<String, JComponent>();
-        map.put("fixedValueLabel", fixedValueLabel);
-        map.put("jScrollPane1", jScrollPane1);
-        map.put("jScrollPane2", jScrollPane2);
-        map.put("availableInputsJList", availableInputsLabel);
-        map.put("formulaInputArea", formulaInputArea);
-        map.put("valuesLabel", valuesLabel);
-        if(map.containsKey(label)){
-            return map.get(label);
-        }
-        else {
-            return null;
-        }
     }
     
     /**
@@ -898,7 +878,6 @@ public class CalculationsPanelView extends javax.swing.JPanel {
     private javax.swing.JLabel fixedValueLabel;
     private javax.swing.JTextArea formulaInputArea;
     private javax.swing.JTextField initialValueTextField;
-    private javax.swing.JScrollPane jScrollPane1;
     private javax.swing.JScrollPane jScrollPane2;
     private javax.swing.JScrollPane jScrollPane3;
     private javax.swing.JScrollPane jScrollPane4;

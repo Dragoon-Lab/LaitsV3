@@ -66,7 +66,7 @@
                 $this->log_level = $_REQUEST[self::LOG_LEVEL_PARAM];
                 $this->logger = $_REQUEST[self::LOGGER_NAME_PARAM];
                 $this->message = urldecode($_REQUEST[self::LOG_MESSAGE_PARAM]);
-                
+                $this->message = stripslashes($this->message);
                 return true;
             } 
             return false;
@@ -75,7 +75,7 @@
         private function save_activity_log() 
         {
             $queryString = "INSERT INTO step (session_id, method, message) VALUE (?,?,?)";
-           
+            
             if ($stmt = mysqli_prepare($this->connection, $queryString)) 
             {
                 $stmt -> bind_param("sss", $this->session_id, $this->log_level, $this->message);                

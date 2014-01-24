@@ -45,7 +45,7 @@
       <Inputs></Inputs>
       <InitialValue>.2</InitialValue>
       <Equation>.2</Equation>
-      <CorrectDescription>The ratio of number of rabbits born in a month to the rabbit population that month</CorrectDescription>
+      <CorrectDescription>The ratio of rabbits born in a month to the rabbit population</CorrectDescription>
       <Plan>fixed value</Plan>
     </Node>
 </Nodes>

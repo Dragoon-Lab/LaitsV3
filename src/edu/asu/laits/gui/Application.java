@@ -69,10 +69,10 @@ public class Application {
             System.out.println("Application was launched from Command Line");
             ApplicationContext.APP_HOST = "http://dragoon.asu.edu/ram/";
             ApplicationContext.forumURL = "http://dragoon.asu.edu/ram/";
-            ApplicationContext.setApplicationEnvironment(ApplicationContext.ApplicationEnvironment.DEV);
+            ApplicationContext.setApplicationEnvironment(ApplicationContext.ApplicationEnvironment.PROD);
             ApplicationContext.setSessionID("testsession4");
             ApplicationContext.setUserID("ramayantiwari");
-            ApplicationContext.setAppMode("test");
+            ApplicationContext.setAppMode("student");
             ApplicationContext.setCurrentTaskID("isle1");
             
         } else {

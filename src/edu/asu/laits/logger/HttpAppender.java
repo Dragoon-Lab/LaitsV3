@@ -81,7 +81,6 @@ public class HttpAppender extends AppenderSkeleton {
                 httpMethod = new HttpGet(sb.toString());
             } 
 
-            
             HttpThread httpThread = new HttpThread(httpClient, errorHandler);
             httpThread.setMethod(httpMethod);
 
