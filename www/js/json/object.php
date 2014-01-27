@@ -53,48 +53,57 @@
                 rabbits.addNodeInput(rabbits.getNodeIDByName("birth rate"), rabbits.getNodeIDByName("births"));
                 rabbits.setNodeParent("id2", true);
                 
-                var ped = new pm("coached", rabbits);
-                ped.descriptionAction("The number of rabbits born each month");
-                
-                
-                rabbits.addStudentNodeWithName("population");
                 rabbits.addStudentNodeWithName("births");
-                rabbits.addStudentNodeWithName("birth rate");
-                rabbits.addStudentNodeInput(rabbits.getNodeIDByName("births"), rabbits.getNodeIDByName("population"));
-                rabbits.addStudentNodeInput(rabbits.getNodeIDByName("population"), rabbits.getNodeIDByName("births"));
-                rabbits.addStudentNodeInput(rabbits.getNodeIDByName("birth rate"), rabbits.getNodeIDByName("births"));
-                rabbits.setStudentNodeSelection("id1", "description", "The number of rabbits born each month");
-                rabbits.setStudentNodeSelection("id1", "description", "The ratio of number of rabbits born in a month to the rabbit population that month");
-                rabbits.setStudentNodeSelection("id1", "type", "function");
-                rabbits.setToDemo("id1", "type");
-                rabbits.setStudentNodeSelection("id1", "initial", 10);
-                rabbits.setStudentNodeSelection("id1", "initial", 100);
-                rabbits.setStudentNodeSelection("id1", "units", "monkeys");
-                rabbits.setStudentNodeSelection("id1", "units", "cowboys");
-                rabbits.setStudentNodeSelection("id1", "units", "giraffes");
-                rabbits.setStudentNodeSelection("id1", "units", "bunnies");
-                rabbits.setToDemo("id1", "units");
-                rabbits.setStudentNodeSelection("id1", "equation", "id2");
-                rabbits.setStudentNodeSelection("id1", "equation", "10 + id2");
-                rabbits.setStudentNodeSelection("id1", "equation", "+ id2");
-
-                rabbits.setStudentNodeSelection("id2", "description", "The number of rabbits in the population");
-                rabbits.setStudentNodeSelection("id2", "description", "The ratio of number of rabbits born in a month to the rabbit population that month");
-                rabbits.setToDemo("id2", "description");
-                rabbits.setStudentNodeSelection("id2", "type", "parameter");
-                rabbits.setToDemo("id2", "type");
-                rabbits.setStudentNodeSelection("id2", "units", "rabbits");
-                rabbits.setStudentNodeSelection("id2", "units", "births");
-                rabbits.setStudentNodeSelection("id2", "equation", "id1 * id3");                
-
-                rabbits.setStudentNodeSelection("id3", "description", "The ratio of number of rabbits born in a month to the rabbit population that month");
-                rabbits.setStudentNodeSelection("id3", "type", "parameter");
-                rabbits.setStudentNodeSelection("id3", "units", "percent");
-                rabbits.setStudentNodeSelection("id3", "equation", "20");
-                rabbits.setStudentNodeSelection("id3", "equation", "2");
-                rabbits.setStudentNodeSelection("id3", "equation", ".2");
-                rabbits.addExtraDescription("The number of rabbits in the population during the second month", "model");
-                rabbits.addExtraDescription("The ratio of rabbits born with superpowers to ordinary rabbits", "extra");
+                rabbits.setStudentNodeSelection("id2", "description", "The number of rabbits born each month");
+                alert(rabbits.isDescriptionOptimal("The number of rabbits in the population"));
+                
+                var ped = new pm("coached", rabbits);
+                ped.descriptionAction("The ratio of number of rabbits born in a month to the rabbit population that month");
+                
+                
+                //*****This builds the student model
+//                rabbits.addStudentNodeWithName("population");
+//                rabbits.addStudentNodeWithName("births");
+//                rabbits.addStudentNodeWithName("birth rate");
+//                rabbits.addStudentNodeInput(rabbits.getNodeIDByName("births"), rabbits.getNodeIDByName("population"));
+//                rabbits.addStudentNodeInput(rabbits.getNodeIDByName("population"), rabbits.getNodeIDByName("births"));
+//                rabbits.addStudentNodeInput(rabbits.getNodeIDByName("birth rate"), rabbits.getNodeIDByName("births"));
+//                rabbits.setStudentNodeSelection("id1", "description", "The number of rabbits born each month");
+//                rabbits.setStudentNodeSelection("id1", "description", "The ratio of number of rabbits born in a month to the rabbit population that month");
+//                rabbits.setStudentNodeSelection("id1", "type", "function");
+//                rabbits.setToDemo("id1", "type");
+//                rabbits.setStudentNodeSelection("id1", "initial", 10);
+//                rabbits.setStudentNodeSelection("id1", "initial", 100);
+//                rabbits.setStudentNodeSelection("id1", "units", "monkeys");
+//                rabbits.setStudentNodeSelection("id1", "units", "cowboys");
+//                rabbits.setStudentNodeSelection("id1", "units", "giraffes");
+//                rabbits.setStudentNodeSelection("id1", "units", "bunnies");
+//                rabbits.setToDemo("id1", "units");
+//                rabbits.setStudentNodeSelection("id1", "equation", "id2");
+//                rabbits.setStudentNodeSelection("id1", "equation", "10 + id2");
+//                rabbits.setStudentNodeSelection("id1", "equation", "+ id2");
+//
+//                rabbits.setStudentNodeSelection("id2", "description", "The number of rabbits in the population");
+//                rabbits.setStudentNodeSelection("id2", "description", "The ratio of number of rabbits born in a month to the rabbit population that month");
+//                rabbits.setToDemo("id2", "description");
+//                rabbits.setStudentNodeSelection("id2", "type", "parameter");
+//                rabbits.setToDemo("id2", "type");
+//                rabbits.setStudentNodeSelection("id2", "units", "rabbits");
+//                rabbits.setStudentNodeSelection("id2", "units", "births");
+//                rabbits.setStudentNodeSelection("id2", "equation", "id1 * id3");                
+//
+////                rabbits.setStudentNodeSelection("id3", "description", "The ratio of number of rabbits born in a month to the rabbit population that month");
+////                rabbits.setStudentNodeSelection("id3", "type", "parameter");
+////                rabbits.setStudentNodeSelection("id3", "units", "percent");
+////                rabbits.setStudentNodeSelection("id3", "equation", "20");
+////                rabbits.setStudentNodeSelection("id3", "equation", "2");
+////                rabbits.setStudentNodeSelection("id3", "equation", ".2");
+////                rabbits.addExtraDescription("The number of rabbits in the population during the second month", "model");
+////                rabbits.addExtraDescription("The ratio of rabbits born with superpowers to ordinary rabbits", "extra");
+     
+     
+     
+     
                 //alert(rabbits.getExtraDescriptions(null));
 
 

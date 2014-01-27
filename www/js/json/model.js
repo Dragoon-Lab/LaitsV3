@@ -120,6 +120,7 @@ define(["dojo/_base/declare", "/laits/js/json/node", "/laits/js/json/student_nod
             this.nodeHeight = 200;
             this.x = this.beginX;
             this.y = this.beginY;
+            this.lastNodeVisible = null;
             this.ID = 1;
             this.taskName = name;
             this.properties = JSON.parse('{"phase" : "' + "" + '",\n"type" : "' + "" +
@@ -360,11 +361,77 @@ define(["dojo/_base/declare", "/laits/js/json/node", "/laits/js/json/student_nod
         isNodesParentVisible: function(/*string*/ id) {
             // Summary: returns true if the node's parent is visible (if the 
             //      node is an input into another node that is in the student model
-            for (var i = 0; i < this.model.task.studentModelNodes.length; i++)
-                for (var ii = 0; ii < this.model.task.studentModelNodes.length; ii++)
-                    if (id === this.model.task.studentModelNodes[i].inputs[ii])
+            for (var i = 0; i < this.model.task.givenModelNodes.length; i++) {
+                var temp = this.model.task.givenModelNodes[i].ID;
+                for (var ii = 0; ii < this.model.task.givenModelNodes[i].inputs.length; ii++)
+                    if (this.isNodeVisible(temp))
                         return true;
+            }
             return false;
+        },
+        getOptimalNode: function() {
+            // Summary: returns the ID of an optimal node to be used next; it 
+            //      first searches for an optimal child node of the last valid 
+            //      node that was made visible, then if none are found the 
+            //      function searches for a parent node that is visible but 
+            //      still has descendant nodes that are not, and then it 
+            //      searches for a parent node that has not been defined, and 
+            //      then for any node that has not been defined 
+            var id = null;
+            if (this.lastNodeVisible !== null) {
+                //searches for an optimal child node of the last valid node that was made visible
+                id = getNextOptimalNode(this.lastNodeVisible);
+                if (id !== null)
+                    return id;
+            }
+            for (var i = 0; i < this.model.task.givenModelNodes.length; i++) {
+                //searches for a parent node that is visible but still has descendant nodes that are not
+                if (this.model.task.givenModelNodes[i].parentNode) {
+                    if (isNodeVisible(this.model.task.givenModelNodes[i].ID)) {
+                        id = getNextOptimalNode(this.model.task.givenModelNodes[i].ID);
+                        if (id !== null)
+                            return id;
+                    } else {
+                        id = this.model.task.givenModelNodes[i].ID;
+                    }
+                }
+            }
+            if (id === null)
+                for (var i = 0; i < this.model.task.givenModelNodes.length; i++)
+                    if (this.isNodeVisible(this.model.task.givenModelNodes[i].ID) === false)
+                        return this.model.task.givenModelNodes[i].ID;
+            return id;
+        },
+        getNextOptimalNode: function(/*string*/ currentNodeID) {
+            for (var i = 0; i < this.model.task.givenModelNodes.length; i++) {
+                if (currentNodeID === this.model.task.givenModelNodes[i].ID) {
+                    for (var ii = 0; ii < this.model.task.givenModelNodes[ii].inputs.length; ii++) {
+                        if (this.isNodeVisible(this.model.task.givenModelNodes[i].inputs[ii].ID) === false)
+                            return this.model.task.givenModelNodes[i].inputs[ii].ID;
+                        else {
+                            var temp = getNextOptimalNode(this.model.task.givenModelNodes[i].inputs[ii].ID);
+                            if(temp !== null)
+                                return temp;
+                        }
+                    }
+                }
+            }
+            return null;
+        },
+        isDescriptionOptimal: function(/*string*/ description) {
+            for (var i = 0; i < this.model.task.givenModelNodes.length; i++) {
+                if (this.model.task.givenModelNodes[i].correctDesc === description) {
+                    var id = this.model.task.givenModelNodes[i].ID;
+                    if (this.isNodeVisible(id))
+                        return "alreadyExists";
+                    if (this.model.task.givenModelNodes[i].parentNode)
+                        return "optimal";
+                    if (this.isNodesParentVisible(id))
+                        return "optimal";
+                    return "notOptimal";
+                }
+            }
+            return "doesNotExist"
         },
         getNodeInitial: function(/*string*/ id) {
             for (var i = 0; i < this.model.task.givenModelNodes.length; i++) {
@@ -491,7 +558,7 @@ define(["dojo/_base/declare", "/laits/js/json/node", "/laits/js/json/student_nod
         getStudentNodeDesc: function(/*string*/ id) {
             for (var i = 0; i < this.model.task.studentModelNodes.length; i++) {
                 if (id === this.model.task.studentModelNodes[i].ID)
-                    return this.model.task.studentModelNodes[i].studentSelections.desc;
+                    return this.model.task.studentModelNodes[i].studentSelections.description;
             }
             return null;
         },
@@ -785,11 +852,14 @@ define(["dojo/_base/declare", "/laits/js/json/node", "/laits/js/json/student_nod
                         if (name === this.model.task.givenModelNodes[ii].name) {
                             this.model.task.studentModelNodes[i].ID = this.model.task.givenModelNodes[ii].ID;
                             this.model.task.studentModelNodes[i].inGivenModel = true;
-                            return this.model.task.studentModelNodes[i].ID;
+                            id = this.model.task.studentModelNodes[i].ID;
+                            this.lastNodeVisible = id;
+                            return id;
                         }
                     }
                 }
             }
+            this.lastNodeVisible = id;
             return id;
         },
         addStudentNodeWithName: function(/*string*/ name) {
