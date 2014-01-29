@@ -95,6 +95,7 @@ public class Application {
                 ApplicationContext.setUserID(userSession.username);
                 ApplicationContext.setAppMode(userSession.mode);
                 ApplicationContext.setCurrentTaskID(userSession.problem_name);
+                ApplicationContext.setSessionID(userSession.session_id);
                 
             } else {
                 JOptionPane.showMessageDialog(null, "Incorrect Initialization Parameters",
