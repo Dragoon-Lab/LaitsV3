@@ -3,27 +3,53 @@
 <Task phase="" type="">
     <TaskName>Predator-Prey</TaskName>
     <TaskDescription>
-        In the foothills of the Wasatch Mountains near Brigham City, Utah, there is a small NEWLINE
-        valley that is home to a rabbit population of 10 rabbits and two bobcats. NEWLINE NEWLINE
+        <![CDATA[
+        In the foothills of the Wasatch Mountains near Brigham City, Utah, there is a small 
+        valley that is home to a rabbit population of 10 rabbits and two bobcats. <br/><br/>
         
-        The rabbits have a birth rate of 73% per year and a death rate of 36.5% per year. NEWLINE
-        However, the number of bobcats has a further effect on the rabbit death rate so the NEWLINE
-        number of rabbit deaths is: rabbit population * rabbit death rate * bobcat population. NEWLINE NEWLINE
+        The rabbits have a birth rate of 73% per year and a death rate of 36.5% per year. 
+        However, the number of bobcats has a further effect on the rabbit death rate so the 
+        number of rabbit deaths is: rabbit population * rabbit death rate * bobcat population. <br/><br/>
       
-        The bobcats have a birth rate of 36.5% per year and a death rate of 50% per year. NEWLINE
-        However, the number of rabbits has an additional effect on the bobcat birth rate so the NEWLINE
-        number of bobcat births is: bobcat birthrate * bobcat population * rabbit population. NEWLINE NEWLINE
+        The bobcats have a birth rate of 36.5% per year and a death rate of 50% per year. 
+        However, the number of rabbits has an additional effect on the bobcat birth rate so the 
+        number of bobcat births is: bobcat birthrate * bobcat population * rabbit population. <br/><br/>
         
-        Construct a model that shows the daily change in the rabbit and bobcat populations over NEWLINE
-        a period of 10 years. Assume that births and deaths are the only change in the population. NEWLINE
-        Immigration and emigration do not occur. NEWLINE
+        Construct a model that shows the daily change in the rabbit and bobcat populations over 
+        a period of 10 years. Assume that births and deaths are the only change in the population. 
+        Immigration and emigration do not occur. 
+        ]]>
     </TaskDescription>
     <URL>images/bobcat_with_rabbit.jpg</URL>
     <StartTime>0.0</StartTime>
     <EndTime>10</EndTime>
     <TimeStep>0.1</TimeStep>
     <Units>Years</Units>
+    <NodeCount>10</NodeCount>
     <Nodes>
+        <Node type="stock" name="Rabbit Population" extra="no">
+            <CorrectDescription>The population size of the rabbits</CorrectDescription>
+            <Plan>proportional to accumulator and input</Plan>
+            <Order>1</Order>
+            <Inputs>
+                <Name>Rabbit Births Per Year</Name>
+                <Name>Rabbit Deaths Per Year</Name>
+            </Inputs>
+            <Outputs/>
+            <Equation>Rabbit Births Per Year -  Rabbit Deaths Per Year</Equation>
+            <InitialValue>10.0</InitialValue>
+        </Node>
+        <Node type="stock" name="Bobcat Population" extra="no">
+            <CorrectDescription>The population size of the bobcats</CorrectDescription>
+            <Plan>proportional to accumulator and input</Plan>
+            <Inputs>
+                <Name>Bobcat Births Per Year</Name>
+                <Name>Bobcat Deaths Per Year</Name>
+            </Inputs>
+            <Outputs/>
+            <Equation>Bobcat Births Per Year -  Bobcat Deaths Per Year</Equation>
+            <InitialValue>2.0</InitialValue>
+        </Node>
         <Node type="constant" name="Bobcat Death Rate" extra="no">
             <CorrectDescription>The death rate coefficient for the bobcat population</CorrectDescription>
             <Plan>fixed value</Plan>
@@ -60,35 +86,35 @@
             <CorrectDescription>The number of rabbits added to the population per year</CorrectDescription>
             <Plan>proportional to accumulator and input</Plan>
             <Inputs>
-                <Name>Water Fowl</Name>
+                <Name>Rabbit Population</Name>
                 <Name>Rabbit Birth Rate</Name>
             </Inputs>
             <Outputs/>
-            <Equation>Water Fowl * Rabbit Birth Rate</Equation>
+            <Equation>Rabbit Population * Rabbit Birth Rate</Equation>
             <InitialValue>0.0</InitialValue>
         </Node>
         <Node type="flow" name="Rabbit Deaths Per Year" extra="no">
             <CorrectDescription>The number of rabbits removed from the population per year</CorrectDescription>
             <Plan>proportional to accumulator and input</Plan>
             <Inputs>
-                <Name>Water Fowl</Name>
+                <Name>Rabbit Population</Name>
                 <Name>Rabbit Death Rate</Name>
                 <Name>Bobcat Population</Name>
             </Inputs>
             <Outputs/>
-            <Equation>Water Fowl * Rabbit Death Rate * Bobcat Population</Equation>
+            <Equation>Rabbit Population * Rabbit Death Rate * Bobcat Population</Equation>
             <InitialValue>0.0</InitialValue>
         </Node>
         <Node type="flow" name="Bobcat Births Per Year" extra="no">
             <CorrectDescription>The number of bobcats added to the population per year</CorrectDescription>
             <Plan>proportional to accumulator and input</Plan>
             <Inputs>
-                <Name>Water Fowl</Name>
+                <Name>Rabbit Population</Name>
                 <Name>Bobcat Birth Rate</Name>
                 <Name>Bobcat Population</Name>
             </Inputs>
             <Outputs/>
-            <Equation>Water Fowl * Bobcat Birth Rate * Bobcat Population</Equation>
+            <Equation>Rabbit Population * Bobcat Birth Rate * Bobcat Population</Equation>
             <InitialValue>0.0</InitialValue>
         </Node>
         <Node type="flow" name="Bobcat Deaths Per Year" extra="no">
@@ -101,29 +127,7 @@
             <Outputs/>
             <Equation>Bobcat Population *  Bobcat Death Rate</Equation>
             <InitialValue>0.0</InitialValue>
-        </Node>
-        <Node type="stock" name="Water Fowl" extra="no">
-            <CorrectDescription>The population size of the rabbit</CorrectDescription>
-            <Plan>proportional to accumulator and input</Plan>
-            <Inputs>
-                <Name>Rabbit Births Per Year</Name>
-                <Name>Rabbit Deaths Per Year</Name>
-            </Inputs>
-            <Outputs/>
-            <Equation>Rabbit Births Per Year -  Rabbit Deaths Per Year</Equation>
-            <InitialValue>10.0</InitialValue>
-        </Node>
-        <Node type="stock" name="Bobcat Population" extra="no">
-            <CorrectDescription>The population size of the bobcats</CorrectDescription>
-            <Plan>proportional to accumulator and input</Plan>
-            <Inputs>
-                <Name>Bobcat Births Per Year</Name>
-                <Name>Bobcat Deaths Per Year</Name>
-            </Inputs>
-            <Outputs/>
-            <Equation>Bobcat Births Per Year -  Bobcat Deaths Per Year</Equation>
-            <InitialValue>2.0</InitialValue>
-        </Node>
+        </Node>        
     </Nodes>    
     
     <DescriptionTree>
@@ -177,8 +181,8 @@
         <Node level="root">
             <Description>The population size</Description>            
             <Node level="leaf">
-                <Description>of the rabbit</Description>
-                <NodeName>Water Fowl</NodeName>
+                <Description>of the rabbits</Description>
+                <NodeName>Rabbit Population</NodeName>
             </Node>
             <Node level="leaf">
                 <Description>of the bobcats</Description>

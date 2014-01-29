@@ -1,110 +1,109 @@
 <Task type="Construct" phase="Training">
-    <TaskName>Chestnut Blight</TaskName>
-    <URL>http://upload.wikimedia.org/wikipedia/commons/f/f1/Chestnut_blight.jpg</URL>
-    <TaskDescription>Problem: In 1900, there were nearly 4,000 million American Chestnut trees in the forests of the United States, but then the 
-        Chestnut blight arrived from Asia. By 1940, nearly all of the mature American Chestnut trees were dead. Let's assume that the 
-        blight kills about 10% of the trees each year. For instance, in the first year of the blight, 400 million trees died, leaving 
-        only 3,600 million alive. In the second year of the blight, 360 million trees died. 
+  <TaskName>Chestnut Blight</TaskName>
+	<URL>http://upload.wikimedia.org/wikipedia/commons/f/f1/Chestnut_blight.jpg</URL>
+	<TaskDescription>Problem: In 1900, there were nearly 4,000 million American Chestnut trees in the forests of the United States, but then the 
+			NEWLINE Chestnut blight arrived from Asia. By 1940, nearly all of the mature American Chestnut trees were dead. Let's assume that the 
+			NEWLINE blight kills about 10% of the trees each year. For instance, in the first year of the blight, 400 million trees died, leaving 
+			NEWLINE only 3,600 million alive. In the second year of the blight, 360 million trees died. 
 			
-        Goal: Graph the number of live Chestnut trees over a 40-year period.(Unit is million)
-    </TaskDescription>
-    <StartTime>0</StartTime>
-    <EndTime>40</EndTime>
-    <Units>years</Units>
-    <NodeCount>6</NodeCount>
-    <Nodes>
-        <Node type="flow" name="annual tree deaths" extra="no">
-            <Inputs>
-                <Name>death rate</Name>
-                <Name>live trees</Name>
-            </Inputs>
-            <InitialValue/>
-            <Equation>death rate * live trees</Equation>
-            <CorrectDescription>The number of trees that died each year</CorrectDescription>
-            <Plan>proportional to accumulator and input</Plan>
-        </Node>
-        <Node type="constant" name="initial population" extra="yes">
-            <Inputs/>
-            <Equation>4000</Equation>
-            <InitialValue>4000</InitialValue>
-            <CorrectDescription>The number of trees alive in the forest in 1900</CorrectDescription>
-            <Plan>fixed value</Plan>
-        </Node>
-        <Node type="constant" name="deaths second year" extra="yes">
-            <Inputs/>
-            <Equation>360</Equation>
-            <InitialValue>360</InitialValue>
-            <CorrectDescription>The number of trees that died during the second year</CorrectDescription>
-            <Plan>fixed value</Plan>
-        </Node>
-        <Node type="constant" name="deaths first year" extra="yes">
-            <Inputs/>
-            <Equation>400</Equation>
-            <InitialValue>400</InitialValue>
-            <CorrectDescription>The number of trees that died during the first year</CorrectDescription>
-            <Plan>fixed value</Plan>
-        </Node>
-        <Node type="constant" name="death rate" extra="no">
-            <Inputs/>
-            <Equation>0.1</Equation>
-            <InitialValue>0.1</InitialValue>
-            <CorrectDescription>The proportion of trees that die in a year to trees that were alive at the beginning of the year</CorrectDescription>
-            <Plan>fixed value</Plan>
-        </Node>
-        <Node type="stock" name="live trees" extra="no">
-            <Order>1</Order>
-            <Inputs>
-                <Name>annual tree deaths</Name>
-            </Inputs>
-            <InitialValue>4000</InitialValue>
-            <Equation>-annual tree deaths</Equation>
-            <CorrectDescription>The number of trees alive in the forest each year</CorrectDescription>
-            <Plan>said to decrease</Plan>
-        </Node>
-    </Nodes>
-    <DescriptionTree>
-        <Node level="root">
-            <Description>The number of trees</Description>
-            <Node level="intermediate">
-                <Description>alive in the forest</Description>
-                <Node level="leaf">
-                    <Description>each year</Description>
-                    <NodeName>live trees</NodeName>
-                </Node>
-                <Node level="leaf">
-                    <Description>in 1900</Description>
-                    <NodeName>initial population</NodeName>
-                </Node>
-            </Node>
-            <Node level="intermediate">
-                <Description>that died</Description>
-                <Node level="leaf">
-                    <Description>each year</Description>
-                    <NodeName>annual tree deaths</NodeName>
-                </Node>
-                <Node level="leaf">
-                    <Description>during the first year</Description>
-                    <NodeName>deaths first year</NodeName>
-                </Node>
-                <Node level="leaf">
-                    <Description>during the second year</Description>
-                    <NodeName>deaths second year</NodeName>
-                </Node>
-            </Node>
-        </Node>
-        <Node level="root">
-            <Description>The proportion of trees</Description>
-            <Node level="intermediate">
-                <Description>that die in a year to</Description>
-                <Node level="leaf">
-                    <Description>trees that were alive at the beginning of the year</Description>
-                    <NodeName>death rate</NodeName>
-                </Node>
-                <Node level="leaf">
-                    <Description>trees that die the preceding year</Description>
-                    <NodeName>tree death decrease</NodeName>
-                </Node>
-            </Node>
-        </Node>
-    </DescriptionTree>
+	NEWLINE NEWLINE Goal: Graph the number of live Chestnut trees over a 40-year period.(Unit is million)</TaskDescription>
+	<StartTime>0</StartTime>
+	<EndTime>40</EndTime>
+	<Units>years</Units>
+	<NodeCount>6</NodeCount>
+	<Nodes>
+		<Node type="stock" name="live trees" extra="no">
+                    <Order>1</Order>
+                    <Inputs>
+                            <Name>annual tree deaths</Name>
+                    </Inputs>
+                    <InitialValue>4000</InitialValue>
+                    <Equation>-annual tree deaths</Equation>
+                    <CorrectDescription>The number of trees alive in the forest each year</CorrectDescription>
+                    <Plan>said to decrease</Plan>
+		</Node>
+                <Node type="flow" name="annual tree deaths" extra="no">
+                    <Inputs>
+                        <Name>death rate</Name>
+                        <Name>live trees</Name>
+                    </Inputs>
+                    <InitialValue/>
+                    <Equation>death rate * live trees</Equation>
+                    <CorrectDescription>The number of trees that died each year</CorrectDescription>
+                    <Plan>proportional to accumulator and input</Plan>
+		</Node>
+		<Node type="constant" name="initial population" extra="yes">
+			<Inputs/>
+			<Equation>4000</Equation>
+			<InitialValue>4000</InitialValue>
+			<CorrectDescription>The number of trees alive in the forest in 1900</CorrectDescription>
+			<Plan>fixed value</Plan>
+		</Node>
+		<Node type="constant" name="deaths second year" extra="yes">
+			<Inputs/>
+			<Equation>360</Equation>
+			<InitialValue>360</InitialValue>
+			<CorrectDescription>The number of trees that died during the second year</CorrectDescription>
+			<Plan>fixed value</Plan>
+		</Node>
+		<Node type="constant" name="deaths first year" extra="yes">
+			<Inputs/>
+			<Equation>400</Equation>
+			<InitialValue>400</InitialValue>
+			<CorrectDescription>The number of trees that died during the first year</CorrectDescription>
+			<Plan>fixed value</Plan>
+		</Node>
+		<Node type="constant" name="death rate" extra="no">
+			<Inputs/>
+			<Equation>0.1</Equation>
+			<InitialValue>0.1</InitialValue>
+			<CorrectDescription>The proportion of trees that die in a year to trees that were alive at the beginning of the year</CorrectDescription>
+			<Plan>fixed value</Plan>
+		</Node>		
+	</Nodes>
+	<DescriptionTree>
+		<Node level="root">
+			<Description>The number of trees</Description>
+			<Node level="intermediate">
+				<Description>alive in the forest</Description>
+				<Node level="leaf">
+					<Description>each year</Description>
+					<NodeName>live trees</NodeName>
+				</Node>
+				<Node level="leaf">
+					<Description>in 1900</Description>
+					<NodeName>initial population</NodeName>
+				</Node>
+			</Node>
+			<Node level="intermediate">
+				<Description>that died</Description>
+				<Node level="leaf">
+					<Description>each year</Description>
+					<NodeName>annual tree deaths</NodeName>
+				</Node>
+				<Node level="leaf">
+					<Description>during the first year</Description>
+					<NodeName>deaths first year</NodeName>
+				</Node>
+				<Node level="leaf">
+					<Description>during the second year</Description>
+					<NodeName>deaths second year</NodeName>
+				</Node>
+			</Node>
+		</Node>
+		<Node level="root">
+			<Description>The proportion of trees</Description>
+			<Node level="intermediate">
+				<Description>that die in a year to</Description>
+				<Node level="leaf">
+					<Description>trees that were alive at the beginning of the year</Description>
+					<NodeName>death rate</NodeName>
+				</Node>
+				<Node level="leaf">
+					<Description>trees that die the preceding year</Description>
+					<NodeName>tree death decrease</NodeName>
+				</Node>
+			</Node>
+		</Node>
+	</DescriptionTree>
 </Task>
