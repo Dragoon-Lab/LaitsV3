@@ -1,287 +1,193 @@
-<graph>
-  <properties>
-    <zoomLevel>1.0</zoomLevel>
-    <defaultShape>DEFAULT</defaultShape>
-    <defaultInsertShape>DEFAULT</defaultInsertShape>
-    <backgroundColor>
-      <red>255</red>
-      <green>255</green>
-      <blue>255</blue>
-      <alpha>255</alpha>
-    </backgroundColor>
-    <defaultUseGraphBackground>true</defaultUseGraphBackground>
-    <defaultVertexBackgroundColor>
-      <red>255</red>
-      <green>255</green>
-      <blue>255</blue>
-      <alpha>255</alpha>
-    </defaultVertexBackgroundColor>
-    <defaultVertexForegroundColor>
-      <red>0</red>
-      <green>0</green>
-      <blue>0</blue>
-      <alpha>255</alpha>
-    </defaultVertexForegroundColor>
-  </properties>
-  <vertexList class="linked-list">
-    <vertex>
-      <xPosition>1075.0</xPosition>
-      <yPosition>101.0</yPosition>
-      <useGraphBackround>true</useGraphBackround>
-      <backgroundColor>
-        <red>255</red>
-        <green>255</green>
-        <blue>255</blue>
-        <alpha>255</alpha>
-      </backgroundColor>
-      <foregroundColor>
-        <red>0</red>
-        <green>0</green>
-        <blue>0</blue>
-        <alpha>255</alpha>
-      </foregroundColor>
-      <type>CONSTANT</type>
-      <name>Cat Death Rate</name>
-      <correctDescription>The death rate coefficient for the cat population</correctDescription>
-      <plan>Parameter</plan>
-      <descriptionStatus>CORRECT</descriptionStatus>
-      <planStatus>CORRECT</planStatus>
-      <calculationsStatus>CORRECT</calculationsStatus>
-      <graphsStatus>UNDEFINED</graphsStatus>
-      <initialValue>0.011</initialValue>
-      <equation></equation>
-      <vertexIndex>0</vertexIndex>
-    </vertex>
-    <vertex>
-      <xPosition>825.0</xPosition>
-      <yPosition>104.0</yPosition>
-      <useGraphBackround>true</useGraphBackround>
-      <backgroundColor reference="../../vertex/backgroundColor"/>
-      <foregroundColor reference="../../vertex/foregroundColor"/>
-      <type>CONSTANT</type>
-      <name>Cat Birth Rate</name>
-      <correctDescription>The birth rate coefficient for the cat population</correctDescription>
-      <plan>Parameter</plan>
-      <descriptionStatus>CORRECT</descriptionStatus>
-      <planStatus>CORRECT</planStatus>
-      <calculationsStatus>CORRECT</calculationsStatus>
-      <graphsStatus>UNDEFINED</graphsStatus>
-      <initialValue>0.001</initialValue>
-      <equation></equation>
-      <vertexIndex>1</vertexIndex>
-    </vertex>
-    <vertex>
-      <xPosition>604.0</xPosition>
-      <yPosition>101.0</yPosition>
-      <useGraphBackround>true</useGraphBackround>
-      <backgroundColor reference="../../vertex/backgroundColor"/>
-      <foregroundColor reference="../../vertex/foregroundColor"/>
-      <type>CONSTANT</type>
-      <name>Bird Death Rate</name>
-      <correctDescription>The death rate coefficient for the water fowl population</correctDescription>
-      <plan>Parameter</plan>
-      <descriptionStatus>CORRECT</descriptionStatus>
-      <planStatus>CORRECT</planStatus>
-      <calculationsStatus>CORRECT</calculationsStatus>
-      <graphsStatus>UNDEFINED</graphsStatus>
-      <initialValue>0.001</initialValue>
-      <equation></equation>
-      <vertexIndex>2</vertexIndex>
-    </vertex>
-    <vertex>
-      <xPosition>388.0</xPosition>
-      <yPosition>98.0</yPosition>
-      <useGraphBackround>true</useGraphBackround>
-      <backgroundColor reference="../../vertex/backgroundColor"/>
-      <foregroundColor reference="../../vertex/foregroundColor"/>
-      <type>CONSTANT</type>
-      <name>Bird Birth Rate</name>
-      <correctDescription>The birth rate coefficient for the water fowl population</correctDescription>
-      <plan>Parameter</plan>
-      <descriptionStatus>CORRECT</descriptionStatus>
-      <planStatus>CORRECT</planStatus>
-      <calculationsStatus>CORRECT</calculationsStatus>
-      <graphsStatus>UNDEFINED</graphsStatus>
-      <initialValue>0.002</initialValue>
-      <equation></equation>
-      <vertexIndex>3</vertexIndex>
-    </vertex>
-    <vertex>
-      <xPosition>390.0</xPosition>
-      <yPosition>270.0</yPosition>
-      <useGraphBackround>true</useGraphBackround>
-      <backgroundColor reference="../../vertex/backgroundColor"/>
-      <foregroundColor reference="../../vertex/foregroundColor"/>
-      <type>FLOW</type>
-      <name>Bird Births Per Day</name>
-      <correctDescription>The number of new water fowl added to the population each day</correctDescription>
-      <plan>Function</plan>
-      <descriptionStatus>CORRECT</descriptionStatus>
-      <planStatus>CORRECT</planStatus>
-      <calculationsStatus>CORRECT</calculationsStatus>
-      <graphsStatus>UNDEFINED</graphsStatus>
-      <initialValue>0.0</initialValue>
-      <equation>Water Fowl *  Bird Birth Rate</equation>
-      <vertexIndex>4</vertexIndex>
-    </vertex>
-    <vertex>
-      <xPosition>606.0</xPosition>
-      <yPosition>270.0</yPosition>
-      <useGraphBackround>true</useGraphBackround>
-      <backgroundColor reference="../../vertex/backgroundColor"/>
-      <foregroundColor reference="../../vertex/foregroundColor"/>
-      <type>FLOW</type>
-      <name>Bird Deaths Per Day</name>
-      <correctDescription>The number of water fowl removed from the population each day</correctDescription>
-      <plan>Function</plan>
-      <descriptionStatus>CORRECT</descriptionStatus>
-      <planStatus>CORRECT</planStatus>
-      <calculationsStatus>CORRECT</calculationsStatus>
-      <graphsStatus>UNDEFINED</graphsStatus>
-      <initialValue>0.0</initialValue>
-      <equation>Water Fowl *  Bird Death Rate *  Domestic Cats</equation>
-      <vertexIndex>5</vertexIndex>
-    </vertex>
-    <vertex>
-      <xPosition>823.0</xPosition>
-      <yPosition>275.0</yPosition>
-      <useGraphBackround>true</useGraphBackround>
-      <backgroundColor reference="../../vertex/backgroundColor"/>
-      <foregroundColor reference="../../vertex/foregroundColor"/>
-      <type>FLOW</type>
-      <name>Cat Births Per Day</name>
-      <correctDescription>The number of new cats added to the population each day</correctDescription>
-      <plan>Function</plan>
-      <descriptionStatus>CORRECT</descriptionStatus>
-      <planStatus>CORRECT</planStatus>
-      <calculationsStatus>CORRECT</calculationsStatus>
-      <graphsStatus>UNDEFINED</graphsStatus>
-      <initialValue>0.0</initialValue>
-      <equation>Water Fowl *  Cat Birth Rate *  Domestic Cats</equation>
-      <vertexIndex>6</vertexIndex>
-    </vertex>
-    <vertex>
-      <xPosition>1072.0</xPosition>
-      <yPosition>273.0</yPosition>
-      <useGraphBackround>true</useGraphBackround>
-      <backgroundColor reference="../../vertex/backgroundColor"/>
-      <foregroundColor reference="../../vertex/foregroundColor"/>
-      <type>FLOW</type>
-      <name>Cat Deaths Per Day</name>
-      <correctDescription>The number of cats removed from the population each day</correctDescription>
-      <plan>Function</plan>
-      <descriptionStatus>CORRECT</descriptionStatus>
-      <planStatus>CORRECT</planStatus>
-      <calculationsStatus>CORRECT</calculationsStatus>
-      <graphsStatus>UNDEFINED</graphsStatus>
-      <initialValue>0.0</initialValue>
-      <equation>Domestic Cats *  Cat Death Rate</equation>
-      <vertexIndex>7</vertexIndex>
-    </vertex>
-    <vertex>
-      <xPosition>483.0</xPosition>
-      <yPosition>471.0</yPosition>
-      <useGraphBackround>true</useGraphBackround>
-      <backgroundColor reference="../../vertex/backgroundColor"/>
-      <foregroundColor reference="../../vertex/foregroundColor"/>
-      <type>STOCK</type>
-      <name>Water Fowl</name>
-      <correctDescription>The population size of the water fowl</correctDescription>
-      <plan>Accumulator</plan>
-      <descriptionStatus>CORRECT</descriptionStatus>
-      <planStatus>CORRECT</planStatus>
-      <calculationsStatus>CORRECT</calculationsStatus>
-      <graphsStatus>UNDEFINED</graphsStatus>
-      <initialValue>10.0</initialValue>
-      <equation>Bird Births Per Day -  Bird Deaths Per Day</equation>
-      <vertexIndex>8</vertexIndex>
-    </vertex>
-    <vertex>
-      <xPosition>846.0</xPosition>
-      <yPosition>456.0</yPosition>
-      <useGraphBackround>true</useGraphBackround>
-      <backgroundColor reference="../../vertex/backgroundColor"/>
-      <foregroundColor reference="../../vertex/foregroundColor"/>
-      <type>STOCK</type>
-      <name>Domestic Cats</name>
-      <correctDescription>The population size of the domestic cats</correctDescription>
-      <plan>Accumulator</plan>
-      <descriptionStatus>CORRECT</descriptionStatus>
-      <planStatus>CORRECT</planStatus>
-      <calculationsStatus>CORRECT</calculationsStatus>
-      <graphsStatus>UNDEFINED</graphsStatus>
-      <initialValue>2.0</initialValue>
-      <equation>Cat Births Per Day -  Cat Deaths Per Day</equation>
-      <vertexIndex>9</vertexIndex>
-    </vertex>
-  </vertexList>
-  <edgeList class="linked-list">
-    <edge>
-      <sourceVertexId>4</sourceVertexId>
-      <targetVertexId>8</targetVertexId>
-    </edge>
-    <edge>
-      <sourceVertexId>5</sourceVertexId>
-      <targetVertexId>8</targetVertexId>
-    </edge>
-    <edge>
-      <sourceVertexId>6</sourceVertexId>
-      <targetVertexId>9</targetVertexId>
-    </edge>
-    <edge>
-      <sourceVertexId>7</sourceVertexId>
-      <targetVertexId>9</targetVertexId>
-    </edge>
-    <edge>
-      <sourceVertexId>9</sourceVertexId>
-      <targetVertexId>7</targetVertexId>
-    </edge>
-    <edge>
-      <sourceVertexId>0</sourceVertexId>
-      <targetVertexId>7</targetVertexId>
-    </edge>
-    <edge>
-      <sourceVertexId>8</sourceVertexId>
-      <targetVertexId>6</targetVertexId>
-    </edge>
-    <edge>
-      <sourceVertexId>1</sourceVertexId>
-      <targetVertexId>6</targetVertexId>
-    </edge>
-    <edge>
-      <sourceVertexId>9</sourceVertexId>
-      <targetVertexId>6</targetVertexId>
-    </edge>
-    <edge>
-      <sourceVertexId>8</sourceVertexId>
-      <targetVertexId>5</targetVertexId>
-    </edge>
-    <edge>
-      <sourceVertexId>2</sourceVertexId>
-      <targetVertexId>5</targetVertexId>
-    </edge>
-    <edge>
-      <sourceVertexId>9</sourceVertexId>
-      <targetVertexId>5</targetVertexId>
-    </edge>
-    <edge>
-      <sourceVertexId>8</sourceVertexId>
-      <targetVertexId>4</targetVertexId>
-    </edge>
-    <edge>
-      <sourceVertexId>3</sourceVertexId>
-      <targetVertexId>4</targetVertexId>
-    </edge>
-  </edgeList>
-  <task>
-    <taskName></taskName>
-    <taskDescription></taskDescription>
-    <imageURL></imageURL>
-    <units>Days</units>
-    <times>
-      <startTime>0.0</startTime>
-      <endTime>3650.0</endTime>
-      <timeStep>1.0</timeStep>
-    </times>
-  </task>
-</graph>
+<?xml version="1.0" encoding="UTF-8"?>
+
+<Task phase="" type="">
+    <TaskName>Predator-Prey</TaskName>
+    <TaskDescription>
+        <![CDATA[
+        In the foothills of the Wasatch Mountains near Brigham City, Utah, there is a small 
+        valley that is home to a rabbit population of 10 rabbits and two bobcats. <br/><br/>
+        
+        The rabbits have a birth rate of 73% per year and a death rate of 36.5% per year. 
+        However, the number of bobcats has a further effect on the rabbit death rate so the 
+        number of rabbit deaths is: rabbit population * rabbit death rate * bobcat population. <br/><br/>
+      
+        The bobcats have a birth rate of 36.5% per year and a death rate of 50% per year. 
+        However, the number of rabbits has an additional effect on the bobcat birth rate so the 
+        number of bobcat births is: bobcat birthrate * bobcat population * rabbit population. <br/><br/>
+        
+        Construct a model that shows the daily change in the rabbit and bobcat populations over 
+        a period of 10 years. Assume that births and deaths are the only change in the population. 
+        Immigration and emigration do not occur. 
+        ]]>
+    </TaskDescription>
+    <URL>images/bobcat_with_rabbit.jpg</URL>
+    <StartTime>0.0</StartTime>
+    <EndTime>10</EndTime>
+    <TimeStep>0.1</TimeStep>
+    <Units>Years</Units>
+    <NodeCount>10</NodeCount>
+    <Nodes>
+        <Node type="stock" name="Rabbit Population" extra="no">
+            <CorrectDescription>The population size of the rabbits</CorrectDescription>
+            <Plan>proportional to accumulator and input</Plan>
+            <Order>1</Order>
+            <Inputs>
+                <Name>Rabbit Births Per Year</Name>
+                <Name>Rabbit Deaths Per Year</Name>
+            </Inputs>
+            <Outputs/>
+            <Equation>Rabbit Births Per Year -  Rabbit Deaths Per Year</Equation>
+            <InitialValue>10.0</InitialValue>
+        </Node>
+        <Node type="stock" name="Bobcat Population" extra="no">
+            <CorrectDescription>The population size of the bobcats</CorrectDescription>
+            <Plan>proportional to accumulator and input</Plan>
+            <Inputs>
+                <Name>Bobcat Births Per Year</Name>
+                <Name>Bobcat Deaths Per Year</Name>
+            </Inputs>
+            <Outputs/>
+            <Equation>Bobcat Births Per Year -  Bobcat Deaths Per Year</Equation>
+            <InitialValue>2.0</InitialValue>
+        </Node>
+        <Node type="constant" name="Bobcat Death Rate" extra="no">
+            <CorrectDescription>The death rate coefficient for the bobcat population</CorrectDescription>
+            <Plan>fixed value</Plan>
+            <Inputs></Inputs>
+            <Outputs/>
+            <Equation>.50</Equation>
+            <InitialValue>.50</InitialValue>
+        </Node>
+        <Node type="constant" name="Bobcat Birth Rate" extra="no">
+            <CorrectDescription>The birth rate coefficient for the bobcat population</CorrectDescription>
+            <Plan>fixed value</Plan>
+            <Inputs/>
+            <Outputs/>
+            <Equation>0.365</Equation>
+            <InitialValue>0.365</InitialValue>
+        </Node>
+        <Node type="constant" name="Rabbit Death Rate" extra="no">
+            <CorrectDescription>The death rate coefficient for the rabbit population</CorrectDescription>
+            <Plan>fixed value</Plan>
+            <Inputs></Inputs>
+            <Outputs/>
+            <Equation>0.365</Equation>
+            <InitialValue>0.365</InitialValue>
+        </Node>
+        <Node type="constant" name="Rabbit Birth Rate" extra="no">
+            <CorrectDescription>The birth rate coefficient for the rabbit population</CorrectDescription>
+            <Plan>fixed value</Plan>
+            <Inputs/>
+            <Outputs/>
+            <Equation>0.73</Equation>
+            <InitialValue>0.73</InitialValue>
+        </Node>
+        <Node type="flow" name="Rabbit Births Per Year" extra="no">
+            <CorrectDescription>The number of rabbits added to the population per year</CorrectDescription>
+            <Plan>proportional to accumulator and input</Plan>
+            <Inputs>
+                <Name>Rabbit Population</Name>
+                <Name>Rabbit Birth Rate</Name>
+            </Inputs>
+            <Outputs/>
+            <Equation>Rabbit Population * Rabbit Birth Rate</Equation>
+            <InitialValue>0.0</InitialValue>
+        </Node>
+        <Node type="flow" name="Rabbit Deaths Per Year" extra="no">
+            <CorrectDescription>The number of rabbits removed from the population per year</CorrectDescription>
+            <Plan>proportional to accumulator and input</Plan>
+            <Inputs>
+                <Name>Rabbit Population</Name>
+                <Name>Rabbit Death Rate</Name>
+                <Name>Bobcat Population</Name>
+            </Inputs>
+            <Outputs/>
+            <Equation>Rabbit Population * Rabbit Death Rate * Bobcat Population</Equation>
+            <InitialValue>0.0</InitialValue>
+        </Node>
+        <Node type="flow" name="Bobcat Births Per Year" extra="no">
+            <CorrectDescription>The number of bobcats added to the population per year</CorrectDescription>
+            <Plan>proportional to accumulator and input</Plan>
+            <Inputs>
+                <Name>Rabbit Population</Name>
+                <Name>Bobcat Birth Rate</Name>
+                <Name>Bobcat Population</Name>
+            </Inputs>
+            <Outputs/>
+            <Equation>Rabbit Population * Bobcat Birth Rate * Bobcat Population</Equation>
+            <InitialValue>0.0</InitialValue>
+        </Node>
+        <Node type="flow" name="Bobcat Deaths Per Year" extra="no">
+            <CorrectDescription>The number of bobcats removed from the population per year</CorrectDescription>
+            <Plan>proportional to accumulator and input</Plan>
+            <Inputs>
+                <Name>Bobcat Population</Name>
+                <Name>Bobcat Death Rate</Name>
+            </Inputs>
+            <Outputs/>
+            <Equation>Bobcat Population *  Bobcat Death Rate</Equation>
+            <InitialValue>0.0</InitialValue>
+        </Node>        
+    </Nodes>    
+    
+    <DescriptionTree>
+        <Node level="root">
+            <Description>The birth rate coefficient</Description>            
+            <Node level="leaf">
+                <Description>for the bobcat population</Description>
+                <NodeName>Bobcat Birth Rate</NodeName>
+            </Node>
+            <Node level="leaf">
+                <Description>for the rabbit population</Description>
+                <NodeName>Rabbit Birth Rate</NodeName>
+            </Node>
+        </Node>
+        <Node level="root">
+            <Description>The death rate coefficient</Description>            
+            <Node level="leaf">
+                <Description>for the bobcat population</Description>
+                <NodeName>Bobcat Death Rate</NodeName>
+            </Node>
+            <Node level="leaf">
+                <Description>for the rabbit population</Description>
+                <NodeName>Rabbit Death Rate</NodeName>
+            </Node>
+        </Node>
+        <Node level="root">
+            <Description>The number of</Description>  
+            <Node level="intermediate">
+                <Description>rabbits</Description>          
+                <Node level="leaf">
+                    <Description>added to the population per year</Description>
+                    <NodeName>Rabbit Births Per Year</NodeName>
+                </Node>
+                <Node level="leaf">
+                    <Description>removed from the population per year</Description>
+                    <NodeName>Rabbit Deaths Per Year</NodeName>
+                </Node>
+            </Node>
+            <Node level="intermediate">
+                <Description>bobcats</Description>          
+                <Node level="leaf">
+                    <Description>added to the population per year</Description>
+                    <NodeName>Bobcat Births Per Year</NodeName>
+                </Node>
+                <Node level="leaf">
+                    <Description>removed from the population per year</Description>
+                    <NodeName>Bobcat Deaths Per Year</NodeName>
+                </Node>
+            </Node>
+        </Node>
+        <Node level="root">
+            <Description>The population size</Description>            
+            <Node level="leaf">
+                <Description>of the rabbits</Description>
+                <NodeName>Rabbit Population</NodeName>
+            </Node>
+            <Node level="leaf">
+                <Description>of the bobcats</Description>
+                <NodeName>Bobcat Population</NodeName>
+            </Node>
+        </Node>
+    </DescriptionTree>
+</Task>
