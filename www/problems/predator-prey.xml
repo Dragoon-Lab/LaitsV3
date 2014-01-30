@@ -5,17 +5,18 @@
     <TaskDescription>
         <![CDATA[
         In the foothills of the Wasatch Mountains near Brigham City, Utah, there is a small 
-        valley that is home to a rabbit population of 10 rabbits and two bobcats. <br/><br/>
+        valley that is home to a rabbit population of 53 rabbits and 4 bobcats. <br/><br/>
         
-        The rabbits have a birth rate of 73% per year and a death rate of 36.5% per year. 
-        However, the number of bobcats has a further effect on the rabbit death rate so the 
-        number of rabbit deaths is: rabbit population * rabbit death rate * bobcat population. <br/><br/>
+        The rabbits have a birth rate of 1.5 per rabbit per year. 
+        However, the number of bobcats affects the rabbit death rate so the 
+        number of rabbit deaths is: Rabbit Population * Rabbit Death Coefficient * Bobcat Population,
+        where the Rabbit Death Coefficient is 0.25. <br/><br/>
       
-        The bobcats have a birth rate of 36.5% per year and a death rate of 50% per year. 
-        However, the number of rabbits has an additional effect on the bobcat birth rate so the 
-        number of bobcat births is: bobcat birthrate * bobcat population * rabbit population. <br/><br/>
+        The bobcats have a death rate of .25 per bobcat per year. The number of rabbits affects the 
+        bobcat birth rate so the number of bobcat births is: Bobcat Birthrate * Bobcat Population * Rabbit Population,
+        where the Bobcat Birth Coefficient is 0.005. <br/><br/>
         
-        Construct a model that shows the daily change in the rabbit and bobcat populations over 
+        Construct a model that shows the change in the rabbit and bobcat populations over 
         a period of 10 years. Assume that births and deaths are the only change in the population. 
         Immigration and emigration do not occur. 
         ]]>
@@ -37,7 +38,7 @@
             </Inputs>
             <Outputs/>
             <Equation>Rabbit Births Per Year -  Rabbit Deaths Per Year</Equation>
-            <InitialValue>10.0</InitialValue>
+            <InitialValue>53.0</InitialValue>
         </Node>
         <Node type="stock" name="Bobcat Population" extra="no">
             <CorrectDescription>The population size of the bobcats</CorrectDescription>
@@ -48,39 +49,39 @@
             </Inputs>
             <Outputs/>
             <Equation>Bobcat Births Per Year -  Bobcat Deaths Per Year</Equation>
-            <InitialValue>2.0</InitialValue>
+            <InitialValue>4.0</InitialValue>
         </Node>
         <Node type="constant" name="Bobcat Death Rate" extra="no">
             <CorrectDescription>The death rate coefficient for the bobcat population</CorrectDescription>
             <Plan>fixed value</Plan>
             <Inputs></Inputs>
             <Outputs/>
-            <Equation>.50</Equation>
-            <InitialValue>.50</InitialValue>
+            <Equation>.25</Equation>
+            <InitialValue>.25</InitialValue>
         </Node>
-        <Node type="constant" name="Bobcat Birth Rate" extra="no">
+        <Node type="constant" name="Bobcat Birth Coefficient" extra="no">
             <CorrectDescription>The birth rate coefficient for the bobcat population</CorrectDescription>
             <Plan>fixed value</Plan>
             <Inputs/>
             <Outputs/>
-            <Equation>0.365</Equation>
-            <InitialValue>0.365</InitialValue>
+            <Equation>.005</Equation>
+            <InitialValue>.005</InitialValue>
         </Node>
-        <Node type="constant" name="Rabbit Death Rate" extra="no">
+        <Node type="constant" name="Rabbit Death Coefficient" extra="no">
             <CorrectDescription>The death rate coefficient for the rabbit population</CorrectDescription>
             <Plan>fixed value</Plan>
             <Inputs></Inputs>
             <Outputs/>
-            <Equation>0.365</Equation>
-            <InitialValue>0.365</InitialValue>
+            <Equation>.25</Equation>
+            <InitialValue>.25</InitialValue>
         </Node>
         <Node type="constant" name="Rabbit Birth Rate" extra="no">
             <CorrectDescription>The birth rate coefficient for the rabbit population</CorrectDescription>
             <Plan>fixed value</Plan>
             <Inputs/>
             <Outputs/>
-            <Equation>0.73</Equation>
-            <InitialValue>0.73</InitialValue>
+            <Equation>1.5</Equation>
+            <InitialValue>1.5</InitialValue>
         </Node>
         <Node type="flow" name="Rabbit Births Per Year" extra="no">
             <CorrectDescription>The number of rabbits added to the population per year</CorrectDescription>
@@ -98,11 +99,11 @@
             <Plan>proportional to accumulator and input</Plan>
             <Inputs>
                 <Name>Rabbit Population</Name>
-                <Name>Rabbit Death Rate</Name>
+                <Name>Rabbit Death Coefficient</Name>
                 <Name>Bobcat Population</Name>
             </Inputs>
             <Outputs/>
-            <Equation>Rabbit Population * Rabbit Death Rate * Bobcat Population</Equation>
+            <Equation>Rabbit Population * Rabbit Death Coefficient * Bobcat Population</Equation>
             <InitialValue>0.0</InitialValue>
         </Node>
         <Node type="flow" name="Bobcat Births Per Year" extra="no">
@@ -110,11 +111,11 @@
             <Plan>proportional to accumulator and input</Plan>
             <Inputs>
                 <Name>Rabbit Population</Name>
-                <Name>Bobcat Birth Rate</Name>
+                <Name>Bobcat Birth Coefficient</Name>
                 <Name>Bobcat Population</Name>
             </Inputs>
             <Outputs/>
-            <Equation>Rabbit Population * Bobcat Birth Rate * Bobcat Population</Equation>
+            <Equation>Rabbit Population * Bobcat Birth Coefficient * Bobcat Population</Equation>
             <InitialValue>0.0</InitialValue>
         </Node>
         <Node type="flow" name="Bobcat Deaths Per Year" extra="no">
@@ -135,7 +136,7 @@
             <Description>The birth rate coefficient</Description>            
             <Node level="leaf">
                 <Description>for the bobcat population</Description>
-                <NodeName>Bobcat Birth Rate</NodeName>
+                <NodeName>Bobcat Birth Coefficient</NodeName>
             </Node>
             <Node level="leaf">
                 <Description>for the rabbit population</Description>
@@ -150,7 +151,7 @@
             </Node>
             <Node level="leaf">
                 <Description>for the rabbit population</Description>
-                <NodeName>Rabbit Death Rate</NodeName>
+                <NodeName>Rabbit Death Coefficient</NodeName>
             </Node>
         </Node>
         <Node level="root">
