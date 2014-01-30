@@ -36,7 +36,7 @@
                     "equation": 3
                 },
                 "status": {
-                    "description": "correct",
+                    "description": "incorrect",
                     "type": "demo",
                     "initial": "correct",
                     "units": "demo",
@@ -105,6 +105,16 @@
                 }
             }
         ],
+        "extraDescriptions": [
+            {
+                "text": "The number of rabbits in the population during the second month",
+                "type": "model"
+            },
+            {
+                "text": "The ratio of rabbits born with superpowers to ordinary rabbits",
+                "type": "extra"
+            }
+        ],
         "studentModelNodes": [
             {
                 "ID": "id1",
@@ -120,7 +130,7 @@
                     "y": 100
                 },
                 "studentSelections": {
-                    "description": "The number of rabbits in the population",
+                    "description": "The ratio of number of rabbits born in a month to the rabbit population that month",
                     "type": "accumulator",
                     "initial": 100,
                     "units": "rabbits",
