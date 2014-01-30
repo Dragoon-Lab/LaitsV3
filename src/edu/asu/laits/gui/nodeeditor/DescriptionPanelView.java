@@ -19,14 +19,14 @@
 package edu.asu.laits.gui.nodeeditor;
 
 import edu.asu.laits.editor.ApplicationContext;
-import edu.asu.laits.gui.BlockingToolTip;
 import edu.asu.laits.gui.MainWindow;
+import edu.asu.laits.logger.UserActivityLog;
 import edu.asu.laits.model.Graph;
 import edu.asu.laits.model.SolutionDTreeNode;
 import edu.asu.laits.model.Vertex;
 import java.awt.Color;
 import java.util.Enumeration;
-import java.util.List;
+import java.util.Map;
 import javax.swing.ImageIcon;
 import javax.swing.JPanel;
 import javax.swing.JTree;
@@ -34,10 +34,6 @@ import javax.swing.tree.*;
 
 import org.apache.log4j.Logger;
 
-import edu.asu.laits.model.HelpBubble;
-import java.util.HashMap;
-import java.util.Map;
-import javax.swing.JComponent;
 import javax.swing.JLabel;
 
 /**
@@ -246,24 +242,11 @@ public class DescriptionPanelView extends JPanel {
             
             this.quantityDescriptionTextField.setText(sb.toString().trim());
             this.nodeNameTextField.setText(node.getNodeName());
-            this.repaint();
-            
-            if (ApplicationContext.isCoachedMode()) {
-                addHelpBalloon(ApplicationContext.getCorrectSolution().getTargetNodes().getFirstNextNode(this.nodeEditor.getOpenVertex()), "descFilled");
-            }            
+            this.repaint();                                    
         }        
     }//GEN-LAST:event_decisionTreeValueChanged
     
-    private void addHelpBalloon(String node, String timing) {
-        List<HelpBubble> bubbles = ApplicationContext.getHelp(node, "DESCRIPTION", timing);
-        if (!bubbles.isEmpty()) {
-            for (HelpBubble bubble : bubbles) {
-                new BlockingToolTip(this.nodeEditor, bubble, this.getLabel(bubble.getAttachedTo()));
-            }
-        }
-    }
-    // returns the value held by triedDuplicate
-    
+    // returns the value held by triedDuplicate    
     public boolean getTriedDuplicate() {
         return triedDuplicate;
     }
@@ -306,7 +289,7 @@ public class DescriptionPanelView extends JPanel {
     
     public boolean processDescriptionPanel() {
         if (getNodeName().trim().length() == 0) {
-            activityLogs.error("User entered empty node name.");
+            activityLogs.error(new UserActivityLog(UserActivityLog.CLIENT_MESSAGE, "User entered empty node name."));
             nodeEditor.setEditorMessage("Node Name can not be empty.");
             return false;
         }
@@ -321,13 +304,12 @@ public class DescriptionPanelView extends JPanel {
                 } catch (Exception ex) {
                     nodeEditor.setEditorMessage(ex.getMessage());
                     setTextFieldBackground(Color.RED);
-                    activityLogs.debug(ex.getMessage());
                     return false;
                 }
             } else {
-                nodeEditor.setEditorMessage("The node name is already used by another node. Please choose a new name for this node.");
+                nodeEditor.setEditorMessage("The node name is already used by another node.\nPlease choose a new name for this node.");
                 setTextFieldBackground(Color.RED);
-                activityLogs.debug("User entered duplicate node name");
+                activityLogs.debug(new UserActivityLog(UserActivityLog.CLIENT_MESSAGE, "User entered duplicate node name"));
                 return false;
             }
         }
@@ -335,7 +317,7 @@ public class DescriptionPanelView extends JPanel {
         if (getNodeDesc().trim().isEmpty()) {
             nodeEditor.setEditorMessage("Please provide correct description for this node.");
             setTextFieldBackground(Color.RED);
-            activityLogs.debug("User entered incorrect description");
+             activityLogs.debug(new UserActivityLog(UserActivityLog.CLIENT_MESSAGE, "User entered empty node name"));
             return false;
         }
         
@@ -388,11 +370,18 @@ public class DescriptionPanelView extends JPanel {
     
     public String printDescriptionPanelDetails() {
         StringBuilder sb = new StringBuilder();
-        sb.append("Node Name = '");
-        sb.append(nodeNameTextField.getText() + "'");
-        sb.append("  Description = '");
-        sb.append(quantityDescriptionTextField.getText() + "'");
+        sb.append("Node Name : ");
+        sb.append(nodeNameTextField.getText());
+        sb.append(",  Description : ");
+        sb.append(quantityDescriptionTextField.getText());
+        sb.append(", Descrption Panel Status : " + nodeEditor.getOpenVertex().getDescriptionStatus());
         return sb.toString();
+    }
+    
+    public void setDescriptionPanelDetails(Map<String, Object> map) {
+        map.put("node-name", nodeNameTextField.getText());
+        map.put("node-desc", quantityDescriptionTextField.getText());
+        map.put("desc-panel-status", nodeEditor.getOpenVertex().getDescriptionStatus());        
     }
     
     public void setEditableTree(boolean b) {
@@ -404,21 +393,6 @@ public class DescriptionPanelView extends JPanel {
     
     public JLabel getTopDescriptionLabel() {
         return evenMorePreciseLabel;
-    }
-    
-    public JComponent getLabel(String label) {
-        
-        Map<String, JComponent> map = new HashMap<String, JComponent>();
-        map.put("evenMorePreciseLabel", evenMorePreciseLabel);
-        map.put("referencesLabel", referencesLabel);
-        map.put("NodeNameLabel", NodeNameLabel);
-        map.put("jScrollPane1", jScrollPane1);
-        map.put("jScrollPane2", jScrollPane2);
-        if (map.containsKey(label)) {
-            return map.get(label);
-        } else {
-            return nodeEditor.getLabel(label);
-        }
     }
     
     public String getNodeName() {

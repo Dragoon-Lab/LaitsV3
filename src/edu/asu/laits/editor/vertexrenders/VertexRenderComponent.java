@@ -1,5 +1,6 @@
 package edu.asu.laits.editor.vertexrenders;
 
+import edu.asu.laits.editor.ApplicationContext;
 import java.awt.Color;
 import java.awt.Component;
 import java.awt.Graphics;
@@ -9,6 +10,7 @@ import java.util.Map;
 import edu.asu.laits.editor.GraphEditorConstants;
 import edu.asu.laits.editor.GraphEditorPane;
 import edu.asu.laits.editor.GraphEditorVertexView;
+import edu.asu.laits.model.StatsCollector;
 import edu.asu.laits.model.Vertex;
 import edu.asu.laits.model.Vertex.VertexType;
 import edu.asu.laits.properties.ImageLoader;
@@ -173,5 +175,20 @@ public class VertexRenderComponent extends VertexRenderer implements
         String newName = name.substring(0, 17);
         newName += "...";
         return newName;
+    }
+    
+    protected boolean isBackGroundPainted(Vertex vertex) {
+        // Paint background green if student used check button only once
+        if(!ApplicationContext.isAuthorMode() && !ApplicationContext.isTestMode()) {
+            StatsCollector stats = ApplicationContext.getCheckDemoStats(vertex.getName());
+            
+            if(vertex.isDescriptionDone() && vertex.isPlanDone() && vertex.isCalculationsDone()) {
+                if(stats != null && stats.getDescriptionPanelCheckCount() == 1 && stats.getPlanPanelCheckCount() == 1 && stats.getCalculationsPanelCheckCount() == 1
+                        && stats.getDescriptionPanelDemoCount() == 0 && stats.getPlanPanelDemoCount() == 0 && stats.getCalculationsPanelDemoCount() == 0) {
+                    return true;
+                }
+            }
+        }
+        return false;
     }
 }

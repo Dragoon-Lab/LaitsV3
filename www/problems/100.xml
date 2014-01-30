@@ -3,31 +3,21 @@
     <TaskName>Oil Tanker</TaskName>
     <URL>http://upload.wikimedia.org/wikipedia/commons/6/63/Maya_OBO_carrier_3.jpg</URL>
     <TaskDescription>
-        Problem: An oil tanker is a ship that carries oil from one port to another.  This particular oil NEWLINE
-        tanker is small, so it only has 2 tanks.  One tank is in the front of the ship and the other is in NEWLINE
-        the rear.  The front tank holds 100,000 gallons of oil when completely full and the rear tank NEWLINE
-        also holds 100,000 gallons of oil when full.  This ship had a problem with its rear tank, which has NEWLINE
-        just been fixed.  While it was being fixed, the front tank was being filled.  At this time, the front NEWLINE
-        tank has 45,000 gallons in it and the rear tank has 500. Thus, the ship has much more weight in NEWLINE
-        the front than the rear and is not riding with an "even keel". That is, its front is pointing slightly NEWLINE
-        downwards.  This makes sense, because the ratio of the rear tanks' content to the front tank's NEWLINE
-        content is 500/45,000, which is 0.01.  This ratio should be 1.0, so that the ship rides at an even NEWLINE
-        keel.  After a quick calculation, the dock master orders the dockworkers to add 5,000 gallons per NEWLINE
-        hour to the front tank and 15,000 gallons an hour to the rear tank.  He figures that this will bring NEWLINE
-        the weight distribution to equality in a few hours, and then the ship will ride at an even keel. NEWLINE NEWLINE
+        Problem: An oil tanker is a ship that carries oil from one port to another.  This particular oil 
+        tanker is small, so it only has 2 tanks.  One tank is in the front of the ship and the other is in 
+        the rear.  The front tank holds 100,000 gallons of oil when completely full and the rear tank 
+        also holds 100,000 gallons of oil when full.  This ship had a problem with its rear tank, which has 
+        just been fixed.  While it was being fixed, the front tank was being filled.  At this time, the front 
+        tank has 45,000 gallons in it and the rear tank has 500. Thus, the ship has much more weight in 
+        the front than the rear and is not riding with an "even keel". That is, its front is pointing slightly 
+        downwards.  This makes sense, because the ratio of the rear tanks' content to the front tank's 
+        content is 500/45,000, which is 0.01.  This ratio should be 1.0, so that the ship rides at an even 
+        keel.  After a quick calculation, the dock master orders the dockworkers to add 5,000 gallons per 
+        hour to the front tank and 15,000 gallons an hour to the rear tank.  He figures that this will bring 
+        the weight distribution to equality in a few hours, and then the ship will ride at an even keel.  
         Goal: Graph the ratio of the rear tank's content to the front tank's content over a 6-hour period.
     </TaskDescription>
-    <ShortDescription>
-        Function: rear to front ratio = rear tank / front tank
-        \n  Accumulator: rear tank = rear tank + added to rear tank hourly
-        Initial value = 500 
-        \n  Given: added to rear tank hourly = 15000
-        \n  Accumulator: front tank = front tank + added to front tank hourly
-        Initial value = 45000 
-        \n  Given: added to front tank hourly = 5000
-        \n  Given: front tank capacity = 100000
-        \n  Given: rear tank capacity = 100000
-</ShortDescription>
+    
     <StartTime>0</StartTime>
     <EndTime>6</EndTime>
     <Units>hours</Units>

@@ -1,259 +1,238 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <Task phase="Challenge" type="Construct">
-  <TaskName>ObscureFlix</TaskName>
-  <URL>http://fc03.deviantart.net/fs70/f/2010/069/1/1/Gorosaurus_pinup_by_KaijuSamurai.jpg</URL>
+    <TaskName>ObscureFlix</TaskName>
+    <URL>http://fc03.deviantart.net/fs70/f/2010/069/1/1/Gorosaurus_pinup_by_KaijuSamurai.jpg</URL>
   
-  <TaskDescription>
-      Problem: Mark enjoys watching obscure, barely known movies so he NEWLINE
-      subscribes to ObscureFlix.  He can watch all the movies he wants, NEWLINE
-      although he has to pay $2.5 per movie.  However, the good people at NEWLINE
-      ObscureFlix only have an average of 5 copies of each movie, so they NEWLINE
-      often have to wait for movies to be returned before they can ship NEWLINE
-      them out again. On average ObscureFlix can only ship half of the NEWLINE
-      movies in Mark’s movie queue each week, which of course removes NEWLINE
-      them from the queue.  After an initial frenzy where he started up his NEWLINE
-      queue by putting 30 really rare movies in it, the number of movies NEWLINE
-      Mark adds to his queue each week is about 20% of the number of NEWLINE
-      movies already on the queue. NEWLINE NEWLINE
-      Goal: Make a graph that shows how many movies he has in his NEWLINE
-      queue over the space of 12 weeks.
-  </TaskDescription>
+    <TaskDescription>
+        Problem: Mark enjoys watching obscure, barely known movies so he 
+        subscribes to ObscureFlix.  He can watch all the movies he wants, 
+        although he has to pay $2.5 per movie.  However, the good people at 
+        ObscureFlix only have an average of 5 copies of each movie, so they 
+        often have to wait for movies to be returned before they can ship 
+        them out again. On average ObscureFlix can only ship half of the 
+        movies in Mark’s movie queue each week, which of course removes 
+        them from the queue.  After an initial frenzy where he started up his 
+        queue by putting 30 really rare movies in it, the number of movies 
+        Mark adds to his queue each week is about 20% of the number of 
+        movies already on the queue.  
+        Goal: Make a graph that shows how many movies he has in his 
+        queue over the space of 12 weeks.
+    </TaskDescription>
 
-  <ShortDescription>
-        The number of movies in the queue at the end of this week =
-        \n     the number of movies in Mark’s queue at the end of the previous week
-        \n     + the number movies Mark adds to the queue this week
-        \n     - the number of movies  removed from the queue this week.
-        \n     Initially, the number of movies in the queue is 30.
-        \nThe number of movies removed from the queue each week =
-        \n     the number of movies in the queue at the beginning of the week
-        \n     - The number of movies shipped to Mark each week.
-        \nThe number of movies shipped to Mark each week =
-        \n     the number of movies in the queue at the beginning of the week
-        \n     * The proportion of movies from the queue shipped each week.
-        \nThe number of movies Mark adds to the queue each week =
-        \n     the number of movies in the queue at the beginning of the week
-        \n     * the proportion of movies that Mark adds to the queue this week
-        \nThe proportion of movies that Marks adds to the queue each week is given as 0.20.
-        \nThe proportion of movies from the queue shipped each week is given as 0.5.
-        \nThe amount of money Marks spends per movie in dollars is given as 2.5.
-        \nThe amount of copies of a movie on average is given as 5.
-        \nThe number of movies in the queue initially is given as 30.
-  </ShortDescription>
-  <StartTime>0</StartTime>
-  <EndTime>10</EndTime>
-  <Units>weeks</Units>
-  <Vertexes>
-    <VertexLabel>movies in queue</VertexLabel>
-    <VertexLabel>movies shipped weekly</VertexLabel>
-    <VertexLabel>proportion of movies shipped</VertexLabel>
-    <VertexLabel>movies added weekly</VertexLabel>
-    <VertexLabel>proportion of movies added</VertexLabel>
-    <VertexLabel>price per movie</VertexLabel>
-    <VertexLabel>price paid per week</VertexLabel>
-    <VertexLabel>copies per movie</VertexLabel>
-    <VertexLabel>movies in queue initially</VertexLabel>
-  </Vertexes>
+    <StartTime>0</StartTime>
+    <EndTime>10</EndTime>
+    <Units>weeks</Units>
+    <Vertexes>
+        <VertexLabel>movies in queue</VertexLabel>
+        <VertexLabel>movies shipped weekly</VertexLabel>
+        <VertexLabel>proportion of movies shipped</VertexLabel>
+        <VertexLabel>movies added weekly</VertexLabel>
+        <VertexLabel>proportion of movies added</VertexLabel>
+        <VertexLabel>price per movie</VertexLabel>
+        <VertexLabel>price paid per week</VertexLabel>
+        <VertexLabel>copies per movie</VertexLabel>
+        <VertexLabel>movies in queue initially</VertexLabel>
+    </Vertexes>
   
-  <NodeCount>9</NodeCount>
+    <NodeCount>9</NodeCount>
 
-  <ProblemSeeking>movies in queue</ProblemSeeking>
-  <CorrespondingSentence>Make a graph that shows how many movies he has in his queue over the space of 12 weeks.</CorrespondingSentence>
+    <ProblemSeeking>movies in queue</ProblemSeeking>
+    <CorrespondingSentence>Make a graph that shows how many movies he has in his queue over the space of 12 weeks.</CorrespondingSentence>
 
-  <Nodes>
-      <Node type="constant" name="proportion of movies shipped" extra="no">
-        <Inputs></Inputs>
-        <Outputs>
-            <Name>movies shipped weekly</Name>
-        </Outputs>
-        <Equation>0.5</Equation>
-        <InitialValue>0.5</InitialValue>
-        <CorrectDescription>The proportion of movies shipped from the queue each week</CorrectDescription>
-        <Plan>fixed value</Plan>
-      </Node>
+    <Nodes>
+        <Node type="constant" name="proportion of movies shipped" extra="no">
+            <Inputs></Inputs>
+            <Outputs>
+                <Name>movies shipped weekly</Name>
+            </Outputs>
+            <Equation>0.5</Equation>
+            <InitialValue>0.5</InitialValue>
+            <CorrectDescription>The proportion of movies shipped from the queue each week</CorrectDescription>
+            <Plan>fixed value</Plan>
+        </Node>
 
-      <Node type="constant" name="proportion of movies added" extra="no">
-        <Inputs></Inputs>
-        <Outputs></Outputs>
-        <Equation>0.2</Equation>
-        <InitialValue>0.2</InitialValue>
-        <CorrectDescription>The proportion of movies that Marks adds to the queue each week</CorrectDescription>
-        <Plan>fixed value</Plan>
-      </Node>
+        <Node type="constant" name="proportion of movies added" extra="no">
+            <Inputs></Inputs>
+            <Outputs></Outputs>
+            <Equation>0.2</Equation>
+            <InitialValue>0.2</InitialValue>
+            <CorrectDescription>The proportion of movies that Marks adds to the queue each week</CorrectDescription>
+            <Plan>fixed value</Plan>
+        </Node>
       
-      <Node type="constant" name="price per movie" extra="yes">
-        <Inputs></Inputs>
-        <Outputs>
-            <Name>price paid per week</Name>
-        </Outputs>
-        <Equation>2.5</Equation>
-        <InitialValue>2.5</InitialValue>
-        <CorrectDescription>The amount of money Marks spends per movie in dollars</CorrectDescription>
-        <Plan>fixed value</Plan>
-      </Node>
+        <Node type="constant" name="price per movie" extra="yes">
+            <Inputs></Inputs>
+            <Outputs>
+                <Name>price paid per week</Name>
+            </Outputs>
+            <Equation>2.5</Equation>
+            <InitialValue>2.5</InitialValue>
+            <CorrectDescription>The amount of money Marks spends per movie in dollars</CorrectDescription>
+            <Plan>fixed value</Plan>
+        </Node>
 
-      <Node type="constant" name="copies per movie" extra="yes">
-        <Inputs></Inputs>
-        <Outputs></Outputs>
-        <Equation>5</Equation>
-        <InitialValue>5</InitialValue>
-        <CorrectDescription>The amount of copies of a movie on average</CorrectDescription>
-        <Plan>fixed value</Plan>
-      </Node>
+        <Node type="constant" name="copies per movie" extra="yes">
+            <Inputs></Inputs>
+            <Outputs></Outputs>
+            <Equation>5</Equation>
+            <InitialValue>5</InitialValue>
+            <CorrectDescription>The amount of copies of a movie on average</CorrectDescription>
+            <Plan>fixed value</Plan>
+        </Node>
 
-      <Node type="constant" name="movies in queue initially" extra="yes">
-        <Inputs></Inputs>
-        <Outputs></Outputs>
-        <Equation>30</Equation>
-        <InitialValue>30</InitialValue>
-        <CorrectDescription>The number of movies in the queue initially</CorrectDescription>
-        <Plan>fixed value</Plan>
-      </Node>
+        <Node type="constant" name="movies in queue initially" extra="yes">
+            <Inputs></Inputs>
+            <Outputs></Outputs>
+            <Equation>30</Equation>
+            <InitialValue>30</InitialValue>
+            <CorrectDescription>The number of movies in the queue initially</CorrectDescription>
+            <Plan>fixed value</Plan>
+        </Node>
 
-      <Node type="stock" name="movies in queue" extra="no">
-        <Order>1</Order>
-        <Inputs>
-            <Name>movies added weekly</Name>
-            <Name>movies shipped weekly</Name>
-        </Inputs>
-        <Outputs>
-            <Name>movies shipped weekly</Name>
-            <Name>movies added weekly</Name>
-        </Outputs>
-        <Equation>+movies added weekly-movies shipped weekly</Equation>
-        <InitialValue>30</InitialValue>
-        <CorrectDescription>The number of movies in the queue each week</CorrectDescription>
-        <Plan>said to both increase and decrease</Plan>
-      </Node>
-      
-      <Node type="flow" name="price paid per week" extra="yes">
-        <Inputs>
-            <Name>price per movie</Name>
-            <Name>movies shipped weekly</Name>
-        </Inputs>
-        <Outputs></Outputs>
-        <Equation>price per movie*movies shipped weekly</Equation>
-        <InitialValue></InitialValue>
-        <CorrectDescription>The amount of money Marks spends per movie each week</CorrectDescription>
-        <Plan>proportional to accumulator and input</Plan>
-      </Node>
-      
-      <Node type="flow" name="movies shipped weekly" extra="no">
-        <Inputs>
-            <Name>movies in queue</Name>
-            <Name>proportion of movies shipped</Name>
-        </Inputs>
-        <Outputs></Outputs>
-        <Equation>movies in queue*proportion of movies shipped</Equation>
-        <InitialValue></InitialValue>
-        <CorrectDescription>The number of movies shipped to Mark each week</CorrectDescription>
-        <Plan>proportional to accumulator and input</Plan>
-      </Node>
-
-      <Node type="flow" name="movies added weekly" extra="no">
-        <Inputs>
-            <Name>proportion of movies added</Name>
-            <Name>movies in queue</Name>
+        <Node type="stock" name="movies in queue" extra="no">
+            <Order>1</Order>
+            <Inputs>
+                <Name>movies added weekly</Name>
+                <Name>movies shipped weekly</Name>
             </Inputs>
-        <Outputs>
-            <Name>movies in queue</Name>
-        </Outputs>
-        <Equation>movies in queue*proportion of movies added</Equation>
-        <InitialValue></InitialValue>
-        <CorrectDescription>The number of movies Mark adds to the queue each week</CorrectDescription>
-        <Plan>proportional to accumulator and input</Plan>
-      </Node>
-  </Nodes>
+            <Outputs>
+                <Name>movies shipped weekly</Name>
+                <Name>movies added weekly</Name>
+            </Outputs>
+            <Equation>+movies added weekly-movies shipped weekly</Equation>
+            <InitialValue>30</InitialValue>
+            <CorrectDescription>The number of movies in the queue each week</CorrectDescription>
+            <Plan>said to both increase and decrease</Plan>
+        </Node>
+      
+        <Node type="flow" name="price paid per week" extra="yes">
+            <Inputs>
+                <Name>price per movie</Name>
+                <Name>movies shipped weekly</Name>
+            </Inputs>
+            <Outputs></Outputs>
+            <Equation>price per movie*movies shipped weekly</Equation>
+            <InitialValue></InitialValue>
+            <CorrectDescription>The amount of money Marks spends per movie each week</CorrectDescription>
+            <Plan>proportional to accumulator and input</Plan>
+        </Node>
+      
+        <Node type="flow" name="movies shipped weekly" extra="no">
+            <Inputs>
+                <Name>movies in queue</Name>
+                <Name>proportion of movies shipped</Name>
+            </Inputs>
+            <Outputs></Outputs>
+            <Equation>movies in queue*proportion of movies shipped</Equation>
+            <InitialValue></InitialValue>
+            <CorrectDescription>The number of movies shipped to Mark each week</CorrectDescription>
+            <Plan>proportional to accumulator and input</Plan>
+        </Node>
+
+        <Node type="flow" name="movies added weekly" extra="no">
+            <Inputs>
+                <Name>proportion of movies added</Name>
+                <Name>movies in queue</Name>
+            </Inputs>
+            <Outputs>
+                <Name>movies in queue</Name>
+            </Outputs>
+            <Equation>movies in queue*proportion of movies added</Equation>
+            <InitialValue></InitialValue>
+            <CorrectDescription>The number of movies Mark adds to the queue each week</CorrectDescription>
+            <Plan>proportional to accumulator and input</Plan>
+        </Node>
+    </Nodes>
   
-  <DescriptionTree>
-    <Node level="root">
-      <Description>The number of</Description>      
-      <Node level="intermediate">
-        <Description>movies in the queue</Description>            
-        <Node level="leaf">
-          <Description>initially</Description>
-          <NodeName>movies in queue initially</NodeName>
+    <DescriptionTree>
+        <Node level="root">
+            <Description>The number of</Description>      
+            <Node level="intermediate">
+                <Description>movies in the queue</Description>            
+                <Node level="leaf">
+                    <Description>initially</Description>
+                    <NodeName>movies in queue initially</NodeName>
+                </Node>
+                <Node level="leaf">
+                    <Description>each week</Description>
+                    <NodeName>movies in queue</NodeName>
+                </Node>
+            </Node>
+            <Node level="intermediate">
+                <Description>movies shipped to Mark</Description>            
+                <Node level="leaf">
+                    <Description>initially</Description>
+                    <NodeName>movies shipped initially</NodeName>
+                </Node>
+                <Node level="leaf">
+                    <Description>each week</Description>
+                    <NodeName>movies shipped weekly</NodeName>
+                </Node>
+            </Node>
+            <Node level="intermediate">
+                <Description>movies Mark adds to the queue</Description>            
+                <Node level="leaf">
+                    <Description>initially</Description>
+                    <NodeName>movies added initially</NodeName>
+                </Node>
+                <Node level="leaf">
+                    <Description>each week</Description>
+                    <NodeName>movies added weekly</NodeName>
+                </Node>
+            </Node>
+            <Node level="intermediate">
+                <Description>movies removed from the queue</Description>            
+                <Node level="leaf">
+                    <Description>initially</Description>
+                    <NodeName>movies removed initially</NodeName>
+                </Node>
+            </Node>
         </Node>
-        <Node level="leaf">
-          <Description>each week</Description>
-          <NodeName>movies in queue</NodeName>
+        <Node level="root">
+            <Description>The amount of</Description>      
+            <Node level="intermediate">
+                <Description>money Marks</Description>            
+                <Node level="leaf">
+                    <Description>spends per movie in dollars</Description>
+                    <NodeName>price per movie</NodeName>
+                </Node>
+                <Node level="leaf">
+                    <Description>spends per movie each week</Description>
+                    <NodeName>price paid per week</NodeName>
+                </Node>
+            </Node>
+            <Node level="intermediate">
+                <Description></Description>            
+                <Node level="leaf">
+                    <Description>copies of a movie on average</Description>
+                    <NodeName>copies per movie</NodeName>
+                </Node>
+            </Node>
         </Node>
-	  </Node>
-      <Node level="intermediate">
-        <Description>movies shipped to Mark</Description>            
-        <Node level="leaf">
-          <Description>initially</Description>
-          <NodeName>movies shipped initially</NodeName>
+        <Node level="root">
+            <Description>The proportion of</Description>      
+            <Node level="intermediate">
+                <Description>movies shipped from the queue</Description>            
+                <Node level="leaf">
+                    <Description>each week</Description>
+                    <NodeName>proportion of movies shipped</NodeName>
+                </Node>
+                <Node level="leaf">
+                    <Description>the first week</Description>
+                    <NodeName>proportion of movies shipped initially</NodeName>
+                </Node>
+            </Node>
+            <Node level="intermediate">
+                <Description>movies that Marks adds to the queue</Description>            
+                <Node level="leaf">
+                    <Description>each week</Description>
+                    <NodeName>proportion of movies added</NodeName>
+                </Node>
+                <Node level="leaf">
+                    <Description>the first week</Description>
+                    <NodeName>proportion of movies added initially</NodeName>
+                </Node>
+            </Node>
         </Node>
-        <Node level="leaf">
-          <Description>each week</Description>
-          <NodeName>movies shipped weekly</NodeName>
-        </Node>
-	  </Node>
-      <Node level="intermediate">
-        <Description>movies Mark adds to the queue</Description>            
-        <Node level="leaf">
-          <Description>initially</Description>
-          <NodeName>movies added initially</NodeName>
-        </Node>
-        <Node level="leaf">
-          <Description>each week</Description>
-          <NodeName>movies added weekly</NodeName>
-        </Node>
-	  </Node>
-      <Node level="intermediate">
-        <Description>movies removed from the queue</Description>            
-        <Node level="leaf">
-          <Description>initially</Description>
-          <NodeName>movies removed initially</NodeName>
-        </Node>
-	  </Node>
-    </Node>
-    <Node level="root">
-      <Description>The amount of</Description>      
-      <Node level="intermediate">
-        <Description>money Marks</Description>            
-        <Node level="leaf">
-          <Description>spends per movie in dollars</Description>
-          <NodeName>price per movie</NodeName>
-        </Node>
-        <Node level="leaf">
-          <Description>spends per movie each week</Description>
-          <NodeName>price paid per week</NodeName>
-        </Node>
-      </Node>
-      <Node level="intermediate">
-        <Description></Description>            
-        <Node level="leaf">
-          <Description>copies of a movie on average</Description>
-          <NodeName>copies per movie</NodeName>
-        </Node>
-	  </Node>
-    </Node>
-    <Node level="root">
-      <Description>The proportion of</Description>      
-      <Node level="intermediate">
-        <Description>movies shipped from the queue</Description>            
-        <Node level="leaf">
-          <Description>each week</Description>
-          <NodeName>proportion of movies shipped</NodeName>
-        </Node>
-        <Node level="leaf">
-          <Description>the first week</Description>
-          <NodeName>proportion of movies shipped initially</NodeName>
-        </Node>
-	  </Node>
-      <Node level="intermediate">
-        <Description>movies that Marks adds to the queue</Description>            
-        <Node level="leaf">
-          <Description>each week</Description>
-          <NodeName>proportion of movies added</NodeName>
-        </Node>
-        <Node level="leaf">
-          <Description>the first week</Description>
-          <NodeName>proportion of movies added initially</NodeName>
-        </Node>
-	  </Node>
-    </Node>
-  </DescriptionTree>
+    </DescriptionTree>
 </Task>

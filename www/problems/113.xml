@@ -1,239 +1,224 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <Task phase="Challenge" type="Construct">
-  <TaskName>Busy Hospital</TaskName>
-  <URL>http://www.todohumor.com/UserFiles/Image/imagenes/2009/marzo09/hospital-mixto.jpg</URL>
+    <TaskName>Busy Hospital</TaskName>
+    <URL>http://www.todohumor.com/UserFiles/Image/imagenes/2009/marzo09/hospital-mixto.jpg</URL>
   
-  <TaskDescription>
-      Problem: A teaching hospital has just installed a cell-phone based workflow monitoring system, and NEWLINE
-      the workflow seems to be working quite well.  When a few more doctors are needed in the hospital, the NEWLINE
-      system texts their cell phone and the doctors walk across the street from their offices to the NEWLINE
-      hospital.  When the hospital doesn't need as many doctors, the system sends some of them back to their NEWLINE
-      offices where they can do their research, read email, etc. until the next time they are needed.  NEWLINE
-      The system is set so that the doctor-to-patient ratio is 1 to 8.  That is, there are 0.125 doctors per NEWLINE
-      patient.  When the system was turned on, there were 80 patients in the hospital and 10 doctors present, NEWLINE
-      so just the right ratio was in place at that instant.  However, things change.  The number of patients NEWLINE
-      admitted (i.e., added) to the hospital is 10 per hour on average.  The number of patients discharged NEWLINE
-      from the hospital (i.e., sent home) depends on the number of doctors working at the time.  In general, NEWLINE
-      for each doctor working during an hour, 3 patients are discharged.  NEWLINE NEWLINE
-      Goal: Graph the number of doctors working in the hospital each hour for 10 hours.
-  </TaskDescription>
-  <ShortDescription>
-        the number of doctors in the hospital each hour = 
-        \n     the number of patients in the hospital this hour
-        \n     * the doctor-to-patient ratio this hour.
-        \nthe doctor-to-patient ratio is 0.125. 
-        \nThe number of patients in the hospital at the end of the hour =
-        \n     the number of patients in the hospital at the end of the previous hour
-        \n     + the number of patients admitted to the hospital this hour
-        \n     - the number of patients discharged from the hospital this hour.
-        \n     Initially, the number of patients in the hospital is 80.
-        \nthe number of patients admitted to the hospital each hour is given as 10.
-        \nthe number of patients discharged from the hospital each hour =
-        \n     the number of patients discharged per doctor this hour
-        \n     * the number of doctors in the hospital this hour.
-        \nthe number of patients discharged per doctor each hour is given as 3.
-  </ShortDescription>
-  <StartTime>0</StartTime>
-  <EndTime>10</EndTime>
-  <Units>hours</Units>
-  <Vertexes>
-      <VertexLabel>doctors</VertexLabel>
-      <VertexLabel>patients</VertexLabel>
-      <VertexLabel>doctor patient ratio</VertexLabel>
-      <VertexLabel>patients admitted</VertexLabel>
-      <VertexLabel>patients discharged</VertexLabel>
-      <VertexLabel>discharges per doctor</VertexLabel>
-      <VertexLabel>patients initially</VertexLabel>
-      <VertexLabel>starting doctors</VertexLabel>
-      <VertexLabel>ratio initially</VertexLabel>
-  </Vertexes>
+    <TaskDescription>
+        Problem: A teaching hospital has just installed a cell-phone based workflow monitoring system, and 
+        the workflow seems to be working quite well.  When a few more doctors are needed in the hospital, the 
+        system texts their cell phone and the doctors walk across the street from their offices to the 
+        hospital.  When the hospital doesn't need as many doctors, the system sends some of them back to their 
+        offices where they can do their research, read email, etc. until the next time they are needed.  
+        The system is set so that the doctor-to-patient ratio is 1 to 8.  That is, there are 0.125 doctors per 
+        patient.  When the system was turned on, there were 80 patients in the hospital and 10 doctors present, 
+        so just the right ratio was in place at that instant.  However, things change.  The number of patients 
+        admitted (i.e., added) to the hospital is 10 per hour on average.  The number of patients discharged 
+        from the hospital (i.e., sent home) depends on the number of doctors working at the time.  In general, 
+        for each doctor working during an hour, 3 patients are discharged.   
+        Goal: Graph the number of doctors working in the hospital each hour for 10 hours.
+    </TaskDescription>
   
-  <NodeCount>9</NodeCount>
+    <StartTime>0</StartTime>
+    <EndTime>10</EndTime>
+    <Units>hours</Units>
+    <Vertexes>
+        <VertexLabel>doctors</VertexLabel>
+        <VertexLabel>patients</VertexLabel>
+        <VertexLabel>doctor patient ratio</VertexLabel>
+        <VertexLabel>patients admitted</VertexLabel>
+        <VertexLabel>patients discharged</VertexLabel>
+        <VertexLabel>discharges per doctor</VertexLabel>
+        <VertexLabel>patients initially</VertexLabel>
+        <VertexLabel>starting doctors</VertexLabel>
+        <VertexLabel>ratio initially</VertexLabel>
+    </Vertexes>
+  
+    <NodeCount>9</NodeCount>
 
-  <ProblemSeeking>doctors</ProblemSeeking>
-  <CorrespondingSentence>Graph the number of doctors working in the hospital each hour for 10 hours.</CorrespondingSentence>
+    <ProblemSeeking>doctors</ProblemSeeking>
+    <CorrespondingSentence>Graph the number of doctors working in the hospital each hour for 10 hours.</CorrespondingSentence>
 
-  <Nodes>
+    <Nodes>
       
-      <Node type="constant" name="doctor patient ratio" extra="no">
-        <Inputs></Inputs>
-        <Outputs>
-            <Name>doctors</Name>
-        </Outputs>
-        <Equation>0.125</Equation>
-        <InitialValue>0.125</InitialValue>
-        <CorrectDescription>The proportion of doctors per patient on average</CorrectDescription>	  
-        <Plan>fixed value</Plan>
-      </Node>
+        <Node type="constant" name="doctor patient ratio" extra="no">
+            <Inputs></Inputs>
+            <Outputs>
+                <Name>doctors</Name>
+            </Outputs>
+            <Equation>0.125</Equation>
+            <InitialValue>0.125</InitialValue>
+            <CorrectDescription>The proportion of doctors per patient on average</CorrectDescription>	  
+            <Plan>fixed value</Plan>
+        </Node>
       
-      <Node type="constant" name="patients initially" extra="yes">
-        <Inputs></Inputs>
-        <Outputs>
-          <Name>ratio initially</Name>
-        </Outputs>
-        <Equation>80</Equation>
-        <InitialValue>80</InitialValue>
-        <CorrectDescription>The number of patients in the hospital when the system was turned on</CorrectDescription>
-        <Plan>fixed value</Plan>
-      </Node>
+        <Node type="constant" name="patients initially" extra="yes">
+            <Inputs></Inputs>
+            <Outputs>
+                <Name>ratio initially</Name>
+            </Outputs>
+            <Equation>80</Equation>
+            <InitialValue>80</InitialValue>
+            <CorrectDescription>The number of patients in the hospital when the system was turned on</CorrectDescription>
+            <Plan>fixed value</Plan>
+        </Node>
     
-      <Node type="constant" name="starting doctors" extra="yes">
-        <Inputs></Inputs>
-        <Outputs>
-            <Name>ratio initially</Name>
-        </Outputs>
-        <Equation>10</Equation>
-        <InitialValue>10</InitialValue>
-        <CorrectDescription>The number of doctors in the hospital when the system was turned on</CorrectDescription>
-        <Plan>fixed value</Plan>
-      </Node>
+        <Node type="constant" name="starting doctors" extra="yes">
+            <Inputs></Inputs>
+            <Outputs>
+                <Name>ratio initially</Name>
+            </Outputs>
+            <Equation>10</Equation>
+            <InitialValue>10</InitialValue>
+            <CorrectDescription>The number of doctors in the hospital when the system was turned on</CorrectDescription>
+            <Plan>fixed value</Plan>
+        </Node>
       
-      <Node type="flow" name="ratio initially" extra="yes">
-          <Inputs>
+        <Node type="flow" name="ratio initially" extra="yes">
+            <Inputs>
               
-          </Inputs>
-          <Outputs></Outputs>
-          <Equation>5</Equation>
-          <InitialValue>5</InitialValue>
-          <CorrectDescription>The proportion of doctors per patient when the system was turned on</CorrectDescription>
-          <Plan>fixed value</Plan>
-      </Node>
+            </Inputs>
+            <Outputs></Outputs>
+            <Equation>5</Equation>
+            <InitialValue>5</InitialValue>
+            <CorrectDescription>The proportion of doctors per patient when the system was turned on</CorrectDescription>
+            <Plan>fixed value</Plan>
+        </Node>
     
       
-      <Node type="constant" name="patients admitted" extra="no">
-        <Inputs></Inputs>
-        <Outputs>
-            <Name>patients</Name>
-        </Outputs>
-        <Equation>10</Equation>
-        <InitialValue>10</InitialValue>
-        <CorrectDescription>The number of patients admitted in the hospital each hour</CorrectDescription>
-        <Plan>fixed value</Plan>
-      </Node>
+        <Node type="constant" name="patients admitted" extra="no">
+            <Inputs></Inputs>
+            <Outputs>
+                <Name>patients</Name>
+            </Outputs>
+            <Equation>10</Equation>
+            <InitialValue>10</InitialValue>
+            <CorrectDescription>The number of patients admitted in the hospital each hour</CorrectDescription>
+            <Plan>fixed value</Plan>
+        </Node>
     
-      <Node type="constant" name="discharges per doctor" extra="no">
-        <Inputs></Inputs>
-        <Outputs>
-            <Name>patients discharged</Name>
-        </Outputs>
-        <Equation>3</Equation>
-        <InitialValue>3</InitialValue>
-        <CorrectDescription>The number of patients discharged per doctor each hour</CorrectDescription>
-        <Plan>fixed value</Plan>
-      </Node>
+        <Node type="constant" name="discharges per doctor" extra="no">
+            <Inputs></Inputs>
+            <Outputs>
+                <Name>patients discharged</Name>
+            </Outputs>
+            <Equation>3</Equation>
+            <InitialValue>3</InitialValue>
+            <CorrectDescription>The number of patients discharged per doctor each hour</CorrectDescription>
+            <Plan>fixed value</Plan>
+        </Node>
 
-      <Node type="flow" name="doctors" extra="no">
-          <Order>1</Order>
-          <Inputs>
-            <Name>doctor patient ratio</Name>
-            <Name>patients</Name>
-          </Inputs>
-          <Outputs>
-            <Name>patients discharged</Name>
-          </Outputs>
-          <Equation>patients*doctor patient ratio</Equation>
-          <InitialValue></InitialValue>
-          <CorrectDescription>The number of doctors in the hospital each hour</CorrectDescription>
-          <Plan>proportional to accumulator and input</Plan>
-      </Node>
+        <Node type="flow" name="doctors" extra="no">
+            <Order>1</Order>
+            <Inputs>
+                <Name>doctor patient ratio</Name>
+                <Name>patients</Name>
+            </Inputs>
+            <Outputs>
+                <Name>patients discharged</Name>
+            </Outputs>
+            <Equation>patients*doctor patient ratio</Equation>
+            <InitialValue></InitialValue>
+            <CorrectDescription>The number of doctors in the hospital each hour</CorrectDescription>
+            <Plan>proportional to accumulator and input</Plan>
+        </Node>
 
-      <Node type="flow" name="patients discharged" extra="no">
-        <Inputs>
-            <Name>discharges per doctor</Name>
-            <Name>doctors</Name>
-        </Inputs>
-        <Outputs>
-            <Name>patients</Name>
-        </Outputs>
-        <Equation>doctors*discharges per doctor</Equation>
-        <InitialValue></InitialValue>
-        <CorrectDescription>The number of patients discharged from the hospital each hour</CorrectDescription>
-        <Plan>proportional to accumulator and input</Plan>
-      </Node>
+        <Node type="flow" name="patients discharged" extra="no">
+            <Inputs>
+                <Name>discharges per doctor</Name>
+                <Name>doctors</Name>
+            </Inputs>
+            <Outputs>
+                <Name>patients</Name>
+            </Outputs>
+            <Equation>doctors*discharges per doctor</Equation>
+            <InitialValue></InitialValue>
+            <CorrectDescription>The number of patients discharged from the hospital each hour</CorrectDescription>
+            <Plan>proportional to accumulator and input</Plan>
+        </Node>
 
-      <Node type="stock" name="patients" extra="no">
-        <Inputs>
-            <Name>patients admitted</Name>
-            <Name>patients discharged</Name>
-        </Inputs>
-        <Outputs>
-            <Name>doctors</Name>
-        </Outputs>
-        <Equation>+patients admitted-patients discharged</Equation>
-        <InitialValue>80</InitialValue>
-        <CorrectDescription>The number of patients in the hospital each hour</CorrectDescription>
-        <Plan>said to both increase and decrease</Plan>
-      </Node>
+        <Node type="stock" name="patients" extra="no">
+            <Inputs>
+                <Name>patients admitted</Name>
+                <Name>patients discharged</Name>
+            </Inputs>
+            <Outputs>
+                <Name>doctors</Name>
+            </Outputs>
+            <Equation>+patients admitted-patients discharged</Equation>
+            <InitialValue>80</InitialValue>
+            <CorrectDescription>The number of patients in the hospital each hour</CorrectDescription>
+            <Plan>said to both increase and decrease</Plan>
+        </Node>
 
-  </Nodes>
+    </Nodes>
 
-  <DescriptionTree>
-    <Node level="root">
-      <Description>The number of</Description>      
-      <Node level="intermediate">
-        <Description>patients admitted in the hospital</Description>            
-        <Node level="leaf">
-          <Description>when the system was turned on</Description>
-          <NodeName>patients admitted initially</NodeName>
+    <DescriptionTree>
+        <Node level="root">
+            <Description>The number of</Description>      
+            <Node level="intermediate">
+                <Description>patients admitted in the hospital</Description>            
+                <Node level="leaf">
+                    <Description>when the system was turned on</Description>
+                    <NodeName>patients admitted initially</NodeName>
+                </Node>
+                <Node level="leaf">
+                    <Description>each hour</Description>
+                    <NodeName>patients admitted</NodeName>
+                </Node>
+            </Node>
+            <Node level="intermediate">
+                <Description>patients in the hospital</Description>            
+                <Node level="leaf">
+                    <Description>each hour</Description>
+                    <NodeName>patients</NodeName>
+                </Node>
+                <Node level="leaf">
+                    <Description>when the system was turned on</Description>
+                    <NodeName>patients initially</NodeName>
+                </Node>
+            </Node>
+            <Node level="intermediate">
+                <Description>patients discharged</Description>
+                <Node level="leaf">
+                    <Description>per doctor each hour</Description>
+                    <NodeName>discharges per doctor</NodeName>
+                </Node>
+                <Node level="leaf">
+                    <Description>when the system was turned on</Description>
+                    <NodeName>patients discharged initially</NodeName>
+                </Node>
+                <Node level="leaf">
+                    <Description>from the hospital each hour</Description>
+                    <NodeName>patients discharged</NodeName>
+                </Node>
+            </Node>
+            <Node level="intermediate">
+                <Description>doctors in the hospital</Description>            
+                <Node level="leaf">
+                    <Description>when the system was turned on</Description>
+                    <NodeName>starting doctors</NodeName>
+                </Node>
+                <Node level="leaf">
+                    <Description>each hour</Description>
+                    <NodeName>doctors</NodeName>
+                </Node>
+            </Node>
         </Node>
-        <Node level="leaf">
-          <Description>each hour</Description>
-          <NodeName>patients admitted</NodeName>
+        <Node level="root">
+            <Description>The ratio of</Description>      
+            <Node level="intermediate">
+                <Description></Description>            
+                <Node level="leaf">
+                    <Description>doctors per patient on average</Description>
+                    <NodeName>doctor patient ratio</NodeName>
+                </Node>
+                <Node level="leaf">
+                    <Description>doctors per patient when the system was turned on</Description>
+                    <NodeName>ratio initially</NodeName>
+                </Node>
+            </Node>
         </Node>
-      </Node>
-      <Node level="intermediate">
-        <Description>patients in the hospital</Description>            
-        <Node level="leaf">
-          <Description>each hour</Description>
-          <NodeName>patients</NodeName>
-        </Node>
-        <Node level="leaf">
-          <Description>when the system was turned on</Description>
-          <NodeName>patients initially</NodeName>
-        </Node>
-      </Node>
-      <Node level="intermediate">
-        <Description>patients discharged</Description>
-        <Node level="leaf">
-          <Description>per doctor each hour</Description>
-          <NodeName>discharges per doctor</NodeName>
-        </Node>
-        <Node level="leaf">
-          <Description>when the system was turned on</Description>
-          <NodeName>patients discharged initially</NodeName>
-        </Node>
-        <Node level="leaf">
-          <Description>from the hospital each hour</Description>
-          <NodeName>patients discharged</NodeName>
-        </Node>
-      </Node>
-      <Node level="intermediate">
-        <Description>doctors in the hospital</Description>            
-        <Node level="leaf">
-          <Description>when the system was turned on</Description>
-          <NodeName>starting doctors</NodeName>
-        </Node>
-        <Node level="leaf">
-          <Description>each hour</Description>
-          <NodeName>doctors</NodeName>
-        </Node>
-      </Node>
-    </Node>
-    <Node level="root">
-      <Description>The ratio of</Description>      
-      <Node level="intermediate">
-        <Description></Description>            
-        <Node level="leaf">
-          <Description>doctors per patient on average</Description>
-          <NodeName>doctor patient ratio</NodeName>
-        </Node>
-        <Node level="leaf">
-          <Description>doctors per patient when the system was turned on</Description>
-          <NodeName>ratio initially</NodeName>
-        </Node>
-      </Node>
-    </Node>
-  </DescriptionTree>
+    </DescriptionTree>
 
   
 </Task>

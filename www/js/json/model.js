@@ -6,11 +6,30 @@
  **/
 
 /**
+ * 
+ * NOTE: this.beginX, this.beginY, this.nodeWidth, and this.nodeHeight should 
+ *      be set to match the requirements of the viewer part of the MVC. These 
+ *      variables control where the nodes will begin being placed, and tell the
+ *      model the size of the nodes to avoid collissions.
+ * 
+ * NOTE: Functions to alter nodes in the given model should only be used for 
+ *      author mode. They are named with the convention: 
+ *      action+"Node"+AffectedPart() (for example: addNode() or setNodeName()). 
+ *      To alter a node on a problem the student is currently working on the 
+ *      functions follow the convention: action+"StudentNode"+AffectedPart() 
+ *      (for example: addStudentNode() or setStudentNodeName()).
+ * 
+ */
+
+/**
  * Heads of the functions in this class; view the function in the body of the class for more information
  **/
 //        constructor: function(/*string*/ name, /*string*/ url, /*int*/ start, /*int*/ end, /*float*/ timeStep, /*string*/ units)
-//        _buildModel: function() ***PRIVATE FUNCTION***
-//        _updateNextXYPosition: function() ***PRIVATE FUNCTION***
+// *** Private Functions ***
+//        _buildModel: function()
+//        _updateNextXYPosition: function()
+//        _setStatus: function(/*string*/ id, /*string*/ part, /*string*/ status)
+// *** Public Functions ***
 //        loadModel: function(/*string*/ jsonString)
 //        getModelAsString: function()
 //        getPhase: function()
@@ -24,23 +43,21 @@
 //        getTaskDescription: function()
 //        getNodeNameByID: function(/*string*/ id)
 //        getNodeIDByName: function(/*string*/ name)
+//        getNodeIDByDescription: function(/*string*/ description)
 //        getNodeType: function(/*string*/ id)
 //        isParentNode: function(/*string*/ id)
 //        isExtraNode: function(/*string*/ id)
 //        getNodeOrder: function(/*string*/ id)
 //        getNodeUnits: function(/*string*/ id)
 //        getNodeInputs: function(/*string*/ id)
+//        isNodeInput: function(/*string*/ mainNodeID, /*string*/ inputID)
+//        isNodeVisible: function(/*string*/ id)
+//        isNodesParentVisible: function(/*string*/ id)
 //        getNodeInitial: function(/*string*/ id)
 //        getNodeEquation: function(/*string*/ id)
 //        getNodeCorrectDescription: function(/*string*/ id)
-//        getNodeAttempts: function(/*string*/ id)
-//        getNodeSolutions: function(/*string*/ id)
-//        getNodeAttempts: function(/*string*/ id)
-//        getSolutionDescription: function(/*string*/ id)
-//        getSolutionType: function(/*string*/ id)
-//        getSolutionInitial: function(/*string*/ id)
-//        getSolutionUnits: function(/*string*/ id)
-//        getSolutionEquation: function(/*string*/ id)
+//        getNodeAttemptCount: function(/*string*/ id, /*string*/ part)
+//        getNodeStatus: function(/*string*/ id, /*string*/ part)
 //        isInGivenModel: function(/*string*/ id)
 //        getStudentNodeInputs: function(/*string*/ id)
 //        getStudentNodeX: function(/*string*/ id)
@@ -79,20 +96,10 @@
 //        setStudentNodeName: function(/*string*/ id, /*string*/ name)
 //        addStudentNodeWithName: function(/*string*/ name)
 //        addStudentNodeInput: function(/*string*/ input, /*string*/ inputInto)
-//        deleteStudentNodeInput: function(/*string*/ id, /*string*/ inputIDToRemove)        
-//        setSolutionDesc: function(/*string*/ id, /*string*/ solution)
-//        setSolutionPlan: function(/*string*/ id, /*string*/ solution)
-//        setSolutionCalc: function(/*string*/ id, /*string*/ solution)
+//        deleteStudentNodeInput: function(/*string*/ id, /*string*/ inputIDToRemove)
 //        setStudentNodeXY: function(/*string*/ id, /*int*/ xPos, /*int*/ yPos)
-//        setStudentSelectionsDesc: function(/*string*/ id, /*string*/ selection)
-//        setStudentSelectionsPlan: function(/*string*/ id, /*string*/ selection)
-//        setStudentSelectionsUnits: function(/*string*/ id, /*string*/ selection)
-//        setStudentSelectionsInitial: function(/*string*/ id, /*float*/ selection)
-//        setStudentSelectionsEquation: function(/*string*/ id, /*string*/ selection)
-//        addAttemptDesc: function(/*string*/ id)
-//        addAttemptPlan: function(/*string*/ id)
-//        addAttemptCalc: function(/*string*/ id)
-
+//        setStudentNodeSelection: function(/*string*/ id, /*string*/ part, /*string*/ selection)
+//        setToDemo: function(/*string*/ id, /*string*/ part)
 
 define(["dojo/_base/declare", "/laits/js/json/node", "/laits/js/json/student_node"]
         , function(declare, Node, StudentNode) {
@@ -107,10 +114,9 @@ define(["dojo/_base/declare", "/laits/js/json/node", "/laits/js/json/student_nod
             this.beginX = 100;
             this.beginY = 100;
             this.nodeWidth = 200;
-            this.nodeHeigth = 200;
-            this.nameRegister = new Array();
-            this.x = 100;
-            this.y = 100;
+            this.nodeHeight = 200;
+            this.x = this.beginX;
+            this.y = this.beginY;
             this.ID = 1;
             this.taskName = name;
             this.properties = JSON.parse('{"phase" : "' + "" + '",\n"type" : "' + "" +
@@ -144,15 +150,40 @@ define(["dojo/_base/declare", "/laits/js/json/node", "/laits/js/json/student_nod
             for (var i = 0; i < this.model.task.studentModelNodes.length; i++) {
                 var x = this.model.task.studentModelNodes[i].position.x;
                 var y = this.model.task.studentModelNodes[i].position.y;
-                while (this.x > x - this.nodeWidth && this.x < x + this.nodeWidth && this.y > y - this.nodeHeigth && this.y < y + this.nodeHeigth) {
+                while (this.x > x - this.nodeWidth && this.x < x + this.nodeWidth &&
+                        this.y > y - this.nodeHeight && this.y < y + this.nodeHeight) {
                     if (this.x + this.nodeWidth < document.documentElement.clientWidth + 100)
                         this.x += this.nodeWidth;
                     else {
                         this.x = this.beginX;
-                        this.y += this.nodeHeigth;
+                        this.y += this.nodeHeight;
                     }
                 }
             }
+        },
+        _setStatus: function(/*string*/ id, /*string*/ part, /*string*/ status) {
+            // Summary: tracks student progress (correct, incorrect) on a given node; 
+            //      used in setStudentNodeSelection() and setToDemo()
+            // Tags: private
+            for (var i = 0; i < this.model.task.givenModelNodes.length; i++)
+                if (id === this.model.task.givenModelNodes[i].ID)
+                    switch (part) {
+                        case "description":
+                            this.model.task.givenModelNodes[i].addStatus(status, null, null, null, null);
+                            break;
+                        case "type":
+                            this.model.task.givenModelNodes[i].addStatus(null, status, null, null, null);
+                            break;
+                        case "initial":
+                            this.model.task.givenModelNodes[i].addStatus(null, null, status, null, null);
+                            break;
+                        case "units":
+                            this.model.task.givenModelNodes[i].addStatus(null, null, null, status, null);
+                            break;
+                        case "equation":
+                            this.model.task.givenModelNodes[i].addStatus(null, null, null, null, status);
+                            break;
+                    }
         },
         /**
          * 
@@ -241,6 +272,15 @@ define(["dojo/_base/declare", "/laits/js/json/node", "/laits/js/json/student_nod
             }
             return null; // returns null if the node cannot be found
         },
+        getNodeIDByDescription: function(/*string*/ description) {
+            // Summary: returns the id of a node matching the given description; the given 
+            //      model nodes are searched first, followed by the student model nodes
+            for (var i = 0; i < this.model.task.givenModelNodes.length; i++) {
+                if (description === this.model.task.givenModelNodes[i].correctDesc)
+                    return this.model.task.givenModelNodes[i].ID;
+            }
+            return null; // returns null if the node cannot be found
+        },
         getNodeType: function(/*string*/ id) {
             for (var i = 0; i < this.model.task.givenModelNodes.length; i++) {
                 if (id === this.model.task.givenModelNodes[i].ID)
@@ -291,6 +331,36 @@ define(["dojo/_base/declare", "/laits/js/json/node", "/laits/js/json/student_nod
             }
             return null;
         },
+        isNodeInput: function(/*string*/ mainNodeID, /*string*/ inputID) {
+            // Summary: returns true if the node identified by inputID is an 
+            //      input into the mainNodeID 
+            for (var i = 0; i < this.model.task.givenModelNodes.length; i++) {
+                if (mainNodeID === this.model.task.givenModelNodes[i].ID && this.model.task.givenModelNodes[i].inputs.length !== 0) {
+                    i = this.model.task.givenModelNodes.length;
+                    for (var ii = 0; ii < this.model.task.givenModelNodes[i].inputs.length; ii++)
+                        if (inputID === this.model.task.givenModelNodes[i].inputs[ii].ID)
+                            return true;
+                }
+            }
+            return false;
+        },
+        isNodeVisible: function(/*string*/ id) {
+            // Summary: returns true if the node is in the student model
+            for (var i = 0; i < this.model.task.studentModelNodes.length; i++) {
+                if (id === this.model.task.studentModelNodes[i].ID)
+                    return true;
+            }
+            return false;
+        },
+        isNodesParentVisible: function(/*string*/ id) {
+            // Summary: returns true if the node's parent is visible (if the 
+            //      node is an input into another node that is in the student model
+            for (var i = 0; i < this.model.task.studentModelNodes.length; i++)
+                for (var ii = 0; ii < this.model.task.studentModelNodes.length; ii++)
+                    if (id === this.model.task.studentModelNodes[i].inputs[ii])
+                        return true;            
+            return false;
+        },
         getNodeInitial: function(/*string*/ id) {
             for (var i = 0; i < this.model.task.givenModelNodes.length; i++) {
                 if (id === this.model.task.givenModelNodes[i].ID)
@@ -312,70 +382,52 @@ define(["dojo/_base/declare", "/laits/js/json/node", "/laits/js/json/student_nod
             }
             return null;
         },
-        getNodeAttempts: function(/*string*/ id) {
-            // Summary: returns an array with the attempt count of each tab (description, plan, and calculation)
-            for (var i = 0; i < this.model.task.givenModelNodes.length; i++) {
-                if (id === this.model.task.givenModelNodes[i].ID) {
-                    var attempts = new Array();
-                    attempts.push(this.model.task.givenModelNodes[i].attemptCount.desc);
-                    attempts.push(this.model.task.givenModelNodes[i].attemptCount.plan);
-                    attempts.push(this.model.task.givenModelNodes[i].attemptCount.calc);
-                    return attempts;
-                }
-            }
+        getNodeAttemptCount: function(/*string*/ id, /*string*/ part) {
+            // Summary: returns the number of attempts a student has made on the 
+            //      given part of the problem
+            for (var i = 0; i < this.model.task.givenModelNodes.length; i++)
+                if (id === this.model.task.givenModelNodes[i].ID)
+                    switch (part) {
+                        case "description":
+                            return this.model.task.givenModelNodes[i].attemptCount.description;
+                            break;
+                        case "type":
+                            return this.model.task.givenModelNodes[i].attemptCount.type;
+                            break;
+                        case "initial":
+                            return this.model.task.givenModelNodes[i].attemptCount.initial;
+                            break;
+                        case "units":
+                            return this.model.task.givenModelNodes[i].attemptCount.units;
+                            break;
+                        case "equation":
+                            return this.model.task.givenModelNodes[i].attemptCount.equation;
+                            break;
+                    }
             return null;
         },
-        /**
-         * Next 5 functions return the progress of the student for a given node
-         */
-        getSolutionDescription: function(/*string*/ id) {
+        getNodeStatus: function(/*string*/ id, /*string*/ part) {
             // Summary: returns the progress (correct, incorrect, or demo) of 
             //      the given node's description section
-            for (var i = 0; i < this.model.task.givenModelNodes.length; i++) {
-                if (id === this.model.task.givenModelNodes[i].ID) {
-                    return this.model.task.givenModelNodes[i].solution.description;
-                }
-            }
-            return null;
-        },
-        getSolutionType: function(/*string*/ id) {
-            // Summary: returns the progress (correct, incorrect, or demo) of 
-            //      the given node's type section
-            for (var i = 0; i < this.model.task.givenModelNodes.length; i++) {
-                if (id === this.model.task.givenModelNodes[i].ID) {
-                    return this.model.task.givenModelNodes[i].solution.type;
-                }
-            }
-            return null;
-        },
-        getSolutionInitial: function(/*string*/ id) {
-            // Summary: returns the progress (correct, incorrect, or demo) of 
-            //      the given node's initial section
-            for (var i = 0; i < this.model.task.givenModelNodes.length; i++) {
-                if (id === this.model.task.givenModelNodes[i].ID) {
-                    return this.model.task.givenModelNodes[i].solution.initial;
-                }
-            }
-            return null;
-        },
-        getSolutionUnits: function(/*string*/ id) {
-            // Summary: returns the progress (correct, incorrect, or demo) of 
-            //      the given node's units section
-            for (var i = 0; i < this.model.task.givenModelNodes.length; i++) {
-                if (id === this.model.task.givenModelNodes[i].ID) {
-                    return this.model.task.givenModelNodes[i].solution.units;
-                }
-            }
-            return null;
-        },
-        getSolutionEquation: function(/*string*/ id) {
-            // Summary: returns the progress (correct, incorrect, or demo) of 
-            //      the given node's equation section
-            for (var i = 0; i < this.model.task.givenModelNodes.length; i++) {
-                if (id === this.model.task.givenModelNodes[i].ID) {
-                    return this.model.task.givenModelNodes[i].solution.equation;
-                }
-            }
+            for (var i = 0; i < this.model.task.givenModelNodes.length; i++)
+                if (id === this.model.task.givenModelNodes[i].ID)
+                    switch (part) {
+                        case "description":
+                            return this.model.task.givenModelNodes[i].status.description;
+                            break;
+                        case "type":
+                            return this.model.task.givenModelNodes[i].status.type;
+                            break;
+                        case "initial":
+                            return this.model.task.givenModelNodes[i].status.initial;
+                            break;
+                        case "units":
+                            return this.model.task.givenModelNodes[i].status.units;
+                            break;
+                        case "equation":
+                            return this.model.task.givenModelNodes[i].status.equation;
+                            break;
+                    }
             return null;
         },
         isInGivenModel: function(/*string*/ id) {
@@ -489,7 +541,7 @@ define(["dojo/_base/declare", "/laits/js/json/node", "/laits/js/json/student_nod
             this.model.task.taskDescription = description;
         },
         /**
-         * Functions to add nodes to the given model and the student model
+         * Functions to add and delete nodes in the given model and the student model
          */
         addNode: function() {
             // Summary: builds a new node and returns the node's unique id
@@ -539,20 +591,30 @@ define(["dojo/_base/declare", "/laits/js/json/node", "/laits/js/json/student_nod
             // Summary: sets the node's name; can be used to change the name as well
             //      and the matching node in the student model will update; the name
             //      must be unique (it cannot be used by another node)
-            for (var i = 0; i < this.model.task.givenModelNodes.length; i++)
+            // Note: setNodeName() should be used in Author mode while 
+            //      setStudentNodeName() should be used when a student is changing 
+            //      a node name in the student model
+            var arrayID1 = -1;
+            var arrayID2 = -1;
+            for (var i = 0; i < this.model.task.givenModelNodes.length; i++) {
                 // the first two for loops ensure that the node name is unique
-                if (this.model.task.givenModelNodes[i].name === name && this.model.task.givenModelNodes[i].ID !== id)
+                if (this.model.task.givenModelNodes[i].name === name)
                     return false;
-            for (var i = 0; i < this.model.task.studentModelNodes.length; i++)
-                if (this.model.task.studentModelNodes[i].name === name && this.model.task.studentModelNodes[i].ID !== id)
+                if (this.model.task.givenModelNodes[i].ID === id)
+                    arrayID1 = i;
+            }
+            for (var i = 0; i < this.model.task.studentModelNodes.length; i++) {
+                if (this.model.task.studentModelNodes[i].name === name)
                     return false;
-            for (var i = 0; i < this.model.task.givenModelNodes.length; i++)
-                // the next two for loops change the name in the given model and the student model
-                if (id === this.model.task.givenModelNodes[i].ID)
-                    this.model.task.givenModelNodes[i].name = name;
-            for (var i = 0; i < this.model.task.studentModelNodes.length; i++)
-                if (id === this.model.task.studentModelNodes[i].ID)
-                    this.model.task.studentModelNodes[i].name = name;
+                if (this.model.task.studentModelNodes[i].ID === id)
+                    arrayID2 = i;
+            }
+            // the next two if statements change the name in the given model and the student model
+            if (arrayID1 > -1)
+                this.model.task.givenModelNodes[arrayID1].name = name;
+            if (arrayID2 > -1)
+                this.model.task.studentModelNodes[arrayID2].name = name;
+            return true;
         },
         setNodeParent: function(/*string*/ id, /*bool*/ parent) {
             for (var i = 0; i < this.model.task.givenModelNodes.length; i++)
@@ -609,8 +671,6 @@ define(["dojo/_base/declare", "/laits/js/json/node", "/laits/js/json/student_nod
                         if (input === this.model.task.givenModelNodes[i].inputs[ii].ID)
                             return false;
                     }
-
-
                     this.model.task.givenModelNodes[i].addInput(inputID);
                     return true;
                 }
@@ -627,7 +687,6 @@ define(["dojo/_base/declare", "/laits/js/json/node", "/laits/js/json/student_nod
                         }
                     }
             }
-
         },
         addStudentNode: function() {
             // Summary: builds a new node in the student model and returns the node's unique ID
@@ -644,44 +703,55 @@ define(["dojo/_base/declare", "/laits/js/json/node", "/laits/js/json/student_nod
         deleteStudentNode: function(/*string*/ id) {
             // Summary: deletes a node with a given id from the student model; removes
             //      the given node from other nodes inputs within the student model and
-            //      erases equations containing the deleted node
+            //      erases equations containing the deleted node; resets matching given
+            //      model nodes to no longer be marked correct
             var deleted = false;
             for (var i = 0; i < this.model.task.studentModelNodes.length; i++) {
                 this.deleteStudentNodeInput(this.model.task.studentModelNodes[i].ID, id);
                 if (this.model.task.studentModelNodes[i].studentSelections.equation.indexOf(id) > -1)
                     this.model.task.studentModelNodes[i].studentSelections.equation = "";
                 if (id === this.model.task.studentModelNodes[i].ID) {
+                    if (this.model.task.studentModelNodes[i].inGivenModel === true) // checks if node was in given model
+                        for (var ii = 0; ii < this.model.task.givenModelNodes.length; ii++)
+                            if (this.model.task.givenModelNodes[ii].ID === id)
+                                this.model.task.givenModelNodes[ii].resetStatus();
                     this.model.task.studentModelNodes.splice(this.model.task.studentModelNodes.indexOf(this.model.task.studentModelNodes[i]), 1);
                     deleted = true;
+                    break;
                 }
             }
-
             return deleted;
         },
         setStudentNodeName: function(/*string*/ id, /*string*/ name) {
             // Summary: sets a name for the student model node and attempts to match it against
             //      the given model; returns the nodes ID, which updates to match the given 
             //      model node, if it exists
-            // Note: this function should only be used at to initially set the name of the node
-            //      in the student model; use setNodeName() for subsequent name changes to ensure 
-            //      that the name changes in the given model and the student model
+            // Note: this function should only be used to set the name of a node in the student 
+            //      model; if a problem is being authored, used setNodeName() to change the name 
+            //      of a node in the given model; if an author wants a problem to appear in both
+            //      the given model and the student model (so that the node appears when the 
+            //      problem is started) use setNodeName() to change the name in models both and 
+            //      to maintain the connection between the nodes
             for (var i = 0; i < this.model.task.studentModelNodes.length; i++)
                 // this first for loop ensures that the node name is unique to other student model node names
-                if (this.model.task.studentModelNodes[i].name === name && this.model.task.studentModelNodes[i].ID !== id)
+                if (this.model.task.studentModelNodes[i].name === name)
                     return null;
             for (var i = 0; i < this.model.task.studentModelNodes.length; i++) {
                 if (id === this.model.task.studentModelNodes[i].ID) {
-                    if (this.model.task.studentModelNodes[i].inGivenModel === false) {
-                        for (var ii = 0; ii < this.model.task.givenModelNodes.length; ii++) {
-                            if (name === this.model.task.givenModelNodes[ii].name) {
-                                this.model.task.studentModelNodes[i].name = name;
-                                this.model.task.studentModelNodes[i].ID = this.model.task.givenModelNodes[ii].ID;
-                                this.model.task.studentModelNodes[i].inGivenModel = true;
-                                return this.model.task.studentModelNodes[i].ID;
-                            }
+                    if (this.model.task.studentModelNodes[i].inGivenModel === true) {
+                        // if inGivenModel = true and name is being changed then node must be re-created 
+                        //      to reset values; new node will be at position studentModelNodes.length - 1
+                        this.deleteStudentNode(id);
+                        id = this.addStudentNode();
+                        i = this.model.task.studentModelNodes.length - 1;
+                    }
+                    this.model.task.studentModelNodes[i].name = name;
+                    for (var ii = 0; ii < this.model.task.givenModelNodes.length; ii++) {
+                        if (name === this.model.task.givenModelNodes[ii].name) {
+                            this.model.task.studentModelNodes[i].ID = this.model.task.givenModelNodes[ii].ID;
+                            this.model.task.studentModelNodes[i].inGivenModel = true;
+                            return this.model.task.studentModelNodes[i].ID;
                         }
-                    } else {
-                        return null;
                     }
                 }
             }
@@ -730,35 +800,6 @@ define(["dojo/_base/declare", "/laits/js/json/node", "/laits/js/json/student_nod
                         }
                     }
             }
-
-        },
-        /**
-         * Next 5 functions track student progress (correct, incorrect, or demo) on a given node of
-         */
-        setSolutionDescription: function(/*string*/ id, /*string*/ solution) {
-            for (var i = 0; i < this.model.task.givenModelNodes.length; i++)
-                if (id === this.model.task.givenModelNodes[i].ID)
-                    this.model.task.givenModelNodes[i].addSolution(solution, null, null, null, null);
-        },
-        setSolutionType: function(/*string*/ id, /*string*/ solution) {
-            for (var i = 0; i < this.model.task.givenModelNodes.length; i++)
-                if (id === this.model.task.givenModelNodes[i].ID)
-                    this.model.task.givenModelNodes[i].addSolution(null, solution, null, null, null);
-        },
-        setSolutionInitial: function(/*string*/ id, /*string*/ solution) {
-            for (var i = 0; i < this.model.task.givenModelNodes.length; i++)
-                if (id === this.model.task.givenModelNodes[i].ID)
-                    this.model.task.givenModelNodes[i].addSolution(null, null, solution, null, null);
-        },
-        setSolutionUnits: function(/*string*/ id, /*string*/ solution) {
-            for (var i = 0; i < this.model.task.givenModelNodes.length; i++)
-                if (id === this.model.task.givenModelNodes[i].ID)
-                    this.model.task.givenModelNodes[i].addSolution(null, null, null, solution, null);
-        },
-        setSolutionEquation: function(/*string*/ id, /*string*/ solution) {
-            for (var i = 0; i < this.model.task.givenModelNodes.length; i++)
-                if (id === this.model.task.givenModelNodes[i].ID)
-                    this.model.task.givenModelNodes[i].addSolution(null, null, null, null, solution);
         },
         setStudentNodeXY: function(/*string*/ id, /*int*/ xPos, /*int*/ yPos) {
             // Summary: sets the "X" and "Y" values of a node's position
@@ -768,106 +809,94 @@ define(["dojo/_base/declare", "/laits/js/json/node", "/laits/js/json/student_nod
                     this.model.task.studentModelNodes[i].position.y = yPos;
                 }
         },
-        /**
-         * Next 5 functions save student choices in the Student Model
-         */
-        setStudentSelectionsDescription: function(/*string*/ id, /*string*/ selection) {
+        setStudentNodeSelection: function(/*string*/ id, /*string*/ part, /*string*/ studInput) {
+            // Summary: saves student choices in the Student Model; 'id' refers to 
+            //      the node ID, 'part' refers the the part of the node, 'studInput'
+            //      refers to the student input
             for (var i = 0; i < this.model.task.studentModelNodes.length; i++) {
                 if (id === this.model.task.studentModelNodes[i].ID) {
-                    this.model.task.studentModelNodes[i].setStudentSeletions(selection, null, null, null, null);
-                    if (this.model.task.studentModelNodes[i].inGivenModel === true) {                       
-                        if (this.getNodeCorrectDescription(id) === selection){                            
-                            this.setSolutionDescription(id, "correct");}
-                        else
-                            this.setSolutionDescription(id, "incorrect");
-                        this.addAttemptDescription(id);
+
+                    switch (part) {
+                        case "description":
+                            this.model.task.studentModelNodes[i].setStudentSeletions(studInput, null, null, null, null);
+                            if (this.model.task.studentModelNodes[i].inGivenModel === true) {
+                                if (this.getNodeCorrectDescription(id) === studInput)
+                                    this._setStatus(id, part, "correct");
+                                else
+                                    this._setStatus(id, part, "incorrect");
+                                this.model.task.givenModelNodes[i].addAttempt(true, false, false, false, false);
+                            }
+                            break;
+                        case "type":
+                            this.model.task.studentModelNodes[i].setStudentSeletions(null, studInput, null, null, null);
+                            if (this.model.task.studentModelNodes[i].inGivenModel === true) {
+                                if (this.getNodeType(id) === studInput)
+                                    this._setStatus(id, part, "correct");
+                                else
+                                    this._setStatus(id, part, "incorrect");
+                                this.model.task.givenModelNodes[i].addAttempt(false, true, false, false, false);
+                            }
+                            break;
+                        case "initial":
+                            this.model.task.studentModelNodes[i].setStudentSeletions(null, null, studInput, null, null);
+                            if (this.model.task.studentModelNodes[i].inGivenModel === true) {
+                                if (this.getNodeInitial(id) === studInput)
+                                    this._setStatus(id, part, "correct");
+                                else
+                                    this._setStatus(id, part, "incorrect");
+                                this.model.task.givenModelNodes[i].addAttempt(false, false, true, false, false);
+                            }
+                            break;
+                        case "units":
+                            this.model.task.studentModelNodes[i].setStudentSeletions(null, null, null, studInput, null);
+                            if (this.model.task.studentModelNodes[i].inGivenModel === true) {
+                                if (this.getNodeUnits(id) === studInput)
+                                    this._setStatus(id, part, "correct");
+                                else
+                                    this._setStatus(id, part, "incorrect");
+                                this.model.task.givenModelNodes[i].addAttempt(false, false, false, true, false);
+                            }
+                            break;
+                        case "equation":
+                            this.model.task.studentModelNodes[i].setStudentSeletions(null, null, null, null, studInput);
+                            if (this.model.task.studentModelNodes[i].inGivenModel === true) {
+                                if (this.getNodeEquation(id) === studInput)
+                                    this._setStatus(id, part, "correct");
+                                else
+                                    this._setStatus(id, part, "incorrect");
+                                this.model.task.givenModelNodes[i].addAttempt(false, false, false, false, true);
+                            }
+                            break;
                     }
                 }
             }
         },
-        setStudentSelectionsType: function(/*string*/ id, /*string*/ selection) {
-            for (var i = 0; i < this.model.task.studentModelNodes.length; i++) {
-                if (id === this.model.task.studentModelNodes[i].ID) {
-                    this.model.task.studentModelNodes[i].setStudentSeletions(null, selection, null, null, null);
-                    if (this.model.task.studentModelNodes[i].inGivenModel === true) {
-                        if (this.getNodeType(id) === selection)
-                            this.setSolutionType(id, "correct");
-                        else
-                            this.setSolutionType(id, "incorrect");
-                        this.addAttemptType(id);
+        setToDemo: function(/*string*/ id, /*string*/ part) {
+            // Summary: sets the given part of the problem to "demo" in the given node
+            //      and puts the correct answer into the studentModelNode; intended to 
+            //      be used when the student asks for the answer or attempts the question 
+            //      incorrectly too many times
+            for (var i = 0; i < this.model.task.givenModelNodes.length; i++)
+                if (id === this.model.task.givenModelNodes[i].ID) {
+                    switch (part) {
+                        case "description":
+                            this.model.task.studentModelNodes[i].setStudentSeletions(this.getNodeCorrectDescription(id), null, null, null, null);
+                            break;
+                        case "type":
+                            this.model.task.studentModelNodes[i].setStudentSeletions(null, this.getNodeType(id), null, null, null);
+                            break;
+                        case "initial":
+                            this.model.task.studentModelNodes[i].setStudentSeletions(null, null, this.getNodeInitial(id), null, null);
+                            break;
+                        case "units":
+                            this.model.task.studentModelNodes[i].setStudentSeletions(null, null, null, this.getNodeUnits(id), null);
+                            break;
+                        case "equation":
+                            this.model.task.studentModelNodes[i].setStudentSeletions(null, null, null, null, this.getNodeEquation(id));
+                            break;
                     }
+                    this._setStatus(id, part, "demo");
                 }
-            }
-        },
-        setStudentSelectionsUnits: function(/*string*/ id, /*string*/ selection) {
-            for (var i = 0; i < this.model.task.studentModelNodes.length; i++) {
-                if (id === this.model.task.studentModelNodes[i].ID) {
-                    this.model.task.studentModelNodes[i].setStudentSeletions(null, null, selection, null, null);
-                    if (this.model.task.studentModelNodes[i].inGivenModel === true) {
-                        if (this.getNodeUnits(id) === selection)
-                            this.setSolutionUnits(id, "correct");
-                        else
-                            this.setSolutionUnits(id, "incorrect");
-                        this.addAttemptUnits(id);
-                    }
-                }
-            }
-        },
-        setStudentSelectionsInitial: function(/*string*/ id, /*float*/ selection) {
-            for (var i = 0; i < this.model.task.studentModelNodes.length; i++) {
-                if (id === this.model.task.studentModelNodes[i].ID) {
-                    this.model.task.studentModelNodes[i].setStudentSeletions(null, null, null, selection, null);
-                    if (this.model.task.studentModelNodes[i].inGivenModel === true) {
-                        if (this.getNodeInitial(id) === selection)
-                            this.setSolutionInitial(id, "correct");
-                        else
-                            this.setSolutionInitial(id, "incorrect");
-                        this.addAttemptInitial(id);
-                    }
-                }
-            }
-        },
-        setStudentSelectionsEquation: function(/*string*/ id, /*string | object*/ selection) {
-            for (var i = 0; i < this.model.task.studentModelNodes.length; i++) {
-                if (id === this.model.task.studentModelNodes[i].ID) {
-                    this.model.task.studentModelNodes[i].setStudentSeletions(null, null, null, null, selection);
-                    if (this.model.task.studentModelNodes[i].inGivenModel === true) {
-                        if (this.getNodeEquation(id) === selection)
-                            this.setSolutionEquation(id, "correct");
-                        else
-                            this.setSolutionEquation(id, "incorrect");
-                        this.addAttemptEquation(id);
-                    }
-                }
-            }
-        },
-        /**
-         * Next 6 functions keep track of student attempts
-         */
-        addAttemptDescription: function(/*string*/ id) {
-            for (var i = 0; i < this.model.task.givenModelNodes.length; i++)
-                if (id === this.model.task.givenModelNodes[i].ID)
-                    this.model.task.givenModelNodes[i].addAttempt(true, false, false, false, false);
-        },
-        addAttemptType: function(/*string*/ id) {
-            for (var i = 0; i < this.model.task.givenModelNodes.length; i++)
-                if (id === this.model.task.givenModelNodes[i].ID)
-                    this.model.task.givenModelNodes[i].addAttempt(false, true, false, false, false);
-        },
-        addAttemptUnits: function(/*string*/ id) {
-            for (var i = 0; i < this.model.task.givenModelNodes.length; i++)
-                if (id === this.model.task.givenModelNodes[i].ID)
-                    this.model.task.givenModelNodes[i].addAttempt(false, false, true, false, false);
-        },
-        addAttemptInitial: function(/*string*/ id) {
-            for (var i = 0; i < this.model.task.givenModelNodes.length; i++)
-                if (id === this.model.task.givenModelNodes[i].ID)
-                    this.model.task.givenModelNodes[i].addAttempt(false, false, false, true, false);
-        },
-        addAttemptEquation: function(/*string*/ id) {
-            for (var i = 0; i < this.model.task.givenModelNodes.length; i++)
-                if (id === this.model.task.givenModelNodes[i].ID)
-                    this.model.task.givenModelNodes[i].addAttempt(false, false, false, false, true);
         }
     });
 });

@@ -18,16 +18,15 @@
  */
 package edu.asu.laits.gui.nodeeditor;
 
+import com.google.gson.Gson;
 import edu.asu.laits.editor.ApplicationContext;
-import edu.asu.laits.gui.BlockingToolTip;
 import edu.asu.laits.gui.MainWindow;
+import edu.asu.laits.logger.UserActivityLog;
 import edu.asu.laits.model.Graph;
-import edu.asu.laits.model.HelpBubble;
 import edu.asu.laits.model.SolutionNode;
 import edu.asu.laits.model.TaskSolution;
 import edu.asu.laits.model.Vertex;
 import java.awt.Color;
-import java.text.DecimalFormat;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Iterator;
@@ -39,15 +38,15 @@ import javax.swing.DefaultListModel;
 import javax.swing.JComponent;
 import javax.swing.JFormattedTextField;
 import javax.swing.JTextArea;
-import javax.swing.text.DefaultFormatter;
 import net.sourceforge.jeval.EvaluationException;
 import net.sourceforge.jeval.Evaluator;
 import edu.asu.laits.model.Vertex.VertexType;
+import java.text.NumberFormat;
+import java.util.Collection;
 import java.util.Collections;
 import java.util.Comparator;
 import java.util.HashSet;
 import javax.swing.JOptionPane;
-
 
 import org.apache.log4j.Logger;
 
@@ -61,7 +60,6 @@ import org.apache.log4j.Logger;
 public class CalculationsPanelView extends javax.swing.JPanel {
     
     private DefaultListModel availableInputJListModel = new DefaultListModel();
-    private final DecimalFormat inputDecimalFormat = new DecimalFormat("###0.000000##");
     private NodeEditorView nodeEditor;
     private Vertex openVertex;
     private Graph modelGraph;
@@ -90,13 +88,13 @@ public class CalculationsPanelView extends javax.swing.JPanel {
         
         if (openVertex.getVertexType().equals(VertexType.CONSTANT)) {
             preparePanelForFixedValue();
-            fixedValueInputBox.setText(String.valueOf(openVertex.getInitialValue()));
+            initialValueTextField.setText(String.valueOf(openVertex.getInitialValue()));
             return;
         }
         
         if (openVertex.getVertexType().equals(VertexType.STOCK)) {            
             preparePanelForStock();
-            fixedValueInputBox.setText(String.valueOf(openVertex.getInitialValue()));
+            initialValueTextField.setText(String.valueOf(openVertex.getInitialValue()));
             formulaInputArea.setText(openVertex.getEquation());
         } else if (openVertex.getVertexType().equals(VertexType.FLOW)) {
             preparePanelForFlow();
@@ -166,31 +164,20 @@ public class CalculationsPanelView extends javax.swing.JPanel {
         availableInputJListModel.add(1, "create one using Create Node button. ");
     }
     
-    public String getFixedValue() {
-        if(openVertex.getVertexType().equals(VertexType.CONSTANT)){
-            return fixedValueInputBox.getText();
-        } else if(openVertex.getVertexType().equals(VertexType.STOCK)){
-            return fixedValueInputBox.getText();
-        } else {
-            return "";
-        }
-        
-    }
-    
     public void setGivenValueTextField(JFormattedTextField givenValueTextField) {
-        this.fixedValueInputBox = givenValueTextField;
+        this.initialValueTextField = givenValueTextField;
     }
     
     public void preparePanelForFixedValue() {
-        fixedValueInputBox.setEnabled(true);
-        fixedValueInputBox.setVisible(true);
+        initialValueTextField.setEnabled(true);
+        initialValueTextField.setVisible(true);
         fixedValueLabel.setVisible(true);
         fixedValueLabel.setText(openVertex.getName() + " =");
         calculatorPanel.setVisible(false);        
     }
     
     public void preparePanelForFlow() {
-        fixedValueInputBox.setVisible(false);
+        initialValueTextField.setVisible(false);
         fixedValueLabel.setVisible(false);
         calculatorPanel.setVisible(true);
         setEditableCalculations(true);
@@ -200,8 +187,8 @@ public class CalculationsPanelView extends javax.swing.JPanel {
     }
     
     public void preparePanelForStock() {        
-        fixedValueInputBox.setVisible(true);
-        fixedValueInputBox.setEnabled(true);
+        initialValueTextField.setVisible(true);
+        initialValueTextField.setEnabled(true);
         fixedValueLabel.setVisible(true);
         calculatorPanel.setVisible(true);
         setEditableCalculations(true);
@@ -215,8 +202,9 @@ public class CalculationsPanelView extends javax.swing.JPanel {
     }
     
     public boolean processCalculationsPanel() {
+        
         if (openVertex.getVertexType().equals(Vertex.VertexType.CONSTANT)) {
-            return processConstantVertex();
+            return processInitialValue();
         } else if (openVertex.getVertexType().equals(Vertex.VertexType.STOCK)) {
             return processStockVertex();
         } else if (openVertex.getVertexType().equals(Vertex.VertexType.FLOW)) {
@@ -224,47 +212,44 @@ public class CalculationsPanelView extends javax.swing.JPanel {
         } else {
             nodeEditor.setEditorMessage("Please Select Node Type in Calculation.");
             return false;
-        }
+        }        
     }
     
-    private boolean processConstantVertex() {
-        logs.info("Processing Constant Vertex");
-        
-        if (fixedValueInputBox.getText().isEmpty()) {
-            nodeEditor.setEditorMessage("Please provide fixed value for this node.");
-            return false;
-        } else {
-            // Check if value is getting changed - disable Graph
-            Double newValue = Double.valueOf(fixedValueInputBox.getText());
-            if (openVertex.getInitialValue() != newValue) {
-                disableAllGraphs();
-            }
-            openVertex.setInitialValue(newValue);
-            return true;
-        }
-    }
-    
-    private boolean processStockInitialValue() {
+    private boolean processInitialValue() {
         logs.info("Processing Stock Initial Value");
+        String initialValueText = initialValueTextField.getText();
         
-        if (fixedValueInputBox.getText().isEmpty()) {
-            nodeEditor.setEditorMessage("Please provide fixed value for this node.");
+        if (initialValueText != null && initialValueTextField.getText().trim().isEmpty()) {
+            if(ApplicationContext.isTestMode()) {
+                nodeEditor.setEditorMessage("The OK button checks for blanks anywhere in the node’s definition.\nFound one: the initial value is missing.");
+            }else{
+                nodeEditor.setEditorMessage("Please provide initial value for this node.");
+            }
             return false;
         } else {
-            // Check if value is getting changed - disable Graph
-            Double newValue = Double.valueOf(fixedValueInputBox.getText());
-            if (openVertex.getInitialValue() != newValue) {
-                disableAllGraphs();
-            }
-            openVertex.setInitialValue(newValue);
-            return true;
+            try {
+                // try to parse string to exclude non-allowed chars
+                Double.parseDouble(initialValueText);                
+                Double newValue = NumberFormat.getNumberInstance(java.util.Locale.US).parse(initialValueText).doubleValue();
+                
+                // Check if value is getting changed - disable Graph
+                if (openVertex.getInitialValue() != newValue) {
+                    disableAllGraphs();
+                }
+                openVertex.setInitialValue(newValue);
+                return true;
+            } catch (Exception ex) {
+                nodeEditor.setEditorMessage("Initial value is not valid.");
+                logs.error("Provided initial value is not parsable " + ex.getMessage());
+                return false;
+            }            
         }
     }
 
     private boolean processStockVertex() {   
         logs.info("Processing Stock Vertex");      
         
-        if (processStockInitialValue() && validateEquation(formulaInputArea.getText().trim())) {
+        if (processInitialValue() && validateEquation(formulaInputArea.getText().trim())) {
             // Check if equation is changed - disable graph
             if (!openVertex.getEquation().equals(formulaInputArea.getText().trim())) {
                 disableAllGraphs();
@@ -296,7 +281,12 @@ public class CalculationsPanelView extends javax.swing.JPanel {
     private boolean validateEquation(String equation) {
         
         if (equation.isEmpty()) {
-            nodeEditor.setEditorMessage("Please provide an equation for this node.");
+            if(ApplicationContext.isTestMode()) {
+                nodeEditor.setEditorMessage("The OK button checks for blanks anywhere in the node’s definition.\nFound one: node equation is missing.");
+            }
+            else{ 
+                nodeEditor.setEditorMessage("Please provide an equation for this node.");
+            }
             return false;
         }
         
@@ -315,9 +305,8 @@ public class CalculationsPanelView extends javax.swing.JPanel {
         // Assign random values to variables to test if equation can be evaluated
         for (String s : usedVariables) {
             if (!availableVariables.contains(s)) {
-                nodeEditor.setEditorMessage("Input node " + s + " is not availabe.");
-                activityLogs.debug("User entered incorrect equation - "+
-                                   "Input node " + s + " is not present.");
+                nodeEditor.setEditorMessage("'"+ s + "' is not an available input.");
+                activityLogs.debug(new UserActivityLog(UserActivityLog.CLIENT_MESSAGE, "User entered incorrect equation - " + "Input node " + s + " is not present."));
                 return false;
             }
             eval.putVariable(s, String.valueOf(Math.random()));
@@ -352,7 +341,7 @@ public class CalculationsPanelView extends javax.swing.JPanel {
     
     public void setCheckedBackground(Color c) {        
         if (openVertex.getVertexType().equals(Vertex.VertexType.CONSTANT) || openVertex.getVertexType().equals(Vertex.VertexType.STOCK)) {
-            fixedValueInputBox.setBackground(c);
+            initialValueTextField.setBackground(c);
         }
         
         if (openVertex.getVertexType().equals(Vertex.VertexType.FLOW)
@@ -373,8 +362,7 @@ public class CalculationsPanelView extends javax.swing.JPanel {
         Vertex currentVertex = nodeEditor.getOpenVertex();
         if (currentVertex.getVertexType().equals(Vertex.VertexType.CONSTANT)) {
             logs.debug("Setting Constant Value as " + correctNode.getNodeEquation());
-            fixedValueInputBox.setText(correctNode.getNodeEquation());
-            MainWindow.refreshGraph();
+            initialValueTextField.setText(correctNode.getNodeEquation());            
         }
         
         if (currentVertex.getVertexType().equals(Vertex.VertexType.FLOW)
@@ -395,27 +383,13 @@ public class CalculationsPanelView extends javax.swing.JPanel {
             processNodeEquation();
             
             if (currentVertex.getVertexType().equals(Vertex.VertexType.STOCK)) {
-                fixedValueInputBox.setText(String.valueOf(correctNode.getInitialValue()));
+                initialValueTextField.setText(String.valueOf(correctNode.getInitialValue()));
             }
-                                    
-            setCheckedBackground(Color.YELLOW);
-            MainWindow.refreshGraph();
         }
-        
+        setCheckedBackground(Color.YELLOW);
+        MainWindow.refreshGraph();
         return true;
         
-    }
-    
-    private void addHelpBalloon(String timing){
-        if(ApplicationContext.isCoachedMode()){
-            List<HelpBubble> bubbles = ApplicationContext.getHelp(openVertex.getName(), "Calculations", timing);
-            if(!bubbles.isEmpty()){
-                for(HelpBubble bubble : bubbles){
-                    
-                    new BlockingToolTip(this.nodeEditor, bubble, this.getLabel(bubble.getAttachedTo()));
-                }
-            }
-        }
     }
     
     private class SortIgnoreCase implements Comparator <Object> {
@@ -436,15 +410,9 @@ public class CalculationsPanelView extends javax.swing.JPanel {
 
         contentPanel = new javax.swing.JPanel();
         fixedValueLabel = new javax.swing.JLabel();
-        //Code commented by Josh 011912 -- starts here
-        //givenValueTextField = new javax.swing.JFormattedTextField();
-        //Code commented by Josh 011912 -- ends here
-        fixedValueInputBox = new DecimalTextField();
         needInputLabel = new javax.swing.JLabel();
         calculatorPanel = new javax.swing.JPanel();
         valuesLabel = new javax.swing.JLabel();
-        jScrollPane1 = new javax.swing.JScrollPane();
-        formulaInputArea = new javax.swing.JTextArea();
         availableInputsLabel = new javax.swing.JLabel();
         jScrollPane4 = new javax.swing.JScrollPane();
         jScrollPane2 = new javax.swing.JScrollPane();
@@ -455,6 +423,9 @@ public class CalculationsPanelView extends javax.swing.JPanel {
         buttonDivide = new javax.swing.JButton();
         buttonCreateNode = new javax.swing.JButton();
         accumulatorTimeLabel = new javax.swing.JLabel();
+        jScrollPane3 = new javax.swing.JScrollPane();
+        formulaInputArea = new javax.swing.JTextArea();
+        initialValueTextField = new javax.swing.JTextField();
 
         setLayout(new org.netbeans.lib.awtextra.AbsoluteLayout());
 
@@ -462,30 +433,11 @@ public class CalculationsPanelView extends javax.swing.JPanel {
 
         fixedValueLabel.setFont(new java.awt.Font("Lucida Grande", 1, 13)); // NOI18N
         fixedValueLabel.setText("<html><b>Initial value = </b></html>");
-        contentPanel.add(fixedValueLabel, new org.netbeans.lib.awtextra.AbsoluteConstraints(10, 0, 100, 30));
-
-        fixedValueInputBox.setFormatterFactory(new javax.swing.text.DefaultFormatterFactory(new javax.swing.text.NumberFormatter(inputDecimalFormat)));
-        fixedValueInputBox.setHorizontalAlignment(javax.swing.JTextField.LEFT);
-        fixedValueInputBox.setDisabledTextColor(new java.awt.Color(102, 102, 102));
-        fixedValueInputBox.setFocusCycleRoot(true);
-        ((DefaultFormatter)fixedValueInputBox.getFormatter()).setAllowsInvalid( true );
-        contentPanel.add(fixedValueInputBox, new org.netbeans.lib.awtextra.AbsoluteConstraints(120, 0, 360, -1));
+        contentPanel.add(fixedValueLabel, new org.netbeans.lib.awtextra.AbsoluteConstraints(10, 0, 140, 30));
         contentPanel.add(needInputLabel, new org.netbeans.lib.awtextra.AbsoluteConstraints(0, 163, -1, -1));
 
         valuesLabel.setFont(new java.awt.Font("Lucida Grande", 1, 13)); // NOI18N
         valuesLabel.setText("Next Value = ");
-
-        formulaInputArea.setColumns(20);
-        formulaInputArea.setLineWrap(true);
-        formulaInputArea.setRows(5);
-        formulaInputArea.setToolTipText("Node Equation");
-        formulaInputArea.setDisabledTextColor(new java.awt.Color(102, 102, 102));
-        formulaInputArea.addKeyListener(new java.awt.event.KeyAdapter() {
-            public void keyReleased(java.awt.event.KeyEvent evt) {
-                formulaInputAreaKeyReleased(evt);
-            }
-        });
-        jScrollPane1.setViewportView(formulaInputArea);
 
         availableInputsLabel.setFont(new java.awt.Font("Lucida Grande", 1, 13)); // NOI18N
         availableInputsLabel.setText("Available Inputs:");
@@ -543,6 +495,18 @@ public class CalculationsPanelView extends javax.swing.JPanel {
         accumulatorTimeLabel.setFont(new java.awt.Font("Lucida Grande", 1, 13)); // NOI18N
         accumulatorTimeLabel.setText("* Change in Time");
 
+        formulaInputArea.setColumns(20);
+        formulaInputArea.setLineWrap(true);
+        formulaInputArea.setRows(5);
+        formulaInputArea.setToolTipText("Node Equation");
+        formulaInputArea.setDisabledTextColor(new java.awt.Color(102, 102, 102));
+        formulaInputArea.addKeyListener(new java.awt.event.KeyAdapter() {
+            public void keyReleased(java.awt.event.KeyEvent evt) {
+                formulaInputAreaKeyReleased(evt);
+            }
+        });
+        jScrollPane3.setViewportView(formulaInputArea);
+
         javax.swing.GroupLayout calculatorPanelLayout = new javax.swing.GroupLayout(calculatorPanel);
         calculatorPanel.setLayout(calculatorPanelLayout);
         calculatorPanelLayout.setHorizontalGroup(
@@ -554,8 +518,7 @@ public class CalculationsPanelView extends javax.swing.JPanel {
                             .addComponent(availableInputsLabel)
                             .addComponent(jScrollPane4, javax.swing.GroupLayout.PREFERRED_SIZE, 229, javax.swing.GroupLayout.PREFERRED_SIZE))
                         .addGap(18, 18, 18)
-                        .addGroup(calculatorPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
-                            .addComponent(jScrollPane1, javax.swing.GroupLayout.DEFAULT_SIZE, 219, Short.MAX_VALUE)
+                        .addGroup(calculatorPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                             .addGroup(calculatorPanelLayout.createSequentialGroup()
                                 .addGap(38, 38, 38)
                                 .addGroup(calculatorPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
@@ -566,11 +529,12 @@ public class CalculationsPanelView extends javax.swing.JPanel {
                                     .addComponent(buttonSubtract, javax.swing.GroupLayout.PREFERRED_SIZE, 55, javax.swing.GroupLayout.PREFERRED_SIZE)
                                     .addComponent(buttonDivide, javax.swing.GroupLayout.PREFERRED_SIZE, 55, javax.swing.GroupLayout.PREFERRED_SIZE)))
                             .addComponent(accumulatorTimeLabel)
-                            .addComponent(valuesLabel, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)))
+                            .addComponent(valuesLabel, javax.swing.GroupLayout.PREFERRED_SIZE, 219, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addComponent(jScrollPane3, javax.swing.GroupLayout.DEFAULT_SIZE, 223, Short.MAX_VALUE)))
                     .addGroup(calculatorPanelLayout.createSequentialGroup()
                         .addContainerGap()
                         .addComponent(buttonCreateNode)))
-                .addGap(0, 4, Short.MAX_VALUE))
+                .addGap(0, 0, Short.MAX_VALUE))
         );
         calculatorPanelLayout.setVerticalGroup(
             calculatorPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -587,8 +551,8 @@ public class CalculationsPanelView extends javax.swing.JPanel {
                         .addGap(44, 44, 44)
                         .addComponent(valuesLabel, javax.swing.GroupLayout.PREFERRED_SIZE, 43, javax.swing.GroupLayout.PREFERRED_SIZE)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 141, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addGap(18, 18, 18)
+                        .addComponent(jScrollPane3, javax.swing.GroupLayout.PREFERRED_SIZE, 96, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                         .addComponent(accumulatorTimeLabel)
                         .addGap(18, 18, 18)
                         .addGroup(calculatorPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
@@ -602,25 +566,26 @@ public class CalculationsPanelView extends javax.swing.JPanel {
         );
 
         contentPanel.add(calculatorPanel, new org.netbeans.lib.awtextra.AbsoluteConstraints(10, 30, 470, 390));
+        contentPanel.add(initialValueTextField, new org.netbeans.lib.awtextra.AbsoluteConstraints(160, 0, 160, -1));
 
         add(contentPanel, new org.netbeans.lib.awtextra.AbsoluteConstraints(0, 10, 490, 440));
     }// </editor-fold>//GEN-END:initComponents
     
     public String printCalculationPanel(){
         StringBuilder sb = new StringBuilder();
-        sb.append("Node Type: '");
+        sb.append("Node Type: ");
         if(openVertex.getVertexType().equals(Vertex.VertexType.FLOW)){
             sb.append("FLOW");
-            sb.append("'  Calculations: '"+openVertex.getEquation()+"'");
+            sb.append(", Calculations: " + openVertex.getEquation());
         }
         else if(openVertex.getVertexType().equals(Vertex.VertexType.STOCK)){
             sb.append("STOCK");
-            sb.append("'  Initial Value: '"+openVertex.getInitialValue()+"'");
-            sb.append("'  Calculations: '"+openVertex.getEquation()+"'");
+            sb.append(", Initial Value: " + openVertex.getInitialValue());
+            sb.append(",  Calculations: " + openVertex.getEquation());
         }
         else if(openVertex.getVertexType().equals(Vertex.VertexType.CONSTANT)){
             sb.append("CONSTANT");
-            sb.append("'  Initial Value: '"+openVertex.getInitialValue()+"'");
+            sb.append(", Initial Value: " + openVertex.getInitialValue());
         }
         else
             sb.append("UNDEFINED");
@@ -628,28 +593,40 @@ public class CalculationsPanelView extends javax.swing.JPanel {
         return sb.toString();
     }
     
+    public Object getCalculationsActivityLog(){
+        Collection collection = new ArrayList();
+        Map<String, Object> equation = new HashMap<>();
+        Map<String, Object> initialValue = new HashMap<>();
+        if(openVertex.getVertexType().equals(Vertex.VertexType.CONSTANT) || openVertex.getVertexType().equals(Vertex.VertexType.STOCK)){
+            initialValue.put("type", "quantity-initial-value");
+            initialValue.put("value", openVertex.getInitialValue());
+            initialValue.put("correct-value", ApplicationContext.getCorrectSolution().getNodeByName(openVertex.getName()).getInitialValue()); 
+            collection.add(initialValue);
+        }
+        
+        if(openVertex.getVertexType().equals(Vertex.VertexType.FLOW) || openVertex.getVertexType().equals(Vertex.VertexType.STOCK)){
+            equation.put("type", "quantity-equation");
+            equation.put("value", openVertex.getEquation());
+            equation.put("correct-value", ApplicationContext.getCorrectSolution().getNodeByName(openVertex.getName()).getNodeEquation());  
+            collection.add(equation);
+        }
+       
+//        Gson gson = new Gson();
+//        return gson.toJson(collection);
+        return collection;
+    }
+    
+    public void setCalculationPanelDetails(Map<String, Object> map) {
+        map.put("node-type", openVertex.getVertexType());
+        map.put("node-initial-value", openVertex.getInitialValue());
+        map.put("node-equation", openVertex.getEquation());
+    }
+    
     public void refreshInputs(){
-        activityLogs.debug("Refreshing Calculations Panel Inputs for Node: "+
+        logs.debug("Refreshing Calculations Panel Inputs for Node: "+
                            nodeEditor.getOpenVertex().getName());
         initializeAvailableInputNodes();
         MainWindow.refreshGraph(); // Why ??
-    }
-    
-    // This method is problematic, why are we creating new map each time ??
-    public JComponent getLabel(String label){        
-        Map<String, JComponent> map = new HashMap<String, JComponent>();
-        map.put("fixedValueLabel", fixedValueLabel);
-        map.put("jScrollPane1", jScrollPane1);
-        map.put("jScrollPane2", jScrollPane2);
-        map.put("availableInputsJList", availableInputsLabel);
-        map.put("formulaInputArea", formulaInputArea);
-        map.put("valuesLabel", valuesLabel);
-        if(map.containsKey(label)){
-            return map.get(label);
-        }
-        else {
-            return null;
-        }
     }
     
     /**
@@ -659,21 +636,23 @@ public class CalculationsPanelView extends javax.swing.JPanel {
      * disabled.
      */
     private void availableInputsJListMouseClicked(java.awt.event.MouseEvent evt) {
-        if(ApplicationContext.isAuthorMode() || !openVertex.isCalculationsDone()){
+        if(availableInputsJList.isSelectionEmpty())
+            return;
+        
+        if(ApplicationContext.isAuthorMode() || !openVertex.isCalculationsDone()) {
             String selectedVertexName = availableInputsJList.getSelectedValue().toString();
             selectedVertexName = removeBoldfromListItem(selectedVertexName);
-            
-//            if(formulaInputArea.getText().contains(selectedVertexName)){
-//                formulaInputArea.setText(formulaInputArea.getText().replaceAll(selectedVertexName, ""));                
-//            }else{
-                formulaInputArea.setText(formulaInputArea.getText() + selectedVertexName);    
-//            }
-            
+            formulaInputArea.setText(formulaInputArea.getText() + selectedVertexName);    
+
             // This can be improved to set/reset selection in if-else
             setSelectedNodesOnJList();
+            Map<String, Object> logMessage = new HashMap<String, Object>();
+            logMessage.put("type", "input-selection");
+            logMessage.put("name", "calculation-panel");
+            logMessage.put("node", openVertex.getName());
+            logMessage.put("selected-input", selectedVertexName);
             
-            activityLogs.debug("User selected input '" + selectedVertexName + 
-                    "' for the Calculations of Node '" + openVertex.getName() + "'");
+            activityLogs.debug(new UserActivityLog(UserActivityLog.UI_ACTION, logMessage));
             
             availableInputsJList.removeSelectionInterval(0, availableInputJListModel.getSize());
         }
@@ -692,17 +671,15 @@ public class CalculationsPanelView extends javax.swing.JPanel {
                 return false;
             }
         }
-        return true;
-        
-//        if (studentNodeNames.size() < correctNodeNames.size()) {
-//            return false;
-//        } else {
-//            return true;
-//        }
+        return true;        
     }
     
     private void buttonCreateNodeActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_buttonCreateNodeActionPerformed
-        activityLogs.debug("User pressed Create node button on Calculations tab for Node " + openVertex.getName());
+        Map<String, Object> logMessage = new HashMap<String, Object>();
+        logMessage.put("type","create-node");
+        logMessage.put("panel", "calculation");
+        logMessage.put("node", openVertex.getName());
+        activityLogs.debug(new UserActivityLog(UserActivityLog.UI_ACTION, logMessage));
     
         // Check if Creating new node is allowed in non authot modes
         if(! ApplicationContext.isAuthorMode()){
@@ -712,8 +689,8 @@ public class CalculationsPanelView extends javax.swing.JPanel {
             }
         }
             
-        if(openVertex.getVertexType().equals(Vertex.VertexType.STOCK)  && !fixedValueInputBox.getText().isEmpty()){
-            openVertex.setInitialValue(Double.valueOf(fixedValueInputBox.getText()));
+        if(openVertex.getVertexType().equals(Vertex.VertexType.STOCK)  && !initialValueTextField.getText().isEmpty()){
+            openVertex.setInitialValue(Double.valueOf(initialValueTextField.getText()));
         }
         
         Vertex v = new Vertex();
@@ -721,7 +698,8 @@ public class CalculationsPanelView extends javax.swing.JPanel {
         v.setVertexIndex(modelGraph.getNextAvailableIndex());
         MainWindow.getInstance().getGraphEditorPane().addVertex(v);
 
-        CreateNewNodeDialog newNodeDialog = new CreateNewNodeDialog(nodeEditor, v);
+        //CreateNewNodeDialog newNodeDialog = new CreateNewNodeDialog(nodeEditor, v);
+        new NodeEditorView(nodeEditor, v);
     }//GEN-LAST:event_buttonCreateNodeActionPerformed
 
     private void buttonDivideActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_buttonDivideActionPerformed
@@ -781,13 +759,13 @@ public class CalculationsPanelView extends javax.swing.JPanel {
         }
     }
     
+    /**
+     * Method to create/remove edges when node equation is changed. 
+     * This method will also ensure that edges exits if equation contains the edge name.
+     */
     private void processNodeEquation() {
-        logs.debug("Processing NodeEquation to create edges");
-        // Neglect spaces typed before or after the equation
-        if (formulaInputArea.getText().trim().equals(openVertex.getEquation())) {
-            return;
-        }
-
+        logs.debug("Processing NodeEquation to create/remvove edges");
+        
         // Evaluators will ensure that entered equation is parsable 
         Evaluator old = new Evaluator();
         Evaluator changed = new Evaluator();
@@ -799,7 +777,22 @@ public class CalculationsPanelView extends javax.swing.JPanel {
             // Sets are used for easier comparision of old and new vertices
             Set<String> oldNodes = new HashSet<String>(old.getAllVariables());
             Set<String> newNodes = new HashSet<String>(changed.getAllVariables());
-            
+            System.out.println("Old : " + oldNodes);
+            System.out.println("New : " + newNodes);
+            // Neglect spaces typed before or after the equation
+            if (formulaInputArea.getText().trim().equals(openVertex.getEquation())) {
+                // Make sure that edges exits in the graph if the edge name is used in the equation
+                
+                for(String node : newNodes){
+                    Vertex source = modelGraph.getVertexByName(node);
+                    if(!modelGraph.containsEdge(source, openVertex)){
+                        logs.info("Fixing Edge Error - Adding Edge from Node '" + node + "'");
+                        MainWindow.getInstance().getGraphEditorPane().addEdge(source, openVertex);                                          
+                    }                    
+                }
+                return;
+            }
+        
             if (!oldNodes.equals(newNodes)) {
                 logs.info("Node Equation Changed");
                 // Remove deleted nodes
@@ -838,10 +831,10 @@ public class CalculationsPanelView extends javax.swing.JPanel {
     }
     
     public void setEditableCalculations(Boolean b){
-        fixedValueInputBox.setEnabled(b);
+        initialValueTextField.setEnabled(b);
         availableInputsJList.setEnabled(b);
         formulaInputArea.setEnabled(b);
-        fixedValueInputBox.setEnabled(b);
+        initialValueTextField.setEnabled(b);
         buttonAdd.setEnabled(b);
         buttonSubtract.setEnabled(b);
         buttonMultiply.setEnabled(b);
@@ -893,11 +886,11 @@ public class CalculationsPanelView extends javax.swing.JPanel {
     private javax.swing.JButton buttonSubtract;
     private javax.swing.JPanel calculatorPanel;
     private javax.swing.JPanel contentPanel;
-    private javax.swing.JFormattedTextField fixedValueInputBox;
     private javax.swing.JLabel fixedValueLabel;
     private javax.swing.JTextArea formulaInputArea;
-    private javax.swing.JScrollPane jScrollPane1;
+    private javax.swing.JTextField initialValueTextField;
     private javax.swing.JScrollPane jScrollPane2;
+    private javax.swing.JScrollPane jScrollPane3;
     private javax.swing.JScrollPane jScrollPane4;
     private javax.swing.JLabel needInputLabel;
     private javax.swing.JLabel valuesLabel;

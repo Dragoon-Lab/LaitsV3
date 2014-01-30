@@ -4,33 +4,29 @@
     <URL>http://laits.engineering.asu.edu/laits_images/1.jpg</URL>
   
     <TaskDescription>
-        Let's include even more specific information on how population NEWLINE
-        dynamics can be constraint by environmental factors. NEWLINE NEWLINE
+        Let's include even more specific information on how population 
+        dynamics can be constraint by environmental factors.  
 
-        The urban lake starts with a population of 10 water fowl and the NEWLINE
-        population growth rate is the birth rate (40% per year) minus the NEWLINE
-        death rate (17% per year). The maximum number of water fowl that the NEWLINE
-        urban lake can support (K) now depends directly on the quantity of the NEWLINE
-        renewable resource (e.g. if there is only 20 hg of the resource, then NEWLINE
-        the lake can only support a maximum of 20 individual water fowl). NEWLINE NEWLINE
+        The urban lake starts with a population of 10 water fowl and the 
+        population growth rate is the birth rate (40% per year) minus the 
+        death rate (17% per year). The maximum number of water fowl that the 
+        urban lake can support (K) now depends directly on the quantity of the 
+        renewable resource (e.g. if there is only 20 hg of the resource, then 
+        the lake can only support a maximum of 20 individual water fowl).  
 
-        The quantity of the renewable resource starts out at 100 hg and NEWLINE
-        is renewed by 60% per year and 2% of the resource is NEWLINE
-        consumed by each water fowl per year. NEWLINE NEWLINE
+        The quantity of the renewable resource starts out at 100 hg and 
+        is renewed by 60% per year and 2% of the resource is 
+        consumed by each water fowl per year.  
 
-        Goal: Graph the water fowl population and quantity of the resource NEWLINE
-        over 10 years. NEWLINE NEWLINE
+        Goal: Graph the water fowl population and quantity of the resource 
+        over 10 years.  
 
-        Hint: Enter constant to the Hundred Thousandth decimal place. NEWLINE
-        Use the logistic equation form (K-N)/K to calculate environmental NEWLINE
+        Hint: Enter constant to the Hundred Thousandth decimal place. 
+        Use the logistic equation form (K-N)/K to calculate environmental 
         resistance, p. 242
       
     </TaskDescription>
 
-    <ShortDescription>
-
-    </ShortDescription>
-  
     <StartTime>0</StartTime>
     <EndTime>10</EndTime>
     <TimeStep>0.1</TimeStep>

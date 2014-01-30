@@ -1,78 +1,78 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
 <Task phase="Intro" type="Debug">
-  <TaskName>Jared's weight</TaskName>
-  <TaskDescription>
-      Jared is on a diet and loses 2.5 pounds each week. He started NEWLINE
-      the diet weighing 200 pounds. A node defining Jared's weekly NEWLINE
-      weight loss as a function of time has been given.  Construct NEWLINE
-      a model for Jared's weight as a function of time.
-  </TaskDescription>
-  <URL>images/weighing-scales2.jpg</URL>
-  <StartTime>0</StartTime>
-  <EndTime>10</EndTime>
-  <Units>Weeks</Units>
-  <NodeCount>2</NodeCount>
-  <Nodes>
-    <Node type="constant" name="weight change" extra="no">
-      <CorrectDescription>The amount of weight Jared lost this week.</CorrectDescription>
-      <Plan>fixed value</Plan>
-      <Inputs/>
-      <Outputs>
-        <Name>Jared weight</Name>
-      </Outputs>
-      <Equation>2.5</Equation>
-      <InitialValue>2.5</InitialValue>
-    </Node>
-    <Node type="stock" name="Jared weight" extra="no">
-      <CorrectDescription>Jared's weight.</CorrectDescription>
-      <Plan>said to decrease</Plan>
-      <Inputs>
-        <Name>weight change</Name>
-      </Inputs>
-      <Order>1</Order>
-      <Outputs/>
-      <Equation>- weight change</Equation>
-      <InitialValue>200.0</InitialValue>
-    </Node>
-  </Nodes>
-<GivenModel>
-    <Node type="constant" name="weight change" extra="no">
-      <CorrectDescription>The amount of weight Jared lost this week.</CorrectDescription>
-      <Plan>fixed value</Plan>
-      <Inputs/>
-      <Outputs>
-        <Name>Jared weight</Name>
-      </Outputs>
-      <Equation></Equation>
-      <InitialValue>2.5</InitialValue>
-    </Node>
-</GivenModel>
+    <TaskName>Jared's weight</TaskName>
+    <TaskDescription>
+        Jared is on a diet and loses 2.5 pounds each week. He started 
+        the diet weighing 200 pounds. A node defining Jared's weekly 
+        weight loss as a function of time has been given.  Construct 
+        a model for Jared's weight as a function of time.
+    </TaskDescription>
+    <URL>images/weighing-scales2.jpg</URL>
+    <StartTime>0</StartTime>
+    <EndTime>10</EndTime>
+    <Units>Weeks</Units>
+    <NodeCount>2</NodeCount>
+    <Nodes>
+        <Node type="constant" name="weight change" extra="no">
+            <CorrectDescription>The amount of weight Jared lost this week.</CorrectDescription>
+            <Plan>fixed value</Plan>
+            <Inputs/>
+            <Outputs>
+                <Name>Jared weight</Name>
+            </Outputs>
+            <Equation>2.5</Equation>
+            <InitialValue>2.5</InitialValue>
+        </Node>
+        <Node type="stock" name="Jared weight" extra="no">
+            <CorrectDescription>Jared's weight.</CorrectDescription>
+            <Plan>said to decrease</Plan>
+            <Inputs>
+                <Name>weight change</Name>
+            </Inputs>
+            <Order>1</Order>
+            <Outputs/>
+            <Equation>- weight change</Equation>
+            <InitialValue>200.0</InitialValue>
+        </Node>
+    </Nodes>
+    <GivenModel>
+        <Node type="constant" name="weight change" extra="no">
+            <CorrectDescription>The amount of weight Jared lost this week.</CorrectDescription>
+            <Plan>fixed value</Plan>
+            <Inputs/>
+            <Outputs>
+                <Name>Jared weight</Name>
+            </Outputs>
+            <Equation></Equation>
+            <InitialValue>2.5</InitialValue>
+        </Node>
+    </GivenModel>
   
-  <DescriptionTree>
-    <Node level="root">
-      <Description>How much does Jared</Description>           
-        <Node level="leaf">
-          <Description>lose each week</Description>
-          <NodeName>weight change</NodeName>
+    <DescriptionTree>
+        <Node level="root">
+            <Description>How much does Jared</Description>           
+            <Node level="leaf">
+                <Description>lose each week</Description>
+                <NodeName>weight change</NodeName>
+            </Node>
+            <Node level="leaf">
+                <Description>weigh at the end of each week</Description>
+                <NodeName>Jared weight</NodeName>
+            </Node>
         </Node>
-        <Node level="leaf">
-          <Description>weigh at the end of each week</Description>
-          <NodeName>Jared weight</NodeName>
+        <Node level="root">
+            <Description>How much does Oprah</Description>             
+            <Node level="leaf">
+                <Description>weigh at the end of each week</Description>
+                <NodeName>Oprah weight</NodeName>
+            </Node>
+            <Node level="leaf">
+                <Description>earn each week</Description>
+                <NodeName>Oprah salary</NodeName>
+            </Node>
         </Node>
-    </Node>
-    <Node level="root">
-      <Description>How much does Oprah</Description>             
-        <Node level="leaf">
-          <Description>weigh at the end of each week</Description>
-          <NodeName>Oprah weight</NodeName>
-        </Node>
-        <Node level="leaf">
-          <Description>earn each week</Description>
-          <NodeName>Oprah salary</NodeName>
-        </Node>
-    </Node>
-  </DescriptionTree>
+    </DescriptionTree>
   
 
 

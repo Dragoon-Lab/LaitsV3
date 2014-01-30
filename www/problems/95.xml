@@ -4,10 +4,10 @@
     <URL>http://farm3.static.flickr.com/2465/3825067478_cb2c3ce571.jpg</URL>
     <TaskDescription>
         Problem: Suppose a city wins a large federal grant and uses it to buy 105 low-emission buses.  Although the buses have excellent technology, 
-        NEWLINE they are driven all day long so 9% of them fail each week. Therefore, approximately 9 buses fail in the first week. Since the city does 
-        NEWLINE not have the funding to increase the staff of its bus fleet maintenance facility, the staff can fix only 6 buses per week.
-        NEWLINE NEWLINE Goal: Graph the size of the bus fleet (i.e., the ones that are on the road and not being repaired) over the first 10 weeks of operation. 
-        NEWLINE A model has been provided for you and run. As you can tell from the G indicators, some of the graphs are wrong.  You will need to fix the model.   
+        they are driven all day long so 9% of them fail each week. Therefore, approximately 9 buses fail in the first week. Since the city does 
+        not have the funding to increase the staff of its bus fleet maintenance facility, the staff can fix only 6 buses per week.
+        Goal: Graph the size of the bus fleet (i.e., the ones that are on the road and not being repaired) over the first 10 weeks of operation. 
+        A model has been provided for you and run. As you can tell from the G indicators, some of the graphs are wrong.  You will need to fix the model.   
     </TaskDescription>
  
     <StartTime>0</StartTime>

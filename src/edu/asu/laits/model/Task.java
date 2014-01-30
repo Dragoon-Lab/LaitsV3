@@ -89,7 +89,7 @@ public class Task {
         if(imageURL.startsWith("http")){
             this.imageURL = imageURL;
         } else {
-            this.imageURL = ApplicationContext.getRootURL() + "/" + imageURL;
+            this.imageURL = ApplicationContext.APP_HOST + imageURL;
         }
     } 
     

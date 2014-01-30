@@ -20,8 +20,8 @@ define(["dojo/_base/declare"]
             this.inGivenModel = false;
             this.inputs = new Array();
             this.position = JSON.parse('{"x" : ' + xPos + ',\n"y" : ' + yPos + '}');
-            this.studentSelections = JSON.parse('{"desc" : "' + null + '",\n"plan" : "' + null
-                    + '",\n"units" : "' + null + '",\n"initial" : ' + null + ',\n"equation" : "' + null + '"}');
+            this.studentSelections = JSON.parse('{"description" : "' + null + '",\n"type" : "' + null
+                    + '",\n"initial" : "' + null + '",\n"units" : ' + null + ',\n"equation" : "' + null + '"}');
         },
         addInput: function(/*string*/ id) {
             var input = JSON.parse('{"ID" : "' + id + '"}');
@@ -34,17 +34,17 @@ define(["dojo/_base/declare"]
                 }
             }
         },
-        setStudentSeletions: function(/*string*/ desc, /*string*/ plan, /*string*/ units, /*float*/ initial, /*string*/ equation) {
+        setStudentSeletions: function(/*string*/ desc, /*string*/ type, /*string*/ init, /*float*/ units, /*string*/ equat) {
             if (desc !== null)
-                this.studentSelections.desc = desc;
-            if (plan !== null)
-                this.studentSelections.plan = plan;
+                this.studentSelections.description = desc;
+            if (type !== null)
+                this.studentSelections.type = type;
+            if (init !== null)
+                this.studentSelections.initial = init;
             if (units !== null)
                 this.studentSelections.units = units;
-            if (initial !== null)
-                this.studentSelections.initial = initial;
-            if (equation !== null)
-                this.studentSelections.equation = equation;
+            if (equat !== null)
+                this.studentSelections.equation = equat;
 
         }
     });

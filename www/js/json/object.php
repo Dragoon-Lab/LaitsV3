@@ -30,11 +30,11 @@ session_start();
 
 
         <script>
-            require(["/laits/js/json/model"], function(model) {
+            require(["/laits/js/json/model", "/laits/js/json/pedagogical_model"], function(model, pm) {
 
                 //The next three lines show loading a model from a JSON formated string
                 var loadModel = new model(null, null, null, null, null, null);
-                var string = '{"task": { "phase": "intro", "type": "construct", "properties": { "taskName": "Rabbits - Intro Problem", "URL": "images/rabbit.jpeg", "startTime": 0, "endTime": 10, "timeStep": 1, "units": "years" }, "taskDescription": "In this exercise, you will construct a model of how a rabbit population grows when no rabbits die. The first quantity in this model is the population or number of rabbits in the population. Initially, there are 100 rabbits, but the number increases with time. The new population each month is its present value plus the number of births (number of rabbits born each month). The number of births is equal to the product of the population and the birth rate. The birthrate or the ratio of the number of rabbits born in a month to the rabbit population that month has a fixed value of 0.2.", "givenModelNodes": [ { "ID": "id1", "name": "population", "type": "stock", "parentNode": false, "extra": false, "order": 1, "units": "rabbits", "inputs": [ { "ID": "id2" } ], "position": { "x": 100, "y": 100 }, "initial": 100, "equation": "+ id2", "correctDesc": "The number of rabbits in the population", "attemptCount": { "desc": 2, "plan": 1, "calc": 1 }, "solution": { "desc": "correct", "plan": "demo", "calc": "correct" } }, { "ID": "id2", "name": "births", "type": "flow", "parentNode": true, "extra": false, "order": 2, "units": "births", "inputs": [ { "ID": "id1" }, { "ID": "id3" } ], "position": { "x": 300, "y": 100 }, "initial": "", "equation": "id1 * id3", "correctDesc": "The number of rabbits born each month", "attemptCount": { "desc": 2, "plan": 1, "calc": 3 }, "solution": { "desc": "correct", "plan": "correct", "calc": "demo" } }, { "ID": "id3", "name": "birth rate", "type": "constant", "parentNode": false, "extra": false, "order": 3, "units": "percent", "inputs": [], "position": { "x": 500, "y": 100 }, "initial": "", "equation": ".2", "correctDesc": "The ratio of number of rabbits born in a month to the rabbit population that month", "attemptCount": { "desc": 2, "plan": 1, "calc": 1 }, "solution": { "desc": "correct", "plan": "correct", "calc": "correct" } } ], "studentModelNodes": [ { "ID": "id1", "name": "population", "inGivenModel": true, "inputs": [ { "ID": "id2" } ], "position": { "x": 700, "y": 100 }, "studentSelections": { "desc": "The number of rabbits in the population", "plan": "stock", "units": "rabbits", "initial": 100, "equation": "+ id2" } }, { "ID": "id2", "name": "births", "inGivenModel": true, "inputs": [ { "ID": "id1" }, { "ID": "id3" } ], "position": { "x": 900, "y": 100 }, "studentSelections": { "desc": "The number of rabbits born each month", "plan": "flow", "units": "births", "initial": null, "equation": "id1 * id3" } }, { "ID": "id3", "name": "birth rate", "inGivenModel": true, "inputs": [], "position": { "x": 1100, "y": 100 }, "studentSelections": { "desc": "The ratio of number of rabbits born in a month to the rabbit population that month", "plan": "constant", "units": "percent", "initial": null, "equation": "0.2" } } ] } }';
+                var string = '{ "task": { "taskName": "Rabbits - Intro Problem", "properties": { "phase": "intro", "type": "construct", "URL": "images/rabbit.jpeg", "startTime": 0, "endTime": 10, "timeStep": 1, "units": "years" }, "taskDescription": "In this exercise, you will construct a model of how a rabbit population grows when no rabbits die. The first quantity in this model is the population or number of rabbits in the population. Initially, there are 100 rabbits, but the number increases with time. The new population each month is its present value plus the number of births (number of rabbits born each month). The number of births is equal to the product of the population and the birth rate. The birthrate or the ratio of the number of rabbits born in a month to the rabbit population that month has a fixed value of 0.2.", "givenModelNodes": [ { "ID": "id1", "name": "population", "type": "accumulator", "parentNode": false, "extra": false, "order": 1, "units": "rabbits", "inputs": [ { "ID": "id2" } ], "initial": 100, "equation": "+ id2", "correctDesc": "The number of rabbits in the population", "attemptCount": { "description": 2, "type": 1, "initial": 2, "units": 4, "equation": 3 }, "status": { "description": "correct", "type": "demo", "initial": "correct", "units": "demo", "equation": "correct" } }, { "ID": "id2", "name": "births", "type": "function", "parentNode": true, "extra": false, "order": 2, "units": "births", "inputs": [ { "ID": "id1" }, { "ID": "id3" } ], "initial": null, "equation": "id1 * id3", "correctDesc": "The number of rabbits born each month", "attemptCount": { "description": 2, "type": 1, "initial": 0, "units": 2, "equation": 1 }, "status": { "description": "demo", "type": "demo", "initial": "null", "units": "correct", "equation": "correct" } }, { "ID": "id3", "name": "birth rate", "type": "parameter", "parentNode": false, "extra": false, "order": 3, "units": "percent", "inputs": [], "initial": null, "equation": ".2", "correctDesc": "The ratio of number of rabbits born in a month to the rabbit population that month", "attemptCount": { "description": 1, "type": 1, "initial": 0, "units": 1, "equation": 3 }, "status": { "description": "correct", "type": "correct", "initial": "null", "units": "correct", "equation": "correct" } } ], "studentModelNodes": [ { "ID": "id1", "name": "population", "inGivenModel": true, "inputs": [ { "ID": "id2" } ], "position": { "x": 100, "y": 100 }, "studentSelections": { "description": "The number of rabbits in the population", "type": "accumulator", "initial": 100, "units": "rabbits", "equation": "+ id2" } }, { "ID": "id2", "name": "births", "inGivenModel": true, "inputs": [ { "ID": "id1" }, { "ID": "id3" } ], "position": { "x": 300, "y": 100 }, "studentSelections": { "description": "The number of rabbits born each month", "type": "function", "initial": "null", "units": "births", "equation": "id1 * id3" } }, { "ID": "id3", "name": "birth rate", "inGivenModel": true, "inputs": [], "position": { "x": 500, "y": 100 }, "studentSelections": { "description": "The ratio of number of rabbits born in a month to the rabbit population that month", "type": "parameter", "initial": "null", "units": "percent", "equation": ".2" } } ] } }';
                 loadModel.loadModel(string);
 
                 // The next section builds a model from scratch as would happen as an author creates a problem
@@ -56,46 +56,47 @@ session_start();
                 rabbits.addNodeInput(rabbits.getNodeIDByName("births"), rabbits.getNodeIDByName("population"));
                 rabbits.addNodeInput(rabbits.getNodeIDByName("population"), rabbits.getNodeIDByName("births"));
                 rabbits.addNodeInput(rabbits.getNodeIDByName("birth rate"), rabbits.getNodeIDByName("births"));
+                
+                var ped = new pm("coached", rabbits);
+                ped.descriptionAction("The number of rabbits in the population");
+                
+                
                 rabbits.addStudentNodeWithName("population");
                 rabbits.addStudentNodeWithName("births");
                 rabbits.addStudentNodeWithName("birth rate");
                 rabbits.addStudentNodeInput(rabbits.getNodeIDByName("births"), rabbits.getNodeIDByName("population"));
                 rabbits.addStudentNodeInput(rabbits.getNodeIDByName("population"), rabbits.getNodeIDByName("births"));
                 rabbits.addStudentNodeInput(rabbits.getNodeIDByName("birth rate"), rabbits.getNodeIDByName("births"));
-                rabbits.addAttemptEquation("id1");
-                rabbits.addAttemptEquation("id1");
-                rabbits.addAttemptType("id1");
-                rabbits.addAttemptEquation("id1");
-                rabbits.setStudentSelectionsDescription("id1", "The number of rabbits in the population");
-                rabbits.setStudentSelectionsType("id1", "accumulator");
-                rabbits.setStudentSelectionsUnits("id1", "rabbits");
-                rabbits.setStudentSelectionsInitial("id1", 100);
-                rabbits.setStudentSelectionsEquation("id1", "+ id2");
+                rabbits.setStudentNodeSelection("id1", "description", "The number of rabbits born each month");
+                rabbits.setStudentNodeSelection("id1", "description", "The ratio of number of rabbits born in a month to the rabbit population that month");
+                rabbits.setStudentNodeSelection("id1", "type", "function");
+                rabbits.setToDemo("id1", "type");
+                rabbits.setStudentNodeSelection("id1", "initial", 10);
+                rabbits.setStudentNodeSelection("id1", "initial", 100);
+                rabbits.setStudentNodeSelection("id1", "units", "monkeys");
+                rabbits.setStudentNodeSelection("id1", "units", "cowboys");
+                rabbits.setStudentNodeSelection("id1", "units", "giraffes");
+                rabbits.setStudentNodeSelection("id1", "units", "bunnies");
+                rabbits.setToDemo("id1", "units");
+                rabbits.setStudentNodeSelection("id1", "equation", "id2");
+                rabbits.setStudentNodeSelection("id1", "equation", "10 + id2");
+                rabbits.setStudentNodeSelection("id1", "equation", "+ id2");
 
-                rabbits.addAttemptDescription("id2");
-                rabbits.addAttemptDescription("id2");
-                rabbits.addAttemptType("id2");
-                rabbits.addAttemptEquation("id2");
-                rabbits.addAttemptEquation("id2");
-                rabbits.addAttemptEquation("id2");
-                rabbits.setStudentSelectionsDescription("id2", "The number of rabbits born each month");
-                rabbits.setStudentSelectionsType("id2", "function");
-                rabbits.setStudentSelectionsUnits("id2", "births");
-                rabbits.setStudentSelectionsInitial("id2", null);
-                rabbits.setStudentSelectionsEquation("id2", "id1 * id3");
+                rabbits.setStudentNodeSelection("id2", "description", "The number of rabbits in the population");
+                rabbits.setStudentNodeSelection("id2", "description", "The ratio of number of rabbits born in a month to the rabbit population that month");
+                rabbits.setToDemo("id2", "description");
+                rabbits.setStudentNodeSelection("id2", "type", "parameter");
+                rabbits.setToDemo("id2", "type");
+                rabbits.setStudentNodeSelection("id2", "units", "rabbits");
+                rabbits.setStudentNodeSelection("id2", "units", "births");
+                rabbits.setStudentNodeSelection("id2", "equation", "id1 * id3");
 
-                rabbits.addAttemptDescription("id3");
-                rabbits.addAttemptDescription("id3");
-                rabbits.addAttemptType("id3");
-                rabbits.addAttemptType("id3");
-                rabbits.addAttemptDescription("id3", "correct");
-                rabbits.addAttemptType("id3", "correct");
-                rabbits.addAttemptEquation("id3", "correct");
-                rabbits.setStudentSelectionsDescription("id3", "The ratio of number of rabbits born in a month to the rabbit population that month");
-                rabbits.setStudentSelectionsType("id3", "parameter");
-                rabbits.setStudentSelectionsUnits("id3", "percent");
-                rabbits.setStudentSelectionsInitial("id3", null);
-                rabbits.setStudentSelectionsEquation("id3", "0.2");
+                rabbits.setStudentNodeSelection("id3", "description", "The ratio of number of rabbits born in a month to the rabbit population that month");
+                rabbits.setStudentNodeSelection("id3", "type", "parameter");
+                rabbits.setStudentNodeSelection("id3", "units", "percent");
+                rabbits.setStudentNodeSelection("id3", "equation", "20");
+                rabbits.setStudentNodeSelection("id3", "equation", "2");
+                rabbits.setStudentNodeSelection("id3", "equation", ".2");
 
 
                 //The next section prints the entire model on the screen, and then uses several getters to access the models information
@@ -110,14 +111,13 @@ session_start();
 //                alert(rabbits.getUnits());
 //                alert(rabbits.getTaskDescription());
                 //alert(rabbits.getNodeIDByName("birth rate"));
-//
-//                rabbits.deleteStudentNode("id1");
-//                rabbits.deleteStudentNode("id2");
-//                rabbits.deleteNode("id2");
-//                rabbits.deleteNodeInput("id2", "id1");
-//                rabbits.deleteNodeInput("id2", "id3");
-//                rabbits.deleteNodeInput("id10", "id3");
+
+
+//                var i = rabbits.setStudentNodeName("id2", "John");
+//                rabbits.setStudentNodeName(i, "births");
                 document.write(JSON.stringify(rabbits.model, null, 4));
+//                document.write(JSON.stringify(loadModel.model, null, 4));
+//                alert(rabbits.getNodeAttemptCount("id1", "type"));
 
                 //alert("Order of " + rabbits.getNodeIDByName("birth rates") + ": " + rabbits.getNodeOrder(rabbits.getNodeIDByName("birth rates")));
 

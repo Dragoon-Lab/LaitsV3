@@ -42,7 +42,6 @@ import org.jfree.util.ShapeUtilities;
 
 public class PlotPanel extends JXTaskPane {
 
-    private String units;
     private static Logger logs = Logger.getLogger("DevLogs");
     private static Logger activityLogs = Logger.getLogger("ActivityLogs");
     private static Color transparent = new Color(0, 0, 0, 0);
@@ -52,11 +51,10 @@ public class PlotPanel extends JXTaskPane {
 
     public PlotPanel(Vertex vertex) {
         logs.info("Initializing Plot Panel. Vertex: " + vertex.getName()
-                + " Units: " + units);
+                + " Units: " + ApplicationContext.getCurrentTask().getUnits());
         List<Vertex> v = new ArrayList<Vertex>();
         v.add(vertex);
-        this.units = units;
-
+        
         if (!ApplicationContext.isAuthorMode()) {
             Vertex correctVertex = ApplicationContext.getCorrectSolution()
                     .getSolutionGraph().getVertexByName(vertex.getName());
@@ -143,7 +141,7 @@ public class PlotPanel extends JXTaskPane {
 
         JFreeChart chart = ChartFactory.createXYLineChart(
                 vertex, // chart title
-                "Time (in " + units + ")", // x axis label
+                "Time (in " + ApplicationContext.getCurrentTask().getUnits() + ")", // x axis label
                 vertex, // y axis label
                 dataset, // data
                 PlotOrientation.VERTICAL,
