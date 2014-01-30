@@ -38,7 +38,29 @@
           </Properties>
           <Constraints>
             <Constraint layoutClass="org.netbeans.modules.form.compat2.layouts.DesignAbsoluteLayout" value="org.netbeans.modules.form.compat2.layouts.DesignAbsoluteLayout$AbsoluteConstraintsDescription">
-              <AbsoluteConstraints x="10" y="0" width="140" height="30"/>
+              <AbsoluteConstraints x="10" y="0" width="100" height="30"/>
+            </Constraint>
+          </Constraints>
+        </Component>
+        <Component class="javax.swing.JFormattedTextField" name="fixedValueInputBox">
+          <Properties>
+            <Property name="formatterFactory" type="javax.swing.JFormattedTextField$AbstractFormatterFactory" editor="org.netbeans.modules.form.RADConnectionPropertyEditor">
+              <Connection code="new javax.swing.text.DefaultFormatterFactory(new javax.swing.text.NumberFormatter(inputDecimalFormat))" type="code"/>
+            </Property>
+            <Property name="horizontalAlignment" type="int" value="2"/>
+            <Property name="disabledTextColor" type="java.awt.Color" editor="org.netbeans.beaninfo.editors.ColorEditor">
+              <Color blue="66" green="66" red="66" type="rgb"/>
+            </Property>
+            <Property name="focusCycleRoot" type="boolean" value="true"/>
+          </Properties>
+          <AuxValues>
+            <AuxValue name="JavaCodeGenerator_CreateCodeCustom" type="java.lang.String" value="new DecimalTextField()"/>
+            <AuxValue name="JavaCodeGenerator_CreateCodePre" type="java.lang.String" value="//Code commented by Josh 011912 -- starts here&#xa;//givenValueTextField = new javax.swing.JFormattedTextField();&#xa;//Code commented by Josh 011912 -- ends here"/>
+            <AuxValue name="JavaCodeGenerator_InitCodePost" type="java.lang.String" value="((DefaultFormatter)fixedValueInputBox.getFormatter()).setAllowsInvalid( true );"/>
+          </AuxValues>
+          <Constraints>
+            <Constraint layoutClass="org.netbeans.modules.form.compat2.layouts.DesignAbsoluteLayout" value="org.netbeans.modules.form.compat2.layouts.DesignAbsoluteLayout$AbsoluteConstraintsDescription">
+              <AbsoluteConstraints x="120" y="0" width="360" height="-1"/>
             </Constraint>
           </Constraints>
         </Component>
@@ -67,7 +89,8 @@
                                   <Component id="jScrollPane4" min="-2" pref="229" max="-2" attributes="0"/>
                               </Group>
                               <EmptySpace type="separate" max="-2" attributes="0"/>
-                              <Group type="103" groupAlignment="0" attributes="0">
+                              <Group type="103" groupAlignment="0" max="-2" attributes="0">
+                                  <Component id="jScrollPane1" pref="219" max="32767" attributes="1"/>
                                   <Group type="102" alignment="0" attributes="0">
                                       <EmptySpace min="-2" pref="38" max="-2" attributes="0"/>
                                       <Group type="103" groupAlignment="1" attributes="0">
@@ -81,8 +104,7 @@
                                       </Group>
                                   </Group>
                                   <Component id="accumulatorTimeLabel" min="-2" max="-2" attributes="0"/>
-                                  <Component id="valuesLabel" alignment="0" min="-2" pref="219" max="-2" attributes="0"/>
-                                  <Component id="jScrollPane3" pref="223" max="32767" attributes="0"/>
+                                  <Component id="valuesLabel" alignment="0" max="32767" attributes="0"/>
                               </Group>
                           </Group>
                           <Group type="102" alignment="0" attributes="0">
@@ -90,7 +112,7 @@
                               <Component id="buttonCreateNode" min="-2" max="-2" attributes="0"/>
                           </Group>
                       </Group>
-                      <EmptySpace min="0" pref="0" max="32767" attributes="0"/>
+                      <EmptySpace min="0" pref="4" max="32767" attributes="0"/>
                   </Group>
               </Group>
             </DimensionLayout>
@@ -110,8 +132,8 @@
                               <EmptySpace min="-2" pref="44" max="-2" attributes="0"/>
                               <Component id="valuesLabel" min="-2" pref="43" max="-2" attributes="0"/>
                               <EmptySpace max="-2" attributes="0"/>
-                              <Component id="jScrollPane3" min="-2" pref="96" max="-2" attributes="0"/>
-                              <EmptySpace max="-2" attributes="0"/>
+                              <Component id="jScrollPane1" min="-2" pref="141" max="-2" attributes="1"/>
+                              <EmptySpace type="separate" max="-2" attributes="0"/>
                               <Component id="accumulatorTimeLabel" min="-2" max="-2" attributes="0"/>
                               <EmptySpace type="separate" max="-2" attributes="0"/>
                               <Group type="103" groupAlignment="3" attributes="0">
@@ -139,6 +161,29 @@
                 <Property name="text" type="java.lang.String" value="Next Value = "/>
               </Properties>
             </Component>
+            <Container class="javax.swing.JScrollPane" name="jScrollPane1">
+              <AuxValues>
+                <AuxValue name="autoScrollPane" type="java.lang.Boolean" value="true"/>
+              </AuxValues>
+
+              <Layout class="org.netbeans.modules.form.compat2.layouts.support.JScrollPaneSupportLayout"/>
+              <SubComponents>
+                <Component class="javax.swing.JTextArea" name="formulaInputArea">
+                  <Properties>
+                    <Property name="columns" type="int" value="20"/>
+                    <Property name="lineWrap" type="boolean" value="true"/>
+                    <Property name="rows" type="int" value="5"/>
+                    <Property name="toolTipText" type="java.lang.String" value="Node Equation"/>
+                    <Property name="disabledTextColor" type="java.awt.Color" editor="org.netbeans.beaninfo.editors.ColorEditor">
+                      <Color blue="66" green="66" red="66" type="rgb"/>
+                    </Property>
+                  </Properties>
+                  <Events>
+                    <EventHandler event="keyReleased" listener="java.awt.event.KeyListener" parameters="java.awt.event.KeyEvent" handler="formulaInputAreaKeyReleased"/>
+                  </Events>
+                </Component>
+              </SubComponents>
+            </Container>
             <Component class="javax.swing.JLabel" name="availableInputsLabel">
               <Properties>
                 <Property name="font" type="java.awt.Font" editor="org.netbeans.beaninfo.editors.FontEditor">
@@ -228,35 +273,8 @@
                 <Property name="text" type="java.lang.String" value="* Change in Time"/>
               </Properties>
             </Component>
-            <Container class="javax.swing.JScrollPane" name="jScrollPane3">
-
-              <Layout class="org.netbeans.modules.form.compat2.layouts.support.JScrollPaneSupportLayout"/>
-              <SubComponents>
-                <Component class="javax.swing.JTextArea" name="formulaInputArea">
-                  <Properties>
-                    <Property name="columns" type="int" value="20"/>
-                    <Property name="lineWrap" type="boolean" value="true"/>
-                    <Property name="rows" type="int" value="5"/>
-                    <Property name="toolTipText" type="java.lang.String" value="Node Equation"/>
-                    <Property name="disabledTextColor" type="java.awt.Color" editor="org.netbeans.beaninfo.editors.ColorEditor">
-                      <Color blue="66" green="66" red="66" type="rgb"/>
-                    </Property>
-                  </Properties>
-                  <Events>
-                    <EventHandler event="keyReleased" listener="java.awt.event.KeyListener" parameters="java.awt.event.KeyEvent" handler="formulaInputAreaKeyReleased"/>
-                  </Events>
-                </Component>
-              </SubComponents>
-            </Container>
           </SubComponents>
         </Container>
-        <Component class="javax.swing.JTextField" name="initialValueTextField">
-          <Constraints>
-            <Constraint layoutClass="org.netbeans.modules.form.compat2.layouts.DesignAbsoluteLayout" value="org.netbeans.modules.form.compat2.layouts.DesignAbsoluteLayout$AbsoluteConstraintsDescription">
-              <AbsoluteConstraints x="160" y="0" width="160" height="-1"/>
-            </Constraint>
-          </Constraints>
-        </Component>
       </SubComponents>
     </Container>
   </SubComponents>

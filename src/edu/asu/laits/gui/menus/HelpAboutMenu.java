@@ -2,14 +2,12 @@ package edu.asu.laits.gui.menus;
 
 import java.awt.Frame;
 
+import javax.swing.JFrame;
 import javax.swing.JMenu;
 import javax.swing.JMenuItem;
 
 import edu.asu.laits.gui.AboutDialog;
-import edu.asu.laits.logger.UserActivityLog;
 import edu.asu.laits.properties.GlobalProperties;
-import java.util.HashMap;
-import java.util.Map;
 import org.apache.log4j.Logger;
 
 /**
@@ -55,10 +53,7 @@ public class HelpAboutMenu extends JMenu {
             helpHelpMenuItem
                     .addActionListener(new java.awt.event.ActionListener() {
                 public void actionPerformed(java.awt.event.ActionEvent e) {
-                    Map<String, Object> logMessage = new HashMap<String, Object>();
-                    logMessage.put("type","menu-choice");
-                    logMessage.put("name", "help");
-                    activityLogs.debug(new UserActivityLog(UserActivityLog.UI_ACTION, logMessage));
+                    activityLogs.info("User Opened Help Menu.");
                    
                     GlobalProperties.getInstance().getHelpBroker()
                             .setDisplayed(true);
@@ -80,10 +75,7 @@ public class HelpAboutMenu extends JMenu {
             aboutHelpMenuItem
                     .addActionListener(new java.awt.event.ActionListener() {
                 public void actionPerformed(java.awt.event.ActionEvent e) {
-                    Map<String, Object> logMessage = new HashMap<String, Object>();
-                    logMessage.put("type","menu-choice");
-                    logMessage.put("name", "about");
-                    activityLogs.debug(new UserActivityLog(UserActivityLog.UI_ACTION, logMessage));
+                    activityLogs.info("User selected About Menu.");
                     AboutDialog.showAboutDialog(mainFrame);
                 }
             });

@@ -4,28 +4,32 @@
     <URL>http://laits.engineering.asu.edu/laits_images/2.jpg</URL>
   
     <TaskDescription>
-        The urban lake is home to two interacting populations: the water fowl  
-        and domestic cat. The urban lake starts with a population of 10 water  
-        fowl and 2 domestic cats.  The water fowl birth rate is 2 per year  
-        per bird and deaths can decrease the population  
-        size by 30% per cat per year. Similarly, domestic cat births can increase the  
-        cat population size by 9% per bird per year and deaths can decrease the population size  
-        at a rate of 1 per year per cat.  
+        The urban lake is home to two interacting populations: the water fowl NEWLINE 
+        and domestic cat. The urban lake starts with a population of 10 water NEWLINE 
+        fowl and 2 domestic cats.  The water fowl birth rate is 2 per year NEWLINE 
+        per bird and deaths can decrease the population NEWLINE 
+        size by 30% per cat per year. Similarly, domestic cat births can increase the NEWLINE 
+        cat population size by 9% per bird per year and deaths can decrease the population size NEWLINE 
+        at a rate of 1 per year per cat. NEWLINE NEWLINE
               
-        The water fowl population also serves as a resource (i.e. food) for the  
-        domestic cats. Hence, the size of the cat population directly affects  
-        the number of birds that die each year (e.g. doubling the cat population  
-        doubles the number of birds that die each year).   
-        The water fowl population is an important supplementary source of food  
-        needed to support a larger cat population. The size of the water fowl  
-        population also directly affects the number of cats that are born each  
-        year.   
+        The water fowl population also serves as a resource (i.e. food) for the NEWLINE 
+        domestic cats. Hence, the size of the cat population directly affects NEWLINE 
+        the number of birds that die each year (e.g. doubling the cat population NEWLINE 
+        doubles the number of birds that die each year). NEWLINE NEWLINE 
+        The water fowl population is an important supplementary source of food NEWLINE 
+        needed to support a larger cat population. The size of the water fowl NEWLINE 
+        population also directly affects the number of cats that are born each NEWLINE 
+        year. NEWLINE NEWLINE 
 
-        Goal: Graph the water fowl and domestic cat populations over 10 years.  
-        Explore how changing initial population size, birth rate, and death rate  
+        Goal: Graph the water fowl and domestic cat populations over 10 years. NEWLINE 
+        Explore how changing initial population size, birth rate, and death rate NEWLINE 
         of the two populations affect population dynamics.
       
     </TaskDescription>
+
+    <ShortDescription>
+
+    </ShortDescription>
   
     <StartTime>0</StartTime>
     <EndTime>10</EndTime>

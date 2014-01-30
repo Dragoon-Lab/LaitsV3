@@ -19,14 +19,8 @@ import com.thoughtworks.xstream.XStream;
 import edu.asu.laits.editor.ApplicationContext;
 import java.awt.Dimension;
 import java.awt.Point;
-import java.util.HashMap;
-import java.util.Map;
 import javax.help.event.HelpSetListener;
 import org.apache.log4j.Logger;
-import org.dom4j.Document;
-import org.dom4j.DocumentException;
-import org.dom4j.Element;
-import org.dom4j.io.SAXReader;
 
 /**
  * This implements the design pattern singleton. It contains global properties
@@ -36,13 +30,14 @@ import org.dom4j.io.SAXReader;
  */
 public class GlobalProperties {
 
-    public static final String PROGRAM_NAME = "Dragoon";
-    public static final String PROPERTIES_DIR = ".dragoon";
+    public static final String PROGRAM_NAME = "LAITS";
+    public static final String PROPERTIES_DIR = ".laits";
     public static final String HELPSET_DESTINATION = "GraphEditor.hs";
     public static final double SCALE_INTERVALL = 0.2;
     private static GlobalProperties instance = null;
     private int numberOfLatestFilesSaved = 6;
     private LinkedList<File> latestFiles;
+    private LinkedList<Boolean> displayQuickMenuList = new LinkedList<Boolean>();
     
     private boolean antialiasing = true;
     private boolean doubleBuffering = true;
@@ -56,18 +51,6 @@ public class GlobalProperties {
     private transient HelpSet helpSet;
     private transient HelpBroker helpBroker;
     
-    public static Map<String, String> GENERAL_LABEL_MAP = new HashMap<String, String> ();
-    public static Map<String, String> GENERAL_TOOLTIP_MAP = new HashMap<String, String> ();
-    public static Map<String, String> AUTHOR_LABEL_MAP = new HashMap<String, String> ();
-    public static Map<String, String> AUTHOR_TOOLTIP_MAP = new HashMap<String, String> ();
-    public static Map<String, String> STUDENT_LABEL_MAP = new HashMap<String, String> ();
-    public static Map<String, String> STUDENT_TOOLTIP_MAP = new HashMap<String, String> ();
-    public static Map<String, String> TEST_LABEL_MAP = new HashMap<String, String> ();
-    public static Map<String, String> TEST_TOOLTIP_MAP = new HashMap<String, String> ();
-    public static Map<String, String> COACHED_LABEL_MAP = new HashMap<String, String> ();
-    public static Map<String, String> COACHED_TOOLTIP_MAP = new HashMap<String, String> ();
-    
-    private static Logger logs = Logger.getLogger("DevLogs");
     /**
      * @return the helpBroker
      */
@@ -75,73 +58,53 @@ public class GlobalProperties {
         return helpBroker;
     }
 
-    private GlobalProperties() throws DocumentException{
-        readUIProperties();
+    private GlobalProperties() {
         latestFiles = new LinkedList<File>();
         createHelpSet(HELPSET_DESTINATION);
     }
 
     public static GlobalProperties getInstance() {
         if (instance == null) {
-            try {
+            if (!createInstanceFromFile()) {
                 instance = new GlobalProperties();
-                instance.initializeNotSerializeFeelds();
-            } catch(Exception ex) {
-                ex.printStackTrace();
-                logs.error("Error in reading property file. Details: " + ex.getMessage());
-                System.exit(1);
-            } 
+            }
         }
 
         return instance;
     }
 
-    private void readUIProperties() throws DocumentException {
-        SAXReader reader = new SAXReader();
-        Document document = reader.read(getClass().getResource("/resources/properties.xml"));        
-        Element dragoonProperties = document.getRootElement();
-        
-        Element userInterface = dragoonProperties.element("UserInterface");
-        Element swingControls = userInterface.element("SwingControls");
-        
-        Element generalUIControls = swingControls.element("GeneralControls");
-        fillUIProperties(generalUIControls, GENERAL_LABEL_MAP, GENERAL_TOOLTIP_MAP);
-        
-        Element modeOverrides = swingControls.element("ModeOverrides");
-        
-        Element authorModeUIElement = modeOverrides.element("AuthorModeControls");
-        fillUIProperties(authorModeUIElement, AUTHOR_LABEL_MAP, AUTHOR_TOOLTIP_MAP);
-        
-        Element studentModeUIElement = modeOverrides.element("StudentModeControls");
-        fillUIProperties(studentModeUIElement, STUDENT_LABEL_MAP, STUDENT_TOOLTIP_MAP);
-        
-        Element testModeUIElement = modeOverrides.element("TestModeControls");
-        fillUIProperties(testModeUIElement, TEST_LABEL_MAP, TEST_TOOLTIP_MAP);
-        
-        Element coachedModeUIElement = modeOverrides.element("CoachedModeControls");
-        fillUIProperties(coachedModeUIElement, COACHED_LABEL_MAP, COACHED_TOOLTIP_MAP);
+    private static boolean createInstanceFromFile() {
+
+        XStream xstream = new XStream();
+
+        File propertiesFile = new File(System.getProperty("user.home")
+                + File.separator + PROPERTIES_DIR + File.separator
+                + "properties.xml");
+
+        if (!propertiesFile.exists()) {
+            System.out.println("Could not find Property File");
+            // There is no properties file.
+            return false;
+        }
+
+        try {
+            FileReader reader = new FileReader(propertiesFile);
+
+            instance = (GlobalProperties) xstream.fromXML(reader);
+            reader.close();
+        } catch (Exception e) {
+            e.printStackTrace();
+            System.err.println("Not possible to read properties file, because of the following reason:"
+                    + e.getMessage());
+            return false;
+        }
+
+        instance.initializeNotSerializeFeelds();
+
+        return true;
+
     }
 
-    private void readConfigs(Element configElement) {
-    
-    }
-    
-    private void fillUIProperties(Element element, Map<String, String> labelMap, Map<String, String> toolTipMap) {
-        if(element == null || element.nodeCount() == 0)
-            return;
-        
-        //Extract all the XML nodes in a list
-        List<Element> uiElements = element.elements("UIElement");
-        for(Element uiElement : uiElements){
-            String name = uiElement.elementTextTrim("Name");
-            String label = uiElement.elementTextTrim("Label");
-            String toolTip = uiElement.elementTextTrim("ToolTipText");
-            
-            labelMap.put(name, label);
-            toolTipMap.put(name, toolTip);
-        }
-    }
-    
     private void initializeNotSerializeFeelds() {
         latestFilesListeners = new LinkedList<LatestFilesPropertyChangeListener>();
         
@@ -152,6 +115,7 @@ public class GlobalProperties {
 
         // Disabling HelpSet creation - slides are used for this
         createHelpSet(HELPSET_DESTINATION);
+
     }
 
     /**

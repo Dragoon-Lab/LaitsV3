@@ -19,7 +19,6 @@ package edu.asu.laits.gui;
 
 import edu.asu.laits.editor.ApplicationContext;
 import edu.asu.laits.editor.DragoonUIUtils;
-import edu.asu.laits.model.Edge;
 import edu.asu.laits.model.Edge.ErrorReaderException;
 import edu.asu.laits.model.Graph;
 import edu.asu.laits.model.LaitsSolutionExporter;
@@ -32,6 +31,7 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.ItemEvent;
 import java.awt.event.ItemListener;
+import java.io.File;
 import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.List;
@@ -47,6 +47,7 @@ import javax.swing.JScrollPane;
 import javax.swing.JTextArea;
 import javax.swing.JTextField;
 import javax.swing.JTree;
+import javax.swing.filechooser.FileFilter;
 import javax.swing.tree.DefaultMutableTreeNode;
 import javax.swing.tree.DefaultTreeModel;
 import net.miginfocom.swing.MigLayout;
@@ -268,19 +269,14 @@ public class ExportSolutionPanel extends JPanel {
         if (validateExportSolutionPanel()) {
             setTaskDetails();
 
-            logs.info("Exporting Dragoon Solution File.");
-            try {            
-                saveToServer();
-            } catch (Edge.ErrorReaderException ex) {
-                logs.error("Error in reading edge info. Export Solution unsuccessful");
-            }
+            logs.info("Exporting Laits Solution File.");
+            saveToServer();            
         }
     }
 
     /**
      * Tries to save to the specified file
      */
-
     private void saveToServer() throws ErrorReaderException {
         logs.info("Exporting Dragoon Solution to Server");
 

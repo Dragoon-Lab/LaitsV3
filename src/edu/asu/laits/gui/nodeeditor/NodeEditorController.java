@@ -18,11 +18,9 @@
 
 package edu.asu.laits.gui.nodeeditor;
 
-import com.google.gson.Gson;
 import edu.asu.laits.editor.ApplicationContext;
+import edu.asu.laits.model.PersistenceManager;
 import edu.asu.laits.model.Vertex;
-import java.util.HashMap;
-import java.util.Map;
 import org.apache.log4j.Logger;
 
 /**
@@ -45,6 +43,7 @@ public abstract class NodeEditorController{
     // Abstract methods to be overridden by all the controllers.
     public abstract void initActionButtons();    
     public abstract int processTabChange(int oldTab, int newTab);    
+    public abstract void initOnLoadBalloonTip();    
     public abstract void initDescriptionPanelView(DescriptionPanelView dPanelView);    
     public abstract String demoDescriptionPanel();    
     public abstract void planPanelRadioClicked();
@@ -54,7 +53,7 @@ public abstract class NodeEditorController{
      * This dialog is used to create new nodes from calculations panel as part of 
      * Target Node Strategy
      */
-    public abstract void initializeCreateNewNodeDialog(NodeEditorView dialog);
+    public abstract void initializeCreateNewNodeDialog(CreateNewNodeDialog dialog);
     
     // Protected methods to be used by Concrete controllers. This is done for reusability.
     protected void initCheckButton(){
@@ -136,17 +135,5 @@ public abstract class NodeEditorController{
         }        
     }
     
-    protected String getNodeDetailLog() {
-        Map<String, Object> equation = new HashMap<>();
-        view.getDescriptionPanel().setDescriptionPanelDetails(equation);
-        view.getPlanPanel().setPlanPanelDetails(equation);
-        view.getCalculationsPanel().setCalculationPanelDetails(equation);
-        
-        Gson gson = new Gson();
-        return gson.toJson(equation);        
-    }
     
-    public Vertex getOpenVertex() {
-        return openVertex;
-    }
 }

@@ -3,14 +3,14 @@
 <Task phase="" type="">
     <TaskName>Epidemic</TaskName>
     <TaskDescription>
-        Suppose there are 1001 people on a cruise ship, and 1 of them is infected with a virus. 
-        Suppose that the virus is transmitted by an infected person meeting an uninfected person. 
-        Suppose they only meet in pairs, and there are 100 random meetings a day. So the chance 
-        of one person in the pair being infected is just the number of infected people (which 
-        varies) divided by the total number of people (1001). The chance of the other person being 
-        uninfected is the number of uninfected people divided by the total number of people. So 
-        you can multiply those two numbers together to get the chance that the pair is the right 
-        kind of pair for the virus to be transmitted. Graph the number of infected people and 
+        Suppose there are 1001 people on a cruise ship, and 1 of them is infected with a virus. NEWLINE
+        Suppose that the virus is transmitted by an infected person meeting an uninfected person. NEWLINE
+        Suppose they only meet in pairs, and there are 100 random meetings a day. So the chance NEWLINE
+        of one person in the pair being infected is just the number of infected people (which NEWLINE
+        varies) divided by the total number of people (1001). The chance of the other person being NEWLINE
+        uninfected is the number of uninfected people divided by the total number of people. So NEWLINE
+        you can multiply those two numbers together to get the chance that the pair is the right NEWLINE
+        kind of pair for the virus to be transmitted. Graph the number of infected people and NEWLINE
         uninfected people over 100 days.
     </TaskDescription>
     <URL>images/virus.jpg</URL>

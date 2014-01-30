@@ -117,16 +117,6 @@ public class FlowVertexRenderComponent extends VertexRenderComponent {
 
     public void drawVertex(Graphics g) {
         Graphics2D g2 = (Graphics2D) g;
-        int a = getWidth() / 2;
-        int b = getHeight() / 2;
-        int m = Math.min(a, b);
-        int r = 4 * m / 5;
-        
-        // Paint Background of Node 
-        if(isBackGroundPainted(currentVertex)) {
-            g2.setColor(new Color(0, 200, 0));
-            g2.fillOval(a - r, b - r - 7, 2 * r, 2 * r);
-        }
         
         // If Vertex has Defined Description, Plan and Calculations - set color to green else use Gray        
         if(currentVertex.isDescriptionDone()){
@@ -145,9 +135,14 @@ public class FlowVertexRenderComponent extends VertexRenderComponent {
         else
             g2.setStroke(new BasicStroke(2));
         
+        int a = getWidth() / 2;
+        int b = getHeight() / 2;
+        int m = Math.min(a, b);
+        int r = 4 * m / 5;
+        
         g2.drawOval(a - r, b - r - 7, 2 * r, 2 * r);
         
-        String vertexName = truncateNodeName(currentVertex.getName());
+        String vertexName = currentVertex.getName();
         double x = getWidth()/2 - (vertexName.length() * 3 -1);
        
         g2.setFont(new Font(null, Font.PLAIN, 10));
@@ -156,5 +151,6 @@ public class FlowVertexRenderComponent extends VertexRenderComponent {
         
         paintVertexStatusIcons(g, currentVertex);
         paintSelectable(g);
+
     }
 }

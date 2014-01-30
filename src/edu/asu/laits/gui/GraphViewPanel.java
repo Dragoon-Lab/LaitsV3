@@ -125,6 +125,8 @@ public class GraphViewPanel{
     }
     
     private void addCharts(){
+        Task t = ApplicationContext.getCurrentTask();
+        
         //if Mode is Graph Mode, Plot Graph against each not constant node
         if(mode.equals(ChartDialogMode.Graph)){
             for(Vertex currentVertex : currentGraph.vertexSet()){
@@ -152,7 +154,7 @@ public class GraphViewPanel{
     private JXTaskPane addChart(Vertex vertex){
         PlotPanel plotPanel = null;
         
-        if(ApplicationContext.getCorrectSolution().getNodeCount() == 1 || !vertex.getVertexType().equals(Vertex.VertexType.CONSTANT)){
+        if(!vertex.getVertexType().equals(Vertex.VertexType.CONSTANT)){
             plotPanel = new PlotPanel(vertex);
         }
         

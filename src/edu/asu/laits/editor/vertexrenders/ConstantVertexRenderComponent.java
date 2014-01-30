@@ -1,6 +1,5 @@
 package edu.asu.laits.editor.vertexrenders;
 
-import edu.asu.laits.editor.ApplicationContext;
 import java.awt.Color;
 import java.awt.Component;
 import java.awt.Graphics;
@@ -12,7 +11,6 @@ import java.util.Map;
 
 import edu.asu.laits.editor.GraphEditorConstants;
 import edu.asu.laits.editor.GraphEditorVertexView;
-import edu.asu.laits.model.StatsCollector;
 import edu.asu.laits.model.Vertex;
 import java.awt.BasicStroke;
 import java.awt.Font;
@@ -33,7 +31,8 @@ public class ConstantVertexRenderComponent   extends VertexRenderComponent {
     private boolean focus;
     private boolean preview;
     private Color background;
-    private Rectangle2D bounds;    
+    private Rectangle2D bounds;
+    private static FlowVertexRenderComponent circleVertexRenderComponent = new FlowVertexRenderComponent();
     private VertexRenderComponent defaultVertexRenderComponent = null;
     private boolean useGraphBackround;
     private Color foreground;
@@ -159,15 +158,6 @@ public class ConstantVertexRenderComponent   extends VertexRenderComponent {
     public void drawVertex(Graphics g) {
         Graphics2D g2 = (Graphics2D) g;
         
-        int[] xpoints = {0, 60, 119, 60};
-        int[] ypoints = {31, 1, 31, 62};
-        
-        // Paint Background of Node 
-        if(isBackGroundPainted(currentVertex)) {
-            g2.setColor(new Color(0, 200, 0));
-            g2.fillPolygon(xpoints, ypoints, 4);
-        }
-        
         // If Vertex has Defined Description, Plan and Calculations - set color to green else use Gray
         if(currentVertex.isDescriptionDone()){
             if(currentVertex.isPlanDone()){
@@ -179,6 +169,9 @@ public class ConstantVertexRenderComponent   extends VertexRenderComponent {
             g2.setColor(foreground);
         }    
         
+        int[] xpoints = {0, 60, 119, 60};
+        int[] ypoints = {31, 1, 31, 62};
+        
         if(selected){
             g2.setStroke(new BasicStroke(3.5f));            
         } else {
@@ -186,8 +179,7 @@ public class ConstantVertexRenderComponent   extends VertexRenderComponent {
         }
         
         g2.drawPolygon(xpoints, ypoints, 4);
-        
-        String vertexName = truncateNodeName(currentVertex.getName());
+        String vertexName = currentVertex.getName();
         double x = getWidth()/2 - (vertexName.length() * 3 -1);
        
         g2.setFont(new Font(null, Font.PLAIN, 10));
@@ -195,6 +187,5 @@ public class ConstantVertexRenderComponent   extends VertexRenderComponent {
         
         paintVertexStatusIcons(g, currentVertex);
         paintSelectable(g);
-        
     }
 }

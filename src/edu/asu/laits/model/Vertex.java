@@ -61,8 +61,8 @@ public class Vertex {
     public void setVertexIndex(int index) {
         vertexIndex = index;
 
-        xPosition = 200 * (vertexIndex % 4) + 500;
-        yPosition = 200 * (vertexIndex / 4) + 80;
+        xPosition = 200 * (vertexIndex % 4) + 480;
+        yPosition = 200 * (vertexIndex / 4) + 60;
     }
 
     public String getName() {
@@ -253,6 +253,7 @@ public class Vertex {
      * An enumeration with the possible shapes of a vertex
      */
     public enum VertexType {
+
         DEFAULT, STOCK, FLOW, CONSTANT
     }
 
@@ -260,6 +261,7 @@ public class Vertex {
      * An enumeration with the possible Plans of a vertex
      */
     public enum Plan {
+
         UNDEFINED, FIXED, INCREASE, DECREASE, INCREASE_AND_DECREASE,
         PROPORTIONAL, DIFFERENCE, RATIO
     }
@@ -268,6 +270,7 @@ public class Vertex {
      * An enumeration with the possible Status of Inputs of a vertex
      */
     public enum DescriptionStatus {
+
         UNDEFINED, CORRECT, INCORRECT, GAVEUP
     }
 
@@ -275,6 +278,7 @@ public class Vertex {
      * An enumeration with the possible Status of Inputs of a vertex
      */
     public enum PlanStatus {
+
         UNDEFINED, MISSEDFIRST, CORRECT, INCORRECT, GAVEUP
     }
 
@@ -282,6 +286,7 @@ public class Vertex {
      * An enumeration with the possible Status of Inputs of a vertex
      */
     public enum InputsStatus {
+
         UNDEFINED, CORRECT, INCORRECT, GAVEUP
     }
 
@@ -289,6 +294,7 @@ public class Vertex {
      * An enumeration with the possible Status of Calculations of a vertex
      */
     public enum CalculationsStatus {
+
         UNDEFINED, CORRECT, INCORRECT, GAVEUP
     }
 
@@ -296,6 +302,7 @@ public class Vertex {
      * An enumeration with the possible Status of Graphs of a vertex
      */
     public enum GraphsStatus {
+
         UNDEFINED, CORRECT, INCORRECT, GAVEUP
     }
 

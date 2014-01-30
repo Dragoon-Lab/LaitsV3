@@ -4,11 +4,11 @@
    <TaskName>Rabbits - Intro Problem</TaskName>
    <URL>images/rabbit.jpeg</URL>
    <TaskDescription>
-       &lt;html&gt;In this exercise, you will construct a model of how a rabbit population grows when no rabbits die.   
-       The first quantity in this model is the &lt;strong&gt;population&lt;/strong&gt; or &lt;em&gt;number of rabbits in the population&lt;/em&gt;. Initially,   
-       there are 100 rabbits, but the number increases with time. The new population each month is its   
-       present value plus the number of &lt;strong&gt;births&lt;/strong&gt; (&lt;em&gt;number of rabbits born each month&lt;/em&gt;).  The number of &lt;strong&gt;births&lt;/strong&gt;   
-       is equal to the product of the population and the &lt;strong&gt;birth rate&lt;/strong&gt;. The &lt;strong&gt;birth rate&lt;/strong&gt; or &lt;em&gt;the ratio of the   
+       &lt;html&gt;In this exercise, you will construct a model of how a rabbit population grows when no rabbits die.  NEWLINE 
+       The first quantity in this model is the &lt;strong&gt;population&lt;/strong&gt; or &lt;em&gt;number of rabbits in the population&lt;/em&gt;. Initially, NEWLINE  
+       there are 100 rabbits, but the number increases with time. The new population each month is its NEWLINE  
+       present value plus the number of &lt;strong&gt;births&lt;/strong&gt; (&lt;em&gt;number of rabbits born each month&lt;/em&gt;).  The number of &lt;strong&gt;births&lt;/strong&gt; NEWLINE  
+       is equal to the product of the population and the &lt;strong&gt;birth rate&lt;/strong&gt;. The &lt;strong&gt;birth rate&lt;/strong&gt; or &lt;em&gt;the ratio of the NEWLINE  
        number of rabbits born in a month to the rabbit population that month&lt;/em&gt; has a fixed value of 0.2.&lt;/html&gt;
 </TaskDescription>
 
@@ -45,10 +45,263 @@
       <Inputs></Inputs>
       <InitialValue>.2</InitialValue>
       <Equation>.2</Equation>
-      <CorrectDescription>The ratio of rabbits born in a month to the rabbit population</CorrectDescription>
+      <CorrectDescription>The ratio of number of rabbits born in a month to the rabbit population that month</CorrectDescription>
       <Plan>fixed value</Plan>
     </Node>
 </Nodes>
+
+<HelpBubbles>
+	<Bubble>
+		<Timing>MainWindow</Timing>
+		<nodeName>population</nodeName>
+		<attachedTo>createNodeButton</attachedTo>
+		<Event>onLoad</Event>
+		<xValue>0</xValue>
+		<yValue>0</yValue>
+		<Message>&lt;html&gt;Read the problem description, then &lt;br /&gt;click the Create Node button to begin.&lt;/html&gt;</Message>
+	</Bubble>
+	<Bubble>
+		<Timing>MainWindow</Timing>
+		<nodeName>population</nodeName>
+		<attachedTo>createNodeButton</attachedTo>
+		<Event>nodeEditorClose</Event>
+		<Message>Double-click the unfinished node to edit it.</Message>
+	</Bubble>
+	<Bubble>
+		<Timing>DESCRIPTION</Timing>
+		<nodeName>population</nodeName>
+		<attachedTo>evenMorePreciseLabel</attachedTo>
+		<Event>onLoad</Event>
+		<Message>&lt;html&gt;Use the decision tree to create the correct description of the problem: &lt;br /&gt;"The number of rabbits in the population"&lt;/html&gt;</Message>
+	</Bubble>
+	<Bubble>
+		<Timing>DESCRIPTION</Timing>
+		<nodeName>population</nodeName>
+		<attachedTo>checkButton</attachedTo>
+		<Event>descFilled</Event>
+		<Message>Click the Check button to verify your description.</Message>
+	</Bubble>
+	<Bubble>
+		<Timing>DESCRIPTION</Timing>
+		<nodeName>population</nodeName>
+		<attachedTo>tabPanel</attachedTo>
+		<Event>descCheckDemo</Event>
+	       <xValue>0</xValue>
+	       <yValue>0</yValue>
+	       <Orient>right_above</Orient>
+		<Message>Click on the Plan tab to continue.</Message>
+	</Bubble>
+
+	<Bubble>
+		<Timing>PLAN</Timing>
+		<nodeName>population</nodeName>
+		<attachedTo>tabPanel</attachedTo>
+		<Event>onLoad</Event>
+		<Message>&lt;html&gt;Select the plan that most accurately matches the problem &lt;br /&gt;In this case, the rabbit population is said to increase.&lt;br /&gt;Click on "said to increase" then click Check.&lt;/html&gt;</Message>
+	</Bubble>
+	<Bubble>
+		<Timing>PLAN</Timing>
+		<nodeName>population</nodeName>
+		<attachedTo>tabPanel</attachedTo>
+		<Event>descCheckDemo</Event>
+	       <xValue>75</xValue>
+	       <yValue>0</yValue>
+		<Message>Click on the Inputs tab to continue.</Message>
+	</Bubble>
+	<Bubble>
+		<Timing>INPUTS</Timing>
+		<nodeName>population</nodeName>
+		<attachedTo>radioPanel</attachedTo>
+		<Event>onLoad</Event>
+		<Message>&lt;html&gt;This value relies on other inputs we will have to create.&lt;br /&gt;Select "Inputs:", then click the Create Node button.&lt;/html&gt;</Message>
+	</Bubble>
+	<Bubble>
+		<Timing>INPUTS</Timing>
+		<nodeName>births</nodeName>
+		<attachedTo>radioPanel</attachedTo>
+		<Event>newNodeClosed</Event>
+		<Message>Select "births" as your input then click Check.</Message>
+	</Bubble>
+	<Bubble>
+		<Timing>INPUTS</Timing>
+		<nodeName>population</nodeName>
+		<attachedTo>tabPanel</attachedTo>
+		<Event>descCheckDemo</Event>
+	       <xValue>0</xValue>
+	       <yValue>0</yValue>
+		<Message>Click on the Calculations tab to continue.</Message>
+	</Bubble>
+	<Bubble>
+		<Timing>InputNewNode</Timing>
+		<nodeName>births</nodeName>
+		<attachedTo>evenMorePreciseLabel</attachedTo>
+		<Event>onLoad</Event>
+		<Message>Make a new node for "Number of rabbits born each month."</Message>
+	</Bubble>
+	<Bubble>
+		<Timing>InputNewNode</Timing>
+		<nodeName>births</nodeName>
+		<attachedTo>referencesLabel</attachedTo>
+		<Event>descFilled</Event>
+		<Message>Click the Check button to verify your description.</Message>
+	</Bubble>
+	<Bubble>
+		<Timing>InputNewNode</Timing>
+		<nodeName>births</nodeName>
+		<attachedTo>referencesLabel</attachedTo>
+		<Event>descCheckDemo</Event>
+		<Message>Click on the Close button to continue.</Message>
+	</Bubble>
+	<Bubble>
+		<Timing>CALCULATIONS</Timing>
+		<nodeName>population</nodeName>
+		<attachedTo>quantityLabel</attachedTo>
+		<Event>onLoad</Event>
+		<Message>Select "accumulates value of its inputs."</Message>
+	</Bubble>
+	<Bubble>
+		<Timing>CALCULATIONS</Timing>
+		<nodeName>population</nodeName>
+		<attachedTo>fixedValueLabel</attachedTo>
+		<Event>stockSelected</Event>
+		<Message>Input "100" as the initial value...</Message>
+	</Bubble>
+	<Bubble>
+		<Timing>CALCULATIONS</Timing>
+		<nodeName>population</nodeName>
+		<attachedTo>availableInputsJList</attachedTo>
+		<Event>stockSelected</Event>
+		<Message>…and click on "Births" to have it added to the initial value.  Then click Check.</Message>
+	</Bubble>
+	<Bubble>
+		<Timing>INPUTS</Timing>
+		<nodeName>births</nodeName>
+		<attachedTo>radioPanel</attachedTo>
+		<Event>onLoad</Event>
+		<Message>&lt;html&gt;This value relies on other inputs we will have to create.&lt;br /&gt;Select "Inputs:", then click the Create Node button.&lt;/html&gt;</Message>
+	</Bubble>
+	<Bubble>
+		<Timing>PLAN</Timing>
+		<nodeName>births</nodeName>
+		<attachedTo>tabPanel</attachedTo>
+		<Event>onLoad</Event>
+		<Message>Select "proportional to the value…" then click Check.</Message>
+	</Bubble>
+	<Bubble>
+		<Timing>PLAN</Timing>
+		<nodeName>births</nodeName>
+		<attachedTo>tabPanel</attachedTo>
+		<Event>descCheckDemo</Event>
+	       <xValue>75</xValue>
+	       <yValue>0</yValue>
+		<Message>Click on the Inputs tab to continue.</Message>
+	</Bubble>
+	<Bubble>
+		<Timing>InputNewNode</Timing>
+		<nodeName>birth rate</nodeName>
+		<attachedTo>evenMorePreciseLabel</attachedTo>
+		<Event>onLoad</Event>
+		<Message>&lt;html&gt;Make a new node for "ratio of rabbits born in a month &lt;br /&gt;to the rabbit population that month."&lt;/html&gt;</Message>
+	</Bubble>
+	<Bubble>
+		<Timing>InputNewNode</Timing>
+		<nodeName>birth rate</nodeName>
+		<attachedTo>referencesLabel</attachedTo>
+		<Event>descFilled</Event>
+		<Message>Click the Check button to verify your description.</Message>
+	</Bubble>
+	<Bubble>
+		<Timing>InputNewNode</Timing>
+		<nodeName>births</nodeName>
+		<attachedTo>referencesLabel</attachedTo>
+		<Event>descCheckDemo</Event>
+		<Message>Click on the Close button to continue.</Message>
+	</Bubble>
+	<Bubble>
+		<Timing>INPUTS</Timing>
+		<nodeName>birth rate</nodeName>
+		<attachedTo>radioPanel</attachedTo>
+		<Event>newNodeClosed</Event>
+		<Message>Select both "births" and "population" as inputs then click Check.</Message>
+	</Bubble>
+	<Bubble>
+		<Timing>INPUTS</Timing>
+		<nodeName>births</nodeName>
+		<attachedTo>tabPanel</attachedTo>
+		<Event>descCheckDemo</Event>
+	       <xValue>0</xValue>
+	       <yValue>0</yValue>
+		<Message>Click on the Calculations tab to continue.</Message>
+	</Bubble>
+	<Bubble>
+		<Timing>CALCULATIONS</Timing>
+		<nodeName>births</nodeName>
+		<attachedTo>quantityLabel</attachedTo>
+		<Event>onLoad</Event>
+		<Message>Select "is a function of its inputs values."</Message>
+	</Bubble>
+	<Bubble>
+		<Timing>CALCULATIONS</Timing>
+		<nodeName>births</nodeName>
+		<attachedTo>valuesLabel</attachedTo>
+		<Event>flowSelected</Event>
+		<Message>Enter the function "population * birth rate"  Then click Check.</Message>
+	</Bubble>
+	<Bubble>
+		<Timing>MainWindow</Timing>
+		<nodeName>births</nodeName>
+		<attachedTo>createNodeButton</attachedTo>
+		<Event>nodeEditorClose</Event>
+		<Message>Double-click the unfinished node to edit it.</Message>
+	</Bubble>
+	<Bubble>
+		<Timing>MainWindow</Timing>
+		<nodeName>birth rate</nodeName>
+		<attachedTo>createNodeButton</attachedTo>
+		<Event>nodeEditorClose</Event>
+		<Message>Click Show Graph to see the results of your model!</Message>
+	</Bubble>
+	<Bubble>
+		<Timing>PLAN</Timing>
+		<nodeName>birth rate</nodeName>
+		<attachedTo>tabPanel</attachedTo>
+		<Event>onLoad</Event>
+		<Message>Select "a fixed, given number" then click Check.</Message>
+	</Bubble>
+	<Bubble>
+		<Timing>PLAN</Timing>
+		<nodeName>birth rate</nodeName>
+		<attachedTo>tabPanel</attachedTo>
+		<Event>descCheckDemo</Event>
+	       <xValue>75</xValue>
+	       <yValue>0</yValue>
+		<Message>Click on the Inputs tab to continue.</Message>
+	</Bubble>
+	<Bubble>
+		<Timing>INPUTS</Timing>
+		<nodeName>birth rate</nodeName>
+		<attachedTo>radioPanel</attachedTo>
+		<Event>onLoad</Event>
+		<Message>&lt;html&gt;This value is fixed, so click on "Value is fixed…" and click Check.&lt;/html&gt;</Message>
+	</Bubble>
+	<Bubble>
+		<Timing>INPUTS</Timing>
+		<nodeName>birth rate</nodeName>
+		<attachedTo>tabPanel</attachedTo>
+		<Event>descCheckDemo</Event>
+	       <xValue>0</xValue>
+	       <yValue>0</yValue>
+		<Message>Click on the Calculations tab to continue.</Message>
+
+	</Bubble>
+	<Bubble>
+		<Timing>CALCULATIONS</Timing>
+		<nodeName>birth rate</nodeName>
+		<attachedTo>fixedValueLabel</attachedTo>
+		<Event>onLoad</Event>
+		<Message>Input ".2" as the fixed value and click Check.</Message>
+	</Bubble>
+</HelpBubbles>
 
   <DescriptionTree>
     <Node level="root">

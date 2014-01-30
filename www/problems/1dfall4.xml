@@ -4,10 +4,10 @@
     <TaskName/>
     <TaskDescription>
         A weight is thrown vertically upward with a velocity of 8.5 m/s
-        from an initial height of 1.2 m. Graph 
-        its velocity and height from 0 seconds to 3 seconds.  
-        How fast is it moving when it reaches a height of 4.0m? How long is 
-        required to reach this height? Explain why there are two answers.   
+        from an initial height of 1.2 m. Graph NEWLINE
+        its velocity and height from 0 seconds to 3 seconds. NEWLINE NEWLINE
+        How fast is it moving when it reaches a height of 4.0m? How long is NEWLINE
+        required to reach this height? Explain why there are two answers.  NEWLINE NEWLINE
         Use -9.81 m/s&lt;sup&gt;2&lt;/sup&gt; as the gravitational acceleration.
     </TaskDescription>
     <URL>images/weight-toss.jpg</URL>

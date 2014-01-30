@@ -3,10 +3,10 @@
 <Task phase="" type="">
     <TaskName>Front Lot to Back Lot</TaskName>
     <TaskDescription>
-        A car dealership has a front lot and a back lot, and it has to 
-        empty the front lot every evening before closing.  The back lot starts 
-        with 10 cars in it, and the front lot starts with 40 cars in it.  
-        Jack drives cars from the front lot to the back lot at a rate of one car per minute. 
+        A car dealership has a front lot and a back lot, and it has to NEWLINE
+        empty the front lot every evening before closing.  The back lot starts NEWLINE
+        with 10 cars in it, and the front lot starts with 40 cars in it. NEWLINE NEWLINE
+        Jack drives cars from the front lot to the back lot at a rate of one car per minute. NEWLINE
         After 40 minutes, he's done.  Graph the contents of both lots.
     </TaskDescription>
     <URL>images/parking.jpg</URL>

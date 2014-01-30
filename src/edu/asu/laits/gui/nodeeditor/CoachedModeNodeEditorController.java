@@ -4,14 +4,11 @@
 package edu.asu.laits.gui.nodeeditor;
 
 import edu.asu.laits.editor.ApplicationContext;
-import edu.asu.laits.logger.UserActivityLog;
 import edu.asu.laits.model.SolutionNode;
 import edu.asu.laits.model.TargetNodes;
 import edu.asu.laits.model.TaskSolution;
 import edu.asu.laits.model.Vertex;
-import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
 import javax.swing.event.ChangeEvent;
 import javax.swing.event.ChangeListener;
 import org.apache.log4j.Logger;
@@ -26,8 +23,8 @@ public class CoachedModeNodeEditorController extends NodeEditorController {
     private NodeEditorView view;
     private Vertex openVertex;
     private TargetNodes targetNodes;
-    private static Logger logs = Logger.getLogger("DevLogs");   
-    private static Logger activityLogs = Logger.getLogger("ActivityLogs");   
+    private static Logger logs = Logger.getLogger("DevLogs");
+    private static Logger activityLogs = Logger.getLogger("ActivityLogs");
 
     public CoachedModeNodeEditorController(NodeEditorView view, Vertex openVertex) {
         super(view, openVertex);
@@ -149,7 +146,7 @@ public class CoachedModeNodeEditorController extends NodeEditorController {
         for (SolutionNode name : correctNodeNames) {
             if (name.getNodeName().equalsIgnoreCase(targetNodes.getFirstNextNode(openVertex))) {
                 giveupNode = name.getNodeName();
-                    //ApplicationContext.nextCurrentOrder()
+                    //                  ApplicationContext.nextCurrentOrder()
                 break;
             }
         }
@@ -165,19 +162,14 @@ public class CoachedModeNodeEditorController extends NodeEditorController {
     
     public void planPanelRadioClicked(){
         TaskSolution solution = ApplicationContext.getCorrectSolution();
-        Map<String, Object> logMessage = new HashMap<String, Object>();
-        logMessage.put("node", openVertex.getName());
-        logMessage.put("type","quantity-type");
-        
-        view.checkPlanPanel(solution, logMessage);
-        activityLogs.debug(new UserActivityLog(UserActivityLog.SOLUTION_STEP, logMessage));
+        view.checkPlanPanel(solution);
     }
     
     /**
      * Initialize CreateNewNodeDialog for Coached Mode.
      * @param dialog 
      */
-    public void initializeCreateNewNodeDialog(NodeEditorView dialog){
+    public void initializeCreateNewNodeDialog(CreateNewNodeDialog dialog){
         // Needs specific implementation for this mode
     }
 }

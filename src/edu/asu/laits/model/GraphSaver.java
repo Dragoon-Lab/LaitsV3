@@ -71,9 +71,6 @@ public class GraphSaver {
         xstream.alias("task", Task.class);       
         file.setTask(ApplicationContext.getCurrentTask());
 
-        xstream.alias("stats", StatsCollector.class);
-        file.setStats(ApplicationContext.studentCheckDemoStats);
-        
         xstream.alias("graph", GraphFile.class);
         
         return xstream.toXML(file);
