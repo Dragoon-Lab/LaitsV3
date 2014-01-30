@@ -21,11 +21,14 @@
 package edu.asu.laits.model;
 
 import edu.asu.laits.editor.ApplicationContext;
+import java.net.MalformedURLException;
 import java.util.List;
 import java.net.URL;
 import java.util.ArrayList;
+import javax.swing.JOptionPane;
 import org.apache.log4j.Logger;
 import org.dom4j.Document;
+import org.dom4j.DocumentException;
 import org.dom4j.Element;
 import org.dom4j.io.SAXReader;
 
@@ -68,33 +71,30 @@ public class TaskSolutionReader {
                 fillSubPlans(solution, subPlans);
             }
             
-            
-            //Read in help bubbles
-            if(ApplicationContext.isCoachedMode() && ApplicationContext.isHelpBubbles()){
-                    Element bubbles = taskNode.element("HelpBubbles");
-                    if(bubbles != null){
-                      fillHelpBubbles(solution, bubbles);
-                    }
-                }
-            
             solution.initTargetNodes();
                 
-        } catch (Exception e) {
-            // Could not read the XML file
-            e.printStackTrace();
+        } catch (MalformedURLException e) {
+            logs.error("MalformedURLException in fetching task." + e.getMessage());
+            JOptionPane.showMessageDialog(null, "Task Solution Could not be loaded. Please check Task Name.",
+                    "Error.", JOptionPane.ERROR_MESSAGE);
+        }
+        catch (DocumentException e) {
+            logs.error("DocumentException in fetching task. " + e.getMessage());
+            JOptionPane.showMessageDialog(null, "Task Solution file is not correct. Please check Task Name.",
+                    "Error.", JOptionPane.ERROR_MESSAGE);
         }
         logs.info("Task Loaded : " + solution.getTaskDetails().toString());
         return solution;
     }
     
-    private Document loadRootDocument(String taskId, String author, String group) throws Exception{
+    private Document loadRootDocument(String taskId, String author, String group) throws MalformedURLException, DocumentException{
         Document document = null;
         SAXReader reader = new SAXReader();
         
-        String resourceURL = ApplicationContext.taskLoaderURL + taskId;
-            if(author.length()>0 && group.length()>0){
-                resourceURL += "&author=" + author + "&group=" + group;
-            }
+        String resourceURL = ApplicationContext.APP_HOST + "task_fetcher.php?taskid=" + taskId;
+//            if(author.length()>0 && group.length()>0){
+//                resourceURL += "&author=" + author + "&group=" + group;
+//            }
         System.out.println("Resource URL "+resourceURL);
         logs.info("Task URL : "+resourceURL);
         document = reader.read(new URL(resourceURL));
@@ -219,29 +219,5 @@ public class TaskSolutionReader {
                 solution.addFunctionSubPlans(subPlan.getTextTrim());
             }
         }
-    }
-    //Read in help bubble info
-    private void fillHelpBubbles(TaskSolution solution, Element bubbles){        
-        List<Element> allBubbles = bubbles.elements("Bubble");
-        for(Element bubble : allBubbles){
-            HelpBubble newBubble = new HelpBubble();
-            newBubble.setTiming(bubble.elementTextTrim("Timing"));
-            newBubble.setNodeName(bubble.elementTextTrim("nodeName"));
-            newBubble.setAttachedTo(bubble.elementTextTrim("attachedTo"));
-            newBubble.setEvent(bubble.elementTextTrim("Event"));
-            if(bubble.elementTextTrim("xValue")!= null){
-                newBubble.setX(Integer.parseInt(bubble.elementTextTrim("xValue")));
-            } 
-            if(bubble.elementTextTrim("yValue")!= null){
-                newBubble.setY(Integer.parseInt(bubble.elementTextTrim("yValue")));
-            }  
-            if(bubble.elementTextTrim("Orient")!= null){
-                newBubble.setOrientation(bubble.elementTextTrim("Orient"));
-            }    
-            newBubble.setMessage(bubble.elementTextTrim("Message"));
-        
-            solution.addHelpBubble(newBubble);            
-        }
-    }
-    
+    }    
 }

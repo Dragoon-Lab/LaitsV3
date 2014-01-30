@@ -1,0 +1,32 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<DragoonProperties>
+    <Config></Config>
+    <UserInterface>
+        <SwingControls>
+            <GeneralControls>
+                <Name>NodeEditor.okButton</Name>
+                <Label>Ok</Label>
+                <ToolTipText>Save and Close NodeEditor</ToolTipText>
+            </GeneralControls>
+            
+            <ModeOverrides>
+                <AuthorModeControls>
+                    
+                </AuthorModeControls>
+                
+                <StudentModeControls>
+                    
+                </StudentModeControls>
+                    
+                <TestModeControls>
+                    
+                </TestModeControls>            
+                
+                <CoachedModeControls>
+                    
+                </CoachedModeControls>                
+            </ModeOverrides>    
+        </SwingControls>
+    </UserInterface>
+</DragoonProperties>

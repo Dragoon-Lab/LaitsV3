@@ -70,6 +70,7 @@ public class GraphLoader {
         xstream.alias("edge", Edge.class);
         xstream.alias("graph", GraphFile.class);
         xstream.alias("task", Task.class);
+        xstream.alias("stats", StatsCollector.class);
 
         GraphFile graphFile = null;
         try {
@@ -94,7 +95,8 @@ public class GraphLoader {
         xstream.alias("edge", Edge.class);
         xstream.alias("graph", GraphFile.class);
         xstream.alias("task", Task.class);
-
+        xstream.alias("stats", StatsCollector.class);
+        
         GraphFile graphFile = null;
         try {
             graphFile = (GraphFile) xstream.fromXML(processedXML);
@@ -160,7 +162,7 @@ public class GraphLoader {
             // but he can't remember why
             if (!ApplicationContext.isAuthorMode()) {
                 if(vertex.getName() != null && !vertex.getName().isEmpty())
-                ApplicationContext.getCorrectSolution().getTargetNodes().setNextNodes();
+                    ApplicationContext.getCorrectSolution().getTargetNodes().setNextNodes();
             }
         }
 
@@ -194,6 +196,7 @@ public class GraphLoader {
         if(ApplicationContext.isAuthorMode())
             ApplicationContext.setCurrentTask(graphFile.getTask());
         
+        ApplicationContext.studentCheckDemoStats = graphFile.getStats();
         //prop.setSavedAs(file);
     }
 

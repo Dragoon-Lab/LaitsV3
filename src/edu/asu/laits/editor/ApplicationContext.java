@@ -17,15 +17,13 @@
  */
 package edu.asu.laits.editor;
 
-import edu.asu.laits.gui.MainWindow;
 import edu.asu.laits.model.TaskSolution;
-import edu.asu.laits.model.HelpBubble;
-import edu.asu.laits.model.SolutionNode;
-import edu.asu.laits.model.TargetNodes;
+import edu.asu.laits.model.StatsCollector;
 import edu.asu.laits.model.Task;
-import java.util.ArrayList;
+import java.util.Date;
+import java.util.HashMap;
 import java.util.List;
-import org.apache.log4j.Logger;
+import java.util.Map;
 
 /**
  *
@@ -37,41 +35,25 @@ public class ApplicationContext {
     private static AppMode appMode;
     private static String section;
     private static String author;
-    private static String rootURL;
-    private static String forumURL;
-    private static boolean isValid = false;
+    public static String APP_HOST;// = "http://dragoon.asu.edu/ram";
+    public static String forumURL;// = "http://dragoon.asu.edu/ram";
     private static TaskSolution correctSolution;
     private static String currentTaskID;
+    private static String newTaskID;
     private static boolean isProblemSolved = false;
-    public static String taskLoaderURL;
-    private static boolean helpBubbles = false;
-    private static Logger logs = Logger.getLogger("DevLogs");
-       
+    private static String session_id;
+    public static long SESSION_START_TIME = new Date().getTime();
+    
+    public static Map<String, StatsCollector> studentCheckDemoStats = new HashMap<String, StatsCollector> ();
+    
     // Task is used at many places in the application. It should be same for all the uses
     private static Task task;
-
-    public static boolean isHelpBubbles() {
-        return helpBubbles;
-    }
 
     private static ApplicationContext.ApplicationEnvironment applicationEnvironment;
 
     public enum ApplicationEnvironment {
 
         DEV, TEST, PROD
-    }
-
-
-    public static void setLoaderURL(String baseURL) {
-        taskLoaderURL = baseURL.concat("/task_fetcher.php?taskid=");
-    }
-
-    public static String getRootURL() {
-        return rootURL;
-    }
-
-    public static void setRootURL(String baseURL) {
-        rootURL = baseURL;
     }
 
     public static String getUserID() {
@@ -106,14 +88,6 @@ public class ApplicationContext {
             forumURL = theForum;
     }
 
-    public static boolean isUserValid() {
-        return isValid;
-    }
-
-    public static void setUserValid(boolean input) {
-        isValid = input;
-    }
-
     public static void setAppMode(String mode) {
         appMode = AppMode.getEnum(mode);
     }
@@ -134,17 +108,28 @@ public class ApplicationContext {
         currentTaskID = uid;
     }
 
+    public static String getNewTaskID() {
+        return newTaskID;
+    }
+
+    public static void setNewTaskID(String newTaskID) {
+        ApplicationContext.newTaskID = newTaskID;
+    }
+    
+    public static String getSessionID() {
+        return session_id;
+    }
+
+    public static void setSessionID(String sid) {
+        session_id = sid;
+    }
+    
     public static boolean isProblemSolved() {
         return isProblemSolved;
     }
 
     public static void setProblemSolved(boolean input) {
         isProblemSolved = input;
-    }
-
-    public static List<HelpBubble> getHelp(String order, String time, String cevent) {
-        return correctSolution.checkForHelp(order, time, cevent);
-
     }
 
     public static ApplicationContext.ApplicationEnvironment getApplicationEnvironment() {
@@ -199,4 +184,57 @@ public class ApplicationContext {
         task = predefinedTask;
     }
    
+    public static void updateCheckUsageStats(int tabId, String nodeName) {
+        if(initStatsMap(nodeName)) {
+            switch(tabId) {
+                case 0:
+                    studentCheckDemoStats.get(nodeName).updateDescriptionPanelCheckCount();
+                    break;
+
+               case 1:
+                    studentCheckDemoStats.get(nodeName).updatePlanPanelCheckCount();
+                    break;
+
+               case 2:
+                    studentCheckDemoStats.get(nodeName).updateCalculationsPanelCheckCount();
+                    break;    
+            }
+        }
+    }
+    
+    public static void updateDemoUsageStats(int tabId, String nodeName) {
+        if(initStatsMap(nodeName)) {
+            switch(tabId) {
+                case 0:
+                    studentCheckDemoStats.get(nodeName).updateDescriptionPanelDemoCount();
+                    break;
+
+               case 1:
+                    studentCheckDemoStats.get(nodeName).updatePlanPanelDemoCount();
+                    break;
+
+               case 2:
+                    studentCheckDemoStats.get(nodeName).updateCalculationsPanelDemoCount();
+                    break;    
+            }
+        }
+    }
+    
+    public static String logCheckDemoStats() {
+        return studentCheckDemoStats.toString();
+    }
+    
+    public static StatsCollector getCheckDemoStats(String nodeName) {
+        return studentCheckDemoStats.get(nodeName);
+    }
+    
+    private static boolean initStatsMap(String nodeName) {
+        if(nodeName == null || nodeName.trim().equals(""))
+            return false;
+                    
+        if(studentCheckDemoStats.get(nodeName) == null)
+            studentCheckDemoStats.put(nodeName, new StatsCollector());
+        
+        return true;
+    }
 }

@@ -2,16 +2,17 @@
 <Task phase="Training" type="Whole">
     <TaskName>Metro Singles Club</TaskName>
     <TaskDescription>
-        Problem: Ever since the Metro Singles Club replaced their open mic karaoke NEWLINE
-        night with cover bands at its parties, the membership in the club has been NEWLINE
-        dropping steadily.  That is having an impact on the all-important female to NEWLINE
-        male ratio, which is defined as the number of women in the club divided by NEWLINE
-        the number of men in the club.  There are currently 100 men and 125 women NEWLINE
-        in the club, so the total membership is initially 225 and the initial female toNEWLINE
-        male ratio is 1.25.  However, 6% of the men leave the club each month and NEWLINE
-        10% of the women leave the club each month.  That is, although some men NEWLINE
-        leave each month, even more women leave, at least initially. NEWLINE NEWLINE
-        Goal: Graph the female to male ratio over a 12-month period.</TaskDescription>
+        Problem: Ever since the Metro Singles Club replaced their open mic karaoke 
+        night with cover bands at its parties, the membership in the club has been 
+        dropping steadily.  That is having an impact on the all-important female to 
+        male ratio, which is defined as the number of women in the club divided by 
+        the number of men in the club.  There are currently 100 men and 125 women 
+        in the club, so the total membership is initially 225 and the initial female to
+        male ratio is 1.25.  However, 6% of the men leave the club each month and 
+        10% of the women leave the club each month.  That is, although some men 
+        leave each month, even more women leave, at least initially.  
+        Goal: Graph the female to male ratio over a 12-month period.
+    </TaskDescription>
     <URL>http://www.hongkonghustle.com/wp-content/photos/Billion_club_Hong_Kong_HK_O.jpg</URL>
   
     <StartTime>0</StartTime>
@@ -30,9 +31,6 @@
     </Vertexes>
 
     <NodeCount>9</NodeCount>
-
-    <ProblemSeeking>female to male ratio</ProblemSeeking>
-    <CorrespondingSentence>Graph the female to male ratio over a 12-month period.</CorrespondingSentence>
 
     <Nodes>
         <Node type="constant" name="proportion women leaving" extra="no">

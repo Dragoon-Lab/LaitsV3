@@ -6,19 +6,20 @@ This contains mostly design documents.
 * [Session behavior](sessions.md) which discusses saving, modifying, and sharing problems.
 * [Add sliders to parameters](sliders.md)
 * [Major modes](major-modes.md) (STUDENT COACHED TEST AUTHOR)
-* [Problem and node-specific forum](Forum_Feature_in_Dragoon.docx).  Document written by Ram
-  with comments by BvdS.
 * [JavaScript design](javascript.md)
-* [XML format](xml-style.md)
+* [JSON format](json-format.md)
 * [Forum](forum.md)
+* [Pedagogical Model JavaScript Version](Pedagogical-Model-JavaScript-Version.docx)
+* [Logging format](logs-structure.md)
 
 Documentation can be in any convenient format (word, html, *et cetera*) with 
 generic [markdown](http://en.wikipedia.org/wiki/Markdown) being the default 
 choice.  Any document should have an associated link in this file.  
 
+
 ## Support Issues ##
 
-In class support in case Java is not working:
+In-class support in case Java is not working:
 
 1. Zip Laits.jar and lib folder to something like laits.zip and put it to demo server. 
 You should then be able to download the zip using: `http://dragoon.asu.edu/laits.zip`.
@@ -32,7 +33,6 @@ directory and launch the jar either by double clicking or from command prompt:
    b) Lanuch Laits.jar from terminal and look at console output.
 4. To see if java is installed and what version they are running, use:
     `java -version`.
-
 
 
 ## Code Review process ##
@@ -58,7 +58,8 @@ It is a good practice to merge `origin/master` onto your branch every
 time you start working.  This will reduce conflicts when you 
 try to merge your code back onto the master branch.
 
-## Install Documentation ##
+
+## Install this Documentation ##
 
 Place a link to the `documentation` directory in your webserver root directory. 
 For the sever to properly translate the markdown, download a 

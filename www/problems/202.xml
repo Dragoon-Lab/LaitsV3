@@ -3,25 +3,21 @@
     <TaskName>Waterfowl 2</TaskName>
     <URL>http://laits.engineering.asu.edu/laits_images/1.jpg</URL>
   
-    <TaskDescription>Problem: You are still interested in the same population of water fowl, NEWLINE
-but you now want to include information on how the rate of population growth is 
-        NEWLINE constrained by environmental factors (i.e. limited by food and space).
+    <TaskDescription>Problem: You are still interested in the same population of water fowl, 
+        but you now want to include information on how the rate of population growth is 
+        constrained by environmental factors (i.e. limited by food and space).
     
-        NEWLINE Suppose the urban lake starts with a population size of 10 water fowl and NEWLINE 
-the population growth rate is 40% per year, but the lake can only support 
-        NEWLINE a maximum of 50 individuals.    
+        Suppose the urban lake starts with a population size of 10 water fowl and  
+        the population growth rate is 40% per year, but the lake can only support 
+        a maximum of 50 individuals.    
 
-        NEWLINE NEWLINE Goal: Graph the water fowl population over 10 years.
+        Goal: Graph the water fowl population over 10 years.
 
-        NEWLINE NEWLINE Hint: 1. Use the logistic equation form (K-N)/K to calculate environmental resistance, p. 242 NEWLINE
+        Hint: 1. Use the logistic equation form (K-N)/K to calculate environmental resistance, p. 242 
         2. Only use up to the thousandth decimal place.
       
     </TaskDescription>
 
-    <ShortDescription>
-
-    </ShortDescription>
-  
     <StartTime>0</StartTime>
     <EndTime>10</EndTime>
     <TimeStep>0.1</TimeStep>

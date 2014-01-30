@@ -5,10 +5,10 @@
     <URL>http://upload.wikimedia.org/wikipedia/commons/3/3f/Box_car_DSSA_18052.jpg</URL>
     <TaskDescription>
         Problem: Rust destroys steel and can spread quickly. Suppose you take a large sheet of steel, such as one that might be used as the 
-        NEWLINE roof of the boxcar on a train, and you put it outside in the weather. Suppose it starts with a spot of rust that is 10 square 
-        NEWLINE inches in area. However, each week the rust spot gets bigger, as it grows by 30%. Therefore at the end of the first week, the 
-        NEWLINE rust spot is 13 square inches in area.
-        NEWLINE NEWLINE Goal: Graph the size of the rust spot over 10 weeks.
+        roof of the boxcar on a train, and you put it outside in the weather. Suppose it starts with a spot of rust that is 10 square 
+        inches in area. However, each week the rust spot gets bigger, as it grows by 30%. Therefore at the end of the first week, the 
+        rust spot is 13 square inches in area.
+        Goal: Graph the size of the rust spot over 10 weeks.
     </TaskDescription>
   
     <StartTime>0</StartTime>

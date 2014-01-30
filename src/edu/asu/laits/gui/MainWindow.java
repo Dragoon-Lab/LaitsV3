@@ -40,11 +40,13 @@ import edu.asu.laits.gui.toolbars.FileToolBar;
 import edu.asu.laits.gui.toolbars.EditToolBar;
 import edu.asu.laits.gui.toolbars.ModelToolBar;
 import edu.asu.laits.gui.toolbars.ViewToolBar;
-import edu.asu.laits.model.HelpBubble;
+import edu.asu.laits.logger.UserActivityLog;
 import edu.asu.laits.model.PersistenceManager;
 import edu.asu.laits.properties.GlobalProperties;
 import edu.asu.laits.properties.GraphProperties;
 import java.awt.Color;
+import java.util.HashMap;
+import java.util.Map;
 import javax.swing.*;
 import org.apache.log4j.Logger;
 import org.dom4j.DocumentException;
@@ -73,7 +75,7 @@ public class MainWindow extends JFrame {
     private ModelToolBar modelToolBar = null;
     private List<JToolBar> toolBars = new LinkedList<JToolBar>();
     private StatusBarPanel statusBarPanel = null;
-    private boolean isSituationTabSelected = true;
+    //private boolean isSituationTabSelected = true;
     
     // Label to Display Tasks
     JLabel situationLabel;    
@@ -98,7 +100,7 @@ public class MainWindow extends JFrame {
             }
             _instance.loadSavedSession();
             _instance.attachGraphChangeListener();
-            _instance.setFrameTitle();
+            _instance.setFrameTitle();            
         }
         return _instance;
     }
@@ -130,18 +132,6 @@ public class MainWindow extends JFrame {
         getGraphEditorPane().addGraphPropertiesChangeListener(l);
     }
     
-    public void addHelpBalloon(String node, String timing) {
-        if (ApplicationContext.isCoachedMode()) {
-            List<HelpBubble> bubbles = ApplicationContext.getHelp(node, "MainWindow", timing);
-            logs.debug(node + " MainWindow " + timing);
-            if (!bubbles.isEmpty()) {
-                for (HelpBubble bubble : bubbles) {
-                    new BlockingToolTip(this, bubble, modelToolBar.getAddNodeButton());
-                }
-            }
-        }
-    }
-
     public static void openWindowWithFile(File file) {
         MainWindow window = new MainWindow();
 
@@ -166,6 +156,8 @@ public class MainWindow extends JFrame {
      *
      */
     private void initializeFrameElements() {
+        logs.info("Initializing Frame Elements");
+                
         this.setContentPane(getJPanel());
         this.setJMenuBar(getMainMenu());
         this.addWindowListener(new java.awt.event.WindowAdapter() {
@@ -205,6 +197,7 @@ public class MainWindow extends JFrame {
      * @return javax.swing.JPanel
      */
     private JPanel getJPanel() {
+        logs.info("Initializing Content JPanel");
         if (mainPanel == null) {
             mainPanel = new JPanel();
             mainPanel.setLayout(new BorderLayout());
@@ -219,6 +212,9 @@ public class MainWindow extends JFrame {
                 mainPanel.add(getSituationPanel());
             }
             mainPanel.add(getStatusBarPanel(), BorderLayout.SOUTH);
+            if(!ApplicationContext.getApplicationEnvironment().equals(ApplicationContext.ApplicationEnvironment.DEV)) {
+                getStatusBarPanel().setVisible(false);
+            }
         }
         return mainPanel;
     }
@@ -231,13 +227,13 @@ public class MainWindow extends JFrame {
             logs.debug("Initializing Situation Panel");
 
             situationPanel = new JScrollPane();
-
+            
             situationLabel = new JLabel("");
             situationLabel.setVerticalTextPosition(JLabel.BOTTOM);
             situationLabel.setHorizontalTextPosition(JLabel.CENTER);
             situationLabel.setVerticalAlignment(JLabel.TOP);
             situationLabel.setHorizontalAlignment(JLabel.CENTER);
-            //situationLabel.setBorder(BorderFactory.createTitledBorder(""));
+            
             situationLabel.setBackground(Color.WHITE);
             situationLabel.setVerticalAlignment(SwingConstants.TOP);
         }
@@ -250,23 +246,26 @@ public class MainWindow extends JFrame {
         logs.debug("Loading New Task - " + name);
 
         StringBuilder sb = new StringBuilder();
-        sb.append("<html>");
-        sb.append("<BR/><BR/><BR/>");
-        //sb.append("<B><H2>"+name+"</B></H2>");
-        sb.append("<B><H2 style='margin-left:150'>" + name + "</B></H2>");
+        sb.append("<HTML>");
         sb.append("<BR/><BR/>");
-        sb.append("<img src='" + imageURL + "' height='300' width='300' hspace='40'> </img>");
+        
+        sb.append("<DIV style='width: 500px;'>");
+        sb.append("<DIV style='font-weight: bold; font-size: 22; text-align: center'>");
+        sb.append("<SPAN>" + name + "</SPAN>");
         sb.append("<BR/><BR/>");
+        sb.append("<img src='" + imageURL + "' height='300' width='300'/>");
+        sb.append("</DIV> <BR/><BR/>");
 
+        sb.append("<DIV style='margin-left:20px; width: 480px; text-align:justify; text-justify: inter-word; font-size: 14;'>");
+        
         description = description.replaceFirst("Problem:", "<B>Problem:</B>");
-        description = description.replaceFirst("Goal:", "<B>Goal:</B>");
-        description = description.replaceFirst("Hint:", "<B>Hint:</B>");
+        description = description.replaceFirst("Goal:", "<BR/><BR/><B>Goal:</B>");
+        description = description.replaceFirst("Hint:", "<BR/><BR/><B>Hint:</B>");
 
-        description = description.replaceAll("NEWLINE", "<BR/>");
-
-        sb.append("<div style='margin-left:10'>" + description + "</div>");
-
-        sb.append("</html>");
+        sb.append(description);
+        sb.append("</DIV>");
+        sb.append("</DIV>");
+        sb.append("</HTML>");
 
         situationLabel.setText(sb.toString());
         situationLabel.setHorizontalAlignment(javax.swing.SwingConstants.LEFT);
@@ -278,23 +277,17 @@ public class MainWindow extends JFrame {
     /**
      * This method replaces situation panel with graph panel and vice versa
      */
-    public void switchTutorModelPanels(boolean toSituationPanel) {
-
-        activityLogs.debug("User is viewing Model Design Panel.");
-        logs.debug("Switching to Model Design Panel");
+    public void prepareModelDesignPanel() {
+        logs.debug("Loading Model Design Panel");
 
         mainPanel.removeAll();
         mainPanel.add(getToolBarPanel(), BorderLayout.NORTH);
         mainPanel.add(getGraphPaneScrollPane(), BorderLayout.CENTER);
         mainPanel.add(getStatusBarPanel(), BorderLayout.SOUTH);
-        isSituationTabSelected = false;
+        //isSituationTabSelected = false;
 
         this.validate();
         mainPanel.repaint();
-    }
-
-    public boolean isSituationSelected() {
-        return isSituationTabSelected;
     }
 
     /**
@@ -302,6 +295,7 @@ public class MainWindow extends JFrame {
      *
      */
     private JPanel getToolBarPanel() {
+        
         if (toolBarPanel == null) {
             toolBarPanel = new JPanel();
             toolBarPanel.setLayout(new BoxLayout(getToolBarPanel(),
@@ -376,8 +370,19 @@ public class MainWindow extends JFrame {
     }
 
     public void exitWindow() {
-        activityLogs.info("User exited LAITS....");
-
+        Map<String, Object> logMessage = new HashMap<String, Object>();
+        logMessage.put("type","menu-choice");
+        logMessage.put("name", "exit");
+        logMessage.put("Is Problem Solved", ApplicationContext.isProblemSolved());
+        
+        if(!ApplicationContext.isAuthorMode()) {
+            logMessage.put("check-demo-stats", ApplicationContext.logCheckDemoStats());
+        }
+        activityLogs.debug(new UserActivityLog(UserActivityLog.CLOSE_PROBLEM, logMessage));
+        try{
+            Thread.sleep(500);
+        }catch(InterruptedException ex){
+        }
         windowCount--;
         if (windowCount == 0) {
             System.exit(0);
@@ -471,14 +476,22 @@ public class MainWindow extends JFrame {
     private void loadSavedSession() {
         try {
             String graphXML = PersistenceManager.loadSession();
-
+            
             if (!graphXML.trim().isEmpty()) {
+                Map<String, Object> logMessage = new HashMap<String, Object>();
+                logMessage.put("text","Previous session of Student is loaded");
+                logMessage.put("session-id", ApplicationContext.getSessionID());
+                activityLogs.debug(new UserActivityLog(UserActivityLog.OPEN_PROBLEM, logMessage ));
                 getGraphEditorPane().resetModelGraph();
                 GraphLoader loader = new GraphLoader(getGraphEditorPane());
                 loader.loadFromServer(graphXML);
-                switchTutorModelPanels(false);
+                prepareModelDesignPanel();
+                
                 if(ApplicationContext.isAuthorMode()){
                     ApplicationContext.setAuthor(ApplicationContext.getUserID());
+                    if(ApplicationContext.getNewTaskID() != null && !ApplicationContext.getNewTaskID().equals("")){
+                        ApplicationContext.setCurrentTaskID(ApplicationContext.getNewTaskID());
+                    }
                 }
             }
         } catch (IOException ex) {

@@ -40,7 +40,6 @@ public class TaskSolution {
     private List<SolutionNode> solutionNodes;
     private List<SolutionNode> givenNodes;
     private List<String> correctNodeNames;
-    private List<HelpBubble> helpBubbles;
     private SolutionDTreeNode dTreeNode;
     private Graph solutionGraph = null;
     private List<String> parameterSubPlans;
@@ -52,8 +51,7 @@ public class TaskSolution {
     public TaskSolution() {
         solutionNodes = new ArrayList<SolutionNode>();
         givenNodes = new ArrayList<SolutionNode>();
-        correctNodeNames = new ArrayList<String>();
-        helpBubbles = new ArrayList<HelpBubble>();
+        correctNodeNames = new ArrayList<String>();        
         taskForStudents = new Task();
         targetNodes = new TargetNodes();
     }
@@ -352,7 +350,6 @@ public class TaskSolution {
     public boolean checkNodeGraph(Vertex studentVertex) {
         if (solutionGraph == null) {
             createSolutionGraph();
-            System.out.println("**\nIn checkNodeGraph()");
             ModelEvaluator evaluator = new ModelEvaluator(solutionGraph);
 
             try {
@@ -433,23 +430,4 @@ public class TaskSolution {
         return solutionGraph;
     }
 
-    public void addHelpBubble(HelpBubble newBubble) {
-        helpBubbles.add(newBubble);
-    }
-
-    public List<HelpBubble> checkForHelp(String order, String time, String cevent) {
-        List<HelpBubble> bubbles = new ArrayList<HelpBubble>();
-        for (HelpBubble bubble : this.helpBubbles) {
-            //System.out.println("Help check passed in " + order + " looking at " + bubble.getNodeName());
-            if (order.equalsIgnoreCase(bubble.getNodeName()) && time.equalsIgnoreCase(bubble.getTiming()) && cevent.equalsIgnoreCase(bubble.getEvent())) {
-
-              //  System.out.println("check for help worked");
-              //  return bubble;
-                bubbles.add(bubble);
-            }
-        }
-        //System.out.println("check for help failed");
-            return bubbles;
-
-    }
 }

@@ -12,7 +12,17 @@
 	<Units>years</Units>
 	<NodeCount>6</NodeCount>
 	<Nodes>
-		<Node type="flow" name="annual tree deaths" extra="no">
+		<Node type="stock" name="live trees" extra="no">
+                    <Order>1</Order>
+                    <Inputs>
+                            <Name>annual tree deaths</Name>
+                    </Inputs>
+                    <InitialValue>4000</InitialValue>
+                    <Equation>-annual tree deaths</Equation>
+                    <CorrectDescription>The number of trees alive in the forest each year</CorrectDescription>
+                    <Plan>said to decrease</Plan>
+		</Node>
+                <Node type="flow" name="annual tree deaths" extra="no">
                     <Inputs>
                         <Name>death rate</Name>
                         <Name>live trees</Name>
@@ -49,17 +59,7 @@
 			<InitialValue>0.1</InitialValue>
 			<CorrectDescription>The proportion of trees that die in a year to trees that were alive at the beginning of the year</CorrectDescription>
 			<Plan>fixed value</Plan>
-		</Node>
-		<Node type="stock" name="live trees" extra="no">
-                    <Order>1</Order>
-                    <Inputs>
-                            <Name>annual tree deaths</Name>
-                    </Inputs>
-                    <InitialValue>4000</InitialValue>
-                    <Equation>-annual tree deaths</Equation>
-                    <CorrectDescription>The number of trees alive in the forest each year</CorrectDescription>
-                    <Plan>said to decrease</Plan>
-		</Node>
+		</Node>		
 	</Nodes>
 	<DescriptionTree>
 		<Node level="root">

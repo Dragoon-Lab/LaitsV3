@@ -3,13 +3,13 @@
 <Task phase="Intro" type="Construct">
     <TaskName>Weight Toss</TaskName>
     <TaskDescription>
-     A weight is thrown vertically upward with a velocity of 8.5m/s NEWLINE
-     from an initial height of 1.2 m. Graph its velocity and its NEWLINE
-     height from 0 seconds to 3 seconds. Use -9.8 m/s/s as the NEWLINE
-     gravitational acceleration. If you haven’t taken physics, you will NEWLINE
-     need to know that the change in height is velocity. That is NEWLINE
-     next(height) = height + velocity. You will also need to know that NEWLINE
-     the change in velocity is acceleration. That is, next(velocity) = velocity + acceleration.”
+        A weight is thrown vertically upward with a velocity of 8.5m/s 
+        from an initial height of 1.2 m. Graph its velocity and its 
+        height from 0 seconds to 3 seconds. Use -9.8 m/s/s as the 
+        gravitational acceleration. If you haven’t taken physics, you will 
+        need to know that the change in height is velocity. That is 
+        next(height) = height + velocity. You will also need to know that 
+        the change in velocity is acceleration. That is, next(velocity) = velocity + acceleration.”
     </TaskDescription>
     <URL>images/weight-toss.jpg</URL>
     <StartTime>0</StartTime>

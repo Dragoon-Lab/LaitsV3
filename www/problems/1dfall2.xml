@@ -3,9 +3,9 @@
 <Task phase="Intro" type="Construct">
     <TaskName/>
     <TaskDescription>
-        An object starts at rest and falls from a building that is 56 meters tall. NEWLINE NEWLINE
-        Graph its speed and distance fallen between 0 seconds and 4 seconds. NEWLINE
-        Use 9.81 m/s&lt;sup&gt;2&lt;/sup&gt; for the acceleration due to gravity. NEWLINE
+        An object starts at rest and falls from a building that is 56 meters tall.  
+        Graph its speed and distance fallen between 0 seconds and 4 seconds. 
+        Use 9.81 m/s&lt;sup&gt;2&lt;/sup&gt; for the acceleration due to gravity. 
     </TaskDescription>
     <URL>images/Leaning_Tower_of_Pisa.jpg</URL>
     <StartTime>0</StartTime>

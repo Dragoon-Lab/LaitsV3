@@ -3,15 +3,16 @@
     <TaskName>Rider Gap</TaskName>
     <URL>http://www.millavenue.com/_files/images/light-rail.jpg</URL>
     <TaskDescription>
-        Problem: Suppose that a commuter rail line has 4000 daily riders when it first opens. The number of cars on the trains determines the NEWLINE 
-        capacity of the rail line. The system has an initial capacity of 10000 riders, so there is a spare capacity of 10000-4000=6000 riders initially. NEWLINE
-        NEWLINE The transportation authority has enough money to add 2 cars per year, which increases the capacity by 500 riders annually. However, the NEWLINE
-        rail line proves to be quite popular and many new people start riding the commuter rail line each year. The ridership grows by 10% each year. NEWLINE NEWLINE 
+        Problem: Suppose that a commuter rail line has 4000 daily riders when it first opens. The number of cars on the trains determines the  
+        capacity of the rail line. The system has an initial capacity of 10000 riders, so there is a spare capacity of 10000-4000=6000 riders initially. 
+        The transportation authority has enough money to add 2 cars per year, which increases the capacity by 500 riders annually. However, the 
+        rail line proves to be quite popular and many new people start riding the commuter rail line each year. The ridership grows by 10% each year.   
       
-        Goal: Graph the spare capacity of the rail line over 10 years. NEWLINE
-        A model has been provided for you and run. As you can tell from the 'C' indicators, not all of the nodes are correct. You will need to fix the model. NEWLINE NEWLINE 
+        Goal: Graph the spare capacity of the rail line over 10 years. 
+        A model has been provided for you and run. As you can tell from the 'C' indicators, not all of the nodes are correct. You will need to fix the model.   
       
-        Hint: Although calculations are often a source of errors, another common error is that the model is missing nodes and/or links.</TaskDescription>
+        Hint: Although calculations are often a source of errors, another common error is that the model is missing nodes and/or links.
+    </TaskDescription>
   
     <StartTime>0</StartTime>
     <EndTime>10</EndTime>

@@ -14,5 +14,6 @@ nblibraries.properties
 .DS_Store
 Thumbs.db
 db_user_password
-*.jar
+db_research_user_password
 *~
+/Dragoon/nbproject/private/

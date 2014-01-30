@@ -40,9 +40,12 @@ import edu.asu.laits.editor.listeners.GraphPropertiesChangeListener;
 import edu.asu.laits.editor.listeners.InsertModeChangeListener;
 import edu.asu.laits.editor.listeners.UndoAndRedoAbleListener;
 import edu.asu.laits.gui.MainWindow;
+import edu.asu.laits.logger.UserActivityLog;
 import edu.asu.laits.properties.GlobalProperties;
 import edu.asu.laits.properties.GraphProperties;
 import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.HashSet;
 import java.util.Iterator;
 import javax.swing.SwingConstants;
 import net.sourceforge.jeval.Evaluator;
@@ -210,12 +213,13 @@ public class GraphEditorPane extends JGraph {
                 int selectedVertices = selectedVertexObjects.length;
                 //int selectedEdges = selectedEdgeObjects.length;
 
-                if(selectedVertices > 0){
-                    MainWindow.getInstance().getModelToolBar().enableDeleteNodeButton();
-                } else {
-                    MainWindow.getInstance().getModelToolBar().disableDeleteNodeButton();
+                if(!ApplicationContext.isCoachedMode()){
+                    if(selectedVertices > 0){
+                        MainWindow.getInstance().getModelToolBar().enableDeleteNodeButton();
+                    } else {
+                        MainWindow.getInstance().getModelToolBar().disableDeleteNodeButton();
+                    }
                 }
-                
                 if(ApplicationContext.getApplicationEnvironment().equals(ApplicationContext.ApplicationEnvironment.DEV)){
                     currentStatusMessageProvider.setMessage("Nodes: " + vertices + ", Edges: " + edges
                     + ", Selected Nodes:  " + selectedVertices );
@@ -336,7 +340,7 @@ public class GraphEditorPane extends JGraph {
         }
 
         this.removeSelected();
-
+        Set<Edge> edgesToRemove = new HashSet<Edge>();
         Iterator<Vertex> it = graph.vertexSet().iterator();
         Vertex v;
         while (it.hasNext()) {
@@ -355,12 +359,23 @@ public class GraphEditorPane extends JGraph {
                         }
                     }
                     
-                    if(shouldEquationChange)
+                    // If equation gets reset, remove all the incoming edges
+                    if(shouldEquationChange){
                         v.setEquation("");
+                        Set<Edge> incomingEdges = graph.incomingEdgesOf(v);
+                        for(Edge e : incomingEdges){
+                            edgesToRemove.add(e);
+                        }
+                    }
                     
                 } catch (Exception e){
                     e.printStackTrace();
                 }
+            }
+            
+            for(Edge e : edgesToRemove) {
+                System.out.println("removing edge");
+                graph.removeEdge(e);
             }
             
             if(v.getCorrectValues() != null) 
@@ -368,8 +383,10 @@ public class GraphEditorPane extends JGraph {
             
             v.setGraphsStatus(Vertex.GraphsStatus.UNDEFINED);
         }
-
-        activityLogs.debug("Deleted Selected Nodes: " + selectedNodes);
+        Map<String, Object> logMessage = new HashMap<String, Object>();
+        logMessage.put("type","delete-action");
+        logMessage.put("deleted-nodes", selectedNodes);
+        activityLogs.debug(new UserActivityLog(UserActivityLog.CLIENT_MESSAGE, logMessage));        
     }
     
     public void addEdge(Vertex sourceVeretx, Vertex targetVertex){
