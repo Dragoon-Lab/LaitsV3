@@ -38,12 +38,14 @@ DROP TABLE IF EXISTS `dev_logs`;
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
 /*!40101 SET character_set_client = utf8 */;
 CREATE TABLE `dev_logs` (
-  `USER_ID` varchar(30) NOT NULL,
-  `DATED` datetime NOT NULL,
-  `LOGGER` varchar(200) NOT NULL,
-  `LEVEL` varchar(10) NOT NULL,
-  `MESSAGE` varchar(1000) NOT NULL
-) ENGINE=MyISAM DEFAULT CHARSET=latin1;
+  `session_id` varchar(50) NOT NULL,
+  `location` varchar(200) DEFAULT NULL,
+  `level` varchar(10) DEFAULT NULL,
+  `message` varchar(1000) DEFAULT NULL,
+  `timestamp` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP,
+  KEY `fk_devlog_session` (`session_id`)
+) ENGINE=InnoDB DEFAULT CHARSET=latin1 ;
+
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -51,32 +53,28 @@ CREATE TABLE `dev_logs` (
 --
 
 DROP TABLE IF EXISTS `session`;
-/*!40101 SET @saved_cs_client     = @@character_set_client */;
-/*!40101 SET character_set_client = utf8 */;
+
 CREATE TABLE `session` (
   `session_id` varchar(50) NOT NULL,
   `mode` varchar(20) NOT NULL,
   `user` varchar(30) NOT NULL,
   `section` varchar(30) NOT NULL,
-  `problem_name` varchar(30),
-  `author` varchar(30),
-  `time` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP on update CURRENT_TIMESTAMP,
-  PRIMARY KEY(session_id)
-) ENGINE=MyISAM DEFAULT CHARSET=latin1;
-/*!40101 SET character_set_client = @saved_cs_client */;
+  `problem_name` varchar(30) DEFAULT NULL,
+  `author` varchar(30) DEFAULT NULL,
+  `time` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
+  `expired` tinyint(4) DEFAULT '0',
+  PRIMARY KEY (`session_id`)
+) ENGINE=InnoDB DEFAULT CHARSET=latin1;
 
---
--- Table structure for table `autosave_table`
---
 
 DROP TABLE IF EXISTS `autosave_table`;
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
 /*!40101 SET character_set_client = utf8 */;
 CREATE TABLE `autosave_table` (
   `session_id` varchar(50) NOT NULL,
-  `saveData` text,
-  `date` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP, 
-  PRIMARY KEY(session_id)
+  `save_data` text,
+  `date` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP,
+  PRIMARY KEY (`session_id`)
 ) ENGINE=MyISAM DEFAULT CHARSET=latin1;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
@@ -88,13 +86,14 @@ DROP TABLE IF EXISTS `step`;
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
 /*!40101 SET character_set_client = utf8 */;
 CREATE TABLE `step` (
-  `tid` int(10) unsigned NOT NULL auto_increment,
+  `tid` int(10) unsigned NOT NULL AUTO_INCREMENT,
   `session_id` varchar(50) NOT NULL,
   `method` varchar(20) NOT NULL,
   `message` text,
-  PRIMARY KEY(tid)
-) ENGINE=MyISAM DEFAULT CHARSET=latin1;
-ALTER TABLE `step` ADD KEY(session_id);
+  PRIMARY KEY (`tid`),
+  KEY `fk_StepSession` (`session_id`),
+  CONSTRAINT `fk_StepSession` FOREIGN KEY (`session_id`) REFERENCES `session` (`session_id`) ON DELETE CASCADE ON UPDATE CASCADE
+) ENGINE=InnoDB AUTO_INCREMENT=13058 DEFAULT CHARSET=latin1;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 
