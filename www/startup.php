@@ -1,7 +1,5 @@
 <?php
-    require "db-login.php";
-    ini_set("log_errors", 1);
-    ini_set("error_log", "/tmp/php-error-ram.log"); 
+    require "common.php";
     
     $app_loader = new Startup;
     $app_loader->start_app();
@@ -18,25 +16,21 @@
         private $section;
         private $problem_name;
         private $author; // TODO
-        private $connection;
         private $hostURL;
         private $forumURL;
-        
+        private $common;
         
         // Constants to represent HTML login form params
         const USER_NAME_PARAM = "username";
         const MODE_PARAM = "mode";
         const SECTION_PARAM = "section";
-        const PROBLEM_NAME_PARAM = "problem_id";
+        const PROBLEM_NAME_PARAM = "problem_id";    
         const AUTHOR_PARAM = "";
-        
+        const DEFAULT_FORUM = "http://dragoon.asu.edu/forum/viewtopic.phpq";
+         
         public function __construct() 
         {
-            global $dbuser, $dbpass, $dbname;
-            
-            // Connect to db
-            $this->connection = mysqli_connect("localhost", $dbuser, $dbpass, $dbname)
-            or trigger_error('Could not connect to database.'); 
+            $this->common =  new Common;
         }
         
         public function start_app()
@@ -49,9 +43,8 @@
                     $this->hostURL = "http://" . $_SERVER['SERVER_NAME'] . 
                     substr($URI, 0, strrpos($URI,'/') + 1);
             
-                    $this->forumURL = isset($_REQUEST['forumurl']) ? $_REQUEST['forumurl'] : $this->hostURL;
-                    
-                    $session_id = $this->generate_and_save_session_to_db();
+                    $this->forumURL = isset($_REQUEST['forumurl']) ? $_REQUEST['forumurl'] : self::DEFAULT_FORUM;
+                    $session_id = $this->common->generate_and_save_session_to_db($this->username, $this->mode, $this->section, $this->problem_name);
                     $this->send_jnlp_response($session_id);
                 }
                 else
@@ -74,11 +67,13 @@
                     isset($_REQUEST[self::PROBLEM_NAME_PARAM])) {
                
                 // Initialize Variables
-                $this->username = mysqli_real_escape_string($this->connection, $_REQUEST[self::USER_NAME_PARAM]);
-                $this->mode = mysqli_real_escape_string($this->connection, $_REQUEST[self::MODE_PARAM]);
-                $this->section = mysqli_real_escape_string($this->connection, $_REQUEST[self::SECTION_PARAM]);
-                $this->problem_name = mysqli_real_escape_string($this->connection, $_REQUEST[self::PROBLEM_NAME_PARAM]);
+                $this->username = mysqli_real_escape_string($this->common->connection, $_REQUEST[self::USER_NAME_PARAM]);
+                $this->mode = mysqli_real_escape_string($this->common->connection, $_REQUEST[self::MODE_PARAM]);
+                $this->section = mysqli_real_escape_string($this->common->connection, $_REQUEST[self::SECTION_PARAM]);
+                $this->problem_name = mysqli_real_escape_string($this->common->connection, $_REQUEST[self::PROBLEM_NAME_PARAM]);
                 
+                // Mode will always be treated in uppercase
+                $this->mode = strtoupper($this->mode);
                 return true;
             } 
             return false;
@@ -102,24 +97,6 @@
                 return true;
             }
             return false;        
-        }
-        
-        private function generate_session_id()
-        {
-            // Using MD5 of user + section + current_time
-            $id = $this->username . $this->section . time();
-            $hash = md5($id);
-            return $hash;
-        }
-        
-        private function generate_and_save_session_to_db() 
-        {
-            $session_id = $this->generate_session_id();
-            $query = "INSERT INTO session (session_id, mode, user, section, problem_name) 
-                    VALUES ('$session_id','$this->mode','$this->username','$this->section','$this->problem_name') ";
-            //error_log("Executing " . $query);
-            $this->connection->query($query) or trigger_error("insert/update to session failed" .$this->connection->error);
-            return $session_id;
         }
         
         private function generate_jnlp_source($session_id) 
