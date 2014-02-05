@@ -54,8 +54,11 @@
 //        isNodeInput: function(/*string*/ mainNodeID, /*string*/ inputID)
 //        isNodeVisible: function(/*string*/ id)
 //        isNodesParentVisible: function(/*string*/ id)
+//        areNodeInputsVisible: function(/*string*/ id)
+//        areAllNodesVisible: function(/*string*/ id)
 //        getOptimalNode: function()
 //        getNextOptimalNode: function(/*string*/ currentNodeID)
+//        getNextOptimalInput: function(/*string*/ currentNodeID)
 //        getNodeInitial: function(/*string*/ id)
 //        getNodeEquation: function(/*string*/ id)
 //        getNodeCorrectDescription: function(/*string*/ id)
@@ -65,6 +68,7 @@
 //        isStudentModelEmpty: function()
 //        isInGivenModel: function(/*string*/ id)
 //        getStudentNodeInputs: function(/*string*/ id)
+//        isStudentNodeInput: function(/*string*/ mainNodeID, /*string*/ inputID)
 //        getStudentNodeX: function(/*string*/ id)
 //        getStudentNodeY: function(/*string*/ id)
 //        getStudentNodeDesc: function(/*string*/ id)
@@ -126,10 +130,8 @@ define(["dojo/_base/declare", "/laits/js/json/node", "/laits/js/json/student_nod
             this.lastNodeVisible = null;
             this.ID = 1;
             this.taskName = name;
-            this.properties = JSON.parse('{"phase" : "' + "" + '",\n"type" : "' + "" +
-                    '",\n"URL" : "' + url + '",\n"startTime" : ' + start + ',\n"endTime" : ' + end +
-                    ',\n"timeStep" : ' + timeStep + ',\n"units" : "' + units + '"}');
-            this.model = JSON.parse('{}');
+            this.properties = {phase: "", type: "", URL: url, startTime: start, endTime: end, timeStep: timeStep, units: units};
+            this.model = {};
             this.checkedNodes = new Array();
             this._buildModel();
         },
@@ -369,10 +371,10 @@ define(["dojo/_base/declare", "/laits/js/json/node", "/laits/js/json/student_nod
             //      input into the mainNodeID 
             for (var i = 0; i < this.model.task.givenModelNodes.length; i++) {
                 if (mainNodeID === this.model.task.givenModelNodes[i].ID && this.model.task.givenModelNodes[i].inputs.length !== 0) {
-                    i = this.model.task.givenModelNodes.length;
                     for (var ii = 0; ii < this.model.task.givenModelNodes[i].inputs.length; ii++)
                         if (inputID === this.model.task.givenModelNodes[i].inputs[ii].ID)
                             return true;
+                    i = this.model.task.givenModelNodes.length;
                 }
             }
             return false;
@@ -395,6 +397,20 @@ define(["dojo/_base/declare", "/laits/js/json/node", "/laits/js/json/student_nod
                         return true;
             }
             return false;
+        },
+        areNodeInputsVisible: function(/*string*/ id) {
+            //Summary: returns true if all of the inputs in a given node are visible
+            for (var i = 0; i < this.getNodeInputs(id).length; i++)
+                if (!this.isNodeVisible(this.getNodeInputs(id)[i]))
+                    return false;
+            return true;
+        },
+        areAllNodesVisible: function(/*string*/ id) {
+            //Summary: returns true if all of the inputs in the model are visible
+            for (var i = 0; i < this.givenModelNodes(id).length; i++)
+                if (!this.isNodeVisible(this.givenModelNodes(id)[i]))
+                    return false;
+            return true;
         },
         getOptimalNode: function() {
             // Summary: returns the ID of an optimal node to be used next
@@ -434,7 +450,13 @@ define(["dojo/_base/declare", "/laits/js/json/node", "/laits/js/json/student_nod
             //      null if there is not an optimal child node
             var checkedNodes = [];
             return this._checkChildren(currentNodeID, checkedNodes);
-
+        },
+        getNextOptimalInput: function(/*string*/ currentNodeID) {
+            //Summary: returns the next non-visible input to a node
+            for (var i = 0; i < this.getNodeInputs(currentNodeID).length; i++)
+                if (!this.isNodeVisible(this.getNodeInputs(currentNodeID)[i]))
+                    return this.getNodeInputs(currentNodeID)[i];
+            return null;
         },
         isDescriptionOptimal: function(/*string*/ description) {
             for (var i = 0; i < this.model.task.givenModelNodes.length; i++) {
@@ -570,6 +592,19 @@ define(["dojo/_base/declare", "/laits/js/json/node", "/laits/js/json/student_nod
                 }
             }
             return null;
+        },
+        isStudentNodeInput: function(/*string*/ mainNodeID, /*string*/ inputID) {
+            // Summary: returns true if the node identified by inputID is an 
+            //      input into the mainNodeID in the Student Model
+            for (var i = 0; i < this.model.task.studentModelNodes.length; i++) {
+                if (mainNodeID === this.model.task.studentModelNodes[i].ID && this.model.task.studentModelNodes[i].inputs.length !== 0) {
+                    i = this.model.task.studentModelNodes.length;
+                    for (var ii = 0; ii < this.model.task.studentModelNodes[i].inputs.length; ii++)
+                        if (inputID === this.model.task.studentModelNodes[i].inputs[ii].ID)
+                            return true;
+                }
+            }
+            return false;
         },
         getStudentNodeX: function(/*string*/ id) {
             for (var i = 0; i < this.model.task.studentModelNodes.length; i++) {
@@ -818,7 +853,7 @@ define(["dojo/_base/declare", "/laits/js/json/node", "/laits/js/json/student_nod
             //      required to complete the model) or "extra" (meaning the 
             //      description is not mentioned in the problem and is not 
             //      needed to solve the problem)
-            this.model.task.extraDescriptions.push(JSON.parse('{"text": "' + text + '", "type": "' + type + '"}'));
+            this.model.task.extraDescriptions.push({text: text, type: type});
         },
         addStudentNode: function() {
             // Summary: builds a new node in the student model and returns the node's unique ID

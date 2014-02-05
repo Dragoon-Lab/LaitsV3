@@ -55,11 +55,11 @@
 
                 rabbits.addExtraDescription("The number of rabbits in the population during the second month", "model");
                 rabbits.addExtraDescription("The ratio of rabbits born with superpowers to ordinary rabbits", "extra");
-                
+
                 //************ Using the Pedagogical Model ************
                 var ped = new pm("coached", rabbits);
-                var descInfo;
-                
+                var descInfo, typeInfo, unitsInfo, inputsInfo;
+
                 //Set description
                 console.log("The ratio of number of rabbits born in a month to the rabbit population that month");
                 descInfo = ped.descriptionAction("The ratio of number of rabbits born in a month to the rabbit population that month");
@@ -72,24 +72,38 @@
                 console.log("The number of rabbits born each month");
                 descInfo = ped.descriptionAction("The number of rabbits born each month");
                 console.log("******" + descInfo.message + "******\n");
-                
+
                 //Set type
                 console.log("sum");
                 typeInfo = ped.typeAction(descInfo.ID, "sum");
                 console.log("******" + typeInfo.message + "******\n");
-                
+
                 console.log("product");
                 typeInfo = ped.typeAction(descInfo.ID, "product");
                 console.log("******" + typeInfo.message + "******\n");
-                
+
                 //Set units
                 console.log("rabbits");
                 unitsInfo = ped.unitsAction(typeInfo.ID, "rabbits");
                 console.log("******" + unitsInfo.message + "******\n");
-                
+
                 console.log("births");
                 unitsInfo = ped.unitsAction(typeInfo.ID, "births");
-                console.log("******" + unitsInfo.message + "******\n");
+                console.log("******" + unitsInfo.status + "******\n");
+
+                //Set inputs
+                console.log("The ratio of rabbits born with superpowers to ordinary rabbits");
+                inputsInfo = ped.inputsAction(unitsInfo.ID, "The ratio of rabbits born with superpowers to ordinary rabbits");
+                console.log("******" + inputsInfo.message + "******\n");
+                
+                console.log("A bunch of rabbits");
+                inputsInfo = ped.inputsAction(unitsInfo.ID, "A bunch of rabbits");
+                console.log("******" + inputsInfo.message + "******\n");
+                
+                console.log("The number of rabbits in the population");
+                inputsInfo = ped.inputsAction(unitsInfo.ID, "The number of rabbits in the population");
+                console.log("******" + inputsInfo.message + "******\n");
+                alert(inputsInfo.status); 
 
 
 

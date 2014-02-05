@@ -26,11 +26,11 @@ define(["dojo/_base/declare"]
             this.initial = "";
             this.equation = "";
             this.correctDesc = "";
-            this.attemptCount = JSON.parse('{"description" : ' + 0 + ',\n"type" : ' + 0 + ',\n"initial" : ' + 0 + ',\n"units" : ' + 0 + ',\n"equation" : ' + 0 + '}');
-            this.status = JSON.parse('{"description" : "' + null + '",\n"type" : "' + null + '",\n"initial" : "' + null + '",\n"units" : "' + null + '",\n"equation" : "' + null + '"}');
+            this.attemptCount = {description: 0, type: 0, initial: 0, units: 0, equation: 0};
+            this.status = {description: null, type: null, initial: null, units: null, equation: null};
         },
         addInput: function(/*string*/ id) {
-            var input = JSON.parse('{"ID" : "' + id + '"}');
+            var input = {ID: id};
             this.inputs.push(input);
         },
         deleteInput: function(/*string*/ id) {
