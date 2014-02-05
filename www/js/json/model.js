@@ -29,6 +29,7 @@
 //        _buildModel: function()
 //        _updateNextXYPosition: function()
 //        _setStatus: function(/*string*/ id, /*string*/ part, /*string*/ status)
+//        _checkChildren: function(/*string*/ currentNodeID, /*string array*/ checkedNodes)
 // *** Public Functions ***
 //        loadModel: function(/*string*/ jsonString)
 //        getModelAsString: function()
@@ -53,6 +54,8 @@
 //        isNodeInput: function(/*string*/ mainNodeID, /*string*/ inputID)
 //        isNodeVisible: function(/*string*/ id)
 //        isNodesParentVisible: function(/*string*/ id)
+//        getOptimalNode: function()
+//        getNextOptimalNode: function(/*string*/ currentNodeID)
 //        getNodeInitial: function(/*string*/ id)
 //        getNodeEquation: function(/*string*/ id)
 //        getNodeCorrectDescription: function(/*string*/ id)
@@ -127,6 +130,7 @@ define(["dojo/_base/declare", "/laits/js/json/node", "/laits/js/json/student_nod
                     '",\n"URL" : "' + url + '",\n"startTime" : ' + start + ',\n"endTime" : ' + end +
                     ',\n"timeStep" : ' + timeStep + ',\n"units" : "' + units + '"}');
             this.model = JSON.parse('{}');
+            this.checkedNodes = new Array();
             this._buildModel();
         },
         /**
@@ -190,6 +194,29 @@ define(["dojo/_base/declare", "/laits/js/json/node", "/laits/js/json/student_nod
                             this.model.task.givenModelNodes[i].addStatus(null, null, null, null, status);
                             break;
                     }
+        },
+        _checkChildren: function(/*string*/ currentNodeID, /*string array*/ checkedNodes) {
+            // Summary: searches the depth of a tree below the given node and returns an
+            //      optimal child node; if no optimal child node exists it returns null
+            // Note: checkedNodes is an array that stores the nodes that have been checked 
+            //      to avoid an infinite loop; it is set to empty before _checkChildren() 
+            //      is called by getNextOptimalNode()
+            // Tags: private
+            checkedNodes.push(currentNodeID);
+            for (var i = 0; i < this.model.task.givenModelNodes.length; i++)
+                if (currentNodeID === this.model.task.givenModelNodes[i].ID) {
+                    for (var ii = 0; ii < this.model.task.givenModelNodes[i].inputs.length; ii++)
+                        if (checkedNodes.indexOf(this.model.task.givenModelNodes[i].inputs[ii].ID) === -1)
+                            if (this.isNodeVisible(this.model.task.givenModelNodes[i].inputs[ii].ID) === false) {
+                                return this.model.task.givenModelNodes[i].inputs[ii].ID;
+                            } else {
+                                var temp = this._checkChildren(this.model.task.givenModelNodes[i].inputs[ii].ID, checkedNodes);
+                                if (temp !== null)
+                                    return temp;
+                            }
+                    return null;
+                }
+            return null;
         },
         /**
          * 
@@ -370,13 +397,13 @@ define(["dojo/_base/declare", "/laits/js/json/node", "/laits/js/json/student_nod
             return false;
         },
         getOptimalNode: function() {
-            // Summary: returns the ID of an optimal node to be used next; it 
-            //      first searches for an optimal child node of the last valid 
-            //      node that was made visible, then if none are found the 
-            //      function searches for a parent node that is visible but 
-            //      still has descendant nodes that are not, and then it 
-            //      searches for a parent node that has not been defined, and 
-            //      then for any node that has not been defined 
+            // Summary: returns the ID of an optimal node to be used next
+            // Note: the function first searches for an optimal child node 
+            //      of the last valid node that was made visible, then if none 
+            //      are found the function searches for a parent node that is 
+            //      visible but still has descendant nodes that are not, and 
+            //      then it searches for a parent node that has not been 
+            //      defined, and then for any node that has not been defined 
             var id = null;
             if (this.lastNodeVisible !== null) {
                 //searches for an optimal child node of the last valid node that was made visible
@@ -387,8 +414,8 @@ define(["dojo/_base/declare", "/laits/js/json/node", "/laits/js/json/student_nod
             for (var i = 0; i < this.model.task.givenModelNodes.length; i++) {
                 //searches for a parent node that is visible but still has descendant nodes that are not
                 if (this.model.task.givenModelNodes[i].parentNode) {
-                    if (isNodeVisible(this.model.task.givenModelNodes[i].ID)) {
-                        id = getNextOptimalNode(this.model.task.givenModelNodes[i].ID);
+                    if (this.isNodeVisible(this.model.task.givenModelNodes[i].ID)) {
+                        id = thils.getNextOptimalNode(this.model.task.givenModelNodes[i].ID);
                         if (id !== null)
                             return id;
                     } else {
@@ -403,20 +430,11 @@ define(["dojo/_base/declare", "/laits/js/json/node", "/laits/js/json/student_nod
             return id;
         },
         getNextOptimalNode: function(/*string*/ currentNodeID) {
-            for (var i = 0; i < this.model.task.givenModelNodes.length; i++) {
-                if (currentNodeID === this.model.task.givenModelNodes[i].ID) {
-                    for (var ii = 0; ii < this.model.task.givenModelNodes[ii].inputs.length; ii++) {
-                        if (this.isNodeVisible(this.model.task.givenModelNodes[i].inputs[ii].ID) === false)
-                            return this.model.task.givenModelNodes[i].inputs[ii].ID;
-                        else {
-                            var temp = getNextOptimalNode(this.model.task.givenModelNodes[i].inputs[ii].ID);
-                            if(temp !== null)
-                                return temp;
-                        }
-                    }
-                }
-            }
-            return null;
+            // Summary: returns the next optimal child node of currentNodeID or 
+            //      null if there is not an optimal child node
+            var checkedNodes = [];
+            return this._checkChildren(currentNodeID, checkedNodes);
+
         },
         isDescriptionOptimal: function(/*string*/ description) {
             for (var i = 0; i < this.model.task.givenModelNodes.length; i++) {
@@ -477,6 +495,18 @@ define(["dojo/_base/declare", "/laits/js/json/node", "/laits/js/json/student_nod
                             break;
                     }
             return null;
+        },
+        setDescriptionAttemptCount: function(/*string*/ id, /*int*/ count) {
+            // Summary: returns the number of attempts a student has made on the 
+            //      given part of the problem
+            console.log("id2 count: " + this.model.task.givenModelNodes[1].attemptCount.description);
+            console.log(id + " attempt count: " + count);
+            for (var i = 0; i < this.model.task.givenModelNodes.length; i++)
+                if (id === this.model.task.givenModelNodes[i].ID) {
+                    this.model.task.givenModelNodes[i].attemptCount.description = count;
+                    console.log(this.model.task.givenModelNodes[i].ID + " recorded attempt count: " + this.model.task.givenModelNodes[i].attemptCount.description);
+                }
+            console.log("id2 count: " + this.model.task.givenModelNodes[1].attemptCount.description);
         },
         getNodeStatus: function(/*string*/ id, /*string*/ part) {
             // Summary: returns the progress (correct, incorrect, or demo) of 
@@ -920,7 +950,6 @@ define(["dojo/_base/declare", "/laits/js/json/node", "/laits/js/json/student_nod
             //      refers to the student input
             for (var i = 0; i < this.model.task.studentModelNodes.length; i++) {
                 if (id === this.model.task.studentModelNodes[i].ID) {
-
                     switch (part) {
                         case "description":
                             this.model.task.studentModelNodes[i].setStudentSeletions(studInput, null, null, null, null);
@@ -929,8 +958,11 @@ define(["dojo/_base/declare", "/laits/js/json/node", "/laits/js/json/student_nod
                                     this._setStatus(id, part, "correct");
                                 else
                                     this._setStatus(id, part, "incorrect");
-                                this.model.task.givenModelNodes[i].addAttempt(true, false, false, false, false);
+                                for (var ii = 0; ii < this.model.task.givenModelNodes.length; ii++)
+                                    if (id === this.model.task.givenModelNodes[i].ID)
+                                        this.model.task.givenModelNodes[ii].addAttempt(true, false, false, false, false);
                             }
+                            return true;
                             break;
                         case "type":
                             this.model.task.studentModelNodes[i].setStudentSeletions(null, studInput, null, null, null);
@@ -939,8 +971,11 @@ define(["dojo/_base/declare", "/laits/js/json/node", "/laits/js/json/student_nod
                                     this._setStatus(id, part, "correct");
                                 else
                                     this._setStatus(id, part, "incorrect");
-                                this.model.task.givenModelNodes[i].addAttempt(false, true, false, false, false);
+                                for (var ii = 0; ii < this.model.task.givenModelNodes.length; ii++)
+                                    if (id === this.model.task.givenModelNodes[ii].ID)
+                                        this.model.task.givenModelNodes[ii].addAttempt(false, true, false, false, false);
                             }
+                            return true;
                             break;
                         case "initial":
                             this.model.task.studentModelNodes[i].setStudentSeletions(null, null, studInput, null, null);
@@ -949,8 +984,11 @@ define(["dojo/_base/declare", "/laits/js/json/node", "/laits/js/json/student_nod
                                     this._setStatus(id, part, "correct");
                                 else
                                     this._setStatus(id, part, "incorrect");
-                                this.model.task.givenModelNodes[i].addAttempt(false, false, true, false, false);
+                                for (var ii = 0; ii < this.model.task.givenModelNodes.length; ii++)
+                                    if (id === this.model.task.givenModelNodes[ii].ID)
+                                        this.model.task.givenModelNodes[ii].addAttempt(false, false, true, false, false);
                             }
+                            return true;
                             break;
                         case "units":
                             this.model.task.studentModelNodes[i].setStudentSeletions(null, null, null, studInput, null);
@@ -959,8 +997,11 @@ define(["dojo/_base/declare", "/laits/js/json/node", "/laits/js/json/student_nod
                                     this._setStatus(id, part, "correct");
                                 else
                                     this._setStatus(id, part, "incorrect");
-                                this.model.task.givenModelNodes[i].addAttempt(false, false, false, true, false);
+                                for (var ii = 0; ii < this.model.task.givenModelNodes.length; ii++)
+                                    if (id === this.model.task.givenModelNodes[ii].ID)
+                                        this.model.task.givenModelNodes[ii].addAttempt(false, false, false, true, false);
                             }
+                            return true;
                             break;
                         case "equation":
                             this.model.task.studentModelNodes[i].setStudentSeletions(null, null, null, null, studInput);
@@ -969,20 +1010,24 @@ define(["dojo/_base/declare", "/laits/js/json/node", "/laits/js/json/student_nod
                                     this._setStatus(id, part, "correct");
                                 else
                                     this._setStatus(id, part, "incorrect");
-                                this.model.task.givenModelNodes[i].addAttempt(false, false, false, false, true);
+                                for (var ii = 0; ii < this.model.task.givenModelNodes.length; ii++)
+                                    if (id === this.model.task.givenModelNodes[ii].ID)
+                                        this.model.task.givenModelNodes[ii].addAttempt(false, false, false, false, true);
                             }
+                            return true;
                             break;
                     }
                 }
             }
+            return false;
         },
         setToDemo: function(/*string*/ id, /*string*/ part) {
             // Summary: sets the given part of the problem to "demo" in the given node
             //      and puts the correct answer into the studentModelNode; intended to 
             //      be used when the student asks for the answer or attempts the question 
             //      incorrectly too many times
-            for (var i = 0; i < this.model.task.givenModelNodes.length; i++)
-                if (id === this.model.task.givenModelNodes[i].ID) {
+            for (var i = 0; i < this.model.task.studentModelNodes.length; i++)
+                if (id === this.model.task.studentModelNodes[i].ID) {
                     switch (part) {
                         case "description":
                             this.model.task.studentModelNodes[i].setStudentSeletions(this.getNodeCorrectDescription(id), null, null, null, null);
