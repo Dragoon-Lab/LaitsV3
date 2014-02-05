@@ -55,31 +55,41 @@
 
                 rabbits.addExtraDescription("The number of rabbits in the population during the second month", "model");
                 rabbits.addExtraDescription("The ratio of rabbits born with superpowers to ordinary rabbits", "extra");
-
-
-
+                
+                //************ Using the Pedagogical Model ************
                 var ped = new pm("coached", rabbits);
                 var descInfo;
-
+                
+                //Set description
                 console.log("The ratio of number of rabbits born in a month to the rabbit population that month");
                 descInfo = ped.descriptionAction("The ratio of number of rabbits born in a month to the rabbit population that month");
-                console.log("\n******" + descInfo.message + "******\n");
+                console.log("******" + descInfo.message + "******\n");
 
                 console.log("The ratio of rabbits born with superpowers to ordinary rabbits");
                 descInfo = ped.descriptionAction("The ratio of rabbits born with superpowers to ordinary rabbits");
-                console.log("\n******" + descInfo.message + "******\n");
+                console.log("******" + descInfo.message + "******\n");
 
                 console.log("The number of rabbits born each month");
                 descInfo = ped.descriptionAction("The number of rabbits born each month");
-                console.log("\n******" + descInfo.message + "******\n");
-
+                console.log("******" + descInfo.message + "******\n");
+                
+                //Set type
                 console.log("sum");
                 typeInfo = ped.typeAction(descInfo.ID, "sum");
-                console.log("\n******" + typeInfo.message + "******\n");
-
+                console.log("******" + typeInfo.message + "******\n");
+                
                 console.log("product");
                 typeInfo = ped.typeAction(descInfo.ID, "product");
-                console.log("\n******" + typeInfo.message + "******\n");
+                console.log("******" + typeInfo.message + "******\n");
+                
+                //Set units
+                console.log("rabbits");
+                unitsInfo = ped.unitsAction(typeInfo.ID, "rabbits");
+                console.log("******" + unitsInfo.message + "******\n");
+                
+                console.log("births");
+                unitsInfo = ped.unitsAction(typeInfo.ID, "births");
+                console.log("******" + unitsInfo.message + "******\n");
 
 
 

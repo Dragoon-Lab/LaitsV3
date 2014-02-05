@@ -36,9 +36,8 @@ define(["dojo/_base/declare", "/laits/js/parserWS"]
             this.description_bCounter = 0;
             this.description_lCounter = 0;
             this.type_iCounter = 0;
-            this.initialCounter = 0;
-            this.unitsCounter = 0;
-            this.equationCounter = 0;
+            this.initial_jCounter = 0;
+            this.units_jCounter = 0;
         },
         _getType: function(/*string*/ expression) {
             //Summary: determines the sub type of a node with type "function"
@@ -84,6 +83,8 @@ define(["dojo/_base/declare", "/laits/js/parserWS"]
             this.infoObject.message = null;
             this.infoObject.status = null;
 
+            var id = this.infoObject.ID;
+
             //creates pedagogicalTable, a double array of sorts that helps assign the
             //      appropriate actions to be taken; the actions are assigned to sequence
             var optimal = {coached: "ijno", feedback: "ijno", test: "ino", power: "ino"};
@@ -102,7 +103,7 @@ define(["dojo/_base/declare", "/laits/js/parserWS"]
             var sequence;
 
             //assign the action based on the answer
-            if (this.infoObject.ID === null) {
+            if (id === null) {
                 for (var i = 0; i < this.model.getExtraDescriptions.length; i++) {
                     if (answer === this.model.getExtraDescriptions("initial")[i])
                         sequence = pedagogicalTable["initialValue"][this.userType];
@@ -111,9 +112,9 @@ define(["dojo/_base/declare", "/laits/js/parserWS"]
                     else
                         sequence = pedagogicalTable["irrelevant"][this.userType];
                 }
-            } else if (this.model.isNodeVisible(this.infoObject.ID)) {
+            } else if (this.model.isNodeVisible(id)) {
                 sequence = pedagogicalTable["redundant"][this.userType];
-            } else if (this.model.isParentNode(this.infoObject.ID) || this.model.isNodesParentVisible(this.infoObject.ID)) {
+            } else if (this.model.isParentNode(id) || this.model.isNodesParentVisible(id)) {
                 sequence = pedagogicalTable["optimal"][this.userType];
             } else if (this.model.isStudentModelEmpty()) {
                 sequence = pedagogicalTable["notTopLevel"][this.userType];
@@ -127,9 +128,9 @@ define(["dojo/_base/declare", "/laits/js/parserWS"]
             switch (sequence) {
                 case "ijno": // i: color green; j: message; n: disable description menu; o: enable type menu
                     this.infoObject.status = "correct";
-                    this.model.addStudentNodeWithName(this.model.getNodeNameByID(this.infoObject.ID));
-                    this.model.setStudentNodeSelection(this.infoObject.ID, "description", answer);
-                    this.model.setDescriptionAttemptCount(this.infoObject.ID, this.descriptionCounter + 1);
+                    this.model.addStudentNodeWithName(this.model.getNodeNameByID(id));
+                    this.model.setStudentNodeSelection(id, "description", answer);
+                    this.model.setDescriptionAttemptCount(id, this.descriptionCounter + 1);
                     if (this.description_jCounter < 1)
                         this.infoObject.message = "Green means correct. Good job!";
                     else
@@ -141,9 +142,9 @@ define(["dojo/_base/declare", "/laits/js/parserWS"]
                     break;
                 case "ino": // i: color green; n: disable description menu; o: enable type menu
                     this.infoObject.status = "correct";
-                    this.model.addStudentNodeWithName(this.model.getNodeNameByID(this.infoObject.ID));
-                    this.model.setStudentNodeSelection(this.infoObject.ID, "description", answer);
-                    this.model.setDescriptionAttemptCount(this.infoObject.ID, this.descriptionCounter + 1);
+                    this.model.addStudentNodeWithName(this.model.getNodeNameByID(id));
+                    this.model.setStudentNodeSelection(id, "description", answer);
+                    this.model.setDescriptionAttemptCount(id, this.descriptionCounter + 1);
                     this.description_jCounter++;
                     this.descriptionOn = false;
                     this.typeOn = true;
@@ -191,7 +192,7 @@ define(["dojo/_base/declare", "/laits/js/parserWS"]
                     break;
                 case "am": // a: color red; m: leave description menu active
                     this.infoObject.status = "incorrect";
-                    this.model.setStudentNodeSelection(this.infoObject.ID, "description", answer);
+                    this.model.setStudentNodeSelection(id, "description", answer);
                     this.descriptionCounter++;
                     break;
                 case "adm": // a: color red; d: message; m: leave description menu active
@@ -233,9 +234,10 @@ define(["dojo/_base/declare", "/laits/js/parserWS"]
                     break;
                 case "klno": //k: color yellow and give optimal solution; l: message; n: disable description menu; o: activate "Type"
                     this.infoObject.status = "demo";
-                    this.infoObject.ID = this.model.getOptimalNode();
-                    this.model.addStudentNodeWithName(this.model.getNodeNameByID(this.infoObject.ID));
-                    this.model.setStudentNodeSelection(this.infoObject.ID, "description", answer);
+                    id = this.model.getOptimalNode();
+                    this.infoObject.ID = id;
+                    this.model.addStudentNodeWithName(this.model.getNodeNameByID(id));
+                    this.model.setStudentNodeSelection(id, "description", answer);
                     if (this.description_lCounter < 1)
                         this.infoObject.message = "Sorry, but that quantity isn’t relevant to the model. Moreover, " +
                                 "this is the third failure, so a correct selection is being made for " +
@@ -247,15 +249,16 @@ define(["dojo/_base/declare", "/laits/js/parserWS"]
                     else
                         this.infoObject.message = "Please study this correct selection.";
                     this.description_lCounter++;
-                    this.model.setDescriptionAttemptCount(this.infoObject.ID, this.descriptionCounter + 1);
+                    this.model.setDescriptionAttemptCount(id, this.descriptionCounter + 1);
                     this.descriptionCounter = 0;
                     break;
                 case "kno":  //k: color yellow and give optimal solution; n: disable description menu; o: activate "Type"
                     this.infoObject.status = "demo";
-                    this.infoObject.ID = this.model.getOptimalNode();
-                    this.model.addStudentNodeWithName(this.model.getNodeNameByID(this.infoObject.ID));
-                    this.model.setStudentNodeSelection(this.infoObject.ID, "description", answer);
-                    this.model.setDescriptionAttemptCount(this.infoObject.ID, this.descriptionCounter + 1);
+                    id = this.model.getOptimalNode();
+                    this.infoObject.ID = id;
+                    this.model.addStudentNodeWithName(this.model.getNodeNameByID(id));
+                    this.model.setStudentNodeSelection(id, "description", answer);
+                    this.model.setDescriptionAttemptCount(id, this.descriptionCounter + 1);
                     descriptionCounter = 0;
                     break;
             }
@@ -280,24 +283,29 @@ define(["dojo/_base/declare", "/laits/js/parserWS"]
                 additionalFailure: additionalFailure};
 
             var sequence;
+            var correctType = this.model.getNodeType(id);
+
+            if (correctType === "function")
+                correctType = this._getType(this.model.getNodeEquation(id));
 
             //allowed anwers include parameter, accumulator, sum, product, and power user
             //      but the model only accepts parameter, accumulator, and function; these
             //      7 lines convert the type allow comparisons and to write to the model
-            if (answer === "sum" || answer === "product" || answer === "hidden function")
-                this.model.setStudentNodeSelection(this.infoObject.ID, "type", "function");
+            if (answer === "sum" || answer === "product" || answer === "hidden function") {
+                if (answer === correctType)
+                    this.model.setStudentNodeSelection(id, "type", "function");
+                else
+                    this.model.setStudentNodeSelection(id, "type", "null");
+            }
             else
-                this.model.setStudentNodeSelection(this.infoObject.ID, "type", answer);
-            var modelType = this.model.getNodeType(this.infoObject.ID);
-            if (modelType === "function")
-                modelType = this._getType(this.model.getNodeEquation(this.infoObject.ID));
+                this.model.setStudentNodeSelection(id, "type", answer);
 
             //assign the action based on the answer
-            if (answer === modelType) {
+            if (answer === correctType) {
                 sequence = pedagogicalTable["correct"][this.userType];
-            } else if (this.model.getNodeAttemptCount(this.infoObject.ID, "type") < 2) {
+            } else if (this.model.getNodeAttemptCount(id, "type") < 2) {
                 sequence = pedagogicalTable["firstFailure"][this.userType];
-            } else if (this.model.getNodeAttemptCount(this.infoObject.ID, "type") < 3) {
+            } else if (this.model.getNodeAttemptCount(id, "type") < 3) {
                 sequence = pedagogicalTable["secondFailure"][this.userType];
             } else
                 sequence = pedagogicalTable["additionalFailure"][this.userType];
@@ -307,7 +315,7 @@ define(["dojo/_base/declare", "/laits/js/parserWS"]
                 case "bfgk": // b: color green; f: freeze type widget; g: enable next widget based on selection; k: message
                     this.infoObject.status = "correct";
                     this.typeOn = false;
-                    if (modelType === "accumulator" || modelType === "parameter")
+                    if (correctType === "accumulator" || correctType === "parameter")
                         this.initialOn = true;
                     else
                         this.unitsOn = true;
@@ -315,7 +323,7 @@ define(["dojo/_base/declare", "/laits/js/parserWS"]
                     break;
                 case "behk": // b: color green; e: leave type widget open; g: enable next widget based on selection; k: message
                     this.infoObject.status = "correct";
-                    if (modelType === "accumulator" || modelType === "parameter") {
+                    if (correctType === "accumulator" || correctType === "parameter") {
                         this.initialOn = true;
                         this.unitsOn = false;
                     } else {
@@ -326,7 +334,7 @@ define(["dojo/_base/declare", "/laits/js/parserWS"]
                     break;
                 case "ceh": // c: leave selection white; e: leave type widge open; h: enable next widget based on selection
                     this.infoObject.status = null;
-                    if (modelType === "accumulator" || modelType === "parameter") {
+                    if (correctType === "accumulator" || correctType === "parameter") {
                         this.initialOn = true;
                         this.unitsOn = false;
                     } else {
@@ -337,30 +345,30 @@ define(["dojo/_base/declare", "/laits/js/parserWS"]
                 case "aje": // a: color red; j: hint; e: leave type widget open
                     this.infoObject.status = "incorrect";
                     //the following hints may be changed if the author is allowed to set his/her own hints
-                    if (this.model.getNodeType(this.infoObject.ID) === "function")
+                    if (this.model.getNodeType(id) === "function")
                         //currently the only action that will be taken within this "if" statement is the final "else" clause
                         if (answer === "sum")
                             this.infoObject.message = "That is incorrect. Remember, with \"" +
-                                    this.model.getNodeNameByID(this.infoObject.ID) + "\" you will need " +
+                                    this.model.getNodeNameByID(id) + "\" you will need " +
                                     "to multiply other nodes to determine its solution.";
                         else if (answer === "product")
                             this.infoObject.message = "That is incorrect. Remember, with \"" +
-                                    this.model.getNodeNameByID(this.infoObject.ID) + "\" you will need " +
+                                    this.model.getNodeNameByID(id) + "\" you will need " +
                                     "to add other nodes to determine its solution.";
                         else
                             this.infoObject.message = "That is incorrect. Remember, with \"" +
-                                    this.model.getNodeNameByID(this.infoObject.ID) + "\" you will need " +
+                                    this.model.getNodeNameByID(id) + "\" you will need " +
                                     "use other nodes to determine its solution.";
-                    else if (modelType === "parameter")
+                    else if (correctType === "parameter")
                         this.infoObject.message = "That is incorrect. Remember, \"" +
-                                this.model.getNodeNameByID(this.infoObject.ID) + "\" has a fixed value.";
+                                this.model.getNodeNameByID(id) + "\" has a fixed value.";
                     else
                         this.infoObject.message = "That is incorrect. Remember, \"" +
-                                this.model.getNodeNameByID(this.infoObject.ID) + "\" starts with one " +
+                                this.model.getNodeNameByID(id) + "\" starts with one " +
                                 "value, which then changes over time based on its other inputs.";
                     break;
                 case "difg": // d: color yellow; i: message; f: freeze type widget; g: enable next widget based on selection
-                    this.model.setToDemo(this.infoObject.ID, "type");
+                    this.model.setToDemo(id, "type");
                     this.infoObject.status = "demo";
                     if (this.type_iCounter < 1) {
                         this.infoObject.message = "Yellow means that you made an incorrect " +
@@ -371,7 +379,7 @@ define(["dojo/_base/declare", "/laits/js/parserWS"]
                     } else
                         this.infoObject.message = "Can you figure out why this is the right type for the node?";
                     this.typeOn = false;
-                    if (modelType === "accumulator" || modelType === "parameter")
+                    if (correctType === "accumulator")
                         this.initialOn = true;
                     else
                         this.unitsOn = true;
@@ -399,19 +407,121 @@ define(["dojo/_base/declare", "/laits/js/parserWS"]
                 additionalFailure: additionalFailure};
 
             var sequence;
+            var correctInitial = this.model.getNodeInitial(id);
 
-            this.model.setStudentNodeSelection(this.infoObject.ID, "initial", answer);
+            this.model.setStudentNodeSelection(id, "initial", answer);
 
-            //allowed anwers include parameter, accumulator, sum, product, and power user
-            //      but the model only accepts parameter, accumulator, and function; these
-            //      5 lines convert the answer to an acceptable format
+            //if the initial entry is blank, the user may put anything in it and continue, if it
+            //      is not blank then the user must enter the correct initial value; this is for
+            //      a possible future feature; if an initial entry is not needed (i.e. the type
+            //      is a parameter or a function) then initial is skipped altogether
+            if (correctInitial === null) {
+                this.infoObject.status = correct;
+                if (this.model.getNodeUnits !== null)
+                    this.unitsOn = true;
+                else
+                    this.inputsOn = true;
+            } else {
+                //assign the action based on the answer
+                if (answer === correctInitial) {
+                    sequence = pedagogicalTable["correct"][this.userType];
+                } else if (this.model.getNodeAttemptCount(id, "initial") < 2) {
+                    sequence = pedagogicalTable["firstFailure"][this.userType];
+                } else if (this.model.getNodeAttemptCount(id, "initial") < 3) {
+                    sequence = pedagogicalTable["secondFailure"][this.userType];
+                } else
+                    sequence = pedagogicalTable["additionalFailure"][this.userType];
+
+                //take the appropriate action
+                switch (sequence) {
+                    case "beg": // b: color green; f: freeze widget; g: enable next widget
+                        this.infoObject.status = "correct";
+                        this.initialOn = false;
+                        if (this.model.getNodeUnits(id) !== null)
+                            this.unitsOn = true;
+                        else
+                            this.inputsOn = true;
+                        break;
+                    case "bfh": // b: color green; f: leave widget active; g: enable next widget
+                        this.infoObject.status = "correct";
+                        if (this.model.getNodeUnits(id) !== null)
+                            this.unitsOn = true;
+                        else
+                            this.inputsOn = true;
+                        break;
+                    case "aif": // a: color red; i: hint; g: leave widget active
+                        this.infoObject.status = "incorrect";
+                        //hint
+                        break;
+                    case "c": // c: leave the widget white
+                        break;
+                    case "degj": // d: mark yellow and give answer; e: freeze widget; enable next widget; j: message
+                        this.infoObject.status = "demo";
+                        if (this.initial_jCounter < 1)
+                            this.infoObject.message = "Yellow means that you made an incorrect " +
+                                    "choice too many times, so you are being shown the correct " +
+                                    "choice.  You should figure out why it is correct so that " +
+                                    "next time your first choice will be correct.";
+                        else
+                            this.infoObject.message = "Can you figure out why this is the right initial value for the quantity?"
+                        this.initial_jCounter++;
+                        this.initialOn = false;
+                        if (this.model.getNodeUnits !== null)
+                            this.unitsOn = true;
+                        else
+                            this.inputsOn = true;
+                        break;
+                    case "djeh": // d: mark yellow and give answer; j: message; e: freeze widget; h: enable all widgets for the nodes type;
+                        this.infoObject.status = "demo";
+                        if (this.initial_jCounter < 1)
+                            this.infoObject.message = "Yellow means that you made an incorrect " +
+                                    "choice too many times, so you are being shown the correct " +
+                                    "choice.  You should figure out why it is correct so that " +
+                                    "next time your first choice will be correct.";
+                        else
+                            this.infoObject.message = "Can you figure out why this is the right initial value for the quantity?"
+                        this.initial_jCounter++;
+                        this.initialOn = false;
+                        if (this.model.getNodeUnits !== null)
+                            this.unitsOn = true;
+                        else
+                            this.inputsOn = true;
+                        break;
+                }
+                return this.infoObject;
+            }
+        },
+        unitsAction: function(/*string*/ id, /*string*/ answer) {
+            //Summary: accepts an answer that the student provides, checks its validity,
+            //      and returns whether the answer is correct, and a message; unitsAction()
+            //      is similar to initialAction();
+
+            //resets the object that will be returned
+            this.infoObject.ID = id;
+            this.infoObject.message = null;
+            this.infoObject.status = null;
+
+            //creates pedagogicalTable, a double array of sorts that helps assign the
+            //      appropriate actions to be taken; the actions are assigned to sequence
+            var correct = {coached: "beg", feedback: "bfh", test: "bfh", power: "bfh"};
+            var firstFailure = {coached: "aif", feedback: "aif", test: "c", power: "c"};
+            var secondFailure = {coached: "degj", feedback: "djeh", test: "c", power: "c"};
+            var additionalFailure = {coached: null, feedback: null, test: "c", power: "c"};
+
+            var pedagogicalTable = {correct: correct, firstFailure: firstFailure, secondFailure: secondFailure,
+                additionalFailure: additionalFailure};
+
+            var sequence;
+            var correctUnits = this.model.getNodeUnits(id);
+
+            this.model.setStudentNodeSelection(id, "units", answer);
 
             //assign the action based on the answer
-            if (answer === this.model.getNodeInitial(this.infoObject.ID)) {
+            if (answer === correctUnits) {
                 sequence = pedagogicalTable["correct"][this.userType];
-            } else if (this.model.getNodeAttemptCount(this.infoObject.ID, "initial") < 1) {
+            } else if (this.model.getNodeAttemptCount(id, "units") < 2) {
                 sequence = pedagogicalTable["firstFailure"][this.userType];
-            } else if (this.model.getNodeAttemptCount(this.infoObject.ID, "initial") < 2) {
+            } else if (this.model.getNodeAttemptCount(id, "units") < 3) {
                 sequence = pedagogicalTable["secondFailure"][this.userType];
             } else
                 sequence = pedagogicalTable["additionalFailure"][this.userType];
@@ -420,15 +530,98 @@ define(["dojo/_base/declare", "/laits/js/parserWS"]
             switch (sequence) {
                 case "beg": // b: color green; f: freeze widget; g: enable next widget
                     this.infoObject.status = "correct";
-                    this.initialOn = false;
-                    if (this.model.getNodeUnits(this.infoObject.ID) !== null)
+                    this.unitsOn = false;
+                    this.inputsOn = true;
+                    break;
+                case "bfh": // b: color green; f: leave widget active; g: enable next widget
+                    this.infoObject.status = "correct";
+                    if (correctUnits !== null)
                         this.unitsOn = true;
                     else
                         this.inputsOn = true;
                     break;
+                case "aif": // a: color red; i: hint; g: leave widget active
+                    this.infoObject.status = "incorrect";
+                    this.infoObject.message = "The units variable should relate to the quantity being measured. Think about the node \"" + 
+                            this.model.getNodeNameByID(id) + "\". What unit would pertain to this node?"
+                    break;
+                case "c": // c: leave the widget white
+                    break;
+                case "degj": // d: mark yellow and give answer; e: freeze widget; enable next widget; j: message
+                    this.infoObject.status = "demo";
+                    if (this.units_jCounter < 1)
+                        this.infoObject.message = "Yellow means that you made an incorrect " +
+                                "choice too many times, so you are being shown the correct " +
+                                "choice.  You should figure out why it is correct so that " +
+                                "next time your first choice will be correct.";
+                    else
+                        this.infoObject.message = "Can you figure out why this is the right units value for the quantity?"
+                    this.units_jCounter++;
+                    this.unitsOn = false;
+                    this.inputsOn = true;
+                    break;
+                case "djeh": // d: mark yellow and give answer; j: message; e: freeze widget; h: enable all widgets for the nodes type;
+                    this.infoObject.status = "demo";
+                    if (this.units_jCounter < 1)
+                        this.infoObject.message = "Yellow means that you made an incorrect " +
+                                "choice too many times, so you are being shown the correct " +
+                                "choice.  You should figure out why it is correct so that " +
+                                "next time your first choice will be correct.";
+                    else
+                        this.infoObject.message = "Can you figure out why this is the right units value for the quantity?"
+                    this.units_jCounter++;
+                    this.unitsOn = false;
+                    this.inputsOn = true;
+                    break;
+            }
+            return this.infoObject;
+        },
+        inputsAction: function(/*string*/ id, /*string*/ answer) {
+            //Summary: accepts an answer that the student provides, checks its validity,
+            //      and returns whether the answer is correct, and a message; unitsAction()
+            //      is similar to initialAction();
+
+            //resets the object that will be returned
+            this.infoObject.ID = id;
+            this.infoObject.message = null;
+            this.infoObject.status = null;
+
+            //creates pedagogicalTable, a double array of sorts that helps assign the
+            //      appropriate actions to be taken; the actions are assigned to sequence
+            var correct = {coached: "beg", feedback: "bfh", test: "bfh", power: "bfh"};
+            var firstFailure = {coached: "aif", feedback: "aif", test: "c", power: "c"};
+            var secondFailure = {coached: "degj", feedback: "djeh", test: "c", power: "c"};
+            var additionalFailure = {coached: null, feedback: null, test: "c", power: "c"};
+
+            var pedagogicalTable = {correct: correct, firstFailure: firstFailure, secondFailure: secondFailure,
+                additionalFailure: additionalFailure};
+
+            var sequence;
+            var correctUnits = this.model.getNodeUnits(id);
+
+            this.model.setStudentNodeSelection(id, "units", answer);
+
+            //assign the action based on the answer
+            if (answer === correctUnits) {
+                sequence = pedagogicalTable["correct"][this.userType];
+            } else if (this.model.getNodeAttemptCount(id, "units") < 2) {
+                sequence = pedagogicalTable["firstFailure"][this.userType];
+            } else if (this.model.getNodeAttemptCount(id, "units") < 3) {
+                sequence = pedagogicalTable["secondFailure"][this.userType];
+            } else
+                sequence = pedagogicalTable["additionalFailure"][this.userType];
+
+            //take the appropriate action
+            switch (sequence) {
+                case "beg": // b: color green; f: freeze widget; g: enable next widget
+                    this.infoObject.status = "correct";
+                    this.unitsOn = false;
+
+                    this.inputsOn = true;
+                    break;
                 case "bfh": // b: color green; f: leave widget active; g: enable next widget
                     this.infoObject.status = "correct";
-                    if (this.model.getNodeUnits(this.infoObject.ID) !== null)
+                    if (correctUnits !== null)
                         this.unitsOn = true;
                     else
                         this.inputsOn = true;
@@ -436,6 +629,34 @@ define(["dojo/_base/declare", "/laits/js/parserWS"]
                 case "aif": // a: color red; i: hint; g: leave widget active
                     this.infoObject.status = "incorrect";
                     //hint
+                    break;
+                case "c": // c: leave the widget white
+                    break;
+                case "degj": // d: mark yellow and give answer; e: freeze widget; enable next widget; j: message
+                    this.infoObject.status = "demo";
+                    if (this.units_jCounter < 1)
+                        this.infoObject.message = "Yellow means that you made an incorrect " +
+                                "choice too many times, so you are being shown the correct " +
+                                "choice.  You should figure out why it is correct so that " +
+                                "next time your first choice will be correct.";
+                    else
+                        this.infoObject.message = "Can you figure out why this is the right units value for the quantity?"
+                    this.units_jCounter++;
+                    this.unitsOn = false;
+                    this.inputsOn = true;
+                    break;
+                case "djeh": // d: mark yellow and give answer; j: message; e: freeze widget; h: enable all widgets for the nodes type;
+                    this.infoObject.status = "demo";
+                    if (this.units_jCounter < 1)
+                        this.infoObject.message = "Yellow means that you made an incorrect " +
+                                "choice too many times, so you are being shown the correct " +
+                                "choice.  You should figure out why it is correct so that " +
+                                "next time your first choice will be correct.";
+                    else
+                        this.infoObject.message = "Can you figure out why this is the right units value for the quantity?"
+                    this.units_jCounter++;
+                    this.unitsOn = false;
+                    this.inputsOn = true;
                     break;
             }
             return this.infoObject;
