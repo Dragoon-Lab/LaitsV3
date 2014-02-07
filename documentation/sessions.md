@@ -185,8 +185,12 @@ the student when a problem is opened.
 
 In author mode, the LMS *may* choose to display only problems that the user
 has themselves authored, along with the ability to create a new
-problem name. This would discourage students from creating problems
-that share a name with an existing published or custom problem.
+problem name. The author can choose to share his problem with other
+students to solve as a student, test, or coached mode problem.  In 
+Java this is the "Export" step, in Javascript this is done by enabling
+the "share" option.  The author needs to be able to define a node as 
+a "first node" for the coached mode target node strategy to work;
+these could be set at export or by a toggle in the node editor.
 
 In author mode, the tutor provides a menu where a student may
 **merge** an existing solution with their solution. The solutions
