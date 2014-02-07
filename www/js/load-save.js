@@ -1,3 +1,4 @@
+/* global define */
 /**
  * 
  * Test file to load and save Dragoon problems
@@ -5,8 +6,9 @@
  * 
  **/
 
-define(["dojo/_base/declare", "dojo/request/xhr", "dojo/request"]
-        , function(declare, xhr, request) {
+define([
+    "dojo/_base/declare", "dojo/request/xhr", "dojo/request"
+],function(declare, xhr, request) {
 
     return declare(null, {
         constructor: function(/*string*/ id, /*string*/ section, /*string*/ problem, /*string*/ saveData) {
