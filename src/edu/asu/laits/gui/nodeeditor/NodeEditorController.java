@@ -112,18 +112,8 @@ public abstract class NodeEditorController{
     }
     
     public void processCancelAction() throws NodeEditorException{
-        activityLogs.debug("User pressed Close button for Node " + openVertex.getName());
-        
-        // Delete this vertex if its not defined and user hits Cancel
-        if (openVertex.getDescriptionStatus().equals(Vertex.DescriptionStatus.UNDEFINED)
-                || openVertex.getDescriptionStatus().equals(Vertex.DescriptionStatus.INCORRECT)) {
-            
-        }
-
-        // Save Student's session to server
-        PersistenceManager.saveSession();
-
-        view.dispose();
+        // At this point this method is not being called in the view.
+        // Specific implementation needs to be done 
     }
     
     private String getNodeEditorTitle(){

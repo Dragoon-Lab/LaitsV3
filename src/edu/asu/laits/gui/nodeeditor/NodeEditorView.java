@@ -82,6 +82,7 @@ public class NodeEditorView extends javax.swing.JDialog {
         
         this.addWindowListener(new java.awt.event.WindowAdapter() {
             public void windowClosing(java.awt.event.WindowEvent e) {
+                activityLogs.debug("User pressed Close button for Node " + openVertex.getName());
                 closeNodeEditor();
             }
         });
@@ -347,24 +348,25 @@ public class NodeEditorView extends javax.swing.JDialog {
     /**
      * Make necessary clean up and save graph session when NodeEditor closes
      */
-    private void closeNodeEditor() {
-
-        activityLogs.debug("User pressed Close button for Node " + openVertex.getName());
+    public void closeNodeEditor() {
+        activityLogs.debug("Closing NodeEditor because of Close action.");
+        
         // Delete this vertex if its not defined and user hits Cancel
         if (!openVertex.isDescriptionDone()) {
             graphPane.setSelectionCell(openVertex.getJGraphVertex());
             graphPane.removeSelected();
         }
-
-        activityLogs.debug("Closing NodeEditor because of Close action.");
-
-        // Save Student's session to server
+       
+        // Save Student's session to server - we save session once node editor closes
         PersistenceManager.saveSession();
+        MainWindow.refreshGraph();
 
-        MainWindow.getInstance().addHelpBalloon(openVertex.getName(), "nodeEditorClose");
+        // Mode specific stuff needs refactoring
         if(ApplicationContext.isCoachedMode()){
+            MainWindow.getInstance().addHelpBalloon(openVertex.getName(), "nodeEditorClose");
             ApplicationContext.getCorrectSolution().getTargetNodes().setNextNodes();
         }
+        
         this.dispose();
     }
 

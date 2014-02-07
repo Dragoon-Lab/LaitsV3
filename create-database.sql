@@ -27,23 +27,28 @@ CREATE TABLE `activity_logs` (
   `DATED` datetime NOT NULL,
   `LEVEL` varchar(10) NOT NULL,
   `MESSAGE` varchar(1000) NOT NULL
-) ENGINE=MyISAM DEFAULT CHARSET=latin1;
+) ENGINE=InnoDB DEFAULT CHARSET=latin1;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
+-- The table dev_logs was specific to the Java version.
+
 --
--- Table structure for table `dev_logs`
+-- Table structure for table `session`
 --
 
-DROP TABLE IF EXISTS `dev_logs`;
+DROP TABLE IF EXISTS `session`;
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
 /*!40101 SET character_set_client = utf8 */;
-CREATE TABLE `dev_logs` (
-  `USER_ID` varchar(30) NOT NULL,
-  `DATED` datetime NOT NULL,
-  `LOGGER` varchar(200) NOT NULL,
-  `LEVEL` varchar(10) NOT NULL,
-  `MESSAGE` varchar(1000) NOT NULL
-) ENGINE=MyISAM DEFAULT CHARSET=latin1;
+CREATE TABLE `session` (
+  `session_id` varchar(50) NOT NULL,
+  `mode` varchar(20) NOT NULL,
+  `user` varchar(30) NOT NULL,
+  `section` varchar(30) NOT NULL,
+  `problem_name` varchar(30) DEFAULT NULL,
+  `author` varchar(30) DEFAULT NULL,
+  `time` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
+  PRIMARY KEY(`session_id`)
+) ENGINE=InnoDB DEFAULT CHARSET=latin1;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -54,25 +59,34 @@ DROP TABLE IF EXISTS `autosave_table`;
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
 /*!40101 SET character_set_client = utf8 */;
 CREATE TABLE `autosave_table` (
-  `id` varchar(30) NOT NULL,
-  `section` varchar(30) NOT NULL,
-  `problemNum` varchar(30) NOT NULL,
-  `author` VARCHAR(30) DEFAULT NULL COMMENT 'for custom problems',
-  `saveData` text NOT NULL,
-  `date` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP, 
-  primary key(id, section, problemNum)
-) ENGINE=MyISAM DEFAULT CHARSET=latin1;
+  `session_id` varchar(50) NOT NULL,
+  `save_data` text,
+  `date` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP,
+  PRIMARY KEY (`session_id`, `date`),
+  CONSTRAINT `fk_sesssion_id` FOREIGN KEY (`session_id`) REFERENCES `session` (`session_id`) ON DELETE CASCADE ON UPDATE CASCADE
+) ENGINE=InnoDB DEFAULT CHARSET=latin1;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
-DROP TABLE IF EXISTS `unsolutions`;
-CREATE TABLE `unsolutions` (
-  `author` varchar(30) NOT NULL,
-  `section` varchar(30) NOT NULL,
-  `problemName` varchar(30) NOT NULL,
-  `saveData` text NOT NULL,
-  `date` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP, 
-  primary key(author, section, problemName)
-) ENGINE=MyISAM DEFAULT CHARSET=latin1 COMMENT 'Work-around for the java version, which has two xml formats.';
+--
+-- Table structure for table `step`
+--
+
+DROP TABLE IF EXISTS `step`;
+/*!40101 SET @saved_cs_client     = @@character_set_client */;
+/*!40101 SET character_set_client = utf8 */;
+CREATE TABLE `step` (
+  `tid` int(10) unsigned NOT NULL AUTO_INCREMENT,
+  `session_id` varchar(50) NOT NULL,
+  `method` varchar(20) NOT NULL,
+  `message` text,
+  PRIMARY KEY (`tid`),
+  KEY (`session_id`),
+  CONSTRAINT `fk_session_id` FOREIGN KEY (`session_id`) REFERENCES `session` (`session_id`) ON DELETE CASCADE ON UPDATE CASCADE
+) ENGINE=InnoDB DEFAULT CHARSET=latin1;
+/*!40101 SET character_set_client = @saved_cs_client */;
+
+
+-- The table unsolutions is specific to the Java version.
 
 --
 -- Table structure for table `solutions`
@@ -90,7 +104,7 @@ CREATE TABLE `solutions` (
     `time` TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP, 
     `solutionGraph` TEXT NOT NULL, 
     PRIMARY KEY(section, problemName, author)
-    ) ENGINE=MyISAM DEFAULT CHARSET=latin1;
+) ENGINE=InnoDB DEFAULT CHARSET=latin1;
 /*!40101 SET character_set_client = @saved_cs_client */;
 /*!40103 SET TIME_ZONE=@OLD_TIME_ZONE */;
 

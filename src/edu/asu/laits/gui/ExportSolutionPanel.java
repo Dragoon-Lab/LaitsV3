@@ -19,6 +19,7 @@ package edu.asu.laits.gui;
 
 import edu.asu.laits.editor.ApplicationContext;
 import edu.asu.laits.editor.DragoonUIUtils;
+import edu.asu.laits.model.Edge.ErrorReaderException;
 import edu.asu.laits.model.Graph;
 import edu.asu.laits.model.LaitsSolutionExporter;
 import edu.asu.laits.model.PersistenceManager;
@@ -35,6 +36,7 @@ import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
+import java.util.logging.Level;
 import javax.swing.JButton;
 import javax.swing.JComboBox;
 import javax.swing.JDialog;
@@ -251,14 +253,18 @@ public class ExportSolutionPanel extends JPanel {
 
         exportAction.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent e) {
-                exportAction();
+                try {
+                    exportAction();
+                } catch (ErrorReaderException ex) {
+                    java.util.logging.Logger.getLogger(ExportSolutionPanel.class.getName()).log(Level.SEVERE, null, ex);
+                }
             }
         });
 
         add(exportAction, "right");
     }
 
-    private void exportAction() {
+    private void exportAction() throws ErrorReaderException {
         // Perform Validation before exporting the task
         if (validateExportSolutionPanel()) {
             setTaskDetails();
@@ -271,8 +277,8 @@ public class ExportSolutionPanel extends JPanel {
     /**
      * Tries to save to the specified file
      */
-    private void saveToServer() {
-        logs.info("Saving LaitsSolution to Server");
+    private void saveToServer() throws ErrorReaderException {
+        logs.info("Exporting Dragoon Solution to Server");
 
         // Exporter will read all the information from task object
         LaitsSolutionExporter exporter = new LaitsSolutionExporter();
@@ -284,6 +290,7 @@ public class ExportSolutionPanel extends JPanel {
                     "Export Error", JOptionPane.ERROR_MESSAGE);
         }
 
+        // This is being done so that newly created dtree, and task details are pushed to server.
         PersistenceManager.saveSession();
         parent.dispose();
     }

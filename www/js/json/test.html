@@ -1,0 +1,80 @@
+<!DOCTYPE html>
+<!--
+    File to test loading and saving with Dojo. Uses load-save.js and model.js.
+    Author: Brandon Strong
+
+    This file gets json example problem, leaving it as a text string.
+    This is to simulate a problem solution constructed by the student.
+
+    Next, it sends it to the server to be saved in the database.
+
+    Finally, it retrieves the file back from the server, ready to be used.
+
+    In real life, we would also translate the JSON string into a Javascript object.
+-->
+<html>
+    <head>
+        <meta charset="utf-8"/>
+        <title>POST/GET Testing</title>
+    </head>
+    <body>
+        <h1>POST/GET Testing</h1>
+        <p>This is a test file to check how to load problems and save problems from files and from the database.<br>  Results are printed in the console.</p>
+
+    <script type="text/javascript">
+        dojoConfig = {
+	    isDebug:true,
+	    async: true,
+            // popup:true,
+	    baseUrl: "../../",
+	    packages: [
+                {name: "json", location: "js/json"},
+		{name: "dojo", location: "dojo"},
+                {name: "dragoon", location: "js"}
+            ]
+	};
+    </script>
+    <script src="../../dojo/dojo.js"></script> 
+
+    <script>
+          
+         require(["dragoon/load-save", "dojo/request/xhr", "dojo/_base/Deferred", "dragoon/model"],
+             function(loadSave, xhr, deferred, model) {
+                  // Example json file with student solution (constructed by hand).
+                  var file = "./rabbit-example.json";
+                  xhr(file, {
+                      // the xhr() function loads a problem from a JSON formatted text file
+                      handleAs: "json"
+                  }).then(function(modelObject) {
+                      var rabbits = new model();
+                      rabbits.loadModel(modelObject);
+                      rabbits.setTaskName("Bugs"); // change the problem's name
+                      // create a new load-save.js object
+                      var problem = new loadSave("Yosemiti","../../");
+                      // save the problem and then re-load it again from the database
+                      problem.saveProblem();
+                      var a = problem.loadFromDB();
+                      // loadFromDB() returns a Dojo Promise which can be read using Dojo Deferred
+                      deferred.when(a, function(value) {
+                          console.log(value);
+                      });
+                  }, function(err){
+                      console.error("Loading of "+file+" failed, ",err);
+                  });
+
+                  /*
+                     Similar to above, but trying it again with the xhr() function in the load-save.js file
+                     and using its returned promise
+                  */
+                  var problem2 = new loadSave("YosemitiSam", "../../");
+                  var b = problem2.loadFromFile(file);
+                  deferred.when(b, function(value) {
+                      var rabbits2 = new model();
+                      rabbits2.loadModel(value);
+                      rabbits2.setTaskName("Bunny"); // change the problem's name
+                      console.log("Got model using second method: ", rabbits2);
+                  });
+              });
+        </script>
+    </body>
+</html>
