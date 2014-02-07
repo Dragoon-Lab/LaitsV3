@@ -19,7 +19,7 @@
     </head>
     <body>
         <h1>POST/GET Testing</h1>
-        <p>This is a test file to check how to load problems and save problems from files and from the database.</p>
+        <p>This is a test file to check how to load problems and save problems from files and from the database.<br>  Results are printed in the console.</p>
 
     <script type="text/javascript">
         dojoConfig = {
@@ -40,17 +40,17 @@
           
          require(["dragoon/load-save", "dojo/request/xhr", "dojo/_base/Deferred", "dragoon/model"],
              function(loadSave, xhr, deferred, model) {
-                  var file = "./jsonExample.json";
+                  // Example json file with student solution (constructed by hand).
+                  var file = "./rabbit-example.json";
                   xhr(file, {
                       // the xhr() function loads a problem from a JSON formatted text file
-                      handleAs: "text"
-                  }).then(function(string) {
-                      // the parameter "string" holds the JSON formatted text string which is loaded into the "rabbits" object
-                      var rabbits = new model(null, null, null, null, null, null);
-                      rabbits.loadModel(string);
+                      handleAs: "json"
+                  }).then(function(modelObject) {
+                      var rabbits = new model();
+                      rabbits.loadModel(modelObject);
                       rabbits.setTaskName("Bugs"); // change the problem's name
-                      // create a new load-save.js object called "problem"
-                      var problem = new loadSave("Yosemiti", "12345", "Sam", rabbits.getModelAsString());
+                      // create a new load-save.js object
+                      var problem = new loadSave("Yosemiti","../../");
                       // save the problem and then re-load it again from the database
                       problem.saveProblem();
                       var a = problem.loadFromDB();
@@ -58,19 +58,21 @@
                       deferred.when(a, function(value) {
                           console.log(value);
                       });
+                  }, function(err){
+                      console.error("Loading of "+file+" failed, ",err);
                   });
 
                   /*
                      Similar to above, but trying it again with the xhr() function in the load-save.js file
                      and using its returned promise
                   */
-                  var problem2 = new loadSave("YosemitiSam", "12345", "Iam", null);
+                  var problem2 = new loadSave("YosemitiSam", "../../");
                   var b = problem2.loadFromFile(file);
                   deferred.when(b, function(value) {
-                      var rabbits2 = new model(null, null, null, null, null, null);
+                      var rabbits2 = new model();
                       rabbits2.loadModel(value);
                       rabbits2.setTaskName("Bunny"); // change the problem's name
-                      console.log(rabbits2.getModelAsString());
+                      console.log("Got model using second method: ", rabbits2);
                   });
               });
         </script>

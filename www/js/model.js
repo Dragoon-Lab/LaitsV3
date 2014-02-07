@@ -43,9 +43,8 @@ define([
             this.ID = 1;
             this.taskName = name;
             this.properties = {phase: "", type: "", URL: url, startTime: start, endTime: end, timeStep: timeStep, units: units};
-            this.model = {};
             this.checkedNodes = new Array();
-            this._buildModel();
+            this.model = this._buildModel();
         },
         /**
          * 
@@ -53,20 +52,20 @@ define([
          *  
          */
         _buildModel: function() {
-            // Summary: builds a JSON formatted object after defining its attributes;
+            // Summary: builds a model object after defining its attributes;
             //      not used when loading a model; only used by the constructor
             // Tags: private
-            var newModel = "{\"task\" : {\n";
-            newModel += "\t\"taskName\" : \"" + this.taskName + "\",\n";
-            newModel += "\t\"properties\" : " + JSON.stringify(this.properties, null, "\t\t") + ",\n";
-            newModel += "\t\"taskDescription\" : \"" + this.taskDescription + "\",\n";
-            newModel += "\t\"givenModelNodes\" : [\n],\n";
-            newModel += "\t\"extraDescriptions\" : [\n],\n";
-            newModel += "\t\"studentModelNodes\" : [\n]\n";
-
-            newModel += "}\n}";
-            this.model = JSON.parse(newModel);
+            var newModel = {task: {
+		taskName: this.taskName,
+		properties: this.properties,
+		taskDescription: this.taskDescription,
+		givenModelNodes: [],
+		extraDescriptions: [],
+		studentModelNodes: []
+	    }};
+            return newModel;
         },
+
         _updateNextXYPosition: function() {
             // Summary: keeps track of where to place the next node; function detects collisions
             //      with other nodes; is called in addStudentNode() before creating the node
@@ -144,10 +143,11 @@ define([
         /**
          * Functions to load or retrieve a model in string format
          */
-        loadModel: function(/*string*/ jsonString) {
-            // Summary: loads a string of JSON formatted text into a JSON object;
+        loadModel: function(/*object*/ model) {
+            // Summary: loads a model object;
             //      allows Dragoon to load a pre-defined program or to load a users saved work
-            this.model = JSON.parse(jsonString);
+            //      Sets id for next node.
+            this.model = model;
             var largest = "id1";
             for (var i = 0; i < this.model.task.studentModelNodes.length; i++) {
                 if (this.model.task.studentModelNodes[i].ID > largest)
@@ -158,13 +158,12 @@ define([
                     largest = this.model.task.givenModelNodes[i].ID;
             }
             this.ID = parseInt(largest.replace("id", "")) + 1;
-            console.log(" :-)  :-)  :-)  :-)  :-) ");
         },
 
         getModelAsString: function() {
             // Summary: Returns a JSON object in string format
+            //          Should only be used for debugging.
             return JSON.stringify(this.model, null, 4);
-            console.log(" :-)  :-)  :-)  :-)  :-) ");
         },
 
         /**
@@ -607,11 +606,11 @@ define([
             return null;
         },
         getNodes: function() {
-            // Summary: returns a JSON object of the nodes in the given model 
+            // Summary: returns an array containing the nodes in the given model 
             return this.model.task.givenModelNodes;
         },
         getStudentNodes: function() {
-            // Summary: returns a JSON object of the nodes in the student model
+            // Summary: returns an array containing the nodes in the student model
             return this.model.task.studentModelNodes;
         },
         /**
