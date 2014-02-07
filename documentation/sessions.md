@@ -212,6 +212,7 @@ Finally, the tutor needs a method for allowing the author to
 create the "predefined" nodes for a problem. This would be some
 sort of switch in the UI?
 
+Since users of the Forum landing page often work in groups, it has been modified to allow multiple authors to author the same problem.  When a problem is created, its original author is assigned in the "author groups" table.  If another student attempts to enter that problem to author it, they are added to "author groups" as an additional author.  The Forum page will pass the original author's name to the PHP, allowing the second person access to the problem. 
 ## Open and Managed access modes ##
 
 [Some notes from Kurt](Dragoon_model_storage_use_cases_13_08_12.docx) on 
