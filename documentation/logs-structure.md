@@ -1,5 +1,5 @@
 # Logging Format #
-
+sss
 This document discusses the structure of the logging and the associated table formats on the server.
 
 ## Database Table Structure ##
@@ -23,7 +23,7 @@ The logging will use the **`session`** table (see
  turn red or green.  The log message will contain both the student
  action and the tutors response, if any. For Dragoon, this includes the "check" button.
  * `seek-help` -  Student request for help and the response. For Dragoon, this includes the "Demo" button.
- *	`close_problem` - The student has closed the session.  This may be missing if the session was interrupted (e.g. the network connection died). 
+ *	`close-problem` - The student has closed the session.  This may be missing if the session was interrupted (e.g. the network connection died). 
 *	`message` - A `text` format field that holds actual log message. The format is specified in the section "Message Format" below.
 
 This table is analogous to the table `STEP_TRANSACTION` in Andes; see [`create_STEP_TRANSACTION.sql`](https://github.com/bvds/andes/blob/master/LogProcessing/database/create_STEP_TRANSACTION.sql).  The Andes table can be used to see how the `step` table should be formatted.
