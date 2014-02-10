@@ -9,8 +9,23 @@
 <h2>Dashboard</h2>
 
 <form method="post" action="dashboard.php">
-	<label>Date</label>&nbsp;<input type = "text" name = "date"/><br/>
-	<label>Time - From</label>&nbsp;<input type="text" name = "fromTime"/>&nbsp;<label>to</label>&nbsp;<input type="text" name="toTime"/><br/>
+	<label>Section&nbsp;:</label>&nbsp;
+	<select name = "section">
+		<option value="">Select Section</option>
+		<option value="CPI-360">CPI-360</option>
+		<option value="sos-326-spring14">SOS-326</option>
+	</select><br/>
+	<label>MODE&nbsp;:</label>&nbsp;
+	<select name = "mode">
+		<option value="STUDENT">STUDENT</option>
+		<option value="COACHED">COACHED</option>
+		<option value="TEST">TEST</option>
+		<option value="AUTHOR">AUTHOR</option>
+	</select><br/>
+	<label>Date</label>&nbsp;(in YYYY-MM-DD format)&nbsp;:&nbsp;<input type = "text" name = "date"/><br/>
+	<label>Time (HH:MM format, 24 hour clock)- From</label>&nbsp;:&nbsp;<input type="text" name = "fromTime"/>&nbsp;<label>to</label>&nbsp;<input type="text" name="toTime"/><br/>
+
+	<label>Student</label>&nbsp;:&nbsp;<input type = "text" name = "user"/><br/>
 	<input type="submit" value="Dashboard"/> 
 </form>
 </body>
