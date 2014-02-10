@@ -508,7 +508,7 @@ Class AnalyzeLogs{
 						if($startTime != 0 && (($messageJSON['time'] - $startTime)>1)){
 							//echo 'andar aaya '.$startTime.' asdf node '.$nodeName.' tab '.$oldTab. ' new tab '.$newTab.'<br/>#';
 							$tabTime = (float)$messageJSON['time'] - $startTime;
-							$nodeString = $nodeString.'<br/># '.$messageJSON['time'].' Time spent on '.$oldTab.' tab => '.$tabTime;
+							$nodeString = $nodeString.'<br/># Time spent on '.$oldTab.' tab => '.$tabTime;
 							//echo 'tab time '.$oldTab.' '.$tabTime.'<br/>#';
 						}
 						$startTime = (float)$messageJSON['time'];
@@ -541,13 +541,13 @@ Class AnalyzeLogs{
 						$lastAction = 'Closed '.$messageJSON['name']." name => ".$name. " in tab => ".$tab;
 						if($workingTempNode){
 							//adding the node data for the node opened in the new node created from the calculation tab for the new node.
-							$tempNodeString = $tempNodeString.'<br/># '.$messageJSON['time'].' Time spent on '.$tab.' tab => '.($messageJSON['time']-$startTimeTempNode);
+							$tempNodeString = $tempNodeString.'<br/># Time spent on '.$tab.' tab => '.($messageJSON['time']-$startTimeTempNode);
 							$tempNodeName = $name;
 							$nodeDetailsArray[$tempNodeName] = $tempNodeString;
 							$tempNodeName = '';
 							$tempNodeString = '';
 						} else {
-							$nodeString = $nodeString.'<br/># '.$messageJSON['time'].' Time spent on '.$tab.' tab => '.($messageJSON['time']-$startTime).' seconds';
+							$nodeString = $nodeString.'<br/># Time spent on '.$tab.' tab => '.($messageJSON['time']-$startTime).' seconds';
 							$nodeName = $name;
 							$resetNodeString = true;
 						}
