@@ -8,8 +8,8 @@
 <body>
 
 <?php
-	//require "../www/db-login.php";
-	//require "../www/error-handler.php";
+	require "../www/db-login.php";
+	require "../www/error-handler.php";
 
 	set_time_limit(30000);
 	include "logAnalysis.php";
@@ -22,8 +22,8 @@
 	!empty($_REQUEST["mode"])?($mode = $_REQUEST["mode"]):$mode = 'STUDENT';
 	!empty($_REQUEST["user"])?($user = $_REQUEST["user"]):$user = '';
 	
-	//$mysqli = mysqli_connect("localhost",$dbuser, $dbpassword, $dbname) or die("Connection not established. Check the user log file");
-	$mysqli = mysqli_connect("localhost", "root", "qwerty211", "laits_devel") or die("Connection not established. Check the user log file");
+	$mysqli = mysqli_connect("localhost",$dbuser, $dbpassword, $dbname) or die("Connection not established. Check the user log file");
+	//$mysqli = mysqli_connect("localhost", "root", "qwerty211", "laits_devel") or die("Connection not established. Check the user log file");
 
 	$al = new AnalyzeLogs($mysqli);
 
