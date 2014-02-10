@@ -7,8 +7,11 @@
         In the foothills of the Wasatch Mountains near Brigham City, Utah, there is a small 
 <<<<<<< HEAD
 <<<<<<< HEAD
+<<<<<<< HEAD
 =======
 >>>>>>> 31f2bd04d511378cf22c756320275a1947bb28a4
+=======
+>>>>>>> 512ee811f800c35bedd7b7178d45c3bff7fa7532
         valley that is home to a rabbit population of 53 rabbits and 4 bobcats. <br/><br/>
         
         The rabbits have a birth rate of 1.5 per rabbit per year. 
@@ -21,6 +24,7 @@
         where the Bobcat Birth Coefficient is 0.005. <br/><br/>
         
         Construct a model that shows the change in the rabbit and bobcat populations over 
+<<<<<<< HEAD
 <<<<<<< HEAD
 =======
         valley that is home to a rabbit population of 10 rabbits and two bobcats. <br/><br/>
@@ -37,6 +41,8 @@
 >>>>>>> master
 =======
 >>>>>>> 31f2bd04d511378cf22c756320275a1947bb28a4
+=======
+>>>>>>> 512ee811f800c35bedd7b7178d45c3bff7fa7532
         a period of 10 years. Assume that births and deaths are the only change in the population. 
         Immigration and emigration do not occur. 
         ]]>
@@ -60,6 +66,7 @@
             <Equation>Rabbit Births Per Year -  Rabbit Deaths Per Year</Equation>
 <<<<<<< HEAD
 <<<<<<< HEAD
+<<<<<<< HEAD
             <InitialValue>53.0</InitialValue>
 =======
             <InitialValue>10.0</InitialValue>
@@ -67,6 +74,9 @@
 =======
             <InitialValue>53.0</InitialValue>
 >>>>>>> 31f2bd04d511378cf22c756320275a1947bb28a4
+=======
+            <InitialValue>53.0</InitialValue>
+>>>>>>> 512ee811f800c35bedd7b7178d45c3bff7fa7532
         </Node>
         <Node type="stock" name="Bobcat Population" extra="no">
             <CorrectDescription>The population size of the bobcats</CorrectDescription>
@@ -79,6 +89,7 @@
             <Equation>Bobcat Births Per Year -  Bobcat Deaths Per Year</Equation>
 <<<<<<< HEAD
 <<<<<<< HEAD
+<<<<<<< HEAD
             <InitialValue>4.0</InitialValue>
 =======
             <InitialValue>2.0</InitialValue>
@@ -86,6 +97,9 @@
 =======
             <InitialValue>4.0</InitialValue>
 >>>>>>> 31f2bd04d511378cf22c756320275a1947bb28a4
+=======
+            <InitialValue>4.0</InitialValue>
+>>>>>>> 512ee811f800c35bedd7b7178d45c3bff7fa7532
         </Node>
         <Node type="constant" name="Bobcat Death Rate" extra="no">
             <CorrectDescription>The death rate coefficient for the bobcat population</CorrectDescription>
@@ -94,12 +108,16 @@
             <Outputs/>
 <<<<<<< HEAD
 <<<<<<< HEAD
+<<<<<<< HEAD
 =======
 >>>>>>> 31f2bd04d511378cf22c756320275a1947bb28a4
+=======
+>>>>>>> 512ee811f800c35bedd7b7178d45c3bff7fa7532
             <Equation>.25</Equation>
             <InitialValue>.25</InitialValue>
         </Node>
         <Node type="constant" name="Bobcat Birth Coefficient" extra="no">
+<<<<<<< HEAD
 <<<<<<< HEAD
 =======
             <Equation>.50</Equation>
@@ -109,18 +127,24 @@
 >>>>>>> master
 =======
 >>>>>>> 31f2bd04d511378cf22c756320275a1947bb28a4
+=======
+>>>>>>> 512ee811f800c35bedd7b7178d45c3bff7fa7532
             <CorrectDescription>The birth rate coefficient for the bobcat population</CorrectDescription>
             <Plan>fixed value</Plan>
             <Inputs/>
             <Outputs/>
 <<<<<<< HEAD
 <<<<<<< HEAD
+<<<<<<< HEAD
 =======
 >>>>>>> 31f2bd04d511378cf22c756320275a1947bb28a4
+=======
+>>>>>>> 512ee811f800c35bedd7b7178d45c3bff7fa7532
             <Equation>.005</Equation>
             <InitialValue>.005</InitialValue>
         </Node>
         <Node type="constant" name="Rabbit Death Coefficient" extra="no">
+<<<<<<< HEAD
 <<<<<<< HEAD
 =======
             <Equation>0.365</Equation>
@@ -130,10 +154,13 @@
 >>>>>>> master
 =======
 >>>>>>> 31f2bd04d511378cf22c756320275a1947bb28a4
+=======
+>>>>>>> 512ee811f800c35bedd7b7178d45c3bff7fa7532
             <CorrectDescription>The death rate coefficient for the rabbit population</CorrectDescription>
             <Plan>fixed value</Plan>
             <Inputs></Inputs>
             <Outputs/>
+<<<<<<< HEAD
 <<<<<<< HEAD
 <<<<<<< HEAD
             <Equation>.25</Equation>
@@ -146,12 +173,17 @@
             <Equation>.25</Equation>
             <InitialValue>.25</InitialValue>
 >>>>>>> 31f2bd04d511378cf22c756320275a1947bb28a4
+=======
+            <Equation>.25</Equation>
+            <InitialValue>.25</InitialValue>
+>>>>>>> 512ee811f800c35bedd7b7178d45c3bff7fa7532
         </Node>
         <Node type="constant" name="Rabbit Birth Rate" extra="no">
             <CorrectDescription>The birth rate coefficient for the rabbit population</CorrectDescription>
             <Plan>fixed value</Plan>
             <Inputs/>
             <Outputs/>
+<<<<<<< HEAD
 <<<<<<< HEAD
 <<<<<<< HEAD
             <Equation>1.5</Equation>
@@ -164,6 +196,10 @@
             <Equation>1.5</Equation>
             <InitialValue>1.5</InitialValue>
 >>>>>>> 31f2bd04d511378cf22c756320275a1947bb28a4
+=======
+            <Equation>1.5</Equation>
+            <InitialValue>1.5</InitialValue>
+>>>>>>> 512ee811f800c35bedd7b7178d45c3bff7fa7532
         </Node>
         <Node type="flow" name="Rabbit Births Per Year" extra="no">
             <CorrectDescription>The number of rabbits added to the population per year</CorrectDescription>
@@ -183,6 +219,7 @@
                 <Name>Rabbit Population</Name>
 <<<<<<< HEAD
 <<<<<<< HEAD
+<<<<<<< HEAD
                 <Name>Rabbit Death Coefficient</Name>
                 <Name>Bobcat Population</Name>
             </Inputs>
@@ -196,12 +233,17 @@
             <Equation>Rabbit Population * Rabbit Death Rate * Bobcat Population</Equation>
 >>>>>>> master
 =======
+=======
+>>>>>>> 512ee811f800c35bedd7b7178d45c3bff7fa7532
                 <Name>Rabbit Death Coefficient</Name>
                 <Name>Bobcat Population</Name>
             </Inputs>
             <Outputs/>
             <Equation>Rabbit Population * Rabbit Death Coefficient * Bobcat Population</Equation>
+<<<<<<< HEAD
 >>>>>>> 31f2bd04d511378cf22c756320275a1947bb28a4
+=======
+>>>>>>> 512ee811f800c35bedd7b7178d45c3bff7fa7532
             <InitialValue>0.0</InitialValue>
         </Node>
         <Node type="flow" name="Bobcat Births Per Year" extra="no">
@@ -209,6 +251,7 @@
             <Plan>proportional to accumulator and input</Plan>
             <Inputs>
                 <Name>Rabbit Population</Name>
+<<<<<<< HEAD
 <<<<<<< HEAD
 <<<<<<< HEAD
                 <Name>Bobcat Birth Coefficient</Name>
@@ -224,12 +267,17 @@
             <Equation>Rabbit Population * Bobcat Birth Rate * Bobcat Population</Equation>
 >>>>>>> master
 =======
+=======
+>>>>>>> 512ee811f800c35bedd7b7178d45c3bff7fa7532
                 <Name>Bobcat Birth Coefficient</Name>
                 <Name>Bobcat Population</Name>
             </Inputs>
             <Outputs/>
             <Equation>Rabbit Population * Bobcat Birth Coefficient * Bobcat Population</Equation>
+<<<<<<< HEAD
 >>>>>>> 31f2bd04d511378cf22c756320275a1947bb28a4
+=======
+>>>>>>> 512ee811f800c35bedd7b7178d45c3bff7fa7532
             <InitialValue>0.0</InitialValue>
         </Node>
         <Node type="flow" name="Bobcat Deaths Per Year" extra="no">
@@ -252,6 +300,7 @@
                 <Description>for the bobcat population</Description>
 <<<<<<< HEAD
 <<<<<<< HEAD
+<<<<<<< HEAD
                 <NodeName>Bobcat Birth Coefficient</NodeName>
 =======
                 <NodeName>Bobcat Birth Rate</NodeName>
@@ -259,6 +308,9 @@
 =======
                 <NodeName>Bobcat Birth Coefficient</NodeName>
 >>>>>>> 31f2bd04d511378cf22c756320275a1947bb28a4
+=======
+                <NodeName>Bobcat Birth Coefficient</NodeName>
+>>>>>>> 512ee811f800c35bedd7b7178d45c3bff7fa7532
             </Node>
             <Node level="leaf">
                 <Description>for the rabbit population</Description>
@@ -275,6 +327,7 @@
                 <Description>for the rabbit population</Description>
 <<<<<<< HEAD
 <<<<<<< HEAD
+<<<<<<< HEAD
                 <NodeName>Rabbit Death Coefficient</NodeName>
 =======
                 <NodeName>Rabbit Death Rate</NodeName>
@@ -282,6 +335,9 @@
 =======
                 <NodeName>Rabbit Death Coefficient</NodeName>
 >>>>>>> 31f2bd04d511378cf22c756320275a1947bb28a4
+=======
+                <NodeName>Rabbit Death Coefficient</NodeName>
+>>>>>>> 512ee811f800c35bedd7b7178d45c3bff7fa7532
             </Node>
         </Node>
         <Node level="root">

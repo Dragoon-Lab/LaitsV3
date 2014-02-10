@@ -109,7 +109,6 @@ public class TargetNodes {
 
     public String getFirstNextNode(Vertex openVertex) {
         List<String> nodes = MainWindow.getInstance().getGraphEditorPane().getModelGraph().getVerticesByName();
-        
         if(!nextNodes.isEmpty()){
             if(openVertex.getName().isEmpty()){
                 for(String fNode : firstNodes){
@@ -119,16 +118,12 @@ public class TargetNodes {
                 }
                 return nextNodes.get(0);
             } else{
-                SolutionNode node = ApplicationContext.getCorrectSolution().getNodeByName(openVertex.getName());
-                if(node != null) {
-                    List<String> inputs = node.getInputNodes();
-                    for(String input : inputs){
-                        if(!nodes.contains(input)){
-                            return input;
-                        }
-                    }
-                }
-               
+               List<String> inputs = ApplicationContext.getCorrectSolution().getNodeByName(openVertex.getName()).getInputNodes();
+               for(String input : inputs){
+                   if(!nodes.contains(input)){
+                       return input;
+                   }
+               }
                return nextNodes.get(0);
             }
         }

@@ -40,6 +40,77 @@
 	    "dragoon"
         ]);	
     </script>
+	
+	<script>
+require(["dojo/query","dojo/NodeList-traverse","dojo/on","dojo/dom","dojox/charting/Chart", "dojox/charting/axis2d/Default", "dojox/charting/plot2d/Lines" , "dojox/charting/themes/WatersEdge", "dijit/form/HorizontalSlider","dojo/parser","www/js/examples/RenderGraph","dojo/ready"],
+  function(query,nodeList, on,dom,Chart, Default, Lines, WatersEdge, HorizontalSlider, Parser,Graph, ready){
+    ready(function(){
+
+
+    	Parser.parse();
+    	//dummy parameter to be passed to graph class
+    	var inputParam = 3;
+    	//values of parameters
+    	var paramValue = ['A','B','C'];
+    	var slider = new Array();
+
+        var button = dom.byId("graphButton");
+        //instantiate graph object
+        var graph = new Graph(inputParam,paramValue);
+        
+        //show graph when button clicked
+        on(button,"click",function(){
+        	
+        	console.debug("button clicked");
+        	
+        	
+        	graph.show();
+            
+        		
+        }); 
+        
+
+
+        
+    });
+});
+	</script>
+	
+	<script>
+require(["dojo/query","dojo/NodeList-traverse","dojo/on","dojo/dom","dojox/charting/Chart", "dojox/charting/axis2d/Default", "dojox/charting/plot2d/Lines" , "dojox/charting/themes/WatersEdge", "dijit/form/HorizontalSlider","dojo/parser","www/js/examples/RenderTable","dojo/ready"],
+  function(query,nodeList, on,dom,Chart, Default, Lines, WatersEdge, HorizontalSlider, Parser,Table, ready){
+    ready(function(){
+
+
+    	Parser.parse();
+    	//dummy parameter to be passed to graph class
+    	var inputParam = 5;
+    	//values of parameters
+    	var paramValue = [1,2,3,4,5,6,7,8,9,10,11,12,13,14,15];
+		var tableHeader = ['time','Param1','Param2','Param3','Param4'];
+    	var slider = new Array();
+
+        var button = dom.byId("tableButton");
+        //instantiate graph object
+        var table = new Table(inputParam,tableHeader,paramValue);
+        
+        //show graph when button clicked
+        on(button,"click",function(){
+        	
+        	console.debug("table button clicked");
+        	
+        	
+        	table.show();
+            
+        		
+        }); 
+        
+
+
+        
+    });
+});
+	</script>
 </head>
 
 <body class="tundra">
@@ -59,6 +130,7 @@
              <div data-dojo-type="dijit/form/Button" id="doneButton" style="position:absolute; top:0; right:10px; margin:0;">Done</div>
 	</div> <!-- Menubar -->
         <div id="drawingPane" data-dojo-type="dijit/layout/ContentPane" region="center" >
+		<!--<div id="tableGrid" data-dojo-type="dijit/layout/ContentPane" region="center" ></div>-->
 	    jsPlumb goes here! 
 	</div>
     </div>  <!-- main -->			

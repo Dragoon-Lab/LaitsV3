@@ -20,10 +20,9 @@
         <!-- load dojo and provide config via data attribute -->
         <script src="//ajax.googleapis.com/ajax/libs/dojo/1.8.5/dojo/dojo.js" data-dojo-config="async: true"></script>
 
-
-
         <script>
             require(["/laits/js/json/model", "/laits/js/json/pedagogical_model"], function(model, pm) {
+
 
                 //The next three lines show loading a model from a JSON formated string
                 var loadModel = new model(null, null, null, null, null, null);
@@ -52,15 +51,63 @@
                 rabbits.addNodeInput(rabbits.getNodeIDByName("population"), rabbits.getNodeIDByName("births"));
                 rabbits.addNodeInput(rabbits.getNodeIDByName("birth rate"), rabbits.getNodeIDByName("births"));
                 rabbits.setNodeParent("id2", true);
-                
-                rabbits.addStudentNodeWithName("births");
-                rabbits.setStudentNodeSelection("id2", "description", "The number of rabbits born each month");
-                alert(rabbits.isDescriptionOptimal("The number of rabbits in the population"));
-                
+
+
+                rabbits.addExtraDescription("The number of rabbits in the population during the second month", "model");
+                rabbits.addExtraDescription("The ratio of rabbits born with superpowers to ordinary rabbits", "extra");
+
+                //************ Using the Pedagogical Model ************
                 var ped = new pm("coached", rabbits);
-                ped.descriptionAction("The ratio of number of rabbits born in a month to the rabbit population that month");
+                var descInfo, typeInfo, unitsInfo, inputsInfo;
+
+                //Set description
+                console.log("The ratio of number of rabbits born in a month to the rabbit population that month");
+                descInfo = ped.descriptionAction("The ratio of number of rabbits born in a month to the rabbit population that month");
+                console.log("******" + descInfo.message + "******\n");
+
+                console.log("The ratio of rabbits born with superpowers to ordinary rabbits");
+                descInfo = ped.descriptionAction("The ratio of rabbits born with superpowers to ordinary rabbits");
+                console.log("******" + descInfo.message + "******\n");
+
+                console.log("The number of rabbits born each month");
+                descInfo = ped.descriptionAction("The number of rabbits born each month");
+                console.log("******" + descInfo.message + "******\n");
+
+                //Set type
+                console.log("sum");
+                typeInfo = ped.typeAction(descInfo.ID, "sum");
+                console.log("******" + typeInfo.message + "******\n");
+
+                console.log("product");
+                typeInfo = ped.typeAction(descInfo.ID, "product");
+                console.log("******" + typeInfo.message + "******\n");
+
+                //Set units
+                console.log("rabbits");
+                unitsInfo = ped.unitsAction(typeInfo.ID, "rabbits");
+                console.log("******" + unitsInfo.message + "******\n");
+
+                console.log("births");
+                unitsInfo = ped.unitsAction(typeInfo.ID, "births");
+                console.log("******" + unitsInfo.status + "******\n");
+
+                //Set inputs
+                console.log("The ratio of rabbits born with superpowers to ordinary rabbits");
+                inputsInfo = ped.inputsAction(unitsInfo.ID, "The ratio of rabbits born with superpowers to ordinary rabbits");
+                console.log("******" + inputsInfo.message + "******\n");
                 
+                console.log("A bunch of rabbits");
+                inputsInfo = ped.inputsAction(unitsInfo.ID, "A bunch of rabbits");
+                console.log("******" + inputsInfo.message + "******\n");
                 
+                console.log("The number of rabbits in the population");
+                inputsInfo = ped.inputsAction(unitsInfo.ID, "The number of rabbits in the population");
+                console.log("******" + inputsInfo.message + "******\n");
+                alert(inputsInfo.status); 
+
+
+
+
                 //*****This builds the student model
 //                rabbits.addStudentNodeWithName("population");
 //                rabbits.addStudentNodeWithName("births");
@@ -100,10 +147,10 @@
 ////                rabbits.setStudentNodeSelection("id3", "equation", ".2");
 ////                rabbits.addExtraDescription("The number of rabbits in the population during the second month", "model");
 ////                rabbits.addExtraDescription("The ratio of rabbits born with superpowers to ordinary rabbits", "extra");
-     
-     
-     
-     
+
+
+
+
                 //alert(rabbits.getExtraDescriptions(null));
 
 

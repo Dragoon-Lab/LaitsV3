@@ -57,23 +57,25 @@ header when communicating between client and server.
 *   `problem` - problem name (string).  May be NULL if `mode` is `author`.
 *	 `author` - For custom problems (string).  Otherwise it will be NULL.
 
-This table similar to the table `PROBLEM_ATTEMPT` in Andes; see
+This table analogous to the table `PROBLEM_ATTEMPT` in Andes; see
 [create_PROBLEM_ATTEMPT.sql](https://github.com/bvds/andes/blob/master/LogProcessing/database/create_PROBLEM_ATTEMPT.sql).
 The Andes table can be used to see how the `session` table should be
 formatted.  Note that the column names of this table correspond to the [list of variable names](sessions.md). 
 
-**`autosave_table`**:  Stored student work on a problem. This table
+**`autosave_table`**:  This appears in the Java version only.  Stored student work on a problem. This table
 has columns for the session ID, time stamp, the student problem and
-solution (in Java, this is in XML and in Javascript the format is JSON). 
-This table is accessed via the script `postvar.php`.
+solution.   This table is accessed via the script `session_manager.php`.
 
 **`solutions`** table stores solution graphs for custom problems.
-This table has columns for author name, section, problem name, a "share" bit
+This table has columns for session id, a "share" bit
 (default zero), a "deleted" bit (default zero), a timestamp and the 
 solution graph (XML for Java version and JSON for Javascript version) (text). 
-The primary key for the table should consist of: 
- section, problem name, and author name. It is important that section is
-listed first.
+The primary key for the table is the session id:  only one copy of
+the solution persists for a session id.
+
+In the Java version, only author mode solutions are stored in this table and, instead of
+session id, it uses section, problem, and author fields as
+its primary key.
 
 The share bit determines whether a custom problem can be viewed --
 in either author or student mode -- by other members of a section. 
@@ -98,7 +100,7 @@ The categories are *name*, *short name*, *id*, *short id*:
 - author, au (for custom problems; this is the original author's
   user name)
 - newProblem, np, newProblemId, npid
-- solutionXML, sx  (for solution text)
+- solutionGraph, sg  (for serialized solution graph)
 - action, ac
 - mode, m (value is a [major mode](major-modes.md))
 - sessionId, x (see [Logging Format](logs-structure.md))
@@ -122,28 +124,26 @@ Javascript should be consistent with this list.
 
 ## Access to the custom problem solution graphs ##
 
+In the Javascript version, solutions are stored in the `solutions` table.
+
 In the Java version, the state associated with a problem solution
 has two forms:  an internal form and an exported form.  The java
 client cannot read the exported form in author mode.
 The internal form is stored in the table `unsolutions` and the 
-exported form is stored in the table `solutions`.  In the Javascript
-version, there will be only one form, which will be stored in
-the `solutions` table.
+exported form is stored in the table `solutions`. 
 
-To retrieve custom problems, the script `task_fetcher.php`
+To retrieve custom problems, or previous work, the script
+`task_fetcher.php` looks for previous student work on a problem (if
+student name is supplied), then
 looks for a matching problem in the `solutions` table, then attempts
 to find a matching published problem. 
 Calls to `task_fetcher.php` use the GET method and must include a problem name, and may
-include an author name and section name. Author name and section are
+include student name and section name or  author name and section
+name.  Author name and section are
 mandatory for a match to a custom problem.
 
-The script `save_solution.php` is invoked with POST and must include problem name,
-author name, section name, and the solution graph xml (text). It may also
-set the "share" bit. It *may* overwrite any existing entry with matching author,
-section, and problem.
-
-If the user is in author mode, `save_solution.php` is called at all instances
-where the `postvar.php` is invoked in student mode.
+In the Java version, if the user is in author mode, `save_solution.php` is called at all instances
+where the `session_manager.php` is invoked in student mode.
 
 
 ## Custom Problem Selection ##
@@ -163,13 +163,6 @@ The student may choose one of
 the existing problems, or, if they are in author mode, they
 may choose a new problem name.
 
-## Student graph Selection ##
-
-The server script `student_graphs.php` retrieves all matching student solution graphs 
-available in the `autosave_table`. 
-It is called using the GET method with arguments:  section, problem, and (optionally) author.
-It returns list of user, author pairs (in json or xml format). 
-
 ## Student Mode ##
 
 In this mode the user only modifies the student graph. This mode
@@ -185,8 +178,12 @@ the student when a problem is opened.
 
 In author mode, the LMS *may* choose to display only problems that the user
 has themselves authored, along with the ability to create a new
-problem name. This would discourage students from creating problems
-that share a name with an existing published or custom problem.
+problem name. The author can choose to share his problem with other
+students to solve as a student, test, or coached mode problem.  In 
+Java this is the "Export" step, in Javascript this is done by enabling
+the "share" option.  The author needs to be able to define a node as 
+a "first node" for the coached mode target node strategy to work;
+these could be set at export or by a toggle in the node editor.
 
 In author mode, the tutor provides a menu where a student may
 **merge** an existing solution with their solution. The solutions
@@ -211,6 +208,8 @@ intuitive for most users.
 Finally, the tutor needs a method for allowing the author to
 create the "predefined" nodes for a problem. This would be some
 sort of switch in the UI?
+
+Since users of the Forum landing page often work in groups, it has been modified to allow multiple authors to author the same problem.  When a problem is created, its original author is assigned in the "author groups" table.  If another student attempts to enter that problem to author it, they are added to "author groups" as an additional author.  The Forum page will pass the original author's name to the PHP, allowing the second person access to the problem. 
 
 ## Open and Managed access modes ##
 

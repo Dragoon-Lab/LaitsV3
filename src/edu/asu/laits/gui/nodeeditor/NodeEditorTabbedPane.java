@@ -18,9 +18,6 @@
 package edu.asu.laits.gui.nodeeditor;
 
 import edu.asu.laits.editor.ApplicationContext;
-import edu.asu.laits.logger.UserActivityLog;
-import java.util.HashMap;
-import java.util.Map;
 import javax.swing.JTabbedPane;
 import org.apache.log4j.Logger;
 
@@ -33,7 +30,6 @@ public class NodeEditorTabbedPane extends JTabbedPane {
     private NodeEditorController _controller;
     private static int MAX_TAB_INDEX = 2;
     private static Logger logs = Logger.getLogger("DevLogs");
-    private static Logger activityLogs = Logger.getLogger("ActivityLogs");
     
     public NodeEditorTabbedPane(NodeEditorController controller) {
         _controller = controller;
@@ -52,12 +48,6 @@ public class NodeEditorTabbedPane extends JTabbedPane {
             if(currentIndex != newIndex){
                 int res = _controller.processTabChange(currentIndex, newIndex);
                 super.setSelectedIndex(res);
-                Map<String, Object> logMessage = new HashMap<String, Object>();
-                logMessage.put("type","dialog-box-tab");
-                logMessage.put("name", "node-editor");
-                logMessage.put("tab", NodeEditorView.getTabName(res));
-                activityLogs.debug(new UserActivityLog(UserActivityLog.UI_ACTION, logMessage));
-                
                 if(!ApplicationContext.isTestMode())
                     _controller.initActionButtons();
             }else{

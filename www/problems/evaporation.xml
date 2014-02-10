@@ -3,11 +3,11 @@
 <Task phase="" type="">
     <TaskName>Accelerating Evaporation</TaskName>
     <TaskDescription>
-        The sun heats some water, adding 3 units of thermal energy per hour.  
-        The evaporation of water is a function of the thermal energy of the 
-        water.  In particular, if the thermal energy of the water is T, then 
-        the percentage of water evaporated during an hour is T*1%.  Assuming 
-        that the initial thermal energy is 0 and the initial water level is 1000, 
+        The sun heats some water, adding 3 units of thermal energy per hour.  NEWLINE
+        The evaporation of water is a function of the thermal energy of the NEWLINE
+        water.  In particular, if the thermal energy of the water is T, then NEWLINE
+        the percentage of water evaporated during an hour is T*1%.  Assuming NEWLINE
+        that the initial thermal energy is 0 and the initial water level is 1000, NEWLINE
         graph the water level for 20 hours.
     </TaskDescription>
     <URL>images/lake.png</URL>

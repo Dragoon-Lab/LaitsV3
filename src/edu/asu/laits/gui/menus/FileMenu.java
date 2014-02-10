@@ -44,7 +44,6 @@ import edu.asu.laits.editor.listeners.GraphChangeListener;
 import edu.asu.laits.editor.listeners.GraphPropertiesChangeListener;
 import edu.asu.laits.editor.listeners.GraphSaveListener;
 import edu.asu.laits.gui.MainWindow;
-import edu.asu.laits.logger.UserActivityLog;
 import edu.asu.laits.model.SolutionNode;
 import edu.asu.laits.model.TaskSolution;
 import edu.asu.laits.model.TaskSolutionReader;
@@ -55,9 +54,7 @@ import edu.asu.laits.properties.LatestFilesPropertyChangeListener;
 import java.io.FileOutputStream;
 import java.io.InputStream;
 import java.io.OutputStream;
-import java.util.HashMap;
 import java.util.Iterator;
-import java.util.Map;
 
 import javax.swing.JFileChooser;
 import javax.swing.filechooser.FileFilter;
@@ -176,9 +173,9 @@ public class FileMenu extends JMenu {
         try {
             TaskSolution solution = solutionReader.loadSolution(id,author,group);
             ApplicationContext.setCorrectSolution(solution);
-            Map<String, Object> logMessage = new HashMap<String, Object>();
-            logMessage.put("problem",id);            
-            activityLogs.debug(new UserActivityLog(UserActivityLog.OPEN_PROBLEM, logMessage));
+
+            activityLogs.debug("Student opened a new task ID: " + id + " - "
+                + ApplicationContext.getCurrentTask().getTaskName());
             
             mainWindow.loadTaskDescription(ApplicationContext.getCurrentTask().getTaskName(),
                     ApplicationContext.getCurrentTask().getTaskDescription(),
@@ -188,8 +185,8 @@ public class FileMenu extends JMenu {
                 createGivenModel(solution, graphPane);
             }
 
-            mainWindow.prepareModelDesignPanel();
-        } catch (ArithmeticException e) {
+            mainWindow.switchTutorModelPanels(false);
+        } catch (Exception e) {
             e.printStackTrace();
         }
     }
@@ -275,10 +272,7 @@ public class FileMenu extends JMenu {
             newAction = new java.awt.event.ActionListener() {
                 public void actionPerformed(java.awt.event.ActionEvent e) {
                     // If new is called a new main window is created
-                    Map<String, Object> logMessage = new HashMap<String, Object>();
-                    logMessage.put("type","menu-choice");
-                    logMessage.put("name", "new");
-                    activityLogs.debug(new UserActivityLog(UserActivityLog.UI_ACTION, logMessage));
+                    activityLogs.debug("User Pressed New File Menu");
                     MainWindow.launch();
                 }
             };
@@ -312,10 +306,7 @@ public class FileMenu extends JMenu {
                     "/resources/icons/16x16/fileopen.png")));
             openAction = new java.awt.event.ActionListener() {
                 public void actionPerformed(java.awt.event.ActionEvent e) {
-                    Map<String, Object> logMessage = new HashMap<String, Object>();
-                    logMessage.put("type","menu-choice");
-                    logMessage.put("name", "open");
-                    activityLogs.debug(new UserActivityLog(UserActivityLog.UI_ACTION, logMessage));                   
+                    activityLogs.debug("User Pressed Open File Menu");                   
                     open();
                 }
             };
@@ -340,6 +331,24 @@ public class FileMenu extends JMenu {
                 return;
             }
             openFile(selectedFile);
+        }
+    }
+
+    private void openTempTask(String name) {
+        String solutionFilePath = name + ".laits";
+        activityLogs.debug("Student working on Problem " + name);
+        InputStream in = getClass().getResourceAsStream(solutionFilePath);
+
+        try {
+
+            File selectedFile = new File("Model.laits");
+            OutputStream out = new FileOutputStream(selectedFile);
+            IOUtils.getInstance().copyStreams(in, out);
+            out.close();
+            mainWindow.getGraphEditorPane().resetModelGraph();
+            openFile(selectedFile);
+        } catch (Exception e) {
+            e.printStackTrace();
         }
     }
 
@@ -426,10 +435,7 @@ public class FileMenu extends JMenu {
             saveFileMenuItem.setEnabled(false);
             saveAction = new java.awt.event.ActionListener() {
                 public void actionPerformed(java.awt.event.ActionEvent e) {
-                    Map<String, Object> logMessage = new HashMap<String, Object>();
-                    logMessage.put("type","menu-choice");
-                    logMessage.put("name", "save");
-                    activityLogs.debug(new UserActivityLog(UserActivityLog.UI_ACTION, logMessage));
+                    activityLogs.debug("User Pressed Save File Menu");
                     save();
                 }
             };
@@ -452,10 +458,7 @@ public class FileMenu extends JMenu {
             saveAsFileMenuItem
                     .addActionListener(new java.awt.event.ActionListener() {
                 public void actionPerformed(java.awt.event.ActionEvent e) {
-                    Map<String, Object> logMessage = new HashMap<String, Object>();
-                    logMessage.put("type","menu-choice");
-                    logMessage.put("name", "save-as");
-                    activityLogs.debug(new UserActivityLog(UserActivityLog.UI_ACTION, logMessage));
+                    activityLogs.debug("User Pressed Save As File Menu");
                     saveAs();
                 }
             });
@@ -477,7 +480,7 @@ public class FileMenu extends JMenu {
 
             File selectedFile = getSaveAsFileChooser().getSelectedFile();
 
-            if (!selectedFile.getName().matches("(.*)(\\.dragoon)")) {
+            if (!selectedFile.getName().matches("(.*)(\\.laits)")) {
 
                 if (selectedFile.getName().matches("\".*\"")) {
                     if (selectedFile.getName().length() < 3) {
@@ -503,7 +506,7 @@ public class FileMenu extends JMenu {
                     }
                 } else {
                     selectedFile = new File(selectedFile.getAbsoluteFile()
-                            + ".dragoon");
+                            + ".laits");
                 }
             }
             globalProperties.addFileToLatestFiles(selectedFile);
@@ -578,13 +581,13 @@ public class FileMenu extends JMenu {
             saveAsFileChooser.addChoosableFileFilter(new FileFilter() {
                 @Override
                 public boolean accept(File f) {
-                    return f.getName().matches(".*.dragoon");
+                    return f.getName().matches(".*.laits");
                 }
 
                 @Override
                 public String getDescription() {
 
-                    return "Dragoon files (*.dragoon)";
+                    return "Laits files (*.laits)";
                 }
             });
         }
@@ -604,13 +607,13 @@ public class FileMenu extends JMenu {
             openFileChooser.addChoosableFileFilter(new FileFilter() {
                 @Override
                 public boolean accept(File f) {
-                    return f.getName().matches(".*\\.dragoon");
+                    return f.getName().matches(".*\\.laits");
                 }
 
                 @Override
                 public String getDescription() {
 
-                    return "Dragoon files (*.dragoon)";
+                    return "Laits files (*.laits)";
                 }
             });
         }

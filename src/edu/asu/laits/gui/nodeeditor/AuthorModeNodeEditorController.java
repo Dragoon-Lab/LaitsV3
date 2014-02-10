@@ -19,6 +19,7 @@
 package edu.asu.laits.gui.nodeeditor;
 
 import edu.asu.laits.gui.MainWindow;
+import edu.asu.laits.model.PersistenceManager;
 import edu.asu.laits.model.Vertex;
 import org.apache.log4j.Logger;
 
@@ -99,11 +100,6 @@ public class AuthorModeNodeEditorController extends NodeEditorController{
             view.getCalculationsPanel().initPanel();
         }
         
-        // Prepare New Tab if it's initilization is dependent on old tab
-        if(targetTab == NodeEditorView.PLAN){
-            view.getPlanPanel().getTitleLable().setText("Node '" + openVertex.getName() +"' is a ...");
-        }
-        
         return targetTab;
     }
     
@@ -178,7 +174,7 @@ public class AuthorModeNodeEditorController extends NodeEditorController{
      * to create a new node.
      * @param dialog 
      */
-    public void initializeCreateNewNodeDialog(NodeEditorView dialog){
+    public void initializeCreateNewNodeDialog(CreateNewNodeDialog dialog){
         dialog.getCheckButton().setEnabled(false);
         dialog.getDemoButton().setEnabled(false);
         dialog.getCancelButton().setText("Create");

@@ -3,16 +3,16 @@
 <Task phase="Intro" type="Construct">
     <TaskName/>
     <TaskDescription>
-        A stone is thrown vertically upward with a velocity of 12.0 m/s from the 
-        edge of a cliff 162 m high. Graph its velocity and height 
-        from 0 seconds to 8 seconds.  
-        How much later does it reach the bottom of the cliff? What is its 
-        velocity just before hitting? What total distance did it travel?  
-        Because the stone is moving against gravity we will set acceleration  
-        due to gravity at -9.81 m/ss&lt;sup&gt;2&lt;/sup&gt;. 
+        A stone is thrown vertically upward with a velocity of 12.0 m/s from the NEWLINE
+        edge of a cliff 162 m high. Graph its velocity and height NEWLINE
+        from 0 seconds to 8 seconds. NEWLINE NEWLINE
+        How much later does it reach the bottom of the cliff? What is its NEWLINE
+        velocity just before hitting? What total distance did it travel? NEWLINE NEWLINE
+        Because the stone is moving against gravity we will set acceleration  NEWLINE
+        due to gravity at -9.81 m/ss&lt;sup&gt;2&lt;/sup&gt;. NEWLINE
         Choose coordinates so that the bottom of the cliff is at zero.
     </TaskDescription>
-    <URL>images/Beachy_Head_and_Lighthouse.jpg</URL>
+        <URL>images/Beachy_Head_and_Lighthouse.jpg</URL>
     <StartTime>0</StartTime>
     <EndTime>8</EndTime>
     <Units>Seconds</Units>
@@ -57,31 +57,31 @@
     
     </Nodes>
   
-    <DescriptionTree>
-        <Node level="root">
-            <Description>The height </Description>
-            <Node level="leaf">
-                <Description>of the stone</Description>
-                <NodeName>Height</NodeName>
-            </Node>
+ <DescriptionTree>
+    <Node level="root">
+        <Description>The height </Description>
+        <Node level="leaf">
+            <Description>of the stone</Description>
+            <NodeName>Height</NodeName>
         </Node>
+    </Node>
       
-        <Node level="root">
-            <Description>The velocity </Description>
-            <Node level="leaf">
-                <Description>of the stone</Description>
-                <NodeName>Velocity</NodeName>
-            </Node>          
+    <Node level="root">
+        <Description>The velocity </Description>
+        <Node level="leaf">
+            <Description>of the stone</Description>
+            <NodeName>Velocity</NodeName>
+        </Node>          
+    </Node>
+      
+    <Node level="root">
+        <Description>The acceleration </Description>
+        <Node level="leaf">
+            <Description>of the stone due to gravity</Description>
+            <NodeName>Acceleration</NodeName>
         </Node>
-      
-        <Node level="root">
-            <Description>The acceleration </Description>
-            <Node level="leaf">
-                <Description>of the stone due to gravity</Description>
-                <NodeName>Acceleration</NodeName>
-            </Node>
-        </Node>
+    </Node>
       
       
-    </DescriptionTree>
+</DescriptionTree>
 </Task>

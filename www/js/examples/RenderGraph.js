@@ -79,7 +79,7 @@ define(["../../dojo/on","../../dojo/_base/declare","../../dijit/layout/Tabcontai
      	   this.dialog = new Dialog({
      		   title: "Graph for Problem",
         		content:this.dialogContent,
-        		style:"width:400px;height:500px"
+        		style:"width:auto;height:auto"
      	   });      	   
      	   
      	   //insert initial value of slider into a textbox

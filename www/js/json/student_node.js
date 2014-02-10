@@ -19,12 +19,11 @@ define(["dojo/_base/declare"]
             this.name = "";
             this.inGivenModel = false;
             this.inputs = new Array();
-            this.position = JSON.parse('{"x" : ' + xPos + ',\n"y" : ' + yPos + '}');
-            this.studentSelections = JSON.parse('{"description" : "' + null + '",\n"type" : "' + null
-                    + '",\n"initial" : "' + null + '",\n"units" : ' + null + ',\n"equation" : "' + null + '"}');
+            this.position = {x: xPos, y: yPos};
+            this.studentSelections = {description: null, type: null, initial: null, units: null, equation: null};
         },
         addInput: function(/*string*/ id) {
-            var input = JSON.parse('{"ID" : "' + id + '"}');
+            var input = {ID: id};
             this.inputs.push(input);
         },
         deleteInput: function(/*string*/ id) {

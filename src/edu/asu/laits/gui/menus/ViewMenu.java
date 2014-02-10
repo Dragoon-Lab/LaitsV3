@@ -7,13 +7,10 @@ import javax.swing.JViewport;
 
 import edu.asu.laits.editor.GraphEditorPane;
 import edu.asu.laits.gui.MainWindow;
-import edu.asu.laits.logger.UserActivityLog;
 
 import java.awt.Point;
 import java.awt.event.ActionListener;
 import java.awt.event.KeyEvent;
-import java.util.HashMap;
-import java.util.Map;
 import javax.swing.ImageIcon;
 import org.apache.log4j.Logger;
 
@@ -64,6 +61,7 @@ public class ViewMenu extends JMenu {
         this.add(getDefaultZoomMenuItem());
         this.add(getJSeparator());
         this.add(getCenterViewMenuItem());
+
     }
 
     /**
@@ -79,10 +77,7 @@ public class ViewMenu extends JMenu {
                     "/resources/icons/16x16/viewmag+.png")));
             zoomInAction = new java.awt.event.ActionListener() {
                 public void actionPerformed(java.awt.event.ActionEvent e) {
-                    Map<String, Object> logMessage = new HashMap<String, Object>();
-                    logMessage.put("type","menu-choice");
-                    logMessage.put("name", "zoom-in");
-                    activityLogs.debug(new UserActivityLog(UserActivityLog.UI_ACTION, logMessage));
+                    activityLogs.debug("User used Zoom In Button");
                     graphPane.zoomIn();
                 }
             };
@@ -104,10 +99,7 @@ public class ViewMenu extends JMenu {
                     "/resources/icons/16x16/viewmag-.png")));
             zoomOutAction = new java.awt.event.ActionListener() {
                 public void actionPerformed(java.awt.event.ActionEvent e) {
-                    Map<String, Object> logMessage = new HashMap<String, Object>();
-                    logMessage.put("type","menu-choice");
-                    logMessage.put("name", "zoom-out");
-                    activityLogs.debug(new UserActivityLog(UserActivityLog.UI_ACTION, logMessage));
+                    activityLogs.debug("User used Zoom Out Button");
                     graphPane.zoomOut();
                 }
             };
@@ -140,10 +132,7 @@ public class ViewMenu extends JMenu {
             centerViewMenuItem
                     .addActionListener(new java.awt.event.ActionListener() {
                 public void actionPerformed(java.awt.event.ActionEvent e) {
-                    Map<String, Object> logMessage = new HashMap<String, Object>();
-                    logMessage.put("type","menu-choice");
-                    logMessage.put("name", "center-view");
-                    activityLogs.debug(new UserActivityLog(UserActivityLog.UI_ACTION, logMessage));
+                    activityLogs.debug("User used Zoom Original Button");
                     JViewport viewport = mainFrame
                             .getGraphPaneScrollPane().getViewport();
                     viewport.setViewPosition(new Point(
@@ -174,10 +163,6 @@ public class ViewMenu extends JMenu {
                     "/resources/icons/16x16/viewmag1.png")));
             defaultZommLevelAction = new java.awt.event.ActionListener() {
                 public void actionPerformed(java.awt.event.ActionEvent e) {
-                    Map<String, Object> logMessage = new HashMap<String, Object>();
-                    logMessage.put("type","menu-choice");
-                    logMessage.put("name", "zoom-default");
-                    activityLogs.debug(new UserActivityLog(UserActivityLog.UI_ACTION, logMessage));
                     graphPane.setDefaultZoomLevel();
                 }
             };

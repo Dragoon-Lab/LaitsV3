@@ -30,7 +30,6 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.util.Enumeration;
 import java.util.List;
-import java.util.Map;
 import javax.swing.AbstractButton;
 import javax.swing.JLabel;
 import net.miginfocom.swing.MigLayout;
@@ -68,11 +67,11 @@ public class PlanPanelView extends javax.swing.JPanel {
     private JRadioButton accumulatorSelection;
     private JRadioButton functionSelection;
    
-    private JLabel lableTitle;
     /**
      * Logger
      */
     private static Logger logs = Logger.getLogger("DevLogs");
+    private static Logger activityLogs = Logger.getLogger("ActivityLogs");
     
     public PlanPanelView(NodeEditorView ne) {
         nodeEditor = ne;
@@ -99,8 +98,7 @@ public class PlanPanelView extends javax.swing.JPanel {
         
         panel = new JPanel(PlanLayout);
         panel.setBackground(Color.WHITE);
-        lableTitle = new JLabel("Node '" + openVertex.getName() + "' is a ...");
-        panel.add(lableTitle, "align center");
+        panel.add(new JLabel(openVertex.getName() + " is a ..."), "align center");
         paraPanel = new JPanel(rowLayout);
         paraPanel.add(parameterSelection, "");
         paraPanel.add(new JLabel(labelHtml + parameterPlan[1]), "");
@@ -243,18 +241,12 @@ public class PlanPanelView extends javax.swing.JPanel {
     
     public String printPlanPanel() {
         StringBuilder sb = new StringBuilder();
-        sb.append("Selected Plan : ");
-        sb.append(planToString(getSelectedPlan()));
-        sb.append(", Plan Panel Status : " + nodeEditor.getOpenVertex().getPlanStatus());
+        sb.append("Selected Plan : '");
+        sb.append(planToString(getSelectedPlan()) + "'");
         return sb.toString();
     }
     
-    public void setPlanPanelDetails(Map<String, Object> map) {
-        map.put("selected-plan", planToString(getSelectedPlan()));
-        map.put("plan-panel-status", nodeEditor.getOpenVertex().getPlanStatus());
-    }
-    
-    public String planToString(Vertex.VertexType p) {
+    private String planToString(Vertex.VertexType p) {
         if (p.equals(Vertex.VertexType.CONSTANT)) {
             return "Parameter";
         } else if (p.equals(Vertex.VertexType.STOCK)) {
@@ -295,9 +287,5 @@ public class PlanPanelView extends javax.swing.JPanel {
         }
         
         return null;
-    }
-    
-    public JLabel getTitleLable() {
-        return lableTitle;
     }
 }

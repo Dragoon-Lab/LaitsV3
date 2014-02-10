@@ -2,15 +2,14 @@
 <Task phase="Challenge" type="Construct">
     <TaskName>Bookworm</TaskName>
     <TaskDescription>Problem: Rod is a book worm. He already has 100 books. Each week he buys and reads two more books. 
-        Goal: Graph the number of books Rod has in 52 weeks. 
-        Hints: 
-        (1) The Done button is enabled (turns green) only when the model is complete and correct. 
-        (2) Although you could construct models by guessing and running them until the Done button is enabled, 
-        this will take too long; it is better to analyze the task and design the model using the advice starting on 
+        NEWLINE NEWLINEGoal: Graph the number of books Rod has in 52 weeks. 
+        NEWLINE NEWLINE Hints: 
+        NEWLINE (1) The Done button is enabled (turns green) only when the model is complete and correct. 
+        NEWLINE (2) Although you could construct models by guessing and running them until the Done button is enabled, NEWLINE
+        this will take too long; it is better to analyze the task and design the model using the advice starting on NEWLINE
         slide 67 of the instruction tab. 
-        (3) If you get really stuck or the software acts buggy, then please ask an experimenter for help.
-    </TaskDescription>
-    
+        NEWLINE (3) If you get really stuck or the software acts buggy, then please ask an experimenter for help.</TaskDescription>
+    <ShortDescription>\n Accumulator: Books = Books + weekly books bought; initially 100\n Given: weekly books bought = 2</ShortDescription>
     <URL>http://passion2read.files.wordpress.com/2011/09/bookworm1.gif</URL>
     <StartTime>0</StartTime>
     <EndTime>52</EndTime>

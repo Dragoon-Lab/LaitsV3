@@ -1,5 +1,7 @@
+
 package edu.asu.laits.editor;
 
+import java.awt.Color;
 import java.awt.event.KeyAdapter;
 import java.awt.event.KeyEvent;
 import java.awt.geom.Point2D;
@@ -7,372 +9,416 @@ import java.awt.geom.Rectangle2D;
 import java.util.HashMap;
 import java.util.HashSet;
 import java.util.Hashtable;
+import java.util.Iterator;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
 
 
+import edu.asu.laits.model.Edge;
 import edu.asu.laits.model.Vertex;
 import edu.asu.laits.model.Vertex.VertexReaderException;
+import edu.asu.laits.gui.CancelAbleProcess;
+import edu.asu.laits.gui.CancelAbleProcessDialog;
+import edu.asu.laits.gui.StatusNotifier;
 import org.jgraph.graph.DefaultEdge;
 import org.jgraph.graph.DefaultGraphCell;
+import org.jgraph.graph.DefaultPort;
 import org.jgraph.graph.Port;
 
 /**
- * Helper class used by GraphEditorPane to perform keystroke operations. It
- * contains methods to perform various operations on the graph.
+ * A class that is only visible in this package. It is used by the
+ * GraphEditorPane to perorm operations on itself. It contains methods to perorm
+ * various operations on the graph.
  */
 class GraphOperationHelper {
 
-    private GraphEditorPane graphPane;
-    private boolean readyForOperation = true;
-    private SelectVertexKeyAdapter vertexSelectKeyAdapter;
+	private GraphEditorPane graphPane;
 
-    public GraphOperationHelper(GraphEditorPane graphPane,
-            InformationPane informationPane) {
-        this.graphPane = graphPane;
-        vertexSelectKeyAdapter = new SelectVertexKeyAdapter();
-        graphPane.addKeyListener(vertexSelectKeyAdapter);
-    }
+	private boolean readyForOperation = true;
 
-    synchronized public boolean isReadyForOperation() {
-        return readyForOperation;
-    }
+	private InformationPane informationPane;
 
-    private class CancelException extends Exception {
-    };
+	private SelectVertexKeyAdapter vertexSelectKeyAdapter;
 
-    private enum KeyType {
-        NO_OPTION_KEY, CANCEL_KEY, APROVE_KEY
-    }
+	public GraphOperationHelper(GraphEditorPane graphPane,
+			InformationPane informationPane) {
+		this.graphPane = graphPane;
+		this.informationPane = informationPane;
+		vertexSelectKeyAdapter = new SelectVertexKeyAdapter();
+		graphPane.addKeyListener(vertexSelectKeyAdapter);
+	}
 
-    private List<DefaultGraphCell> selectVertexSet(
-            Set<Object> notAbleToSelectSet) throws CancelException {
-        
-        Hashtable<Object, Object> nestedMap = new Hashtable<Object, Object>();
-        for (Object o : notAbleToSelectSet) {
-            Hashtable<Object, Object> map = new Hashtable<Object, Object>();
-            if (o instanceof DefaultGraphCell) {
-                DefaultGraphCell cell = (DefaultGraphCell) o;
-                GraphEditorConstants.setSelectable(map, false);
-            }
-            nestedMap.put(o, map);
-        }
-        graphPane.getGraphLayoutCache().edit(nestedMap);
+	synchronized public boolean isReadyForOperation() {
+		return readyForOperation;
+	}
 
-        KeyType keyPressed = vertexSelectKeyAdapter.getKeyAlternative();
+	/**
+	 * @param readyForOperation
+	 *            the readyForOperation to set
+	 */
+	synchronized private void setReadyForOperation(boolean readyForOperation) {
 
-        if (keyPressed == KeyType.CANCEL_KEY) {
-            throw new CancelException();
-        }
+		this.readyForOperation = readyForOperation;
 
-        // Vertex set is selected and approve key is typed
-        Object[] selectedVertices = graphPane.getSelectionCells(graphPane
-                .getGraphLayoutCache().getCells(false, true, false, false));
-        List<DefaultGraphCell> selectedVertexList = null;
+	}
 
-        if (selectedVertices == null || selectedVertices.length == 0) {
-            selectedVertexList = new LinkedList<DefaultGraphCell>();
-        } else {
-            selectedVertexList = new LinkedList();
-            for (Object o : selectedVertices) {
-                if (o instanceof DefaultGraphCell) {
-                    DefaultGraphCell cell = (DefaultGraphCell) o;
-                    selectedVertexList.add(cell);
-                }
+	
+	private class CancelException extends Exception {
+	};
 
-            }
+	private enum KeyType {
+		NO_OPTION_KEY, CANCEL_KEY, APROVE_KEY
+	}
 
-        }
-        // Make it possible to select cells in it again
-        nestedMap = new Hashtable<Object, Object>();
-        for (Object o : notAbleToSelectSet) {
-            Hashtable<Object, Object> map = new Hashtable<Object, Object>();
-            if (o instanceof DefaultGraphCell) {
-                DefaultGraphCell cell = (DefaultGraphCell) o;
-                GraphEditorConstants.setSelectable(map, true);
-            }
-            nestedMap.put(o, map);
-        }
-        graphPane.getGraphLayoutCache().edit(nestedMap);
+	private List<DefaultGraphCell> selectVertexSet(
+			Set<Object> notAbleToSelectSet) throws CancelException {
+		// Sets the not able to select sets so it is not posible to selects
+		// cells
+		// in it
 
-        return selectedVertexList;
-    }
+		Hashtable<Object, Object> nestedMap = new Hashtable<Object, Object>();
+		for (Object o : notAbleToSelectSet) {
+			Hashtable<Object, Object> map = new Hashtable<Object, Object>();
+			if (o instanceof DefaultGraphCell) {
+				DefaultGraphCell cell = (DefaultGraphCell) o;
+				GraphEditorConstants.setSelectable(map, false);
+			}
+			nestedMap.put(o, map);
+		}
+		graphPane.getGraphLayoutCache().edit(nestedMap);
 
-    private List<DefaultGraphCell> selectVertexSet() throws CancelException {
-        return selectVertexSet(new HashSet<Object>());
-    }
+		KeyType keyPressed = vertexSelectKeyAdapter.getKeyAlternative();
 
-    class SelectVertexKeyAdapter extends KeyAdapter {
-        private KeyType keyIsTyped = KeyType.NO_OPTION_KEY;
-        boolean keyAlternativeRequested = false;
+		if (keyPressed == KeyType.CANCEL_KEY)
+			throw new CancelException();
 
-        public void keyReleased(KeyEvent e) {
-            if (!keyAlternativeRequested) {
-                return;
-            }
-            if ((e.getKeyCode() == KeyEvent.VK_ESCAPE)) {
+		// Vertex set is selected and approve key is typed
+		Object[] selectedVertices = graphPane.getSelectionCells(graphPane
+				.getGraphLayoutCache().getCells(false, true, false, false));
+		List<DefaultGraphCell> selectedVertexList = null;
 
-                keyIsTyped = KeyType.CANCEL_KEY;
-            } else if (e.getKeyCode() == KeyEvent.VK_ENTER) {
-                keyIsTyped = KeyType.APROVE_KEY;
-            }
-        }
+		if (selectedVertices == null || selectedVertices.length == 0)
+			selectedVertexList = new LinkedList<DefaultGraphCell>();
+		else {
+			selectedVertexList = new LinkedList();
+			for (Object o : selectedVertices) {
+				if (o instanceof DefaultGraphCell) {
+					DefaultGraphCell cell = (DefaultGraphCell) o;
+					selectedVertexList.add(cell);
+				}
 
-        synchronized KeyType getTypedKey() {
-            return keyIsTyped;
-        }
+			}
 
-        synchronized void setTypedKey(KeyType k) {
-            keyIsTyped = k;
-        }
+		}
+		// Make it possible to select cells in it again
+		nestedMap = new Hashtable<Object, Object>();
+		for (Object o : notAbleToSelectSet) {
+			Hashtable<Object, Object> map = new Hashtable<Object, Object>();
+			if (o instanceof DefaultGraphCell) {
+				DefaultGraphCell cell = (DefaultGraphCell) o;
+				GraphEditorConstants.setSelectable(map, true);
+			}
+			nestedMap.put(o, map);
+		}
+		graphPane.getGraphLayoutCache().edit(nestedMap);
 
-        synchronized public KeyType getKeyAlternative() {
-            keyAlternativeRequested = true;
-            while (getTypedKey() == KeyType.NO_OPTION_KEY) {
-                Thread.yield();
-            }
-            KeyType type = getTypedKey();
-            setTypedKey(KeyType.NO_OPTION_KEY);
-            keyAlternativeRequested = false;
-            return type;
-        }
-    }
+		return selectedVertexList;
+	}
 
-    private class VertexTuple {
-        private Vertex v1;
-        private Vertex v2;
+	private List<DefaultGraphCell> selectVertexSet() throws CancelException {
+		return selectVertexSet(new HashSet<Object>());
+	}
 
-        public VertexTuple(Vertex v1, Vertex v2) {
-            try {
-                v1.fetchInformationFromJGraph();
-                v2.fetchInformationFromJGraph();
-            } catch (VertexReaderException e) {
+	class SelectVertexKeyAdapter extends KeyAdapter {
+		private KeyType keyIsTyped = KeyType.NO_OPTION_KEY;
 
-                e.printStackTrace();
-            }
-            this.v1 = v1;
-            this.v2 = v2;
-        }
+		boolean keyAlternativeRequested = false;
 
-        @Override
-        public boolean equals(Object obj) {
-            if (obj instanceof VertexTuple) {
-                VertexTuple o = (VertexTuple) obj;
-                return (((o.getV1() == v1) && (o.getV2() == v2)) || ((o.getV1() == v2) && (o
-                        .getV2() == v1)));
+		public void keyReleased(KeyEvent e) {
+			if (!keyAlternativeRequested)
+				return;
+			if ((e.getKeyCode() == KeyEvent.VK_ESCAPE)) {
+				
+				keyIsTyped = KeyType.CANCEL_KEY;
+			} else if (e.getKeyCode() == KeyEvent.VK_ENTER)
+				keyIsTyped = KeyType.APROVE_KEY;
+		}
 
-            }
-            return false;
-        }
+		synchronized KeyType getTypedKey() {
+			return keyIsTyped;
+		}
 
-        @Override
-        public int hashCode() {
+		synchronized void setTypedKey(KeyType k) {
+			keyIsTyped = k;
+		}
 
-            return v1.hashCode() + v2.hashCode();
-        }
+		synchronized public KeyType getKeyAlternative() {
+			keyAlternativeRequested = true;
+			while (getTypedKey() == KeyType.NO_OPTION_KEY)
+				Thread.yield();
+			KeyType type = getTypedKey();
+			setTypedKey(KeyType.NO_OPTION_KEY);
+			keyAlternativeRequested = false;
+			return type;
+		}
+	}
 
-        public Vertex getV1() {
-            return v1;
-        }
+	
 
-        public Vertex getV2() {
-            return v2;
-        }
-    }
+	private class VertexTuple {
+		private Vertex v1;
 
-    public void placeSelectedVerticesInCircle() {
-        Object[] selectedVertices = graphPane.getSelectionCells(graphPane
-                .getGraphLayoutCache().getCells(false, true, false, false));
-        if (selectedVertices == null || selectedVertices.length == 0) {
-            return;
-        }
-        // Place the circle within the bounds of the cellse
-        Rectangle2D bounds = graphPane.getCellBounds(selectedVertices);
-        double centerX = bounds.getCenterX();
-        double centerY = bounds.getCenterY();
-        double radius = (bounds.getWidth() > bounds.getHeight() ? bounds
-                .getWidth() / 2 : bounds.getHeight() / 2);
+		private Vertex v2;
 
-        double piT2 = Math.PI * 2;
-        double distanceBetweenVertices = piT2 / selectedVertices.length;
-        double place = 0;
-        Map<Object, Object> nestadMap = new HashMap<Object, Object>();
+		public VertexTuple(Vertex v1, Vertex v2) {
+			try {
+				v1.fetchInformationFromJGraph();
+				v2.fetchInformationFromJGraph();
+			} catch (VertexReaderException e) {
 
-        for (Object selectedVertex : selectedVertices) {
-            if (selectedVertex instanceof DefaultGraphCell) {
-                DefaultGraphCell cell = (DefaultGraphCell) selectedVertex;
-                Rectangle2D prevBoundes = GraphEditorConstants.getBounds(cell
-                        .getAttributes());
-                Map<Object, Object> attrMap = new HashMap<Object, Object>();
-                GraphEditorConstants.setBounds(attrMap, new Rectangle2D.Double(
-                        Math.cos(place) * radius + centerX, Math.sin(place)
-                        * radius + centerY, prevBoundes.getWidth(),
-                        prevBoundes.getHeight()));
-                nestadMap.put(cell, attrMap);
-            }
+				e.printStackTrace();
+			}
+			this.v1 = v1;
+			this.v2 = v2;
+		}
 
-            place = place + distanceBetweenVertices;
-        }
-        graphPane.getGraphLayoutCache().edit(nestadMap);
-    }
+		/*
+		 * (non-Javadoc)
+		 * 
+		 * @see java.lang.Object#equals(java.lang.Object)
+		 */
+		@Override
+		public boolean equals(Object obj) {
+			if (obj instanceof VertexTuple) {
+				VertexTuple o = (VertexTuple) obj;
+				return (((o.getV1() == v1) && (o.getV2() == v2)) || ((o.getV1() == v2) && (o
+						.getV2() == v1)));
 
-    public void mirrorSelectedVerticesVertical() {
+			}
+			return false;
+		}
 
-        Object[] selectedVertices = graphPane.getSelectionCells(graphPane
-                .getGraphLayoutCache().getCells(false, true, false, false));
-        if (selectedVertices == null || selectedVertices.length == 0) {
-            return;
-        }
-        // Place the circle within the bounds of the cellse
-        Rectangle2D bounds = graphPane.getCellBounds(selectedVertices);
+		@Override
+		public int hashCode() {
 
-        double zeroPointPlusMaxPoint = bounds.getMinX() + bounds.getMaxX();
+			return v1.hashCode() + v2.hashCode();
+		}
 
-        Map<Object, Object> nestadMap = new HashMap<Object, Object>();
+		/**
+		 * @return the v1
+		 */
+		public Vertex getV1() {
+			return v1;
+		}
 
-        for (Object selectedVertex : selectedVertices) {
-            if (selectedVertex instanceof DefaultGraphCell) {
-                DefaultGraphCell cell = (DefaultGraphCell) selectedVertex;
-                Rectangle2D prevBoundes = GraphEditorConstants.getBounds(cell
-                        .getAttributes());
-                double prevX = prevBoundes.getX();
-                double prevY = prevBoundes.getY();
-                Map<Object, Object> attrMap = new HashMap<Object, Object>();
-                GraphEditorConstants
-                        .setBounds(attrMap,
-                        new Rectangle2D.Double(zeroPointPlusMaxPoint
-                        - prevX - prevBoundes.getWidth(),
-                        prevY, prevBoundes.getWidth(),
-                        prevBoundes.getHeight()));
-                nestadMap.put(cell, attrMap);
-            }
-        }
-        graphPane.getGraphLayoutCache().edit(nestadMap);
+		/**
+		 * @return the v2
+		 */
+		public Vertex getV2() {
+			return v2;
+		}
 
-    }
+	}
 
-    public void mirrorSelectedVerticesHorizontal() {
-        Object[] selectedVertices = graphPane.getSelectionCells(graphPane
-                .getGraphLayoutCache().getCells(false, true, false, false));
-        if (selectedVertices == null || selectedVertices.length == 0) {
-            return;
-        }
-        // Place the circle within the bounds of the cellse
-        Rectangle2D bounds = graphPane.getCellBounds(selectedVertices);
+	
+	public void placeSelectedVerticesInCircle() {
+		Object[] selectedVertices = graphPane.getSelectionCells(graphPane
+				.getGraphLayoutCache().getCells(false, true, false, false));
+		if (selectedVertices == null || selectedVertices.length == 0)
+			return;
+		// Place the circle within the bounds of the cellse
+		Rectangle2D bounds = graphPane.getCellBounds(selectedVertices);
+		double centerX = bounds.getCenterX();
+		double centerY = bounds.getCenterY();
+		double radius = (bounds.getWidth() > bounds.getHeight() ? bounds
+				.getWidth() / 2 : bounds.getHeight() / 2);
 
-        double zeroPointPlusMaxPoint = bounds.getMinY() + bounds.getMaxY();
+		double piT2 = Math.PI * 2;
+		double distanceBetweenVertices = piT2 / selectedVertices.length;
+		double place = 0;
+		Map<Object, Object> nestadMap = new HashMap<Object, Object>();
 
-        Map<Object, Object> nestadMap = new HashMap<Object, Object>();
+		for (Object selectedVertex : selectedVertices) {
+			if (selectedVertex instanceof DefaultGraphCell) {
+				DefaultGraphCell cell = (DefaultGraphCell) selectedVertex;
+				Rectangle2D prevBoundes = GraphEditorConstants.getBounds(cell
+						.getAttributes());
+				Map<Object, Object> attrMap = new HashMap<Object, Object>();
+				GraphEditorConstants.setBounds(attrMap, new Rectangle2D.Double(
+						Math.cos(place) * radius + centerX, Math.sin(place)
+								* radius + centerY, prevBoundes.getWidth(),
+						prevBoundes.getHeight()));
+				nestadMap.put(cell, attrMap);
+			}
 
-        for (Object selectedVertex : selectedVertices) {
-            if (selectedVertex instanceof DefaultGraphCell) {
-                DefaultGraphCell cell = (DefaultGraphCell) selectedVertex;
-                Rectangle2D prevBoundes = GraphEditorConstants.getBounds(cell
-                        .getAttributes());
-                double prevX = prevBoundes.getX();
-                double prevY = prevBoundes.getY();
-                Map<Object, Object> attrMap = new HashMap<Object, Object>();
-                GraphEditorConstants.setBounds(attrMap, new Rectangle2D.Double(
-                        prevX, zeroPointPlusMaxPoint - prevY
-                        - prevBoundes.getHeight(), prevBoundes
-                        .getWidth(), prevBoundes.getHeight()));
-                nestadMap.put(cell, attrMap);
-            }
-        }
-        graphPane.getGraphLayoutCache().edit(nestadMap);
-    }
+			place = place + distanceBetweenVertices;
+		}
+		graphPane.getGraphLayoutCache().edit(nestadMap);
+	}
 
-    public void splitSelectedEdges(int verticesBetween) {
-        if (verticesBetween < 1) {
-            return;
-        }
+	public void mirrorSelectedVerticesVertical() {
 
-        Object[] selectedEdges = graphPane.getSelectionCells(graphPane
-                .getGraphLayoutCache().getCells(false, false, false, true));
-        for (Object o : selectedEdges) {
-            if (o instanceof DefaultEdge) {
-                DefaultEdge edge = (DefaultEdge) o;
-                splitEdge(edge, verticesBetween);
-            }
-        }
-    }
+		Object[] selectedVertices = graphPane.getSelectionCells(graphPane
+				.getGraphLayoutCache().getCells(false, true, false, false));
+		if (selectedVertices == null || selectedVertices.length == 0)
+			return;
+		// Place the circle within the bounds of the cellse
+		Rectangle2D bounds = graphPane.getCellBounds(selectedVertices);
 
-    private void splitEdge(DefaultEdge edge, int verticesBetween) {
+		double zeroPointPlusMaxPoint = bounds.getMinX() + bounds.getMaxX();
 
-        List<Object> modifiedCells = new LinkedList<Object>();
-        DefaultGraphCell source = graphPane.getSource(edge);
-        modifiedCells.add(source);
-        DefaultGraphCell dest = graphPane.getDest(edge);
-        modifiedCells.add(dest);
-        Object[] edgeCell = {edge};
-        graphPane.getGraphLayoutCache().remove(edgeCell);
-        Rectangle2D bounds = GraphEditorConstants.getBounds(source
-                .getAttributes());
-        Point2D sourcePos = new Point2D.Double(bounds.getCenterX(), bounds
-                .getCenterY());
-        bounds = GraphEditorConstants.getBounds(dest.getAttributes());
-        Point2D destPos = new Point2D.Double(bounds.getCenterX(), bounds
-                .getCenterY());
+		Map<Object, Object> nestadMap = new HashMap<Object, Object>();
 
-        double correctTermX = bounds.getWidth() / 2;
-        double correctTermY = bounds.getHeight() / 2;
+		for (Object selectedVertex : selectedVertices) {
+			if (selectedVertex instanceof DefaultGraphCell) {
+				DefaultGraphCell cell = (DefaultGraphCell) selectedVertex;
+				Rectangle2D prevBoundes = GraphEditorConstants.getBounds(cell
+						.getAttributes());
+				double prevX = prevBoundes.getX();
+				double prevY = prevBoundes.getY();
+				Map<Object, Object> attrMap = new HashMap<Object, Object>();
+				GraphEditorConstants
+						.setBounds(attrMap,
+								new Rectangle2D.Double(zeroPointPlusMaxPoint
+										- prevX - prevBoundes.getWidth(),
+										prevY, prevBoundes.getWidth(),
+										prevBoundes.getHeight()));
+				nestadMap.put(cell, attrMap);
+			}
+		}
+		graphPane.getGraphLayoutCache().edit(nestadMap);
 
-        double deltaX = destPos.getX() - sourcePos.getX();
-        double deltaY = destPos.getY() - sourcePos.getY();
+	}
 
-        double xStepSize = deltaX / (verticesBetween + 1);
-        double yStepSize = deltaY / (verticesBetween + 1);
+	public void mirrorSelectedVerticesHorizontal() {
+		Object[] selectedVertices = graphPane.getSelectionCells(graphPane
+				.getGraphLayoutCache().getCells(false, true, false, false));
+		if (selectedVertices == null || selectedVertices.length == 0)
+			return;
+		// Place the circle within the bounds of the cellse
+		Rectangle2D bounds = graphPane.getCellBounds(selectedVertices);
 
-        double insertPosX = xStepSize + sourcePos.getX();
-        double insertPosY = yStepSize + sourcePos.getY();
-        DefaultGraphCell prevCell = source;
-        DefaultGraphCell currentCell = null;
-        for (int n = 0; n < verticesBetween; n++) {
-            // Insert vertex
-            currentCell = graphPane.addDefaultVertexAt(insertPosX
-                    - correctTermX + bounds.getCenterX() - bounds.getX(),
-                    insertPosY - correctTermY + bounds.getCenterY()
-                    - bounds.getY());
-            modifiedCells.add(currentCell);
-            // Connect
-            modifiedCells.add(graphPane.connect((Port) prevCell.getChildAt(0),
-                    (Port) currentCell.getChildAt(0)));
+		double zeroPointPlusMaxPoint = bounds.getMinY() + bounds.getMaxY();
 
-            prevCell = currentCell;
-            // Increase insert pos
-            insertPosX = insertPosX + xStepSize;
-            insertPosY = insertPosY + yStepSize;
-        }
-        modifiedCells.add(graphPane.connect((Port) currentCell.getChildAt(0),
-                (Port) dest.getChildAt(0)));
-        graphPane.setSelectionCells(modifiedCells.toArray());
+		Map<Object, Object> nestadMap = new HashMap<Object, Object>();
 
-    }
+		for (Object selectedVertex : selectedVertices) {
+			if (selectedVertex instanceof DefaultGraphCell) {
+				DefaultGraphCell cell = (DefaultGraphCell) selectedVertex;
+				Rectangle2D prevBoundes = GraphEditorConstants.getBounds(cell
+						.getAttributes());
+				double prevX = prevBoundes.getX();
+				double prevY = prevBoundes.getY();
+				Map<Object, Object> attrMap = new HashMap<Object, Object>();
+				GraphEditorConstants.setBounds(attrMap, new Rectangle2D.Double(
+						prevX, zeroPointPlusMaxPoint - prevY
+								- prevBoundes.getHeight(), prevBoundes
+								.getWidth(), prevBoundes.getHeight()));
+				nestadMap.put(cell, attrMap);
+			}
+		}
+		graphPane.getGraphLayoutCache().edit(nestadMap);
+		
+	}
 
-    public void expandByFactor(double factor) {
-        Object vertexCells[] = graphPane.getSelectionCells(graphPane
-                .getGraphLayoutCache().getCells(false, true, false, false));
+	
 
-        Rectangle2D areaBounds = graphPane.getCellBounds(vertexCells);
-        Hashtable<Object, Object> nestedMap = new Hashtable<Object, Object>();
-        for (Object o : vertexCells) {
-            Hashtable<Object, Object> map = new Hashtable<Object, Object>();
-            if (o instanceof DefaultGraphCell) {
-                DefaultGraphCell cell = (DefaultGraphCell) o;
-                Rectangle2D bounds =
-                        GraphEditorConstants.getBounds(cell.getAttributes());
-                Rectangle2D newBounds = new Rectangle2D.Double(
-                        areaBounds.getX() + (bounds.getX() - areaBounds.getX()) * factor,
-                        areaBounds.getY() + (bounds.getY() - areaBounds.getY()) * factor,
-                        bounds.getWidth(),
-                        bounds.getHeight());
-                GraphEditorConstants.setBounds(map, newBounds);
+	public void splitSelectedEdges(int verticesBetween) {
+		if (verticesBetween < 1)
+			return;
 
-            }
-            nestedMap.put(o, map);
-        }
-        graphPane.getGraphLayoutCache().edit(nestedMap);
-    }
+		Object[] selectedEdges = graphPane.getSelectionCells(graphPane
+				.getGraphLayoutCache().getCells(false, false, false, true));
+		for (Object o : selectedEdges) {
+			if (o instanceof DefaultEdge) {
+				DefaultEdge edge = (DefaultEdge) o;
+				splitEdge(edge, verticesBetween);
+			}
+
+		}
+
+	}
+
+	private void splitEdge(DefaultEdge edge, int verticesBetween) {
+
+		List<Object> modifiedCells = new LinkedList<Object>();
+		DefaultGraphCell source = graphPane.getSource(edge);
+		modifiedCells.add(source);
+		DefaultGraphCell dest = graphPane.getDest(edge);
+		modifiedCells.add(dest);
+		Object[] edgeCell = { edge };
+		graphPane.getGraphLayoutCache().remove(edgeCell);
+		Rectangle2D bounds = GraphEditorConstants.getBounds(source
+				.getAttributes());
+		Point2D sourcePos = new Point2D.Double(bounds.getCenterX(), bounds
+				.getCenterY());
+		bounds = GraphEditorConstants.getBounds(dest.getAttributes());
+		Point2D destPos = new Point2D.Double(bounds.getCenterX(), bounds
+				.getCenterY());
+
+		double correctTermX = bounds.getWidth() / 2;
+		double correctTermY = bounds.getHeight() / 2;
+
+		double deltaX = destPos.getX() - sourcePos.getX();
+		double deltaY = destPos.getY() - sourcePos.getY();
+
+		double xStepSize = deltaX / (verticesBetween + 1);
+		double yStepSize = deltaY / (verticesBetween + 1);
+
+		double insertPosX = xStepSize + sourcePos.getX();
+		double insertPosY = yStepSize + sourcePos.getY();
+		DefaultGraphCell prevCell = source;
+		DefaultGraphCell currentCell = null;
+		for (int n = 0; n < verticesBetween; n++) {
+			// Insert vertex
+			currentCell = graphPane.addDefaultVertexAt(insertPosX
+					- correctTermX + bounds.getCenterX() - bounds.getX(),
+					insertPosY - correctTermY + bounds.getCenterY()
+							- bounds.getY());
+			modifiedCells.add(currentCell);
+			// Connect
+			modifiedCells.add(graphPane.connect((Port) prevCell.getChildAt(0),
+					(Port) currentCell.getChildAt(0)));
+
+			prevCell = currentCell;
+			// Increase insert pos
+			insertPosX = insertPosX + xStepSize;
+			insertPosY = insertPosY + yStepSize;
+		}
+		modifiedCells.add(graphPane.connect((Port) currentCell.getChildAt(0),
+				(Port) dest.getChildAt(0)));
+		graphPane.setSelectionCells(modifiedCells.toArray());
+
+	}
+
+	
+	
+	 
+		public void expandByFactor(double factor) {
+			Object vertexCells[] = graphPane.getSelectionCells(graphPane
+					.getGraphLayoutCache().getCells(false, true, false, false));
+
+			Rectangle2D areaBounds = graphPane.getCellBounds(vertexCells);
+			Hashtable<Object, Object> nestedMap = new Hashtable<Object, Object>();
+			for (Object o : vertexCells) {
+				Hashtable<Object, Object> map = new Hashtable<Object, Object>();
+				if (o instanceof DefaultGraphCell) {
+					DefaultGraphCell cell = (DefaultGraphCell) o;
+					Rectangle2D bounds =
+						GraphEditorConstants.getBounds(cell.getAttributes());
+					Rectangle2D newBounds = new Rectangle2D.Double(
+							areaBounds.getX() + (bounds.getX()-areaBounds.getX())*factor,
+							areaBounds.getY() + (bounds.getY()-areaBounds.getY())*factor,
+							bounds.getWidth(),
+							bounds.getHeight());
+					GraphEditorConstants.setBounds(map, newBounds);
+					
+				}
+				nestedMap.put(o, map);
+			}
+			graphPane.getGraphLayoutCache().edit(nestedMap);
+		}
+
 }
