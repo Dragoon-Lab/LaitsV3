@@ -1,0 +1,87 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<html>
+<head>
+    <script type="text/javascript" src="jquery.validate.min.js" type="text/javascript"></script>
+    <script type="text/javascript" src="//ajax.googleapis.com/ajax/libs/dojo/1.9.1/dojo/dojo.js"type="text/javascript"></script>
+
+
+    <script>
+        function reset_options(){
+            //document.getElementById('mode').options.length=0;
+            //document.getElementById('problem_category').options.length=0;
+            $('#problem_category').prop('disabled', false);
+            $('#problem_id').prop('disabled', false);
+            return true;
+        }
+    </script> 
+     <script type="text/javascript">
+
+ 
+var pid=[];  // global list of the problem ids
+
+require(["dojo/parser","dojo/dom","dijit/registry","dijit/form/Select", 
+         "dojo/request/xhr","dojo/_base/array",
+         "dojo/dom-construct", 
+         "dojo/json","dojo/domReady!"],
+function(parser,dom,registry,Select,xhr,array,domConst,JSON){
+    parser.parse();  // Make sure widgets are defined
+
+function addProblems(){
+    xhr("/demo/available_problems.php",{
+      // Script also wants "student" but we will assume
+      // All solutions are shared in this class
+      query: {
+        // This should be gotten from the appropriate section
+        // form field (or java should set that field).
+        section: "test"
+      },
+      handleAs: "json"
+    }).then(function(data){
+        var widget = registry.byId("custom_problems");
+        console.log("retrieved problems:  ",data);
+        widget.options=[];  // clear any existing options.
+        widget.addOption({label:"--choose problem--",value:""});
+        pid=[];
+        var i=1;  // value=0 acts like value=''
+        array.forEach(data,function(datum){
+           pid[i]=datum;  // record value for submit handling
+           var y={label:datum.problemname+" by "+datum.author,
+                             value:i++};
+           widget.addOption(y);
+        });
+    },
+    function(err){
+       console.log("an error occurred:  ",err);
+    });
+  };
+
+  // initially populate options on startup
+  addProblems();
+
+  // Update options list which select is selected.
+  var widget=registry.byId("custom_problems");
+  console.log("add connect to ",widget);
+  dojo.connect(widget,"onClick",addProblems);
+});
+</script>
+
+    <title>LAITS Demo</title>
+
+    <link rel="stylesheet" type="text/css" href="bootstrap.css">
+
+</head>
+<body>
+    <!-- Removed "onbeforeunload='reset_options()'" from body tag to correct form reset problems after download-->
+
+                        <label for="problem_id">Problem: </label>
+                        
+    <!-- Needs to be a dijit for addOption to work -->
+    				<select id="custom_problems" name="problem_id"
+      					data-dojo-type="dijit/form/Select">
+      <!-- This gets overwritten by the javascript -->
+      					<option value="">--choose--</option>
+    				</select>
+
+
+</body>
+</html>
