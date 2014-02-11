@@ -7,8 +7,9 @@
  **/
 
 define([
-    "dojo/_base/declare", "dojo/request/xhr", "dojo/_base/json"
-],function(declare, xhr, json) {
+    "dojo/_base/declare", "dojo/request/xhr", "dojo/_base/json",
+    "dojo/_base/lang"
+],function(declare, xhr, json, lang) {
 
         // FNV-1a for string, 32 bit version, returning hex.
 	var FNV1aHash = function(x){
@@ -31,10 +32,11 @@ define([
 	// The constructor creates a session and sets the sessionId
         // It also sets the path.
         constructor: function(/*object*/ params, /*string*/ path) {
+	    // Dragoon database requires that clientID be 50 characters.
             this.sessionId = FNV1aHash(params.user+"_"+params.section) +
 		'_' + new Date().getTime();
 	    console.log("New sessionId = ", this.sessionId);
-	    console.warn("Need to set up session timing here.");
+	    this._startTime = (new Date()).getTime();
 	    this.path = path || "";
 	    // Create a session
 	    this.log("start-session", params);
@@ -82,12 +84,18 @@ define([
 	    });
         },
 
+	getTime: function(){
+	    // Returns time in seconds since start of session.
+	    return  ((new Date()).getTime() - this._startTime)/1000.0;
+	},
+
 	log: function(method, params){
-	    console.warn("should add session time to params");
             xhr.post(this.path + "logger.php", {
 		data: {
 		    method: method,
-		    message: json.toJson(params),
+		    message: json.toJson(
+			// Add time to log message
+			lang.mixin({time: this.getTime()}, params)),
                     x: this.sessionId
                 }
             }).then(function(reply){

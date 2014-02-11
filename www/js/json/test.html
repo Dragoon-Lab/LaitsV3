@@ -63,6 +63,13 @@
                       deferred.when(a, function(value) {
                           console.log("Returned model: ",value);
                       });
+                      // Test logging and timer
+                      setTimeout(function(){
+                          problem.log("client-message",{
+                              type: "warning", name: "test",
+                              text: "dummy log message"
+                          })
+                      },1234);
                   }, function(err){
                       console.error("Loading of " + file + " failed, ", err);
                   });
