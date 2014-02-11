@@ -41,73 +41,47 @@
         ]);	
     </script>
 	
-	<script>
-require(["dojo/query","dojo/NodeList-traverse","dojo/on","dojo/dom","dojox/charting/Chart", "dojox/charting/axis2d/Default", "dojox/charting/plot2d/Lines" , "dojox/charting/themes/WatersEdge", "dijit/form/HorizontalSlider","dojo/parser","www/js/examples/RenderGraph","dojo/ready"],
-  function(query,nodeList, on,dom,Chart, Default, Lines, WatersEdge, HorizontalSlider, Parser,Graph, ready){
+	<script type="text/javascript">
+require([
+    "dojo/on","dojo/dom", "dragoon/RenderGraph",
+    "dragoon/RenderTable", "dojo/ready"
+], function(on, dom, Graph, Table, ready){
     ready(function(){
 
+        // This should at least be put in main.js or in its own file.
 
-    	Parser.parse();
-    	//dummy parameter to be passed to graph class
+    	// dummy parameter to be passed to graph class
     	var inputParam = 3;
-    	//values of parameters
+    	// values of parameters
     	var paramValue = ['A','B','C'];
     	var slider = new Array();
-
         var button = dom.byId("graphButton");
-        //instantiate graph object
+
+        // instantiate graph object
         var graph = new Graph(inputParam,paramValue);
         
-        //show graph when button clicked
+        // show graph when button clicked
         on(button,"click",function(){
-        	
-        	console.debug("button clicked");
-        	
-        	
-        	graph.show();
-            
-        		
+            console.debug("button clicked");	   
+            graph.show();
         }); 
-        
 
-
-        
-    });
-});
-	</script>
-	
-	<script>
-require(["dojo/query","dojo/NodeList-traverse","dojo/on","dojo/dom","dojox/charting/Chart", "dojox/charting/axis2d/Default", "dojox/charting/plot2d/Lines" , "dojox/charting/themes/WatersEdge", "dijit/form/HorizontalSlider","dojo/parser","www/js/examples/RenderTable","dojo/ready"],
-  function(query,nodeList, on,dom,Chart, Default, Lines, WatersEdge, HorizontalSlider, Parser,Table, ready){
-    ready(function(){
-
-
-    	Parser.parse();
     	//dummy parameter to be passed to graph class
-    	var inputParam = 5;
-    	//values of parameters
-    	var paramValue = [1,2,3,4,5,6,7,8,9,10,11,12,13,14,15];
+    	inputParam = 5;
+    	// values of parameters
+    	paramValue = [1,2,3,4,5,6,7,8,9,10,11,12,13,14,15];
 		var tableHeader = ['time','Param1','Param2','Param3','Param4'];
-    	var slider = new Array();
+    	slider = new Array();
+        button = dom.byId("tableButton");
 
-        var button = dom.byId("tableButton");
-        //instantiate graph object
+        // instantiate graph object
         var table = new Table(inputParam,tableHeader,paramValue);
         
-        //show graph when button clicked
-        on(button,"click",function(){
-        	
+        // show graph when button clicked
+        on(button,"click",function(){        	
         	console.debug("table button clicked");
-        	
-        	
         	table.show();
-            
-        		
         }); 
-        
-
-
-        
     });
 });
 	</script>
