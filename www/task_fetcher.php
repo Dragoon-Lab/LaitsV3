@@ -88,7 +88,7 @@ EOT;
   /* If author and section is not supplied, then use published problems. */
   $host  = $_SERVER['HTTP_HOST'];
   $uri   = rtrim(dirname($_SERVER['PHP_SELF']), '/\\');
-  // To support Java, would need to switch this to xml
+  // To support Java, one would need to switch this to xml
   $extra = 'problems/' . $problem . '.json';
   /* Redirect to a page relative to the current directory.
      HTTP/1.1 requires an absolute URI as argument to Location. */

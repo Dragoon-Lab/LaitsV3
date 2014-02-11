@@ -1,19 +1,6 @@
 <!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
 <html>
 <head>
-    <script src="http://ajax.googleapis.com/ajax/libs/jquery/1/jquery.min.js"></script>
-    <script type="text/javascript" src="jquery.validate.min.js"></script>
-
-    <script>
-        function reset_options(){
-            //document.getElementById('mode').options.length=0;
-            //document.getElementById('problem_category').options.length=0;
-            $('#problem_category').prop('disabled', false);
-            $('#problem_id').prop('disabled', false);
-            return true;
-        }
-    </script> 
-
     <title>LAITS Demo</title>
 
     <link rel="stylesheet" type="text/css" href="bootstrap.css">
@@ -68,7 +55,7 @@
         .results { border: 1px solid blue; padding:20px; margin-top:20px; min-height:50px; }
         .blue-bold { font-size:18px; font-weight:bold; color:blue; }
 
-        #problem-selection-form {
+        #problem-select {
             background: url("form-fieldset.gif") repeat-x scroll left bottom #F8FDEF;
             border: 1px solid #DFDCDC;
             border-radius: 15px 15px 15px 15px;
@@ -80,14 +67,14 @@
             width: 390px;
         }
 
-        #problem-selection-form .fieldgroup {
+        #problem-select .fieldgroup {
             background: url("form-divider.gif") repeat-x scroll left top transparent;
             display: inline-block;
             padding: 8px 10px;
             width: 380px;
         }
 
-        #problem-selection-form .fieldgroup label {
+        #problem-select .fieldgroup label {
             float: left;
             padding: 15px 5px 0;
             text-align: right;
@@ -95,19 +82,19 @@
             font-weight:bold;
         }
 
-        #problem-selection-form .fieldgroup input, #problem-selection-form .fieldgroup textarea, #problem-selection-form .fieldgroup select {
+        #problem-select .fieldgroup input, #problem-select .fieldgroup textarea, #problem-select .fieldgroup select {
             float: right;
             margin: 10px 0;
             height: 30px;
         }
 
-        #problem-selection-form .submit {
+        #problem-select .submit {
             padding: 10px;
             width: 220px;
             height: 40px !important;
         }
 
-        #problem-selection-form .fieldgroup label.error {
+        #problem-select .fieldgroup label.error {
             color: #FB3A3A;
             display: inline-block;
             margin: 4px 0 5px 175px;
@@ -119,20 +106,15 @@
 
     <script type="text/javascript">
 
-        //when the dom has loaded setup form validation rules
-        $(document).ready(function($) {
-            $("#problem-selection-form").validate({
-                rules: {
-                    username: "required",
-                },
-                messages: {
-                    username: "Please enter your Username.",
-                },
-                submitHandler: function(form) {
-                    form.submit();                   
-                }
-            });
-          });
+function validateForm(){
+
+     var x=document.forms["problem-select"]["u"].value;
+     if (x==null || x=="")
+     {
+         alert("Please enter a username.");
+         return false;
+     }
+    }
 
     </script>
 
@@ -143,7 +125,7 @@
 
     <div id="content">
 
-        <form action="startup.php" method="POST" id="problem-selection-form" novalidate="novalidate">
+        <form action="index.html" method="GET" id="problem-select"  onsubmit="return validateForm()">
 
             <h2>LAITS Demo Page</h2>
 
@@ -152,15 +134,12 @@
 
                     <div class="fieldgroup">
                         <label for="username">Username: </label>
-                        <input id="username" type="text" name="username" />
+                        <input id="username" type="text" name="u" />
                     </div>
 
                     <div class="fieldgroup">
                         <label for="mode">Mode: </label>
-                        <select name="mode" id="mode">
-
-                            <script>reset_options();</script>
-
+                        <select name="m" id="mode">
                             <option value="STUDENT">Student</option>
                             <option value="AUTHOR">Author</option>
                             <option value="COACHED">Coached</option>
@@ -169,13 +148,13 @@
                     </div>
 
                     <div class="fieldgroup">
-                        <label for="problem_id">Problem: </label>
-                        <input id="problem_id" type="text" name="problem_id" placeholder="Enter problem ID" onChange="javascript:this.value=this.value.toLowerCase();"/>
+                        <label for="problem">Problem: </label>
+                        <input id="problem" type="text" name="p" value="rabbit-example"/>
                     </div>
 
                     <div class="fieldgroup">
                         <label for="section">Section: </label>
-                        <input id="section" type="text" name="section" value="login.html"/>
+                        <input id="section" type="text" name="s" value="login.html"/>
                     </div>
 
                     <div class="fieldgroup">
