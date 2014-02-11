@@ -13,8 +13,16 @@ require "db-login.php";
 $mysqli = mysqli_connect("localhost", $dbuser, $dbpass, $dbname)
   or trigger_error('Could not connect to database.',E_USER_ERROR);
 
+/*
+   Work-around in case magic quotes are enabled.
+   See http://stackoverflow.com/questions/220437/magic-quotes-in-php
+ */
+if (get_magic_quotes_gpc()) {
+    $_POST['sg'] = stripslashes($_POST['sg']);
+}
+
 //retrieve POST variables
-$sessionId = $_POST['x'];
+$sessionId = $_POST['x']; // system generated
 $solutionGraph = mysqli_real_escape_string($mysqli,$_POST['sg']);
 
 // share is optional, default value 1.
@@ -22,7 +30,7 @@ $solutionGraph = mysqli_real_escape_string($mysqli,$_POST['sg']);
 // Mysql encodes true and false as 1 and 0.
 $share = isset($_POST['share'])?($_POST['share']?"1":"0"):"DEFAULT";
 // deleted is optional, default value 0
-$deleted = isset($_POST['delete']?($_POST['delete']?'1':'0'):"DEFAULT";
+$deleted = isset($_POST['delete'])?($_POST['delete']?'1':'0'):"DEFAULT";
 
 //process request
 // If session doesn't exist, this should give an error.

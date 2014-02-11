@@ -9,14 +9,37 @@
 // Using trigger_error() so logging level and destination can be modified.
 require "error-handler.php";
 
+if (!function_exists('json_last_error_msg')) {
+    function json_last_error_msg() {
+        static $errors = array(
+            JSON_ERROR_NONE             => null,
+            JSON_ERROR_DEPTH            => 'Maximum stack depth exceeded',
+            JSON_ERROR_STATE_MISMATCH   => 'Underflow or the modes mismatch',
+            JSON_ERROR_CTRL_CHAR        => 'Unexpected control character found',
+            JSON_ERROR_SYNTAX           => 'Syntax error, malformed JSON',
+            JSON_ERROR_UTF8             => 'Malformed UTF-8 characters, possibly incorrectly encoded'
+        );
+        $error = json_last_error();
+        return array_key_exists($error, $errors) ? $errors[$error] : "Unknown error ({$error})";
+    }
+}
+
 //connect to database
 require "db-login.php";
 $mysqli = mysqli_connect("localhost", $dbuser, $dbpass, $dbname)
-  or trigger_erro('Could not connect to database.',E_USER_ERROR);
+  or trigger_error('Could not connect to database.',E_USER_ERROR);
 
 $sessionId = $_POST['x'];
 $method = $_POST['method']; // system generated choices
-$message =  mysqli_real_escape_string($mysqli,$_POST['message']);
+$message =  $_POST['message'];
+
+/*
+   Work-around in case magic quotes are enabled.
+   See http://stackoverflow.com/questions/220437/magic-quotes-in-php
+ */
+if (get_magic_quotes_gpc()) {
+    $message = stripslashes($message);
+}
 
 if($method == 'start-session'){
   /*
@@ -25,25 +48,30 @@ if($method == 'start-session'){
     which we decode.
   */
   
-  $x = json_decode($message);
-  $problem = issset($x->problem)?"'$x->problem'":"DEFAULT";
-  $author = issset($x->author)?"'$x->author'":"DEFAULT";
+  $x = json_decode($message) or
+    trigger_error("Bad json " . json_last_error_msg());
+  foreach($x as &$value){
+    $value =  mysqli_real_escape_string($mysqli, $value);
+  }
+  $problem = isset($x->p)?"'$x->p'":"DEFAULT";
+  $author = isset($x->a)?"'$x->a'":"DEFAULT";
   // This should give an error if session id already exists.
   // Need to verify how error is handled.
-  $query = "INSERT INTO session VALUES ('$session_id','$x->mode','$x->user'," .
-    "'$x->section',$problem,$author)";
+  $query = "INSERT INTO session (session_id, mode, user, section, problem, author) " .
+    "VALUES ('$sessionId','$x->m','$x->u','$x->s',$problem,$author)";
+  // echo "Starting new session query $query\n";
   $mysqli->query($query)
-    or trigger_error("Session creation failed.");
+    or trigger_error("Session creation failed: " . $mysqli->error);
 
 } else {
 
   /* 
      Save log message, assuming session exists.
   */
-
+  $message = mysqli_real_escape_string($mysqli, $message);
   $query = "INSERT INTO step (session_id,method,message) VALUES ('$sessionId','$method','$message')";
   $mysqli->query($query)
-    or trigger_error("Logging message failed.");
+    or trigger_error("Logging failed.". $mysqli->error);
 }
 
 ?>

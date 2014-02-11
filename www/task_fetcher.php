@@ -40,13 +40,13 @@ if(isset($_GET['u']) && isset($_GET['s']) && isset($_GET['m'])){
   $as = isset($_GET['a'])? "= '$author'":'IS NULL';
 
   $query = <<<EOT
-    SELECT t1.solution_graph FROM solutions AS t1, session AS t2 USING session_id 
+    SELECT t1.solution_graph FROM solutions AS t1 JOIN session AS t2 USING (session_id) 
       WHERE t2.user = '$user' AND t2.section = '$section' AND t2.mode = '$mode' 
           AND t2.problem = '$problem' AND t2.author $as ORDER BY t1.time DESC LIMIT 1
 EOT;
 
   $result = $mysqli->query($query)
-    or trigger_error("Previous work query failed.");
+    or trigger_error("Previous work query failed." . $mysqli->error);
   if($row = $result->fetch_row()){
     header("Content-type: application/json");
     print $row[0];
