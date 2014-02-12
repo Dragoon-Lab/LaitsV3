@@ -23,7 +23,7 @@
  */
 
 define([
-    "dojo/_base/declare", "dragoon/node", "dragoon/student_node"
+    "dojo/_base/declare", "./node", "./student_node"
 ], function(declare, Node, StudentNode) {
 
     return declare(null, {
@@ -65,6 +65,7 @@ define([
                 }};
             return newModel;
         },
+
         _updateNextXYPosition: function() {
             // Summary: keeps track of where to place the next node; function detects collisions
             //      with other nodes; is called in addStudentNode() before creating the node
@@ -83,6 +84,7 @@ define([
                 }
             }
         },
+
         _setStatus: function(/*string*/ id, /*string*/ part, /*string*/ status) {
             // Summary: tracks student progress (correct, incorrect) on a given node; 
             //      used in setStudentNodeSelection() and setToDemo()
@@ -107,6 +109,7 @@ define([
                             break;
                     }
         },
+
         _checkChildren: function(/*string*/ currentNodeID, /*string array*/ checkedNodes) {
             // Summary: searches the depth of a tree below the given node and returns an
             //      optimal child node; if no optimal child node exists it returns null
@@ -130,6 +133,7 @@ define([
                 }
             return null;
         },
+
         /**
          * 
          * Public methods
@@ -155,11 +159,13 @@ define([
             }
             this.ID = parseInt(largest.replace("id", "")) + 1;
         },
+
         getModelAsString: function() {
             // Summary: Returns a JSON object in string format
             //          Should only be used for debugging.
             return JSON.stringify(this.model, null, 4);
         },
+
         /**
          * GETTERS; retrieves specific attributes from a model; node attributes are usually
          * by accessed by the node's ID--if the ID is not known use getNodeIDByName("name");
@@ -167,21 +173,27 @@ define([
         getPhase: function() {
             return this.model.task.properties.phase;
         },
+
         getType: function() {
             return this.model.task.properties.type;
         },
+
         getTaskName: function() {
             return this.model.task.taskName;
         },
+
         getURL: function() {
             return this.model.task.properties.URL;
         },
+
         getStartTime: function() {
             return this.model.task.properties.startTime;
         },
+
         getEndTime: function() {
             return this.model.task.properties.endTime;
         },
+
         getTimeStep: function() {
             return this.model.task.properties.timeStep;
         },
