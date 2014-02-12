@@ -14,8 +14,13 @@
 		{name: "dojo", location: "dojo"},
 		{name: "dijit", location: "dijit"},
 		{name: "dojox", location: "dojox"},
-		{name: "jsPlumb", location: "jsPlumb"},
-		{name: "dragoon", location: "js"}
+		{name: "jsPlumb", location: "jsPlumb/src"},
+		{name: "dragoon", location: "js"},
+                // AMD doesn't handle file names with dots,
+                // need to specify explicitly
+                {name: "jsBezier", location: "jsPlumb/lib", main: "jsBezier-0.6"},
+                {name: "jsplumb-geom", location: "jsPlumb/lib", main: "jsplumb-geom-0.1"},
+                {name: "demo", location: "jsPlumb/demo"}
             ]
 	};
 	if(dojoConfig.isDebug){
@@ -33,87 +38,101 @@
 	    "dojo/parser",
             "dijit/MenuBar", "dijit/PopupMenuBarItem",
             "dijit/layout/BorderContainer", "dijit/MenuItem",
-	    "dijit/form/Button",
-	    "dijit/Menu",
+	    "dijit/form/Button", "dijit/form/TextBox",
+	    "dijit/form/SimpleTextarea", "dijit/Menu",
             "dijit/layout/ContentPane",
 	    "dragoon/menu", // Wire up menus
+            // Load up Dragoon itself
 	    "dragoon"
         ]);	
     </script>
 	
-	<script>
-require(["dojo/query","dojo/NodeList-traverse","dojo/on","dojo/dom","dojox/charting/Chart", "dojox/charting/axis2d/Default", "dojox/charting/plot2d/Lines" , "dojox/charting/themes/WatersEdge", "dijit/form/HorizontalSlider","dojo/parser","www/js/examples/RenderGraph","dojo/ready"],
-  function(query,nodeList, on,dom,Chart, Default, Lines, WatersEdge, HorizontalSlider, Parser,Graph, ready){
-    ready(function(){
 
+	<!-- Node Editor Libs  End -->
 
-    	Parser.parse();
-    	//dummy parameter to be passed to graph class
-    	var inputParam = 3;
-    	//values of parameters
-    	var paramValue = ['A','B','C'];
-    	var slider = new Array();
+	<!-- jsPlumb Libs Start Here -->
+		
+		<script type="text/javascript">
+/*
+		require([
+		  "dijit/dijit",
+		  "dojo/parser",
+                  "dijit/Dialog",
+                  // These don't seem to  be needed?
+		  // "maqetta/space",
+		  // "maqetta/AppStates",
+		  "dijit/layout/BorderContainer",
+		  "dijit/layout/ContentPane",
+		  "dijit/form/ComboBox",
+		  "dijit/form/Button",
+		  "dijit/form/ComboButton",
+		  "dijit/Menu",
+		  "dijit/MenuItem",
+		  "dijit/form/DropDownButton",
+		  "dijit/form/TextBox"
+		]);
+*/
+</script>
 
-        var button = dom.byId("graphButton");
-        //instantiate graph object
-        var graph = new Graph(inputParam,paramValue);
-        
-        //show graph when button clicked
-        on(button,"click",function(){
-        	
-        	console.debug("button clicked");
-        	
-        	
-        	graph.show();
-            
-        		
-        }); 
-        
-
-
-        
-    });
-});
-	</script>
+    <script type="text/javascript">
+        // Use AMD to get jsPlumb
+	require([
+	    // support lib for bezier stuff
+	    "jsBezier",
+            // jsplumb geom functions
+            "jsplumb-geom",
+            // base DOM adapter 
+            "jsPlumb/dom-adapter",
+            // main jsplumb engine 
+            "jsPlumb/jsPlumb",
+            // endpoint 
+            "jsPlumb/endpoint", 
+            // connection 
+            "jsPlumb/connection",
+            // anchors 
+            "jsPlumb/anchors",
+            // connectors, endpoint and overlays  
+            "jsPlumb/defaults",
+            // bezier connectors 
+            // "jsPlumb/connectors-bezier",
+            // state machine connectors 
+            "jsPlumb/connectors-statemachine",
+            // flowchart connectors 
+            "jsPlumb/connectors-flowchart",
+            "jsPlumb/connector-editors",
+            // SVG renderer 
+            "jsPlumb/renderers-svg",
+            // canvas renderer 
+            "jsPlumb/renderers-canvas",
+            // vml renderer 
+            "jsPlumb/renderers-vml",            
+            // jquery jsPlumb adapter 
+            "jsPlumb/dojo-adapter",
+            // Dojo interface layer
+            "demo/demo-helper-dojo",
+	    "js/examples/state-machine.js"
+        ]);
+    </script>
 	
-	<script>
-require(["dojo/query","dojo/NodeList-traverse","dojo/on","dojo/dom","dojox/charting/Chart", "dojox/charting/axis2d/Default", "dojox/charting/plot2d/Lines" , "dojox/charting/themes/WatersEdge", "dijit/form/HorizontalSlider","dojo/parser","www/js/examples/RenderTable","dojo/ready"],
-  function(query,nodeList, on,dom,Chart, Default, Lines, WatersEdge, HorizontalSlider, Parser,Table, ready){
-    ready(function(){
-
-
-    	Parser.parse();
-    	//dummy parameter to be passed to graph class
-    	var inputParam = 5;
-    	//values of parameters
-    	var paramValue = [1,2,3,4,5,6,7,8,9,10,11,12,13,14,15];
-		var tableHeader = ['time','Param1','Param2','Param3','Param4'];
-    	var slider = new Array();
-
-        var button = dom.byId("tableButton");
-        //instantiate graph object
-        var table = new Table(inputParam,tableHeader,paramValue);
-        
-        //show graph when button clicked
-        on(button,"click",function(){
-        	
-        	console.debug("table button clicked");
-        	
-        	
-        	table.show();
-            
-        		
-        }); 
-        
-
-
-        
-    });
-});
+	
+	<!-- jsPlumb Libs End Here -->
+	
+	<!--Loading Controller Module -->
+	<script type="text/javascript">
+		require([
+			"js/examples/controller/controller.js"
+		], function(controller){
+			//load controller
+			var controllerObject  = new controller();
+			controllerObject.initHandles();
+		});
+		
 	</script>
+	<!--Loading Controller Module -->
+	
 </head>
 
-<body class="tundra">
+<body class="claro">
     <div id="main" data-dojo-type="dijit/layout/BorderContainer" gutters="false">
         <div data-dojo-type="dijit/MenuBar" id="menuBar" region="top" splitter="false">
              <div data-dojo-type="dijit/form/Button" id="createNodeButton">Create Node</div>
@@ -130,8 +149,102 @@ require(["dojo/query","dojo/NodeList-traverse","dojo/on","dojo/dom","dojox/chart
              <div data-dojo-type="dijit/form/Button" id="doneButton" style="position:absolute; top:0; right:10px; margin:0;">Done</div>
 	</div> <!-- Menubar -->
         <div id="drawingPane" data-dojo-type="dijit/layout/ContentPane" region="center" >
+		
 		<!--<div id="tableGrid" data-dojo-type="dijit/layout/ContentPane" region="center" ></div>-->
-	    jsPlumb goes here! 
+		
+		
+		
+		<!-- Putting jsPlumb-stuff for demo -->
+		 <canvas id="myCanvas" height = "800" width="800"></canvas>
+		<div class="demo statemachine-demo" id="statemachine-demo">
+                <div class="w" id="population" ></br></br>120</br></br></br></br></br></br>Population</div>
+                <div class="circle" id="growth" ></br></br>*</br></br></br></br></br></br>Growth</div>
+                <div class="diamond" id="grate" ><div class="diamond-inner"></br></br>0.3</br></br></br></br></br></br>Growth Rate</label><br/></div></div>
+		</div>
+				
+		<!-- Putting jsPlumb-stuff for demo  end-->
+
+		
+			<!-- Putting Node-Editor -Dialog stuff for demo -->
+			<div style="position: absolute; z-index: 900; left: 162px; top: 111px; height: 388px; width: 689px;" class="claro"  data-dojo-type="dijit/Dialog" id="nodeeditor">
+  <div data-dojo-type="dijit/layout/ContentPane" title="Pane" doLayout="false" style="border: 1px solid black; position: absolute; z-index: 900; left: 53px; top: 19px; width: 565px; height: 293px;">
+   <div style="position: absolute; z-index: 900; height: 26px; left: 81.09375px; top: 40.5px; width: 481px;"></div>
+   <select data-dojo-type="dijit/form/ComboBox" value="Rabbits Population" intermediateChanges="false" trim="false" uppercase="false" lowercase="false" propercase="false" invalidMessage="$_unset_$" pageSize="Infinity" searchDelay="200" style="position: absolute; z-index: 900; left: 83.546875px; top: 47.5px; width: 467.109375px;">
+     <option value="Rabbits Population" selected="true">
+       Rabbits Population</option>
+     <option value="Item 2">
+       Item 2</option>
+     <option value="Item 3">
+       Item 3</option>
+   </select>
+   <div style="position: absolute; z-index: 900; height: 23px; width: 129px; left: 83.546875px; top: 73px;"></div>
+   <div style="height: 23px; position: absolute; z-index: 900; width: 63px; left: 318.4375px; top: 75px;"></div>
+   <div style="height: 23px; position: absolute; z-index: 900; left: 457px; top: 75px; width: 105px;"></div>
+   <select data-dojo-type="dijit/form/ComboBox" value="Sum" intermediateChanges="false" trim="false" uppercase="false" lowercase="false" propercase="false" invalidMessage="$_unset_$" pageSize="Infinity" searchDelay="200" style="position: absolute; z-index: 900; width: 119.109375px; left: 87.4921875px; top: 75px;">
+   <option value="Sum" selected="true">
+       Sum</option>
+     <option value="Product">
+       Product</option>
+     <option value="Parameter">
+       Parameter</option>
+     <option value="Accumulator">
+       Accumulator</option>
+   </select>
+   <select data-dojo-type="dijit/form/ComboBox" value="200" intermediateChanges="false" trim="false" uppercase="false" lowercase="false" propercase="false" invalidMessage="$_unset_$" pageSize="Infinity" searchDelay="200" style="position: absolute; z-index: 900; width: 49.109375px; left: 321.0390625px; top: 77px;">
+   <option value="200" selected="true">
+       200</option>
+     <option value="300">
+       300</option>
+     <option value="400">
+       400</option>
+   </select>
+   <select data-dojo-type="dijit/form/ComboBox" value="births/year" intermediateChanges="false" trim="false" uppercase="false" lowercase="false" propercase="false" invalidMessage="$_unset_$" pageSize="Infinity" searchDelay="200" style="position: absolute; z-index: 900; left: 464.9375px; top: 77px; width: 91.109375px;">
+     <option value="births/year" selected="true">
+       births/year</option>
+     <option value="deaths/year">
+       deaths/year</option>
+   </select>
+   <div style="position: absolute; z-index: 900; width: 482px; height: 32px; left: 78.9921875px; top: 113px;">
+    <select data-dojo-type="dijit/form/ComboBox" style="position: absolute; z-index: 900; width: 458.109375px; left: 12px; top: 7.5px;">
+      <option value="Item 1">
+        Item 1</option>
+      <option value="Item 2">
+        Item 2</option>
+      <option value="Item 3">
+        Item 3</option>
+    </select>
+  </div>
+   <div style="position: absolute; z-index: 900; width: 37px; left: 78.984375px; top: 157px; height: 30px;"></div>
+   <div style="position: absolute; z-index: 900; width: 33px; height: 28px; left: 133.484375px; top: 158.98285007476807px;"></div>
+   <div style="position: absolute; z-index: 900; width: 35px; left: 177.546875px; top: 160.46875px; height: 26px;"></div>
+   <div style="position: absolute; z-index: 900; width: 35px; left: 230.96875px; top: 160.46875px; height: 26px;"></div>
+   <div style="position: absolute; z-index: 900; left: 401.046875px; top: 160px; width: 50px; height: 30px;"></div>
+   <div style="position: absolute; z-index: 900; width: 54px; height: 31px; left: 495.984375px; top: 161.1875px;"></div>
+   <div style="position: absolute; z-index: 900; width: 471px; left: 74.984375px; top: 199.5px; height: 19px;"></div>
+   <div style="position: absolute; z-index: 900; width: 479px; height: 68px; left: 70.984375px; top: 233.5px;"></div>
+   <input type="button" data-dojo-type="dijit/form/Button" intermediateChanges="false" label="+" iconClass="dijitNoIcon" style="position: absolute; z-index: 900; left: 82.48589992523193px; top: 159.59679985046387px;" id="plus"></input>
+   <input type="button" data-dojo-type="dijit/form/Button" intermediateChanges="false" label="-" iconClass="dijitNoIcon" style="position: absolute; z-index: 900; left: 135.04839992523193px; top: 159.76714992523193px;"></input>
+   <input type="button" data-dojo-type="dijit/form/Button" intermediateChanges="false" label="*" iconClass="dijitNoIcon" style="position: absolute; z-index: 900; left: 181.04839992523193px; top: 159.56554985046387px;"></input>
+   <input type="button" data-dojo-type="dijit/form/Button" intermediateChanges="false" label="/" iconClass="dijitNoIcon" style="position: absolute; z-index: 900; left: 235.47027492523193px; top: 159.54839992523193px;"></input>
+   <input type="button" data-dojo-type="dijit/form/Button" intermediateChanges="false" label="Undo" iconClass="dijitNoIcon" style="position: absolute; z-index: 900; left: 401.04992485046387px; top: 161.29839992523193px;"></input>
+   <input type="button"  id="doneNodeEditor" data-dojo-type="dijit/form/Button" intermediateChanges="false" label="Done" iconClass="dijitNoIcon" style="position: absolute; z-index: 900; left: 495.984375px; top: 160px;" ></input>
+   <textarea type="text" data-dojo-type="dijit/form/SimpleTextarea" rows="2" cols="5" style="position: absolute; z-index: 900; height: auto; width: 437px; left: 82.578125px; top: 248.5px;"></textarea>
+   <label style="position: absolute; z-index: 900; left: 82.47027492523193px; top: 204px;">
+   input:</label>
+   <label style="position: absolute; z-index: 900; left: 10.984375px; top: 47.5px;">
+   Description</label>
+   <label style="position: absolute; z-index: 900; left: 46.984375px; top: 78px;">
+   Type</label>
+   <label style="position: absolute; z-index: 900; left: 231.96875px; top: 78px;">
+   Initial Value</label>
+   <label style="position: absolute; z-index: 900; left: 426.046875px; top: 83px;">
+   Unit</label>
+   <label style="position: absolute; z-index: 900; left: 44.984375px; top: 123.5px;">
+     Input</label>
+ </div>
+</div>
+		    <!-- Putting Node-Editor stuff for demo  end -->
+			
 	</div>
     </div>  <!-- main -->			
 </body>

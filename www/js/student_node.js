@@ -1,3 +1,4 @@
+/* global define */
 /**
  * 
  * Student Model node creation class used by model.js for Dragoon problems
@@ -10,8 +11,9 @@
  * another part of Dragoon
  */
 
-define(["dojo/_base/declare"]
-        , function(declare) {
+define([
+    "dojo/_base/declare"
+], function(declare) {
 
     return declare(null, {
         constructor: function(/*string*/ id, /*int*/ xPos, /*int*/ yPos) {
@@ -22,10 +24,12 @@ define(["dojo/_base/declare"]
             this.position = {x: xPos, y: yPos};
             this.studentSelections = {description: null, type: null, initial: null, units: null, equation: null};
         },
+
         addInput: function(/*string*/ id) {
             var input = {ID: id};
             this.inputs.push(input);
         },
+
         deleteInput: function(/*string*/ id) {
             for (var i = 0; i < this.inputs.length; i++) {
                 if (id === this.inputs[i]) {
@@ -33,6 +37,7 @@ define(["dojo/_base/declare"]
                 }
             }
         },
+
         setStudentSeletions: function(/*string*/ desc, /*string*/ type, /*string*/ init, /*float*/ units, /*string*/ equat) {
             if (desc !== null)
                 this.studentSelections.description = desc;

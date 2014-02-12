@@ -3,15 +3,16 @@
  * Pedagogical Model class used to solve Dragoon problems
  * @author: Brandon Strong
  *
- * 
  **/
 
 /**
- *
- */
+ * Pedagogical model that accepts student entries, updates the model, and returns an object
+ * with the id of the node, a message with encouragement or a hint, and the status of the 
+ * attempt (correct, incorrect, demo, or premature).
+ **/
 
-define(["dojo/_base/declare", "/laits/js/parserWS"]
-        , function(declare, parser) {
+define(["dojo/_base/declare", "parser/parser", "./equation_check"]
+        , function(declare, parser, check) {
 
     return declare(null, {
         constructor: function(/*string*/ user, /*model.js object*/model) {
@@ -246,7 +247,7 @@ define(["dojo/_base/declare", "/laits/js/parserWS"]
                     id = this.model.getOptimalNode();
                     this.infoObject.ID = id;
                     this.model.addStudentNodeWithName(this.model.getNodeNameByID(id));
-                    this.model.setStudentNodeSelection(id, "description", answer);
+                    this.model.setToDemo(id, "description");
                     if (this.description_lCounter < 1)
                         this.infoObject.message = "Sorry, but that quantity isn’t relevant to the model. Moreover, " +
                                 "this is the third failure, so a correct selection is being made for " +
@@ -266,7 +267,7 @@ define(["dojo/_base/declare", "/laits/js/parserWS"]
                     id = this.model.getOptimalNode();
                     this.infoObject.ID = id;
                     this.model.addStudentNodeWithName(this.model.getNodeNameByID(id));
-                    this.model.setStudentNodeSelection(id, "description", answer);
+                    this.model.setToDemo(id, "description");
                     this.model.setDescriptionAttemptCount(id, this.descriptionCounter + 1);
                     descriptionCounter = 0;
                     break;
@@ -466,6 +467,7 @@ define(["dojo/_base/declare", "/laits/js/parserWS"]
                         break;
                     case "degj": // d: mark yellow and give answer; e: freeze widget; enable next widget; j: message
                         this.infoObject.status = "demo";
+                        this.model.setToDemo(id, "initial");
                         if (this.initial_jCounter < 1)
                             this.infoObject.message = "Yellow means that you made an incorrect " +
                                     "choice too many times, so you are being shown the correct " +
@@ -482,6 +484,7 @@ define(["dojo/_base/declare", "/laits/js/parserWS"]
                         break;
                     case "djeh": // d: mark yellow and give answer; j: message; e: freeze widget; h: enable all widgets for the nodes type;
                         this.infoObject.status = "demo";
+                        this.model.setToDemo(id, "initial");
                         if (this.initial_jCounter < 1)
                             this.infoObject.message = "Yellow means that you made an incorrect " +
                                     "choice too many times, so you are being shown the correct " +
@@ -558,6 +561,7 @@ define(["dojo/_base/declare", "/laits/js/parserWS"]
                     break;
                 case "degj": // d: mark yellow and give answer; e: freeze widget; enable next widget; j: message
                     this.infoObject.status = "demo";
+                    this.model.setToDemo(id, "units");
                     if (this.units_jCounter < 1)
                         this.infoObject.message = "Yellow means that you made an incorrect " +
                                 "choice too many times, so you are being shown the correct " +
@@ -571,6 +575,7 @@ define(["dojo/_base/declare", "/laits/js/parserWS"]
                     break;
                 case "djeh": // d: mark yellow and give answer; j: message; e: freeze widget; h: enable all widgets for the nodes type;
                     this.infoObject.status = "demo";
+                    this.model.setToDemo(id, "units");
                     if (this.units_jCounter < 1)
                         this.infoObject.message = "Yellow means that you made an incorrect " +
                                 "choice too many times, so you are being shown the correct " +
@@ -733,11 +738,11 @@ define(["dojo/_base/declare", "/laits/js/parserWS"]
                     this.inputs_bCounter++;
                     this.inputsCounter++;
                     break;
-                    
-                    
+
+
                     // ************ ahm's message is not correct--need to fix; otherwise implementation appears to be working ************
-                    
-                    
+
+
                 case "ahm": // f: color blue; h message; m: leave description menu active
                     this.infoObject.status = "incorrect";
                     if (this.inputs_hCounter < 1)
@@ -759,7 +764,7 @@ define(["dojo/_base/declare", "/laits/js/parserWS"]
                     this.infoObject.status = "demo";
                     inputID = this.model.getNextOptimalInput(id);
                     this.model.addStudentNodeWithName(this.model.getNodeNameByID(inputID));
-                    this.model.setStudentNodeSelection(inputID, "description", answer);
+                    this.model.setToDemo(inputID, "description");
                     if (this.inputs_lCounter < 1)
                         this.infoObject.message = "Sorry, but that quantity isn’t relevant to the model. Moreover, " +
                                 "this is the third failure, so a correct selection is being made for " +
@@ -776,6 +781,30 @@ define(["dojo/_base/declare", "/laits/js/parserWS"]
                     if (this.model.areNodeInputsVisible(id))
                         this.inputsOn = false;
                     break;
+            }
+            return this.infoObject;
+        },
+        //equationCheck() is a basic implementation; it needs additional code to 
+        //      display different messages based on the type of user
+        equationAction: function(/*string*/ id, /*string*/ equation) {
+            this.infoObject.ID = id;
+            this.infoObject.message = null;
+            this.infoObject.status = null;
+
+            this.model.setStudentNodeSelection(id, "equation", equation);
+            var equivCheck = new check(this.model.getNodeEquation(id), equation);
+
+            if (equivCheck.areEquivalent()) {
+                this.infoObject.message = "Green means correct.";
+                this.infoObject.status = "correct";
+            } else if (this.model.getNodeAttemptCount(id, "equation") == 3) {
+                this.infoObject.message = "That is not correct. Because this is the third time you have " +
+                        "attempted the problem, the correct description is being provided for you.";
+                this.infoObject.status = "demo";
+                this.model.setToDemo(id, "equation");
+            } else {
+                this.infoObject.message = "That is not correct.";
+                this.infoObject.status = "incorrect";
             }
             return this.infoObject;
         }
