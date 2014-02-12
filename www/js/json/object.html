@@ -74,57 +74,71 @@
 
                 //************ Using the Pedagogical Model ************
                 var ped = new pm("coached", rabbits);
-                var descInfo, typeInfo, unitsInfo, inputsInfo;
+                var descInfo, typeInfo, unitsInfo, inputsInfo, equationInfo;
 
                 //Set description
-                console.log("The ratio of number of rabbits born in a month to the rabbit population that month");
+                console.log("Description: The ratio of number of rabbits born in a month to the rabbit population that month");
                 descInfo = ped.descriptionAction("The ratio of number of rabbits born in a month to the rabbit population that month");
                 console.log("******" + descInfo.message + "******\n");
 
-                console.log("The ratio of rabbits born with superpowers to ordinary rabbits");
+                console.log("Description: The ratio of rabbits born with superpowers to ordinary rabbits");
                 descInfo = ped.descriptionAction("The ratio of rabbits born with superpowers to ordinary rabbits");
                 console.log("******" + descInfo.message + "******\n");
 
-                console.log("The number of rabbits born each month");
+                console.log("Description: The number of rabbits born each month");
                 descInfo = ped.descriptionAction("The number of rabbits born each month");
                 console.log("******" + descInfo.message + "******\n");
 
                 //Set type
-                console.log("sum");
+                console.log("Type: sum");
                 typeInfo = ped.typeAction(descInfo.ID, "sum");
                 console.log("******" + typeInfo.message + "******\n");
 
-                console.log("product");
+                console.log("Type: product");
                 typeInfo = ped.typeAction(descInfo.ID, "product");
                 console.log("******" + typeInfo.message + "******\n");
 
                 //Set units
-                console.log("rabbits");
+                console.log("Units: rabbits");
                 unitsInfo = ped.unitsAction(typeInfo.ID, "rabbits");
                 console.log("******" + unitsInfo.message + "******\n");
 
-                console.log("births");
+                console.log("Units: births");
                 unitsInfo = ped.unitsAction(typeInfo.ID, "births");
                 console.log("******" + unitsInfo.status + "******\n");
 
                 //Set inputs
-                console.log("The ratio of rabbits born with superpowers to ordinary rabbits");
+                console.log("Inputs: The ratio of rabbits born with superpowers to ordinary rabbits");
                 inputsInfo = ped.inputsAction(unitsInfo.ID, "The ratio of rabbits born with superpowers to ordinary rabbits");
                 console.log("******" + inputsInfo.message + "******\n");
 
-                console.log("A bunch of rabbits");
+                console.log("Inputs: A bunch of rabbits");
                 inputsInfo = ped.inputsAction(unitsInfo.ID, "A bunch of rabbits");
                 console.log("******" + inputsInfo.message + "******\n");
 
-                console.log("The number of rabbits in the population");
+                console.log("Inputs: The number of rabbits in the population");
                 inputsInfo = ped.inputsAction(unitsInfo.ID, "The number of rabbits in the population");
                 console.log("******" + inputsInfo.message + "******\n");
-
-
-                var equation = new equation(rabbits.getNodeEquation("id2"), "id3 *  id1");
-
+                
+                //Set Equation
+                console.log("Equation: id3 *   id2");
+                equationInfo = ped.equationAction(inputsInfo.ID, "id3 *   id2");
+                console.log("******" + equationInfo.message + "******\n");
+                
+                console.log("Equation: id3 *   id1 * 0");
+                equationInfo = ped.equationAction(inputsInfo.ID, "id3 *   id1 * 0");
+                console.log("******" + equationInfo.message + "******\n");
+                
+                console.log("Equation: id3 *   id1 + 0");
+                equationInfo = ped.equationAction(inputsInfo.ID, "id3 *   id1 + 0");
+                console.log("******" + equationInfo.message + "******\n");
+                
+                
+                
+                
                 document.write(JSON.stringify(rabbits.model, null, 4));
-
+                
+                
             });
         </script>
 
