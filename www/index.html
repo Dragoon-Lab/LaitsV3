@@ -39,7 +39,7 @@
             "dijit/MenuBar", "dijit/PopupMenuBarItem",
             "dijit/layout/BorderContainer", "dijit/MenuItem",
 	    "dijit/form/Button", "dijit/form/TextBox",
-	    "dijit/Menu",
+	    "dijit/form/SimpleTextarea", "dijit/Menu",
             "dijit/layout/ContentPane",
 	    "dragoon/menu", // Wire up menus
             // Load up Dragoon itself
@@ -47,26 +47,13 @@
         ]);	
     </script>
 	
-     <!-- Node Editor Libs -->
-	 <script type="text/javascript">
-/*
-require([
-  "dijit/dijit",
-  "dojo/parser",
-  "dijit/layout/ContentPane",
-  "dijit/form/ComboBox",
-  "dijit/form/Button",
-  "dijit/form/SimpleTextarea"
-]);
-*/
-</script>
-<style>@import "http://ajax.googleapis.com/ajax/libs/dojo/1.6.1/dijit/themes/claro/claro.css";@import "http://ajax.googleapis.com/ajax/libs/dojo/1.6.1/dijit/themes/claro/document.css";@import "js/examples/node-editor/app.css";
-</style>
+
 	<!-- Node Editor Libs  End -->
 
 	<!-- jsPlumb Libs Start Here -->
 		
 		<script type="text/javascript">
+/*
 		require([
 		  "dijit/dijit",
 		  "dojo/parser",
@@ -84,7 +71,8 @@ require([
 		  "dijit/form/DropDownButton",
 		  "dijit/form/TextBox"
 		]);
-		</script>
+*/
+</script>
 
     <script type="text/javascript">
         // Use AMD to get jsPlumb
@@ -126,7 +114,6 @@ require([
         ]);
     </script>
 	
-    <link rel="stylesheet" href="js/examples/state-machine1.css">
 	
 	<!-- jsPlumb Libs End Here -->
 	
@@ -145,7 +132,7 @@ require([
 	
 </head>
 
-<body class="tundra">
+<body class="claro">
     <div id="main" data-dojo-type="dijit/layout/BorderContainer" gutters="false">
         <div data-dojo-type="dijit/MenuBar" id="menuBar" region="top" splitter="false">
              <div data-dojo-type="dijit/form/Button" id="createNodeButton">Create Node</div>

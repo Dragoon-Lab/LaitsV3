@@ -1,10 +1,14 @@
 @import url("../dojo/resources/dojo.css");
 @import url("../dijit/themes/dijit.css");
-@import url("../dijit/themes/tundra/layout/BorderContainer.css");
-@import url("../dijit/themes/tundra/layout/ContentPane.css");
-@import url("../dijit/themes/tundra/form/Button.css");
-@import url("../dijit/themes/tundra/Menu.css");
-@import url("../dijit/themes/tundra/Dialog.css");
+@import url("../dijit/themes/claro/layout/BorderContainer.css");
+@import url("../dijit/themes/claro/layout/ContentPane.css");
+@import url("../dijit/themes/claro/form/Button.css");
+@import url("../dijit/themes/claro/Menu.css");
+@import url("../dijit/themes/claro/Dialog.css");
+@import url("../dijit/themes/claro/document.css");
+@import url("../js/examples/node-editor/app.css");
+@import url("../js/examples/state-machine1.css");
+
 
 html, body, #main{
 	width: 100%;	/* make the body expand to fill the visible window */
