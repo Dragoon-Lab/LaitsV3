@@ -14,8 +14,13 @@
 		{name: "dojo", location: "dojo"},
 		{name: "dijit", location: "dijit"},
 		{name: "dojox", location: "dojox"},
-		{name: "jsPlumb", location: "jsPlumb"},
+		{name: "jsPlumb", location: "jsPlumb/src"},
 		{name: "dragoon", location: "js"}
+                // AMD doesn't handle file names with dots,
+                // need to specify explicitly
+                {name: "jsBezier", location: "jsPlumb/lib", main: "jsBezier-0.6"},
+                {name: "jsplumb-geom", location: "jsPlumb/lib", main: "jsplumb-geom-0.1"},
+                {name: "demo", location: "jsPlumb/demo"}
             ]
 	};
 	if(dojoConfig.isDebug){
@@ -33,10 +38,11 @@
 	    "dojo/parser",
             "dijit/MenuBar", "dijit/PopupMenuBarItem",
             "dijit/layout/BorderContainer", "dijit/MenuItem",
-	    "dijit/form/Button",
+	    "dijit/form/Button", "dijit/form/TextBox",
 	    "dijit/Menu",
             "dijit/layout/ContentPane",
 	    "dragoon/menu", // Wire up menus
+            // Load up Dragoon itself
 	    "dragoon"
         ]);	
     </script>

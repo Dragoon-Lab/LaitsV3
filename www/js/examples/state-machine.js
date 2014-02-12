@@ -1,6 +1,6 @@
 /* global define, jsPlumb */
 define([
-    "jsPlumb/src/jsPlumb"
+    "jsPlumb/jsPlumb"
 ],function(){
 	
 	jsPlumb.ready(function() {

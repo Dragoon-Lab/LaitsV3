@@ -21,18 +21,13 @@
 			    {name: "dojo", location: "dojo"},
 			    {name: "dijit", location: "dijit"},
 			    {name: "dojox", location: "dojox"},
-			    {name: "jsPlumb", location: "jsPlumb"},
-                            {name: "gridx", location: "../gridx"},
-                            {name: "clipart", location: "../../clipart"},
-                            {name: "maqettaSamples", location: "../../../samples"},
-                            {name: "maqetta", location: "../../maqetta"},
-                            {name: "shapes", location: "../../shapes"},
-                            {name: "zazl", location: "../../zazl"},
-                            {name: "widgets", location: "../../custom"}
-                         ],
-                         themeMap: [["Android","",["themes/android/android.css"]],["BlackBerry","",["themes/blackberry/blackberry.css"]],["iPad","",["themes/ipad/ipad.css"]],["iPhone","",["themes/iphone/iphone.css"]],[".*","",["themes/iphone/iphone.css"]]],
-                         mblThemeFiles: [],
-                         mblLoadCompatPattern: ""
+			    {name: "jsPlumb", location: "jsPlumb/src"},
+                            // AMD doesn't handle file names with dots,
+                            // need to specify explicitly
+                           {name: "jsBezier", location: "jsPlumb/lib", main: "jsBezier-0.6"},
+		           {name: "jsplumb-geom", location: "jsPlumb/lib", main: "jsplumb-geom-0.1"},
+                           {name: "demo", location: "jsPlumb/demo"}
+                         ]
 		};
 	</script>
         <script src="../../dojo/dojo.js" type="text/javascript"></script>
@@ -41,9 +36,6 @@
 		  "dijit/dijit",
 		  "dojo/parser",
                   "dijit/Dialog",
-                  // These don't seem to  be needed?
-		  // "maqetta/space",
-		  // "maqetta/AppStates",
 		  "dijit/layout/BorderContainer",
 		  "dijit/layout/ContentPane",
 		  "dijit/form/ComboBox",
@@ -52,48 +44,45 @@
 		  "dijit/Menu",
 		  "dijit/MenuItem",
 		  "dijit/form/DropDownButton",
-		  "dijit/form/TextBox"
-		]);
-		</script>
+		  "dijit/form/TextBox",
 
-    <script type="text/javascript">
-        // Use AMD to get jsPlumb
-	require([
+            // jsPlumb load
+            // Use AMD to get jsPlumb
 	    // support lib for bezier stuff
-	    "jsPlumb/lib/jsBezier-0.6",
+	    "jsBezier",
             // jsplumb geom functions
-            "jsPlumb/lib/jsplumb-geom-0.1",
+            "jsplumb-geom",
             // jsplumb util 
-             "jsPlumb/src/util",
+             "jsPlumb/util",
             // base DOM adapter 
-            "jsPlumb/src/dom-adapter",
+            "jsPlumb/dom-adapter",
             // main jsplumb engine 
-            "jsPlumb/src/jsPlumb",
+            "jsPlumb/jsPlumb",
             // endpoint 
-            "jsPlumb/src/endpoint", 
+            "jsPlumb/endpoint", 
             // connection 
-            "jsPlumb/src/connection",
+            "jsPlumb/connection",
             // anchors 
-            "jsPlumb/src/anchors",
+            "jsPlumb/anchors",
             // connectors, endpoint and overlays  
-            "jsPlumb/src/defaults",
+            "jsPlumb/defaults",
             // bezier connectors 
-            // "jsPlumb/src/connectors-bezier",
+            // "jsPlumb/connectors-bezier",
             // state machine connectors 
-            "jsPlumb/src/connectors-statemachine",
+            "jsPlumb/connectors-statemachine",
             // flowchart connectors 
-            "jsPlumb/src/connectors-flowchart",
-            "jsPlumb/src/connector-editors",
+            "jsPlumb/connectors-flowchart",
+            "jsPlumb/connector-editors",
             // SVG renderer 
-            "jsPlumb/src/renderers-svg",
+            "jsPlumb/renderers-svg",
             // canvas renderer 
-            "jsPlumb/src/renderers-canvas",
+            "jsPlumb/renderers-canvas",
             // vml renderer 
-            "jsPlumb/src/renderers-vml",            
+            "jsPlumb/renderers-vml",            
             // jquery jsPlumb adapter 
-            "jsPlumb/src/dojo-adapter",
+            "jsPlumb/dojo-adapter",
             // Dojo interface layer
-            "jsPlumb/demo/demo-helper-dojo",
+            "demo/demo-helper-dojo",
 	    "./state-machine.js"
         ]);
     </script>
