@@ -49,6 +49,7 @@
 	
      <!-- Node Editor Libs -->
 	 <script type="text/javascript">
+/*
 require([
   "dijit/dijit",
   "dojo/parser",
@@ -57,6 +58,7 @@ require([
   "dijit/form/Button",
   "dijit/form/SimpleTextarea"
 ]);
+*/
 </script>
 <style>@import "http://ajax.googleapis.com/ajax/libs/dojo/1.6.1/dijit/themes/claro/claro.css";@import "http://ajax.googleapis.com/ajax/libs/dojo/1.6.1/dijit/themes/claro/document.css";@import "js/examples/node-editor/app.css";
 </style>
@@ -88,40 +90,38 @@ require([
         // Use AMD to get jsPlumb
 	require([
 	    // support lib for bezier stuff
-	    "jsPlumb/lib/jsBezier-0.6",
+	    "jsBezier",
             // jsplumb geom functions
-            "jsPlumb/lib/jsplumb-geom-0.1",
-            // jsplumb util 
-             "jsPlumb/src/util",
+            "jsplumb-geom",
             // base DOM adapter 
-            "jsPlumb/src/dom-adapter",
+            "jsPlumb/dom-adapter",
             // main jsplumb engine 
-            "jsPlumb/src/jsPlumb",
+            "jsPlumb/jsPlumb",
             // endpoint 
-            "jsPlumb/src/endpoint", 
+            "jsPlumb/endpoint", 
             // connection 
-            "jsPlumb/src/connection",
+            "jsPlumb/connection",
             // anchors 
-            "jsPlumb/src/anchors",
+            "jsPlumb/anchors",
             // connectors, endpoint and overlays  
-            "jsPlumb/src/defaults",
+            "jsPlumb/defaults",
             // bezier connectors 
-            // "jsPlumb/src/connectors-bezier",
+            // "jsPlumb/connectors-bezier",
             // state machine connectors 
-            "jsPlumb/src/connectors-statemachine",
+            "jsPlumb/connectors-statemachine",
             // flowchart connectors 
-            "jsPlumb/src/connectors-flowchart",
-            "jsPlumb/src/connector-editors",
+            "jsPlumb/connectors-flowchart",
+            "jsPlumb/connector-editors",
             // SVG renderer 
-            "jsPlumb/src/renderers-svg",
+            "jsPlumb/renderers-svg",
             // canvas renderer 
-            "jsPlumb/src/renderers-canvas",
+            "jsPlumb/renderers-canvas",
             // vml renderer 
-            "jsPlumb/src/renderers-vml",            
+            "jsPlumb/renderers-vml",            
             // jquery jsPlumb adapter 
-            "jsPlumb/src/dojo-adapter",
+            "jsPlumb/dojo-adapter",
             // Dojo interface layer
-            "jsPlumb/demo/demo-helper-dojo",
+            "demo/demo-helper-dojo",
 	    "js/examples/state-machine.js"
         ]);
     </script>
