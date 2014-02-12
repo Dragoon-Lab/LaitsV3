@@ -7,7 +7,7 @@ define([
     "./load-save",
     "./model",
     "./RenderGraph", "./RenderTable", "./wraptext"
-],function(dom, on, ioQuery, ready, loadSave, model, Graph, Table, wrapText){ 
+],function(dom, on, ioQuery, ready, loadSave, model, Graph, Table, wraptext){ 
     console.log("load main.js");
     
     // Get session parameters
@@ -73,7 +73,7 @@ define([
 
       	imageObj.onload = function() {
         	context.drawImage(imageObj, 69, 50);
-        	wrapText(context, desc_text, 70, 400, 400, 20)
+        	wraptext(context, desc_text, 70, 400, 400, 20);
       	};
       	imageObj.src = givenmodel.getURL();
 

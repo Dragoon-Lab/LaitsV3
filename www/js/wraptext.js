@@ -1,4 +1,5 @@
- function wrapText(context, text, x, y, maxWidth, lineHeight) {
+ define([],function(){
+  return function(context, text, x, y, maxWidth, lineHeight) {
         var words = text.split(' ');
         var line = '';
 
@@ -16,5 +17,5 @@
           }
         }
         context.fillText(line, x, y);
-      }
-      
+      };
+      });
