@@ -6,8 +6,7 @@
 @import url("../dijit/themes/claro/Menu.css");
 @import url("../dijit/themes/claro/Dialog.css");
 @import url("../dijit/themes/claro/document.css");
-@import url("../js/examples/node-editor/app.css");
-@import url("../js/examples/state-machine1.css");
+@import url("state-machine1.css");
 
 
 html, body, #main{
