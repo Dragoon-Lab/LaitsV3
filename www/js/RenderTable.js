@@ -1,25 +1,27 @@
+/* global define */
 /**
  * @author: Deepak Bhosale
  * @brief: example for creating table
  * 
  */
 
-
-
-define(["../../dojo/on","../../dojo/_base/declare","../../dojox/layout/TableContainer","../../dijit/Dialog","../../dojo/dom","../../dojo/dom-construct","../../dojo/data/ItemFileReadStore","../../dojox/grid/DataGrid","../../dojo/domReady!" ]
-, function(on,declare, tableContainer,Dialog,dom,domConstruct,read,grid){
+define([
+    "dojo/on", "dojo/_base/declare", "dojox/layout/TableContainer", "dijit/Dialog",
+    "dojo/dom", "dojo/dom-construct", "dojo/data/ItemFileReadStore", "dojox/grid/DataGrid",
+    "dojo/domReady!" 
+], function(on, declare, tableContainer, Dialog, dom, domConstruct, read, grid){
+    
+    return declare(null, {
 	
-	return declare(null, {
-
-		//no of parameters to display in a table
-		inputParam:0,
-		//This is name of each parameter. Example 'Mass','Velocity' ....
-		paramValue: new Array(),
-		//tableHeader
-		tableHeader: new Array(),
-		//Parameter to set DOM in a dialog dynamically
-	    dialogContent:"",	
-		//Object of a dialog
+	//no of parameters to display in a table
+	inputParam:0,
+	//This is name of each parameter. Example 'Mass','Velocity' ....
+	paramValue: new Array(),
+	//tableHeader
+	tableHeader: new Array(),
+	//Parameter to set DOM in a dialog dynamically
+	dialogContent:"",	
+	//Object of a dialog
         dialog:"",
 		        
         /*
@@ -28,12 +30,11 @@ define(["../../dojo/on","../../dojo/_base/declare","../../dojox/layout/TableCont
          */
         constructor: function(noOfParam,tableHeader,paramValue)
         {
-     	   //assign parameters to object properties 
-     	   this.inputParam = noOfParam;
-     	   this.paramValue = paramValue;
-		   this.tableHeader = tableHeader;
-     	   this.initialize();
-     	   
+     	    //assign parameters to object properties 
+     	    this.inputParam = noOfParam;
+     	    this.paramValue = paramValue;
+	    this.tableHeader = tableHeader;
+     	    this.initialize();     	    
         },
 
         /*
@@ -41,7 +42,7 @@ define(["../../dojo/on","../../dojo/_base/declare","../../dojox/layout/TableCont
          *  
          */
          
-        initialize:function()
+        initialize: function()
         {
         	
      	   var i=0,j=0,domId="",rowLength = this.paramValue.length/this.inputParam;
@@ -88,13 +89,13 @@ define(["../../dojo/on","../../dojo/_base/declare","../../dojox/layout/TableCont
          * @param: domText - text to be contained in dom. e.g <label>TEXT</label>. domText = TEXT in this case
          */
        
-       initTable:function(){
+       initTable: function(){
     	   var tableString = "";
-		   tableString = "<div id='table' data-dojo-type='dijit/layout/ContentPane' region='center'>"+"<div align='center'>"+"<table border=1 style='border-spacing:0px'>"		
+		   tableString = "<div id='table' data-dojo-type='dijit/layout/ContentPane' region='center'>"+"<div align='center'>"+"<table border=1 style='border-spacing:0px'>";		
 			return tableString;
        },
 	   
-	   closeTable:function(){
+	closeTable: function(){
 	   
 			var tableString = "";
 			tableString = "</table>"+"</div>"+"</div>";
@@ -102,14 +103,14 @@ define(["../../dojo/on","../../dojo/_base/declare","../../dojox/layout/TableCont
 			return tableString;
 		},
 		
-		setTableHeader:function(){
+		setTableHeader: function(){
 		
 			var i=0, tableString="";
 			
 			tableString = tableString + "<tr>";
 			for(i=0;i<this.inputParam;i++)
 			{
-				tableString = tableString + "<th style='padding-right:5px;padding-left:5px;'>"+this.tableHeader[i]+"</th>"
+				tableString = tableString + "<th style='padding-right:5px;padding-left:5px;'>"+this.tableHeader[i]+"</th>";
 			}
 			
 			tableString = tableString + "</tr>";

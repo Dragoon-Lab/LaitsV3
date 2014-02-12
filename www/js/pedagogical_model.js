@@ -10,7 +10,7 @@
  *
  */
 
-define(["dojo/_base/declare", "/laits/js/parserWS"]
+define(["dojo/_base/declare", "parser/parser"]
         , function(declare, parser) {
 
     return declare(null, {

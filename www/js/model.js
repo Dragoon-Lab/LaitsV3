@@ -23,7 +23,7 @@
  */
 
 define([
-    "dojo/_base/declare", "/laits/js/json/node", "/laits/js/json/student_node"
+    "dojo/_base/declare", "dragoon/node", "dragoon/student_node"
 ], function(declare, Node, StudentNode) {
 
     return declare(null, {
@@ -56,16 +56,15 @@ define([
             //      not used when loading a model; only used by the constructor
             // Tags: private
             var newModel = {task: {
-		taskName: this.taskName,
-		properties: this.properties,
-		taskDescription: this.taskDescription,
-		givenModelNodes: [],
-		extraDescriptions: [],
-		studentModelNodes: []
-	    }};
+                    taskName: this.taskName,
+                    properties: this.properties,
+                    taskDescription: this.taskDescription,
+                    givenModelNodes: [],
+                    extraDescriptions: [],
+                    studentModelNodes: []
+                }};
             return newModel;
         },
-
         _updateNextXYPosition: function() {
             // Summary: keeps track of where to place the next node; function detects collisions
             //      with other nodes; is called in addStudentNode() before creating the node
@@ -84,7 +83,6 @@ define([
                 }
             }
         },
-
         _setStatus: function(/*string*/ id, /*string*/ part, /*string*/ status) {
             // Summary: tracks student progress (correct, incorrect) on a given node; 
             //      used in setStudentNodeSelection() and setToDemo()
@@ -109,7 +107,6 @@ define([
                             break;
                     }
         },
-
         _checkChildren: function(/*string*/ currentNodeID, /*string array*/ checkedNodes) {
             // Summary: searches the depth of a tree below the given node and returns an
             //      optimal child node; if no optimal child node exists it returns null
@@ -133,7 +130,6 @@ define([
                 }
             return null;
         },
-
         /**
          * 
          * Public methods
@@ -159,13 +155,11 @@ define([
             }
             this.ID = parseInt(largest.replace("id", "")) + 1;
         },
-
         getModelAsString: function() {
             // Summary: Returns a JSON object in string format
             //          Should only be used for debugging.
             return JSON.stringify(this.model, null, 4);
         },
-
         /**
          * GETTERS; retrieves specific attributes from a model; node attributes are usually
          * by accessed by the node's ID--if the ID is not known use getNodeIDByName("name");
@@ -173,39 +167,30 @@ define([
         getPhase: function() {
             return this.model.task.properties.phase;
         },
-
         getType: function() {
             return this.model.task.properties.type;
         },
-
         getTaskName: function() {
             return this.model.task.taskName;
         },
-
         getURL: function() {
             return this.model.task.properties.URL;
         },
-
         getStartTime: function() {
             return this.model.task.properties.startTime;
         },
-
         getEndTime: function() {
             return this.model.task.properties.endTime;
         },
-
         getTimeStep: function() {
             return this.model.task.properties.timeStep;
         },
-
         getUnits: function() {
             return this.model.task.properties.units;
         },
-
         getTaskDescription: function() {
             return this.model.task.taskDescription;
         },
-
         getNodeNameByID: function(/*string*/ id) {
             // Summary: returns the name of a node matching the given id; the given 
             //      model nodes are searched first, followed by the student model nodes
@@ -219,7 +204,6 @@ define([
             }
             return null; // returns null if the node cannot be found
         },
-
         getNodeIDByName: function(/*string*/ name) {
             // Summary: returns the id of a node matching the given name; the given 
             //      model nodes are searched first, followed by the student model nodes
@@ -233,7 +217,6 @@ define([
             }
             return null; // returns null if the node cannot be found
         },
-
         getNodeIDByDescription: function(/*string*/ description) {
             // Summary: returns the id of a node matching the given description; the given 
             //      model nodes are searched first, followed by the student model nodes
@@ -243,7 +226,6 @@ define([
             }
             return null; // returns null if the node cannot be found
         },
-
         getNodeType: function(/*string*/ id) {
             for (var i = 0; i < this.model.task.givenModelNodes.length; i++) {
                 if (id === this.model.task.givenModelNodes[i].ID)
@@ -251,7 +233,6 @@ define([
             }
             return null;
         },
-
         isParentNode: function(/*string*/ id) {
             // Summary: returns true if a node is the parent node in a tree structure; parent 
             //      nodes will be displayed first when the student demos a node name/description
@@ -261,7 +242,6 @@ define([
             }
             return null;
         },
-
         isExtraNode: function(/*string*/ id) {
             // Summary: returns true if the node is not required in the final model
             for (var i = 0; i < this.model.task.givenModelNodes.length; i++) {
@@ -270,7 +250,6 @@ define([
             }
             return null;
         },
-
         getNodeOrder: function(/*string*/ id) {
             for (var i = 0; i < this.model.task.givenModelNodes.length; i++) {
                 if (id === this.model.task.givenModelNodes[i].ID)
@@ -278,7 +257,6 @@ define([
             }
             return null;
         },
-
         getNodeUnits: function(/*string*/ id) {
             for (var i = 0; i < this.model.task.givenModelNodes.length; i++) {
                 if (id === this.model.task.givenModelNodes[i].ID)
@@ -286,7 +264,6 @@ define([
             }
             return null;
         },
-
         getNodeInputs: function(/*string*/ id) {
             // Summary: returns an array with the inputs that the node uses
             for (var i = 0; i < this.model.task.givenModelNodes.length; i++) {
@@ -299,7 +276,6 @@ define([
             }
             return null;
         },
-
         isNodeInput: function(/*string*/ mainNodeID, /*string*/ inputID) {
             // Summary: returns true if the node identified by inputID is an 
             //      input into the mainNodeID 
@@ -313,7 +289,6 @@ define([
             }
             return false;
         },
-
         isNodeVisible: function(/*string*/ id) {
             // Summary: returns true if the node is in the student model
             for (var i = 0; i < this.model.task.studentModelNodes.length; i++) {
@@ -322,7 +297,6 @@ define([
             }
             return false;
         },
-
         isNodesParentVisible: function(/*string*/ id) {
             // Summary: returns true if the node's parent is visible (if the 
             //      node is an input into another node that is in the student model
@@ -334,7 +308,6 @@ define([
             }
             return false;
         },
-
         areNodeInputsVisible: function(/*string*/ id) {
             //Summary: returns true if all of the inputs in a given node are visible
             for (var i = 0; i < this.getNodeInputs(id).length; i++)
@@ -342,7 +315,6 @@ define([
                     return false;
             return true;
         },
-
         areAllNodesVisible: function(/*string*/ id) {
             //Summary: returns true if all of the inputs in the model are visible
             for (var i = 0; i < this.givenModelNodes(id).length; i++)
@@ -350,7 +322,6 @@ define([
                     return false;
             return true;
         },
-
         getOptimalNode: function() {
             // Summary: returns the ID of an optimal node to be used next
             // Note: the function first searches for an optimal child node 
@@ -384,14 +355,12 @@ define([
                         return this.model.task.givenModelNodes[i].ID;
             return id;
         },
-
         getNextOptimalNode: function(/*string*/ currentNodeID) {
             // Summary: returns the next optimal child node of currentNodeID or 
             //      null if there is not an optimal child node
             var checkedNodes = [];
             return this._checkChildren(currentNodeID, checkedNodes);
         },
-
         getNextOptimalInput: function(/*string*/ currentNodeID) {
             //Summary: returns the next non-visible input to a node
             for (var i = 0; i < this.getNodeInputs(currentNodeID).length; i++)
@@ -399,7 +368,6 @@ define([
                     return this.getNodeInputs(currentNodeID)[i];
             return null;
         },
-
         isDescriptionOptimal: function(/*string*/ description) {
             for (var i = 0; i < this.model.task.givenModelNodes.length; i++) {
                 if (this.model.task.givenModelNodes[i].correctDesc === description) {
@@ -415,7 +383,6 @@ define([
             }
             return "doesNotExist";
         },
-
         getNodeInitial: function(/*string*/ id) {
             for (var i = 0; i < this.model.task.givenModelNodes.length; i++) {
                 if (id === this.model.task.givenModelNodes[i].ID)
@@ -423,7 +390,6 @@ define([
             }
             return null;
         },
-
         getNodeEquation: function(/*string*/ id) {
             for (var i = 0; i < this.model.task.givenModelNodes.length; i++) {
                 if (id === this.model.task.givenModelNodes[i].ID)
@@ -431,7 +397,6 @@ define([
             }
             return null;
         },
-
         getNodeCorrectDescription: function(/*string*/ id) {
             for (var i = 0; i < this.model.task.givenModelNodes.length; i++) {
                 if (id === this.model.task.givenModelNodes[i].ID)
@@ -439,7 +404,6 @@ define([
             }
             return null;
         },
-
         getNodeAttemptCount: function(/*string*/ id, /*string*/ part) {
             // Summary: returns the number of attempts a student has made on the 
             //      given part of the problem
@@ -461,22 +425,17 @@ define([
                         case "equation":
                             return this.model.task.givenModelNodes[i].attemptCount.equation;
                             break;
-			default:
-			    console.error("Invalid part ", part);
+                        default:
+                            console.error("Invalid part ", part);
                     }
             return null;
         },
         setDescriptionAttemptCount: function(/*string*/ id, /*int*/ count) {
             // Summary: returns the number of attempts a student has made on the 
             //      given part of the problem
-            console.log("id2 count: " + this.model.task.givenModelNodes[1].attemptCount.description);
-            console.log(id + " attempt count: " + count);
             for (var i = 0; i < this.model.task.givenModelNodes.length; i++)
-                if (id === this.model.task.givenModelNodes[i].ID) {
+                if (id === this.model.task.givenModelNodes[i].ID)
                     this.model.task.givenModelNodes[i].attemptCount.description = count;
-                    console.log(this.model.task.givenModelNodes[i].ID + " recorded attempt count: " + this.model.task.givenModelNodes[i].attemptCount.description);
-                }
-            console.log("id2 count: " + this.model.task.givenModelNodes[1].attemptCount.description);
         },
         getNodeStatus: function(/*string*/ id, /*string*/ part) {
             // Summary: returns the progress (correct, incorrect, or demo) of 
@@ -499,7 +458,7 @@ define([
                         case "equation":
                             return this.model.task.givenModelNodes[i].status.equation;
                             break;
-			default:
+                        default:
                             console.error("Invalid part ", part);
                     }
             return null;
@@ -656,7 +615,6 @@ define([
             this.ID++;
             var newNode = new Node(id, order);
             this.model.task.givenModelNodes.push(newNode);
-            console.log(" :-)  :-)  :-)  :-)  :-) ");
             return id;
         },
         deleteNode: function(/*string*/ id) {
@@ -814,7 +772,6 @@ define([
             this.ID++;
             var newNode = new StudentNode(id, xPos, yPos);
             this.model.task.studentModelNodes.push(newNode);
-            console.log(" :-)  :-)  :-)  :-)  :-) ");
             return id;
         },
         deleteStudentNode: function(/*string*/ id) {

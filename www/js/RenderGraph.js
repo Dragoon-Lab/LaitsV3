@@ -1,25 +1,29 @@
+/* global define */
 /**
  * @author: Deepak Bhosale
  * @brief: example for creating graph and sliders in a dialog using Dojo
  * 
  */
 
-
-
-define(["../../dojo/on","../../dojo/_base/declare","../../dijit/layout/Tabcontainer", "../../dijit/layout/ContentPane","../../dijit/Dialog","../../dijit/form/HorizontalSlider","../../dojo/dom","dojox/charting/Chart", "dojox/charting/axis2d/Default", "dojox/charting/plot2d/Lines","dojox/charting/plot2d/Grid","dojox/charting/widget/Legend","../../dojo/domReady!" ]
-, function(on,declare, tabcontainer, contentpane,Dialog,HorizontalSlider,dom,Chart, Default, Lines,Grid,Legend){
+define([
+    "dojo/on", "dojo/_base/declare", "dijit/layout/Tabcontainer", 
+    "dijit/layout/ContentPane", "dijit/Dialog", "dijit/form/HorizontalSlider",
+    "dojo/dom", "dojox/charting/Chart", "dojox/charting/axis2d/Default", "dojox/charting/plot2d/Lines",
+    "dojox/charting/plot2d/Grid", "dojox/charting/widget/Legend", "dojo/domReady!"
+], function(on,declare, tabcontainer, contentpane, Dialog, HorizontalSlider, dom,
+	    Chart, Default, Lines, Grid, Legend){
 	
-	return declare(null, {
-
-		//no of parameters that can affect graph. This parameter will be used to create sliders
-		inputParam:0,
-		//This is name of each parameter. Example 'Mass','Velocity' ....
-		paramValue: new Array(),
-		//Parameter to set DOM in a dialog dynamically
-	    dialogContent:"",	
-	    //Parameter to create slider objects
-	    sliders:new Array(),
-	    //Object of a dialog
+    return declare(null, {
+	
+	//no of parameters that can affect graph. This parameter will be used to create sliders
+	inputParam:0,
+	//This is name of each parameter. Example 'Mass','Velocity' ....
+	paramValue: new Array(),
+	//Parameter to set DOM in a dialog dynamically
+	dialogContent:"",	
+	//Parameter to create slider objects
+	sliders:new Array(),
+	//Object of a dialog
         dialog:"",
         //Object of a chart
         chart:"",
@@ -28,7 +32,7 @@ define(["../../dojo/on","../../dojo/_base/declare","../../dijit/layout/Tabcontai
          *  @brief:constructor for a graph object
          *  @param: noOfParam
          */
-        constructor: function(noOfParam,paramValue)
+        constructor: function(noOfParam, paramValue)
         {
      	   //assign parameters to object properties 
      	   this.inputParam = noOfParam;
@@ -41,7 +45,7 @@ define(["../../dojo/on","../../dojo/_base/declare","../../dijit/layout/Tabcontai
          * @brief: initialize Dialog/charts and sliders
          *  
          */
-        initialize:function()
+        initialize: function()
         {
      	   var i=0;
      	   //fake data for correct graph
@@ -53,7 +57,7 @@ define(["../../dojo/on","../../dojo/_base/declare","../../dijit/layout/Tabcontai
      	   this.dialogContent= this.dialogContent + this.createDom('div','legend',"style='width:800px; margin:0 auto;'");
      	   
      	   //create sliders bsed on number of input parameters
-     	   for(i=0;i<this.inputParam;i++)
+     	   for(i=0; i<this.inputParam; i++)
      	   {
      		    // create slider and assign to object property
      		    // 
@@ -84,7 +88,7 @@ define(["../../dojo/on","../../dojo/_base/declare","../../dijit/layout/Tabcontai
      	   
      	   //insert initial value of slider into a textbox
      	   //append slider to the div node
-     	   for(i=0;i<this.inputParam;i++)
+     	   for(i=0; i<this.inputParam; i++)
      	   {
      		  dom.byId("text"+i).value = this.sliders[i].value;
      		 dom.byId("slider"+i).appendChild(this.sliders[i].domNode);
@@ -94,13 +98,16 @@ define(["../../dojo/on","../../dojo/_base/declare","../../dijit/layout/Tabcontai
      	   this.chart = new Chart("chart");
      	   this.chart.addPlot("default", {type: Lines,markers:true});
      	  
-     	   this.chart.addAxis("x",{fixed:true,min:0,max:10,title:"Distance (meters)", titleOrientation:"away",titleGap:5});
-     	   this.chart.addAxis("y", {vertical: true,min:0,title:"Velocity (meters/seconds)"});
-     	   this.chart.addSeries("correct solution", arrayCorrect,{stroke:"red"});
-     	   this.chart.addSeries("Variable solution",arrayVariable,{stroke:"green"});
+     	   this.chart.addAxis("x", {
+	       fixed: true, min: 0, max: 10, title: "Distance (meters)", 
+	       titleOrientation: "away", titleGap:5
+	   });
+     	   this.chart.addAxis("y", {vertical: true, min: 0, title: "Velocity (meters/seconds)"});
+     	   this.chart.addSeries("correct solution", arrayCorrect, {stroke: "red"});
+     	   this.chart.addSeries("Variable solution", arrayVariable, {stroke: "green"});
      	   this.chart.render();
      	   
-     	   var legend = new Legend({chart:this.chart}, "legend");
+     	   var legend = new Legend({chart: this.chart}, "legend");
      	   
      	   //Use local variables and assign object properties to local variables
      	   //local variables are work-around as object properties are not accessed inside a event handler (here inside 'onclick' event)
@@ -116,7 +123,7 @@ define(["../../dojo/on","../../dojo/_base/declare","../../dijit/layout/Tabcontai
      	           
      			   var j;
      			   //get current value of a slider inside textbox
-     			   for(j=0;j<noOfParam;j++)
+     			   for(j=0; j<noOfParam; j++)
      			   {
      				   
      				   dom.byId("text"+j).value = slider[j].value;
@@ -125,13 +132,13 @@ define(["../../dojo/on","../../dojo/_base/declare","../../dijit/layout/Tabcontai
      			   
      			   //dummy calculation to plot a graph when sliders are moved
      			   //this should be replaced by actual node editor equation
-     			   for(j=0;j<10;j++)
+     			   for(j=0; j<10; j++)
  				   {
      				   arrayVariable[j] = arrayVariable[j]+1; 
  				   }
      			   
      			   //update and render the chart
-     	           	chart.updateSeries("Variable solution",arrayVariable);
+     	           	chart.updateSeries("Variable solution", arrayVariable);
      	           	chart.render();
      	           });
            }
@@ -148,7 +155,7 @@ define(["../../dojo/on","../../dojo/_base/declare","../../dijit/layout/Tabcontai
          * @param: domText - text to be contained in dom. e.g <label>TEXT</label>. domText = TEXT in this case
          */
        
-       createDom:function(domType, domId, domParam, domText){
+       createDom: function(domType, domId, domParam, domText){
     	   
     	 var style="", dom="";
     	 var str="";
@@ -174,17 +181,12 @@ define(["../../dojo/on","../../dojo/_base/declare","../../dijit/layout/Tabcontai
     	 return dom;
        },
        
-       
-       
        /*
         * @brief: display the graph
         */
-       show: function(){
-    	   
+       show: function(){    	   
     	   this.dialog.show();
-       }
-	
+       }	
 		
-	});
-		
+	});	
 });
