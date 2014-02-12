@@ -18,7 +18,7 @@
         </form>
 
         <!-- load dojo and provide config via data attribute -->
-        
+
 
         <script type="text/javascript">
             dojoConfig = {
@@ -37,7 +37,7 @@
         <script src="../../dojo/dojo.js"></script> 
 
         <script>
-            require(["dragoon/model", "dragoon/pedagogical_model"], function(model, pm) {
+            require(["dragoon/model", "dragoon/pedagogical_model", "dragoon/equation_check"], function(model, pm, equation) {
 
 
                 //The next three lines show loading a model from a JSON formated string
@@ -121,9 +121,10 @@
                 console.log("******" + inputsInfo.message + "******\n");
 
 
+                var equation = new equation(rabbits.getNodeEquation("id2"), "id3 *  id1");
 
                 document.write(JSON.stringify(rabbits.model, null, 4));
-                
+
             });
         </script>
 
