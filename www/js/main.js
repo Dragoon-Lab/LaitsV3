@@ -6,8 +6,8 @@ define([
     "dojo/ready",
     "./load-save",
     "./model",
-    "./RenderGraph", "./RenderTable"
-],function(dom, on, ioQuery, ready, loadSave, model, Graph, Table){ 
+    "./RenderGraph", "./RenderTable", "./wraptext"
+],function(dom, on, ioQuery, ready, loadSave, model, Graph, Table, wrapText){ 
     console.log("load main.js");
     
     // Get session parameters
@@ -62,7 +62,24 @@ define([
 	    on(button,"click",function(){        	
 		console.debug("table button clicked");
 		table.show();
-	    }); 
+	    });
+
+	    var givenmodel = new model();
+	    givenmodel.loadModel(solutionGraph);
+	    var canvas = document.getElementById('myCanvas');
+      	var context = canvas.getContext('2d');
+      	var imageObj = new Image();
+      	var desc_text = givenmodel.getTaskDescription();
+
+      	imageObj.onload = function() {
+        	context.drawImage(imageObj, 69, 50);
+        	wrapText(context, desc_text, 70, 400, 400, 20)
+      	};
+      	imageObj.src = givenmodel.getURL();
+
+		 
 	});
     });    
 });
+
+
