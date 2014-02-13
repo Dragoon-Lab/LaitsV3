@@ -143,7 +143,7 @@ border:1px solid #2e6f9a;
 	z-index:3;
 }
 
-#population {
+#id1 {
 	left:10em;
 	top:5em;
 }
@@ -159,7 +159,7 @@ border:1px solid #2e6f9a;
 	width:7em;
 }
 
-#growth {
+#id2 {
 	left:35em;
 	top:12em;
 	width:7em;
@@ -170,7 +170,7 @@ border:1px solid #2e6f9a;
 	top:23em;
 }
 
-#grate {
+#id3 {
 	left:12em;
 	top:23em;
 }

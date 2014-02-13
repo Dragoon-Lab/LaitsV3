@@ -21,7 +21,7 @@ define([
 	initHandles:function(){
 	
 			//fetch Node Editor Element Ids
-			var nodeIds = ["population","growth","grate"]; 
+			var nodeIds = ["id1","id2","id3"]; 
 	
 			/*
 			*	Node Editor Handles

@@ -104,9 +104,9 @@ define([
 			});
 			
 			// and finally, make a couple of connections
-			instance.connect({ source:"population", target:"growth" });
-			instance.connect({ source:"grate", target:"growth" });              
-			instance.connect({ source:"growth", target:"population" });              
+			instance.connect({ source:"id1", target:"id2" });
+			instance.connect({ source:"id3", target:"id2" });              
+			instance.connect({ source:"id2", target:"id1" });              
 			
 		});
 	

@@ -1,3 +1,4 @@
+/* global define, Parser */
 /**
  *
  * Pedagogical Model class used to solve Dragoon problems
@@ -11,8 +12,10 @@
  * attempt (correct, incorrect, demo, or premature).
  **/
 
-define(["dojo/_base/declare", "parser/parser", "./equation_check"]
-        , function(declare, parser, check) {
+define([
+    "dojo/_base/declare", "./equation_check", 
+    "parser/parser"  // defines global variable Parser
+], function(declare, check) {
 
     return declare(null, {
         constructor: function(/*string*/ user, /*model.js object*/model) {
@@ -269,7 +272,7 @@ define(["dojo/_base/declare", "parser/parser", "./equation_check"]
                     this.model.addStudentNodeWithName(this.model.getNodeNameByID(id));
                     this.model.setToDemo(id, "description");
                     this.model.setDescriptionAttemptCount(id, this.descriptionCounter + 1);
-                    descriptionCounter = 0;
+                    this.descriptionCounter = 0;
                     break;
             }
             return this.infoObject;
@@ -474,7 +477,7 @@ define(["dojo/_base/declare", "parser/parser", "./equation_check"]
                                     "choice.  You should figure out why it is correct so that " +
                                     "next time your first choice will be correct.";
                         else
-                            this.infoObject.message = "Can you figure out why this is the right initial value for the quantity?"
+                            this.infoObject.message = "Can you figure out why this is the right initial value for the quantity?";
                         this.initial_jCounter++;
                         this.initialOn = false;
                         if (this.model.getNodeUnits !== null)
@@ -491,7 +494,7 @@ define(["dojo/_base/declare", "parser/parser", "./equation_check"]
                                     "choice.  You should figure out why it is correct so that " +
                                     "next time your first choice will be correct.";
                         else
-                            this.infoObject.message = "Can you figure out why this is the right initial value for the quantity?"
+                            this.infoObject.message = "Can you figure out why this is the right initial value for the quantity?";
                         this.initial_jCounter++;
                         this.initialOn = false;
                         if (this.model.getNodeUnits !== null)
@@ -555,7 +558,7 @@ define(["dojo/_base/declare", "parser/parser", "./equation_check"]
                 case "aif": // a: color red; i: hint; g: leave widget active
                     this.infoObject.status = "incorrect";
                     this.infoObject.message = "The units variable should relate to the quantity being measured. Think about the node \"" +
-                            this.model.getNodeNameByID(id) + "\". What unit would pertain to this node?"
+                            this.model.getNodeNameByID(id) + "\". What unit would pertain to this node?";
                     break;
                 case "c": // c: leave the widget white
                     break;
@@ -568,7 +571,7 @@ define(["dojo/_base/declare", "parser/parser", "./equation_check"]
                                 "choice.  You should figure out why it is correct so that " +
                                 "next time your first choice will be correct.";
                     else
-                        this.infoObject.message = "Can you figure out why this is the right units value for the quantity?"
+                        this.infoObject.message = "Can you figure out why this is the right units value for the quantity?";
                     this.units_jCounter++;
                     this.unitsOn = false;
                     this.inputsOn = true;
@@ -582,7 +585,7 @@ define(["dojo/_base/declare", "parser/parser", "./equation_check"]
                                 "choice.  You should figure out why it is correct so that " +
                                 "next time your first choice will be correct.";
                     else
-                        this.infoObject.message = "Can you figure out why this is the right units value for the quantity?"
+                        this.infoObject.message = "Can you figure out why this is the right units value for the quantity?";
                     this.units_jCounter++;
                     this.unitsOn = false;
                     this.inputsOn = true;
