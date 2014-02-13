@@ -1,9 +1,12 @@
+/* global define */
 /*
 *  Dojo Controller 0.1 
 *        -  Delegate Event Call Backs 
 * 	     -  Loading AMD UI 
 */
-define(['dojo/_base/declare','dojo/dom','dojo/on','dijit/registry'], function(declare,dom,on,registry) {
+define([
+    'dojo/_base/declare','dojo/dom','dojo/on','dijit/registry'
+], function(declare, dom, on, registry) {
 
 	return declare(null, {
 
@@ -32,7 +35,7 @@ define(['dojo/_base/declare','dojo/dom','dojo/on','dijit/registry'], function(de
 			on(done, 'click', null);
 			on(plus, 'click', null);
 			
-			for(id in nodeIds){
+			for(var id in nodeIds){
 				var element = dom.byId(nodeIds[id]);
 				on(element,'click',this.showNodeEditor);
 			}

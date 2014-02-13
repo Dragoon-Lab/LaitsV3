@@ -1,4 +1,4 @@
-/* global define */
+/* global define, Image */
 define([
     "dojo/dom",
     "dojo/on",
@@ -6,8 +6,9 @@ define([
     "dojo/ready",
     "./load-save",
     "./model",
-    "./RenderGraph", "./RenderTable", "./wraptext"
-],function(dom, on, ioQuery, ready, loadSave, model, Graph, Table, wraptext){ 
+    "./RenderGraph", "./RenderTable", "./wraptext",
+     "./js/examples/controller/controller.js"
+],function(dom, on, ioQuery, ready, loadSave, model, Graph, Table, wrapText, controller){ 
     console.log("load main.js");
     
     // Get session parameters
@@ -23,7 +24,14 @@ define([
     // Start up new session and get model object from server
     var session = new loadSave(query);	   
     session.loadProblem(query).then(function(solutionGraph){
+
 	console.info("Have solution: ", solutionGraph);
+
+	/*
+	 start up controller
+	 */
+	var controllerObject  = new controller();
+	controllerObject.initHandles();
 	
 	/*
 	 Make model solution plot using dummy data. 
@@ -64,18 +72,18 @@ define([
 		table.show();
 	    });
 
-	    var givenmodel = new model();
-	    givenmodel.loadModel(solutionGraph);
+	    var givenModel = new model();
+	    givenModel.loadModel(solutionGraph);
 	    var canvas = document.getElementById('myCanvas');
       	var context = canvas.getContext('2d');
       	var imageObj = new Image();
-      	var desc_text = givenmodel.getTaskDescription();
+      	var desc_text = givenModel.getTaskDescription();
 
       	imageObj.onload = function() {
         	context.drawImage(imageObj, 69, 50);
-        	wraptext(context, desc_text, 70, 400, 400, 20);
+        	wrapText(context, desc_text, 70, 400, 400, 20);
       	};
-      	imageObj.src = givenmodel.getURL();
+      	imageObj.src = givenModel.getURL();
 
 		 
 	});

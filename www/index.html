@@ -31,6 +31,7 @@
 	    document.write('<scr'+'ipt src="release/dojo/dojo.js"></scr'+'ipt>');
 	};
     </script>
+
     <script type="text/javascript">
         // This require should include all of the packages
         // needed by widgets defined in the html below.
@@ -46,33 +47,10 @@
 	    "dragoon"
         ]);	
     </script>
-	
 
-	<!-- Node Editor Libs  End -->
 
-	<!-- jsPlumb Libs Start Here -->
-		
-		<script type="text/javascript">
-/*
-		require([
-		  "dijit/dijit",
-		  "dojo/parser",
-                  "dijit/Dialog",
-                  // These don't seem to  be needed?
-		  // "maqetta/space",
-		  // "maqetta/AppStates",
-		  "dijit/layout/BorderContainer",
-		  "dijit/layout/ContentPane",
-		  "dijit/form/ComboBox",
-		  "dijit/form/Button",
-		  "dijit/form/ComboButton",
-		  "dijit/Menu",
-		  "dijit/MenuItem",
-		  "dijit/form/DropDownButton",
-		  "dijit/form/TextBox"
-		]);
-*/
-</script>
+    <!-- jsPlumb Libs Start Here -->		
+    <!-- Once AMD is correctly implemented in jsPlumb, these should go away -->
 
     <script type="text/javascript">
         // Use AMD to get jsPlumb
@@ -112,23 +90,10 @@
             "demo/demo-helper-dojo",
 	    "js/examples/state-machine.js"
         ]);
-    </script>
+    </script>		
+
+    <!-- jsPlumb Libs End Here -->
 	
-	
-	<!-- jsPlumb Libs End Here -->
-	
-	<!--Loading Controller Module -->
-	<script type="text/javascript">
-		require([
-			"js/examples/controller/controller.js"
-		], function(controller){
-			//load controller
-			var controllerObject  = new controller();
-			controllerObject.initHandles();
-		});
-		
-	</script>
-	<!--Loading Controller Module -->
 	
 </head>
 
