@@ -21,9 +21,9 @@ define([
 			Container:"statemachine-demo"
 		});
 
-		var windows = jsPlumb.getSelector(".statemachine-demo .w");
-		var windows1 = jsPlumb.getSelector(".statemachine-demo .circle");
-		var windows2 = jsPlumb.getSelector(".statemachine-demo .diamond");
+		var windows = jsPlumb.getSelector(".statemachine-demo .parameter");
+		var windows1 = jsPlumb.getSelector(".statemachine-demo .function");
+		var windows2 = jsPlumb.getSelector(".statemachine-demo .accumulator");
 
         // initialise draggable elements.  
 		instance.draggable(windows);
