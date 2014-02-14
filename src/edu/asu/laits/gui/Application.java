@@ -69,11 +69,11 @@ public class Application {
             System.out.println("Application was launched from Command Line");
             ApplicationContext.APP_HOST = "http://dragoon.asu.edu/ram/";
             ApplicationContext.forumURL = "http://dragoon.asu.edu/ram/";
-            ApplicationContext.setApplicationEnvironment(ApplicationContext.ApplicationEnvironment.PROD);
-            ApplicationContext.setSessionID("testsession4");
+            ApplicationContext.setApplicationEnvironment(ApplicationContext.ApplicationEnvironment.DEV);
+            ApplicationContext.setSessionID("authortestsession1");
             ApplicationContext.setUserID("ramayantiwari");
-            ApplicationContext.setAppMode("student");
-            ApplicationContext.setCurrentTaskID("isle1");
+            ApplicationContext.setAppMode("author");
+            ApplicationContext.setCurrentTaskID("test_prob1");
             
         } else {
             // Try to Launch application using JNLP for PROD

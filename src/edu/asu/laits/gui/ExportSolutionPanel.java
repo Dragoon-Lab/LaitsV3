@@ -38,6 +38,7 @@ import java.util.List;
 import java.util.Set;
 import java.util.logging.Level;
 import javax.swing.JButton;
+import javax.swing.JCheckBox;
 import javax.swing.JComboBox;
 import javax.swing.JDialog;
 import javax.swing.JFileChooser;
@@ -78,6 +79,9 @@ public class ExportSolutionPanel extends JPanel {
     private JComboBox nodeNamesComboBox;
     JTextArea fakeDescTextArea;
     JTextField correctDesc;
+    
+    // Check button for Coached mode - is first node
+    JCheckBox isFirstNodeCheckBox;
 
     public ExportSolutionPanel(JDialog parentFrame) {
         super(new MigLayout());
@@ -115,6 +119,9 @@ public class ExportSolutionPanel extends JPanel {
 
         units = DragoonUIUtils.createComboBox(UNITS);
         units.setSelectedItem(currentTask.getUnits());
+        
+        isFirstNodeCheckBox = DragoonUIUtils.createCheckBox("Is First Node for Target Node Strategy?");
+        isFirstNodeCheckBox.setToolTipText("Check if this is start node for Target Node Strategy");        
     }
 
     private void addProblemDefinitionSection() {
@@ -162,18 +169,10 @@ public class ExportSolutionPanel extends JPanel {
         String[] nodeNames = vertexList.toArray(new String[vertexList.size()]);
 
         nodeNamesComboBox = DragoonUIUtils.createComboBox(nodeNames);
-        
         nodeNamesComboBox.addItemListener(new ItemChangeListener());
         
-        nodeNamesComboBox.addActionListener(new ActionListener() {
-            @Override
-            public void actionPerformed(ActionEvent e) {
-                
-            }
-        });
-
         add(nodeNamesComboBox, "wrap");
-
+        
         String desc = "";
         
         if (nodeNames != null && nodeNames.length != 0) {
@@ -191,7 +190,11 @@ public class ExportSolutionPanel extends JPanel {
 
         add(DragoonUIUtils.createLabel("Fake Description: "), "skip");
         add(fakeDescTextArea, "wrap");
-
+        
+        add(DragoonUIUtils.createLabel(" "), "skip");
+        add(isFirstNodeCheckBox, "wrap");
+        isFirstNodeCheckBox.addItemListener(new FirstNodeCheckBoxChangeListener());
+        
         // Extra Line for space
         add(DragoonUIUtils.createLabel(" "), "skip");
         add(DragoonUIUtils.createLabel(" "), "wrap");
@@ -390,5 +393,19 @@ public class ExportSolutionPanel extends JPanel {
                 v.setCorrectDescription(correctDesc.getText().trim());
             }            
         }
-    }    
+    } 
+    
+    
+    class FirstNodeCheckBoxChangeListener implements ItemListener {
+        @Override
+        public void itemStateChanged(ItemEvent event) {
+            if(event.getSource() == isFirstNodeCheckBox) {
+                if(isFirstNodeCheckBox.isSelected()) {
+                
+                } else {
+                
+                }
+            }           
+        }
+    } 
 }

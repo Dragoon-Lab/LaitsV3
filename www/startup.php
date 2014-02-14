@@ -26,7 +26,7 @@
         const SECTION_PARAM = "section";
         const PROBLEM_NAME_PARAM = "problem_id";    
         const AUTHOR_PARAM = "";
-        const DEFAULT_FORUM = "http://dragoon.asu.edu/forum/viewtopic.phpq";
+        const DEFAULT_FORUM = "http://dragoon.asu.edu/forum/viewtopic.php";
          
         public function __construct() 
         {

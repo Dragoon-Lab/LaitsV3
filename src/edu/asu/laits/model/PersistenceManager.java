@@ -60,7 +60,7 @@ public class PersistenceManager implements Runnable {
     }
 
     public static synchronized String loadSession() throws IOException{
-        String action = ApplicationContext.isAuthorMode() ? "author_load" : "load";
+        String action = "load";
         String serviceURL = ApplicationContext.APP_HOST.concat("session_manager.php");
         
         return sendHTTPRequest(action, serviceURL, "");
@@ -68,7 +68,7 @@ public class PersistenceManager implements Runnable {
     
     public void run() {
         int statusCode = 0;
-        String action = ApplicationContext.isAuthorMode() ? "author_save" : "save";
+        String action = "save";
         String serviceURL = ApplicationContext.APP_HOST.concat("session_manager.php");
         
         try {
@@ -104,13 +104,10 @@ public class PersistenceManager implements Runnable {
             List<NameValuePair> postVariable = new ArrayList<NameValuePair>();
 
             postVariable.add(new BasicNameValuePair("action", action));
-            if(ApplicationContext.isAuthorMode())
-                postVariable.add(new BasicNameValuePair("author", ApplicationContext.getUserID()));
-            else
-                postVariable.add(new BasicNameValuePair("session_id", ApplicationContext.getSessionID()));
+            postVariable.add(new BasicNameValuePair("session_id", ApplicationContext.getSessionID()));
             
             
-            if (action.equals("save") || action.equals("author_save")) {                
+            if (action.equals("save")) {                
                 data = URLEncoder.encode(data, "UTF-8");
                 postVariable.add(new BasicNameValuePair("save_data", data));
             }
@@ -118,7 +115,7 @@ public class PersistenceManager implements Runnable {
             httpPost.setEntity(new UrlEncodedFormEntity(postVariable, "UTF-8"));            
             HttpResponse response = httpClient.execute(httpPost);
             
-            if(action.equals("author_save") || action.equals("save")) {
+            if(action.equals("save")) {
                 String responseCode = String.valueOf(response.getStatusLine().getStatusCode());
                 return responseCode;
             }

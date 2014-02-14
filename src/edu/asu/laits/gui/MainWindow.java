@@ -96,7 +96,7 @@ public class MainWindow extends JFrame {
         if (_instance == null) {
             _instance = new MainWindow();
             if (!ApplicationContext.isAuthorMode()) {
-                _instance.loadTask();
+                _instance.loadCorrectSolution();
             }
             _instance.loadSavedSession();
             _instance.attachGraphChangeListener();
@@ -455,7 +455,7 @@ public class MainWindow extends JFrame {
         return statusBarPanel;
     }
 
-    private void loadTask() {
+    private void loadCorrectSolution() {
         try {
             String task = ApplicationContext.getCurrentTaskID();
             String author = ApplicationContext.getAuthor();

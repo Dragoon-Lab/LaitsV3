@@ -198,7 +198,7 @@ public class CalculationsPanelView extends javax.swing.JPanel {
         if(!ApplicationContext.isAuthorMode())            
             valuesLabel.setText("<html><body style='width: 275px'>New " + openVertex.getName() + "= <br />Old " + openVertex.getName() + " +</body></html>"); 
         else
-            valuesLabel.setText("New Value = Old Vlaue + ");
+            valuesLabel.setText("New Value = Old Value + ");
     }
     
     public boolean processCalculationsPanel() {
