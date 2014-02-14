@@ -153,7 +153,7 @@ define([
                 if (this.model.task.studentModelNodes[i].ID > largest)
                     largest = this.model.task.studentModelNodes[i].ID;
             }
-            for (var i = 0; i < this.model.task.givenModelNodes.length; i++) {
+            for (i = 0; i < this.model.task.givenModelNodes.length; i++) {
                 if (this.model.task.givenModelNodes[i].ID > largest)
                     largest = this.model.task.givenModelNodes[i].ID;
             }
@@ -200,9 +200,38 @@ define([
         getUnits: function() {
             return this.model.task.properties.units;
         },
+
+	getAllUnits: function(){
+	    // Summary:  returns a list of all distinct units 
+	    // (string format) defined in a problem.
+            // Need to order list alphabetically.
+	    var unitList=[this.getUnits()];
+	    array.forEach(this.getNodes(),function(node){
+		if(array.indexOf(unitList, node.units) == -1){
+		    unitList.push(node.units);
+		}
+	    });
+	    return unitList;
+	},
+
         getTaskDescription: function() {
             return this.model.task.taskDescription;
         },
+
+	getAllDescriptions: function(){
+	    // Summary: returns an array of all descriptions with
+            // name (label) and any associated node id (value).
+	    // TO DO:  The list should be sorted.
+	    var d = [];
+	    array.forEach(this.getNodes(), function(node){
+		d.push({label: node.correctDesc, value: node.ID});
+	    });
+	    array.forEach(this.getExtraDescriptions(), function(desc){
+	        d.push({label: desc, value: "invalid"});
+	    });
+	    return d;
+	},
+
         getNodeNameByID: function(/*string*/ id) {
             // Summary: returns the name of a node matching the given id; the given 
             //      model nodes are searched first, followed by the student model nodes
@@ -246,13 +275,6 @@ define([
             }
             return null;
         },
-
-	getAllDescriptions: function(){
-	    // Summary:  returns an array containing the descriptions of all solution graph nodes
-	    return array.map(this.getNodes(),function(node){
-		return node.correctDesc;
-		});
-	},
 
         isParentNode: function(/*string*/ id) {
             // Summary: returns true if a node is the parent node in a tree structure; parent 

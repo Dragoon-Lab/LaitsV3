@@ -2,9 +2,9 @@
 DROP TABLE IF EXISTS `step`;
 DROP TABLE IF EXISTS `solutions`;
 DROP TABLE IF EXISTS `session`;
+
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
 /*!40101 SET character_set_client = utf8 */;
-
 CREATE TABLE `session` (
   `session_id` varchar(50) NOT NULL,
   `mode` varchar(20) NOT NULL,
@@ -16,6 +16,13 @@ CREATE TABLE `session` (
   PRIMARY KEY (`session_id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
 /*!40101 SET character_set_client = @saved_cs_client */;
+
+--
+-- All logging goes in table `step`
+--
+
+/*!40101 SET @saved_cs_client     = @@character_set_client */;
+/*!40101 SET character_set_client = utf8 */;
 CREATE TABLE `step` (
   `tid` int(10) unsigned NOT NULL AUTO_INCREMENT,
   `session_id` varchar(50) NOT NULL,
@@ -25,10 +32,15 @@ CREATE TABLE `step` (
   KEY (`session_id`),
   CONSTRAINT `fk_session_id` FOREIGN KEY (`session_id`) REFERENCES `session` (`session_id`) ON DELETE CASCADE ON UPDATE CASCADE
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
-USE test;
+/*!40101 SET character_set_client = @saved_cs_client */;
+
 --
 -- Table structure for table `solutions`
 --
+
+--  the share and deleted bits are set here, rather than in the session table
+--  since they are most naturally set during the autosave process.
+
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
 /*!40101 SET character_set_client = utf8 */;
 CREATE TABLE `solutions` (
@@ -42,10 +54,4 @@ CREATE TABLE `solutions` (
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
-/*!40101 SET @saved_cs_client     = @@character_set_client */;
-/*!40101 SET character_set_client = utf8 */;
-
-
---  the share and deleted bits are set here, rather than in the sessions table
---  since they are most naturally set during the autosave process.
 
