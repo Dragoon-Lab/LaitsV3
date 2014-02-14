@@ -7,7 +7,7 @@ define([
     "./load-save",
     "./model",
     "./RenderGraph", "./RenderTable", "./wraptext",
-     "./js/examples/controller/controller.js"
+     "./controller"
 ],function(dom, on, ioQuery, ready, loadSave, model, Graph, Table, wrapText, controller){ 
     console.log("load main.js");
     
@@ -27,10 +27,20 @@ define([
 
 	console.info("Have solution: ", solutionGraph);
 
+	var givenModel = new model();
+	givenModel.loadModel(solutionGraph);
+
 	/*
 	 start up controller
 	 */
-	var controllerObject  = new controller();
+	var controllerObject  = new controller(givenModel);
+	/*
+	 It would make more sense to call initHandles for each node as it is created
+         on the canvas.
+	 
+	 In AUTHOR mode, this will break, since we want the solution
+	 graph in that case.  See trello card https://trello.com/c/TDWdq6q6
+	 */
 	controllerObject.initHandles();
 	
 	/*
@@ -72,8 +82,6 @@ define([
 		table.show();
 	    });
 
-	    var givenModel = new model();
-	    givenModel.loadModel(solutionGraph);
 	    var canvas = document.getElementById('myCanvas');
       	var context = canvas.getContext('2d');
       	var imageObj = new Image();

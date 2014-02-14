@@ -23,8 +23,8 @@
  */
 
 define([
-    "dojo/_base/declare", "./node", "./student_node"
-], function(declare, Node, StudentNode) {
+    "dojo/_base/array", "dojo/_base/declare", "./node", "./student_node"
+], function(array, declare, Node, StudentNode) {
 
     return declare(null, {
         constructor: function(/*string*/ name, /*string*/ url, /*int*/ start, /*int*/ end, /*float*/ timeStep, /*string*/ units) {
@@ -238,6 +238,7 @@ define([
             }
             return null; // returns null if the node cannot be found
         },
+
         getNodeType: function(/*string*/ id) {
             for (var i = 0; i < this.model.task.givenModelNodes.length; i++) {
                 if (id === this.model.task.givenModelNodes[i].ID)
@@ -245,6 +246,14 @@ define([
             }
             return null;
         },
+
+	getAllDescriptions: function(){
+	    // Summary:  returns an array containing the descriptions of all solution graph nodes
+	    return array.map(this.getNodes(),function(node){
+		return node.correctDesc;
+		});
+	},
+
         isParentNode: function(/*string*/ id) {
             // Summary: returns true if a node is the parent node in a tree structure; parent 
             //      nodes will be displayed first when the student demos a node name/description
@@ -514,6 +523,7 @@ define([
             }
             return null;
         },
+
         isStudentNodeInput: function(/*string*/ mainNodeID, /*string*/ inputID) {
             // Summary: returns true if the node identified by inputID is an 
             //      input into the mainNodeID in the Student Model
@@ -717,6 +727,7 @@ define([
                 if (id === this.model.task.givenModelNodes[i].ID)
                     this.model.task.givenModelNodes[i].initial = initial;
         },
+
         setNodeEquation: function(/*string*/ id, /*string | object*/ equation) {
             for (var i = 0; i < this.model.task.givenModelNodes.length; i++)
                 if (id === this.model.task.givenModelNodes[i].ID)
@@ -727,6 +738,7 @@ define([
                 if (id === this.model.task.givenModelNodes[i].ID)
                     this.model.task.givenModelNodes[i].correctDesc = correctDesc;
         },
+
         addNodeInput: function(/*string*/ input, /*string*/ inputInto) {
             // Summary: adds a node (input) as an input into the given node (inputInto); both params are node ID strings
             var inputID = "";
@@ -753,6 +765,7 @@ define([
             }
             return false;
         },
+
         deleteNodeInput: function(/*string*/ id, /*string*/ inputIDToRemove) {
             // Summary: remove an input from a node in the given model
             for (var i = 0; i < this.model.task.givenModelNodes.length; i++) {
@@ -764,6 +777,7 @@ define([
                     }
             }
         },
+
         addExtraDescription: function(/*string*/ text, /*string*/ type) {
             // Summary: allows author to add extra descriptions that are not
             //      required in the completed model to further challenge the 
@@ -775,6 +789,7 @@ define([
             //      needed to solve the problem)
             this.model.task.extraDescriptions.push({text: text, type: type});
         },
+
         addStudentNode: function() {
             // Summary: builds a new node in the student model and returns the node's unique ID
             var id = "id" + this.ID;
@@ -786,6 +801,7 @@ define([
             this.model.task.studentModelNodes.push(newNode);
             return id;
         },
+
         deleteStudentNode: function(/*string*/ id) {
             // Summary: deletes a node with a given id from the student model; removes
             //      the given node from other nodes inputs within the student model and
