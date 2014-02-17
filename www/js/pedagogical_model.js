@@ -16,7 +16,31 @@ define(["dojo/_base/declare", "parser/parser", "./equation_check"]
 
     return declare(null, {
         constructor: function(/*string*/ user, /*model.js object*/model) {
-
+            //**** Redesign of pedagogical model in process; functions that are called by other files should stay the same ****//
+            this.correct = new Array();
+            this.correct[0] = "Green means correct.  Good job!";
+            this.correct[1] = "Green means correct.";
+            this.incorrectIrrelevant = new Array();
+            this.incorrectIrrelevant[0] = "The quantity is irrelevant to this problem.  Choose a different one.";
+            this.incorrectIrrelevant[1] = "This quantity is irrelevant for modeling the system.  Try again.";
+            this.incorrectIrrelevant[2] = "Irrelevant.  Try again.";
+            this.incorrectInitial1 = "You tried to define a parameter for the initial value of an accumulator.  This is unnecessary, because you can put the initial value for the accumulator right into the definition of the accumulator itself.";
+            this.incorrectInitial2 = "That should be the initial value of an accumulator, not a parameter node.";
+            this.incorrectInitial2 = "That should be the initial value of an accumulator";
+            this.incorrectNotInModel1 = "You tried to define a parameter for a number you read in the problem.  Not all numbers in the problem statement are necessary for the model.  You will save effort if you follow the Target Node Strategy, which says you should start by defining a node for a quantity that the problem asks you to graph, then define nodes for its inputs, and then define nodes for their inputs, etc.  That way, every node you create is an input to some node.";
+            this.incorrectNotInModel2 = "Not every number in the problem statement is necessary for the model.  You should define a node for a quantity only when either (1) it is required as input to a previously defined node, or (2) the problem statement asks you to graph it.";
+            this.incorrectNotInModel3 = "Please be sure you need a node before defining it.  Even if a number appears in the problem statement, it may not be needed in the model.";
+            this.inccorectExists = "A node already exists for that quantity.  If you want to edit it, click on it.”  Notice that “say” is not the same as SayInSequence.  It means that the phrase is always said to the student";
+            this.demo1 = "Sorry, but that quantity isn’t relevant to the model.  Moreover, this is the third failure, so a correct selection is being done for you.  Please study it and figure out why it is correct.  Your goal should be to make a correct selection on the first attempt.";
+            this.demo2 = "Here’s a correct solution.  Please figure out why it is correct so that next time, your first selection will be correct.";
+            this.demo3 = "Please study this correct selection.";
+            this.demoType1 = "Yellow means that you made an incorrect choice too many times, so you are being shown the correct choice.  You should figure out why it is correct so that next time your first choice will be correct.";
+            this.demoType2 = "Can you figure out why this is the right type/initial value for the node?";
+            this.premature2 = "Blue means that the quantity is relevant for modeling the system, but it is not yet time to define it.  You should follow the Target Node Strategy, which says you should edit an existing node that is not yet defined.  Such nodes have dotted outlines.  Click on one to edit it.";
+            this.premature2 = "Blue means that according to the Target Node Strategy, it is too early to define a node for this quantity.  Edit a node that has a dotted outline.";
+            this.premature3 = "Blue means premature.  Edit a node with a dotted outline instead.";
+            this.otherBlue1 = "Blue means that quantity isn’t one that the problem statement asks you to graph.  Although this quantity will eventually be in your model, you should follow the Target Node Strategy, which says you should first define a node for a top level goal quantity.";
+            this.otherBlue2 = "Please start with a quantity mentioned in the problem statement as one that needs to be graphed.";
             this.userType = user;
             this.model = model;
             this.infoObject = {ID: null, message: null, status: null};
