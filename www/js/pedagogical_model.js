@@ -1,4 +1,4 @@
-/* global define, Parser */
+/* global define */
 /**
  *
  * Pedagogical Model class used to solve Dragoon problems
@@ -13,9 +13,8 @@
  **/
 
 define([
-    "dojo/_base/declare", "./equation_check", 
-    "parser/parser"  // defines global variable Parser
-], function(declare, check) {
+    "dojo/_base/declare", "./equation_check", "parser/parser"
+], function(declare, check, Parser) {
 
     return declare(null, {
         constructor: function(/*string*/ user, /*model.js object*/model) {

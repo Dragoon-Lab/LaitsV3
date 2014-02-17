@@ -1,3 +1,4 @@
+/* global define */
 /**
  *
  * Equation checking to compare an equation given by the student with a given equation
@@ -11,7 +12,7 @@
  **/
 
 define(["dojo/_base/declare", "parser/parser"]
-        , function(declare, parser) {
+        , function(declare, Parser) {
 
     return declare(null, {
         constructor: function(/*string*/ model, /*string*/student) {

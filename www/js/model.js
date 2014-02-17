@@ -245,6 +245,7 @@ define([
             }
             return null; // returns null if the node cannot be found
         },
+
         getNodeIDByName: function(/*string*/ name) {
             // Summary: returns the id of a node matching the given name; the given 
             //      model nodes are searched first, followed by the student model nodes

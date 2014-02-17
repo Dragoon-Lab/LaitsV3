@@ -8,8 +8,9 @@ define([
     "./model",
     "./RenderGraph", "./RenderTable", "./wraptext",
      "./controller",
-	 "../www/math-parser/parser"
-],function(dom, on, ioQuery, ready, loadSave, model, Graph, Table, wrapText, controller){ 
+    "parser/parser"
+],function(dom, on, ioQuery, ready, loadSave, model, Graph, Table, wrapText, 
+	   controller, Parser){ 
     console.log("load main.js");
     
     // Get session parameters
