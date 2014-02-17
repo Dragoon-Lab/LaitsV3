@@ -2,7 +2,7 @@
 	margin-top:5em;
 }
 
-.w { 	
+.parameter { 	
 	width: 80px; 
     height: 80px; 
 	position:absolute;
@@ -26,13 +26,13 @@
 	transition:background-color 0.25s ease-in;	
 }
 
-.w:hover {
+.parameter:hover {
 	background-color: #5c96bc;
 	color:white;
 
 }
 
-.diamond-inner{
+.accumulator-inner{
 
 	  z-index:20; position:absolute;
       transform:rotate(45deg);
@@ -43,7 +43,7 @@
 	  font-size:1.2em;
     }
 
-.diamond {
+.accumulator {
    width: 80px; 
    height: 80px; 
    margin: 23px 0 0 30px;
@@ -80,7 +80,7 @@
 }
 
 
- .circle {
+ .function {
     width: 80px;
     height: 80px;
    z-index:20; position:absolute;
@@ -143,7 +143,7 @@ border:1px solid #2e6f9a;
 	z-index:3;
 }
 
-#population {
+#id1 {
 	left:10em;
 	top:5em;
 }
@@ -159,7 +159,7 @@ border:1px solid #2e6f9a;
 	width:7em;
 }
 
-#growth {
+#id2 {
 	left:35em;
 	top:12em;
 	width:7em;
@@ -170,7 +170,7 @@ border:1px solid #2e6f9a;
 	top:23em;
 }
 
-#grate {
+#id3 {
 	left:12em;
 	top:23em;
 }

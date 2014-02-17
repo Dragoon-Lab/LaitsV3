@@ -21,9 +21,9 @@ define([
 			Container:"statemachine-demo"
 		});
 
-		var windows = jsPlumb.getSelector(".statemachine-demo .w");
-		var windows1 = jsPlumb.getSelector(".statemachine-demo .circle");
-		var windows2 = jsPlumb.getSelector(".statemachine-demo .diamond");
+		var windows = jsPlumb.getSelector(".statemachine-demo .parameter");
+		var windows1 = jsPlumb.getSelector(".statemachine-demo .function");
+		var windows2 = jsPlumb.getSelector(".statemachine-demo .accumulator");
 
         // initialise draggable elements.  
 		instance.draggable(windows);
@@ -104,9 +104,9 @@ define([
 			});
 			
 			// and finally, make a couple of connections
-			instance.connect({ source:"population", target:"growth" });
-			instance.connect({ source:"grate", target:"growth" });              
-			instance.connect({ source:"growth", target:"population" });              
+			instance.connect({ source:"id1", target:"id2" });
+			instance.connect({ source:"id3", target:"id2" });              
+			instance.connect({ source:"id2", target:"id1" });              
 			
 		});
 	

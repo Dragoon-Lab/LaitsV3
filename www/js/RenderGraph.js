@@ -6,13 +6,13 @@
  */
 
 define([
-    "dojo/on", "dojo/_base/declare", "dijit/layout/Tabcontainer", 
-    "dijit/layout/ContentPane", "dijit/Dialog", "dijit/form/HorizontalSlider",
+    "dojo/on", "dojo/_base/declare", 
+    "dijit/Dialog", "dijit/form/HorizontalSlider",
     "dojo/dom", "dojox/charting/Chart", "dojox/charting/axis2d/Default", "dojox/charting/plot2d/Lines",
     "dojox/charting/plot2d/Grid", "dojox/charting/widget/Legend", "dojo/domReady!"
-], function(on,declare, tabcontainer, contentpane, Dialog, HorizontalSlider, dom,
+], function(on, declare, Dialog, HorizontalSlider, dom,
+	    // It looks like Default, Lines, Grid are not used.  Can they be removed?
 	    Chart, Default, Lines, Grid, Legend){
-	
     return declare(null, {
 	
 	//no of parameters that can affect graph. This parameter will be used to create sliders
@@ -96,7 +96,7 @@ define([
      	   
      	   //create a chart
      	   this.chart = new Chart("chart");
-     	   this.chart.addPlot("default", {type: Lines,markers:true});
+     	   this.chart.addPlot("default", {type: Lines, markers:true});
      	  
      	   this.chart.addAxis("x", {
 	       fixed: true, min: 0, max: 10, title: "Distance (meters)", 

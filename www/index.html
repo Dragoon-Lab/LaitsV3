@@ -31,6 +31,7 @@
 	    document.write('<scr'+'ipt src="release/dojo/dojo.js"></scr'+'ipt>');
 	};
     </script>
+
     <script type="text/javascript">
         // This require should include all of the packages
         // needed by widgets defined in the html below.
@@ -46,33 +47,10 @@
 	    "dragoon"
         ]);	
     </script>
-	
 
-	<!-- Node Editor Libs  End -->
 
-	<!-- jsPlumb Libs Start Here -->
-		
-		<script type="text/javascript">
-/*
-		require([
-		  "dijit/dijit",
-		  "dojo/parser",
-                  "dijit/Dialog",
-                  // These don't seem to  be needed?
-		  // "maqetta/space",
-		  // "maqetta/AppStates",
-		  "dijit/layout/BorderContainer",
-		  "dijit/layout/ContentPane",
-		  "dijit/form/ComboBox",
-		  "dijit/form/Button",
-		  "dijit/form/ComboButton",
-		  "dijit/Menu",
-		  "dijit/MenuItem",
-		  "dijit/form/DropDownButton",
-		  "dijit/form/TextBox"
-		]);
-*/
-</script>
+    <!-- jsPlumb Libs Start Here -->		
+    <!-- Once AMD is correctly implemented in jsPlumb, these should go away -->
 
     <script type="text/javascript">
         // Use AMD to get jsPlumb
@@ -112,23 +90,10 @@
             "demo/demo-helper-dojo",
 	    "js/examples/state-machine.js"
         ]);
-    </script>
+    </script>		
+
+    <!-- jsPlumb Libs End Here -->
 	
-	
-	<!-- jsPlumb Libs End Here -->
-	
-	<!--Loading Controller Module -->
-	<script type="text/javascript">
-		require([
-			"js/examples/controller/controller.js"
-		], function(controller){
-			//load controller
-			var controllerObject  = new controller();
-			controllerObject.initHandles();
-		});
-		
-	</script>
-	<!--Loading Controller Module -->
 	
 </head>
 
@@ -157,9 +122,9 @@
 		<!-- Putting jsPlumb-stuff for demo -->
 		 <canvas id="myCanvas" height = "800" width="800"></canvas>
 		<div class="demo statemachine-demo" id="statemachine-demo">
-                <div class="w" id="population" ></br></br>120</br></br></br></br></br></br>Population</div>
-                <div class="circle" id="growth" ></br></br>*</br></br></br></br></br></br>Growth</div>
-                <div class="diamond" id="grate" ><div class="diamond-inner"></br></br>0.3</br></br></br></br></br></br>Growth Rate</label><br/></div></div>
+                <div class="parameter" id="id1" ></br></br>120</br></br></br></br></br></br>Population</div>
+                <div class="function" id="id2" ></br></br>*</br></br></br></br></br></br>Growth</div>
+                <div class="accumulator" id="id3" ><div class="accumulator-inner"></br></br>0.3</br></br></br></br></br></br>Growth Rate</label><br/></div></div>
 		</div>
 				
 		<!-- Putting jsPlumb-stuff for demo  end-->
@@ -169,18 +134,12 @@
 			<div style="position: absolute; z-index: 900; left: 162px; top: 111px; height: 388px; width: 689px;" class="claro"  data-dojo-type="dijit/Dialog" id="nodeeditor">
   <div data-dojo-type="dijit/layout/ContentPane" title="Pane" doLayout="false" style="border: 1px solid black; position: absolute; z-index: 900; left: 53px; top: 19px; width: 565px; height: 293px;">
    <div style="position: absolute; z-index: 900; height: 26px; left: 81.09375px; top: 40.5px; width: 481px;"></div>
-   <select data-dojo-type="dijit/form/ComboBox" value="Rabbits Population" intermediateChanges="false" trim="false" uppercase="false" lowercase="false" propercase="false" invalidMessage="$_unset_$" pageSize="Infinity" searchDelay="200" style="position: absolute; z-index: 900; left: 83.546875px; top: 47.5px; width: 467.109375px;">
-     <option value="Rabbits Population" selected="true">
-       Rabbits Population</option>
-     <option value="Item 2">
-       Item 2</option>
-     <option value="Item 3">
-       Item 3</option>
+   <select id="selectDescription" data-dojo-type="dijit/form/Select" intermediateChanges="false" trim="false" uppercase="false" lowercase="false" propercase="false" invalidMessage="$_unset_$" pageSize="Infinity" searchDelay="200" style="position: absolute; z-index: 900; left: 83.546875px; top: 47.5px; width: 467.109375px;">
    </select>
    <div style="position: absolute; z-index: 900; height: 23px; width: 129px; left: 83.546875px; top: 73px;"></div>
    <div style="height: 23px; position: absolute; z-index: 900; width: 63px; left: 318.4375px; top: 75px;"></div>
    <div style="height: 23px; position: absolute; z-index: 900; left: 457px; top: 75px; width: 105px;"></div>
-   <select data-dojo-type="dijit/form/ComboBox" value="Sum" intermediateChanges="false" trim="false" uppercase="false" lowercase="false" propercase="false" invalidMessage="$_unset_$" pageSize="Infinity" searchDelay="200" style="position: absolute; z-index: 900; width: 119.109375px; left: 87.4921875px; top: 75px;">
+   <select data-dojo-type="dijit/form/Select" value="Sum" intermediateChanges="false" trim="false" uppercase="false" lowercase="false" propercase="false" invalidMessage="$_unset_$" pageSize="Infinity" searchDelay="200" style="position: absolute; z-index: 900; width: 119.109375px; left: 87.4921875px; top: 75px;">
    <option value="Sum" selected="true">
        Sum</option>
      <option value="Product">
@@ -190,19 +149,8 @@
      <option value="Accumulator">
        Accumulator</option>
    </select>
-   <select data-dojo-type="dijit/form/ComboBox" value="200" intermediateChanges="false" trim="false" uppercase="false" lowercase="false" propercase="false" invalidMessage="$_unset_$" pageSize="Infinity" searchDelay="200" style="position: absolute; z-index: 900; width: 49.109375px; left: 321.0390625px; top: 77px;">
-   <option value="200" selected="true">
-       200</option>
-     <option value="300">
-       300</option>
-     <option value="400">
-       400</option>
-   </select>
-   <select data-dojo-type="dijit/form/ComboBox" value="births/year" intermediateChanges="false" trim="false" uppercase="false" lowercase="false" propercase="false" invalidMessage="$_unset_$" pageSize="Infinity" searchDelay="200" style="position: absolute; z-index: 900; left: 464.9375px; top: 77px; width: 91.109375px;">
-     <option value="births/year" selected="true">
-       births/year</option>
-     <option value="deaths/year">
-       deaths/year</option>
+   <input id="initialValue" type="text" data-dojo-type="dijit/form/NumberTextBox" intermediateChanges="false" trim="false" uppercase="false" lowercase="false" propercase="false" invalidMessage="$_unset_$" pageSize="Infinity" searchDelay="200" style="position: absolute; z-index: 900; width: 49.109375px; left: 321.0390625px; top: 77px;">
+   <select id="selectUnits" data-dojo-type="dijit/form/Select" intermediateChanges="false" trim="false" uppercase="false" lowercase="false" propercase="false" invalidMessage="$_unset_$" pageSize="Infinity" searchDelay="200" style="position: absolute; z-index: 900; left: 464.9375px; top: 77px; width: 91.109375px;">
    </select>
    <div style="position: absolute; z-index: 900; width: 482px; height: 32px; left: 78.9921875px; top: 113px;">
     <select data-dojo-type="dijit/form/ComboBox" style="position: absolute; z-index: 900; width: 458.109375px; left: 12px; top: 7.5px;">
