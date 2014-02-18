@@ -6,10 +6,12 @@ define([
     "dojo/ready",
     "./load-save",
     "./model",
-    "./RenderGraph", "./RenderTable", "./wraptext",
-     "./controller",
-    "parser/parser",
-     "./draw-model"
+    "./RenderGraph", "./RenderTable", "./wraptext", 
+    
+	"./controller",
+	"parser/parser",
+	"./draw-model",
+    
 ],function(dom, on, ioQuery, ready, loadSave, model, Graph, Table, wrapText, controller, Parser, drawmodel){ 
 
     console.log("load main.js");
@@ -162,6 +164,7 @@ define([
 	 */
 	 
 	ready(function(){
+	var drawModel = new drawmodel(givenModel);
 	var controllerObject  = new controller(givenModel);
 	/*
 	 It would make more sense to call initHandles for each node as it is created
