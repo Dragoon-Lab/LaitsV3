@@ -3,8 +3,8 @@
             This is just a quick initial attempt to draw a model
 */
 define([
-    "dojo/_base/array", "dojo/dom-construct", "jsPlumb/jsPlumb"
-],function(array, domConstruct){
+    "dojo/_base/array", 'dojo/_base/declare', "dojo/dom-construct", "jsPlumb/jsPlumb"
+],function(array, declare, domConstruct){
 
         return declare(null, {
 
@@ -106,9 +106,9 @@ define([
                         inputs=givenModel.getInputNodes(vertex);
                         array.forEach(inputs, function(input){
                             instance.connect({source: input, target: vertex});
-                        })
+                        });
 
-                    })
+                    });
 
                     // and finally, make a couple of connections
                    // instance.connect({ source:"population", target:"growth" });
@@ -119,4 +119,5 @@ define([
 
             });
         }
+});
 });
