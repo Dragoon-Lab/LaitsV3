@@ -9,8 +9,9 @@ define([
     "./RenderGraph", "./RenderTable", "./wraptext",
      "./controller",
     "parser/parser"
-],function(dom, on, ioQuery, ready, loadSave, model, Graph, Table, wrapText, 
-	   controller, Parser){ 
+     "./draw-model"
+],function(dom, on, ioQuery, ready, loadSave, model, Graph, Table, wrapText, controller, Parser, drawmodel){ 
+
     console.log("load main.js");
     
     // Get session parameters
@@ -159,6 +160,8 @@ define([
 	/*
 	 start up controller
 	 */
+	 
+	ready(function(){
 	var controllerObject  = new controller(givenModel);
 	/*
 	 It would make more sense to call initHandles for each node as it is created
@@ -226,7 +229,6 @@ define([
       	};
       	imageObj.src = givenModel.getURL();
 
-		 
 	});
     });    
 });
