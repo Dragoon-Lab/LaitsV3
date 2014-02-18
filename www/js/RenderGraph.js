@@ -18,25 +18,34 @@ define([
 	//no of parameters that can affect graph. This parameter will be used to create sliders
 	inputParam:0,
 	//This is name of each parameter. Example 'Mass','Velocity' ....
+	paramNames: new Array(),
+	//this is initial value of each parameter
 	paramValue: new Array(),
+	//object containing array of calculated values of 'function' & 'accumulator' nodes
+	arrayOfNodeValues:{},
+	//units of nodes
+	units: {},
 	//Parameter to set DOM in a dialog dynamically
 	dialogContent:"",	
 	//Parameter to create slider objects
 	sliders:new Array(),
 	//Object of a dialog
-        dialog:"",
-        //Object of a chart
-        chart:"",
+    dialog:"",
+    //Object of a chart
+    chart:"",
         
         /*
          *  @brief:constructor for a graph object
          *  @param: noOfParam
          */
-        constructor: function(noOfParam, paramValue)
+        constructor: function(noOfParam,paramNames, paramValue,arrayOfNodeValues,units)
         {
      	   //assign parameters to object properties 
      	   this.inputParam = noOfParam;
+		   this.paramNames = paramNames;
      	   this.paramValue = paramValue;
+		   this.arrayOfNodeValues = arrayOfNodeValues;
+		   this.units = units;
      	   this.initialize();
      	   
         },
@@ -47,23 +56,32 @@ define([
          */
         initialize: function()
         {
-     	   var i=0;
+     	   var i;
      	   //fake data for correct graph
            var arrayCorrect = [1, 2, 2, 3, 4, 5, 5, 7,9,6];
            //fake data for graph which changes based on slider values
            var arrayVariable = [1, 2, 2, 3, 4, 5, 5, 7,9,6];
            //create dom for chart and chart legend and embed it in dialog
-     	   this.dialogContent= this.dialogContent + this.createDom('div','chart');
-     	   this.dialogContent= this.dialogContent + this.createDom('div','legend',"style='width:800px; margin:0 auto;'");
-     	   
-     	   //create sliders bsed on number of input parameters
-     	   for(i=0; i<this.inputParam; i++)
+		   
+		   i=0;
+		   var str="";
+		   for(j in this.arrayOfNodeValues)
+		   {
+				str = "chart"+i.toString();
+				this.dialogContent= this.dialogContent + this.createDom('div',str);
+				this.dialogContent= this.dialogContent + this.createDom('div','legend'+i,"style='width:800px; margin:0 auto;'");
+				i++;
+		   }
+     	        	   
+		   i=0;
+     	   //create sliders based on number of input parameters
+     	   for(j in this.paramNames)
      	   {
      		    // create slider and assign to object property
      		    // 
      	        this.sliders[i] = new HorizontalSlider({
      	            name: "slider"+i,
-     	            value: 5,
+     	            value: this.paramValue[j],
      	            minimum: 0,
      	            maximum: 10,
      	            intermediateChanges: true,
@@ -73,9 +91,11 @@ define([
      	        //create label for name of a textbox
      	        //create input for a textbox
      	        //create div for embedding a slider
-     	        this.dialogContent= this.dialogContent + this.createDom('label','','',this.paramValue[i]+" = ")+this.createDom('input','text'+i,"type='text' data-dojo-type='dijit/form/TextBox'")+"<br>"
+     	        this.dialogContent= this.dialogContent + this.createDom('label','','',this.paramNames[j]+" = ")+this.createDom('input','text'+i,"type='text' data-dojo-type='dijit/form/TextBox'")+"<br>"
      	        +this.createDom('div','slider'+i);
      	        console.debug("dialogContent is "+this.dialogContent);
+				
+				i++;
      	   }
      	   
      	   //create a dialog and give created dom in above loop as input to 'content'
@@ -83,7 +103,7 @@ define([
      	   this.dialog = new Dialog({
      		   title: "Graph for Problem",
         		content:this.dialogContent,
-        		style:"width:auto;height:auto"
+        		style:"width:auto;height:auto;"
      	   });      	   
      	   
      	   //insert initial value of slider into a textbox
@@ -93,8 +113,32 @@ define([
      		  dom.byId("text"+i).value = this.sliders[i].value;
      		 dom.byId("slider"+i).appendChild(this.sliders[i].domNode);
      	   }
+		   
+		   var chartArray = new Array();
+		   var legendArray = new Array();
+		   i=0;
+		   for(j in this.arrayOfNodeValues)
+		   {
+			   str = "chart"+i.toString();	
+			   chartArray[i] = new Chart(str);
+			   chartArray[i].addPlot("default", {type: Lines, markers:true});
+			  
+			   chartArray[i].addAxis("x", {
+			   fixed: true, min: 0, max: 10, title: this.units["x"], 
+			   titleOrientation: "away", titleGap:5
+			});
+			   chartArray[i].addAxis("y", {vertical: true, min: 0, title: this.units[j]});
+			   chartArray[i].addSeries("correct solution", this.arrayOfNodeValues[j], {stroke: "red"});
+			   chartArray[i].addSeries("Variable solution", this.arrayOfNodeValues[j], {stroke: "green"});
+			   chartArray[i].render();
+			   
+			   str = "legend"+i.toString();
+			   legendArray[i] = new Legend({chart: chartArray[i]}, str);
+			   i++;
+		   }
      	   
      	   //create a chart
+		   /*
      	   this.chart = new Chart("chart");
      	   this.chart.addPlot("default", {type: Lines, markers:true});
      	  
@@ -108,7 +152,22 @@ define([
      	   this.chart.render();
      	   
      	   var legend = new Legend({chart: this.chart}, "legend");
+		   
+		   
+		   var ch = new Chart("chart2");
+     	   ch.addPlot("default", {type: Lines, markers:true});
+     	  
+     	   ch.addAxis("x", {
+	       fixed: true, min: 0, max: 10, title: "Distance (meters)", 
+	       titleOrientation: "away", titleGap:5
+		});
+     	   ch.addAxis("y", {vertical: true, min: 0, title: "Velocity (meters/seconds)"});
+     	   ch.addSeries("correct solution", arrayCorrect, {stroke: "red"});
+     	   ch.addSeries("Variable solution", arrayVariable, {stroke: "green"});
+     	   ch.render();
      	   
+     	   var leg = new Legend({chart: ch}, "legend2");
+     	   */
      	   //Use local variables and assign object properties to local variables
      	   //local variables are work-around as object properties are not accessed inside a event handler (here inside 'onclick' event)
      	   var _slider=new Array();

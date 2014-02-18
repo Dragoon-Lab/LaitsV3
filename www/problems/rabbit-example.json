@@ -26,7 +26,7 @@
                     }
                 ],
                 "initial": 100,
-                "equation": "+ id2",
+                "equation": "id1 + id2",
                 "correctDesc": "The number of rabbits in the population",
                 "attemptCount": {
                     "description": 2,
@@ -86,7 +86,7 @@
                 "order": 3,
                 "units": "percent",
                 "inputs": [],
-                "initial": null,
+                "initial": 0.2,
                 "equation": ".2",
                 "correctDesc": "The ratio of number of rabbits born in a month to the rabbit population that month",
                 "attemptCount": {
@@ -99,7 +99,7 @@
                 "status": {
                     "description": "correct",
                     "type": "correct",
-                    "initial": "null",
+                    "initial": ".2",
                     "units": "correct",
                     "equation": "correct"
                 }
@@ -134,7 +134,7 @@
                     "type": "accumulator",
                     "initial": 100,
                     "units": "rabbits",
-                    "equation": "+ id2"
+                    "equation": "id1 + id2"
                 }
             },
             {
@@ -173,7 +173,7 @@
                 "studentSelections": {
                     "description": "The ratio of number of rabbits born in a month to the rabbit population that month",
                     "type": "parameter",
-                    "initial": "null",
+                    "initial": ".2",
                     "units": "percent",
                     "equation": ".2"
                 }

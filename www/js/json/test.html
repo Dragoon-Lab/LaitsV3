@@ -30,16 +30,17 @@
 	    packages: [
                 {name: "json", location: "js/json"},
 		{name: "dojo", location: "dojo"},
-                {name: "dragoon", location: "js"}
+                {name: "dragoon", location: "js"},
+				{name:"parser",location: "math-parser"}
             ]
 	};
     </script>
     <script src="../../dojo/dojo.js"></script> 
 
-    <script>
+    <!--<script>
           
-         require(["dragoon/load-save", "dojo/request/xhr", "dojo/_base/Deferred", "dragoon/model"],
-             function(loadSave, xhr, deferred, model) {
+         require(["dragoon/load-save", "dojo/request/xhr", "dojo/_base/Deferred", "dragoon/model","parser/parser"],
+             function(loadSave, xhr, deferred, model,parser) {
                   // Example json file with student solution (constructed by hand).
                   var file = "rabbit-example.json";
                   console.log("file: " + file);
@@ -47,8 +48,22 @@
                       // the xhr() function loads a problem from a JSON formatted text file
                       handleAs: "json"
                   }).then(function(modelObject) {
+					  
                       var rabbits = new model();
                       rabbits.loadModel(modelObject);
+					  
+					  var arrayNodes = rabbits.getStudentNodes();
+					  var i=0;
+					  var expr="";
+					  var parsedExpr="";
+					  var variable="";
+					  for(i=0;i<arrayNodes.length;i++)
+					  {
+						expr = rabbits.getStudentNodeEquation(arrayNodes[i].ID);
+						parsedExpr = Parser.parse(expr);
+						variable = parsedExpr.variables();
+					  }
+					  
                       rabbits.setTaskName("Bugs"); // change the problem's name
                       // create a new session:
                       var params = {
@@ -90,6 +105,20 @@
                       rabbits2.setTaskName("Bunny"); // change the problem's name
                       console.log("Got model using second method: ", rabbits2);
                   });
+            });
+        </script> -->
+		
+		
+		<script>
+          
+         require(["www/js/json/calculation"],
+             function(calculation) {
+				
+				var file = "rabbit-example.json";
+                console.log("file: " + file);
+				var calc = new calculation();
+				calc._substituteExpressions(file);
+				
             });
         </script>
     </body>

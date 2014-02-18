@@ -48,17 +48,52 @@ define([
 	var expr,variable;
 	//use this object to store current key/value pair of value of nodes e.g{id1:100,id2:200}
 	var currentNodeValues = {};
-	var nextNodeValues = {};
 	//create this object to store key/value pair of node equations
 	var nodeEquations = {};
-	
-	
-	
+	//object to store array of values of nodes based on steps
+	var arrayOfNodeValues = {};
+	//array of name of 'parameter' nodes.this array is passed to 'graph' to place sliders
+	var arrayOfParameterNames = {};
+	//array of initial values of parameters
+	var arrayOfParamInitialValues = {};
+	//array of units of all nodes
+	var arrayOfUnits = {};
 	givenModelNodes = givenModel.getNodes();
 	
 	startTime = givenModel.getStartTime();
 	endTime = givenModel.getEndTime();
 	timeStep = givenModel.getTimeStep();
+	
+	//function to get units of all nodes
+	var getUnits = function(_givenModel)
+	{
+		var modelNodes = _givenModel.getNodes();
+		//get the unit for x axis.
+		arrayOfUnits["x"] = _givenModel.getUnits();
+		for (i=0;i<modelNodes.length;i++)
+		{
+			arrayOfUnits[modelNodes[i].ID] = modelNodes[i].units;
+		}
+		
+		return arrayOfUnits;
+	};
+	
+	//function to calculate no of 'parameter' nodes in graph
+	var storeParametersNameValue = function(_givenModelNodes)
+	{
+		var i,count=0;
+		for(i=0;i<_givenModelNodes.length;i++)
+		{
+			if(_givenModelNodes[i].type == 'parameter')
+			{
+				arrayOfParameterNames[_givenModelNodes[i].ID] = _givenModelNodes[i].name;
+				arrayOfParamInitialValues[_givenModelNodes[i].ID] = _givenModelNodes[i].initial;
+				count++;
+			}
+		}
+		return count;
+	};
+	
 	
 	//this is a function used to find initial values of node of type function
 	var calcNULLNodeValue = function(nodeID)
@@ -94,26 +129,47 @@ define([
 	{
 		currentNodeValues[givenModelNodes[i].ID] = givenModel.getNodeInitial(givenModelNodes[i].ID);
 	}
-	
-	
+
+	//create an array belonging to every node to store step values
 	for(j=0;j<givenModelNodes.length;j++)
 	{
-		if(currentNodeValues[givenModelNodes[j].ID] == null)
+		if(givenModelNodes[j].type != 'parameter')
 		{
-			calcNULLNodeValue(givenModelNodes[j].ID);
+			arrayOfNodeValues[givenModelNodes[j].ID] = new Array();
 		}
 	}
-		
+	
+	/* calculate initial values of all nodes which are null */
+	for(j=0;j<givenModelNodes.length;j++)
+	{
+		var _v;
+		if(currentNodeValues[givenModelNodes[j].ID] == null)
+		{
+			_v = calcNULLNodeValue(givenModelNodes[j].ID);
+		}
+		else
+		{
+			_v = givenModelNodes[j].initial;
+		}
+		if(givenModelNodes[j].type != 'parameter')
+		{
+			arrayOfNodeValues[givenModelNodes[j].ID].push(_v);
+		}	
+	}
+	
 	//put this code in function calculateStepValues()
 	for(i=1;i<(endTime-startTime)/timeStep;i++)
 	{
 		for(j=0;j<givenModelNodes.length;j++)
 		{
-			calcNULLNodeValue(givenModelNodes[j].ID);
+			if(givenModelNodes[j].type != 'parameter')
+			{
+				arrayOfNodeValues[givenModelNodes[j].ID].push(calcNULLNodeValue(givenModelNodes[j].ID));
+			}
 		}
 	}
-
-
+	
+	
 	/*
 	 start up controller
 	 */
@@ -133,15 +189,21 @@ define([
 	 */
 	
 	ready(function(){
+	
 	    // dummy parameter to be passed to graph class
-	    var inputParam = 3;
+		var noOfParams = storeParametersNameValue(givenModelNodes);;
+	    
 	    // values of parameters
-	    var paramValue = ['A','B','C'];
+	    //var paramValue = ['A','B','C'];
+		var paramNames = arrayOfParameterNames;
+		var paramValue = arrayOfParamInitialValues;
+		var nodeValueArray = arrayOfNodeValues;
+		var units = getUnits(givenModel);
 	    var slider = new Array();
 	    var button = dom.byId("graphButton");
 	    
 	    // instantiate graph object
-	    var graph = new Graph(inputParam,paramValue);
+	    var graph = new Graph(noOfParams,paramNames,paramValue,nodeValueArray,units);
 	    
 	    // show graph when button clicked
 	    on(button,"click",function(){
