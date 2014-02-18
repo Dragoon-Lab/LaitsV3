@@ -8,7 +8,7 @@ define([
     "./model",
     "./RenderGraph", "./RenderTable", "./wraptext",
      "./controller",
-    "parser/parser"
+    "parser/parser",
      "./draw-model"
 ],function(dom, on, ioQuery, ready, loadSave, model, Graph, Table, wrapText, controller, Parser, drawmodel){ 
 
