@@ -130,7 +130,7 @@ define([
 			   fixed: true, min: 0, max: 10, title: this.xunits, 
 			   titleOrientation: "away", titleGap:5
 			});
-			   chartArray[i].addAxis("y", {vertical: true, min: 0, title: this.units[j]});
+			   chartArray[i].addAxis("y", {vertical: true, min: 0, title: this.units[i]});
 			   chartArray[i].addSeries("correct solution", this.arrayOfNodeValues[j], {stroke: "red"});
 			   chartArray[i].addSeries("Variable solution", this.arrayOfNodeValues[j], {stroke: "green"});
 			   chartArray[i].render();
