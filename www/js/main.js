@@ -177,7 +177,6 @@ define([
 	 This should be put in its own module.
 	 */
 	
-	ready(function(){
 	
 	    // dummy parameter to be passed to graph class
 		var noOfParams = storeParametersNameValue(givenModelNodes);;
