@@ -5,8 +5,8 @@
 * 	     -  Loading AMD UI 
 */
 define([
-	 "dojo/_base/array", 'dojo/_base/declare', "dojo/_base/lang", 
-	 'dojo/aspect', 'dojo/dom', 'dojo/on', "dojo/ready", 'dijit/registry'
+    "dojo/_base/array", 'dojo/_base/declare', "dojo/_base/lang", 
+    'dojo/aspect', 'dojo/dom', 'dojo/on', "dojo/ready", 'dijit/registry'
 ], function(array, declare, lang, aspect, dom, on, ready, registry) {
 
     return declare(null, {
@@ -93,7 +93,8 @@ define([
 	    
 	//show node editor
 	showNodeEditor : function(nodeEvent){
-	    console.log("showNodeEditor called for ", nodeEvent.target.id);
+	    // There is no argument if this is called by "Create Node" button.
+	    console.log("showNodeEditor called for ", nodeEvent && nodeEvent.target.id);
 	    var nodeeditor = registry.byId('nodeeditor');
 
 	    console.warn("TO DO:  populate fields in node editor.");

@@ -4,15 +4,14 @@ define([
     "dojo/on",
     "dojo/io-query",
     "dojo/ready",
+    "./menu",
     "./load-save",
     "./model",
     "./RenderGraph", "./RenderTable", "./wraptext", 
-    
-	"./controller",
-	"parser/parser",
-	"./draw-model",
-    
-],function(dom, on, ioQuery, ready, loadSave, model, Graph, Table, wrapText, controller, Parser, drawmodel){ 
+    "./controller",
+    "parser/parser",
+    "./draw-model" 
+],function(dom, on, ioQuery, ready, menu, loadSave, model, Graph, Table, wrapText, controller, Parser, drawmodel){ 
 
     console.log("load main.js");
     
@@ -166,6 +165,12 @@ define([
 	ready(function(){
 	var drawModel = new drawmodel(givenModel);
 	var controllerObject  = new controller(givenModel);
+
+	/* add to menu */
+	menu.add("createNodeButton", function(){
+	    controllerObject.showNodeEditor();
+	});
+
 	/*
 	 It would make more sense to call initHandles for each node as it is created
          on the canvas.
@@ -192,15 +197,14 @@ define([
 		var units = givenModel.getEachNodeUnits();
 	        var xunits = givenModel.getUnits();
 	    var slider = new Array();
-	    var button = dom.byId("graphButton");
 	    
 	    // instantiate graph object
 	    var graph = new Graph(noOfParams,paramNames,paramValue,nodeValueArray,units,xunits);
 	    
 	    // show graph when button clicked
-	    on(button,"click",function(){
+	    menu.add("graphButton",function(){
 		console.debug("button clicked");	   
-            graph.show();
+		graph.show();
 	    }); 
 	    
 	    //dummy parameter to be passed to graph class
@@ -209,13 +213,12 @@ define([
 	    paramValue = [1,2,3,4,5,6,7,8,9,10,11,12,13,14,15];
 	    var tableHeader = ['time','Param1','Param2','Param3','Param4'];
 	    slider = new Array();
-	    button = dom.byId("tableButton");
 	
 	    // instantiate graph object
 	    var table = new Table(inputParam,tableHeader,paramValue);
 	
 	    // show graph when button clicked
-	    on(button,"click",function(){        	
+	    menu.add("tableButton", function(){        	
 		console.debug("table button clicked");
 		table.show();
 	    });
