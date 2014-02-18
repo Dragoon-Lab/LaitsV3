@@ -25,6 +25,7 @@ define([
 	arrayOfNodeValues:{},
 	//units of nodes
 	units: {},
+	xunits: null,
 	//Parameter to set DOM in a dialog dynamically
 	dialogContent:"",	
 	//Parameter to create slider objects
@@ -38,14 +39,16 @@ define([
          *  @brief:constructor for a graph object
          *  @param: noOfParam
          */
-        constructor: function(noOfParam,paramNames, paramValue,arrayOfNodeValues,units)
+        constructor: function(noOfParam,paramNames, paramValue, arrayOfNodeValues, units, xunits)
         {
      	   //assign parameters to object properties 
      	   this.inputParam = noOfParam;
 		   this.paramNames = paramNames;
      	   this.paramValue = paramValue;
 		   this.arrayOfNodeValues = arrayOfNodeValues;
+	    console.log("***** In RenderGraph constructor, units = ", units);
 		   this.units = units;
+	    this.xunits = xunits;
      	   this.initialize();
      	   
         },
@@ -56,7 +59,7 @@ define([
          */
         initialize: function()
         {
-     	   var i;
+     	   var i, j;
      	   //fake data for correct graph
            var arrayCorrect = [1, 2, 2, 3, 4, 5, 5, 7,9,6];
            //fake data for graph which changes based on slider values
@@ -124,7 +127,7 @@ define([
 			   chartArray[i].addPlot("default", {type: Lines, markers:true});
 			  
 			   chartArray[i].addAxis("x", {
-			   fixed: true, min: 0, max: 10, title: this.units["x"], 
+			   fixed: true, min: 0, max: 10, title: this.xunits, 
 			   titleOrientation: "away", titleGap:5
 			});
 			   chartArray[i].addAxis("y", {vertical: true, min: 0, title: this.units[j]});

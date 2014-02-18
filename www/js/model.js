@@ -201,12 +201,21 @@ define([
             return this.model.task.properties.units;
         },
 
+        getEachNodeUnits: function() {
+	    // Summary:  returns an object containing the units for each node
+	    var unitList = [];
+	    array.forEach(this.getNodes(), function(node){		
+		unitList.push(node.units);
+	    });
+	    return unitList;
+	},
+
 	getAllUnits: function(){
 	    // Summary:  returns a list of all distinct units 
 	    // (string format) defined in a problem.
             // Need to order list alphabetically.
 	    var unitList=[this.getUnits()];
-	    array.forEach(this.getNodes(),function(node){
+	    array.forEach(this.getNodes(), function(node){
 		if(array.indexOf(unitList, node.units) == -1){
 		    unitList.push(node.units);
 		}

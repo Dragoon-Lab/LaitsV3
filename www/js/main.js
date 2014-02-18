@@ -63,21 +63,7 @@ define([
 	startTime = givenModel.getStartTime();
 	endTime = givenModel.getEndTime();
 	timeStep = givenModel.getTimeStep();
-	
-	//function to get units of all nodes
-	var getUnits = function(_givenModel)
-	{
-		var modelNodes = _givenModel.getNodes();
-		//get the unit for x axis.
-		arrayOfUnits["x"] = _givenModel.getUnits();
-		for (i=0;i<modelNodes.length;i++)
-		{
-			arrayOfUnits[modelNodes[i].ID] = modelNodes[i].units;
-		}
 		
-		return arrayOfUnits;
-	};
-	
 	//function to calculate no of 'parameter' nodes in graph
 	var storeParametersNameValue = function(_givenModelNodes)
 	{
@@ -131,7 +117,7 @@ define([
 	}
 
 	//create an array belonging to every node to store step values
-	for(j=0;j<givenModelNodes.length;j++)
+	for(var j=0;j<givenModelNodes.length;j++)
 	{
 		if(givenModelNodes[j].type != 'parameter')
 		{
@@ -198,12 +184,13 @@ define([
 		var paramNames = arrayOfParameterNames;
 		var paramValue = arrayOfParamInitialValues;
 		var nodeValueArray = arrayOfNodeValues;
-		var units = getUnits(givenModel);
+		var units = givenModel.getEachNodeUnits();
+	        var xunits = givenModel.getUnits();
 	    var slider = new Array();
 	    var button = dom.byId("graphButton");
 	    
 	    // instantiate graph object
-	    var graph = new Graph(noOfParams,paramNames,paramValue,nodeValueArray,units);
+	    var graph = new Graph(noOfParams,paramNames,paramValue,nodeValueArray,units,xunits);
 	    
 	    // show graph when button clicked
 	    on(button,"click",function(){
@@ -212,7 +199,7 @@ define([
 	    }); 
 	    
 	    //dummy parameter to be passed to graph class
-	    inputParam = 5;
+	    var inputParam = 5;
 	    // values of parameters
 	    paramValue = [1,2,3,4,5,6,7,8,9,10,11,12,13,14,15];
 	    var tableHeader = ['time','Param1','Param2','Param3','Param4'];
