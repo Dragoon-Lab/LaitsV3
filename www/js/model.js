@@ -209,6 +209,15 @@ define([
 	    });
 	    return unitList;
 	},
+	
+		getEachNodeUnitbyID:function() {
+		//summary: returns key/value pair of node-id/unit
+		var unitList = {};
+		array.forEach(this.getNodes(), function(node){		
+		unitList[node.ID] = node.units;
+	    });	
+		return unitList;
+	},
 
 	getAllUnits: function(){
 	    // Summary:  returns a list of all distinct units 

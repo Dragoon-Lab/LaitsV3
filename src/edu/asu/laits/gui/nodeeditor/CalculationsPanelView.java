@@ -386,7 +386,8 @@ public class CalculationsPanelView extends javax.swing.JPanel {
             
             if (!availableInputs.containsAll(correctInputs)) {
                 // Button name should be a variable;  see Bug #2104
-                nodeEditor.setEditorMessage("Please define all the Nodes before using Demo.");
+                nodeEditor.setEditorMessage("The correct calculation includes nodes that are not yet in the list 'Available Inputs.'\n"
+                        + "Please use 'Create Node' to define some more inputs, then try Demo again or enter the calculation yourself.");
                 return false;
             }
             

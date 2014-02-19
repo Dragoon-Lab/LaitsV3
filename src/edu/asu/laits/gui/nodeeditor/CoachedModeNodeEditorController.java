@@ -146,7 +146,7 @@ public class CoachedModeNodeEditorController extends NodeEditorController {
         for (SolutionNode name : correctNodeNames) {
             if (name.getNodeName().equalsIgnoreCase(targetNodes.getFirstNextNode(openVertex))) {
                 giveupNode = name.getNodeName();
-                    //                  ApplicationContext.nextCurrentOrder()
+                    //ApplicationContext.nextCurrentOrder()
                 break;
             }
         }

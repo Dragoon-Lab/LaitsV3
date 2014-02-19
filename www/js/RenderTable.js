@@ -14,26 +14,32 @@ define([
     return declare(null, {
 	
 	//no of parameters to display in a table
-	inputParam:0,
-	//This is name of each parameter. Example 'Mass','Velocity' ....
-	paramValue: new Array(),
-	//tableHeader
-	tableHeader: new Array(),
+	noOfParam:0,
+	//timesteps unit
+	xUnits: null,
+	//tableHeaders (units of all nodes)
+	units: {},
+	//timestep values
+	timeSteps: new Array(),
+	//values of all nodes stored in an array
+	nodeValueArray: {},
 	//Parameter to set DOM in a dialog dynamically
 	dialogContent:"",	
 	//Object of a dialog
-        dialog:"",
+    dialog:"",
 		        
         /*
          *  @brief:constructor for a graph object
          *  @param: noOfParam
          */
-        constructor: function(noOfParam,tableHeader,paramValue)
+        constructor: function(noOfParam,xUnits,units,timeSteps,nodeValueArray)
         {
      	    //assign parameters to object properties 
      	    this.inputParam = noOfParam;
-     	    this.paramValue = paramValue;
-	    this.tableHeader = tableHeader;
+     	    this.xUnits = xUnits;
+			this.units = units;
+			this.timeSteps = timeSteps
+			this.nodeValueArray = nodeValueArray;
      	    this.initialize();     	    
         },
 
@@ -45,12 +51,27 @@ define([
         initialize: function()
         {
         	
-     	   var i=0,j=0,domId="",rowLength = this.paramValue.length/this.inputParam;
+     	   var i=0,j=0,domId="",tempArray;
 		   
 		   this.dialogContent = this.dialogContent+this.initTable();
 		   this.dialogContent = this.dialogContent+this.setTableHeader();
      	   
-		   for(i=0; i < rowLength; i++)
+			for(i=0;i<this.timeSteps.length;i++)
+			{
+				this.dialogContent = this.dialogContent+"<tr>";
+				this.dialogContent = this.dialogContent+"<td align='center'>"+this.timeSteps[i] + "</td>";
+				//set values in table according to their table-headers
+				for(j in this.nodeValueArray)
+				{
+					tempArray = this.nodeValueArray[j];
+					this.dialogContent = this.dialogContent+"<td align='center'>"+tempArray[i].toFixed(2) + "</td>";
+					
+				}
+				this.dialogContent = this.dialogContent+"</tr>";
+			}
+			
+			/*
+			for(i=0; i < rowLength; i++)
 			{
 				this.dialogContent = this.dialogContent+"<tr>";
 				for(j=0;j < this.inputParam; j++)
@@ -58,7 +79,7 @@ define([
 					this.dialogContent = this.dialogContent+"<td align='center'>"+this.paramValue[this.inputParam * i + j] + "</td>";
 				}
 				this.dialogContent = this.dialogContent+"</tr>";
-			}
+			}*/
 		   
 		   this.dialogContent = this.dialogContent+this.closeTable();
            //this.dialogContent = this.dialogContent+this.createDom("div","table","",""); ;
@@ -108,9 +129,14 @@ define([
 			var i=0, tableString="";
 			
 			tableString = tableString + "<tr>";
-			for(i=0;i<this.inputParam;i++)
+			
+			//setup xunit (unit of timesteps)
+			//tableString = tableString + "<th align='center' style='padding-right:5px;padding-left:5px;'>"+this.xUnits+"</th>";
+			tableString = tableString + "<th style='text-align:center;padding-right:10px;padding-left:10px;'>"+this.xUnits+"</th>";
+			for(i in this.nodeValueArray)
 			{
-				tableString = tableString + "<th style='padding-right:5px;padding-left:5px;'>"+this.tableHeader[i]+"</th>";
+				//tableString = tableString + "<th align='center' style='padding-right:5px;padding-left:5px;'>"+this.units[i]+"</th>";
+				tableString = tableString + "<th style='text-align:center;padding-right:10px;padding-left:10px;'>"+this.units[i]+"</th>";
 			}
 			
 			tableString = tableString + "</tr>";
