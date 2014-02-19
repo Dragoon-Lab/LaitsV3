@@ -60,6 +60,8 @@ define([
 	var arrayOfParamInitialValues = {};
 	//array of units of all nodes
 	var arrayOfUnits = {};
+	//array of timesteps. Use this in rendering table
+	var arrayOfTimeSteps = [];
 	givenModelNodes = givenModel.getNodes();
 	
 	startTime = givenModel.getStartTime();
@@ -145,9 +147,12 @@ define([
 		}	
 	}
 	
+	//push first timestep as 'startTime' (initial timestep)
+	arrayOfTimeSteps.push(startTime);
 	//put this code in function calculateStepValues()
-	for(i=1;i<(endTime-startTime)/timeStep;i++)
+	for(i=startTime+timeStep;i<(endTime-startTime)/timeStep;i=i+timeStep)
 	{
+		arrayOfTimeSteps.push(i);
 		for(j=0;j<givenModelNodes.length;j++)
 		{
 			if(givenModelNodes[j].type != 'parameter')
@@ -195,7 +200,7 @@ define([
 		var paramValue = arrayOfParamInitialValues;
 		var nodeValueArray = arrayOfNodeValues;
 		var units = givenModel.getEachNodeUnits();
-	        var xunits = givenModel.getUnits();
+	    var xunits = givenModel.getUnits();
 	    var slider = new Array();
 	    
 	    // instantiate graph object
@@ -207,15 +212,19 @@ define([
 		graph.show();
 	    }); 
 	    
-	    //dummy parameter to be passed to graph class
-	    var inputParam = 5;
+	    //defining parameters again for tables
+	    var noOfParam = storeParametersNameValue(givenModelNodes);;
+		var xUnit = givenModel.getUnits();
+		var unit = givenModel.getEachNodeUnitbyID();
 	    // values of parameters
-	    paramValue = [1,2,3,4,5,6,7,8,9,10,11,12,13,14,15];
-	    var tableHeader = ['time','Param1','Param2','Param3','Param4'];
-	    slider = new Array();
+	    var nodeValueArray = arrayOfNodeValues;
+		//values of timesteps
+		var timeSteps = arrayOfTimeSteps;
+	    //var tableHeader = ['time','Param1','Param2','Param3','Param4'];
+	    //slider = new Array();
 	
 	    // instantiate graph object
-	    var table = new Table(inputParam,tableHeader,paramValue);
+	    var table = new Table(noOfParam,xUnit,unit,timeSteps,nodeValueArray);
 	
 	    // show graph when button clicked
 	    menu.add("tableButton", function(){        	
