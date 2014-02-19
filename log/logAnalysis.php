@@ -6,6 +6,7 @@ Class AnalyzeLogs{
 	private static $minimumTime = 600; //minimum problem time, usually the time has to be greater than this to be considered. if a problem is done in less than this time then we do not check all the action times.
 	private static $actionTime = 420; //time in seconds greater than this then student is not working on the problem.
 	private static $problemLoadTime = 1; //used for multiple loading times of a problem.
+	private static $tabReadingTime = 7; //minimum time to decide whether the tab was completely read or thought of properly
 	
 	function checkBadUsers($user){
 		$bad = AnalyzeLogs::$badUsers;
@@ -353,7 +354,7 @@ Class AnalyzeLogs{
 		$oldSession; $oldRow; $help; $nodeDetailsArray;
 		$nodeName =''; $nodeString = ''; $userGaming = false;
 		$index = 0;
-		$startTime = 0; $nodeIndex = 0;
+		$startTime = 0;
 		$user; $problem; $lastAction = '';
 		$tempNodeName = ''; $tempNodeString = ''; $startTimeTempNode = 0;
 		$workingTempNode = false;
@@ -378,7 +379,7 @@ Class AnalyzeLogs{
 					if($counter == 1)
 						$oldRow = $row;
 					$problemTime = 0;
-					$startTime = 0; $startTimeTempNode = 0; $nodeIndex = 0;
+					$startTime = 0; $startTimeTempNode = 0;
 					$lastAction = '';
 					$userGaming = false;
 					$sessionRunning = true;
@@ -524,7 +525,6 @@ Class AnalyzeLogs{
 						} else {
 							//otherwise initialized an empty string. Name will be set in the dialog-box-tab or in the check correct case on Plan tab or in seek help.
 							$nodeString = 'Node Creation '.($newTab == 'DESCRIPTION'?' started in ':' continued from ').$newTab.' tab';
-							$nodeIndex++;
 						}
 						$startTime = $messageJSON['time'];
 					} elseif($actionType === 'create-newnode-dialog-box'){
@@ -613,6 +613,330 @@ Class AnalyzeLogs{
 		echo "</td>\n";
 		echo "<td>".$lastAction."</td>\n";
 		echo "</tr>\n";
+	}
+
+	function createSmallDashboard($section, $mode, $date, $fromTime, $toTime, $user){
+		$userString = "AND user = '".$user."' ";
+		$sessionQuery = "SELECT tid, session.session_id, user, problem_name, time, method, message, author from session JOIN step ON session.session_id = step.session_id where section = '".$section."' AND time >= '".$date." ".$fromTime."' AND time <= '".$date." ".$toTime."' AND mode = '".$mode."' ".($user != ''?$userString:'')."ORDER BY user asc, problem_name asc, tid asc;";
+
+		//echo $sessionQuery;
+
+		$totalWork = $this->getResults($sessionQuery);
+		$numResults = mysqli_num_rows($totalWork);
+		$index = 0; $noOfTimesProblemAccessed=0; $problemTime = 0; $helpCounter = 0; $nodeIndex=0;
+		$nodeTabCheck = 0;
+		$UIaction = array();
+		$tabReadTime = AnalyzeLogs::$tabReadingTime;
+		$maxIdleTime = AnalyzeLogs::$actionTime;
+		$runningProblems = array();
+		$completeProblems = array();
+		$workingTempNode = false;
+		$resetNodeString = false;
+		$nodeName = ''; $nodeString = '';
+
+		if($numResults != 0){
+			while($row = $totalWork->fetch_assoc()){
+				if($index == 0){
+					//first session values
+					$UIactions = array();
+					$oldRow = $row;
+					$oldSession = $row['session_id'];
+					$nodeIndex = 0; $helpCounter = 0;
+					$problemTime = 0;
+					$workingTempNode = false;
+					$resetNodeString = false;
+					$nodeName = ''; $nodeString = '';
+					$nodeTabCheck = 0;
+				}
+				$method = $row['method'];
+				$message = $row['message'];
+				$newSession = $row['session_id'];
+
+				if($oldRow['method'] != 'close-problem' && stripos($oldRow['message'], '"{')){
+					$tempMessage = str_replace('"{', "{", $oldRow['message']);
+					$tempMessage = str_replace('}"', "}", $tempMessage);
+					
+					$oldRow['message'] = $tempMessage;
+				}
+				if($method != 'close-problem' && stripos($row['message'], '"{')){
+					$tempMessage = str_replace('"{', "{", $row['message']);
+					$tempMessage = str_replace('}"', "}", $tempMessage);
+					
+					$row['message'] = $tempMessage;
+				}
+
+				$oldMessageJSON = json_decode($oldRow['message'], true);	
+				$messageJSON = json_decode($row['message'], true);
+
+				$continuedSession = true;
+				if($oldSession != $newSession){
+					if($row['user'] == $oldRow['user'] && $row['problem_name'] == $oldRow['problem_name']){
+						$continuedSession = true;
+						$startTime = 0; // used while calculating the tab time for the problem. Setting in case where the user had a node opened when it closed the problem.
+					} else {
+						$continuedSession = false;
+					}
+				}
+
+				$timeDiff = $messageJSON['time']-$oldMessageJSON['time'];
+				
+				if($messageJSON['time'] > $oldMessageJSON['time'] && $timeDiff > $maxIdleTime){
+					$userGaming = true;
+				}
+				if($continuedSession && $oldSession==$newSession) {
+					$problemTime = $problemTime + $timeDiff;
+				} else {
+					$noOfTimesProblemAccessed++;
+				}
+
+				if($resetNodeString){
+					if(($nodeName!='') && ($nodeString!='')){
+						$nodeDetailsArray[$nodeName] = $nodeString;
+					}
+					$nodeName = '';
+					$nodeString = '';
+					$resetNodeString = false;
+				}
+
+				if($method === 'ui-action'){
+					$actionType = $messageJSON['type'];
+					// this is a UI action to give last 3 ui actions on the dash board.
+					if($actionType === 'dialog-box-tab'){
+						// this is the case where the user moves to the new tab
+						$oldTab = $newTab;
+						$newTab = $messageJSON['tab'];
+						$lastAction = 'Swiched Tab from => '.$oldTab.' to => '.$newTab.($nodeName != ''?(' in node => '.$nodeName):'');
+						$tabCheckTime = $messageJSON['time'];
+						$nodeCheck = 0;
+					} elseif($actionType === 'open-dialog-box'){
+						//opened the node
+						$lastAction = 'node editor opened '.($nodeName != ''?(' for node => '.$nodeName):' for new node ').' in tab => '.$messageJSON['tab'];
+						$newTab = $messageJSON['tab'];
+						$nodeName = $messageJSON['node'];
+						if($nodeName != ''){
+							//looking if the string was already created or not.
+							$nodeString = (array_key_exists($nodeName, $nodeDetailsArray)?$nodeDetailsArray[$nodeName].' || ':'').'Node re-opened in '.$newTab.' tab';
+
+						} else {
+							//otherwise initialized an empty string. Name will be set in the dialog-box-tab or in the check correct case on Plan tab or in seek help.
+							$nodeIndex++;
+							$nodeString = 'Node #'.$nodeIndex.' Created';
+						}
+						$startTime = $messageJSON['time'];
+						$tabCheckTime = $messageJSON['time'];
+						$nodeCheck = 0;
+					} elseif($actionType === 'create-newnode-dialog-box'){
+						$nodeIndex++; 
+						$lastAction = 'Create new node pressed from calculation tab in node'.$nodeName;
+						$tempNodeString = 'Node #'.$nodeIndex.' Created from '.$nodeName.'</b>';
+						$startTimeTempNode = $messageJSON['time'];
+						$tempTabCheckTime = $messageJSON['time'];
+						$workingTempNode = true;
+						$tempNodeCheck = 0;
+					} elseif($actionType === 'menu-choice'){
+						//chose something from the top menu
+						$lastAction = $messageJSON['name'].' clicked from the menu';
+					} elseif($actionType === 'close-dialog-box'){
+						$name = $messageJSON['node'];
+						$tab = $messageJSON['tab'];
+						$lastAction = 'Closed '.$messageJSON['name']." name => ".$name. " in tab => ".$tab;
+						if($workingTempNode){
+							//adding the node data for the node opened in the new node created from the calculation tab for the new node.
+							//$tempNodeString = $tempNodeString.'<br/># Time spent on '.$tab.' tab => '.($messageJSON['time']-$startTimeTempNode);
+							$tempNodeName = $name;
+							$nodeDetailsArray[$tempNodeName] = $tempNodeString;
+							$tempNodeName = '';
+							$tempNodeString = '';
+						} else {
+							//$nodeString = $nodeString.'<br/># Time spent on '.$tab.' tab => '.($messageJSON['time']-$startTime).' seconds';
+							$nodeName = $name;
+							$resetNodeString = true;
+						}
+						$workingTempNode = false;
+					} elseif($actionType === 'info'){
+						$lastAction = $messageJSON['text']." Was Graph Correct => ".(($messageJSON['Is Problem Solved'])?"Yes":"No");
+						if($messageJSON['Is Problem Solved']){
+							$problemComplete = true;
+							$sessionRunning = false;
+						}
+					}
+					array_push($UIactions, $lastAction);
+				}elseif($method === 'solution-step' && array_key_exists('check-result', $messageJSON)){
+					$nodeCheck++;
+					$tempCheckTime = $tabReadTime+1;
+					$CheckTime = $tabReadTime+1;
+					$userTabGaming = false;
+
+					if($workingTempNode){
+						$tempCheckTime = $messageJSON['time'] - $tempTabCheckTime;
+						$tempTabCheckTime = $messageJSON['time'];
+						if(!(array_key_exists('name', $messageJSON)))
+							$tempNodeName = $messageJSON['node'];
+						else
+							$tempNodeName = $messageJSON['name']; 
+					} else {
+						$checkTime = $messageJSON['time'] - $tabCheckTime;
+						$tabCheckTime = $messageJSON['time'];
+						$nodeName = $messageJSON['node'];						
+					}
+					if($nodeCheck>1 && ($tempCheckTime < $tabReadTime || $checkTime < $tabReadTime)){
+						$userTabGaming = true;
+					}
+					if($messageJSON['check-result'] === 'INCORRECT' && array_key_exists('substeps', $messageJSON)){
+						foreach($messageJSON['substeps'] as $step){
+							$class = 'incorrectCheck'.($nodeCheck>2?'3':$nodeCheck);
+							$nodeString = $nodeString.'||<span class="'.$class.'">'.$step['value'].' '.$newTab.($userTabGaming?'</span><span class="helpButtonPressed"> gamed ':'').'</span>';
+						}
+					} elseif($messageJSON['check-result'] === 'INCORRECT'){
+						$class = 'incorrectCheck'.($nodeCheck>2?'3':$nodeCheck);
+						if($workingTempNode){
+							//$tempNodeString = $tempNodeString.'<br/># node selected => '.$messageJSON['name'].' and node description => '.$messageJSON['text'];
+							$tempNodeString = $tempNodeString.'||<span class="'.$class.'">'.$messageJSON['name'].' DISCUSSION'.($userTabGaming?' </span><span class="helpButtonPressed"> gamed ':'').'</span>';
+						} else {
+							if(array_key_exists('correct-result', $messageJSON)){
+								$temp = $messageJSON['name'];
+								if($temp === 'CONSTANT'){
+									$temp = 'Parameter';
+								} elseif($temp === 'STOCK'){
+									$temp = 'Accumulator';
+								} else {
+									$temp = 'Function';
+								}
+								$nodeString = $nodeString.'|| <span class="'.$class.'">'.$temp.($userTabGaming?' </span><span class="helpButtonPressed"> gamed ':'').'</span>';
+							} else {
+								$nodeString = $nodeString.'|| <span class="'.$class.'">'.$messageJSON['name'].($userTabGaming?' </span><span class="helpButtonPressed"> gamed ':'').'</span>';
+							}
+						}
+					} elseif($messageJSON['check-result'] === 'CORRECT'){
+						if($workingTempNode){
+							$tempNodeString = $tempNodeString.'||<span class="correctCheck">'.$newTab.'</span>';
+						} else {
+							$nodeString = $nodeString.'||<span class="correctCheck">'.$newTab.'</span>';
+						}
+					}
+					//after each solution step the node details are saved... in case problem stops earlier.
+					if($nodeName != '')
+						$nodeDetailsArray[$nodeName] = $nodeString;
+					if($messageJSON['check-result'] === 'CORRECT')
+						$nodeCheck = 0;
+				} elseif($method === 'seek-help'){
+					//this is a demo button pressed action
+					$helpCounter++;
+					$tabName = $messageJSON['tab'];
+					if($workingTempNode){
+						$tempHelpTime = $messageJSON['time'] - $tempTabCheckTime;
+						$tempTabCheckTime = $messageJSON['time'];
+						$tempNodeString = $tempNodeString.' || <span class="helpButtonPressed">'.$tabName.' ('.$tempHelpTime.' s)</span>';
+						$tempNodeName = $messageJSON['name'];
+					} else {
+						$helpTime = $messageJSON['time'] - $tabCheckTime;
+						$tabCheckTime = $messageJSON['time'];
+						$nodeString = $nodeString.'|| <span class="helpButtonPressed">'.$tabName.'</span>';
+					}
+					//$nodeName = $messageJSON[];
+				}
+				if(!($continuedSession)){
+					$user = $oldRow['user'];
+					$problem = $oldRow['problem_name'];
+
+					$finalTime = $oldMessageJSON['time'];
+					$newData = array('user' => $user, 'problem' => $problem, 'problemTime' => $problemTime, 'nodeDetails' => $nodeDetailsArray, 'uiActions' => $UIactions);
+
+					if(!($problemComplete) && $sessionRunning){
+						array_push($runningProblems, $newData);
+					} else {
+						array_push($completeProblems, $newData);
+					}
+
+					$oldSession = $newSession;
+					$oldRow = $row;
+					$index = 0; // next time the data will be refreshed.
+					
+				} else {
+					$oldSession = $newSession;
+					$oldRow = $row;
+					
+					$index++;
+				}
+			}
+			$newData = array('user' => $user, 'problem' => $problem, 'problemTime' => $problemTime, 'nodeDetails' => $nodeDetailsArray, 'uiActions' => $UIactions);
+
+			if(!($problemComplete) && $sessionRunning){
+				array_push($runningProblems, $newData);
+			} else {
+				array_push($completeProblems, $newData);
+			}
+
+			$this->printSmallDashboard($runningProblems, $completeProblems);
+		}
+	}
+
+	function printSmallDashboard($runningProblems, $completeProblems){
+		echo "Color Scheme : \n";
+		echo "<ul>\n";
+		echo "<li><span style='color:Red'>Red</span> : Help Button Presesd</li>\n";
+		echo "<li><span style='color:Yellow'>Yellow</span> : First incorrect check</li>\n";
+		echo "<li><span style='color:Orange'>Orange</span> : Second incorrect check</li>\n";
+		echo "<li><span style='color:Blue'>Blue</span> : Third incorrect check</li>\n";
+		echo "<li><span style='color:Green'>Green</span> : Correct Check</li>\n";
+		echo "</ul>\n";
+		echo "<h2>Running Problems</h2>\n";
+		echo "<table border='1'>\n";
+		echo "<tr>\n";
+		echo "<th>User Name</th>\n";
+		echo "<th>Problem Name</th>\n";
+		echo "<th>Time Spent/Session Running Time</th>\n";
+		echo "<th>Nodes Details</th>\n";
+		echo "<th>Last UI actions</th>\n";
+		echo "</tr>\n";
+		foreach ($runningProblems as $row){
+			echo "<tr>\n";
+			echo "<td>".$row['user']."</td>\n";
+			echo "<td>".$row['problem']."</td>\n";
+			echo "<td>".$row['problemTime']."</td>\n";
+			echo "<td>\n";
+			foreach($row['nodeDetails'] as $nodeName => $nodeDetails){
+				echo "<b>".$nodeName."</b> => ".$nodeDetails.'<br/>';
+			}
+			echo "</td>\n";
+			echo "<td>\n";
+			$size = sizeof($row['uiActions']);
+			for($i = $size-3; $i<$size; $i++){
+				echo $row['uiActions'][$i]."<br/>\n";
+			}
+			echo "</td>\n";
+			echo "</tr>";
+		}
+		echo "</table>\n";
+
+		echo "<h2>Complete Problems</h2>\n";
+		echo "<table border='1'>\n";
+		echo "<tr>\n";
+		echo "<th>User Name</th>\n";
+		echo "<th>Problem Name</th>\n";
+		echo "<th>Time Spent/Session Running Time</th>\n";
+		echo "<th>Nodes Details</th>\n";
+		echo "<th>Last UI actions</th>\n";
+		echo "</tr>\n";
+		foreach ($completeProblems as $row){
+			echo "<tr>\n";
+			echo "<td>".$row['user']."</td>\n";
+			echo "<td>".$row['problem']."</td>\n";
+			echo "<td>".$row['problemTime']."</td>\n";
+			echo "<td>\n";
+			foreach($row['nodeDetails'] as $nodeName => $nodeDetails){
+				echo "<b>".$nodeName."</b> => ".$nodeDetails.'<br/>';
+			}
+			echo "</td>\n";
+			echo "<td>\n";
+			$size = sizeof($row['uiActions']);
+			for($i = $size-3; $i<$size; $i++){
+				echo $row['uiActions'][$i]."<br/>\n";
+			}
+			echo "</td>\n";
+			echo "</tr>";
+		}
+		echo "</table>\n";
 	}
 }
 ?>
