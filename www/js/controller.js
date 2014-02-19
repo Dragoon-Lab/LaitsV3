@@ -10,14 +10,17 @@ define([
 ], function(array, declare, lang, aspect, dom, on, ready, registry) {
 
     return declare(null, {
-
+	
 	_model: {},
+	_nodeEditor : {}, // node-editor object- will be used for populating
+	_nodeMap: {},  // create map of Node against ids using model
 		     
 	constructor: function(model){
 	    this._model = model;
 	    // The Node Editor widget must be set up before modifications
             // It might be a better idea to only  call the controller
 	    // after widgets are set up.
+		this._nodeEditor = registry.byId('nodeeditor'); //get Node Editor element from tree
   	    ready(this, this._setUpNodeEditor);
 	},
         
@@ -94,12 +97,36 @@ define([
 	//show node editor
 	showNodeEditor : function(nodeEvent){
 	    console.log("showNodeEditor called for ", nodeEvent.target.id);
-	    var nodeeditor = registry.byId('nodeeditor');
-
 	    console.warn("TO DO:  populate fields in node editor.");
-
-	    nodeeditor.show();
+		this.populateNodeEditorFields(nodeEvent.target.id);
+	    this._nodeEditor.show();
+	},
+	
+	populateNodeEditorFields : function(nodeid){
+		//populate description
+		var model = this._model;
+		var editor = this._nodeEditor;
+		var descriptions = model.getAllDescriptions();
+		//populate units
+		var units = model.getAllUnits();
+		var selectUnits = dijit.byId('selectUnits');
+		selectUnits.attr('units',units);
+		//set task name
+		var nodeName = model.getNodeNameByID(nodeid);
+		editor.set('title',nodeName);
+		//populate type
+		//populate initial value
+		//populate units
+		var inputs=model.getNodeInputs(nodeid);
+		var nodeInputs = dijit.byId('nodeInputs');
+		nodeInputs.attr('inputs',inputs); //this is not populating combo box, find syntax
+		//populate inputs	
+		
+	},
+	createNodeMap : function(){  //node hashmap for fast retrival using id 
+		
 	}
+	
 	
     });	
 });
