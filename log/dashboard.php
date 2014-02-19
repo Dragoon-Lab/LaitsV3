@@ -30,7 +30,7 @@
 	!empty($_REQUEST["user"])?($user = $_REQUEST["user"]):$user = '';
 	($_REQUEST["dashboard"] === 'small')?($smallDashboard = true):($smallDashboard=false);
 	
-	$mysqli = mysqli_connect("localhost",$dbuser, $dbpassword, $dbname) or die("Connection not established. Check the user log file");
+	$mysqli = mysqli_connect("localhost",$dbuser, $dbpass, $dbname) or die("Connection not established. Check the user log file");
 	//$mysqli = mysqli_connect("localhost", "root", "qwerty211", "laits_devel") or die("Connection not established. Check the user log file");
 
 	$al = new AnalyzeLogs($mysqli);
