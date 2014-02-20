@@ -538,12 +538,14 @@ define([
                         descriptions.push(this.model.task.extraDescriptions[i].text);
             return descriptions;
         },
+
         isStudentModelEmpty: function() {
             // Summary: returns true if the the student model is empty
             if (this.model.task.studentModelNodes)
                 return true;
             return false;
         },
+
         isInGivenModel: function(/*string*/ id) {
             // Summary: returns true if a node in the student model is also found in the given model
             for (var i = 0; i < this.model.task.studentModelNodes.length; i++) {
@@ -552,6 +554,7 @@ define([
             }
             return null;
         },
+
         getStudentNodeInputs: function(/*string*/ id) {
             // Summary: returns an array with the nodes that the student has selected as inputs
             for (var i = 0; i < this.model.task.studentModelNodes.length; i++) {
@@ -578,63 +581,66 @@ define([
             }
             return false;
         },
-        getStudentNodeX: function(/*string*/ id) {
-            for (var i = 0; i < this.model.task.studentModelNodes.length; i++) {
-                if (id === this.model.task.studentModelNodes[i].ID)
-                    return this.model.task.studentModelNodes[i].position.x;
-            }
-            return null;
+
+	/*
+	 Brandon:  Here is a clean-up of some of the getters that
+	 uses a common function to find the node.  Note that it
+	 has error handling in the event that the id is invalid.
+
+	 It is not clear if these getters will be needed in this form.
+	 It might make for cleaner code (outside of model.js) if a node is passed in
+	 as an argument.
+	 */
+
+        getStudentNodePosition: function(/*string*/ id) {
+	    var node = this.getStudentNode(id);
+            return node && node.position;
         },
-        getStudentNodeY: function(/*string*/ id) {
-            for (var i = 0; i < this.model.task.studentModelNodes.length; i++) {
-                if (id === this.model.task.studentModelNodes[i].ID)
-                    return this.model.task.studentModelNodes[i].position.y;
-            }
-            return null;
-        },
+
         getStudentNodeDesc: function(/*string*/ id) {
-            for (var i = 0; i < this.model.task.studentModelNodes.length; i++) {
-                if (id === this.model.task.studentModelNodes[i].ID)
-                    return this.model.task.studentModelNodes[i].studentSelections.description;
-            }
-            return null;
+	    var node = this.getStudentNode(id);
+            return node && node.studentSelections.description;
         },
+
         getStudentNodePlan: function(/*string*/ id) {
-            for (var i = 0; i < this.model.task.studentModelNodes.length; i++) {
-                if (id === this.model.task.studentModelNodes[i].ID)
-                    return this.model.task.studentModelNodes[i].studentSelections.plan;
-            }
-            return null;
+	    var node = this.getStudentNode(id);
+            return node && node.studentSelections.plan;
         },
+
         getStudentNodeUnits: function(/*string*/ id) {
-            for (var i = 0; i < this.model.task.studentModelNodes.length; i++) {
-                if (id === this.model.task.studentModelNodes[i].ID)
-                    return this.model.task.studentModelNodes[i].studentSelections.units;
-            }
-            return null;
+	    var node = this.getStudentNode(id);
+            return node && node.studentSelections.units;
         },
+
         getStudentNodeInitial: function(/*string*/ id) {
-            for (var i = 0; i < this.model.task.studentModelNodes.length; i++) {
-                if (id === this.model.task.studentModelNodes[i].ID)
-                    return this.model.task.studentModelNodes[i].studentSelections.initial;
-            }
-            return null;
+	    var node = this.getStudentNode(id);
+            return node && node.studentSelections.initial;
         },
+
         getStudentNodeEquation: function(/*string*/ id) {
-            for (var i = 0; i < this.model.task.studentModelNodes.length; i++) {
-                if (id === this.model.task.studentModelNodes[i].ID)
-                    return this.model.task.studentModelNodes[i].studentSelections.equation;
-            }
-            return null;
+	    var node = this.getStudentNode(id);
+            return node && node.studentSelections.equation;
         },
+
         getNodes: function() {
             // Summary: returns an array containing the nodes in the given model 
             return this.model.task.givenModelNodes;
         },
+
+	getStudentNode: function(/*string*/ id){
+            for (var i = 0; i < this.model.task.studentModelNodes.length; i++) {
+                if (id === this.model.task.studentModelNodes[i].ID)
+                    return this.model.task.studentModelNodes[i];
+            }
+	    console.error("Invalid node id: ", id);
+            return null;
+        },
+
         getStudentNodes: function() {
             // Summary: returns an array containing the nodes in the student model
             return this.model.task.studentModelNodes;
         },
+
         /**
          * SETTERS
          */

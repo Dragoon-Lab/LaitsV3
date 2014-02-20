@@ -68,9 +68,7 @@ define([
 	},
 	    
 	//show node editor
-	showNodeEditor : function(nodeEvent){
-	    // There is no argument if this is called by "Create Node" button.
-	    var id =  nodeEvent && nodeEvent.node.id;
+	showNodeEditor : function(/*string*/ id){
 	    console.log("showNodeEditor called for node ", id);
 	    var nodeeditor = registry.byId('nodeeditor');
 

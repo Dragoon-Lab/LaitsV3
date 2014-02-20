@@ -110,9 +110,8 @@ define([
                     });
                 });
 		
-                var inputs;
                 array.forEach(vertices, function(vertex){
-                    inputs=givenModel.getInputNodes(vertex);
+                    var inputs = givenModel.getInputNodes(vertex);
                     array.forEach(inputs, function(input){
                         instance.connect({source: input, target: vertex});
                     });
@@ -128,6 +127,10 @@ define([
 
 	    return instance;
 
+	},
+
+	addNode: function(/*object*/ node){
+	   console.warn("Draw new node.  Need to add code here."); 
 	},
 
 	// Keep track of whether there was a mouseDown and mouseUp

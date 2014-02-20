@@ -176,14 +176,16 @@ define([
 
 	/* add to menu */
 	menu.add("createNodeButton", function(){
-	    controllerObject.showNodeEditor();
+	    var id = givenModel.addStudentNode();
+	    drawModel.addNode(givenModel.getStudentNode(id));
+	    controllerObject.showNodeEditor(id);
 	});
 
 	/*
 	 Connect node editor to "click with no move" events.
 	 */
-	 aspect.after(drawModel, "onClickNoMove", function(){
-	    controllerObject.showNodeEditor.apply(null, arguments);
+	 aspect.after(drawModel, "onClickNoMove", function(mover){
+	    controllerObject.showNodeEditor(mover.node.id);
 	 }, true);	     
 
 	/*
