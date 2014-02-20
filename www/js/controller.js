@@ -6,8 +6,8 @@
 */
 define([
     "dojo/_base/array", 'dojo/_base/declare', "dojo/_base/lang", 
-    'dojo/aspect', 'dojo/dom', 'dojo/on', "dojo/ready", 'dijit/registry'
-], function(array, declare, lang, aspect, dom, on, ready, registry) {
+    'dojo/aspect', 'dojo/dom', 'dojo/on', "dojo/ready", 'dijit/registry','dijit'
+], function(array, declare, lang, aspect, dom, on, ready, registry,dijit) {
 
     return declare(null, {
 	
@@ -62,6 +62,9 @@ define([
 	     */
 	    var done = dom.byId("doneNodeEditor");
 	    var plus = dom.byId("plus");
+		
+		//combo box control
+		var type = dijit.byId("typeId");
 	    
 		array.forEach(this._model.getStudentNodes(), function(node){
  		var element = dom.byId(node.ID);
@@ -74,8 +77,8 @@ define([
  	    }, this);
 	    
 	    //attach callbacks
-	    on(done, 'click', null);
-	    on(plus, 'click', null);	    
+	    on(type, 'select', lang.handleNodeEditorComboClicks);	    
+		on(done, 'click', null);
 	},
 	    
 	//show node editor
@@ -85,6 +88,10 @@ define([
 	var nodeeditor = registry.byId('nodeeditor');
 	this.populateNodeEditorFields(nodeEvent.target.id);
 	this._nodeEditor.show();
+	},
+	
+	handleNodeEditorButtonClicks: function(buttonId){
+		console.log('testing combo box select '+button.id);
 	},
 	
 	populateNodeEditorFields : function(nodeid){
