@@ -43,7 +43,7 @@ define([
      	    this.inputParam = noOfParam;
      	    this.xUnits = xUnits;
 			this.units = units;
-			this.timeSteps = timeSteps
+			this.timeSteps = timeSteps;
 			this.nodeValueArray = nodeValueArray;
 			this.paramNames = paramNames;
 			this.paramValue  = paramValue;
@@ -63,6 +63,7 @@ define([
 		   this.dialogContent = this.dialogContent+this.initTable();
 		   this.dialogContent = this.dialogContent+this.setTableHeader();
      	   
+	    console.log(" env ", this, this.timeSteps);
 			for(i=0;i<this.timeSteps.length;i++)
 			{
 				this.dialogContent = this.dialogContent+"<tr>";

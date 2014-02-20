@@ -89,7 +89,7 @@ define([
                 // which prevents us from just setting a jsPlumb.Defaults.PaintStyle.  but that is what i
                 // would recommend you do. Note also here that we use the 'filter' option to tell jsPlumb
                 // which parts of the element should actually respond to a drag start.
-                array.forEach(vertices,function(vertex){
+                array.forEach(vertices, function(vertex){
                     instance.makeSource(vertex, {
                         filter:".ep",                               // only supported by jquery
                         anchor:"Continuous",
@@ -103,7 +103,7 @@ define([
                 });
 		
                 // initialise all '.w' elements as connection targets.
-                array.forEach(vertices,function(vertex){
+                array.forEach(vertices, function(vertex){
                     instance.makeTarget(vertex, {
                         dropOptions:{ hoverClass:"dragHover" },
                         anchor:"Continuous"
@@ -146,8 +146,14 @@ define([
 	onMoveStop: function(){
 	    if(this._clickNoMove){
 		this.onClickNoMove.apply(null, arguments);
+	    } else {
+		this.onClickMoved.apply(null, arguments);
 	    }
 	    this._clickNoMove = false;
+	},
+
+	onClickMoved: function(mover){
+	    // stub for attaching save new coordinates to model
 	},
 
 	onClickNoMove: function(){
