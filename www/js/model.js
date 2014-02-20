@@ -11,7 +11,7 @@
  * NOTE: this.beginX, this.beginY, this.nodeWidth, and this.nodeHeight should 
  *      be set to match the requirements of the viewer part of the MVC. These 
  *      variables control where the nodes will begin being placed, and tell the
- *      model the size of the nodes to avoid collissions.
+ *      model the size of the nodes to avoid collisions.
  * 
  * NOTE: Functions to alter nodes in the given model should only be used for 
  *      author mode. They are named with the convention: 
@@ -65,7 +65,6 @@ define([
                 }};
             return newModel;
         },
-
         _updateNextXYPosition: function() {
             // Summary: keeps track of where to place the next node; function detects collisions
             //      with other nodes; is called in addStudentNode() before creating the node
@@ -84,7 +83,6 @@ define([
                 }
             }
         },
-
         _setStatus: function(/*string*/ id, /*string*/ part, /*string*/ status) {
             // Summary: tracks student progress (correct, incorrect) on a given node; 
             //      used in setStudentNodeSelection() and setToDemo()
@@ -109,7 +107,6 @@ define([
                             break;
                     }
         },
-
         _checkChildren: function(/*string*/ currentNodeID, /*string array*/ checkedNodes) {
             // Summary: searches the depth of a tree below the given node and returns an
             //      optimal child node; if no optimal child node exists it returns null
@@ -133,7 +130,6 @@ define([
                 }
             return null;
         },
-
         /**
          * 
          * Public methods
@@ -159,13 +155,11 @@ define([
             }
             this.ID = parseInt(largest.replace("id", "")) + 1;
         },
-
         getModelAsString: function() {
             // Summary: Returns a JSON object in string format
             //          Should only be used for debugging.
             return JSON.stringify(this.model, null, 4);
         },
-
         /**
          * GETTERS; retrieves specific attributes from a model; node attributes are usually
          * by accessed by the node's ID--if the ID is not known use getNodeIDByName("name");
@@ -173,83 +167,71 @@ define([
         getPhase: function() {
             return this.model.task.properties.phase;
         },
-
         getType: function() {
             return this.model.task.properties.type;
         },
-
         getTaskName: function() {
             return this.model.task.taskName;
         },
-
         getURL: function() {
             return this.model.task.properties.URL;
         },
-
         getStartTime: function() {
             return this.model.task.properties.startTime;
         },
-
         getEndTime: function() {
             return this.model.task.properties.endTime;
         },
-
         getTimeStep: function() {
             return this.model.task.properties.timeStep;
         },
         getUnits: function() {
             return this.model.task.properties.units;
         },
-
         getEachNodeUnits: function() {
-	    // Summary:  returns an object containing the units for each node
-	    var unitList = [];
-	    array.forEach(this.getNodes(), function(node){		
-		unitList.push(node.units);
-	    });
-	    return unitList;
-	},
-	
-		getEachNodeUnitbyID:function() {
-		//summary: returns key/value pair of node-id/unit
-		var unitList = {};
-		array.forEach(this.getNodes(), function(node){		
-		unitList[node.ID] = node.units;
-	    });	
-		return unitList;
-	},
-
-	getAllUnits: function(){
-	    // Summary:  returns a list of all distinct units 
-	    // (string format) defined in a problem.
+            // Summary:  returns an object containing the units for each node
+            var unitList = [];
+            array.forEach(this.getNodes(), function(node) {
+                unitList.push(node.units);
+            });
+            return unitList;
+        },
+        getEachNodeUnitbyID: function() {
+            //summary: returns key/value pair of node-id/unit
+            var unitList = {};
+            array.forEach(this.getNodes(), function(node) {
+                unitList[node.ID] = node.units;
+            });
+            return unitList;
+        },
+        getAllUnits: function() {
+            // Summary:  returns a list of all distinct units 
+            // (string format) defined in a problem.
             // Need to order list alphabetically.
-	    var unitList=[this.getUnits()];
-	    array.forEach(this.getNodes(), function(node){
-		if(array.indexOf(unitList, node.units) == -1){
-		    unitList.push(node.units);
-		}
-	    });
-	    return unitList;
-	},
-
+            var unitList = [this.getUnits()];
+            array.forEach(this.getNodes(), function(node) {
+                if (array.indexOf(unitList, node.units) == -1) {
+                    unitList.push(node.units);
+                }
+            });
+            return unitList;
+        },
         getTaskDescription: function() {
             return this.model.task.taskDescription;
         },
-
-	getAllDescriptions: function(){
-	    // Summary: returns an array of all descriptions with
+        getAllDescriptions: function() {
+            // Summary: returns an array of all descriptions with
             // name (label) and any associated node id (value).
-	    // TO DO:  The list should be sorted.
-	    var d = [];
-	    array.forEach(this.getNodes(), function(node){
-		d.push({label: node.correctDesc, value: node.ID});
-	    });
-	    array.forEach(this.getExtraDescriptions(), function(desc){
-	        d.push({label: desc, value: "invalid"});
-	    });
-	    return d;
-	},
-
+            // TO DO:  The list should be sorted.
+            var d = [];
+            array.forEach(this.getNodes(), function(node) {
+                d.push({label: node.correctDesc, value: node.ID});
+            });
+            array.forEach(this.getExtraDescriptions(), function(desc) {
+                d.push({label: desc, value: "invalid"});
+            });
+            return d;
+        },
         getNodeNameByID: function(/*string*/ id) {
             // Summary: returns the name of a node matching the given id; the given 
             //      model nodes are searched first, followed by the student model nodes
@@ -263,7 +245,6 @@ define([
             }
             return null; // returns null if the node cannot be found
         },
-
         getNodeIDByName: function(/*string*/ name) {
             // Summary: returns the id of a node matching the given name; the given 
             //      model nodes are searched first, followed by the student model nodes
@@ -286,7 +267,6 @@ define([
             }
             return null; // returns null if the node cannot be found
         },
-
         getNodeType: function(/*string*/ id) {
             for (var i = 0; i < this.model.task.givenModelNodes.length; i++) {
                 if (id === this.model.task.givenModelNodes[i].ID)
@@ -294,7 +274,6 @@ define([
             }
             return null;
         },
-
         isParentNode: function(/*string*/ id) {
             // Summary: returns true if a node is the parent node in a tree structure; parent 
             //      nodes will be displayed first when the student demos a node name/description
@@ -326,7 +305,6 @@ define([
             }
             return null;
         },
-
         getNodeInputs: function(/*string*/ id) {
             // Summary: returns an array with the inputs that the node uses
             for (var i = 0; i < this.model.task.givenModelNodes.length; i++) {
@@ -339,7 +317,6 @@ define([
             }
             return null;
         },
-
         isNodeInput: function(/*string*/ mainNodeID, /*string*/ inputID) {
             // Summary: returns true if the node identified by inputID is an 
             //      input into the mainNodeID 
@@ -353,7 +330,6 @@ define([
             }
             return false;
         },
-
         isNodeVisible: function(/*string*/ id) {
             // Summary: returns true if the node is in the student model
             for (var i = 0; i < this.model.task.studentModelNodes.length; i++) {
@@ -362,7 +338,6 @@ define([
             }
             return false;
         },
-
         isNodesParentVisible: function(/*string*/ id) {
             // Summary: returns true if the node's parent is visible (if the 
             //      node is an input into another node that is in the student model
@@ -542,14 +517,12 @@ define([
                         descriptions.push(this.model.task.extraDescriptions[i].text);
             return descriptions;
         },
-
         isStudentModelEmpty: function() {
             // Summary: returns true if the the student model is empty
             if (this.model.task.studentModelNodes)
                 return true;
             return false;
         },
-
         isInGivenModel: function(/*string*/ id) {
             // Summary: returns true if a node in the student model is also found in the given model
             for (var i = 0; i < this.model.task.studentModelNodes.length; i++) {
@@ -558,15 +531,13 @@ define([
             }
             return null;
         },
-
         getStudentNodeInputs: function(/*string*/ id) {
-	    var node = this.getStudentNode(id);
+            var node = this.getStudentNode(id);
             // Summary: returns an array with the node ids that the student has selected as inputs
-	    return node && array.map(node.inputs, function(input){
-		return input.ID;
-	    });
+            return node && array.map(node.inputs, function(input) {
+                return input.ID;
+            });
         },
-
         isStudentNodeInput: function(/*string*/ mainNodeID, /*string*/ inputID) {
             // Summary: returns true if the node identified by inputID is an 
             //      input into the mainNodeID in the Student Model
@@ -580,66 +551,65 @@ define([
             }
             return false;
         },
-
-	/*
-	 Brandon:  Here is a clean-up of some of the getters that
-	 uses a common function to find the node.  Note that it
-	 has error handling in the event that the id is invalid.
-
-	 It is not clear if these getters will be needed in this form.
-	 It might make for cleaner code (outside of model.js) if a node is passed in
-	 as an argument.
-	 */
+        /*
+         Brandon:  Here is a clean-up of some of the getters that
+         uses a common function to find the node.  Note that it
+         has error handling in the event that the id is invalid.
+         
+         It is not clear if these getters will be needed in this form.
+         It might make for cleaner code (outside of model.js) if a node is passed in
+         as an argument.
+         */
 
         getStudentNodePosition: function(/*string*/ id) {
-	    var node = this.getStudentNode(id);
+            var node = this.getStudentNode(id);
             return node && node.position;
         },
-
         getStudentNodeDesc: function(/*string*/ id) {
-	    var node = this.getStudentNode(id);
+            var node = this.getStudentNode(id);
             return node && node.studentSelections.description;
         },
-
         getStudentNodePlan: function(/*string*/ id) {
-	    var node = this.getStudentNode(id);
+            var node = this.getStudentNode(id);
             return node && node.studentSelections.plan;
         },
-
         getStudentNodeUnits: function(/*string*/ id) {
-	    var node = this.getStudentNode(id);
+            var node = this.getStudentNode(id);
             return node && node.studentSelections.units;
         },
-
         getStudentNodeInitial: function(/*string*/ id) {
-	    var node = this.getStudentNode(id);
+            var node = this.getStudentNode(id);
             return node && node.studentSelections.initial;
         },
-
         getStudentNodeEquation: function(/*string*/ id) {
-	    var node = this.getStudentNode(id);
+            var node = this.getStudentNode(id);
             return node && node.studentSelections.equation;
         },
-
         getNodes: function() {
             // Summary: returns an array containing the nodes in the given model 
             return this.model.task.givenModelNodes;
         },
-
-	getStudentNode: function(/*string*/ id){
+        getNode: function(/*string*/ id) {
+            //Summary: returns a JavaScript object of a specified given model node
+            for (var i = 0; i < this.model.task.givenModelNodes.length; i++)
+                if (id === this.model.task.givenModelNodes[i].ID)
+                    return this.model.task.givenModelNodes[i];
+            console.error("Invalid node id: ", id);
+            return null;
+        },
+        getStudentNode: function(/*string*/ id) {
+            //Summary: returns a JavaScript object of a specified student model node
             for (var i = 0; i < this.model.task.studentModelNodes.length; i++) {
                 if (id === this.model.task.studentModelNodes[i].ID)
                     return this.model.task.studentModelNodes[i];
             }
-	    console.error("Invalid node id: ", id);
+            console.error("Invalid node id: ", id);
             return null;
         },
-
         getStudentNodes: function() {
             // Summary: returns an array containing the nodes in the student model
             return this.model.task.studentModelNodes;
         },
-
         /**
          * SETTERS
          */
@@ -773,7 +743,6 @@ define([
                 if (id === this.model.task.givenModelNodes[i].ID)
                     this.model.task.givenModelNodes[i].initial = initial;
         },
-
         setNodeEquation: function(/*string*/ id, /*string | object*/ equation) {
             for (var i = 0; i < this.model.task.givenModelNodes.length; i++)
                 if (id === this.model.task.givenModelNodes[i].ID)
@@ -784,7 +753,6 @@ define([
                 if (id === this.model.task.givenModelNodes[i].ID)
                     this.model.task.givenModelNodes[i].correctDesc = correctDesc;
         },
-
         addNodeInput: function(/*string*/ input, /*string*/ inputInto) {
             // Summary: adds a node (input) as an input into the given node (inputInto); both params are node ID strings
             var inputID = "";
@@ -811,7 +779,6 @@ define([
             }
             return false;
         },
-
         deleteNodeInput: function(/*string*/ id, /*string*/ inputIDToRemove) {
             // Summary: remove an input from a node in the given model
             for (var i = 0; i < this.model.task.givenModelNodes.length; i++) {
@@ -823,7 +790,6 @@ define([
                     }
             }
         },
-
         addExtraDescription: function(/*string*/ text, /*string*/ type) {
             // Summary: allows author to add extra descriptions that are not
             //      required in the completed model to further challenge the 
@@ -835,7 +801,6 @@ define([
             //      needed to solve the problem)
             this.model.task.extraDescriptions.push({text: text, type: type});
         },
-
         addStudentNode: function() {
             // Summary: builds a new node in the student model and returns the node's unique ID
             var id = "id" + this.ID;
@@ -847,7 +812,6 @@ define([
             this.model.task.studentModelNodes.push(newNode);
             return id;
         },
-
         deleteStudentNode: function(/*string*/ id) {
             // Summary: deletes a node with a given id from the student model; removes
             //      the given node from other nodes inputs within the student model and

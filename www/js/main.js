@@ -1,6 +1,7 @@
 /* global define, Image */
 define([
     "dojo/dom",
+    'dojo/dom-geometry',
     "dojo/on",
     'dojo/aspect',
     "dojo/io-query",
@@ -12,7 +13,7 @@ define([
     "./controller",
     "parser/parser",
     "./draw-model" 
-],function(dom, on, aspect, ioQuery, ready, menu, loadSave, model, 
+],function(dom, geometry, on, aspect, ioQuery, ready, menu, loadSave, model, 
 	   Graph, Table, wrapText, controller, Parser, drawmodel
 	  ){ 
 
@@ -186,7 +187,16 @@ define([
 	 */
 	 aspect.after(drawModel, "onClickNoMove", function(mover){
 	    controllerObject.showNodeEditor(mover.node.id);
-	 }, true);	     
+	 }, true);
+	    
+	    /* 
+	     After moving node, save coordinates to model 
+	     */	     
+	    aspect.after(drawModel, "onClickMoved", function(mover){
+		console.log("Update model coordinates for ", mover.node);
+		var g = geometry.position(mover.node);
+		// givenModel
+	    }, true);
 
 	/*
 	 It would make more sense to call initHandles for each node as it is created
@@ -229,14 +239,17 @@ define([
 		var xUnit = givenModel.getUnits();
 		var unit = givenModel.getEachNodeUnitbyID();
 	    // values of parameters
-	    var nodeValueArray = arrayOfNodeValues;
+	    nodeValueArray = arrayOfNodeValues;
 		//values of timesteps
 		var timeSteps = arrayOfTimeSteps;
+		var paramNames = arrayOfParameterNames;
+		var paramValue = arrayOfParamInitialValues;
 	    //var tableHeader = ['time','Param1','Param2','Param3','Param4'];
 	    //slider = new Array();
 	
-	    // instantiate graph object
-	    var table = new Table(noOfParam,xUnit,unit,timeSteps,nodeValueArray);
+	    // instantiate Table object
+	    console.log("********** Time steps ", timeSteps);
+	    var table = new Table(noOfParam,paramNames, paramValue,xUnit,unit,timeSteps,nodeValueArray);
 	
 	    // show graph when button clicked
 	    menu.add("tableButton", function(){        	
