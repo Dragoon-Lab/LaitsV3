@@ -3,8 +3,9 @@
             This is just a quick initial attempt to draw a model
 */
 define([
-    "dojo/_base/array", 'dojo/_base/declare', "dojo/dom-construct", "jsPlumb/jsPlumb"
-],function(array, declare, domConstruct){
+    "dojo/_base/array", 'dojo/_base/declare', 'dojo/_base/lang', 
+    "dojo/dom-construct", "jsPlumb/jsPlumb"
+],function(array, declare, lang, domConstruct){
 
     return declare(null, {
 	
@@ -48,24 +49,18 @@ define([
 	    
             // initialise draggable elements.
             array.forEach(vertices, function(vertex){
-		// This shows how to attach handlers to the vertices of the graph.
-		// Next, we need to connect this to any desired logging and opening of
-		// the node editor.
-		//
-		// Note that the names (onMoveStart, onMove, onMoveStop) are from
-		// the underlying library dojo/dnd/move, rather than jsPlumb.
-                instance.draggable(vertex,{
-		    onMoveStart: function(mover){
-			console.log("Start draggable for ", mover.node.id, mover);
-		    },
-		    onMove: function(mover, position, c){
-			console.log("drag draggable for ", mover.node.id, mover, position , c);
-		    },
-		    onMoveStop: function(mover){
-			console.log("stop draggable for ", mover.node.id, mover);
-		    }		    
+		/*
+		 Fire off functions associated with draggable events.
+		 
+		 Note that the names (onMoveStart, onMove, onMoveStop) are from
+		 the underlying library dojo/dnd/move, rather than jsPlumb.
+		 */ 
+		instance.draggable(vertex,{
+		    onMoveStart: lang.hitch(this, this.onMoveStart),
+		    onMove: lang.hitch(this, this.onMove),
+		    onMoveStop: lang.hitch(this, this.onMoveStop)
 		});
-            });
+            }, this);
 	    
             console.log("====== instance:  ", instance);
 	    
@@ -133,6 +128,30 @@ define([
 
 	    return instance;
 
+	},
+
+	// Keep track of whether there was a mouseDown and mouseUp
+	// with no intervening mouseMove
+	_clickNoMove: false,
+
+	onMoveStart: function(){
+	    this._clickNoMove = true;
+	},
+
+	onMove: function(){
+	    this._clickNoMove = false;
+	},
+
+	onMoveStop: function(){
+	    if(this._clickNoMove){
+		this.onClickNoMove.apply(null, arguments);
+	    }
+	    this._clickNoMove = false;
+	},
+
+	onClickNoMove: function(){
+	    // stub for attaching node editor startup
 	}
+
     });
 });
