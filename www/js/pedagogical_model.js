@@ -43,15 +43,21 @@ define([
             this.premature3 = "Blue means premature.  Edit a node with a dotted outline instead.";
             this.otherBlue1 = "Blue means that quantity isn’t one that the problem statement asks you to graph.  Although this quantity will eventually be in your model, you should follow the Target Node Strategy, which says you should first define a node for a top level goal quantity.";
             this.otherBlue2 = "Please start with a quantity mentioned in the problem statement as one that needs to be graphed.";
-            this.userType = user;
+            //Need further clarification on the feedback and user; also need to implement switching between the two
+            if (user === "student" || user === "power") {
+                this.userType = "feedback";
+                console.log("*****\nUser type was input as " + user + ". Currently this is being set to feedback.\n");
+            } else {
+                this.userType = user;
+            }
             this.model = model;
-            this.infoObject = {ID: null, message: null, status: null};
+            this.infoObject = {ID: null, message: null, status: null, descriptionOn: true, typeOn: false, initialOn: false, unitsOn: false, inputsOn: false};
             this.message = "";
             this.descriptionOn = true;
             this.typeOn = false;
             this.initialOn = false;
             this.unitsOn = false;
-            this.inputOn = false;
+            this.inputsOn = false;
             this.addAsPlusButton = false;
             this.addAsMinusButton = false;
             this.descriptionCounter = 0;
@@ -104,6 +110,50 @@ define([
                 if (theVariable == theArray[i])
                     return true;
             return false;
+        },
+        _splice: function(/*array*/ theArray, /*variableToRemove*/ theVar) {
+            //Summary: removes a variable from an array and returns the new array
+            //      by copying the contents to another array without the variable
+            //
+            //Tags: private
+            var tempArray = new Array();
+            for (var i = 0; i < theArray.length; i++)
+                if (theVar !== theArray[i])
+                    tempArray.push(theArray[i]);
+            return tempArray;
+        },
+        _setNext: function(/*string*/ current, /*string*/ status) {
+            //Summary: activates/deactives the parts of the node based on what 
+            //      part the user is at; *****In process--still need to account for 
+            //      opening access to all parts at certain steps (i.e. Test mode)
+            //
+            //Tags: private
+            
+            //First set all parts to false (not active)
+            var nodeParts = new Array("description", "type", "initial", "units", "inputs");
+            for (var i = 0; i < nodeParts.length; i++)
+                this.infoObject[nodeParts[i] + "On"] = false;
+            
+            //Remove parts that are not needed in the model
+            if (this.model.getNodeInitial(this.infoObject.ID) === null)
+                nodeParts = this._splice(nodeParts, "inital");
+            if (this.model.getNodeUnits(this.infoObject.ID) === null)
+                nodeParts = this._splice(nodeParts, "units");
+            if (this.model.getNodeInputs(this.infoObject.ID) === null)
+                nodeParts = this._splice(nodeParts, "inputs");
+            
+            //If student should move on to the next part (i.e. status = correct or demo)
+            //      activate next part, otherwise mark current part as still active
+            for (var i = 0; i < nodeParts.length; i++) {
+                if (current === nodeParts[i]) {
+                    if (status === "correct" || status === "demo") {
+                        this.infoObject[nodeParts[i + 1] + "On"] = true;
+                        i++;
+                    }
+                    else
+                        this.infoObject[nodeParts[i] + "On"] = true;
+                }
+            }
         },
         descriptionAction: function(/*string*/ answer) {
             //Summary: accepts an answer that the student provides, checks its validity,
@@ -298,6 +348,7 @@ define([
                     this.descriptionCounter = 0;
                     break;
             }
+            this._setNext("description", this.infoObject.status);
             return this.infoObject;
         },
         typeAction: function(/*string*/ id, /*string*/ answer) {
