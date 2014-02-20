@@ -63,7 +63,15 @@ define([
 	    var done = dom.byId("doneNodeEditor");
 	    var plus = dom.byId("plus");
 	    
-	    //other Clickable Elements from Node Editor 
+		array.forEach(this._model.getStudentNodes(), function(node){
+ 		var element = dom.byId(node.ID);
+ 		console.log("wiring up node ", node.ID);
+ 		// Need to distinguish between a simple click and 
+ 		// a drag.	    
+ 
+ 		// Use hitch to preserve the scope in showNodeEditor
+ 		on(element, 'click', lang.hitch(this, this.showNodeEditor));
+ 	    }, this);
 	    
 	    //attach callbacks
 	    on(done, 'click', null);
