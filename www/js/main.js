@@ -232,11 +232,13 @@ define([
 	    var nodeValueArray = arrayOfNodeValues;
 		//values of timesteps
 		var timeSteps = arrayOfTimeSteps;
+		var paramNames = arrayOfParameterNames;
+		var paramValue = arrayOfParamInitialValues;
 	    //var tableHeader = ['time','Param1','Param2','Param3','Param4'];
 	    //slider = new Array();
 	
 	    // instantiate graph object
-	    var table = new Table(noOfParam,xUnit,unit,timeSteps,nodeValueArray);
+	    var table = new Table(noOfParam,paramNames,paramValue,xUnit,unit,timeSteps,nodeValueArray);
 	
 	    // show graph when button clicked
 	    menu.add("tableButton", function(){        	
