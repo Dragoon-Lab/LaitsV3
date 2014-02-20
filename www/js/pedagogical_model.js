@@ -51,7 +51,7 @@ define([
                 this.userType = user;
             }
             this.model = model;
-            this.infoObject = {ID: null, message: null, status: null, descriptionOn: true, typeOn: false, initialOn: false, unitsOn: false, inputsOn: false};
+            this.infoObject = {ID: null, message: null, status: null, descriptionOn: true, typeOn: false, initialOn: false, unitsOn: false, inputsOn: false, equationOn: false};
             this.message = "";
             this.descriptionOn = true;
             this.typeOn = false;
@@ -122,36 +122,48 @@ define([
                     tempArray.push(theArray[i]);
             return tempArray;
         },
-        _setNext: function(/*string*/ current, /*string*/ status) {
+        _getReturnObject: function(/*string*/ current) {
+            this._setNext(current);
+            return this.infoObject;
+        },
+        _setNext: function(/*string*/ current) {
             //Summary: activates/deactives the parts of the node based on what 
-            //      part the user is at; *****In process--still need to account for 
-            //      opening access to all parts at certain steps (i.e. Test mode)
+            //      part the user is at and the type (mode) of user (i.e. coached, feedback, etc.)
             //
             //Tags: private
-            
+
             //First set all parts to false (not active)
-            var nodeParts = new Array("description", "type", "initial", "units", "inputs");
+            var nodeParts = new Array("description", "type", "initial", "units", "inputs", "equation");
             for (var i = 0; i < nodeParts.length; i++)
                 this.infoObject[nodeParts[i] + "On"] = false;
-            
+
             //Remove parts that are not needed in the model
             if (this.model.getNodeInitial(this.infoObject.ID) === null)
-                nodeParts = this._splice(nodeParts, "inital");
+                nodeParts = this._splice(nodeParts, "initial");
             if (this.model.getNodeUnits(this.infoObject.ID) === null)
                 nodeParts = this._splice(nodeParts, "units");
             if (this.model.getNodeInputs(this.infoObject.ID) === null)
                 nodeParts = this._splice(nodeParts, "inputs");
-            
+            if (this.model.getNodeEquation(this.infoObject.ID) === null)
+                nodeParts = this._splice(nodeParts, "equation");
+
             //If student should move on to the next part (i.e. status = correct or demo)
-            //      activate next part, otherwise mark current part as still active
+            //      activate next part(s), otherwise mark current part as still active
+            var activateRemaining = false;
             for (var i = 0; i < nodeParts.length; i++) {
                 if (current === nodeParts[i]) {
-                    if (status === "correct" || status === "demo") {
-                        this.infoObject[nodeParts[i + 1] + "On"] = true;
-                        i++;
-                    }
-                    else
+                    if (this.infoObject.status === "correct" || this.infoObject.status === "demo") {
+                        if (current !== nodeParts[nodeParts.length - 1]){
+                            this.infoObject[nodeParts[i + 1] + "On"] = true;
+                            if (current !== "description" && (this.userType === "feedback" || this.userType === "test" || this.userType === "power"))
+                                activateRemaining = true; // According to the pedagogical model document, if certain users get an answer correct, we should activate the remaining parts of the node after "type"
+                            i++;
+                        }
+                    } else {
                         this.infoObject[nodeParts[i] + "On"] = true;
+                    }
+                } else if (activateRemaining === true) {
+                    this.infoObject[nodeParts[i] + "On"] = true;
                 }
             }
         },
@@ -348,8 +360,7 @@ define([
                     this.descriptionCounter = 0;
                     break;
             }
-            this._setNext("description", this.infoObject.status);
-            return this.infoObject;
+            return this._getReturnObject("description");
         },
         typeAction: function(/*string*/ id, /*string*/ answer) {
             //Summary: accepts an answer that the student provides, checks its validity,
@@ -472,7 +483,7 @@ define([
                         this.unitsOn = true;
                     break;
             }
-            return this.infoObject;
+            return this._getReturnObject("type");
         },
         initialAction: function(/*string*/ id, /*string*/ answer) {
             //Summary: accepts an answer that the student provides, checks its validity,
@@ -577,8 +588,8 @@ define([
                             this.inputsOn = true;
                         break;
                 }
-                return this.infoObject;
             }
+            return this._getReturnObject("inital");
         },
         unitsAction: function(/*string*/ id, /*string*/ answer) {
             //Summary: accepts an answer that the student provides, checks its validity,
@@ -665,7 +676,7 @@ define([
                     this.inputsOn = true;
                     break;
             }
-            return this.infoObject;
+            return this._getReturnObject("units");
         },
         inputsAction: function(/*string*/ id, /*string*/ answer) {
             //Summary: accepts a description that the student provides, checks its validity,
@@ -859,7 +870,7 @@ define([
                         this.inputsOn = false;
                     break;
             }
-            return this.infoObject;
+            return this._getReturnObject("inputs");
         },
         //equationCheck() is a basic implementation; it needs additional code to 
         //      display different messages based on the type of user
@@ -883,7 +894,7 @@ define([
                 this.infoObject.message = "That is not correct.";
                 this.infoObject.status = "incorrect";
             }
-            return this.infoObject;
+            return this._getReturnObject("equation");
         }
     });
 });
