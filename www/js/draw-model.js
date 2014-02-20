@@ -4,8 +4,8 @@
 */
 define([
     "dojo/_base/array", 'dojo/_base/declare', 'dojo/_base/lang', 
-    "dojo/dom-construct", "jsPlumb/jsPlumb"
-],function(array, declare, lang, domConstruct){
+    "dojo/dom-attr", "dojo/dom-construct", "jsPlumb/jsPlumb"
+],function(array, declare, lang, attr, domConstruct){
 
     return declare(null, {
 	
@@ -111,17 +111,15 @@ define([
                 });
 		
                 array.forEach(vertices, function(vertex){
-                    var inputs = givenModel.getInputNodes(vertex);
+		    // Not sure why vertex is an array and not just the <div>
+		    var id = attr.get(vertex[0], "id");
+                    var inputs = givenModel.getStudentNodeInputs(id);
                     array.forEach(inputs, function(input){
-                        instance.connect({source: input, target: vertex});
+			console.log("---- adding connection from ", input, " to ", id);
+                        instance.connect({source: input, target: id});
                     });
 		    
                 });
-		
-                // and finally, make a couple of connections
-                // instance.connect({ source:"population", target:"growth" });
-                //instance.connect({ source:"grate", target:"growth" });
-                //instance.connect({ source:"growth", target:"population" });
 		
             });
 

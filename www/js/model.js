@@ -326,6 +326,7 @@ define([
             }
             return null;
         },
+
         getNodeInputs: function(/*string*/ id) {
             // Summary: returns an array with the inputs that the node uses
             for (var i = 0; i < this.model.task.givenModelNodes.length; i++) {
@@ -338,6 +339,7 @@ define([
             }
             return null;
         },
+
         isNodeInput: function(/*string*/ mainNodeID, /*string*/ inputID) {
             // Summary: returns true if the node identified by inputID is an 
             //      input into the mainNodeID 
@@ -351,6 +353,7 @@ define([
             }
             return false;
         },
+
         isNodeVisible: function(/*string*/ id) {
             // Summary: returns true if the node is in the student model
             for (var i = 0; i < this.model.task.studentModelNodes.length; i++) {
@@ -359,6 +362,7 @@ define([
             }
             return false;
         },
+
         isNodesParentVisible: function(/*string*/ id) {
             // Summary: returns true if the node's parent is visible (if the 
             //      node is an input into another node that is in the student model
@@ -556,16 +560,11 @@ define([
         },
 
         getStudentNodeInputs: function(/*string*/ id) {
-            // Summary: returns an array with the nodes that the student has selected as inputs
-            for (var i = 0; i < this.model.task.studentModelNodes.length; i++) {
-                if (id === this.model.task.studentModelNodes[i].ID && this.model.task.studentModelNodes[i].inputs.length !== 0) {
-                    var inputs = new Array();
-                    for (var ii = 0; ii < this.model.task.studentModelNodes[i].inputs.length; ii++)
-                        inputs.push(this.model.task.studentModelNodes[i].inputs[ii].ID);
-                    return inputs;
-                }
-            }
-            return null;
+	    var node = this.getStudentNode(id);
+            // Summary: returns an array with the node ids that the student has selected as inputs
+	    return node && array.map(node.inputs, function(input){
+		return input.ID;
+	    });
         },
 
         isStudentNodeInput: function(/*string*/ mainNodeID, /*string*/ inputID) {
