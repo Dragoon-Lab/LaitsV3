@@ -2,6 +2,7 @@
 define([
     "dojo/dom",
     "dojo/on",
+    'dojo/aspect',
     "dojo/io-query",
     "dojo/ready",
     "./menu",
@@ -11,7 +12,9 @@ define([
     "./controller",
     "parser/parser",
     "./draw-model" 
-],function(dom, on, ioQuery, ready, menu, loadSave, model, Graph, Table, wrapText, controller, Parser, drawmodel){ 
+],function(dom, on, aspect, ioQuery, ready, menu, loadSave, model, 
+	   Graph, Table, wrapText, controller, Parser, drawmodel
+	  ){ 
 
     console.log("load main.js");
     
@@ -173,8 +176,17 @@ define([
 
 	/* add to menu */
 	menu.add("createNodeButton", function(){
-	    controllerObject.showNodeEditor();
+	    var id = givenModel.addStudentNode();
+	    drawModel.addNode(givenModel.getStudentNode(id));
+	    controllerObject.showNodeEditor(id);
 	});
+
+	/*
+	 Connect node editor to "click with no move" events.
+	 */
+	 aspect.after(drawModel, "onClickNoMove", function(mover){
+	    controllerObject.showNodeEditor(mover.node.id);
+	 }, true);	     
 
 	/*
 	 It would make more sense to call initHandles for each node as it is created

@@ -64,37 +64,12 @@ define([
 	    
 	    //attach callbacks
 	    on(done, 'click', null);
-	    on(plus, 'click', null);
-	    
-	    /* 
-	     Attach node editor to each node in model.
-	     
-	     This assumes the model is already added to the canvas.
-
-	     It would make more sense to do for each node as it is created
-             on the canvas.
-	     
-	     In AUTHOR mode, this will break, since we want the solution
-	     graph in that case.  See trello card https://trello.com/c/TDWdq6q6
-	     */
-	    array.forEach(this._model.getStudentNodes(), function(node){
-		var element = dom.byId(node.ID);
-		console.log("wiring up node ", node.ID);
-
-		// Need to distinguish between a simple click and 
-		// a drag.	    
-
-		// Use hitch to preserve the scope in showNodeEditor
-		on(element, 'click', lang.hitch(this, this.showNodeEditor));
-	    }, this);
+	    on(plus, 'click', null);	    
 	},
-
-        moved: false,
 	    
 	//show node editor
-	showNodeEditor : function(nodeEvent){
-	    // There is no argument if this is called by "Create Node" button.
-	    console.log("showNodeEditor called for ", nodeEvent && nodeEvent.target.id);
+	showNodeEditor : function(/*string*/ id){
+	    console.log("showNodeEditor called for node ", id);
 	    var nodeeditor = registry.byId('nodeeditor');
 
 	    console.warn("TO DO:  populate fields in node editor.");
