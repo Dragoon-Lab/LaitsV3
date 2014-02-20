@@ -172,46 +172,48 @@ define([
 	 */
 	 
 	ready(function(){
-	var drawModel = new drawmodel(givenModel);
-	var controllerObject  = new controller(givenModel);
 
-	/* add to menu */
-	menu.add("createNodeButton", function(){
-	    var id = givenModel.addStudentNode();
-	    drawModel.addNode(givenModel.getStudentNode(id));
-	    controllerObject.showNodeEditor(id);
-	});
-
-	/*
-	 Connect node editor to "click with no move" events.
-	 */
-	 aspect.after(drawModel, "onClickNoMove", function(mover){
-	    controllerObject.showNodeEditor(mover.node.id);
-	 }, true);
+	    var drawModel = new drawmodel(givenModel);
+	    var controllerObject  = new controller(givenModel);
+	    
+	    /* add to menu */
+	    menu.add("createNodeButton", function(){
+		var id = givenModel.addStudentNode();
+		drawModel.addNode(givenModel.getStudentNode(id));
+		controllerObject.showNodeEditor(id);
+	    });
+	    
+	    /*
+	     Connect node editor to "click with no move" events.
+	     */
+	    aspect.after(drawModel, "onClickNoMove", function(mover){
+		controllerObject.showNodeEditor(mover.node.id);
+	    }, true);
 	    
 	    /* 
 	     After moving node, save coordinates to model 
 	     */	     
 	    aspect.after(drawModel, "onClickMoved", function(mover){
-		console.log("Update model coordinates for ", mover.node);
-		var g = geometry.position(mover.node);
-		// givenModel
+		var g = geometry.position(mover.node, true);  // take into account scrolling
+		console.log("Update model coordinates for ", mover.node.id, g);
+		console.warn("This should take into account scrolling, but it doesn't.");
+		givenModel.setStudentNodeXY(mover.node.id, g.x, g.y);
+		console.warn("Should autosave here.");
 	    }, true);
-
-	/*
-	 It would make more sense to call initHandles for each node as it is created
-         on the canvas.
-	 
-	 In AUTHOR mode, this will break, since we want the solution
-	 graph in that case.  See trello card https://trello.com/c/TDWdq6q6
-	 */
-	controllerObject.initHandles();
-	
-	/*
-	 Make model solution plot using dummy data. 
-	 This should be put in its own module.
-	 */
-	
+	    
+	    /*
+	     It would make more sense to call initHandles for each node as it is created
+             on the canvas.
+	     
+	     In AUTHOR mode, this will break, since we want the solution
+	     graph in that case.  See trello card https://trello.com/c/TDWdq6q6
+	     */
+	    controllerObject.initHandles();
+	    
+	    /*
+	     Make model solution plot using dummy data. 
+	     This should be put in its own module.
+	     */	
 	
 	    // dummy parameter to be passed to graph class
 		var noOfParams = storeParametersNameValue(givenModelNodes);;
