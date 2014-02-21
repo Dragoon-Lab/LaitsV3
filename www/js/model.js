@@ -11,7 +11,7 @@
  * NOTE: this.beginX, this.beginY, this.nodeWidth, and this.nodeHeight should 
  *      be set to match the requirements of the viewer part of the MVC. These 
  *      variables control where the nodes will begin being placed, and tell the
- *      model the size of the nodes to avoid collissions.
+ *      model the size of the nodes to avoid collisions.
  * 
  * NOTE: Functions to alter nodes in the given model should only be used for 
  *      author mode. They are named with the convention: 
