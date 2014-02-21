@@ -228,7 +228,7 @@ define([
 	    var slider = new Array();
 	    
 	    // instantiate graph object
-	    var graph = new Graph(noOfParams,paramNames,paramValue,nodeValueArray,units,xunits);
+	    var graph = new Graph(noOfParams, paramNames, paramValue, nodeValueArray, units, xunits);
 	    
 	    // show graph when button clicked
 	    menu.add("graphButton",function(){
@@ -244,14 +244,13 @@ define([
 	    nodeValueArray = arrayOfNodeValues;
 		//values of timesteps
 		var timeSteps = arrayOfTimeSteps;
-		var paramNames = arrayOfParameterNames;
-		var paramValue = arrayOfParamInitialValues;
+	    paramNames = arrayOfParameterNames;
+	    paramValue = arrayOfParamInitialValues;
 	    //var tableHeader = ['time','Param1','Param2','Param3','Param4'];
 	    //slider = new Array();
 	
 	    // instantiate Table object
-	    console.log("********** Time steps ", timeSteps);
-	    var table = new Table(noOfParam,paramNames, paramValue,xUnit,unit,timeSteps,nodeValueArray);
+	    var table = new Table(noOfParam, paramNames, paramValue, xUnit, unit, timeSteps, nodeValueArray);
 	
 	    // show graph when button clicked
 	    menu.add("tableButton", function(){        	

@@ -1,30 +1,29 @@
 /* global define */
 /*
-*  Dojo Controller 0.1 
-*        -  Delegate Event Call Backs 
-* 	     -  Loading AMD UI 
+*                               Controller for Node Editor
 */
 define([
     "dojo/_base/array", 'dojo/_base/declare', "dojo/_base/lang", 
-    'dojo/aspect', 'dojo/dom', 'dojo/on', "dojo/ready", 'dijit/registry','dijit'
-], function(array, declare, lang, aspect, dom, on, ready, registry,dijit) {
+    'dojo/aspect', 'dojo/dom', 'dojo/on', "dojo/ready", 'dijit/registry'
+], function(array, declare, lang, aspect, dom, on, ready, registry) {
 
     return declare(null, {
 	
 	_model: {},
-	_nodeEditor : {}, // node-editor object- will be used for populating
-	_nodeMap: {},  // create map of Node against ids using model
+	_nodeEditor: null, // node-editor object- will be used for populating fields
 		     
 	constructor: function(model){
 	    this._model = model;
 	    // The Node Editor widget must be set up before modifications
             // It might be a better idea to only  call the controller
 	    // after widgets are set up.
-		this._nodeEditor = registry.byId('nodeeditor'); //get Node Editor element from tree
   	    ready(this, this._setUpNodeEditor);
 	},
         
 	_setUpNodeEditor: function(){
+	    
+	    // get Node Editor widget from tree
+	    this._nodeEditor = registry.byId('nodeeditor');
 
             // Initialize fields in the node editor that are
             // common to all nodes in a problem.
@@ -44,81 +43,82 @@ define([
             // console.log("units widget ", u);
 	    array.forEach(this._model.getAllUnits(), function(unit){
 	        u.addOption({label: unit, value: unit});
-	    });	    
-	},
-		     
-	//Loading UI, Should be 
-	loadUI  : function() {
-	    //will be done by main.js  
-	    //or
-	    //put UI AMD Module  
+	    });
+	    
+	    // TODO: Megha is supposed to populate inputs field here.
+
+	    
 	},
 
 	//set up event handling with UI components
-	initHandles:function(){
-	    	    
-	    /*
-	     *	Node Editor Handles
-	     */
+	initHandles:function(){	    	    
+	    // Summary: Set up Node Editor Handlers
+	  
+	    // BvdS:  do we want dom.byId or registry.byId here?
+	    // Look for examples in Dojo documentation
 	    var done = dom.byId("doneNodeEditor");
 	    var plus = dom.byId("plus");
-		
-		//combo box control
-		var type = dijit.byId("typeId");
+	    var type = registry.byId("typeId");
 	    
-		array.forEach(this._model.getStudentNodes(), function(node){
- 		var element = dom.byId(node.ID);
- 		console.log("wiring up node ", node.ID);
- 		// Need to distinguish between a simple click and 
- 		// a drag.	    
- 
- 		// Use hitch to preserve the scope in showNodeEditor
- 		on(element, 'click', lang.hitch(this, this.showNodeEditor));
- 	    }, this);
-	    
-	    //attach callbacks
-	    on(type, 'select', lang.handleNodeEditorComboClicks);	    
-		on(done, 'click', null);
+	    // attach callbacks to each field in node Editor.
+	    console.log("============== wiring up type ", type);
+	    on(type, 'onChange', this.handleNodeEditorComboClicks);	    
+	    on(done, 'click',  function(){
+		console.log("handler for done");
+	    });
+            on(plus, 'click', function(){
+		console.log("handler for plus");
+	    });  
 	},
 	    
-	//show node editor
-	showNodeEditor : function(nodeEvent){
-	// There is no argument if this is called by "Create Node" button.
-	console.log("showNodeEditor called for ", nodeEvent && nodeEvent.target.id);
-	var nodeeditor = registry.byId('nodeeditor');
-	this.populateNodeEditorFields(nodeEvent.target.id);
-	this._nodeEditor.show();
+	handleNodeEditorComboClicks: function(){
+	    console.log("handler for typeId");
 	},
-	
+
 	handleNodeEditorButtonClicks: function(buttonId){
-		console.log('testing combo box select '+button.id);
+		console.log('testing combo box select ', buttonId);
 	},
-	
+
+	//show node editor
+       showNodeEditor: function(/*string*/ id){
+           console.log("showNodeEditor called for node ", id);
+	   this.populateNodeEditorFields(id);
+	   this._nodeEditor.show();
+	},
+		
 	populateNodeEditorFields : function(nodeid){
-		//populate description
-		var model = this._model;
-		var editor = this._nodeEditor;
-		var descriptions = model.getAllDescriptions();
-		//populate units
-		var units = model.getAllUnits();
-		var selectUnits = dijit.byId('selectUnits');
-		selectUnits.attr('units',units);
-		//set task name
-		var nodeName = model.getNodeNameByID(nodeid);
-		editor.set('title',nodeName);
-		//populate type
-		//populate initial value
-		//populate units
-		var inputs=model.getNodeInputs(nodeid);
-		var nodeInputs = dijit.byId('nodeInputs');
-		nodeInputs.attr('inputs',inputs); //this is not populating combo box, find syntax
-		//populate inputs	
-		
-	},
-	createNodeMap : function(){  //node hashmap for fast retrival using id 
-		
+	    //populate description
+	    var model = this._model;
+	    var editor = this._nodeEditor;
+	    //set task name
+	    var nodeName = model.getNodeNameByID(nodeid);
+	    editor.set('title',nodeName);
+	    //populate type
+	    // populate initial value
+	    // populate units
+	    /* 
+	     Need to set the following:
+	     1. selected description
+	     2. whether description is enabled
+	     3. selected type
+	     4. whether type is enabled
+             5. value for initial value
+	     6. whether whether is enabled
+	     7. selected units 
+	     8. whether units are enabled
+	     9. selected inputs (may have to do custom styling)
+	     10. whether input is enabled
+	     11. whether + - * / undo and done are enabled
+	     12. value for input
+	     13. whether input is enabled
+	     14. Color for Description, type, initial value, units, and input.
+
+	     Note that if input is disabled, then + - * / undo, and done should also be disabled.
+
+	     This is a pretty big job, so we need to figure out how to do
+	     this efficiently.
+	     */
 	}
-	
 	
     });	
 });

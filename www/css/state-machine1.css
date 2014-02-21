@@ -148,40 +148,17 @@ border:1px solid #2e6f9a;
 	top:5em;
 }
 
-#opened {
-	left:10em;
-	top:5em;
-}
-
-#phone1 {
-	left:35em;
-	top:12em;
-	width:7em;
-}
-
 #id2 {
 	left:35em;
 	top:12em;
 	width:7em;
 }
 
-#phone2 {
-	left:12em;
-	top:23em;
-}
-
 #id3 {
 	left:12em;
 	top:23em;
 }
-#phone2 {
-	left:28em;
-	top:24em;
-}
-#rejected {
-	left:10em;
-	top:35em;
-}
+
 .dragHover { border:2px solid orange; }
 
 path { cursor:pointer; }
