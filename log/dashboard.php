@@ -4,12 +4,19 @@
 <head>
 <meta http-equiv="Content-type" content="text/html;charset=UTF-8">
 <title>Log Analysis</title>
+<style>
+	.helpButtonPressed{color:red; font-weight:bold;}
+	.incorrectCheck1{color:yellow; font-weight:bold;}
+	.incorrectCheck2{color:orange; font-weight:bold;}
+	.incorrectCheck3{color:blue; font-weight:bold;}
+	.correctCheck{color:green;}
+</style>
 </head>
 <body>
 
 <?php
-	require "../www/db-login.php";
-	require "../www/error-handler.php";
+	//require "../www/db-login.php";
+	//require "../www/error-handler.php";
 
 	set_time_limit(30000);
 	include "logAnalysis.php";
@@ -18,14 +25,21 @@
 	!empty($_REQUEST["date"])?($date = $_REQUEST["date"]):($date = Date("Y-m-d"));
 	!empty($_REQUEST["fromTime"])?($fromTime = $_REQUEST["fromTime"]):($fromTime = '15:00:000');
 	!empty($_REQUEST["toTime"])?($toTime = $_REQUEST["toTime"]):($toTime = '16:15:000');
+	!empty($_REQUEST["section"])?($section = $_REQUEST["section"]):($section = 'sos-326-spring14');
+	!empty($_REQUEST["mode"])?($mode = $_REQUEST["mode"]):$mode = 'STUDENT';
+	!empty($_REQUEST["user"])?($user = $_REQUEST["user"]):$user = '';
+	(!empty($_REQUEST["dashboard"]) &&($_REQUEST["dashboard"] === 'small'))?($smallDashboard = true):($smallDashboard=false);
 	
-	$mysqli = mysqli_connect("localhost",$dbuser, $dbpassword, $dbname) or die("Connection not established. Check the user log file");
+	//$mysqli = mysqli_connect("localhost",$dbuser, $dbpass, $dbname) or die("Connection not established. Check the user log file");
+	$mysqli = mysqli_connect("localhost", "root", "qwerty211", "laits_devel") or die("Connection not established. Check the user log file");
 
 	$al = new AnalyzeLogs($mysqli);
 
-	error_log('asdf');
-	$al->createDashboard($date, $fromTime, $toTime);
-
+	if($smallDashboard){
+		$al->createSmallDashboard($section, $mode, $date, $fromTime, $toTime, $user);
+	} else {
+		$al->createDashboard($section, $mode, $date, $fromTime, $toTime, $user);
+	}
 	mysqli_close($mysqli);
 ?>
 </body>
