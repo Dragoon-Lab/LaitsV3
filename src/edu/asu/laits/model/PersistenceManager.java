@@ -111,11 +111,19 @@ public class PersistenceManager implements Runnable {
                 data = URLEncoder.encode(data, "UTF-8");
                 postVariable.add(new BasicNameValuePair("save_data", data));
             }
+            
+            if (action.equals("author_save")) {                
+                data = URLEncoder.encode(data, "UTF-8");
+                postVariable.add(new BasicNameValuePair("solution_xml", data));
+                postVariable.add(new BasicNameValuePair("author", ApplicationContext.getAuthor()));
+                postVariable.add(new BasicNameValuePair("section", ApplicationContext.getSection()));
+                postVariable.add(new BasicNameValuePair("problem_name", ApplicationContext.getCurrentTaskID()));
+            }
 
             httpPost.setEntity(new UrlEncodedFormEntity(postVariable, "UTF-8"));            
             HttpResponse response = httpClient.execute(httpPost);
             
-            if(action.equals("save")) {
+            if(action.equals("save") || action.equals("author_save")) {
                 String responseCode = String.valueOf(response.getStatusLine().getStatusCode());
                 return responseCode;
             }

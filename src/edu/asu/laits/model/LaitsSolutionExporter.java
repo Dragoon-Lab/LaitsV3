@@ -63,9 +63,8 @@ public class LaitsSolutionExporter {
             OutputFormat format = OutputFormat.createPrettyPrint();  
             XMLWriter xmlwriter = new XMLWriter(stringWriter, format);  
             xmlwriter.write(document);  
-            String sessionData = URLEncoder.encode(stringWriter.toString(), "UTF-8");
-            response = PersistenceManager.sendHTTPRequest("author_save",
-                    serviceURL,sessionData);
+            
+            response = PersistenceManager.sendHTTPRequest("author_save",serviceURL, stringWriter.toString());
             if (Integer.parseInt(response) == 200) {
                 logs.info("Successfully sent exported solution to server.");
                 return true;
@@ -182,6 +181,11 @@ public class LaitsSolutionExporter {
 
         Element initialValue = node.addElement("InitialValue");
         initialValue.setText(String.valueOf(vertex.getInitialValue()));
+        
+        if(vertex.isFirstTargetNode()) {
+            Element order = node.addElement("Order");
+            order.setText("1");        
+        }        
     }
 
     private void addPlanDetails(Vertex vertex, Element node) {

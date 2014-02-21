@@ -181,6 +181,12 @@ public class ExportSolutionPanel extends JPanel {
             desc = selectedVertex.getCorrectDescription();
             List<String> fakeDList = selectedVertex.getFakeDescription();
             fakeDescTextArea.setText(convertFakeDescListtoTextAreaText(fakeDList));
+        
+            if(selectedVertex.isFirstTargetNode()) {
+                isFirstNodeCheckBox.setSelected(true);
+            } else {
+                isFirstNodeCheckBox.setSelected(false);
+            }
         }
 
         add(DragoonUIUtils.createLabel("Correct Description: "), "skip");
@@ -193,7 +199,6 @@ public class ExportSolutionPanel extends JPanel {
         
         add(DragoonUIUtils.createLabel(" "), "skip");
         add(isFirstNodeCheckBox, "wrap");
-        isFirstNodeCheckBox.addItemListener(new FirstNodeCheckBoxChangeListener());
         
         // Extra Line for space
         add(DragoonUIUtils.createLabel(" "), "skip");
@@ -386,26 +391,23 @@ public class ExportSolutionPanel extends JPanel {
                 List<String> fakeDList = v.getFakeDescription();
                 fakeDescTextArea.setText(convertFakeDescListtoTextAreaText(fakeDList));                
                 correctDesc.setText(v.getCorrectDescription());
+                if(v.isFirstTargetNode()) {
+                    isFirstNodeCheckBox.setSelected(true);
+                } else {
+                    isFirstNodeCheckBox.setSelected(false);
+                }
             }
             if(event.getStateChange() == ItemEvent.DESELECTED) {
                 List<String> updatedfakeDList = convertTextAreaTextToFakeDescList(fakeDescTextArea.getText());
                 v.setFakeDescription(updatedfakeDList);
                 v.setCorrectDescription(correctDesc.getText().trim());
+                if(isFirstNodeCheckBox.isSelected()) {
+                    v.setIsFirstTargetNode(true);
+                } else {
+                    v.setIsFirstTargetNode(false);
+                }
             }            
         }
     } 
     
-    
-    class FirstNodeCheckBoxChangeListener implements ItemListener {
-        @Override
-        public void itemStateChanged(ItemEvent event) {
-            if(event.getSource() == isFirstNodeCheckBox) {
-                if(isFirstNodeCheckBox.isSelected()) {
-                
-                } else {
-                
-                }
-            }           
-        }
-    } 
 }

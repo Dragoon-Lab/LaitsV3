@@ -74,7 +74,7 @@ public class Application {
             ApplicationContext.setUserID("ramayantiwari");
             ApplicationContext.setAppMode("author");
             ApplicationContext.setCurrentTaskID("test_prob1");
-            
+            ApplicationContext.setSection("testsection");
         } else {
             // Try to Launch application using JNLP for PROD
             String sessionID = System.getProperty("jnlp.session_id");
@@ -96,7 +96,7 @@ public class Application {
                 ApplicationContext.setAppMode(userSession.mode);
                 ApplicationContext.setCurrentTaskID(userSession.problem_name);
                 ApplicationContext.setSessionID(userSession.session_id);
-                
+                ApplicationContext.setSection(userSession.section);
             } else {
                 JOptionPane.showMessageDialog(null, "Incorrect Initialization Parameters",
                         "An error has occured. Contact Support.", JOptionPane.ERROR_MESSAGE);
