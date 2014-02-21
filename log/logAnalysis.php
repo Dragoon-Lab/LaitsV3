@@ -617,6 +617,8 @@ Class AnalyzeLogs{
 
 	function createSmallDashboard($section, $mode, $date, $fromTime, $toTime, $user){
 		$userString = "AND user = '".$user."' ";
+		//$sessionQuery = "SELECT tid, session.session_id, user, problem_name, time, method, message, author from session JOIN step ON session.session_id = step.session_id where section = 'sos-326-spring14' AND time >= '2014-01-29 15:00' AND time <= '2014-01-29 16:15' AND mode = 'COACHED' AND (user = 'bstrong' OR user = 'cmflanne') ORDER BY user asc, problem_name asc, tid asc;";
+
 		$sessionQuery = "SELECT tid, session.session_id, user, problem_name, time, method, message, author from session JOIN step ON session.session_id = step.session_id where section = '".$section."' AND time >= '".$date." ".$fromTime."' AND time <= '".$date." ".$toTime."' AND mode = '".$mode."' ".($user != ''?$userString:'')."ORDER BY user asc, problem_name asc, tid asc;";
 
 		//echo $sessionQuery;
@@ -633,18 +635,20 @@ Class AnalyzeLogs{
 		$workingTempNode = false;
 		$resetNodeString = false;
 		$nodeName = ''; $nodeString = '';
+		$row = '';
 
 		if($numResults != 0){
 			while($row = $totalWork->fetch_assoc()){
 				if($index == 0){
 					//first session values
 					$UIactions = array();
+					$nodeDetailsArray = array();
 					$oldRow = $row;
 					$oldSession = $row['session_id'];
 					$nodeIndex = 0; $helpCounter = 0;
 					$problemTime = 0;
 					$workingTempNode = false;
-					$resetNodeString = false;
+					$resetNodeString = false; $sessionRunning = true; $problemComplete = false;
 					$nodeName = ''; $nodeString = '';
 					$nodeTabCheck = 0;
 				}
@@ -766,6 +770,12 @@ Class AnalyzeLogs{
 					$tempCheckTime = $tabReadTime+1;
 					$CheckTime = $tabReadTime+1;
 					$userTabGaming = false;
+					
+					if($workingTempNode)
+						$lastAction = "Pressed check button in DISCUSSION tab for new Node";
+					else
+						$lastAction = "Pressed check button in ".$newTab." tab ".(($nodeName != ''):("for node =>".$nodeName):"";
+					array_push($UIactions, $lastAction);
 
 					if($workingTempNode){
 						$tempCheckTime = $messageJSON['time'] - $tempTabCheckTime;
@@ -809,7 +819,7 @@ Class AnalyzeLogs{
 						}
 					} elseif($messageJSON['check-result'] === 'CORRECT'){
 						if($workingTempNode){
-							$tempNodeString = $tempNodeString.'||<span class="correctCheck">'.$newTab.'</span>';
+							$tempNodeString = $tempNodeString.'||<span class="correctCheck">DISCUSSION</span>';
 						} else {
 							$nodeString = $nodeString.'||<span class="correctCheck">'.$newTab.'</span>';
 						}
@@ -823,6 +833,13 @@ Class AnalyzeLogs{
 					//this is a demo button pressed action
 					$helpCounter++;
 					$tabName = $messageJSON['tab'];
+
+					if($workingTempNode)
+						$lastAction = "Pressed check button in DISCUSSION tab for new Node";
+					else
+						$lastAction = "Pressed check button in ".$newTab." tab ".(($nodeName != ''):("for node =>".$nodeName):"";
+					array_push($UIactions, $lastAction);
+					
 					if($workingTempNode){
 						$tempHelpTime = $messageJSON['time'] - $tempTabCheckTime;
 						$tempTabCheckTime = $messageJSON['time'];
@@ -859,9 +876,11 @@ Class AnalyzeLogs{
 					$index++;
 				}
 			}
+			$user = $oldRow['user'];
+			$problem = $oldRow['problem_name'];
 			$newData = array('user' => $user, 'problem' => $problem, 'problemTime' => $problemTime, 'nodeDetails' => $nodeDetailsArray, 'uiActions' => $UIactions);
 
-			if(!($problemComplete) && $sessionRunning){
+			if(!($problemComplete)){
 				array_push($runningProblems, $newData);
 			} else {
 				array_push($completeProblems, $newData);
@@ -901,8 +920,18 @@ Class AnalyzeLogs{
 			echo "</td>\n";
 			echo "<td>\n";
 			$size = sizeof($row['uiActions']);
-			for($i = $size-3; $i<$size; $i++){
-				echo $row['uiActions'][$i]."<br/>\n";
+			$index = 0;
+			if($size == 0){
+				echo "User has not started the problem.";
+			} else {
+				if($size >= 3){
+					$index = $size -3;
+				} else {
+					$index = $size;
+				}
+				for($i = $index; $i<$size; $i++){
+					echo $row['uiActions'][$i]."<br/>\n";
+				}
 			}
 			echo "</td>\n";
 			echo "</tr>";
@@ -930,8 +959,18 @@ Class AnalyzeLogs{
 			echo "</td>\n";
 			echo "<td>\n";
 			$size = sizeof($row['uiActions']);
-			for($i = $size-3; $i<$size; $i++){
-				echo $row['uiActions'][$i]."<br/>\n";
+			$index = 0;
+			if($size == 0){
+				echo "User hasnt started the problem.";
+			} else {
+				if($size >= 3){
+					$index = $size -3;
+				} else {
+					$index = $size;
+				}
+				for($i = $index; $i<$size; $i++){
+					echo $row['uiActions'][$i]."<br/>\n";
+				}
 			}
 			echo "</td>\n";
 			echo "</tr>";

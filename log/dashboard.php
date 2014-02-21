@@ -15,8 +15,8 @@
 <body>
 
 <?php
-	require "../www/db-login.php";
-	require "../www/error-handler.php";
+	//require "../www/db-login.php";
+	//require "../www/error-handler.php";
 
 	set_time_limit(30000);
 	include "logAnalysis.php";
@@ -28,10 +28,10 @@
 	!empty($_REQUEST["section"])?($section = $_REQUEST["section"]):($section = 'sos-326-spring14');
 	!empty($_REQUEST["mode"])?($mode = $_REQUEST["mode"]):$mode = 'STUDENT';
 	!empty($_REQUEST["user"])?($user = $_REQUEST["user"]):$user = '';
-	($_REQUEST["dashboard"] === 'small')?($smallDashboard = true):($smallDashboard=false);
+	(!empty($_REQUEST["dashboard"]) &&($_REQUEST["dashboard"] === 'small'))?($smallDashboard = true):($smallDashboard=false);
 	
-	$mysqli = mysqli_connect("localhost",$dbuser, $dbpass, $dbname) or die("Connection not established. Check the user log file");
-	//$mysqli = mysqli_connect("localhost", "root", "qwerty211", "laits_devel") or die("Connection not established. Check the user log file");
+	//$mysqli = mysqli_connect("localhost",$dbuser, $dbpass, $dbname) or die("Connection not established. Check the user log file");
+	$mysqli = mysqli_connect("localhost", "root", "qwerty211", "laits_devel") or die("Connection not established. Check the user log file");
 
 	$al = new AnalyzeLogs($mysqli);
 
