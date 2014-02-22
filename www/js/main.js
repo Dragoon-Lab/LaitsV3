@@ -41,10 +41,8 @@ define([
 	
 	/*
 	@author: Deepak
-	@brief: code for calculating the given and student solution.This code should be moved to calculatin.js
+	@brief: code for calculating the given and student solution.This code should be moved to calculation.js
 	*/
-	
-	
 	
 	var i=0;
 	//get all nodes of given model
