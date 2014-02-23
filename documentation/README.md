@@ -1,8 +1,7 @@
 # Documentation for Dragoon #
 
-This contains mostly design documents.  
+This contains mostly design documents. 
 
-* [Node Editor](node-editor.md) with tabs:  Description, Plan, and Calculation
 * [Session behavior](sessions.md) which discusses saving, modifying, and sharing problems.
 * [Add sliders to parameters](sliders.md)
 * [Major modes](major-modes.md) (STUDENT COACHED TEST AUTHOR)
@@ -11,13 +10,15 @@ This contains mostly design documents.
 * [Forum](forum.md)
 * [Pedagogical Model JavaScript Version](Pedagogical-Model-JavaScript-Version.docx)
 * [Logging format](logs-structure.md)
+* For Java version:  [Node Editor](node-editor.md) with Description,
+  Plan, and Calculation tabs
 
 Documentation can be in any convenient format (word, html, *et cetera*) with 
 generic [markdown](http://en.wikipedia.org/wiki/Markdown) being the default 
 choice.  Any document should have an associated link in this file.  
 
 
-## Support Issues ##
+## Java Support Issues ##
 
 In-class support in case Java is not working:
 

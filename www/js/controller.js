@@ -61,8 +61,10 @@ define([
 	    var type = registry.byId("typeId");
 	    
 	    // attach callbacks to each field in node Editor.
-	    console.log("============== wiring up type ", type);
-	    on(type, 'onChange', this.handleNodeEditorComboClicks);	    
+
+	    // BvdS:  I couldn't get this to work with "on"
+	    // may need to use dojo/hitch here?
+	    aspect.after(type, 'onChange', this.handleType, true);	    
 	    on(done, 'click',  function(){
 		console.log("handler for done");
 	    });
@@ -71,8 +73,8 @@ define([
 	    });  
 	},
 	    
-	handleNodeEditorComboClicks: function(){
-	    console.log("handler for typeId");
+	handleType: function(type){
+	    console.log("Student has chosen type ", type, this);
 	},
 
 	handleNodeEditorButtonClicks: function(buttonId){
@@ -92,7 +94,7 @@ define([
 	    var editor = this._nodeEditor;
 	    //set task name
 	    var nodeName = model.getNodeNameByID(nodeid);
-	    editor.set('title',nodeName);
+	    editor.set('title', nodeName);
 	    //populate type
 	    // populate initial value
 	    // populate units

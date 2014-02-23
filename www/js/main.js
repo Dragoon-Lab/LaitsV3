@@ -194,7 +194,7 @@ define([
 	    aspect.after(drawModel, "onClickMoved", function(mover){
 		var g = geometry.position(mover.node, true);  // take into account scrolling
 		console.log("Update model coordinates for ", mover.node.id, g);
-		console.warn("This should take into account scrolling, but it doesn't.");
+		console.warn("This should take into account scrolling, Bug #2300.");
 		givenModel.setStudentNodeXY(mover.node.id, g.x, g.y);
 		console.warn("Should autosave here.");
 	    }, true);

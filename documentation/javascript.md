@@ -1,38 +1,76 @@
 # JavaScript user interface #
 
-## Frameworks ##
+## Libraries ##
 
-We need a framework.  See Wikipedia [article comparing JavaScript frameworks](http://en.wikipedia.org/wiki/Comparison_of_JavaScript_frameworks). 
-We need a framework with the following:
+We are using:
 
-* 2-D vector graphics
-* Charting
-* Open Source license
-* The equivalent of dojo mixin and extend.
+* The [Dojo](http://dojotoolkit.org) framework.
+* A [fork of jsPlumb](https://github.com/bhosaledipak/JsPlumb_Dojo_Integreate)
+  that uses AMD and Dojo.
+* A [fork of js-expression-eval](https://github.com/bvds/js-expression-eval) 
+ that uses AMD and can accept variable names with spaces.
 
-There are other things we need but the above items most strongly
-discriminate between the candidate libraries.
-
-
-[d3js](http://d3js.org):
+We might use  [d3js](http://d3js.org):
 See [MIT Media lab project](http://immersion.media.mit.edu), you can 
 login with your email account.
 
-## Graph Visualization and editing ##
+## Model-View-Controller for the node editor
 
-A [list of possible libraries](http://stackoverflow.com/questions/7034) at stackoverflow.
+We have AMD modules, `js/model.js` and `js/controller.js`, that implement the MVC for the
+node editor.  The view is implemented in `index.html` and using the
+[Dijit](http://dojotoolkit.org/reference-guide/dijit/) libraries.  In
+addition, we have the Pedagogical Module (PM). 
 
-[jsPlumb](http://jsplumbtoolkit.com) sits on top of either jQuery,
-MooTools, or [YUI3](http://en.wikipedia.org/wiki/YUI_Library).
-If we go with another Framework, then we would have to interface this 
-library with that framework.
+`js/model.js` provides an interface to the model.  It has many
+Java-style getter and setter methods. For AUTHOR mode, one is
+modifying `givenModel` while in other major modes, one is modifying
+the `studentModel`.
+To handle AUTHOR mode, we extend the `model` class and to have
+model accessor functions that give access to the appropriate model,
+depending on the major mode.  The new class is called `mmodel`.
+For example, in the model class, we have the functions
+`getGivenNodes()` and `getStudentNodes()` to get the `givenModel` and
+`studentModel` nodes, respectively.  The function in `mmodel` would be
+`getNodes()`. 
+
+`js/pedagogical_model.js` informs the controller about updates
+[controls](http://www.w3.org/TR/html401/interact/forms.html#form-controls)
+in the Node Editor:
+
+* set as enabled/disabled
+* mark as correct, incorrect, or demo
+* send a user message
+* it may update the value associated with a control (in the case of
+  demo).
+
+The PM saves state in the `givenModel` and interacts directly with the
+model for this purpose.  Although the PM reads the `studentModel`, it
+generally does not update it.
+
+Methods in the PM return an array of directives like this:
+
+    [
+		{id: "initialValue", attribute: "disabled", value: true},  // enable or disable a control
+		// Send a message (id may be ignored by the controller)
+		{id: "initialValue", attribute: "message", value: "You should try again."},
+		{id: "selectDescription", attribute: "status", value: "demo"},  // Set the status (red/green/yellow)
+		// Set the value of a control (in the case of demo)
+		{id: "selectDescription", attribute: "selected", value: "id3"} 
+	]
+
+The attribute names in the above example are not set in stone:  they
+should be chosen to map easily onto controls in the Node Editor.
+
+`js/controller.js` acts as the controller.  On opening the node
+editor, it sets values of the Node Editor controls based on `studentModel`.  It also
+queries the PM to set other attributes of the controls.
+It sends user input changes to `studentModel`  and to the PM and updates
+the view based on the response of the PM.
 
 ## Automatic node placement ##
 
-Right now, the fifth node is placed on top of the first node.
-This was seen in author mode, but I suspect it is a general
-flaw in initial node placement algorithm.
-Maybe do placement like this:
+Our algorithm for automatic node placement will
+produce a pattern like this:
 
      0  1  4  9
      2  3  5 10
