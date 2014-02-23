@@ -543,7 +543,8 @@ Class AnalyzeLogs{
 							//adding the node data for the node opened in the new node created from the calculation tab for the new node.
 							$tempNodeString = $tempNodeString.'<br/># Time spent on '.$tab.' tab => '.($messageJSON['time']-$startTimeTempNode);
 							$tempNodeName = $name;
-							$nodeDetailsArray[$tempNodeName] = $tempNodeString;
+							if($tempNodeName != '')
+								$nodeDetailsArray[$tempNodeName] = $tempNodeString;
 							$tempNodeName = '';
 							$tempNodeString = '';
 						} else {
@@ -635,7 +636,7 @@ Class AnalyzeLogs{
 		$workingTempNode = false;
 		$resetNodeString = false;
 		$nodeName = ''; $nodeString = '';
-		$row = '';
+		$outOfOrderNode = '';
 
 		if($numResults != 0){
 			while($row = $totalWork->fetch_assoc()){
@@ -649,8 +650,8 @@ Class AnalyzeLogs{
 					$problemTime = 0;
 					$workingTempNode = false;
 					$resetNodeString = false; $sessionRunning = true; $problemComplete = false;
-					$nodeName = ''; $nodeString = '';
-					$nodeTabCheck = 0;
+					$nodeName = ''; $nodeString = ''; $outOfOrderNode = '';
+					$nodeTabCheck = 0;					
 				}
 				$method = $row['method'];
 				$message = $row['message'];
@@ -693,14 +694,7 @@ Class AnalyzeLogs{
 					$noOfTimesProblemAccessed++;
 				}
 
-				if($resetNodeString){
-					if(($nodeName!='') && ($nodeString!='')){
-						$nodeDetailsArray[$nodeName] = $nodeString;
-					}
-					$nodeName = '';
-					$nodeString = '';
-					$resetNodeString = false;
-				}
+				
 
 				if($method === 'ui-action'){
 					$actionType = $messageJSON['type'];
@@ -720,7 +714,6 @@ Class AnalyzeLogs{
 						if($nodeName != ''){
 							//looking if the string was already created or not.
 							$nodeString = (array_key_exists($nodeName, $nodeDetailsArray)?$nodeDetailsArray[$nodeName].' || ':'').'Node re-opened in '.$newTab.' tab';
-
 						} else {
 							//otherwise initialized an empty string. Name will be set in the dialog-box-tab or in the check correct case on Plan tab or in seek help.
 							$nodeIndex++;
@@ -748,11 +741,14 @@ Class AnalyzeLogs{
 							//adding the node data for the node opened in the new node created from the calculation tab for the new node.
 							//$tempNodeString = $tempNodeString.'<br/># Time spent on '.$tab.' tab => '.($messageJSON['time']-$startTimeTempNode);
 							$tempNodeName = $name;
-							$nodeDetailsArray[$tempNodeName] = $tempNodeString;
+							if($tempNodeName != ''){
+								$nodeDetailsArray[$tempNodeName] = $tempNodeString;
+							} else {
+								$nodeIndex--;
+							}
 							$tempNodeName = '';
 							$tempNodeString = '';
 						} else {
-							//$nodeString = $nodeString.'<br/># Time spent on '.$tab.' tab => '.($messageJSON['time']-$startTime).' seconds';
 							$nodeName = $name;
 							$resetNodeString = true;
 						}
@@ -772,9 +768,9 @@ Class AnalyzeLogs{
 					$userTabGaming = false;
 					
 					if($workingTempNode)
-						$lastAction = "Pressed check button in DISCUSSION tab for new Node";
+						$lastAction = "Pressed check button in DESCRIPTION tab for new Node";
 					else
-						$lastAction = "Pressed check button in ".$newTab." tab ".(($nodeName != ''):("for node =>".$nodeName):"";
+						$lastAction = "Pressed check button in ".$newTab." tab ".(($nodeName != '')?("for node =>".$nodeName):"");
 					array_push($UIactions, $lastAction);
 
 					if($workingTempNode){
@@ -793,15 +789,17 @@ Class AnalyzeLogs{
 						$userTabGaming = true;
 					}
 					if($messageJSON['check-result'] === 'INCORRECT' && array_key_exists('substeps', $messageJSON)){
+						$nodeString = $nodeString.'||<span class="'.$class.'">';
 						foreach($messageJSON['substeps'] as $step){
 							$class = 'incorrectCheck'.($nodeCheck>2?'3':$nodeCheck);
-							$nodeString = $nodeString.'||<span class="'.$class.'">'.$step['value'].' '.$newTab.($userTabGaming?'</span><span class="helpButtonPressed"> gamed ':'').'</span>';
+							$nodeString = $nodeString.$step['value'].' ';
 						}
+						$nodeString = $nodeString.$newTab.($userTabGaming?'</span><span class="helpButtonPressed"> gamed ':'').'</span>';
 					} elseif($messageJSON['check-result'] === 'INCORRECT'){
 						$class = 'incorrectCheck'.($nodeCheck>2?'3':$nodeCheck);
 						if($workingTempNode){
 							//$tempNodeString = $tempNodeString.'<br/># node selected => '.$messageJSON['name'].' and node description => '.$messageJSON['text'];
-							$tempNodeString = $tempNodeString.'||<span class="'.$class.'">'.$messageJSON['name'].' DISCUSSION'.($userTabGaming?' </span><span class="helpButtonPressed"> gamed ':'').'</span>';
+							$tempNodeString = $tempNodeString.'||<span class="'.$class.'">'.$messageJSON['name'].' DESCRIPTION'.($userTabGaming?' </span><span class="helpButtonPressed"> gamed ':'').'</span>';
 						} else {
 							if(array_key_exists('correct-result', $messageJSON)){
 								$temp = $messageJSON['name'];
@@ -817,15 +815,17 @@ Class AnalyzeLogs{
 								$nodeString = $nodeString.'|| <span class="'.$class.'">'.$messageJSON['name'].($userTabGaming?' </span><span class="helpButtonPressed"> gamed ':'').'</span>';
 							}
 						}
+					} elseif($messageJSON['check-result'] === "DESC OUT OF ORDER"){
+						$outOfOrderNode = $messageJSON["name"];
 					} elseif($messageJSON['check-result'] === 'CORRECT'){
 						if($workingTempNode){
-							$tempNodeString = $tempNodeString.'||<span class="correctCheck">DISCUSSION</span>';
+							$tempNodeString = $tempNodeString.'||<span class="correctCheck">DESCRIPTION</span>';
 						} else {
-							$nodeString = $nodeString.'||<span class="correctCheck">'.$newTab.'</span>';
+							$nodeString = $nodeString.'||<span class="correctCheck"> '.$newTab.'</span>';
 						}
 					}
 					//after each solution step the node details are saved... in case problem stops earlier.
-					if($nodeName != '')
+					if($nodeName != '' && ($nodeName != $outOfOrderNode))
 						$nodeDetailsArray[$nodeName] = $nodeString;
 					if($messageJSON['check-result'] === 'CORRECT')
 						$nodeCheck = 0;
@@ -835,9 +835,9 @@ Class AnalyzeLogs{
 					$tabName = $messageJSON['tab'];
 
 					if($workingTempNode)
-						$lastAction = "Pressed check button in DISCUSSION tab for new Node";
+						$lastAction = "Pressed check button in DESCRIPTION tab for new Node";
 					else
-						$lastAction = "Pressed check button in ".$newTab." tab ".(($nodeName != ''):("for node =>".$nodeName):"";
+						$lastAction = "Pressed check button in ".$newTab." tab ".(($nodeName != '')?("for node =>".$nodeName):"");
 					array_push($UIactions, $lastAction);
 					
 					if($workingTempNode){
@@ -848,10 +848,19 @@ Class AnalyzeLogs{
 					} else {
 						$helpTime = $messageJSON['time'] - $tabCheckTime;
 						$tabCheckTime = $messageJSON['time'];
-						$nodeString = $nodeString.'|| <span class="helpButtonPressed">'.$tabName.'</span>';
+						$nodeString = $nodeString.'|| <span class="helpButtonPressed">'.$tabName.'('.$helpTime.' s)</span>';
 					}
 					//$nodeName = $messageJSON[];
 				}
+				if($resetNodeString){
+					if(($nodeName!='') && ($nodeString!='')){
+						$nodeDetailsArray[$nodeName] = $nodeString;
+					}
+					$nodeName = '';
+					$nodeString = '';
+					$resetNodeString = false;
+				}
+
 				if(!($continuedSession)){
 					$user = $oldRow['user'];
 					$problem = $oldRow['problem_name'];
@@ -868,7 +877,6 @@ Class AnalyzeLogs{
 					$oldSession = $newSession;
 					$oldRow = $row;
 					$index = 0; // next time the data will be refreshed.
-					
 				} else {
 					$oldSession = $newSession;
 					$oldRow = $row;
@@ -879,7 +887,7 @@ Class AnalyzeLogs{
 			$user = $oldRow['user'];
 			$problem = $oldRow['problem_name'];
 			$newData = array('user' => $user, 'problem' => $problem, 'problemTime' => $problemTime, 'nodeDetails' => $nodeDetailsArray, 'uiActions' => $UIactions);
-
+			
 			if(!($problemComplete)){
 				array_push($runningProblems, $newData);
 			} else {
