@@ -26,13 +26,14 @@ define([
     "dojo/_base/array", "dojo/_base/declare", "./node", "./student_node"
 ], function(array, declare, Node, StudentNode) {
 
-    return declare(null, {
-        constructor: function(/*string*/ name, /*string*/ url, /*int*/ start, /*int*/ end, /*float*/ timeStep, /*string*/ units) {
+    var model= declare(null, {
+        constructor: function(/*string*/ mode, /*string*/ name, /*object*/ properties) {
             // Summary: Initializes the object (the Dragoon problem)
             // Note: beginX and beginY specify coordinates where nodes can begin appearing
             //      when the student adds them; nodeWidth and nodeHeighth can be manually
             //      adjusted to allow enough room in between the nodes; _updateNextXYPosition()
             //      uses nodeWidth and nodeHeighth to know where to place new student nodes
+	    this._mode = mode;
             this.beginX = 100;
             this.beginY = 100;
             this.nodeWidth = 200;
@@ -42,10 +43,11 @@ define([
             this.lastNodeVisible = null;
             this.ID = 1;
             this.taskName = name;
-            this.properties = {phase: "", type: "", URL: url, startTime: start, endTime: end, timeStep: timeStep, units: units};
+            this.properties = properties;
             this.checkedNodes = new Array();
             this.model = this._buildModel();
         },
+	taskDescription: null,
         /**
          * 
          * Private methods; these methods should not be accessed outside of this class
@@ -1033,4 +1035,25 @@ define([
                 }
         }
     });
+
+    /* 
+     add subclasses with model accessors 
+     */
+    model.given = {
+	getNodes: model.getNodes,
+	setNodeName: model.setNodeName
+    };
+
+    model.student = {
+	getNodes: model.getStudentNodes,
+	setNodeName: model.setStudentNodeName
+    };
+
+    /*
+     Define the "active model" (see doucumentation/javascript.md).
+     */
+
+    model.active = (model._mode == "AUTHOR")?model.given: model.student;
+
+    return model;
 });
