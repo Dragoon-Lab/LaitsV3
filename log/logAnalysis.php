@@ -789,9 +789,9 @@ Class AnalyzeLogs{
 						$userTabGaming = true;
 					}
 					if($messageJSON['check-result'] === 'INCORRECT' && array_key_exists('substeps', $messageJSON)){
+						$class = 'incorrectCheck'.($nodeCheck>2?'3':$nodeCheck);
 						$nodeString = $nodeString.'||<span class="'.$class.'">';
 						foreach($messageJSON['substeps'] as $step){
-							$class = 'incorrectCheck'.($nodeCheck>2?'3':$nodeCheck);
 							$nodeString = $nodeString.$step['value'].' ';
 						}
 						$nodeString = $nodeString.$newTab.($userTabGaming?'</span><span class="helpButtonPressed"> gamed ':'').'</span>';
