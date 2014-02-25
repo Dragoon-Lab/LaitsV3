@@ -1,0 +1,88 @@
+<!DOCTYPE HTML PUBLIC "-//IETF//DTD HTML//EN">
+<html> <head>
+<title>Test subclasses</title>
+        <script type="text/javascript">
+		dojoConfig = {
+			isDebug:true,
+			parseOnLoad:true,
+		        async: true,
+			 baseUrl: "../../",
+			 packages: [
+			    {name: "dojo", location: "dojo"},
+			    {name: "dijit", location: "dijit"},
+			    {name: "dojox", location: "dojox"},
+                         ]
+		};
+	</script>
+        <script src="../../dojo/dojo.js" type="text/javascript"></script>
+
+<script type="text/javascript">
+
+
+require([
+   "dojo/_base/declare", "dojo/_base/lang"
+],function(declare, lang){
+
+var model = declare(null,{
+     constructor: function(){
+        this.sub.parent = this;
+        this.sub.getData3 = lang.hitch(this,this.getData);
+        this.data = "ok";
+     },
+     data: "bad",
+     getData: function(){
+           return this.data;
+     },
+
+     sub: {
+           getData2: function(){return this.parent.getData.apply(this.parent,arguments);}
+     }
+
+});
+
+var m = new model();
+console.log("model class instance ", m);
+console.log("call getData: ", m.getData());
+console.log("call getData: ", m.sub.getData2());
+console.log("call getData: ", m.sub.getData3());
+
+console.info("Alternative method where declare is done after");
+
+model = function(){
+var obj = {
+     constructor: function(x){
+         this.data = x;
+     },
+     data: "bad",
+     getData: function(){
+         return this.data;
+    }
+};
+
+obj.sub = {
+   getData2: lang.hitch(obj, obj.getData),
+   getData3: function(){return obj.getData.apply(obj,arguments);}
+};
+
+obj.constructor.apply(obj,arguments);
+
+return obj;
+};
+
+m = new model("ok");
+console.log("model class instance ", m);
+console.log("call getData: ", m.getData());
+console.log("call getData: ", m.sub.getData2()); // wrong!
+console.log("call getData: ", m.sub.getData3()); // wrong!
+
+
+
+});
+
+</script>
+
+</head>
+<body>
+<h1>Test subclasses</h1>
+Results are in console.log
+</body> </html>
