@@ -1,21 +1,13 @@
 /* global define, Image */
 define([
-    "dojo/dom",
-    'dojo/dom-geometry',
-    "dojo/on",
-    'dojo/aspect',
-    "dojo/io-query",
-    "dojo/ready",
-    "./menu",
-    "./load-save",
+	"dojo/_base/declare",	
     "./model",
-    "./RenderGraph", "./RenderTable", "./wraptext", 
-    "./controller",
-    "parser/parser",
-    "./draw-model" 
-],function(dom, geometry, on, aspect, ioQuery, ready, menu, loadSave, model, 
-	   Graph, Table, wrapText, controller, Parser, drawmodel
+    "parser/parser"
+],function(declare, model, Parser
 	  ){ 
+	  
+	  
+	  return declare(null, {
 			//timesteps in graph
 			timeSteps:0,
 			//start time to plot graph
@@ -33,17 +25,17 @@ define([
 			constructor: function(solutionGraph)
 			{
 				this.model = new model();
-				_setModel(solutionGraph);
-				_setStartTime();
-				_setEndtime();
-				_setTimeStep();
+				this._setModel(solutionGraph);
+				this._setStartTime();
+				this._setEndtime();
+				this._setTimeStep();
 			},
 		
 			//set model based on given solution graph (private method)
 			_setModel:function(solutionGraph)
 			{
 				this.model.loadModel(solutionGraph);		
-				_getModelNodes();
+				this._getModelNodes();
 			},
 			
 			//get model nodes from solution
@@ -62,7 +54,7 @@ define([
 			_setEndtime: function()
 			{
 				this.endTime = this.model.getEndTime();
-			}
+			},
 
 			//set time-step (private method)
 			_setTimeStep: function()
@@ -93,7 +85,7 @@ define([
 				{
 					if(this.model.getNodeType(this.modelNodes[j].ID) != 'parameter')
 					{
-						arrayOfNodeValues[givenModelNodes[j].ID] = new Array();
+						arrayOfNodeValues[this.modelNodes[j].ID] = new Array();
 					}
 				}
 				
@@ -122,7 +114,7 @@ define([
 							var _v;
 							if(this.model.getNodeInitial(this.modelNodes[j].ID) == null)
 							{
-								_v = _calcNULLNodeValue(this.modelNodes[j].ID,nodeEquations);
+								_v = this._calcNULLNodeValue(this.modelNodes[j].ID,nodeEquations);
 							}
 							else
 							{
@@ -137,20 +129,20 @@ define([
 						break;
 					
 					case false:
-						for(i=startTime+timeStep;i<(endTime-startTime)/timeStep;i=i+timeStep)
+						for(i=this.startTime+this.timeSteps;i<(this.endTime-this.startTime)/this.timeSteps;i=i+this.timeSteps)
 						{
 							arrayOfTimeSteps.push(i);
 							for(j=0;j<this.modelNodes.length;j++)
 							{
 								if(this.model.getNodeType(this.modelNodes[j].ID) != 'parameter')
 								{
-									arrayOfNodeValues[this.modelNodes[j].ID].push(_calcNULLNodeValue(this.modelNodes[j].ID,nodeEquations));
+									arrayOfNodeValues[this.modelNodes[j].ID].push(this._calcNULLNodeValue(this.modelNodes[j].ID,nodeEquations));
 								}
 							}
 						}
 						break;
 
-					case default:
+					default:
 					console.error("calculations.js - function: _getNodeValuesByTimeSteps: 'isInitialValue' parameter not defined");
 				}
 			},
@@ -165,14 +157,14 @@ define([
 				_variable = _expr.variables();
 				for(_k=0;_k<_variable.length;_k++)
 				{
-					if(currentNodeValues[_variable[_k]] == null)
+					if(this.currentNodeValues[_variable[_k]] == null)
 					{
-						_calcNULLNodeValue(_variable[_k],nodeEquations);
+						this._calcNULLNodeValue(_variable[_k],nodeEquations);
 					}
-					_exprValues[_variable[_k]] = currentNodeValues[_variable[_k]];
+					_exprValues[_variable[_k]] = this.currentNodeValues[_variable[_k]];
 				}
 				_value = _expr.evaluate(_exprValues);
-				currentNodeValues[nodeID] = _value;
+				this.currentNodeValues[nodeID] = _value;
 		
 				return _value;
 			},
@@ -184,7 +176,7 @@ define([
 				var i,count=0;
 				for(i=0;i<this.modelNodes.length;i++)
 				{
-					if(this.model.getNodeType(this.modelNodes[j].ID) == 'parameter')
+					if(this.model.getNodeType(this.modelNodes[i].ID) == 'parameter')
 					{
 						arrayOfParameterNames[this.modelNodes[i].ID] = this.model.getNodeNameByID(this.modelNodes[i].ID);
 						arrayOfParamInitialValues[this.modelNodes[i].ID] = this.model.getNodeInitial(this.modelNodes[i].ID);
@@ -194,11 +186,70 @@ define([
 				return count;
 			},
 			
+			_getUnits:function()
+			{
+				var obj = {};
+				
+				obj["xUnits"] = this.model.getUnits();
+				obj["units"] = this.model.getEachNodeUnitbyID();
+				
+				return obj;
+			},
+			
 			//@brief: this function returns an object having all parameters required for rendering graph and table
 			gerParametersForRendering: function(solutionGraph)
 			{
-				//to be completed
+				//variable to tell function if we are calculating starttime value for node or rest other values
+				//This is done as initially few node values can be null and these values need to be setup
+				var isInitialValue;
+				//variable to get number of nodes of type 'parameter' in given graph
+				var noOfParam;
+				//variables to get units
+				var xUnits,units;
+				//arrays to get name and initial values of node type 'parameter'
+				var arrayOfParameterNames = [],arrayOfParamInitialValues=[];
+				//get key/value pair of node-id/equation in object
+				var nodeEquations={};
+				//get key/value pair of node-id/array of values over timesteps in object
+				var arrayOfNodeValues = {};
+				//create an array which stores values of timesteps
+				var arrayOfTimeSteps = [];
+				
+				//set up a model based on solution-graph and obtain number of nodes in a graph
+				this._setModel(solutionGraph);
+				//get equations of all nodes
+				nodeEquations = this._getAllNodeEquations();
+				//create key/value pair of node-id/array of values
+				arrayOfNodeValues = this._createNodeValueArray();
+				//set 'isInitialValue' flag to true and find initial values of nodes which are null
+				isInitialValue = true;
+				this._getNodeValuesByTimeSteps(isInitialValue, arrayOfNodeValues, arrayOfTimeSteps, nodeEquations);
+				//set 'isInitialValue' flag to false and find values of nodes over timesteps
+				isInitialValue = false;
+				this._getNodeValuesByTimeSteps(isInitialValue, arrayOfNodeValues, arrayOfTimeSteps, nodeEquations);
+				//get no of parameters/parameter names/initial values for nodes of type 'parameter'
+				noOfParam = this._storeParametersNameValue(arrayOfParameterNames, arrayOfParamInitialValues);
+				//get units used in graph
+				var obj = this._getUnits();
+				xUnits = obj["xUnits"];
+				units = obj["units"];
+				
+				//create object comprising all parameters required for rendering chart and table
+				var object = {noOfParam:noOfParam,arrayOfParameterNames:arrayOfParameterNames,arrayOfParamInitialValues:arrayOfParamInitialValues,
+				xUnits:xUnits,units:units,arrayOfTimeSteps:arrayOfTimeSteps,arrayOfNodeValues:arrayOfNodeValues
+				};
+				/*
+				object.noOfParam = noOfParam;
+				object.arrayOfParameterNames = arrayOfParameterNames;
+				object.arrayOfParamInitialValues = arrayOfParamInitialValues;
+				object.xUnits = xUnits;
+				object.units = units;
+				object.arrayOfTimeSteps = arrayOfTimeSteps;
+				object.arrayOfNodeValues = arrayOfNodeValues;
+				*/
+				return object;
 			}
+	});		
 });
 
 

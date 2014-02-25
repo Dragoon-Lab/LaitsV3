@@ -26,6 +26,7 @@ define([
     "dojo/_base/array", "dojo/_base/lang", "./node", "./student_node"
 ], function(array, lang, Node, StudentNode) {
 
+
     return function(){
 
  	var obj= {
@@ -65,6 +66,7 @@ define([
 		//      not used when loading a model; only used by the constructor
 		// Tags: private
 		var newModel = {task: {
+
                     taskName: this.taskName,
                     properties: this.properties,
                     taskDescription: this.taskDescription,

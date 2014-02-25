@@ -39,16 +39,16 @@ define([
          *  @brief:constructor for a graph object
          *  @param: noOfParam
          */
-        constructor: function(noOfParam,paramNames, paramValue, arrayOfNodeValues, units, xunits)
+		constructor: function(object)
         {
      	   //assign parameters to object properties 
-     	   this.inputParam = noOfParam;
-		   this.paramNames = paramNames;
-     	   this.paramValue = paramValue;
-		   this.arrayOfNodeValues = arrayOfNodeValues;
-	    console.log("***** In RenderGraph constructor, units = ", units);
-		   this.units = units;
-	    this.xunits = xunits;
+     	   this.inputParam = object.noOfParam;
+		   this.paramNames = object.arrayOfParameterNames;
+     	   this.paramValue = object.arrayOfParamInitialValues;
+		   this.arrayOfNodeValues = object.arrayOfNodeValues;
+			console.log("***** In RenderGraph constructor");
+		   this.units = object.units;
+		   this.xunits = object.xUnits;
      	   this.initialize();
      	   
         },
@@ -130,7 +130,7 @@ define([
 			   fixed: true, min: 0, max: 10, title: this.xunits, 
 			   titleOrientation: "away", titleGap:5
 			});
-			   chartArray[i].addAxis("y", {vertical: true, min: 0, title: this.units[i]});
+			   chartArray[i].addAxis("y", {vertical: true, min: 0, title: this.units[j]});
 			   chartArray[i].addSeries("correct solution", this.arrayOfNodeValues[j], {stroke: "red"});
 			   chartArray[i].addSeries("Variable solution", this.arrayOfNodeValues[j], {stroke: "green"});
 			   chartArray[i].render();
