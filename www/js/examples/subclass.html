@@ -23,45 +23,47 @@ require([
    "dojo/_base/declare", "dojo/_base/lang"
 ],function(declare, lang){
 
+console.info("Methods using declare:");
+
 var model = declare(null,{
      constructor: function(){
         this.sub.parent = this;
-        this.sub.getData3 = lang.hitch(this,this.getData);
+        this.sub.getData3 = lang.hitch(this,this.getData1);
         this.data = "ok";
      },
      data: "bad",
-     getData: function(){
+     getData1: function(){
            return this.data;
      },
 
      sub: {
-           getData2: function(){return this.parent.getData.apply(this.parent,arguments);}
+           getData2: function(){return this.parent.getData1.apply(this.parent,arguments);}
      }
 
 });
 
 var m = new model();
 console.log("model class instance ", m);
-console.log("call getData: ", m.getData());
-console.log("call getData: ", m.sub.getData2());
-console.log("call getData: ", m.sub.getData3());
+console.log("call getData1: ", m.getData1());
+console.log("call getData2: ", m.sub.getData2());
+console.log("call getData3: ", m.sub.getData3());
 
-console.info("Alternative method where declare is done after");
+console.info("Alternative methods using function:");
 
 model = function(){
 var obj = {
-     constructor: function(x){
-         this.data = x;
+     constructor: function(){
+         this.data = "ok";
      },
      data: "bad",
-     getData: function(){
+     getData4: function(){
          return this.data;
     }
 };
 
 obj.sub = {
-   getData2: lang.hitch(obj, obj.getData),
-   getData3: function(){return obj.getData.apply(obj,arguments);}
+   getData5: lang.hitch(obj, obj.getData4),
+   getData6: function(){return obj.getData4.apply(obj,arguments);}
 };
 
 obj.constructor.apply(obj,arguments);
@@ -69,11 +71,11 @@ obj.constructor.apply(obj,arguments);
 return obj;
 };
 
-m = new model("ok");
+m = new model();
 console.log("model class instance ", m);
-console.log("call getData: ", m.getData());
-console.log("call getData: ", m.sub.getData2()); // wrong!
-console.log("call getData: ", m.sub.getData3()); // wrong!
+console.log("call getData4: ", m.getData4());
+console.log("call getData5: ", m.sub.getData5());
+console.log("call getData6: ", m.sub.getData6());
 
 
 

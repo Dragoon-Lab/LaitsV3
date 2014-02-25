@@ -12,9 +12,10 @@ define([
     "./RenderGraph", "./RenderTable", "./wraptext", 
     "./controller",
     "parser/parser",
-    "./draw-model" 
+    "./draw-model",
+    "./pedagogical_module"
 ],function(dom, geometry, on, aspect, ioQuery, ready, menu, loadSave, model, 
-	   Graph, Table, wrapText, controller, Parser, drawmodel
+	   Graph, Table, wrapText, controller, Parser, drawmodel, PM
 	  ){ 
 
     console.log("load main.js");
@@ -35,9 +36,8 @@ define([
 
 	console.info("Have solution: ", solutionGraph);
 
-	var givenModel = new model();
+	var givenModel = new model(query.m);
 	givenModel.loadModel(solutionGraph);
-	
 	
 	/*
 	@author: Deepak
@@ -172,6 +172,7 @@ define([
 	ready(function(){
 
 	    var drawModel = new drawmodel(givenModel);
+	    var pm = new PM(query.u, givenModel);
 	    var controllerObject  = new controller(givenModel);
 	    
 	    /* add to menu */

@@ -112,7 +112,7 @@ define([
                     var inputs = givenModel.getStudentNodeInputs(id);
                     array.forEach(inputs, function(input){
 			console.log("---- adding connection from ", input, " to ", id);
-                        this.instance.connect({source: input, target: id});
+                        instance.connect({source: input, target: id});
                     });
 		    
                 });
