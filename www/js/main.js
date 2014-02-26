@@ -43,8 +43,8 @@ define([
 	@author: Deepak
 	@brief: calling calculation class to get node values and passing parameters to rendergraph and rendertable
 	*/
-	var calc = new calculations(solutionGraph);
-	var obj = calc.gerParametersForRendering(solutionGraph);
+	var calc = new calculations(solutionGraph,true);
+	var obj = calc.gerParametersForRendering(solutionGraph,true);
 	
 	/*
 	 start up controller

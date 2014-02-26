@@ -215,6 +215,14 @@ define([
 		});
 		return unitList;
             },
+            getEachStudentNodeUnitbyID: function() {
+            //summary: returns key/value pair of node-id/unit
+            var unitList = {};
+            array.forEach(this.getStudentNodes(), function(node) {
+                unitList[node.ID] = node.units;
+            });
+            return unitList;
+        },
             getAllUnits: function() {
 		// Summary:  returns a list of all distinct units 
 		// (string format) defined in a problem.
@@ -285,6 +293,14 @@ define([
 		}
 		return null;
             },
+            //function added to get student node type
+            getStudentNodeType: function(/*string*/ id) {
+            for (var i = 0; i < this.model.task.studentModelNodes.length; i++) {
+                if (id === this.model.task.studentModelNodes[i].ID)
+                    return this.model.task.studentModelNodes[i].type;
+            }
+            return null;
+        },
             isParentNode: function(/*string*/ id) {
 		// Summary: returns true if a node is the parent node in a tree structure; parent 
 		//      nodes will be displayed first when the student demos a node name/description
@@ -1056,11 +1072,19 @@ define([
 		});
 	    },
 	    getNodes: lang.hitch(obj, obj.getNodes),
+        getNodeEquation: lang.hitch(obj, obj.getNodeEquation),
+        getNodeInitial: lang.hitch(obj, obj.getNodeInitial),
+        getNodeType: lang.hitch(obj, obj.getNodeType),
+        getEachNodeUnitbyID: lang.hitch(obj, obj.getEachNodeUnitbyID),
 	    setNodeName: lang.hitch(obj, obj.setNodeName)
 	};
 
 	obj.student = {
 	    getNodes: lang.hitch(obj, obj.getStudentNodes),
+        getNodeEquation: lang.hitch(obj, obj.getStudentNodeEquation),
+        getNodeInitial: lang.hitch(obj, obj.getStudentNodeInitial),
+        getNodeType: lang.hitch(obj, obj.getStudentNodeType),
+        getEachNodeUnitbyID: lang.hitch(obj, obj.getEachStudentNodeUnitbyID),
 	    setNodeName: lang.hitch(obj, obj.setStudentNodeName)
 	};
 

@@ -20,16 +20,33 @@ define([
 			modelNodes:null,
 			//current node values
 			currentNodeValues: {},
+            //set current mode. TRUE = givenModel / FALSE = StudentModel
+            active:null,
 			
 			
-			constructor: function(solutionGraph)
+			constructor: function(solutionGraph,mode)
 			{
 				this.model = new model();
+                this._setMode(mode);
 				this._setModel(solutionGraph);
 				this._setStartTime();
 				this._setEndtime();
 				this._setTimeStep();
+                this.active = mode;
 			},
+
+            //this function sets mode of model to be student or given
+            _setMode: function(mode)
+            {
+                if(mode == true)
+                {
+                    this.active = this.model.given;
+                }
+                else
+                {
+                    this.active = this.model.student;
+                }
+            },
 		
 			//set model based on given solution graph (private method)
 			_setModel:function(solutionGraph)
@@ -41,7 +58,7 @@ define([
 			//get model nodes from solution
 			_getModelNodes:function()
 			{
-				this.modelNodes = this.model.getNodes();
+				this.modelNodes = this.active.getNodes();
 			},
 			
 			//set start-time (private method)
@@ -70,7 +87,7 @@ define([
 				
 				for(i=0; i<this.modelNodes.length; i++)
 				{
-					nodeEquations[this.modelNodes[i].ID] = this.model.getNodeEquation(this.modelNodes[i].ID);
+					nodeEquations[this.modelNodes[i].ID] = this.active.getNodeEquation(this.modelNodes[i].ID);
 				}
 				
 				return nodeEquations;
@@ -83,7 +100,7 @@ define([
 				var j, arrayOfNodeValues={};
 				for(var j=0; j<this.modelNodes.length; j++)
 				{
-					if(this.model.getNodeType(this.modelNodes[j].ID) != 'parameter')
+					if(this.active.getNodeType(this.modelNodes[j].ID) != 'parameter')
 					{
 						arrayOfNodeValues[this.modelNodes[j].ID] = new Array();
 					}
@@ -104,7 +121,7 @@ define([
 					
 						for(i=0;i<this.modelNodes.length;i++)
 						{
-							this.currentNodeValues[this.modelNodes[i].ID] = this.model.getNodeInitial(this.modelNodes[i].ID);
+							this.currentNodeValues[this.modelNodes[i].ID] = this.active.getNodeInitial(this.modelNodes[i].ID);
 						}
 						
 						arrayOfTimeSteps.push(this.startTime);
@@ -112,15 +129,15 @@ define([
 						for(j=0;j<this.modelNodes.length;j++)
 						{
 							var _v;
-							if(this.model.getNodeInitial(this.modelNodes[j].ID) == null)
+							if(this.active.getNodeInitial(this.modelNodes[j].ID) == null)
 							{
 								_v = this._calcNULLNodeValue(this.modelNodes[j].ID,nodeEquations);
 							}
 							else
 							{
-								_v = this.model.getNodeInitial(this.modelNodes[j].ID);;
+								_v = this.active.getNodeInitial(this.modelNodes[j].ID);
 							}
-							if(this.model.getNodeType(this.modelNodes[j].ID) != 'parameter')
+							if(this.active.getNodeType(this.modelNodes[j].ID) != 'parameter')
 							{
 								arrayOfNodeValues[this.modelNodes[j].ID].push(_v);
 							}			
@@ -134,7 +151,7 @@ define([
 							arrayOfTimeSteps.push(i);
 							for(j=0;j<this.modelNodes.length;j++)
 							{
-								if(this.model.getNodeType(this.modelNodes[j].ID) != 'parameter')
+								if(this.active.getNodeType(this.modelNodes[j].ID) != 'parameter')
 								{
 									arrayOfNodeValues[this.modelNodes[j].ID].push(this._calcNULLNodeValue(this.modelNodes[j].ID,nodeEquations));
 								}
@@ -176,10 +193,10 @@ define([
 				var i,count=0;
 				for(i=0;i<this.modelNodes.length;i++)
 				{
-					if(this.model.getNodeType(this.modelNodes[i].ID) == 'parameter')
+					if(this.active.getNodeType(this.modelNodes[i].ID) == 'parameter')
 					{
 						arrayOfParameterNames[this.modelNodes[i].ID] = this.model.getNodeNameByID(this.modelNodes[i].ID);
-						arrayOfParamInitialValues[this.modelNodes[i].ID] = this.model.getNodeInitial(this.modelNodes[i].ID);
+						arrayOfParamInitialValues[this.modelNodes[i].ID] = this.active.getNodeInitial(this.modelNodes[i].ID);
 						count++;
 					}
 				}
@@ -191,13 +208,13 @@ define([
 				var obj = {};
 				
 				obj["xUnits"] = this.model.getUnits();
-				obj["units"] = this.model.getEachNodeUnitbyID();
+				obj["units"] = this.active.getEachNodeUnitbyID();
 				
 				return obj;
 			},
 			
 			//@brief: this function returns an object having all parameters required for rendering graph and table
-			gerParametersForRendering: function(solutionGraph)
+			gerParametersForRendering: function(solutionGraph,mode)
 			{
 				//variable to tell function if we are calculating starttime value for node or rest other values
 				//This is done as initially few node values can be null and these values need to be setup
@@ -214,7 +231,9 @@ define([
 				var arrayOfNodeValues = {};
 				//create an array which stores values of timesteps
 				var arrayOfTimeSteps = [];
-				
+
+                //set mode to be student or given
+                this._setMode(mode);
 				//set up a model based on solution-graph and obtain number of nodes in a graph
 				this._setModel(solutionGraph);
 				//get equations of all nodes
@@ -238,16 +257,8 @@ define([
 				var object = {noOfParam:noOfParam,arrayOfParameterNames:arrayOfParameterNames,arrayOfParamInitialValues:arrayOfParamInitialValues,
 				xUnits:xUnits,units:units,arrayOfTimeSteps:arrayOfTimeSteps,arrayOfNodeValues:arrayOfNodeValues
 				};
-				/*
-				object.noOfParam = noOfParam;
-				object.arrayOfParameterNames = arrayOfParameterNames;
-				object.arrayOfParamInitialValues = arrayOfParamInitialValues;
-				object.xUnits = xUnits;
-				object.units = units;
-				object.arrayOfTimeSteps = arrayOfTimeSteps;
-				object.arrayOfNodeValues = arrayOfNodeValues;
-				*/
-				return object;
+
+                return object;
 			}
 	});		
 });
