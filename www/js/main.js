@@ -13,10 +13,9 @@ define([
     "./controller",
     "parser/parser",
     "./draw-model",
-    "./pedagogical_module",
-	"./calculations"
+    "./calculations"
 ],function(dom, geometry, on, aspect, ioQuery, ready, menu, loadSave, model, 
-	   Graph, Table, wrapText, controller, Parser, drawmodel, PM,calculations
+	   Graph, Table, wrapText, controller, Parser, drawmodel, calculations
 	  ){ 
 
     console.log("load main.js");
@@ -54,8 +53,7 @@ define([
 	ready(function(){
 
 	    var drawModel = new drawmodel(givenModel);
-	    var pm = new PM(query.u, givenModel);
-	    var controllerObject  = new controller(givenModel);
+	    var controllerObject  = new controller(query.m, givenModel);
 	    
 	    /* add to menu */
 	    menu.add("createNodeButton", function(){

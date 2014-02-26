@@ -167,24 +167,21 @@ define([
                 }
             }
         },
-        descriptionAction: function(/*string*/ answer) {
+        descriptionAction: function(/*string*/ id) {
             //Summary: accepts an answer that the student provides, checks its validity,
             //      and returns the current ID, whether the answer is correct, and a 
             //      message
-            //Note: the ID of the node may change until the correct answer is reached
-            //      or the system provides it; at this point the ID will be set; if
-            //      this.infoObject.status = "correct" then this.infoObject.ID is the
-            //      correct ID.
+            //Note: Each choice is labeled by either a node ID (for choices that
+            //      correspond to nodes in the given model) or other label (for disctractors).
 
             //resets the object that will be returned
-            this.infoObject.ID = this.model.getNodeIDByDescription(answer);
+            this.infoObject.ID = id;
             this.infoObject.message = null;
             this.infoObject.status = null;
 
-            var id = this.infoObject.ID;
-
             //creates pedagogicalTable, a double array of sorts that helps assign the
             //      appropriate actions to be taken; the actions are assigned to sequence
+	    // BvdS:  this should be combined into one object defining pedagogicalTable 
             var optimal = {coached: "ijno", feedback: "ijno", test: "ino", power: "ino"};
             var notTopLevel = {coached: "fhm", feedback: "ijno", test: "ino", power: "ino"};
             var premature = {coached: "fgm", feedback: "ijno", test: "ino", power: "ino"};
@@ -201,11 +198,11 @@ define([
             var sequence;
 
             //assign the action based on the answer
-            if (id === null) {
+            if (!this.model.given.isNode(id)) {
                 for (var i = 0; i < this.model.getExtraDescriptions.length; i++) {
-                    if (answer === this.model.getExtraDescriptions("initial")[i])
+                    if (id === this.model.getExtraDescriptions("initial")[i].ID)
                         sequence = pedagogicalTable["initialValue"][this.userType];
-                    else if (answer === this.model.getExtraDescriptions("extra")[i])
+                    else if (id === this.model.getExtraDescriptions("extra")[i].ID)
                         sequence = pedagogicalTable["extraValue"][this.userType];
                     else
                         sequence = pedagogicalTable["irrelevant"][this.userType];

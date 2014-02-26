@@ -1050,6 +1050,11 @@ define([
 	 */
 
 	obj.given = {
+	    isNode: function(/*string*/ id){
+		return array.some(this.getNodes(),function(node){
+		    return node.ID === id;
+		});
+	    },
 	    getNodes: lang.hitch(obj, obj.getNodes),
 	    setNodeName: lang.hitch(obj, obj.setNodeName)
 	};
