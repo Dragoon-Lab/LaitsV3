@@ -22,18 +22,16 @@ node editor.  The view is implemented in `index.html` and using the
 addition, we have the Pedagogical Module (PM). 
 
 `js/model.js` provides an interface to the model.  It has many
-Java-style getter and setter methods. For AUTHOR mode, one is
-modifying `givenModel` while in other major modes, one is modifying
-the `studentModel`.
-To handle AUTHOR mode, we extend the `model` class and to have
-model accessor functions that give access to the appropriate model,
-depending on the major mode.  The new class is called `mmodel`.
-For example, in the model class, we have the functions
-`getGivenNodes()` and `getStudentNodes()` to get the `givenModel` and
-`studentModel` nodes, respectively.  The function in `mmodel` would be
-`getNodes()`. 
+Java-style getter and setter methods. For AUTHOR mode, the student
+is mofiying the **given model**, subclass `given`, while in other major
+modes, the student is modifying the **student model**, subclass `student`.
+To handle switching between modes, we introduce  an **active model**,
+the subclass `active`, which points to the appropriate model.  For example, 
+`given.getNodes()` and `student.getNodes()` get the given model and
+student model nodes, respectively.  The corresponding **active model**
+function is `active.getNodes()`. 
 
-`js/pedagogical_model.js` informs the controller about updates
+`js/pedagogical_module.js` informs the controller about updates
 [controls](http://www.w3.org/TR/html401/interact/forms.html#form-controls)
 in the Node Editor:
 
@@ -43,9 +41,10 @@ in the Node Editor:
 * it may update the value associated with a control (in the case of
   demo).
 
-The PM saves state in the `givenModel` and interacts directly with the
-model for this purpose.  Although the PM reads the `studentModel`, it
-generally does not update it.
+The PM saves state in the **given model** and interacts directly with the
+model for this purpose.  Although the PM reads the **student model**, it
+generally does not update it (changing an input value on "demo" *may*
+be an exception).
 
 Methods in the PM return an array of directives like this:
 
@@ -58,14 +57,15 @@ Methods in the PM return an array of directives like this:
 		{id: "selectDescription", attribute: "selected", value: "id3"} 
 	]
 
-The attribute names in the above example are not set in stone:  they
+These attribute names in the above example are not set in stone:  they
 should be chosen to map easily onto controls in the Node Editor.
 
 `js/controller.js` acts as the controller.  On opening the node
-editor, it sets values of the Node Editor controls based on `studentModel`.  It also
-queries the PM to set other attributes of the controls.
-It sends user input changes to `studentModel`  and to the PM and updates
-the view based on the response of the PM.
+editor, it sets values of the Node Editor controls based on the **active
+model**.  It also queries the PM to set other attributes of the controls.
+It sends user input changes to the **active model**  and to the PM and updates
+the view based on the response of the PM.  The controller does not
+access the **given model** or **student model** directly.
 
 ## Automatic node placement ##
 

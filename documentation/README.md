@@ -8,7 +8,8 @@ This contains mostly design documents.
 * [JavaScript design](javascript.md)
 * [JSON format](json-format.md)
 * [Forum](forum.md)
-* [Pedagogical Model JavaScript Version](Pedagogical-Model-JavaScript-Version.docx)
+* Kurt's design for the [Pedagogical Module](Pedagogical-Module-v2.docx)
+  as well as [Sachin's version](Pedagogical-Module-JavaScript-Version-2.docx)
 * [Logging format](logs-structure.md)
 * For Java version:  [Node Editor](node-editor.md) with Description,
   Plan, and Calculation tabs

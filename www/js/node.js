@@ -1,3 +1,4 @@
+/* global define */
 /**
  * 
  * Given Model node creation class used by model.js for Dragoon problems
@@ -43,15 +44,15 @@ define(["dojo/_base/declare"]
         // **** Need to add counter to check number of times part of equation entered comparied to the 
         //          number of times it was correct, compared to the inputs (as discussed with Brett)
         addAttempt: function(/*bool*/ desc, /*bool*/ type, /*bool*/ init, /*bool*/ units, /*bool*/ equat) {
-            if (desc === true)
+            if (desc)
                 this.attemptCount.description += 1;
-            if (type === true)
+            if (type)
                 this.attemptCount.type += 1;
-            if (init === true)
+            if (init)
                 this.attemptCount.initial += 1;
-            if (units === true)
+            if (units)
                 this.attemptCount.units += 1;
-            if (equat === true)
+            if (equat)
                 this.attemptCount.equation += 1;
         },
         addStatus: function(/*string*/ desc, /*string*/ type, /*string*/ init, /*string*/ units, /*string*/ equat) {

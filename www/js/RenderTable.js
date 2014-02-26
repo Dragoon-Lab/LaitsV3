@@ -37,16 +37,17 @@ define([
          *  @brief:constructor for a graph object
          *  @param: noOfParam
          */
-        constructor: function(noOfParam,paramNames, paramValue,xUnits,units,timeSteps,nodeValueArray)
+        //constructor: function(noOfParam,paramNames, paramValue,xUnits,units,timeSteps,nodeValueArray)
+		constructor: function(object)
         {
      	    //assign parameters to object properties 
-     	    this.inputParam = noOfParam;
-     	    this.xUnits = xUnits;
-			this.units = units;
-			this.timeSteps = timeSteps;
-			this.nodeValueArray = nodeValueArray;
-			this.paramNames = paramNames;
-			this.paramValue  = paramValue;
+     	    this.inputParam = object.noOfParam;
+     	    this.xUnits = object.xUnits;
+			this.units = object.units;
+			this.timeSteps = object.arrayOfTimeSteps;
+			this.nodeValueArray = object.arrayOfNodeValues;
+			this.paramNames = object.arrayOfParameterNames;
+			this.paramValue  = object.arrayOfParamInitialValues;
      	    this.initialize();     	    
         },
 
