@@ -2,7 +2,7 @@
 
 First, some definitions. We distinguish between the LMS and the tutor:
 
-* __tutor__ is the Javascript code for Dragoon. It is invoked
+* __tutor__ is the JavaScript code for Dragoon. It is invoked
 via the URL `index.html`. On startup, the URL includes name-value pairs
 of the [major mode](major-modes.md), user name, section, 
 problem name, and (optionally) the problem author. 
@@ -28,18 +28,18 @@ their name. They are available to all users
 (no section restrictions), and one can assume that the LMS has a list of
 these problems. Students select published problems via the LMS. 
 If the tutor is being run locally, these problems are 
-stored along side the java code (this doesn't exist yet).
+stored along side the Java code (this doesn't exist yet).
 * __custom__ or __dynamic__ problems are authored
 by users. 
 
 ## Session ID ##
 
-Associated with each java/javascript instance of Dragoon will be a unique session identifier.  In the javascript version, a page reload will generate a new session ID.  In the java version, each running of `Laits.jar` will generate a new session ID.  Opening more than one problem (or renaming a problem) *may* occur during a given session.
+Associated with each Java/JavaScript instance of Dragoon will be a unique session identifier.  In the JavaScript version, a page reload will generate a new session ID.  In the Java version, each running of `Laits.jar` will generate a new session ID.  Opening more than one problem (or renaming a problem) *may* occur during a given session.
 
 The format for the session ID variable `sessionId` will be a string of length 50.
 It is convenient to generate `sessionId` by applying a hash function
 to the user name and section name and adding a timestamp.  An example
-javascript implementation can be found in Andes:  see the function
+JavaScript implementation can be found in Andes:  see the function
 `FNV1aHash` and the code that follows it in the file
 [`web-UI/andes/startup.js`](https://github.com/bvds/andes/blob/master/web-UI/andes/startup.js).
 In Andes, we found it convenient to include the session ID as an HTTP
@@ -69,7 +69,7 @@ solution.   This table is accessed via the script `session_manager.php`.
 **`solutions`** table stores solution graphs for custom problems.
 This table has columns for session id, a "share" bit
 (default zero), a "deleted" bit (default zero), a timestamp and the 
-solution graph (XML for Java version and JSON for Javascript version) (text). 
+solution graph (XML for Java version and JSON for JavaScript version) (text). 
 The primary key for the table is the session id:  only one copy of
 the solution persists for a session id.
 
@@ -118,16 +118,16 @@ Quantities in  categories *name* and *short name* are strings, while
 
 This list is not written in stone:  please correct/change/improve as you 
 see fit.  The idea is not to change this all at once, especially in the 
-java code, since we are switching over to Javascript.  However, any 
-Javascript should be consistent with this list.
+Java code, since we are switching over to JavaScript.  However, any 
+JavaScript should be consistent with this list.
 
 
 ## Access to the custom problem solution graphs ##
 
-In the Javascript version, solutions are stored in the `solutions` table.
+In the JavaScript version, solutions are stored in the `solutions` table.
 
 In the Java version, the state associated with a problem solution
-has two forms:  an internal form and an exported form.  The java
+has two forms:  an internal form and an exported form.  The Java
 client cannot read the exported form in author mode.
 The internal form is stored in the table `unsolutions` and the 
 exported form is stored in the table `solutions`. 
@@ -180,7 +180,7 @@ In author mode, the LMS *may* choose to display only problems that the user
 has themselves authored, along with the ability to create a new
 problem name. The author can choose to share his problem with other
 students to solve as a student, test, or coached mode problem.  In 
-Java this is the "Export" step, in Javascript this is done by enabling
+Java this is the "Export" step, in JavaScript this is done by enabling
 the "share" option.  The author needs to be able to define a node as 
 a "first node" for the coached mode target node strategy to work;
 these could be set at export or by a toggle in the node editor.

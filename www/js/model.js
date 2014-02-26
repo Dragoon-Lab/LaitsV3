@@ -130,7 +130,7 @@ define([
                     if (currentNodeID === this.model.task.givenModelNodes[i].ID) {
 			for (var ii = 0; ii < this.model.task.givenModelNodes[i].inputs.length; ii++)
                             if (checkedNodes.indexOf(this.model.task.givenModelNodes[i].inputs[ii].ID) === -1)
-				if (this.isNodeVisible(this.model.task.givenModelNodes[i].inputs[ii].ID) === false) {
+				if (!this.isNodeVisible(this.model.task.givenModelNodes[i].inputs[ii].ID)) {
                                     return this.model.task.givenModelNodes[i].inputs[ii].ID;
 				} else {
                                     var temp = this._checkChildren(this.model.task.givenModelNodes[i].inputs[ii].ID, checkedNodes);
@@ -252,17 +252,17 @@ define([
 		return d;
             },
             getNodeNameByID: function(/*string*/ id) {
-		// Summary: returns the name of a node matching the given id; the given 
-		//      model nodes are searched first, followed by the student model nodes
-		for (var i = 0; i < this.model.task.givenModelNodes.length; i++) {
-                    if (id === this.model.task.givenModelNodes[i].ID)
-			return this.model.task.givenModelNodes[i].name;
-		}
-		for (var i = 0; i < this.model.task.studentModelNodes.length; i++) {
-                    if (id === this.model.task.studentModelNodes[i].ID)
-			return this.model.task.studentModelNodes[i].name;
-		}
-		return null; // returns null if the node cannot be found
+		// Summary: returns the name of a node matching the given student
+		//      node  id.  If no match is found, then return null.
+		var ret = null;
+		array.some(this.getStudentNodes(), function(node){
+		    if(node.ID == id && node.givenNodeID){
+			ret = this.getNode(node.givenNodeID).name;
+			return true;
+		    } else
+			return false;
+		}, this);
+		return ret; // returns null if the node cannot be found
             },
             getNodeIDByName: function(/*string*/ name) {
 		// Summary: returns the id of a node matching the given name; the given 
@@ -271,6 +271,8 @@ define([
                     if (name === this.model.task.givenModelNodes[i].name)
 			return this.model.task.givenModelNodes[i].ID;
 		}
+		console.error("Can't find node name in given model: ", name);
+		// Need to decide how to handle student model node name
 		for (var i = 0; i < this.model.task.studentModelNodes.length; i++) {
                     if (name === this.model.task.studentModelNodes[i].name)
 			return this.model.task.studentModelNodes[i].ID;
@@ -418,8 +420,8 @@ define([
                     }
 		}
 		if (id === null)
-                    for (var i = 0; i < this.model.task.givenModelNodes.length; i++)
-			if (this.isNodeVisible(this.model.task.givenModelNodes[i].ID) === false)
+                    for (i = 0; i < this.model.task.givenModelNodes.length; i++)
+			if (!this.isNodeVisible(this.model.task.givenModelNodes[i].ID))
                             return this.model.task.givenModelNodes[i].ID;
 		return id;
             },
@@ -498,12 +500,12 @@ define([
 			}
 		return null;
             },
-            setDescriptionAttemptCount: function(/*string*/ id, /*int*/ count) {
+            incrementDescriptionAttemptCount: function(/*string*/ id) {
 		// Summary: returns the number of attempts a student has made on the 
 		//      given part of the problem
 		for (var i = 0; i < this.model.task.givenModelNodes.length; i++)
                     if (id === this.model.task.givenModelNodes[i].ID)
-			this.model.task.givenModelNodes[i].attemptCount.description = count;
+			this.model.task.givenModelNodes[i].attemptCount.description++;
             },
             getNodeStatus: function(/*string*/ id, /*string*/ part) {
 		// Summary: returns the progress (correct, incorrect, or demo) of 
@@ -554,16 +556,16 @@ define([
 		// Summary: returns true if a node in the student model is also found in the given model
 		for (var i = 0; i < this.model.task.studentModelNodes.length; i++) {
                     if (id === this.model.task.studentModelNodes[i].ID)
-			return this.model.task.studentModelNodes[i].inGivenModel;
+			return this.model.task.studentModelNodes[i].givenNodeID;
 		}
 		return null;
             },
             getStudentNodeInputs: function(/*string*/ id) {
 		var node = this.getStudentNode(id);
 		// Summary: returns an array with the node ids that the student has selected as inputs
-		return node && array.map(node.inputs, function(input) {
+               return node && array.map(node.inputs, function(input) {
                     return input.ID;
-		});
+               });
             },
             isStudentNodeInput: function(/*string*/ mainNodeID, /*string*/ inputID) {
 		// Summary: returns true if the node identified by inputID is an 
@@ -696,7 +698,7 @@ define([
 			if (this.model.task.givenModelNodes.length > i)
                             this.model.task.givenModelNodes[i].order = this.model.task.givenModelNodes[i].order - 1;
                     }
-                    else if (deleted === true)//maintains order of nodes during deletion                    
+                    else if (deleted)//maintains order of nodes during deletion                    
 			this.model.task.givenModelNodes[i].order = this.model.task.givenModelNodes[i].order - 1;
 		}
 		this.deleteStudentNode(id);
@@ -732,6 +734,8 @@ define([
                     if (this.model.task.givenModelNodes[i].ID === id)
 			arrayID1 = i;
 		}
+		console.error("Can't find node id in given model: ", id, name);
+		// Need to decide how to handle student model node id/naeme
 		for (var i = 0; i < this.model.task.studentModelNodes.length; i++) {
                     if (this.model.task.studentModelNodes[i].name === name)
 			return false;
@@ -850,7 +854,7 @@ define([
                     if (this.model.task.studentModelNodes[i].studentSelections.equation.indexOf(id) > -1)
 			this.model.task.studentModelNodes[i].studentSelections.equation = "";
                     if (id === this.model.task.studentModelNodes[i].ID) {
-			if (this.model.task.studentModelNodes[i].inGivenModel === true) // checks if node was in given model
+			if (this.model.task.studentModelNodes[i].givenNodeID) // checks if node was in given model
                             for (var ii = 0; ii < this.model.task.givenModelNodes.length; ii++)
 				if (this.model.task.givenModelNodes[ii].ID === id)
                                     this.model.task.givenModelNodes[ii].resetStatus();
@@ -863,22 +867,22 @@ define([
             },
             setStudentNodeName: function(/*string*/ id, /*string*/ name) {
 		// Summary: sets a name for the student model node and attempts to match it against
-		//      the given model; returns the nodes ID, which updates to match the given 
-		//      model node, if it exists
+		//      the given model; returns the nodes ID
 		// Note: this function should only be used to set the name of a node in the student 
 		//      model; if a problem is being authored, used setNodeName() to change the name 
 		//      of a node in the given model; if an author wants a problem to appear in both
 		//      the given model and the student model (so that the node appears when the 
 		//      problem is started) use setNodeName() to change the name in models both and 
 		//      to maintain the connection between the nodes
+		console.error("setStudentNodeName breaks current design");
 		for (var i = 0; i < this.model.task.studentModelNodes.length; i++)
                     // this first for loop ensures that the node name is unique to other student model node names
                     if (this.model.task.studentModelNodes[i].name === name)
 			return null;
 		for (var i = 0; i < this.model.task.studentModelNodes.length; i++) {
                     if (id === this.model.task.studentModelNodes[i].ID) {
-			if (this.model.task.studentModelNodes[i].inGivenModel === true) {
-                            // if inGivenModel = true and name is being changed then node must be re-created 
+			if (this.model.task.studentModelNodes[i].givenNodeID) {
+                            // if givenNodeID exists and name is being changed then node must be re-created 
                             //      to reset values; new node will be at position studentModelNodes.length - 1
                             this.deleteStudentNode(id);
                             id = this.addStudentNode();
@@ -887,8 +891,8 @@ define([
 			this.model.task.studentModelNodes[i].name = name;
 			for (var ii = 0; ii < this.model.task.givenModelNodes.length; ii++) {
                             if (name === this.model.task.givenModelNodes[ii].name) {
-				this.model.task.studentModelNodes[i].ID = this.model.task.givenModelNodes[ii].ID;
-				this.model.task.studentModelNodes[i].inGivenModel = true;
+				this.model.task.studentModelNodes[i].givenNodeID = 
+				    this.model.task.givenModelNodes[ii].ID;
 				id = this.model.task.studentModelNodes[i].ID;
 				this.lastNodeVisible = id;
 				return id;
@@ -919,7 +923,7 @@ define([
 			if (i === this.model.task.studentModelNodes.length - 1)
                             return false;
                     }
-		for (var i = 0; i < this.model.task.studentModelNodes.length; i++) {
+		for (i = 0; i < this.model.task.studentModelNodes.length; i++) {
                     if (inputInto === this.model.task.studentModelNodes[i].ID) {
 
 			for (var ii = 0; ii < this.model.task.studentModelNodes[i].inputs.length; ii++) {
@@ -960,7 +964,7 @@ define([
 			switch (part) {
                         case "description":
                             this.model.task.studentModelNodes[i].setStudentSeletions(studInput, null, null, null, null);
-                            if (this.model.task.studentModelNodes[i].inGivenModel === true) {
+                            if (this.model.task.studentModelNodes[i].givenNodeID) {
                                 if (this.getNodeCorrectDescription(id) === studInput)
                                     this._setStatus(id, part, "correct");
                                 else
@@ -973,7 +977,7 @@ define([
                             break;
                         case "type":
                             this.model.task.studentModelNodes[i].setStudentSeletions(null, studInput, null, null, null);
-                            if (this.model.task.studentModelNodes[i].inGivenModel === true) {
+                            if (this.model.task.studentModelNodes[i].givenNodeID) {
                                 if (this.getNodeType(id) === studInput)
                                     this._setStatus(id, part, "correct");
                                 else
@@ -986,7 +990,7 @@ define([
                             break;
                         case "initial":
                             this.model.task.studentModelNodes[i].setStudentSeletions(null, null, studInput, null, null);
-                            if (this.model.task.studentModelNodes[i].inGivenModel === true) {
+                            if (this.model.task.studentModelNodes[i].givenNodeID) {
                                 if (this.getNodeInitial(id) === studInput)
                                     this._setStatus(id, part, "correct");
                                 else
@@ -999,7 +1003,7 @@ define([
                             break;
                         case "units":
                             this.model.task.studentModelNodes[i].setStudentSeletions(null, null, null, studInput, null);
-                            if (this.model.task.studentModelNodes[i].inGivenModel === true) {
+                            if (this.model.task.studentModelNodes[i].givenNodeID) {
                                 if (this.getNodeUnits(id) === studInput)
                                     this._setStatus(id, part, "correct");
                                 else
@@ -1012,7 +1016,7 @@ define([
                             break;
                         case "equation":
                             this.model.task.studentModelNodes[i].setStudentSeletions(null, null, null, null, studInput);
-                            if (this.model.task.studentModelNodes[i].inGivenModel === true) {
+                            if (this.model.task.studentModelNodes[i].givenNodeID) {
                                 if (this.getNodeEquation(id) === studInput)
                                     this._setStatus(id, part, "correct");
                                 else
@@ -1072,24 +1076,30 @@ define([
 		});
 	    },
 	    getNodes: lang.hitch(obj, obj.getNodes),
-        getNodeEquation: lang.hitch(obj, obj.getNodeEquation),
-        getNodeInitial: lang.hitch(obj, obj.getNodeInitial),
-        getNodeType: lang.hitch(obj, obj.getNodeType),
-        getEachNodeUnitbyID: lang.hitch(obj, obj.getEachNodeUnitbyID),
+            getNodeEquation: lang.hitch(obj, obj.getNodeEquation),
+            getNodeInitial: lang.hitch(obj, obj.getNodeInitial),
+            getNodeType: lang.hitch(obj, obj.getNodeType),
+            getEachNodeUnitbyID: lang.hitch(obj, obj.getEachNodeUnitbyID),
 	    setNodeName: lang.hitch(obj, obj.setNodeName)
 	};
 
 	obj.student = {
+	    getGivenNodeID: function(id){
+		// Return any matched given model id for student node.
+		var node = this.getNode(id);
+		return node && node.givenNodeID;
+	    },
 	    getNodes: lang.hitch(obj, obj.getStudentNodes),
-        getNodeEquation: lang.hitch(obj, obj.getStudentNodeEquation),
-        getNodeInitial: lang.hitch(obj, obj.getStudentNodeInitial),
-        getNodeType: lang.hitch(obj, obj.getStudentNodeType),
-        getEachNodeUnitbyID: lang.hitch(obj, obj.getEachStudentNodeUnitbyID),
+	    getNode: lang.hitch(obj, obj.getStudentNode),
+            getNodeEquation: lang.hitch(obj, obj.getStudentNodeEquation),
+            getNodeInitial: lang.hitch(obj, obj.getStudentNodeInitial),
+            getNodeType: lang.hitch(obj, obj.getStudentNodeType),
+            getEachNodeUnitbyID: lang.hitch(obj, obj.getEachStudentNodeUnitbyID),
 	    setNodeName: lang.hitch(obj, obj.setStudentNodeName)
 	};
 
 	// Execute the constructor
-	obj.constructor.apply(obj,arguments);
+	obj.constructor.apply(obj, arguments);
 
 	return obj;
     

@@ -38,7 +38,7 @@ define([
             //this function sets mode of model to be student or given
             _setMode: function(mode)
             {
-                if(mode == true)
+                if(mode)
                 {
                     this.active = this.model.given;
                 }
