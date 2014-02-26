@@ -335,6 +335,7 @@ JSON document.
                     },
                     {
                         "ID": "id5",
+						"givenNodeID": "id2",
                         "inputs":  [ { "ID": "id4" }, { "ID": "id6" } ],
                         "position": {
                             "x": 300,

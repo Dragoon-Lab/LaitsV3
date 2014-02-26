@@ -834,11 +834,10 @@ define([
             },
             addStudentNode: function() {
 		// Summary: builds a new node in the student model and returns the node's unique ID
-		var id = "id" + this.ID;
+		var id = "id" + this.ID++;
 		this._updateNextXYPosition();
 		var xPos = this.x;
 		var yPos = this.y;
-		this.ID++;
 		var newNode = new StudentNode(id, xPos, yPos);
 		this.model.task.studentModelNodes.push(newNode);
 		return id;

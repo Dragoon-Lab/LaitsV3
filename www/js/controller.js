@@ -101,7 +101,7 @@ define([
 	    var model = this._model;
 	    var editor = this._nodeEditor;
 	    //set task name
-	    var nodeName = model.getNodeNameByID(nodeid);
+	    var nodeName = model.getNodeNameByID(nodeid) || "New quantity";
 	    editor.set('title', nodeName);
 	    //populate type
 	    // populate initial value
