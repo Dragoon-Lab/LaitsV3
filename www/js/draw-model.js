@@ -106,22 +106,26 @@ define([
                     });
                 });
 		
-                array.forEach(vertices, function(vertex){
-		    // Not sure why vertex is an array and not just the <div>
-		    var id = attr.get(vertex[0], "id");
-                    var inputs = givenModel.getStudentNodeInputs(id);
-                    array.forEach(inputs, function(input){
-			console.log("---- adding connection from ", input, " to ", id);
-                        instance.connect({source: input, target: id});
-                    });
-		    
-                });
+
 		
             });
+
+            array.forEach(vertices, function(vertex){
+            // Not sure why vertex is an array and not just the <div>
+                var id = attr.get(vertex[0], "id");
+                var inputs = givenModel.getStudentNodeInputs(id);
+                array.forEach(inputs, function(input){
+                    console.log("---- adding connection from ", input, " to ", id, " scope is ", this);
+                    this.addConnection(vertex, input);
+                }, this);
+
+            }, this);
 
 	    return instance;
 
 	},
+
+    /* addNode: Add a node to the jsPlumb model.  */
 
 	addNode: function(/*object*/ node){
                 /*
@@ -153,6 +157,16 @@ define([
         });
 
 	},
+
+    /* addConnection: add a input connection between two nodes.  Pass in strings representing the IDs of the source and destination nodes. */ 
+
+    addConnection: function(/*string*/ source, /*string*/ destination){
+        this._instance.connect({source: source, target: destination});
+    },
+
+    deleteNode: function(/*object*/ node){
+
+    },
 
 	// Keep track of whether there was a mouseDown and mouseUp
 	// with no intervening mouseMove
