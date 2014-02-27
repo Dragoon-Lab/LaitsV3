@@ -23,7 +23,7 @@
                 "inputs": [ { "ID" : "id2" } ],
                 "initial": 100,
                 "equation": "id2",
-                "correctDesc": "The number of rabbits in the population",
+                "description": "The number of rabbits in the population",
                 "attemptCount": {
                     "description": 2,
                     "type": 1,
@@ -50,7 +50,7 @@
                 "inputs": [ { "ID": "id1" }, { "ID": "id3" } ],
                 "initial": null,
                 "equation": "id1 * id3",
-                "correctDesc": "The number of rabbits born each month",
+                "description": "The number of rabbits born each month",
                 "attemptCount": {
                     "description": 2,
                     "type": 1,
@@ -76,7 +76,7 @@
                 "inputs": [],
                 "initial": 0.2,
                 "equation": ".2",
-                "correctDesc": "The ratio of number of rabbits born in a month to the rabbit population that month",
+                "description": "The ratio of number of rabbits born in a month to the rabbit population that month",
                 "attemptCount": {
                     "description": 1,
                     "type": 1,
@@ -94,11 +94,17 @@
         ],
         "extraDescriptions": [
             {
-                "text": "The number of rabbits in the population during the second month",
+                "ID": "id7",
+                "name": "month two population",
+                "description": "The number of rabbits in the population during the second month",
+		"units": "rabbits",
                 "type": "model"
             },
             {
-                "text": "The ratio of rabbits born with superpowers to ordinary rabbits",
+                "ID": "id8",
+                "name": "superpower fraction",
+                "description": "The ratio of rabbits born with superpowers to ordinary rabbits",
+		"units": "rabbits per rabbit",
                 "type": "extra"
             }
         ],
@@ -111,7 +117,7 @@
                     "x": 100,
                     "y": 100
                 },
-                "studentSelections": {
+                "selections": {
                     "description": "id1",
                     "type": "accumulator",
                     "initial": 100,
@@ -127,7 +133,7 @@
                     "x": 300,
                     "y": 100
                 },
-                "studentSelections": {
+                "selections": {
                     "description": "id2",
                     "type": "function",
                     "units": "births",
@@ -142,7 +148,7 @@
                     "x": 500,
                     "y": 100
                 },
-                "studentSelections": {
+                "selections": {
                     "description": "id3",
                     "type": "parameter",
                     "initial": ".2",

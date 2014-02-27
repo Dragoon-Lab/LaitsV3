@@ -86,7 +86,7 @@ given model.
                 "inputs": [ { "ID" : "id2" } ],
                 "initial": 100,
                 "equation": "+ id2",
-                "correctDesc": "The number of rabbits in the population",
+                "description": "The number of rabbits in the population",
                 "attemptCount": {
                     "description": 2,
                     "type": 1,
@@ -132,7 +132,7 @@ unit is rabbits, meaning the number of rabbits in the population). The element
 "inputs" list other nodes that are required in the node's equation. The element 
 "initial" is used in accumulator nodes to give an initial value that the 
 equation builds upon, "equation" holds the equation used for the value of the 
-node at each time step, and "correctDesc" contains the correct description of 
+node at each time step, and "description" contains the correct description of 
 the node. 
 
 The elements "attemptCount" and "status" are used for grading and, as they are 
@@ -183,7 +183,7 @@ They are visible on the screen.
                     "x": 100,
                     "y": 100
                 },
-                "studentSelections": {
+                "selections": {
                     "description": "id1",
                     "type": "accumulator",
                     "initial": 100,
@@ -238,7 +238,7 @@ JSON document.
                         "inputs":  [ { "ID" : "id2" } ],
                         "initial": 100,
                         "equation": "+ id2",
-                        "correctDesc": "The number of rabbits in the population",
+                        "description": "The number of rabbits in the population",
                         "attemptCount": {
                             "description": 2,
                             "type": 1,
@@ -265,7 +265,7 @@ JSON document.
                         "inputs": [ { "ID": "id1" }, { "ID": "id3" } ],
                         "initial": null,
                         "equation": "id1 * id3",
-                        "correctDesc": "The number of rabbits born each month",
+                        "description": "The number of rabbits born each month",
                         "attemptCount": {
                             "description": 2,
                             "type": 1,
@@ -290,7 +290,7 @@ JSON document.
                         "units": "percent",
                         "inputs": [],
                         "equation": ".2",
-                        "correctDesc": "The ratio of number of rabbits born in a month to the rabbit population that month",
+                        "description": "The ratio of number of rabbits born in a month to the rabbit population that month",
                         "attemptCount": {
                             "description": 1,
                             "type": 1,
@@ -308,11 +308,15 @@ JSON document.
                 ],
                 "extraDescriptions": [
                     {
-                        "text": "The number of rabbits in the population during the second month",
+                        "ID": "id7",
+						"name": "month two population",
+						"text": "The number of rabbits in the population during the second month",
                         "type": "model"
                     },
                     {
-                        "text": "The ratio of rabbits born with superpowers to ordinary rabbits",
+                        "ID": "id8",
+						"name": "superpower fraction",
+						"text": "The ratio of rabbits born with superpowers to ordinary rabbits",
                         "type": "extra"
                     }
                 ],
@@ -325,7 +329,7 @@ JSON document.
                             "x": 100,
                             "y": 100
                         },
-                        "studentSelections": {
+                        "selections": {
                             "description": "id1",
                             "type": "accumulator",
                             "initial": 100,
@@ -341,7 +345,7 @@ JSON document.
                             "x": 300,
                             "y": 100
                         },
-                        "studentSelections": {
+                        "selections": {
                             "description": "id2",
                             "type": "function",
                             "units": "births",
@@ -356,7 +360,7 @@ JSON document.
                             "x": 500,
                             "y": 100
                         },
-                        "studentSelections": {
+                        "selections": {
                             "description": "id3",
                             "type": "parameter",
                             "units": "percent",

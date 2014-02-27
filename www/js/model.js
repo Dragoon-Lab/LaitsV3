@@ -237,7 +237,7 @@ define([
 		// TO DO:  The list should be sorted.
 		var d = [];
 		array.forEach(this.getNodes(), function(node) {
-                    d.push({label: node.correctDesc, value: node.ID});
+                    d.push({label: node.description, value: node.ID});
 		});
 		array.forEach(this.getExtraDescriptions(), function(desc) {
                     d.push({label: desc, value: "invalid"});
@@ -276,7 +276,7 @@ define([
 		// Summary: returns the id of a node matching the given description; the given 
 		//      model nodes are searched first, followed by the student model nodes
 		for (var i = 0; i < this.model.task.givenModelNodes.length; i++) {
-                    if (description === this.model.task.givenModelNodes[i].correctDesc)
+                    if (description === this.model.task.givenModelNodes[i].description)
 			return this.model.task.givenModelNodes[i].ID;
 		}
 		return null; // returns null if the node cannot be found
@@ -433,7 +433,7 @@ define([
             },
             isDescriptionOptimal: function(/*string*/ description) {
 		for (var i = 0; i < this.model.task.givenModelNodes.length; i++) {
-                    if (this.model.task.givenModelNodes[i].correctDesc === description) {
+                    if (this.model.task.givenModelNodes[i].description === description) {
 			var id = this.model.task.givenModelNodes[i].ID;
 			if (this.isNodeVisible(id))
                             return "alreadyExists";
@@ -463,7 +463,7 @@ define([
             getNodeCorrectDescription: function(/*string*/ id) {
 		for (var i = 0; i < this.model.task.givenModelNodes.length; i++) {
                     if (id === this.model.task.givenModelNodes[i].ID)
-			return this.model.task.givenModelNodes[i].correctDesc;
+			return this.model.task.givenModelNodes[i].description;
 		}
 		return null;
             },
@@ -589,23 +589,23 @@ define([
             },
             getStudentNodeDesc: function(/*string*/ id) {
 		var node = this.getStudentNode(id);
-		return node && node.studentSelections.description;
+		return node && node.selections.description;
             },
             getStudentNodePlan: function(/*string*/ id) {
 		var node = this.getStudentNode(id);
-		return node && node.studentSelections.plan;
+		return node && node.selections.plan;
             },
             getStudentNodeUnits: function(/*string*/ id) {
 		var node = this.getStudentNode(id);
-		return node && node.studentSelections.units;
+		return node && node.selections.units;
             },
             getStudentNodeInitial: function(/*string*/ id) {
 		var node = this.getStudentNode(id);
-		return node && node.studentSelections.initial;
+		return node && node.selections.initial;
             },
             getStudentNodeEquation: function(/*string*/ id) {
 		var node = this.getStudentNode(id);
-		return node && node.studentSelections.equation;
+		return node && node.selections.equation;
             },
             getNodes: function() {
 		// Summary: returns an array containing the nodes in the given model 
@@ -727,10 +727,10 @@ define([
                     if (id === this.model.task.givenModelNodes[i].ID)
 			this.model.task.givenModelNodes[i].equation = equation;
             },
-            setNodeCorrectDesc: function(/*string*/ id, /*string*/ correctDesc) {
+            setNodeCorrectDesc: function(/*string*/ id, /*string*/ description) {
 		for (var i = 0; i < this.model.task.givenModelNodes.length; i++)
                     if (id === this.model.task.givenModelNodes[i].ID)
-			this.model.task.givenModelNodes[i].correctDesc = correctDesc;
+			this.model.task.givenModelNodes[i].description = description;
             },
             addNodeInput: function(/*string*/ input, /*string*/ inputInto) {
 		// Summary: adds a node (input) as an input into the given node (inputInto); both params are node ID strings
@@ -788,8 +788,8 @@ define([
 		var deleted = false;
 		for (var i = 0; i < this.model.task.studentModelNodes.length; i++) {
                     this.deleteStudentNodeInput(this.model.task.studentModelNodes[i].ID, id);
-                    if (this.model.task.studentModelNodes[i].studentSelections.equation.indexOf(id) > -1)
-			this.model.task.studentModelNodes[i].studentSelections.equation = "";
+                    if (this.model.task.studentModelNodes[i].selections.equation.indexOf(id) > -1)
+			this.model.task.studentModelNodes[i].selections.equation = "";
                     if (id === this.model.task.studentModelNodes[i].ID) {
 			if (this.model.task.studentModelNodes[i].givenNodeID) // checks if node was in given model
                             for (var ii = 0; ii < this.model.task.givenModelNodes.length; ii++)
@@ -987,7 +987,7 @@ define([
 		    ID: id, 
 		    inputs: [],
 		    position: {x: obj.x, y: obj.y},
-		    studentSelections: []
+		    selections: []
 		};
 		obj.model.task.studentModelNodes.push(newNode);
 		return id;
