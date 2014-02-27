@@ -13,13 +13,6 @@
  *      variables control where the nodes will begin being placed, and tell the
  *      model the size of the nodes to avoid collisions.
  * 
- * NOTE: Functions to alter nodes in the given model should only be used for 
- *      author mode. They are named with the convention: 
- *      action+"Node"+AffectedPart() (for example: addNode() or setNodeName()). 
- *      To alter a node on a problem the student is currently working on the 
- *      functions follow the convention: action+"StudentNode"+AffectedPart() 
- *      (for example: addStudentNode() or setStudentNodeName()).
- * 
  */
 
 define([
@@ -704,51 +697,6 @@ define([
 		this.deleteStudentNode(id);
 		return deleted;
             },
-            addNodeWithAttributes: function(/*string*/ name, /*bool*/ parent, /*string*/ type, /*bool*/ extra, /*string*/ units, /*float*/ initial, /*string*/ equation, /*string*/ correctDesc) {
-		// Summary: create a new node and set its attributes in one step
-		// Note: this function is useful for testing; if it is not needed it may be deleted when the MVC is complete
-		var id = this.addNode();
-		this.setNodeName(id, name);
-		this.setNodeParent(id, parent);
-		this.setNodeType(id, type);
-		this.setNodeExtra(id, extra);
-		this.setNodeUnits(id, units);
-		this.setNodeInitial(id, initial);
-		this.setNodeEquation(id, equation);
-		this.setNodeCorrectDesc(id, correctDesc);
-		return id;
-            },
-            setNodeName: function(/*string*/ id, /*string*/ name) {
-		// Summary: sets the node's name; can be used to change the name as well
-		//      and the matching node in the student model will update; the name
-		//      must be unique (it cannot be used by another node)
-		// Note: setNodeName() should be used in Author mode while 
-		//      setStudentNodeName() should be used when a student is changing 
-		//      a node name in the student model
-		var arrayID1 = -1;
-		var arrayID2 = -1;
-		for (var i = 0; i < this.model.task.givenModelNodes.length; i++) {
-                    // the first two for loops ensure that the node name is unique
-                    if (this.model.task.givenModelNodes[i].name === name)
-			return false;
-                    if (this.model.task.givenModelNodes[i].ID === id)
-			arrayID1 = i;
-		}
-		console.error("Can't find node id in given model: ", id, name);
-		// Need to decide how to handle student model node id/naeme
-		for (i = 0; i < this.model.task.studentModelNodes.length; i++) {
-                    if (this.model.task.studentModelNodes[i].name === name)
-			return false;
-                    if (this.model.task.studentModelNodes[i].ID === id)
-			arrayID2 = i;
-		}
-		// the next two if statements change the name in the given model and the student model
-		if (arrayID1 > -1)
-                    this.model.task.givenModelNodes[arrayID1].name = name;
-		if (arrayID2 > -1)
-                    this.model.task.studentModelNodes[arrayID2].name = name;
-		return true;
-            },
             setNodeParent: function(/*string*/ id, /*bool*/ parent) {
 		for (var i = 0; i < this.model.task.givenModelNodes.length; i++)
                     if (id === this.model.task.givenModelNodes[i].ID)
@@ -832,20 +780,6 @@ define([
 		//      needed to solve the problem)
 		this.model.task.extraDescriptions.push({text: text, type: type});
             },
-            addStudentNode: function() {
-		// Summary: builds a new node in the student model and returns the node's unique ID
-		var id = "id" + this.ID++;
-		this._updateNextXYPosition();
-		var xPos = this.x;
-		var yPos = this.y;
-		var newNode = {
-		    ID: id, 
-		    position: {x: xPos, y: yPos},
-		    studentSelections: []
-		};
-		this.model.task.studentModelNodes.push(newNode);
-		return id;
-            },
             deleteStudentNode: function(/*string*/ id) {
 		// Summary: deletes a node with a given id from the student model; removes
 		//      the given node from other nodes inputs within the student model and
@@ -867,51 +801,6 @@ define([
                     }
 		}
 		return deleted;
-            },
-            setStudentNodeName: function(/*string*/ id, /*string*/ name) {
-		// Summary: sets a name for the student model node and attempts to match it against
-		//      the given model; returns the nodes ID
-		// Note: this function should only be used to set the name of a node in the student 
-		//      model; if a problem is being authored, used setNodeName() to change the name 
-		//      of a node in the given model; if an author wants a problem to appear in both
-		//      the given model and the student model (so that the node appears when the 
-		//      problem is started) use setNodeName() to change the name in models both and 
-		//      to maintain the connection between the nodes
-		console.error("setStudentNodeName breaks current design");
-		var i;
-		for (i = 0; i < this.model.task.studentModelNodes.length; i++)
-                    // this first for loop ensures that the node name is unique to other student model node names
-                    if (this.model.task.studentModelNodes[i].name === name)
-			return null;
-		for (i = 0; i < this.model.task.studentModelNodes.length; i++) {
-                    if (id === this.model.task.studentModelNodes[i].ID) {
-			if (this.model.task.studentModelNodes[i].givenNodeID) {
-                            // if givenNodeID exists and name is being changed then node must be re-created 
-                            //      to reset values; new node will be at position studentModelNodes.length - 1
-                            this.deleteStudentNode(id);
-                            id = this.addStudentNode();
-                            i = this.model.task.studentModelNodes.length - 1;
-			}
-			this.model.task.studentModelNodes[i].name = name;
-			for (var ii = 0; ii < this.model.task.givenModelNodes.length; ii++) {
-                            if (name === this.model.task.givenModelNodes[ii].name) {
-				this.model.task.studentModelNodes[i].givenNodeID = 
-				    this.model.task.givenModelNodes[ii].ID;
-				id = this.model.task.studentModelNodes[i].ID;
-				this.lastNodeVisible = id;
-				return id;
-                            }
-			}
-                    }
-		}
-		this.lastNodeVisible = id;
-		return id;
-            },
-            addStudentNodeWithName: function(/*string*/ name) {
-		// Summary: create a new node in the StudentModel and set its attributes in one step
-		//      returns the nodes ID, which updates to match the given model node, if it exists
-		var id = this.addStudentNode();
-		return this.setStudentNodeName(id, name);
             },
             addStudentNodeInput: function(/*string*/ input, /*string*/ inputInto) {
 		// Summary: adds a node (input) as an input into the given node in 
@@ -1086,11 +975,23 @@ define([
             getNodeEquation: lang.hitch(obj, obj.getNodeEquation),
             getNodeInitial: lang.hitch(obj, obj.getNodeInitial),
             getNodeType: lang.hitch(obj, obj.getNodeType),
-            getEachNodeUnitbyID: lang.hitch(obj, obj.getEachNodeUnitbyID),
-	    setNodeName: lang.hitch(obj, obj.setNodeName)
+            getEachNodeUnitbyID: lang.hitch(obj, obj.getEachNodeUnitbyID)
 	};
 
 	obj.student = {
+	    addNode: function() {
+		// Summary: builds a new node in the student model and returns the node's ID
+		var id = "id" + obj.ID++;
+		obj._updateNextXYPosition();
+		var newNode = {
+		    ID: id, 
+		    inputs: [],
+		    position: {x: obj.x, y: obj.y},
+		    studentSelections: []
+		};
+		obj.model.task.studentModelNodes.push(newNode);
+		return id;
+            },
 	    getGivenNodeID: function(id){
 		// Return any matched given model id for student node.
 		var node = this.getNode(id);
@@ -1102,8 +1003,7 @@ define([
             getNodeEquation: lang.hitch(obj, obj.getStudentNodeEquation),
             getNodeInitial: lang.hitch(obj, obj.getStudentNodeInitial),
             getNodeType: lang.hitch(obj, obj.getStudentNodeType),
-            getEachNodeUnitbyID: lang.hitch(obj, obj.getEachStudentNodeUnitbyID),
-	    setNodeName: lang.hitch(obj, obj.setStudentNodeName)
+            getEachNodeUnitbyID: lang.hitch(obj, obj.getEachStudentNodeUnitbyID)
 	};
 
 	// Execute the constructor

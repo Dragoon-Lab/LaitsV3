@@ -57,7 +57,7 @@ define([
 	    
 	    /* add to menu */
 	    menu.add("createNodeButton", function(){
-		var id = givenModel.addStudentNode();
+		var id = givenModel.student.addNode();
 		drawModel.addNode(givenModel.student.getNode(id));
 		controllerObject.showNodeEditor(id);
 	    });
