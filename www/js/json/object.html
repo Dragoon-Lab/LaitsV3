@@ -37,7 +37,7 @@
         <script src="../../dojo/dojo.js"></script> 
 
         <script>
-            require(["dragoon/model", "dragoon/pedagogical_model", "dragoon/equation_check"], function(model, pm, equation) {
+            require(["dragoon/model", "dragoon/pedagogical_module", "dragoon/equation_check"], function(model, pm, equation) {
 
 
                 //The next three lines show loading a model from a JSON formated string
@@ -51,7 +51,7 @@
                 rabbits.setTaskDescription("In this exercise, you will construct a model of how a rabbit population grows when no rabbits die. The first quantity in this model is the population or number of rabbits in the population. Initially, there are 100 rabbits, but the number increases with time. The new population each month is its present value plus the number of births (number of rabbits born each month).  The number of births is equal to the product of the population and the birth rate. The birthrate or the ratio of the number of rabbits born in a month to the rabbit population that month has a fixed value of 0.2.");
                 rabbits.setPhase("intro");
                 rabbits.setType("construct");
-                var rabbitID = rabbits.addNode();
+                var rabbitID = rabbits.given.addNode();
                 rabbits.setNodeName(rabbitID, "population");
                 rabbits.setNodeParent(rabbitID, false);
                 rabbits.setNodeType(rabbitID, "accumulator");
