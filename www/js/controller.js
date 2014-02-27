@@ -29,28 +29,26 @@ define([
             // common to all nodes in a problem.
 	    
 	    // Add fields to Description box
-            // In author mode, the Description input must be a text box!
+        // In author mode, the Description input must be a text box
 	    var d = registry.byId("selectDescription");
+        // populate input feild
         var t = registry.byId("nodeInputs");
-
-        
-	    // console.log("description widget = ", d);
+        // console.log("description widget = ", d);
 	    // d.removeOption(d.getOptions()); // Delete all options
 	    array.forEach(this._model.getAllDescriptions(), function(desc){
-            console.log("printing desc" + desc);
-	        d.addOption(desc);
-            var name = this._model.getNodeNameByID(desc.value); //this model is not accessible, should we remove for each
-            var option = {label: desc.label+'~'+name, value:desc.value};
+            d.addOption(desc);
+            var name = this._model.getNodeNameByID(desc.value);
+            var option = {label: desc.label+' '+ ' | '+' '+ name, value:desc.value};
             t.addOption(option);
-	    });
+	    },this);
 	  
 	    // Add fields to units box, using units in model node
             // In author mode, this needs to be turned into a text box.
-
-	    //var inputs = registry.byId("nodeInputs")
-	    // TODO: Megha is supposed to populate inputs field here.
-
-
+        var u = registry.byId("selectUnits");
+        // console.log("units widget ", u);
+        array.forEach(this._model.getAllUnits(), function(unit){
+            u.addOption({label: unit, value: unit});
+        });
 	},
 
 	//set up event handling with UI components
