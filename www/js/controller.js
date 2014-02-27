@@ -4,16 +4,24 @@
 */
 define([
     "dojo/_base/array", 'dojo/_base/declare', "dojo/_base/lang", 
-    'dojo/aspect', 'dojo/dom', 'dojo/on', "dojo/ready", 'dijit/registry'
-], function(array, declare, lang, aspect, dom, on, ready, registry) {
+    'dojo/aspect', 'dojo/dom', 'dojo/on', "dojo/ready", 'dijit/registry',
+    "./pedagogical_module"
+], function(array, declare, lang, aspect, dom, on, ready, registry, PM) {
 
     return declare(null, {
 	
 	_model: {},
+	_PM: {},
 	_nodeEditor: null, // node-editor object- will be used for populating fields
 		     
-	constructor: function(model){
+	constructor: function(mode, model){
 	    this._model = model;
+	    this._PM = new PM(mode, model);
+
+	    // Test the PM 
+            var r = this._PM.descriptionAction("id1");
+	    console.log("********** test PM description", r);
+
 	    // The Node Editor widget must be set up before modifications
             // It might be a better idea to only  call the controller
 	    // after widgets are set up.
@@ -94,7 +102,7 @@ define([
 	    var model = this._model;
 	    var editor = this._nodeEditor;
 	    //set task name
-	    var nodeName = model.getNodeNameByID(nodeid);
+	    var nodeName = model.getNodeNameByID(nodeid) || "New quantity";
 	    editor.set('title', nodeName);
 	    //populate type
 	    // populate initial value

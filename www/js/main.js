@@ -13,10 +13,9 @@ define([
     "./controller",
     "parser/parser",
     "./draw-model",
-    "./pedagogical_module",
-	"./calculations"
+    "./calculations"
 ],function(dom, geometry, on, aspect, ioQuery, ready, menu, loadSave, model, 
-	   Graph, Table, wrapText, controller, Parser, drawmodel, PM,calculations
+	   Graph, Table, wrapText, controller, Parser, drawmodel, calculations
 	  ){ 
 
     console.log("load main.js");
@@ -44,8 +43,8 @@ define([
 	@author: Deepak
 	@brief: calling calculation class to get node values and passing parameters to rendergraph and rendertable
 	*/
-	var calc = new calculations(solutionGraph);
-	var obj = calc.gerParametersForRendering(solutionGraph);
+	var calc = new calculations(solutionGraph,true);
+	var obj = calc.gerParametersForRendering(solutionGraph,true);
 	
 	/*
 	 start up controller
@@ -54,13 +53,12 @@ define([
 	ready(function(){
 
 	    var drawModel = new drawmodel(givenModel);
-	    var pm = new PM(query.u, givenModel);
-	    var controllerObject  = new controller(givenModel);
+	    var controllerObject  = new controller(query.m, givenModel);
 	    
 	    /* add to menu */
 	    menu.add("createNodeButton", function(){
-		var id = givenModel.addStudentNode();
-		drawModel.addNode(givenModel.getStudentNode(id));
+		var id = givenModel.student.addNode();
+		drawModel.addNode(givenModel.student.getNode(id));
 		controllerObject.showNodeEditor(id);
 	    });
 	    

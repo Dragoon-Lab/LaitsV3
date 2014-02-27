@@ -37,13 +37,12 @@
         <script src="../../dojo/dojo.js"></script> 
 
         <script>
-            require(["dragoon/model", "dragoon/pedagogical_model", "dragoon/equation_check"], function(model, pm, equation) {
+            require(["dragoon/model", "dragoon/pedagogical_module", "dragoon/equation_check"], function(model, pm, equation) {
 
 
                 //The next three lines show loading a model from a JSON formated string
                 var loadModel = new model(null, null, null, null, null, null);
-                //var string = { "task": { "taskName": "Rabbits - Intro Problem", "properties": { "phase": "intro", "type": "construct", "URL": "images/rabbit.jpeg", "startTime": 0, "endTime": 10, "timeStep": 1, "units": "years" }, "taskDescription": "In this exercise, you will construct a model of how a rabbit population grows when no rabbits die. The first quantity in this model is the population or number of rabbits in the population. Initially, there are 100 rabbits, but the number increases with time. The new population each month is its present value plus the number of births (number of rabbits born each month). The number of births is equal to the product of the population and the birth rate. The birthrate or the ratio of the number of rabbits born in a month to the rabbit population that month has a fixed value of 0.2.", "givenModelNodes": [ { "ID": "id1", "name": "population", "type": "accumulator", "parentNode": false, "extra": false, "order": 1, "units": "rabbits", "inputs": [ { "ID": "id2" } ], "initial": 100, "equation": "+ id2", "correctDesc": "The number of rabbits in the population", "attemptCount": { "description": 2, "type": 1, "initial": 2, "units": 4, "equation": 3 }, "status": { "description": "correct", "type": "demo", "initial": "correct", "units": "demo", "equation": "correct" } }, { "ID": "id2", "name": "births", "type": "function", "parentNode": true, "extra": false, "order": 2, "units": "births", "inputs": [ { "ID": "id1" }, { "ID": "id3" } ], "initial": null, "equation": "id1 * id3", "correctDesc": "The number of rabbits born each month", "attemptCount": { "description": 2, "type": 1, "initial": 0, "units": 2, "equation": 1 }, "status": { "description": "demo", "type": "demo", "initial": "null", "units": "correct", "equation": "correct" } }, { "ID": "id3", "name": "birth rate", "type": "parameter", "parentNode": false, "extra": false, "order": 3, "units": "percent", "inputs": [], "initial": null, "equation": ".2", "correctDesc": "The ratio of number of rabbits born in a month to the rabbit population that month", "attemptCount": { "description": 1, "type": 1, "initial": 0, "units": 1, "equation": 3 }, "status": { "description": "correct", "type": "correct", "initial": "null", "units": "correct", "equation": "correct" } } ], "studentModelNodes": [ { "ID": "id1", "name": "population", "inGivenModel": true, "inputs": [ { "ID": "id2" } ], "position": { "x": 100, "y": 100 }, "studentSelections": { "description": "The number of rabbits in the population", "type": "accumulator", "initial": 100, "units": "rabbits", "equation": "+ id2" } }, { "ID": "id2", "name": "births", "inGivenModel": true, "inputs": [ { "ID": "id1" }, { "ID": "id3" } ], "position": { "x": 300, "y": 100 }, "studentSelections": { "description": "The number of rabbits born each month", "type": "function", "initial": "null", "units": "births", "equation": "id1 * id3" } }, { "ID": "id3", "name": "birth rate", "inGivenModel": true, "inputs": [], "position": { "x": 500, "y": 100 }, "studentSelections": { "description": "The ratio of number of rabbits born in a month to the rabbit population that month", "type": "parameter", "initial": "null", "units": "percent", "equation": ".2" } } ] } };
-                //loadModel.loadModel(string);
+               
 //                alert(loadModel.getURL());
                 //});
 
@@ -52,7 +51,7 @@
                 rabbits.setTaskDescription("In this exercise, you will construct a model of how a rabbit population grows when no rabbits die. The first quantity in this model is the population or number of rabbits in the population. Initially, there are 100 rabbits, but the number increases with time. The new population each month is its present value plus the number of births (number of rabbits born each month).  The number of births is equal to the product of the population and the birth rate. The birthrate or the ratio of the number of rabbits born in a month to the rabbit population that month has a fixed value of 0.2.");
                 rabbits.setPhase("intro");
                 rabbits.setType("construct");
-                var rabbitID = rabbits.addNode();
+                var rabbitID = rabbits.given.addNode();
                 rabbits.setNodeName(rabbitID, "population");
                 rabbits.setNodeParent(rabbitID, false);
                 rabbits.setNodeType(rabbitID, "accumulator");

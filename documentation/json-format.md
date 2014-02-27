@@ -4,7 +4,7 @@
 
 The following JSON format is proposed for problem files, for problems in the 
 database (e.g. problems authored for specific sessions), and to store the user's 
-progress in the autosave_table on the database. This JSON format is proposed to 
+progress in the `solutions` table on the database. This JSON format is proposed to 
 be standard across the three categories just mentioned to ensure readability, 
 portability, and ease of use and modification. 
 
@@ -12,9 +12,9 @@ The format is different from former Intelligent Tutoring Systems (LAITS, Java
 version of Dragoon) in that they used XML to store their problems. Because 
 JavaScript uses JSON naturally we are proposing to use it for the JavaScript 
 version of Dragoon. The proposed JSON format is similar to the format used in 
-older XML problems in Dragoon to allow easierconversion of problems that have 
+older XML problems in Dragoon to allow easier conversion of problems that have 
 previously been defined. It is significantly different than what was being saved 
-in the autosave_table. This is to allow it to match the other problems. This new 
+in the `autosave_table`.  This new 
 format also attempts to remove redundant and deprecated code that existed in the 
 XML formats.
 
@@ -24,11 +24,10 @@ new JSON format to show how the new format will be modeled.
 ## General Formatting Conventions ##
 
 JSON is a language that defines elements and attributes in name/value pairings.
-For more information see http://www.json.org/. For the JavaScript version of the 
+For more information see [json.org](http://www.json.org/). For the JavaScript version of the 
 Dragoon project, elements will begin with a lower-case letter and will be 
-written in camelCase (all words are combined into one word with the first letter 
-of each subsequent word capitalized, such as camel case -> camelCase), except 
-for acronyms such as URL, which will be capitalized. Using camel case is for 
+written in [camelCase](http://en.wikipedia.org/wiki/CamelCase), except 
+for acronyms such as URL, which will be capitalized. Using camelCase is for 
 consistency and to mimic the corresponding variables in the model. 
 
 ## Beginning Properties##
@@ -84,14 +83,10 @@ given model.
                 "extra": false,
                 "order": 1,
                 "units": "rabbits",
-                "inputs": [
-                    {
-                        "ID": "id2"
-                    }
-                ],
+                "inputs": [ { "ID" : "id2" } ],
                 "initial": 100,
                 "equation": "+ id2",
-                "correctDesc": "The number of rabbits in the population",
+                "description": "The number of rabbits in the population",
                 "attemptCount": {
                     "description": 2,
                     "type": 1,
@@ -137,7 +132,7 @@ unit is rabbits, meaning the number of rabbits in the population). The element
 "inputs" list other nodes that are required in the node's equation. The element 
 "initial" is used in accumulator nodes to give an initial value that the 
 equation builds upon, "equation" holds the equation used for the value of the 
-node at each time step, and "correctDesc" contains the correct description of 
+node at each time step, and "description" contains the correct description of 
 the node. 
 
 The elements "attemptCount" and "status" are used for grading and, as they are 
@@ -181,20 +176,15 @@ They are visible on the screen.
 
         "studentModelNodes": [
             {
-                "ID": "id1",
-                "name": "population",
-                "inGivenModel": true,
-                "inputs": [
-                    {
-                        "ID": "id2"
-                    }
-                ],
+                "ID": "id4",
+			    "givenNodeID": "id1",
+                "inputs":  [ { "ID": "id5" } ],
                 "position": {
                     "x": 100,
                     "y": 100
                 },
-                "studentSelections": {
-                    "description": "The number of rabbits in the population",
+                "selections": {
+                    "description": "id1",
                     "type": "accumulator",
                     "initial": 100,
                     "units": "rabbits",
@@ -203,12 +193,11 @@ They are visible on the screen.
             },
 
 They contain information that identifies the node, positions it, and marks the 
-student's selections. The element "inGivenModel" tells the program if there is 
-a node in the given model to link it with. Other than the ID and the name, the 
-information in the student model may not match information in the given 
-model as the student may or may not select correct information. The student can 
-also generate nodes that are not in the given model and are not part of the 
-solution.
+student's selections. The element `givenNodeID` specifies a matching node in the
+given model or is empty if there is no match.  The selections
+in the student model may not match information in the given 
+model. The student can also generate nodes that are not in the given
+model and are not part of the solution.
 
 Another function of the student model is to allow the author to create a 
 partially completed model that the user will have to correct or complete. Thus 
@@ -216,9 +205,8 @@ an author can build a model and specify which nodes should be present when the
 user opens the problem for the first time. 
 
 When a node is given a name by the student the name will be checked against 
-other nodes in the given model and if a match is found then the element 
-"inGivenModel" will be set to true and the ID will be updated to match the node 
-in the given model.
+other nodes in the given model and if a match is found then the
+`givenNodeID` will be set.
 
 ## Example of a Complete JSON Formatted Problem ##
 
@@ -247,14 +235,10 @@ JSON document.
                         "extra": false,
                         "order": 1,
                         "units": "rabbits",
-                        "inputs": [
-                            {
-                                "ID": "id2"
-                            }
-                        ],
+                        "inputs":  [ { "ID" : "id2" } ],
                         "initial": 100,
                         "equation": "+ id2",
-                        "correctDesc": "The number of rabbits in the population",
+                        "description": "The number of rabbits in the population",
                         "attemptCount": {
                             "description": 2,
                             "type": 1,
@@ -278,17 +262,10 @@ JSON document.
                         "extra": false,
                         "order": 2,
                         "units": "births",
-                        "inputs": [
-                            {
-                                "ID": "id1"
-                            },
-                            {
-                                "ID": "id3"
-                            }
-                        ],
+                        "inputs": [ { "ID": "id1" }, { "ID": "id3" } ],
                         "initial": null,
                         "equation": "id1 * id3",
-                        "correctDesc": "The number of rabbits born each month",
+                        "description": "The number of rabbits born each month",
                         "attemptCount": {
                             "description": 2,
                             "type": 1,
@@ -299,7 +276,6 @@ JSON document.
                         "status": {
                             "description": "demo",
                             "type": "demo",
-                            "initial": "null",
                             "units": "correct",
                             "equation": "correct"
                         }
@@ -313,9 +289,8 @@ JSON document.
                         "order": 3,
                         "units": "percent",
                         "inputs": [],
-                        "initial": null,
                         "equation": ".2",
-                        "correctDesc": "The ratio of number of rabbits born in a month to the rabbit population that month",
+                        "description": "The ratio of number of rabbits born in a month to the rabbit population that month",
                         "attemptCount": {
                             "description": 1,
                             "type": 1,
@@ -326,7 +301,6 @@ JSON document.
                         "status": {
                             "description": "correct",
                             "type": "correct",
-                            "initial": "null",
                             "units": "correct",
                             "equation": "correct"
                         }
@@ -334,30 +308,29 @@ JSON document.
                 ],
                 "extraDescriptions": [
                     {
-                        "text": "The number of rabbits in the population during the second month",
+                        "ID": "id7",
+						"name": "month two population",
+						"text": "The number of rabbits in the population during the second month",
                         "type": "model"
                     },
                     {
-                        "text": "The ratio of rabbits born with superpowers to ordinary rabbits",
+                        "ID": "id8",
+						"name": "superpower fraction",
+						"text": "The ratio of rabbits born with superpowers to ordinary rabbits",
                         "type": "extra"
                     }
                 ],
                 "studentModelNodes": [
                     {
-                        "ID": "id1",
-                        "name": "population",
-                        "inGivenModel": true,
-                        "inputs": [
-                            {
-                                "ID": "id2"
-                            }
-                        ],
+                        "ID": "id4",
+						"givenNodeID": "id1",
+                        "inputs": [ { "ID": "id5" } ],
                         "position": {
                             "x": 100,
                             "y": 100
                         },
-                        "studentSelections": {
-                            "description": "The ratio of number of rabbits born in a month to the rabbit population that month",
+                        "selections": {
+                            "description": "id1",
                             "type": "accumulator",
                             "initial": 100,
                             "units": "rabbits",
@@ -365,42 +338,31 @@ JSON document.
                         }
                     },
                     {
-                        "ID": "id2",
-                        "name": "births",
-                        "inGivenModel": true,
-                        "inputs": [
-                            {
-                                "ID": "id1"
-                            },
-                            {
-                                "ID": "id3"
-                            }
-                        ],
+                        "ID": "id5",
+						"givenNodeID": "id2",
+                        "inputs":  [ { "ID": "id4" }, { "ID": "id6" } ],
                         "position": {
                             "x": 300,
                             "y": 100
                         },
-                        "studentSelections": {
-                            "description": "The number of rabbits born each month",
+                        "selections": {
+                            "description": "id2",
                             "type": "function",
-                            "initial": "null",
                             "units": "births",
-                            "equation": "id1 * id3"
+                            "equation": "id4 * id6"
                         }
                     },
                     {
-                        "ID": "id3",
-                        "name": "birth rate",
-                        "inGivenModel": true,
+                        "ID": "id6",
+						"givenNodeID": "id3",
                         "inputs": [],
                         "position": {
                             "x": 500,
                             "y": 100
                         },
-                        "studentSelections": {
-                            "description": "The ratio of number of rabbits born in a month to the rabbit population that month",
+                        "selections": {
+                            "description": "id3",
                             "type": "parameter",
-                            "initial": "null",
                             "units": "percent",
                             "equation": ".2"
                         }
