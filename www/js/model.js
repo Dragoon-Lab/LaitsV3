@@ -731,32 +731,6 @@ define([
                     if (id === this.model.task.givenModelNodes[i].ID)
                         this.model.task.givenModelNodes[i].description = description;
             },
-            addNodeInput: function(/*string*/ input, /*string*/ inputInto) {
-                // Summary: adds a node (input) as an input into the given node (inputInto); both params are node ID strings
-                var inputID = "";
-                if (inputInto === input)//node can't be input into itself
-                    return false;
-                for (var i = 0; i < this.model.task.givenModelNodes.length; i++)
-                    if (input === this.model.task.givenModelNodes[i].ID) {
-                        inputID = this.model.task.givenModelNodes[i].ID;
-                        i = this.model.task.givenModelNodes.length;
-                    } else {
-                        if (i === this.model.task.givenModelNodes.length - 1)
-                            return false;
-                    }
-                for (i = 0; i < this.model.task.givenModelNodes.length; i++) {
-                    if (inputInto === this.model.task.givenModelNodes[i].ID) {
-
-                        for (var ii = 0; ii < this.model.task.givenModelNodes[i].inputs.length; ii++) {
-                            if (input === this.model.task.givenModelNodes[i].inputs[ii].ID)
-                                return false;
-                        }
-                        this.model.task.givenModelNodes[i].addInput(inputID);
-                        return true;
-                    }
-                }
-                return false;
-            },
             deleteNodeInput: function(/*string*/ id, /*string*/ inputIDToRemove) {
                 // Summary: remove an input from a node in the given model
                 for (var i = 0; i < this.model.task.givenModelNodes.length; i++) {
@@ -967,20 +941,10 @@ define([
         obj.given = {
             addNode: function() {
                 // Summary: builds a new node and returns the node's unique id
-                var id = "id" + this.ID;
-                var order = obj.model.task.givenModelNodes.length + 1;
-                this.ID++;
+                var id = "id" + obj.ID;
+                obj.ID++;
                 var newNode = {"ID": id,
-                    "name": null,
-                    "type": null,
-                    "parentNode": false,
-                    "extra": false,
-                    "order": order,
-                    "units": null,
                     "inputs": [],
-                    "initial": null,
-                    "equation": null,
-                    "correctDesc": null,
                     "attemptCount": {
                         "description": 0,
                         "type": 0,
@@ -988,19 +952,63 @@ define([
                         "units": 0,
                         "equation": 0
                     },
-                    "status": {
-                        "description": null,
-                        "type": null,
-                        "initial": null,
-                        "units": null,
-                        "equation": null
-                    }
+                    "status": {}
                 };
                 obj.model.task.givenModelNodes.push(newNode);
                 return id;
             },
+            getNode: function(/*string*/ id) {
+                //Summary: returns a JavaScript object of a specified given model node
+                for (var i = 0; i < obj.model.task.givenModelNodes.length; i++)
+                    if (id === obj.model.task.givenModelNodes[i].ID)
+                        return obj.model.task.givenModelNodes[i];
+                console.error("Invalid node id: ", id);
+                return null;
+            },
+            setName: function(/*string*/ id, /*string*/ name) {
+                obj.getNode(id).name = name;
+            },
+            setParent: function(/*string*/ id, /*bool*/ parent) {
+                obj.getNode(id).parent = parent;
+            },
+            setType: function(/*string*/ id, /*string*/ type) {
+                obj.getNode(id).parent = type;
+            },
+            setExtra: function(/*string*/ id, /*bool*/ extra) {
+                obj.getNode(id).parent = extra;
+            },
+            setUnits: function(/*string*/ id, /*string*/ units) {
+                obj.getNode(id).parent = units;
+            },
+            setInitial: function(/*string*/ id, /*float*/ initial) {
+                obj.getNode(id).parent = initial;
+            },
+            setEquation: function(/*string*/ id, /*string*/ equation) {
+                obj.getNode(id).parent = equation;
+            },
+            setDescription: function(/*string*/ id, /*float*/ description) {
+                obj.getNode(id).parent = description;
+            },
+            addInput: function(/*string*/ input, /*string*/ inputInto) {
+                // Summary: adds a node (input) as an input into the given node (inputInto); both params are node ID strings
+                if (inputInto === input) {//node can't be input into itself
+                    console.error("Can't input node into itself.");
+                    return;
+                }
+                //check that input and inputInto are valid ID's
+                if (!obj.getNode(input)) {
+                    console.error("Input node is not valid: ", input);
+                    return;
+                }
+                var receivingNode = obj.getNode(inputInto);
+                if (!receivingNode) {
+                    console.error("Receiving node is not valid: ", inputInto);
+                    return;
+                }
+                receivingNode.inputs.push(input);
+            },
             isNode: function(/*string*/ id) {
-                return array.some(this.getNodes(), function(node) {
+                return array.some(obj.getNodes(), function(node) {
                     return node.ID === id;
                 });
             },
