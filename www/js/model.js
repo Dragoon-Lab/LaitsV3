@@ -23,8 +23,8 @@
  */
 
 define([
-    "dojo/_base/array", "dojo/_base/lang", "./node", "./student_node"
-], function(array, lang, Node, StudentNode) {
+    "dojo/_base/array", "dojo/_base/lang"
+], function(array, lang) {
 
 
     return function(){
@@ -273,7 +273,7 @@ define([
 		}
 		console.error("Can't find node name in given model: ", name);
 		// Need to decide how to handle student model node name
-		for (var i = 0; i < this.model.task.studentModelNodes.length; i++) {
+		for (i = 0; i < this.model.task.studentModelNodes.length; i++) {
                     if (name === this.model.task.studentModelNodes[i].name)
 			return this.model.task.studentModelNodes[i].ID;
 		}
@@ -541,7 +541,7 @@ define([
                     for (var i = 0; i < this.model.task.extraDescriptions.length; i++)
 			descriptions.push(this.model.task.extraDescriptions[i].text);
 		else
-                    for (var i = 0; i < this.model.task.extraDescriptions.length; i++)
+                    for (i = 0; i < this.model.task.extraDescriptions.length; i++)
 			if (this.model.task.extraDescriptions[i].type === type)
                             descriptions.push(this.model.task.extraDescriptions[i].text);
 		return descriptions;
@@ -736,7 +736,7 @@ define([
 		}
 		console.error("Can't find node id in given model: ", id, name);
 		// Need to decide how to handle student model node id/naeme
-		for (var i = 0; i < this.model.task.studentModelNodes.length; i++) {
+		for (i = 0; i < this.model.task.studentModelNodes.length; i++) {
                     if (this.model.task.studentModelNodes[i].name === name)
 			return false;
                     if (this.model.task.studentModelNodes[i].ID === id)
@@ -797,7 +797,7 @@ define([
 			if (i === this.model.task.givenModelNodes.length - 1)
                             return false;
                     }
-		for (var i = 0; i < this.model.task.givenModelNodes.length; i++) {
+		for (i = 0; i < this.model.task.givenModelNodes.length; i++) {
                     if (inputInto === this.model.task.givenModelNodes[i].ID) {
 
 			for (var ii = 0; ii < this.model.task.givenModelNodes[i].inputs.length; ii++) {
@@ -838,7 +838,11 @@ define([
 		this._updateNextXYPosition();
 		var xPos = this.x;
 		var yPos = this.y;
-		var newNode = new StudentNode(id, xPos, yPos);
+		var newNode = {
+		    ID: id, 
+		    position: {x: xPos, y: yPos},
+		    studentSelections: []
+		};
 		this.model.task.studentModelNodes.push(newNode);
 		return id;
             },
@@ -874,11 +878,12 @@ define([
 		//      problem is started) use setNodeName() to change the name in models both and 
 		//      to maintain the connection between the nodes
 		console.error("setStudentNodeName breaks current design");
-		for (var i = 0; i < this.model.task.studentModelNodes.length; i++)
+		var i;
+		for (i = 0; i < this.model.task.studentModelNodes.length; i++)
                     // this first for loop ensures that the node name is unique to other student model node names
                     if (this.model.task.studentModelNodes[i].name === name)
 			return null;
-		for (var i = 0; i < this.model.task.studentModelNodes.length; i++) {
+		for (i = 0; i < this.model.task.studentModelNodes.length; i++) {
                     if (id === this.model.task.studentModelNodes[i].ID) {
 			if (this.model.task.studentModelNodes[i].givenNodeID) {
                             // if givenNodeID exists and name is being changed then node must be re-created 
@@ -981,7 +986,7 @@ define([
                                     this._setStatus(id, part, "correct");
                                 else
                                     this._setStatus(id, part, "incorrect");
-                                for (var ii = 0; ii < this.model.task.givenModelNodes.length; ii++)
+                                for (ii = 0; ii < this.model.task.givenModelNodes.length; ii++)
                                     if (id === this.model.task.givenModelNodes[ii].ID)
                                         this.model.task.givenModelNodes[ii].addAttempt(false, true, false, false, false);
                             }
@@ -994,7 +999,7 @@ define([
                                     this._setStatus(id, part, "correct");
                                 else
                                     this._setStatus(id, part, "incorrect");
-                                for (var ii = 0; ii < this.model.task.givenModelNodes.length; ii++)
+                                for (ii = 0; ii < this.model.task.givenModelNodes.length; ii++)
                                     if (id === this.model.task.givenModelNodes[ii].ID)
                                         this.model.task.givenModelNodes[ii].addAttempt(false, false, true, false, false);
                             }
@@ -1007,7 +1012,7 @@ define([
                                     this._setStatus(id, part, "correct");
                                 else
                                     this._setStatus(id, part, "incorrect");
-                                for (var ii = 0; ii < this.model.task.givenModelNodes.length; ii++)
+                                for (ii = 0; ii < this.model.task.givenModelNodes.length; ii++)
                                     if (id === this.model.task.givenModelNodes[ii].ID)
                                         this.model.task.givenModelNodes[ii].addAttempt(false, false, false, true, false);
                             }
@@ -1020,7 +1025,7 @@ define([
                                     this._setStatus(id, part, "correct");
                                 else
                                     this._setStatus(id, part, "incorrect");
-                                for (var ii = 0; ii < this.model.task.givenModelNodes.length; ii++)
+                                for (ii = 0; ii < this.model.task.givenModelNodes.length; ii++)
                                     if (id === this.model.task.givenModelNodes[ii].ID)
                                         this.model.task.givenModelNodes[ii].addAttempt(false, false, false, false, true);
                             }
