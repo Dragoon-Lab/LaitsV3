@@ -37,29 +37,30 @@ define([
             // common to all nodes in a problem.
 	    
 	    // Add fields to Description box
-            // In author mode, the Description input must be a text box!
+        // In author mode, the Description input must be a text box
 	    var d = registry.byId("selectDescription");
-	    // console.log("description widget = ", d);
+        // populate input feild
+        var t = registry.byId("nodeInputs");
+        // console.log("description widget = ", d);
 	    // d.removeOption(d.getOptions()); // Delete all options
 	    array.forEach(this._model.getAllDescriptions(), function(desc){
-	        d.addOption(desc);
-	    });
+            d.addOption(desc);
+            var name = this._model.getNodeNameByID(desc.value);
+            var option = {label: desc.label+' '+ ' | '+' '+ name, value:desc.value};
+            t.addOption(option);
+	    },this);
 	  
 	    // Add fields to units box, using units in model node
             // In author mode, this needs to be turned into a text box.
-	    var u = registry.byId("selectUnits");
-            // console.log("units widget ", u);
-	    array.forEach(this._model.getAllUnits(), function(unit){
-	        u.addOption({label: unit, value: unit});
-	    });
-	    
-	    // TODO: Megha is supposed to populate inputs field here.
-
-	    
+        var u = registry.byId("selectUnits");
+        // console.log("units widget ", u);
+        array.forEach(this._model.getAllUnits(), function(unit){
+            u.addOption({label: unit, value: unit});
+        });
 	},
 
 	//set up event handling with UI components
-	initHandles:function(){	    	    
+	initHandles:function(){
 	    // Summary: Set up Node Editor Handlers
 	  
 	    // BvdS:  do we want dom.byId or registry.byId here?
