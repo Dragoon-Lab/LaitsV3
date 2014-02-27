@@ -1,7 +1,7 @@
 /* global define, jsPlumb */
 /*
-            This is just a quick initial attempt to draw a model
-*/
+ This is just a quick initial attempt to draw a model
+ */
 define([
     "dojo/_base/array", 'dojo/_base/declare', 'dojo/_base/lang', 
     "dojo/dom-attr", "dojo/dom-construct", "jsPlumb/jsPlumb"
@@ -10,11 +10,11 @@ define([
     return declare(null, {
 
         _instance: null,
-
+	
         constructor: function(givenModel){
-
+	    
             // setup some defaults for jsPlumb.
-             var instance = jsPlumb.getInstance({
+            var instance = jsPlumb.getInstance({
                 Endpoint : ["Dot", {radius:2}],
                 HoverPaintStyle : {strokeStyle:"#1e8151", lineWidth:2 },
                 ConnectionOverlays : [
@@ -28,7 +28,7 @@ define([
                 ],
                 Container:"statemachine-demo"
             });
-
+	    
             this._instance = instance;
 	    
             var shapes = {
@@ -37,25 +37,11 @@ define([
                 parameter: "parameter"
             };
 	    
-            var vertices = array.map(givenModel.getStudentNodes(),function(node){
-                var type = node.studentSelections.type;
-		/*
-                 <div class="w" id="population" ></br></br>120</br></br></br></br></br></br>Population</div>
-                 <div class="circle" id="growth" ></br></br>*</br></br></br></br></br></br>Growth</div>
-                 <div class="diamond" id="grate" ><div class="diamond-inner"></br></br>0.3</br></br></br></br></br></br>Growth Rate</label><br/></div></div>
-		 */
-                console.log("Adding element to canvas, id = ", node.ID, ", class = ", type);
-                // Add div to drawing
-                    domConstruct.create("div", {id: node.ID, 'class': type}, "statemachine-demo");
-                // jsPlumb.addEndpoint(node.ID);
-                return jsPlumb.getSelector(".statemachine-demo ." + type); // maybe node.ID instead?
-            });
-	    
             // initialise draggable elements.
-            array.forEach(vertices, function(vertex){
-                this.addNode(vertex);
+            var vertices = array.map(givenModel.student.getNodes(), function(node){
+                return this.addNode(node);
             }, this);
-
+	    
 	    
             console.log("====== instance:  ", instance);
 	    
@@ -84,7 +70,7 @@ define([
                 // which prevents us from just setting a jsPlumb.Defaults.PaintStyle.  but that is what i
                 // would recommend you do. Note also here that we use the 'filter' option to tell jsPlumb
                 // which parts of the element should actually respond to a drag start.
-
+		
                 array.forEach(vertices,function(vertex){
                     instance.makeSource(vertex, {
                         filter:".ep",                               // only supported by jquery
@@ -111,54 +97,68 @@ define([
             });
 
             array.forEach(vertices, function(vertex){
-            // Not sure why vertex is an array and not just the <div>
+		// Not sure why vertex is an array and not just the <div>
                 var id = attr.get(vertex[0], "id");
-                var inputs = givenModel.getStudentNodeInputs(id);
+                var inputs = givenModel.student.getNodeInputs(id);
                 array.forEach(inputs, function(input){
                     console.log("---- adding connection from ", input, " to ", id, " scope is ", this);
                     this.addConnection(vertex, input);
                 }, this);
-
+		
             }, this);
 
 	    return instance;
 
 	},
-
-    /* addNode: Add a node to the jsPlumb model.  */
+	
+	/* addNode: Add a node to the jsPlumb model.  */
 
 	addNode: function(/*object*/ node){
-                /*
-         Fire off functions associated with draggable events.
-         
-         Note that the names (onMoveStart, onMove, onMoveStop) are from
-         the underlying library dojo/dnd/move, rather than jsPlumb.
-         */ 
-
-        this._instance.draggable(node,{
-            onMoveStart: lang.hitch(this, this.onMoveStart),
-            onMove: lang.hitch(this, this.onMove),
-            onMoveStop: lang.hitch(this, this.onMoveStop)
-           });
-	   console.warn("Draw new node.  Need to add code here."); 
-       this._instance.makeSource(node, {
-            filter:".ep",                               // only supported by jquery
-            anchor:"Continuous",
-            connector:[ "StateMachine", { curviness:20 } ],
-            connectorStyle:{ strokeStyle:"#5c96bc", lineWidth:2, outlineColor:"transparent", outlineWidth:4 },
-            maxConnections:5,
-            onMaxConnections:function(info, e) {
-                alert("Maximum connections (" + info.maxConnections + ") reached");
+	    
+            var type = node.studentSelections.type || "triangle";
+	    /*
+                 <div class="w" id="population" ></br></br>120</br></br></br></br></br></br>Population</div>
+             <div class="circle" id="growth" ></br></br>*</br></br></br></br></br></br>Growth</div>
+             <div class="diamond" id="grate" ><div class="diamond-inner"></br></br>0.3</br></br></br></br></br></br>Growth Rate</label><br/></div></div>
+	     */
+            console.log("Adding element to canvas, id = ", node.ID, ", class = ", type);
+            // Add div to drawing
+            domConstruct.create("div", {id: node.ID, 'class': type}, "statemachine-demo");
+            // jsPlumb.addEndpoint(node.ID);
+            var vertex = jsPlumb.getSelector(".statemachine-demo ." + type);
+	    
+            /*
+             Fire off functions associated with draggable events.
+             
+             Note that the names (onMoveStart, onMove, onMoveStop) are from
+             the underlying library dojo/dnd/move, rather than jsPlumb.
+             */ 
+            this._instance.draggable(vertex,{
+		onMoveStart: lang.hitch(this, this.onMoveStart),
+		onMove: lang.hitch(this, this.onMove),
+		onMoveStop: lang.hitch(this, this.onMoveStop)
+            });
+	    console.warn("Draw new vertex.  Need to add code here."); 
+	    this._instance.makeSource(vertex, {
+		filter:".ep",                               // only supported by jquery
+		anchor:"Continuous",
+		connector:[ "StateMachine", { curviness:20 } ],
+		connectorStyle:{ strokeStyle:"#5c96bc", lineWidth:2, outlineColor:"transparent", outlineWidth:4 },
+		maxConnections:5,
+		onMaxConnections:function(info, e) {
+                    alert("Maximum connections (" + info.maxConnections + ") reached");
                 }
         });
-        this._instance.makeTarget(node, {
-            dropOptions:{ hoverClass:"dragHover" },
-                anchor:"Continuous"
-        });
-
+            this._instance.makeTarget(vertex, {
+		dropOptions:{ hoverClass:"dragHover" },
+		anchor:"Continuous"
+            });
+	    
+	    return vertex;
+	    
 	},
-
-    /* addConnection: add a input connection between two nodes.  Pass in strings representing the IDs of the source and destination nodes. */ 
+	
+	/* addConnection: add a input connection between two nodes.  Pass in strings representing the IDs of the source and destination nodes. */ 
 
     addConnection: function(/*string*/ source, /*string*/ destination){
         this._instance.connect({source: source, target: destination});

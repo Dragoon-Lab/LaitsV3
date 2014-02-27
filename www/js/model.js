@@ -1066,6 +1066,9 @@ define([
 
 	/* 
 	 add subclasses with model accessors 
+
+	 TODO:  Move associated functions themselves to this 
+	 section.
 	 */
 
 	obj.given = {
@@ -1090,6 +1093,7 @@ define([
 	    },
 	    getNodes: lang.hitch(obj, obj.getStudentNodes),
 	    getNode: lang.hitch(obj, obj.getStudentNode),
+	    getNodeInputs: lang.hitch(obj, obj.getStudentNodeInputs),
             getNodeEquation: lang.hitch(obj, obj.getStudentNodeEquation),
             getNodeInitial: lang.hitch(obj, obj.getStudentNodeInitial),
             getNodeType: lang.hitch(obj, obj.getStudentNodeType),
