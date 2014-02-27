@@ -9,9 +9,9 @@ define([
 	  
 	  return declare(null, {
 			//timesteps in graph
-			timeSteps:0,
+			timeSteps: 0,
 			//start time to plot graph
-			startTime:0,
+			startTime: 0,
 			//end time to plot grpah
 			endTime:0,
 			//model 

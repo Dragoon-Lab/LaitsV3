@@ -1,13 +1,13 @@
 /* global define */
 /**
  *
- * Pedagogical Model class used to solve Dragoon problems
+ * Pedagogical Module class used to solve Dragoon problems
  * @author: Brandon Strong
  *
  **/
 
 /**
- * Pedagogical model that accepts student entries, updates the model, and returns an object
+ * Pedagogical module that accepts student entries, updates the model, and returns an object
  * with the id of the node, a message with encouragement or a hint, and the status of the 
  * attempt (correct, incorrect, demo, or premature).
  **/

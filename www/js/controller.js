@@ -1,27 +1,27 @@
 /* global define */
 /*
-*                               Controller for Node Editor
-*/
+ *                               Controller for Node Editor
+ */
 define([
     "dojo/_base/array", 'dojo/_base/declare', "dojo/_base/lang", 
     'dojo/aspect', 'dojo/dom', 'dojo/on', "dojo/ready", 'dijit/registry',
     "./pedagogical_module"
 ], function(array, declare, lang, aspect, dom, on, ready, registry, PM) {
-
+    
     return declare(null, {
 	
 	_model: {},
-	_PM: {},
+        _PM: {},
 	_nodeEditor: null, // node-editor object- will be used for populating fields
-		     
+	
 	constructor: function(mode, model){
 	    this._model = model;
 	    this._PM = new PM(mode, model);
-
-	    // Test the PM 
+	    
+            // Test the PM 
             var r = this._PM.descriptionAction("id1");
-	    console.log("********** test PM description", r);
-
+            console.log("********** test PM description", r);
+	    
 	    // The Node Editor widget must be set up before modifications
             // It might be a better idea to only  call the controller
 	    // after widgets are set up.
@@ -32,31 +32,31 @@ define([
 	    
 	    // get Node Editor widget from tree
 	    this._nodeEditor = registry.byId('nodeeditor');
-
+	    
             // Initialize fields in the node editor that are
             // common to all nodes in a problem.
 	    
 	    // Add fields to Description box
-        // In author mode, the Description input must be a text box
+            // In author mode, the Description input must be a text box
 	    var d = registry.byId("selectDescription");
-        // populate input feild
-        var t = registry.byId("nodeInputs");
-        // console.log("description widget = ", d);
+            // populate input feild
+            var t = registry.byId("nodeInputs");
+       	    // console.log("description widget = ", d);
 	    // d.removeOption(d.getOptions()); // Delete all options
 	    array.forEach(this._model.getAllDescriptions(), function(desc){
-            d.addOption(desc);
-            var name = this._model.getNodeNameByID(desc.value);
-            var option = {label: desc.label+' '+ ' | '+' '+ name, value:desc.value};
-            t.addOption(option);
-	    },this);
-	  
+	        d.addOption(desc);
+		var name = this._model.getNodeNameByID(desc.value);
+		var option = {label: desc.label+' '+ ' | '+' '+ name, value:desc.value};
+		t.addOption(option);
+	    }, this);
+	    
 	    // Add fields to units box, using units in model node
             // In author mode, this needs to be turned into a text box.
-        var u = registry.byId("selectUnits");
-        // console.log("units widget ", u);
-        array.forEach(this._model.getAllUnits(), function(unit){
-            u.addOption({label: unit, value: unit});
-        });
+            var u = registry.byId("selectUnits");
+            // console.log("units widget ", u);
+            array.forEach(this._model.getAllUnits(), function(unit){
+		u.addOption({label: unit, value: unit});
+            });
 	},
 
 	//set up event handling with UI components
@@ -102,7 +102,7 @@ define([
 	    var model = this._model;
 	    var editor = this._nodeEditor;
 	    //set task name
-	    var nodeName = model.getNodeNameByID(nodeid) || "New quantity";
+           var nodeName = model.student.getNodeNameByID(nodeid) || "New quantity";
 	    editor.set('title', nodeName);
 	    //populate type
 	    // populate initial value
