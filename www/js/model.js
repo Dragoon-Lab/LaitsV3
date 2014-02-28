@@ -89,31 +89,6 @@ define([
                     }
                 }
             },
-            _getLargestID: function() {
-                // Summary: returns the integer value of the largest node ID;
-                //      used to update the counter used to assign unique IDs
-                //      when a model or node object is loaded directly
-                // Tags: private
-                var largest = 0;
-                var intID = function(/*string*/ id, /*int*/ counter) {
-                    if (id.length >= 2 && id.slice(0, 2) == "id") {
-                        var n = parseInt(id.slice(2));
-                        if (n && n > counter)
-                            counter = n;
-                    }
-                    return counter;
-                };
-                array.forEach(this.given.getNodes(), function(node) {
-                    largest = intID(node.ID, largest);
-                });
-                array.forEach(this.student.getNodes(), function(node) {
-                    largest = intID(node.ID, largest);
-                });
-                array.forEach(this.getExtraDescriptions(), function(node) {
-                    largest = intID(node.ID, largest);
-                });
-                return largest;
-            },
             _setStatus: function(/*string*/ id, /*string*/ part, /*string*/ status) {
                 // Summary: tracks student progress (correct, incorrect) on a given node; 
                 //      used in setStudentNodeSelection() and setToDemo()
@@ -175,7 +150,24 @@ define([
                 //      allows Dragoon to load a pre-defined program or to load a users saved work
                 //      Sets id for next node.
                 this.model = model;
-                this._ID = this._getLargestID() + 1;
+
+		/*
+		 We use ids of the form "id"+integer.  This loops through
+		 all the nodes in the model and finds the lowest integer such
+		 that there is no name conflict.  We simply ignore any ids that
+		 are not of the form "id"+integer.
+		 */ 
+                var largest = 0;
+		var intID = function(/*object*/ node){
+		    if(node.ID.length >= 2 && node.ID.slice(0,2) == "id"){
+			var n = parseInt(node.ID.slice(2));
+			if(n && n>largest) largest=n;
+		    }
+		};
+		array.forEach(this.given.getNodes(), intID);
+		array.forEach(this.student.getNodes(), intID);
+		array.forEach(this.getExtraDescriptions(), intID);
+                this.ID = largest+1;
             },
             getModelAsString: function() {
                 // Summary: Returns a JSON object in string format
@@ -975,9 +967,7 @@ define([
         obj.given = lang.mixin({
             addNode: function() {
                 // Summary: builds a new node and returns the node's unique id
-                var id = "id" + obj._ID;
-                obj._ID++;
-                var newNode = {"ID": id,
+                var newNode = {"ID": obj.ID++,
                     "inputs": [],
                     "attemptCount": {
                         "description": 0,
@@ -989,7 +979,7 @@ define([
                     "status": {}
                 };
                 obj.model.task.givenModelNodes.push(newNode);
-                return id;
+                return newNode.ID;
             },
             addNodeObject: function(/*node object*/ nodeObject) {
                 // Summary: adds a node object that is passed into it; used for
@@ -1045,16 +1035,15 @@ define([
         obj.student = lang.mixin({
             addNode: function() {
                 // Summary: builds a new node in the student model and returns the node's ID
-                var id = "id" + obj._ID++;
                 obj._updateNextXYPosition();
                 var newNode = {
-                    ID: id,
+                    ID: "id" + obj.ID++,
                     inputs: [],
                     position: {x: obj.x, y: obj.y},
                     selections: []
                 };
                 obj.model.task.studentModelNodes.push(newNode);
-                return id;
+                return newNode.ID;
             },
             addNodeObject: function(/*node object*/ nodeObject) {
                 // Summary: adds a node object that is passed into it; used for
