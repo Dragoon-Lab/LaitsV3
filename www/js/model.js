@@ -89,6 +89,36 @@ define([
                     }
                 }
             },
+            _getLargestID: function() {
+                /*
+                 We use ids of the form "id"+integer.  This loops through
+                 all the nodes in the model and finds the lowest integer such
+                 that there is no name conflict.  We simply ignore any ids that
+                 are not of the form "id"+integer.
+                 */
+
+                /*
+                 * Brett: I moved this code into another function because I am 
+                 * using it in addNodeObject() (which I use for testing to avoid
+                 * writing out excessive code in my testing) and I thought it 
+                 * would be more efficient to not copy the same stuff. I'm putting
+                 * it in a function again so that my code works, but I will keep 
+                 * these changes to a single commit so that it can be undone if
+                 * there is something I am not accounting for. Thanks!
+                 */
+                var largest = 0;
+                var intID = function(/*object*/ node) {
+                    if (node.ID.length >= 2 && node.ID.slice(0, 2) == "id") {
+                        var n = parseInt(node.ID.slice(2));
+                        if (n && n > largest)
+                            largest = n;
+                    }
+                };
+                array.forEach(this.given.getNodes(), intID);
+                array.forEach(this.student.getNodes(), intID);
+                array.forEach(this.getExtraDescriptions(), intID);
+                return largest;
+            },
             _setStatus: function(/*string*/ id, /*string*/ part, /*string*/ status) {
                 // Summary: tracks student progress (correct, incorrect) on a given node; 
                 //      used in setStudentNodeSelection() and setToDemo()
@@ -150,24 +180,8 @@ define([
                 //      allows Dragoon to load a pre-defined program or to load a users saved work
                 //      Sets id for next node.
                 this.model = model;
-
-		/*
-		 We use ids of the form "id"+integer.  This loops through
-		 all the nodes in the model and finds the lowest integer such
-		 that there is no name conflict.  We simply ignore any ids that
-		 are not of the form "id"+integer.
-		 */ 
-                var largest = 0;
-		var intID = function(/*object*/ node){
-		    if(node.ID.length >= 2 && node.ID.slice(0,2) == "id"){
-			var n = parseInt(node.ID.slice(2));
-			if(n && n>largest) largest=n;
-		    }
-		};
-		array.forEach(this.given.getNodes(), intID);
-		array.forEach(this.student.getNodes(), intID);
-		array.forEach(this.getExtraDescriptions(), intID);
-                this.ID = largest+1;
+                // Brett: please see the explanation for the change in _getLargestID()
+                this._ID = this._getLargestID + 1;
             },
             getModelAsString: function() {
                 // Summary: Returns a JSON object in string format
@@ -830,7 +844,7 @@ define([
             },
             addNode: function() {
                 // Summary: builds a new node and returns the node's unique id
-                var newNode = {"ID": obj.ID++,
+                var newNode = {"ID": "id" + obj._ID++,
                     "inputs": [],
                     "attemptCount": {
                         "description": 0,
@@ -909,7 +923,7 @@ define([
                 // Summary: builds a new node in the student model and returns the node's ID
                 obj._updateNextXYPosition();
                 var newNode = {
-                    ID: "id" + obj.ID++,
+                    ID: "id" + obj._ID++,
                     inputs: [],
                     position: {x: obj.x, y: obj.y},
                     selections: {}
