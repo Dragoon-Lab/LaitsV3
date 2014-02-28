@@ -70,7 +70,7 @@
                     "inputs": [ { "ID": "id1" }, { "ID": "id3" } ],
                     "initial": null,
                     "equation": "id1 * id3",
-                    "correctDesc": "The number of rabbits born each month",
+                    "description": "The number of rabbits born each month",
                     "attemptCount": {
                         "description": 0,
                         "type": 0,
@@ -89,7 +89,7 @@
                     "units": "percent",
                     "inputs": [],
                     "equation": ".2",
-                    "correctDesc": "The ratio of number of rabbits born in a month to the rabbit population that month",
+                    "description": "The ratio of number of rabbits born in a month to the rabbit population that month",
                     "attemptCount": {
                         "description": 0,
                         "type": 0,
@@ -99,6 +99,21 @@
                     },
                     "status": {}
                 });
+                rabbits.student.addNodeObject({
+                    "ID": "id6",
+                    "givenNodeID": "id3",
+                    "inputs": [],
+                    "position": {
+                        "x": 500,
+                        "y": 100
+                    },
+                    "selections": {}
+                });
+                rabbits.setToDemo("id6", "description");
+                rabbits.setToDemo("id6", "type");
+                rabbits.setToDemo("id6", "initial");
+                rabbits.setToDemo("id6", "units");
+                rabbits.setToDemo("id6", "equation");
                 rabbits.given.addInput(rabbits.getNodeIDByName("births"), rabbits.getNodeIDByName("population"));
 
 
