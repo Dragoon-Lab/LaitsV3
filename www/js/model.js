@@ -133,7 +133,6 @@ define([
                     }
                 return null;
             },
-
             /**
              * 
              * Public methods
@@ -149,23 +148,24 @@ define([
                 //      Sets id for next node.
                 this.model = model;
                 var largest = 0;
-		var intID = function(/*string*/ id, /*int*/ counter){
-		    if(id.length >= 2 && id.slice(0,2) == "id"){
-			var n = parseInt(id.slice(2));
-			if(n && n>counter) counter=n;
-		    }
-		    return counter;
-		};
-		array.forEach(this.given.getNodes(), function(node){
-		    largest = intID(node.ID, largest);
-		});
-		array.forEach(this.student.getNodes(), function(node){
-		    largest = intID(node.ID, largest);
-		});
-		array.forEach(this.getExtraDescriptions(), function(node){
-		    largest = intID(node.ID, largest);
-		});
-                this.ID = largest+1;
+                var intID = function(/*string*/ id, /*int*/ counter) {
+                    if (id.length >= 2 && id.slice(0, 2) == "id") {
+                        var n = parseInt(id.slice(2));
+                        if (n && n > counter)
+                            counter = n;
+                    }
+                    return counter;
+                };
+                array.forEach(this.given.getNodes(), function(node) {
+                    largest = intID(node.ID, largest);
+                });
+                array.forEach(this.student.getNodes(), function(node) {
+                    largest = intID(node.ID, largest);
+                });
+                array.forEach(this.getExtraDescriptions(), function(node) {
+                    largest = intID(node.ID, largest);
+                });
+                this.ID = largest + 1;
             },
             getModelAsString: function() {
                 // Summary: Returns a JSON object in string format
@@ -249,29 +249,29 @@ define([
                 var d = [];
                 array.forEach(this.given.getNodes(), function(node) {
                     d.push({label: node.description, value: node.ID});
-		});
-		array.forEach(this.getExtraDescriptions(), function(node) {
+                });
+                array.forEach(this.getExtraDescriptions(), function(node) {
                     d.push({label: node.description, value: node.ID});
-		});
-		return d;
+                });
+                return d;
             },
             getNodeNameByID: function(/*string*/ id) {
                 // Summary: returns the name of a node matching the given model
                 //      node or extra node id.  If no match is 
-		//      found, then return null.
+                //      found, then return null.
                 var ret = null;
-		// Not very efficient, but it works
+                // Not very efficient, but it works
                 array.forEach(this.given.getNodes(), function(node) {
                     if (node.ID == id) {
                         ret = node.name;
-		    }
-		}, this);
+                    }
+                }, this);
                 array.forEach(this.getExtraDescriptions(), function(node) {
                     if (node.ID == id) {
                         ret = node.name;
-		    }
-		}, this);
-		console.assert(ret, "Node '"+id+"' not found.");
+                    }
+                }, this);
+                console.assert(ret, "Node '" + id + "' not found.");
                 return ret; // returns null if the node cannot be found
             },
             getNodeIDByName: function(/*string*/ name) {
@@ -544,9 +544,9 @@ define([
                 return null;
             },
             getExtraDescriptions: function() {
-		// Summary: returns an array of the extra descriptions.
-		return this.model.task.extraDescriptions;
-	    },
+                // Summary: returns an array of the extra descriptions.
+                return this.model.task.extraDescriptions;
+            },
             isStudentModelEmpty: function() {
                 // Summary: returns true if the the student model is empty
                 if (this.model.task.studentModelNodes)
@@ -922,23 +922,24 @@ define([
          section.
          */
 
-	// Methods common to both student and given.
-	// These will be mixed into both obj.given and obj.student
-	var both = {
+        // Methods common to both student and given.
+        // These will be mixed into both obj.given and obj.student
+        var both = {
             isNode: function(/*string*/ id) {
                 return array.some(this.getNodes(), function(node) {
                     return node.ID === id;
                 });
             },
             getNode: function(/*string*/ id) {
-		var ret = null;
-		array.some(this.getNodes(), function(node){
-		    if(node.ID == id) ret = node;
-		    return node.ID == id;
-		});
-		console.info("in getNode", this.getNodes());
-		console.assert(ret,"No matching node for '"+id+"'");
-		return ret;
+                var ret = null;
+                array.some(this.getNodes(), function(node) {
+                    if (node.ID == id)
+                        ret = node;
+                    return node.ID == id;
+                });
+                console.info("in getNode", this.getNodes());
+                console.assert(ret, "No matching node for '" + id + "'");
+                return ret;
             },
             addInput: function(/*string*/ input, /*string*/ inputInto) {
                 // Summary: adds a node (input) as an input into the given node (inputInto); both params are node ID strings
@@ -958,8 +959,8 @@ define([
                 }
                 receivingNode.inputs.push(input);
             }
-	};
-	    
+        };
+
 
         obj.given = lang.mixin({
             addNode: function() {
@@ -980,14 +981,14 @@ define([
                 obj.model.task.givenModelNodes.push(newNode);
                 return id;
             },
-            getNodes: function(){
-		return obj.model.task.givenModelNodes;
-	    },
+            getNodes: function() {
+                return obj.model.task.givenModelNodes;
+            },
             getNodeNameByID: function(/*string*/ id) {
                 // Summary: returns the name of a node matching the student model.
                 //      If no match is found, then return null.
-		var node = this.getNode(id);
-		return node && node.name;
+                var node = this.getNode(id);
+                return node && node.name;
             },
             getNodeEquation: lang.hitch(obj, obj.getNodeEquation),
             getNodeInitial: lang.hitch(obj, obj.getNodeInitial),
@@ -1000,22 +1001,22 @@ define([
                 this.getNode(id).parent = parent;
             },
             setType: function(/*string*/ id, /*string*/ type) {
-                this.getNode(id).parent = type;
+                this.getNode(id).type = type;
             },
             setExtra: function(/*string*/ id, /*bool*/ extra) {
-                this.getNode(id).parent = extra;
+                this.getNode(id).extra = extra;
             },
             setUnits: function(/*string*/ id, /*string*/ units) {
-                this.getNode(id).parent = units;
+                this.getNode(id).units = units;
             },
             setInitial: function(/*string*/ id, /*float*/ initial) {
-                this.getNode(id).parent = initial;
+                this.getNode(id).initial = initial;
             },
             setEquation: function(/*string*/ id, /*string*/ equation) {
-                this.getNode(id).parent = equation;
+                this.getNode(id).equation = equation;
             },
             setDescription: function(/*string*/ id, /*float*/ description) {
-                this.getNode(id).parent = description;
+                this.getNode(id).description = description;
             }
         }, both);
 
@@ -1035,25 +1036,25 @@ define([
             },
             getGivenNodeID: function(id) {
                 // Return any matched given model id for student node.
-		// node.givenNodeID is largely redundant with node.sections.description.
+                // node.givenNodeID is largely redundant with node.sections.description.
                 var node = this.getNode(id);
                 return node && node.givenNodeID;
             },
             getNodeNameByID: function(/*string*/ id) {
                 // Summary: returns the name of a node matching the student model.
                 //      If no match is found, then return null.
-		/*
-		Determine what student has selected for this node 
-		 and then look for matching node in given model
-		 and extraDescriptions
-		 */
-		var node = this.getNode(id);
-		return node && node.selections.description
-		    && obj.getNodeNameByID(node.selections.description);
+                /*
+                 Determine what student has selected for this node 
+                 and then look for matching node in given model
+                 and extraDescriptions
+                 */
+                var node = this.getNode(id);
+                return node && node.selections.description
+                        && obj.getNodeNameByID(node.selections.description);
             },
-            getNodes: function(){
-		return obj.model.task.studentModelNodes;
-	    },
+            getNodes: function() {
+                return obj.model.task.studentModelNodes;
+            },
             getNodeInputs: lang.hitch(obj, obj.getStudentNodeInputs),
             getNodeEquation: lang.hitch(obj, obj.getStudentNodeEquation),
             getNodeInitial: lang.hitch(obj, obj.getStudentNodeInitial),
