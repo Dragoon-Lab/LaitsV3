@@ -17,8 +17,15 @@ define([
 ], function(array, declare, check, Parser) {
 
     return declare(null, {
-        constructor: function(/*string*/ user, /*model.js object*/model) {
-            //**** Redesign of pedagogical model in process; functions that are called by other files should stay the same ****//
+
+	mode: null,
+
+        constructor: function(/*string*/ mode, /*model.js object*/ model, /*string*/ user) {
+
+            /*
+	     Redesign of pedagogical model in process; functions that are called by 
+	     other files should stay the same 
+	    */
             this.correct = new Array();
             this.correct[0] = "Green means correct.  Good job!";
             this.correct[1] = "Green means correct.";
@@ -38,18 +45,23 @@ define([
             this.demo3 = "Please study this correct selection.";
             this.demoType1 = "Yellow means that you made an incorrect choice too many times, so you are being shown the correct choice.  You should figure out why it is correct so that next time your first choice will be correct.";
             this.demoType2 = "Can you figure out why this is the right type/initial value for the node?";
-            this.premature2 = "Blue means that the quantity is relevant for modeling the system, but it is not yet time to define it.  You should follow the Target Node Strategy, which says you should edit an existing node that is not yet defined.  Such nodes have dotted outlines.  Click on one to edit it.";
+            this.premature1 = "Blue means that the quantity is relevant for modeling the system, but it is not yet time to define it.  You should follow the Target Node Strategy, which says you should edit an existing node that is not yet defined.  Such nodes have dotted outlines.  Click on one to edit it.";
             this.premature2 = "Blue means that according to the Target Node Strategy, it is too early to define a node for this quantity.  Edit a node that has a dotted outline.";
             this.premature3 = "Blue means premature.  Edit a node with a dotted outline instead.";
             this.otherBlue1 = "Blue means that quantity isn’t one that the problem statement asks you to graph.  Although this quantity will eventually be in your model, you should follow the Target Node Strategy, which says you should first define a node for a top level goal quantity.";
             this.otherBlue2 = "Please start with a quantity mentioned in the problem statement as one that needs to be graphed.";
-            //Need further clarification on the feedback and user; also need to implement switching between the two
+
+            /*
+	     Need further clarification on the feedback and user; also need to implement 
+	     switching between the two
+	     */
             if (user === "student" || user === "power") {
                 this.userType = "feedback";
                 console.log("*****\nUser type was input as " + user + ". Currently this is being set to feedback.\n");
             } else {
                 this.userType = user;
             }
+
             this.model = model;
             this.message = "";
             this.descriptionOn = true;
@@ -115,7 +127,7 @@ define([
             //      part the user is at and the type (mode) of user (i.e. coached, feedback, etc.)
             //
             //Tags: private
-
+ 
             var nodeParts = new Array("description", "type", "initial", "units", "inputs", "equation");
 	    var neededControls = new Array("description", "type");
 

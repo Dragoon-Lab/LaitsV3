@@ -96,39 +96,44 @@ define([
 	   this.populateNodeEditorFields(id);
 	   this._nodeEditor.show();
 	},
+
+	dispatch: function(/*array*/ directives){
+	    array.forEach(directives, function(directive){
+		console.log("========= directive ", directive);
+		
+	    });
+	},
+
 		
 	populateNodeEditorFields : function(nodeid){
 	    //populate description
 	    var model = this._model;
 	    var editor = this._nodeEditor;
 	    //set task name
-           var nodeName = model.student.getNodeNameByID(nodeid) || "New quantity";
+            var nodeName = model.student.getNodeNameByID(nodeid) || "New quantity";
 	    editor.set('title', nodeName);
-	    //populate type
-	    // populate initial value
-	    // populate units
+
 	    /* 
-	     Need to set the following:
-	     1. selected description
-	     2. whether description is enabled
-	     3. selected type
-	     4. whether type is enabled
-             5. value for initial value
-	     6. whether whether is enabled
-	     7. selected units 
-	     8. whether units are enabled
-	     9. selected inputs (may have to do custom styling)
-	     10. whether input is enabled
-	     11. whether + - * / undo and done are enabled
-	     12. value for input
-	     13. whether input is enabled
-	     14. Color for Description, type, initial value, units, and input.
-
-	     Note that if input is disabled, then + - * / undo, and done should also be disabled.
-
-	     This is a pretty big job, so we need to figure out how to do
-	     this efficiently.
+	     Set values and choices based on student model
+	     
+	     Set selection for description, type, units, inputs (multiple selections)
+	     
+	     Set value for initial value, equation (input), 
 	     */
+
+	    /*
+	     The PM sets enabled/disabled and color for the controls
+	     
+	     Set enabled/disabled for input, units, initial value, type
+	     description
+	     
+	     Color for Description, type, initial value, units, and input.
+
+	     Note that if and only if input is disabled, then +, -, *, /, undo, and done 
+	     should also be disabled.
+	     */
+	    
+	    this.dispatch(PM.openAction(nodeid));
 	}
 	
     });	
