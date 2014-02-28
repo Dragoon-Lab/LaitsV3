@@ -827,7 +827,8 @@ define([
                 //      instead of setting elements one at a time.
                 if (!this.getNode(nodeObject.ID)) {
                     console.log("Adding node object. Node ID does not yet exist. Ignore matching error on previous line.");
-                    this._addNodeObject(nodeObject);
+                    // call function to insert node in the given or student model (based on code that called addNodeObject()
+                    this._addNodeObject(nodeObject); 
                     obj._ID = obj._getLargestID() + 1;
                 } else {
                     console.error("Node ID is already in use: ", nodeObject.ID);
@@ -837,8 +838,8 @@ define([
 
         obj.given = lang.mixin({
             _addNodeObject: function(/*node object*/ nodeObject) {
-                // Summary: adds node object after checking for duplicates; 
-                //      used for testing.                
+                // Summary: adds node object after checking for duplicates in 
+                //      addNodeObject() under the subclass "both"; used for testing.                
                 // Tags: private
                 obj.model.task.givenModelNodes.push(nodeObject);
             },
@@ -914,8 +915,8 @@ define([
 
         obj.student = lang.mixin({
             _addNodeObject: function(/*node object*/ nodeObject) {
-                // Summary: adds node object after checking for duplicates; 
-                //      used for testing.
+                // Summary: adds node object after checking for duplicates in 
+                //      addNodeObject() under the subclass "both"; used for testing.                
                 // Tags: private
                 obj.model.task.studentModelNodes.push(nodeObject);
             },
