@@ -19,7 +19,7 @@ define([
 	    this._PM = new PM(mode, model);
 	    
             // Test the PM 
-            var r = this._PM.openAction("id4");
+           var r = this._PM.openAction("id4");
             console.log("********** test PM open", r);
             var rr = this._PM.descriptionAction("id1");
             console.log("********** test PM description", rr);
@@ -135,7 +135,6 @@ define([
 	     should also be disabled.
 	     */
 	    
-	    this.dispatch(PM.openAction(nodeid));
 	}
 	
     });	

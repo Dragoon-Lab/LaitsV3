@@ -763,7 +763,7 @@ define([
             getNodes: function() {
                 return obj.model.task.givenModelNodes;
             },
-            getNameByID: function(/*string*/ id) {
+            getNodeNameByID: function(/*string*/ id) {
                 // Summary: returns the name of a node matching the student model.
                 //      If no match is found, then return null.
                 var node = this.getNode(id);
@@ -833,7 +833,7 @@ define([
                 var node = this.getNode(id);
                 return node && node.givenNodeID;
             },
-            getNameByID: function(/*string*/ id) {
+            getNodeNameByID: function(/*string*/ id) {
                 // Summary: returns the name of a node matching the student model.
                 //      If no match is found, then return null.
                 /*

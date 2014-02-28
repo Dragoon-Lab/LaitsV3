@@ -17,7 +17,6 @@ define([
 ], function(array, declare, check, Parser) {
 
     return declare(null, {
-        mode: null,
         constructor: function(/*string*/ mode, /*model.js object*/ model) {
 
             /*
@@ -62,6 +61,7 @@ define([
             this.inputs_lCounter = 0;
             this.lastNodeOpened = null; //used to track inputs attempts in inputsAction();
         },
+        mode: null,
         _getType: function(/*string*/ expression) {
             //Summary: determines the sub type of a node with type "function"
             //
