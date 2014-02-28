@@ -99,7 +99,7 @@ define([
             array.forEach(vertices, function(vertex){
 		// Not sure why vertex is an array and not just the <div>
                 var id = attr.get(vertex[0], "id");
-                var inputs = givenModel.student.getNodeInputs(id);
+                var inputs = givenModel.student.getInputs(id);
                 array.forEach(inputs, function(input){
                     console.log("---- adding connection from ", input, " to ", id, " scope is ", this);
                     this.addConnection(vertex, input);

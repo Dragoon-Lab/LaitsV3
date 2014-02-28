@@ -104,13 +104,13 @@ define([
             // Only enable/disable parts needed in the model (present in the given model)
             // Parts not needed should be disabled when the window is opened.
             // Pehaps this list should be populated when the node editor is opened.
-            if (this.model.getNodeInitial(this.givenNodeId))
+            if (this.model.given.getInitial(this.givenNodeId))
                 neededControls.push("initial");
-            if (this.model.getNodeUnits(this.givenNodeId))
+            if (this.model.given.getUnits(this.givenNodeId))
                 neededControls.push("units");
-            if (this.model.getNodeInputs(this.givenNodeId))
+            if (this.model.given.getInputs(this.givenNodeId))
                 neededControls.push("inputs");
-            if (this.model.getNodeEquation(this.givenNodeId))
+            if (this.model.given.getEquation(this.givenNodeId))
                 neededControls.push("equation");
 
             //If student should move on to the next part (i.e. status = correct or demo)
@@ -158,6 +158,10 @@ define([
             var infoObject = Array();
             return this._getReturnObject(infoObject);
         },
+	closeAction: function(){
+	    this.studentNodeId = null;
+	    this.givenNodeId = null;
+	},
         descriptionAction: function(/*string*/ id) {
             //Summary: accepts an answer that the student provides, checks its validity,
             //      and returns an array of diretives
@@ -198,7 +202,7 @@ define([
                 sequence = pedagogicalTable["redundant"][this.userType];
             } else if (this.model.isParentNode(id) || this.model.isNodesParentVisible(id)) {
                 sequence = pedagogicalTable["optimal"][this.userType];
-            } else if (this.model.isStudentModelEmpty()) {
+            } else if (this.model.student.getNodes().length == 0) {
                 sequence = pedagogicalTable["notTopLevel"][this.userType];
             } else
                 sequence = pedagogicalTable["premature"][this.userType];
@@ -366,10 +370,10 @@ define([
                 additionalFailure: additionalFailure};
 
             var sequence;
-            var correctType = this.model.getNodeType(id);
+            var correctType = this.model.getType(id);
 
             if (correctType === "function")
-                correctType = this._getType(this.model.getNodeEquation(id));
+                correctType = this._getType(this.model.given.getEquation(id));
 
             //allowed anwers include parameter, accumulator, sum, product, and power user
             //      but the model only accepts parameter, accumulator, and function; these
@@ -428,7 +432,7 @@ define([
                 case "aje": // a: color red; j: hint; e: leave type widget open
                     infoObject.push({id: control, attrubute: "status", value: "incorrect"});
                     //the following hints may be changed if the author is allowed to set his/her own hints
-                    if (this.model.getNodeType(id) === "function")
+                    if (this.model.getType(id) === "function")
                         //currently the only action that will be taken within this "if" statement is the final "else" clause
                         if (answer === "sum")
                             infoObject.push({id: control, attribute: "message", value: "That is incorrect. Remember, with \"" +
@@ -489,7 +493,7 @@ define([
                 additionalFailure: additionalFailure};
 
             var sequence;
-            var correctInitial = this.model.getNodeInitial(id);
+            var correctInitial = this.model.given.getInitial(id);
 
             this.model.setStudentNodeSelection(id, "initial", answer);
 
@@ -703,7 +707,7 @@ define([
                     else
                         sequence = pedagogicalTable["irrelevant"][this.userType];
                 }
-            } else if (this.model.isStudentNodeInput(id, inputID)) {
+            } else if (this.model.isNodeInput(id, inputID)) {
                 sequence = pedagogicalTable["redundant"][this.userType];
             } else if (this.model.isNodeInput(id, inputID)) {
                 sequence = pedagogicalTable["optimal"][this.userType];
@@ -863,7 +867,7 @@ define([
             var control = "equation";  // Should match control id in index.html
 
             this.model.setStudentNodeSelection(id, "equation", equation);
-            var equivCheck = new check(this.model.getNodeEquation(id), equation);
+            var equivCheck = new check(this.model.given.getEquation(id), equation);
 
             if (equivCheck.areEquivalent()) {
                 infoObject.push({id: control, attribute: "message", value: "Green means correct."});

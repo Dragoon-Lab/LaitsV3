@@ -87,7 +87,7 @@ define([
 				
 				for(i=0; i<this.modelNodes.length; i++)
 				{
-					nodeEquations[this.modelNodes[i].ID] = this.active.getNodeEquation(this.modelNodes[i].ID);
+					nodeEquations[this.modelNodes[i].ID] = this.active.getEquation(this.modelNodes[i].ID);
 				}
 				
 				return nodeEquations;
@@ -100,7 +100,7 @@ define([
 				var j, arrayOfNodeValues={};
 				for(var j=0; j<this.modelNodes.length; j++)
 				{
-					if(this.active.getNodeType(this.modelNodes[j].ID) != 'parameter')
+					if(this.active.getType(this.modelNodes[j].ID) != 'parameter')
 					{
 						arrayOfNodeValues[this.modelNodes[j].ID] = new Array();
 					}
@@ -121,7 +121,7 @@ define([
 					
 						for(i=0;i<this.modelNodes.length;i++)
 						{
-							this.currentNodeValues[this.modelNodes[i].ID] = this.active.getNodeInitial(this.modelNodes[i].ID);
+							this.currentNodeValues[this.modelNodes[i].ID] = this.active.getInitial(this.modelNodes[i].ID);
 						}
 						
 						arrayOfTimeSteps.push(this.startTime);
@@ -129,15 +129,15 @@ define([
 						for(j=0;j<this.modelNodes.length;j++)
 						{
 							var _v;
-							if(this.active.getNodeInitial(this.modelNodes[j].ID) == null)
+							if(this.active.getInitial(this.modelNodes[j].ID) == null)
 							{
 								_v = this._calcNULLNodeValue(this.modelNodes[j].ID,nodeEquations);
 							}
 							else
 							{
-								_v = this.active.getNodeInitial(this.modelNodes[j].ID);
+								_v = this.active.getInitial(this.modelNodes[j].ID);
 							}
-							if(this.active.getNodeType(this.modelNodes[j].ID) != 'parameter')
+							if(this.active.getType(this.modelNodes[j].ID) != 'parameter')
 							{
 								arrayOfNodeValues[this.modelNodes[j].ID].push(_v);
 							}			
@@ -151,7 +151,7 @@ define([
 							arrayOfTimeSteps.push(i);
 							for(j=0;j<this.modelNodes.length;j++)
 							{
-								if(this.active.getNodeType(this.modelNodes[j].ID) != 'parameter')
+								if(this.active.getType(this.modelNodes[j].ID) != 'parameter')
 								{
 									arrayOfNodeValues[this.modelNodes[j].ID].push(this._calcNULLNodeValue(this.modelNodes[j].ID,nodeEquations));
 								}
@@ -193,10 +193,10 @@ define([
 				var i,count=0;
 				for(i=0;i<this.modelNodes.length;i++)
 				{
-					if(this.active.getNodeType(this.modelNodes[i].ID) == 'parameter')
+					if(this.active.getType(this.modelNodes[i].ID) == 'parameter')
 					{
 						arrayOfParameterNames[this.modelNodes[i].ID] = this.model.getNodeNameByID(this.modelNodes[i].ID);
-						arrayOfParamInitialValues[this.modelNodes[i].ID] = this.active.getNodeInitial(this.modelNodes[i].ID);
+						arrayOfParamInitialValues[this.modelNodes[i].ID] = this.active.getInitial(this.modelNodes[i].ID);
 						count++;
 					}
 				}

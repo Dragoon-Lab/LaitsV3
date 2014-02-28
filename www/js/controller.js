@@ -19,8 +19,10 @@ define([
 	    this._PM = new PM(mode, model);
 	    
             // Test the PM 
-            var r = this._PM.descriptionAction("id1");
-            console.log("********** test PM description", r);
+            var r = this._PM.openAction("id4");
+            console.log("********** test PM open", r);
+            var rr = this._PM.descriptionAction("id1");
+            console.log("********** test PM description", rr);
 	    
 	    // The Node Editor widget must be set up before modifications
             // It might be a better idea to only  call the controller
