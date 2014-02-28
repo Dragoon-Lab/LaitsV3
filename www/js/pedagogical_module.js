@@ -215,7 +215,7 @@ define([
                 case "ijno": // i: color green; j: message; n: disable description menu; o: enable type menu
                     infoObject.push({id: control, attrubute: "status", value: "correct"});
                     // BvdS:  These are done by controller
-                    // this.model.addStudentNodeWithName(this.model.getNodeNameByID(id));
+                    // this.model.addStudentNodeWithName(this.model.getName(id));
                     // this.model.setStudentNodeSelection(id, "description", answer);
                     this.model.incrementDescriptionAttemptCount(id, this.descriptionCounter);
                     if (this.description_jCounter < 1)
@@ -229,7 +229,7 @@ define([
                     break;
                 case "ino": // i: color green; n: disable description menu; o: enable type menu
                     infoObject.push({id: control, attrubute: "status", value: "correct"});
-                    this.model.addStudentNodeWithName(this.model.getNodeNameByID(id));
+                    this.model.addStudentNodeWithName(this.model.getName(id));
                     this.model.setStudentNodeSelection(id, "description", answer);
                     this.model.incrementDescriptionAttemptCount(id);
                     this.description_jCounter++;
@@ -323,7 +323,7 @@ define([
                     infoObject.push({id: control, attrubute: "status", value: "demo"});
                     id = this.model.getOptimalNode();
                     infoObject.ID = id;
-                    this.model.addStudentNodeWithName(this.model.getNodeNameByID(id));
+                    this.model.addStudentNodeWithName(this.model.getName(id));
                     this.model.setToDemo(id, "description");
                     if (this.description_lCounter < 1)
                         infoObject.push({id: control, attribute: "message", value: "Sorry, but that quantity isn’t relevant to the model. Moreover, " +
@@ -343,7 +343,7 @@ define([
                     infoObject.push({id: control, attrubute: "status", value: "demo"});
                     id = this.model.getOptimalNode();
                     infoObject.ID = id;
-                    this.model.addStudentNodeWithName(this.model.getNodeNameByID(id));
+                    this.model.addStudentNodeWithName(this.model.getName(id));
                     this.model.setToDemo(id, "description");
                     this.model.incrementDescriptionAttemptCount(id);
                     this.descriptionCounter = 0;
@@ -436,22 +436,22 @@ define([
                         //currently the only action that will be taken within this "if" statement is the final "else" clause
                         if (answer === "sum")
                             infoObject.push({id: control, attribute: "message", value: "That is incorrect. Remember, with \"" +
-                                        this.model.getNodeNameByID(id) + "\" you will need " +
+                                        this.model.getName(id) + "\" you will need " +
                                         "to multiply other nodes to determine its solution."});
                         else if (answer === "product")
                             infoObject.push({id: control, attribute: "message", value: "That is incorrect. Remember, with \"" +
-                                        this.model.getNodeNameByID(id) + "\" you will need " +
+                                        this.model.getName(id) + "\" you will need " +
                                         "to add other nodes to determine its solution."});
                         else
                             infoObject.push({id: control, attribute: "message", value: "That is incorrect. Remember, with \"" +
-                                        this.model.getNodeNameByID(id) + "\" you will need " +
+                                        this.model.getName(id) + "\" you will need " +
                                         "use other nodes to determine its solution."});
                     else if (correctType === "parameter")
                         infoObject.push({id: control, attribute: "message", value: "That is incorrect. Remember, \"" +
-                                    this.model.getNodeNameByID(id) + "\" has a fixed value."});
+                                    this.model.getName(id) + "\" has a fixed value."});
                     else
                         infoObject.push({id: control, attribute: "message", value: "That is incorrect. Remember, \"" +
-                                    this.model.getNodeNameByID(id) + "\" starts with one " +
+                                    this.model.getName(id) + "\" starts with one " +
                                     "value, which then changes over time based on its other inputs."});
                     break;
                 case "difg": // d: color yellow; i: message; f: freeze type widget; g: enable next widget based on selection
@@ -630,7 +630,7 @@ define([
                 case "aif": // a: color red; i: hint; g: leave widget active
                     infoObject.push({id: control, attrubute: "status", value: "incorrect"});
                     infoObject.push({id: control, attribute: "message", value: "The units variable should relate to the quantity being measured. Think about the node \"" +
-                                this.model.getNodeNameByID(id) + "\". What unit would pertain to this node?"});
+                                this.model.getName(id) + "\". What unit would pertain to this node?"});
                     break;
                 case "c": // c: leave the widget white
                     break;
@@ -722,7 +722,7 @@ define([
                 case "ijno": // i: color green; j: message; n: freeze inputs (implemented after all 
                     // inputs are visible--needs discussion due to extra inputs); o: enable "+ input" and "- input" buttons
                     infoObject.push({id: control, attrubute: "status", value: "correct"});
-                    this.model.addStudentNodeWithName(this.model.getNodeNameByID(inputID));
+                    this.model.addStudentNodeWithName(this.model.getName(inputID));
                     this.model.setStudentNodeSelection(inputID, "description", answer);
                     this.model.incrementescriptionAttemptCount(inputID);
                     if (this.inputs_jCounter < 1)
@@ -742,7 +742,7 @@ define([
                     break;
                 case "io": // i: color green; n: disable input menu; o: enable "+ input" and "- input" buttons
                     infoObject.push({id: control, attrubute: "status", value: "correct"});
-                    this.model.addStudentNodeWithName(this.model.getNodeNameByID(inputID));
+                    this.model.addStudentNodeWithName(this.model.getName(inputID));
                     this.model.setStudentNodeSelection(inputID, "description", answer);
                     this.model.incrementescriptionAttemptCount(inputID);
                     this.inputs_jCounter++;
@@ -837,7 +837,7 @@ define([
                 case "klno": //k: color yellow and give optimal solution; l: message; n: disable description menu; o: activate "Type"
                     infoObject.push({id: control, attrubute: "status", value: "demo"});
                     inputID = this.model.getNextOptimalInput(id);
-                    this.model.addStudentNodeWithName(this.model.getNodeNameByID(inputID));
+                    this.model.addStudentNodeWithName(this.model.getName(inputID));
                     this.model.setToDemo(inputID, "description");
                     if (this.inputs_lCounter < 1)
                         infoObject.push({id: control, attribute: "message", value: "Sorry, but that quantity isn’t relevant to the model. Moreover, " +

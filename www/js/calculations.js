@@ -195,7 +195,7 @@ define([
 				{
 					if(this.active.getType(this.modelNodes[i].ID) == 'parameter')
 					{
-						arrayOfParameterNames[this.modelNodes[i].ID] = this.model.getNodeNameByID(this.modelNodes[i].ID);
+						arrayOfParameterNames[this.modelNodes[i].ID] = this.model.getName(this.modelNodes[i].ID);
 						arrayOfParamInitialValues[this.modelNodes[i].ID] = this.active.getInitial(this.modelNodes[i].ID);
 						count++;
 					}

@@ -47,7 +47,7 @@ define([
 	    // d.removeOption(d.getOptions()); // Delete all options
 	    array.forEach(this._model.getAllDescriptions(), function(desc){
 	        d.addOption(desc);
-		var name = this._model.getNodeNameByID(desc.value);
+		var name = this._model.getName(desc.value);
 		var option = {label: desc.label+' '+ ' | '+' '+ name, value:desc.value};
 		t.addOption(option);
 	    }, this);
@@ -112,7 +112,7 @@ define([
 	    var model = this._model;
 	    var editor = this._nodeEditor;
 	    //set task name
-            var nodeName = model.student.getNodeNameByID(nodeid) || "New quantity";
+            var nodeName = model.student.getName(nodeid) || "New quantity";
 	    editor.set('title', nodeName);
 
 	    /* 
