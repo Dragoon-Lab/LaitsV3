@@ -19,7 +19,7 @@
 	//require "../www/error-handler.php";
 
 	set_time_limit(30000);
-	include "logAnalysis.php";
+	include "createDashboard.php";
 	
 	date_default_timezone_set('America/Phoenix');
 	!empty($_REQUEST["date"])?($date = $_REQUEST["date"]):($date = Date("Y-m-d"));
@@ -33,12 +33,12 @@
 	//$mysqli = mysqli_connect("localhost",$dbuser, $dbpass, $dbname) or die("Connection not established. Check the user log file");
 	$mysqli = mysqli_connect("localhost", "root", "qwerty211", "laits_devel") or die("Connection not established. Check the user log file");
 
-	$al = new AnalyzeLogs($mysqli);
+	$db = new Dashboard($mysqli);
 
 	if($smallDashboard){
-		$al->createSmallDashboard($section, $mode, $date, $fromTime, $toTime, $user);
+		$db->createSmallDashboard($section, $mode, $date, $fromTime, $toTime, $user);
 	} else {
-		$al->createDashboard($section, $mode, $date, $fromTime, $toTime, $user);
+		$db->createDashboard($section, $mode, $date, $fromTime, $toTime, $user);
 	}
 	mysqli_close($mysqli);
 ?>
