@@ -9,7 +9,7 @@
 <?php
 	include "modelChanges.php";
 
-	:require "../www/db-login.php";
+	require "../www/db-login.php";
 	require "../www/error-handler.php";
 
 	$mysqli = mysqli_connect("localhost",$dbuser, $dbpass, "laits_fall_2013") or die("Connection not established. Check the user log file");
