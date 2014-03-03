@@ -9,13 +9,15 @@
 <?php
 	include "modelChanges.php";
 
-	//require "../www/db-login.php";
-	//require "../www/error-handler.php";
+	:require "../www/db-login.php";
+	require "../www/error-handler.php";
 
-	//$mysqli = mysqli_connect("localhost",$dbuser, $dbpass, $dbname) or die("Connection not established. Check the user log file");
-	$mysqli = mysqli_connect("localhost", "root", "qwerty211", "laits_fall13") or die("Connection not established. Check the user log file");
+	$mysqli = mysqli_connect("localhost",$dbuser, $dbpass, "laits_fall_2013") or die("Connection not established. Check the user log file");
+	//$mysqli = mysqli_connect("localhost", "root", "qwerty211", "laits_fall13") or die("Connection not established. Check the user log file");
 
 	$model = new ModelChanges($mysqli);
+
+	echo "Picking code from laits_fall_2013 database.";
 
 	$model->getProblemPairs();
 
