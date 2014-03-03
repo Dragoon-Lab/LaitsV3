@@ -856,7 +856,7 @@ define([
 		var node = this.getNode(id);
 		return node && node.selections.type;
 	    },
-	    getType: function(/*string*/ id){
+	    getInitial: function(/*string*/ id){
 		var node = this.getNode(id);
 		return node && node.selections.initial;
 	    },

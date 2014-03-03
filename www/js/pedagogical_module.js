@@ -30,6 +30,7 @@ define([
              */
 
             this.setMode(mode);
+            this.returnObject = new Object;
             this.mode = null;
             this.model = model;
             this.message = "";
@@ -158,11 +159,37 @@ define([
             var infoObject = Array();
             return this._getReturnObject(infoObject);
         },
-	closeAction: function(){
-	    this.studentNodeId = null;
-	    this.givenNodeId = null;
-	},
-        descriptionAction: function(/*string*/ id) {
+        closeAction: function() {
+            this.studentNodeId = null;
+            this.givenNodeId = null;
+        },
+        newDescriptionAction: function(/*string*/ id, /*string*/ answer) {
+            //Summary: accepts an answer that the student provides, checks its validity,
+            //      and returns an array of diretives
+            //      message
+            //Note: Each choice is labeled by either a node ID (for choices that
+            //      correspond to nodes in the given model) or other label (for disctractors).
+
+            //The array that that will be returned
+            var infoObject = Array();
+            var control = "description";  // Should match control id in index.html
+
+            //pedagogicalTable assigns the
+            //      appropriate actions to be taken; the actions are assigned to sequence
+            var pedagogicalTable = {
+                optimal: {coached: "ijno", feedback: "ijno", test: "ino", power: "ino"},
+                notTopLevel: {coached: "fhm", feedback: "ijno", test: "ino", power: "ino"},
+                premature: {coached: "fgm", feedback: "ijno", test: "ino", power: "ino"},
+                initialValue: {coached: "acm", feedback: "acm", test: "am", power: "am"},
+                extraValue: {coached: "adm", feedback: "abm", test: "am", power: "am"},
+                irrelevant: {coached: "abm", feedback: "abm", test: "am", power: "am"},
+                redundant: {coached: "aem", feedback: "aem", test: "aem", power: "aem"},
+                lastFailure: {coached: "klno", feedback: "klno", test: "kno", power: "kno"}
+            };
+
+            var sequence;
+        },
+        descriptionAction: function(/*string*/ id, /*string*/ answer) {
             //Summary: accepts an answer that the student provides, checks its validity,
             //      and returns an array of diretives
             //      message
