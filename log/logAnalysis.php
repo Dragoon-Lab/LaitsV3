@@ -1,7 +1,7 @@
 <?php
 Class AnalyzeLogs{
 	public $sqlConnection;
-	private static $badUsers = array('bvds', 'reid', 'test', 'deepak', 'megha', 'ramayan', 'ram', 'tiwari', 'joiner');
+	private static $badUsers = array('bvds', 'reid', 'test', 'deepak', 'megha', 'ramayan', 'ram', 'tiwari', 'joiner', 'ben');
 	private static $goldenRatio = 0.6;//ratio of (number of times give up pressed)/(total number of solution checks)
 	private static $minimumTime = 600; //minimum problem time, usually the time has to be greater than this to be considered. if a problem is done in less than this time then we do not check all the action times.
 	private static $actionTime = 420; //time in seconds greater than this then student is not working on the problem.
@@ -9,23 +9,23 @@ Class AnalyzeLogs{
 	private static $tabReadingTime = 7; //minimum time to decide whether the tab was completely read or thought of properly
 
 	function getGoldenRation(){
-		return $this->goldenRatio;
+		return AnalyzeLogs::$goldenRatio;
 	}
 
 	function getMinimumTime(){
-		return $this->minimumTime;
+		return AnalyzeLogs::$minimumTime;
 	}
 
 	function getActionTime(){
-		return $this->actionTime;
+		return AnalyzeLogs::$actionTime;
 	}
 
 	function getProblemLoadTime(){
-		return $this->problemLoadTime;
+		return AnalyzeLogs::$problemLoadTime;
 	}
 
 	function getTabReadingTime(){
-		return $this->tabReadingTime;
+		return AnalyzeLogs::$tabReadingTime;
 	}
 
 	
@@ -33,10 +33,10 @@ Class AnalyzeLogs{
 		$bad = AnalyzeLogs::$badUsers;
 		for($i = 0; $i<sizeof($bad); $i++){
 			if(stripos($user, $bad[$i]) !== false){
-				return false;
+				return true;
 			}
 		}
-		return true;
+		return false;
 	}
 	function __construct($con){
 		$this->sqlConnection = $con;
@@ -123,7 +123,7 @@ Class AnalyzeLogs{
 			$index = 0;
 			$goodUser = array();
 			while($student = $result->fetch_assoc()){
-				if(!empty($student['id']) && $this->checkBadUsers($student['id'])){
+				if(!empty($student['id']) && !($this->checkBadUsers($student['id']))){
 					$goodUser[$index] = $student['id'];
 					$index++;
 				}

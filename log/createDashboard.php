@@ -6,7 +6,7 @@ Class Dashboard{
 	public $al;
 
 	function __construct($con){
-		Dashboard::sqlConnection = $con;
+		Dashboard::$sqlConnection = $con;
 		$this->al = new AnalyzeLogs(Dashboard::$sqlConnection);
 	}
 
@@ -16,10 +16,10 @@ Class Dashboard{
 		$userString = "AND user = '".$user."' ";
 		$sessionQuery = "SELECT tid, session.session_id, user, problem_name, time, method, message, author from session JOIN step ON session.session_id = step.session_id where section = '".$section."' AND time >= '".$date." ".$fromTime."' AND time <= '".$date." ".$toTime."' AND mode = '".$mode."' ".($user != ''?$userString:'')."ORDER BY user asc, problem_name asc, tid asc;";
 		
-		$totalWork = $al->getResults($sessionQuery);
+		$totalWork = $this->al->getResults($sessionQuery);
 		$numResults = mysqli_num_rows($totalWork);
 		
-		$maxIdleTime = $al->getActionTime();
+		$maxIdleTime = $this->al->getActionTime();
 		$counter = 1; $problemTime = 0;
 		$resetNodeString = true;
 		$oldSession; $oldRow; $help; $nodeDetailsArray;
@@ -295,13 +295,13 @@ Class Dashboard{
 
 		//echo $sessionQuery;
 
-		$totalWork = $al->getResults($sessionQuery);
+		$totalWork = $this->al->getResults($sessionQuery);
 		$numResults = mysqli_num_rows($totalWork);
 		$index = 0; $noOfTimesProblemAccessed=0; $problemTime = 0; $helpCounter = 0; $nodeIndex=0;
 		$nodeTabCheck = 0;
 		$UIaction = array();
-		$tabReadTime = $al->getTabReadingTime;
-		$maxIdleTime = $al->getActionTime;
+		$tabReadTime = $this->al->getTabReadingTime();
+		$maxIdleTime = $this->al->getActionTime();
 		$runningProblems = array();
 		$completeProblems = array();
 		$workingTempNode = false;
@@ -570,91 +570,95 @@ Class Dashboard{
 	}
 
 	function printSmallDashboard($runningProblems, $completeProblems){
-		echo "Color Scheme : \n";
-		echo "<ul>\n";
-		echo "<li><span style='color:Red'>Red</span> : Help Button Presesd</li>\n";
-		echo "<li><span style='color:Yellow'>Yellow</span> : First incorrect check</li>\n";
-		echo "<li><span style='color:Orange'>Orange</span> : Second incorrect check</li>\n";
-		echo "<li><span style='color:Blue'>Blue</span> : Third incorrect check</li>\n";
-		echo "<li><span style='color:Green'>Green</span> : Correct Check</li>\n";
-		echo "</ul>\n";
-		echo "<h2>Running Problems</h2>\n";
-		echo "<table border='1'>\n";
-		echo "<tr>\n";
-		echo "<th>User Name</th>\n";
-		echo "<th>Problem Name</th>\n";
-		echo "<th>Time Spent/Session Running Time</th>\n";
-		echo "<th>Nodes Details</th>\n";
-		echo "<th>Last UI actions</th>\n";
-		echo "</tr>\n";
-		foreach ($runningProblems as $row){
+		if(($runningProblems != null && !empty($runningProblems))||($completeProblems != null && !empty($completeProblems))){
+			echo "Color Scheme : \n";
+			echo "<ul>\n";
+			echo "<li><span style='color:Red'>Red</span> : Help Button Presesd</li>\n";
+			echo "<li><span style='color:Yellow'>Yellow</span> : First incorrect check</li>\n";
+			echo "<li><span style='color:Orange'>Orange</span> : Second incorrect check</li>\n";
+			echo "<li><span style='color:Blue'>Blue</span> : Third incorrect check</li>\n";
+			echo "<li><span style='color:Green'>Green</span> : Correct Check</li>\n";
+			echo "</ul>\n";
+			echo "<h2>Running Problems</h2>\n";
+			echo "<table border='1'>\n";
 			echo "<tr>\n";
-			echo "<td>".$row['user']."</td>\n";
-			echo "<td>".$row['problem']."</td>\n";
-			echo "<td>".$row['problemTime']."</td>\n";
-			echo "<td>\n";
-			foreach($row['nodeDetails'] as $nodeName => $nodeDetails){
-				echo "<b>".$nodeName."</b> => ".$nodeDetails.'<br/>';
-			}
-			echo "</td>\n";
-			echo "<td>\n";
-			$size = sizeof($row['uiActions']);
-			$index = 0;
-			if($size == 0){
-				echo "User has not started the problem.";
-			} else {
-				if($size >= 3){
-					$index = $size -3;
+			echo "<th>User Name</th>\n";
+			echo "<th>Problem Name</th>\n";
+			echo "<th>Time Spent/Session Running Time</th>\n";
+			echo "<th>Nodes Details</th>\n";
+			echo "<th>Last UI actions</th>\n";
+			echo "</tr>\n";
+			foreach ($runningProblems as $row){
+				echo "<tr>\n";
+				echo "<td>".$row['user']."</td>\n";
+				echo "<td>".$row['problem']."</td>\n";
+				echo "<td>".$row['problemTime']."</td>\n";
+				echo "<td>\n";
+				foreach($row['nodeDetails'] as $nodeName => $nodeDetails){
+					echo "<b>".$nodeName."</b> => ".$nodeDetails.'<br/>';
+				}
+				echo "</td>\n";
+				echo "<td>\n";
+				$size = sizeof($row['uiActions']);
+				$index = 0;
+				if($size == 0){
+					echo "User has not started the problem.";
 				} else {
-					$index = $size;
+					if($size >= 3){
+						$index = $size -3;
+					} else {
+						$index = $size;
+					}
+					for($i = $index; $i<$size; $i++){
+						echo $row['uiActions'][$i]."<br/>\n";
+					}
 				}
-				for($i = $index; $i<$size; $i++){
-					echo $row['uiActions'][$i]."<br/>\n";
-				}
+				echo "</td>\n";
+				echo "</tr>";
 			}
-			echo "</td>\n";
-			echo "</tr>";
-		}
-		echo "</table>\n";
+			echo "</table>\n";
 
-		echo "<h2>Complete Problems</h2>\n";
-		echo "<table border='1'>\n";
-		echo "<tr>\n";
-		echo "<th>User Name</th>\n";
-		echo "<th>Problem Name</th>\n";
-		echo "<th>Time Spent/Session Running Time</th>\n";
-		echo "<th>Nodes Details</th>\n";
-		echo "<th>Last UI actions</th>\n";
-		echo "</tr>\n";
-		foreach ($completeProblems as $row){
+			echo "<h2>Complete Problems</h2>\n";
+			echo "<table border='1'>\n";
 			echo "<tr>\n";
-			echo "<td>".$row['user']."</td>\n";
-			echo "<td>".$row['problem']."</td>\n";
-			echo "<td>".$row['problemTime']."</td>\n";
-			echo "<td>\n";
-			foreach($row['nodeDetails'] as $nodeName => $nodeDetails){
-				echo "<b>".$nodeName."</b> => ".$nodeDetails.'<br/>';
-			}
-			echo "</td>\n";
-			echo "<td>\n";
-			$size = sizeof($row['uiActions']);
-			$index = 0;
-			if($size == 0){
-				echo "User hasnt started the problem.";
-			} else {
-				if($size >= 3){
-					$index = $size -3;
+			echo "<th>User Name</th>\n";
+			echo "<th>Problem Name</th>\n";
+			echo "<th>Time Spent/Session Running Time</th>\n";
+			echo "<th>Nodes Details</th>\n";
+			echo "<th>Last UI actions</th>\n";
+			echo "</tr>\n";
+			foreach ($completeProblems as $row){
+				echo "<tr>\n";
+				echo "<td>".$row['user']."</td>\n";
+				echo "<td>".$row['problem']."</td>\n";
+				echo "<td>".$row['problemTime']."</td>\n";
+				echo "<td>\n";
+				foreach($row['nodeDetails'] as $nodeName => $nodeDetails){
+					echo "<b>".$nodeName."</b> => ".$nodeDetails.'<br/>';
+				}
+				echo "</td>\n";
+				echo "<td>\n";
+				$size = sizeof($row['uiActions']);
+				$index = 0;
+				if($size == 0){
+					echo "User hasnt started the problem.";
 				} else {
-					$index = $size;
+					if($size >= 3){
+						$index = $size -3;
+					} else {
+						$index = $size;
+					}
+					for($i = $index; $i<$size; $i++){
+						echo $row['uiActions'][$i]."<br/>\n";
+					}
 				}
-				for($i = $index; $i<$size; $i++){
-					echo $row['uiActions'][$i]."<br/>\n";
-				}
+				echo "</td>\n";
+				echo "</tr>";
 			}
-			echo "</td>\n";
-			echo "</tr>";
+			echo "</table>\n";
+		} else {
+			echo "No records during this time. Kindly change the time range and try again.";
 		}
-		echo "</table>\n";
 	}
 }
 ?>
