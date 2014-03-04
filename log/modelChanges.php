@@ -25,8 +25,8 @@ Class ModelChanges{
 	 		//$studentUserType = $this->al->checkBadUsers($row['id']);
 	 		//$authorUserType = $this->al->checkBadUsers($row['author']);
 	 		echo "<tr>\n";
-	 		$authorURL = "http://dragoon.asu.edu/devel/startup.php?section=".$row['section']."&amp;problem_id=".$row['problemName']."&amp;mode=AUTHOR&amp;username=".$row['author'];
-	 		$studentURL = "http://dragoon.asu.edu/devel/startup.php?section=".$row['section']."&amp;problem_id=".$row['problemNum']."&amp;mode=STUDENT&amp;username=".$row['id'];
+	 		$authorURL = "http://dragoon.asu.edu/demo/startup.php?section=".$row['section']."&amp;problem_id=".$row['problemName']."&amp;mode=AUTHOR&amp;username=".$row['author'];
+	 		$studentURL = "http://dragoon.asu.edu/demo/startup.php?section=".$row['section']."&amp;problem_id=".$row['problemNum']."&amp;mode=STUDENT&amp;username=".$row['id'];
 	 		echo "<td>".$row['author']."</td>\n";
 	 		echo "<td>".$row['problemName']."</td>\n";
 	 		echo '<td><a href = "'.$authorURL.'">Final Authored model</a></td>';
