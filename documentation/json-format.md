@@ -171,42 +171,40 @@ not mentioned in the model).
 ## Student Model Nodes ##
 
 Student model nodes are nodes that the student has created while trying to 
-complete the model or that the author wants visible when the problem is begun. 
-They are visible on the screen.
+complete the model or that the author wants visible when the problem
+is first opened.   They are visible on the screen.
 
         "studentModelNodes": [
             {
                 "ID": "id4",
-			    "givenNodeID": "id1",
+			    "descriptionID": "id1",
+                "type": "accumulator",
+				"initial": 100
+                "units": "rabbits",
                 "inputs":  [ { "ID": "id5" } ],
+                "equation": "id5",
                 "position": {
                     "x": 100,
                     "y": 100
                 },
-                "selections": {
-                    "description": "id1",
-                    "type": "accumulator",
-                    "initial": 100,
-                    "units": "rabbits",
-                    "equation": "+ id2"
-                }
             },
 
 They contain information that identifies the node, positions it, and marks the 
-student's selections. The element `givenNodeID` specifies a matching node in the
-given model or is empty if there is no match.  The selections
-in the student model may not match information in the given 
-model. The student can also generate nodes that are not in the given
+student's selections. The attribute "descriptionID" specifies a node in the
+given model or in "extraDescriptions" that has been selected by the student.
+Thus, the student *may* generate nodes that are not in the given
 model and are not part of the solution.
+
+If the student equation can be parsed, the attribute "equation" contains  the
+equation written in terms of student node ids.  If the parse fails,
+then it contains the text written by the student and "inputs" is empty.
+Likewise,  "initial" contains either the numerical value of the
+student input or the string typed by the student if the parse fails.
 
 Another function of the student model is to allow the author to create a 
 partially completed model that the user will have to correct or complete. Thus 
 an author can build a model and specify which nodes should be present when the 
 user opens the problem for the first time. 
-
-When a node is given a name by the student the name will be checked against 
-other nodes in the given model and if a match is found then the
-`givenNodeID` will be set.
 
 ## Example of a Complete JSON Formatted Problem ##
 
@@ -263,8 +261,7 @@ JSON document.
                         "order": 2,
                         "units": "births",
                         "inputs": [ { "ID": "id1" }, { "ID": "id3" } ],
-                        "initial": null,
-                        "equation": "id1 * id3",
+                       "equation": "id1 * id3",
                         "description": "The number of rabbits born each month",
                         "attemptCount": {
                             "description": 2,
@@ -323,48 +320,40 @@ JSON document.
                 "studentModelNodes": [
                     {
                         "ID": "id4",
-						"givenNodeID": "id1",
+						"descriptionID": "id1",
+						"type": "accumulator",
+						"initial": "100",
+						"units": "rabbits",
                         "inputs": [ { "ID": "id5" } ],
+                        "equation": "id5",
+						"initial": 100,
                         "position": {
                             "x": 100,
                             "y": 100
-                        },
-                        "selections": {
-                            "description": "id1",
-                            "type": "accumulator",
-                            "initial": 100,
-                            "units": "rabbits",
-                            "equation": "+ id2"
                         }
                     },
                     {
                         "ID": "id5",
-						"givenNodeID": "id2",
+						"descriptionID": "id2",
+						"type": "function",
+						"units": "births",
                         "inputs":  [ { "ID": "id4" }, { "ID": "id6" } ],
+                        "equation": "id4*id6",
                         "position": {
                             "x": 300,
                             "y": 100
-                        },
-                        "selections": {
-                            "description": "id2",
-                            "type": "function",
-                            "units": "births",
-                            "equation": "id4 * id6"
                         }
                     },
                     {
                         "ID": "id6",
-						"givenNodeID": "id3",
+						"descriptionID": "id3",
+						"type": "parameter",
+						"initial": 0.2,
+						"units": "percent",
                         "inputs": [],
                         "position": {
                             "x": 500,
                             "y": 100
-                        },
-                        "selections": {
-                            "description": "id3",
-                            "type": "parameter",
-                            "units": "percent",
-                            "equation": ".2"
                         }
                     }
                 ]

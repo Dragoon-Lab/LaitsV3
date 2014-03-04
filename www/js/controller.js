@@ -21,7 +21,7 @@ define([
             // Test the PM 
            var r = this._PM.openAction("id4");
             console.log("********** test PM open", r);
-            var rr = this._PM.descriptionAction("id1");
+            var rr = this._PM.descriptionAction("id4","id1");
             console.log("********** test PM description", rr);
 	    
 	    // The Node Editor widget must be set up before modifications

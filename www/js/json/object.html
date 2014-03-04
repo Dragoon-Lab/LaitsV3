@@ -44,37 +44,29 @@
                 rabbits.given.setExtra(rabbitID, false);
                 rabbits.given.setUnits(rabbitID, "rabbits");
                 rabbits.given.setInitial(rabbitID, 100);
-                rabbits.given.setEquation(rabbitID, "+ id2");
+                rabbits.given.setEquation(rabbitID, "myid2");
                 rabbits.given.setDescription(rabbitID, "The number of rabbits in the population");
                 rabbits.given.addNode({
-                    "ID": "id2",
+                    "ID": "myid2",
                     "name": "births",
                     "type": "function",
                     "parentNode": true,
                     "extra": false,
                     "units": "births",
-                    "inputs": [ { "ID": "id1" }, { "ID": "id3" } ],
+                    "inputs": [ { "ID": rabbitID }, { "ID": "myid3" } ],
                     "initial": null,
-                    "equation": "id1 * id3",
-                    "description": "The number of rabbits born each month",
-                    "attemptCount": {
-                        "description": 0,
-                        "type": 0,
-                        "initial": 0,
-                        "units": 0,
-                        "equation": 0
-                    },
-                    "status": {}
+                    "equation": rabbitID +" * myid3",
+                    "description": "The number of rabbits born each month"
                 });
                 rabbits.given.addNode({
-                    "ID": "id3",
+                    "ID": "myid3",
                     "name": "birth rate",
                     "type": "parameter",
                     "parentNode": false,
                     "extra": false,
                     "units": "percent",
                     "inputs": [],
-                    "equation": ".2",
+                    "initial": ".2",
                     "description": "The ratio of number of rabbits born in a month to the rabbit population that month",
                     "attemptCount": {
                         "description": 0,
@@ -85,9 +77,8 @@
                     },
                     "status": {}
                 });
-                rabbits.student.addNode({
+                var myNode = rabbits.student.addNode({
                     "ID": "myNode",
-                    "givenNodeID": "id3",
                     "inputs": [],
                     "position": {
                         "x": 500,
@@ -95,19 +86,27 @@
                     },
                     "selections": {}
                 });
-                rabbits.setToDemo("myNode", "description");
-                rabbits.setToDemo("myNode", "type");
-                rabbits.setToDemo("myNode", "initial");
-                rabbits.setToDemo("myNode", "units");
-                rabbits.setToDemo("myNode", "equation");
+                rabbits.setToDemo(myNode, "description");
+                rabbits.setToDemo(myNode, "type");
+                rabbits.setToDemo(myNode, "initial");
+                rabbits.setToDemo(myNode, "units");
+                rabbits.setToDemo(myNode, "equation");
                 rabbits.given.addInput(rabbits.getNodeIDByName("births"), rabbits.getNodeIDByName("population"));
 
 
-                rabbits.addExtraDescription("The number of rabbits in the population during the second month", "model");
-                rabbits.addExtraDescription("The ratio of rabbits born with superpowers to ordinary rabbits", "extra");
+                rabbits.addExtraDescription({
+                    name: "extras",
+                    text: "The number of rabbits in the populationc during the second month",
+                    type: "model"
+                });
+                rabbits.addExtraDescription({
+                    name: "super ratio",
+                    text: "The ratio of rabbits born with superpowers to ordinary rabbits",
+                    type: "extra"
+                 });
 
             /*
-	    *********** Using the Pedagogical Model ************
+	    *********** Using the Pedagogical Module ************
 	    */
 
 	    /*

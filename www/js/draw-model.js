@@ -115,7 +115,7 @@ define([
 
 	addNode: function(/*object*/ node){
 	    
-            var type = node.selections.type || "triangle";
+            var type = node.type || "triangle";
 	    /*
                  <div class="w" id="population" ></br></br>120</br></br></br></br></br></br>Population</div>
              <div class="circle" id="growth" ></br></br>*</br></br></br></br></br></br>Growth</div>

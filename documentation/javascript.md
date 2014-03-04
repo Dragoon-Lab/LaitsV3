@@ -26,7 +26,7 @@ Java-style getter and setter methods. For AUTHOR mode, the student
 is mofiying the **given model**, subclass `given`, while in other major
 modes, the student is modifying the **student model**, subclass `student`.
 To handle switching between modes, we introduce  an **active model**,
-the subclass `active`, which points to the appropriate model.  For example, 
+subclass `active`, which points to the appropriate model.  For example, 
 `given.getNodes()` and `student.getNodes()` get the given model and
 student model nodes, respectively.  The corresponding **active model**
 function is `active.getNodes()`. 

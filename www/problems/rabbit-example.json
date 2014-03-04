@@ -111,48 +111,39 @@
         "studentModelNodes": [
             {
                 "ID": "id4",
-		"givenNodeID": "id1",
+		"descriptionID": "id1",
+                "type": "accumulator",
+                "initial": 100,
+                "units": "rabbits",
                 "inputs": [ { "ID": "id5" } ],
+                "equation": "id5",
                 "position": {
                     "x": 100,
                     "y": 100
-                },
-                "selections": {
-                    "description": "id1",
-                    "type": "accumulator",
-                    "initial": 100,
-                    "units": "rabbits",
-                    "equation": "id5"
                 }
             },
             {
                 "ID": "id5",
-                "givenNodeID": "id2",
+                "descriptionID": "id2",
+                "type": "function",
+                "units": "births",
                 "inputs": [ { "ID": "id4" }, { "ID": "id6" } ],
+                "equation": "id4*id6",
                 "position": {
                     "x": 300,
                     "y": 100
-                },
-                "selections": {
-                    "description": "id2",
-                    "type": "function",
-                    "units": "births",
-                    "equation": "id4 * id6"
                 }
             },
             {
                 "ID": "id6",
-		"givenNodeID": "id3",
+		"descriptionID": "id3",
+                "type": "parameter",
+                "initial": 0.2,
+                "units": "percent",
                 "inputs": [],
                 "position": {
                     "x": 500,
                     "y": 100
-                },
-                "selections": {
-                    "description": "id3",
-                    "type": "parameter",
-                    "initial": ".2",
-                    "units": "percent"
                 }
             }
         ]

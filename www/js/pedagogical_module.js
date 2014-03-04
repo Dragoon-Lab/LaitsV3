@@ -139,7 +139,7 @@ define([
                     return true;
             return false;
         },
-        _getReturnObject: function(/*string*/ infoObject, /*string*/ control) {
+        _getReturnObject: function(/*string*/ id, /*string*/ infoObject, /*string*/ control) {
             //Summary: activates/deactives the parts of the node based on what 
             //      part the user is at and the type (mode) of user (i.e. coached, feedback, etc.)
             //
@@ -151,13 +151,14 @@ define([
             // Only enable/disable parts needed in the model (present in the given model)
             // Parts not needed should be disabled when the window is opened.
             // Pehaps this list should be populated when the node editor is opened.
-            if (this.model.given.getInitial(this.givenNodeId))
+	    var givenID = this.model.student.getDescriptionID(id);
+            if (this.model.given.getInitial(givenID))
                 neededControls.push("initial");
-            if (this.model.given.getUnits(this.givenNodeId))
+            if (this.model.given.getUnits(givenID))
                 neededControls.push("units");
-            if (this.model.given.getInputs(this.givenNodeId))
+            if (this.model.given.getInputs(givenID))
                 neededControls.push("inputs");
-            if (this.model.given.getEquation(this.givenNodeId))
+            if (this.model.given.getEquation(givenID))
                 neededControls.push("equation");
 
             //If student should move on to the next part (i.e. status = correct or demo)
@@ -197,28 +198,22 @@ define([
                 this.mode = userMode;
             }
         },
-        openAction: function(/*string*/ studentNodeId) {
-            //Summary: call this when opening the node editor to set controls
-            this.studentNodeId = studentNodeId;
-            // Controller has already created the model node.
-            this.givenNodeId = this.model.student.getGivenNodeID(studentNodeId);
+        openAction: function(/*string*/ id) {
+            //Summary: Call this when opening the node editor to set controls.
+	    //         id is the student node ID.
+            //Note: The controller has already created the model node.
             var infoObject = Array();
-            return this._getReturnObject(infoObject);
+            return this._getReturnObject(id, infoObject);
         },
-        closeAction: function() {
-            this.studentNodeId = null;
-            this.givenNodeId = null;
-        },
-        newDescriptionAction: function(/*string*/ id, /*string*/ answer) {
+        newDescriptionAction: function(/*string*/ id, /*string*/ choice) {
             //Summary: accepts an answer that the student provides, checks its validity,
-            //      and returns an array of diretives
-            //      message
+            //         and returns a list of directives; id is the student node id.
             //Note: Each choice is labeled by either a node ID (for choices that
             //      correspond to nodes in the given model) or other label (for disctractors).
 
             //The array that that will be returned
             var infoObject = Array();
-            var control = "description";  // Should match control id in index.html
+            var control = "description";  
 
             //pedagogicalTable assigns the
             //      appropriate actions to be taken; the actions are assigned to sequence
@@ -237,14 +232,13 @@ define([
         },
         descriptionAction: function(/*string*/ id, /*string*/ answer) {
             //Summary: accepts an answer that the student provides, checks its validity,
-            //      and returns an array of diretives
-            //      message
+            //         and returns a list of directives; id is the student node id.
             //Note: Each choice is labeled by either a node ID (for choices that
             //      correspond to nodes in the given model) or other label (for disctractors).
 
             //The array that that will be returned
             var infoObject = Array();
-            var control = "description";  // Should match control id in index.html
+            var control = "description";  
 
             //pedagogicalTable assigns the
             //      appropriate actions to be taken; the actions are assigned to sequence
@@ -422,15 +416,15 @@ define([
                     this.descriptionCounter = 0;
                     break;
             }
-            return this._getReturnObject(infoObject, control);
+            return this._getReturnObject(id, infoObject, control);
         },
         typeAction: function(/*string*/ id, /*string*/ answer) {
             //Summary: accepts an answer that the student provides, checks its validity,
-            //      and returns whether the answer is correct, and a message
+            //         and returns a list of directives; id is the student node ID.
 
             //The array that that will be returned
             var infoObject = Array();
-            var control = "type";  // Should match control id in index.html
+            var control = "type"; 
 
             //creates pedagogicalTable, a double array of sorts that helps assign the
             //      appropriate actions to be taken; the actions are assigned to sequence
@@ -545,11 +539,11 @@ define([
                         this.unitsOn = true;
                     break;
             }
-            return this._getReturnObject(infoObject, control);
+            return this._getReturnObject(id, infoObject, control);
         },
         initialAction: function(/*string*/ id, /*string*/ answer) {
             //Summary: accepts an answer that the student provides, checks its validity,
-            //      and returns whether the answer is correct, and a message
+            //         and returns a list of directives; id is the student node ID.
 
             //The array that that will be returned
             var infoObject = Array();
@@ -650,12 +644,13 @@ define([
                         break;
                 }
             }
-            return this._getReturnObject(infoObject, control);
+            return this._getReturnObject(id, infoObject, control);
         },
         unitsAction: function(/*string*/ id, /*string*/ answer) {
             //Summary: accepts an answer that the student provides, checks its validity,
-            //      and returns whether the answer is correct, and a message; unitsAction()
-            //      is similar to initialAction();
+            //         and returns a list of directives; 
+	    //         unitsAction() is similar to initialAction();
+	    //         id is the student node ID.
 
             //The array that that will be returned
             var infoObject = Array();
@@ -736,12 +731,12 @@ define([
                     this.inputsOn = true;
                     break;
             }
-            return this._getReturnObject(infoObject, control);
+            return this._getReturnObject(id, infoObject, control);
         },
         inputsAction: function(/*string*/ id, /*string*/ answer) {
-            //Summary: accepts a description that the student provides, checks its validity,
-            //      and returns the current ID, whether the answer is correct, and a 
-            //      message
+            //Summary: accepts a description that the student provides, checks its 
+	    //         validity and returns a list of directives; id is the
+	    //         student node ID.
 
             //The array that that will be returned
             var infoObject = Array();
@@ -929,11 +924,17 @@ define([
                         this.inputsOn = false;
                     break;
             }
-            return this._getReturnObject(infoObject, control);
+            return this._getReturnObject(id, infoObject, control);
         },
-        //equationCheck() is a basic implementation; it needs additional code to 
-        //      display different messages based on the type of user
+        /*
+	 equationCheck() is a basic implementation; it needs additional code to 
+         display different messages based on the type of user
+	 */
         equationAction: function(/*string*/ id, /*string*/ equation) {
+            //Summary: accepts an equation that the student provides, checks its validity,
+            //         and returns a list of directives; id is the student node ID.
+	    //         The equation is in the form of the string seen in the
+	    //         equation box.
 
             //The array that that will be returned
             var infoObject = Array();
@@ -954,7 +955,7 @@ define([
                 infoObject.push({id: control, attribute: "message", value: "That is not correct."});
                 infoObject.push({id: control, attrubute: "status", value: "incorrect"});
             }
-            return this._getReturnObject(infoObject, control);
+            return this._getReturnObject(id, infoObject, control);
         }
     });
 });
