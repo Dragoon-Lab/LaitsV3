@@ -17,7 +17,7 @@ define([
 ], function(array, declare, check, Parser) {
 
     return declare(null, {
-        constructor: function(/*string*/ mode, /*model.js object*/ model) {
+        constructor: function(/*string*/ mode, /*string*/ subMode, /*model.js object*/ model) {
 
             /*
              Redesign of pedagogical model in process; functions that are called by 
@@ -29,9 +29,9 @@ define([
              switching between the two
              */
 
-            this.setMode(mode);
+            this.mode = mode;
+            this.setUserType(subMode);
             this.returnObject = new Object;
-            this.mode = null;
             this.model = model;
             this.message = "";
             this.descriptionOn = true;
@@ -63,6 +63,7 @@ define([
             this.lastNodeOpened = null; //used to track inputs attempts in inputsAction();
         },
         mode: null,
+	userType: null,
 	hints: {
 	    incorrect: {
 		irrelevant: [
@@ -146,6 +147,7 @@ define([
             //Tags: private
 
             var nodeParts = new Array("description", "type", "initial", "units", "inputs", "equation");
+	    // Always need description and type
             var neededControls = new Array("description", "type");
 
             // Only enable/disable parts needed in the model (present in the given model)
@@ -166,11 +168,11 @@ define([
             //See documentation/major-modes.md for details.
             var activateRemaining = false;
             array.forEach(neededControls, function(neededControl) {
-                if (control === neededControl) {
+                if (!control || control === neededControl) {
                     if (infoObject.status === "correct" || infoObject.status === "demo") {
                         if (control !== nodeParts[nodeParts.length - 1]) {
                             infoObject[nodeParts[i + 1] + "On"] = true;
-                            if (control !== "description" && (this.userType === "feedback" || this.userType === "test" || this.userType === "power"))
+                            if (control !== "description" && (this.userType === "feedback" || this.userType === "TEST" || this.userType === "power"))
                                 /*
                                  According to the pedagogical model document, if certain users 
                                  get an answer correct, we should activate the remaining parts 
@@ -188,14 +190,13 @@ define([
 
             return infoObject;
         },
-        setMode: function(/*string*/ userMode) {
+        setUserType: function(/*string*/ subMode) {
             // Summary: Sets the user mode; used by the constructor, but also
-            //      allows the mode to be updated dynamically by the pedagogical module.
-            if (userMode === "student" || userMode === "power") {
-                console.log("User type was input as " + userMode + ". Currently this is being set to feedback.");
-                this.mode = "feedback";
+            //      allows the mode to be updated dynamically.
+	    if(this.mode === "STUDENT"){
+		this.userType = subMode;
             } else {
-                this.mode = userMode;
+                this.userType = this.mode;
             }
         },
         openAction: function(/*string*/ id) {
@@ -203,6 +204,8 @@ define([
 	    //         id is the student node ID.
             //Note: The controller has already created the model node.
             var infoObject = Array();
+	    // Note that we don't specify the control, since
+	    // we want this for all controls.
             return this._getReturnObject(id, infoObject);
         },
         newDescriptionAction: function(/*string*/ id, /*string*/ choice) {
@@ -218,14 +221,14 @@ define([
             //pedagogicalTable assigns the
             //      appropriate actions to be taken; the actions are assigned to sequence
             var pedagogicalTable = {
-                optimal: {coached: "ijno", feedback: "ijno", test: "ino", power: "ino"},
-                notTopLevel: {coached: "fhm", feedback: "ijno", test: "ino", power: "ino"},
-                premature: {coached: "fgm", feedback: "ijno", test: "ino", power: "ino"},
-                initialValue: {coached: "acm", feedback: "acm", test: "am", power: "am"},
-                extraValue: {coached: "adm", feedback: "abm", test: "am", power: "am"},
-                irrelevant: {coached: "abm", feedback: "abm", test: "am", power: "am"},
-                redundant: {coached: "aem", feedback: "aem", test: "aem", power: "aem"},
-                lastFailure: {coached: "klno", feedback: "klno", test: "kno", power: "kno"}
+                optimal: {COACHED: "ijno", feedback: "ijno", TEST: "ino", power: "ino"},
+                notTopLevel: {COACHED: "fhm", feedback: "ijno", TEST: "ino", power: "ino"},
+                premature: {COACHED: "fgm", feedback: "ijno", TEST: "ino", power: "ino"},
+                initialValue: {COACHED: "acm", feedback: "acm", TEST: "am", power: "am"},
+                extraValue: {COACHED: "adm", feedback: "abm", TEST: "am", power: "am"},
+                irrelevant: {COACHED: "abm", feedback: "abm", TEST: "am", power: "am"},
+                redundant: {COACHED: "aem", feedback: "aem", TEST: "aem", power: "aem"},
+                lastFailure: {COACHED: "klno", feedback: "klno", TEST: "kno", power: "kno"}
             };
 
             var sequence;
@@ -243,39 +246,42 @@ define([
             //pedagogicalTable assigns the
             //      appropriate actions to be taken; the actions are assigned to sequence
             var pedagogicalTable = {
-                optimal: {coached: "ijno", feedback: "ijno", test: "ino", power: "ino"},
-                notTopLevel: {coached: "fhm", feedback: "ijno", test: "ino", power: "ino"},
-                premature: {coached: "fgm", feedback: "ijno", test: "ino", power: "ino"},
-                initialValue: {coached: "acm", feedback: "acm", test: "am", power: "am"},
-                extraValue: {coached: "adm", feedback: "abm", test: "am", power: "am"},
-                irrelevant: {coached: "abm", feedback: "abm", test: "am", power: "am"},
-                redundant: {coached: "aem", feedback: "aem", test: "aem", power: "aem"},
-                lastFailure: {coached: "klno", feedback: "klno", test: "kno", power: "kno"}
+                optimal: {COACHED: "ijno", feedback: "ijno", TEST: "ino", power: "ino"},
+                notTopLevel: {COACHED: "fhm", feedback: "ijno", TEST: "ino", power: "ino"},
+                premature: {COACHED: "fgm", feedback: "ijno", TEST: "ino", power: "ino"},
+                initialValue: {COACHED: "acm", feedback: "acm", TEST: "am", power: "am"},
+                extraValue: {COACHED: "adm", feedback: "abm", TEST: "am", power: "am"},
+                irrelevant: {COACHED: "abm", feedback: "abm", TEST: "am", power: "am"},
+                redundant: {COACHED: "aem", feedback: "aem", TEST: "aem", power: "aem"},
+                lastFailure: {COACHED: "klno", feedback: "klno", TEST: "kno", power: "kno"}
             };
 
-            var sequence;
+	    var interpretation;
 
             //assign the action based on the answer
-            if (!this.model.given.isNode(id)) {
-                for (var i = 0; i < this.model.getExtraDescriptions.length; i++) {
-                    if (id === this.model.getExtraDescriptions("initial")[i].ID)
-                        sequence = pedagogicalTable["initialValue"][this.userType];
-                    else if (id === this.model.getExtraDescriptions("extra")[i].ID)
-                        sequence = pedagogicalTable["extraValue"][this.userType];
-                    else
-                        sequence = pedagogicalTable["irrelevant"][this.userType];
-                }
+            if (this.model.student.isInExtras(id)) {
+		array.forEach(this.model.getExtraDescriptions(), function(extra){
+                    if (answer === extra.ID && extra.type === "initial")
+                        interpretation = "initialValue";
+                    else if (answer === extra.ID && extra.type == "extra")
+                        interpretation = "extraValue";
+                    else if (answer === extra.ID && extra.type == "model")
+                        interpretation = "irrelevant";
+                });
             } else if (this.model.isNodeVisible(id)) {
-                sequence = pedagogicalTable["redundant"][this.userType];
+                interpretation = "redundant";
             } else if (this.model.isParentNode(id) || this.model.isNodesParentVisible(id)) {
-                sequence = pedagogicalTable["optimal"][this.userType];
+                interpretation = "optimal";
             } else if (this.model.student.getNodes().length == 0) {
-                sequence = pedagogicalTable["notTopLevel"][this.userType];
-            } else
-                sequence = pedagogicalTable["premature"][this.userType];
-            if (sequence !== pedagogicalTable["optimal"][this.userType] && this.descriptionCounter === 2) {
-                sequence = pedagogicalTable["lastFailure"][this.userType];
+                interpretation = "notTopLevel";
+            } else {
+                interpretation = "premature";
+	    }
+	    if (interpretation !== "optimal" && this.descriptionCounter === 2) {
+                interpretation = "lastFailure";
             }
+	    
+            var sequence = pedagogicalTable[interpretation][this.userType];
 
             //take the appropriate action
             switch (sequence) {
@@ -428,10 +434,10 @@ define([
 
             //creates pedagogicalTable, a double array of sorts that helps assign the
             //      appropriate actions to be taken; the actions are assigned to sequence
-            var correct = {coached: "bfgk", feedback: "behk", test: "ceh", power: "ceh"};
-            var firstFailure = {coached: "aje", feedback: "aje", test: "ceh", power: "ceh"};
-            var secondFailure = {coached: "difg", feedback: "difg", test: "ceh", power: "ceh"};
-            var additionalFailure = {coached: null, feedback: null, test: "ceh", power: "ceh"};
+            var correct = {COACHED: "bfgk", feedback: "behk", TEST: "ceh", power: "ceh"};
+            var firstFailure = {COACHED: "aje", feedback: "aje", TEST: "ceh", power: "ceh"};
+            var secondFailure = {COACHED: "difg", feedback: "difg", TEST: "ceh", power: "ceh"};
+            var additionalFailure = {COACHED: null, feedback: null, TEST: "ceh", power: "ceh"};
 
             var pedagogicalTable = {correct: correct, firstFailure: firstFailure, secondFailure: secondFailure,
                 additionalFailure: additionalFailure};
@@ -551,10 +557,10 @@ define([
 
             //creates pedagogicalTable, a double array of sorts that helps assign the
             //      appropriate actions to be taken; the actions are assigned to sequence
-            var correct = {coached: "beg", feedback: "bfh", test: "bfh", power: "bfh"};
-            var firstFailure = {coached: "aif", feedback: "aif", test: "c", power: "c"};
-            var secondFailure = {coached: "degj", feedback: "djeh", test: "c", power: "c"};
-            var additionalFailure = {coached: null, feedback: null, test: "c", power: "c"};
+            var correct = {COACHED: "beg", feedback: "bfh", TEST: "bfh", power: "bfh"};
+            var firstFailure = {COACHED: "aif", feedback: "aif", TEST: "c", power: "c"};
+            var secondFailure = {COACHED: "degj", feedback: "djeh", TEST: "c", power: "c"};
+            var additionalFailure = {COACHED: null, feedback: null, TEST: "c", power: "c"};
 
             var pedagogicalTable = {correct: correct, firstFailure: firstFailure, secondFailure: secondFailure,
                 additionalFailure: additionalFailure};
@@ -658,10 +664,10 @@ define([
 
             //creates pedagogicalTable, a double array of sorts that helps assign the
             //      appropriate actions to be taken; the actions are assigned to sequence
-            var correct = {coached: "beg", feedback: "bfh", test: "bfh", power: "bfh"};
-            var firstFailure = {coached: "aif", feedback: "aif", test: "c", power: "c"};
-            var secondFailure = {coached: "degj", feedback: "djeh", test: "c", power: "c"};
-            var additionalFailure = {coached: null, feedback: null, test: "c", power: "c"};
+            var correct = {COACHED: "beg", feedback: "bfh", TEST: "bfh", power: "bfh"};
+            var firstFailure = {COACHED: "aif", feedback: "aif", TEST: "c", power: "c"};
+            var secondFailure = {COACHED: "degj", feedback: "djeh", TEST: "c", power: "c"};
+            var additionalFailure = {COACHED: null, feedback: null, TEST: "c", power: "c"};
 
             var pedagogicalTable = {correct: correct, firstFailure: firstFailure, secondFailure: secondFailure,
                 additionalFailure: additionalFailure};
@@ -751,13 +757,13 @@ define([
 
             //creates pedagogicalTable, a double array of sorts that helps assign the
             //      appropriate actions to be taken; the actions are assigned to sequence
-            var optimal = {coached: "ijno", feedback: "ijno", test: "qo", power: "qo"};
-            var premature = {coached: "fgm", feedback: "io", test: "qo", power: "qo"};
-            var initialValue = {coached: "acm", feedback: "acm", test: "qo", power: "qo"};
-            var extraValue = {coached: "adm", feedback: "abm", test: "qo", power: "qo"};
-            var irrelevant = {coached: "ahm", feedback: "ahm", test: "qo", power: "qo"};
-            var redundant = {coached: "aem", feedback: "aem", test: "am", power: "am"};
-            var lastFailure = {coached: "klno", feedback: "klno", test: "qo", power: "qo"};
+            var optimal = {COACHED: "ijno", feedback: "ijno", TEST: "qo", power: "qo"};
+            var premature = {COACHED: "fgm", feedback: "io", TEST: "qo", power: "qo"};
+            var initialValue = {COACHED: "acm", feedback: "acm", TEST: "qo", power: "qo"};
+            var extraValue = {COACHED: "adm", feedback: "abm", TEST: "qo", power: "qo"};
+            var irrelevant = {COACHED: "ahm", feedback: "ahm", TEST: "qo", power: "qo"};
+            var redundant = {COACHED: "aem", feedback: "aem", TEST: "am", power: "am"};
+            var lastFailure = {COACHED: "klno", feedback: "klno", TEST: "qo", power: "qo"};
 
             var pedagogicalTable = {optimal: optimal, premature: premature,
                 initialValue: initialValue, extraValue: extraValue, irrelevant: irrelevant,

@@ -838,6 +838,12 @@ define([
                 obj.model.task.studentModelNodes.push(newNode);
                 return newNode.ID;
             },
+	    isInExtras: function(/*string*/ id){
+		// Summary: returns true if node description is in extras
+                return array.some(obj.getExtraDescriptions(), function(description){
+		    return id == description.ID;
+		});
+	    },
             getDescriptionID: function(id) {
                 // Return any matched given model id for student node.
                 var node = this.getNode(id);

@@ -53,7 +53,12 @@ define([
 	ready(function(){
 
 	    var drawModel = new drawmodel(givenModel);
-	    var controllerObject  = new controller(query.m, givenModel);
+	    /* 
+	     The sub-mode of STUDENT mode can be either "feedback" or "power"
+	     This is eventually supposed to be supplied by the student model
+	     */
+	    var subMode = "feedback";
+	    var controllerObject  = new controller(query.m, subMode, givenModel);
 	    
 	    /* add to menu */
 	    menu.add("createNodeButton", function(){

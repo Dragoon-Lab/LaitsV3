@@ -102,6 +102,8 @@ given model.
                     "equation": "correct"
                 }
             },
+			...
+		]
 
 Each node has a unique ID, which is how the node will typically be referred to 
 in the code. This allows the name to be changed without disrupting other nodes 
@@ -150,16 +152,15 @@ The author may include distraction descriptions which are not part of the given
 model to further challenge the student. They are included in the 
 "extraDescriptions" array, as in the following example.
 
-        "extraDescriptions": [
-            {
-                "text": "The number of rabbits in the population during the second month",
-                "type": "model"
-            },
-            {
-                "text": "The ratio of rabbits born with superpowers to ordinary rabbits",
-                "type": "extra"
-            }
-        ],
+                "extraDescriptions": [
+                    {
+                        "ID": "id7",
+						"name": "month two population",
+						"text": "The number of rabbits in the population during the second month",
+                        "type": "model"
+                    },
+					...
+                ]
 
 The attribute "description" has the extra description that is not needed to 
 solve the model. The attribute "type" tells the problem if the extra description 
@@ -186,8 +187,10 @@ is first opened.   They are visible on the screen.
                 "position": {
                     "x": 100,
                     "y": 100
-                },
+                }
             },
+			...
+		]
 
 They contain information that identifies the node, positions it, and marks the 
 student's selections. The attribute "descriptionID" specifies a node in the

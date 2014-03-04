@@ -14,14 +14,14 @@ define([
         _PM: {},
 	_nodeEditor: null, // node-editor object- will be used for populating fields
 	
-	constructor: function(mode, model){
+	constructor: function(mode, subMode, model){
 	    this._model = model;
-	    this._PM = new PM(mode, model);
+	    this._PM = new PM(mode, subMode, model);
 	    
             // Test the PM 
            var r = this._PM.openAction("id4");
             console.log("********** test PM open", r);
-            var rr = this._PM.descriptionAction("id4","id1");
+            var rr = this._PM.descriptionAction("id4", "id1");
             console.log("********** test PM description", rr);
 	    
 	    // The Node Editor widget must be set up before modifications

@@ -8,7 +8,7 @@ This contains mostly design documents.
 * [JavaScript design](javascript.md)
 * [JSON format](json-format.md)
 * [Forum](forum.md)
-* Kurt's design for the [Pedagogical Module](Pedagogical-Module-v2.docx)
+* Kurt's design for the [Pedagogical Module](Pedagogical-Module.docx)
   as well as [Sachin's version](Pedagogical-Module-JavaScript-Version-2.docx)
 * [Logging format](logs-structure.md)
 * For Java version:  [Node Editor](node-editor.md) with Description,
@@ -41,7 +41,7 @@ directory and launch the jar either by double clicking or from command prompt:
 
 We use a "[Shared Repository Model](https://help.github.com/articles/using-pull-requests#shared-repository-model)."
 The basic idea is that everyone works on their own branch.  When a developer
-want something merged onto the master branch, they push their branch onto
+wants something merged onto the master branch, they push their branch onto
 github and start a "pull request" (or send an email).
 
 Our policy is that code is merged onto the master branch once it has
