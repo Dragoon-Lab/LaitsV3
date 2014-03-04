@@ -123,17 +123,46 @@ define([
 	     Set value for initial value, equation (input), 
 	     */
 
+	    // This sets the selected value in the description.
+	    var desc =  model.student.getDescriptionID(nodeid);
+	    registry.byId('selectDescription').attr('value', desc || '');
+
 	    /*
 	     The PM sets enabled/disabled and color for the controls
 	     
 	     Set enabled/disabled for input, units, initial value, type
 	     description
 	     
-	     Color for Description, type, initial value, units, and input.
+	     Color for Description, type, initial value, units, input, 
+             and equation.
 
-	     Note that if and only if input is disabled, then +, -, *, /, undo, and done 
-	     should also be disabled.
+	     Note that if equation is disabled then 
+	     input, +, -, *, /, undo, and done should also be disabled.
 	     */
+
+	    var controlMap = {
+		description: "selectDescription",
+		type: "typeId",
+		initial: "initialValue",
+		units: "selectUnits",
+		inputs: "nodeInputs",
+		equation: "equation"
+	    };
+
+	    /*
+	     We will need to use same handler for each call 
+	     to the PM.  Probably should make this a separate 
+	     function
+	     */
+	    array.forEach(this._PM.openAction(nodeid), function(directive){
+		console.log("===== openAction directive ", directive);
+		var w = registry.byId(controlMap[directive.id]);
+		// I have checked that this works for disable/enable
+		// Still need to do other colors
+		// Still need to enable/disable equation together
+		// with inputs, and associated buttons.
+		w.attr(directive.attribute, directive.value);
+	    });
 	    
 	}
 	
