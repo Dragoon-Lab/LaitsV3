@@ -75,7 +75,9 @@ define([
 
 	    // BvdS:  I couldn't get this to work with "on"
 	    // may need to use dojo/hitch here?
-	    aspect.after(type, 'onChange', this.handleType, true);	    
+	    //aspect.after(type, 'onChange', this.handleType, true);
+        //OR, following on works
+        on(type,'Change',this.handleType);
 	    on(done, 'click',  function(){
 		console.log("handler for done");
 	    });
