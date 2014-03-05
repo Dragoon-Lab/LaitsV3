@@ -178,16 +178,8 @@ is first opened.   They are visible on the screen.
     "studentModelNodes": [
         {
             "ID": "id4",
-            "description": {
-                "selected": "id1", 
-		"status": "correct", 
-		"disabled": true
-            },
-            "type": {
-	        "selected": "accumulator",
-		"status": "demo",
-		"disabled": false
-            },		
+            "descriptionID": "id1",
+            "type": "accumulator",		
             "initial": 100
             "units": "rabbits",
             "inputs":  [ { "ID": "id5" } ],
@@ -195,13 +187,24 @@ is first opened.   They are visible on the screen.
             "position": {
                 "x": 100,
                 "y": 100
+            },
+            "status": {
+                "description": {
+                    "status": "correct", 
+                    "disabled": true
+                },
+                "type": {
+                    "status": "demo",
+                    "disabled": false
+                },
+                ...		    
             }
         },
         ...
     ]
 
 They contain information that identifies the node, positions it, and marks the 
-student's selections. The attribute "description" specifies a node in the
+student's selections. The attribute "descriptionID" specifies a node in the
 given model or in "extraDescriptions" that has been selected by the student.
 Thus, the student *may* generate nodes that are not in the given
 model and are not part of the solution.
@@ -211,6 +214,9 @@ equation written in terms of student node ids.  If the parse fails,
 then it contains the text written by the student and "inputs" is empty.
 Likewise,  "initial" contains either the numerical value of the
 student input or the string typed by the student if the parse fails.
+
+The attribute "status" saves state for the node editor, listing
+status and enable/disable for each of the controls.
 
 Another function of the student model is to allow the author to create a 
 partially completed model that the user will have to correct or complete. Thus 
@@ -331,16 +337,30 @@ JSON document.
             "studentModelNodes": [
                 {
                     "ID": "id4",
-                        "descriptionID": "id1",
-                        "type": "accumulator",
-                        "initial": "100",
-                        "units": "rabbits",
+                    "descriptionID": "id1",
+                    "type": "accumulator",
+                    "initial": "100",
+                    "units": "rabbits",
                     "inputs": [ { "ID": "id5" } ],
                     "equation": "id5",
-                        "initial": 100,
+                    "initial": 100,
                     "position": {
                         "x": 100,
                         "y": 100
+                    },
+                    "status": {
+                        "description": {
+                            "status": "correct", 
+                            "disabled": true
+                        },
+                        "type": {
+                            "status": "demo",
+                            "disabled": false
+                        },
+                        "units": {
+                            "status": "incorrect",
+                            "disabled": false
+                        }
                     }
                 },
                 {
@@ -353,6 +373,20 @@ JSON document.
                     "position": {
                         "x": 300,
                         "y": 100
+                    },
+                    "status": {
+                        "description": {
+                            "status": "correct", 
+                            "disabled": true
+                        },
+                        "type": {
+                            "status": "demo",
+                            "disabled": true
+                        },
+                        "units": {
+                            "status": "demo",
+                            "disabled": true
+                        }
                     }
                 },
                 {
@@ -365,6 +399,20 @@ JSON document.
                     "position": {
                         "x": 500,
                         "y": 100
+                    },
+                    "status": {
+                        "description": {
+                            "status": "demo", 
+                            "disabled": true
+                        },
+                        "type": {
+                            "status": "correct",
+                            "disabled": true
+                        },
+                        "units": {
+                            "status": "correct",
+                            "disabled": false
+                        }
                     }
                 }
             ]

@@ -19,8 +19,6 @@ define([
 	    this._PM = new PM(mode, subMode, model);
 	    
             // Test the PM 
-           var r = this._PM.openAction("id4");
-            console.log("********** test PM open", r);
             var rr = this._PM.descriptionAction("id4", "id1");
             console.log("********** test PM description", rr);
 	    
@@ -171,7 +169,7 @@ define([
 	     to the PM.  Probably should make this a separate 
 	     function
 	     */
-	    array.forEach(this._PM.openAction(nodeid), function(directive){
+	    array.forEach(model.student.getStatusDirectives(nodeid), function(directive){
 		console.log("===== openAction directive ", directive);
 		var w = registry.byId(controlMap[directive.id]);
 		// I have checked that this works for disable/enable

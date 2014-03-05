@@ -833,7 +833,7 @@ define([
                     ID: "id" + obj._ID++,
                     inputs: [],
                     position: {x: obj.x, y: obj.y},
-                    selections: {}
+                    status: {}
                 }, options || {});
                 obj.model.task.studentModelNodes.push(newNode);
                 return newNode.ID;
@@ -873,6 +873,22 @@ define([
 		return node && node.initial;
 	    },
             getEachNodeUnitbyID: lang.hitch(obj, obj.getEachStudentNodeUnitbyID),
+	    getStatusDirectives: function(/*string*/ id){
+		//Summary:  Return a list of directives (like PM does).
+		//          to set up node editor.
+		var status = this.getNode(id).status;
+		var directives = [];
+		for (var control in status){
+		    for(var attribute in status[control]){
+			directives.push({
+			    id: control, 
+			    attribute: attribute, 
+			    value: status[control][attribute]
+			});
+		    }
+		} 
+		return directives;
+	    },
             setDescriptionID: function(/*string*/ id, /*string*/ descriptionID) {
                 this.getNode(id).descriptionID = descriptionID;
             },
@@ -884,7 +900,14 @@ define([
             },
             setEquation: function(/*string*/ id, /*string | object*/ equation) {
                 this.getNode(id).equation = equation;
-            }
+            },
+	    setStatus: function(/*string*/ id, /*string*/ control, /*object*/ options) {
+		//Summary: Update status for a particular control.
+		//         options may have attributes "status" and "disabled".
+		var attributes = this.getNode(id).status[control];
+		lang.mixin(attributes, options);
+		return attributes;
+	    }
         }, both);
 
         // Execute the constructor

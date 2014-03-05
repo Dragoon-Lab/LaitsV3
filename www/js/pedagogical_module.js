@@ -199,15 +199,6 @@ define([
                 this.userType = this.mode;
             }
         },
-        openAction: function(/*string*/ id) {
-            //Summary: Call this when opening the node editor to set controls.
-	    //         id is the student node ID.
-            //Note: The controller has already created the model node.
-            var infoObject = Array();
-	    // Note that we don't specify the control, since
-	    // we want this for all controls.
-            return this._getReturnObject(id, infoObject);
-        },
         newDescriptionAction: function(/*string*/ id, /*string*/ choice) {
             //Summary: accepts an answer that the student provides, checks its validity,
             //         and returns a list of directives; id is the student node id.
