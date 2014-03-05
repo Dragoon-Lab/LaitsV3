@@ -127,7 +127,22 @@ define([
 
 	    // This sets the selected value in the description.
 	    var desc =  model.student.getDescriptionID(nodeid);
-	    registry.byId('selectDescription').attr('value', desc || '');
+	    registry.byId('selectDescription').set('value', desc || '');
+
+        var type = model.student.getType(nodeid);
+        console.log('node type is '+type);
+        registry.byId('typeId').set('value',type || '');
+
+        var initial = model.student.getInitial(nodeid);
+        console.log('initial value is '+initial);
+        registry.byId('initialValue').attr('value',initial || 0.0);
+
+        var unit = model.student.getEachNodeUnitbyID(nodeid);
+        console.log('unit is '+unit[nodeid]);
+        registry.byId('selectUnits').set('value',unit[nodeid]);
+
+
+
 
 	    /*
 	     The PM sets enabled/disabled and color for the controls
