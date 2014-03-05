@@ -36,19 +36,19 @@ The JSON document will begin with the "task" element, of which all other
 elements will be attributes. It will be followed by the name, properties and 
 description of the task (problem) that is being modeled.
 
-        {
-            "task": {
-                "taskName": "Rabbits - Intro Problem",
-                "properties": {
-                    "phase": "intro",
-                    "type": "construct",
-                    "URL": "images/rabbit.jpeg",
-                    "startTime": 0,
-                    "endTime": 10,
-                    "timeStep": 1,
-                    "units": "years"
-                },
-                "taskDescription": "In this exercise, you will construct a model of how a 
+    {
+        "task": {
+            "taskName": "Rabbits - Intro Problem",
+            "properties": {
+                "phase": "intro",
+                "type": "construct",
+                "URL": "images/rabbit.jpeg",
+                "startTime": 0,
+                "endTime": 10,
+                "timeStep": 1,
+                "units": "years"
+            },
+            "taskDescription": "In this exercise, you will construct a model of how a 
                     rabbit population grows when no rabbits die. The first quantity in this 
                     model is the population or number of rabbits in the population. Initially, 
                     there are 100 rabbits, but the number increases with time. The new 
@@ -74,36 +74,36 @@ but a student has not correctly solved the model until the corresponding
 elements of the nodes in the student model match the non-extra nodes in the 
 given model.
 
-        "givenModelNodes": [
-            {
-                "ID": "id1",
-                "name": "population",
-                "type": "accumulator",
-                "parentNode": false,
-                "extra": false,
-                "order": 1,
-                "units": "rabbits",
-                "inputs": [ { "ID" : "id2" } ],
-                "initial": 100,
-                "equation": "+ id2",
-                "description": "The number of rabbits in the population",
-                "attemptCount": {
-                    "description": 2,
-                    "type": 1,
-                    "initial": 2,
-                    "units": 4,
-                    "equation": 3
-                },
-                "status": {
-                    "description": "correct",
-                    "type": "demo",
-                    "initial": "correct",
-                    "units": "demo",
-                    "equation": "correct"
-                }
+    "givenModelNodes": [
+        {
+            "ID": "id1",
+            "name": "population",
+            "type": "accumulator",
+            "parentNode": false,
+            "extra": false,
+            "order": 1,
+            "units": "rabbits",
+            "inputs": [ { "ID" : "id2" } ],
+            "initial": 100,
+            "equation": "+ id2",
+            "description": "The number of rabbits in the population",
+            "attemptCount": {
+                "description": 2,
+                "type": 1,
+                "initial": 2,
+                "units": 4,
+                "equation": 3
             },
-			...
-		]
+            "status": {
+                "description": "correct",
+                "type": "demo",
+                "initial": "correct",
+                "units": "demo",
+                "equation": "correct"
+            }
+        },
+        ...
+    ]
 
 Each node has a unique ID, which is how the node will typically be referred to 
 in the code. This allows the name to be changed without disrupting other nodes 
@@ -152,15 +152,15 @@ The author may include distraction descriptions which are not part of the given
 model to further challenge the student. They are included in the 
 "extraDescriptions" array, as in the following example.
 
-                "extraDescriptions": [
-                    {
-                        "ID": "id7",
-						"name": "month two population",
-						"text": "The number of rabbits in the population during the second month",
-                        "type": "model"
-                    },
-					...
-                ]
+    "extraDescriptions": [
+        {
+            "ID": "id7",
+            "name": "month two population",
+            "text": "The number of rabbits in the population during the second month",
+            "type": "model"
+        },
+        ...
+    ]
 
 The attribute "description" has the extra description that is not needed to 
 solve the model. The attribute "type" tells the problem if the extra description 
@@ -175,25 +175,33 @@ Student model nodes are nodes that the student has created while trying to
 complete the model or that the author wants visible when the problem
 is first opened.   They are visible on the screen.
 
-        "studentModelNodes": [
-            {
-                "ID": "id4",
-			    "descriptionID": "id1",
-                "type": "accumulator",
-				"initial": 100
-                "units": "rabbits",
-                "inputs":  [ { "ID": "id5" } ],
-                "equation": "id5",
-                "position": {
-                    "x": 100,
-                    "y": 100
-                }
+    "studentModelNodes": [
+        {
+            "ID": "id4",
+            "description": {
+                "selected": "id1", 
+		"status": "correct", 
+		"disabled": true
             },
-			...
-		]
+            "type": {
+	        "selected": "accumulator",
+		"status": "demo",
+		"disabled": false
+            },		
+            "initial": 100
+            "units": "rabbits",
+            "inputs":  [ { "ID": "id5" } ],
+            "equation": "id5",
+            "position": {
+                "x": 100,
+                "y": 100
+            }
+        },
+        ...
+    ]
 
 They contain information that identifies the node, positions it, and marks the 
-student's selections. The attribute "descriptionID" specifies a node in the
+student's selections. The attribute "description" specifies a node in the
 given model or in "extraDescriptions" that has been selected by the student.
 Thus, the student *may* generate nodes that are not in the given
 model and are not part of the solution.
@@ -214,151 +222,151 @@ user opens the problem for the first time.
 The following code shows the "rabbits" problem with the new specification in a 
 JSON document.
 
-        {
-            "task": {
-                "taskName": "Rabbits - Intro Problem",
-                "properties": {
-                    "phase": "intro",
-                    "type": "construct",
-                    "URL": "images/rabbit.jpeg",
-                    "startTime": 0,
-                    "endTime": 10,
+    {
+        "task": {
+            "taskName": "Rabbits - Intro Problem",
+            "properties": {
+                "phase": "intro",
+                "type": "construct",
+                "URL": "images/rabbit.jpeg",
+                "startTime": 0,
+                "endTime": 10,
                     "timeStep": 1,
-                    "units": "years"
+                "units": "years"
+            },
+            "taskDescription": "In this exercise, you will construct a model of how a rabbit population grows when no rabbits die. The first quantity in this model is the population or number of rabbits in the population. Initially, there are 100 rabbits, but the number increases with time. The new population each month is its present value plus the number of births (number of rabbits born each month). The number of births is equal to the product of the population and the birth rate. The birthrate or the ratio of the number of rabbits born in a month to the rabbit population that month has a fixed value of 0.2.",
+            "givenModelNodes": [
+                {
+                    "ID": "id1",
+                    "name": "population",
+                    "type": "accumulator",
+                    "parentNode": false,
+                    "extra": false,
+                    "order": 1,
+                    "units": "rabbits",
+                    "inputs":  [ { "ID" : "id2" } ],
+                    "initial": 100,
+                    "equation": "+ id2",
+                    "description": "The number of rabbits in the population",
+                    "attemptCount": {
+                        "description": 2,
+                        "type": 1,
+                        "initial": 2,
+                        "units": 4,
+                        "equation": 3
+                    },
+                    "status": {
+                        "description": "incorrect",
+                        "type": "demo",
+                        "initial": "correct",
+                        "units": "demo",
+                        "equation": "correct"
+                    }
                 },
-                "taskDescription": "In this exercise, you will construct a model of how a rabbit population grows when no rabbits die. The first quantity in this model is the population or number of rabbits in the population. Initially, there are 100 rabbits, but the number increases with time. The new population each month is its present value plus the number of births (number of rabbits born each month). The number of births is equal to the product of the population and the birth rate. The birthrate or the ratio of the number of rabbits born in a month to the rabbit population that month has a fixed value of 0.2.",
-                "givenModelNodes": [
-                    {
-                        "ID": "id1",
-                        "name": "population",
+                {
+                    "ID": "id2",
+                    "name": "births",
+                    "type": "function",
+                    "parentNode": true,
+                    "extra": false,
+                    "order": 2,
+                    "units": "births",
+                    "inputs": [ { "ID": "id1" }, { "ID": "id3" } ],
+                    "equation": "id1 * id3",
+                    "description": "The number of rabbits born each month",
+                    "attemptCount": {
+                        "description": 2,
+                        "type": 1,
+                        "initial": 0,
+                        "units": 2,
+                        "equation": 1
+                    },
+                    "status": {
+                        "description": "demo",
+                        "type": "demo",
+                        "units": "correct",
+                        "equation": "correct"
+                    }
+                },
+                {
+                    "ID": "id3",
+                    "name": "birth rate",
+                    "type": "parameter",
+                    "parentNode": false,
+                    "extra": false,
+                    "order": 3,
+                    "units": "percent",
+                    "inputs": [],
+                    "equation": ".2",
+                    "description": "The ratio of number of rabbits born in a month to the rabbit population that month",
+                    "attemptCount": {
+                        "description": 1,
+                        "type": 1,
+                        "initial": 0,
+                        "units": 1,
+                        "equation": 3
+                    },
+                    "status": {
+                        "description": "correct",
+                        "type": "correct",
+                        "units": "correct",
+                        "equation": "correct"
+                    }
+                }
+            ],
+            "extraDescriptions": [
+                {
+                    "ID": "id7",
+                    "name": "month two population",
+                    "text": "The number of rabbits in the population during the second month",
+                    "type": "model"
+                },
+                {
+                    "ID": "id8",
+                    "name": "superpower fraction",
+                    "text": "The ratio of rabbits born with superpowers to ordinary rabbits",
+                    "type": "extra"
+                }
+            ],
+            "studentModelNodes": [
+                {
+                    "ID": "id4",
+                        "descriptionID": "id1",
                         "type": "accumulator",
-                        "parentNode": false,
-                        "extra": false,
-                        "order": 1,
+                        "initial": "100",
                         "units": "rabbits",
-                        "inputs":  [ { "ID" : "id2" } ],
+                    "inputs": [ { "ID": "id5" } ],
+                    "equation": "id5",
                         "initial": 100,
-                        "equation": "+ id2",
-                        "description": "The number of rabbits in the population",
-                        "attemptCount": {
-                            "description": 2,
-                            "type": 1,
-                            "initial": 2,
-                            "units": 4,
-                            "equation": 3
-                        },
-                        "status": {
-                            "description": "incorrect",
-                            "type": "demo",
-                            "initial": "correct",
-                            "units": "demo",
-                            "equation": "correct"
-                        }
-                    },
-                    {
-                        "ID": "id2",
-                        "name": "births",
-                        "type": "function",
-                        "parentNode": true,
-                        "extra": false,
-                        "order": 2,
-                        "units": "births",
-                        "inputs": [ { "ID": "id1" }, { "ID": "id3" } ],
-                       "equation": "id1 * id3",
-                        "description": "The number of rabbits born each month",
-                        "attemptCount": {
-                            "description": 2,
-                            "type": 1,
-                            "initial": 0,
-                            "units": 2,
-                            "equation": 1
-                        },
-                        "status": {
-                            "description": "demo",
-                            "type": "demo",
-                            "units": "correct",
-                            "equation": "correct"
-                        }
-                    },
-                    {
-                        "ID": "id3",
-                        "name": "birth rate",
-                        "type": "parameter",
-                        "parentNode": false,
-                        "extra": false,
-                        "order": 3,
-                        "units": "percent",
-                        "inputs": [],
-                        "equation": ".2",
-                        "description": "The ratio of number of rabbits born in a month to the rabbit population that month",
-                        "attemptCount": {
-                            "description": 1,
-                            "type": 1,
-                            "initial": 0,
-                            "units": 1,
-                            "equation": 3
-                        },
-                        "status": {
-                            "description": "correct",
-                            "type": "correct",
-                            "units": "correct",
-                            "equation": "correct"
-                        }
+                    "position": {
+                        "x": 100,
+                        "y": 100
                     }
-                ],
-                "extraDescriptions": [
-                    {
-                        "ID": "id7",
-						"name": "month two population",
-						"text": "The number of rabbits in the population during the second month",
-                        "type": "model"
-                    },
-                    {
-                        "ID": "id8",
-						"name": "superpower fraction",
-						"text": "The ratio of rabbits born with superpowers to ordinary rabbits",
-                        "type": "extra"
+                },
+                {
+                    "ID": "id5",
+                    "descriptionID": "id2",
+                    "type": "function",
+                    "units": "births",
+                    "inputs":  [ { "ID": "id4" }, { "ID": "id6" } ],
+                    "equation": "id4*id6",
+                    "position": {
+                        "x": 300,
+                        "y": 100
                     }
-                ],
-                "studentModelNodes": [
-                    {
-                        "ID": "id4",
-						"descriptionID": "id1",
-						"type": "accumulator",
-						"initial": "100",
-						"units": "rabbits",
-                        "inputs": [ { "ID": "id5" } ],
-                        "equation": "id5",
-						"initial": 100,
-                        "position": {
-                            "x": 100,
-                            "y": 100
-                        }
-                    },
-                    {
-                        "ID": "id5",
-						"descriptionID": "id2",
-						"type": "function",
-						"units": "births",
-                        "inputs":  [ { "ID": "id4" }, { "ID": "id6" } ],
-                        "equation": "id4*id6",
-                        "position": {
-                            "x": 300,
-                            "y": 100
-                        }
-                    },
-                    {
-                        "ID": "id6",
-						"descriptionID": "id3",
-						"type": "parameter",
-						"initial": 0.2,
-						"units": "percent",
-                        "inputs": [],
-                        "position": {
-                            "x": 500,
-                            "y": 100
-                        }
+                },
+                {
+                    "ID": "id6",
+                    "descriptionID": "id3",
+                    "type": "parameter",
+                    "initial": 0.2,
+                    "units": "percent",
+                    "inputs": [],
+                    "position": {
+                        "x": 500,
+                        "y": 100
                     }
-                ]
-            }
+                }
+            ]
         }
+    }
