@@ -27,6 +27,15 @@ define([
 	    // after widgets are set up.
   	    ready(this, this._setUpNodeEditor);
 	},
+
+	 controlMap: {
+	     description: "selectDescription",
+	     type: "typeId",
+	     initial: "initialValue",
+	     units: "selectUnits",
+	     inputs: "nodeInputs",
+	     equation: "equation"
+	 },
         
 	_setUpNodeEditor: function(){
 	    
@@ -38,9 +47,9 @@ define([
 	    
 	    // Add fields to Description box
             // In author mode, the Description input must be a text box
-	    var d = registry.byId("selectDescription");
-            // populate input feild
-            var t = registry.byId("nodeInputs");
+	    var d = registry.byId(this.controlMap.description);
+            // populate input field
+            var t = registry.byId(this.controlMap.inputs);
        	    // console.log("description widget = ", d);
 	    // d.removeOption(d.getOptions()); // Delete all options
 	    array.forEach(this._model.getAllDescriptions(), function(desc){
@@ -49,6 +58,28 @@ define([
 		var option = {label: desc.label+' '+ ' | '+' '+ name, value:desc.value};
 		t.addOption(option);
 	    }, this);
+
+            /*
+	     Add attribute handler to all of the controls
+	     When "status" attribute is changed, then this function
+	     is called.
+	     */
+	    var setStatus = function(value){
+		var colorMap = {
+		    correct: "lightGreen",
+		    incorrect: "#FF8080",
+		    demo: "yellow"
+		};
+		console.log("In widget._setStatusAttr for '" + value + 
+			    "', scope ", this);
+		// Chose bgColor because it was easy to do
+		// Might instead change text color?  
+		this.domNode.bgColor = value?colorMap[value]:'';
+	    };
+	    for(var control in this.controlMap){
+		var w = registry.byId(this.controlMap[control]);
+		w._setStatusAttr = setStatus;
+	    }	    
 	    
 	    // Add fields to units box, using units in model node
             // In author mode, this needs to be turned into a text box.
@@ -74,8 +105,8 @@ define([
 	    // BvdS:  I couldn't get this to work with "on"
 	    // may need to use dojo/hitch here?
 	    //aspect.after(type, 'onChange', this.handleType, true);
-        //OR, following on works
-        on(type,'Change',this.handleType);
+            //OR, following on works
+            on(type,'Change',this.handleType);
 	    on(done, 'click',  function(){
 		console.log("handler for done");
 	    });
@@ -86,6 +117,8 @@ define([
 	    
 	handleType: function(type){
 	    console.log("Student has chosen type ", type, this);
+	    // Need to call PM, and handle reply from PM,
+	    // updating node editor and the model.
 	},
 
 	handleNodeEditorButtonClicks: function(buttonId){
@@ -125,22 +158,22 @@ define([
 
 	    // This sets the selected value in the description.
 	    var desc =  model.student.getDescriptionID(nodeid);
-	    registry.byId('selectDescription').set('value', desc || '');
+	    registry.byId(this.controlMap.description).set('value', desc || '');
 
-        var type = model.student.getType(nodeid);
-        console.log('node type is '+type);
-        registry.byId('typeId').set('value',type || '');
+            var type = model.student.getType(nodeid);
+            console.log('node type is ', type || "not set");
+            registry.byId(this.controlMap.type).set('value', type || '');
+	    
+            var initial = model.student.getInitial(nodeid);
+            console.log('initial value is ', initial || "not set");
+            registry.byId(this.controlMap.initial).attr('value', initial || "0.0");
+	    
+            var unit = model.student.getEachNodeUnitbyID(nodeid);
+            console.log('unit is ', unit[nodeid] || "not set");
+            registry.byId(this.controlMap.units).set('value', unit[nodeid] || '');
 
-        var initial = model.student.getInitial(nodeid);
-        console.log('initial value is '+initial);
-        registry.byId('initialValue').attr('value',initial || 0.0);
-
-        var unit = model.student.getEachNodeUnitbyID(nodeid);
-        console.log('unit is '+unit[nodeid]);
-        registry.byId('selectUnits').set('value',unit[nodeid]);
-
-
-
+	    console.log("======== units widget ", registry.byId('selectUnits'));
+	    
 
 	    /*
 	     The PM sets enabled/disabled and color for the controls
@@ -155,29 +188,20 @@ define([
 	     input, +, -, *, /, undo, and done should also be disabled.
 	     */
 
-	    var controlMap = {
-		description: "selectDescription",
-		type: "typeId",
-		initial: "initialValue",
-		units: "selectUnits",
-		inputs: "nodeInputs",
-		equation: "equation"
-	    };
-
 	    /*
-	     We will need to use same handler for each call 
-	     to the PM.  Probably should make this a separate 
-	     function
+	     We will need a similar handler for each call 
+	     to the PM.  However, in that case, the model also
+	     needs updating.
 	     */
 	    array.forEach(model.student.getStatusDirectives(nodeid), function(directive){
-		console.log("===== openAction directive ", directive);
-		var w = registry.byId(controlMap[directive.id]);
+		console.log("===== update from model ", directive);
+		var w = registry.byId(this.controlMap[directive.id]);
 		// I have checked that this works for disable/enable
 		// Still need to do other colors
 		// Still need to enable/disable equation together
 		// with inputs, and associated buttons.
-		w.attr(directive.attribute, directive.value);
-	    });
+		w.set(directive.attribute, directive.value);
+	    }, this);
 	    
 	}
 	
