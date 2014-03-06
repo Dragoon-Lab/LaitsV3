@@ -25,19 +25,13 @@
                 "equation": "id2",
                 "description": "The number of rabbits in the population",
                 "attemptCount": {
-                    "description": 2,
-                    "type": 1,
-                    "initial": 2,
-                    "units": 4,
-                    "equation": 3
+                    "description": 0,
+                    "type": 0,
+                    "initial": 0,
+                    "units": 0,
+                    "equation": 0
                 },
-                "status": {
-                    "description": "incorrect",
-                    "type": "demo",
-                    "initial": "correct",
-                    "units": "demo",
-                    "equation": "correct"
-                }
+                "status": { }
             },
             {
                 "ID": "id2",
@@ -52,18 +46,13 @@
                 "equation": "id1 * id3",
                 "description": "The number of rabbits born each month",
                 "attemptCount": {
-                    "description": 2,
-                    "type": 1,
+                    "description": 0,
+                    "type": 0,
                     "initial": 0,
-                    "units": 2,
-                    "equation": 1
+                    "units": 0,
+                    "equation": 0
                 },
-                "status": {
-                    "description": "demo",
-                    "type": "demo",
-                    "units": "correct",
-                    "equation": "correct"
-                }
+                "status": { }
             },
             {
                 "ID": "id3",
@@ -78,18 +67,13 @@
                 "equation": ".2",
                 "description": "The ratio of number of rabbits born in a month to the rabbit population that month",
                 "attemptCount": {
-                    "description": 1,
-                    "type": 1,
+                    "description": 0,
+                    "type": 0,
                     "initial": 0,
-                    "units": 1,
-                    "equation": 3
+                    "units": 0,
+                    "equation": 0
                 },
-                "status": {
-                    "description": "correct",
-                    "type": "correct",
-                    "initial": "demo",
-                    "units": "correct"
-                }
+                "status": { }
             }
         ],
         "extraDescriptions": [

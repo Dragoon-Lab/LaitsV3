@@ -17,11 +17,7 @@ define([
 	constructor: function(mode, subMode, model){
 	    this._model = model;
 	    this._PM = new PM(mode, subMode, model);
-	    
-            // Test the PM 
-            var rr = this._PM.descriptionAction("id4", "id1");
-            console.log("********** test PM description", rr);
-	    
+	    	    
 	    // The Node Editor widget must be set up before modifications
             // It might be a better idea to only  call the controller
 	    // after widgets are set up.
@@ -70,10 +66,8 @@ define([
 		    incorrect: "#FF8080",
 		    demo: "yellow"
 		};
-		console.log("In widget._setStatusAttr for '" + value + 
-			    "', scope ", this);
-		// Chose bgColor because it was easy to do
-		// Might instead change text color?  
+		// BvdS:  I chose bgColor because it was easy to do
+		// Might instead/also change text color?  
 		this.domNode.bgColor = value?colorMap[value]:'';
 	    };
 	    for(var control in this.controlMap){
@@ -124,20 +118,19 @@ define([
 	handleNodeEditorButtonClicks: function(buttonId){
 		console.log('testing combo box select ', buttonId);
 	},
-    convertEquation: function(equation){
-        var cequation = equation; //copy original equation
-        var tokens = parser.parse(equation).tokens;
-        array.forEach(tokens,function(token){
-            console.log("===========token is "+token);
-            var nodeName=this._model.student.getName(token.index_);
-            console.log("====================node name is "+nodeName);
-            if(nodeName != undefined){
-                cequation=cequation.replace(token.index_,nodeName);
-            }
-        },this);
-        return cequation;
-    }
-    ,
+
+	convertEquation: function(equation){
+            var expr = parser.parse(equation);
+		console.log("            parse: ", expr);
+            array.forEach(expr.variables(), function(variable){
+		var nodeName = this._model.student.getName(variable);
+		console.log("=========== substituting ", variable, " -> ", nodeName);
+		expr = expr.substitute(variable, nodeName);
+		console.log("            result: ", expr);
+            },this);
+            return expr.toString();
+	},
+
 	//show node editor
        showNodeEditor: function(/*string*/ id){
            console.log("showNodeEditor called for node ", id);
