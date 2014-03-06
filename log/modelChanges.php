@@ -11,7 +11,7 @@ Class ModelChanges{
 	}
 
 	function getProblemPairs(){
-		$sqlQuery = "SELECT autosave_table.id, autosave_table.problemNum, autosave_table.section, unsolutions.problemName, unsolutions.author from autosave_table JOIN unsolutions on autosave_table.problemNum = unsolutions.problemName where autosave_table.id != unsolutions.author and autosave_table.section = 'SOS-326' and autosave_table.date > '2013-10-29' and unsolutions.date > '2013-10-29' order by author;";
+		$sqlQuery = "SELECT autosave_table.id, autosave_table.problemNum, autosave_table.section, unsolutions.problemName, unsolutions.author from autosave_table JOIN unsolutions on autosave_table.problemNum = unsolutions.problemName and autosave_table.author = unsolutions.author where autosave_table.id != unsolutions.author and autosave_table.section = 'SOS-326' and autosave_table.date > '2013-10-29' and unsolutions.date > '2013-10-29' order by author;";
 
 		$problemPairs = $this->al->getResults($sqlQuery);
 
