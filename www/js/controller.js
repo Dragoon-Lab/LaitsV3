@@ -93,6 +93,7 @@ define([
 	    var done = dom.byId("doneNodeEditor");
 	    var plus = dom.byId("plus");
 	    var type = registry.byId("typeId");
+	    var desc = registry.byId("selectDescription");
 	    
 	    // attach callbacks to each field in node Editor.
 
@@ -101,6 +102,10 @@ define([
 	    //aspect.after(type, 'onChange', this.handleType, true);
             //OR, following on works
             on(type,'Change',this.handleType);
+	    
+	    aspect.after(desc, 'onChange', lang.hitch(this,function(x){
+		console.log("Hi------------", x, this.currentID);
+	    }, true));
 	    on(done, 'click',  function(){
 		console.log("handler for done");
 	    });
@@ -125,7 +130,7 @@ define([
             array.forEach(expr.variables(), function(variable){
 		var nodeName = this._model.student.getName(variable);
 		console.log("=========== substituting ", variable, " -> ", nodeName);
-		expr = expr.substitute(variable, nodeName);
+		expr.substitute(variable, nodeName);
 		console.log("            result: ", expr);
             },this);
             return expr.toString();
@@ -136,15 +141,8 @@ define([
            console.log("showNodeEditor called for node ", id);
 	   this.populateNodeEditorFields(id);
 	   this._nodeEditor.show();
+	   this.currentID = id;
 	},
-
-	dispatch: function(/*array*/ directives){
-	    array.forEach(directives, function(directive){
-		console.log("========= directive ", directive);
-		
-	    });
-	},
-
 		
 	populateNodeEditorFields : function(nodeid){
 	    //populate description
