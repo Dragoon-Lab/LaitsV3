@@ -63,53 +63,53 @@ define([
             this.lastNodeOpened = null; //used to track inputs attempts in inputsAction();
         },
         mode: null,
-	userType: null,
-	hints: {
-	    incorrect: {
-		irrelevant: [
+        userType: null,
+        hints: {
+            incorrect: {
+                irrelevant: [
                     "The quantity is irrelevant to this problem.  Choose a different one.",
                     "This quantity is irrelevant for modeling the system.  Try again.",
                     "Irrelevant.  Try again."
-		],
-		initial: [
+                ],
+                initial: [
                     "You tried to define a parameter for the initial value of an accumulator.  This is unnecessary, because you can put the initial value for the accumulator right into the definition of the accumulator itself.",
                     "That should be the initial value of an accumulator, not a parameter node.",
                     "That should be the initial value of an accumulator."
-		],
-		notInModel: [
+                ],
+                notInModel: [
                     "You tried to define a parameter for a number you read in the problem.  Not all numbers in the problem statement are necessary for the model.  You will save effort if you follow the Target Node Strategy, which says you should start by defining a node for a quantity that the problem asks you to graph, then define nodes for its inputs, and then define nodes for their inputs, etc.  That way, every node you create is an input to some node.",
                     "Not every number in the problem statement is necessary for the model.  You should define a node for a quantity only when either (1) it is required as input to a previously defined node, or (2) the problem statement asks you to graph it.",
                     "Please be sure you need a node before defining it.  Even if a number appears in the problem statement, it may not be needed in the model."
-		],
-		exists: [
+                ],
+                exists: [
                     "A node already exists for that quantity.  If you want to edit it, click on it."
-		]
-	    },
-	    premature: [
-                    "Blue means that the quantity is relevant for modeling the system, but it is not yet time to define it.  You should follow the Target Node Strategy, which says you should edit an existing node that is not yet defined.  Such nodes have dotted outlines.  Click on one to edit it.",
-                    "Blue means that according to the Target Node Strategy, it is too early to define a node for this quantity.  Edit a node that has a dotted outline.",
-                    "Blue means premature.  Edit a node with a dotted outline instead."
-	    ],
-	    blue: [
+                ]
+            },
+            premature: [
+                "Blue means that the quantity is relevant for modeling the system, but it is not yet time to define it.  You should follow the Target Node Strategy, which says you should edit an existing node that is not yet defined.  Such nodes have dotted outlines.  Click on one to edit it.",
+                "Blue means that according to the Target Node Strategy, it is too early to define a node for this quantity.  Edit a node that has a dotted outline.",
+                "Blue means premature.  Edit a node with a dotted outline instead."
+            ],
+            blue: [
                 "Blue means that quantity isn’t one that the problem statement asks you to graph.  Although this quantity will eventually be in your model, you should follow the Target Node Strategy, which says you should first define a node for a top level goal quantity.",
                 "Please start with a quantity mentioned in the problem statement as one that needs to be graphed."
-	    ],
-	    correct: [
+            ],
+            correct: [
                 "Green means correct.  Good job!",
                 "Green means correct."
-	    ],
-	    demo: {
-		irrelevant: [
+            ],
+            demo: {
+                irrelevant: [
                     "Sorry, but that quantity isn’t relevant to the model.  Moreover, this is the third failure, so a correct selection is being done for you.  Please study it and figure out why it is correct.  Your goal should be to make a correct selection on the first attempt.",
                     "Here’s a correct solution.  Please figure out why it is correct so that next time, your first selection will be correct.",
                     "Please study this correct selection."
-		],
-		many: [
+                ],
+                many: [
                     "Yellow means that you made an incorrect choice too many times, so you are being shown the correct choice.  You should figure out why it is correct so that next time your first choice will be correct.",
                     "Can you figure out why this is the right type for the node?"
-		]
-	    }
-	},
+                ]
+            }
+        },
         _getType: function(/*string*/ expression) {
             //Summary: determines the sub type of a node with type "function"
             //
@@ -147,13 +147,13 @@ define([
             //Tags: private
 
             var nodeParts = new Array("description", "type", "initial", "units", "inputs", "equation");
-	    // Always need description and type
+            // Always need description and type
             var neededControls = new Array("description", "type");
 
             // Only enable/disable parts needed in the model (present in the given model)
             // Parts not needed should be disabled when the window is opened.
             // Pehaps this list should be populated when the node editor is opened.
-	    var givenID = this.model.student.getDescriptionID(id);
+            var givenID = this.model.student.getDescriptionID(id);
             if (this.model.given.getInitial(givenID))
                 neededControls.push("initial");
             if (this.model.given.getUnits(givenID))
@@ -193,74 +193,31 @@ define([
         setUserType: function(/*string*/ subMode) {
             // Summary: Sets the user mode; used by the constructor, but also
             //      allows the mode to be updated dynamically.
-	    if(this.mode === "STUDENT"){
-		this.userType = subMode;
+            if (this.mode === "STUDENT") {
+                this.userType = subMode;
             } else {
                 this.userType = this.mode;
             }
         },
         openAction: function(/*string*/ id) {
             //Summary: Call this when opening the node editor to set controls.
-	    //         id is the student node ID.
+            //         id is the student node ID.
             //Note: The controller has already created the model node.
             var infoObject = Array();
-	    // Note that we don't specify the control, since
-	    // we want this for all controls.
+            // Note that we don't specify the control, since
+            // we want this for all controls.
             return this._getReturnObject(id, infoObject);
         },
-        newDescriptionAction: function(/*string*/ id, /*string*/ choice) {
-            //Summary: accepts an answer that the student provides, checks its validity,
-            //         and returns a list of directives; id is the student node id.
-            //Note: Each choice is labeled by either a node ID (for choices that
-            //      correspond to nodes in the given model) or other label (for disctractors).
-
-            //The array that that will be returned
-            var infoObject = Array();
-            var control = "description";  
-
-            //pedagogicalTable assigns the
-            //      appropriate actions to be taken; the actions are assigned to sequence
-            var pedagogicalTable = {
-                optimal: {COACHED: "ijno", feedback: "ijno", TEST: "ino", power: "ino"},
-                notTopLevel: {COACHED: "fhm", feedback: "ijno", TEST: "ino", power: "ino"},
-                premature: {COACHED: "fgm", feedback: "ijno", TEST: "ino", power: "ino"},
-                initialValue: {COACHED: "acm", feedback: "acm", TEST: "am", power: "am"},
-                extraValue: {COACHED: "adm", feedback: "abm", TEST: "am", power: "am"},
-                irrelevant: {COACHED: "abm", feedback: "abm", TEST: "am", power: "am"},
-                redundant: {COACHED: "aem", feedback: "aem", TEST: "aem", power: "aem"},
-                lastFailure: {COACHED: "klno", feedback: "klno", TEST: "kno", power: "kno"}
-            };
-
-            var sequence;
+        getColor: function(/*string*/ nodePart, /*string*/ status) {
+            // Summary: Adds the correct status of the current node part to the 
+            //      return object
+            this.infoObject.push({id: nodePart, attribute: "status", value: status});
         },
-        descriptionAction: function(/*string*/ id, /*string*/ answer) {
-            //Summary: accepts an answer that the student provides, checks its validity,
-            //         and returns a list of directives; id is the student node id.
-            //Note: Each choice is labeled by either a node ID (for choices that
-            //      correspond to nodes in the given model) or other label (for disctractors).
-
-            //The array that that will be returned
-            var infoObject = Array();
-            var control = "description";  
-
-            //pedagogicalTable assigns the
-            //      appropriate actions to be taken; the actions are assigned to sequence
-            var pedagogicalTable = {
-                optimal: {COACHED: "ijno", feedback: "ijno", TEST: "ino", power: "ino"},
-                notTopLevel: {COACHED: "fhm", feedback: "ijno", TEST: "ino", power: "ino"},
-                premature: {COACHED: "fgm", feedback: "ijno", TEST: "ino", power: "ino"},
-                initialValue: {COACHED: "acm", feedback: "acm", TEST: "am", power: "am"},
-                extraValue: {COACHED: "adm", feedback: "abm", TEST: "am", power: "am"},
-                irrelevant: {COACHED: "abm", feedback: "abm", TEST: "am", power: "am"},
-                redundant: {COACHED: "aem", feedback: "aem", TEST: "aem", power: "aem"},
-                lastFailure: {COACHED: "klno", feedback: "klno", TEST: "kno", power: "kno"}
-            };
-
-	    var interpretation;
-
-            //assign the action based on the answer
+        getInterpretation: function(/*string*/ id, /*string*/ nodePart, /*string*/ answer) {
+            // Summary: Returns the interpretation of a given answer (correct, 
+            //      incorrect, etc. and sets the status in the return object
             if (this.model.student.isInExtras(id)) {
-		array.forEach(this.model.getExtraDescriptions(), function(extra){
+                array.forEach(this.model.getExtraDescriptions(), function(extra) {
                     if (answer === extra.ID && extra.type === "initial")
                         interpretation = "initialValue";
                     else if (answer === extra.ID && extra.type == "extra")
@@ -268,20 +225,106 @@ define([
                     else if (answer === extra.ID && extra.type == "model")
                         interpretation = "irrelevant";
                 });
+                this.getColor(nodePart, "incorrect");
             } else if (this.model.isNodeVisible(id)) {
                 interpretation = "redundant";
+                this.getColor(nodePart, "incorrect");
             } else if (this.model.isParentNode(id) || this.model.isNodesParentVisible(id)) {
                 interpretation = "optimal";
+                this.getColor(nodePart, "correct");
             } else if (this.model.student.getNodes().length == 0) {
                 interpretation = "notTopLevel";
+                this.getColor(nodePart, "premature");
             } else {
                 interpretation = "premature";
-	    }
-	    if (interpretation !== "optimal" && this.descriptionCounter === 2) {
-                interpretation = "lastFailure";
+                this.getColor(nodePart, "premature");
             }
-	    
+            if (interpretation !== "optimal" && this.descriptionCounter === 2) {
+                interpretation = "lastFailure";
+                this.getColor(nodePart, "demo");
+            }
+        },
+        newDescriptionAction: function(/*string*/ id, /*string*/ choice) {
+            // Summary: Accepts an answer that the student provides, checks its validity,
+            //         and returns a list of directives; id is the student node id.
+            // Note: Each choice is labeled by either a node ID (for choices that
+            //      correspond to nodes in the given model) or other label (for disctractors).
+
+            //The array that that will be returned
+            var infoObject = Array();
+            var control = "description";
+
+            //pedagogicalTable assigns the
+            //      appropriate actions to be taken; the actions are assigned to sequence
+            var pedagogicalTable = {
+                optimal: {COACHED: "ijno", feedback: "ijno", TEST: "ino", power: "ino"},
+                notTopLevel: {COACHED: "fhm", feedback: "ijno", TEST: "ino", power: "ino"},
+                premature: {COACHED: "fgm", feedback: "ijno", TEST: "ino", power: "ino"},
+                initialValue: {COACHED: "acm", feedback: "acm", TEST: "am", power: "am"},
+                extraValue: {COACHED: "adm", feedback: "abm", TEST: "am", power: "am"},
+                irrelevant: {COACHED: "abm", feedback: "abm", TEST: "am", power: "am"},
+                redundant: {COACHED: "aem", feedback: "aem", TEST: "aem", power: "aem"},
+                lastFailure: {COACHED: "klno", feedback: "klno", TEST: "kno", power: "kno"}
+            };
+
+            var interpretation = this.getInterpretation(id, answer);
+
             var sequence = pedagogicalTable[interpretation][this.userType];
+            switch (sequence) {
+                case "ijno":
+                    this.infoObject.push({id: nodePart, attribute: "status", value: "correct"});
+
+                    break;
+            }
+
+        },
+        i: function() {
+            alert(42);
+        },
+        j: function() {
+            alert("is the answer to life, the universe, and everything.");
+        },
+        getPedagogicalTable: function(/*string*/ id, /*string*/ answer, /*string*/ nodePart) {
+            var table = {optimal: {}, notTopLevel: {}, premature: {}, initialValue: {}, extraValue: {}, irrelevant: {}, redundant: {}, lastFailure: {}};
+            
+            table.optimal.COACHED = function(model) {model.i(); model.j();};
+            
+            table.optimal.COACHED(this);
+            
+        },
+        descriptionAction: function(/*string*/ id, /*string*/ answer) {
+            // Summary: Accepts an answer that the student provides, checks its validity,
+            //         and returns a list of directives; id is the student node id.
+            // Note: Each choice is labeled by either a node ID (for choices that
+            //      correspond to nodes in the given model) or other label (for disctractors).
+
+            //The array that that will be returned
+            var infoObject = Array();
+            var control = "description";
+
+            //pedagogicalTable assigns the
+            //      appropriate actions to be taken; the actions are assigned to sequence
+            var pedagogicalTable = {
+                optimal: {
+                    COACHED: [
+                        {id: nodePart, attribute: "status", value: status},
+                        {id: nodePart, attribute: "status", value: this.getColor("description", "status")},
+                    ],
+                    feedback: [this.i(), this.j(), this.n(), this.o()], TEST: "ino", power: "ino"},
+                notTopLevel: {COACHED: "fhm", feedback: "ijno", TEST: "ino", power: "ino"},
+                premature: {COACHED: "fgm", feedback: "ijno", TEST: "ino", power: "ino"},
+                initialValue: {COACHED: "acm", feedback: "acm", TEST: "am", power: "am"},
+                extraValue: {COACHED: "adm", feedback: "abm", TEST: "am", power: "am"},
+                irrelevant: {COACHED: "abm", feedback: "abm", TEST: "am", power: "am"},
+                redundant: {COACHED: "aem", feedback: "aem", TEST: "aem", power: "aem"},
+                lastFailure: {COACHED: "klno", feedback: "klno", TEST: "kno", power: "kno"}
+            };
+
+            var interpretation = this.getInterpretation(id, answer);
+
+            var sequence = pedagogicalTable[interpretation][this.userType];
+
+
 
             //take the appropriate action
             switch (sequence) {
@@ -430,7 +473,7 @@ define([
 
             //The array that that will be returned
             var infoObject = Array();
-            var control = "type"; 
+            var control = "type";
 
             //creates pedagogicalTable, a double array of sorts that helps assign the
             //      appropriate actions to be taken; the actions are assigned to sequence
@@ -655,8 +698,8 @@ define([
         unitsAction: function(/*string*/ id, /*string*/ answer) {
             //Summary: accepts an answer that the student provides, checks its validity,
             //         and returns a list of directives; 
-	    //         unitsAction() is similar to initialAction();
-	    //         id is the student node ID.
+            //         unitsAction() is similar to initialAction();
+            //         id is the student node ID.
 
             //The array that that will be returned
             var infoObject = Array();
@@ -741,8 +784,8 @@ define([
         },
         inputsAction: function(/*string*/ id, /*string*/ answer) {
             //Summary: accepts a description that the student provides, checks its 
-	    //         validity and returns a list of directives; id is the
-	    //         student node ID.
+            //         validity and returns a list of directives; id is the
+            //         student node ID.
 
             //The array that that will be returned
             var infoObject = Array();
@@ -933,14 +976,14 @@ define([
             return this._getReturnObject(id, infoObject, control);
         },
         /*
-	 equationCheck() is a basic implementation; it needs additional code to 
+         equationCheck() is a basic implementation; it needs additional code to 
          display different messages based on the type of user
-	 */
+         */
         equationAction: function(/*string*/ id, /*string*/ equation) {
             //Summary: accepts an equation that the student provides, checks its validity,
             //         and returns a list of directives; id is the student node ID.
-	    //         The equation is in the form of the string seen in the
-	    //         equation box.
+            //         The equation is in the form of the string seen in the
+            //         equation box.
 
             //The array that that will be returned
             var infoObject = Array();

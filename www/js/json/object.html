@@ -109,10 +109,13 @@
 	    *********** Using the Pedagogical Module ************
 	    */
 
-	    /*
+	    
             var ped = new pm("feedback", rabbits);
             var descInfo, typeInfo, unitsInfo, inputsInfo, equationInfo;
-	    
+            
+            ped.getPedagogicalTable(null, null, null);
+            
+	    /*
             //Set description
             console.log("Description: The ratio of number of rabbits born in a month to the rabbit population that month");
             descInfo = ped.descriptionAction("The ratio of number of rabbits born in a month to the rabbit population that month");
@@ -180,26 +183,15 @@ alert("DescriptionOn: " + obj.descriptionOn + "\nTypeOn: " + obj.typeOn + "\nIni
 	    */
 
             document.getElementById('result').innerHTML = JSON.stringify(rabbits.model, null, 4);
-                
+            
+            
                 
             });
         </script>
 
     </head>
     <body>
-        <h1>Object Store Demonstration</h1>
-
-        <!--hidden form to submit POST variables in JavaScript below-->
-        <form id="sampleForm" name="sampleForm" method="post" action="../../author-load-save.php">
-            <input type="hidden" name="action" id="action" value="">
-            <input type="hidden" name="id" id="id" value="">
-            <input type="hidden" name="section" id="section" value="">
-            <input type="hidden" name="problem" id="problem" value="">
-            <input type="hidden" name="saveData" id="saveData" value="">
-        </form>
-
-        <!-- load dojo and provide config via data attribute -->
-
+        <h1>JavaScript Model and Pedagogical Module Testing</h1>
 
      <div id="result">Result here</div>
 
