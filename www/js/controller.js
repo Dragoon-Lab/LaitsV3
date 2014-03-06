@@ -230,11 +230,11 @@ define([
             registry.byId(this.controlMap.equation).set('value','');
         }
 
+        //testing
+        if(mEquation!=undefined || equation != undefined){
         //get orignal equation back
-        console.log('=============================getting orignal equation back');
-
-        console.log(this.convertBackEquation(mEquation));
-
+        console.log('=============================getting orignal equation back'+this.convertBackEquation(mEquation));
+        }
 	    /*
 	     The PM sets enabled/disabled and color for the controls
 	     
