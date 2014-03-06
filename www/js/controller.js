@@ -34,7 +34,7 @@ define([
 	     initial: "initialValue",
 	     units: "selectUnits",
 	     inputs: "nodeInputs",
-	     equation: "equation"
+	     equation: "equationBox"
 	 },
         
 	_setUpNodeEditor: function(){
@@ -161,6 +161,30 @@ define([
             var nodeName = model.student.getName(nodeid) || "New quantity";
 	    editor.set('title', nodeName);
 
+	    /*
+	     First, erase any modifications to the control settings from
+	     previous uses of the node editor.  This could also be
+	     done on node editor close.
+	     */
+
+	    for(var control in this.controlMap){
+		var w = registry.byId(this.controlMap[control]);
+		w.set("disabled", false);  // enable everything
+		w.set("status", '');  // remove colors
+	    }
+
+	    /* 
+	     Settings for a new node, as suppied by the PM.
+	     These don't need to be recorded in the model, since they
+	     are applied each time the node editor is opened.
+	     */
+	    
+	    array.forEach(this._PM.newAction(), function(directive){
+		var w = registry.byId(this.controlMap[directive.id]);
+		w.set(directive.attribute, directive.value);
+	    }, this);
+		
+
 	    /* 
 	     Set values and choices based on student model
 	     
@@ -218,12 +242,7 @@ define([
 	     needs updating.
 	     */
 	    array.forEach(model.student.getStatusDirectives(nodeid), function(directive){
-		console.log("===== update from model ", directive);
 		var w = registry.byId(this.controlMap[directive.id]);
-		// I have checked that this works for disable/enable
-		// Still need to do other colors
-		// Still need to enable/disable equation together
-		// with inputs, and associated buttons.
 		w.set(directive.attribute, directive.value);
 	    }, this);
 	    

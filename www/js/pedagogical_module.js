@@ -135,12 +135,11 @@ define([
             //Summary: returns true if the supplied array contains the supplied variable or object
             //
             //Tags: private
-            for (var i = 0; i < theArray.length; i++)
-                if (theVariable == theArray[i])
-                    return true;
-            return false;
-        },
-        _getReturnObject: function(/*string*/ id, /*string*/ infoObject, /*string*/ control) {
+	    return array.some(theArray, function(x){
+		return theVariable === x;
+	    });
+	},
+        _getReturnObject: function(/*string*/ id, /*array*/ infoObject, /*string*/ control) {
             //Summary: activates/deactives the parts of the node based on what 
             //      part the user is at and the type (mode) of user (i.e. coached, feedback, etc.)
             //
@@ -163,9 +162,12 @@ define([
             if (this.model.given.getEquation(givenID))
                 neededControls.push("equation");
 
-            //If student should move on to the next part (i.e. status = correct or demo)
-            //      activate next part(s), otherwise mark current part as still active
-            //See documentation/major-modes.md for details.
+            /*
+	     If the student should move on to the next part (i.e. status = correct or demo),
+	     disable the current part (if mode is not TEST) and activate next part(s), depending
+	     on the mode.
+             See documentation/major-modes.md for details.
+	     */
             var activateRemaining = false;
             array.forEach(neededControls, function(neededControl) {
                 if (!control || control === neededControl) {
@@ -199,6 +201,16 @@ define([
                 this.userType = this.mode;
             }
         },
+	newAction: function() {
+	    //Summary:  Settings for the node editor for a new node
+	    //          It assumes everything has been enabled and has no colors
+	    // Policy: disable all but the description on new node
+	    // BvdS: might want to also activate type in TEST mode
+	    var controls = ["type", "initial", "units", "inputs", "equation"];
+	    return array.map(controls, function(control){
+		return {id: control, attribute: "disabled", value: true};
+	    });
+	},
         newDescriptionAction: function(/*string*/ id, /*string*/ choice) {
             //Summary: accepts an answer that the student provides, checks its validity,
             //         and returns a list of directives; id is the student node id.
