@@ -5,8 +5,8 @@
 define([
     "dojo/_base/array", 'dojo/_base/declare', "dojo/_base/lang", 
     'dojo/aspect', 'dojo/dom', 'dojo/on', "dojo/ready", 'dijit/registry',
-    "./pedagogical_module"
-], function(array, declare, lang, aspect, dom, on, ready, registry, PM) {
+    "./pedagogical_module","parser/parser"
+], function(array, declare, lang, aspect, dom, on, ready, registry, PM, parser) {
     
     return declare(null, {
 	
@@ -124,7 +124,20 @@ define([
 	handleNodeEditorButtonClicks: function(buttonId){
 		console.log('testing combo box select ', buttonId);
 	},
-
+    convertEquation: function(equation){
+        var cequation = equation; //copy original equation
+        var tokens = parser.parse(equation).tokens;
+        array.forEach(tokens,function(token){
+            console.log("===========token is "+token);
+            var nodeName=this._model.student.getName(token.index_);
+            console.log("====================node name is "+nodeName);
+            if(nodeName != undefined){
+                cequation=cequation.replace(token.index_,nodeName);
+            }
+        },this);
+        return cequation;
+    }
+    ,
 	//show node editor
        showNodeEditor: function(/*string*/ id){
            console.log("showNodeEditor called for node ", id);
@@ -173,6 +186,17 @@ define([
             registry.byId(this.controlMap.units).set('value', unit[nodeid] || '');
 
 	    console.log("======== units widget ", registry.byId('selectUnits'));
+
+            var equation = model.student.getEquation(nodeid);
+
+        if(equation != undefined){
+        console.log("equation before conversion "+equation);
+            var mEquation = this.convertEquation(equation);
+        console.log("equation after conversion "+mEquation);
+            registry.byId(this.controlMap.equation).set('value', mEquation || '');
+        }else{
+            //clear old equation
+        }
 	    
 
 	    /*
