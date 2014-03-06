@@ -17,3 +17,6 @@ html, body, #main{
 	margin: 0 0 0 0;
 	font: 10pt Arial,Myriad,Tahoma,Verdana,sans-serif !important;
 }
+.claro .dijitDialog {
+  background: #fff; /* override claro Dialog css */
+}
