@@ -155,9 +155,9 @@ define([
 	//show node editor
        showNodeEditor: function(/*string*/ id){
            console.log("showNodeEditor called for node ", id);
+       this.currentID = id; //moved using inside populateNodeEditorFields
 	   this.populateNodeEditorFields(id);
 	   this._nodeEditor.show();
-	   this.currentID = id;
 	},
 		
 	populateNodeEditorFields : function(nodeid){
