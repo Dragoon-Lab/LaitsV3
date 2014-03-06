@@ -123,17 +123,33 @@ define([
 	handleNodeEditorButtonClicks: function(buttonId){
 		console.log('testing combo box select ', buttonId);
 	},
-
+    convertBackEquation:function(mEquation){
+        console.log("Got mEquation   "+mEquation);
+        //get variables using map and currentID
+        var expr = this.mapVariableNodeNames[this.currentID];
+        array.forEach(expr.variables(),function(nodeName){
+            var variable = this.mapVariableNodeNames[nodeName];
+            expr.substitute(nodeName, variable);
+            console.log("            result: ", expr);
+        },this);
+        return expr.toString();
+    }
+    ,
 	convertEquation: function(equation){
             var expr = parser.parse(equation);
+        this.mapVariableNodeNames = {};
 		console.log("            parse: ", expr);
             array.forEach(expr.variables(), function(variable){
 		var nodeName = this._model.student.getName(variable);
 		console.log("=========== substituting ", variable, " -> ", nodeName);
+        //for getting original equation back
+        this.mapVariableNodeNames[nodeName]=variable;
 		expr.substitute(variable, nodeName);
 		console.log("            result: ", expr);
             },this);
-            return expr.toString();
+        //also push new expr to map against currentID
+        this.mapVariableNodeNames[this.currentID]=expr;
+        return expr.toString();
 	},
 
 	//show node editor
@@ -211,8 +227,13 @@ define([
             registry.byId(this.controlMap.equation).set('value', mEquation || '');
         }else{
             //clear old equation
+            registry.byId(this.controlMap.equation).set('value','');
         }
-	    
+
+        //get orignal equation back
+        console.log('=============================getting orignal equation back');
+
+        console.log(this.convertBackEquation(mEquation));
 
 	    /*
 	     The PM sets enabled/disabled and color for the controls
