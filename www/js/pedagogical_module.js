@@ -325,27 +325,27 @@ define([
         typeAction: function(/*string*/ id, /*string*/ answer) {
             var interpretation = this.getInterpretation("id2", "description", "The number of rabbits born each month");
             var table = this._getPedagogicalTable(id, "description", interpretation);
-            return table[interpretation][this.mode];
+            return table[interpretation][this.userType];
         },
         initialAction: function(/*string*/ id, /*string*/ answer) {
             var interpretation = this.getInterpretation("id2", "description", "The number of rabbits born each month");
             var table = this._getPedagogicalTable(id, "description", interpretation);
-            return table[interpretation][this.mode];
+            return table[interpretation][this.userType];
         },
         unitsAction: function(/*string*/ id, /*string*/ answer) {
             var interpretation = this.getInterpretation("id2", "description", "The number of rabbits born each month");
             var table = this._getPedagogicalTable(id, "description", interpretation);
-            return table[interpretation][this.mode];
+            return table[interpretation][this.userType];
         },
         inputsAction: function(/*string*/ id, /*string*/ answer) {
             var interpretation = this.getInterpretation("id2", "description", "The number of rabbits born each month");
             var table = this._getPedagogicalTable(id, "description", interpretation);
-            return table[interpretation][this.mode];
+            return table[interpretation][this.userType];
         },
         equationAction: function(/*string*/ id, /*string*/ answer) {
             var interpretation = this.getInterpretation("id2", "description", "The number of rabbits born each month");
             var table = this._getPedagogicalTable(id, "description", interpretation);
-            return table[interpretation][this.mode];
+            return table[interpretation][this.userType];
         }
     });
 });
