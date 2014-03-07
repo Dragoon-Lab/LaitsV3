@@ -1,3 +1,4 @@
+/* global define */
 
 define([
     "dojo/_base/array", "dojo/_base/declare", "./equation_check", "parser/parser"
@@ -286,6 +287,18 @@ define([
             }
             return interpretation;
         },
+
+	newAction: function() {
+            //Summary:  Settings for the node editor for a new node
+            //          It assumes everything has been enabled and has no colors
+            // Policy: disable all but the description on new node
+            // BvdS: might want to also activate type in TEST mode
+            var controls = ["type", "initial", "units", "inputs", "equation"];
+            return array.map(controls, function(control){
+		return {id: control, attribute: "disabled", value: true};
+            });
+	},
+
         /**
          * 
          * Currently all of the nodes are essentially copies of descriptionAction()

@@ -37,12 +37,16 @@ define([
 	    
 	    // get Node Editor widget from tree
 	    this._nodeEditor = registry.byId('nodeeditor');
-	    
+
+	    // Wire up this.closeEditor
+	    aspect.after(this._nodeEditor,"hide", 
+			 lang.hitch(this, this.closeEditor), true);
+
             // Initialize fields in the node editor that are
             // common to all nodes in a problem.
 	    
-	    // Add fields to Description box
-            // In author mode, the Description input must be a text box
+	    // Add fields to Description box and inputs box
+            // In author mode, the description control must be a text box
 	    var d = registry.byId(this.controlMap.description);
             // populate input field
             var t = registry.byId(this.controlMap.inputs);
@@ -82,6 +86,18 @@ define([
             array.forEach(this._model.getAllUnits(), function(unit){
 		u.addOption({label: unit, value: unit});
             });
+	},
+
+	// Function called when node editor is closed.
+	// This can be used as a hook for saving sessions.
+	closeEditor: function(){
+
+	    // Erase modifications to the control settingse.
+	    for(var control in this.controlMap){
+		var w = registry.byId(this.controlMap[control]);
+		w.set("disabled", false);  // enable everything
+		w.set("status", '');  // remove colors
+	    }
 	},
 
 	//set up event handling with UI components
@@ -168,18 +184,6 @@ define([
             var nodeName = model.student.getName(nodeid) || "New quantity";
 	    editor.set('title', nodeName);
 
-	    /*
-	     First, erase any modifications to the control settings from
-	     previous uses of the node editor.  This could also be
-	     done on node editor close.
-	     */
-
-	    for(var control in this.controlMap){
-		var w = registry.byId(this.controlMap[control]);
-		w.set("disabled", false);  // enable everything
-		w.set("status", '');  // remove colors
-	    }
-
 	    /* 
 	     Settings for a new node, as suppied by the PM.
 	     These don't need to be recorded in the model, since they
@@ -216,20 +220,12 @@ define([
             console.log('unit is ', unit[nodeid] || "not set");
             registry.byId(this.controlMap.units).set('value', unit[nodeid] || '');
 
-	    console.log("======== units widget ", registry.byId('selectUnits'));
-
             var equation = model.student.getEquation(nodeid);
-
-        if(equation != undefined){
-        console.log("equation before conversion "+equation);
-            var mEquation = this.convertEquation(equation);
-        console.log("equation after conversion "+mEquation);
-            registry.byId(this.controlMap.equation).set('value', mEquation || '');
-        }else{
-            //clear old equation
-            registry.byId(this.controlMap.equation).set('value','');
-        }
-
+            console.log("equation before conversion ", equation);
+            var mEquation = equation?this.convertEquation(equation):'';
+            console.log("equation after conversion ", mEquation);
+            registry.byId(this.controlMap.equation).set('value', mEquation);
+	    
         //testing
         if(mEquation!=undefined || equation != undefined){
         //get orignal equation back
