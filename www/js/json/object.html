@@ -23,7 +23,7 @@
         <script src="../../dojo/dojo.js"></script> 
 
         <script>
-            require(["dragoon/model", "dragoon/pedagogical_module", "dragoon/equation_check"], function(model, pm, equation) {
+            require(["dragoon/model", "dragoon/pedagogical_module", "dragoon/equation_check", "dragoon/sandbox"], function(model, pm, equation, sandbox) {
 
 
                 //The next three lines show loading a model from a JSON formated string
@@ -110,10 +110,17 @@
 	    */
 
 	    
-            var ped = new pm("feedback", rabbits);
+
             var descInfo, typeInfo, unitsInfo, inputsInfo, equationInfo;
             
-            ped.getPedagogicalTable(null, null, null);
+            var ped = new pm("COACHED", null, rabbits);
+            
+            descInfo = ped.descriptionAction("id4", "The number of rabbits born each month");
+            console.log(descInfo);
+            
+            descInfo = ped.typeAction("id4", "The number of rabbits born each month");
+            console.log(descInfo);
+            
             
 	    /*
             //Set description
