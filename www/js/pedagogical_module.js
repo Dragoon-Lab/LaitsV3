@@ -8,7 +8,8 @@ define([
         constructor: function(/*string*/ mode, /*string*/ subMode, /*model.js object*/ model) {
             this.model = model;
             this.mode = mode;
-            this.subMode = subMode;
+            //this.subMode = subMode;
+            this.setUserType(subMode);
             this.correctCounter = 0;
             this.notTopLevelCounter = 0;
             this.prematureCounter = 0;
@@ -185,7 +186,7 @@ define([
                 {id: nodePart, attribute: "disabled", value: true},
                 {id: nextPart, attribute: "disabled", value: false}
             ];
-            if (this.mode === "COACHED" || this.mode === "feedback")
+            if (this.userType === "COACHED" || this.userType === "feedback")
                 correctSequence.push({id: nodePart, attribute: "message", value: this._getMessage(nodePart, "correct")});
             
             // Builds part of table that addresses correct responses that are given early.
@@ -193,7 +194,7 @@ define([
                 {id: nodePart, attribute: "status", value: "premature"},
                 {id: nodePart, attribute: "disabled", value: false}
             ];
-            if (this.mode === "COACHED" || this.mode === "feedback")
+            if (this.userType === "COACHED" || this.userType === "feedback")
                 notTopLevelSequence.push({id: nodePart, attribute: "message", value: this._getMessage(nodePart, "notTopLevel")});
             
             // Builds part of table that addresses other premature responses.
@@ -201,7 +202,7 @@ define([
                 {id: nodePart, attribute: "status", value: "premature"},
                 {id: nodePart, attribute: "disabled", value: false}
             ];
-            if (this.mode === "COACHED" || this.mode === "feedback")
+            if (this.userType === "COACHED" || this.userType === "feedback")
                 prematureSequence.push({id: nodePart, attribute: "message", value: this._getMessage(nodePart, "premature")});
             
             // Builds part of table that addresses incorrect responses.
@@ -209,11 +210,11 @@ define([
                 {id: nodePart, attribute: "status", value: "incorrect"},
                 {id: nodePart, attribute: "disabled", value: false}
             ];
-            if (this.mode === "COACHED" || this.mode === "feedback") {
+            if (this.userType === "COACHED" || this.userType === "feedback") {
                 var status;
                 if (interpretation === "initial")
                     status = "initial";
-                else if (interpretation === "extra" && this.mode === "COACHED")
+                else if (interpretation === "extra" && this.userType === "COACHED")
                     status = "extra";
                 else if (interpretation === "redundant")
                     status = "redundant";
@@ -228,7 +229,7 @@ define([
                 {id: nodePart, attribute: "disabled", value: true},
                 {id: nextPart, attribute: "disabled", value: false}
             ];
-            if (this.mode === "COACHED" || this.mode === "feedback") {
+            if (this.userType === "COACHED" || this.userType === "feedback") {
                 lastFailureSequence.push({id: nodePart, attribute: "message", value: this._getMessage(nodePart, "lastFailure")});
             }
             
@@ -287,6 +288,15 @@ define([
             }
             return interpretation;
         },
+        setUserType: function(/*string*/ subMode) {
+            // Summary: Sets the user mode; used by the constructor, but also
+            //      allows the mode to be updated dynamically.
+            if (this.mode === "STUDENT") {
+                this.userType = subMode;
+            } else {
+                this.userType = this.mode;
+            }
+        },
 
 	newAction: function() {
             //Summary:  Settings for the node editor for a new node
@@ -309,7 +319,8 @@ define([
         descriptionAction: function(/*string*/ id, /*string*/ answer) {
             var interpretation = this.getInterpretation(id, "description", answer);
             var table = this._getPedagogicalTable(id, "description", interpretation);
-            return table[interpretation][this.mode];
+            console.log("in description:", interpretation, this.userType, table);
+            return table[interpretation][this.userType];
         },
         typeAction: function(/*string*/ id, /*string*/ answer) {
             var interpretation = this.getInterpretation("id2", "description", "The number of rabbits born each month");

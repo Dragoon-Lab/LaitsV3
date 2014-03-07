@@ -110,7 +110,7 @@ define([
 	    var plus = dom.byId("plus");
 	    var type = registry.byId("typeId");
 	    var desc = registry.byId("selectDescription");
-	    
+
 	    // attach callbacks to each field in node Editor.
 
 	    // BvdS:  I couldn't get this to work with "on"
@@ -119,12 +119,15 @@ define([
             //OR, following on works
             on(type,'Change',this.handleType);
 	    
-	    aspect.after(desc, 'onChange', lang.hitch(this,function(x){
-		console.log("Hi------------", x, this.currentID);
-	    }, true));
+	    //aspect.after(desc, 'onChange', lang.hitch(this,function(x){
+		//console.log("Hi------------", x, this.currentID);
+	    //}, true));
 	    on(done, 'click',  function(){
 		console.log("handler for done");
 	    });
+        //aspect.after(desc, 'onChange', this.handleDescription, true);
+        on(desc, 'Change', lang.hitch(this, this.handleDescription));
+        console.log("testing the description widget",desc);
             on(plus, 'click', function(){
 		console.log("handler for plus");
 	    });  
@@ -139,18 +142,32 @@ define([
 	handleNodeEditorButtonClicks: function(buttonId){
 		console.log('testing combo box select ', buttonId);
 	},
-    convertBackEquation:function(mEquation){
-        console.log("Got mEquation   "+mEquation);
-        //get variables using map and currentID
-        var expr = this.mapVariableNodeNames[this.currentID];
-        array.forEach(expr.variables(),function(nodeName){
-            var variable = this.mapVariableNodeNames[nodeName];
-            expr.substitute(nodeName, variable);
-            console.log("            result: ", expr);
-        },this);
-        return expr.toString();
-    }
-    ,
+
+    handleDescription: function(selectDescription){
+        console.log("testing ", selectDescription , this.currentID);
+        this._model.active.setDescriptionID(this.currentID, selectDescription);
+        var directives = this._PM.descriptionAction(this.currentID, selectDescription);
+        console.log(directives);
+       array.forEach(directives , function(desc){
+           var w = registry.byId(this.controlMap[desc.id]);
+           console.log("test",desc.attribute, desc.value );
+           w.set(desc.attribute, desc.value);
+
+        }, this);
+
+    },
+        convertBackEquation:function(mEquation){
+            console.log("Got mEquation   "+mEquation);
+            //get variables using map and currentID
+            var expr = this.mapVariableNodeNames[this.currentID];
+            array.forEach(expr.variables(),function(nodeName){
+                var variable = this.mapVariableNodeNames[nodeName];
+                expr.substitute(nodeName, variable);
+                console.log("            result: ", expr);
+            },this);
+            return expr.toString();
+        }
+        ,
 	convertEquation: function(equation){
             var expr = parser.parse(equation);
         this.mapVariableNodeNames = {};
@@ -227,7 +244,7 @@ define([
             registry.byId(this.controlMap.equation).set('value', mEquation);
 	    
         //testing
-        if(mEquation!=undefined || equation != undefined){
+        if(mEquation || equation){
         //get orignal equation back
         console.log('=============================getting orignal equation back'+this.convertBackEquation(mEquation));
         }
