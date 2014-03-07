@@ -23,8 +23,7 @@ define([
                         id:"arrow",
                         length:14,
                         foldback:0.8
-                    } ],
-                    [ "Label", { label:"FOO", id:"label", cssClass:"aLabel" }]
+                    } ]
                 ],
                 Container:"statemachine-demo"
             });
