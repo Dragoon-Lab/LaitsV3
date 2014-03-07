@@ -147,21 +147,7 @@ border:1px solid #2e6f9a;
     These should be removed once positions are gotten from the model.
 */
 
-#id4 {
-	left: 358px;
-	top: 158px;
-}
 
-#id5 {
-	left: 609px;
-	top: 177px;
-	width: 7em;
-}
-
-#id6 {
-	left: 840px;
-	top: 164px;
-}
 
 .dragHover { border:2px solid orange; }
 

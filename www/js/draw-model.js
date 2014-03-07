@@ -122,7 +122,8 @@ define([
 	     */
             console.log("Adding element to canvas, id = ", node.ID, ", class = ", type);
             // Add div to drawing
-            domConstruct.create("div", {id: node.ID, 'class': type}, "statemachine-demo");
+            console.log("--> setting position for vertex : "+ node.ID +" position: x"+node.position.x+"  y:"+node.position.y);
+            domConstruct.create("div", {id: node.ID, 'class': type, 'style':{ left: node.position.x +'px' , top: node.position.y +'px'}}, "statemachine-demo");
             // jsPlumb.addEndpoint(node.ID);
             var vertex = jsPlumb.getSelector(".statemachine-demo ." + type);
 	    
