@@ -13,9 +13,10 @@ define([
     "./controller",
     "parser/parser",
     "./draw-model",
-    "./calculations"
+    "./calculations",
+    "./logging"
 ],function(dom, geometry, on, aspect, ioQuery, ready, menu, loadSave, model, 
-	   Graph, Table, wrapText, controller, Parser, drawmodel, calculations
+	   Graph, Table, wrapText, controller, Parser, drawmodel, calculations, logging
 	  ){ 
 
     console.log("load main.js");
@@ -38,7 +39,8 @@ define([
 
 	var givenModel = new model(query.m);
 	givenModel.loadModel(solutionGraph);
-	
+	logging.setModel(givenModel);
+
 	/*
 	@author: Deepak
 	@brief: calling calculation class to get node values and passing parameters to rendergraph and rendertable
@@ -59,6 +61,7 @@ define([
 	     */
 	    var subMode = "feedback";
 	    var controllerObject  = new controller(query.m, subMode, givenModel);
+	    logging.setupController(controllerObject);
 	    
 	    /* add to menu */
 	    menu.add("createNodeButton", function(){

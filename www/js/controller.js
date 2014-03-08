@@ -17,7 +17,7 @@ define([
 	constructor: function(mode, subMode, model){
 	    this._model = model;
 	    this._PM = new PM(mode, subMode, model);
-	    	    
+	    
 	    // The Node Editor widget must be set up before modifications
             // It might be a better idea to only  call the controller
 	    // after widgets are set up.
@@ -91,6 +91,7 @@ define([
 	// Function called when node editor is closed.
 	// This can be used as a hook for saving sessions.
 	closeEditor: function(){
+	    console.log("----------------- in closeEditor");
 
 	    // Erase modifications to the control settingse.
 	    for(var control in this.controlMap){
@@ -140,7 +141,7 @@ define([
 	},
 
 	handleNodeEditorButtonClicks: function(buttonId){
-		console.log('testing combo box select ', buttonId);
+	    console.log('testing combo box select ', buttonId);
 	},
 
     handleDescription: function(selectDescription){
@@ -161,37 +162,37 @@ define([
             //get variables using map and currentID
             var expr = this.mapVariableNodeNames[this.currentID];
             array.forEach(expr.variables(),function(nodeName){
-                var variable = this.mapVariableNodeNames[nodeName];
-                expr.substitute(nodeName, variable);
-                console.log("            result: ", expr);
+		var variable = this.mapVariableNodeNames[nodeName];
+		expr.substitute(nodeName, variable);
+		console.log("            result: ", expr);
             },this);
             return expr.toString();
-        }
-        ,
+	},
+
 	convertEquation: function(equation){
             var expr = parser.parse(equation);
-        this.mapVariableNodeNames = {};
-		console.log("            parse: ", expr);
+            this.mapVariableNodeNames = {};
+	    console.log("            parse: ", expr);
             array.forEach(expr.variables(), function(variable){
 		var nodeName = this._model.student.getName(variable);
 		console.log("=========== substituting ", variable, " -> ", nodeName);
-        //for getting original equation back
-        this.mapVariableNodeNames[nodeName]=variable;
+		//for getting original equation back
+		this.mapVariableNodeNames[nodeName]=variable;
 		expr.substitute(variable, nodeName);
 		console.log("            result: ", expr);
             },this);
-        //also push new expr to map against currentID
-        this.mapVariableNodeNames[this.currentID]=expr;
-        return expr.toString();
+            //also push new expr to map against currentID
+            this.mapVariableNodeNames[this.currentID]=expr;
+            return expr.toString();
 	},
-
+	
 	//show node editor
        showNodeEditor: function(/*string*/ id){
            console.log("showNodeEditor called for node ", id);
-       this.currentID = id; //moved using inside populateNodeEditorFields
+	   this.currentID = id; //moved using inside populateNodeEditorFields
 	   this.populateNodeEditorFields(id);
 	   this._nodeEditor.show();
-	},
+       },
 		
 	populateNodeEditorFields : function(nodeid){
 	    //populate description
@@ -200,7 +201,7 @@ define([
 	    //set task name
             var nodeName = model.student.getName(nodeid) || "New quantity";
 	    editor.set('title', nodeName);
-
+	    
 	    /* 
 	     Settings for a new node, as suppied by the PM.
 	     These don't need to be recorded in the model, since they
@@ -236,7 +237,7 @@ define([
             var unit = model.student.getEachNodeUnitbyID(nodeid);
             console.log('unit is ', unit[nodeid] || "not set");
             registry.byId(this.controlMap.units).set('value', unit[nodeid] || '');
-
+	    
             var equation = model.student.getEquation(nodeid);
             console.log("equation before conversion ", equation);
             var mEquation = equation?this.convertEquation(equation):'';
