@@ -13,6 +13,11 @@ define([
 	_model: {},
         _PM: {},
 	_nodeEditor: null, // node-editor object- will be used for populating fields
+	/*
+	 When opening the node editor, we need to populate the controls without
+	 evaluating those changes.
+	 */
+	disableHandlers: false,
 	
 	constructor: function(mode, subMode, model){
 	    this._model = model;
@@ -79,8 +84,10 @@ define([
 		w._setStatusAttr = setStatus;
 	    }	    
 	    
-	    // Add fields to units box, using units in model node
-            // In author mode, this needs to be turned into a text box.
+	    /*
+	     Add fields to units box, using units in model node
+             In author mode, this needs to be turned into a text box.
+	     */
             var u = registry.byId("selectUnits");
             // console.log("units widget ", u);
             array.forEach(this._model.getAllUnits(), function(unit){
@@ -103,47 +110,41 @@ define([
 	initHandles:function(){
 	    // Summary: Set up Node Editor Handlers
 	  
-	    // BvdS:  do we want dom.byId or registry.byId here?
-	    // Look for examples in Dojo documentation
-	    var done = dom.byId("doneNodeEditor");
-	    var plus = dom.byId("plus");
-	    var type = registry.byId("typeId");
-	    var desc = registry.byId("selectDescription");
+	    /*
+	     Attach callbacks to each field in node Editor.
 
-	    // attach callbacks to each field in node Editor.
+	     The lang.hitch sets the scope to the current scope
+	     and then the handler is only called when disableHandlers
+	     is false.
 
-	    // BvdS:  I couldn't get this to work with "on"
-	    // may need to use dojo/hitch here?
-	    //aspect.after(type, 'onChange', this.handleType, true);
-            //OR, following on works
-            on(type,'Change',this.handleType);
+	     We could write a function to attach the handlers?
+	     */
+
+	    var desc = registry.byId(this.controlMap.description);
+            on(desc, 'Change',  lang.hitch(this, function(){
+		return this.disableHandlers || this.handleDescription.apply(this, arguments);
+	    }));
+
+	    var type = registry.byId(this.controlMap.type);
+            on(type, 'Change',  lang.hitch(this, function(){
+		return this.disableHandlers || this.handleType.apply(this, arguments);
+	    }));
 	    
-	    //aspect.after(desc, 'onChange', lang.hitch(this,function(x){
-		//console.log("Hi------------", x, this.currentID);
-	    //}, true));
+	    var done = dom.byId("doneNodeEditor");
 	    on(done, 'click',  function(){
-		console.log("handler for done");
+		console.log("*********** handler for done");
 	    });
-        //aspect.after(desc, 'onChange', this.handleDescription, true);
-        on(desc, 'Change', lang.hitch(this, this.handleDescription));
-        console.log("testing the description widget",desc);
+
+	    var plus = dom.byId("plus");
+            console.log("testing the description widget", desc);
             on(plus, 'click', function(){
-		console.log("handler for plus");
+		console.log("******** handler for plus");
 	    });  
 	},
 	    
-	handleType: function(type){
-	    console.log("Student has chosen type ", type, this);
-	    // Need to call PM, and handle reply from PM,
-	    // updating node editor and the model.
-	},
-
-	handleNodeEditorButtonClicks: function(buttonId){
-	    console.log('testing combo box select ', buttonId);
-	},
-
 	handleDescription: function(selectDescription){
-            console.log("testing ", selectDescription , this.currentID);
+            console.log("****** in handleDescription ", this.currentID, selectDescription);
+	    if(selectDescription == 'defaultSelect')return; // don't do anything if they choose default
             this._model.active.setDescriptionID(this.currentID, selectDescription);
             var directives = this._PM.descriptionAction(this.currentID, selectDescription);
 	    array.forEach(directives , function(desc){
@@ -151,8 +152,18 @@ define([
 		// also updated.
 		var w = registry.byId(this.controlMap[desc.id]);
 		w.set(desc.attribute, desc.value);
-            }, this);
-	    
+            }, this);	    
+	},
+
+	handleType: function(type){
+	    console.log("****** Student has chosen type ", type, this);
+	    if(type == 'defaultSelect')return; // don't do anything if they choose default
+	    // Need to call PM, and handle reply from PM,
+	    // updating node editor and the model.
+	},
+
+	handleNodeEditorButtonClicks: function(buttonId){
+	    console.log('****** combo box select ', buttonId);
 	},
 
         convertBackEquation:function(mEquation){
@@ -188,7 +199,9 @@ define([
        showNodeEditor: function(/*string*/ id){
            console.log("showNodeEditor called for node ", id);
 	   this.currentID = id; //moved using inside populateNodeEditorFields
+	   this.disableHandlers = true; console.log("------- disable handlers");
 	   this.populateNodeEditorFields(id);
+	   this.disableHandlers = false; console.log("------- enable handlers");
 	   this._nodeEditor.show();
        },
 		
@@ -222,19 +235,20 @@ define([
 
 	    // This sets the selected value in the description.
 	    var desc =  model.student.getDescriptionID(nodeid);
-	    registry.byId(this.controlMap.description).set('value', desc || '');
+            console.log('description is', desc || "not set");
+	    registry.byId(this.controlMap.description).set('value', desc || 'defaultSelect');
 
             var type = model.student.getType(nodeid);
-            console.log('node type is ', type || "not set");
-            registry.byId(this.controlMap.type).set('value', type || '');
+            console.log('node type is', type || "not set");
+            if(type)registry.byId(this.controlMap.type).set('value', type || 'defaultSelect');
 	    
             var initial = model.student.getInitial(nodeid);
-            console.log('initial value is ', initial || "not set");
-            registry.byId(this.controlMap.initial).attr('value', initial || "0.0");
+            console.log('initial value is', initial || "not set");
+            registry.byId(this.controlMap.initial).attr('value', initial || '');
 	    
             var unit = model.student.getEachNodeUnitbyID(nodeid);
-            console.log('unit is ', unit[nodeid] || "not set");
-            registry.byId(this.controlMap.units).set('value', unit[nodeid] || '');
+            console.log('unit is', unit[nodeid] || "not set");
+            registry.byId(this.controlMap.units).set('value', unit[nodeid] || 'defaultSelect');
 	    
             var equation = model.student.getEquation(nodeid);
             console.log("equation before conversion ", equation);
@@ -245,7 +259,7 @@ define([
         //testing
         if(mEquation || equation){
         //get orignal equation back
-        console.log('=============================getting orignal equation back'+this.convertBackEquation(mEquation));
+        console.log('=================== getting orignal equation back'+this.convertBackEquation(mEquation));
         }
 	    /*
 	     The PM sets enabled/disabled and color for the controls
