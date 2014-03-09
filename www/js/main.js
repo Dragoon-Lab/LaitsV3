@@ -15,12 +15,13 @@ define([
     "./draw-model",
     "./calculations",
     "./logging"
-],function(dom, geometry, on, aspect, ioQuery, ready, menu, loadSave, model, 
-	   Graph, Table, wrapText, controller, Parser, drawmodel, calculations, logging
-	  ){ 
-
+],function(
+    dom, geometry, on, aspect, ioQuery, ready, menu, loadSave, model, 
+    Graph, Table, wrapText, controller, Parser, drawmodel, calculations, logging
+){ 
+    
     console.log("load main.js");
-	    
+    
     // Get session parameters
     var query={};
     if(window.location.search){
@@ -33,13 +34,11 @@ define([
     
     // Start up new session and get model object from server
     var session = new loadSave(query);	   
+    logging.setSession(session);  // Give logger message destination
     session.loadProblem(query).then(function(solutionGraph){
-
-	console.info("Have solution: ", solutionGraph);
 
 	var givenModel = new model(query.m);
 	givenModel.loadModel(solutionGraph);
-	logging.setModel(givenModel);
 
 	/*
 	@author: Deepak
@@ -61,7 +60,6 @@ define([
 	     */
 	    var subMode = "feedback";
 	    var controllerObject  = new controller(query.m, subMode, givenModel);
-	    logging.setupController(controllerObject);
 	    
 	    /* add to menu */
 	    menu.add("createNodeButton", function(){
@@ -78,15 +76,24 @@ define([
 	    }, true);
 	    
 	    /* 
-	     After moving node, save coordinates to model 
+	     After moving node, save coordinates to model, and autosave
 	     */	     
 	    aspect.after(drawModel, "onClickMoved", function(mover){
 		var g = geometry.position(mover.node, true);  // take into account scrolling
 		console.log("Update model coordinates for ", mover.node.id, g);
 		console.warn("This should take into account scrolling, Bug #2300.");
 		givenModel.setStudentNodeXY(mover.node.id, g.x, g.y);
-		console.warn("Should autosave here.");
+		// It would be more efficient if we only saved the changed node.
+		session.saveProblem(givenModel.model);   // Autosave to server
 	    }, true);
+
+	    /*
+	     Autosave on close window
+	     It would be more efficient if we only saved the changed node.
+	     */
+	    aspect.after(controllerObject, 'closeEditor', function(){
+		session.saveProblem(givenModel.model);
+	    });
 	    
 	    /*
 	     It would make more sense to call initHandles for each node as it is created

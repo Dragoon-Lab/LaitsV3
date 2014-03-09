@@ -62,7 +62,7 @@ define([
                 query: params,
                 handleAs: "json"
             }).then(function(model_object) {  // this makes loadProblem blocking?
-		console.log("loadFromDB worked");
+		console.log("loadFromDB worked", model_object);
                 return model_object;
             }, function(err){
 	        console.error("loadFromDB error ", err);
@@ -80,7 +80,7 @@ define([
             }).then(function(reply){  // this makes saveProblem blocking?
 		console.log("saveProblem worked: ", reply);
 	    }, function(err){
-		console.error("saveProblem error ",err);
+		console.error("saveProblem error ", err);
 	    });
         },
 
@@ -90,18 +90,18 @@ define([
 	},
 
 	log: function(method, params){
+	    // Add time to log message (allowing override).
+	    var p = lang.mixin({time: this.getTime()}, params);
             xhr.post(this.path + "logger.php", {
 		data: {
 		    method: method,
-		    message: json.toJson(
-			// Add time to log message
-			lang.mixin({time: this.getTime()}, params)),
+		    message: json.toJson(p),
                     x: this.sessionId
                 }
             }).then(function(reply){
-		console.log("logging " + method + " worked: ", reply);
+		console.log("---------- logging " + method + ': ', p, " OK, reply: ", reply);
 	    }, function(err){
-		console.error("logging " + method + " error ",err);
+		console.error("---------- logging " + method + ': ', p, " error: ", err);
 	    });
 	}
     });

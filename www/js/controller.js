@@ -89,10 +89,8 @@ define([
 	},
 
 	// Function called when node editor is closed.
-	// This can be used as a hook for saving sessions.
+	// This can be used as a hook for saving sessions and logging
 	closeEditor: function(){
-	    console.log("----------------- in closeEditor");
-
 	    // Erase modifications to the control settingse.
 	    for(var control in this.controlMap){
 		var w = registry.byId(this.controlMap[control]);
@@ -144,19 +142,19 @@ define([
 	    console.log('testing combo box select ', buttonId);
 	},
 
-    handleDescription: function(selectDescription){
-        console.log("testing ", selectDescription , this.currentID);
-        this._model.active.setDescriptionID(this.currentID, selectDescription);
-        var directives = this._PM.descriptionAction(this.currentID, selectDescription);
-        console.log(directives);
-       array.forEach(directives , function(desc){
-           var w = registry.byId(this.controlMap[desc.id]);
-           console.log("test",desc.attribute, desc.value );
-           w.set(desc.attribute, desc.value);
+	handleDescription: function(selectDescription){
+            console.log("testing ", selectDescription , this.currentID);
+            this._model.active.setDescriptionID(this.currentID, selectDescription);
+            var directives = this._PM.descriptionAction(this.currentID, selectDescription);
+	    array.forEach(directives , function(desc){
+		// Some directives require that the model is
+		// also updated.
+		var w = registry.byId(this.controlMap[desc.id]);
+		w.set(desc.attribute, desc.value);
+            }, this);
+	    
+	},
 
-        }, this);
-
-    },
         convertBackEquation:function(mEquation){
             console.log("Got mEquation   "+mEquation);
             //get variables using map and currentID

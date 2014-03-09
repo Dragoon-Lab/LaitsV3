@@ -11,7 +11,7 @@ define([
             // If I use registry.byId(), then the function is called twice.
 	    var o = dom.byId(button);
 	    if(o){
-		console.log("wiring up ",button,", widget=",o);
+		console.log("wiring up ", button, ", widget=",o);
 		/*
 		 This is a work-around for getting a button to work 
 		 inside a MenuBar.
@@ -20,7 +20,7 @@ define([
 		registry.byId(button)._setSelected = function(arg){
 		    console.log("_setSelected called with ", arg);
 		};
-		on(o,"click",handler);
+		on(o, 'click', handler);
 	    } else {
 		console.warn("Can't find menu item ", o);
 	    }
