@@ -6,6 +6,7 @@ define([
     'dojo/aspect',
     "dojo/io-query",
     "dojo/ready",
+    'dijit/registry',
     "./menu",
     "./load-save",
     "./model",
@@ -14,10 +15,12 @@ define([
     "parser/parser",
     "./draw-model",
     "./calculations",
-    "./logging"
+    "./logging",
+    './author'
 ],function(
-    dom, geometry, on, aspect, ioQuery, ready, menu, loadSave, model, 
-    Graph, Table, wrapText, controller, Parser, drawmodel, calculations, logging
+    dom, geometry, on, aspect, ioQuery, ready, registry, 
+    menu, loadSave, model, 
+    Graph, Table, wrapText, controller, Parser, drawmodel, calculations, logging, author
 ){ 
     
     console.log("load main.js");
@@ -62,12 +65,19 @@ define([
 	    var controllerObject  = new controller(query.m, subMode, givenModel);
 	    controllerObject._PM.setLogging(session);  // Set up direct logging in PM
 	    
-	    /* add to menu */
+	    /* add "Create Node" button to menu */
 	    menu.add("createNodeButton", function(){
-		var id = givenModel.student.addNode();
-		drawModel.addNode(givenModel.student.getNode(id));
+		var id = givenModel.active.addNode();
+		drawModel.addNode(givenModel.active.getNode(id));
 		controllerObject.showNodeEditor(id);
 	    });
+
+	    /* 
+	     Set up author-mode stuff
+	     */
+	    registry.byId("authorMenu").set("disabled", query.m != 'AUTHOR');
+	    if(query.m == 'AUTHOR')
+		author.setup(menu, givenModel);
 	    
 	    /*
 	     Connect node editor to "click with no move" events.
