@@ -5,6 +5,7 @@ define([
 ], function(array, declare, check, Parser) {
 
     return declare(null, {
+
         constructor: function(/*string*/ mode, /*string*/ subMode, /*model.js object*/ model) {
             this.model = model;
             this.mode = mode;
@@ -20,6 +21,9 @@ define([
             this.lastFailureCounter = 0;
             this.oneAttemptFailureCounter = 0;
         },
+
+	logging: null, // Pointer to optional logging facility
+
         hints: {
             //Summary: Messages that are given to the user based on the type of user, 
             //      his or her answers, and the number of hints of that type.
@@ -252,6 +256,7 @@ define([
             //      incorrect, etc. and sets the status in the return object
             //
             // Tags: Private
+	    console.warn("BvdS:  I'm pretty sure that id is handled incorrectly here");
             var interpretation = null;
             if (nodePart === "description") {
                 id = this.model.getNodeIDByDescription(answer);
@@ -286,6 +291,13 @@ define([
                 interpretation = "lastFailure";
                 this.lastFailureCounter++;
             }
+	    /* 
+	     This is an example of logging via direct function calls
+	     Note that I haven't set correct-value.  For most controls, it should be set
+	     */
+	    if(this.logging){
+		this.logging.log('solution-step', {node: id, type: nodePart, value: answer, checkResult: interpretation});
+	    }
             return interpretation;
         },
         setUserType: function(/*string*/ subMode) {
@@ -297,6 +309,10 @@ define([
                 this.userType = this.mode;
             }
         },
+	
+	setLogging: function(/*string*/ logging){
+	    this.logging = logging;
+	},
 
 	newAction: function() {
             //Summary:  Settings for the node editor for a new node

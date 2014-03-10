@@ -60,6 +60,7 @@ define([
 	     */
 	    var subMode = "feedback";
 	    var controllerObject  = new controller(query.m, subMode, givenModel);
+	    controllerObject._PM.setLogging(session);  // Set up direct logging in PM
 	    
 	    /* add to menu */
 	    menu.add("createNodeButton", function(){
