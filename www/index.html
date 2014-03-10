@@ -105,6 +105,13 @@
              <div data-dojo-type="dijit/form/Button" id="graphButton">Graph</div>
              <div data-dojo-type="dijit/form/Button" id="tableButton">Table</div>
              <div data-dojo-type="dijit/form/Button" id="forumButton">Forum</div>
+	     <div data-dojo-type="dijit/PopupMenuBarItem" id="authorMenu">
+                 <span>Author</span>
+		 <div data-dojo-type="dijit/Menu" id="authorMenuList">
+		    <div id="authorExtraNode" data-dojo-type="dijit/MenuItem">Extra Node</div>
+		    <div id="authorDescription" data-dojo-type="dijit/MenuItem">Description</div>                 		    <div id="authorTimes" data-dojo-type="dijit/MenuItem">Times</div>                    
+		 </div>
+             </div>
 	     <div data-dojo-type="dijit/PopupMenuBarItem">
                  <span>Help</span>
 		 <div data-dojo-type="dijit/Menu" id="menuHelp">
@@ -112,7 +119,8 @@
 		    <div id="menuIntroVideo" data-dojo-type="dijit/MenuItem">Intro Video</div>                     
 		 </div>
              </div>
-             <div data-dojo-type="dijit/form/Button" id="doneButton" style="position:absolute; top:0; right:10px; margin:0;">Done</div>
+
+	     <div data-dojo-type="dijit/form/Button" id="doneButton" style="position:absolute; top:0; right:10px; margin:0;">Done</div>
 	</div> <!-- Menubar -->
         <div id="drawingPane" data-dojo-type="dijit/layout/ContentPane" region="center" >
 		
