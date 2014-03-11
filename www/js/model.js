@@ -298,6 +298,10 @@ define([
                     if (description === this.model.task.givenModelNodes[i].description)
                         return this.model.task.givenModelNodes[i].ID;
                 }
+                for(var i = 0; i < this.model.task.extraDescriptions.length; i++){
+                    if(description === this.model.task.extraDescriptions[i].text)
+                        return this.model.task.extraDescriptions[i].ID;
+                }
                 return null; // returns null if the node cannot be found
             },
             isParentNode: function(/*string*/ id) {
