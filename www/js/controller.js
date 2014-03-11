@@ -164,10 +164,9 @@ define([
 
         this._model.active.setType(this.currentID, type);
         var directives = this._PM.typeAction(this.currentID, type);
-        console.log("=====Hi! show me your id======", this.currentID, type);
         array.forEach(directives, function(type){
             var w = registry.byId(this.controlMap[type.id]);
-            console.log("========Hey this is widget!!======", w);
+
             w.set(type.attribute, type.value );
         }, this);
 
