@@ -46,7 +46,7 @@ define([
             // Private variables
             _ID: 1,
             // Public variables
-            beginX: 100,
+            beginX: 400,
             beginY: 100,
             nodeWidth: 200,
             nodeHeight: 200,
