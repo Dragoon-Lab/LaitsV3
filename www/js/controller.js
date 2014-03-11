@@ -143,6 +143,24 @@ define([
 		console.log("******** handler for plus");
 	    });  
 	},
+
+
+	// Need to save state of the node editor in the status section
+	// of the student model.  See documentation/json-format.md
+	updateModelStatus: function(desc){
+	    if(this.validStatus[desc.attribute]){
+		var opt = {};
+		opt[desc.attribute] = desc.value;
+		this._model.student.setStatus(this.currentID, desc.id, opt);
+	    } else {
+		// There are some directives that should update
+		// the student model node (but not the status section).
+		console.warn("======= not saving in status, node=" + this.currentID + ": ", desc);
+	    }
+	},
+
+	// attributes that should be saved in the status section
+	validStatus: {status: true, disabled: true}, 
 	    
 	handleDescription: function(selectDescription){
             console.log("****** in handleDescription ", this.currentID, selectDescription);
@@ -150,8 +168,7 @@ define([
             this._model.active.setDescriptionID(this.currentID, selectDescription);
             var directives = this._PM.descriptionAction(this.currentID, selectDescription);
 	    array.forEach(directives , function(desc){
-		// Some directives require that the model is
-		// also updated.
+		this.updateModelStatus(desc);
 		var w = registry.byId(this.controlMap[desc.id]);
 		w.set(desc.attribute, desc.value);
             }, this);	    
@@ -228,12 +245,10 @@ define([
            console.log("showNodeEditor called for node ", id);
 	   this.currentID = id; //moved using inside populateNodeEditorFields
 	   this.disableHandlers = true; 
-	   console.info("------- disable handlers");
 	   this.populateNodeEditorFields(id);
 	   this._nodeEditor.show().then(
 	       lang.hitch(this, function(){
 		   this.disableHandlers = false; 
-		   console.info("------- enable handlers");
 	       })
 	   );
        },
@@ -306,6 +321,7 @@ define([
 	     Note that if equation is disabled then 
 	     input, +, -, *, /, undo, and done should also be disabled.
 	     */
+	    console.log("model: ", this._model.model.task);
 
 	    /*
 	     We will need a similar handler for each call 

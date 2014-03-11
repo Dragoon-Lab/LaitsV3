@@ -905,7 +905,8 @@ define([
 		//Summary: Update status for a particular control.
 		//         options may have attributes "status" and "disabled".
 		var attributes = this.getNode(id).status[control];
-		lang.mixin(attributes, options);
+		// When undefined, status[control] needs to be set explicitly.
+		this.getNode(id).status[control] = lang.mixin(attributes, options);
 		return attributes;
 	    }
         }, both);
