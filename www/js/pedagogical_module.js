@@ -51,7 +51,7 @@ define([
             "Green means correct.  Good job!",
             "Green means correct."
         ],
-        incorrect:[
+        incorrect: [
             "Your answer is incorrect. Please try again.",
             "Your answer is incorrect."
         ],
@@ -65,7 +65,7 @@ define([
             "Can you figure out why this is the right type for the node?"
         ]
     };
-    
+
     var descriptionTable = {
             optimal: {
                 COACHED: function(obj,part){state(obj, part, "correct"); message(obj,part, "correct"); disable(obj, part, true); disable(obj, "type", false);}, 
@@ -141,22 +141,22 @@ define([
                 TEST: function(obj,part){disable(obj, "enableRemaining", false);}, 
                 power: function(obj,part){disable(obj, "enableRemaining", false);}
             }};
-    
+
     var counter = {correct: 0, notTopLevel: 0, premature: 0, initial: 0, extra: 0, irrelevant: 0, redundant: 0, lastFailure: 0, lastFailure2: 0};
     
-    function state(/*object*/ obj, /*string*/ nodePart, /*string*/ status){
+    function state(/*object*/ obj, /*string*/ nodePart, /*string*/ status) {
         obj.push({id: nodePart, attribute: "status", value: status});
     }
-    
-    function message(/*object*/ obj, /*string*/ nodePart, /*string*/ status){
+
+    function message(/*object*/ obj, /*string*/ nodePart, /*string*/ status) {
         obj.push({id: nodePart, attribute: "message", value: _getMessage(nodePart, status)});
     }
-    
-    function disable(/*object*/ obj, /*string*/ nodePart, /*boolean*/ disable){
-            obj.push({id: nodePart, attribute: "disabled", value: disable});
+
+    function disable(/*object*/ obj, /*string*/ nodePart, /*boolean*/ disable) {
+        obj.push({id: nodePart, attribute: "disabled", value: disable});
     }
-    
-    
+
+
     function _getMessage(/*string*/ nodePart, /*string*/ status) {
         // Summary: Returns the appropriate message from the hints object (above).
         //
@@ -172,7 +172,7 @@ define([
             return messages[theCounter];
         }
     }
-    
+
 
     /**
      * 
@@ -182,14 +182,14 @@ define([
 
 
     return declare(null, {
-
         constructor: function(/*string*/ mode, /*string*/ subMode, /*model.js object*/ model) {
             this.model = model;
             this.mode = mode;
-            this.setUserType(subMode);
+            this.setUserType(subMode);           
         },
         matchingID: null,
         logging: null,
+        descriptionCounter: 0,
         _getNextPart: function(/*string*/ givenNodeID, /*string*/ currentPart) {
             // Summary: Determines the next portion of the node to be completed 
             //      when the user gets a correct answer.
@@ -238,7 +238,6 @@ define([
             }
             return nextPart;
         },
-
         _getInterpretation: function(/*string*/ id, /*string*/ nodePart, /*string | object*/ answer) {
             // Summary: Returns the interpretation of a given answer (correct, 
             //      incorrect, etc. and sets the status in the return object
@@ -251,8 +250,8 @@ define([
 
             switch (nodePart) {
                 case "description":
+                    this.descriptionCounter++;
                     newID = answer;
-                    this.matchingID = newID;
 
                     if (this.model.student.isInExtras(newID)) {
                         array.forEach(this.model.getExtraDescriptions(), function(extra) {
@@ -268,20 +267,26 @@ define([
                         interpretation = "redundant";
                     } else if (this.model.isParentNode(newID) || this.model.isNodesParentVisible(newID)) {
                         interpretation = "optimal";
+                        this.descriptionCounter = 0;
                     } else if (this.model.student.getNodes().length === 0) {
                         interpretation = "notTopLevel";
+                        if(this.userType !== "COACHED")
+                            this.descriptionCounter = 0;
                     } else {
                         interpretation = "premature";
+                        if(this.userType !== "COACHED")
+                            this.descriptionCounter = 0;
                     }
-                    if (interpretation !== "optimal" && this.model.getNodeAttemptCount(newID, "description") === 2) {
+                    if (interpretation !== "optimal" && this.descriptionCounter > 2) {
                         interpretation = "lastFailure";
+                        this.descriptionCounter = 0;
                     }
                     break;
                 case "type":
                     if (answer === this.model.given.getType(id)) {
                         interpretation = "correct";
                     } else {
-                        if (this.model.getNodeAttemptCount(newID, "type") === 1)
+                        if (this.model.getNodeAttemptCount(newID, "type") > 1)
                             interpretation = "lastFailure2";
                         else
                             interpretation = "incorrect";
@@ -290,12 +295,12 @@ define([
                 case "initial":
                     if (answer === this.model.given.getInitial(id)) {
                         interpretation = "correct";
-                    } else if(this.model.given.getInitial(id) === ""){
+                    } else if (this.model.given.getInitial(id) === "") {
                         interpretation = "correct";
                     } else {
-                        if (this.model.getNodeAttemptCount(newID, "initial") === 2)
+                        if (this.model.getNodeAttemptCount(newID, "initial") > 2)
                             interpretation = "lastFailure2";
-                        else if (this.model.getNodeAttemptCount(newID, "initial") === 1)
+                        else if (this.model.getNodeAttemptCount(newID, "initial") > 1)
                             interpretation = "secondFailure";
                         else
                             interpretation = "firstFailure";
@@ -305,9 +310,9 @@ define([
                     if (answer === this.model.given.getUnits(id)) {
                         interpretation = "correct";
                     } else {
-                        if (this.model.getNodeAttemptCount(newID, "units") === 2)
+                        if (this.model.getNodeAttemptCount(newID, "units") > 2)
                             interpretation = "lastFailure2";
-                        else if (this.model.getNodeAttemptCount(newID, "units") === 1)
+                        else if (this.model.getNodeAttemptCount(newID, "units") > 1)
                             interpretation = "secondFailure";
                         else
                             interpretation = "firstFailure";
@@ -316,25 +321,25 @@ define([
                 case "equation":
                     var equivCheck = new check(this.model.given.getEquation(id), answer);
 
-                    if (equivCheck.areEquivalent()){
+                    if (equivCheck.areEquivalent()) {
                         interpretation = "correct";
                     } else {
-                        if (this.model.getNodeAttemptCount(newID, "equation") === 2)
+                        if (this.model.getNodeAttemptCount(newID, "equation") > 2)
                             interpretation = "lastFailure2";
-                        else if (this.model.getNodeAttemptCount(newID, "equation") === 1)
+                        else if (this.model.getNodeAttemptCount(newID, "equation") > 1)
                             interpretation = "secondFailure";
                         else
                             interpretation = "firstFailure";
                     }
                     break;
             }
-	    /* 
-	     This is an example of logging via direct function calls
-	     Note that I haven't set correct-value.  For most controls, it should be set
-	     */
-	    if(this.logging){
-		this.logging.log('solution-step', {node: id, type: nodePart, value: answer, checkResult: interpretation});
-	    }
+            /* 
+             This is an example of logging via direct function calls
+             Note that I haven't set correct-value.  For most controls, it should be set
+             */
+            if (this.logging) {
+                this.logging.log('solution-step', {node: id, type: nodePart, value: answer, checkResult: interpretation});
+            }
             return interpretation;
         },
         setUserType: function(/*string*/ subMode) {
@@ -345,24 +350,25 @@ define([
             } else {
                 this.userType = this.mode;
             }
-         },
-        setLogging: function(/*string*/ logging){
+        },
+        setLogging: function(/*string*/ logging) {
             this.logging = logging;
         },
         newAction: function() {
-             //Summary:  Settings for the node editor for a new node
-             //          It assumes everything has been enabled and has no colors
-             // Policy: disable all but the description on new node
-             // BvdS: might want to also activate type in TEST mode
-             var controls = ["type", "initial", "units", "inputs", "equation"];
-             return array.map(controls, function(control){
+            // Summary:  Settings for the node editor for a new node
+            //          It assumes everything has been enabled and has no colors
+            // Policy: disable all but the description on new node
+            // BvdS: might want to also activate type in TEST mode
+            var controls = ["type", "initial", "units", "inputs", "equation"];
+            return array.map(controls, function(control) {
                 return {id: control, attribute: "disabled", value: true};
-             });
+            });
         },
         descriptionAction: function(/*string*/ id, /*string*/ answer) {
-            var interpretation = this._getInterpretation(id, "description", answer);           
+            // Summary: Accepts a student's answer and returns an object to the 
+            //      controller with the result and what parts of the node are available.
+            var interpretation = this._getInterpretation(id, "description", answer);
             var returnObj = [];
-            alert(interpretation);
             descriptionTable[interpretation][this.userType](returnObj, "description");
             return returnObj;
         },
@@ -371,9 +377,9 @@ define([
             var interpretation = this._getInterpretation(newID, "type", answer);
             var returnObj = [];
             typeTable[interpretation][this.userType](returnObj, "type");
-            for(var i = 0; i<returnObj.length; i++){
-                if(returnObj[i].id === "enableNext")
-                    returnObj[i].id = this._getNextPart(newID,"type");
+            for (var i = 0; i < returnObj.length; i++) {
+                if (returnObj[i].id === "enableNext")
+                    returnObj[i].id = this._getNextPart(newID, "type");
             }
             return returnObj;
         },
@@ -382,9 +388,9 @@ define([
             var interpretation = this._getInterpretation(newID, "initial", answer);
             var returnObj = [];
             typeTable[interpretation][this.userType](returnObj, "initial");
-            for(var i = 0; i<returnObj.length; i++){
-                if(returnObj[i].id === "enableNext")
-                    returnObj[i].id = this._getNextPart(newID,"initial");
+            for (var i = 0; i < returnObj.length; i++) {
+                if (returnObj[i].id === "enableNext")
+                    returnObj[i].id = this._getNextPart(newID, "initial");
             }
             return returnObj;
         },
@@ -393,9 +399,9 @@ define([
             var interpretation = this._getInterpretation(newID, "units", answer);
             var returnObj = [];
             typeTable[interpretation][this.userType](returnObj, "units");
-            for(var i = 0; i<returnObj.length; i++){
-                if(returnObj[i].id === "enableNext")
-                    returnObj[i].id = this._getNextPart(newID,"units");
+            for (var i = 0; i < returnObj.length; i++) {
+                if (returnObj[i].id === "enableNext")
+                    returnObj[i].id = this._getNextPart(newID, "units");
             }
             return returnObj;
         },
@@ -404,9 +410,9 @@ define([
             var interpretation = this._getInterpretation(newID, "inputs", answer);
             var returnObj = [];
             typeTable[interpretation][this.userType](returnObj, "inputs");
-            for(var i = 0; i<returnObj.length; i++){
-                if(returnObj[i].id === "enableNext")
-                    returnObj[i].id = this._getNextPart(newID,"inputs");
+            for (var i = 0; i < returnObj.length; i++) {
+                if (returnObj[i].id === "enableNext")
+                    returnObj[i].id = this._getNextPart(newID, "inputs");
             }
             return returnObj;
         },
@@ -415,9 +421,9 @@ define([
             var interpretation = this._getInterpretation(newID, "equation", answer);
             var returnObj = [];
             typeTable[interpretation][this.userType](returnObj, "equation");
-            for(var i = 0; i<returnObj.length; i++){
-                if(returnObj[i].id === "enableNext")
-                    returnObj[i].id = this._getNextPart(newID,"equation");
+            for (var i = 0; i < returnObj.length; i++) {
+                if (returnObj[i].id === "enableNext")
+                    returnObj[i].id = this._getNextPart(newID, "equation");
             }
             return returnObj;
         }

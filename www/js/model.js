@@ -151,23 +151,24 @@ define([
                 //      Sets id for next node.
                 this.model = model;
 
-		/*
-		 We use ids of the form "id"+integer.  This loops through
-		 all the nodes in the model and finds the lowest integer such
-		 that there is no name conflict.  We simply ignore any ids that
-		 are not of the form "id"+integer.
-		 */ 
+                /*
+                 We use ids of the form "id"+integer.  This loops through
+                 all the nodes in the model and finds the lowest integer such
+                 that there is no name conflict.  We simply ignore any ids that
+                 are not of the form "id"+integer.
+                 */
                 var largest = 0;
-		var intID = function(/*object*/ node){
-		    if(node.ID.length >= 2 && node.ID.slice(0,2) == "id"){
-			var n = parseInt(node.ID.slice(2));
-			if(n && n>largest) largest=n;
-		    }
-		};
-		array.forEach(this.given.getNodes(), intID);
-		array.forEach(this.student.getNodes(), intID);
-		array.forEach(this.getExtraDescriptions(), intID);
-                this._ID = largest+1;
+                var intID = function(/*object*/ node) {
+                    if (node.ID.length >= 2 && node.ID.slice(0, 2) == "id") {
+                        var n = parseInt(node.ID.slice(2));
+                        if (n && n > largest)
+                            largest = n;
+                    }
+                };
+                array.forEach(this.given.getNodes(), intID);
+                array.forEach(this.student.getNodes(), intID);
+                array.forEach(this.getExtraDescriptions(), intID);
+                this._ID = largest + 1;
             },
             getModelAsString: function() {
                 // Summary: Returns a JSON object in string format
@@ -178,6 +179,12 @@ define([
              * GETTERS; retrieves specific attributes from a model; node attributes are usually
              * by accessed by the node's ID--if the ID is not known use getNodeIDByName("name");
              */
+            getBeginX: function() {
+                return this.beginX;
+            },
+            getBeginY: function() {
+                return this.beginY;
+            },
             getPhase: function() {
                 return this.model.task.properties.phase;
             },
@@ -298,8 +305,8 @@ define([
                     if (description === this.model.task.givenModelNodes[i].description)
                         return this.model.task.givenModelNodes[i].ID;
                 }
-                for(var i = 0; i < this.model.task.extraDescriptions.length; i++){
-                    if(description === this.model.task.extraDescriptions[i].text)
+                for (var i = 0; i < this.model.task.extraDescriptions.length; i++) {
+                    if (description === this.model.task.extraDescriptions[i].text)
                         return this.model.task.extraDescriptions[i].ID;
                 }
                 return null; // returns null if the node cannot be found
@@ -323,8 +330,8 @@ define([
             },
             isNodeVisible: function(/*string*/ studentID, /*string*/ givenID) {
                 // Summary: returns true if the node is in the student model
-                return array.some(this.student.getNodes(), function(node){
-                    return node.ID !== studentID && node.descriptionID===givenID;
+                return array.some(this.student.getNodes(), function(node) {
+                    return node.ID !== studentID && node.descriptionID === givenID;
                 });
             },
             isNodesParentVisible: function(/*string*/ id) {
@@ -497,6 +504,12 @@ define([
             /**
              * SETTERS
              */
+            setBeginX: function(/*int*/ x) {
+                this.beginX = x;
+            },
+            setBeginY: function(/*int*/ y) {
+                this.beginY = y;
+            },
             setTaskName: function(/*string*/ name) {
                 this.model.task.taskName = name;
             },
@@ -580,14 +593,14 @@ define([
                 //      required to complete the model) or "extra" (meaning the 
                 //      description is not mentioned in the problem and is not 
                 //      needed to solve the problem)
-		console.assert(options.name, "addExtraDescription should contain name");
-		console.assert(options.text, "addExtraDescription should contain text");
-		console.assert(options.type, "addExtraDescription should contain type");
-		var node = lang.mixin({
-		    ID: "id" + obj._ID++
-		}, options);
+                console.assert(options.name, "addExtraDescription should contain name");
+                console.assert(options.text, "addExtraDescription should contain text");
+                console.assert(options.type, "addExtraDescription should contain type");
+                var node = lang.mixin({
+                    ID: "id" + obj._ID++
+                }, options);
                 this.model.task.extraDescriptions.push(node);
-		return node.ID;
+                return node.ID;
             },
             deleteStudentNode: function(/*string*/ id) {
                 // Summary: deletes a node with a given id from the student model; removes
@@ -707,13 +720,13 @@ define([
             isInput: function(/*string*/ mainNodeID, /*string*/ inputID) {
                 // Summary: returns true if the node identified by inputID is an 
                 //      input into the mainNodeID 
-		var main = this.getNode(mainNodeID);
-		return main && array.some(main.inputs, function(input){
-		    return array.some(input, function(link){
-			return link.ID == inputID;
-		    });
-		});
-	    },
+                var main = this.getNode(mainNodeID);
+                return main && array.some(main.inputs, function(input) {
+                    return array.some(input, function(link) {
+                        return link.ID == inputID;
+                    });
+                });
+            },
             getNode: function(/*string*/ id) {
                 var ret = null;
                 array.some(this.getNodes(), function(node) {
@@ -724,23 +737,24 @@ define([
                 console.assert(ret, "No matching node for '" + id + "'");
                 return ret;
             },
-	    getType: function(/*string*/ id){
-		var node = this.getNode(id);
-		return node && node.type;
-	    },
+            getType: function(/*string*/ id) {
+                var node = this.getNode(id);
+                return node && node.type;
+            },
             getUnits: function(/*string*/ id) {
                 return this.getNode(id).units;
             },
             getInputs: function(/*string*/ id) {
-		// Summary: return an array containing the input ids for a node.
+                // Summary: return an array containing the input ids for a node.
                 var ret = this.getNode(id);
-		return ret && array.map(ret.inputs,function(input){
-		    return input.ID;
-		});
+                return ret && array.map(ret.inputs, function(input) {
+                    return input.ID;
+                });
             },
             setType: function(/*string*/ id, /*string*/ type) {
                 var ret = this.getNode(id);
-                if(ret) ret.type = type;
+                if (ret)
+                    ret.type = type;
             },
             addInput: function(/*string*/ input, /*string*/ inputInto) {
                 // Summary: adds a node (input) as an input into the given node (inputInto); both params are node ID strings
@@ -766,9 +780,9 @@ define([
         obj.given = lang.mixin({
             addNode: function(options) {
                 // Summary: builds a new node and returns the node's unique id
-		//          Can optionally add initial values to node.
+                //          Can optionally add initial values to node.
                 var newNode = lang.mixin({
-		    "ID": "id" + obj._ID++,
+                    "ID": "id" + obj._ID++,
                     "inputs": [],
                     "attemptCount": {
                         "description": 0,
@@ -791,10 +805,10 @@ define([
                 var node = this.getNode(id);
                 return node && node.name;
             },
-	    getEquation: function(/*string*/ id){
-		var node = this.getNode(id);
-		return node && node.equation;
-	    },
+            getEquation: function(/*string*/ id) {
+                var node = this.getNode(id);
+                return node && node.equation;
+            },
             getInitial: function(/*string*/ id) {
                 return this.getNode(id).initial;
             },
@@ -828,8 +842,8 @@ define([
         obj.student = lang.mixin({
             addNode: function(options) {
                 // Summary: builds a new node in the student model and 
-		//          returns the node's ID.  Can optionally set 
-		//          properties.
+                //          returns the node's ID.  Can optionally set 
+                //          properties.
                 obj._updateNextXYPosition();
                 var newNode = lang.mixin({
                     ID: "id" + obj._ID++,
@@ -840,12 +854,12 @@ define([
                 obj.model.task.studentModelNodes.push(newNode);
                 return newNode.ID;
             },
-	    isInExtras: function(/*string*/ id){
-		// Summary: returns true if node description is in extras
-                return array.some(obj.getExtraDescriptions(), function(description){
-		    return id == description.ID;
-		});
-	    },
+            isInExtras: function(/*string*/ id) {
+                // Summary: returns true if node description is in extras
+                return array.some(obj.getExtraDescriptions(), function(description) {
+                    return id == description.ID;
+                });
+            },
             getDescriptionID: function(id) {
                 // Return any matched given model id for student node.
                 var node = this.getNode(id);
@@ -866,31 +880,31 @@ define([
             getNodes: function() {
                 return obj.model.task.studentModelNodes;
             },
-	    getEquation: function(/*string*/ id){
-		var node = this.getNode(id);
-		return node && node.equation;
-	    },
-	    getInitial: function(/*string*/ id){
-		var node = this.getNode(id);
-		return node && node.initial;
-	    },
+            getEquation: function(/*string*/ id) {
+                var node = this.getNode(id);
+                return node && node.equation;
+            },
+            getInitial: function(/*string*/ id) {
+                var node = this.getNode(id);
+                return node && node.initial;
+            },
             getEachNodeUnitbyID: lang.hitch(obj, obj.getEachStudentNodeUnitbyID),
-	    getStatusDirectives: function(/*string*/ id){
-		//Summary:  Return a list of directives (like PM does).
-		//          to set up node editor.
-		var status = this.getNode(id).status;
-		var directives = [];
-		for (var control in status){
-		    for(var attribute in status[control]){
-			directives.push({
-			    id: control, 
-			    attribute: attribute, 
-			    value: status[control][attribute]
-			});
-		    }
-		} 
-		return directives;
-	    },
+            getStatusDirectives: function(/*string*/ id) {
+                //Summary:  Return a list of directives (like PM does).
+                //          to set up node editor.
+                var status = this.getNode(id).status;
+                var directives = [];
+                for (var control in status) {
+                    for (var attribute in status[control]) {
+                        directives.push({
+                            id: control,
+                            attribute: attribute,
+                            value: status[control][attribute]
+                        });
+                    }
+                }
+                return directives;
+            },
             setDescriptionID: function(/*string*/ id, /*string*/ descriptionID) {
                 this.getNode(id).descriptionID = descriptionID;
             },
@@ -903,14 +917,14 @@ define([
             setEquation: function(/*string*/ id, /*string | object*/ equation) {
                 this.getNode(id).equation = equation;
             },
-	    setStatus: function(/*string*/ id, /*string*/ control, /*object*/ options) {
-		//Summary: Update status for a particular control.
-		//         options may have attributes "status" and "disabled".
-		var attributes = this.getNode(id).status[control];
-		// When undefined, status[control] needs to be set explicitly.
-		this.getNode(id).status[control] = lang.mixin(attributes, options);
-		return attributes;
-	    }
+            setStatus: function(/*string*/ id, /*string*/ control, /*object*/ options) {
+                //Summary: Update status for a particular control.
+                //         options may have attributes "status" and "disabled".
+                var attributes = this.getNode(id).status[control];
+                // When undefined, status[control] needs to be set explicitly.
+                this.getNode(id).status[control] = lang.mixin(attributes, options);
+                return attributes;
+            }
         }, both);
 
         // Execute the constructor
