@@ -37,6 +37,10 @@ define([
             "Green means correct.  Good job!",
             "Green means correct."
         ],
+        incorrect:[
+            "Your answer is incorrect. Please try again.",
+            "Your answer is incorrect."
+        ],
         lastFailure: [
             "Sorry, but that quantity isn’t relevant to the model.  Moreover, this is the third failure, so a correct selection is being done for you.  Please study it and figure out why it is correct.  Your goal should be to make a correct selection on the first attempt.",
             "Here’s a correct solution.  Please figure out why it is correct so that next time, your first selection will be correct.",
@@ -47,8 +51,105 @@ define([
             "Can you figure out why this is the right type for the node?"
         ]
     };
+    
+    var descriptionTable = {
+            optimal: {
+                COACHED: function(obj,part){state(obj, part, "correct"); message(obj,part, "correct"); disable(obj, part, true); disable(obj, "type", false);}, 
+                feedback: function(obj,part){state(obj, part, "correct"); message(obj,part, "correct"); disable(obj, part, true); disable(obj, "type", false);},
+                TEST: function(obj,part){state(obj, part, "correct"); disable(obj, part, true); disable(obj, "type", false);}, 
+                power: function(obj,part){state(obj, part, "correct"); disable(obj, part, true); disable(obj, "type", false);}
+            },
+            notTopLevel: {
+                COACHED: function(obj,part){state(obj, part, "notTopLevel"); message(obj,part, "premature");}, 
+                feedback: function(obj,part){state(obj, part, "correct"); message(obj,part, "correct"); disable(obj, part, true); disable(obj, "type", false);},
+                TEST: function(obj,part){state(obj, part, "correct"); disable(obj, part, true); disable(obj, "type", false);}, 
+                power: function(obj,part){state(obj, part, "correct"); disable(obj, part, true); disable(obj, "type", false);}
+            },
+            premature: {
+                COACHED: function(obj,part){state(obj, part, "premature"); message(obj,part, "premature");}, 
+                feedback: function(obj,part){state(obj, part, "correct"); message(obj,part, "correct"); disable(obj, part, true); disable(obj, "type", false);},
+                TEST: function(obj,part){state(obj, part, "correct"); disable(obj, part, true);disable(obj, "type", false);}, 
+                power: function(obj,part){state(obj, part, "correct"); disable(obj, part, true);disable(obj, "type", false);}
+            },
+            initialValue: {
+                COACHED: function(obj,part){state(obj, part, "incorrect"); message(obj,part, "initial");}, 
+                feedback: function(obj,part){state(obj, part, "incorrect"); message(obj,part, "initial");}, 
+                TEST: function(obj,part){state(obj, part, "incorrect");}, 
+                power: function(obj,part){state(obj, part, "incorrect");}
+            },
+            extraValue: {
+                COACHED: function(obj,part){state(obj, part, "incorrect"); message(obj,part, "extra");}, 
+                feedback: function(obj,part){state(obj, part, "incorrect"); message(obj,part, "irrelevant");}, 
+                TEST: function(obj,part){state(obj, part, "incorrect");}, 
+                power: function(obj,part){state(obj, part, "incorrect");}
+            },
+            irrelevant: {
+                COACHED: function(obj,part){state(obj, part, "incorrect"); message(obj,part, "irrelevant");}, 
+                feedback: function(obj,part){state(obj, part, "incorrect"); message(obj,part, "irrelevant");}, 
+                TEST: function(obj,part){state(obj, part, "incorrect");}, 
+                power: function(obj,part){state(obj, part, "incorrect");}
+            },
+            redundant: {
+                COACHED: function(obj,part){state(obj, part, "incorrect"); message(obj,part, "redundant");}, 
+                feedback: function(obj,part){state(obj, part, "incorrect"); message(obj,part, "redundant");}, 
+                TEST: function(obj,part){state(obj, part, "incorrect"); message(obj,part, "redundant");}, 
+                power: function(obj,part){state(obj, part, "incorrect"); message(obj,part, "redundant");}
+            },
+            lastFailure: {
+                COACHED: function(obj,part){state(obj, part, "demo"); message(obj,part, "lastFailure2");disable(obj, part, true); disable(obj, "type", false);}, 
+                feedback: function(obj,part){state(obj, part, "demo"); message(obj,part, "lastFailure2");disable(obj, part, true); disable(obj, "type", false);},
+                TEST: function(obj,part){state(obj, part, "demo"); disable(obj, part, true);disable(obj, "type", false);}, 
+                power: function(obj,part){state(obj, part, "demo"); disable(obj, part, true);disable(obj, "type", false);}
+            }};
+        
+    var typeTable = {
+            correct: {
+                COACHED: function(obj,part){state(obj, part, "correct"); message(obj,part, "correct"); disable(obj, part, true); disable(obj, "enableNext", false);}, 
+                feedback: function(obj,part){state(obj, part, "correct"); message(obj,part, "correct"); disable(obj, part, true); disable(obj, "enableNext", false);}, 
+                TEST: function(obj,part){disable(obj, "enableRemaining", false);}, 
+                power: function(obj,part){disable(obj, "enableRemaining", false);}
+            },
+            firstFailure: {
+                COACHED: function(obj,part){state(obj, part, "incorrect"); message(obj,part, "incorrect");}, 
+                feedback: function(obj,part){state(obj, part, "incorrect"); message(obj,part, "incorrect");},
+                TEST: function(obj,part){disable(obj, "enableRemaining", false);}, 
+                power: function(obj,part){disable(obj, "enableRemaining", false);}
+            },
+            secondFailure: {
+                COACHED: function(obj,part){state(obj, part, "demo"); message(obj,part, "correct"); disable(obj, part, true); disable(obj, "enableNext", false);}, 
+                feedback: function(obj,part){state(obj, part, "correct"); message(obj,part, "correct"); disable(obj, part, true); disable(obj, "enableNext", false);}, 
+                TEST: function(obj,part){disable(obj, "enableRemaining", false);}, 
+                power: function(obj,part){disable(obj, "enableRemaining", false);}
+            },
+            anotherFailure: {
+                COACHED: function(){console.error("Attempting to access typeTable after demo has been sent.");}, 
+                feedback: function(){console.error("Attempting to access typeTable after demo has been sent.");}, 
+                TEST: function(obj,part){disable(obj, "enableRemaining", false);}, 
+                power: function(obj,part){disable(obj, "enableRemaining", false);}
+            }};
+    
+    var inputsTable = descriptionTable;   
+        
+    for(var key in descriptionTable){
+        inputsTable[key].TEST = function(obj,part){disable(obj, "positiveButton", false); disable(obj, "negativeButton", false);};
+        inputsTable[key].power = inputsTable[key].TEST;
+    }
+          
     var counter = {correct: 0, notTopLevel: 0, premature: 0, initial: 0, extra: 0, irrelevant: 0, redundant: 0, lastFailure: 0, lastFailure2: 0};
-
+    
+    function state(/*object*/ obj, /*string*/ nodePart, /*string*/ status){
+        obj.push({id: nodePart, attribute: "status", value: status});
+    }
+    
+    function message(/*object*/ obj, /*string*/ nodePart, /*string*/ status){
+        obj.push({id: nodePart, attribute: "message", value: _getMessage(nodePart, status)});
+    }
+    
+    function disable(/*object*/ obj, /*string*/ nodePart, /*boolean*/ disable){
+            obj.push({id: nodePart, attribute: "disabled", value: disable});
+    }
+    
+    
     function _getMessage(/*string*/ nodePart, /*string*/ status) {
         // Summary: Returns the appropriate message from the hints object (above).
         //
@@ -64,83 +165,7 @@ define([
             return messages[theCounter];
         }
     }
-    function _getPedagogicalTable(/*string*/ id, /*string*/ nodePart, /*string*/ mode, /*string*/ interpretation) {
-        // Summary: Builds and returns the pedagogical table
-        // 
-        // Tags: Private
-        //
-        // Note: This function is under construction--it will likely be arranged differently
-
-        //var nextPart = _getNextPart(id, nodePart);
-
-        // Builds part of table that addresses correct responses.
-        var correctSequence = [
-            {id: nodePart, attribute: "status", value: "correct"},
-            {id: nodePart, attribute: "disabled", value: true},
-            //{id: nextPart, attribute: "disabled", value: false}
-        ];
-        if (mode === "COACHED" || mode === "feedback")
-            correctSequence.push({id: nodePart, attribute: "message", value: _getMessage(nodePart, "correct")});
-
-        // Builds part of table that addresses correct responses that are given early.
-        var notTopLevelSequence = [
-            {id: nodePart, attribute: "status", value: "premature"},
-            {id: nodePart, attribute: "disabled", value: false}
-        ];
-        if (mode === "COACHED" || mode === "feedback")
-            notTopLevelSequence.push({id: nodePart, attribute: "message", value: _getMessage(nodePart, "notTopLevel")});
-
-        // Builds part of table that addresses other premature responses.
-        var prematureSequence = [
-            {id: nodePart, attribute: "status", value: "premature"},
-            {id: nodePart, attribute: "disabled", value: false}
-        ];
-        if (mode === "COACHED" || mode === "feedback")
-            prematureSequence.push({id: nodePart, attribute: "message", value: _getMessage(nodePart, "premature")});
-
-        // Builds part of table that addresses incorrect responses.
-        var incorrectSequence = [
-            {id: nodePart, attribute: "status", value: "incorrect"},
-            {id: nodePart, attribute: "disabled", value: false}
-        ];
-        if (mode === "COACHED" || mode === "feedback") {
-            var status;
-            if (interpretation === "initial")
-                status = "initial";
-            else if (interpretation === "extra" && mode === "COACHED")
-                status = "extra";
-            else if (interpretation === "redundant")
-                status = "redundant";
-            else
-                status = "irrelevant";
-            incorrectSequence.push({id: nodePart, attribute: "message", value: _getMessage(nodePart, status)});
-        }
-
-        // Builds part of table that addresses demo responses.
-        var lastFailureSequence = [
-            {id: nodePart, attribute: "status", value: "demo"},
-            {id: nodePart, attribute: "disabled", value: true},
-            //{id: nextPart, attribute: "disabled", value: false}
-        ];
-        if (mode === "COACHED" || mode === "feedback") {
-            lastFailureSequence.push({id: nodePart, attribute: "message", value: _getMessage(nodePart, "lastFailure")});
-        }
-
-        // Put table together.
-        var table = {
-            correct: {COACHED: correctSequence, feedback: correctSequence, TEST: correctSequence, power: correctSequence},
-            optimal: {COACHED: correctSequence, feedback: correctSequence, TEST: correctSequence, power: correctSequence},
-            notTopLevel: {COACHED: notTopLevelSequence, feedback: correctSequence, TEST: correctSequence, power: correctSequence},
-            premature: {COACHED: prematureSequence, feedback: correctSequence, TEST: correctSequence, power: correctSequence},
-            incorrect: {COACHED: incorrectSequence, feedback: incorrectSequence, TEST: incorrectSequence, power: incorrectSequence},
-            initialValue: {COACHED: incorrectSequence, feedback: incorrectSequence, TEST: incorrectSequence, power: incorrectSequence},
-            extraValue: {COACHED: incorrectSequence, feedback: incorrectSequence, TEST: incorrectSequence, power: incorrectSequence},
-            irrelevant: {COACHED: incorrectSequence, feedback: incorrectSequence, TEST: incorrectSequence, power: incorrectSequence},
-            redundant: {COACHED: incorrectSequence, feedback: incorrectSequence, TEST: incorrectSequence, power: incorrectSequence},
-            lastFailure: {COACHED: lastFailureSequence, feedback: lastFailureSequence, TEST: lastFailureSequence, power: lastFailureSequence}
-        };
-
-        return table;
+    
 
     /**
      * 
@@ -226,7 +251,6 @@ define([
                         nextPart = "inputs";
                     else
                         nextPart = "equation";
-                    alert(nextPart);
                     break;
                 case "initial":
                     if (this.model.given.getUnits(givenNodeID) !== null)
@@ -269,11 +293,14 @@ define([
          * 
          **/
         descriptionAction: function(/*string*/ id, /*string*/ answer) {
-            var interpretation = this._getInterpretation(id, "description", answer);
-            var table = _getPedagogicalTable(id, "description", this.mode, interpretation);
-            var returnObj = table[interpretation][this.mode];
-            if (interpretation === "optimal") {
-                returnObj.push({id: this._getNextPart(null, "description"), attribute: "disabled", value: false});
+            
+            console.log(inputsTable);
+            var interpretation = this._getInterpretation(id, "description", answer);           
+            var returnObj = [];
+            descriptionTable[interpretation][this.mode](returnObj, "description");
+            for(var i = 0; i<returnObj.length; i++){
+                if(returnObj[i].id === "enableNext")
+                    returnObj[i].id = this._getNextPart(null,"description");
             }
             returnObj.push({id: "description", attribute: "descriptionID", value: this.matchingID});
             return returnObj;
@@ -281,32 +308,57 @@ define([
         typeAction: function(/*string*/ id, /*string*/ answer) {
             var newID = this.model.student.getDescriptionID(id);
             var interpretation = this._getInterpretation(newID, "type", answer);
-            var table = _getPedagogicalTable(newID, "type", this.mode, interpretation);
-            var returnObj = table[interpretation][this.mode];
-            if (interpretation === "correct") {
-                returnObj.push({id: this._getNextPart(newID, "type"), attribute: "disabled", value: false});
+            var returnObj = [];
+            typeTable[interpretation][this.mode](returnObj, "type");
+            for(var i = 0; i<returnObj.length; i++){
+                if(returnObj[i].id === "enableNext")
+                    returnObj[i].id = this._getNextPart(newID,"type");
             }
             return returnObj;
         },
         initialAction: function(/*string*/ id, /*string*/ answer) {
-            var interpretation = this._getInterpretation("id2", "description", "The number of rabbits born each month");
-            var table = this._getPedagogicalTable(id, "description", interpretation);
-            return table[interpretation][this.mode];
+            var newID = this.model.student.getDescriptionID(id);
+            var interpretation = this._getInterpretation(newID, "type", answer);
+            var returnObj = [];
+            typeTable[interpretation][this.mode](returnObj, "type");
+            for(var i = 0; i<returnObj.length; i++){
+                if(returnObj[i].id === "enableNext")
+                    returnObj[i].id = this._getNextPart(newID,"initial");
+            }
+            return returnObj;
         },
         unitsAction: function(/*string*/ id, /*string*/ answer) {
-            var interpretation = this._getInterpretation("id2", "description", "The number of rabbits born each month");
-            var table = this._getPedagogicalTable(id, "description", interpretation);
-            return table[interpretation][this.mode];
+            var newID = this.model.student.getDescriptionID(id);
+            var interpretation = this._getInterpretation(newID, "type", answer);
+            var returnObj = [];
+            typeTable[interpretation][this.mode](returnObj, "type");
+            for(var i = 0; i<returnObj.length; i++){
+                if(returnObj[i].id === "enableNext")
+                    returnObj[i].id = this._getNextPart(newID,"units");
+            }
+            return returnObj;
         },
         inputsAction: function(/*string*/ id, /*string*/ answer) {
-            var interpretation = this._getInterpretation("id2", "description", "The number of rabbits born each month");
-            var table = this._getPedagogicalTable(id, "description", interpretation);
-            return table[interpretation][this.mode];
+            var newID = this.model.student.getDescriptionID(id);
+            var interpretation = this._getInterpretation(newID, "type", answer);
+            var returnObj = [];
+            typeTable[interpretation][this.mode](returnObj, "type");
+            for(var i = 0; i<returnObj.length; i++){
+                if(returnObj[i].id === "enableNext")
+                    returnObj[i].id = this._getNextPart(newID,"inputs");
+            }
+            return returnObj;
         },
         equationAction: function(/*string*/ id, /*string*/ answer) {
-            var interpretation = this._getInterpretation("id2", "description", "The number of rabbits born each month");
-            var table = this._getPedagogicalTable(id, "description", interpretation);
-            return table[interpretation][this.mode];
+            var newID = this.model.student.getDescriptionID(id);
+            var interpretation = this._getInterpretation(newID, "type", answer);
+            var returnObj = [];
+            typeTable[interpretation][this.mode](returnObj, "type");
+            for(var i = 0; i<returnObj.length; i++){
+                if(returnObj[i].id === "enableNext")
+                    returnObj[i].id = this._getNextPart(newID,"equation");
+            }
+            return returnObj;
         }
     });
 });
