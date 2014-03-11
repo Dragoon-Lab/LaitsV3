@@ -5,8 +5,8 @@
 define([
     "dojo/_base/array", 'dojo/_base/declare', "dojo/_base/lang", 
     'dojo/aspect', 'dojo/dom', 'dojo/on', "dojo/ready", 'dijit/registry',
-    "./pedagogical_module","parser/parser","dojo/dom-class"
-], function(array, declare, lang, aspect, dom, on, ready, registry, PM, parser,domClass) {
+    "./pedagogical_module","parser/parser","dojo/dom-class","dojo/dom-construct"
+], function(array, declare, lang, aspect, dom, on, ready, registry, PM, parser,domClass,domConstruct) {
     
     return declare(null, {
 	
@@ -183,6 +183,7 @@ define([
         console.log("===========>   changing node class to "+type);
         domClass.replace(this.currentID,type);
 
+        this.showMessageNodeEditor("testing ...");
 
         // updating node editor and the model.
 
@@ -206,7 +207,15 @@ define([
             w.set(unit.attribute, unit.value);
         }, this);
     },
+    showMessageNodeEditor:function(message){
+        //can color green or red
 
+        var messageRed = '<div style="background:#ff6d66">'+message+'</div>';
+        var messageGreen = '<div style="background:#d9ff83">'+message+'</div>';
+
+        dojo.byId("messageBox").innerHTML=dojo.byId("messageBox").innerHTML+messageRed+'<br/>';
+        dojo.byId("messageBox").innerHTML=dojo.byId("messageBox").innerHTML+messageGreen+'<br/>';
+    },
 	handleNodeEditorButtonClicks: function(buttonId){
 	    console.log('****** combo box select ', buttonId);
 	},
