@@ -75,6 +75,8 @@ define([
 		    incorrect: "#FF8080",
 		    demo: "yellow"
 		};
+		if(value)
+		    console.assert(colorMap[value], "Invalid color specification "+value);
 		// BvdS:  I chose bgColor because it was easy to do
 		// Might instead/also change text color?  
 		this.domNode.bgColor = value?colorMap[value]:'';
@@ -136,7 +138,7 @@ define([
 	    });
 
 	    var plus = dom.byId("plus");
-            console.log("testing the description widget", desc);
+            console.log("testing the plus widget", desc);
             on(plus, 'click', function(){
 		console.log("******** handler for plus");
 	    });  
@@ -146,7 +148,6 @@ define([
             console.log("****** in handleDescription ", this.currentID, selectDescription);
 	    if(selectDescription == 'defaultSelect')return; // don't do anything if they choose default
             this._model.active.setDescriptionID(this.currentID, selectDescription);
-        console.log("****** in handleDescription ", this.currentID, selectDescription);
             var directives = this._PM.descriptionAction(this.currentID, selectDescription);
 	    array.forEach(directives , function(desc){
 		// Some directives require that the model is
@@ -226,10 +227,15 @@ define([
        showNodeEditor: function(/*string*/ id){
            console.log("showNodeEditor called for node ", id);
 	   this.currentID = id; //moved using inside populateNodeEditorFields
-	   this.disableHandlers = true; console.log("------- disable handlers");
+	   this.disableHandlers = true; 
+	   console.info("------- disable handlers");
 	   this.populateNodeEditorFields(id);
-	   this.disableHandlers = false; console.log("------- enable handlers");
-	   this._nodeEditor.show();
+	   this._nodeEditor.show().then(
+	       lang.hitch(this, function(){
+		   this.disableHandlers = false; 
+		   console.info("------- enable handlers");
+	       })
+	   );
        },
 		
 	populateNodeEditorFields : function(nodeid){
