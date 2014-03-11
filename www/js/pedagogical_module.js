@@ -251,16 +251,16 @@ define([
 
             switch (nodePart) {
                 case "description":
-                    newID = this.model.getNodeIDByDescription(answer);
+                    newID = answer;
                     this.matchingID = newID;
 
                     if (this.model.student.isInExtras(newID)) {
                         array.forEach(this.model.getExtraDescriptions(), function(extra) {
-                            if (answer === extra.text && extra.type === "initial") {
+                            if (answer === extra.ID && extra.type === "initial") {
                                 interpretation = "initialValue";
-                            } else if (answer === extra.text && extra.type === "extra") {
+                            } else if (answer === extra.ID && extra.type === "extra") {
                                 interpretation = "extraValue";
-                            } else if (answer === extra.text && extra.type === "model") {
+                            } else if (answer === extra.ID && extra.type === "model") {
                                 interpretation = "irrelevant";
                             }
                         });
@@ -362,12 +362,8 @@ define([
         descriptionAction: function(/*string*/ id, /*string*/ answer) {
             var interpretation = this._getInterpretation(id, "description", answer);           
             var returnObj = [];
+            alert(interpretation);
             descriptionTable[interpretation][this.userType](returnObj, "description");
-            for(var i = 0; i<returnObj.length; i++){
-                if(returnObj[i].id === "enableNext")
-                    returnObj[i].id = this._getNextPart(null,"description");
-            }
-            returnObj.push({id: "description", attribute: "descriptionID", value: this.matchingID});
             return returnObj;
         },
         typeAction: function(/*string*/ id, /*string*/ answer) {

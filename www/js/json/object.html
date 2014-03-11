@@ -108,11 +108,13 @@
 
 
                 rabbits.addExtraDescription({
+                    ID: "id7",
                     name: "extras",
                     text: "The number of rabbits in the population during the second month",
                     type: "model"
                 });
                 rabbits.addExtraDescription({
+                    ID: "id8",
                     name: "super ratio",
                     text: "The ratio of rabbits born with superpowers to ordinary rabbits",
                     type: "extra"
@@ -128,7 +130,7 @@
 
                 var ped = new pm("COACHED", null, rabbits);
 
-                descInfo = ped.descriptionAction("myid5", "The number of rabbits born each month");
+                descInfo = ped.descriptionAction("myid5", "id7");
                 console.log(descInfo);
 
                 descInfo = ped.typeAction("myid5", "function");
