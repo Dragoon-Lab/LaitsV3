@@ -146,6 +146,7 @@ define([
             console.log("****** in handleDescription ", this.currentID, selectDescription);
 	    if(selectDescription == 'defaultSelect')return; // don't do anything if they choose default
             this._model.active.setDescriptionID(this.currentID, selectDescription);
+        console.log("****** in handleDescription ", this.currentID, selectDescription);
             var directives = this._PM.descriptionAction(this.currentID, selectDescription);
 	    array.forEach(directives , function(desc){
 		// Some directives require that the model is
@@ -160,7 +161,28 @@ define([
 	    if(type == 'defaultSelect')return; // don't do anything if they choose default
 	    // Need to call PM, and handle reply from PM,
 	    // updating node editor and the model.
+
+        this._model.active.setType(this.currentID, type);
+        var directives = this._PM.typeAction(this.currentID, type);
+        console.log("=====Hi! show me your id======", this.currentID, type);
+        array.forEach(directives, function(type){
+            var w = registry.byId(this.controlMap[type.id]);
+            console.log("========Hey this is widget!!======", w);
+            w.set(type.attribute, type.value );
+        }, this);
+
 	},
+
+    handleUnits: function(unit){
+      console.log("*******Student has chosen unit", unit, this);
+        this._model.active.setUnits(this.currentID, unit);
+
+        var directives = this._PM.unitsAction(this.currentID, unit);
+        array.forEach(directives, function(unit){
+            var w = registry.byId(this.controlMap[type.id]);
+            w.set(unit.attribute, unit.value);
+        }, this);
+    },
 
 	handleNodeEditorButtonClicks: function(buttonId){
 	    console.log('****** combo box select ', buttonId);
@@ -258,7 +280,7 @@ define([
 	    
         //testing
         if(mEquation || equation){
-        //get orignal equation back
+        //get original equation back
         console.log('=================== getting orignal equation back'+this.convertBackEquation(mEquation));
         }
 	    /*
