@@ -22,7 +22,7 @@
                 "units": "rabbits",
                 "inputs": [ { "ID" : "id2" } ],
                 "initial": 100,
-                "equation": "id2",
+                "equation": "id1+id2",
                 "description": "The number of rabbits in the population",
                 "attemptCount": {
                     "description": 2,
@@ -116,7 +116,7 @@
                 "initial": 100,
                 "units": "rabbits",
                 "inputs": [ { "ID": "id5" } ],
-                "equation": "id5",
+                "equation": "id4+id5",
                 "position": {
                     "x": 100,
                     "y": 100
