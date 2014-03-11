@@ -29,9 +29,15 @@ define(["dojo/_base/declare", "parser/parser"]
             //      positive
             //
             //Tags: private
-            var given = Parser.parse(this.correctEquation);
+            if (typeof this.correctEquation == 'string')
+                var given = Parser.parse(this.correctEquation);
+            else
+                given = this.correctEquation;
             var givenVar = given.variables();
-            var student = Parser.parse(this.studentEquation);
+            if (typeof this.studentEquation == 'string')
+                var student = Parser.parse(this.studentEquation);
+            else
+                student = this.studentEquation;
             var studentVar = student.variables();
             if (!this._areArraysEqual(givenVar, studentVar)) {
                 this.equivalent = false;
@@ -84,4 +90,4 @@ define(["dojo/_base/declare", "parser/parser"]
         }
     });
 });
-        
+

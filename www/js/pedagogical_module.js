@@ -1,3 +1,15 @@
+/**
+ *
+ * Pedagogical Module class used to solve Dragoon problems
+ * @author: Brandon Strong
+ *
+ **/
+
+/**
+ * Pedagogical module that accepts student entries, and returns an object with the  
+ * id of the node, a message with encouragement or a hint, and the status of the 
+ * attempt (correct, incorrect, demo, or premature).
+ **/
 
 define([
     "dojo/_base/array", "dojo/_base/declare", "./equation_check", "parser/parser"
@@ -128,13 +140,6 @@ define([
                 power: function(obj,part){disable(obj, "enableRemaining", false);}
             }};
     
-    var inputsTable = descriptionTable;   
-        
-    for(var key in descriptionTable){
-        inputsTable[key].TEST = function(obj,part){disable(obj, "positiveButton", false); disable(obj, "negativeButton", false);};
-        inputsTable[key].power = inputsTable[key].TEST;
-    }
-          
     var counter = {correct: 0, notTopLevel: 0, premature: 0, initial: 0, extra: 0, irrelevant: 0, redundant: 0, lastFailure: 0, lastFailure2: 0};
     
     function state(/*object*/ obj, /*string*/ nodePart, /*string*/ status){
@@ -178,10 +183,72 @@ define([
         constructor: function(/*string*/ mode, /*string*/ subMode, /*model.js object*/ model) {
             this.model = model;
             this.mode = mode;
-            this.subMode = subMode;
+            this._setUserType(subMode);
             this.matchingID = null;
         },
-        _getInterpretation: function(/*string*/ id, /*string*/ nodePart, /*string*/ answer) {
+                _setUserType: function(/*string*/ subMode) {
+            // Summary: Sets the user mode; used by the constructor, but also
+            //      allows the mode to be updated dynamically.
+            if (this.mode === "STUDENT") {
+                this.userType = subMode;
+            } else {
+                this.userType = this.mode;
+            }
+         },
+        _getNextPart: function(/*string*/ givenNodeID, /*string*/ currentPart) {
+            // Summary: Determines the next portion of the node to be completed 
+            //      when the user gets a correct answer.
+            //
+            // Tags: Private
+            var nextPart = null;
+            switch (currentPart) {
+                case "description":
+                    nextPart = "type";
+                    break;
+                case "type":
+                    if (this.model.given.getInitial(givenNodeID) !== null)
+                        nextPart = "initial";
+                    else if (this.model.given.getUnits(givenNodeID) !== null)
+                        nextPart = "units";
+                    else if (this.model.given.getinputs(givenNodeID) !== null)
+                        nextPart = "inputs";
+                    else
+                        nextPart = "equation";
+                    break;
+                case "initial":
+                    if (this.model.given.getUnits(givenNodeID) !== null)
+                        nextPart = "units";
+                    else if (this.model.given.getinputs(givenNodeID) !== null)
+                        nextPart = "inputs";
+                    else if (this.model.given.getEquation(givenNodeID) !== null)
+                        nextPart = "equation";
+                    else
+                        nextPart = null;
+                    break;
+                case "units":
+                    if (this.model.given.getInputs(givenNodeID) !== null)
+                        nextPart = "inputs";
+                    else if (this.model.given.getEquation(givenNodeID) !== null)
+                        nextPart = "equation";
+                    else
+                        nextPart = null;
+                    break;
+                case "inputs":
+                    if (this.model.given.getEquation(givenNodeID) !== null)
+                        nextPart = "equation";
+                    break;
+                case "equation":
+                    nextPart = null;
+                    break;
+                    //The default was running every time--look into if a default is needed,
+                    //      otherwise remove.
+//                default:
+//                    console.error("Unexpected value assigned to currentPart in _getNextPart().");
+//                    break;
+            }
+            return nextPart;
+        },
+        _getInterpretation: function(/*string*/ id, /*string*/ nodePart, /*string | object*/ answer) {
             // Summary: Returns the interpretation of a given answer (correct, 
             //      incorrect, etc. and sets the status in the return object
             //
@@ -229,62 +296,50 @@ define([
                             interpretation = "incorrect";
                     }
                     break;
+                case "initial":
+                    if (answer === this.model.given.getInitial(id)) {
+                        interpretation = "correct";
+                    } else if(this.model.given.getInitial(id) === ""){
+                        interpretation = "correct";
+                    } else {
+                        if (this.model.getNodeAttemptCount(newID, "initial") === 2)
+                            interpretation = "lastFailure2";
+                        else if (this.model.getNodeAttemptCount(newID, "initial") === 1)
+                            interpretation = "secondFailure";
+                        else
+                            interpretation = "firstFailure";
+                    }
+                    break;
+                case "units":
+                    if (answer === this.model.given.getUnits(id)) {
+                        interpretation = "correct";
+                    } else {
+                        if (this.model.getNodeAttemptCount(newID, "units") === 2)
+                            interpretation = "lastFailure2";
+                        else if (this.model.getNodeAttemptCount(newID, "units") === 1)
+                            interpretation = "secondFailure";
+                        else
+                            interpretation = "firstFailure";
+                    }
+                    break;
+                case "equation":
+                    var equivCheck = new check(this.model.given.getEquation(id), answer);
+
+                    if (equivCheck.areEquivalent()){
+                        interpretation = "correct";
+                    } else {
+                        if (this.model.getNodeAttemptCount(newID, "equation") === 2)
+                            interpretation = "lastFailure2";
+                        else if (this.model.getNodeAttemptCount(newID, "equation") === 1)
+                            interpretation = "secondFailure";
+                        else
+                            interpretation = "firstFailure";
+                    }
+                    break;
             }
             return interpretation;
         },
-        _getNextPart: function(/*string*/ givenNodeID, /*string*/ currentPart) {
-            // Summary: Determines the next portion of the node to be completed 
-            //      when the user gets a correct answer.
-            //
-            // Tags: Private
-            var nextPart = null;
-            switch (currentPart) {
-                case "description":
-                    nextPart = "type";
-                    break;
-                case "type":
-                    if (this.model.given.getInitial(givenNodeID) !== null)
-                        nextPart = "initial";
-                    else if (this.model.given.getUnits(givenNodeID) !== null)
-                        nextPart = "units";
-                    else if (this.model.given.getinputs(givenNodeID) !== null)
-                        nextPart = "inputs";
-                    else
-                        nextPart = "equation";
-                    break;
-                case "initial":
-                    if (this.model.given.getUnits(givenNodeID) !== null)
-                        nextPart = "units";
-                    else if (this.model.given.getinputs(givenNodeID) !== null)
-                        nextPart = "inputs";
-                    else if (this.model.given.getEquation(givenNodeID) !== null)
-                        nextPart = "equation";
-                    else
-                        nextPart = null;
-                    break;
-                case "units":
-                    if (this.model.given.getinputs(givenNodeID) !== null)
-                        nextPart = "inputs";
-                    else if (this.model.given.getEquation(givenNodeID) !== null)
-                        nextPart = "equation";
-                    else
-                        nextPart = null;
-                    break;
-                case "inputs":
-                    if (this.model.given.getEquation(givenNodeID) !== null)
-                        nextPart = "equation";
-                    break;
-                case "equation":
-                    nextPart = null;
-                    break;
-                    //The default was running every time--look into if a default is needed,
-                    //      otherwise remove.
-//                default:
-//                    console.error("Unexpected value assigned to currentPart in _getNextPart().");
-//                    break;
-            }
-            return nextPart;
-        },
+        
         /**
          * 
          * Currently all of the nodes are essentially copies of descriptionAction()
@@ -293,11 +348,9 @@ define([
          * 
          **/
         descriptionAction: function(/*string*/ id, /*string*/ answer) {
-            
-            console.log(inputsTable);
             var interpretation = this._getInterpretation(id, "description", answer);           
             var returnObj = [];
-            descriptionTable[interpretation][this.mode](returnObj, "description");
+            descriptionTable[interpretation][this.userType](returnObj, "description");
             for(var i = 0; i<returnObj.length; i++){
                 if(returnObj[i].id === "enableNext")
                     returnObj[i].id = this._getNextPart(null,"description");
@@ -309,7 +362,7 @@ define([
             var newID = this.model.student.getDescriptionID(id);
             var interpretation = this._getInterpretation(newID, "type", answer);
             var returnObj = [];
-            typeTable[interpretation][this.mode](returnObj, "type");
+            typeTable[interpretation][this.userType](returnObj, "type");
             for(var i = 0; i<returnObj.length; i++){
                 if(returnObj[i].id === "enableNext")
                     returnObj[i].id = this._getNextPart(newID,"type");
@@ -318,9 +371,9 @@ define([
         },
         initialAction: function(/*string*/ id, /*string*/ answer) {
             var newID = this.model.student.getDescriptionID(id);
-            var interpretation = this._getInterpretation(newID, "type", answer);
+            var interpretation = this._getInterpretation(newID, "initial", answer);
             var returnObj = [];
-            typeTable[interpretation][this.mode](returnObj, "type");
+            typeTable[interpretation][this.userType](returnObj, "initial");
             for(var i = 0; i<returnObj.length; i++){
                 if(returnObj[i].id === "enableNext")
                     returnObj[i].id = this._getNextPart(newID,"initial");
@@ -329,9 +382,9 @@ define([
         },
         unitsAction: function(/*string*/ id, /*string*/ answer) {
             var newID = this.model.student.getDescriptionID(id);
-            var interpretation = this._getInterpretation(newID, "type", answer);
+            var interpretation = this._getInterpretation(newID, "units", answer);
             var returnObj = [];
-            typeTable[interpretation][this.mode](returnObj, "type");
+            typeTable[interpretation][this.userType](returnObj, "units");
             for(var i = 0; i<returnObj.length; i++){
                 if(returnObj[i].id === "enableNext")
                     returnObj[i].id = this._getNextPart(newID,"units");
@@ -340,20 +393,20 @@ define([
         },
         inputsAction: function(/*string*/ id, /*string*/ answer) {
             var newID = this.model.student.getDescriptionID(id);
-            var interpretation = this._getInterpretation(newID, "type", answer);
+            var interpretation = this._getInterpretation(newID, "inputs", answer);
             var returnObj = [];
-            typeTable[interpretation][this.mode](returnObj, "type");
+            typeTable[interpretation][this.userType](returnObj, "inputs");
             for(var i = 0; i<returnObj.length; i++){
                 if(returnObj[i].id === "enableNext")
                     returnObj[i].id = this._getNextPart(newID,"inputs");
             }
             return returnObj;
         },
-        equationAction: function(/*string*/ id, /*string*/ answer) {
+        equationAction: function(/*string*/ id, /*object*/ answer) {
             var newID = this.model.student.getDescriptionID(id);
-            var interpretation = this._getInterpretation(newID, "type", answer);
+            var interpretation = this._getInterpretation(newID, "equation", answer);
             var returnObj = [];
-            typeTable[interpretation][this.mode](returnObj, "type");
+            typeTable[interpretation][this.userType](returnObj, "equation");
             for(var i = 0; i<returnObj.length; i++){
                 if(returnObj[i].id === "enableNext")
                     returnObj[i].id = this._getNextPart(newID,"equation");

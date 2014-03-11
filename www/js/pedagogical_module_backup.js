@@ -7,8 +7,8 @@
  **/
 
 /**
- * Pedagogical module that accepts student entries, updates the model, and returns an object
- * with the id of the node, a message with encouragement or a hint, and the status of the 
+ * Pedagogical module that accepts student entries, and returns an object with the  
+ * id of the node, a message with encouragement or a hint, and the status of the 
  * attempt (correct, incorrect, demo, or premature).
  **/
 

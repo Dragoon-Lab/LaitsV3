@@ -55,7 +55,7 @@
                     "units": "births",
                     "inputs": [{"ID": rabbitID}, {"ID": "myid3"}],
                     "initial": null,
-                    "equation": rabbitID + " * myid3",
+                    "equation": "id1 * myid3",
                     "description": "The number of rabbits born each month"
                 });
                 rabbits.given.addNode({
@@ -134,7 +134,11 @@
                 descInfo = ped.typeAction("myid5", "function");
                 console.log(descInfo);
                 
+                descInfo = ped.unitsAction("myid5", "births");
+                console.log(descInfo);
                 
+                descInfo = ped.equationAction("myid5", "id1 * myid3");
+                console.log(descInfo);
 
                 /*
                  //Set description
