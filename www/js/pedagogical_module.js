@@ -264,7 +264,7 @@ define([
                                 interpretation = "irrelevant";
                             }
                         });
-                    } else if (this.model.isNodeVisible(newID)) {
+                    } else if (this.model.isNodeVisible(id, newID)) {
                         interpretation = "redundant";
                     } else if (this.model.isParentNode(newID) || this.model.isNodesParentVisible(newID)) {
                         interpretation = "optimal";

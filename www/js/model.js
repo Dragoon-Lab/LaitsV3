@@ -321,13 +321,11 @@ define([
                 }
                 return null;
             },
-            isNodeVisible: function(/*string*/ id) {
+            isNodeVisible: function(/*string*/ studentID, /*string*/ givenID) {
                 // Summary: returns true if the node is in the student model
-                for (var i = 0; i < this.model.task.studentModelNodes.length; i++) {
-                    if (id === this.model.task.studentModelNodes[i].ID)
-                        return true;
-                }
-                return false;
+                return array.some(this.student.getNodes(), function(node){
+                    return node.ID !== studentID && node.descriptionID===givenID;
+                });
             },
             isNodesParentVisible: function(/*string*/ id) {
                 // Summary: returns true if the node's parent is visible (if the 
