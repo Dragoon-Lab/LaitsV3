@@ -79,6 +79,20 @@
 	transition:background-color 0.25s ease-in;	
 }
 
+.triangle{
+	width: 0; 
+	height: 0; 
+	z-index:20; position:absolute;
+	border-left: 45px solid transparent;
+	border-right: 45px solid transparent;
+	border-bottom: 90px solid #2e6f9a;
+	cursor:move;
+	font-size:11px;
+	-webkit-transition:background-color 0.25s ease-in;
+	-moz-transition:background-color 0.25s ease-in;
+	transition:background-color 0.25s ease-in;
+}
+
 
  .function {
     width: 80px;

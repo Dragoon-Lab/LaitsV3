@@ -5,8 +5,8 @@
 define([
     "dojo/_base/array", 'dojo/_base/declare', "dojo/_base/lang", 
     'dojo/aspect', 'dojo/dom', 'dojo/on', "dojo/ready", 'dijit/registry',
-    "./pedagogical_module","parser/parser"
-], function(array, declare, lang, aspect, dom, on, ready, registry, PM, parser) {
+    "./pedagogical_module","parser/parser","dojo/dom-class"
+], function(array, declare, lang, aspect, dom, on, ready, registry, PM, parser,domClass) {
     
     return declare(null, {
 	
@@ -160,7 +160,13 @@ define([
 	    console.log("****** Student has chosen type ", type, this);
 	    if(type == 'defaultSelect')return; // don't do anything if they choose default
 	    // Need to call PM, and handle reply from PM,
-	    // updating node editor and the model.
+
+        //update node type
+        console.log("===========>   changing node class to "+type);
+        domClass.replace(this.currentID,type);
+
+
+        // updating node editor and the model.
 
         this._model.active.setType(this.currentID, type);
         var directives = this._PM.typeAction(this.currentID, type);
