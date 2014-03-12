@@ -61,7 +61,7 @@ define([
 	     The sub-mode of STUDENT mode can be either "feedback" or "power"
 	     This is eventually supposed to be supplied by the student model
 	     */
-	    var subMode = "feedback";
+	    var subMode = query.sm || "feedback";
 	    var controllerObject  = new controller(query.m, subMode, givenModel);
 	    controllerObject._PM.setLogging(session);  // Set up direct logging in PM
 	    

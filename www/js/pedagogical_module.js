@@ -360,9 +360,13 @@ define([
             // Policy: disable all but the description on new node
             // BvdS: might want to also activate type in TEST mode
             var controls = ["type", "initial", "units", "inputs", "equation"];
-            return array.map(controls, function(control) {
+            var directives = array.map(controls, function(control) {
                 return {id: control, attribute: "disabled", value: true};
             });
+	    // Only allow nodes of type 'function' for power users and tests.
+	    if(this.userType !== 'power' || this.mode == 'TEST')
+		directives.push({id: 'type', attribute: 'disableOption', value: 'function'});
+	    return directives;
         },
         descriptionAction: function(/*string*/ id, /*string*/ answer) {
             // Summary: Accepts a student's answer and returns an object to the 
@@ -375,6 +379,7 @@ define([
         typeAction: function(/*string*/ id, /*string*/ answer) {
             var newID = this.model.student.getDescriptionID(id);
             var interpretation = this._getInterpretation(newID, "type", answer);
+	    console.assert(typeTable[interpretation], "typeAction:  unknown interpretation", interpretation);
             var returnObj = [];
             typeTable[interpretation][this.userType](returnObj, "type");
             for (var i = 0; i < returnObj.length; i++) {
