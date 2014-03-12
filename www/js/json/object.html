@@ -98,7 +98,7 @@
                         "y": 100
                     },
                     "status": {}
-                });
+                }); 
                 var myNode = rabbits.student.addNode({
                     "ID": "myid6",
                     "descriptionID": null,
@@ -112,13 +112,13 @@
                     },
                     "status": {}
                 });
-                rabbits.setToDemo(myNode, "description");
+/*                rabbits.setToDemo(myNode, "description");
                 rabbits.setToDemo(myNode, "type");
                 rabbits.setToDemo(myNode, "initial");
                 rabbits.setToDemo(myNode, "units");
                 rabbits.setToDemo(myNode, "equation");
                 rabbits.given.addInput(rabbits.getNodeIDByName("births"), rabbits.getNodeIDByName("population"));
-
+*/
 
                 rabbits.addExtraDescription({
                     ID: "id7",
@@ -141,15 +141,15 @@
 
                 var descInfo, typeInfo, unitsInfo, inputsInfo, equationInfo;
 
-                var ped = new pm("feedback", null, rabbits);
+                var ped = new pm("COACHED", null, rabbits);
 
                 descInfo = ped.descriptionAction("myid5", "id7");
                 console.log(descInfo);
                 
-                descInfo = ped.descriptionAction("myid5", "myid2");
-                console.log(descInfo);
+                //descInfo = ped.descriptionAction("myid5", "myid2");
+                //console.log(descInfo);
                 
-                descInfo = ped.descriptionAction("myid6", "myid2");
+                descInfo = ped.descriptionAction("myid5", "myid2");
                 console.log(descInfo);
 
                 descInfo = ped.typeAction("myid5", "function");

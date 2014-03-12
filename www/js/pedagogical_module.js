@@ -1,10 +1,8 @@
 /* global define */
 
 /**
- *
  * Pedagogical Module class used to solve Dragoon problems
  * @author: Brandon Strong
- *
  **/
 
 /**
@@ -18,7 +16,7 @@ define([
 ], function(array, declare, check, Parser) {
 
     var hints = {
-        //Summary: Messages that are given to the user based on the type of user, 
+        // Summary: Messages that are given to the user based on the type of user, 
         //      his or her answers, and the number of hints of that type.
         irrelevant: [
             "The quantity is irrelevant to this problem.  Choose a different one.",
@@ -67,6 +65,8 @@ define([
     };
 
     var descriptionTable = {
+        // Summary: This table is used for determining the proper response to a student's 'description' answer (see 
+        //      'Pedagogical_Module.docx' in the documentation)
             optimal: {
                 COACHED: function(obj,part){state(obj, part, "correct"); message(obj,part, "correct"); disable(obj, part, true); disable(obj, "type", false);}, 
                 feedback: function(obj,part){state(obj, part, "correct"); message(obj,part, "correct"); disable(obj, part, true); disable(obj, "type", false);},
@@ -116,7 +116,9 @@ define([
                 power: function(obj,part){state(obj, part, "demo"); disable(obj, part, true);disable(obj, "type", false);}
             }};
         
-    var typeTable = {
+    var actionTable = {
+        // Summary: This table is used for determining the proper response to a student's answers in the 
+        //      remaining sections (see 'Pedagogical_Module.docx' in the documentation)
             correct: {
                 COACHED: function(obj,part){state(obj, part, "correct"); message(obj,part, "correct"); disable(obj, part, true); disable(obj, "enableNext", false);}, 
                 feedback: function(obj,part){state(obj, part, "correct"); message(obj,part, "correct"); disable(obj, part, true); disable(obj, "enableRemaining", false);}, 
@@ -136,31 +138,34 @@ define([
                 power: function(obj,part){disable(obj, "enableRemaining", false);}
             },
             anotherFailure: {
-                COACHED: function(){console.error("Attempting to access typeTable after demo has been sent.");}, 
-                feedback: function(){console.error("Attempting to access typeTable after demo has been sent.");}, 
+                COACHED: function(){console.error("Attempting to access actionTable after demo has been sent.");}, 
+                feedback: function(){console.error("Attempting to access actionTable after demo has been sent.");}, 
                 TEST: function(obj,part){disable(obj, "enableRemaining", false);}, 
                 power: function(obj,part){disable(obj, "enableRemaining", false);}
             }};
-
+        
+    // Counters used to determine which message in an array to display; they are not dependent on which node is 
+    //      active and differ from the counters (attemptCount) in the model, which are node specific
     var counter = {correct: 0, notTopLevel: 0, premature: 0, initial: 0, extra: 0, irrelevant: 0, redundant: 0, incorrect: 0, lastFailure: 0, lastFailure2: 0};
     
+    /*****
+     * Summary: The following four functions are used by the above tables to push 
+     *      statuses and messages to the return object array.
+     *****/
     function state(/*object*/ obj, /*string*/ nodePart, /*string*/ status) {
         obj.push({id: nodePart, attribute: "status", value: status});
     }
 
     function message(/*object*/ obj, /*string*/ nodePart, /*string*/ status) {
-        obj.push({id: 'message', attribute: 'append', value: _getMessage(nodePart, status)});
+        obj.push({id: 'message', attribute: 'append', value: getMessage(nodePart, status)});
     }
 
     function disable(/*object*/ obj, /*string*/ nodePart, /*boolean*/ disable) {
         obj.push({id: nodePart, attribute: "disabled", value: disable});
     }
-
-
-    function _getMessage(/*string*/ nodePart, /*string*/ status) {
+    
+    function getMessage(/*string*/ nodePart, /*string*/ status) {
         // Summary: Returns the appropriate message from the hints object (above).
-        //
-        // Tags: Private
         var messages = new Array();
         var theCounter = 0;
         messages = hints[status];
@@ -172,15 +177,12 @@ define([
             return messages[theCounter];
         }
     }
-
-
-    /**
+    
+    /*****
      * 
-     * Class construction
+     * Builds class that is used by controller to check student answers
      * 
-     **/
-
-
+     *****/
     return declare(null, {
         constructor: function(/*string*/ mode, /*string*/ subMode, /*model.js object*/ model) {
             this.model = model;
@@ -190,100 +192,75 @@ define([
         matchingID: null,
         logging: null,
         descriptionCounter: 0,
-        _getNextPart: function(/*string*/ givenNodeID, /*string*/ currentPart) {
-            // Summary: Determines the next portion of the node to be completed 
-            //      when the user gets a correct answer.
-            //
-            // Tags: Private
-            var nextPart = null;
+        /*****
+         * Private Nodes
+         *****/
+        _enableNext: function(/*object*/ obj, /*string*/ givenNodeID, /*string*/ currentPart, /*string*/ job) {
+        // Summary: adds messages to return object to enable specified parts of 
+        //      the node
+        //
+        // Tags: Private
+            var nodeType = this.model.given.getType(givenNodeID);
+            var newPart = "equation";
+            
             switch (currentPart) {
-                case "description":
-                    nextPart = "type";
-                    break;
-                case "type":
-                    if (this.model.given.getInitial(givenNodeID) !== null)
-                        nextPart = "initial";
-                    else if (this.model.given.getUnits(givenNodeID) !== null)
-                        nextPart = "units";
-                    else if (this.model.given.getinputs(givenNodeID) !== null)
-                        nextPart = "inputs";
-                    else
-                        nextPart = "equation";
-                    break;
-                case "initial":
-                    if (this.model.given.getUnits(givenNodeID) !== null)
-                        nextPart = "units";
-                    else if (this.model.given.getinputs(givenNodeID) !== null)
-                        nextPart = "inputs";
-                    else if (this.model.given.getEquation(givenNodeID) !== null)
-                        nextPart = "equation";
-                    else
-                        nextPart = null;
-                    break;
-                case "units":
-                    if (this.model.given.getInputs(givenNodeID) !== null)
-                        nextPart = "inputs";
-                    else if (this.model.given.getEquation(givenNodeID) !== null)
-                        nextPart = "equation";
-                    else
-                        nextPart = null;
-                    break;
-                case "inputs":
-                    if (this.model.given.getEquation(givenNodeID) !== null)
-                        nextPart = "equation";
-                    break;
-                case "equation":
-                    nextPart = null;
-                    break;
-            }
-            return nextPart;
-        },
-        _enableRemaining: function(/*object*/ obj, /*string*/ givenNodeID, /*string*/ currentPart) {
-            switch (currentPart) {
-                case "type":
-                    if (this.model.given.getInitial(givenNodeID) !== null)
+                case "type":                   
+                    if(nodeType === "parameter" || nodeType === "accumulator"){
                         disable(obj, "initial", false);
-                    if (this.model.given.getUnits(givenNodeID) !== null)
+                        newPart = "initial";
+                    }else if (this.model.given.getUnits(givenNodeID)){
                         disable(obj, "units", false);
-                    if (this.model.given.getEquation(givenNodeID) !== null)
+                        newPart = "units";
+                    }else{
                         disable(obj, "equation", false);
+                        newPart = "equation";
+                    }
                     break;
-                case "initial":
-                    if (this.model.given.getUnits(givenNodeID) !== null)
+                case "initial":                   
+                    if (this.model.given.getUnits(givenNodeID)){
                         disable(obj, "units", false);
-                    if (this.model.given.getEquation(givenNodeID) !== null)
+                        newPart = "units";
+                    }else if(nodeType === "function" || nodeType === "accumulator"){
                         disable(obj, "equation", false);
+                        newPart = "equation";
+                    }
                     break;
                 case "units":
-                    if (this.model.given.getEquation(givenNodeID) !== null)
+                    if(nodeType === "function" || nodeType === "accumulator")
                         disable(obj, "equation", false);
+                    newPart = "equation";
                     break;
             }
+            if(job === "enableRemaining" && newPart !== "equation")
+                this._enableNext(obj, givenNodeID, newPart, job);
+            else
+                return;
         },
         _getInterpretation: function(/*string*/ studentID, /*string*/ nodePart, /*string | object*/ answer) {
-            // Summary: Returns the interpretation of a given answer (correct, 
-            //      incorrect, etc. and sets the status in the return object
+            // Summary: Returns the interpretation of a given answer (correct, incorrect, etc.)
             //
             // Tags: Private
             var interpretation = null;
             var model = this.model; //needed for anonymous function in interpret var.
             
-            // retrieves the givenID for the matching given model node
+            // Retrieves the givenID for the matching given model node
             var givenID = this.model.student.getDescriptionID(studentID); 
             
+            // Anonymous function assigned to interpret--used by most parts of the switch below
             var interpret = function(correctAnswer){
-                    if (answer === correctAnswer || correctAnswer === true) {
-                        interpretation = "correct";
-                    } else {
-                        if (model.getNodeAttemptCount(givenID, nodePart) > 2)
-                            interpretation = "lastFailure2";
-                        else if (model.getNodeAttemptCount(givenID, nodePart) > 1)
-                            interpretation = "secondFailure";
-                        else
-                            interpretation = "firstFailure";
-                    }
-                };
-
+                if (answer === correctAnswer || correctAnswer === true) {
+                    interpretation = "correct";
+                } else {
+                    if (model.getNodeAttemptCount(givenID, nodePart) > 2)
+                        interpretation = "lastFailure2";
+                    else if (model.getNodeAttemptCount(givenID, nodePart) > 1)
+                        interpretation = "secondFailure";
+                    else
+                        interpretation = "firstFailure";
+                }
+            };
+                
+            // Take action based on the part of the node being evaluated
             switch (nodePart) {
                 case "description":
                     this.descriptionCounter++;
@@ -302,26 +279,20 @@ define([
                         interpretation = "redundant";
                     } else if (this.model.isParentNode(answer) || this.model.isNodesParentVisible(studentID)) {
                         interpretation = "optimal";
-                        this.descriptionCounter = 0;
                     } else if (this.model.student.getNodes().length === 0) {
                         interpretation = "notTopLevel";
-                        if(this.userType !== "COACHED")
-                            this.descriptionCounter = 0;
                     } else {
                         interpretation = "premature";
-                        if(this.userType !== "COACHED")
-                            this.descriptionCounter = 0;
                     }
                     if (interpretation !== "optimal" && this.descriptionCounter > 2) {
                         interpretation = "lastFailure";
-                        this.descriptionCounter = 0;
                     }
                     break;
                 case "type":
                     interpret(this.model.given.getType(givenID));
                     break;
                 case "initial":
-                    if (!this.model.given.getInitial(givenID)) // This is per Dr. VanLehn's document; if initial is empty then the student can enter anything.
+                    if (!this.model.given.getInitial(givenID))
                         interpretation = "correct";
                     else
                         interpret(this.model.given.getInitial(givenID));                   
@@ -330,6 +301,8 @@ define([
                     interpret(this.model.given.getUnits(givenID));
                     break;
                 case "equation":
+                    // The 'equation' case accepts an equation object from the controller
+                    //      and checks it against the given equation using equation_check.js
                     var equivCheck = new check(this.model.given.getEquation(givenID), answer);
                     interpret(equivCheck.areEquivalent());
                     break;
@@ -343,6 +316,64 @@ define([
             }
             return interpretation;
         },
+        _processAnswer: function(/*string*/ id, /*string*/ nodePart, /*string*/ answer){
+            // Summary: Pocesses a student's answers and returns if correct, 
+            //      incorrect, etc. and alerts the controller about what parts 
+            //      of the node editor should be active.
+            //
+            // Tags: Private
+            var interpretation = this._getInterpretation(id, nodePart, answer);
+            var returnObj = [];
+            
+            // Process answers for description
+            if(nodePart === "description"){
+                descriptionTable[interpretation][this.userType](returnObj, nodePart);
+                for (var i = 0; i < returnObj.length; i++) 
+                    if (returnObj[i].value === "correct" || returnObj[i].value === "demo"){
+                        this.model.given.setAttemptCount(answer, nodePart, this.descriptionCounter);
+                        this.descriptionCounter = 0;
+                    }
+            // Process answers for all other node types
+            }else{
+                var givenID = this.model.student.getDescriptionID(id);
+                actionTable[interpretation][this.userType](returnObj, nodePart);
+                this.model.given.setAttemptCount(givenID, nodePart, this.model.getNodeAttemptCount(givenID, nodePart) + 1);
+                               
+                // Activate appropriate parts of the node editor
+                var lastElement = returnObj[returnObj.length-1].id;
+                if (lastElement === "enableNext" || lastElement === "enableRemaining"){
+                    returnObj.pop();
+                    this._enableNext(returnObj, givenID, nodePart, lastElement);
+                }
+            }
+            
+            return returnObj;
+        },
+        /*****
+         * Public Nodes
+         *****/
+        /*****
+         * The following five functions are used by the controller to 
+         *      process the student's answers using _processAnswer().
+         *****/
+        descriptionAction: function(/*string*/ id, /*string*/ answer) {
+            return this._processAnswer(id, "description", answer);
+        },
+        typeAction: function(/*string*/ id, /*string*/ answer) {
+            return this._processAnswer(id, "type", answer);
+        },
+        initialAction: function(/*string*/ id, /*string*/ answer) {
+            return this._processAnswer(id, "initial", answer);
+        },
+        unitsAction: function(/*string*/ id, /*string*/ answer) {
+            return this._processAnswer(id, "units", answer);
+        },
+        equationAction: function(/*string*/ id, /*object*/ answer) {
+            return this._processAnswer(id, "equation", answer);
+        },
+        /*****
+         * Additional public functions
+         *****/
         setUserType: function(/*string*/ subMode) {
             // Summary: Sets the user mode; used by the constructor, but also
             //      allows the mode to be updated dynamically.
@@ -365,77 +396,12 @@ define([
                 return {id: control, attribute: "disabled", value: true};
             });
 	    // Only allow nodes of type 'function' for power users and tests.
-	    if(this.userType !== 'power' || this.mode == 'TEST')
-		directives.push({id: 'type', attribute: 'disableOption', value: 'function'});
+	    //if(this.userType !== 'power' || this.mode == 'TEST')
+            //      directives.push({id: 'type', attribute: 'disableOption', value: 'function'});
+                // Temp disable of sum and product, after handling change we will disable function
+            directives.push({id: 'type', attribute: 'disableOption', value: 'sum'});
+            directives.push({id: 'type', attribute: 'disableOption', value: 'product'});
 	    return directives;
-        },
-        descriptionAction: function(/*string*/ id, /*string*/ answer) {
-            // Summary: Accepts a student's answer and returns an object to the 
-            //      controller with the result and what parts of the node are available.
-            var interpretation = this._getInterpretation(id, "description", answer);
-            var returnObj = [];
-            descriptionTable[interpretation][this.userType](returnObj, "description");
-            return returnObj;
-        },
-        typeAction: function(/*string*/ id, /*string*/ answer) {
-            var givenID = this.model.student.getDescriptionID(id);
-            var interpretation = this._getInterpretation(id, "type", answer);
-            var returnObj = [];
-            typeTable[interpretation][this.userType](returnObj, "type");
-            for (var i = 0; i < returnObj.length; i++) {
-                if (returnObj[i].id === "enableNext")
-                    returnObj[i].id = this._getNextPart(givenID, "type");
-                if (returnObj[i].id === "enableRemaining"){
-                    var u = returnObj.pop();
-                    this._enableRemaining(returnObj, givenID, "type");
-                }
-            }
-            return returnObj;
-        },
-        initialAction: function(/*string*/ id, /*string*/ answer) {
-            var givenID = this.model.student.getDescriptionID(id);
-            var interpretation = this._getInterpretation(id, "initial", answer);
-            var returnObj = [];
-            typeTable[interpretation][this.userType](returnObj, "initial");
-            for (var i = 0; i < returnObj.length; i++) {
-                if (returnObj[i].id === "enableNext")
-                    returnObj[i].id = this._getNextPart(givenID, "initial");
-                if (returnObj[i].id === "enableRemaining"){
-                    var u = returnObj.pop();
-                    this._enableRemaining(returnObj, givenID, "initial");
-                }
-            }
-            return returnObj;
-        },
-        unitsAction: function(/*string*/ id, /*string*/ answer) {
-            var givenID = this.model.student.getDescriptionID(id);
-            var interpretation = this._getInterpretation(id, "units", answer);
-            var returnObj = [];
-            typeTable[interpretation][this.userType](returnObj, "units");
-            for (var i = 0; i < returnObj.length; i++) {
-                if (returnObj[i].id === "enableNext")
-                    returnObj[i].id = this._getNextPart(givenID, "units");
-                if (returnObj[i].id === "enableRemaining"){
-                    var u = returnObj.pop();
-                    this._enableRemaining(returnObj, givenID, "units");
-                }
-            }
-            return returnObj;
-        },
-        equationAction: function(/*string*/ id, /*object*/ answer) {
-            var givenID = this.model.student.getDescriptionID(id);
-            var interpretation = this._getInterpretation(id, "equation", answer);
-            var returnObj = [];
-            typeTable[interpretation][this.userType](returnObj, "equation");
-            for (var i = 0; i < returnObj.length; i++) {
-                if (returnObj[i].id === "enableNext")
-                    returnObj[i].id = this._getNextPart(givenID, "equation");
-                if (returnObj[i].id === "enableRemaining"){
-                    var u = returnObj.pop();
-                    this._enableRemaining(returnObj, givenID, "equation");
-                }
-            }
-            return returnObj;
         }
     });
 });

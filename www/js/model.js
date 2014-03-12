@@ -836,6 +836,9 @@ define([
             },
             setDescription: function(/*string*/ id, /*string*/ description) {
                 this.getNode(id).description = description;
+            },
+            setAttemptCount: function(/*string*/ id, /*string*/ part, /*string*/ count) {      
+                this.getNode(id).attemptCount[part] = count;
             }
         }, both);
 
