@@ -240,7 +240,7 @@ define([
         domClass.replace(this.currentID, type);
 
         var nodeName = this._model.student.getName(this.currentID);
-        if(nodeName)
+        if(nodeName && type != "triangle")
             nodeName='<div id='+this.currentID+'Label><strong>'+nodeName+'</strong></div>';
         else
             nodeName='';
