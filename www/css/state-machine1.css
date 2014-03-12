@@ -7,7 +7,7 @@
     height: 80px; 
 	position:absolute;
 	border: 1px solid black;
-	z-index:4;
+	z-index:24;
 	border-radius:1em;
 	border:1px solid #2e6f9a;
 	box-shadow: 2px 2px 19px #e0e0e0;
@@ -24,6 +24,9 @@
 	-webkit-transition:background-color 0.25s ease-in;
 	-moz-transition:background-color 0.25s ease-in;
 	transition:background-color 0.25s ease-in;	
+	text-align:center; 
+    	vertical-align: middle;
+	line-height: 80px;
 }
 
 .parameter:hover {
@@ -41,7 +44,17 @@
       position:absolute;
 	  font-family:helvetica;
 	  font-size:1.2em;
+	
+
     }
+
+.accumulator div{
+	   -webkit-transform: rotate(45deg);
+	   -moz-transform: rotate(45deg);
+   	-ms-transform: rotate(45deg);
+	   -o-transform: rotate(45deg);
+	   transform: rotate(45deg);
+}
 
 .accumulator {
    width: 80px; 
@@ -54,12 +67,6 @@
    -ms-transform: rotate(-45deg);
    -o-transform: rotate(-45deg);
    transform: rotate(-45deg);
-   /* Rotate Origin */
-   -webkit-transform-origin: 50% 100%;
-   -moz-transform-origin: 50% 100%;
-   -ms-transform-origin: 50% 100%;
-   -o-transform-origin: 50% 100%;
-   transform-origin: 50% 100%;
    
   border-radius:1em;
 	border:1px solid #2e6f9a;
@@ -77,6 +84,12 @@
 	-webkit-transition:background-color 0.25s ease-in;
 	-moz-transition:background-color 0.25s ease-in;
 	transition:background-color 0.25s ease-in;	
+
+			text-align:center; 
+    	vertical-align: middle;
+	line-height: 80px;
+
+
 }
 
 .triangle{
@@ -112,6 +125,9 @@ border:1px solid #2e6f9a;
 	-webkit-transition:background-color 0.25s ease-in;
 	-moz-transition:background-color 0.25s ease-in;
 	transition:background-color 0.25s ease-in;	
+	text-align:center; 
+    	vertical-align: middle;
+	line-height: 80px;
 }
 
 
