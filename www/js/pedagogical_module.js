@@ -149,7 +149,7 @@ define([
     }
 
     function message(/*object*/ obj, /*string*/ nodePart, /*string*/ status) {
-        obj.push({id: nodePart, attribute: "message", value: _getMessage(nodePart, status)});
+        obj.push({id: 'message', attribute: 'append', value: _getMessage(nodePart, status)});
     }
 
     function disable(/*object*/ obj, /*string*/ nodePart, /*boolean*/ disable) {

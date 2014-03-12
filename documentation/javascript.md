@@ -50,8 +50,8 @@ Methods in the PM return an array of directives like this:
 
     [
 		{id: "initial", attribute: "disabled", value: true},  // enable or disable a control
-		// Send a message (id may be ignored by the controller)
-		{id: "initial", attribute: "message", value: "You should try again."},
+		// Send a message.
+		{id: "message", attribute: "append", value: "You should try again."},
 		{id: "description", attribute: "status", value: "demo"},  // Set the status (red/green/yellow)
 		// Set the value of a control (in the case of demo)
 		{id: "description", attribute: "selected", value: "id3"},

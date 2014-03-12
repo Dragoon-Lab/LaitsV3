@@ -27,8 +27,11 @@ define([
             // It might be a better idea to only  call the controller
 	    // after widgets are set up.
   	    ready(this, this._setUpNodeEditor);
+
+	    lang.mixin(this.widgetMap, this.controlMap);
 	},
 
+	// A list of all form controls
 	 controlMap: {
 	     description: "selectDescription",
 	     type: "typeId",
@@ -37,6 +40,11 @@ define([
 	     inputs: "nodeInputs",
 	     equation: "equationBox"
 	 },
+
+	// A list of all widgets.  (The constructor mixes this with controlMap)
+	widgetMap: {
+	    message: 'messageBox'
+	},
 
 	// Controls that are select menus
 	selects: ['description', 'type', 'units', 'inputs'],
@@ -111,6 +119,14 @@ define([
 		w._setEnableOptionAttr = setEnableOption;
 		w._setDisableOptionAttr = setDisableOption;
 	    }, this);
+
+	    // Add appender to message widget
+            var messageWidget = registry.byId(this.widgetMap.message);
+	    messageWidget._setAppendAttr = function (message){
+		var existing = this.get('content');
+		// console.log("+++++++ appending message '" + message + "' to ", this, existing);
+		this.set('content', existing + '<p>' + message + '</p>');
+	    };
 	    
 	    /*
 	     Add fields to units box, using units in model node
@@ -131,13 +147,19 @@ define([
 	    array.forEach(this.selects, function(control){
 		var w = registry.byId(this.controlMap[control]);
 		w.set("enableOption", null);  // enable all options
-	    });
+	    }, this);
 	    // For all controls:
 	    for(var control in this.controlMap){
 		var w = registry.byId(this.controlMap[control]);
 		w.set("disabled", false);  // enable everything
 		w.set("status", '');  // remove colors
 	    }
+
+	    /* Erase messages
+	     Eventually, we probably want to save and restore
+	     messages for each node. */
+            var messageWidget = registry.byId(this.widgetMap.message);
+	    messageWidget.set('content', '');
 	},
 
 	//set up event handling with UI components
@@ -201,12 +223,10 @@ define([
             var directives = this._PM.descriptionAction(this.currentID, selectDescription);
 	    array.forEach(directives , function(desc){
 		this.updateModelStatus(desc);
-		if(desc.attribute == 'message')
-		    this.showMessageNodeEditor(desc.value);
-		else {
-		    var w = registry.byId(this.controlMap[desc.id]);
-		    w.set(desc.attribute, desc.value);
-		}
+		var w = registry.byId(this.widgetMap[desc.id]);
+		console.assert(w, "widget not found", this.widgetMap, desc, this.widgetMap[desc.id]);
+		// console.log("*********  setting widget ", w, " using ", desc);
+		w.set(desc.attribute, desc.value);
             }, this);	    
 	},
 
@@ -226,12 +246,8 @@ define([
         array.forEach(directives, function(directive){
 	    console.log("*********** update node editor ", directive); 
 	    this.updateModelStatus(directive);
-	    if(directive.attribute == 'message')
-		this.showMessageNodeEditor(directive.value);
-	    else {
-		var w = registry.byId(this.controlMap[directive.id]);
-		w.set(directive.attribute, directive.value);
-	    }
+	    var w = registry.byId(this.widgetMap[directive.id]);
+	    w.set(directive.attribute, directive.value);
         }, this);
 
 	},
@@ -241,19 +257,10 @@ define([
         this._model.active.setUnits(this.currentID, unit);
 
         var directives = this._PM.unitsAction(this.currentID, unit);
-        array.forEach(directives, function(unit){
-            var w = registry.byId(this.controlMap[type.id]);
-            w.set(unit.attribute, unit.value);
+        array.forEach(directives, function(directive){
+            var w = registry.byId(this.controlMap[directive.id]);
+            w.set(directive.attribute, directive.value);
         }, this);
-    },
-    showMessageNodeEditor:function(message){
-        //can color green or red
-
-        var messageRed = '<div style="background:#ff6d66">'+message+'</div>';
-        var messageGreen = '<div style="background:#d9ff83">'+message+'</div>';
-
-        dojo.byId("messageBox").innerHTML=dojo.byId("messageBox").innerHTML+messageRed+'<br/>';
-        dojo.byId("messageBox").innerHTML=dojo.byId("messageBox").innerHTML+messageGreen+'<br/>';
     },
 	handleNodeEditorButtonClicks: function(buttonId){
 	    console.log('****** combo box select ', buttonId);
