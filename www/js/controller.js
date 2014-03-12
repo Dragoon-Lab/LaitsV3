@@ -37,6 +37,10 @@ define([
 	     inputs: "nodeInputs",
 	     equation: "equationBox"
 	 },
+
+	// Controls that are select menus
+	selects: ['description', 'type', 'units', 'inputs'],
+
         
 	_setUpNodeEditor: function(){
 	    
@@ -84,7 +88,29 @@ define([
 	    for(var control in this.controlMap){
 		var w = registry.byId(this.controlMap[control]);
 		w._setStatusAttr = setStatus;
-	    }	    
+	    }
+	    var setEnableOption = function(value){
+		console.log("++++ in setEnableOption, scope=", this);
+		array.forEach(this.options, function(option){
+		    if(!value || option.value == value)
+			option.disabled = false;
+		});
+		this.startup();
+	    };
+	    var setDisableOption = function(value){
+		console.log("++++ in setDisableOption, scope=", this);
+		array.forEach(this.options, function(option){
+		    if(!value || option.value == value)
+			option.disabled = true;
+		});
+		this.startup();
+	    };
+	    // All <select> controls
+	    array.forEach(this.selects, function(select){
+		var w = registry.byId(this.controlMap[select]);
+		w._setEnableOptionAttr = setEnableOption;
+		w._setDisableOptionAttr = setDisableOption;
+	    }, this);
 	    
 	    /*
 	     Add fields to units box, using units in model node
@@ -101,6 +127,12 @@ define([
 	// This can be used as a hook for saving sessions and logging
 	closeEditor: function(){
 	    // Erase modifications to the control settingse.
+	    // Enable all options in select controls.
+	    array.forEach(this.selects, function(control){
+		var w = registry.byId(this.controlMap[control]);
+		w.set("enableOption", null);  // enable all options
+	    });
+	    // For all controls:
 	    for(var control in this.controlMap){
 		var w = registry.byId(this.controlMap[control]);
 		w.set("disabled", false);  // enable everything
@@ -169,8 +201,12 @@ define([
             var directives = this._PM.descriptionAction(this.currentID, selectDescription);
 	    array.forEach(directives , function(desc){
 		this.updateModelStatus(desc);
-		var w = registry.byId(this.controlMap[desc.id]);
-		w.set(desc.attribute, desc.value);
+		if(desc.attribute == 'message')
+		    this.showMessageNodeEditor(desc.value);
+		else {
+		    var w = registry.byId(this.controlMap[desc.id]);
+		    w.set(desc.attribute, desc.value);
+		}
             }, this);	    
 	},
 
@@ -181,18 +217,21 @@ define([
 
         //update node type
         console.log("===========>   changing node class to "+type);
-        domClass.replace(this.currentID,type);
-
-        this.showMessageNodeEditor("testing ...");
+        domClass.replace(this.currentID, type);
 
         // updating node editor and the model.
 
         this._model.active.setType(this.currentID, type);
         var directives = this._PM.typeAction(this.currentID, type);
-        array.forEach(directives, function(type){
-            var w = registry.byId(this.controlMap[type.id]);
-
-            w.set(type.attribute, type.value );
+        array.forEach(directives, function(directive){
+	    console.log("*********** update node editor ", directive); 
+	    this.updateModelStatus(directive);
+	    if(directive.attribute == 'message')
+		this.showMessageNodeEditor(directive.value);
+	    else {
+		var w = registry.byId(this.controlMap[directive.id]);
+		w.set(directive.attribute, directive.value);
+	    }
         }, this);
 
 	},

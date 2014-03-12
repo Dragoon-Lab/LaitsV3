@@ -54,12 +54,17 @@ Methods in the PM return an array of directives like this:
 		{id: "initial", attribute: "message", value: "You should try again."},
 		{id: "description", attribute: "status", value: "demo"},  // Set the status (red/green/yellow)
 		// Set the value of a control (in the case of demo)
-		{id: "description", attribute: "selected", value: "id3"} 
+		{id: "description", attribute: "selected", value: "id3"},
+		// Disable individual choices in a pull-down menu
+		{id: "type", attribute: "disableOption", value: "function")
 	]
 
 The attribute names can be: `description`, `type`, `initial`,
 `units`, `inputs`, or `equation`.  The controller 
 maps these names onto the appropriate widget `id` in `index.html`.
+The attributes `enableOption`/`disableOption` can be used to
+enable/disable individual options in a select control.  If no value is
+given, then all options in the control are enabled/disabled.
 
 `js/controller.js` acts as the controller.  On opening the node
 editor, it sets values of the Node Editor controls based on the **active

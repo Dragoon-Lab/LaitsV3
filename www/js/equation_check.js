@@ -2,7 +2,6 @@
 /**
  *
  * Equation checking to compare an equation given by the student with a given equation
- * @author: Brandon Strong
  * 
  **/
 

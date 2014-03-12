@@ -10,7 +10,8 @@ define([
     return declare(null, {
 
         _instance: null,
-	
+	    _givenModel: null,
+
         constructor: function(givenModel){
 	    
             // setup some defaults for jsPlumb.
@@ -29,6 +30,7 @@ define([
             });
 	    
             this._instance = instance;
+            this._givenModel = givenModel;
 	    
             var shapes = {
                 accumulator: "accumulator",
@@ -123,7 +125,15 @@ define([
             console.log("Adding element to canvas, id = ", node.ID, ", class = ", type);
             // Add div to drawing
             console.log("--> setting position for vertex : "+ node.ID +" position: x"+node.position.x+"  y:"+node.position.y);
-            domConstruct.create("div", {id: node.ID, 'class': type, 'style':{ left: node.position.x +'px' , top: node.position.y +'px'}}, "statemachine-demo");
+
+            var nodeName = this._givenModel.student.getName(node.ID);
+            if(nodeName)
+                nodeName='<div><strong>'+nodeName+'</strong></div>';
+            else
+                nodeName='';
+
+
+            domConstruct.create("div", {id: node.ID, 'class': type, 'style':{ left: node.position.x +'px' , top: node.position.y +'px'},innerHTML:nodeName}, "statemachine-demo");
             // jsPlumb.addEndpoint(node.ID);
             var vertex = jsPlumb.getSelector(".statemachine-demo ." + type);
 	    

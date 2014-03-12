@@ -204,24 +204,34 @@ define([
                     if (this.model.given.getInitial(givenNodeID) !== null)
                         nextPart = "initial";
                     else if (this.model.given.getUnits(givenNodeID) !== null)
-                        nextPart = "units";                   
+                        nextPart = "units";
+                    else if (this.model.given.getinputs(givenNodeID) !== null)
+                        nextPart = "inputs";
                     else
                         nextPart = "equation";
                     break;
                 case "initial":
                     if (this.model.given.getUnits(givenNodeID) !== null)
                         nextPart = "units";
+                    else if (this.model.given.getinputs(givenNodeID) !== null)
+                        nextPart = "inputs";
                     else if (this.model.given.getEquation(givenNodeID) !== null)
                         nextPart = "equation";
                     else
                         nextPart = null;
                     break;
                 case "units":
-                    if (this.model.given.getEquation(givenNodeID) !== null)
+                    if (this.model.given.getInputs(givenNodeID) !== null)
+                        nextPart = "inputs";
+                    else if (this.model.given.getEquation(givenNodeID) !== null)
                         nextPart = "equation";
                     else
                         nextPart = null;
-                    break;               
+                    break;
+                case "inputs":
+                    if (this.model.given.getEquation(givenNodeID) !== null)
+                        nextPart = "equation";
+                    break;
                 case "equation":
                     nextPart = null;
                     break;
@@ -329,7 +339,7 @@ define([
              Note that I haven't set correct-value.  For most controls, it should be set
              */
             if (this.logging) {
-                this.logging.log('solution-step', {node: givenID, type: nodePart, value: answer, checkResult: interpretation});
+                this.logging.log('solution-step', {node: studentID, type: nodePart, value: answer, checkResult: interpretation});
             }
             return interpretation;
         },
@@ -351,9 +361,13 @@ define([
             // Policy: disable all but the description on new node
             // BvdS: might want to also activate type in TEST mode
             var controls = ["type", "initial", "units", "inputs", "equation"];
-            return array.map(controls, function(control) {
+            var directives = array.map(controls, function(control) {
                 return {id: control, attribute: "disabled", value: true};
             });
+	    // Only allow nodes of type 'function' for power users and tests.
+	    if(this.userType !== 'power' || this.mode == 'TEST')
+		directives.push({id: 'type', attribute: 'disableOption', value: 'function'});
+	    return directives;
         },
         descriptionAction: function(/*string*/ id, /*string*/ answer) {
             // Summary: Accepts a student's answer and returns an object to the 
