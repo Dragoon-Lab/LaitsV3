@@ -119,7 +119,7 @@ define([
     var typeTable = {
             correct: {
                 COACHED: function(obj,part){state(obj, part, "correct"); message(obj,part, "correct"); disable(obj, part, true); disable(obj, "enableNext", false);}, 
-                feedback: function(obj,part){state(obj, part, "correct"); message(obj,part, "correct"); disable(obj, part, true); disable(obj, "enableNext", false);}, 
+                feedback: function(obj,part){state(obj, part, "correct"); message(obj,part, "correct"); disable(obj, part, true); disable(obj, "enableRemaining", false);}, 
                 TEST: function(obj,part){disable(obj, "enableRemaining", false);}, 
                 power: function(obj,part){disable(obj, "enableRemaining", false);}
             },
@@ -130,8 +130,8 @@ define([
                 power: function(obj,part){disable(obj, "enableRemaining", false);}
             },
             secondFailure: {
-                COACHED: function(obj,part){state(obj, part, "demo"); message(obj,part, "correct"); disable(obj, part, true); disable(obj, "enableNext", false);}, 
-                feedback: function(obj,part){state(obj, part, "correct"); message(obj,part, "correct"); disable(obj, part, true); disable(obj, "enableNext", false);}, 
+                COACHED: function(obj,part){state(obj, part, "demo"); message(obj,part, "lastFailure2"); disable(obj, part, true); disable(obj, "enableNext", false);}, 
+                feedback: function(obj,part){state(obj, part, "demo"); message(obj,part, "lastFailure2"); disable(obj, part, true); disable(obj, "enableRemaining", false);}, 
                 TEST: function(obj,part){disable(obj, "enableRemaining", false);}, 
                 power: function(obj,part){disable(obj, "enableRemaining", false);}
             },
@@ -142,7 +142,7 @@ define([
                 power: function(obj,part){disable(obj, "enableRemaining", false);}
             }};
 
-    var counter = {correct: 0, notTopLevel: 0, premature: 0, initial: 0, extra: 0, irrelevant: 0, redundant: 0, lastFailure: 0, lastFailure2: 0};
+    var counter = {correct: 0, notTopLevel: 0, premature: 0, initial: 0, extra: 0, irrelevant: 0, redundant: 0, incorrect: 0, lastFailure: 0, lastFailure2: 0};
     
     function state(/*object*/ obj, /*string*/ nodePart, /*string*/ status) {
         obj.push({id: nodePart, attribute: "status", value: status});
@@ -228,6 +228,28 @@ define([
             }
             return nextPart;
         },
+        _enableRemaining: function(/*object*/ obj, /*string*/ givenNodeID, /*string*/ currentPart) {
+            switch (currentPart) {
+                case "type":
+                    if (this.model.given.getInitial(givenNodeID) !== null)
+                        disable(obj, "initial", false);
+                    if (this.model.given.getUnits(givenNodeID) !== null)
+                        disable(obj, "units", false);
+                    if (this.model.given.getEquation(givenNodeID) !== null)
+                        disable(obj, "equation", false);
+                    break;
+                case "initial":
+                    if (this.model.given.getUnits(givenNodeID) !== null)
+                        disable(obj, "units", false);
+                    if (this.model.given.getEquation(givenNodeID) !== null)
+                        disable(obj, "equation", false);
+                    break;
+                case "units":
+                    if (this.model.given.getEquation(givenNodeID) !== null)
+                        disable(obj, "equation", false);
+                    break;
+            }
+        },
         _getInterpretation: function(/*string*/ studentID, /*string*/ nodePart, /*string | object*/ answer) {
             // Summary: Returns the interpretation of a given answer (correct, 
             //      incorrect, etc. and sets the status in the return object
@@ -239,11 +261,10 @@ define([
             // retrieves the givenID for the matching given model node
             var givenID = this.model.student.getDescriptionID(studentID); 
             
-            var interpret = function(obj, correctAnswer){
+            var interpret = function(correctAnswer){
                     if (answer === correctAnswer || correctAnswer === true) {
                         interpretation = "correct";
                     } else {
-                        alert(model.getNodeAttemptCount(givenID, nodePart));
                         if (model.getNodeAttemptCount(givenID, nodePart) > 2)
                             interpretation = "lastFailure2";
                         else if (model.getNodeAttemptCount(givenID, nodePart) > 1)
@@ -253,12 +274,11 @@ define([
                     }
                 };
 
-            switch (nodePart) {             
+            switch (nodePart) {
                 case "description":
                     this.descriptionCounter++;
-                    studentID = answer;
-
-                    if (this.model.student.isInExtras(studentID)) {
+                    
+                    if (this.model.student.isInExtras(answer)) {
                         array.forEach(this.model.getExtraDescriptions(), function(extra) {
                             if (answer === extra.ID && extra.type === "initial") {
                                 interpretation = "initialValue";
@@ -268,9 +288,9 @@ define([
                                 interpretation = "irrelevant";
                             }
                         });
-                    } else if (this.model.isNodeVisible(givenID, studentID)) {
+                    } else if (this.model.isNodeVisible(studentID, answer)) {
                         interpretation = "redundant";
-                    } else if (this.model.isParentNode(studentID) || this.model.isNodesParentVisible(studentID)) {
+                    } else if (this.model.isParentNode(answer) || this.model.isNodesParentVisible(studentID)) {
                         interpretation = "optimal";
                         this.descriptionCounter = 0;
                     } else if (this.model.student.getNodes().length === 0) {
@@ -288,20 +308,20 @@ define([
                     }
                     break;
                 case "type":
-                    interpret(this.model, this.model.given.getType(givenID));
+                    interpret(this.model.given.getType(givenID));
                     break;
                 case "initial":
-                    if (this.model.given.getInitial(givenID) === "") // This is per Dr. VanLehn's document; if initial is empty then the student can enter anything.
+                    if (!this.model.given.getInitial(givenID)) // This is per Dr. VanLehn's document; if initial is empty then the student can enter anything.
                         interpretation = "correct";
                     else
-                        interpret(this.model, this.model.given.getInitial(givenID));                   
+                        interpret(this.model.given.getInitial(givenID));                   
                     break;
                 case "units":
-                    interpret(this.model, this.model.given.getUnits(givenID));
+                    interpret(this.model.given.getUnits(givenID));
                     break;
                 case "equation":
                     var equivCheck = new check(this.model.given.getEquation(givenID), answer);
-                    interpret(this.model, equivCheck.areEquivalent());
+                    interpret(equivCheck.areEquivalent());
                     break;
             }
             /* 
@@ -351,6 +371,10 @@ define([
             for (var i = 0; i < returnObj.length; i++) {
                 if (returnObj[i].id === "enableNext")
                     returnObj[i].id = this._getNextPart(givenID, "type");
+                if (returnObj[i].id === "enableRemaining"){
+                    var u = returnObj.pop();
+                    this._enableRemaining(returnObj, givenID, "type");
+                }
             }
             return returnObj;
         },
@@ -362,6 +386,10 @@ define([
             for (var i = 0; i < returnObj.length; i++) {
                 if (returnObj[i].id === "enableNext")
                     returnObj[i].id = this._getNextPart(givenID, "initial");
+                if (returnObj[i].id === "enableRemaining"){
+                    var u = returnObj.pop();
+                    this._enableRemaining(returnObj, givenID, "initial");
+                }
             }
             return returnObj;
         },
@@ -373,6 +401,10 @@ define([
             for (var i = 0; i < returnObj.length; i++) {
                 if (returnObj[i].id === "enableNext")
                     returnObj[i].id = this._getNextPart(givenID, "units");
+                if (returnObj[i].id === "enableRemaining"){
+                    var u = returnObj.pop();
+                    this._enableRemaining(returnObj, givenID, "units");
+                }
             }
             return returnObj;
         },
@@ -384,6 +416,10 @@ define([
             for (var i = 0; i < returnObj.length; i++) {
                 if (returnObj[i].id === "enableNext")
                     returnObj[i].id = this._getNextPart(givenID, "equation");
+                if (returnObj[i].id === "enableRemaining"){
+                    var u = returnObj.pop();
+                    this._enableRemaining(returnObj, givenID, "equation");
+                }
             }
             return returnObj;
         }
