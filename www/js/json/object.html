@@ -56,7 +56,15 @@
                     "inputs": [{"ID": rabbitID}, {"ID": "myid3"}],
                     "initial": null,
                     "equation": "id1 * myid3",
-                    "description": "The number of rabbits born each month"
+                    "description": "The number of rabbits born each month",
+                    "attemptCount": {
+                        "description": 0,
+                        "type": 0,
+                        "initial": 0,
+                        "units": 0,
+                        "equation": 0
+                    },
+                    "status": {}
                 });
                 rabbits.given.addNode({
                     "ID": "myid3",
@@ -132,6 +140,9 @@
 
                 descInfo = ped.descriptionAction("myid5", "id7");
                 console.log(descInfo);
+                
+                descInfo = ped.descriptionAction("myid5", "myid2");
+                console.log(descInfo);
 
                 descInfo = ped.typeAction("myid5", "function");
                 console.log(descInfo);
@@ -139,7 +150,7 @@
                 descInfo = ped.unitsAction("myid5", "births");
                 console.log(descInfo);
                 
-                descInfo = ped.equationAction("myid5", "id1 * myid3");
+                descInfo = ped.equationAction("myid5", "id1 * myid3 * 0");
                 console.log(descInfo);
 
                 /*

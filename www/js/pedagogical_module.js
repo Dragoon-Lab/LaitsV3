@@ -204,56 +204,61 @@ define([
                     if (this.model.given.getInitial(givenNodeID) !== null)
                         nextPart = "initial";
                     else if (this.model.given.getUnits(givenNodeID) !== null)
-                        nextPart = "units";
-                    else if (this.model.given.getinputs(givenNodeID) !== null)
-                        nextPart = "inputs";
+                        nextPart = "units";                   
                     else
                         nextPart = "equation";
                     break;
                 case "initial":
                     if (this.model.given.getUnits(givenNodeID) !== null)
                         nextPart = "units";
-                    else if (this.model.given.getinputs(givenNodeID) !== null)
-                        nextPart = "inputs";
                     else if (this.model.given.getEquation(givenNodeID) !== null)
                         nextPart = "equation";
                     else
                         nextPart = null;
                     break;
                 case "units":
-                    if (this.model.given.getInputs(givenNodeID) !== null)
-                        nextPart = "inputs";
-                    else if (this.model.given.getEquation(givenNodeID) !== null)
+                    if (this.model.given.getEquation(givenNodeID) !== null)
                         nextPart = "equation";
                     else
                         nextPart = null;
-                    break;
-                case "inputs":
-                    if (this.model.given.getEquation(givenNodeID) !== null)
-                        nextPart = "equation";
-                    break;
+                    break;               
                 case "equation":
                     nextPart = null;
                     break;
             }
             return nextPart;
         },
-        _getInterpretation: function(/*string*/ id, /*string*/ nodePart, /*string | object*/ answer) {
+        _getInterpretation: function(/*string*/ studentID, /*string*/ nodePart, /*string | object*/ answer) {
             // Summary: Returns the interpretation of a given answer (correct, 
             //      incorrect, etc. and sets the status in the return object
             //
             // Tags: Private
             var interpretation = null;
-            var newID = id;
-            // The next 'if' statement sets retrieves the id for the matching node
-            //      when the student is in the 'description' section of the node
+            var model = this.model; //needed for anonymous function in interpret var.
+            
+            // retrieves the givenID for the matching given model node
+            var givenID = this.model.student.getDescriptionID(studentID); 
+            
+            var interpret = function(obj, correctAnswer){
+                    if (answer === correctAnswer || correctAnswer === true) {
+                        interpretation = "correct";
+                    } else {
+                        alert(model.getNodeAttemptCount(givenID, nodePart));
+                        if (model.getNodeAttemptCount(givenID, nodePart) > 2)
+                            interpretation = "lastFailure2";
+                        else if (model.getNodeAttemptCount(givenID, nodePart) > 1)
+                            interpretation = "secondFailure";
+                        else
+                            interpretation = "firstFailure";
+                    }
+                };
 
-            switch (nodePart) {
+            switch (nodePart) {             
                 case "description":
                     this.descriptionCounter++;
-                    newID = answer;
+                    studentID = answer;
 
-                    if (this.model.student.isInExtras(newID)) {
+                    if (this.model.student.isInExtras(studentID)) {
                         array.forEach(this.model.getExtraDescriptions(), function(extra) {
                             if (answer === extra.ID && extra.type === "initial") {
                                 interpretation = "initialValue";
@@ -263,9 +268,9 @@ define([
                                 interpretation = "irrelevant";
                             }
                         });
-                    } else if (this.model.isNodeVisible(id, newID)) {
+                    } else if (this.model.isNodeVisible(givenID, studentID)) {
                         interpretation = "redundant";
-                    } else if (this.model.isParentNode(newID) || this.model.isNodesParentVisible(newID)) {
+                    } else if (this.model.isParentNode(studentID) || this.model.isNodesParentVisible(studentID)) {
                         interpretation = "optimal";
                         this.descriptionCounter = 0;
                     } else if (this.model.student.getNodes().length === 0) {
@@ -283,54 +288,20 @@ define([
                     }
                     break;
                 case "type":
-                    if (answer === this.model.given.getType(id)) {
-                        interpretation = "correct";
-                    } else {
-                        if (this.model.getNodeAttemptCount(newID, "type") > 1)
-                            interpretation = "lastFailure2";
-                        else
-                            interpretation = "incorrect";
-                    }
+                    interpret(this.model, this.model.given.getType(givenID));
                     break;
                 case "initial":
-                    if (answer === this.model.given.getInitial(id)) {
+                    if (this.model.given.getInitial(givenID) === "") // This is per Dr. VanLehn's document; if initial is empty then the student can enter anything.
                         interpretation = "correct";
-                    } else if (this.model.given.getInitial(id) === "") {
-                        interpretation = "correct";
-                    } else {
-                        if (this.model.getNodeAttemptCount(newID, "initial") > 2)
-                            interpretation = "lastFailure2";
-                        else if (this.model.getNodeAttemptCount(newID, "initial") > 1)
-                            interpretation = "secondFailure";
-                        else
-                            interpretation = "firstFailure";
-                    }
+                    else
+                        interpret(this.model, this.model.given.getInitial(givenID));                   
                     break;
                 case "units":
-                    if (answer === this.model.given.getUnits(id)) {
-                        interpretation = "correct";
-                    } else {
-                        if (this.model.getNodeAttemptCount(newID, "units") > 2)
-                            interpretation = "lastFailure2";
-                        else if (this.model.getNodeAttemptCount(newID, "units") > 1)
-                            interpretation = "secondFailure";
-                        else
-                            interpretation = "firstFailure";
-                    }
+                    interpret(this.model, this.model.given.getUnits(givenID));
                     break;
                 case "equation":
-                    var equivCheck = new check(this.model.given.getEquation(id), answer);
-
-                    if (equivCheck.areEquivalent()) {
-                        interpretation = "correct";
-                    } else {
-                        if (this.model.getNodeAttemptCount(newID, "equation") > 2)
-                            interpretation = "lastFailure2";
-                        else if (this.model.getNodeAttemptCount(newID, "equation") > 1)
-                            interpretation = "secondFailure";
-                        else
-                            interpretation = "firstFailure";
-                    }
+                    var equivCheck = new check(this.model.given.getEquation(givenID), answer);
+                    interpret(this.model, equivCheck.areEquivalent());
                     break;
             }
             /* 
@@ -338,7 +309,7 @@ define([
              Note that I haven't set correct-value.  For most controls, it should be set
              */
             if (this.logging) {
-                this.logging.log('solution-step', {node: id, type: nodePart, value: answer, checkResult: interpretation});
+                this.logging.log('solution-step', {node: givenID, type: nodePart, value: answer, checkResult: interpretation});
             }
             return interpretation;
         },
@@ -373,57 +344,46 @@ define([
             return returnObj;
         },
         typeAction: function(/*string*/ id, /*string*/ answer) {
-            var newID = this.model.student.getDescriptionID(id);
-            var interpretation = this._getInterpretation(newID, "type", answer);
+            var givenID = this.model.student.getDescriptionID(id);
+            var interpretation = this._getInterpretation(id, "type", answer);
             var returnObj = [];
             typeTable[interpretation][this.userType](returnObj, "type");
             for (var i = 0; i < returnObj.length; i++) {
                 if (returnObj[i].id === "enableNext")
-                    returnObj[i].id = this._getNextPart(newID, "type");
+                    returnObj[i].id = this._getNextPart(givenID, "type");
             }
             return returnObj;
         },
         initialAction: function(/*string*/ id, /*string*/ answer) {
-            var newID = this.model.student.getDescriptionID(id);
-            var interpretation = this._getInterpretation(newID, "initial", answer);
+            var givenID = this.model.student.getDescriptionID(id);
+            var interpretation = this._getInterpretation(id, "initial", answer);
             var returnObj = [];
             typeTable[interpretation][this.userType](returnObj, "initial");
             for (var i = 0; i < returnObj.length; i++) {
                 if (returnObj[i].id === "enableNext")
-                    returnObj[i].id = this._getNextPart(newID, "initial");
+                    returnObj[i].id = this._getNextPart(givenID, "initial");
             }
             return returnObj;
         },
         unitsAction: function(/*string*/ id, /*string*/ answer) {
-            var newID = this.model.student.getDescriptionID(id);
-            var interpretation = this._getInterpretation(newID, "units", answer);
+            var givenID = this.model.student.getDescriptionID(id);
+            var interpretation = this._getInterpretation(id, "units", answer);
             var returnObj = [];
             typeTable[interpretation][this.userType](returnObj, "units");
             for (var i = 0; i < returnObj.length; i++) {
                 if (returnObj[i].id === "enableNext")
-                    returnObj[i].id = this._getNextPart(newID, "units");
-            }
-            return returnObj;
-        },
-        inputsAction: function(/*string*/ id, /*string*/ answer) {
-            var newID = this.model.student.getDescriptionID(id);
-            var interpretation = this._getInterpretation(newID, "inputs", answer);
-            var returnObj = [];
-            typeTable[interpretation][this.userType](returnObj, "inputs");
-            for (var i = 0; i < returnObj.length; i++) {
-                if (returnObj[i].id === "enableNext")
-                    returnObj[i].id = this._getNextPart(newID, "inputs");
+                    returnObj[i].id = this._getNextPart(givenID, "units");
             }
             return returnObj;
         },
         equationAction: function(/*string*/ id, /*object*/ answer) {
-            var newID = this.model.student.getDescriptionID(id);
-            var interpretation = this._getInterpretation(newID, "equation", answer);
+            var givenID = this.model.student.getDescriptionID(id);
+            var interpretation = this._getInterpretation(id, "equation", answer);
             var returnObj = [];
             typeTable[interpretation][this.userType](returnObj, "equation");
             for (var i = 0; i < returnObj.length; i++) {
                 if (returnObj[i].id === "enableNext")
-                    returnObj[i].id = this._getNextPart(newID, "equation");
+                    returnObj[i].id = this._getNextPart(givenID, "equation");
             }
             return returnObj;
         }
