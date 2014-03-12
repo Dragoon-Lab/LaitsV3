@@ -239,6 +239,14 @@ define([
         console.log("===========>   changing node class to "+type);
         domClass.replace(this.currentID, type);
 
+        var nodeName = this._model.student.getName(this.currentID);
+        if(nodeName)
+            nodeName='<div><strong>'+nodeName+'</strong></div>';
+        else
+            nodeName='';
+
+        domConstruct.place(nodeName,this.currentID);
+
         // updating node editor and the model.
 
         this._model.active.setType(this.currentID, type);
