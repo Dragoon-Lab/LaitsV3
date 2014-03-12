@@ -4,8 +4,9 @@
  */
 define([
     "dojo/_base/array", 'dojo/_base/declare', 'dojo/_base/lang', 
-    "dojo/dom-attr", "dojo/dom-construct", "jsPlumb/jsPlumb"
-],function(array, declare, lang, attr, domConstruct){
+    "dojo/dom-attr", "dojo/dom-construct","dijit/Menu",
+    "dijit/MenuItem", "jsPlumb/jsPlumb"
+],function(array, declare, lang, attr, domConstruct,Menu,MenuItem){
 
     return declare(null, {
 
@@ -134,6 +135,17 @@ define([
 
 
             domConstruct.create("div", {id: node.ID, 'class': type, 'style':{ left: node.position.x +'px' , top: node.position.y +'px'},innerHTML:nodeName}, "statemachine-demo");
+
+            //add menu to delete or we can iterate over all node.IDs and do following
+            var pMenu = new Menu({
+                targetNodeIds: [node.ID]
+            });
+            pMenu.addChild(new MenuItem({
+            label: "Delete Node",
+            onClick: lang.hitch(this,function(){this.deleteNode(node.ID)}) //onClick expects anonymous function call
+            }));
+
+
             // jsPlumb.addEndpoint(node.ID);
             var vertex = jsPlumb.getSelector(".statemachine-demo ." + type);
 	    
@@ -174,8 +186,8 @@ define([
         this._instance.connect({source: source, target: destination});
     },
 
-    deleteNode: function(/*object*/ node){
-
+    deleteNode: function(/*object*/ nodeID){
+        console.log("delete node called for "+nodeID);
     },
 
 	// Keep track of whether there was a mouseDown and mouseUp

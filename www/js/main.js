@@ -83,7 +83,8 @@ define([
 	     Connect node editor to "click with no move" events.
 	     */
 	    aspect.after(drawModel, "onClickNoMove", function(mover){
-		controllerObject.showNodeEditor(mover.node.id);
+            if(mover.mouseButton!=2) //check if not right click
+		        controllerObject.showNodeEditor(mover.node.id);
 	    }, true);
 	    
 	    /* 
