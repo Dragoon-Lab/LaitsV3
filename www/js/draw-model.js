@@ -129,7 +129,7 @@ define([
 
             var nodeName = this._givenModel.student.getName(node.ID);
             if(nodeName)
-                nodeName='<div><strong>'+nodeName+'</strong></div>';
+                nodeName='<div id='+node.ID+'Label><strong>'+nodeName+'</strong></div>';
             else
                 nodeName='';
 

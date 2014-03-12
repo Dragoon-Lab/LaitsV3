@@ -241,11 +241,13 @@ define([
 
         var nodeName = this._model.student.getName(this.currentID);
         if(nodeName)
-            nodeName='<div><strong>'+nodeName+'</strong></div>';
+            nodeName='<div id='+this.currentID+'Label><strong>'+nodeName+'</strong></div>';
         else
             nodeName='';
-
-        domConstruct.place(nodeName,this.currentID);
+        if(lang.exists(this.currentID+'Label'))
+            domConstruct.place(nodeName,this.currentID+'Label',"replace");
+        else //new node
+            domConstruct.place(nodeName,this.currentID);
 
         // updating node editor and the model.
 
