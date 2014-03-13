@@ -193,7 +193,7 @@ define([
         logging: null,
         descriptionCounter: 0,
         /*****
-         * Private Nodes
+         * Private Functions
          *****/
         _enableNext: function(/*object*/ obj, /*string*/ givenNodeID, /*string*/ currentPart, /*string*/ job) {
         // Summary: adds messages to return object to enable specified parts of 
@@ -241,7 +241,7 @@ define([
             //
             // Tags: Private
             var interpretation = null;
-            var model = this.model; //needed for anonymous function in interpret var.
+            var model = this.model; //needed for anonymous function in the interpret variable.
             
             // Retrieves the givenID for the matching given model node
             var givenID = this.model.student.getDescriptionID(studentID); 
@@ -277,7 +277,7 @@ define([
                         });
                     } else if (this.model.isNodeVisible(studentID, answer)) {
                         interpretation = "redundant";
-                    } else if (this.model.isParentNode(answer) || this.model.isNodesParentVisible(studentID)) {
+                    } else if (this.model.isParentNode(answer) || this.model.isNodesParentVisible(studentID, answer)) {
                         interpretation = "optimal";
                     } else if (this.model.student.getNodes().length === 0) {
                         interpretation = "notTopLevel";
@@ -350,7 +350,7 @@ define([
             return returnObj;
         },
         /*****
-         * Public Nodes
+         * Public Functions
          *****/
         /*****
          * The following five functions are used by the controller to 
@@ -372,7 +372,7 @@ define([
             return this._processAnswer(id, "equation", answer);
         },
         /*****
-         * Additional public functions
+         * Additional Public Functions
          *****/
         setUserType: function(/*string*/ subMode) {
             // Summary: Sets the user mode; used by the constructor, but also

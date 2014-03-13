@@ -334,17 +334,19 @@ define([
                     return node.ID !== studentID && node.descriptionID === givenID;
                 });
             },
-            isNodesParentVisible: function(/*string*/ id) {
-                // Summary: returns true if the node's parent is visible (if the 
-                //      node is an input into another node that is in the student model
-                for (var i = 0; i < this.model.task.givenModelNodes.length; i++) {
-                    var temp = this.model.task.givenModelNodes[i].ID;
-                    for (var ii = 0; ii < this.model.task.givenModelNodes[i].inputs.length; ii++)
-                        if (this.isNodeVisible(temp))
-                            return true;
-                }
-                return false;
+            //var temp = this.model.task.givenModelNodes[i].ID;myid6, myid3
+            isNodesParentVisible: function(/*string*/ studentID, /*string*/ givenID) {
+                // Summary: returns true if the given node's parent is visible (if the 
+                //      node is an input into another node that is in the student model)
+                var nodes = this.given.getNodes();
+
+                return array.some(nodes, function(node) {
+                    return array.some(node.inputs, function(input) {
+                        return givenID === input.ID && this.isNodeVisible(studentID, node.ID); // node.ID is the parent of input.ID;
+                    }, this);
+                }, this);
             },
+            //
             areNodeInputsVisible: function(/*string*/ id) {
                 //Summary: returns true if all of the inputs in a given node are visible
                 for (var i = 0; i < this.given.getInputs(id).length; i++)
@@ -359,7 +361,59 @@ define([
                         return false;
                 return true;
             },
+            isInputVisible: function(givenNodeID) {
+                return array.some(this.student.getNodes(), function(node) {
+                    return node.descriptionID === givenNodeID;
+                });
+            },
+            /*   
+             array.forEach(this.given.getNodes(), function(node) {
+             if (node.ID == id) {
+             ret = node.name;
+             }
+             }, this);
+             */
+    
+    /**
+     * Next 2 nodes are to return the next optimal node; needs testing; in process;
+     *      getOptimalNode() can be called to search through the model and return 
+     *      an optimal node as long as the model is in a tree structure
+     */
+            _getNextOptimalNode: function(givenNodeID) {
+                var optimalNode = null;
+                var isInputVisible = function(givenNodeID) {
+                    return array.some(obj.student.getNodes(), function(node) {
+                        return node.descriptionID === givenNodeID;
+                    }, this);
+                };
+                array.forEach(this.given.getNode(givenNodeID).inputs, function(node) {
+                    if (!isInputVisible(node.ID) && givenNodeID !== node.ID) {
+                        optimalNode = node.ID;
+                    }else if(node.inputs){
+                        optimalNode = this._getNextOptimalNode(node.ID);
+                    }
+                }, obj);
+                return optimalNode;
+            },
             getOptimalNode: function() {
+                var givenNodes = this.given.getNodes();
+                var studentNodes = this.student.getNodes();
+                var nextNode;
+                
+                for (var i = 0; i < givenNodes.length; i++) {                   
+                    if (givenNodes[i].parentNode) {
+                        for (var ii = 0; ii < studentNodes.length; ii++) {
+                            if (studentNodes[ii].descriptionID === givenNodes[i].ID) {
+                                return this._getNextOptimalNode(givenNodes[i].ID);
+                            } else {
+                                nextNode = givenNodes[i].ID;
+                            }
+                        }
+                    }
+                }
+                return nextNode;
+            },
+            getOptimalNode2: function() {
                 // Summary: returns the ID of an optimal node to be used next
                 // Note: the function first searches for an optimal child node 
                 //      of the last valid node that was made visible, then if none 
@@ -392,7 +446,7 @@ define([
                             return this.model.task.givenModelNodes[i].ID;
                 return id;
             },
-            getNextOptimalNode: function(/*string*/ currentNodeID) {
+            getNextOptimalNode2: function(/*string*/ currentNodeID) {
                 // Summary: returns the next optimal child node of currentNodeID or 
                 //      null if there is not an optimal child node
                 var checkedNodes = [];
@@ -820,7 +874,7 @@ define([
                 this.getNode(id).name = name;
             },
             setParent: function(/*string*/ id, /*bool*/ parent) {
-                this.getNode(id).parent = parent;
+                this.getNode(id).parentNode = parent;
             },
             setExtra: function(/*string*/ id, /*bool*/ extra) {
                 this.getNode(id).extra = extra;
@@ -837,7 +891,7 @@ define([
             setDescription: function(/*string*/ id, /*string*/ description) {
                 this.getNode(id).description = description;
             },
-            setAttemptCount: function(/*string*/ id, /*string*/ part, /*string*/ count) {      
+            setAttemptCount: function(/*string*/ id, /*string*/ part, /*string*/ count) {
                 this.getNode(id).attemptCount[part] = count;
             }
         }, both);

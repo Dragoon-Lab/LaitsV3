@@ -86,7 +86,7 @@
                  },
                  "selections": {}
                  });*/
-                var myNode = rabbits.student.addNode({
+                rabbits.student.addNode({
                     "ID": "myid5",
                     "descriptionID": "myid2",
                     "type": null,
@@ -99,7 +99,7 @@
                     },
                     "status": {}
                 }); 
-                var myNode = rabbits.student.addNode({
+                rabbits.student.addNode({
                     "ID": "myid6",
                     "descriptionID": null,
                     "type": null,
@@ -112,6 +112,9 @@
                     },
                     "status": {}
                 });
+                
+                alert(rabbits.getOptimalNode());
+                //alert(rabbits.isNodesParentVisible("myid6", "myid3"));
 /*                rabbits.setToDemo(myNode, "description");
                 rabbits.setToDemo(myNode, "type");
                 rabbits.setToDemo(myNode, "initial");
