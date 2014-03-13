@@ -327,7 +327,7 @@ define([
             // Alert conroller of correct answer if status will be set to 'demo'
             if (interpretation === "lastFailure" || interpretation === "secondFailure") {
                 answer = this.model.getCorrectAnswer(id, nodePart);
-                console.log("*****\n",id, {id: nodePart, attribute: "select", value: answer});
+                console.log("****\n", "set to: ", {id: nodePart, attribute: "select", value: answer});
                 returnObj.push({id: nodePart, attribute: "select", value: answer});
             }
 

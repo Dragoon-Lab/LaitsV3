@@ -432,92 +432,10 @@ define([
                     return node[nodePart];
                 }
             },
-            getOptimalNode2: function() {
-                // Summary: returns the ID of an optimal node to be used next
-                // Note: the function first searches for an optimal child node 
-                //      of the last valid node that was made visible, then if none 
-                //      are found the function searches for a parent node that is 
-                //      visible but still has descendant nodes that are not, and 
-                //      then it searches for a parent node that has not been 
-                //      defined, and then for any node that has not been defined 
-                var id = null;
-                if (this.lastNodeVisible !== null) {
-                    //searches for an optimal child node of the last valid node that was made visible
-                    id = this.getNextOptimalNode(this.lastNodeVisible);
-                    if (id !== null)
-                        return id;
-                }
-                for (var i = 0; i < this.model.task.givenModelNodes.length; i++) {
-                    //searches for a parent node that is visible but still has descendant nodes that are not
-                    if (this.model.task.givenModelNodes[i].parentNode) {
-                        if (this.isNodeVisible(this.model.task.givenModelNodes[i].ID)) {
-                            id = this.getNextOptimalNode(this.model.task.givenModelNodes[i].ID);
-                            if (id !== null)
-                                return id;
-                        } else {
-                            id = this.model.task.givenModelNodes[i].ID;
-                        }
-                    }
-                }
-                if (id === null)
-                    for (i = 0; i < this.model.task.givenModelNodes.length; i++)
-                        if (!this.isNodeVisible(this.model.task.givenModelNodes[i].ID))
-                            return this.model.task.givenModelNodes[i].ID;
-                return id;
-            },
-            getNextOptimalNode2: function(/*string*/ currentNodeID) {
-                // Summary: returns the next optimal child node of currentNodeID or 
-                //      null if there is not an optimal child node
-                var checkedNodes = [];
-                return this._checkChildren(currentNodeID, checkedNodes);
-            },
-            getNextOptimalInput: function(/*string*/ currentNodeID) {
-                //Summary: returns the next non-visible input to a node
-                for (var i = 0; i < this.given.getInputs(currentNodeID).length; i++)
-                    if (!this.isNodeVisible(this.given.getInputs(currentNodeID)[i]))
-                        return this.given.getInputs(currentNodeID)[i];
-                return null;
-            },
-            isDescriptionOptimal: function(/*string*/ description) {
-                for (var i = 0; i < this.model.task.givenModelNodes.length; i++) {
-                    if (this.model.task.givenModelNodes[i].description === description) {
-                        var id = this.model.task.givenModelNodes[i].ID;
-                        if (this.isNodeVisible(id))
-                            return "alreadyExists";
-                        if (this.model.task.givenModelNodes[i].parentNode)
-                            return "optimal";
-                        if (this.isNodesParentVisible(id))
-                            return "optimal";
-                        return "notOptimal";
-                    }
-                }
-                return "doesNotExist";
-            },
-            getNodeAttemptCount: function(/*string*/ id, /*string*/ part) {
+            getNodeAttemptCount: function(/*string*/ id, /*string*/ nodePart) {
                 // Summary: returns the number of attempts a student has made on the 
                 //      given part of the problem
-                for (var i = 0; i < this.model.task.givenModelNodes.length; i++)
-                    if (id === this.model.task.givenModelNodes[i].ID)
-                        switch (part) {
-                            case "description":
-                                return this.model.task.givenModelNodes[i].attemptCount.description;
-                                break;
-                            case "type":
-                                return this.model.task.givenModelNodes[i].attemptCount.type;
-                                break;
-                            case "initial":
-                                return this.model.task.givenModelNodes[i].attemptCount.initial;
-                                break;
-                            case "units":
-                                return this.model.task.givenModelNodes[i].attemptCount.units;
-                                break;
-                            case "equation":
-                                return this.model.task.givenModelNodes[i].attemptCount.equation;
-                                break;
-                            default:
-                                console.error("Invalid part ", part);
-                        }
-                return null;
+                return this.given.getNode(id).attemptCount[nodePart] || null;
             },
             incrementDescriptionAttemptCount: function(/*string*/ id) {
                 // Summary: returns the number of attempts a student has made on the 

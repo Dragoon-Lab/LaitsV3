@@ -147,13 +147,13 @@
 
                 var ped = new pm("COACHED", null, rabbits);
 
-                descInfo = ped.descriptionAction("id6", "id7");
+                descInfo = ped.descriptionAction("id5", "id7");
                 console.log(descInfo);
                 
-                descInfo = ped.descriptionAction("id6", "id8");
+                descInfo = ped.descriptionAction("id5", "id8");
                 console.log(descInfo);
                 
-                descInfo = ped.descriptionAction("id6", "id7");
+                descInfo = ped.descriptionAction("id5", "id7");
                 console.log(descInfo);
 
 //***
@@ -172,7 +172,8 @@
                 descInfo = ped.equationAction("id5", "id1 * id3 + 0");
 
                 console.log(descInfo);
-
+                
+                console.log("AC:", rabbits.getNodeAttemptCount("id10", "equation"));
 
                 /*
                  //Set description
