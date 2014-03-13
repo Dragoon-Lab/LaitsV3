@@ -47,19 +47,19 @@
                 rabbits.given.setEquation(rabbitID, "myid2");
                 rabbits.given.setDescription(rabbitID, "The number of rabbits in the population");
                 rabbits.given.addNode({
-                    "ID": "myid2",
+                    "ID": "id2",
                     "name": "births",
                     "type": "function",
                     "parentNode": true,
                     "extra": false,
                     "units": "births",
-                    "inputs": [{"ID": rabbitID}, {"ID": "myid3"}],
+                    "inputs": [{"ID": rabbitID}, {"ID": "id3"}],
                     "initial": null,
-                    "equation": "id1 * myid3",
+                    "equation": "id1 * id3",
                     "description": "The number of rabbits born each month"
                 });
                 rabbits.given.addNode({
-                    "ID": "myid3",
+                    "ID": "id3",
                     "name": "birth rate",
                     "type": "parameter",
                     "parentNode": false,
@@ -77,6 +77,7 @@
                     },
                     "status": {}
                 });
+                 console.log("All nodes visible?", rabbits.areAllNodesVisible());
                 /*var myNode = rabbits.student.addNode({
                  "ID": "myNode",  //This is optional.
                  "inputs": [],
@@ -87,8 +88,8 @@
                  "selections": {}
                  });*/
                 rabbits.student.addNode({
-                    "ID": "myid5",
-                    "descriptionID": "myid2",
+                    "ID": "id5",
+                    "descriptionID": "id2",
                     "type": null,
                     "units": null,
                     "inputs": [],
@@ -100,7 +101,7 @@
                     "status": {}
                 }); 
                 rabbits.student.addNode({
-                    "ID": "myid6",
+                    "ID": "id6",
                     "descriptionID": null,
                     "type": null,
                     "units": null,
@@ -113,7 +114,7 @@
                     "status": {}
                 });
                 
-                alert(rabbits.getOptimalNode());
+                //alert(rabbits.getOptimalNode());
                 //alert(rabbits.isNodesParentVisible("myid6", "myid3"));
 /*                rabbits.setToDemo(myNode, "description");
                 rabbits.setToDemo(myNode, "type");
@@ -146,24 +147,32 @@
 
                 var ped = new pm("COACHED", null, rabbits);
 
-                descInfo = ped.descriptionAction("myid5", "id7");
+                descInfo = ped.descriptionAction("id6", "id7");
                 console.log(descInfo);
                 
-                //descInfo = ped.descriptionAction("myid5", "myid2");
-                //console.log(descInfo);
+                descInfo = ped.descriptionAction("id6", "id8");
+                console.log(descInfo);
                 
-                descInfo = ped.descriptionAction("myid5", "myid2");
+                descInfo = ped.descriptionAction("id6", "id7");
                 console.log(descInfo);
 
-                descInfo = ped.typeAction("myid5", "function");
+//***
+
+                descInfo = ped.typeAction("id5", "parameter");
                 console.log(descInfo);
                 
-                descInfo = ped.unitsAction("myid5", "births");
+                descInfo = ped.typeAction("id5", "parameter");
+                console.log(descInfo);
+
+//***
+
+                descInfo = ped.unitsAction("id5", "births");
                 console.log(descInfo);
                 
-                descInfo = ped.equationAction("myid5", "id1 * myid3 + 0");
+                descInfo = ped.equationAction("id5", "id1 * id3 + 0");
 
                 console.log(descInfo);
+
 
                 /*
                  //Set description

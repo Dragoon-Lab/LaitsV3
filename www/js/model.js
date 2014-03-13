@@ -354,32 +354,38 @@ define([
                         return false;
                 return true;
             },
-            areAllNodesVisible: function(/*string*/ id) {
-                //Summary: returns true if all of the inputs in the model are visible
-                for (var i = 0; i < this.givenModelNodes(id).length; i++)
-                    if (!this.isNodeVisible(this.givenModelNodes(id)[i]))
+            areAllNodesVisible: function() {
+                //Summary: returns true if all of the nodes in the model are visible
+                var givenNodes = this.given.getNodes();
+                for (var i = 0; i < givenNodes.length; i++) {
+                    if (!array.some(this.student.getNodes(), function(studentNode) {
+                        return this.isNodeVisible(studentNode.ID, givenNodes[i].ID);
+                    }, this))
                         return false;
+                }
                 return true;
             },
-            isInputVisible: function(givenNodeID) {
-                return array.some(this.student.getNodes(), function(node) {
-                    return node.descriptionID === givenNodeID;
-                });
-            },
-            /*   
+            /*isInputVisible: function(givenNodeID) {
+             return array.some(this.student.getNodes(), function(node) {
+             return node.descriptionID === givenNodeID;
+             });
+             },
+             
              array.forEach(this.given.getNodes(), function(node) {
              if (node.ID == id) {
              ret = node.name;
              }
              }, this);
              */
-    
-    /**
-     * Next 2 nodes are to return the next optimal node; needs testing; in process;
-     *      getOptimalNode() can be called to search through the model and return 
-     *      an optimal node as long as the model is in a tree structure
-     */
-            _getNextOptimalNode: function(givenNodeID) {
+
+            /**
+             * Next 2 nodes are to return the next optimal node; needs testing; in process;
+             *      getOptimalNode() can be called to search through the model and return 
+             *      an optimal node as long as the model is in a tree structure
+             */
+            _getNextOptimalNode: function(/*string*/ givenNodeID) {
+                // Summary: Accepts the id of a parent node and returns the next optimal
+                //      child node that is not visible, or null if all descendants are visible
                 var optimalNode = null;
                 var isInputVisible = function(givenNodeID) {
                     return array.some(obj.student.getNodes(), function(node) {
@@ -389,29 +395,42 @@ define([
                 array.forEach(this.given.getNode(givenNodeID).inputs, function(node) {
                     if (!isInputVisible(node.ID) && givenNodeID !== node.ID) {
                         optimalNode = node.ID;
-                    }else if(node.inputs){
+                    } else if (node.inputs) {
                         optimalNode = this._getNextOptimalNode(node.ID);
                     }
                 }, obj);
                 return optimalNode;
             },
-            getOptimalNode: function() {
-                var givenNodes = this.given.getNodes();
-                var studentNodes = this.student.getNodes();
-                var nextNode;
+            getOptimalNode: function(/*string*/ studentID) {
+                // Summary: Returns the next optimal node, first checking for children
+                //      of visible parent nodes, and then checking for parent nodes that
+                //      aren't visible; 
+                //      
+                // Note: the student node studentID is assumed incorrect so it is ignored
                 
-                for (var i = 0; i < givenNodes.length; i++) {                   
+                var givenNodes = this.given.getNodes();
+                var nextNode = "model complete";
+
+                for (var i = 0; i < givenNodes.length; i++) {
                     if (givenNodes[i].parentNode) {
-                        for (var ii = 0; ii < studentNodes.length; ii++) {
-                            if (studentNodes[ii].descriptionID === givenNodes[i].ID) {
-                                return this._getNextOptimalNode(givenNodes[i].ID);
-                            } else {
-                                nextNode = givenNodes[i].ID;
-                            }
-                        }
+                        if (!this.isNodeVisible(studentID, givenNodes[i].ID))
+                            nextNode = givenNodes[i].ID;
+                        else if (givenNodes[i].inputs)
+                            return this._getNextOptimalNode(givenNodes[i].ID);
+                        console.log("*^*^*Parent:\n", givenNodes[i].ID);
                     }
                 }
                 return nextNode;
+            },
+            getCorrectAnswer: function(/*string*/ studentID, /*string*/ nodePart) {
+                // Summary: returns the correct answer for a given part of a node;
+                //      used by the pedagogical model
+                var node = this.given.getNode(this.student.getNode(studentID).descriptionID);
+                if (nodePart === "description")
+                    return this.getOptimalNode(studentID);
+                else {
+                    return node[nodePart];
+                }
             },
             getOptimalNode2: function() {
                 // Summary: returns the ID of an optimal node to be used next
