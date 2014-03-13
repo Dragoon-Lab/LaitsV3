@@ -47,9 +47,7 @@ define([
 	@author: Deepak
 	@brief: calling calculation class to get node values and passing parameters to rendergraph and rendertable
 	*/
-	var calc = new calculations(solutionGraph,true);
-	var obj = calc.gerParametersForRendering(solutionGraph,true);
-	
+
 	/*
 	 start up controller
 	 */
@@ -108,32 +106,32 @@ define([
 	    });
 	    
 	    /*
-	     It would make more sense to call initHandles for each node as it is created
-             on the canvas.
-	     
-	     In AUTHOR mode, this will break, since we want the solution
-	     graph in that case.  See trello card https://trello.com/c/TDWdq6q6
-	     */
-	    controllerObject.initHandles();
-	    
-	    /*
 	     Make model solution plot using dummy data. 
 	     This should be put in its own module.
 	     */	
 	
-	    // instantiate graph object
-	    var graph = new Graph(obj);
+
 	    // show graph when button clicked
 	    menu.add("graphButton",function(){
-		console.debug("button clicked");	   
+		console.debug("button clicked");
+
+        var calc = new calculations(solutionGraph,true);
+        var obj = calc.gerParametersForRendering(solutionGraph,true);
+
+        // instantiate graph object
+        var graph = new Graph(obj);
 		graph.show();
 	    }); 
 	    
-		var table = new Table(obj);
-	
-	    // show graph when button clicked
+
+	    // show table when button clicked
 	    menu.add("tableButton", function(){        	
 		console.debug("table button clicked");
+
+        var calc = new calculations(solutionGraph,true);
+        var obj = calc.gerParametersForRendering(solutionGraph,true);
+
+        var table = new Table(obj);
 		table.show();
 	    });
 

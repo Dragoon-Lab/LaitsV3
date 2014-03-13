@@ -22,10 +22,12 @@ define([
 			currentNodeValues: {},
             //set current mode. TRUE = givenModel / FALSE = StudentModel
             active:null,
-			
+			//solution graph object
+            solutionGraph: null,
 			
 			constructor: function(solutionGraph,mode)
 			{
+                this.solutionGraph = solutionGraph;
 				this.model = new model();
                 this._setMode(mode);
 				this._setModel(solutionGraph);
@@ -255,7 +257,7 @@ define([
 				
 				//create object comprising all parameters required for rendering chart and table
 				var object = {noOfParam:noOfParam,arrayOfParameterNames:arrayOfParameterNames,arrayOfParamInitialValues:arrayOfParamInitialValues,
-				xUnits:xUnits,units:units,arrayOfTimeSteps:arrayOfTimeSteps,arrayOfNodeValues:arrayOfNodeValues
+				xUnits:xUnits,units:units,arrayOfTimeSteps:arrayOfTimeSteps,arrayOfNodeValues:arrayOfNodeValues, calculationObj:this
 				};
 
                 return object;
