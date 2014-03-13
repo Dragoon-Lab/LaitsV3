@@ -128,8 +128,8 @@ define([
             console.log("--> setting position for vertex : "+ node.ID +" position: x"+node.position.x+"  y:"+node.position.y);
 
             var nodeName = this._givenModel.student.getName(node.ID);
-            if(nodeName)
-                nodeName='<div><strong>'+nodeName+'</strong></div>';
+            if(nodeName && type != "triangle")
+                nodeName='<div id='+node.ID+'Label><strong>'+nodeName+'</strong></div>';
             else
                 nodeName='';
 
