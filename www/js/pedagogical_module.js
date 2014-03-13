@@ -334,8 +334,9 @@ define([
                         this.descriptionCounter = 0;
                     }
             // Process answers for all other node types
-            }else{
+            } else {
                 var givenID = this.model.student.getDescriptionID(id);
+		console.assert(actionTable[interpretation],"_processAnswer interpretation '" + interpretation + "' not in table ", actionTable);
                 actionTable[interpretation][this.userType](returnObj, nodePart);
                 this.model.given.setAttemptCount(givenID, nodePart, this.model.getNodeAttemptCount(givenID, nodePart) + 1);
                                
