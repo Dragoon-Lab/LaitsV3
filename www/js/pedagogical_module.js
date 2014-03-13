@@ -391,7 +391,11 @@ define([
             //          It assumes everything has been enabled and has no colors
             // Policy: disable all but the description on new node
             // BvdS: might want to also activate type in TEST mode
-            var controls = ["type", "initial", "units", "inputs", "equation"];
+	    /*
+	     For now, do not enable/disable inputs.  
+	     See Trello card https://trello.com/c/mpd2Ivjd
+	     */
+            var controls = ["type", "initial", "units", "equation"];
             var directives = array.map(controls, function(control) {
                 return {id: control, attribute: "disabled", value: true};
             });

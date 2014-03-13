@@ -138,7 +138,6 @@
 		
 			<!-- Putting Node-Editor -Dialog stuff for demo -->
 			<div style="position: absolute; z-index: 900; left: 162px; top: 111px; height: 488px; width: 689px;" class="claro"  data-dojo-type="dijit/Dialog" id="nodeeditor">
-  <div data-dojo-type="dijit/layout/ContentPane" title="Pane" doLayout="false" style="border: 1px solid black; position: absolute; z-index: 900; left: 53px; top: 19px; width: 565px; height: 400px;">
    <div style="position: absolute; z-index: 900; height: 26px; left: 81.09375px; top: 40.5px; width: 481px;"></div>
    <select id="selectDescription" data-dojo-type="dijit/form/Select" intermediateChanges="false" trim="false" uppercase="false" lowercase="false" propercase="false" invalidMessage="$_unset_$" pageSize="Infinity" searchDelay="200" style="position: absolute; z-index: 900; left: 83.546875px; top: 47.5px; width: 467.109375px;">
        <option value='defaultSelect'>--Select--</option>
@@ -152,7 +151,7 @@
        <option value="accumulator">Accumulator</option>
        <option value="function">Function</option>
    </select>
-   <input id="initialValue" type="text" data-dojo-type="dijit/form/NumberTextBox" intermediateChanges="false" trim="false" uppercase="false" lowercase="false" propercase="false" invalidMessage="$_unset_$" pageSize="Infinity" searchDelay="200" style="position: absolute; z-index: 900; width: 49.109375px; left: 321.0390625px; top: 77px;">
+   <input id="initialValue" type="text" data-dojo-type="dijit/form/NumberTextBox" intermediateChanges="false" uppercase="false" lowercase="false" propercase="false" invalidMessage="$_unset_$" pageSize="Infinity" searchDelay="200" style="position: absolute; z-index: 900; width: 49.109375px; left: 321.0390625px; top: 77px;">
    <select id="selectUnits" data-dojo-type="dijit/form/Select" intermediateChanges="false" trim="false" uppercase="false" lowercase="false" propercase="false" invalidMessage="$_unset_$" pageSize="Infinity" searchDelay="200" style="position: absolute; z-index: 900; left: 464.9375px; top: 77px; width: 91.109375px;">
        <option value='defaultSelect'>--Select--</option>
    </select>
@@ -164,12 +163,12 @@
   </div>
     
 
-   <input type="button" data-dojo-type="dijit/form/Button" intermediateChanges="false" label="+" iconClass="dijitNoIcon" style="position: absolute; z-index: 900; left: 82.48589992523193px; top: 159.59679985046387px;" id="plus"></input>
-   <input type="button" data-dojo-type="dijit/form/Button" intermediateChanges="false" label="-" iconClass="dijitNoIcon" style="position: absolute; z-index: 900; left: 135.04839992523193px; top: 159.76714992523193px;"></input>
-   <input type="button" data-dojo-type="dijit/form/Button" intermediateChanges="false" label="*" iconClass="dijitNoIcon" style="position: absolute; z-index: 900; left: 181.04839992523193px; top: 159.56554985046387px;"></input>
-   <input type="button" data-dojo-type="dijit/form/Button" intermediateChanges="false" label="/" iconClass="dijitNoIcon" style="position: absolute; z-index: 900; left: 235.47027492523193px; top: 159.54839992523193px;"></input>
-   <input type="button" data-dojo-type="dijit/form/Button" intermediateChanges="false" label="Undo" iconClass="dijitNoIcon" style="position: absolute; z-index: 900; left: 401.04992485046387px; top: 161.29839992523193px;"></input>
-   <input type="button"  id="doneNodeEditor" data-dojo-type="dijit/form/Button" intermediateChanges="false" label="Done" iconClass="dijitNoIcon" style="position: absolute; z-index: 900; left: 495.984375px; top: 160px;" ></input>
+   <input id="plusButton" type="button" data-dojo-type="dijit/form/Button" intermediateChanges="false" label="+" iconClass="dijitNoIcon" style="position: absolute; z-index: 900; left: 82.48589992523193px; top: 159.59679985046387px;"></input>
+   <input id="minusButton" type="button" data-dojo-type="dijit/form/Button" intermediateChanges="false" label="-" iconClass="dijitNoIcon" style="position: absolute; z-index: 900; left: 135.04839992523193px; top: 159.76714992523193px;"></input>
+   <input id="timesButton" type="button" data-dojo-type="dijit/form/Button" intermediateChanges="false" label="*" iconClass="dijitNoIcon" style="position: absolute; z-index: 900; left: 181.04839992523193px; top: 159.56554985046387px;"></input>
+   <input id="divideButton" type="button" data-dojo-type="dijit/form/Button" intermediateChanges="false" label="/" iconClass="dijitNoIcon" style="position: absolute; z-index: 900; left: 235.47027492523193px; top: 159.54839992523193px;"></input>
+   <input id="undoButton" type="button" data-dojo-type="dijit/form/Button" intermediateChanges="false" label="Undo" iconClass="dijitNoIcon" style="position: absolute; z-index: 900; left: 401.04992485046387px; top: 161.29839992523193px;"></input>
+   <input id="equationDoneButton" type="button" data-dojo-type="dijit/form/Button" intermediateChanges="false" label="Done" iconClass="dijitNoIcon" style="position: absolute; z-index: 900; left: 495.984375px; top: 160px;" ></input>
    <textarea id="equationBox" type="text" data-dojo-type="dijit/form/SimpleTextarea" rows="2" cols="5" style="position: absolute; z-index: 900; height: auto; width: 437px; left: 82.578125px; top: 248.5px;"></textarea>
 <div id="messageBox" data-dojo-type="dijit/layout/ContentPane" style="background:#e5e5e5; border:solid black 1px; overflow-y:scroll; position: absolute; z-index: 900; height: 80px; width: 437px;  left: 82.578125px; top: 330.5px;"></div>
    <label style="position: absolute; z-index: 900; left: 82.47027492523193px; top: 204px;">
@@ -190,7 +189,6 @@
 </div>
 		    <!-- Putting Node-Editor stuff for demo  end -->
 			
-	</div>
     </div>  <!-- main -->			
 </body>
 </html>

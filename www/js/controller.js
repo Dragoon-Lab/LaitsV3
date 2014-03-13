@@ -4,9 +4,9 @@
  */
 define([
     "dojo/_base/array", 'dojo/_base/declare', "dojo/_base/lang", 
-    'dojo/aspect', 'dojo/dom', 'dojo/on', "dojo/ready", 'dijit/registry',
+    'dojo/aspect', 'dojo/dom', 'dojo/dom-style', 'dojo/keys', 'dojo/on', "dojo/ready", 'dijit/registry',
     "./pedagogical_module","parser/parser","dojo/dom-class","dojo/dom-construct"
-], function(array, declare, lang, aspect, dom, on, ready, registry, PM, parser,domClass,domConstruct) {
+], function(array, declare, lang, aspect, dom, style, keys, on, ready, registry, PM, parser,domClass,domConstruct) {
     
     return declare(null, {
 	
@@ -89,9 +89,12 @@ define([
 		};
 		if(value)
 		    console.assert(colorMap[value], "Invalid color specification "+value);
-		// BvdS:  I chose bgColor because it was easy to do
-		// Might instead/also change text color?  
-		this.domNode.bgColor = value?colorMap[value]:'';
+		// console.log(" >>>>>>>> changing color to " + value);
+		/* BvdS:  I chose bgColor because it was easy to do
+		 Might instead/also change text color? 
+		 Previously, just set domNode.bgcolor but this approach didn't work
+		 for text boxes.   */
+		style.set(this.domNode, 'backgroundColor', value?colorMap[value]:'');
 	    };
 	    for(var control in this.controlMap){
 		var w = registry.byId(this.controlMap[control]);
@@ -177,25 +180,49 @@ define([
 	     */
 
 	    var desc = registry.byId(this.controlMap.description);
-            on(desc, 'Change',  lang.hitch(this, function(){
+            desc.on('Change',  lang.hitch(this, function(){
 		return this.disableHandlers || this.handleDescription.apply(this, arguments);
 	    }));
 
 	    var type = registry.byId(this.controlMap.type);
-            on(type, 'Change',  lang.hitch(this, function(){
+            type.on('Change',  lang.hitch(this, function(){
 		return this.disableHandlers || this.handleType.apply(this, arguments);
 	    }));
-	    
-	    var done = dom.byId("doneNodeEditor");
-	    on(done, 'click',  function(){
-		console.log("*********** handler for done");
+
+	    var initialWidget = registry.byId(this.controlMap.initial);
+	    // This event gets fired if student hits TAB or input box
+	    // goes out of focus.
+            initialWidget.on('Change',  lang.hitch(this, function(){
+		return this.disableHandlers || this.handleInitial.apply(this, arguments);
+	    }));
+	    // Look for ENTER key event and fire 'Change' event, passing
+	    // value in box as argument.  This is then intercepted by the 
+	    // regular handler.
+	    initialWidget.on("keydown", function(evt){
+		// console.log("----------- input character ", evt.keyCode, this.get('value'));
+		if(evt.keyCode == keys.ENTER)
+		    this.emit('Change', {}, [this.get('value')]);
 	    });
 
-	    var plus = dom.byId("plus");
-            console.log("testing the plus widget", desc);
-            on(plus, 'click', function(){
-		console.log("******** handler for plus");
-	    });  
+	    var unitsWidget = registry.byId(this.controlMap.units);
+            unitsWidget.on('Change',  lang.hitch(this, function(){
+		return this.disableHandlers || this.handleUnits.apply(this, arguments);
+	    }));
+
+	    var equationWidget = registry.byId(this.controlMap.equation);
+            equationWidget.on('Change',  lang.hitch(this, function(){
+		return this.disableHandlers || this.handleEquation.apply(this, arguments);
+	    }));
+	    
+	    var buttons = ['plusButton', 'minusButton', 'timesButton', 'divideButton', 'undoButton', 'equationDoneButton'];
+	    array.forEach(buttons, function(button){
+		var w = registry.byId(button);
+		console.assert(w, "Button " + button + " not found");
+		w.on('click',  function(){
+		    console.log("*********** handler for " + button);
+		});
+	    });
+
 	},
 
 
@@ -219,59 +246,73 @@ define([
 	handleDescription: function(selectDescription){
             console.log("****** in handleDescription ", this.currentID, selectDescription);
 	    if(selectDescription == 'defaultSelect')return; // don't do anything if they choose default
+
+            // updating node editor and the model.	    
             this._model.active.setDescriptionID(this.currentID, selectDescription);
             var directives = this._PM.descriptionAction(this.currentID, selectDescription);
-	    array.forEach(directives , function(desc){
-		this.updateModelStatus(desc);
-		var w = registry.byId(this.widgetMap[desc.id]);
-		console.assert(w, "widget not found", this.widgetMap, desc, this.widgetMap[desc.id]);
-		// console.log("*********  setting widget ", w, " using ", desc);
-		w.set(desc.attribute, desc.value);
+	    array.forEach(directives , function(directive){
+		this.updateModelStatus(directive);
+		var w = registry.byId(this.widgetMap[directive.id]);
+		// console.log("*********  setting widget ", w, " using ", directive);
+		w.set(directive.attribute, directive.value);
             }, this);	    
 	},
-
+	
 	handleType: function(type){
 	    console.log("****** Student has chosen type ", type, this);
 	    if(type == 'defaultSelect')return; // don't do anything if they choose default
-	    // Need to call PM, and handle reply from PM,
 
-        //update node type
-        console.log("===========>   changing node class to "+type);
-        domClass.replace(this.currentID, type);
-
-        var nodeName = this._model.student.getName(this.currentID);
-        if(nodeName && type != "triangle")
-            nodeName='<div id='+this.currentID+'Label><strong>'+nodeName+'</strong></div>';
-        else
-            nodeName='';
-        if(lang.exists(this.currentID+'Label'))
-            domConstruct.place(nodeName,this.currentID+'Label',"replace");
-        else //new node
-            domConstruct.place(nodeName,this.currentID);
-
-        // updating node editor and the model.
-
-        this._model.active.setType(this.currentID, type);
-        var directives = this._PM.typeAction(this.currentID, type);
-        array.forEach(directives, function(directive){
-	    console.log("*********** update node editor ", directive); 
-	    this.updateModelStatus(directive);
-	    var w = registry.byId(this.widgetMap[directive.id]);
-	    w.set(directive.attribute, directive.value);
-        }, this);
-
+	    //update node type
+            console.log("===========>   changing node class to "+type);
+            domClass.replace(this.currentID, type);
+            var nodeName = this._model.student.getName(this.currentID);
+            if(nodeName && type != "triangle")
+		nodeName='<div id='+this.currentID+'Label><strong>'+nodeName+'</strong></div>';
+            else
+		nodeName='';
+            if(lang.exists(this.currentID+'Label'))
+		domConstruct.place(nodeName,this.currentID+'Label',"replace");
+            else //new node
+		domConstruct.place(nodeName,this.currentID);
+	    
+            // updating node editor and the model.	    
+            this._model.active.setType(this.currentID, type);
+            var directives = this._PM.typeAction(this.currentID, type);
+            array.forEach(directives, function(directive){
+		console.log("*********** update node editor ", directive); 
+		this.updateModelStatus(directive);
+		var w = registry.byId(this.widgetMap[directive.id]);
+		w.set(directive.attribute, directive.value);
+            }, this);	    
 	},
 
-    handleUnits: function(unit){
-      console.log("*******Student has chosen unit", unit, this);
-        this._model.active.setUnits(this.currentID, unit);
+	handleInitial: function(initial){
+	    console.log("****** Student has chosen initial value", initial, this);	    
 
-        var directives = this._PM.unitsAction(this.currentID, unit);
-        array.forEach(directives, function(directive){
-            var w = registry.byId(this.controlMap[directive.id]);
-            w.set(directive.attribute, directive.value);
-        }, this);
-    },
+            // updating node editor and the model.	    
+            this._model.active.setInitial(this.currentID, initial);
+            var directives = this._PM.initialAction(this.currentID, initial);
+            array.forEach(directives, function(directive){
+		// console.log("*********** update node editor ", directive); 
+		this.updateModelStatus(directive);
+		var w = registry.byId(this.widgetMap[directive.id]);
+		w.set(directive.attribute, directive.value);
+            }, this);
+	},
+
+	handleUnits: function(unit){
+	    console.log("*******Student has chosen unit", unit, this);
+
+            // updating node editor and the model.	    
+            this._model.active.setUnits(this.currentID, unit);
+	    var directives = this._PM.unitsAction(this.currentID, unit);
+            array.forEach(directives, function(directive){
+		this.updateModelStatus(directive);
+		var w = registry.byId(this.widgetMap[directive.id]);
+		w.set(directive.attribute, directive.value);
+            }, this);
+	},
+
 	handleNodeEditorButtonClicks: function(buttonId){
 	    console.log('****** combo box select ', buttonId);
 	},
