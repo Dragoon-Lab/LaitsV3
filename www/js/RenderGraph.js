@@ -9,10 +9,10 @@ define([
     "dojo/on", "dojo/_base/declare", 
     "dijit/Dialog", "dijit/form/HorizontalSlider",
     "dojo/dom", "dojox/charting/Chart", "dojox/charting/axis2d/Default", "dojox/charting/plot2d/Lines",
-    "dojox/charting/plot2d/Grid", "dojox/charting/widget/Legend","dojo/ready", "dojo/domReady!"
+    "dojox/charting/plot2d/Grid", "dojox/charting/widget/Legend","dojo/ready", "dojo/_base/lang","dojo/domReady!"
 ], function(on, declare, Dialog, HorizontalSlider, dom,
 	    // It looks like Default, Lines, Grid are not used.  Can they be removed?
-	    Chart, Default, Lines, Grid, Legend,ready){
+	    Chart, Default, Lines, Grid, Legend,ready,lang){
     return declare(null, {
 	
 	//no of parameters that can affect graph. This parameter will be used to create sliders
@@ -99,11 +99,12 @@ define([
                var chartArray = this.chart;
                var slider = this.sliders[i];
                var index  = i;
-               on(this.sliders[i],"change", function(evt){
+
+               on(this.sliders[i],"change", lang.hitch(this,function(){
 
                    dom.byId("text"+index).value = slider.value;
-                   obj.calculationObj.active.setInitial(paramID,slider.value);
-                   var newObj = obj.calculationObj.gerParametersForRendering(obj.calculationObj.solutionGraph,true);
+                   this.object.calculationObj.active.setInitial(paramID,slider.value);
+                   var newObj = this.object.calculationObj.gerParametersForRendering(this.object.calculationObj.solutionGraph,true);
 
                    //update and render the chart
                    var l=0;
@@ -114,7 +115,7 @@ define([
                        l++;
                    }
 
-               });
+               }));
      	   
      	        //create label for name of a textbox
      	        //create input for a textbox
