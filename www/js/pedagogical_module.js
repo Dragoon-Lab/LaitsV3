@@ -147,7 +147,7 @@ define([
     // Counters used to determine which message in an array to display; they are not dependent on which node is 
     //      active and differ from the counters (attemptCount) in the model, which are node specific
     var counter = {correct: 0, notTopLevel: 0, premature: 0, initial: 0, extra: 0, irrelevant: 0, redundant: 0, incorrect: 0, lastFailure: 0, lastFailure2: 0};
-    
+
     /*****
      * Summary: The following four functions are used by the above tables to push 
      *      statuses and messages to the return object array.
@@ -163,7 +163,7 @@ define([
     function disable(/*object*/ obj, /*string*/ nodePart, /*boolean*/ disable) {
         obj.push({id: nodePart, attribute: "disabled", value: disable});
     }
-    
+
     function getMessage(/*string*/ nodePart, /*string*/ status) {
         // Summary: Returns the appropriate message from the hints object (above).
         var messages = new Array();
@@ -177,7 +177,7 @@ define([
             return messages[theCounter];
         }
     }
-    
+
     /*****
      * 
      * Builds class that is used by controller to check student answers
@@ -187,7 +187,7 @@ define([
         constructor: function(/*string*/ mode, /*string*/ subMode, /*model.js object*/ model) {
             this.model = model;
             this.mode = mode;
-            this.setUserType(subMode);           
+            this.setUserType(subMode);
         },
         matchingID: null,
         logging: null,
@@ -196,42 +196,42 @@ define([
          * Private Functions
          *****/
         _enableNext: function(/*object*/ obj, /*string*/ givenNodeID, /*string*/ currentPart, /*string*/ job) {
-        // Summary: adds messages to return object to enable specified parts of 
-        //      the node
-        //
-        // Tags: Private
+            // Summary: adds messages to return object to enable specified parts of 
+            //      the node
+            //
+            // Tags: Private
             var nodeType = this.model.given.getType(givenNodeID);
             var newPart = "equation";
-            
+
             switch (currentPart) {
-                case "type":                   
-                    if(nodeType === "parameter" || nodeType === "accumulator"){
+                case "type":
+                    if (nodeType === "parameter" || nodeType === "accumulator") {
                         disable(obj, "initial", false);
                         newPart = "initial";
-                    }else if (this.model.given.getUnits(givenNodeID)){
+                    } else if (this.model.given.getUnits(givenNodeID)) {
                         disable(obj, "units", false);
                         newPart = "units";
-                    }else{
+                    } else {
                         disable(obj, "equation", false);
                         newPart = "equation";
                     }
                     break;
-                case "initial":                   
-                    if (this.model.given.getUnits(givenNodeID)){
+                case "initial":
+                    if (this.model.given.getUnits(givenNodeID)) {
                         disable(obj, "units", false);
                         newPart = "units";
-                    }else if(nodeType === "function" || nodeType === "accumulator"){
+                    } else if (nodeType === "function" || nodeType === "accumulator") {
                         disable(obj, "equation", false);
                         newPart = "equation";
                     }
                     break;
                 case "units":
-                    if(nodeType === "function" || nodeType === "accumulator")
+                    if (nodeType === "function" || nodeType === "accumulator")
                         disable(obj, "equation", false);
                     newPart = "equation";
                     break;
             }
-            if(job === "enableRemaining" && newPart !== "equation")
+            if (job === "enableRemaining" && newPart !== "equation")
                 this._enableNext(obj, givenNodeID, newPart, job);
             else
                 return;
@@ -242,29 +242,27 @@ define([
             // Tags: Private
             var interpretation = null;
             var model = this.model; //needed for anonymous function in the interpret variable.
-            
+
             // Retrieves the givenID for the matching given model node
-            var givenID = this.model.student.getDescriptionID(studentID); 
-            
+            var givenID = this.model.student.getDescriptionID(studentID);
+
             // Anonymous function assigned to interpret--used by most parts of the switch below
-            var interpret = function(correctAnswer){
+            var interpret = function(correctAnswer) {
                 if (answer === correctAnswer || correctAnswer === true) {
                     interpretation = "correct";
                 } else {
-                    if (model.getNodeAttemptCount(givenID, nodePart) > 2)
-                        interpretation = "lastFailure2";
-                    else if (model.getNodeAttemptCount(givenID, nodePart) > 1)
+                    if (model.getNodeAttemptCount(givenID, nodePart) > 0)
                         interpretation = "secondFailure";
                     else
                         interpretation = "firstFailure";
                 }
             };
-                
+
             // Take action based on the part of the node being evaluated
             switch (nodePart) {
                 case "description":
                     this.descriptionCounter++;
-                    
+
                     if (this.model.student.isInExtras(answer)) {
                         array.forEach(this.model.getExtraDescriptions(), function(extra) {
                             if (answer === extra.ID && extra.type === "initial") {
@@ -295,7 +293,7 @@ define([
                     if (!this.model.given.getInitial(givenID))
                         interpretation = "correct";
                     else
-                        interpret(this.model.given.getInitial(givenID));                   
+                        interpret(this.model.given.getInitial(givenID));
                     break;
                 case "units":
                     interpret(this.model.given.getUnits(givenID));
@@ -314,9 +312,10 @@ define([
             if (this.logging) {
                 this.logging.log('solution-step', {node: studentID, type: nodePart, value: answer, checkResult: interpretation});
             }
+            console.log("*****\n",interpretation);
             return interpretation;
         },
-        _processAnswer: function(/*string*/ id, /*string*/ nodePart, /*string*/ answer){
+        _processAnswer: function(/*string*/ id, /*string*/ nodePart, /*string*/ answer) {
             // Summary: Pocesses a student's answers and returns if correct, 
             //      incorrect, etc. and alerts the controller about what parts 
             //      of the node editor should be active.
@@ -325,29 +324,35 @@ define([
             var interpretation = this._getInterpretation(id, nodePart, answer);
             var returnObj = [];
             
+            // Alert conroller of correct answer if status will be set to 'demo'
+            if (interpretation === "lastFailure" || interpretation === "secondFailure") {
+                answer = this.model.getCorrectAnswer(id, nodePart);
+                console.log("*****\n",id, {id: nodePart, attribute: "select", value: answer});
+                returnObj.push({id: nodePart, attribute: "select", value: answer});
+            }
+
             // Process answers for description
-            if(nodePart === "description"){
+            if (nodePart === "description") {                
                 descriptionTable[interpretation][this.userType](returnObj, nodePart);
-                for (var i = 0; i < returnObj.length; i++) 
-                    if (returnObj[i].value === "correct" || returnObj[i].value === "demo"){
+                for (var i = 0; i < returnObj.length; i++)
+                    if (returnObj[i].value === "correct" || returnObj[i].value === "demo") {
                         this.model.given.setAttemptCount(answer, nodePart, this.descriptionCounter);
                         this.descriptionCounter = 0;
                     }
-            // Process answers for all other node types
+                // Process answers for all other node types
             } else {
                 var givenID = this.model.student.getDescriptionID(id);
-		console.assert(actionTable[interpretation],"_processAnswer interpretation '" + interpretation + "' not in table ", actionTable);
+                console.assert(actionTable[interpretation], "_processAnswer interpretation '" + interpretation + "' not in table ", actionTable);
                 actionTable[interpretation][this.userType](returnObj, nodePart);
                 this.model.given.setAttemptCount(givenID, nodePart, this.model.getNodeAttemptCount(givenID, nodePart) + 1);
-                               
+
                 // Activate appropriate parts of the node editor
-                var lastElement = returnObj[returnObj.length-1].id;
-                if (lastElement === "enableNext" || lastElement === "enableRemaining"){
+                var lastElement = returnObj[returnObj.length - 1].id;
+                if (lastElement === "enableNext" || lastElement === "enableRemaining") {
                     returnObj.pop();
                     this._enableNext(returnObj, givenID, nodePart, lastElement);
                 }
             }
-            
             return returnObj;
         },
         /*****
@@ -392,21 +397,21 @@ define([
             //          It assumes everything has been enabled and has no colors
             // Policy: disable all but the description on new node
             // BvdS: might want to also activate type in TEST mode
-	    /*
-	     For now, do not enable/disable inputs.  
-	     See Trello card https://trello.com/c/mpd2Ivjd
-	     */
+            /*
+             For now, do not enable/disable inputs.  
+             See Trello card https://trello.com/c/mpd2Ivjd
+             */
             var controls = ["type", "initial", "units", "equation"];
             var directives = array.map(controls, function(control) {
                 return {id: control, attribute: "disabled", value: true};
             });
-	    // Only allow nodes of type 'function' for power users and tests.
-	    //if(this.userType !== 'power' || this.mode == 'TEST')
+            // Only allow nodes of type 'function' for power users and tests.
+            //if(this.userType !== 'power' || this.mode == 'TEST')
             //      directives.push({id: 'type', attribute: 'disableOption', value: 'function'});
-                // Temp disable of sum and product, after handling change we will disable function
+            // Temp disable of sum and product, after handling change we will disable function
             directives.push({id: 'type', attribute: 'disableOption', value: 'sum'});
             directives.push({id: 'type', attribute: 'disableOption', value: 'product'});
-	    return directives;
+            return directives;
         }
     });
 });
