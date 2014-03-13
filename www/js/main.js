@@ -106,15 +106,6 @@ define([
 	    });
 	    
 	    /*
-	     It would make more sense to call initHandles for each node as it is created
-             on the canvas.
-	     
-	     In AUTHOR mode, this will break, since we want the solution
-	     graph in that case.  See trello card https://trello.com/c/TDWdq6q6
-	     */
-	    controllerObject.initHandles();
-	    
-	    /*
 	     Make model solution plot using dummy data. 
 	     This should be put in its own module.
 	     */	

@@ -27,6 +27,7 @@ define([
             // It might be a better idea to only  call the controller
 	    // after widgets are set up.
   	    ready(this, this._setUpNodeEditor);
+	    ready(this, this._initHandles);
 
 	    lang.mixin(this.widgetMap, this.controlMap);
 	},
@@ -166,7 +167,7 @@ define([
 	},
 
 	//set up event handling with UI components
-	initHandles:function(){
+	_initHandles:function(){
 	    // Summary: Set up Node Editor Handlers
 	  
 	    /*
@@ -209,19 +210,26 @@ define([
 		return this.disableHandlers || this.handleUnits.apply(this, arguments);
 	    }));
 
+	    var inputsWidget = registry.byId(this.controlMap.inputs);
+            inputsWidget.on('Change',  lang.hitch(this, function(){
+		return this.disableHandlers || this.handleInputs.apply(this, arguments);
+	    }));
+
 	    var equationWidget = registry.byId(this.controlMap.equation);
             equationWidget.on('Change',  lang.hitch(this, function(){
 		return this.disableHandlers || this.handleEquation.apply(this, arguments);
 	    }));
 	    
-	    var buttons = ['plusButton', 'minusButton', 'timesButton', 'divideButton', 'undoButton', 'equationDoneButton'];
+	    // For each button 'name', assume there is an associated widget in the HTML
+	    // with id 'nameButton' and associated handler 'nameHandler' below.
+	    var buttons = ['plus', 'minus', 'times', 'divide', 'undo', 'equationDone'];
 	    array.forEach(buttons, function(button){
-		var w = registry.byId(button);
-		console.assert(w, "Button " + button + " not found");
-		w.on('click',  function(){
-		    console.log("*********** handler for " + button);
-		});
-	    });
+		var w = registry.byId(button + 'Button');
+		console.assert(w, "Button for " + button + " not found");
+		var handler = this[button + 'Handler'];
+		console.assert(handler, "Button handler '" + handler + "' not found");
+		w.on('click', lang.hitch(this, handler));
+	    }, this);
 
 
 	},
@@ -314,8 +322,71 @@ define([
             }, this);
 	},
 
-	handleNodeEditorButtonClicks: function(buttonId){
-	    console.log('****** combo box select ', buttonId);
+	equationInsert: function(text){
+	    var widget = registry.byId(this.controlMap.equation);
+	    var oldEqn = widget.get("value");
+	    // Get current cursor position or go to end of input
+	    var offset = widget.domNode.selectionStart || oldEqn.length;
+	    widget.set("value",oldEqn.substr(0,offset) + text + oldEqn.substr(offset));
+	},
+
+	handleInputs: function(id){
+	    console.log("*******Student has chosen input", id, this);
+	    // Should add name associated with id to equation
+	    // at position of cursor or at the end.
+	    var expr = this._model.getName(id);
+	    this.equationInsert(expr);
+ 	},
+
+	handleEquation: function(equation){
+	    // Generally, we don't need to do anthing for these events
+ 	},
+
+	plusHandler: function(){
+	    console.log("****** plus button");
+	    this.equationInsert('+');
+	},
+
+	minusHandler: function(){
+	    console.log("****** minus button");
+	    this.equationInsert('-');
+	},
+
+	timesHandler: function(){
+	    console.log("****** times button");
+	    this.equationInsert('*');
+	},
+
+	divideHandler: function(){
+	    console.log("****** divide button");
+	    this.equationInsert('/');
+	},
+
+	undoHandler: function(){
+	    console.warn("****** undo button not implemented");
+	    // We will work on this later
+	},
+
+	equationDoneHandler: function(inputEquation){
+	    console.log("****** enter button");
+	    // Get equation text, try to parse it.
+	    // If parse fails, send an error message
+	    // If parse succeeds, substitute in givenModel
+	    // parameters, update the student model and update
+	    // the student model inputs.  The model module may do
+	    // some of these things automatically.
+	    // Also update the graph to show any changes to the edges.
+	    var parsedEquation = "parsedEquation in terms of given variables goes here";
+	    
+            // updating node editor and the model.	    
+            this._model.active.setEquation(this.currentID, parsedEquation);
+	    var directives = this._PM.equationAction(this.currentID, parsedEquation);
+            array.forEach(directives, function(directive){
+		this.updateModelStatus(directive);
+		var w = registry.byId(this.widgetMap[directive.id]);
+		w.set(directive.attribute, directive.value);
+            }, this);
+	    
 	},
 
         convertBackEquation:function(mEquation){
