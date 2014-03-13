@@ -9,10 +9,10 @@ define([
     "dojo/on", "dojo/_base/declare", 
     "dijit/Dialog", "dijit/form/HorizontalSlider",
     "dojo/dom", "dojox/charting/Chart", "dojox/charting/axis2d/Default", "dojox/charting/plot2d/Lines",
-    "dojox/charting/plot2d/Grid", "dojox/charting/widget/Legend", "dojo/domReady!"
+    "dojox/charting/plot2d/Grid", "dojox/charting/widget/Legend","dojo/ready", "dojo/domReady!"
 ], function(on, declare, Dialog, HorizontalSlider, dom,
 	    // It looks like Default, Lines, Grid are not used.  Can they be removed?
-	    Chart, Default, Lines, Grid, Legend){
+	    Chart, Default, Lines, Grid, Legend,ready){
     return declare(null, {
 	
 	//no of parameters that can affect graph. This parameter will be used to create sliders
@@ -34,6 +34,8 @@ define([
     dialog:"",
     //Object of a chart
     chart:"",
+    //object passed to constructor
+    object : null,
         
         /*
          *  @brief:constructor for a graph object
@@ -41,6 +43,7 @@ define([
          */
 		constructor: function(object)
         {
+           this.object = object;
      	   //assign parameters to object properties 
      	   this.inputParam = object.noOfParam;
 		   this.paramNames = object.arrayOfParameterNames;
@@ -76,7 +79,7 @@ define([
 				i++;
 		   }
      	        	   
-		   i=0;
+            i=0;
      	   //create sliders based on number of input parameters
      	   for(j in this.paramNames)
      	   {
@@ -86,10 +89,32 @@ define([
      	            name: "slider"+i,
      	            value: this.paramValue[j],
      	            minimum: 0,
-     	            maximum: 10,
+     	            maximum: 1,
      	            intermediateChanges: true,
      	            style: "width:300px;"
      	        }, "slider"+i);
+
+               var obj = this.object;
+               var paramID = j;
+               var chartArray = this.chart;
+               var slider = this.sliders[i];
+               var index  = i;
+               on(this.sliders[i],"change", function(evt){
+
+                   dom.byId("text"+index).value = slider.value;
+                   obj.calculationObj.active.setInitial(paramID,slider.value);
+                   var newObj = obj.calculationObj.gerParametersForRendering(obj.calculationObj.solutionGraph,true);
+
+                   //update and render the chart
+                   var l=0;
+                   for(var k in newObj.arrayOfNodeValues)
+                   {
+                       chartArray[l].updateSeries("Variable solution", newObj.arrayOfNodeValues[k]);
+                       chartArray[l].render();
+                       l++;
+                   }
+
+               });
      	   
      	        //create label for name of a textbox
      	        //create input for a textbox
@@ -107,8 +132,9 @@ define([
      		   title: "Graph for Problem",
         		content:this.dialogContent,
         		style:"width:auto;height:auto;"
-     	   });      	   
-     	   
+     	   });
+
+
      	   //insert initial value of slider into a textbox
      	   //append slider to the div node
      	   for(i=0; i<this.inputParam; i++)
@@ -139,6 +165,8 @@ define([
 			   legendArray[i] = new Legend({chart: chartArray[i]}, str);
 			   i++;
 		   }
+
+            this.chart = chartArray;
      	   
      	   //create a chart
 		   /*
@@ -173,6 +201,8 @@ define([
      	   */
      	   //Use local variables and assign object properties to local variables
      	   //local variables are work-around as object properties are not accessed inside a event handler (here inside 'onclick' event)
+
+            /*
      	   var _slider=new Array();
      	   var slider=new Array();
      	   var noOfParam = this.inputParam;
@@ -203,7 +233,7 @@ define([
      	           	chart.updateSeries("Variable solution", arrayVariable);
      	           	chart.render();
      	           });
-           }
+           } */
 
         },
         

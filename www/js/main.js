@@ -47,9 +47,7 @@ define([
 	@author: Deepak
 	@brief: calling calculation class to get node values and passing parameters to rendergraph and rendertable
 	*/
-	var calc = new calculations(solutionGraph,true);
-	var obj = calc.gerParametersForRendering(solutionGraph,true);
-	
+
 	/*
 	 start up controller
 	 */
@@ -121,19 +119,28 @@ define([
 	     This should be put in its own module.
 	     */	
 	
-	    // instantiate graph object
-	    var graph = new Graph(obj);
+
 	    // show graph when button clicked
 	    menu.add("graphButton",function(){
-		console.debug("button clicked");	   
+		console.debug("button clicked");
+
+        var calc = new calculations(solutionGraph,true);
+        var obj = calc.gerParametersForRendering(solutionGraph,true);
+
+        // instantiate graph object
+        var graph = new Graph(obj);
 		graph.show();
 	    }); 
 	    
-		var table = new Table(obj);
-	
-	    // show graph when button clicked
+
+	    // show table when button clicked
 	    menu.add("tableButton", function(){        	
 		console.debug("table button clicked");
+
+        var calc = new calculations(solutionGraph,true);
+        var obj = calc.gerParametersForRendering(solutionGraph,true);
+
+        var table = new Table(obj);
 		table.show();
 	    });
 
