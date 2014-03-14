@@ -258,7 +258,7 @@ define([
 
             // updating node editor and the model.	    
             this._model.active.setDescriptionID(this.currentID, selectDescription);
-            var directives = this._PM.descriptionAction(this.currentID, selectDescription);
+            var directives = this._PM.processAnswer(this.currentID, 'description', selectDescription);
 	    array.forEach(directives , function(directive){
 		this.updateModelStatus(directive);
 		var w = registry.byId(this.widgetMap[directive.id]);
@@ -286,7 +286,7 @@ define([
 	    
             // updating node editor and the model.	    
             this._model.active.setType(this.currentID, type);
-            var directives = this._PM.typeAction(this.currentID, type);
+            var directives = this._PM.processAnswer(this.currentID, 'type', type);
             array.forEach(directives, function(directive){
 		console.log("*********** update node editor ", directive); 
 		this.updateModelStatus(directive);
@@ -300,7 +300,7 @@ define([
 
             // updating node editor and the model.	    
             this._model.active.setInitial(this.currentID, initial);
-            var directives = this._PM.initialAction(this.currentID, initial);
+            var directives = this._PM.processAnswer(this.currentID, 'initial', initial);
             array.forEach(directives, function(directive){
 		// console.log("*********** update node editor ", directive); 
 		this.updateModelStatus(directive);
@@ -314,7 +314,7 @@ define([
 
             // updating node editor and the model.	    
             this._model.active.setUnits(this.currentID, unit);
-	    var directives = this._PM.unitsAction(this.currentID, unit);
+	    var directives = this._PM.processAnswer(this.currentID, 'units', unit);
             array.forEach(directives, function(directive){
 		this.updateModelStatus(directive);
 		var w = registry.byId(this.widgetMap[directive.id]);
@@ -369,24 +369,25 @@ define([
 
 	equationDoneHandler: function(inputEquation){
 	    console.log("****** enter button");
-	    // Get equation text, try to parse it.
-	    // If parse fails, send an error message
-	    // If parse succeeds, substitute in givenModel
-	    // parameters, update the student model and update
-	    // the student model inputs.  The model module may do
-	    // some of these things automatically.
-	    // Also update the graph to show any changes to the edges.
-	    var parsedEquation = "parsedEquation in terms of given variables goes here";
+	    /*
+	     Get equation text, try to parse it.
+	     If parse fails, send an error message
+	     If parse succeeds, substitute in any student model
+	     ids for variable names, update the student model and update
+	     the student model inputs.  (The model module may do
+	     some of these things automatically.)
+	     Also update the graph to show any changes to the edges.
+	     */
+	    var parsedEquation = "parsedEquation in terms of student variable ids goes here";
 	    
             // updating node editor and the model.	    
             this._model.active.setEquation(this.currentID, parsedEquation);
-	    var directives = this._PM.equationAction(this.currentID, parsedEquation);
+	    var directives = this._PM.processAnswer(this.currentID, 'equation', parsedEquation);
             array.forEach(directives, function(directive){
 		this.updateModelStatus(directive);
 		var w = registry.byId(this.widgetMap[directive.id]);
 		w.set(directive.attribute, directive.value);
             }, this);
-	    
 	},
 
         convertBackEquation:function(mEquation){
