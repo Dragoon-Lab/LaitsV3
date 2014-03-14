@@ -120,20 +120,20 @@ public class AuthorModeNodeEditorController extends NodeEditorController{
         
         if (view.getDescriptionPanel().processDescriptionPanel()) {
             openVertex.setDescriptionStatus(Vertex.DescriptionStatus.CORRECT);
-            activityLogs.debug(view.getDescriptionPanel().printDescriptionPanelDetails());
+            //activityLogs.debug(view.getDescriptionPanel().printDescriptionPanelDetails());
             
             // Process Plan and Calc Panel only if the Editor is not CreateNewNode Dialog
             if(view.getTabbedPane().getTabCount() > 1) {
                 if (view.getPlanPanel().processPlanPanel()) {
                     openVertex.setPlanStatus(Vertex.PlanStatus.CORRECT);
-                    activityLogs.debug(view.getPlanPanel().printPlanPanel());
+                    //activityLogs.debug(view.getPlanPanel().printPlanPanel());
 
                     if (view.getCalculationsPanel().processCalculationsPanel()) {
                         openVertex.setCalculationsStatus(Vertex.CalculationsStatus.CORRECT);                    
                     } else {
                         openVertex.setCalculationsStatus(Vertex.CalculationsStatus.INCORRECT);
                     }
-                    activityLogs.debug(view.getCalculationsPanel().printCalculationPanel());
+                    //activityLogs.debug(view.getCalculationsPanel().printCalculationPanel());
                 }    
             }
         }

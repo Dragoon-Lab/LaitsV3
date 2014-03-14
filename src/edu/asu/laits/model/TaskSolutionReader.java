@@ -95,6 +95,11 @@ public class TaskSolutionReader {
 //            if(author.length()>0 && group.length()>0){
 //                resourceURL += "&author=" + author + "&group=" + group;
 //            }
+        if(ApplicationContext.getAuthor() != null && ApplicationContext.getAuthor().trim().length() != 0) {
+            resourceURL += "&author=" + ApplicationContext.getAuthor();
+            resourceURL += "&section=" + ApplicationContext.getSection();
+        }
+        
         System.out.println("Resource URL "+resourceURL);
         logs.info("Task URL : "+resourceURL);
         document = reader.read(new URL(resourceURL));

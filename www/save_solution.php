@@ -30,10 +30,10 @@ require "common.php";
             $this->section = isset($_REQUEST['section']) ? mysqli_real_escape_string($this->common->connection, $_REQUEST['section']) : '';
             $this->problem_name = isset($_REQUEST['problem_name']) ? mysqli_real_escape_string($this->common->connection, $_REQUEST['problem_name']) : '';
             $this->solution_xml = isset($_REQUEST['solution_xml']) ? mysqli_real_escape_string($this->common->connection, $_REQUEST['solution_xml']) : '';            
-            $this->share = (!isset($_REQUEST['share']) || $_REQUEST['share']) ? 1 : 0;  
+            $this->share = (!isset($_REQUEST['share']) || $_REQUEST['share']) ? 1 : 0;       
             
             // Save data needs to be URL decoded
-            $this->solution_xml = urldecode($this->solution_xml);  
+            $this->solution_xml = urldecode($this->solution_xml); 
         }
         
         public function __destruct() {
@@ -63,7 +63,7 @@ require "common.php";
             $query = "INSERT INTO solutions(author, section, problemName, solutionGraph, share) 
                     VALUES ('$this->author','$this->section', '$this->problem_name', '$this->solution_xml', '$this->share') 
                     ON DUPLICATE KEY UPDATE solutionGraph=values(solutionGraph), time = CURRENT_TIMESTAMP";
-            //error_log("Executing " . $query);
+            error_log("Executing " . $query);
             $this->common->connection->query($query) or trigger_error("insert/update to solutions failed" .$this->common->connection->error);            
         }
         

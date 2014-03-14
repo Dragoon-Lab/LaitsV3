@@ -115,7 +115,7 @@ public class PersistenceManager implements Runnable {
             if (action.equals("author_save")) {                
                 data = URLEncoder.encode(data, "UTF-8");
                 postVariable.add(new BasicNameValuePair("solution_xml", data));
-                postVariable.add(new BasicNameValuePair("author", ApplicationContext.getAuthor()));
+                postVariable.add(new BasicNameValuePair("author", ApplicationContext.getUserID()));
                 postVariable.add(new BasicNameValuePair("section", ApplicationContext.getSection()));
                 postVariable.add(new BasicNameValuePair("problem_name", ApplicationContext.getCurrentTaskID()));
             }
