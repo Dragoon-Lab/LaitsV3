@@ -315,7 +315,10 @@ define([
             console.log("*****\n",interpretation);
             return interpretation;
         },
-        _processAnswer: function(/*string*/ id, /*string*/ nodePart, /*string*/ answer) {
+        /*****
+         * Public Functions
+         *****/
+        processAnswer: function(/*string*/ id, /*string*/ nodePart, /*string*/ answer) {
             // Summary: Pocesses a student's answers and returns if correct, 
             //      incorrect, etc. and alerts the controller about what parts 
             //      of the node editor should be active.
@@ -354,28 +357,6 @@ define([
                 }
             }
             return returnObj;
-        },
-        /*****
-         * Public Functions
-         *****/
-        /*****
-         * The following five functions are used by the controller to 
-         *      process the student's answers using _processAnswer().
-         *****/
-        descriptionAction: function(/*string*/ id, /*string*/ answer) {
-            return this._processAnswer(id, "description", answer);
-        },
-        typeAction: function(/*string*/ id, /*string*/ answer) {
-            return this._processAnswer(id, "type", answer);
-        },
-        initialAction: function(/*string*/ id, /*string*/ answer) {
-            return this._processAnswer(id, "initial", answer);
-        },
-        unitsAction: function(/*string*/ id, /*string*/ answer) {
-            return this._processAnswer(id, "units", answer);
-        },
-        equationAction: function(/*string*/ id, /*object*/ answer) {
-            return this._processAnswer(id, "equation", answer);
         },
         /*****
          * Additional Public Functions
