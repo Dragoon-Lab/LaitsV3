@@ -54,7 +54,7 @@ Methods in the PM return an array of directives like this:
 		{id: "message", attribute: "append", value: "You should try again."},
 		{id: "description", attribute: "status", value: "demo"},  // Set the status (red/green/yellow)
 		// Set the value of a control (in the case of demo)
-		{id: "description", attribute: "selected", value: "id3"},
+		{id: "description", attribute: "value", value: "id3"},
 		// Disable individual choices in a pull-down menu
 		{id: "type", attribute: "disableOption", value: "function")
 	]

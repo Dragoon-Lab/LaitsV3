@@ -326,11 +326,11 @@ define([
             var interpretation = this._getInterpretation(id, nodePart, answer);
             var returnObj = [];
             
-            // Alert conroller of correct answer if status will be set to 'demo'
+            // Alert controller of correct answer if status will be set to 'demo'
             if (interpretation === "lastFailure" || interpretation === "secondFailure") {
                 answer = this.model.getCorrectAnswer(id, nodePart);
-                console.log("****\n", "set to: ", {id: nodePart, attribute: "select", value: answer});
-                returnObj.push({id: nodePart, attribute: "select", value: answer});
+                console.log("****\n", "set to: ", {id: nodePart, attribute: "value", value: answer});
+                returnObj.push({id: nodePart, attribute: "value", value: answer});
             }
 
             // Process answers for description

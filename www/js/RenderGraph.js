@@ -9,10 +9,10 @@ define([
     "dojo/on", "dojo/_base/declare", 
     "dijit/Dialog", "dijit/form/HorizontalSlider",
     "dojo/dom", "dojox/charting/Chart", "dojox/charting/axis2d/Default", "dojox/charting/plot2d/Lines",
-    "dojox/charting/plot2d/Grid", "dojox/charting/widget/Legend","dojo/ready", "dojo/_base/lang","dojo/domReady!"
+    "dojox/charting/plot2d/Grid", "dojox/charting/widget/Legend","dojo/ready", "dojo/_base/lang","dijit/registry","dojo/domReady!"
 ], function(on, declare, Dialog, HorizontalSlider, dom,
 	    // It looks like Default, Lines, Grid are not used.  Can they be removed?
-	    Chart, Default, Lines, Grid, Legend,ready,lang){
+	    Chart, Default, Lines, Grid, Legend,ready,lang,registry){
     return declare(null, {
 	
 	//no of parameters that can affect graph. This parameter will be used to create sliders
@@ -36,7 +36,8 @@ define([
     chart:"",
     //object passed to constructor
     object : null,
-        
+    //collect IDs of all DOMs created to destroy the same when dialog is closed
+    strDomID: new Array(),
         /*
          *  @brief:constructor for a graph object
          *  @param: noOfParam
@@ -63,19 +64,18 @@ define([
         initialize: function()
         {
      	   var i, j;
-     	   //fake data for correct graph
-           var arrayCorrect = [1, 2, 2, 3, 4, 5, 5, 7,9,6];
-           //fake data for graph which changes based on slider values
-           var arrayVariable = [1, 2, 2, 3, 4, 5, 5, 7,9,6];
-           //create dom for chart and chart legend and embed it in dialog
-		   
+
 		   i=0;
 		   var str="";
 		   for(j in this.arrayOfNodeValues)
 		   {
 				str = "chart"+i.toString();
+                this.strDomID.push(str);
 				this.dialogContent= this.dialogContent + this.createDom('div',str);
-				this.dialogContent= this.dialogContent + this.createDom('div','legend'+i,"style='width:800px; margin:0 auto;'");
+
+                str = "legend"+ i.toString();
+               this.strDomID.push(str);
+				this.dialogContent= this.dialogContent + this.createDom('div',str,"style='width:800px; margin:0 auto;'");
 				i++;
 		   }
      	        	   
@@ -94,9 +94,8 @@ define([
      	            style: "width:300px;"
      	        }, "slider"+i);
 
-               var obj = this.object;
+
                var paramID = j;
-               var chartArray = this.chart;
                var slider = this.sliders[i];
                var index  = i;
 
@@ -110,8 +109,8 @@ define([
                    var l=0;
                    for(var k in newObj.arrayOfNodeValues)
                    {
-                       chartArray[l].updateSeries("Variable solution", newObj.arrayOfNodeValues[k]);
-                       chartArray[l].render();
+                       this.chart[l].updateSeries("Variable solution", newObj.arrayOfNodeValues[k]);
+                       this.chart[l].render();
                        l++;
                    }
 
@@ -120,9 +119,18 @@ define([
      	        //create label for name of a textbox
      	        //create input for a textbox
      	        //create div for embedding a slider
-     	        this.dialogContent= this.dialogContent + this.createDom('label','','',this.paramNames[j]+" = ")+this.createDom('input','text'+i,"type='text' data-dojo-type='dijit/form/TextBox'")+"<br>"
-     	        +this.createDom('div','slider'+i);
-     	        console.debug("dialogContent is "+this.dialogContent);
+     	        /*this.dialogContent= this.dialogContent + this.createDom('label','','',this.paramNames[j]+" = ")+this.createDom('input','text'+i,"type='text' data-dojo-type='dijit/form/TextBox'")+"<br>"
+     	        +this.createDom('div','slider'+i);*/
+               this.dialogContent= this.dialogContent + this.createDom('label','','',this.paramNames[j]+" = ");
+
+               str = 'text'+ i.toString();
+               this.strDomID.push(str);
+               this.dialogContent= this.dialogContent + this.createDom('input',str,"type='text' data-dojo-type='dijit/form/TextBox'")+"<br>";
+               str = 'slider'+ i.toString();
+               this.strDomID.push(str);
+               this.dialogContent= this.dialogContent  +this.createDom('div',str);
+
+               console.debug("dialogContent is "+this.dialogContent);
 				
 				i++;
      	   }
@@ -134,6 +142,13 @@ define([
         		content:this.dialogContent,
         		style:"width:auto;height:auto;"
      	   });
+
+           //destroy the dialog when it is closed
+            on(this.dialog,"hide",lang.hitch(this,function(){
+
+                this.dialog.destroyRecursive();
+
+            }));
 
 
      	   //insert initial value of slider into a textbox
@@ -279,7 +294,10 @@ define([
         */
        show: function(){    	   
     	   this.dialog.show();
-       }	
+
+       }
+
+
 		
 	});	
 });
