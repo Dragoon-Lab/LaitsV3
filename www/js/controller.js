@@ -6,7 +6,7 @@ define([
     "dojo/_base/array", 'dojo/_base/declare', "dojo/_base/lang", 
     'dojo/aspect', 'dojo/dom', 'dojo/dom-style', 'dojo/keys', 'dojo/on', "dojo/ready", 'dijit/registry',
     "./pedagogical_module","parser/parser","dojo/dom-class","dojo/dom-construct"
-], function(array, declare, lang, aspect, dom, style, keys, on, ready, registry, PM, parser,domClass,domConstruct) {
+], function(array, declare, lang, aspect, dom, style, keys, on, ready, registry, PM, parser, domClass, domConstruct) {
     
     return declare(null, {
 	
@@ -234,7 +234,6 @@ define([
 
 	},
 
-
 	// Need to save state of the node editor in the status section
 	// of the student model.  See documentation/json-format.md
 	updateModelStatus: function(desc){
@@ -326,8 +325,9 @@ define([
 	    var widget = registry.byId(this.controlMap.equation);
 	    var oldEqn = widget.get("value");
 	    // Get current cursor position or go to end of input
-	    var offset = widget.domNode.selectionStart || oldEqn.length;
-	    widget.set("value",oldEqn.substr(0,offset) + text + oldEqn.substr(offset));
+	    var offset1 = widget.domNode.selectionStart || oldEqn.length;
+	    var offset2 = widget.domNode.selectionEnd || oldEqn.length;
+	    widget.set("value", oldEqn.substr(0, offset1) + text + oldEqn.substr(offset2));
 	},
 
 	handleInputs: function(id){
@@ -366,23 +366,69 @@ define([
 	    console.warn("****** undo button not implemented");
 	    // We will work on this later
 	},
-
-	equationDoneHandler: function(inputEquation){
+	
+	equationDoneHandler: function(){
 	    console.log("****** enter button");
 	    /*
-	     Get equation text, try to parse it.
-	     If parse fails, send an error message
-	     If parse succeeds, substitute in any student model
-	     ids for variable names, update the student model and update
-	     the student model inputs.  (The model module may do
-	     some of these things automatically.)
-	     Also update the graph to show any changes to the edges.
+	     This takes the contents of the equation box and parses it.
+	     
+	     If the parse fails:
+	     * send a warning message, and
+	     * log attempt (the PM does not handle syntax errors).
+	     
+	     If the parse succeeds:
+	     * substitute in student id for variable names (when possible),
+	     * save to model,
+	     * update inputs,
+	     * update the associated connections in the graph, and
+	     * send the equation to the PM. **Done**
+	     * Handle the reply from the PM. **Done**
+	     * If the reply contains an update to the equation, the model should also be updated.
+	     
+	     Note: the model module may do some of these things automatically.
+
+	     Also, the following section could just as well be placed in the PM?
 	     */
-	    var parsedEquation = "parsedEquation in terms of student variable ids goes here";
-	    
-            // updating node editor and the model.	    
-            this._model.active.setEquation(this.currentID, parsedEquation);
-	    var directives = this._PM.processAnswer(this.currentID, 'equation', parsedEquation);
+	    var widget = registry.byId(this.controlMap.equation);
+	    var inputEquation = widget.get("value");
+	    var directives = [];
+	    var parse = null;
+	    try{
+		parse = parser.parse(inputEquation);
+	    } catch(err) {
+		console.log("Parser error: ", err);
+		this._model.active.setEquation(this.currentID, inputEquation);
+		directives.push({id: 'message', attribute: 'append', value: 'Incorrect equation syntax.'});
+		directives.push({id: 'equation', attribute: 'status', value: 'incorrect'});
+		// Call hook for bad parse 
+		this.badParse(inputEquation);
+	    } 
+	    if(parse){
+		array.forEach(parse.variables(), function(variable){
+		    // Test if variable name can be found in given model or extras
+		    var id = this._model.getNodeIDByName[variable];
+		    if(id){
+			// Test if variable has been defined by student
+			var studentID = this._model.student.getNodeIDFor(id);
+			if(studentID){
+			    parse.substitute(variable, studentID);
+			} else {
+			    directives.push({id: 'message', attribute: 'append', value: "Quantity '" + variable + "' not defined yet."});
+			}
+		    } else {
+			directives.push({id: 'message', attribute: 'append', value: "Unknown variable '" + variable + "'."});
+		    }
+		},this);		
+		// Expression now is written in terms of student IDs, when possible.
+		var parsedEquation = parse.toString();
+		this._model.active.setEquation(this.currentID, parsedEquation);
+		// Send to PM
+		// BvdS:  Should we still send to PM if there are unknown variables
+		//        or undefined variables?
+		directives.concat(this._PM.processAnswer(this.currentID, 'equation', parse));
+	    }
+
+	    // Now apply directives, either from PM or special messages above.
             array.forEach(directives, function(directive){
 		this.updateModelStatus(directive);
 		var w = registry.byId(this.widgetMap[directive.id]);
@@ -390,33 +436,25 @@ define([
             }, this);
 	},
 
-        convertBackEquation:function(mEquation){
-            console.log("Got mEquation   "+mEquation);
-            //get variables using map and currentID
-            var expr = this.mapVariableNodeNames[this.currentID];
-            array.forEach(expr.variables(),function(nodeName){
-		var variable = this.mapVariableNodeNames[nodeName];
-		expr.substitute(nodeName, variable);
-		console.log("            result: ", expr);
-            },this);
-            return expr.toString();
-	},
+	// Stub to connect logging to record bad parse.
+	badParse: function(inputEquation){},
 
 	convertEquation: function(equation){
             var expr = parser.parse(equation);
-            this.mapVariableNodeNames = {};
-	    console.log("            parse: ", expr);
-            array.forEach(expr.variables(), function(variable){
-		var nodeName = this._model.student.getName(variable);
-		console.log("=========== substituting ", variable, " -> ", nodeName);
-		//for getting original equation back
-		this.mapVariableNodeNames[nodeName]=variable;
-		expr.substitute(variable, nodeName);
-		console.log("            result: ", expr);
-            },this);
-            //also push new expr to map against currentID
-            this.mapVariableNodeNames[this.currentID]=expr;
-            return expr.toString();
+	    if(expr){
+		this.mapVariableNodeNames = {};
+		// console.log("            parse: ", expr);
+		array.forEach(expr.variables(), function(studentID){
+		    var nodeName = this._model.student.getName(studentID);
+		    // console.log("=========== substituting ", variable, " -> ", nodeName);
+		    expr.substitute(studentID, nodeName);
+		    // console.log("            result: ", expr);
+		}, this);
+		return expr.toString();
+	    } else {
+		// If parse fails, return the original string.
+		return equation;
+	    }
 	},
 	
 	//show node editor
@@ -483,11 +521,6 @@ define([
             console.log("equation after conversion ", mEquation);
             registry.byId(this.controlMap.equation).set('value', mEquation);
 	    
-        //testing
-        if(mEquation || equation){
-        //get original equation back
-        console.log('=================== getting orignal equation back'+this.convertBackEquation(mEquation));
-        }
 	    /*
 	     The PM sets enabled/disabled and color for the controls
 	     

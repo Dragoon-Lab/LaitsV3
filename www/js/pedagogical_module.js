@@ -301,8 +301,7 @@ define([
                 case "equation":
                     // The 'equation' case accepts an equation object from the controller
                     //      and checks it against the given equation using equation_check.js
-                    var equivCheck = new check(this.model.given.getEquation(givenID), answer);
-                    interpret(equivCheck.areEquivalent());
+                    interpret(check.areEquivalent(givenID, this.model, answer));
                     break;
             }
             /* 

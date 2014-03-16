@@ -10,83 +10,62 @@
  *      testing the expressions with values assigned to the variables
  **/
 
-define(["dojo/_base/declare", "parser/parser"]
-        , function(declare, Parser) {
-
-    return declare(null, {
-        constructor: function(/*string*/ model, /*string*/student) {
-            this.correctEquation = model;
-            this.studentEquation = student;
-            this.equivalent = null;
-            this._areExprEquiv();
-        },
-        //*********** Private Methods ***********
-        _areExprEquiv: function() {
-            //Summary: checks equivalence of this.correctEquation and this.studentEquation
-            //      and sets this.equivalent to true or false based on equivalence; it includes
-            //      a loop to check equivalence multiple times to minimize the risk of a false
-            //      positive
+define([
+    "dojo/_base/array", "dojo/_base/lang", "parser/parser"
+], function(array, lang, Parser) {
+    
+    return {
+        areEquivalent: function(/*string*/ id, /*object*/ model, /*string*/ studentEquation) {
+            //Summary: For a given model node id, checks the correctness of the student equation.
             //
-            //Tags: private
-            if (typeof this.correctEquation == 'string')
-                var given = Parser.parse(this.correctEquation);
-            else
-                given = this.correctEquation;
-            var givenVar = given.variables();
             if (typeof this.studentEquation == 'string')
                 var student = Parser.parse(this.studentEquation);
             else
-                student = this.studentEquation;
-            var studentVar = student.variables();
-            if (!this._areArraysEqual(givenVar, studentVar)) {
-                this.equivalent = false;
-            } else {
-                for (var i = 0; i < 2; i++) {
-                    var obj = this._buildObject(givenVar);
-                    if (Parser.evaluate(this.correctEquation, obj) === Parser.evaluate(this.studentEquation, obj)) {
-                        this.equivalent = true;
-                    } else {
-                        this.equivalent = false;
-                        break;
-                    }
-                }
-            }
-        },
-        _areArraysEqual: function(/*variable | array*/ array1, /*variable | array*/ array2) {
-            //Summary: returns true if the supplied arrays contain the same elements; 
-            //      the order does not matter.
-            //
-            //Tags: private
-            if (array1.length !== array2.length)
-                return false;
-            else if (array1.length === undefined)
-                return array1 === array2;
-            for (var i = 0; i < array1.length; i++)
-                for (var ii = 0; ii < array2.length; ii++) {
-                    if (array1[i] === array2[ii])
-                        break;
-                    else if (ii + 1 === array2.length)
-                        return false;
-                }
-            return true;
-        },
-        _buildObject: function(/*array*/ variables) {
-            //Summary: returns an object with random numbers assigned to the 
-            //      given variables to test equivalence in _areExprEquiv()
-            //
-            //Tags: private
-            var theObject = {};
-            for (var i = 0; i < variables.length; i++)
-                theObject[variables[i]] = Math.random();
-            return theObject;
-        },
-        //*********** Public Method ***********
-        areEquivalent: function() {
-            //Summary: returns if the expressions given to the constructor are equivalent
-            //
-            //Tags: public
-            return this.equivalent;
-        }
-    });
+                student = studentEquation;
+	    
+	    var vals = {};
+	    var givenResult = this.evalVar(model.given.getNode(id), model.given, vals, {});
+	    var studentVals = {};
+	    for(var givenID in vals){
+		var studentID = model.student.getNodeIDFor(givenID);
+		if(studentID){
+		    studentVals[studentID] = vals[givenID];
+		} else {
+		    console.log("^^^^^^ areEquivalent id='" + givenID + "' not defined in student model".);
+		}
+	    }
+	    console.warn("Does not correctly handle case where node is not yet evaluated.");
+	    var studentResult = studentEquation.evaluate(studentVals);
+	    return Math.abs(studentResult - givenResult) <= 10e-10*Math.abs(studentResult+givenResult);
+	},
+	
+	/*
+	 Recursively evaluate functions in the given model,
+	 choosing random values for any parameters or accumulators.
+
+	 If the function nodes have circular dependencies, then an error will be produced.
+	 */
+	evalVar: function(node, model, vals, parents){
+	    if(node.type == 'parameter' || node.type == 'accumulator'){
+		vals[node.id] = Math.random();
+	    } else {
+		if(parents[node.id]){
+		    // Should throw an error, so that message can be sent to user.
+		    console.error("Function node '" + node.id + "' has circular dependency.");
+		    return;
+		}
+		var z = lang.clone(parents);
+		z[node.id] = true;
+		// Evaluate function node
+		var parse = Parser.parse(node.equation);
+		array.forEach(parse.variables(), function(x){
+		    if(! vals[x]){
+			this.evalVar(model.getNode(x), model, vals, z);
+		    }
+		}, this);
+		vals[node.id] = parse.evaluate(vals);
+	    }
+	}
+    };
 });
 

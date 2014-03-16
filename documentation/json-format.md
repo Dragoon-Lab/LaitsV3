@@ -210,10 +210,10 @@ Thus, the student *may* generate nodes that are not in the given
 model and are not part of the solution.
 
 If the student equation can be parsed, the attribute "equation" contains  the
-equation written in terms of student node ids.  If the parse fails,
-then it contains the text written by the student and "inputs" is empty.
-Likewise,  "initial" contains either the numerical value of the
-student input or the string typed by the student if the parse fails.
+equation written in terms of student node ids, when possible.  If the parse fails,
+then it contains the student string and the "inputs" array is empty.
+Likewise,  "initial" contains the numerical value of the
+student input; if the parse fails, it contains the student string.
 
 The attribute "status" saves state for the node editor, listing
 status and enable/disable for each of the controls.

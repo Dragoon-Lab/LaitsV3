@@ -268,49 +268,31 @@ define([
                 // Summary: returns the name of a node matching the given model
                 //      node or extra node id.  If no match is 
                 //      found, then return null.
-                var ret = null;
-                // Not very efficient, but it works
-                array.forEach(this.given.getNodes(), function(node) {
-                    if (node.ID == id) {
-                        ret = node.name;
-                    }
-                }, this);
-                array.forEach(this.getExtraDescriptions(), function(node) {
-                    if (node.ID == id) {
-                        ret = node.name;
-                    }
-                }, this);
-                console.assert(ret, "Node '" + id + "' not found.");
-                return ret; // returns null if the node cannot be found
-            },
+		var name = null;
+                array.some(this.given.getNodes(), function(node) {
+		    name = node.name;
+                    return node.ID == id;
+                }) ||array.some(this.getExtraDescriptions(), function(node) {
+		    name = node.name;
+		    return node.ID == id;
+                });
+		return name;
+	    },
+
             getNodeIDByName: function(/*string*/ name) {
-                // Summary: returns the id of a node matching the given name; the given 
-                //      model nodes are searched first, followed by the student model nodes
-                for (var i = 0; i < this.model.task.givenModelNodes.length; i++) {
-                    if (name === this.model.task.givenModelNodes[i].name)
-                        return this.model.task.givenModelNodes[i].ID;
-                }
-                console.error("Can't find node name in given model: ", name);
-                // Need to decide how to handle student model node name
-                for (i = 0; i < this.model.task.studentModelNodes.length; i++) {
-                    if (name === this.model.task.studentModelNodes[i].name)
-                        return this.model.task.studentModelNodes[i].ID;
-                }
-                return null; // returns null if the node cannot be found
-            },
-            getNodeIDByDescription: function(/*string*/ description) {
-                // Summary: returns the id of a node matching the given description; the given 
-                //      model nodes are searched first, followed by the student model nodes
-                for (var i = 0; i < this.model.task.givenModelNodes.length; i++) {
-                    if (description === this.model.task.givenModelNodes[i].description)
-                        return this.model.task.givenModelNodes[i].ID;
-                }
-                for (var i = 0; i < this.model.task.extraDescriptions.length; i++) {
-                    if (description === this.model.task.extraDescriptions[i].text)
-                        return this.model.task.extraDescriptions[i].ID;
-                }
-                return null; // returns null if the node cannot be found
-            },
+                // Summary: returns the id of a node matching the given name from the 
+		//          given or extra nodes.  If none is found, return null.
+		var id = null;
+		array.some(this.student.getNodes(), function(node){
+		    id = node.id;
+		    return node.name === name;
+		}) || array.some(this.getExtraDescriptions(), function(node){
+		    id = node.id;
+		    return node.name === name;
+		});
+		return id;
+	    },
+
             isParentNode: function(/*string*/ id) {
                 // Summary: returns true if a node is the parent node in a tree structure; parent 
                 //      nodes will be displayed first when the student demos a node name/description
@@ -329,7 +311,8 @@ define([
                 return null;
             },
             isNodeVisible: function(/*string*/ studentID, /*string*/ givenID) {
-                // Summary: returns true if the node is in the student model
+                // Summary: returns true if the node is in the student model,
+		//          excluding the current student node.
                 return array.some(this.student.getNodes(), function(node) {
                     return node.ID !== studentID && node.descriptionID === givenID;
                 });
@@ -474,14 +457,6 @@ define([
                 // Summary: returns an array of the extra descriptions.
                 return this.model.task.extraDescriptions;
             },
-            isInGivenModel: function(/*string*/ id) {
-                // Summary: returns true if a node in the student model is also found in the given model
-                for (var i = 0; i < this.model.task.studentModelNodes.length; i++) {
-                    if (id === this.model.task.studentModelNodes[i].ID)
-                        return this.model.task.studentModelNodes[i].descriptionID;
-                }
-                return null;
-            },
             /*
              Brandon:  Here is a clean-up of some of the getters that
              uses a common function to find the node.  Note that it
@@ -534,15 +509,6 @@ define([
             /**
              * Functions to add and delete nodes in the given model and the student model
              */
-            addNode: function() {
-                // Summary: builds a new node and returns the node's unique id
-                var id = "id" + this._ID;
-                var order = this.model.task.givenModelNodes.length + 1;
-                this._ID++;
-                var newNode = new Node(id, order);
-                this.model.task.givenModelNodes.push(newNode);
-                return id;
-            },
             deleteNode: function(/*string*/ id) {
                 // Summary: deletes a node with a given id; re-orders the remaining nodes; removes the
                 //      given node from other nodes' inputs and erases equations containing the deleted node
@@ -849,16 +815,23 @@ define([
                 return newNode.ID;
             },
             isInExtras: function(/*string*/ id) {
-                // Summary: returns true if node description is in extras
+                // Summary: Returns true if node description is in extras.
                 return array.some(obj.getExtraDescriptions(), function(description) {
                     return id == description.ID;
                 });
             },
             getDescriptionID: function(id) {
-                // Return any matched given model id for student node.
+                // Summary: Return any matched given model id for student node.
                 var node = this.getNode(id);
                 return node && node.descriptionID;
             },
+	    getNodeIDFor: function(id){
+		// Summary: returns the id of a student node having a matching descriptionID;
+		//          return null if no match is found.
+		return array.some(this.getNodes(), function(node){
+		    return node.descriptionID == id && node.id;
+		}) || null;
+	    },
             getName: function(/*string*/ id) {
                 // Summary: returns the name of a node matching the student model.
                 //      If no match is found, then return null.
