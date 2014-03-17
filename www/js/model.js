@@ -268,21 +268,21 @@ define([
                 // Summary: returns the name of a node matching the given model
                 //      node or extra node id.  If no match is 
                 //      found, then return null.
-		var name = null;
-                array.some(this.given.getNodes(), function(node) {
+		var name;
+                var gotIt = array.some(this.given.getNodes(), function(node) {
 		    name = node.name;
                     return node.ID == id;
-                }) ||array.some(this.getExtraDescriptions(), function(node) {
+                }) || array.some(this.getExtraDescriptions(), function(node) {
 		    name = node.name;
 		    return node.ID == id;
                 });
-		return name;
+		return gotIt?name:null;
 	    },
 
             getNodeIDByName: function(/*string*/ name) {
                 // Summary: returns the id of a node matching the given name from the 
 		//          given or extra nodes.  If none is found, return null.
-		var id = null;
+		var id;
 		var gotIt = array.some(this.given.getNodes(), function(node){
 		    id = node.ID;
 		    return node.name === name;
@@ -290,7 +290,7 @@ define([
 		    id = node.ID;
 		    return node.name === name;
 		});
-		return id;
+		return gotIt?id: null;
 	    },
 
             isParentNode: function(/*string*/ id) {
@@ -685,14 +685,13 @@ define([
                 });
             },
             getNode: function(/*string*/ id) {
-                var ret = null;
-                array.some(this.getNodes(), function(node) {
-                    if (node.ID == id)
-                        ret = node;
+                var ret;
+                var gotIt = array.some(this.getNodes(), function(node) {
+                    ret = node;
                     return node.ID == id;
                 });
-                console.assert(ret, "No matching node for '" + id + "'");
-                return ret;
+                console.assert(gotIt, "No matching node for '" + id + "'");
+                return gotIt?ret:null;
             },
             getType: function(/*string*/ id) {
                 var node = this.getNode(id);
@@ -825,12 +824,15 @@ define([
                 var node = this.getNode(id);
                 return node && node.descriptionID;
             },
-	    getNodeIDFor: function(id){
+	    getNodeIDFor: function(givenID){
 		// Summary: returns the id of a student node having a matching descriptionID;
 		//          return null if no match is found.
-		return array.some(this.getNodes(), function(node){
-		    return node.descriptionID == id && node.id;
-		}) || null;
+		var id;
+		var gotIt = array.some(this.getNodes(), function(node){
+		    id = node.ID;
+		    return node.descriptionID == givenID;
+		});
+		return gotIt?id:null;  
 	    },
             getName: function(/*string*/ id) {
                 // Summary: returns the name of a node matching the student model.

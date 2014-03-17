@@ -22,8 +22,8 @@ define([
         areEquivalent: function(/*string*/ id, /*object*/ model, /*string*/ studentEquation) {
             //Summary: For a given model node id, checks the correctness of the student equation.
             //
-            if (typeof this.studentEquation == 'string')
-                var student = Parser.parse(this.studentEquation);
+            if (typeof studentEquation == 'string')
+                var student = Parser.parse(studentEquation);
             else
                 student = studentEquation;
 	    
@@ -33,8 +33,8 @@ define([
 	    var givenParse = Parser.parse(model.given.getEquation(id));		
 	    var givenVals = {};
 	    array.forEach(givenParse.variables(), function(variable){
+		// console.log("    ==== evaluating given variable ", variable);
 		// given model variables should all be given node IDs
-		console.log("areEquivalent given variable ", variable);
 		this.evalVar(variable, model.given, givenVals);
 	    }, this);
 	    var givenResult = givenParse.evaluate(givenVals);
@@ -47,13 +47,15 @@ define([
 	     */
 	    var studentVals = {};
 	    array.forEach(student.variables(), function(variable){
-		console.log("areEquivalent student variable ", variable);
+		console.log("    ==== evaluating student variable ", variable);
 		var givenID;
 		if(model.student.isNode(variable)){
 		    givenID = model.student.getDescriptionID(variable);
 		} else {
 		    givenID = model.getNodeIDByName(variable);
 		}
+		/* This should never happen:  there is a check for unknown variables
+		 at a higher level. */
 		console.assert(givenID, "Student variable '" + variable + "' has no match.");
 		// At this point, givenID can also be from the extra nodes.
 		this.evalVar(givenID, model.given, givenVals);
@@ -64,20 +66,17 @@ define([
 	},
 	
 	/*
-	 Recursively evaluate functions in the given model,
+	 Recursively evaluate functions in the model,
 	 choosing random values for any parameters or accumulators.
 	 
 	 If the function nodes have circular dependencies, then an error will be produced.
 	 */
 	evalVar: function(id, model, vals, parents){
-	    console.assert(model.isNode(id), "Model equation '" + id + 
-			   "' has unknown variable '" + id + "'.");
+	    console.assert(model.isNode(id), "evalVar: unknown variable '" + id + "'.");
 	    var node = model.getNode(id);
 	    if(vals[id]){
-		console.log("Variable '" + id + "' already set, do nothing.");
 		// if already assigned a value, do nothing.
 	    } else if(node.type == 'parameter' || node.type == 'accumulator'){
-		console.log("Setting '" + id + "' to random value.");
 		vals[id] = Math.random();
 	    } else {
 		if(!parents) parents = new Object();

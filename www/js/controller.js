@@ -404,30 +404,34 @@ define([
 		this.badParse(inputEquation);
 	    } 
 	    if(parse){
+		var toPM = true;
 		array.forEach(parse.variables(), function(variable){
 		    // Test if variable name can be found in given model or extras
-		    var id = this._model.getNodeIDByName[variable];
-		    if(id){
+		    var givenID = this._model.getNodeIDByName(variable);
+		    if(givenID){
 			// Test if variable has been defined by student
-			var studentID = this._model.student.getNodeIDFor(id);
+			var studentID = this._model.student.getNodeIDFor(givenID);
 			if(studentID){
+			    // console.log("       substituting ", variable, " -> ", studentID);
 			    parse.substitute(variable, studentID);
 			} else {
 			    directives.push({id: 'message', attribute: 'append', value: "Quantity '" + variable + "' not defined yet."});
 			}
 		    } else {
+			toPM = false;  // Don't send to PM
 			directives.push({id: 'message', attribute: 'append', value: "Unknown variable '" + variable + "'."});
 		    }
 		},this);		
 		// Expression now is written in terms of student IDs, when possible.
-		var parsedEquation = parse.toString();
+		// Save with explicit parentheses for all binary operations.
+		var parsedEquation = parse.toString(true);
+		// console.log("********* Saving equation to model: ", parsedEquation);
 		this._model.active.setEquation(this.currentID, parsedEquation);
-		// Send to PM
-		// BvdS:  Should we still send to PM if there are unknown variables
-		//        or undefined variables?
-		directives.concat(this._PM.processAnswer(this.currentID, 'equation', parse));
+		// Send to PM if all variables are known.
+		if(toPM)
+		    directives.concat(this._PM.processAnswer(this.currentID, 'equation', parse));
 	    }
-
+	    
 	    // Now apply directives, either from PM or special messages above.
             array.forEach(directives, function(directive){
 		this.updateModelStatus(directive);
@@ -444,14 +448,14 @@ define([
 	    if(expr){
 		this.mapVariableNodeNames = {};
 		// console.log("            parse: ", expr);
-		array.forEach(expr.variables(), function(studentID){
+		array.forEach(expr.variables(), function(variable){
 		    /* A student equation variable can be a student node id
 		     or given (or extra) model node name (if the node has not been
 		     defined by the student). */
-		    if(this._model.student.isNode(studentID)){
-			var nodeName = this._model.student.getName(studentID);
+		    if(this._model.student.isNode(variable)){
+			var nodeName = this._model.student.getName(variable);
 			// console.log("=========== substituting ", variable, " -> ", nodeName);
-			expr.substitute(studentID, nodeName);
+			expr.substitute(variable, nodeName);
 			// console.log("            result: ", expr);
 		    }
 		}, this);
