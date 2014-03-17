@@ -132,6 +132,14 @@ define([
 
                 this.dialog.destroyRecursive();
 
+
+                //set initial values of all parameters to original values
+                var i;
+                for(i in this.paramNames)
+                {
+                    this.object.calculationObj.active.setInitial(i,this.paramValue[i]);
+                }
+
             }));
 
             var paneText="";

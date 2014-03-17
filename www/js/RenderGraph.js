@@ -146,7 +146,16 @@ define([
            //destroy the dialog when it is closed
             on(this.dialog,"hide",lang.hitch(this,function(){
 
+
+
                 this.dialog.destroyRecursive();
+
+                //set initial values of all parameters to original values
+                var i;
+                 for(i in this.paramNames)
+                 {
+                 this.object.calculationObj.active.setInitial(i,this.paramValue[i]);
+                 }
 
             }));
 
