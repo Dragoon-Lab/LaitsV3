@@ -135,8 +135,8 @@ define([
 						{
 							this.currentNodeValues[this.modelNodes[i].ID] = this.active.getInitial(this.modelNodes[i].ID);
 						}
-						
-						arrayOfTimeSteps.push(this.startTime);
+
+						arrayOfTimeSteps.push(this.startTime.toFixed(2));
 						
 						for(j=0;j<this.modelNodes.length;j++)
 						{
@@ -158,9 +158,11 @@ define([
 						break;
 					
 					case false:
-						for(i=this.startTime+this.timeSteps;i<(this.endTime-this.startTime)/this.timeSteps;i=i+this.timeSteps)
+						//for(i=this.startTime+this.timeSteps;i<(this.endTime-this.startTime)/this.timeSteps;i=i+this.timeSteps)
+                        for(i=this.startTime+this.timeSteps;i<this.endTime;i=i+this.timeSteps)
 						{
-							arrayOfTimeSteps.push(i);
+                            console.log(this.model.getTimeStep());
+							arrayOfTimeSteps.push(i.toFixed(2));
 							for(j=0;j<this.modelNodes.length;j++)
 							{
 								if(this.active.getType(this.modelNodes[j].ID) != 'parameter')

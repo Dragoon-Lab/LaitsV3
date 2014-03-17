@@ -7,7 +7,7 @@
             "URL": "images/rabbit.jpeg",
             "startTime": 0,
             "endTime": 10,
-            "timeStep": 1,
+            "timeStep": 0.5,
             "units": "years"
         },
         "taskDescription": "In this exercise, you will construct a model of how a rabbit population grows when no rabbits die. The first quantity in this model is the population or number of rabbits in the population. Initially, there are 100 rabbits, but the number increases with time. The new population each month is its present value plus the number of births (number of rabbits born each month). The number of births is equal to the product of the population and the birth rate. The birthrate or the ratio of the number of rabbits born in a month to the rabbit population that month has a fixed value of 0.2.",

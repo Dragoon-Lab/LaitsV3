@@ -111,7 +111,7 @@ define([
      	        //create label for name of a textbox
      	        //create input for a textbox
      	        //create div for embedding a slider
-                this.dialogContent= this.dialogContent + this.createDom('label','','',this.paramNames[j]+" = ")+this.createDom('input','textTable'+i,"type='text' data-dojo-type='dijit/form/TextBox'")+"<br>"
+                this.dialogContent= this.dialogContent + this.createDom('label','','',this.paramNames[j]+" = ")+this.createDom('input','textTable'+i,"type='text' data-dojo-type='dijit/form/TextBox' readOnly=true")+"<br>"
      	        +this.createDom('div','sliderTable'+i);
      	        console.debug("dialogContent is "+this.dialogContent);
 

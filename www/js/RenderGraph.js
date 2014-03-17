@@ -125,7 +125,7 @@ define([
 
                str = 'text'+ i.toString();
                this.strDomID.push(str);
-               this.dialogContent= this.dialogContent + this.createDom('input',str,"type='text' data-dojo-type='dijit/form/TextBox'")+"<br>";
+               this.dialogContent= this.dialogContent + this.createDom('input',str,"type='text' data-dojo-type='dijit/form/TextBox' readOnly=true")+"<br>";
                str = 'slider'+ i.toString();
                this.strDomID.push(str);
                this.dialogContent= this.dialogContent  +this.createDom('div',str);
@@ -178,10 +178,13 @@ define([
 			   chartArray[i].addPlot("default", {type: Lines, markers:true});
 			  
 			   chartArray[i].addAxis("x", {
-			   fixed: true, min: 0, max: 10, title: this.xunits, 
+			   fixed: true, min: this.object.calculationObj.model.getStartTime(), max: (this.object.calculationObj.model.getEndTime()-this.object.calculationObj.model.getStartTime())/this.object.calculationObj.model.getTimeStep(), title: this.xunits,
 			   titleOrientation: "away", titleGap:5
 			});
-			   chartArray[i].addAxis("y", {vertical: true, min: 0, title: this.units[j]});
+               var array = this.arrayOfNodeValues[j];
+               var maxArrayValue = array[array.length-1];
+			   //chartArray[i].addAxis("y", {vertical: true, min: 0, title: this.units[j]});
+               chartArray[i].addAxis("y", {vertical: true, min: 0, max:maxArrayValue,title: this.units[j]});
 			   chartArray[i].addSeries("correct solution", this.arrayOfNodeValues[j], {stroke: "red"});
 			   chartArray[i].addSeries("Variable solution", this.arrayOfNodeValues[j], {stroke: "green"});
 			   chartArray[i].render();
