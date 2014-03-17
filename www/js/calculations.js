@@ -85,11 +85,21 @@ define([
 			//		  node-id/node-equation
 			_getAllNodeEquations:function()
 			{
-				var i,nodeEquations={};
+				var i,nodeEquations={},tempStr="";
 				
 				for(i=0; i<this.modelNodes.length; i++)
 				{
-					nodeEquations[this.modelNodes[i].ID] = this.active.getEquation(this.modelNodes[i].ID);
+
+                    if(this.active.getType(this.modelNodes[i    ].ID) == 'accumulator')
+                    {
+                        tempStr = this.modelNodes[i].ID + "+" + this.active.getEquation(this.modelNodes[i].ID)+"*" + this.model.getTimeStep();
+                    }
+                    else
+                    {
+                        tempStr = this.active.getEquation(this.modelNodes[i].ID);
+                    }
+                    nodeEquations[this.modelNodes[i].ID] = tempStr;
+					//nodeEquations[this.modelNodes[i].ID] = this.active.getEquation(this.modelNodes[i].ID);
 				}
 				
 				return nodeEquations;
