@@ -13,6 +13,10 @@
 define([
     "dojo/_base/array", "dojo/_base/lang", "parser/parser"
 ], function(array, lang, Parser) {
+
+    function equivalentError(message){
+	
+    };
     
     return {
         areEquivalent: function(/*string*/ id, /*object*/ model, /*string*/ studentEquation) {
@@ -23,47 +27,72 @@ define([
             else
                 student = studentEquation;
 	    
-	    var vals = {};
-	    var givenResult = this.evalVar(model.given.getNode(id), model.given, vals, {});
+	    // Choose values so that the given model node can be evaluated.
+	    var givenEqn = model.given.getEquation(id);
+	    console.assert(givenEqn,"Given node '" + id + "' does not have an equation.");
+	    var givenParse = Parser.parse(model.given.getEquation(id));		
+	    var givenVals = {};
+	    array.forEach(givenParse.variables(), function(variable){
+		// given model variables should all be given node IDs
+		console.log("areEquivalent given variable ", variable);
+		this.evalVar(variable, model.given, givenVals);
+	    }, this);
+	    var givenResult = givenParse.evaluate(givenVals);
+
+	    /*
+	     Go through student variables.  Each variable can be either
+	     a given/extra model node name or a student modelnode id.
+	     A variable may, or may not, have a value assigned when 
+	     the given model was evaluated above.
+	     */
 	    var studentVals = {};
-	    for(var givenID in vals){
-		var studentID = model.student.getNodeIDFor(givenID);
-		if(studentID){
-		    studentVals[studentID] = vals[givenID];
+	    array.forEach(student.variables(), function(variable){
+		console.log("areEquivalent student variable ", variable);
+		var givenID;
+		if(model.student.isNode(variable)){
+		    givenID = model.student.getDescriptionID(variable);
 		} else {
-		    console.log("^^^^^^ areEquivalent id='" + givenID + "' not defined in student model".);
+		    givenID = model.getNodeIDByName(variable);
 		}
-	    }
-	    console.warn("Does not correctly handle case where node is not yet evaluated.");
-	    var studentResult = studentEquation.evaluate(studentVals);
+		console.assert(givenID, "Student variable '" + variable + "' has no match.");
+		// At this point, givenID can also be from the extra nodes.
+		this.evalVar(givenID, model.given, givenVals);
+		studentVals[variable] = givenVals[givenID];
+	    }, this);
+	    var studentResult = student.evaluate(studentVals);
 	    return Math.abs(studentResult - givenResult) <= 10e-10*Math.abs(studentResult+givenResult);
 	},
 	
 	/*
 	 Recursively evaluate functions in the given model,
 	 choosing random values for any parameters or accumulators.
-
+	 
 	 If the function nodes have circular dependencies, then an error will be produced.
 	 */
-	evalVar: function(node, model, vals, parents){
-	    if(node.type == 'parameter' || node.type == 'accumulator'){
-		vals[node.id] = Math.random();
+	evalVar: function(id, model, vals, parents){
+	    console.assert(model.isNode(id), "Model equation '" + id + 
+			   "' has unknown variable '" + id + "'.");
+	    var node = model.getNode(id);
+	    if(vals[id]){
+		console.log("Variable '" + id + "' already set, do nothing.");
+		// if already assigned a value, do nothing.
+	    } else if(node.type == 'parameter' || node.type == 'accumulator'){
+		console.log("Setting '" + id + "' to random value.");
+		vals[id] = Math.random();
 	    } else {
-		if(parents[node.id]){
+		if(!parents) parents = new Object();
+		if(parents[id]){
 		    // Should throw an error, so that message can be sent to user.
-		    console.error("Function node '" + node.id + "' has circular dependency.");
-		    return;
+		    throw new Error("Function node '" + node.id + "' has circular dependency.");
 		}
-		var z = lang.clone(parents);
-		z[node.id] = true;
+		parents[id] = true;
 		// Evaluate function node
 		var parse = Parser.parse(node.equation);
 		array.forEach(parse.variables(), function(x){
-		    if(! vals[x]){
-			this.evalVar(model.getNode(x), model, vals, z);
-		    }
+		    this.evalVar(x, model, vals, parents);
 		}, this);
-		vals[node.id] = parse.evaluate(vals);
+		vals[id] = parse.evaluate(vals);
+		parents[id] = false;
 	    }
 	}
     };

@@ -283,11 +283,11 @@ define([
                 // Summary: returns the id of a node matching the given name from the 
 		//          given or extra nodes.  If none is found, return null.
 		var id = null;
-		array.some(this.student.getNodes(), function(node){
-		    id = node.id;
+		var gotIt = array.some(this.given.getNodes(), function(node){
+		    id = node.ID;
 		    return node.name === name;
 		}) || array.some(this.getExtraDescriptions(), function(node){
-		    id = node.id;
+		    id = node.ID;
 		    return node.name === name;
 		});
 		return id;

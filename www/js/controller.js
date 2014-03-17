@@ -445,10 +445,15 @@ define([
 		this.mapVariableNodeNames = {};
 		// console.log("            parse: ", expr);
 		array.forEach(expr.variables(), function(studentID){
-		    var nodeName = this._model.student.getName(studentID);
-		    // console.log("=========== substituting ", variable, " -> ", nodeName);
-		    expr.substitute(studentID, nodeName);
-		    // console.log("            result: ", expr);
+		    /* A student equation variable can be a student node id
+		     or given (or extra) model node name (if the node has not been
+		     defined by the student). */
+		    if(this._model.student.isNode(studentID)){
+			var nodeName = this._model.student.getName(studentID);
+			// console.log("=========== substituting ", variable, " -> ", nodeName);
+			expr.substitute(studentID, nodeName);
+			// console.log("            result: ", expr);
+		    }
 		}, this);
 		return expr.toString();
 	    } else {
