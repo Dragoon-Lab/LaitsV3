@@ -1,14 +1,9 @@
 /* global define */
-/**
- *
- * Equation checking to compare an equation given by the student with a given equation
- * 
- **/
-
-/**
- * Evaluates two expressions for equivalence by comparing the given variables, and then
- *      testing the expressions with values assigned to the variables
- **/
+/*
+ *  Routines associated with the Parser:
+ *  * Equation checking to compare an equation given by the student with a given equation
+ *  * Convert equation between format stored in model and format shown on node editor.
+ */
 
 define([
     "dojo/_base/array", "dojo/_base/lang", "parser/parser"
@@ -19,6 +14,16 @@ define([
     };
     
     return {
+
+	parse: function(equation){
+	   return Parser.parse(equation);
+	},
+
+	/**
+	 * Evaluates two expressions for equivalence by comparing the given variables, and then
+	 *      testing the expressions with values assigned to the variables
+	 **/
+
         areEquivalent: function(/*string*/ id, /*object*/ model, /*string*/ studentEquation) {
             //Summary: For a given model node id, checks the correctness of the student equation.
             //
@@ -93,7 +98,31 @@ define([
 		vals[id] = parse.evaluate(vals);
 		parents[id] = false;
 	    }
+	},
+
+	convert: function(model, equation){
+	    try{
+		var expr= Parser.parse(equation);
+	    } catch(e){
+		console.warn("Should log this as a JavaScript error.");
+		return equation;
+	    }
+	    this.mapVariableNodeNames = {};
+	    // console.log("            parse: ", expr);
+	    array.forEach(expr.variables(), function(variable){
+		/* A student equation variable can be a student node id
+		 or given (or extra) model node name (if the node has not been
+		 defined by the student). */
+		if(model.isNode(variable)){
+		    var nodeName = model.getName(variable);
+		    // console.log("=========== substituting ", variable, " -> ", nodeName);
+		    expr.substitute(variable, nodeName);
+		    // console.log("            result: ", expr);
+		}
+	    }, this);
+	    return expr.toString();
 	}
+
     };
 });
 

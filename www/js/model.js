@@ -707,29 +707,26 @@ define([
                     return input.ID;
                 });
             },
+	    setInputs: function(/*array*/ inputs, /*string*/ inputInto){
+		// Silently filter out any inputs that are not defined.
+		var node = this.getNode(inputInto);
+		if(node){
+		    node.inputs = array.map(
+			array.filter(inputs, this.isNode, this), 
+			function(id){
+			    return {ID: id};
+			}, 
+			this
+		    );
+		}
+	    },
             setType: function(/*string*/ id, /*string*/ type) {
                 var ret = this.getNode(id);
                 if (ret)
                     ret.type = type;
             },
             addInput: function(/*string*/ input, /*string*/ inputInto) {
-                // Summary: adds a node (input) as an input into the given node (inputInto); both params are node ID strings
-                if (inputInto === input) { //node can't be input into itself
-                    console.error("Can't input node into itself.");
-                    return;
-                }
-                // Check that input and inputInto are valid ID's
-                if (!this.getNode(input)) {
-                    console.error("Input node is not valid: ", input);
-                    return;
-                }
-                var receivingNode = this.getNode(inputInto);
-                if (!receivingNode) {
-                    console.error("Receiving node is not valid: ", inputInto);
-                    return;
-                }
-                // Add input to node inputs
-                receivingNode.inputs.push({ID: input});
+		 console.error("Deprecated.  Use setInputs() instead.");
             }
         };
 

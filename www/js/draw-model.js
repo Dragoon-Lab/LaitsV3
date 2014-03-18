@@ -102,10 +102,7 @@ define([
 		// Not sure why vertex is an array and not just the <div>
                 var id = attr.get(vertex[0], "id");
                 var inputs = givenModel.student.getInputs(id);
-                array.forEach(inputs, function(input){
-                    console.log("---- adding connection from ", input, " to ", id, " scope is ", this);
-                    this.addConnection(vertex, input);
-                }, this);
+		this.setConnections(inputs, vertex);
 		
             }, this);
 
@@ -142,7 +139,7 @@ define([
             });
             pMenu.addChild(new MenuItem({
             label: "Delete Node",
-            onClick: lang.hitch(this,function(){this.deleteNode(node.ID)}) //onClick expects anonymous function call
+            onClick: lang.hitch(this, function(){this.deleteNode(node.ID);}) //onClick expects anonymous function call
             }));
 
 
@@ -170,7 +167,7 @@ define([
 		onMaxConnections:function(info, e) {
                     alert("Maximum connections (" + info.maxConnections + ") reached");
                 }
-        });
+            });
             this._instance.makeTarget(vertex, {
 		dropOptions:{ hoverClass:"dragHover" },
 		anchor:"Continuous"
@@ -180,20 +177,26 @@ define([
 	    
 	},
 	
-	/* addConnection: add a input connection between two nodes.  Pass in strings representing the IDs of the source and destination nodes. */ 
-
-    addConnection: function(/*string*/ source, /*string*/ destination){
-        this._instance.connect({source: source, target: destination});
-    },
-
-    deleteNode: function(/*object*/ nodeID){
-        console.log("delete node called for "+nodeID);
-    },
-
+	/* 
+	 Set all connections going into a given node (destination), silently
+	 filtering out any source nodes that don't exist. 
+	 */
+	setConnections: function(/*array*/ sources, /*string*/ destination){
+	    console.warn("setConnections:  Need to delete existing connections going into " + destination);
+	    array.forEach(sources, function(source){
+		console.warn("Need to ignore sources that don't exist");
+		this._instance.connect({source: source, target: destination});
+	    }, this);
+	},
+	
+	deleteNode: function(/*object*/ nodeID){
+            console.log("delete node called for "+nodeID);
+	},
+	
 	// Keep track of whether there was a mouseDown and mouseUp
 	// with no intervening mouseMove
 	_clickNoMove: false,
-
+	
 	onMoveStart: function(){
 	    this._clickNoMove = true;
 	},

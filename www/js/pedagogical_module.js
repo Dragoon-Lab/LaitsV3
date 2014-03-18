@@ -12,8 +12,8 @@
  **/
 
 define([
-    "dojo/_base/array", "dojo/_base/declare", "./equation_check", "parser/parser"
-], function(array, declare, check, Parser) {
+    "dojo/_base/array", "dojo/_base/declare", "./equation"
+], function(array, declare, check) {
 
     var hints = {
         // Summary: Messages that are given to the user based on the type of user, 

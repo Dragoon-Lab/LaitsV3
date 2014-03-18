@@ -1,5 +1,6 @@
 /* global define, Image */
 define([
+    'dojo/_base/lang',
     "dojo/dom",
     'dojo/dom-geometry',
     "dojo/on",
@@ -18,7 +19,7 @@ define([
     "./logging",
     './author'
 ],function(
-    dom, geometry, on, aspect, ioQuery, ready, registry, 
+    lang, dom, geometry, on, aspect, ioQuery, ready, registry, 
     menu, loadSave, model, 
     Graph, Table, wrapText, controller, Parser, drawmodel, calculations, logging, author
 ){ 
@@ -44,20 +45,16 @@ define([
 	givenModel.loadModel(solutionGraph);
 
 	/*
-	@author: Deepak
-	@brief: calling calculation class to get node values and passing parameters to rendergraph and rendertable
-	*/
-
-	/*
 	 start up controller
 	 */
 	 
 	ready(function(){
-
+	    
 	    var drawModel = new drawmodel(givenModel);
 	    /* 
 	     The sub-mode of STUDENT mode can be either "feedback" or "power"
-	     This is eventually supposed to be supplied by the student model
+	     This is eventually supposed to be supplied by the student model.
+	     In the mean time, allow it as a GET parameter.
 	     */
 	    var subMode = query.sm || "feedback";
 	    var controllerObject  = new controller(query.m, subMode, givenModel);
@@ -98,6 +95,12 @@ define([
 	    }, true);
 
 	    /*
+	     Add connection when inputs are updated
+	     */
+	    aspect.after(controllerObject, 'setConnections', 
+			 lang.hitch(drawModel, drawModel.setConnections), true);
+
+	    /*
 	     Autosave on close window
 	     It would be more efficient if we only saved the changed node.
 	     */
@@ -109,43 +112,43 @@ define([
 	     Make model solution plot using dummy data. 
 	     This should be put in its own module.
 	     */	
-	
-
+	    
+	    
 	    // show graph when button clicked
 	    menu.add("graphButton",function(){
 		console.debug("button clicked");
-
-        var calc = new calculations(solutionGraph,true);
-        var obj = calc.gerParametersForRendering(solutionGraph,true);
-
-        // instantiate graph object
-        var graph = new Graph(obj);
+		
+		var calc = new calculations(solutionGraph,true);
+		var obj = calc.gerParametersForRendering(solutionGraph,true);
+		
+		// instantiate graph object
+		var graph = new Graph(obj);
 		graph.show();
 	    }); 
 	    
-
+	    
 	    // show table when button clicked
 	    menu.add("tableButton", function(){        	
 		console.debug("table button clicked");
-
-        var calc = new calculations(solutionGraph,true);
-        var obj = calc.gerParametersForRendering(solutionGraph,true);
-
-        var table = new Table(obj);
+		
+		var calc = new calculations(solutionGraph,true);
+		var obj = calc.gerParametersForRendering(solutionGraph,true);
+		
+		var table = new Table(obj);
 		table.show();
 	    });
-
+	    
 	    var canvas = document.getElementById('myCanvas');
-      	var context = canvas.getContext('2d');
-      	var imageObj = new Image();
-      	var desc_text = givenModel.getTaskDescription();
-
-      	imageObj.onload = function() {
+      	    var context = canvas.getContext('2d');
+      	    var imageObj = new Image();
+      	    var desc_text = givenModel.getTaskDescription();
+	    
+      	    imageObj.onload = function() {
         	context.drawImage(imageObj, 69, 50);
         	wrapText(context, desc_text, 70, 400, 400, 20);
-      	};
-      	imageObj.src = givenModel.getURL();
-
+      	    };
+      	    imageObj.src = givenModel.getURL();
+	    
 	});
     });    
 });

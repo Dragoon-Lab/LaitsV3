@@ -4,9 +4,10 @@
  */
 define([
     "dojo/_base/array", 'dojo/_base/declare', "dojo/_base/lang", 
-    'dojo/aspect', 'dojo/dom', 'dojo/dom-style', 'dojo/keys', 'dojo/on', "dojo/ready", 'dijit/registry',
-    "./pedagogical_module","parser/parser","dojo/dom-class","dojo/dom-construct"
-], function(array, declare, lang, aspect, dom, style, keys, on, ready, registry, PM, parser, domClass, domConstruct) {
+    'dojo/aspect', 'dojo/dom', "dojo/dom-class", "dojo/dom-construct", 
+    'dojo/dom-style', 'dojo/keys', 'dojo/on', "dojo/ready", 'dijit/registry',
+    "./pedagogical_module","./equation"
+], function(array, declare, lang, aspect, dom, domClass, domConstruct, style, keys, on, ready, registry, PM, expression) {
     
     return declare(null, {
 	
@@ -257,6 +258,8 @@ define([
 
             // updating node editor and the model.	    
             this._model.active.setDescriptionID(this.currentID, selectDescription);
+	    this._nodeEditor.set('title', this._model.active.getName(this.currentID));
+
             var directives = this._PM.processAnswer(this.currentID, 'description', selectDescription);
 	    array.forEach(directives , function(directive){
 		this.updateModelStatus(directive);
@@ -275,13 +278,13 @@ define([
             domClass.replace(this.currentID, type);
             var nodeName = this._model.student.getName(this.currentID);
             if(nodeName && type != "triangle")
-		nodeName='<div id='+this.currentID+'Label><strong>'+nodeName+'</strong></div>';
+		nodeName = '<div id=' + this.currentID + 'Label><strong>' + nodeName + '</strong></div>';
             else
-		nodeName='';
+		nodeName = '';
             if(lang.exists(this.currentID+'Label'))
-		domConstruct.place(nodeName,this.currentID+'Label',"replace");
+		domConstruct.place(nodeName, this.currentID+'Label', "replace");
             else //new node
-		domConstruct.place(nodeName,this.currentID);
+		domConstruct.place(nodeName, this.currentID);
 	    
             // updating node editor and the model.	    
             this._model.active.setType(this.currentID, type);
@@ -394,7 +397,7 @@ define([
 	    var directives = [];
 	    var parse = null;
 	    try{
-		parse = parser.parse(inputEquation);
+		parse = expression.parse(inputEquation);
 	    } catch(err) {
 		console.log("Parser error: ", err);
 		this._model.active.setEquation(this.currentID, inputEquation);
@@ -427,6 +430,11 @@ define([
 		var parsedEquation = parse.toString(true);
 		// console.log("********* Saving equation to model: ", parsedEquation);
 		this._model.active.setEquation(this.currentID, parsedEquation);
+
+		// Update inputs and connections
+		this._model.student.setInputs(parse.variables(), this.currentID);
+		this.setConnections(parse.variables(), this.currentID);
+
 		// Send to PM if all variables are known.
 		if(toPM)
 		    directives.concat(this._PM.processAnswer(this.currentID, 'equation', parse));
@@ -443,29 +451,11 @@ define([
 	// Stub to connect logging to record bad parse.
 	badParse: function(inputEquation){},
 
-	convertEquation: function(equation){
-            var expr = parser.parse(equation);
-	    if(expr){
-		this.mapVariableNodeNames = {};
-		// console.log("            parse: ", expr);
-		array.forEach(expr.variables(), function(variable){
-		    /* A student equation variable can be a student node id
-		     or given (or extra) model node name (if the node has not been
-		     defined by the student). */
-		    if(this._model.student.isNode(variable)){
-			var nodeName = this._model.student.getName(variable);
-			// console.log("=========== substituting ", variable, " -> ", nodeName);
-			expr.substitute(variable, nodeName);
-			// console.log("            result: ", expr);
-		    }
-		}, this);
-		return expr.toString();
-	    } else {
-		// If parse fails, return the original string.
-		return equation;
-	    }
+	// Stub to set connections in the graph
+	setConnctions: function(from, to){
+	    // console.log("======== setConnections fired for node" + to);
 	},
-	
+
 	//show node editor
        showNodeEditor: function(/*string*/ id){
            console.log("showNodeEditor called for node ", id);
@@ -526,7 +516,7 @@ define([
 	    
             var equation = model.student.getEquation(nodeid);
             console.log("equation before conversion ", equation);
-            var mEquation = equation?this.convertEquation(equation):'';
+            var mEquation = equation?expression.convert(model.student, equation):'';
             console.log("equation after conversion ", mEquation);
             registry.byId(this.controlMap.equation).set('value', mEquation);
 	    
