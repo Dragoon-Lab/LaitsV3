@@ -310,8 +310,23 @@ define([
 		this.updateModelStatus(directive);
 		var w = registry.byId(this.widgetMap[directive.id]);
 
-       if(directive.attribute=='value'){
+       if(directive.attribute=='value'){  //if correct value suggested by PM
             w.set(directive.attribute, directive.value,false);
+
+           //perform all changes
+
+           domClass.replace(this.currentID, type);
+           var nodeName = this._model.student.getName(this.currentID);
+           if(nodeName && type != "triangle")
+               nodeName = '<div id=' + this.currentID + 'Label><strong>' + nodeName + '</strong></div>';
+           else
+               nodeName = '';
+           if(lang.exists(this.currentID+'Label'))
+               domConstruct.place(nodeName, this.currentID+'Label', "replace");
+           else //new node
+               domConstruct.place(nodeName, this.currentID);
+
+
             // Update the model.
             this._model.active.setType(this.currentID, type);
         }
