@@ -256,9 +256,17 @@ define([
             console.log("****** in handleDescription ", this.currentID, selectDescription);
 	    if(selectDescription == 'defaultSelect')return; // don't do anything if they choose default
 
-            // updating node editor and the model.	    
+            // Update node editor and the model.	    
             this._model.active.setDescriptionID(this.currentID, selectDescription);
 	    this._nodeEditor.set('title', this._model.active.getName(this.currentID));
+
+	    // Update connections and the equation variables
+	    // Update inputs
+	    //expression.addQuantity(this.currentID, this._model.active, selectDescription);
+
+	    // need to delete all existing outgoing connections
+	    // need to add connections based on new inputs in model.
+	    // add hook so we can do this in draw-model...
 
             var directives = this._PM.processAnswer(this.currentID, 'description', selectDescription);
 	    array.forEach(directives , function(directive){
@@ -328,9 +336,12 @@ define([
 	    var widget = registry.byId(this.controlMap.equation);
 	    var oldEqn = widget.get("value");
 	    // Get current cursor position or go to end of input
-	    var offset1 = widget.domNode.selectionStart || oldEqn.length;
-	    var offset2 = widget.domNode.selectionEnd || oldEqn.length;
-	    widget.set("value", oldEqn.substr(0, offset1) + text + oldEqn.substr(offset2));
+	    // console.log("       Got offsets, length: ", widget.domNode.selectionStart, widget.domNode.selectionEnd, oldEqn.length);
+	    var p1 = widget.domNode.selectionStart;
+	    var p2 = widget.domNode.selectionEnd;
+	    widget.set("value", oldEqn.substr(0, p1) + text + oldEqn.substr(p2));
+	    // Set cursor to end of current paste
+	    widget.domNode.selectionStart = widget.domNode.selectionEnd = p1 + text.length;
 	},
 
 	handleInputs: function(id){

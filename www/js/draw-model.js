@@ -4,9 +4,9 @@
  */
 define([
     "dojo/_base/array", 'dojo/_base/declare', 'dojo/_base/lang', 
-    "dojo/dom-attr", "dojo/dom-construct","dijit/Menu",
+    'dojo/dom', "dojo/dom-attr", "dojo/dom-construct","dijit/Menu",
     "dijit/MenuItem", "jsPlumb/jsPlumb"
-],function(array, declare, lang, attr, domConstruct,Menu,MenuItem){
+],function(array, declare, lang, dom, attr, domConstruct,Menu,MenuItem){
 
     return declare(null, {
 
@@ -73,7 +73,7 @@ define([
                  would recommend you do. Note also here that we use the 'filter' option to tell jsPlumb
                  which parts of the element should actually respond to a drag start. */
 		
-                array.forEach(vertices,function(vertex){
+                array.forEach(vertices, function(vertex){
                     instance.makeSource(vertex, {
                         filter:".ep",                               // only supported by jquery
                         anchor:"Continuous",
@@ -87,7 +87,7 @@ define([
                 });
 		
                 // initialise all '.w' elements as connection targets.
-                array.forEach(vertices,function(vertex){
+                array.forEach(vertices, function(vertex){
                     instance.makeTarget(vertex, {
                         dropOptions:{ hoverClass:"dragHover" },
                         anchor:"Continuous"
@@ -182,15 +182,27 @@ define([
 	 filtering out any source nodes that don't exist. 
 	 */
 	setConnections: function(/*array*/ sources, /*string*/ destination){
-	    console.warn("setConnections:  Need to delete existing connections going into " + destination);
+	    // For now, we simply remove all existing connections and 
+	    // create all new connections.
+	    // See http://stackoverflow.com/questions/11488067/how-to-delete-jsplumb-connection
+	    // console.log("setConnections:  Need to delete existing connections going into " + destination, this._instance);
+	    // Go through existing connections and delete those that 
+	    // have this destination as their target.
+	    array.forEach(this._instance.getConnections(), function(connection){
+		if(connection.targetId == destination)
+		    this._instance.detach(connection);
+	    }, this);
+	    // Create new connections
 	    array.forEach(sources, function(source){
-		console.warn("Need to ignore sources that don't exist");
-		this._instance.connect({source: source, target: destination});
+		// Silently ignore sources that don't exist.
+		// The JsPlumb Dojo adapter also uses dom.byId() to locate graph nodes.
+		if(dom.byId(source))
+		   this._instance.connect({source: source, target: destination});
 	    }, this);
 	},
 	
 	deleteNode: function(/*object*/ nodeID){
-            console.log("delete node called for "+nodeID);
+            console.log("delete node called for " + nodeID);
 	},
 	
 	// Keep track of whether there was a mouseDown and mouseUp
