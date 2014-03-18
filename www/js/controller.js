@@ -273,7 +273,15 @@ define([
 		this.updateModelStatus(directive);
 		var w = registry.byId(this.widgetMap[directive.id]);
 		// console.log("*********  setting widget ", w, " using ", directive);
-		w.set(directive.attribute, directive.value);
+
+        if(directive.attribute=='value'){
+           w.set(directive.attribute, directive.value,false);
+            // Update the model.
+            this._model.active.setDescriptionID(this.currentID, directive.value);
+        }
+        else
+		    w.set(directive.attribute, directive.value);
+
             }, this);	    
 	},
 	
@@ -301,7 +309,15 @@ define([
 		console.log("*********** update node editor ", directive); 
 		this.updateModelStatus(directive);
 		var w = registry.byId(this.widgetMap[directive.id]);
+
+       if(directive.attribute=='value'){
+            w.set(directive.attribute, directive.value,false);
+            // Update the model.
+            this._model.active.setType(this.currentID, type);
+        }
+        else
 		w.set(directive.attribute, directive.value);
+
             }, this);	    
 	},
 
@@ -316,6 +332,10 @@ define([
 		this.updateModelStatus(directive);
 		var w = registry.byId(this.widgetMap[directive.id]);
 		w.set(directive.attribute, directive.value);
+
+                if(directive.attribute=='value') //if correct value suggested by PM update model
+                    this._model.active.setInitial(this.currentId,initial);
+
             }, this);
 	},
 
@@ -328,8 +348,13 @@ define([
             array.forEach(directives, function(directive){
 		this.updateModelStatus(directive);
 		var w = registry.byId(this.widgetMap[directive.id]);
+        if(directive.attribute=='value'){
+           w.set(directive.attribute, directive.value,false);
+           // Update the model.
+           this._model.active.setUnits(this.currentID, unit);
+         }else
 		w.set(directive.attribute, directive.value);
-            }, this);
+       }, this);
 	},
 
 	equationInsert: function(text){
