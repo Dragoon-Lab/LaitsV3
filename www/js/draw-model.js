@@ -194,11 +194,24 @@ define([
 	    }, this);
 	    // Create new connections
 	    array.forEach(sources, function(source){
-		// Silently ignore sources that don't exist.
-		// The JsPlumb Dojo adapter also uses dom.byId() to locate graph nodes.
-		if(dom.byId(source))
-		   this._instance.connect({source: source, target: destination});
+		// All sources and destinations should exist.
+		this._instance.connect({source: source, target: destination});
 	    }, this);
+	},
+
+	addQuantity: function(/*string*/ source, /*array*/ destinations){
+	    // Go through existing connections an delete those
+	    // that have this source.
+	    array.forEach(this._instance.getConnections(), function(connection){
+		if(connection.sourceId == source)
+		    this._instance.detach(connection);
+	    }, this);
+	    // Create new connections
+	    array.forEach(destinations, function(destination){
+		// All sources and destinations should exist.
+		this._instance.connect({source: source, target: destination});
+	    }, this);
+	    
 	},
 	
 	deleteNode: function(/*object*/ nodeID){

@@ -260,13 +260,13 @@ define([
             this._model.active.setDescriptionID(this.currentID, selectDescription);
 	    this._nodeEditor.set('title', this._model.active.getName(this.currentID));
 
-	    // Update connections and the equation variables
-	    // Update inputs
-	    //expression.addQuantity(this.currentID, this._model.active, selectDescription);
+	    // Update inputs and other equations based on new quantity.
+	    expression.addQuantity(this.currentID, this._model.active);
 
 	    // need to delete all existing outgoing connections
 	    // need to add connections based on new inputs in model.
 	    // add hook so we can do this in draw-model...
+	    this.addQuantity(this.currentID, this._model.active.getOutputs(this.currentID));
 
             var directives = this._PM.processAnswer(this.currentID, 'description', selectDescription);
 	    array.forEach(directives , function(directive){
@@ -284,6 +284,9 @@ define([
 
             }, this);	    
 	},
+
+	/* Stub to update connections in graph */
+	addQuantity: function(source, destinations){},
 	
 	handleType: function(type){
 	    console.log("****** Student has chosen type ", type, this);
@@ -484,7 +487,7 @@ define([
 
 		// Update inputs and connections
 		this._model.student.setInputs(parse.variables(), this.currentID);
-		this.setConnections(parse.variables(), this.currentID);
+		this.setConnections(this._model.student.getInputs(this.currentID), this.currentID);
 
 		// Send to PM if all variables are known.
 		if(toPM)

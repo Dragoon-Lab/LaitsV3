@@ -707,6 +707,18 @@ define([
                     return input.ID;
                 });
             },
+            getOutputs: function(/*string*/ id) {
+                // Summary: return an array containing the output ids for a node.
+                var outputs = [];
+		array.forEach(this.getNodes(), function(node){
+		    if(array.some(node.inputs, function(input){
+			return input.ID == id;
+		    })){
+			outputs.push(node.ID);
+		    }
+		});
+                return outputs;
+            },
 	    setInputs: function(/*array*/ inputs, /*string*/ inputInto){
 		// Silently filter out any inputs that are not defined.
 		var node = this.getNode(inputInto);

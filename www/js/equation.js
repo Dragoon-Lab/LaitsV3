@@ -121,7 +121,43 @@ define([
 		}
 	    }, this);
 	    return expr.toString();
-	}
+	},
+
+	/*
+	 Adding quantity to student model:  Update 
+	 equations and inputs of existing nodes.
+	 */
+	addQuantity: function(id, model){
+	    var name = model.getName(id);
+	    array.forEach(model.getNodes(), function(node){
+		if(node.equation){ 
+		    try{
+			var expr= Parser.parse(node.equation);
+		    } catch(e){
+			/* If an equation fails to parse, then the input
+			 string is stored as the equation for that node.
+                         Thus, if the parse fails, just move on to the 
+			 next node. */
+			return;
+		    }
+		    var changed = false;
+		    array.forEach(expr.variables(), function(variable){
+			if(name == variable){
+			    changed = true;
+			    expr.substitute(name, id);
+			}
+		    });
+		    if(changed){
+			node.equation = expr.toString(true);
+			node.inputs = [];
+			array.forEach(expr.variables(), function(id){
+			    if(model.isNode(id))
+				node.inputs.push({ID: id});
+			});
+		    }
+		}
+	    });
+	} 
 
     };
 });
