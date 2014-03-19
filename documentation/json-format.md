@@ -41,30 +41,38 @@ description of the task (problem) that is being modeled.
             "taskName": "Rabbits - Intro Problem",
             "properties": {
                 "phase": "intro",
-                "type": "construct",
-                "URL": "images/rabbit.jpeg",
-                "startTime": 0,
-                "endTime": 10,
-                "timeStep": 1,
+                "type": "construct"
+            },
+            "time": {
+                "start": 0,
+                "end": 10,
+                "step": 1,
                 "units": "years"
             },
-            "taskDescription": "In this exercise, you will construct a model of how a 
-                    rabbit population grows when no rabbits die. The first quantity in this 
-                    model is the population or number of rabbits in the population. Initially, 
-                    there are 100 rabbits, but the number increases with time. The new 
-                    population each month is its present value plus the number of births 
-                    (number of rabbits born each month).  The number of births is equal to the 
-                    product of the population and the birth rate. The birthrate or the ratio 
-                    of the number of rabbits born in a month to the rabbit population that 
-                    month has a fixed value of 0.2.",
+            "image": {
+                "URL": "images/rabbit.jpeg",
+                "width": 225,
+                "height": 100
+            },
+            "taskDescription": "In this exercise, you will construct a model of 
+            how a rabbit population grows when no rabbits die. The first 
+            quantity in this model is the population or number of rabbits in the 
+            population. Initially, there are 100 rabbits, but the number 
+            increases with time. The new population each month is its present 
+            value plus the number of births (number of rabbits born each month). 
+            The number of births is equal to the product of the population and 
+            the birth rate. The birthrate or the ratio of the number of rabbits 
+            born in a month to the rabbit population that month has a fixed 
+            value of 0.2.",
 
 Within the properties element, "phase" and "type" refer to the type of task and 
-let the program know what kind of help the student should receive. The element 
-"URL" gives the location of the picture used for the problem, "startTime", 
-"endTime", and "timeStep" refer to the time frame that the problem is modeling 
-and are self explanatory, and "units" refers to the time that the model spans. 
-The element "taskDescription" gives the student information needed to complete 
-the model.
+let the program know what kind of help the student should receive. Within the 
+"time" element "startTime", "endTime", and "timeStep" refer to the time frame 
+that the problem is modeling and are self explanatory, and "units" refers to the 
+time that the model spans. Within the "image" element "URL" gives the location 
+of the picture used for the problem, with "width" and "height" giving its 
+desired dimensions. The element "taskDescription" gives the student information 
+needed to complete the model.
 
 ## Given Model Nodes ##
 
@@ -152,6 +160,7 @@ The author may include distraction descriptions which are not part of the given
 model to further challenge the student. They are included in the 
 "extraDescriptions" array, as in the following example.
 
+    ***This code needs to be updated--what term are we using to show the type of node?***
     "extraDescriptions": [
         {
             "ID": "id7",
@@ -162,11 +171,10 @@ model to further challenge the student. They are included in the
         ...
     ]
 
-The attribute "description" has the extra description that is not needed to 
-solve the model. The attribute "type" tells the problem if the extra description 
-is a "model" description (meaning it was spoken of in the model but is not 
-needed to solve the problem), or an "extra" description (meaning the model was 
-not mentioned in the model).
+The attributes can include all of the attributes in the given model, though they 
+are not required to. This allows the student to potentially construct a full 
+node that is not needed, requiring the student to better understand the problem 
+and deduce which nodes are actually needed. 
 
 
 ## Student Model Nodes ##

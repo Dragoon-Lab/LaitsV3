@@ -149,7 +149,7 @@ define([
         	context.drawImage(imageObj, 69, 50);
         	wrapText(context, desc_text, 70, 400, 400, 20);
       	    };
-      	    imageObj.src = givenModel.getURL();
+      	    imageObj.src = givenModel.getImageURL();
 	    
 	});
     });    

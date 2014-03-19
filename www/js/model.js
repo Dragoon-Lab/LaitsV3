@@ -36,6 +36,10 @@ define([
                 this.properties = properties;
                 this.checkedNodes = new Array();
                 this.model = this._buildModel();
+                if(properties)
+                    this.properties = properties;
+                else
+                    this.properties = {};
 
                 /*
                  Define the "active model" (see doucumentation/javascript.md).
@@ -195,19 +199,28 @@ define([
                 return this.model.task.taskName;
             },
             getURL: function() {
-                return this.model.task.properties.URL;
+                console.error("The function getURL() is deprecated. Use getImageURL().")
+            },
+            getImageURL: function() {
+                return this.model.task.image.URL;
+            },
+            getImageWidth: function() {
+                return this.model.task.image.URL;
+            },
+            getImageHeight: function() {
+                return this.model.task.image.URL;
             },
             getStartTime: function() {
-                return this.model.task.properties.startTime;
+                return this.model.task.time.start;
             },
             getEndTime: function() {
-                return this.model.task.properties.endTime;
+                return this.model.task.time.end;
             },
             getTimeStep: function() {
-                return this.model.task.properties.timeStep;
+                return this.model.task.time.time;
             },
             getUnits: function() {
-                return this.model.task.properties.units;
+                return this.model.task.time.units;
             },
             getEachNodeUnits: function() {
                 // Summary:  returns an object containing the units for each node
@@ -268,31 +281,29 @@ define([
                 // Summary: returns the name of a node matching the given model
                 //      node or extra node id.  If no match is 
                 //      found, then return null.
-		var name;
+                var name;
                 var gotIt = array.some(this.given.getNodes(), function(node) {
-		    name = node.name;
+                    name = node.name;
                     return node.ID == id;
                 }) || array.some(this.getExtraDescriptions(), function(node) {
-		    name = node.name;
-		    return node.ID == id;
+                    name = node.name;
+                    return node.ID == id;
                 });
-		return gotIt?name:null;
-	    },
-
+                return gotIt ? name : null;
+            },
             getNodeIDByName: function(/*string*/ name) {
                 // Summary: returns the id of a node matching the given name from the 
-		//          given or extra nodes.  If none is found, return null.
-		var id;
-		var gotIt = array.some(this.given.getNodes(), function(node){
-		    id = node.ID;
-		    return node.name === name;
-		}) || array.some(this.getExtraDescriptions(), function(node){
-		    id = node.ID;
-		    return node.name === name;
-		});
-		return gotIt?id: null;
-	    },
-
+                //          given or extra nodes.  If none is found, return null.
+                var id;
+                var gotIt = array.some(this.given.getNodes(), function(node) {
+                    id = node.ID;
+                    return node.name === name;
+                }) || array.some(this.getExtraDescriptions(), function(node) {
+                    id = node.ID;
+                    return node.name === name;
+                });
+                return gotIt ? id : null;
+            },
             isParentNode: function(/*string*/ id) {
                 // Summary: returns true if a node is the parent node in a tree structure; parent 
                 //      nodes will be displayed first when the student demos a node name/description
@@ -312,7 +323,7 @@ define([
             },
             isNodeVisible: function(/*string*/ studentID, /*string*/ givenID) {
                 // Summary: returns true if the node is in the student model,
-		//          excluding the current student node.
+                //          excluding the current student node.
                 return array.some(this.student.getNodes(), function(node) {
                     return node.ID !== studentID && node.descriptionID === givenID;
                 });
@@ -390,7 +401,7 @@ define([
                 //      aren't visible; 
                 //      
                 // Note: the student node studentID is assumed incorrect so it is ignored
-                
+
                 var givenNodes = this.given.getNodes();
                 var nextNode = "model complete";
 
@@ -479,20 +490,26 @@ define([
             setTaskName: function(/*string*/ name) {
                 this.model.task.taskName = name;
             },
-            setURL: function(/*string*/ url) {
-                this.model.task.properties.URL = url;
+            setImageURL: function(/*string*/ url) {
+                this.model.task.time.URL = url;
+            },
+            setImageWidth: function(/*string*/ url) {
+                this.model.task.time.width = url;
+            },
+            setImageHeight: function(/*string*/ url) {
+                this.model.task.time.height = url;
             },
             setStartTime: function(/*int*/ start) {
-                this.model.task.properties.startTime = start;
+                this.model.task.time.start = start;
             },
             setEndTime: function(/*int*/ end) {
-                this.model.task.properties.endTime = end;
+                this.model.task.time.end = end;
             },
             setTimeStep: function(/*float*/ timeStep) {
-                this.model.task.properties.timeStep = timeStep;
+                this.model.task.time.time = timeStep;
             },
             setModelUnits: function(/*string*/ units) {
-                this.model.task.properties.units = units;
+                this.model.task.time.units = units;
             },
             setPhase: function(/*string*/ phase) {
                 // Summary: set the model's phase
@@ -691,7 +708,7 @@ define([
                     return node.ID == id;
                 });
                 console.assert(gotIt, "No matching node for '" + id + "'");
-                return gotIt?ret:null;
+                return gotIt ? ret : null;
             },
             getType: function(/*string*/ id) {
                 var node = this.getNode(id);
@@ -738,7 +755,7 @@ define([
                     ret.type = type;
             },
             addInput: function(/*string*/ input, /*string*/ inputInto) {
-		 console.error("Deprecated.  Use setInputs() instead.");
+                console.error("Deprecated.  Use setInputs() instead.");
             }
         };
 
@@ -833,16 +850,16 @@ define([
                 var node = this.getNode(id);
                 return node && node.descriptionID;
             },
-	    getNodeIDFor: function(givenID){
-		// Summary: returns the id of a student node having a matching descriptionID;
-		//          return null if no match is found.
-		var id;
-		var gotIt = array.some(this.getNodes(), function(node){
-		    id = node.ID;
-		    return node.descriptionID == givenID;
-		});
-		return gotIt?id:null;  
-	    },
+            getNodeIDFor: function(givenID) {
+                // Summary: returns the id of a student node having a matching descriptionID;
+                //          return null if no match is found.
+                var id;
+                var gotIt = array.some(this.getNodes(), function(node) {
+                    id = node.ID;
+                    return node.descriptionID == givenID;
+                });
+                return gotIt ? id : null;
+            },
             getName: function(/*string*/ id) {
                 // Summary: returns the name of a node matching the student model.
                 //      If no match is found, then return null.

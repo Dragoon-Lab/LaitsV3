@@ -15,6 +15,7 @@
                 packages: [
                     {name: "json", location: "js/json"},
                     {name: "dojo", location: "dojo"},
+                    {name: "dojox", location: "dojox"},
                     {name: "dragoon", location: "js"},
                     {name: "parser", location: "math-parser"}
                 ]
@@ -23,7 +24,7 @@
         <script src="../../dojo/dojo.js"></script> 
 
         <script>
-            require(["dragoon/model", "dragoon/pedagogical_module", "dragoon/equation_check", "dragoon/sandbox"], function(model, pm, equation, sandbox) {
+            require(["dragoon/model", "dragoon/pedagogical_module", "dragoon/equation", "dragoon/sandbox", "dragoon/converter"], function(model, pm, equation, sandbox, converter) {
 
 
                 //The next three lines show loading a model from a JSON formated string
@@ -147,29 +148,37 @@
 
                 var ped = new pm("COACHED", null, rabbits);
 
-                descInfo = ped.descriptionAction("id5", "id7");
+                descInfo = ped.processAnswer("id5", "description", "id7");
                 console.log(descInfo);
                 
-                descInfo = ped.descriptionAction("id5", "id8");
+                descInfo = ped.processAnswer("id5", "description", "id8");
                 console.log(descInfo);
                 
-                descInfo = ped.descriptionAction("id5", "id7");
+                descInfo = ped.processAnswer("id5", "description", "id7");
                 console.log(descInfo);
 
 //***
 
-                descInfo = ped.typeAction("id5", "parameter");
+                descInfo = ped.processAnswer("id5", "type", "parameter");
                 console.log(descInfo);
                 
-                descInfo = ped.typeAction("id5", "parameter");
+                descInfo = ped.processAnswer("id5", "type", "parameter");
                 console.log(descInfo);
+                
+                
+                var convert = new converter(5);
+                convert.test();
+                var test = convert.loadXMLFromFile("../../../../Problems/100.xml");
+                console.log(test);
+                
+                //convert.parse();
 
 //***
 
-                descInfo = ped.unitsAction("id5", "births");
+/*               descInfo = ped.processAnswer("id5", "units", "births");
                 console.log(descInfo);
                 
-                descInfo = ped.equationAction("id5", "id1 * id3 + 0");
+                descInfo = ped.processAnswer("id5", "equation", "id1 * id3 + 0");
 
                 console.log(descInfo);
                 
@@ -243,9 +252,8 @@
                  */
 
                 document.getElementById('result').innerHTML = JSON.stringify(rabbits.model, null, 4);
-
-
-
+                
+                
             });
         </script>
 

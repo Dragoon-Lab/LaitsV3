@@ -3,12 +3,18 @@
         "taskName": "Rabbits - Intro Problem",
         "properties": {
             "phase": "intro",
-            "type": "construct",
-            "URL": "images/rabbit.jpeg",
-            "startTime": 0,
-            "endTime": 10,
-            "timeStep": 1,
+            "type": "construct"
+        },
+        "time": {
+            "start": 0,
+            "end": 10,
+            "step": 1,
             "units": "years"
+        },
+        "image": {
+            "URL": "images/rabbit.jpeg",
+            "width": 225,
+            "height": 100
         },
         "taskDescription": "In this exercise, you will construct a model of how a rabbit population grows when no rabbits die. The first quantity in this model is the population or number of rabbits in the population. Initially, there are 100 rabbits, but the number increases with time. The new population each month is its present value plus the number of births (number of rabbits born each month). The number of births is equal to the product of the population and the birth rate. The birthrate or the ratio of the number of rabbits born in a month to the rabbit population that month has a fixed value of 0.2.",
         "givenModelNodes": [
@@ -20,7 +26,7 @@
                 "extra": false,
                 "order": 1,
                 "units": "rabbits",
-                "inputs": [ { "ID" : "id2" } ],
+                "inputs": [{"ID": "id2"}],
                 "initial": 100,
                 "equation": "id2",
                 "description": "The number of rabbits in the population",
@@ -31,7 +37,7 @@
                     "units": 0,
                     "equation": 0
                 },
-                "status": { }
+                "status": {}
             },
             {
                 "ID": "id2",
@@ -41,7 +47,7 @@
                 "extra": false,
                 "order": 2,
                 "units": "births",
-                "inputs": [ { "ID": "id1" }, { "ID": "id3" } ],
+                "inputs": [{"ID": "id1"}, {"ID": "id3"}],
                 "initial": null,
                 "equation": "id1 * id3",
                 "description": "The number of rabbits born each month",
@@ -52,7 +58,7 @@
                     "units": 0,
                     "equation": 0
                 },
-                "status": { }
+                "status": {}
             },
             {
                 "ID": "id3",
@@ -73,7 +79,7 @@
                     "units": 0,
                     "equation": 0
                 },
-                "status": { }
+                "status": {}
             }
         ],
         "extraDescriptions": [
@@ -81,17 +87,17 @@
                 "ID": "id7",
                 "name": "month two population",
                 "description": "The number of rabbits in the population during the second month",
-		"units": "rabbits",
+                "units": "rabbits",
                 "type": "model"
             },
             {
                 "ID": "id8",
                 "name": "superpower fraction",
                 "description": "The ratio of rabbits born with superpowers to ordinary rabbits",
-		"units": "rabbits per rabbit",
+                "units": "rabbits per rabbit",
                 "type": "extra"
             }
         ],
-        "studentModelNodes": [ ]
+        "studentModelNodes": []
     }
 }

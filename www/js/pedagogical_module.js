@@ -300,7 +300,7 @@ define([
                     break;
                 case "equation":
                     // The 'equation' case accepts an equation object from the controller
-                    //      and checks it against the given equation using equation_check.js
+                    //      and checks it against the given equation using equation.js
                     interpret(check.areEquivalent(givenID, this.model, answer));
                     break;
             }
