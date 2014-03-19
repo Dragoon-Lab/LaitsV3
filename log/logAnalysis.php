@@ -206,7 +206,7 @@ Class AnalyzeLogs{
 			$gaming_system = 'N/A';
 		}
 		
-		$userProblemAnalysis = array('user' => $user, 'problem' => $problem, 'totalTime' => $totalTime, 'giveUpCount' => $totalGiveUpCount, 'totalCheckCount' => $totalCheckCount, 'gamingTheSystem' => $gaming_system);
+		$userProblemAnalysis = array('user' => $user, 'problem' => $problem, 'totalTime' => $totalTime, 'giveUpCount' => $totalGiveUpCount, 'totalCheckCount' => $totalCheckCount, 'gamingTheSystem' => $gaming_system, 'problemTime' => $problemTime);
 		
 		return $userProblemAnalysis;
 	}
@@ -244,6 +244,11 @@ Class AnalyzeLogs{
 				echo "<td>".$userProblemAnalysis['giveUpCount']."</td>\n";
 				echo "<td>".$userProblemAnalysis['totalCheckCount']."</td>\n";
 				echo "<td>".$userProblemAnalysis['gamingTheSystem']."</td>\n";
+				echo "<td>\n";
+				foreach($userProblemAnalysis['problemTime'] as $time){
+					echo "Start Time => ".$time['startTime']." end Time => ".$time['endTime']."<br/>";
+				}
+				echo "</td>\n";
 				echo "</tr>\n";
 			}
 			echo "</table>\n";
@@ -316,43 +321,52 @@ Class AnalyzeLogs{
 		}
 	}
 	
-	function show_logs($table, $toDate, $fromDate){
+	function show_logs($table, $toDate, $fromDate, $user){
 		date_default_timezone_set('America/Phoenix');
 		$table = !empty($table)?$table:"dev_logs";
 		$startDate = !empty($fromDate)?$fromDate: Date('Y-m-d', strtotime('-7 days'));
 		if($table != 'tasks'){
-			$colQuery = "SELECT COLUMN_NAME FROM information_schema.COLUMNS WHERE TABLE_NAME = '".$table."' AND (DATA_TYPE = 'timestamp' OR DATA_TYPE = 'datetime');";
-			$colName = $this->getResults($colQuery);
-			
-			$colRow = $colName->fetch_assoc();
-			$colName = $colRow['COLUMN_NAME'];
+			$colQuery = "DESCRIBE ".$table.";";
+			$colNames = $this->getResults($colQuery);
+			$colName ='';
+			$columns = array();
+
+			foreach($colNames as $column){
+				if($column['Type'] === 'datetime' || $column['Type'] === 'timestamp'){
+					$colName = $column['Field'];
+				}
+				array_push($columns, $column['Field']);
+			}
 			$toDateString = "AND ".$colName." <='".$toDate."'";
-			$queryString = "SELECT * from ".$table." Where ".$colName." >= '".$startDate."' ".(!empty($toDate)?$toDateString:"").";";
+			$userString = " AND USER_ID = '".$user[0]."'";
+			
+			$queryString = "SELECT * from ".$table." Where ".$colName." >= '".$startDate."' ".(!empty($toDate)?$toDateString:"").(!empty($user)?$userString:"").";";
+			//$queryString = "SELECT * from ".$table." Where ".$colName." >= '".$startDate."' ".(!empty($toDate)?$toDateString:"").(!empty($user)?$userString:"").";";
 		} else {
 			$queryString = "SELECT * from ".$table.";";
 		}
+		//echo $queryString;
 		$result = $this->getResults($queryString);
 		
-		$columnsQuery = "SELECT COLUMN_NAME FROM information_schema.COLUMNS WHERE TABLE_NAME = '".$table."';";
-		$columns = $this->getResults($columnsQuery);
-	
 		if($result != null && !empty($result)){
 			echo '<table border="1">';
 			echo "<tr>\n";
 			$colNameArray = array();
-			while($columnName = $columns->fetch_assoc()){
-				echo "<th>".$columnName['COLUMN_NAME']."</th>\n";
-				array_push($colNameArray, $columnName['COLUMN_NAME']);
+			foreach($columns as $columnName){
+				echo "<th>".$columnName."</th>\n";
+				//array_push($colNameArray, $columnName);
 			}
 			echo "</tr>\n";
 			
 			while($row = $result->fetch_assoc()){
-				echo " <tr>\n";
-				$numberOfColumns = sizeof($colNameArray);
-				for($i = 0; $i<$numberOfColumns; $i++){
-					echo "<td>".$row[$colNameArray[$i]]."</td>\n";
+				if(((stripos($row['LOGGER'], "GraphLoader")) === false) && ((stripos($row['LOGGER'], "GraphViewPanel")) === false) && (stripos($row['LOGGER'], "PlotPanel") === false)){
+					echo " <tr>\n";
+					$numberOfColumns = sizeof($colNameArray);
+					foreach($columns as $columnName){
+						echo "<td>".$row[$columnName]."</td>\n";
+					}
+					echo "</tr>\n";
 				}
-				echo "</tr>\n";
 			}
 			echo "</table>\n";
 		} else {
