@@ -58,7 +58,7 @@ Class Dashboard{
 					$sessionRunning = true;
 					$problemComplete = false;
 					$nodeDetailsArray = array();
-					$noOfTimesProblemAccessed = 1;
+					$noOfTimesindexProblemAccessed = 1;
 					$workingTempNode = false;
 					$tempNodeName = ''; $tempNodeString = '';
 					//echo "=================================new problem started ".$row['problem_name'].'<br/>';
