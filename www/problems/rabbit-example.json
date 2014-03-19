@@ -88,7 +88,7 @@
                     "type": 1,
                     "initial": 0,
                     "units": 1,
-                    "equation": 3
+                    "equation": 0
                 },
                 "status": {
                     "description": "correct",
@@ -102,16 +102,34 @@
             {
                 "ID": "id7",
                 "name": "month two population",
+                "genus": "model",
+                "type": "parameter",
+                "parentNode": true,
+                "extra": false,
+                "units": "rabbits",
+                "inputs": [],
+                "initial": 120,
                 "description": "The number of rabbits in the population during the second month",
-		"units": "rabbits",
-                "type": "model"
+                "attemptCount": {
+                    "description": 2,
+                    "type": 1,
+                    "initial": 2,
+                    "units": 2,
+                    "equation": 0
+                },
+                "status": {
+                    "description": "correct",
+                    "type": "correct",
+                    "initial": "demo",
+                    "units": "correct"
+                }
             },
             {
                 "ID": "id8",
                 "name": "superpower fraction",
                 "description": "The ratio of rabbits born with superpowers to ordinary rabbits",
 		"units": "rabbits per rabbit",
-                "type": "extra"
+                "genus": "extra"
             }
         ],
         "studentModelNodes": [

@@ -265,11 +265,11 @@ define([
 
                     if (this.model.student.isInExtras(answer)) {
                         array.forEach(this.model.getExtraDescriptions(), function(extra) {
-                            if (answer === extra.ID && extra.type === "initial") {
+                            if (answer === extra.ID && extra.genus === "initial") {
                                 interpretation = "initialValue";
-                            } else if (answer === extra.ID && extra.type === "extra") {
+                            } else if (answer === extra.ID && extra.genus === "extra") {
                                 interpretation = "extraValue";
-                            } else if (answer === extra.ID && extra.type === "model") {
+                            } else if (answer === extra.ID && extra.genus === "model") {
                                 interpretation = "irrelevant";
                             }
                         });

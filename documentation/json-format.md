@@ -160,21 +160,40 @@ The author may include distraction descriptions which are not part of the given
 model to further challenge the student. They are included in the 
 "extraDescriptions" array, as in the following example.
 
-    ***This code needs to be updated--what term are we using to show the type of node?***
     "extraDescriptions": [
         {
-            "ID": "id7",
-            "name": "month two population",
-            "text": "The number of rabbits in the population during the second month",
-            "type": "model"
-        },
+                "ID": "id7",
+                "name": "month two population",
+                "genus": "model",
+                "type": "parameter",
+                "parentNode": true,
+                "extra": false,
+                "units": "rabbits",
+                "inputs": [],
+                "initial": 120,
+                "description": "The number of rabbits in the population during the second month",
+                "attemptCount": {
+                    "description": 2,
+                    "type": 1,
+                    "initial": 2,
+                    "units": 2,
+                    "equation": 0
+                },
+                "status": {
+                    "description": "correct",
+                    "type": "correct",
+                    "initial": "demo",
+                    "units": "correct"
+                }
+            },
         ...
     ]
 
 The attributes can include all of the attributes in the given model, though they 
 are not required to. This allows the student to potentially construct a full 
 node that is not needed, requiring the student to better understand the problem 
-and deduce which nodes are actually needed. 
+and deduce which nodes are actually needed. The element "genus" identifies the 
+type of extra node for pedagogical module purposes. 
 
 
 ## Student Model Nodes ##
@@ -241,12 +260,18 @@ JSON document.
             "taskName": "Rabbits - Intro Problem",
             "properties": {
                 "phase": "intro",
-                "type": "construct",
-                "URL": "images/rabbit.jpeg",
-                "startTime": 0,
-                "endTime": 10,
-                    "timeStep": 1,
+                "type": "construct"
+            },
+            "time": {
+                "start": 0,
+                "end": 10,
+                "step": 1,
                 "units": "years"
+            },
+            "image": {
+                "URL": "images/rabbit.jpeg",
+                "width": 225,
+                "height": 100
             },
             "taskDescription": "In this exercise, you will construct a model of how a rabbit population grows when no rabbits die. The first quantity in this model is the population or number of rabbits in the population. Initially, there are 100 rabbits, but the number increases with time. The new population each month is its present value plus the number of births (number of rabbits born each month). The number of births is equal to the product of the population and the birth rate. The birthrate or the ratio of the number of rabbits born in a month to the rabbit population that month has a fixed value of 0.2.",
             "givenModelNodes": [
@@ -258,9 +283,9 @@ JSON document.
                     "extra": false,
                     "order": 1,
                     "units": "rabbits",
-                    "inputs":  [ { "ID" : "id2" } ],
+                    "inputs": [ { "ID" : "id2" } ],
                     "initial": 100,
-                    "equation": "+ id2",
+                    "equation": "id2",
                     "description": "The number of rabbits in the population",
                     "attemptCount": {
                         "description": 2,
@@ -286,6 +311,7 @@ JSON document.
                     "order": 2,
                     "units": "births",
                     "inputs": [ { "ID": "id1" }, { "ID": "id3" } ],
+                    "initial": null,
                     "equation": "id1 * id3",
                     "description": "The number of rabbits born each month",
                     "attemptCount": {
@@ -311,6 +337,7 @@ JSON document.
                     "order": 3,
                     "units": "percent",
                     "inputs": [],
+                    "initial": 0.2,
                     "equation": ".2",
                     "description": "The ratio of number of rabbits born in a month to the rabbit population that month",
                     "attemptCount": {
@@ -318,13 +345,13 @@ JSON document.
                         "type": 1,
                         "initial": 0,
                         "units": 1,
-                        "equation": 3
+                        "equation": 0
                     },
                     "status": {
                         "description": "correct",
                         "type": "correct",
-                        "units": "correct",
-                        "equation": "correct"
+                        "initial": "demo",
+                        "units": "correct"
                     }
                 }
             ],
@@ -332,14 +359,34 @@ JSON document.
                 {
                     "ID": "id7",
                     "name": "month two population",
-                    "text": "The number of rabbits in the population during the second month",
-                    "type": "model"
+                    "genus": "model",
+                    "type": "parameter",
+                    "parentNode": true,
+                    "extra": false,
+                    "units": "rabbits",
+                    "inputs": [],
+                    "initial": 120,
+                    "description": "The number of rabbits in the population during the second month",
+                    "attemptCount": {
+                        "description": 2,
+                        "type": 1,
+                        "initial": 2,
+                        "units": 2,
+                        "equation": 0
+                    },
+                    "status": {
+                        "description": "correct",
+                        "type": "correct",
+                        "initial": "demo",
+                        "units": "correct"
+                    }
                 },
                 {
                     "ID": "id8",
                     "name": "superpower fraction",
-                    "text": "The ratio of rabbits born with superpowers to ordinary rabbits",
-                    "type": "extra"
+                    "description": "The ratio of rabbits born with superpowers to ordinary rabbits",
+                    "units": "rabbits per rabbit",
+                    "genus": "extra"
                 }
             ],
             "studentModelNodes": [
@@ -347,11 +394,10 @@ JSON document.
                     "ID": "id4",
                     "descriptionID": "id1",
                     "type": "accumulator",
-                    "initial": "100",
+                    "initial": 100,
                     "units": "rabbits",
                     "inputs": [ { "ID": "id5" } ],
-                    "equation": "id5",
-                    "initial": 100,
+                    "equation": "id4+id5",
                     "position": {
                         "x": 100,
                         "y": 100
@@ -376,7 +422,7 @@ JSON document.
                     "descriptionID": "id2",
                     "type": "function",
                     "units": "births",
-                    "inputs":  [ { "ID": "id4" }, { "ID": "id6" } ],
+                    "inputs": [ { "ID": "id4" }, { "ID": "id6" } ],
                     "equation": "id4*id6",
                     "position": {
                         "x": 300,

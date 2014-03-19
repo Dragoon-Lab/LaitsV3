@@ -86,9 +86,22 @@
             {
                 "ID": "id7",
                 "name": "month two population",
-                "description": "The number of rabbits in the population during the second month",
+                "genus": "model",
+                "type": "parameter",
+                "parentNode": true,
+                "extra": false,
                 "units": "rabbits",
-                "type": "model"
+                "inputs": [],
+                "initial": 120,
+                "description": "The number of rabbits in the population during the second month",
+                "attemptCount": {
+                    "description": 0,
+                    "type": 0,
+                    "initial": 0,
+                    "units": 0,
+                    "equation": 0
+                },
+                "status": {}
             },
             {
                 "ID": "id8",
