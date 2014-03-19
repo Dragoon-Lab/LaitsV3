@@ -171,6 +171,7 @@ define([
 		   var chartArray = new Array();
 		   var legendArray = new Array();
 		   i=0;
+	           var time = this.object.calculationObj.model.getTime();
 		   for(j in this.arrayOfNodeValues)
 		   {
 			   str = "chart"+i.toString();	
@@ -178,7 +179,7 @@ define([
 			   chartArray[i].addPlot("default", {type: Lines, markers:true});
 			  
 			   chartArray[i].addAxis("x", {
-			   fixed: true, min: this.object.calculationObj.model.getStartTime(), max: (this.object.calculationObj.model.getEndTime()-this.object.calculationObj.model.getStartTime())/this.object.calculationObj.model.getTimeStep(), title: this.xunits,
+			   fixed: true, min: time.start, max: (time.end - time.start)/time.step, title: this.xunits,
 			   titleOrientation: "away", titleGap:5
 			});
                var array = this.arrayOfNodeValues[j];

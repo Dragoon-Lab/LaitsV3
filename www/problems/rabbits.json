@@ -8,7 +8,7 @@
         "time": {
             "start": 0,
             "end": 10,
-            "step": 1,
+            "step": 0.5,
             "units": "years"
         },
         "image": {
@@ -108,7 +108,7 @@
                 "name": "superpower fraction",
                 "description": "The ratio of rabbits born with superpowers to ordinary rabbits",
                 "units": "rabbits per rabbit",
-                "type": "extra"
+                "genus": "extra"
             }
         ],
         "studentModelNodes": []

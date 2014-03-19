@@ -66,19 +66,19 @@ define([
 			//set start-time (private method)
 			_setStartTime: function()
 			{
-				this.startTime = this.model.getStartTime();
+				this.startTime = this.model.getTime().start;
 			},
 
 			//set end-time (private method)
 			_setEndtime: function()
 			{
-				this.endTime = this.model.getEndTime();
+				this.endTime = this.model.getTime().end;
 			},
 
 			//set time-step (private method)
 			_setTimeStep: function()
 			{
-				this.timeSteps = this.model.getTimeStep();
+				this.timeSteps = this.model.getTime().step;
 			},
 			
 			//@brief: this function will create an object which will return key/value pair of
@@ -92,7 +92,7 @@ define([
 
                     if(this.active.getType(this.modelNodes[i    ].ID) == 'accumulator')
                     {
-                        tempStr = this.modelNodes[i].ID + "+" + this.active.getEquation(this.modelNodes[i].ID)+"*" + this.model.getTimeStep();
+                        tempStr = this.modelNodes[i].ID + "+" + this.active.getEquation(this.modelNodes[i].ID)+"*" + this.model.getTime().step;
                     }
                     else
                     {
@@ -125,7 +125,7 @@ define([
 			//@brief: this function returns an object containing array of values of nodes over given timesteps
 			_getNodeValuesByTimeSteps:function(isInitialValue, arrayOfNodeValues, arrayOfTimeSteps, nodeEquations)
 			{
-				var j;
+				var i, j;
 				//set initial values of all nodes
 				switch(isInitialValue)
 				{
@@ -161,7 +161,6 @@ define([
 						//for(i=this.startTime+this.timeSteps;i<(this.endTime-this.startTime)/this.timeSteps;i=i+this.timeSteps)
                         for(i=this.startTime+this.timeSteps;i<this.endTime;i=i+this.timeSteps)
 						{
-                            console.log(this.model.getTimeStep());
 							arrayOfTimeSteps.push(i.toFixed(2));
 							for(j=0;j<this.modelNodes.length;j++)
 							{

@@ -33,13 +33,9 @@ define([
                 this.x = this.beginX;
                 this.y = this.beginY;
                 this.taskName = name;
-                this.properties = properties;
+                this.properties = properties || {};
                 this.checkedNodes = new Array();
                 this.model = this._buildModel();
-                if(properties)
-                    this.properties = properties;
-                else
-                    this.properties = {};
 
                 /*
                  Define the "active model" (see doucumentation/javascript.md).
@@ -199,25 +195,16 @@ define([
                 return this.model.task.taskName;
             },
             getURL: function() {
-                console.error("The function getURL() is deprecated. Use getImageURL().")
+                console.error("The function getURL() is deprecated. Use getImageURL().");
             },
             getImageURL: function() {
                 return this.model.task.image.URL;
             },
-            getImageWidth: function() {
-                return this.model.task.image.URL;
+            getImageDimensons: function() {
+                return {width: this.model.task.image.width, height: this.model.task.image.height};
             },
-            getImageHeight: function() {
-                return this.model.task.image.URL;
-            },
-            getStartTime: function() {
-                return this.model.task.time.start;
-            },
-            getEndTime: function() {
-                return this.model.task.time.end;
-            },
-            getTimeStep: function() {
-                return this.model.task.time.time;
+            getTime: function() {
+                return this.model.task.time;
             },
             getUnits: function() {
                 return this.model.task.time.units;
@@ -490,26 +477,11 @@ define([
             setTaskName: function(/*string*/ name) {
                 this.model.task.taskName = name;
             },
-            setImageURL: function(/*string*/ url) {
-                this.model.task.time.URL = url;
+            setImage: function(/*object*/ options) {
+                lang.mixin(this.model.task.image, options);
             },
-            setImageWidth: function(/*string*/ url) {
-                this.model.task.time.width = url;
-            },
-            setImageHeight: function(/*string*/ url) {
-                this.model.task.time.height = url;
-            },
-            setStartTime: function(/*int*/ start) {
-                this.model.task.time.start = start;
-            },
-            setEndTime: function(/*int*/ end) {
-                this.model.task.time.end = end;
-            },
-            setTimeStep: function(/*float*/ timeStep) {
-                this.model.task.time.time = timeStep;
-            },
-            setModelUnits: function(/*string*/ units) {
-                this.model.task.time.units = units;
+            setTime: function(/*object*/ options) {
+                lang.mixin(this.model.task.time, options);
             },
             setPhase: function(/*string*/ phase) {
                 // Summary: set the model's phase

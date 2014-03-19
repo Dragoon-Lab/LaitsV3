@@ -162,9 +162,9 @@ model to further challenge the student. They are included in the
 
     "extraDescriptions": [
         {
+                "genus": "model",
                 "ID": "id7",
                 "name": "month two population",
-                "genus": "model",
                 "type": "parameter",
                 "parentNode": true,
                 "extra": false,
