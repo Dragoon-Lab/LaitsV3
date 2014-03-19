@@ -22,10 +22,12 @@ define([
 			currentNodeValues: {},
             //set current mode. TRUE = givenModel / FALSE = StudentModel
             active:null,
-			
+			//solution graph object
+            solutionGraph: null,
 			
 			constructor: function(solutionGraph,mode)
 			{
+                this.solutionGraph = solutionGraph;
 				this.model = new model();
                 this._setMode(mode);
 				this._setModel(solutionGraph);
@@ -64,30 +66,40 @@ define([
 			//set start-time (private method)
 			_setStartTime: function()
 			{
-				this.startTime = this.model.getStartTime();
+				this.startTime = this.model.getTime().start;
 			},
 
 			//set end-time (private method)
 			_setEndtime: function()
 			{
-				this.endTime = this.model.getEndTime();
+				this.endTime = this.model.getTime().end;
 			},
 
 			//set time-step (private method)
 			_setTimeStep: function()
 			{
-				this.timeSteps = this.model.getTimeStep();
+				this.timeSteps = this.model.getTime().step;
 			},
 			
 			//@brief: this function will create an object which will return key/value pair of
 			//		  node-id/node-equation
 			_getAllNodeEquations:function()
 			{
-				var i,nodeEquations={};
+				var i,nodeEquations={},tempStr="";
 				
 				for(i=0; i<this.modelNodes.length; i++)
 				{
-					nodeEquations[this.modelNodes[i].ID] = this.active.getEquation(this.modelNodes[i].ID);
+
+                    if(this.active.getType(this.modelNodes[i    ].ID) == 'accumulator')
+                    {
+                        tempStr = this.modelNodes[i].ID + "+" + this.active.getEquation(this.modelNodes[i].ID)+"*" + this.model.getTime().step;
+                    }
+                    else
+                    {
+                        tempStr = this.active.getEquation(this.modelNodes[i].ID);
+                    }
+                    nodeEquations[this.modelNodes[i].ID] = tempStr;
+					//nodeEquations[this.modelNodes[i].ID] = this.active.getEquation(this.modelNodes[i].ID);
 				}
 				
 				return nodeEquations;
@@ -113,7 +125,7 @@ define([
 			//@brief: this function returns an object containing array of values of nodes over given timesteps
 			_getNodeValuesByTimeSteps:function(isInitialValue, arrayOfNodeValues, arrayOfTimeSteps, nodeEquations)
 			{
-				var j;
+				var i, j;
 				//set initial values of all nodes
 				switch(isInitialValue)
 				{
@@ -123,8 +135,8 @@ define([
 						{
 							this.currentNodeValues[this.modelNodes[i].ID] = this.active.getInitial(this.modelNodes[i].ID);
 						}
-						
-						arrayOfTimeSteps.push(this.startTime);
+
+						arrayOfTimeSteps.push(this.startTime.toFixed(2));
 						
 						for(j=0;j<this.modelNodes.length;j++)
 						{
@@ -146,9 +158,10 @@ define([
 						break;
 					
 					case false:
-						for(i=this.startTime+this.timeSteps;i<(this.endTime-this.startTime)/this.timeSteps;i=i+this.timeSteps)
+						//for(i=this.startTime+this.timeSteps;i<(this.endTime-this.startTime)/this.timeSteps;i=i+this.timeSteps)
+                        for(i=this.startTime+this.timeSteps;i<this.endTime;i=i+this.timeSteps)
 						{
-							arrayOfTimeSteps.push(i);
+							arrayOfTimeSteps.push(i.toFixed(2));
 							for(j=0;j<this.modelNodes.length;j++)
 							{
 								if(this.active.getType(this.modelNodes[j].ID) != 'parameter')
@@ -255,7 +268,7 @@ define([
 				
 				//create object comprising all parameters required for rendering chart and table
 				var object = {noOfParam:noOfParam,arrayOfParameterNames:arrayOfParameterNames,arrayOfParamInitialValues:arrayOfParamInitialValues,
-				xUnits:xUnits,units:units,arrayOfTimeSteps:arrayOfTimeSteps,arrayOfNodeValues:arrayOfNodeValues
+				xUnits:xUnits,units:units,arrayOfTimeSteps:arrayOfTimeSteps,arrayOfNodeValues:arrayOfNodeValues, calculationObj:this
 				};
 
                 return object;

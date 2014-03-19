@@ -15,6 +15,7 @@
                 packages: [
                     {name: "json", location: "js/json"},
                     {name: "dojo", location: "dojo"},
+                    {name: "dojox", location: "dojox"},
                     {name: "dragoon", location: "js"},
                     {name: "parser", location: "math-parser"}
                 ]
@@ -23,12 +24,12 @@
         <script src="../../dojo/dojo.js"></script> 
 
         <script>
-            require(["dragoon/model", "dragoon/pedagogical_module", "dragoon/equation_check"], function(model, pm, equation) {
+            require(["dragoon/model", "dragoon/pedagogical_module", "dragoon/equation", "dragoon/sandbox", "dragoon/converter"], function(model, pm, equation, sandbox, converter) {
 
 
                 //The next three lines show loading a model from a JSON formated string
                 var loadModel = new model();
-               
+
 //                alert(loadModel.getURL());
                 //});
 
@@ -47,19 +48,19 @@
                 rabbits.given.setEquation(rabbitID, "myid2");
                 rabbits.given.setDescription(rabbitID, "The number of rabbits in the population");
                 rabbits.given.addNode({
-                    "ID": "myid2",
+                    "ID": "id2",
                     "name": "births",
                     "type": "function",
                     "parentNode": true,
                     "extra": false,
                     "units": "births",
-                    "inputs": [ { "ID": rabbitID }, { "ID": "myid3" } ],
+                    "inputs": [{"ID": rabbitID}, {"ID": "id3"}],
                     "initial": null,
-                    "equation": rabbitID +" * myid3",
+                    "equation": "id1 * id3",
                     "description": "The number of rabbits born each month"
                 });
                 rabbits.given.addNode({
-                    "ID": "myid3",
+                    "ID": "id3",
                     "name": "birth rate",
                     "type": "parameter",
                     "parentNode": false,
@@ -77,109 +78,180 @@
                     },
                     "status": {}
                 });
-                var myNode = rabbits.student.addNode({
-                    "ID": "myNode",  //This is optional.
+                 console.log("All nodes visible?", rabbits.areAllNodesVisible());
+                /*var myNode = rabbits.student.addNode({
+                 "ID": "myNode",  //This is optional.
+                 "inputs": [],
+                 "position": {
+                 "x": 500,
+                 "y": 100
+                 },
+                 "selections": {}
+                 });*/
+                rabbits.student.addNode({
+                    "ID": "id5",
+                    "descriptionID": "id2",
+                    "type": null,
+                    "units": null,
                     "inputs": [],
+                    "equation": null,
                     "position": {
-                        "x": 500,
+                        "x": 300,
                         "y": 100
                     },
-                    "selections": {}
+                    "status": {}
+                }); 
+                rabbits.student.addNode({
+                    "ID": "id6",
+                    "descriptionID": null,
+                    "type": null,
+                    "units": null,
+                    "inputs": [],
+                    "equation": null,
+                    "position": {
+                        "x": 300,
+                        "y": 100
+                    },
+                    "status": {}
                 });
-                rabbits.setToDemo(myNode, "description");
+                
+                //alert(rabbits.getOptimalNode());
+                //alert(rabbits.isNodesParentVisible("myid6", "myid3"));
+/*                rabbits.setToDemo(myNode, "description");
                 rabbits.setToDemo(myNode, "type");
                 rabbits.setToDemo(myNode, "initial");
                 rabbits.setToDemo(myNode, "units");
                 rabbits.setToDemo(myNode, "equation");
                 rabbits.given.addInput(rabbits.getNodeIDByName("births"), rabbits.getNodeIDByName("population"));
-
+*/
 
                 rabbits.addExtraDescription({
+                    ID: "id7",
                     name: "extras",
                     text: "The number of rabbits in the population during the second month",
                     type: "model"
                 });
                 rabbits.addExtraDescription({
+                    ID: "id8",
                     name: "super ratio",
                     text: "The ratio of rabbits born with superpowers to ordinary rabbits",
                     type: "extra"
-                 });
+                });
 
-            /*
-	    *********** Using the Pedagogical Module ************
-	    */
+                /*
+                 *********** Using the Pedagogical Module ************
+                 */
 
-	    /*
-            var ped = new pm("feedback", rabbits);
-            var descInfo, typeInfo, unitsInfo, inputsInfo, equationInfo;
-	    
-            //Set description
-            console.log("Description: The ratio of number of rabbits born in a month to the rabbit population that month");
-            descInfo = ped.descriptionAction("The ratio of number of rabbits born in a month to the rabbit population that month");
-            console.log("******" + descInfo.message + "******\n");
-	    var obj = descInfo;
-	    alert("DescriptionOn: " + obj.descriptionOn + "\nTypeOn: " + obj.typeOn + "\nInitialOn: " + obj.initialOn + "\nUnitsOn: " + obj.unitsOn + "\nInputsOn: " + obj.inputsOn+ "\nEquationOn: " + obj.equationOn);
-            console.log("Description: The ratio of rabbits born with superpowers to ordinary rabbits");
-            descInfo = ped.descriptionAction("The ratio of rabbits born with superpowers to ordinary rabbits");
-            console.log("******" + descInfo.message + "******\n");
-	    
-            console.log("Description: The number of rabbits born each month");
-            descInfo = ped.descriptionAction("The number of rabbits born each month");
-            console.log("******" + descInfo.message + "******\n");
-	    var obj = descInfo;
-	    alert("DescriptionOn: " + obj.descriptionOn + "\nTypeOn: " + obj.typeOn + "\nInitialOn: " + obj.initialOn + "\nUnitsOn: " + obj.unitsOn + "\nInputsOn: " + obj.inputsOn+ "\nEquationOn: " + obj.equationOn);
-            //Set type
-            console.log("Type: sum");
-            typeInfo = ped.typeAction(descInfo.ID, "sum");
-	    console.log("******" + typeInfo.message + "******\n");
 
-                console.log("Type: product");
-                typeInfo = ped.typeAction(descInfo.ID, "product");
-                console.log("******" + typeInfo.message + "******\n");
-var obj = typeInfo;
-alert("DescriptionOn: " + obj.descriptionOn + "\nTypeOn: " + obj.typeOn + "\nInitialOn: " + obj.initialOn + "\nUnitsOn: " + obj.unitsOn + "\nInputsOn: " + obj.inputsOn+ "\nEquationOn: " + obj.equationOn);
-                //Set units
-                console.log("Units: rabbits");
-                unitsInfo = ped.unitsAction(typeInfo.ID, "rabbits");
-                console.log("******" + unitsInfo.message + "******\n");
 
-                console.log("Units: births");
-                unitsInfo = ped.unitsAction(typeInfo.ID, "births");
-                console.log("******" + unitsInfo.status + "******\n");
-var obj = unitsInfo;
-alert("DescriptionOn: " + obj.descriptionOn + "\nTypeOn: " + obj.typeOn + "\nInitialOn: " + obj.initialOn + "\nUnitsOn: " + obj.unitsOn + "\nInputsOn: " + obj.inputsOn+ "\nEquationOn: " + obj.equationOn);
-                //Set inputs
-                console.log("Inputs: The ratio of rabbits born with superpowers to ordinary rabbits");
-                inputsInfo = ped.inputsAction(unitsInfo.ID, "The ratio of rabbits born with superpowers to ordinary rabbits");
-                console.log("******" + inputsInfo.message + "******\n");
+                var descInfo, typeInfo, unitsInfo, inputsInfo, equationInfo;
 
-                console.log("Inputs: A bunch of rabbits");
-                inputsInfo = ped.inputsAction(unitsInfo.ID, "A bunch of rabbits");
-                console.log("******" + inputsInfo.message + "******\n");
+                var ped = new pm("COACHED", null, rabbits);
 
-                console.log("Inputs: The number of rabbits in the population");
-                inputsInfo = ped.inputsAction(unitsInfo.ID, "The number of rabbits in the population");
-                console.log("******" + inputsInfo.message + "******\n");
-	    var obj = inputsInfo;
-	    alert("DescriptionOn: " + obj.descriptionOn + "\nTypeOn: " + obj.typeOn + "\nInitialOn: " + obj.initialOn + "\nUnitsOn: " + obj.unitsOn + "\nInputsOn: " + obj.inputsOn+ "\nEquationOn: " + obj.equationOn);
-                //Set Equation
-                console.log("Equation: id3 *   id2");
-                equationInfo = ped.equationAction(inputsInfo.ID, "id3 *   id2");
-                console.log("******" + equationInfo.message + "******\n");
+                descInfo = ped.processAnswer("id5", "description", "id7");
+                console.log(descInfo);
                 
-                console.log("Equation: id3 *   id1 * 0");
-                equationInfo = ped.equationAction(inputsInfo.ID, "id3 *   id1 * 0");
-                console.log("******" + equationInfo.message + "******\n");
+                descInfo = ped.processAnswer("id5", "description", "id8");
+                console.log(descInfo);
                 
-                console.log("Equation: id3 *   id1 + 0");
-                equationInfo = ped.equationAction(inputsInfo.ID, "id3 *   id1 + 0");
-                console.log("******" + equationInfo.message + "******\n");
-                
-	    var obj = equationInfo;
-	    alert("DescriptionOn: " + obj.descriptionOn + "\nTypeOn: " + obj.typeOn + "\nInitialOn: " + obj.initialOn + "\nUnitsOn: " + obj.unitsOn + "\nInputsOn: " + obj.inputsOn+ "\nEquationOn: " + obj.equationOn);
-	    */
+                descInfo = ped.processAnswer("id5", "description", "id7");
+                console.log(descInfo);
 
-            document.getElementById('result').innerHTML = JSON.stringify(rabbits.model, null, 4);
+//***
+
+                descInfo = ped.processAnswer("id5", "type", "parameter");
+                console.log(descInfo);
+                
+                descInfo = ped.processAnswer("id5", "type", "parameter");
+                console.log(descInfo);
+                
+                
+                var convert = new converter(5);
+                convert.test();
+                var test = convert.loadXMLFromFile("../../../../Problems/100.xml");
+                console.log(test);
+                
+                //convert.parse();
+
+//***
+
+/*               descInfo = ped.processAnswer("id5", "units", "births");
+                console.log(descInfo);
+                
+                descInfo = ped.processAnswer("id5", "equation", "id1 * id3 + 0");
+
+                console.log(descInfo);
+                
+                console.log("AC:", rabbits.getNodeAttemptCount("id10", "equation"));
+
+                /*
+                 //Set description
+                 console.log("Description: The ratio of number of rabbits born in a month to the rabbit population that month");
+                 descInfo = ped.descriptionAction("The ratio of number of rabbits born in a month to the rabbit population that month");
+                 console.log("******" + descInfo.message + "******\n");
+                 var obj = descInfo;
+                 alert("DescriptionOn: " + obj.descriptionOn + "\nTypeOn: " + obj.typeOn + "\nInitialOn: " + obj.initialOn + "\nUnitsOn: " + obj.unitsOn + "\nInputsOn: " + obj.inputsOn+ "\nEquationOn: " + obj.equationOn);
+                 console.log("Description: The ratio of rabbits born with superpowers to ordinary rabbits");
+                 descInfo = ped.descriptionAction("The ratio of rabbits born with superpowers to ordinary rabbits");
+                 console.log("******" + descInfo.message + "******\n");
+                 
+                 console.log("Description: The number of rabbits born each month");
+                 descInfo = ped.descriptionAction("The number of rabbits born each month");
+                 console.log("******" + descInfo.message + "******\n");
+                 var obj = descInfo;
+                 alert("DescriptionOn: " + obj.descriptionOn + "\nTypeOn: " + obj.typeOn + "\nInitialOn: " + obj.initialOn + "\nUnitsOn: " + obj.unitsOn + "\nInputsOn: " + obj.inputsOn+ "\nEquationOn: " + obj.equationOn);
+                 //Set type
+                 console.log("Type: sum");
+                 typeInfo = ped.typeAction(descInfo.ID, "sum");
+                 console.log("******" + typeInfo.message + "******\n");
+                 
+                 console.log("Type: product");
+                 typeInfo = ped.typeAction(descInfo.ID, "product");
+                 console.log("******" + typeInfo.message + "******\n");
+                 var obj = typeInfo;
+                 alert("DescriptionOn: " + obj.descriptionOn + "\nTypeOn: " + obj.typeOn + "\nInitialOn: " + obj.initialOn + "\nUnitsOn: " + obj.unitsOn + "\nInputsOn: " + obj.inputsOn+ "\nEquationOn: " + obj.equationOn);
+                 //Set units
+                 console.log("Units: rabbits");
+                 unitsInfo = ped.unitsAction(typeInfo.ID, "rabbits");
+                 console.log("******" + unitsInfo.message + "******\n");
+                 
+                 console.log("Units: births");
+                 unitsInfo = ped.unitsAction(typeInfo.ID, "births");
+                 console.log("******" + unitsInfo.status + "******\n");
+                 var obj = unitsInfo;
+                 alert("DescriptionOn: " + obj.descriptionOn + "\nTypeOn: " + obj.typeOn + "\nInitialOn: " + obj.initialOn + "\nUnitsOn: " + obj.unitsOn + "\nInputsOn: " + obj.inputsOn+ "\nEquationOn: " + obj.equationOn);
+                 //Set inputs
+                 console.log("Inputs: The ratio of rabbits born with superpowers to ordinary rabbits");
+                 inputsInfo = ped.inputsAction(unitsInfo.ID, "The ratio of rabbits born with superpowers to ordinary rabbits");
+                 console.log("******" + inputsInfo.message + "******\n");
+                 
+                 console.log("Inputs: A bunch of rabbits");
+                 inputsInfo = ped.inputsAction(unitsInfo.ID, "A bunch of rabbits");
+                 console.log("******" + inputsInfo.message + "******\n");
+                 
+                 console.log("Inputs: The number of rabbits in the population");
+                 inputsInfo = ped.inputsAction(unitsInfo.ID, "The number of rabbits in the population");
+                 console.log("******" + inputsInfo.message + "******\n");
+                 var obj = inputsInfo;
+                 alert("DescriptionOn: " + obj.descriptionOn + "\nTypeOn: " + obj.typeOn + "\nInitialOn: " + obj.initialOn + "\nUnitsOn: " + obj.unitsOn + "\nInputsOn: " + obj.inputsOn+ "\nEquationOn: " + obj.equationOn);
+                 //Set Equation
+                 console.log("Equation: id3 *   id2");
+                 equationInfo = ped.equationAction(inputsInfo.ID, "id3 *   id2");
+                 console.log("******" + equationInfo.message + "******\n");
+                 
+                 console.log("Equation: id3 *   id1 * 0");
+                 equationInfo = ped.equationAction(inputsInfo.ID, "id3 *   id1 * 0");
+                 console.log("******" + equationInfo.message + "******\n");
+                 
+                 console.log("Equation: id3 *   id1 + 0");
+                 equationInfo = ped.equationAction(inputsInfo.ID, "id3 *   id1 + 0");
+                 console.log("******" + equationInfo.message + "******\n");
+                 
+                 var obj = equationInfo;
+                 alert("DescriptionOn: " + obj.descriptionOn + "\nTypeOn: " + obj.typeOn + "\nInitialOn: " + obj.initialOn + "\nUnitsOn: " + obj.unitsOn + "\nInputsOn: " + obj.inputsOn+ "\nEquationOn: " + obj.equationOn);
+                 */
+
+                document.getElementById('result').innerHTML = JSON.stringify(rabbits.model, null, 4);
                 
                 
             });
@@ -187,21 +259,9 @@ alert("DescriptionOn: " + obj.descriptionOn + "\nTypeOn: " + obj.typeOn + "\nIni
 
     </head>
     <body>
-        <h1>Object Store Demonstration</h1>
+        <h1>JavaScript Model and Pedagogical Module Testing</h1>
 
-        <!--hidden form to submit POST variables in JavaScript below-->
-        <form id="sampleForm" name="sampleForm" method="post" action="../../author-load-save.php">
-            <input type="hidden" name="action" id="action" value="">
-            <input type="hidden" name="id" id="id" value="">
-            <input type="hidden" name="section" id="section" value="">
-            <input type="hidden" name="problem" id="problem" value="">
-            <input type="hidden" name="saveData" id="saveData" value="">
-        </form>
-
-        <!-- load dojo and provide config via data attribute -->
-
-
-     <div id="result">Result here</div>
+        <div id="result">Result here</div>
 
     </body>
 

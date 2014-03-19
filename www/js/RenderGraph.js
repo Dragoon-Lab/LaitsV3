@@ -9,10 +9,10 @@ define([
     "dojo/on", "dojo/_base/declare", 
     "dijit/Dialog", "dijit/form/HorizontalSlider",
     "dojo/dom", "dojox/charting/Chart", "dojox/charting/axis2d/Default", "dojox/charting/plot2d/Lines",
-    "dojox/charting/plot2d/Grid", "dojox/charting/widget/Legend", "dojo/domReady!"
+    "dojox/charting/plot2d/Grid", "dojox/charting/widget/Legend","dojo/ready", "dojo/_base/lang","dijit/registry","dojo/domReady!"
 ], function(on, declare, Dialog, HorizontalSlider, dom,
 	    // It looks like Default, Lines, Grid are not used.  Can they be removed?
-	    Chart, Default, Lines, Grid, Legend){
+	    Chart, Default, Lines, Grid, Legend,ready,lang,registry){
     return declare(null, {
 	
 	//no of parameters that can affect graph. This parameter will be used to create sliders
@@ -34,13 +34,17 @@ define([
     dialog:"",
     //Object of a chart
     chart:"",
-        
+    //object passed to constructor
+    object : null,
+    //collect IDs of all DOMs created to destroy the same when dialog is closed
+    strDomID: new Array(),
         /*
          *  @brief:constructor for a graph object
          *  @param: noOfParam
          */
 		constructor: function(object)
         {
+           this.object = object;
      	   //assign parameters to object properties 
      	   this.inputParam = object.noOfParam;
 		   this.paramNames = object.arrayOfParameterNames;
@@ -60,23 +64,22 @@ define([
         initialize: function()
         {
      	   var i, j;
-     	   //fake data for correct graph
-           var arrayCorrect = [1, 2, 2, 3, 4, 5, 5, 7,9,6];
-           //fake data for graph which changes based on slider values
-           var arrayVariable = [1, 2, 2, 3, 4, 5, 5, 7,9,6];
-           //create dom for chart and chart legend and embed it in dialog
-		   
+
 		   i=0;
 		   var str="";
 		   for(j in this.arrayOfNodeValues)
 		   {
 				str = "chart"+i.toString();
+                this.strDomID.push(str);
 				this.dialogContent= this.dialogContent + this.createDom('div',str);
-				this.dialogContent= this.dialogContent + this.createDom('div','legend'+i,"style='width:800px; margin:0 auto;'");
+
+                str = "legend"+ i.toString();
+               this.strDomID.push(str);
+				this.dialogContent= this.dialogContent + this.createDom('div',str,"style='width:800px; margin:0 auto;'");
 				i++;
 		   }
      	        	   
-		   i=0;
+            i=0;
      	   //create sliders based on number of input parameters
      	   for(j in this.paramNames)
      	   {
@@ -86,17 +89,48 @@ define([
      	            name: "slider"+i,
      	            value: this.paramValue[j],
      	            minimum: 0,
-     	            maximum: 10,
+     	            maximum: 1,
      	            intermediateChanges: true,
      	            style: "width:300px;"
      	        }, "slider"+i);
+
+
+               var paramID = j;
+               var slider = this.sliders[i];
+               var index  = i;
+
+               on(this.sliders[i],"change", lang.hitch(this,function(){
+
+                   dom.byId("text"+index).value = slider.value;
+                   this.object.calculationObj.active.setInitial(paramID,slider.value);
+                   var newObj = this.object.calculationObj.gerParametersForRendering(this.object.calculationObj.solutionGraph,true);
+
+                   //update and render the chart
+                   var l=0;
+                   for(var k in newObj.arrayOfNodeValues)
+                   {
+                       this.chart[l].updateSeries("Variable solution", newObj.arrayOfNodeValues[k]);
+                       this.chart[l].render();
+                       l++;
+                   }
+
+               }));
      	   
      	        //create label for name of a textbox
      	        //create input for a textbox
      	        //create div for embedding a slider
-     	        this.dialogContent= this.dialogContent + this.createDom('label','','',this.paramNames[j]+" = ")+this.createDom('input','text'+i,"type='text' data-dojo-type='dijit/form/TextBox'")+"<br>"
-     	        +this.createDom('div','slider'+i);
-     	        console.debug("dialogContent is "+this.dialogContent);
+     	        /*this.dialogContent= this.dialogContent + this.createDom('label','','',this.paramNames[j]+" = ")+this.createDom('input','text'+i,"type='text' data-dojo-type='dijit/form/TextBox'")+"<br>"
+     	        +this.createDom('div','slider'+i);*/
+               this.dialogContent= this.dialogContent + this.createDom('label','','',this.paramNames[j]+" = ");
+
+               str = 'text'+ i.toString();
+               this.strDomID.push(str);
+               this.dialogContent= this.dialogContent + this.createDom('input',str,"type='text' data-dojo-type='dijit/form/TextBox' readOnly=true")+"<br>";
+               str = 'slider'+ i.toString();
+               this.strDomID.push(str);
+               this.dialogContent= this.dialogContent  +this.createDom('div',str);
+
+               console.debug("dialogContent is "+this.dialogContent);
 				
 				i++;
      	   }
@@ -107,8 +141,25 @@ define([
      		   title: "Graph for Problem",
         		content:this.dialogContent,
         		style:"width:auto;height:auto;"
-     	   });      	   
-     	   
+     	   });
+
+           //destroy the dialog when it is closed
+            on(this.dialog,"hide",lang.hitch(this,function(){
+
+
+
+                this.dialog.destroyRecursive();
+
+                //set initial values of all parameters to original values
+                var i;
+                 for(i in this.paramNames)
+                 {
+                 this.object.calculationObj.active.setInitial(i,this.paramValue[i]);
+                 }
+
+            }));
+
+
      	   //insert initial value of slider into a textbox
      	   //append slider to the div node
      	   for(i=0; i<this.inputParam; i++)
@@ -120,6 +171,7 @@ define([
 		   var chartArray = new Array();
 		   var legendArray = new Array();
 		   i=0;
+	           var time = this.object.calculationObj.model.getTime();
 		   for(j in this.arrayOfNodeValues)
 		   {
 			   str = "chart"+i.toString();	
@@ -127,10 +179,13 @@ define([
 			   chartArray[i].addPlot("default", {type: Lines, markers:true});
 			  
 			   chartArray[i].addAxis("x", {
-			   fixed: true, min: 0, max: 10, title: this.xunits, 
+			   fixed: true, min: time.start, max: (time.end - time.start)/time.step, title: this.xunits,
 			   titleOrientation: "away", titleGap:5
 			});
-			   chartArray[i].addAxis("y", {vertical: true, min: 0, title: this.units[j]});
+               var array = this.arrayOfNodeValues[j];
+               var maxArrayValue = array[array.length-1];
+			   //chartArray[i].addAxis("y", {vertical: true, min: 0, title: this.units[j]});
+               chartArray[i].addAxis("y", {vertical: true, min: 0, max:maxArrayValue,title: this.units[j]});
 			   chartArray[i].addSeries("correct solution", this.arrayOfNodeValues[j], {stroke: "red"});
 			   chartArray[i].addSeries("Variable solution", this.arrayOfNodeValues[j], {stroke: "green"});
 			   chartArray[i].render();
@@ -139,6 +194,8 @@ define([
 			   legendArray[i] = new Legend({chart: chartArray[i]}, str);
 			   i++;
 		   }
+
+            this.chart = chartArray;
      	   
      	   //create a chart
 		   /*
@@ -173,6 +230,8 @@ define([
      	   */
      	   //Use local variables and assign object properties to local variables
      	   //local variables are work-around as object properties are not accessed inside a event handler (here inside 'onclick' event)
+
+            /*
      	   var _slider=new Array();
      	   var slider=new Array();
      	   var noOfParam = this.inputParam;
@@ -203,7 +262,7 @@ define([
      	           	chart.updateSeries("Variable solution", arrayVariable);
      	           	chart.render();
      	           });
-           }
+           } */
 
         },
         
@@ -248,7 +307,10 @@ define([
         */
        show: function(){    	   
     	   this.dialog.show();
-       }	
+
+       }
+
+
 		
 	});	
 });

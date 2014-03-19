@@ -3,12 +3,18 @@
         "taskName": "Rabbits - Intro Problem",
         "properties": {
             "phase": "intro",
-            "type": "construct",
-            "URL": "images/rabbit.jpeg",
-            "startTime": 0,
-            "endTime": 10,
-            "timeStep": 1,
+            "type": "construct"
+        },
+        "time": {
+            "start": 0,
+            "end": 10,
+            "step": 0.5,
             "units": "years"
+        },
+        "image": {
+            "URL": "images/rabbit.jpeg",
+            "width": 225,
+            "height": 100
         },
         "taskDescription": "In this exercise, you will construct a model of how a rabbit population grows when no rabbits die. The first quantity in this model is the population or number of rabbits in the population. Initially, there are 100 rabbits, but the number increases with time. The new population each month is its present value plus the number of births (number of rabbits born each month). The number of births is equal to the product of the population and the birth rate. The birthrate or the ratio of the number of rabbits born in a month to the rabbit population that month has a fixed value of 0.2.",
         "givenModelNodes": [
@@ -82,7 +88,7 @@
                     "type": 1,
                     "initial": 0,
                     "units": 1,
-                    "equation": 3
+                    "equation": 0
                 },
                 "status": {
                     "description": "correct",
@@ -96,16 +102,34 @@
             {
                 "ID": "id7",
                 "name": "month two population",
+                "genus": "model",
+                "type": "parameter",
+                "parentNode": true,
+                "extra": false,
+                "units": "rabbits",
+                "inputs": [],
+                "initial": 120,
                 "description": "The number of rabbits in the population during the second month",
-		"units": "rabbits",
-                "type": "model"
+                "attemptCount": {
+                    "description": 2,
+                    "type": 1,
+                    "initial": 2,
+                    "units": 2,
+                    "equation": 0
+                },
+                "status": {
+                    "description": "correct",
+                    "type": "correct",
+                    "initial": "demo",
+                    "units": "correct"
+                }
             },
             {
                 "ID": "id8",
                 "name": "superpower fraction",
                 "description": "The ratio of rabbits born with superpowers to ordinary rabbits",
 		"units": "rabbits per rabbit",
-                "type": "extra"
+                "genus": "extra"
             }
         ],
         "studentModelNodes": [
@@ -116,7 +140,7 @@
                 "initial": 100,
                 "units": "rabbits",
                 "inputs": [ { "ID": "id5" } ],
-                "equation": "id5",
+                "equation": "id4+id5",
                 "position": {
                     "x": 100,
                     "y": 100

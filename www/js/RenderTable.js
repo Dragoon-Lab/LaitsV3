@@ -7,9 +7,10 @@
 
 define([
     "dojo/on", "dojo/_base/declare", "dojox/layout/TableContainer", "dijit/Dialog",
-    "dojo/dom", "dojo/dom-construct", "dojo/data/ItemFileReadStore", "dojox/grid/DataGrid","dijit/form/HorizontalSlider",
+    "dojo/dom", "dojo/dom-construct", "dojo/data/ItemFileReadStore", "dojox/grid/DataGrid","dijit/form/HorizontalSlider","dojo/_base/lang",
+    "dijit/layout/ContentPane",
     "dojo/domReady!" 
-], function(on, declare, tableContainer, Dialog, dom, domConstruct, read, grid,HorizontalSlider){
+], function(on, declare, tableContainer, Dialog, dom, domConstruct, read, grid,HorizontalSlider,lang, contentPane){
     
     return declare(null, {
 	
@@ -32,6 +33,10 @@ define([
 	dialogContent:"",	
 	//Object of a dialog
     dialog:"",
+    //object passed to constructor
+    object : null,
+    //contentPane for table
+    contentPane : null,
 		        
         /*
          *  @brief:constructor for a graph object
@@ -40,6 +45,7 @@ define([
         //constructor: function(noOfParam,paramNames, paramValue,xUnits,units,timeSteps,nodeValueArray)
 		constructor: function(object)
         {
+            this.object = object;
      	    //assign parameters to object properties 
      	    this.inputParam = object.noOfParam;
      	    this.xUnits = object.xUnits;
@@ -60,39 +66,11 @@ define([
         {
         	
      	   var i=0,j=0,domId="",tempArray;
-		   
-		   this.dialogContent = this.dialogContent+this.initTable();
-		   this.dialogContent = this.dialogContent+this.setTableHeader();
-     	   
-	    console.log(" env ", this, this.timeSteps);
-			for(i=0;i<this.timeSteps.length;i++)
-			{
-				this.dialogContent = this.dialogContent+"<tr>";
-				this.dialogContent = this.dialogContent+"<td align='center'>"+this.timeSteps[i] + "</td>";
-				//set values in table according to their table-headers
-				for(j in this.nodeValueArray)
-				{
-					tempArray = this.nodeValueArray[j];
-					this.dialogContent = this.dialogContent+"<td align='center'>"+tempArray[i].toFixed(2) + "</td>";
-					
-				}
-				this.dialogContent = this.dialogContent+"</tr>";
-			}
-			
-			/*
-			for(i=0; i < rowLength; i++)
-			{
-				this.dialogContent = this.dialogContent+"<tr>";
-				for(j=0;j < this.inputParam; j++)
-				{
-					this.dialogContent = this.dialogContent+"<td align='center'>"+this.paramValue[this.inputParam * i + j] + "</td>";
-				}
-				this.dialogContent = this.dialogContent+"</tr>";
-			}*/
-		   
-		   this.dialogContent = this.dialogContent+this.closeTable();
+
+
            //this.dialogContent = this.dialogContent+this.createDom("div","table","","");
-		   
+
+            this.dialogContent = this.dialogContent+ "<div id='table'></div>";
 		   i=0;
      	   //create sliders based on number of input parameters
      	   for(j in this.paramNames)
@@ -103,18 +81,40 @@ define([
      	            name: "sliderTable"+i,
      	            value: this.paramValue[j],
      	            minimum: 0,
-     	            maximum: 10,
+     	            maximum: 1,
      	            intermediateChanges: true,
      	            style: "width:300px;"
      	        }, "sliderTable"+i);
-     	   
+
+               var paramID = j;
+               var slider = this.sliders[i];
+               var index  = i;
+
+               on(this.sliders[i],"change", lang.hitch(this,function(){
+
+                   //dom.byId("table").remove();
+
+                   dom.byId("textTable"+index).value = slider.value;
+                   this.object.calculationObj.active.setInitial(paramID,slider.value);
+                   var newObj = this.object.calculationObj.gerParametersForRendering(this.object.calculationObj.solutionGraph,true);
+
+                   this.nodeValueArray = newObj.arrayOfNodeValues;
+                   paneText = "";
+                   paneText = paneText+this.initTable();
+                   paneText = paneText+this.setTableHeader();
+                   paneText = paneText + this.setTableContent();
+                   paneText = paneText+this.closeTable();
+
+                   this.contentPane.setContent(paneText);
+               }));
+
      	        //create label for name of a textbox
      	        //create input for a textbox
      	        //create div for embedding a slider
-     	        this.dialogContent= this.dialogContent + this.createDom('label','','',this.paramNames[j]+" = ")+this.createDom('input','textTable'+i,"type='text' data-dojo-type='dijit/form/TextBox'")+"<br>"
+                this.dialogContent= this.dialogContent + this.createDom('label','','',this.paramNames[j]+" = ")+this.createDom('input','textTable'+i,"type='text' data-dojo-type='dijit/form/TextBox' readOnly=true")+"<br>"
      	        +this.createDom('div','sliderTable'+i);
      	        console.debug("dialogContent is "+this.dialogContent);
-				
+
 				i++;
      	   }
            
@@ -122,10 +122,40 @@ define([
      	   //this will create dom inside a dialog
      	   this.dialog = new Dialog({
      		   title: "Table for Problem",
-        		content:this.dialogContent,
+        		//content:this.dialogContent,
         		style:"width:auto;height:auto"
      	   });  
-		   
+           this.dialog.setContent(this.dialogContent);
+
+            //destroy the dialog when it is closed
+            on(this.dialog,"hide",lang.hitch(this,function(){
+
+                this.dialog.destroyRecursive();
+
+
+                //set initial values of all parameters to original values
+                var i;
+                for(i in this.paramNames)
+                {
+                    this.object.calculationObj.active.setInitial(i,this.paramValue[i]);
+                }
+
+            }));
+
+            var paneText="";
+            paneText = paneText+this.initTable();
+            paneText = paneText+this.setTableHeader();
+            paneText = paneText + this.setTableContent();
+            paneText = paneText+this.closeTable();
+
+            this.contentPane = new contentPane(
+                {
+                   content:paneText
+                },"table");
+
+
+
+            //this.contentPane.setContent(paneText);
 		    //insert initial value of slider into a textbox
      	   //append slider to the div node
      	   for(i=0; i<this.inputParam; i++)
@@ -175,17 +205,30 @@ define([
        },
        
        initTable: function(){
+           /*
     	   var tableString = "";
-		   tableString = "<div id='table' data-dojo-type='dijit/layout/ContentPane' region='center'>"+"<div align='center'>"+"<table border=1 style='border-spacing:0px'>";		
-			return tableString;
+		   tableString = "<div id='table' data-dojo-type='dijit/layout/ContentPane' region='center'>"+"<div align='center'>"+"<table border=1 style='border-spacing:0px'>";
+			return tableString;*/
+
+           var tableString = "";
+
+
+           tableString ="<div align='center'>"+"<table border=1 style='border-spacing:0px'>";
+           return tableString;
        },
 	   
 	closeTable: function(){
-	   
-			var tableString = "";
+
+        /*
+			var tableString;
 			tableString = "</table>"+"</div>"+"</div>";
 			
-			return tableString;
+			return tableString;*/
+
+        var tableString;
+        tableString = "</table>"+"</div>";
+
+        return tableString;
 		},
 		
 		setTableHeader: function(){
@@ -207,12 +250,33 @@ define([
 			
 			return tableString;
 		},
+
+        setTableContent: function(){
+            console.log(" env ", this, this.timeSteps);
+
+            var tableString;
+            for(i=0;i<this.timeSteps.length;i++)
+            {
+                tableString = tableString+"<tr>";
+                tableString = tableString+"<td align='center'>"+this.timeSteps[i] + "</td>";
+                //set values in table according to their table-headers
+                for(j in this.nodeValueArray)
+                {
+                    tempArray = this.nodeValueArray[j];
+                    tableString = tableString+"<td align='center'>"+tempArray[i].toFixed(2) + "</td>";
+
+                }
+                tableString = tableString+"</tr>";
+            }
+
+            return tableString;
+
+        },
        
            /*
         * @brief: display the graph
         */
        show: function(){
-    	   
     	  this.dialog.show();
        }
 	

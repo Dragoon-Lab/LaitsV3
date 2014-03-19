@@ -49,16 +49,22 @@ be an exception).
 Methods in the PM return an array of directives like this:
 
     [
-		{id: "initialValue", attribute: "disabled", value: true},  // enable or disable a control
-		// Send a message (id may be ignored by the controller)
-		{id: "initialValue", attribute: "message", value: "You should try again."},
-		{id: "selectDescription", attribute: "status", value: "demo"},  // Set the status (red/green/yellow)
+		{id: "initial", attribute: "disabled", value: true},  // enable or disable a control
+		// Send a message.
+		{id: "message", attribute: "append", value: "You should try again."},
+		{id: "description", attribute: "status", value: "demo"},  // Set the status (red/green/yellow)
 		// Set the value of a control (in the case of demo)
-		{id: "selectDescription", attribute: "selected", value: "id3"} 
+		{id: "description", attribute: "value", value: "id3"},
+		// Disable individual choices in a pull-down menu
+		{id: "type", attribute: "disableOption", value: "function")
 	]
 
-These attribute names in the above example are not set in stone:  they
-should be chosen to map easily onto controls in the Node Editor.
+The attribute names can be: `description`, `type`, `initial`,
+`units`, `inputs`, or `equation`.  The controller 
+maps these names onto the appropriate widget `id` in `index.html`.
+The attributes `enableOption`/`disableOption` can be used to
+enable/disable individual options in a select control.  If no value is
+given, then all options in the control are enabled/disabled.
 
 `js/controller.js` acts as the controller.  On opening the node
 editor, it sets values of the Node Editor controls based on the **active

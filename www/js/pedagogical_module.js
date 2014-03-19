@@ -1,970 +1,397 @@
 /* global define */
+
 /**
- *
  * Pedagogical Module class used to solve Dragoon problems
  * @author: Brandon Strong
- *
  **/
 
 /**
- * Pedagogical module that accepts student entries, updates the model, and returns an object
- * with the id of the node, a message with encouragement or a hint, and the status of the 
+ * Pedagogical module that accepts student entries, and returns an object with the  
+ * id of the node, a message with encouragement or a hint, and the status of the 
  * attempt (correct, incorrect, demo, or premature).
  **/
 
 define([
-    "dojo/_base/array", "dojo/_base/declare", "./equation_check", "parser/parser"
-], function(array, declare, check, Parser) {
+    "dojo/_base/array", "dojo/_base/declare", "./equation"
+], function(array, declare, check) {
 
+    var hints = {
+        // Summary: Messages that are given to the user based on the type of user, 
+        //      his or her answers, and the number of hints of that type.
+        irrelevant: [
+            "The quantity is irrelevant to this problem.  Choose a different one.",
+            "This quantity is irrelevant for modeling the system.  Try again.",
+            "Irrelevant.  Try again."
+        ],
+        initial: [
+            "You tried to define a parameter for the initial value of an accumulator.  This is unnecessary, because you can put the initial value for the accumulator right into the definition of the accumulator itself.",
+            "That should be the initial value of an accumulator, not a parameter node.",
+            "That should be the initial value of an accumulator."
+        ],
+        extra: [
+            "You tried to define a parameter for a number you read in the problem.  Not all numbers in the problem statement are necessary for the model.  You will save effort if you follow the Target Node Strategy, which says you should start by defining a node for a quantity that the problem asks you to graph, then define nodes for its inputs, and then define nodes for their inputs, etc.  That way, every node you create is an input to some node.",
+            "Not every number in the problem statement is necessary for the model.  You should define a node for a quantity only when either (1) it is required as input to a previously defined node, or (2) the problem statement asks you to graph it.",
+            "Please be sure you need a node before defining it.  Even if a number appears in the problem statement, it may not be needed in the model."
+        ],
+        redundant: [
+            "A node already exists for that quantity.  If you want to edit it, click on it."
+        ],
+        premature: [
+            "Blue means that the quantity is relevant for modeling the system, but it is not yet time to define it.  You should follow the Target Node Strategy, which says you should edit an existing node that is not yet defined.  Such nodes have dotted outlines.  Click on one to edit it.",
+            "Blue means that according to the Target Node Strategy, it is too early to define a node for this quantity.  Edit a node that has a dotted outline.",
+            "Blue means premature.  Edit a node with a dotted outline instead."
+        ],
+        notTopLevel: [
+            "Blue means that quantity isn’t one that the problem statement asks you to graph.  Although this quantity will eventually be in your model, you should follow the Target Node Strategy, which says you should first define a node for a top level goal quantity.",
+            "Please start with a quantity mentioned in the problem statement as one that needs to be graphed."
+        ],
+        correct: [
+            "Green means correct.  Good job!",
+            "Green means correct."
+        ],
+        incorrect: [
+            "Your answer is incorrect. Please try again.",
+            "Your answer is incorrect."
+        ],
+        lastFailure: [
+            "Sorry, but that quantity isn’t relevant to the model.  Moreover, this is the third failure, so a correct selection is being done for you.  Please study it and figure out why it is correct.  Your goal should be to make a correct selection on the first attempt.",
+            "Here’s a correct solution.  Please figure out why it is correct so that next time, your first selection will be correct.",
+            "Please study this correct selection."
+        ],
+        lastFailure2: [
+            "Yellow means that you made an incorrect choice too many times, so you are being shown the correct choice.  You should figure out why it is correct so that next time your first choice will be correct.",
+            "Can you figure out why this is the right type for the node?"
+        ]
+    };
+
+    var descriptionTable = {
+        // Summary: This table is used for determining the proper response to a student's 'description' answer (see 
+        //      'Pedagogical_Module.docx' in the documentation)
+            optimal: {
+                COACHED: function(obj,part){state(obj, part, "correct"); message(obj,part, "correct"); disable(obj, part, true); disable(obj, "type", false);}, 
+                feedback: function(obj,part){state(obj, part, "correct"); message(obj,part, "correct"); disable(obj, part, true); disable(obj, "type", false);},
+                TEST: function(obj,part){state(obj, part, "correct"); disable(obj, part, true); disable(obj, "type", false);}, 
+                power: function(obj,part){state(obj, part, "correct"); disable(obj, part, true); disable(obj, "type", false);}
+            },
+            notTopLevel: {
+                COACHED: function(obj,part){state(obj, part, "notTopLevel"); message(obj,part, "premature");}, 
+                feedback: function(obj,part){state(obj, part, "correct"); message(obj,part, "correct"); disable(obj, part, true); disable(obj, "type", false);},
+                TEST: function(obj,part){state(obj, part, "correct"); disable(obj, part, true); disable(obj, "type", false);}, 
+                power: function(obj,part){state(obj, part, "correct"); disable(obj, part, true); disable(obj, "type", false);}
+            },
+            premature: {
+                COACHED: function(obj,part){state(obj, part, "premature"); message(obj,part, "premature");}, 
+                feedback: function(obj,part){state(obj, part, "correct"); message(obj,part, "correct"); disable(obj, part, true); disable(obj, "type", false);},
+                TEST: function(obj,part){state(obj, part, "correct"); disable(obj, part, true);disable(obj, "type", false);}, 
+                power: function(obj,part){state(obj, part, "correct"); disable(obj, part, true);disable(obj, "type", false);}
+            },
+            initialValue: {
+                COACHED: function(obj,part){state(obj, part, "incorrect"); message(obj,part, "initial");}, 
+                feedback: function(obj,part){state(obj, part, "incorrect"); message(obj,part, "initial");}, 
+                TEST: function(obj,part){state(obj, part, "incorrect");}, 
+                power: function(obj,part){state(obj, part, "incorrect");}
+            },
+            extraValue: {
+                COACHED: function(obj,part){state(obj, part, "incorrect"); message(obj,part, "extra");}, 
+                feedback: function(obj,part){state(obj, part, "incorrect"); message(obj,part, "irrelevant");}, 
+                TEST: function(obj,part){state(obj, part, "incorrect");}, 
+                power: function(obj,part){state(obj, part, "incorrect");}
+            },
+            irrelevant: {
+                COACHED: function(obj,part){state(obj, part, "incorrect"); message(obj,part, "irrelevant");}, 
+                feedback: function(obj,part){state(obj, part, "incorrect"); message(obj,part, "irrelevant");}, 
+                TEST: function(obj,part){state(obj, part, "incorrect");}, 
+                power: function(obj,part){state(obj, part, "incorrect");}
+            },
+            redundant: {
+                COACHED: function(obj,part){state(obj, part, "incorrect"); message(obj,part, "redundant");}, 
+                feedback: function(obj,part){state(obj, part, "incorrect"); message(obj,part, "redundant");}, 
+                TEST: function(obj,part){state(obj, part, "incorrect"); message(obj,part, "redundant");}, 
+                power: function(obj,part){state(obj, part, "incorrect"); message(obj,part, "redundant");}
+            },
+            lastFailure: {
+                COACHED: function(obj,part){state(obj, part, "demo"); message(obj,part, "lastFailure2");disable(obj, part, true); disable(obj, "type", false);}, 
+                feedback: function(obj,part){state(obj, part, "demo"); message(obj,part, "lastFailure2");disable(obj, part, true); disable(obj, "type", false);},
+                TEST: function(obj,part){state(obj, part, "demo"); disable(obj, part, true);disable(obj, "type", false);}, 
+                power: function(obj,part){state(obj, part, "demo"); disable(obj, part, true);disable(obj, "type", false);}
+            }};
+        
+    var actionTable = {
+        // Summary: This table is used for determining the proper response to a student's answers in the 
+        //      remaining sections (see 'Pedagogical_Module.docx' in the documentation)
+            correct: {
+                COACHED: function(obj,part){state(obj, part, "correct"); message(obj,part, "correct"); disable(obj, part, true); disable(obj, "enableNext", false);}, 
+                feedback: function(obj,part){state(obj, part, "correct"); message(obj,part, "correct"); disable(obj, part, true); disable(obj, "enableRemaining", false);}, 
+                TEST: function(obj,part){disable(obj, "enableRemaining", false);}, 
+                power: function(obj,part){disable(obj, "enableRemaining", false);}
+            },
+            firstFailure: {
+                COACHED: function(obj,part){state(obj, part, "incorrect"); message(obj,part, "incorrect");}, 
+                feedback: function(obj,part){state(obj, part, "incorrect"); message(obj,part, "incorrect");},
+                TEST: function(obj,part){disable(obj, "enableRemaining", false);}, 
+                power: function(obj,part){disable(obj, "enableRemaining", false);}
+            },
+            secondFailure: {
+                COACHED: function(obj,part){state(obj, part, "demo"); message(obj,part, "lastFailure2"); disable(obj, part, true); disable(obj, "enableNext", false);}, 
+                feedback: function(obj,part){state(obj, part, "demo"); message(obj,part, "lastFailure2"); disable(obj, part, true); disable(obj, "enableRemaining", false);}, 
+                TEST: function(obj,part){disable(obj, "enableRemaining", false);}, 
+                power: function(obj,part){disable(obj, "enableRemaining", false);}
+            },
+            anotherFailure: {
+                COACHED: function(){console.error("Attempting to access actionTable after demo has been sent.");}, 
+                feedback: function(){console.error("Attempting to access actionTable after demo has been sent.");}, 
+                TEST: function(obj,part){disable(obj, "enableRemaining", false);}, 
+                power: function(obj,part){disable(obj, "enableRemaining", false);}
+            }};
+        
+    // Counters used to determine which message in an array to display; they are not dependent on which node is 
+    //      active and differ from the counters (attemptCount) in the model, which are node specific
+    var counter = {correct: 0, notTopLevel: 0, premature: 0, initial: 0, extra: 0, irrelevant: 0, redundant: 0, incorrect: 0, lastFailure: 0, lastFailure2: 0};
+
+    /*****
+     * Summary: The following four functions are used by the above tables to push 
+     *      statuses and messages to the return object array.
+     *****/
+    function state(/*object*/ obj, /*string*/ nodePart, /*string*/ status) {
+        obj.push({id: nodePart, attribute: "status", value: status});
+    }
+
+    function message(/*object*/ obj, /*string*/ nodePart, /*string*/ status) {
+        obj.push({id: 'message', attribute: 'append', value: getMessage(nodePart, status)});
+    }
+
+    function disable(/*object*/ obj, /*string*/ nodePart, /*boolean*/ disable) {
+        obj.push({id: nodePart, attribute: "disabled", value: disable});
+    }
+
+    function getMessage(/*string*/ nodePart, /*string*/ status) {
+        // Summary: Returns the appropriate message from the hints object (above).
+        var messages = new Array();
+        var theCounter = 0;
+        messages = hints[status];
+        theCounter = counter[status];
+        counter[status]++;
+        if (theCounter > messages.length - 1) {
+            return messages[messages.length - 1];
+        } else {
+            return messages[theCounter];
+        }
+    }
+
+    /*****
+     * 
+     * Builds class that is used by controller to check student answers
+     * 
+     *****/
     return declare(null, {
         constructor: function(/*string*/ mode, /*string*/ subMode, /*model.js object*/ model) {
-
-            /*
-             Redesign of pedagogical model in process; functions that are called by 
-             other files should stay the same 
-             */
-
-            /*
-             Need further clarification on the feedback and user; also need to implement 
-             switching between the two
-             */
-
+            this.model = model;
             this.mode = mode;
             this.setUserType(subMode);
-            this.returnObject = new Object;
-            this.model = model;
-            this.message = "";
-            this.descriptionOn = true;
-            this.typeOn = false;
-            this.initialOn = false;
-            this.unitsOn = false;
-            this.inputsOn = false;
-            this.addAsPlusButton = false;
-            this.addAsMinusButton = false;
-            this.descriptionCounter = 0;
-            this.description_jCounter = 0;
-            this.description_hCounter = 0;
-            this.description_gCounter = 0;
-            this.description_cCounter = 0;
-            this.description_dCounter = 0;
-            this.description_bCounter = 0;
-            this.description_lCounter = 0;
-            this.type_iCounter = 0;
-            this.initial_jCounter = 0;
-            this.units_jCounter = 0;
-            this.inputsCounter = 0;
-            this.inputs_jCounter = 0;
-            this.inputs_hCounter = 0;
-            this.inputs_gCounter = 0;
-            this.inputs_cCounter = 0;
-            this.inputs_dCounter = 0;
-            this.inputs_bCounter = 0;
-            this.inputs_lCounter = 0;
-            this.lastNodeOpened = null; //used to track inputs attempts in inputsAction();
         },
-        mode: null,
-	userType: null,
-	hints: {
-	    incorrect: {
-		irrelevant: [
-                    "The quantity is irrelevant to this problem.  Choose a different one.",
-                    "This quantity is irrelevant for modeling the system.  Try again.",
-                    "Irrelevant.  Try again."
-		],
-		initial: [
-                    "You tried to define a parameter for the initial value of an accumulator.  This is unnecessary, because you can put the initial value for the accumulator right into the definition of the accumulator itself.",
-                    "That should be the initial value of an accumulator, not a parameter node.",
-                    "That should be the initial value of an accumulator."
-		],
-		notInModel: [
-                    "You tried to define a parameter for a number you read in the problem.  Not all numbers in the problem statement are necessary for the model.  You will save effort if you follow the Target Node Strategy, which says you should start by defining a node for a quantity that the problem asks you to graph, then define nodes for its inputs, and then define nodes for their inputs, etc.  That way, every node you create is an input to some node.",
-                    "Not every number in the problem statement is necessary for the model.  You should define a node for a quantity only when either (1) it is required as input to a previously defined node, or (2) the problem statement asks you to graph it.",
-                    "Please be sure you need a node before defining it.  Even if a number appears in the problem statement, it may not be needed in the model."
-		],
-		exists: [
-                    "A node already exists for that quantity.  If you want to edit it, click on it."
-		]
-	    },
-	    premature: [
-                    "Blue means that the quantity is relevant for modeling the system, but it is not yet time to define it.  You should follow the Target Node Strategy, which says you should edit an existing node that is not yet defined.  Such nodes have dotted outlines.  Click on one to edit it.",
-                    "Blue means that according to the Target Node Strategy, it is too early to define a node for this quantity.  Edit a node that has a dotted outline.",
-                    "Blue means premature.  Edit a node with a dotted outline instead."
-	    ],
-	    blue: [
-                "Blue means that quantity isn’t one that the problem statement asks you to graph.  Although this quantity will eventually be in your model, you should follow the Target Node Strategy, which says you should first define a node for a top level goal quantity.",
-                "Please start with a quantity mentioned in the problem statement as one that needs to be graphed."
-	    ],
-	    correct: [
-                "Green means correct.  Good job!",
-                "Green means correct."
-	    ],
-	    demo: {
-		irrelevant: [
-                    "Sorry, but that quantity isn’t relevant to the model.  Moreover, this is the third failure, so a correct selection is being done for you.  Please study it and figure out why it is correct.  Your goal should be to make a correct selection on the first attempt.",
-                    "Here’s a correct solution.  Please figure out why it is correct so that next time, your first selection will be correct.",
-                    "Please study this correct selection."
-		],
-		many: [
-                    "Yellow means that you made an incorrect choice too many times, so you are being shown the correct choice.  You should figure out why it is correct so that next time your first choice will be correct.",
-                    "Can you figure out why this is the right type for the node?"
-		]
-	    }
-	},
-        _getType: function(/*string*/ expression) {
-            //Summary: determines the sub type of a node with type "function"
+        matchingID: null,
+        logging: null,
+        descriptionCounter: 0,
+        /*****
+         * Private Functions
+         *****/
+        _enableNext: function(/*object*/ obj, /*string*/ givenNodeID, /*string*/ currentPart, /*string*/ job) {
+            // Summary: adds messages to return object to enable specified parts of 
+            //      the node
             //
-            //Tags: private
-            var expr = Parser.parse(expression);
-            var variables = expr.variables();
-            var sum = 0, product = 0;
-            for (var i = 0; i < expr.tokens.length; i++)
-                if (!this._contains(expr.tokens[i], variables))
-                    if (expr.tokens[i] == '+' || expr.tokens[i] == '-')
-                        sum++;
-                    else if (expr.tokens[i] == '*')
-                        product++;
-                    else
-                        return "hidden function";
-            if (sum > 0 && product === 0)
-                return "sum";
-            if (sum === 0 && product > 0)
-                return "product";
-            return "hidden function";
-        },
-        _contains: function(/*variable | object*/ theVariable, /*variable | object*/ theArray) {
-            //Summary: returns true if the supplied array contains the supplied variable or object
-            //
-            //Tags: private
-	    return array.some(theArray, function(x){
-		return theVariable === x;
-	    });
-	},
-        _getReturnObject: function(/*string*/ id, /*array*/ infoObject, /*string*/ control) {
-            //Summary: activates/deactives the parts of the node based on what 
-            //      part the user is at and the type (mode) of user (i.e. coached, feedback, etc.)
-            //
-            //Tags: private
+            // Tags: Private
+            var nodeType = this.model.given.getType(givenNodeID);
+            var newPart = "equation";
 
-            var nodeParts = new Array("description", "type", "initial", "units", "inputs", "equation");
-	    // Always need description and type
-            var neededControls = new Array("description", "type");
-
-            // Only enable/disable parts needed in the model (present in the given model)
-            // Parts not needed should be disabled when the window is opened.
-            // Pehaps this list should be populated when the node editor is opened.
-	    var givenID = this.model.student.getDescriptionID(id);
-            if (this.model.given.getInitial(givenID))
-                neededControls.push("initial");
-            if (this.model.given.getUnits(givenID))
-                neededControls.push("units");
-            if (this.model.given.getInputs(givenID))
-                neededControls.push("inputs");
-            if (this.model.given.getEquation(givenID))
-                neededControls.push("equation");
-
-            /*
-	     If the student should move on to the next part (i.e. status = correct or demo),
-	     disable the current part (if mode is not TEST) and activate next part(s), depending
-	     on the mode.
-             See documentation/major-modes.md for details.
-	     */
-            var activateRemaining = false;
-            array.forEach(neededControls, function(neededControl) {
-                if (!control || control === neededControl) {
-                    if (infoObject.status === "correct" || infoObject.status === "demo") {
-                        if (control !== nodeParts[nodeParts.length - 1]) {
-                            infoObject[nodeParts[i + 1] + "On"] = true;
-                            if (control !== "description" && (this.userType === "feedback" || this.userType === "TEST" || this.userType === "power"))
-                                /*
-                                 According to the pedagogical model document, if certain users 
-                                 get an answer correct, we should activate the remaining parts 
-                                 of the node after "type".
-                                 */
-                                activateRemaining = true;
-                        }
+            switch (currentPart) {
+                case "type":
+                    if (nodeType === "parameter" || nodeType === "accumulator") {
+                        disable(obj, "initial", false);
+                        newPart = "initial";
+                    } else if (this.model.given.getUnits(givenNodeID)) {
+                        disable(obj, "units", false);
+                        newPart = "units";
                     } else {
-                        infoObject.push({id: neededControl, attribute: "disabled", value: false});
+                        disable(obj, "equation", false);
+                        newPart = "equation";
                     }
-                } else if (activateRemaining) {
-                    infoObject.push({id: neededControl, attribute: "disabled", value: false});
-                }
-            });
-
-            return infoObject;
+                    break;
+                case "initial":
+                    if (this.model.given.getUnits(givenNodeID)) {
+                        disable(obj, "units", false);
+                        newPart = "units";
+                    } else if (nodeType === "function" || nodeType === "accumulator") {
+                        disable(obj, "equation", false);
+                        newPart = "equation";
+                    }
+                    break;
+                case "units":
+                    if (nodeType === "function" || nodeType === "accumulator")
+                        disable(obj, "equation", false);
+                    newPart = "equation";
+                    break;
+            }
+            if (job === "enableRemaining" && newPart !== "equation")
+                this._enableNext(obj, givenNodeID, newPart, job);
+            else
+                return;
         },
+        _getInterpretation: function(/*string*/ studentID, /*string*/ nodePart, /*string | object*/ answer) {
+            // Summary: Returns the interpretation of a given answer (correct, incorrect, etc.)
+            //
+            // Tags: Private
+            var interpretation = null;
+            var model = this.model; //needed for anonymous function in the interpret variable.
+
+            // Retrieves the givenID for the matching given model node
+            var givenID = this.model.student.getDescriptionID(studentID);
+
+            // Anonymous function assigned to interpret--used by most parts of the switch below
+            var interpret = function(correctAnswer) {
+                if (answer === correctAnswer || correctAnswer === true) {
+                    interpretation = "correct";
+                } else {
+                    if (model.getNodeAttemptCount(givenID, nodePart) > 0)
+                        interpretation = "secondFailure";
+                    else
+                        interpretation = "firstFailure";
+                }
+            };
+
+            // Take action based on the part of the node being evaluated
+            switch (nodePart) {
+                case "description":
+                    this.descriptionCounter++;
+
+                    if (this.model.student.isInExtras(answer)) {
+                        array.forEach(this.model.getExtraDescriptions(), function(extra) {
+                            if (answer === extra.ID && extra.genus === "initial") {
+                                interpretation = "initialValue";
+                            } else if (answer === extra.ID && extra.genus === "extra") {
+                                interpretation = "extraValue";
+                            } else if (answer === extra.ID && extra.genus === "model") {
+                                interpretation = "irrelevant";
+                            }
+                        });
+                    } else if (this.model.isNodeVisible(studentID, answer)) {
+                        interpretation = "redundant";
+                    } else if (this.model.isParentNode(answer) || this.model.isNodesParentVisible(studentID, answer)) {
+                        interpretation = "optimal";
+                    } else if (this.model.student.getNodes().length === 0) {
+                        interpretation = "notTopLevel";
+                    } else {
+                        interpretation = "premature";
+                    }
+                    if (interpretation !== "optimal" && this.descriptionCounter > 2) {
+                        interpretation = "lastFailure";
+                    }
+                    break;
+                case "type":
+                    interpret(this.model.given.getType(givenID));
+                    break;
+                case "initial":
+                    if (!this.model.given.getInitial(givenID))
+                        interpretation = "correct";
+                    else
+                        interpret(this.model.given.getInitial(givenID));
+                    break;
+                case "units":
+                    interpret(this.model.given.getUnits(givenID));
+                    break;
+                case "equation":
+                    // The 'equation' case accepts an equation object from the controller
+                    //      and checks it against the given equation using equation.js
+                    interpret(check.areEquivalent(givenID, this.model, answer));
+                    break;
+            }
+            /* 
+             This is an example of logging via direct function calls
+             Note that I haven't set correct-value.  For most controls, it should be set
+             */
+            if (this.logging) {
+                this.logging.log('solution-step', {node: studentID, type: nodePart, value: answer, checkResult: interpretation});
+            }
+            console.log("*****\n",interpretation);
+            return interpretation;
+        },
+        /*****
+         * Public Functions
+         *****/
+        processAnswer: function(/*string*/ id, /*string*/ nodePart, /*string*/ answer) {
+            // Summary: Pocesses a student's answers and returns if correct, 
+            //      incorrect, etc. and alerts the controller about what parts 
+            //      of the node editor should be active.
+            //
+            // Tags: Private
+            var interpretation = this._getInterpretation(id, nodePart, answer);
+            var returnObj = [];
+            
+            // Alert controller of correct answer if status will be set to 'demo'
+            if (interpretation === "lastFailure" || interpretation === "secondFailure") {
+                answer = this.model.getCorrectAnswer(id, nodePart);
+                console.log("****\n", "set to: ", {id: nodePart, attribute: "value", value: answer});
+                returnObj.push({id: nodePart, attribute: "value", value: answer});
+            }
+
+            // Process answers for description
+            if (nodePart === "description") {                
+                descriptionTable[interpretation][this.userType](returnObj, nodePart);
+                for (var i = 0; i < returnObj.length; i++)
+                    if (returnObj[i].value === "correct" || returnObj[i].value === "demo") {
+                        this.model.given.setAttemptCount(answer, nodePart, this.descriptionCounter);
+                        this.descriptionCounter = 0;
+                    }
+                // Process answers for all other node types
+            } else {
+                var givenID = this.model.student.getDescriptionID(id);
+                console.assert(actionTable[interpretation], "_processAnswer interpretation '" + interpretation + "' not in table ", actionTable);
+                actionTable[interpretation][this.userType](returnObj, nodePart);
+                this.model.given.setAttemptCount(givenID, nodePart, this.model.getNodeAttemptCount(givenID, nodePart) + 1);
+
+                // Activate appropriate parts of the node editor
+                var lastElement = returnObj[returnObj.length - 1].id;
+                if (lastElement === "enableNext" || lastElement === "enableRemaining") {
+                    returnObj.pop();
+                    this._enableNext(returnObj, givenID, nodePart, lastElement);
+                }
+            }
+            return returnObj;
+        },
+        /*****
+         * Additional Public Functions
+         *****/
         setUserType: function(/*string*/ subMode) {
             // Summary: Sets the user mode; used by the constructor, but also
             //      allows the mode to be updated dynamically.
-	    if(this.mode === "STUDENT"){
-		this.userType = subMode;
+            if (this.mode === "STUDENT") {
+                this.userType = subMode;
             } else {
                 this.userType = this.mode;
             }
         },
-	newAction: function() {
-	    //Summary:  Settings for the node editor for a new node
-	    //          It assumes everything has been enabled and has no colors
-	    // Policy: disable all but the description on new node
-	    // BvdS: might want to also activate type in TEST mode
-	    var controls = ["type", "initial", "units", "inputs", "equation"];
-	    return array.map(controls, function(control){
-		return {id: control, attribute: "disabled", value: true};
-	    });
-	},
-        newDescriptionAction: function(/*string*/ id, /*string*/ choice) {
-            //Summary: accepts an answer that the student provides, checks its validity,
-            //         and returns a list of directives; id is the student node id.
-            //Note: Each choice is labeled by either a node ID (for choices that
-            //      correspond to nodes in the given model) or other label (for disctractors).
-
-            //The array that that will be returned
-            var infoObject = Array();
-            var control = "description";  
-
-            //pedagogicalTable assigns the
-            //      appropriate actions to be taken; the actions are assigned to sequence
-            var pedagogicalTable = {
-                optimal: {COACHED: "ijno", feedback: "ijno", TEST: "ino", power: "ino"},
-                notTopLevel: {COACHED: "fhm", feedback: "ijno", TEST: "ino", power: "ino"},
-                premature: {COACHED: "fgm", feedback: "ijno", TEST: "ino", power: "ino"},
-                initialValue: {COACHED: "acm", feedback: "acm", TEST: "am", power: "am"},
-                extraValue: {COACHED: "adm", feedback: "abm", TEST: "am", power: "am"},
-                irrelevant: {COACHED: "abm", feedback: "abm", TEST: "am", power: "am"},
-                redundant: {COACHED: "aem", feedback: "aem", TEST: "aem", power: "aem"},
-                lastFailure: {COACHED: "klno", feedback: "klno", TEST: "kno", power: "kno"}
-            };
-
-            var sequence;
+        setLogging: function(/*string*/ logging) {
+            this.logging = logging;
         },
-        descriptionAction: function(/*string*/ id, /*string*/ answer) {
-            //Summary: accepts an answer that the student provides, checks its validity,
-            //         and returns a list of directives; id is the student node id.
-            //Note: Each choice is labeled by either a node ID (for choices that
-            //      correspond to nodes in the given model) or other label (for disctractors).
-
-            //The array that that will be returned
-            var infoObject = Array();
-            var control = "description";  
-
-            //pedagogicalTable assigns the
-            //      appropriate actions to be taken; the actions are assigned to sequence
-            var pedagogicalTable = {
-                optimal: {COACHED: "ijno", feedback: "ijno", TEST: "ino", power: "ino"},
-                notTopLevel: {COACHED: "fhm", feedback: "ijno", TEST: "ino", power: "ino"},
-                premature: {COACHED: "fgm", feedback: "ijno", TEST: "ino", power: "ino"},
-                initialValue: {COACHED: "acm", feedback: "acm", TEST: "am", power: "am"},
-                extraValue: {COACHED: "adm", feedback: "abm", TEST: "am", power: "am"},
-                irrelevant: {COACHED: "abm", feedback: "abm", TEST: "am", power: "am"},
-                redundant: {COACHED: "aem", feedback: "aem", TEST: "aem", power: "aem"},
-                lastFailure: {COACHED: "klno", feedback: "klno", TEST: "kno", power: "kno"}
-            };
-
-	    var interpretation;
-
-            //assign the action based on the answer
-            if (this.model.student.isInExtras(id)) {
-		array.forEach(this.model.getExtraDescriptions(), function(extra){
-                    if (answer === extra.ID && extra.type === "initial")
-                        interpretation = "initialValue";
-                    else if (answer === extra.ID && extra.type == "extra")
-                        interpretation = "extraValue";
-                    else if (answer === extra.ID && extra.type == "model")
-                        interpretation = "irrelevant";
-                });
-            } else if (this.model.isNodeVisible(id)) {
-                interpretation = "redundant";
-            } else if (this.model.isParentNode(id) || this.model.isNodesParentVisible(id)) {
-                interpretation = "optimal";
-            } else if (this.model.student.getNodes().length == 0) {
-                interpretation = "notTopLevel";
-            } else {
-                interpretation = "premature";
-	    }
-	    if (interpretation !== "optimal" && this.descriptionCounter === 2) {
-                interpretation = "lastFailure";
-            }
-	    
-            var sequence = pedagogicalTable[interpretation][this.userType];
-
-            //take the appropriate action
-            switch (sequence) {
-                case "ijno": // i: color green; j: message; n: disable description menu; o: enable type menu
-                    infoObject.push({id: control, attrubute: "status", value: "correct"});
-                    // BvdS:  These are done by controller
-                    // this.model.addStudentNodeWithName(this.model.getName(id));
-                    // this.model.setStudentNodeSelection(id, "description", answer);
-                    this.model.incrementDescriptionAttemptCount(id, this.descriptionCounter);
-                    if (this.description_jCounter < 1)
-                        infoObject.push({id: control, attribute: "message", value: "Green means correct. Good job!"});
-                    else
-                        infoObject.push({id: control, attribute: "message", value: "Green means correct."});
-                    this.description_jCounter++;
-                    this.descriptionOn = false;
-                    this.typeOn = true;
-                    this.descriptionCounter = 0;
-                    break;
-                case "ino": // i: color green; n: disable description menu; o: enable type menu
-                    infoObject.push({id: control, attrubute: "status", value: "correct"});
-                    this.model.addStudentNodeWithName(this.model.getName(id));
-                    this.model.setStudentNodeSelection(id, "description", answer);
-                    this.model.incrementDescriptionAttemptCount(id);
-                    this.description_jCounter++;
-                    this.descriptionOn = false;
-                    this.typeOn = true;
-                    this.descriptionCounter = 0;
-                    break;
-                case "fhm": // f: color blue; h message; m: leave description menu active
-                    infoObject.push({id: control, attrubute: "status", value: "premature"});
-                    if (this.description_hCounter < 1)
-                        infoObject.push({id: control, attribute: "message", value: "Blue means that quantity isn’t one that the problem statement " +
-                                    "asks you to graph. Although this quantity will eventually be in " +
-                                    "your model, you should follow the Target Node Strategy, which says " +
-                                    "you should first define a node for a top level goal quantity."});
-                    else
-                        infoObject.push({id: control, attribute: "message", value: "Please start with a quantity mentioned in the problem statement as one that needs to be graphed."});
-                    this.description_hCounter++;
-                    this.descriptionCounter++;
-                    break;
-                case "fgm": // f: color blue; g: message; m: leave description menu active
-                    infoObject.push({id: control, attrubute: "status", value: "premature"});
-                    if (this.description_gCounter < 1)
-                        infoObject.push({id: control, attribute: "message", value: "Blue means that the quantity is relevant for modeling the system, " +
-                                    "but it is not yet time to define it. You should follow the Target " +
-                                    "Node Strategy, which says you should edit an existing node that is " +
-                                    "not yet defined. Such nodes have dotted outlines. Click on one to edit it."});
-                    else if (this.description_hCounter < 2)
-                        infoObject.push({id: control, attribute: "message", value: "Blue means that according to the Target Node Strategy, it is too early to" +
-                                    "define a node for this quantity. Edit a node that has a dotted outline."});
-                    else
-                        infoObject.push({id: control, attribute: "message", value: "Blue means premature. Edit a node with a dotted outline instead."});
-                    this.description_gCounter++;
-                    this.descriptionCounter++;
-                    break;
-                case "acm": // a: color red; d: message; m: leave description menu active
-                    infoObject.push({id: control, attrubute: "status", value: "incorrect"});
-                    if (this.description_cCounter < 1)
-                        infoObject.push({id: control, attribute: "message", value: "You tried to define a parameter for the initial value of an accumulator" +
-                                    "This is unnecessary, because you can put the initial value for the " +
-                                    "accumulator right into the definition of the accumulator itself."});
-                    else if (this.description_hCounter < 2)
-                        infoObject.push({id: control, attribute: "message", value: "That should be the initial value of an accumulator, not a parameter node."});
-                    else
-                        infoObject.push({id: control, attribute: "message", value: "That should be the initial value of an accumulator."});
-                    this.description_cCounter++;
-                    this.descriptionCounter++;
-                    break;
-                case "am": // a: color red; m: leave description menu active
-                    infoObject.push({id: control, attrubute: "status", value: "incorrect"});
-                    this.model.setStudentNodeSelection(id, "description", answer);
-                    this.descriptionCounter++;
-                    break;
-                case "adm": // a: color red; d: message; m: leave description menu active
-                    infoObject.push({id: control, attrubute: "status", value: "incorrect"});
-                    if (this.description_cCounter < 1)
-                        infoObject.push({id: control, attribute: "message", value: "You tried to define a parameter for a number you read in the problem. " +
-                                    "Not all numbers in the problem statement are necessary for the model. " +
-                                    "You will save effort if you follow the Target Node Strategy, which " +
-                                    "says you should start by defining a node for a quantity that the " +
-                                    "problem asks you to graph, then define nodes for its inputs, and then " +
-                                    "define nodes for their inputs, etc. That way, every node you create is " +
-                                    "an input to some node."});
-                    else if (this.description_hCounter < 2)
-                        infoObject.push({id: control, attribute: "message", value: "Not every number in the problem statement is necessary for the model. " +
-                                    "You should define a node for a quantity only when either (1) it is " +
-                                    "required as input to a previously defined node, or (2) the problem " +
-                                    "statement asks you to graph it."});
-                    else
-                        infoObject.push({id: control, attribute: "message", value: "Please be sure you need a node before defining it. Even if a number " +
-                                    "appears in the problem statement, it may not be needed in the model."});
-                    this.description_dCounter++;
-                    this.descriptionCounter++;
-                    break;
-                case "abm": //a: color red; b: message; m: leave description menu active
-                    infoObject.push({id: control, attrubute: "status", value: "incorrect"});
-                    if (this.description_cCounter < 1)
-                        infoObject.push({id: control, attribute: "message", value: "The quantity is irrelevant to this problem. Choose a different one."});
-                    else if (this.description_hCounter < 2)
-                        infoObject.push({id: control, attribute: "message", value: "This quantity is irrelevant for modeling the system. Try again."});
-                    else
-                        infoObject.push({id: control, attribute: "message", value: "Irrelevant. Try again."});
-                    this.description_bCounter++;
-                    this.descriptionCounter++;
-                    break;
-                case "aem": //a: color red; e: message; m: leave description menu active
-                    infoObject.push({id: control, attrubute: "status", value: "incorrect"});
-                    infoObject.push({id: control, attribute: "message", value: "A node already exists for that quantity. If you want to edit it, click on it."});
-                    this.descriptionCounter++;
-                    break;
-                case "klno": //k: color yellow and give optimal solution; l: message; n: disable description menu; o: activate "Type"
-                    infoObject.push({id: control, attrubute: "status", value: "demo"});
-                    id = this.model.getOptimalNode();
-                    infoObject.ID = id;
-                    this.model.addStudentNodeWithName(this.model.getName(id));
-                    this.model.setToDemo(id, "description");
-                    if (this.description_lCounter < 1)
-                        infoObject.push({id: control, attribute: "message", value: "Sorry, but that quantity isn’t relevant to the model. Moreover, " +
-                                    "this is the third failure, so a correct selection is being made for " +
-                                    "you. Please study it and figure out why it is correct. Your goal " +
-                                    "should be to make a correct selection on the first attempt."});
-                    else if (this.description_lCounter < 2)
-                        infoObject.push({id: control, attribute: "message", value: "Here’s a correct solution. Please figure out why it is correct " +
-                                    "so that next time, your first selection will be correct."});
-                    else
-                        infoObject.push({id: control, attribute: "message", value: "Please study this correct selection."});
-                    this.description_lCounter++;
-                    this.model.incrementDescriptionAttemptCount(id);
-                    this.descriptionCounter = 0;
-                    break;
-                case "kno":  //k: color yellow and give optimal solution; n: disable description menu; o: activate "Type"
-                    infoObject.push({id: control, attrubute: "status", value: "demo"});
-                    id = this.model.getOptimalNode();
-                    infoObject.ID = id;
-                    this.model.addStudentNodeWithName(this.model.getName(id));
-                    this.model.setToDemo(id, "description");
-                    this.model.incrementDescriptionAttemptCount(id);
-                    this.descriptionCounter = 0;
-                    break;
-            }
-            return this._getReturnObject(id, infoObject, control);
-        },
-        typeAction: function(/*string*/ id, /*string*/ answer) {
-            //Summary: accepts an answer that the student provides, checks its validity,
-            //         and returns a list of directives; id is the student node ID.
-
-            //The array that that will be returned
-            var infoObject = Array();
-            var control = "type"; 
-
-            //creates pedagogicalTable, a double array of sorts that helps assign the
-            //      appropriate actions to be taken; the actions are assigned to sequence
-            var correct = {COACHED: "bfgk", feedback: "behk", TEST: "ceh", power: "ceh"};
-            var firstFailure = {COACHED: "aje", feedback: "aje", TEST: "ceh", power: "ceh"};
-            var secondFailure = {COACHED: "difg", feedback: "difg", TEST: "ceh", power: "ceh"};
-            var additionalFailure = {COACHED: null, feedback: null, TEST: "ceh", power: "ceh"};
-
-            var pedagogicalTable = {correct: correct, firstFailure: firstFailure, secondFailure: secondFailure,
-                additionalFailure: additionalFailure};
-
-            var sequence;
-            var correctType = this.model.getType(id);
-
-            if (correctType === "function")
-                correctType = this._getType(this.model.given.getEquation(id));
-
-            //allowed anwers include parameter, accumulator, sum, product, and power user
-            //      but the model only accepts parameter, accumulator, and function; these
-            //      7 lines convert the type allow comparisons and to write to the model
-            if (answer === "sum" || answer === "product" || answer === "hidden function") {
-                if (answer === correctType)
-                    this.model.setStudentNodeSelection(id, "type", "function");
-                else
-                    this.model.setStudentNodeSelection(id, "type", "null");
-            }
-            else
-                this.model.setStudentNodeSelection(id, "type", answer);
-
-            //assign the action based on the answer
-            if (answer === correctType) {
-                sequence = pedagogicalTable["correct"][this.userType];
-            } else if (this.model.getNodeAttemptCount(id, "type") < 2) {
-                sequence = pedagogicalTable["firstFailure"][this.userType];
-            } else if (this.model.getNodeAttemptCount(id, "type") < 3) {
-                sequence = pedagogicalTable["secondFailure"][this.userType];
-            } else
-                sequence = pedagogicalTable["additionalFailure"][this.userType];
-
-            //take the appropriate action
-            switch (sequence) {
-                case "bfgk": // b: color green; f: freeze type widget; g: enable next widget based on selection; k: message
-                    infoObject.push({id: control, attrubute: "status", value: "correct"});
-                    this.typeOn = false;
-                    if (correctType === "accumulator" || correctType === "parameter")
-                        this.initialOn = true;
-                    else
-                        this.unitsOn = true;
-                    infoObject.push({id: control, attribute: "message", value: "Green means correct. Well Done!"});
-                    break;
-                case "behk": // b: color green; e: leave type widget open; g: enable next widget based on selection; k: message
-                    infoObject.push({id: control, attrubute: "status", value: "correct"});
-                    if (correctType === "accumulator" || correctType === "parameter") {
-                        this.initialOn = true;
-                        this.unitsOn = false;
-                    } else {
-                        this.initialOn = false;
-                        this.unitsOn = true;
-                    }
-                    infoObject.push({id: control, attribute: "message", value: "Green means correct. Well Done!"});
-                    break;
-                case "ceh": // c: leave selection white; e: leave type widge open; h: enable next widget based on selection
-                    infoObject.status = null;
-                    if (correctType === "accumulator" || correctType === "parameter") {
-                        this.initialOn = true;
-                        this.unitsOn = false;
-                    } else {
-                        this.initialOn = false;
-                        this.unitsOn = true;
-                    }
-                    break;
-                case "aje": // a: color red; j: hint; e: leave type widget open
-                    infoObject.push({id: control, attrubute: "status", value: "incorrect"});
-                    //the following hints may be changed if the author is allowed to set his/her own hints
-                    if (this.model.getType(id) === "function")
-                        //currently the only action that will be taken within this "if" statement is the final "else" clause
-                        if (answer === "sum")
-                            infoObject.push({id: control, attribute: "message", value: "That is incorrect. Remember, with \"" +
-                                        this.model.getName(id) + "\" you will need " +
-                                        "to multiply other nodes to determine its solution."});
-                        else if (answer === "product")
-                            infoObject.push({id: control, attribute: "message", value: "That is incorrect. Remember, with \"" +
-                                        this.model.getName(id) + "\" you will need " +
-                                        "to add other nodes to determine its solution."});
-                        else
-                            infoObject.push({id: control, attribute: "message", value: "That is incorrect. Remember, with \"" +
-                                        this.model.getName(id) + "\" you will need " +
-                                        "use other nodes to determine its solution."});
-                    else if (correctType === "parameter")
-                        infoObject.push({id: control, attribute: "message", value: "That is incorrect. Remember, \"" +
-                                    this.model.getName(id) + "\" has a fixed value."});
-                    else
-                        infoObject.push({id: control, attribute: "message", value: "That is incorrect. Remember, \"" +
-                                    this.model.getName(id) + "\" starts with one " +
-                                    "value, which then changes over time based on its other inputs."});
-                    break;
-                case "difg": // d: color yellow; i: message; f: freeze type widget; g: enable next widget based on selection
-                    this.model.setToDemo(id, "type");
-                    infoObject.push({id: control, attrubute: "status", value: "demo"});
-                    if (this.type_iCounter < 1) {
-                        infoObject.push({id: control, attribute: "message", value: "Yellow means that you made an incorrect " +
-                                    "choice too many times, so you are being shown the correct " +
-                                    "choice. You should figure out why it is correct so that " +
-                                    "next time your first choice will be correct."});
-                        this.type_iCounter++;
-                    } else
-                        infoObject.push({id: control, attribute: "message", value: "Can you figure out why this is the right type for the node?"});
-                    this.typeOn = false;
-                    if (correctType === "accumulator")
-                        this.initialOn = true;
-                    else
-                        this.unitsOn = true;
-                    break;
-            }
-            return this._getReturnObject(id, infoObject, control);
-        },
-        initialAction: function(/*string*/ id, /*string*/ answer) {
-            //Summary: accepts an answer that the student provides, checks its validity,
-            //         and returns a list of directives; id is the student node ID.
-
-            //The array that that will be returned
-            var infoObject = Array();
-            var control = "initial";  // Should match control id in index.html
-
-            //creates pedagogicalTable, a double array of sorts that helps assign the
-            //      appropriate actions to be taken; the actions are assigned to sequence
-            var correct = {COACHED: "beg", feedback: "bfh", TEST: "bfh", power: "bfh"};
-            var firstFailure = {COACHED: "aif", feedback: "aif", TEST: "c", power: "c"};
-            var secondFailure = {COACHED: "degj", feedback: "djeh", TEST: "c", power: "c"};
-            var additionalFailure = {COACHED: null, feedback: null, TEST: "c", power: "c"};
-
-            var pedagogicalTable = {correct: correct, firstFailure: firstFailure, secondFailure: secondFailure,
-                additionalFailure: additionalFailure};
-
-            var sequence;
-            var correctInitial = this.model.given.getInitial(id);
-
-            this.model.setStudentNodeSelection(id, "initial", answer);
-
-            //if the initial entry is blank, the user may put anything in it and continue, if it
-            //      is not blank then the user must enter the correct initial value; this is for
-            //      a possible future feature; if an initial entry is not needed (i.e. the type
-            //      is a parameter or a function) then initial is skipped altogether
-            if (correctInitial === null) {
-                infoObject.push({id: control, attrubute: "status", value: "correct"});
-                if (this.model.getNodeUnits !== null)
-                    this.unitsOn = true;
-                else
-                    this.inputsOn = true;
-            } else {
-                //assign the action based on the answer
-                if (answer === correctInitial) {
-                    sequence = pedagogicalTable["correct"][this.userType];
-                } else if (this.model.getNodeAttemptCount(id, "initial") < 2) {
-                    sequence = pedagogicalTable["firstFailure"][this.userType];
-                } else if (this.model.getNodeAttemptCount(id, "initial") < 3) {
-                    sequence = pedagogicalTable["secondFailure"][this.userType];
-                } else
-                    sequence = pedagogicalTable["additionalFailure"][this.userType];
-
-                //take the appropriate action
-                switch (sequence) {
-                    case "beg": // b: color green; f: freeze widget; g: enable next widget
-                        infoObject.push({id: control, attrubute: "status", value: "correct"});
-                        this.initialOn = false;
-                        if (this.model.getNodeUnits(id) !== null)
-                            this.unitsOn = true;
-                        else
-                            this.inputsOn = true;
-                        break;
-                    case "bfh": // b: color green; f: leave widget active; g: enable next widget
-                        infoObject.push({id: control, attrubute: "status", value: "correct"});
-                        if (this.model.getNodeUnits(id) !== null)
-                            this.unitsOn = true;
-                        else
-                            this.inputsOn = true;
-                        break;
-                    case "aif": // a: color red; i: hint; g: leave widget active
-                        infoObject.push({id: control, attrubute: "status", value: "incorrect"});
-                        //hint
-                        break;
-                    case "c": // c: leave the widget white
-                        break;
-                    case "degj": // d: mark yellow and give answer; e: freeze widget; enable next widget; j: message
-                        infoObject.push({id: control, attrubute: "status", value: "demo"});
-                        this.model.setToDemo(id, "initial");
-                        if (this.initial_jCounter < 1)
-                            infoObject.push({id: control, attribute: "message", value: "Yellow means that you made an incorrect " +
-                                        "choice too many times, so you are being shown the correct " +
-                                        "choice.  You should figure out why it is correct so that " +
-                                        "next time your first choice will be correct."});
-                        else
-                            infoObject.push({id: control, attribute: "message", value: "Can you figure out why this is the right initial value for the quantity?"});
-                        this.initial_jCounter++;
-                        this.initialOn = false;
-                        if (this.model.getNodeUnits !== null)
-                            this.unitsOn = true;
-                        else
-                            this.inputsOn = true;
-                        break;
-                    case "djeh": // d: mark yellow and give answer; j: message; e: freeze widget; h: enable all widgets for the nodes type;
-                        infoObject.push({id: control, attrubute: "status", value: "demo"});
-                        this.model.setToDemo(id, "initial");
-                        if (this.initial_jCounter < 1)
-                            infoObject.push({id: control, attribute: "message", value: "Yellow means that you made an incorrect " +
-                                        "choice too many times, so you are being shown the correct " +
-                                        "choice.  You should figure out why it is correct so that " +
-                                        "next time your first choice will be correct."});
-                        else
-                            infoObject.push({id: control, attribute: "message", value: "Can you figure out why this is the right initial value for the quantity?"});
-                        this.initial_jCounter++;
-                        this.initialOn = false;
-                        if (this.model.getNodeUnits !== null)
-                            this.unitsOn = true;
-                        else
-                            this.inputsOn = true;
-                        break;
-                }
-            }
-            return this._getReturnObject(id, infoObject, control);
-        },
-        unitsAction: function(/*string*/ id, /*string*/ answer) {
-            //Summary: accepts an answer that the student provides, checks its validity,
-            //         and returns a list of directives; 
-	    //         unitsAction() is similar to initialAction();
-	    //         id is the student node ID.
-
-            //The array that that will be returned
-            var infoObject = Array();
-            var control = "units";  // Should match control id in index.html
-
-            //creates pedagogicalTable, a double array of sorts that helps assign the
-            //      appropriate actions to be taken; the actions are assigned to sequence
-            var correct = {COACHED: "beg", feedback: "bfh", TEST: "bfh", power: "bfh"};
-            var firstFailure = {COACHED: "aif", feedback: "aif", TEST: "c", power: "c"};
-            var secondFailure = {COACHED: "degj", feedback: "djeh", TEST: "c", power: "c"};
-            var additionalFailure = {COACHED: null, feedback: null, TEST: "c", power: "c"};
-
-            var pedagogicalTable = {correct: correct, firstFailure: firstFailure, secondFailure: secondFailure,
-                additionalFailure: additionalFailure};
-
-            var sequence;
-            var correctUnits = this.model.getNodeUnits(id);
-
-            this.model.setStudentNodeSelection(id, "units", answer);
-
-            //assign the action based on the answer
-            if (answer === correctUnits) {
-                sequence = pedagogicalTable["correct"][this.userType];
-            } else if (this.model.getNodeAttemptCount(id, "units") < 2) {
-                sequence = pedagogicalTable["firstFailure"][this.userType];
-            } else if (this.model.getNodeAttemptCount(id, "units") < 3) {
-                sequence = pedagogicalTable["secondFailure"][this.userType];
-            } else
-                sequence = pedagogicalTable["additionalFailure"][this.userType];
-
-            //take the appropriate action
-            switch (sequence) {
-                case "beg": // b: color green; f: freeze widget; g: enable next widget
-                    infoObject.push({id: control, attrubute: "status", value: "correct"});
-                    this.unitsOn = false;
-                    this.inputsOn = true;
-                    break;
-                case "bfh": // b: color green; f: leave widget active; g: enable next widget
-                    infoObject.push({id: control, attrubute: "status", value: "correct"});
-                    if (correctUnits !== null)
-                        this.unitsOn = true;
-                    else
-                        this.inputsOn = true;
-                    break;
-                case "aif": // a: color red; i: hint; g: leave widget active
-                    infoObject.push({id: control, attrubute: "status", value: "incorrect"});
-                    infoObject.push({id: control, attribute: "message", value: "The units variable should relate to the quantity being measured. Think about the node \"" +
-                                this.model.getName(id) + "\". What unit would pertain to this node?"});
-                    break;
-                case "c": // c: leave the widget white
-                    break;
-                case "degj": // d: mark yellow and give answer; e: freeze widget; enable next widget; j: message
-                    infoObject.push({id: control, attrubute: "status", value: "demo"});
-                    this.model.setToDemo(id, "units");
-                    if (this.units_jCounter < 1)
-                        infoObject.push({id: control, attribute: "message", value: "Yellow means that you made an incorrect " +
-                                    "choice too many times, so you are being shown the correct " +
-                                    "choice.  You should figure out why it is correct so that " +
-                                    "next time your first choice will be correct."});
-                    else
-                        infoObject.push({id: control, attribute: "message", value: "Can you figure out why this is the right units value for the quantity?"});
-                    this.units_jCounter++;
-                    this.unitsOn = false;
-                    this.inputsOn = true;
-                    break;
-                case "djeh": // d: mark yellow and give answer; j: message; e: freeze widget; h: enable all widgets for the nodes type;
-                    infoObject.push({id: control, attrubute: "status", value: "demo"});
-                    this.model.setToDemo(id, "units");
-                    if (this.units_jCounter < 1)
-                        infoObject.push({id: control, attribute: "message", value: "Yellow means that you made an incorrect " +
-                                    "choice too many times, so you are being shown the correct " +
-                                    "choice.  You should figure out why it is correct so that " +
-                                    "next time your first choice will be correct."});
-                    else
-                        infoObject.push({id: control, attribute: "message", value: "Can you figure out why this is the right units value for the quantity?"});
-                    this.units_jCounter++;
-                    this.unitsOn = false;
-                    this.inputsOn = true;
-                    break;
-            }
-            return this._getReturnObject(id, infoObject, control);
-        },
-        inputsAction: function(/*string*/ id, /*string*/ answer) {
-            //Summary: accepts a description that the student provides, checks its 
-	    //         validity and returns a list of directives; id is the
-	    //         student node ID.
-
-            //The array that that will be returned
-            var infoObject = Array();
-            var control = "inputs";  // Should match control id in index.html
-
-            if (this.lastNodeOpened !== id) {
-                this.lastNodeOpened = id;
-                this.inputsCounter = 0;
-            }
-
-            var inputID = this.model.getNodeIDByDescription(answer);
-
-            //creates pedagogicalTable, a double array of sorts that helps assign the
-            //      appropriate actions to be taken; the actions are assigned to sequence
-            var optimal = {COACHED: "ijno", feedback: "ijno", TEST: "qo", power: "qo"};
-            var premature = {COACHED: "fgm", feedback: "io", TEST: "qo", power: "qo"};
-            var initialValue = {COACHED: "acm", feedback: "acm", TEST: "qo", power: "qo"};
-            var extraValue = {COACHED: "adm", feedback: "abm", TEST: "qo", power: "qo"};
-            var irrelevant = {COACHED: "ahm", feedback: "ahm", TEST: "qo", power: "qo"};
-            var redundant = {COACHED: "aem", feedback: "aem", TEST: "am", power: "am"};
-            var lastFailure = {COACHED: "klno", feedback: "klno", TEST: "qo", power: "qo"};
-
-            var pedagogicalTable = {optimal: optimal, premature: premature,
-                initialValue: initialValue, extraValue: extraValue, irrelevant: irrelevant,
-                redundant: redundant, lastFailure: lastFailure};
-
-            var sequence;
-
-            //assign the action based on the answer
-            if (inputID === null) {
-                for (var i = 0; i < this.model.getExtraDescriptions.length; i++) {
-                    if (answer === this.model.getExtraDescriptions("initial")[i])
-                        sequence = pedagogicalTable["initialValue"][this.userType];
-                    else if (answer === this.model.getExtraDescriptions("extra")[i])
-                        sequence = pedagogicalTable["extraValue"][this.userType];
-                    else
-                        sequence = pedagogicalTable["irrelevant"][this.userType];
-                }
-            } else if (this.model.isNodeInput(id, inputID)) {
-                sequence = pedagogicalTable["redundant"][this.userType];
-            } else if (this.model.isNodeInput(id, inputID)) {
-                sequence = pedagogicalTable["optimal"][this.userType];
-            } else
-                sequence = pedagogicalTable["premature"][this.userType];
-            if (sequence !== pedagogicalTable["optimal"][this.userType] && this.inputsCounter === 2) {
-                sequence = pedagogicalTable["lastFailure"][this.userType];
-            }
-
-            //take the appropriate action
-            switch (sequence) {
-                case "ijno": // i: color green; j: message; n: freeze inputs (implemented after all 
-                    // inputs are visible--needs discussion due to extra inputs); o: enable "+ input" and "- input" buttons
-                    infoObject.push({id: control, attrubute: "status", value: "correct"});
-                    this.model.addStudentNodeWithName(this.model.getName(inputID));
-                    this.model.setStudentNodeSelection(inputID, "description", answer);
-                    this.model.incrementescriptionAttemptCount(inputID);
-                    if (this.inputs_jCounter < 1)
-                        infoObject.push({id: control, attribute: "message", value: "Green means correct. Good job!"});
-                    else
-                        infoObject.push({id: control, attribute: "message", value: "Green means correct."});
-                    this.inputs_jCounter++;
-                    if (this.model.areNodeInputsVisible(id))
-                        this.inputsOn = false;
-                    this.addAsPlusButton = true;
-                    this.addAsMinusButton = true;
-                    this.inputsCounter = 0;
-                    break;
-                case "qo": // q: leave input menu white; o: enable "+ input" and "- input" buttons
-                    this.addAsPlusButton = true;
-                    this.addAsMinusButton = true;
-                    break;
-                case "io": // i: color green; n: disable input menu; o: enable "+ input" and "- input" buttons
-                    infoObject.push({id: control, attrubute: "status", value: "correct"});
-                    this.model.addStudentNodeWithName(this.model.getName(inputID));
-                    this.model.setStudentNodeSelection(inputID, "description", answer);
-                    this.model.incrementescriptionAttemptCount(inputID);
-                    this.inputs_jCounter++;
-                    if (this.model.areNodeInputsVisible(id))
-                        this.inputsOn = false;
-                    this.addAsPlusButton = true;
-                    this.addAsMinusButton = true;
-                    this.inputsCounter = 0;
-                    break;
-                case "fgm": // f: color blue; g: message; m: leave input menu active
-                    infoObject.push({id: control, attrubute: "status", value: "premature"});
-                    if (this.inputs_gCounter < 1)
-                        infoObject.push({id: control, attribute: "message", value: "Blue means that the quantity is relevant for modeling the system, " +
-                                    "but it is not yet time to define it. You should follow the Target " +
-                                    "Node Strategy, which says you should edit an existing node that is " +
-                                    "not yet defined. Such nodes have dotted outlines. Click on one to edit it."});
-                    else if (this.inputs_hCounter < 2)
-                        infoObject.push({id: control, attribute: "message", value: "Blue means that according to the Target Node Strategy, it is too early to" +
-                                    "define a node for this quantity. Edit a node that has a dotted outline."});
-                    else
-                        infoObject.push({id: control, attribute: "message", value: "Blue means premature. Edit a node with a dotted outline instead."});
-                    this.inputs_gCounter++;
-                    this.inputsCounter++;
-                    break;
-                case "acm": // a: color red; d: message; m: leave description menu active
-                    infoObject.push({id: control, attrubute: "status", value: "incorrect"});
-                    if (this.inputs_cCounter < 1)
-                        infoObject.push({id: control, attribute: "message", value: "You tried to define a parameter for the initial value of an accumulator" +
-                                    "This is unnecessary, because you can put the initial value for the " +
-                                    "accumulator right into the definition of the accumulator itself."});
-                    else if (this.inputs_hCounter < 2)
-                        infoObject.push({id: control, attribute: "message", value: "That should be the initial value of an accumulator, not a parameter node."});
-                    else
-                        infoObject.push({id: control, attribute: "message", value: "That should be the initial value of an accumulator."});
-                    this.inputs_cCounter++;
-                    this.inputsCounter++;
-                    break;
-                case "adm": // a: color red; d: message; m: leave description menu active
-                    infoObject.push({id: control, attrubute: "status", value: "incorrect"});
-                    if (this.inputs_cCounter < 1)
-                        infoObject.push({id: control, attribute: "message", value: "You tried to define a parameter for a number you read in the problem. " +
-                                    "Not all numbers in the problem statement are necessary for the model. " +
-                                    "You will save effort if you follow the Target Node Strategy, which " +
-                                    "says you should start by defining a node for a quantity that the " +
-                                    "problem asks you to graph, then define nodes for its inputs, and then " +
-                                    "define nodes for their inputs, etc. That way, every node you create is " +
-                                    "an input to some node."});
-                    else if (this.inputs_hCounter < 2)
-                        infoObject.push({id: control, attribute: "message", value: "Not every number in the problem statement is necessary for the model. " +
-                                    "You should define a node for a quantity only when either (1) it is " +
-                                    "required as input to a previously defined node, or (2) the problem " +
-                                    "statement asks you to graph it."});
-                    else
-                        infoObject.push({id: control, attribute: "message", value: "Please be sure you need a node before defining it. Even if a number " +
-                                    "appears in the problem statement, it may not be needed in the model."});
-                    this.inputs_dCounter++;
-                    this.inputsCounter++;
-                    break;
-                case "abm": //a: color red; b: message; m: leave description menu active
-                    infoObject.push({id: control, attrubute: "status", value: "incorrect"});
-                    if (this.inputs_cCounter < 1)
-                        infoObject.push({id: control, attribute: "message", value: "The quantity is irrelevant to this problem. Choose a different one."});
-                    else if (this.inputs_hCounter < 2)
-                        infoObject.push({id: control, attribute: "message", value: "This quantity is irrelevant for modeling the system. Try again."});
-                    else
-                        infoObject.push({id: control, attribute: "message", value: "Irrelevant. Try again."});
-                    this.inputs_bCounter++;
-                    this.inputsCounter++;
-                    break;
-
-
-                    // ************ ahm's message is not correct--need to fix; otherwise implementation appears to be working ************
-
-
-                case "ahm": // f: color blue; h message; m: leave description menu active
-                    infoObject.push({id: control, attrubute: "status", value: "incorrect"});
-                    if (this.inputs_hCounter < 1)
-                        infoObject.push({id: control, attribute: "message", value: "Blue means that quantity isn’t one that the problem statement " +
-                                    "asks you to graph. Although this quantity will eventually be in " +
-                                    "your model, you should follow the Target Node Strategy, which says " +
-                                    "you should first define a node for a top level goal quantity."});
-                    else
-                        infoObject.push({id: control, attribute: "message", value: "Please start with a quantity mentioned in the problem statement as one that needs to be graphed."});
-                    this.inputs_hCounter++;
-                    this.inputsCounter++;
-                    break;
-                case "aem": //a: color red; e: message; m: leave description menu active
-                    infoObject.push({id: control, attrubute: "status", value: "incorrect"});
-                    infoObject.push({id: control, attribute: "message", value: "A node already exists for that quantity. If you want to edit it, click on it."});
-                    this.inputsCounter++;
-                    break;
-                case "klno": //k: color yellow and give optimal solution; l: message; n: disable description menu; o: activate "Type"
-                    infoObject.push({id: control, attrubute: "status", value: "demo"});
-                    inputID = this.model.getNextOptimalInput(id);
-                    this.model.addStudentNodeWithName(this.model.getName(inputID));
-                    this.model.setToDemo(inputID, "description");
-                    if (this.inputs_lCounter < 1)
-                        infoObject.push({id: control, attribute: "message", value: "Sorry, but that quantity isn’t relevant to the model. Moreover, " +
-                                    "this is the third failure, so a correct selection is being made for " +
-                                    "you. Please study it and figure out why it is correct. Your goal " +
-                                    "should be to make a correct selection on the first attempt."});
-                    else if (this.inputs_lCounter < 2)
-                        infoObject.push({id: control, attribute: "message", value: "Here’s a correct solution. Please figure out why it is correct " +
-                                    "so that next time, your first selection will be correct."});
-                    else
-                        infoObject.push({id: control, attribute: "message", value: "Please study this correct selection."});
-                    this.inputs_lCounter++;
-                    this.model.incrementDescriptionAttemptCount(inputID);
-                    this.inputsCounter = 0;
-                    if (this.model.areNodeInputsVisible(id))
-                        this.inputsOn = false;
-                    break;
-            }
-            return this._getReturnObject(id, infoObject, control);
-        },
-        /*
-	 equationCheck() is a basic implementation; it needs additional code to 
-         display different messages based on the type of user
-	 */
-        equationAction: function(/*string*/ id, /*string*/ equation) {
-            //Summary: accepts an equation that the student provides, checks its validity,
-            //         and returns a list of directives; id is the student node ID.
-	    //         The equation is in the form of the string seen in the
-	    //         equation box.
-
-            //The array that that will be returned
-            var infoObject = Array();
-            var control = "equation";  // Should match control id in index.html
-
-            this.model.setStudentNodeSelection(id, "equation", equation);
-            var equivCheck = new check(this.model.given.getEquation(id), equation);
-
-            if (equivCheck.areEquivalent()) {
-                infoObject.push({id: control, attribute: "message", value: "Green means correct."});
-                infoObject.push({id: control, attrubute: "status", value: "correct"});
-            } else if (this.model.getNodeAttemptCount(id, "equation") == 3) {
-                infoObject.push({id: control, attribute: "message", value: "That is not correct. Because this is the third time you have " +
-                            "attempted the problem, the correct description is being provided for you."});
-                infoObject.push({id: control, attrubute: "status", value: "demo"});
-                this.model.setToDemo(id, "equation");
-            } else {
-                infoObject.push({id: control, attribute: "message", value: "That is not correct."});
-                infoObject.push({id: control, attrubute: "status", value: "incorrect"});
-            }
-            return this._getReturnObject(id, infoObject, control);
+        newAction: function() {
+            // Summary:  Settings for the node editor for a new node
+            //          It assumes everything has been enabled and has no colors
+            // Policy: disable all but the description on new node
+            // BvdS: might want to also activate type in TEST mode
+            /*
+             For now, do not enable/disable inputs.  
+             See Trello card https://trello.com/c/mpd2Ivjd
+             */
+            var controls = ["type", "initial", "units", "equation"];
+            var directives = array.map(controls, function(control) {
+                return {id: control, attribute: "disabled", value: true};
+            });
+            // Only allow nodes of type 'function' for power users and tests.
+            //if(this.userType !== 'power' || this.mode == 'TEST')
+            //      directives.push({id: 'type', attribute: 'disableOption', value: 'function'});
+            // Temp disable of sum and product, after handling change we will disable function
+            directives.push({id: 'type', attribute: 'disableOption', value: 'sum'});
+            directives.push({id: 'type', attribute: 'disableOption', value: 'product'});
+            return directives;
         }
     });
 });
