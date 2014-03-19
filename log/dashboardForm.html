@@ -22,17 +22,26 @@
 			<option value="TEST">TEST</option>
 			<option value="AUTHOR">AUTHOR</option>
 		</select><br/>
-		<label>Date</label>&nbsp;(in YYYY-MM-DD format)&nbsp;:&nbsp;<input type = "text" name = "date"/><br/>
+		<label>Date</label>&nbsp;(in YYYY-MM-DD format)&nbsp;:&nbsp;<input type = "datetime" name = "fromDate"/>&nbsp;<label>to&nbsp;-</label>&nbsp;<input type = "datetime" name = "toDate"/> <br/>
 		<label>Time (HH:MM format, 24 hour clock)- From</label>&nbsp;:&nbsp;<input type="text" name = "fromTime"/>&nbsp;<label>to</label>&nbsp;<input type="text" name="toTime"/><br/>
 
 		<label>Student</label>&nbsp;:&nbsp;<input type = "text" name = "user"/><br/>
 
 		<p>Type of analysis :</p>
 		<input type = "radio" name="dashboard" value="small" checked>In class</input>&nbsp;
-		<input type = "radio" name="dashboard" value="complete">Complete</input>
+		<input type = "radio" name="dashboard" value="complete">Complete or Time on Task Analysis</input>
 		<br/>
 
 		<input type="submit" value="Dashboard"/> 
 	</form>
+
+	<div>
+		<h4>To help you:</h4>
+		<ul>
+			<li>If you want analysis for the class then just fill the from value only.</li>
+			<li>The total time spent on a problem is a lot better in Complete Dashboard. I have thoroughly checked those values in many scenarios. So for the total time spent it would be better to look at those values.</li>
+		</ul>
+
+	</div>
 </body>
 </html>
