@@ -131,6 +131,8 @@ define([
 		var existing = this.get('content');
 		// console.log("+++++++ appending message '" + message + "' to ", this, existing);
 		this.set('content', existing + '<p>' + message + '</p>');
+		// Scroll to bottom
+		this.domNode.scrollTop = this.domNode.scrollHeight;
 	    };
 	    
 	    /*
