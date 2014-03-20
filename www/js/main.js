@@ -41,8 +41,10 @@ define([
     logging.setSession(session);  // Give logger message destination
     session.loadProblem(query).then(function(solutionGraph){
 
-	var givenModel = new model(query.m);
-	givenModel.loadModel(solutionGraph);
+	var givenModel = new model(query.m, query.p);
+	if(solutionGraph){
+	    givenModel.loadModel(solutionGraph);
+	}
 
 	/*
 	 start up controller

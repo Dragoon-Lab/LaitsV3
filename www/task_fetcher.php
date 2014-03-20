@@ -13,15 +13,18 @@ require "error-handler.php";
 //connect to database
 require "db-login.php";
 $mysqli = mysqli_connect("localhost", $dbuser, $dbpass, $dbname)
-  or trigger_error('Could not connect to database.',E_USER_ERROR);
+  or trigger_error('Could not connect to database.', E_USER_ERROR);
 
 // Must always provide problem name
 $problem =  mysqli_real_escape_string($mysqli,$_GET['p'])
-  or trigger_error('Problem name not supplied.',E_USER_ERROR);
+  or trigger_error('Problem name not supplied.', E_USER_ERROR);
 // Author is optional
-$author = isset($_GET['a'])?mysqli_real_escape_string($mysqli,$_GET['']):null;
+$author = isset($_GET['a'])?mysqli_real_escape_string($mysqli,$_GET['a']):null;
 
 /* 
+   Not providing the author is equivalent to saying that this is 
+   a published problem.
+
    If student, section, and mode have been provided, see if there has been 
    previous work by the student (same mode) and return solution graph.
 
@@ -62,14 +65,15 @@ EOT;
 
 if(isset($_GET['a']) && isset($_GET['s'])){
   /*
-    If author an section are supplied, then look for 
+    If author and section are supplied, then look for 
     custom problem stored in database.
   */
 
   $section = mysqli_real_escape_string($mysqli,$_GET['s']);
 
   $query = <<<EOT
-    SELECT t1.solution_graph FROM solutions AS t1, session AS t2 USING session_id 
+    SELECT t1.solution_graph FROM solutions AS t1 JOIN session AS t2 
+          USING (session_id) 
       WHERE t2.section = '$section' AND t2.mode = 'AUTHOR' 
           AND t2.problem = '$problem' AND t2.author = '$author' ORDER BY t1.time DESC LIMIT 1
 EOT;
@@ -80,7 +84,8 @@ EOT;
     header("Content-type: application/json");
     print $row[0];
   } else {
-    	http_response_code(500);
+        // No previous work found:  assume that this is a new problem	 
+    	http_response_code(204);
   }
 
 } else {

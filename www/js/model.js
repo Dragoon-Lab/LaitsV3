@@ -23,7 +23,7 @@ define([
     return function() {
 
         var obj = {
-            constructor: function(/*string*/ mode, /*string*/ name, /*object*/ properties) {
+            constructor: function(/*string*/ mode, /*string*/ name) {
                 // Summary: Initializes the object (the Dragoon problem)
                 // Note: beginX and beginY specify coordinates where nodes can begin appearing
                 //      when the student adds them; nodeWidth and nodeHeighth can be manually
@@ -32,10 +32,15 @@ define([
 
                 this.x = this.beginX;
                 this.y = this.beginY;
-                this.taskName = name;
-                this.properties = properties || {};
                 this.checkedNodes = new Array();
-                this.model = this._buildModel();
+                this.model =  {task: {
+                    taskName: name,
+		    time: {start: 0, end: 10, step: 0.5},
+                    properties: {}, 
+                    givenModelNodes: [],
+                    extraDescriptions: [],
+                    studentModelNodes: []
+                }};
 
                 /*
                  Define the "active model" (see doucumentation/javascript.md).
@@ -51,26 +56,11 @@ define([
             nodeWidth: 200,
             nodeHeight: 200,
             lastNodeVisible: null,
-            taskDescription: null,
             /**
              * 
              * Private methods; these methods should not be accessed outside of this class
              *  
              */
-            _buildModel: function() {
-                // Summary: builds a model object after defining its attributes;
-                //      not used when loading a model; only used by the constructor
-                // Tags: private
-                var newModel = {task: {
-                        taskName: this.taskName,
-                        properties: this.properties,
-                        taskDescription: this.taskDescription,
-                        givenModelNodes: [],
-                        extraDescriptions: [],
-                        studentModelNodes: []
-                    }};
-                return newModel;
-            },
             _updateNextXYPosition: function() {
                 // Summary: keeps track of where to place the next node; function detects collisions
                 //      with other nodes; is called in addStudentNode() before creating the node
