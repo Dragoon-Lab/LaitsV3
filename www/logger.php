@@ -9,6 +9,16 @@
 // Using trigger_error() so logging level and destination can be modified.
 require "error-handler.php";
 
+// Old versions of PHP do not have JSON routines built-in.
+if(!function_exists('json_decode')) {
+    include 'JSON.php';
+    $json = new Services_JSON();
+    function json_decode($x){
+        global $json;
+        return $json->decode($x);
+    } 
+}
+
 if (!function_exists('json_last_error_msg')) {
     function json_last_error_msg() {
         static $errors = array(
