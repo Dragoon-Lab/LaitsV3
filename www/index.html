@@ -137,64 +137,58 @@
 
 		
 			<!-- Putting Node-Editor -Dialog stuff for demo -->
-	<div style=" width: 55%;" class="claro"  data-dojo-type="dijit/Dialog" id="nodeeditor">
-   <div style="width:98%; margin:1%; float:left;"> <label style="width:9%; margin-right:1%;  float:left;">
-   Description</label>
-   <select id="selectDescription" data-dojo-type="dijit/form/Select" intermediateChanges="false" trim="false" uppercase="false" lowercase="false" propercase="false" invalidMessage="$_unset_$" pageSize="Infinity" searchDelay="200" style="margin-right:1%; width:88%; float:left;">
-       <option value='defaultSelect'>--Select--</option>
-   </select></div>
-<div style="width:98%; float:left; margin:1%; margin-bottom:2%;"> 
-<label style="width:9%; margin-right:1%; float:left;">
-   Type</label>
-   <select id="typeId" data-dojo-type="dijit/form/Select" intermediateChanges="false" trim="false" uppercase="false" lowercase="false" propercase="false" invalidMessage="$_unset_$" pageSize="Infinity" searchDelay="200" style="width: 18%; margin-right:1%; float:left;">
-       <option value='defaultSelect'>--Select--</option>
-       <option value="sum">Sum</option>
-       <option value="product">Product</option>
-       <option value="parameter">Parameter</option>
-       <option value="accumulator">Accumulator</option>
-       <option value="function">Function</option>
-   </select>
-   <label style="width:15%; margin-left:1%; margin-right:1%; float:left;">
-   Initial Value</label>
-   <input id="initialValue" type="text" data-dojo-type="dijit/form/NumberTextBox" intermediateChanges="false" uppercase="false" lowercase="false" propercase="false" invalidMessage="$_unset_$" pageSize="Infinity" searchDelay="200" style="width: 18%; margin-right:1%; float:left;">
-   <label style="width:10%; margin-left:1%; margin-right:1%; float:left;">
-   Unit</label>
-   <select id="selectUnits" data-dojo-type="dijit/form/Select" intermediateChanges="false" trim="false" uppercase="false" lowercase="false" propercase="false" invalidMessage="$_unset_$" pageSize="Infinity" searchDelay="200" style="width: 18%; margin-right:1%; float:left;">
-       <option value='defaultSelect'>--Select--</option>
-   </select>
-</div>
-<div style="width:98%; float:left; margin:1%; margin-bottom:2%;"> 
-   <label style="width:9%; margin-right:1%; float:left;">
-   Input:</label>
-    <select id="nodeInputs" data-dojo-type="dijit/form/Select" intermediateChanges="false" trim="false" uppercase="false" lowercase="false" propercase="false" invalidMessage="$_unset_$" pageSize="Infinity" searchDelay="200" style="margin-right:1%; width:88%; float:left;">
-       <option value='defaultSelect'>--Select--</option>
-    </select>
-</div>   
-<div style="width:98%; margin:1%; float:left; margin-bottom:3%">
-   <input id="plusButton" type="button" data-dojo-type="dijit/form/Button" intermediateChanges="false" label="+" iconClass="dijitNoIcon" style="margin-left: 11%; margin-right:2%;" id="plus"></input>
-   <input id="minusButton" type="button" data-dojo-type="dijit/form/Button" intermediateChanges="false" label="-" iconClass="dijitNoIcon" style="margin-left: 2%; margin-right:2%;"></input>
-   <input id="timesButton" type="button" data-dojo-type="dijit/form/Button" intermediateChanges="false" label="*" iconClass="dijitNoIcon" style="margin-left: 2%; margin-right:2%;"></input>
-   <input id="divideButton" type="button" data-dojo-type="dijit/form/Button" intermediateChanges="false" label="/" iconClass="dijitNoIcon" style="margin-left: 2%; margin-right:30%;"></input>
-   <input id="undoButton" type="button" data-dojo-type="dijit/form/Button" intermediateChanges="false" label="Undo" iconClass="dijitNoIcon" style="margin-right:5%;"></input>
-   <input id="equationDoneButton" type="button"  id="doneNodeEditor" data-dojo-type="dijit/form/Button" intermediateChanges="false" label="Done" iconClass="dijitNoIcon" style="" ></input>
-</div>
-<div style="width:98%; margin:1%; float:left; margin-bottom:1%">
-  <label style="margin-right:11%; float:left;">
-   input:</label>
-</div>
-<div style="width:98%; margin:1%; float:left; margin-bottom:2%">
-   <textarea id="equationBox" type="text" data-dojo-type="dijit/form/SimpleTextarea" rows="2" cols="5" style="margin-left:11%; float:left; height: auto; width:70%"></textarea>
- </div> 
- <div style="width:98%; margin:1%; float:left; margin-bottom:1%">
-  <label style="margin-right:11%; float:left;">
-   Messages:</label>
-</div> 
-<div style="width:98%; margin:1%; float:left; margin-bottom:2%">
-<div id="messageBox" data-dojo-type="dijit/layout/ContentPane" style="background:#e5e5e5; border:solid black 1px; overflow-y:scroll; margin-left:11%; height:50px; width:70%"></div>
- </div>
-</div>
-</div>
-		    <!-- Putting Node-Editor stuff for demo  end -->
+        <div class="claro"  data-dojo-type="dijit/Dialog" id="nodeeditor">
+            <div class="fieldgroup">
+	       <label for="selectDescription">Description</label>
+               <select id="selectDescription" data-dojo-type="dijit/form/Select" intermediateChanges="false" trim="false" uppercase="false" lowercase="false" propercase="false" invalidMessage="$_unset_$" pageSize="Infinity" searchDelay="200">
+                   <option value='defaultSelect'>--Select--</option>
+               </select>
+	   </div>
+           <div class="fieldgroup">
+               <label for="typeId">Type</label>
+               <select id="typeId" data-dojo-type="dijit/form/Select" intermediateChanges="false" trim="false" uppercase="false" lowercase="false" propercase="false" invalidMessage="$_unset_$" pageSize="Infinity" searchDelay="200">
+                   <option value='defaultSelect'>--Select--</option>
+                   <option value="sum">Sum</option>
+                   <option value="product">Product</option>
+                   <option value="parameter">Parameter</option>
+                   <option value="accumulator">Accumulator</option>
+                   <option value="function">Function</option>
+               </select>
+               <label for="initialValue">Initial Value</label>
+               <input id="initialValue" type="text" style="width:6em" data-dojo-type="dijit/form/NumberTextBox" intermediateChanges="false" uppercase="false" lowercase="false" propercase="false" invalidMessage="$_unset_$" searchDelay="200"></input>
+               <label for="selectUnits">Units</label>
+               <select id="selectUnits" data-dojo-type="dijit/form/Select" intermediateChanges="false" trim="false" uppercase="false" lowercase="false" propercase="false" invalidMessage="$_unset_$" pageSize="Infinity" searchDelay="200">
+                   <option value='defaultSelect'>--Select--</option>
+               </select>
+           </div>
+           <div class="fieldgroup">
+               <label for="nodeInputs">Input</label>
+               <select id="nodeInputs" data-dojo-type="dijit/form/Select" intermediateChanges="false" trim="false" uppercase="false" lowercase="false" propercase="false" invalidMessage="$_unset_$" pageSize="Infinity" searchDelay="200">
+                   <option value='defaultSelect'>--Select--</option>
+               </select>
+           </div>   
+           <div class="fieldgroup">
+               <label></label> <!-- Strut to move buttons over -->
+               <input id="plusButton" type="button" data-dojo-type="dijit/form/Button" intermediateChanges="false" label="+" iconClass="dijitNoIcon"></input>
+               <input id="minusButton" type="button" data-dojo-type="dijit/form/Button" intermediateChanges="false" label="-" iconClass="dijitNoIcon"></input>
+               <input id="timesButton" type="button" data-dojo-type="dijit/form/Button" intermediateChanges="false" label="*" iconClass="dijitNoIcon"></input>
+               <input id="divideButton" type="button" data-dojo-type="dijit/form/Button" intermediateChanges="false" label="/" iconClass="dijitNoIcon"></input>
+             <div style="float:right">
+	     <input id="undoButton" type="button" data-dojo-type="dijit/form/Button" intermediateChanges="false" label="Undo" iconClass="dijitNoIcon"></input>
+               <input id="equationDoneButton" type="button" data-dojo-type="dijit/form/Button" intermediateChanges="false" label="Done" iconClass="dijitNoIcon"></input>
+                </div>
+	     </div>
+           <div class="fieldgroup">
+               <label for="equationBox">Expression</label>
+               <textarea id="equationBox" type="text" data-dojo-type="dijit/form/SimpleTextarea" rows="2"></textarea>
+           </div> 
+           <span class="fieldgroup">
+               <label for="messageBox">Messages</label>
+               <div id="messageBox" class="textscroll" data-dojo-type="dijit/layout/ContentPane"></div>
+           </span>
+       </div>
+    </div>
+    <!-- Putting Node-Editor stuff for demo  end -->
 			
     </div>  <!-- main -->			
 </body>

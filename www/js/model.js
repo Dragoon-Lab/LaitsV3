@@ -406,10 +406,11 @@ define([
             getCorrectAnswer: function(/*string*/ studentID, /*string*/ nodePart) {
                 // Summary: returns the correct answer for a given part of a node;
                 //      used by the pedagogical model
-                var node = this.given.getNode(this.student.getNode(studentID).descriptionID);
                 if (nodePart === "description")
                     return this.getOptimalNode(studentID);
                 else {
+		    var id = this.student.getDescriptionID(studentID);
+		    var node = this.givenExtra.getNode(id);
                     return node[nodePart];
                 }
             },
@@ -795,6 +796,21 @@ define([
                 this.getNode(id).attemptCount[part] = count;
             }
         }, both);
+	
+	obj.givenExtra = {
+	    getNode: function(id){
+                var ret;
+                var gotIt = array.some(obj.given.getNodes(), function(node) {
+                    ret = node;
+                    return node.ID == id;
+                }) || array.some(obj.getExtraDescriptions(), function(node) {
+                    ret = node;
+                    return node.ID == id;
+                });
+		console.assert(gotIt, "No matching node for '" + id + "'");
+		return gotIt?ret:null;
+            }
+	};
 
         obj.student = lang.mixin({
             addNode: function(options) {
