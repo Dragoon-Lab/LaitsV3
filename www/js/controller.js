@@ -19,6 +19,8 @@ define([
 	 evaluating those changes.
 	 */
 	disableHandlers: false,
+    disableInitialTextEvent:false,
+
 	
 	constructor: function(mode, subMode, model){
 	    this._model = model;
@@ -342,6 +344,12 @@ define([
 	},
 
 	handleInitial: function(initial){
+
+        if(this.disableInitialTextEvent){
+           this.disableInitialTextEvent=false;
+           return;
+        }
+
 	    console.log("****** Student has chosen initial value", initial, this);	    
 
             // updating node editor and the model.	    
@@ -353,8 +361,12 @@ define([
 		var w = registry.byId(this.widgetMap[directive.id]);
 		w.set(directive.attribute, directive.value);
 
-                if(directive.attribute=='value') //if correct value suggested by PM update model
-                    this._model.active.setInitial(this.currentId,initial);
+                if(directive.attribute=='value'){ //if correct value suggested by PM update model
+                    this._model.active.setInitial(this.currentID,directive.value);
+                    this.disableInitialTextEvent=true;
+                }
+
+                    w.set(directive.attribute, directive.value); //third parameter doesn't work for false attribute
 
             }, this);
 	},
