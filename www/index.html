@@ -41,7 +41,8 @@
             "dijit/MenuBar", "dijit/PopupMenuBarItem",
             "dijit/layout/BorderContainer", "dijit/MenuItem",
             "dijit/form/Select", 
-	    "dijit/form/Button", "dijit/form/TextBox", "dijit/form/NumberTextBox",
+	    "dijit/form/Button", "dijit/form/TextBox",
+            "dijit/form/NumberTextBox", "dijit/form/ComboBox",
 	    "dijit/form/SimpleTextarea", "dijit/Menu",
             "dijit/layout/ContentPane",
 	    "dragoon/menu", // Wire up menus
@@ -138,10 +139,20 @@
 		
 			<!-- Putting Node-Editor -Dialog stuff for demo -->
         <div class="claro"  data-dojo-type="dijit/Dialog" id="nodeeditor">
-            <div class="fieldgroup">
+            <div id="nameControl" class="fieldgroup" style="display:none">
+	       <label for="selectName">Name</label>
+               <select id="selectName" data-dojo-type="dijit/form/ComboBox">
+               </select>
+	   </div>
+            <div id="descriptionControlStudent" class="fieldgroup">
 	       <label for="selectDescription">Description</label>
                <select id="selectDescription" data-dojo-type="dijit/form/Select" intermediateChanges="false" trim="false" uppercase="false" lowercase="false" propercase="false" invalidMessage="$_unset_$" pageSize="Infinity" searchDelay="200">
                    <option value='defaultSelect'>--Select--</option>
+               </select>
+	   </div>
+            <div id="descriptionControlAuthor" class="fieldgroup" style="display:none">
+	       <label for="comboDescription">Description</label>
+               <select id="comboDescription" data-dojo-type="dijit/form/ComboBox">
                </select>
 	   </div>
            <div class="fieldgroup">
@@ -159,6 +170,8 @@
                <label for="selectUnits">Units</label>
                <select id="selectUnits" data-dojo-type="dijit/form/Select" intermediateChanges="false" trim="false" uppercase="false" lowercase="false" propercase="false" invalidMessage="$_unset_$" pageSize="Infinity" searchDelay="200">
                    <option value='defaultSelect'>--Select--</option>
+               </select>
+               <select id="enterUnits" data-dojo-type="dijit/form/ComboBox" style="display:none">
                </select>
            </div>
            <div class="fieldgroup">

@@ -40,7 +40,7 @@ define([
             };
 	    
             // initialise draggable elements.
-            var vertices = array.map(givenModel.student.getNodes(), function(node){
+            var vertices = array.map(givenModel.getNodes(), function(node){
                 return this.addNode(node);
             }, this);
 	    
@@ -101,7 +101,7 @@ define([
             array.forEach(vertices, function(vertex){
 		// Not sure why vertex is an array and not just the <div>
                 var id = attr.get(vertex[0], "id");
-                var inputs = givenModel.student.getInputs(id);
+                var inputs = givenModel.getInputs(id);
 		this.setConnections(inputs, vertex);
 		
             }, this);
@@ -124,7 +124,7 @@ define([
             // Add div to drawing
             console.log("--> setting position for vertex : "+ node.ID +" position: x"+node.position.x+"  y:"+node.position.y);
 
-            var nodeName = this._givenModel.student.getName(node.ID);
+            var nodeName = this._givenModel.getName(node.ID);
             if(nodeName && type != "triangle")
                 nodeName='<div id='+node.ID+'Label><strong>'+nodeName+'</strong></div>';
             else

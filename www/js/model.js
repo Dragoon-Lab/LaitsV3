@@ -37,6 +37,7 @@ define([
                     taskName: name,
 		    time: {start: 0, end: 10, step: 0.5},
                     properties: {}, 
+		    image: {},
                     givenModelNodes: [],
                     extraDescriptions: [],
                     studentModelNodes: []
@@ -726,17 +727,19 @@ define([
             addNode: function(options) {
                 // Summary: builds a new node and returns the node's unique id
                 //          Can optionally add initial values to node.
+                obj._updateNextXYPosition();
                 var newNode = lang.mixin({
-                    "ID": "id" + obj._ID++,
-                    "inputs": [],
-                    "attemptCount": {
-                        "description": 0,
-                        "type": 0,
-                        "initial": 0,
-                        "units": 0,
-                        "equation": 0
+                    ID: "id" + obj._ID++,
+                    inputs: [],
+                    position: {x: obj.x, y: obj.y},
+                    attemptCount: {
+                        description: 0,
+                        type: 0,
+                        initial: 0,
+                        units: 0,
+                        equation: 0
                     },
-                    "status": {}
+                    status: {}
                 }, options || {});
                 obj.model.task.givenModelNodes.push(newNode);
                 return newNode.ID;

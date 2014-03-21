@@ -52,7 +52,7 @@ define([
 	 
 	ready(function(){
 	    
-	    var drawModel = new drawmodel(givenModel);
+	    var drawModel = new drawmodel(givenModel.active);
 	    /* 
 	     The sub-mode of STUDENT mode can be either "feedback" or "power"
 	     This is eventually supposed to be supplied by the student model.
@@ -60,7 +60,8 @@ define([
 	     */
 	    var subMode = query.sm || "feedback";
 	    var controllerObject  = new controller(query.m, subMode, givenModel);
-	    controllerObject._PM.setLogging(session);  // Set up direct logging in PM
+	    if(controllerObject._PM)
+		controllerObject._PM.setLogging(session);  // Set up direct logging in PM
 	    
 	    /* add "Create Node" button to menu */
 	    menu.add("createNodeButton", function(){
@@ -142,6 +143,13 @@ define([
 		table.show();
 	    });
 	    
+	    /*
+	     BvdS:  this doesn't look quite right.  We want to download
+             the image and then get its dimensions.  (This is a property of 
+	     the image object) and use the dimensions to place the description
+
+	     Maybe in author mode make image clickable and 
+	     */
 	    var canvas = document.getElementById('myCanvas');
       	    var context = canvas.getContext('2d');
       	    var imageObj = new Image();
@@ -151,7 +159,11 @@ define([
         	context.drawImage(imageObj, 69, 50);
         	wrapText(context, desc_text, 70, 400, 400, 20);
       	    };
-      	    imageObj.src = givenModel.getImageURL();
+	    var url = givenModel.getImageURL();
+      	    if(url)
+		imageObj.src = url;
+	    else
+		console.warn("No image found.  Put clickable box on canvas in author mode?");
 	    
 	});
     });    

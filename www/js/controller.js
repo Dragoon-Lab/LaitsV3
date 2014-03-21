@@ -11,8 +11,8 @@ define([
     
     return declare(null, {
 	
-	_model: {},
-        _PM: {},
+	_model: null,
+        _PM: null,
 	_nodeEditor: null, // node-editor object- will be used for populating fields
 	/*
 	 When opening the node editor, we need to populate the controls without
@@ -24,7 +24,10 @@ define([
 	
 	constructor: function(mode, subMode, model){
 	    this._model = model;
-	    this._PM = new PM(mode, subMode, model);
+	    this._mode = mode;
+	    if(this._mode != 'AUTHOR'){
+		this._PM = new PM(mode, subMode, model);
+	    }
 	    
 	    // The Node Editor widget must be set up before modifications
             // It might be a better idea to only  call the controller
@@ -62,6 +65,17 @@ define([
 	    // Wire up this.closeEditor
 	    aspect.after(this._nodeEditor,"hide", 
 			 lang.hitch(this, this.closeEditor), true);
+
+	    // Turn on/off AUTHOR mode controls
+	    if(this._mode == 'AUTHOR'){
+		console.log("++++++++ Setting AUTHOR format in Node Editor.");
+		style.set('nameControl', 'display', 'block');
+		style.set('descriptionControlStudent', 'display', 'none');
+		style.set('descriptionControlAuthor', 'display', 'block');
+		console.warn("Units input not working in AUTHOR mode.");
+		style.set('selectUnits', 'display', 'none');
+		style.set('enterUnits', 'display', 'inline');
+	    }
 
             // Initialize fields in the node editor that are
             // common to all nodes in a problem.
@@ -299,7 +313,7 @@ define([
 	    //update node type
             console.log("===========>   changing node class to "+type);
             domClass.replace(this.currentID, type);
-            var nodeName = this._model.student.getName(this.currentID);
+            var nodeName = this._model.active.getName(this.currentID);
             if(nodeName && type != "triangle")
 		nodeName = '<div id=' + this.currentID + 'Label><strong>' + nodeName + '</strong></div>';
             else
@@ -323,7 +337,7 @@ define([
            //perform all changes
 
            domClass.replace(this.currentID, type);
-           var nodeName = this._model.student.getName(this.currentID);
+           var nodeName = this._model.active.getName(this.currentID);
            if(nodeName && type != "triangle")
                nodeName = '<div id=' + this.currentID + 'Label><strong>' + nodeName + '</strong></div>';
            else
@@ -480,8 +494,8 @@ define([
 		    // Test if variable name can be found in given model or extras
 		    var givenID = this._model.getNodeIDByName(variable);
 		    if(givenID){
-			// Test if variable has been defined by student
-			var studentID = this._model.student.getNodeIDFor(givenID);
+			// Test if variable has been defined already
+			var studentID = this._model.active.getNodeIDFor(givenID);
 			if(studentID){
 			    // console.log("       substituting ", variable, " -> ", studentID);
 			    parse.substitute(variable, studentID);
@@ -500,8 +514,8 @@ define([
 		this._model.active.setEquation(this.currentID, parsedEquation);
 
 		// Update inputs and connections
-		this._model.student.setInputs(parse.variables(), this.currentID);
-		this.setConnections(this._model.student.getInputs(this.currentID), this.currentID);
+		this._model.active.setInputs(parse.variables(), this.currentID);
+		this.setConnections(this._model.active.getInputs(this.currentID), this.currentID);
 
 		// Send to PM if all variables are known.
 		if(toPM)
@@ -539,10 +553,10 @@ define([
 		
 	populateNodeEditorFields : function(nodeid){
 	    //populate description
-	    var model = this._model;
+	    var model = this._model.active;
 	    var editor = this._nodeEditor;
 	    //set task name
-            var nodeName = model.student.getName(nodeid) || "New quantity";
+            var nodeName = model.getName(nodeid) || "New quantity";
 	    editor.set('title', nodeName);
 	    
 	    /* 
@@ -551,11 +565,12 @@ define([
 	     are applied each time the node editor is opened.
 	     */
 	    
-	    array.forEach(this._PM.newAction(), function(directive){
-		var w = registry.byId(this.controlMap[directive.id]);
-		w.set(directive.attribute, directive.value);
-	    }, this);
-		
+	    if(this._PM){
+		array.forEach(this._PM.newAction(), function(directive){
+		    var w = registry.byId(this.controlMap[directive.id]);
+		    w.set(directive.attribute, directive.value);
+		}, this);
+	    }	
 
 	    /* 
 	     Set values and choices based on student model
@@ -566,25 +581,25 @@ define([
 	     */
 
 	    // This sets the selected value in the description.
-	    var desc =  model.student.getDescriptionID(nodeid);
-            console.log('description is', desc || "not set");
+	    var desc = (this._mode == 'AUTHOR'?model.getDescription(nodeid):model.getDescriptionID(nodeid));
+	    console.log('description is', desc || "not set");
 	    registry.byId(this.controlMap.description).set('value', desc || 'defaultSelect');
 
-            var type = model.student.getType(nodeid);
+            var type = model.getType(nodeid);
             console.log('node type is', type || "not set");
             if(type)registry.byId(this.controlMap.type).set('value', type || 'defaultSelect');
 	    
-            var initial = model.student.getInitial(nodeid);
+            var initial = model.getInitial(nodeid);
             console.log('initial value is', initial || "not set");
             registry.byId(this.controlMap.initial).attr('value', initial || '');
 	    
-            var unit = model.student.getEachNodeUnitbyID(nodeid);
+            var unit = model.getEachNodeUnitbyID(nodeid);
             console.log('unit is', unit[nodeid] || "not set");
             registry.byId(this.controlMap.units).set('value', unit[nodeid] || 'defaultSelect');
 	    
-            var equation = model.student.getEquation(nodeid);
+            var equation = model.getEquation(nodeid);
             console.log("equation before conversion ", equation);
-            var mEquation = equation?expression.convert(model.student, equation):'';
+            var mEquation = equation?expression.convert(model, equation):'';
             console.log("equation after conversion ", mEquation);
             registry.byId(this.controlMap.equation).set('value', mEquation);
 	    
@@ -603,14 +618,14 @@ define([
 	    console.log("model: ", this._model.model.task);
 
 	    /*
-	     We will need a similar handler for each call 
-	     to the PM.  However, in that case, the model also
-	     needs updating.
+	     Set color and enable disable in non-AUTHOR modes.
 	     */
-	    array.forEach(model.student.getStatusDirectives(nodeid), function(directive){
-		var w = registry.byId(this.controlMap[directive.id]);
-		w.set(directive.attribute, directive.value);
-	    }, this);
+	    if(this._mode != 'AUTHOR'){
+		array.forEach(model.getStatusDirectives(nodeid), function(directive){
+		    var w = registry.byId(this.controlMap[directive.id]);
+		    w.set(directive.attribute, directive.value);
+		}, this);
+	    }
 	    
 	}
 	
