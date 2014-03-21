@@ -86,7 +86,7 @@
             {
                 "ID": "id7",
                 "name": "month two population",
-                "genus": "model",
+                "genus": "extra",
                 "type": "parameter",
                 "parentNode": true,
                 "extra": false,
@@ -108,7 +108,7 @@
                 "name": "superpower fraction",
                 "description": "The ratio of rabbits born with superpowers to ordinary rabbits",
                 "units": "rabbits per rabbit",
-                "genus": "extra"
+                "genus": "irrelevant"
             }
         ],
         "studentModelNodes": []

@@ -23,7 +23,7 @@ define([
             "This quantity is irrelevant for modeling the system.  Try again.",
             "Irrelevant.  Try again."
         ],
-        initial: [
+        initialValue: [
             "You tried to define a parameter for the initial value of an accumulator.  This is unnecessary, because you can put the initial value for the accumulator right into the definition of the accumulator itself.",
             "That should be the initial value of an accumulator, not a parameter node.",
             "That should be the initial value of an accumulator."
@@ -86,14 +86,14 @@ define([
                 power: function(obj,part){state(obj, part, "correct"); disable(obj, part, true);disable(obj, "type", false);}
             },
             initialValue: {
-                COACHED: function(obj,part){state(obj, part, "incorrect"); message(obj,part, "initial");}, 
-                feedback: function(obj,part){state(obj, part, "incorrect"); message(obj,part, "initial");}, 
+                COACHED: function(obj,part){state(obj, part, "incorrect"); message(obj,part, "initialValue");}, 
+                feedback: function(obj,part){state(obj, part, "incorrect"); message(obj,part, "initialValue");}, 
                 TEST: function(obj,part){state(obj, part, "incorrect");}, 
                 power: function(obj,part){state(obj, part, "incorrect");}
             },
-            extraValue: {
+            extra: {
                 COACHED: function(obj,part){state(obj, part, "incorrect"); message(obj,part, "extra");}, 
-                feedback: function(obj,part){state(obj, part, "incorrect"); message(obj,part, "irrelevant");}, 
+                feedback: function(obj,part){state(obj, part, "incorrect"); message(obj,part, "extra");}, 
                 TEST: function(obj,part){state(obj, part, "incorrect");}, 
                 power: function(obj,part){state(obj, part, "incorrect");}
             },
@@ -265,12 +265,8 @@ define([
 
                     if (this.model.student.isInExtras(answer)) {
                         array.forEach(this.model.getExtraDescriptions(), function(extra) {
-                            if (answer === extra.ID && extra.genus === "initial") {
-                                interpretation = "initialValue";
-                            } else if (answer === extra.ID && extra.genus === "extra") {
-                                interpretation = "extraValue";
-                            } else if (answer === extra.ID && extra.genus === "model") {
-                                interpretation = "irrelevant";
+                            if (answer === extra.ID && extra.genus && extra.genus != "allowed") {
+				interpretation = extra.genus;
                             }
                         });
                     } else if (this.model.isNodeVisible(studentID, answer)) {
