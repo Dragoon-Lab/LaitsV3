@@ -206,7 +206,7 @@ define([
 				var i,count=0;
 				for(i=0;i<this.modelNodes.length;i++)
 				{
-					if(this.active.getType(this.modelNodes[i].ID) == 'parameter')
+					if(this.active.getType(this.modelNodes[i].ID) == 'parameter' || this.active.getType(this.modelNodes[i].ID) == 'accumulator')
 					{
 						arrayOfParameterNames[this.modelNodes[i].ID] = this.model.getName(this.modelNodes[i].ID);
 						arrayOfParamInitialValues[this.modelNodes[i].ID] = this.active.getInitial(this.modelNodes[i].ID);
@@ -267,8 +267,9 @@ define([
 				units = obj["units"];
 				
 				//create object comprising all parameters required for rendering chart and table
-				var object = {noOfParam:noOfParam,arrayOfParameterNames:arrayOfParameterNames,arrayOfParamInitialValues:arrayOfParamInitialValues,
-				xUnits:xUnits,units:units,arrayOfTimeSteps:arrayOfTimeSteps,arrayOfNodeValues:arrayOfNodeValues, calculationObj:this
+				var object = {noOfParam:noOfParam,arrayOfParameterNames:arrayOfParameterNames,
+                    arrayOfParamInitialValues:arrayOfParamInitialValues,xUnits:xUnits,units:units,
+                    arrayOfTimeSteps:arrayOfTimeSteps,arrayOfNodeValues:arrayOfNodeValues, calculationObj:this
 				};
 
                 return object;

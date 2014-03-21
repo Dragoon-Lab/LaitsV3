@@ -78,6 +78,26 @@ define([
 				this.dialogContent= this.dialogContent + this.createDom('div',str,"style='width:800px; margin:0 auto;'");
 				i++;
 		   }
+
+            var registerEventOnSlider = lang.hitch(this,function(slider,index,paramID)
+            {
+                on(slider,"change", lang.hitch(this,function(){
+
+                    dom.byId("text"+index).value = slider.value;
+                    this.object.calculationObj.active.setInitial(paramID,slider.value);
+                    var newObj = this.object.calculationObj.gerParametersForRendering(this.object.calculationObj.solutionGraph,true);
+
+                    //update and render the chart
+                    var l=0;
+                    for(var k in newObj.arrayOfNodeValues)
+                    {
+                        this.chart[l].updateSeries("Variable solution", newObj.arrayOfNodeValues[k]);
+                        this.chart[l].render();
+                        l++;
+                    }
+
+                }));
+            })
      	        	   
             i=0;
      	   //create sliders based on number of input parameters
@@ -88,18 +108,20 @@ define([
      	        this.sliders[i] = new HorizontalSlider({
      	            name: "slider"+i,
      	            value: this.paramValue[j],
-     	            minimum: 0,
-     	            maximum: 1,
+     	            minimum: this.paramValue[j]/10,
+     	            maximum: this.paramValue[j]*10,
      	            intermediateChanges: true,
      	            style: "width:300px;"
      	        }, "slider"+i);
 
 
                var paramID = j;
-               var slider = this.sliders[i];
                var index  = i;
+               var slider = this.sliders[i];
 
-               on(this.sliders[i],"change", lang.hitch(this,function(){
+               registerEventOnSlider(slider,index,paramID);
+
+               /*on(this.sliders[i],"change", lang.hitch(this,function(){
 
                    dom.byId("text"+index).value = slider.value;
                    this.object.calculationObj.active.setInitial(paramID,slider.value);
@@ -114,7 +136,7 @@ define([
                        l++;
                    }
 
-               }));
+               }));*/
      	   
      	        //create label for name of a textbox
      	        //create input for a textbox
@@ -134,6 +156,9 @@ define([
 				
 				i++;
      	   }
+
+
+
      	   
      	   //create a dialog and give created dom in above loop as input to 'content'
      	   //this will create dom inside a dialog
