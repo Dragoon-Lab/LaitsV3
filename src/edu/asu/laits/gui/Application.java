@@ -69,12 +69,12 @@ public class Application {
             System.out.println("Application was launched from Command Line");
             ApplicationContext.APP_HOST = "http://dragoon.asu.edu/ram/";
             ApplicationContext.forumURL = "http://dragoon.asu.edu/ram/";
-            ApplicationContext.setApplicationEnvironment(ApplicationContext.ApplicationEnvironment.PROD);
-            ApplicationContext.setSessionID("testsession4");
+            ApplicationContext.setApplicationEnvironment(ApplicationContext.ApplicationEnvironment.DEV);
+            ApplicationContext.setSessionID("authortestsession1");
             ApplicationContext.setUserID("ramayantiwari");
-            ApplicationContext.setAppMode("student");
-            ApplicationContext.setCurrentTaskID("isle1");
-            
+            ApplicationContext.setAppMode("author");
+            ApplicationContext.setCurrentTaskID("test_prob1");
+            ApplicationContext.setSection("testsection");
         } else {
             // Try to Launch application using JNLP for PROD
             String sessionID = System.getProperty("jnlp.session_id");
@@ -90,13 +90,14 @@ public class Application {
                 String json = readUrl(ApplicationContext.APP_HOST + "session_manager.php?action=get_session_info&session_id=" + sessionID);
 
                 UserSession userSession = gson.fromJson(json, UserSession.class);
-
+                System.out.println("Session Details: " + userSession.toString());
                 ApplicationContext.setApplicationEnvironment(ApplicationContext.ApplicationEnvironment.PROD);
                 ApplicationContext.setUserID(userSession.username);
                 ApplicationContext.setAppMode(userSession.mode);
                 ApplicationContext.setCurrentTaskID(userSession.problem_name);
                 ApplicationContext.setSessionID(userSession.session_id);
-                
+                ApplicationContext.setSection(userSession.section);
+                ApplicationContext.setAuthor(userSession.author);
             } else {
                 JOptionPane.showMessageDialog(null, "Incorrect Initialization Parameters",
                         "An error has occured. Contact Support.", JOptionPane.ERROR_MESSAGE);
@@ -132,5 +133,12 @@ public class Application {
         String problem_name;
         String mode;
         String section;
+        String author;
+        
+        @Override
+        public String toString() {
+            return "SessionID: " + session_id + " Username: " + username + " Problem Name: " + problem_name
+                    + " Mode: " + mode + " Section: " + section + " Author: " + author;
+        }
     }
 }

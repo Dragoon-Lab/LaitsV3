@@ -25,7 +25,7 @@
         const MODE_PARAM = "mode";
         const SECTION_PARAM = "section";
         const PROBLEM_NAME_PARAM = "problem_id";    
-        const AUTHOR_PARAM = "";
+        const AUTHOR_PARAM = "author";
         const DEFAULT_FORUM = "http://dragoon.asu.edu/forum/viewtopic.phpq";
          
         public function __construct() 
@@ -44,7 +44,7 @@
                     substr($URI, 0, strrpos($URI,'/') + 1);
             
                     $this->forumURL = isset($_REQUEST['forumurl']) ? $_REQUEST['forumurl'] : self::DEFAULT_FORUM;
-                    $session_id = $this->common->generate_and_save_session_to_db($this->username, $this->mode, $this->section, $this->problem_name);
+                    $session_id = $this->common->generate_and_save_session_to_db($this->username, $this->mode, $this->section, $this->problem_name,$this->author);
                     $this->send_jnlp_response($session_id);
                 }
                 else
@@ -71,7 +71,7 @@
                 $this->mode = mysqli_real_escape_string($this->common->connection, $_REQUEST[self::MODE_PARAM]);
                 $this->section = mysqli_real_escape_string($this->common->connection, $_REQUEST[self::SECTION_PARAM]);
                 $this->problem_name = mysqli_real_escape_string($this->common->connection, $_REQUEST[self::PROBLEM_NAME_PARAM]);
-                
+                $this->author = mysqli_real_escape_string($this->common->connection, $_REQUEST[self::AUTHOR_PARAM]);
                 // Mode will always be treated in uppercase
                 $this->mode = strtoupper($this->mode);
                 return true;

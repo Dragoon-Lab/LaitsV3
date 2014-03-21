@@ -18,6 +18,8 @@
 
 package edu.asu.laits.gui.nodeeditor;
 
+import edu.asu.laits.editor.ApplicationContext;
+import edu.asu.laits.gui.Application;
 import edu.asu.laits.gui.MainWindow;
 import edu.asu.laits.model.Vertex;
 import org.apache.log4j.Logger;
@@ -107,24 +109,33 @@ public class AuthorModeNodeEditorController extends NodeEditorController{
         return targetTab;
     }
     
+    /**
+     * Method to process Author Mode OK Action.
+     * This method is used both from NodeEditor and From Create New Node Dialog, at Calc Panel.
+     * 
+     * @throws NodeEditorException 
+     */
     public void processOKAction() throws NodeEditorException{
         logs.debug("Processing Author Mode OK Button Action");
         
         if (view.getDescriptionPanel().processDescriptionPanel()) {
             openVertex.setDescriptionStatus(Vertex.DescriptionStatus.CORRECT);
-            activityLogs.debug(view.getDescriptionPanel().printDescriptionPanelDetails());
+            //activityLogs.debug(view.getDescriptionPanel().printDescriptionPanelDetails());
             
-            if (view.getPlanPanel().processPlanPanel()) {
-                openVertex.setPlanStatus(Vertex.PlanStatus.CORRECT);
-                activityLogs.debug(view.getPlanPanel().printPlanPanel());
+            // Process Plan and Calc Panel only if the Editor is not CreateNewNode Dialog
+            if(view.getTabbedPane().getTabCount() > 1) {
+                if (view.getPlanPanel().processPlanPanel()) {
+                    openVertex.setPlanStatus(Vertex.PlanStatus.CORRECT);
+                    //activityLogs.debug(view.getPlanPanel().printPlanPanel());
 
-                if (view.getCalculationsPanel().processCalculationsPanel()) {
-                    openVertex.setCalculationsStatus(Vertex.CalculationsStatus.CORRECT);                    
-                } else {
-                    openVertex.setCalculationsStatus(Vertex.CalculationsStatus.INCORRECT);
-                }
-                activityLogs.debug(view.getCalculationsPanel().printCalculationPanel());
-            }           
+                    if (view.getCalculationsPanel().processCalculationsPanel()) {
+                        openVertex.setCalculationsStatus(Vertex.CalculationsStatus.CORRECT);                    
+                    } else {
+                        openVertex.setCalculationsStatus(Vertex.CalculationsStatus.INCORRECT);
+                    }
+                    //activityLogs.debug(view.getCalculationsPanel().printCalculationPanel());
+                }    
+            }
         }
         
         if(!openVertex.getCalculationsStatus().equals(Vertex.CalculationsStatus.INCORRECT)){
@@ -181,6 +192,10 @@ public class AuthorModeNodeEditorController extends NodeEditorController{
     public void initializeCreateNewNodeDialog(NodeEditorView dialog){
         dialog.getCheckButton().setEnabled(false);
         dialog.getDemoButton().setEnabled(false);
-        dialog.getCancelButton().setText("Create");
+        if(ApplicationContext.isAuthorMode()) {
+            dialog.getCancelButton().setText("Cancel");
+        }else{
+            dialog.getCancelButton().setText("Create");
+        }
     }
 }

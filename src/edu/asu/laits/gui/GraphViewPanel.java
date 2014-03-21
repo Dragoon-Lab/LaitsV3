@@ -151,8 +151,7 @@ public class GraphViewPanel{
     
     private JXTaskPane addChart(Vertex vertex){
         PlotPanel plotPanel = null;
-        
-        if(ApplicationContext.getCorrectSolution().getNodeCount() == 1 || !vertex.getVertexType().equals(Vertex.VertexType.CONSTANT)){
+        if(!vertex.getVertexType().equals(Vertex.VertexType.CONSTANT)){
             plotPanel = new PlotPanel(vertex);
         }
         

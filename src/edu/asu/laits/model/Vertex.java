@@ -35,6 +35,7 @@ public class Vertex {
     private int vertexIndex;
     // List to store Fake Description List for each vertex
     private List<String> fakeDescription;
+    private boolean isFirstTargetNode;
     /**
      * Logger
      */
@@ -341,5 +342,13 @@ public class Vertex {
         sb.append("CalcStatus : " + getCalculationsStatus() + "\n");        
         
         return sb.toString();
+    }
+    
+    public void setIsFirstTargetNode(boolean value) {
+        isFirstTargetNode = value;
+    }
+    
+    public boolean isFirstTargetNode() {
+        return isFirstTargetNode;
     }
 }

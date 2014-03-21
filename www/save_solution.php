@@ -1,61 +1,87 @@
 <?php
-session_start();
+require "common.php";
+    
+    session_start();
+    
+    $solution_manager = new SolutionManager;
+    $solution_manager->process_request();
+    /**
+     * SolutionManager class to load and save author's solutions.
+     * 
+     * @author Ramayan Tiwari <rptiwari@asu.edu>
+     */
+    
+    class SolutionManager
+    {
+        private $author;
+        private $action;
+        private $section;
+        private $problem_name;
+        private $solution_xml;
+        private $share;
+        private $common;
+        
+        public function __construct()
+        {
+            $this->common = new Common;
+            
+            $this->action = $_REQUEST['action'];
+            $this->author = isset($_REQUEST['author']) ? mysqli_real_escape_string($this->common->connection, $_REQUEST['author']) : '';
+            $this->section = isset($_REQUEST['section']) ? mysqli_real_escape_string($this->common->connection, $_REQUEST['section']) : '';
+            $this->problem_name = isset($_REQUEST['problem_name']) ? mysqli_real_escape_string($this->common->connection, $_REQUEST['problem_name']) : '';
+            $this->solution_xml = isset($_REQUEST['solution_xml']) ? mysqli_real_escape_string($this->common->connection, $_REQUEST['solution_xml']) : '';            
+            $this->share = (!isset($_REQUEST['share']) || $_REQUEST['share']) ? 1 : 0;       
+            
+            // Save data needs to be URL decoded
+            $this->solution_xml = urldecode($this->solution_xml); 
+        }
+        
+        public function __destruct() {
+            $this->common->connection->close();
+        }
+        
+        public function process_request()
+        {
+            switch ($this->action) 
+            {
+                case "author_save" :
+                    $this->save_author_solution_to_DB();
+                    break;
+                
+                case "author_load" :
+                    $this->load_author_solution_from_DB();
+                    break;
 
-require "db-login.php";
-require "error-handler.php";
-
-// Using trigger_error() so logging level and destination can be modified.
-
-//connect to database
-$mysqli = mysqli_connect("localhost", $dbuser, $dbpass, $dbname)
-  or trigger_error('Could not connect to database.',E_USER_ERROR);
-
-//retrieve POST variables
-$action = mysqli_real_escape_string($mysqli,$_POST['action']);
-$author = mysqli_real_escape_string($mysqli,$_POST['id']);
-$section = mysqli_real_escape_string($mysqli,$_POST['section']);
-$problemName = mysqli_real_escape_string($mysqli,$_POST['problem']);
-$solutionGraph = mysqli_real_escape_string($mysqli,$_POST['saveData']);
-// share is optional, default value 1.
-// Need to see what values client can send
-// Mysql encodes true and false as 1 and 0.
-$share = (!isset($_POST['share']) || $_POST['share'])?1:0;
-
-//process request
-if(strcmp($action, "author_save") == 0){
-  $query="SELECT solutionGraph FROM solutions WHERE author='$author' AND section='$section' AND problemName='$problemName'";
-  $result = $mysqli->query($query)
-    or trigger_error("author_save lookup failed: " . $mysqli->error,
-		     E_USER_ERROR);
-  $num_rows = $result->num_rows;
-  
-  if ($num_rows == 0) {
-    $query="INSERT INTO solutions(author,section,problemName,solutionGraph,share) VALUES ('$author','$section','$problemName','$solutionGraph',$share)";
-    $result=$mysqli->query($query)
-      or trigger_error("author_save insert failed: " . $mysqli->error);
-    // error_log("query= $query");
-    // On OS X, TRUE is returned even for bad queries!
-    // error_log("hi1: " . $result?"TRUE":"FALSE");
-  } else {
-    $query="UPDATE solutions SET solutionGraph='$solutionGraph', share='$share', 
-                time = CURRENT_TIMESTAMP WHERE author='$author' AND section='$section' AND problemName='$problemName'";
-    $result=$mysqli->query($query)
-      or trigger_error("author_save update failed: " . $mysqli->error);
-  }
-} elseif(strcmp($action, "author_load") == 0) {
-  $query="SELECT solutionGraph FROM solutions WHERE author='$author' AND section='$section' AND problemName='$problemName'";
-  $result = $mysqli->query($query)
-    or trigger_error("author_load failed: " . $mysqli->error);
-  
-  $num_rows = $result->num_rows;
-  
-  if ($num_rows == 1) {
-    while($row = $result->fetch_row()){
-      printf("%s", $row[0]);
+                default:
+                    //error_log("Unauthorized Request Recived ");
+                    header('HTTP/1.0 401 Unauthorized');                     
+            }
+        }
+        
+        private function save_author_solution_to_DB()
+        {
+            $query = "INSERT INTO solutions(author, section, problemName, solutionGraph, share) 
+                    VALUES ('$this->author','$this->section', '$this->problem_name', '$this->solution_xml', '$this->share') 
+                    ON DUPLICATE KEY UPDATE solutionGraph=values(solutionGraph), time = CURRENT_TIMESTAMP";
+            error_log("Executing " . $query);
+            $this->common->connection->query($query) or trigger_error("insert/update to solutions failed" .$this->common->connection->error);            
+        }
+        
+        private function load_author_solution_from_DB()
+        {
+            $queryString = "SELECT solutionGraph FROM solutions WHERE author=? AND section=? AND problemName=?";
+           
+            if ($stmt = mysqli_prepare($this->common->connection, $queryString)) {
+                
+                $stmt -> bind_param("sss", $this->author, $this->section, $this->problem_name);
+                
+                $stmt->execute() or trigger_error("select from solutions failed" .$this->common->connection->error);;
+                $stmt->bind_result($save_data);
+                $stmt->fetch();
+                
+                print($save_data);                
+            }
+        }
     }
-  }
-} else {
-  trigger_error("Invalid action $action.");
-}
 
 ?>

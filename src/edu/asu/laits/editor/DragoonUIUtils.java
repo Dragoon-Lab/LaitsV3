@@ -24,6 +24,7 @@ import java.util.List;
 import javax.swing.BorderFactory;
 import javax.swing.ButtonGroup;
 import javax.swing.JButton;
+import javax.swing.JCheckBox;
 import javax.swing.JComboBox;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
@@ -104,6 +105,11 @@ public class DragoonUIUtils {
         decisionTree.setEditable(false);
                 
         return decisionTree;
+    }
+    
+    public static JCheckBox createCheckBox(String text) {
+        final JCheckBox checkBox = new JCheckBox(text);
+        return checkBox;
     }
     
     public static final Color LABEL_COLOR = new Color(0, 70, 213);
