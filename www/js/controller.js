@@ -87,9 +87,9 @@ define([
             var t = registry.byId(this.controlMap.inputs);
        	    // console.log("description widget = ", d);
 	    // d.removeOption(d.getOptions()); // Delete all options
-	    array.forEach(this._model.getAllDescriptions(), function(desc){
+	    array.forEach(this._model.given.getDescriptions(), function(desc){
 	        d.addOption(desc);
-		var name = this._model.getName(desc.value);
+		var name = this._model.given.getName(desc.value);
 		var option = {label: desc.label+' '+ ' | '+' '+ name, value:desc.value};
 		t.addOption(option);
 	    }, this);
@@ -419,7 +419,7 @@ define([
 	    console.log("*******Student has chosen input", id, this);
 	    // Should add name associated with id to equation
 	    // at position of cursor or at the end.
-	    var expr = this._model.getName(id);
+	    var expr = this._model.given.getName(id);
 	    this.equationInsert(expr);
  	},
 
@@ -491,8 +491,8 @@ define([
 	    if(parse){
 		var toPM = true;
 		array.forEach(parse.variables(), function(variable){
-		    // Test if variable name can be found in given model or extras
-		    var givenID = this._model.getNodeIDByName(variable);
+		    // Test if variable name can be found in given model
+		    var givenID = this._model.given.getNodeIDByName(variable);
 		    if(givenID){
 			// Test if variable has been defined already
 			var studentID = this._model.active.getNodeIDFor(givenID);
@@ -593,9 +593,9 @@ define([
             console.log('initial value is', initial || "not set");
             registry.byId(this.controlMap.initial).attr('value', initial || '');
 	    
-            var unit = model.getEachNodeUnitbyID(nodeid);
-            console.log('unit is', unit[nodeid] || "not set");
-            registry.byId(this.controlMap.units).set('value', unit[nodeid] || 'defaultSelect');
+            var unit = model.getUnits(nodeid);
+            console.log('unit is', unit || "not set");
+            registry.byId(this.controlMap.units).set('value', unit || 'defaultSelect');
 	    
             var equation = model.getEquation(nodeid);
             console.log("equation before conversion ", equation);

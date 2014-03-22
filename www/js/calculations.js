@@ -42,7 +42,7 @@ define([
             {
                 if(mode)
                 {
-                    this.active = this.model.given;
+                    this.active = this.model.solution;
                 }
                 else
                 {

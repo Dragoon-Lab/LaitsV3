@@ -57,7 +57,7 @@ define([
 		if(model.student.isNode(variable)){
 		    givenID = model.student.getDescriptionID(variable);
 		} else {
-		    givenID = model.getNodeIDByName(variable);
+		    givenID = model.given.getNodeIDByName(variable);
 		}
 		/* This should never happen:  there is a check for unknown variables
 		 at a higher level. */
@@ -76,9 +76,9 @@ define([
 	 
 	 If the function nodes have circular dependencies, then an error will be produced.
 	 */
-	evalVar: function(id, model, vals, parents){
-	    console.assert(model.isNode(id), "evalVar: unknown variable '" + id + "'.");
-	    var node = model.getNode(id);
+	evalVar: function(id, subModel, vals, parents){
+	    console.assert(subModel.isNode(id), "evalVar: unknown variable '" + id + "'.");
+	    var node = subModel.getNode(id);
 	    if(vals[id]){
 		// if already assigned a value, do nothing.
 	    } else if(node.type == 'parameter' || node.type == 'accumulator'){
@@ -93,14 +93,14 @@ define([
 		// Evaluate function node
 		var parse = Parser.parse(node.equation);
 		array.forEach(parse.variables(), function(x){
-		    this.evalVar(x, model, vals, parents);
+		    this.evalVar(x, subModel, vals, parents);
 		}, this);
 		vals[id] = parse.evaluate(vals);
 		parents[id] = false;
 	    }
 	},
 
-	convert: function(model, equation){
+	convert: function(subModel, equation){
 	    try{
 		var expr= Parser.parse(equation);
 	    } catch(e){
@@ -113,8 +113,8 @@ define([
 		/* A student equation variable can be a student node id
 		 or given (or extra) model node name (if the node has not been
 		 defined by the student). */
-		if(model.isNode(variable)){
-		    var nodeName = model.getName(variable);
+		if(subModel.isNode(variable)){
+		    var nodeName = subModel.getName(variable);
 		    // console.log("=========== substituting ", variable, " -> ", nodeName);
 		    expr.substitute(variable, nodeName);
 		    // console.log("            result: ", expr);
@@ -127,9 +127,9 @@ define([
 	 Adding quantity to student model:  Update 
 	 equations and inputs of existing nodes.
 	 */
-	addQuantity: function(id, model){
-	    var name = model.getName(id);
-	    array.forEach(model.getNodes(), function(node){
+	addQuantity: function(id, subModel){
+	    var name = subModel.getName(id);
+	    array.forEach(subModel.getNodes(), function(node){
 		if(node.equation){ 
 		    try{
 			var expr= Parser.parse(node.equation);
@@ -151,7 +151,7 @@ define([
 			node.equation = expr.toString(true);
 			node.inputs = [];
 			array.forEach(expr.variables(), function(id){
-			    if(model.isNode(id))
+			    if(subModel.isNode(id))
 				node.inputs.push({ID: id});
 			});
 		    }

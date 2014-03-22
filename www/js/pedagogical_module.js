@@ -263,8 +263,8 @@ define([
                 case "description":
                     this.descriptionCounter++;
 
-                    if (this.model.student.isInExtras(answer)) {
-                        array.forEach(this.model.getExtraDescriptions(), function(extra) {
+                    if (this.model.given.isExtra(answer)) {
+                        array.forEach(this.model.given.getNodes(), function(extra) {
                             if (answer === extra.ID && extra.genus && extra.genus != "allowed") {
 				interpretation = extra.genus;
                             }

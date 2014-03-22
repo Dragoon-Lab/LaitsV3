@@ -123,6 +123,7 @@ define([
 	    menu.add("graphButton",function(){
 		console.debug("button clicked");
 		
+		// Instead, one should pass "givenMovel" into here.Bug #2307
 		var calc = new calculations(solutionGraph,true);
 		var givenObj = calc.gerParametersForRendering(solutionGraph,true);
         var studentObj = calc.gerParametersForRendering(solutionGraph,false);
