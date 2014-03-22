@@ -233,7 +233,7 @@ define([
                 //set initial values of all parameters to original values
                 var i;
                 for (i in this.studentParamNames) {
-                    this.object.calculationObj.active.setInitial(i, this.studentParamValue[i]);
+                    this.studentObject.calculationObj.model.student.setInitial(i, this.studentParamValue[i]);
                 }
 
             }));
