@@ -24,7 +24,12 @@ addition, we have the Pedagogical Module (PM).
 `js/model.js` provides an interface to the model.  It has many
 Java-style getter and setter methods. For AUTHOR mode, the student
 is mofiying the **given model**, subclass `given`, while in other major
-modes, the student is modifying the **student model**, subclass `student`.
+modes, the student is modifying the **student model**, subclass
+`student`.  The **given model** includes both the solution quantities
+plus any extra quantities ("allowed," "extra," "irrelevant," *et
+cetera*) that have been defined.  The `solution` subclass contains
+accessors to the solution quantities.
+
 To handle switching between modes, we introduce  an **active model**,
 subclass `active`, which points to the appropriate model.  For example, 
 `given.getNodes()` and `student.getNodes()` get the given model and

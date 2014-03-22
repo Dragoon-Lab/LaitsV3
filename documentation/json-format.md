@@ -156,12 +156,12 @@ many times). Once it is marked "demo" this mark will not be changed.
 
 ## Extra Descriptions ##
 
-The author may include distraction descriptions which are not part of the given 
-model to further challenge the student. They are included in the 
-"extraDescriptions" array, as in the following example.
+The author may include quantities which are not part of the model
+solution to allow for different ways of expressing the model and
+to provide distractors in the list of quantity choices.
+They are included in the "givenModelNode" array, as in the following example.
 
-    "extraDescriptions": [
-        {
+            {
                 "genus": "extra",
                 "ID": "id7",
                 "name": "month two population",
@@ -187,8 +187,6 @@ model to further challenge the student. They are included in the
                     "units": "correct"
                 }
             },
-        ...
-    ]
 
 The attributes can include all of the attributes in the given model, though they 
 are not required to. This allows the student to potentially construct a full 
@@ -200,7 +198,7 @@ following values:
 
 * "allowed"   The student *may* include this quantity in a solution.
 Use of this quantity will still allow the student to construct a model that agrees
-with the given model. Thus, this designation can only apply to "function" nodes. 
+with the given model.  This quantity *may* have no explicit "type".
 There is no penalty (or negative feedback) if the student includes this quantity, but there
 will be no hints or feedback suggesting the use of this quantity.
 
@@ -215,7 +213,9 @@ will be no hints or feedback suggesting the use of this quantity.
   be a penalty or negative feedback if the student uses this quantity.
 
 * "initialValue"   The initial value of a quantity that is in the given model.
-  
+
+For solution nodes, "genus" is either the empty string or not included.
+
 ## Student Model Nodes ##
 
 Student model nodes are nodes that the student has created while trying to 
@@ -358,7 +358,6 @@ JSON document.
                     "units": "percent",
                     "inputs": [],
                     "initial": 0.2,
-                    "equation": ".2",
                     "description": "The ratio of number of rabbits born in a month to the rabbit population that month",
                     "attemptCount": {
                         "description": 1,
@@ -373,9 +372,7 @@ JSON document.
                         "initial": "demo",
                         "units": "correct"
                     }
-                }
-            ],
-            "extraDescriptions": [
+                },
                 {
                     "ID": "id7",
                     "name": "month two population",

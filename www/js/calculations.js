@@ -42,7 +42,7 @@ define([
             {
                 if(mode)
                 {
-                    this.active = this.model.given;
+                    this.active = this.model.solution;
                 }
                 else
                 {
@@ -208,7 +208,7 @@ define([
 				{
 					if(this.active.getType(this.modelNodes[i].ID) == 'parameter' || this.active.getType(this.modelNodes[i].ID) == 'accumulator')
 					{
-						arrayOfParameterNames[this.modelNodes[i].ID] = this.model.getName(this.modelNodes[i].ID);
+						arrayOfParameterNames[this.modelNodes[i].ID] = this.active.getName(this.modelNodes[i].ID);
 						arrayOfParamInitialValues[this.modelNodes[i].ID] = this.active.getInitial(this.modelNodes[i].ID);
 						count++;
 					}
@@ -267,13 +267,19 @@ define([
 				units = obj["units"];
 				
 				//create object comprising all parameters required for rendering chart and table
-				var object = {noOfParam:noOfParam,arrayOfParameterNames:arrayOfParameterNames,
+				var object = {mode:mode,noOfParam:noOfParam,arrayOfParameterNames:arrayOfParameterNames,
                     arrayOfParamInitialValues:arrayOfParamInitialValues,xUnits:xUnits,units:units,
                     arrayOfTimeSteps:arrayOfTimeSteps,arrayOfNodeValues:arrayOfNodeValues, calculationObj:this
 				};
 
                 return object;
-			}
+			},
+
+            setStudentGivenModel: function(givenObj,studentObj)
+            {
+                var obj =  {givenObj:givenObj, studentObj:studentObj};
+                return obj;
+            }
 	});		
 });
 

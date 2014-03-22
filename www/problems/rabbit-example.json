@@ -81,7 +81,6 @@
                 "units": "percent",
                 "inputs": [],
                 "initial": 0.2,
-                "equation": ".2",
                 "description": "The ratio of number of rabbits born in a month to the rabbit population that month",
                 "attemptCount": {
                     "description": 1,
@@ -96,9 +95,7 @@
                     "initial": "demo",
                     "units": "correct"
                 }
-            }
-        ],
-        "extraDescriptions": [
+            },
             {
                 "ID": "id7",
                 "name": "month two population",
@@ -140,7 +137,7 @@
                 "initial": 100,
                 "units": "rabbits",
                 "inputs": [ { "ID": "id5" } ],
-                "equation": "id4+id5",
+                "equation": "id5",
                 "position": {
                     "x": 100,
                     "y": 100
