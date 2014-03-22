@@ -6,11 +6,11 @@
  */
 
 define([
-    "dojo/on", "dojo/_base/declare", 
+    "dojo/on", "dojo/_base/declare", "dojo/_base/lang",
     "dijit/Dialog", "dijit/form/HorizontalSlider",
     "dojo/dom", "dojox/charting/Chart", "dojox/charting/axis2d/Default", "dojox/charting/plot2d/Lines",
     "dojox/charting/plot2d/Grid", "dojox/charting/widget/Legend","dojo/ready", "dojo/_base/lang","dijit/registry","dojo/domReady!"
-], function(on, declare, Dialog, HorizontalSlider, dom,
+], function(on, declare, lang, Dialog, HorizontalSlider, dom,
 	    // It looks like Default, Lines, Grid are not used.  Can they be removed?
 	    Chart, Default, Lines, Grid, Legend,ready,lang,registry){
     return declare(null, {
@@ -103,7 +103,7 @@ define([
             }*/
 
 
-            var tempGivenArrayOfNodeValues = this.copyObj(this.givenArrayOfNodeValues);
+            var tempGivenArrayOfNodeValues = lang.clone(this.givenArrayOfNodeValues);
 
             i = 0;
             for (j in this.studentArrayOfNodeValues) {
@@ -156,7 +156,7 @@ define([
                     }
 
                 }));
-            })
+            });
 
             i = 0;
             //create sliders based on number of input parameters
@@ -263,7 +263,7 @@ define([
                 var maxArrayValue = array[array.length - 1];
                 chartArray[j].addAxis("y", {vertical: true, min: 0, max: maxArrayValue, title: this.studentUnits[j]});
 
-                var descriptionID = this.studentObject.calculationObj.model.student.getDescriptionID(j);
+                descriptionID = this.studentObject.calculationObj.model.student.getDescriptionID(j);
 
                 //plot chart for student node
                 chartArray[j].addSeries("Variable solution", this.studentArrayOfNodeValues[j], {stroke: "green"});
@@ -293,8 +293,8 @@ define([
                     fixed: true, min: time.start, max: (time.end - time.start) / time.step, title: this.xunits,
                     titleOrientation: "away", titleGap: 5
                 });
-                var array = this.givenArrayOfNodeValues[j];
-                var maxArrayValue = array[array.length - 1];
+                array = this.givenArrayOfNodeValues[j];
+                maxArrayValue = array[array.length - 1];
                 chartArray[j].addAxis("y", {vertical: true, min: 0, max: maxArrayValue, title: this.units[j]});
 
                 //plot chart for given node
@@ -396,30 +396,15 @@ define([
             if (domType == "div") {
                 style = "";
                 domText = "";
-            }
-
-            if (domType == "label") {
+            } else if (domType == "label") {
                 domParam = "";
-            }
-
-            if (domType == "input") {
-
+            } else if (domType == "input") {
                 domText = "";
             }
 
             dom = "<" + domType + " " + domParam + " id= " + "'" + domId + "'" + ">" + domText + "</" + domType + ">";
             console.debug("dom is " + dom);
             return dom;
-        },
-
-        copyObj: function(obj){
-            var tempObj  = {};
-            var i;
-            for(i in obj)
-            {
-                tempObj[i] = obj[i];
-            }
-            return tempObj;
         },
 
         /*
