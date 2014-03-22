@@ -140,7 +140,7 @@
                 "initial": 100,
                 "units": "rabbits",
                 "inputs": [ { "ID": "id5" } ],
-                "equation": "id4+id5",
+                "equation": "id5",
                 "position": {
                     "x": 100,
                     "y": 100
