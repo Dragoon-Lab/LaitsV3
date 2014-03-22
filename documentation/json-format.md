@@ -61,7 +61,7 @@ description of the task (problem) that is being modeled.
             increases with time. The new population each month is its present 
             value plus the number of births (number of rabbits born each month). 
             The number of births is equal to the product of the population and 
-            the birth rate. The birthrate or the ratio of the number of rabbits 
+            the birth rate. The birth rate or the ratio of the number of rabbits 
             born in a month to the rabbit population that month has a fixed 
             value of 0.2.",
 
@@ -162,7 +162,7 @@ model to further challenge the student. They are included in the
 
     "extraDescriptions": [
         {
-                "genus": "model",
+                "genus": "extra",
                 "ID": "id7",
                 "name": "month two population",
                 "type": "parameter",
@@ -170,8 +170,9 @@ model to further challenge the student. They are included in the
                 "extra": false,
                 "units": "rabbits",
                 "inputs": [],
-                "initial": 120,
-                "description": "The number of rabbits in the population during the second month",
+                "initial": 100,
+                "description":
+				"The number of rabbits in the population after 1 year ",
                 "attemptCount": {
                     "description": 2,
                     "type": 1,
@@ -192,10 +193,29 @@ model to further challenge the student. They are included in the
 The attributes can include all of the attributes in the given model, though they 
 are not required to. This allows the student to potentially construct a full 
 node that is not needed, requiring the student to better understand the problem 
-and deduce which nodes are actually needed. The element "genus" identifies the 
-type of extra node for pedagogical module purposes. 
+and deduce which nodes are actually needed.
 
+The element "genus" identifies the type of extra node.  It *may* have the
+following values:
 
+* "allowed"   The student *may* include this quantity in a solution.
+Use of this quantity will still allow the student to construct a model that agrees
+with the given model. Thus, this designation can only apply to "function" nodes. 
+There is no penalty (or negative feedback) if the student includes this quantity, but there
+will be no hints or feedback suggesting the use of this quantity.
+
+* "extra" A quantity that might be part of a valid model, and
+  mentioned in the problem description, but
+  inclusion of this quantity will generally not allow the student to
+  construct a model that agrees with the given model.  There *may*
+  be a penalty or negative feedback if the student uses this quantity.
+  
+* "irrelevant"  A quantity that is not part of the given model and
+  not mentioned in the problem description. There *may*
+  be a penalty or negative feedback if the student uses this quantity.
+
+* "initialValue"   The initial value of a quantity that is in the given model.
+  
 ## Student Model Nodes ##
 
 Student model nodes are nodes that the student has created while trying to 
@@ -359,7 +379,7 @@ JSON document.
                 {
                     "ID": "id7",
                     "name": "month two population",
-                    "genus": "model",
+                    "genus": "extra",
                     "type": "parameter",
                     "parentNode": true,
                     "extra": false,
@@ -386,7 +406,7 @@ JSON document.
                     "name": "superpower fraction",
                     "description": "The ratio of rabbits born with superpowers to ordinary rabbits",
                     "units": "rabbits per rabbit",
-                    "genus": "extra"
+                    "genus": "irrelevant"
                 }
             ],
             "studentModelNodes": [

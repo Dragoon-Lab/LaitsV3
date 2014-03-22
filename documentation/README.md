@@ -3,7 +3,6 @@
 This contains mostly design documents. 
 
 * [Session behavior](sessions.md) which discusses saving, modifying, and sharing problems.
-* [Add sliders to parameters](sliders.md)
 * [Major modes](major-modes.md) (STUDENT COACHED TEST AUTHOR)
 * [JavaScript design](javascript.md)
 * [JSON format](json-format.md)
