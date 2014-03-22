@@ -3,12 +3,20 @@
  *                          AUTHOR mode-specific handlers
  */
 define([
-    'dojo/_base/declare',"dojo/_base/lang",
-    'dojo/dom-style',
-    'dijit/registry'
-], function(declare, lang, style, registry) {
+    'dojo/_base/declare', "dojo/_base/lang",
+    'dojo/dom-style', 'dojo/ready',
+    'dijit/registry',
+    './controller',
+    "dojo/domReady!"
+], function(declare, lang, style, ready, registry, controller) {
     
-    return declare(null, {
+    return declare(controller, {
+
+	constructor: function(){
+	    console.log("++++++++ In author constructor");
+	    this.authorControls();
+	    ready(this, "initAuthorHandles");
+	},
 
 	authorControls: function(){
 	    console.log("++++++++ Setting AUTHOR format in Node Editor.");

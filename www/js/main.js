@@ -12,7 +12,7 @@ define([
     "./load-save",
     "./model",
     "./RenderGraph", "./RenderTable", "./wraptext", 
-    "./controller",
+    "./con-student", './con-author',
     "parser/parser",
     "./draw-model",
     "./calculations",
@@ -20,7 +20,7 @@ define([
 ],function(
     lang, dom, geometry, on, aspect, ioQuery, ready, registry, 
     menu, loadSave, model, 
-    Graph, Table, wrapText, controller, Parser, drawmodel, calculations, logging
+    Graph, Table, wrapText, controlStudent, controlAuthor, Parser, drawmodel, calculations, logging
 ){ 
     
     console.log("load main.js");
@@ -48,19 +48,22 @@ define([
 	/*
 	 start up controller
 	 */
+
+	/* 
+	 The sub-mode of STUDENT mode can be either "feedback" or "power"
+	 This is eventually supposed to be supplied by the student model.
+	 In the mean time, allow it as a GET parameter.
+	 */
+	var subMode = query.sm || "feedback";
+	/* In principle, we could load just one controller or the other. */
+	var controllerObject = query.m == 'AUTHOR'?new controlAuthor(query.m, subMode, givenModel):
+		new controlStudent(query.m, subMode, givenModel);
+	if(controllerObject._PM)
+	    controllerObject._PM.setLogging(session);  // Set up direct logging in PM
 	 
 	ready(function(){
 	    
 	    var drawModel = new drawmodel(givenModel.active);
-	    /* 
-	     The sub-mode of STUDENT mode can be either "feedback" or "power"
-	     This is eventually supposed to be supplied by the student model.
-	     In the mean time, allow it as a GET parameter.
-	     */
-	    var subMode = query.sm || "feedback";
-	    var controllerObject  = new controller(query.m, subMode, givenModel);
-	    if(controllerObject._PM)
-		controllerObject._PM.setLogging(session);  // Set up direct logging in PM
 	    
 	    /* add "Create Node" button to menu */
 	    menu.add("createNodeButton", function(){

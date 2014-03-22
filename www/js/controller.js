@@ -6,10 +6,10 @@ define([
     "dojo/_base/array", 'dojo/_base/declare', "dojo/_base/lang", 
     'dojo/aspect', 'dojo/dom', "dojo/dom-class", "dojo/dom-construct", 'dojo/dom-style',
     'dojo/keys', 'dojo/on', "dojo/ready", 'dijit/registry',
-    "./pedagogical_module","./equation", './author'
-], function(array, declare, lang, aspect, dom, domClass, domConstruct, style, keys, on, ready, registry, PM, expression, author) {
+    "./pedagogical_module", './equation'
+], function(array, declare, lang, aspect, dom, domClass, domConstruct, style, keys, on, ready, registry, PM, expression) {
     
-    return declare(author, {
+    return declare(null, {
 	
 	_model: null,
         _PM: null,
@@ -23,17 +23,14 @@ define([
 
 	
 	constructor: function(mode, subMode, model){
+
+	    console.log("+++++++++ In generic controller constructor");
 	    this._model = model;
 	    this._mode = mode;
 	    if(this._mode != 'AUTHOR'){
 		this._PM = new PM(mode, subMode, model);
 	    }
 	    
-	    if(mode=='AUTHOR'){
-		this.authorControls();
-		this.initAuthorHandles();
-	    }
-
 	    // The Node Editor widget must be set up before modifications
             // It might be a better idea to only  call the controller
 	    // after widgets are set up.
