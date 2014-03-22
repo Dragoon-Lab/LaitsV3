@@ -295,11 +295,11 @@ define([
                 });
                 array = this.givenArrayOfNodeValues[j];
                 maxArrayValue = array[array.length - 1];
-                chartArray[j].addAxis("y", {vertical: true, min: 0, max: maxArrayValue, title: this.units[j]});
+                chartArray[j].addAxis("y", {vertical: true, min: 0, max: maxArrayValue, title: this.givenUnits[j]});
 
                 //plot chart for given node
                     chartArray[j].addSeries("correct solution", this.givenArrayOfNodeValues[j], {stroke: "red"});
-                    chartArray[j].addSeries("Variable solution", this.studentArrayOfNodeValues[j], {stroke: "green"});
+                //    chartArray[j].addSeries("Variable solution", this.studentArrayOfNodeValues[j], {stroke: "green"});
 
                 chartArray[j].render();
 
