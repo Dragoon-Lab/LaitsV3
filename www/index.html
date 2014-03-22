@@ -106,13 +106,6 @@
              <div data-dojo-type="dijit/form/Button" id="graphButton">Graph</div>
              <div data-dojo-type="dijit/form/Button" id="tableButton">Table</div>
              <div data-dojo-type="dijit/form/Button" id="forumButton">Forum</div>
-	     <div data-dojo-type="dijit/PopupMenuBarItem" id="authorMenu">
-                 <span>Author</span>
-		 <div data-dojo-type="dijit/Menu" id="authorMenuList">
-		    <div id="authorExtraNode" data-dojo-type="dijit/MenuItem">Extra Node</div>
-		    <div id="authorDescription" data-dojo-type="dijit/MenuItem">Description</div>                 		    <div id="authorTimes" data-dojo-type="dijit/MenuItem">Times</div>                    
-		 </div>
-             </div>
 	     <div data-dojo-type="dijit/PopupMenuBarItem">
                  <span>Help</span>
 		 <div data-dojo-type="dijit/Menu" id="menuHelp">
@@ -140,9 +133,16 @@
 			<!-- Putting Node-Editor -Dialog stuff for demo -->
         <div class="claro"  data-dojo-type="dijit/Dialog" id="nodeeditor">
             <div id="nameControl" class="fieldgroup" style="display:none">
-	       <label for="selectName">Name</label>
-               <select id="selectName" data-dojo-type="dijit/form/ComboBox">
+	       <label for="setName">Name</label>
+               <select id="setName" data-dojo-type="dijit/form/ComboBox">
                </select>
+	       <label for="selectKind">Kind of quantity</label>
+               <select id="selectKind" data-dojo-type="dijit/form/Select">
+	           <option value='given' selected>in solution</option>
+	           <option value='allowed'>optional</option>
+	           <option value='forbidden'>not allowed</option>
+	           <option value='offTopic'>irrelevant</option>
+	       </select>
 	   </div>
             <div id="descriptionControlStudent" class="fieldgroup">
 	       <label for="selectDescription">Description</label>
@@ -151,8 +151,8 @@
                </select>
 	   </div>
             <div id="descriptionControlAuthor" class="fieldgroup" style="display:none">
-	       <label for="comboDescription">Description</label>
-               <select id="comboDescription" data-dojo-type="dijit/form/ComboBox">
+	       <label for="setDescription">Description</label>
+               <select id="setDescription" data-dojo-type="dijit/form/ComboBox">
                </select>
 	   </div>
            <div class="fieldgroup">
@@ -171,8 +171,12 @@
                <select id="selectUnits" data-dojo-type="dijit/form/Select" intermediateChanges="false" trim="false" uppercase="false" lowercase="false" propercase="false" invalidMessage="$_unset_$" pageSize="Infinity" searchDelay="200">
                    <option value='defaultSelect'>--Select--</option>
                </select>
-               <select id="enterUnits" data-dojo-type="dijit/form/ComboBox" style="display:none">
+	       <!-- Setting display:none in the widget itself doesn't work.
+                    Also, div doesn't work here -->
+	       <span id="setUnitsControl" style="display:none">
+               <select id="setUnits" data-dojo-type="dijit/form/ComboBox" style="width:6em">
                </select>
+	       </span>
            </div>
            <div class="fieldgroup">
                <label for="nodeInputs">Input</label>

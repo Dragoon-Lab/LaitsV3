@@ -4,12 +4,12 @@
  */
 define([
     "dojo/_base/array", 'dojo/_base/declare', "dojo/_base/lang", 
-    'dojo/aspect', 'dojo/dom', "dojo/dom-class", "dojo/dom-construct", 
-    'dojo/dom-style', 'dojo/keys', 'dojo/on', "dojo/ready", 'dijit/registry',
-    "./pedagogical_module","./equation"
-], function(array, declare, lang, aspect, dom, domClass, domConstruct, style, keys, on, ready, registry, PM, expression) {
+    'dojo/aspect', 'dojo/dom', "dojo/dom-class", "dojo/dom-construct", 'dojo/dom-style',
+    'dojo/keys', 'dojo/on', "dojo/ready", 'dijit/registry',
+    "./pedagogical_module","./equation", './author'
+], function(array, declare, lang, aspect, dom, domClass, domConstruct, style, keys, on, ready, registry, PM, expression, author) {
     
-    return declare(null, {
+    return declare(author, {
 	
 	_model: null,
         _PM: null,
@@ -19,7 +19,7 @@ define([
 	 evaluating those changes.
 	 */
 	disableHandlers: false,
-    disableInitialTextEvent:false,
+	disableInitialTextEvent:false,
 
 	
 	constructor: function(mode, subMode, model){
@@ -29,6 +29,11 @@ define([
 		this._PM = new PM(mode, subMode, model);
 	    }
 	    
+	    if(mode=='AUTHOR'){
+		this.authorControls();
+		this.initAuthorHandles();
+	    }
+
 	    // The Node Editor widget must be set up before modifications
             // It might be a better idea to only  call the controller
 	    // after widgets are set up.
@@ -66,35 +71,28 @@ define([
 	    aspect.after(this._nodeEditor,"hide", 
 			 lang.hitch(this, this.closeEditor), true);
 
-	    // Turn on/off AUTHOR mode controls
-	    if(this._mode == 'AUTHOR'){
-		console.log("++++++++ Setting AUTHOR format in Node Editor.");
-		style.set('nameControl', 'display', 'block');
-		style.set('descriptionControlStudent', 'display', 'none');
-		style.set('descriptionControlAuthor', 'display', 'block');
-		console.warn("Units input not working in AUTHOR mode.");
-		style.set('selectUnits', 'display', 'none');
-		style.set('enterUnits', 'display', 'inline');
-	    }
+	    /*
+	     Initialize fields in the node editor that are
+	     common to all nodes in a problem.
 
-            // Initialize fields in the node editor that are
-            // common to all nodes in a problem.
-	    
+	     In AUTHOR mode, this needs to be done when the
+	     node editor is opened.
+	     */
 	    // Add fields to Description box and inputs box
-            // In author mode, the description control must be a text box
+	    // In author mode, the description control must be a text box
 	    var d = registry.byId(this.controlMap.description);
-            // populate input field
-            var t = registry.byId(this.controlMap.inputs);
+	    // populate input field
+	    var t = registry.byId(this.controlMap.inputs);
        	    // console.log("description widget = ", d);
 	    // d.removeOption(d.getOptions()); // Delete all options
 	    array.forEach(this._model.getAllDescriptions(), function(desc){
 	        d.addOption(desc);
 		var name = this._model.getName(desc.value);
-		var option = {label: desc.label+' '+ ' | '+' '+ name, value:desc.value};
+		    var option = {label: desc.label+' '+ ' | '+' '+ name, value:desc.value};
 		t.addOption(option);
 	    }, this);
 
-            /*
+	    /*
 	     Add attribute handler to all of the controls
 	     When "status" attribute is changed, then this function
 	     is called.
@@ -123,7 +121,7 @@ define([
 		array.forEach(this.options, function(option){
 		    if(!value || option.value == value)
 			option.disabled = false;
-		});
+		    });
 		this.startup();
 	    };
 	    var setDisableOption = function(value){
@@ -142,7 +140,7 @@ define([
 	    }, this);
 
 	    // Add appender to message widget
-            var messageWidget = registry.byId(this.widgetMap.message);
+	    var messageWidget = registry.byId(this.widgetMap.message);
 	    messageWidget._setAppendAttr = function (message){
 		var existing = this.get('content');
 		// console.log("+++++++ appending message '" + message + "' to ", this, existing);
@@ -155,13 +153,13 @@ define([
 	     Add fields to units box, using units in model node
              In author mode, this needs to be turned into a text box.
 	     */
-            var u = registry.byId("selectUnits");
+	    var u = registry.byId("selectUnits");
             // console.log("units widget ", u);
             array.forEach(this._model.getAllUnits(), function(unit){
 		u.addOption({label: unit, value: unit});
             });
 	},
-
+	
 	// Function called when node editor is closed.
 	// This can be used as a hook for saving sessions and logging
 	closeEditor: function(){
@@ -201,7 +199,7 @@ define([
 
 	    var desc = registry.byId(this.controlMap.description);
             desc.on('Change',  lang.hitch(this, function(){
-		return this.disableHandlers || this.handleDescription.apply(this, arguments);
+		return this.disableHandlers || this.handleSelectDescription.apply(this, arguments);
 	    }));
 
 	    var type = registry.byId(this.controlMap.type);
@@ -270,8 +268,8 @@ define([
 	// attributes that should be saved in the status section
 	validStatus: {status: true, disabled: true}, 
 	    
-	handleDescription: function(selectDescription){
-            console.log("****** in handleDescription ", this.currentID, selectDescription);
+	handleSelectDescription: function(selectDescription){
+            console.log("****** in handleChooseDescription ", this.currentID, selectDescription);
 	    if(selectDescription == 'defaultSelect')return; // don't do anything if they choose default
 
             // Update node editor and the model.	    
@@ -627,7 +625,6 @@ define([
 		}, this);
 	    }
 	    
-	}
-	
+	}	
     });	
 });

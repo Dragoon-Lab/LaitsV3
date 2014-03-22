@@ -1,51 +1,62 @@
 /* global define */
 /*
- *                          Author mode specific stuff
+ *                          AUTHOR mode-specific handlers
  */
 define([
-    "dojo/dom",
-    "dojo/on"
-], function(dom, on) {
-
-    // This is mainly to keep from cluttering up main.js too much
-    // There is no reason to bother with instantiation...
+    'dojo/_base/declare',"dojo/_base/lang",
+    'dojo/dom-style',
+    'dijit/registry'
+], function(declare, lang, style, registry) {
     
-    return {
-	setup: function(/*object*/ menu, /*object*/ model){
-	    
-	    /* add "Extra Node" button */
-	    on(dom.byId("authorExtraNode"), "click", function(){
-		console.warn("Author mode:  open extra quantity dialog box");
-		// var id = model.addExtraDescription() should have name, text, and type defined
-		// Extra quantities should be shown on canvas, so they can be 
-		// modified/deleted.
-	    });
+    return declare(null, {
 
-	    /* add "Description" button */
-	    on(dom.byId("authorDescription"), "click", function(){
-		console.warn("Author mode:  open description dialog box");
-		// model.setTaskDescription( ...);
-		// In author mode, description should be clickable on canvas
-	    });
+	authorControls: function(){
+	    console.log("++++++++ Setting AUTHOR format in Node Editor.");
+	    style.set('nameControl', 'display', 'block');
+	    style.set('descriptionControlStudent', 'display', 'none');
+	    style.set('descriptionControlAuthor', 'display', 'block');
+	    style.set('selectUnits', 'display', 'none');
+	    style.set('setUnitsControl', 'display', 'inline');
+	},
 
-	    /* add "Time" button */
-	    on(dom.byId("authorTimes"), "click", function(){
-		console.warn("Author mode:  open times dialog box");
-		// model.setStartTime( );
-		// model.setEndTime( );
-		// model.setTimeStep( );
-	    });
+	initAuthorHandles: function(){
+	    var name = registry.byId("setName");
+	    name.on('Change',  lang.hitch(this, function(){
+		return this.disableHandlers || this.handleName.apply(this, arguments);
+	    }));
+	    var kind = registry.byId("selectKind");
+	    kind.on('Change',  lang.hitch(this, function(){
+		return this.disableHandlers || this.handleKind.apply(this, arguments);
+	    }));
+	    var description = registry.byId("setDescription");
+	    description.on('Change',  lang.hitch(this, function(){
+		return this.disableHandlers || this.handleSetDescription.apply(this, arguments);
+	    }));
+	    var units = registry.byId("setUnits");
+	    units.on('Change',  lang.hitch(this, function(){
+		return this.disableHandlers || this.handleSetUnits.apply(this, arguments);
+	    }));
 
-	    /*
-	     Connect handlers for each of the dialog boxes here
-	     */
+	},
 
+	handleName: function(name){
+	    console.log("**************** in handleName ", name);
+	    this._nodeEditor.set('title', this._model.active.getName(this.currentID));
+	    this._model.active.setName(this.currentID, name);
+	},
+
+	handleKind: function(kind){
+	    console.log("**************** in handleKind ", kind);
+	},
+
+	handleSetDescription: function(setDescription){
+	    console.log("**************** in handleSetDescription ", setDescription);
+	    this.handleDescription(setDescription);
+	},
+
+	handleSetUnits: function(units){
+	    console.log("**************** in handleSetUnits ", units);
 	}
 
-	/*
-	 Add handlers for each of the dialog boxes here
-	 */
-
-	
-    };	
+    });
 });

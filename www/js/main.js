@@ -16,12 +16,11 @@ define([
     "parser/parser",
     "./draw-model",
     "./calculations",
-    "./logging",
-    './author'
+    "./logging"
 ],function(
     lang, dom, geometry, on, aspect, ioQuery, ready, registry, 
     menu, loadSave, model, 
-    Graph, Table, wrapText, controller, Parser, drawmodel, calculations, logging, author
+    Graph, Table, wrapText, controller, Parser, drawmodel, calculations, logging
 ){ 
     
     console.log("load main.js");
@@ -69,13 +68,6 @@ define([
 		drawModel.addNode(givenModel.active.getNode(id));
 		controllerObject.showNodeEditor(id);
 	    });
-
-	    /* 
-	     Set up author-mode stuff
-	     */
-	    registry.byId("authorMenu").set("disabled", query.m != 'AUTHOR');
-	    if(query.m == 'AUTHOR')
-		author.setup(menu, givenModel);
 	    
 	    /*
 	     Connect node editor to "click with no move" events.
@@ -148,7 +140,10 @@ define([
              the image and then get its dimensions.  (This is a property of 
 	     the image object) and use the dimensions to place the description
 
-	     Maybe in author mode make image clickable and 
+	     In AUTHOR mode, make image clickable or put in "click here" box.
+             Also, make description clickable, with default text "click here".
+	     These will be wired up to dialog boxes to set the image URL and
+             the description.
 	     */
 	    var canvas = document.getElementById('myCanvas');
       	    var context = canvas.getContext('2d');
