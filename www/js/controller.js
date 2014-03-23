@@ -4,25 +4,32 @@
  */
 define([
     "dojo/_base/array", 'dojo/_base/declare', "dojo/_base/lang", 
-    'dojo/aspect', 'dojo/dom', "dojo/dom-class", "dojo/dom-construct", 
-    'dojo/dom-style', 'dojo/keys', 'dojo/on', "dojo/ready", 'dijit/registry',
-    "./pedagogical_module","./equation"
+    'dojo/aspect', 'dojo/dom', "dojo/dom-class", "dojo/dom-construct", 'dojo/dom-style',
+    'dojo/keys', 'dojo/on', "dojo/ready", 'dijit/registry',
+    "./pedagogical_module", './equation'
 ], function(array, declare, lang, aspect, dom, domClass, domConstruct, style, keys, on, ready, registry, PM, expression) {
     
     return declare(null, {
 	
-	_model: {},
-        _PM: {},
+	_model: null,
+        _PM: null,
 	_nodeEditor: null, // node-editor object- will be used for populating fields
 	/*
 	 When opening the node editor, we need to populate the controls without
 	 evaluating those changes.
 	 */
 	disableHandlers: false,
+	disableInitialTextEvent:false,
+
 	
 	constructor: function(mode, subMode, model){
+
+	    console.log("+++++++++ In generic controller constructor");
 	    this._model = model;
-	    this._PM = new PM(mode, subMode, model);
+	    this._mode = mode;
+	    if(this._mode != 'AUTHOR'){
+		this._PM = new PM(mode, subMode, model);
+	    }
 	    
 	    // The Node Editor widget must be set up before modifications
             // It might be a better idea to only  call the controller
@@ -61,24 +68,28 @@ define([
 	    aspect.after(this._nodeEditor,"hide", 
 			 lang.hitch(this, this.closeEditor), true);
 
-            // Initialize fields in the node editor that are
-            // common to all nodes in a problem.
-	    
+	    /*
+	     Initialize fields in the node editor that are
+	     common to all nodes in a problem.
+
+	     In AUTHOR mode, this needs to be done when the
+	     node editor is opened.
+	     */
 	    // Add fields to Description box and inputs box
-            // In author mode, the description control must be a text box
+	    // In author mode, the description control must be a text box
 	    var d = registry.byId(this.controlMap.description);
-            // populate input field
-            var t = registry.byId(this.controlMap.inputs);
+	    // populate input field
+	    var t = registry.byId(this.controlMap.inputs);
        	    // console.log("description widget = ", d);
 	    // d.removeOption(d.getOptions()); // Delete all options
-	    array.forEach(this._model.getAllDescriptions(), function(desc){
+	    array.forEach(this._model.given.getDescriptions(), function(desc){
 	        d.addOption(desc);
-		var name = this._model.getName(desc.value);
+		var name = this._model.given.getName(desc.value);
 		var option = {label: desc.label+' '+ ' | '+' '+ name, value:desc.value};
 		t.addOption(option);
 	    }, this);
 
-            /*
+	    /*
 	     Add attribute handler to all of the controls
 	     When "status" attribute is changed, then this function
 	     is called.
@@ -107,7 +118,7 @@ define([
 		array.forEach(this.options, function(option){
 		    if(!value || option.value == value)
 			option.disabled = false;
-		});
+		    });
 		this.startup();
 	    };
 	    var setDisableOption = function(value){
@@ -126,24 +137,26 @@ define([
 	    }, this);
 
 	    // Add appender to message widget
-            var messageWidget = registry.byId(this.widgetMap.message);
+	    var messageWidget = registry.byId(this.widgetMap.message);
 	    messageWidget._setAppendAttr = function (message){
 		var existing = this.get('content');
 		// console.log("+++++++ appending message '" + message + "' to ", this, existing);
 		this.set('content', existing + '<p>' + message + '</p>');
+		// Scroll to bottom
+		this.domNode.scrollTop = this.domNode.scrollHeight;
 	    };
 	    
 	    /*
 	     Add fields to units box, using units in model node
              In author mode, this needs to be turned into a text box.
 	     */
-            var u = registry.byId("selectUnits");
+	    var u = registry.byId("selectUnits");
             // console.log("units widget ", u);
             array.forEach(this._model.getAllUnits(), function(unit){
 		u.addOption({label: unit, value: unit});
             });
 	},
-
+	
 	// Function called when node editor is closed.
 	// This can be used as a hook for saving sessions and logging
 	closeEditor: function(){
@@ -183,7 +196,7 @@ define([
 
 	    var desc = registry.byId(this.controlMap.description);
             desc.on('Change',  lang.hitch(this, function(){
-		return this.disableHandlers || this.handleDescription.apply(this, arguments);
+		return this.disableHandlers || this.handleSelectDescription.apply(this, arguments);
 	    }));
 
 	    var type = registry.byId(this.controlMap.type);
@@ -252,8 +265,8 @@ define([
 	// attributes that should be saved in the status section
 	validStatus: {status: true, disabled: true}, 
 	    
-	handleDescription: function(selectDescription){
-            console.log("****** in handleDescription ", this.currentID, selectDescription);
+	handleSelectDescription: function(selectDescription){
+            console.log("****** in handleChooseDescription ", this.currentID, selectDescription);
 	    if(selectDescription == 'defaultSelect')return; // don't do anything if they choose default
 
             // Update node editor and the model.	    
@@ -295,7 +308,7 @@ define([
 	    //update node type
             console.log("===========>   changing node class to "+type);
             domClass.replace(this.currentID, type);
-            var nodeName = this._model.student.getName(this.currentID);
+            var nodeName = this._model.active.getName(this.currentID);
             if(nodeName && type != "triangle")
 		nodeName = '<div id=' + this.currentID + 'Label><strong>' + nodeName + '</strong></div>';
             else
@@ -319,7 +332,7 @@ define([
            //perform all changes
 
            domClass.replace(this.currentID, type);
-           var nodeName = this._model.student.getName(this.currentID);
+           var nodeName = this._model.active.getName(this.currentID);
            if(nodeName && type != "triangle")
                nodeName = '<div id=' + this.currentID + 'Label><strong>' + nodeName + '</strong></div>';
            else
@@ -340,6 +353,12 @@ define([
 	},
 
 	handleInitial: function(initial){
+
+        if(this.disableInitialTextEvent){
+           this.disableInitialTextEvent=false;
+           return;
+        }
+
 	    console.log("****** Student has chosen initial value", initial, this);	    
 
             // updating node editor and the model.	    
@@ -351,8 +370,12 @@ define([
 		var w = registry.byId(this.widgetMap[directive.id]);
 		w.set(directive.attribute, directive.value);
 
-                if(directive.attribute=='value') //if correct value suggested by PM update model
-                    this._model.active.setInitial(this.currentId,initial);
+                if(directive.attribute=='value'){ //if correct value suggested by PM update model
+                    this._model.active.setInitial(this.currentID,directive.value);
+                    this.disableInitialTextEvent=true;
+                }
+
+                    w.set(directive.attribute, directive.value); //third parameter doesn't work for false attribute
 
             }, this);
 	},
@@ -391,7 +414,7 @@ define([
 	    console.log("*******Student has chosen input", id, this);
 	    // Should add name associated with id to equation
 	    // at position of cursor or at the end.
-	    var expr = this._model.getName(id);
+	    var expr = this._model.given.getName(id);
 	    this.equationInsert(expr);
  	},
 
@@ -463,11 +486,11 @@ define([
 	    if(parse){
 		var toPM = true;
 		array.forEach(parse.variables(), function(variable){
-		    // Test if variable name can be found in given model or extras
-		    var givenID = this._model.getNodeIDByName(variable);
+		    // Test if variable name can be found in given model
+		    var givenID = this._model.given.getNodeIDByName(variable);
 		    if(givenID){
-			// Test if variable has been defined by student
-			var studentID = this._model.student.getNodeIDFor(givenID);
+			// Test if variable has been defined already
+			var studentID = this._model.active.getNodeIDFor(givenID);
 			if(studentID){
 			    // console.log("       substituting ", variable, " -> ", studentID);
 			    parse.substitute(variable, studentID);
@@ -486,8 +509,8 @@ define([
 		this._model.active.setEquation(this.currentID, parsedEquation);
 
 		// Update inputs and connections
-		this._model.student.setInputs(parse.variables(), this.currentID);
-		this.setConnections(this._model.student.getInputs(this.currentID), this.currentID);
+		this._model.active.setInputs(parse.variables(), this.currentID);
+		this.setConnections(this._model.active.getInputs(this.currentID), this.currentID);
 
 		// Send to PM if all variables are known.
 		if(toPM)
@@ -525,10 +548,10 @@ define([
 		
 	populateNodeEditorFields : function(nodeid){
 	    //populate description
-	    var model = this._model;
+	    var model = this._model.active;
 	    var editor = this._nodeEditor;
 	    //set task name
-            var nodeName = model.student.getName(nodeid) || "New quantity";
+            var nodeName = model.getName(nodeid) || "New quantity";
 	    editor.set('title', nodeName);
 	    
 	    /* 
@@ -537,11 +560,12 @@ define([
 	     are applied each time the node editor is opened.
 	     */
 	    
-	    array.forEach(this._PM.newAction(), function(directive){
-		var w = registry.byId(this.controlMap[directive.id]);
-		w.set(directive.attribute, directive.value);
-	    }, this);
-		
+	    if(this._PM){
+		array.forEach(this._PM.newAction(), function(directive){
+		    var w = registry.byId(this.controlMap[directive.id]);
+		    w.set(directive.attribute, directive.value);
+		}, this);
+	    }	
 
 	    /* 
 	     Set values and choices based on student model
@@ -552,25 +576,25 @@ define([
 	     */
 
 	    // This sets the selected value in the description.
-	    var desc =  model.student.getDescriptionID(nodeid);
-            console.log('description is', desc || "not set");
+	    var desc = (this._mode == 'AUTHOR'?model.getDescription(nodeid):model.getDescriptionID(nodeid));
+	    console.log('description is', desc || "not set");
 	    registry.byId(this.controlMap.description).set('value', desc || 'defaultSelect');
 
-            var type = model.student.getType(nodeid);
+            var type = model.getType(nodeid);
             console.log('node type is', type || "not set");
             if(type)registry.byId(this.controlMap.type).set('value', type || 'defaultSelect');
 	    
-            var initial = model.student.getInitial(nodeid);
+            var initial = model.getInitial(nodeid);
             console.log('initial value is', initial || "not set");
             registry.byId(this.controlMap.initial).attr('value', initial || '');
 	    
-            var unit = model.student.getEachNodeUnitbyID(nodeid);
-            console.log('unit is', unit[nodeid] || "not set");
-            registry.byId(this.controlMap.units).set('value', unit[nodeid] || 'defaultSelect');
+            var unit = model.getUnits(nodeid);
+            console.log('unit is', unit || "not set");
+            registry.byId(this.controlMap.units).set('value', unit || 'defaultSelect');
 	    
-            var equation = model.student.getEquation(nodeid);
+            var equation = model.getEquation(nodeid);
             console.log("equation before conversion ", equation);
-            var mEquation = equation?expression.convert(model.student, equation):'';
+            var mEquation = equation?expression.convert(model, equation):'';
             console.log("equation after conversion ", mEquation);
             registry.byId(this.controlMap.equation).set('value', mEquation);
 	    
@@ -589,16 +613,15 @@ define([
 	    console.log("model: ", this._model.model.task);
 
 	    /*
-	     We will need a similar handler for each call 
-	     to the PM.  However, in that case, the model also
-	     needs updating.
+	     Set color and enable disable in non-AUTHOR modes.
 	     */
-	    array.forEach(model.student.getStatusDirectives(nodeid), function(directive){
-		var w = registry.byId(this.controlMap[directive.id]);
-		w.set(directive.attribute, directive.value);
-	    }, this);
+	    if(this._mode != 'AUTHOR'){
+		array.forEach(model.getStatusDirectives(nodeid), function(directive){
+		    var w = registry.byId(this.controlMap[directive.id]);
+		    w.set(directive.attribute, directive.value);
+		}, this);
+	    }
 	    
-	}
-	
+	}	
     });	
 });

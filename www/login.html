@@ -106,14 +106,21 @@
 
     <script type="text/javascript">
 
-function validateForm(){
-
-     var x=document.forms["problem-select"]["u"].value;
-     if (x==null || x=="")
-     {
-         alert("Please enter a username.");
-         return false;
-     }
+    function validateForm(){
+        var form = document.forms["problem-select"];
+        var x = form.u.value;
+        if (x==null || x==""){
+            alert("Please enter a username.");
+            return false;
+        }
+        // If author field is empty, remove from form.
+        // Dragoon treats the presence of the author field
+        // as a switch for author mode problems.
+        if(form.a.value.trim() == ""){
+          console.log("Deleting author (a) from GET.", form);
+          document.getElementById("author").removeAttribute('name');
+        }
+        return true;
     }
 
     </script>
@@ -163,6 +170,11 @@ function validateForm(){
                     <div class="fieldgroup">
                         <label for="section">Section: </label>
                         <input id="section" type="text" name="s" value="login.html"/>
+                    </div>
+
+                    <div class="fieldgroup">
+                        <label for="author">Author (optional): </label>
+                        <input id="author" type="text" name="a" value=""/>
                     </div>
 
                     <div class="fieldgroup">

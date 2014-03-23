@@ -12,16 +12,15 @@ define([
     "./load-save",
     "./model",
     "./RenderGraph", "./RenderTable", "./wraptext", 
-    "./controller",
+    "./con-student", './con-author',
     "parser/parser",
     "./draw-model",
     "./calculations",
-    "./logging",
-    './author'
+    "./logging"
 ],function(
     lang, dom, geometry, on, aspect, ioQuery, ready, registry, 
     menu, loadSave, model, 
-    Graph, Table, wrapText, controller, Parser, drawmodel, calculations, logging, author
+    Graph, Table, wrapText, controlStudent, controlAuthor, Parser, drawmodel, calculations, logging
 ){ 
     
     console.log("load main.js");
@@ -41,24 +40,30 @@ define([
     logging.setSession(session);  // Give logger message destination
     session.loadProblem(query).then(function(solutionGraph){
 
-	var givenModel = new model(query.m);
-	givenModel.loadModel(solutionGraph);
+	var givenModel = new model(query.m, query.p);
+	if(solutionGraph){
+	    givenModel.loadModel(solutionGraph);
+	}
 
 	/*
 	 start up controller
 	 */
+
+	/* 
+	 The sub-mode of STUDENT mode can be either "feedback" or "power"
+	 This is eventually supposed to be supplied by the student model.
+	 In the mean time, allow it as a GET parameter.
+	 */
+	var subMode = query.sm || "feedback";
+	/* In principle, we could load just one controller or the other. */
+	var controllerObject = query.m == 'AUTHOR'?new controlAuthor(query.m, subMode, givenModel):
+		new controlStudent(query.m, subMode, givenModel);
+	if(controllerObject._PM)
+	    controllerObject._PM.setLogging(session);  // Set up direct logging in PM
 	 
 	ready(function(){
 	    
-	    var drawModel = new drawmodel(givenModel);
-	    /* 
-	     The sub-mode of STUDENT mode can be either "feedback" or "power"
-	     This is eventually supposed to be supplied by the student model.
-	     In the mean time, allow it as a GET parameter.
-	     */
-	    var subMode = query.sm || "feedback";
-	    var controllerObject  = new controller(query.m, subMode, givenModel);
-	    controllerObject._PM.setLogging(session);  // Set up direct logging in PM
+	    var drawModel = new drawmodel(givenModel.active);
 	    
 	    /* add "Create Node" button to menu */
 	    menu.add("createNodeButton", function(){
@@ -66,13 +71,6 @@ define([
 		drawModel.addNode(givenModel.active.getNode(id));
 		controllerObject.showNodeEditor(id);
 	    });
-
-	    /* 
-	     Set up author-mode stuff
-	     */
-	    registry.byId("authorMenu").set("disabled", query.m != 'AUTHOR');
-	    if(query.m == 'AUTHOR')
-		author.setup(menu, givenModel);
 	    
 	    /*
 	     Connect node editor to "click with no move" events.
@@ -120,8 +118,11 @@ define([
 	    menu.add("graphButton",function(){
 		console.debug("button clicked");
 		
+		// Instead, one should pass "givenMovel" into here.Bug #2307
 		var calc = new calculations(solutionGraph,true);
-		var obj = calc.gerParametersForRendering(solutionGraph,true);
+		var givenObj = calc.gerParametersForRendering(solutionGraph,true);
+        var studentObj = calc.gerParametersForRendering(solutionGraph,false);
+        var obj = calc.setStudentGivenModel(givenObj,studentObj);
 		
 		// instantiate graph object
 		var graph = new Graph(obj);
@@ -140,6 +141,16 @@ define([
 		table.show();
 	    });
 	    
+	    /*
+	     BvdS:  this doesn't look quite right.  We want to download
+             the image and then get its dimensions.  (This is a property of 
+	     the image object) and use the dimensions to place the description
+
+	     In AUTHOR mode, make image clickable or put in "click here" box.
+             Also, make description clickable, with default text "click here".
+	     These will be wired up to dialog boxes to set the image URL and
+             the description.
+	     */
 	    var canvas = document.getElementById('myCanvas');
       	    var context = canvas.getContext('2d');
       	    var imageObj = new Image();
@@ -149,7 +160,11 @@ define([
         	context.drawImage(imageObj, 69, 50);
         	wrapText(context, desc_text, 70, 400, 400, 20);
       	    };
-      	    imageObj.src = givenModel.getImageURL();
+	    var url = givenModel.getImageURL();
+      	    if(url)
+		imageObj.src = url;
+	    else
+		console.warn("No image found.  Put clickable box on canvas in author mode?");
 	    
 	});
     });    

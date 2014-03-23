@@ -70,7 +70,6 @@
                 "units": "percent",
                 "inputs": [],
                 "initial": 0.2,
-                "equation": ".2",
                 "description": "The ratio of number of rabbits born in a month to the rabbit population that month",
                 "attemptCount": {
                     "description": 0,
@@ -80,13 +79,11 @@
                     "equation": 0
                 },
                 "status": {}
-            }
-        ],
-        "extraDescriptions": [
+            },
             {
                 "ID": "id7",
                 "name": "month two population",
-                "genus": "model",
+                "genus": "extra",
                 "type": "parameter",
                 "parentNode": true,
                 "extra": false,
@@ -108,7 +105,7 @@
                 "name": "superpower fraction",
                 "description": "The ratio of rabbits born with superpowers to ordinary rabbits",
                 "units": "rabbits per rabbit",
-                "genus": "extra"
+                "genus": "irrelevant"
             }
         ],
         "studentModelNodes": []
