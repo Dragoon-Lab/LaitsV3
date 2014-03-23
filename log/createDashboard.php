@@ -206,6 +206,10 @@ Class Dashboard{
 					} elseif($actionType === 'menu-choice'){
 						//chose something from the top menu
 						$lastAction = $messageJSON['name'].' clicked from the menu';
+						if($messageJSON['name'] === 'export-solution' && $mode == 'AUTHOR'){
+							$sessionRunning = false;
+							$problemComplete = true;
+						}
 					} elseif($actionType === 'close-dialog-box'){
 						$name = $messageJSON['node'];
 						$tab = $messageJSON['tab'];
@@ -358,14 +362,11 @@ Class Dashboard{
 				
 				if($messageJSON['time'] > $oldMessageJSON['time'] && $timeDiff > $maxIdleTime){
 					$userGaming = true;
-				}
-				if($continuedSession && $oldSession==$newSession) {
+				} else if($continuedSession && $messageJSON['time'] > $oldMessageJSON['time']) {
 					$problemTime = $problemTime + $timeDiff;
 				} else {
 					$noOfTimesProblemAccessed++;
 				}
-
-				
 
 				if($method === 'ui-action'){
 					$actionType = $messageJSON['type'];
@@ -404,6 +405,10 @@ Class Dashboard{
 					} elseif($actionType === 'menu-choice'){
 						//chose something from the top menu
 						$lastAction = $messageJSON['name'].' clicked from the menu';
+						if($messageJSON['name'] === 'export-solution' && $mode == 'AUTHOR'){
+							$sessionRunning = false;
+							$problemComplete = true;
+						}
 					} elseif($actionType === 'close-dialog-box'){
 						$name = $messageJSON['node'];
 						$tab = $messageJSON['tab'];
