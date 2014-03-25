@@ -33,14 +33,14 @@ define([
                 this.x = this.beginX;
                 this.y = this.beginY;
                 this.checkedNodes = new Array();
-                this.model =  {task: {
-                    taskName: name,
-		    time: {start: 0, end: 10, step: 0.5},
-                    properties: {}, 
-		    image: {},
-                    givenModelNodes: [],
-                    studentModelNodes: []
-                }};
+                this.model = {task: {
+                        taskName: name,
+                        time: {start: 0, end: 10, step: .5},
+                        properties: {},
+                        image: {},
+                        givenModelNodes: [],
+                        studentModelNodes: []
+                    }};
 
                 /*
                  Define the "active model" (see doucumentation/javascript.md).
@@ -185,6 +185,9 @@ define([
             },
             getURL: function() {
                 console.error("The function getURL() is deprecated. Use getImageURL().");
+            },
+            getImage: function() {
+                return this.model.task.image;
             },
             getImageURL: function() {
                 return this.model.task.image.URL;
@@ -331,8 +334,8 @@ define([
                 if (nodePart === "description")
                     return this.getOptimalNode(studentID);
                 else {
-		    var id = this.student.getDescriptionID(studentID);
-		    var node = this.givenExtra.getNode(id);
+                    var id = this.student.getDescriptionID(studentID);
+                    var node = this.givenExtra.getNode(id);
                     return node[nodePart];
                 }
             },
@@ -589,28 +592,28 @@ define([
             getOutputs: function(/*string*/ id) {
                 // Summary: return an array containing the output ids for a node.
                 var outputs = [];
-		array.forEach(this.getNodes(), function(node){
-		    if(array.some(node.inputs, function(input){
-			return input.ID == id;
-		    })){
-			outputs.push(node.ID);
-		    }
-		});
+                array.forEach(this.getNodes(), function(node) {
+                    if (array.some(node.inputs, function(input) {
+                        return input.ID == id;
+                    })) {
+                        outputs.push(node.ID);
+                    }
+                });
                 return outputs;
             },
-	    setInputs: function(/*array*/ inputs, /*string*/ inputInto){
-		// Silently filter out any inputs that are not defined.
-		var node = this.getNode(inputInto);
-		if(node){
-		    node.inputs = array.map(
-			array.filter(inputs, this.isNode, this), 
-			function(id){
-			    return {ID: id};
-			}, 
-			this
-		    );
-		}
-	    },
+            setInputs: function(/*array*/ inputs, /*string*/ inputInto) {
+                // Silently filter out any inputs that are not defined.
+                var node = this.getNode(inputInto);
+                if (node) {
+                    node.inputs = array.map(
+                            array.filter(inputs, this.isNode, this),
+                            function(id) {
+                                return {ID: id};
+                            },
+                            this
+                            );
+                }
+            },
             setType: function(/*string*/ id, /*string*/ type) {
                 var ret = this.getNode(id);
                 if (ret)
@@ -642,9 +645,9 @@ define([
                 obj.model.task.givenModelNodes.push(newNode);
                 return newNode.ID;
             },
-	    isExtra: function(/*string*/ id){
-		return this.getNode(id).genus;
-	    },
+            isExtra: function(/*string*/ id) {
+                return this.getNode(id).genus;
+            },
             getNodes: function() {
                 return obj.model.task.givenModelNodes;
             },
@@ -700,21 +703,21 @@ define([
                 this.getNode(id).attemptCount[part] = count;
             }
         }, both);
-	
-	obj.solution = lang.mixin({
-	    getNodes: function(){
-		return array.filter(obj.model.task.givenModelNodes, function(node){
-		    return !node.genus;
-		});
-	    },
-	    // This method is common with given but not student.
+
+        obj.solution = lang.mixin({
+            getNodes: function() {
+                return array.filter(obj.model.task.givenModelNodes, function(node) {
+                    return !node.genus;
+                });
+            },
+            // This method is common with given but not student.
             getName: function(/*string*/ id) {
                 // Summary: returns the name of a node matching the student model.
                 //      If no match is found, then return null.
                 var node = this.getNode(id);
                 return node && node.name;
             }
-	}, both);
+        }, both);
 
         obj.student = lang.mixin({
             addNode: function(options) {
