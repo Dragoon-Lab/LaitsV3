@@ -103,11 +103,16 @@ define([
 	    /*
 	     Autosave on close window
 	     It would be more efficient if we only saved the changed node.
+
+	     Connecting to controllerObject.closeEditor causes a race condition
+	     with code in controllerObject._setUpNodeEditor that wires up closeEditor.
+             Instead, we connect directly to the widget.
 	     */
-	    aspect.after(controllerObject, 'closeEditor', function(){
+	    aspect.after(registry.byId('nodeeditor'), "hide", function(){
+		console.log("Calling session.saveProblem");
 		session.saveProblem(givenModel.model);
 	    });
-	    
+
 	    /*
 	     Make model solution plot using dummy data. 
 	     This should be put in its own module.
