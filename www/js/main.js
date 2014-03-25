@@ -139,8 +139,11 @@ define([
 	    menu.add("tableButton", function(){        	
 		console.debug("table button clicked");
 		
-		var calc = new calculations(solutionGraph,true);
-		var obj = calc.gerParametersForRendering(solutionGraph,true);
+		/*var calc = new calculations(solutionGraph,true);
+		var obj = calc.gerParametersForRendering(solutionGraph,true);*/
+
+         var calc = new calculations(solutionGraph,false);
+         var obj = calc.gerParametersForRendering(solutionGraph,false);
 		
 		var table = new Table(obj);
 		table.show();
