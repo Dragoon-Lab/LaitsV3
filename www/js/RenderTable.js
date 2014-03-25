@@ -77,7 +77,8 @@ define([
                     on(slider, "change", lang.hitch(this, function () {
 
                         dom.byId("textTable"+index).value = slider.value;
-                        this.object.calculationObj.active.setInitial(paramID,slider.value);
+                        //this.object.calculationObj.active.setInitial(paramID,slider.value);
+                        this.object.calculationObj.model.student.setInitial(paramID,slider.value);
                         var newObj = this.object.calculationObj.gerParametersForRendering(this.object.calculationObj.solutionGraph,false);
 
                         this.nodeValueArray = newObj.arrayOfNodeValues;
@@ -161,7 +162,7 @@ define([
                     var i;
                     for(i in this.paramNames)
                     {
-                        this.object.calculationObj.active.setInitial(i,this.paramValue[i]);
+                        this.object.calculationObj.model.student.setInitial(i,this.paramValue[i]);
                     }
 
                 }));
