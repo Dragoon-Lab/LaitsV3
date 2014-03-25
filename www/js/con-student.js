@@ -121,12 +121,15 @@ define([
 	equationDoneHandler: function(){
 	    var directives = [];
 	    var parse = this.equationAnalysis(directives);
-	    if(parse)
-		directives.concat(this._PM.processAnswer(this.currentID, 'equation', parse));
+	    if(parse){
+		var dd = this._PM.processAnswer(this.currentID, 'equation', parse);
+		directives = directives.concat(dd);
+	    }
 	    // Now apply directives, either from PM or special messages above.
             array.forEach(directives, function(directive){
 		this.updateModelStatus(directive);
 		var w = registry.byId(this.widgetMap[directive.id]);
+		// console.log(">>>>>>>>> setting directive ", directive);
 		if(directive.attribute=='value'){
 		    w.set(directive.attribute, directive.value, false);
 		    // Update the model.
@@ -157,7 +160,7 @@ define([
 	    registry.byId(this.controlMap.description).set('value', desc || 'defaultSelect', false);
 
 	    /*
-	     Set color and enable disable in non-AUTHOR modes.
+	     Set color and enable/disable
 	     */
 	    array.forEach(this._model.student.getStatusDirectives(nodeid), function(directive){
 		var w = registry.byId(this.controlMap[directive.id]);

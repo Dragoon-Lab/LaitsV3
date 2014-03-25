@@ -98,11 +98,11 @@ define([
 		};
 		if(value)
 		    console.assert(colorMap[value], "Invalid color specification "+value);
-		// console.log(" >>>>>>>> changing color to " + value);
 		/* BvdS:  I chose bgColor because it was easy to do
 		 Might instead/also change text color? 
 		 Previously, just set domNode.bgcolor but this approach didn't work
 		 for text boxes.   */
+		// console.log(">>>>>>>>>>>>> setting color ", this.domNode.id, " to ", value);
 		style.set(this.domNode, 'backgroundColor', value?colorMap[value]:'');
 	    };
 	    for(var control in this.controlMap){
@@ -219,7 +219,14 @@ define([
             equationWidget.on('Change',  lang.hitch(this, function(){
 		return this.disableHandlers || this.handleEquation.apply(this, arguments);
 	    }));
-	    
+
+	    // When the equation box is enabled/disabled, do the same for
+	    // the inputs widget.
+	    equationWidget.watch("disabled", function(attr, oldValue, newValue){
+		// console.log("************* " + (newValue?"dis":"en") + "able inputs");
+		inputsWidget.set("disabled", newValue);
+	    });
+
 	    // For each button 'name', assume there is an associated widget in the HTML
 	    // with id 'nameButton' and associated handler 'nameHandler' below.
 	    var buttons = ['plus', 'minus', 'times', 'divide', 'undo', 'equationDone'];
@@ -229,6 +236,12 @@ define([
 		var handler = this[button + 'Handler'];
 		console.assert(handler, "Button handler '" + handler + "' not found");
 		w.on('click', lang.hitch(this, handler));
+		/*  When the equation box is enabled/disabled also do the same
+		 for this button */
+		equationWidget.watch("disabled", function(attr, oldValue, newValue){
+		    // console.log("************* " + (newValue?"dis":"en") + "able " + button);
+		    w.set("disabled", newValue);
+		});
 	    }, this);
 
 
@@ -397,6 +410,7 @@ define([
 		// Update inputs and connections
 		this._model.active.setInputs(parse.variables(), this.currentID);
 		this.setConnections(this._model.active.getInputs(this.currentID), this.currentID);
+		// console.log("************** equationAnalysis directives ", directives);
 
 		// Send to PM if all variables are known.
 		return toPM?parse:null;
