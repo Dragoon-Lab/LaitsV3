@@ -157,7 +157,32 @@ define([
 		    }
 		}
 	    });
-	} 
+	},
+
+	isSum: function(parse){
+            // Return true if expression is a sum of variables, allowing for minus signs.
+	    // Note that a bare variable will also return true.
+	    var ops = parse.operators();
+	    var allowed = {"+": true, "-": true, "variable": true};
+	    for(var op in ops){
+		if(ops[op]>0 && !allowed[op])return false;
+	    }
+	    return true;
+	},
+
+	isProduct: function(parse){
+            // Return true if the expression is a product of variables, allowing for division
+	    // Note that explicit powers (a^2) are not allowed, which is mathematically incorrect
+	    // but we have no mechanism for adding powers on our user interface.  For problems
+	    // that are that complicated, the student should be using the full text entry anyway.
+	    // Note that a bare variable will also return true.
+	    var ops = parse.operators();
+	    var allowed = {"*": true, "/": true, "variable": true};
+	    for(var op in ops){
+		if(ops[op]>0 && !allowed[op])return false;
+	    }
+	    return true;
+	}
 
     };
 });
