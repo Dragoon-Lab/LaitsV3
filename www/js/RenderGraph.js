@@ -15,6 +15,9 @@ define([
 	    Chart, Default, Lines, Grid, Legend,ready,lang,registry){
     return declare(null, {
 
+        //array of timesteps
+        timeSteps: new Array(),
+
         //no of parameters that can affect graph. This parameter will be used to create sliders
         givenInputParam: 0,
         studentInputParam: 0,
@@ -30,6 +33,11 @@ define([
         //object containing array of calculated values of 'function' & 'accumulator' nodes
         givenArrayOfNodeValues: {},
         studentArrayOfNodeValues: {},
+
+        //format above array of nodevalues for charting
+        givenFormattedArrayOfNodeValues: {},
+        studentFormattedArrayOfNodeValues: {},
+
 
         //units of nodes
         givenUnits: {},
@@ -77,6 +85,7 @@ define([
             this.studentUnits = object.studentObj.units;
 
             this.xunits = object.givenObj.xUnits;
+            this.timeSteps = object.givenObj.arrayOfTimeSteps;
             this.initialize();
 
         },
@@ -102,6 +111,7 @@ define([
                 i++;
             }*/
 
+            this.formatArrayOfNodeValuesForChart();
 
             var tempGivenArrayOfNodeValues = lang.clone(this.givenArrayOfNodeValues);
 
@@ -147,10 +157,14 @@ define([
                     this.studentObject.calculationObj.active.setInitial(paramID, slider.value);
                     var newObj = this.studentObject.calculationObj.gerParametersForRendering(this.studentObject.calculationObj.solutionGraph, false);
 
+                    this.studentArrayOfNodeValues = newObj.arrayOfNodeValues;
+                    this.formatArrayOfNodeValuesForChart();
+
                     //update and render the chart
                     var l = 0;
                     for (var k in newObj.arrayOfNodeValues) {
-                        this.chart[k].updateSeries("Variable solution", newObj.arrayOfNodeValues[k]);
+                        //***this.chart[k].updateSeries("Variable solution", newObj.arrayOfNodeValues[k]);
+                        this.chart[k].updateSeries("Variable solution", this.studentFormattedArrayOfNodeValues[k]);
                         this.chart[k].render();
                         l++;
                     }
@@ -256,7 +270,7 @@ define([
                 chartArray[j].addPlot("default", {type: Lines, markers: true});
 
                 chartArray[j].addAxis("x", {
-                    fixed: true, min: time.start, max: (time.end - time.start) / time.step, title: this.xunits,
+                    title: this.xunits,
                     titleOrientation: "away", titleGap: 5
                 });
                 var array = this.studentArrayOfNodeValues[j];
@@ -266,11 +280,13 @@ define([
                 descriptionID = this.studentObject.calculationObj.model.student.getDescriptionID(j);
 
                 //plot chart for student node
-                chartArray[j].addSeries("Variable solution", this.studentArrayOfNodeValues[j], {stroke: "green"});
+                //***chartArray[j].addSeries("Variable solution", this.studentArrayOfNodeValues[j], {stroke: "green"});
+                chartArray[j].addSeries("Variable solution", this.studentFormattedArrayOfNodeValues[j], {stroke: "green"});
                 //plot chart from given node if it matches with student node
                 if((this.studentObject.calculationObj.model.given.isNode(descriptionID)))
                 {
-                    chartArray[j].addSeries("correct solution", this.givenArrayOfNodeValues[descriptionID], {stroke: "red"});
+                    //***chartArray[j].addSeries("correct solution", this.givenArrayOfNodeValues[descriptionID], {stroke: "red"});
+                    chartArray[j].addSeries("correct solution", this.givenFormattedArrayOfNodeValues[descriptionID], {stroke: "red"});
                     //remove plotted node from collection
                     delete this.givenArrayOfNodeValues[descriptionID];
                 }
@@ -290,7 +306,7 @@ define([
                 chartArray[j].addPlot("default", {type: Lines, markers: true});
 
                 chartArray[j].addAxis("x", {
-                    fixed: true, min: time.start, max: (time.end - time.start) / time.step, title: this.xunits,
+                    fixed: true,  title: this.xunits,
                     titleOrientation: "away", titleGap: 5
                 });
                 array = this.givenArrayOfNodeValues[j];
@@ -298,7 +314,8 @@ define([
                 chartArray[j].addAxis("y", {vertical: true, min: 0, max: maxArrayValue, title: this.givenUnits[j]});
 
                 //plot chart for given node
-                    chartArray[j].addSeries("correct solution", this.givenArrayOfNodeValues[j], {stroke: "red"});
+                    //***chartArray[j].addSeries("correct solution", this.givenArrayOfNodeValues[j], {stroke: "red"});
+                chartArray[j].addSeries("correct solution", this.givenFormattedArrayOfNodeValues[j], {stroke: "red"});
                 //    chartArray[j].addSeries("Variable solution", this.studentArrayOfNodeValues[j], {stroke: "green"});
 
                 chartArray[j].render();
@@ -405,6 +422,44 @@ define([
             dom = "<" + domType + " " + domParam + " id= " + "'" + domId + "'" + ">" + domText + "</" + domType + ">";
             console.debug("dom is " + dom);
             return dom;
+        },
+
+        formatArrayOfNodeValuesForChart: function()
+        {
+            var i,j;
+
+            //convert array of node values to object {x:timestep,y:node value for timestep}
+            for(i in this.givenArrayOfNodeValues)
+            {
+
+                var tempArray = this.givenArrayOfNodeValues[i];
+                var arrayOfXYpairs = new Array();
+                for(j=0; j<tempArray.length;j++)
+                {
+                    var obj = new Object();
+                    obj["x"] = this.timeSteps[j];
+                    obj["y"] = tempArray[j];
+                    arrayOfXYpairs.push(obj);
+                }
+
+                this.givenFormattedArrayOfNodeValues[i] = arrayOfXYpairs;
+            }
+
+            for(i in this.studentArrayOfNodeValues)
+            {
+
+                var tempArray = this.studentArrayOfNodeValues[i];
+                var arrayOfXYpairs = new Array();
+                for(j=0; j<tempArray.length;j++)
+                {
+                    var obj = new Object();
+                    obj["x"] = this.timeSteps[j];
+                    obj["y"] = tempArray[j];
+                    arrayOfXYpairs.push(obj);
+                }
+
+                this.studentFormattedArrayOfNodeValues[i] = arrayOfXYpairs;
+            }
         },
 
         /*
