@@ -343,8 +343,9 @@ define([
 	},
 
 	undoHandler: function(){
-	    console.warn("****** undo button not implemented");
-	    // We will work on this later
+	    var widget = registry.byId(this.controlMap.equation);
+	    // Delete everything in equation box.
+	    var oldEqn = widget.set("value", "");
 	},
 	
 	equationAnalysis: function(directives){
