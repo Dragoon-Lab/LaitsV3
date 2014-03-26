@@ -182,6 +182,7 @@ define([
 	 filtering out any source nodes that don't exist. 
 	 */
 	setConnections: function(/*array*/ sources, /*string*/ destination){
+	    console.log("--------- in setConnections for ", sources, destination);
 	    // For now, we simply remove all existing connections and 
 	    // create all new connections.
 	    // See http://stackoverflow.com/questions/11488067/how-to-delete-jsplumb-connection

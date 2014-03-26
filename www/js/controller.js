@@ -6,13 +6,12 @@ define([
     "dojo/_base/array", 'dojo/_base/declare', "dojo/_base/lang", 
     'dojo/aspect', 'dojo/dom', "dojo/dom-class", "dojo/dom-construct", 'dojo/dom-style',
     'dojo/keys', 'dojo/on', "dojo/ready", 'dijit/registry',
-    "./pedagogical_module", './equation'
-], function(array, declare, lang, aspect, dom, domClass, domConstruct, style, keys, on, ready, registry, PM, expression) {
+    './equation'
+], function(array, declare, lang, aspect, dom, domClass, domConstruct, style, keys, on, ready, registry, expression) {
     
     return declare(null, {
 	
 	_model: null,
-        _PM: null,
 	_nodeEditor: null, // node-editor object- will be used for populating fields
 	/*
 	 When opening the node editor, we need to populate the controls without
@@ -27,9 +26,6 @@ define([
 	    console.log("+++++++++ In generic controller constructor");
 	    this._model = model;
 	    this._mode = mode;
-	    if(this._mode != 'AUTHOR'){
-		this._PM = new PM(mode, subMode, model);
-	    }
 	    
 	    // The Node Editor widget must be set up before modifications
             // It might be a better idea to only  call the controller
@@ -65,8 +61,8 @@ define([
 	    this._nodeEditor = registry.byId('nodeeditor');
 
 	    // Wire up this.closeEditor
-	    aspect.after(this._nodeEditor,"hide", 
-			 lang.hitch(this, this.closeEditor), true);
+	    aspect.after(this._nodeEditor, "hide", 
+			 lang.hitch(this, this.closeEditor));
 
 	    /*
 	     Initialize fields in the node editor that are
@@ -102,11 +98,11 @@ define([
 		};
 		if(value)
 		    console.assert(colorMap[value], "Invalid color specification "+value);
-		// console.log(" >>>>>>>> changing color to " + value);
 		/* BvdS:  I chose bgColor because it was easy to do
 		 Might instead/also change text color? 
 		 Previously, just set domNode.bgcolor but this approach didn't work
 		 for text boxes.   */
+		// console.log(">>>>>>>>>>>>> setting color ", this.domNode.id, " to ", value);
 		style.set(this.domNode, 'backgroundColor', value?colorMap[value]:'');
 	    };
 	    for(var control in this.controlMap){
@@ -194,11 +190,6 @@ define([
 	     We could write a function to attach the handlers?
 	     */
 
-	    var desc = registry.byId(this.controlMap.description);
-            desc.on('Change',  lang.hitch(this, function(){
-		return this.disableHandlers || this.handleSelectDescription.apply(this, arguments);
-	    }));
-
 	    var type = registry.byId(this.controlMap.type);
             type.on('Change',  lang.hitch(this, function(){
 		return this.disableHandlers || this.handleType.apply(this, arguments);
@@ -219,11 +210,6 @@ define([
 		    this.emit('Change', {}, [this.get('value')]);
 	    });
 
-	    var unitsWidget = registry.byId(this.controlMap.units);
-            unitsWidget.on('Change',  lang.hitch(this, function(){
-		return this.disableHandlers || this.handleUnits.apply(this, arguments);
-	    }));
-
 	    var inputsWidget = registry.byId(this.controlMap.inputs);
             inputsWidget.on('Change',  lang.hitch(this, function(){
 		return this.disableHandlers || this.handleInputs.apply(this, arguments);
@@ -233,7 +219,14 @@ define([
             equationWidget.on('Change',  lang.hitch(this, function(){
 		return this.disableHandlers || this.handleEquation.apply(this, arguments);
 	    }));
-	    
+
+	    // When the equation box is enabled/disabled, do the same for
+	    // the inputs widget.
+	    equationWidget.watch("disabled", function(attr, oldValue, newValue){
+		// console.log("************* " + (newValue?"dis":"en") + "able inputs");
+		inputsWidget.set("disabled", newValue);
+	    });
+
 	    // For each button 'name', assume there is an associated widget in the HTML
 	    // with id 'nameButton' and associated handler 'nameHandler' below.
 	    var buttons = ['plus', 'minus', 'times', 'divide', 'undo', 'equationDone'];
@@ -243,6 +236,12 @@ define([
 		var handler = this[button + 'Handler'];
 		console.assert(handler, "Button handler '" + handler + "' not found");
 		w.on('click', lang.hitch(this, handler));
+		/*  When the equation box is enabled/disabled also do the same
+		 for this button */
+		equationWidget.watch("disabled", function(attr, oldValue, newValue){
+		    // console.log("************* " + (newValue?"dis":"en") + "able " + button);
+		    w.set("disabled", newValue);
+		});
 	    }, this);
 
 
@@ -264,13 +263,9 @@ define([
 
 	// attributes that should be saved in the status section
 	validStatus: {status: true, disabled: true}, 
-	    
-	handleSelectDescription: function(selectDescription){
-            console.log("****** in handleChooseDescription ", this.currentID, selectDescription);
-	    if(selectDescription == 'defaultSelect')return; // don't do anything if they choose default
 
+	updateNodes: function(){
             // Update node editor and the model.	    
-            this._model.active.setDescriptionID(this.currentID, selectDescription);
 	    this._nodeEditor.set('title', this._model.active.getName(this.currentID));
 
 	    // Update inputs and other equations based on new quantity.
@@ -280,31 +275,12 @@ define([
 	    // need to add connections based on new inputs in model.
 	    // add hook so we can do this in draw-model...
 	    this.addQuantity(this.currentID, this._model.active.getOutputs(this.currentID));
-
-            var directives = this._PM.processAnswer(this.currentID, 'description', selectDescription);
-	    array.forEach(directives , function(directive){
-		this.updateModelStatus(directive);
-		var w = registry.byId(this.widgetMap[directive.id]);
-		// console.log("*********  setting widget ", w, " using ", directive);
-
-        if(directive.attribute=='value'){
-           w.set(directive.attribute, directive.value,false);
-            // Update the model.
-            this._model.active.setDescriptionID(this.currentID, directive.value);
-        }
-        else
-		    w.set(directive.attribute, directive.value);
-
-            }, this);	    
 	},
-
+	    
 	/* Stub to update connections in graph */
 	addQuantity: function(source, destinations){},
-	
-	handleType: function(type){
-	    console.log("****** Student has chosen type ", type, this);
-	    if(type == 'defaultSelect')return; // don't do anything if they choose default
 
+	updateType: function(type){
 	    //update node type
             console.log("===========>   changing node class to "+type);
             domClass.replace(this.currentID, type);
@@ -313,89 +289,13 @@ define([
 		nodeName = '<div id=' + this.currentID + 'Label><strong>' + nodeName + '</strong></div>';
             else
 		nodeName = '';
-            if(lang.exists(this.currentID+'Label'))
+            if(dom.byId(this.currentID+'Label'))
 		domConstruct.place(nodeName, this.currentID+'Label', "replace");
             else //new node
 		domConstruct.place(nodeName, this.currentID);
 	    
             // updating node editor and the model.	    
             this._model.active.setType(this.currentID, type);
-            var directives = this._PM.processAnswer(this.currentID, 'type', type);
-            array.forEach(directives, function(directive){
-		console.log("*********** update node editor ", directive); 
-		this.updateModelStatus(directive);
-		var w = registry.byId(this.widgetMap[directive.id]);
-
-       if(directive.attribute=='value'){  //if correct value suggested by PM
-            w.set(directive.attribute, directive.value,false);
-
-           //perform all changes
-
-           domClass.replace(this.currentID, type);
-           var nodeName = this._model.active.getName(this.currentID);
-           if(nodeName && type != "triangle")
-               nodeName = '<div id=' + this.currentID + 'Label><strong>' + nodeName + '</strong></div>';
-           else
-               nodeName = '';
-           if(lang.exists(this.currentID+'Label'))
-               domConstruct.place(nodeName, this.currentID+'Label', "replace");
-           else //new node
-               domConstruct.place(nodeName, this.currentID);
-
-
-            // Update the model.
-            this._model.active.setType(this.currentID, type);
-        }
-        else
-		w.set(directive.attribute, directive.value);
-
-            }, this);	    
-	},
-
-	handleInitial: function(initial){
-
-        if(this.disableInitialTextEvent){
-           this.disableInitialTextEvent=false;
-           return;
-        }
-
-	    console.log("****** Student has chosen initial value", initial, this);	    
-
-            // updating node editor and the model.	    
-            this._model.active.setInitial(this.currentID, initial);
-            var directives = this._PM.processAnswer(this.currentID, 'initial', initial);
-            array.forEach(directives, function(directive){
-		// console.log("*********** update node editor ", directive); 
-		this.updateModelStatus(directive);
-		var w = registry.byId(this.widgetMap[directive.id]);
-		w.set(directive.attribute, directive.value);
-
-                if(directive.attribute=='value'){ //if correct value suggested by PM update model
-                    this._model.active.setInitial(this.currentID,directive.value);
-                    this.disableInitialTextEvent=true;
-                }
-
-                    w.set(directive.attribute, directive.value); //third parameter doesn't work for false attribute
-
-            }, this);
-	},
-
-	handleUnits: function(unit){
-	    console.log("*******Student has chosen unit", unit, this);
-
-            // updating node editor and the model.	    
-            this._model.active.setUnits(this.currentID, unit);
-	    var directives = this._PM.processAnswer(this.currentID, 'units', unit);
-            array.forEach(directives, function(directive){
-		this.updateModelStatus(directive);
-		var w = registry.byId(this.widgetMap[directive.id]);
-        if(directive.attribute=='value'){
-           w.set(directive.attribute, directive.value,false);
-           // Update the model.
-           this._model.active.setUnits(this.currentID, unit);
-         }else
-		w.set(directive.attribute, directive.value);
-       }, this);
 	},
 
 	equationInsert: function(text){
@@ -447,7 +347,7 @@ define([
 	    // We will work on this later
 	},
 	
-	equationDoneHandler: function(){
+	equationAnalysis: function(directives){
 	    console.log("****** enter button");
 	    /*
 	     This takes the contents of the equation box and parses it.
@@ -471,7 +371,6 @@ define([
 	     */
 	    var widget = registry.byId(this.controlMap.equation);
 	    var inputEquation = widget.get("value");
-	    var directives = [];
 	    var parse = null;
 	    try{
 		parse = expression.parse(inputEquation);
@@ -511,18 +410,12 @@ define([
 		// Update inputs and connections
 		this._model.active.setInputs(parse.variables(), this.currentID);
 		this.setConnections(this._model.active.getInputs(this.currentID), this.currentID);
+		// console.log("************** equationAnalysis directives ", directives);
 
 		// Send to PM if all variables are known.
-		if(toPM)
-		    directives.concat(this._PM.processAnswer(this.currentID, 'equation', parse));
+		return toPM?parse:null;
 	    }
-	    
-	    // Now apply directives, either from PM or special messages above.
-            array.forEach(directives, function(directive){
-		this.updateModelStatus(directive);
-		var w = registry.byId(this.widgetMap[directive.id]);
-		w.set(directive.attribute, directive.value);
-            }, this);
+	    return null;
 	},
 
 	// Stub to connect logging to record bad parse.
@@ -538,6 +431,7 @@ define([
            console.log("showNodeEditor called for node ", id);
 	   this.currentID = id; //moved using inside populateNodeEditorFields
 	   this.disableHandlers = true; 
+	   this.initialControlSettings(id);
 	   this.populateNodeEditorFields(id);
 	   this._nodeEditor.show().then(
 	       lang.hitch(this, function(){
@@ -545,7 +439,12 @@ define([
 	       })
 	   );
        },
-		
+
+	// Stub to be overwritten by student or author mode-specific method.
+	initialControlSettings: function(){
+	    console.error("initialControlSettings should be overwritten.");
+	},
+
 	populateNodeEditorFields : function(nodeid){
 	    //populate description
 	    var model = this._model.active;
@@ -553,19 +452,6 @@ define([
 	    //set task name
             var nodeName = model.getName(nodeid) || "New quantity";
 	    editor.set('title', nodeName);
-	    
-	    /* 
-	     Settings for a new node, as suppied by the PM.
-	     These don't need to be recorded in the model, since they
-	     are applied each time the node editor is opened.
-	     */
-	    
-	    if(this._PM){
-		array.forEach(this._PM.newAction(), function(directive){
-		    var w = registry.byId(this.controlMap[directive.id]);
-		    w.set(directive.attribute, directive.value);
-		}, this);
-	    }	
 
 	    /* 
 	     Set values and choices based on student model
@@ -574,11 +460,6 @@ define([
 	     
 	     Set value for initial value, equation (input), 
 	     */
-
-	    // This sets the selected value in the description.
-	    var desc = (this._mode == 'AUTHOR'?model.getDescription(nodeid):model.getDescriptionID(nodeid));
-	    console.log('description is', desc || "not set");
-	    registry.byId(this.controlMap.description).set('value', desc || 'defaultSelect');
 
             var type = model.getType(nodeid);
             console.log('node type is', type || "not set");
@@ -610,18 +491,6 @@ define([
 	     Note that if equation is disabled then 
 	     input, +, -, *, /, undo, and done should also be disabled.
 	     */
-	    console.log("model: ", this._model.model.task);
-
-	    /*
-	     Set color and enable disable in non-AUTHOR modes.
-	     */
-	    if(this._mode != 'AUTHOR'){
-		array.forEach(model.getStatusDirectives(nodeid), function(directive){
-		    var w = registry.byId(this.controlMap[directive.id]);
-		    w.set(directive.attribute, directive.value);
-		}, this);
-	    }
-	    
 	}	
     });	
 });

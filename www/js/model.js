@@ -334,8 +334,8 @@ define([
                 if (nodePart === "description")
                     return this.getOptimalNode(studentID);
                 else {
-                    var id = this.student.getDescriptionID(studentID);
-                    var node = this.givenExtra.getNode(id);
+		    var id = this.student.getDescriptionID(studentID);
+		    var node = this.given.getNode(id);
                     return node[nodePart];
                 }
             },
@@ -551,13 +551,15 @@ define([
                 });
             },
             getNode: function(/*string*/ id) {
-                var ret;
-                var gotIt = array.some(this.getNodes(), function(node) {
-                    ret = node;
-                    return node.ID == id;
-                });
-                console.assert(gotIt, "No matching node for '" + id + "'");
-                return gotIt ? ret : null;
+		// This is not very efficient:  should probably have separate
+		// method for each sub-class and construct a hash table.
+                var nodes = this.getNodes();
+		var l = nodes.length;
+		for(var i=0; i<l; i++){
+		    if(nodes[i].ID == id) return nodes[i];
+		}
+                console.warn("No matching node for '" + id + "'");
+                return null;
             },
             getType: function(/*string*/ id) {
                 var node = this.getNode(id);
@@ -679,7 +681,10 @@ define([
                 return this.getNode(id).description;
             },
             setName: function(/*string*/ id, /*string*/ name) {
-                this.getNode(id).name = name;
+                this.getNode(id).name = name.trim();
+            },
+            setDescription: function(/*string*/ id, /*string*/ description) {
+                this.getNode(id).description = description.trim();
             },
             setParent: function(/*string*/ id, /*bool*/ parent) {
                 this.getNode(id).parentNode = parent;
@@ -695,9 +700,6 @@ define([
             },
             setEquation: function(/*string*/ id, /*string | object*/ equation) {
                 this.getNode(id).equation = equation;
-            },
-            setDescription: function(/*string*/ id, /*string*/ description) {
-                this.getNode(id).description = description;
             },
             setAttemptCount: function(/*string*/ id, /*string*/ part, /*string*/ count) {
                 this.getNode(id).attemptCount[part] = count;
@@ -787,6 +789,7 @@ define([
                 this.getNode(id).initial = initial;
             },
             setUnits: function(/*string*/ id, /*string*/ units) {
+		console.log("******** Setting student units to ", units);
                 this.getNode(id).units = units;
             },
             setEquation: function(/*string*/ id, /*string | object*/ equation) {

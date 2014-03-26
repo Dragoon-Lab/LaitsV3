@@ -67,104 +67,135 @@ define([
         	
      	   var i=0,j=0,domId="",tempArray;
 
+            //check if array of node values is empty
+            //plot table if these values are not empty
 
-           //this.dialogContent = this.dialogContent+this.createDom("div","table","","");
+               //this.dialogContent = this.dialogContent+this.createDom("div","table","","");
+               this.dialogContent = this.dialogContent+ "<div id='table'></div>";
 
-            this.dialogContent = this.dialogContent+ "<div id='table'></div>";
-		   i=0;
-     	   //create sliders based on number of input parameters
-     	   for(j in this.paramNames)
-     	   {
-     		    // create slider and assign to object property
-     		    // 
-     	        this.sliders[i] = new HorizontalSlider({
-     	            name: "sliderTable"+i,
-     	            value: this.paramValue[j],
-     	            minimum: 0,
-     	            maximum: 1,
-     	            intermediateChanges: true,
-     	            style: "width:300px;"
-     	        }, "sliderTable"+i);
+                var registerEventOnSlider = lang.hitch(this, function (slider, index, paramID) {
+                    on(slider, "change", lang.hitch(this, function () {
 
-               var paramID = j;
-               var slider = this.sliders[i];
-               var index  = i;
+                        dom.byId("textTable"+index).value = slider.value;
+                        //this.object.calculationObj.active.setInitial(paramID,slider.value);
+                        this.object.calculationObj.model.student.setInitial(paramID,slider.value);
+                        var newObj = this.object.calculationObj.gerParametersForRendering(this.object.calculationObj.solutionGraph,false);
 
-               on(this.sliders[i],"change", lang.hitch(this,function(){
+                        this.nodeValueArray = newObj.arrayOfNodeValues;
+                        paneText = "";
+                        paneText = paneText+this.initTable();
+                        paneText = paneText+this.setTableHeader();
+                        paneText = paneText + this.setTableContent();
+                        paneText = paneText+this.closeTable();
 
-                   //dom.byId("table").remove();
+                        this.contentPane.setContent(paneText);
 
-                   dom.byId("textTable"+index).value = slider.value;
-                   this.object.calculationObj.active.setInitial(paramID,slider.value);
-                   var newObj = this.object.calculationObj.gerParametersForRendering(this.object.calculationObj.solutionGraph,true);
+                    }));
+                });
 
-                   this.nodeValueArray = newObj.arrayOfNodeValues;
-                   paneText = "";
-                   paneText = paneText+this.initTable();
-                   paneText = paneText+this.setTableHeader();
-                   paneText = paneText + this.setTableContent();
-                   paneText = paneText+this.closeTable();
+               i=0;
+               //create sliders based on number of input parameters
+               for(j in this.paramNames)
+               {
+                    // create slider and assign to object property
+                    //
+                    this.sliders[i] = new HorizontalSlider({
+                        name: "sliderTable"+i,
+                        value: this.paramValue[j],
+                        minimum: this.paramValue[j]/10,
+                        maximum: this.paramValue[j]*10,
+                        intermediateChanges: true,
+                        style: "width:300px;"
+                    }, "sliderTable"+i);
 
-                   this.contentPane.setContent(paneText);
-               }));
-
-     	        //create label for name of a textbox
-     	        //create input for a textbox
-     	        //create div for embedding a slider
-                this.dialogContent= this.dialogContent + this.createDom('label','','',this.paramNames[j]+" = ")+this.createDom('input','textTable'+i,"type='text' data-dojo-type='dijit/form/TextBox' readOnly=true")+"<br>"
-     	        +this.createDom('div','sliderTable'+i);
-     	        console.debug("dialogContent is "+this.dialogContent);
-
-				i++;
-     	   }
-           
-           //create a dialog and give created dom in above loop as input to 'content'
-     	   //this will create dom inside a dialog
-     	   this.dialog = new Dialog({
-     		   title: "Table for Problem",
-        		//content:this.dialogContent,
-        		style:"width:auto;height:auto"
-     	   });  
-           this.dialog.setContent(this.dialogContent);
-
-            //destroy the dialog when it is closed
-            on(this.dialog,"hide",lang.hitch(this,function(){
-
-                this.dialog.destroyRecursive();
+                   var paramID = j;
+                   var slider = this.sliders[i];
+                   var index  = i;
 
 
-                //set initial values of all parameters to original values
-                var i;
-                for(i in this.paramNames)
+                   registerEventOnSlider(slider,index,paramID);
+
+                   /*on(this.sliders[i],"change", lang.hitch(this,function(){
+
+                       //dom.byId("table").remove();
+
+                       dom.byId("textTable"+index).value = slider.value;
+                       this.object.calculationObj.active.setInitial(paramID,slider.value);
+                       var newObj = this.object.calculationObj.gerParametersForRendering(this.object.calculationObj.solutionGraph,true);
+
+                       this.nodeValueArray = newObj.arrayOfNodeValues;
+                       paneText = "";
+                       paneText = paneText+this.initTable();
+                       paneText = paneText+this.setTableHeader();
+                       paneText = paneText + this.setTableContent();
+                       paneText = paneText+this.closeTable();
+
+                       this.contentPane.setContent(paneText);
+                   }));*/
+
+                    //create label for name of a textbox
+                    //create input for a textbox
+                    //create div for embedding a slider
+                    this.dialogContent= this.dialogContent + this.createDom('label','','',this.paramNames[j]+" = ")+this.createDom('input','textTable'+i,"type='text' data-dojo-type='dijit/form/TextBox' readOnly=true")+"<br>"
+                    +this.createDom('div','sliderTable'+i);
+                    console.debug("dialogContent is "+this.dialogContent);
+
+                    i++;
+               }
+
+               //create a dialog and give created dom in above loop as input to 'content'
+               //this will create dom inside a dialog
+               this.dialog = new Dialog({
+                   title: "Table for Problem",
+                    //content:this.dialogContent,
+                    style:"width:auto;height:auto"
+               });
+               this.dialog.setContent(this.dialogContent);
+
+                //destroy the dialog when it is closed
+                on(this.dialog,"hide",lang.hitch(this,function(){
+
+                    this.dialog.destroyRecursive();
+
+
+                    //set initial values of all parameters to original values
+                    var i;
+                    for(i in this.paramNames)
+                    {
+                        this.object.calculationObj.model.student.setInitial(i,this.paramValue[i]);
+                    }
+
+                }));
+
+                var paneText="";
+                if(!this.isNodeValueEmpty())
                 {
-                    this.object.calculationObj.active.setInitial(i,this.paramValue[i]);
+                    paneText = paneText+this.initTable();
+                    paneText = paneText+this.setTableHeader();
+                    paneText = paneText + this.setTableContent();
+                    paneText = paneText+this.closeTable();
+                }
+                else
+                {
+                    paneText = "student did not plot any node as yet!!"
                 }
 
-            }));
-
-            var paneText="";
-            paneText = paneText+this.initTable();
-            paneText = paneText+this.setTableHeader();
-            paneText = paneText + this.setTableContent();
-            paneText = paneText+this.closeTable();
-
-            this.contentPane = new contentPane(
-                {
-                   content:paneText
-                },"table");
+                this.contentPane = new contentPane(
+                    {
+                       content:paneText
+                    },"table");
 
 
 
-            //this.contentPane.setContent(paneText);
-		    //insert initial value of slider into a textbox
-     	   //append slider to the div node
-     	   for(i=0; i<this.inputParam; i++)
-     	   {
-     		  dom.byId("textTable"+i).value = this.sliders[i].value;
-     		 dom.byId("sliderTable"+i).appendChild(this.sliders[i].domNode);
-     	   }
-     	   
-     	   
+                //this.contentPane.setContent(paneText);
+                //insert initial value of slider into a textbox
+               //append slider to the div node
+               for(i=0; i<this.inputParam; i++)
+               {
+                  dom.byId("textTable"+i).value = this.sliders[i].value;
+                 dom.byId("sliderTable"+i).appendChild(this.sliders[i].domNode);
+               }
+
 
         },
         
@@ -254,23 +285,39 @@ define([
         setTableContent: function(){
             console.log(" env ", this, this.timeSteps);
 
-            var tableString;
-            for(i=0;i<this.timeSteps.length;i++)
-            {
-                tableString = tableString+"<tr>";
-                tableString = tableString+"<td align='center'>"+this.timeSteps[i] + "</td>";
-                //set values in table according to their table-headers
-                for(j in this.nodeValueArray)
-                {
-                    tempArray = this.nodeValueArray[j];
-                    tableString = tableString+"<td align='center'>"+tempArray[i].toFixed(2) + "</td>";
+            var tableString="";
 
+
+                for(i=0;i<this.timeSteps.length;i++)
+                {
+                    tableString = tableString+"<tr>";
+                    tableString = tableString+"<td align='center'>"+this.timeSteps[i] + "</td>";
+                    //set values in table according to their table-headers
+                    for(j in this.nodeValueArray)
+                    {
+                        tempArray = this.nodeValueArray[j];
+                        tableString = tableString+"<td align='center'>"+tempArray[i].toFixed(2) + "</td>";
+
+                    }
+                    tableString = tableString+"</tr>";
                 }
-                tableString = tableString+"</tr>";
-            }
+
+
 
             return tableString;
+        },
 
+        isNodeValueEmpty:function()
+        {
+            var i;
+            for(i in this.nodeValueArray)
+            {
+                if(this.nodeValueArray.hasOwnProperty(i))
+                {
+                    return false;
+                }
+            }
+            return true;
         },
        
            /*
