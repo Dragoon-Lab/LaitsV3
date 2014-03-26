@@ -6,8 +6,8 @@ define([
     "dojo/_base/array", 'dojo/_base/declare',"dojo/_base/lang",
     'dojo/dom-style', "dojo/ready",
     'dijit/registry',
-    './controller', "./pedagogical_module"
-], function(array, declare, lang, style, ready, registry, controller, PM) {
+    './controller', "./pedagogical_module", "./equation"
+], function(array, declare, lang, style, ready, registry, controller, PM,expression) {
 
     /*
      Methods in controller specific to the student modes
@@ -131,11 +131,17 @@ define([
 		var w = registry.byId(this.widgetMap[directive.id]);
 		// console.log(">>>>>>>>> setting directive ", directive);
 		if(directive.attribute=='value'){
-		    w.set(directive.attribute, directive.value, false);
+
+            var equation = directive.value;
+            console.log("equation before conversion ", equation);
+            var mEquation = equation?expression.convert(this._model.given, equation):'';  //since student node doesn't have same ids as equation
+            console.log("equation after conversion ", mEquation);
+		    w.set(directive.attribute, mEquation, false);
+
 		    // Update the model.
 		    console.warn("Updating equation in model to ", directive.value, " based on PM.");
 		    this._model.student.setEquation(this.currentID, directive.value);
-		} else 
+		} else
 		    w.set(directive.attribute, directive.value);
             }, this);
 	},
