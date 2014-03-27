@@ -469,9 +469,9 @@ define([
         isNodeValueEmpty:function()
         {
             var i;
-            for(i in this.nodeValueArray)
+            for(i in this.studentArrayOfNodeValues)
             {
-                if(this.nodeValueArray.hasOwnProperty(i))
+                if(this.studentArrayOfNodeValues.hasOwnProperty(i))
                 {
                     return false;
                 }
