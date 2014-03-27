@@ -24,7 +24,7 @@
         <script src="../../dojo/dojo.js"></script> 
 
         <script>
-            require(["dragoon/model", "dragoon/pedagogical_module", "dragoon/equation", "dragoon/sandbox", "dragoon/converter"], function(model, pm, equation, sandbox, converter) {
+            require(["dragoon/model", "dragoon/pedagogical_module", "dragoon/equation", "dragoon/sandbox", "dragoon/json/converter"], function(model, pm, equation, sandbox, converter) {
 
 
                 //The next three lines show loading a model from a JSON formated string
@@ -114,7 +114,6 @@
                     },
                     "status": {}
                 });
-                
                 //alert(rabbits.getOptimalNode());
                 //alert(rabbits.isNodesParentVisible("myid6", "myid3"));
 /*                rabbits.setToDemo(myNode, "description");
@@ -170,9 +169,7 @@
 */
 
                 var convert = new converter(5);
-                convert.test();
-                var test = convert.loadXMLFromFile("../../../../../Problems/100.xml");
-                console.log(test);
+                convert.convertXMLtoJSON("100.xml");
                 
                 //convert.parse();
 

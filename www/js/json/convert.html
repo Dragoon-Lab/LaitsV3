@@ -1,0 +1,52 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <title>Dragoon Converter</title>
+    </head>
+    <body>
+        <h1>Convert Dragoon problems from XML to JSON</h1>
+        <br/>
+        <form action="">
+            Enter the file name to convert: <input type="text" name="fileName" id="file"><br/><br/>
+            <input type="submit" value="Convert to JSON" id="b">
+        </form>
+        <script type="text/javascript">
+            dojoConfig = {
+                isDebug: true,
+                async: true,
+                // popup:true,
+                baseUrl: "../../",
+                packages: [
+                    {name: "json", location: "js/json"},
+                    {name: "dojo", location: "dojo"},
+                    {name: "dojox", location: "dojox"},
+                    {name: "dragoon", location: "js"},
+                    {name: "parser", location: "math-parser"}
+                ]
+            };
+        </script>
+        <script src="../../dojo/dojo.js"></script> 
+        <script type="text/javascript">
+            require(["dragoon/json/converter"],
+                    function(converter) {
+
+                        var $_GET = {};
+                        window.location.href.replace(/[?&]+([^=&]+)=([^&]*)/gi, function(a, name, value) {
+                            $_GET[name] = value;
+                        });
+                        if ($_GET['fileName']) {
+                            var convert = new converter(5);
+                            convert.convertXMLtoJSON($_GET['fileName']);
+                        }
+
+                        function test() {
+                            alert(input.value);
+                            //alert(fileName);
+                        }
+
+                        var button = document.getElementById('b');
+                        //button.addEventListener('click', test);
+                    });
+        </script>
+    </body>
+</html>

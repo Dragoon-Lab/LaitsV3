@@ -17,9 +17,10 @@ define(["dojo/_base/declare", "dragoon/model", "dojo/request/xhr", "dojox/xml/pa
 //            var load = new loadSave(ioQuery.queryToObject(window.location.search.slice(1)));
 //            load.loadXMLFromFile(theString);
 //        }
-        loadXMLFromFile: function(/*string*/ file) {
+        convertXMLtoJSON: function(/*string*/ file) {
             //Summary: retrieves the text of a given file and returns it as a Dojo promise
-            return xhr(this.path + file, {
+            var currentPath = this.path + "../../../../problems/"
+            return xhr(currentPath + file, {
                 handleAs: "text"
             }).then(function(model_object) {
                 console.log("loadXMLFromFile worked");
@@ -34,16 +35,15 @@ define(["dojo/_base/declare", "dragoon/model", "dojo/request/xhr", "dojox/xml/pa
                 this.phase = jsdom.getElementsByTagName("Task")[0].getAttributeNode("phase").nodeValue;
                 this.type = jsdom.getElementsByTagName("Task")[0].getAttributeNode("type").nodeValue;
 
-                this.start = jsdom.getElementsByTagName("StartTime")[0].childNodes[0].nodeValue;
-                this.end = jsdom.getElementsByTagName("EndTime")[0].childNodes[0].nodeValue;
+                this.start = Number(jsdom.getElementsByTagName("StartTime")[0].childNodes[0].nodeValue);
+                this.end = Number(jsdom.getElementsByTagName("EndTime")[0].childNodes[0].nodeValue);
                 this.units = jsdom.getElementsByTagName("Units")[0].childNodes[0].nodeValue;
-                this.timeStep = (jsdom.getElementsByTagName("TimeStep")[0] && jsdom.getElementsByTagName("TimeStep")[0].childNodes[0].nodeValue) || .5;
+                this.timeStep = (Number(jsdom.getElementsByTagName("TimeStep")[0] && jsdom.getElementsByTagName("TimeStep")[0].childNodes[0].nodeValue)) || 0.5;
                 this.timeUnits = jsdom.getElementsByTagName("Units")[0].childNodes[0].nodeValue;
                 this.URL = jsdom.getElementsByTagName("URL")[0].childNodes[0].nodeValue;
                 this.description = jsdom.getElementsByTagName("TaskDescription")[0].childNodes[0].nodeValue;
 
                 this.description = this.description.replace(/NEWLINE/g, "").replace(/\n/g, "").replace(/ +/g, " ");
-
                 //Creqtes model and adds properties
                 this.model = new model("AUTHOR", this.taskName, {"phase": this.phase, "type": this.type});
                 this.model.setTime({start: this.start, end: this.end, step: this.timeStep, units: this.units});
@@ -56,62 +56,121 @@ define(["dojo/_base/declare", "dragoon/model", "dojo/request/xhr", "dojox/xml/pa
 
                 for (var i = 0; i < this.length; i++) {
                     this.nodes = jsdom.getElementsByTagName("Node")[i];
-                    if (this.nodes.getAttributeNode("level"))
+                    if (this.nodes.getAttributeNode("level")) {
                         console.log("Node " + i + " is a desc tree");
-                    else {
-                        
+                        break;
+                    } else {
+
                         var name = this.nodes.getAttributeNode("name").nodeValue;
-                        console.log(name);
+                        var extra = this.nodes.getAttributeNode("extra").nodeValue;
+                        if (extra === "yes")
+                            extra = true;
+                        else
+                            extra = false;
+                        var parent = false;
+                        if (this.nodes.getElementsByTagName("Order").length > 0) {
+                            parent = this.nodes.getElementsByTagName("Order")[0].childNodes[0].nodeValue;
+                            if (parent == 1)
+                                parent = true;
+                            else
+                                parent = false;
+                        }
                         var type = this.nodes.getAttributeNode("type").nodeValue;
-                        console.log(type);
-                        var equation = (this.nodes.getElementsByTagName("Equation")[0] && jsdom.getElementsByTagName("Equation")[0].childNodes[0].nodeValue) || null;
-                        console.log(equation);
-                        var initial = (this.nodes.getElementsByTagName("InitialValue")[0] && jsdom.getElementsByTagName("InitialValue")[0].childNodes[0].nodeValue) || null;
-                        console.log(initial);
-                        var description = (this.nodes.getElementsByTagName("CorrectDescription")[0] && jsdom.getElementsByTagName("CorrectDescription")[0].childNodes[0].nodeValue) || null;
-                        console.log(description);
                         if (type === "constant")
                             type = "parameter";
-                        this.model.given.addNode({
+                        else if (type === "stock")
+                            type = "accumulator";
+                        else if (type === "flow")
+                            type = "function";
+                        var description = (this.nodes.getElementsByTagName("CorrectDescription")[0].childNodes[0] && this.nodes.getElementsByTagName("CorrectDescription")[0].childNodes[0].nodeValue) || null;
+                        if (type === "constant")
+                            type = "parameter";
+                        var id = this.model.given.addNode({
                             "name": name,
                             "type": type,
-                            "initial": initial,
-                            "equation": equation,
+                            "parentNode": parent,
+                            "extra": extra,
+                            "units": "",
                             "description": description
                         });
                     }
                 }
-                
+
+
                 for (var i = 0; i < this.length; i++) {
                     this.nodes = jsdom.getElementsByTagName("Node")[i];
-                    var inputs = new Array();
-                    if (!this.nodes.getAttributeNode("level")){
-                        this.inputs = this.nodes.getElementsByTagName("Inputs");
-                        for(var j = 0; j < this.inputs.length; j++){
-                            inputs[j] = this.model.getNodeIDByName(this.inputs[0].getElementsByTagName("Name")[1].childNodes[0].nodeValue);
+                    if (this.nodes.getAttributeNode("level")) {
+                        console.log("Node " + i + " is a desc tree");
+                        break;
+                    } else {
+                        var name = this.nodes.getAttributeNode("name").nodeValue;
+                        var id = this.model.given.getNodeIDByName(name);
+                        var type = this.model.given.getType(id);
+
+                        var initial = (Number(this.nodes.getElementsByTagName("InitialValue")[0].childNodes[0] && this.nodes.getElementsByTagName("InitialValue")[0].childNodes[0].nodeValue)) || null;
+                        var equation = (this.nodes.getElementsByTagName("Equation")[0].childNodes[0] && this.nodes.getElementsByTagName("Equation")[0].childNodes[0].nodeValue) || null;
+
+                        if (type !== "function")
+                            this.model.given.setInitial(id, initial);
+
+                        if (type !== "parameter") {
+                            console.log(this.model.getModelAsString());
+                            var regex = /([\+\-\*\/])/;
+                            var eq = equation.split(regex);
+                            var finalEquation = "";
+                            console.log(eq);
+                            for (var k = 0; k < eq.length; k++) {
+                                if (eq[k] !== "+" && eq[k] !== "-" && eq[k] !== "*" && eq[k] !== "/" && eq[k] !== "") {
+                                    eq[k] = eq[k].trim();
+                                    eq[k] = this.model.given.getNodeIDByName(eq[k]);
+                                }
+                                finalEquation += eq[k];
+                                if (k < eq.length - 1)
+                                    finalEquation += " ";
+                            }
+                            finalEquation = finalEquation.trim();
+                            console.log(eq);
+                            this.model.given.setEquation(id, finalEquation);
                         }
-                        this.model.setInputs(inputs, this.nodes.getAttributeNode("name").nodeValue);
                     }
                 }
-                
-                this.nodes = jsdom.getElementsByTagName("Node")[6];
-                this.inputs = this.nodes.getElementsByTagName("Inputs");
-                console.log(this.inputs);
-                alert(this.inputs[0].getElementsByTagName("Name")[1].childNodes[0].nodeValue);
-//                alert(this.nodes.getElementsByTagName("Name")[0].childNodes[0].nodeValue);
-                
-//                console.log(this.nodes.getElementsByTagName("Equation")[0].childNodes[0].nodeValue);
-//                console.log(this.nodes.getAttributeNode("name").nodeValue);
 
 
 
+                for (var i = 0; i < this.length; i++) {
+                    this.nodes = jsdom.getElementsByTagName("Node")[i];
+                    if (this.nodes.getAttributeNode("level")) {
+                        console.log("Node " + i + " is a desc tree");
+                        break;
+                    } else {
+                        this.nodes = jsdom.getElementsByTagName("Node")[i];
+                        var inputs = new Array();
+                        if (!this.nodes.getAttributeNode("level")) {
+                            this.inputs = this.nodes.getElementsByTagName("Inputs");
+                            for (var j = 0; j < this.inputs[0].getElementsByTagName("Name").length; j++) {
+                                inputs.push(this.model.given.getNodeIDByName(this.inputs[0].getElementsByTagName("Name")[j].childNodes[0].nodeValue));
+                            }
+                            this.model.given.setInputs(inputs, this.model.given.getNodeIDByName(this.nodes.getAttributeNode("name").nodeValue));
+                        }
+                    }
+                }
 
+                //opens a new window and downloads the file
+                //window.open('data:text;charset=utf-8,' + escape(this.model.getModelAsString()));
 
-
+                var download = function(filename, text) {
+                    var pom = document.createElement('a');
+                    pom.setAttribute('href', 'data:text/plain;charset=utf-8,' + encodeURIComponent(text));
+                    pom.setAttribute('download', filename);
+                    pom.click();
+                };
+                var fileSplit = file.split(".");
+                file = fileSplit[0];
+                download(file + ".json", this.model.getModelAsString());
                 console.log(this.model.getModelAsString());
 
 
-                return model_object;
+                return this.model.getModelAsString();
             }, function(err) {
                 console.error("loadFromFile error ", err);
             });
