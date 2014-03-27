@@ -4,14 +4,13 @@ This contains mostly design documents.
 
 * [Session behavior](sessions.md) which discusses saving, modifying, and sharing problems.
 * [Major modes](major-modes.md) (STUDENT COACHED TEST AUTHOR)
+* [Graph (nodes and connectors) Design](graph.md)
 * [JavaScript design](javascript.md)
 * [JSON format](json-format.md)
 * [Forum](forum.md)
 * Kurt's design for the [Pedagogical Module](Pedagogical-Module.docx)
   as well as [Sachin's version](Pedagogical-Module-JavaScript-Version-2.docx)
 * [Logging format](logs-structure.md)
-* For Java version:  [Node Editor](node-editor.md) with Description,
-  Plan, and Calculation tabs
 
 Documentation can be in any convenient format (word, html, *et cetera*) with 
 generic [markdown](http://en.wikipedia.org/wiki/Markdown) being the default 
