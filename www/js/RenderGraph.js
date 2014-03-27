@@ -160,10 +160,29 @@ define([
                     this.studentArrayOfNodeValues = newObj.arrayOfNodeValues;
                     this.formatArrayOfNodeValuesForChart();
 
+
                     //update and render the chart
                     var l = 0;
                     for (var k in newObj.arrayOfNodeValues) {
-                        //***this.chart[k].updateSeries("Variable solution", newObj.arrayOfNodeValues[k]);
+
+                        var descriptionID = newObj.calculationObj.model.student.getDescriptionID(k);
+                        var objStudent = this.getMinMaxFromaArray(newObj.arrayOfNodeValues[k]);
+                        var min = objStudent.min;
+                        var max = objStudent.max;
+                        if((newObj.calculationObj.model.given.isNode(descriptionID)))
+                        {
+                            var objGiven = this.getMinMaxFromaArray(this.givenArrayOfNodeValues[descriptionID]);
+                            min = objStudent.min > objGiven.min?objGiven.min:objStudent.min;
+                            max = objStudent.max > objGiven.max?objStudent.max:objGiven.max;
+                        }
+
+
+
+                        //var array = newObj.arrayOfNodeValues[k];
+                        //var maxArrayValue = array[array.length - 1];
+
+                        this.chart[k].removeAxis("y");
+                        this.chart[k].addAxis("y", {vertical: true,min: min, max: max,  title: this.studentUnits[k]});
                         this.chart[k].updateSeries("Variable solution", this.studentFormattedArrayOfNodeValues[k]);
                         this.chart[k].render();
                         l++;
@@ -264,6 +283,7 @@ define([
             var legendArray = {};
             i = 0;
             var time = this.studentObject.calculationObj.model.getTime();
+            tempGivenArrayOfNodeValues = lang.clone(this.givenArrayOfNodeValues);
            if(!this.isNodeValueEmpty())
            {
                 for (j in this.studentArrayOfNodeValues) {
@@ -275,9 +295,11 @@ define([
                         title: this.xunits,
                         titleOrientation: "away", titleGap: 5
                     });
-                    var array = this.studentArrayOfNodeValues[j];
-                    var maxArrayValue = array[array.length - 1];
-                    chartArray[j].addAxis("y", {vertical: true, min: 0, max: maxArrayValue, title: this.studentUnits[j]});
+//                    var array = this.studentArrayOfNodeValues[j];
+//                    var maxArrayValue = array[array.length - 1];
+
+                    var obj = this.getMinMaxFromaArray(this.studentArrayOfNodeValues[j]);
+                    chartArray[j].addAxis("y", {vertical: true, min: obj.min, max: obj.max, title: this.studentUnits[j]});
 
                     descriptionID = this.studentObject.calculationObj.model.student.getDescriptionID(j);
 
@@ -287,10 +309,16 @@ define([
                     //plot chart from given node if it matches with student node
                     if((this.studentObject.calculationObj.model.given.isNode(descriptionID)))
                     {
-                        //***chartArray[j].addSeries("correct solution", this.givenArrayOfNodeValues[descriptionID], {stroke: "red"});
+                        chartArray[j].removeAxis("y");
+                        var objStudent = this.getMinMaxFromaArray(this.studentArrayOfNodeValues[j]);
+                        var objGiven = this.getMinMaxFromaArray(this.givenArrayOfNodeValues[descriptionID]);
+
+                        var min = objStudent.min > objGiven.min?objGiven.min:objStudent.min;
+                        var max = objStudent.max > objGiven.max?objStudent.max:objGiven.max;
+                        chartArray[j].addAxis("y", {vertical: true, min: min, max: max, title: this.studentUnits[j]});
                         chartArray[j].addSeries("correct solution", this.givenFormattedArrayOfNodeValues[descriptionID], {stroke: "red"});
                         //remove plotted node from collection
-                        delete this.givenArrayOfNodeValues[descriptionID];
+                        delete tempGivenArrayOfNodeValues[descriptionID];
                     }
 
 
@@ -479,6 +507,32 @@ define([
             return true;
         },
 
+        //get minimum and maximum value from an array
+        getMinMaxFromaArray:function(array)
+        {
+            var i;
+            var obj;
+            var min= array[0];
+            var max = array[0];
+            for(i=1;i<array.length;i++)
+            {
+                if(array[i] < min)
+                {
+                    min = array[i];
+                }
+            }
+
+            for(i=1;i<array.length;i++)
+            {
+                if(array[i] > max)
+                {
+                    max = array[i];
+                }
+            }
+
+            obj={min:min,max:max};
+            return obj;
+        },
         /*
          * @brief: display the graph
          */
