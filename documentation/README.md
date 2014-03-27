@@ -5,6 +5,7 @@ This contains mostly design documents.
 * [Session behavior](sessions.md) which discusses saving, modifying, and sharing problems.
 * [Major modes](major-modes.md) (STUDENT COACHED TEST AUTHOR)
 * [Graph (nodes and connectors) Design](graph.md)
+* [Node Editor Design](node-editor.md)
 * [JavaScript design](javascript.md)
 * [JSON format](json-format.md)
 * [Forum](forum.md)
