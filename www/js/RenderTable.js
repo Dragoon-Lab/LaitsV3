@@ -177,7 +177,7 @@ define([
                 }
                 else
                 {
-                    paneText = "student did not plot any node as yet!!"
+                    paneText = "Student did not plot any node as yet!!"
                 }
 
                 this.contentPane = new contentPane(
