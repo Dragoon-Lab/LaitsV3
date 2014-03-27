@@ -264,42 +264,48 @@ define([
             var legendArray = {};
             i = 0;
             var time = this.studentObject.calculationObj.model.getTime();
-            for (j in this.studentArrayOfNodeValues) {
-                str = "chart" + j.toString();
-                chartArray[j] = new Chart(str);
-                chartArray[j].addPlot("default", {type: Lines, markers: true});
+           if(!this.isNodeValueEmpty())
+           {
+                for (j in this.studentArrayOfNodeValues) {
+                    str = "chart" + j.toString();
+                    chartArray[j] = new Chart(str);
+                    chartArray[j].addPlot("default", {type: Lines, markers: true});
 
-                chartArray[j].addAxis("x", {
-                    title: this.xunits,
-                    titleOrientation: "away", titleGap: 5
-                });
-                var array = this.studentArrayOfNodeValues[j];
-                var maxArrayValue = array[array.length - 1];
-                chartArray[j].addAxis("y", {vertical: true, min: 0, max: maxArrayValue, title: this.studentUnits[j]});
+                    chartArray[j].addAxis("x", {
+                        title: this.xunits,
+                        titleOrientation: "away", titleGap: 5
+                    });
+                    var array = this.studentArrayOfNodeValues[j];
+                    var maxArrayValue = array[array.length - 1];
+                    chartArray[j].addAxis("y", {vertical: true, min: 0, max: maxArrayValue, title: this.studentUnits[j]});
 
-                descriptionID = this.studentObject.calculationObj.model.student.getDescriptionID(j);
+                    descriptionID = this.studentObject.calculationObj.model.student.getDescriptionID(j);
 
-                //plot chart for student node
-                //***chartArray[j].addSeries("Variable solution", this.studentArrayOfNodeValues[j], {stroke: "green"});
-                chartArray[j].addSeries("Variable solution", this.studentFormattedArrayOfNodeValues[j], {stroke: "green"});
-                //plot chart from given node if it matches with student node
-                if((this.studentObject.calculationObj.model.given.isNode(descriptionID)))
-                {
-                    //***chartArray[j].addSeries("correct solution", this.givenArrayOfNodeValues[descriptionID], {stroke: "red"});
-                    chartArray[j].addSeries("correct solution", this.givenFormattedArrayOfNodeValues[descriptionID], {stroke: "red"});
-                    //remove plotted node from collection
-                    delete this.givenArrayOfNodeValues[descriptionID];
+                    //plot chart for student node
+                    //***chartArray[j].addSeries("Variable solution", this.studentArrayOfNodeValues[j], {stroke: "green"});
+                    chartArray[j].addSeries("Variable solution", this.studentFormattedArrayOfNodeValues[j], {stroke: "green"});
+                    //plot chart from given node if it matches with student node
+                    if((this.studentObject.calculationObj.model.given.isNode(descriptionID)))
+                    {
+                        //***chartArray[j].addSeries("correct solution", this.givenArrayOfNodeValues[descriptionID], {stroke: "red"});
+                        chartArray[j].addSeries("correct solution", this.givenFormattedArrayOfNodeValues[descriptionID], {stroke: "red"});
+                        //remove plotted node from collection
+                        delete this.givenArrayOfNodeValues[descriptionID];
+                    }
+
+
+                    chartArray[j].render();
+
+                    str = "legend" + j.toString();
+                    legendArray[j] = new Legend({chart: chartArray[j]}, str);
+                    i++;
                 }
-
-
-                chartArray[j].render();
-
-                str = "legend" + j.toString();
-                legendArray[j] = new Legend({chart: chartArray[j]}, str);
-                i++;
-            }
-
-            for (j in this.givenArrayOfNodeValues) {
+           }
+            else
+           {
+               this.dialog.setContent("<h1>"+ "Student did not plot any node as yet!!"+ "</h1>");
+           }
+            /*for (j in this.givenArrayOfNodeValues) {
 
                 str = "chart" + j.toString();
                 chartArray[j] = new Chart(str);
@@ -314,16 +320,14 @@ define([
                 chartArray[j].addAxis("y", {vertical: true, min: 0, max: maxArrayValue, title: this.givenUnits[j]});
 
                 //plot chart for given node
-                    //***chartArray[j].addSeries("correct solution", this.givenArrayOfNodeValues[j], {stroke: "red"});
                 chartArray[j].addSeries("correct solution", this.givenFormattedArrayOfNodeValues[j], {stroke: "red"});
-                //    chartArray[j].addSeries("Variable solution", this.studentArrayOfNodeValues[j], {stroke: "green"});
 
                 chartArray[j].render();
 
                 str = "legend" + j.toString();
                 legendArray[j] = new Legend({chart: chartArray[j]}, str);
                 i++;
-            }
+            }*/
 
             this.chart = chartArray;
 
@@ -460,6 +464,19 @@ define([
 
                 this.studentFormattedArrayOfNodeValues[i] = arrayOfXYpairs;
             }
+        },
+
+        isNodeValueEmpty:function()
+        {
+            var i;
+            for(i in this.nodeValueArray)
+            {
+                if(this.nodeValueArray.hasOwnProperty(i))
+                {
+                    return false;
+                }
+            }
+            return true;
         },
 
         /*
