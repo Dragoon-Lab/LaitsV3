@@ -1,9 +1,9 @@
 {
     "task": {
-        "taskName": "Intro Problem 2",
+        "taskName": "Intro Problem 4",
         "time": {
-            "start": 2000,
-            "end": 2011,
+            "start": 0,
+            "end": 15,
             "step": 0.5,
             "units": "years"
         },
@@ -12,9 +12,9 @@
             "type": "Debug"
         },
         "image": {
-            "URL": "http://amt.javiergs.com/images/tasks/intro-3.png"
+            "URL": "http://www.azdot.gov/highways/rfs/images/SR101_I17_AerialPhoto.jpg"
         },
-        "taskDescription": " Problem:The US Supreme Court has 9 justices, and 3 justices are female. Goal: Create a model that uses a function node to calculate the proportion of the justices that are female.",
+        "taskDescription": "Problem: Suppose the Phoenix Metro area currently has a population of 4,192,887. Suppose the population grows at 5.5% per year. That is, the number of new residents added to the population each year is 5.5% ofthe number of residents at the beginning of the year. Goal: Graph the population for the Phoenix Metro area each year over a 15 year period. ",
         "givenModelNodes": [
             {
                 "ID": "id1",
@@ -31,17 +31,24 @@
                     "equation": 0
                 },
                 "status": {},
-                "name": "female justices",
+                "name": "growth rate",
                 "type": "parameter",
                 "parentNode": false,
                 "extra": false,
                 "units": "",
-                "description": "The number of US Supreme Court justices that are female",
-                "initial": 3
+                "description": "The rate that people move into the Phoenix Metro area during each year",
+                "initial": 0.055
             },
             {
                 "ID": "id2",
-                "inputs": [],
+                "inputs": [
+                    {
+                        "ID": "id3"
+                    },
+                    {
+                        "ID": "id1"
+                    }
+                ],
                 "position": {
                     "x": 400,
                     "y": 100
@@ -54,20 +61,17 @@
                     "equation": 0
                 },
                 "status": {},
-                "name": "justices",
-                "type": "parameter",
+                "name": "new residents",
+                "type": "function",
                 "parentNode": false,
                 "extra": false,
                 "units": "",
-                "description": "The total number of US Supreme Court justices",
-                "initial": 9
+                "description": "The number of new residents that move into the Phoenix Metro Area each year",
+                "equation": "id3 + id1"
             },
             {
                 "ID": "id3",
                 "inputs": [
-                    {
-                        "ID": "id1"
-                    },
                     {
                         "ID": "id2"
                     }
@@ -84,13 +88,14 @@
                     "equation": 0
                 },
                 "status": {},
-                "name": "female justice prop",
-                "type": "function",
+                "name": "population",
+                "type": "accumulator",
                 "parentNode": true,
                 "extra": false,
                 "units": "",
-                "description": "The ratio of female justices to total justices in the US Supreme court",
-                "equation": "id1 / id2"
+                "description": "The number of people in the Phoenix Metro Area each year",
+                "initial": 4192887,
+                "equation": "+ id2"
             },
             {
                 "ID": "id4",
@@ -107,12 +112,12 @@
                     "equation": 0
                 },
                 "status": {},
-                "name": "female justices",
+                "name": "growth rate",
                 "type": "parameter",
                 "parentNode": false,
                 "extra": false,
                 "units": "",
-                "description": "The number of US Supreme Court justices that are female"
+                "description": "The rate that people move into the Phoenix Metro area during each year"
             },
             {
                 "ID": "id5",
@@ -129,12 +134,34 @@
                     "equation": 0
                 },
                 "status": {},
-                "name": "justices",
-                "type": "parameter",
+                "name": "new residents",
+                "type": "function",
                 "parentNode": false,
                 "extra": false,
                 "units": "",
-                "description": "The total number of US Supreme Court justices"
+                "description": "The number of new residents that move into the Phoenix Metro Area each year"
+            },
+            {
+                "ID": "id6",
+                "inputs": [],
+                "position": {
+                    "x": 400,
+                    "y": 100
+                },
+                "attemptCount": {
+                    "description": 0,
+                    "type": 0,
+                    "initial": 0,
+                    "units": 0,
+                    "equation": 0
+                },
+                "status": {},
+                "name": "population",
+                "type": "accumulator",
+                "parentNode": false,
+                "extra": false,
+                "units": "",
+                "description": "The number of people in the Phoenix Metro Area each year"
             }
         ],
         "studentModelNodes": []

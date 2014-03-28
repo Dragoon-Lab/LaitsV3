@@ -1,73 +1,24 @@
 {
     "task": {
-        "taskName": "Intro Problem 2",
+        "taskName": "Jared and Oprah with ratio",
         "time": {
-            "start": 2000,
-            "end": 2011,
+            "start": 0,
+            "end": 10,
             "step": 0.5,
-            "units": "years"
+            "units": "Weeks"
         },
         "properties": {
             "phase": "Intro",
             "type": "Debug"
         },
         "image": {
-            "URL": "http://amt.javiergs.com/images/tasks/intro-3.png"
+            "URL": "images/jared-and-oprah.jpg"
         },
-        "taskDescription": " Problem:The US Supreme Court has 9 justices, and 3 justices are female. Goal: Create a model that uses a function node to calculate the proportion of the justices that are female.",
+        "taskDescription": " Suppose that Jared always weighs 1.3 times as much as Oprah. That is, when she weighs 100 pounds, then Jared weighs 130 pounds. When Oprah weighs 120 pounds, then Jared weight 156 pounds (156 is 1.3*120). Note: Dragoon uses * to denote multiplication. To save you work, the nodes for Oprah’s weight and weekly weight loss have been defined already. Thus you will only have to define two nodes: * Jared weight: This is how much Jared weighs at the end of each week. * Jared extra weight: This is a factor that is used to convert Oprah’s weight to Jared’s weight.",
         "givenModelNodes": [
             {
                 "ID": "id1",
-                "inputs": [],
-                "position": {
-                    "x": 400,
-                    "y": 100
-                },
-                "attemptCount": {
-                    "description": 0,
-                    "type": 0,
-                    "initial": 0,
-                    "units": 0,
-                    "equation": 0
-                },
-                "status": {},
-                "name": "female justices",
-                "type": "parameter",
-                "parentNode": false,
-                "extra": false,
-                "units": "",
-                "description": "The number of US Supreme Court justices that are female",
-                "initial": 3
-            },
-            {
-                "ID": "id2",
-                "inputs": [],
-                "position": {
-                    "x": 400,
-                    "y": 100
-                },
-                "attemptCount": {
-                    "description": 0,
-                    "type": 0,
-                    "initial": 0,
-                    "units": 0,
-                    "equation": 0
-                },
-                "status": {},
-                "name": "justices",
-                "type": "parameter",
-                "parentNode": false,
-                "extra": false,
-                "units": "",
-                "description": "The total number of US Supreme Court justices",
-                "initial": 9
-            },
-            {
-                "ID": "id3",
                 "inputs": [
-                    {
-                        "ID": "id1"
-                    },
                     {
                         "ID": "id2"
                     }
@@ -84,13 +35,67 @@
                     "equation": 0
                 },
                 "status": {},
-                "name": "female justice prop",
+                "name": "Oprah weight",
+                "type": "accumulator",
+                "parentNode": false,
+                "extra": false,
+                "units": "",
+                "description": "How much Oprah weighs at the end of the week",
+                "initial": 140,
+                "equation": "- id2"
+            },
+            {
+                "ID": "id2",
+                "inputs": [],
+                "position": {
+                    "x": 400,
+                    "y": 100
+                },
+                "attemptCount": {
+                    "description": 0,
+                    "type": 0,
+                    "initial": 0,
+                    "units": 0,
+                    "equation": 0
+                },
+                "status": {},
+                "name": "Oprah weight loss",
+                "type": "parameter",
+                "parentNode": false,
+                "extra": false,
+                "units": "",
+                "description": "How much Oprah loses each week",
+                "initial": 1.5
+            },
+            {
+                "ID": "id3",
+                "inputs": [
+                    {
+                        "ID": "id1"
+                    },
+                    {
+                        "ID": "id4"
+                    }
+                ],
+                "position": {
+                    "x": 400,
+                    "y": 100
+                },
+                "attemptCount": {
+                    "description": 0,
+                    "type": 0,
+                    "initial": 0,
+                    "units": 0,
+                    "equation": 0
+                },
+                "status": {},
+                "name": "Jared weight",
                 "type": "function",
                 "parentNode": true,
                 "extra": false,
                 "units": "",
-                "description": "The ratio of female justices to total justices in the US Supreme court",
-                "equation": "id1 / id2"
+                "description": "How much Jared weighs at the end of the week",
+                "equation": "id4 * id1"
             },
             {
                 "ID": "id4",
@@ -107,12 +112,13 @@
                     "equation": 0
                 },
                 "status": {},
-                "name": "female justices",
+                "name": "Jared extra weight",
                 "type": "parameter",
                 "parentNode": false,
                 "extra": false,
                 "units": "",
-                "description": "The number of US Supreme Court justices that are female"
+                "description": "Jared's extra percent of weight over Oprah's weight.",
+                "initial": 1.3
             },
             {
                 "ID": "id5",
@@ -129,12 +135,34 @@
                     "equation": 0
                 },
                 "status": {},
-                "name": "justices",
+                "name": "Oprah weight",
+                "type": "accumulator",
+                "parentNode": false,
+                "extra": false,
+                "units": "",
+                "description": "How much Oprah weighs at the end of the week"
+            },
+            {
+                "ID": "id6",
+                "inputs": [],
+                "position": {
+                    "x": 400,
+                    "y": 100
+                },
+                "attemptCount": {
+                    "description": 0,
+                    "type": 0,
+                    "initial": 0,
+                    "units": 0,
+                    "equation": 0
+                },
+                "status": {},
+                "name": "Oprah weight loss",
                 "type": "parameter",
                 "parentNode": false,
                 "extra": false,
                 "units": "",
-                "description": "The total number of US Supreme Court justices"
+                "description": "How much Oprah loses each week"
             }
         ],
         "studentModelNodes": []

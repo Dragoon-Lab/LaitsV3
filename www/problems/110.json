@@ -1,0 +1,172 @@
+{
+    "task": {
+        "taskName": "Chestnut Blight",
+        "time": {
+            "start": 0,
+            "end": 40,
+            "step": 0.5,
+            "units": "years"
+        },
+        "properties": {
+            "phase": "Training",
+            "type": "Construct"
+        },
+        "image": {
+            "URL": "http://upload.wikimedia.org/wikipedia/commons/f/f1/Chestnut_blight.jpg"
+        },
+        "taskDescription": "Problem: In 1900, there were nearly 4,000 million American Chestnut trees in the forests of the United States, but then the \t\t\t Chestnut blight arrived from Asia. By 1940, nearly all of the mature American Chestnut trees were dead. Let's assume that the \t\t\t blight kills about 10% of the trees each year. For instance, in the first year of the blight, 400 million trees died, leaving \t\t\t only 3,600 million alive. In the second year of the blight, 360 million trees died. \t\t\t\t Goal: Graph the number of live Chestnut trees over a 40-year period.(Unit is million)",
+        "givenModelNodes": [
+            {
+                "ID": "id1",
+                "inputs": [
+                    {
+                        "ID": "id2"
+                    }
+                ],
+                "position": {
+                    "x": 400,
+                    "y": 100
+                },
+                "attemptCount": {
+                    "description": 0,
+                    "type": 0,
+                    "initial": 0,
+                    "units": 0,
+                    "equation": 0
+                },
+                "status": {},
+                "name": "live trees",
+                "type": "accumulator",
+                "parentNode": true,
+                "extra": false,
+                "units": "",
+                "description": "The number of trees alive in the forest each year",
+                "initial": 4000,
+                "equation": "- id2"
+            },
+            {
+                "ID": "id2",
+                "inputs": [
+                    {
+                        "ID": "id6"
+                    },
+                    {
+                        "ID": "id1"
+                    }
+                ],
+                "position": {
+                    "x": 400,
+                    "y": 100
+                },
+                "attemptCount": {
+                    "description": 0,
+                    "type": 0,
+                    "initial": 0,
+                    "units": 0,
+                    "equation": 0
+                },
+                "status": {},
+                "name": "annual tree deaths",
+                "type": "function",
+                "parentNode": false,
+                "extra": false,
+                "units": "",
+                "description": "The number of trees that died each year",
+                "equation": "id6 * id1"
+            },
+            {
+                "ID": "id3",
+                "inputs": [],
+                "position": {
+                    "x": 400,
+                    "y": 100
+                },
+                "attemptCount": {
+                    "description": 0,
+                    "type": 0,
+                    "initial": 0,
+                    "units": 0,
+                    "equation": 0
+                },
+                "status": {},
+                "name": "initial population",
+                "type": "parameter",
+                "parentNode": false,
+                "extra": true,
+                "units": "",
+                "description": "The number of trees alive in the forest in 1900",
+                "initial": 4000
+            },
+            {
+                "ID": "id4",
+                "inputs": [],
+                "position": {
+                    "x": 400,
+                    "y": 100
+                },
+                "attemptCount": {
+                    "description": 0,
+                    "type": 0,
+                    "initial": 0,
+                    "units": 0,
+                    "equation": 0
+                },
+                "status": {},
+                "name": "deaths second year",
+                "type": "parameter",
+                "parentNode": false,
+                "extra": true,
+                "units": "",
+                "description": "The number of trees that died during the second year",
+                "initial": 360
+            },
+            {
+                "ID": "id5",
+                "inputs": [],
+                "position": {
+                    "x": 400,
+                    "y": 100
+                },
+                "attemptCount": {
+                    "description": 0,
+                    "type": 0,
+                    "initial": 0,
+                    "units": 0,
+                    "equation": 0
+                },
+                "status": {},
+                "name": "deaths first year",
+                "type": "parameter",
+                "parentNode": false,
+                "extra": true,
+                "units": "",
+                "description": "The number of trees that died during the first year",
+                "initial": 400
+            },
+            {
+                "ID": "id6",
+                "inputs": [],
+                "position": {
+                    "x": 400,
+                    "y": 100
+                },
+                "attemptCount": {
+                    "description": 0,
+                    "type": 0,
+                    "initial": 0,
+                    "units": 0,
+                    "equation": 0
+                },
+                "status": {},
+                "name": "death rate",
+                "type": "parameter",
+                "parentNode": false,
+                "extra": false,
+                "units": "",
+                "description": "The proportion of trees that die in a year to trees that were alive at the beginning of the year",
+                "initial": 0.1
+            }
+        ],
+        "studentModelNodes": []
+    }
+}

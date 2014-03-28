@@ -1,24 +1,31 @@
 {
     "task": {
-        "taskName": "Intro Problem 2",
+        "taskName": "Isle Royale - Wolves",
         "time": {
-            "start": 2000,
-            "end": 2011,
+            "start": 1949,
+            "end": 2009,
             "step": 0.5,
-            "units": "years"
+            "units": "Years"
         },
         "properties": {
-            "phase": "Intro",
-            "type": "Debug"
+            "phase": "",
+            "type": ""
         },
         "image": {
-            "URL": "http://amt.javiergs.com/images/tasks/intro-3.png"
+            "URL": "images/moose_wolves.png"
         },
-        "taskDescription": " Problem:The US Supreme Court has 9 justices, and 3 justices are female. Goal: Create a model that uses a function node to calculate the proportion of the justices that are female.",
+        "taskDescription": " Assumptions: * The wolf population is 2 in the first year (1949). * Births and deaths are the only change in the population. Immigration and emigration do not occur. * The number of wolf deaths each year is 67% of the wolf population. * The number of births each year is year is 75% of the wolf population. ",
         "givenModelNodes": [
             {
                 "ID": "id1",
-                "inputs": [],
+                "inputs": [
+                    {
+                        "ID": "id3"
+                    },
+                    {
+                        "ID": "id4"
+                    }
+                ],
                 "position": {
                     "x": 400,
                     "y": 100
@@ -31,13 +38,14 @@
                     "equation": 0
                 },
                 "status": {},
-                "name": "female justices",
-                "type": "parameter",
-                "parentNode": false,
+                "name": "wolf population",
+                "type": "accumulator",
+                "parentNode": true,
                 "extra": false,
                 "units": "",
-                "description": "The number of US Supreme Court justices that are female",
-                "initial": 3
+                "description": "The number of wolves in the population",
+                "initial": 2,
+                "equation": "id3 - id4"
             },
             {
                 "ID": "id2",
@@ -54,13 +62,13 @@
                     "equation": 0
                 },
                 "status": {},
-                "name": "justices",
+                "name": "wolf birth rate",
                 "type": "parameter",
                 "parentNode": false,
                 "extra": false,
                 "units": "",
-                "description": "The total number of US Supreme Court justices",
-                "initial": 9
+                "description": "The ratio of wolves born each year to the wolf population",
+                "initial": 0.75
             },
             {
                 "ID": "id3",
@@ -84,17 +92,24 @@
                     "equation": 0
                 },
                 "status": {},
-                "name": "female justice prop",
+                "name": "wolf births",
                 "type": "function",
-                "parentNode": true,
+                "parentNode": false,
                 "extra": false,
                 "units": "",
-                "description": "The ratio of female justices to total justices in the US Supreme court",
-                "equation": "id1 / id2"
+                "description": "The number of wolves born each year",
+                "equation": "id1 * id2"
             },
             {
                 "ID": "id4",
-                "inputs": [],
+                "inputs": [
+                    {
+                        "ID": "id1"
+                    },
+                    {
+                        "ID": "id5"
+                    }
+                ],
                 "position": {
                     "x": 400,
                     "y": 100
@@ -107,12 +122,13 @@
                     "equation": 0
                 },
                 "status": {},
-                "name": "female justices",
-                "type": "parameter",
+                "name": "wolf deaths",
+                "type": "function",
                 "parentNode": false,
                 "extra": false,
                 "units": "",
-                "description": "The number of US Supreme Court justices that are female"
+                "description": "The number of wolves that die each year",
+                "equation": "id1 * id5"
             },
             {
                 "ID": "id5",
@@ -129,12 +145,13 @@
                     "equation": 0
                 },
                 "status": {},
-                "name": "justices",
+                "name": "wolf death rate",
                 "type": "parameter",
                 "parentNode": false,
                 "extra": false,
                 "units": "",
-                "description": "The total number of US Supreme Court justices"
+                "description": "The ratio of wolves that die each year to the wolf population",
+                "initial": 0.67
             }
         ],
         "studentModelNodes": []

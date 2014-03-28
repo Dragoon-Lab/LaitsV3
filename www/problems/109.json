@@ -1,20 +1,20 @@
 {
     "task": {
-        "taskName": "Intro Problem 2",
+        "taskName": "Giardia Bacteria",
         "time": {
-            "start": 2000,
-            "end": 2011,
+            "start": 0,
+            "end": 8,
             "step": 0.5,
-            "units": "years"
+            "units": "hours"
         },
         "properties": {
-            "phase": "Intro",
-            "type": "Debug"
+            "phase": "Challenge",
+            "type": "Construct"
         },
         "image": {
-            "URL": "http://amt.javiergs.com/images/tasks/intro-3.png"
+            "URL": "http://www.cdc.gov/parasites/images/giardia/Giardia_trophs.jpg"
         },
-        "taskDescription": " Problem:The US Supreme Court has 9 justices, and 3 justices are female. Goal: Create a model that uses a function node to calculate the proportion of the justices that are female.",
+        "taskDescription": " Problem: Giardia is a microscopic single-cell organism that lives in streams and lakes. It can multiply quickly. Suppose a hiker's water bottle initially holds 100 Giardia. On average, 40% of the Giardia reproduce each hour, each producing a new Giardia. Thus, after the first hour, there are 140 Giardia in the bottle, after the second hour there are 196 in the bottle, and so on. Goal: Graph the number of Giardia in the bottle over 8 hours.",
         "givenModelNodes": [
             {
                 "ID": "id1",
@@ -31,13 +31,13 @@
                     "equation": 0
                 },
                 "status": {},
-                "name": "female justices",
+                "name": "initial population",
                 "type": "parameter",
                 "parentNode": false,
-                "extra": false,
+                "extra": true,
                 "units": "",
-                "description": "The number of US Supreme Court justices that are female",
-                "initial": 3
+                "description": "The number of Giardia in the bottle initially",
+                "initial": 100
             },
             {
                 "ID": "id2",
@@ -54,24 +54,17 @@
                     "equation": 0
                 },
                 "status": {},
-                "name": "justices",
+                "name": "population 2nd hour",
                 "type": "parameter",
                 "parentNode": false,
-                "extra": false,
+                "extra": true,
                 "units": "",
-                "description": "The total number of US Supreme Court justices",
-                "initial": 9
+                "description": "The number of Giardia in the bottle during the second hour",
+                "initial": 196
             },
             {
                 "ID": "id3",
-                "inputs": [
-                    {
-                        "ID": "id1"
-                    },
-                    {
-                        "ID": "id2"
-                    }
-                ],
+                "inputs": [],
                 "position": {
                     "x": 400,
                     "y": 100
@@ -84,13 +77,13 @@
                     "equation": 0
                 },
                 "status": {},
-                "name": "female justice prop",
-                "type": "function",
-                "parentNode": true,
-                "extra": false,
+                "name": "population 1st hour",
+                "type": "parameter",
+                "parentNode": false,
+                "extra": true,
                 "units": "",
-                "description": "The ratio of female justices to total justices in the US Supreme court",
-                "equation": "id1 / id2"
+                "description": "The number of Giardia in the bottle during the first hour",
+                "initial": 140
             },
             {
                 "ID": "id4",
@@ -107,16 +100,21 @@
                     "equation": 0
                 },
                 "status": {},
-                "name": "female justices",
+                "name": "growth rate",
                 "type": "parameter",
                 "parentNode": false,
                 "extra": false,
                 "units": "",
-                "description": "The number of US Supreme Court justices that are female"
+                "description": "The rate that Giardia reproduce",
+                "initial": 0.4
             },
             {
                 "ID": "id5",
-                "inputs": [],
+                "inputs": [
+                    {
+                        "ID": "id6"
+                    }
+                ],
                 "position": {
                     "x": 400,
                     "y": 100
@@ -129,12 +127,44 @@
                     "equation": 0
                 },
                 "status": {},
-                "name": "justices",
-                "type": "parameter",
+                "name": "population",
+                "type": "accumulator",
+                "parentNode": true,
+                "extra": false,
+                "units": "",
+                "description": "The number of Giardia in the bottle each hour",
+                "initial": 100,
+                "equation": "+ id6"
+            },
+            {
+                "ID": "id6",
+                "inputs": [
+                    {
+                        "ID": "id5"
+                    },
+                    {
+                        "ID": "id4"
+                    }
+                ],
+                "position": {
+                    "x": 400,
+                    "y": 100
+                },
+                "attemptCount": {
+                    "description": 0,
+                    "type": 0,
+                    "initial": 0,
+                    "units": 0,
+                    "equation": 0
+                },
+                "status": {},
+                "name": "births",
+                "type": "function",
                 "parentNode": false,
                 "extra": false,
                 "units": "",
-                "description": "The total number of US Supreme Court justices"
+                "description": "The number of Giardia born each hour",
+                "equation": "id5 * id4"
             }
         ],
         "studentModelNodes": []

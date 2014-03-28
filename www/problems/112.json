@@ -1,0 +1,175 @@
+{
+    "task": {
+        "taskName": "Blood Glucose",
+        "time": {
+            "start": 0,
+            "end": 24,
+            "step": 0.5,
+            "units": "hours"
+        },
+        "properties": {
+            "phase": "",
+            "type": "Whole"
+        },
+        "image": {
+            "URL": "http://lh6.ggpht.com/_9F9_RUESS2E/SqpDdiLBcII/AAAAAAAABEE/ZNVbA8UwO1k/s800/Looking-at-the-World-through-a-Microscope-red-blood-cells3.jpg"
+        },
+        "taskDescription": " Problem: When admitted to the hospital, the glucose level in the patient's blood was 10 units, which is too low. Thus, an IV line was started which adds 3 units per hour to the blood. Even though the patient is lying still on the bed, the body burns up some glucose. The amount of glucose the body removes from the blood each hour is 2% of the glucose in the blood at that time. So after the first hour, the glucose levels in the patient's blood was 12.74 units. Goal: Graph the glucose level in the blood for 24 hours. ",
+        "givenModelNodes": [
+            {
+                "ID": "id1",
+                "inputs": [],
+                "position": {
+                    "x": 400,
+                    "y": 100
+                },
+                "attemptCount": {
+                    "description": 0,
+                    "type": 0,
+                    "initial": 0,
+                    "units": 0,
+                    "equation": 0
+                },
+                "status": {},
+                "name": "beg. glucose level",
+                "type": "parameter",
+                "parentNode": false,
+                "extra": true,
+                "units": "",
+                "description": "The amount of glucose in the blood that was originally in the blood",
+                "initial": 10
+            },
+            {
+                "ID": "id2",
+                "inputs": [],
+                "position": {
+                    "x": 400,
+                    "y": 100
+                },
+                "attemptCount": {
+                    "description": 0,
+                    "type": 0,
+                    "initial": 0,
+                    "units": 0,
+                    "equation": 0
+                },
+                "status": {},
+                "name": "glucose level 1 hour",
+                "type": "parameter",
+                "parentNode": false,
+                "extra": true,
+                "units": "",
+                "description": "The amount of glucose in the blood that was in the blood after the first hour",
+                "initial": 12.74
+            },
+            {
+                "ID": "id3",
+                "inputs": [],
+                "position": {
+                    "x": 400,
+                    "y": 100
+                },
+                "attemptCount": {
+                    "description": 0,
+                    "type": 0,
+                    "initial": 0,
+                    "units": 0,
+                    "equation": 0
+                },
+                "status": {},
+                "name": "removal rate",
+                "type": "parameter",
+                "parentNode": false,
+                "extra": false,
+                "units": "",
+                "description": "The proportion of glucose removed from the blood during each hour",
+                "initial": 0.02
+            },
+            {
+                "ID": "id4",
+                "inputs": [],
+                "position": {
+                    "x": 400,
+                    "y": 100
+                },
+                "attemptCount": {
+                    "description": 0,
+                    "type": 0,
+                    "initial": 0,
+                    "units": 0,
+                    "equation": 0
+                },
+                "status": {},
+                "name": "glucose added",
+                "type": "parameter",
+                "parentNode": false,
+                "extra": false,
+                "units": "",
+                "description": "The amount of glucose added to the blood each hour and it remains the same from hour to hour",
+                "initial": 3
+            },
+            {
+                "ID": "id5",
+                "inputs": [
+                    {
+                        "ID": "id3"
+                    },
+                    {
+                        "ID": "id6"
+                    }
+                ],
+                "position": {
+                    "x": 400,
+                    "y": 100
+                },
+                "attemptCount": {
+                    "description": 0,
+                    "type": 0,
+                    "initial": 0,
+                    "units": 0,
+                    "equation": 0
+                },
+                "status": {},
+                "name": "glucose removed",
+                "type": "function",
+                "parentNode": false,
+                "extra": false,
+                "units": "",
+                "description": "The amount of glucose removed from the blood each hour and it varies from hour to hour",
+                "equation": "id6 * id3"
+            },
+            {
+                "ID": "id6",
+                "inputs": [
+                    {
+                        "ID": "id4"
+                    },
+                    {
+                        "ID": "id5"
+                    }
+                ],
+                "position": {
+                    "x": 400,
+                    "y": 100
+                },
+                "attemptCount": {
+                    "description": 0,
+                    "type": 0,
+                    "initial": 0,
+                    "units": 0,
+                    "equation": 0
+                },
+                "status": {},
+                "name": "glucose in the blood",
+                "type": "accumulator",
+                "parentNode": true,
+                "extra": false,
+                "units": "",
+                "description": "The amount of glucose in the blood at the end of each hour and it varies from hour to hour",
+                "initial": 10,
+                "equation": "+ id4 - id5"
+            }
+        ],
+        "studentModelNodes": []
+    }
+}

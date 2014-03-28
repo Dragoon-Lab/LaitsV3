@@ -1,0 +1,189 @@
+{
+    "task": {
+        "taskName": "Waterfowl 2",
+        "time": {
+            "start": 0,
+            "end": 10,
+            "step": 0.1,
+            "units": "years"
+        },
+        "properties": {
+            "phase": "Challenge",
+            "type": "Whole"
+        },
+        "image": {
+            "URL": "http://laits.engineering.asu.edu/laits_images/1.jpg"
+        },
+        "taskDescription": "Problem: You are still interested in the same population of water fowl, but you now want to include information on how the rate of population growth is constrained by environmental factors (i.e. limited by food and space). Suppose the urban lake starts with a population size of 10 water fowl and the population growth rate is 40% per year, but the lake can only support a maximum of 50 individuals. Goal: Graph the water fowl population over 10 years. Hint: 1. Use the logistic equation form (K-N)/K to calculate environmental resistance, p. 242 2. Only use up to the thousandth decimal place. ",
+        "givenModelNodes": [
+            {
+                "ID": "id1",
+                "inputs": [
+                    {
+                        "ID": "id3"
+                    },
+                    {
+                        "ID": "id2"
+                    }
+                ],
+                "position": {
+                    "x": 400,
+                    "y": 100
+                },
+                "attemptCount": {
+                    "description": 0,
+                    "type": 0,
+                    "initial": 0,
+                    "units": 0,
+                    "equation": 0
+                },
+                "status": {},
+                "name": "unutilized K prop",
+                "type": "function",
+                "parentNode": false,
+                "extra": false,
+                "units": "",
+                "description": "The proportion of the carrying capacity not utilized by the water fowl",
+                "equation": "id3 / id2"
+            },
+            {
+                "ID": "id2",
+                "inputs": [],
+                "position": {
+                    "x": 400,
+                    "y": 100
+                },
+                "attemptCount": {
+                    "description": 0,
+                    "type": 0,
+                    "initial": 0,
+                    "units": 0,
+                    "equation": 0
+                },
+                "status": {},
+                "name": "carrying capacity",
+                "type": "parameter",
+                "parentNode": false,
+                "extra": false,
+                "units": "",
+                "description": "The maximum number of water fowl the lake can support",
+                "initial": 50
+            },
+            {
+                "ID": "id3",
+                "inputs": [
+                    {
+                        "ID": "id2"
+                    },
+                    {
+                        "ID": "id6"
+                    }
+                ],
+                "position": {
+                    "x": 400,
+                    "y": 100
+                },
+                "attemptCount": {
+                    "description": 0,
+                    "type": 0,
+                    "initial": 0,
+                    "units": 0,
+                    "equation": 0
+                },
+                "status": {},
+                "name": "unutilized K",
+                "type": "function",
+                "parentNode": false,
+                "extra": false,
+                "units": "",
+                "description": "The amount of carrying capacity utilized by the water fowl population",
+                "equation": "id2 - id6"
+            },
+            {
+                "ID": "id4",
+                "inputs": [
+                    {
+                        "ID": "id1"
+                    },
+                    {
+                        "ID": "id5"
+                    },
+                    {
+                        "ID": "id6"
+                    }
+                ],
+                "position": {
+                    "x": 400,
+                    "y": 100
+                },
+                "attemptCount": {
+                    "description": 0,
+                    "type": 0,
+                    "initial": 0,
+                    "units": 0,
+                    "equation": 0
+                },
+                "status": {},
+                "name": "popul growth rate",
+                "type": "function",
+                "parentNode": false,
+                "extra": false,
+                "units": "",
+                "description": "The number of water fowl added per year",
+                "equation": "id1 * id5 * id6"
+            },
+            {
+                "ID": "id5",
+                "inputs": [],
+                "position": {
+                    "x": 400,
+                    "y": 100
+                },
+                "attemptCount": {
+                    "description": 0,
+                    "type": 0,
+                    "initial": 0,
+                    "units": 0,
+                    "equation": 0
+                },
+                "status": {},
+                "name": "growth rate coeff",
+                "type": "parameter",
+                "parentNode": false,
+                "extra": false,
+                "units": "",
+                "description": "The proportion that the water fowl population grows",
+                "initial": 0.4
+            },
+            {
+                "ID": "id6",
+                "inputs": [
+                    {
+                        "ID": "id4"
+                    }
+                ],
+                "position": {
+                    "x": 400,
+                    "y": 100
+                },
+                "attemptCount": {
+                    "description": 0,
+                    "type": 0,
+                    "initial": 0,
+                    "units": 0,
+                    "equation": 0
+                },
+                "status": {},
+                "name": "water fowl",
+                "type": "accumulator",
+                "parentNode": true,
+                "extra": false,
+                "units": "",
+                "description": "The size of water fowl population",
+                "initial": 10,
+                "equation": "+ id4"
+            }
+        ],
+        "studentModelNodes": []
+    }
+}

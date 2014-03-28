@@ -1,0 +1,203 @@
+{
+    "task": {
+        "taskName": "ASU Commuters",
+        "time": {
+            "start": 0,
+            "end": 10,
+            "step": 0.5,
+            "units": "years"
+        },
+        "properties": {
+            "phase": "Challenge",
+            "type": "Construct"
+        },
+        "image": {
+            "URL": "http://www.statepress.com/wp-content/uploads/2011/04/4.21-Upass.jpg"
+        },
+        "taskDescription": " Problem: Currently, 24,000 drivers purchase and use parking permits at ASU's Tempe campus for their private motor vehicles. On the other hand approximately 14,000 commuters purchase and use ASU's U-pass, which allows for unlimited access to local busses, shuttles and the Light Rail. So the difference is 10,000 more parking permits are sold than the total number of U-passes purchased in the first year. In addition to the motor vehicles used at the Tempe campus there are more than 17,000 students using bicycles each day. Transportation planners are considering raising the parking fees and adding more public and alternative forms of transportation to help increase the number of commuters using public transportation each year. They estimate that doing this would increase the number of commuters purchasing and using U-passes by about 4% per year. As more commuters use public transportation the number of private drivers will decrease each year. This would decrease the number of drivers using private motor vehicles by about 2% a year. In 10 years, they hope the difference will become close to zero or maybe even go negative. Goal: Graph the annual difference between the number of drivers using private vehicles and commuters using public transportation over 10 years. For this model we will generally refer to those driving private vehicles as drivers and to those using public transportation as commuters. ",
+        "givenModelNodes": [
+            {
+                "ID": "id1",
+                "inputs": [],
+                "position": {
+                    "x": 400,
+                    "y": 100
+                },
+                "attemptCount": {
+                    "description": 0,
+                    "type": 0,
+                    "initial": 0,
+                    "units": 0,
+                    "equation": 0
+                },
+                "status": {},
+                "name": "bicycle users",
+                "type": "parameter",
+                "parentNode": false,
+                "extra": true,
+                "units": "",
+                "description": "The number of commuters that use a bicycle for transportation each day on ASU campus",
+                "initial": 17000
+            },
+            {
+                "ID": "id2",
+                "inputs": [],
+                "position": {
+                    "x": 400,
+                    "y": 100
+                },
+                "attemptCount": {
+                    "description": 0,
+                    "type": 0,
+                    "initial": 0,
+                    "units": 0,
+                    "equation": 0
+                },
+                "status": {},
+                "name": "drivers lost prop.",
+                "type": "parameter",
+                "parentNode": false,
+                "extra": false,
+                "units": "",
+                "description": "The proportion of private drivers that stop using private transportation to private drivers who continue to use private transportation each year",
+                "initial": 0.02
+            },
+            {
+                "ID": "id3",
+                "inputs": [],
+                "position": {
+                    "x": 400,
+                    "y": 100
+                },
+                "attemptCount": {
+                    "description": 0,
+                    "type": 0,
+                    "initial": 0,
+                    "units": 0,
+                    "equation": 0
+                },
+                "status": {},
+                "name": "new commuter prop.",
+                "type": "parameter",
+                "parentNode": false,
+                "extra": false,
+                "units": "",
+                "description": "The proportion of new public commuters that start taking public transportation to public commuters who already are using public transportation each year",
+                "initial": 0.04
+            },
+            {
+                "ID": "id4",
+                "inputs": [],
+                "position": {
+                    "x": 400,
+                    "y": 100
+                },
+                "attemptCount": {
+                    "description": 0,
+                    "type": 0,
+                    "initial": 0,
+                    "units": 0,
+                    "equation": 0
+                },
+                "status": {},
+                "name": "public commuters",
+                "type": "accumulator",
+                "parentNode": false,
+                "extra": false,
+                "units": "",
+                "description": "The number of commuters that use public transportation each year",
+                "initial": 14000,
+                "equation": "+ null"
+            },
+            {
+                "ID": "id5",
+                "inputs": [
+                    {
+                        "ID": "id6"
+                    }
+                ],
+                "position": {
+                    "x": 400,
+                    "y": 100
+                },
+                "attemptCount": {
+                    "description": 0,
+                    "type": 0,
+                    "initial": 0,
+                    "units": 0,
+                    "equation": 0
+                },
+                "status": {},
+                "name": "private drivers",
+                "type": "accumulator",
+                "parentNode": false,
+                "extra": false,
+                "units": "",
+                "description": "The number of commuters that use private transportation each year",
+                "initial": 24000,
+                "equation": "- id6"
+            },
+            {
+                "ID": "id6",
+                "inputs": [
+                    {
+                        "ID": "id2"
+                    },
+                    {
+                        "ID": "id5"
+                    }
+                ],
+                "position": {
+                    "x": 400,
+                    "y": 100
+                },
+                "attemptCount": {
+                    "description": 0,
+                    "type": 0,
+                    "initial": 0,
+                    "units": 0,
+                    "equation": 0
+                },
+                "status": {},
+                "name": "drivers lost",
+                "type": "function",
+                "parentNode": false,
+                "extra": false,
+                "units": "",
+                "description": "The number of private drivers that stop using private transportation each year",
+                "equation": "id5 * id2"
+            },
+            {
+                "ID": "id7",
+                "inputs": [
+                    {
+                        "ID": "id5"
+                    },
+                    {
+                        "ID": "id4"
+                    }
+                ],
+                "position": {
+                    "x": 400,
+                    "y": 100
+                },
+                "attemptCount": {
+                    "description": 0,
+                    "type": 0,
+                    "initial": 0,
+                    "units": 0,
+                    "equation": 0
+                },
+                "status": {},
+                "name": "driver commuter diff.",
+                "type": "function",
+                "parentNode": true,
+                "extra": false,
+                "units": "",
+                "description": "The number of private drivers minus the number of public commuters each year",
+                "equation": "id5 - id4"
+            }
+        ],
+        "studentModelNodes": []
+    }
+}
