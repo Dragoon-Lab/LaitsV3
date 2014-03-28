@@ -1,0 +1,101 @@
+{
+    "task": {
+        "taskName": null,
+        "time": {
+            "start": 0,
+            "end": 3,
+            "step": 0.1,
+            "units": "Seconds"
+        },
+        "properties": {
+            "phase": "Intro",
+            "type": "Construct"
+        },
+        "image": {
+            "URL": "images/weight-toss.jpg"
+        },
+        "taskDescription": " A weight is thrown vertically upward with a velocity of 8.5 m/s from an initial height of 1.2 m. Graph its velocity and height from 0 seconds to 3 seconds. How fast is it moving when it reaches a height of 4.0m? How long is required to reach this height? Explain why there are two answers. Use -9.81 m/s<sup>2</sup> as the gravitational acceleration. ",
+        "givenModelNodes": [
+            {
+                "ID": "id1",
+                "inputs": [],
+                "position": {
+                    "x": 400,
+                    "y": 100
+                },
+                "attemptCount": {
+                    "description": 0,
+                    "type": 0,
+                    "initial": 0,
+                    "units": 0,
+                    "equation": 0
+                },
+                "status": {},
+                "name": "Acceleration",
+                "type": "parameter",
+                "parentNode": false,
+                "extra": false,
+                "units": "",
+                "description": "The acceleration of the weight due to gravity",
+                "initial": -9.81
+            },
+            {
+                "ID": "id2",
+                "inputs": [
+                    {
+                        "ID": "id1"
+                    }
+                ],
+                "position": {
+                    "x": 400,
+                    "y": 100
+                },
+                "attemptCount": {
+                    "description": 0,
+                    "type": 0,
+                    "initial": 0,
+                    "units": 0,
+                    "equation": 0
+                },
+                "status": {},
+                "name": "Velocity",
+                "type": "accumulator",
+                "parentNode": false,
+                "extra": false,
+                "units": "",
+                "description": "The velocity of the weight",
+                "initial": 8.5,
+                "equation": "id1"
+            },
+            {
+                "ID": "id3",
+                "inputs": [
+                    {
+                        "ID": "id2"
+                    }
+                ],
+                "position": {
+                    "x": 400,
+                    "y": 100
+                },
+                "attemptCount": {
+                    "description": 0,
+                    "type": 0,
+                    "initial": 0,
+                    "units": 0,
+                    "equation": 0
+                },
+                "status": {},
+                "name": "Height",
+                "type": "accumulator",
+                "parentNode": true,
+                "extra": false,
+                "units": "",
+                "description": "The height of the weight",
+                "initial": 1.2,
+                "equation": "id2"
+            }
+        ],
+        "studentModelNodes": []
+    }
+}

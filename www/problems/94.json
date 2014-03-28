@@ -1,20 +1,20 @@
 {
     "task": {
-        "taskName": "Intro Problem 2",
+        "taskName": "Rust",
         "time": {
-            "start": 2000,
-            "end": 2011,
+            "start": 0,
+            "end": 10,
             "step": 0.5,
-            "units": "years"
+            "units": "weeks"
         },
         "properties": {
-            "phase": "Intro",
-            "type": "Debug"
+            "phase": "Training",
+            "type": "Construct"
         },
         "image": {
-            "URL": "http://amt.javiergs.com/images/tasks/intro-3.png"
+            "URL": "http://upload.wikimedia.org/wikipedia/commons/3/3f/Box_car_DSSA_18052.jpg"
         },
-        "taskDescription": " Problem:The US Supreme Court has 9 justices, and 3 justices are female. Goal: Create a model that uses a function node to calculate the proportion of the justices that are female.",
+        "taskDescription": " Problem: Rust destroys steel and can spread quickly. Suppose you take a large sheet of steel, such as one that might be used as the roof of the boxcar on a train, and you put it outside in the weather. Suppose it starts with a spot of rust that is 10 square inches in area. However, each week the rust spot gets bigger, as it grows by 30%. Therefore at the end of the first week, the rust spot is 13 square inches in area. Goal: Graph the size of the rust spot over 10 weeks. ",
         "givenModelNodes": [
             {
                 "ID": "id1",
@@ -31,13 +31,13 @@
                     "equation": 0
                 },
                 "status": {},
-                "name": "female justices",
+                "name": "rust area first week",
                 "type": "parameter",
                 "parentNode": false,
-                "extra": false,
+                "extra": true,
                 "units": "",
-                "description": "The number of US Supreme Court justices that are female",
-                "initial": 3
+                "description": "The amount in square inches of total rust after the first week",
+                "initial": 13
             },
             {
                 "ID": "id2",
@@ -54,19 +54,47 @@
                     "equation": 0
                 },
                 "status": {},
-                "name": "justices",
+                "name": "rust growth factor",
                 "type": "parameter",
                 "parentNode": false,
                 "extra": false,
                 "units": "",
-                "description": "The total number of US Supreme Court justices",
-                "initial": 9
+                "description": "The proportion of new rust to the existing rusted area",
+                "initial": 0.3
             },
             {
                 "ID": "id3",
                 "inputs": [
                     {
-                        "ID": "id1"
+                        "ID": "id4"
+                    }
+                ],
+                "position": {
+                    "x": 400,
+                    "y": 100
+                },
+                "attemptCount": {
+                    "description": 0,
+                    "type": 0,
+                    "initial": 0,
+                    "units": 0,
+                    "equation": 0
+                },
+                "status": {},
+                "name": "rust spot area",
+                "type": "accumulator",
+                "parentNode": true,
+                "extra": false,
+                "units": "",
+                "description": "The amount in square inches of total rust each week",
+                "initial": 10,
+                "equation": "+ id4"
+            },
+            {
+                "ID": "id4",
+                "inputs": [
+                    {
+                        "ID": "id3"
                     },
                     {
                         "ID": "id2"
@@ -84,57 +112,13 @@
                     "equation": 0
                 },
                 "status": {},
-                "name": "female justice prop",
+                "name": "new rust per week",
                 "type": "function",
-                "parentNode": true,
-                "extra": false,
-                "units": "",
-                "description": "The ratio of female justices to total justices in the US Supreme court",
-                "equation": "id1 / id2"
-            },
-            {
-                "ID": "id4",
-                "inputs": [],
-                "position": {
-                    "x": 400,
-                    "y": 100
-                },
-                "attemptCount": {
-                    "description": 0,
-                    "type": 0,
-                    "initial": 0,
-                    "units": 0,
-                    "equation": 0
-                },
-                "status": {},
-                "name": "female justices",
-                "type": "parameter",
                 "parentNode": false,
                 "extra": false,
                 "units": "",
-                "description": "The number of US Supreme Court justices that are female"
-            },
-            {
-                "ID": "id5",
-                "inputs": [],
-                "position": {
-                    "x": 400,
-                    "y": 100
-                },
-                "attemptCount": {
-                    "description": 0,
-                    "type": 0,
-                    "initial": 0,
-                    "units": 0,
-                    "equation": 0
-                },
-                "status": {},
-                "name": "justices",
-                "type": "parameter",
-                "parentNode": false,
-                "extra": false,
-                "units": "",
-                "description": "The total number of US Supreme Court justices"
+                "description": "The amount in square inches of new rust each week",
+                "equation": "id3 * id2"
             }
         ],
         "studentModelNodes": []

@@ -1,0 +1,217 @@
+{
+    "task": {
+        "taskName": "Bus Fleet",
+        "time": {
+            "start": 0,
+            "end": 10,
+            "step": 0.5,
+            "units": "weeks"
+        },
+        "properties": {
+            "phase": "Training",
+            "type": "Debug"
+        },
+        "image": {
+            "URL": "http://farm3.static.flickr.com/2465/3825067478_cb2c3ce571.jpg"
+        },
+        "taskDescription": " Problem: Suppose a city wins a large federal grant and uses it to buy 105 low-emission buses. Although the buses have excellent technology, they are driven all day long so 9% of them fail each week. Therefore, approximately 9 buses fail in the first week. Since the city does not have the funding to increase the staff of its bus fleet maintenance facility, the staff can fix only 6 buses per week. Goal: Graph the size of the bus fleet (i.e., the ones that are on the road and not being repaired) over the first 10 weeks of operation. A model has been provided for you and run. As you can tell from the G indicators, some of the graphs are wrong. You will need to fix the model. ",
+        "givenModelNodes": [
+            {
+                "ID": "id1",
+                "inputs": [],
+                "position": {
+                    "x": 400,
+                    "y": 100
+                },
+                "attemptCount": {
+                    "description": 0,
+                    "type": 0,
+                    "initial": 0,
+                    "units": 0,
+                    "equation": 0
+                },
+                "status": {},
+                "name": "buses each week",
+                "type": "parameter",
+                "parentNode": false,
+                "extra": false,
+                "units": "",
+                "description": "The number of buses that are fixed each week",
+                "initial": 6
+            },
+            {
+                "ID": "id2",
+                "inputs": [],
+                "position": {
+                    "x": 400,
+                    "y": 100
+                },
+                "attemptCount": {
+                    "description": 0,
+                    "type": 0,
+                    "initial": 0,
+                    "units": 0,
+                    "equation": 0
+                },
+                "status": {},
+                "name": "prop buses that fail",
+                "type": "parameter",
+                "parentNode": false,
+                "extra": false,
+                "units": "",
+                "description": "The proportion of the number of buses that fail to the number of buses that are in the bus fleet each week",
+                "initial": 9
+            },
+            {
+                "ID": "id3",
+                "inputs": [
+                    {
+                        "ID": "id1"
+                    },
+                    {
+                        "ID": "id4"
+                    }
+                ],
+                "position": {
+                    "x": 400,
+                    "y": 100
+                },
+                "attemptCount": {
+                    "description": 0,
+                    "type": 0,
+                    "initial": 0,
+                    "units": 0,
+                    "equation": 0
+                },
+                "status": {},
+                "name": "bus fleet",
+                "type": "accumulator",
+                "parentNode": true,
+                "extra": false,
+                "units": "",
+                "description": "The number of buses that are working and used each week by the city",
+                "initial": 105,
+                "equation": "+ id1 - id4"
+            },
+            {
+                "ID": "id4",
+                "inputs": [
+                    {
+                        "ID": "id3"
+                    },
+                    {
+                        "ID": "id2"
+                    }
+                ],
+                "position": {
+                    "x": 400,
+                    "y": 100
+                },
+                "attemptCount": {
+                    "description": 0,
+                    "type": 0,
+                    "initial": 0,
+                    "units": 0,
+                    "equation": 0
+                },
+                "status": {},
+                "name": "buses fail each week",
+                "type": "function",
+                "parentNode": false,
+                "extra": false,
+                "units": "",
+                "description": "The number of buses that fail each week",
+                "equation": "id3 + id2"
+            },
+            {
+                "ID": "id5",
+                "inputs": [],
+                "position": {
+                    "x": 400,
+                    "y": 100
+                },
+                "attemptCount": {
+                    "description": 0,
+                    "type": 0,
+                    "initial": 0,
+                    "units": 0,
+                    "equation": 0
+                },
+                "status": {},
+                "name": "buses each week",
+                "type": "parameter",
+                "parentNode": false,
+                "extra": false,
+                "units": "",
+                "description": "The number of buses that are fixed each week"
+            },
+            {
+                "ID": "id6",
+                "inputs": [],
+                "position": {
+                    "x": 400,
+                    "y": 100
+                },
+                "attemptCount": {
+                    "description": 0,
+                    "type": 0,
+                    "initial": 0,
+                    "units": 0,
+                    "equation": 0
+                },
+                "status": {},
+                "name": "prop buses that fail",
+                "type": "parameter",
+                "parentNode": false,
+                "extra": false,
+                "units": "",
+                "description": "The proportion of the number of buses that fail to the number of buses that are in the bus fleet each week"
+            },
+            {
+                "ID": "id7",
+                "inputs": [],
+                "position": {
+                    "x": 400,
+                    "y": 100
+                },
+                "attemptCount": {
+                    "description": 0,
+                    "type": 0,
+                    "initial": 0,
+                    "units": 0,
+                    "equation": 0
+                },
+                "status": {},
+                "name": "bus fleet",
+                "type": "accumulator",
+                "parentNode": false,
+                "extra": false,
+                "units": "",
+                "description": "The number of buses that are working and used each week by the city"
+            },
+            {
+                "ID": "id8",
+                "inputs": [],
+                "position": {
+                    "x": 400,
+                    "y": 100
+                },
+                "attemptCount": {
+                    "description": 0,
+                    "type": 0,
+                    "initial": 0,
+                    "units": 0,
+                    "equation": 0
+                },
+                "status": {},
+                "name": "buses fail each week",
+                "type": "function",
+                "parentNode": false,
+                "extra": false,
+                "units": "",
+                "description": "The number of buses that fail each week"
+            }
+        ],
+        "studentModelNodes": []
+    }
+}

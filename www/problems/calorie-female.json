@@ -1,0 +1,235 @@
+{
+    "task": {
+        "taskName": "Basal Metabolic Rate",
+        "time": {
+            "start": 0,
+            "end": 10,
+            "step": 0.5,
+            "units": "Days"
+        },
+        "properties": {
+            "phase": "",
+            "type": ""
+        },
+        "image": {
+            "URL": "images/runners.jpg"
+        },
+        "taskDescription": " <strong>Goal: </strong>Read the information given by your instructor. Construct a model for a 20 year old woman who weighs 150 pounds, is 68 inches tall, and is moderately active (HB Factor = 1.55). Show her weight change if she consumes 500 less calories than she burns each day. After constructing the model click \"Show Graph\" or \"Show Table\" to enter your own values. Then complete the worksheet. <strong>BMR Formulas </strong>(weight is in pounds, height in inches, age in years): Women: BMR = 655 + (4.35 x weight) + (4.7 x height) - (4.7 x age) Men: BMR = 66 + (6.23 x weight) + (12.7 x height) - (6.8 x age) <strong>Harris Benedict Formulas: </strong> Sedentary (little or no exercise): BMR x 1.2 Lightly active (light exercise/sports 1-3 days/week): BMR x 1.375 Moderately active (moderate exercise/sports 3-5 days/week): BMR x 1.55 Very active (hard exercise/sports 6-7 days a week): BMR x 1.725 Extra active (very hard exercise/sports): BMR x 1.9 ",
+        "givenModelNodes": [
+            {
+                "ID": "id1",
+                "inputs": [
+                    {
+                        "ID": "id4"
+                    },
+                    {
+                        "ID": "id4"
+                    },
+                    {
+                        "ID": "id3"
+                    },
+                    {
+                        "ID": "id2"
+                    }
+                ],
+                "position": {
+                    "x": 400,
+                    "y": 100
+                },
+                "attemptCount": {
+                    "description": 0,
+                    "type": 0,
+                    "initial": 0,
+                    "units": 0,
+                    "equation": 0
+                },
+                "status": {},
+                "name": "bmr",
+                "type": "function",
+                "parentNode": false,
+                "extra": false,
+                "units": "",
+                "description": "The formula to determine the Basal Metabolic Rate",
+                "equation": "655 + 4.35 * id4 + 4.7 * id3 - id2 * 4.7"
+            },
+            {
+                "ID": "id2",
+                "inputs": [],
+                "position": {
+                    "x": 400,
+                    "y": 100
+                },
+                "attemptCount": {
+                    "description": 0,
+                    "type": 0,
+                    "initial": 0,
+                    "units": 0,
+                    "equation": 0
+                },
+                "status": {},
+                "name": "age",
+                "type": "parameter",
+                "parentNode": false,
+                "extra": false,
+                "units": "",
+                "description": "Given age (years)",
+                "initial": 20
+            },
+            {
+                "ID": "id3",
+                "inputs": [],
+                "position": {
+                    "x": 400,
+                    "y": 100
+                },
+                "attemptCount": {
+                    "description": 0,
+                    "type": 0,
+                    "initial": 0,
+                    "units": 0,
+                    "equation": 0
+                },
+                "status": {},
+                "name": "height",
+                "type": "parameter",
+                "parentNode": false,
+                "extra": false,
+                "units": "",
+                "description": "Given height (inches)",
+                "initial": 68
+            },
+            {
+                "ID": "id4",
+                "inputs": [
+                    {
+                        "ID": "id5"
+                    }
+                ],
+                "position": {
+                    "x": 400,
+                    "y": 100
+                },
+                "attemptCount": {
+                    "description": 0,
+                    "type": 0,
+                    "initial": 0,
+                    "units": 0,
+                    "equation": 0
+                },
+                "status": {},
+                "name": "weight",
+                "type": "accumulator",
+                "parentNode": false,
+                "extra": false,
+                "units": "",
+                "description": "Given weight (pounds)",
+                "initial": 150,
+                "equation": "id5"
+            },
+            {
+                "ID": "id5",
+                "inputs": [
+                    {
+                        "ID": "id6"
+                    }
+                ],
+                "position": {
+                    "x": 400,
+                    "y": 100
+                },
+                "attemptCount": {
+                    "description": 0,
+                    "type": 0,
+                    "initial": 0,
+                    "units": 0,
+                    "equation": 0
+                },
+                "status": {},
+                "name": "weight change",
+                "type": "function",
+                "parentNode": false,
+                "extra": false,
+                "units": "",
+                "description": "Change in weight (calorie difference / calories per lb)",
+                "equation": "id6 / 3500"
+            },
+            {
+                "ID": "id6",
+                "inputs": [],
+                "position": {
+                    "x": 400,
+                    "y": 100
+                },
+                "attemptCount": {
+                    "description": 0,
+                    "type": 0,
+                    "initial": 0,
+                    "units": 0,
+                    "equation": 0
+                },
+                "status": {},
+                "name": "calorie difference",
+                "type": "parameter",
+                "parentNode": false,
+                "extra": false,
+                "units": "",
+                "description": "number of missing (negative number) or extra (positive number) calories",
+                "initial": -500
+            },
+            {
+                "ID": "id7",
+                "inputs": [
+                    {
+                        "ID": "id1"
+                    },
+                    {
+                        "ID": "id8"
+                    }
+                ],
+                "position": {
+                    "x": 400,
+                    "y": 100
+                },
+                "attemptCount": {
+                    "description": 0,
+                    "type": 0,
+                    "initial": 0,
+                    "units": 0,
+                    "equation": 0
+                },
+                "status": {},
+                "name": "harris benedict formula",
+                "type": "function",
+                "parentNode": false,
+                "extra": false,
+                "units": "",
+                "description": "The formula to determine the BMR plus physical activity",
+                "equation": "id1 * id8"
+            },
+            {
+                "ID": "id8",
+                "inputs": [],
+                "position": {
+                    "x": 400,
+                    "y": 100
+                },
+                "attemptCount": {
+                    "description": 0,
+                    "type": 0,
+                    "initial": 0,
+                    "units": 0,
+                    "equation": 0
+                },
+                "status": {},
+                "name": "hb factor",
+                "type": "parameter",
+                "parentNode": false,
+                "extra": false,
+                "units": "",
+                "description": "Factor to multiply BMR by (calculates physical activity)",
+                "initial": 1.55
+            }
+        ],
+        "studentModelNodes": []
+    }
+}

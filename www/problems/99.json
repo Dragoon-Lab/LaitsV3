@@ -1,20 +1,20 @@
 {
     "task": {
-        "taskName": "Intro Problem 2",
+        "taskName": "Venice",
         "time": {
-            "start": 2000,
-            "end": 2011,
+            "start": 0,
+            "end": 10,
             "step": 0.5,
-            "units": "years"
+            "units": "decades"
         },
         "properties": {
-            "phase": "Intro",
-            "type": "Debug"
+            "phase": "Challenge",
+            "type": "Construct"
         },
         "image": {
-            "URL": "http://amt.javiergs.com/images/tasks/intro-3.png"
+            "URL": "http://upload.wikimedia.org/wikipedia/commons/3/36/Venezia_acqua_alta_notte_2005_modificata.jpg"
         },
-        "taskDescription": " Problem:The US Supreme Court has 9 justices, and 3 justices are female. Goal: Create a model that uses a function node to calculate the proportion of the justices that are female.",
+        "taskDescription": " Problem: The city of Venice in Italy is famous for its canals. The largest canal is 36,576 centimeters wide and on average the smaller canals are 3,810 centimeters wide. While the main form of transportation is via waterways, there are still a few streets and road that are mainly used by pedestrians. Unfortunately, like many coastal cities, Venice is sinking slowly. It sinks about 10 centimeters per decade. The elevation of most of the streets still in use is 300 centimeters above sea level. Goal: Graph the elevation above sea level of those streets for the next 10 decades.",
         "givenModelNodes": [
             {
                 "ID": "id1",
@@ -31,13 +31,13 @@
                     "equation": 0
                 },
                 "status": {},
-                "name": "female justices",
+                "name": "smaller canal width",
                 "type": "parameter",
                 "parentNode": false,
-                "extra": false,
+                "extra": true,
                 "units": "",
-                "description": "The number of US Supreme Court justices that are female",
-                "initial": 3
+                "description": "The number of centimeters wide of the smaller canals",
+                "initial": 3810
             },
             {
                 "ID": "id2",
@@ -54,22 +54,42 @@
                     "equation": 0
                 },
                 "status": {},
-                "name": "justices",
+                "name": "largest canal width",
+                "type": "parameter",
+                "parentNode": false,
+                "extra": true,
+                "units": "",
+                "description": "The number of centimeters wide of the largest canals",
+                "initial": 36576
+            },
+            {
+                "ID": "id3",
+                "inputs": [],
+                "position": {
+                    "x": 400,
+                    "y": 100
+                },
+                "attemptCount": {
+                    "description": 0,
+                    "type": 0,
+                    "initial": 0,
+                    "units": 0,
+                    "equation": 0
+                },
+                "status": {},
+                "name": "cm sunk per decade",
                 "type": "parameter",
                 "parentNode": false,
                 "extra": false,
                 "units": "",
-                "description": "The total number of US Supreme Court justices",
-                "initial": 9
+                "description": "The number of centimeters the streets of Venice sink each decade",
+                "initial": 10
             },
             {
-                "ID": "id3",
+                "ID": "id4",
                 "inputs": [
                     {
-                        "ID": "id1"
-                    },
-                    {
-                        "ID": "id2"
+                        "ID": "id3"
                     }
                 ],
                 "position": {
@@ -84,57 +104,14 @@
                     "equation": 0
                 },
                 "status": {},
-                "name": "female justice prop",
-                "type": "function",
+                "name": "cm above sea level",
+                "type": "accumulator",
                 "parentNode": true,
                 "extra": false,
                 "units": "",
-                "description": "The ratio of female justices to total justices in the US Supreme court",
-                "equation": "id1 / id2"
-            },
-            {
-                "ID": "id4",
-                "inputs": [],
-                "position": {
-                    "x": 400,
-                    "y": 100
-                },
-                "attemptCount": {
-                    "description": 0,
-                    "type": 0,
-                    "initial": 0,
-                    "units": 0,
-                    "equation": 0
-                },
-                "status": {},
-                "name": "female justices",
-                "type": "parameter",
-                "parentNode": false,
-                "extra": false,
-                "units": "",
-                "description": "The number of US Supreme Court justices that are female"
-            },
-            {
-                "ID": "id5",
-                "inputs": [],
-                "position": {
-                    "x": 400,
-                    "y": 100
-                },
-                "attemptCount": {
-                    "description": 0,
-                    "type": 0,
-                    "initial": 0,
-                    "units": 0,
-                    "equation": 0
-                },
-                "status": {},
-                "name": "justices",
-                "type": "parameter",
-                "parentNode": false,
-                "extra": false,
-                "units": "",
-                "description": "The total number of US Supreme Court justices"
+                "description": "The number of centimeters the streets of Venice are above sea level each decade",
+                "initial": 300,
+                "equation": "- id3"
             }
         ],
         "studentModelNodes": []

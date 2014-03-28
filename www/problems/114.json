@@ -1,0 +1,258 @@
+{
+    "task": {
+        "taskName": "ObscureFlix",
+        "time": {
+            "start": 0,
+            "end": 10,
+            "step": 0.5,
+            "units": "weeks"
+        },
+        "properties": {
+            "phase": "Challenge",
+            "type": "Construct"
+        },
+        "image": {
+            "URL": "http://fc03.deviantart.net/fs70/f/2010/069/1/1/Gorosaurus_pinup_by_KaijuSamurai.jpg"
+        },
+        "taskDescription": " Problem: Mark enjoys watching obscure, barely known movies so he subscribes to ObscureFlix. He can watch all the movies he wants, although he has to pay $2.5 per movie. However, the good people at ObscureFlix only have an average of 5 copies of each movie, so they often have to wait for movies to be returned before they can ship them out again. On average ObscureFlix can only ship half of the movies in Mark’s movie queue each week, which of course removes them from the queue. After an initial frenzy where he started up his queue by putting 30 really rare movies in it, the number of movies Mark adds to his queue each week is about 20% of the number of movies already on the queue. Goal: Make a graph that shows how many movies he has in his queue over the space of 12 weeks. ",
+        "givenModelNodes": [
+            {
+                "ID": "id1",
+                "inputs": [],
+                "position": {
+                    "x": 400,
+                    "y": 100
+                },
+                "attemptCount": {
+                    "description": 0,
+                    "type": 0,
+                    "initial": 0,
+                    "units": 0,
+                    "equation": 0
+                },
+                "status": {},
+                "name": "proportion of movies shipped",
+                "type": "parameter",
+                "parentNode": false,
+                "extra": false,
+                "units": "",
+                "description": "The proportion of movies shipped from the queue each week",
+                "initial": 0.5
+            },
+            {
+                "ID": "id2",
+                "inputs": [],
+                "position": {
+                    "x": 400,
+                    "y": 100
+                },
+                "attemptCount": {
+                    "description": 0,
+                    "type": 0,
+                    "initial": 0,
+                    "units": 0,
+                    "equation": 0
+                },
+                "status": {},
+                "name": "proportion of movies added",
+                "type": "parameter",
+                "parentNode": false,
+                "extra": false,
+                "units": "",
+                "description": "The proportion of movies that Marks adds to the queue each week",
+                "initial": 0.2
+            },
+            {
+                "ID": "id3",
+                "inputs": [],
+                "position": {
+                    "x": 400,
+                    "y": 100
+                },
+                "attemptCount": {
+                    "description": 0,
+                    "type": 0,
+                    "initial": 0,
+                    "units": 0,
+                    "equation": 0
+                },
+                "status": {},
+                "name": "price per movie",
+                "type": "parameter",
+                "parentNode": false,
+                "extra": true,
+                "units": "",
+                "description": "The amount of money Marks spends per movie in dollars",
+                "initial": 2.5
+            },
+            {
+                "ID": "id4",
+                "inputs": [],
+                "position": {
+                    "x": 400,
+                    "y": 100
+                },
+                "attemptCount": {
+                    "description": 0,
+                    "type": 0,
+                    "initial": 0,
+                    "units": 0,
+                    "equation": 0
+                },
+                "status": {},
+                "name": "copies per movie",
+                "type": "parameter",
+                "parentNode": false,
+                "extra": true,
+                "units": "",
+                "description": "The amount of copies of a movie on average",
+                "initial": 5
+            },
+            {
+                "ID": "id5",
+                "inputs": [],
+                "position": {
+                    "x": 400,
+                    "y": 100
+                },
+                "attemptCount": {
+                    "description": 0,
+                    "type": 0,
+                    "initial": 0,
+                    "units": 0,
+                    "equation": 0
+                },
+                "status": {},
+                "name": "movies in queue initially",
+                "type": "parameter",
+                "parentNode": false,
+                "extra": true,
+                "units": "",
+                "description": "The number of movies in the queue initially",
+                "initial": 30
+            },
+            {
+                "ID": "id6",
+                "inputs": [
+                    {
+                        "ID": "id9"
+                    },
+                    {
+                        "ID": "id8"
+                    }
+                ],
+                "position": {
+                    "x": 400,
+                    "y": 100
+                },
+                "attemptCount": {
+                    "description": 0,
+                    "type": 0,
+                    "initial": 0,
+                    "units": 0,
+                    "equation": 0
+                },
+                "status": {},
+                "name": "movies in queue",
+                "type": "accumulator",
+                "parentNode": true,
+                "extra": false,
+                "units": "",
+                "description": "The number of movies in the queue each week",
+                "initial": 30,
+                "equation": "+ id9 - id8"
+            },
+            {
+                "ID": "id7",
+                "inputs": [
+                    {
+                        "ID": "id3"
+                    },
+                    {
+                        "ID": "id8"
+                    }
+                ],
+                "position": {
+                    "x": 400,
+                    "y": 100
+                },
+                "attemptCount": {
+                    "description": 0,
+                    "type": 0,
+                    "initial": 0,
+                    "units": 0,
+                    "equation": 0
+                },
+                "status": {},
+                "name": "price paid per week",
+                "type": "function",
+                "parentNode": false,
+                "extra": true,
+                "units": "",
+                "description": "The amount of money Marks spends per movie each week",
+                "equation": "id3 * id8"
+            },
+            {
+                "ID": "id8",
+                "inputs": [
+                    {
+                        "ID": "id6"
+                    },
+                    {
+                        "ID": "id1"
+                    }
+                ],
+                "position": {
+                    "x": 400,
+                    "y": 100
+                },
+                "attemptCount": {
+                    "description": 0,
+                    "type": 0,
+                    "initial": 0,
+                    "units": 0,
+                    "equation": 0
+                },
+                "status": {},
+                "name": "movies shipped weekly",
+                "type": "function",
+                "parentNode": false,
+                "extra": false,
+                "units": "",
+                "description": "The number of movies shipped to Mark each week",
+                "equation": "id6 * id1"
+            },
+            {
+                "ID": "id9",
+                "inputs": [
+                    {
+                        "ID": "id2"
+                    },
+                    {
+                        "ID": "id6"
+                    }
+                ],
+                "position": {
+                    "x": 400,
+                    "y": 100
+                },
+                "attemptCount": {
+                    "description": 0,
+                    "type": 0,
+                    "initial": 0,
+                    "units": 0,
+                    "equation": 0
+                },
+                "status": {},
+                "name": "movies added weekly",
+                "type": "function",
+                "parentNode": false,
+                "extra": false,
+                "units": "",
+                "description": "The number of movies Mark adds to the queue each week",
+                "equation": "id6 * id2"
+            }
+        ],
+        "studentModelNodes": []
+    }
+}

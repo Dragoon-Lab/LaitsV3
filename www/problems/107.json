@@ -1,20 +1,20 @@
 {
     "task": {
-        "taskName": "Intro Problem 2",
+        "taskName": "Intro Problem 3",
         "time": {
-            "start": 2000,
-            "end": 2011,
+            "start": 0,
+            "end": 12,
             "step": 0.5,
-            "units": "years"
+            "units": "weeks"
         },
         "properties": {
             "phase": "Intro",
             "type": "Debug"
         },
         "image": {
-            "URL": "http://amt.javiergs.com/images/tasks/intro-3.png"
+            "URL": "http://amt.javiergs.com/images/tasks/intro-4.png"
         },
-        "taskDescription": " Problem:The US Supreme Court has 9 justices, and 3 justices are female. Goal: Create a model that uses a function node to calculate the proportion of the justices that are female.",
+        "taskDescription": "Problem: Corky is a struggling student. He keeps a task list of assignments he needs to do, but it keeps getting longer and longer. Each week Corky adds 7 new assignments to his task list. As hard as he tries, Corky is only able to complete 3 assignments each week and remove them from his task list. At the beginning of the semester, he starts with 2 tasks on his list. Goal: Graph the number of assignments on the task list over the 12-week semester. ",
         "givenModelNodes": [
             {
                 "ID": "id1",
@@ -31,13 +31,13 @@
                     "equation": 0
                 },
                 "status": {},
-                "name": "female justices",
+                "name": "assignments added",
                 "type": "parameter",
                 "parentNode": false,
                 "extra": false,
                 "units": "",
-                "description": "The number of US Supreme Court justices that are female",
-                "initial": 3
+                "description": "The number of new assignments added each week",
+                "initial": 7
             },
             {
                 "ID": "id2",
@@ -54,13 +54,13 @@
                     "equation": 0
                 },
                 "status": {},
-                "name": "justices",
+                "name": "assignments removed",
                 "type": "parameter",
                 "parentNode": false,
                 "extra": false,
                 "units": "",
-                "description": "The total number of US Supreme Court justices",
-                "initial": 9
+                "description": "The number of assignments completed and removed from the task list each week",
+                "initial": 3
             },
             {
                 "ID": "id3",
@@ -84,13 +84,14 @@
                     "equation": 0
                 },
                 "status": {},
-                "name": "female justice prop",
-                "type": "function",
+                "name": "task list",
+                "type": "accumulator",
                 "parentNode": true,
                 "extra": false,
                 "units": "",
-                "description": "The ratio of female justices to total justices in the US Supreme court",
-                "equation": "id1 / id2"
+                "description": "The number of assignments on the task list at the end of each week",
+                "initial": 2,
+                "equation": "+ id1 - id2"
             },
             {
                 "ID": "id4",
@@ -107,12 +108,12 @@
                     "equation": 0
                 },
                 "status": {},
-                "name": "female justices",
+                "name": "assignments added",
                 "type": "parameter",
                 "parentNode": false,
                 "extra": false,
                 "units": "",
-                "description": "The number of US Supreme Court justices that are female"
+                "description": "The number of new assignments added each week"
             },
             {
                 "ID": "id5",
@@ -129,12 +130,12 @@
                     "equation": 0
                 },
                 "status": {},
-                "name": "justices",
+                "name": "assignments removed",
                 "type": "parameter",
                 "parentNode": false,
                 "extra": false,
                 "units": "",
-                "description": "The total number of US Supreme Court justices"
+                "description": "The number of assignments completed and removed from the task list each week"
             }
         ],
         "studentModelNodes": []

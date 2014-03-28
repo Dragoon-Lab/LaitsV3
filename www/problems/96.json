@@ -1,0 +1,177 @@
+{
+    "task": {
+        "taskName": "Capacity Utilization",
+        "time": {
+            "start": 0,
+            "end": 6,
+            "step": 0.5,
+            "units": "months"
+        },
+        "properties": {
+            "phase": "Training",
+            "type": "Whole"
+        },
+        "image": {
+            "URL": "http://upload.wikimedia.org/wikipedia/commons/c/cd/ARTurista.JPG"
+        },
+        "taskDescription": " Problem: Capacity utilization is an important statistic for virtually any form of passenger transportation, regardless of whether the transportation is by bus, train, plane, or ship. Capacity utilization is the ratio of the number of passengers riding to the capacity of the system, which is usually determined by the number of seats (for busses, trains and planes) or cabins (for cruise ships). Unfortunately, transportation management usually cannot rapidly adjust capacity. Suppose that a small airline initially flies 222 flights per month, which combine to a total capacity of 10000 seats. The airline is running at about 0.9 capacity utilization, which means 9000 of its seats are filled every month. During an economic downturn, the airline loses 1000 passengers each month but can take only 500 seats out of service each month. Goal: Graph the capacity utilization over 6 months. ",
+        "givenModelNodes": [
+            {
+                "ID": "id1",
+                "inputs": [],
+                "position": {
+                    "x": 400,
+                    "y": 100
+                },
+                "attemptCount": {
+                    "description": 0,
+                    "type": 0,
+                    "initial": 0,
+                    "units": 0,
+                    "equation": 0
+                },
+                "status": {},
+                "name": "passengers lost",
+                "type": "parameter",
+                "parentNode": false,
+                "extra": false,
+                "units": "",
+                "description": "The number of passengers lost each month",
+                "initial": 1000
+            },
+            {
+                "ID": "id2",
+                "inputs": [],
+                "position": {
+                    "x": 400,
+                    "y": 100
+                },
+                "attemptCount": {
+                    "description": 0,
+                    "type": 0,
+                    "initial": 0,
+                    "units": 0,
+                    "equation": 0
+                },
+                "status": {},
+                "name": "seats removed",
+                "type": "parameter",
+                "parentNode": false,
+                "extra": false,
+                "units": "",
+                "description": "The number of seats removed from service each month from all flights",
+                "initial": 500
+            },
+            {
+                "ID": "id3",
+                "inputs": [],
+                "position": {
+                    "x": 400,
+                    "y": 100
+                },
+                "attemptCount": {
+                    "description": 0,
+                    "type": 0,
+                    "initial": 0,
+                    "units": 0,
+                    "equation": 0
+                },
+                "status": {},
+                "name": "flights per month",
+                "type": "parameter",
+                "parentNode": false,
+                "extra": true,
+                "units": "",
+                "description": "The number of flights the small airline has each month",
+                "initial": 222
+            },
+            {
+                "ID": "id4",
+                "inputs": [
+                    {
+                        "ID": "id2"
+                    }
+                ],
+                "position": {
+                    "x": 400,
+                    "y": 100
+                },
+                "attemptCount": {
+                    "description": 0,
+                    "type": 0,
+                    "initial": 0,
+                    "units": 0,
+                    "equation": 0
+                },
+                "status": {},
+                "name": "seats in service",
+                "type": "accumulator",
+                "parentNode": false,
+                "extra": false,
+                "units": "",
+                "description": "The number of seats in service in the whole airline each month",
+                "initial": 10000,
+                "equation": "- id2"
+            },
+            {
+                "ID": "id5",
+                "inputs": [
+                    {
+                        "ID": "id1"
+                    }
+                ],
+                "position": {
+                    "x": 400,
+                    "y": 100
+                },
+                "attemptCount": {
+                    "description": 0,
+                    "type": 0,
+                    "initial": 0,
+                    "units": 0,
+                    "equation": 0
+                },
+                "status": {},
+                "name": "passengers",
+                "type": "accumulator",
+                "parentNode": false,
+                "extra": false,
+                "units": "",
+                "description": "The number of passengers flying each month",
+                "initial": 9000,
+                "equation": "- id1"
+            },
+            {
+                "ID": "id6",
+                "inputs": [
+                    {
+                        "ID": "id4"
+                    },
+                    {
+                        "ID": "id5"
+                    }
+                ],
+                "position": {
+                    "x": 400,
+                    "y": 100
+                },
+                "attemptCount": {
+                    "description": 0,
+                    "type": 0,
+                    "initial": 0,
+                    "units": 0,
+                    "equation": 0
+                },
+                "status": {},
+                "name": "capacity utilization",
+                "type": "function",
+                "parentNode": true,
+                "extra": false,
+                "units": "",
+                "description": "The proportion of passengers flying to seats in service each month",
+                "equation": "id5 / id4"
+            }
+        ],
+        "studentModelNodes": []
+    }
+}

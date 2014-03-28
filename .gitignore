@@ -18,3 +18,4 @@ db_research_user_password
 *.jar
 *~
 /Dragoon/nbproject/private/
+/MyApplication/nbproject/private/

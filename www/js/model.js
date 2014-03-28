@@ -38,6 +38,7 @@ define([
                         time: {start: 0, end: 10, step: .5},
                         properties: {},
                         image: {},
+                        taskDescription: "",
                         givenModelNodes: [],
                         studentModelNodes: []
                     }};
@@ -350,16 +351,7 @@ define([
                 for (var i = 0; i < this.model.task.givenModelNodes.length; i++)
                     if (id === this.model.task.givenModelNodes[i].ID)
                         this.model.task.givenModelNodes[i].attemptCount.description++;
-            },
-            /*
-             Brandon:  Here is a clean-up of some of the getters that
-             uses a common function to find the node.  Note that it
-             has error handling in the event that the id is invalid.
-             
-             It is not clear if these getters will be needed in this form.
-             It might make for cleaner code (outside of model.js) if a node is passed in
-             as an argument.
-             */
+            },           
 
             /**
              * SETTERS
