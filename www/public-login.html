@@ -132,13 +132,13 @@
             115:'Widget Stocking',113:'Busy Hospital',
             114:'ObscureFlix'
         },
-	'UrbanWaterfowl' : {
+	'Urban Waterfowl' : {
             '201' : 'Waterfowl 1',
             '202' : 'Waterfowl 2',
             '203' : 'Waterfowl 3',
             '204' : 'Waterfowl & cats'
         },
-	'IsleRoyale': {
+	'Isle Royale': {
             'isle1' : 'Moose population 1',
             'isle2' : 'Moose population 2',
             'isle3' : 'Moose population 3',
@@ -157,7 +157,7 @@
             '1dfall4' : 'Thrown Stone 1',
             '1dfall5' : 'Thrown Stone 2'
         },
-        'Fall2013': {
+        'Fall 2013': {
             'barrels': 'Two Barrels',
             'evaporation': 'Accelerating Evaporation',
             'greenhouse1': 'Greenhouse 1',
@@ -200,15 +200,17 @@
         updateProblems();   
     };
 
-    str="";
-    for(var category in problemIndex){
-        str += "\""+category+"\", , \n";
-	for(var id in problemIndex[category]){
-          str += ", \""+id+"\", \""+problemIndex[category][id]+"\"\n";
+    /* Print out the list of problems in csv format */
+    if(false){
+        str="";
+        for(var category in problemIndex){
+            str += "\""+category+"\", , \n";
+	    for(var id in problemIndex[category]){
+              str += ", \""+id+"\", \""+problemIndex[category][id]+"\"\n";
+            }
         }
-     }
-    console.log(str);
- 
+        console.log(str);
+   }
     </script>
 
 </head>
@@ -249,14 +251,14 @@
                   <div class="fieldgroup">
                         <label for="problem_category">Problem Category: </label>
                         <select id="problem_category" onmouseup="updateProblems()">
-                           <option value="IsleRoyale">Isle Royale</option> 
+                           <option>Isle Royale</option> 
                            <option>Kinematics</option> 
                            <option>Calories</option> 
-                           <option value="UrbanWaterfowl">Urban Waterfowl</option> 
+                           <option>Urban Waterfowl</option> 
                            <option>Introductory</option>
                            <option>Training</option>
                            <option>Challenge</option>
-                           <option value="Fall2013">Fall 2013</options>
+                           <option>Fall 2013</options>
                         </select>
                     </div>
 
