@@ -331,7 +331,8 @@ define([
            }
             else
            {
-               this.dialog.setContent("<h1>"+ "Student did not plot any node as yet!!"+ "</h1>");
+               this.dialog.setContent("<div>"+ "Student did not plot any node as yet"+ "</div>"+"<div align='center'>"+"OR"+"</div>"
+               +"<div align='center'>"+"Nodes are not complete"+"</div>");
            }
             /*for (j in this.givenArrayOfNodeValues) {
 
