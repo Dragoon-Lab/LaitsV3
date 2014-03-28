@@ -1,10 +1,11 @@
 <!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
 <html>
 <head>
+    <meta http-equiv="Content-type" content="text/html;charset=UTF-8">
     <title>Dragoon Demo</title>
 
     <link rel="stylesheet" type="text/css" href="css/login.css">
-    <style>
+    <style type="text/css">
         body {
             background-color: #C6F5F2;
             font-family:"Helvetica Neue",Helvetica,Arial,sans-serif;
@@ -115,7 +116,7 @@
         }
         // If author field is empty, remove from form.
         // Dragoon treats the presence of the author field
-        // as a switch for author mode problems.
+        // as a switch for published versus custom problems.
         if(form.a.value.trim() == ""){
           console.log("Deleting author (a) from GET.", form);
           document.getElementById("author").removeAttribute('name');
@@ -164,7 +165,7 @@
 
                     <div class="fieldgroup">
                         <label for="problem">Problem: </label>
-                        <input id="problem" type="text" name="p" value="rabbit-example"/>
+                        <input id="problem" type="text" name="p" value="rabbits"/>
                     </div>
 
                     <div class="fieldgroup">

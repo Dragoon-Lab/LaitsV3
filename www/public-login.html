@@ -2,10 +2,6 @@
 <html>
 <head>
     <meta http-equiv="Content-type" content="text/html;charset=UTF-8">
-    <script  type="text/javascript" src="http://ajax.googleapis.com/ajax/libs/jquery/1/jquery.min.js"></script>
-    <script type="text/javascript" src="jquery.validate.min.js"></script>
-
-
     <title>Additional Dragoon Problems</title>
 
     <link rel="stylesheet" type="text/css" href="css/login.css">
@@ -87,7 +83,7 @@
             font-weight:bold;
         }
 
-        .problem-selection-form .fieldgroup input, #problem-selection-form .fieldgroup textarea, #problem-selection-form .fieldgroup select {
+        .problem-selection-form .fieldgroup input, .problem-selection-form .fieldgroup textarea, .problem-selection-form .fieldgroup select {
             float: right;
             margin: 10px 0;
             height: 30px;
@@ -111,91 +107,108 @@
 
     <script type="text/javascript">
 
-        //when the dom has loaded setup form validation rules
-        $(document).ready(function($) {
-	    $(".problem-selection-form").each(function(){
-                $(this).validate({
-                    rules: {
-                        username: "required",
-                    },
-                    messages: {
-                        username: "Please enter your Username.",
-                    },
-                    submitHandler: function(form) {
-                       form.submit();                   
-                    }
-                });
-            });
 
-            $("#problem_category").change(function(){
-                set_problems($("#mode option:selected").text(),
-	                 $("#problem_category option:selected").text());
-            });
-
-        });
-
-        function set_problems(mode,category){
-             var map = {
-             'Introductory' : {
-	          'jared1' : "Jared's weight",
-	          'jared2' : "Jared &amp Oprah",
-	          'jared3' : "Jared &amp; Oprah +",
-	          'jared4' : "Jared &amp; Oprah *",
-	          'dodos' : "Dodo extinction",
-	          'rabbits' : "Rabbit population",	          
-	          105:'Intro problem 1',106:'Intro problem 2',
-                  107:'Intro problem 3',108:'Intro problem 4',
-	     },
-             'Training': {
-                  74:'Dying orchard',92:'Bilge water',94:'Rust',
-                  110:'Chestnut blight',95:'Bus Fleet',93:'Rider gap',
-                  96:'Capacity utilization',97:'Bank Account',
-                  98:'Merchant Marine',80:'Metro Singles Club'
-             },
-             'Challenge': {
-                  111:'Bookworm',99:'Venice',109:'Giardia Bacteria',
-                  112:'Blood Glucose',100:'Oil Tanker',
-                  79:'Hardwood Forest',101:'ASU Commuters'
-                  // The following problems not working 
-                  // on August 21, 2013:
-                  // ,113:'Busy Hospital',
-                  // 115:'Widget Stocking',114:'ObscureFlix',
-             },
-	     'Urban Waterfowl' : {
-                  '201' : 'Waterfowl 1',
-                  '202' : 'Waterfowl 2',
-                  '203' : 'Waterfowl 3',
-                  '204' : 'Waterfowl & cats'
-	     },
-	     'Isle Royale': {
-                  'isle1' : 'Moose population 1',
-                  'isle2' : 'Moose population 2',
-                  'isle3' : 'Moose population 3',
-                  'isle4' : 'Moose population 4',
-                  'isle5' : 'Wolves',
-                  'isle6' : 'Moose and Wolves'
-             },
-	     'Calories': {
-                  'calorie-male' : 'Weight and Calories: male',
-                  'calorie-female' : 'Weight and Calories: female'
-             },
-	     'Kinematics': {
-                  '1dfall1' : 'Fall from building 1',
-                  '1dfall2' : 'Fall from building 2',
-                  '1dfall3' : 'Fall from building 3',
-                  '1dfall4' : 'Thrown Stone 1',
-                  '1dfall5' : 'Thrown Stone 2'
-             }};
-	
-	     var newList='';
-	     for(var id in map[category]){
-                  newList += "<option value='"+id+"'> "+map[category][id] + 
-                  "<\/option>\n";  // backslash so html validator works.
-             }
-	  
-            $('#problem_id').children().remove().end().append(newList) ;
+    var problemIndex = {
+        'Introductory' : {
+	    'jared1' : "Jared's weight",
+	    'jared2' : "Jared &amp Oprah",
+	    'jared3' : "Jared &amp; Oprah +",
+            'jared4' : "Jared &amp; Oprah *",
+            'dodos' : "Dodo extinction",
+            'rabbits' : "Rabbit population",	          
+            105:'Intro problem 1', 106:'Intro problem 2',
+            107:'Intro problem 3',108:'Intro problem 4',
+	},
+        'Training': {
+            74:'Dying orchard',92:'Bilge water',94:'Rust',
+            110:'Chestnut blight',95:'Bus Fleet',93:'Rider gap',
+            96:'Capacity utilization',97:'Bank Account',
+            98:'Merchant Marine',80:'Metro Singles Club'
+        },
+        'Challenge': {
+            111:'Bookworm',99:'Venice',109:'Giardia Bacteria',
+            112:'Blood Glucose',100:'Oil Tanker',
+            79:'Hardwood Forest',101:'ASU Commuters',
+            115:'Widget Stocking',113:'Busy Hospital',
+            114:'ObscureFlix'
+        },
+	'UrbanWaterfowl' : {
+            '201' : 'Waterfowl 1',
+            '202' : 'Waterfowl 2',
+            '203' : 'Waterfowl 3',
+            '204' : 'Waterfowl & cats'
+        },
+	'IsleRoyale': {
+            'isle1' : 'Moose population 1',
+            'isle2' : 'Moose population 2',
+            'isle3' : 'Moose population 3',
+            'isle4' : 'Moose population 4',
+            'isle5' : 'Wolves',
+            'isle6' : 'Moose and Wolves'
+        },
+	'Calories': {
+            'calorie-male' : 'Weight and Calories: male',
+            'calorie-female' : 'Weight and Calories: female'
+        },
+	'Kinematics': {
+            '1dfall1' : 'Fall from building 1',
+            '1dfall2' : 'Fall from building 2',
+            '1dfall3' : 'Fall from building 3',
+            '1dfall4' : 'Thrown Stone 1',
+            '1dfall5' : 'Thrown Stone 2'
+        },
+        'Fall2013': {
+            'barrels': 'Two Barrels',
+            'evaporation': 'Accelerating Evaporation',
+            'greenhouse1': 'Greenhouse 1',
+            'parkinglot': 'Front Lot to Back Lot',
+            'predator-prey': 'Predator-Prey',
+            'toilet': 'Toilet tank',
+            'weighttoss': 'Weight Toss'
         }
-	  
+    };
+	     
+    function validateForm(ff){
+        var form = document.forms[ff?"problem-select2":"problem-select"];
+        var x = form.u.value;
+        if (x==null || x==""){
+            alert("Please enter a username.");
+            return false;
+        }
+        // For author form, remove empty author
+        if(ff && form.a.value.trim() == ""){
+          console.log("Deleting author (a) from GET.", form);
+          document.getElementById("author2").removeAttribute('name');
+        }
+        return true;
+    };
+
+    function updateProblems(){
+        var form = document.forms["problem-select"];
+        var category = form["problem_category"].value;
+        var problemOptions = form["p"].options;
+        problemOptions.length = 0; // Delete existing options
+	for(var id in problemIndex[category]){
+            var option = document.createElement("option");
+            option.value = id;
+            option.text = problemIndex[category][id];
+            problemOptions.add(option);
+        }
+    };
+
+    window.onload = function(){ 
+        updateProblems();   
+    };
+
+    str="";
+    for(var category in problemIndex){
+        str += "\""+category+"\", , \n";
+	for(var id in problemIndex[category]){
+          str += ", \""+id+"\", \""+problemIndex[category][id]+"\"\n";
+        }
+     }
+    console.log(str);
+ 
     </script>
 
 </head>
@@ -205,42 +218,51 @@
 
     <div id="content">
 
-        <form action="startup.php" method="POST" class="problem-selection-form">
+        <form action="index.html" method="GET" id="problem-select" class="problem-selection-form" onsubmit="return validateForm()">
 
             <h2>Additional Dragoon Problems</h2>
 
  
                     <div class="fieldgroup">
                         <label for="un1">Username: </label>
-                        <input id="un1" type="text" name="username">
+                        <input id="un1" type="text" name="u">
                     </div>
 
                     <div class="fieldgroup">
                         <label for="mode">Mode: </label>
-                        <select name="mode" id="mode">
+                        <select name="m" id="mode">
                             <option value="STUDENT">Student</option>
                             <option value="COACHED">Coached</option>
                             <option value="TEST">Test</option>
                         </select>
                     </div>
 
-                    <div class="fieldgroup">
+ 
+                     <div class="fieldgroup">
+                        <label for="subMode">Submode (of STUDENT mode): </label>
+                        <select name="sm" id="subMode">
+                            <option value="feedback">Feedback</option>
+                            <option value="power">Power User</option>
+                        </select>
+                    </div>
+
+                  <div class="fieldgroup">
                         <label for="problem_category">Problem Category: </label>
-                        <select id="problem_category" name="problem_category">
-                           <!-- These should be filled dynamically from map, Bug #2183 --> 
-                           <option>Isle Royale</option> 
+                        <select id="problem_category" onmouseup="updateProblems()">
+                           <option value="IsleRoyale">Isle Royale</option> 
                            <option>Kinematics</option> 
                            <option>Calories</option> 
-                           <option>Urban Waterfowl</option> 
+                           <option value="UrbanWaterfowl">Urban Waterfowl</option> 
                            <option>Introductory</option>
                            <option>Training</option>
                            <option>Challenge</option>
+                           <option value="Fall2013">Fall 2013</options>
                         </select>
                     </div>
 
                     <div class="fieldgroup">
                         <label for="problem_id">Problem: </label>
-                        <select id="problem_id" name="problem_id">
+                        <select id="problem_id" name="p">
                            <!-- These should be filled dynamially from map, Bug #2183 --> 
                             <option value="isle1">Moose population 1</option>
                             <option value="isle2">Moose population 2</option>
@@ -251,36 +273,37 @@
                         </select>
                     </div>
 
-                    <input type="hidden" name="section" value="public-login.html">
+                    <input type="hidden" name="s" value="public-login.html">
 
                     <div class="fieldgroup">
-                        <button type="submit" value="Continue" class="submit">
-                        Open problem
-                        </button>
+                        <input type="submit" value="Continue" class="submit">
                     </div>
         </form>
 
-        <form action="startup.php" method="POST" class="problem-selection-form">
+        <form action="index.html" method="GET"  id="problem-select2" class="problem-selection-form"  onsubmit="return validateForm(true)">
             <h2>Author a problem</h2>
 
                     <div class="fieldgroup">
                         <label for="un2">Username: </label>
-                        <input id="un2" type="text" name="username">
+                        <input id="un2" type="text" name="u">
                     </div>
 
-		    <input type="hidden" name="mode" value="author">
+		    <input type="hidden" name="m" value="AUTHOR">
 
                     <div class="fieldgroup">
                         <label for="problem_id">Problem: </label>
-                        <input type="text" name="problem_id" onChange="javascript:this.value=this.value.toLowerCase();">
+                        <input type="text" name="p" onChange="javascript:this.value=this.value.toLowerCase();">
                     </div>
 
-                    <input type="hidden" name="section" value="public-login.html">
+                    <div class="fieldgroup">
+                        <label for="author2">Author: </label>
+                        <input id="author2" type="text" name="a">
+                    </div>
+
+                    <input type="hidden" name="s" value="public-login.html">
 
                     <div class="fieldgroup">
-                        <button type="submit" value="Continue" class="submit">
-                        Open problem
-                        </button>
+                        <input type="submit" value="Continue" class="submit">
                     </div>
 
 
