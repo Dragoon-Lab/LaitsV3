@@ -113,6 +113,12 @@ define([
 		session.saveProblem(givenModel.model);
 	    });
 
+	    // Wire up close button...
+	    // This will trigger the above session.saveProblem()
+	    on(registry.byId("closeButton"), "click", function(){
+		registry.byId("nodeeditor").hide();
+	    });
+
 	    /*
 	     Make model solution plot using dummy data. 
 	     This should be put in its own module.
