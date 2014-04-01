@@ -179,6 +179,20 @@ define([
                     return false;
             }
             return true;
+        },
+        convertUsingDescriptionIDs:function(subModel,equation){
+            try {
+                var expr = Parser.parse(equation);
+            } catch (e) {
+                console.warn("Should log this as a JavaScript error.");
+                return equation;
+            }
+            array.forEach(expr.variables(), function(variable) {
+
+                var givenNodeId = subModel.getNodeIDFor(variable);
+                expr.substitute(variable, givenNodeId);
+            }, this);
+            return expr.toString();
         }
 
     };

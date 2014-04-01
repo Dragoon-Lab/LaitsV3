@@ -138,9 +138,15 @@ define([
             console.log("equation after conversion ", mEquation);
 		    w.set(directive.attribute, mEquation, false);
 
+            console.log('before replacing by descriptionIDs '+equation);
+            equation = expression.convertUsingDescriptionIDs(this._model.student,equation);
+            console.log('after replacing by descriptionIDs '+equation);
+
 		    // Update the model.
-		    console.warn("Updating equation in model to ", directive.value, " based on PM.");
-		    this._model.student.setEquation(this.currentID, directive.value);
+		    console.warn("Updating equation in model to ", equation, " based on PM.");
+            //update the equation to student ids, use descriptionID from nodes of givenModel which will match with student node id
+
+		    this._model.student.setEquation(this.currentID, equation);
 		} else
 		    w.set(directive.attribute, directive.value);
             }, this);
