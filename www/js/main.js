@@ -56,8 +56,8 @@ define([
 	 */
 	var subMode = query.sm || "feedback";
 	/* In principle, we could load just one controller or the other. */
-	var controllerObject = query.m == 'AUTHOR'?new controlAuthor(query.m, subMode, givenModel):
-		new controlStudent(query.m, subMode, givenModel);
+	var controllerObject = query.m == 'AUTHOR'?new controlAuthor(query.m, subMode, givenModel, query.is):
+		new controlStudent(query.m, subMode, givenModel, query.is);
 	if(controllerObject._PM)
 	    controllerObject._PM.setLogging(session);  // Set up direct logging in PM
 	 

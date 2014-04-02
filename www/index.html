@@ -43,6 +43,7 @@
             "dijit/form/Select", 
 	    "dijit/form/Button", "dijit/form/TextBox",
             "dijit/form/NumberTextBox", "dijit/form/ComboBox",
+            "dijit/form/RadioButton",
 	    "dijit/form/SimpleTextarea", "dijit/Menu",
             "dijit/layout/ContentPane",
 	    "dragoon/menu", // Wire up menus
@@ -128,13 +129,13 @@
 		</div>
 				
 		<!-- Putting jsPlumb-stuff for demo  end-->
-
+        </div>
 		
 			<!-- Putting Node-Editor -Dialog stuff for demo -->
         <div class="claro"  data-dojo-type="dijit/Dialog" id="nodeeditor">
             <div id="nameControl" class="fieldgroup" style="display:none">
 	        <label for="setName">Name</label>
-                <select id="setName" data-dojo-type="dijit/form/ComboBox"></select>
+                <input id="setName" data-dojo-type="dijit/form/ComboBox">
 	        <label for="selectKind">Kind of quantity</label>
                 <select id="selectKind" data-dojo-type="dijit/form/Select">
 	            <option value='given' selected>in solution</option>
@@ -145,66 +146,100 @@
 	    </div>
             <div id="descriptionControlStudent" class="fieldgroup">
 	        <label for="selectDescription">Description</label>
-                <select id="selectDescription" data-dojo-type="dijit/form/Select" intermediateChanges="false" trim="false" uppercase="false" lowercase="false" propercase="false" invalidMessage="$_unset_$" pageSize="Infinity" searchDelay="200">
+                <select id="selectDescription" data-dojo-type="dijit/form/Select">
                     <option value='defaultSelect'>--Select--</option>
                 </select>
 	    </div>
             <div id="descriptionControlAuthor" class="fieldgroup" style="display:none">
 	        <label for="setDescription">Description</label>
-                <select id="setDescription" data-dojo-type="dijit/form/ComboBox">
-                </select>
+                <input id="setDescription" data-dojo-type="dijit/form/ComboBox">
 	    </div>
             <div class="fieldgroup">
                 <label for="typeId">Type</label>
-                <select id="typeId" data-dojo-type="dijit/form/Select" intermediateChanges="false" trim="false" uppercase="false" lowercase="false" propercase="false" invalidMessage="$_unset_$" pageSize="Infinity" searchDelay="200">
+                <select id="typeId" data-dojo-type="dijit/form/Select">
                     <option value='defaultSelect'>--Select--</option>
-                    <option value="sum">Sum</option>
-                    <option value="product">Product</option>
                     <option value="parameter">Parameter</option>
                     <option value="accumulator">Accumulator</option>
                     <option value="function">Function</option>
                 </select>
                 <label for="initialValue">Initial Value</label>
-                <input id="initialValue" type="text" style="width:6em" data-dojo-type="dijit/form/NumberTextBox" intermediateChanges="false" uppercase="false" lowercase="false" propercase="false" invalidMessage="$_unset_$" searchDelay="200"></input>
-                <label for="selectUnits">Units</label>
-                <select id="selectUnits" data-dojo-type="dijit/form/Select" intermediateChanges="false" trim="false" uppercase="false" lowercase="false" propercase="false" invalidMessage="$_unset_$" pageSize="Infinity" searchDelay="200">
-                    <option value='defaultSelect'>--Select--</option>
-                </select>
-	        <!-- Setting display:none in the widget itself doesn't work.
-                     Also, div doesn't work here -->
-	        <span id="setUnitsControl" style="display:none">
-                    <select id="setUnits" data-dojo-type="dijit/form/ComboBox" style="width:6em"></select>
-                </span>
+                <input id="initialValue" type="text" style="width:6em" data-dojo-type="dijit/form/NumberTextBox"></input>
+                <label id="selectUnitsControl">
+		    Units
+                    <select id="selectUnits" data-dojo-type="dijit/form/Select">
+                        <option value='defaultSelect'>--Select--</option>
+                    </select>
+		</label>
+		<label id="setUnitsControl" style="display:none">
+		    Units
+	            <!-- Setting display:none in the widget itself doesn't work. -->
+                    <input id="setUnits" data-dojo-type="dijit/form/ComboBox" style="width:6em">
+                </label>
+            </div>
+            <div class="fieldgroup" id="algebraic">
+	        <label>Inputs</label>
+                <div class="vertical">
+                    <select id="nodeInputs" data-dojo-type="dijit/form/Select">
+                        <option value='defaultSelect'>--Select--</option>
+                    </select>
+		    <div class="horizontal">
+                        <input id="plusButton" type="button" data-dojo-type="dijit/form/Button" label="+" iconClass="dijitNoIcon"></input>
+                        <input id="minusButton" type="button" data-dojo-type="dijit/form/Button" label="-" iconClass="dijitNoIcon"></input>
+                        <input id="timesButton" type="button" data-dojo-type="dijit/form/Button" label="*" iconClass="dijitNoIcon"></input>
+                        <input id="divideButton" type="button" data-dojo-type="dijit/form/Button" label="/" iconClass="dijitNoIcon"></input>
+		    </div>
+		</div>
+	    </div>
+	    <div class="fieldgroup" id="structured">
+	        <label>Inputs</label>
+	        <div class="vertical">
+		    <div class="horizontal">
+		      <!-- BvdS: I could not get
+		      dijit/form/RadioButton to display anything -->
+		        <input id="formSum" type="radio" name="functionForm" value="sum"></input>
+		        <label for="formSum">Sum</label>
+		        <input id="formProduct" type="radio" name="functionForm" value="product"></input>
+		        <label for="formProduct">Product</label>
+		    </div>
+		    <div class="horizontal">
+		        <div class="vertical">
+		            <label for="positiveInputs" style="display:inline">Positive Quantity:</label><br>
+        		    <select id="positiveInputs" data-dojo-type="dijit/form/Select" style="display:inline-block">
+                                <option value='defaultSelect'>--Select--</option>
+                            </select>
+			</div>
+		        <div class="vertical">
+			    <label for="negativeInputs" style="display:inline">Negative Quantity:</label><br>
+        		    <select id="negativeInputs" data-dojo-type="dijit/form/Select" style="display:inline-block">
+                                <option value='defaultSelect'>--Select--</option>
+                            </select>
+			</div>
+		    </div>
+		</div>
+	   </div>
+	   <div class="fieldgroup" id="equationInput">
+		<label for="equationBox">Expression</label>
+                <textarea id="equationBox" rows=2 cols=30 data-dojo-type="dijit/form/SimpleTextarea"></textarea>
+	   </div>
+	   <div class="fieldgroup" id="equationShow">
+		<label>Expression</label>
+	        <div id="positive">positives</div>
+		<div id="sign">-</div>
+		<div id="negative">negatives</div>
+	   </div>
+	   <div class="fieldgroup" style="overflow:hidden"> <!-- assign space for the float -->	    
+                <div style="float:right">
+	            <input id="undoButton" type="button" data-dojo-type="dijit/form/Button" label="Clear" iconClass="dijitNoIcon"></input>
+                    <input id="equationDoneButton" type="button" data-dojo-type="dijit/form/Button" label="Check expression" iconClass="dijitNoIcon"></input>
+	        </div>
             </div>
             <div class="fieldgroup">
-                <label for="nodeInputs">Input</label>
-                <select id="nodeInputs" data-dojo-type="dijit/form/Select" intermediateChanges="false" trim="false" uppercase="false" lowercase="false" propercase="false" invalidMessage="$_unset_$" pageSize="Infinity" searchDelay="200">
-                    <option value='defaultSelect'>--Select--</option>
-                </select>
-            </div>   
-            <div class="fieldgroup">
-                <label></label> <!-- Strut to move buttons over -->
-                <input id="plusButton" type="button" data-dojo-type="dijit/form/Button" intermediateChanges="false" label="+" iconClass="dijitNoIcon"></input>
-                <input id="minusButton" type="button" data-dojo-type="dijit/form/Button" intermediateChanges="false" label="-" iconClass="dijitNoIcon"></input>
-                <input id="timesButton" type="button" data-dojo-type="dijit/form/Button" intermediateChanges="false" label="*" iconClass="dijitNoIcon"></input>
-                <input id="divideButton" type="button" data-dojo-type="dijit/form/Button" intermediateChanges="false" label="/" iconClass="dijitNoIcon"></input>
-                <div style="float:right">
-	            <input id="undoButton" type="button" data-dojo-type="dijit/form/Button" intermediateChanges="false" label="Clear" iconClass="dijitNoIcon"></input>
-                    <input id="equationDoneButton" type="button" data-dojo-type="dijit/form/Button" intermediateChanges="false" label="Check expression" iconClass="dijitNoIcon"></input>
-                </div>
-	    </div>
-            <div class="fieldgroup">
-                <label for="equationBox">Expression</label>
-                <textarea id="equationBox" type="text" data-dojo-type="dijit/form/SimpleTextarea" rows="2"></textarea>
-            </div> 
-            <span class="fieldgroup">
                 <label for="messageBox">Messages</label>
-                <div id="messageBox" class="textscroll" data-dojo-type="dijit/layout/ContentPane"></div>
-            </span>
-            <div class="fieldgroup">
-                <div style="float:right">
-    	            <input id="closeButton" type="button" data-dojo-type="dijit/form/Button" intermediateChanges="false" label="Done" iconClass="dijitNoIcon"></input>
-	        </div>
+		<div id="messageBox" class="textscroll" data-dojo-type="dijit/layout/ContentPane">
+		</div>
+            </div>
+            <div class="fieldgroup" style="overflow:hidden">  <!-- this assigns space for the float -->
+	        <input id="closeButton" style="float:right" type="button" data-dojo-type="dijit/form/Button" label="Done" iconClass="dijitNoIcon"></input>
             </div>
 	</div> <!-- end of node editor -->
         <!-- Putting Node-Editor stuff for demo  end -->

@@ -103,6 +103,11 @@
             text-align: left;
             width: 220px;
         }
+
+        #problem-select .fieldgroup .radio {
+            float:none;
+            display:inline
+        }
     </style>
 
     <script type="text/javascript">
@@ -156,11 +161,16 @@
                     </div>
 
                     <div class="fieldgroup">
-                        <label for="subMode">Submode (of STUDENT mode): </label>
-                        <select name="sm" id="subMode">
-                            <option value="feedback">Feedback</option>
-                            <option value="power">Power User</option>
-                        </select>
+		        <label>Student submode:</label> &nbsp; &nbsp; &nbsp;
+                        <input type="radio" id="fb" name="sm" value="feedback"  checked="checked" style="float:none">
+		        <label for="fb" class="radio">Feedback</label>
+		        <input type="radio" id="po" name="sm" value="power" style="float:none">
+		        <label for="po" class="radio">Power User</label><br>
+                        <label>Node Editor:</label>&nbsp;&nbsp;&nbsp;
+                        <input type="radio" id="eia" name="is" value="algebraic" checked="checked" style="float:none">
+		        <label for="eia" class="radio">Algebraic</label>
+                        <input type="radio" id="eis" name="is" value="structured" style="float:none">
+		        <label for="eis" class="radio">Structured</label>
                     </div>
 
                     <div class="fieldgroup">
