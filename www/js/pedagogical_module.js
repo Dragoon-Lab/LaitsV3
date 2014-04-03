@@ -323,7 +323,7 @@ define([
             obj.push({id: "crisisAlert", attribute: "open", value: getMessage(nodePart, status)});
         if(status === "extra" || status === "irrelevant")
             status = "incorrect";
-        obj.push({id: "message", attribute: "append", value: "The entered " + nodePart + " was " + status + "."});
+        obj.push({id: "message", attribute: "append", value: "The value entered for " + nodePart + " is " + status + "."});
     }
 
     function disable(/*object*/ obj, /*string*/ nodePart, /*boolean*/ disable) {

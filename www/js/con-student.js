@@ -66,13 +66,17 @@ define([
             array.forEach(directives, function(directive) {
                 console.log("*********** update node editor ", directive);
                 this.updateModelStatus(directive);
-                var w = registry.byId(this.widgetMap[directive.id]);
+                if (this.widgetMap[directive.id]) {
+                    var w = registry.byId(this.widgetMap[directive.id]);
 
-                if (directive.attribute == 'value') {  //if correct value suggested by PM
-                    w.set(directive.attribute, directive.value, false);
-                    this.updateType(directive.value);
-                } else
-                    w.set(directive.attribute, directive.value);
+                    if (directive.attribute == 'value') {  //if correct value suggested by PM
+                        w.set(directive.attribute, directive.value, false);
+                        this.updateType(directive.value);
+                    } else
+                        w.set(directive.attribute, directive.value);
+                } else {
+                    console.warn("Directive with unknown id: " + directive.id);
+                }
             }, this);
         },
         handleInitial: function(initial) {
@@ -90,13 +94,17 @@ define([
             array.forEach(directives, function(directive) {
                 // console.log("*********** update node editor ", directive);
                 this.updateModelStatus(directive);
-                var w = registry.byId(this.widgetMap[directive.id]);
-                w.set(directive.attribute, directive.value);
-                if (directive.attribute == 'value') { //if correct value suggested by PM update model
-                    this._model.active.setInitial(this.currentID, directive.value);
-                    this.disableInitialTextEvent = true;
+                if (this.widgetMap[directive.id]) {
+                    var w = registry.byId(this.widgetMap[directive.id]);
+                    w.set(directive.attribute, directive.value);
+                    if (directive.attribute == 'value') { //if correct value suggested by PM update model
+                        this._model.active.setInitial(this.currentID, directive.value);
+                        this.disableInitialTextEvent = true;
+                    }
+                    w.set(directive.attribute, directive.value); //third parameter doesn't work for false attribute
+                } else {
+                    console.warn("Directive with unknown id: " + directive.id);
                 }
-                w.set(directive.attribute, directive.value); //third parameter doesn't work for false attribute
             }, this);
         },
         handleUnits: function(unit) {
@@ -104,50 +112,58 @@ define([
 
             // updating node editor and the model.
             this._model.student.setUnits(this.currentID, unit);
-	    var directives = this._PM.processAnswer(this.currentID, 'units', unit);
-            array.forEach(directives, function(directive){
-		this.updateModelStatus(directive);
-		var w = registry.byId(this.widgetMap[directive.id]);
-		if(directive.attribute=='value'){
-		    w.set(directive.attribute, directive.value,false);
-		    // Update the model.
-		    this._model.student.setUnits(this.currentID, directive.value);
-		}else
-		    w.set(directive.attribute, directive.value);
-	    }, this);
-	},
+            var directives = this._PM.processAnswer(this.currentID, 'units', unit);
+            array.forEach(directives, function(directive) {
+                this.updateModelStatus(directive);
+                if (this.widgetMap[directive.id]) {
+                    var w = registry.byId(this.widgetMap[directive.id]);
+                    if (directive.attribute == 'value') {
+                        w.set(directive.attribute, directive.value, false);
+                        // Update the model.
+                        this._model.student.setUnits(this.currentID, directive.value);
+                    } else
+                        w.set(directive.attribute, directive.value);
+                } else {
+                    console.warn("Directive with unknown id: " + directive.id);
+                }
+            }, this);
+        },
+        equationDoneHandler: function() {
+            var directives = [];
+            var parse = this.equationAnalysis(directives);
+            if (parse) {
+                var dd = this._PM.processAnswer(this.currentID, 'equation', parse);
+                directives = directives.concat(dd);
+            }
+            // Now apply directives, either from PM or special messages above.
+            array.forEach(directives, function(directive) {
+                this.updateModelStatus(directive);
+                if (this.widgetMap[directive.id]) {
+                    var w = registry.byId(this.widgetMap[directive.id]);
+                    // console.log(">>>>>>>>> setting directive ", directive);
+                    if (directive.attribute == 'value') {
 
-	equationDoneHandler: function(){
-	    var directives = [];
-	    var parse = this.equationAnalysis(directives);
-	    if(parse){
-		var dd = this._PM.processAnswer(this.currentID, 'equation', parse);
-		directives = directives.concat(dd);
-	    }
-	    // Now apply directives, either from PM or special messages above.
-            array.forEach(directives, function(directive){
-		this.updateModelStatus(directive);
-		var w = registry.byId(this.widgetMap[directive.id]);
-		// console.log(">>>>>>>>> setting directive ", directive);
-		if(directive.attribute=='value'){
+                        var equation = directive.value;
+                        console.log("equation before conversion ", equation);
+                        var mEquation = equation ? expression.convert(this._model.given, equation) : '';  //since student node doesn't have same ids as equation
+                        console.log("equation after conversion ", mEquation);
+                        w.set(directive.attribute, mEquation, false);
 
-            var equation = directive.value;
-            console.log("equation before conversion ", equation);
-            var mEquation = equation?expression.convert(this._model.given, equation):'';  //since student node doesn't have same ids as equation
-            console.log("equation after conversion ", mEquation);
-		    w.set(directive.attribute, mEquation, false);
+                        console.log('before replacing by descriptionIDs ' + equation);
+                        equation = expression.convertUsingDescriptionIDs(this._model.student, equation);
+                        console.log('after replacing by descriptionIDs ' + equation);
 
-            console.log('before replacing by descriptionIDs '+equation);
-            equation = expression.convertUsingDescriptionIDs(this._model.student,equation);
-            console.log('after replacing by descriptionIDs '+equation);
+                        // Update the model.
+                        console.warn("Updating equation in model to ", equation, " based on PM.");
+                        //update the equation to student ids, use descriptionID from nodes of givenModel which will match with student node id
 
-		    // Update the model.
-		    console.warn("Updating equation in model to ", equation, " based on PM.");
-            //update the equation to student ids, use descriptionID from nodes of givenModel which will match with student node id
+                        this._model.student.setEquation(this.currentID, equation);
+                    } else
+                        w.set(directive.attribute, directive.value);
+                } else {
+                    console.warn("Directive with unknown id: " + directive.id);
+                }
 
-		    this._model.student.setEquation(this.currentID, equation);
-		} else
-		    w.set(directive.attribute, directive.value);
             }, this);
         },
         /* 
