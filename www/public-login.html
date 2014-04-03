@@ -184,6 +184,7 @@
     };
 
     function updateProblems(){
+        console.log("updateProblems called.");
         var form = document.forms["problem-select"];
         var category = form["problem_category"].value;
         var problemOptions = form["p"].options;
@@ -250,7 +251,9 @@
 
                   <div class="fieldgroup">
                         <label for="problem_category">Problem Category: </label>
-                        <select id="problem_category" onmouseup="updateProblems()">
+		        <!-- onclick and onmouseup work only for
+                        Firefox, onchange works for both Firefox and Chrome -->
+                        <select id="problem_category" onchange="updateProblems();">
                            <option>Isle Royale</option> 
                            <option>Kinematics</option> 
                            <option>Calories</option> 
