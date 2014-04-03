@@ -94,7 +94,7 @@ public class GraphViewPanel{
         
         for(Vertex currentVertex : currentGraph.vertexSet()) {
 
-            if(currentVertex.getVertexType().equals(Vertex.VertexType.CONSTANT)) {
+            if(currentVertex.getVertexType().equals(Vertex.VertexType.CONSTANT) || currentVertex.getVertexType().equals(Vertex.VertexType.STOCK) ) {
                 newSlider = addSlider(currentVertex);
 
                 newSlider.setPaintTicks(true);
