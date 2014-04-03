@@ -80,30 +80,6 @@ define([
                     }
                 }
             },
-            _setStatus: function(/*string*/ id, /*string*/ part, /*string*/ status) {
-                // Summary: tracks student progress (correct, incorrect) on a given node; 
-                //      used in setStudentNodeSelection() and setToDemo()
-                // Tags: private
-                for (var i = 0; i < this.model.task.givenModelNodes.length; i++)
-                    if (id === this.model.task.givenModelNodes[i].ID)
-                        switch (part) {
-                            case "description":
-                                this.model.task.givenModelNodes[i].addStatus(status, null, null, null, null);
-                                break;
-                            case "type":
-                                this.model.task.givenModelNodes[i].addStatus(null, status, null, null, null);
-                                break;
-                            case "initial":
-                                this.model.task.givenModelNodes[i].addStatus(null, null, status, null, null);
-                                break;
-                            case "units":
-                                this.model.task.givenModelNodes[i].addStatus(null, null, null, status, null);
-                                break;
-                            case "equation":
-                                this.model.task.givenModelNodes[i].addStatus(null, null, null, null, status);
-                                break;
-                        }
-            },
             _checkChildren: function(/*string*/ currentNodeID, /*string array*/ checkedNodes) {
                 // Summary: searches the depth of a tree below the given node and returns an
                 //      optimal child node; if no optimal child node exists it returns null
@@ -335,8 +311,8 @@ define([
                 if (nodePart === "description")
                     return this.getOptimalNode(studentID);
                 else {
-		    var id = this.student.getDescriptionID(studentID);
-		    var node = this.given.getNode(id);
+                    var id = this.student.getDescriptionID(studentID);
+                    var node = this.given.getNode(id);
                     return node[nodePart];
                 }
             },
@@ -351,8 +327,7 @@ define([
                 for (var i = 0; i < this.model.task.givenModelNodes.length; i++)
                     if (id === this.model.task.givenModelNodes[i].ID)
                         this.model.task.givenModelNodes[i].attemptCount.description++;
-            },           
-
+            },
             /**
              * SETTERS
              */
@@ -512,7 +487,7 @@ define([
                         default:
                             console.error("Invalid part ", part);
                     }
-                    this._setStatus(id, part, "demo");
+                    this.given.setStatus(id, part, "demo");
                 }
             }
         };
@@ -543,13 +518,14 @@ define([
                 });
             },
             getNode: function(/*string*/ id) {
-		// This is not very efficient:  should probably have separate
-		// method for each sub-class and construct a hash table.
+                // This is not very efficient:  should probably have separate
+                // method for each sub-class and construct a hash table.
                 var nodes = this.getNodes();
-		var l = nodes.length;
-		for(var i=0; i<l; i++){
-		    if(nodes[i].ID == id) return nodes[i];
-		}
+                var l = nodes.length;
+                for (var i = 0; i < l; i++) {
+                    if (nodes[i].ID == id)
+                        return nodes[i];
+                }
                 console.warn("No matching node for '" + id + "'");
                 return null;
             },
@@ -672,6 +648,9 @@ define([
             getDescription: function(/*string*/ id) {
                 return this.getNode(id).description;
             },
+            getStatus: function(/*string*/ id, /*string*/ nodePart) {
+                return this.getNode(id).status[nodePart];
+            },
             setName: function(/*string*/ id, /*string*/ name) {
                 this.getNode(id).name = name.trim();
             },
@@ -695,6 +674,10 @@ define([
             },
             setAttemptCount: function(/*string*/ id, /*string*/ part, /*string*/ count) {
                 this.getNode(id).attemptCount[part] = count;
+            },
+            setStatus: function(/*string*/ id, /*string*/ part, /*string*/ status) {
+                // Summary: tracks student progress (correct, incorrect) on a given node;
+                this.getNode(id).status[part] = status;
             }
         }, both);
 
@@ -781,7 +764,7 @@ define([
                 this.getNode(id).initial = initial;
             },
             setUnits: function(/*string*/ id, /*string*/ units) {
-		console.log("******** Setting student units to ", units);
+                console.log("******** Setting student units to ", units);
                 this.getNode(id).units = units;
             },
             setEquation: function(/*string*/ id, /*string | object*/ equation) {

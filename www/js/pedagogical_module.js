@@ -61,89 +61,251 @@ define([
         lastFailure2: [
             "Yellow means that you made an incorrect choice too many times, so you are being shown the correct choice.  You should figure out why it is correct so that next time your first choice will be correct.",
             "Can you figure out why this is the right type for the node?"
+        ],
+        erasedCorrect: [
+            "Your choice was not correct and you are being given the correct answer. However, you previously completed this part correctly. It will continue to be marked this way."
+        ],
+        erasedDemo: [
+            "Your choice was correct, however this part was previously completed by the model. It will continue to be marked this way."
         ]
     };
 
     var descriptionTable = {
         // Summary: This table is used for determining the proper response to a student's 'description' answer (see 
         //      'Pedagogical_Module.docx' in the documentation)
-            optimal: {
-                COACHED: function(obj,part){state(obj, part, "correct"); message(obj,part, "correct"); disable(obj, part, true); disable(obj, "type", false);}, 
-                feedback: function(obj,part){state(obj, part, "correct"); message(obj,part, "correct"); disable(obj, part, true); disable(obj, "type", false);},
-                TEST: function(obj,part){state(obj, part, "correct"); disable(obj, part, true); disable(obj, "type", false);}, 
-                power: function(obj,part){state(obj, part, "correct"); disable(obj, part, true); disable(obj, "type", false);}
+        optimal: {
+            COACHED: function(obj, part) {
+                state(obj, part, "correct");
+                message(obj, part, "correct");
+                disable(obj, part, true);
+                disable(obj, "type", false);
             },
-            notTopLevel: {
-                COACHED: function(obj,part){state(obj, part, "notTopLevel"); message(obj,part, "premature");}, 
-                feedback: function(obj,part){state(obj, part, "correct"); message(obj,part, "correct"); disable(obj, part, true); disable(obj, "type", false);},
-                TEST: function(obj,part){state(obj, part, "correct"); disable(obj, part, true); disable(obj, "type", false);}, 
-                power: function(obj,part){state(obj, part, "correct"); disable(obj, part, true); disable(obj, "type", false);}
+            feedback: function(obj, part) {
+                state(obj, part, "correct");
+                message(obj, part, "correct");
+                disable(obj, part, true);
+                disable(obj, "type", false);
             },
-            premature: {
-                COACHED: function(obj,part){state(obj, part, "premature"); message(obj,part, "premature");}, 
-                feedback: function(obj,part){state(obj, part, "correct"); message(obj,part, "correct"); disable(obj, part, true); disable(obj, "type", false);},
-                TEST: function(obj,part){state(obj, part, "correct"); disable(obj, part, true);disable(obj, "type", false);}, 
-                power: function(obj,part){state(obj, part, "correct"); disable(obj, part, true);disable(obj, "type", false);}
+            TEST: function(obj, part) {
+                state(obj, part, "correct");
+                disable(obj, part, true);
+                disable(obj, "type", false);
             },
-            initialValue: {
-                COACHED: function(obj,part){state(obj, part, "incorrect"); message(obj,part, "initialValue");}, 
-                feedback: function(obj,part){state(obj, part, "incorrect"); message(obj,part, "initialValue");}, 
-                TEST: function(obj,part){state(obj, part, "incorrect");}, 
-                power: function(obj,part){state(obj, part, "incorrect");}
+            power: function(obj, part) {
+                state(obj, part, "correct");
+                disable(obj, part, true);
+                disable(obj, "type", false);
+            }
+        },
+        notTopLevel: {
+            COACHED: function(obj, part) {
+                state(obj, part, "notTopLevel");
+                message(obj, part, "premature");
             },
-            extra: {
-                COACHED: function(obj,part){state(obj, part, "incorrect"); message(obj,part, "extra");}, 
-                feedback: function(obj,part){state(obj, part, "incorrect"); message(obj,part, "extra");}, 
-                TEST: function(obj,part){state(obj, part, "incorrect");}, 
-                power: function(obj,part){state(obj, part, "incorrect");}
+            feedback: function(obj, part) {
+                state(obj, part, "correct");
+                message(obj, part, "correct");
+                disable(obj, part, true);
+                disable(obj, "type", false);
             },
-            irrelevant: {
-                COACHED: function(obj,part){state(obj, part, "incorrect"); message(obj,part, "irrelevant");}, 
-                feedback: function(obj,part){state(obj, part, "incorrect"); message(obj,part, "irrelevant");}, 
-                TEST: function(obj,part){state(obj, part, "incorrect");}, 
-                power: function(obj,part){state(obj, part, "incorrect");}
+            TEST: function(obj, part) {
+                state(obj, part, "correct");
+                disable(obj, part, true);
+                disable(obj, "type", false);
             },
-            redundant: {
-                COACHED: function(obj,part){state(obj, part, "incorrect"); message(obj,part, "redundant");}, 
-                feedback: function(obj,part){state(obj, part, "incorrect"); message(obj,part, "redundant");}, 
-                TEST: function(obj,part){state(obj, part, "incorrect"); message(obj,part, "redundant");}, 
-                power: function(obj,part){state(obj, part, "incorrect"); message(obj,part, "redundant");}
+            power: function(obj, part) {
+                state(obj, part, "correct");
+                disable(obj, part, true);
+                disable(obj, "type", false);
+            }
+        },
+        premature: {
+            COACHED: function(obj, part) {
+                state(obj, part, "premature");
+                message(obj, part, "premature");
             },
-            lastFailure: {
-                COACHED: function(obj,part){state(obj, part, "demo"); message(obj,part, "lastFailure2");disable(obj, part, true); disable(obj, "type", false);}, 
-                feedback: function(obj,part){state(obj, part, "demo"); message(obj,part, "lastFailure2");disable(obj, part, true); disable(obj, "type", false);},
-                TEST: function(obj,part){state(obj, part, "demo"); disable(obj, part, true);disable(obj, "type", false);}, 
-                power: function(obj,part){state(obj, part, "demo"); disable(obj, part, true);disable(obj, "type", false);}
-            }};
-        
+            feedback: function(obj, part) {
+                state(obj, part, "correct");
+                message(obj, part, "correct");
+                disable(obj, part, true);
+                disable(obj, "type", false);
+            },
+            TEST: function(obj, part) {
+                state(obj, part, "correct");
+                disable(obj, part, true);
+                disable(obj, "type", false);
+            },
+            power: function(obj, part) {
+                state(obj, part, "correct");
+                disable(obj, part, true);
+                disable(obj, "type", false);
+            }
+        },
+        initialValue: {
+            COACHED: function(obj, part) {
+                state(obj, part, "incorrect");
+                message(obj, part, "initialValue");
+            },
+            feedback: function(obj, part) {
+                state(obj, part, "incorrect");
+                message(obj, part, "initialValue");
+            },
+            TEST: function(obj, part) {
+                state(obj, part, "incorrect");
+            },
+            power: function(obj, part) {
+                state(obj, part, "incorrect");
+            }
+        },
+        extra: {
+            COACHED: function(obj, part) {
+                state(obj, part, "incorrect");
+                message(obj, part, "extra");
+            },
+            feedback: function(obj, part) {
+                state(obj, part, "incorrect");
+                message(obj, part, "extra");
+            },
+            TEST: function(obj, part) {
+                state(obj, part, "incorrect");
+            },
+            power: function(obj, part) {
+                state(obj, part, "incorrect");
+            }
+        },
+        irrelevant: {
+            COACHED: function(obj, part) {
+                state(obj, part, "incorrect");
+                message(obj, part, "irrelevant");
+            },
+            feedback: function(obj, part) {
+                state(obj, part, "incorrect");
+                message(obj, part, "irrelevant");
+            },
+            TEST: function(obj, part) {
+                state(obj, part, "incorrect");
+            },
+            power: function(obj, part) {
+                state(obj, part, "incorrect");
+            }
+        },
+        redundant: {
+            COACHED: function(obj, part) {
+                state(obj, part, "incorrect");
+                message(obj, part, "redundant");
+            },
+            feedback: function(obj, part) {
+                state(obj, part, "incorrect");
+                message(obj, part, "redundant");
+            },
+            TEST: function(obj, part) {
+                state(obj, part, "incorrect");
+                message(obj, part, "redundant");
+            },
+            power: function(obj, part) {
+                state(obj, part, "incorrect");
+                message(obj, part, "redundant");
+            }
+        },
+        lastFailure: {
+            COACHED: function(obj, part) {
+                state(obj, part, "demo");
+                message(obj, part, "lastFailure2");
+                disable(obj, part, true);
+                disable(obj, "type", false);
+            },
+            feedback: function(obj, part) {
+                state(obj, part, "demo");
+                message(obj, part, "lastFailure2");
+                disable(obj, part, true);
+                disable(obj, "type", false);
+            },
+            TEST: function(obj, part) {
+                state(obj, part, "demo");
+                disable(obj, part, true);
+                disable(obj, "type", false);
+            },
+            power: function(obj, part) {
+                state(obj, part, "demo");
+                disable(obj, part, true);
+                disable(obj, "type", false);
+            }
+        }};
+
     var actionTable = {
         // Summary: This table is used for determining the proper response to a student's answers in the 
         //      remaining sections (see 'Pedagogical_Module.docx' in the documentation)
-            correct: {
-                COACHED: function(obj,part){state(obj, part, "correct"); message(obj,part, "correct"); disable(obj, part, true); disable(obj, "enableNext", false);}, 
-                feedback: function(obj,part){state(obj, part, "correct"); message(obj,part, "correct"); disable(obj, part, true); disable(obj, "enableRemaining", false);}, 
-                TEST: function(obj,part){disable(obj, "enableRemaining", false);}, 
-                power: function(obj,part){disable(obj, "enableRemaining", false);}
+        correct: {
+            COACHED: function(obj, part) {
+                state(obj, part, "correct");
+                message(obj, part, "correct");
+                disable(obj, part, true);
+                disable(obj, "enableNext", false);
             },
-            firstFailure: {
-                COACHED: function(obj,part){state(obj, part, "incorrect"); message(obj,part, "incorrect");}, 
-                feedback: function(obj,part){state(obj, part, "incorrect"); message(obj,part, "incorrect");},
-                TEST: function(obj,part){disable(obj, "enableRemaining", false);}, 
-                power: function(obj,part){disable(obj, "enableRemaining", false);}
+            feedback: function(obj, part) {
+                state(obj, part, "correct");
+                message(obj, part, "correct");
+                disable(obj, part, true);
+                disable(obj, "enableRemaining", false);
             },
-            secondFailure: {
-                COACHED: function(obj,part){state(obj, part, "demo"); message(obj,part, "lastFailure2"); disable(obj, part, true); disable(obj, "enableNext", false);}, 
-                feedback: function(obj,part){state(obj, part, "demo"); message(obj,part, "lastFailure2"); disable(obj, part, true); disable(obj, "enableRemaining", false);}, 
-                TEST: function(obj,part){disable(obj, "enableRemaining", false);}, 
-                power: function(obj,part){disable(obj, "enableRemaining", false);}
+            TEST: function(obj, part) {
+                disable(obj, "enableRemaining", false);
             },
-            anotherFailure: {
-                COACHED: function(){console.error("Attempting to access actionTable after demo has been sent.");}, 
-                feedback: function(){console.error("Attempting to access actionTable after demo has been sent.");}, 
-                TEST: function(obj,part){disable(obj, "enableRemaining", false);}, 
-                power: function(obj,part){disable(obj, "enableRemaining", false);}
-            }};
-        
+            power: function(obj, part) {
+                disable(obj, "enableRemaining", false);
+            }
+        },
+        firstFailure: {
+            COACHED: function(obj, part) {
+                state(obj, part, "incorrect");
+                message(obj, part, "incorrect");
+            },
+            feedback: function(obj, part) {
+                state(obj, part, "incorrect");
+                message(obj, part, "incorrect");
+            },
+            TEST: function(obj, part) {
+                disable(obj, "enableRemaining", false);
+            },
+            power: function(obj, part) {
+                disable(obj, "enableRemaining", false);
+            }
+        },
+        secondFailure: {
+            COACHED: function(obj, part) {
+                state(obj, part, "demo");
+                message(obj, part, "lastFailure2");
+                disable(obj, part, true);
+                disable(obj, "enableNext", false);
+            },
+            feedback: function(obj, part) {
+                state(obj, part, "demo");
+                message(obj, part, "lastFailure2");
+                disable(obj, part, true);
+                disable(obj, "enableRemaining", false);
+            },
+            TEST: function(obj, part) {
+                disable(obj, "enableRemaining", false);
+            },
+            power: function(obj, part) {
+                disable(obj, "enableRemaining", false);
+            }
+        },
+        anotherFailure: {
+            COACHED: function() {
+                console.error("Attempting to access actionTable after demo has been sent.");
+            },
+            feedback: function() {
+                console.error("Attempting to access actionTable after demo has been sent.");
+            },
+            TEST: function(obj, part) {
+                disable(obj, "enableRemaining", false);
+            },
+            power: function(obj, part) {
+                disable(obj, "enableRemaining", false);
+            }
+        }};
+
     // Counters used to determine which message in an array to display; they are not dependent on which node is 
     //      active and differ from the counters (attemptCount) in the model, which are node specific
     var counter = {correct: 0, notTopLevel: 0, premature: 0, initial: 0, extra: 0, irrelevant: 0, redundant: 0, incorrect: 0, lastFailure: 0, lastFailure2: 0};
@@ -157,7 +319,11 @@ define([
     }
 
     function message(/*object*/ obj, /*string*/ nodePart, /*string*/ status) {
-        obj.push({id: 'message', attribute: 'append', value: getMessage(nodePart, status)});
+        if (counter[status] < hints[status].length)
+            obj.push({id: "crisisAlert", attribute: "open", value: getMessage(nodePart, status)});
+        if(status === "extra" || status === "irrelevant")
+            status = "incorrect";
+        obj.push({id: "message", attribute: "append", value: "The entered " + nodePart + " was " + status + "."});
     }
 
     function disable(/*object*/ obj, /*string*/ nodePart, /*boolean*/ disable) {
@@ -266,7 +432,7 @@ define([
                     if (this.model.given.isExtra(answer)) {
                         array.forEach(this.model.given.getNodes(), function(extra) {
                             if (answer === extra.ID && extra.genus && extra.genus != "allowed") {
-				interpretation = extra.genus;
+                                interpretation = extra.genus;
                             }
                         });
                     } else if (this.model.isNodeVisible(studentID, answer)) {
@@ -307,7 +473,7 @@ define([
             if (this.logging) {
                 this.logging.log('solution-step', {node: studentID, type: nodePart, value: answer, checkResult: interpretation});
             }
-            console.log("*****\n",interpretation);
+            console.log("*****\n", interpretation);
             return interpretation;
         },
         /*****
@@ -321,7 +487,51 @@ define([
             // Tags: Private
             var interpretation = this._getInterpretation(id, nodePart, answer);
             var returnObj = [];
-            
+            var currentStatus;
+
+            //Retrieve the id from the given model.
+            var givenID;
+            if (nodePart === "description")
+                givenID = answer;
+            else {
+                givenID = this.model.student.getDescriptionID(id);
+                currentStatus = this.model.given.getStatus(givenID, nodePart); //get current status set in given model
+            }
+
+            //Anonymous function that updates the status if it is not already set to "correct" or "demo"
+            var updateStatus = function(returnObj, model) {
+                returnObj.forEach(function(i) {
+                    if (i.attribute === "status") {
+                        if (i.value === "correct") {
+                            if (model.given.getStatus(givenID, nodePart) !== "demo")
+                                model.given.setStatus(givenID, nodePart, "correct");
+                            else {
+                                i.value = "demo";
+                                returnObj.forEach(function(j) {
+                                    if (j.id === "message") {
+                                        j.value = hints.erasedDemo;
+                                    }
+                                });
+                            }
+                        }
+                        else if (i.value === "demo") {
+                            if (model.given.getStatus(givenID, nodePart) !== "correct")
+                                model.given.setStatus(givenID, nodePart, "demo");
+                            else {
+                                i.value = "correct";
+                                returnObj.forEach(function(j) {
+                                    if (j.id === "message") {
+                                        j.value = hints.erasedCorrect;
+                                    }
+                                });
+                            }
+                        }
+                        else
+                            model.given.setStatus(givenID, nodePart, "incorrect");
+                    }
+                });
+            };
+
             // Alert controller of correct answer if status will be set to 'demo'
             if (interpretation === "lastFailure" || interpretation === "secondFailure") {
                 answer = this.model.getCorrectAnswer(id, nodePart);
@@ -330,19 +540,24 @@ define([
             }
 
             // Process answers for description
-            if (nodePart === "description") {                
+            if (nodePart === "description") {
                 descriptionTable[interpretation][this.userType](returnObj, nodePart);
                 for (var i = 0; i < returnObj.length; i++)
                     if (returnObj[i].value === "correct" || returnObj[i].value === "demo") {
-                        this.model.given.setAttemptCount(answer, nodePart, this.descriptionCounter);
+                        currentStatus = this.model.given.getStatus(givenID, nodePart); //get current status set in given model
+                        if (currentStatus !== "correct" && currentStatus !== "demo")
+                            this.model.given.setAttemptCount(answer, nodePart, this.descriptionCounter);
+                        updateStatus(returnObj, this.model);
                         this.descriptionCounter = 0;
                     }
                 // Process answers for all other node types
             } else {
                 var givenID = this.model.student.getDescriptionID(id);
-                console.assert(actionTable[interpretation], "_processAnswer interpretation '" + interpretation + "' not in table ", actionTable);
+                console.assert(actionTable[interpretation], "processAnswer() interpretation '" + interpretation + "' not in table ", actionTable);
                 actionTable[interpretation][this.userType](returnObj, nodePart);
-                this.model.given.setAttemptCount(givenID, nodePart, this.model.getNodeAttemptCount(givenID, nodePart) + 1);
+                if (currentStatus !== "correct" && currentStatus !== "demo")
+                    this.model.given.setAttemptCount(givenID, nodePart, this.model.getNodeAttemptCount(givenID, nodePart) + 1);
+                updateStatus(returnObj, this.model);
 
                 // Activate appropriate parts of the node editor
                 var lastElement = returnObj[returnObj.length - 1].id;
@@ -351,6 +566,7 @@ define([
                     this._enableNext(returnObj, givenID, nodePart, lastElement);
                 }
             }
+            console.log(returnObj);
             return returnObj;
         },
         /*****
