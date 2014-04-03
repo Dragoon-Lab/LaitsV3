@@ -169,17 +169,24 @@ define([
       	    var context = canvas.getContext('2d');
       	    var imageObj = new Image();
       	    var desc_text = givenModel.getTaskDescription();
-	    
-      	    imageObj.onload = function() {
-        	context.drawImage(imageObj, 69, 50);
+            var scalingFactor = 1;
+            var url = givenModel.getImageURL();
+            if(url){
+                imageObj.src = url;
+            }
+            else
+                console.warn("No image found.  Put clickable box on canvas in author mode?");
+
+
+         imageObj.onload = function() {
+             console.log("Image width is "+imageObj.width);
+             if(imageObj.width > 300 || imageObj.width != 0)
+                 scalingFactor = 300/imageObj.width;  //assuming we want width 300
+             console.log('Computing scaling factor for image '+scalingFactor);
+        	context.drawImage(imageObj, 69, 50,imageObj.width*scalingFactor,imageObj.height*scalingFactor);
         	wrapText(context, desc_text, 70, 400, 400, 20);
       	    };
-	    var url = givenModel.getImageURL();
-      	    if(url)
-		imageObj.src = url;
-	    else
-		console.warn("No image found.  Put clickable box on canvas in author mode?");
-	    
+
 	});
     });    
 });
