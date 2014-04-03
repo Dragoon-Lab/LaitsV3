@@ -183,8 +183,15 @@ define([
              if(imageObj.width > 300 || imageObj.width != 0)
                  scalingFactor = 300/imageObj.width;  //assuming we want width 300
              console.log('Computing scaling factor for image '+scalingFactor);
-        	context.drawImage(imageObj, 69, 50,imageObj.width*scalingFactor,imageObj.height*scalingFactor);
-        	wrapText(context, desc_text, 70, 400, 400, 20);
+             var height = imageObj.height*scalingFactor;
+        	 context.drawImage(imageObj, 69, 50,imageObj.width*scalingFactor,height);
+             var marginTop = (70 + height) - 400;
+             if(marginTop < 0)
+                marginTop = 0;
+
+             console.log('computed top margin for text '+marginTop);
+
+        	 wrapText(context, desc_text, 70, 400+marginTop, 400, 20);
       	    };
 
 	});
