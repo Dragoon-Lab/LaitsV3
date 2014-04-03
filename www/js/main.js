@@ -178,21 +178,30 @@ define([
                 console.warn("No image found.  Put clickable box on canvas in author mode?");
 
 
-         imageObj.onload = function() {
-             console.log("Image width is "+imageObj.width);
-             if(imageObj.width > 300 || imageObj.width != 0)
-                 scalingFactor = 300/imageObj.width;  //assuming we want width 300
-             console.log('Computing scaling factor for image '+scalingFactor);
-             var height = imageObj.height*scalingFactor;
-        	 context.drawImage(imageObj, 69, 50,imageObj.width*scalingFactor,height);
-             var marginTop = (70 + height) - 400;
-             if(marginTop < 0)
+        var imageLeft = 30;
+        var imageTop = 20;
+        var gapTextImage = 50;
+        var textLeft = 30;
+        var textTop = 300;
+        var textWidth =400;
+        var textHeight =20;
+
+
+        imageObj.onload = function() {
+            console.log("Image width is "+imageObj.width);
+            if(imageObj.width > 300 || imageObj.width != 0)
+                scalingFactor = 300/imageObj.width;  //assuming we want width 300
+            console.log('Computing scaling factor for image '+scalingFactor);
+            var imageHeight = imageObj.height*scalingFactor;
+            context.drawImage(imageObj, imageLeft, imageTop,imageObj.width*scalingFactor,imageHeight);
+            var marginTop = (gapTextImage + imageHeight) - textTop;
+            if(marginTop < 0)
                 marginTop = 0;
 
-             console.log('computed top margin for text '+marginTop);
+            console.log('computed top margin for text '+marginTop);
 
-        	 wrapText(context, desc_text, 70, 400+marginTop, 400, 20);
-      	    };
+            wrapText(context, desc_text, textLeft, textTop+marginTop, textWidth, textHeight);
+        };
 
 	});
     });    
