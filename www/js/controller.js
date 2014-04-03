@@ -94,7 +94,8 @@ define([
 		var colorMap = {
 		    correct: "lightGreen",
 		    incorrect: "#FF8080",
-		    demo: "yellow"
+		    demo: "yellow",
+                    premature: "lightBlue"
 		};
 		if(value)
 		    console.assert(colorMap[value], "Invalid color specification "+value);
