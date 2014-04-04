@@ -3,7 +3,7 @@
 <html>
     <head>
         <meta charset="utf-8"/>
-        <title>Tutorial: Hello Dojo!</title>
+        <title>Model Testing</title>
 
 
         <script type="text/javascript">
@@ -45,8 +45,9 @@
                 rabbits.given.setExtra(rabbitID, false);
                 rabbits.given.setUnits(rabbitID, "rabbits");
                 rabbits.given.setInitial(rabbitID, 100);
-                rabbits.given.setEquation(rabbitID, "myid2");
+                rabbits.given.setEquation(rabbitID, "id2");
                 rabbits.given.setDescription(rabbitID, "The number of rabbits in the population");
+                
                 rabbits.given.addNode({
                     "ID": "id2",
                     "name": "births",
@@ -78,7 +79,8 @@
                     },
                     "status": {}
                 });
-                 console.log("All nodes visible?", rabbits.areAllNodesVisible());
+                rabbits.given.setInputs(["id2"], "id1");
+                console.log("All nodes visible?", rabbits.areAllNodesVisible());
                 /*var myNode = rabbits.student.addNode({
                  "ID": "myNode",  //This is optional.
                  "inputs": [],
@@ -93,7 +95,7 @@
                     "descriptionID": "id2",
                     "type": null,
                     "units": null,
-                    "inputs": [],
+                    "inputs": [ { "ID": "id4" }, { "ID": "id6" } ],
                     "equation": null,
                     "position": {
                         "x": 300,
@@ -114,15 +116,9 @@
                     },
                     "status": {}
                 });
-                //alert(rabbits.getOptimalNode());
-                //alert(rabbits.isNodesParentVisible("myid6", "myid3"));
-/*                rabbits.setToDemo(myNode, "description");
-                rabbits.setToDemo(myNode, "type");
-                rabbits.setToDemo(myNode, "initial");
-                rabbits.setToDemo(myNode, "units");
-                rabbits.setToDemo(myNode, "equation");
-                rabbits.given.addInput(rabbits.getNodeIDByName("births"), rabbits.getNodeIDByName("population"));
-*/
+                
+                rabbits.student.deleteNode("id6");
+                console.log(rabbits.getModelAsString());
 
 
 /* This next section is used to test the PM
@@ -168,9 +164,6 @@
                 
 */
 
-                var convert = new converter(5);
-                convert.convertXMLtoJSON("100.xml");
-                
                 //convert.parse();
 
 //***
