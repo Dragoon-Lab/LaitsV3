@@ -21,11 +21,12 @@ define([
 	disableInitialTextEvent:false,
 
 	
-	constructor: function(mode, subMode, model){
+	constructor: function(mode, subMode, model, inputStyle){
 
 	    console.log("+++++++++ In generic controller constructor");
 	    this._model = model;
 	    this._mode = mode;
+            this._inputStyle = inputStyle;
 	    
 	    // The Node Editor widget must be set up before modifications
             // It might be a better idea to only  call the controller
@@ -65,6 +66,18 @@ define([
 			 lang.hitch(this, this.closeEditor));
 
 	    /*
+	     Hide/show fields based on inputStyle
+	     If this can change during a session, then we 
+	     should move this to this.showNodeEditor()
+	     */
+	    var algebraic = (this._inputStyle == "algebraic"?"":"none");
+	    var structured = (this._inputStyle == "structured"?"":"none");
+	    style.set("algebraic", "display", algebraic);
+	    style.set("structured", "display", structured);
+	    style.set("equationInput", "display", algebraic);
+	    style.set("equationShow", "display", structured);
+
+	    /*
 	     Initialize fields in the node editor that are
 	     common to all nodes in a problem.
 
@@ -76,6 +89,9 @@ define([
 	    var d = registry.byId(this.controlMap.description);
 	    // populate input field
 	    var t = registry.byId(this.controlMap.inputs);
+	    console.assert(t, "Can't find widget " + this.controlMap.inputs);
+	    var positiveInputs = registry.byId("positiveInputs");
+	    var negativeInputs = registry.byId("negativeInputs");
        	    // console.log("description widget = ", d);
 	    // d.removeOption(d.getOptions()); // Delete all options
 	    array.forEach(this._model.given.getDescriptions(), function(desc){
@@ -83,6 +99,8 @@ define([
 		var name = this._model.given.getName(desc.value);
 		var option = {label: desc.label+' '+ ' | '+' '+ name, value:desc.value};
 		t.addOption(option);
+		positiveInputs.addOption(option);
+		negativeInputs.addOption(option);
 	    }, this);
 
 	    /*
@@ -222,10 +240,21 @@ define([
 	    }));
 
 	    // When the equation box is enabled/disabled, do the same for
-	    // the inputs widget.
-	    equationWidget.watch("disabled", function(attr, oldValue, newValue){
-		// console.log("************* " + (newValue?"dis":"en") + "able inputs");
-		inputsWidget.set("disabled", newValue);
+	    // the inputs widgets.
+	    array.forEach(["nodeInputs", "positiveInputs", "negativeInputs"], function(input){
+		var widget = registry.byId(input);
+		equationWidget.watch("disabled", function(attr, oldValue, newValue){
+		    // console.log("************* " + (newValue?"dis":"en") + "able inputs");
+		    widget.set("disabled", newValue);
+		});
+	    });
+	    // The dijit/form/RadioButton widget didn't work, so we have to use regular html
+	    // on the radioButtons
+	    array.forEach(["formSum", "formProduct"], function(id){
+		var element = dom.byId(id);
+		equationWidget.watch("disabled", function(attr, oldValue, newValue){
+		    element.disabled = newValue;
+		});
 	    });
 
 	    // For each button 'name', assume there is an associated widget in the HTML
@@ -245,8 +274,23 @@ define([
 		});
 	    }, this);
 
+	    /* 
+	     Structured Input 
 
+	     BvdS:  I was not able to get dijit/form/RadioButton to work,
+             so generic radiobutton is used here.
+	     */
+	    var fs = dom.byId("formSum");
+	    on(fs, 'click', lang.hitch(this, function(){
+		this.functionForm = "sum";
+	    }));
+	    var fp = dom.byId("formProduct");
+	    on(fp, 'click', lang.hitch(this, function(){
+		this.functionForm = "product";
+	    }));
 	},
+
+	functionForm: null, // For structured select, where node is a pure sum or product.
 
 	// Need to save state of the node editor in the status section
 	// of the student model.  See documentation/json-format.md

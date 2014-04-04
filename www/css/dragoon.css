@@ -27,6 +27,7 @@ html, body, #main{
 }
 
 #nodeeditor .fieldgroup {
+    display:block;
     margin-top:2ex;
     margin-bottom:2ex;
     margin-left:0ex
@@ -38,17 +39,13 @@ html, body, #main{
     margin-right:1ex;
 }
 
-#nodeeditor .fieldgroup label:first-child {
-    width:10ex;
-}
-
-#nodeeditor .fieldgroup label,.textscroll,input {
+#nodeeditor .fieldgroup > * {
     display:inline-block;
     vertical-align:top
 }
 
-#nodeeditor #equationBox {
-    width:35em
+#nodeeditor .fieldgroup > label:first-child {
+    width:10ex;
 }
 
 #nodeeditor .textscroll {
@@ -56,10 +53,21 @@ html, body, #main{
     border:solid black 1px;
     overflow-y:scroll;
     height:8ex;
-    width:30em
+    width:20em
 }
 
 #nodeeditor .textscroll p {
     margin-top:0.5ex;
     margin-bottom:0.5ex;
+}
+
+/*  Display contents as horizontal but this block as vertical. */
+#nodeeditor .horizontal {
+    display:block;
+}
+
+/* Display contents as vertical but this block as horizontal. */
+#nodeeditor .vertical {
+    display:inline-block;
+    vertical-align:top;
 }

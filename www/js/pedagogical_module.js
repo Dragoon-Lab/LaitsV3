@@ -602,9 +602,9 @@ define([
             // Only allow nodes of type 'function' for power users and tests.
             //if(this.userType !== 'power' || this.mode == 'TEST')
             //      directives.push({id: 'type', attribute: 'disableOption', value: 'function'});
-            // Temp disable of sum and product, after handling change we will disable function
-            directives.push({id: 'type', attribute: 'disableOption', value: 'sum'});
-            directives.push({id: 'type', attribute: 'disableOption', value: 'product'});
+            // disable sum and product, after handling change we will disable function
+            // directives.push({id: 'type', attribute: 'disableOption', value: 'sum'});
+            // directives.push({id: 'type', attribute: 'disableOption', value: 'product'});
             return directives;
         }
     });
