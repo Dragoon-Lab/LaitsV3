@@ -4,109 +4,10 @@
     <meta http-equiv="Content-type" content="text/html;charset=UTF-8">
     <title>Additional Dragoon Problems</title>
 
-    <link rel="stylesheet" type="text/css" href="css/login.css">
-    <style type="text/css">
-        body {
-            background-color: #C6F5F2;
-            font-family:"Helvetica Neue",Helvetica,Arial,sans-serif;
-        }
-
-        #content {
-            background-color:#C6F5F2;
-            width:950px;
-            min-height:450px;
-            text-align:left;
-            padding:20px;
-        }
-
-        h2 {
-            padding-left: 0px !important;
-            text-align:right;
-        }
-
-        .large { font-size:22px; }
-        .orange { color:orange; }
-        .italic { font-style:italic }
-        .textmiddle {vertical-align:middle;}
-        .padout { padding-left:25px; padding-right:25px; }
-
-        .rounded-corners {
-            -moz-border-radius: 40px;
-            -webkit-border-radius: 40px;
-            -khtml-border-radius: 40px;
-            border-radius: 40px;
-        }
-        .rounded-corners-top {
-            -moz-border-top-radius: 40px;
-            -webkit-border-radius: 40px;
-            -khtml-border-radius: 40px;
-            border-radius: 40px;
-        }
-        .right {
-            float: right;
-        }
-        .scrolldown {
-            padding-left:20px;
-            color:#EDECE8; font-size:40px;
-            font-weight:bold;
-            vertical-align:middle;
-            text-shadow: #6374AB 2px 2px 2px;
-        }
-        .contentblock { margin: 0px 20px; }
-        .results { border: 1px solid blue; padding:20px; margin-top:20px; min-height:50px; }
-        .blue-bold { font-size:18px; font-weight:bold; color:blue; }
-
-        .problem-selection-form {
-            background: url("form-fieldset.gif") repeat-x scroll left bottom #F8FDEF;
-            border: 1px solid #DFDCDC;
-            border-radius: 15px 15px 15px 15px;
-            display: inline-block;
-            margin-bottom: 30px;
-            margin-left: 20px;
-            margin-top: 10px;
-            padding: 25px 50px 10px;
-            width: 390px;
-        }
-
-        .problem-selection-form .fieldgroup {
-            background: url("form-divider.gif") repeat-x scroll left top transparent;
-            display: inline-block;
-            padding: 8px 10px;
-            width: 380px;
-        }
-
-        .problem-selection-form .fieldgroup label {
-            float: left;
-            padding: 15px 5px 0;
-            text-align: right;
-            width: 120px;
-            font-weight:bold;
-        }
-
-        .problem-selection-form .fieldgroup input, .problem-selection-form .fieldgroup textarea, .problem-selection-form .fieldgroup select {
-            float: right;
-            margin: 10px 0;
-            height: 30px;
-        }
-
-        .problem-selection-form .submit {
-            padding: 10px;
-            width: 220px;
-            height: 40px !important;
-        }
-
-        .problem-selection-form .fieldgroup label.error {
-            color: #FB3A3A;
-            display: inline-block;
-            margin: 4px 0 5px 175px;
-            padding: 0;
-            text-align: left;
-            width: 220px;
-        }
-    </style>
+    <link rel="stylesheet" type="text/css" href="css/login-base.css">
+    <link rel="stylesheet" type="text/css" href="css/login-form.css">
 
     <script type="text/javascript">
-
 
     var problemIndex = {
         'Introductory' : {
@@ -240,13 +141,17 @@
                         </select>
                     </div>
 
- 
-                     <div class="fieldgroup">
-                        <label for="subMode">Submode (of STUDENT mode): </label>
-                        <select name="sm" id="subMode">
-                            <option value="feedback">Feedback</option>
-                            <option value="power">Power User</option>
-                        </select>
+                    <div class="fieldgroup">
+		        <label>Student submode:</label> &nbsp; &nbsp; &nbsp;
+                        <input type="radio" id="fb" name="sm" value="feedback"  checked="checked" style="float:none">
+		        <label for="fb" class="radio">Feedback</label>
+		        <input type="radio" id="po" name="sm" value="power" style="float:none">
+		        <label for="po" class="radio">Power User</label><br>
+                        <label>Node Editor:</label>&nbsp;&nbsp;&nbsp;
+                        <input type="radio" id="eia" name="is" value="algebraic" checked="checked" style="float:none">
+		        <label for="eia" class="radio">Algebraic</label>
+                        <input type="radio" id="eis" name="is" value="structured" style="float:none">
+		        <label for="eis" class="radio">Structured</label>
                     </div>
 
                   <div class="fieldgroup">
@@ -261,7 +166,7 @@
                            <option>Introductory</option>
                            <option>Training</option>
                            <option>Challenge</option>
-                           <option>Fall 2013</options>
+                           <option>Fall 2013</option>
                         </select>
                     </div>
 
