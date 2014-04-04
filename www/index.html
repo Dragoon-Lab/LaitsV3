@@ -43,7 +43,6 @@
             "dijit/form/Select", 
 	    "dijit/form/Button", "dijit/form/TextBox",
             "dijit/form/NumberTextBox", "dijit/form/ComboBox",
-            "dijit/form/RadioButton",
 	    "dijit/form/SimpleTextarea", "dijit/Menu",
             "dijit/layout/ContentPane",
 	    "dragoon/menu", // Wire up menus
@@ -194,26 +193,20 @@
 	        <label>Inputs</label>
 	        <div class="vertical">
 		    <div class="horizontal">
-		      <!-- BvdS: I could not get
-		      dijit/form/RadioButton to display anything -->
-		        <input id="formSum" type="radio" name="functionForm" value="sum"></input>
-		        <label for="formSum">Sum</label>
-		        <input id="formProduct" type="radio" name="functionForm" value="product"></input>
-		        <label for="formProduct">Product</label>
+                        <input id="sumButton" type="button" data-dojo-type="dijit/form/Button" label="Sum" iconClass="dijitNoIcon"></input>
+                        <input id="productButton" type="button" data-dojo-type="dijit/form/Button" label="Product" iconClass="dijitNoIcon"></input>
 		    </div>
 		    <div class="horizontal">
-		        <div class="vertical">
-		            <label for="positiveInputs" style="display:inline">Positive Quantity:</label><br>
-        		    <select id="positiveInputs" data-dojo-type="dijit/form/Select" style="display:inline-block">
-                                <option value='defaultSelect'>--Select--</option>
-                            </select>
-			</div>
-		        <div class="vertical">
-			    <label for="negativeInputs" style="display:inline">Negative Quantity:</label><br>
-        		    <select id="negativeInputs" data-dojo-type="dijit/form/Select" style="display:inline-block">
-                                <option value='defaultSelect'>--Select--</option>
-                            </select>
-			</div>
+		        <label for="positiveInputs" style="display:inline">Positive Quantity:</label><br>
+        	        <select id="positiveInputs" data-dojo-type="dijit/form/Select" style="display:inline-block">
+			    <option value='defaultSelect'>--Select--</option>
+                        </select>
+		    </div>
+		    <div class="horizontal">
+		        <label for="negativeInputs" style="display:inline">Negative Quantity:</label><br>
+		        <select id="negativeInputs" data-dojo-type="dijit/form/Select" style="display:inline-block">
+                            <option value='defaultSelect'>--Select--</option>
+                        </select>
 		    </div>
 		</div>
 	   </div>
@@ -223,9 +216,7 @@
 	   </div>
 	   <div class="fieldgroup" id="equationShow">
 		<label>Expression</label>
-	        <div id="positive">positives</div>
-		<div id="sign">-</div>
-		<div id="negative">negatives</div>
+	        <div id="equationText"></div>
 	   </div>
 	   <div class="fieldgroup" style="overflow:hidden"> <!-- assign space for the float -->	    
                 <div style="float:right">

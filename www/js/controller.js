@@ -27,6 +27,10 @@ define([
 	    this._model = model;
 	    this._mode = mode;
             this._inputStyle = inputStyle;
+
+	    // structured should be its own module.  For now,
+	    // initialize
+	    this.structured._model = this._model;
 	    
 	    // The Node Editor widget must be set up before modifications
             // It might be a better idea to only  call the controller
@@ -234,6 +238,12 @@ define([
 		return this.disableHandlers || this.handleInputs.apply(this, arguments);
 	    }));
 
+	    var positiveWidget = registry.byId("positiveInputs");
+            positiveWidget.on('Change',  lang.hitch(this.structured, this.structured.handlePositive));
+
+	    var negativeWidget = registry.byId("negativeInputs");
+            negativeWidget.on('Change',  lang.hitch(this.structured, this.structured.handleNegative));
+
 	    var equationWidget = registry.byId(this.controlMap.equation);
             equationWidget.on('Change',  lang.hitch(this, function(){
 		return this.disableHandlers || this.handleEquation.apply(this, arguments);
@@ -248,18 +258,10 @@ define([
 		    widget.set("disabled", newValue);
 		});
 	    });
-	    // The dijit/form/RadioButton widget didn't work, so we have to use regular html
-	    // on the radioButtons
-	    array.forEach(["formSum", "formProduct"], function(id){
-		var element = dom.byId(id);
-		equationWidget.watch("disabled", function(attr, oldValue, newValue){
-		    element.disabled = newValue;
-		});
-	    });
 
 	    // For each button 'name', assume there is an associated widget in the HTML
 	    // with id 'nameButton' and associated handler 'nameHandler' below.
-	    var buttons = ['plus', 'minus', 'times', 'divide', 'undo', 'equationDone'];
+	    var buttons = ["plus", "minus", "times", "divide", "undo", "equationDone", "sum", "product"];
 	    array.forEach(buttons, function(button){
 		var w = registry.byId(button + 'Button');
 		console.assert(w, "Button for " + button + " not found");
@@ -274,23 +276,7 @@ define([
 		});
 	    }, this);
 
-	    /* 
-	     Structured Input 
-
-	     BvdS:  I was not able to get dijit/form/RadioButton to work,
-             so generic radiobutton is used here.
-	     */
-	    var fs = dom.byId("formSum");
-	    on(fs, 'click', lang.hitch(this, function(){
-		this.functionForm = "sum";
-	    }));
-	    var fp = dom.byId("formProduct");
-	    on(fp, 'click', lang.hitch(this, function(){
-		this.functionForm = "product";
-	    }));
 	},
-
-	functionForm: null, // For structured select, where node is a pure sum or product.
 
 	// Need to save state of the node editor in the status section
 	// of the student model.  See documentation/json-format.md
@@ -387,10 +373,77 @@ define([
 	    this.equationInsert('/');
 	},
 
+	sumHandler: function(){
+	    console.log("****** sum button");
+	    this.structured.operation = "sum";
+	    this.structured.update();
+	},
+
+	productHandler: function(){
+	    console.log("****** product button");
+	    this.structured.operation = "product";
+	    this.structured.update();
+	},
+
+	structured: {
+	    _model: null, // Needs to be set to to instance of model
+	    operation: "sum",
+	    positives: [],
+	    negatives: [],
+	    handlePositive: function(id){
+		console.log("****** structured.handlePositives ", id);
+		this.positives.push(this._model.given.getName(id));
+		this.update();
+	    },
+	    handleNegative: function(id){
+		console.log("****** structured.handleNegatives ", id);
+		this.negatives.push(this._model.given.getName(id));
+		this.update();
+	    },
+	    update: function(){
+		// Update expression shown in equation box
+		// And structured expression
+	        var pos = "";
+		var op = this.operation == "sum" ? "+": "*";
+		var nop = this.operation == "sum" ? "-": "/";
+		array.forEach(this.positives, function(term, i){
+		    if(i>0)pos += op;
+		    pos += term;
+		});
+		if(this.negatives.length>0 && this.positives.length>1)
+		    pos = "("+pos+")";
+		if(this.positives.length==0 && this.negatives.length>0 && this.operation == "product")
+		    pos = "1";
+		var neg = "";
+		array.forEach(this.negatives, function(term, i){
+		    if(i>0)neg += op;
+		    neg += term;
+		});
+		if(this.negatives.length>1)
+		    neg = "("+neg+")";
+		if(this.negatives.length>0)
+		    neg = nop+neg;
+		pos += neg;
+		console.log("********* New equation is ", pos);
+		
+		// Print in equation box
+		var equationWidget = registry.byId("equationBox");
+		equationWidget.set("value", pos);
+		dom.byId("equationText").innerHTML = pos;
+
+	    },
+	    reset: function(){
+		this.positives.length = 0;
+		this.negatives.length = 0;
+		this.update();
+	    }
+	},
+
 	undoHandler: function(){
 	    var widget = registry.byId(this.controlMap.equation);
 	    // Delete everything in equation box.
 	    var oldEqn = widget.set("value", "");
+	    this.structured.reset();
 	},
 	
 	equationAnalysis: function(directives){
