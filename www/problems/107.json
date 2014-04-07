@@ -34,7 +34,6 @@
                 "name": "assignments added",
                 "type": "parameter",
                 "parentNode": false,
-                "extra": false,
                 "units": "",
                 "description": "The number of new assignments added each week",
                 "initial": 7
@@ -57,7 +56,6 @@
                 "name": "assignments removed",
                 "type": "parameter",
                 "parentNode": false,
-                "extra": false,
                 "units": "",
                 "description": "The number of assignments completed and removed from the task list each week",
                 "initial": 3
@@ -87,7 +85,6 @@
                 "name": "task list",
                 "type": "accumulator",
                 "parentNode": true,
-                "extra": false,
                 "units": "",
                 "description": "The number of assignments on the task list at the end of each week",
                 "initial": 2,
@@ -111,7 +108,6 @@
                 "name": "assignments added",
                 "type": "parameter",
                 "parentNode": false,
-                "extra": false,
                 "units": "",
                 "description": "The number of new assignments added each week"
             },
@@ -133,7 +129,6 @@
                 "name": "assignments removed",
                 "type": "parameter",
                 "parentNode": false,
-                "extra": false,
                 "units": "",
                 "description": "The number of assignments completed and removed from the task list each week"
             }

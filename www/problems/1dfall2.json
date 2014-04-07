@@ -34,7 +34,6 @@
                 "name": "Acceleration",
                 "type": "parameter",
                 "parentNode": false,
-                "extra": false,
                 "units": "",
                 "description": "The acceleration of the object due to gravity",
                 "initial": 9.81
@@ -61,7 +60,6 @@
                 "name": "Speed",
                 "type": "accumulator",
                 "parentNode": false,
-                "extra": false,
                 "units": "",
                 "description": "The speed of the falling object",
                 "initial": null,
@@ -89,7 +87,6 @@
                 "name": "Distance",
                 "type": "accumulator",
                 "parentNode": true,
-                "extra": false,
                 "units": "",
                 "description": "The distance travelled by the falling object",
                 "initial": null,

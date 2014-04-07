@@ -34,7 +34,6 @@
                 "name": "target stock",
                 "type": "parameter",
                 "parentNode": false,
-                "extra": false,
                 "units": "",
                 "description": "The number of widgets that should be in stock each week",
                 "initial": 100
@@ -57,7 +56,6 @@
                 "name": "proportion sold",
                 "type": "parameter",
                 "parentNode": false,
-                "extra": false,
                 "units": "",
                 "description": "The proportion of the stock sold each week",
                 "initial": 0.25
@@ -80,7 +78,6 @@
                 "name": "deficit prop to order",
                 "type": "parameter",
                 "parentNode": false,
-                "extra": false,
                 "units": "",
                 "description": "The proportion of the stock deficit added each week",
                 "initial": 0.3
@@ -103,7 +100,7 @@
                 "name": "target sell",
                 "type": "parameter",
                 "parentNode": false,
-                "extra": true,
+                "genus": "extra",
                 "units": "",
                 "description": "The number of widgets that Shaunna should sell each week",
                 "initial": 25
@@ -126,7 +123,7 @@
                 "name": "initial reorder",
                 "type": "parameter",
                 "parentNode": false,
-                "extra": true,
+                "genus": "extra",
                 "units": "",
                 "description": "The number of widgets that Shaunna wants Shane to reorder on the first week",
                 "initial": 75
@@ -149,7 +146,7 @@
                 "name": "initial stock",
                 "type": "parameter",
                 "parentNode": false,
-                "extra": true,
+                "genus": "extra",
                 "units": "",
                 "description": "The number of widgets in the stock after Shane was sick",
                 "initial": 25
@@ -172,7 +169,7 @@
                 "name": "initial deficit",
                 "type": "parameter",
                 "parentNode": false,
-                "extra": true,
+                "genus": "extra",
                 "units": "",
                 "description": "The number of widget deficit initially",
                 "initial": 75

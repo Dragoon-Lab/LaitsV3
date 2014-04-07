@@ -34,7 +34,6 @@
                 "name": "passengers lost",
                 "type": "parameter",
                 "parentNode": false,
-                "extra": false,
                 "units": "",
                 "description": "The number of passengers lost each month",
                 "initial": 1000
@@ -57,7 +56,6 @@
                 "name": "seats removed",
                 "type": "parameter",
                 "parentNode": false,
-                "extra": false,
                 "units": "",
                 "description": "The number of seats removed from service each month from all flights",
                 "initial": 500
@@ -80,7 +78,7 @@
                 "name": "flights per month",
                 "type": "parameter",
                 "parentNode": false,
-                "extra": true,
+                "genus": "extra",
                 "units": "",
                 "description": "The number of flights the small airline has each month",
                 "initial": 222
@@ -107,7 +105,6 @@
                 "name": "seats in service",
                 "type": "accumulator",
                 "parentNode": false,
-                "extra": false,
                 "units": "",
                 "description": "The number of seats in service in the whole airline each month",
                 "initial": 10000,
@@ -135,7 +132,6 @@
                 "name": "passengers",
                 "type": "accumulator",
                 "parentNode": false,
-                "extra": false,
                 "units": "",
                 "description": "The number of passengers flying each month",
                 "initial": 9000,
@@ -166,7 +162,6 @@
                 "name": "capacity utilization",
                 "type": "function",
                 "parentNode": true,
-                "extra": false,
                 "units": "",
                 "description": "The proportion of passengers flying to seats in service each month",
                 "equation": "id5 / id4"

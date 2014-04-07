@@ -41,7 +41,6 @@
                 "name": "moose births",
                 "type": "function",
                 "parentNode": false,
-                "extra": false,
                 "units": "",
                 "description": "The number of moose born each year",
                 "equation": "id5 * id2"
@@ -64,7 +63,6 @@
                 "name": "moose birth rate",
                 "type": "parameter",
                 "parentNode": false,
-                "extra": false,
                 "units": "",
                 "description": "The ratio of moose born each year to the moose population",
                 "initial": 0.2
@@ -87,7 +85,6 @@
                 "name": "moose capacity",
                 "type": "parameter",
                 "parentNode": false,
-                "extra": false,
                 "units": "",
                 "description": "The number of moose the island can support",
                 "initial": 500
@@ -110,7 +107,6 @@
                 "name": "moose death rate",
                 "type": "function",
                 "parentNode": false,
-                "extra": false,
                 "units": "",
                 "description": "The ratio of moose that die each year to the moose population",
                 "equation": "0.05"
@@ -140,7 +136,6 @@
                 "name": "moose population",
                 "type": "accumulator",
                 "parentNode": true,
-                "extra": false,
                 "units": "",
                 "description": "The number of moose in the population",
                 "initial": 20,
@@ -171,7 +166,6 @@
                 "name": "moose deaths",
                 "type": "function",
                 "parentNode": false,
-                "extra": false,
                 "units": "",
                 "description": "The number of moose that die each year",
                 "equation": "id5 * id4"
@@ -194,7 +188,6 @@
                 "name": "moose population",
                 "type": "accumulator",
                 "parentNode": true,
-                "extra": false,
                 "units": "",
                 "description": "The number of moose in the population"
             },
@@ -216,7 +209,6 @@
                 "name": "moose birth rate",
                 "type": "parameter",
                 "parentNode": false,
-                "extra": false,
                 "units": "",
                 "description": "The ratio of moose born each year to the moose population"
             },
@@ -238,7 +230,6 @@
                 "name": "moose death rate",
                 "type": "parameter",
                 "parentNode": false,
-                "extra": false,
                 "units": "",
                 "description": "The ratio of moose that die each year to the moose population"
             },
@@ -260,7 +251,6 @@
                 "name": "moose births",
                 "type": "function",
                 "parentNode": false,
-                "extra": false,
                 "units": "",
                 "description": "The number of moose born each year"
             },
@@ -282,7 +272,6 @@
                 "name": "moose deaths",
                 "type": "function",
                 "parentNode": false,
-                "extra": false,
                 "units": "",
                 "description": "The number of moose that die each year"
             }

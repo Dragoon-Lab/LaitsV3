@@ -34,7 +34,7 @@
                 "name": "water first hour",
                 "type": "parameter",
                 "parentNode": false,
-                "extra": true,
+                "genus": "extra",
                 "units": "",
                 "description": "The amount of water in the bilge after the first hour",
                 "initial": 9600
@@ -57,7 +57,6 @@
                 "name": "leaked in per hour",
                 "type": "parameter",
                 "parentNode": false,
-                "extra": false,
                 "units": "",
                 "description": "The amount of water leaked into the bilge each hour",
                 "initial": 500
@@ -80,7 +79,6 @@
                 "name": "pumped out per hour",
                 "type": "parameter",
                 "parentNode": false,
-                "extra": false,
                 "units": "",
                 "description": "The amount of water being pumped out of the bilge each hour",
                 "initial": 900
@@ -110,7 +108,6 @@
                 "name": "bilge water",
                 "type": "accumulator",
                 "parentNode": true,
-                "extra": false,
                 "units": "",
                 "description": "The amount of water in the bilge each hour",
                 "initial": 10000,

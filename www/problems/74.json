@@ -34,7 +34,7 @@
                 "name": "trees first year",
                 "type": "parameter",
                 "parentNode": false,
-                "extra": true,
+                "genus": "extra",
                 "units": "",
                 "description": "The number of trees alive in the orchard at the end of the first year",
                 "initial": 240
@@ -57,7 +57,6 @@
                 "name": "annual tree deaths",
                 "type": "parameter",
                 "parentNode": false,
-                "extra": false,
                 "units": "",
                 "description": "The number of trees that die each year",
                 "initial": 16
@@ -80,7 +79,6 @@
                 "name": "trees in orchard",
                 "type": "accumulator",
                 "parentNode": true,
-                "extra": false,
                 "units": "",
                 "description": "The number of trees alive in the orchard each year",
                 "initial": 256,

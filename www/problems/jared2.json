@@ -34,7 +34,6 @@
                 "name": "Oprah weight",
                 "type": "parameter",
                 "parentNode": false,
-                "extra": false,
                 "units": "",
                 "description": "How much Oprah weighs",
                 "initial": 120
@@ -64,7 +63,6 @@
                 "name": "Jared weight",
                 "type": "function",
                 "parentNode": true,
-                "extra": false,
                 "units": "",
                 "description": "How much Jared weighs",
                 "equation": "id3 + id1"
@@ -87,7 +85,6 @@
                 "name": "Jared extra weight",
                 "type": "parameter",
                 "parentNode": false,
-                "extra": false,
                 "units": "",
                 "description": "Jared additional weight",
                 "initial": 50
@@ -110,7 +107,6 @@
                 "name": "Oprah weight",
                 "type": "parameter",
                 "parentNode": false,
-                "extra": false,
                 "units": "",
                 "description": "How much Oprah weighs"
             }

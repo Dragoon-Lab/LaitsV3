@@ -38,7 +38,6 @@
                 "name": "infected people",
                 "type": "accumulator",
                 "parentNode": true,
-                "extra": false,
                 "units": "",
                 "description": "The number of people infected by the virus",
                 "initial": 1,
@@ -66,7 +65,6 @@
                 "name": "uninfected people",
                 "type": "accumulator",
                 "parentNode": false,
-                "extra": false,
                 "units": "",
                 "description": "The amount of people not infected by the virus",
                 "initial": 1000,
@@ -90,7 +88,6 @@
                 "name": "total people",
                 "type": "parameter",
                 "parentNode": false,
-                "extra": false,
                 "units": "",
                 "description": "The amount of people total on the cruise ship",
                 "initial": 1001
@@ -120,7 +117,6 @@
                 "name": "chance of uninfected",
                 "type": "function",
                 "parentNode": false,
-                "extra": false,
                 "units": "",
                 "description": "The chance an individual is not infected",
                 "equation": "id2 / id3"
@@ -150,7 +146,6 @@
                 "name": "chance of infected",
                 "type": "function",
                 "parentNode": false,
-                "extra": false,
                 "units": "",
                 "description": "The chance an individual is infected",
                 "equation": "id1 / id3"
@@ -180,7 +175,6 @@
                 "name": "chance of infectious meeting",
                 "type": "function",
                 "parentNode": false,
-                "extra": false,
                 "units": "",
                 "description": "The chance an individual who is uninfected will meet an infected one",
                 "equation": "id5 * id4"
@@ -203,7 +197,6 @@
                 "name": "meetings per day",
                 "type": "parameter",
                 "parentNode": false,
-                "extra": false,
                 "units": "",
                 "description": "The number of meetings that occur each day",
                 "initial": 100
@@ -233,7 +226,6 @@
                 "name": "infections per day",
                 "type": "function",
                 "parentNode": false,
-                "extra": false,
                 "units": "",
                 "description": "The number of infections per day",
                 "equation": "id7 * id6"

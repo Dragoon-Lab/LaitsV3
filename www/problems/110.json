@@ -38,7 +38,6 @@
                 "name": "live trees",
                 "type": "accumulator",
                 "parentNode": true,
-                "extra": false,
                 "units": "",
                 "description": "The number of trees alive in the forest each year",
                 "initial": 4000,
@@ -69,7 +68,6 @@
                 "name": "annual tree deaths",
                 "type": "function",
                 "parentNode": false,
-                "extra": false,
                 "units": "",
                 "description": "The number of trees that died each year",
                 "equation": "id6 * id1"
@@ -92,7 +90,7 @@
                 "name": "initial population",
                 "type": "parameter",
                 "parentNode": false,
-                "extra": true,
+                "genus": "extra",
                 "units": "",
                 "description": "The number of trees alive in the forest in 1900",
                 "initial": 4000
@@ -115,7 +113,7 @@
                 "name": "deaths second year",
                 "type": "parameter",
                 "parentNode": false,
-                "extra": true,
+                "genus": "extra",
                 "units": "",
                 "description": "The number of trees that died during the second year",
                 "initial": 360
@@ -138,7 +136,7 @@
                 "name": "deaths first year",
                 "type": "parameter",
                 "parentNode": false,
-                "extra": true,
+                "genus": "extra",
                 "units": "",
                 "description": "The number of trees that died during the first year",
                 "initial": 400
@@ -161,7 +159,6 @@
                 "name": "death rate",
                 "type": "parameter",
                 "parentNode": false,
-                "extra": false,
                 "units": "",
                 "description": "The proportion of trees that die in a year to trees that were alive at the beginning of the year",
                 "initial": 0.1

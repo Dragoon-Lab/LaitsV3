@@ -34,7 +34,6 @@
                 "name": "proportion of movies shipped",
                 "type": "parameter",
                 "parentNode": false,
-                "extra": false,
                 "units": "",
                 "description": "The proportion of movies shipped from the queue each week",
                 "initial": 0.5
@@ -57,7 +56,6 @@
                 "name": "proportion of movies added",
                 "type": "parameter",
                 "parentNode": false,
-                "extra": false,
                 "units": "",
                 "description": "The proportion of movies that Marks adds to the queue each week",
                 "initial": 0.2
@@ -80,7 +78,7 @@
                 "name": "price per movie",
                 "type": "parameter",
                 "parentNode": false,
-                "extra": true,
+                "genus": "extra",
                 "units": "",
                 "description": "The amount of money Marks spends per movie in dollars",
                 "initial": 2.5
@@ -103,7 +101,7 @@
                 "name": "copies per movie",
                 "type": "parameter",
                 "parentNode": false,
-                "extra": true,
+                "genus": "extra",
                 "units": "",
                 "description": "The amount of copies of a movie on average",
                 "initial": 5
@@ -126,7 +124,7 @@
                 "name": "movies in queue initially",
                 "type": "parameter",
                 "parentNode": false,
-                "extra": true,
+                "genus": "extra",
                 "units": "",
                 "description": "The number of movies in the queue initially",
                 "initial": 30
@@ -156,7 +154,6 @@
                 "name": "movies in queue",
                 "type": "accumulator",
                 "parentNode": true,
-                "extra": false,
                 "units": "",
                 "description": "The number of movies in the queue each week",
                 "initial": 30,
@@ -187,7 +184,7 @@
                 "name": "price paid per week",
                 "type": "function",
                 "parentNode": false,
-                "extra": true,
+                "genus": "extra",
                 "units": "",
                 "description": "The amount of money Marks spends per movie each week",
                 "equation": "id3 * id8"
@@ -217,7 +214,6 @@
                 "name": "movies shipped weekly",
                 "type": "function",
                 "parentNode": false,
-                "extra": false,
                 "units": "",
                 "description": "The number of movies shipped to Mark each week",
                 "equation": "id6 * id1"
@@ -247,7 +243,6 @@
                 "name": "movies added weekly",
                 "type": "function",
                 "parentNode": false,
-                "extra": false,
                 "units": "",
                 "description": "The number of movies Mark adds to the queue each week",
                 "equation": "id6 * id2"

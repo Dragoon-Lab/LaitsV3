@@ -34,7 +34,6 @@
                 "name": "buses each week",
                 "type": "parameter",
                 "parentNode": false,
-                "extra": false,
                 "units": "",
                 "description": "The number of buses that are fixed each week",
                 "initial": 6
@@ -57,7 +56,6 @@
                 "name": "prop buses that fail",
                 "type": "parameter",
                 "parentNode": false,
-                "extra": false,
                 "units": "",
                 "description": "The proportion of the number of buses that fail to the number of buses that are in the bus fleet each week",
                 "initial": 9
@@ -87,7 +85,6 @@
                 "name": "bus fleet",
                 "type": "accumulator",
                 "parentNode": true,
-                "extra": false,
                 "units": "",
                 "description": "The number of buses that are working and used each week by the city",
                 "initial": 105,
@@ -118,7 +115,6 @@
                 "name": "buses fail each week",
                 "type": "function",
                 "parentNode": false,
-                "extra": false,
                 "units": "",
                 "description": "The number of buses that fail each week",
                 "equation": "id3 + id2"
@@ -141,7 +137,6 @@
                 "name": "buses each week",
                 "type": "parameter",
                 "parentNode": false,
-                "extra": false,
                 "units": "",
                 "description": "The number of buses that are fixed each week"
             },
@@ -163,7 +158,6 @@
                 "name": "prop buses that fail",
                 "type": "parameter",
                 "parentNode": false,
-                "extra": false,
                 "units": "",
                 "description": "The proportion of the number of buses that fail to the number of buses that are in the bus fleet each week"
             },
@@ -185,7 +179,6 @@
                 "name": "bus fleet",
                 "type": "accumulator",
                 "parentNode": false,
-                "extra": false,
                 "units": "",
                 "description": "The number of buses that are working and used each week by the city"
             },
@@ -207,7 +200,6 @@
                 "name": "buses fail each week",
                 "type": "function",
                 "parentNode": false,
-                "extra": false,
                 "units": "",
                 "description": "The number of buses that fail each week"
             }

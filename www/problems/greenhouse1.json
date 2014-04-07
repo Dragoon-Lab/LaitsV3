@@ -41,7 +41,6 @@
                 "name": "Heat",
                 "type": "accumulator",
                 "parentNode": false,
-                "extra": false,
                 "units": "",
                 "description": "The thermal energy of the Earth's surface",
                 "initial": 1000,
@@ -72,7 +71,6 @@
                 "name": "Atmospheric CO2",
                 "type": "accumulator",
                 "parentNode": false,
-                "extra": false,
                 "units": "",
                 "description": "The amount of carbon held in the atmosphere as carbon dioxide, CO2",
                 "initial": null,
@@ -109,7 +107,6 @@
                 "name": "Water liquid and vapor",
                 "type": "function",
                 "parentNode": false,
-                "extra": false,
                 "units": "",
                 "description": "The amount of water in unfrozen form including both liquid water and water vapor",
                 "equation": "id1 * id5 * id6"
@@ -142,7 +139,6 @@
                 "name": "Ice and snow",
                 "type": "function",
                 "parentNode": false,
-                "extra": false,
                 "units": "",
                 "description": "The amount of water in frozen form",
                 "equation": "id6 - id3"
@@ -165,7 +161,6 @@
                 "name": "Heat effect on water",
                 "type": "parameter",
                 "parentNode": false,
-                "extra": false,
                 "units": "",
                 "description": "The effect of temperature on liquid water to total water",
                 "initial": 0.0059
@@ -188,7 +183,6 @@
                 "name": "Total water",
                 "type": "parameter",
                 "parentNode": false,
-                "extra": false,
                 "units": "",
                 "description": "The amount of water on earth in both frozen and unfrozen states",
                 "initial": 100
@@ -211,7 +205,6 @@
                 "name": "Sunlight",
                 "type": "parameter",
                 "parentNode": false,
-                "extra": false,
                 "units": "",
                 "description": "The amount of heat from the sun that strikes the earths atmosphere",
                 "initial": 100
@@ -241,7 +234,6 @@
                 "name": "Heat gain",
                 "type": "function",
                 "parentNode": false,
-                "extra": false,
                 "units": "",
                 "description": "The amount of heat on Earth due to sunlight",
                 "equation": "id7 - id7 * id9"
@@ -274,7 +266,6 @@
                 "name": "Total albedo",
                 "type": "function",
                 "parentNode": false,
-                "extra": false,
                 "units": "",
                 "description": "The reflectance of sunlight (total reflectance)",
                 "equation": "id17 + id18 + id19"
@@ -304,7 +295,6 @@
                 "name": "Heat loss",
                 "type": "function",
                 "parentNode": false,
-                "extra": false,
                 "units": "",
                 "description": "The amount of thermal energy lost to space",
                 "equation": "id11 - id11 * id12"
@@ -327,7 +317,6 @@
                 "name": "Heat loss without GHE",
                 "type": "parameter",
                 "parentNode": false,
-                "extra": false,
                 "units": "",
                 "description": "The amount of heat loss that would occur without a greenhouse effect",
                 "initial": null
@@ -363,7 +352,6 @@
                 "name": "Total GHE",
                 "type": "function",
                 "parentNode": false,
-                "extra": false,
                 "units": "",
                 "description": "The greenhouse effect from all sources (total)",
                 "equation": "id13 + id15 + id16 + id14"
@@ -393,7 +381,6 @@
                 "name": "Atmospheric CO2 GHE",
                 "type": "function",
                 "parentNode": false,
-                "extra": false,
                 "units": "",
                 "description": "The greenhouse effect due to Atmospheric CO2",
                 "equation": "id2 * id23"
@@ -423,7 +410,6 @@
                 "name": "Water vapor GHE",
                 "type": "function",
                 "parentNode": false,
-                "extra": false,
                 "units": "",
                 "description": "The greenhouse effect due to water vapor in the atmosphere",
                 "equation": "id27 * id29"
@@ -453,7 +439,6 @@
                 "name": "Cloud GHE",
                 "type": "function",
                 "parentNode": false,
-                "extra": false,
                 "units": "",
                 "description": "The greenhouse effect due to clouds",
                 "equation": "id25 * id26"
@@ -476,7 +461,6 @@
                 "name": "Methane GHE",
                 "type": "parameter",
                 "parentNode": false,
-                "extra": false,
                 "units": "",
                 "description": "The greenhouse effect due to methane, nitrous oxide and other minor greenhouse gases",
                 "initial": null
@@ -499,7 +483,6 @@
                 "name": "Aerosols albedo",
                 "type": "parameter",
                 "parentNode": false,
-                "extra": false,
                 "units": "",
                 "description": "The reflectance due to aerosols in the atmosphere",
                 "initial": 0.05
@@ -529,7 +512,6 @@
                 "name": "Cloud albedo",
                 "type": "function",
                 "parentNode": false,
-                "extra": false,
                 "units": "",
                 "description": "The reflectance due to clouds",
                 "equation": "id30 * id25"
@@ -559,7 +541,6 @@
                 "name": "Ice and snow albedo",
                 "type": "function",
                 "parentNode": false,
-                "extra": false,
                 "units": "",
                 "description": "The reflectance due to ice and snow",
                 "equation": "id4 * id31"
@@ -582,7 +563,6 @@
                 "name": "combustion",
                 "type": "parameter",
                 "parentNode": false,
-                "extra": false,
                 "units": "",
                 "description": "The emmission of CO2 into the atmosphere by burning fossil fuels and forests",
                 "initial": 1
@@ -612,7 +592,6 @@
                 "name": "CO2 absorbed by oceans",
                 "type": "function",
                 "parentNode": false,
-                "extra": false,
                 "units": "",
                 "description": "The amount of CO2 absorbed by the oceans per year",
                 "equation": "id22 * id1"
@@ -635,7 +614,6 @@
                 "name": "Heat effect on CO2 absorption",
                 "type": "parameter",
                 "parentNode": false,
-                "extra": false,
                 "units": "",
                 "description": "The effect of temperature on the CO2 absorption rate of oceans",
                 "initial": null
@@ -658,7 +636,6 @@
                 "name": "Convert CO2 to GHE",
                 "type": "parameter",
                 "parentNode": false,
-                "extra": false,
                 "units": "",
                 "description": "The more CO2 in the atmosphere, the higher the GHE by some factor",
                 "initial": null
@@ -681,7 +658,6 @@
                 "name": "Cloud proportion",
                 "type": "parameter",
                 "parentNode": false,
-                "extra": false,
                 "units": "",
                 "description": "The proportion of liquid and vaporous water that is in clouds",
                 "initial": null
@@ -711,7 +687,6 @@
                 "name": "clouds",
                 "type": "function",
                 "parentNode": false,
-                "extra": false,
                 "units": "",
                 "description": "The amount of water in clouds",
                 "equation": "id3 * id24"
@@ -734,7 +709,6 @@
                 "name": "Convert Clouds to GHE",
                 "type": "parameter",
                 "parentNode": false,
-                "extra": false,
                 "units": "",
                 "description": "The effect of clouds on greenhouse emissions",
                 "initial": null
@@ -764,7 +738,6 @@
                 "name": "Water vapor",
                 "type": "function",
                 "parentNode": false,
-                "extra": false,
                 "units": "",
                 "description": "The amount of water held as water vapor in the atmosphere",
                 "equation": "id3 * id28"
@@ -787,7 +760,6 @@
                 "name": "Water vapor proportion",
                 "type": "parameter",
                 "parentNode": false,
-                "extra": false,
                 "units": "",
                 "description": "The proportion of vaporous and liquid water that is held as water vapor in the atmosphere",
                 "initial": null
@@ -810,7 +782,6 @@
                 "name": "Convert water vapor to GHE",
                 "type": "parameter",
                 "parentNode": false,
-                "extra": false,
                 "units": "",
                 "description": "A factor that converts the amount of water vapor to the amount of GHE caused by water vapor",
                 "initial": null
@@ -833,7 +804,6 @@
                 "name": "Convert clouds to albedo",
                 "type": "parameter",
                 "parentNode": false,
-                "extra": false,
                 "units": "",
                 "description": "A factor that converts the amount of clouds to the amount of reflectivity caused by clouds",
                 "initial": null
@@ -856,7 +826,6 @@
                 "name": "Convert ice & snow to albedo",
                 "type": "parameter",
                 "parentNode": false,
-                "extra": false,
                 "units": "",
                 "description": "A factor that converts the amount of ice and snow to the reflectivity caused by them",
                 "initial": null

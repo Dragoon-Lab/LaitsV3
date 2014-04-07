@@ -34,7 +34,6 @@
                 "name": "doctor patient ratio",
                 "type": "parameter",
                 "parentNode": false,
-                "extra": false,
                 "units": "",
                 "description": "The proportion of doctors per patient on average",
                 "initial": 0.125
@@ -57,7 +56,7 @@
                 "name": "patients initially",
                 "type": "parameter",
                 "parentNode": false,
-                "extra": true,
+                "genus": "extra",
                 "units": "",
                 "description": "The number of patients in the hospital when the system was turned on",
                 "initial": 80
@@ -80,7 +79,7 @@
                 "name": "starting doctors",
                 "type": "parameter",
                 "parentNode": false,
-                "extra": true,
+                "genus": "extra",
                 "units": "",
                 "description": "The number of doctors in the hospital when the system was turned on",
                 "initial": 10
@@ -103,7 +102,7 @@
                 "name": "ratio initially",
                 "type": "function",
                 "parentNode": false,
-                "extra": true,
+                "genus": "extra",
                 "units": "",
                 "description": "The proportion of doctors per patient when the system was turned on",
                 "equation": "null"
@@ -126,7 +125,6 @@
                 "name": "patients admitted",
                 "type": "parameter",
                 "parentNode": false,
-                "extra": false,
                 "units": "",
                 "description": "The number of patients admitted in the hospital each hour",
                 "initial": 10
@@ -149,7 +147,6 @@
                 "name": "discharges per doctor",
                 "type": "parameter",
                 "parentNode": false,
-                "extra": false,
                 "units": "",
                 "description": "The number of patients discharged per doctor each hour",
                 "initial": 3
@@ -179,7 +176,6 @@
                 "name": "doctors",
                 "type": "function",
                 "parentNode": true,
-                "extra": false,
                 "units": "",
                 "description": "The number of doctors in the hospital each hour",
                 "equation": "id9 * id1"
@@ -209,7 +205,6 @@
                 "name": "patients discharged",
                 "type": "function",
                 "parentNode": false,
-                "extra": false,
                 "units": "",
                 "description": "The number of patients discharged from the hospital each hour",
                 "equation": "id7 * id6"
@@ -239,7 +234,6 @@
                 "name": "patients",
                 "type": "accumulator",
                 "parentNode": false,
-                "extra": false,
                 "units": "",
                 "description": "The number of patients in the hospital each hour",
                 "initial": 80,

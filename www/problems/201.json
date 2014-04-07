@@ -41,7 +41,6 @@
                 "name": "population growth rate",
                 "type": "function",
                 "parentNode": false,
-                "extra": false,
                 "units": "",
                 "description": "The number of water fowl added per year",
                 "equation": "id3 * id2"
@@ -64,7 +63,6 @@
                 "name": "growth rate coeff",
                 "type": "parameter",
                 "parentNode": false,
-                "extra": false,
                 "units": "",
                 "description": "The proportion that the water fowl population grows",
                 "initial": 0.4
@@ -91,7 +89,6 @@
                 "name": "water fowl",
                 "type": "accumulator",
                 "parentNode": true,
-                "extra": false,
                 "units": "",
                 "description": "The size of water fowl population",
                 "initial": 10,

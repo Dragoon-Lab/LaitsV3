@@ -34,7 +34,7 @@
                 "name": "bicycle users",
                 "type": "parameter",
                 "parentNode": false,
-                "extra": true,
+                "genus": "extra",
                 "units": "",
                 "description": "The number of commuters that use a bicycle for transportation each day on ASU campus",
                 "initial": 17000
@@ -57,7 +57,6 @@
                 "name": "drivers lost prop.",
                 "type": "parameter",
                 "parentNode": false,
-                "extra": false,
                 "units": "",
                 "description": "The proportion of private drivers that stop using private transportation to private drivers who continue to use private transportation each year",
                 "initial": 0.02
@@ -80,7 +79,6 @@
                 "name": "new commuter prop.",
                 "type": "parameter",
                 "parentNode": false,
-                "extra": false,
                 "units": "",
                 "description": "The proportion of new public commuters that start taking public transportation to public commuters who already are using public transportation each year",
                 "initial": 0.04
@@ -103,7 +101,6 @@
                 "name": "public commuters",
                 "type": "accumulator",
                 "parentNode": false,
-                "extra": false,
                 "units": "",
                 "description": "The number of commuters that use public transportation each year",
                 "initial": 14000,
@@ -131,7 +128,6 @@
                 "name": "private drivers",
                 "type": "accumulator",
                 "parentNode": false,
-                "extra": false,
                 "units": "",
                 "description": "The number of commuters that use private transportation each year",
                 "initial": 24000,
@@ -162,7 +158,6 @@
                 "name": "drivers lost",
                 "type": "function",
                 "parentNode": false,
-                "extra": false,
                 "units": "",
                 "description": "The number of private drivers that stop using private transportation each year",
                 "equation": "id5 * id2"
@@ -192,7 +187,6 @@
                 "name": "driver commuter diff.",
                 "type": "function",
                 "parentNode": true,
-                "extra": false,
                 "units": "",
                 "description": "The number of private drivers minus the number of public commuters each year",
                 "equation": "id5 - id4"

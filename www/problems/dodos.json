@@ -38,7 +38,6 @@
                 "name": "population",
                 "type": "accumulator",
                 "parentNode": true,
-                "extra": false,
                 "units": "",
                 "description": "The number of Dodos in the Dodo population",
                 "initial": 1000,
@@ -69,7 +68,6 @@
                 "name": "deaths",
                 "type": "function",
                 "parentNode": false,
-                "extra": false,
                 "units": "",
                 "description": "The number of Dodos that die each year",
                 "equation": "id1 * id3"
@@ -92,7 +90,6 @@
                 "name": "death rate",
                 "type": "parameter",
                 "parentNode": false,
-                "extra": false,
                 "units": "",
                 "description": "The percentage of Dodos that die each year",
                 "initial": 0.2

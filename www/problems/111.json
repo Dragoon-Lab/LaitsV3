@@ -34,7 +34,6 @@
                 "name": "weekly books bought",
                 "type": "parameter",
                 "parentNode": false,
-                "extra": false,
                 "units": "",
                 "description": "The number of books Rod buys each week",
                 "initial": 2
@@ -61,7 +60,6 @@
                 "name": "books",
                 "type": "accumulator",
                 "parentNode": true,
-                "extra": false,
                 "units": "",
                 "description": "The number of books Rod has",
                 "initial": 100,

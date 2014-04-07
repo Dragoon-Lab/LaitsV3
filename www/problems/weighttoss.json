@@ -34,7 +34,6 @@
                 "name": "Acceleration",
                 "type": "parameter",
                 "parentNode": false,
-                "extra": false,
                 "units": "",
                 "description": "The acceleration of the weight due to gravity",
                 "initial": -9.8
@@ -61,7 +60,6 @@
                 "name": "Velocity",
                 "type": "accumulator",
                 "parentNode": false,
-                "extra": false,
                 "units": "",
                 "description": "The velocity of the weight",
                 "initial": 8.5,
@@ -89,7 +87,6 @@
                 "name": "Height",
                 "type": "accumulator",
                 "parentNode": true,
-                "extra": false,
                 "units": "",
                 "description": "The height of the weight",
                 "initial": 1.2,

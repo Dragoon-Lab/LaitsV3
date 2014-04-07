@@ -47,7 +47,6 @@
                 "name": "bmr",
                 "type": "function",
                 "parentNode": false,
-                "extra": false,
                 "units": "",
                 "description": "The formula to determine the Basal Metabolic Rate",
                 "equation": "66 + 6.23 * id4 + 12.7 * id3 - id2 * 6.8"
@@ -70,7 +69,6 @@
                 "name": "age",
                 "type": "parameter",
                 "parentNode": false,
-                "extra": false,
                 "units": "",
                 "description": "Given age (years)",
                 "initial": 20
@@ -93,7 +91,6 @@
                 "name": "height",
                 "type": "parameter",
                 "parentNode": false,
-                "extra": false,
                 "units": "",
                 "description": "Given height (inches)",
                 "initial": 71
@@ -120,7 +117,6 @@
                 "name": "weight",
                 "type": "accumulator",
                 "parentNode": false,
-                "extra": false,
                 "units": "",
                 "description": "Given weight (pounds)",
                 "initial": 180,
@@ -148,7 +144,6 @@
                 "name": "weight change",
                 "type": "function",
                 "parentNode": false,
-                "extra": false,
                 "units": "",
                 "description": "Change in weight (calorie difference / calories per lb)",
                 "equation": "id6 / 3500"
@@ -171,7 +166,6 @@
                 "name": "calorie difference",
                 "type": "parameter",
                 "parentNode": false,
-                "extra": false,
                 "units": "",
                 "description": "number of missing (negative number) or extra (positive number) calories",
                 "initial": -500
@@ -201,7 +195,6 @@
                 "name": "harris benedict formula",
                 "type": "function",
                 "parentNode": false,
-                "extra": false,
                 "units": "",
                 "description": "The formula to determine the BMR plus physical activity",
                 "equation": "id1 * id8"
@@ -224,7 +217,6 @@
                 "name": "hb factor",
                 "type": "parameter",
                 "parentNode": false,
-                "extra": false,
                 "units": "",
                 "description": "Factor to multiply BMR by (calculates physical activity)",
                 "initial": 1.55

@@ -38,7 +38,6 @@
                 "name": "Oprah weight",
                 "type": "accumulator",
                 "parentNode": false,
-                "extra": false,
                 "units": "",
                 "description": "How much Oprah weighs at the end of the week",
                 "initial": 140,
@@ -62,7 +61,6 @@
                 "name": "Oprah weight loss",
                 "type": "parameter",
                 "parentNode": false,
-                "extra": false,
                 "units": "",
                 "description": "How much Oprah loses each week",
                 "initial": 1.5
@@ -92,7 +90,6 @@
                 "name": "Jared weight",
                 "type": "function",
                 "parentNode": true,
-                "extra": false,
                 "units": "",
                 "description": "How much Jared weighs at the end of the week",
                 "equation": "id4 * id1"
@@ -115,7 +112,6 @@
                 "name": "Jared extra weight",
                 "type": "parameter",
                 "parentNode": false,
-                "extra": false,
                 "units": "",
                 "description": "Jared's extra percent of weight over Oprah's weight.",
                 "initial": 1.3
@@ -138,7 +134,6 @@
                 "name": "Oprah weight",
                 "type": "accumulator",
                 "parentNode": false,
-                "extra": false,
                 "units": "",
                 "description": "How much Oprah weighs at the end of the week"
             },
@@ -160,7 +155,6 @@
                 "name": "Oprah weight loss",
                 "type": "parameter",
                 "parentNode": false,
-                "extra": false,
                 "units": "",
                 "description": "How much Oprah loses each week"
             }

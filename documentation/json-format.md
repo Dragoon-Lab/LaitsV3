@@ -88,7 +88,6 @@ given model.
             "name": "population",
             "type": "accumulator",
             "parentNode": false,
-            "extra": false,
             "order": 1,
             "units": "rabbits",
             "inputs": [ { "ID" : "id2" } ],
@@ -133,8 +132,7 @@ element "order" is deprecated with "parentNode" and it currently not being
 used. It is retained in case it is needed later but can be removed if needed. 
 
 The author can also include nodes that are not necessary for completion to 
-additionally challenge the student. The element "extra" indicates whether or not 
-a node is one of these extra nodes. If it is marked true, it is not required. 
+additionally challenge the student. 
 
 The node element "units" differs from the task element units (which refers to 
 time) and signifies the item that the node refers to (in the above example, the 
@@ -167,7 +165,6 @@ They are included in the "givenModelNode" array, as in the following example.
                 "name": "month two population",
                 "type": "parameter",
                 "parentNode": true,
-                "extra": false,
                 "units": "rabbits",
                 "inputs": [],
                 "initial": 100,
@@ -300,7 +297,6 @@ JSON document.
                     "name": "population",
                     "type": "accumulator",
                     "parentNode": false,
-                    "extra": false,
                     "order": 1,
                     "units": "rabbits",
                     "inputs": [ { "ID" : "id2" } ],
@@ -327,7 +323,6 @@ JSON document.
                     "name": "births",
                     "type": "function",
                     "parentNode": true,
-                    "extra": false,
                     "order": 2,
                     "units": "births",
                     "inputs": [ { "ID": "id1" }, { "ID": "id3" } ],
@@ -353,7 +348,6 @@ JSON document.
                     "name": "birth rate",
                     "type": "parameter",
                     "parentNode": false,
-                    "extra": false,
                     "order": 3,
                     "units": "percent",
                     "inputs": [],
@@ -379,7 +373,6 @@ JSON document.
                     "genus": "extra",
                     "type": "parameter",
                     "parentNode": true,
-                    "extra": false,
                     "units": "rabbits",
                     "inputs": [],
                     "initial": 120,

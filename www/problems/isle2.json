@@ -38,7 +38,6 @@
                 "name": "moose population",
                 "type": "accumulator",
                 "parentNode": true,
-                "extra": false,
                 "units": "",
                 "description": "The number of moose in the population",
                 "initial": 20,
@@ -62,7 +61,6 @@
                 "name": "moose birth rate",
                 "type": "parameter",
                 "parentNode": false,
-                "extra": false,
                 "units": "",
                 "description": "The ratio of moose born each year to the moose population",
                 "initial": 0.2
@@ -92,7 +90,6 @@
                 "name": "moose births",
                 "type": "function",
                 "parentNode": false,
-                "extra": false,
                 "units": "",
                 "description": "The number of moose born each year",
                 "equation": "id1 * id2"

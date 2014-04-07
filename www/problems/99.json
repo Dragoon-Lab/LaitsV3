@@ -34,7 +34,7 @@
                 "name": "smaller canal width",
                 "type": "parameter",
                 "parentNode": false,
-                "extra": true,
+                "genus": "extra",
                 "units": "",
                 "description": "The number of centimeters wide of the smaller canals",
                 "initial": 3810
@@ -57,7 +57,7 @@
                 "name": "largest canal width",
                 "type": "parameter",
                 "parentNode": false,
-                "extra": true,
+                "genus": "extra",
                 "units": "",
                 "description": "The number of centimeters wide of the largest canals",
                 "initial": 36576
@@ -80,7 +80,6 @@
                 "name": "cm sunk per decade",
                 "type": "parameter",
                 "parentNode": false,
-                "extra": false,
                 "units": "",
                 "description": "The number of centimeters the streets of Venice sink each decade",
                 "initial": 10
@@ -107,7 +106,6 @@
                 "name": "cm above sea level",
                 "type": "accumulator",
                 "parentNode": true,
-                "extra": false,
                 "units": "",
                 "description": "The number of centimeters the streets of Venice are above sea level each decade",
                 "initial": 300,

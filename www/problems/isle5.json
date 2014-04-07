@@ -41,7 +41,6 @@
                 "name": "wolf population",
                 "type": "accumulator",
                 "parentNode": true,
-                "extra": false,
                 "units": "",
                 "description": "The number of wolves in the population",
                 "initial": 2,
@@ -65,7 +64,6 @@
                 "name": "wolf birth rate",
                 "type": "parameter",
                 "parentNode": false,
-                "extra": false,
                 "units": "",
                 "description": "The ratio of wolves born each year to the wolf population",
                 "initial": 0.75
@@ -95,7 +93,6 @@
                 "name": "wolf births",
                 "type": "function",
                 "parentNode": false,
-                "extra": false,
                 "units": "",
                 "description": "The number of wolves born each year",
                 "equation": "id1 * id2"
@@ -125,7 +122,6 @@
                 "name": "wolf deaths",
                 "type": "function",
                 "parentNode": false,
-                "extra": false,
                 "units": "",
                 "description": "The number of wolves that die each year",
                 "equation": "id1 * id5"
@@ -148,7 +144,6 @@
                 "name": "wolf death rate",
                 "type": "parameter",
                 "parentNode": false,
-                "extra": false,
                 "units": "",
                 "description": "The ratio of wolves that die each year to the wolf population",
                 "initial": 0.67

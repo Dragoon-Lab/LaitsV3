@@ -34,7 +34,6 @@
                 "name": "proportion women leaving",
                 "type": "parameter",
                 "parentNode": false,
-                "extra": false,
                 "units": "",
                 "description": "The ratio of women leaving the club to women in the club",
                 "initial": 0.1
@@ -57,7 +56,6 @@
                 "name": "proportion men leaving",
                 "type": "parameter",
                 "parentNode": false,
-                "extra": false,
                 "units": "",
                 "description": "The ratio of men leaving the club to men in the club",
                 "initial": 0.06
@@ -80,7 +78,7 @@
                 "name": "initial club membership",
                 "type": "parameter",
                 "parentNode": false,
-                "extra": true,
+                "genus": "extra",
                 "units": "",
                 "description": "The number of people in the club the first month",
                 "initial": 225
@@ -103,7 +101,7 @@
                 "name": "initial female to male ratio",
                 "type": "parameter",
                 "parentNode": false,
-                "extra": true,
+                "genus": "extra",
                 "units": "",
                 "description": "The ratio of women in the club to men in the club the first month",
                 "initial": 1.25
@@ -130,7 +128,6 @@
                 "name": "men",
                 "type": "accumulator",
                 "parentNode": false,
-                "extra": false,
                 "units": "",
                 "description": "The number of men in the club each month",
                 "initial": 100,
@@ -158,7 +155,6 @@
                 "name": "women",
                 "type": "accumulator",
                 "parentNode": false,
-                "extra": false,
                 "units": "",
                 "description": "The number of women in the club each month",
                 "initial": 125,
@@ -189,7 +185,6 @@
                 "name": "women leaving",
                 "type": "function",
                 "parentNode": false,
-                "extra": false,
                 "units": "",
                 "description": "The number of women leaving the club each month",
                 "equation": "id6 * id1"
@@ -219,7 +214,6 @@
                 "name": "men leaving",
                 "type": "function",
                 "parentNode": false,
-                "extra": false,
                 "units": "",
                 "description": "The number of men leaving the club each month",
                 "equation": "id5 * id2"
@@ -249,7 +243,6 @@
                 "name": "female to male ratio",
                 "type": "function",
                 "parentNode": true,
-                "extra": false,
                 "units": "",
                 "description": "The ratio of women in the club to men in the club",
                 "equation": "id6 / id5"

@@ -34,7 +34,6 @@
                 "name": "weight change",
                 "type": "parameter",
                 "parentNode": false,
-                "extra": false,
                 "units": "",
                 "description": "The amount of weight Jared lost this week.",
                 "initial": 2.5
@@ -61,7 +60,6 @@
                 "name": "Jared weight",
                 "type": "accumulator",
                 "parentNode": true,
-                "extra": false,
                 "units": "",
                 "description": "Jared's weight.",
                 "initial": 200,
@@ -85,7 +83,6 @@
                 "name": "weight change",
                 "type": "parameter",
                 "parentNode": false,
-                "extra": false,
                 "units": "",
                 "description": "The amount of weight Jared lost this week."
             }

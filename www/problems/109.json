@@ -34,7 +34,7 @@
                 "name": "initial population",
                 "type": "parameter",
                 "parentNode": false,
-                "extra": true,
+                "genus": "extra",
                 "units": "",
                 "description": "The number of Giardia in the bottle initially",
                 "initial": 100
@@ -57,7 +57,7 @@
                 "name": "population 2nd hour",
                 "type": "parameter",
                 "parentNode": false,
-                "extra": true,
+                "genus": "extra",
                 "units": "",
                 "description": "The number of Giardia in the bottle during the second hour",
                 "initial": 196
@@ -80,7 +80,7 @@
                 "name": "population 1st hour",
                 "type": "parameter",
                 "parentNode": false,
-                "extra": true,
+                "genus": "extra",
                 "units": "",
                 "description": "The number of Giardia in the bottle during the first hour",
                 "initial": 140
@@ -103,7 +103,6 @@
                 "name": "growth rate",
                 "type": "parameter",
                 "parentNode": false,
-                "extra": false,
                 "units": "",
                 "description": "The rate that Giardia reproduce",
                 "initial": 0.4
@@ -130,7 +129,6 @@
                 "name": "population",
                 "type": "accumulator",
                 "parentNode": true,
-                "extra": false,
                 "units": "",
                 "description": "The number of Giardia in the bottle each hour",
                 "initial": 100,
@@ -161,7 +159,6 @@
                 "name": "births",
                 "type": "function",
                 "parentNode": false,
-                "extra": false,
                 "units": "",
                 "description": "The number of Giardia born each hour",
                 "equation": "id5 * id4"

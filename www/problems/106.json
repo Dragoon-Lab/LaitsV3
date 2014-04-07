@@ -34,7 +34,7 @@
                 "name": "female justices",
                 "type": "parameter",
                 "parentNode": false,
-                "extra": false,
+                
                 "units": "",
                 "description": "The number of US Supreme Court justices that are female",
                 "initial": 3
@@ -57,7 +57,7 @@
                 "name": "justices",
                 "type": "parameter",
                 "parentNode": false,
-                "extra": false,
+                
                 "units": "",
                 "description": "The total number of US Supreme Court justices",
                 "initial": 9
@@ -87,7 +87,7 @@
                 "name": "female justice prop",
                 "type": "function",
                 "parentNode": true,
-                "extra": false,
+                
                 "units": "",
                 "description": "The ratio of female justices to total justices in the US Supreme court",
                 "equation": "id1 / id2"
@@ -110,7 +110,7 @@
                 "name": "female justices",
                 "type": "parameter",
                 "parentNode": false,
-                "extra": false,
+                
                 "units": "",
                 "description": "The number of US Supreme Court justices that are female"
             },
@@ -132,7 +132,7 @@
                 "name": "justices",
                 "type": "parameter",
                 "parentNode": false,
-                "extra": false,
+                
                 "units": "",
                 "description": "The total number of US Supreme Court justices"
             }

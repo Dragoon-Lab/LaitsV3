@@ -34,7 +34,7 @@
                 "name": "beg. glucose level",
                 "type": "parameter",
                 "parentNode": false,
-                "extra": true,
+                "genus": "extra",
                 "units": "",
                 "description": "The amount of glucose in the blood that was originally in the blood",
                 "initial": 10
@@ -57,7 +57,7 @@
                 "name": "glucose level 1 hour",
                 "type": "parameter",
                 "parentNode": false,
-                "extra": true,
+                "genus": "extra",
                 "units": "",
                 "description": "The amount of glucose in the blood that was in the blood after the first hour",
                 "initial": 12.74
@@ -80,7 +80,6 @@
                 "name": "removal rate",
                 "type": "parameter",
                 "parentNode": false,
-                "extra": false,
                 "units": "",
                 "description": "The proportion of glucose removed from the blood during each hour",
                 "initial": 0.02
@@ -103,7 +102,6 @@
                 "name": "glucose added",
                 "type": "parameter",
                 "parentNode": false,
-                "extra": false,
                 "units": "",
                 "description": "The amount of glucose added to the blood each hour and it remains the same from hour to hour",
                 "initial": 3
@@ -133,7 +131,6 @@
                 "name": "glucose removed",
                 "type": "function",
                 "parentNode": false,
-                "extra": false,
                 "units": "",
                 "description": "The amount of glucose removed from the blood each hour and it varies from hour to hour",
                 "equation": "id6 * id3"
@@ -163,7 +160,6 @@
                 "name": "glucose in the blood",
                 "type": "accumulator",
                 "parentNode": true,
-                "extra": false,
                 "units": "",
                 "description": "The amount of glucose in the blood at the end of each hour and it varies from hour to hour",
                 "initial": 10,

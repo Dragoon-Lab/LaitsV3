@@ -34,7 +34,6 @@
                 "name": "fat content",
                 "type": "parameter",
                 "parentNode": true,
-                "extra": false,
                 "units": "",
                 "description": "The ratio of the weight of the fat in a potato chip to the weight of the potato chip",
                 "initial": 0.35

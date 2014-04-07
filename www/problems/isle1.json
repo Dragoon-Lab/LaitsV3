@@ -38,7 +38,6 @@
                 "name": "moose population",
                 "type": "accumulator",
                 "parentNode": true,
-                "extra": false,
                 "units": "",
                 "description": "The number of moose in the population",
                 "initial": 20,
@@ -62,7 +61,6 @@
                 "name": "moose births",
                 "type": "parameter",
                 "parentNode": false,
-                "extra": false,
                 "units": "",
                 "description": "The number of moose born each year",
                 "initial": 2

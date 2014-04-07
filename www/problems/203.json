@@ -44,7 +44,6 @@
                 "name": "births per year",
                 "type": "function",
                 "parentNode": false,
-                "extra": false,
                 "units": "",
                 "description": "The number of new water fowl added to the population each year",
                 "equation": "id6 * id10 * id2"
@@ -74,7 +73,6 @@
                 "name": "proportion capacity remaining",
                 "type": "function",
                 "parentNode": false,
-                "extra": false,
                 "units": "",
                 "description": "The proportion of the unutilized ecosystem carrying capacity",
                 "equation": "id5 / id9"
@@ -104,7 +102,6 @@
                 "name": "renew per year",
                 "type": "function",
                 "parentNode": false,
-                "extra": false,
                 "units": "",
                 "description": "The number of new resources added to the resource pool each year",
                 "equation": "id9 * id11"
@@ -137,7 +134,6 @@
                 "name": "consump per year",
                 "type": "function",
                 "parentNode": false,
-                "extra": false,
                 "units": "",
                 "description": "The number of resources consumed each year",
                 "equation": "id12 * id6 * id9"
@@ -167,7 +163,6 @@
                 "name": "capacity remaining",
                 "type": "function",
                 "parentNode": false,
-                "extra": false,
                 "units": "",
                 "description": "The amount of the ecosystem carrying capacity not utilized by the water fowl population",
                 "equation": "id9 - id6"
@@ -197,7 +192,6 @@
                 "name": "water fowl",
                 "type": "accumulator",
                 "parentNode": true,
-                "extra": false,
                 "units": "",
                 "description": "The water fowl population size",
                 "initial": 10,
@@ -228,7 +222,6 @@
                 "name": "deaths per year",
                 "type": "function",
                 "parentNode": false,
-                "extra": false,
                 "units": "",
                 "description": "The number of water fowl removed from the population each year",
                 "equation": "id8 * id6"
@@ -251,7 +244,6 @@
                 "name": "death rate",
                 "type": "parameter",
                 "parentNode": false,
-                "extra": false,
                 "units": "",
                 "description": "The maximum rate of death of water fowl",
                 "initial": 0.17
@@ -281,7 +273,6 @@
                 "name": "resource",
                 "type": "accumulator",
                 "parentNode": false,
-                "extra": false,
                 "units": "",
                 "description": "The size of the resource pool (hg) available to the water fowl",
                 "initial": 100,
@@ -305,7 +296,6 @@
                 "name": "birth rate",
                 "type": "parameter",
                 "parentNode": false,
-                "extra": false,
                 "units": "",
                 "description": "The maximum rate of birth of water fowl",
                 "initial": 0.4
@@ -328,7 +318,6 @@
                 "name": "renew rate",
                 "type": "parameter",
                 "parentNode": false,
-                "extra": false,
                 "units": "",
                 "description": "The maximum rate that the resource is renewed",
                 "initial": 0.6
@@ -351,7 +340,6 @@
                 "name": "consump rate",
                 "type": "parameter",
                 "parentNode": false,
-                "extra": false,
                 "units": "",
                 "description": "The maximum rate that the resource is consumed",
                 "initial": 0.02

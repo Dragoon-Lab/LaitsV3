@@ -34,7 +34,6 @@
                 "name": "proportion harvested",
                 "type": "parameter",
                 "parentNode": false,
-                "extra": false,
                 "units": "",
                 "description": "The proportion of the number of trees that are harvested to the number of trees that are in the forest each year",
                 "initial": 0.05
@@ -57,7 +56,7 @@
                 "name": "market price ratio",
                 "type": "parameter",
                 "parentNode": false,
-                "extra": true,
+                "genus": "extra",
                 "units": "",
                 "description": "The proportion of the price of softwood each year to the price of hardwood each year",
                 "initial": 0.33
@@ -80,7 +79,7 @@
                 "name": "softwood price",
                 "type": "parameter",
                 "parentNode": false,
-                "extra": true,
+                "genus": "extra",
                 "units": "",
                 "description": "The value of softwood in the market each year",
                 "initial": 3
@@ -103,7 +102,7 @@
                 "name": "hardwood price",
                 "type": "parameter",
                 "parentNode": false,
-                "extra": true,
+                "genus": "extra",
                 "units": "",
                 "description": "The value of hardwood in the market each year",
                 "initial": 9
@@ -126,7 +125,6 @@
                 "name": "trees planted",
                 "type": "parameter",
                 "parentNode": false,
-                "extra": false,
                 "units": "",
                 "description": "The number of trees planted each year in the forest",
                 "initial": 10000
@@ -149,7 +147,7 @@
                 "name": "proportion hardwood",
                 "type": "parameter",
                 "parentNode": false,
-                "extra": true,
+                "genus": "extra",
                 "units": "",
                 "description": "The proportion of hardwood trees in the forest to total number of trees in the forest each year",
                 "initial": 0.99
@@ -179,7 +177,6 @@
                 "name": "trees in the forest",
                 "type": "accumulator",
                 "parentNode": true,
-                "extra": false,
                 "units": "",
                 "description": "The number of trees in the forest each year",
                 "initial": 500000,
@@ -210,7 +207,6 @@
                 "name": "trees harvested",
                 "type": "function",
                 "parentNode": false,
-                "extra": false,
                 "units": "",
                 "description": "The number of trees harvested each year from the forest",
                 "equation": "id7 * id1"

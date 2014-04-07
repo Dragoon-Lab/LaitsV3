@@ -34,7 +34,7 @@
                 "name": "minimal size of ships",
                 "type": "parameter",
                 "parentNode": false,
-                "extra": true,
+                "genus": "extra",
                 "units": "",
                 "description": "The number in tons of the minimum size of ships counted",
                 "initial": 10000
@@ -57,7 +57,6 @@
                 "name": "Panama ships added",
                 "type": "parameter",
                 "parentNode": false,
-                "extra": false,
                 "units": "",
                 "description": "The number Panama adds to its fleet each year",
                 "initial": 100
@@ -80,7 +79,6 @@
                 "name": "proportion of US ships removed",
                 "type": "parameter",
                 "parentNode": false,
-                "extra": false,
                 "units": "",
                 "description": "The proportion of US ships removed annually from service to ships still serving in the US fleet each year",
                 "initial": 0.05
@@ -107,7 +105,6 @@
                 "name": "fleet of Panama",
                 "type": "accumulator",
                 "parentNode": false,
-                "extra": false,
                 "units": "",
                 "description": "The number of ships that Panama has in its fleet each year",
                 "initial": 1000,
@@ -135,7 +132,6 @@
                 "name": "fleet of the US",
                 "type": "accumulator",
                 "parentNode": false,
-                "extra": false,
                 "units": "",
                 "description": "The number of ships that the US has in its fleet each year",
                 "initial": 5000,
@@ -166,7 +162,6 @@
                 "name": "difference in fleet sizes",
                 "type": "function",
                 "parentNode": true,
-                "extra": false,
                 "units": "",
                 "description": "The number the US has each year in excess of those that Panama has each year",
                 "equation": "id5 - id4"
@@ -196,7 +191,6 @@
                 "name": "US ships removed",
                 "type": "function",
                 "parentNode": false,
-                "extra": false,
                 "units": "",
                 "description": "The number the US removes from its fleet each year",
                 "equation": "id5 * id3"

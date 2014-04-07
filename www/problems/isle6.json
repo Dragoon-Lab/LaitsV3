@@ -41,7 +41,6 @@
                 "name": "moose births",
                 "type": "function",
                 "parentNode": false,
-                "extra": false,
                 "units": "",
                 "description": "The number of moose born each year",
                 "equation": "id2 * id5"
@@ -71,7 +70,6 @@
                 "name": "moose population",
                 "type": "accumulator",
                 "parentNode": true,
-                "extra": false,
                 "units": "",
                 "description": "The number of moose in the population",
                 "initial": 500,
@@ -102,7 +100,6 @@
                 "name": "moose deaths",
                 "type": "function",
                 "parentNode": false,
-                "extra": false,
                 "units": "",
                 "description": "The number of moose that die each year",
                 "equation": "id2 * id4"
@@ -125,7 +122,6 @@
                 "name": "moose death rate",
                 "type": "function",
                 "parentNode": false,
-                "extra": false,
                 "units": "",
                 "description": "The ratio of moose that die each year to the moose population",
                 "equation": "0.05"
@@ -148,7 +144,6 @@
                 "name": "moose birth rate",
                 "type": "parameter",
                 "parentNode": false,
-                "extra": false,
                 "units": "",
                 "description": "The ratio of moose born each year to the moose population",
                 "initial": 0.1
@@ -178,7 +173,6 @@
                 "name": "wolf births",
                 "type": "function",
                 "parentNode": false,
-                "extra": false,
                 "units": "",
                 "description": "The number of wolves born each year",
                 "equation": "id12 * id8"
@@ -208,7 +202,6 @@
                 "name": "wolf deaths",
                 "type": "function",
                 "parentNode": false,
-                "extra": false,
                 "units": "",
                 "description": "The number of wolves that die each year",
                 "equation": "id12 * id9"
@@ -231,7 +224,6 @@
                 "name": "wolf birth rate",
                 "type": "function",
                 "parentNode": false,
-                "extra": false,
                 "units": "",
                 "description": "The ratio of wolves that are born each year to the wolf population",
                 "equation": "0.75"
@@ -254,7 +246,6 @@
                 "name": "wolf death rate",
                 "type": "parameter",
                 "parentNode": false,
-                "extra": false,
                 "units": "",
                 "description": "The ratio of wolves that die each year to the wolf population",
                 "initial": 0.25
@@ -277,7 +268,6 @@
                 "name": "effect of moose on wolves",
                 "type": "parameter",
                 "parentNode": false,
-                "extra": false,
                 "units": "",
                 "description": "The effect of moose on the wolf population",
                 "initial": 0.00075
@@ -300,7 +290,6 @@
                 "name": "effect of wolves on moose",
                 "type": "parameter",
                 "parentNode": false,
-                "extra": false,
                 "units": "",
                 "description": "The effect of wolves on the moose population",
                 "initial": 0.003
@@ -330,7 +319,6 @@
                 "name": "wolf population",
                 "type": "accumulator",
                 "parentNode": true,
-                "extra": false,
                 "units": "",
                 "description": "The number of wolves in the population",
                 "initial": 20,
@@ -354,7 +342,6 @@
                 "name": "moose births",
                 "type": "function",
                 "parentNode": false,
-                "extra": false,
                 "units": "",
                 "description": "The number of moose born each year"
             },
@@ -376,7 +363,6 @@
                 "name": "moose population",
                 "type": "accumulator",
                 "parentNode": false,
-                "extra": false,
                 "units": "",
                 "description": "The number of moose in the population"
             },
@@ -398,7 +384,6 @@
                 "name": "moose deaths",
                 "type": "function",
                 "parentNode": false,
-                "extra": false,
                 "units": "",
                 "description": "The number of moose that die each year"
             },
@@ -420,7 +405,6 @@
                 "name": "moose death rate",
                 "type": "parameter",
                 "parentNode": false,
-                "extra": false,
                 "units": "",
                 "description": "The ratio of moose that die each year to the moose population"
             },
@@ -442,7 +426,6 @@
                 "name": "moose birth rate",
                 "type": "parameter",
                 "parentNode": false,
-                "extra": false,
                 "units": "",
                 "description": "The ratio of moose born each year to the moose population"
             },
@@ -464,7 +447,6 @@
                 "name": "wolf births",
                 "type": "function",
                 "parentNode": false,
-                "extra": false,
                 "units": "",
                 "description": "The number of wolves born each year"
             },
@@ -486,7 +468,6 @@
                 "name": "wolf population",
                 "type": "accumulator",
                 "parentNode": false,
-                "extra": false,
                 "units": "",
                 "description": "The number of wolves in the population"
             },
@@ -508,7 +489,6 @@
                 "name": "wolf deaths",
                 "type": "function",
                 "parentNode": false,
-                "extra": false,
                 "units": "",
                 "description": "The number of wolves that die each year"
             },
@@ -530,7 +510,6 @@
                 "name": "wolf birth rate",
                 "type": "parameter",
                 "parentNode": false,
-                "extra": false,
                 "units": "",
                 "description": "The ratio of wolves born each year to the wolf population"
             },
@@ -552,7 +531,6 @@
                 "name": "wolf death rate",
                 "type": "parameter",
                 "parentNode": false,
-                "extra": false,
                 "units": "",
                 "description": "The ratio of wolves that die each year to the wolf population"
             }

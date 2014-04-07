@@ -34,7 +34,7 @@
                 "name": "rust area first week",
                 "type": "parameter",
                 "parentNode": false,
-                "extra": true,
+                "genus": "extra",
                 "units": "",
                 "description": "The amount in square inches of total rust after the first week",
                 "initial": 13
@@ -57,7 +57,6 @@
                 "name": "rust growth factor",
                 "type": "parameter",
                 "parentNode": false,
-                "extra": false,
                 "units": "",
                 "description": "The proportion of new rust to the existing rusted area",
                 "initial": 0.3
@@ -84,7 +83,6 @@
                 "name": "rust spot area",
                 "type": "accumulator",
                 "parentNode": true,
-                "extra": false,
                 "units": "",
                 "description": "The amount in square inches of total rust each week",
                 "initial": 10,
@@ -115,7 +113,6 @@
                 "name": "new rust per week",
                 "type": "function",
                 "parentNode": false,
-                "extra": false,
                 "units": "",
                 "description": "The amount in square inches of new rust each week",
                 "equation": "id3 * id2"
