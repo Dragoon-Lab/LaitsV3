@@ -64,7 +64,6 @@
                 "name": "new residents",
                 "type": "function",
                 "parentNode": false,
-                
                 "units": "",
                 "description": "The number of new residents that move into the Phoenix Metro Area each year",
                 "equation": "id3 + id1"
@@ -91,7 +90,6 @@
                 "name": "population",
                 "type": "accumulator",
                 "parentNode": true,
-                
                 "units": "",
                 "description": "The number of people in the Phoenix Metro Area each year",
                 "initial": 4192887,
@@ -115,7 +113,6 @@
                 "name": "growth rate",
                 "type": "parameter",
                 "parentNode": false,
-                
                 "units": "",
                 "description": "The rate that people move into the Phoenix Metro area during each year"
             },
@@ -137,7 +134,6 @@
                 "name": "new residents",
                 "type": "function",
                 "parentNode": false,
-                
                 "units": "",
                 "description": "The number of new residents that move into the Phoenix Metro Area each year"
             },
@@ -159,7 +155,6 @@
                 "name": "population",
                 "type": "accumulator",
                 "parentNode": false,
-                
                 "units": "",
                 "description": "The number of people in the Phoenix Metro Area each year"
             }
