@@ -246,9 +246,9 @@ define([
             negativeWidget.on('Change',  lang.hitch(this.structured, this.structured.handleNegative));
 
             //workaround to handleInputs on Same Node Click
-            inputsWidget.on('Click',lang.hitch(this,function(){
+           /* inputsWidget.on('Click',lang.hitch(this,function(){
                 return this.disableHandlers || this.handleInputs.apply(this,arguments);
-            }));
+            }));*/
 
             var equationWidget = registry.byId(this.controlMap.equation);
             equationWidget.on('Change',  lang.hitch(this, function(){
@@ -348,17 +348,24 @@ define([
         },
 
         handleInputs: function(id){
-            if(id.MOUSEDOWN){
+            /*if(id.MOUSEDOWN){
+                if(this.lastHandleInputId){
                 console.log('onclick event found onSelect, use old id '+this.lastHandleInputId);
                 id=this.lastHandleInputId; //restore
+                }else
+                return;  //if last id is not defined return
             }else
-                this.lastHandleInputId=id; //copy it for next onClick event
+                this.lastHandleInputId=id; //copy it for next onClick event*/
+
+            //check if id is  not select else return
 
             console.log("*******Student has chosen input", id, this);
             // Should add name associated with id to equation
             // at position of cursor or at the end.
             var expr = this._model.given.getName(id);
             this.equationInsert(expr);
+            //restore to default  - creating select input as stateless
+            registry.byId(this.controlMap.inputs).set('value', 'defaultSelect',false);
         },
 
         handleEquation: function(equation){
@@ -406,11 +413,13 @@ define([
                 console.log("****** structured.handlePositives ", id);
                 this.positives.push(this._model.given.getName(id));
                 this.update();
+                registry.byId("positiveInputs").set('value', 'defaultSelect',false);// restore to default
             },
             handleNegative: function(id){
                 console.log("****** structured.handleNegatives ", id);
                 this.negatives.push(this._model.given.getName(id));
                 this.update();
+                registry.byId("negativeInputs").set('value', 'defaultSelect',false);// restore to default
             },
             update: function(){
                 // Update expression shown in equation box
