@@ -104,6 +104,10 @@ The categories are *name*, *short name*, *id*, *short id*:
 - action, ac
 - mode, m (value is a [major mode](major-modes.md))
 - sessionId, x (see [Logging Format](logs-structure.md))
+- subMode, sm (Dragoon state)
+- inputStyle, is (Dragoon state)
+- apropos, aps (state category)
+- property, pry (of a state)
 - forumURL, f
 - location (what is this?)
 - logText (for msg)
