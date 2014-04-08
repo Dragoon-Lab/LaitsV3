@@ -67,8 +67,8 @@ public class Application {
         // Currently DEV mode will not perform session handling.
         if (args.length > 0) {
             System.out.println("Application was launched from Command Line");
-            ApplicationContext.APP_HOST = "http://dragoon.asu.edu/ram/";
-            ApplicationContext.forumURL = "http://dragoon.asu.edu/ram/";
+            ApplicationContext.APP_HOST = "http://dragoon.asu.edu/demo/";
+            ApplicationContext.forumURL = "http://dragoon.asu.edu/demo/";
             ApplicationContext.setApplicationEnvironment(ApplicationContext.ApplicationEnvironment.DEV);
             ApplicationContext.setSessionID("authortestsession1");
             ApplicationContext.setUserID("ramayantiwari");
