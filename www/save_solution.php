@@ -29,11 +29,11 @@ require "common.php";
             $this->author = isset($_REQUEST['author']) ? mysqli_real_escape_string($this->common->connection, $_REQUEST['author']) : '';
             $this->section = isset($_REQUEST['section']) ? mysqli_real_escape_string($this->common->connection, $_REQUEST['section']) : '';
             $this->problem_name = isset($_REQUEST['problem_name']) ? mysqli_real_escape_string($this->common->connection, $_REQUEST['problem_name']) : '';
-            $this->solution_xml = isset($_REQUEST['solution_xml']) ? mysqli_real_escape_string($this->common->connection, $_REQUEST['solution_xml']) : '';            
+            $this->solution_xml = isset($_REQUEST['solution_xml']) ? mysqli_real_escape_string($this->common->connection, urldecode($_REQUEST['solution_xml'])) : '';            
             $this->share = (!isset($_REQUEST['share']) || $_REQUEST['share']) ? 1 : 0;       
             
             // Save data needs to be URL decoded
-            $this->solution_xml = mysqli_real_escape_string(urldecode($this->solution_xml)); 
+          //  $this->solution_xml = mysqli_real_escape_string($this->solution_xml)); 
         }
         
         public function __destruct() {
