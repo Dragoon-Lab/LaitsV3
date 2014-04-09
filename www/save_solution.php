@@ -33,7 +33,7 @@ require "common.php";
             $this->share = (!isset($_REQUEST['share']) || $_REQUEST['share']) ? 1 : 0;       
             
             // Save data needs to be URL decoded
-            $this->solution_xml = urldecode($this->solution_xml); 
+            $this->solution_xml = mysqli_real_escape_string(urldecode($this->solution_xml)); 
         }
         
         public function __destruct() {
