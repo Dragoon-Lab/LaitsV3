@@ -110,7 +110,7 @@
                 if($arr["expired"] == 1)  
                 {
                     //error_log("Session Is Expried. Creating a new session ");
-                    $this->session_id = $this->common->generate_and_save_session_to_db($arr["user"], $arr["mode"], $arr["section"], $arr["problem_name"], $arr["author"]);
+                    $this->session_id = $this->common->generate_and_save_session_to_db($arr["user"], $arr["mode"], $arr["section"], $arr["problem_name"]);
                     $json_array["session_id"] = $this->session_id;
                 } 
                  
