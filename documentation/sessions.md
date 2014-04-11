@@ -108,6 +108,7 @@ The categories are *name*, *short name*, *id*, *short id*:
 - inputStyle, is (Dragoon state)
 - apropos, aps (state category)
 - property, pry (of a state)
+- value, vle (of a state)
 - forumURL, f
 - location (what is this?)
 - logText (for msg)

@@ -33,7 +33,7 @@ define([
         // It also sets the path.
         constructor: function(/*object*/ params, /*string*/ path) {
 	    // Dragoon database requires that clientID be 50 characters.
-            this.sessionId = FNV1aHash(params.user+"_"+params.section) +
+            this.sessionId = FNV1aHash(params.u+"_"+params.s) +
 		'_' + new Date().getTime();
 	    console.log("New sessionId = ", this.sessionId);
 	    this._startTime = (new Date()).getTime();
