@@ -30,6 +30,11 @@ define([
                 return this.disableHandlers || this.handleUnits.apply(this, arguments);
             }));
 
+            var inputsWidget = registry.byId(this.controlMap.inputs);
+            inputsWidget.on('Change',  lang.hitch(this, function(){
+                return this.disableHandlers || this.handleInputs.apply(this, arguments);
+            }));
+
         },
         handleSelectDescription: function(selectDescription) {
             console.log("****** in handleChooseDescription ", this.currentID, selectDescription);
@@ -107,6 +112,30 @@ define([
                 }
             }, this);
         },
+
+        /*
+        *    handle event on inputs box
+        * */
+        handleInputs: function(id){
+            /*if(id.MOUSEDOWN){
+             if(this.lastHandleInputId){
+             console.log('onclick event found onSelect, use old id '+this.lastHandleInputId);
+             id=this.lastHandleInputId; //restore
+             }else
+             return;  //if last id is not defined return
+             }else
+             this.lastHandleInputId=id; //copy it for next onClick event*/
+
+            //check if id is  not select else return
+
+            console.log("*******Student has chosen input", id, this);
+            // Should add name associated with id to equation
+            // at position of cursor or at the end.
+            var expr = this._model.given.getName(id);
+            this.equationInsert(expr);
+            //restore to default  - creating select input as stateless
+            registry.byId(this.controlMap.inputs).set('value', 'defaultSelect',false);
+        },
         handleUnits: function(unit) {
             console.log("*******Student has chosen unit", unit, this);
 
@@ -167,7 +196,7 @@ define([
             }, this);
         },
         /* 
-         Settings for a new node, as suppied by the PM.
+         Settings for a new node, as supplied by the PM.
          These don't need to be recorded in the model, since they
          are applied each time the node editor is opened.
          */

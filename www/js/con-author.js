@@ -25,6 +25,8 @@ define([
 	    style.set('descriptionControlAuthor', 'display', 'block');
 	    style.set('selectUnits', 'display', 'none');
 	    style.set('setUnitsControl', 'display', 'inline');
+        style.set('inputControlAuthor', 'display', 'block');
+        style.set('inputControlStudent', 'display', 'none');
 	},
 
 	initAuthorHandles: function(){
@@ -45,7 +47,30 @@ define([
 		return this.disableHandlers || this.handleSetUnits.apply(this, arguments);
 	    }));
 
+        var inputsWidget = registry.byId("setInput");
+        inputsWidget.on('Change',  lang.hitch(this, function(){
+            return this.disableHandlers || this.handleInputs.apply(this, arguments);
+        }));
+
 	},
+
+    /*
+      Added handler for type field in AUTHOR mode
+    */
+    handleType: function(type){
+      console.log("In AUTHOR mode. Type selected is:" + type);
+    },
+
+    /*
+      Added handler for type field in AUTHOR mode
+    */
+    handleInitial: function(initial){
+        console.log("In AUTHOR mode. Initial value is: " + initial);
+    },
+
+    handleInputs: function(text){
+        console.log("In AUTHOR mode. Input selected is: " + text);
+    },
 
 	handleName: function(name){
 	    console.log("**************** in handleName ", name);

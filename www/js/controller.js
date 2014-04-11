@@ -200,7 +200,7 @@ define([
         },
 
         //set up event handling with UI components
-        _initHandles:function(){
+            _initHandles:function(){
             // Summary: Set up Node Editor Handlers
 
             /*
@@ -213,11 +213,19 @@ define([
              We could write a function to attach the handlers?
              */
 
+            /*
+            *   event handler for 'type' field
+            *   'handleType' will be called in either Student or Author mode
+            * */
             var type = registry.byId(this.controlMap.type);
             type.on('Change',  lang.hitch(this, function(){
                 return this.disableHandlers || this.handleType.apply(this, arguments);
             }));
 
+            /*
+            *   event handler for 'Initial' field
+            *   'handleInitial' will be called in either Student or Author mode
+            * */
             var initialWidget = registry.byId(this.controlMap.initial);
             // This event gets fired if student hits TAB or input box
             // goes out of focus.
@@ -233,10 +241,12 @@ define([
                     this.emit('Change', {}, [this.get('value')]);
             });
 
-            var inputsWidget = registry.byId(this.controlMap.inputs);
+            //Changed by Deepak
+            //this handler should be in student controller
+            /*var inputsWidget = registry.byId(this.controlMap.inputs);
             inputsWidget.on('Change',  lang.hitch(this, function(){
                 return this.disableHandlers || this.handleInputs.apply(this, arguments);
-            }));
+            }));*/
 
 
             var positiveWidget = registry.byId("positiveInputs");
@@ -347,15 +357,18 @@ define([
             widget.domNode.selectionStart = widget.domNode.selectionEnd = p1 + text.length;
         },
 
-        handleInputs: function(id){
-            /*if(id.MOUSEDOWN){
+        //Changed by Deepak
+        //This function should be in Author and Student controller
+        //Moving it from here to both student/author controller
+/*        handleInputs: function(id){
+            if(id.MOUSEDOWN){
                 if(this.lastHandleInputId){
                 console.log('onclick event found onSelect, use old id '+this.lastHandleInputId);
                 id=this.lastHandleInputId; //restore
                 }else
                 return;  //if last id is not defined return
             }else
-                this.lastHandleInputId=id; //copy it for next onClick event*/
+                this.lastHandleInputId=id; //copy it for next onClick event
 
             //check if id is  not select else return
 
@@ -366,7 +379,7 @@ define([
             this.equationInsert(expr);
             //restore to default  - creating select input as stateless
             registry.byId(this.controlMap.inputs).set('value', 'defaultSelect',false);
-        },
+        },*/
 
         handleEquation: function(equation){
             // Generally, we don't need to do anthing for these events
