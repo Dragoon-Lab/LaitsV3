@@ -56,7 +56,6 @@ define([
             beginY: 100,
             nodeWidth: 200,
             nodeHeight: 200,
-            lastNodeVisible: null,
             /**
              * 
              * Private methods; these methods should not be accessed outside of this class
@@ -79,6 +78,25 @@ define([
                         }
                     }
                 }
+            },
+            _getNextOptimalNode: function(/*string*/ givenNodeID) {
+                // Summary: Accepts the id of a parent node and returns the next optimal
+                //      child node that is not visible, or null if all descendants are visible;
+                //      called by getOptimalNode().
+                var optimalNode = null;
+                var isInputVisible = function(givenNodeID) {
+                    return array.some(obj.student.getNodes(), function(node) {
+                        return node.descriptionID === givenNodeID;
+                    }, this);
+                };
+                array.forEach(this.given.getNode(givenNodeID).inputs, function(node) {
+                    if (!isInputVisible(node.ID) && givenNodeID !== node.ID) {
+                        optimalNode = node.ID;
+                    } else if (node.inputs) {
+                        optimalNode = this._getNextOptimalNode(node.ID);
+                    }
+                }, obj);
+                return optimalNode;
             },
             /**
              * 
@@ -159,13 +177,41 @@ define([
             getTaskDescription: function() {
                 return this.model.task.taskDescription;
             },
+            getOptimalNode: function(/*string*/ studentID) {
+                // Summary: Returns the next optimal node, first checking for children
+                //      of visible parent nodes, and then checking for parent nodes that
+                //      aren't visible; 
+                //      
+                // Note: the student node studentID is assumed incorrect so it is ignored
+
+                var solutionNodes = this.solution.getNodes();
+                var nextNode = "model complete";
+                for (var i = 0; i < solutionNodes.length; i++) {
+                    if (solutionNodes[i].parentNode) {
+                        if (!this.isNodeVisible(studentID, solutionNodes[i].ID))
+                            nextNode = solutionNodes[i].ID;
+                        else if (solutionNodes[i].inputs)
+                            return this._getNextOptimalNode(solutionNodes[i].ID);
+                        console.log("*^*^*Parent:\n", solutionNodes[i].ID);
+                    }
+                }
+                return nextNode;
+            },
+            areRequiredNodesVisible: function() {
+                //Summary: returns true if all of the nodes in the model are visible
+                console.error("*****\n***** Need to update areRequiredNodesVisible() in model.js to only check for completeness of required nodes. Currently it looks at all nodes.");
+                var givenNodes = this.given.getNodes();
+                for (var i = 0; i < givenNodes.length; i++) {
+                    if (!array.some(this.student.getNodes(), function(studentNode) {
+                        return this.isNodeVisible(studentNode.ID, givenNodes[i].ID);
+                    }, this))
+                        return false;
+                }
+                return true;
+            },
             isParentNode: function(/*string*/ id) {
                 // Summary: returns true if a node is the parent node in a tree structure;
                 return this.given.getNode(id).parentNode;
-            },
-            isExtraNode: function(/*string*/ id) {
-                // Summary: returns true if the node is not required in the final model
-                return this.given.getNode(id).extra;
             },
             isNodeVisible: function(/*string*/ studentID, /*string*/ givenID) {
                 // Summary: returns true if the node is in the student model,
@@ -185,91 +231,6 @@ define([
                     }, this);
                 }, this);
             },
-            areNodeInputsVisible: function(/*string*/ id) {
-                //Summary: returns true if all of the inputs in a given node are visible
-                for (var i = 0; i < this.given.getInputs(id).length; i++)
-                    if (!this.isNodeVisible(this.given.getInputs(id)[i]))
-                        return false;
-                return true;
-            },
-            areAllNodesVisible: function() {
-                //Summary: returns true if all of the nodes in the model are visible
-                var givenNodes = this.given.getNodes();
-                for (var i = 0; i < givenNodes.length; i++) {
-                    if (!array.some(this.student.getNodes(), function(studentNode) {
-                        return this.isNodeVisible(studentNode.ID, givenNodes[i].ID);
-                    }, this))
-                        return false;
-                }
-                return true;
-            },
-            /**
-             * Next 2 nodes are to return the next optimal node; needs testing; in process;
-             *      getOptimalNode() can be called to search through the model and return 
-             *      an optimal node as long as the model is in a tree structure
-             */
-            _getNextOptimalNode: function(/*string*/ givenNodeID) {
-                // Summary: Accepts the id of a parent node and returns the next optimal
-                //      child node that is not visible, or null if all descendants are visible
-                var optimalNode = null;
-                var isInputVisible = function(givenNodeID) {
-                    return array.some(obj.student.getNodes(), function(node) {
-                        return node.descriptionID === givenNodeID;
-                    }, this);
-                };
-                array.forEach(this.given.getNode(givenNodeID).inputs, function(node) {
-                    if (!isInputVisible(node.ID) && givenNodeID !== node.ID) {
-                        optimalNode = node.ID;
-                    } else if (node.inputs) {
-                        optimalNode = this._getNextOptimalNode(node.ID);
-                    }
-                }, obj);
-                return optimalNode;
-            },
-            getOptimalNode: function(/*string*/ studentID) {
-                // Summary: Returns the next optimal node, first checking for children
-                //      of visible parent nodes, and then checking for parent nodes that
-                //      aren't visible; 
-                //      
-                // Note: the student node studentID is assumed incorrect so it is ignored
-
-                var solutionNodes = this.solution.getNodes();
-                var nextNode = "model complete";
-
-                for (var i = 0; i < solutionNodes.length; i++) {
-                    if (solutionNodes[i].parentNode) {
-                        if (!this.isNodeVisible(studentID, solutionNodes[i].ID))
-                            nextNode = solutionNodes[i].ID;
-                        else if (solutionNodes[i].inputs)
-                            return this._getNextOptimalNode(solutionNodes[i].ID);
-                        console.log("*^*^*Parent:\n", solutionNodes[i].ID);
-                    }
-                }
-                return nextNode;
-            },
-            getCorrectAnswer: function(/*string*/ studentID, /*string*/ nodePart) {
-                // Summary: returns the correct answer for a given part of a node;
-                //      used by the pedagogical model
-                if (nodePart === "description")
-                    return this.getOptimalNode(studentID);
-                else {
-                    var id = this.student.getDescriptionID(studentID);
-                    var node = this.given.getNode(id);
-                    return node[nodePart];
-                }
-            },
-            getNodeAttemptCount: function(/*string*/ id, /*string*/ nodePart) {
-                // Summary: returns the number of attempts a student has made on the 
-                //      given part of the problem
-                return this.given.getNode(id).attemptCount[nodePart] || null;
-            },
-            incrementDescriptionAttemptCount: function(/*string*/ id) {
-                // Summary: returns the number of attempts a student has made on the 
-                //      given part of the problem
-                for (var i = 0; i < this.model.task.givenModelNodes.length; i++)
-                    if (id === this.model.task.givenModelNodes[i].ID)
-                        this.model.task.givenModelNodes[i].attemptCount.description++;
-            },
             /**
              * SETTERS
              */
@@ -277,9 +238,11 @@ define([
                 this.model.task.taskName = name;
             },
             setImage: function(/*object*/ options) {
+                // Summary: JSON object with "URL", "width", and "height" elements; see sample JSON model.
                 lang.mixin(this.model.task.image, options);
             },
             setTime: function(/*object*/ options) {
+                // Summary: JSON object with "start", "end", "step", and "units" elements; see sample JSON model.
                 lang.mixin(this.model.task.time, options);
             },
             setPhase: function(/*string*/ phase) {
@@ -441,7 +404,7 @@ define([
                 obj.model.task.givenModelNodes.push(newNode);
                 return newNode.ID;
             },
-            isExtra: function(/*string*/ id) {
+            getGenus: function(/*string*/ id) {
                 return this.getNode(id).genus;
             },
             getNodes: function() {
@@ -474,6 +437,9 @@ define([
             getDescription: function(/*string*/ id) {
                 return this.getNode(id).description;
             },
+            getAttemptCount: function(/*string*/ id, /*string*/ part) {
+                return this.getNode(id).attemptCount[part];
+            },
             getStatus: function(/*string*/ id, /*string*/ nodePart) {
                 return this.getNode(id).status[nodePart];
             },
@@ -486,8 +452,8 @@ define([
             setParent: function(/*string*/ id, /*bool*/ parent) {
                 this.getNode(id).parentNode = parent;
             },
-            setExtra: function(/*string*/ id, /*bool*/ extra) {
-                this.getNode(id).extra = extra;
+            setGenus: function(/*string*/ id, /*string*/ genus) {
+                this.getNode(id).genus = genus;
             },
             setUnits: function(/*string*/ id, /*string*/ units) {
                 this.getNode(id).units = units;
@@ -536,6 +502,17 @@ define([
                 }, options || {});
                 obj.model.task.studentModelNodes.push(newNode);
                 return newNode.ID;
+            },
+            getCorrectAnswer: function(/*string*/ studentID, /*string*/ nodePart) {
+                // Summary: returns the correct answer for a given part of a node;
+                //      used by the pedagogical model
+                if (nodePart === "description")
+                    return obj.getOptimalNode(studentID);
+                else {
+                    var id = this.getDescriptionID(studentID);
+                    var node = obj.given.getNode(id);
+                    return node[nodePart];
+                }
             },
             getDescriptionID: function(id) {
                 // Summary: Return any matched given model id for student node.

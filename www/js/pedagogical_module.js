@@ -419,7 +419,7 @@ define([
                 if (answer === correctAnswer || correctAnswer === true) {
                     interpretation = "correct";
                 } else {
-                    if (model.getNodeAttemptCount(givenID, nodePart) > 0)
+                    if (model.given.getAttemptCount(givenID, nodePart) > 0)
                         interpretation = "secondFailure";
                     else
                         interpretation = "firstFailure";
@@ -431,7 +431,7 @@ define([
                 case "description":
                     this.descriptionCounter++;
 
-                    if (this.model.given.isExtra(answer)) {
+                    if (this.model.given.getGenus(answer)) {
                         array.forEach(this.model.given.getNodes(), function(extra) {
                             if (answer === extra.ID && extra.genus && extra.genus != "allowed") {
                                 interpretation = extra.genus;
@@ -481,7 +481,7 @@ define([
         /*****
          * Public Functions
          *****/
-        processAnswer: function(/*string*/ id, /*string*/ nodePart, /*string*/ answer) {
+        processAnswer: function(/*string*/ id, /*string*/ nodePart, /*string | object*/ answer) {
             // Summary: Pocesses a student's answers and returns if correct, 
             //      incorrect, etc. and alerts the controller about what parts 
             //      of the node editor should be active.
@@ -536,7 +536,7 @@ define([
 
             // Alert controller of correct answer if status will be set to 'demo'
             if (interpretation === "lastFailure" || interpretation === "secondFailure") {
-                answer = this.model.getCorrectAnswer(id, nodePart);
+                answer = this.model.student.getCorrectAnswer(id, nodePart);
                 console.log("****\n", "set to: ", {id: nodePart, attribute: "value", value: answer});
                 returnObj.push({id: nodePart, attribute: "value", value: answer});
             }
@@ -558,7 +558,7 @@ define([
                 console.assert(actionTable[interpretation], "processAnswer() interpretation '" + interpretation + "' not in table ", actionTable);
                 actionTable[interpretation][this.userType](returnObj, nodePart);
                 if (currentStatus !== "correct" && currentStatus !== "demo")
-                    this.model.given.setAttemptCount(givenID, nodePart, this.model.getNodeAttemptCount(givenID, nodePart) + 1);
+                    this.model.given.setAttemptCount(givenID, nodePart, this.model.given.getAttemptCount(givenID, nodePart) + 1);
                 updateStatus(returnObj, this.model);
 
                 // Activate appropriate parts of the node editor
