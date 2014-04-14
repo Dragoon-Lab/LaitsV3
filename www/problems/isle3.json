@@ -1,0 +1,214 @@
+{
+    "task": {
+        "taskName": "Isle Royale - Moose population 3",
+        "time": {
+            "start": 1900,
+            "end": 1949,
+            "step": 0.5,
+            "units": "Years"
+        },
+        "properties": {
+            "phase": "",
+            "type": "debug"
+        },
+        "image": {
+            "URL": "images/moose_60.png"
+        },
+        "taskDescription": " Assumptions: * The moose population is 20 in the first year (1900). * Births and deaths are the only change in the population. Immigration and emigration do not occur. * The number of moose births each year is 20% of the moose population. * The number of moose deaths each year is 5% of the moose population. ",
+        "givenModelNodes": [
+            {
+                "ID": "id1",
+                "inputs": [
+                    {
+                        "ID": "id4"
+                    }
+                ],
+                "position": {
+                    "x": 400,
+                    "y": 100
+                },
+                "attemptCount": {
+                    "description": 0,
+                    "type": 0,
+                    "initial": 0,
+                    "units": 0,
+                    "equation": 0
+                },
+                "status": {},
+                "name": "moose population",
+                "type": "accumulator",
+                "parentNode": true,
+                "units": "",
+                "description": "The number of moose in the population",
+                "initial": 20,
+                "equation": "id4"
+            },
+            {
+                "ID": "id2",
+                "inputs": [],
+                "position": {
+                    "x": 400,
+                    "y": 100
+                },
+                "attemptCount": {
+                    "description": 0,
+                    "type": 0,
+                    "initial": 0,
+                    "units": 0,
+                    "equation": 0
+                },
+                "status": {},
+                "name": "moose birth rate",
+                "type": "parameter",
+                "parentNode": false,
+                "units": "",
+                "description": "The ratio of moose born each year to the moose population",
+                "initial": 0.2
+            },
+            {
+                "ID": "id3",
+                "inputs": [],
+                "position": {
+                    "x": 400,
+                    "y": 100
+                },
+                "attemptCount": {
+                    "description": 0,
+                    "type": 0,
+                    "initial": 0,
+                    "units": 0,
+                    "equation": 0
+                },
+                "status": {},
+                "name": "moose death rate",
+                "type": "parameter",
+                "parentNode": false,
+                "units": "",
+                "description": "The ratio of moose that die each year to the moose population",
+                "initial": 0.05
+            },
+            {
+                "ID": "id4",
+                "inputs": [
+                    {
+                        "ID": "id1"
+                    },
+                    {
+                        "ID": "id2"
+                    }
+                ],
+                "position": {
+                    "x": 400,
+                    "y": 100
+                },
+                "attemptCount": {
+                    "description": 0,
+                    "type": 0,
+                    "initial": 0,
+                    "units": 0,
+                    "equation": 0
+                },
+                "status": {},
+                "name": "moose births",
+                "type": "function",
+                "parentNode": false,
+                "units": "",
+                "description": "The number of moose born each year",
+                "equation": "id1 * id2"
+            },
+            {
+                "ID": "id5",
+                "inputs": [
+                    {
+                        "ID": "id1"
+                    },
+                    {
+                        "ID": "id3"
+                    }
+                ],
+                "position": {
+                    "x": 400,
+                    "y": 100
+                },
+                "attemptCount": {
+                    "description": 0,
+                    "type": 0,
+                    "initial": 0,
+                    "units": 0,
+                    "equation": 0
+                },
+                "status": {},
+                "name": "moose deaths",
+                "type": "function",
+                "parentNode": false,
+                "units": "",
+                "description": "The number of moose that die each year",
+                "equation": "id1 * id3"
+            },
+            {
+                "ID": "id6",
+                "inputs": [],
+                "position": {
+                    "x": 400,
+                    "y": 100
+                },
+                "attemptCount": {
+                    "description": 0,
+                    "type": 0,
+                    "initial": 0,
+                    "units": 0,
+                    "equation": 0
+                },
+                "status": {},
+                "name": "moose population",
+                "type": "accumulator",
+                "parentNode": true,
+                "units": "",
+                "description": "The number of moose in the population"
+            },
+            {
+                "ID": "id7",
+                "inputs": [],
+                "position": {
+                    "x": 400,
+                    "y": 100
+                },
+                "attemptCount": {
+                    "description": 0,
+                    "type": 0,
+                    "initial": 0,
+                    "units": 0,
+                    "equation": 0
+                },
+                "status": {},
+                "name": "moose birth rate",
+                "type": "parameter",
+                "parentNode": false,
+                "units": "",
+                "description": "The ratio of moose born each year to the moose population"
+            },
+            {
+                "ID": "id8",
+                "inputs": [],
+                "position": {
+                    "x": 400,
+                    "y": 100
+                },
+                "attemptCount": {
+                    "description": 0,
+                    "type": 0,
+                    "initial": 0,
+                    "units": 0,
+                    "equation": 0
+                },
+                "status": {},
+                "name": "moose births",
+                "type": "function",
+                "parentNode": false,
+                "units": "",
+                "description": "The number of moose born each year"
+            }
+        ],
+        "studentModelNodes": []
+    }
+}

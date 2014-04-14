@@ -15,6 +15,9 @@ define([
 	    Chart, Default, Lines, Grid, Legend,ready,lang,registry){
     return declare(null, {
 
+        //array of timesteps
+        timeSteps: new Array(),
+
         //no of parameters that can affect graph. This parameter will be used to create sliders
         givenInputParam: 0,
         studentInputParam: 0,
@@ -30,6 +33,11 @@ define([
         //object containing array of calculated values of 'function' & 'accumulator' nodes
         givenArrayOfNodeValues: {},
         studentArrayOfNodeValues: {},
+
+        //format above array of nodevalues for charting
+        givenFormattedArrayOfNodeValues: {},
+        studentFormattedArrayOfNodeValues: {},
+
 
         //units of nodes
         givenUnits: {},
@@ -77,6 +85,7 @@ define([
             this.studentUnits = object.studentObj.units;
 
             this.xunits = object.givenObj.xUnits;
+            this.timeSteps = object.givenObj.arrayOfTimeSteps;
             this.initialize();
 
         },
@@ -102,6 +111,7 @@ define([
                 i++;
             }*/
 
+            this.formatArrayOfNodeValuesForChart();
 
             var tempGivenArrayOfNodeValues = lang.clone(this.givenArrayOfNodeValues);
 
@@ -147,10 +157,33 @@ define([
                     this.studentObject.calculationObj.active.setInitial(paramID, slider.value);
                     var newObj = this.studentObject.calculationObj.gerParametersForRendering(this.studentObject.calculationObj.solutionGraph, false);
 
+                    this.studentArrayOfNodeValues = newObj.arrayOfNodeValues;
+                    this.formatArrayOfNodeValuesForChart();
+
+
                     //update and render the chart
                     var l = 0;
                     for (var k in newObj.arrayOfNodeValues) {
-                        this.chart[k].updateSeries("Variable solution", newObj.arrayOfNodeValues[k]);
+
+                        var descriptionID = newObj.calculationObj.model.student.getDescriptionID(k);
+                        var objStudent = this.getMinMaxFromaArray(newObj.arrayOfNodeValues[k]);
+                        var min = objStudent.min;
+                        var max = objStudent.max;
+                        if((newObj.calculationObj.model.given.isNode(descriptionID)))
+                        {
+                            var objGiven = this.getMinMaxFromaArray(this.givenArrayOfNodeValues[descriptionID]);
+                            min = objStudent.min > objGiven.min?objGiven.min:objStudent.min;
+                            max = objStudent.max > objGiven.max?objStudent.max:objGiven.max;
+                        }
+
+
+
+                        //var array = newObj.arrayOfNodeValues[k];
+                        //var maxArrayValue = array[array.length - 1];
+
+                        this.chart[k].removeAxis("y");
+                        this.chart[k].addAxis("y", {vertical: true,min: min, max: max,  title: this.studentUnits[k]});
+                        this.chart[k].updateSeries("Variable solution", this.studentFormattedArrayOfNodeValues[k]);
                         this.chart[k].render();
                         l++;
                     }
@@ -250,47 +283,65 @@ define([
             var legendArray = {};
             i = 0;
             var time = this.studentObject.calculationObj.model.getTime();
-            for (j in this.studentArrayOfNodeValues) {
-                str = "chart" + j.toString();
-                chartArray[j] = new Chart(str);
-                chartArray[j].addPlot("default", {type: Lines, markers: true});
+            tempGivenArrayOfNodeValues = lang.clone(this.givenArrayOfNodeValues);
+           if(!this.isNodeValueEmpty())
+           {
+                for (j in this.studentArrayOfNodeValues) {
+                    str = "chart" + j.toString();
+                    chartArray[j] = new Chart(str);
+                    chartArray[j].addPlot("default", {type: Lines, markers: true});
 
-                chartArray[j].addAxis("x", {
-                    fixed: true, min: time.start, max: (time.end - time.start) / time.step, title: this.xunits,
-                    titleOrientation: "away", titleGap: 5
-                });
-                var array = this.studentArrayOfNodeValues[j];
-                var maxArrayValue = array[array.length - 1];
-                chartArray[j].addAxis("y", {vertical: true, min: 0, max: maxArrayValue, title: this.studentUnits[j]});
+                    chartArray[j].addAxis("x", {
+                        title: this.xunits,
+                        titleOrientation: "away", titleGap: 5
+                    });
+//                    var array = this.studentArrayOfNodeValues[j];
+//                    var maxArrayValue = array[array.length - 1];
 
-                descriptionID = this.studentObject.calculationObj.model.student.getDescriptionID(j);
+                    var obj = this.getMinMaxFromaArray(this.studentArrayOfNodeValues[j]);
+                    chartArray[j].addAxis("y", {vertical: true, min: obj.min, max: obj.max, title: this.studentUnits[j]});
 
-                //plot chart for student node
-                chartArray[j].addSeries("Variable solution", this.studentArrayOfNodeValues[j], {stroke: "green"});
-                //plot chart from given node if it matches with student node
-                if((this.studentObject.calculationObj.model.given.isNode(descriptionID)))
-                {
-                    chartArray[j].addSeries("correct solution", this.givenArrayOfNodeValues[descriptionID], {stroke: "red"});
-                    //remove plotted node from collection
-                    delete this.givenArrayOfNodeValues[descriptionID];
+                    descriptionID = this.studentObject.calculationObj.model.student.getDescriptionID(j);
+
+                    //plot chart for student node
+                    //***chartArray[j].addSeries("Variable solution", this.studentArrayOfNodeValues[j], {stroke: "green"});
+                    chartArray[j].addSeries("Variable solution", this.studentFormattedArrayOfNodeValues[j], {stroke: "green"});
+                    //plot chart from given node if it matches with student node
+                    if((this.studentObject.calculationObj.model.given.isNode(descriptionID)))
+                    {
+                        chartArray[j].removeAxis("y");
+                        var objStudent = this.getMinMaxFromaArray(this.studentArrayOfNodeValues[j]);
+                        var objGiven = this.getMinMaxFromaArray(this.givenArrayOfNodeValues[descriptionID]);
+
+                        var min = objStudent.min > objGiven.min?objGiven.min:objStudent.min;
+                        var max = objStudent.max > objGiven.max?objStudent.max:objGiven.max;
+                        chartArray[j].addAxis("y", {vertical: true, min: min, max: max, title: this.studentUnits[j]});
+                        chartArray[j].addSeries("correct solution", this.givenFormattedArrayOfNodeValues[descriptionID], {stroke: "red"});
+                        //remove plotted node from collection
+                        delete tempGivenArrayOfNodeValues[descriptionID];
+                    }
+
+
+                    chartArray[j].render();
+
+                    str = "legend" + j.toString();
+                    legendArray[j] = new Legend({chart: chartArray[j]}, str);
+                    i++;
                 }
-
-
-                chartArray[j].render();
-
-                str = "legend" + j.toString();
-                legendArray[j] = new Legend({chart: chartArray[j]}, str);
-                i++;
-            }
-
-            for (j in this.givenArrayOfNodeValues) {
+           }
+            else
+           {
+               this.dialog.setContent("<div>"+ "Student did not plot any node as yet"+ "</div>"+"<div align='center'>"+"OR"+"</div>"
+               +"<div align='center'>"+"Nodes are not complete"+"</div>");
+           }
+            /*for (j in this.givenArrayOfNodeValues) {
 
                 str = "chart" + j.toString();
                 chartArray[j] = new Chart(str);
                 chartArray[j].addPlot("default", {type: Lines, markers: true});
 
                 chartArray[j].addAxis("x", {
-                    fixed: true, min: time.start, max: (time.end - time.start) / time.step, title: this.xunits,
+                    fixed: true,  title: this.xunits,
                     titleOrientation: "away", titleGap: 5
                 });
                 array = this.givenArrayOfNodeValues[j];
@@ -298,15 +349,14 @@ define([
                 chartArray[j].addAxis("y", {vertical: true, min: 0, max: maxArrayValue, title: this.givenUnits[j]});
 
                 //plot chart for given node
-                    chartArray[j].addSeries("correct solution", this.givenArrayOfNodeValues[j], {stroke: "red"});
-                //    chartArray[j].addSeries("Variable solution", this.studentArrayOfNodeValues[j], {stroke: "green"});
+                chartArray[j].addSeries("correct solution", this.givenFormattedArrayOfNodeValues[j], {stroke: "red"});
 
                 chartArray[j].render();
 
                 str = "legend" + j.toString();
                 legendArray[j] = new Legend({chart: chartArray[j]}, str);
                 i++;
-            }
+            }*/
 
             this.chart = chartArray;
 
@@ -407,6 +457,83 @@ define([
             return dom;
         },
 
+        formatArrayOfNodeValuesForChart: function()
+        {
+            var i,j;
+
+            //convert array of node values to object {x:timestep,y:node value for timestep}
+            for(i in this.givenArrayOfNodeValues)
+            {
+
+                var tempArray = this.givenArrayOfNodeValues[i];
+                var arrayOfXYpairs = new Array();
+                for(j=0; j<tempArray.length;j++)
+                {
+                    var obj = new Object();
+                    obj["x"] = this.timeSteps[j];
+                    obj["y"] = tempArray[j];
+                    arrayOfXYpairs.push(obj);
+                }
+
+                this.givenFormattedArrayOfNodeValues[i] = arrayOfXYpairs;
+            }
+
+            for(i in this.studentArrayOfNodeValues)
+            {
+
+                var tempArray = this.studentArrayOfNodeValues[i];
+                var arrayOfXYpairs = new Array();
+                for(j=0; j<tempArray.length;j++)
+                {
+                    var obj = new Object();
+                    obj["x"] = this.timeSteps[j];
+                    obj["y"] = tempArray[j];
+                    arrayOfXYpairs.push(obj);
+                }
+
+                this.studentFormattedArrayOfNodeValues[i] = arrayOfXYpairs;
+            }
+        },
+
+        isNodeValueEmpty:function()
+        {
+            var i;
+            for(i in this.studentArrayOfNodeValues)
+            {
+                if(this.studentArrayOfNodeValues.hasOwnProperty(i))
+                {
+                    return false;
+                }
+            }
+            return true;
+        },
+
+        //get minimum and maximum value from an array
+        getMinMaxFromaArray:function(array)
+        {
+            var i;
+            var obj;
+            var min= array[0];
+            var max = array[0];
+            for(i=1;i<array.length;i++)
+            {
+                if(array[i] < min)
+                {
+                    min = array[i];
+                }
+            }
+
+            for(i=1;i<array.length;i++)
+            {
+                if(array[i] > max)
+                {
+                    max = array[i];
+                }
+            }
+
+            obj={min:min,max:max};
+            return obj;
+        },
         /*
          * @brief: display the graph
          */

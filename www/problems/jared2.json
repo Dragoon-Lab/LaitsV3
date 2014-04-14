@@ -1,0 +1,116 @@
+{
+    "task": {
+        "taskName": "Jared and Oprah",
+        "time": {
+            "start": 0,
+            "end": 10,
+            "step": 0.5,
+            "units": "Days"
+        },
+        "properties": {
+            "phase": "Intro",
+            "type": "Debug"
+        },
+        "image": {
+            "URL": "images/jared-and-oprah.jpg"
+        },
+        "taskDescription": " Suppose Jared is a diet tester for Oprah Winfrey. He eats exactly what she eats, and does the same exercises too. He and Oprah compare weights each week, and it turns out that Jared is always 50 pounds heavier than Oprah. Create a model of Jared’s weight. A node representing Oprah’s weight has already been created for you. ",
+        "givenModelNodes": [
+            {
+                "ID": "id1",
+                "inputs": [],
+                "position": {
+                    "x": 400,
+                    "y": 100
+                },
+                "attemptCount": {
+                    "description": 0,
+                    "type": 0,
+                    "initial": 0,
+                    "units": 0,
+                    "equation": 0
+                },
+                "status": {},
+                "name": "Oprah weight",
+                "type": "parameter",
+                "parentNode": false,
+                "units": "",
+                "description": "How much Oprah weighs",
+                "initial": 120
+            },
+            {
+                "ID": "id2",
+                "inputs": [
+                    {
+                        "ID": "id1"
+                    },
+                    {
+                        "ID": "id3"
+                    }
+                ],
+                "position": {
+                    "x": 400,
+                    "y": 100
+                },
+                "attemptCount": {
+                    "description": 0,
+                    "type": 0,
+                    "initial": 0,
+                    "units": 0,
+                    "equation": 0
+                },
+                "status": {},
+                "name": "Jared weight",
+                "type": "function",
+                "parentNode": true,
+                "units": "",
+                "description": "How much Jared weighs",
+                "equation": "id3 + id1"
+            },
+            {
+                "ID": "id3",
+                "inputs": [],
+                "position": {
+                    "x": 400,
+                    "y": 100
+                },
+                "attemptCount": {
+                    "description": 0,
+                    "type": 0,
+                    "initial": 0,
+                    "units": 0,
+                    "equation": 0
+                },
+                "status": {},
+                "name": "Jared extra weight",
+                "type": "parameter",
+                "parentNode": false,
+                "units": "",
+                "description": "Jared additional weight",
+                "initial": 50
+            },
+            {
+                "ID": "id4",
+                "inputs": [],
+                "position": {
+                    "x": 400,
+                    "y": 100
+                },
+                "attemptCount": {
+                    "description": 0,
+                    "type": 0,
+                    "initial": 0,
+                    "units": 0,
+                    "equation": 0
+                },
+                "status": {},
+                "name": "Oprah weight",
+                "type": "parameter",
+                "parentNode": false,
+                "units": "",
+                "description": "How much Oprah weighs"
+            }
+        ],
+        "studentModelNodes": []
+    }
+}

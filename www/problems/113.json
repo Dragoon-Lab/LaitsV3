@@ -1,0 +1,245 @@
+{
+    "task": {
+        "taskName": "Busy Hospital",
+        "time": {
+            "start": 0,
+            "end": 10,
+            "step": 0.5,
+            "units": "hours"
+        },
+        "properties": {
+            "phase": "Challenge",
+            "type": "Construct"
+        },
+        "image": {
+            "URL": "http://www.todohumor.com/UserFiles/Image/imagenes/2009/marzo09/hospital-mixto.jpg"
+        },
+        "taskDescription": " Problem: A teaching hospital has just installed a cell-phone based workflow monitoring system, and the workflow seems to be working quite well. When a few more doctors are needed in the hospital, the system texts their cell phone and the doctors walk across the street from their offices to the hospital. When the hospital doesn't need as many doctors, the system sends some of them back to their offices where they can do their research, read email, etc. until the next time they are needed. The system is set so that the doctor-to-patient ratio is 1 to 8. That is, there are 0.125 doctors per patient. When the system was turned on, there were 80 patients in the hospital and 10 doctors present, so just the right ratio was in place at that instant. However, things change. The number of patients admitted (i.e., added) to the hospital is 10 per hour on average. The number of patients discharged from the hospital (i.e., sent home) depends on the number of doctors working at the time. In general, for each doctor working during an hour, 3 patients are discharged. Goal: Graph the number of doctors working in the hospital each hour for 10 hours. ",
+        "givenModelNodes": [
+            {
+                "ID": "id1",
+                "inputs": [],
+                "position": {
+                    "x": 400,
+                    "y": 100
+                },
+                "attemptCount": {
+                    "description": 0,
+                    "type": 0,
+                    "initial": 0,
+                    "units": 0,
+                    "equation": 0
+                },
+                "status": {},
+                "name": "doctor patient ratio",
+                "type": "parameter",
+                "parentNode": false,
+                "units": "",
+                "description": "The proportion of doctors per patient on average",
+                "initial": 0.125
+            },
+            {
+                "ID": "id2",
+                "inputs": [],
+                "position": {
+                    "x": 400,
+                    "y": 100
+                },
+                "attemptCount": {
+                    "description": 0,
+                    "type": 0,
+                    "initial": 0,
+                    "units": 0,
+                    "equation": 0
+                },
+                "status": {},
+                "name": "patients initially",
+                "type": "parameter",
+                "parentNode": false,
+                "genus": "extra",
+                "units": "",
+                "description": "The number of patients in the hospital when the system was turned on",
+                "initial": 80
+            },
+            {
+                "ID": "id3",
+                "inputs": [],
+                "position": {
+                    "x": 400,
+                    "y": 100
+                },
+                "attemptCount": {
+                    "description": 0,
+                    "type": 0,
+                    "initial": 0,
+                    "units": 0,
+                    "equation": 0
+                },
+                "status": {},
+                "name": "starting doctors",
+                "type": "parameter",
+                "parentNode": false,
+                "genus": "extra",
+                "units": "",
+                "description": "The number of doctors in the hospital when the system was turned on",
+                "initial": 10
+            },
+            {
+                "ID": "id4",
+                "inputs": [],
+                "position": {
+                    "x": 400,
+                    "y": 100
+                },
+                "attemptCount": {
+                    "description": 0,
+                    "type": 0,
+                    "initial": 0,
+                    "units": 0,
+                    "equation": 0
+                },
+                "status": {},
+                "name": "ratio initially",
+                "type": "function",
+                "parentNode": false,
+                "genus": "extra",
+                "units": "",
+                "description": "The proportion of doctors per patient when the system was turned on",
+                "equation": "null"
+            },
+            {
+                "ID": "id5",
+                "inputs": [],
+                "position": {
+                    "x": 400,
+                    "y": 100
+                },
+                "attemptCount": {
+                    "description": 0,
+                    "type": 0,
+                    "initial": 0,
+                    "units": 0,
+                    "equation": 0
+                },
+                "status": {},
+                "name": "patients admitted",
+                "type": "parameter",
+                "parentNode": false,
+                "units": "",
+                "description": "The number of patients admitted in the hospital each hour",
+                "initial": 10
+            },
+            {
+                "ID": "id6",
+                "inputs": [],
+                "position": {
+                    "x": 400,
+                    "y": 100
+                },
+                "attemptCount": {
+                    "description": 0,
+                    "type": 0,
+                    "initial": 0,
+                    "units": 0,
+                    "equation": 0
+                },
+                "status": {},
+                "name": "discharges per doctor",
+                "type": "parameter",
+                "parentNode": false,
+                "units": "",
+                "description": "The number of patients discharged per doctor each hour",
+                "initial": 3
+            },
+            {
+                "ID": "id7",
+                "inputs": [
+                    {
+                        "ID": "id1"
+                    },
+                    {
+                        "ID": "id9"
+                    }
+                ],
+                "position": {
+                    "x": 400,
+                    "y": 100
+                },
+                "attemptCount": {
+                    "description": 0,
+                    "type": 0,
+                    "initial": 0,
+                    "units": 0,
+                    "equation": 0
+                },
+                "status": {},
+                "name": "doctors",
+                "type": "function",
+                "parentNode": true,
+                "units": "",
+                "description": "The number of doctors in the hospital each hour",
+                "equation": "id9 * id1"
+            },
+            {
+                "ID": "id8",
+                "inputs": [
+                    {
+                        "ID": "id6"
+                    },
+                    {
+                        "ID": "id7"
+                    }
+                ],
+                "position": {
+                    "x": 400,
+                    "y": 100
+                },
+                "attemptCount": {
+                    "description": 0,
+                    "type": 0,
+                    "initial": 0,
+                    "units": 0,
+                    "equation": 0
+                },
+                "status": {},
+                "name": "patients discharged",
+                "type": "function",
+                "parentNode": false,
+                "units": "",
+                "description": "The number of patients discharged from the hospital each hour",
+                "equation": "id7 * id6"
+            },
+            {
+                "ID": "id9",
+                "inputs": [
+                    {
+                        "ID": "id5"
+                    },
+                    {
+                        "ID": "id8"
+                    }
+                ],
+                "position": {
+                    "x": 400,
+                    "y": 100
+                },
+                "attemptCount": {
+                    "description": 0,
+                    "type": 0,
+                    "initial": 0,
+                    "units": 0,
+                    "equation": 0
+                },
+                "status": {},
+                "name": "patients",
+                "type": "accumulator",
+                "parentNode": false,
+                "units": "",
+                "description": "The number of patients in the hospital each hour",
+                "initial": 80,
+                "equation": "+ id5 - id8"
+            }
+        ],
+        "studentModelNodes": []
+    }
+}

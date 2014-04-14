@@ -3,12 +3,12 @@
  *                          AUTHOR mode-specific handlers
  */
 define([
-    'dojo/_base/declare', "dojo/_base/lang",
+    "dojo/_base/array", 'dojo/_base/declare', "dojo/_base/lang",
     'dojo/dom-style', 'dojo/ready',
     'dijit/registry',
     './controller',
     "dojo/domReady!"
-], function(declare, lang, style, ready, registry, controller) {
+], function(array, declare, lang, style, ready, registry, controller) {
     
     return declare(controller, {
 
@@ -25,6 +25,8 @@ define([
 	    style.set('descriptionControlAuthor', 'display', 'block');
 	    style.set('selectUnits', 'display', 'none');
 	    style.set('setUnitsControl', 'display', 'inline');
+        style.set('inputControlAuthor', 'display', 'block');
+        style.set('inputControlStudent', 'display', 'none');
 	},
 
 	initAuthorHandles: function(){
@@ -45,7 +47,30 @@ define([
 		return this.disableHandlers || this.handleSetUnits.apply(this, arguments);
 	    }));
 
+        var inputsWidget = registry.byId("setInput");
+        inputsWidget.on('Change',  lang.hitch(this, function(){
+            return this.disableHandlers || this.handleInputs.apply(this, arguments);
+        }));
+
 	},
+
+    /*
+      Added handler for type field in AUTHOR mode
+    */
+    handleType: function(type){
+      console.log("In AUTHOR mode. Type selected is:" + type);
+    },
+
+    /*
+      Added handler for type field in AUTHOR mode
+    */
+    handleInitial: function(initial){
+        console.log("In AUTHOR mode. Initial value is: " + initial);
+    },
+
+    handleInputs: function(text){
+        console.log("In AUTHOR mode. Input selected is: " + text);
+    },
 
 	handleName: function(name){
 	    console.log("**************** in handleName ", name);
@@ -64,6 +89,23 @@ define([
 
 	handleSetUnits: function(units){
 	    console.log("**************** in handleSetUnits ", units);
+	},
+
+	equationDoneHandler: function(){
+	    var directives = [];
+	    var parse = this.equationAnalysis(directives);
+	    // Now apply directives
+            array.forEach(directives, function(directive){
+		this.updateModelStatus(directive);
+		var w = registry.byId(this.widgetMap[directive.id]);
+		w.set(directive.attribute, directive.value);
+            }, this);
+	},
+
+	initialControlSettings: function(nodeid){
+	    var desc = this._model.given.getDescription(nodeid);
+	    console.log('description is', desc || "not set");
+	    registry.byId("setDescription").set('value', desc || 'defaultSelect', false);
 	}
 
     });

@@ -1,0 +1,71 @@
+{
+    "task": {
+        "taskName": "Isle Royale - Moose population 1",
+        "time": {
+            "start": 1900,
+            "end": 1920,
+            "step": 0.5,
+            "units": "Years"
+        },
+        "properties": {
+            "phase": "",
+            "type": ""
+        },
+        "image": {
+            "URL": "images/moose_20.png"
+        },
+        "taskDescription": " Assumptions: * The moose population is 20 in the first year (1900). * Births are the only change in population. Deaths, immigration and emigration do not occur. * The number of moose births each year is 2. ",
+        "givenModelNodes": [
+            {
+                "ID": "id1",
+                "inputs": [
+                    {
+                        "ID": "id2"
+                    }
+                ],
+                "position": {
+                    "x": 400,
+                    "y": 100
+                },
+                "attemptCount": {
+                    "description": 0,
+                    "type": 0,
+                    "initial": 0,
+                    "units": 0,
+                    "equation": 0
+                },
+                "status": {},
+                "name": "moose population",
+                "type": "accumulator",
+                "parentNode": true,
+                "units": "",
+                "description": "The number of moose in the population",
+                "initial": 20,
+                "equation": "id2"
+            },
+            {
+                "ID": "id2",
+                "inputs": [],
+                "position": {
+                    "x": 400,
+                    "y": 100
+                },
+                "attemptCount": {
+                    "description": 0,
+                    "type": 0,
+                    "initial": 0,
+                    "units": 0,
+                    "equation": 0
+                },
+                "status": {},
+                "name": "moose births",
+                "type": "parameter",
+                "parentNode": false,
+                "units": "",
+                "description": "The number of moose born each year",
+                "initial": 2
+            }
+        ],
+        "studentModelNodes": []
+    }
+}

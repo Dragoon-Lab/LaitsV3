@@ -1,0 +1,540 @@
+{
+    "task": {
+        "taskName": "Isle Royale - Moose and Wolves",
+        "time": {
+            "start": 1950,
+            "end": 2009,
+            "step": 0.5,
+            "units": "Years"
+        },
+        "properties": {
+            "phase": "",
+            "type": "debug"
+        },
+        "image": {
+            "URL": "images/isle6pic.jpg"
+        },
+        "taskDescription": " Assumptions: * Births and deaths are the only change in the population. * The wolf population is 20 in the first year. * The number of wolf deaths each year is 25% of the wolf population. * The number of wolf births is wolf birth rate times the wolf population. * The wolf birth rate is the moose pop. times the effect of moose on wolves. * The effect of moose on wolves is 0.00075. * The moose population is 500 in the first year. * The moose birth rate is 10% of the moose population. * The number of moose deaths is the moose death rate times the moose pop. * The mose death rate is the wolf pop. times the effect of wolves on moose. * The effect of wolves on moose is 0.003. ",
+        "givenModelNodes": [
+            {
+                "ID": "id1",
+                "inputs": [
+                    {
+                        "ID": "id2"
+                    },
+                    {
+                        "ID": "id5"
+                    }
+                ],
+                "position": {
+                    "x": 400,
+                    "y": 100
+                },
+                "attemptCount": {
+                    "description": 0,
+                    "type": 0,
+                    "initial": 0,
+                    "units": 0,
+                    "equation": 0
+                },
+                "status": {},
+                "name": "moose births",
+                "type": "function",
+                "parentNode": false,
+                "units": "",
+                "description": "The number of moose born each year",
+                "equation": "id2 * id5"
+            },
+            {
+                "ID": "id2",
+                "inputs": [
+                    {
+                        "ID": "id1"
+                    },
+                    {
+                        "ID": "id3"
+                    }
+                ],
+                "position": {
+                    "x": 400,
+                    "y": 100
+                },
+                "attemptCount": {
+                    "description": 0,
+                    "type": 0,
+                    "initial": 0,
+                    "units": 0,
+                    "equation": 0
+                },
+                "status": {},
+                "name": "moose population",
+                "type": "accumulator",
+                "parentNode": true,
+                "units": "",
+                "description": "The number of moose in the population",
+                "initial": 500,
+                "equation": "id1 - id3"
+            },
+            {
+                "ID": "id3",
+                "inputs": [
+                    {
+                        "ID": "id2"
+                    },
+                    {
+                        "ID": "id4"
+                    }
+                ],
+                "position": {
+                    "x": 400,
+                    "y": 100
+                },
+                "attemptCount": {
+                    "description": 0,
+                    "type": 0,
+                    "initial": 0,
+                    "units": 0,
+                    "equation": 0
+                },
+                "status": {},
+                "name": "moose deaths",
+                "type": "function",
+                "parentNode": false,
+                "units": "",
+                "description": "The number of moose that die each year",
+                "equation": "id2 * id4"
+            },
+            {
+                "ID": "id4",
+                "inputs": [],
+                "position": {
+                    "x": 400,
+                    "y": 100
+                },
+                "attemptCount": {
+                    "description": 0,
+                    "type": 0,
+                    "initial": 0,
+                    "units": 0,
+                    "equation": 0
+                },
+                "status": {},
+                "name": "moose death rate",
+                "type": "function",
+                "parentNode": false,
+                "units": "",
+                "description": "The ratio of moose that die each year to the moose population",
+                "equation": "0.05"
+            },
+            {
+                "ID": "id5",
+                "inputs": [],
+                "position": {
+                    "x": 400,
+                    "y": 100
+                },
+                "attemptCount": {
+                    "description": 0,
+                    "type": 0,
+                    "initial": 0,
+                    "units": 0,
+                    "equation": 0
+                },
+                "status": {},
+                "name": "moose birth rate",
+                "type": "parameter",
+                "parentNode": false,
+                "units": "",
+                "description": "The ratio of moose born each year to the moose population",
+                "initial": 0.1
+            },
+            {
+                "ID": "id6",
+                "inputs": [
+                    {
+                        "ID": "id12"
+                    },
+                    {
+                        "ID": "id8"
+                    }
+                ],
+                "position": {
+                    "x": 400,
+                    "y": 100
+                },
+                "attemptCount": {
+                    "description": 0,
+                    "type": 0,
+                    "initial": 0,
+                    "units": 0,
+                    "equation": 0
+                },
+                "status": {},
+                "name": "wolf births",
+                "type": "function",
+                "parentNode": false,
+                "units": "",
+                "description": "The number of wolves born each year",
+                "equation": "id12 * id8"
+            },
+            {
+                "ID": "id7",
+                "inputs": [
+                    {
+                        "ID": "id12"
+                    },
+                    {
+                        "ID": "id9"
+                    }
+                ],
+                "position": {
+                    "x": 400,
+                    "y": 100
+                },
+                "attemptCount": {
+                    "description": 0,
+                    "type": 0,
+                    "initial": 0,
+                    "units": 0,
+                    "equation": 0
+                },
+                "status": {},
+                "name": "wolf deaths",
+                "type": "function",
+                "parentNode": false,
+                "units": "",
+                "description": "The number of wolves that die each year",
+                "equation": "id12 * id9"
+            },
+            {
+                "ID": "id8",
+                "inputs": [],
+                "position": {
+                    "x": 400,
+                    "y": 100
+                },
+                "attemptCount": {
+                    "description": 0,
+                    "type": 0,
+                    "initial": 0,
+                    "units": 0,
+                    "equation": 0
+                },
+                "status": {},
+                "name": "wolf birth rate",
+                "type": "function",
+                "parentNode": false,
+                "units": "",
+                "description": "The ratio of wolves that are born each year to the wolf population",
+                "equation": "0.75"
+            },
+            {
+                "ID": "id9",
+                "inputs": [],
+                "position": {
+                    "x": 400,
+                    "y": 100
+                },
+                "attemptCount": {
+                    "description": 0,
+                    "type": 0,
+                    "initial": 0,
+                    "units": 0,
+                    "equation": 0
+                },
+                "status": {},
+                "name": "wolf death rate",
+                "type": "parameter",
+                "parentNode": false,
+                "units": "",
+                "description": "The ratio of wolves that die each year to the wolf population",
+                "initial": 0.25
+            },
+            {
+                "ID": "id10",
+                "inputs": [],
+                "position": {
+                    "x": 400,
+                    "y": 100
+                },
+                "attemptCount": {
+                    "description": 0,
+                    "type": 0,
+                    "initial": 0,
+                    "units": 0,
+                    "equation": 0
+                },
+                "status": {},
+                "name": "effect of moose on wolves",
+                "type": "parameter",
+                "parentNode": false,
+                "units": "",
+                "description": "The effect of moose on the wolf population",
+                "initial": 0.00075
+            },
+            {
+                "ID": "id11",
+                "inputs": [],
+                "position": {
+                    "x": 400,
+                    "y": 100
+                },
+                "attemptCount": {
+                    "description": 0,
+                    "type": 0,
+                    "initial": 0,
+                    "units": 0,
+                    "equation": 0
+                },
+                "status": {},
+                "name": "effect of wolves on moose",
+                "type": "parameter",
+                "parentNode": false,
+                "units": "",
+                "description": "The effect of wolves on the moose population",
+                "initial": 0.003
+            },
+            {
+                "ID": "id12",
+                "inputs": [
+                    {
+                        "ID": "id6"
+                    },
+                    {
+                        "ID": "id7"
+                    }
+                ],
+                "position": {
+                    "x": 400,
+                    "y": 100
+                },
+                "attemptCount": {
+                    "description": 0,
+                    "type": 0,
+                    "initial": 0,
+                    "units": 0,
+                    "equation": 0
+                },
+                "status": {},
+                "name": "wolf population",
+                "type": "accumulator",
+                "parentNode": true,
+                "units": "",
+                "description": "The number of wolves in the population",
+                "initial": 20,
+                "equation": "id6 - id7"
+            },
+            {
+                "ID": "id13",
+                "inputs": [],
+                "position": {
+                    "x": 400,
+                    "y": 100
+                },
+                "attemptCount": {
+                    "description": 0,
+                    "type": 0,
+                    "initial": 0,
+                    "units": 0,
+                    "equation": 0
+                },
+                "status": {},
+                "name": "moose births",
+                "type": "function",
+                "parentNode": false,
+                "units": "",
+                "description": "The number of moose born each year"
+            },
+            {
+                "ID": "id14",
+                "inputs": [],
+                "position": {
+                    "x": 400,
+                    "y": 100
+                },
+                "attemptCount": {
+                    "description": 0,
+                    "type": 0,
+                    "initial": 0,
+                    "units": 0,
+                    "equation": 0
+                },
+                "status": {},
+                "name": "moose population",
+                "type": "accumulator",
+                "parentNode": false,
+                "units": "",
+                "description": "The number of moose in the population"
+            },
+            {
+                "ID": "id15",
+                "inputs": [],
+                "position": {
+                    "x": 400,
+                    "y": 100
+                },
+                "attemptCount": {
+                    "description": 0,
+                    "type": 0,
+                    "initial": 0,
+                    "units": 0,
+                    "equation": 0
+                },
+                "status": {},
+                "name": "moose deaths",
+                "type": "function",
+                "parentNode": false,
+                "units": "",
+                "description": "The number of moose that die each year"
+            },
+            {
+                "ID": "id16",
+                "inputs": [],
+                "position": {
+                    "x": 400,
+                    "y": 100
+                },
+                "attemptCount": {
+                    "description": 0,
+                    "type": 0,
+                    "initial": 0,
+                    "units": 0,
+                    "equation": 0
+                },
+                "status": {},
+                "name": "moose death rate",
+                "type": "parameter",
+                "parentNode": false,
+                "units": "",
+                "description": "The ratio of moose that die each year to the moose population"
+            },
+            {
+                "ID": "id17",
+                "inputs": [],
+                "position": {
+                    "x": 400,
+                    "y": 100
+                },
+                "attemptCount": {
+                    "description": 0,
+                    "type": 0,
+                    "initial": 0,
+                    "units": 0,
+                    "equation": 0
+                },
+                "status": {},
+                "name": "moose birth rate",
+                "type": "parameter",
+                "parentNode": false,
+                "units": "",
+                "description": "The ratio of moose born each year to the moose population"
+            },
+            {
+                "ID": "id18",
+                "inputs": [],
+                "position": {
+                    "x": 400,
+                    "y": 100
+                },
+                "attemptCount": {
+                    "description": 0,
+                    "type": 0,
+                    "initial": 0,
+                    "units": 0,
+                    "equation": 0
+                },
+                "status": {},
+                "name": "wolf births",
+                "type": "function",
+                "parentNode": false,
+                "units": "",
+                "description": "The number of wolves born each year"
+            },
+            {
+                "ID": "id19",
+                "inputs": [],
+                "position": {
+                    "x": 400,
+                    "y": 100
+                },
+                "attemptCount": {
+                    "description": 0,
+                    "type": 0,
+                    "initial": 0,
+                    "units": 0,
+                    "equation": 0
+                },
+                "status": {},
+                "name": "wolf population",
+                "type": "accumulator",
+                "parentNode": false,
+                "units": "",
+                "description": "The number of wolves in the population"
+            },
+            {
+                "ID": "id20",
+                "inputs": [],
+                "position": {
+                    "x": 400,
+                    "y": 100
+                },
+                "attemptCount": {
+                    "description": 0,
+                    "type": 0,
+                    "initial": 0,
+                    "units": 0,
+                    "equation": 0
+                },
+                "status": {},
+                "name": "wolf deaths",
+                "type": "function",
+                "parentNode": false,
+                "units": "",
+                "description": "The number of wolves that die each year"
+            },
+            {
+                "ID": "id21",
+                "inputs": [],
+                "position": {
+                    "x": 400,
+                    "y": 100
+                },
+                "attemptCount": {
+                    "description": 0,
+                    "type": 0,
+                    "initial": 0,
+                    "units": 0,
+                    "equation": 0
+                },
+                "status": {},
+                "name": "wolf birth rate",
+                "type": "parameter",
+                "parentNode": false,
+                "units": "",
+                "description": "The ratio of wolves born each year to the wolf population"
+            },
+            {
+                "ID": "id22",
+                "inputs": [],
+                "position": {
+                    "x": 400,
+                    "y": 100
+                },
+                "attemptCount": {
+                    "description": 0,
+                    "type": 0,
+                    "initial": 0,
+                    "units": 0,
+                    "equation": 0
+                },
+                "status": {},
+                "name": "wolf death rate",
+                "type": "parameter",
+                "parentNode": false,
+                "units": "",
+                "description": "The ratio of wolves that die each year to the wolf population"
+            }
+        ],
+        "studentModelNodes": []
+    }
+}

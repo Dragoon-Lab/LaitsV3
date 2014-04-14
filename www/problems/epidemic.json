@@ -1,0 +1,236 @@
+{
+    "task": {
+        "taskName": "Epidemic",
+        "time": {
+            "start": 0,
+            "end": 100,
+            "step": 1,
+            "units": "days"
+        },
+        "properties": {
+            "phase": "",
+            "type": ""
+        },
+        "image": {
+            "URL": "images/virus.jpg"
+        },
+        "taskDescription": " Suppose there are 1001 people on a cruise ship, and 1 of them is infected with a virus. Suppose that the virus is transmitted by an infected person meeting an uninfected person. Suppose they only meet in pairs, and there are 100 random meetings a day. So the chance of one person in the pair being infected is just the number of infected people (which varies) divided by the total number of people (1001). The chance of the other person being uninfected is the number of uninfected people divided by the total number of people. So you can multiply those two numbers together to get the chance that the pair is the right kind of pair for the virus to be transmitted. Graph the number of infected people and uninfected people over 100 days. ",
+        "givenModelNodes": [
+            {
+                "ID": "id1",
+                "inputs": [
+                    {
+                        "ID": "id8"
+                    }
+                ],
+                "position": {
+                    "x": 400,
+                    "y": 100
+                },
+                "attemptCount": {
+                    "description": 0,
+                    "type": 0,
+                    "initial": 0,
+                    "units": 0,
+                    "equation": 0
+                },
+                "status": {},
+                "name": "infected people",
+                "type": "accumulator",
+                "parentNode": true,
+                "units": "",
+                "description": "The number of people infected by the virus",
+                "initial": 1,
+                "equation": "id8"
+            },
+            {
+                "ID": "id2",
+                "inputs": [
+                    {
+                        "ID": "id8"
+                    }
+                ],
+                "position": {
+                    "x": 400,
+                    "y": 100
+                },
+                "attemptCount": {
+                    "description": 0,
+                    "type": 0,
+                    "initial": 0,
+                    "units": 0,
+                    "equation": 0
+                },
+                "status": {},
+                "name": "uninfected people",
+                "type": "accumulator",
+                "parentNode": false,
+                "units": "",
+                "description": "The amount of people not infected by the virus",
+                "initial": 1000,
+                "equation": "- id8"
+            },
+            {
+                "ID": "id3",
+                "inputs": [],
+                "position": {
+                    "x": 400,
+                    "y": 100
+                },
+                "attemptCount": {
+                    "description": 0,
+                    "type": 0,
+                    "initial": 0,
+                    "units": 0,
+                    "equation": 0
+                },
+                "status": {},
+                "name": "total people",
+                "type": "parameter",
+                "parentNode": false,
+                "units": "",
+                "description": "The amount of people total on the cruise ship",
+                "initial": 1001
+            },
+            {
+                "ID": "id4",
+                "inputs": [
+                    {
+                        "ID": "id2"
+                    },
+                    {
+                        "ID": "id3"
+                    }
+                ],
+                "position": {
+                    "x": 400,
+                    "y": 100
+                },
+                "attemptCount": {
+                    "description": 0,
+                    "type": 0,
+                    "initial": 0,
+                    "units": 0,
+                    "equation": 0
+                },
+                "status": {},
+                "name": "chance of uninfected",
+                "type": "function",
+                "parentNode": false,
+                "units": "",
+                "description": "The chance an individual is not infected",
+                "equation": "id2 / id3"
+            },
+            {
+                "ID": "id5",
+                "inputs": [
+                    {
+                        "ID": "id1"
+                    },
+                    {
+                        "ID": "id3"
+                    }
+                ],
+                "position": {
+                    "x": 400,
+                    "y": 100
+                },
+                "attemptCount": {
+                    "description": 0,
+                    "type": 0,
+                    "initial": 0,
+                    "units": 0,
+                    "equation": 0
+                },
+                "status": {},
+                "name": "chance of infected",
+                "type": "function",
+                "parentNode": false,
+                "units": "",
+                "description": "The chance an individual is infected",
+                "equation": "id1 / id3"
+            },
+            {
+                "ID": "id6",
+                "inputs": [
+                    {
+                        "ID": "id5"
+                    },
+                    {
+                        "ID": "id4"
+                    }
+                ],
+                "position": {
+                    "x": 400,
+                    "y": 100
+                },
+                "attemptCount": {
+                    "description": 0,
+                    "type": 0,
+                    "initial": 0,
+                    "units": 0,
+                    "equation": 0
+                },
+                "status": {},
+                "name": "chance of infectious meeting",
+                "type": "function",
+                "parentNode": false,
+                "units": "",
+                "description": "The chance an individual who is uninfected will meet an infected one",
+                "equation": "id5 * id4"
+            },
+            {
+                "ID": "id7",
+                "inputs": [],
+                "position": {
+                    "x": 400,
+                    "y": 100
+                },
+                "attemptCount": {
+                    "description": 0,
+                    "type": 0,
+                    "initial": 0,
+                    "units": 0,
+                    "equation": 0
+                },
+                "status": {},
+                "name": "meetings per day",
+                "type": "parameter",
+                "parentNode": false,
+                "units": "",
+                "description": "The number of meetings that occur each day",
+                "initial": 100
+            },
+            {
+                "ID": "id8",
+                "inputs": [
+                    {
+                        "ID": "id7"
+                    },
+                    {
+                        "ID": "id6"
+                    }
+                ],
+                "position": {
+                    "x": 400,
+                    "y": 100
+                },
+                "attemptCount": {
+                    "description": 0,
+                    "type": 0,
+                    "initial": 0,
+                    "units": 0,
+                    "equation": 0
+                },
+                "status": {},
+                "name": "infections per day",
+                "type": "function",
+                "parentNode": false,
+                "units": "",
+                "description": "The number of infections per day",
+                "equation": "id7 * id6"
+            }
+        ],
+        "studentModelNodes": []
+    }
+}

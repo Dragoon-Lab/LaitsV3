@@ -1,0 +1,119 @@
+{
+    "task": {
+        "taskName": "Bilge Water",
+        "time": {
+            "start": 0,
+            "end": 24,
+            "step": 0.5,
+            "units": "hours"
+        },
+        "properties": {
+            "phase": "Training",
+            "type": "Construct"
+        },
+        "image": {
+            "URL": "http://upload.wikimedia.org/wikipedia/commons/thumb/c/cd/Bilge_well.jpg/450px-Bilge_well.jpg"
+        },
+        "taskDescription": " Problem: No matter how well constructed most large ships are, water still leaks into them. They are designed so that water collects in the lowest part of the ship, called the bilge. The water there is called bilge water and is nasty, filthy stuff. Suppose that on a certain ship, leaks contribute 500 gallons of water to the bilge every hour. Fortunately, the ship has pumps that can remove 900 gallons an hour, so normally the bilge doesn't have much water in it. However, during a particularly severe storm, the bilge pumps fail. By the time they are repaired, there are 10,000 gallons of bilge water. The first hour after the repair, there are 9,600 gallons of bilge water remaining. Goal: With the pumps running at full power and the leaks going at their usual rate, graph the amount of bilge water over 24 hours. ",
+        "givenModelNodes": [
+            {
+                "ID": "id1",
+                "inputs": [],
+                "position": {
+                    "x": 400,
+                    "y": 100
+                },
+                "attemptCount": {
+                    "description": 0,
+                    "type": 0,
+                    "initial": 0,
+                    "units": 0,
+                    "equation": 0
+                },
+                "status": {},
+                "name": "water first hour",
+                "type": "parameter",
+                "parentNode": false,
+                "genus": "extra",
+                "units": "",
+                "description": "The amount of water in the bilge after the first hour",
+                "initial": 9600
+            },
+            {
+                "ID": "id2",
+                "inputs": [],
+                "position": {
+                    "x": 400,
+                    "y": 100
+                },
+                "attemptCount": {
+                    "description": 0,
+                    "type": 0,
+                    "initial": 0,
+                    "units": 0,
+                    "equation": 0
+                },
+                "status": {},
+                "name": "leaked in per hour",
+                "type": "parameter",
+                "parentNode": false,
+                "units": "",
+                "description": "The amount of water leaked into the bilge each hour",
+                "initial": 500
+            },
+            {
+                "ID": "id3",
+                "inputs": [],
+                "position": {
+                    "x": 400,
+                    "y": 100
+                },
+                "attemptCount": {
+                    "description": 0,
+                    "type": 0,
+                    "initial": 0,
+                    "units": 0,
+                    "equation": 0
+                },
+                "status": {},
+                "name": "pumped out per hour",
+                "type": "parameter",
+                "parentNode": false,
+                "units": "",
+                "description": "The amount of water being pumped out of the bilge each hour",
+                "initial": 900
+            },
+            {
+                "ID": "id4",
+                "inputs": [
+                    {
+                        "ID": "id2"
+                    },
+                    {
+                        "ID": "id3"
+                    }
+                ],
+                "position": {
+                    "x": 400,
+                    "y": 100
+                },
+                "attemptCount": {
+                    "description": 0,
+                    "type": 0,
+                    "initial": 0,
+                    "units": 0,
+                    "equation": 0
+                },
+                "status": {},
+                "name": "bilge water",
+                "type": "accumulator",
+                "parentNode": true,
+                "units": "",
+                "description": "The amount of water in the bilge each hour",
+                "initial": 10000,
+                "equation": "+ id2 - id3"
+            }
+        ],
+        "studentModelNodes": []
+    }
+}

@@ -1,0 +1,291 @@
+{
+    "task": {
+        "taskName": "Rider Gap",
+        "time": {
+            "start": 0,
+            "end": 10,
+            "step": 0.5,
+            "units": "years"
+        },
+        "properties": {
+            "phase": "Training",
+            "type": "Debug"
+        },
+        "image": {
+            "URL": "http://www.millavenue.com/_files/images/light-rail.jpg"
+        },
+        "taskDescription": " Problem: Suppose that a commuter rail line has 4000 daily riders when it first opens. The number of cars on the trains determines the capacity of the rail line. The system has an initial capacity of 10000 riders, so there is a spare capacity of 10000-4000=6000 riders initially. The transportation authority has enough money to add 2 cars per year, which increases the capacity by 500 riders annually. However, the rail line proves to be quite popular and many new people start riding the commuter rail line each year. The ridership grows by 10% each year. Goal: Graph the spare capacity of the rail line over 10 years. A model has been provided for you and run. As you can tell from the 'C' indicators, not all of the nodes are correct. You will need to fix the model. Hint: Although calculations are often a source of errors, another common error is that the model is missing nodes and/or links.",
+        "givenModelNodes": [
+            {
+                "ID": "id1",
+                "inputs": [],
+                "position": {
+                    "x": 400,
+                    "y": 100
+                },
+                "attemptCount": {
+                    "description": 0,
+                    "type": 0,
+                    "initial": 0,
+                    "units": 0,
+                    "equation": 0
+                },
+                "status": {},
+                "name": "new cars per year",
+                "type": "parameter",
+                "parentNode": false,
+                "genus": "extra",
+                "units": "",
+                "description": "The number of new cars added each year",
+                "initial": 2
+            },
+            {
+                "ID": "id2",
+                "inputs": [],
+                "position": {
+                    "x": 400,
+                    "y": 100
+                },
+                "attemptCount": {
+                    "description": 0,
+                    "type": 0,
+                    "initial": 0,
+                    "units": 0,
+                    "equation": 0
+                },
+                "status": {},
+                "name": "rider growth rate",
+                "type": "parameter",
+                "parentNode": false,
+                "units": "",
+                "description": "The proportion of new riders to existing riders each year",
+                "initial": 0.1
+            },
+            {
+                "ID": "id3",
+                "inputs": [],
+                "position": {
+                    "x": 400,
+                    "y": 100
+                },
+                "attemptCount": {
+                    "description": 0,
+                    "type": 0,
+                    "initial": 0,
+                    "units": 0,
+                    "equation": 0
+                },
+                "status": {},
+                "name": "new cap per year",
+                "type": "parameter",
+                "parentNode": false,
+                "units": "",
+                "description": "The number of capacity that is added each year",
+                "initial": 500
+            },
+            {
+                "ID": "id4",
+                "inputs": [],
+                "position": {
+                    "x": 400,
+                    "y": 100
+                },
+                "attemptCount": {
+                    "description": 0,
+                    "type": 0,
+                    "initial": 0,
+                    "units": 0,
+                    "equation": 0
+                },
+                "status": {},
+                "name": "riders",
+                "type": "accumulator",
+                "parentNode": false,
+                "units": "",
+                "description": "The number of people who ride the commuter rail each year",
+                "initial": 4000,
+                "equation": "+ id2"
+            },
+            {
+                "ID": "id5",
+                "inputs": [],
+                "position": {
+                    "x": 400,
+                    "y": 100
+                },
+                "attemptCount": {
+                    "description": 0,
+                    "type": 0,
+                    "initial": 0,
+                    "units": 0,
+                    "equation": 0
+                },
+                "status": {},
+                "name": "capacity",
+                "type": "accumulator",
+                "parentNode": false,
+                "units": "",
+                "description": "The number of people who can ride the commuter rail line if it is completely full",
+                "initial": 10000,
+                "equation": "+ id3"
+            },
+            {
+                "ID": "id6",
+                "inputs": [
+                    {
+                        "ID": "id2"
+                    },
+                    {
+                        "ID": "id4"
+                    }
+                ],
+                "position": {
+                    "x": 400,
+                    "y": 100
+                },
+                "attemptCount": {
+                    "description": 0,
+                    "type": 0,
+                    "initial": 0,
+                    "units": 0,
+                    "equation": 0
+                },
+                "status": {},
+                "name": "new riders per year",
+                "type": "function",
+                "parentNode": false,
+                "units": "",
+                "description": "The number of people who start riding the commuter rail line each year",
+                "equation": "id4 * id2"
+            },
+            {
+                "ID": "id7",
+                "inputs": [],
+                "position": {
+                    "x": 400,
+                    "y": 100
+                },
+                "attemptCount": {
+                    "description": 0,
+                    "type": 0,
+                    "initial": 0,
+                    "units": 0,
+                    "equation": 0
+                },
+                "status": {},
+                "name": "spare capacity",
+                "type": "function",
+                "parentNode": true,
+                "units": "",
+                "description": "The number of capacity that is available but not used by riders each year",
+                "equation": "id5 - id4"
+            },
+            {
+                "ID": "id8",
+                "inputs": [],
+                "position": {
+                    "x": 400,
+                    "y": 100
+                },
+                "attemptCount": {
+                    "description": 0,
+                    "type": 0,
+                    "initial": 0,
+                    "units": 0,
+                    "equation": 0
+                },
+                "status": {},
+                "name": "rider growth rate",
+                "type": "parameter",
+                "parentNode": false,
+                "units": "",
+                "description": "The proportion of new riders to existing riders each year"
+            },
+            {
+                "ID": "id9",
+                "inputs": [],
+                "position": {
+                    "x": 400,
+                    "y": 100
+                },
+                "attemptCount": {
+                    "description": 0,
+                    "type": 0,
+                    "initial": 0,
+                    "units": 0,
+                    "equation": 0
+                },
+                "status": {},
+                "name": "new cap per year",
+                "type": "parameter",
+                "parentNode": false,
+                "units": "",
+                "description": "The number of capacity that is added each year"
+            },
+            {
+                "ID": "id10",
+                "inputs": [],
+                "position": {
+                    "x": 400,
+                    "y": 100
+                },
+                "attemptCount": {
+                    "description": 0,
+                    "type": 0,
+                    "initial": 0,
+                    "units": 0,
+                    "equation": 0
+                },
+                "status": {},
+                "name": "riders",
+                "type": "accumulator",
+                "parentNode": false,
+                "units": "",
+                "description": "The number of people who ride the commuter rail each year"
+            },
+            {
+                "ID": "id11",
+                "inputs": [],
+                "position": {
+                    "x": 400,
+                    "y": 100
+                },
+                "attemptCount": {
+                    "description": 0,
+                    "type": 0,
+                    "initial": 0,
+                    "units": 0,
+                    "equation": 0
+                },
+                "status": {},
+                "name": "capacity",
+                "type": "accumulator",
+                "parentNode": false,
+                "units": "",
+                "description": "The number of people who can ride the commuter rail line if it is completely full"
+            },
+            {
+                "ID": "id12",
+                "inputs": [],
+                "position": {
+                    "x": 400,
+                    "y": 100
+                },
+                "attemptCount": {
+                    "description": 0,
+                    "type": 0,
+                    "initial": 0,
+                    "units": 0,
+                    "equation": 0
+                },
+                "status": {},
+                "name": "spare capacity",
+                "type": "function",
+                "parentNode": false,
+                "units": "",
+                "description": "The number of capacity that is available but not used by riders each year"
+            }
+        ],
+        "studentModelNodes": []
+    }
+}

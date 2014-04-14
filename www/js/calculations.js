@@ -166,7 +166,15 @@ define([
 							{
 								if(this.active.getType(this.modelNodes[j].ID) != 'parameter')
 								{
-									arrayOfNodeValues[this.modelNodes[j].ID].push(this._calcNULLNodeValue(this.modelNodes[j].ID,nodeEquations));
+                                    var val = this._calcNULLNodeValue(this.modelNodes[j].ID,nodeEquations);
+                                    if(val == null){
+                                        delete arrayOfNodeValues[this.modelNodes[j].ID];
+                                        //break;
+                                    }
+                                    else{
+                                        arrayOfNodeValues[this.modelNodes[j].ID].push(val);
+                                    }
+
 								}
 							}
 						}
@@ -183,7 +191,14 @@ define([
 				//object for storing values of variables to be passed to expression
 				var _exprValues = {};
 				var _expr,_variable,_k,_value;
-				_expr = Parser.parse(nodeEquations[nodeID]);
+                try{
+                    _expr = Parser.parse(nodeEquations[nodeID]);
+                }
+                catch(err){
+                    this.currentNodeValues[nodeID] = null;
+                    return null;
+                }
+
 				_variable = _expr.variables();
 				for(_k=0;_k<_variable.length;_k++)
 				{
@@ -191,11 +206,24 @@ define([
 					{
 						this._calcNULLNodeValue(_variable[_k],nodeEquations);
 					}
-					_exprValues[_variable[_k]] = this.currentNodeValues[_variable[_k]];
+
+                    if(this.currentNodeValues[_variable[_k]] == null){
+                        break;
+                    }
+                    else{
+                        _exprValues[_variable[_k]] = this.currentNodeValues[_variable[_k]];
+                    }
+
 				}
-				_value = _expr.evaluate(_exprValues);
-				this.currentNodeValues[nodeID] = _value;
-		
+
+                if(_k<_variable.length){
+                    _value = null;
+                }
+                else{
+                    _value = _expr.evaluate(_exprValues);
+                    this.currentNodeValues[nodeID] = _value;
+                }
+
 				return _value;
 			},
 			
