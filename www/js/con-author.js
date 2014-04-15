@@ -107,6 +107,7 @@ define([
             }, this);            
             console.log("*****\n*****Model:");
             console.log(this._model.getModelAsString());
+            return directives;
         },
         initialControlSettings: function(nodeid) {
             var desc = this._model.given.getDescription(nodeid);
