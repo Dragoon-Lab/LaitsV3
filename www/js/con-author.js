@@ -104,7 +104,9 @@ define([
                 this.updateModelStatus(directive);
                 var w = registry.byId(this.widgetMap[directive.id]);
                 w.set(directive.attribute, directive.value);
-            }, this);
+            }, this);            
+            console.log("*****\n*****Model:");
+            console.log(this._model.getModelAsString());
         },
         initialControlSettings: function(nodeid) {
             var desc = this._model.given.getDescription(nodeid);
