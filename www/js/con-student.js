@@ -18,7 +18,6 @@ define([
         constructor: function(mode, subMode, model) {
             console.log("++++++++ In student constructor");
             this._PM = new PM(mode, subMode, model);
-            expression.parse("Deepak");
             ready(this, "initStudentHandles");
 
         },
