@@ -42,7 +42,6 @@
                 rabbits.given.setName(rabbitID, "population");
                 rabbits.given.setParent(rabbitID, false);
                 rabbits.given.setType(rabbitID, "accumulator");
-                rabbits.given.setExtra(rabbitID, false);
                 rabbits.given.setUnits(rabbitID, "rabbits");
                 rabbits.given.setInitial(rabbitID, 100);
                 rabbits.given.setEquation(rabbitID, "id2");
@@ -80,7 +79,7 @@
                     "status": {}
                 });
                 rabbits.given.setInputs(["id2"], "id1");
-                console.log("All nodes visible?", rabbits.areAllNodesVisible());
+                console.log("All nodes visible?", rabbits.areRequiredNodesVisible());
                 /*var myNode = rabbits.student.addNode({
                  "ID": "myNode",  //This is optional.
                  "inputs": [],
