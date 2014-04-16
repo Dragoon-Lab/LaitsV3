@@ -7,8 +7,6 @@
       A possible extension is to retrieve all properties for a given
       apropos if the property is not specified in a GET.  This would
       allow the client to pre-fetch all properties for a given student model.
-      The query would look something like:
-          $query = "SELECT property, value FROM state WHERE section='$section' 
 */
 
 // Using trigger_error() so logging level and destination can be modified.
