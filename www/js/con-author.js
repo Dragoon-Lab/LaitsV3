@@ -7,8 +7,10 @@ define([
     'dojo/dom-style', 'dojo/ready',
     'dijit/registry',
     './controller',
+    "./equation",
     "dojo/domReady!"
-], function(array, declare, lang, style, ready, registry, controller) {
+
+], function(array, declare, lang, style, ready, registry, controller,equation) {
 
     return declare(controller, {
         constructor: function() {
@@ -71,8 +73,23 @@ define([
         },
         handleName: function(name) {
             console.log("**************** in handleName ", name);
-            this._nodeEditor.set('title', this._model.active.getName(this.currentID));
-            this._model.active.setName(this.currentID, name);
+
+            /* check if node with name already exists and
+               if name is parsed as valid variable
+            */
+            if(!this._model.given.getNodeIDByName(this.currentID) && equation.isVariable(name)){
+                // check all nodes in the model for equations containing name of this node
+                // replace name of this node in equation with its ID
+                this.findAndReplace(name);
+                // save the model
+                this._model.active.setName(this.currentID, name);
+                //set title of node editor with name of the node
+                this._nodeEditor.set('title', this._model.active.getName(this.currentID));
+
+            }
+            else{
+                console.error("Node name already exists");
+            }
         },
         handleKind: function(kind) {
             console.log("**************** in handleKind ", kind);
@@ -113,7 +130,33 @@ define([
             var desc = this._model.given.getDescription(nodeid);
             console.log('description is', desc || "not set");
             registry.byId("setDescription").set('value', desc || 'defaultSelect', false);
-        }
+        },
 
+        /*
+        *  this function searches for name of the node equations of given model
+        *  and replaces node name with its ID
+        * */
+        findAndReplace: function(string){
+            //iterte over all nodes in given model
+            array.forEach(this._model.given.getNodes(),lang.hitch(this,function(nodeId){
+                //get equation of the node
+                var expression = this._model.given.getEquation(nodeId.ID);
+
+                if(expression){
+                    var parse = equation.parse(expression);
+                    if(parse){
+                        // for every variable in the equation, check if variable matches with
+                        // node name. If yes, replace node name with its ID
+                        array.forEach(parse.variables(),lang.hitch(this,function(variable){
+
+                            if(variable == string){
+                                parse.substitute(variable,this.currentID);
+                                this._model.given.setEquation(nodeId.ID,parse.toString());
+                            }
+                        }))
+                    }
+                }
+            }))
+        }
     });
 });
