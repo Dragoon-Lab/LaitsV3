@@ -62,9 +62,9 @@ DROP TABLE IF EXISTS `state`;
 CREATE TABLE IF NOT EXISTS `state` (
   `section` varchar(30) NOT NULL COMMENT 'Should match section in session table.',
   `user` varchar(30) NOT NULL DEFAULT '' COMMENT 'Empty string means that this is a section-wide setting.  Otherwise, should match user in session table.',
-  `apropos` varchar(20) NOT NULL COMMENT '"student" is default student model; "dragoon" is Dragoon customizations.',
-  `property` varchar(50) NOT NULL COMMENT 'For a student model, this is the name of the knowledge component.',
+  `apropos` varchar(20) NOT NULL COMMENT 'Category of quantity.',
+  `property` varchar(50) NOT NULL COMMENT 'Quantity name.',
   `tid` int(10) unsigned NOT NULL COMMENT 'References tid in step table.',
-  `value` text DEFAULT NULL COMMENT 'Description of current state as json object.  NULL is equivalent to removing a property from the table.',
+  `value` text DEFAULT NULL COMMENT 'Quantity value stored as JSON.  NULL is equivalent to removing a property from the table.',
   UNIQUE (`section`,`user`,`apropos`,`property`,`tid`)
-) ENGINE=InnoDB AUTO_INCREMENT=1644 DEFAULT CHARSET=latin1 COMMENT='Changes to state.  Changes within a session may be consolidated.  Changes in a session may use any tid within that session.  Entries that do not refect a change in value may be included.';
+) ENGINE=InnoDB AUTO_INCREMENT=1644 DEFAULT CHARSET=latin1;
