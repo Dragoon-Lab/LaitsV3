@@ -83,13 +83,6 @@ define([
                 this._model.given.setName(this.currentID, name);
                 this.updateNodes();
                 this.setConnections(this._model.given.getInputs(this.currentID), this.currentID);
-/*                equation.addQuantity(this.currentID, this._model.given);
-                this.findAndReplace(name);
-                // save the model
-
-                //set title of node editor with name of the node
-                this._nodeEditor.set('title', this._model.active.getName(this.currentID));*/
-
             }
             else{
                 console.error("Node name already exists OR node name is not valid variable!");
@@ -145,34 +138,6 @@ define([
             var desc = this._model.given.getDescription(nodeid);
             console.log('description is', desc || "not set");
             registry.byId("setDescription").set('value', desc || 'defaultSelect', false);
-        },
-
-        /*
-        *  this function searches for name of the node equations of given model
-        *  and replaces node name with its ID
-        * */
-        findAndReplace: function(string){
-            //iterte over all nodes in given model
-            array.forEach(this._model.given.getNodes(),lang.hitch(this,function(nodeId){
-                //get equation of the node
-                var expression = this._model.given.getEquation(nodeId.ID);
-
-                if(expression){
-                    var parse = equation.parse(expression);
-                    if(parse){
-                        // for every variable in the equation, check if variable matches with
-                        // node name. If yes, replace node name with its ID
-                        array.forEach(parse.variables(),lang.hitch(this,function(variable){
-
-                            if(variable == string){
-                                parse.substitute(variable,this.currentID);
-                                this._model.given.setEquation(nodeId.ID,parse.toString());
-                            }
-                        }))
-                    }
-                }
-            }))
         }
-
     });
 });
