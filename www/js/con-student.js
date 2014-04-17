@@ -19,6 +19,7 @@ define([
             console.log("++++++++ In student constructor");
             this._PM = new PM(mode, subMode, model);
             ready(this, "initStudentHandles");
+
         },
         initStudentHandles: function() {
 

@@ -193,6 +193,14 @@ define([
                 expr.substitute(variable, givenNodeId);
             }, this);
             return expr.toString();
+        },
+
+        /*
+        *  Author: Deepak
+        *  description: Adding wrapper to function 'isVariable' in math-parser/parser.js
+        */
+        isVariable: function(expr){
+            return Parser.parse(expr);
         }
 
     };
