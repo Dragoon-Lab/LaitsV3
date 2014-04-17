@@ -6,7 +6,7 @@ This contains mostly design documents.
 * [Major modes](major-modes.md) (STUDENT COACHED TEST AUTHOR)
 * [Graph (nodes and connectors) Design](graph.md)
 * [Node Editor Design](node-editor.md)
-* [JavaScript design](javascript.md)
+* [Libraries, Model-View-Controller, and the Pedagogical Module](javascript.md)
 * [JSON format](json-format.md)
 * [Forum](forum.md)
 * Kurt's design for the [Pedagogical Module](Pedagogical-Module.docx)

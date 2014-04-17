@@ -61,11 +61,13 @@ Methods in the PM return an array of directives like this:
 		// Set the value of a control (in the case of demo)
 		{id: "description", attribute: "value", value: "id3"},
 		// Disable individual choices in a pull-down menu
-		{id: "type", attribute: "disableOption", value: "function")
+		{id: "type", attribute: "disableOption", value: "function"},
+		// Open a blocking pop-up box
+		{id: "crisisAlert", attribute: "open", value: "You should be more careful."}
 	]
 
 The attribute names can be: `description`, `type`, `initial`,
-`units`, `inputs`, or `equation`.  The controller 
+`units`, `inputs`, `equation`, or `crisisAlert`.  The controller 
 maps these names onto the appropriate widget `id` in `index.html`.
 The attributes `enableOption`/`disableOption` can be used to
 enable/disable individual options in a select control.  If no value is

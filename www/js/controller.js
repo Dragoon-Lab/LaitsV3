@@ -78,8 +78,8 @@ define([
             var structured = (this._inputStyle == "structured"?"":"none");
             style.set("algebraic", "display", algebraic);
             style.set("structured", "display", structured);
-            style.set("equationInput", "display", algebraic);
-            style.set("equationShow", "display", structured);
+            style.set("equationBox", "display", algebraic);
+            style.set("equationText", "display", structured);
 
             /*
              Initialize fields in the node editor that are
@@ -191,7 +191,7 @@ define([
                 w.set("disabled", false);  // enable everything
                 w.set("status", '');  // remove colors
             }
-
+ 
             /* Erase messages
              Eventually, we probably want to save and restore
              messages for each node. */
@@ -343,6 +343,29 @@ define([
 
             // updating node editor and the model.	    
             this._model.active.setType(this.currentID, type);
+        },
+
+        updateEquationLabels:function(type){
+            var name = this._model.active.getName(this.currentID);
+            var nodeName = "";
+	    var tt = "";
+	    switch(type){
+	    case "accumulator":
+                nodeName = 'new ' + name + ' = ' + 'old ' + name + ' +';
+		tt = " * Change in Time";
+		break;
+	    case "function":
+                nodeName = name + ' = ';
+		break;
+	    case "parameter":
+		break;
+	    default:
+		console.error("Invalid type ", type);
+	    }
+            dom.byId('equationLabel').innerHTML = nodeName;
+	    style.set("equationLabel", "display", nodeName?"":"none");
+            dom.byId('timeStepLabel').innerHTML = tt;
+	    style.set("timeStepLabel", "display", tt?"":"none");
         },
 
         equationInsert: function(text){
@@ -614,6 +637,7 @@ define([
             var mEquation = equation?expression.convert(model, equation):'';
             console.log("equation after conversion ", mEquation);
             registry.byId(this.controlMap.equation).set('value', mEquation);
+	    dom.byId("equationText").innerHTML = mEquation;
 
             /*
              The PM sets enabled/disabled and color for the controls

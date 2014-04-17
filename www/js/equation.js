@@ -199,9 +199,7 @@ define([
         *  Author: Deepak
         *  description: Adding wrapper to function 'isVariable' in math-parser/parser.js
         */
-        isVariable: function(expr){
-            return Parser.parse(expr);
-        }
+        isVariable: Parser.isVariable
 
     };
 });

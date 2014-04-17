@@ -10,7 +10,7 @@ define([
     "./equation",
     "dojo/domReady!"
 
-], function(array, declare, lang, style, ready, registry, controller,equation) {
+], function(array, declare, lang, style, ready, registry, controller, equation) {
 
     return declare(controller, {
         constructor: function() {
