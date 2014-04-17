@@ -83,7 +83,22 @@ define([
                     console.warn("Directive with unknown id: " + directive.id);
                 }
             }, this);
+            this.updateEquationLabels(type);
         },
+        updateEquationLabels:function(type){
+            var name = this._model.student.getName(this.currentID);
+            var nodeName = '';
+            if(type=='accumulator'){
+                var nodeName = 'new '+name+' = '+ 'old '+name+' +';
+                document.getElementById("timeStepLabel").style.visibility="visible";
+            }else if(type=='function'){
+                var nodeName = name+' = ';
+                document.getElementById("timeStepLabel").style.visibility="hidden";
+            }else{
+                document.getElementById("timeStepLabel").style.visibility="hidden";
+            }
+            document.getElementById('equationLabel').innerHTML = nodeName;
+        }  ,
         handleInitial: function(initial) {
 
             if (this.disableInitialTextEvent) {
@@ -220,6 +235,9 @@ define([
             array.forEach(this._model.student.getStatusDirectives(nodeid), function(directive) {
                 var w = registry.byId(this.controlMap[directive.id]);
                 w.set(directive.attribute, directive.value);
+                if(directive.id=='type'){
+                    this.updateEquationLabels(directive.value);
+                }
             }, this);
         }
 

@@ -598,6 +598,9 @@ define([
             console.log('node type is', type || "not set");
             if(type)registry.byId(this.controlMap.type).set('value', type || 'defaultSelect');
 
+            //update labels
+            this.updateEquationLabels(type); //specific to student class but need to call from controller
+
             var initial = model.getInitial(nodeid);
             console.log('initial value is', initial || "not set");
             registry.byId(this.controlMap.initial).attr('value', initial || '');

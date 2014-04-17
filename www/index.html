@@ -216,14 +216,26 @@
 		    </div>
 		</div>
 	   </div>
-	   <div class="fieldgroup" id="equationInput">
+
+	   <div class="fieldgroup">
 		<label for="equationBox">Expression</label>
-                <textarea id="equationBox" rows=2 cols=30 data-dojo-type="dijit/form/SimpleTextarea"></textarea>
-	   </div>
-	   <div class="fieldgroup" id="equationShow">
+           <div id="equationLabel" class="vertical">
+               Here goes the equation Label
+           </div>
+       </div>
+
+            <div  class="fieldgroup" id="equationInput" >
+                <label for="equationBox"></label>
+           <textarea id="equationBox" rows=2 cols=30 data-dojo-type="dijit/form/SimpleTextarea"></textarea>
+           </div>
+            <div class="fieldgroup" id="equationShow">
 		<label>Expression</label>
 	        <div id="equationText"></div>
 	   </div>
+            <div class="fieldgroup" id="timeStepLabel" style="visibility: hidden">
+                <label for="equationBox"></label>
+                * Change in Time
+            </div>
 	   <div class="fieldgroup" style="overflow:hidden"> <!-- assign space for the float -->	    
                 <div style="float:right">
 	            <input id="undoButton" type="button" data-dojo-type="dijit/form/Button" label="Clear" iconClass="dijitNoIcon"></input>
