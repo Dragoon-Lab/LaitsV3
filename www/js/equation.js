@@ -125,6 +125,7 @@ define([
          equations and inputs of existing nodes.
          */
         addQuantity: function(id, subModel) {
+
             var name = subModel.getName(id);
             array.forEach(subModel.getNodes(), function(node) {
                 if (node.equation) {

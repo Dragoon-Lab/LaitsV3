@@ -20,7 +20,6 @@ define([
         disableHandlers: false,
         disableInitialTextEvent:false,
 
-
         constructor: function(mode, subMode, model, inputStyle){
 
             console.log("+++++++++ In generic controller constructor");
@@ -651,6 +650,20 @@ define([
              Note that if equation is disabled then
              input, +, -, *, /, undo, and done should also be disabled.
              */
+        },
+        updateEquationLabels:function(type){
+            var name = this._model.student.getName(this.currentID);
+            var nodeName = '';
+            if(type=='accumulator'){
+                var nodeName = 'new '+name+' = '+ 'old '+name+' +';
+                document.getElementById("timeStepLabel").style.visibility="visible";
+            }else if(type=='function'){
+                var nodeName = name+' = ';
+                document.getElementById("timeStepLabel").style.visibility="hidden";
+            }else{
+                document.getElementById("timeStepLabel").style.visibility="hidden";
+            }
+            document.getElementById('equationLabel').innerHTML = nodeName;
         }
     });
 });

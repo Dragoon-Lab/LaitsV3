@@ -80,16 +80,23 @@ define([
             if(!this._model.given.getNodeIDByName(this.currentID) && equation.isVariable(name)){
                 // check all nodes in the model for equations containing name of this node
                 // replace name of this node in equation with its ID
+                this._model.given.setName(this.currentID, name);
+                this.updateNodes();
+                this.setConnections(this._model.given.getInputs(this.currentID), this.currentID);
+/*                equation.addQuantity(this.currentID, this._model.given);
                 this.findAndReplace(name);
                 // save the model
-                this._model.active.setName(this.currentID, name);
+
                 //set title of node editor with name of the node
-                this._nodeEditor.set('title', this._model.active.getName(this.currentID));
+                this._nodeEditor.set('title', this._model.active.getName(this.currentID));*/
 
             }
             else{
-                console.error("Node name already exists");
+                console.error("Node name already exists OR node name is not valid variable!");
             }
+        },
+        handleEquation: function(expression){
+
         },
         handleKind: function(kind) {
             console.log("**************** in handleKind ", kind);
@@ -114,17 +121,25 @@ define([
             console.log("**************** in handleSetUnits ", units);
         },
         equationDoneHandler: function() {
-            var directives = [];
-            var parse = this.equationAnalysis(directives);
-            // Now apply directives
-            array.forEach(directives, function(directive) {
-                this.updateModelStatus(directive);
-                var w = registry.byId(this.widgetMap[directive.id]);
-                w.set(directive.attribute, directive.value);
-            }, this);            
-            console.log("*****\n*****Model:");
-            console.log(this._model.getModelAsString());
-            return directives;
+            console.log("Inside equationDone handler");
+            var widget = registry.byId(this.controlMap.equation);
+            var expression = widget.get("value");
+            var parse = equation.parse(expression);
+            if(parse){
+                this._model.given.setEquation(this.currentID,expression);
+                // for every variable in the equation, check if variable matches with
+                // node name. If yes, replace node name with its ID
+                array.forEach(parse.variables(),lang.hitch(this,function(variable){
+                    if(this._model.given.getNodeIDByName(variable)){
+                        var nodeId = this._model.given.getNodeIDByName(variable);
+                        equation.addQuantity(nodeId,this._model.given);
+                        this.setConnections(this._model.given.getInputs(this.currentID), this.currentID);
+                    }
+                }))
+            }
+            else{
+                console.error("bad parsing");
+            }
         },
         initialControlSettings: function(nodeid) {
             var desc = this._model.given.getDescription(nodeid);
@@ -158,5 +173,6 @@ define([
                 }
             }))
         }
+
     });
 });
