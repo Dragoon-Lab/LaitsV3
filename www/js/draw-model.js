@@ -3,7 +3,7 @@
  This is just a quick initial attempt to draw a model
  */
 define([
-    "dojo/_base/array", 'dojo/_base/declare', 'dojo/_base/lang', 
+    "dojo/_base/array", 'dojo/_base/declare', 'dojo/_base/lang',
     'dojo/dom', "dojo/dom-attr", "dojo/dom-construct","dijit/Menu",
     "dijit/MenuItem", "jsPlumb/jsPlumb"
 ],function(array, declare, lang, dom, attr, domConstruct,Menu,MenuItem){
@@ -11,68 +11,69 @@ define([
     return declare(null, {
 
         _instance: null,
-	    _givenModel: null,
+        _givenModel: null,
 
         constructor: function(givenModel){
-	    
+
             // setup some defaults for jsPlumb.
             var instance = jsPlumb.getInstance({
-                Endpoint : ["Dot", {radius:2}],
+                Endpoint : ["Dot", {radius:0.1}], //hiding it
                 HoverPaintStyle : {strokeStyle:"#1e8151", lineWidth:2 },
                 ConnectionOverlays : [
                     [ "Arrow", {
                         location:1,
                         id:"arrow",
                         length:14,
-                        foldback:0.8
+                        foldback:0.9
                     } ]
+                    /*,[ "Label", { label:"+", id:"label", cssClass:"aLabel" }]*/
                 ],
                 Container:"statemachine-demo"
             });
-	    
+
             this._instance = instance;
             this._givenModel = givenModel;
-	    
+
             var shapes = {
                 accumulator: "accumulator",
                 function: "function",
                 parameter: "parameter"
             };
-	    
+
             // initialise draggable elements.
             var vertices = array.map(givenModel.getNodes(), function(node){
                 return this.addNode(node);
             }, this);
-	    
-	    
+
+
             console.log("====== instance:  ", instance);
-	    
-	    
+
+
             /* bind a click listener to each connection; the connection is deleted. you could of course
              just do this: jsPlumb.bind("click", jsPlumb.detach), but I wanted to make it clear what was
              happening. */
             instance.bind("click", function(c) {
                 //instance.detach(c);
             });
-	    
+
             /* bind a connection listener. note that the parameter passed to this function contains more than
              just the new connection - see the documentation for a full list of what is included in 'info'.
              this listener sets the connection's internal
              id as the label overlay's text. */
-            instance.bind("connection", function(info) {
-                info.connection.getOverlay("label").setLabel(info.connection.id);
-            });
-	    
+            /* instance.bind("connection", function(info) {
+             info.connection.getOverlay("label").setLabel(info.connection.id);
+             }); */
+
             // suspend drawing and initialise.
             instance.doWhileSuspended(function() {
-		
+
                 /* make each ".ep" div a source and give it some parameters to work with.  here we tell it
                  to use a Continuous anchor and the StateMachine connectors, and also we give it the
                  connector's paint style.  note that in this demo the strokeStyle is dynamically generated,
                  which prevents us from just setting a jsPlumb.Defaults.PaintStyle.  but that is what i
                  would recommend you do. Note also here that we use the 'filter' option to tell jsPlumb
                  which parts of the element should actually respond to a drag start. */
-		
+
                 array.forEach(vertices, function(vertex){
                     instance.makeSource(vertex, {
                         filter:".ep",                               // only supported by jquery
@@ -85,7 +86,7 @@ define([
                         }
                     });
                 });
-		
+
                 // initialise all '.w' elements as connection targets.
                 array.forEach(vertices, function(vertex){
                     instance.makeTarget(vertex, {
@@ -93,33 +94,33 @@ define([
                         anchor:"Continuous"
                     });
                 });
-		
 
-		
+
+
             });
 
             array.forEach(vertices, function(vertex){
-		// Not sure why vertex is an array and not just the <div>
+                // Not sure why vertex is an array and not just the <div>
                 var id = attr.get(vertex[0], "id");
                 var inputs = givenModel.getInputs(id);
-		this.setConnections(inputs, vertex);
-		
+                this.setConnections(inputs, vertex);
+
             }, this);
 
-	    return instance;
+            return instance;
 
-	},
-	
-	/* addNode: Add a node to the jsPlumb model.  */
+        },
 
-	addNode: function(/*object*/ node){
-	    
+        /* addNode: Add a node to the jsPlumb model.  */
+
+        addNode: function(/*object*/ node){
+
             var type = node.type || "triangle";
-	    /*
-                 <div class="w" id="population" ></br></br>120</br></br></br></br></br></br>Population</div>
+            /*
+             <div class="w" id="population" ></br></br>120</br></br></br></br></br></br>Population</div>
              <div class="circle" id="growth" ></br></br>*</br></br></br></br></br></br>Growth</div>
              <div class="diamond" id="grate" ><div class="diamond-inner"></br></br>0.3</br></br></br></br></br></br>Growth Rate</label><br/></div></div>
-	     */
+             */
             console.log("Adding element to canvas, id = ", node.ID, ", class = ", type);
             // Add div to drawing
             console.log("--> setting position for vertex : "+ node.ID +" position: x"+node.position.x+"  y:"+node.position.y);
@@ -138,115 +139,135 @@ define([
                 targetNodeIds: [node.ID]
             });
             pMenu.addChild(new MenuItem({
-            label: "Delete Node",
-            onClick: lang.hitch(this, function(){this.deleteNode(node.ID);}) //onClick expects anonymous function call
+                label: "Delete Node",
+                onClick: lang.hitch(this, function(){this.deleteNode(node.ID);}) //onClick expects anonymous function call
             }));
 
 
             // jsPlumb.addEndpoint(node.ID);
             var vertex = jsPlumb.getSelector(".statemachine-demo ." + type);
-	    
+
             /*
              Fire off functions associated with draggable events.
-             
+
              Note that the names (onMoveStart, onMove, onMoveStop) are from
              the underlying library dojo/dnd/move, rather than jsPlumb.
-             */ 
+             */
             this._instance.draggable(vertex,{
-		onMoveStart: lang.hitch(this, this.onMoveStart),
-		onMove: lang.hitch(this, this.onMove),
-		onMoveStop: lang.hitch(this, this.onMoveStop)
+                onMoveStart: lang.hitch(this, this.onMoveStart),
+                onMove: lang.hitch(this, this.onMove),
+                onMoveStop: lang.hitch(this, this.onMoveStop)
             });
-	    console.warn("Draw new vertex.  Need to add code here."); 
-	    this._instance.makeSource(vertex, {
-		filter:".ep",                               // only supported by jquery
-		anchor:"Continuous",
-		connector:[ "StateMachine", { curviness:20 } ],
-		connectorStyle:{ strokeStyle:"#5c96bc", lineWidth:2, outlineColor:"transparent", outlineWidth:4 },
-		maxConnections:5,
-		onMaxConnections:function(info, e) {
+            console.warn("Draw new vertex.  Need to add code here.");
+            this._instance.makeSource(vertex, {
+                filter:".ep",                               // only supported by jquery
+                anchor:"Continuous",
+                connector:[ "StateMachine", { curviness:20 } ],
+                connectorStyle:{ strokeStyle:"#5c96bc", lineWidth:2, outlineColor:"transparent", outlineWidth:4 },
+                maxConnections:5,
+                onMaxConnections:function(info, e) {
                     alert("Maximum connections (" + info.maxConnections + ") reached");
                 }
             });
             this._instance.makeTarget(vertex, {
-		dropOptions:{ hoverClass:"dragHover" },
-		anchor:"Continuous"
+                dropOptions:{ hoverClass:"dragHover" },
+                anchor:"Continuous"
             });
-	    
-	    return vertex;
-	    
-	},
-	
-	/* 
-	 Set all connections going into a given node (destination), silently
-	 filtering out any source nodes that don't exist. 
-	 */
-	setConnections: function(/*array*/ sources, /*string*/ destination){
-	    console.log("--------- in setConnections for ", sources, destination);
-	    // For now, we simply remove all existing connections and 
-	    // create all new connections.
-	    // See http://stackoverflow.com/questions/11488067/how-to-delete-jsplumb-connection
-	    // console.log("setConnections:  Need to delete existing connections going into " + destination, this._instance);
-	    // Go through existing connections and delete those that 
-	    // have this destination as their target.
-	    array.forEach(this._instance.getConnections(), function(connection){
-		if(connection.targetId == destination)
-		    this._instance.detach(connection);
-	    }, this);
-	    // Create new connections
-	    array.forEach(sources, function(source){
-		// All sources and destinations should exist.
-		this._instance.connect({source: source, target: destination});
-	    }, this);
-	},
 
-	addQuantity: function(/*string*/ source, /*array*/ destinations){
-	    // Go through existing connections an delete those
-	    // that have this source.
-	    array.forEach(this._instance.getConnections(), function(connection){
-		if(connection.sourceId == source)
-		    this._instance.detach(connection);
-	    }, this);
-	    // Create new connections
-	    array.forEach(destinations, function(destination){
-		// All sources and destinations should exist.
-		this._instance.connect({source: source, target: destination});
-	    }, this);
-	    
-	},
-	
-	deleteNode: function(/*object*/ nodeID){
+            return vertex;
+
+        },
+        getEndPointConfiguration:function (sign){
+            if(sign)
+             return [["Arrow", { location:1, id:"arrow", length:14, foldback:0.9 } ], ["Custom", { create:function(component) { var overlay = domConstruct.create("div", { innerHTML: "<div class='endPoint'>"+sign+"</div>" }); return overlay; }, location:1.0, id:"customOverlay" }]];
+            else
+             return '';
+        },
+        /*
+         Set all connections going into a given node (destination), silently
+         filtering out any source nodes that don't exist.
+         */
+        setConnections: function(/*array*/ sources, /*string*/ destination){
+
+            //after determining equation type + or  - , set connection EndPoint by using following method
+
+            this._instance.Defaults.ConnectionOverlays = this.getEndPointConfiguration('+');
+
+            console.log("--------- in setConnections for ", sources, destination);
+            // For now, we simply remove all existing connections and
+            // create all new connections.
+            // See http://stackoverflow.com/questions/11488067/how-to-delete-jsplumb-connection
+            // console.log("setConnections:  Need to delete existing connections going into " + destination, this._instance);
+            // Go through existing connections and delete those that
+            // have this destination as their target.
+            array.forEach(this._instance.getConnections(), function(connection){
+                if(connection.targetId == destination)
+                    this._instance.detach(connection);
+            }, this);
+            // Create new connections
+            array.forEach(sources, function(source){
+                // All sources and destinations should exist.
+
+//                if(destination.is)
+
+
+                this._instance.connect({source: source,
+                    target: destination
+                   /* overlays: [
+                        ["Label",{label:"+", id:"label1", cssClass:"aLabel",location:0.95, radius:0.5 }],
+                        ["Label",{label:"-", id:"label2", cssClass:"aLabel",location:0.03, radius:0.5 }]
+                    ]*/
+                });
+            }, this);
+        },
+
+        addQuantity: function(/*string*/ source, /*array*/ destinations){
+            // Go through existing connections an delete those
+            // that have this source.
+            array.forEach(this._instance.getConnections(), function(connection){
+                if(connection.sourceId == source)
+                    this._instance.detach(connection);
+            }, this);
+            // Create new connections
+            array.forEach(destinations, function(destination){
+                // All sources and destinations should exist.
+                this._instance.connect({source: source, target: destination});
+            }, this);
+
+        },
+
+        deleteNode: function(/*object*/ nodeID){
             console.log("delete node called for " + nodeID);
-	},
-	
-	// Keep track of whether there was a mouseDown and mouseUp
-	// with no intervening mouseMove
-	_clickNoMove: false,
-	
-	onMoveStart: function(){
-	    this._clickNoMove = true;
-	},
+        },
 
-	onMove: function(){
-	    this._clickNoMove = false;
-	},
+        // Keep track of whether there was a mouseDown and mouseUp
+        // with no intervening mouseMove
+        _clickNoMove: false,
 
-	onMoveStop: function(){
-	    if(this._clickNoMove){
-		this.onClickNoMove.apply(null, arguments);
-	    } else {
-		this.onClickMoved.apply(null, arguments);
-	    }
-	    this._clickNoMove = false;
-	},
+        onMoveStart: function(){
+            this._clickNoMove = true;
+        },
 
-	onClickMoved: function(mover){
-	    // stub for attaching save new coordinates to model
-	},
+        onMove: function(){
+            this._clickNoMove = false;
+        },
 
-	onClickNoMove: function(){
-	    // stub for attaching node editor startup
-	}
+        onMoveStop: function(){
+            if(this._clickNoMove){
+                this.onClickNoMove.apply(null, arguments);
+            } else {
+                this.onClickMoved.apply(null, arguments);
+            }
+            this._clickNoMove = false;
+        },
+
+        onClickMoved: function(mover){
+            // stub for attaching save new coordinates to model
+        },
+
+        onClickNoMove: function(){
+            // stub for attaching node editor startup
+        }
 
     });
 });
