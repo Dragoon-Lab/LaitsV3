@@ -25,15 +25,7 @@ define([
                         id:"arrow",
                         length:14,
                         foldback:0.9
-                    } ],
-                    ["Custom", {
-                        create:function(component) {
-                            var overlay = domConstruct.create("div", { innerHTML: "<div class='endPoint'>+</div>" }); // replace +,- or +-
-                            return overlay;
-                        },
-                        location:1.0,
-                        id:"customOverlay"
-                    }]
+                    } ]
                     /*,[ "Label", { label:"+", id:"label", cssClass:"aLabel" }]*/
                 ],
                 Container:"statemachine-demo"
@@ -185,12 +177,22 @@ define([
             return vertex;
 
         },
-
+        getEndPointConfiguration:function (sign){
+            if(sign)
+             return [["Arrow", { location:1, id:"arrow", length:14, foldback:0.9 } ], ["Custom", { create:function(component) { var overlay = domConstruct.create("div", { innerHTML: "<div class='endPoint'>"+sign+"</div>" }); return overlay; }, location:1.0, id:"customOverlay" }]];
+            else
+             return '';
+        },
         /*
          Set all connections going into a given node (destination), silently
          filtering out any source nodes that don't exist.
          */
         setConnections: function(/*array*/ sources, /*string*/ destination){
+
+            //after determining equation type + or  - , set connection EndPoint by using following method
+
+            this._instance.Defaults.ConnectionOverlays = this.getEndPointConfiguration('+');
+
             console.log("--------- in setConnections for ", sources, destination);
             // For now, we simply remove all existing connections and
             // create all new connections.
@@ -205,8 +207,12 @@ define([
             // Create new connections
             array.forEach(sources, function(source){
                 // All sources and destinations should exist.
+
+//                if(destination.is)
+
+
                 this._instance.connect({source: source,
-                    target: destination,
+                    target: destination
                    /* overlays: [
                         ["Label",{label:"+", id:"label1", cssClass:"aLabel",location:0.95, radius:0.5 }],
                         ["Label",{label:"-", id:"label2", cssClass:"aLabel",location:0.03, radius:0.5 }]
