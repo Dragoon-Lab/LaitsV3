@@ -190,7 +190,10 @@ define([
                 w.set("disabled", false);  // enable everything
                 w.set("status", '');  // remove colors
             }
- 
+
+	    // Undo equation labels
+	    this.updateEquationLabels("none"); 
+
             /* Erase messages
              Eventually, we probably want to save and restore
              messages for each node. */
@@ -327,11 +330,11 @@ define([
         addQuantity: function(source, destinations){},
 
         updateType: function(type){
-            //update node type
+            //update node type on canvas
             console.log("===========>   changing node class to "+type);
             domClass.replace(this.currentID, type);
             var nodeName = this._model.active.getName(this.currentID);
-            if(nodeName && type != "triangle")
+            if(nodeName)
                 nodeName = '<div id=' + this.currentID + 'Label><strong>' + nodeName + '</strong></div>';
             else
                 nodeName = '';
@@ -340,31 +343,36 @@ define([
             else //new node
                 domConstruct.place(nodeName, this.currentID);
 
-            // updating node editor and the model.	    
+            // updating the model and the equation labels	    
             this._model.active.setType(this.currentID, type);
+            this.updateEquationLabels();
         },
 
-        updateEquationLabels:function(type){
+        updateEquationLabels:function(typeIn){
+	    var type = typeIn || this._model.active.getType(this.currentID) || "none";
             var name = this._model.active.getName(this.currentID);
             var nodeName = "";
 	    var tt = "";
-	    switch(type){
-	    case "accumulator":
-                nodeName = 'new ' + name + ' = ' + 'old ' + name + ' +';
-		tt = " * Change in Time";
-		break;
-	    case "function":
-                nodeName = name + ' = ';
-		break;
-	    case "parameter":
-		break;
-	    default:
-		console.error("Invalid type ", type);
+	    // Only add label when name exists
+	    if(name){
+		switch(type){
+		case "accumulator":
+                    nodeName = 'new ' + name + ' = ' + 'old ' + name + ' +';
+		    tt = " * Change in Time";
+		    break;
+		case "function":
+                    nodeName = name + ' = ';
+		    break;
+		case "parameter":
+		case "none":
+		    break;
+		default:
+		    console.error("Invalid type ", type);
+		}
 	    }
+	    // Removing all the text is the same as setting display:none.
             dom.byId('equationLabel').innerHTML = nodeName;
-	    style.set("equationLabel", "display", nodeName?"":"none");
             dom.byId('timeStepLabel').innerHTML = tt;
-	    style.set("timeStepLabel", "display", tt?"":"none");
         },
 
         equationInsert: function(text){
@@ -618,10 +626,11 @@ define([
 
             var type = model.getType(nodeid);
             console.log('node type is', type || "not set");
-            if(type)registry.byId(this.controlMap.type).set('value', type || 'defaultSelect');
-
-            //update labels
-            this.updateEquationLabels(type); //specific to student class but need to call from controller
+            if(type){
+		registry.byId(this.controlMap.type).set('value', type || 'defaultSelect');
+		//update labels
+		this.updateEquationLabels(type);
+	    }
 
             var initial = model.getInitial(nodeid);
             console.log('initial value is', initial || "not set");
@@ -650,20 +659,6 @@ define([
              Note that if equation is disabled then
              input, +, -, *, /, undo, and done should also be disabled.
              */
-        },
-        updateEquationLabels:function(type){
-            var name = this._model.student.getName(this.currentID);
-            var nodeName = '';
-            if(type=='accumulator'){
-                var nodeName = 'new '+name+' = '+ 'old '+name+' +';
-                document.getElementById("timeStepLabel").style.visibility="visible";
-            }else if(type=='function'){
-                var nodeName = name+' = ';
-                document.getElementById("timeStepLabel").style.visibility="hidden";
-            }else{
-                document.getElementById("timeStepLabel").style.visibility="hidden";
-            }
-            document.getElementById('equationLabel').innerHTML = nodeName;
         }
     });
 });

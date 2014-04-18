@@ -23,7 +23,7 @@ define([
             style.set('nameControl', 'display', 'block');
             style.set('descriptionControlStudent', 'display', 'none');
             style.set('descriptionControlAuthor', 'display', 'block');
-            style.set('selectUnits', 'display', 'none');
+            style.set('selectUnitsControl', 'display', 'none');
             style.set('setUnitsControl', 'display', 'inline');
             style.set('inputControlAuthor', 'display', 'block');
             style.set('inputControlStudent', 'display', 'none');
@@ -53,23 +53,13 @@ define([
 
         },
         /*
-         Added handler for type field in AUTHOR mode
+         Handler for type selector
          */
         handleType: function(type) {
             // Summary: Sets the type of the current node.
-            this._model.active.setType(this.currentID, type);
             console.log("In AUTHOR mode. Type selected is:" + type);
-        },
-        /*
-         Added handler for type field in AUTHOR mode
-         */
-        handleInitial: function(initial) {
-            // Summary: Sets the initial value of the current node.
-            this._model.active.setInitial(this.currentID, initial);
-            console.log("In AUTHOR mode. Initial value is: " + initial);
-        },
-        handleInputs: function(text) {
-            console.log("In AUTHOR mode. Input selected is: " + text);
+            this._model.active.setType(this.currentID, type);
+	    this.updateEquationLabels(); 
         },
         handleName: function(name) {
             console.log("**************** in handleName ", name);
@@ -80,12 +70,12 @@ define([
             if(!this._model.given.getNodeIDByName(this.currentID) && equation.isVariable(name)){
                 // check all nodes in the model for equations containing name of this node
                 // replace name of this node in equation with its ID
-                this._model.given.setName(this.currentID, name);
+                this._model.active.setName(this.currentID, name);
                 this.updateNodes();
-                this.setConnections(this._model.given.getInputs(this.currentID), this.currentID);
-            }
-            else{
-                console.error("Node name already exists OR node name is not valid variable!");
+                this.setConnections(this._model.active.getInputs(this.currentID), this.currentID);
+		this.updateEquationLabels(); 
+            } else {
+                console.error("Node name already exists OR node name is not valid variable.  Need message for student!");
             }
         },
         handleEquation: function(expression){
@@ -113,6 +103,17 @@ define([
             this._model.active.setUnits(this.currentID, units);
             console.log("**************** in handleSetUnits ", units);
         },
+        /*
+         Handler for initial value input
+         */
+        handleInitial: function(initial) {
+            // Summary: Sets the initial value of the current node.
+            this._model.active.setInitial(this.currentID, initial);
+            console.log("In AUTHOR mode. Initial value is: " + initial);
+        },
+        handleInputs: function(text) {
+            console.log("In AUTHOR mode. Input selected is: " + text);
+        },
         equationDoneHandler: function() {
             console.log("Inside equationDone handler");
             var widget = registry.byId(this.controlMap.equation);
@@ -135,9 +136,12 @@ define([
             }
         },
         initialControlSettings: function(nodeid) {
+	    var name = this._model.given.getName(nodeid);
+            registry.byId("setName").set('value', name || '', false);
+	    
             var desc = this._model.given.getDescription(nodeid);
             console.log('description is', desc || "not set");
-            registry.byId("setDescription").set('value', desc || 'defaultSelect', false);
+            registry.byId("setDescription").set('value', desc || '', false);
         }
     });
 });

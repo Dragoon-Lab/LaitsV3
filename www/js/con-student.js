@@ -45,6 +45,10 @@ define([
             this._model.active.setDescriptionID(this.currentID, selectDescription);
             this.updateNodes();
 
+	    // This is only needed if the type has already been set,
+	    // something that is generally only possible in TEST mode.
+            this.updateEquationLabels();
+
             var directives = this._PM.processAnswer(this.currentID, 'description', selectDescription);
             array.forEach(directives, function(directive) {
                 this.updateModelStatus(directive);
@@ -77,14 +81,20 @@ define([
 
                     if (directive.attribute == 'value') {  //if correct value suggested by PM
                         w.set(directive.attribute, directive.value, false);
-                        this.updateType(directive.value);
                     } else
                         w.set(directive.attribute, directive.value);
                 } else {
                     console.warn("Directive with unknown id: " + directive.id);
                 }
+		// If the value has been changed, then need to update model
+		// and maybe other stuff (not fully implemented yet).
+		if(directive.attribute == "value"){
+		    if(directive.id == "type")
+			this.updateType(directive.value);
+		    else
+			console.error("Can't handle change in value for other controls.");
+		}
             }, this);
-            this.updateEquationLabels(type);
         },
 
         handleInitial: function(initial) {
@@ -223,9 +233,10 @@ define([
             array.forEach(this._model.student.getStatusDirectives(nodeid), function(directive) {
                 var w = registry.byId(this.controlMap[directive.id]);
                 w.set(directive.attribute, directive.value);
-                if(directive.id=='type'){
-                    this.updateEquationLabels(directive.value);
-                }
+		// The actual values should be in the model itself, not in status directives.
+                if(directive.attribute == "value"){
+		    console.error("Values should not be set in status directives");
+		}
             }, this);
         }
 

@@ -480,6 +480,10 @@ define([
             setStatus: function(/*string*/ id, /*string*/ part, /*string*/ status) {
                 // Summary: tracks student progress (correct, incorrect) on a given node;
                 this.getNode(id).status[part] = status;
+            },
+            setPosition: function(/*string*/ id, /*object*/ positionObject) {
+                // Summary: sets the "X" and "Y" values of a node's position
+                this.getNode(id).position = positionObject;
             }
         }, both);
 
@@ -590,10 +594,6 @@ define([
                 // When undefined, status[control] needs to be set explicitly.
                 this.getNode(id).status[control] = lang.mixin(attributes, options);
                 return attributes;
-            },
-            setPosition: function(/*string*/ id, /*object*/ positionObject) {
-                // Summary: sets the "X" and "Y" values of a node's position
-                this.getNode(id).position = positionObject;
             }
         }, both);
 

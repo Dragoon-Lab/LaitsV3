@@ -9,15 +9,12 @@ define([
     "dojo/_base/array", "dojo/_base/lang", "parser/parser"
 ], function(array, lang, Parser) {
 
-    function equivalentError(message) {
-
-    }
-    ;
-
     return {
         parse: function(equation) {
             return Parser.parse(equation);
         },
+        isVariable: Parser.isVariable,
+
         /**
          * Evaluates two expressions for equivalence by comparing the given variables, and then
          *      testing the expressions with values assigned to the variables
@@ -194,13 +191,7 @@ define([
                 expr.substitute(variable, givenNodeId);
             }, this);
             return expr.toString();
-        },
-
-        /*
-        *  Author: Deepak
-        *  description: Adding wrapper to function 'isVariable' in math-parser/parser.js
-        */
-        isVariable: Parser.isVariable
+        }
 
     };
 });
