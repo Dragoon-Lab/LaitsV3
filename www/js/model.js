@@ -356,6 +356,10 @@ define([
                 if (ret)
                     ret.type = type;
             },
+            setPosition: function(/*string*/ id, /*object*/ positionObject) {
+                // Summary: sets the "X" and "Y" values of a node's position
+                this.getNode(id).position = positionObject;
+            },
             addInput: function(/*string*/ input, /*string*/ inputInto) {
                 console.error("Deprecated.  Use setInputs() instead.");
             },
@@ -480,10 +484,6 @@ define([
             setStatus: function(/*string*/ id, /*string*/ part, /*string*/ status) {
                 // Summary: tracks student progress (correct, incorrect) on a given node;
                 this.getNode(id).status[part] = status;
-            },
-            setPosition: function(/*string*/ id, /*object*/ positionObject) {
-                // Summary: sets the "X" and "Y" values of a node's position
-                this.getNode(id).position = positionObject;
             }
         }, both);
 
