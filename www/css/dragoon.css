@@ -18,6 +18,12 @@ html, body, #main{
 	font:10pt Arial,Myriad,Tahoma,Verdana,sans-serif !important;
 }
 
+#crisisAlertMessage{
+  background: #fff; /* override claro Dialog css for crisis alert message */
+}
+
+
+
 /*
                         Node editor
 */

@@ -319,8 +319,13 @@ define([
     }
 
     function message(/*object*/ obj, /*string*/ nodePart, /*string*/ status) {
-        if (counter[status] < hints[status].length)
+        if (counter[status] < hints[status].length){
             obj.push({id: "crisisAlert", attribute: "open", value: getMessage(nodePart, status)});
+            //Creates Dialog with a Message
+            dijit.byId("crisisAlertMessage").setContent("You should be more careful!");
+            dijit.byId("crisisAlertMessage").show();
+
+        }
         if(status === "extra" || status === "irrelevant")
             status = "incorrect";
         if(status === "lastFailure" || status === "lastFailure2")
@@ -569,6 +574,7 @@ define([
                 }
             }
             console.log(returnObj);
+            //returnObj.push([{id: "crisisAlert", attribute: "open", value: "You should be more careful."}]);
             return returnObj;
         },
         /*****
