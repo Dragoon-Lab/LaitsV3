@@ -567,6 +567,8 @@ define([
                 // Expression now is written in terms of student IDs, when possible.
                 // Save with explicit parentheses for all binary operations.
                 var parsedEquation = parse.toString(true);
+
+		// This duplicates code in equationDoneHandler
                 // console.log("********* Saving equation to model: ", parsedEquation);
                 this._model.active.setEquation(this.currentID, parsedEquation);
 

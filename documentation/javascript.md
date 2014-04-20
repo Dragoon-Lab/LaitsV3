@@ -60,6 +60,8 @@ Methods in the PM return an array of directives like this:
 		{id: "description", attribute: "status", value: "demo"},  // Set the status (red/green/yellow)
 		// Set the value of a control (in the case of demo)
 		{id: "description", attribute: "value", value: "id3"},
+		// Set the equation; the equation contains the text, as written by the student (no IDs).
+		{id: "equation", attribute: "value", "-fish * fowl"}
 		// Disable individual choices in a pull-down menu
 		{id: "type", attribute: "disableOption", value: "function"},
 		// Open a blocking pop-up box
