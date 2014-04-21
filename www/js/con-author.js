@@ -82,10 +82,17 @@ define([
             }
         },
         handleEquation: function(expression){
-
+            //generally this handler is not needed
         },
         handleKind: function(kind) {
             console.log("**************** in handleKind ", kind);
+
+            if(kind == "given"){
+                this._model.given.setGenus(this.currentID,"");
+            }
+            else{
+                this._model.given.setGenus(this.currentID,kind);
+            }
         },
         handleDescription: function(description) {
             // Summary: Checks to see if the given description exists; if the 
