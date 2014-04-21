@@ -193,8 +193,10 @@ define([
                 w.set("status", '');  // remove colors
             }
 
-	    // Undo any initial value history
-	    this.lastInitialValue = null;
+	    // Undo any initial value
+	    var initial = registry.byId(this.controlMap["initial"]);
+	    initial.set("value", "");
+	    this.lastInitialValue = "";
 
 	    // Undo equation labels
 	    this.updateEquationLabels("none"); 

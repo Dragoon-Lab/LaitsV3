@@ -70,6 +70,7 @@ define([
 
         handleInitial: function(initial) {
 
+            console.log("****** Student has chosen initial value", initial, this.lastInitialValue);
 	    /*
 	     Don't evaluate if value is unchanged.
 
@@ -80,8 +81,6 @@ define([
 		return;
 	    }
 	    this.lastInitialValue = initial;
-
-            console.log("****** Student has chosen initial value", initial);
 
             // updating node editor and the model.
             this._model.active.setInitial(this.currentID, initial);
@@ -136,7 +135,9 @@ define([
         },
 	equationSet: function(value){
 	    var directives = [];
-            var parse = this.equationAnalysis(directives);
+	    // Parse and update model, connections, etc.
+            this.equationAnalysis(directives);
+	    // Generally, since this is the correct solution, there should be no directives
 	    this.applyDirectives(directives);
 	},
         /* 
