@@ -1,13 +1,13 @@
 /* global define */
 /*
- *                          AUTHOR mode-specific handlers
+ *                          student mode-specific handlers
  */
 define([
     "dojo/_base/array", 'dojo/_base/declare', "dojo/_base/lang",
-    "dojo/dom", "dojo/dom-style", "dojo/ready",
+    "dojo/dom", "dojo/ready",
     'dijit/registry',
     './controller', "./pedagogical_module", "./equation"
-], function(array, declare, lang, dom, style, ready, registry, controller, PM, expression) {
+], function(array, declare, lang, dom, ready, registry, controller, PM, expression) {
 
     /*
      Methods in controller specific to the student modes

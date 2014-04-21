@@ -53,7 +53,8 @@ define([
 
         // A list of all widgets.  (The constructor mixes this with controlMap)
         widgetMap: {
-            message: 'messageBox'
+            message: 'messageBox',
+            crisisAlert: 'crisisAlertMessage'
         },
 
         // Controls that are select menus
@@ -132,6 +133,7 @@ define([
                 var w = registry.byId(this.controlMap[control]);
                 w._setStatusAttr = setStatus;
             }
+
             var setEnableOption = function(value){
                 console.log("++++ in setEnableOption, scope=", this);
                 array.forEach(this.options, function(option){
@@ -154,6 +156,13 @@ define([
                 w._setEnableOptionAttr = setEnableOption;
                 w._setDisableOptionAttr = setDisableOption;
             }, this);
+
+	    var crisis = registry.byId(this.widgetMap.crisisAlert);
+	    crisis._setOpenAttr = function(message){
+		console.log("crisis alert message ", message);
+		this.setContent(message);
+		this.show();
+	    };
 
             // Add appender to message widget
             var messageWidget = registry.byId(this.widgetMap.message);
@@ -209,7 +218,7 @@ define([
         },
 
         //set up event handling with UI components
-            _initHandles:function(){
+        _initHandles:function(){
             // Summary: Set up Node Editor Handlers
 
             /*
