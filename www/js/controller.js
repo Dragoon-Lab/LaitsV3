@@ -18,7 +18,6 @@ define([
          evaluating those changes.
          */
         disableHandlers: false,
-        disableInitialTextEvent:false,
 
         constructor: function(mode, subMode, model, inputStyle){
 
@@ -178,6 +177,7 @@ define([
         // Function called when node editor is closed.
         // This can be used as a hook for saving sessions and logging
         closeEditor: function(){
+	    console.log("++++++++++ entering closeEditor");
             // Erase modifications to the control settingse.
             // Enable all options in select controls.
             array.forEach(this.selects, function(control){

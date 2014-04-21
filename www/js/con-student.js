@@ -15,6 +15,7 @@ define([
 
     return declare(controller, {
         _PM: null,
+
         constructor: function(mode, subMode, model) {
             console.log("++++++++ In student constructor");
             this._PM = new PM(mode, subMode, model);
@@ -69,12 +70,7 @@ define([
 
         handleInitial: function(initial) {
 
-            if (this.disableInitialTextEvent) {
-                this.disableInitialTextEvent = false;
-                return;
-            }
-
-            console.log("****** Student has chosen initial value", initial, this);
+            console.log("****** Student has chosen initial value", initial);
 
             // updating node editor and the model.
             this._model.active.setInitial(this.currentID, initial);
@@ -82,7 +78,6 @@ define([
         },
         initialSet: function(value){
             this._model.active.setInitial(this.currentID, value);
-            this.disableInitialTextEvent = true;
 	},
 
         /*
