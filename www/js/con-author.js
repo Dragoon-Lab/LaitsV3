@@ -57,7 +57,7 @@ define([
          */
         handleType: function(type) {
             // Summary: Sets the type of the current node.
-            console.log("****** Student has chosen type ", type, this);
+            console.log("****** AUTHOR has chosen type ", type, this);
             if (type == 'defaultSelect')
                 return; // don't do anything if they choose default
             this.updateType(type);
