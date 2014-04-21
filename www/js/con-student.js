@@ -4,10 +4,10 @@
  */
 define([
     "dojo/_base/array", 'dojo/_base/declare', "dojo/_base/lang",
-    'dojo/dom-style', "dojo/ready",
+    "dojo/dom", "dojo/dom-style", "dojo/ready",
     'dijit/registry',
     './controller', "./pedagogical_module", "./equation"
-], function(array, declare, lang, style, ready, registry, controller, PM, expression) {
+], function(array, declare, lang, dom, style, ready, registry, controller, PM, expression) {
 
     /*
      Methods in controller specific to the student modes
@@ -134,6 +134,9 @@ define([
 	    this.applyDirectives(directives);
         },
 	equationSet: function(value){
+	    // applyDirectives updates equationBox, but not equationText:
+	    dom.byId("equationText").innerHTML = value;
+
 	    var directives = [];
 	    // Parse and update model, connections, etc.
             this.equationAnalysis(directives);
