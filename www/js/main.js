@@ -155,6 +155,15 @@ define([
                 table.show();
             });
 
+
+           menu.add("doneButton",function(){
+               console.debug("done button is clicked");
+               window.history.back();
+
+
+           });
+
+
             /*
              BvdS:  this doesn't look quite right.  We want to download
              the image and then get its dimensions.  (This is a property of 
