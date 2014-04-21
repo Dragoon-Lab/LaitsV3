@@ -8,15 +8,19 @@ define([
     'dijit/registry',
     './controller',
     "./equation",
+    "dojo/store/Memory",
     "dojo/domReady!"
 
-], function(array, declare, lang, style, ready, registry, controller, equation) {
+], function(array, declare, lang, style, ready, registry, controller, equation,memory) {
 
     return declare(controller, {
         constructor: function() {
             console.log("++++++++ In author constructor");
             this.authorControls();
             ready(this, "initAuthorHandles");
+        },
+        authorControlMap:{
+            input:"setInput"
         },
         authorControls: function() {
             console.log("++++++++ Setting AUTHOR format in Node Editor.");
@@ -62,7 +66,7 @@ define([
                 return; // don't do anything if they choose default
             this.updateType(type);
             this._model.active.setType(this.currentID, type);
-    	    this.updateEquationLabels();
+    	    //this.updateEquationLabels();
         },
         handleName: function(name) {
             console.log("**************** in handleName ", name);
@@ -152,6 +156,28 @@ define([
             var desc = this._model.given.getDescription(nodeid);
             console.log('description is', desc || "not set");
             registry.byId("setDescription").set('value', desc || '', false);
+
+            // populate inputs
+            var t = registry.byId(this.authorControlMap.input);
+
+            /*
+            *   populate the nodes in input tab
+            *   For combo-box we need to setup a data-store which is collection of {name:'',id:''} object
+            *
+            */
+            var dummyArray =[];
+            var id = 1;
+            array.forEach(this._model.given.getDescriptions(), function(desc){
+                if(desc.label){
+                    var name = this._model.given.getName(desc.value);
+                    var obj = {name:desc.label+' '+'|'+' '+name,id:id};
+                    dummyArray.push(obj);
+                    id++;
+                }
+            }, this);
+            var m = new memory({data:dummyArray});
+            t.attr("store",m);
+
         }
     });
 });

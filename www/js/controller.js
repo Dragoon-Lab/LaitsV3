@@ -613,7 +613,7 @@ define([
         },
 
         // Stub to be overwritten by student or author mode-specific method.
-        initialControlSettings: function(){
+        initialControlSettings: function(id){
             console.error("initialControlSettings should be overwritten.");
         },
 
