@@ -57,9 +57,12 @@ define([
          */
         handleType: function(type) {
             // Summary: Sets the type of the current node.
-            console.log("In AUTHOR mode. Type selected is:" + type);
+            console.log("****** Student has chosen type ", type, this);
+            if (type == 'defaultSelect')
+                return; // don't do anything if they choose default
+            this.updateType(type);
             this._model.active.setType(this.currentID, type);
-	    this.updateEquationLabels(); 
+    	    this.updateEquationLabels();
         },
         handleName: function(name) {
             console.log("**************** in handleName ", name);
