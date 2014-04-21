@@ -18,6 +18,8 @@ define([
          evaluating those changes.
          */
         disableHandlers: false,
+	/* The last value entered into the intial value control */
+	lastInitialValue: null,
 
         constructor: function(mode, subMode, model, inputStyle){
 
@@ -190,6 +192,9 @@ define([
                 w.set("disabled", false);  // enable everything
                 w.set("status", '');  // remove colors
             }
+
+	    // Undo any initial value history
+	    this.lastInitialValue = null;
 
 	    // Undo equation labels
 	    this.updateEquationLabels("none"); 
@@ -636,6 +641,7 @@ define([
 
             var initial = model.getInitial(nodeid);
             console.log('initial value is', initial || "not set");
+	    this.lastInitialValue = initial;
             registry.byId(this.controlMap.initial).attr('value', initial || '');
 
             var unit = model.getUnits(nodeid);

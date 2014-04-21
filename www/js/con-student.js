@@ -70,6 +70,17 @@ define([
 
         handleInitial: function(initial) {
 
+	    /*
+	     Don't evaluate if value is unchanged.
+
+	     This covers a bug where an event is emitted from 
+	     the initial value widget when the node editor is closed.
+	     */
+	    if(!initial || initial == this.lastInitialValue){
+		return;
+	    }
+	    this.lastInitialValue = initial;
+
             console.log("****** Student has chosen initial value", initial);
 
             // updating node editor and the model.
