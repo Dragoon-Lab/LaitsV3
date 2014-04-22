@@ -134,7 +134,17 @@ define([
                 var w = registry.byId(this.controlMap[control]);
                 w._setStatusAttr = setStatus;
             }
+	    /*
+	     If the status is set for equationBox, we also need to set
+	     the status for equationText.  Since equationText is not a widget,
+	     we need to set it explicitly.
 
+	     Adding a watch method to the equationBox didn't work.
+	     */
+	    aspect.after(registry.byId(this.controlMap.equation), "_setStatusAttr", 
+			 lang.hitch({domNode: dom.byId("equationText")}, setStatus),
+			 true);
+	    
             var setEnableOption = function(value){
                 console.log("++++ in setEnableOption, scope=", this);
                 array.forEach(this.options, function(option){

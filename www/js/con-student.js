@@ -72,10 +72,10 @@ define([
 
             console.log("****** Student has chosen initial value", initial, this.lastInitialValue);
 	    /*
-	     Don't evaluate if value is unchanged.
+	     Evaluate only if the value is changed.
 
-	     This covers a bug where an event is emitted from 
-	     the initial value widget when the node editor is closed.
+	     The controller modifies the initial value widget so that a "Change" event is
+	     fired if the widget loses focus.  This may happen when the node editor is closed.
 	     */
 	    if(!initial || initial == this.lastInitialValue){
 		return;
@@ -175,6 +175,8 @@ define([
 	/*
 	 Take a list of directives and apply them to the Node Editor,
 	 updating the model and updating the graph.
+
+	 The format for directives is defined in documentation/javascript.md
 	 */
 
 	applyDirectives: function(directives, noModelUpdate){

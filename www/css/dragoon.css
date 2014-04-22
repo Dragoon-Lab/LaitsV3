@@ -20,6 +20,7 @@ html, body, #main{
 
 #crisisAlertMessage{
   background: #fff; /* override claro Dialog css for crisis alert message */
+  max-width: 60ex;
 }
 
 
@@ -28,7 +29,7 @@ html, body, #main{
                         Node editor
 */
 
-#nodeeditor {
+#nodeeditor, #crisisAlertMessage {
     font:10pt Arial,Myriad,Tahoma,Verdana,sans-serif !important;
 }
 
