@@ -21,6 +21,7 @@ define([
 	/* The last value entered into the intial value control */
 	lastInitialValue: null,
 
+
         constructor: function(mode, subMode, model, inputStyle){
 
             console.log("+++++++++ In generic controller constructor");
@@ -644,11 +645,13 @@ define([
 
             var type = model.getType(nodeid);
             console.log('node type is', type || "not set");
-            if(type){
+
+
+
 		registry.byId(this.controlMap.type).set('value', type || 'defaultSelect');
 		//update labels
 		this.updateEquationLabels(type);
-	    }
+
 
             var initial = model.getInitial(nodeid);
             console.log('initial value is', initial || "not set");
