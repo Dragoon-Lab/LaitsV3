@@ -20,7 +20,9 @@ define([
             ready(this, "initAuthorHandles");
         },
         authorControlMap:{
-            input:"setInput"
+            input:"setInput",
+            name:"setName",
+            description:"setDescription"
         },
         authorControls: function() {
             console.log("++++++++ Setting AUTHOR format in Node Editor.");
@@ -125,8 +127,9 @@ define([
             this._model.active.setInitial(this.currentID, initial);
             console.log("In AUTHOR mode. Initial value is: " + initial);
         },
-        handleInputs: function(text) {
-            console.log("In AUTHOR mode. Input selected is: " + text);
+        handleInputs: function(name) {
+            console.log("In AUTHOR mode. Input selected is: " + name);
+            this.equationInsert(name);
         },
         equationDoneHandler: function() {
             console.log("Inside equationDone handler");
@@ -151,11 +154,11 @@ define([
         },
         initialControlSettings: function(nodeid) {
 	    var name = this._model.given.getName(nodeid);
-            registry.byId("setName").set('value', name || '', false);
+            registry.byId(this.authorControlMap.name).set('value', name || '', false);
 	    
             var desc = this._model.given.getDescription(nodeid);
             console.log('description is', desc || "not set");
-            registry.byId("setDescription").set('value', desc || '', false);
+            registry.byId(this.authorControlMap.description).set('value', desc || '', false);
 
             // populate inputs
             var t = registry.byId(this.authorControlMap.input);
@@ -170,7 +173,7 @@ define([
             array.forEach(this._model.given.getDescriptions(), function(desc){
                 if(desc.label){
                     var name = this._model.given.getName(desc.value);
-                    var obj = {name:desc.label+' '+'|'+' '+name,id:id};
+                    var obj = {name:name,id:id};
                     dummyArray.push(obj);
                     id++;
                 }
