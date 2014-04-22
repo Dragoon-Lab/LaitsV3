@@ -113,6 +113,10 @@ define([
             //restore to default  - creating select input as stateless
             registry.byId(this.controlMap.inputs).set('value', 'defaultSelect',false);
         },
+        handleEquation: function(equation){
+            var w = registry.byId(this.widgetMap.equation);
+            w.set("status","");
+        },
         handleUnits: function(unit) {
             console.log("*******Student has chosen unit", unit, this);
 
