@@ -146,7 +146,7 @@ define([
                         equation.addQuantity(nodeId,this._model.given);
                         this.setConnections(this._model.given.getInputs(this.currentID), this.currentID);
                     }
-                }))
+                }));
             }
             else{
                 console.error("bad parsing");
