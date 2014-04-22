@@ -129,10 +129,9 @@ define([
             menu.add("graphButton", function() {
                 console.debug("button clicked");
 
-                // Instead, one should pass "givenMovel" into here.Bug #2307
-                var calc = new calculations(solutionGraph, true);
-                var givenObj = calc.gerParametersForRendering(solutionGraph, true);
-                var studentObj = calc.gerParametersForRendering(solutionGraph, false);
+                var calc = new calculations(givenModel);
+                var givenObj = calc.gerParametersForRendering(true);
+                var studentObj = calc.gerParametersForRendering(false);
                 var obj = calc.setStudentGivenModel(givenObj, studentObj);
 
                 // instantiate graph object
@@ -145,11 +144,11 @@ define([
             menu.add("tableButton", function() {
                 console.debug("table button clicked");
 
-                /*var calc = new calculations(solutionGraph,true);
-                 var obj = calc.gerParametersForRendering(solutionGraph,true);*/
+                /*var calc = new calculations(givenModel,true);
+                 var obj = calc.gerParametersForRendering(givenModel,true);*/
 
-                var calc = new calculations(solutionGraph, false);
-                var obj = calc.gerParametersForRendering(solutionGraph, false);
+                var calc = new calculations(givenModel);
+                var obj = calc.gerParametersForRendering(false);
 
                 var table = new Table(obj);
                 table.show();
