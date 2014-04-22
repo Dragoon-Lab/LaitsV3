@@ -171,7 +171,8 @@ define([
 	    var crisis = registry.byId(this.widgetMap.crisisAlert);
 	    crisis._setOpenAttr = function(message){
 		console.log("crisis alert message ", message);
-		this.setContent(message);
+        this.set('content',message); //deprecated error
+		//this.setContent(message);
 		this.show();
 	    };
 
