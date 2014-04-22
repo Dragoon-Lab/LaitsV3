@@ -131,12 +131,13 @@ define([
                 array.forEach(this.student.getNodes(), intID);
                 this._ID = largest + 1;
 
-		/* Sanity test that all given node names 
-		   and descriptions are distinct
+		/*
+		 Sanity test that all given model node names 
+		 and descriptions are distinct
 		 */
 		var ids = {}, names = {}, descriptions = {};
 		array.forEach(this.given.getNodes(), function(node){
-		    console.log("********* testing ", node.ID, node.name, node.description);
+		    // console.log("********* testing ", node.ID, node.name, node.description);
 		    if(node.ID in ids)
 			throw new Error("Duplicate node id " + node.id);
 		    if(node.name in names)
