@@ -219,7 +219,10 @@ define([
 	    this.lastInitialValue = "";
 
 	    // Undo equation labels
-	    this.updateEquationLabels("none"); 
+	    this.updateEquationLabels("none");
+
+	    // Reset equationText to be empty
+	    this.structured.reset();
 
             /* Erase messages
              Eventually, we probably want to save and restore
