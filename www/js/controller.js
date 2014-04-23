@@ -366,7 +366,7 @@ define([
             domClass.replace(this.currentID, type);
             var nodeName = this._model.active.getName(this.currentID);
             if(nodeName)
-                nodeName = '<div id=' + this.currentID + 'Label><strong>' + nodeName + '</strong></div>';
+                nodeName='<div id='+this.currentID+'Label  class="bubble"><strong>'+nodeName+'</strong></div>';
             else
                 nodeName = '';
             if(dom.byId(this.currentID+'Label'))

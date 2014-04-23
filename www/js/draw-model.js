@@ -127,7 +127,7 @@ define([
 
             var nodeName = this._givenModel.getName(node.ID);
             if(nodeName && type != "triangle")
-                nodeName='<div id='+node.ID+'Label><strong>'+nodeName+'</strong></div>';
+                nodeName='<div id='+node.ID+'Label  class="bubble"><strong>'+nodeName+'</strong></div>';
             else
                 nodeName='';
 
