@@ -137,7 +137,6 @@ define([
 		 */
 		var ids = {}, names = {}, descriptions = {};
 		array.forEach(this.given.getNodes(), function(node){
-		    // console.log("********* testing ", node.ID, node.name, node.description);
 		    if(node.ID in ids)
 			throw new Error("Duplicate node id " + node.id);
 		    if(node.name in names)
@@ -200,19 +199,29 @@ define([
             getOptimalNode: function(/*string*/ studentID) {
                 // Summary: Returns the next optimal node, first checking for children
                 //      of visible parent nodes, and then checking for parent nodes that
-                //      aren't visible; 
+                //      aren't visible; Returns null if all nodes visible.
                 //      
                 // Note: the student node studentID is assumed incorrect so it is ignored
-
                 var solutionNodes = this.solution.getNodes();
-                var nextNode = "model complete";
+                var nextNode = null;
                 for (var i = 0; i < solutionNodes.length; i++) {
                     if (solutionNodes[i].parentNode) {
                         if (!this.isNodeVisible(studentID, solutionNodes[i].ID))
+			    // Use this if no children are found
                             nextNode = solutionNodes[i].ID;
-                        else if (solutionNodes[i].inputs)
-                            return this._getNextOptimalNode(solutionNodes[i].ID);
-                        console.log("*^*^*Parent:\n", solutionNodes[i].ID);
+                        else if (solutionNodes[i].inputs) {
+                            var optimalNode1 = this._getNextOptimalNode(solutionNodes[i].ID);
+                            if(optimalNode1)
+                                return optimalNode1;
+                        }
+                    } else {
+                        if(!this.isNodeVisible(studentID, solutionNodes[i].ID) && !nextNode)
+                            nextNode = solutionNodes[i].ID;
+                        else if(this.isNodeVisible(studentID, solutionNodes[i].ID) && solutionNodes[i].inputs) {
+                            var optimalNode2 = this._getNextOptimalNode(solutionNodes[i].ID);
+                            if(optimalNode2)
+                                return optimalNode2;
+                        }
                     }
                 }
                 return nextNode;
@@ -540,9 +549,11 @@ define([
             getCorrectAnswer: function(/*string*/ studentID, /*string*/ nodePart) {
                 // Summary: returns the correct answer for a given part of a node;
                 //      used by the pedagogical model
-                if (nodePart === "description")
-                    return obj.getOptimalNode(studentID);
-                else {
+                if (nodePart === "description"){
+                    var returnValue = obj.getOptimalNode(studentID);
+                    console.log("Correct node: ", returnValue);
+                    return returnValue;
+                }else {
                     var id = this.getDescriptionID(studentID);
                     var node = obj.given.getNode(id);
                     return node[nodePart];
@@ -601,7 +612,6 @@ define([
                 this.getNode(id).initial = initial;
             },
             setUnits: function(/*string*/ id, /*string*/ units) {
-                console.log("******** Setting student units to ", units);
                 this.getNode(id).units = units;
             },
             setEquation: function(/*string*/ id, /*string | object*/ equation) {

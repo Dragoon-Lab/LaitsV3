@@ -321,9 +321,9 @@ define([
     function message(/*object*/ obj, /*string*/ nodePart, /*string*/ status) {
         if (counter[status] < hints[status].length)
             obj.push({id: "crisisAlert", attribute: "open", value: getMessage(nodePart, status)});
-        if(status === "extra" || status === "irrelevant")
+        if (status === "extra" || status === "irrelevant")
             status = "incorrect";
-        if(status === "lastFailure" || status === "lastFailure2")
+        if (status === "lastFailure" || status === "lastFailure2")
             status = "incorrect. The correct answer has been given";
         obj.push({id: "message", attribute: "append", value: "The value entered for " + nodePart + " is " + status + "."});
     }
@@ -475,7 +475,6 @@ define([
             if (this.logging) {
                 this.logging.log('solution-step', {node: studentID, type: nodePart, value: answer, checkResult: interpretation});
             }
-            console.log("*****\n", interpretation);
             return interpretation;
         },
         /*****
@@ -488,19 +487,26 @@ define([
             //
             // Tags: Private
             var interpretation = this._getInterpretation(id, nodePart, answer);
-            var returnObj = [];
-            var currentStatus;
+            var returnObj = [], currentStatus;
+            var givenID;  // ID of the correct node, if it exists
 
-            //Retrieve the id from the given model.
-            var givenID;
-            if (nodePart === "description")
-                givenID = answer;
-            else {
-                givenID = this.model.student.getDescriptionID(id);
-                currentStatus = this.model.given.getStatus(givenID, nodePart); //get current status set in given model
+	    // Send correct answer to controller if status will be set to 'demo'
+            if (interpretation === "lastFailure" || interpretation === "secondFailure") {
+                answer = this.model.student.getCorrectAnswer(id, nodePart);
+                // In case of an equation, we need to substitute variablenames in for the IDs.
+                if (nodePart == "equation") {
+                    answer = check.convert(this.model.given, answer);
+                }
+                if (!answer) {
+                    if (nodePart === "description") {
+                        returnObj.push({id: "message", attribute: "append", value: "You have already created all the necessary nodes."});
+                    } else
+			console.error("Unexpected null from model.getCorrectAnswer().");
+                } else
+                    returnObj.push({id: nodePart, attribute: "value", value: answer});
             }
 
-            //Anonymous function that updates the status if it is not already set to "correct" or "demo"
+            // Local function that updates the status if it is not already set to "correct" or "demo"
             var updateStatus = function(returnObj, model) {
                 returnObj.forEach(function(i) {
                     if (i.attribute === "status") {
@@ -534,31 +540,27 @@ define([
                 });
             };
 
-            // Send correct answer to controller if status will be set to 'demo'
-            if (interpretation === "lastFailure" || interpretation === "secondFailure") {
-                answer = this.model.student.getCorrectAnswer(id, nodePart);
-		// In case of an equation, we need to substitute variable names in for the IDs.
-		if(nodePart=="equation"){
-		    answer = check.convert(this.model.given, answer);
-		}
-                console.log("****\n", "set to: ", {id: nodePart, attribute: "value", value: answer});
-                returnObj.push({id: nodePart, attribute: "value", value: answer});
-            }
-
             // Process answers for description
             if (nodePart === "description") {
-                descriptionTable[interpretation][this.userType](returnObj, nodePart);
-                for (var i = 0; i < returnObj.length; i++)
-                    if (returnObj[i].value === "correct" || returnObj[i].value === "demo") {
-                        currentStatus = this.model.given.getStatus(givenID, nodePart); //get current status set in given model
-                        if (currentStatus !== "correct" && currentStatus !== "demo")
-                            this.model.given.setAttemptCount(answer, nodePart, this.descriptionCounter);
-                        updateStatus(returnObj, this.model);
-                        this.descriptionCounter = 0;
-                    }
+                if (answer) {
+                    givenID = answer;
+                    descriptionTable[interpretation][this.userType](returnObj, nodePart);
+                    for (var i = 0; i < returnObj.length; i++)
+                        if (returnObj[i].value === "correct" || returnObj[i].value === "demo") {
+                            currentStatus = this.model.given.getStatus(givenID, nodePart); //get current status set in given model
+                            if (currentStatus !== "correct" && currentStatus !== "demo")
+                                this.model.given.setAttemptCount(answer, nodePart, this.descriptionCounter);
+                            if (currentStatus === "")
+                                this.model.given.setStatus(givenID, nodePart, returnObj[i].value);
+                            else
+                                updateStatus(returnObj, this.model);
+                            this.descriptionCounter = 0;
+                        }
+                }
                 // Process answers for all other node types
             } else {
-                var givenID = this.model.student.getDescriptionID(id);
+                givenID = this.model.student.getDescriptionID(id);
+                currentStatus = this.model.given.getStatus(givenID, nodePart); //get current status set in given model
                 console.assert(actionTable[interpretation], "processAnswer() interpretation '" + interpretation + "' not in table ", actionTable);
                 actionTable[interpretation][this.userType](returnObj, nodePart);
                 if (currentStatus !== "correct" && currentStatus !== "demo")
@@ -573,7 +575,7 @@ define([
                 }
             }
             //returnObj.push([{id: "crisisAlert", attribute: "open", value: "You should be more careful."}]);
-            console.log("**** PM returning\n", returnObj);
+            console.log("**** PM returning:\n", returnObj);
             return returnObj;
         },
         /*****
