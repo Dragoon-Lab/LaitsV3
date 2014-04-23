@@ -145,6 +145,69 @@
                 "units": "",
                 "description": "The number of moose that die each year",
                 "equation": "id1 * id3"
+            },
+            {
+                "ID": "id6",
+                "inputs": [],
+                "position": {
+                    "x": 400,
+                    "y": 100
+                },
+                "attemptCount": {
+                    "description": 0,
+                    "type": 0,
+                    "initial": 0,
+                    "units": 0,
+                    "equation": 0
+                },
+                "status": {},
+                "name": "moose population",
+                "type": "accumulator",
+                "parentNode": true,
+                "units": "",
+                "description": "The number of moose in the population"
+            },
+            {
+                "ID": "id7",
+                "inputs": [],
+                "position": {
+                    "x": 400,
+                    "y": 100
+                },
+                "attemptCount": {
+                    "description": 0,
+                    "type": 0,
+                    "initial": 0,
+                    "units": 0,
+                    "equation": 0
+                },
+                "status": {},
+                "name": "moose birth rate",
+                "type": "parameter",
+                "parentNode": false,
+                "units": "",
+                "description": "The ratio of moose born each year to the moose population"
+            },
+            {
+                "ID": "id8",
+                "inputs": [],
+                "position": {
+                    "x": 400,
+                    "y": 100
+                },
+                "attemptCount": {
+                    "description": 0,
+                    "type": 0,
+                    "initial": 0,
+                    "units": 0,
+                    "equation": 0
+                },
+                "status": {},
+                "name": "moose births",
+                "type": "function",
+                "parentNode": false,
+                "units": "",
+                "description": "The number of moose born each year"
             }
         ],
         "studentModelNodes": []
