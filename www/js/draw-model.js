@@ -6,7 +6,7 @@ define([
     "dojo/_base/array", 'dojo/_base/declare', 'dojo/_base/lang',
     'dojo/dom', "dojo/dom-attr", "dojo/dom-construct","dijit/Menu",
     "dijit/MenuItem", "jsPlumb/jsPlumb"
-],function(array, declare, lang, dom, attr, domConstruct,Menu,MenuItem){
+],function(array, declare, lang, dom, attr, domConstruct, Menu, MenuItem){
 
     return declare(null, {
 
@@ -100,18 +100,16 @@ define([
             });
 
             array.forEach(vertices, function(vertex){
-                // Not sure why vertex is an array and not just the <div>
-                var id = attr.get(vertex[0], "id");
+                var id = attr.get(vertex, "id");
                 var inputs = givenModel.getInputs(id);
                 this.setConnections(inputs, vertex);
-
             }, this);
 
             return instance;
 
         },
 
-        /* addNode: Add a node to the jsPlumb model.  */
+        /* addNode: Add a node to the jsPlumb model, returning the DOM element.  */
 
         addNode: function(/*object*/ node){
 
@@ -131,8 +129,12 @@ define([
             else
                 nodeName='';
 
-
-            domConstruct.create("div", {id: node.ID, 'class': type, 'style':{ left: node.position.x +'px' , top: node.position.y +'px'},innerHTML:nodeName}, "statemachine-demo");
+            var vertex = domConstruct.create("div", {
+		id: node.ID,
+		"class": type,
+		style: {left: node.position.x +'px', top: node.position.y +'px'},
+		innerHTML: nodeName
+	    }, "statemachine-demo");
 
             //add menu to delete or we can iterate over all node.IDs and do following
             var pMenu = new Menu({
@@ -140,12 +142,8 @@ define([
             });
             pMenu.addChild(new MenuItem({
                 label: "Delete Node",
-                onClick: lang.hitch(this, function(){this.deleteNode(node.ID);}) //onClick expects anonymous function call
+                onClick: lang.hitch(this, this.deleteNode) 
             }));
-
-
-            // jsPlumb.addEndpoint(node.ID);
-            var vertex = jsPlumb.getSelector(".statemachine-demo ." + type);
 
             /*
              Fire off functions associated with draggable events.
@@ -158,7 +156,6 @@ define([
                 onMove: lang.hitch(this, this.onMove),
                 onMoveStop: lang.hitch(this, this.onMoveStop)
             });
-            console.warn("Draw new vertex.  Need to add code here.");
             this._instance.makeSource(vertex, {
                 filter:".ep",                               // only supported by jquery
                 anchor:"Continuous",
@@ -175,8 +172,8 @@ define([
             });
 
             return vertex;
-
         },
+
         getEndPointConfiguration:function (sign){
             if(sign)
              return [["Arrow", { location:1, id:"arrow", length:14, foldback:0.9 } ], ["Custom", { create:function(component) { var overlay = domConstruct.create("div", { innerHTML: "<div class='endPoint'>"+sign+"</div>" }); return overlay; }, location:1.0, id:"customOverlay" }]];
@@ -193,7 +190,6 @@ define([
 
             this._instance.Defaults.ConnectionOverlays = this.getEndPointConfiguration('+');
 
-            console.log("--------- in setConnections for ", sources, destination);
             // For now, we simply remove all existing connections and
             // create all new connections.
             // See http://stackoverflow.com/questions/11488067/how-to-delete-jsplumb-connection
@@ -237,7 +233,7 @@ define([
         },
 
         deleteNode: function(/*object*/ nodeID){
-            console.log("delete node called for " + nodeID);
+            console.log("delete node called for ", nodeID);
         },
 
         // Keep track of whether there was a mouseDown and mouseUp
