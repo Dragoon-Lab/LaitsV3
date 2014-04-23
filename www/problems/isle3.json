@@ -20,7 +20,8 @@
                 "ID": "id1",
                 "inputs": [
                     {
-                        "ID": "id4"
+                        "ID": "id4",
+                        "ID": "id5"
                     }
                 ],
                 "position": {
@@ -41,7 +42,7 @@
                 "units": "",
                 "description": "The number of moose in the population",
                 "initial": 20,
-                "equation": "id4"
+                "equation": "id4-id5"
             },
             {
                 "ID": "id2",
