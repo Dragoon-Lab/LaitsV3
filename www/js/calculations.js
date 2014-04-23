@@ -1,32 +1,30 @@
 /* global define, Image */
 define([
     "dojo/_base/declare",	
-    "./model",
     "parser/parser"
-],function(declare, model, Parser){ 
-    
-	      
+],function(declare, Parser){
+
     return declare(null, {
 	// timesteps in graph
 	timeSteps: 0,
 	// start time to plot graph
 	startTime: 0,
 	// end time to plot grpah
-	endTime:0,
+	endTime: 0,
 	// model 
-	model:null,
+	model: null,
 	// model nodes
-	modelNodes:null,
+	modelNodes: null,
 	// current node values
 	currentNodeValues: {},
         // set current mode. TRUE = givenModel / FALSE = StudentModel
-        active:null,
+        active: null,
 			
 	constructor: function(model){
             this.model = model;
-	    this._setStartTime();
-	    this._setEndtime();
-	    this._setTimeStep();
+	    this.startTime = this.model.getTime().start;
+	    this.endTime = this.model.getTime().end;
+	    this.timeSteps = this.model.getTime().step;
 	},
 	
         //this function sets mode of model to be student or given
@@ -43,24 +41,6 @@ define([
 	    this.modelNodes = this.active.getNodes();
         },
 	
-	//set start-time (private method)
-	_setStartTime: function()
-	{
-	    this.startTime = this.model.getTime().start;
-	},
-
-	//set end-time (private method)
-	_setEndtime: function()
-	{
-				this.endTime = this.model.getTime().end;
-	},
-	
-	//set time-step (private method)
-	_setTimeStep: function()
-	{
-	    this.timeSteps = this.model.getTime().step;
-	},
-	
 	//@brief: this function will create an object which will return key/value pair of
 	//		  node-id/node-equation
 	_getAllNodeEquations:function()
@@ -70,7 +50,7 @@ define([
 	    for(i=0; i<this.modelNodes.length; i++)
 	    {
 
-                if(this.active.getType(this.modelNodes[i    ].ID) == 'accumulator')
+                if(this.active.getType(this.modelNodes[i].ID) == 'accumulator')
                 {
                     tempStr = this.modelNodes[i].ID + "+" + this.active.getEquation(this.modelNodes[i].ID)+"*" + this.model.getTime().step;
                 }
@@ -166,11 +146,11 @@ define([
 	},
 	
 	//@brief: this function calculates node value based on node equation
-	_calcNULLNodeValue: function(nodeID,nodeEquations)
+	_calcNULLNodeValue: function(nodeID, nodeEquations)
 	{
 	    //object for storing values of variables to be passed to expression
 	    var _exprValues = {};
-	    var _expr,_variable,_k,_value;
+	    var _expr, _variable, _k, _value;
             try{
                 _expr = Parser.parse(nodeEquations[nodeID]);
             }
