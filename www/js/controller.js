@@ -561,7 +561,6 @@ define([
                     // Checks for nodes referencing themselves; this causes problems because
                     //      functions will always evaluate to true if they reference themselves
                     if (this._model.student.getType(this.currentID) === "function") {
-                        alert(42);
                         if (givenID === this._model.student.getDescriptionID(this.currentID)) {
                             toPM = false;
                             directives.push({id: 'equation', attribute: 'status', value: 'incorrect'});
