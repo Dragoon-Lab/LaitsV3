@@ -463,9 +463,15 @@ define([
                     interpret(this.model.given.getUnits(givenID));
                     break;
                 case "equation":
-                    // The 'equation' case accepts an equation object from the controller
-                    //      and checks it against the given equation using equation.js
-                    interpret(check.areEquivalent(givenID, this.model, answer));
+                    // The "if" statement checks for nodes referencing themselves--this 
+                    //      causes problems because functions will always evaluate 
+                    //      to true if they self reference; don't use the literal 
+                    //      "===" check, use the equivelant "==" check.
+                    if (studentID == answer) {
+                        interpret(false);
+                    } else {
+                        interpret(check.areEquivalent(givenID, this.model, answer));
+                    }
                     break;
             }
             /* 
