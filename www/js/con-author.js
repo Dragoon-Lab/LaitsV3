@@ -1,6 +1,6 @@
 /* global define */
 /*
- *                          AUTHOR mode-specific handlers
+ * AUTHOR mode-specific handlers
  */
 define([
     "dojo/_base/array", 'dojo/_base/declare', "dojo/_base/lang",
@@ -14,15 +14,49 @@ define([
 ], function(array, declare, lang, style, ready, registry, controller, equation,memory) {
 
     return declare(controller, {
+        //pedagogical module class for author
+        authorPM:{
+            process: function(nodeID,nodeType,value){
+                var returnObj=[];
+                switch(nodeType.toUpperCase()){
+                    case "TYPE":
+                        if(value.toUpperCase() == "PARAMETER"){
+                            //disable inputs and expression
+                            var obj = {attribute:"disabled",id:"equation",value:true};
+                            returnObj.push(obj);
+
+                            var obj = {attribute:"disabled",id:"authorInput",value:true};
+                            returnObj.push(obj);
+                        }
+                        else if(value.toUpperCase() == "FUNCTION"){
+                            var obj = {attribute:"disabled",id:"initial",value:true};
+                            returnObj.push(obj);
+                        }
+                        else{
+                            /*no directives need to be setup for accumulator
+                            * add code in case new requirements are defined
+                            */
+                        }
+                        break;
+
+                    default:
+                        console.log("");
+                }
+                return returnObj;
+            }
+        },
         constructor: function() {
             console.log("++++++++ In author constructor");
+            lang.mixin(this.authorControlMap,this.widgetMap);
             this.authorControls();
             ready(this, "initAuthorHandles");
         },
         authorControlMap:{
-            input:"setInput",
-            name:"setName",
-            description:"setDescription"
+            authorInput:"setInput",
+            authorName:"setName",
+            authorDescription:"setDescription",
+            authorKind:"selectKind",
+            authorUnits:"setUnits"
         },
         authorControls: function() {
             console.log("++++++++ Setting AUTHOR format in Node Editor.");
@@ -35,24 +69,24 @@ define([
             style.set('inputControlStudent', 'display', 'none');
         },
         initAuthorHandles: function() {
-            var name = registry.byId("setName");
+            var name = registry.byId(this.authorControlMap.authorName);
             name.on('Change', lang.hitch(this, function() {
                 return this.disableHandlers || this.handleName.apply(this, arguments);
             }));
-            var kind = registry.byId("selectKind");
+            var kind = registry.byId(this.authorControlMap.authorKind);
             kind.on('Change', lang.hitch(this, function() {
                 return this.disableHandlers || this.handleKind.apply(this, arguments);
             }));
-            var description = registry.byId("setDescription");
+            var description = registry.byId(this.authorControlMap.authorDescription);
             description.on('Change', lang.hitch(this, function() {
                 return this.disableHandlers || this.handleSetDescription.apply(this, arguments);
             }));
-            var units = registry.byId("setUnits");
+            var units = registry.byId(this.authorControlMap.authorUnits);
             units.on('Change', lang.hitch(this, function() {
                 return this.disableHandlers || this.handleSetUnits.apply(this, arguments);
             }));
 
-            var inputsWidget = registry.byId("setInput");
+            var inputsWidget = registry.byId(this.authorControlMap.authorInput);
             inputsWidget.on('Change', lang.hitch(this, function() {
                 return this.disableHandlers || this.handleInputs.apply(this, arguments);
             }));
@@ -67,8 +101,7 @@ define([
             if (type == 'defaultSelect')
                 return; // don't do anything if they choose default
             this.updateType(type);
-            this._model.active.setType(this.currentID, type);
-    	    //this.updateEquationLabels();
+            this.applyDirectives(this.authorPM.process(this.currentID,'type',type));
         },
         handleName: function(name) {
             console.log("**************** in handleName ", name);
@@ -82,7 +115,7 @@ define([
                 this._model.active.setName(this.currentID, name);
                 this.updateNodes();
                 this.setConnections(this._model.active.getInputs(this.currentID), this.currentID);
-		this.updateEquationLabels(); 
+        		this.updateEquationLabels();
             } else {
                 console.error("Node name already exists OR node name is not valid variable.  Need message for student!");
             }
@@ -92,7 +125,6 @@ define([
         },
         handleKind: function(kind) {
             console.log("**************** in handleKind ", kind);
-
             if(kind == "given"){
                 this._model.given.setGenus(this.currentID,"");
             }
@@ -101,7 +133,7 @@ define([
             }
         },
         handleDescription: function(description) {
-            // Summary: Checks to see if the given description exists; if the 
+            // Summary: Checks to see if the given description exists; if the
             //      description doesn't exist, it sets the description of the current node.
             if (!this._model.active.getNodeIDByDescription(description)) {
                 this._model.active.setDescription(this.currentID, description);
@@ -154,14 +186,14 @@ define([
         },
         initialControlSettings: function(nodeid) {
 	    var name = this._model.given.getName(nodeid);
-            registry.byId(this.authorControlMap.name).set('value', name || '', false);
-	    
+            registry.byId(this.authorControlMap.authorName).set('value', name || '', false);
+
             var desc = this._model.given.getDescription(nodeid);
             console.log('description is', desc || "not set");
-            registry.byId(this.authorControlMap.description).set('value', desc || '', false);
+            registry.byId(this.authorControlMap.authorDescription).set('value', desc || '', false);
 
             // populate inputs
-            var t = registry.byId(this.authorControlMap.input);
+            var t = registry.byId(this.authorControlMap.authorInput);
 
             /*
             *   populate the nodes in input tab
@@ -169,18 +201,31 @@ define([
             *
             */
             var dummyArray =[];
-            var id = 1;
             array.forEach(this._model.given.getDescriptions(), function(desc){
                 if(desc.label){
                     var name = this._model.given.getName(desc.value);
-                    var obj = {name:name,id:id};
+                    var obj = {name:name,id:desc.id};
                     dummyArray.push(obj);
-                    id++;
                 }
             }, this);
             var m = new memory({data:dummyArray});
             t.attr("store",m);
-
+        },
+        applyDirectives: function(directives){
+            array.forEach(directives,function(directive){
+                if(this.authorControlMap[directive.id]){
+                    var w = registry.byId(this.authorControlMap[directive.id]);
+                    if(directive.attribute == 'value'){
+                        //write this part later
+                    }
+                    else{
+                        w.set(directive.attribute, directive.value);
+                    }
+                }
+                else{
+                    console.warn("Directive with unknown id: " + directive.id);
+                }
+            },this)
         }
     });
 });
