@@ -173,8 +173,12 @@ define([
              These will be wired up to dialog boxes to set the image URL and
              the description.
              */
-            var canvas = document.getElementById('myCanvas');
-            var context = canvas.getContext('2d');
+            var canvas = dom.byId('myCanvas');
+	    if(canvas.getContext){
+		var context = canvas.getContext('2d');
+	    } else {
+		throw new Error("Canvas not supported on this browser.");
+	    }
             var imageObj = new Image();
             var desc_text = givenModel.getTaskDescription();
             var scalingFactor = 1;
