@@ -463,15 +463,7 @@ define([
                     interpret(this.model.given.getUnits(givenID));
                     break;
                 case "equation":
-                    // The "if" statement checks for nodes referencing themselves--this 
-                    //      causes problems because functions will always evaluate 
-                    //      to true if they self reference; don't use the literal 
-                    //      "===" check, use the equivelant "==" check.
-                    if (studentID == answer) {
-                        interpret(false);
-                    } else {
-                        interpret(check.areEquivalent(givenID, this.model, answer));
-                    }
+                    interpret(check.areEquivalent(givenID, this.model, answer));
                     break;
             }
             /* 
@@ -496,7 +488,7 @@ define([
             var returnObj = [], currentStatus;
             var givenID;  // ID of the correct node, if it exists
 
-	    // Send correct answer to controller if status will be set to 'demo'
+            // Send correct answer to controller if status will be set to 'demo'
             if (interpretation === "lastFailure" || interpretation === "secondFailure") {
                 answer = this.model.student.getCorrectAnswer(id, nodePart);
                 // In case of an equation, we need to substitute variablenames in for the IDs.
@@ -507,7 +499,7 @@ define([
                     if (nodePart === "description") {
                         returnObj.push({id: "message", attribute: "append", value: "You have already created all the necessary nodes."});
                     } else
-			console.error("Unexpected null from model.getCorrectAnswer().");
+                        console.error("Unexpected null from model.getCorrectAnswer().");
                 } else
                     returnObj.push({id: nodePart, attribute: "value", value: answer});
             }
