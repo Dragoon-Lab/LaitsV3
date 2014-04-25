@@ -109,14 +109,16 @@ define([
             /* check if node with name already exists and
                if name is parsed as valid variable
             */
-            if(!this._model.given.getNodeIDByName(this.currentID) && equation.isVariable(name)){
+            if(!this._model.given.getNodeIDByName(name) && equation.isVariable(name)){
                 // check all nodes in the model for equations containing name of this node
                 // replace name of this node in equation with its ID
                 this._model.active.setName(this.currentID, name);
                 this.updateNodes();
                 this.setConnections(this._model.active.getInputs(this.currentID), this.currentID);
+
         		this.updateEquationLabels();
             }else {
+
                 console.error("Node name already exists OR node name is not valid variable.  Need message for student!");
             }
         },
@@ -211,21 +213,8 @@ define([
             var m = new memory({data:dummyArray});
             t.attr("store", m);
         },
-        applyDirectives: function(directives){
-            array.forEach(directives, function(directive){
-                if(this.authorControlMap[directive.id]){
-                    var w = registry.byId(this.authorControlMap[directive.id]);
-                    if(directive.attribute == 'value'){
-                        //write this part later
-                    }
-                    else{
-                        w.set(directive.attribute, directive.value);
-                    }
-                }
-                else{
-                    console.warn("Directive with unknown id: " + directive.id);
-                }
-            }, this)
+        updateModelStatus: function(desc){
+            //stub for updateModelStatus
         }
     });
 });

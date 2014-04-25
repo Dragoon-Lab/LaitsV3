@@ -314,20 +314,12 @@ define([
                     w.set("disabled", newValue);
                 });
             }, this);
-
         },
         // Need to save state of the node editor in the status section
         // of the student model.  See documentation/json-format.md
         updateModelStatus: function(desc){
-            if(this.validStatus[desc.attribute]){
-                var opt = {};
-                opt[desc.attribute] = desc.value;
-                this._model.student.setStatus(this.currentID, desc.id, opt);
-            }else {
-                // There are some directives that should update
-                // the student model node (but not the status section).
-                console.warn("======= not saving in status, node=" + this.currentID + ": ", desc);
-            }
+            //stub for updateModelStatus
+            //actual implementation in con-student and con-author
         },
         // attributes that should be saved in the status section
         validStatus: {status: true, disabled: true},
@@ -677,6 +669,33 @@ define([
              Note that if equation is disabled then
              input, +, -, *, /, undo, and done should also be disabled.
              */
+        },
+
+/*         Take a list of directives and apply them to the Node Editor,
+         updating the model and updating the graph.
+
+         The format for directives is defined in documentation/javascript.md*/
+        applyDirectives: function(directives, noModelUpdate){
+            // Apply directives, either from PM or the controller itself.
+            array.forEach(directives, function(directive) {
+                if(!noModelUpdate)
+                    this.updateModelStatus(directive);
+                if (this.widgetMap[directive.id]) {
+                    var w = registry.byId(this.widgetMap[directive.id]);
+                    // console.log(">>>>>>>>> setting directive ", directive);
+                    if (directive.attribute == 'value') {
+                        w.set("value", directive.value, false);
+                        // Each control has its own function to update the
+                        // the model and the graph.
+                        this[directive.id+'Set'].call(this, directive.value);
+                    } else
+                        w.set(directive.attribute, directive.value);
+                } else {
+                    console.warn("Directive with unknown id: " + directive.id);
+                }
+
+            }, this);
+
         }
     });
 });
