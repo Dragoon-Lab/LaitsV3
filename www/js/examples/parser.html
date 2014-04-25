@@ -33,7 +33,7 @@
                 var isVariable = document.getElementById('isVariable');
                 var isSum = document.getElementById('isSum');
                 var isProduct = document.getElementById('isProduct');
-                isVariable.innerHTML = "Is" + (Parser.isVarible(expr)?"":" not") + " a variable.";
+                isVariable.innerHTML = "Is" + (Parser.isVariable(expr)?"":" not") + " a variable.";
                 var parse = Parser.parse(expr);
                 isSum.innerHTML = "Is" + (expression.isSum(parse)?"":" not") + " a sum.";
                 isProduct.innerHTML = "Is" + (expression.isProduct(parse)?"":" not") + " a product.";
@@ -41,6 +41,17 @@
                 console.log("Operator content: ", parse.operators());
                 verboseOutput.innerHTML = "verbose parse is:  " + parse.toString(true);
                 prettyOutput.innerHTML = "pretty parse is:  " + parse.toString();
+                var grad = expression.gradient(parse), y="partial derivative: ";
+                console.log("Gradient is ", grad);
+                var first = true;
+                for(var x in grad){
+                    if(first)
+                       first=false;
+                    else
+                       y += ", ";
+                    y = y.concat(x + ": " + grad[x]);
+                }
+                partial.innerHTML = y;
            };
            });
 </script>
@@ -57,6 +68,7 @@
     <div id='isVariable'>variable test here</div>
     <div id='isProduct'>product test here</div>
     <div id='isSum'>sum test here</div>
+    <div id='partial'>Partial derivatives</div>
 
 </body>
 </html>
