@@ -91,7 +91,17 @@
             },
             {
                 "ID": "id4",
-                "inputs": [],
+                "inputs": [
+                    {
+                        "ID": "id2"
+                    },
+                    {
+                        "ID": "id3"
+                    },
+                    {
+                        "ID": "id5"
+                    }
+                ],
                 "position": {
                     "x": 400,
                     "y": 100
@@ -109,7 +119,7 @@
                 "parentNode": false,
                 "units": "",
                 "description": "The ratio of moose that die each year to the moose population",
-                "equation": "0.05"
+                "equation": "id2 * (id5 / id3)"
             },
             {
                 "ID": "id5",
