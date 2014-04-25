@@ -43,12 +43,6 @@ define([
             initial: "initialValue",
             equation: "equationBox"
         },
-        // A list of all form controls
-        /*controlMap: {
-            description: "selectDescription",
-            units: "selectUnits",
-            inputs: "nodeInputs"
-        },*/
         // A list of all widgets.  (The constructor mixes this with controlMap)
         widgetMap: {
             message: 'messageBox',
