@@ -22,6 +22,7 @@ define([
         constructor: function(mode, subMode, model, inputStyle){
 
             console.log("+++++++++ In generic controller constructor");
+            lang.mixin(this.controlMap, this.genericControlMap);
             this._model = model;
             this._mode = mode;
             this._inputStyle = inputStyle;
@@ -35,18 +36,19 @@ define([
             // after widgets are set up.
             ready(this, this._setUpNodeEditor);
             ready(this, this._initHandles);
-
-            lang.mixin(this.widgetMap, this.controlMap);
         },
-        // A list of all form controls
-        controlMap: {
-            description: "selectDescription",
+        // A list of common controls of student and author
+        genericControlMap: {
             type: "typeId",
             initial: "initialValue",
-            units: "selectUnits",
-            inputs: "nodeInputs",
             equation: "equationBox"
         },
+        // A list of all form controls
+        /*controlMap: {
+            description: "selectDescription",
+            units: "selectUnits",
+            inputs: "nodeInputs"
+        },*/
         // A list of all widgets.  (The constructor mixes this with controlMap)
         widgetMap: {
             message: 'messageBox',

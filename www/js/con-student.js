@@ -6,8 +6,8 @@ define([
     "dojo/_base/array", 'dojo/_base/declare', "dojo/_base/lang",
     "dojo/dom", "dojo/ready",
     'dijit/registry',
-    './controller', "./pedagogical_module", "./equation"
-], function(array, declare, lang, dom, ready, registry, controller, PM, expression){
+    './controller', "./pedagogical_module", "./equation","dojo/_base/lang"
+], function(array, declare, lang, dom, ready, registry, controller, PM, expression,lang){
 
     /*
      Methods in controller specific to the student modes
@@ -19,8 +19,14 @@ define([
         constructor: function(mode, subMode, model){
             console.log("++++++++ In student constructor");
             this._PM = new PM(mode, subMode, model);
+            lang.mixin(this.widgetMap, this.controlMap);
             ready(this, "initStudentHandles");
-
+        },
+        // A list of control map specific to students
+        controlMap: {
+            description: "selectDescription",
+            units: "selectUnits",
+            inputs: "nodeInputs"
         },
         initStudentHandles: function(){
 

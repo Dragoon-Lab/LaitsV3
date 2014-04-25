@@ -18,24 +18,41 @@ define([
         authorPM:{
             process: function(nodeID, nodeType, value){
                 var returnObj=[];
-                switch(nodeType.toUpperCase()){
-                    case "TYPE":
-                        if(value.toUpperCase() == "PARAMETER"){
+                switch(nodeType){
+                    case "type":
+                        if(value == "parameter"){
                             //disable inputs and expression
-                            var obj = {attribute:"disabled", id:"equation", value:true};
+                            var obj = {attribute:"disabled", id:"initial", value:false};
                             returnObj.push(obj);
 
-                            var obj = {attribute:"disabled", id:"authorInput", value:true};
+                            var obj = {attribute:"disabled", id:"inputs", value:true};
+                            returnObj.push(obj);
+
+                            var obj = {attribute:"disabled", id:"equation", value:true};
                             returnObj.push(obj);
                         }
-                        else if(value.toUpperCase() == "FUNCTION"){
+                        else if(value == "function"){
                             var obj = {attribute:"disabled", id:"initial", value:true};
+                            returnObj.push(obj);
+
+                            var obj = {attribute:"disabled", id:"inputs", value:false};
+                            returnObj.push(obj);
+
+                            var obj = {attribute:"disabled", id:"equation", value:false};
+                            returnObj.push(obj);
+                        }
+                        else if(value == "accumulator"){
+                            var obj = {attribute:"disabled", id:"initial", value:false};
+                            returnObj.push(obj);
+
+                            var obj = {attribute:"disabled", id:"inputs", value:false};
+                            returnObj.push(obj);
+
+                            var obj = {attribute:"disabled", id:"equation", value:false};
                             returnObj.push(obj);
                         }
                         else{
-                            /*no directives need to be setup for accumulator
-                            * add code in case new requirements are defined
-                            */
+                            console.error("wrong choice");
                         }
                         break;
 
@@ -47,16 +64,16 @@ define([
         },
         constructor: function(){
             console.log("++++++++ In author constructor");
-            lang.mixin(this.authorControlMap, this.widgetMap);
+            lang.mixin(this.widgetMap, this.controlMap);
             this.authorControls();
             ready(this, "initAuthorHandles");
         },
-        authorControlMap:{
-            authorInput:"setInput",
-            authorName:"setName",
-            authorDescription:"setDescription",
-            authorKind:"selectKind",
-            authorUnits:"setUnits"
+        controlMap:{
+            inputs:"setInput",
+            name:"setName",
+            description:"setDescription",
+            kind:"selectKind",
+            units:"setUnits"
         },
         authorControls: function(){
             console.log("++++++++ Setting AUTHOR format in Node Editor.");
@@ -69,24 +86,24 @@ define([
             style.set('inputControlStudent', 'display', 'none');
         },
         initAuthorHandles: function(){
-            var name = registry.byId(this.authorControlMap.authorName);
+            var name = registry.byId(this.controlMap.name);
             name.on('Change', lang.hitch(this, function(){
                 return this.disableHandlers || this.handleName.apply(this, arguments);
             }));
-            var kind = registry.byId(this.authorControlMap.authorKind);
+            var kind = registry.byId(this.controlMap.kind);
             kind.on('Change', lang.hitch(this, function(){
                 return this.disableHandlers || this.handleKind.apply(this, arguments);
             }));
-            var description = registry.byId(this.authorControlMap.authorDescription);
+            var description = registry.byId(this.controlMap.description);
             description.on('Change', lang.hitch(this, function(){
                 return this.disableHandlers || this.handleSetDescription.apply(this, arguments);
             }));
-            var units = registry.byId(this.authorControlMap.authorUnits);
+            var units = registry.byId(this.controlMap.units);
             units.on('Change', lang.hitch(this, function(){
                 return this.disableHandlers || this.handleSetUnits.apply(this, arguments);
             }));
 
-            var inputsWidget = registry.byId(this.authorControlMap.authorInput);
+            var inputsWidget = registry.byId(this.controlMap.inputs);
             inputsWidget.on('Change', lang.hitch(this, function(){
                 return this.disableHandlers || this.handleInputs.apply(this, arguments);
             }));
@@ -188,14 +205,14 @@ define([
         },
         initialControlSettings: function(nodeid){
 	    var name = this._model.given.getName(nodeid);
-            registry.byId(this.authorControlMap.authorName).set('value', name || '', false);
+            registry.byId(this.controlMap.name).set('value', name || '', false);
 
             var desc = this._model.given.getDescription(nodeid);
             console.log('description is', desc || "not set");
-            registry.byId(this.authorControlMap.authorDescription).set('value', desc || '', false);
+            registry.byId(this.controlMap.description).set('value', desc || '', false);
 
             // populate inputs
-            var t = registry.byId(this.authorControlMap.authorInput);
+            var t = registry.byId(this.controlMap.inputs);
 
             /*
             *   populate the nodes in input tab
