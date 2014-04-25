@@ -182,6 +182,34 @@ define([
             }
             return true;
         },
+	gradient: function(parse, point){
+	    // Find the numerical partial derivatives of the expression at
+	    // the given point or at a random point, if the point is not supplied.
+	    // Both the given point and the return vector are expressed as objects.
+	    /*
+	     In principle, one could calculate the gradient algebraically and 
+	     use that to determine coefficients.  However, the current parser library
+	     is not really set up to do algebraic manipulations.
+	     */
+	    if(!point){
+		point = {};
+		array.forEach(parse.variables(), function(x){
+		    // For products, we want to stay away from zero.
+		    point[x]= Math.random()+0.5;
+		});
+	    }
+	    var partial = {};
+	    array.forEach(parse.variables(), function(x){
+		var z = lang.clone(point);
+		var dx = 1.0e-6*Math.abs(point[x]==0?1:point[x]);
+		z[x] -= 0.5*dx;
+		var y1 = parse.evaluate(z);
+		z[x] += dx;
+		var y2 = parse.evaluate(z);
+		partial[x] = (y2-y1)/dx;
+	    });
+	    return partial;
+	},
         convertUsingDescriptionIDs:function(subModel, equation){
             try {
                 var expr = Parser.parse(equation);
