@@ -7,7 +7,7 @@ define([
     "./pedagogical_module",
     "./model",
     './controller'
-], function(aspect, on, PM, model, controller) {
+], function(aspect, on, PM, model, controller){
 
     /*
      In this case, we have a single global logger that we attach

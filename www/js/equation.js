@@ -7,10 +7,10 @@
 
 define([
     "dojo/_base/array", "dojo/_base/lang", "parser/parser"
-], function(array, lang, Parser) {
+], function(array, lang, Parser){
 
     return {
-        parse: function(equation) {
+        parse: function(equation){
             return Parser.parse(equation);
         },
         isVariable: Parser.isVariable,
@@ -20,10 +20,10 @@ define([
          *      testing the expressions with values assigned to the variables
          **/
 
-        areEquivalent: function(/*string*/ id, /*object*/ model, /*string*/ studentEquation) {
+        areEquivalent: function(/*string*/ id, /*object*/ model, /*string*/ studentEquation){
             //Summary: For a given model node id, checks the correctness of the student equation.
             //
-            if (typeof studentEquation == 'string')
+            if(typeof studentEquation == 'string')
                 var student = Parser.parse(studentEquation);
             else
                 student = studentEquation;
@@ -33,7 +33,7 @@ define([
             console.assert(givenEqn, "Given node '" + id + "' does not have an equation.");
             var givenParse = Parser.parse(model.given.getEquation(id));
             var givenVals = {};
-            array.forEach(givenParse.variables(), function(variable) {
+            array.forEach(givenParse.variables(), function(variable){
                 // console.log("    ==== evaluating given variable ", variable);
                 // given model variables should all be given node IDs
                 this.evalVar(variable, model.given, givenVals);
@@ -47,12 +47,12 @@ define([
              the given model was evaluated above.
              */
             var studentVals = {};
-            array.forEach(student.variables(), function(variable) {
+            array.forEach(student.variables(), function(variable){
                 console.log("    ==== evaluating student variable ", variable);
                 var givenID;
-                if (model.student.isNode(variable)) {
+                if(model.student.isNode(variable)){
                     givenID = model.student.getDescriptionID(variable);
-                } else {
+                }else {
                     givenID = model.given.getNodeIDByName(variable);
                 }
                 /* This should never happen:  there is a check for unknown variables
@@ -71,19 +71,19 @@ define([
          
          If the function nodes have circular dependencies, then an error will be produced.
          */
-        evalVar: function(id, subModel, vals, parents) {
+        evalVar: function(id, subModel, vals, parents){
             console.assert(subModel.isNode(id), "evalVar: unknown variable '" + id + "'.");
             var node = subModel.getNode(id);
-            if (vals[id]) {
+            if(vals[id]){
                 // if already assigned a value, do nothing.
-            } else if (node.type == 'parameter' || node.type == 'accumulator' || !node.equation) {
+            }else if(node.type == 'parameter' || node.type == 'accumulator' || !node.equation){
                 /* Parameter and accumulator nodes, as well as nodes without an equation, 
 		are treated as independent. */
                 vals[id] = Math.random();
-            } else {
-                if (!parents)
+            }else {
+                if(!parents)
                     parents = new Object();
-                if (parents[id]) {
+                if(parents[id]){
                     // Should throw an error, so that message can be sent to user.
                     throw new Error("Function node '" + node.id + "' has circular dependency.");
                 }
@@ -92,27 +92,27 @@ define([
 		console.log("=========== about to parse ", node.equation);
 		console.warn("========    It is important to log failures of this parse");
                 var parse = Parser.parse(node.equation);
-                array.forEach(parse.variables(), function(x) {
+                array.forEach(parse.variables(), function(x){
                     this.evalVar(x, subModel, vals, parents);
                 }, this);
                 vals[id] = parse.evaluate(vals);
                 parents[id] = false;
             }
         },
-        convert: function(subModel, equation) {
+        convert: function(subModel, equation){
             try {
                 var expr = Parser.parse(equation);
-            } catch (e) {
+            }catch(e){
                 console.warn("Should log this as a JavaScript error.");
                 return equation;
             }
             this.mapVariableNodeNames = {};
             // console.log("            parse: ", expr);
-            array.forEach(expr.variables(), function(variable) {
+            array.forEach(expr.variables(), function(variable){
                 /* A student equation variable can be a student node id
                  or given (or extra) model node name (if the node has not been
                  defined by the student). */
-                if (subModel.isNode(variable)) {
+                if(subModel.isNode(variable)){
                     var nodeName = subModel.getName(variable);
                     // console.log("=========== substituting ", variable, " -> ", nodeName);
                     expr.substitute(variable, nodeName);
@@ -125,14 +125,14 @@ define([
          Adding quantity to student model:  Update 
          equations and inputs of existing nodes.
          */
-        addQuantity: function(id, subModel) {
+        addQuantity: function(id, subModel){
 
             var name = subModel.getName(id);
-            array.forEach(subModel.getNodes(), function(node) {
-                if (node.equation) {
+            array.forEach(subModel.getNodes(), function(node){
+                if(node.equation){
                     try {
                         var expr = Parser.parse(node.equation);
-                    } catch (e) {
+                    }catch(e){
                         /* If an equation fails to parse, then the input
                          string is stored as the equation for that node.
                          Thus, if the parse fails, just move on to the 
@@ -140,35 +140,35 @@ define([
                         return;
                     }
                     var changed = false;
-                    array.forEach(expr.variables(), function(variable) {
-                        if (name == variable) {
+                    array.forEach(expr.variables(), function(variable){
+                        if(name == variable){
                             changed = true;
                             expr.substitute(name, id);
                         }
                     });
-                    if (changed) {
+                    if(changed){
                         node.equation = expr.toString(true);
                         node.inputs = [];
-                        array.forEach(expr.variables(), function(id) {
-                            if (subModel.isNode(id))
+                        array.forEach(expr.variables(), function(id){
+                            if(subModel.isNode(id))
                                 node.inputs.push({ID: id});
                         });
                     }
                 }
             });
         },
-        isSum: function(parse) {
+        isSum: function(parse){
             // Return true if expression is a sum of variables, allowing for minus signs.
             // Note that a bare variable will also return true.
             var ops = parse.operators();
             var allowed = {"+": true, "-": true, "variable": true};
-            for (var op in ops) {
-                if (ops[op] > 0 && !allowed[op])
+            for(var op in ops){
+                if(ops[op] > 0 && !allowed[op])
                     return false;
             }
             return true;
         },
-        isProduct: function(parse) {
+        isProduct: function(parse){
             // Return true if the expression is a product of variables, allowing for division
             // Note that explicit powers (a^2) are not allowed, which is mathematically incorrect
             // but we have no mechanism for adding powers on our user interface.  For problems
@@ -176,20 +176,20 @@ define([
             // Note that a bare variable will also return true.
             var ops = parse.operators();
             var allowed = {"*": true, "/": true, "variable": true};
-            for (var op in ops) {
-                if (ops[op] > 0 && !allowed[op])
+            for(var op in ops){
+                if(ops[op] > 0 && !allowed[op])
                     return false;
             }
             return true;
         },
-        convertUsingDescriptionIDs:function(subModel,equation){
+        convertUsingDescriptionIDs:function(subModel, equation){
             try {
                 var expr = Parser.parse(equation);
-            } catch (e) {
+            }catch(e){
                 console.warn("Should log this as a JavaScript error.");
                 return equation;
             }
-            array.forEach(expr.variables(), function(variable) {
+            array.forEach(expr.variables(), function(variable){
 
                 var givenNodeId = subModel.getNodeIDFor(variable);
                 expr.substitute(variable, givenNodeId);

@@ -10,7 +10,7 @@ define([
     "dojo/dom", "dojo/dom-construct", "dojo/data/ItemFileReadStore", "dojox/grid/DataGrid","dijit/form/HorizontalSlider","dojo/_base/lang",
     "dijit/layout/ContentPane",
     "dojo/domReady!" 
-], function(on, declare, tableContainer, Dialog, dom, domConstruct, read, grid,HorizontalSlider,lang, contentPane){
+], function(on, declare, tableContainer, Dialog, dom, domConstruct, read, grid, HorizontalSlider, lang, contentPane){
     
     return declare(null, {
 	
@@ -42,7 +42,7 @@ define([
          *  @brief:constructor for a graph object
          *  @param: noOfParam
          */
-        //constructor: function(noOfParam,paramNames, paramValue,xUnits,units,timeSteps,nodeValueArray)
+        //constructor: function(noOfParam, paramNames, paramValue, xUnits, units, timeSteps, nodeValueArray)
 		constructor: function(object)
         {
             this.object = object;
@@ -65,7 +65,7 @@ define([
         initialize: function()
         {
         	
-     	   var i=0,j=0,domId="",tempArray;
+     	   var i=0, j=0, domId="", tempArray;
 
             //check if array of node values is empty
             //plot table if these values are not empty
@@ -73,13 +73,13 @@ define([
                //this.dialogContent = this.dialogContent+this.createDom("div","table","","");
                this.dialogContent = this.dialogContent+ "<div id='table'></div>";
 
-                var registerEventOnSlider = lang.hitch(this, function (slider, index, paramID) {
-                    on(slider, "change", lang.hitch(this, function () {
+                var registerEventOnSlider = lang.hitch(this, function(slider, index, paramID){
+                    on(slider, "change", lang.hitch(this, function(){
 
                         dom.byId("textTable"+index).value = slider.value;
-                        //this.object.calculationObj.active.setInitial(paramID,slider.value);
-                        this.object.calculationObj.model.student.setInitial(paramID,slider.value);
-                        var newObj = this.object.calculationObj.gerParametersForRendering(this.object.calculationObj.solutionGraph,false);
+                        //this.object.calculationObj.active.setInitial(paramID, slider.value);
+                        this.object.calculationObj.model.student.setInitial(paramID, slider.value);
+                        var newObj = this.object.calculationObj.gerParametersForRendering(this.object.calculationObj.solutionGraph, false);
 
                         this.nodeValueArray = newObj.arrayOfNodeValues;
                         paneText = "";
@@ -113,15 +113,15 @@ define([
                    var index  = i;
 
 
-                   registerEventOnSlider(slider,index,paramID);
+                   registerEventOnSlider(slider, index, paramID);
 
-                   /*on(this.sliders[i],"change", lang.hitch(this,function(){
+                   /*on(this.sliders[i],"change", lang.hitch(this, function(){
 
                        //dom.byId("table").remove();
 
                        dom.byId("textTable"+index).value = slider.value;
-                       this.object.calculationObj.active.setInitial(paramID,slider.value);
-                       var newObj = this.object.calculationObj.gerParametersForRendering(this.object.calculationObj.solutionGraph,true);
+                       this.object.calculationObj.active.setInitial(paramID, slider.value);
+                       var newObj = this.object.calculationObj.gerParametersForRendering(this.object.calculationObj.solutionGraph, true);
 
                        this.nodeValueArray = newObj.arrayOfNodeValues;
                        paneText = "";
@@ -136,7 +136,7 @@ define([
                     //create label for name of a textbox
                     //create input for a textbox
                     //create div for embedding a slider
-                    this.dialogContent= this.dialogContent + this.createDom('label','','',this.paramNames[j]+" = ")+this.createDom('input','textTable'+i,"type='text' data-dojo-type='dijit/form/TextBox' readOnly=true")+"<br>"
+                    this.dialogContent= this.dialogContent + this.createDom('label','','', this.paramNames[j]+" = ")+this.createDom('input','textTable'+i,"type='text' data-dojo-type='dijit/form/TextBox' readOnly=true")+"<br>"
                     +this.createDom('div','sliderTable'+i);
                     console.debug("dialogContent is "+this.dialogContent);
 
@@ -153,7 +153,7 @@ define([
                this.dialog.setContent(this.dialogContent);
 
                 //destroy the dialog when it is closed
-                on(this.dialog,"hide",lang.hitch(this,function(){
+                on(this.dialog,"hide", lang.hitch(this, function(){
 
                     this.dialog.destroyRecursive();
 
@@ -162,7 +162,7 @@ define([
                     var i;
                     for(i in this.paramNames)
                     {
-                        this.object.calculationObj.model.student.setInitial(i,this.paramValue[i]);
+                        this.object.calculationObj.model.student.setInitial(i, this.paramValue[i]);
                     }
 
                 }));

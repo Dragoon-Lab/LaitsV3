@@ -6,7 +6,7 @@ define([
     "dojo/_base/array", 'dojo/_base/declare', 'dojo/_base/lang',
     'dojo/dom', "dojo/dom-attr", "dojo/dom-construct","dijit/Menu",
     "dijit/MenuItem", "jsPlumb/jsPlumb"
-],function(array, declare, lang, dom, attr, domConstruct, Menu, MenuItem){
+], function(array, declare, lang, dom, attr, domConstruct, Menu, MenuItem){
 
     return declare(null, {
 
@@ -52,7 +52,7 @@ define([
             /* bind a click listener to each connection; the connection is deleted. you could of course
              just do this: jsPlumb.bind("click", jsPlumb.detach), but I wanted to make it clear what was
              happening. */
-            instance.bind("click", function(c) {
+            instance.bind("click", function(c){
                 //instance.detach(c);
             });
 
@@ -60,12 +60,12 @@ define([
              just the new connection - see the documentation for a full list of what is included in 'info'.
              this listener sets the connection's internal
              id as the label overlay's text. */
-            /* instance.bind("connection", function(info) {
+            /* instance.bind("connection", function(info){
              info.connection.getOverlay("label").setLabel(info.connection.id);
              }); */
 
             // suspend drawing and initialise.
-            instance.doWhileSuspended(function() {
+            instance.doWhileSuspended(function(){
 
                 /* make each ".ep" div a source and give it some parameters to work with.  here we tell it
                  to use a Continuous anchor and the StateMachine connectors, and also we give it the
@@ -81,7 +81,7 @@ define([
                         connector:[ "StateMachine", { curviness:20 } ],
                         connectorStyle:{ strokeStyle:"#5c96bc", lineWidth:2, outlineColor:"transparent", outlineWidth:4 },
                         maxConnections:5,
-                        onMaxConnections:function(info, e) {
+                        onMaxConnections:function(info, e){
                             alert("Maximum connections (" + info.maxConnections + ") reached");
                         }
                     });
@@ -162,7 +162,7 @@ define([
                 connector:[ "StateMachine", { curviness:20 } ],
                 connectorStyle:{ strokeStyle:"#5c96bc", lineWidth:2, outlineColor:"transparent", outlineWidth:4 },
                 maxConnections:5,
-                onMaxConnections:function(info, e) {
+                onMaxConnections:function(info, e){
                     alert("Maximum connections (" + info.maxConnections + ") reached");
                 }
             });
@@ -174,9 +174,9 @@ define([
             return vertex;
         },
 
-        getEndPointConfiguration:function (sign){
+        getEndPointConfiguration:function(sign){
             if(sign)
-             return [["Arrow", { location:1, id:"arrow", length:14, foldback:0.9 } ], ["Custom", { create:function(component) { var overlay = domConstruct.create("div", { innerHTML: "<div class='endPoint'>"+sign+"</div>" }); return overlay; }, location:1.0, id:"customOverlay" }]];
+             return [["Arrow", { location:1, id:"arrow", length:14, foldback:0.9 } ], ["Custom", { create:function(component){ var overlay = domConstruct.create("div", { innerHTML: "<div class='endPoint'>"+sign+"</div>" }); return overlay; }, location:1.0, id:"customOverlay" }]];
             else
              return '';
         },
@@ -210,8 +210,8 @@ define([
                 this._instance.connect({source: source,
                     target: destination
                    /* overlays: [
-                        ["Label",{label:"+", id:"label1", cssClass:"aLabel",location:0.95, radius:0.5 }],
-                        ["Label",{label:"-", id:"label2", cssClass:"aLabel",location:0.03, radius:0.5 }]
+                        ["Label",{label:"+", id:"label1", cssClass:"aLabel", location:0.95, radius:0.5 }],
+                        ["Label",{label:"-", id:"label2", cssClass:"aLabel", location:0.03, radius:0.5 }]
                     ]*/
                 });
             }, this);
@@ -251,7 +251,7 @@ define([
         onMoveStop: function(){
             if(this._clickNoMove){
                 this.onClickNoMove.apply(null, arguments);
-            } else {
+            }else {
                 this.onClickMoved.apply(null, arguments);
             }
             this._clickNoMove = false;

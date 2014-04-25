@@ -2,7 +2,7 @@
 define([
     "dojo/_base/declare",	
     "parser/parser"
-],function(declare, Parser){
+], function(declare, Parser){
 
     return declare(null, {
 	// timesteps in graph
@@ -45,7 +45,7 @@ define([
 	//		  node-id/node-equation
 	_getAllNodeEquations:function()
 	{
-	    var i,nodeEquations={},tempStr="";
+	    var i, nodeEquations={}, tempStr="";
 	    
 	    for(i=0; i<this.modelNodes.length; i++)
 	    {
@@ -103,7 +103,7 @@ define([
 		    var _v;
 		    if(this.active.getInitial(this.modelNodes[j].ID) == null)
 		    {
-			_v = this._calcNULLNodeValue(this.modelNodes[j].ID,nodeEquations);
+			_v = this._calcNULLNodeValue(this.modelNodes[j].ID, nodeEquations);
 		    }
 		    else
 		    {
@@ -126,7 +126,7 @@ define([
 		    {
 			if(this.active.getType(this.modelNodes[j].ID) != 'parameter')
 			{
-                            var val = this._calcNULLNodeValue(this.modelNodes[j].ID,nodeEquations);
+                            var val = this._calcNULLNodeValue(this.modelNodes[j].ID, nodeEquations);
                             if(val == null){
                                 delete arrayOfNodeValues[this.modelNodes[j].ID];
                                 //break;
@@ -164,7 +164,7 @@ define([
 	    {
 		if(this.currentNodeValues[_variable[_k]] == null)
 		{
-		    this._calcNULLNodeValue(_variable[_k],nodeEquations);
+		    this._calcNULLNodeValue(_variable[_k], nodeEquations);
 		}
 		
                 if(this.currentNodeValues[_variable[_k]] == null){
@@ -191,7 +191,7 @@ define([
 	//	      returns total number of 'parameter, nodes in given model
 	_storeParametersNameValue: function(arrayOfParameterNames, arrayOfParamInitialValues)
 	{
-	    var i,count=0;
+	    var i, count=0;
 	    for(i=0;i<this.modelNodes.length;i++)
 	    {
 		if(this.active.getType(this.modelNodes[i].ID) == 'parameter' || this.active.getType(this.modelNodes[i].ID) == 'accumulator')
@@ -223,9 +223,9 @@ define([
 	    //variable to get number of nodes of type 'parameter' in given graph
 	    var noOfParam;
 	    //variables to get units
-	    var xUnits,units;
+	    var xUnits, units;
 	    //arrays to get name and initial values of node type 'parameter'
-	    var arrayOfParameterNames = [],arrayOfParamInitialValues=[];
+	    var arrayOfParameterNames = [], arrayOfParamInitialValues=[];
 	    //get key/value pair of node-id/equation in object
 	    var nodeEquations={};
 	    //get key/value pair of node-id/array of values over timesteps in object
@@ -253,9 +253,9 @@ define([
 	    units = obj["units"];
 	    
 	    //create object comprising all parameters required for rendering chart and table
-	    var object = {mode:mode,noOfParam:noOfParam,arrayOfParameterNames:arrayOfParameterNames,
-			  arrayOfParamInitialValues:arrayOfParamInitialValues,xUnits:xUnits,units:units,
-			  arrayOfTimeSteps:arrayOfTimeSteps,arrayOfNodeValues:arrayOfNodeValues, calculationObj:this
+	    var object = {mode:mode, noOfParam:noOfParam, arrayOfParameterNames:arrayOfParameterNames,
+			  arrayOfParamInitialValues:arrayOfParamInitialValues, xUnits:xUnits, units:units,
+			  arrayOfTimeSteps:arrayOfTimeSteps, arrayOfNodeValues:arrayOfNodeValues, calculationObj:this
 			 };
 	    
             return object;

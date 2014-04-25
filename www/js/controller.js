@@ -7,7 +7,7 @@ define([
     'dojo/aspect', 'dojo/dom', "dojo/dom-class", "dojo/dom-construct", 'dojo/dom-style',
     'dojo/keys', 'dojo/on', "dojo/ready", 'dijit/registry',
     './equation'
-], function(array, declare, lang, aspect, dom, domClass, domConstruct, style, keys, on, ready, registry, expression) {
+], function(array, declare, lang, aspect, dom, domClass, domConstruct, style, keys, on, ready, registry, expression){
 
     return declare(null, {
         _model: null,
@@ -19,7 +19,7 @@ define([
         disableHandlers: false,
         /* The last value entered into the intial value control */
         lastInitialValue: null,
-        constructor: function(mode, subMode, model, inputStyle) {
+        constructor: function(mode, subMode, model, inputStyle){
 
             console.log("+++++++++ In generic controller constructor");
             this._model = model;
@@ -54,7 +54,7 @@ define([
         },
         // Controls that are select menus
         selects: ['description', 'type', 'units', 'inputs'],
-        _setUpNodeEditor: function() {
+        _setUpNodeEditor: function(){
 
             // get Node Editor widget from tree
             this._nodeEditor = registry.byId('nodeeditor');
@@ -92,7 +92,7 @@ define([
             var negativeInputs = registry.byId("negativeInputs");
             // console.log("description widget = ", d);
             // d.removeOption(d.getOptions()); // Delete all options
-            array.forEach(this._model.given.getDescriptions(), function(desc) {
+            array.forEach(this._model.given.getDescriptions(), function(desc){
                 d.addOption(desc);
                 var name = this._model.given.getName(desc.value);
                 var option = {label: desc.label + ' ' + ' | ' + ' ' + name, value: desc.value};
@@ -106,14 +106,14 @@ define([
              When "status" attribute is changed, then this function
              is called.
              */
-            var setStatus = function(value) {
+            var setStatus = function(value){
                 var colorMap = {
                     correct: "lightGreen",
                     incorrect: "#FF8080",
                     demo: "yellow",
                     premature: "lightBlue"
                 };
-                if (value)
+                if(value)
                     console.assert(colorMap[value], "Invalid color specification " + value);
                 /* BvdS:  I chose bgColor because it was easy to do
                  Might instead/also change text color?
@@ -122,7 +122,7 @@ define([
                 // console.log(">>>>>>>>>>>>> setting color ", this.domNode.id, " to ", value);
                 style.set(this.domNode, 'backgroundColor', value ? colorMap[value] : '');
             };
-            for (var control in this.controlMap) {
+            for(var control in this.controlMap){
                 var w = registry.byId(this.controlMap[control]);
                 w._setStatusAttr = setStatus;
             }
@@ -137,31 +137,31 @@ define([
                     lang.hitch({domNode: dom.byId("equationText")}, setStatus),
                     true);
 
-            var setEnableOption = function(value) {
+            var setEnableOption = function(value){
                 console.log("++++ in setEnableOption, scope=", this);
-                array.forEach(this.options, function(option) {
-                    if (!value || option.value == value)
+                array.forEach(this.options, function(option){
+                    if(!value || option.value == value)
                         option.disabled = false;
                 });
                 this.startup();
             };
-            var setDisableOption = function(value) {
+            var setDisableOption = function(value){
                 console.log("++++ in setDisableOption, scope=", this);
-                array.forEach(this.options, function(option) {
-                    if (!value || option.value == value)
+                array.forEach(this.options, function(option){
+                    if(!value || option.value == value)
                         option.disabled = true;
                 });
                 this.startup();
             };
             // All <select> controls
-            array.forEach(this.selects, function(select) {
+            array.forEach(this.selects, function(select){
                 var w = registry.byId(this.controlMap[select]);
                 w._setEnableOptionAttr = setEnableOption;
                 w._setDisableOptionAttr = setDisableOption;
             }, this);
 
             var crisis = registry.byId(this.widgetMap.crisisAlert);
-            crisis._setOpenAttr = function(message) {
+            crisis._setOpenAttr = function(message){
                 console.log("crisis alert message ", message);
                 this.set('content', message); //deprecated error
                 //this.setContent(message);
@@ -170,7 +170,7 @@ define([
 
             // Add appender to message widget
             var messageWidget = registry.byId(this.widgetMap.message);
-            messageWidget._setAppendAttr = function(message) {
+            messageWidget._setAppendAttr = function(message){
                 var existing = this.get('content');
                 // console.log("+++++++ appending message '" + message + "' to ", this, existing);
                 this.set('content', existing + '<p>' + message + '</p>');
@@ -184,22 +184,22 @@ define([
              */
             var u = registry.byId("selectUnits");
             // console.log("units widget ", u);
-            array.forEach(this._model.getAllUnits(), function(unit) {
+            array.forEach(this._model.getAllUnits(), function(unit){
                 u.addOption({label: unit, value: unit});
             });
         },
         // Function called when node editor is closed.
         // This can be used as a hook for saving sessions and logging
-        closeEditor: function() {
+        closeEditor: function(){
             console.log("++++++++++ entering closeEditor");
             // Erase modifications to the control settingse.
             // Enable all options in select controls.
-            array.forEach(this.selects, function(control) {
+            array.forEach(this.selects, function(control){
                 var w = registry.byId(this.controlMap[control]);
                 w.set("enableOption", null);  // enable all options
             }, this);
             // For all controls:
-            for (var control in this.controlMap) {
+            for(var control in this.controlMap){
                 var w = registry.byId(this.controlMap[control]);
                 w.set("disabled", false);  // enable everything
                 w.set("status", '');  // remove colors
@@ -223,7 +223,7 @@ define([
             messageWidget.set('content', '');
         },
         //set up event handling with UI components
-        _initHandles: function() {
+        _initHandles: function(){
             // Summary: Set up Node Editor Handlers
 
             /*
@@ -241,7 +241,7 @@ define([
              *   'handleType' will be called in either Student or Author mode
              * */
             var type = registry.byId(this.controlMap.type);
-            type.on('Change', lang.hitch(this, function() {
+            type.on('Change', lang.hitch(this, function(){
                 return this.disableHandlers || this.handleType.apply(this, arguments);
             }));
 
@@ -252,15 +252,15 @@ define([
             var initialWidget = registry.byId(this.controlMap.initial);
             // This event gets fired if student hits TAB or input box
             // goes out of focus.
-            initialWidget.on('Change', lang.hitch(this, function() {
+            initialWidget.on('Change', lang.hitch(this, function(){
                 return this.disableHandlers || this.handleInitial.apply(this, arguments);
             }));
             // Look for ENTER key event and fire 'Change' event, passing
             // value in box as argument.  This is then intercepted by the
             // regular handler.
-            initialWidget.on("keydown", function(evt) {
+            initialWidget.on("keydown", function(evt){
                 // console.log("----------- input character ", evt.keyCode, this.get('value'));
-                if (evt.keyCode == keys.ENTER)
+                if(evt.keyCode == keys.ENTER)
                     this.emit('Change', {}, [this.get('value')]);
             });
 
@@ -279,20 +279,20 @@ define([
             negativeWidget.on('Change', lang.hitch(this.structured, this.structured.handleNegative));
 
             //workaround to handleInputs on Same Node Click
-            /* inputsWidget.on('Click',lang.hitch(this,function(){
-             return this.disableHandlers || this.handleInputs.apply(this,arguments);
+            /* inputsWidget.on('Click', lang.hitch(this, function(){
+             return this.disableHandlers || this.handleInputs.apply(this, arguments);
              }));*/
 
             var equationWidget = registry.byId(this.controlMap.equation);
-            equationWidget.on('Change', lang.hitch(this, function() {
+            equationWidget.on('Change', lang.hitch(this, function(){
                 return this.disableHandlers || this.handleEquation.apply(this, arguments);
             }));
 
             // When the equation box is enabled/disabled, do the same for
             // the inputs widgets.
-            array.forEach(["nodeInputs", "positiveInputs", "negativeInputs"], function(input) {
+            array.forEach(["nodeInputs", "positiveInputs", "negativeInputs"], function(input){
                 var widget = registry.byId(input);
-                equationWidget.watch("disabled", function(attr, oldValue, newValue) {
+                equationWidget.watch("disabled", function(attr, oldValue, newValue){
                     // console.log("************* " + (newValue?"dis":"en") + "able inputs");
                     widget.set("disabled", newValue);
                 });
@@ -301,7 +301,7 @@ define([
             // For each button 'name', assume there is an associated widget in the HTML
             // with id 'nameButton' and associated handler 'nameHandler' below.
             var buttons = ["plus", "minus", "times", "divide", "undo", "equationDone", "sum", "product"];
-            array.forEach(buttons, function(button) {
+            array.forEach(buttons, function(button){
                 var w = registry.byId(button + 'Button');
                 console.assert(w, "Button for " + button + " not found");
                 var handler = this[button + 'Handler'];
@@ -309,7 +309,7 @@ define([
                 w.on('click', lang.hitch(this, handler));
                 /*  When the equation box is enabled/disabled also do the same
                  for this button */
-                equationWidget.watch("disabled", function(attr, oldValue, newValue) {
+                equationWidget.watch("disabled", function(attr, oldValue, newValue){
                     // console.log("************* " + (newValue?"dis":"en") + "able " + button);
                     w.set("disabled", newValue);
                 });
@@ -318,12 +318,12 @@ define([
         },
         // Need to save state of the node editor in the status section
         // of the student model.  See documentation/json-format.md
-        updateModelStatus: function(desc) {
-            if (this.validStatus[desc.attribute]) {
+        updateModelStatus: function(desc){
+            if(this.validStatus[desc.attribute]){
                 var opt = {};
                 opt[desc.attribute] = desc.value;
                 this._model.student.setStatus(this.currentID, desc.id, opt);
-            } else {
+            }else {
                 // There are some directives that should update
                 // the student model node (but not the status section).
                 console.warn("======= not saving in status, node=" + this.currentID + ": ", desc);
@@ -331,7 +331,7 @@ define([
         },
         // attributes that should be saved in the status section
         validStatus: {status: true, disabled: true},
-        updateNodes: function() {
+        updateNodes: function(){
             // Update node editor and the model.	    
             this._nodeEditor.set('title', this._model.active.getName(this.currentID));
 
@@ -344,18 +344,18 @@ define([
             this.addQuantity(this.currentID, this._model.active.getOutputs(this.currentID));
         },
         /* Stub to update connections in graph */
-        addQuantity: function(source, destinations) {
+        addQuantity: function(source, destinations){
         },
-        updateType: function(type) {
+        updateType: function(type){
             //update node type on canvas
             console.log("===========>   changing node class to " + type);
             domClass.replace(this.currentID, type);
             var nodeName = this._model.active.getName(this.currentID);
-            if (nodeName)
+            if(nodeName)
                 nodeName = '<div id=' + this.currentID + 'Label  class="bubble"><strong>' + nodeName + '</strong></div>';
             else
                 nodeName = '';
-            if (dom.byId(this.currentID + 'Label'))
+            if(dom.byId(this.currentID + 'Label'))
                 domConstruct.place(nodeName, this.currentID + 'Label', "replace");
             else //new node
                 domConstruct.place(nodeName, this.currentID);
@@ -364,14 +364,14 @@ define([
             this._model.active.setType(this.currentID, type);
             this.updateEquationLabels();
         },
-        updateEquationLabels: function(typeIn) {
+        updateEquationLabels: function(typeIn){
             var type = typeIn || this._model.active.getType(this.currentID) || "none";
             var name = this._model.active.getName(this.currentID);
             var nodeName = "";
             var tt = "";
             // Only add label when name exists
-            if (name) {
-                switch (type) {
+            if(name){
+                switch(type){
                     case "accumulator":
                         nodeName = 'new ' + name + ' = ' + 'old ' + name + ' +';
                         tt = " * Change in Time";
@@ -390,7 +390,7 @@ define([
             dom.byId('equationLabel').innerHTML = nodeName;
             dom.byId('timeStepLabel').innerHTML = tt;
         },
-        equationInsert: function(text) {
+        equationInsert: function(text){
             var widget = registry.byId(this.controlMap.equation);
             var oldEqn = widget.get("value");
             // Get current cursor position or go to end of input
@@ -422,34 +422,34 @@ define([
          var expr = this._model.given.getName(id);
          this.equationInsert(expr);
          //restore to default  - creating select input as stateless
-         registry.byId(this.controlMap.inputs).set('value', 'defaultSelect',false);
+         registry.byId(this.controlMap.inputs).set('value', 'defaultSelect', false);
          },*/
 
-        handleEquation: function(equation) {
+        handleEquation: function(equation){
             // Generally, we don't need to do anthing for these events
         },
-        plusHandler: function() {
+        plusHandler: function(){
             console.log("****** plus button");
             this.equationInsert('+');
         },
-        minusHandler: function() {
+        minusHandler: function(){
             console.log("****** minus button");
             this.equationInsert('-');
         },
-        timesHandler: function() {
+        timesHandler: function(){
             console.log("****** times button");
             this.equationInsert('*');
         },
-        divideHandler: function() {
+        divideHandler: function(){
             console.log("****** divide button");
             this.equationInsert('/');
         },
-        sumHandler: function() {
+        sumHandler: function(){
             console.log("****** sum button");
             this.structured.operation = "sum";
             this.structured.update();
         },
-        productHandler: function() {
+        productHandler: function(){
             console.log("****** product button");
             this.structured.operation = "product";
             this.structured.update();
@@ -459,42 +459,42 @@ define([
             operation: "sum",
             positives: [],
             negatives: [],
-            handlePositive: function(id) {
+            handlePositive: function(id){
                 console.log("****** structured.handlePositives ", id);
                 this.positives.push(this._model.given.getName(id));
                 this.update();
                 registry.byId("positiveInputs").set('value', 'defaultSelect', false);// restore to default
             },
-            handleNegative: function(id) {
+            handleNegative: function(id){
                 console.log("****** structured.handleNegatives ", id);
                 this.negatives.push(this._model.given.getName(id));
                 this.update();
                 registry.byId("negativeInputs").set('value', 'defaultSelect', false);// restore to default
             },
-            update: function() {
+            update: function(){
                 // Update expression shown in equation box
                 // And structured expression
                 var pos = "";
                 var op = this.operation == "sum" ? "+" : "*";
                 var nop = this.operation == "sum" ? "-" : "/";
-                array.forEach(this.positives, function(term, i) {
-                    if (i > 0)
+                array.forEach(this.positives, function(term, i){
+                    if(i > 0)
                         pos += op;
                     pos += term;
                 });
-                if (this.negatives.length > 0 && this.positives.length > 1)
+                if(this.negatives.length > 0 && this.positives.length > 1)
                     pos = "(" + pos + ")";
-                if (this.positives.length == 0 && this.negatives.length > 0 && this.operation == "product")
+                if(this.positives.length == 0 && this.negatives.length > 0 && this.operation == "product")
                     pos = "1";
                 var neg = "";
-                array.forEach(this.negatives, function(term, i) {
-                    if (i > 0)
+                array.forEach(this.negatives, function(term, i){
+                    if(i > 0)
                         neg += op;
                     neg += term;
                 });
-                if (this.negatives.length > 1)
+                if(this.negatives.length > 1)
                     neg = "(" + neg + ")";
-                if (this.negatives.length > 0)
+                if(this.negatives.length > 0)
                     neg = nop + neg;
                 pos += neg;
                 console.log("********* New equation is ", pos);
@@ -505,19 +505,19 @@ define([
                 dom.byId("equationText").innerHTML = pos;
 
             },
-            reset: function() {
+            reset: function(){
                 this.positives.length = 0;
                 this.negatives.length = 0;
                 this.update();
             }
         },
-        undoHandler: function() {
+        undoHandler: function(){
             var widget = registry.byId(this.controlMap.equation);
             // Delete everything in equation box.
             var oldEqn = widget.set("value", "");
             this.structured.reset();
         },
-        equationAnalysis: function(directives) {
+        equationAnalysis: function(directives){
             console.log("****** enter button");
             /*
              This takes the contents of the equation box and parses it.
@@ -544,7 +544,7 @@ define([
             var parse = null;
             try {
                 parse = expression.parse(inputEquation);
-            } catch (err) {
+            }catch(err){
                 console.log("Parser error: ", err);
                 this._model.active.setEquation(this.currentID, inputEquation);
                 directives.push({id: 'message', attribute: 'append', value: 'Incorrect equation syntax.'});
@@ -553,30 +553,30 @@ define([
                 this.badParse(inputEquation);
             }
 
-            if (parse) {
+            if(parse){
                 var toPM = true;
-                array.forEach(parse.variables(), function(variable) {
+                array.forEach(parse.variables(), function(variable){
                     // Test if variable name can be found in given model
                     var givenID = this._model.given.getNodeIDByName(variable);
                     // Checks for nodes referencing themselves; this causes problems because
                     //      functions will always evaluate to true if they reference themselves
-                    if (this._model.student.getType(this.currentID) === "function") {
-                        if (givenID === this._model.student.getDescriptionID(this.currentID)) {
+                    if(this._model.student.getType(this.currentID) === "function"){
+                        if(givenID === this._model.student.getDescriptionID(this.currentID)){
                             toPM = false;
                             directives.push({id: 'equation', attribute: 'status', value: 'incorrect'});
                             directives.push({id: 'message', attribute: 'append', value: "You cannot use '" + variable + "' in the equation. Function nodes cannot reference themselves."});
                         }
                     }
-                    if (givenID) {
+                    if(givenID){
                         // Test if variable has been defined already
                         var studentID = this._model.active.getNodeIDFor(givenID);
-                        if (studentID) {
+                        if(studentID){
                             // console.log("       substituting ", variable, " -> ", studentID);
                             parse.substitute(variable, studentID);
-                        } else {
+                        }else {
                             directives.push({id: 'message', attribute: 'append', value: "Quantity '" + variable + "' not defined yet."});
                         }
-                    } else {
+                    }else {
                         toPM = false;  // Don't send to PM
                         directives.push({id: 'message', attribute: 'append', value: "Unknown variable '" + variable + "'."});
                     }
@@ -600,30 +600,30 @@ define([
             return null;
         },
         // Stub to connect logging to record bad parse.
-        badParse: function(inputEquation) {
+        badParse: function(inputEquation){
         },
         // Stub to set connections in the graph
-        setConnctions: function(from, to) {
+        setConnctions: function(from, to){
             // console.log("======== setConnections fired for node" + to);
         },
         //show node editor
-        showNodeEditor: function(/*string*/ id) {
+        showNodeEditor: function(/*string*/ id){
             console.log("showNodeEditor called for node ", id);
             this.currentID = id; //moved using inside populateNodeEditorFields
             this.disableHandlers = true;
             this.initialControlSettings(id);
             this.populateNodeEditorFields(id);
             this._nodeEditor.show().then(
-                    lang.hitch(this, function() {
+                    lang.hitch(this, function(){
                 this.disableHandlers = false;
             })
                     );
         },
         // Stub to be overwritten by student or author mode-specific method.
-        initialControlSettings: function(id) {
+        initialControlSettings: function(id){
             console.error("initialControlSettings should be overwritten.");
         },
-        populateNodeEditorFields: function(nodeid) {
+        populateNodeEditorFields: function(nodeid){
             //populate description
             var model = this._model.active;
             var editor = this._nodeEditor;

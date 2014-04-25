@@ -7,7 +7,7 @@ define([
     "dojo/dom", "dojo/ready",
     'dijit/registry',
     './controller', "./pedagogical_module", "./equation"
-], function(array, declare, lang, dom, ready, registry, controller, PM, expression) {
+], function(array, declare, lang, dom, ready, registry, controller, PM, expression){
 
     /*
      Methods in controller specific to the student modes
@@ -16,19 +16,19 @@ define([
     return declare(controller, {
         _PM: null,
 
-        constructor: function(mode, subMode, model) {
+        constructor: function(mode, subMode, model){
             console.log("++++++++ In student constructor");
             this._PM = new PM(mode, subMode, model);
             ready(this, "initStudentHandles");
 
         },
-        initStudentHandles: function() {
+        initStudentHandles: function(){
 
             var desc = registry.byId(this.controlMap.description);
             desc.on('Change', lang.hitch(this, this.handleSelectDescription));
 
             var unitsWidget = registry.byId(this.controlMap.units);
-            unitsWidget.on('Change', lang.hitch(this, function() {
+            unitsWidget.on('Change', lang.hitch(this, function(){
                 return this.disableHandlers || this.handleUnits.apply(this, arguments);
             }));
 
@@ -38,9 +38,9 @@ define([
             }));
 
         },
-        handleSelectDescription: function(selectDescription) {
+        handleSelectDescription: function(selectDescription){
             console.log("****** in handleChooseDescription ", this.currentID, selectDescription);
-            if (selectDescription == 'defaultSelect')
+            if(selectDescription == 'defaultSelect')
                 return; // don't do anything if they choose default
 
             this._model.active.setDescriptionID(this.currentID, selectDescription);
@@ -57,9 +57,9 @@ define([
             this._model.student.setDescriptionID(this.currentID, value);
 	    this.updateNodes();
 	},
-        handleType: function(type) {
+        handleType: function(type){
             console.log("****** Student has chosen type ", type, this);
-            if (type == 'defaultSelect')
+            if(type == 'defaultSelect')
                 return; // don't do anything if they choose default
             this.updateType(type);
             this.applyDirectives(this._PM.processAnswer(this.currentID, 'type', type));
@@ -68,7 +68,7 @@ define([
 	    this.updateType(value);
 	},
 
-        handleInitial: function(initial) {
+        handleInitial: function(initial){
 
             console.log("****** Student has chosen initial value", initial, this.lastInitialValue);
 	    /*
@@ -111,13 +111,13 @@ define([
             var expr = this._model.given.getName(id);
             this.equationInsert(expr);
             //restore to default  - creating select input as stateless
-            registry.byId(this.controlMap.inputs).set('value', 'defaultSelect',false);
+            registry.byId(this.controlMap.inputs).set('value', 'defaultSelect', false);
         },
         handleEquation: function(equation){
             var w = registry.byId(this.widgetMap.equation);
             w.set("status","");
         },
-        handleUnits: function(unit) {
+        handleUnits: function(unit){
             console.log("*******Student has chosen unit", unit, this);
 
             // updating node editor and the model.
@@ -128,10 +128,10 @@ define([
             // Update the model.
             this._model.student.setUnits(this.currentID, value);
 	},
-        equationDoneHandler: function() {
+        equationDoneHandler: function(){
             var directives = [];
             var parse = this.equationAnalysis(directives);
-            if (parse) {
+            if(parse){
                 var dd = this._PM.processAnswer(this.currentID, 'equation', parse);
                 directives = directives.concat(dd);
             }
@@ -153,7 +153,7 @@ define([
          are applied each time the node editor is opened.
          */
 
-        initialControlSettings: function(nodeid) {
+        initialControlSettings: function(nodeid){
             // Apply settings from PM
 	    this.applyDirectives(this._PM.newAction(), true);
 
@@ -165,7 +165,7 @@ define([
             /*
              Set color and enable/disable
              */
-            array.forEach(this._model.student.getStatusDirectives(nodeid), function(directive) {
+            array.forEach(this._model.student.getStatusDirectives(nodeid), function(directive){
                 var w = registry.byId(this.controlMap[directive.id]);
                 w.set(directive.attribute, directive.value);
 		// The actual values should be in the model itself, not in status directives.
@@ -185,20 +185,20 @@ define([
 
 	applyDirectives: function(directives, noModelUpdate){
             // Apply directives, either from PM or the controller itself.
-            array.forEach(directives, function(directive) {
+            array.forEach(directives, function(directive){
                 if(!noModelUpdate)
 		    this.updateModelStatus(directive);
-                if (this.widgetMap[directive.id]) {
+                if(this.widgetMap[directive.id]){
                     var w = registry.byId(this.widgetMap[directive.id]);
                     // console.log(">>>>>>>>> setting directive ", directive);
-                    if (directive.attribute == 'value') {
+                    if(directive.attribute == 'value'){
 			w.set("value", directive.value, false);
 			// Each control has its own function to update the
 			// the model and the graph.
 			this[directive.id+'Set'].call(this, directive.value);
-		    } else
+		    }else
                         w.set(directive.attribute, directive.value);
-                } else {
+                }else {
                     console.warn("Directive with unknown id: " + directive.id);
                 }
 

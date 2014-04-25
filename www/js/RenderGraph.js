@@ -12,7 +12,7 @@ define([
     "dojox/charting/plot2d/Grid", "dojox/charting/widget/Legend","dojo/ready", "dojo/_base/lang","dijit/registry","dojo/domReady!"
 ], function(on, declare, lang, Dialog, HorizontalSlider, dom,
 	    // It looks like Default, Lines, Grid are not used.  Can they be removed?
-	    Chart, Default, Lines, Grid, Legend,ready,lang,registry){
+	    Chart, Default, Lines, Grid, Legend, ready, lang, registry){
     return declare(null, {
 
         //array of timesteps
@@ -63,7 +63,7 @@ define([
          *  @brief:constructor for a graph object
          *  @param: noOfParam
          */
-        constructor: function (object) {
+        constructor: function(object){
             this.givenObject = object.givenObj;
             this.studentObject = object.studentObj;
 
@@ -94,13 +94,13 @@ define([
          * @brief: initialize Dialog/charts and sliders
          *
          */
-        initialize: function () {
+        initialize: function(){
             var i, j;
 
 
             var str = "";
 
-            /*for (j in this.givenArrayOfNodeValues) {
+            /*for(j in this.givenArrayOfNodeValues){
                 str = "chart" + j.toString();
                 this.strDomID.push(str);
                 this.dialogContent = this.dialogContent + this.createDom('div', str);
@@ -116,7 +116,7 @@ define([
             var tempGivenArrayOfNodeValues = lang.clone(this.givenArrayOfNodeValues);
 
             i = 0;
-            for (j in this.studentArrayOfNodeValues) {
+            for(j in this.studentArrayOfNodeValues){
                 //get givenModel/extraModel node ID related to student Node
                 var descriptionID = this.studentObject.calculationObj.model.student.getDescriptionID(j);
 
@@ -150,8 +150,8 @@ define([
                 this.dialogContent = this.dialogContent + this.createDom('div', str, "style='width:800px; margin:0 auto;'");
             }
 
-            var registerEventOnSlider = lang.hitch(this, function (slider, index, paramID) {
-                on(slider, "change", lang.hitch(this, function () {
+            var registerEventOnSlider = lang.hitch(this, function(slider, index, paramID){
+                on(slider, "change", lang.hitch(this, function(){
 
                     dom.byId("text" + paramID.toString()).value = slider.value;
                     this.studentObject.calculationObj.active.setInitial(paramID, slider.value);
@@ -163,7 +163,7 @@ define([
 
                     //update and render the chart
                     var l = 0;
-                    for (var k in newObj.arrayOfNodeValues) {
+                    for(var k in newObj.arrayOfNodeValues){
 
                         var descriptionID = newObj.calculationObj.model.student.getDescriptionID(k);
                         var objStudent = this.getMinMaxFromaArray(newObj.arrayOfNodeValues[k]);
@@ -182,7 +182,7 @@ define([
                         //var maxArrayValue = array[array.length - 1];
 
                         this.chart[k].removeAxis("y");
-                        this.chart[k].addAxis("y", {vertical: true,min: min, max: max,  title: this.studentUnits[k]});
+                        this.chart[k].addAxis("y", {vertical: true, min: min, max: max,  title: this.studentUnits[k]});
                         this.chart[k].updateSeries("Variable solution", this.studentFormattedArrayOfNodeValues[k]);
                         this.chart[k].render();
                         l++;
@@ -193,7 +193,7 @@ define([
 
             i = 0;
             //create sliders based on number of input parameters
-            for (j in this.studentParamNames) {
+            for(j in this.studentParamNames){
                 // create slider and assign to object property
                 //
                 this.sliders[j] = new HorizontalSlider({
@@ -212,11 +212,11 @@ define([
 
                 registerEventOnSlider(slider, index, paramID);
 
-                /*on(this.sliders[i],"change", lang.hitch(this,function(){
+                /*on(this.sliders[i],"change", lang.hitch(this, function(){
 
                  dom.byId("text"+index).value = slider.value;
-                 this.object.calculationObj.active.setInitial(paramID,slider.value);
-                 var newObj = this.object.calculationObj.gerParametersForRendering(this.object.calculationObj.solutionGraph,true);
+                 this.object.calculationObj.active.setInitial(paramID, slider.value);
+                 var newObj = this.object.calculationObj.gerParametersForRendering(this.object.calculationObj.solutionGraph, true);
 
                  //update and render the chart
                  var l=0;
@@ -232,7 +232,7 @@ define([
                 //create label for name of a textbox
                 //create input for a textbox
                 //create div for embedding a slider
-                /*this.dialogContent= this.dialogContent + this.createDom('label','','',this.paramNames[j]+" = ")+this.createDom('input','text'+i,"type='text' data-dojo-type='dijit/form/TextBox'")+"<br>"
+                /*this.dialogContent= this.dialogContent + this.createDom('label','','', this.paramNames[j]+" = ")+this.createDom('input','text'+i,"type='text' data-dojo-type='dijit/form/TextBox'")+"<br>"
                  +this.createDom('div','slider'+i);*/
                 this.dialogContent = this.dialogContent + this.createDom('label', '', '', this.studentParamNames[j] + " = ");
 
@@ -258,14 +258,14 @@ define([
             });
 
             //destroy the dialog when it is closed
-            on(this.dialog, "hide", lang.hitch(this, function () {
+            on(this.dialog, "hide", lang.hitch(this, function(){
 
 
                 this.dialog.destroyRecursive();
 
                 //set initial values of all parameters to original values
                 var i;
-                for (i in this.studentParamNames) {
+                for(i in this.studentParamNames){
                     this.studentObject.calculationObj.model.student.setInitial(i, this.studentParamValue[i]);
                 }
 
@@ -274,7 +274,7 @@ define([
 
             //insert initial value of slider into a textbox
             //append slider to the div node
-            for (i in this.studentParamValue) {
+            for(i in this.studentParamValue){
                 dom.byId("text" + i.toString()).value = this.sliders[i].value;
                 dom.byId("slider" + i.toString()).appendChild(this.sliders[i].domNode);
             }
@@ -286,7 +286,7 @@ define([
             tempGivenArrayOfNodeValues = lang.clone(this.givenArrayOfNodeValues);
            if(!this.isNodeValueEmpty())
            {
-                for (j in this.studentArrayOfNodeValues) {
+                for(j in this.studentArrayOfNodeValues){
                     str = "chart" + j.toString();
                     chartArray[j] = new Chart(str);
                     chartArray[j].addPlot("default", {type: Lines, markers: true});
@@ -334,7 +334,7 @@ define([
                this.dialog.setContent("<div>"+ "Student did not plot any node as yet"+ "</div>"+"<div align='center'>"+"OR"+"</div>"
                +"<div align='center'>"+"Nodes are not complete"+"</div>");
            }
-            /*for (j in this.givenArrayOfNodeValues) {
+            /*for(j in this.givenArrayOfNodeValues){
 
                 str = "chart" + j.toString();
                 chartArray[j] = new Chart(str);
@@ -403,7 +403,7 @@ define([
              {
              _slider[i] = dom.byId("slider"+i);
              slider[i] = this.sliders[i];
-             on(_slider[i],"click",function(){
+             on(_slider[i],"click", function(){
 
              var j;
              //get current value of a slider inside textbox
@@ -439,16 +439,16 @@ define([
          * @param: domText - text to be contained in dom. e.g <label>TEXT</label>. domText = TEXT in this case
          */
 
-        createDom: function (domType, domId, domParam, domText) {
+        createDom: function(domType, domId, domParam, domText){
 
             var style = "", dom = "";
             var str = "";
-            if (domType == "div") {
+            if(domType == "div"){
                 style = "";
                 domText = "";
-            } else if (domType == "label") {
+            }else if(domType == "label"){
                 domParam = "";
-            } else if (domType == "input") {
+            }else if(domType == "input"){
                 domText = "";
             }
 
@@ -459,9 +459,9 @@ define([
 
         formatArrayOfNodeValuesForChart: function()
         {
-            var i,j;
+            var i, j;
 
-            //convert array of node values to object {x:timestep,y:node value for timestep}
+            //convert array of node values to object {x:timestep, y:node value for timestep}
             for(i in this.givenArrayOfNodeValues)
             {
 
@@ -531,13 +531,13 @@ define([
                 }
             }
 
-            obj={min:min,max:max};
+            obj={min:min, max:max};
             return obj;
         },
         /*
          * @brief: display the graph
          */
-        show: function () {
+        show: function(){
             this.dialog.show();
 
         }
