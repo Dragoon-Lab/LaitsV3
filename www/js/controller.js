@@ -232,6 +232,9 @@ define([
              We could write a function to attach the handlers?
              */
 
+            var desc = registry.byId(this.controlMap.description);
+            desc.on('Change', lang.hitch(this, this.handleDescription));
+
             /*
              *   event handler for 'type' field
              *   'handleType' will be called in either Student or Author mode
@@ -260,13 +263,15 @@ define([
                     this.emit('Change', {}, [this.get('value')]);
             });
 
-            //Changed by Deepak
-            //this handler should be in student controller
-            /*var inputsWidget = registry.byId(this.controlMap.inputs);
-             inputsWidget.on('Change',  lang.hitch(this, function(){
-             return this.disableHandlers || this.handleInputs.apply(this, arguments);
-             }));*/
+            var inputsWidget = registry.byId(this.controlMap.inputs);
+            inputsWidget.on('Change',  lang.hitch(this, function(){
+                return this.disableHandlers || this.handleInputs.apply(this, arguments);
+            }));
 
+            var unitsWidget = registry.byId(this.controlMap.units);
+            unitsWidget.on('Change', lang.hitch(this, function(){
+                return this.disableHandlers || this.handleUnits.apply(this, arguments);
+            }));
 
             var positiveWidget = registry.byId("positiveInputs");
             positiveWidget.on('Change', lang.hitch(this.structured, this.structured.handlePositive));
@@ -414,7 +419,8 @@ define([
          },*/
 
         handleEquation: function(equation){
-            // Generally, we don't need to do anthing for these events
+            var w = registry.byId(this.widgetMap.equation);
+            w.set("status", "");
         },
         plusHandler: function(){
             console.log("****** plus button");

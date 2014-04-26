@@ -22,34 +22,25 @@ define([
                     case "type":
                         if(value == "parameter"){
                             //disable inputs and expression
-                            var obj = {attribute:"disabled", id:"initial", value:false};
-                            returnObj.push(obj);
+                            returnObj.push({attribute:"disabled", id:"initial", value:false});
 
-                            var obj = {attribute:"disabled", id:"inputs", value:true};
-                            returnObj.push(obj);
+                            returnObj.push({attribute:"disabled", id:"inputs", value:true});
 
-                            var obj = {attribute:"disabled", id:"equation", value:true};
-                            returnObj.push(obj);
+                            returnObj.push({attribute:"disabled", id:"equation", value:true});
                         }
                         else if(value == "function"){
-                            var obj = {attribute:"disabled", id:"initial", value:true};
-                            returnObj.push(obj);
+                            returnObj.push({attribute:"disabled", id:"initial", value:true});
 
-                            var obj = {attribute:"disabled", id:"inputs", value:false};
-                            returnObj.push(obj);
+                            returnObj.push({attribute:"disabled", id:"inputs", value:false});
 
-                            var obj = {attribute:"disabled", id:"equation", value:false};
-                            returnObj.push(obj);
+                            returnObj.push({attribute:"disabled", id:"equation", value:false});
                         }
                         else if(value == "accumulator"){
-                            var obj = {attribute:"disabled", id:"initial", value:false};
-                            returnObj.push(obj);
+                            returnObj.push({attribute:"disabled", id:"initial", value:false});
 
-                            var obj = {attribute:"disabled", id:"inputs", value:false};
-                            returnObj.push(obj);
+                            returnObj.push({attribute:"disabled", id:"inputs", value:false});
 
-                            var obj = {attribute:"disabled", id:"equation", value:false};
-                            returnObj.push(obj);
+                            returnObj.push({attribute:"disabled", id:"equation", value:false});
                         }
                         else{
                             console.error("wrong choice");
@@ -68,7 +59,7 @@ define([
             this.authorControls();
             ready(this, "initAuthorHandles");
         },
-        controlMap:{
+        controlMap: {
             inputs:"setInput",
             name:"setName",
             description:"setDescription",
@@ -94,32 +85,10 @@ define([
             kind.on('Change', lang.hitch(this, function(){
                 return this.disableHandlers || this.handleKind.apply(this, arguments);
             }));
-            var description = registry.byId(this.controlMap.description);
-            description.on('Change', lang.hitch(this, function(){
-                return this.disableHandlers || this.handleSetDescription.apply(this, arguments);
-            }));
-            var units = registry.byId(this.controlMap.units);
-            units.on('Change', lang.hitch(this, function(){
-                return this.disableHandlers || this.handleSetUnits.apply(this, arguments);
-            }));
-
-            var inputsWidget = registry.byId(this.controlMap.inputs);
-            inputsWidget.on('Change', lang.hitch(this, function(){
-                return this.disableHandlers || this.handleInputs.apply(this, arguments);
-            }));
-
         },
         /*
          Handler for type selector
          */
-        handleType: function(type){
-            // Summary: Sets the type of the current node.
-            console.log("****** AUTHOR has chosen type ", type, this);
-            if(type == 'defaultSelect')
-                return; // don't do anything if they choose default
-            this.updateType(type);
-            this.applyDirectives(this.authorPM.process(this.currentID,'type', type));
-        },
         handleName: function(name){
             console.log("**************** in handleName ", name);
 
@@ -133,15 +102,13 @@ define([
                 this.updateNodes();
                 this.setConnections(this._model.active.getInputs(this.currentID), this.currentID);
 
-        		this.updateEquationLabels();
+        	this.updateEquationLabels();
             }else {
 
                 console.error("Node name already exists OR node name is not valid variable.  Need message for student!");
             }
         },
-        handleEquation: function(expression){
-            //generally this handler is not needed
-        },
+
         handleKind: function(kind){
             console.log("**************** in handleKind ", kind);
             if(kind == "given"){
@@ -151,6 +118,7 @@ define([
                 this._model.given.setGenus(this.currentID, kind);
             }
         },
+
         handleDescription: function(description){
             // Summary: Checks to see if the given description exists; if the
             //      description doesn't exist, it sets the description of the current node.
@@ -161,14 +129,19 @@ define([
                 console.warn("In AUTHOR mode. Attempted to use description that already exists: " + description);
             }
         },
-        handleSetDescription: function(setDescription){
-            console.log("**************** in handleSetDescription ", setDescription);
-            this.handleDescription(setDescription);
+
+        handleType: function(type){
+            // Summary: Sets the type of the current node.
+            console.log("****** AUTHOR has chosen type ", type, this);
+            if(type == 'defaultSelect')
+                return; // don't do anything if they choose default
+            this.updateType(type);
+            this.applyDirectives(this.authorPM.process(this.currentID,'type', type));
         },
-        handleSetUnits: function(units){
+        handleUnits: function(units){
+            console.log("**************** in handleUnits ", units);
             // Summary: Sets the units of the current node.
             this._model.active.setUnits(this.currentID, units);
-            console.log("**************** in handleSetUnits ", units);
         },
         /*
          Handler for initial value input
