@@ -182,10 +182,13 @@ define([
             }
             return true;
         },
-	gradient: function(parse, point){
+	gradient: function(parse, /*boolean*/ monomial, point){
 	    // Find the numerical partial derivatives of the expression at
 	    // the given point or at a random point, if the point is not supplied.
 	    // Both the given point and the return vector are expressed as objects.
+	    // If monomial is true, take the gradient of the logarithm and multiply by the variable.
+	    // That is, find     x d/dx log(f)
+	    // For a monomial, this will give the degree of each factor 
 	    /*
 	     In principle, one could calculate the gradient algebraically and 
 	     use that to determine coefficients.  However, the current parser library
@@ -199,6 +202,7 @@ define([
 		});
 	    }
 	    var partial = {};
+	    var y = parse.evaluate(point);
 	    array.forEach(parse.variables(), function(x){
 		var z = lang.clone(point);
 		var dx = 1.0e-6*Math.abs(point[x]==0?1:point[x]);
@@ -207,9 +211,38 @@ define([
 		z[x] += dx;
 		var y2 = parse.evaluate(z);
 		partial[x] = (y2-y1)/dx;
+		if(monomial){
+		    partial[x] *= point[x]/y;
+		}
 	    });
 	    return partial;
 	},
+
+	// Test if this is a pure sum or product
+	// If so, determine connection labels
+	createInputs: function(parse){
+	    var grad;
+	    var chooseSign = function(x, a, b, c){
+		return x>0.5?a:(x<-0.5?b:c);
+	    };
+	    if(this.isSum(parse)){
+		grad = this.gradient(parse, false);
+		return array.map(parse.variables(), function(x){
+		    return {ID: x, label: chooseSign(grad[x],"+","-","0")};
+		});
+	    }else if(this.isProduct(parse)){
+		grad = this.gradient(parse, true);
+		return array.map(parse.variables(), function(x){
+		    return {ID: x, label: chooseSign(grad[x],"*","/","none")};
+		});
+	    }else{
+		// General expression
+		return array.map(parse.variables(), function(x){
+		    return {ID: x};
+		});
+	    }
+	},
+
         convertUsingDescriptionIDs:function(subModel, equation){
             try {
                 var expr = Parser.parse(equation);

@@ -351,9 +351,7 @@ define([
             getInputs: function(/*string*/ id){
                 // Summary: return an array containing the input ids for a node.
                 var ret = this.getNode(id);
-                return ret && array.map(ret.inputs, function(input){
-                    return input.ID;
-                });
+		return ret && ret.inputs;
             },
             getOutputs: function(/*string*/ id){
                 // Summary: return an array containing the output ids for a node.
@@ -369,15 +367,12 @@ define([
             },
             setInputs: function(/*array*/ inputs, /*string*/ inputInto){
                 // Silently filter out any inputs that are not defined.
+		// inputs is an array of objects.
                 var node = this.getNode(inputInto);
                 if(node){
-                    node.inputs = array.map(
-                            array.filter(inputs, this.isNode, this),
-                            function(id){
-                                return {ID: id};
-                            },
-                            this
-                            );
+                    node.inputs = array.filter(inputs, function(input){
+			return this.isNode(input.ID);
+		    }, this);
                 }
             },
             setType: function(/*string*/ id, /*string*/ type){

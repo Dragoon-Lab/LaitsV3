@@ -583,8 +583,12 @@ define([
                 // console.log("********* Saving equation to model: ", parsedEquation);
                 this._model.active.setEquation(this.currentID, parsedEquation);
 
+		// Test if this is a pure sum or product
+		// If so, determine connection labels
+		var inputs = expression.createInputs(parse);
+
                 // Update inputs and connections
-                this._model.active.setInputs(parse.variables(), this.currentID);
+                this._model.active.setInputs(inputs, this.currentID);
                 this.setConnections(this._model.active.getInputs(this.currentID), this.currentID);
                 // console.log("************** equationAnalysis directives ", directives);
 

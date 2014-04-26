@@ -46,7 +46,7 @@ define([
             }, this);
 
 
-            console.log("====== instance:  ", instance);
+            console.log("-------- instance:  ", instance);
 
 
             /* bind a click listener to each connection; the connection is deleted. you could of course
@@ -119,9 +119,9 @@ define([
              <div class="circle" id="growth" ></br></br>*</br></br></br></br></br></br>Growth</div>
              <div class="diamond" id="grate" ><div class="diamond-inner"></br></br>0.3</br></br></br></br></br></br>Growth Rate</label><br/></div></div>
              */
-            console.log("Adding element to canvas, id = ", node.ID, ", class = ", type);
+            console.log("------- Adding element to canvas, id = ", node.ID, ", class = ", type);
             // Add div to drawing
-            console.log("--> setting position for vertex : "+ node.ID +" position: x"+node.position.x+"  y:"+node.position.y);
+            console.log("      --> setting position for vertex : "+ node.ID +" position: x"+node.position.x+"  y:"+node.position.y);
 
             var nodeName = this._givenModel.getName(node.ID);
             if(nodeName && type != "triangle")
@@ -193,7 +193,7 @@ define([
             // For now, we simply remove all existing connections and
             // create all new connections.
             // See http://stackoverflow.com/questions/11488067/how-to-delete-jsplumb-connection
-            // console.log("setConnections:  Need to delete existing connections going into " + destination, this._instance);
+            // console.log("----- setConnections:  Need to delete existing connections going into " + destination, this._instance);
             // Go through existing connections and delete those that
             // have this destination as their target.
             array.forEach(this._instance.getConnections(), function(connection){
@@ -205,11 +205,11 @@ define([
                 // All sources and destinations should exist.
 
 //                if(destination.is)
-
-
-                this._instance.connect({source: source,
+		if(source.label)
+		    console.log("------- At this point, we should add a '"+source.label+"' label to "+ source.ID);
+                this._instance.connect({source: source.ID,
                     target: destination
-                   /* overlays: [
+                    /* overlays: [
                         ["Label",{label:"+", id:"label1", cssClass:"aLabel", location:0.95, radius:0.5 }],
                         ["Label",{label:"-", id:"label2", cssClass:"aLabel", location:0.03, radius:0.5 }]
                     ]*/
@@ -233,7 +233,7 @@ define([
         },
 
         deleteNode: function(/*object*/ nodeID){
-            console.log("delete node called for ", nodeID);
+            console.log("------- delete node called for ", nodeID);
         },
 
         // Keep track of whether there was a mouseDown and mouseUp
