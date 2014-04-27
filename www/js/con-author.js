@@ -185,23 +185,35 @@ define([
             registry.byId(this.controlMap.description).set('value', desc || '', false);
 
             // populate inputs
-            var t = registry.byId(this.controlMap.inputs);
+            var inputsWidget = registry.byId(this.controlMap.inputs);
+	    var nameWidget = registry.byId(this.controlMap.name);
+	    var descriptionWidget = registry.byId(this.controlMap.description);
+	    var unitsWidget = registry.byId(this.controlMap.units);
 
             /*
-            *   populate the nodes in input tab
+            *   populate the nodes in the Name, Description, Units, and Inputs tab
             *   For combo-box we need to setup a data-store which is collection of {name:'', id:''} object
             *
             */
             var dummyArray =[];
+	    var descriptions = [];
+	    var units = [];
             array.forEach(this._model.given.getDescriptions(), function(desc){
                 if(desc.label){
                     var name = this._model.given.getName(desc.value);
                     var obj = {name:name, id:desc.id};
                     dummyArray.push(obj);
+		    descriptions.push({name: this._model.given.getDescription(desc.value), id: desc.id});
+		    units.push({name: this._model.given.getUnits(desc.value), id: desc.id});
                 }
             }, this);
             var m = new memory({data:dummyArray});
-            t.attr("store", m);
+            inputsWidget.set("store", m);
+            nameWidget.set("store", m);
+	    m = new memory({data: descriptions});
+	    descriptionWidget.set("store", m);
+	    m = new memory({data: units});
+	    units.push("store", m);
         },
         updateModelStatus: function(desc){
             //stub for updateModelStatus

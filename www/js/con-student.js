@@ -20,6 +20,7 @@ define([
             console.log("++++++++ In student constructor");
             this._PM = new PM(mode, subMode, model);
             lang.mixin(this.widgetMap, this.controlMap);
+	    ready(this, "populateSelections");
         },
         // A list of control map specific to students
         controlMap: {
@@ -27,6 +28,34 @@ define([
             units: "selectUnits",
             inputs: "nodeInputs"
         },
+
+	populateSelections: function(){
+	    /*
+             Initialize select options in the node editor that are
+             common to all nodes in a problem.
+             
+             In AUTHOR mode, this needs to be done when the
+             node editor is opened.
+             */
+            // Add fields to Description box and inputs box
+            // In author mode, the description control must be a text box
+            var d = registry.byId(this.controlMap.description);
+            // populate input field
+            var t = registry.byId(this.controlMap.inputs);
+            console.assert(t, "Can't find widget " + this.controlMap.inputs);
+            var positiveInputs = registry.byId("positiveInputs");
+            var negativeInputs = registry.byId("negativeInputs");
+            console.log("description widget = ", d, this.controlMap.description);
+            // d.removeOption(d.getOptions()); // Delete all options
+            array.forEach(this._model.given.getDescriptions(), function(desc){
+                d.addOption(desc);
+                var name = this._model.given.getName(desc.value);
+                var option = {label: desc.label + ' ' + ' | ' + ' ' + name, value: desc.value};
+                t.addOption(option);
+                positiveInputs.addOption(option);
+                negativeInputs.addOption(option);
+            }, this);
+	},
 
         handleDescription: function(selectDescription){
             console.log("****** in handleDescription ", this.currentID, selectDescription);
@@ -134,12 +163,12 @@ define([
 	    // Generally, since this is the correct solution, there should be no directives
 	    this.applyDirectives(directives);
 	},
-        /* 
+ 
+	/* 
          Settings for a new node, as supplied by the PM.
          These don't need to be recorded in the model, since they
          are applied each time the node editor is opened.
          */
-
         initialControlSettings: function(nodeid){
             // Apply settings from PM
 	    this.applyDirectives(this._PM.newAction(), true);
@@ -161,6 +190,7 @@ define([
 		}
             }, this);
         },
+
         // Need to save state of the node editor in the status section
         // of the student model.  See documentation/json-format.md
         updateModelStatus: function(desc) {

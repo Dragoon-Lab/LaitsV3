@@ -72,32 +72,6 @@ define([
             style.set("equationText", "display", structured);
 
             /*
-             Initialize fields in the node editor that are
-             common to all nodes in a problem.
-             
-             In AUTHOR mode, this needs to be done when the
-             node editor is opened.
-             */
-            // Add fields to Description box and inputs box
-            // In author mode, the description control must be a text box
-            var d = registry.byId(this.controlMap.description);
-            // populate input field
-            var t = registry.byId(this.controlMap.inputs);
-            console.assert(t, "Can't find widget " + this.controlMap.inputs);
-            var positiveInputs = registry.byId("positiveInputs");
-            var negativeInputs = registry.byId("negativeInputs");
-            // console.log("description widget = ", d);
-            // d.removeOption(d.getOptions()); // Delete all options
-            array.forEach(this._model.given.getDescriptions(), function(desc){
-                d.addOption(desc);
-                var name = this._model.given.getName(desc.value);
-                var option = {label: desc.label + ' ' + ' | ' + ' ' + name, value: desc.value};
-                t.addOption(option);
-                positiveInputs.addOption(option);
-                negativeInputs.addOption(option);
-            }, this);
-
-            /*
              Add attribute handler to all of the controls
              When "status" attribute is changed, then this function
              is called.
@@ -640,12 +614,9 @@ define([
             var type = model.getType(nodeid);
             console.log('node type is', type || "not set");
 
-
-
             registry.byId(this.controlMap.type).set('value', type || 'defaultSelect');
             //update labels
             this.updateEquationLabels(type);
-
 
             var initial = model.getInitial(nodeid);
             console.log('initial value is', initial || "not set");
@@ -677,10 +648,12 @@ define([
              */
         },
 
-/*         Take a list of directives and apply them to the Node Editor,
+	/* 
+         Take a list of directives and apply them to the Node Editor,
          updating the model and updating the graph.
-
-         The format for directives is defined in documentation/javascript.md*/
+	 
+         The format for directives is defined in documentation/javascript.md
+	 */
         applyDirectives: function(directives, noModelUpdate){
             // Apply directives, either from PM or the controller itself.
             array.forEach(directives, function(directive) {
