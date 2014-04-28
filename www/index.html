@@ -210,13 +210,13 @@
                         <button id="productButton" type="button" data-dojo-type="dijit/form/Button" iconClass="dijitNoIcon">Product</button>
 		    </div>
 		    <div class="horizontal">
-		        <label for="positiveInputs" style="display:inline">Positive Quantity:</label><br>
+		        <label id="positiveInputsText" for="positiveInputs" style="display:inline">Add quantity:</label><br>
         	        <select id="positiveInputs" data-dojo-type="dijit/form/Select" style="display:inline-block">
 			    <option value='defaultSelect'>--Select--</option>
                         </select>
 		    </div>
 		    <div class="horizontal">
-		        <label for="negativeInputs" style="display:inline">Negative Quantity:</label><br>
+		        <label id="negativeInputsText" for="negativeInputs" style="display:inline">Subtract quantity:</label><br>
 		        <select id="negativeInputs" data-dojo-type="dijit/form/Select" style="display:inline-block">
                             <option value='defaultSelect'>--Select--</option>
                         </select>
@@ -232,7 +232,7 @@
                     <div id="timeStepLabel"></div>
                 </div>
                 <div class="buttonBox">	    
-	            <button id="undoButton" type="button" data-dojo-type="dijit/form/Button" iconClass="dijitNoIcon">Clear</button>
+	            <button id="undoButton" type="button" data-dojo-type="dijit/form/Button" iconClass="dijitNoIcon">Undo</button>
                     <button id="equationDoneButton" type="button" data-dojo-type="dijit/form/Button" iconClass="dijitNoIcon">Check Expression</button>
 	        </div>
             </div>

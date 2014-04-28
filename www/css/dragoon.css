@@ -41,7 +41,7 @@ html, body, #main{
     clear:both;
 }
 
-#nodeeditor .fieldgroup label {
+#nodeeditor .fieldgroup > label {
     text-align:right;
     margin-left:2ex;
     margin-right:1ex;
@@ -54,6 +54,13 @@ html, body, #main{
 
 #nodeeditor .fieldgroup > label:first-child {
     width:10ex;
+}
+
+#nodeeditor #equationText {
+    max-width:40ex;
+    border:solid black 1px;
+    padding:2px;
+    margin:2px;
 }
 
 #nodeeditor .textscroll {

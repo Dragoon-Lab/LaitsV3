@@ -414,37 +414,61 @@ define([
         },
         sumHandler: function(){
             console.log("****** sum button");
-            this.structured.operation = "sum";
-            this.structured.update();
+	    this.structured.setOperation("sum");
         },
         productHandler: function(){
             console.log("****** product button");
-            this.structured.operation = "product";
-            this.structured.update();
+	    this.structured.setOperation("product");
         },
         structured: {
             _model: null, // Needs to be set to to instance of model
             operation: "sum",
             positives: [],
             negatives: [],
+	    ops: [],
+	    setOperation: function(op){
+		switch(op){
+		case "sum":
+		    this.operation = op;
+		    dom.byId("positiveInputsText").innerHTML = "Add quantity:";
+		    dom.byId("negativeInputsText").innerHTML = "Subtract quantity:";
+		    break;
+		case "product":
+		    this.operation = "product";
+		    dom.byId("positiveInputsText").innerHTML = "Multiply by quantity:";
+		    dom.byId("negativeInputsText").innerHTML = "Divide by quantity:";
+		    break;
+		default:
+		    throw new Error("Invalid operation " + op);
+		}
+		this.update();
+	    },
+
             handlePositive: function(id){
                 console.log("****** structured.handlePositives ", id);
                 this.positives.push(this._model.given.getName(id));
+		this.ops.push("positives");
                 this.update();
                 registry.byId("positiveInputs").set('value', 'defaultSelect', false);// restore to default
             },
             handleNegative: function(id){
                 console.log("****** structured.handleNegatives ", id);
                 this.negatives.push(this._model.given.getName(id));
+		this.ops.push("negatives");
                 this.update();
                 registry.byId("negativeInputs").set('value', 'defaultSelect', false);// restore to default
             },
+	    pop: function(){
+		var op = this.ops.pop();
+		this[op].pop();
+		this.update();
+	    },
             update: function(){
                 // Update expression shown in equation box
                 // And structured expression
                 var pos = "";
-                var op = this.operation == "sum" ? "+" : "*";
-                var nop = this.operation == "sum" ? "-" : "/";
+                var op = this.operation == "sum" ? " + " : " * ";
+                var nop = this.operation == "sum" ? " - " : " / ";
                 array.forEach(this.positives, function(term, i){
                     if(i > 0)
                         pos += op;
@@ -476,14 +500,13 @@ define([
             reset: function(){
                 this.positives.length = 0;
                 this.negatives.length = 0;
+		this.ops.length = 0;
                 this.update();
             }
         },
         undoHandler: function(){
             var widget = registry.byId(this.controlMap.equation);
-            // Delete everything in equation box.
-            var oldEqn = widget.set("value", "");
-            this.structured.reset();
+            this.structured.pop();
         },
         equationAnalysis: function(directives){
             console.log("****** enter button");
