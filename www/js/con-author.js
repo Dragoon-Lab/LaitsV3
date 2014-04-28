@@ -20,6 +20,7 @@ define([
                 var returnObj=[];
                 switch(nodeType){
                     case "type":
+                        returnObj.push({attribute:"status",id:"type",value:"entered"});
                         if(value == "parameter"){
                             //disable inputs and expression
                             returnObj.push({attribute:"disabled", id:"initial", value:false});
@@ -43,10 +44,59 @@ define([
                             returnObj.push({attribute:"disabled", id:"equation", value:false});
                         }
                         else{
+                            returnObj[0].value="incorrect";
+                            returnObj.push({id:"message",attribute:"append",value:"Please select node type"});
                             console.error("wrong choice");
                         }
                         break;
 
+                    case "name":
+                        if(!nodeID){
+                            returnObj.push({id:"message",attribute:"append",value:"node name is available for use"});
+                            returnObj.push({id:"name",attribute:"status",value:"entered"});
+                        }
+                        else{
+                            returnObj.push({id:"message",attribute:"append",value:"node name is already in use"});
+                            returnObj.push({id:"name",attribute:"status",value:"incorrect"});
+                        }
+                        break;
+
+                    case "kind":
+                        var message="";
+                        returnObj.push({id:"kind",attribute:"status",value:"entered"});
+                        if(value == "given"){
+                            message  = "kind selected is 'in solution'. This implies student has to include this node in solution";
+                        }
+                        else if(value == "allowed"){
+                            message  = "kind selected is 'optional'. The student may include this quantity in a solution.";
+                        }
+                        else if(value == "forbidden"){
+                            message  = "kind selected is 'not allowed'. A quantity that might be part of a valid model, " +
+                                "and mentioned in the problem description, but inclusion of this quantity will generally " +
+                                "not allow the student to construct a model";
+                        }
+                        else if(value == "offTopic"){
+                            message  = "kind selected is 'irrelevant'. A quantity that is not part of the given model and not " +
+                                "mentioned in the problem description.";
+                        }
+                        else{
+                            returnObj[0].value = "incorrect";
+                            message  = "kind selected is 'default'. Please select valid value from kind drop-down.";
+                        }
+                        returnObj.push({id:"message",attribute:"append",value:message});
+                        break;
+
+                    case "description":
+                        returnObj.push({id:"description",attribute:"status",value:"entered"});
+                        break;
+
+                    case "initial":
+                        returnObj.push({id:"initial",attribute:"status",value:"entered"});
+                        break;
+
+                    case "inputs":
+                        returnObj.push({id:"inputs",attribute:"status",value:"entered"});
+                        break;
                     default:
                         console.log("");
                 }
@@ -95,6 +145,7 @@ define([
             /* check if node with name already exists and
                if name is parsed as valid variable
             */
+            this.applyDirectives(this.authorPM.process(this._model.given.getNodeIDByName(name)?!(this._model.given.getNodeIDByName(name)==this.currentID):null,'name',name));
             if(!this._model.given.getNodeIDByName(name) && equation.isVariable(name)){
                 // check all nodes in the model for equations containing name of this node
                 // replace name of this node in equation with its ID
@@ -103,14 +154,12 @@ define([
                 this.setConnections(this._model.active.getInputs(this.currentID), this.currentID);
 
         	this.updateEquationLabels();
-            }else {
-
-                console.error("Node name already exists OR node name is not valid variable.  Need message for student!");
             }
         },
 
         handleKind: function(kind){
             console.log("**************** in handleKind ", kind);
+            this.applyDirectives(this.authorPM.process(this.currentID,"kind",kind));
             if(kind == "given"){
                 this._model.given.setGenus(this.currentID,"");
             }
@@ -128,15 +177,16 @@ define([
             }else {
                 console.warn("In AUTHOR mode. Attempted to use description that already exists: " + description);
             }
+            this.applyDirectives(this.authorPM.process(this.currentID,"description",description));
         },
 
         handleType: function(type){
             // Summary: Sets the type of the current node.
             console.log("****** AUTHOR has chosen type ", type, this);
+            this.applyDirectives(this.authorPM.process(this.currentID,'type', type));
             if(type == 'defaultSelect')
                 return; // don't do anything if they choose default
             this.updateType(type);
-            this.applyDirectives(this.authorPM.process(this.currentID,'type', type));
         },
         handleUnits: function(units){
             console.log("**************** in handleUnits ", units);
@@ -149,11 +199,13 @@ define([
         handleInitial: function(initial){
             // Summary: Sets the initial value of the current node.
             this._model.active.setInitial(this.currentID, initial);
+            this.applyDirectives(this.authorPM.process(this.currentID,"initial",initial));
             console.log("In AUTHOR mode. Initial value is: " + initial);
         },
         handleInputs: function(name){
             console.log("In AUTHOR mode. Input selected is: " + name);
             this.equationInsert(name);
+            this.applyDirectives(this.authorPM.process(this.currentID,"inputs",name));
         },
         equationDoneHandler: function(){
             console.log("Inside equationDone handler");
