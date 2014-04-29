@@ -153,7 +153,7 @@ define([
                 this.updateNodes();
                 this.setConnections(this._model.active.getInputs(this.currentID), this.currentID);
 
-        	this.updateEquationLabels();
+            this.updateEquationLabels();
             }
         },
 
@@ -162,6 +162,9 @@ define([
             this.applyDirectives(this.authorPM.process(this.currentID,"kind",kind));
             if(kind == "given"){
                 this._model.given.setGenus(this.currentID,"");
+            }
+            else if(kind == "defaultSelect"){
+                this._model.given.setGenus(this.currentID, null);
             }
             else{
                 this._model.given.setGenus(this.currentID, kind);
@@ -198,6 +201,17 @@ define([
          */
         handleInitial: function(initial){
             // Summary: Sets the initial value of the current node.
+            /*
+             Evaluate only if the value is changed.
+
+             The controller modifies the initial value widget so that a "Change" event is
+             fired if the widget loses focus.  This may happen when the node editor is closed.
+             */
+            if(!initial || initial == this.lastInitialValue){
+                return;
+            }
+            this.lastInitialValue = initial;
+
             this._model.active.setInitial(this.currentID, initial);
             this.applyDirectives(this.authorPM.process(this.currentID,"initial",initial));
             console.log("In AUTHOR mode. Initial value is: " + initial);
@@ -229,7 +243,7 @@ define([
             }
         },
         initialControlSettings: function(nodeid){
-	    var name = this._model.given.getName(nodeid);
+        var name = this._model.given.getName(nodeid);
             registry.byId(this.controlMap.name).set('value', name || '', false);
 
             var desc = this._model.given.getDescription(nodeid);
@@ -238,9 +252,9 @@ define([
 
             // populate inputs
             var inputsWidget = registry.byId(this.controlMap.inputs);
-	    var nameWidget = registry.byId(this.controlMap.name);
-	    var descriptionWidget = registry.byId(this.controlMap.description);
-	    var unitsWidget = registry.byId(this.controlMap.units);
+            var nameWidget = registry.byId(this.controlMap.name);
+            var descriptionWidget = registry.byId(this.controlMap.description);
+            var unitsWidget = registry.byId(this.controlMap.units);
 
             /*
             *   populate the nodes in the Name, Description, Units, and Inputs tab
@@ -248,24 +262,36 @@ define([
             *
             */
             var dummyArray =[];
-	    var descriptions = [];
-	    var units = [];
+            var descriptions = [];
+            var units = [];
             array.forEach(this._model.given.getDescriptions(), function(desc){
                 if(desc.label){
                     var name = this._model.given.getName(desc.value);
                     var obj = {name:name, id:desc.id};
                     dummyArray.push(obj);
-		    descriptions.push({name: this._model.given.getDescription(desc.value), id: desc.id});
-		    units.push({name: this._model.given.getUnits(desc.value), id: desc.id});
+            descriptions.push({name: this._model.given.getDescription(desc.value), id: desc.id});
+            units.push({name: this._model.given.getUnits(desc.value), id: desc.id});
                 }
             }, this);
             var m = new memory({data:dummyArray});
             inputsWidget.set("store", m);
             nameWidget.set("store", m);
-	    m = new memory({data: descriptions});
-	    descriptionWidget.set("store", m);
-	    m = new memory({data: units});
-	    units.push("store", m);
+            m = new memory({data: descriptions});
+            descriptionWidget.set("store", m);
+            m = new memory({data: units});
+            units.push("store", m);
+
+            for(var key in this.controlMap){
+                var value = registry.byId(this.controlMap[key]).get("value");
+                var obj=[];
+                if((key=='name' && value=="") || (key=='kind' && value=="defaultSelect") || (key=="description" && value=="") || (key=="type" && value=="defaultSelect")){
+                    obj.push({attribute:"status",id:key,value:"incorrect"});
+                }
+                else{
+                    obj.push({attribute:"status",id:key,value:"entered"});
+                }
+                this.applyDirectives(obj);
+            }
         },
         updateModelStatus: function(desc){
             //stub for updateModelStatus
