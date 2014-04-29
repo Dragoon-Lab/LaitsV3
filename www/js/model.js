@@ -508,7 +508,26 @@ define([
             setStatus: function(/*string*/ id, /*string*/ part, /*string*/ status){
                 // Summary: tracks student progress (correct, incorrect) on a given node;
                 this.getNode(id).status[part] = status;
-            }
+            },
+	    isComplete: function(/*string*/ id, /*object*/ ignoreIt){
+		// Summary: Test whether a node is completely filled out, correct or not
+		// Returns a boolean
+		// id: the node id
+		// ignoreIt:  an optional object having a list of attributes to ignore,
+		//      such as, in AUTHOR mode, whether units need to be specified.
+		// 
+		// There is no test for "genus" since it defaults to node being in solution.
+		ignoreIt = ignoreIt || {};
+		var node = this.getNode();
+		var initialEntered = node.type && node.type == "function" || node.initial;
+		var equationEntered = node.type && node.type == "parameter" || node.equation;
+		return (ignoreIt.name || node.name) && 
+		    (ignoreIt.description || node.description) && 
+		    (ignoreIt.type || node.type) && 
+		    (ignoreIt.initial || initialEntered) &&
+		    (ignoreIt.units || node.units) &&
+		    (ignoreIt.equation || equationEntered);
+	    }
         }, both);
 
         obj.solution = lang.mixin({
@@ -619,7 +638,24 @@ define([
                 // When undefined, status[control] needs to be set explicitly.
                 this.getNode(id).status[control] = lang.mixin(attributes, options);
                 return attributes;
-            }
+            },
+	    isComplete: function(/*string*/ id, /*object*/ ignoreIt){
+		// Summary: Test whether a node is completely filled out, correct or not
+		// Returns a boolean
+		// id: the node id
+		// ignoreIt:  an optional object having a list of attributes to ignore.
+		ignoreIt = ignoreIt || {};
+		var node = this.getNode();
+		// Some given models do not include units.
+		var hasUnits = node.descriptionID && obj.given.getUnits(node.descriptionID);
+		var initialEntered = node.type && node.type == "function" || node.initial;
+		var equationEntered = node.type && node.type == "parameter" || node.equation;
+		return (ignoreIt.descriptionID || node.descriptionID) && 
+		    (ignoreIt.type || node.type) && 
+		    (ignoreIt.initial || initialEntered) &&
+		    (ignoreIt.units || !hasUnits || node.units) &&
+		    (ignoreIt.equation || equationEntered);
+	    }
         }, both);
 
         // Execute the constructor
