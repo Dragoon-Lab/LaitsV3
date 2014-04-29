@@ -509,25 +509,35 @@ define([
                 // Summary: tracks student progress (correct, incorrect) on a given node;
                 this.getNode(id).status[part] = status;
             },
-	    isComplete: function(/*string*/ id, /*object*/ ignoreIt){
+	    isComplete: function(/*string*/ id, /*object*/ ignoreUnits){
 		// Summary: Test whether a node is completely filled out, correct or not
 		// Returns a boolean
 		// id: the node id
-		// ignoreIt:  an optional object having a list of attributes to ignore,
-		//      such as, in AUTHOR mode, whether units need to be specified.
+		// ignoreUnits:  whether units need to be specified.
 		// 
-		// There is no test for "genus" since it defaults to node being in solution.
-		ignoreIt = ignoreIt || {};
+		// If genus indicates a solution node or an optional node, 
+		// then all the fields must be filled in.  
+		// If it is a non-solution node, then only some fields
+		// must be included.  Here are the possibilities:
+		//   1.  Just a description (needs name, too)
+                //   2.  Just units
+		//   3.  Optional quantity (needs name and description)
 		var node = this.getNode();
 		var initialEntered = node.type && node.type == "function" || node.initial;
 		var equationEntered = node.type && node.type == "parameter" || node.equation;
-		return (ignoreIt.name || node.name) && 
-		    (ignoreIt.description || node.description) && 
-		    (ignoreIt.type || node.type) && 
-		    (ignoreIt.initial || initialEntered) &&
-		    (ignoreIt.units || node.units) &&
-		    (ignoreIt.equation || equationEntered);
+		if(!node.genus || node.genus == "allowed" || node.genus == "preferred"){
+		    return node.name && node.description && 
+			node.type && initialEntered &&
+			(ignoreUnits || node.units) &&
+			equationEntered;
+		}else if (node.genus == "initialValue"){
+		    return node.name && node.description;
+		}else{
+		    return (node.name && node.description) || 
+			node.units;
+		}
 	    }
+
         }, both);
 
         obj.solution = lang.mixin({
@@ -639,22 +649,18 @@ define([
                 this.getNode(id).status[control] = lang.mixin(attributes, options);
                 return attributes;
             },
-	    isComplete: function(/*string*/ id, /*object*/ ignoreIt){
+	    isComplete: function(/*string*/ id){
 		// Summary: Test whether a node is completely filled out, correct or not
 		// Returns a boolean
 		// id: the node id
-		// ignoreIt:  an optional object having a list of attributes to ignore.
-		ignoreIt = ignoreIt || {};
 		var node = this.getNode();
 		// Some given models do not include units.
 		var hasUnits = node.descriptionID && obj.given.getUnits(node.descriptionID);
 		var initialEntered = node.type && node.type == "function" || node.initial;
 		var equationEntered = node.type && node.type == "parameter" || node.equation;
-		return (ignoreIt.descriptionID || node.descriptionID) && 
-		    (ignoreIt.type || node.type) && 
-		    (ignoreIt.initial || initialEntered) &&
-		    (ignoreIt.units || !hasUnits || node.units) &&
-		    (ignoreIt.equation || equationEntered);
+		return node.descriptionID && node.type && 
+		    initialEntered && (!hasUnits || node.units) &&
+		    equationEntered;
 	    }
         }, both);
 
