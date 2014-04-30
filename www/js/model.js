@@ -613,6 +613,31 @@ define([
             getNodes: function(){
                 return obj.model.task.studentModelNodes;
             },
+	    getCorrectness: function(/*string*/ studentID){
+		var node = this.getNode(studentID);
+		var id = this.getDescriptionId(studentID);
+		var status = id && obj.given.getNode(id).status;
+		var rank = {
+		    "incorrect": 3,
+		    "demo": 2,
+		    "correct": 1,
+		    "": 0
+		};
+		var s = "";
+		var update = function(attr, sattr){
+		    // If description has not been defined, then status is null.
+		    if(status && node[sattr || attr] && status[attr] && 
+		       rank[status[attr]] > rank[s]){
+			s = status[attr];
+		    } 
+		};
+		update("description", "descriptionID");
+		update("type");
+		update("initial");
+		update("units");
+		update("equation");
+		return s;
+	    },
             getStatusDirectives: function(/*string*/ id){
                 //Summary:  Return a list of directives (like PM does).
                 //          to set up node editor.
