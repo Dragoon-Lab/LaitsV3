@@ -201,7 +201,8 @@ define([
             } else {
                 // There are some directives that should update
                 // the student model node (but not the status section).
-                console.warn("======= not saving in status, node=" + this.currentID + ": ", desc);
+
+                // console.warn("======= not saving in status, node=" + this.currentID + ": ", desc);
             }
         }
     });

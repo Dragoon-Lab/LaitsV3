@@ -159,13 +159,8 @@ define([
 
         handleKind: function(kind){
             console.log("**************** in handleKind ", kind);
-            this.applyDirectives(this.authorPM.process(this.currentID,"kind",kind));
-            if(kind == "given"){
-                this._model.given.setGenus(this.currentID,"");
-            }
-            else{
-                this._model.given.setGenus(this.currentID, kind);
-            }
+            this._model.given.setGenus(this.currentID, kind);
+            this.applyDirectives(this. authorPM.process(this.currentID, "kind", kind));
         },
 
         handleDescription: function(description){

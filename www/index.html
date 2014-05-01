@@ -139,12 +139,12 @@
            <div id="nameControl" class="fieldgroup" style="display:none">
 	        <label for="setName">Name</label>
                 <input id="setName" data-dojo-type="dijit/form/ComboBox">
-	        <label for="selectKind">Kind of quantity</label>
+	        <label for="selectKind">Kind of quantity:</label>
                 <select id="selectKind" data-dojo-type="dijit/form/Select">
-	            <option value='given' selected>in solution</option>
+	            <option value='' selected>in model</option>
 	            <option value='allowed'>optional</option>
-	            <option value='forbidden'>not allowed</option>
-	            <option value='offTopic'>irrelevant</option>
+	            <option value='extra'>in description but not in model</option>
+	            <option value='irrelevant'>not in model or description</option>
 	        </select>
 	    </div>
             <div id="descriptionControlStudent" class="fieldgroup">

@@ -323,6 +323,7 @@ define([
                         return nodes[i];
                 }
                 console.warn("No matching node for '" + id + "'");
+		// console.trace();
                 return null;
             },
             getType: function(/*string*/ id){
@@ -522,7 +523,7 @@ define([
 		//   1.  Just a description (needs name, too)
                 //   2.  Just units
 		//   3.  Optional quantity (needs name and description)
-		var node = this.getNode();
+		var node = this.getNode(id);
 		var initialEntered = node.type && node.type == "function" || node.initial;
 		var equationEntered = node.type && node.type == "parameter" || node.equation;
 		if(!node.genus || node.genus == "allowed" || node.genus == "preferred"){
@@ -615,28 +616,27 @@ define([
             },
 	    getCorrectness: function(/*string*/ studentID){
 		var node = this.getNode(studentID);
-		var id = this.getDescriptionId(studentID);
-		var status = id && obj.given.getNode(id).status;
 		var rank = {
 		    "incorrect": 3,
 		    "demo": 2,
 		    "correct": 1,
 		    "": 0
 		};
-		var s = "";
+		var bestStatus = "";
 		var update = function(attr, sattr){
-		    // If description has not been defined, then status is null.
-		    if(status && node[sattr || attr] && status[attr] && 
-		       rank[status[attr]] > rank[s]){
-			s = status[attr];
-		    } 
+		    // node.status always exists
+		    var nsa = node.status[attr];
+		    if(node[sattr || attr] && nsa && nsa.status && 
+		       rank[nsa.status] > rank[bestStatus]){
+			bestStatus = nsa.status;
+		    }
 		};
 		update("description", "descriptionID");
 		update("type");
 		update("initial");
 		update("units");
 		update("equation");
-		return s;
+		return bestStatus;
 	    },
             getStatusDirectives: function(/*string*/ id){
                 //Summary:  Return a list of directives (like PM does).
@@ -678,7 +678,7 @@ define([
 		// Summary: Test whether a node is completely filled out, correct or not
 		// Returns a boolean
 		// id: the node id
-		var node = this.getNode();
+		var node = this.getNode(id);
 		// Some given models do not include units.
 		var hasUnits = node.descriptionID && obj.given.getUnits(node.descriptionID);
 		var initialEntered = node.type && node.type == "function" || node.initial;
