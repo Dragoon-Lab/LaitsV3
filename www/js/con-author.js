@@ -153,7 +153,7 @@ define([
                 this.updateNodes();
                 this.setConnections(this._model.active.getInputs(this.currentID), this.currentID);
 
-            this.updateEquationLabels();
+                this.updateEquationLabels();
             }
         },
 
@@ -247,6 +247,8 @@ define([
             var nameWidget = registry.byId(this.controlMap.name);
             var descriptionWidget = registry.byId(this.controlMap.description);
             var unitsWidget = registry.byId(this.controlMap.units);
+            var kindWidget = registry.byId(this.controlMap.kind);
+            var typeWidget = registry.byId(this.controlMap.type);
 
             /*
             *   populate the nodes in the Name, Description, Units, and Inputs tab
@@ -273,16 +275,54 @@ define([
             m = new memory({data: units});
             units.push("store", m);
 
-            for(var key in this.controlMap){
-                var value = registry.byId(this.controlMap[key]).get("value");
-                var obj=[];
-                if((key=='name' && value=="") || (key=='kind' && value=="defaultSelect") || (key=="description" && value=="") || (key=="type" && value=="defaultSelect")){
-                    obj.push({attribute:"status",id:key,value:"incorrect"});
+            var value;
+            //find whether node is created for first time or NOT
+            if(!this._model.given.getName(this.currentID)        && !this._model.given.getGenus(this.currentID) &&
+               !this._model.given.getDescription(this.currentID) && !this._model.given.getType(this.currentID)  &&
+               !this._model.given.getInitial(this.currentID)     && !this._model.given.getUnits(this.currentID) &&
+               !this._model.given.getEquation(this.currentID)    && this._model.given.getInputs(this.currentID).length == 0){
+                console.log("node created for first time", this.currentID);
+            }
+            else{
+                //node is not created for the first time. apply colors to widgets
+                //color name widget
+                if(!this._model.given.getName(this.currentID)){
+                    value = "incorrect";
                 }
                 else{
-                    obj.push({attribute:"status",id:key,value:"entered"});
+                    value = "entered";
                 }
-                this.applyDirectives(obj);
+                this.applyDirectives([{id:"name",attribute:"status",value:value}]);
+
+                //color kind widget
+                this.applyDirectives([{id:"kind",attribute:"status",value:"entered"}]);
+
+                //color description widget
+                if(!this._model.given.getDescription(this.currentID)){
+                    value = "incorrect";
+                }
+                else{
+                    value = "entered";
+                }
+                this.applyDirectives([{id:"description",attribute:"status",value:value}]);
+
+                //color type widget
+                if(!this._model.given.getType(this.currentID)){
+                    value = "incorrect";
+                }
+                else{
+                    value = "entered";
+                }
+                this.applyDirectives([{id:"type",attribute:"status",value:value}]);
+
+                if(this._model.given.getType(this.currentID) && this._model.given.getType(this.currentID) != 'function'){
+                    this.applyDirectives([{id:"initial",attribute:"status",value:"entered"}]);
+                }
+
+                if(this._model.given.getType(this.currentID) && this._model.given.getType(this.currentID) != 'parameter'){
+                    this.applyDirectives([{id:"inputs",attribute:"status",value:"entered"}]);
+                }
+                this.applyDirectives([{id:"units",attribute:"status",value:"entered"}]);
             }
         },
         updateModelStatus: function(desc){
