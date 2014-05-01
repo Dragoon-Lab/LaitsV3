@@ -163,9 +163,6 @@ define([
             if(kind == "given"){
                 this._model.given.setGenus(this.currentID,"");
             }
-            else if(kind == "defaultSelect"){
-                this._model.given.setGenus(this.currentID, null);
-            }
             else{
                 this._model.given.setGenus(this.currentID, kind);
             }
