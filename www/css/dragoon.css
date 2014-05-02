@@ -98,3 +98,24 @@ html, body, #main{
     float:right;
     clear:right;
 }
+
+
+/*
+            plots and tables 
+*/
+
+table.solution, table.solution th, table.solution td {
+    border:1px solid black;
+    border-spacing:0px;
+}
+
+table.solution th {
+    text-align:center;
+    padding-right:10px;
+    padding-left:10px;
+}
+
+div.legend {
+    width:800px;
+    margin:0 auto;
+}

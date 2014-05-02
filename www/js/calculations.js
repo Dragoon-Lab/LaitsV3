@@ -1,8 +1,8 @@
 /* global define, Image */
 define([
-    "dojo/_base/declare",	
+    "dojo/_base/declare", "dojo/_base/lang",
     "parser/parser"
-], function(declare, Parser){
+], function(declare, lang, Parser){
 
     return declare(null, {
 	// timesteps in graph

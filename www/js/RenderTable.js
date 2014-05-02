@@ -42,7 +42,6 @@ define([
          *  @brief:constructor for a graph object
          *  @param: noOfParam
          */
-        //constructor: function(noOfParam, paramNames, paramValue, xUnits, units, timeSteps, nodeValueArray)
 		constructor: function(object)
         {
             this.calculationObj = object.calculationObj;
@@ -70,8 +69,7 @@ define([
             //check if array of node values is empty
             //plot table if these values are not empty
 
-               //this.dialogContent = this.dialogContent+this.createDom("div","table","","");
-               this.dialogContent = this.dialogContent+ "<div id='table'></div>";
+               this.dialogContent += "<div id='table'></div>";
 
                 var registerEventOnSlider = lang.hitch(this, function(slider, index, paramID){
                     on(slider, "change", lang.hitch(this, function(){
@@ -83,10 +81,10 @@ define([
 
                         this.nodeValueArray = newObj.arrayOfNodeValues;
                         paneText = "";
-                        paneText = paneText+this.initTable();
-                        paneText = paneText+this.setTableHeader();
-                        paneText = paneText + this.setTableContent();
-                        paneText = paneText+this.closeTable();
+                        paneText += this.initTable();
+                        paneText += this.setTableHeader();
+                        paneText += this.setTableContent();
+                        paneText += this.closeTable();
 
                         this.contentPane.setContent(paneText);
 
@@ -119,9 +117,10 @@ define([
                     //create label for name of a textbox
                     //create input for a textbox
                     //create div for embedding a slider
-                    this.dialogContent= this.dialogContent + this.createDom('label','','', this.paramNames[j]+" = ")+this.createDom('input','textTable'+i,"type='text' data-dojo-type='dijit/form/TextBox' readOnly=true")+"<br>"
-                    +this.createDom('div','sliderTable'+i);
-                    console.debug("dialogContent is "+this.dialogContent);
+                    this.dialogContent += this.createDom('label', '', '', this.paramNames[j] + " = ") + 
+		       this.createDom('input','textTable'+i, "type='text' data-dojo-type='dijit/form/TextBox' readOnly=true")+"<br>"
+                    +this.createDom('div','sliderTable' + i);
+                    console.debug("dialogContent is " + this.dialogContent);
 
                     i++;
                }
@@ -136,7 +135,7 @@ define([
                this.dialog.setContent(this.dialogContent);
 
                 //destroy the dialog when it is closed
-                on(this.dialog,"hide", lang.hitch(this, function(){
+                on(this.dialog, "hide", lang.hitch(this, function(){
 
                     this.dialog.destroyRecursive();
 
@@ -153,10 +152,10 @@ define([
                 var paneText="";
                 if(!this.isNodeValueEmpty())
                 {
-                    paneText = paneText+this.initTable();
-                    paneText = paneText+this.setTableHeader();
-                    paneText = paneText + this.setTableContent();
-                    paneText = paneText+this.closeTable();
+                    paneText += this.initTable();
+                    paneText += this.setTableHeader();
+                    paneText += this.setTableContent();
+                    paneText += this.closeTable();
                 }
                 else
                 {
@@ -166,7 +165,7 @@ define([
                 this.contentPane = new contentPane(
                     {
                        content:paneText
-                    },"table");
+                    }, "table");
 
 
 
@@ -192,95 +191,74 @@ define([
          * @param: domText - text to be contained in dom. e.g <label>TEXT</label>. domText = TEXT in this case
          */
 		 
-		 createDom: function(domType, domId, domParam, domText){
-    	   
-    	 var style="", dom="";
-    	 var str="";
-    	 if(domType == "div")
-    	 {
-    		 style = "";	 
-    		 domText="";
-    	 }
-    	 
-    	 if(domType == "label")
-    	 {
-    		 domParam="";
-    	 }
-    	 
-    	 if( domType == "input")
-    	 {
+	createDom: function(domType, domId, domParam, domText){
+    	    
+    	    var style="", dom="";
+    	    var str="";
+    	    if(domType == "div")
+    	    {
+    		style = "";	 
+    		domText="";
+    	    }
+    	    
+    	    if(domType == "label")
+    	    {
+    		domParam="";
+    	    }
+    	    
+    	    if( domType == "input")
+    	    {
 
-    		 domText="";
-         }
+    		domText="";
+            }
     	   
-    	 dom = "<"+domType+" "+domParam+" id= "+"'"+domId+"'"+">"+domText+"</"+domType+">";
-    	 console.debug("dom is "+dom);
-    	 return dom;
+    	    dom = "<"+domType+" "+domParam+" id='"+domId+"'>"+domText+"</"+domType+">";
+    	    console.debug("dom is " + dom);
+    	    return dom;
        },
        
-       initTable: function(){
+	initTable: function(){
 
            var tableString = "";
 
-
-           tableString ="<div align='center'>"+"<table border=1 style='border-spacing:0px'>";
+	    
+           tableString = "<div align='center'>" + "<table class='solution'>";
            return tableString;
        },
 	   
 	closeTable: function(){
-
-        /*
-			var tableString;
-			tableString = "</table>"+"</div>"+"</div>";
-			
-			return tableString;*/
-
-        var tableString;
-        tableString = "</table>"+"</div>";
-
-        return tableString;
-		},
-		
-		setTableHeader: function(){
-		
-			var i=0, tableString="";
-			
-			tableString = tableString + "<tr>";
-			
-			//setup xunit (unit of timesteps)
-			tableString = tableString + "<th style='text-align:center;padding-right:10px;padding-left:10px;'>"+this.xUnits+"</th>";
-			for(i in this.nodeValueArray)
-			{
-				tableString = tableString + "<th style='text-align:center;padding-right:10px;padding-left:10px;'>"+this.units[i]+"</th>";
-			}
-			
-			tableString = tableString + "</tr>";
-			
-			return tableString;
-		},
+	    
+            var tableString;
+            tableString = "</table>"+"</div>";
+	    
+            return tableString;
+	},
+	
+	setTableHeader: function(){
+	    var i=0, tableString="";
+	    tableString += "<tr>";
+	    //setup xunit (unit of timesteps)
+	    tableString += "<th>"+this.xUnits+"</th>";
+	    for(i in this.nodeValueArray){
+		tableString += "<th>" + this.units[i] + "</th>";
+	    }
+	    tableString += "</tr>";
+	    return tableString;
+	},
 
         setTableContent: function(){
-            console.log(" env ", this, this.timeSteps);
-
+            // console.log(" env ", this, this.timeSteps);
             var tableString="";
-
-
-                for(var i=0;i<this.timeSteps.length;i++)
-                {
-                    tableString = tableString+"<tr>";
-                    tableString = tableString+"<td align='center'>"+this.timeSteps[i] + "</td>";
-                    //set values in table according to their table-headers
-                    for(var j in this.nodeValueArray)
-                    {
-                        var tempArray = this.nodeValueArray[j];
-                        tableString = tableString+"<td align='center'>"+tempArray[i].toFixed(2) + "</td>";
-
-                    }
-                    tableString = tableString+"</tr>";
+            for(var i=0;i<this.timeSteps.length;i++){
+                tableString += "<tr>";
+                tableString += "<td align='center'>" + this.timeSteps[i] + "</td>";
+                //set values in table according to their table-headers
+                for(var j in this.nodeValueArray){
+                    var tempArray = this.nodeValueArray[j];
+                    tableString += "<td align='center'>" + tempArray[i].toFixed(2) + "</td>";
                 }
-
-
-
+                tableString += "</tr>";
+            }
             return tableString;
         },
 

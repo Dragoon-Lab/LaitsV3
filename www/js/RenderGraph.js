@@ -108,7 +108,7 @@ define([
 
                     str = "legend" + j.toString();
                     this.strDomID.push(str);
-                    this.dialogContent = this.dialogContent + this.createDom('div', str, "style='width:800px; margin:0 auto;'");
+                    this.dialogContent = this.dialogContent + this.createDom('div', str, "class='legend'");
                     i++;
 
                     if((this.student.calculationObj.model.given.isNode(descriptionID))){
@@ -126,7 +126,7 @@ define([
 
                 str = "legend" + j.toString();
                 this.strDomID.push(str);
-                this.dialogContent = this.dialogContent + this.createDom('div', str, "style='width:800px; margin:0 auto;'");
+                this.dialogContent = this.dialogContent + this.createDom('div', str, "class='legend'");
             }
 
             var registerEventOnSlider = lang.hitch(this, function(slider, index, paramID){
@@ -194,16 +194,14 @@ define([
                 //create label for name of a textbox
                 //create input for a textbox
                 //create div for embedding a slider
-                /*this.dialogContent= this.dialogContent + this.createDom('label','','', this.paramNames[j]+" = ")+this.createDom('input','text'+i,"type='text' data-dojo-type='dijit/form/TextBox'")+"<br>"
-                 +this.createDom('div','slider'+i);*/
-                this.dialogContent = this.dialogContent + this.createDom('label', '', '', this.student.paramNames[j] + " = ");
+                this.dialogContent += this.createDom('label', '', '', this.student.paramNames[j] + " = ");
 
                 str = 'text' + j.toString();
                 this.strDomID.push(str);
-                this.dialogContent = this.dialogContent + this.createDom('input', str, "type='text' data-dojo-type='dijit/form/TextBox' readOnly=true") + "<br>";
+                this.dialogContent += this.createDom('input', str, "type='text' data-dojo-type='dijit/form/TextBox' readOnly=true") + "<br>";
                 str = 'slider' + j.toString();
                 this.strDomID.push(str);
-                this.dialogContent = this.dialogContent + this.createDom('div', str);
+                this.dialogContent += this.createDom('div', str);
 
                 console.debug("dialogContent is " + this.dialogContent);
 
@@ -339,10 +337,10 @@ define([
                 var arrayOfXYpairs1 = new Array();
                 for(j=0; j<tempArray1.length;j++)
                 {
-                    var obj1 = new Object();
-                    obj1["x"] = this.timeSteps[j];
-                    obj1["y"] = tempArray1[j];
-                    arrayOfXYpairs1.push(obj1);
+                    arrayOfXYpairs1.push({
+			x: this.timeSteps[j],
+			y: tempArray1[j]
+		    });
                 }
 
                 this.givenFormattedArrayOfNodeValues[i] = arrayOfXYpairs1;
@@ -355,10 +353,10 @@ define([
                 var arrayOfXYpairs2 = new Array();
                 for(j=0; j<tempArray2.length;j++)
                 {
-                    var obj2 = new Object();
-                    obj2["x"] = this.timeSteps[j];
-                    obj2["y"] = tempArray2[j];
-                    arrayOfXYpairs2.push(obj2);
+                    arrayOfXYpairs2.push({
+			x: this.timeSteps[j],
+			y: tempArray2[j]
+		    });
                 }
 
                 this.studentFormattedArrayOfNodeValues[i] = arrayOfXYpairs2;
