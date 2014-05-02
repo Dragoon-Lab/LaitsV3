@@ -70,7 +70,7 @@ define([
 	_createNodeValueArray: function()
 	{
 	    var j, arrayOfNodeValues={};
-	    for(var j=0; j<this.modelNodes.length; j++)
+	    for(j=0; j<this.modelNodes.length; j++)
 	    {
 		if(this.active.getType(this.modelNodes[j].ID) != 'parameter')
 		{
@@ -203,17 +203,7 @@ define([
 	    }
 	    return count;
 	},
-	
-	_getUnits:function()
-	{
-	    var obj = {};
-	    
-	    obj["xUnits"] = this.model.getUnits();
-	    obj["units"] = this.active.getEachNodeUnitbyID();
-	    
-	    return obj;
-	},
-	
+		
 	//@brief: this function returns an object having all parameters required for rendering graph and table
 	gerParametersForRendering: function(mode)
 	{
@@ -247,24 +237,22 @@ define([
 	    this._getNodeValuesByTimeSteps(isInitialValue, arrayOfNodeValues, arrayOfTimeSteps, nodeEquations);
 	    //get no of parameters/parameter names/initial values for nodes of type 'parameter'
 	    noOfParam = this._storeParametersNameValue(arrayOfParameterNames, arrayOfParamInitialValues);
-	    //get units used in graph
-	    var obj = this._getUnits();
-	    xUnits = obj["xUnits"];
-	    units = obj["units"];
 	    
 	    //create object comprising all parameters required for rendering chart and table
-	    var object = {mode:mode, noOfParam:noOfParam, arrayOfParameterNames:arrayOfParameterNames,
-			  arrayOfParamInitialValues:arrayOfParamInitialValues, xUnits:xUnits, units:units,
-			  arrayOfTimeSteps:arrayOfTimeSteps, arrayOfNodeValues:arrayOfNodeValues, calculationObj:this
-			 };
+	    return {
+		mode: mode, 
+		noOfParam: noOfParam, 
+		arrayOfParameterNames: arrayOfParameterNames,
+		arrayOfParamInitialValues: arrayOfParamInitialValues, 
+		//get units used in graph
+		xUnits: this.model.getUnits(), 
+		units: this.active.getEachNodeUnitbyID(),
+		arrayOfTimeSteps: arrayOfTimeSteps, 
+		arrayOfNodeValues: arrayOfNodeValues, 
+		calculationObj: this
+	    };
 	    
-            return object;
-	},
-	
-        setStudentGivenModel: function(givenObj, studentObj)
-        {
-            var obj =  {givenObj:givenObj, studentObj:studentObj};
-            return obj;
-        }
+	}
+
     });		
 });

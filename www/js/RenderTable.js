@@ -45,7 +45,7 @@ define([
         //constructor: function(noOfParam, paramNames, paramValue, xUnits, units, timeSteps, nodeValueArray)
 		constructor: function(object)
         {
-            this.object = object;
+            this.calculationObj = object.calculationObj;
      	    //assign parameters to object properties 
      	    this.inputParam = object.noOfParam;
      	    this.xUnits = object.xUnits;
@@ -77,9 +77,9 @@ define([
                     on(slider, "change", lang.hitch(this, function(){
 
                         dom.byId("textTable"+index).value = slider.value;
-                        //this.object.calculationObj.active.setInitial(paramID, slider.value);
-                        this.object.calculationObj.model.student.setInitial(paramID, slider.value);
-                        var newObj = this.object.calculationObj.gerParametersForRendering(this.object.calculationObj.solutionGraph, false);
+                        //this.calculationObj.active.setInitial(paramID, slider.value);
+                        this.calculationObj.model.student.setInitial(paramID, slider.value);
+                        var newObj = this.calculationObj.gerParametersForRendering(this.calculationObj.solutionGraph, false);
 
                         this.nodeValueArray = newObj.arrayOfNodeValues;
                         paneText = "";
@@ -115,23 +115,6 @@ define([
 
                    registerEventOnSlider(slider, index, paramID);
 
-                   /*on(this.sliders[i],"change", lang.hitch(this, function(){
-
-                       //dom.byId("table").remove();
-
-                       dom.byId("textTable"+index).value = slider.value;
-                       this.object.calculationObj.active.setInitial(paramID, slider.value);
-                       var newObj = this.object.calculationObj.gerParametersForRendering(this.object.calculationObj.solutionGraph, true);
-
-                       this.nodeValueArray = newObj.arrayOfNodeValues;
-                       paneText = "";
-                       paneText = paneText+this.initTable();
-                       paneText = paneText+this.setTableHeader();
-                       paneText = paneText + this.setTableContent();
-                       paneText = paneText+this.closeTable();
-
-                       this.contentPane.setContent(paneText);
-                   }));*/
 
                     //create label for name of a textbox
                     //create input for a textbox
@@ -162,7 +145,7 @@ define([
                     var i;
                     for(i in this.paramNames)
                     {
-                        this.object.calculationObj.model.student.setInitial(i, this.paramValue[i]);
+                        this.calculationObj.model.student.setInitial(i, this.paramValue[i]);
                     }
 
                 }));
@@ -177,7 +160,7 @@ define([
                 }
                 else
                 {
-                    paneText = "Student did not plot any node as yet!!"
+                    paneText = "Student did not plot any node as yet!!";
                 }
 
                 this.contentPane = new contentPane(
@@ -236,10 +219,6 @@ define([
        },
        
        initTable: function(){
-           /*
-    	   var tableString = "";
-		   tableString = "<div id='table' data-dojo-type='dijit/layout/ContentPane' region='center'>"+"<div align='center'>"+"<table border=1 style='border-spacing:0px'>";
-			return tableString;*/
 
            var tableString = "";
 
@@ -269,11 +248,9 @@ define([
 			tableString = tableString + "<tr>";
 			
 			//setup xunit (unit of timesteps)
-			//tableString = tableString + "<th align='center' style='padding-right:5px;padding-left:5px;'>"+this.xUnits+"</th>";
 			tableString = tableString + "<th style='text-align:center;padding-right:10px;padding-left:10px;'>"+this.xUnits+"</th>";
 			for(i in this.nodeValueArray)
 			{
-				//tableString = tableString + "<th align='center' style='padding-right:5px;padding-left:5px;'>"+this.units[i]+"</th>";
 				tableString = tableString + "<th style='text-align:center;padding-right:10px;padding-left:10px;'>"+this.units[i]+"</th>";
 			}
 			
@@ -288,14 +265,14 @@ define([
             var tableString="";
 
 
-                for(i=0;i<this.timeSteps.length;i++)
+                for(var i=0;i<this.timeSteps.length;i++)
                 {
                     tableString = tableString+"<tr>";
                     tableString = tableString+"<td align='center'>"+this.timeSteps[i] + "</td>";
                     //set values in table according to their table-headers
-                    for(j in this.nodeValueArray)
+                    for(var j in this.nodeValueArray)
                     {
-                        tempArray = this.nodeValueArray[j];
+                        var tempArray = this.nodeValueArray[j];
                         tableString = tableString+"<td align='center'>"+tempArray[i].toFixed(2) + "</td>";
 
                     }
@@ -325,8 +302,7 @@ define([
         */
        show: function(){
     	  this.dialog.show();
-       }
-	
+       }	
 		
 	});
 		

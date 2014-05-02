@@ -132,10 +132,9 @@ define([
                 var calc = new calculations(givenModel);
                 var givenObj = calc.gerParametersForRendering(true);
                 var studentObj = calc.gerParametersForRendering(false);
-                var obj = calc.setStudentGivenModel(givenObj, studentObj);
 
                 // instantiate graph object
-                var graph = new Graph(obj);
+                var graph = new Graph(givenObj, studentObj);
                 graph.show();
             });
 

@@ -9,10 +9,11 @@ define([
     "dojo/on", "dojo/_base/declare", "dojo/_base/lang",
     "dijit/Dialog", "dijit/form/HorizontalSlider",
     "dojo/dom", "dojox/charting/Chart", "dojox/charting/axis2d/Default", "dojox/charting/plot2d/Lines",
-    "dojox/charting/plot2d/Grid", "dojox/charting/widget/Legend","dojo/ready", "dojo/_base/lang","dijit/registry","dojo/domReady!"
+    "dojox/charting/plot2d/Grid", "dojox/charting/widget/Legend","dojo/ready", "dijit/registry", 
+    "dojo/domReady!"
 ], function(on, declare, lang, Dialog, HorizontalSlider, dom,
 	    // It looks like Default, Lines, Grid are not used.  Can they be removed?
-	    Chart, Default, Lines, Grid, Legend, ready, lang, registry){
+	    Chart, Default, Lines, Grid, Legend, ready, registry){
     return declare(null, {
 
         //array of timesteps
@@ -53,9 +54,9 @@ define([
         dialog: "",
         //Object of a chart
         chart: {},
-        //object passed to constructor
-        givenObject: null,
-        studentObject: null,
+        // Given and student solutions
+        given: {},
+        student: {},
 
         //collect IDs of all DOMs created to destroy the same when dialog is closed
         strDomID: new Array(),
@@ -63,29 +64,19 @@ define([
          *  @brief:constructor for a graph object
          *  @param: noOfParam
          */
-        constructor: function(object){
-            this.givenObject = object.givenObj;
-            this.studentObject = object.studentObj;
+        constructor: function(givenObj, studentObj){
+            this.student.calculationObj = studentObj.calculationObj;
+            this.student.paramNames = studentObj.arrayOfParameterNames;
+            this.student.paramValue = studentObj.arrayOfParamInitialValues;
 
-            //assign parameters to object properties
-            this.givenInputParam = object.givenObj.noOfParam;
-            this.studentInputParam = object.studentObj.noOfParam;
-
-            this.givenParamNames = object.givenObj.arrayOfParameterNames;
-            this.studentParamNames = object.studentObj.arrayOfParameterNames;
-
-            this.givenParamValue = object.givenObj.arrayOfParamInitialValues;
-            this.studentParamValue = object.studentObj.arrayOfParamInitialValues;
-
-            this.givenArrayOfNodeValues = object.givenObj.arrayOfNodeValues;
-            this.studentArrayOfNodeValues = object.studentObj.arrayOfNodeValues;
+            this.given.arrayOfNodeValues = givenObj.arrayOfNodeValues;
+            this.student.arrayOfNodeValues = studentObj.arrayOfNodeValues;
 
             console.log("***** In RenderGraph constructor");
-            this.givenUnits = object.givenObj.units;
-            this.studentUnits = object.studentObj.units;
+            this.student.units = studentObj.units;
 
-            this.xunits = object.givenObj.xUnits;
-            this.timeSteps = object.givenObj.arrayOfTimeSteps;
+            this.xunits = givenObj.xUnits;
+            this.timeSteps = givenObj.arrayOfTimeSteps;
             this.initialize();
 
         },
@@ -99,26 +90,14 @@ define([
 
 
             var str = "";
-
-            /*for(j in this.givenArrayOfNodeValues){
-                str = "chart" + j.toString();
-                this.strDomID.push(str);
-                this.dialogContent = this.dialogContent + this.createDom('div', str);
-
-                str = "legend" + j.toString();
-                this.strDomID.push(str);
-                this.dialogContent = this.dialogContent + this.createDom('div', str, "style='width:800px; margin:0 auto;'");
-                i++;
-            }*/
-
             this.formatArrayOfNodeValuesForChart();
 
-            var tempGivenArrayOfNodeValues = lang.clone(this.givenArrayOfNodeValues);
+            var tempGivenArrayOfNodeValues = lang.clone(this.given.arrayOfNodeValues);
 
             i = 0;
-            for(j in this.studentArrayOfNodeValues){
+            for(j in this.student.arrayOfNodeValues){
                 //get givenModel/extraModel node ID related to student Node
-                var descriptionID = this.studentObject.calculationObj.model.student.getDescriptionID(j);
+                var descriptionID = this.student.calculationObj.model.student.getDescriptionID(j);
 
                 //plot chart of student node only if this node corresponds to extra node
 
@@ -132,7 +111,7 @@ define([
                     this.dialogContent = this.dialogContent + this.createDom('div', str, "style='width:800px; margin:0 auto;'");
                     i++;
 
-                    if((this.studentObject.calculationObj.model.given.isNode(descriptionID))){
+                    if((this.student.calculationObj.model.given.isNode(descriptionID))){
                         delete tempGivenArrayOfNodeValues[descriptionID];
                     }
 
@@ -154,10 +133,10 @@ define([
                 on(slider, "change", lang.hitch(this, function(){
 
                     dom.byId("text" + paramID.toString()).value = slider.value;
-                    this.studentObject.calculationObj.active.setInitial(paramID, slider.value);
-                    var newObj = this.studentObject.calculationObj.gerParametersForRendering(this.studentObject.calculationObj.solutionGraph, false);
+                    this.student.calculationObj.active.setInitial(paramID, slider.value);
+                    var newObj = this.student.calculationObj.gerParametersForRendering(this.student.calculationObj.solutionGraph, false);
 
-                    this.studentArrayOfNodeValues = newObj.arrayOfNodeValues;
+                    this.student.arrayOfNodeValues = newObj.arrayOfNodeValues;
                     this.formatArrayOfNodeValuesForChart();
 
 
@@ -171,7 +150,7 @@ define([
                         var max = objStudent.max;
                         if((newObj.calculationObj.model.given.isNode(descriptionID)))
                         {
-                            var objGiven = this.getMinMaxFromaArray(this.givenArrayOfNodeValues[descriptionID]);
+                            var objGiven = this.getMinMaxFromaArray(this.given.arrayOfNodeValues[descriptionID]);
                             min = objStudent.min > objGiven.min?objGiven.min:objStudent.min;
                             max = objStudent.max > objGiven.max?objStudent.max:objGiven.max;
                         }
@@ -182,7 +161,7 @@ define([
                         //var maxArrayValue = array[array.length - 1];
 
                         this.chart[k].removeAxis("y");
-                        this.chart[k].addAxis("y", {vertical: true, min: min, max: max,  title: this.studentUnits[k]});
+                        this.chart[k].addAxis("y", {vertical: true, min: min, max: max,  title: this.student.units[k]});
                         this.chart[k].updateSeries("Variable solution", this.studentFormattedArrayOfNodeValues[k]);
                         this.chart[k].render();
                         l++;
@@ -193,14 +172,14 @@ define([
 
             i = 0;
             //create sliders based on number of input parameters
-            for(j in this.studentParamNames){
+            for(j in this.student.paramNames){
                 // create slider and assign to object property
                 //
                 this.sliders[j] = new HorizontalSlider({
                     name: "slider" + j.toString(),
-                    value: this.studentParamValue[j],
-                    minimum: this.studentParamValue[j] / 10,
-                    maximum: this.studentParamValue[j] * 10,
+                    value: this.student.paramValue[j],
+                    minimum: this.student.paramValue[j] / 10,
+                    maximum: this.student.paramValue[j] * 10,
                     intermediateChanges: true,
                     style: "width:300px;"
                 }, "slider" + j.toString());
@@ -212,29 +191,12 @@ define([
 
                 registerEventOnSlider(slider, index, paramID);
 
-                /*on(this.sliders[i],"change", lang.hitch(this, function(){
-
-                 dom.byId("text"+index).value = slider.value;
-                 this.object.calculationObj.active.setInitial(paramID, slider.value);
-                 var newObj = this.object.calculationObj.gerParametersForRendering(this.object.calculationObj.solutionGraph, true);
-
-                 //update and render the chart
-                 var l=0;
-                 for(var k in newObj.arrayOfNodeValues)
-                 {
-                 this.chart[l].updateSeries("Variable solution", newObj.arrayOfNodeValues[k]);
-                 this.chart[l].render();
-                 l++;
-                 }
-
-                 }));*/
-
                 //create label for name of a textbox
                 //create input for a textbox
                 //create div for embedding a slider
                 /*this.dialogContent= this.dialogContent + this.createDom('label','','', this.paramNames[j]+" = ")+this.createDom('input','text'+i,"type='text' data-dojo-type='dijit/form/TextBox'")+"<br>"
                  +this.createDom('div','slider'+i);*/
-                this.dialogContent = this.dialogContent + this.createDom('label', '', '', this.studentParamNames[j] + " = ");
+                this.dialogContent = this.dialogContent + this.createDom('label', '', '', this.student.paramNames[j] + " = ");
 
                 str = 'text' + j.toString();
                 this.strDomID.push(str);
@@ -265,8 +227,8 @@ define([
 
                 //set initial values of all parameters to original values
                 var i;
-                for(i in this.studentParamNames){
-                    this.studentObject.calculationObj.model.student.setInitial(i, this.studentParamValue[i]);
+                for(i in this.student.paramNames){
+                    this.student.calculationObj.model.student.setInitial(i, this.student.paramValue[i]);
                 }
 
             }));
@@ -274,7 +236,7 @@ define([
 
             //insert initial value of slider into a textbox
             //append slider to the div node
-            for(i in this.studentParamValue){
+            for(i in this.student.paramValue){
                 dom.byId("text" + i.toString()).value = this.sliders[i].value;
                 dom.byId("slider" + i.toString()).appendChild(this.sliders[i].domNode);
             }
@@ -282,11 +244,11 @@ define([
             var chartArray = {};
             var legendArray = {};
             i = 0;
-            var time = this.studentObject.calculationObj.model.getTime();
-            tempGivenArrayOfNodeValues = lang.clone(this.givenArrayOfNodeValues);
+            var time = this.student.calculationObj.model.getTime();
+            tempGivenArrayOfNodeValues = lang.clone(this.given.arrayOfNodeValues);
            if(!this.isNodeValueEmpty())
            {
-                for(j in this.studentArrayOfNodeValues){
+                for(j in this.student.arrayOfNodeValues){
                     str = "chart" + j.toString();
                     chartArray[j] = new Chart(str);
                     chartArray[j].addPlot("default", {type: Lines, markers: true});
@@ -295,27 +257,25 @@ define([
                         title: this.xunits,
                         titleOrientation: "away", titleGap: 5
                     });
-//                    var array = this.studentArrayOfNodeValues[j];
-//                    var maxArrayValue = array[array.length - 1];
 
-                    var obj = this.getMinMaxFromaArray(this.studentArrayOfNodeValues[j]);
-                    chartArray[j].addAxis("y", {vertical: true, min: obj.min, max: obj.max, title: this.studentUnits[j]});
+                    var obj = this.getMinMaxFromaArray(this.student.arrayOfNodeValues[j]);
+                    chartArray[j].addAxis("y", {vertical: true, min: obj.min, max: obj.max, title: this.student.units[j]});
 
-                    descriptionID = this.studentObject.calculationObj.model.student.getDescriptionID(j);
+                    descriptionID = this.student.calculationObj.model.student.getDescriptionID(j);
 
                     //plot chart for student node
-                    //***chartArray[j].addSeries("Variable solution", this.studentArrayOfNodeValues[j], {stroke: "green"});
+                    //***chartArray[j].addSeries("Variable solution", this.student.arrayOfNodeValues[j], {stroke: "green"});
                     chartArray[j].addSeries("Variable solution", this.studentFormattedArrayOfNodeValues[j], {stroke: "green"});
                     //plot chart from given node if it matches with student node
-                    if((this.studentObject.calculationObj.model.given.isNode(descriptionID)))
+                    if((this.student.calculationObj.model.given.isNode(descriptionID)))
                     {
                         chartArray[j].removeAxis("y");
-                        var objStudent = this.getMinMaxFromaArray(this.studentArrayOfNodeValues[j]);
-                        var objGiven = this.getMinMaxFromaArray(this.givenArrayOfNodeValues[descriptionID]);
+                        var objStudent = this.getMinMaxFromaArray(this.student.arrayOfNodeValues[j]);
+                        var objGiven = this.getMinMaxFromaArray(this.given.arrayOfNodeValues[descriptionID]);
 
                         var min = objStudent.min > objGiven.min?objGiven.min:objStudent.min;
                         var max = objStudent.max > objGiven.max?objStudent.max:objGiven.max;
-                        chartArray[j].addAxis("y", {vertical: true, min: min, max: max, title: this.studentUnits[j]});
+                        chartArray[j].addAxis("y", {vertical: true, min: min, max: max, title: this.student.units[j]});
                         chartArray[j].addSeries("correct solution", this.givenFormattedArrayOfNodeValues[descriptionID], {stroke: "red"});
                         //remove plotted node from collection
                         delete tempGivenArrayOfNodeValues[descriptionID];
@@ -334,98 +294,8 @@ define([
                this.dialog.setContent("<div>"+ "Student did not plot any node as yet"+ "</div>"+"<div align='center'>"+"OR"+"</div>"
                +"<div align='center'>"+"Nodes are not complete"+"</div>");
            }
-            /*for(j in this.givenArrayOfNodeValues){
-
-                str = "chart" + j.toString();
-                chartArray[j] = new Chart(str);
-                chartArray[j].addPlot("default", {type: Lines, markers: true});
-
-                chartArray[j].addAxis("x", {
-                    fixed: true,  title: this.xunits,
-                    titleOrientation: "away", titleGap: 5
-                });
-                array = this.givenArrayOfNodeValues[j];
-                maxArrayValue = array[array.length - 1];
-                chartArray[j].addAxis("y", {vertical: true, min: 0, max: maxArrayValue, title: this.givenUnits[j]});
-
-                //plot chart for given node
-                chartArray[j].addSeries("correct solution", this.givenFormattedArrayOfNodeValues[j], {stroke: "red"});
-
-                chartArray[j].render();
-
-                str = "legend" + j.toString();
-                legendArray[j] = new Legend({chart: chartArray[j]}, str);
-                i++;
-            }*/
 
             this.chart = chartArray;
-
-            //create a chart
-            /*
-             this.chart = new Chart("chart");
-             this.chart.addPlot("default", {type: Lines, markers:true});
-
-             this.chart.addAxis("x", {
-             fixed: true, min: 0, max: 10, title: "Distance (meters)",
-             titleOrientation: "away", titleGap:5
-             });
-             this.chart.addAxis("y", {vertical: true, min: 0, title: "Velocity (meters/seconds)"});
-             this.chart.addSeries("correct solution", arrayCorrect, {stroke: "red"});
-             this.chart.addSeries("Variable solution", arrayVariable, {stroke: "green"});
-             this.chart.render();
-
-             var legend = new Legend({chart: this.chart}, "legend");
-
-
-             var ch = new Chart("chart2");
-             ch.addPlot("default", {type: Lines, markers:true});
-
-             ch.addAxis("x", {
-             fixed: true, min: 0, max: 10, title: "Distance (meters)",
-             titleOrientation: "away", titleGap:5
-             });
-             ch.addAxis("y", {vertical: true, min: 0, title: "Velocity (meters/seconds)"});
-             ch.addSeries("correct solution", arrayCorrect, {stroke: "red"});
-             ch.addSeries("Variable solution", arrayVariable, {stroke: "green"});
-             ch.render();
-
-             var leg = new Legend({chart: ch}, "legend2");
-             */
-            //Use local variables and assign object properties to local variables
-            //local variables are work-around as object properties are not accessed inside a event handler (here inside 'onclick' event)
-
-            /*
-             var _slider=new Array();
-             var slider=new Array();
-             var noOfParam = this.inputParam;
-             var chart = this.chart;
-             for(i=0;i<this.inputParam;i++)
-             {
-             _slider[i] = dom.byId("slider"+i);
-             slider[i] = this.sliders[i];
-             on(_slider[i],"click", function(){
-
-             var j;
-             //get current value of a slider inside textbox
-             for(j=0; j<noOfParam; j++)
-             {
-
-             dom.byId("text"+j).value = slider[j].value;
-
-             }
-
-             //dummy calculation to plot a graph when sliders are moved
-             //this should be replaced by actual node editor equation
-             for(j=0; j<10; j++)
-             {
-             arrayVariable[j] = arrayVariable[j]+1;
-             }
-
-             //update and render the chart
-             chart.updateSeries("Variable solution", arrayVariable);
-             chart.render();
-             });
-             } */
 
         },
 
@@ -462,45 +332,45 @@ define([
             var i, j;
 
             //convert array of node values to object {x:timestep, y:node value for timestep}
-            for(i in this.givenArrayOfNodeValues)
+            for(i in this.given.arrayOfNodeValues)
             {
 
-                var tempArray = this.givenArrayOfNodeValues[i];
-                var arrayOfXYpairs = new Array();
-                for(j=0; j<tempArray.length;j++)
+                var tempArray1 = this.given.arrayOfNodeValues[i];
+                var arrayOfXYpairs1 = new Array();
+                for(j=0; j<tempArray1.length;j++)
                 {
-                    var obj = new Object();
-                    obj["x"] = this.timeSteps[j];
-                    obj["y"] = tempArray[j];
-                    arrayOfXYpairs.push(obj);
+                    var obj1 = new Object();
+                    obj1["x"] = this.timeSteps[j];
+                    obj1["y"] = tempArray1[j];
+                    arrayOfXYpairs1.push(obj1);
                 }
 
-                this.givenFormattedArrayOfNodeValues[i] = arrayOfXYpairs;
+                this.givenFormattedArrayOfNodeValues[i] = arrayOfXYpairs1;
             }
 
-            for(i in this.studentArrayOfNodeValues)
+            for(i in this.student.arrayOfNodeValues)
             {
 
-                var tempArray = this.studentArrayOfNodeValues[i];
-                var arrayOfXYpairs = new Array();
-                for(j=0; j<tempArray.length;j++)
+                var tempArray2 = this.student.arrayOfNodeValues[i];
+                var arrayOfXYpairs2 = new Array();
+                for(j=0; j<tempArray2.length;j++)
                 {
-                    var obj = new Object();
-                    obj["x"] = this.timeSteps[j];
-                    obj["y"] = tempArray[j];
-                    arrayOfXYpairs.push(obj);
+                    var obj2 = new Object();
+                    obj2["x"] = this.timeSteps[j];
+                    obj2["y"] = tempArray2[j];
+                    arrayOfXYpairs2.push(obj2);
                 }
 
-                this.studentFormattedArrayOfNodeValues[i] = arrayOfXYpairs;
+                this.studentFormattedArrayOfNodeValues[i] = arrayOfXYpairs2;
             }
         },
 
         isNodeValueEmpty:function()
         {
             var i;
-            for(i in this.studentArrayOfNodeValues)
+            for(i in this.student.arrayOfNodeValues)
             {
-                if(this.studentArrayOfNodeValues.hasOwnProperty(i))
+                if(this.student.arrayOfNodeValues.hasOwnProperty(i))
                 {
                     return false;
                 }
