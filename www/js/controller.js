@@ -192,6 +192,9 @@ define([
              messages for each node. */
             var messageWidget = registry.byId(this.widgetMap.message);
             messageWidget.set('content', '');
+			
+			//color the borders of Node
+			this.colorNodeBorder();
         },
         //set up event handling with UI components
         _initHandles: function(){

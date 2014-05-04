@@ -6,8 +6,8 @@ define([
     "dojo/_base/array", 'dojo/_base/declare', "dojo/_base/lang",
     "dojo/dom", "dojo/ready",
     'dijit/registry',
-    './controller', "./pedagogical_module", "./equation"
-], function(array, declare, lang, dom, ready, registry, controller, PM, expression){
+    './controller', "./pedagogical_module", "./equation",'dojo/dom-style'
+], function(array, declare, lang, dom, ready, registry, controller, PM, expression,style){
 
     /*
      Methods in controller specific to the student modes
@@ -204,6 +204,13 @@ define([
 
                 // console.warn("======= not saving in status, node=" + this.currentID + ": ", desc);
             }
-        }
+        },
+		colorNodeBorder: function(){
+				//console.log(this._model.student.getCorrectness());   //getCorrectness using student function  - studentID ? 
+				var color = 'red';  //decide color using correctness response , test red
+				console.log('coloring node  '+this.currentID);
+				style.set(this.currentID,'border','1px solid '+color);
+				//save the node
+		}
     });
 });
