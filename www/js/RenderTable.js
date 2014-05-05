@@ -77,7 +77,7 @@ define([
                         dom.byId("textTable"+index).value = slider.value;
                         //this.calculationObj.active.setInitial(paramID, slider.value);
                         this.calculationObj.model.student.setInitial(paramID, slider.value);
-                        var newObj = this.calculationObj.gerParametersForRendering(this.calculationObj.solutionGraph, false);
+                        var newObj = this.calculationObj.gerParametersForRendering(false);
 
                         this.nodeValueArray = newObj.arrayOfNodeValues;
                         paneText = "";
