@@ -80,7 +80,7 @@ define([
 		    
                     dom.byId("textTable"+index).value = slider.value;
                     this.model.student.setInitial(paramID, slider.value);
-                    var newObj = this.gerParametersForRendering(this.solutionGraph, false);
+                    var newObj = this.gerParametersForRendering(false);
 		    
                     this.nodeValueArray = newObj.arrayOfNodeValues;
                     paneText = "";

@@ -137,7 +137,7 @@ define([
 
                     dom.byId("text" + paramID.toString()).value = slider.value;
                     this.active.setInitial(paramID, slider.value);
-                    var newObj = this.gerParametersForRendering(this.solutionGraph, false);
+                    var newObj = this.gerParametersForRendering(false);
 
                     this.student.arrayOfNodeValues = newObj.arrayOfNodeValues;
                     this.formatArrayOfNodeValuesForChart();
