@@ -6,15 +6,24 @@
  */
 
 define([
-    "dojo/on", "dojo/_base/declare", "dojo/_base/lang",
-    "dijit/Dialog", "dijit/form/HorizontalSlider",
-    "dojo/dom", "dojox/charting/Chart", "dojox/charting/axis2d/Default", "dojox/charting/plot2d/Lines",
-    "dojox/charting/plot2d/Grid", "dojox/charting/widget/Legend","dojo/ready", "dijit/registry", 
+    "dojo/_base/array", "dojo/_base/declare", "dojo/_base/lang",
+    "dojo/dom", "dojo/on", "dojo/ready",
+    "dijit/Dialog", "dijit/form/HorizontalSlider", "dijit/registry",
+    "dojox/charting/Chart", "dojox/charting/axis2d/Default", "dojox/charting/plot2d/Lines",
+    "dojox/charting/plot2d/Grid", "dojox/charting/widget/Legend",
+    "./calculations",
     "dojo/domReady!"
-], function(on, declare, lang, Dialog, HorizontalSlider, dom,
+], function(array, declare, lang, dom, on, ready,
+	    Dialog, HorizontalSlider, registry,
 	    // It looks like Default, Lines, Grid are not used.  Can they be removed?
-	    Chart, Default, Lines, Grid, Legend, ready, registry){
-    return declare(null, {
+	    Chart, Default, Lines, Grid, Legend, calculations){
+    return declare(calculations, {
+
+	constructor: function(model){
+            var givenObj = this.gerParametersForRendering(true);
+            var studentObj = this.gerParametersForRendering(false);
+	    this.initialize(givenObj, studentObj);
+	},
 
         //array of timesteps
         timeSteps: new Array(),
@@ -64,7 +73,7 @@ define([
          *  @brief:constructor for a graph object
          *  @param: noOfParam
          */
-        constructor: function(givenObj, studentObj){
+        initialize: function(givenObj, studentObj){
             this.student.calculationObj = studentObj.calculationObj;
             this.student.paramNames = studentObj.arrayOfParameterNames;
             this.student.paramValue = studentObj.arrayOfParamInitialValues;
@@ -97,7 +106,7 @@ define([
             i = 0;
             for(j in this.student.arrayOfNodeValues){
                 //get givenModel/extraModel node ID related to student Node
-                var descriptionID = this.student.calculationObj.model.student.getDescriptionID(j);
+                var descriptionID = this.model.student.getDescriptionID(j);
 
                 //plot chart of student node only if this node corresponds to extra node
 
@@ -111,7 +120,7 @@ define([
                     this.dialogContent = this.dialogContent + this.createDom('div', str, "class='legend'");
                     i++;
 
-                    if((this.student.calculationObj.model.given.isNode(descriptionID))){
+                    if((this.model.given.isNode(descriptionID))){
                         delete tempGivenArrayOfNodeValues[descriptionID];
                     }
 
@@ -133,8 +142,8 @@ define([
                 on(slider, "change", lang.hitch(this, function(){
 
                     dom.byId("text" + paramID.toString()).value = slider.value;
-                    this.student.calculationObj.active.setInitial(paramID, slider.value);
-                    var newObj = this.student.calculationObj.gerParametersForRendering(this.student.calculationObj.solutionGraph, false);
+                    this.active.setInitial(paramID, slider.value);
+                    var newObj = this.gerParametersForRendering(this.solutionGraph, false);
 
                     this.student.arrayOfNodeValues = newObj.arrayOfNodeValues;
                     this.formatArrayOfNodeValuesForChart();
@@ -226,7 +235,7 @@ define([
                 //set initial values of all parameters to original values
                 var i;
                 for(i in this.student.paramNames){
-                    this.student.calculationObj.model.student.setInitial(i, this.student.paramValue[i]);
+                    this.model.student.setInitial(i, this.student.paramValue[i]);
                 }
 
             }));
@@ -242,7 +251,7 @@ define([
             var chartArray = {};
             var legendArray = {};
             i = 0;
-            var time = this.student.calculationObj.model.getTime();
+            var time = this.model.getTime();
             tempGivenArrayOfNodeValues = lang.clone(this.given.arrayOfNodeValues);
            if(!this.isNodeValueEmpty())
            {
@@ -259,13 +268,13 @@ define([
                     var obj = this.getMinMaxFromaArray(this.student.arrayOfNodeValues[j]);
                     chartArray[j].addAxis("y", {vertical: true, min: obj.min, max: obj.max, title: this.student.units[j]});
 
-                    descriptionID = this.student.calculationObj.model.student.getDescriptionID(j);
+                    descriptionID = this.model.student.getDescriptionID(j);
 
                     //plot chart for student node
                     //***chartArray[j].addSeries("Variable solution", this.student.arrayOfNodeValues[j], {stroke: "green"});
                     chartArray[j].addSeries("Variable solution", this.studentFormattedArrayOfNodeValues[j], {stroke: "green"});
                     //plot chart from given node if it matches with student node
-                    if((this.student.calculationObj.model.given.isNode(descriptionID)))
+                    if((this.model.given.isNode(descriptionID)))
                     {
                         chartArray[j].removeAxis("y");
                         var objStudent = this.getMinMaxFromaArray(this.student.arrayOfNodeValues[j]);

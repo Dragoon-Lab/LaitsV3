@@ -6,14 +6,24 @@
  */
 
 define([
-    "dojo/on", "dojo/_base/declare", "dojox/layout/TableContainer", "dijit/Dialog",
-    "dojo/dom", "dojo/dom-construct", "dojo/data/ItemFileReadStore", "dojox/grid/DataGrid","dijit/form/HorizontalSlider","dojo/_base/lang",
-    "dijit/layout/ContentPane",
+    "dojo/_base/array", "dojo/_base/declare", "dojo/_base/lang",
+    "dojo/dom", "dojo/dom-construct", "dojo/data/ItemFileReadStore", "dojo/on",
+    "dijit/layout/ContentPane", "dijit/Dialog", "dijit/form/HorizontalSlider",
+    "dojox/layout/TableContainer", "dojox/grid/DataGrid",
+    "./calculations",
     "dojo/domReady!" 
-], function(on, declare, tableContainer, Dialog, dom, domConstruct, read, grid, HorizontalSlider, lang, contentPane){
+], function(array, declare, lang, dom, domConstruct, read, on,
+	    contentPane, Dialog, HorizontalSlider,
+	    tableContainer, grid,
+	   calculations){
     
-    return declare(null, {
+    return declare(calculations, {
 	
+	constructor: function(model){
+	    var obj = this.gerParametersForRendering(false);
+	    this.initialize(obj);
+	},
+
 	//no of parameters to display in a table
 	inputParam:0,
 	//timesteps unit
@@ -42,8 +52,7 @@ define([
          *  @brief:constructor for a graph object
          *  @param: noOfParam
          */
-		constructor: function(object)
-        {
+	initialize: function(object){
             this.calculationObj = object.calculationObj;
      	    //assign parameters to object properties 
      	    this.inputParam = object.noOfParam;
@@ -75,9 +84,9 @@ define([
                     on(slider, "change", lang.hitch(this, function(){
 
                         dom.byId("textTable"+index).value = slider.value;
-                        //this.calculationObj.active.setInitial(paramID, slider.value);
-                        this.calculationObj.model.student.setInitial(paramID, slider.value);
-                        var newObj = this.calculationObj.gerParametersForRendering(this.calculationObj.solutionGraph, false);
+                        //this.active.setInitial(paramID, slider.value);
+                        this.model.student.setInitial(paramID, slider.value);
+                        var newObj = this.gerParametersForRendering(this.solutionGraph, false);
 
                         this.nodeValueArray = newObj.arrayOfNodeValues;
                         paneText = "";
@@ -118,10 +127,9 @@ define([
                     //create input for a textbox
                     //create div for embedding a slider
                     this.dialogContent += this.createDom('label', '', '', this.paramNames[j] + " = ") + 
-		       this.createDom('input','textTable'+i, "type='text' data-dojo-type='dijit/form/TextBox' readOnly=true")+"<br>"
-                    +this.createDom('div','sliderTable' + i);
+		       this.createDom('input','textTable'+i,"type='text' data-dojo-type='dijit/form/TextBox' readOnly=true")+"<br>" + 
+                       this.createDom('div','sliderTable' + i);
                     console.debug("dialogContent is " + this.dialogContent);
-
                     i++;
                }
 
@@ -144,7 +152,7 @@ define([
                     var i;
                     for(i in this.paramNames)
                     {
-                        this.calculationObj.model.student.setInitial(i, this.paramValue[i]);
+                        this.model.student.setInitial(i, this.paramValue[i]);
                     }
 
                 }));
@@ -218,12 +226,7 @@ define([
        },
        
 	initTable: function(){
-
-           var tableString = "";
-
-	    
-           tableString = "<div align='center'>" + "<table class='solution'>";
-           return tableString;
+           return "<div align='center'>" + "<table class='solution'>";
        },
 	   
 	closeTable: function(){
