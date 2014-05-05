@@ -18,11 +18,6 @@ define([
 	   calculations){
     
     return declare(calculations, {
-	
-	constructor: function(){
-	    var obj = this.gerParametersForRendering(false);
-	    this.initialize(obj);
-	},
 
 	//no of parameters to display in a table
 	inputParam:0,
@@ -47,13 +42,14 @@ define([
     object : null,
     //contentPane for table
     contentPane : null,
-		        
+
         /*
          *  @brief:constructor for a graph object
          *  @param: noOfParam
          */
-	initialize: function(object){
-            this.calculationObj = object.calculationObj;
+	constructor: function(){
+	    var object = this.gerParametersForRendering(false);
+
      	    //assign parameters to object properties 
      	    this.inputParam = object.noOfParam;
      	    this.xUnits = object.xUnits;
@@ -63,133 +59,124 @@ define([
 			this.paramNames = object.arrayOfParameterNames;
 			this.paramValue  = object.arrayOfParamInitialValues;
      	    this.initialize();     	    
-        },
+	},
 
         /*
          * @brief: initialize Dialog/charts and sliders
          *  
          */
          
-        initialize: function()
-        {
-        	
+        initialize: function(){
+            
      	   var i=0, j=0, domId="", tempArray;
-
+	    
             //check if array of node values is empty
             //plot table if these values are not empty
 
-               this.dialogContent += "<div id='table'></div>";
-
-                var registerEventOnSlider = lang.hitch(this, function(slider, index, paramID){
-                    on(slider, "change", lang.hitch(this, function(){
-
-                        dom.byId("textTable"+index).value = slider.value;
-                        //this.active.setInitial(paramID, slider.value);
-                        this.model.student.setInitial(paramID, slider.value);
-                        var newObj = this.gerParametersForRendering(this.solutionGraph, false);
-
-                        this.nodeValueArray = newObj.arrayOfNodeValues;
-                        paneText = "";
-                        paneText += this.initTable();
-                        paneText += this.setTableHeader();
-                        paneText += this.setTableContent();
-                        paneText += this.closeTable();
-
-                        this.contentPane.setContent(paneText);
-
-                    }));
-                });
-
-               i=0;
-               //create sliders based on number of input parameters
-               for(j in this.paramNames)
-               {
-                    // create slider and assign to object property
-                    //
-                    this.sliders[i] = new HorizontalSlider({
-                        name: "sliderTable"+i,
-                        value: this.paramValue[j],
-                        minimum: this.paramValue[j]/10,
-                        maximum: this.paramValue[j]*10,
-                        intermediateChanges: true,
-                        style: "width:300px;"
-                    }, "sliderTable"+i);
-
-                   var paramID = j;
-                   var slider = this.sliders[i];
-                   var index  = i;
-
-
-                   registerEventOnSlider(slider, index, paramID);
-
-
-                    //create label for name of a textbox
-                    //create input for a textbox
-                    //create div for embedding a slider
-                    this.dialogContent += this.createDom('label', '', '', this.paramNames[j] + " = ") + 
-		       this.createDom('input','textTable'+i,"type='text' data-dojo-type='dijit/form/TextBox' readOnly=true")+"<br>" + 
-                       this.createDom('div','sliderTable' + i);
-                    console.debug("dialogContent is " + this.dialogContent);
-                    i++;
-               }
-
-               //create a dialog and give created dom in above loop as input to 'content'
-               //this will create dom inside a dialog
-               this.dialog = new Dialog({
-                   title: "Table for Problem",
-                    //content:this.dialogContent,
-                    style:"width:auto;height:auto"
-               });
-               this.dialog.setContent(this.dialogContent);
-
-                //destroy the dialog when it is closed
-                on(this.dialog, "hide", lang.hitch(this, function(){
-
-                    this.dialog.destroyRecursive();
-
-
-                    //set initial values of all parameters to original values
-                    var i;
-                    for(i in this.paramNames)
-                    {
-                        this.model.student.setInitial(i, this.paramValue[i]);
-                    }
-
-                }));
-
-                var paneText="";
-                if(!this.isNodeValueEmpty())
-                {
+            this.dialogContent += "<div id='table'></div>";
+	    
+            var registerEventOnSlider = lang.hitch(this, function(slider, index, paramID){
+                on(slider, "change", lang.hitch(this, function(){
+		    
+                    dom.byId("textTable"+index).value = slider.value;
+                    this.model.student.setInitial(paramID, slider.value);
+                    var newObj = this.gerParametersForRendering(this.solutionGraph, false);
+		    
+                    this.nodeValueArray = newObj.arrayOfNodeValues;
+                    paneText = "";
                     paneText += this.initTable();
                     paneText += this.setTableHeader();
                     paneText += this.setTableContent();
                     paneText += this.closeTable();
+
+                    this.contentPane.setContent(paneText);
+		    
+                    }));
+            });
+	    
+            i=0;
+            //create sliders based on number of input parameters
+            for(j in this.paramNames){
+                // create slider and assign to object property
+                //
+                this.sliders[i] = new HorizontalSlider({
+                    name: "sliderTable"+i,
+                    value: this.paramValue[j],
+                    minimum: this.paramValue[j]/10,
+                    maximum: this.paramValue[j]*10,
+                    intermediateChanges: true,
+                    style: "width:300px;"
+                }, "sliderTable"+i);
+		
+                var paramID = j;
+                var slider = this.sliders[i];
+                var index  = i;
+
+                registerEventOnSlider(slider, index, paramID);
+		
+                //create label for name of a textbox
+                //create input for a textbox
+                //create div for embedding a slider
+                this.dialogContent += this.createDom('label', '', '', this.paramNames[j] + " = ") + 
+		    this.createDom('input','textTable'+i,"type='text' data-dojo-type='dijit/form/TextBox' readOnly=true")+"<br>" + 
+                    this.createDom('div','sliderTable' + i);
+                console.debug("dialogContent is " + this.dialogContent);
+                i++;
+            }
+	    
+            //create a dialog and give created dom in above loop as input to 'content'
+            //this will create dom inside a dialog
+            this.dialog = new Dialog({
+                title: "Table for Problem",
+                //content:this.dialogContent,
+                style:"width:auto;height:auto"
+            });
+            this.dialog.setContent(this.dialogContent);
+	    
+            //destroy the dialog when it is closed
+            on(this.dialog, "hide", lang.hitch(this, function(){
+                this.dialog.destroyRecursive();
+
+                //set initial values of all parameters to original values
+                var i;
+                for(i in this.paramNames){
+                    this.model.student.setInitial(i, this.paramValue[i]);
                 }
-                else
+		
+                }));
+	    
+            var paneText="";
+            if(!this.isNodeValueEmpty())
+            {
+                paneText += this.initTable();
+                paneText += this.setTableHeader();
+                paneText += this.setTableContent();
+                paneText += this.closeTable();
+            }
+            else
+            {
+                paneText = "Student did not plot any node as yet!!";
+            }
+	    
+            this.contentPane = new contentPane(
                 {
-                    paneText = "Student did not plot any node as yet!!";
-                }
-
-                this.contentPane = new contentPane(
-                    {
-                       content:paneText
+                    content:paneText
                     }, "table");
-
-
-
-                //this.contentPane.setContent(paneText);
-                //insert initial value of slider into a textbox
-               //append slider to the div node
-               for(i=0; i<this.inputParam; i++)
-               {
-                  dom.byId("textTable"+i).value = this.sliders[i].value;
-                 dom.byId("sliderTable"+i).appendChild(this.sliders[i].domNode);
-               }
-
-
+	    
+	    
+            //this.contentPane.setContent(paneText);
+            //insert initial value of slider into a textbox
+            //append slider to the div node
+            for(i=0; i<this.inputParam; i++)
+            {
+                dom.byId("textTable"+i).value = this.sliders[i].value;
+                dom.byId("sliderTable"+i).appendChild(this.sliders[i].domNode);
+            }
+	    
+	    
         },
         
-       
+	
         /*
          * @brief: create a dom based on input parameters
          * @param: domType - type of dom to be created (e.g div, input, label)

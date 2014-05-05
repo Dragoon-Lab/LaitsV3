@@ -19,12 +19,6 @@ define([
 	    Chart, Default, Lines, Grid, Legend, calculations){
     return declare(calculations, {
 
-	constructor: function(){
-            var givenObj = this.gerParametersForRendering(true);
-            var studentObj = this.gerParametersForRendering(false);
-	    this.initialize(givenObj, studentObj);
-	},
-
         //array of timesteps
         timeSteps: new Array(),
 
@@ -73,8 +67,11 @@ define([
          *  @brief:constructor for a graph object
          *  @param: noOfParam
          */
-        initialize: function(givenObj, studentObj){
-            this.student.calculationObj = studentObj.calculationObj;
+
+	constructor: function(){
+            var givenObj = this.gerParametersForRendering(true);
+            var studentObj = this.gerParametersForRendering(false);
+
             this.student.paramNames = studentObj.arrayOfParameterNames;
             this.student.paramValue = studentObj.arrayOfParamInitialValues;
 
@@ -95,15 +92,12 @@ define([
          *
          */
         initialize: function(){
-            var i, j;
-
-
             var str = "";
             this.formatArrayOfNodeValuesForChart();
 
             var tempGivenArrayOfNodeValues = lang.clone(this.given.arrayOfNodeValues);
 
-            i = 0;
+            var i = 0, j;
             for(j in this.student.arrayOfNodeValues){
                 //get givenModel/extraModel node ID related to student Node
                 var descriptionID = this.model.student.getDescriptionID(j);
@@ -153,12 +147,11 @@ define([
                     var l = 0;
                     for(var k in newObj.arrayOfNodeValues){
 
-                        var descriptionID = newObj.calculationObj.model.student.getDescriptionID(k);
+                        var descriptionID = this.model.student.getDescriptionID(k);
                         var objStudent = this.getMinMaxFromaArray(newObj.arrayOfNodeValues[k]);
                         var min = objStudent.min;
                         var max = objStudent.max;
-                        if((newObj.calculationObj.model.given.isNode(descriptionID)))
-                        {
+                        if(this.model.given.isNode(descriptionID)){
                             var objGiven = this.getMinMaxFromaArray(this.given.arrayOfNodeValues[descriptionID]);
                             min = objStudent.min > objGiven.min?objGiven.min:objStudent.min;
                             max = objStudent.max > objGiven.max?objStudent.max:objGiven.max;

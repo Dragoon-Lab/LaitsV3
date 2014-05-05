@@ -28,7 +28,7 @@ define([
 
 	     In student modes, plot solution for all student nodes (of type
 	     "accumulator" or "function") as well
-             as any matching given model node of genus false..
+             as any matching given model node of genus false.
 	     The table contains only the student nodes.
 	     */
 	    this._mode = mode;
@@ -258,8 +258,7 @@ define([
 		xUnits: this.model.getUnits(), 
 		units: this.active.getEachNodeUnitbyID(),
 		arrayOfTimeSteps: arrayOfTimeSteps, 
-		arrayOfNodeValues: arrayOfNodeValues, 
-		calculationObj: this
+		arrayOfNodeValues: arrayOfNodeValues
 	    };
 	    
 	}
