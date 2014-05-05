@@ -20,8 +20,18 @@ define([
         // set current mode. TRUE = givenModel / FALSE = StudentModel
         active: null,
 			
-	constructor: function(model){
+	constructor: function(model, mode){
             this.model = model;
+	    /* In AUTHOR mode, plot solution for all given nodes of genus false
+	     and type "accumulator" or "function""
+	     The table contains the same nodes.
+
+	     In student modes, plot solution for all student nodes (of type
+	     "accumulator" or "function") as well
+             as any matching given model node of genus false..
+	     The table contains only the student nodes.
+	     */
+	    this._mode = mode;
 	    this.startTime = this.model.getTime().start;
 	    this.endTime = this.model.getTime().end;
 	    this.timeSteps = this.model.getTime().step;

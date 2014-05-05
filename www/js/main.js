@@ -129,7 +129,7 @@ define([
             menu.add("graphButton", function(){
                 console.debug("button clicked");
                 // instantiate graph object
-                var graph = new Graph(givenModel);
+                var graph = new Graph(givenModel, query.m);
                 graph.show();
             });
 
@@ -137,7 +137,7 @@ define([
             // show table when button clicked
             menu.add("tableButton", function(){
                 console.debug("table button clicked");
-                var table = new Table(givenModel);
+                var table = new Table(givenModel, query.m);
                 table.show();
             });
 

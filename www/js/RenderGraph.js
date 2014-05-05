@@ -19,7 +19,7 @@ define([
 	    Chart, Default, Lines, Grid, Legend, calculations){
     return declare(calculations, {
 
-	constructor: function(model){
+	constructor: function(){
             var givenObj = this.gerParametersForRendering(true);
             var studentObj = this.gerParametersForRendering(false);
 	    this.initialize(givenObj, studentObj);

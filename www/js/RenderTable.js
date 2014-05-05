@@ -19,7 +19,7 @@ define([
     
     return declare(calculations, {
 	
-	constructor: function(model){
+	constructor: function(){
 	    var obj = this.gerParametersForRendering(false);
 	    this.initialize(obj);
 	},
