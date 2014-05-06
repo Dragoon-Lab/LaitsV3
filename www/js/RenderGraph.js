@@ -6,30 +6,21 @@
  */
 
 define([
-    "dojo/on", "dojo/_base/declare", "dojo/_base/lang",
-    "dijit/Dialog", "dijit/form/HorizontalSlider",
-    "dojo/dom", "dojox/charting/Chart", "dojox/charting/axis2d/Default", "dojox/charting/plot2d/Lines",
-    "dojox/charting/plot2d/Grid", "dojox/charting/widget/Legend","dojo/ready", "dijit/registry", 
+    "dojo/_base/array", "dojo/_base/declare", "dojo/_base/lang",
+    "dojo/dom", "dojo/on", "dojo/ready",
+    "dijit/Dialog", "dijit/form/HorizontalSlider", "dijit/registry",
+    "dojox/charting/Chart", "dojox/charting/axis2d/Default", "dojox/charting/plot2d/Lines",
+    "dojox/charting/plot2d/Grid", "dojox/charting/widget/Legend",
+    "./calculations",
     "dojo/domReady!"
-], function(on, declare, lang, Dialog, HorizontalSlider, dom,
+], function(array, declare, lang, dom, on, ready,
+	    Dialog, HorizontalSlider, registry,
 	    // It looks like Default, Lines, Grid are not used.  Can they be removed?
-	    Chart, Default, Lines, Grid, Legend, ready, registry){
-    return declare(null, {
+	    Chart, Default, Lines, Grid, Legend, calculations){
+    return declare(calculations, {
 
         //array of timesteps
         timeSteps: new Array(),
-
-        //no of parameters that can affect graph. This parameter will be used to create sliders
-        givenInputParam: 0,
-        studentInputParam: 0,
-
-        //This is name of each parameter. Example 'Mass','Velocity' ....
-        givenParamNames: new Array(),
-        studentParamNames: new Array(),
-
-        //this is initial value of each parameter
-        givenParamValue: new Array(),
-        studentParamValue: new Array(),
 
         //object containing array of calculated values of 'function' & 'accumulator' nodes
         givenArrayOfNodeValues: {},
@@ -38,12 +29,6 @@ define([
         //format above array of nodevalues for charting
         givenFormattedArrayOfNodeValues: {},
         studentFormattedArrayOfNodeValues: {},
-
-
-        //units of nodes
-        givenUnits: {},
-        studentUnits: {},
-        xunits: null,
 
         //Parameter to set DOM in a dialog dynamically
         dialogContent: "",
@@ -64,8 +49,11 @@ define([
          *  @brief:constructor for a graph object
          *  @param: noOfParam
          */
-        constructor: function(givenObj, studentObj){
-            this.student.calculationObj = studentObj.calculationObj;
+
+	constructor: function(){
+            var givenObj = this.gerParametersForRendering(true);
+            var studentObj = this.gerParametersForRendering(false);
+
             this.student.paramNames = studentObj.arrayOfParameterNames;
             this.student.paramValue = studentObj.arrayOfParamInitialValues;
 
@@ -73,12 +61,9 @@ define([
             this.student.arrayOfNodeValues = studentObj.arrayOfNodeValues;
 
             console.log("***** In RenderGraph constructor");
-            this.student.units = studentObj.units;
 
-            this.xunits = givenObj.xUnits;
             this.timeSteps = givenObj.arrayOfTimeSteps;
             this.initialize();
-
         },
 
         /*
@@ -86,18 +71,15 @@ define([
          *
          */
         initialize: function(){
-            var i, j;
-
-
             var str = "";
             this.formatArrayOfNodeValuesForChart();
 
             var tempGivenArrayOfNodeValues = lang.clone(this.given.arrayOfNodeValues);
 
-            i = 0;
+            var i = 0, j;
             for(j in this.student.arrayOfNodeValues){
                 //get givenModel/extraModel node ID related to student Node
-                var descriptionID = this.student.calculationObj.model.student.getDescriptionID(j);
+                var descriptionID = this.model.student.getDescriptionID(j);
 
                 //plot chart of student node only if this node corresponds to extra node
 
@@ -111,13 +93,10 @@ define([
                     this.dialogContent = this.dialogContent + this.createDom('div', str, "class='legend'");
                     i++;
 
-                    if((this.student.calculationObj.model.given.isNode(descriptionID))){
+                    if((this.model.given.isNode(descriptionID))){
                         delete tempGivenArrayOfNodeValues[descriptionID];
                     }
-
-
             }
-
 
             for(j in tempGivenArrayOfNodeValues){
                 str = "chart" + j.toString();
@@ -129,39 +108,38 @@ define([
                 this.dialogContent = this.dialogContent + this.createDom('div', str, "class='legend'");
             }
 
+	    /*
+	     Redundant slider code; see Bug #2339
+	     */
             var registerEventOnSlider = lang.hitch(this, function(slider, index, paramID){
                 on(slider, "change", lang.hitch(this, function(){
 
-                    dom.byId("text" + paramID.toString()).value = slider.value;
-                    this.student.calculationObj.active.setInitial(paramID, slider.value);
-                    var newObj = this.student.calculationObj.gerParametersForRendering(false);
+                    dom.byId("text" + index).value = slider.value;
+                    this.active.setInitial(paramID, slider.value);
+                    var newObj = this.gerParametersForRendering(false);
 
                     this.student.arrayOfNodeValues = newObj.arrayOfNodeValues;
                     this.formatArrayOfNodeValuesForChart();
-
 
                     //update and render the chart
                     var l = 0;
                     for(var k in newObj.arrayOfNodeValues){
 
-                        var descriptionID = newObj.calculationObj.model.student.getDescriptionID(k);
+                        var descriptionID = this.model.student.getDescriptionID(k);
                         var objStudent = this.getMinMaxFromaArray(newObj.arrayOfNodeValues[k]);
                         var min = objStudent.min;
                         var max = objStudent.max;
-                        if((newObj.calculationObj.model.given.isNode(descriptionID)))
-                        {
+                        if(this.model.given.isNode(descriptionID)){
                             var objGiven = this.getMinMaxFromaArray(this.given.arrayOfNodeValues[descriptionID]);
-                            min = objStudent.min > objGiven.min?objGiven.min:objStudent.min;
-                            max = objStudent.max > objGiven.max?objStudent.max:objGiven.max;
+                            min = Math.min(objGiven.min, objStudent.min);
+                            max = Math.max(objGiven.max, objStudent.max);
                         }
 
-
-
-                        //var array = newObj.arrayOfNodeValues[k];
-                        //var maxArrayValue = array[array.length - 1];
-
                         this.chart[k].removeAxis("y");
-                        this.chart[k].addAxis("y", {vertical: true, min: min, max: max,  title: this.student.units[k]});
+                        this.chart[k].addAxis("y", {
+			    vertical: true, min: min, max: max,
+			    title: this.labelString(k)
+			});
                         this.chart[k].updateSeries("Variable solution", this.studentFormattedArrayOfNodeValues[k]);
                         this.chart[k].render();
                         l++;
@@ -171,6 +149,7 @@ define([
             });
 
             i = 0;
+	    var units;
             //create sliders based on number of input parameters
             for(j in this.student.paramNames){
                 // create slider and assign to object property
@@ -185,20 +164,21 @@ define([
                 }, "slider" + j.toString());
 
 
-                var paramID = j;
-                var index = i;
+                var paramID = this.student.paramNames[j];
                 var slider = this.sliders[j];
 
-                registerEventOnSlider(slider, index, paramID);
+                registerEventOnSlider(slider, i, paramID);
 
                 //create label for name of a textbox
                 //create input for a textbox
                 //create div for embedding a slider
-                this.dialogContent += this.createDom('label', '', '', this.student.paramNames[j] + " = ");
-
-                str = 'text' + j.toString();
-                this.strDomID.push(str);
-                this.dialogContent += this.createDom('input', str, "type='text' data-dojo-type='dijit/form/TextBox' readOnly=true") + "<br>";
+                this.dialogContent += this.createDom('label', '', '', this.model.active.getName(paramID) + " = ");
+                this.dialogContent += this.createDom('input', "text" + i, "type='text' data-dojo-type='dijit/form/TextBox' readOnly=true");
+		units = this.model.active.getUnits(paramID);
+		if(units){
+		    this.dialogContent += " " + units;
+		}
+		this.dialogContent += "<br>";
                 str = 'slider' + j.toString();
                 this.strDomID.push(str);
                 this.dialogContent += this.createDom('div', str);
@@ -223,10 +203,10 @@ define([
 
                 this.dialog.destroyRecursive();
 
-                //set initial values of all parameters to original values
+                //set initial values of all parameters back to original values; Bug #2337
                 var i;
                 for(i in this.student.paramNames){
-                    this.student.calculationObj.model.student.setInitial(i, this.student.paramValue[i]);
+                    this.model.student.setInitial(this.student.paramNames[i], this.student.paramValue[i]);
                 }
 
             }));
@@ -234,15 +214,15 @@ define([
 
             //insert initial value of slider into a textbox
             //append slider to the div node
-            for(i in this.student.paramValue){
-                dom.byId("text" + i.toString()).value = this.sliders[i].value;
-                dom.byId("slider" + i.toString()).appendChild(this.sliders[i].domNode);
+            for(i in this.student.paramNames){
+                dom.byId("text" + i).value = this.sliders[i].value;
+                dom.byId("slider" + i).appendChild(this.sliders[i].domNode);
             }
 
             var chartArray = {};
             var legendArray = {};
             i = 0;
-            var time = this.student.calculationObj.model.getTime();
+            var time = this.model.getTime();
             tempGivenArrayOfNodeValues = lang.clone(this.given.arrayOfNodeValues);
            if(!this.isNodeValueEmpty())
            {
@@ -252,28 +232,33 @@ define([
                     chartArray[j].addPlot("default", {type: Lines, markers: true});
 
                     chartArray[j].addAxis("x", {
-                        title: this.xunits,
+                        title: this.labelString(),
                         titleOrientation: "away", titleGap: 5
                     });
 
                     var obj = this.getMinMaxFromaArray(this.student.arrayOfNodeValues[j]);
-                    chartArray[j].addAxis("y", {vertical: true, min: obj.min, max: obj.max, title: this.student.units[j]});
+                    chartArray[j].addAxis("y", {
+			vertical: true, min: obj.min, max: obj.max, 
+			title: this.labelString(j)
+		    });
 
-                    descriptionID = this.student.calculationObj.model.student.getDescriptionID(j);
+                    descriptionID = this.model.student.getDescriptionID(j);
 
                     //plot chart for student node
-                    //***chartArray[j].addSeries("Variable solution", this.student.arrayOfNodeValues[j], {stroke: "green"});
                     chartArray[j].addSeries("Variable solution", this.studentFormattedArrayOfNodeValues[j], {stroke: "green"});
                     //plot chart from given node if it matches with student node
-                    if((this.student.calculationObj.model.given.isNode(descriptionID)))
+                    if((this.model.given.isNode(descriptionID)))
                     {
                         chartArray[j].removeAxis("y");
                         var objStudent = this.getMinMaxFromaArray(this.student.arrayOfNodeValues[j]);
                         var objGiven = this.getMinMaxFromaArray(this.given.arrayOfNodeValues[descriptionID]);
 
-                        var min = objStudent.min > objGiven.min?objGiven.min:objStudent.min;
-                        var max = objStudent.max > objGiven.max?objStudent.max:objGiven.max;
-                        chartArray[j].addAxis("y", {vertical: true, min: min, max: max, title: this.student.units[j]});
+                        chartArray[j].addAxis("y", {
+			    vertical: true, 
+			    min: Math.min(objGiven.min, objStudent.min), 
+			    max: Math.max(objGiven.max, objStudent.max),
+			    title: this.labelString(j)
+			});
                         chartArray[j].addSeries("correct solution", this.givenFormattedArrayOfNodeValues[descriptionID], {stroke: "red"});
                         //remove plotted node from collection
                         delete tempGivenArrayOfNodeValues[descriptionID];
@@ -380,27 +365,18 @@ define([
         getMinMaxFromaArray:function(array)
         {
             var i;
-            var obj;
             var min= array[0];
             var max = array[0];
-            for(i=1;i<array.length;i++)
-            {
-                if(array[i] < min)
-                {
+            for(i=1; i<array.length; i++){
+                if(array[i] < min){
                     min = array[i];
                 }
-            }
-
-            for(i=1;i<array.length;i++)
-            {
-                if(array[i] > max)
-                {
+                if(array[i] > max){
                     max = array[i];
                 }
             }
 
-            obj={min:min, max:max};
-            return obj;
+            return {min:min, max:max};
         },
         /*
          * @brief: display the graph

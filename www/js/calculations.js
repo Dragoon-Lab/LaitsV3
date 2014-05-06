@@ -1,16 +1,10 @@
 /* global define, Image */
 define([
-    "dojo/_base/declare", "dojo/_base/lang",
+    "dojo/_base/array", "dojo/_base/declare", "dojo/_base/lang",
     "parser/parser"
-], function(declare, lang, Parser){
+], function(array, declare, lang, Parser){
 
     return declare(null, {
-	// timesteps in graph
-	timeSteps: 0,
-	// start time to plot graph
-	startTime: 0,
-	// end time to plot grpah
-	endTime: 0,
 	// model 
 	model: null,
 	// model nodes
@@ -20,11 +14,18 @@ define([
         // set current mode. TRUE = givenModel / FALSE = StudentModel
         active: null,
 			
-	constructor: function(model){
+	constructor: function(model, mode){
             this.model = model;
-	    this.startTime = this.model.getTime().start;
-	    this.endTime = this.model.getTime().end;
-	    this.timeSteps = this.model.getTime().step;
+	    /* In AUTHOR mode, plot solution for all given nodes of genus false
+	     and type "accumulator" or "function""
+	     The table contains the same nodes.
+
+	     In student modes, plot solution for all student nodes (of type
+	     "accumulator" or "function") as well
+             as any matching given model node of genus false.
+	     The table contains only the student nodes.
+	     */
+	    this._mode = mode;
 	},
 	
         //this function sets mode of model to be student or given
@@ -86,6 +87,7 @@ define([
 	_getNodeValuesByTimeSteps:function(isInitialValue, arrayOfNodeValues, arrayOfTimeSteps, nodeEquations)
 	{
 	    var i, j;
+	    var time = this.model.getTime();
 	    //set initial values of all nodes
 	    switch(isInitialValue)
 	    {
@@ -96,7 +98,7 @@ define([
 		    this.currentNodeValues[this.modelNodes[i].ID] = this.active.getInitial(this.modelNodes[i].ID);
 		}
 		
-		arrayOfTimeSteps.push(this.startTime.toFixed(2));
+		arrayOfTimeSteps.push(time.start.toFixed(2));
 		
 		for(j=0;j<this.modelNodes.length;j++)
 		{
@@ -118,8 +120,7 @@ define([
 		break;
 		
 	    case false:
-		//for(i=this.startTime+this.timeSteps;i<(this.endTime-this.startTime)/this.timeSteps;i=i+this.timeSteps)
-                for(i=this.startTime+this.timeSteps;i<this.endTime;i=i+this.timeSteps)
+                for(i=time.start+time.step; i<time.end; i+= time.step)
 		{
 		    arrayOfTimeSteps.push(i.toFixed(2));
 		    for(j=0;j<this.modelNodes.length;j++)
@@ -192,12 +193,12 @@ define([
 	_storeParametersNameValue: function(arrayOfParameterNames, arrayOfParamInitialValues)
 	{
 	    var i, count=0;
-	    for(i=0;i<this.modelNodes.length;i++)
+	    for(i=0; i<this.modelNodes.length; i++)
 	    {
 		if(this.active.getType(this.modelNodes[i].ID) == 'parameter' || this.active.getType(this.modelNodes[i].ID) == 'accumulator')
 		{
-		    arrayOfParameterNames[this.modelNodes[i].ID] = this.active.getName(this.modelNodes[i].ID);
-		    arrayOfParamInitialValues[this.modelNodes[i].ID] = this.active.getInitial(this.modelNodes[i].ID);
+		    arrayOfParameterNames[count] = this.modelNodes[i].ID;
+		    arrayOfParamInitialValues[count] = this.active.getInitial(this.modelNodes[i].ID);
 		    count++;
 		}
 	    }
@@ -212,8 +213,6 @@ define([
 	    var isInitialValue;
 	    //variable to get number of nodes of type 'parameter' in given graph
 	    var noOfParam;
-	    //variables to get units
-	    var xUnits, units;
 	    //arrays to get name and initial values of node type 'parameter'
 	    var arrayOfParameterNames = [], arrayOfParamInitialValues=[];
 	    //get key/value pair of node-id/equation in object
@@ -244,14 +243,21 @@ define([
 		noOfParam: noOfParam, 
 		arrayOfParameterNames: arrayOfParameterNames,
 		arrayOfParamInitialValues: arrayOfParamInitialValues, 
-		//get units used in graph
-		xUnits: this.model.getUnits(), 
-		units: this.active.getEachNodeUnitbyID(),
 		arrayOfTimeSteps: arrayOfTimeSteps, 
-		arrayOfNodeValues: arrayOfNodeValues, 
-		calculationObj: this
+		arrayOfNodeValues: arrayOfNodeValues
 	    };
 	    
+	},
+
+	labelString: function(id){
+	    // Summary:  Return a string containing the quantity name and any units.
+	    // id:  Node id for active model; null returns time label
+	    var label = id?this.model.active.getName(id):"time";
+	    var units = id?this.model.active.getUnits(id):this.model.getUnits();
+	    if(units){
+		label += " (" + units + ")";
+	    }
+	    return label;
 	}
 
     });		

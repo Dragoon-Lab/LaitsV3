@@ -128,13 +128,8 @@ define([
             // show graph when button clicked
             menu.add("graphButton", function(){
                 console.debug("button clicked");
-
-                var calc = new calculations(givenModel);
-                var givenObj = calc.gerParametersForRendering(true);
-                var studentObj = calc.gerParametersForRendering(false);
-
                 // instantiate graph object
-                var graph = new Graph(givenObj, studentObj);
+                var graph = new Graph(givenModel, query.m);
                 graph.show();
             });
 
@@ -142,14 +137,7 @@ define([
             // show table when button clicked
             menu.add("tableButton", function(){
                 console.debug("table button clicked");
-
-                /*var calc = new calculations(givenModel, true);
-                 var obj = calc.gerParametersForRendering(givenModel, true);*/
-
-                var calc = new calculations(givenModel);
-                var obj = calc.gerParametersForRendering(false);
-
-                var table = new Table(obj);
+                var table = new Table(givenModel, query.m);
                 table.show();
             });
 
