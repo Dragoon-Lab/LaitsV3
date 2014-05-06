@@ -64,24 +64,17 @@ define([
                     case "kind":
                         var message="";
                         returnObj.push({id:"kind",attribute:"status",value:"entered"});
-                        if(value == "given"){
-                            message  = "kind selected is 'in solution'. This implies student has to include this node in solution";
+                        if(value == "allowed"){
+                            message  = "One may include this quantity in a solution, but they can solve the problem without it.";
                         }
-                        else if(value == "allowed"){
-                            message  = "kind selected is 'optional'. The student may include this quantity in a solution.";
+                        else if(value == "extra"){
+                            message  = "This quantity is mentioned in the problem description, but it not part of a valid model.";
                         }
-                        else if(value == "forbidden"){
-                            message  = "kind selected is 'not allowed'. A quantity that might be part of a valid model, " +
-                                "and mentioned in the problem description, but inclusion of this quantity will generally " +
-                                "not allow the student to construct a model";
-                        }
-                        else if(value == "offTopic"){
-                            message  = "kind selected is 'irrelevant'. A quantity that is not part of the given model and not " +
-                                "mentioned in the problem description.";
+                        else if(value == "irrelevant"){
+                            message  = "This quantity is not part of a valid solution and is not mentioned in the description.";
                         }
                         else{
-                            returnObj[0].value = "incorrect";
-                            message  = "kind selected is 'default'. Please select valid value from kind drop-down.";
+                            message = "Solution quantity";
                         }
                         returnObj.push({id:"message",attribute:"append",value:message});
                         break;
