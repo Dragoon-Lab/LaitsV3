@@ -51,8 +51,8 @@ define([
          */
 
 	constructor: function(){
-            var givenObj = this.gerParametersForRendering(true);
-            var studentObj = this.gerParametersForRendering(false);
+            var givenObj = this.getParametersForRendering(true);
+            var studentObj = this.getParametersForRendering(false);
 
             this.student.paramNames = studentObj.arrayOfParameterNames;
             this.student.paramValue = studentObj.arrayOfParamInitialValues;
@@ -116,7 +116,7 @@ define([
 
                     dom.byId("text" + index).value = slider.value;
                     this.active.setInitial(paramID, slider.value);
-                    var newObj = this.gerParametersForRendering(false);
+                    var newObj = this.getParametersForRendering(false);
 
                     this.student.arrayOfNodeValues = newObj.arrayOfNodeValues;
                     this.formatArrayOfNodeValuesForChart();
