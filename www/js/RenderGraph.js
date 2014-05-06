@@ -22,18 +22,6 @@ define([
         //array of timesteps
         timeSteps: new Array(),
 
-        //no of parameters that can affect graph. This parameter will be used to create sliders
-        givenInputParam: 0,
-        studentInputParam: 0,
-
-        //This is name of each parameter. Example 'Mass','Velocity' ....
-        givenParamNames: new Array(),
-        studentParamNames: new Array(),
-
-        //this is initial value of each parameter
-        givenParamValue: new Array(),
-        studentParamValue: new Array(),
-
         //object containing array of calculated values of 'function' & 'accumulator' nodes
         givenArrayOfNodeValues: {},
         studentArrayOfNodeValues: {},
@@ -108,10 +96,7 @@ define([
                     if((this.model.given.isNode(descriptionID))){
                         delete tempGivenArrayOfNodeValues[descriptionID];
                     }
-
-
             }
-
 
             for(j in tempGivenArrayOfNodeValues){
                 str = "chart" + j.toString();
@@ -123,16 +108,18 @@ define([
                 this.dialogContent = this.dialogContent + this.createDom('div', str, "class='legend'");
             }
 
+	    /*
+	     Redundant slider code; see Bug #2339
+	     */
             var registerEventOnSlider = lang.hitch(this, function(slider, index, paramID){
                 on(slider, "change", lang.hitch(this, function(){
 
-                    dom.byId("text" + paramID.toString()).value = slider.value;
+                    dom.byId("text" + index).value = slider.value;
                     this.active.setInitial(paramID, slider.value);
                     var newObj = this.gerParametersForRendering(false);
 
                     this.student.arrayOfNodeValues = newObj.arrayOfNodeValues;
                     this.formatArrayOfNodeValuesForChart();
-
 
                     //update and render the chart
                     var l = 0;
@@ -151,7 +138,7 @@ define([
                         this.chart[k].removeAxis("y");
                         this.chart[k].addAxis("y", {
 			    vertical: true, min: min, max: max,
-			    title: this.model.active.getUnits[k]
+			    title: this.labelString(k)
 			});
                         this.chart[k].updateSeries("Variable solution", this.studentFormattedArrayOfNodeValues[k]);
                         this.chart[k].render();
@@ -162,6 +149,7 @@ define([
             });
 
             i = 0;
+	    var units;
             //create sliders based on number of input parameters
             for(j in this.student.paramNames){
                 // create slider and assign to object property
@@ -176,20 +164,21 @@ define([
                 }, "slider" + j.toString());
 
 
-                var paramID = j;
-                var index = i;
+                var paramID = this.student.paramNames[j];
                 var slider = this.sliders[j];
 
-                registerEventOnSlider(slider, index, paramID);
+                registerEventOnSlider(slider, i, paramID);
 
                 //create label for name of a textbox
                 //create input for a textbox
                 //create div for embedding a slider
-                this.dialogContent += this.createDom('label', '', '', this.student.paramNames[j] + " = ");
-
-                str = 'text' + j.toString();
-                this.strDomID.push(str);
-                this.dialogContent += this.createDom('input', str, "type='text' data-dojo-type='dijit/form/TextBox' readOnly=true") + "<br>";
+                this.dialogContent += this.createDom('label', '', '', this.model.active.getName(paramID) + " = ");
+                this.dialogContent += this.createDom('input', "text" + i, "type='text' data-dojo-type='dijit/form/TextBox' readOnly=true");
+		units = this.model.active.getUnits(paramID);
+		if(units){
+		    this.dialogContent += " " + units;
+		}
+		this.dialogContent += "<br>";
                 str = 'slider' + j.toString();
                 this.strDomID.push(str);
                 this.dialogContent += this.createDom('div', str);
@@ -214,10 +203,10 @@ define([
 
                 this.dialog.destroyRecursive();
 
-                //set initial values of all parameters to original values
+                //set initial values of all parameters back to original values; Bug #2337
                 var i;
                 for(i in this.student.paramNames){
-                    this.model.student.setInitial(i, this.student.paramValue[i]);
+                    this.model.student.setInitial(this.student.paramNames[i], this.student.paramValue[i]);
                 }
 
             }));
@@ -225,9 +214,9 @@ define([
 
             //insert initial value of slider into a textbox
             //append slider to the div node
-            for(i in this.student.paramValue){
-                dom.byId("text" + i.toString()).value = this.sliders[i].value;
-                dom.byId("slider" + i.toString()).appendChild(this.sliders[i].domNode);
+            for(i in this.student.paramNames){
+                dom.byId("text" + i).value = this.sliders[i].value;
+                dom.byId("slider" + i).appendChild(this.sliders[i].domNode);
             }
 
             var chartArray = {};
@@ -243,14 +232,14 @@ define([
                     chartArray[j].addPlot("default", {type: Lines, markers: true});
 
                     chartArray[j].addAxis("x", {
-                        title: this.model.getUnits(),
+                        title: this.labelString(),
                         titleOrientation: "away", titleGap: 5
                     });
 
                     var obj = this.getMinMaxFromaArray(this.student.arrayOfNodeValues[j]);
                     chartArray[j].addAxis("y", {
 			vertical: true, min: obj.min, max: obj.max, 
-			title: this.model.active.getUnits(j)
+			title: this.labelString(j)
 		    });
 
                     descriptionID = this.model.student.getDescriptionID(j);
@@ -268,7 +257,7 @@ define([
 			    vertical: true, 
 			    min: Math.min(objGiven.min, objStudent.min), 
 			    max: Math.max(objGiven.max, objStudent.max),
-			    title: this.model.active.getUnits(j)
+			    title: this.labelString(j)
 			});
                         chartArray[j].addSeries("correct solution", this.givenFormattedArrayOfNodeValues[descriptionID], {stroke: "red"});
                         //remove plotted node from collection

@@ -33,9 +33,9 @@ define([
 	sliders:new Array(),
 	dialogContent:"",	
 	//Object of a dialog
-    dialog:"",
-    //contentPane for table
-    contentPane : null,
+	dialog:"",
+	//contentPane for table
+	contentPane : null,
 
         /*
          *  @brief:constructor for a graph object
@@ -60,13 +60,16 @@ define([
          
         initialize: function(){
             
-     	   var i=0, j=0, domId="", tempArray;
+     	    var i=0, j=0, domId="", tempArray;
 	    
             //check if array of node values is empty
             //plot table if these values are not empty
-
+	    
             this.dialogContent += "<div id='table'></div>";
 	    
+	    /*
+	     Redundant code; see Bug #2339
+	     */
             var registerEventOnSlider = lang.hitch(this, function(slider, index, paramID){
                 on(slider, "change", lang.hitch(this, function(){
 		    
@@ -87,6 +90,7 @@ define([
             });
 	    
             i=0;
+	    var units;
             //create sliders based on number of input parameters
             for(j in this.paramNames){
                 // create slider and assign to object property
@@ -100,18 +104,22 @@ define([
                     style: "width:300px;"
                 }, "sliderTable"+i);
 		
-                var paramID = j;
+                var paramID = this.paramNames[j];
                 var slider = this.sliders[i];
-                var index  = i;
 
-                registerEventOnSlider(slider, index, paramID);
+                registerEventOnSlider(slider, i, paramID);
 		
                 //create label for name of a textbox
                 //create input for a textbox
                 //create div for embedding a slider
-                this.dialogContent += this.createDom('label', '', '', this.paramNames[j] + " = ") + 
-		    this.createDom('input','textTable'+i,"type='text' data-dojo-type='dijit/form/TextBox' readOnly=true")+"<br>" + 
-                    this.createDom('div','sliderTable' + i);
+                this.dialogContent += this.createDom('label', '', '', this.model.active.getName(paramID) + " = ");
+		this.dialogContent += this.createDom('input', 'textTable'+i, "type='text' data-dojo-type='dijit/form/TextBox' readOnly=true");
+		units = this.model.active.getUnits(paramID);
+		if(units){
+		    this.dialogContent += " " + units;
+		}
+		this.dialogContent += "<br>";
+		this.dialogContent += this.createDom('div','sliderTable' + i);
                 console.debug("dialogContent is " + this.dialogContent);
                 i++;
             }
@@ -129,10 +137,10 @@ define([
             on(this.dialog, "hide", lang.hitch(this, function(){
                 this.dialog.destroyRecursive();
 
-                //set initial values of all parameters to original values
+                //set initial values of all parameters back to original values; Bug #2337
                 var i;
                 for(i in this.paramNames){
-                    this.model.student.setInitial(i, this.paramValue[i]);
+                    this.model.student.setInitial(this.paramNames[i], this.paramValue[i]);
                 }
 		
                 }));
@@ -209,21 +217,16 @@ define([
        },
 	   
 	closeTable: function(){
-	    
-            var tableString;
-            tableString = "</table>"+"</div>";
-	    
-            return tableString;
+            return "</table>"+"</div>";
 	},
 	
 	setTableHeader: function(){
-	    var i=0, tableString="";
+	    var i=0, tableString = "";
 	    tableString += "<tr>";
 	    //setup xunit (unit of timesteps)
-	    tableString += "<th>" + this.model.getUnits() + "</th>";
+	    tableString += "<th>" + this.labelString() + "</th>";
 	    for(i in this.nodeValueArray){
-		var units = this.model.active.getUnits(i);
-		tableString += "<th>" + units + "</th>";
+		tableString += "<th>" + this.labelString(i) + "</th>";
 	    }
 	    tableString += "</tr>";
 	    return tableString;

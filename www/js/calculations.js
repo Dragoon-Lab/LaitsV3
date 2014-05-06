@@ -193,12 +193,12 @@ define([
 	_storeParametersNameValue: function(arrayOfParameterNames, arrayOfParamInitialValues)
 	{
 	    var i, count=0;
-	    for(i=0;i<this.modelNodes.length;i++)
+	    for(i=0; i<this.modelNodes.length; i++)
 	    {
 		if(this.active.getType(this.modelNodes[i].ID) == 'parameter' || this.active.getType(this.modelNodes[i].ID) == 'accumulator')
 		{
-		    arrayOfParameterNames[this.modelNodes[i].ID] = this.active.getName(this.modelNodes[i].ID);
-		    arrayOfParamInitialValues[this.modelNodes[i].ID] = this.active.getInitial(this.modelNodes[i].ID);
+		    arrayOfParameterNames[count] = this.modelNodes[i].ID;
+		    arrayOfParamInitialValues[count] = this.active.getInitial(this.modelNodes[i].ID);
 		    count++;
 		}
 	    }
@@ -247,6 +247,17 @@ define([
 		arrayOfNodeValues: arrayOfNodeValues
 	    };
 	    
+	},
+
+	labelString: function(id){
+	    // Summary:  Return a string containing the quantity name and any units.
+	    // id:  Node id for active model; null returns time label
+	    var label = id?this.model.active.getName(id):"time";
+	    var units = id?this.model.active.getUnits(id):this.model.getUnits();
+	    if(units){
+		label += " (" + units + ")";
+	    }
+	    return label;
 	}
 
     });		
