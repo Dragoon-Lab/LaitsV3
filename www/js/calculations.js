@@ -5,12 +5,6 @@ define([
 ], function(array, declare, lang, Parser){
 
     return declare(null, {
-	// timesteps in graph
-	timeSteps: 0,
-	// start time to plot graph
-	startTime: 0,
-	// end time to plot grpah
-	endTime: 0,
 	// model 
 	model: null,
 	// model nodes
@@ -32,9 +26,6 @@ define([
 	     The table contains only the student nodes.
 	     */
 	    this._mode = mode;
-	    this.startTime = this.model.getTime().start;
-	    this.endTime = this.model.getTime().end;
-	    this.timeSteps = this.model.getTime().step;
 	},
 	
         //this function sets mode of model to be student or given
@@ -96,6 +87,7 @@ define([
 	_getNodeValuesByTimeSteps:function(isInitialValue, arrayOfNodeValues, arrayOfTimeSteps, nodeEquations)
 	{
 	    var i, j;
+	    var time = this.model.getTime();
 	    //set initial values of all nodes
 	    switch(isInitialValue)
 	    {
@@ -106,7 +98,7 @@ define([
 		    this.currentNodeValues[this.modelNodes[i].ID] = this.active.getInitial(this.modelNodes[i].ID);
 		}
 		
-		arrayOfTimeSteps.push(this.startTime.toFixed(2));
+		arrayOfTimeSteps.push(time.start.toFixed(2));
 		
 		for(j=0;j<this.modelNodes.length;j++)
 		{
@@ -128,8 +120,7 @@ define([
 		break;
 		
 	    case false:
-		//for(i=this.startTime+this.timeSteps;i<(this.endTime-this.startTime)/this.timeSteps;i=i+this.timeSteps)
-                for(i=this.startTime+this.timeSteps;i<this.endTime;i=i+this.timeSteps)
+                for(i=time.start+time.step; i<time.end; i+= time.step)
 		{
 		    arrayOfTimeSteps.push(i.toFixed(2));
 		    for(j=0;j<this.modelNodes.length;j++)
@@ -222,8 +213,6 @@ define([
 	    var isInitialValue;
 	    //variable to get number of nodes of type 'parameter' in given graph
 	    var noOfParam;
-	    //variables to get units
-	    var xUnits, units;
 	    //arrays to get name and initial values of node type 'parameter'
 	    var arrayOfParameterNames = [], arrayOfParamInitialValues=[];
 	    //get key/value pair of node-id/equation in object
@@ -254,9 +243,6 @@ define([
 		noOfParam: noOfParam, 
 		arrayOfParameterNames: arrayOfParameterNames,
 		arrayOfParamInitialValues: arrayOfParamInitialValues, 
-		//get units used in graph
-		xUnits: this.model.getUnits(), 
-		units: this.active.getEachNodeUnitbyID(),
 		arrayOfTimeSteps: arrayOfTimeSteps, 
 		arrayOfNodeValues: arrayOfNodeValues
 	    };

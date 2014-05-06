@@ -21,10 +21,6 @@ define([
 
 	//no of parameters to display in a table
 	inputParam:0,
-	//timesteps unit
-	xUnits: null,
-	//tableHeaders (units of all nodes)
-	units: {},
 	//timestep values
 	timeSteps: new Array(),
 	//values of all nodes stored in an array
@@ -38,8 +34,6 @@ define([
 	dialogContent:"",	
 	//Object of a dialog
     dialog:"",
-    //object passed to constructor
-    object : null,
     //contentPane for table
     contentPane : null,
 
@@ -52,8 +46,6 @@ define([
 
      	    //assign parameters to object properties 
      	    this.inputParam = object.noOfParam;
-     	    this.xUnits = object.xUnits;
-			this.units = object.units;
 			this.timeSteps = object.arrayOfTimeSteps;
 			this.nodeValueArray = object.arrayOfNodeValues;
 			this.paramNames = object.arrayOfParameterNames;
@@ -228,9 +220,10 @@ define([
 	    var i=0, tableString="";
 	    tableString += "<tr>";
 	    //setup xunit (unit of timesteps)
-	    tableString += "<th>"+this.xUnits+"</th>";
+	    tableString += "<th>" + this.model.getUnits() + "</th>";
 	    for(i in this.nodeValueArray){
-		tableString += "<th>" + this.units[i] + "</th>";
+		var units = this.model.active.getUnits(i);
+		tableString += "<th>" + units + "</th>";
 	    }
 	    tableString += "</tr>";
 	    return tableString;
