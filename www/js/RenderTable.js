@@ -19,6 +19,8 @@ define([
     
     return declare(calculations, {
 
+    //ID for text-box DOM
+    textBoxID:"textTable",
 	//no of parameters to display in a table
 	inputParam:0,
 	//timestep values
@@ -68,7 +70,7 @@ define([
 	    /*
 	     Redundant code; see Bug #2339
 	     */
-            var registerEventOnSlider = lang.hitch(this, function(slider, index, paramID){
+            /*var registerEventOnSlider = lang.hitch(this, function(slider, index, paramID){
                 on(slider, "change", lang.hitch(this, function(){
 		    
                     dom.byId("textTable"+index).value = slider.value;
@@ -85,7 +87,7 @@ define([
                     this.contentPane.setContent(paneText);
 		    
                     }));
-            });
+            });*/
 	    
             i=0;
 	    var units;
@@ -105,13 +107,13 @@ define([
                 var paramID = this.paramNames[j];
                 var slider = this.sliders[i];
 
-                registerEventOnSlider(slider, i, paramID);
+                this.registerEventOnSlider(slider, i, paramID);
 		
                 //create label for name of a textbox
                 //create input for a textbox
                 //create div for embedding a slider
                 this.dialogContent += this.createDom('label', '', '', this.model.active.getName(paramID) + " = ");
-		this.dialogContent += this.createDom('input', 'textTable'+i, "type='text' data-dojo-type='dijit/form/TextBox' readOnly=true");
+		this.dialogContent += this.createDom('input', this.textBoxID+i, "type='text' data-dojo-type='dijit/form/TextBox' readOnly=true");
 		units = this.model.active.getUnits(paramID);
 		if(units){
 		    this.dialogContent += " " + units;
@@ -257,6 +259,18 @@ define([
                 }
             }
             return true;
+        },
+
+        //Render dialog of table after slider event
+        renderDialog: function(calculationObj){
+            this.nodeValueArray = calculationObj.arrayOfNodeValues;
+            paneText = "";
+            paneText += this.initTable();
+            paneText += this.setTableHeader();
+            paneText += this.setTableContent();
+            paneText += this.closeTable();
+
+            this.contentPane.setContent(paneText);
         }
 		
 	});

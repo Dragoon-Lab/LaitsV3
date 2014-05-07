@@ -1,8 +1,11 @@
 /* global define, Image */
 define([
-    "dojo/_base/array", "dojo/_base/declare", "dojo/_base/lang",
-    "parser/parser"
-], function(array, declare, lang, Parser){
+    "dojo/_base/array",
+    "dojo/_base/declare",
+    "dojo/_base/lang",
+    "parser/parser",
+    "dojo/on","dojo/dom"
+], function(array, declare, lang, Parser, on, dom){
 
     return declare(null, {
     // model
@@ -15,6 +18,7 @@ define([
     active: null,
     // dialog box to be displayed
     dialog:"",
+
     constructor: function(model, mode){
         this.model = model;
         /* In AUTHOR mode, plot solution for all given nodes of genus false
@@ -261,10 +265,22 @@ define([
         return label;
     },
 
+    //@brief: this function registers event on slider from graph and table
+    //graph and table-specific functionality is carried out in renderGraph/renderTable
+    registerEventOnSlider: function(slider, index, paramID){
+        on(slider, "change", lang.hitch(this, function(){
+            dom.byId(this.textBoxID + index).value = slider.value;
+            this.model.active.setInitial(paramID, slider.value);
+            var calculationObj = this.getParametersForRendering(false);
+
+            //this function is specific to graph/table
+            this.renderDialog(calculationObj);
+        }))
+    },
+
     // @brief: display the graph
     show: function(){
         this.dialog.show();
-
     }
     });		
 });

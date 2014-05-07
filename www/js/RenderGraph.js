@@ -19,6 +19,8 @@ define([
 	    Chart, Default, Lines, Grid, Legend, calculations){
     return declare(calculations, {
 
+        //ID for text-box DOM
+        textBoxID:"text",
         //array of timesteps
         timeSteps: new Array(),
 
@@ -109,7 +111,7 @@ define([
 	    /*
 	     Redundant slider code; see Bug #2339
 	     */
-            var registerEventOnSlider = lang.hitch(this, function(slider, index, paramID){
+            /*var registerEventOnSlider = lang.hitch(this, function(slider, index, paramID){
                 on(slider, "change", lang.hitch(this, function(){
 
                     dom.byId("text" + index).value = slider.value;
@@ -144,7 +146,7 @@ define([
                     }
 
                 }));
-            });
+            });*/
 
             i = 0;
 	    var units;
@@ -171,13 +173,13 @@ define([
                     labelText = "Initial " + labelText;
                 }
 
-                registerEventOnSlider(slider, i, paramID);
+                this.registerEventOnSlider(slider, i, paramID);
 
                 //create label for name of a textbox
                 //create input for a textbox
                 //create div for embedding a slider
                 this.dialogContent += this.createDom('label', '', '', labelText + " = ");
-                this.dialogContent += this.createDom('input', "text" + i, "type='text' readOnly=true width='100%'");
+                this.dialogContent += this.createDom('input', this.textBoxID + i, "type='text' readOnly=true width='100%'");
 		units = this.model.active.getUnits(paramID);
 		if(units){
 		    this.dialogContent += " " + units;
@@ -381,6 +383,33 @@ define([
             }
 
             return {min:min, max:max};
+        },
+
+        //Render dialog for graph after slider event
+        renderDialog: function(calculationObj){
+            this.student.arrayOfNodeValues = calculationObj.arrayOfNodeValues;
+            this.formatArrayOfNodeValuesForChart();
+            //update and render the chart
+            var l = 0;
+            for(var k in calculationObj.arrayOfNodeValues){
+                var descriptionID = this.model.student.getDescriptionID(k);
+                var objStudent = this.getMinMaxFromaArray(calculationObj.arrayOfNodeValues[k]);
+                var min = objStudent.min;
+                var max = objStudent.max;
+                if(this.model.given.isNode(descriptionID)){
+                    var objGiven = this.getMinMaxFromaArray(this.given.arrayOfNodeValues[descriptionID]);
+                    min = Math.min(objGiven.min, objStudent.min);
+                    max = Math.max(objGiven.max, objStudent.max);
+                }
+                this.chart[k].removeAxis("y");
+                this.chart[k].addAxis("y", {
+                    vertical: true, min: min, max: max,
+                    title: this.labelString(k)
+                });
+                this.chart[k].updateSeries("Variable solution", this.studentFormattedArrayOfNodeValues[k]);
+                this.chart[k].render();
+                l++;
+            }
         }
     });
 
