@@ -278,6 +278,32 @@ define([
         }))
     },
 
+    /*
+    * @brief: create a dom based on input parameters
+    * @param: domType - type of dom to be created (e.g div, input, label)
+    * @param: domId - Id to be assigned
+    * @param: domParam - parameters to be passed to a dom. this will be a string describing node properties. e.g style="width:200px" will be passed
+    * to domParam to assign it to the node
+    * @param: domText - text to be contained in dom. e.g <label>TEXT</label>. domText = TEXT in this case
+    */
+    createDom: function(domType, domId, domParam, domText){
+
+        var style = "", dom = "";
+        var str = "";
+        if(domType == "div"){
+            style = "";
+            domText = "";
+        }else if(domType == "label"){
+            domParam = "";
+        }else if(domType == "input"){
+            domText = "";
+        }
+
+        dom = "<" + domType + " " + domParam + " id= " + "'" + domId + "'" + ">" + domText + "</" + domType + ">";
+        console.debug("dom is " + dom);
+        return dom;
+    },
+
     // @brief: display the graph
     show: function(){
         this.dialog.show();
