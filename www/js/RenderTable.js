@@ -66,29 +66,7 @@ define([
             //plot table if these values are not empty
 	    
             this.dialogContent += "<div id='table'></div>";
-	    
-	    /*
-	     Redundant code; see Bug #2339
-	     */
-            /*var registerEventOnSlider = lang.hitch(this, function(slider, index, paramID){
-                on(slider, "change", lang.hitch(this, function(){
-		    
-                    dom.byId("textTable"+index).value = slider.value;
-                    this.model.student.setInitial(paramID, slider.value);
-                    var newObj = this.getParametersForRendering(false);
-		    
-                    this.nodeValueArray = newObj.arrayOfNodeValues;
-                    paneText = "";
-                    paneText += this.initTable();
-                    paneText += this.setTableHeader();
-                    paneText += this.setTableContent();
-                    paneText += this.closeTable();
 
-                    this.contentPane.setContent(paneText);
-		    
-                    }));
-            });*/
-	    
             i=0;
 	    var units;
             //create sliders based on number of input parameters

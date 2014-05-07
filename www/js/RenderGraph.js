@@ -108,46 +108,6 @@ define([
                 this.dialogContent = this.dialogContent + this.createDom('div', str, "class='legend'");
             }
 
-	    /*
-	     Redundant slider code; see Bug #2339
-	     */
-            /*var registerEventOnSlider = lang.hitch(this, function(slider, index, paramID){
-                on(slider, "change", lang.hitch(this, function(){
-
-                    dom.byId("text" + index).value = slider.value;
-                    this.active.setInitial(paramID, slider.value);
-                    var newObj = this.getParametersForRendering(false);
-
-                    this.student.arrayOfNodeValues = newObj.arrayOfNodeValues;
-                    this.formatArrayOfNodeValuesForChart();
-
-                    //update and render the chart
-                    var l = 0;
-                    for(var k in newObj.arrayOfNodeValues){
-
-                        var descriptionID = this.model.student.getDescriptionID(k);
-                        var objStudent = this.getMinMaxFromaArray(newObj.arrayOfNodeValues[k]);
-                        var min = objStudent.min;
-                        var max = objStudent.max;
-                        if(this.model.given.isNode(descriptionID)){
-                            var objGiven = this.getMinMaxFromaArray(this.given.arrayOfNodeValues[descriptionID]);
-                            min = Math.min(objGiven.min, objStudent.min);
-                            max = Math.max(objGiven.max, objStudent.max);
-                        }
-
-                        this.chart[k].removeAxis("y");
-                        this.chart[k].addAxis("y", {
-			    vertical: true, min: min, max: max,
-			    title: this.labelString(k)
-			});
-                        this.chart[k].updateSeries("Variable solution", this.studentFormattedArrayOfNodeValues[k]);
-                        this.chart[k].render();
-                        l++;
-                    }
-
-                }));
-            });*/
-
             i = 0;
 	    var units;
             //create sliders based on number of input parameters
