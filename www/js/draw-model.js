@@ -114,11 +114,6 @@ define([
         addNode: function(/*object*/ node){
 
             var type = node.type || "triangle";
-            /*
-             <div class="w" id="population" ></br></br>120</br></br></br></br></br></br>Population</div>
-             <div class="circle" id="growth" ></br></br>*</br></br></br></br></br></br>Growth</div>
-             <div class="diamond" id="grate" ><div class="diamond-inner"></br></br>0.3</br></br></br></br></br></br>Growth Rate</label><br/></div></div>
-             */
             console.log("------- Adding element to canvas, id = ", node.ID, ", class = ", type);
             // Add div to drawing
             console.log("      --> setting position for vertex : "+ node.ID +" position: x"+node.position.x+"  y:"+node.position.y);
@@ -128,11 +123,25 @@ define([
                 nodeName='<div id='+node.ID+'Label  class="bubble"><strong>'+nodeName+'</strong></div>';
             else
                 nodeName='';
-
+	
+			var colorMap = {
+                    correct: "lightGreen",
+                    incorrect: "#FF8080",
+                    demo: "yellow"
+                };
+			var borderColor = '';
+			var boxShadow = '';
+			if(type!='triangle'){
+				var color = this._givenModel.getCorrectness(node.ID);
+				borderColor = '2px solid '+colorMap[color];
+				boxShadow = 'inset 0px 0px 5px #000 , 0px 0px 10px #000';
+			}
+			
+				
             var vertex = domConstruct.create("div", {
 		id: node.ID,
 		"class": type,
-		style: {left: node.position.x +'px', top: node.position.y +'px'},
+		style: {left: node.position.x +'px', top: node.position.y +'px',border:borderColor,'box-shadow':boxShadow},
 		innerHTML: nodeName
 	    }, "statemachine-demo");
 
@@ -144,7 +153,6 @@ define([
                 label: "Delete Node",
                 onClick: lang.hitch(this, this.deleteNode) 
             }));
-
             /*
              Fire off functions associated with draggable events.
 

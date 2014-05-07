@@ -194,7 +194,7 @@ define([
             messageWidget.set('content', '');
 
 	    // Color the borders of the Node
-	    this.colorNodeBorder();
+	    this.colorNodeBorder(this.currentID);
         },
         //set up event handling with UI components
         _initHandles: function(){

@@ -205,12 +205,23 @@ define([
                 // console.warn("======= not saving in status, node=" + this.currentID + ": ", desc);
             }
         },
-		colorNodeBorder: function(){
-				//console.log(this._model.student.getCorrectness());   //getCorrectness using student function  - studentID ? 
-				var color = 'red';  //decide color using correctness response , test red
-				console.log('coloring node  '+this.currentID);
-				style.set(this.currentID,'border','1px solid '+color);
-				//save the node
+		colorNodeBorder: function(nodeId){
+				//get model type
+				var type = this._model.student.getType(nodeId);
+				if(type){
+				console.log('model type is '+type);
+		
+				var colorMap = {
+                    correct: "lightGreen",
+                    incorrect: "#FF8080",
+                    demo: "yellow"
+                };
+				console.log('nodeId is '+nodeId);
+				var color = this._model.student.getCorrectness(nodeId);
+				console.log('color is '+color);
+				style.set(this.currentID,'border','2px solid '+colorMap[color]);
+				style.set(this.currentID,'box-shadow','inset 0px 0px 5px #000 , 0px 0px 10px #000');
+				}
 		}
     });
 });
