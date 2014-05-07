@@ -42,7 +42,7 @@ define([
          *  @param: noOfParam
          */
 	constructor: function(){
-	    var object = this.gerParametersForRendering(false);
+	    var object = this.getParametersForRendering(false);
 
      	    //assign parameters to object properties 
      	    this.inputParam = object.noOfParam;
@@ -75,7 +75,7 @@ define([
 		    
                     dom.byId("textTable"+index).value = slider.value;
                     this.model.student.setInitial(paramID, slider.value);
-                    var newObj = this.gerParametersForRendering(false);
+                    var newObj = this.getParametersForRendering(false);
 		    
                     this.nodeValueArray = newObj.arrayOfNodeValues;
                     paneText = "";
