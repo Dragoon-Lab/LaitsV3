@@ -13,7 +13,8 @@ define([
     currentNodeValues: {},
     // set current mode. TRUE = givenModel / FALSE = StudentModel
     active: null,
-
+    // dialog box to be displayed
+    dialog:"",
     constructor: function(model, mode){
         this.model = model;
         /* In AUTHOR mode, plot solution for all given nodes of genus false
@@ -258,7 +259,12 @@ define([
         label += " (" + units + ")";
         }
         return label;
-    }
+    },
 
+    // @brief: display the graph
+    show: function(){
+        this.dialog.show();
+
+    }
     });		
 });

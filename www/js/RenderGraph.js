@@ -35,8 +35,6 @@ define([
         //Parameter to create slider objects
         //sliders: new Array(),
         sliders: {},
-        //Object of a dialog
-        dialog: "",
         //Object of a chart
         chart: {},
         // Given and student solutions
@@ -166,14 +164,20 @@ define([
 
                 var paramID = this.student.paramNames[j];
                 var slider = this.sliders[j];
+                var labelText = "";
+
+                labelText = this.model.active.getName(paramID);
+                if(this.model.active.getType(paramID) == 'accumulator'){
+                    labelText = "Initial " + labelText;
+                }
 
                 registerEventOnSlider(slider, i, paramID);
 
                 //create label for name of a textbox
                 //create input for a textbox
                 //create div for embedding a slider
-                this.dialogContent += this.createDom('label', '', '', this.model.active.getName(paramID) + " = ");
-                this.dialogContent += this.createDom('input', "text" + i, "type='text' data-dojo-type='dijit/form/TextBox' readOnly=true");
+                this.dialogContent += this.createDom('label', '', '', labelText + " = ");
+                this.dialogContent += this.createDom('input', "text" + i, "type='text' readOnly=true width='100%'");
 		units = this.model.active.getUnits(paramID);
 		if(units){
 		    this.dialogContent += " " + units;
@@ -377,17 +381,7 @@ define([
             }
 
             return {min:min, max:max};
-        },
-        /*
-         * @brief: display the graph
-         */
-        show: function(){
-            this.dialog.show();
-
         }
-
-
-
     });
 
 });

@@ -126,7 +126,7 @@ define([
 
 
             // show graph when button clicked
-            menu.add("graphButton", function(){
+             menu.add("graphButton", function(){
                 console.debug("button clicked");
                 // instantiate graph object
                 var graph = new Graph(givenModel, query.m);

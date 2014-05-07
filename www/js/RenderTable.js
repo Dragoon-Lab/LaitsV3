@@ -32,8 +32,6 @@ define([
 	//Parameter to create slider objects
 	sliders:new Array(),
 	dialogContent:"",	
-	//Object of a dialog
-	dialog:"",
 	//contentPane for table
 	contentPane : null,
 
@@ -259,14 +257,7 @@ define([
                 }
             }
             return true;
-        },
-       
-           /*
-        * @brief: display the graph
-        */
-       show: function(){
-    	  this.dialog.show();
-       }	
+        }
 		
 	});
 		
