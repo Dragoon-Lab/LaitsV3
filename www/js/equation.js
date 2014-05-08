@@ -99,6 +99,7 @@ define([
                 parents[id] = false;
             }
         },
+
         convert: function(subModel, equation){
             try {
                 var expr = Parser.parse(equation);
@@ -256,7 +257,76 @@ define([
                 expr.substitute(variable, givenNodeId);
             }, this);
             return expr.toString();
-        }
+        },
+
+	initializeTimeStep: function(model){
+	    // Summarize:  set up env for the function evaluateTimeStep
+	    var env = {parse: {}, xvars: [], parameters: {}, functions: []};
+	    var fv = {};
+	    array.forEach(model.getNodes(), function(node){
+		if(!node.genus && node.type && node.equation){
+		    var parse = Parser.parse(node.equation);;
+		    env.parse[node.ID] = parse;
+		    switch(node.type){
+		    case "parameter":
+			env.parameters[node.ID] = node.initial;
+			break;
+		    case "function":
+			// We can only calculate the order for functions
+			// after all the variables are given.
+			fv[node.ID] = parse.variables();
+			// We sort the nodes below
+			env.functions.push(node.ID);
+			break;
+		    case "accumulator":
+			// This sets the order of the xvars.
+			env.xvars.push(node.ID);
+			break;
+		    default:
+			new Error("Invalid type ", node.type);
+		    }
+		}
+	    });
+	    // Find correct evaluation order for function nodes.
+	    // This is incorrect:  need a *topological sort* here.
+	    env.functions.sort(function(a,b){
+		if(array.indexOf(fv[a],b)>=0){
+		    return -1;
+		} else if(array.indexOf(fv[b],a)>=0){
+		    return 1;
+		} else {
+		    return 0;
+		}
+	    });
+	    return env;
+	},
+
+	evaluateTimeStep:  function(x, env){
+	    // Summary:  evaluate model at some time step.
+	    // Description:  The rationale behind this notation is that the 
+	    //    numerical integration routine should know nothing about 
+	    //    variable names or the model.
+	    // x: array containing current value for dynamic variables (accumulators)
+	    // env: Object containing:
+ 	    //     parse: Object containing parses labled by node ID
+	    //     xvars:  Array giving the node ID for each x
+	    //     parameters:  Object containing values for parameter nodes, labeled by nodeID
+	    //     functions:  Array containing node ID for each function.  The order is such
+	    //                 that the later functions in the array depend on earlier functions
+	    // Returns:  array containing the gradient of the dynamic variables, in the order
+	    //     specified by xvars.
+	    var variables = {};
+	    for(var i=0; i<x.length; i++){
+		variables[env.xvars[i]] = x[i];
+	    }
+	    lang.mixin(variables, env.parameters);
+	    array.forEach(env.functions, function(id){
+		variables[id] = env.parse[id].evaluate(env.parameters);
+	    });
+	    return array.map(env.xvars, function(id){
+		return env.parse[id].evaluate(env.parameters);
+	    });	    
+	}
 
     };
 });
