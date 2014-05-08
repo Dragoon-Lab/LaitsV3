@@ -2,7 +2,7 @@
     margin-top:5em;
 }
 
-.parameter {
+.accumulator {
     width: 80px;
     height: 80px;
     position:absolute;
@@ -28,7 +28,7 @@
     vertical-align: middle;
 }
 
-.parameter:before {
+.accumulator:before {
     content: '';
     display: inline-block;
     height: 100%;
@@ -36,7 +36,7 @@
     margin-right: -0.25em;
 }
 
-.accumulator:before {
+.parameter:before {
     content: '';
     display: inline-block;
     height: 100%;
@@ -57,13 +57,13 @@
     vertical-align: middle;
 }
 
-.parameter:hover {
+.accumulator:hover {
     background-color: #5c96bc;
     color:white;
 
 }
 
-.accumulator-inner{
+.parameter-inner{
 
     z-index:20; position:absolute;
     transform:rotate(45deg);
@@ -76,21 +76,21 @@
 
 }
 
-.accumulator div{
-   /* -webkit-transform: rotate(45deg);
+.parameter div{
+    -webkit-transform: rotate(45deg);
     -moz-transform: rotate(45deg);
     -ms-transform: rotate(45deg);
     -o-transform: rotate(45deg);
-    transform: rotate(45deg);*/
+    transform: rotate(45deg);
 }
 
-.accumulator {
+.parameter {
     width: 80px;
     height: 80px;
     margin: 23px 0 0 30px;
     z-index:20; position:absolute;
     /* Rotate */
-   /* -webkit-transform: rotate(-45deg);
+    -webkit-transform: rotate(-45deg);
     -moz-transform: rotate(-45deg);
     -ms-transform: rotate(-45deg);
     -o-transform: rotate(-45deg);
