@@ -33,6 +33,12 @@ define([
             console.assert(givenEqn, "Given node '" + id + "' does not have an equation.");
             var givenParse = Parser.parse(model.given.getEquation(id));
             var givenVals = {};
+	    array.forEach(model.given.getNodes(), function(node){
+                /* Parameter and accumulator nodes are treated as independent. */
+		if(!node.genus && (node.type == 'parameter' || node.type == 'accumulator')){
+                    givenVals[node.ID] = Math.random();
+		}
+	    });
             array.forEach(givenParse.variables(), function(variable){
                 // console.log("    ==== evaluating given variable ", variable);
                 // given model variables should all be given node IDs
@@ -66,25 +72,17 @@ define([
             return Math.abs(studentResult - givenResult) <= 10e-10 * Math.abs(studentResult + givenResult);
         },
         /*
-         Recursively evaluate functions in the model,
-         choosing random values for any parameters or accumulators.
-         
+         Recursively evaluate functions in the model.
          If the function nodes have circular dependencies, then an error will be produced.
+	 This is the same algorithm used in the function topologicalSort.
          */
         evalVar: function(id, subModel, vals, parents){
+	    parents = parents || {};
             console.assert(subModel.isNode(id), "evalVar: unknown variable '" + id + "'.");
             var node = subModel.getNode(id);
-            if(vals[id]){
-                // if already assigned a value, do nothing.
-            }else if(node.type == 'parameter' || node.type == 'accumulator' || !node.equation){
-                /* Parameter and accumulator nodes, as well as nodes without an equation, 
-		are treated as independent. */
-                vals[id] = Math.random();
-            }else {
-                if(!parents)
-                    parents = new Object();
+            if(!(id in vals)){
                 if(parents[id]){
-                    // Should throw an error, so that message can be sent to user.
+                    // Should send a message to the user.
                     throw new Error("Function node '" + node.id + "' has circular dependency.");
                 }
                 parents[id] = true;
@@ -261,7 +259,7 @@ define([
 
 	initializeTimeStep: function(model){
 	    // Summarize:  set up env for the function evaluateTimeStep
-	    var env = {parse: {}, xvars: [], parameters: {}, functions: []};
+	    var env = {parse: {}, xvars: [], parameters: {}};
 	    var fv = {};
 	    array.forEach(model.getNodes(), function(node){
 		if(!node.genus && node.type && node.equation){
@@ -275,8 +273,6 @@ define([
 			// We can only calculate the order for functions
 			// after all the variables are given.
 			fv[node.ID] = parse.variables();
-			// We sort the nodes below
-			env.functions.push(node.ID);
 			break;
 		    case "accumulator":
 			// This sets the order of the xvars.
@@ -289,16 +285,40 @@ define([
 	    });
 	    // Find correct evaluation order for function nodes.
 	    // This is incorrect:  need a *topological sort* here.
-	    env.functions.sort(function(a,b){
-		if(array.indexOf(fv[a],b)>=0){
-		    return -1;
-		} else if(array.indexOf(fv[b],a)>=0){
-		    return 1;
-		} else {
-		    return 0;
-		}
-	    });
+	    env.functions = this.topologicalSort(fv);
 	    return env;
+	},
+
+	// This is the same algorithm that is used in the function evalVar()
+	topologicalSort: function(directedGraph){
+	    // Summary: returns the topological sort of a directed acyclic graph.
+	    //          If a cycle is detected, then an error condition is given.
+	    //          Children that are not themselves a vertex are ignored.
+	    // directedGraph:  An object of the form {vertex: [array of children], ...}
+	    //
+	    var sorted = [], evaluated = {};
+	    // list of parents is used to detect any cycles in the graph.
+	    var parents = {};
+	    var followEdge = function(vertex){
+		if(!(vertex in evaluated)){
+		    parents[vertex] = true;
+		    array.forEach(directedGraph[vertex], function(child){
+			if(parents[child]){
+			    new Error("Found cycle in graph", directedGraph);
+			}
+			if(child in directedGraph){
+			    followEdge(child);
+			}
+		    });
+		    parents[vertex] = false;
+		    sorted.push(vertex);
+		    evaluated[vertex] = true;
+		}
+	    };
+            for(var v in directedGraph){
+		followEdge(v);
+	    }
+	    return sorted;
 	},
 
 	evaluateTimeStep:  function(x, env){
@@ -321,10 +341,10 @@ define([
 	    }
 	    lang.mixin(variables, env.parameters);
 	    array.forEach(env.functions, function(id){
-		variables[id] = env.parse[id].evaluate(env.parameters);
+		variables[id] = env.parse[id].evaluate(variables);
 	    });
 	    return array.map(env.xvars, function(id){
-		return env.parse[id].evaluate(env.parameters);
+		return env.parse[id].evaluate(variables);
 	    });	    
 	}
 
