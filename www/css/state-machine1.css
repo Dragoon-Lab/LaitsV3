@@ -77,11 +77,11 @@
 }
 
 .accumulator div{
-    -webkit-transform: rotate(45deg);
+   /* -webkit-transform: rotate(45deg);
     -moz-transform: rotate(45deg);
     -ms-transform: rotate(45deg);
     -o-transform: rotate(45deg);
-    transform: rotate(45deg);
+    transform: rotate(45deg);*/
 }
 
 .accumulator {
@@ -90,13 +90,13 @@
     margin: 23px 0 0 30px;
     z-index:20; position:absolute;
     /* Rotate */
-    -webkit-transform: rotate(-45deg);
+   /* -webkit-transform: rotate(-45deg);
     -moz-transform: rotate(-45deg);
     -ms-transform: rotate(-45deg);
     -o-transform: rotate(-45deg);
-    transform: rotate(-45deg);
+    transform: rotate(-45deg);*/
 
-    border-radius:1em;
+  /* border-radius:1em;*/
     border:1px solid #2e6f9a;
     box-shadow: 2px 2px 19px #e0e0e0;
     -o-box-shadow: 2px 2px 19px #e0e0e0;
