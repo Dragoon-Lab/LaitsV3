@@ -6,63 +6,33 @@
  */
 
 define([
-    "dojo/_base/array", "dojo/_base/declare", "dojo/_base/lang",
-    "dojo/dom", "dojo/on", "dojo/ready",
-    "dijit/Dialog", "dijit/form/HorizontalSlider", "dijit/registry",
-    "dojox/charting/Chart", "dojox/charting/axis2d/Default", "dojox/charting/plot2d/Lines",
-    "dojox/charting/plot2d/Grid", "dojox/charting/widget/Legend",
+    "dojo/_base/declare",
+    "dojo/_base/lang",
+    "dojox/charting/Chart",
+    "dojox/charting/axis2d/Default",
+    "dojox/charting/plot2d/Lines",
+    "dojox/charting/plot2d/Grid",
+    "dojox/charting/widget/Legend",
     "./calculations",
     "dojo/domReady!"
-], function(array, declare, lang, dom, on, ready,
-	    Dialog, HorizontalSlider, registry,
-	    // It looks like Default, Lines, Grid are not used.  Can they be removed?
-	    Chart, Default, Lines, Grid, Legend, calculations){
+], function(declare, lang, Chart, Default, Lines, Grid, Legend, calculations){
     return declare(calculations, {
 
-        //ID for text-box DOM
-        textBoxID:"text",
-        //array of timesteps
-        timeSteps: new Array(),
+        type: "Graph",                                  //Rendering type
+        textBoxID:"textGraph",                          //ID for text-box DOM
+        sliderID: "sliderGraph",                        //ID for slider DOM
+        givenFormattedArrayOfNodeValues: {},            //format array of node values for charting
+        studentFormattedArrayOfNodeValues: {},          //format array of node values for charting
+        chart: {},                                      //Object of a chart
 
-        //object containing array of calculated values of 'function' & 'accumulator' nodes
-        givenArrayOfNodeValues: {},
-        studentArrayOfNodeValues: {},
-
-        //format above array of nodevalues for charting
-        givenFormattedArrayOfNodeValues: {},
-        studentFormattedArrayOfNodeValues: {},
-
-        //Parameter to set DOM in a dialog dynamically
-        dialogContent: "",
-        //Parameter to create slider objects
-        //sliders: new Array(),
-        sliders: {},
-        //Object of a chart
-        chart: {},
-        // Given and student solutions
-        given: {},
-        student: {},
-
-        //collect IDs of all DOMs created to destroy the same when dialog is closed
-        strDomID: new Array(),
         /*
          *  @brief:constructor for a graph object
          *  @param: noOfParam
          */
 
 	constructor: function(){
-            var givenObj = this.getParametersForRendering(true);
-            var studentObj = this.getParametersForRendering(false);
-
-            this.student.paramNames = studentObj.arrayOfParameterNames;
-            this.student.paramValue = studentObj.arrayOfParamInitialValues;
-
-            this.given.arrayOfNodeValues = givenObj.arrayOfNodeValues;
-            this.student.arrayOfNodeValues = studentObj.arrayOfNodeValues;
-
             console.log("***** In RenderGraph constructor");
-
-            this.timeSteps = givenObj.arrayOfTimeSteps;
+            this.timeSteps = this.given.timeSteps;
             this.initialize();
         },
 
@@ -85,11 +55,9 @@ define([
 
 
                     str = "chart" + j.toString();
-                    this.strDomID.push(str);
                     this.dialogContent = this.dialogContent + this.createDom('div', str);
 
                     str = "legend" + j.toString();
-                    this.strDomID.push(str);
                     this.dialogContent = this.dialogContent + this.createDom('div', str, "class='legend'");
                     i++;
 
@@ -100,90 +68,14 @@ define([
 
             for(j in tempGivenArrayOfNodeValues){
                 str = "chart" + j.toString();
-                this.strDomID.push(str);
                 this.dialogContent = this.dialogContent + this.createDom('div', str);
 
                 str = "legend" + j.toString();
-                this.strDomID.push(str);
                 this.dialogContent = this.dialogContent + this.createDom('div', str, "class='legend'");
             }
 
-            i = 0;
-	    var units;
-            //create sliders based on number of input parameters
-            for(j in this.student.paramNames){
-                // create slider and assign to object property
-                //
-                this.sliders[j] = new HorizontalSlider({
-                    name: "slider" + j.toString(),
-                    value: this.student.paramValue[j],
-                    minimum: this.student.paramValue[j] / 10,
-                    maximum: this.student.paramValue[j] * 10,
-                    intermediateChanges: true,
-                    style: "width:300px;"
-                }, "slider" + j.toString());
-
-
-                var paramID = this.student.paramNames[j];
-                var slider = this.sliders[j];
-                var labelText = "";
-
-                labelText = this.model.active.getName(paramID);
-                if(this.model.active.getType(paramID) == 'accumulator'){
-                    labelText = "Initial " + labelText;
-                }
-
-                this.registerEventOnSlider(slider, i, paramID);
-
-                //create label for name of a textbox
-                //create input for a textbox
-                //create div for embedding a slider
-                this.dialogContent += this.createDom('label', '', '', labelText + " = ");
-                this.dialogContent += this.createDom('input', this.textBoxID + i, "type='text' readOnly=true width='100%'");
-		units = this.model.active.getUnits(paramID);
-		if(units){
-		    this.dialogContent += " " + units;
-		}
-		this.dialogContent += "<br>";
-                str = 'slider' + j.toString();
-                this.strDomID.push(str);
-                this.dialogContent += this.createDom('div', str);
-
-                console.debug("dialogContent is " + this.dialogContent);
-
-                i++;
-            }
-
-
-            //create a dialog and give created dom in above loop as input to 'content'
-            //this will create dom inside a dialog
-            this.dialog = new Dialog({
-                title: "Graph for Problem",
-                content: this.dialogContent,
-                style: "width:auto;height:auto;"
-            });
-
-            //destroy the dialog when it is closed
-            on(this.dialog, "hide", lang.hitch(this, function(){
-
-
-                this.dialog.destroyRecursive();
-
-                //set initial values of all parameters back to original values; Bug #2337
-                var i;
-                for(i in this.student.paramNames){
-                    this.model.student.setInitial(this.student.paramNames[i], this.student.paramValue[i]);
-                }
-
-            }));
-
-
-            //insert initial value of slider into a textbox
-            //append slider to the div node
-            for(i in this.student.paramNames){
-                dom.byId("text" + i).value = this.sliders[i].value;
-                dom.byId("slider" + i).appendChild(this.sliders[i].domNode);
-            }
+            this.createSliderDialog();
+            this.closeDialogHandler();
 
             var chartArray = {};
             var legendArray = {};

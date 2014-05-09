@@ -4,8 +4,10 @@ define([
     "dojo/_base/declare",
     "dojo/_base/lang",
     "parser/parser",
-    "dojo/on","dojo/dom"
-], function(array, declare, lang, Parser, on, dom){
+    "dojo/on","dojo/dom",
+    "dijit/form/HorizontalSlider",
+    "dijit/Dialog"
+], function(array, declare, lang, Parser, on, dom, HorizontalSlider, Dialog){
 
     return declare(null, {
     // model
@@ -16,10 +18,17 @@ define([
     currentNodeValues: {},
     // set current mode. TRUE = givenModel / FALSE = StudentModel
     active: null,
-    // dialog box to be displayed
-    dialog:"",
+
+    /* variables specific to rendering graph and table */
+    given: {},                          // object to store calculated parameters from given model
+    student: {},                        // object to store calculated parameters from student model
+    timeSteps: new Array(),             // timeSteps to be plotted in graph and table
+    dialog:"",                          // dialog box to be displayed
+    dialogContent: "",                  // Parameter to set DOM in a dialog dynamically
+    sliders: {},                        // Parameter to create slider objects
 
     constructor: function(model, mode){
+        console.log("***** In calculations constructor");
         this.model = model;
         /* In AUTHOR mode, plot solution for all given nodes of genus false
          and type "accumulator" or "function""
@@ -31,6 +40,20 @@ define([
          The table contains only the student nodes.
          */
         this._mode = mode;
+
+        // get all calculated parameters for given and student model
+        var givenObj = this.getParametersForRendering(true);
+        var studentObj = this.getParametersForRendering(false);
+
+        this.student.paramNames = studentObj.arrayOfParameterNames;
+        this.student.paramValue = studentObj.arrayOfParamInitialValues;
+        this.student.inputParam = studentObj.noOfParam;
+        this.student.arrayOfNodeValues = studentObj.arrayOfNodeValues;
+        this.student.timeSteps = studentObj.arrayOfTimeSteps;
+
+        this.given.timeSteps = givenObj.arrayOfTimeSteps;
+        this.given.arrayOfNodeValues = givenObj.arrayOfNodeValues;
+
     },
 
     //this function sets mode of model to be student or given
@@ -265,8 +288,8 @@ define([
         return label;
     },
 
-    //@brief: this function registers event on slider from graph and table
-    //graph and table-specific functionality is carried out in renderGraph/renderTable
+    /* @brief: this function registers event on slider from graph and table
+      graph and table-specific functionality is carried out in renderGraph/renderTable */
     registerEventOnSlider: function(slider, index, paramID){
         on(slider, "change", lang.hitch(this, function(){
             dom.byId(this.textBoxID + index).value = slider.value;
@@ -302,6 +325,72 @@ define([
         dom = "<" + domType + " " + domParam + " id= " + "'" + domId + "'" + ">" + domText + "</" + domType + ">";
         console.debug("dom is " + dom);
         return dom;
+    },
+
+    // @brief: create slider object for graphs and table
+    createSliderDialog: function(){
+        var i = 0, j;
+        var units, str;
+        //create sliders based on number of input parameters
+        for(j in this.student.paramNames){
+            // create slider and assign to object property
+            this.sliders[j] = new HorizontalSlider({
+                name: this.sliderID + j.toString(),
+                value: this.student.paramValue[j],
+                minimum: this.student.paramValue[j] / 10,
+                maximum: this.student.paramValue[j] * 10,
+                intermediateChanges: true,
+                style: "width:300px;"
+            }, this.sliderID + j.toString());
+
+            var paramID = this.student.paramNames[j];
+            var slider = this.sliders[j];
+            var labelText = "";
+            labelText = this.model.active.getName(paramID);
+            if(this.model.active.getType(paramID) == 'accumulator'){
+                labelText = "Initial " + labelText;
+            }
+            this.registerEventOnSlider(slider, i, paramID);
+            //create label for name of a textbox
+            //create input for a textbox
+            //create div for embedding a slider
+            this.dialogContent += this.createDom('label', '', '', labelText + " = ");
+            this.dialogContent += this.createDom('input', this.textBoxID + i, "type='text' readOnly=true width='100%'");
+            units = this.model.active.getUnits(paramID);
+            if(units){
+                this.dialogContent += " " + units;
+            }
+            this.dialogContent += "<br>";
+            str = this.sliderID + j.toString();
+            this.dialogContent += this.createDom('div', str);
+
+            i++;
+        }
+
+        this.dialog = new Dialog({
+            title: this.model.getTaskName() + " - " + this.type,
+            //content:this.dialogContent,
+            style:"width:auto;height:auto"
+        });
+        this.dialog.setContent(this.dialogContent);
+
+        for(i=0; i<this.student.inputParam; i++)
+        {
+            dom.byId(this.textBoxID + i).value = this.sliders[i].value;
+            dom.byId(this.sliderID + i).appendChild(this.sliders[i].domNode);
+        }
+    },
+
+    closeDialogHandler: function(){
+        //destroy the dialog when it is closed
+        on(this.dialog, "hide", lang.hitch(this, function(){
+            this.dialog.destroyRecursive();
+            //set initial values of all parameters back to original values; Bug #2337
+            var i;
+            for(i in this.student.paramNames){
+                this.model.student.setInitial(this.student.paramNames[i], this.student.paramValue[i]);
+            }
+        }));
     },
 
     // @brief: display the graph
