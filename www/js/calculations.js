@@ -12,14 +12,11 @@ define([
 ], function(array, declare, lang, Parser, on, dom, HorizontalSlider, Dialog, equation, integrate){
 
     return declare(null, {
-    // model
-    model: null,
-    // model nodes
-    modelNodes: null,
-    // current node values
-    currentNodeValues: {},
-    // set current mode. TRUE = givenModel / FALSE = StudentModel
-    active: null,
+
+    model: null,                        // model
+    modelNodes: null,                   // model nodes
+    currentNodeValues: {},              // current node values
+    active: null,                       // set current mode. TRUE = givenModel / FALSE = StudentModel
 
     /* variables specific to rendering graph and table */
     given: {},                          // object to store calculated parameters from given model
@@ -291,13 +288,13 @@ define([
     },
 
     /* @brief: this function registers event on slider from graph and table
-      graph and table-specific functionality is carried out in renderGraph/renderTable */
+    *  graph and table-specific functionality is carried out in renderGraph/renderTable
+    */
     registerEventOnSlider: function(slider, index, paramID){
         on(slider, "change", lang.hitch(this, function(){
             dom.byId(this.textBoxID + index).value = slider.value;
             this.model.active.setInitial(paramID, slider.value);
             var calculationObj = this.getParametersForRendering(false);
-
             //this function is specific to graph/table
             this.renderDialog(calculationObj);
         }))
@@ -312,7 +309,6 @@ define([
     * @param: domText - text to be contained in dom. e.g <label>TEXT</label>. domText = TEXT in this case
     */
     createDom: function(domType, domId, domParam, domText){
-
         var style = "", dom = "";
         var str = "";
         if(domType == "div"){
@@ -323,14 +319,15 @@ define([
         }else if(domType == "input"){
             domText = "";
         }
-
         dom = "<" + domType + " " + domParam + " id= " + "'" + domId + "'" + ">" + domText + "</" + domType + ">";
         console.debug("dom is " + dom);
         return dom;
     },
 
-    // @brief: create slider object for graphs and table
-    createSliderDialog: function(){
+    /*
+    * @brief: create slider object for graphs and table
+    */
+    createSliderAndDialogObject: function(){
         var i = 0, j;
         var units, str;
         //create sliders based on number of input parameters
@@ -383,6 +380,9 @@ define([
         }
     },
 
+    /*
+    * @brief: function to handle closing of dialog box
+    */
     closeDialogHandler: function(){
         //destroy the dialog when it is closed
         on(this.dialog, "hide", lang.hitch(this, function(){
@@ -395,9 +395,24 @@ define([
         }));
     },
 
-    // @brief: display the graph
+    /*
+    * @brief: this function checks if node values for particular node are empty
+    * return true implies node values are empty
+    * return false implies node values NOT empty
+    */
+    isNodeValueEmpty:function(){
+        var i;
+        for(i in this.student.arrayOfNodeValues){
+            if(this.student.arrayOfNodeValues.hasOwnProperty(i)){
+                return false;
+            }
+        }
+        return true;
+    },
+
+    /* @brief: display the graph*/
     show: function(){
         this.dialog.show();
     }
-    });		
+    });
 });

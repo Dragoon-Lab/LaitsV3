@@ -5,8 +5,8 @@
 define([
     "dojo/_base/array", 'dojo/_base/declare', 'dojo/_base/lang',
     'dojo/dom', "dojo/dom-attr", "dojo/dom-construct","dijit/Menu",
-    "dijit/MenuItem", "jsPlumb/jsPlumb"
-], function(array, declare, lang, dom, attr, domConstruct, Menu, MenuItem){
+    "dijit/MenuItem","./equation", "jsPlumb/jsPlumb"
+], function(array, declare, lang, dom, attr, domConstruct, Menu, MenuItem,equation){
 
     return declare(null, {
 
@@ -119,8 +119,22 @@ define([
             console.log("      --> setting position for vertex : "+ node.ID +" position: x"+node.position.x+"  y:"+node.position.y);
 
             var nodeName = this._givenModel.getName(node.ID);
+	    var parse = this._givenModel.getEquation(node.ID);
+	    var parameter =  '';
+	    if(parse){
+		parse=equation.parse(parse);
+		parameter = equation.isSum(parse)?'Sum':equation.isProduct(parse)?'Product':'';
+	    }
+	    var initialValue = this._givenModel.getInitial(node.ID);
+ 	    if(initialValue)
+		{
+		    var unitsValue = this._givenModel.getUnits(node.ID);
+		    initialValue=initialValue+'</br>'+unitsValue;
+		}else
+		 initialValue = '';
+
             if(nodeName && type != "triangle")
-                nodeName='<div id='+node.ID+'Label  class="bubble"><strong>'+nodeName+'</strong></div>';
+                nodeName='<div id='+node.ID+'Label  class="bubble"><strong>'+parameter+'</br>'+initialValue+'</strong></div>';
             else
                 nodeName='';
 	
