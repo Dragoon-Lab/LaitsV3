@@ -64,14 +64,14 @@ define([
 
     /*
     * @brief: function to close table dom
-    * */
+    */
 	closeTable: function(){
             return "</table>"+"</div>";
 	},
 
     /*
     * @brief: function to set headers of table
-    * */
+    */
 	setTableHeader: function(){
 	    var i, tableString = "";
 	    tableString += "<tr>";
@@ -86,8 +86,7 @@ define([
 
     /*
     * @brief: function to set contents of table according to node values
-    *
-    * */
+    */
     setTableContent: function(){
         var tableString="";
         for(var i=0;i<this.timeSteps.length;i++){
