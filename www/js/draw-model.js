@@ -180,7 +180,7 @@ define([
             });
 
             return vertex;
-        },
+        },/*
 
         getEndPointConfiguration:function(sign){
             if(sign)
@@ -196,7 +196,7 @@ define([
 
             //after determining equation type + or  - , set connection EndPoint by using following method
 
-            this._instance.Defaults.ConnectionOverlays = this.getEndPointConfiguration('+');
+            //this._instance.Defaults.ConnectionOverlays = this.getEndPointConfiguration('+');
 
             // For now, we simply remove all existing connections and
             // create all new connections.
