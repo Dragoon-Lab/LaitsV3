@@ -262,19 +262,22 @@ define([
 	    var env = {parse: {}, xvars: [], parameters: {}};
 	    var fv = {};
 	    array.forEach(model.getNodes(), function(node){
-		if(!node.genus && node.type && node.equation){
-		    var parse = Parser.parse(node.equation);;
-		    env.parse[node.ID] = parse;
+		// Include all nodes that belong in the solution.
+		if(!node.genus){
 		    switch(node.type){
 		    case "parameter":
+			// No equation to parse
 			env.parameters[node.ID] = node.initial;
 			break;
 		    case "function":
+			var fparse = Parser.parse(node.equation);
+			env.parse[node.ID] = fparse;
 			// We can only calculate the order for functions
 			// after all the variables are given.
-			fv[node.ID] = parse.variables();
+			fv[node.ID] = fparse.variables();
 			break;
 		    case "accumulator":
+			env.parse[node.ID] = Parser.parse(node.equation);
 			// This sets the order of the xvars.
 			env.xvars.push(node.ID);
 			break;
@@ -284,7 +287,8 @@ define([
 		}
 	    });
 	    // Find correct evaluation order for function nodes.
-	    // This is incorrect:  need a *topological sort* here.
+	    // This is a partially ordered set, so we need 
+	    // a topological sort.
 	    env.functions = this.topologicalSort(fv);
 	    return env;
 	},
@@ -321,13 +325,13 @@ define([
 	    return sorted;
 	},
 
-	evaluateTimeStep:  function(x, env){
+	evaluateTimeStep:  function(x){
 	    // Summary:  evaluate model at some time step.
 	    // Description:  The rationale behind this notation is that the 
 	    //    numerical integration routine should know nothing about 
 	    //    variable names or the model.
 	    // x: array containing current value for dynamic variables (accumulators)
-	    // env: Object containing:
+	    // The scope should contain the following objects: 
  	    //     parse: Object containing parses labled by node ID
 	    //     xvars:  Array giving the node ID for each x
 	    //     parameters:  Object containing values for parameter nodes, labeled by nodeID
@@ -337,15 +341,15 @@ define([
 	    //     specified by xvars.
 	    var variables = {};
 	    for(var i=0; i<x.length; i++){
-		variables[env.xvars[i]] = x[i];
+		variables[this.xvars[i]] = x[i];
 	    }
-	    lang.mixin(variables, env.parameters);
-	    array.forEach(env.functions, function(id){
-		variables[id] = env.parse[id].evaluate(variables);
-	    });
-	    return array.map(env.xvars, function(id){
-		return env.parse[id].evaluate(variables);
-	    });	    
+	    lang.mixin(variables, this.parameters);
+	    array.forEach(this.functions, function(id){
+		variables[id] = this.parse[id].evaluate(variables);
+	    }, this);
+	    return array.map(this.xvars, function(id){
+		return this.parse[id].evaluate(variables);
+	    }, this);	    
 	}
 
     };

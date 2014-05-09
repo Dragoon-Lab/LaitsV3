@@ -21,15 +21,58 @@
 
         <script>
         require([
-            "dragoon/integrate"
-        ], function(integrate) {
-
+	    "dojo/_base/array", 
+            "dragoon/integrate", "dragoon/model", "dragoon/equation"
+        ], function(array, integrate, model, equation) {
+	
+            console.info("Test integrator for simple function");
             var f = function(values){
-                  return [values[0]+this.a, values[1] + this.b];
+                  return [this.a, this.b];
             }
             var result=integrate.eulersMethod({a: 1, b: -1}, f, [3, 5],
-                 {start: 1, end: 10, step: 2});
-            console.log("integration result: ", result);
+                 {start: 0, end: 10, step: 2});
+            console.log("integration result: ", result.times, result.values);
+
+            console.info("Make simple model and integrate over time");
+	    var rabbits = new model("STUDENT", "test model");
+	    rabbits.setTime({start: 1, end: 9, step: 2});
+	    rabbits.given.addNode({
+	        ID: "id1",
+                type: "function",
+                equation: "id3+1"
+            });
+	    rabbits.given.addNode({
+	        ID: "id2",
+                type: "function",
+                equation: "id1+1"
+            });
+	    rabbits.given.addNode({
+	        ID: "id3",
+                type: "function",
+                equation: "id4"
+            });
+	    rabbits.given.addNode({
+	        ID: "id4",
+                type: "parameter",
+                initial: 5
+            });
+	    rabbits.given.addNode({
+	        ID: "id5",
+                type: "accumulator",
+                equation: "id1+id2",
+	        initial: -2
+            });
+           var ts = equation.initializeTimeStep(rabbits.given);
+	   console.log("Initialized object ", ts);
+	   var stepResult = equation.evaluateTimeStep.call(ts, [7.7]);
+	   console.log("Evaluate a single time step", stepResult);
+	   var initialValues = array.map(ts.xvars, rabbits.given.getInitial, 
+	       rabbits.given);
+	   console.log("Integrate model with initial values ", initialValues, 
+                       " and times ", rabbits.getTime());
+	   var intz = integrate.eulersMethod(ts, equation.evaluateTimeStep, 
+	       initialValues, rabbits.getTime());
+	   console.log("    result ", intz);
        });
 </script>
 </head>
