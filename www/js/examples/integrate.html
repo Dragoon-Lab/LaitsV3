@@ -1,0 +1,43 @@
+<!DOCTYPE HTML PUBLIC "-//IETF//DTD HTML//EN">
+<html> <head>
+<title>Test math parser</title>
+<!-- Using Dojo to handle the AMD.  It is not used by parser.js -->
+        <script type="text/javascript">
+            dojoConfig = {
+                isDebug: true,
+                async: true,
+                // popup:true,
+                baseUrl: "../../",
+                packages: [
+                    {name: "json", location: "js/json"},
+                    {name: "dojo", location: "dojo"},
+                    {name: "dojox", location: "dojox"},
+                    {name: "dragoon", location: "js"},
+                    {name: "parser", location: "math-parser"}
+                ]
+            };
+        </script>
+        <script src="../../dojo/dojo.js"></script> 
+
+        <script>
+        require([
+            "dragoon/integrate"
+        ], function(integrate) {
+
+            var f = function(values){
+                  return [values[0]+this.a, values[1] + this.b];
+            }
+            var result=integrate.eulersMethod({a: 1, b: -1}, f, [3, 5],
+                 {start: 1, end: 10, step: 2});
+            console.log("integration result: ", result);
+       });
+</script>
+</head>
+
+<body>
+    <h1>Test routines related to integrator</h1>
+
+    Results are shown in the JavaScript console.
+
+</body>
+</html>

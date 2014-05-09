@@ -6,8 +6,10 @@ define([
     "parser/parser",
     "dojo/on","dojo/dom",
     "dijit/form/HorizontalSlider",
-    "dijit/Dialog"
-], function(array, declare, lang, Parser, on, dom, HorizontalSlider, Dialog){
+    "dijit/Dialog",
+    "./equation",
+    "./integrate"
+], function(array, declare, lang, Parser, on, dom, HorizontalSlider, Dialog, equation, integrate){
 
     return declare(null, {
     // model
