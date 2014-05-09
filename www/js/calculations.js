@@ -293,7 +293,6 @@ define([
             dom.byId(this.textBoxID + index).value = slider.value;
             this.model.active.setInitial(paramID, slider.value);
             var calculationObj = this.getParametersForRendering(false);
-
             //this function is specific to graph/table
             this.renderDialog(calculationObj);
         }))
@@ -308,7 +307,6 @@ define([
     * @param: domText - text to be contained in dom. e.g <label>TEXT</label>. domText = TEXT in this case
     */
     createDom: function(domType, domId, domParam, domText){
-
         var style = "", dom = "";
         var str = "";
         if(domType == "div"){
@@ -319,7 +317,6 @@ define([
         }else if(domType == "input"){
             domText = "";
         }
-
         dom = "<" + domType + " " + domParam + " id= " + "'" + domId + "'" + ">" + domText + "</" + domType + ">";
         console.debug("dom is " + dom);
         return dom;
@@ -415,5 +412,5 @@ define([
     show: function(){
         this.dialog.show();
     }
-    });		
+    });
 });

@@ -2,7 +2,6 @@
 /**
  * @author: Deepak Bhosale
  * @brief: Graph rendering and related functions
- * 
  */
 
 define([
