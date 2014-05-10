@@ -125,13 +125,17 @@ define([
 		parse=equation.parse(parse);
 		parameter = equation.isSum(parse)?'Sum':equation.isProduct(parse)?'Product':'';
 	    }
-	    var initialValue = this._givenModel.getInitial(node.ID);
- 	    if(initialValue)
-		{
-		    var unitsValue = this._givenModel.getUnits(node.ID);
-		    initialValue=initialValue+'</br>'+unitsValue;
-		}else
-		 initialValue = '';
+
+	     var initialValue = this._givenModel.getInitial(node.ID);
+            if(!initialValue)
+                 initialValue = '';
+
+             var unitsValue = this._givenModel.getUnits(node.ID);
+             if(!unitsValue)
+                     unitsValue = '';
+
+            initialValue=initialValue+'</br>'+unitsValue;
+
 
             if(nodeName && type != "triangle")
                 nodeName='<div id='+node.ID+'Label  class="bubble"><strong>'+parameter+'</br>'+initialValue+'</strong><div class='+type+'Div><strong>'+nodeName+'</strong></div></div>';
@@ -139,7 +143,7 @@ define([
                 nodeName='';
 	
 			var colorMap = {
-                    correct: "lightGreen",
+                    correct: "green",
                     incorrect: "#FF8080",
                     demo: "yellow"
                 };

@@ -195,6 +195,14 @@ define([
 
 	    // Color the borders of the Node
 	    this.colorNodeBorder(this.currentID);
+
+
+	    // update Node labels upon exit	
+             var nodeName = this.getNodeName();
+
+            if(dom.byId(this.currentID + 'Label'))
+                domConstruct.place(nodeName, this.currentID + 'Label', "replace");
+
         },
         //set up event handling with UI components
         _initHandles: function(){
@@ -321,11 +329,16 @@ define([
             //update node type on canvas
             console.log("===========>   changing node class to " + type);
             domClass.replace(this.currentID, type);
-            var nodeName = this._model.active.getName(this.currentID);
+
+
+	      var nodeName = this.getNodeName();
+	
+        /*    var nodeName = this._model.active.getName(this.currentID);
             if(nodeName)
                 nodeName = '<div id=' + this.currentID + 'Label  class="bubble"><strong>' + nodeName + '</strong></div>';
             else
-                nodeName = '';
+                nodeName = ''; */
+
             if(dom.byId(this.currentID + 'Label'))
                 domConstruct.place(nodeName, this.currentID + 'Label', "replace");
             else //new node
@@ -335,6 +348,31 @@ define([
             this._model.active.setType(this.currentID, type);
             this.updateEquationLabels();
         },
+	getNodeName:function(){
+	     var type = this._model.active.getType(this.currentID);
+	     var nodeName = this._model.active.getName(this.currentID);
+             var parse = this._model.active.getEquation(this.currentID);
+             var parameter =  '';
+            if(parse){
+                parse=expression.parse(parse);
+                parameter = expression.isSum(parse)?'Sum':expression.isProduct(parse)?'Product':'';
+            }
+            var initialValue = this._model.active.getInitial(this.currentID);
+            if(!initialValue)
+                 initialValue = '';
+	   
+             var unitsValue = this._model.active.getUnits(this.currentID);
+             if(!unitsValue)
+                     unitsValue = '';
+		
+	    initialValue=initialValue+'</br>'+unitsValue;
+
+            if(nodeName)
+                nodeName='<div id='+this.currentID+'Label  class="bubble"><strong>'+parameter+'</br>'+initialValue+'</strong><div class='+type+'Div><strong>'+nodeName+'</strong></div></div>';
+            else
+                nodeName='';
+		return nodeName;
+	},
         updateEquationLabels: function(typeIn){
             var type = typeIn || this._model.active.getType(this.currentID) || "none";
             var name = this._model.active.getName(this.currentID);
