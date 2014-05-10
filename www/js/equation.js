@@ -227,12 +227,12 @@ define([
 	    if(this.isSum(parse)){
 		grad = this.gradient(parse, false);
 		return array.map(parse.variables(), function(x){
-		    return {ID: x, label: chooseSign(grad[x],"+","-","0")};
+		    return {ID: x, label: chooseSign(grad[x],"","-","0")};
 		});
 	    }else if(this.isProduct(parse)){
 		grad = this.gradient(parse, true);
 		return array.map(parse.variables(), function(x){
-		    return {ID: x, label: chooseSign(grad[x],"*","/","none")};
+		    return {ID: x, label: chooseSign(grad[x],"","/","none")};
 		});
 	    }else{
 		// General expression

@@ -297,7 +297,7 @@ define([
             var calculationObj = this.getParametersForRendering(false);
             //this function is specific to graph/table
             this.renderDialog(calculationObj);
-        }))
+        }));
     },
 
     /*
