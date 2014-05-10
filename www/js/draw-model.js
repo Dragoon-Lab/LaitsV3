@@ -134,7 +134,7 @@ define([
 		 initialValue = '';
 
             if(nodeName && type != "triangle")
-                nodeName='<div id='+node.ID+'Label  class="bubble"><strong>'+parameter+'</br>'+initialValue+'</strong></div>';
+                nodeName='<div id='+node.ID+'Label  class="bubble"><strong>'+parameter+'</br>'+initialValue+'</strong><div class='+type+'Div><strong>'+nodeName+'</strong></div></div>';
             else
                 nodeName='';
 	
