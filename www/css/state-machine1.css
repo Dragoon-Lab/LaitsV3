@@ -57,11 +57,11 @@
     vertical-align: middle;
 }
 
-.accumulator:hover {
+/*.accumulator:hover {
     background-color: #5c96bc;
     color:white;
 
-}
+}*/
 
 .parameter-inner{
 
@@ -75,6 +75,27 @@
 
 
 }
+
+.parameterDiv{
+    -webkit-transform: rotate(0deg)!important;
+    -moz-transform: rotate(0deg)!important;
+    -ms-transform: rotate(0deg)!important;
+    -o-transform: rotate(0deg)!important;
+    transform: rotate(0deg)!important;
+    position: relative;
+    top:48px;
+}
+
+.functionDiv{
+  position:relative; 
+  top:48px;
+}
+
+.accumulatorDiv{
+ position:relative;
+ top:42px;
+}
+
 
 .parameter div{
     -webkit-transform: rotate(45deg);

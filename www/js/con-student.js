@@ -212,7 +212,7 @@ define([
 				console.log('model type is '+type);
 		
 				var colorMap = {
-                    correct: "lightGreen",
+                    correct: "green",
                     incorrect: "#FF8080",
                     demo: "yellow"
                 };
