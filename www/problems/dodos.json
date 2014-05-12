@@ -4,7 +4,7 @@
         "time": {
             "start": 0,
             "end": 20,
-            "step": 0.5,
+            "step": 1.0,
             "units": "Years"
         },
         "properties": {
@@ -14,7 +14,11 @@
         "image": {
             "URL": "images/737px-Frohawk_Dodo.png"
         },
-        "taskDescription": " Suppose that 1000 Dodos were living on the island of Mauritius when sailors landed. The sailors accidentally introduced a new species, rats. The rats ate essentially all the Dodo eggs as soon as they were laid, so the Dodo birth rate dropped to zero. Meanwhile, the annual Dodo death rate continued to be 20%. That is, 20% of the Dodos died each year and no Dodos were born. Build a model and observe how the Dodo population changed over 20 years. You will need: * A node called \"population\" to represent the number of Dodos still alive on Mauritius. This decreases each year due to deaths. * A node called \"deaths\" to represent the number of Dodos that die each year. To calculate it, multiple death rate by population. * A node called \"death rate\" to represent the percentage of the Dodo population that die each year. Dragoon doesn’t understand percentages, so always use decimals. For example, use 0.20 instead of 20%. ",
+        "taskDescription": ["Suppose that 1000 Dodos were living on the island of Mauritius when sailors landed. The sailors accidentally introduced a new species, rats. The rats ate essentially all the Dodo eggs as soon as they were laid, so the Dodo birth rate dropped to zero. Meanwhile, the annual Dodo death rate continued to be 20%. That is, 20% of the Dodos died each year and no Dodos were born. Build a model and observe how the Dodo population changed over 20 years.", 
+           "You will need:", 
+           "* A node called \"population\" to represent the number of Dodos still alive on Mauritius. This decreases each year due to deaths.", 
+           "* A node called \"deaths\" to represent the number of Dodos that die each year. To calculate it, multiple death rate by population.",
+           "* A node called \"death rate\" to represent the fraction of the Dodo population that dies each year. Dragoon doesn't understand percentages, so we use 0.20 instead of 20%."],
         "givenModelNodes": [
             {
                 "ID": "id1",
