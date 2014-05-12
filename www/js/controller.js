@@ -355,7 +355,8 @@ define([
              var parameter =  '';
             if(parse){
                 parse=expression.parse(parse);
-                parameter = expression.isSum(parse)?'Sum':expression.isProduct(parse)?'Product':'';
+		// May want to change symbols to "sum" and "product"
+                parameter = expression.isSum(parse)?'+':expression.isProduct(parse)?'*':'';
             }
             var initialValue = this._model.active.getInitial(this.currentID);
             if(!initialValue)
@@ -365,10 +366,10 @@ define([
              if(!unitsValue)
                      unitsValue = '';
 		
-	    initialValue=initialValue+'</br>'+unitsValue;
+	    initialValue += " " + unitsValue;
 
             if(nodeName)
-                nodeName='<div id='+this.currentID+'Label  class="bubble"><strong>'+parameter+'</br>'+initialValue+'</strong><div class='+type+'Div><strong>'+nodeName+'</strong></div></div>';
+                nodeName='<div id='+this.currentID+'Label  class="bubble"><strong>'+parameter+'<br>'+initialValue+'</strong><div class='+type+'Div><strong>'+nodeName+'</strong></div></div>';
             else
                 nodeName='';
 		return nodeName;
