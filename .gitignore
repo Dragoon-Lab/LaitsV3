@@ -8,6 +8,9 @@
 /Model.laits
 /preview-application.html
 /README.md
+sandbox.js
+sandbox.json
+sandbox.xml
 first.xml
 nbbuild.xml
 nblibraries.properties
@@ -15,5 +18,7 @@ nblibraries.properties
 Thumbs.db
 db_user_password
 db_research_user_password
+*.jar
 *~
 /Dragoon/nbproject/private/
+/MyApplication/nbproject/private/

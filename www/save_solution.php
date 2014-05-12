@@ -1,87 +1,42 @@
 <?php
-require "common.php";
-    
-    session_start();
-    
-    $solution_manager = new SolutionManager;
-    $solution_manager->process_request();
-    /**
-     * SolutionManager class to load and save author's solutions.
-     * 
-     * @author Ramayan Tiwari <rptiwari@asu.edu>
-     */
-    
-    class SolutionManager
-    {
-        private $author;
-        private $action;
-        private $section;
-        private $problem_name;
-        private $solution_xml;
-        private $share;
-        private $common;
-        
-        public function __construct()
-        {
-            $this->common = new Common;
-            
-            $this->action = $_REQUEST['action'];
-            $this->author = isset($_REQUEST['author']) ? mysqli_real_escape_string($this->common->connection, $_REQUEST['author']) : '';
-            $this->section = isset($_REQUEST['section']) ? mysqli_real_escape_string($this->common->connection, $_REQUEST['section']) : '';
-            $this->problem_name = isset($_REQUEST['problem_name']) ? mysqli_real_escape_string($this->common->connection, $_REQUEST['problem_name']) : '';
-            $this->solution_xml = isset($_REQUEST['solution_xml']) ? mysqli_real_escape_string($this->common->connection, $_REQUEST['solution_xml']) : '';            
-            $this->share = (!isset($_REQUEST['share']) || $_REQUEST['share']) ? 1 : 0;       
-            
-            // Save data needs to be URL decoded
-            $this->solution_xml = urldecode($this->solution_xml); 
-        }
-        
-        public function __destruct() {
-            $this->common->connection->close();
-        }
-        
-        public function process_request()
-        {
-            switch ($this->action) 
-            {
-                case "author_save" :
-                    $this->save_author_solution_to_DB();
-                    break;
-                
-                case "author_load" :
-                    $this->load_author_solution_from_DB();
-                    break;
+/*
+         Save solutions in the solutions table
+ 
+         This script is stateless, so we don't need to worry about php sessions.
+*/
 
-                default:
-                    //error_log("Unauthorized Request Recived ");
-                    header('HTTP/1.0 401 Unauthorized');                     
-            }
-        }
-        
-        private function save_author_solution_to_DB()
-        {
-            $query = "INSERT INTO solutions(author, section, problemName, solutionGraph, share) 
-                    VALUES ('$this->author','$this->section', '$this->problem_name', '$this->solution_xml', '$this->share') 
-                    ON DUPLICATE KEY UPDATE solutionGraph=values(solutionGraph), time = CURRENT_TIMESTAMP";
-            error_log("Executing " . $query);
-            $this->common->connection->query($query) or trigger_error("insert/update to solutions failed" .$this->common->connection->error);            
-        }
-        
-        private function load_author_solution_from_DB()
-        {
-            $queryString = "SELECT solutionGraph FROM solutions WHERE author=? AND section=? AND problemName=?";
-           
-            if ($stmt = mysqli_prepare($this->common->connection, $queryString)) {
-                
-                $stmt -> bind_param("sss", $this->author, $this->section, $this->problem_name);
-                
-                $stmt->execute() or trigger_error("select from solutions failed" .$this->common->connection->error);;
-                $stmt->bind_result($save_data);
-                $stmt->fetch();
-                
-                print($save_data);                
-            }
-        }
-    }
+// Using trigger_error() so logging level and destination can be modified.
+require "error-handler.php";
+
+//connect to database
+require "db-login.php";
+$mysqli = mysqli_connect("localhost", $dbuser, $dbpass, $dbname)
+  or trigger_error('Could not connect to database.',E_USER_ERROR);
+
+/*
+   Work-around in case magic quotes are enabled.
+   See http://stackoverflow.com/questions/220437/magic-quotes-in-php
+ */
+if (get_magic_quotes_gpc()) {
+    $_POST['sg'] = stripslashes($_POST['sg']);
+}
+
+//retrieve POST variables
+$sessionId = $_POST['x']; // system generated
+$solutionGraph = mysqli_real_escape_string($mysqli,$_POST['sg']);
+
+// share is optional, default value 1.
+// Need to see what values client can send
+// Mysql encodes true and false as 1 and 0.
+$share = isset($_POST['share'])?($_POST['share']?"1":"0"):"DEFAULT";
+// deleted is optional, default value 0
+$deleted = isset($_POST['delete'])?($_POST['delete']?'1':'0'):"DEFAULT";
+
+//process request
+// If session doesn't exist, this should give an error.
+// Need to verify.
+$query="REPLACE INTO solutions(session_id,share,deleted,solution_graph) VALUES ('$sessionId',$share,$deleted,'$solutionGraph')";
+$result=$mysqli->query($query)
+  or trigger_error("author_save insert failed: " . $mysqli->error);
 
 ?>

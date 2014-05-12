@@ -1,0 +1,180 @@
+{
+    "task": {
+        "taskName": "Widget Stocking",
+        "time": {
+            "start": 0,
+            "end": 20,
+            "step": 0.5,
+            "units": "weeks"
+        },
+        "properties": {
+            "phase": "Challenge",
+            "type": "Construct"
+        },
+        "image": {
+            "URL": "http://img.shopstyle.com/uim/y2010/d345/51/5135f69e005364825c125b1c914e468c.jpg"
+        },
+        "taskDescription": " Problem: Shane and Shaunna manage a widget store. Shaunna is the saleperson, and she is very good. However many widgets are in stock, she manages to sell 25% of them each week. It's Shane's job to make sure the number of widgets in stock is around 100, which means Shaunna would sell about 25 widgets a week. However, while Shane was sick, the widget stock dropped to 25 widgets. Although the current widget deficit is 75, and Shaunna wants him to order that many, Shane is conservative. He decides the number of widgets he will order and add to stock each week will be 30% of the deficit each week until the deficit is gone. Goal: Graph the number of widgets in stock for 20 weeks. ",
+        "givenModelNodes": [
+            {
+                "ID": "id1",
+                "inputs": [],
+                "position": {
+                    "x": 400,
+                    "y": 100
+                },
+                "attemptCount": {
+                    "description": 0,
+                    "type": 0,
+                    "initial": 0,
+                    "units": 0,
+                    "equation": 0
+                },
+                "status": {},
+                "name": "target stock",
+                "type": "parameter",
+                "parentNode": false,
+                "units": "",
+                "description": "The number of widgets that should be in stock each week",
+                "initial": 100
+            },
+            {
+                "ID": "id2",
+                "inputs": [],
+                "position": {
+                    "x": 400,
+                    "y": 100
+                },
+                "attemptCount": {
+                    "description": 0,
+                    "type": 0,
+                    "initial": 0,
+                    "units": 0,
+                    "equation": 0
+                },
+                "status": {},
+                "name": "proportion sold",
+                "type": "parameter",
+                "parentNode": false,
+                "units": "",
+                "description": "The proportion of the stock sold each week",
+                "initial": 0.25
+            },
+            {
+                "ID": "id3",
+                "inputs": [],
+                "position": {
+                    "x": 400,
+                    "y": 100
+                },
+                "attemptCount": {
+                    "description": 0,
+                    "type": 0,
+                    "initial": 0,
+                    "units": 0,
+                    "equation": 0
+                },
+                "status": {},
+                "name": "deficit prop to order",
+                "type": "parameter",
+                "parentNode": false,
+                "units": "",
+                "description": "The proportion of the stock deficit added each week",
+                "initial": 0.3
+            },
+            {
+                "ID": "id4",
+                "inputs": [],
+                "position": {
+                    "x": 400,
+                    "y": 100
+                },
+                "attemptCount": {
+                    "description": 0,
+                    "type": 0,
+                    "initial": 0,
+                    "units": 0,
+                    "equation": 0
+                },
+                "status": {},
+                "name": "target sell",
+                "type": "parameter",
+                "parentNode": false,
+                "genus": "extra",
+                "units": "",
+                "description": "The number of widgets that Shaunna should sell each week",
+                "initial": 25
+            },
+            {
+                "ID": "id5",
+                "inputs": [],
+                "position": {
+                    "x": 400,
+                    "y": 100
+                },
+                "attemptCount": {
+                    "description": 0,
+                    "type": 0,
+                    "initial": 0,
+                    "units": 0,
+                    "equation": 0
+                },
+                "status": {},
+                "name": "initial reorder",
+                "type": "parameter",
+                "parentNode": false,
+                "genus": "extra",
+                "units": "",
+                "description": "The number of widgets that Shaunna wants Shane to reorder on the first week",
+                "initial": 75
+            },
+            {
+                "ID": "id6",
+                "inputs": [],
+                "position": {
+                    "x": 400,
+                    "y": 100
+                },
+                "attemptCount": {
+                    "description": 0,
+                    "type": 0,
+                    "initial": 0,
+                    "units": 0,
+                    "equation": 0
+                },
+                "status": {},
+                "name": "initial stock",
+                "type": "parameter",
+                "parentNode": false,
+                "genus": "extra",
+                "units": "",
+                "description": "The number of widgets in the stock after Shane was sick",
+                "initial": 25
+            },
+            {
+                "ID": "id7",
+                "inputs": [],
+                "position": {
+                    "x": 400,
+                    "y": 100
+                },
+                "attemptCount": {
+                    "description": 0,
+                    "type": 0,
+                    "initial": 0,
+                    "units": 0,
+                    "equation": 0
+                },
+                "status": {},
+                "name": "initial deficit",
+                "type": "parameter",
+                "parentNode": false,
+                "genus": "extra",
+                "units": "",
+                "description": "The number of widget deficit initially",
+                "initial": 75
+            }
+        ],
+        "studentModelNodes": []
+    }
+}

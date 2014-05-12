@@ -1,0 +1,120 @@
+{
+    "task": {
+        "taskName": "Rabbits - Intro Problem",
+        "properties": {
+            "phase": "intro",
+            "type": "construct"
+        },
+        "time": {
+            "start": 1859,
+            "end": 1920,
+            "step": 1,
+            "units": "years"
+        },
+        "image": {
+            "URL": "images/rabbit.jpeg",
+            "width": 225,
+            "height": 100
+        },
+        "taskDescription": [
+	    "In 1859, Thomas Austin released 24 rabbits onto his property in Australia. Despite various attempts at eradicating the rabbits, the population grew at an average rate of 0.3 per year over the next 60 years. The rabbits eventually occupied most of the continent of Australia.",
+	    "",
+	    "In this exercise, you will construct a model of rabbit population growth. The first quantity in this model is the population or number of rabbits in the population. Initially, there are 24 rabbits, but the number increases with time. The new population each year is its present value plus the net growth (number of rabbits born minus deaths). The net growth is equal to the product of the population and the growth rate. The growth rate has a fixed value of 0.3 per year."
+	],
+        "givenModelNodes": [
+            {
+                "ID": "id1",
+                "name": "population",
+                "type": "accumulator",
+                "parentNode": false,
+                "order": 1,
+                "units": "rabbits",
+                "inputs": [{"ID": "id2"}],
+                "initial": 24,
+                "equation": "id2",
+                "description": "The number of rabbits in the population",
+                "attemptCount": {
+                    "description": 0,
+                    "type": 0,
+                    "initial": 0,
+                    "units": 0,
+                    "equation": 0
+                },
+                "status": {}
+            },
+            {
+                "ID": "id2",
+                "name": "net growth",
+                "type": "function",
+                "parentNode": true,
+                "order": 2,
+                "units": "rabbits/year",
+                "inputs": [{"ID": "id1"}, {"ID": "id3"}],
+                "initial": null,
+                "equation": "id1 * id3",
+                "description": "The number of additional rabbits each year",
+                "attemptCount": {
+                    "description": 0,
+                    "type": 0,
+                    "initial": 0,
+                    "units": 0,
+                    "equation": 0
+                },
+                "status": {}
+            },
+            {
+                "ID": "id3",
+                "name": "growth rate",
+                "type": "parameter",
+                "parentNode": false,
+                "order": 3,
+                "units": "1/year",
+                "inputs": [],
+                "initial": 0.3,
+                "description": "The number of additional rabbits per year per rabbit",
+                "attemptCount": {
+                    "description": 0,
+                    "type": 0,
+                    "initial": 0,
+                    "units": 0,
+                    "equation": 0
+                },
+                "status": {}
+            },
+            {
+                "ID": "id7",
+                "name": "year two population",
+                "genus": "extra",
+                "type": "parameter",
+                "parentNode": true,
+                "units": "rabbits",
+                "inputs": [],
+                "initial": 120,
+                "description": "The number of rabbits in the population during the second year",
+                "attemptCount": {
+                    "description": 0,
+                    "type": 0,
+                    "initial": 0,
+                    "units": 0,
+                    "equation": 0
+                },
+                "status": {}
+            },
+            {
+                "ID": "id8",
+                "name": "birth rate",
+                "description": "The number of rabbits born per year per rabbit",
+                "units": "1/year",
+                "genus": "irrelevant"
+            },
+            {
+                "ID": "id9",
+                "name": "death rate",
+                "description": "The number of rabbits that die per year per rabbit",
+                "units": "1/year",
+                "genus": "irrelevant"
+            }
+        ],
+        "studentModelNodes": []
+    }
+}

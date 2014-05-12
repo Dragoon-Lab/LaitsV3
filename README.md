@@ -7,7 +7,7 @@ tutorial to get you started using dragoon.
 [Documentation and design documents](documentation/README.md) are
 available.
 
-## Dragoon Install and Netbeans ##
+## Dragoon Install ##
 
 This document contains instructions for setting up a dragoon server.
 These instructions are for the Javascript version of Dragoon.
@@ -31,11 +31,15 @@ local server on OS X 10.8 (mountain lion).
 
     sudo apachectl start
     cd /Library/WebServer/Documents/
-    sudo ln -s ~/laits/www/ ./laits 
+    sudo ln -s <*path to Dragoon*>/www/ ./laits 
     # try http://localhost/laits/ in your web browser
     sudo nano /etc/apache2/httpd.conf  || uncomment php line
     sudo apachectl restart
-    echo "<?php phpinfo(); ?>" > ~/laits/www/index.php  
-    # try http://localhost/laits/index.html on Browser
+    echo "<?php phpinfo(); ?>" > <*path to Dragoon*>/www/php-test.php 
+    # try http://localhost/laits/php-test.php on Browser
+	# PHP looks for the MySQL sock in the wrong place.
+	# Make a link so that PHP will find the sock file:
+	sudo mkdir /var/mysql
+	sudo ln -s /tmp/mysql.sock /var/mysql/mysql.sock
 
-More information on [starting php and Apache on OS X](http://coolestguyplanettech.com/downtown/install-and-configure-apache-mysql-php-and-phpmyadmin-osx-108-mountain-lion).
+More information on [starting php and Apache on OS X](http://akrabat.com/computing/setting-up-php-mysql-on-os-x-10-8-mountain-lion).

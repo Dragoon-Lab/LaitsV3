@@ -1,5 +1,5 @@
 # Logging Format #
-
+sss
 This document discusses the structure of the logging and the associated table formats on the server.
 
 ## Database Table Structure ##
@@ -14,16 +14,16 @@ The logging will use the **`session`** table (see
 *	`method` can be one of the following:
 	*	`start-session` send session ID to the server as well as the user name and section and major mode.  Normally, it will also include the problem name and the author name for custom problems.  This will create an entry in the `session` table.
 	* `open-problem` - Client asks for the problem from the server or opens a local file.  The message will include problem name and possibly section name and author name for custom problems.
-	*	`client-message` - java/javascript exceptions and warnings.  Messages associated with the dragoon code itself.
+	*	`client-message` - Java/JavaScript exceptions and warnings.  Messages associated with the dragoon code itself.
 	*	`student-status` - Informational messages about the status of the student's progress in solving the problem.  
 	*	`ui-action` - Actions taken by the user on the interface, such as clicking on a menu or moving a node on the canvas, that are not problem-solving steps.  We will not log keystrokes or mouse events but a level above it. Like switch tabs and open node editor, values added to the node editor *et cetera*.  
- The javascript version will record going in and out of focus.  See [`andes/drawing.js`](https://github.com/bvds/andes/blob/master/web-UI/andes/drawing.js) for an example.
+ The JavaScript version will record going in and out of focus.  See [`andes/drawing.js`](https://github.com/bvds/andes/blob/master/web-UI/andes/drawing.js) for an example.
  *	`solution-step`  - Steps that the student takes toward solving the
  problem.  This will generally be associated with something that could
  turn red or green.  The log message will contain both the student
  action and the tutors response, if any. For Dragoon, this includes the "check" button.
  * `seek-help` -  Student request for help and the response. For Dragoon, this includes the "Demo" button.
- *	`close_problem` - The student has closed the session.  This may be missing if the session was interrupted (e.g. the network connection died). 
+ *	`close-problem` - The student has closed the session.  This may be missing if the session was interrupted (e.g. the network connection died). 
 *	`message` - A `text` format field that holds actual log message. The format is specified in the section "Message Format" below.
 
 This table is analogous to the table `STEP_TRANSACTION` in Andes; see [`create_STEP_TRANSACTION.sql`](https://github.com/bvds/andes/blob/master/LogProcessing/database/create_STEP_TRANSACTION.sql).  The Andes table can be used to see how the `step` table should be formatted.
@@ -97,7 +97,7 @@ one for the menu button and one for opening the node editor.
 -- method: `ui-action`  
 -- message: `{"time": 21.3, "type": "open-dialog-box",
   "name": "node-editor", "tab": "DESCRIPTION", "node": null}`  
-In the Javascript version, we will use the node id to name the node, so this will never be null.  In the Java version, we use the node name, when it is known.
+In the JavaScript version, we will use the node id to name the node, so this will never be null.  In the Java version, we use the node name, when it is known.
 
 Possible logging message associated with above  
 -- method: `student-status` 
@@ -106,7 +106,7 @@ Possible logging message associated with above
   {"node":  "description", "descriptionPanelStatus": null, "selected
   plan": null, "planPanelStatus": null, "nodeType": null}}`  
 Note that member names with a space, like `"plan panel"`, do not work
-well with javascript or other languages.  It is better to use
+well with JavaScript or other languages.  It is better to use
 camelCase or underscores.
 
 Student chooses a quantity in the description tab.  
@@ -115,7 +115,7 @@ Student chooses a quantity in the description tab.
   "name": "fat content", "text": "The ratio of the weight of the fat
   in a potato chip to the weight of the potato chip", "checkResult":
   "CORRECT"}`  
-In the Javascript version, `"node"` is the node id, in the Java
+In the JavaScript version, `"node"` is the node id, in the Java
   version, it is either null or the node name `"fat content"`.
 
 Student switches tabs:  
@@ -172,7 +172,7 @@ described using either two solution step rows or using a single solution step
 with two substeps.
 
 This is the version with two solution steps.  This matches the design
-for the Javascript version better.   
+for the JavaScript version better.   
 -- method: `solution-step`  
 -- message: `{"time": 60.2, "node": "velocity", "type": "quantity-initial-value",
   "value": "0.45", "correct-value": "0.65", "checkResult": "INCORRECT"}`  

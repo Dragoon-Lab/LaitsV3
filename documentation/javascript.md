@@ -1,38 +1,91 @@
 # JavaScript user interface #
 
-## Frameworks ##
+## Libraries ##
 
-We need a framework.  See Wikipedia [article comparing JavaScript frameworks](http://en.wikipedia.org/wiki/Comparison_of_JavaScript_frameworks). 
-We need a framework with the following:
+We are using:
 
-* 2-D vector graphics
-* Charting
-* Open Source license
-* The equivalent of dojo mixin and extend.
+* The [Dojo](http://dojotoolkit.org) framework.
+* A [fork of jsPlumb](https://github.com/bhosaledipak/JsPlumb_Dojo_Integreate)
+  that uses AMD and Dojo.
+* A [fork of js-expression-eval](https://github.com/bvds/js-expression-eval) 
+ that uses AMD and can accept variable names with spaces.
 
-There are other things we need but the above items most strongly
-discriminate between the candidate libraries.
-
-
-[d3js](http://d3js.org):
+We might use  [d3js](http://d3js.org):
 See [MIT Media lab project](http://immersion.media.mit.edu), you can 
 login with your email account.
 
-## Graph Visualization and editing ##
+## Model-View-Controller for the node editor
 
-A [list of possible libraries](http://stackoverflow.com/questions/7034) at stackoverflow.
+We have AMD modules, `js/model.js` and `js/controller.js`, that implement the MVC for the
+node editor.  The view is implemented in `index.html` and using the
+[Dijit](http://dojotoolkit.org/reference-guide/dijit/) libraries.  In
+addition, we have the Pedagogical Module (PM). 
 
-[jsPlumb](http://jsplumbtoolkit.com) sits on top of either jQuery,
-MooTools, or [YUI3](http://en.wikipedia.org/wiki/YUI_Library).
-If we go with another Framework, then we would have to interface this 
-library with that framework.
+`js/model.js` provides an interface to the model.  It has many
+Java-style getter and setter methods. For AUTHOR mode, the student
+is mofiying the **given model**, subclass `given`, while in other major
+modes, the student is modifying the **student model**, subclass
+`student`.  The **given model** includes both the solution quantities
+plus any extra quantities ("allowed," "extra," "irrelevant," *et
+cetera*) that have been defined.  The `solution` subclass contains
+accessors to the solution quantities.
+
+To handle switching between modes, we introduce  an **active model**,
+subclass `active`, which points to the appropriate model.  For example, 
+`given.getNodes()` and `student.getNodes()` get the given model and
+student model nodes, respectively.  The corresponding **active model**
+function is `active.getNodes()`. 
+
+`js/pedagogical_module.js` informs the controller about updates
+[controls](http://www.w3.org/TR/html401/interact/forms.html#form-controls)
+in the Node Editor:
+
+* set as enabled/disabled
+* mark as correct, incorrect, or demo
+* send a user message
+* it may update the value associated with a control (in the case of
+  demo).
+
+The PM saves state in the **given model** and interacts directly with the
+model for this purpose.  Although the PM reads the **student model**, it
+generally does not update it (changing an input value on "demo" *may*
+be an exception).
+
+Methods in the PM return an array of directives like this:
+
+    [
+		{id: "initial", attribute: "disabled", value: true},  // enable or disable a control
+		// Send a message.
+		{id: "message", attribute: "append", value: "You should try again."},
+		{id: "description", attribute: "status", value: "demo"},  // Set the status (red/green/yellow)
+		// Set the value of a control (in the case of demo)
+		{id: "description", attribute: "value", value: "id3"},
+		// Set the equation; the equation contains the text, as written by the student (no IDs).
+		{id: "equation", attribute: "value", "-fish * fowl"}
+		// Disable individual choices in a pull-down menu
+		{id: "type", attribute: "disableOption", value: "function"},
+		// Open a blocking pop-up box
+		{id: "crisisAlert", attribute: "open", value: "You should be more careful."}
+	]
+
+The attribute names can be: `description`, `type`, `initial`,
+`units`, `inputs`, `equation`, or `crisisAlert`.  The controller 
+maps these names onto the appropriate widget `id` in `index.html`.
+The attributes `enableOption`/`disableOption` can be used to
+enable/disable individual options in a select control.  If no value is
+given, then all options in the control are enabled/disabled.
+
+`js/controller.js` acts as the controller.  On opening the node
+editor, it sets values of the Node Editor controls based on the **active
+model**.  It also queries the PM to set other attributes of the controls.
+It sends user input changes to the **active model**  and to the PM and updates
+the view based on the response of the PM.  The controller does not
+access the **given model** or **student model** directly.
 
 ## Automatic node placement ##
 
-Right now, the fifth node is placed on top of the first node.
-This was seen in author mode, but I suspect it is a general
-flaw in initial node placement algorithm.
-Maybe do placement like this:
+Our algorithm for automatic node placement will
+produce a pattern like this:
 
      0  1  4  9
      2  3  5 10

@@ -1,0 +1,152 @@
+{
+    "task": {
+        "taskName": "Accelerating Evaporation",
+        "time": {
+            "start": 0,
+            "end": 20,
+            "step": 1,
+            "units": "hours"
+        },
+        "properties": {
+            "phase": "",
+            "type": ""
+        },
+        "image": {
+            "URL": "images/lake.png"
+        },
+        "taskDescription": " The sun heats some water, adding 3 units of thermal energy per hour. The evaporation of water is a function of the thermal energy of the water. In particular, if the thermal energy of the water is T, then the percentage of water evaporated during an hour is T*1%. Assuming that the initial thermal energy is 0 and the initial water level is 1000, graph the water level for 20 hours. ",
+        "givenModelNodes": [
+            {
+                "ID": "id1",
+                "inputs": [
+                    {
+                        "ID": "id5"
+                    }
+                ],
+                "position": {
+                    "x": 400,
+                    "y": 100
+                },
+                "attemptCount": {
+                    "description": 0,
+                    "type": 0,
+                    "initial": 0,
+                    "units": 0,
+                    "equation": 0
+                },
+                "status": {},
+                "name": "water level",
+                "type": "accumulator",
+                "parentNode": true,
+                "units": "",
+                "description": "The water level",
+                "initial": 1000,
+                "equation": "- id5"
+            },
+            {
+                "ID": "id2",
+                "inputs": [
+                    {
+                        "ID": "id3"
+                    }
+                ],
+                "position": {
+                    "x": 400,
+                    "y": 100
+                },
+                "attemptCount": {
+                    "description": 0,
+                    "type": 0,
+                    "initial": 0,
+                    "units": 0,
+                    "equation": 0
+                },
+                "status": {},
+                "name": "thermal energy",
+                "type": "accumulator",
+                "parentNode": false,
+                "units": "",
+                "description": "The amount of thermal energy of the water each hour",
+                "initial": null,
+                "equation": "id3"
+            },
+            {
+                "ID": "id3",
+                "inputs": [],
+                "position": {
+                    "x": 400,
+                    "y": 100
+                },
+                "attemptCount": {
+                    "description": 0,
+                    "type": 0,
+                    "initial": 0,
+                    "units": 0,
+                    "equation": 0
+                },
+                "status": {},
+                "name": "thermal increase",
+                "type": "parameter",
+                "parentNode": false,
+                "units": "",
+                "description": "The amount of thermal energy added to the water per hour",
+                "initial": 3
+            },
+            {
+                "ID": "id4",
+                "inputs": [],
+                "position": {
+                    "x": 400,
+                    "y": 100
+                },
+                "attemptCount": {
+                    "description": 0,
+                    "type": 0,
+                    "initial": 0,
+                    "units": 0,
+                    "equation": 0
+                },
+                "status": {},
+                "name": "energy evaporation factor",
+                "type": "parameter",
+                "parentNode": false,
+                "units": "",
+                "description": "The evaporation rate (water lost per hour) per unit of thermal energy",
+                "initial": 0.01
+            },
+            {
+                "ID": "id5",
+                "inputs": [
+                    {
+                        "ID": "id4"
+                    },
+                    {
+                        "ID": "id2"
+                    },
+                    {
+                        "ID": "id1"
+                    }
+                ],
+                "position": {
+                    "x": 400,
+                    "y": 100
+                },
+                "attemptCount": {
+                    "description": 0,
+                    "type": 0,
+                    "initial": 0,
+                    "units": 0,
+                    "equation": 0
+                },
+                "status": {},
+                "name": "water evaporated",
+                "type": "function",
+                "parentNode": false,
+                "units": "",
+                "description": "The amount of water evaporated during an hour",
+                "equation": "id1 * id2 * id4"
+            }
+        ],
+        "studentModelNodes": []
+    }
+}

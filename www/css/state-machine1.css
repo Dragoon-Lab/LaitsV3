@@ -1,0 +1,230 @@
+#demo {
+    margin-top:5em;
+}
+
+.accumulator {
+    width: 80px;
+    height: 80px;
+    position:absolute;
+    border: 1px solid black;
+    z-index:24;
+    border-radius:1em;
+    border:1px solid #2e6f9a;
+    box-shadow: 2px 2px 19px #e0e0e0;
+    -o-box-shadow: 2px 2px 19px #e0e0e0;
+    -webkit-box-shadow: 2px 2px 19px #e0e0e0;
+    -moz-box-shadow: 2px 2px 19px #e0e0e0;
+    -moz-border-radius:8px;
+    border-radius:8px;
+    opacity:0.8;
+    filter:alpha(opacity=80);
+    cursor:move;
+    background-color:white;
+    font-size:11px;
+    -webkit-transition:background-color 0.25s ease-in;
+    -moz-transition:background-color 0.25s ease-in;
+    transition:background-color 0.25s ease-in;
+    text-align:center;
+    vertical-align: middle;
+}
+
+.accumulator:before {
+    content: '';
+    display: inline-block;
+    height: 100%;
+    vertical-align: middle;
+    margin-right: -0.25em;
+}
+
+.parameter:before {
+    content: '';
+    display: inline-block;
+    height: 100%;
+    vertical-align: middle;
+    margin-right: -0.25em;
+}
+
+.function:before {
+    content: '';
+    display: inline-block;
+    height: 100%;
+    vertical-align: middle;
+    margin-right: -0.25em;
+}
+
+.bubble{
+    display: inline-block;
+    vertical-align: middle;
+}
+
+.accumulator:hover {
+    background-color: #5c96bc;
+    color:white;
+
+}
+
+.parameter-inner{
+
+    z-index:20; position:absolute;
+    transform:rotate(45deg);
+    -ms-transform:rotate(45deg);
+    -webkit-transform:rotate(45deg);
+    position:absolute;
+    font-family:helvetica;
+    font-size:1.2em;
+
+
+}
+
+.parameter div{
+    -webkit-transform: rotate(45deg);
+    -moz-transform: rotate(45deg);
+    -ms-transform: rotate(45deg);
+    -o-transform: rotate(45deg);
+    transform: rotate(45deg);
+}
+
+.parameter {
+    width: 80px;
+    height: 80px;
+    margin: 23px 0 0 30px;
+    z-index:20; position:absolute;
+    /* Rotate */
+    -webkit-transform: rotate(-45deg);
+    -moz-transform: rotate(-45deg);
+    -ms-transform: rotate(-45deg);
+    -o-transform: rotate(-45deg);
+    transform: rotate(-45deg);*/
+
+  /* border-radius:1em;*/
+    border:1px solid #2e6f9a;
+    box-shadow: 2px 2px 19px #e0e0e0;
+    -o-box-shadow: 2px 2px 19px #e0e0e0;
+    -webkit-box-shadow: 2px 2px 19px #e0e0e0;
+    -moz-box-shadow: 2px 2px 19px #e0e0e0;
+    -moz-border-radius:8px;
+    border-radius:8px;
+    opacity:0.8;
+    filter:alpha(opacity=80);
+    cursor:move;
+    background-color:white;
+    font-size:11px;
+    -webkit-transition:background-color 0.25s ease-in;
+    -moz-transition:background-color 0.25s ease-in;
+    transition:background-color 0.25s ease-in;
+
+    text-align:center;
+    vertical-align: middle;
+
+}
+
+.triangle{
+    width: 0;
+    height: 0;
+    z-index:20; position:absolute;
+    border-left: 45px solid transparent;
+    border-right: 45px solid transparent;
+    border-bottom: 90px solid #2e6f9a;
+    cursor:move;
+    font-size:11px;
+    -webkit-transition:background-color 0.25s ease-in;
+    -moz-transition:background-color 0.25s ease-in;
+    transition:background-color 0.25s ease-in;
+}
+
+
+.function {
+    width: 80px;
+    height: 80px;
+    z-index:20; position:absolute;
+    border-radius: 50px;
+    border:1px solid #2e6f9a;
+    box-shadow: 2px 2px 19px #e0e0e0;
+    -o-box-shadow: 2px 2px 19px #e0e0e0;
+    -webkit-box-shadow: 2px 2px 19px #e0e0e0;
+    -moz-box-shadow: 2px 2px 19px #e0e0e0;
+    opacity:0.8;
+    filter:alpha(opacity=80);
+    cursor:move;
+    background-color:white;
+    font-size:11px;
+    -webkit-transition:background-color 0.25s ease-in;
+    -moz-transition:background-color 0.25s ease-in;
+    transition:background-color 0.25s ease-in;
+    text-align:center;
+    vertical-align: middle;
+}
+
+.endPoint {
+    width: 20px;
+    height: 20px;
+    border-radius: 50px;
+    border:1px solid #2e6f9a;
+    box-shadow: 2px 2px 19px #e0e0e0;
+    -o-box-shadow: 2px 2px 19px #e0e0e0;
+    -webkit-box-shadow: 2px 2px 19px #e0e0e0;
+    -moz-box-shadow: 2px 2px 19px #e0e0e0;
+    opacity:1.0;
+    filter:alpha(opacity=80);
+    cursor:move;
+    background-color:white;
+    font-size:11px;
+    -webkit-transition:background-color 0.25s ease-in;
+    -moz-transition:background-color 0.25s ease-in;
+    transition:background-color 0.25s ease-in;
+    text-align:center;
+    vertical-align: middle;
+    line-height: 20px;
+}
+
+.aLabel {
+    -webkit-transition:background-color 0.25s ease-in;
+    -moz-transition:background-color 0.25s ease-in;
+    transition:background-color 0.25s ease-in;
+}
+
+.aLabel._jsPlumb_hover, ._jsPlumb_source_hover, ._jsPlumb_target_hover {
+    background-color:#1e8151;
+    color:white;
+}
+
+.aLabel {
+    background-color:white;
+    /*	opacity:0.8; */
+    padding:0.7em;
+    border-radius:3.0em;
+    border:1px solid #346789;
+    cursor:pointer;
+}
+
+.ep {
+    position:absolute;
+    bottom: 37%;
+    right: 5px;
+    width:1em;
+    height:1em;
+    background-color:orange;
+    cursor:pointer;
+    box-shadow: 0px 0px 2px black;
+    -webkit-transition:-webkit-box-shadow 0.25s ease-in;
+    -moz-transition:-moz-box-shadow 0.25s ease-in;
+    transition:box-shadow 0.25s ease-in;
+}
+
+.ep:hover {
+    box-shadow: 0px 0px 6px black;
+}
+
+.statemachine-demo ._jsPlumb_endpoint {
+    z-index:3;
+}
+
+/*
+    These should be removed once positions are gotten from the model.
+*/
+
+
+
+.dragHover { border:2px solid orange; }
+
+path { cursor:pointer; }

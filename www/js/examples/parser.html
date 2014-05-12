@@ -1,0 +1,74 @@
+<!DOCTYPE HTML PUBLIC "-//IETF//DTD HTML//EN">
+<html> <head>
+<title>Test math parser</title>
+<!-- Using Dojo to handle the AMD.  It is not used by parser.js -->
+        <script type="text/javascript">
+            dojoConfig = {
+                isDebug: true,
+                async: true,
+                // popup:true,
+                baseUrl: "../../",
+                packages: [
+                    {name: "json", location: "js/json"},
+                    {name: "dojo", location: "dojo"},
+                    {name: "dojox", location: "dojox"},
+                    {name: "dragoon", location: "js"},
+                    {name: "parser", location: "math-parser"}
+                ]
+            };
+        </script>
+        <script src="../../dojo/dojo.js"></script> 
+
+        <script>
+            require([
+                "dragoon/model", "dragoon/pedagogical_module",
+                "dragoon/equation", "parser/parser"
+            ], function(model, pm, expression, Parser) {
+
+            console.log("parser loaded", Parser);
+            submit = function(){
+                var expr = document.getElementById('fName').value;
+                var verboseOutput = document.getElementById('verboseOutput');
+                var prettyOutput = document.getElementById('prettyOutput');
+                var isVariable = document.getElementById('isVariable');
+                var isSum = document.getElementById('isSum');
+                var isProduct = document.getElementById('isProduct');
+                isVariable.innerHTML = "Is" + (Parser.isVariable(expr)?"":" not") + " a variable.";
+                var parse = Parser.parse(expr);
+                isSum.innerHTML = "Is" + (expression.isSum(parse)?"":" not") + " a sum.";
+                isProduct.innerHTML = "Is" + (expression.isProduct(parse)?"":" not") + " a product.";
+                console.log("Parsed expression: ", parse);
+                console.log("Operator content: ", parse.operators());
+                verboseOutput.innerHTML = "verbose parse is:  " + parse.toString(true);
+                prettyOutput.innerHTML = "pretty parse is:  " + parse.toString();
+                var grad = expression.gradient(parse), y="partial derivative: ";
+                console.log("Gradient is ", grad);
+                var first = true;
+                for(var x in grad){
+                    if(first)
+                       first=false;
+                    else
+                       y += ", ";
+                    y = y.concat(x + ": " + grad[x]);
+                }
+                partial.innerHTML = y;
+           };
+           });
+</script>
+</head>
+
+<body>
+    <h1>Test parser-related functions</h1>
+
+    Input math expression:<br>
+    <input class="textBox" id="fName" type="text" maxlength="30" required/> &nbsp; &nbsp; 
+    <input type="button" class="loginButtons" value="Parse" onclick="submit();"/>
+    <div id='verboseOutput'>verbose here</div>
+    <div id='prettyOutput'>pretty here</div>
+    <div id='isVariable'>variable test here</div>
+    <div id='isProduct'>product test here</div>
+    <div id='isSum'>sum test here</div>
+    <div id='partial'>Partial derivatives</div>
+
+</body>
+</html>
