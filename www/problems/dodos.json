@@ -95,7 +95,7 @@
                 "type": "parameter",
                 "parentNode": false,
                 "units": "",
-                "description": "The percentage of Dodos that die each year",
+                "description": "The fraction of Dodos that die each year",
                 "initial": 0.2
             }
         ],
