@@ -1,0 +1,100 @@
+{
+    "task": {
+        "taskName": "Dodo extinction",
+        "time": {
+            "start": 0,
+            "end": 20,
+            "step": 0.5,
+            "units": "Years"
+        },
+        "properties": {
+            "phase": "Intro",
+            "type": "Construct"
+        },
+        "image": {
+            "URL": "images/737px-Frohawk_Dodo.png"
+        },
+        "taskDescription": " Suppose that 1000 Dodos were living on the island of Mauritius when sailors landed. The sailors accidentally introduced a new species, rats. The rats ate essentially all the Dodo eggs as soon as they were laid, so the Dodo birth rate dropped to zero. Meanwhile, the annual Dodo death rate continued to be 20%. That is, 20% of the Dodos died each year and no Dodos were born. Build a model and observe how the Dodo population changed over 20 years. You will need: * A node called \"population\" to represent the number of Dodos still alive on Mauritius. This decreases each year due to deaths. * A node called \"deaths\" to represent the number of Dodos that die each year. To calculate it, multiple death rate by population. * A node called \"death rate\" to represent the percentage of the Dodo population that die each year. Dragoon doesn’t understand percentages, so always use decimals. For example, use 0.20 instead of 20%. ",
+        "givenModelNodes": [
+            {
+                "ID": "id1",
+                "inputs": [
+                    {
+                        "ID": "id2"
+                    }
+                ],
+                "position": {
+                    "x": 400,
+                    "y": 100
+                },
+                "attemptCount": {
+                    "description": 0,
+                    "type": 0,
+                    "initial": 0,
+                    "units": 0,
+                    "equation": 0
+                },
+                "status": {},
+                "name": "population",
+                "type": "accumulator",
+                "parentNode": true,
+                "units": "",
+                "description": "The number of Dodos in the Dodo population",
+                "initial": 1000,
+                "equation": "- id2"
+            },
+            {
+                "ID": "id2",
+                "inputs": [
+                    {
+                        "ID": "id1"
+                    },
+                    {
+                        "ID": "id3"
+                    }
+                ],
+                "position": {
+                    "x": 400,
+                    "y": 100
+                },
+                "attemptCount": {
+                    "description": 0,
+                    "type": 0,
+                    "initial": 0,
+                    "units": 0,
+                    "equation": 0
+                },
+                "status": {},
+                "name": "deaths",
+                "type": "function",
+                "parentNode": false,
+                "units": "",
+                "description": "The number of Dodos that die each year",
+                "equation": "id1 * id3"
+            },
+            {
+                "ID": "id3",
+                "inputs": [],
+                "position": {
+                    "x": 400,
+                    "y": 100
+                },
+                "attemptCount": {
+                    "description": 0,
+                    "type": 0,
+                    "initial": 0,
+                    "units": 0,
+                    "equation": 0
+                },
+                "status": {},
+                "name": "death rate",
+                "type": "parameter",
+                "parentNode": false,
+                "units": "",
+                "description": "The percentage of Dodos that die each year",
+                "initial": 0.2
+            }
+        ],
+        "studentModelNodes": []
+    }
+}

@@ -1,0 +1,156 @@
+{
+    "task": {
+        "taskName": "Two Barrels",
+        "time": {
+            "start": 0,
+            "end": 100,
+            "step": 1,
+            "units": "minutes"
+        },
+        "properties": {
+            "phase": "",
+            "type": ""
+        },
+        "image": {
+            "URL": "images/barrels.jpg"
+        },
+        "taskDescription": " Consider two 100-gallon rain barrels that are connected to each other by a hose. They are next to each other on a horizontal surface, and a hose connects them at their bottoms. One barrel starts with 55 gallons in it, and the other is empty. Thus, water will flow from the full barrel to the empty barrel via the hose. The rate of flow is proportional to the difference in the water levels in the the two barrels. In particular, when both barrels have the same amount of water in them, the flow stops. The number of gallons that flow through the hose per minute is difference in the number of gallons in the two barrels times 0.03. ",
+        "givenModelNodes": [
+            {
+                "ID": "id1",
+                "inputs": [
+                    {
+                        "ID": "id4"
+                    }
+                ],
+                "position": {
+                    "x": 400,
+                    "y": 100
+                },
+                "attemptCount": {
+                    "description": 0,
+                    "type": 0,
+                    "initial": 0,
+                    "units": 0,
+                    "equation": 0
+                },
+                "status": {},
+                "name": "second barrel",
+                "type": "accumulator",
+                "parentNode": true,
+                "units": "",
+                "description": "The amount of water in the second barrel",
+                "initial": null,
+                "equation": "id4"
+            },
+            {
+                "ID": "id2",
+                "inputs": [
+                    {
+                        "ID": "id4"
+                    }
+                ],
+                "position": {
+                    "x": 400,
+                    "y": 100
+                },
+                "attemptCount": {
+                    "description": 0,
+                    "type": 0,
+                    "initial": 0,
+                    "units": 0,
+                    "equation": 0
+                },
+                "status": {},
+                "name": "first barrel",
+                "type": "accumulator",
+                "parentNode": false,
+                "units": "",
+                "description": "The amount of water in the first barrel",
+                "initial": 55,
+                "equation": "- id4"
+            },
+            {
+                "ID": "id3",
+                "inputs": [],
+                "position": {
+                    "x": 400,
+                    "y": 100
+                },
+                "attemptCount": {
+                    "description": 0,
+                    "type": 0,
+                    "initial": 0,
+                    "units": 0,
+                    "equation": 0
+                },
+                "status": {},
+                "name": "water flow factor",
+                "type": "parameter",
+                "parentNode": false,
+                "units": "",
+                "description": "The rate (water flow per minute) per difference in barrel contents",
+                "initial": 0.03
+            },
+            {
+                "ID": "id4",
+                "inputs": [
+                    {
+                        "ID": "id3"
+                    },
+                    {
+                        "ID": "id5"
+                    }
+                ],
+                "position": {
+                    "x": 400,
+                    "y": 100
+                },
+                "attemptCount": {
+                    "description": 0,
+                    "type": 0,
+                    "initial": 0,
+                    "units": 0,
+                    "equation": 0
+                },
+                "status": {},
+                "name": "water flow",
+                "type": "function",
+                "parentNode": false,
+                "units": "",
+                "description": "The amount of water flowing from the first to second barrel per minute",
+                "equation": "id3 * id5"
+            },
+            {
+                "ID": "id5",
+                "inputs": [
+                    {
+                        "ID": "id1"
+                    },
+                    {
+                        "ID": "id2"
+                    }
+                ],
+                "position": {
+                    "x": 400,
+                    "y": 100
+                },
+                "attemptCount": {
+                    "description": 0,
+                    "type": 0,
+                    "initial": 0,
+                    "units": 0,
+                    "equation": 0
+                },
+                "status": {},
+                "name": "water difference",
+                "type": "function",
+                "parentNode": false,
+                "units": "",
+                "description": "The difference in water level between the two barrels",
+                "equation": "id2 - id1"
+            }
+        ],
+        "studentModelNodes": []
+    }
+}

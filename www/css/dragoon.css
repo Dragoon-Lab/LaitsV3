@@ -1,16 +1,120 @@
 @import url("../dojo/resources/dojo.css");
 @import url("../dijit/themes/dijit.css");
-@import url("../dijit/themes/tundra/layout/BorderContainer.css");
-@import url("../dijit/themes/tundra/layout/ContentPane.css");
-@import url("../dijit/themes/tundra/form/Button.css");
-@import url("../dijit/themes/tundra/Menu.css");
-@import url("../dijit/themes/tundra/Dialog.css");
+@import url("../dijit/themes/claro/layout/BorderContainer.css");
+@import url("../dijit/themes/claro/layout/ContentPane.css");
+@import url("../dijit/themes/claro/form/Button.css");
+@import url("../dijit/themes/claro/Menu.css");
+@import url("../dijit/themes/claro/Dialog.css");
+@import url("../dijit/themes/claro/document.css");
+@import url("state-machine1.css");
+
 
 html, body, #main{
-	width: 100%;	/* make the body expand to fill the visible window */
-	height: 100%;
-	overflow: hidden;	/* erase window level scrollbars */
-	padding: 0 0 0 0;
-	margin: 0 0 0 0;
-	font: 10pt Arial,Myriad,Tahoma,Verdana,sans-serif;
+	width:100%;	/* make the body expand to fill the visible window */
+	height:100%;
+	overflow:hidden;	/* erase window level scrollbars */
+	padding:0 0 0 0;
+	margin:0 0 0 0;
+	font:10pt Arial,Myriad,Tahoma,Verdana,sans-serif !important;
+}
+
+#crisisAlertMessage{
+  background: #fff; /* override claro Dialog css for crisis alert message */
+  max-width: 60ex;
+}
+
+
+
+/*
+                        Node editor
+*/
+
+#nodeeditor, #crisisAlertMessage {
+    font:10pt Arial,Myriad,Tahoma,Verdana,sans-serif !important;
+}
+
+#nodeeditor .fieldgroup {
+    display:block;
+    margin-top:2ex;
+    margin-bottom:2ex;
+    margin-left:0ex;
+    clear:both;
+}
+
+#nodeeditor .fieldgroup > label {
+    text-align:right;
+    margin-left:2ex;
+    margin-right:1ex;
+}
+
+#nodeeditor .fieldgroup > * {
+    display:inline-block;
+    vertical-align:top
+}
+
+#nodeeditor .fieldgroup > label:first-child {
+    width:10ex;
+}
+
+#nodeeditor #equationText {
+    max-width:40ex;
+    border:solid black 1px;
+    padding:2px;
+    margin:2px;
+}
+
+#nodeeditor .textscroll {
+    background:#e5e5e5;
+    border:solid black 1px;
+    overflow-y:scroll;
+    height:8ex;
+    width:20em
+}
+
+#nodeeditor .textscroll p {
+    margin-top:0.5ex;
+    margin-bottom:0.5ex;
+}
+
+/*  Display contents as horizontal but this block as vertical. */
+#nodeeditor .horizontal {
+    display:block;
+}
+
+/* Display contents as vertical but this block as horizontal. */
+#nodeeditor .vertical {
+    display:inline-block;
+    vertical-align:top;
+}
+
+/* If we use float to horizontally align, there seems to be
+   no way to vertically align the buttons.  */
+#nodeeditor .buttonBox {
+    float:right;
+}
+
+/* Right align buttons */
+.buttonBox > * {
+    float:right;
+    clear:right;
+}
+
+
+/*
+            plots and tables 
+*/
+
+table.solution, table.solution th, table.solution td {
+    border:1px solid black;
+    border-spacing:0px;
+}
+
+table.solution th {
+    text-align:center;
+    padding-right:10px;
+    padding-left:10px;
+}
+
+div.legend {
+    margin:0 auto;
 }

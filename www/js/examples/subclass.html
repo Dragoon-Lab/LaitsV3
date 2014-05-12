@@ -1,0 +1,90 @@
+<!DOCTYPE HTML PUBLIC "-//IETF//DTD HTML//EN">
+<html> <head>
+<title>Test subclasses</title>
+        <script type="text/javascript">
+		dojoConfig = {
+			isDebug:true,
+			parseOnLoad:true,
+		        async: true,
+			 baseUrl: "../../",
+			 packages: [
+			    {name: "dojo", location: "dojo"},
+			    {name: "dijit", location: "dijit"},
+			    {name: "dojox", location: "dojox"},
+                         ]
+		};
+	</script>
+        <script src="../../dojo/dojo.js" type="text/javascript"></script>
+
+<script type="text/javascript">
+
+
+require([
+   "dojo/_base/declare", "dojo/_base/lang"
+],function(declare, lang){
+
+console.info("Methods using declare:");
+
+var model = declare(null,{
+     constructor: function(){
+        this.sub.parent = this;
+        this.sub.getData3 = lang.hitch(this,this.getData1);
+        this.data = "ok";
+     },
+     data: "bad",
+     getData1: function(){
+           return this.data;
+     },
+
+     sub: {
+           getData2: function(){return this.parent.getData1.apply(this.parent,arguments);}
+     }
+
+});
+
+var m = new model();
+console.log("model class instance ", m);
+console.log("call getData1: ", m.getData1());
+console.log("call getData2: ", m.sub.getData2());
+console.log("call getData3: ", m.sub.getData3());
+
+console.info("Alternative methods using function:");
+
+model = function(){
+var obj = {
+     constructor: function(){
+         this.data = "ok";
+     },
+     data: "bad",
+     getData4: function(){
+         return this.data;
+    }
+};
+
+obj.sub = {
+   getData5: lang.hitch(obj, obj.getData4),
+   getData6: function(){return obj.getData4.apply(obj,arguments);}
+};
+
+obj.constructor.apply(obj,arguments);
+
+return obj;
+};
+
+m = new model();
+console.log("model class instance ", m);
+console.log("call getData4: ", m.getData4());
+console.log("call getData5: ", m.sub.getData5());
+console.log("call getData6: ", m.sub.getData6());
+
+
+
+});
+
+</script>
+
+</head>
+<body>
+<h1>Test subclasses</h1>
+Results are in console.log
+</body> </html>

@@ -11,7 +11,7 @@ Class ModelChanges{
 	}
 
 	function getProblemPairs(){
-		$sqlQuery = "SELECT autosave_table.id, autosave_table.problemNum, autosave_table.section, unsolutions.problemName, unsolutions.author from autosave_table JOIN unsolutions on autosave_table.problemNum = unsolutions.problemName where autosave_table.id != unsolutions.author and autosave_table.section = 'SOS-326' and autosave_table.date > '2013-10-29' and unsolutions.date > '2013-10-29' order by author;";
+		$sqlQuery = "SELECT autosave_table.id, autosave_table.problemNum, autosave_table.section, unsolutions.problemName, unsolutions.author from autosave_table JOIN unsolutions on autosave_table.problemNum = unsolutions.problemName and autosave_table.author = unsolutions.author where autosave_table.id != unsolutions.author and autosave_table.section = 'SOS-326' and autosave_table.date > '2013-10-29' and unsolutions.date > '2013-10-29' order by author;";
 
 		$problemPairs = $this->al->getResults($sqlQuery);
 
@@ -25,8 +25,9 @@ Class ModelChanges{
 	 		//$studentUserType = $this->al->checkBadUsers($row['id']);
 	 		//$authorUserType = $this->al->checkBadUsers($row['author']);
 	 		echo "<tr>\n";
-	 		$authorURL = "http://dragoon.asu.edu/demo/startup.php?section=".$row['section']."&amp;problem_id=".$row['problemName']."&amp;mode=AUTHOR&amp;username=".$row['author'];
-	 		$studentURL = "http://dragoon.asu.edu/demo/startup.php?section=".$row['section']."&amp;problem_id=".$row['problemNum']."&amp;mode=STUDENT&amp;username=".$row['id'];
+	 		//echo "<td>".$row['saveData']."</td>\n";
+	 		$authorURL = "http://dragoon.asu.edu/old/startup.php?section=".$row['section']."&amp;problem_id=".$row['problemName']."&amp;mode=AUTHOR&amp;username=".$row['author'];
+	 		$studentURL = "http://dragoon.asu.edu/old/startup.php?section=".$row['section']."&amp;problem_id=".$row['problemNum']."&amp;mode=STUDENT&amp;username=".$row['id']."&amp;author=".$row['author'];
 	 		echo "<td>".$row['author']."</td>\n";
 	 		echo "<td>".$row['problemName']."</td>\n";
 	 		echo '<td><a href = "'.$authorURL.'">Final Authored model</a></td>';

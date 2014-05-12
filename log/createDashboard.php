@@ -10,12 +10,14 @@ Class Dashboard{
 		$this->al = new AnalyzeLogs(Dashboard::$sqlConnection);
 	}
 
-	function createDashboard($section, $mode, $date, $fromTime, $toTime, $user){
+	function createDashboard($section, $mode, $fromDate, $toDate, $fromTime, $toTime, $user){
 		//$sessionQuery = "SELECT * from session JOIN step ON session.session_id = step.session_id where time >= '2014-01-26 08:00:000' AND time <= '2014-01-29 16:15:000' AND mode = 'STUDENT' ORDER BY user asc, step.session_id asc, time asc;";
 		//$sessionQuery = "select * from step where session_id = '4556e5121a83ecd679ebe6ecbd2a7aec' order by tid asc;";
 		$userString = "AND user = '".$user."' ";
-		$sessionQuery = "SELECT tid, session.session_id, user, problem_name, time, method, message, author from session JOIN step ON session.session_id = step.session_id where section = '".$section."' AND time >= '".$date." ".$fromTime."' AND time <= '".$date." ".$toTime."' AND mode = '".$mode."' ".($user != ''?$userString:'')."ORDER BY user asc, problem_name asc, tid asc;";
+		$sessionQuery = "SELECT tid, session.session_id, user, problem_name, time, method, message, author from session JOIN step ON session.session_id = step.session_id where section = '".$section."' AND time >= '".$fromDate." ".$fromTime."' AND time <= '".(!empty($toDate)?$toDate:$fromDate)." ".$toTime."' AND mode = '".$mode."' ".($user != ''?$userString:'')."ORDER BY user asc, problem_name asc, tid asc;";
 		
+		//echo $sessionQuery."<br/>";
+
 		$totalWork = $this->al->getResults($sessionQuery);
 		$numResults = mysqli_num_rows($totalWork);
 		
@@ -59,6 +61,7 @@ Class Dashboard{
 					$noOfTimesProblemAccessed = 1;
 					$workingTempNode = false;
 					$tempNodeName = ''; $tempNodeString = '';
+					//echo "=================================new problem started ".$row['problem_name'].'<br/>';
 				}
 				$message = $row['message'];
 				$method = $row['method'];
@@ -92,10 +95,10 @@ Class Dashboard{
 				}
 
 				$timeDiff = $messageJSON['time']-$oldMessageJSON['time'];
-				
+
 				if($messageJSON['time'] > $oldMessageJSON['time'] && $timeDiff > $maxIdleTime){
 					$userGaming = true;
-				} else if($continuedSession) {
+				} else if($continuedSession && $messageJSON['time'] > $oldMessageJSON['time']) {
 					$problemTime = $problemTime + $timeDiff;
 				} else {
 					$noOfTimesProblemAccessed++;
@@ -118,7 +121,7 @@ Class Dashboard{
 						$problemComplete = true;
 					}
 				} elseif($method === 'client-message'){
-					if($messageJSON['text'] === 'Model ran successfully'){
+					if(array_key_exists('text', $messageJSON) && $messageJSON['text'] === 'Model ran successfully'){
 						$problemComplete = true;
 						$sessionRunning = false;
 					}
@@ -261,7 +264,7 @@ Class Dashboard{
 			$user = $oldRow['user'];
 			$problem = $oldRow['problem_name'];
 
-			$finalTime = $oldMessageJSON['time'];
+			$finalTime = $messageJSON['time'];
 			$this->printData($user, $problem, $userGaming, $problemComplete, $sessionRunning, $problemTime, $nodeDetailsArray, $lastAction, $finalTime);
 			echo "</table>\n";
 		} else {
@@ -291,11 +294,11 @@ Class Dashboard{
 		echo "</tr>\n";
 	}
 
-	function createSmallDashboard($section, $mode, $date, $fromTime, $toTime, $user){
+	function createSmallDashboard($section, $mode, $fromDate, $toDate, $fromTime, $toTime, $user){
 		$userString = "AND user = '".$user."' ";
 		//$sessionQuery = "SELECT tid, session.session_id, user, problem_name, time, method, message, author from session JOIN step ON session.session_id = step.session_id where section = 'sos-326-spring14' AND time >= '2014-01-29 15:00' AND time <= '2014-01-29 16:15' AND mode = 'COACHED' AND (user = 'bstrong' OR user = 'cmflanne') ORDER BY user asc, problem_name asc, tid asc;";
 
-		$sessionQuery = "SELECT tid, session.session_id, user, problem_name, time, method, message, author from session JOIN step ON session.session_id = step.session_id where section = '".$section."' AND time >= '".$date." ".$fromTime."' AND time <= '".$date." ".$toTime."' AND mode = '".$mode."' ".($user != ''?$userString:'')."ORDER BY user asc, problem_name asc, tid asc;";
+		$sessionQuery = "SELECT tid, session.session_id, user, problem_name, time, method, message, author from session JOIN step ON session.session_id = step.session_id where section = '".$section."' AND time >= '".$fromDate." ".$fromTime."' AND time <= '".(!empty($toDate)?$toDate:$fromDate)." ".$toTime."' AND mode = '".$mode."' ".($user != ''?$userString:'')."ORDER BY user asc, problem_name asc, tid asc;";
 
 		//echo $sessionQuery;
 

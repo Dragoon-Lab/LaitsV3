@@ -1,0 +1,100 @@
+{
+    "task": {
+        "taskName": "Rabbits - Intro Problem",
+        "time": {
+            "start": 0,
+            "end": 10,
+            "step": 0.5,
+            "units": "Years"
+        },
+        "properties": {
+            "phase": "Intro",
+            "type": "Construct"
+        },
+        "image": {
+            "URL": "images/rabbit.jpeg"
+        },
+        "taskDescription": " <html>In this exercise, you will construct a model of how a rabbit population grows when no rabbits die. The first quantity in this model is the <strong>population</strong> or <em>number of rabbits in the population</em>. Initially, there are 100 rabbits, but the number increases with time. The new population each month is its present value plus the number of <strong>births</strong> (<em>number of rabbits born each month</em>). The number of <strong>births</strong> is equal to the product of the population and the <strong>birth rate</strong>. The <strong>birth rate</strong> or <em>the ratio of the number of rabbits born in a month to the rabbit population that month</em> has a fixed value of 0.2.</html>",
+        "givenModelNodes": [
+            {
+                "ID": "id1",
+                "inputs": [
+                    {
+                        "ID": "id2"
+                    }
+                ],
+                "position": {
+                    "x": 400,
+                    "y": 100
+                },
+                "attemptCount": {
+                    "description": 0,
+                    "type": 0,
+                    "initial": 0,
+                    "units": 0,
+                    "equation": 0
+                },
+                "status": {},
+                "name": "population",
+                "type": "accumulator",
+                "parentNode": true,
+                "units": "",
+                "description": "The number of rabbits in the population",
+                "initial": 100,
+                "equation": "+ id2"
+            },
+            {
+                "ID": "id2",
+                "inputs": [
+                    {
+                        "ID": "id1"
+                    },
+                    {
+                        "ID": "id3"
+                    }
+                ],
+                "position": {
+                    "x": 400,
+                    "y": 100
+                },
+                "attemptCount": {
+                    "description": 0,
+                    "type": 0,
+                    "initial": 0,
+                    "units": 0,
+                    "equation": 0
+                },
+                "status": {},
+                "name": "births",
+                "type": "function",
+                "parentNode": false,
+                "units": "",
+                "description": "The number of rabbits born each month",
+                "equation": "id1 * id3"
+            },
+            {
+                "ID": "id3",
+                "inputs": [],
+                "position": {
+                    "x": 400,
+                    "y": 100
+                },
+                "attemptCount": {
+                    "description": 0,
+                    "type": 0,
+                    "initial": 0,
+                    "units": 0,
+                    "equation": 0
+                },
+                "status": {},
+                "name": "birth rate",
+                "type": "parameter",
+                "parentNode": false,
+                "units": "",
+                "description": "The ratio of number of rabbits born in a month to the rabbit population that month",
+                "initial": 0.2
+            }
+        ],
+        "studentModelNodes": []
+    }
+}

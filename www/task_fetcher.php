@@ -1,49 +1,103 @@
 <?php
+/*
+     Retrieve previous work from solutions table or 
+     a custom problem from the solutions table or
+     a published problem
 
-$problem = $_GET['taskid'];
-$section = isset($_GET['group'])?$_GET['group']:'';
-if(isset($_GET['author'])){
-  /*
-    If section is given as argument, then look for 
-    section-authored problems stored in database.
-  */
-  $author=$_GET['author'];
-  
-  require "db-login.php";
-  $con = new mysqli("localhost", $dbuser, $dbpass,$dbname)
-    or trigger_error("Failed to connect to MySQL: (" . $con->connect_errno . ") " . $con->connect_error,E_USER_ERROR);
-  
-  /* 
-     The remaining code needs to be modified to look for section-specific
-     problems in the database.
-     
-     Since searching may be by name, include a copy of the problem name 
-     outside the xml.
-  */
-  
-  //Commented out for bug 2172
-  $query = "SELECT solutionGraph FROM solutions WHERE problemName='$problem' AND author='$author' AND section='$section'";
-  
-  //echo $query;
-  
-  $result = $con->query($query)
-    or trigger_error("Select from solutions failed");
+     This script is stateless, so we don't need to worry about php sessions.
+*/
+
+// Using trigger_error() so logging level and destination can be modified.
+require "error-handler.php";
+
+//connect to database
+require "db-login.php";
+$mysqli = mysqli_connect("localhost", $dbuser, $dbpass, $dbname)
+  or trigger_error('Could not connect to database.', E_USER_ERROR);
+
+// Must always provide problem name
+$problem =  mysqli_real_escape_string($mysqli,$_GET['p'])
+  or trigger_error('Problem name not supplied.', E_USER_ERROR);
+// Author is optional
+$author = isset($_GET['a'])?mysqli_real_escape_string($mysqli,$_GET['a']):null;
+
+/* 
+   Not providing the author is equivalent to saying that this is 
+   a published problem.
+
+   If student, section, and mode have been provided, see if there has been 
+   previous work by the student (same mode) and return solution graph.
+
+   If author and section are specified, then 
+       look for solution from author mode sessions with matching author, session
+       and problem (if none is found, then log an error.)         
+   else
+       forward to published problems
+
+*/
+
+if(isset($_GET['u']) && isset($_GET['s']) && isset($_GET['m'])){
+  $user = mysqli_real_escape_string($mysqli,$_GET['u']);
+  $section = mysqli_real_escape_string($mysqli,$_GET['s']);
+  $mode = $_GET['m'];  // only four choices
+  $as = isset($_GET['a'])? "= '$author'":'IS NULL';
+
+  $query = <<<EOT
+    SELECT t1.solution_graph FROM solutions AS t1 JOIN session AS t2 USING (session_id) 
+      WHERE t2.user = '$user' AND t2.section = '$section' AND t2.mode = '$mode' 
+          AND t2.problem = '$problem' AND t2.author $as ORDER BY t1.time DESC LIMIT 1
+EOT;
+
+  $result = $mysqli->query($query)
+    or trigger_error("Previous work query failed." . $mysqli->error);
   if($row = $result->fetch_row()){
-    //echo $row['task_details'];
-    header("Content-type: text/xml");
+    header("Content-type: application/json");
+    print $row[0];
+    exit;
+  }
+}
+
+/*
+     No previous work found: treat this as starting a new problem.
+     Look for a matching custom problem or look for
+     a matching published problem
+*/
+
+if(isset($_GET['a']) && isset($_GET['s'])){
+  /*
+    If author and section are supplied, then look for 
+    custom problem stored in database.
+  */
+
+  $section = mysqli_real_escape_string($mysqli,$_GET['s']);
+
+  $query = <<<EOT
+    SELECT t1.solution_graph FROM solutions AS t1 JOIN session AS t2 
+          USING (session_id) 
+      WHERE t2.section = '$section' AND t2.mode = 'AUTHOR' 
+          AND t2.problem = '$problem' AND t2.author = '$author' ORDER BY t1.time DESC LIMIT 1
+EOT;
+
+  $result = $mysqli->query($query)
+    or trigger_error("Custom solution query failed.");
+  if($row = $result->fetch_row()){
+    header("Content-type: application/json");
     print $row[0];
   } else {
-    	http_response_code(500);
+        // No previous work found:  assume that this is a new problem	 
+    	http_response_code(204);
   }
+
 } else {
-  /* If section is not supplied, then use published problems. */
-  
+
+  /* If author and section is not supplied, then use published problems. */
   $host  = $_SERVER['HTTP_HOST'];
   $uri   = rtrim(dirname($_SERVER['PHP_SELF']), '/\\');
-  $extra = 'problems/' . $problem . '.xml';
+  // To support Java, one would need to switch this to xml
+  $extra = 'problems/' . $problem . '.json';
   /* Redirect to a page relative to the current directory.
      HTTP/1.1 requires an absolute URI as argument to Location. */
   header("Location: http://$host$uri/$extra");
-  exit;
 }
+
 ?>

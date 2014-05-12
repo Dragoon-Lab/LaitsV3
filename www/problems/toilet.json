@@ -1,0 +1,151 @@
+{
+    "task": {
+        "taskName": "Toilet tank",
+        "time": {
+            "start": 0,
+            "end": 100,
+            "step": 1,
+            "units": "minutes"
+        },
+        "properties": {
+            "phase": "",
+            "type": ""
+        },
+        "image": {
+            "URL": "images/toilettank.jpg"
+        },
+        "taskDescription": " • Most toilets used at home have a tank full of water. There is a float (usually shaped like a ball) on the surface of the water, and it is attached to a valve. The valve lets water into the tank. When the tank is full, the valve is closed. When the toilet is flushed, the tank empties, the water level falls, the float falls and the value opens. The valve eventually refills the tank. However, the water it lets into the tank is proportional to the height of the float. When the float is at its full height of 13 inches, the valve is \tclosed. When it is 1 inch below its full height (i.e., float height = 12), then the valve lets in 0.05 inches of water per second. For each inch of float height, it lets in an additional 0.05 inches of water per second. Thus, when float height = 0, the valve lets in 13*0.05 = 0.65 inches of water per second. Graph the height of the water in the tank over 100 seconds. ",
+        "givenModelNodes": [
+            {
+                "ID": "id1",
+                "inputs": [
+                    {
+                        "ID": "id2"
+                    }
+                ],
+                "position": {
+                    "x": 400,
+                    "y": 100
+                },
+                "attemptCount": {
+                    "description": 0,
+                    "type": 0,
+                    "initial": 0,
+                    "units": 0,
+                    "equation": 0
+                },
+                "status": {},
+                "name": "float height",
+                "type": "accumulator",
+                "parentNode": true,
+                "units": "",
+                "description": "The height of the water in the toilet tank",
+                "initial": null,
+                "equation": "id2"
+            },
+            {
+                "ID": "id2",
+                "inputs": [
+                    {
+                        "ID": "id5"
+                    },
+                    {
+                        "ID": "id4"
+                    }
+                ],
+                "position": {
+                    "x": 400,
+                    "y": 100
+                },
+                "attemptCount": {
+                    "description": 0,
+                    "type": 0,
+                    "initial": 0,
+                    "units": 0,
+                    "equation": 0
+                },
+                "status": {},
+                "name": "water flow",
+                "type": "function",
+                "parentNode": false,
+                "units": "",
+                "description": "The amount of water flowing into the tank",
+                "equation": "id5 * id4"
+            },
+            {
+                "ID": "id3",
+                "inputs": [],
+                "position": {
+                    "x": 400,
+                    "y": 100
+                },
+                "attemptCount": {
+                    "description": 0,
+                    "type": 0,
+                    "initial": 0,
+                    "units": 0,
+                    "equation": 0
+                },
+                "status": {},
+                "name": "full height",
+                "type": "parameter",
+                "parentNode": false,
+                "units": "",
+                "description": "The height of the water when the tank is full",
+                "initial": 13
+            },
+            {
+                "ID": "id4",
+                "inputs": [
+                    {
+                        "ID": "id1"
+                    },
+                    {
+                        "ID": "id3"
+                    }
+                ],
+                "position": {
+                    "x": 400,
+                    "y": 100
+                },
+                "attemptCount": {
+                    "description": 0,
+                    "type": 0,
+                    "initial": 0,
+                    "units": 0,
+                    "equation": 0
+                },
+                "status": {},
+                "name": "height difference",
+                "type": "function",
+                "parentNode": false,
+                "units": "",
+                "description": "The number of inches below full height of the water",
+                "equation": "id3 - id1"
+            },
+            {
+                "ID": "id5",
+                "inputs": [],
+                "position": {
+                    "x": 400,
+                    "y": 100
+                },
+                "attemptCount": {
+                    "description": 0,
+                    "type": 0,
+                    "initial": 0,
+                    "units": 0,
+                    "equation": 0
+                },
+                "status": {},
+                "name": "flow per inch",
+                "type": "parameter",
+                "parentNode": false,
+                "units": "",
+                "description": "The amount of water flowing into the tank per inch of height difference",
+                "initial": 0.05
+            }
+        ],
+        "studentModelNodes": []
+    }
+}

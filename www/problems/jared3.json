@@ -1,0 +1,122 @@
+{
+    "task": {
+        "taskName": "Jared and Oprah with difference",
+        "time": {
+            "start": 0,
+            "end": 10,
+            "step": 0.5,
+            "units": "Days"
+        },
+        "properties": {
+            "phase": "Intro",
+            "type": "Construct"
+        },
+        "image": {
+            "URL": "images/jared-and-oprah.jpg"
+        },
+        "taskDescription": "Create a model with four nodes: *Jared weight: Jared always weighs a certain amount more than Oprah. *Jared extra weight: This is 50 pounds, which is how much more he weighs than Oprah. *Oprah weight: She starts at 140 pounds and decreases by a certain amount a week. *Oprah weight loss: She loses 1.5 pounds a week.",
+        "givenModelNodes": [
+            {
+                "ID": "id1",
+                "inputs": [],
+                "position": {
+                    "x": 400,
+                    "y": 100
+                },
+                "attemptCount": {
+                    "description": 0,
+                    "type": 0,
+                    "initial": 0,
+                    "units": 0,
+                    "equation": 0
+                },
+                "status": {},
+                "name": "Jared extra weight",
+                "type": "parameter",
+                "parentNode": false,
+                "units": "",
+                "description": "How much Jared weighs more than Oprah",
+                "initial": 50
+            },
+            {
+                "ID": "id2",
+                "inputs": [
+                    {
+                        "ID": "id3"
+                    }
+                ],
+                "position": {
+                    "x": 400,
+                    "y": 100
+                },
+                "attemptCount": {
+                    "description": 0,
+                    "type": 0,
+                    "initial": 0,
+                    "units": 0,
+                    "equation": 0
+                },
+                "status": {},
+                "name": "Oprah weight",
+                "type": "accumulator",
+                "parentNode": false,
+                "units": "",
+                "description": "How much Oprah weighs at the end of the week",
+                "initial": 140,
+                "equation": "- id3"
+            },
+            {
+                "ID": "id3",
+                "inputs": [],
+                "position": {
+                    "x": 400,
+                    "y": 100
+                },
+                "attemptCount": {
+                    "description": 0,
+                    "type": 0,
+                    "initial": 0,
+                    "units": 0,
+                    "equation": 0
+                },
+                "status": {},
+                "name": "Oprah weight loss",
+                "type": "parameter",
+                "parentNode": false,
+                "units": "",
+                "description": "How much Oprah loses each week",
+                "initial": 1.5
+            },
+            {
+                "ID": "id4",
+                "inputs": [
+                    {
+                        "ID": "id2"
+                    },
+                    {
+                        "ID": "id1"
+                    }
+                ],
+                "position": {
+                    "x": 400,
+                    "y": 100
+                },
+                "attemptCount": {
+                    "description": 0,
+                    "type": 0,
+                    "initial": 0,
+                    "units": 0,
+                    "equation": 0
+                },
+                "status": {},
+                "name": "Jared weight",
+                "type": "function",
+                "parentNode": true,
+                "units": "",
+                "description": "How much Jared weighs at the end of the week",
+                "equation": "id2 + id1"
+            }
+        ],
+        "studentModelNodes": []
+    }
+}

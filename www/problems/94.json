@@ -1,0 +1,123 @@
+{
+    "task": {
+        "taskName": "Rust",
+        "time": {
+            "start": 0,
+            "end": 10,
+            "step": 0.5,
+            "units": "weeks"
+        },
+        "properties": {
+            "phase": "Training",
+            "type": "Construct"
+        },
+        "image": {
+            "URL": "http://upload.wikimedia.org/wikipedia/commons/3/3f/Box_car_DSSA_18052.jpg"
+        },
+        "taskDescription": " Problem: Rust destroys steel and can spread quickly. Suppose you take a large sheet of steel, such as one that might be used as the roof of the boxcar on a train, and you put it outside in the weather. Suppose it starts with a spot of rust that is 10 square inches in area. However, each week the rust spot gets bigger, as it grows by 30%. Therefore at the end of the first week, the rust spot is 13 square inches in area. Goal: Graph the size of the rust spot over 10 weeks. ",
+        "givenModelNodes": [
+            {
+                "ID": "id1",
+                "inputs": [],
+                "position": {
+                    "x": 400,
+                    "y": 100
+                },
+                "attemptCount": {
+                    "description": 0,
+                    "type": 0,
+                    "initial": 0,
+                    "units": 0,
+                    "equation": 0
+                },
+                "status": {},
+                "name": "rust area first week",
+                "type": "parameter",
+                "parentNode": false,
+                "genus": "extra",
+                "units": "",
+                "description": "The amount in square inches of total rust after the first week",
+                "initial": 13
+            },
+            {
+                "ID": "id2",
+                "inputs": [],
+                "position": {
+                    "x": 400,
+                    "y": 100
+                },
+                "attemptCount": {
+                    "description": 0,
+                    "type": 0,
+                    "initial": 0,
+                    "units": 0,
+                    "equation": 0
+                },
+                "status": {},
+                "name": "rust growth factor",
+                "type": "parameter",
+                "parentNode": false,
+                "units": "",
+                "description": "The proportion of new rust to the existing rusted area",
+                "initial": 0.3
+            },
+            {
+                "ID": "id3",
+                "inputs": [
+                    {
+                        "ID": "id4"
+                    }
+                ],
+                "position": {
+                    "x": 400,
+                    "y": 100
+                },
+                "attemptCount": {
+                    "description": 0,
+                    "type": 0,
+                    "initial": 0,
+                    "units": 0,
+                    "equation": 0
+                },
+                "status": {},
+                "name": "rust spot area",
+                "type": "accumulator",
+                "parentNode": true,
+                "units": "",
+                "description": "The amount in square inches of total rust each week",
+                "initial": 10,
+                "equation": "+ id4"
+            },
+            {
+                "ID": "id4",
+                "inputs": [
+                    {
+                        "ID": "id3"
+                    },
+                    {
+                        "ID": "id2"
+                    }
+                ],
+                "position": {
+                    "x": 400,
+                    "y": 100
+                },
+                "attemptCount": {
+                    "description": 0,
+                    "type": 0,
+                    "initial": 0,
+                    "units": 0,
+                    "equation": 0
+                },
+                "status": {},
+                "name": "new rust per week",
+                "type": "function",
+                "parentNode": false,
+                "units": "",
+                "description": "The amount in square inches of new rust each week",
+                "equation": "id3 * id2"
+            }
+        ],
+        "studentModelNodes": []
+    }
+}

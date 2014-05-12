@@ -1,0 +1,90 @@
+{
+    "task": {
+        "taskName": "Dying Orchard",
+        "time": {
+            "start": 0,
+            "end": 10,
+            "step": 0.5,
+            "units": "years"
+        },
+        "properties": {
+            "phase": "Training",
+            "type": "Construct"
+        },
+        "image": {
+            "URL": "http://image1.masterfile.com/getImage/NjAwLTAwMTcwOTExbi4wMDAwMDAwMA=AKB8Lk/600-00170911n.jpg"
+        },
+        "taskDescription": " Problem: There are initially 256 trees in the orange orchard \"La belle orangerie\", and 16 trees die each year. So at the end of the first year, there are only 240 trees remaining in the orchard. Goal: Graph the number of trees in the orchard each year for 10 years. ",
+        "givenModelNodes": [
+            {
+                "ID": "id1",
+                "inputs": [],
+                "position": {
+                    "x": 400,
+                    "y": 100
+                },
+                "attemptCount": {
+                    "description": 0,
+                    "type": 0,
+                    "initial": 0,
+                    "units": 0,
+                    "equation": 0
+                },
+                "status": {},
+                "name": "trees first year",
+                "type": "parameter",
+                "parentNode": false,
+                "genus": "extra",
+                "units": "",
+                "description": "The number of trees alive in the orchard at the end of the first year",
+                "initial": 240
+            },
+            {
+                "ID": "id2",
+                "inputs": [],
+                "position": {
+                    "x": 400,
+                    "y": 100
+                },
+                "attemptCount": {
+                    "description": 0,
+                    "type": 0,
+                    "initial": 0,
+                    "units": 0,
+                    "equation": 0
+                },
+                "status": {},
+                "name": "annual tree deaths",
+                "type": "parameter",
+                "parentNode": false,
+                "units": "",
+                "description": "The number of trees that die each year",
+                "initial": 16
+            },
+            {
+                "ID": "id3",
+                "inputs": [],
+                "position": {
+                    "x": 400,
+                    "y": 100
+                },
+                "attemptCount": {
+                    "description": 0,
+                    "type": 0,
+                    "initial": 0,
+                    "units": 0,
+                    "equation": 0
+                },
+                "status": {},
+                "name": "trees in orchard",
+                "type": "accumulator",
+                "parentNode": true,
+                "units": "",
+                "description": "The number of trees alive in the orchard each year",
+                "initial": 256,
+                "equation": "- id2"
+            }
+        ],
+        "studentModelNodes": []
+    }
+}
