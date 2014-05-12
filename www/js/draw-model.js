@@ -123,7 +123,7 @@ define([
 	    var parameter =  '';
 	    if(parse){
 		parse=equation.parse(parse);
-		parameter = equation.isSum(parse)?'Sum':equation.isProduct(parse)?'Product':'';
+		parameter = equation.isSum(parse)?'+':equation.isProduct(parse)?'*':'';
 	    }
 
 	     var initialValue = this._givenModel.getInitial(node.ID);
@@ -134,11 +134,11 @@ define([
              if(!unitsValue)
                      unitsValue = '';
 
-            initialValue=initialValue+'</br>'+unitsValue;
+            initialValue+=' '+unitsValue;
 
 
             if(nodeName && type != "triangle")
-                nodeName='<div id='+node.ID+'Label  class="bubble"><strong>'+parameter+'</br>'+initialValue+'</strong><div class='+type+'Div><strong>'+nodeName+'</strong></div></div>';
+                nodeName='<div id='+node.ID+'Label  class="bubble"><strong>'+parameter+'<br>'+initialValue+'</strong><div class='+type+'Div><strong>'+nodeName+'</strong></div></div>';
             else
                 nodeName='';
 	

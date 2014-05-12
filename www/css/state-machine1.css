@@ -83,17 +83,17 @@
     -o-transform: rotate(0deg)!important;
     transform: rotate(0deg)!important;
     position: relative;
-    top:48px;
+    top:55px;
 }
 
 .functionDiv{
   position:relative; 
-  top:48px;
+  top:40px;
 }
 
 .accumulatorDiv{
  position:relative;
- top:42px;
+ top:40px;
 }
 
 
