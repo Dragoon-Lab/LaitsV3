@@ -14,7 +14,20 @@
         "image": {
             "URL": "images/isle6pic.jpg"
         },
-        "taskDescription": " Assumptions: * Births and deaths are the only change in the population. * The wolf population is 20 in the first year. * The number of wolf deaths each year is 25% of the wolf population. * The number of wolf births is wolf birth rate times the wolf population. * The wolf birth rate is the moose pop. times the effect of moose on wolves. * The effect of moose on wolves is 0.00075. * The moose population is 500 in the first year. * The moose birth rate is 10% of the moose population. * The number of moose deaths is the moose death rate times the moose pop. * The mose death rate is the wolf pop. times the effect of wolves on moose. * The effect of wolves on moose is 0.003. ",
+        "taskDescription": [
+            "Assumptions:",
+            " * Births and deaths are the only change in the population.",
+            " * The wolf population is 20 in the first year.", 
+            " * The number of wolf deaths each year is 25% of the wolf population.",
+            " * The number of wolf births is wolf birth rate times the wolf population.",
+            " * The wolf birth rate is the moose pop. times the effect of moose on wolves.",
+            " * The effect of moose on wolves is 0.00075.",
+            " * The moose population is 500 in the first year.", 
+ 	    " * The moose birth rate is 10% of the moose population.", 
+            " * The number of moose deaths is the moose death rate times the moose pop.",
+            " * The mose death rate is the wolf pop. times the effect of wolves on moose.",
+            " * The effect of wolves on moose is 0.003."
+        ],
         "givenModelNodes": [
             {
                 "ID": "id1",
