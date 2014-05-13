@@ -2,14 +2,14 @@
 
 The [Dragoon website](http://dragoon.asu.edu) includes
 background information, access to the tutor system and a
-tutorial to get you started using dragoon.
+tutorial to get you started using Dragoon.
 
 [Documentation and design documents](documentation/README.md) are
 available.
 
 ## Dragoon Install ##
 
-This document contains instructions for setting up a dragoon server.
+This document contains instructions for setting up a Dragoon server.
 These instructions are for the Javascript version of Dragoon.
 
 ### Database Setup ###
