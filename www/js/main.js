@@ -21,15 +21,15 @@ define([
         lang, dom, geometry, on, aspect, ioQuery, ready, registry,
         menu, loadSave, model,
         Graph, Table, wrapText, controlStudent, controlAuthor, Parser, drawmodel, calculations, logging
-        ) {
+        ){
 
     console.log("load main.js");
 
     // Get session parameters
     var query = {};
-    if (window.location.search) {
+    if(window.location.search){
         query = ioQuery.queryToObject(window.location.search.slice(1));
-    } else {
+    }else {
         console.warn("Should have method for logging this to Apache log files.");
         console.warn("Dragoon log files won't work since we can't set up a session.");
         console.error("Function called without arguments");
@@ -38,11 +38,15 @@ define([
     // Start up new session and get model object from server
     var session = new loadSave(query);
     logging.setSession(session);  // Give logger message destination
-    session.loadProblem(query).then(function(solutionGraph) {
+    session.loadProblem(query).then(function(solutionGraph){
 
         var givenModel = new model(query.m, query.p);
+<<<<<<< HEAD
         logging.log('open-problem',{problem : givenModel.getTaskName()});
         if (solutionGraph) {
+=======
+        if(solutionGraph){
+>>>>>>> master
             givenModel.loadModel(solutionGraph);
         }
 
@@ -59,15 +63,15 @@ define([
         /* In principle, we could load just one controller or the other. */
             var controllerObject = query.m == 'AUTHOR' ? new controlAuthor(query.m, subMode, givenModel, query.is) :
                 new controlStudent(query.m, subMode, givenModel, query.is);
-        if (controllerObject._PM)
+        if(controllerObject._PM)
             controllerObject._PM.setLogging(session);  // Set up direct logging in PM
 
-        ready(function() {
+        ready(function(){
 
             var drawModel = new drawmodel(givenModel.active);
 
             /* add "Create Node" button to menu */
-            menu.add("createNodeButton", function() {
+            menu.add("createNodeButton", function(){
                 var id = givenModel.active.addNode();
                 drawModel.addNode(givenModel.active.getNode(id));
                 controllerObject.showNodeEditor(id);
@@ -76,19 +80,19 @@ define([
             /*
              Connect node editor to "click with no move" events.
              */
-            aspect.after(drawModel, "onClickNoMove", function(mover) {
-                if (mover.mouseButton != 2) //check if not right click
+            aspect.after(drawModel, "onClickNoMove", function(mover){
+                if(mover.mouseButton != 2) //check if not right click
                     controllerObject.showNodeEditor(mover.node.id);
             }, true);
 
             /* 
              After moving node, save coordinates to model, and autosave
              */
-            aspect.after(drawModel, "onClickMoved", function(mover) {
+            aspect.after(drawModel, "onClickMoved", function(mover){
                 var g = geometry.position(mover.node, true);  // take into account scrolling
                 console.log("Update model coordinates for ", mover.node.id, g);
                 console.warn("This should take into account scrolling, Bug #2300.");
-                givenModel.student.setPosition(mover.node.id, {"x": g.x, "y": g.y});
+                givenModel.active.setPosition(mover.node.id, {"x": g.x, "y": g.y});
                 // It would be more efficient if we only saved the changed node.
                 session.saveProblem(givenModel.model);   // Autosave to server
             }, true);
@@ -109,14 +113,14 @@ define([
              with code in controllerObject._setUpNodeEditor that wires up closeEditor.
              Instead, we connect directly to the widget.
              */
-            aspect.after(registry.byId('nodeeditor'), "hide", function() {
+            aspect.after(registry.byId('nodeeditor'), "hide", function(){
                 console.log("Calling session.saveProblem");
                 session.saveProblem(givenModel.model);
             });
 
             // Wire up close button...
             // This will trigger the above session.saveProblem()
-            on(registry.byId("closeButton"), "click", function() {
+            on(registry.byId("closeButton"), "click", function(){
                 registry.byId("nodeeditor").hide();
             });
 
@@ -127,34 +131,29 @@ define([
 
 
             // show graph when button clicked
-            menu.add("graphButton", function() {
+             menu.add("graphButton", function(){
                 console.debug("button clicked");
-
-                // Instead, one should pass "givenMovel" into here.Bug #2307
-                var calc = new calculations(solutionGraph, true);
-                var givenObj = calc.gerParametersForRendering(solutionGraph, true);
-                var studentObj = calc.gerParametersForRendering(solutionGraph, false);
-                var obj = calc.setStudentGivenModel(givenObj, studentObj);
-
                 // instantiate graph object
-                var graph = new Graph(obj);
+                var graph = new Graph(givenModel, query.m);
                 graph.show();
             });
 
 
             // show table when button clicked
-            menu.add("tableButton", function() {
+            menu.add("tableButton", function(){
                 console.debug("table button clicked");
-
-                /*var calc = new calculations(solutionGraph,true);
-                 var obj = calc.gerParametersForRendering(solutionGraph,true);*/
-
-                var calc = new calculations(solutionGraph, false);
-                var obj = calc.gerParametersForRendering(solutionGraph, false);
-
-                var table = new Table(obj);
+                var table = new Table(givenModel, query.m);
                 table.show();
             });
+
+
+           menu.add("doneButton", function(){
+               console.debug("done button is clicked");
+               window.history.back();
+
+
+           });
+
 
             /*
              BvdS:  this doesn't look quite right.  We want to download
@@ -166,13 +165,17 @@ define([
              These will be wired up to dialog boxes to set the image URL and
              the description.
              */
-            var canvas = document.getElementById('myCanvas');
-            var context = canvas.getContext('2d');
+            var canvas = dom.byId('myCanvas');
+	    if(canvas.getContext){
+		var context = canvas.getContext('2d');
+	    }else {
+		throw new Error("Canvas not supported on this browser.");
+	    }
             var imageObj = new Image();
             var desc_text = givenModel.getTaskDescription();
             var scalingFactor = 1;
             var url = givenModel.getImageURL();
-            if (url) {
+            if(url){
                 imageObj.src = url;
             }
             else
@@ -187,15 +190,15 @@ define([
             var textHeight = 20;
 
 
-            imageObj.onload = function() {
+            imageObj.onload = function(){
                 console.log("Image width is " + imageObj.width);
-                if (imageObj.width > 300 || imageObj.width != 0)
+                if(imageObj.width > 300 || imageObj.width != 0)
                     scalingFactor = 300 / imageObj.width;  //assuming we want width 300
                 console.log('Computing scaling factor for image ' + scalingFactor);
                 var imageHeight = imageObj.height * scalingFactor;
                 context.drawImage(imageObj, imageLeft, imageTop, imageObj.width * scalingFactor, imageHeight);
                 var marginTop = (gapTextImage + imageHeight) - textTop;
-                if (marginTop < 0)
+                if(marginTop < 0)
                     marginTop = 0;
 
                 console.log('computed top margin for text ' + marginTop);

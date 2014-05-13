@@ -102,26 +102,25 @@
 <body class="claro">
     <div id="main" data-dojo-type="dijit/layout/BorderContainer" gutters="false">
         <div data-dojo-type="dijit/MenuBar" id="menuBar" region="top" splitter="false">
-             <div data-dojo-type="dijit/form/Button" id="createNodeButton">Create Node</div>
-             <div data-dojo-type="dijit/form/Button" id="graphButton">Graph</div>
-             <div data-dojo-type="dijit/form/Button" id="tableButton">Table</div>
-             <div data-dojo-type="dijit/form/Button" id="forumButton">Forum</div>
+             <button type="button" data-dojo-type="dijit/form/Button" id="createNodeButton">Create Node</button>
+             <button type="button" data-dojo-type="dijit/form/Button" id="graphButton">Graph</button>
+             <button type="button" data-dojo-type="dijit/form/Button" id="tableButton">Table</button>
+             <button type="button" data-dojo-type="dijit/form/Button" id="forumButton">Forum</button>
 	     <div data-dojo-type="dijit/PopupMenuBarItem">
                  <span>Help</span>
 		 <div data-dojo-type="dijit/Menu" id="menuHelp">
 		    <div id="menuIntroText" data-dojo-type="dijit/MenuItem">Introduction</div>
-		    <div id="menuIntroVideo" data-dojo-type="dijit/MenuItem">Intro Video</div>                     
+		    <div id="menuIntroVideo" data-dojo-type="dijit/MenuItem">Intro Video</div>                  
 		 </div>
              </div>
 
-	     <div data-dojo-type="dijit/form/Button" id="doneButton" style="position:absolute; top:0; right:10px; margin:0;">Done</div>
+	     <button type="button" data-dojo-type="dijit/form/Button" id="doneButton" style="position:absolute; top:0; right:10px; margin:0;">Done</button>
 	</div> <!-- Menubar -->
         <div id="drawingPane" data-dojo-type="dijit/layout/ContentPane" region="center" >
 		
 		<!--<div id="tableGrid" data-dojo-type="dijit/layout/ContentPane" region="center" ></div>-->
 		
-		
-		
+
 		<!-- Putting jsPlumb-stuff for demo -->
 		 <canvas id="myCanvas" height = "800" width="800"></canvas>
 		<div class="demo statemachine-demo" id="statemachine-demo">
@@ -129,18 +128,23 @@
 				
 		<!-- Putting jsPlumb-stuff for demo  end-->
         </div>
-		
+
+        <!-- Putting crisis-Alert Dialog stuff -->
+        <div class="claro" id="crisisAlertMessage" data-dojo-type="dijit.Dialog" title="Message"></div>
+
+        <!-- Putting crisis-Alert Dialog stuff end -->
+
 			<!-- Putting Node-Editor -Dialog stuff for demo -->
         <div class="claro"  data-dojo-type="dijit/Dialog" id="nodeeditor">
-            <div id="nameControl" class="fieldgroup" style="display:none">
+           <div id="nameControl" class="fieldgroup" style="display:none">
 	        <label for="setName">Name</label>
                 <input id="setName" data-dojo-type="dijit/form/ComboBox">
-	        <label for="selectKind">Kind of quantity</label>
+	        <label for="selectKind">Kind of quantity:</label>
                 <select id="selectKind" data-dojo-type="dijit/form/Select">
-	            <option value='given' selected>in solution</option>
+	            <option value='' selected>in model</option>
 	            <option value='allowed'>optional</option>
-	            <option value='forbidden'>not allowed</option>
-	            <option value='offTopic'>irrelevant</option>
+	            <option value='extra'>in description but not in model</option>
+	            <option value='irrelevant'>not in model or description</option>
 	        </select>
 	    </div>
             <div id="descriptionControlStudent" class="fieldgroup">
@@ -162,7 +166,7 @@
                     <option value="function">Function</option>
                 </select>
                 <label for="initialValue">Initial Value</label>
-                <input id="initialValue" type="text" style="width:6em" data-dojo-type="dijit/form/NumberTextBox"></input>
+                <input id="initialValue" type="text" style="width:6em" data-dojo-type="dijit/form/NumberTextBox">
                 <label id="selectUnitsControl">
 		    Units
                     <select id="selectUnits" data-dojo-type="dijit/form/Select">
@@ -178,20 +182,22 @@
             <div class="fieldgroup" id="algebraic">
 	        <label>Inputs</label>
             <div class="vertical">
-                <div id="inputControlStudent" class="fieldgroup">
+                <div id="inputControlStudent">
                     <select id="nodeInputs" data-dojo-type="dijit/form/Select">
                         <option value='defaultSelect'>--Select--</option>
                     </select>
                 </div>
 
-                <div id="inputControlAuthor" class="fieldgroup" style="display:none">
-                    <input id="setInput" data-dojo-type="dijit/form/ComboBox">
+                <div id="inputControlAuthor" style="display:none">
+                    <select id="setInput" data-dojo-type="dijit/form/ComboBox">
+                        <option value='defaultSelect'>--Select--</option>
+                    </select>
                 </div>
 		    <div class="horizontal">
-                        <input id="plusButton" type="button" data-dojo-type="dijit/form/Button" label="+" iconClass="dijitNoIcon"></input>
-                        <input id="minusButton" type="button" data-dojo-type="dijit/form/Button" label="-" iconClass="dijitNoIcon"></input>
-                        <input id="timesButton" type="button" data-dojo-type="dijit/form/Button" label="*" iconClass="dijitNoIcon"></input>
-                        <input id="divideButton" type="button" data-dojo-type="dijit/form/Button" label="/" iconClass="dijitNoIcon"></input>
+                        <button id="plusButton" type="button" data-dojo-type="dijit/form/Button" iconClass="dijitNoIcon">+</button>
+                        <button id="minusButton" type="button" data-dojo-type="dijit/form/Button" iconClass="dijitNoIcon">-</button>
+                        <button id="timesButton" type="button" data-dojo-type="dijit/form/Button" iconClass="dijitNoIcon">*</button>
+                        <button id="divideButton" type="button" data-dojo-type="dijit/form/Button" iconClass="dijitNoIcon">/</button>
 		    </div>
 		</div>
 	    </div>
@@ -199,45 +205,48 @@
 	        <label>Inputs</label>
 	        <div class="vertical">
 		    <div class="horizontal">
-                        <input id="sumButton" type="button" data-dojo-type="dijit/form/Button" label="Sum" iconClass="dijitNoIcon"></input>
-                        <input id="productButton" type="button" data-dojo-type="dijit/form/Button" label="Product" iconClass="dijitNoIcon"></input>
+                        <button id="sumButton" type="button" data-dojo-type="dijit/form/Button" iconClass="dijitNoIcon">Sum</button>
+                        <button id="productButton" type="button" data-dojo-type="dijit/form/Button" iconClass="dijitNoIcon">Product</button>
 		    </div>
 		    <div class="horizontal">
-		        <label for="positiveInputs" style="display:inline">Positive Quantity:</label><br>
+		        <label id="positiveInputsText" for="positiveInputs" style="display:inline">Add quantity:</label><br>
         	        <select id="positiveInputs" data-dojo-type="dijit/form/Select" style="display:inline-block">
 			    <option value='defaultSelect'>--Select--</option>
                         </select>
 		    </div>
 		    <div class="horizontal">
-		        <label for="negativeInputs" style="display:inline">Negative Quantity:</label><br>
+		        <label id="negativeInputsText" for="negativeInputs" style="display:inline">Subtract quantity:</label><br>
 		        <select id="negativeInputs" data-dojo-type="dijit/form/Select" style="display:inline-block">
                             <option value='defaultSelect'>--Select--</option>
                         </select>
 		    </div>
 		</div>
-	   </div>
-	   <div class="fieldgroup" id="equationInput">
-		<label for="equationBox">Expression</label>
-                <textarea id="equationBox" rows=2 cols=30 data-dojo-type="dijit/form/SimpleTextarea"></textarea>
-	   </div>
-	   <div class="fieldgroup" id="equationShow">
-		<label>Expression</label>
-	        <div id="equationText"></div>
-	   </div>
-	   <div class="fieldgroup" style="overflow:hidden"> <!-- assign space for the float -->	    
-                <div style="float:right">
-	            <input id="undoButton" type="button" data-dojo-type="dijit/form/Button" label="Clear" iconClass="dijitNoIcon"></input>
-                    <input id="equationDoneButton" type="button" data-dojo-type="dijit/form/Button" label="Check expression" iconClass="dijitNoIcon"></input>
+	    </div>
+            <div class="fieldgroup">
+	        <label for="equationBox">Expression</label>
+                <div class="vertical">
+                    <div id="equationLabel"></div>
+                    <textarea id="equationBox" rows=2 cols=30 data-dojo-type="dijit/form/SimpleTextarea"></textarea>
+	            <div id="equationText"></div>
+                    <div id="timeStepLabel"></div>
+                </div>
+                <div class="buttonBox">	    
+	            <button id="undoButton" type="button" data-dojo-type="dijit/form/Button" iconClass="dijitNoIcon">Undo</button>
+                    <button id="equationDoneButton" type="button" data-dojo-type="dijit/form/Button" iconClass="dijitNoIcon">Check Expression</button>
 	        </div>
             </div>
             <div class="fieldgroup">
                 <label for="messageBox">Messages</label>
-		<div id="messageBox" class="textscroll" data-dojo-type="dijit/layout/ContentPane">
+	        <div id="messageBox" class="textscroll" data-dojo-type="dijit/layout/ContentPane"></div>
+		<div class="buttonBox">
+		    <!-- Strut to move close button down.  It would be
+                    better to do this with css... -->
+		    <div>&nbsp;</div>
+		    <div>&nbsp;</div>
+		    <div>&nbsp;</div>
+		    <button id="closeButton" type="button" data-dojo-type="dijit/form/Button" iconClass="dijitNoIcon">Done</button>
 		</div>
-            </div>
-            <div class="fieldgroup" style="overflow:hidden">  <!-- this assigns space for the float -->
-	        <input id="closeButton" style="float:right" type="button" data-dojo-type="dijit/form/Button" label="Done" iconClass="dijitNoIcon"></input>
-            </div>
+	    </div>
 	</div> <!-- end of node editor -->
         <!-- Putting Node-Editor stuff for demo  end -->
 			

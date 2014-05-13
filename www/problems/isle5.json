@@ -14,7 +14,13 @@
         "image": {
             "URL": "images/moose_wolves.png"
         },
-        "taskDescription": " Assumptions: * The wolf population is 2 in the first year (1949). * Births and deaths are the only change in the population. Immigration and emigration do not occur. * The number of wolf deaths each year is 67% of the wolf population. * The number of births each year is year is 75% of the wolf population. ",
+        "taskDescription": [
+            "Assumptions:",
+	    " * The wolf population is 2 in the first year (1949).",
+	    " * Births and deaths are the only change in the population. Immigration and emigration do not occur.",
+            " * The number of wolf deaths each year is 67% of the wolf population.",
+            " * The number of births each year is year is 75% of the wolf population. "
+        ],
         "givenModelNodes": [
             {
                 "ID": "id1",

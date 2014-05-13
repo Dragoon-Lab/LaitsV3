@@ -1,13 +1,13 @@
 /* global define */
 /*
- *                          AUTHOR mode-specific handlers
+ *                          student mode-specific handlers
  */
 define([
     "dojo/_base/array", 'dojo/_base/declare', "dojo/_base/lang",
-    'dojo/dom-style', "dojo/ready",
+    "dojo/dom", "dojo/ready",
     'dijit/registry',
-    './controller', "./pedagogical_module", "./equation"
-], function(array, declare, lang, style, ready, registry, controller, PM, expression) {
+    './controller', "./pedagogical_module", "./equation",'dojo/dom-style'
+], function(array, declare, lang, dom, ready, registry, controller, PM, expression,style){
 
     /*
      Methods in controller specific to the student modes
@@ -15,103 +15,100 @@ define([
 
     return declare(controller, {
         _PM: null,
-        constructor: function(mode, subMode, model) {
+
+        constructor: function(mode, subMode, model){
             console.log("++++++++ In student constructor");
             this._PM = new PM(mode, subMode, model);
-            ready(this, "initStudentHandles");
+            lang.mixin(this.widgetMap, this.controlMap);
+	    ready(this, "populateSelections");
         },
-        initStudentHandles: function() {
-
-            var desc = registry.byId(this.controlMap.description);
-            desc.on('Change', lang.hitch(this, this.handleSelectDescription));
-
-            var unitsWidget = registry.byId(this.controlMap.units);
-            unitsWidget.on('Change', lang.hitch(this, function() {
-                return this.disableHandlers || this.handleUnits.apply(this, arguments);
-            }));
-
-            var inputsWidget = registry.byId(this.controlMap.inputs);
-            inputsWidget.on('Change',  lang.hitch(this, function(){
-                return this.disableHandlers || this.handleInputs.apply(this, arguments);
-            }));
-
+        // A list of control map specific to students
+        controlMap: {
+            description: "selectDescription",
+            units: "selectUnits",
+            inputs: "nodeInputs"
         },
-        handleSelectDescription: function(selectDescription) {
-            console.log("****** in handleChooseDescription ", this.currentID, selectDescription);
-            if (selectDescription == 'defaultSelect')
+
+	populateSelections: function(){
+	    /*
+             Initialize select options in the node editor that are
+             common to all nodes in a problem.
+             
+             In AUTHOR mode, this needs to be done when the
+             node editor is opened.
+             */
+            // Add fields to Description box and inputs box
+            // In author mode, the description control must be a text box
+            var d = registry.byId(this.controlMap.description);
+            // populate input field
+            var t = registry.byId(this.controlMap.inputs);
+            console.assert(t, "Can't find widget " + this.controlMap.inputs);
+            var positiveInputs = registry.byId("positiveInputs");
+            var negativeInputs = registry.byId("negativeInputs");
+            console.log("description widget = ", d, this.controlMap.description);
+            // d.removeOption(d.getOptions()); // Delete all options
+            array.forEach(this._model.given.getDescriptions(), function(desc){
+                d.addOption(desc);
+                var name = this._model.given.getName(desc.value);
+                var option = {label: desc.label + ' ' + ' | ' + ' ' + name, value: desc.value};
+                t.addOption(option);
+                positiveInputs.addOption(option);
+                negativeInputs.addOption(option);
+            }, this);
+	},
+
+        handleDescription: function(selectDescription){
+            console.log("****** in handleDescription ", this.currentID, selectDescription);
+            if(selectDescription == 'defaultSelect')
                 return; // don't do anything if they choose default
 
             this._model.active.setDescriptionID(this.currentID, selectDescription);
             this.updateNodes();
 
-            var directives = this._PM.processAnswer(this.currentID, 'description', selectDescription);
-            array.forEach(directives, function(directive) {
-                this.updateModelStatus(directive);
-                if (this.widgetMap[directive.id]) {
-                    var w = registry.byId(this.widgetMap[directive.id]);
-                    // console.log("*********  setting widget ", w, " using ", directive);
-                    if (directive.attribute == 'value') {
-                        w.set(directive.attribute, directive.value, false);
-                        // Update the model.
-                        this._model.student.setDescriptionID(this.currentID, directive.value);
-                    }
-                    else
-                        w.set(directive.attribute, directive.value);
-                } else {
-                    console.warn("Directive with unknown id: " + directive.id);
-                }
-            }, this);
+	    // This is only needed if the type has already been set,
+	    // something that is generally only possible in TEST mode.
+            this.updateEquationLabels();
+
+            this.applyDirectives(this._PM.processAnswer(this.currentID, 'description', selectDescription));
         },
-        handleType: function(type) {
+	descriptionSet: function(value){
+            // Update the model.
+            this._model.student.setDescriptionID(this.currentID, value);
+	    this.updateNodes();
+	},
+
+        handleType: function(type){
             console.log("****** Student has chosen type ", type, this);
-            if (type == 'defaultSelect')
+            if(type == 'defaultSelect')
                 return; // don't do anything if they choose default
             this.updateType(type);
-            var directives = this._PM.processAnswer(this.currentID, 'type', type);
-            array.forEach(directives, function(directive) {
-                console.log("*********** update node editor ", directive);
-                this.updateModelStatus(directive);
-                if (this.widgetMap[directive.id]) {
-                    var w = registry.byId(this.widgetMap[directive.id]);
-
-                    if (directive.attribute == 'value') {  //if correct value suggested by PM
-                        w.set(directive.attribute, directive.value, false);
-                        this.updateType(directive.value);
-                    } else
-                        w.set(directive.attribute, directive.value);
-                } else {
-                    console.warn("Directive with unknown id: " + directive.id);
-                }
-            }, this);
+            this.applyDirectives(this._PM.processAnswer(this.currentID, 'type', type));
         },
-        handleInitial: function(initial) {
+	typeSet: function(value){
+	    this.updateType(value);
+	},
 
-            if (this.disableInitialTextEvent) {
-                this.disableInitialTextEvent = false;
-                return;
-            }
+        handleInitial: function(initial){
 
-            console.log("****** Student has chosen initial value", initial, this);
+            console.log("****** Student has chosen initial value", initial, this.lastInitialValue);
+	    /*
+	     Evaluate only if the value is changed.
+
+	     The controller modifies the initial value widget so that a "Change" event is
+	     fired if the widget loses focus.  This may happen when the node editor is closed.
+	     */
+	    if(!initial || initial == this.lastInitialValue){
+		return;
+	    }
+	    this.lastInitialValue = initial;
 
             // updating node editor and the model.
             this._model.active.setInitial(this.currentID, initial);
-            var directives = this._PM.processAnswer(this.currentID, 'initial', initial);
-            array.forEach(directives, function(directive) {
-                // console.log("*********** update node editor ", directive);
-                this.updateModelStatus(directive);
-                if (this.widgetMap[directive.id]) {
-                    var w = registry.byId(this.widgetMap[directive.id]);
-                    w.set(directive.attribute, directive.value);
-                    if (directive.attribute == 'value') { //if correct value suggested by PM update model
-                        this._model.active.setInitial(this.currentID, directive.value);
-                        this.disableInitialTextEvent = true;
-                    }
-                    w.set(directive.attribute, directive.value); //third parameter doesn't work for false attribute
-                } else {
-                    console.warn("Directive with unknown id: " + directive.id);
-                }
-            }, this);
+            this.applyDirectives(this._PM.processAnswer(this.currentID, 'initial', initial));
         },
+        initialSet: function(value){
+            this._model.active.setInitial(this.currentID, value);
+	},
 
         /*
         *    handle event on inputs box
@@ -134,82 +131,49 @@ define([
             var expr = this._model.given.getName(id);
             this.equationInsert(expr);
             //restore to default  - creating select input as stateless
-            registry.byId(this.controlMap.inputs).set('value', 'defaultSelect',false);
+            registry.byId(this.controlMap.inputs).set('value', 'defaultSelect', false);
         },
-        handleUnits: function(unit) {
+        handleUnits: function(unit){
             console.log("*******Student has chosen unit", unit, this);
 
             // updating node editor and the model.
             this._model.student.setUnits(this.currentID, unit);
-            var directives = this._PM.processAnswer(this.currentID, 'units', unit);
-            array.forEach(directives, function(directive) {
-                this.updateModelStatus(directive);
-                if (this.widgetMap[directive.id]) {
-                    var w = registry.byId(this.widgetMap[directive.id]);
-                    if (directive.attribute == 'value') {
-                        w.set(directive.attribute, directive.value, false);
-                        // Update the model.
-                        this._model.student.setUnits(this.currentID, directive.value);
-                    } else
-                        w.set(directive.attribute, directive.value);
-                } else {
-                    console.warn("Directive with unknown id: " + directive.id);
-                }
-            }, this);
+            this.applyDirectives(this._PM.processAnswer(this.currentID, 'units', unit));
         },
-        equationDoneHandler: function() {
+        unitsSet: function(value){
+            // Update the model.
+            this._model.student.setUnits(this.currentID, value);
+	},
+        equationDoneHandler: function(){
             var directives = [];
             var parse = this.equationAnalysis(directives);
-            if (parse) {
+            if(parse){
                 var dd = this._PM.processAnswer(this.currentID, 'equation', parse);
                 directives = directives.concat(dd);
             }
-            // Now apply directives, either from PM or special messages above.
-            array.forEach(directives, function(directive) {
-                this.updateModelStatus(directive);
-                if (this.widgetMap[directive.id]) {
-                    var w = registry.byId(this.widgetMap[directive.id]);
-                    // console.log(">>>>>>>>> setting directive ", directive);
-                    if (directive.attribute == 'value') {
-
-                        var equation = directive.value;
-                        console.log("equation before conversion ", equation);
-                        var mEquation = equation ? expression.convert(this._model.given, equation) : '';  //since student node doesn't have same ids as equation
-                        console.log("equation after conversion ", mEquation);
-                        w.set(directive.attribute, mEquation, false);
-
-                        console.log('before replacing by descriptionIDs ' + equation);
-                        equation = expression.convertUsingDescriptionIDs(this._model.student, equation);
-                        console.log('after replacing by descriptionIDs ' + equation);
-
-                        // Update the model.
-                        console.warn("Updating equation in model to ", equation, " based on PM.");
-                        //update the equation to student ids, use descriptionID from nodes of givenModel which will match with student node id
-
-                        this._model.student.setEquation(this.currentID, equation);
-                    } else
-                        w.set(directive.attribute, directive.value);
-                } else {
-                    console.warn("Directive with unknown id: " + directive.id);
-                }
-
-            }, this);
+	    this.applyDirectives(directives);
         },
-        /* 
+	equationSet: function(value){
+	    // applyDirectives updates equationBox, but not equationText:
+	    dom.byId("equationText").innerHTML = value;
+
+	    var directives = [];
+	    // Parse and update model, connections, etc.
+            this.equationAnalysis(directives);
+	    // Generally, since this is the correct solution, there should be no directives
+	    this.applyDirectives(directives);
+	},
+ 
+	/* 
          Settings for a new node, as supplied by the PM.
          These don't need to be recorded in the model, since they
          are applied each time the node editor is opened.
          */
+        initialControlSettings: function(nodeid){
+            // Apply settings from PM
+	    this.applyDirectives(this._PM.newAction(), true);
 
-        initialControlSettings: function(nodeid) {
-            array.forEach(this._PM.newAction(), function(directive) {
-                var w = registry.byId(this.controlMap[directive.id]);
-                if (directive.attribute == 'value')
-                    w.set(directive.attribute, directive.value, false);
-                else
-                    w.set(directive.attribute, directive.value);
-            }, this);
-            // This sets the selected value in the description.
+            // Set the selected value in the description.
             var desc = this._model.student.getDescriptionID(nodeid);
             console.log('description is', desc || "not set");
             registry.byId(this.controlMap.description).set('value', desc || 'defaultSelect', false);
@@ -217,12 +181,47 @@ define([
             /*
              Set color and enable/disable
              */
-            array.forEach(this._model.student.getStatusDirectives(nodeid), function(directive) {
+            array.forEach(this._model.student.getStatusDirectives(nodeid), function(directive){
                 var w = registry.byId(this.controlMap[directive.id]);
                 w.set(directive.attribute, directive.value);
+		// The actual values should be in the model itself, not in status directives.
+                if(directive.attribute == "value"){
+		    console.error("Values should not be set in status directives");
+		}
             }, this);
-        }
+        },
 
+        // Need to save state of the node editor in the status section
+        // of the student model.  See documentation/json-format.md
+        updateModelStatus: function(desc) {
+            if (this.validStatus[desc.attribute]) {
+                var opt = {};
+                opt[desc.attribute] = desc.value;
+                this._model.student.setStatus(this.currentID, desc.id, opt);
+            } else {
+                // There are some directives that should update
+                // the student model node (but not the status section).
 
+                // console.warn("======= not saving in status, node=" + this.currentID + ": ", desc);
+            }
+        },
+		colorNodeBorder: function(nodeId){
+				//get model type
+				var type = this._model.student.getType(nodeId);
+				if(type){
+				console.log('model type is '+type);
+		
+				var colorMap = {
+                    correct: "green",
+                    incorrect: "#FF8080",
+                    demo: "yellow"
+                };
+				console.log('nodeId is '+nodeId);
+				var color = this._model.student.getCorrectness(nodeId);
+				console.log('color is '+color);
+				style.set(this.currentID,'border','2px solid '+colorMap[color]);
+				style.set(this.currentID,'box-shadow','inset 0px 0px 5px #000 , 0px 0px 10px #000');
+				}
+		}
     });
 });

@@ -71,8 +71,12 @@ let the program know what kind of help the student should receive. Within the
 that the problem is modeling and are self explanatory, and "units" refers to the 
 time that the model spans. Within the "image" element "URL" gives the location 
 of the picture used for the problem, with "width" and "height" giving its 
-desired dimensions. The element "taskDescription" gives the student information 
-needed to complete the model.
+desired dimensions.
+
+The element "taskDescription" gives the student information 
+needed to complete the model.  It may be a string or an array of
+strings (if there are multiple paragraphs).  Currently, the description
+is rendered as plain text (not HTML).
 
 ## Given Model Nodes ##
 
