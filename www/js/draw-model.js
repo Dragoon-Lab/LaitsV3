@@ -6,7 +6,7 @@ define([
     "dojo/_base/array", 'dojo/_base/declare', 'dojo/_base/lang',
     'dojo/dom', "dojo/dom-attr", "dojo/dom-construct","dijit/Menu",
     "dijit/MenuItem","./equation", "jsPlumb/jsPlumb"
-], function(array, declare, lang, dom, attr, domConstruct, Menu, MenuItem,equation){
+], function(array, declare, lang, dom, attr, domConstruct, Menu, MenuItem, equation){
 
     return declare(null, {
 

@@ -14,7 +14,12 @@
         "image": {
             "URL": "images/moose_20.png"
         },
-        "taskDescription": " Assumptions: * The moose population is 20 in the first year (1900). * Births are the only change in population. Deaths, immigration and emigration do not occur. * The number of moose births each year is 2. ",
+        "taskDescription": [
+	    "Assumptions: ",
+	    " * The moose population is 20 in the first year (1900).",
+	    " * Births are the only change in population. Deaths, immigration and emigration do not occur.",
+	    " * The number of moose births each year is 2."
+	],
         "givenModelNodes": [
             {
                 "ID": "id1",

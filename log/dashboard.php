@@ -15,8 +15,8 @@
 <body>
 
 <?php
-	require "../www/db-login.php";
-	require "../www/error-handler.php";
+	//require "../www/db-login.php";
+	//require "../www/error-handler.php";
 
 	set_time_limit(30000);
 	include "createDashboard.php";
