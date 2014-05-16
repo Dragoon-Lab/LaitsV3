@@ -376,7 +376,7 @@ define([
             if(parse){
                 parse=expression.parse(parse);
 		// May want to change symbols to "sum" and "product"
-                parameter = expression.isSum(parse)?'+':expression.isProduct(parse)?'*':'';
+                parameter = equation.isSum(parse)&&equation.isProduct(parse)?'':equation.isSum(parse)?'+':equation.isProduct(parse)?'*':'';
             }
             var initialValue = this._model.active.getInitial(this.currentID);
             if(!initialValue)

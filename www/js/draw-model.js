@@ -143,7 +143,7 @@ define([
 	    var parameter =  '';
 	    if(parse){
 		parse=equation.parse(parse);
-		parameter = equation.isSum(parse)?'+':equation.isProduct(parse)?'*':'';
+		parameter =equation.isSum(parse)&&equation.isProduct(parse)?'':equation.isSum(parse)?'+':equation.isProduct(parse)?'*':'';
 	    }
 
 	     var initialValue = this._givenModel.getInitial(node.ID);
@@ -242,6 +242,9 @@ define([
             // console.log("----- setConnections:  Need to delete existing connections going into " + destination, this._instance);
             // Go through existing connections and delete those that
             // have this destination as their target.
+	 
+	    console.log('while adding connections ');
+
             array.forEach(this._instance.getConnections(), function(connection){
                 if(connection.targetId == destination)
                     this._instance.detach(connection);
