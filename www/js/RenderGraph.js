@@ -95,7 +95,13 @@ define([
 		array.forEach(this.active.plotVariables, function(id, k){
                     var str = "chart" + id;
                     charts[id] = new Chart(str);
-                    charts[id].addPlot("default", {type: Lines, markers: true});
+                    charts[id].addPlot("default", {
+			type: Lines, 
+			// Do not include markers if there are too
+			// many plot points.  It looks ugly and slows down
+			// plotting significantly.
+			markers: activeSolution.times.length<25
+		    });
                     charts[id].addAxis("x", {
 			title: this.labelString(),
 			titleOrientation: "away", titleGap: 5

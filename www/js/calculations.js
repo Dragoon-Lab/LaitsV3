@@ -142,7 +142,7 @@ define([
 	    // Do this separately in case plotting is slow
             on(slider, "change", lang.hitch(this, function(){
 		// Print slider value in box.
-		dom.byId(index).value = transform(slider.value);
+		dom.byId(index).value = transform(slider.value).toPrecision(3);
 	    }));
 	    // Can use "change" or "mouseup"
 	    /* 
@@ -150,7 +150,7 @@ define([
 	     slider appear "stuck."  Need to find some way to update
 	     the plots without blocking all other processes.
 	     */
-            on(slider, "mouseup", lang.hitch(this, function(){
+            on(slider, "change", lang.hitch(this, function(){
 		console.log("---- slider event", this.getTime());
 
 		if(this._rendering){
@@ -191,6 +191,9 @@ define([
 	 * to domParam to assign it to the node
 	 * @param: domText - text to be contained in dom. e.g <label>TEXT</label>. domText = TEXT in this case
 	 */
+
+	// This should be removed in favor of dojo/dom-create or explicit code.
+	// See Bug #2351.
 	createDom: function(domType, domId, domParam, domText){
 	    var dom = "<" + domType;
 	    dom += domParam? " "+ domParam:"";
@@ -235,14 +238,14 @@ define([
 		    max = -2*val;
 		}
 
-		// create slider and assign to obparamIDect property
+		// create slider
 		this.sliders[paramID] = new HorizontalSlider({
                     name: this.sliderID + paramID,
                     value: val,
                     minimum: min,
                     maximum: max,
                     intermediateChanges: true,
-                    style: "width:300px;"
+                    style: "width:300px;margin:3px;"
 		    
 		}, this.sliderID + paramID);
 		
@@ -257,7 +260,10 @@ define([
 		//create input for a textbox
 		//create div for embedding a slider
 		this.dialogContent += this.createDom('label', '', '', labelText + " = ");
-		this.dialogContent += this.createDom('input', textBoxID[paramID], "type='text' readOnly=true width='100%'");
+		// The input element does not have an end tag so we can't use
+		// this.createDom().
+		// Set width as number of characters.
+		this.dialogContent += "<input id=\"" + textBoxID[paramID] + "\" type=\"text\" readOnly=true size=10>";
 		units = this.model.active.getUnits(paramID);
 		if(units){
                     this.dialogContent += " " + units;
