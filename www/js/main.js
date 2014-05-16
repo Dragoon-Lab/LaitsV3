@@ -41,6 +41,7 @@ define([
     session.loadProblem(query).then(function(solutionGraph){
 
         var givenModel = new model(query.m, query.p);
+        logging.session.log('open-problem',{problem : givenModel.getTaskName()});
         if(solutionGraph){
             givenModel.loadModel(solutionGraph);
         }

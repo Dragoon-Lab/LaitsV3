@@ -471,7 +471,11 @@ define([
              Note that I haven't set correct-value.  For most controls, it should be set
              */
             if(this.logging){
-                this.logging.log('solution-step', {node: studentID, type: nodePart, value: answer, checkResult: interpretation});
+                if(interpretation === 'correct' || interpretation === 'optimal')
+                    this.logging.log('solution-step', {node: studentID, name: this.model.student.getName(givenID), type: nodePart, value: answer1, checkResult: 'CORRECT', order : interpretation});
+                else
+                    this.logging.log('solution-step', {node: studentID, name: this.model.student.getName(studentID), type: nodePart, value: answer1, checkResult: 'INCORRECT', order : interpretation});
+                //this.logging.log('solution-step', {node: studentID, type: nodePart, value: answer, checkResult: interpretation});
             }
             return interpretation;
         },

@@ -68,6 +68,9 @@ define([
 	    }
     });
      */
+    window.onerror = function(msg, filename, url, lineNumber){
+        logging.session.log('client-message', {message: msg, file:filename, line : lineNumber});
+    }
 
     return logging;
 });
