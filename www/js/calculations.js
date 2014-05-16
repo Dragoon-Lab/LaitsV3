@@ -115,14 +115,14 @@ define([
 	/* @brief: this function registers event on slider from graph and table
 	 *  graph and table-specific functionality is carried out in renderGraph/renderTable
 	 */
-	registerEventOnSlider: function(slider, index, paramID){
+	registerEventOnSlider: function(slider, index, paramID, transform){
 	    on(slider, "click", lang.hitch(this, function(){
 		console.log("---- slider click", this.getTime());
 	    }));
 	    // Do this separately in case plotting is slow
             on(slider, "change", lang.hitch(this, function(){
 		// Print slider value in box.
-		dom.byId(index).value = slider.value;
+		dom.byId(index).value = transform(slider.value);
 	    }));
 	    // Can use "change" or "mouseup"
 	    /* 
@@ -140,9 +140,9 @@ define([
 		this._rendering = true;
 		var active = this.active;
 		if(paramID in active.timeStep.parameters){
-		    active.timeStep.parameters[paramID] = slider.value;
+		    active.timeStep.parameters[paramID] = transform(slider.value);
 		}else if(paramID in active.xvarMap){
-		    active.initialValues[active.xvarMap[paramID]] = slider.value;
+		    active.initialValues[active.xvarMap[paramID]] = transform(slider.value);
 		} else {
 		    throw new Error("Invalid id", paramID);
 		}
@@ -193,12 +193,34 @@ define([
 	    var textBoxID = {}, sliderID = {};
             //create sliders based on number of input parameters
             for(var paramID in sliderVars){
+
+		/*
+		 Determine range and transform to use for slider
+		 */
+		var val = sliderVars[paramID], min, max, transform;
+		if(val==0){
+		    transform = function(x){return x;}; // identity function
+		    min = -1;
+		    max = 1;
+		}else if(val>0){
+		    // Range from 1/10 to 10 times the nominal value
+		    // Use logarithmic scale for the slider.
+		    transform = Math.exp;
+		    val = Math.log(val);
+		    min = val - Math.log(10);
+		    max = val + Math.log(10);
+		} else {
+		    transform = function(x){return x;}; // identity function
+		    min = 2*val;
+		    max = -2*val;
+		}
+
 		// create slider and assign to obparamIDect property
 		this.sliders[paramID] = new HorizontalSlider({
                     name: this.sliderID + paramID,
-                    value: sliderVars[paramID],
-                    minimum: sliderVars[paramID] / 10,
-                    maximum: sliderVars[paramID] * 10,
+                    value: val,
+                    minimum: min,
+                    maximum: max,
                     intermediateChanges: true,
                     style: "width:300px;"
 		    
@@ -210,7 +232,7 @@ define([
 		}
 		// DOM id for the text <input>.
 		textBoxID[paramID] = this.textBoxID + "_" + paramID;
-		this.registerEventOnSlider(this.sliders[paramID], textBoxID[paramID], paramID);
+		this.registerEventOnSlider(this.sliders[paramID], textBoxID[paramID], paramID, transform);
 		//create label for name of a textbox
 		//create input for a textbox
 		//create div for embedding a slider
