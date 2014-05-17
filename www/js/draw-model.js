@@ -25,8 +25,8 @@
 define([
     "dojo/_base/array", 'dojo/_base/declare', 'dojo/_base/lang',
     'dojo/dom', "dojo/dom-attr", "dojo/dom-construct","dijit/Menu",
-    "dijit/MenuItem","./equation", "jsPlumb/jsPlumb"
-], function(array, declare, lang, dom, attr, domConstruct, Menu, MenuItem, equation){
+    "dijit/MenuItem","./equation","./util", "jsPlumb/jsPlumb"
+], function(array, declare, lang, dom, attr, domConstruct, Menu, MenuItem, equation, util){
 
     return declare(null, {
 
@@ -218,31 +218,26 @@ define([
             });
 
             return vertex;
-        },/*
-
-        getEndPointConfiguration:function(sign){
-            if(sign)
-             return [["Arrow", { location:1, id:"arrow", length:14, foldback:0.9 } ], ["Custom", { create:function(component){ var overlay = domConstruct.create("div", { innerHTML: "<div class='endPoint'>"+sign+"</div>" }); return overlay; }, location:1.0, id:"customOverlay" }]];
-            else
-             return '';
         },
-        /*
-         Set all connections going into a given node (destination), silently
-         filtering out any source nodes that don't exist.
-         */
         setConnections: function(/*array*/ sources, /*string*/ destination){
 
             //after determining equation type + or  - , set connection EndPoint by using following method
-
             //this._instance.Defaults.ConnectionOverlays = this.getEndPointConfiguration('+');
-
             // For now, we simply remove all existing connections and
             // create all new connections.
             // See http://stackoverflow.com/questions/11488067/how-to-delete-jsplumb-connection
             // console.log("----- setConnections:  Need to delete existing connections going into " + destination, this._instance);
             // Go through existing connections and delete those that
             // have this destination as their target.
-	 
+	    
+             var targetId = attr.get(destination, "id");
+	     var parse = this._givenModel.getEquation(targetId),isSum,isProduct;
+	    if(parse){
+	     parse = equation.parse(parse);
+	     isSum = equation.isSum(parse);
+	     isProduct = equation.isProduct(parse);
+	    }
+
 	    console.log('while adding connections ');
 
             array.forEach(this._instance.getConnections(), function(connection){
@@ -252,10 +247,22 @@ define([
             // Create new connections
             array.forEach(sources, function(source){
                 // All sources and destinations should exist.
-
 //                if(destination.is)
-		if(source.label)
+		if(source.label){
 		    console.log("------- At this point, we should add a '"+source.label+"' label to "+ source.ID);
+		    //check pure sum  or pure product but not both
+		    if(!(isSum&&isProduct)){	
+				if(isSum){
+					if(source.label=='-')						
+						this._instance.Defaults.ConnectionOverlays = util.getEndPointConfiguration(source.label);
+				}else{
+					 if(source.label=='/')                                          
+                                                this._instance.Defaults.ConnectionOverlays = util.getEndPointConfiguration(source.label);
+				}
+			}
+		}
+
+
                 this._instance.connect({source: source.ID,
                     target: destination
                     /* overlays: [
