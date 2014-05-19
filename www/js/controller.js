@@ -661,7 +661,7 @@ define([
         badParse: function(inputEquation){
         },
         // Stub to set connections in the graph
-        setConnctions: function(from, to){
+        setConnections: function(from, to){
             // console.log("======== setConnections fired for node" + to);
         },
         //show node editor
@@ -760,7 +760,12 @@ define([
                 }
 
             }, this);
+        },
 
-        }
+        // Stub to be overwritten by student or author mode-specific method.
+	colorNodeBorder: function(nodeId){
+	    console.log("colorNodeBorder stub called");
+	}
+
     });
 });

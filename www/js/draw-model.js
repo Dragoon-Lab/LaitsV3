@@ -162,24 +162,30 @@ define([
             else
                 nodeName='';
 	
-			var colorMap = {
-                    correct: "green",
-                    incorrect: "#FF8080",
-                    demo: "yellow"
-                };
-			var borderColor = '';
-			var boxShadow = '';
-			if(type!='triangle'){
-				var color = this._givenModel.getCorrectness(node.ID);
-				borderColor = '2px solid '+colorMap[color];
-				boxShadow = 'inset 0px 0px 5px #000 , 0px 0px 10px #000';
-			}
-			
-				
+	    var colorMap = {
+                correct: "green",
+                incorrect: "#FF8080",
+                demo: "yellow",
+		neutral: "gray"
+            };
+	    var borderColor = "",
+		boxShadow = "";
+	    if(type!='triangle'){
+		var color = this._givenModel.getCorrectness?
+			this._givenModel.getCorrectness(node.ID):"neutral";
+		borderColor += "2px solid " + colorMap[color];
+		boxShadow = 'inset 0px 0px 5px #000 , 0px 0px 10px #000';
+	    }
+
             var vertex = domConstruct.create("div", {
 		id: node.ID,
 		"class": type,
-		style: {left: node.position.x +'px', top: node.position.y +'px',border:borderColor,'box-shadow':boxShadow},
+		style: {
+		    left: node.position.x +'px', 
+		    top: node.position.y +'px',
+		    border:borderColor,
+		    'box-shadow':boxShadow
+		},
 		innerHTML: nodeName
 	    }, "statemachine-demo");
 
