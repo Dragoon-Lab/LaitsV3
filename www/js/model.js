@@ -153,21 +153,24 @@ define([
 
 		/*
 		 Sanity test that all given model IDs, node names,
-		 and descriptions are distinct
+		 and descriptions are distinct, if they are defined.
 		 */
 		var ids = {}, names = {}, descriptions = {};
 		array.forEach(this.given.getNodes(), function(node){
-		    if(node.ID in ids)
+		    if(node.ID in ids){
 			throw new Error("Duplicate node id " + node.id);
-		    if(node.name in names)
+		    }
+		    if(node.name in names){
 			throw new Error("Duplicate node name \"" + node.name  + 
 					"\" for " + node.ID + " and " + names[node.name]);
-		    if(node.description in descriptions)
+		    }
+		    if(node.description in descriptions){
 			throw new Error("Duplicate node description \"" + node.description + 
 					"\" for " + node.ID + " and " + descriptions[node.description]);
+		    }
 		    ids[node.ID] = true;
-		    names[node.name] = node.ID;
-		    descriptions[node.description] = node.ID;		    
+		    if(node.name){ names[node.name] = node.ID; }
+		    if(node.description){ descriptions[node.description] = node.ID; }
 		}, this);
             },
             getModelAsString: function(){
