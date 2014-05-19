@@ -26,7 +26,7 @@ define([
     "dojo/_base/array", 'dojo/_base/declare', 'dojo/_base/lang',
     'dojo/dom', "dojo/dom-attr", "dojo/dom-construct","dijit/Menu",
     "dijit/MenuItem","./equation","./util", "jsPlumb/jsPlumb"
-], function(array, declare, lang, dom, attr, domConstruct, Menu, MenuItem, equation, util){
+], function(array, declare, lang, dom, attr, domConstruct, Menu, MenuItem, equation, utils){
 
     return declare(null, {
 
@@ -254,10 +254,10 @@ define([
 		    if(!(isSum&&isProduct)){	
 				if(isSum){
 					if(source.label=='-')						
-						this._instance.Defaults.ConnectionOverlays = util.getEndPointConfiguration(source.label);
+						this._instance.Defaults.ConnectionOverlays = utils.getEndPointConfiguration(source.label);
 				}else{
 					 if(source.label=='/')                                          
-                                                this._instance.Defaults.ConnectionOverlays = util.getEndPointConfiguration(source.label);
+                                                this._instance.Defaults.ConnectionOverlays = utils.getEndPointConfiguration(source.label);
 				}
 			}
 		}
