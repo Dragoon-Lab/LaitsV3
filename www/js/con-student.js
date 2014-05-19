@@ -70,7 +70,7 @@ define([
             array.forEach(this._model.given.getDescriptions(), function(desc){
                 d.addOption(desc);
                 var name = this._model.given.getName(desc.value);
-                var option = {label: desc.label + ' ' + ' | ' + ' ' + name, value: desc.value};
+                var option = {label: name + " (" + desc.label + ")", value: desc.value};
                 t.addOption(option);
                 positiveInputs.addOption(option);
                 negativeInputs.addOption(option);
