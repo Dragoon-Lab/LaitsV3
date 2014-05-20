@@ -237,9 +237,10 @@ define([
                     demo: "yellow"
                 };
 				console.log('nodeId is '+nodeId);
+				var isComplete   = this._model.student.isComplete(nodeId,true)?'solid':'dashed';
 				var color = this._model.student.getCorrectness(nodeId);
 				console.log('color is '+color);
-				style.set(this.currentID,'border','2px solid '+colorMap[color]);
+				style.set(this.currentID,'border','2px '+isComplete+' '+colorMap[color]);
 				style.set(this.currentID,'box-shadow','inset 0px 0px 5px #000 , 0px 0px 10px #000');
 				}
 		}
