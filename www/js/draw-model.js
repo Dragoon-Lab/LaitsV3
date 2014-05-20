@@ -251,6 +251,7 @@ define([
                     this._instance.detach(connection);
             }, this);
             // Create new connections
+	    var connectionOverlays = utils.getEndPointConfiguration('');
             array.forEach(sources, function(source){
                 // All sources and destinations should exist.
 //                if(destination.is)
@@ -260,22 +261,19 @@ define([
 		    if(!(isSum&&isProduct)){	
 				if(isSum){
 					if(source.label=='-')						
-						this._instance.Defaults.ConnectionOverlays = utils.getEndPointConfiguration(source.label);
-				}else{
+						 connectionOverlays = utils.getEndPointConfiguration(source.label);
+				}else if(isProduct){
 					 if(source.label=='/')                                          
-                                                this._instance.Defaults.ConnectionOverlays = utils.getEndPointConfiguration(source.label);
+                                                connectionOverlays = utils.getEndPointConfiguration(source.label);
 				}
 			}
 		}
 
-
                 this._instance.connect({source: source.ID,
-                    target: destination
-                    /* overlays: [
-                        ["Label",{label:"+", id:"label1", cssClass:"aLabel", location:0.95, radius:0.5 }],
-                        ["Label",{label:"-", id:"label2", cssClass:"aLabel", location:0.03, radius:0.5 }]
-                    ]*/
+                    target: destination,
+                    overlays:connectionOverlays
                 });
+		connectionOverlays = utils.getEndPointConfiguration('');
             }, this);
         },
 

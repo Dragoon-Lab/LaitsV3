@@ -23,10 +23,10 @@ define([
 ], function(domConstruct){
     return {
        getEndPointConfiguration:function(sign){
-            if(sign)
+            if(sign!='')
              return [["Arrow", { location:1, id:"arrow", length:14, foldback:0.9 } ], ["Custom", { create:function(component){ var overlay = domConstruct.create("div", { innerHTML: "<div class='endPoint'>"+sign+"</div>" }); return overlay; }, location:1.0, id:"customOverlay" }]];
             else
-             return '';
+               return [["Arrow", { location:1, id:"arrow", length:14, foldback:0.9 } ]];
         } 
     };
 });
