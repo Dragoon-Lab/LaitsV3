@@ -1,3 +1,23 @@
+/**
+ *Dragoon Project
+ *Arizona State University
+ *(c) 2014, Arizona Board of Regents for and on behalf of Arizona State University
+ *
+ *This file is a part of Dragoon
+ *Dragoon is free software: you can redistribute it and/or modify
+ *it under the terms of the GNU General Public License as published by
+ *the Free Software Foundation, either version 3 of the License, or
+ *(at your option) any later version.
+ *
+ *Dragoon is distributed in the hope that it will be useful,
+ *but WITHOUT ANY WARRANTY; without even the implied warranty of
+ *MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ *GNU General Public License for more details.
+ *
+ *You should have received a copy of the GNU General Public License
+ *along with Dragoon.  If not, see <http://www.gnu.org/licenses/>.
+ *
+ */
 /* global define */
 /*
  *                          student mode-specific handlers
@@ -54,7 +74,7 @@ define([
             array.forEach(this._model.given.getDescriptions(), function(desc){
                 d.addOption(desc);
                 var name = this._model.given.getName(desc.value);
-                var option = {label: desc.label + ' ' + ' | ' + ' ' + name, value: desc.value};
+                var option = {label: name + " (" + desc.label + ")", value: desc.value};
                 t.addOption(option);
                 positiveInputs.addOption(option);
                 negativeInputs.addOption(option);
@@ -221,9 +241,10 @@ define([
                     demo: "yellow"
                 };
 				console.log('nodeId is '+nodeId);
+				var isComplete   = this._model.student.isComplete(nodeId,true)?'solid':'dashed';
 				var color = this._model.student.getCorrectness(nodeId);
 				console.log('color is '+color);
-				style.set(this.currentID,'border','2px solid '+colorMap[color]);
+				style.set(this.currentID,'border','2px '+isComplete+' '+colorMap[color]);
 				style.set(this.currentID,'box-shadow','inset 0px 0px 5px #000 , 0px 0px 10px #000');
 				}
 		}

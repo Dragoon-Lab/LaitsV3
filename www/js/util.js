@@ -18,7 +18,16 @@
  *along with Dragoon.  If not, see <http://www.gnu.org/licenses/>.
  *
  */
-//>>built
-define("shapes/Text",["dojo/_base/declare","dijit/_WidgetBase"],function(_1,_2){
-return _1("shapes.Text",[_2],{});
+define([
+    "dojo/dom-construct"
+], function(domConstruct){
+    return {
+       getEndPointConfiguration:function(sign){
+            if(sign!='')
+             return [["Arrow", { location:1, id:"arrow", length:14, foldback:0.9 } ], ["Custom", { create:function(component){ var overlay = domConstruct.create("div", { innerHTML: "<div class='endPoint'>"+sign+"</div>" }); return overlay; }, location:1.0, id:"customOverlay" }]];
+            else
+               return [["Arrow", { location:1, id:"arrow", length:14, foldback:0.9 } ]];
+        } 
+    };
 });
+    

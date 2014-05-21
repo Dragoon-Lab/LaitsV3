@@ -1,3 +1,23 @@
+/**
+ *Dragoon Project
+ *Arizona State University
+ *(c) 2014, Arizona Board of Regents for and on behalf of Arizona State University
+ *
+ *This file is a part of Dragoon
+ *Dragoon is free software: you can redistribute it and/or modify
+ *it under the terms of the GNU General Public License as published by
+ *the Free Software Foundation, either version 3 of the License, or
+ *(at your option) any later version.
+ *
+ *Dragoon is distributed in the hope that it will be useful,
+ *but WITHOUT ANY WARRANTY; without even the implied warranty of
+ *MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ *GNU General Public License for more details.
+ *
+ *You should have received a copy of the GNU General Public License
+ *along with Dragoon.  If not, see <http://www.gnu.org/licenses/>.
+ *
+ */
 /* global define */
 /*
  *                               Controller for Node Editor
@@ -360,32 +380,33 @@ define([
             this._model.active.setType(this.currentID, type);
             this.updateEquationLabels();
         },
-    	getNodeName:function(){
-    	     var type = this._model.active.getType(this.currentID);
-    	     var nodeName = this._model.active.getName(this.currentID);
-                 var parse = this._model.active.getEquation(this.currentID);
-                 var parameter =  '';
-                if(parse){
-                    parse=expression.parse(parse);
-    		// May want to change symbols to "sum" and "product"
-                    parameter = expression.isSum(parse)?'+':expression.isProduct(parse)?'*':'';
-                }
-                var initialValue = this._model.active.getInitial(this.currentID);
-                if(!initialValue)
-                     initialValue = '';
-    	   
-                 var unitsValue = this._model.active.getUnits(this.currentID);
-                 if(!unitsValue)
-                         unitsValue = '';
-    		
-    	    initialValue += " " + unitsValue;
 
-                if(nodeName)
-                    nodeName='<div id='+this.currentID+'Label  class="bubble"><strong>'+parameter+'<br>'+initialValue+'</strong><div class='+type+'Div><strong>'+nodeName+'</strong></div></div>';
-                else
-                    nodeName='';
-    		return nodeName;
-    	},
+	getNodeName:function(){
+	     var type = this._model.active.getType(this.currentID);
+	     var nodeName = this._model.active.getName(this.currentID);
+             var parse = this._model.active.getEquation(this.currentID);
+             var parameter =  '';
+            if(parse){
+                parse=expression.parse(parse);
+		// May want to change symbols to "sum" and "product"
+                parameter = expression.isSum(parse)&&expression.isProduct(parse)?'':expression.isSum(parse)?'+':expression.isProduct(parse)?'*':'';
+            }
+            var initialValue = this._model.active.getInitial(this.currentID);
+            if(!initialValue)
+                 initialValue = '';
+	   
+             var unitsValue = this._model.active.getUnits(this.currentID);
+             if(!unitsValue)
+                     unitsValue = '';
+		
+	    initialValue += " " + unitsValue;
+
+            if(nodeName)
+                nodeName='<div id='+this.currentID+'Label  class="bubble"><strong>'+parameter+'<br>'+initialValue+'</strong><div class='+type+'Div><strong>'+nodeName+'</strong></div></div>';
+            else
+                nodeName='';
+		return nodeName;
+	},
         updateEquationLabels: function(typeIn){
             var type = typeIn || this._model.active.getType(this.currentID) || "none";
             var name = this._model.active.getName(this.currentID);
@@ -653,7 +674,7 @@ define([
         badParse: function(inputEquation){
         },
         // Stub to set connections in the graph
-        setConnctions: function(from, to){
+        setConnections: function(from, to){
             // console.log("======== setConnections fired for node" + to);
         },
         //show node editor
@@ -754,7 +775,12 @@ define([
                 }
 
             }, this);
+        },
 
-        }
+        // Stub to be overwritten by student or author mode-specific method.
+	colorNodeBorder: function(nodeId){
+	    console.log("colorNodeBorder stub called");
+	}
+
     });
 });
