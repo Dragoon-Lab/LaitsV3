@@ -19,6 +19,7 @@ define([
         disableHandlers: false,
         /* The last value entered into the intial value control */
         lastInitialValue: null,
+        logging : null,
         constructor: function(mode, subMode, model, inputStyle){
 
             console.log("+++++++++ In generic controller constructor");
@@ -84,8 +85,12 @@ define([
                     premature: "lightBlue",
                     entered: "#2EFEF7"
                 };
-                if(value)
+                if(value){
                     console.assert(colorMap[value], "Invalid color specification " + value);
+                    if(!colorMap[value]){
+                        this.logging.session.log('client-message', {file:'controller.js', functionName:'setStatus', message:'Invalid color specification', value:value});
+                    }
+                }
                 /* BvdS:  I chose bgColor because it was easy to do
                  Might instead/also change text color?
                  Previously, just set domNode.bgcolor but this approach didn't work
@@ -124,6 +129,7 @@ define([
                 });
                 this.startup();
             };
+            
             // All <select> controls
             array.forEach(this.selects, function(select){
                 var w = registry.byId(this.controlMap[select]);
@@ -291,8 +297,14 @@ define([
             array.forEach(buttons, function(button){
                 var w = registry.byId(button + 'Button');
                 console.assert(w, "Button for " + button + " not found");
+                if(!w){
+                    this.logging.session.log('client-message', {file:'controller.js', functionName:'_initHandles', message:"button not found", value:button});
+                }
                 var handler = this[button + 'Handler'];
                 console.assert(handler, "Button handler '" + handler + "' not found");
+                if(!handler){
+                    this.logging.session.log('client-message', {file:'controller.js', functionName:'_initHandles', message:"button handler not found", value:handler});
+                }
                 w.on('click', lang.hitch(this, handler));
                 /*  When the equation box is enabled/disabled also do the same
                  for this button */
@@ -348,32 +360,32 @@ define([
             this._model.active.setType(this.currentID, type);
             this.updateEquationLabels();
         },
-	getNodeName:function(){
-	     var type = this._model.active.getType(this.currentID);
-	     var nodeName = this._model.active.getName(this.currentID);
-             var parse = this._model.active.getEquation(this.currentID);
-             var parameter =  '';
-            if(parse){
-                parse=expression.parse(parse);
-		// May want to change symbols to "sum" and "product"
-                parameter = expression.isSum(parse)?'+':expression.isProduct(parse)?'*':'';
-            }
-            var initialValue = this._model.active.getInitial(this.currentID);
-            if(!initialValue)
-                 initialValue = '';
-	   
-             var unitsValue = this._model.active.getUnits(this.currentID);
-             if(!unitsValue)
-                     unitsValue = '';
-		
-	    initialValue += " " + unitsValue;
+    	getNodeName:function(){
+    	     var type = this._model.active.getType(this.currentID);
+    	     var nodeName = this._model.active.getName(this.currentID);
+                 var parse = this._model.active.getEquation(this.currentID);
+                 var parameter =  '';
+                if(parse){
+                    parse=expression.parse(parse);
+    		// May want to change symbols to "sum" and "product"
+                    parameter = expression.isSum(parse)?'+':expression.isProduct(parse)?'*':'';
+                }
+                var initialValue = this._model.active.getInitial(this.currentID);
+                if(!initialValue)
+                     initialValue = '';
+    	   
+                 var unitsValue = this._model.active.getUnits(this.currentID);
+                 if(!unitsValue)
+                         unitsValue = '';
+    		
+    	    initialValue += " " + unitsValue;
 
-            if(nodeName)
-                nodeName='<div id='+this.currentID+'Label  class="bubble"><strong>'+parameter+'<br>'+initialValue+'</strong><div class='+type+'Div><strong>'+nodeName+'</strong></div></div>';
-            else
-                nodeName='';
-		return nodeName;
-	},
+                if(nodeName)
+                    nodeName='<div id='+this.currentID+'Label  class="bubble"><strong>'+parameter+'<br>'+initialValue+'</strong><div class='+type+'Div><strong>'+nodeName+'</strong></div></div>';
+                else
+                    nodeName='';
+    		return nodeName;
+    	},
         updateEquationLabels: function(typeIn){
             var type = typeIn || this._model.active.getType(this.currentID) || "none";
             var name = this._model.active.getName(this.currentID);
@@ -393,7 +405,7 @@ define([
                     case "none":
                         break;
                     default:
-                        console.error("Invalid type ", type);
+                        this.logging.session.log('client-message', {file:'controller.js', functionName:'updateEquationLabels', message:"Invalid type", value: type});
                 }
             }
             // Removing all the text is the same as setting display:none.
@@ -468,44 +480,44 @@ define([
             operation: "sum",
             positives: [],
             negatives: [],
-	    ops: [],
-	    setOperation: function(op){
-		switch(op){
-		case "sum":
-		    this.operation = op;
-		    dom.byId("positiveInputsText").innerHTML = "Add quantity:";
-		    dom.byId("negativeInputsText").innerHTML = "Subtract quantity:";
-		    break;
-		case "product":
-		    this.operation = "product";
-		    dom.byId("positiveInputsText").innerHTML = "Multiply by quantity:";
-		    dom.byId("negativeInputsText").innerHTML = "Divide by quantity:";
-		    break;
-		default:
-		    throw new Error("Invalid operation " + op);
-		}
-		this.update();
-	    },
+    	    ops: [],
+    	    setOperation: function(op){
+    		switch(op){
+        		case "sum":
+        		    this.operation = op;
+        		    dom.byId("positiveInputsText").innerHTML = "Add quantity:";
+        		    dom.byId("negativeInputsText").innerHTML = "Subtract quantity:";
+        		    break;
+        		case "product":
+        		    this.operation = "product";
+        		    dom.byId("positiveInputsText").innerHTML = "Multiply by quantity:";
+        		    dom.byId("negativeInputsText").innerHTML = "Divide by quantity:";
+        		    break;
+        		default:
+        		    throw new Error("Invalid operation " + op);
+        		}
+                this.update();
+            },
 
             handlePositive: function(id){
                 console.log("****** structured.handlePositives ", id);
                 this.positives.push(this._model.given.getName(id));
-		this.ops.push("positives");
+                this.ops.push("positives");
                 this.update();
                 registry.byId("positiveInputs").set('value', 'defaultSelect', false);// restore to default
             },
             handleNegative: function(id){
                 console.log("****** structured.handleNegatives ", id);
                 this.negatives.push(this._model.given.getName(id));
-		this.ops.push("negatives");
+                this.ops.push("negatives");
                 this.update();
                 registry.byId("negativeInputs").set('value', 'defaultSelect', false);// restore to default
             },
-	    pop: function(){
-		var op = this.ops.pop();
-		this[op].pop();
-		this.update();
-	    },
+    	    pop: function(){
+                var op = this.ops.pop();
+                this[op].pop();
+                this.update();
+    	    },
             update: function(){
                 // Update expression shown in equation box
                 // And structured expression
@@ -543,7 +555,7 @@ define([
             reset: function(){
                 this.positives.length = 0;
                 this.negatives.length = 0;
-		this.ops.length = 0;
+                this.ops.length = 0;
                 this.update();
             }
         },
@@ -651,15 +663,14 @@ define([
             this.disableHandlers = true;
             this.initialControlSettings(id);
             this.populateNodeEditorFields(id);
-            this._nodeEditor.show().then(
-                    lang.hitch(this, function(){
+            this._nodeEditor.show().then(lang.hitch(this, function(){
                 this.disableHandlers = false;
-            })
-                    );
+            }));
         },
         // Stub to be overwritten by student or author mode-specific method.
         initialControlSettings: function(id){
             console.error("initialControlSettings should be overwritten.");
+            //log message added through aspect.
         },
         populateNodeEditorFields: function(nodeid){
             //populate description
@@ -713,7 +724,9 @@ define([
              input, +, -, *, /, undo, and done should also be disabled.
              */
         },
-
+        setLogging: function(/*string*/ logging){
+            this.logging = logging;
+        },
 	/* 
          Take a list of directives and apply them to the Node Editor,
          updating the model and updating the graph.
@@ -737,6 +750,7 @@ define([
                         w.set(directive.attribute, directive.value);
                 } else {
                     console.warn("Directive with unknown id: " + directive.id);
+                    this.logging.session.log('client-message', {file:'controller.js', functionName:'applyDirectives', message:"Directive with unknown id", value:directive.id});
                 }
 
             }, this);

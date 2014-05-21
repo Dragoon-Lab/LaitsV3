@@ -16,11 +16,12 @@ define([
     "parser/parser",
     "./draw-model",
     "./calculations",
-    "./logging"
+    "./logging",
+    "./equation"
 ], function(
         lang, dom, geometry, on, aspect, ioQuery, ready, registry,
         menu, loadSave, model,
-        Graph, Table, wrapText, controlStudent, controlAuthor, Parser, drawmodel, calculations, logging
+        Graph, Table, wrapText, controlStudent, controlAuthor, Parser, drawmodel, calculations, logging, expression
         ){
 
     console.log("load main.js");
@@ -41,7 +42,7 @@ define([
     session.loadProblem(query).then(function(solutionGraph){
 
         var givenModel = new model(query.m, query.p);
-        logging.session.log('open-problem',{problem : givenModel.getTaskName()});
+        logging.session.log('open-problem',{problem : query.p});
         if(solutionGraph){
             givenModel.loadModel(solutionGraph);
         }
@@ -59,8 +60,14 @@ define([
         /* In principle, we could load just one controller or the other. */
             var controllerObject = query.m == 'AUTHOR' ? new controlAuthor(query.m, subMode, givenModel, query.is) :
                 new controlStudent(query.m, subMode, givenModel, query.is);
+
+        //setting up logging for different modules.
         if(controllerObject._PM)
             controllerObject._PM.setLogging(session);  // Set up direct logging in PM
+        
+        controllerObject.setLogging(session); // set up direct logging in controller
+
+        expression.setLogging(session);
 
         ready(function(){
 
@@ -174,8 +181,10 @@ define([
             if(url){
                 imageObj.src = url;
             }
-            else
+            else{
                 console.warn("No image found.  Put clickable box on canvas in author mode?");
+                controllerObject._PM.logging.session.log('client-message', {file:'main.js', funcitonName:'ready', message:'No image found for this problem', value:query.p});
+            }
 
             var imageLeft = 30;
             var imageTop = 20;

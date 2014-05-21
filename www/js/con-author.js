@@ -46,7 +46,7 @@ define([
                         else{
                             returnObj[0].value="incorrect";
                             returnObj.push({id:"message",attribute:"append",value:"Please select node type"});
-                            console.error("wrong choice");
+                            logging.session.log('client-message', {file:'con-author.js', functionName:'authorPM process', message:"wrong choice for node type"});
                         }
                         break;
 
@@ -224,7 +224,7 @@ define([
                 }));
             }
             else{
-                console.error("bad parsing");
+                logging.session.log('client-message', {file: 'con-author.js', functionName:'equationDoneHandler', message:"bad parsing"});
             }
         },
         initialControlSettings: function(nodeid){

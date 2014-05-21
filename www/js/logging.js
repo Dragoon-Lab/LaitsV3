@@ -56,6 +56,11 @@ define([
 	logging.session.log('ui-action', {type: 'close-dialog-box', name: 'node-editor', node: this.currentID});
     }, true);
 
+    aspect.after(controller.prototype, "initialControlSettings", function(){
+        logging.session.log('client-message', {file: 'controller.js', functionName : 'initialControlSettings', message:"initialControlSettings should be overwritten."});
+    }, true);
+
+
 
     // This does not work for some reason.  It should call the existing
     // closeEditor function.  Instead, it over-writes closeEditor.
@@ -69,6 +74,8 @@ define([
     });
      */
     window.onerror = function(msg, filename, url, lineNumber){
+        var tempFile = filename.split('/');
+        filename = tempFile[tempFile.length-1];
         logging.session.log('client-message', {message: msg, file:filename, line : lineNumber});
     }
 
