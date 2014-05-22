@@ -71,6 +71,7 @@ define([
                 return model_object;
             }, function(err){
 	        console.error("loadFromFile error ", err);
+	        this.log('client-message', {message:err, functionName:'loadFromFile'});
 	    });;
         },
 
@@ -86,6 +87,7 @@ define([
                 return model_object;
             }, function(err){
 	        console.error("loadFromDB error ", err);
+	        this.log('client-message', {message:err, functionName:'loadProblem'});
 	    });
         },
 
@@ -101,6 +103,7 @@ define([
 		console.log("saveProblem worked: ", reply);
 	    }, function(err){
 		console.error("saveProblem error ", err);
+			this.log('client-message', {message:err, functionName:'saveProblem'});
 	    });
         },
 
@@ -123,6 +126,10 @@ define([
 	    }, function(err){
 		console.error("---------- logging " + method + ': ', p, " error: ", err);
 	    });
+	},
+
+	clientLog: function(msg, fromFunction){
+		this.log('client-message', {message:msg, functionName:fromFunction});
 	}
     });
 });
