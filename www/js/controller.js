@@ -26,8 +26,8 @@ define([
     "dojo/_base/array", 'dojo/_base/declare', "dojo/_base/lang",
     'dojo/aspect', 'dojo/dom', "dojo/dom-class", "dojo/dom-construct", 'dojo/dom-style',
     'dojo/keys', 'dojo/on', "dojo/ready", 'dijit/registry',
-    './equation'
-], function(array, declare, lang, aspect, dom, domClass, domConstruct, style, keys, on, ready, registry, expression){
+    './equation','dojo/dom-attr','dojo/_base/Deferred'
+], function(array, declare, lang, aspect, dom, domClass, domConstruct, style, keys, on, ready, registry, expression,domattr,deferred){
 
     return declare(null, {
         _model: null,
@@ -164,11 +164,20 @@ define([
             messageWidget._setAppendAttr = function(message){
                 var existing = this.get('content');
                 // console.log("+++++++ appending message '" + message + "' to ", this, existing);
-                this.set('content', existing + '<p>' + message + '</p>');
-                // Scroll to bottom
+                this.set('content', existing + '<div id="new_message_update" style="background-color:#FFD700;"><p>'+ message + '</p></div>');
+            
+                setTimeout(function(){ var element = dom.byId("new_message_update");
+                                         console.log('message element is '+element) ;
+                                         domattr.set(element,"style","background-color:#ccc");
+                                         domattr.set(element,"id","");
+                                         
+         },5000);   
+                // Scroll to bottoms
                 this.domNode.scrollTop = this.domNode.scrollHeight;
             };
-
+             /*Set interval for message blink*/
+             
+            
             /*
              Add fields to units box, using units in model node
              In author mode, this needs to be turned into a text box.
@@ -179,6 +188,8 @@ define([
                 u.addOption({label: unit, value: unit});
             });
         },
+         
+         
         // Function called when node editor is closed.
         // This can be used as a hook for saving sessions and logging
         closeEditor: function(){
