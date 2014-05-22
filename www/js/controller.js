@@ -26,8 +26,8 @@ define([
     "dojo/_base/array", 'dojo/_base/declare', "dojo/_base/lang",
     'dojo/aspect', 'dojo/dom', "dojo/dom-class", "dojo/dom-construct", 'dojo/dom-style',
     'dojo/keys', 'dojo/on', "dojo/ready", 'dijit/registry',
-    './equation','dojo/dom-attr'
-], function(array, declare, lang, aspect, dom, domClass, domConstruct, style, keys, on, ready, registry, expression,domattr){
+    './equation'
+], function(array, declare, lang, aspect, dom, domClass, domConstruct, domStyle, keys, on, ready, registry, expression){
 
     return declare(null, {
         _model: null,
@@ -86,10 +86,10 @@ define([
              */
             var algebraic = (this._inputStyle == "algebraic" ? "" : "none");
             var structured = (this._inputStyle == "structured" ? "" : "none");
-            style.set("algebraic", "display", algebraic);
-            style.set("structured", "display", structured);
-            style.set("equationBox", "display", algebraic);
-            style.set("equationText", "display", structured);
+            domStyle.set("algebraic", "display", algebraic);
+            domStyle.set("structured", "display", structured);
+            domStyle.set("equationBox", "display", algebraic);
+            domStyle.set("equationText", "display", structured);
 
             /*
              Add attribute handler to all of the controls
@@ -111,7 +111,7 @@ define([
                  Previously, just set domNode.bgcolor but this approach didn't work
                  for text boxes.   */
                 // console.log(">>>>>>>>>>>>> setting color ", this.domNode.id, " to ", value);
-                style.set(this.domNode, 'backgroundColor', value ? colorMap[value] : '');
+                domStyle.set(this.domNode, 'backgroundColor', value ? colorMap[value] : '');
             };
             for(var control in this.controlMap){
                 var w = registry.byId(this.controlMap[control]);
@@ -162,22 +162,17 @@ define([
             // Add appender to message widget
             var messageWidget = registry.byId(this.widgetMap.message);
             messageWidget._setAppendAttr = function(message){
-                var existing = this.get('content');
-                //var message_box_id=dom.byId(this);
                 var message_box_id=dom.byId("messageBox");
-                // console.log("+++++++ appending message '" + message + "' to ", this, existing);
-                //In the following paragraph, we give an id so that we can highlight a new message each time it pops up
-                //this.set('content', existing + '<p id="new_message_update" style="background-color:#FFD700;">'+ message + '</p>');
-                
-                var return_op=domConstruct.place('<p style="background-color:#FFD700;">'+ message + '</p>', message_box_id);
-                //we change the back ground color using set and further empty the id so that new message can follow with colored back ground
-                console.log(return_op);
-                new_msg = setTimeout(function(){ var element = return_op;
-                                         console.log('message element is '+element);
-                                         domattr.set(element,"style","background-color: none");
-                                         
-                },5000);
-                   
+		
+		// Set the background color for the new <p> element
+		// then undo the background color after waiting.
+                var element=domConstruct.place('<p style="background-color:#FFD700;">' 
+					       + message + '</p>', message_box_id);
+                window.setTimeout(function(){ 
+		    // This unsets the "background-color" style
+                    domStyle.set(element, "backgroundColor", "");
+                }, 3000);  // Wait in milliseconds
+
                 // Scroll to bottoms
                 this.domNode.scrollTop = this.domNode.scrollHeight;
             };
