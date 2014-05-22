@@ -147,6 +147,7 @@ define([
 	    }
 
 	     var initialValue = this._givenModel.getInitial(node.ID);
+	     var isComplete   =	this._givenModel.isComplete(node.ID)?'solid':'dashed';
             if(!initialValue)
                  initialValue = '';
 
@@ -173,7 +174,7 @@ define([
 	    if(type!='triangle'){
 		var color = this._givenModel.getCorrectness?
 			this._givenModel.getCorrectness(node.ID):"neutral";
-		borderColor += "2px solid " + colorMap[color];
+		borderColor += "2px "+isComplete+" " + colorMap[color];
 		boxShadow = 'inset 0px 0px 5px #000 , 0px 0px 10px #000';
 	    }
 
