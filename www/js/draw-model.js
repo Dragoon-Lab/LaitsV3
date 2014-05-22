@@ -148,6 +148,7 @@ define([
 
 	     var initialValue = this._givenModel.getInitial(node.ID);
 	     var isComplete   =	this._givenModel.isComplete(node.ID)?'solid':'dashed';
+
             if(!initialValue)
                  initialValue = '';
 
