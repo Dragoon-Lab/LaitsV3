@@ -70,7 +70,7 @@ define([
             array.forEach(this._model.given.getDescriptions(), function(desc){
                 d.addOption(desc);
                 var name = this._model.given.getName(desc.value);
-                var option = {label: desc.label + ' ' + ' | ' + ' ' + name, value: desc.value};
+                var option = {label: name + " (" + desc.label + ")", value: desc.value};
                 t.addOption(option);
                 positiveInputs.addOption(option);
                 negativeInputs.addOption(option);
@@ -224,7 +224,7 @@ define([
 
                 // console.warn("======= not saving in status, node=" + this.currentID + ": ", desc);
             }
-        },
+        }/*,
 		colorNodeBorder: function(nodeId){
 				//get model type
 				var type = this._model.student.getType(nodeId);
@@ -237,11 +237,12 @@ define([
                     demo: "yellow"
                 };
 				console.log('nodeId is '+nodeId);
+				var isComplete   = this._model.student.isComplete(nodeId,true)?'solid':'dashed';
 				var color = this._model.student.getCorrectness(nodeId);
 				console.log('color is '+color);
-				style.set(this.currentID,'border','2px solid '+colorMap[color]);
+				style.set(this.currentID,'border','2px '+isComplete+' '+colorMap[color]);
 				style.set(this.currentID,'box-shadow','inset 0px 0px 5px #000 , 0px 0px 10px #000');
 				}
-		}
+		}*/
     });
 });
