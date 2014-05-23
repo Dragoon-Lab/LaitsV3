@@ -77,7 +77,7 @@ define([
     }, true);
 
     aspect.after(controller.prototype, "initialControlSettings", function(){
-        logging.session.log('client-message', {file: 'controller.js', functionName : 'initialControlSettings', message:"initialControlSettings should be overwritten."});
+        logging.session.clientLog('initialControlSettings should be overwritten.', 'initialControlSettings');
     }, true);
 
 
@@ -93,10 +93,10 @@ define([
 	    }
     });
      */
-    window.onerror = function(msg, filename, url, lineNumber){
-        var tempFile = filename.split('/');
+    window.onerror = function(msg, url, lineNumber){
+        var tempFile = url.split('/');
         filename = tempFile[tempFile.length-1];
-        logging.session.log('client-message', {message: msg, file:filename, line : lineNumber});
+        logging.session.clientLog(msg, '', filename, lineNumber});
     }
 
     return logging;
