@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
-<Task phase="" type="debug">
+<Task phase="" type="">
     <TaskName>Isle Royale - Moose population 3</TaskName>
     <TaskDescription>
         Assumptions: NEWLINE   
@@ -78,7 +78,6 @@
             <InitialValue>0.0</InitialValue>
         </Node>
     </Nodes>
- 
     <DescriptionTree>
         <Node level="root">
             <Description>The number of moose</Description>            
