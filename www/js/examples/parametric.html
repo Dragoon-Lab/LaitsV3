@@ -5,6 +5,35 @@
     <title>Dojo charts practices</title>
 </head>
 <body>
+    <h1>Line chart</h1>
+
+    <!-- Important line to plot the line chart -->
+    <div id="chartNode" style="width:800px;height:400px;"></div>
+    <script src="../../dojo/dojo.js"></script>
+    <script>
+        require([
+                    "dojox/charting/Chart",
+                    "dojox/charting/themes/Renkoo",
+                    "dojox/charting/plot2d/Lines",
+                    "dojox/charting/plot2d/Markers",
+                    "dojox/charting/axis2d/Default",
+                    "dojo/domReady!"
+                ],function(Chart, theme, LinesPlot){
+                    var chartData = [10000,9200,11811,12000,7662,13887,14200,12222,12000,10009,11288,12099];
+                    var chart = new Chart("chartNode");
+                    chart.setTheme(theme);
+                    chart.addPlot("default", {
+                        type: LinesPlot,
+                        markers: true
+                    });
+                    chart.addAxis("x");
+                    chart.addAxis("y", { min: 5000, max: 15000, vertical: true, fixLower: "major", fixUpper: "major" });
+                    chart.addSeries("Monthly Sales",chartData);
+                    chart.render();
+
+                }
+        );
+    </script>
 
 </body>
 </html>
