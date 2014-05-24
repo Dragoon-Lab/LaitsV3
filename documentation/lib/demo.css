@@ -1,0 +1,24 @@
+/** ELEMENT POSITIONS **/
+#maine {top:40em;left:4em;}
+#menu  {top:10em;left:30em;}
+#load-save {top:15em;left:30em;}
+#model  {top:20em;left:30em;}
+#RenderGraph {top:25em;left:30em;}
+#RenderTable {top:30em;left:30em;}
+#wraptext {top:35em;left:30em;}
+#con-student {top:40em;left:60em;}
+#con-author {top:55em;left:75em;}
+#drawmodel {top:50em;left:30em;}
+#calculations {top:55em;left:30em;}
+#logging {top:60em;left:30em;}
+#pedagogical_module { top:20em; left:50em;}
+
+#integrate { top:66em;left:40em; }
+#controller { top:56em; left:58em;}
+
+#state {left:76em;top:27em;}
+#util {left:76em;top:20em;}
+
+
+
+#equation {left:66em;top:10em;}
