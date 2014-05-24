@@ -97,6 +97,7 @@ define([
             menu.add("createNodeButton", function(){
                 var id = givenModel.active.addNode();
                 drawModel.addNode(givenModel.active.getNode(id));
+                controllerObject.logging.log('ui-action', {type: "menu-choice", name: "create-node"});
                 controllerObject.showNodeEditor(id);
             });
 
@@ -138,6 +139,7 @@ define([
              */
             aspect.after(registry.byId('nodeeditor'), "hide", function(){
                 console.log("Calling session.saveProblem");
+                controllerObject.logging.log("ui-action", {node: "name of the node", tab:"last value checked", type:"dialog-box-tab"});
                 session.saveProblem(givenModel.model);
             });
 
@@ -158,6 +160,7 @@ define([
                 console.debug("button clicked");
                 // instantiate graph object
                 var graph = new Graph(givenModel, query.m);
+                controllerObject.logging.log('ui-action', {type: "menu-choice", name: "graph-button", "Is Problem Solved":"need to figure this out"});
                 graph.show();
             });
 
@@ -166,12 +169,14 @@ define([
             menu.add("tableButton", function(){
                 console.debug("table button clicked");
                 var table = new Table(givenModel, query.m);
+                controllerObject.logging.log('ui-action', {type: "menu-choice", name: "table-button"});
                 table.show();
             });
 
 
            menu.add("doneButton", function(){
                console.debug("done button is clicked");
+               controllerObject.logging.log('close-problem', {type: "menu-choice", name: "done-button", "Is Problem Solved":"need to figure this out"});
                window.history.back();
 
 
@@ -203,7 +208,7 @@ define([
             }
             else{
                 console.warn("No image found.  Put clickable box on canvas in author mode?");
-                controllerObject._PM.logging.session.log('client-message', {file:'main.js', funcitonName:'ready', message:'No image found for this problem', value:query.p});
+                controllerObject.logging.clientLog('No image found for the problem : '+query.p, 'ready');
             }
 
             var imageLeft = 30;
