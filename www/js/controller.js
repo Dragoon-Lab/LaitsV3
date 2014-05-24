@@ -108,7 +108,7 @@ define([
                 if(value){
                     console.assert(colorMap[value], "Invalid color specification " + value);
                     if(!colorMap[value]){
-                        this.logging.session.clientLog('Invalid color specification, color value : '+value, 'setStatus');
+                        this.logging.clientLog('Invalid color specification, color value : '+value, 'setStatus');
                     }
                 }
                 /* BvdS:  I chose bgColor because it was easy to do
@@ -330,12 +330,12 @@ define([
                 var w = registry.byId(button + 'Button');
                 console.assert(w, "Button for " + button + " not found");
                 if(!w){
-                    this.logging.session.clientLog("button not found, button id : "+button, '_initHandles');
+                    this.logging.clientLog("button not found, button id : "+button, '_initHandles');
                 }
                 var handler = this[button + 'Handler'];
                 console.assert(handler, "Button handler '" + handler + "' not found");
                 if(!handler){
-                    this.logging.session.clientLog("button handler not found, handler id : "+handler, '_initHandles');
+                    this.logging.clientLog("button handler not found, handler id : "+handler, '_initHandles');
                 }
                 w.on('click', lang.hitch(this, handler));
                 /*  When the equation box is enabled/disabled also do the same
@@ -438,7 +438,7 @@ define([
                     case "none":
                         break;
                     default:
-                        this.logging.session.clientLog("Invalid node type, value selected : "+type, 'updateEquationLabels');
+                        this.logging.clientLog("Invalid node type, value selected : "+type, 'updateEquationLabels');
                 }
             }
             // Removing all the text is the same as setting display:none.
@@ -783,7 +783,7 @@ define([
                         w.set(directive.attribute, directive.value);
                 } else {
                     console.warn("Directive with unknown id: " + directive.id);
-                    this.logging.session.clientLog("Directive with unknown id, id : "+directive.id, 'applyDirectives');
+                    this.logging.clientLog("Directive with unknown id, id : "+directive.id, 'applyDirectives');
                 }
 
             }, this);

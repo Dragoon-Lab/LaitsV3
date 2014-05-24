@@ -96,7 +96,7 @@ define([
     window.onerror = function(msg, url, lineNumber){
         var tempFile = url.split('/');
         filename = tempFile[tempFile.length-1];
-        logging.session.clientLog(msg, '', filename, lineNumber});
+        logging.session.clientLog(msg, '', filename, lineNumber);
     }
 
     return logging;
