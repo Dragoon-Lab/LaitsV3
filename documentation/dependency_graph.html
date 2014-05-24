@@ -1,54 +1,50 @@
+<!doctype html>
 <html>
-<head>
-
-    <script type="text/javascript" src="http://cdnjs.cloudflare.com/ajax/libs/raphael/2.1.2/raphael-min.js"></script>
-    <script type="text/javascript" src="http://cdnjs.cloudflare.com/ajax/libs/jquery/2.1.1/jquery.js"></script>
-    <script type="text/javascript" src="lib/dracula_graffle.js"></script>
-    <script type="text/javascript" src="lib/dracula_graph.js"></script>
-    
-    <script>
-    
-var redraw;
-
-/* only do all this when document has finished loading (needed for RaphaelJS) */
-window.onload = function() {
-
-var g = new Graph();
- 
-g.addEdge("menu.js","main.js", {directed:true});
-g.addEdge("load-save.js","main.js", {directed:true});
-g.addEdge("model.js","main.js", {directed:true});
-g.addEdge("RenderGraph.js","main.js", {directed:true});
-g.addEdge("RenderTable.js","main.js", {directed:true});
-g.addEdge("wraptext.js","main.js", {directed:true});
-g.addEdge("con-student.js","main.js", {directed:true});
-g.addEdge("con-author.js","main.js", {directed:true});
-g.addEdge("draw-model.js","main.js", {directed:true});
-g.addEdge("calculations.js","main.js", {directed:true});
-g.addEdge("logging.js","main.js", {directed:true});
-g.addEdge("calculations.js","RenderGraph.js", {directed:true});
-g.addEdge("calculations.js","RenderTable.js", {directed:true});
-g.addEdge("controller.js","con-student.js", {directed:true});
-g.addEdge( "pedagogical_module.js","con-student.js",{directed:true});
-g.addEdge("equation.js","con-student.js", {directed:true});
-g.addEdge( "controller.js","con-author.js",{directed:true}); 
-g.addEdge("equation.js","con-author.js", {directed:true});
-g.addEdge( "equation.js","draw-model.js",{directed:true});
-g.addEdge( "equation.js","calculations.js",{directed:true});
-g.addEdge("integrate.js","calculations.js", {directed:true});
-g.addEdge("pedagogical_module.js","logging.js", {directed:true});
-g.addEdge("model.js","logging.js", {directed:true});
-g.addEdge( "controller.js","logging.js",{directed:true});
-g.addEdge("state.js", "state.js");
-var layouter = new Graph.Layout.Spring(g);
-layouter.layout();
- 
-var renderer = new Graph.Renderer.Raphael('canvas', g, 1000, 700);
-renderer.draw();
-};
-    </script>
-</head>
-<body>
-<div id="canvas"/>
-</body>
+    <head>        
+        <title>jsPlumb 1.6.2 demo - no library</title>
+		<meta http-equiv="content-type" content="text/html;charset=utf-8" />
+        <script src="http://ajax.googleapis.com/ajax/libs/dojo/1.8.5/dojo/dojo.js" data-dojo-config="async: true"></script>		
+        <script src="http://cdnjs.cloudflare.com/ajax/libs/jquery/2.1.1/jquery.js"></script>
+         <script src="//cdnjs.cloudflare.com/ajax/libs/jqueryui/1.10.3/jquery-ui.min.js"></script>        
+        <link href="//netdna.bootstrapcdn.com/font-awesome/4.0.1/css/font-awesome.css" rel="stylesheet">
+        <link rel="stylesheet" href="lib/jsplumb.css">
+		<link rel="stylesheet" href="lib/demo.css">
+   </head>
+    <body data-demo-id="home" data-library="dom">
+        
+		
+        <div id="main">
+			<div class="demo kitchensink-demo" id="kitchensink-demo">
+                
+                <div class="component window" id="maine"><strong>main.js</strong></div>
+                <div class="component window" id="drawmodel"><strong>draw-model.js</strong></div>                
+                <div class="component window" id="model"><strong>model.js</strong></div>
+                <div class="component window" id="menu"><strong>menu.js</strong></div>
+                <div class="component window" id="load-save"><strong>load-save.js</strong></div>
+                <div class="component window" id="RenderGraph"><strong>RenderGraph.js</strong></div>
+                <div class="component window" id="RenderTable"><strong>RenderTable.js</strong></div>
+                <div class="component window" id="wraptext"><strong>wraptext.js</strong></div>
+                <div class="component window" id="con-student"><strong>con-student.js</strong></div>
+                <div class="component window" id="con-author"><strong>con-author.js</strong></div>                       
+                <div class="component window" id="calculations"><strong>calculations.js</strong></div>
+                <div class="component window" id="equation"><strong>equations.js</strong></div>
+                <div class="component window" id="integrate"><strong>integrate.js</strong></div>
+                <div class="component window" id="pedagogical_module"><strong>pedagogical_module.js</strong></div>
+                <div class="component window" id="controller"><strong>controller.js</strong></div>
+                <div class="component window" id="state"><strong>state.js</strong></div>
+                <div class="component window" id="logging"><strong>logging.js</strong></div>
+                <div class="component window" id="util"><strong>util.js</strong></div>                
+            </div>
+			<!-- /demo -->
+        </div>
+        		
+		<!-- JS -->        
+		<!-- support lib for bezier stuff -->
+		<script src="//cdnjs.cloudflare.com/ajax/libs/jsPlumb/1.4.1/jquery.jsPlumb-1.4.1-all-min.js"></script>     
+		<script src="lib/demo.js"></script>
+		
+		<!--  demo list and helper code. you don't need this stuff if you're just copying the single demo. -->
+        	
+        
+    </body>
 </html>
