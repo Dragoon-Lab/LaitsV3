@@ -111,7 +111,7 @@ jsPlumb.ready(function(){
 	}, connection1);
         instance.connect({
 		source:"calculations",
-		target:"RenderGraph"
+		target:"RenderTable"
 	}, connection1);
         instance.connect({
 		source:"controller",
