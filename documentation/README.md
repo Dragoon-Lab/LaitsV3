@@ -7,6 +7,7 @@ This contains mostly design documents.
 * [Graph (nodes and connectors) Design](graph.md)
 * [Node Editor Design](node-editor.md)
 * [Libraries, Model-View-Controller, and the Pedagogical Module](javascript.md)
+* [Module Dependencies](modules.png)
 * [JSON format](json-format.md)
 * [Forum](forum.md)
 * Kurt's design for the [Pedagogical Module](Pedagogical-Module.docx)

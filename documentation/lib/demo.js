@@ -25,8 +25,9 @@ jsPlumb.ready(function(){
 		connector:["Bezier", { curviness:70 }],
 	   	cssClass:"c1",
 	   	endpoint:"Blank",
-	   	endpointClass:"c1Endpoint",													   
-	   	anchors:["BottomCenter", [ 0.75, 0, 0, -1 ]], 
+	        endpointClass:"c1Endpoint",
+
+	        anchors:["Left", "Right"],
 	   	paintStyle:{ 
 			lineWidth:6,
 			strokeStyle:"#a7b04b",
