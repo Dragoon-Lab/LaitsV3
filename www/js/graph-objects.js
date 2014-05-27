@@ -19,15 +19,42 @@
  *
  */
 define([
-    "dojo/dom-construct"
-], function(domConstruct){
+    "dojo/dom-construct","./equation"
+], function(domConstruct,expression){
     return {
        getEndPointConfiguration:function(sign){
             if(sign!='')
              return [["Arrow", { location:1, id:"arrow", length:14, foldback:0.9 } ], ["Custom", { create:function(component){ var overlay = domConstruct.create("div", { innerHTML: "<div class='endPoint'>"+sign+"</div>" }); return overlay; }, location:1.0, id:"customOverlay" }]];
             else
                return [["Arrow", { location:1, id:"arrow", length:14, foldback:0.9 } ]];
-        } 
+        },
+ 	getNodeName:function(model,nodeId){
+	      var type = model.getType(nodeId)||'triangle';
+             var nodeName = model.getName(nodeId);
+             var parse = model.getEquation(nodeId);
+             var parameter =  '';
+            if(parse){
+                parse=expression.parse(parse);
+                // May want to change symbols to "sum" and "product"
+                parameter = expression.isSum(parse)&&expression.isProduct(parse)?'':expression.isSum(parse)?'+':expression.isProduct(parse)?'*':'';
+            }
+            var initialValue = model.getInitial(nodeId);
+            if(!initialValue)
+                 initialValue = '';
+
+             var unitsValue = model.getUnits(nodeId);
+             if(!unitsValue)
+                     unitsValue = '';
+
+            initialValue += " " + unitsValue;
+
+            if(nodeName&&type!='triangle')
+                nodeName='<div id='+nodeId+'Label  class="bubble"><strong>'+parameter+'<br>'+initialValue+'</strong><div class='+type+'Div><strong>'+nodeName+'</strong></div></div>';
+            else
+                nodeName='';
+                return nodeName;
+
+	}
     };
 });
     

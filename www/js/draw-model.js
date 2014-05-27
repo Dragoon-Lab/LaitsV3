@@ -25,8 +25,8 @@
 define([
     "dojo/_base/array", 'dojo/_base/declare', 'dojo/_base/lang',
     'dojo/dom', "dojo/dom-attr", "dojo/dom-construct","dijit/Menu",
-    "dijit/MenuItem","./equation","./util", "jsPlumb/jsPlumb"
-], function(array, declare, lang, dom, attr, domConstruct, Menu, MenuItem, equation, utils){
+    "dijit/MenuItem","./equation","./graph-objects", "jsPlumb/jsPlumb"
+], function(array, declare, lang, dom, attr, domConstruct, Menu, MenuItem, equation, graphObjects){
 
     return declare(null, {
 
@@ -138,7 +138,7 @@ define([
             // Add div to drawing
             console.log("      --> setting position for vertex : "+ node.ID +" position: x"+node.position.x+"  y:"+node.position.y);
 
-            var nodeName = this._givenModel.getName(node.ID);
+            /*var nodeName = this._givenModel.getName(node.ID);
 	    var parse = this._givenModel.getEquation(node.ID);
 	    var parameter =  '';
 	    if(parse){
@@ -162,8 +162,12 @@ define([
             if(nodeName && type != "triangle")
                 nodeName='<div id='+node.ID+'Label  class="bubble"><strong>'+parameter+'<br>'+initialValue+'</strong><div class='+type+'Div><strong>'+nodeName+'</strong></div></div>';
             else
-                nodeName='';
+                nodeName='';*/
 	
+            var nodeName = graphObjects.getNodeName(this._givenModel,node.ID);
+	    var isComplete   = this._givenModel.isComplete(node.ID)?'solid':'dashed';
+	
+
 	    var colorMap = {
                 correct: "green",
                 incorrect: "#FF8080",
@@ -253,7 +257,7 @@ define([
                     this._instance.detach(connection);
             }, this);
             // Create new connections
-	    var connectionOverlays = utils.getEndPointConfiguration('');
+	    var connectionOverlays = graphObjects.getEndPointConfiguration('');
             array.forEach(sources, function(source){
                 // All sources and destinations should exist.
 //                if(destination.is)
@@ -263,10 +267,10 @@ define([
 		    if(!(isSum&&isProduct)){	
 				if(isSum){
 					if(source.label=='-')						
-						 connectionOverlays = utils.getEndPointConfiguration(source.label);
+						 connectionOverlays = graphObjects.getEndPointConfiguration(source.label);
 				}else if(isProduct){
 					 if(source.label=='/')                                          
-                                                connectionOverlays = utils.getEndPointConfiguration(source.label);
+                                                connectionOverlays = graphObjects.getEndPointConfiguration(source.label);
 				}
 			}
 		}
@@ -275,7 +279,7 @@ define([
                     target: destination,
                     overlays:connectionOverlays
                 });
-		connectionOverlays = utils.getEndPointConfiguration('');
+		connectionOverlays = graphObjects.getEndPointConfiguration('');
             }, this);
         },
 

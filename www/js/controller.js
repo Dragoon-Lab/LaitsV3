@@ -26,8 +26,8 @@ define([
     "dojo/_base/array", 'dojo/_base/declare', "dojo/_base/lang",
     'dojo/aspect', 'dojo/dom', "dojo/dom-class", "dojo/dom-construct", 'dojo/dom-style',
     'dojo/keys', 'dojo/on', "dojo/ready", 'dijit/registry',
-    './equation'
-], function(array, declare, lang, aspect, dom, domClass, domConstruct, domStyle, keys, on, ready, registry, expression){
+    './equation','./graph-objects'
+], function(array, declare, lang, aspect, dom, domClass, domConstruct, domStyle, keys, on, ready, registry, expression,graphObjects){
 
     return declare(null, {
         _model: null,
@@ -230,7 +230,7 @@ define([
 
 
 	    // update Node labels upon exit	
-             var nodeName = this.getNodeName();
+             var nodeName = graphObjects.getNodeName(this._model.active,this.currentID);
 
             if(dom.byId(this.currentID + 'Label'))
                 domConstruct.place(nodeName, this.currentID + 'Label', "replace");
@@ -363,7 +363,7 @@ define([
             domClass.replace(this.currentID, type);
 
 
-	      var nodeName = this.getNodeName();
+	      var nodeName = graphObjects.getNodeName(this._model.active,this.currentID);
 	
         /*    var nodeName = this._model.active.getName(this.currentID);
             if(nodeName)
@@ -379,7 +379,7 @@ define([
             // updating the model and the equation labels	    
             this._model.active.setType(this.currentID, type);
             this.updateEquationLabels();
-        },
+        }/*,
 	getNodeName:function(){
 	     var type = this._model.active.getType(this.currentID);
 	     var nodeName = this._model.active.getName(this.currentID);
@@ -405,7 +405,7 @@ define([
             else
                 nodeName='';
 		return nodeName;
-	},
+	}*/,
         updateEquationLabels: function(typeIn){
             var type = typeIn || this._model.active.getType(this.currentID) || "none";
             var name = this._model.active.getName(this.currentID);
