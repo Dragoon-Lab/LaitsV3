@@ -26,8 +26,8 @@ define([
     "dojo/_base/array", 'dojo/_base/declare', "dojo/_base/lang",
     'dojo/aspect', 'dojo/dom', "dojo/dom-class", "dojo/dom-construct", 'dojo/dom-style',
     'dojo/keys', 'dojo/on', "dojo/ready", 'dijit/registry',
-    './equation'
-], function(array, declare, lang, aspect, dom, domClass, domConstruct, domStyle, keys, on, ready, registry, expression){
+    './equation', './graph-objects'
+], function(array, declare, lang, aspect, dom, domClass, domConstruct, domStyle, keys, on, ready, registry, expression, graphObjects){
 
     return declare(null, {
         _model: null,
@@ -234,10 +234,8 @@ define([
 	    // Color the borders of the Node
 	    this.colorNodeBorder(this.currentID);
 
-
 	    // update Node labels upon exit	
-             var nodeName = this.getNodeName();
-
+            var nodeName = graphObjects.getNodeName(this._model.active,this.currentID);
             if(dom.byId(this.currentID + 'Label'))
                 domConstruct.place(nodeName, this.currentID + 'Label', "replace");
 
@@ -378,15 +376,7 @@ define([
             console.log("===========>   changing node class to " + type);
             domClass.replace(this.currentID, type);
 
-
-	      var nodeName = this.getNodeName();
-	
-        /*    var nodeName = this._model.active.getName(this.currentID);
-            if(nodeName)
-                nodeName = '<div id=' + this.currentID + 'Label  class="bubble"><strong>' + nodeName + '</strong></div>';
-            else
-                nodeName = ''; */
-
+	    var nodeName = graphObjects.getNodeName(this._model.active,this.currentID,type);
             if(dom.byId(this.currentID + 'Label'))
                 domConstruct.place(nodeName, this.currentID + 'Label', "replace");
             else //new node
@@ -396,33 +386,6 @@ define([
             this._model.active.setType(this.currentID, type);
             this.updateEquationLabels();
         },
-
-	getNodeName:function(){
-	     var type = this._model.active.getType(this.currentID);
-	     var nodeName = this._model.active.getName(this.currentID);
-             var parse = this._model.active.getEquation(this.currentID);
-             var parameter =  '';
-            if(parse){
-                parse=expression.parse(parse);
-		// May want to change symbols to "sum" and "product"
-                parameter = expression.isSum(parse)&&expression.isProduct(parse)?'':expression.isSum(parse)?'+':expression.isProduct(parse)?'*':'';
-            }
-            var initialValue = this._model.active.getInitial(this.currentID);
-            if(!initialValue)
-                 initialValue = '';
-	   
-             var unitsValue = this._model.active.getUnits(this.currentID);
-             if(!unitsValue)
-                     unitsValue = '';
-		
-	    initialValue += " " + unitsValue;
-
-            if(nodeName)
-                nodeName='<div id='+this.currentID+'Label  class="bubble"><strong>'+parameter+'<br>'+initialValue+'</strong><div class='+type+'Div><strong>'+nodeName+'</strong></div></div>';
-            else
-                nodeName='';
-		return nodeName;
-	},
         updateEquationLabels: function(typeIn){
             var type = typeIn || this._model.active.getType(this.currentID) || "none";
             var name = this._model.active.getName(this.currentID);
