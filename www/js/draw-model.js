@@ -137,32 +137,6 @@ define([
             console.log("------- Adding element to canvas, id = ", node.ID, ", class = ", type);
             // Add div to drawing
             console.log("      --> setting position for vertex : "+ node.ID +" position: x"+node.position.x+"  y:"+node.position.y);
-
-            /*var nodeName = this._givenModel.getName(node.ID);
-	    var parse = this._givenModel.getEquation(node.ID);
-	    var parameter =  '';
-	    if(parse){
-		parse=equation.parse(parse);
-		parameter =equation.isSum(parse)&&equation.isProduct(parse)?'':equation.isSum(parse)?'+':equation.isProduct(parse)?'*':'';
-	    }
-
-	     var initialValue = this._givenModel.getInitial(node.ID);
-	     var isComplete   =	this._givenModel.isComplete(node.ID)?'solid':'dashed';
-
-            if(!initialValue)
-                 initialValue = '';
-
-             var unitsValue = this._givenModel.getUnits(node.ID);
-             if(!unitsValue)
-                     unitsValue = '';
-
-            initialValue+=' '+unitsValue;
-
-
-            if(nodeName && type != "triangle")
-                nodeName='<div id='+node.ID+'Label  class="bubble"><strong>'+parameter+'<br>'+initialValue+'</strong><div class='+type+'Div><strong>'+nodeName+'</strong></div></div>';
-            else
-                nodeName='';*/
 	
             var nodeName = graphObjects.getNodeName(this._givenModel,node.ID);
 	    var isComplete   = this._givenModel.isComplete(node.ID)?'solid':'dashed';

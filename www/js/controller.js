@@ -379,33 +379,7 @@ define([
             // updating the model and the equation labels	    
             this._model.active.setType(this.currentID, type);
             this.updateEquationLabels();
-        }/*,
-	getNodeName:function(){
-	     var type = this._model.active.getType(this.currentID);
-	     var nodeName = this._model.active.getName(this.currentID);
-             var parse = this._model.active.getEquation(this.currentID);
-             var parameter =  '';
-            if(parse){
-                parse=expression.parse(parse);
-		// May want to change symbols to "sum" and "product"
-                parameter = expression.isSum(parse)&&expression.isProduct(parse)?'':expression.isSum(parse)?'+':expression.isProduct(parse)?'*':'';
-            }
-            var initialValue = this._model.active.getInitial(this.currentID);
-            if(!initialValue)
-                 initialValue = '';
-	   
-             var unitsValue = this._model.active.getUnits(this.currentID);
-             if(!unitsValue)
-                     unitsValue = '';
-		
-	    initialValue += " " + unitsValue;
-
-            if(nodeName)
-                nodeName='<div id='+this.currentID+'Label  class="bubble"><strong>'+parameter+'<br>'+initialValue+'</strong><div class='+type+'Div><strong>'+nodeName+'</strong></div></div>';
-            else
-                nodeName='';
-		return nodeName;
-	}*/,
+        },
         updateEquationLabels: function(typeIn){
             var type = typeIn || this._model.active.getType(this.currentID) || "none";
             var name = this._model.active.getName(this.currentID);
