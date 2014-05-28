@@ -272,8 +272,13 @@ define([
              *   'handleInitial' will be called in either Student or Author mode
              * */
             //Define a new tooltip object so that it can be used around the textbox in case of non-numeric value
-            var myTooltipDialog = new TooltipDialog({
+            var myTooltipDialog = new TooltipDialog({ //new tool tip for indicating use of decimals instead of percentages
              id: 'myTooltipDialog',
+             style: "width: 150px;",
+             content: "Use decimals instead of percent",
+            });
+            var myTooltipDialog2 = new TooltipDialog({ // new tooltip for indicating non numeric data is not accepted
+             id: 'myTooltipDialog2',
              style: "width: 150px;",
              content: "Non Numeric data not accepted",
             });
@@ -281,18 +286,35 @@ define([
             // This event gets fired if student hits TAB or input box
             // goes out of focus.
             //This keyup event will handle non numeric data indication
-            initialWidget.on('keyup', lang.hitch(this,function(){
+            
+            initialWidget.on('change', lang.hitch(this,function(){
                 //close tooltip on each key up before further check the content
-                popup.close(myTooltipDialog);
+                popup.close(myTooltipDialog);// close old pop-ups' before a new one 
+                popup.close(myTooltipDialog2);
                 var impose_nums=initialValue.value;
-                if(!impose_nums.match('^[0-9]+$') && impose_nums!='') {
+               if(!impose_nums.match('^[-+]?[0-9]*\.?[0-9]+([eE][-+]?[0-9]+)?%$')){ //To check the decimals against percentages
+                
+                if(isNaN(impose_nums) && impose_nums!='') { //Incase input is not a number
+                 popup.open({
+                 popup: myTooltipDialog2,
+                 around: dom.byId(initialValue)
+                });
+              }
+              }
+              else{ //if entered string has percentage symbol, pop up a message to use decimals
+                 popup.close(myTooltipDialog);// close old pop-ups' before a new one 
+                 popup.close(myTooltipDialog2);
                  popup.open({
                  popup: myTooltipDialog,
                  around: dom.byId(initialValue)
                 });
               }
+            
+            
             }));
+            
             initialWidget.on('Change', lang.hitch(this, function(){
+            
             return this.disableHandlers || this.handleInitial.apply(this, arguments);
             }));
 

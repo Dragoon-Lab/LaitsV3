@@ -109,6 +109,7 @@ define([
 	},
 
         handleInitial: function(initial){
+            initial=Number(initial);// we do this type conversion because we used a textbox for initialvalue input which is a numerical
 
             console.log("****** Student has chosen initial value", initial, this.lastInitialValue);
 	    /*
