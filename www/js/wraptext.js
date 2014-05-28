@@ -27,13 +27,15 @@ define([
 	array.forEach(typeof textIn == "string"?[textIn]:textIn, function(text){
             var words = text.split(' ');
             var line = '';
-	    
+            context.font='normal 13px Arial';
             for(var n = 0; n < words.length; n++){
 		var testLine = line + words[n] + ' ';
 		var metrics = context.measureText(testLine);
 		var testWidth = metrics.width;
 		if(testWidth > maxWidth && n > 0){
-		    context.fillText(line, x, y);
+		    
+            context.fillText(line, x, y);
+            
 		    line = words[n] + ' ';
 		    y += lineHeight;
 		}
