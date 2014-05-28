@@ -251,6 +251,8 @@ define([
 
                 console.log('computed top margin for text ' + marginTop);
 
+		// Set font for description text
+		context.font = "normal 13px Arial";
                 wrapText(context, desc_text, textLeft, textTop + marginTop, textWidth, textHeight);
             };
 
