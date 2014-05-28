@@ -28,8 +28,8 @@ define([
             else
                return [["Arrow", { location:1, id:"arrow", length:14, foldback:0.9 } ]];
         },
- 	getNodeName:function(model,nodeId){
-	      var type = model.getType(nodeId)||'triangle';
+ 	getNodeName:function(model,nodeId,type){
+	      var type = model.getType(nodeId)||type||'triangle';
              var nodeName = model.getName(nodeId);
              var parse = model.getEquation(nodeId);
              var parameter =  '';
