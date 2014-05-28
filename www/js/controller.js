@@ -363,7 +363,7 @@ define([
             domClass.replace(this.currentID, type);
 
 
-	      var nodeName = graphObjects.getNodeName(this._model.active,this.currentID);
+	      var nodeName = graphObjects.getNodeName(this._model.active,this.currentID,type);
 	
         /*    var nodeName = this._model.active.getName(this.currentID);
             if(nodeName)
