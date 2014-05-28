@@ -160,7 +160,13 @@ define([
                 console.debug("button clicked");
                 // instantiate graph object
                 var graph = new Graph(givenModel, query.m);
-                controllerObject.logging.log('ui-action', {type: "menu-choice", name: "graph-button", "Is Problem Solved":"need to figure this out"});
+                var problemComplete = givenModel.matchesGivenSolution();
+                
+                controllerObject.logging.log('ui-action', {
+                    type: "menu-choice", 
+                    name: "graph-button", 
+                    "Is Problem Solved":problemComplete
+                });
                 graph.show();
             });
 
@@ -169,14 +175,23 @@ define([
             menu.add("tableButton", function(){
                 console.debug("table button clicked");
                 var table = new Table(givenModel, query.m);
-                controllerObject.logging.log('ui-action', {type: "menu-choice", name: "table-button"});
+                controllerObject.logging.log('ui-action', {
+                    type: "menu-choice", 
+                    name: "table-button"
+                });
                 table.show();
             });
 
 
            menu.add("doneButton", function(){
-               console.debug("done button is clicked");
-               controllerObject.logging.log('close-problem', {type: "menu-choice", name: "done-button", "Is Problem Solved":"need to figure this out"});
+                console.debug("done button is clicked");
+                var problemComplete = givenModel.matchesGivenSolution();
+
+                controllerObject.logging.log('close-problem', {
+                    type: "menu-choice", 
+                    name: "done-button", 
+                    "Is Problem Solved":problemComplete
+                });
                window.history.back();
 
 
@@ -208,7 +223,10 @@ define([
             }
             else{
                 console.warn("No image found.  Put clickable box on canvas in author mode?");
-                controllerObject.logging.clientLog('No image found for the problem : '+query.p, 'ready');
+                controllerObject.logging.clientLog("warning", {
+                    message:'No image found for the problem : '+query.p, 
+                    functionTag : 'main.js ready'
+                });
             }
 
             var imageLeft = 30;

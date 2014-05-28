@@ -44,7 +44,8 @@ define([
         areEquivalent: function(/*string*/ id, /*object*/ model, /*string*/ studentEquation){
             //Summary: For a given model node id, checks the correctness of the student equation.
             //
-            this.logging.clientLog("test message", 'function-name');
+            var test = 25;
+            this.logging.clientLog("error", {message : "test message "+test, fucntionTag:'function-name'});
             if(typeof studentEquation == 'string')
                 var student = Parser.parse(studentEquation);
             else
@@ -54,7 +55,10 @@ define([
             var givenEqn = model.given.getEquation(id);
             console.assert(givenEqn, "Given node '" + id + "' does not have an equation.");
             if(!givenEqn){
-                this.logging.clientLog('Given node '+id+' does not have an equation', 'areEquivalent');
+                this.logging.clientLog("assert", {
+                    message:'Given node '+id+' does not have an equation', 
+                    funcitonTag : 'areEquivalent'
+            });
             }
             var givenParse = Parser.parse(model.given.getEquation(id));
             var givenVals = {};
@@ -90,7 +94,10 @@ define([
                  at a higher level. */
                 console.assert(givenID, "Student variable '" + variable + "' has no match.");
                 if(!givenID){
-                    this.logging.clientLog('Student variable has no match, variable name : '+variable, 'areEquivalent');
+                    this.logging.clientLog("assert", {
+                        message:'Student variable has no match, variable name : '+variable, 
+                        functionTag: 'areEquivalent'
+                    });
                 }
                 // At this point, givenID can also be from the extra nodes.
                 this.evalVar(givenID, model.given, givenVals);
@@ -108,7 +115,10 @@ define([
 	    parents = parents || {};
             console.assert(subModel.isNode(id), "evalVar: unknown variable '" + id + "'.");
             if(!subModel.isNode(id)){
-                this.logging.clientLog('unknown variable for evaluation, variable name : '+id, 'evalVar');
+                this.logging.clientLog("assert", {
+                    message:'unknown variable for evaluation, variable name : '+id, 
+                    functionTag:'evalVar'
+                });
             }
             var node = subModel.getNode(id);
             if(!(id in vals)){
@@ -134,7 +144,10 @@ define([
                 var expr = Parser.parse(equation);
             }catch(e){
                 console.warn("Should log this as a JavaScript error.");
-                this.logging.clientLog('error in parser, error message : ' + e, 'convert');
+                this.logging.clientLog("error", {
+                    message:'error in parser, error message : ' + e, 
+                    functionTag:'convert'
+                });
                 return equation;
             }
             this.mapVariableNodeNames = {};
@@ -279,7 +292,10 @@ define([
                 var expr = Parser.parse(equation);
             }catch(e){
                 console.warn("Should log this as a JavaScript error.");
-                this.logging.clientLog('error in parser, error message : '+e, 'convertUsingDescriptionIDs');
+                this.logging.clientLog("error", {
+                    message:'error in parser, error message : '+e, 
+                    functionTag : 'convertUsingDescriptionIDs'
+                });
                 return equation;
             }
             array.forEach(expr.variables(), function(variable){

@@ -252,10 +252,11 @@ define([
             areRequiredNodesVisible: function(){
                 //Summary: returns true if all of the nodes in the model are visible
                 console.error("*****\n***** Need to update areRequiredNodesVisible() in model.js to only check for completeness of required nodes. Currently it looks at all nodes.");
-                var givenNodes = this.given.getNodes();
-                for(var i = 0; i < givenNodes.length; i++){
+                var solutionNodes = this.solution.getNodes();
+                var sLength = solutionNodes.length;
+                for(var i = 0; i < sLength; i++){
                     if(!array.some(this.student.getNodes(), function(studentNode){
-                        return this.isNodeVisible(studentNode.ID, givenNodes[i].ID);
+                        return this.isNodeVisible(studentNode.ID, solutionNodes[i].ID);
                     }, this))
                         return false;
                 }
@@ -282,6 +283,23 @@ define([
                         return givenID === input.ID && this.isNodeVisible(studentID, node.ID); // node.ID is the parent of input.ID;
                     }, this);
                 }, this);
+            },
+            matchesGivenSolution: function(){
+                /*See bug #2362*/
+                var visibilityFlag = this.areRequiredNodesVisible();
+                var solutionNodes = this.solution.getNodes();
+                var studentNodes = this.student.getNodes();
+                var flag = false;
+                if(visibilityFlag){
+                    //now we will need to a detailed check. 
+                    if(array.every(studentNodes, function(sNode){
+                        return this.student.isComplete(sNode.ID);
+                    }, this)){
+                        flag = true;
+                    }
+                }
+                console.log("flag value : ", flag);
+                return flag;
             },
             /**
              * SETTERS
