@@ -1,3 +1,23 @@
+/**
+ *Dragoon Project
+ *Arizona State University
+ *(c) 2014, Arizona Board of Regents for and on behalf of Arizona State University
+ *
+ *This file is a part of Dragoon
+ *Dragoon is free software: you can redistribute it and/or modify
+ *it under the terms of the GNU General Public License as published by
+ *the Free Software Foundation, either version 3 of the License, or
+ *(at your option) any later version.
+ *
+ *Dragoon is distributed in the hope that it will be useful,
+ *but WITHOUT ANY WARRANTY; without even the implied warranty of
+ *MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ *GNU General Public License for more details.
+ *
+ *You should have received a copy of the GNU General Public License
+ *along with Dragoon.  If not, see <http://www.gnu.org/licenses/>.
+ *
+ */
 /* global define, jsPlumb */
 /*
  This is just a quick initial attempt to draw a model
@@ -5,8 +25,8 @@
 define([
     "dojo/_base/array", 'dojo/_base/declare', 'dojo/_base/lang',
     'dojo/dom', "dojo/dom-attr", "dojo/dom-construct","dijit/Menu",
-    "dijit/MenuItem", "jsPlumb/jsPlumb"
-], function(array, declare, lang, dom, attr, domConstruct, Menu, MenuItem){
+    "dijit/MenuItem","./equation","./graph-objects", "jsPlumb/jsPlumb"
+], function(array, declare, lang, dom, attr, domConstruct, Menu, MenuItem, equation, graphObjects){
 
     return declare(null, {
 
@@ -117,31 +137,35 @@ define([
             console.log("------- Adding element to canvas, id = ", node.ID, ", class = ", type);
             // Add div to drawing
             console.log("      --> setting position for vertex : "+ node.ID +" position: x"+node.position.x+"  y:"+node.position.y);
-
-            var nodeName = this._givenModel.getName(node.ID);
-            if(nodeName && type != "triangle")
-                nodeName='<div id='+node.ID+'Label  class="bubble"><strong>'+nodeName+'</strong></div>';
-            else
-                nodeName='';
 	
-			var colorMap = {
-                    correct: "lightGreen",
-                    incorrect: "#FF8080",
-                    demo: "yellow"
-                };
-			var borderColor = '';
-			var boxShadow = '';
-			if(type!='triangle'){
-				var color = this._givenModel.getCorrectness(node.ID);
-				borderColor = '2px solid '+colorMap[color];
-				boxShadow = 'inset 0px 0px 5px #000 , 0px 0px 10px #000';
-			}
-			
-				
+            var nodeName = graphObjects.getNodeName(this._givenModel,node.ID);
+	    var isComplete   = this._givenModel.isComplete(node.ID)?'solid':'dashed';
+	
+
+	    var colorMap = {
+                correct: "green",
+                incorrect: "#FF8080",
+                demo: "yellow",
+		neutral: "gray"
+            };
+	    var borderColor = "",
+		boxShadow = "";
+	    if(type!='triangle'){
+		var color = this._givenModel.getCorrectness?
+			this._givenModel.getCorrectness(node.ID):"neutral";
+		borderColor += "2px "+isComplete+" " + colorMap[color];
+		boxShadow = 'inset 0px 0px 5px #000 , 0px 0px 10px #000';
+	    }
+
             var vertex = domConstruct.create("div", {
 		id: node.ID,
 		"class": type,
-		style: {left: node.position.x +'px', top: node.position.y +'px',border:borderColor,'box-shadow':boxShadow},
+		style: {
+		    left: node.position.x +'px', 
+		    top: node.position.y +'px',
+		    border:borderColor,
+		    'box-shadow':boxShadow
+		},
 		innerHTML: nodeName
 	    }, "statemachine-demo");
 
@@ -180,48 +204,56 @@ define([
             });
 
             return vertex;
-        },/*
-
-        getEndPointConfiguration:function(sign){
-            if(sign)
-             return [["Arrow", { location:1, id:"arrow", length:14, foldback:0.9 } ], ["Custom", { create:function(component){ var overlay = domConstruct.create("div", { innerHTML: "<div class='endPoint'>"+sign+"</div>" }); return overlay; }, location:1.0, id:"customOverlay" }]];
-            else
-             return '';
         },
-        /*
-         Set all connections going into a given node (destination), silently
-         filtering out any source nodes that don't exist.
-         */
         setConnections: function(/*array*/ sources, /*string*/ destination){
 
             //after determining equation type + or  - , set connection EndPoint by using following method
-
             //this._instance.Defaults.ConnectionOverlays = this.getEndPointConfiguration('+');
-
             // For now, we simply remove all existing connections and
             // create all new connections.
             // See http://stackoverflow.com/questions/11488067/how-to-delete-jsplumb-connection
             // console.log("----- setConnections:  Need to delete existing connections going into " + destination, this._instance);
             // Go through existing connections and delete those that
             // have this destination as their target.
+	    
+             var targetId = attr.get(destination, "id");
+	     var parse = this._givenModel.getEquation(targetId),isSum,isProduct;
+	    if(parse){
+	     parse = equation.parse(parse);
+	     isSum = equation.isSum(parse);
+	     isProduct = equation.isProduct(parse);
+	    }
+
+	    console.log('while adding connections ');
+
             array.forEach(this._instance.getConnections(), function(connection){
                 if(connection.targetId == destination)
                     this._instance.detach(connection);
             }, this);
             // Create new connections
+	    var connectionOverlays = graphObjects.getEndPointConfiguration('');
             array.forEach(sources, function(source){
                 // All sources and destinations should exist.
-
 //                if(destination.is)
-		if(source.label)
+		if(source.label){
 		    console.log("------- At this point, we should add a '"+source.label+"' label to "+ source.ID);
+		    //check pure sum  or pure product but not both
+		    if(!(isSum&&isProduct)){	
+				if(isSum){
+					if(source.label=='-')						
+						 connectionOverlays = graphObjects.getEndPointConfiguration(source.label);
+				}else if(isProduct){
+					 if(source.label=='/')                                          
+                                                connectionOverlays = graphObjects.getEndPointConfiguration(source.label);
+				}
+			}
+		}
+
                 this._instance.connect({source: source.ID,
-                    target: destination
-                    /* overlays: [
-                        ["Label",{label:"+", id:"label1", cssClass:"aLabel", location:0.95, radius:0.5 }],
-                        ["Label",{label:"-", id:"label2", cssClass:"aLabel", location:0.03, radius:0.5 }]
-                    ]*/
+                    target: destination,
+                    overlays:connectionOverlays
                 });
+		connectionOverlays = graphObjects.getEndPointConfiguration('');
             }, this);
         },
 

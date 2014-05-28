@@ -1,3 +1,23 @@
+/**
+ *Dragoon Project
+ *Arizona State University
+ *(c) 2014, Arizona Board of Regents for and on behalf of Arizona State University
+ *
+ *This file is a part of Dragoon
+ *Dragoon is free software: you can redistribute it and/or modify
+ *it under the terms of the GNU General Public License as published by
+ *the Free Software Foundation, either version 3 of the License, or
+ *(at your option) any later version.
+ *
+ *Dragoon is distributed in the hope that it will be useful,
+ *but WITHOUT ANY WARRANTY; without even the implied warranty of
+ *MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ *GNU General Public License for more details.
+ *
+ *You should have received a copy of the GNU General Public License
+ *along with Dragoon.  If not, see <http://www.gnu.org/licenses/>.
+ *
+ */
 /* global define */
 /*
  *                               Controller for Node Editor
@@ -6,8 +26,8 @@ define([
     "dojo/_base/array", 'dojo/_base/declare', "dojo/_base/lang",
     'dojo/aspect', 'dojo/dom', "dojo/dom-class", "dojo/dom-construct", 'dojo/dom-style',
     'dojo/keys', 'dojo/on', "dojo/ready", 'dijit/registry',
-    './equation'
-], function(array, declare, lang, aspect, dom, domClass, domConstruct, style, keys, on, ready, registry, expression){
+    './equation','./graph-objects'
+], function(array, declare, lang, aspect, dom, domClass, domConstruct, domStyle, keys, on, ready, registry, expression,graphObjects){
 
     return declare(null, {
         _model: null,
@@ -66,10 +86,10 @@ define([
              */
             var algebraic = (this._inputStyle == "algebraic" ? "" : "none");
             var structured = (this._inputStyle == "structured" ? "" : "none");
-            style.set("algebraic", "display", algebraic);
-            style.set("structured", "display", structured);
-            style.set("equationBox", "display", algebraic);
-            style.set("equationText", "display", structured);
+            domStyle.set("algebraic", "display", algebraic);
+            domStyle.set("structured", "display", structured);
+            domStyle.set("equationBox", "display", algebraic);
+            domStyle.set("equationText", "display", structured);
 
             /*
              Add attribute handler to all of the controls
@@ -91,7 +111,7 @@ define([
                  Previously, just set domNode.bgcolor but this approach didn't work
                  for text boxes.   */
                 // console.log(">>>>>>>>>>>>> setting color ", this.domNode.id, " to ", value);
-                style.set(this.domNode, 'backgroundColor', value ? colorMap[value] : '');
+                domStyle.set(this.domNode, 'backgroundColor', value ? colorMap[value] : '');
             };
             for(var control in this.controlMap){
                 var w = registry.byId(this.controlMap[control]);
@@ -142,13 +162,23 @@ define([
             // Add appender to message widget
             var messageWidget = registry.byId(this.widgetMap.message);
             messageWidget._setAppendAttr = function(message){
-                var existing = this.get('content');
-                // console.log("+++++++ appending message '" + message + "' to ", this, existing);
-                this.set('content', existing + '<p>' + message + '</p>');
-                // Scroll to bottom
+                var message_box_id=dom.byId("messageBox");
+		
+		// Set the background color for the new <p> element
+		// then undo the background color after waiting.
+                var element=domConstruct.place('<p style="background-color:#FFD700;">' 
+					       + message + '</p>', message_box_id);
+                window.setTimeout(function(){ 
+		    // This unsets the "background-color" style
+                    domStyle.set(element, "backgroundColor", "");
+                }, 3000);  // Wait in milliseconds
+
+                // Scroll to bottoms
                 this.domNode.scrollTop = this.domNode.scrollHeight;
             };
-
+             /*Set interval for message blink*/
+             
+            
             /*
              Add fields to units box, using units in model node
              In author mode, this needs to be turned into a text box.
@@ -159,6 +189,8 @@ define([
                 u.addOption({label: unit, value: unit});
             });
         },
+         
+         
         // Function called when node editor is closed.
         // This can be used as a hook for saving sessions and logging
         closeEditor: function(){
@@ -195,6 +227,14 @@ define([
 
 	    // Color the borders of the Node
 	    this.colorNodeBorder(this.currentID);
+
+
+	    // update Node labels upon exit	
+             var nodeName = graphObjects.getNodeName(this._model.active,this.currentID);
+
+            if(dom.byId(this.currentID + 'Label'))
+                domConstruct.place(nodeName, this.currentID + 'Label', "replace");
+
         },
         //set up event handling with UI components
         _initHandles: function(){
@@ -321,11 +361,16 @@ define([
             //update node type on canvas
             console.log("===========>   changing node class to " + type);
             domClass.replace(this.currentID, type);
-            var nodeName = this._model.active.getName(this.currentID);
+
+
+	      var nodeName = graphObjects.getNodeName(this._model.active,this.currentID);
+	
+        /*    var nodeName = this._model.active.getName(this.currentID);
             if(nodeName)
                 nodeName = '<div id=' + this.currentID + 'Label  class="bubble"><strong>' + nodeName + '</strong></div>';
             else
-                nodeName = '';
+                nodeName = ''; */
+
             if(dom.byId(this.currentID + 'Label'))
                 domConstruct.place(nodeName, this.currentID + 'Label', "replace");
             else //new node
@@ -602,7 +647,7 @@ define([
         badParse: function(inputEquation){
         },
         // Stub to set connections in the graph
-        setConnctions: function(from, to){
+        setConnections: function(from, to){
             // console.log("======== setConnections fired for node" + to);
         },
         //show node editor
@@ -701,7 +746,29 @@ define([
                 }
 
             }, this);
+        },
 
-        }
+        // Stub to be overwritten by student or author mode-specific method.
+	colorNodeBorder: function(nodeId){
+	    console.log("colorNodeBorder stub called");
+	                                  //get model type
+                  var type = this._model.active.getType(nodeId);
+                   if(type){
+                                console.log('model type is '+type);
+
+                                var colorMap = {
+                    correct: "green",
+                    incorrect: "#FF8080",
+                    demo: "yellow"
+                };
+                                console.log('nodeId is '+nodeId);
+                                var isComplete   = this._model.active.isComplete(nodeId)?'solid':'dashed';
+                                var color = this._model.active.getCorrectness(nodeId);
+                                console.log('color is '+color);
+                                domStyle.set(this.currentID,'border','2px '+isComplete+' '+colorMap[color]);
+                                domStyle.set(this.currentID,'box-shadow','inset 0px 0px 5px #000 , 0px 0px 10px #000');
+                                }
+                }
+
     });
 });

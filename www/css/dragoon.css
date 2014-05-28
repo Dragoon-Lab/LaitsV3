@@ -29,7 +29,7 @@ html, body, #main{
                         Node editor
 */
 
-#nodeeditor, #crisisAlertMessage {
+#nodeeditor, #crisisAlertMessage, div#solution {
     font:10pt Arial,Myriad,Tahoma,Verdana,sans-serif !important;
 }
 
