@@ -806,8 +806,8 @@ define([
                                 var isComplete   = this._model.active.isComplete(nodeId)?'solid':'dashed';
                                 var color = this._model.active.getCorrectness(nodeId);
                                 console.log('color is '+color);
-                                style.set(this.currentID,'border','2px '+isComplete+' '+colorMap[color]);
-                                style.set(this.currentID,'box-shadow','inset 0px 0px 5px #000 , 0px 0px 10px #000');
+                                domStyle.set(this.currentID,'border','2px '+isComplete+' '+colorMap[color]);
+                                domStyle.set(this.currentID,'box-shadow','inset 0px 0px 5px #000 , 0px 0px 10px #000');
                                 }
                 }
 
