@@ -25,9 +25,10 @@
 define([
     "dojo/_base/array", 'dojo/_base/declare', "dojo/_base/lang",
     'dojo/aspect', 'dojo/dom', "dojo/dom-class", "dojo/dom-construct", 'dojo/dom-style',
-    'dojo/keys', 'dojo/on', "dojo/ready", 'dijit/registry',
+    'dojo/keys', 'dojo/on', "dojo/ready", 'dijit/registry',"dijit/TooltipDialog",
+    "dijit/popup",
     './equation'
-], function(array, declare, lang, aspect, dom, domClass, domConstruct, domStyle, keys, on, ready, registry, expression){
+], function(array, declare, lang, aspect, dom, domClass, domConstruct, domStyle, keys, on, ready, registry,TooltipDialog, popup, expression){
 
     return declare(null, {
         _model: null,
@@ -261,17 +262,46 @@ define([
             type.on('Change', lang.hitch(this, function(){
                 return this.disableHandlers || this.handleType.apply(this, arguments);
             }));
+            
+            
+            
+            
 
             /*
              *   event handler for 'Initial' field
              *   'handleInitial' will be called in either Student or Author mode
              * */
+            //Define a new tooltip object so that it can be used around the textbox in case of non-numeric value
+            var myTooltipDialog = new TooltipDialog({
+             id: 'myTooltipDialog',
+             style: "width: 150px;",
+             content: "Non Numeric data not accepted",
+            });
             var initialWidget = registry.byId(this.controlMap.initial);
             // This event gets fired if student hits TAB or input box
             // goes out of focus.
-            initialWidget.on('Change', lang.hitch(this, function(){
-                return this.disableHandlers || this.handleInitial.apply(this, arguments);
+            //This keyup event will handle non numeric data indication
+            initialWidget.on('keyup', lang.hitch(this,function(){
+                //close tooltip on each key up before further check the content
+                popup.close(myTooltipDialog);
+                var impose_nums=initialValue.value;
+                if(!impose_nums.match('^[0-9]+$') && impose_nums!='') {
+                 popup.open({
+                 popup: myTooltipDialog,
+                 around: dom.byId(initialValue)
+                });
+              }
             }));
+            initialWidget.on('Change', lang.hitch(this, function(){
+            return this.disableHandlers || this.handleInitial.apply(this, arguments);
+            }));
+
+            
+            
+            
+            
+            
+            
             // Look for ENTER key event and fire 'Change' event, passing
             // value in box as argument.  This is then intercepted by the
             // regular handler.
@@ -791,8 +821,8 @@ define([
                                 var isComplete   = this._model.active.isComplete(nodeId)?'solid':'dashed';
                                 var color = this._model.active.getCorrectness(nodeId);
                                 console.log('color is '+color);
-                                style.set(this.currentID,'border','2px '+isComplete+' '+colorMap[color]);
-                                style.set(this.currentID,'box-shadow','inset 0px 0px 5px #000 , 0px 0px 10px #000');
+                                domStyle.set(this.currentID,'border','2px '+isComplete+' '+colorMap[color]);
+                                domStyle.set(this.currentID,'box-shadow','inset 0px 0px 5px #000 , 0px 0px 10px #000');
                                 }
                 }
 
