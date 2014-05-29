@@ -70,10 +70,9 @@ define([
 		console.log("loadFromFile worked");
                 return model_object;
             }, function(err){
-	        //console.error("loadFromFile error ", err);
 	        this.clientLog("error", {
-	        	message:"loadFromFile error : "+err, 
-	        	functionTag:'loadFromFile'
+	        	message: "loadFromFile error : "+err,
+	        	functionTag: 'loadFromFile'
 	        });
 	    });
         },
@@ -89,10 +88,9 @@ define([
 		console.log("loadFromDB worked", model_object);
                 return model_object;
             }, function(err){
-		        console.error("loadFromDB error ", err);
 		        this.clientLog("error", {
-		        	message : "load from DB error : "+err, 
-		        	functionTag : 'loadProblem'
+		        	message: "load from DB error : "+err,
+		        	functionTag: 'loadProblem'
 		        });
 	    	});
         },
@@ -108,10 +106,9 @@ define([
             }).then(function(reply){  // this makes saveProblem blocking?
 			console.log("saveProblem worked: ", reply);
 	    	}, function(err){
-				console.error("saveProblem error ", err);
 				this.clientLog("error", {
-					message : "save Problem error : "+err, 
-					functionTag : 'saveProblem'
+					message: "save Problem error : "+err,
+					functionTag: 'saveProblem'
 				});
 	    	});
         },
@@ -139,21 +136,19 @@ define([
 	},
 
 	clientLog: function(/* string */ type, /* json */ opts){
-		/*
-		Since JavaScript does not have a direct function overloading, so there is just one function with all the parameters. 
-		function name would be coming from all the file errors that exist, like catch error messages, or console.assert() and console.error() messages
-		line number and file name would be coming from the window.on error messages.
-		filename can be sent from the catch error messages as well, if we want to add that at the later stage. Just sending the parameter will work directly.
-		*/
-		opts = lang.mixin({"type": type}, opts);
-		if(type === 'error'){
-			console.error(opts.message);
-		} else if(type === 'warning'){
-			console.warn(opts.message);
-		} else if(type === 'assert'){
-			console.error(opts.message);
-		} 
-		this.log('client-message', opts);
+	    // Summary:  this handles all client messages and prints to
+	    //      console for the appropriate types.
+	    lang.mixin(opts, {"type": type});
+	    switch(type){
+		case 'error':
+		case 'assert':
+		console.error(opts.message);
+		break;
+		case "warning":
+		console.warn(opts.message);
+		break;
+	    }
+	    this.log('client-message', opts);
 	}
     });
 });

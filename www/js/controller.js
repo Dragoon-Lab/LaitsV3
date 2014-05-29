@@ -39,7 +39,7 @@ define([
         disableHandlers: false,
         /* The last value entered into the intial value control */
         lastInitialValue: null,
-        logging : null,
+        logging: null,
         constructor: function(mode, subMode, model, inputStyle){
 
             console.log("+++++++++ In generic controller constructor");
@@ -105,14 +105,11 @@ define([
                     premature: "lightBlue",
                     entered: "#2EFEF7"
                 };
-                if(value){
-                    console.assert(colorMap[value], "Invalid color specification " + value);
-                    if(!colorMap[value]){
-                        this.logging.clientLog("assert", {
-                            message : 'Invalid color specification, color value : '+value, 
-                            functionTag :'setStatus'
-                        });
-                    }
+                if(value && !colorMap[value]){
+                    this.logging.clientLog("assert", {
+                        message: 'Invalid color specification, color value : '+value,
+                        functionTag: 'setStatus'
+                    });
                 }
                 /* BvdS:  I chose bgColor because it was easy to do
                  Might instead/also change text color?
@@ -331,19 +328,17 @@ define([
             var buttons = ["plus", "minus", "times", "divide", "undo", "equationDone", "sum", "product"];
             array.forEach(buttons, function(button){
                 var w = registry.byId(button + 'Button');
-                console.assert(w, "Button for " + button + " not found");
                 if(!w){
                     this.logging.clientLog("assert", {
-                        message : "button not found, button id : "+button, 
+                        message: "button not found, button id : "+button,
                         functionTag: '_initHandles'
                     });
                 }
                 var handler = this[button + 'Handler'];
-                console.assert(handler, "Button handler '" + handler + "' not found");
                 if(!handler){
                     this.logging.clientLog("assert", {
-                        message : "button handler not found, handler id : "+handler, 
-                        functionTag : '_initHandles'
+                        message: "button handler not found, handler id : "+handler,
+                        functionTag: '_initHandles'
                     });
                 }
                 w.on('click', lang.hitch(this, handler));
@@ -448,8 +443,8 @@ define([
                         break;
                     default:
                         this.logging.clientLog("error", {
-                            message : "Invalid node type, value selected : "+type, 
-                            functionTag : "updateEquationLabels"
+                            message: "Invalid node type, value selected : "+type,
+                            functionTag: "updateEquationLabels"
                         });
                 }
             }
@@ -794,10 +789,9 @@ define([
                     } else
                         w.set(directive.attribute, directive.value);
                 } else {
-                    console.warn("Directive with unknown id: " + directive.id);
                     this.logging.clientLog("warning", {
-                        message : "Directive with unknown id, id :"+directive.id, 
-                        functionTag :'applyDirectives'
+                        message: "Directive with unknown id, id :"+directive.id,
+                        functionTag: 'applyDirectives'
                     });
                 }
 

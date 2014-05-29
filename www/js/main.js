@@ -88,7 +88,7 @@ define([
         controllerObject.setLogging(session); // set up direct logging in controller
 
         expression.setLogging(session);
-
+	
         ready(function(){
 
             var drawModel = new drawmodel(givenModel.active);
@@ -165,7 +165,7 @@ define([
                 controllerObject.logging.log('ui-action', {
                     type: "menu-choice", 
                     name: "graph-button", 
-                    "Is Problem Solved":problemComplete
+                    problemComplete: problemComplete
                 });
                 graph.show();
             });
@@ -190,7 +190,7 @@ define([
                 controllerObject.logging.log('close-problem', {
                     type: "menu-choice", 
                     name: "done-button", 
-                    "Is Problem Solved":problemComplete
+                    problemComplete: problemComplete
                 });
                window.history.back();
 
@@ -222,10 +222,9 @@ define([
                 imageObj.src = url;
             }
             else{
-                console.warn("No image found.  Put clickable box on canvas in author mode?");
                 controllerObject.logging.clientLog("warning", {
-                    message:'No image found for the problem : '+query.p, 
-                    functionTag : 'main.js ready'
+                    message: 'No image found for the problem : '+query.p,
+                    functionTag: 'main.js ready'
                 });
             }
 

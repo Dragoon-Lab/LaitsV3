@@ -62,11 +62,10 @@ define([
             var d = registry.byId(this.controlMap.description);
             // populate input field
             var t = registry.byId(this.controlMap.inputs);
-            console.assert(t, "Can't find widget " + this.controlMap.inputs);
             if(!t){
                 this.logging.clientLog("assert", {
-                    message : "Can't find widget for "+this.controlMap.inputs, 
-                    functionTag : 'populateSelections'
+                    message: "Can't find widget for "+this.controlMap.inputs,
+                    functionTag: 'populateSelections'
                 });
             }
 
@@ -214,8 +213,8 @@ define([
     		// The actual values should be in the model itself, not in status directives.
                 if(directive.attribute == "value"){
                     this.logging.clientLog("error", {
-                        message:"Values should not be set in status directives", 
-                        functionTag:'initialControlSettings'
+                        message: "Values should not be set in status directives",
+                        functionTag: 'initialControlSettings'
                     });
                 }
             }, this);

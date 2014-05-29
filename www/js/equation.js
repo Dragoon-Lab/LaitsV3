@@ -44,8 +44,6 @@ define([
         areEquivalent: function(/*string*/ id, /*object*/ model, /*string*/ studentEquation){
             //Summary: For a given model node id, checks the correctness of the student equation.
             //
-            var test = 25;
-            this.logging.clientLog("error", {message : "test message "+test, fucntionTag:'function-name'});
             if(typeof studentEquation == 'string')
                 var student = Parser.parse(studentEquation);
             else
@@ -53,11 +51,10 @@ define([
 
             // Choose values so that the given model node can be evaluated.
             var givenEqn = model.given.getEquation(id);
-            console.assert(givenEqn, "Given node '" + id + "' does not have an equation.");
             if(!givenEqn){
                 this.logging.clientLog("assert", {
                     message:'Given node '+id+' does not have an equation', 
-                    funcitonTag : 'areEquivalent'
+                    functionTag : 'areEquivalent'
             });
             }
             var givenParse = Parser.parse(model.given.getEquation(id));
@@ -92,7 +89,6 @@ define([
                 }
                 /* This should never happen:  there is a check for unknown variables
                  at a higher level. */
-                console.assert(givenID, "Student variable '" + variable + "' has no match.");
                 if(!givenID){
                     this.logging.clientLog("assert", {
                         message:'Student variable has no match, variable name : '+variable, 
@@ -113,7 +109,6 @@ define([
          */
         evalVar: function(id, subModel, vals, parents){
 	    parents = parents || {};
-            console.assert(subModel.isNode(id), "evalVar: unknown variable '" + id + "'.");
             if(!subModel.isNode(id)){
                 this.logging.clientLog("assert", {
                     message:'unknown variable for evaluation, variable name : '+id, 
@@ -143,7 +138,6 @@ define([
             try {
                 var expr = Parser.parse(equation);
             }catch(e){
-                console.warn("Should log this as a JavaScript error.");
                 this.logging.clientLog("error", {
                     message:'error in parser, error message : ' + e, 
                     functionTag:'convert'
@@ -291,7 +285,6 @@ define([
             try {
                 var expr = Parser.parse(equation);
             }catch(e){
-                console.warn("Should log this as a JavaScript error.");
                 this.logging.clientLog("error", {
                     message:'error in parser, error message : '+e, 
                     functionTag : 'convertUsingDescriptionIDs'

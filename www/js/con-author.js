@@ -66,9 +66,9 @@ define([
                         else{
                             returnObj[0].value="incorrect";
                             returnObj.push({id:"message",attribute:"append",value:"Please select node type"});
-                            this.logging.clientLog("error",{
-                                message :"wrong choice for node type", 
-                                functionTag : 'authorPM process'
+                            this.logging.clientLog("error", {
+                                message: "wrong choice for node type",
+                                functionTag: "authorPM process"
                             });
                         }
                         break;
@@ -248,8 +248,8 @@ define([
             }
             else{
                 this.logging.clientLog("error", {
-                    message : "bad parsing", 
-                    functionTag : 'equationDoneHandler'
+                    message: "bad parsing",
+                    functionTag: 'equationDoneHandler'
                 });
             }
         },
