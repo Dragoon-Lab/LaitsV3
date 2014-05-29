@@ -57,14 +57,26 @@
     vertical-align: middle;
     width:40px;
 }
-.wrapper{
+.functionWrapper,.accumulatorWrapper{
     overflow:hidden!important;
-    white-space:nowrap;
+    /*white-space:nowrap;*/
     -ms-text-overflow:ellipsis;
     text-overflow:ellipsis;
     width:40px;
 }
-.wrapper:hover{
+.parameterWrapper{
+	  overflow:hidden!important;
+    /*white-space:nowrap;*/
+    -ms-text-overflow:ellipsis;
+    text-overflow:ellipsis;
+    width:40px;
+	 -webkit-transform: rotate(0deg)!important;
+    -moz-transform: rotate(0deg);
+    -ms-transform: rotate(0deg);
+    -o-transform: rotate(0deg);
+    transform: rotate(0deg);	
+}
+.functionWrapper:hover,.accumulatorWrapper:hover,.parameterWrapper:hover{
  overflow:visible!important;
 }
 /*.accumulator:hover {

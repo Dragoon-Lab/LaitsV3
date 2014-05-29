@@ -51,7 +51,7 @@ define([
             initialValue += " " + unitsValue;
 
             if(nodeName&&type!='triangle')
-                nodeName='<div id='+nodeId+'Label  class="bubble"><div class="wrapper"><strong>'+parameter+'<br>'+initialValue+'</strong></div><div class='+type+'Div><strong>'+nodeName+'</strong></div></div>';
+                nodeName='<div id='+nodeId+'Label  class="bubble"><div class="'+type+'Wrapper"><strong>'+parameter+'<br>'+initialValue+'</strong></div><div class='+type+'Div><strong>'+nodeName+'</strong></div></div>';
             else
                 nodeName='';
                 return nodeName;
