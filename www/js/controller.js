@@ -27,8 +27,8 @@ define([
     'dojo/aspect', 'dojo/dom', "dojo/dom-class", "dojo/dom-construct", 'dojo/dom-style',
     'dojo/keys', 'dojo/on', "dojo/ready", 'dijit/registry',"dijit/TooltipDialog",
     "dijit/popup",
-    './equation'
-], function(array, declare, lang, aspect, dom, domClass, domConstruct, domStyle, keys, on, ready, registry,TooltipDialog, popup, expression){
+    './equation', './graph-objects'
+], function(array, declare, lang, aspect, dom, domClass, domConstruct, domStyle, keys, on, ready, registry,TooltipDialog, popup, expression, graphObjects){
 
     return declare(null, {
         _model: null,
@@ -40,6 +40,7 @@ define([
         disableHandlers: false,
         /* The last value entered into the intial value control */
         lastInitialValue: null,
+        logging: null,
         constructor: function(mode, subMode, model, inputStyle){
 
             console.log("+++++++++ In generic controller constructor");
@@ -105,8 +106,12 @@ define([
                     premature: "lightBlue",
                     entered: "#2EFEF7"
                 };
-                if(value)
-                    console.assert(colorMap[value], "Invalid color specification " + value);
+                if(value && !colorMap[value]){
+                    this.logging.clientLog("assert", {
+                        message: 'Invalid color specification, color value : '+value,
+                        functionTag: 'setStatus'
+                    });
+                }
                 /* BvdS:  I chose bgColor because it was easy to do
                  Might instead/also change text color?
                  Previously, just set domNode.bgcolor but this approach didn't work
@@ -145,6 +150,7 @@ define([
                 });
                 this.startup();
             };
+            
             // All <select> controls
             array.forEach(this.selects, function(select){
                 var w = registry.byId(this.controlMap[select]);
@@ -229,10 +235,8 @@ define([
 	    // Color the borders of the Node
 	    this.colorNodeBorder(this.currentID);
 
-
 	    // update Node labels upon exit	
-             var nodeName = this.getNodeName();
-
+            var nodeName = graphObjects.getNodeName(this._model.active,this.currentID);
             if(dom.byId(this.currentID + 'Label'))
                 domConstruct.place(nodeName, this.currentID + 'Label', "replace");
 
@@ -262,35 +266,35 @@ define([
             type.on('Change', lang.hitch(this, function(){
                 return this.disableHandlers || this.handleType.apply(this, arguments);
             }));
-            
-            
-            
-            
 
             /*
              *   event handler for 'Initial' field
              *   'handleInitial' will be called in either Student or Author mode
              * */
-            //Define a new tooltip object so that it can be used around the textbox in case of non-numeric value
+            /*
+	     Define a new tooltip object so that it can be used around the textbox 
+	     in case of non-numeric value
+	     */
             var myTooltipDialog = new TooltipDialog({ //new tool tip for indicating use of decimals instead of percentages
              id: 'myTooltipDialog',
              style: "width: 150px;",
-             content: "Use decimals instead of percent",
+             content: "Use decimals instead of percent"
             });
             var myTooltipDialog2 = new TooltipDialog({ // new tooltip for indicating non numeric data is not accepted
              id: 'myTooltipDialog2',
              style: "width: 150px;",
-             content: "Non Numeric data not accepted",
+             content: "Non Numeric data not accepted"
             });
             var initialWidget = registry.byId(this.controlMap.initial);
             // This event gets fired if student hits TAB or input box
             // goes out of focus.
-            //This keyup event will handle non numeric data indication
+            // This keyup event will handle non numeric data indication
             
             initialWidget.on('change', lang.hitch(this,function(){
                 //close tooltip on each key up before further check the content
                 popup.close(myTooltipDialog);// close old pop-ups' before a new one 
                 popup.close(myTooltipDialog2);
+		// initialValue is not defined.
                 var impose_nums=initialValue.value;
                if(!impose_nums.match('^[-+]?[0-9]*\.?[0-9]+([eE][-+]?[0-9]+)?%$')){ //To check the decimals against percentages
                 
@@ -318,12 +322,6 @@ define([
             return this.disableHandlers || this.handleInitial.apply(this, arguments);
             }));
 
-            
-            
-            
-            
-            
-            
             // Look for ENTER key event and fire 'Change' event, passing
             // value in box as argument.  This is then intercepted by the
             // regular handler.
@@ -374,9 +372,19 @@ define([
             var buttons = ["plus", "minus", "times", "divide", "undo", "equationDone", "sum", "product"];
             array.forEach(buttons, function(button){
                 var w = registry.byId(button + 'Button');
-                console.assert(w, "Button for " + button + " not found");
+                if(!w){
+                    this.logging.clientLog("assert", {
+                        message: "button not found, button id : "+button,
+                        functionTag: '_initHandles'
+                    });
+                }
                 var handler = this[button + 'Handler'];
-                console.assert(handler, "Button handler '" + handler + "' not found");
+                if(!handler){
+                    this.logging.clientLog("assert", {
+                        message: "button handler not found, handler id : "+handler,
+                        functionTag: '_initHandles'
+                    });
+                }
                 w.on('click', lang.hitch(this, handler));
                 /*  When the equation box is enabled/disabled also do the same
                  for this button */
@@ -414,15 +422,7 @@ define([
             console.log("===========>   changing node class to " + type);
             domClass.replace(this.currentID, type);
 
-
-	      var nodeName = this.getNodeName();
-	
-        /*    var nodeName = this._model.active.getName(this.currentID);
-            if(nodeName)
-                nodeName = '<div id=' + this.currentID + 'Label  class="bubble"><strong>' + nodeName + '</strong></div>';
-            else
-                nodeName = ''; */
-
+	    var nodeName = graphObjects.getNodeName(this._model.active,this.currentID,type);
             if(dom.byId(this.currentID + 'Label'))
                 domConstruct.place(nodeName, this.currentID + 'Label', "replace");
             else //new node
@@ -432,32 +432,6 @@ define([
             this._model.active.setType(this.currentID, type);
             this.updateEquationLabels();
         },
-	getNodeName:function(){
-	     var type = this._model.active.getType(this.currentID);
-	     var nodeName = this._model.active.getName(this.currentID);
-             var parse = this._model.active.getEquation(this.currentID);
-             var parameter =  '';
-            if(parse){
-                parse=expression.parse(parse);
-		// May want to change symbols to "sum" and "product"
-                parameter = expression.isSum(parse)&&expression.isProduct(parse)?'':expression.isSum(parse)?'+':expression.isProduct(parse)?'*':'';
-            }
-            var initialValue = this._model.active.getInitial(this.currentID);
-            if(!initialValue)
-                 initialValue = '';
-	   
-             var unitsValue = this._model.active.getUnits(this.currentID);
-             if(!unitsValue)
-                     unitsValue = '';
-		
-	    initialValue += " " + unitsValue;
-
-            if(nodeName)
-                nodeName='<div id='+this.currentID+'Label  class="bubble"><strong>'+parameter+'<br>'+initialValue+'</strong><div class='+type+'Div><strong>'+nodeName+'</strong></div></div>';
-            else
-                nodeName='';
-		return nodeName;
-	},
         updateEquationLabels: function(typeIn){
             var type = typeIn || this._model.active.getType(this.currentID) || "none";
             var name = this._model.active.getName(this.currentID);
@@ -477,7 +451,10 @@ define([
                     case "none":
                         break;
                     default:
-                        console.error("Invalid type ", type);
+                        this.logging.clientLog("error", {
+                            message: "Invalid node type, value selected : "+type,
+                            functionTag: "updateEquationLabels"
+                        });
                 }
             }
             // Removing all the text is the same as setting display:none.
@@ -552,44 +529,44 @@ define([
             operation: "sum",
             positives: [],
             negatives: [],
-	    ops: [],
-	    setOperation: function(op){
-		switch(op){
-		case "sum":
-		    this.operation = op;
-		    dom.byId("positiveInputsText").innerHTML = "Add quantity:";
-		    dom.byId("negativeInputsText").innerHTML = "Subtract quantity:";
-		    break;
-		case "product":
-		    this.operation = "product";
-		    dom.byId("positiveInputsText").innerHTML = "Multiply by quantity:";
-		    dom.byId("negativeInputsText").innerHTML = "Divide by quantity:";
-		    break;
-		default:
-		    throw new Error("Invalid operation " + op);
-		}
-		this.update();
-	    },
+    	    ops: [],
+    	    setOperation: function(op){
+    		switch(op){
+        		case "sum":
+        		    this.operation = op;
+        		    dom.byId("positiveInputsText").innerHTML = "Add quantity:";
+        		    dom.byId("negativeInputsText").innerHTML = "Subtract quantity:";
+        		    break;
+        		case "product":
+        		    this.operation = "product";
+        		    dom.byId("positiveInputsText").innerHTML = "Multiply by quantity:";
+        		    dom.byId("negativeInputsText").innerHTML = "Divide by quantity:";
+        		    break;
+        		default:
+        		    throw new Error("Invalid operation " + op);
+        		}
+                this.update();
+            },
 
             handlePositive: function(id){
                 console.log("****** structured.handlePositives ", id);
                 this.positives.push(this._model.given.getName(id));
-		this.ops.push("positives");
+                this.ops.push("positives");
                 this.update();
                 registry.byId("positiveInputs").set('value', 'defaultSelect', false);// restore to default
             },
             handleNegative: function(id){
                 console.log("****** structured.handleNegatives ", id);
                 this.negatives.push(this._model.given.getName(id));
-		this.ops.push("negatives");
+                this.ops.push("negatives");
                 this.update();
                 registry.byId("negativeInputs").set('value', 'defaultSelect', false);// restore to default
             },
-	    pop: function(){
-		var op = this.ops.pop();
-		this[op].pop();
-		this.update();
-	    },
+    	    pop: function(){
+                var op = this.ops.pop();
+                this[op].pop();
+                this.update();
+    	    },
             update: function(){
                 // Update expression shown in equation box
                 // And structured expression
@@ -627,7 +604,7 @@ define([
             reset: function(){
                 this.positives.length = 0;
                 this.negatives.length = 0;
-		this.ops.length = 0;
+                this.ops.length = 0;
                 this.update();
             }
         },
@@ -735,15 +712,14 @@ define([
             this.disableHandlers = true;
             this.initialControlSettings(id);
             this.populateNodeEditorFields(id);
-            this._nodeEditor.show().then(
-                    lang.hitch(this, function(){
+            this._nodeEditor.show().then(lang.hitch(this, function(){
                 this.disableHandlers = false;
-            })
-                    );
+            }));
         },
         // Stub to be overwritten by student or author mode-specific method.
         initialControlSettings: function(id){
             console.error("initialControlSettings should be overwritten.");
+            //log message added through aspect.
         },
         populateNodeEditorFields: function(nodeid){
             //populate description
@@ -797,7 +773,9 @@ define([
              input, +, -, *, /, undo, and done should also be disabled.
              */
         },
-
+        setLogging: function(/*string*/ logging){
+            this.logging = logging;
+        },
 	/* 
          Take a list of directives and apply them to the Node Editor,
          updating the model and updating the graph.
@@ -820,7 +798,10 @@ define([
                     } else
                         w.set(directive.attribute, directive.value);
                 } else {
-                    console.warn("Directive with unknown id: " + directive.id);
+                    this.logging.clientLog("warning", {
+                        message: "Directive with unknown id, id :"+directive.id,
+                        functionTag: 'applyDirectives'
+                    });
                 }
 
             }, this);

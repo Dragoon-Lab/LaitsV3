@@ -49,7 +49,7 @@ define([
             inputs: "nodeInputs"
         },
 
-	populateSelections: function(){
+        populateSelections: function(){
 	    /*
              Initialize select options in the node editor that are
              common to all nodes in a problem.
@@ -62,7 +62,13 @@ define([
             var d = registry.byId(this.controlMap.description);
             // populate input field
             var t = registry.byId(this.controlMap.inputs);
-            console.assert(t, "Can't find widget " + this.controlMap.inputs);
+            if(!t){
+                this.logging.clientLog("assert", {
+                    message: "Can't find widget for "+this.controlMap.inputs,
+                    functionTag: 'populateSelections'
+                });
+            }
+
             var positiveInputs = registry.byId("positiveInputs");
             var negativeInputs = registry.byId("negativeInputs");
             console.log("description widget = ", d, this.controlMap.description);
@@ -75,7 +81,7 @@ define([
                 positiveInputs.addOption(option);
                 negativeInputs.addOption(option);
             }, this);
-	},
+        },
 
         handleDescription: function(selectDescription){
             console.log("****** in handleDescription ", this.currentID, selectDescription);
@@ -91,11 +97,11 @@ define([
 
             this.applyDirectives(this._PM.processAnswer(this.currentID, 'description', selectDescription));
         },
-	descriptionSet: function(value){
+        descriptionSet: function(value){
             // Update the model.
             this._model.student.setDescriptionID(this.currentID, value);
-	    this.updateNodes();
-	},
+            this.updateNodes();
+        },
 
         handleType: function(type){
             console.log("****** Student has chosen type ", type, this);
@@ -104,32 +110,41 @@ define([
             this.updateType(type);
             this.applyDirectives(this._PM.processAnswer(this.currentID, 'type', type));
         },
-	typeSet: function(value){
-	    this.updateType(value);
-	},
-
+    	typeSet: function(value){
+    	    this.updateType(value);
+    	},
+	
         handleInitial: function(initial){
-            initial=Number(initial);// we do this type conversion because we used a textbox for initialvalue input which is a numerical
+	    // we do this type conversion because we used a textbox for initialvalue input which is a numerical
+            initial= 0 + initial;
+	    // use isNaN to test if conversion worked.
+
+	    // Put in checks here
+	    
+	    // if conversion fails, give hint and return from function;
+	    //  hints for: %
+	    //             should be numeric
+            //  logging
 
             console.log("****** Student has chosen initial value", initial, this.lastInitialValue);
-	    /*
-	     Evaluate only if the value is changed.
-
-	     The controller modifies the initial value widget so that a "Change" event is
-	     fired if the widget loses focus.  This may happen when the node editor is closed.
-	     */
-	    if(!initial || initial == this.lastInitialValue){
-		return;
-	    }
-	    this.lastInitialValue = initial;
-
+    	    /*
+    	     Evaluate only if the value is changed.
+	     
+    	     The controller modifies the initial value widget so that a "Change" event is
+    	     fired if the widget loses focus.  This may happen when the node editor is closed.
+    	     */
+    	    if(!initial || initial == this.lastInitialValue){
+    		return;
+    	    }
+    	    this.lastInitialValue = initial;
+	    
             // updating node editor and the model.
             this._model.active.setInitial(this.currentID, initial);
             this.applyDirectives(this._PM.processAnswer(this.currentID, 'initial', initial));
-        },
+            },
         initialSet: function(value){
             this._model.active.setInitial(this.currentID, value);
-	},
+    	},
 
         /*
         *    handle event on inputs box
@@ -164,7 +179,7 @@ define([
         unitsSet: function(value){
             // Update the model.
             this._model.student.setUnits(this.currentID, value);
-	},
+        },
         equationDoneHandler: function(){
             var directives = [];
             var parse = this.equationAnalysis(directives);
@@ -172,27 +187,27 @@ define([
                 var dd = this._PM.processAnswer(this.currentID, 'equation', parse);
                 directives = directives.concat(dd);
             }
-	    this.applyDirectives(directives);
+            this.applyDirectives(directives);
         },
-	equationSet: function(value){
-	    // applyDirectives updates equationBox, but not equationText:
-	    dom.byId("equationText").innerHTML = value;
+    	equationSet: function(value){
+    	    // applyDirectives updates equationBox, but not equationText:
+    	    dom.byId("equationText").innerHTML = value;
 
-	    var directives = [];
-	    // Parse and update model, connections, etc.
-            this.equationAnalysis(directives);
-	    // Generally, since this is the correct solution, there should be no directives
-	    this.applyDirectives(directives);
-	},
+    	    var directives = [];
+    	    // Parse and update model, connections, etc.
+                this.equationAnalysis(directives);
+    	    // Generally, since this is the correct solution, there should be no directives
+    	    this.applyDirectives(directives);
+    	},
  
-	/* 
+        /* 
          Settings for a new node, as supplied by the PM.
          These don't need to be recorded in the model, since they
          are applied each time the node editor is opened.
          */
         initialControlSettings: function(nodeid){
             // Apply settings from PM
-	    this.applyDirectives(this._PM.newAction(), true);
+            this.applyDirectives(this._PM.newAction(), true);
 
             // Set the selected value in the description.
             var desc = this._model.student.getDescriptionID(nodeid);
@@ -205,10 +220,13 @@ define([
             array.forEach(this._model.student.getStatusDirectives(nodeid), function(directive){
                 var w = registry.byId(this.controlMap[directive.id]);
                 w.set(directive.attribute, directive.value);
-		// The actual values should be in the model itself, not in status directives.
+    		// The actual values should be in the model itself, not in status directives.
                 if(directive.attribute == "value"){
-		    console.error("Values should not be set in status directives");
-		}
+                    this.logging.clientLog("error", {
+                        message: "Values should not be set in status directives",
+                        functionTag: 'initialControlSettings'
+                    });
+                }
             }, this);
         },
 
