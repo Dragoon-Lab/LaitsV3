@@ -38,6 +38,7 @@ define([
                 parse=expression.parse(parse);
                 // May want to change symbols to "sum" and "product"
                 parameter = expression.isSum(parse)&&expression.isProduct(parse)?'':expression.isSum(parse)?'+':expression.isProduct(parse)?'*':'';
+		parameter = '<strong style="font-size:18px">'+parameter+'</strong>';
             }
             var initialValue = model.getInitial(nodeId);
             if(!initialValue)
