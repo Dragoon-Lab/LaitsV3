@@ -139,7 +139,7 @@ define([
             console.log("      --> setting position for vertex : "+ node.ID +" position: x"+node.position.x+"  y:"+node.position.y);
 	
             var nodeName = graphObjects.getNodeName(this._givenModel,node.ID);
-	    var isComplete = this._givenModel.isComplete(node.ID)?'solid':'dashed';
+	        var isComplete = this._givenModel.isComplete(node.ID)?'solid':'dashed';
 
 	    var colorMap = {
                 correct: "green",
@@ -170,11 +170,15 @@ define([
 
             //add menu to delete or we can iterate over all node.IDs and do following
             var pMenu = new Menu({
+
                 targetNodeIds: [node.ID]
             });
+
             pMenu.addChild(new MenuItem({
                 label: "Delete Node",
-                onClick: lang.hitch(this, this.deleteNode) 
+                onClick: function (){
+			domConstruct.destroy(node.ID);
+		}
             }));
             /*
              Fire off functions associated with draggable events.
@@ -272,7 +276,9 @@ define([
         },
 
         deleteNode: function(/*object*/ nodeID){
-            console.log("------- delete node called for ", nodeID);
+
+            console.log("------- delete node called for ",nodeID);
+
         },
 
         // Keep track of whether there was a mouseDown and mouseUp
