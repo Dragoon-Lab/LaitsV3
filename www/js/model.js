@@ -285,11 +285,11 @@ define([
             },
             matchesGivenSolution: function(){
                 /*See bug #2362*/
-		return this.areRequiredNodesVisible() &&
-		    array.every(this.student.getNodes(), function(sNode){
+                return this.areRequiredNodesVisible() &&
+                    array.every(this.student.getNodes(), function(sNode){
                         return this.student.isComplete(sNode.ID);
-                    }, this);
-	    },
+                    }, this) && true;
+            },
 	    
             /**
              * SETTERS
