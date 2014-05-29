@@ -3,8 +3,8 @@
 }
 
 .accumulator {
-    width: 80px;
-    height: 80px;
+    width: 60px;
+    height: 60px;
     position:absolute;
     border: 1px solid black;
     z-index:24;
@@ -55,8 +55,18 @@
 .bubble{
     display: inline-block;
     vertical-align: middle;
+    width:40px;
 }
-
+.wrapper{
+    overflow:hidden!important;
+    white-space:nowrap;
+    -ms-text-overflow:ellipsis;
+    text-overflow:ellipsis;
+    width:40px;
+}
+.wrapper:hover{
+ overflow:visible!important;
+}
 /*.accumulator:hover {
     background-color: #5c96bc;
     color:white;
@@ -106,8 +116,8 @@
 }
 
 .parameter {
-    width: 80px;
-    height: 80px;
+    width: 60px;
+    height: 60px;
     margin: 23px 0 0 30px;
     z-index:20; position:absolute;
     /* Rotate */
@@ -155,8 +165,8 @@
 
 
 .function {
-    width: 80px;
-    height: 80px;
+    width: 60px;
+    height: 60px;
     z-index:20; position:absolute;
     border-radius: 50px;
     border:1px solid #2e6f9a;
