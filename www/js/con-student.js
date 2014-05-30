@@ -178,6 +178,10 @@ define([
             this._model.active.setInitial(this.currentID, initial);
             this.applyDirectives(this._PM.processAnswer(this.currentID, 'initial', initial));
 	},
+         closePops: function(){
+            popup.close(this.myTooltipDialog);// close old pop-ups' before a new one  
+            popup.close(this.myTooltipDialog2);
+    	},
 	
         initialSet: function(value){
                 this._model.active.setInitial(this.currentID, value);

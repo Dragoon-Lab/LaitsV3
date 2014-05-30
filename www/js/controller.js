@@ -238,6 +238,8 @@ define([
             var nodeName = graphObjects.getNodeName(this._model.active,this.currentID);
             if(dom.byId(this.currentID + 'Label'))
                 domConstruct.place(nodeName, this.currentID + 'Label', "replace");
+                if(this.closePops)
+                this.closePops();//this is a function in con-student, where it closes the popups in case node editor is closed
 
         },
         //set up event handling with UI components
