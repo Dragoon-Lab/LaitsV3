@@ -696,7 +696,7 @@ define([
              */
 
 
-            if(model.active.getNodeIDFor){
+            if(model.getNodeIDFor){
             var d = registry.byId(this.controlMap.description);
             array.forEach(this._model.given.getDescriptions(), function(desc){
                 var exists =  model.getNodeIDFor(desc.value);
