@@ -38,11 +38,12 @@
         // needed by widgets defined in the html below.
         require([
 	    "dojo/parser",
+            "dijit/Dialog",
             "dijit/MenuBar", "dijit/PopupMenuBarItem",
             "dijit/layout/BorderContainer", "dijit/MenuItem",
             "dijit/form/Select", 
 	    "dijit/form/Button", "dijit/form/TextBox",
-            "dijit/form/NumberTextBox", "dijit/form/ComboBox",
+            "dijit/form/ComboBox",
 	    "dijit/form/SimpleTextarea", "dijit/Menu",
             "dijit/layout/ContentPane",
 	    "dragoon/menu", // Wire up menus
@@ -170,7 +171,7 @@
                     <option value="function">Function</option>
                 </select>
                 <label for="initialValue">Initial Value</label>
-                <input id="initialValue" type="text" style="width:6em" data-dojo-type="dijit/form/NumberTextBox">
+                <input id="initialValue" type="text" style="width:5em" data-dojo-type="dijit/form/TextBox" >
                 <label id="selectUnitsControl">
 		    Units
                     <select id="selectUnits" data-dojo-type="dijit/form/Select">

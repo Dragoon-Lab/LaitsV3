@@ -270,12 +270,14 @@ define([
              *   event handler for 'Initial' field
              *   'handleInitial' will be called in either Student or Author mode
              * */
+
             var initialWidget = registry.byId(this.controlMap.initial);
             // This event gets fired if student hits TAB or input box
             // goes out of focus.
-            initialWidget.on('Change', lang.hitch(this, function(){
-                return this.disableHandlers || this.handleInitial.apply(this, arguments);
+             initialWidget.on('Change', lang.hitch(this, function(){
+            return this.disableHandlers || this.handleInitial.apply(this, arguments);
             }));
+
             // Look for ENTER key event and fire 'Change' event, passing
             // value in box as argument.  This is then intercepted by the
             // regular handler.
