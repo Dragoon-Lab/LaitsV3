@@ -691,6 +691,16 @@ define([
              Set value for initial value, equation (input),
              */
 
+
+            
+            var d = registry.byId(this.controlMap.description);
+            array.forEach(this._model.given.getDescriptions(), function(desc){
+                var exists =  model.getNodeIDFor(desc.value);
+                 d.getOptions(desc).disabled=exists;
+                if(desc.value == nodeName){
+                    d.getOptions(desc).disabled=false;
+                }});
+
             var type = model.getType(nodeid);
             console.log('node type is', type || "not set");
 
