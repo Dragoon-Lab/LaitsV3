@@ -270,8 +270,6 @@ define([
              *   event handler for 'Initial' field
              *   'handleInitial' will be called in either Student or Author mode
              * */
-            /*
-	     */
 
             var initialWidget = registry.byId(this.controlMap.initial);
             // This event gets fired if student hits TAB or input box

@@ -41,6 +41,16 @@ define([
             this._PM = new PM(mode, subMode, model);
             lang.mixin(this.widgetMap, this.controlMap);
 	    ready(this, "populateSelections");
+
+            this.myTooltipDialog = new TooltipDialog({ //new tool tip for indicating use of decimals instead of percentages
+		style: "width: 150px;",
+		content: "Use decimals instead of percent"
+            }); 
+            this.myTooltipDialog2 = new TooltipDialog({ // new tooltip for indicating non numeric data is not accepted
+		style: "width: 150px;",
+		content: "Non Numeric data not accepted"
+            });        
+
         },
         // A list of control map specific to students
         controlMap: {
@@ -116,69 +126,61 @@ define([
 	
         handleInitial: function(initial){
             
-            popup.close(myTooltipDialog);// close old pop-ups' before a new one  
-            popup.close(myTooltipDialog2);
-           
-            var myTooltipDialog = new TooltipDialog({ //new tool tip for indicating use of decimals instead of percentages
-             style: "width: 150px;",
-             content: "Use decimals instead of percent"
-            }); 
-            var myTooltipDialog2 = new TooltipDialog({ // new tooltip for indicating non numeric data is not accepted
-             style: "width: 150px;",
-             content: "Non Numeric data not accepted"
-            });        
-           
- 	   // we do this type conversion because we used a textbox for initialvalue input which is a numerical
-            initial= +initial; // usage of + unary operator converts a element to number 
+	    var initialWidget = dom.byId(this.widgetMap.initial);
+	    // Popups only occur for an error, so leave it up until
+	    // the next time the student attempts to enter a number.
+            popup.close(this.myTooltipDialog);// close old pop-ups' before a new one  
+            popup.close(this.myTooltipDialog2);
+    
+            
+ 	    // we do this type conversion because we used a textbox for initialvalue input which is a numerical
+            initial= +initial; // usage of + unary operator converts a string to number 
 	    // use isNaN to test if conversion worked.
             if(isNaN(initial)){
-            // Put in checks here
-   	           console.log('not a number');
-               var impose_nums=dom.byId(initialValue).value; //initialValue is the id of the textbox, we get the value in the textbox
-               
-               if(!impose_nums.match('^[-+]?[0-9]*\.?[0-9]+([eE][-+]?[0-9]+)?%$')){ //To check the decimals against percentages
-                
-                  if(isNaN(impose_nums) && impose_nums!='') { //Incase input is not a number
+		// Put in checks here
+   	        console.log('not a number');
+		//initialValue is the id of the textbox, we get the value in the textbox
+		var impose_nums= initialWidget.value; 
+		
+		if(!impose_nums.match('^[-+]?[0-9]*\.?[0-9]+([eE][-+]?[0-9]+)?%$')){ //To check the decimals against percentages
+                    
+                  if(isNaN(impose_nums) && impose_nums!=''){ //Incase input is not a number
+		    console.warn("Should log when this happens");
                     popup.open({
-                    popup: myTooltipDialog2,
-                    around: dom.byId(initialValue)
+			popup: this.myTooltipDialog2,
+			around: initialWidget
                     });
-                 }
-               }
-           else{ //if entered string has percentage symbol, pop up a message to use decimals
-                 popup.open({
-                 popup: myTooltipDialog,
-                 around: dom.byId(initialValue)
-                });
-              }
-            
-            return; 
+                  }
+		}else{ //if entered string has percentage symbol, pop up a message to use decimals
+		    console.warn("Should log when this happens");
+                    popup.open({
+			popup: this.myTooltipDialog,
+			around: initialWidget
+                    });
+		}
+		
+		return; 
             }
-       else {
-            console.log("****** Student has chosen initial value", initial, this.lastInitialValue);
+	    console.log("****** Student has chosen initial value", initial, this.lastInitialValue);
     	    /*
-    	     Evaluate only if the value is changed.
+    		 Evaluate only if the value is changed.
 	     
     	     The controller modifies the initial value widget so that a "Change" event is
     	     fired if the widget loses focus.  This may happen when the node editor is closed.
     	     */
-             
     	    if(typeof initial === 'undefined' || initial == this.lastInitialValue){
     		return;
     	    }
-            
-            
+
     	    this.lastInitialValue = initial;
 	    
             // updating node editor and the model.
             this._model.active.setInitial(this.currentID, initial);
             this.applyDirectives(this._PM.processAnswer(this.currentID, 'initial', initial));
-            }
-            },
-        
-        
+	},
+	
         initialSet: function(value){
-            this._model.active.setInitial(this.currentID, value);
+                this._model.active.setInitial(this.currentID, value);
     	},
 
         /*
