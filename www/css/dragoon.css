@@ -18,6 +18,12 @@ html, body, #main{
 	font:10pt Arial,Myriad,Tahoma,Verdana,sans-serif !important;
 }
 
+
+.claro #nodeeditor .dijitDisabled{
+    background-color:#e6e6e6;
+}
+
+
 #crisisAlertMessage{
   background: #fff; /* override claro Dialog css for crisis alert message */
   max-width: 60ex;
