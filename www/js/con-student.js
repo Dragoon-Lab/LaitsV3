@@ -26,8 +26,8 @@ define([
     "dojo/_base/array", 'dojo/_base/declare', "dojo/_base/lang",
     "dojo/dom", "dojo/ready",
     'dijit/registry',
-    './controller', "./pedagogical_module", "./equation",'dojo/dom-style'
-], function(array, declare, lang, dom, ready, registry, controller, PM, expression,style){
+    './controller', "./pedagogical_module", "./equation",'dojo/dom-style',"dijit/TooltipDialog","dijit/popup"
+], function(array, declare, lang, dom, ready, registry, controller, PM, expression,style,TooltipDialog, popup){
 
     /*
      Methods in controller specific to the student modes
@@ -115,17 +115,46 @@ define([
     	},
 	
         handleInitial: function(initial){
-	    // we do this type conversion because we used a textbox for initialvalue input which is a numerical
-            initial= 0 + initial;
+            
+            popup.close(myTooltipDialog);// close old pop-ups' before a new one  
+            popup.close(myTooltipDialog2);
+           
+            var myTooltipDialog = new TooltipDialog({ //new tool tip for indicating use of decimals instead of percentages
+             style: "width: 150px;",
+             content: "Use decimals instead of percent"
+            }); 
+            var myTooltipDialog2 = new TooltipDialog({ // new tooltip for indicating non numeric data is not accepted
+             style: "width: 150px;",
+             content: "Non Numeric data not accepted"
+            });        
+           
+ 	   // we do this type conversion because we used a textbox for initialvalue input which is a numerical
+            initial= +initial; // usage of + unary operator converts a element to number 
 	    // use isNaN to test if conversion worked.
-
-	    // Put in checks here
-	    
-	    // if conversion fails, give hint and return from function;
-	    //  hints for: %
-	    //             should be numeric
-            //  logging
-
+            if(isNaN(initial)){
+            // Put in checks here
+   	           console.log('not a number');
+               var impose_nums=dom.byId(initialValue).value; //initialValue is the id of the textbox, we get the value in the textbox
+               
+               if(!impose_nums.match('^[-+]?[0-9]*\.?[0-9]+([eE][-+]?[0-9]+)?%$')){ //To check the decimals against percentages
+                
+                  if(isNaN(impose_nums) && impose_nums!='') { //Incase input is not a number
+                    popup.open({
+                    popup: myTooltipDialog2,
+                    around: dom.byId(initialValue)
+                    });
+                 }
+               }
+           else{ //if entered string has percentage symbol, pop up a message to use decimals
+                 popup.open({
+                 popup: myTooltipDialog,
+                 around: dom.byId(initialValue)
+                });
+              }
+            
+            return; 
+            }
+       else {
             console.log("****** Student has chosen initial value", initial, this.lastInitialValue);
     	    /*
     	     Evaluate only if the value is changed.
@@ -133,15 +162,21 @@ define([
     	     The controller modifies the initial value widget so that a "Change" event is
     	     fired if the widget loses focus.  This may happen when the node editor is closed.
     	     */
-    	    if(!initial || initial == this.lastInitialValue){
+             
+    	    if(typeof initial === 'undefined' || initial == this.lastInitialValue){
     		return;
     	    }
+            
+            
     	    this.lastInitialValue = initial;
 	    
             // updating node editor and the model.
             this._model.active.setInitial(this.currentID, initial);
             this.applyDirectives(this._PM.processAnswer(this.currentID, 'initial', initial));
+            }
             },
+        
+        
         initialSet: function(value){
             this._model.active.setInitial(this.currentID, value);
     	},
