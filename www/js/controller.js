@@ -713,11 +713,8 @@ define([
             
             var d = registry.byId(this.controlMap.description);
             array.forEach(this._model.given.getDescriptions(), function(desc){
-                var exists = null;
-                exists =  model.getNodeIDFor(desc.value);
-                if(exists){
-                 d.getOptions(desc).disabled=true;
-            }
+                var exists =  model.getNodeIDFor(desc.value);
+                 d.getOptions(desc).disabled=exists;
                 if(desc.value == nodeName){
                     d.getOptions(desc).disabled=false;
                 }});
