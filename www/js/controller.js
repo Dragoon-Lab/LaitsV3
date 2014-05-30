@@ -238,6 +238,8 @@ define([
             var nodeName = graphObjects.getNodeName(this._model.active,this.currentID);
             if(dom.byId(this.currentID + 'Label'))
                 domConstruct.place(nodeName, this.currentID + 'Label', "replace");
+                if(this.closePops)
+                this.closePops();//this is a function in con-student, where it closes the popups in case node editor is closed
 
         },
         //set up event handling with UI components
@@ -270,12 +272,14 @@ define([
              *   event handler for 'Initial' field
              *   'handleInitial' will be called in either Student or Author mode
              * */
+
             var initialWidget = registry.byId(this.controlMap.initial);
             // This event gets fired if student hits TAB or input box
             // goes out of focus.
-            initialWidget.on('Change', lang.hitch(this, function(){
-                return this.disableHandlers || this.handleInitial.apply(this, arguments);
+             initialWidget.on('Change', lang.hitch(this, function(){
+            return this.disableHandlers || this.handleInitial.apply(this, arguments);
             }));
+
             // Look for ENTER key event and fire 'Change' event, passing
             // value in box as argument.  This is then intercepted by the
             // regular handler.
@@ -690,6 +694,16 @@ define([
              
              Set value for initial value, equation (input),
              */
+
+
+            
+            var d = registry.byId(this.controlMap.description);
+            array.forEach(this._model.given.getDescriptions(), function(desc){
+                var exists =  model.getNodeIDFor(desc.value);
+                 d.getOptions(desc).disabled=exists;
+                if(desc.value == nodeName){
+                    d.getOptions(desc).disabled=false;
+                }});
 
             var type = model.getType(nodeid);
             console.log('node type is', type || "not set");
