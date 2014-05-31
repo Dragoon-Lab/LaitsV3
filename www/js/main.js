@@ -197,6 +197,19 @@ define([
 
            });
 
+	    /* 
+	     Add link to intro video
+	     */
+	    var video = dom.byId("menuIntroVideo");
+	    on(video, "click", function(){
+		controllerObject.logging.log('ui-action', {
+                    type: "menu-choice", 
+                    name: "intro-video"
+                });
+		// It would be better to open a dialog box and 
+		// have an embedded video.
+		window.open("https://www.youtube.com/watch?v=gsrM07XfABk");
+	    });
 
             /*
              BvdS:  this doesn't look quite right.  We want to download
