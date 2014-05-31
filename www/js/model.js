@@ -558,6 +558,7 @@ define([
 		var node = this.getNode(id);
 		var initialEntered = node.type && node.type == "function" || node.initial;
 		var equationEntered = node.type && node.type == "parameter" || node.equation;
+        ignoreUnits = (ignoreUnits ? ignoreUnits : false); // A hack! to explicitly set this true as return value is going undefined because node.units value is not set in author mode in many cases, and during all the calls to this function ignoreUnits is never sent.
 		if(!node.genus || node.genus == "allowed" || node.genus == "preferred"){
 		    return node.name && node.description && 
 			node.type && initialEntered &&
@@ -570,7 +571,6 @@ define([
 			node.units;
 		}
 	    }
-
         }, both);
 
         obj.solution = lang.mixin({
@@ -706,19 +706,19 @@ define([
                 this.getNode(id).status[control] = lang.mixin(attributes, options);
                 return attributes;
             },
-	    isComplete: function(/*string*/ id){
-		// Summary: Test whether a node is completely filled out, correct or not
-		// Returns a boolean
-		// id: the node id
-		var node = this.getNode(id);
-		// Some given models do not include units.
-		var hasUnits = node.descriptionID && obj.given.getUnits(node.descriptionID);
-		var initialEntered = node.type && node.type == "function" || node.initial;
-		var equationEntered = node.type && node.type == "parameter" || node.equation;
-		return node.descriptionID && node.type && 
-		    initialEntered && (!hasUnits || node.units) &&
-		    equationEntered;
-	    }
+    	    isComplete: function(/*string*/ id){
+    		// Summary: Test whether a node is completely filled out, correct or not
+    		// Returns a boolean
+    		// id: the node id
+    		var node = this.getNode(id);
+    		// Some given models do not include units.
+    		var hasUnits = node.descriptionID && obj.given.getUnits(node.descriptionID);
+    		var initialEntered = node.type && node.type == "function" || node.initial;
+    		var equationEntered = node.type && node.type == "parameter" || node.equation;
+    		return node.descriptionID && node.type && 
+    		    initialEntered && (!hasUnits || node.units) &&
+    		    equationEntered;
+    	    }
         }, both);
 
         // Execute the constructor

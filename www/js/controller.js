@@ -787,11 +787,14 @@ define([
                                 var colorMap = {
                     correct: "green",
                     incorrect: "#FF8080",
-                    demo: "yellow"
+                    demo: "yellow",
+                    neutral: "gray"
                 };
-                                console.log('nodeId is '+nodeId);
-                                var isComplete   = this._model.active.isComplete(nodeId)?'solid':'dashed';
-                                var color = this._model.active.getCorrectness(nodeId);
+                                console.log('nodeId is '+nodeId + ' ' +this._model.active.isComplete(nodeId));
+                                var isComplete   = this._model.active.isComplete(nodeId)?'solid':'dashed'; //this is dashed in case of incomplete node, so for author this is dashed even if units are not entered.
+                                var color = '';
+                                color = this._model.active.getCorrectness?this._model.active.getCorrectness(nodeId):'neutral';
+
                                 console.log('color is '+color);
                                 domStyle.set(this.currentID,'border','2px '+isComplete+' '+colorMap[color]);
                                 domStyle.set(this.currentID,'box-shadow','inset 0px 0px 5px #000 , 0px 0px 10px #000');
