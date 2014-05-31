@@ -176,9 +176,17 @@ define([
 
             pMenu.addChild(new MenuItem({
                 label: "Delete Node",
-                onClick: function (){
+                onClick: lang.hitch(this,function (){
 			domConstruct.destroy(node.ID);
-		}
+			//remove all connnections including incoming and outgoing
+			 array.forEach(this._instance.getConnections(), function(connection){
+                          if(connection.targetId == node.ID||connection.sourceId == node.ID)
+                             this._instance.detach(connection);
+            }, this);
+
+			//delete from  the model
+			this._givenModel.deleteNode(node.ID);		
+		})
             }));
             /*
              Fire off functions associated with draggable events.
