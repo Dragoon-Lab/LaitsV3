@@ -32,8 +32,10 @@ define([
 
         _instance: null,
         _givenModel: null,
+	_session:null,
+	_model:null,
 
-        constructor: function(givenModel){
+        constructor: function(givenModel,session,model){
 
             // setup some defaults for jsPlumb.
             var instance = jsPlumb.getInstance({
@@ -53,7 +55,8 @@ define([
 
             this._instance = instance;
             this._givenModel = givenModel;
-
+	    this._session = session;
+	    this._model = model;
             var shapes = {
                 accumulator: "accumulator",
                 function: "function",
@@ -185,7 +188,8 @@ define([
             }, this);
 
 			//delete from  the model
-			this._givenModel.deleteNode(node.ID);		
+			this._givenModel.deleteNode(node.ID);
+			this._session.saveProblem(this._model); 		
 		})
             }));
             /*

@@ -91,7 +91,7 @@ define([
 	
         ready(function(){
 
-            var drawModel = new drawmodel(givenModel.active);
+            var drawModel = new drawmodel(givenModel.active,session,givenModel.model);
 
             /* add "Create Node" button to menu */
             menu.add("createNodeButton", function(){
