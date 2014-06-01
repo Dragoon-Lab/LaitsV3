@@ -386,6 +386,11 @@ define([
                 var ret = this.getNode(id);
 		return ret && ret.inputs;
             },
+            getDescriptionID: function(id){
+                // Summary: Return any matched given model id for student node.
+                var node = this.getNode(id);
+                return node && node.descriptionID;
+            },
             getOutputs: function(/*string*/ id){
                 // Summary: return an array containing the output ids for a node.
                 var outputs = [];
@@ -616,11 +621,12 @@ define([
                     return node[nodePart];
                 }
             },
+            /*moved to both as this is needed while rendering graph in author as well.
             getDescriptionID: function(id){
                 // Summary: Return any matched given model id for student node.
                 var node = this.getNode(id);
                 return node && node.descriptionID;
-            },
+            },*/
             getNodeIDFor: function(givenID){
                 // Summary: returns the id of a student node having a matching descriptionID;
                 //          return null if no match is found.

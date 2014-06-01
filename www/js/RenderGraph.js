@@ -87,7 +87,7 @@ define([
 	    
 	    // Calculate solutions
 	    var activeSolution = this.findSolution(true, this.active.plotVariables);
-	    var givenSolution = this.findSolution(false, this.given.plotVariables);
+	    var givenSolution = this.given.initialValues ?this.findSolution(false, this.given.plotVariables) : this.findSolution(true, this.given.plotVariables);
 	    
             var charts = {};
             var legends = {};
