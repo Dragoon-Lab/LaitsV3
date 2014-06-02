@@ -151,13 +151,14 @@ define([
             });
 
 
-            //Description button wiring
+	    // Also used in image loading below.
+            var descObj = new description(givenModel);
 
             if(query.m == "AUTHOR"){
                 var db = registry.byId("descButton");
 		db.setAttribute("disabled", false);
 
-                var descObj = new description(givenModel);
+		// Description button wiring
 		menu.add("descButton", function(){
                     registry.byId("authorDescDialog").show();
                 });
