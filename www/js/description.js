@@ -21,9 +21,9 @@
  */
 define([
     "dojo/_base/array", "dojo/_base/declare", 
-    "dijit/registry", 
+    "dijit/registry", "dojo/dom",
     "./model", "./wraptext"
-], function(array, declare, registry, model, wrapText) {
+], function(array, declare, registry, dom, model, wrapText) {
 
     return declare(null, {
 
@@ -32,13 +32,13 @@ define([
             this.givenModel = givenModel;
 
             var timeObj = givenModel.getTime();
-            authorSetTimeStart.value = (timeObj.start) ? timeObj.start : 0;
-            authorSetTimeEnd.value = (timeObj.end) ? timeObj.end : 10;
-            authorSetTimeStep.value = (timeObj.step) ? timeObj.step : 1;
-            authorSetTimeStepUnits.value = (timeObj.units) ? timeObj.units : "years";
+            dom.byId("authorSetTimeStart").value = (timeObj.start) ? timeObj.start : 0;
+            dom.byId("authorSetTimeEnd").value = (timeObj.end) ? timeObj.end : 10;
+            dom.byId("authorSetTimeStep").value = (timeObj.step) ? timeObj.step : 1;
+            dom.byId("authorSetTimeStepUnits").value = (timeObj.units) ? timeObj.units : "years";
 
-            authorSetImage.value = (givenModel.getImageURL()) ? givenModel.getImageURL() : "";
-            authorSetDescription.value = (givenModel.getTaskDescription()) ? givenModel.getTaskDescription() : "";
+            dom.byId("authorSetImage").value = (givenModel.getImageURL()) ? givenModel.getImageURL() : "";
+            dom.byId("authorSetDescription").value = (givenModel.getTaskDescription()) ? givenModel.getTaskDescription() : "";
         },
 
         showDescription: function(){
@@ -85,13 +85,13 @@ define([
 
     closeDescriptionEditor: function(){
 
-        this.givenModel.setTaskDescription(authorSetDescription.value);
+        this.givenModel.setTaskDescription(dom.byId("authorSetDescription").value);
 
         var timeObj = {
-            start: authorSetTimeStart.value,
-            end: authorSetTimeEnd.value,
-            step: authorSetTimeStep.value, 
-            units: authorSetTimeStepUnits.value
+            start: dom.byId("authorSetTimeStart").value,
+            end: dom.byId("authorSetTimeEnd").value,
+            step: dom.byId("authorSetTimeStep").value, 
+            units: dom.byId("authorSetTimeStepUnits").value
         };
 
         this.givenModel.setTime(timeObj);
@@ -99,7 +99,7 @@ define([
         var imageObj = new Image();
         var height = null;
         var width = null;
-        var url = authorSetImage.value;
+        var url = dom.byId("authorSetImage").value;
             if (url) {
                 imageObj.src = url;
                 var imageJson = {
