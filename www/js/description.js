@@ -28,21 +28,8 @@ define([
     return declare(null, {
 
         givenModel: null,
-        authorDescription: null,
-        authorSetTimeStart: null,
-        authorSetTimeEnd: null,
-        authorSetTimeStep: null,
-        authorSetTimeStepUnits: null,
-        authorSetImage: null,
-
         constructor: function(/*model*/ givenModel){
             this.givenModel = givenModel;
-/*this.authorDescription = registry.byId(authorSetDescription);
-            this.authorSetTimeStart = registry.byId(authorSetTimeStart);
-            this.authorSetTimeEnd = registry.byId(authorSetTimeEnd);
-            this.authorSetTimeStepUnits = registry.byId(authorSetTimeStepUnits);
-            this.authorSetTimeStep = registry.byId(authorSetTimeStep);
-            this.authorSetImage = registry.byId(authorSetImage); */
 
             var timeObj = givenModel.getTime();
             authorSetTimeStart.value = (timeObj.start) ? timeObj.start : 0;
@@ -74,7 +61,7 @@ define([
             var imageTop = 20;
             var gapTextImage = 50;
             var textLeft = 30;
-            var textTop = 300;
+            var textTop = 50;
             var textWidth = 400;
             var textHeight = 20;
 
@@ -105,7 +92,7 @@ define([
             end: authorSetTimeEnd.value,
             step: authorSetTimeStep.value, 
             units: authorSetTimeStepUnits.value
-        }
+        };
 
         this.givenModel.setTime(timeObj);
 
@@ -122,9 +109,10 @@ define([
                 }
                 this.givenModel.setImage(imageJson);
 
-            }
+            };
 
 
         this.showDescription(this.givenModel);
-    }})});
+    }});
+});
 

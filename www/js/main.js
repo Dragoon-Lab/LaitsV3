@@ -156,17 +156,22 @@ define([
 
             if(query.m == "AUTHOR"){
                 var db = registry.byId("descButton");
-		db.setAttribute("disabled", false);
+	           db.setAttribute("disabled", false);
+           
 
 		// Description button wiring
-		menu.add("descButton", function(){
+		       menu.add("descButton", function(){
                     registry.byId("authorDescDialog").show();
                 });
                 aspect.after(registry.byId('authorDescDialog'), "hide", function(){
                     console.log("Saving Description/Timestep edits");
                     descObj.closeDescriptionEditor();
+                    session.saveProblem(givenModel.model);
                 });
-            }
+             on(registry.byId("descCloseButton"), "click", function(){
+                registry.byId("authorDescDialog").hide();
+            });
+         }
 
             /*
              Make model solution plot using dummy data. 
@@ -241,52 +246,8 @@ define([
              These will be wired up to dialog boxes to set the image URL and
              the description.
              */
-            var canvas = dom.byId('myCanvas');
-	    if(canvas.getContext){
-		var context = canvas.getContext('2d');
-	    }else {
-		throw new Error("Canvas not supported on this browser.");
-	    }
-            var imageObj = new Image();
-            var desc_text = givenModel.getTaskDescription();
-            var scalingFactor = 1;
-            var url = givenModel.getImageURL();
-            if(url){
-                imageObj.src = url;
-            }
-            else{
-                controllerObject.logging.clientLog("warning", {
-                    message: 'No image found for the problem : '+query.p,
-                    functionTag: 'main.js ready'
-                });
-            }
 
-            var imageLeft = 30;
-            var imageTop = 20;
-            var gapTextImage = 50;
-            var textLeft = 30;
-            var textTop = 300;
-            var textWidth = 400;
-            var textHeight = 20;
-
-
-            imageObj.onload = function(){
-                console.log("Image width is " + imageObj.width);
-                if(imageObj.width > 300 || imageObj.width != 0)
-                    scalingFactor = 300 / imageObj.width;  //assuming we want width 300
-                console.log('Computing scaling factor for image ' + scalingFactor);
-                var imageHeight = imageObj.height * scalingFactor;
-                context.drawImage(imageObj, imageLeft, imageTop, imageObj.width * scalingFactor, imageHeight);
-                var marginTop = (gapTextImage + imageHeight) - textTop;
-                if(marginTop < 0)
-                    marginTop = 0;
-
-                console.log('computed top margin for text ' + marginTop);
-
-		// Set font for description text
-		context.font = "normal 13px Arial";
-                wrapText(context, desc_text, textLeft, textTop + marginTop, textWidth, textHeight);
-            };
+        descObj.showDescription();
 
         });
     });

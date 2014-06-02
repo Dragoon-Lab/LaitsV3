@@ -142,7 +142,7 @@
 
 			<!-- Putting Node-Editor -Dialog stuff for demo -->
             <!--  authorSetDescription, authorSetTimeStart, authorSetTimeEnd, authorSetTimeStep, authorSetTimeStepUnits, authorSetImage) -->
-        <div class="claro"  data-dojo-type="dijit/Dialog" id="authorDescDialog">
+        <div class="claro"  data-dojo-type="dijit/Dialog" id="authorDescDialog" title="Edit Timesteps, Image, and Description">
         <label for="authorSetTimeStart">Enter Start Time</label>
 
         <input id="authorSetTimeStart" value="0"></input><br />
@@ -159,7 +159,8 @@
         <label for="authorSetImage">URL for Image</label>
         <input id="authorSetImage"></input><br />
         <label for="authorSetDescription">Enter Description of Problem</label>
-        <textarea id="authorSetDescription" name="authorSetDescription" data-dojo-type="dijit/form/Textarea" value="Enter Description here..."></textarea>
+        <textarea id="authorSetDescription" name="authorSetDescription" data-dojo-type="dijit/form/Textarea" value="Enter Description here..."></textarea><br />
+         <button id="descCloseButton" type="button" data-dojo-type="dijit/form/Button" iconClass="dijitNoIcon">Done</button>
         </div>
 
         <div class="claro"  data-dojo-type="dijit/Dialog" id="nodeeditor">

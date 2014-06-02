@@ -35,11 +35,11 @@ html, body, #main{
                         Node editor
 */
 
-#nodeeditor, #crisisAlertMessage, div#solution {
+#nodeeditor, #crisisAlertMessage, #authorDescDialog, div#solution {
     font:10pt Arial,Myriad,Tahoma,Verdana,sans-serif !important;
 }
 
-#nodeeditor .fieldgroup {
+#nodeeditor, #authorDescDialog .fieldgroup {
     display:block;
     margin-top:2ex;
     margin-bottom:2ex;
@@ -47,18 +47,18 @@ html, body, #main{
     clear:both;
 }
 
-#nodeeditor .fieldgroup > label {
+#nodeeditor, #authorDescDialog .fieldgroup > label {
     text-align:right;
     margin-left:2ex;
     margin-right:1ex;
 }
 
-#nodeeditor .fieldgroup > * {
+#nodeeditor, #authorDescDialog .fieldgroup > * {
     display:inline-block;
     vertical-align:top
 }
 
-#nodeeditor .fieldgroup > label:first-child {
+#nodeeditor, #authorDescDialog .fieldgroup > label:first-child {
     width:10ex;
 }
 
