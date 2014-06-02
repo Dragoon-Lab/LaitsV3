@@ -37,11 +37,12 @@ define([
     "./draw-model",
     "./calculations",
     "./logging",
-    "./equation"
+    "./equation",
+    "./description"
 ], function(
         lang, dom, geometry, on, aspect, ioQuery, ready, registry,
         menu, loadSave, model,
-        Graph, Table, wrapText, controlStudent, controlAuthor, Parser, drawmodel, calculations, logging, expression
+        Graph, Table, wrapText, controlStudent, controlAuthor, Parser, drawmodel, calculations, logging, expression, description
         ){
 
     console.log("load main.js");
@@ -149,6 +150,22 @@ define([
                 registry.byId("nodeeditor").hide();
             });
 
+
+            //Description button wiring
+
+            if(query.m == "AUTHOR"){
+                registry.byId("descButton").disabled="false";
+
+                var descObj = new description(givenModel);
+                on(registry.byId("descButton"), "click", function(){
+                    registry.byId("authorDescDialog").show();
+                });
+                aspect.after(registry.byId('authorDescDialog'), "hide", function(){
+                    console.log("Saving Description/Timestep edits");
+                    descObj.closeDescriptionEditor();
+                });
+            }
+
             /*
              Make model solution plot using dummy data. 
              This should be put in its own module.
@@ -193,6 +210,7 @@ define([
                     problemComplete: problemComplete
                 });
                window.history.back();
+
 
 
            });
