@@ -1,3 +1,4 @@
+/* global define */
 /**
  *Dragoon Project
  *Arizona State University
@@ -18,7 +19,6 @@
  *along with Dragoon.  If not, see <http://www.gnu.org/licenses/>.
  *
  */
-/* global define, Image */
 define([
     "dojo/_base/array",
     "dojo/_base/declare",

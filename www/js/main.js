@@ -158,9 +158,7 @@ define([
 		db.setAttribute("disabled", false);
 
                 var descObj = new description(givenModel);
-		var descriptionBox = registry.byId("descButton");
-		console.log("Wiring up description box", descriptionBox);
-                on(descriptionBox, "click", function(){
+		menu.add("descButton", function(){
                     registry.byId("authorDescDialog").show();
                 });
                 aspect.after(registry.byId('authorDescDialog'), "hide", function(){
