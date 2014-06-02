@@ -154,10 +154,13 @@ define([
             //Description button wiring
 
             if(query.m == "AUTHOR"){
-                registry.byId("descButton").disabled="false";
+                var db = registry.byId("descButton");
+		db.setAttribute("disabled", false);
 
                 var descObj = new description(givenModel);
-                on(registry.byId("descButton"), "click", function(){
+		var descriptionBox = registry.byId("descButton");
+		console.log("Wiring up description box", descriptionBox);
+                on(descriptionBox, "click", function(){
                     registry.byId("authorDescDialog").show();
                 });
                 aspect.after(registry.byId('authorDescDialog'), "hide", function(){
