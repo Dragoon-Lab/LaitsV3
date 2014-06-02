@@ -32,14 +32,43 @@ define([
             this.givenModel = givenModel;
 
             var timeObj = givenModel.getTime();
-            dom.byId("authorSetTimeStart").value = (timeObj.start) ? timeObj.start : 0;
-            dom.byId("authorSetTimeEnd").value = (timeObj.end) ? timeObj.end : 10;
-            dom.byId("authorSetTimeStep").value = (timeObj.step) ? timeObj.step : 1;
-            dom.byId("authorSetTimeStepUnits").value = (timeObj.units) ? timeObj.units : "years";
+            dom.byId("authorSetTimeStart").value = timeObj.start;
+            dom.byId("authorSetTimeEnd").value = timeObj.end;
+            dom.byId("authorSetTimeStep").value = timeObj.step;
+            dom.byId("authorSetTimeStepUnits").value = timeObj.units || "seconds";
 
-            dom.byId("authorSetImage").value = (givenModel.getImageURL()) ? givenModel.getImageURL() : "";
+            dom.byId("authorSetImage").value = givenModel.getImageURL() || "";
             dom.byId("authorSetDescription").value = (givenModel.getTaskDescription()) ? givenModel.getTaskDescription() : "";
         },
+
+	// add line breaks
+	// use string split method to unserialize
+	// https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/String/split
+	serialize: function(d){
+	    if(typeof d === "string"){
+		return d;
+	    } else {
+		var result="";
+		array.forEach(d, function(x){
+		    result += x + "\n";		
+		});
+		return result;
+	    }
+	},
+
+
+	// turn line breaks to array
+	unserialize: function(d){
+	    if(typeof d === "string"){
+		return d;
+	    } else {
+		var result="";
+		array.forEach(d, function(x){
+		    result += x + "\n";		
+		});
+		return result;
+	    }
+	},
 
         showDescription: function(){
 
