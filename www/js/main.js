@@ -91,7 +91,11 @@ define([
 	
         ready(function(){
 
-            var drawModel = new drawmodel(givenModel.active,session,givenModel.model);
+            var drawModel = new drawmodel(givenModel.active);
+	    // Wire up send to server
+	    aspect.after("updater", drawModel, function(){
+		session.saveProblem(givenModel);
+	    });
 
             /* add "Create Node" button to menu */
             menu.add("createNodeButton", function(){
@@ -271,5 +275,3 @@ define([
         });
     });
 });
-
-

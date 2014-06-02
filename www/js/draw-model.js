@@ -32,10 +32,10 @@ define([
 
         _instance: null,
         _givenModel: null,
-	_session:null,
-	_model:null,
+	// Hook for updates
+	updater: function(){},
 
-        constructor: function(givenModel,session,model){
+        constructor: function(givenModel){
 
             // setup some defaults for jsPlumb.
             var instance = jsPlumb.getInstance({
@@ -189,7 +189,7 @@ define([
 
 			//delete from  the model
 			this._givenModel.deleteNode(node.ID);
-			this._session.saveProblem(this._model); 		
+			this.updater();
 		})
             }));
             /*
