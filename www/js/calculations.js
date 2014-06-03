@@ -43,7 +43,7 @@ define([
 	sliders: {},                        // Parameter to create slider objects
 	
 	constructor: function(model, mode){
-            console.log("***** In calculations constructor");
+            console.log("***** In calculations constructor", this.given);
             this.model = model;
             /* In AUTHOR mode, plot solution for all given nodes of genus false
              and type "accumulator" or "function""
