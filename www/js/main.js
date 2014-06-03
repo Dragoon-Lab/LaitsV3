@@ -35,14 +35,13 @@ define([
     "./con-student", './con-author',
     "parser/parser",
     "./draw-model",
-    "./calculations",
     "./logging",
     "./equation",
     "./description"
 ], function(
         lang, dom, geometry, on, aspect, ioQuery, ready, registry,
         menu, loadSave, model,
-        Graph, Table, wrapText, controlStudent, controlAuthor, Parser, drawmodel, calculations, logging, expression, description
+        Graph, Table, wrapText, controlStudent, controlAuthor, Parser, drawmodel, logging, expression, description
         ){
 
     console.log("load main.js");
@@ -252,5 +251,3 @@ define([
         });
     });
 });
-
-
