@@ -27,7 +27,7 @@ define([
 	array.forEach(typeof textIn == "string"?[textIn]:textIn, function(text){
             var words = text.split(' ');
             var line = '';
-	    
+
             for(var n = 0; n < words.length; n++){
 		var testLine = line + words[n] + ' ';
 		var metrics = context.measureText(testLine);

@@ -251,11 +251,11 @@ define([
             },
             areRequiredNodesVisible: function(){
                 //Summary: returns true if all of the nodes in the model are visible
-                console.error("*****\n***** Need to update areRequiredNodesVisible() in model.js to only check for completeness of required nodes. Currently it looks at all nodes.");
-                var givenNodes = this.given.getNodes();
-                for(var i = 0; i < givenNodes.length; i++){
+                var solutionNodes = this.solution.getNodes();
+                var sLength = solutionNodes.length;
+                for(var i = 0; i < sLength; i++){
                     if(!array.some(this.student.getNodes(), function(studentNode){
-                        return this.isNodeVisible(studentNode.ID, givenNodes[i].ID);
+                        return this.isNodeVisible(studentNode.ID, solutionNodes[i].ID);
                     }, this))
                         return false;
                 }
@@ -283,6 +283,15 @@ define([
                     }, this);
                 }, this);
             },
+            matchesGivenSolution: function(){
+                /*See bug #2362*/
+                var flag = this.areRequiredNodesVisible() &&
+                    array.every(this.student.getNodes(), function(sNode){
+                        return this.student.isComplete(sNode.ID);
+                    }, this);
+                return flag ? true : false;
+            },
+	    
             /**
              * SETTERS
              */
@@ -376,6 +385,11 @@ define([
                 // Summary: return an array containing the input ids for a node.
                 var ret = this.getNode(id);
 		return ret && ret.inputs;
+            },
+            getDescriptionID: function(id){
+                // Summary: Return any matched given model id for student node.
+                var node = this.getNode(id);
+                return node && node.descriptionID;
             },
             getOutputs: function(/*string*/ id){
                 // Summary: return an array containing the output ids for a node.
@@ -549,6 +563,7 @@ define([
 		var node = this.getNode(id);
 		var initialEntered = node.type && node.type == "function" || node.initial;
 		var equationEntered = node.type && node.type == "parameter" || node.equation;
+        ignoreUnits = (ignoreUnits ? ignoreUnits : false); // A hack! to explicitly set this true as return value is going undefined because node.units value is not set in author mode in many cases, and during all the calls to this function ignoreUnits is never sent.
 		if(!node.genus || node.genus == "allowed" || node.genus == "preferred"){
 		    return node.name && node.description && 
 			node.type && initialEntered &&
@@ -561,7 +576,6 @@ define([
 			node.units;
 		}
 	    }
-
         }, both);
 
         obj.solution = lang.mixin({
@@ -607,11 +621,12 @@ define([
                     return node[nodePart];
                 }
             },
+            /*moved to both as this is needed while rendering graph in author as well.
             getDescriptionID: function(id){
                 // Summary: Return any matched given model id for student node.
                 var node = this.getNode(id);
                 return node && node.descriptionID;
-            },
+            },*/
             getNodeIDFor: function(givenID){
                 // Summary: returns the id of a student node having a matching descriptionID;
                 //          return null if no match is found.
@@ -697,19 +712,19 @@ define([
                 this.getNode(id).status[control] = lang.mixin(attributes, options);
                 return attributes;
             },
-	    isComplete: function(/*string*/ id){
-		// Summary: Test whether a node is completely filled out, correct or not
-		// Returns a boolean
-		// id: the node id
-		var node = this.getNode(id);
-		// Some given models do not include units.
-		var hasUnits = node.descriptionID && obj.given.getUnits(node.descriptionID);
-		var initialEntered = node.type && node.type == "function" || node.initial;
-		var equationEntered = node.type && node.type == "parameter" || node.equation;
-		return node.descriptionID && node.type && 
-		    initialEntered && (!hasUnits || node.units) &&
-		    equationEntered;
-	    }
+    	    isComplete: function(/*string*/ id){
+    		// Summary: Test whether a node is completely filled out, correct or not
+    		// Returns a boolean
+    		// id: the node id
+    		var node = this.getNode(id);
+    		// Some given models do not include units.
+    		var hasUnits = node.descriptionID && obj.given.getUnits(node.descriptionID);
+    		var initialEntered = node.type && node.type == "function" || node.initial;
+    		var equationEntered = node.type && node.type == "parameter" || node.equation;
+    		return node.descriptionID && node.type && 
+    		    initialEntered && (!hasUnits || node.units) &&
+    		    equationEntered;
+    	    }
         }, both);
 
         // Execute the constructor

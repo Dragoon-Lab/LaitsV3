@@ -1,3 +1,4 @@
+/* global define */
 /**
  *Dragoon Project
  *Arizona State University
@@ -18,7 +19,6 @@
  *along with Dragoon.  If not, see <http://www.gnu.org/licenses/>.
  *
  */
-/* global define, Image */
 define([
     "dojo/_base/array",
     "dojo/_base/declare",
@@ -43,7 +43,7 @@ define([
 	sliders: {},                        // Parameter to create slider objects
 	
 	constructor: function(model, mode){
-            console.log("***** In calculations constructor");
+            console.log("***** In calculations constructor", this.given);
             this.model = model;
             /* In AUTHOR mode, plot solution for all given nodes of genus false
              and type "accumulator" or "function""

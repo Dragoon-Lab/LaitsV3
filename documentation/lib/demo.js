@@ -98,10 +98,6 @@ jsPlumb.ready(function(){
 		target:"maine"
 	}, connection1);
         instance.connect({
-		source:"calculations",
-		target:"maine"
-	}, connection1);
-        instance.connect({
 		source:"logging",
 		target:"maine"
 	}, connection1);

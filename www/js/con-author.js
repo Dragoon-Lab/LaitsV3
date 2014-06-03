@@ -36,7 +36,7 @@ define([
     return declare(controller, {
         //pedagogical module class for author
         authorPM:{
-            process: function(nodeID, nodeType, value){
+            process: function(nodeID, nodeType, value, validInput){
                 var returnObj=[];
                 switch(nodeType){
                     case "type":
@@ -66,14 +66,20 @@ define([
                         else{
                             returnObj[0].value="incorrect";
                             returnObj.push({id:"message",attribute:"append",value:"Please select node type"});
-                            console.error("wrong choice");
+                            this.logging.clientLog("error", {
+                                message: "wrong choice for node type",
+                                functionTag: "authorPM process"
+                            });
                         }
                         break;
 
                     case "name":
-                        if(!nodeID){
+                        if(!nodeID && validInput){
                             returnObj.push({id:"message",attribute:"append",value:"node name is available for use"});
                             returnObj.push({id:"name",attribute:"status",value:"entered"});
+                        } else if(!validInput){
+                            returnObj.push({id:"message",attribute:"append",value:"Please enter a valid name without using numbers"});
+                            returnObj.push({id:"name",attribute:"status",value:"incorrect"});
                         }
                         else{
                             returnObj.push({id:"message",attribute:"append",value:"node name is already in use"});
@@ -158,7 +164,8 @@ define([
             /* check if node with name already exists and
                if name is parsed as valid variable
             */
-            this.applyDirectives(this.authorPM.process(this._model.given.getNodeIDByName(name)?!(this._model.given.getNodeIDByName(name)==this.currentID):null,'name',name));
+            this.applyDirectives(this.authorPM.process(this._model.given.getNodeIDByName(name)?!(this._model.given.getNodeIDByName(name)==this.currentID):null,'name',name, equation.isVariable(name)));
+            console.log(equation.isVariable(name))
             if(!this._model.given.getNodeIDByName(name) && equation.isVariable(name)){
                 // check all nodes in the model for equations containing name of this node
                 // replace name of this node in equation with its ID
@@ -244,7 +251,10 @@ define([
                 }));
             }
             else{
-                console.error("bad parsing");
+                this.logging.clientLog("error", {
+                    message: "bad parsing",
+                    functionTag: 'equationDoneHandler'
+                });
             }
         },
         initialControlSettings: function(nodeid){
@@ -316,23 +326,30 @@ define([
                 }
                 this.applyDirectives([{id:"description",attribute:"status",value:value}]);
 
+                var type = this._model.given.getType(this.currentID);
                 //color type widget
-                if(!this._model.given.getType(this.currentID)){
+                if(!type){
                     value = "incorrect";
                 }
                 else{
                     value = "entered";
+                    this.applyDirectives(this.authorPM.process(this.currentID, 'type', type));
                 }
                 this.applyDirectives([{id:"type",attribute:"status",value:value}]);
 
-                if(this._model.given.getType(this.currentID) && this._model.given.getType(this.currentID) != 'function'){
-                    this.applyDirectives([{id:"initial",attribute:"status",value:"entered"}]);
+                if(type && type != 'function'){
+                    if(this._model.given.getInitial(this.currentID))
+                        this.applyDirectives([{id:"initial",attribute:"status",value:"entered"}]);
                 }
 
-                if(this._model.given.getType(this.currentID) && this._model.given.getType(this.currentID) != 'parameter'){
-                    this.applyDirectives([{id:"inputs",attribute:"status",value:"entered"}]);
+                if(type && type != 'parameter'){
+                    if(this._model.given.getInputs(this.currentID)!= '')
+                        this.applyDirectives([{id:"inputs",attribute:"status",value:"entered"}]);
                 }
-                this.applyDirectives([{id:"units",attribute:"status",value:"entered"}]);
+
+                if(this._model.given.getUnits(this.currentID))
+                    this.applyDirectives([{id:"units",attribute:"status",value:"entered"}]);
+
             }
         },
         updateModelStatus: function(desc){
