@@ -93,8 +93,8 @@ define([
 
             var drawModel = new drawmodel(givenModel.active);
 	    // Wire up send to server
-	    aspect.after("updater", drawModel, function(){
-		session.saveProblem(givenModel);
+	    aspect.after(drawModel, "updater", function(){
+		session.saveProblem(givenModel.model);
 	    });
 
             /* add "Create Node" button to menu */
