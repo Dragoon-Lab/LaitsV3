@@ -4,7 +4,7 @@
         "time": {
             "start": 1900,
             "end": 1920,
-            "step": 0.5,
+            "step": 1.0,
             "units": "Years"
         },
         "properties": {
