@@ -41,10 +41,12 @@ define([
 	dialog: "",                          // dialog box to be displayed
 	dialogContent: "",                  // Parameter to set DOM in a dialog dynamically
 	sliders: {},                        // Parameter to create slider objects
+	mode : null, 						// Parameter to hold the mode value to differentiate graphs for author and student mode.
 	
 	constructor: function(model, mode){
             console.log("***** In calculations constructor");
             this.model = model;
+            this.mode = mode;
             /* In AUTHOR mode, plot solution for all given nodes of genus false
              and type "accumulator" or "function""
              The table contains the same nodes.
@@ -67,7 +69,7 @@ define([
 	    }, this);
 	    // These are not used for the tables
 	    if(mode != "AUTHOR"){
-		this.given.timeStep = equation.initializeTimeStep(model.given);
+	    	this.given.timeStep = equation.initializeTimeStep(model.given);
 		this.given.initialValues = array.map(
 		    this.given.timeStep.xvars, 
 		    model.given.getInitial,
