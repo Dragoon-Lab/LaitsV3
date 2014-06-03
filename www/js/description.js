@@ -68,26 +68,22 @@ define([
             var imageLeft = 30;
             var imageTop = 20;
 	    var imageHeight = 0;  // default in case there is no image
-            var gapTextImage = 50;
+            var gapTextImage = 30;
             var textLeft = 30;
             var textTop = 50;
             var textWidth = 400;
             var textHeight = 20;
 
-            var scalingFactor = 1;
             var url = this.givenModel.getImageURL();
 
 	    // Layout text
 	    // This routine should go in wrapText.js
 	    var showText = function(){
-		var marginTop = (gapTextImage + imageHeight) - textTop;
-		if (marginTop < 0){
-                    marginTop = 0;
-		}
+		var marginTop = Math.max(gapTextImage + imageHeight + imageTop, textTop);
 
 		// Set font for description text
 		context.font = "normal 13px Arial";
-		wrapText(context, desc_text, textLeft, textTop + marginTop, textWidth, textHeight);
+		wrapText(context, desc_text, textLeft, marginTop, textWidth, textHeight);
 	    };
 
             if (url) {
@@ -98,8 +94,9 @@ define([
 		// we can layout the text immediately
 		imageObj.onload = function(){
 		    console.log("Image width is " + imageObj.width);
-		    if (imageObj.width && imageObj.width > 300)
-			scalingFactor = 300 / imageObj.width;  //assuming we want width 300
+		    // Rescale image size, while maintaining aspect ratio,
+		    // assuming we want max width 300
+		    var scalingFactor = imageObj.width > 300 ? 300 / imageObj.width : 1.0;
 		    console.log('Computing scaling factor for image ' + scalingFactor);
 		    imageHeight = imageObj.height * scalingFactor;
 		    context.drawImage(imageObj, imageLeft, imageTop, imageObj.width * scalingFactor, imageHeight);
