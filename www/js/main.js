@@ -18,7 +18,7 @@
  *along with Dragoon.  If not, see <http://www.gnu.org/licenses/>.
  *
  */
-/* global define, Image */
+/* global define */
 define([
     'dojo/_base/lang',
     "dojo/dom",
@@ -31,18 +31,17 @@ define([
     "./menu",
     "./load-save",
     "./model",
-    "./RenderGraph", "./RenderTable", "./wraptext",
+    "./RenderGraph", "./RenderTable",
     "./con-student", './con-author',
     "parser/parser",
     "./draw-model",
-    "./calculations",
     "./logging",
     "./equation",
     "./description"
 ], function(
         lang, dom, geometry, on, aspect, ioQuery, ready, registry,
         menu, loadSave, model,
-        Graph, Table, wrapText, controlStudent, controlAuthor, Parser, drawmodel, calculations, logging, expression, description
+        Graph, Table, controlStudent, controlAuthor, Parser, drawmodel, logging, expression, description
         ){
 
     console.log("load main.js");
@@ -150,17 +149,16 @@ define([
                 registry.byId("nodeeditor").hide();
             });
 
-
+	    
 	    // Also used in image loading below.
             var descObj = new description(givenModel);
-
+	    
             if(query.m == "AUTHOR"){
                 var db = registry.byId("descButton");
-	           db.setAttribute("disabled", false);
-           
-
+	        db.setAttribute("disabled", false);
+		
 		// Description button wiring
-		       menu.add("descButton", function(){
+		menu.add("descButton", function(){
                     registry.byId("authorDescDialog").show();
                 });
                 aspect.after(registry.byId('authorDescDialog'), "hide", function(){
@@ -168,8 +166,8 @@ define([
                     descObj.closeDescriptionEditor();
                     session.saveProblem(givenModel.model);
                 });
-             on(registry.byId("descCloseButton"), "click", function(){
-                registry.byId("authorDescDialog").hide();
+		on(registry.byId("descCloseButton"), "click", function(){
+                    registry.byId("authorDescDialog").hide();
             });
          }
 
@@ -247,10 +245,8 @@ define([
              the description.
              */
 
-        descObj.showDescription();
+            descObj.showDescription();
 
         });
     });
 });
-
-

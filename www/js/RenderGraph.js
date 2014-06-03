@@ -69,26 +69,30 @@ define([
 	     To include optional nodes,
 	     one would need to order them using topologicalSort
 	     */
-	    this.given.plotVariables = array.map(this.active.plotVariables, function(id){
-		var givenID = this.model.active.getDescriptionID?
-			this.model.active.getDescriptionID(id):id;
-		// givenID should always exist.
-		console.assert(givenID, "Node '" + id + "' has no corresponding given node");
-		var givenNode = this.model.given.getNode(givenID);
-		return givenNode && (!givenNode.genus?givenID:null);
-	    }, this);
-	    
-            array.forEach(this.active.plotVariables, function(id){
-		this.dialogContent += this.createDom('div', "chart" + id);
-		this.dialogContent += this.createDom('div', "legend" + id, "class='legend'");
-            }, this);
-	    //plot sliders 
-            this.createSliderAndDialogObject();
-	    
-	    // Calculate solutions
 	    var activeSolution = this.findSolution(true, this.active.plotVariables);
-	    var givenSolution = this.given.initialValues ?this.findSolution(false, this.given.plotVariables) : this.findSolution(true, this.given.plotVariables);
-	    
+
+	    if(this.mode != "AUTHOR"){
+	    	//check for author mode. Here we need to create just one graph.
+		    this.given.plotVariables = array.map(this.active.plotVariables, function(id){
+			var givenID = this.model.active.getDescriptionID?
+				this.model.active.getDescriptionID(id):id;
+			// givenID should always exist.
+			console.assert(givenID, "Node '" + id + "' has no corresponding given node");
+			var givenNode = this.model.given.getNode(givenID);
+			return givenNode && (!givenNode.genus?givenID:null);
+		    }, this);
+		    
+		    // Calculate solutions
+		    var givenSolution = this.findSolution(false, this.given.plotVariables);
+		}
+
+		 array.forEach(this.active.plotVariables, function(id){
+			this.dialogContent += this.createDom('div', "chart" + id);
+			this.dialogContent += this.createDom('div', "legend" + id, "class='legend'");
+	            }, this);
+		    //plot sliders 
+	            this.createSliderAndDialogObject();
+
             var charts = {};
             var legends = {};
             if(this.active.plotVariables){
@@ -112,8 +116,9 @@ define([
 			vertical: true, // min: obj.min, max: obj.max,
 			title: this.labelString(id)
                     });
-		    
-                    var givenID = this.model.active.getDescriptionID(id);
+
+		    if(this.mode != "AUTHOR")	
+                var givenID = this.model.active.getDescriptionID(id);
 		    
                     //plot chart for student node
                     charts[id].addSeries(
@@ -121,7 +126,7 @@ define([
 			this.formatSeriesForChart(activeSolution, k), 
 			{stroke: "green"}
 		    );
-		    if(this.given.plotVariables[k]){
+		    if(this.mode != "AUTHOR" && this.given.plotVariables[k]){
 			charts[id].addSeries(
 			    "correct solution", 
 			    this.formatSeriesForChart(givenSolution, k), {stroke: "red"});
