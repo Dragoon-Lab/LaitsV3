@@ -38,7 +38,9 @@ define([
             dom.byId("authorSetTimeStepUnits").value = timeObj.units || "seconds";
 
             dom.byId("authorSetImage").value = givenModel.getImageURL() || "";
-            dom.byId("authorSetDescription").value = (givenModel.getTaskDescription()) ? givenModel.getTaskDescription() : "";
+            dom.byId("authorSetDescription").value = this.serialize(
+		givenModel.getTaskDescription() ? givenModel.getTaskDescription() : ""
+	    );
         },
 
 	// add line breaks
@@ -56,92 +58,89 @@ define([
 	    }
 	},
 
-
-	// turn line breaks to array
-	unserialize: function(d){
-	    if(typeof d === "string"){
-		return d;
-	    } else {
-		var result="";
-		array.forEach(d, function(x){
-		    result += x + "\n";		
-		});
-		return result;
-	    }
-	},
-
         showDescription: function(){
 
-        var canvas = document.getElementById('myCanvas');
+            var canvas = document.getElementById('myCanvas');
             var context = canvas.getContext('2d');
             context.clearRect(0,0,canvas.width, canvas.height);
-            var imageObj = new Image();
             var desc_text = this.givenModel.getTaskDescription();
-
-            var scalingFactor = 1;
-            var url = this.givenModel.getImageURL();
-            if (url) {
-                imageObj.src = url;
-            }
-            else
-                console.warn("No image found.  Put clickable box on canvas in author mode?");
 
             var imageLeft = 30;
             var imageTop = 20;
+	    var imageHeight = 0;  // default in case there is no image
             var gapTextImage = 50;
             var textLeft = 30;
             var textTop = 50;
             var textWidth = 400;
             var textHeight = 20;
 
-                console.log("Image width is " + imageObj.width);
-                if (imageObj.width > 300 || imageObj.width != 0)
-                    scalingFactor = 300 / imageObj.width;  //assuming we want width 300
-                console.log('Computing scaling factor for image ' + scalingFactor);
-                var imageHeight = imageObj.height * scalingFactor;
-                context.drawImage(imageObj, imageLeft, imageTop, imageObj.width * scalingFactor, imageHeight);
-                var marginTop = (gapTextImage + imageHeight) - textTop;
-                if (marginTop < 0)
+            var scalingFactor = 1;
+            var url = this.givenModel.getImageURL();
+
+	    // Layout text
+	    // This routine should go in wrapText.js
+	    var showText = function(){
+		var marginTop = (gapTextImage + imageHeight) - textTop;
+		if (marginTop < 0){
                     marginTop = 0;
+		}
 
-                console.log('computed top margin for text ' + marginTop);
+		// Set font for description text
+		context.font = "normal 13px Arial";
+		wrapText(context, desc_text, textLeft, textTop + marginTop, textWidth, textHeight);
+	    };
 
-                console.log(context, desc_text,textLeft, textTop + marginTop, textWidth, textHeight);
+            if (url) {
+		var imageObj = new Image();
+                imageObj.src = url;
+		// Can't compute layout unless image is downloaded
+		// The model can also provide dimensions.  If it does, then 
+		// we can layout the text immediately
+		imageObj.onload = function(){
+		    console.log("Image width is " + imageObj.width);
+		    if (imageObj.width && imageObj.width > 300)
+			scalingFactor = 300 / imageObj.width;  //assuming we want width 300
+		    console.log('Computing scaling factor for image ' + scalingFactor);
+		    imageHeight = imageObj.height * scalingFactor;
+		    context.drawImage(imageObj, imageLeft, imageTop, imageObj.width * scalingFactor, imageHeight);
+		    showText();
+		};
+	    }else{
+		showText();
+	    }
+	},
 
-                wrapText(context, desc_text, textLeft, textTop + marginTop, textWidth, textHeight);
-
-    },
-
-    closeDescriptionEditor: function(){
-
-        this.givenModel.setTaskDescription(dom.byId("authorSetDescription").value);
-
-        var timeObj = {
-            start: dom.byId("authorSetTimeStart").value,
-            end: dom.byId("authorSetTimeEnd").value,
-            step: dom.byId("authorSetTimeStep").value, 
-            units: dom.byId("authorSetTimeStepUnits").value
-        };
-
-        this.givenModel.setTime(timeObj);
-
-        var imageObj = new Image();
-        var height = null;
-        var width = null;
-        var url = dom.byId("authorSetImage").value;
+	closeDescriptionEditor: function(){
+	    var tin = dom.byId("authorSetDescription").value;
+            this.givenModel.setTaskDescription(tin.split("\n"));
+	    
+            var timeObj = {
+		start: dom.byId("authorSetTimeStart").value,
+		end: dom.byId("authorSetTimeEnd").value,
+		step: dom.byId("authorSetTimeStep").value, 
+		units: dom.byId("authorSetTimeStepUnits").value
+            };
+	    
+            this.givenModel.setTime(timeObj);
+	    
+            var imageObj = new Image();
+            var height = null;
+            var width = null;
+            var url = dom.byId("authorSetImage").value;
+	    // This doesn't handle case of deleting an image. Bug #2369
             if (url) {
                 imageObj.src = url;
                 var imageJson = {
                     URL: url,
                     width: imageObj.width,
                     height: imageObj.height
-                }
+                };
                 this.givenModel.setImage(imageJson);
-
+		
             };
+            this.showDescription(this.givenModel);
+	}
 
-
-        this.showDescription(this.givenModel);
-    }});
+    });
 });
 
