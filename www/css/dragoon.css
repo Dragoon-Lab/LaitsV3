@@ -35,7 +35,7 @@ html, body, #main{
                         Node editor
 */
 
-#nodeeditor, #crisisAlertMessage, div#solution {
+#nodeeditor, #crisisAlertMessage, #authorDescDialog, div#solution {
     font:10pt Arial,Myriad,Tahoma,Verdana,sans-serif !important;
 }
 

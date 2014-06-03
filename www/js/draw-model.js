@@ -32,6 +32,8 @@ define([
 
         _instance: null,
         _givenModel: null,
+	// Hook for updates
+	updater: function(){},
 
         constructor: function(givenModel){
 
@@ -53,7 +55,6 @@ define([
 
             this._instance = instance;
             this._givenModel = givenModel;
-
             var shapes = {
                 accumulator: "accumulator",
                 function: "function",
@@ -139,7 +140,7 @@ define([
             console.log("      --> setting position for vertex : "+ node.ID +" position: x"+node.position.x+"  y:"+node.position.y);
 	
             var nodeName = graphObjects.getNodeName(this._givenModel,node.ID);
-	    var isComplete = this._givenModel.isComplete(node.ID)?'solid':'dashed';
+	        var isComplete = this._givenModel.isComplete(node.ID)?'solid':'dashed';
 
 	    var colorMap = {
                 correct: "green",
@@ -170,11 +171,24 @@ define([
 
             //add menu to delete or we can iterate over all node.IDs and do following
             var pMenu = new Menu({
+
                 targetNodeIds: [node.ID]
             });
+
             pMenu.addChild(new MenuItem({
                 label: "Delete Node",
-                onClick: lang.hitch(this, this.deleteNode) 
+                onClick: lang.hitch(this, function (){
+		    domConstruct.destroy(node.ID);
+		    //remove all connnections including incoming and outgoing
+		    array.forEach(this._instance.getConnections(), function(connection){
+                        if(connection.targetId == node.ID||connection.sourceId == node.ID)
+                            this._instance.detach(connection);
+		    }, this);
+		    
+		    //delete from  the model
+		    this._givenModel.deleteNode(node.ID);
+		    this.updater();
+		})
             }));
             /*
              Fire off functions associated with draggable events.
@@ -269,10 +283,6 @@ define([
                 this._instance.connect({source: source, target: destination});
             }, this);
 
-        },
-
-        deleteNode: function(/*object*/ nodeID){
-            console.log("------- delete node called for ", nodeID);
         },
 
         // Keep track of whether there was a mouseDown and mouseUp

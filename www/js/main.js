@@ -18,7 +18,7 @@
  *along with Dragoon.  If not, see <http://www.gnu.org/licenses/>.
  *
  */
-/* global define, Image */
+/* global define */
 define([
     'dojo/_base/lang',
     "dojo/dom",
@@ -31,17 +31,17 @@ define([
     "./menu",
     "./load-save",
     "./model",
-    "./RenderGraph", "./RenderTable", "./wraptext",
+    "./RenderGraph", "./RenderTable",
     "./con-student", './con-author',
     "parser/parser",
     "./draw-model",
-    "./calculations",
     "./logging",
-    "./equation"
+    "./equation",
+    "./description"
 ], function(
         lang, dom, geometry, on, aspect, ioQuery, ready, registry,
         menu, loadSave, model,
-        Graph, Table, wrapText, controlStudent, controlAuthor, Parser, drawmodel, calculations, logging, expression
+        Graph, Table, controlStudent, controlAuthor, Parser, drawmodel, logging, expression, description
         ){
 
     console.log("load main.js");
@@ -92,6 +92,10 @@ define([
         ready(function(){
 
             var drawModel = new drawmodel(givenModel.active);
+	    // Wire up send to server
+	    aspect.after(drawModel, "updater", function(){
+		session.saveProblem(givenModel.model);
+	    });
 
             /* add "Create Node" button to menu */
             menu.add("createNodeButton", function(){
@@ -149,6 +153,28 @@ define([
                 registry.byId("nodeeditor").hide();
             });
 
+	    
+	    // Also used in image loading below.
+            var descObj = new description(givenModel);
+	    
+            if(query.m == "AUTHOR"){
+                var db = registry.byId("descButton");
+	        db.setAttribute("disabled", false);
+		
+		// Description button wiring
+		menu.add("descButton", function(){
+                    registry.byId("authorDescDialog").show();
+                });
+                aspect.after(registry.byId('authorDescDialog'), "hide", function(){
+                    console.log("Saving Description/Timestep edits");
+                    descObj.closeDescriptionEditor();
+                    session.saveProblem(givenModel.model);
+                });
+		on(registry.byId("descCloseButton"), "click", function(){
+                    registry.byId("authorDescDialog").hide();
+            });
+         }
+
             /*
              Make model solution plot using dummy data. 
              This should be put in its own module.
@@ -195,6 +221,7 @@ define([
                window.history.back();
 
 
+
            });
 
 	    /* 
@@ -221,55 +248,9 @@ define([
              These will be wired up to dialog boxes to set the image URL and
              the description.
              */
-            var canvas = dom.byId('myCanvas');
-	    if(canvas.getContext){
-		var context = canvas.getContext('2d');
-	    }else {
-		throw new Error("Canvas not supported on this browser.");
-	    }
-            var imageObj = new Image();
-            var desc_text = givenModel.getTaskDescription();
-            var scalingFactor = 1;
-            var url = givenModel.getImageURL();
-            if(url){
-                imageObj.src = url;
-            }
-            else{
-                controllerObject.logging.clientLog("warning", {
-                    message: 'No image found for the problem : '+query.p,
-                    functionTag: 'main.js ready'
-                });
-            }
 
-            var imageLeft = 30;
-            var imageTop = 20;
-            var gapTextImage = 50;
-            var textLeft = 30;
-            var textTop = 300;
-            var textWidth = 400;
-            var textHeight = 20;
-
-
-            imageObj.onload = function(){
-                console.log("Image width is " + imageObj.width);
-                if(imageObj.width > 300 || imageObj.width != 0)
-                    scalingFactor = 300 / imageObj.width;  //assuming we want width 300
-                console.log('Computing scaling factor for image ' + scalingFactor);
-                var imageHeight = imageObj.height * scalingFactor;
-                context.drawImage(imageObj, imageLeft, imageTop, imageObj.width * scalingFactor, imageHeight);
-                var marginTop = (gapTextImage + imageHeight) - textTop;
-                if(marginTop < 0)
-                    marginTop = 0;
-
-                console.log('computed top margin for text ' + marginTop);
-
-		// Set font for description text
-		context.font = "normal 13px Arial";
-                wrapText(context, desc_text, textLeft, textTop + marginTop, textWidth, textHeight);
-            };
+            descObj.showDescription();
 
         });
     });
 });
-
-
