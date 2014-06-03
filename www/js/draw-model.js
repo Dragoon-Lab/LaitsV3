@@ -55,8 +55,6 @@ define([
 
             this._instance = instance;
             this._givenModel = givenModel;
-	    this._session = session;
-	    this._model = model;
             var shapes = {
                 accumulator: "accumulator",
                 function: "function",
