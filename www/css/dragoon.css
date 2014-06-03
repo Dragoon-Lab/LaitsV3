@@ -39,7 +39,7 @@ html, body, #main{
     font:10pt Arial,Myriad,Tahoma,Verdana,sans-serif !important;
 }
 
-#nodeeditor, #authorDescDialog .fieldgroup {
+#nodeeditor .fieldgroup {
     display:block;
     margin-top:2ex;
     margin-bottom:2ex;
@@ -47,18 +47,18 @@ html, body, #main{
     clear:both;
 }
 
-#nodeeditor, #authorDescDialog .fieldgroup > label {
+#nodeeditor .fieldgroup > label {
     text-align:right;
     margin-left:2ex;
     margin-right:1ex;
 }
 
-#nodeeditor, #authorDescDialog .fieldgroup > * {
+#nodeeditor .fieldgroup > * {
     display:inline-block;
     vertical-align:top
 }
 
-#nodeeditor, #authorDescDialog .fieldgroup > label:first-child {
+#nodeeditor .fieldgroup > label:first-child {
     width:10ex;
 }
 
