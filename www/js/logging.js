@@ -96,15 +96,17 @@ define([
 	    }
     });
      */
+
     window.onerror = function(msg, url, lineNumber){
         var tempFile = url.split('/');
-        filename = tempFile[tempFile.length-1];
+        var filename = tempFile[tempFile.length-1];
         logging.session.clientLog("runtime-error", {
-            message:msg,
-            file:filename, 
-            line:lineNumber
+            message: msg,
+            file: filename, 
+            line: lineNumber
         });
-    }
+	return true;
+    };
 
     return logging;
 });
