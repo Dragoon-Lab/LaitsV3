@@ -161,9 +161,8 @@ define([
                 crisis._setOpenAttr = function(message){
                     var crisisMessage = dojo.byId('crisisMessage');
                     console.log("crisis alert message ", message);
-                    crisisMessage.innerHTML = message; //deprecated error
-                    //this.setContent(message);
-                   this.show();
+                    crisisMessage.innerHTML = message;
+                    this.show();
                 }
                 on(registry.byId("OkButton"), "click", function(){
                     console.log("this is called");
