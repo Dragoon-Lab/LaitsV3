@@ -4,7 +4,7 @@
         "time": {
             "start": 0,
             "end": 15,
-            "step": 0.5,
+            "step": 1.0,
             "units": "years"
         },
         "properties": {
@@ -12,7 +12,7 @@
             "type": "Debug"
         },
         "image": {
-            "URL": "http://www.azdot.gov/highways/rfs/images/SR101_I17_AerialPhoto.jpg"
+            "URL": "images/downtown_phoenix.jpg"
         },
         "taskDescription": "Problem: Suppose the Phoenix Metro area currently has a population of 4,192,887. Suppose the population grows at 5.5% per year. That is, the number of new residents added to the population each year is 5.5% ofthe number of residents at the beginning of the year. Goal: Graph the population for the Phoenix Metro area each year over a 15 year period. ",
         "givenModelNodes": [
@@ -66,7 +66,7 @@
                 "parentNode": false,
                 "units": "",
                 "description": "The number of new residents that move into the Phoenix Metro Area each year",
-                "equation": "id3 + id1"
+                "equation": "id3 * id1"
             },
             {
                 "ID": "id3",
@@ -94,69 +94,6 @@
                 "description": "The number of people in the Phoenix Metro Area each year",
                 "initial": 4192887,
                 "equation": "+ id2"
-            },
-            {
-                "ID": "id4",
-                "inputs": [],
-                "position": {
-                    "x": 400,
-                    "y": 100
-                },
-                "attemptCount": {
-                    "description": 0,
-                    "type": 0,
-                    "initial": 0,
-                    "units": 0,
-                    "equation": 0
-                },
-                "status": {},
-                "name": "growth rate",
-                "type": "parameter",
-                "parentNode": false,
-                "units": "",
-                "description": "The rate that people move into the Phoenix Metro area during each year"
-            },
-            {
-                "ID": "id5",
-                "inputs": [],
-                "position": {
-                    "x": 400,
-                    "y": 100
-                },
-                "attemptCount": {
-                    "description": 0,
-                    "type": 0,
-                    "initial": 0,
-                    "units": 0,
-                    "equation": 0
-                },
-                "status": {},
-                "name": "new residents",
-                "type": "function",
-                "parentNode": false,
-                "units": "",
-                "description": "The number of new residents that move into the Phoenix Metro Area each year"
-            },
-            {
-                "ID": "id6",
-                "inputs": [],
-                "position": {
-                    "x": 400,
-                    "y": 100
-                },
-                "attemptCount": {
-                    "description": 0,
-                    "type": 0,
-                    "initial": 0,
-                    "units": 0,
-                    "equation": 0
-                },
-                "status": {},
-                "name": "population",
-                "type": "accumulator",
-                "parentNode": false,
-                "units": "",
-                "description": "The number of people in the Phoenix Metro Area each year"
             }
         ],
         "studentModelNodes": []

@@ -157,13 +157,17 @@ define([
                 w._setDisableOptionAttr = setDisableOption;
             }, this);
 
-            var crisis = registry.byId(this.widgetMap.crisisAlert);
-            crisis._setOpenAttr = function(message){
-                console.log("crisis alert message ", message);
-                this.set('content', message); //deprecated error
-                //this.setContent(message);
-                this.show();
-            };
+                var crisis = registry.byId(this.widgetMap.crisisAlert);
+                crisis._setOpenAttr = function(message){
+                    var crisisMessage = dojo.byId('crisisMessage');
+                    console.log("crisis alert message ", message);
+                    crisisMessage.innerHTML = message;
+                    this.show();
+                }
+                on(registry.byId("OkButton"), "click", function(){
+                    console.log("this is called");
+                    crisis.hide();
+                });
 
             // Add appender to message widget
             var messageWidget = registry.byId(this.widgetMap.message);
@@ -430,29 +434,6 @@ define([
             // Set cursor to end of current paste
             widget.domNode.selectionStart = widget.domNode.selectionEnd = p1 + text.length;
         },
-        //Changed by Deepak
-        //This function should be in Author and Student controller
-        //Moving it from here to both student/author controller
-        /*        handleInputs: function(id){
-         if(id.MOUSEDOWN){
-         if(this.lastHandleInputId){
-         console.log('onclick event found onSelect, use old id '+this.lastHandleInputId);
-         id=this.lastHandleInputId; //restore
-         }else
-         return;  //if last id is not defined return
-         }else
-         this.lastHandleInputId=id; //copy it for next onClick event
-         
-         //check if id is  not select else return
-         
-         console.log("*******Student has chosen input", id, this);
-         // Should add name associated with id to equation
-         // at position of cursor or at the end.
-         var expr = this._model.given.getName(id);
-         this.equationInsert(expr);
-         //restore to default  - creating select input as stateless
-         registry.byId(this.controlMap.inputs).set('value', 'defaultSelect', false);
-         },*/
 
         handleEquation: function(equation){
             var w = registry.byId(this.widgetMap.equation);
@@ -726,7 +707,8 @@ define([
             console.log("equation before conversion ", equation);
             var mEquation = equation ? expression.convert(model, equation) : '';
             console.log("equation after conversion ", mEquation);
-            registry.byId(this.controlMap.equation).set('value', mEquation);
+            /* mEquation is a number instead of a string if equation is just a number; convert to string before setting the value */
+            registry.byId(this.controlMap.equation).set('value', mEquation.toString());
             dom.byId("equationText").innerHTML = mEquation;
 
             /*
@@ -779,27 +761,25 @@ define([
         // Stub to be overwritten by student or author mode-specific method.
 	colorNodeBorder: function(nodeId){
 	    console.log("colorNodeBorder stub called");
-	                                  //get model type
-                  var type = this._model.active.getType(nodeId);
-                   if(type){
-                                console.log('model type is '+type);
-
-                                var colorMap = {
+	    //get model type
+            var type = this._model.active.getType(nodeId);
+            if(type){
+                console.log('model type is '+type);
+		
+                var colorMap = {
                     correct: "green",
                     incorrect: "#FF8080",
-                    demo: "yellow",
-                    neutral: "gray"
-                };
-                                console.log('nodeId is '+nodeId + ' ' +this._model.active.isComplete(nodeId));
-                                var isComplete   = this._model.active.isComplete(nodeId)?'solid':'dashed'; //this is dashed in case of incomplete node, so for author this is dashed even if units are not entered.
-                                var color = '';
-                                color = this._model.active.getCorrectness?this._model.active.getCorrectness(nodeId):'neutral';
-
-                                console.log('color is '+color);
-                                domStyle.set(this.currentID,'border','2px '+isComplete+' '+colorMap[color]);
-                                domStyle.set(this.currentID,'box-shadow','inset 0px 0px 5px #000 , 0px 0px 10px #000');
-                                }
-                }
+                    demo: "yellow"
+		};
+                console.log('nodeId is ' + nodeId + ' ' + this._model.active.isComplete(nodeId));
+		//this is dashed in case of incomplete node, so for author this is dashed even if units are not entered.
+		var isComplete  = this._model.active.isComplete(nodeId)?'solid':'dashed'; 
+		var color = this._model.active.getCorrectness?this._model.active.getCorrectness(nodeId):"neutral";
+                console.log('color is ' + color);
+                domStyle.set(this.currentID,'border','2px '+isComplete+' '+colorMap[color]);
+                domStyle.set(this.currentID,'box-shadow','inset 0px 0px 5px #000 , 0px 0px 10px #000');
+            }
+        }
 
     });
 });
