@@ -27,6 +27,7 @@ html, body, #main{
 #crisisAlertMessage{
   background: #fff; /* override claro Dialog css for crisis alert message */
   max-width: 60ex;
+  text-align: center;
 }
 
 
