@@ -18,7 +18,7 @@
  *along with Dragoon.  If not, see <http://www.gnu.org/licenses/>.
  *
  */
-/* global define, Image */
+/* global define */
 define([
     'dojo/_base/lang',
     "dojo/dom",
@@ -31,16 +31,17 @@ define([
     "./menu",
     "./load-save",
     "./model",
-    "./RenderGraph", "./RenderTable", "./wraptext",
+    "./RenderGraph", "./RenderTable",
     "./con-student", './con-author',
     "parser/parser",
     "./draw-model",
-    "./calculations",
-    "./logging"
+    "./logging",
+    "./equation",
+    "./description"
 ], function(
         lang, dom, geometry, on, aspect, ioQuery, ready, registry,
         menu, loadSave, model,
-        Graph, Table, wrapText, controlStudent, controlAuthor, Parser, drawmodel, calculations, logging
+        Graph, Table, controlStudent, controlAuthor, Parser, drawmodel, logging, expression, description
         ){
 
     console.log("load main.js");
@@ -61,6 +62,7 @@ define([
     session.loadProblem(query).then(function(solutionGraph){
 
         var givenModel = new model(query.m, query.p);
+        logging.session.log('open-problem',{problem : query.p});
         if(solutionGraph){
             givenModel.loadModel(solutionGraph);
         }
@@ -78,17 +80,28 @@ define([
         /* In principle, we could load just one controller or the other. */
             var controllerObject = query.m == 'AUTHOR' ? new controlAuthor(query.m, subMode, givenModel, query.is) :
                 new controlStudent(query.m, subMode, givenModel, query.is);
+
+        //setting up logging for different modules.
         if(controllerObject._PM)
             controllerObject._PM.setLogging(session);  // Set up direct logging in PM
+        
+        controllerObject.setLogging(session); // set up direct logging in controller
 
+        expression.setLogging(session);
+	
         ready(function(){
 
             var drawModel = new drawmodel(givenModel.active);
+	    // Wire up send to server
+	    aspect.after(drawModel, "updater", function(){
+		session.saveProblem(givenModel.model);
+	    });
 
             /* add "Create Node" button to menu */
             menu.add("createNodeButton", function(){
                 var id = givenModel.active.addNode();
                 drawModel.addNode(givenModel.active.getNode(id));
+                controllerObject.logging.log('ui-action', {type: "menu-choice", name: "create-node"});
                 controllerObject.showNodeEditor(id);
             });
 
@@ -130,6 +143,7 @@ define([
              */
             aspect.after(registry.byId('nodeeditor'), "hide", function(){
                 console.log("Calling session.saveProblem");
+                controllerObject.logging.log("ui-action", {node: "name of the node", tab:"last value checked", type:"dialog-box-tab"});
                 session.saveProblem(givenModel.model);
             });
 
@@ -138,6 +152,28 @@ define([
             on(registry.byId("closeButton"), "click", function(){
                 registry.byId("nodeeditor").hide();
             });
+
+	    
+	    // Also used in image loading below.
+            var descObj = new description(givenModel);
+	    
+            if(query.m == "AUTHOR"){
+                var db = registry.byId("descButton");
+	        db.setAttribute("disabled", false);
+		
+		// Description button wiring
+		menu.add("descButton", function(){
+                    registry.byId("authorDescDialog").show();
+                });
+                aspect.after(registry.byId('authorDescDialog'), "hide", function(){
+                    console.log("Saving Description/Timestep edits");
+                    descObj.closeDescriptionEditor();
+                    session.saveProblem(givenModel.model);
+                });
+		on(registry.byId("descCloseButton"), "click", function(){
+                    registry.byId("authorDescDialog").hide();
+            });
+         }
 
             /*
              Make model solution plot using dummy data. 
@@ -150,6 +186,13 @@ define([
                 console.debug("button clicked");
                 // instantiate graph object
                 var graph = new Graph(givenModel, query.m);
+                var problemComplete = givenModel.matchesGivenSolution();
+                
+                controllerObject.logging.log('ui-action', {
+                    type: "menu-choice", 
+                    name: "graph-button", 
+                    problemComplete: problemComplete
+                });
                 graph.show();
             });
 
@@ -158,17 +201,42 @@ define([
             menu.add("tableButton", function(){
                 console.debug("table button clicked");
                 var table = new Table(givenModel, query.m);
+                controllerObject.logging.log('ui-action', {
+                    type: "menu-choice", 
+                    name: "table-button"
+                });
                 table.show();
             });
 
 
            menu.add("doneButton", function(){
-               console.debug("done button is clicked");
+                console.debug("done button is clicked");
+                var problemComplete = givenModel.matchesGivenSolution();
+
+                controllerObject.logging.log('close-problem', {
+                    type: "menu-choice", 
+                    name: "done-button", 
+                    problemComplete: problemComplete
+                });
                window.history.back();
+
 
 
            });
 
+	    /* 
+	     Add link to intro video
+	     */
+	    var video = dom.byId("menuIntroVideo");
+	    on(video, "click", function(){
+		controllerObject.logging.log('ui-action', {
+                    type: "menu-choice", 
+                    name: "intro-video"
+                });
+		// It would be better to open a dialog box and 
+		// have an embedded video.
+		window.open("https://www.youtube.com/watch?v=gsrM07XfABk");
+	    });
 
             /*
              BvdS:  this doesn't look quite right.  We want to download
@@ -180,49 +248,9 @@ define([
              These will be wired up to dialog boxes to set the image URL and
              the description.
              */
-            var canvas = dom.byId('myCanvas');
-	    if(canvas.getContext){
-		var context = canvas.getContext('2d');
-	    }else {
-		throw new Error("Canvas not supported on this browser.");
-	    }
-            var imageObj = new Image();
-            var desc_text = givenModel.getTaskDescription();
-            var scalingFactor = 1;
-            var url = givenModel.getImageURL();
-            if(url){
-                imageObj.src = url;
-            }
-            else
-                console.warn("No image found.  Put clickable box on canvas in author mode?");
 
-            var imageLeft = 30;
-            var imageTop = 20;
-            var gapTextImage = 50;
-            var textLeft = 30;
-            var textTop = 300;
-            var textWidth = 400;
-            var textHeight = 20;
-
-
-            imageObj.onload = function(){
-                console.log("Image width is " + imageObj.width);
-                if(imageObj.width > 300 || imageObj.width != 0)
-                    scalingFactor = 300 / imageObj.width;  //assuming we want width 300
-                console.log('Computing scaling factor for image ' + scalingFactor);
-                var imageHeight = imageObj.height * scalingFactor;
-                context.drawImage(imageObj, imageLeft, imageTop, imageObj.width * scalingFactor, imageHeight);
-                var marginTop = (gapTextImage + imageHeight) - textTop;
-                if(marginTop < 0)
-                    marginTop = 0;
-
-                console.log('computed top margin for text ' + marginTop);
-
-                wrapText(context, desc_text, textLeft, textTop + marginTop, textWidth, textHeight);
-            };
+            descObj.showDescription();
 
         });
     });
 });
-
-

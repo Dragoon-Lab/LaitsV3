@@ -25,13 +25,15 @@
 define([
     "dojo/_base/array", 'dojo/_base/declare', 'dojo/_base/lang',
     'dojo/dom', "dojo/dom-attr", "dojo/dom-construct","dijit/Menu",
-    "dijit/MenuItem","./equation","./util", "jsPlumb/jsPlumb"
-], function(array, declare, lang, dom, attr, domConstruct, Menu, MenuItem, equation, utils){
+    "dijit/MenuItem","./equation","./graph-objects", "jsPlumb/jsPlumb"
+], function(array, declare, lang, dom, attr, domConstruct, Menu, MenuItem, equation, graphObjects){
 
     return declare(null, {
 
         _instance: null,
         _givenModel: null,
+	// Hook for updates
+	updater: function(){},
 
         constructor: function(givenModel){
 
@@ -53,7 +55,6 @@ define([
 
             this._instance = instance;
             this._givenModel = givenModel;
-
             var shapes = {
                 accumulator: "accumulator",
                 function: "function",
@@ -137,32 +138,10 @@ define([
             console.log("------- Adding element to canvas, id = ", node.ID, ", class = ", type);
             // Add div to drawing
             console.log("      --> setting position for vertex : "+ node.ID +" position: x"+node.position.x+"  y:"+node.position.y);
-
-            var nodeName = this._givenModel.getName(node.ID);
-	    var parse = this._givenModel.getEquation(node.ID);
-	    var parameter =  '';
-	    if(parse){
-		parse=equation.parse(parse);
-		parameter =equation.isSum(parse)&&equation.isProduct(parse)?'':equation.isSum(parse)?'+':equation.isProduct(parse)?'*':'';
-	    }
-
-	     var initialValue = this._givenModel.getInitial(node.ID);
-	     var isComplete   =	this._givenModel.isComplete(node.ID,true)?'solid':'dashed';
-            if(!initialValue)
-                 initialValue = '';
-
-             var unitsValue = this._givenModel.getUnits(node.ID);
-             if(!unitsValue)
-                     unitsValue = '';
-
-            initialValue+=' '+unitsValue;
-
-
-            if(nodeName && type != "triangle")
-                nodeName='<div id='+node.ID+'Label  class="bubble"><strong>'+parameter+'<br>'+initialValue+'</strong><div class='+type+'Div><strong>'+nodeName+'</strong></div></div>';
-            else
-                nodeName='';
 	
+            var nodeName = graphObjects.getNodeName(this._givenModel,node.ID);
+	        var isComplete = this._givenModel.isComplete(node.ID)?'solid':'dashed';
+
 	    var colorMap = {
                 correct: "green",
                 incorrect: "#FF8080",
@@ -192,11 +171,24 @@ define([
 
             //add menu to delete or we can iterate over all node.IDs and do following
             var pMenu = new Menu({
+
                 targetNodeIds: [node.ID]
             });
+
             pMenu.addChild(new MenuItem({
                 label: "Delete Node",
-                onClick: lang.hitch(this, this.deleteNode) 
+                onClick: lang.hitch(this, function (){
+		    domConstruct.destroy(node.ID);
+		    //remove all connnections including incoming and outgoing
+		    array.forEach(this._instance.getConnections(), function(connection){
+                        if(connection.targetId == node.ID||connection.sourceId == node.ID)
+                            this._instance.detach(connection);
+		    }, this);
+		    
+		    //delete from  the model
+		    this._givenModel.deleteNode(node.ID);
+		    this.updater();
+		})
             }));
             /*
              Fire off functions associated with draggable events.
@@ -252,7 +244,7 @@ define([
                     this._instance.detach(connection);
             }, this);
             // Create new connections
-	    var connectionOverlays = utils.getEndPointConfiguration('');
+	    var connectionOverlays = graphObjects.getEndPointConfiguration('');
             array.forEach(sources, function(source){
                 // All sources and destinations should exist.
 //                if(destination.is)
@@ -262,10 +254,10 @@ define([
 		    if(!(isSum&&isProduct)){	
 				if(isSum){
 					if(source.label=='-')						
-						 connectionOverlays = utils.getEndPointConfiguration(source.label);
+						 connectionOverlays = graphObjects.getEndPointConfiguration(source.label);
 				}else if(isProduct){
 					 if(source.label=='/')                                          
-                                                connectionOverlays = utils.getEndPointConfiguration(source.label);
+                                                connectionOverlays = graphObjects.getEndPointConfiguration(source.label);
 				}
 			}
 		}
@@ -274,7 +266,7 @@ define([
                     target: destination,
                     overlays:connectionOverlays
                 });
-		connectionOverlays = utils.getEndPointConfiguration('');
+		connectionOverlays = graphObjects.getEndPointConfiguration('');
             }, this);
         },
 
@@ -291,10 +283,6 @@ define([
                 this._instance.connect({source: source, target: destination});
             }, this);
 
-        },
-
-        deleteNode: function(/*object*/ nodeID){
-            console.log("------- delete node called for ", nodeID);
         },
 
         // Keep track of whether there was a mouseDown and mouseUp

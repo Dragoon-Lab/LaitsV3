@@ -26,8 +26,8 @@ define([
     "dojo/_base/array", 'dojo/_base/declare', "dojo/_base/lang",
     "dojo/dom", "dojo/ready",
     'dijit/registry',
-    './controller', "./pedagogical_module", "./equation",'dojo/dom-style'
-], function(array, declare, lang, dom, ready, registry, controller, PM, expression,style){
+    './controller', "./pedagogical_module", "./equation",'dojo/dom-style',"dijit/TooltipDialog","dijit/popup"
+], function(array, declare, lang, dom, ready, registry, controller, PM, expression,style,TooltipDialog, popup){
 
     /*
      Methods in controller specific to the student modes
@@ -41,6 +41,16 @@ define([
             this._PM = new PM(mode, subMode, model);
             lang.mixin(this.widgetMap, this.controlMap);
 	    ready(this, "populateSelections");
+
+            this.myTooltipDialog = new TooltipDialog({ //new tool tip for indicating use of decimals instead of percentages
+		style: "width: 150px;",
+		content: "Use decimals instead of percent"
+            }); 
+            this.myTooltipDialog2 = new TooltipDialog({ // new tooltip for indicating non numeric data is not accepted
+		style: "width: 150px;",
+		content: "Non Numeric data not accepted"
+            });        
+
         },
         // A list of control map specific to students
         controlMap: {
@@ -49,7 +59,7 @@ define([
             inputs: "nodeInputs"
         },
 
-	populateSelections: function(){
+        populateSelections: function(){
 	    /*
              Initialize select options in the node editor that are
              common to all nodes in a problem.
@@ -62,11 +72,17 @@ define([
             var d = registry.byId(this.controlMap.description);
             // populate input field
             var t = registry.byId(this.controlMap.inputs);
-            console.assert(t, "Can't find widget " + this.controlMap.inputs);
+            if(!t){
+                this.logging.clientLog("assert", {
+                    message: "Can't find widget for "+this.controlMap.inputs,
+                    functionTag: 'populateSelections'
+                });
+            }
+
             var positiveInputs = registry.byId("positiveInputs");
             var negativeInputs = registry.byId("negativeInputs");
             console.log("description widget = ", d, this.controlMap.description);
-            // d.removeOption(d.getOptions()); // Delete all options
+          //  d.removeOption(d.getOptions()); // Delete all options
             array.forEach(this._model.given.getDescriptions(), function(desc){
                 d.addOption(desc);
                 var name = this._model.given.getName(desc.value);
@@ -75,7 +91,7 @@ define([
                 positiveInputs.addOption(option);
                 negativeInputs.addOption(option);
             }, this);
-	},
+        },
 
         handleDescription: function(selectDescription){
             console.log("****** in handleDescription ", this.currentID, selectDescription);
@@ -91,11 +107,11 @@ define([
 
             this.applyDirectives(this._PM.processAnswer(this.currentID, 'description', selectDescription));
         },
-	descriptionSet: function(value){
+        descriptionSet: function(value){
             // Update the model.
             this._model.student.setDescriptionID(this.currentID, value);
-	    this.updateNodes();
-	},
+            this.updateNodes();
+        },
 
         handleType: function(type){
             console.log("****** Student has chosen type ", type, this);
@@ -104,31 +120,72 @@ define([
             this.updateType(type);
             this.applyDirectives(this._PM.processAnswer(this.currentID, 'type', type));
         },
-	typeSet: function(value){
-	    this.updateType(value);
-	},
-
+    	typeSet: function(value){
+    	    this.updateType(value);
+    	},
+	
         handleInitial: function(initial){
+            
+	    var initialWidget = dom.byId(this.widgetMap.initial);
+	    // Popups only occur for an error, so leave it up until
+	    // the next time the student attempts to enter a number.
+            popup.close(this.myTooltipDialog);// close old pop-ups' before a new one  
+            popup.close(this.myTooltipDialog2);
+    
+            
+ 	    // we do this type conversion because we used a textbox for initialvalue input which is a numerical
+            initial= +initial; // usage of + unary operator converts a string to number 
+	    // use isNaN to test if conversion worked.
+            if(isNaN(initial)){
+		// Put in checks here
+   	        console.log('not a number');
+		//initialValue is the id of the textbox, we get the value in the textbox
+		var impose_nums= initialWidget.value; 
+		
+		if(!impose_nums.match('^[-+]?[0-9]*\.?[0-9]+([eE][-+]?[0-9]+)?%$')){ //To check the decimals against percentages
+                    
+                  if(isNaN(impose_nums) && impose_nums!=''){ //Incase input is not a number
+		    console.warn("Should log when this happens");
+                    popup.open({
+			popup: this.myTooltipDialog2,
+			around: initialWidget
+                    });
+                  }
+		}else{ //if entered string has percentage symbol, pop up a message to use decimals
+		    console.warn("Should log when this happens");
+                    popup.open({
+			popup: this.myTooltipDialog,
+			around: initialWidget
+                    });
+		}
+		
+		return; 
+            }
+	    console.log("****** Student has chosen initial value", initial, this.lastInitialValue);
+    	    /*
+    		 Evaluate only if the value is changed.
+	     
+    	     The controller modifies the initial value widget so that a "Change" event is
+    	     fired if the widget loses focus.  This may happen when the node editor is closed.
+    	     */
+    	    if(typeof initial === 'undefined' || initial == this.lastInitialValue){
+    		return;
+    	    }
 
-            console.log("****** Student has chosen initial value", initial, this.lastInitialValue);
-	    /*
-	     Evaluate only if the value is changed.
-
-	     The controller modifies the initial value widget so that a "Change" event is
-	     fired if the widget loses focus.  This may happen when the node editor is closed.
-	     */
-	    if(!initial || initial == this.lastInitialValue){
-		return;
-	    }
-	    this.lastInitialValue = initial;
-
+    	    this.lastInitialValue = initial;
+	    
             // updating node editor and the model.
             this._model.active.setInitial(this.currentID, initial);
             this.applyDirectives(this._PM.processAnswer(this.currentID, 'initial', initial));
-        },
-        initialSet: function(value){
-            this._model.active.setInitial(this.currentID, value);
 	},
+         closePops: function(){
+            popup.close(this.myTooltipDialog);// close old pop-ups' before a new one  
+            popup.close(this.myTooltipDialog2);
+    	},
+	
+        initialSet: function(value){
+                this._model.active.setInitial(this.currentID, value);
+    	},
 
         /*
         *    handle event on inputs box
@@ -163,7 +220,7 @@ define([
         unitsSet: function(value){
             // Update the model.
             this._model.student.setUnits(this.currentID, value);
-	},
+        },
         equationDoneHandler: function(){
             var directives = [];
             var parse = this.equationAnalysis(directives);
@@ -171,27 +228,27 @@ define([
                 var dd = this._PM.processAnswer(this.currentID, 'equation', parse);
                 directives = directives.concat(dd);
             }
-	    this.applyDirectives(directives);
+            this.applyDirectives(directives);
         },
-	equationSet: function(value){
-	    // applyDirectives updates equationBox, but not equationText:
-	    dom.byId("equationText").innerHTML = value;
+    	equationSet: function(value){
+    	    // applyDirectives updates equationBox, but not equationText:
+    	    dom.byId("equationText").innerHTML = value;
 
-	    var directives = [];
-	    // Parse and update model, connections, etc.
-            this.equationAnalysis(directives);
-	    // Generally, since this is the correct solution, there should be no directives
-	    this.applyDirectives(directives);
-	},
+    	    var directives = [];
+    	    // Parse and update model, connections, etc.
+                this.equationAnalysis(directives);
+    	    // Generally, since this is the correct solution, there should be no directives
+    	    this.applyDirectives(directives);
+    	},
  
-	/* 
+        /* 
          Settings for a new node, as supplied by the PM.
          These don't need to be recorded in the model, since they
          are applied each time the node editor is opened.
          */
         initialControlSettings: function(nodeid){
             // Apply settings from PM
-	    this.applyDirectives(this._PM.newAction(), true);
+            this.applyDirectives(this._PM.newAction(), true);
 
             // Set the selected value in the description.
             var desc = this._model.student.getDescriptionID(nodeid);
@@ -204,10 +261,13 @@ define([
             array.forEach(this._model.student.getStatusDirectives(nodeid), function(directive){
                 var w = registry.byId(this.controlMap[directive.id]);
                 w.set(directive.attribute, directive.value);
-		// The actual values should be in the model itself, not in status directives.
+    		// The actual values should be in the model itself, not in status directives.
                 if(directive.attribute == "value"){
-		    console.error("Values should not be set in status directives");
-		}
+                    this.logging.clientLog("error", {
+                        message: "Values should not be set in status directives",
+                        functionTag: 'initialControlSettings'
+                    });
+                }
             }, this);
         },
 
@@ -224,7 +284,7 @@ define([
 
                 // console.warn("======= not saving in status, node=" + this.currentID + ": ", desc);
             }
-        },
+        }/*,
 		colorNodeBorder: function(nodeId){
 				//get model type
 				var type = this._model.student.getType(nodeId);
@@ -243,6 +303,6 @@ define([
 				style.set(this.currentID,'border','2px '+isComplete+' '+colorMap[color]);
 				style.set(this.currentID,'box-shadow','inset 0px 0px 5px #000 , 0px 0px 10px #000');
 				}
-		}
+		}*/
     });
 });

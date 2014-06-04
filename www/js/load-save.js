@@ -70,8 +70,11 @@ define([
 		console.log("loadFromFile worked");
                 return model_object;
             }, function(err){
-	        console.error("loadFromFile error ", err);
-	    });;
+	        this.clientLog("error", {
+	        	message: "loadFromFile error : "+err,
+	        	functionTag: 'loadFromFile'
+	        });
+	    });
         },
 
         loadProblem: function(/*object*/ params){
@@ -85,8 +88,11 @@ define([
 		console.log("loadFromDB worked", model_object);
                 return model_object;
             }, function(err){
-	        console.error("loadFromDB error ", err);
-	    });
+		        this.clientLog("error", {
+		        	message: "load from DB error : "+err,
+		        	functionTag: 'loadProblem'
+		        });
+	    	});
         },
 
         saveProblem: function(model){
@@ -98,10 +104,13 @@ define([
                     x: this.sessionId
                 }
             }).then(function(reply){  // this makes saveProblem blocking?
-		console.log("saveProblem worked: ", reply);
-	    }, function(err){
-		console.error("saveProblem error ", err);
-	    });
+			console.log("saveProblem worked: ", reply);
+	    	}, function(err){
+				this.clientLog("error", {
+					message: "save Problem error : "+err,
+					functionTag: 'saveProblem'
+				});
+	    	});
         },
 
 	getTime: function(){
@@ -122,7 +131,24 @@ define([
 		console.log("---------- logging " + method + ': ', p, " OK, reply: ", reply);
 	    }, function(err){
 		console.error("---------- logging " + method + ': ', p, " error: ", err);
+		console.error("This should be sent to apache logs");
 	    });
+	},
+
+	clientLog: function(/* string */ type, /* json */ opts){
+	    // Summary:  this handles all client messages and prints to
+	    //      console for the appropriate types.
+	    lang.mixin(opts, {"type": type});
+	    switch(type){
+		case 'error':
+		case 'assert':
+		console.error(opts.message);
+		break;
+		case "warning":
+		console.warn(opts.message);
+		break;
+	    }
+	    this.log('client-message', opts);
 	}
     });
 });

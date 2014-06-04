@@ -38,11 +38,12 @@
         // needed by widgets defined in the html below.
         require([
 	    "dojo/parser",
+            "dijit/Dialog",
             "dijit/MenuBar", "dijit/PopupMenuBarItem",
             "dijit/layout/BorderContainer", "dijit/MenuItem",
             "dijit/form/Select", 
 	    "dijit/form/Button", "dijit/form/TextBox",
-            "dijit/form/NumberTextBox", "dijit/form/ComboBox",
+            "dijit/form/ComboBox", "dijit/form/Textarea",
 	    "dijit/form/SimpleTextarea", "dijit/Menu",
             "dijit/layout/ContentPane",
 	    "dragoon/menu", // Wire up menus
@@ -106,6 +107,7 @@
              <button type="button" data-dojo-type="dijit/form/Button" id="graphButton">Graph</button>
              <button type="button" data-dojo-type="dijit/form/Button" id="tableButton">Table</button>
              <button type="button" data-dojo-type="dijit/form/Button" id="forumButton">Forum</button>
+             <button type="button" data-dojo-type="dijit/form/Button" id="descButton" disabled="true">Description &amp; Times</button>
 	     <div data-dojo-type="dijit/PopupMenuBarItem">
                  <span>Help</span>
 		 <div data-dojo-type="dijit/Menu" id="menuHelp">
@@ -138,7 +140,42 @@
 
         <!-- Putting crisis-Alert Dialog stuff end -->
 
-			<!-- Putting Node-Editor -Dialog stuff for demo -->
+            <!--  authorSetDescription, authorSetTimeStart, authorSetTimeEnd, authorSetTimeStep, authorSetTimeStepUnits, authorSetImage) -->
+        <div class="claro"  data-dojo-type="dijit/Dialog" id="authorDescDialog" title="Edit Times, Image, and Description">
+	  <div class="fieldgroup">
+	    <label for="authorSetTimeStart">Start Time:</label>
+            <input id="authorSetTimeStart"  style="width:5em" value="0"></input>
+	  </div>
+	  <div class="fieldgroup">
+            <label for="authorSetTimeEnd">End Time:</label>
+            <input id="authorSetTimeEnd"  style="width:5em" value="10"></input>
+	  </div>
+	  <div class="fieldgroup">
+            <label for="authorSetTimeStep">Time Step:</label>
+            <input id="authorSetTimeStep"  style="width:5em" value="1"></input>
+	  </div>
+	  <div class="fieldgroup">
+            <label for="authorSetTimeStepUnits">Units:</label>
+            <select data-dojo-type="dijit/form/ComboBox" id="authorSetTimeStepUnits" name="authorSetTimeStepUnits">
+              <option selected>Years</option>
+              <option>Hours</option>
+              <option>Months</option>
+            </select>
+	  </div>
+	  <div class="fieldgroup">
+            <label for="authorSetImage">URL for Image:</label>
+            <input id="authorSetImage"></input>
+	  </div>
+	  <div class="fieldgroup">
+            <label for="authorSetDescription">Description of Problem:</label>
+            <textarea id="authorSetDescription" name="authorSetDescription" data-dojo-type="dijit/form/Textarea" value="Enter Description here..."></textarea>
+          </div>
+	  <div class="fieldgroup">
+	    <button id="descCloseButton" type="button" data-dojo-type="dijit/form/Button" iconClass="dijitNoIcon">Done</button>
+          </div>
+	</div>
+
+	<!-- Putting Node-Editor -Dialog stuff for demo -->
         <div class="claro"  data-dojo-type="dijit/Dialog" id="nodeeditor">
            <div id="nameControl" class="fieldgroup" style="display:none">
 	        <label for="setName">Name</label>
@@ -170,7 +207,7 @@
                     <option value="function">Function</option>
                 </select>
                 <label for="initialValue">Initial Value</label>
-                <input id="initialValue" type="text" style="width:6em" data-dojo-type="dijit/form/NumberTextBox">
+                <input id="initialValue" type="text" style="width:5em" data-dojo-type="dijit/form/TextBox" >
                 <label id="selectUnitsControl">
 		    Units
                     <select id="selectUnits" data-dojo-type="dijit/form/Select">
