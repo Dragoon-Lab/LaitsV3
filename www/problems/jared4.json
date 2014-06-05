@@ -115,49 +115,8 @@
                 "units": "",
                 "description": "Jared's extra percent of weight over Oprah's weight.",
                 "initial": 1.3
-            },
-            {
-                "ID": "id5",
-                "inputs": [],
-                "position": {
-                    "x": 400,
-                    "y": 100
-                },
-                "attemptCount": {
-                    "description": 0,
-                    "type": 0,
-                    "initial": 0,
-                    "units": 0,
-                    "equation": 0
-                },
-                "status": {},
-                "name": "Oprah weight",
-                "type": "accumulator",
-                "parentNode": false,
-                "units": "",
-                "description": "How much Oprah weighs at the end of the week"
-            },
-            {
-                "ID": "id6",
-                "inputs": [],
-                "position": {
-                    "x": 400,
-                    "y": 100
-                },
-                "attemptCount": {
-                    "description": 0,
-                    "type": 0,
-                    "initial": 0,
-                    "units": 0,
-                    "equation": 0
-                },
-                "status": {},
-                "name": "Oprah weight loss",
-                "type": "parameter",
-                "parentNode": false,
-                "units": "",
-                "description": "How much Oprah loses each week"
             }
+
         ],
         "studentModelNodes": []
     }

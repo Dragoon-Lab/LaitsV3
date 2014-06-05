@@ -42,9 +42,12 @@ The state table has the following columns:
 For normal use, the state table *should* be accessed using the script `www/state.php` which can set or return a value for a single parameter.  The `state.php` script hides the existence of the timestamp `tid` from the user.
 
 It is possible for a server-side script to act on the state table, taking the `actions` and other log data, creating
-a new model of the student and setting values for `policies`.
+a new model of the student, and setting values for `policies`.
 
 ### State Module ###
 
 The JavaScript module `www/js/state.js` can be used to access the state table.  Generally, one creates a new state object for a specific `section`, `user`, and `apropos`.  Then one can access the associated parameters using `get()` and `put()` methodes.  Note that the `get()` method does not return a value.  Rather, it returns a Dojo *promise*.  See
 `www/js/examples/state-demo.html` for an example showing how to use the `get()` method.
+
+Use of a promise is rather inconvenient in most cases.  The new design is to pre-fetch quantities at load time using `init()`, giving a default value to use if a reply is not yet received from the server (or the quantity has not been defined yet).  Then, the `get()` method will either return the value from the server or the default value.
+
