@@ -32,7 +32,7 @@ define([
     "./calculations",
     "dojo/domReady!" 
 ], function(array, declare, lang, on, contentPane, calculations){
-    return declare(calculations, {
+    return declare(calculations, {   //calculations constructor is loaded here before RenderGraph constructor is 
 	
 	type: "Table",                      // Type for dialog title
 	textBoxID:"textTable",              //ID for text-box DOM
@@ -61,15 +61,15 @@ define([
 	    /* List of variables to plot: Include functions */
 	    this.plotVariables = this.active.timeStep.xvars.concat(
 		this.active.timeStep.functions);
-            if(this.plotVariables){
+            if(this.plotVariables.length>0){ //we check the length of object, if there are nodes , then we proceed else give an error and return
 		paneText += this.initTable();
 		paneText += this.setTableHeader();
 		paneText += this.setTableContent();
 		paneText += this.closeTable();
-            }
-            else
+            } 
+            else //Error telling there are no nodes and Table cant be rendered
             {
-		paneText = "Nothing to plot.  Please define some quantitites";
+		paneText = "Nothing to plot.  Please define some quantitites"; 
             }
             this.contentPane = new contentPane({
 		content:paneText
@@ -110,7 +110,14 @@ define([
 	 */
 	setTableContent: function(){
             var tableString="";
-	    var solution = this.findSolution(true, this.plotVariables);
+	    var solution = this.findSolution(true, this.plotVariables); // Return value from findSlution in calculation, returns an array and we check for any missing nodes
+        if(solution[1]=="error")
+	    {
+	       this.dialogWidget.set("content", "<div>"+solution[0]+"</div>"); //We show the error message like "A Node is Missing"
+           return;
+	    }
+        
+        
             for(var i=0; i<solution.times.length; i++){
 		tableString += "<tr>";
 		tableString += "<td align='center'>" + solution.times[i] + "</td>";

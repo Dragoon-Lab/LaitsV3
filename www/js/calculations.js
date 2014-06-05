@@ -46,6 +46,7 @@ define([
 	constructor: function(model, mode){
             console.log("***** In calculations constructor", this.given);
             this.model = model;
+            console.log("model",this.model);
             this.mode = mode;
             /* In AUTHOR mode, plot solution for all given nodes of genus false
              and type "accumulator" or "function""
@@ -56,9 +57,10 @@ define([
              as any matching given model node of genus false.
              The table contains only the student nodes.
              */
-	    
+	    this.dialogWidget = registry.byId("solution");
+        console.log("now in active model");
 	    this.active.timeStep = equation.initializeTimeStep(model.active);
-            this.active.initialValues = array.map(
+        this.active.initialValues = array.map(
 		this.active.timeStep.xvars, 
 		model.active.getInitial,
 		model.active
@@ -69,6 +71,7 @@ define([
 	    }, this);
 	    // These are not used for the tables
 	    if(mode != "AUTHOR"){
+	       console.log("now in given model");
 	    	this.given.timeStep = equation.initializeTimeStep(model.given);
 		this.given.initialValues = array.map(
 		    this.given.timeStep.xvars, 
@@ -80,19 +83,29 @@ define([
 	    }
 	},
 	
-	findSolution: function(isActive, plotVariables){
+	findSolution: function(isActive, plotVariables){ //return value here serves two purposes , returns a solution or error 
 	    var choice = isActive?this.active:this.given;
-	    // console.log("in findSolution ", isActive, choice.initialValues, choice.timeStep.parameters);
+	    console.log("in findSolution ", isActive, choice.initialValues, choice.timeStep.parameters);
 	    /*
 	     Calculate solution by solving differential 
 	     equation for accumulator nodes
 	     */
+        try { // we try to run the method because there might be some nodes missing and an error is generated
 	    var solution = integrate.eulersMethod(
 		choice.timeStep, 
 		equation.evaluateTimeStep,
 		choice.initialValues, 
 		this.model.getTime());
-	    /*
+	    }
+        catch(err){ // we catch the correspoding error here
+            var if_id=err.message.substr(19).trim(); //In case the name is not generated and a node id is , we have to get the name from the active object for the user to understand           
+            console.log("catch error",this.model.active.getName(if_id));  
+            if(this.model.active.getName(if_id))
+            var new_err=this.model.active.getName(if_id) + " is incomplete"; // In case a node is incomplete
+            else new_err=err.message;
+            return [new_err,"error"];
+        }
+        /*
 	     Given a solution, create an array of values for the
 	     list of plot variables.  The list may include function nodes.
 	     */
@@ -119,7 +132,7 @@ define([
 		}	    
 		return {times: solution.times, plotValues: plotValues};
 	    } else {
-		return solution;
+		return [solution,"solution"];
 	    }
 	},
 	
@@ -203,6 +216,7 @@ define([
             dom += domText || "";
             dom += "</" + domType + ">";
             console.debug("dom is " + dom);
+            console.log("one node is done");
             return dom;
 	},
 	
@@ -276,7 +290,7 @@ define([
 		this.dialogContent += this.createDom('div', sliderID[paramID]);
             }
 	    
-	    this.dialogWidget = registry.byId("solution");
+	    
 	    this.dialogWidget.set("title", this.model.getTaskName() + " - " + this.type);
             this.dialogWidget.set("content", this.dialogContent);
 	    
