@@ -461,26 +461,30 @@ define([
         plusHandler: function(){
             console.log("****** plus button");
             this.equationInsert('+');
+            this.structured.handlePositive("positiveInputs");
         },
         minusHandler: function(){
             console.log("****** minus button");
             this.equationInsert('-');
+            this.structured.handleNegative("negativeInputs");
         },
         timesHandler: function(){
             console.log("****** times button");
             this.equationInsert('*');
+            this.structured.handlePositive("positiveInputs");
         },
         divideHandler: function(){
             console.log("****** divide button");
             this.equationInsert('/');
+            this.structured.handleNegative("negativeInputs");
         },
         sumHandler: function(){
             console.log("****** sum button");
-	    this.structured.setOperation("sum");
+	        this.structured.setOperation("sum");
         },
         productHandler: function(){
             console.log("****** product button");
-	    this.structured.setOperation("product");
+	        this.structured.setOperation("product");
         },
         structured: {
             _model: null, // Needs to be set to to instance of model
@@ -520,9 +524,11 @@ define([
                 this.update();
                 registry.byId("negativeInputs").set('value', 'defaultSelect', false);// restore to default
             },
-    	    pop: function(){
+            pop: function () {
+                console.log("ops: " + this.ops);
                 var op = this.ops.pop();
-                this[op].pop();
+                console.log("Op: " + op);
+    	        this[op].pop();
                 this.update();
     	    },
             update: function(){
