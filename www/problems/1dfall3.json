@@ -14,7 +14,7 @@
         "image": {
             "URL": "images/Henninger_Turm-2005-05-01.jpg"
         },
-        "taskDescription": " An object starts at rest and falls from the top of a silo that is 120 meters tall. For an object falling freely from rest, show that the distance traveled during each successive second increases in the ratio of successive odd integers (1, 3, 5, etc.). Assume that acceleration due to gravity is 9.81 m/s<sup>2</sup>. Choose coordinates so that the top of the building is at zero and acceleration is positive. ",
+        "taskDescription": " An object starts at rest and falls from the top of a silo that is 120 meters tall. For an object falling freely from rest, show that the distance traveled during each successive second increases in the ratio of successive odd integers (1, 3, 5, etc.). Assume that acceleration due to gravity is 9.81 m/s^2. Choose coordinates so that the top of the building is at zero and acceleration is positive. ",
         "givenModelNodes": [
             {
                 "ID": "id1",
