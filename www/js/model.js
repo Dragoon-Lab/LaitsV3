@@ -542,11 +542,10 @@ define([
                 // Summary: tracks student progress (correct, incorrect) on a given node;
                 this.getNode(id).status[part] = status;
             },
-	    isComplete: function(/*string*/ id, /*object*/ ignoreUnits){
+	    isComplete: function(/*string*/ id){
 		// Summary: Test whether a node is completely filled out, correct or not
-		// Returns a boolean
+		// Returns a boolean.  Units are ignored.
 		// id: the node id
-		// ignoreUnits:  whether units need to be specified.
 		// 
 		// If genus indicates a solution node or an optional node, 
 		// then all the fields must be filled in.  
@@ -558,11 +557,9 @@ define([
 		var node = this.getNode(id);
 		var initialEntered = node.type && node.type == "function" || node.initial;
 		var equationEntered = node.type && node.type == "parameter" || node.equation;
-        ignoreUnits = (ignoreUnits ? ignoreUnits : false); // A hack! to explicitly set this true as return value is going undefined because node.units value is not set in author mode in many cases, and during all the calls to this function ignoreUnits is never sent.
 		if(!node.genus || node.genus == "allowed" || node.genus == "preferred"){
 		    return node.name && node.description && 
 			node.type && initialEntered &&
-			(ignoreUnits || node.units) &&
 			equationEntered;
 		}else if (node.genus == "initialValue"){
 		    return node.name && node.description;
@@ -706,17 +703,17 @@ define([
                 this.getNode(id).status[control] = lang.mixin(attributes, options);
                 return attributes;
             },
-    	    isComplete: function(/*string*/ id){
+	    isComplete: function(/*string*/ id, /*boolean*/ ignoreUnits){
     		// Summary: Test whether a node is completely filled out, correct or not
     		// Returns a boolean
     		// id: the node id
     		var node = this.getNode(id);
     		// Some given models do not include units.
-    		var hasUnits = node.descriptionID && obj.given.getUnits(node.descriptionID);
-    		var initialEntered = node.type && node.type == "function" || node.initial;
+		var hasUnits = node.descriptionID && obj.given.getUnits(node.descriptionID);
+		var initialEntered = node.type && node.type == "function" || node.initial;
     		var equationEntered = node.type && node.type == "parameter" || node.equation;
     		return node.descriptionID && node.type && 
-    		    initialEntered && (!hasUnits || node.units) &&
+		    initialEntered && (ignoreUnits || !hasUnits || node.units) &&
     		    equationEntered;
     	    }
         }, both);

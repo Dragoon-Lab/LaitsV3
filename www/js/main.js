@@ -185,18 +185,14 @@ define([
              menu.add("graphButton", function(){
                 console.debug("button clicked");
                 // instantiate graph object
-                console.log(givenModel);
-                console.log(query.m)
                 var graph = new Graph(givenModel, query.m);
-                console.log(graph);
                 var problemComplete = givenModel.matchesGivenSolution();
+                
                 controllerObject.logging.log('ui-action', {
                     type: "menu-choice", 
                     name: "graph-button", 
                     problemComplete: problemComplete
-                
                 });
-                //console.log(graph);
                 graph.show();
             });
 

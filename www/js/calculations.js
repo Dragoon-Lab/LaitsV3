@@ -46,7 +46,6 @@ define([
 	constructor: function(model, mode){
             console.log("***** In calculations constructor", this.given);
             this.model = model;
-            console.log("model",this.model);
             this.mode = mode;
             /* In AUTHOR mode, plot solution for all given nodes of genus false
              and type "accumulator" or "function""
@@ -57,10 +56,8 @@ define([
              as any matching given model node of genus false.
              The table contains only the student nodes.
              */
-	    this.dialogWidget = registry.byId("solution");
-        console.log("now in active model");
 	    this.active.timeStep = equation.initializeTimeStep(model.active);
-        this.active.initialValues = array.map(
+            this.active.initialValues = array.map(
 		this.active.timeStep.xvars, 
 		model.active.getInitial,
 		model.active
@@ -83,7 +80,13 @@ define([
 	    }
 	},
 	
-	findSolution: function(isActive, plotVariables){ //return value here serves two purposes , returns a solution or error 
+	findSolution: function(isActive, plotVariables){ 
+	    //Summary:  Find a solution
+	    //Returns:  an object of the form
+            //       {status: s, type: m, solution: n}
+	    // where s can be "error" or "solution"
+	    //       m can be "missingVariable" or ....
+            //       n is solution returned by the integration routine
 	    var choice = isActive?this.active:this.given;
 	    console.log("in findSolution ", isActive, choice.initialValues, choice.timeStep.parameters);
 	    /*
@@ -103,7 +106,7 @@ define([
             if(this.model.active.getName(if_id))
             var new_err=this.model.active.getName(if_id) + " is incomplete"; // In case a node is incomplete
             else new_err=err.message;
-            return [new_err,"error"];
+            return [new_err, "error"];
         }
         /*
 	     Given a solution, create an array of values for the
@@ -132,7 +135,7 @@ define([
 		}	    
 		return {times: solution.times, plotValues: plotValues};
 	    } else {
-		return [solution,"solution"];
+		return [solution, "solution"];
 	    }
 	},
 	
@@ -216,7 +219,6 @@ define([
             dom += domText || "";
             dom += "</" + domType + ">";
             console.debug("dom is " + dom);
-            console.log("one node is done");
             return dom;
 	},
 	
@@ -290,9 +292,9 @@ define([
 		this.dialogContent += this.createDom('div', sliderID[paramID]);
             }
 	    
-	    
-	    this.dialogWidget.set("title", this.model.getTaskName() + " - " + this.type);
-            this.dialogWidget.set("content", this.dialogContent);
+	    var dialogWidget = registry.byId("solution");
+	    dialogWidget.set("title", this.model.getTaskName() + " - " + this.type);
+            dialogWidget.set("content", this.dialogContent);
 	    
             for(paramID in sliderVars){
 		dom.byId(textBoxID[paramID]).value = sliderVars[paramID];

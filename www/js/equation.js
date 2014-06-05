@@ -305,9 +305,9 @@ define([
 	    var fv = {};
 	    array.forEach(model.getNodes(), function(node){
 		// Include all nodes that belong in the solution.
-        console.log(node);
-        
-		if(!node.genus && model.isComplete(node.ID)){ // Additionally we allow the further process only if each node is complete
+		// Additionally we only include nodes that are complete,
+		// except for units.
+		if(!node.genus && model.isComplete(node.ID, true)){ 
 		    switch(node.type){
 		    case "parameter":
 			// No equation to parse
