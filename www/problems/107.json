@@ -89,49 +89,8 @@
                 "description": "The number of assignments on the task list at the end of each week",
                 "initial": 2,
                 "equation": "+ id1 - id2"
-            },
-            {
-                "ID": "id4",
-                "inputs": [],
-                "position": {
-                    "x": 400,
-                    "y": 100
-                },
-                "attemptCount": {
-                    "description": 0,
-                    "type": 0,
-                    "initial": 0,
-                    "units": 0,
-                    "equation": 0
-                },
-                "status": {},
-                "name": "assignments added",
-                "type": "parameter",
-                "parentNode": false,
-                "units": "",
-                "description": "The number of new assignments added each week"
-            },
-            {
-                "ID": "id5",
-                "inputs": [],
-                "position": {
-                    "x": 400,
-                    "y": 100
-                },
-                "attemptCount": {
-                    "description": 0,
-                    "type": 0,
-                    "initial": 0,
-                    "units": 0,
-                    "equation": 0
-                },
-                "status": {},
-                "name": "assignments removed",
-                "type": "parameter",
-                "parentNode": false,
-                "units": "",
-                "description": "The number of assignments completed and removed from the task list each week"
             }
+
         ],
         "studentModelNodes": []
     }
