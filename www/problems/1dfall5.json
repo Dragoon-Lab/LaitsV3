@@ -14,7 +14,7 @@
         "image": {
             "URL": "images/Beachy_Head_and_Lighthouse.jpg"
         },
-        "taskDescription": " A stone is thrown vertically upward with a velocity of 12.0 m/s from the edge of a cliff 162 m high. Graph its velocity and height from 0 seconds to 8 seconds. How much later does it reach the bottom of the cliff? What is its velocity just before hitting? What total distance did it travel? Because the stone is moving against gravity we will set acceleration due to gravity at -9.81 m/ss<sup>2</sup>. Choose coordinates so that the bottom of the cliff is at zero. ",
+        "taskDescription": " A stone is thrown vertically upward with a velocity of 12.0 m/s from the edge of a cliff 162 m high. Graph its velocity and height from 0 seconds to 8 seconds. How much later does it reach the bottom of the cliff? What is its velocity just before hitting? What total distance did it travel? Because the stone is moving against gravity we will set acceleration due to gravity at -9.81 m/s^2. Choose coordinates so that the bottom of the cliff is at zero. ",
         "givenModelNodes": [
             {
                 "ID": "id1",
