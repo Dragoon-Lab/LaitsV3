@@ -614,7 +614,6 @@ define([
             }
             //returnObj.push([{id: "crisisAlert", attribute: "open", value: "You should be more careful."}]);
             console.log("**** PM returning:\n", returnObj);
-            console.log(this.model.getModelAsString());
             return returnObj;
         },
         /*****
