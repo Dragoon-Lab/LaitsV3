@@ -106,7 +106,14 @@ define([
                         break;
 
                     case "description":
-                        returnObj.push({id:"description",attribute:"status",value:"entered"});
+                        if(nodeID) {
+                            returnObj.push({id: "message", attribute: "append", value: "Description is available for use"});
+                            returnObj.push({id:"description",attribute:"status",value:"entered"});
+                        }
+                        else{
+                            returnObj.push({id:"message",attribute:"append",value:"Description is already in use"});
+                            returnObj.push({id:"description",attribute:"status",value:"incorrect"});
+                        }
                         break;
 
                     case "initial":
