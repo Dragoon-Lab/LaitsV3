@@ -430,29 +430,6 @@ define([
             // Set cursor to end of current paste
             widget.domNode.selectionStart = widget.domNode.selectionEnd = p1 + text.length;
         },
-        //Changed by Deepak
-        //This function should be in Author and Student controller
-        //Moving it from here to both student/author controller
-        /*        handleInputs: function(id){
-         if(id.MOUSEDOWN){
-         if(this.lastHandleInputId){
-         console.log('onclick event found onSelect, use old id '+this.lastHandleInputId);
-         id=this.lastHandleInputId; //restore
-         }else
-         return;  //if last id is not defined return
-         }else
-         this.lastHandleInputId=id; //copy it for next onClick event
-         
-         //check if id is  not select else return
-         
-         console.log("*******Student has chosen input", id, this);
-         // Should add name associated with id to equation
-         // at position of cursor or at the end.
-         var expr = this._model.given.getName(id);
-         this.equationInsert(expr);
-         //restore to default  - creating select input as stateless
-         registry.byId(this.controlMap.inputs).set('value', 'defaultSelect', false);
-         },*/
 
         handleEquation: function(equation){
             var w = registry.byId(this.widgetMap.equation);
