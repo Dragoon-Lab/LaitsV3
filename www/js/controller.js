@@ -379,8 +379,8 @@ define([
             //update node type on canvas
             console.log("===========>   changing node class to " + type);
             domClass.replace(this.currentID, type);
-
-	    var nodeName = graphObjects.getNodeName(this._model.active,this.currentID,type);
+            
+            var nodeName = graphObjects.getNodeName(this._model.active,this.currentID,type);
             if(dom.byId(this.currentID + 'Label'))
                 domConstruct.place(nodeName, this.currentID + 'Label', "replace");
             else //new node
@@ -781,23 +781,24 @@ define([
 	colorNodeBorder: function(nodeId){
 	    console.log("colorNodeBorder stub called");
 	                                  //get model type
-                  var type = this._model.active.getType(nodeId);
-                   if(type){
-                                console.log('model type is '+type);
+        var type = this._model.active.getType(nodeId);
+        if(type && type != "triangle"){
+            console.log('model type is '+type);
 
-                                var colorMap = {
-                    correct: "green",
-                    incorrect: "#FF8080",
-                    demo: "yellow"
-                };
-                                console.log('nodeId is '+nodeId);
-                                var isComplete   = this._model.active.isComplete(nodeId)?'solid':'dashed';
-                                var color = this._model.active.getCorrectness(nodeId);
-                                console.log('color is '+color);
-                                domStyle.set(this.currentID,'border','2px '+isComplete+' '+colorMap[color]);
-                                domStyle.set(this.currentID,'box-shadow','inset 0px 0px 5px #000 , 0px 0px 10px #000');
-                                }
-                }
+            var colorMap = {
+                correct: "green",
+                incorrect: "#FF8080",
+                demo: "yellow",
+                neutral: "gray"
+            };
+            console.log('nodeId is '+nodeId);
+            var isComplete   = this._model.active.isComplete(nodeId)?'solid':'dashed';
+            var color = this._model.active.getCorrectness? this._model.active.getCorrectness(nodeId):'neutral';
+            console.log('color is '+color);
+            domStyle.set(this.currentID,'border','2px '+isComplete+' '+colorMap[color]);
+            domStyle.set(this.currentID,'box-shadow','inset 0px 0px 5px #000 , 0px 0px 10px #000');
+        }
+    }
 
     });
 });
