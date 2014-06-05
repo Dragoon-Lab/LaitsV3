@@ -157,13 +157,17 @@ define([
                 w._setDisableOptionAttr = setDisableOption;
             }, this);
 
-            var crisis = registry.byId(this.widgetMap.crisisAlert);
-            crisis._setOpenAttr = function(message){
-                console.log("crisis alert message ", message);
-                this.set('content', message); //deprecated error
-                //this.setContent(message);
-                this.show();
-            };
+                var crisis = registry.byId(this.widgetMap.crisisAlert);
+                crisis._setOpenAttr = function(message){
+                    var crisisMessage = dojo.byId('crisisMessage');
+                    console.log("crisis alert message ", message);
+                    crisisMessage.innerHTML = message;
+                    this.show();
+                }
+                on(registry.byId("OkButton"), "click", function(){
+                    console.log("this is called");
+                    crisis.hide();
+                });
 
             // Add appender to message widget
             var messageWidget = registry.byId(this.widgetMap.message);
