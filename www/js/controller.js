@@ -85,7 +85,11 @@ define([
              If this can change during a session, then we
              should move this to this.showNodeEditor()
              */
-            var algebraic = (this._inputStyle == "algebraic" ? "" : "none");
+            if(this._inputStyle!="algebraic" && this._inputStyle!="structured" && this._inputStyle){ //If the input style is anything different frm algebraic, structured, unmentioned then we log an error as corrupted input style
+            error = new Error("input style has been corrupted");
+            throw error;
+            }
+            var algebraic = (this._inputStyle == "algebraic" || !this._inputStyle ? "" : "none"); //making algebraic the default input style incase n inputstyle is defined
             var structured = (this._inputStyle == "structured" ? "" : "none");
             domStyle.set("algebraic", "display", algebraic);
             domStyle.set("structured", "display", structured);
