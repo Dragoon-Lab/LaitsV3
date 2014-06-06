@@ -372,10 +372,11 @@ define([
      * 
      *****/
     return declare(null, {
-        constructor: function(/*string*/ mode, /*string*/ subMode, /*model.js object*/ model){
+        constructor: function(/*string*/ mode, /*string*/ subMode, /*model.js object*/ model, /*state.js object*/ state){
             this.model = model;
             this.mode = mode;
             this.setUserType(subMode);
+            record = state;
         },
         matchingID: null,
         logging: null,
