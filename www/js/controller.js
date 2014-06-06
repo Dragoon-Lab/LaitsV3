@@ -91,6 +91,7 @@ define([
 
             // Wire up this.closeEditor.  Aspect.around is used so we can stop hide()
 	    // from firing if equation is not entered.
+            this.equationEntered = true;
             aspect.around(this._nodeEditor, "hide", lang.hitch(this, function(doHide){
                 //To keep the proper scope throughout
                 var myThis = this;
