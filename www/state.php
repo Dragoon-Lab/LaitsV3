@@ -62,4 +62,5 @@ if($_POST){
 
 } else {
   trigger_error("Invalid method " . $_SERVER['REQUEST_METHOD'], E_USER_ERROR);
-}?>
+}
+?>

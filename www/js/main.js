@@ -90,11 +90,11 @@ define([
 
         expression.setLogging(session);
 
-		/*
-		Create state object
-		*/
-		var state = new State(query.u, query.s, "action");
-		controllerObject.setState(state);
+	/*
+	 Create state object
+	 */
+	var state = new State(query.u, query.s, "action");
+	controllerObject.setState(state);
 	
         ready(function(){
 
@@ -264,4 +264,3 @@ define([
         });
     });
 });
-

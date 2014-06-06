@@ -75,20 +75,16 @@ define([
     /*
     This is not in dojo store API, no value will be initiated less than 0.
     */
-	init: function (property, value) {
-		this.get(property).then(lang.hitch(this, function (x) {
-	        x = x || "initial"
-	        if (x === "initial") {
-	            this.cache[property] = value;
-	        }
-	    }));
+	init: function (property, defaultValue) {
+	    this.cache[property] = defaultValue;
+	    this.get(property, true);
 	},
 
 	/*
 	 Get always returns a promise
 	 */
-	get: function(property, defaultValue){
-	    if(property in this.cache)
+	get: function(property, noCache){
+	    if(!noCache && property in this.cache)
 		return when(this.cache[property]);
 	    else {
 		var object = xhr.get(this.path, {
@@ -97,10 +93,11 @@ define([
 		});
 		object.then(lang.hitch(this, function(x){
 		    // Don't add to cache if property is also not on the server.
-		    if(x)
+		    if(x!=""){
 			this.cache[property] = x;
+		    }
 		}));
-		return object===undefined?defaultValue:object;
+		return object;
 	    }
 	},
 
@@ -132,22 +129,23 @@ define([
 	},
     
 	getLocal: function(property){
-		console.log("getlocal called");
+	    console.log("getlocal called");
 	    if (property in this.cache) {
 	        return this.cache[property];
-	    }
-	    else {
-	        throw "Property not in cache";
+	    }else{
+	        throw new Error("Property '" + property + "' not in cache");
 	    }
 	},
+
 	/*
 	 This is not in Dojo Store API.
 	 */
-	increment: function (property, step) {
-	     var x = this.getLocal(property);
-	        x += step === undefined ? 1 : step;
-	        this.put(property, parseInt(x));
-	        }
+	increment: function (property, step){
+	    // The unary plus converts a string into a number
+	    var x = +this.getLocal(property);
+	    x += step === undefined ? 1 : step;
+	    this.put(property, x);
+	    return x;
+	}
     });
 });
-

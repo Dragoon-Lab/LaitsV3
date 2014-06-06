@@ -36,9 +36,9 @@ define([
     return declare(controller, {
         _PM: null,
 
-        constructor: function(mode, subMode, model, query, state){
+        constructor: function(mode, subMode, model){
             console.log("++++++++ In student constructor");
-            this._PM = new PM(mode, subMode, model, state);
+            this._PM = new PM(mode, subMode, model);
             lang.mixin(this.widgetMap, this.controlMap);
             ready(this, "populateSelections");
         },
