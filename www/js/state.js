@@ -72,10 +72,22 @@ define([
 	    this.path = (path || "") + "state.php";
 	},
 	
+    /*
+    This is not in dojo store API, no value will be initiated less than 0.
+    */
+	init: function (property, value) {
+		this.get(property).then(lang.hitch(this, function (x) {
+	        x = x || "initial"
+	        if (x === "initial") {
+	            this.cache[property] = value;
+	        }
+	    }));
+	},
+
 	/*
 	 Get always returns a promise
 	 */
-	get: function(property){
+	get: function(property, defaultValue){
 	    if(property in this.cache)
 		return when(this.cache[property]);
 	    else {
@@ -88,7 +100,7 @@ define([
 		    if(x)
 			this.cache[property] = x;
 		}));
-		return object;
+		return object===undefined?defaultValue:object;
 	    }
 	},
 
@@ -102,10 +114,10 @@ define([
 	    }
 	    this.cache[property] = object;
 	    xhr.post(this.path, {
-		data: lang.mixin({
-		    pry: property, 
-		    vle: json.toJson(object)
-		}, this.params)
+	        data: lang.mixin({
+	            pry: property, 
+	            vle: json.toJson(object)
+	        }, this.params)
 	    });
 	},
 
@@ -118,16 +130,23 @@ define([
 		}, this.params)
 	    });
 	},
-
+    
+	getLocal: function(property){
+	    if (property in this.cache) {
+	        return this.cache[property];
+	    }
+	    else {
+	        throw "Property not in cache";
+	    }
+	},
 	/*
 	 This is not in Dojo Store API.
 	 */
-	increment: function(property, step){
-	    return this.get(property).then(lang.hitch(this, function(x){
-		x += step===undefined?1:step;
-		this.put(property, x);
-	    }));
-	}
-
+	increment: function (property, step) {
+	     var x = this.getLocal(property);
+	        x += step === undefined ? 1 : step;
+	        this.put(property, parseInt(x));
+	        }
     });
 });
+

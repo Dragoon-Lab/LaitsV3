@@ -37,11 +37,12 @@ define([
     "./draw-model",
     "./logging",
     "./equation",
-    "./description"
+    "./description",
+	"./state"
 ], function(
         lang, dom, geometry, on, aspect, ioQuery, ready, registry,
         menu, loadSave, model,
-        Graph, Table, controlStudent, controlAuthor, Parser, drawmodel, logging, expression, description
+        Graph, Table, controlStudent, controlAuthor, Parser, drawmodel, logging, expression, description, State
         ){
 
     console.log("load main.js");
@@ -71,6 +72,11 @@ define([
          start up controller
          */
 
+		/*
+		Create state object
+		*/
+		var state = new State(query.u, query.s, "action");
+		
         /* 
          The sub-mode of STUDENT mode can be either "feedback" or "power"
          This is eventually supposed to be supplied by the student model.
@@ -79,7 +85,7 @@ define([
         var subMode = query.sm || "feedback";
         /* In principle, we could load just one controller or the other. */
             var controllerObject = query.m == 'AUTHOR' ? new controlAuthor(query.m, subMode, givenModel, query.is) :
-                new controlStudent(query.m, subMode, givenModel, state, query.is);
+                new controlStudent(query.m, subMode, givenModel, query.is, state);
 
         //setting up logging for different modules.
         if(controllerObject._PM)
@@ -257,3 +263,4 @@ define([
         });
     });
 });
+
