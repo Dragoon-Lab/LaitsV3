@@ -24,10 +24,10 @@
  */
 define([
     "dojo/_base/array", 'dojo/_base/declare', "dojo/_base/lang",
-    "dojo/dom", "dojo/ready",
+    "dojo/dom", "dojo/dom-style", "dojo/ready",
     'dijit/registry',
     './controller', "./pedagogical_module", "./equation",'dojo/dom-style'
-], function(array, declare, lang, dom, ready, registry, controller, PM, expression,style){
+], function(array, declare, lang, dom, style, ready, registry, controller, PM, expression){
 
     /*
      Methods in controller specific to the student modes
@@ -118,10 +118,9 @@ define([
             if(!this.checkNumber(initial)){
                 return;
             }
- 	    
             console.log("****** Student has chosen initial value", initial, this.lastInitialValue);
     	    /*
-    		 Evaluate only if the value is changed.
+    	     Evaluate only if the value is changed.
 	     
     	     The controller modifies the initial value widget so that a "Change" event is
     	     fired if the widget loses focus.  This may happen when the node editor is closed.
@@ -136,10 +135,6 @@ define([
             this._model.active.setInitial(this.currentID, initial);
             this.applyDirectives(this._PM.processAnswer(this.currentID, 'initial', initial));
         },
-         closePops: function(){
-            popup.close(this.myTooltipDialog);// close old pop-ups' before a new one  
-            popup.close(this.myTooltipDialog2);
-    	},
 	
         initialSet: function(value){
                 this._model.active.setInitial(this.currentID, value);
