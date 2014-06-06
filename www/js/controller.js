@@ -25,9 +25,10 @@
 define([
     "dojo/_base/array", 'dojo/_base/declare', "dojo/_base/lang",
     'dojo/aspect', 'dojo/dom', "dojo/dom-class", "dojo/dom-construct", 'dojo/dom-style',
-    'dojo/keys', 'dojo/on', "dojo/ready", 'dijit/registry',
+    'dojo/keys', 'dojo/on', "dojo/ready", 
+    "dijit/popup", 'dijit/registry', "dijit/TooltipDialog",
     './equation', './graph-objects'
-], function(array, declare, lang, aspect, dom, domClass, domConstruct, domStyle, keys, on, ready, registry, expression, graphObjects){
+], function(array, declare, lang, aspect, dom, domClass, domConstruct, domStyle, keys, on, ready, popup, registry, TooltipDialog, expression, graphObjects){
 
     return declare(null, {
         _model: null,
@@ -60,6 +61,17 @@ define([
             // after widgets are set up.
             ready(this, this._setUpNodeEditor);
             ready(this, this._initHandles);
+
+	    // Tool Tip for indicating use of decimals instead of percentages
+            this.myTooltipDialog = new TooltipDialog({ 
+                style: "width: 150px;",
+                content: "Use decimals instead of percent."
+            });
+	    // Tool Tip for indicating non numeric data is not accepted
+            this.myTooltipDialog2 = new TooltipDialog({
+                style: "width: 150px;",
+                content: "Non-numeric data not accepted"
+            });
         },
         // A list of common controls of student and author
         genericControlMap: {
@@ -255,15 +267,15 @@ define([
             var messageWidget = registry.byId(this.widgetMap.message);
             messageWidget.set('content', '');
 
-	    // Color the borders of the Node
-	    this.colorNodeBorder(this.currentID);
+            // Color the borders of the Node
+            this.colorNodeBorder(this.currentID);
 
-	    // update Node labels upon exit	
+            // update Node labels upon exit	
             var nodeName = graphObjects.getNodeName(this._model.active,this.currentID);
             if(dom.byId(this.currentID + 'Label'))
                 domConstruct.place(nodeName, this.currentID + 'Label', "replace");
-                if(this.closePops)
-                this.closePops();//this is a function in con-student, where it closes the popups in case node editor is closed
+	    // In case any tool tips are still open.
+            this.closePops();
 
         },
         //set up event handling with UI components
@@ -399,20 +411,64 @@ define([
         /* Stub to update connections in graph */
         addQuantity: function(source, destinations){
         },
+        closePops: function(){
+            popup.close(this.myTooltipDialog);
+            popup.close(this.myTooltipDialog2);
+    	},
+        checkNumber: function(initialString){
+            var initialWidget = dom.byId(this.widgetMap.initial);
+            // Popups only occur for an error, so leave it up until
+            // the next time the student attempts to enter a number.
+	    this.closePops();
+            // we do this type conversion because we used a textbox for initialvalue input which is a numerical
+            var initial= +initialString; // usage of + unary operator converts a string to number 
+            // use isNaN to test if conversion worked.
+            if(isNaN(initial)){
+                // Put in checks here
+                console.log('not a number');
+                //initialValue is the id of the textbox, we get the value in the textbox
+                if(!initialString.match('%')){ //To check the decimals against percentages
+                    console.warn("Sachin should log when this happens");
+                    popup.open({
+                        popup: this.myTooltipDialog2,
+                        around: initialWidget
+                    });
+                }else{ 
+		    // if entered string has percentage symbol, pop up a message to use decimals
+                    console.warn("Sachin should log when this happens");
+                    popup.open({
+                        popup: this.myTooltipDialog,
+                        around: initialWidget
+                    });
+                }            
+                return false; 
+            }
+            return true;
+        },
         updateType: function(type){
             //update node type on canvas
             console.log("===========>   changing node class to " + type);
-            domClass.replace(this.currentID, type);
 
-	    var nodeName = graphObjects.getNodeName(this._model.active,this.currentID,type);
-            if(dom.byId(this.currentID + 'Label'))
-                domConstruct.place(nodeName, this.currentID + 'Label', "replace");
-            else //new node
-                domConstruct.place(nodeName, this.currentID);
+            //if type is triangle, remove border and box-shadow
+            if(type==''){
+  		domStyle.set(this.currentID,'border','');
+		domStyle.set(this.currentID,'box-shadow','');
+		domClass.replace(this.currentID, "triangle");
+            } else {
+                domClass.replace(this.currentID, type);
+            }
 
-            // updating the model and the equation labels	    
+            // updating the model and the equation labels
             this._model.active.setType(this.currentID, type);
             this.updateEquationLabels();
+            
+            var nodeName = graphObjects.getNodeName(this._model.active,this.currentID,type);
+            if(nodeName != ''){
+                if(dom.byId(this.currentID + 'Label'))
+                    domConstruct.place(nodeName, this.currentID + 'Label', "replace");
+                else //new node
+                    domConstruct.place(nodeName, this.currentID);
+            }
         },
         updateEquationLabels: function(typeIn){
             var type = typeIn || this._model.active.getType(this.currentID) || "none";
@@ -762,7 +818,6 @@ define([
                     this.updateModelStatus(directive);
                 if (this.widgetMap[directive.id]) {
                     var w = registry.byId(this.widgetMap[directive.id]);
-                    // console.log(">>>>>>>>> setting directive ", directive);
                     if (directive.attribute == 'value') {
                         w.set("value", directive.value, false);
                         // Each control has its own function to update the
@@ -783,25 +838,25 @@ define([
         // Stub to be overwritten by student or author mode-specific method.
 	colorNodeBorder: function(nodeId){
 	    console.log("colorNodeBorder stub called");
-	    //get model type
-            var type = this._model.active.getType(nodeId);
-            if(type){
-                console.log('model type is '+type);
-		
-                var colorMap = {
-                    correct: "green",
-                    incorrect: "#FF8080",
-                    demo: "yellow"
-		};
-                console.log('nodeId is ' + nodeId + ' ' + this._model.active.isComplete(nodeId));
-		//this is dashed in case of incomplete node, so for author this is dashed even if units are not entered.
-		var isComplete  = this._model.active.isComplete(nodeId)?'solid':'dashed'; 
-		var color = this._model.active.getCorrectness?this._model.active.getCorrectness(nodeId):"neutral";
-                console.log('color is ' + color);
-                domStyle.set(this.currentID,'border','2px '+isComplete+' '+colorMap[color]);
-                domStyle.set(this.currentID,'box-shadow','inset 0px 0px 5px #000 , 0px 0px 10px #000');
-            }
+	                                  //get model type
+        var type = this._model.active.getType(nodeId);
+        if(type){
+            console.log('model type is '+type);
+
+            var colorMap = {
+                correct: "green",
+                incorrect: "#FF8080",
+                demo: "yellow",
+                neutral: "gray"
+            };
+            console.log('nodeId is '+nodeId);
+            var isComplete   = this._model.active.isComplete(nodeId)?'solid':'dashed';
+            var color = this._model.active.getCorrectness? this._model.active.getCorrectness(nodeId):'neutral';
+            console.log('color is '+color);
+            domStyle.set(this.currentID,'border','2px '+isComplete+' '+colorMap[color]);
+            domStyle.set(this.currentID,'box-shadow','inset 0px 0px 5px #000 , 0px 0px 10px #000');
         }
+    }
 
     });
 });
