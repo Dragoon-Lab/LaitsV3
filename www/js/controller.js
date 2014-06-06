@@ -40,6 +40,8 @@ define([
         /* The last value entered into the intial value control */
         lastInitialValue: null,
         logging: null,
+        // Variable to track if an equation has been entered and checked 
+        equationEntered: false,
         constructor: function(mode, subMode, model, inputStyle){
 
             console.log("+++++++++ In generic controller constructor");
@@ -83,7 +85,7 @@ define([
                 var myThis = this;
                 return function(){
                     var equation = registry.byId("equationBox");
-                    if(equation.value && equation.disabled == false){
+                    if(equation.value && !myThis.equationEntered){
 			//Crisis alert popup if equation not checked
 			myThis.applyDirectives([{
 			    id: "crisisAlert", attribute:
@@ -330,7 +332,7 @@ define([
             /* inputsWidget.on('Click', lang.hitch(this, function(){
              return this.disableHandlers || this.handleInputs.apply(this, arguments);
              }));*/
-
+            
             var equationWidget = registry.byId(this.controlMap.equation);
             equationWidget.on('Change', lang.hitch(this, function(){
                 return this.disableHandlers || this.handleEquation.apply(this, arguments);
@@ -454,6 +456,7 @@ define([
 
         handleEquation: function(equation){
             var w = registry.byId(this.widgetMap.equation);
+            this.equationEntered = false;
             w.set("status", "");
         },
         plusHandler: function(){
@@ -569,6 +572,7 @@ define([
             this.structured.pop();
         },
         equationAnalysis: function(directives){
+            this.equationEntered = true;
             console.log("****** enter button");
             /*
              This takes the contents of the equation box and parses it.
