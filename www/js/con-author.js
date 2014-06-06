@@ -34,6 +34,7 @@ define([
 ], function(array, declare, lang, style, ready, registry, controller, equation, memory){
 
     return declare(controller, {
+
         //pedagogical module class for author
         authorPM:{
             process: function(nodeID, nodeType, value, validInput){
@@ -106,12 +107,13 @@ define([
                         break;
 
                     case "description":
-                        if(nodeID) {
-                            returnObj.push({id: "message", attribute: "append", value: "Description is available for use"});
+                        if(validInput){
+                            returnObj.push({id:"message",attribute:"append",value:"Description is available for use"});
                             returnObj.push({id:"description",attribute:"status",value:"entered"});
                         }
-                        else{
-                            returnObj.push({id:"message",attribute:"append",value:"Description is already in use"});
+                        else
+                        {
+                            returnObj.push({id:"message",attribute:"append",value:"Description is not available for use"});
                             returnObj.push({id:"description",attribute:"status",value:"incorrect"});
                         }
                         break;
@@ -169,10 +171,10 @@ define([
             console.log("**************** in handleName ", name);
 
             /* check if node with name already exists and
-               if name is parsed as valid variable
-            */
+             if name is parsed as valid variable
+             */
             this.applyDirectives(this.authorPM.process(this._model.given.getNodeIDByName(name)?!(this._model.given.getNodeIDByName(name)==this.currentID):null,'name',name, equation.isVariable(name)));
-            console.log(equation.isVariable(name))
+            console.log(equation.isVariable(name));
             if(!this._model.given.getNodeIDByName(name) && equation.isVariable(name)){
                 // check all nodes in the model for equations containing name of this node
                 // replace name of this node in equation with its ID
@@ -193,13 +195,19 @@ define([
         handleDescription: function(description){
             // Summary: Checks to see if the given description exists; if the
             //      description doesn't exist, it sets the description of the current node.
-            if(!this._model.active.getNodeIDByDescription(description)){
+            var valInp;
+            if(!this._model.active.getNodeIDByDescription(description) || description === ""){
+
                 this._model.active.setDescription(this.currentID, description);
                 console.log("In AUTHOR mode. Description value is: " + description);
-            }else {
-                console.warn("In AUTHOR mode. Attempted to use description that already exists: " + description);
+                valInp = true;
             }
-            this.applyDirectives(this.authorPM.process(this.currentID,"description",description));
+            else {
+                this._model.active.setDescription(this.currentID, description);
+                console.warn("In AUTHOR mode. Attempted to use description that already exists: " + description);
+                valInp = false;
+            }
+            this.applyDirectives(this.authorPM.process(this.currentID,"description",description, valInp));
         },
 
         handleType: function(type){
@@ -265,7 +273,7 @@ define([
             }
         },
         initialControlSettings: function(nodeid){
-        var name = this._model.given.getName(nodeid);
+            var name = this._model.given.getName(nodeid);
             registry.byId(this.controlMap.name).set('value', name || '', false);
 
             var desc = this._model.given.getDescription(nodeid);
@@ -278,10 +286,10 @@ define([
             var descriptionWidget = registry.byId(this.controlMap.description);
 
             /*
-            *   populate the nodes in the Name, Description, Units, and Inputs tab
-            *   For combo-box we need to setup a data-store which is collection of {name:'', id:''} object
-            *
-            */
+             *   populate the nodes in the Name, Description, Units, and Inputs tab
+             *   For combo-box we need to setup a data-store which is collection of {name:'', id:''} object
+             *
+             */
             var dummyArray =[];
             var descriptions = [];
             var units = [];
@@ -290,8 +298,8 @@ define([
                     var name = this._model.given.getName(desc.value);
                     var obj = {name:name, id:desc.id};
                     dummyArray.push(obj);
-            descriptions.push({name: this._model.given.getDescription(desc.value), id: desc.id});
-            units.push({name: this._model.given.getUnits(desc.value), id: desc.id});
+                    descriptions.push({name: this._model.given.getDescription(desc.value), id: desc.id});
+                    units.push({name: this._model.given.getUnits(desc.value), id: desc.id});
                 }
             }, this);
             var m = new memory({data:dummyArray});
@@ -305,9 +313,9 @@ define([
             var value;
             //find whether node is created for first time or NOT
             if(!this._model.given.getName(this.currentID)        && !this._model.given.getGenus(this.currentID) &&
-               !this._model.given.getDescription(this.currentID) && !this._model.given.getType(this.currentID)  &&
-               !this._model.given.getInitial(this.currentID)     && !this._model.given.getUnits(this.currentID) &&
-               !this._model.given.getEquation(this.currentID)    && this._model.given.getInputs(this.currentID).length == 0){
+                !this._model.given.getDescription(this.currentID) && !this._model.given.getType(this.currentID)  &&
+                !this._model.given.getInitial(this.currentID)     && !this._model.given.getUnits(this.currentID) &&
+                !this._model.given.getEquation(this.currentID)    && this._model.given.getInputs(this.currentID).length == 0){
                 console.log("node created for first time", this.currentID);
             }
             else{
