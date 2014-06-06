@@ -566,8 +566,15 @@ define([
             }
         },
         undoHandler: function(){
-            var widget = registry.byId(this.controlMap.equation);
-            this.structured.pop();
+			if(this.structured.ops.length == 0) {
+				var equationWidget = registry.byId("equationBox");
+				equationWidget.set("value", "");
+				dom.byId("equationText").innerHTML = ""
+			}
+			else {
+				var widget = registry.byId(this.controlMap.equation);
+				this.structured.pop();
+			}
         },
         equationAnalysis: function(directives){
             console.log("****** enter button");
