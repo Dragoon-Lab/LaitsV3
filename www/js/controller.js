@@ -40,6 +40,9 @@ define([
         /* The last value entered into the intial value control */
         lastInitialValue: null,
         logging: null,
+        // Variable to track if an equation has been entered and checked
+        equationEntered: false,
+
         constructor: function(mode, subMode, model, inputStyle){
 
             console.log("+++++++++ In generic controller constructor");
@@ -76,9 +79,26 @@ define([
             // get Node Editor widget from tree
             this._nodeEditor = registry.byId('nodeeditor');
 
-            // Wire up this.closeEditor
-            aspect.after(this._nodeEditor, "hide",
-                    lang.hitch(this, this.closeEditor));
+            // Wire up this.closeEditor.  Aspect.around is used so we can stop hide()
+	    // from firing if equation is not entered.
+            aspect.around(this._nodeEditor, "hide", lang.hitch(this, function(doHide){
+                //To keep the proper scope throughout
+                var myThis = this;
+                return function(){
+                    var equation = registry.byId("equationBox");
+                    if(equation.value && !myThis.equationEntered){
+			//Crisis alert popup if equation not checked
+			myThis.applyDirectives([{
+			    id: "crisisAlert", attribute:
+			    "open", value: "Your expression has not been checked!  Go back and check your expression to verify it is correct, or delete the expression, before closing the node editor."
+			}]);
+                    }else{
+			// Else, do normal closeEditor routine and hide
+			doHide.apply(myThis._nodeEditor);
+			myThis.closeEditor.call(myThis);
+                    }
+		};
+	    }));
 
             /*
              Hide/show fields based on inputStyle
@@ -159,11 +179,11 @@ define([
 
                 var crisis = registry.byId(this.widgetMap.crisisAlert);
                 crisis._setOpenAttr = function(message){
-                    var crisisMessage = dojo.byId('crisisMessage');
+                    var crisisMessage = dom.byId('crisisMessage');
                     console.log("crisis alert message ", message);
                     crisisMessage.innerHTML = message;
                     this.show();
-                }
+                };
                 on(registry.byId("OkButton"), "click", function(){
                     console.log("this is called");
                     crisis.hide();
@@ -437,6 +457,7 @@ define([
 
         handleEquation: function(equation){
             var w = registry.byId(this.widgetMap.equation);
+            this.equationEntered = false;
             w.set("status", "");
         },
         plusHandler: function(){
@@ -552,6 +573,7 @@ define([
             this.structured.pop();
         },
         equationAnalysis: function(directives){
+            this.equationEntered = true;
             console.log("****** enter button");
             /*
              This takes the contents of the equation box and parses it.
