@@ -235,8 +235,11 @@ define([
         },
         equationDoneHandler: function(){
 
-            //WORKAROUND -- Sets equationENtered once Check Expression is clicked to enable window to close
+            //WORKAROUND -- Sets equationENtered once Check Expression is clicked 
+	    // to enable window to close
+	    // Remove when equationDoneHandler calls equationAnalysis
             this.equationEntered = true;
+
             console.log("Inside equationDone handler");
             var widget = registry.byId(this.controlMap.equation);
             var expression = widget.get("value");

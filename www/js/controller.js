@@ -40,8 +40,9 @@ define([
         /* The last value entered into the intial value control */
         lastInitialValue: null,
         logging: null,
-        // Variable to track if an equation has been entered and checked 
+        // Variable to track if an equation has been entered and checked
         equationEntered: false,
+
         constructor: function(mode, subMode, model, inputStyle){
 
             console.log("+++++++++ In generic controller constructor");
@@ -332,7 +333,7 @@ define([
             /* inputsWidget.on('Click', lang.hitch(this, function(){
              return this.disableHandlers || this.handleInputs.apply(this, arguments);
              }));*/
-            
+
             var equationWidget = registry.byId(this.controlMap.equation);
             equationWidget.on('Change', lang.hitch(this, function(){
                 return this.disableHandlers || this.handleEquation.apply(this, arguments);
