@@ -69,6 +69,11 @@ define([
                         else{
                             returnObj.push({id:"type", attribute:"status", value:""});
                             returnObj.push({id:"message", attribute:"append", value:"Please select node type"});
+                            returnObj.push({attribute:"disabled", id:"initial", value:false});
+
+                            returnObj.push({attribute:"disabled", id:"inputs", value:false});
+
+                            returnObj.push({attribute:"disabled", id:"equation", value:false});
                         }
                         break;
 
@@ -112,15 +117,18 @@ define([
                             returnObj.push({id:"message", attribute:"append", value:"Description is already in use"});
                         }else{
                             returnObj.push({id:"description", attribute:"status", value:"entered"});
-			}
+                        }
                         break;
 
                     case "initial":
-                        if(value){
+                        if(value && validInput){
                             returnObj.push({id:"initial", attribute:"status", value:"entered"});
-                        }else{
+                        } else if(value && !validInput){
+                            returnObj.push({id:"initial", attribute:"status", value:"incorrect"});
+                        }
+                        else{
                             returnObj.push({id:"initial", attribute:"status", value:""});
-			}
+                        }
                         break;
 
                     case "inputs":
@@ -132,7 +140,7 @@ define([
                             returnObj.push({id:"equation", attribute:"status", value:"entered"});
                         }else{
                             returnObj.push({id:"equation", attribute:"status", value:""});
-			}
+                        }
                         break;
 
                     case "units":
@@ -140,7 +148,7 @@ define([
                             returnObj.push({id:"units", attribute:"status", value:"entered"});
                         }else{
                             returnObj.push({id:"units", attribute:"status", value:""});
-			}
+                        }
                         break;
 
                     default:
@@ -215,8 +223,8 @@ define([
         handleDescription: function(description){
             // Summary: Checks to see if the given description exists; if the
             //      description doesn't exist, it sets the description of the current node.
-	    var descriptionID = this._model.given.getNodeIDByDescription(description);
-	    // If descriptionID is falsy give "null"; if it doesn't match, give "false"
+            var descriptionID = this._model.given.getNodeIDByDescription(description);
+            // If descriptionID is falsy give "null"; if it doesn't match, give "false"
             this.applyDirectives(this.authorPM.process(descriptionID?!(descriptionID==this.currentID):null, "description", description));
             if(!this._model.active.getNodeIDByDescription(description)){
                 this._model.active.setDescription(this.currentID, description);
@@ -230,20 +238,23 @@ define([
             // Summary: Sets the type of the current node.
             console.log("****** AUTHOR has chosen type ", type, this);
             this.applyDirectives(this.authorPM.process(this.currentID,'type', type));
-            if(type == 'defaultSelect'){
-                console.log("     undo type selection");
+            if(type == 'defaultSelect' || type == ''){
+                console.log("undo type selection");
                 this.logging.clientLog("error", {
                     message: "no type selected for author node type",
                     functionTag: "handleType"
                 });
-                type = "triangle";
+                type = "";
             }
             this.updateType(type);
         },
         handleUnits: function(units){
             console.log("**************** in handleUnits ", units);
             // Summary: Sets the units of the current node.
-            this._model.active.setUnits(this.currentID, units);
+            if(units && units != "defaultSelect"){ 
+                this._model.active.setUnits(this.currentID, units);
+                this.authorPM.process(this.applyDirectives(this.currentID, "units", units));
+            }
         },
         /*
          Handler for initial value input
@@ -256,13 +267,17 @@ define([
              The controller modifies the initial value widget so that a "Change" event is
              fired if the widget loses focus.  This may happen when the node editor is closed.
              */
-            if(!initial || initial == this.lastInitialValue){
+            //this.applyDirectives(this.authorPM.process(this.currentID, "initial", initial));
+            //check number checks for the % and nan values.
+            var numberFlag = this.checkNumber(initial);
+            this.applyDirectives(this.authorPM.process(this.currentID, "initial", initial, numberFlag));
+            if(initial == this.lastInitialValue || !numberFlag){
                 return;
             }
+
             this.lastInitialValue = initial;
 
             this._model.active.setInitial(this.currentID, initial);
-            this.applyDirectives(this.authorPM.process(this.currentID, "initial", initial));
             console.log("In AUTHOR mode. Initial value is: " + initial);
         },
         handleInputs: function(name){
@@ -333,47 +348,47 @@ define([
             units.push("store", m);
 
             var value;
-            //find whether node is created for first time or NOT
-            if(!this._model.given.getName(this.currentID)        && !this._model.given.getGenus(this.currentID) &&
-               !this._model.given.getDescription(this.currentID) && !this._model.given.getType(this.currentID)  &&
-               !this._model.given.getInitial(this.currentID)     && !this._model.given.getUnits(this.currentID) &&
-               !this._model.given.getEquation(this.currentID)    && this._model.given.getInputs(this.currentID).length == 0){
-                console.log("node created for first time", this.currentID);
-            }else{
-                //node is not created for the first time. apply colors to widgets
-                //color name widget
+            //node is not created for the first time. apply colors to widgets
+            //color name widget
 
-                //false value is set because while creating a name we are already checking for uniqueness and checking again while re-opening the node is not needed.
+            //false value is set because while creating a name we are already checking for uniqueness and checking again while re-opening the node is not needed.
+            if(name)
                 this.applyDirectives(this.authorPM.process(false, "name", name, equation.isVariable(name)));
 
-                //color kind widget
+            //color kind widget
+            if(this._model.given.getGenus(this.currentID))
                 this.applyDirectives(this.authorPM.process(this.currentID, "kind", this._model.given.getGenus(this.currentID)));
 
-                //color description widget
-                //uniqueness taken care of by the handler while adding a new value. So a false value sent.
+            //color description widget
+            //uniqueness taken care of by the handler while adding a new value. So a false value sent.
+            if(this._model.given.getDescription(this.currentID))
                 this.applyDirectives(this.authorPM.process(false, "description", this._model.given.getDescription(this.currentID)));
 
-                //color units widget
+            //color units widget
+            var units = this._model.given.getUnits(this.currentID);
+            if(units && units != 'defaultSelect')
                 this.applyDirectives(this.authorPM.process(this.currentID, 'units', this._model.given.getUnits(this.currentID)));
 
-                //color initial value widget
-                this.applyDirectives(this.authorPM.process(this.currentID, 'initial', this._model.given.getInitial(this.currentID)));
+            //color initial value widget
+            if(this._model.given.getInitial(this.currentID))
+                this.applyDirectives(this.authorPM.process(this.currentID, 'initial', this._model.given.getInitial(this.currentID), true));
 
-                //color units widget
+            //color units widget
+            if(this._model.given.getEquation(this.currentID))
                 this.applyDirectives(this.authorPM.process(this.currentID, 'equation', this._model.given.getEquation(this.currentID)));
 
-                var type = this._model.given.getType(this.currentID);
-                //color type widget
+            var type = this._model.given.getType(this.currentID);
+            //color type widget
+            if(type)
                 this.applyDirectives(this.authorPM.process(this.currentID, 'type', type));
 
-                if(type && type != 'function'){
-                    if(this._model.given.getInitial(this.currentID))
-                        this.applyDirectives([{id:"initial", attribute:"status", value:"entered"}]);
-                }
-                if(type && type != 'parameter'){
-                    if(this._model.given.getEquation(this.currentID))
-                        this.applyDirectives([{id:"equation", attribute:"status", value:"entered"}]);
-                }
+            if(type && type != 'function'){
+                if(this._model.given.getInitial(this.currentID))
+                    this.applyDirectives([{id:"initial", attribute:"status", value:"entered"}]);
+            }
+            if(type && type != 'parameter'){
+                if(this._model.given.getEquation(this.currentID))
+                    this.applyDirectives([{id:"equation", attribute:"status", value:"entered"}]);
             }
         },
         updateModelStatus: function(desc){

@@ -26,8 +26,8 @@ define([
     "dojo/_base/array", 'dojo/_base/declare', "dojo/_base/lang",
     'dojo/aspect', 'dojo/dom', "dojo/dom-class", "dojo/dom-construct", 'dojo/dom-style',
     'dojo/keys', 'dojo/on', "dojo/ready", 'dijit/registry',
-    './equation', './graph-objects'
-], function(array, declare, lang, aspect, dom, domClass, domConstruct, domStyle, keys, on, ready, registry, expression, graphObjects){
+    './equation', './graph-objects',"dijit/TooltipDialog","dijit/popup"
+], function(array, declare, lang, aspect, dom, domClass, domConstruct, domStyle, keys, on, ready, registry, expression, graphObjects,TooltipDialog, popup){
 
     return declare(null, {
         _model: null,
@@ -57,6 +57,16 @@ define([
             // after widgets are set up.
             ready(this, this._setUpNodeEditor);
             ready(this, this._initHandles);
+
+            //tooltip code moved to controller.js
+            this.myTooltipDialog = new TooltipDialog({ //new tool tip for indicating use of decimals instead of percentages
+                style: "width: 150px;",
+                content: "Use decimals instead of percent"
+            }); 
+            this.myTooltipDialog2 = new TooltipDialog({ // new tooltip for indicating non numeric data is not accepted
+                style: "width: 150px;",
+                content: "Non Numeric data not accepted"
+            });  
         },
         // A list of common controls of student and author
         genericControlMap: {
@@ -235,14 +245,14 @@ define([
             var messageWidget = registry.byId(this.widgetMap.message);
             messageWidget.set('content', '');
 
-	    // Color the borders of the Node
-	    this.colorNodeBorder(this.currentID);
+            // Color the borders of the Node
+            this.colorNodeBorder(this.currentID);
 
-	    // update Node labels upon exit	
+            // update Node labels upon exit	
             var nodeName = graphObjects.getNodeName(this._model.active,this.currentID);
             if(dom.byId(this.currentID + 'Label'))
                 domConstruct.place(nodeName, this.currentID + 'Label', "replace");
-                if(this.closePops)
+            if(this.closePops)
                 this.closePops();//this is a function in con-student, where it closes the popups in case node editor is closed
 
         },
@@ -379,20 +389,64 @@ define([
         /* Stub to update connections in graph */
         addQuantity: function(source, destinations){
         },
+        checkNumber: function(initial){
+            var initialWidget = dom.byId(this.widgetMap.initial);
+            // Popups only occur for an error, so leave it up until
+            // the next time the student attempts to enter a number.
+            popup.close(this.myTooltipDialog);// close old pop-ups' before a new one  
+            popup.close(this.myTooltipDialog2);
+            // we do this type conversion because we used a textbox for initialvalue input which is a numerical
+            initial= +initial; // usage of + unary operator converts a string to number 
+            // use isNaN to test if conversion worked.
+            if(isNaN(initial)){
+                // Put in checks here
+                console.log('not a number');
+                //initialValue is the id of the textbox, we get the value in the textbox
+                var impose_nums= initialWidget.value; 
+            
+                if(!impose_nums.match('^[-+]?[0-9]*\.?[0-9]+([eE][-+]?[0-9]+)?%$')){ //To check the decimals against percentages
+                    if(isNaN(impose_nums) && impose_nums!=''){ //Incase input is not a number
+                        console.warn("Should log when this happens");
+                        popup.open({
+                            popup: this.myTooltipDialog2,
+                            around: initialWidget
+                        });
+                    }
+                }else{ //if entered string has percentage symbol, pop up a message to use decimals
+                    console.warn("Should log when this happens");
+                    popup.open({
+                        popup: this.myTooltipDialog,
+                        around: initialWidget
+                    });
+                }            
+                return false; 
+            }
+            return true;
+        },
         updateType: function(type){
             //update node type on canvas
             console.log("===========>   changing node class to " + type);
-            domClass.replace(this.currentID, type);
-            
-            var nodeName = graphObjects.getNodeName(this._model.active,this.currentID,type);
-            if(dom.byId(this.currentID + 'Label'))
-                domConstruct.place(nodeName, this.currentID + 'Label', "replace");
-            else //new node
-                domConstruct.place(nodeName, this.currentID);
+	 
+            //if type is triangle, remove border and box-shadow
+            if(type==''){
+            	domStyle.set(this.currentID,'border','');
+            	domStyle.set(this.currentID,'box-shadow','');
+                domClass.replace(this.currentID, "triangle");
+            } else {
+                domClass.replace(this.currentID, type);
+            }
 
-            // updating the model and the equation labels	    
+            // updating the model and the equation labels       
             this._model.active.setType(this.currentID, type);
             this.updateEquationLabels();
+            
+            var nodeName = graphObjects.getNodeName(this._model.active,this.currentID,type);
+            if(nodeName != ''){
+                if(dom.byId(this.currentID + 'Label'))
+                    domConstruct.place(nodeName, this.currentID + 'Label', "replace");
+                else //new node
+                    domConstruct.place(nodeName, this.currentID);
+            }
         },
         updateEquationLabels: function(typeIn){
             var type = typeIn || this._model.active.getType(this.currentID) || "none";
@@ -740,7 +794,6 @@ define([
                     this.updateModelStatus(directive);
                 if (this.widgetMap[directive.id]) {
                     var w = registry.byId(this.widgetMap[directive.id]);
-                    // console.log(">>>>>>>>> setting directive ", directive);
                     if (directive.attribute == 'value') {
                         w.set("value", directive.value, false);
                         // Each control has its own function to update the
@@ -763,7 +816,7 @@ define([
 	    console.log("colorNodeBorder stub called");
 	                                  //get model type
         var type = this._model.active.getType(nodeId);
-        if(type && type != "triangle"){
+        if(type && type != ""){
             console.log('model type is '+type);
 
             var colorMap = {
