@@ -25,9 +25,10 @@
 define([
     "dojo/_base/array", 'dojo/_base/declare', "dojo/_base/lang",
     'dojo/aspect', 'dojo/dom', "dojo/dom-class", "dojo/dom-construct", 'dojo/dom-style',
-    'dojo/keys', 'dojo/on', "dojo/ready", 'dijit/registry',
-    './equation', './graph-objects',"dijit/TooltipDialog","dijit/popup"
-], function(array, declare, lang, aspect, dom, domClass, domConstruct, domStyle, keys, on, ready, registry, expression, graphObjects,TooltipDialog, popup){
+    'dojo/keys', 'dojo/on', "dojo/ready", 
+    "dijit/popup", 'dijit/registry', "dijit/TooltipDialog",
+    './equation', './graph-objects'
+], function(array, declare, lang, aspect, dom, domClass, domConstruct, domStyle, keys, on, ready, popup, registry, TooltipDialog, expression, graphObjects){
 
     return declare(null, {
         _model: null,
@@ -61,15 +62,16 @@ define([
             ready(this, this._setUpNodeEditor);
             ready(this, this._initHandles);
 
-            //tooltip code moved to controller.js
-            this.myTooltipDialog = new TooltipDialog({ //new tool tip for indicating use of decimals instead of percentages
+	    // Tool Tip for indicating use of decimals instead of percentages
+            this.myTooltipDialog = new TooltipDialog({ 
                 style: "width: 150px;",
-                content: "Use decimals instead of percent"
-            }); 
-            this.myTooltipDialog2 = new TooltipDialog({ // new tooltip for indicating non numeric data is not accepted
+                content: "Use decimals instead of percent."
+            });
+	    // Tool Tip for indicating non numeric data is not accepted
+            this.myTooltipDialog2 = new TooltipDialog({
                 style: "width: 150px;",
-                content: "Non Numeric data not accepted"
-            });  
+                content: "Non-numeric data not accepted"
+            });
         },
         // A list of common controls of student and author
         genericControlMap: {
@@ -273,8 +275,8 @@ define([
             var nodeName = graphObjects.getNodeName(this._model.active,this.currentID);
             if(dom.byId(this.currentID + 'Label'))
                 domConstruct.place(nodeName, this.currentID + 'Label', "replace");
-            if(this.closePops)
-                this.closePops();//this is a function in con-student, where it closes the popups in case node editor is closed
+	    // In case any tool tips are still open.
+            this.closePops();
 
         },
         //set up event handling with UI components
@@ -410,31 +412,31 @@ define([
         /* Stub to update connections in graph */
         addQuantity: function(source, destinations){
         },
-        checkNumber: function(initial){
+        closePops: function(){
+            popup.close(this.myTooltipDialog);
+            popup.close(this.myTooltipDialog2);
+    	},
+        checkNumber: function(initialString){
             var initialWidget = dom.byId(this.widgetMap.initial);
             // Popups only occur for an error, so leave it up until
             // the next time the student attempts to enter a number.
-            popup.close(this.myTooltipDialog);// close old pop-ups' before a new one  
-            popup.close(this.myTooltipDialog2);
+	    this.closePops();
             // we do this type conversion because we used a textbox for initialvalue input which is a numerical
-            initial= +initial; // usage of + unary operator converts a string to number 
+            var initial= +initialString; // usage of + unary operator converts a string to number 
             // use isNaN to test if conversion worked.
             if(isNaN(initial)){
                 // Put in checks here
                 console.log('not a number');
                 //initialValue is the id of the textbox, we get the value in the textbox
-                var impose_nums= initialWidget.value; 
-            
-                if(!impose_nums.match('^[-+]?[0-9]*\.?[0-9]+([eE][-+]?[0-9]+)?%$')){ //To check the decimals against percentages
-                    if(isNaN(impose_nums) && impose_nums!=''){ //Incase input is not a number
-                        console.warn("Should log when this happens");
-                        popup.open({
-                            popup: this.myTooltipDialog2,
-                            around: initialWidget
-                        });
-                    }
-                }else{ //if entered string has percentage symbol, pop up a message to use decimals
-                    console.warn("Should log when this happens");
+                if(!initialString.match('%')){ //To check the decimals against percentages
+                    console.warn("Sachin should log when this happens");
+                    popup.open({
+                        popup: this.myTooltipDialog2,
+                        around: initialWidget
+                    });
+                }else{ 
+		    // if entered string has percentage symbol, pop up a message to use decimals
+                    console.warn("Sachin should log when this happens");
                     popup.open({
                         popup: this.myTooltipDialog,
                         around: initialWidget
@@ -447,17 +449,17 @@ define([
         updateType: function(type){
             //update node type on canvas
             console.log("===========>   changing node class to " + type);
-	 
+
             //if type is triangle, remove border and box-shadow
             if(type==''){
-            	domStyle.set(this.currentID,'border','');
-            	domStyle.set(this.currentID,'box-shadow','');
-                domClass.replace(this.currentID, "triangle");
+  		domStyle.set(this.currentID,'border','');
+		domStyle.set(this.currentID,'box-shadow','');
+		domClass.replace(this.currentID, "triangle");
             } else {
                 domClass.replace(this.currentID, type);
             }
 
-            // updating the model and the equation labels       
+            // updating the model and the equation labels
             this._model.active.setType(this.currentID, type);
             this.updateEquationLabels();
             
@@ -839,7 +841,7 @@ define([
 	    console.log("colorNodeBorder stub called");
 	                                  //get model type
         var type = this._model.active.getType(nodeId);
-        if(type && type != ""){
+        if(type){
             console.log('model type is '+type);
 
             var colorMap = {

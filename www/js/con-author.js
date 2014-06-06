@@ -40,7 +40,7 @@ define([
                 var returnObj=[];
                 switch(nodeType){
                     case "type":
-                        returnObj.push({attribute:"status",id:"type", value:"entered"});
+                        returnObj.push({attribute:"status", id:"type", value:"entered"});
                         if(value == "parameter"){
                             //disable inputs and expression
                             returnObj.push({attribute:"disabled", id:"initial", value:false});
@@ -129,10 +129,6 @@ define([
                         else{
                             returnObj.push({id:"initial", attribute:"status", value:""});
                         }
-                        break;
-
-                    case "inputs":
-                        returnObj.push({id:"inputs", attribute:"status", value:""});
                         break;
 
                     case "equation":
@@ -270,7 +266,6 @@ define([
              The controller modifies the initial value widget so that a "Change" event is
              fired if the widget loses focus.  This may happen when the node editor is closed.
              */
-            //this.applyDirectives(this.authorPM.process(this.currentID, "initial", initial));
             //check number checks for the % and nan values.
             var numberFlag = this.checkNumber(initial);
             this.applyDirectives(this.authorPM.process(this.currentID, "initial", initial, numberFlag));
@@ -286,7 +281,6 @@ define([
         handleInputs: function(name){
             console.log("In AUTHOR mode. Input selected is: " + name);
             this.equationInsert(name);
-            //this.applyDirectives(this.authorPM.process(this.currentID, "inputs", name));
         },
         equationDoneHandler: function(){
 
@@ -301,6 +295,8 @@ define([
             var undefinedVariables = '';
             var directives = [];
 
+	    // This is redundant with code in equationAnalysis() in controller.js
+	    // See https://trello.com/c/dOklXlOu
             var parse;
             try{
                 parse = equation.parse(expression);
@@ -324,7 +320,10 @@ define([
                         this.setConnections(this._model.given.getInputs(this.currentID), this.currentID);
                     } else {
                         variableFlag = true;
-                        undefinedVariables += variable+' ';
+			if(undefinedVariables){
+			    undefinedVariables += ", ";
+			}
+                        undefinedVariables += variable;
                     }
                 }));
                 directives = directives.concat(this.authorPM.process(this.currentID, "equation", expression, variableFlag));
@@ -332,12 +331,6 @@ define([
                     directives = directives.concat({id:"message", attribute:"append", value:"undefined variables : "+undefinedVariables});
             }
             this.applyDirectives(directives);
-            /*else{
-                this.logging.clientLog("error", {
-                    message: "bad parsing",
-                    functionTag: 'equationDoneHandler'
-                });
-            }*/
         },
         initialControlSettings: function(nodeid){
             var name = this._model.given.getName(nodeid);
@@ -382,36 +375,36 @@ define([
             //color name widget
 
             //false value is set because while creating a name we are already checking for uniqueness and checking again while re-opening the node is not needed.
-            if(name)
+            if(name){
                 this.applyDirectives(this.authorPM.process(false, "name", name, equation.isVariable(name)));
-
+	    }
             //color kind widget
-            if(this._model.given.getGenus(this.currentID))
+            if(this._model.given.getGenus(this.currentID)){
                 this.applyDirectives(this.authorPM.process(this.currentID, "kind", this._model.given.getGenus(this.currentID)));
-
+	    }
             //color description widget
             //uniqueness taken care of by the handler while adding a new value. So a false value sent.
-            if(this._model.given.getDescription(this.currentID))
+            if(this._model.given.getDescription(this.currentID)){
                 this.applyDirectives(this.authorPM.process(false, "description", this._model.given.getDescription(this.currentID)));
-
+	    }
             //color units widget
-            var units = this._model.given.getUnits(this.currentID);
-            if(units && units != 'defaultSelect')
+            var unitsChoice = this._model.given.getUnits(this.currentID);
+            if(unitsChoice && unitsChoice != 'defaultSelect'){
                 this.applyDirectives(this.authorPM.process(this.currentID, 'units', this._model.given.getUnits(this.currentID)));
-
+	    }
             //color initial value widget
-            if(this._model.given.getInitial(this.currentID))
+            if(this._model.given.getInitial(this.currentID)){
                 this.applyDirectives(this.authorPM.process(this.currentID, 'initial', this._model.given.getInitial(this.currentID), true));
-
+	    }
             //color units widget
-            if(this._model.given.getEquation(this.currentID))
+            if(this._model.given.getEquation(this.currentID)){
                 this.applyDirectives(this.authorPM.process(this.currentID, 'initial', this._model.given.getInitial(this.currentID), true));
-
+	    }
             var type = this._model.given.getType(this.currentID);
             //color type widget
-            if(type)
+            if(type){
                 this.applyDirectives(this.authorPM.process(this.currentID, 'type', type));
-
+	    }
             if(type && type != 'function'){
                 if(this._model.given.getInitial(this.currentID))
                     this.applyDirectives([{id:"initial", attribute:"status", value:"entered"}]);
