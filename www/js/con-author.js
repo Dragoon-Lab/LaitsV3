@@ -34,6 +34,7 @@ define([
 ], function(array, declare, lang, style, ready, registry, controller, equation, memory){
 
     return declare(controller, {
+        
         //pedagogical module class for author
         authorPM:{
             process: function(nodeID, nodeType, value, validInput){
@@ -106,7 +107,18 @@ define([
                         break;
 
                     case "description":
-                        returnObj.push({id:"description",attribute:"status",value:"entered"});
+                        //alert(validInput);
+                        if(validInput){
+                           returnObj.push({id:"message",attribute:"append",value:"Description is available for use"});
+                            returnObj.push({id:"description",attribute:"status",value:"entered"});  
+                        }
+                        //returnObj.push({id:"description",attribute:"status",value:"entered"});
+                        else
+                        {
+                            returnObj.push({id:"message",attribute:"append",value:"Description is not available for use"});
+                            returnObj.push({id:"description",attribute:"status",value:"entered"});
+                        }
+                        returnObj.push({id:"description",attribute:"status",value:"Incorrect"});
                         break;
 
                     case "initial":
@@ -186,13 +198,16 @@ define([
         handleDescription: function(description){
             // Summary: Checks to see if the given description exists; if the
             //      description doesn't exist, it sets the description of the current node.
+            var abc=1;
             if(!this._model.active.getNodeIDByDescription(description)){
+                
                 this._model.active.setDescription(this.currentID, description);
                 console.log("In AUTHOR mode. Description value is: " + description);
             }else {
                 console.warn("In AUTHOR mode. Attempted to use description that already exists: " + description);
+            abc=0;
             }
-            this.applyDirectives(this.authorPM.process(this.currentID,"description",description));
+            this.applyDirectives(this.authorPM.process(this.currentID,"description",description,abc));
         },
 
         handleType: function(type){

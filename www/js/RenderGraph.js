@@ -70,9 +70,9 @@ define([
 	     one would need to order them using topologicalSort
 	     */
 	    var activeSolution = this.findSolution(true, this.active.plotVariables);
-        if(activeSolution[1]=="error") // Return value from findSlution in calculation, returns an array and we check for any missing nodes
+        if(activeSolution.status=="error" && activeSolution.type=="missing") // Return value from findSlution in calculation, returns an array and we check for status and any missing nodes
 	    {
-	       this.dialogWidget.set("content", "<div>"+activeSolution[0]+"</div>"); //We show the error message like "A Node is Missing"
+	       this.dialogWidget.set("content", "<div>"+activeSolution.missingNode+" is missing</div>"); //We show the error message like "A Node is Missing"
            return;
 	    }
         

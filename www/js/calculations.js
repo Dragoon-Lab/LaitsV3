@@ -78,15 +78,13 @@ define([
 	    } else {
 		console.log("-------- no given solution for mode", mode); 
 	    }
-	},
+	this.dialogWidget = registry.byId("solution");
+    },
 	
 	findSolution: function(isActive, plotVariables){ 
 	    //Summary:  Find a solution
 	    //Returns:  an object of the form
-            //       {status: s, type: m, solution: n}
-	    // where s can be "error" or "solution"
-	    //       m can be "missingVariable" or ....
-            //       n is solution returned by the integration routine
+        //{status: s, type: m, missingNode: n/soln: solution}
 	    var choice = isActive?this.active:this.given;
 	    console.log("in findSolution ", isActive, choice.initialValues, choice.timeStep.parameters);
 	    /*
@@ -104,9 +102,9 @@ define([
             var if_id=err.message.substr(19).trim(); //In case the name is not generated and a node id is , we have to get the name from the active object for the user to understand           
             console.log("catch error",this.model.active.getName(if_id));  
             if(this.model.active.getName(if_id))
-            var new_err=this.model.active.getName(if_id) + " is incomplete"; // In case a node is incomplete
-            else new_err=err.message;
-            return [new_err, "error"];
+            var miss_node=this.model.active.getName(if_id); // In case a node is incomplete
+            else miss_node=if_id;
+            return {status: 'error', type: 'missing', missingNode: miss_node};
         }
         /*
 	     Given a solution, create an array of values for the
@@ -135,7 +133,7 @@ define([
 		}	    
 		return {times: solution.times, plotValues: plotValues};
 	    } else {
-		return [solution, "solution"];
+		return {status: 'solution', soln: solution};
 	    }
 	},
 	
