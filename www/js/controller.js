@@ -76,9 +76,23 @@ define([
             // get Node Editor widget from tree
             this._nodeEditor = registry.byId('nodeeditor');
 
-            // Wire up this.closeEditor
-            aspect.after(this._nodeEditor, "hide",
-                    lang.hitch(this, this.closeEditor));
+            // Wire up this.closeEditor.  Aspect.around is used so we can stop hide() from firing if equation is not entered.
+            aspect.around(this._nodeEditor, "hide", lang.hitch(this, function(doHide){
+                //To keep the proper scope throughout
+                var myThis = this;
+                return function(){
+
+                var equation = registry.byId("equationBox");
+                if(equation.value && equation.disabled == false){
+                    //Crisis alert popup if equation not checked
+                    myThis.applyDirectives([{id: "crisisAlert", attribute: "open", value: "Your expression has not been checked!  Go back and check your expression to verify it is correct, or empty the expression box to exit the node editor without saving an expression."}]);
+                } else{ 
+                    // Else, do normal closeEditor routine and hide
+                    doHide.apply(myThis._nodeEditor);
+                    myThis.closeEditor.call(myThis);
+                }
+            }})); 
+
 
             /*
              Hide/show fields based on inputStyle
@@ -735,12 +749,14 @@ define([
 	 */
         applyDirectives: function(directives, noModelUpdate){
             // Apply directives, either from PM or the controller itself.
+
+                console.log("REID -- Insde ApplyDirectives", directives);
             array.forEach(directives, function(directive) {
                 if(!noModelUpdate)
                     this.updateModelStatus(directive);
                 if (this.widgetMap[directive.id]) {
                     var w = registry.byId(this.widgetMap[directive.id]);
-                    // console.log(">>>>>>>>> setting directive ", directive);
+                    //console.log(">>>>>>>>> setting directive ", directive);
                     if (directive.attribute == 'value') {
                         w.set("value", directive.value, false);
                         // Each control has its own function to update the
