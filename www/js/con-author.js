@@ -136,9 +136,12 @@ define([
                         break;
 
                     case "equation":
-                        if(value){
+                        if(value && !validInput){
                             returnObj.push({id:"equation", attribute:"status", value:"entered"});
-                        }else{
+                        } else if(value && validInput){
+                            returnObj.push({id:"equation", attribute:"status", value:"incorrect"});
+                            //returnObj.push({id:"message", attribute:"append", value:"one or more variables the equation are not available in the model."});
+                        } else {
                             returnObj.push({id:"equation", attribute:"status", value:""});
                         }
                         break;
@@ -199,8 +202,8 @@ define([
             /* check if node with name already exists and
                if name is parsed as valid variable
             */
-	    var nameID = this._model.given.getNodeIDByName(name);
-	    // If nameID is falsy give "null"; if it doesn't match, give "false"
+            var nameID = this._model.given.getNodeIDByName(name);
+            // If nameID is falsy give "null"; if it doesn't match, give "false"
             this.applyDirectives(this.authorPM.process(nameID?!(nameID==this.currentID):null,'name',name, equation.isVariable(name)));
 
             if(!this._model.given.getNodeIDByName(name) && equation.isVariable(name)){
@@ -253,7 +256,7 @@ define([
             // Summary: Sets the units of the current node.
             if(units && units != "defaultSelect"){ 
                 this._model.active.setUnits(this.currentID, units);
-                this.authorPM.process(this.applyDirectives(this.currentID, "units", units));
+                this.applyDirectives(this.authorPM.process(this.currentID, "units", units));
             }
         },
         /*
@@ -289,7 +292,21 @@ define([
             console.log("Inside equationDone handler");
             var widget = registry.byId(this.controlMap.equation);
             var expression = widget.get("value");
-            var parse = equation.parse(expression);
+            var undefinedVariables = '';
+            var directives = [];
+
+            var parse;
+            try{
+                parse = equation.parse(expression);
+            } catch (err){
+                console.log("Parser error: ", err);
+                //this._model.active.setEquation(this.currentID, inputEquation);
+                directives.push({id: 'message', attribute: 'append', value: 'Incorrect equation syntax.'});
+                directives.push({id: 'equation', attribute: 'status', value: 'incorrect'});
+                // Call hook for bad parse
+                this.badParse(expression);
+            }
+            var variableFlag = false;
             if(parse){
                 this._model.given.setEquation(this.currentID, expression);
                 // for every variable in the equation, check if variable matches with
@@ -299,15 +316,22 @@ define([
                         var nodeId = this._model.given.getNodeIDByName(variable);
                         equation.addQuantity(nodeId, this._model.given);
                         this.setConnections(this._model.given.getInputs(this.currentID), this.currentID);
+                    } else {
+                        variableFlag = true;
+                        undefinedVariables += variable+' ';
                     }
                 }));
+                directives = directives.concat(this.authorPM.process(this.currentID, "equation", expression, variableFlag));
+                if(variableFlag)
+                    directives = directives.concat({id:"message", attribute:"append", value:"undefined variables : "+undefinedVariables});
             }
-            else{
+            this.applyDirectives(directives);
+            /*else{
                 this.logging.clientLog("error", {
                     message: "bad parsing",
                     functionTag: 'equationDoneHandler'
                 });
-            }
+            }*/
         },
         initialControlSettings: function(nodeid){
             var name = this._model.given.getName(nodeid);
@@ -375,7 +399,7 @@ define([
 
             //color units widget
             if(this._model.given.getEquation(this.currentID))
-                this.applyDirectives(this.authorPM.process(this.currentID, 'equation', this._model.given.getEquation(this.currentID)));
+                this.applyDirectives(this.authorPM.process(this.currentID, 'initial', this._model.given.getInitial(this.currentID), true));
 
             var type = this._model.given.getType(this.currentID);
             //color type widget

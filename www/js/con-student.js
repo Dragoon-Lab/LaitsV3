@@ -115,9 +115,6 @@ define([
     	},
 	
         handleInitial: function(initial){
-            
-	    
-    
             if(!this.checkNumber(initial)){
                 return;
             }
