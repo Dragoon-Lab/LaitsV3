@@ -59,6 +59,10 @@ define([
             inputs: "nodeInputs"
         },
 
+	setState: function(state){
+	    this._PM.setState(state);
+	},
+
         populateSelections: function(){
 	    /*
              Initialize select options in the node editor that are

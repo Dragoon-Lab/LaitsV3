@@ -71,11 +71,6 @@ define([
         /*
          start up controller
          */
-
-		/*
-		Create state object
-		*/
-		var state = new State(query.u, query.s, "action");
 		
         /* 
          The sub-mode of STUDENT mode can be either "feedback" or "power"
@@ -84,8 +79,8 @@ define([
          */
         var subMode = query.sm || "feedback";
         /* In principle, we could load just one controller or the other. */
-            var controllerObject = query.m == 'AUTHOR' ? new controlAuthor(query.m, subMode, givenModel, query.is) :
-                new controlStudent(query.m, subMode, givenModel, query.is, state);
+            var controllerObject = query.m == 'AUTHOR' ? new controlAuthor(query.m, subMode, givenModel) :
+                new controlStudent(query.m, subMode, givenModel, query.is);
 
         //setting up logging for different modules.
         if(controllerObject._PM)
@@ -94,6 +89,12 @@ define([
         controllerObject.setLogging(session); // set up direct logging in controller
 
         expression.setLogging(session);
+
+	/*
+	 Create state object
+	 */
+	var state = new State(query.u, query.s, "action");
+	controllerObject.setState(state);
 	
         ready(function(){
 

@@ -391,6 +391,13 @@ define([
         matchingID: null,
         logging: null,
         descriptionCounter: 0,
+
+	record: null,
+	setState: function(state){
+	    this.record = state;
+	    
+	},
+
         /*****
          * Private Functions
          *****/
