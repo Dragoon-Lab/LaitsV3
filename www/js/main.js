@@ -79,7 +79,7 @@ define([
          */
         var subMode = query.sm || "feedback";
         /* In principle, we could load just one controller or the other. */
-            var controllerObject = query.m == 'AUTHOR' ? new controlAuthor(query.m, subMode, givenModel) :
+            var controllerObject = query.m == 'AUTHOR' ? new controlAuthor(query.m, subMode, givenModel, query.is) :
                 new controlStudent(query.m, subMode, givenModel, query.is);
 
         //setting up logging for different modules.
@@ -90,11 +90,11 @@ define([
 
         expression.setLogging(session);
 
-	/*
-	 Create state object
-	 */
-	var state = new State(query.u, query.s, "action");
-	controllerObject.setState(state);
+		/*
+		Create state object
+		*/
+		var state = new State(query.u, query.s, "action");
+		controllerObject.setState(state);
 	
         ready(function(){
 

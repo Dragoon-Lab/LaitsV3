@@ -34,7 +34,6 @@
 define([
     "dojo/_base/array", "dojo/_base/declare", "./equation"
 ], function (array, declare, check) {
-    var record = null;
     var hints = {
         // Summary: Messages that are given to the user based on the type of user, 
         //      his or her answers, and the number of hints of that type.
@@ -331,7 +330,8 @@ define([
     // Counters used to determine which message in an array to display; they are not dependent on which node is 
     //      active and differ from the counters (attemptCount) in the model, which are node specific
     var counter = { correct: 0, notTopLevel: 0, premature: 0, initial: 0, extra: 0, irrelevant: 0, redundant: 0, incorrect: 0, lastFailure: 0, lastFailure2: 0 };
-
+	//Declare variable for accessing state module
+	var record = null;
     /*****
      * Summary: The following four functions are used by the above tables to push 
      *      statuses and messages to the return object array.
@@ -383,19 +383,16 @@ define([
             this.model = model;
             this.mode = mode;
             this.setUserType(subMode);
-            record = state;
-            for (var i in counter) {
-                record.init(i, 0);
-            }
         },
         matchingID: null,
         logging: null,
         descriptionCounter: 0,
-
-	record: null,
+	
 	setState: function(state){
-	    this.record = state;
-	    
+	    record = state;
+	    for (var i in counter) {
+            record.init(i, 0);
+        }
 	},
 
         /*****

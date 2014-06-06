@@ -132,6 +132,7 @@ define([
 	},
     
 	getLocal: function(property){
+		console.log("getlocal called");
 	    if (property in this.cache) {
 	        return this.cache[property];
 	    }
