@@ -521,9 +521,7 @@ define([
             },
             pop: function () {
                 var op = this.ops.pop();
-                if (this[op]) {
-                    this[op].pop();
-                }
+                this[op].pop();
                 this.update();
     	    },
             update: function(){
