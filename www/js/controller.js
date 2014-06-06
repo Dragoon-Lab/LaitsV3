@@ -250,6 +250,18 @@ define([
                 w.set("status", '');  // remove colors
             }
 
+	    // Undo Name value (only in AUTHOR mode)
+	    if(this.controlMap.name){
+		var name = registry.byId(this.controlMap["name"]);
+		name.set("value", "");
+	    }
+
+	    // Undo Description value (only needed in AUTHOR mode)
+	    if(this.controlMap.description){
+		var description = registry.byId(this.controlMap.description);
+		description.set("value", "");
+	    }
+
             // Undo any initial value
             var initial = registry.byId(this.controlMap["initial"]);
             initial.set("value", "");
