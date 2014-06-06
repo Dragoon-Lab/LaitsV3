@@ -361,7 +361,7 @@ define([
         counter[status]++;
         if(theCounter > messages.length - 1){
             return messages[messages.length - 1];
-        }else {
+        }else{
             return messages[theCounter];
         }
     }
@@ -399,7 +399,7 @@ define([
                     }else if(this.model.given.getUnits(givenNodeID)){
                         disable(obj, "units", false);
                         newPart = "units";
-                    }else {
+                    }else{
                         disable(obj, "equation", false);
                         newPart = "equation";
                     }
@@ -438,7 +438,7 @@ define([
             var interpret = function(correctAnswer){
                 if(answer === correctAnswer || correctAnswer === true){
                     interpretation = "correct";
-                }else {
+                }else{
                     if(model.given.getAttemptCount(givenID, nodePart) > 0)
                         interpretation = "secondFailure";
                     else
@@ -463,7 +463,7 @@ define([
                         interpretation = "optimal";
                     }else if(this.model.student.getNodes().length === 0){
                         interpretation = "notTopLevel";
-                    }else {
+                    }else{
                         interpretation = "premature";
                     }
                     if(interpretation !== "optimal" && this.descriptionCounter > 2){
@@ -491,14 +491,14 @@ define([
              Note that I haven't set correct-value.  For most controls, it should be set
              */
             if(this.logging){
-                    this.logging.log('solution-step', {
-			node: studentID, 
-			name: this.model.student.getName(givenID), 
-			type: nodePart, 
-			value: answer, 
-			checkResult: (interpretation == 'correct' || interpretation == 'optimal')?'CORRECT':'INCORRECT', 
-			order: interpretation
-		    });
+                this.logging.log('solution-step', {
+                    node: studentID,
+                    name: this.model.student.getName(givenID),
+                    type: nodePart,
+                    value: answer,
+                    checkResult: (interpretation == 'correct' || interpretation == 'optimal') ? 'CORRECT' : 'INCORRECT',
+                    order: interpretation
+                });
             }
             return interpretation;
         },
@@ -538,7 +538,7 @@ define([
                         if(i.value === "correct"){
                             if(model.given.getStatus(givenID, nodePart) !== "demo")
                                 model.given.setStatus(givenID, nodePart, "correct");
-                            else {
+                            else{
                                 i.value = "demo";
                                 returnObj.forEach(function(j){
                                     if(j.id === "message"){
@@ -550,7 +550,7 @@ define([
                         else if(i.value === "demo"){
                             if(model.given.getStatus(givenID, nodePart) !== "correct")
                                 model.given.setStatus(givenID, nodePart, "demo");
-                            else {
+                            else{
                                 i.value = "correct";
                                 returnObj.forEach(function(j){
                                     if(j.id === "message"){
@@ -573,8 +573,15 @@ define([
                     for(var i = 0; i < returnObj.length; i++)
                         if(returnObj[i].value === "correct" || returnObj[i].value === "demo"){
                             currentStatus = this.model.given.getStatus(givenID, nodePart); //get current status set in given model
-                            if(currentStatus !== "correct" && currentStatus !== "demo")
-                                this.model.given.setAttemptCount(answer, nodePart, this.descriptionCounter);
+                            if(currentStatus !== "correct" && currentStatus !== "demo"){
+                                //
+                                this.model.given.setAttemptCount(answer, nodePart, this.descriptionCounter + this.model.given.getAttemptCount(answer, "description"));
+                                //
+                                if(this.model.student.getAssistanceScore(id))
+                                    this.model.student.setAssistanceScore(id, this.descriptionCounter - 1 + this.model.student.getAssistanceScore(id));
+                                else
+                                    this.model.student.setAssistanceScore(id, this.descriptionCounter - 1);
+                            }
                             if(currentStatus === "")
                                 this.model.given.setStatus(givenID, nodePart, returnObj[i].value);
                             else
@@ -583,13 +590,19 @@ define([
                         }
                 }
                 // Process answers for all other node types
-            }else {
+            }else{
                 givenID = this.model.student.getDescriptionID(id);
                 currentStatus = this.model.given.getStatus(givenID, nodePart); //get current status set in given model
                 console.assert(actionTable[interpretation], "processAnswer() interpretation '" + interpretation + "' not in table ", actionTable);
                 actionTable[interpretation][this.userType](returnObj, nodePart);
-                if(currentStatus !== "correct" && currentStatus !== "demo")
+                if(currentStatus !== "correct" && currentStatus !== "demo"){
                     this.model.given.setAttemptCount(givenID, nodePart, this.model.given.getAttemptCount(givenID, nodePart) + 1);
+                    //
+                    for(var i = 0; i < returnObj.length; i++)
+                        if(returnObj[i].value === "incorrect" || returnObj[i].value === "demo"){
+                            this.model.student.incrementAssistanceScore(id);
+                        }
+                }
                 updateStatus(returnObj, this.model);
 
                 // Activate appropriate parts of the node editor
@@ -611,7 +624,7 @@ define([
             //      allows the mode to be updated dynamically.
             if(this.mode === "STUDENT"){
                 this.userType = subMode;
-            }else {
+            }else{
                 this.userType = this.mode;
             }
         },
