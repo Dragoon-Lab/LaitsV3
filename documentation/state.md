@@ -46,8 +46,7 @@ a new model of the student, and setting values for `policies`.
 
 ### State Module ###
 
-The JavaScript module `www/js/state.js` can be used to access the state table.  Generally, one creates a new state object for a specific `section`, `user`, and `apropos`.  Then one can access the associated parameters using `get()` and `put()` methodes.  Note that the `get()` method does not return a value.  Rather, it returns a Dojo *promise*.  See
-`www/js/examples/state-demo.html` for an example showing how to use the `get()` method.
+The JavaScript module `www/js/state.js` can be used to access the state table.  Generally, one creates a new state object for a specific `section`, `user`, and `apropos` using the 'init()' function. The 'init()' function places the initial value in the local cache. Then one can access the associated parameters using `getLocal()` and change the associated parameter using 'increment()' methods. 'Increment()' method also place the updated value in the state table.
 
-Use of a promise is rather inconvenient in most cases.  The new design is to pre-fetch quantities at load time using `init()`, giving a default value to use if a reply is not yet received from the server (or the quantity has not been defined yet).  Then, the `get()` method will either return the value from the server or the default value.
+Note: 'init()' is the only time the module needs to retrieve data from the server. Thus, 'init()' needs to be called before 'increment()' or 'getLocal()' to allow time for data retrieval. This is to avoid problems due to possible delays from the server. After 'init()', all data retrieval relies on the local cache, allowing for greater efficiency.
 
