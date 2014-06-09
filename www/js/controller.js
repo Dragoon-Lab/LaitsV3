@@ -42,7 +42,7 @@ define([
         lastInitialValue: null,
         logging: null,
         // Variable to track if an equation has been entered and checked
-        equationEntered: false,
+	equationEntered: null,  // value is set when node editor opened
 
         constructor: function(mode, subMode, model, inputStyle){
 
@@ -93,7 +93,6 @@ define([
 
             // Wire up this.closeEditor.  Aspect.around is used so we can stop hide()
 	    // from firing if equation is not entered.
-            this.equationEntered = true;
             aspect.around(this._nodeEditor, "hide", lang.hitch(this, function(doHide){
                 //To keep the proper scope throughout
                 var myThis = this;
@@ -807,6 +806,7 @@ define([
             /* mEquation is a number instead of a string if equation is just a number; convert to string before setting the value */
             registry.byId(this.controlMap.equation).set('value', mEquation.toString());
             dom.byId("equationText").innerHTML = mEquation;
+            this.equationEntered = true;
 
             /*
              The PM sets enabled/disabled and color for the controls
