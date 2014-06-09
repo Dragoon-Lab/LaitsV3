@@ -505,6 +505,11 @@ define([
         /*****
          * Public Functions
          *****/
+
+	setState: function(state){
+	    // Stub for setting state object.
+	},
+
         processAnswer: function(/*string*/ id, /*string*/ nodePart, /*string | object*/ answer){
             // Summary: Pocesses a student's answers and returns if correct, 
             //      incorrect, etc. and alerts the controller about what parts 
