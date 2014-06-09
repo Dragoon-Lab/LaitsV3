@@ -84,8 +84,14 @@ EOT;
     header("Content-type: application/json");
     print $row[0];
   } else {
-        // No previous work found:  assume that this is a new problem	 
-    	http_response_code(204);
+    // No previous work found:  assume that this is a new problem	 
+    $statusCode=204;
+    if (function_exists('http_response_code')){
+      // Only exists for php versions >= 5.4.0
+      http_response_code($statusCode);
+    } else {
+      header('HTTP/1.0 ' . $statusCode + ' No Content');
+    }
   }
 
 } else {
