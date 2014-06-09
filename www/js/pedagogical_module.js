@@ -1,3 +1,4 @@
+/* global define */
 /**
  *Dragoon Project
  *Arizona State University
@@ -18,7 +19,6 @@
  *along with Dragoon.  If not, see <http://www.gnu.org/licenses/>.
  *
  */
-/* global define */
 
 /**
  * Pedagogical Module class used to solve Dragoon problems
@@ -326,15 +326,9 @@ define([
             }
         }};
 
-    /*
-     Counters used to determine which message in an array to display; they are not 
-     dependent on which node is active and differ from the counters (attemptCount) 
-     in the model, which are node specific.
-     */
-    var counters = ["correct", "notTopLevel", "premature", "initial", "extra", "irrelevant", "redundant", "incorrect", "lastFailure", "lastFailure2"];
     //Declare variable for accessing state.js module
     var record = null;
-    
+	
     /*****
      * Summary: The following four functions are used by the above tables to push 
      *      statuses and messages to the return object array.
@@ -375,7 +369,13 @@ define([
         matchingID: null,
         logging: null,
         descriptionCounter: 0,
-		
+	/*
+	 Counters used to determine which message in an array to display; 
+	 they are not dependent on which node is active and differ from 
+	 the counters (attemptCount) in the model, which are node-specific.
+	 */
+	counters: ["correct", "notTopLevel", "premature", "initial", "extra", "irrelevant", "redundant", "incorrect", "lastFailure", "lastFailure2"],
+	
         /*****
          * Private Functions
          *****/
@@ -505,7 +505,7 @@ define([
 	
 	setState: function(/*state.js object*/ State){
 	    record = State;
-	    array.forEach(counters, function(counter){
+	    array.forEach(this.counters, function(counter){
 		record.init(counter, 0);
 	    });
 	},

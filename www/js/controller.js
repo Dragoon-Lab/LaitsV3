@@ -109,7 +109,7 @@ define([
 			doHide.apply(myThis._nodeEditor);
 			myThis.closeEditor.call(myThis);
                     }
-		};
+        };
 	    }));
 
             /*
@@ -250,17 +250,18 @@ define([
                 w.set("status", '');  // remove colors
             }
 
-	    // Undo Name value (only in AUTHOR mode)
-	    if(this.controlMap.name){
-		var name = registry.byId(this.controlMap["name"]);
-		name.set("value", "");
-	    }
+            this.disableHandlers = true;
+            // Undo Name value (only in AUTHOR mode)
+    	    if(this.controlMap.name){
+        		var name = registry.byId(this.controlMap["name"]);
+        		name.set("value", "");
+    	    }
 
-	    // Undo Description value (only needed in AUTHOR mode)
-	    if(this.controlMap.description){
-		var description = registry.byId(this.controlMap.description);
-		description.set("value", "");
-	    }
+    	    // Undo Description value (only needed in AUTHOR mode)
+    	    if(this.controlMap.description){
+        		var description = registry.byId(this.controlMap.description);
+        		description.set("value", "");
+    	    }
 
             // Undo any initial value
             var initial = registry.byId(this.controlMap["initial"]);
@@ -286,8 +287,10 @@ define([
             var nodeName = graphObjects.getNodeName(this._model.active,this.currentID);
             if(dom.byId(this.currentID + 'Label'))
                 domConstruct.place(nodeName, this.currentID + 'Label', "replace");
+
 	    // In case any tool tips are still open.
             this.closePops();
+            //this.disableHandlers = false;
 
         },
         //set up event handling with UI components
@@ -305,7 +308,9 @@ define([
              */
 
             var desc = registry.byId(this.controlMap.description);
-            desc.on('Change', lang.hitch(this, this.handleDescription));
+            desc.on('Change', lang.hitch(this, function(){
+                return this.disableHandlers || this.handleDescription.apply(this, arguments);
+            }));
 
             /*
              *   event handler for 'type' field
