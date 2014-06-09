@@ -66,7 +66,7 @@ define([
             "Please start with a quantity mentioned in the problem statement as one that needs to be graphed."
         ],
         correct: [
-            "Green means correct. Good job!",
+            "Green means correct.  Good job!",
             "Green means correct."
         ],
         incorrect: [
@@ -250,8 +250,7 @@ define([
                 disable(obj, part, true);
                 disable(obj, "type", false);
             }
-        }
-    };
+        }};
 
     var actionTable = {
         // Summary: This table is used for determining the proper response to a student's answers in the 
@@ -325,14 +324,12 @@ define([
             power: function(obj, part){
                 disable(obj, "enableRemaining", false);
             }
-        }
-    };
+        }};
 
     // Counters used to determine which message in an array to display; they are not dependent on which node is 
     //      active and differ from the counters (attemptCount) in the model, which are node specific
     var counter = {correct: 0, notTopLevel: 0, premature: 0, initial: 0, extra: 0, irrelevant: 0, redundant: 0, incorrect: 0, lastFailure: 0, lastFailure2: 0};
-	//Declare variable for accessing state module
-	var record = null;
+
     /*****
      * Summary: The following four functions are used by the above tables to push 
      *      statuses and messages to the return object array.
@@ -342,18 +339,13 @@ define([
     }
 
     function message(/*object*/ obj, /*string*/ nodePart, /*string*/ status){
-        var x = record.getLocal(status);
-        counter[status] = x;
-        if(x < hints[status].length){
-            record.increment(status, 1);
-        }
-        if(counter[status] < hints[status].length){
+        if(counter[status] < hints[status].length)
             obj.push({id: "crisisAlert", attribute: "open", value: getMessage(nodePart, status)});
-        }
-        if(status === "extra" || status === "irrelevant"){
+        if(status === "extra" || status === "irrelevant")
             status = "incorrect";
-        }
-        obj.push({id: "message", attribute: "append", value: "The value entered for " + nodePart + " is " + status + "." });
+        if(status === "lastFailure" || status === "lastFailure2")
+            status = "incorrect. The correct answer has been given";
+        obj.push({id: "message", attribute: "append", value: "The value entered for " + nodePart + " is " + status + "."});
     }
 
     function disable(/*object*/ obj, /*string*/ nodePart, /*boolean*/ disable){
@@ -388,14 +380,6 @@ define([
         matchingID: null,
         logging: null,
         descriptionCounter: 0,
-	
-	setState: function(state){
-	    record = state;
-	    for(var i in counter){
-            record.init(i, 0);
-        }
-	},
-
         /*****
          * Private Functions
          *****/
@@ -522,7 +506,7 @@ define([
          * Public Functions
          *****/
         processAnswer: function(/*string*/ id, /*string*/ nodePart, /*string | object*/ answer){
-            // Summary: Processes a student's answers and returns if correct, 
+            // Summary: Pocesses a student's answers and returns if correct, 
             //      incorrect, etc. and alerts the controller about what parts 
             //      of the node editor should be active.
             //
@@ -589,8 +573,15 @@ define([
                     for(var i = 0; i < returnObj.length; i++)
                         if(returnObj[i].value === "correct" || returnObj[i].value === "demo"){
                             currentStatus = this.model.given.getStatus(givenID, nodePart); //get current status set in given model
-                            if(currentStatus !== "correct" && currentStatus !== "demo")
-                                this.model.given.setAttemptCount(answer, nodePart, this.descriptionCounter);
+                            if(currentStatus !== "correct" && currentStatus !== "demo"){
+                                //
+                                this.model.given.setAttemptCount(answer, nodePart, this.descriptionCounter + this.model.given.getAttemptCount(answer, "description"));
+                                //
+                                if(this.model.student.getAssistanceScore(id))
+                                    this.model.student.setAssistanceScore(id, this.descriptionCounter - 1 + this.model.student.getAssistanceScore(id));
+                                else
+                                    this.model.student.setAssistanceScore(id, this.descriptionCounter - 1);
+                            }
                             if(currentStatus === "")
                                 this.model.given.setStatus(givenID, nodePart, returnObj[i].value);
                             else
@@ -606,7 +597,12 @@ define([
                 actionTable[interpretation][this.userType](returnObj, nodePart);
                 if(currentStatus !== "correct" && currentStatus !== "demo"){
                     this.model.given.setAttemptCount(givenID, nodePart, this.model.given.getAttemptCount(givenID, nodePart) + 1);
-		}
+                    //
+                    for(var i = 0; i < returnObj.length; i++)
+                        if(returnObj[i].value === "incorrect" || returnObj[i].value === "demo"){
+                            this.model.student.incrementAssistanceScore(id);
+                        }
+                }
                 updateStatus(returnObj, this.model);
 
                 // Activate appropriate parts of the node editor

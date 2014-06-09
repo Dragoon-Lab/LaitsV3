@@ -72,10 +72,12 @@ define([
 	    this.path = (path || "") + "state.php";
 	},
 	
-    /*
-    This is not in dojo store API, no value will be initiated less than 0.
-    */
+	/*
+	 This is not in dojo store API, no value will be initiated less than 0.
+	 */
 	init: function (property, defaultValue) {
+	    // Add default value to cache *then* request
+	    // value from server, not looking at cache.
 	    this.cache[property] = defaultValue;
 	    this.get(property, true);
 	},
@@ -112,7 +114,7 @@ define([
 	    this.cache[property] = object;
 	    xhr.post(this.path, {
 	        data: lang.mixin({
-	            pry: property, 
+	            pry: property,
 	            vle: json.toJson(object)
 	        }, this.params)
 	    });
@@ -127,9 +129,10 @@ define([
 		}, this.params)
 	    });
 	},
-    
+
 	getLocal: function(property){
-	    console.log("getlocal called");
+	    // Summary:  get value from local cache or return an error.
+	    //           This is supposed to be used in conjunction with init()
 	    if (property in this.cache) {
 	        return this.cache[property];
 	    }else{
@@ -147,5 +150,6 @@ define([
 	    this.put(property, x);
 	    return x;
 	}
+
     });
 });

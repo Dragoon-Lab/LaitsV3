@@ -71,7 +71,7 @@ define([
         /*
          start up controller
          */
-		
+
         /* 
          The sub-mode of STUDENT mode can be either "feedback" or "power"
          This is eventually supposed to be supplied by the student model.
