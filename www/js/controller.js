@@ -166,8 +166,7 @@ define([
                    this.show();
                 }
                 on(registry.byId("OkButton"), "click", function(){
-                    console.log("this is called");
-                    crisis.hide();
+                crisis.hide();
                 });
 
             // Add appender to message widget
@@ -668,8 +667,24 @@ define([
         setConnections: function(from, to){
             // console.log("======== setConnections fired for node" + to);
         },
+
+
+        checkDoneness: function (){
+        var exitNodeEditor = this._PM.checkDoneness(this._model);
+        if(exitNodeEditor){
+            this.applyDirectives([{
+                id: "crisisAlert", attribute:
+                    "open", value: "You have already created all the necessary nodes. You might want to see the graph and table."
+            }]);
+            return false;
+        }else
+            return true;
+        }
+        ,
         //show node editor
         showNodeEditor: function(/*string*/ id){
+            //Checks if the current mode is COACHED mode and exit from node editor if all the modes are defined
+
             console.log("showNodeEditor called for node ", id);
             this.currentID = id; //moved using inside populateNodeEditorFields
             this.disableHandlers = true;
