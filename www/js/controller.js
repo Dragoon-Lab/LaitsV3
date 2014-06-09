@@ -251,6 +251,18 @@ define([
                 w.set("status", '');  // remove colors
             }
 
+	    // Undo Name value (only in AUTHOR mode)
+	    if(this.controlMap.name){
+		var name = registry.byId(this.controlMap["name"]);
+		name.set("value", "");
+	    }
+
+	    // Undo Description value (only needed in AUTHOR mode)
+	    if(this.controlMap.description){
+		var description = registry.byId(this.controlMap.description);
+		description.set("value", "");
+	    }
+
             // Undo any initial value
             var initial = registry.byId(this.controlMap["initial"]);
             initial.set("value", "");
@@ -535,11 +547,11 @@ define([
         },
         sumHandler: function(){
             console.log("****** sum button");
-	    this.structured.setOperation("sum");
+	        this.structured.setOperation("sum");
         },
         productHandler: function(){
             console.log("****** product button");
-	    this.structured.setOperation("product");
+	        this.structured.setOperation("product");
         },
         structured: {
             _model: null, // Needs to be set to to instance of model
@@ -564,7 +576,6 @@ define([
         		}
                 this.update();
             },
-
             handlePositive: function(id){
                 console.log("****** structured.handlePositives ", id);
                 this.positives.push(this._model.given.getName(id));
@@ -579,7 +590,7 @@ define([
                 this.update();
                 registry.byId("negativeInputs").set('value', 'defaultSelect', false);// restore to default
             },
-    	    pop: function(){
+            pop: function () {
                 var op = this.ops.pop();
                 this[op].pop();
                 this.update();
@@ -626,8 +637,15 @@ define([
             }
         },
         undoHandler: function(){
-            var widget = registry.byId(this.controlMap.equation);
-            this.structured.pop();
+			if(this.structured.ops.length == 0) {
+				var equationWidget = registry.byId("equationBox");
+				equationWidget.set("value", "");
+				dom.byId("equationText").innerHTML = ""
+			}
+			else {
+				var widget = registry.byId(this.controlMap.equation);
+				this.structured.pop();
+			}
         },
         equationAnalysis: function(directives){
             this.equationEntered = true;
