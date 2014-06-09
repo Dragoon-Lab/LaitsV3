@@ -100,7 +100,7 @@ define([
             /* add "Create Node" button to menu */
             menu.add("createNodeButton", function(){
 
-                if(!controllerObject.checkDoneness()){
+                if(!controllerObject.checkDonenessMessage()){
                     return;
                 }
 		

@@ -669,7 +669,7 @@ define([
         },
 
 
-        checkDoneness: function (){
+        checkDonenessMessage: function (){
         var exitNodeEditor = this._PM.checkDoneness(this._model);
         if(exitNodeEditor){
             this.applyDirectives([{
