@@ -329,7 +329,9 @@ define([
     // Counters used to determine which message in an array to display; they are not dependent on which node is 
     //      active and differ from the counters (attemptCount) in the model, which are node specific
     var counter = {correct: 0, notTopLevel: 0, premature: 0, initial: 0, extra: 0, irrelevant: 0, redundant: 0, incorrect: 0, lastFailure: 0, lastFailure2: 0};
-
+	//Declare variable for accessing state.js module
+	var record = null;
+	
     /*****
      * Summary: The following four functions are used by the above tables to push 
      *      statuses and messages to the return object array.
@@ -339,7 +341,9 @@ define([
     }
 
     function message(/*object*/ obj, /*string*/ nodePart, /*string*/ status){
+		counter[status] = record.getLocal(status);
         if(counter[status] < hints[status].length)
+			record.increment(status, 1);
             obj.push({id: "crisisAlert", attribute: "open", value: getMessage(nodePart, status)});
         if(status === "extra" || status === "irrelevant")
             status = "incorrect";
@@ -380,6 +384,13 @@ define([
         matchingID: null,
         logging: null,
         descriptionCounter: 0,
+		
+		setState: function(/*state.js object*/ State){
+			record = State;
+			for (var status in counter) {
+				record.init(status, 0);
+			}
+		},
         /*****
          * Private Functions
          *****/
