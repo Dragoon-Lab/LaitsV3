@@ -162,6 +162,12 @@ define([
             this.authorControls();
             ready(this, "initAuthorHandles");
         },
+
+	/*
+	 Stub for setting up state saving in AUTHOR mode.
+	 */
+	setState: function(){},
+
         controlMap: {
             inputs:"setInput",
             name:"setName",
