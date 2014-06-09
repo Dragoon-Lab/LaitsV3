@@ -328,7 +328,7 @@ define([
 
     // Counters used to determine which message in an array to display; they are not dependent on which node is 
     //      active and differ from the counters (attemptCount) in the model, which are node specific
-    var counter = {correct: 0, notTopLevel: 0, premature: 0, initial: 0, extra: 0, irrelevant: 0, redundant: 0, incorrect: 0, lastFailure: 0, lastFailure2: 0};
+    var counter = ["correct", "notTopLevel", "premature", "initial", "extra", "irrelevant", "redundant", "incorrect", "lastFailure", "lastFailure2"];
 	//Declare variable for accessing state.js module
 	var record = null;
 	
@@ -341,10 +341,9 @@ define([
     }
 
     function message(/*object*/ obj, /*string*/ nodePart, /*string*/ status){
-		counter[status] = record.getLocal(status);
-        if(counter[status] < hints[status].length)
+        if(record.getLocal(status) < hints[status].length){
 			record.increment(status, 1);
-            obj.push({id: "crisisAlert", attribute: "open", value: getMessage(nodePart, status)});
+            obj.push({id: "crisisAlert", attribute: "open", value: getMessage(nodePart, status)})};
         if(status === "extra" || status === "irrelevant")
             status = "incorrect";
         if(status === "lastFailure" || status === "lastFailure2")
@@ -361,8 +360,7 @@ define([
         var messages = new Array();
         var theCounter = 0;
         messages = hints[status];
-        theCounter = counter[status];
-        counter[status]++;
+        theCounter = record.getLocal(status);
         if(theCounter > messages.length - 1){
             return messages[messages.length - 1];
         }else{
@@ -385,12 +383,6 @@ define([
         logging: null,
         descriptionCounter: 0,
 		
-		setState: function(/*state.js object*/ State){
-			record = State;
-			for (var status in counter) {
-				record.init(status, 0);
-			}
-		},
         /*****
          * Private Functions
          *****/
@@ -516,6 +508,13 @@ define([
         /*****
          * Public Functions
          *****/
+		setState: function(/*state.js object*/ State){
+			record = State;
+			for (var status in counter) {
+				record.init(counter[status], 0);
+			}
+		},
+		
         processAnswer: function(/*string*/ id, /*string*/ nodePart, /*string | object*/ answer){
             // Summary: Pocesses a student's answers and returns if correct, 
             //      incorrect, etc. and alerts the controller about what parts 
