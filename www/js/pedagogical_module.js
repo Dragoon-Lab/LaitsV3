@@ -369,12 +369,6 @@ define([
         matchingID: null,
         logging: null,
         descriptionCounter: 0,
-	/*
-	 Counters used to determine which message in an array to display; 
-	 they are not dependent on which node is active and differ from 
-	 the counters (attemptCount) in the model, which are node-specific.
-	 */
-	counters: ["correct", "notTopLevel", "premature", "initial", "extra", "irrelevant", "redundant", "incorrect", "lastFailure", "lastFailure2"],
 	
         /*****
          * Private Functions
@@ -505,9 +499,9 @@ define([
 	
 	setState: function(/*state.js object*/ State){
 	    record = State;
-	    array.forEach(this.counters, function(counter){
-		record.init(counter, 0);
-	    });
+	    for(var hint in hints){
+		record.init(hint, 0);
+	    };
 	},
 		
         processAnswer: function(/*string*/ id, /*string*/ nodePart, /*string | object*/ answer){
