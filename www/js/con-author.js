@@ -135,7 +135,7 @@ define([
                         if(value && !validInput){
                             returnObj.push({id:"equation", attribute:"status", value:"entered"});
                         } else if(value && validInput){
-                            returnObj.push({id:"equation", attribute:"status", value:"incorrect"});
+                            returnObj.push({id:"equation", attribute:"status", value:"entered"});
                             //returnObj.push({id:"message", attribute:"append", value:"one or more variables the equation are not available in the model."});
                         } else {
                             returnObj.push({id:"equation", attribute:"status", value:""});
@@ -293,7 +293,7 @@ define([
             //WORKAROUND -- Sets equationENtered once Check Expression is clicked 
 	    // to enable window to close
 	    // Remove when equationDoneHandler calls equationAnalysis
-            this.equationEntered = true;
+            //this.equationEntered = true;
 
             console.log("Inside equationDone handler");
             var widget = registry.byId(this.controlMap.equation);
@@ -308,7 +308,7 @@ define([
                 parse = equation.parse(expression);
             } catch (err){
                 console.log("Parser error: ", err);
-                //this._model.active.setEquation(this.currentID, inputEquation);
+                this._model.active.setEquation(this.currentID, expression);
                 directives.push({id: 'message', attribute: 'append', value: 'Incorrect equation syntax.'});
                 directives.push({id: 'equation', attribute: 'status', value: 'incorrect'});
                 // Call hook for bad parse

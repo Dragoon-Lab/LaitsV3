@@ -109,7 +109,7 @@ define([
 			doHide.apply(myThis._nodeEditor);
 			myThis.closeEditor.call(myThis);
                     }
-        };
+            };
 	    }));
 
             /*
@@ -475,6 +475,17 @@ define([
                 domClass.replace(this.currentID, type);
             }
 
+            //resetting the value of initial and equation boxes when type is changed in author mode
+            if(type == "function" && this._model.active.getInitial(this.currentID)){
+                var initialNode = registry.byId(this.controlMap.initial);
+                initialNode.set("value", "");
+            }
+            if(type == "parameter" && this._model.active.getEquation(this.currentID)){
+                var equationNode = registry.byId(this.controlMap.equation);
+                equationNode.set("value", "");
+                //changing the equation value does not call the handler so setting the value explicitly using set equation.
+                this._model.active.setEquation(this.currentID, '');
+            }
             // updating the model and the equation labels
             this._model.active.setType(this.currentID, type);
             this.updateEquationLabels();
