@@ -124,65 +124,25 @@ define([
     	    this.updateType(value);
     	},
 	
-        handleInitial: function(initial){
+       handleInitial: function(initial){
             
-	    var initialWidget = dom.byId(this.widgetMap.initial);
-	    // Popups only occur for an error, so leave it up until
-	    // the next time the student attempts to enter a number.
-            popup.close(this.myTooltipDialog);// close old pop-ups' before a new one  
-            popup.close(this.myTooltipDialog2);
-    
-            
- 	    // we do this type conversion because we used a textbox for initialvalue input which is a numerical
-            initial= +initial; // usage of + unary operator converts a string to number 
-	    // use isNaN to test if conversion worked.
-            if(isNaN(initial)){
-		// Put in checks here
-   	        console.log('not a number');
-		//initialValue is the id of the textbox, we get the value in the textbox
-		var impose_nums= initialWidget.value; 
-		
-		if(!impose_nums.match('^[-+]?[0-9]*\.?[0-9]+([eE][-+]?[0-9]+)?%$')){ //To check the decimals against percentages
-                    
-                  if(isNaN(impose_nums) && impose_nums!=''){ //Incase input is not a number
-		    console.warn("Should log when this happens");
-                    popup.open({
-			popup: this.myTooltipDialog2,
-			around: initialWidget
-                    });
-                  }
-		}else{ //if entered string has percentage symbol, pop up a message to use decimals
-		    console.warn("Should log when this happens");
-                    popup.open({
-			popup: this.myTooltipDialog,
-			around: initialWidget
-                    });
-		}
-		
-		return; 
+            var numberFlag = this.checkNumber(initial,this.lastInitialValue);
+            console.log("numberFlag",numberFlag);
+            if(!numberFlag){
+                return;
             }
-	    console.log("****** Student has chosen initial value", initial, this.lastInitialValue);
-    	    /*
-    		 Evaluate only if the value is changed.
-	     
-    	     The controller modifies the initial value widget so that a "Change" event is
-    	     fired if the widget loses focus.  This may happen when the node editor is closed.
-    	     */
-    	    if(typeof initial === 'undefined' || initial == this.lastInitialValue){
-    		return;
-    	    }
-
-    	    this.lastInitialValue = initial;
-	    
-            // updating node editor and the model.
-            this._model.active.setInitial(this.currentID, initial);
+            else{
+            console.log("****** Student has chosen initial value", initial, this.lastInitialValue);
+            initial=+initial;
             this.applyDirectives(this._PM.processAnswer(this.currentID, 'initial', initial));
-	},
+        }
+        
+        },
+        
          closePops: function(){
             popup.close(this.myTooltipDialog);// close old pop-ups' before a new one  
             popup.close(this.myTooltipDialog2);
     	},
-	
         initialSet: function(value){
                 this._model.active.setInitial(this.currentID, value);
     	},

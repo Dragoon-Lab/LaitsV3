@@ -25,9 +25,10 @@
 define([
     "dojo/_base/array", 'dojo/_base/declare', "dojo/_base/lang",
     'dojo/aspect', 'dojo/dom', "dojo/dom-class", "dojo/dom-construct", 'dojo/dom-style',
-    'dojo/keys', 'dojo/on', "dojo/ready", 'dijit/registry',
+    'dojo/keys', 'dojo/on', "dojo/ready", 
+    "dijit/popup", 'dijit/registry', "dijit/TooltipDialog",
     './equation', './graph-objects'
-], function(array, declare, lang, aspect, dom, domClass, domConstruct, domStyle, keys, on, ready, registry, expression, graphObjects){
+], function(array, declare, lang, aspect, dom, domClass, domConstruct, domStyle, keys, on, ready, popup, registry, TooltipDialog, expression, graphObjects){
 
     return declare(null, {
         _model: null,
@@ -382,6 +383,47 @@ define([
         },
         /* Stub to update connections in graph */
         addQuantity: function(source, destinations){
+        },
+        closePops: function(){
+            popup.close(this.myTooltipDialog);
+            popup.close(this.myTooltipDialog2);
+    	},
+        checkNumber: function(initialString,thislastInitialValue){
+            var initialWidget = dom.byId(this.widgetMap.initial);
+            // Popups only occur for an error, so leave it up until
+            // the next time the student attempts to enter a number.
+	         this.closePops();
+            // we do this type conversion because we used a textbox for initialvalue input which is a numerical
+             var initial= +initialString; // usage of + unary operator converts a string to number 
+            // use isNaN to test if conversion worked.
+            if(isNaN(initial)){
+                // Put in checks here
+                console.log('not a number');
+                //initialValue is the id of the textbox, we get the value in the textbox
+                if(!initialString.match('%')){ //To check the decimals against percentages
+                    console.warn("Sachin should log when this happens");
+                    popup.open({
+                        popup: this.myTooltipDialog2,
+                        around: initialWidget
+                    });
+                }else{ 
+		    // if entered string has percentage symbol, pop up a message to use decimals
+                    console.warn("Sachin should log when this happens");
+                    popup.open({
+                        popup: this.myTooltipDialog,
+                        around: initialWidget
+                    });
+                }            
+                return false; 
+            }
+            console.log("is",initialString,thislastInitialValue);
+            if(typeof initialString === 'undefined' || initialString == thislastInitialValue){
+    		return false;
+    	    }
+    	    this.lastInitialValue = initialString;
+            // updating node editor and the model.
+            this._model.active.setInitial(this.currentID, initialString);
+            return true;
         },
         updateType: function(type){
             //update node type on canvas
