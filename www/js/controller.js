@@ -797,7 +797,13 @@ define([
 
             var unit = model.getUnits(nodeid);
             console.log('unit is', unit || "not set");
-            registry.byId(this.controlMap.units).set('value', unit || 'defaultSelect');
+            // Initial input in Units box
+            registry.byId(this.controlMap.units).set('value', unit || '');
+
+            var input = model.getInputs(nodeid);
+            console.log('input is',input || "not set");
+            // Initial input in Inputs box
+            registry.byId(this.controlMap.inputs).set('value', input || '');
 
             var equation = model.getEquation(nodeid);
             console.log("equation before conversion ", equation);
