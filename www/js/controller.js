@@ -745,19 +745,6 @@ define([
             // console.log("======== setConnections fired for node" + to);
         },
 
-
-        checkDonenessMessage: function (){
-        var exitNodeEditor = this._PM.checkDoneness(this._model);
-        if(exitNodeEditor){
-            this.applyDirectives([{
-                id: "crisisAlert", attribute:
-                    "open", value: "You have already created all the necessary nodes. You might want to see the graph and table."
-            }]);
-            return false;
-        }else
-            return true;
-        }
-        ,
         //show node editor
         showNodeEditor: function(/*string*/ id){
             //Checks if the current mode is COACHED mode and exit from node editor if all the modes are defined

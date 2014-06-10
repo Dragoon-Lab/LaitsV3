@@ -241,6 +241,14 @@ define([
 
                 // console.warn("======= not saving in status, node=" + this.currentID + ": ", desc);
             }
+        },
+
+        checkDonenessMessage: function (){
+	    // Returns true if model is not complete.
+            var directives = this._PM.checkDoneness(this._model);
+	    this.applyDirectives(directives);
+	    return directives;
         }
+
     });
 });

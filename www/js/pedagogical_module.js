@@ -657,11 +657,15 @@ define([
             // directives.push({id: 'type', attribute: 'disableOption', value: 'product'});
             return directives;
         },
+
         checkDoneness: function(model){
-            if(this.mode === "COACHED" ){
-                console.log("checkDoneness called for COACHED MODE");
-                return  model.areRequiredNodesVisible();
-            }
+            if(model.areRequiredNodesVisible()){
+		return [{
+                    id: "crisisAlert", 
+		    attribute: "open", 
+		    value: "You have already created all the necessary nodes. You might want to click on \"Graph\" or \"Table\""
+		}];
+            } 
             return false;
         }
 

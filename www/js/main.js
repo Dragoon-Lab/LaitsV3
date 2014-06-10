@@ -107,7 +107,8 @@ define([
             /* add "Create Node" button to menu */
             menu.add("createNodeButton", function(){
 
-                if(!controllerObject.checkDonenessMessage()){
+                if(controllerObject.checkDonenessMessage && 
+		   controllerObject.checkDonenessMessage()){
                     return;
                 }
 		
