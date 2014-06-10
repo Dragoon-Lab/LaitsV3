@@ -256,10 +256,10 @@ define([
         handleUnits: function(units){
             console.log("**************** in handleUnits ", units);
             // Summary: Sets the units of the current node.
-            if(units && units != "defaultSelect"){ 
+            //if(units && units != "defaultSelect"){ 
                 this._model.active.setUnits(this.currentID, units);
                 this.applyDirectives(this.authorPM.process(this.currentID, "units", units));
-            }
+            //}
         },
         /*
          Handler for initial value input
@@ -350,6 +350,7 @@ define([
             var inputsWidget = registry.byId(this.controlMap.inputs);
             var nameWidget = registry.byId(this.controlMap.name);
             var descriptionWidget = registry.byId(this.controlMap.description);
+            var unitsWidget = registry.byId(this.controlMap.units);
 
             /*
             *   populate the nodes in the Name, Description, Units, and Inputs tab
@@ -365,8 +366,11 @@ define([
                     var obj = {name:name, id:desc.id};
                     dummyArray.push(obj);
             descriptions.push({name: this._model.given.getDescription(desc.value), id: desc.id});
-            units.push({name: this._model.given.getUnits(desc.value), id: desc.id});
                 }
+            }, this);
+            array.forEach(this._model.getAllUnits(), function(unit){
+                if(unit)
+                    units.push({name : unit, id:unit});
             }, this);
             var m = new memory({data:dummyArray});
             inputsWidget.set("store", m);
@@ -374,7 +378,7 @@ define([
             m = new memory({data: descriptions});
             descriptionWidget.set("store", m);
             m = new memory({data: units});
-            units.push("store", m);
+            unitsWidget.set("store", m);
 
             var value;
             //node is not created for the first time. apply colors to widgets
