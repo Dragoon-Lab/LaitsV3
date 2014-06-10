@@ -659,7 +659,7 @@ define([
         },
 
         checkDoneness: function(model){
-            if(model.areRequiredNodesVisible()){
+            if(this.mode == "COACHED" && model.areRequiredNodesVisible()){
 		return [{
                     id: "crisisAlert", 
 		    attribute: "open", 
