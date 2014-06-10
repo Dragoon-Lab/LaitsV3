@@ -26,8 +26,8 @@ define([
     "dojo/_base/array", 'dojo/_base/declare', "dojo/_base/lang",
     "dojo/dom", "dojo/ready",
     'dijit/registry',
-    './controller', "./pedagogical_module", "./equation",'dojo/dom-style',"dijit/TooltipDialog","dijit/popup"
-], function(array, declare, lang, dom, ready, registry, controller, PM, expression,style,TooltipDialog, popup){
+    './controller', "./pedagogical_module", "./equation"
+], function(array, declare, lang, dom, ready, registry, controller, PM, expression){
 
     /*
      Methods in controller specific to the student modes
@@ -41,16 +41,6 @@ define([
             this._PM = new PM(mode, subMode, model);
             lang.mixin(this.widgetMap, this.controlMap);
 	    ready(this, "populateSelections");
-
-            this.myTooltipDialog = new TooltipDialog({ //new tool tip for indicating use of decimals instead of percentages
-		style: "width: 150px;",
-		content: "Use decimals instead of percent"
-            }); 
-            this.myTooltipDialog2 = new TooltipDialog({ // new tooltip for indicating non numeric data is not accepted
-		style: "width: 150px;",
-		content: "Non Numeric data not accepted"
-            });        
-
         },
         // A list of control map specific to students
         controlMap: {
@@ -123,26 +113,18 @@ define([
     	typeSet: function(value){
     	    this.updateType(value);
     	},
+        /*
+         Handler for initial value input
+         */
 	
        handleInitial: function(initial){
-            
-            var numberFlag = this.checkNumber(initial,this.lastInitialValue);
-            console.log("numberFlag",numberFlag);
-            if(!numberFlag){
-                return;
+            var IniFlag = this.checkInitialValue(initial,this.lastInitialValue); //IniFlag returns the status and initial value
+            if(IniFlag.status){ //If the initial value is not a number of is unchanged from previous value we dont process
+            var newInitial=IniFlag.value;
+            this.applyDirectives(this._PM.processAnswer(this.currentID, 'initial', newInitial));
             }
-            else{
-            console.log("****** Student has chosen initial value", initial, this.lastInitialValue);
-            initial=+initial;
-            this.applyDirectives(this._PM.processAnswer(this.currentID, 'initial', initial));
-        }
-        
         },
         
-         closePops: function(){
-            popup.close(this.myTooltipDialog);// close old pop-ups' before a new one  
-            popup.close(this.myTooltipDialog2);
-    	},
         initialSet: function(value){
                 this._model.active.setInitial(this.currentID, value);
     	},

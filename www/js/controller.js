@@ -58,7 +58,22 @@ define([
             // after widgets are set up.
             ready(this, this._setUpNodeEditor);
             ready(this, this._initHandles);
+        
+	    // Tool Tip for indicating use of decimals instead of percentages
+            this.myTooltipDialog = new TooltipDialog({ 
+                style: "width: 150px;",
+                content: "Use decimals instead of percent."
+            });
+	    // Tool Tip for indicating non numeric data is not accepted
+            this.myTooltipDialog2 = new TooltipDialog({
+                style: "width: 150px;",
+                content: "Non-numeric data not accepted"
+            });
         },
+        
+        
+        
+        
         // A list of common controls of student and author
         genericControlMap: {
             type: "typeId",
@@ -154,6 +169,7 @@ define([
                 });
                 this.startup();
             };
+            
             
             // All <select> controls
             array.forEach(this.selects, function(select){
@@ -388,7 +404,10 @@ define([
             popup.close(this.myTooltipDialog);
             popup.close(this.myTooltipDialog2);
     	},
-        checkNumber: function(initialString,thislastInitialValue){
+        
+        checkInitialValue: function(initialString,thislastInitialValue){ 
+            //Description : performs non number check and also checks if the initial value was changed from previously entered value
+            //returns: status, a boolean value and value, the current initial value
             var initialWidget = dom.byId(this.widgetMap.initial);
             // Popups only occur for an error, so leave it up until
             // the next time the student attempts to enter a number.
@@ -405,7 +424,7 @@ define([
                     popup.open({
                         popup: this.myTooltipDialog2,
                         around: initialWidget
-                    });
+                     });
                 }else{ 
 		    // if entered string has percentage symbol, pop up a message to use decimals
                     console.warn("Sachin should log when this happens");
@@ -413,17 +432,18 @@ define([
                         popup: this.myTooltipDialog,
                         around: initialWidget
                     });
-                }            
-                return false; 
+                 }            
+                return {status: false}; 
             }
-            console.log("is",initialString,thislastInitialValue);
+                        
             if(typeof initialString === 'undefined' || initialString == thislastInitialValue){
-    		return false;
+    		return { status: false};
     	    }
     	    this.lastInitialValue = initialString;
             // updating node editor and the model.
+            initialString=+initialString;
             this._model.active.setInitial(this.currentID, initialString);
-            return true;
+            return { status: true, value: initialString};
         },
         updateType: function(type){
             //update node type on canvas
