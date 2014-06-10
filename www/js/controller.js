@@ -25,9 +25,10 @@
 define([
     "dojo/_base/array", 'dojo/_base/declare', "dojo/_base/lang",
     'dojo/aspect', 'dojo/dom', "dojo/dom-class", "dojo/dom-construct", 'dojo/dom-style',
-    'dojo/keys', 'dojo/on', "dojo/ready", 'dijit/registry',
+    'dojo/keys', 'dojo/on', "dojo/ready", 
+    "dijit/popup", 'dijit/registry', "dijit/TooltipDialog",
     './equation', './graph-objects'
-], function(array, declare, lang, aspect, dom, domClass, domConstruct, domStyle, keys, on, ready, registry, expression, graphObjects){
+], function(array, declare, lang, aspect, dom, domClass, domConstruct, domStyle, keys, on, ready, popup, registry, TooltipDialog, expression, graphObjects){
 
     return declare(null, {
         _model: null,
@@ -40,6 +41,9 @@ define([
         /* The last value entered into the intial value control */
         lastInitialValue: null,
         logging: null,
+        // Variable to track if an equation has been entered and checked
+	equationEntered: null,  // value is set when node editor opened
+
         constructor: function(mode, subMode, model, inputStyle){
 
             console.log("+++++++++ In generic controller constructor");
@@ -57,6 +61,17 @@ define([
             // after widgets are set up.
             ready(this, this._setUpNodeEditor);
             ready(this, this._initHandles);
+
+	    // Tool Tip for indicating use of decimals instead of percentages
+            this.myTooltipDialog = new TooltipDialog({ 
+                style: "width: 150px;",
+                content: "Use decimals instead of percent."
+            });
+	    // Tool Tip for indicating non numeric data is not accepted
+            this.myTooltipDialog2 = new TooltipDialog({
+                style: "width: 150px;",
+                content: "Non-numeric data not accepted"
+            });
         },
         // A list of common controls of student and author
         genericControlMap: {
@@ -76,9 +91,26 @@ define([
             // get Node Editor widget from tree
             this._nodeEditor = registry.byId('nodeeditor');
 
-            // Wire up this.closeEditor
-            aspect.after(this._nodeEditor, "hide",
-                    lang.hitch(this, this.closeEditor));
+            // Wire up this.closeEditor.  Aspect.around is used so we can stop hide()
+	    // from firing if equation is not entered.
+            aspect.around(this._nodeEditor, "hide", lang.hitch(this, function(doHide){
+                //To keep the proper scope throughout
+                var myThis = this;
+                return function(){
+                    var equation = registry.byId("equationBox");
+                    if(equation.value && !myThis.equationEntered){
+			//Crisis alert popup if equation not checked
+			myThis.applyDirectives([{
+			    id: "crisisAlert", attribute:
+			    "open", value: "Your expression has not been checked!  Go back and check your expression to verify it is correct, or delete the expression, before closing the node editor."
+			}]);
+                    }else{
+			// Else, do normal closeEditor routine and hide
+			doHide.apply(myThis._nodeEditor);
+			myThis.closeEditor.call(myThis);
+                    }
+        };
+	    }));
 
             /*
              Hide/show fields based on inputStyle
@@ -159,12 +191,11 @@ define([
 
                 var crisis = registry.byId(this.widgetMap.crisisAlert);
                 crisis._setOpenAttr = function(message){
-                    var crisisMessage = dojo.byId('crisisMessage');
+                    var crisisMessage = dom.byId('crisisMessage');
                     console.log("crisis alert message ", message);
-                    crisisMessage.innerHTML = message; //deprecated error
-                    //this.setContent(message);
-                   this.show();
-                }
+                    crisisMessage.innerHTML = message;
+                    this.show();
+                };
                 on(registry.byId("OkButton"), "click", function(){
                 crisis.hide();
                 });
@@ -218,6 +249,19 @@ define([
                 w.set("status", '');  // remove colors
             }
 
+            this.disableHandlers = true;
+            // Undo Name value (only in AUTHOR mode)
+    	    if(this.controlMap.name){
+        		var name = registry.byId(this.controlMap["name"]);
+        		name.set("value", "");
+    	    }
+
+    	    // Undo Description value (only needed in AUTHOR mode)
+    	    if(this.controlMap.description){
+        		var description = registry.byId(this.controlMap.description);
+        		description.set("value", "");
+    	    }
+
             // Undo any initial value
             var initial = registry.byId(this.controlMap["initial"]);
             initial.set("value", "");
@@ -235,15 +279,17 @@ define([
             var messageWidget = registry.byId(this.widgetMap.message);
             messageWidget.set('content', '');
 
-	    // Color the borders of the Node
-	    this.colorNodeBorder(this.currentID);
+            // Color the borders of the Node
+            this.colorNodeBorder(this.currentID);
 
-	    // update Node labels upon exit	
+            // update Node labels upon exit	
             var nodeName = graphObjects.getNodeName(this._model.active,this.currentID);
             if(dom.byId(this.currentID + 'Label'))
                 domConstruct.place(nodeName, this.currentID + 'Label', "replace");
-                if(this.closePops)
-                this.closePops();//this is a function in con-student, where it closes the popups in case node editor is closed
+
+	    // In case any tool tips are still open.
+            this.closePops();
+            //this.disableHandlers = false;
 
         },
         //set up event handling with UI components
@@ -261,7 +307,9 @@ define([
              */
 
             var desc = registry.byId(this.controlMap.description);
-            desc.on('Change', lang.hitch(this, this.handleDescription));
+            desc.on('Change', lang.hitch(this, function(){
+                return this.disableHandlers || this.handleDescription.apply(this, arguments);
+            }));
 
             /*
              *   event handler for 'type' field
@@ -379,20 +427,64 @@ define([
         /* Stub to update connections in graph */
         addQuantity: function(source, destinations){
         },
+        closePops: function(){
+            popup.close(this.myTooltipDialog);
+            popup.close(this.myTooltipDialog2);
+    	},
+        checkNumber: function(initialString){
+            var initialWidget = dom.byId(this.widgetMap.initial);
+            // Popups only occur for an error, so leave it up until
+            // the next time the student attempts to enter a number.
+	    this.closePops();
+            // we do this type conversion because we used a textbox for initialvalue input which is a numerical
+            var initial= +initialString; // usage of + unary operator converts a string to number 
+            // use isNaN to test if conversion worked.
+            if(isNaN(initial)){
+                // Put in checks here
+                console.log('not a number');
+                //initialValue is the id of the textbox, we get the value in the textbox
+                if(!initialString.match('%')){ //To check the decimals against percentages
+                    console.warn("Sachin should log when this happens");
+                    popup.open({
+                        popup: this.myTooltipDialog2,
+                        around: initialWidget
+                    });
+                }else{ 
+		    // if entered string has percentage symbol, pop up a message to use decimals
+                    console.warn("Sachin should log when this happens");
+                    popup.open({
+                        popup: this.myTooltipDialog,
+                        around: initialWidget
+                    });
+                }            
+                return false; 
+            }
+            return true;
+        },
         updateType: function(type){
             //update node type on canvas
             console.log("===========>   changing node class to " + type);
-            domClass.replace(this.currentID, type);
 
-	    var nodeName = graphObjects.getNodeName(this._model.active,this.currentID,type);
-            if(dom.byId(this.currentID + 'Label'))
-                domConstruct.place(nodeName, this.currentID + 'Label', "replace");
-            else //new node
-                domConstruct.place(nodeName, this.currentID);
+            //if type is triangle, remove border and box-shadow
+            if(type==''){
+  		domStyle.set(this.currentID,'border','');
+		domStyle.set(this.currentID,'box-shadow','');
+		domClass.replace(this.currentID, "triangle");
+            } else {
+                domClass.replace(this.currentID, type);
+            }
 
-            // updating the model and the equation labels	    
+            // updating the model and the equation labels
             this._model.active.setType(this.currentID, type);
             this.updateEquationLabels();
+            
+            var nodeName = graphObjects.getNodeName(this._model.active,this.currentID,type);
+            if(nodeName != ''){
+                if(dom.byId(this.currentID + 'Label'))
+                    domConstruct.place(nodeName, this.currentID + 'Label', "replace");
+                else //new node
+                    domConstruct.place(nodeName, this.currentID);
+            }
         },
         updateEquationLabels: function(typeIn){
             var type = typeIn || this._model.active.getType(this.currentID) || "none";
@@ -434,32 +526,10 @@ define([
             // Set cursor to end of current paste
             widget.domNode.selectionStart = widget.domNode.selectionEnd = p1 + text.length;
         },
-        //Changed by Deepak
-        //This function should be in Author and Student controller
-        //Moving it from here to both student/author controller
-        /*        handleInputs: function(id){
-         if(id.MOUSEDOWN){
-         if(this.lastHandleInputId){
-         console.log('onclick event found onSelect, use old id '+this.lastHandleInputId);
-         id=this.lastHandleInputId; //restore
-         }else
-         return;  //if last id is not defined return
-         }else
-         this.lastHandleInputId=id; //copy it for next onClick event
-         
-         //check if id is  not select else return
-         
-         console.log("*******Student has chosen input", id, this);
-         // Should add name associated with id to equation
-         // at position of cursor or at the end.
-         var expr = this._model.given.getName(id);
-         this.equationInsert(expr);
-         //restore to default  - creating select input as stateless
-         registry.byId(this.controlMap.inputs).set('value', 'defaultSelect', false);
-         },*/
 
         handleEquation: function(equation){
             var w = registry.byId(this.widgetMap.equation);
+            this.equationEntered = false;
             w.set("status", "");
         },
         plusHandler: function(){
@@ -480,11 +550,11 @@ define([
         },
         sumHandler: function(){
             console.log("****** sum button");
-	    this.structured.setOperation("sum");
+	        this.structured.setOperation("sum");
         },
         productHandler: function(){
             console.log("****** product button");
-	    this.structured.setOperation("product");
+	        this.structured.setOperation("product");
         },
         structured: {
             _model: null, // Needs to be set to to instance of model
@@ -509,7 +579,6 @@ define([
         		}
                 this.update();
             },
-
             handlePositive: function(id){
                 console.log("****** structured.handlePositives ", id);
                 this.positives.push(this._model.given.getName(id));
@@ -524,7 +593,7 @@ define([
                 this.update();
                 registry.byId("negativeInputs").set('value', 'defaultSelect', false);// restore to default
             },
-    	    pop: function(){
+            pop: function () {
                 var op = this.ops.pop();
                 this[op].pop();
                 this.update();
@@ -571,10 +640,18 @@ define([
             }
         },
         undoHandler: function(){
-            var widget = registry.byId(this.controlMap.equation);
-            this.structured.pop();
+			if(this.structured.ops.length == 0) {
+				var equationWidget = registry.byId("equationBox");
+				equationWidget.set("value", "");
+				dom.byId("equationText").innerHTML = ""
+			}
+			else {
+				var widget = registry.byId(this.controlMap.equation);
+				this.structured.pop();
+			}
         },
         equationAnalysis: function(directives){
+            this.equationEntered = true;
             console.log("****** enter button");
             /*
              This takes the contents of the equation box and parses it.
@@ -746,8 +823,10 @@ define([
             console.log("equation before conversion ", equation);
             var mEquation = equation ? expression.convert(model, equation) : '';
             console.log("equation after conversion ", mEquation);
-            registry.byId(this.controlMap.equation).set('value', mEquation);
+            /* mEquation is a number instead of a string if equation is just a number; convert to string before setting the value */
+            registry.byId(this.controlMap.equation).set('value', mEquation.toString());
             dom.byId("equationText").innerHTML = mEquation;
+            this.equationEntered = true;
 
             /*
              The PM sets enabled/disabled and color for the controls
@@ -778,7 +857,6 @@ define([
                     this.updateModelStatus(directive);
                 if (this.widgetMap[directive.id]) {
                     var w = registry.byId(this.widgetMap[directive.id]);
-                    // console.log(">>>>>>>>> setting directive ", directive);
                     if (directive.attribute == 'value') {
                         w.set("value", directive.value, false);
                         // Each control has its own function to update the
@@ -800,26 +878,24 @@ define([
 	colorNodeBorder: function(nodeId){
 	    console.log("colorNodeBorder stub called");
 	                                  //get model type
-                  var type = this._model.active.getType(nodeId);
-                   if(type){
-                                console.log('model type is '+type);
+        var type = this._model.active.getType(nodeId);
+        if(type){
+            console.log('model type is '+type);
 
-                                var colorMap = {
-                    correct: "green",
-                    incorrect: "#FF8080",
-                    demo: "yellow",
-                    neutral: "gray"
-                };
-                                console.log('nodeId is '+nodeId + ' ' +this._model.active.isComplete(nodeId));
-                                var isComplete   = this._model.active.isComplete(nodeId)?'solid':'dashed'; //this is dashed in case of incomplete node, so for author this is dashed even if units are not entered.
-                                var color = '';
-                                color = this._model.active.getCorrectness?this._model.active.getCorrectness(nodeId):'neutral';
-
-                                console.log('color is '+color);
-                                domStyle.set(this.currentID,'border','2px '+isComplete+' '+colorMap[color]);
-                                domStyle.set(this.currentID,'box-shadow','inset 0px 0px 5px #000 , 0px 0px 10px #000');
-                                }
-                }
+            var colorMap = {
+                correct: "green",
+                incorrect: "#FF8080",
+                demo: "yellow",
+                neutral: "gray"
+            };
+            console.log('nodeId is '+nodeId);
+            var isComplete   = this._model.active.isComplete(nodeId)?'solid':'dashed';
+            var color = this._model.active.getCorrectness? this._model.active.getCorrectness(nodeId):'neutral';
+            console.log('color is '+color);
+            domStyle.set(this.currentID,'border','2px '+isComplete+' '+colorMap[color]);
+            domStyle.set(this.currentID,'box-shadow','inset 0px 0px 5px #000 , 0px 0px 10px #000');
+        }
+    }
 
     });
 });

@@ -12,7 +12,7 @@
             "type": "Construct"
         },
         "image": {
-            "URL": "http://image1.masterfile.com/getImage/NjAwLTAwMTcwOTExbi4wMDAwMDAwMA=AKB8Lk/600-00170911n.jpg"
+            "URL": "images/oranges.jpg"
         },
         "taskDescription": " Problem: There are initially 256 trees in the orange orchard \"La belle orangerie\", and 16 trees die each year. So at the end of the first year, there are only 240 trees remaining in the orchard. Goal: Graph the number of trees in the orchard each year for 10 years. ",
         "givenModelNodes": [

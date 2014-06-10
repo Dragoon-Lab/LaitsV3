@@ -37,11 +37,12 @@ define([
     "./draw-model",
     "./logging",
     "./equation",
-    "./description"
+    "./description",
+	"./state"
 ], function(
         lang, dom, geometry, on, aspect, ioQuery, ready, registry,
         menu, loadSave, model,
-        Graph, Table, controlStudent, controlAuthor, Parser, drawmodel, logging, expression, description
+        Graph, Table, controlStudent, controlAuthor, Parser, drawmodel, logging, expression, description, State
         ){
 
     console.log("load main.js");
@@ -88,6 +89,12 @@ define([
         controllerObject.setLogging(session); // set up direct logging in controller
 
         expression.setLogging(session);
+
+	/*
+	 Create state object
+	 */
+	var state = new State(query.u, query.s, "action");
+	controllerObject.setState(state);
 	
         ready(function(){
 
@@ -238,9 +245,12 @@ define([
                     type: "menu-choice", 
                     name: "intro-video"
                 });
-		// It would be better to open a dialog box and 
-		// have an embedded video.
-		window.open("https://www.youtube.com/watch?v=gsrM07XfABk");
+		// "newwindow": the pop-out window name, not required, could be empty
+		// "height" and "width": pop-out window size
+		// Other properties could be changed as the value of yes or no
+		window.open("https://www.youtube.com/watch_popup?v=gsrM07XfABk","newwindow",
+			    "height=400, width=600, toolbar =no, menubar=no, scrollbars=no, resizable=no, location=no, status=no"
+			   );
 	    });
 
             /*
