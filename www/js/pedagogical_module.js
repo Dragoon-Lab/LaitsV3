@@ -1,3 +1,4 @@
+/* global define */
 /**
  *Dragoon Project
  *Arizona State University
@@ -18,7 +19,6 @@
  *along with Dragoon.  If not, see <http://www.gnu.org/licenses/>.
  *
  */
-/* global define */
 
 /**
  * Pedagogical Module class used to solve Dragoon problems
@@ -326,10 +326,9 @@ define([
             }
         }};
 
-    // Counters used to determine which message in an array to display; they are not dependent on which node is 
-    //      active and differ from the counters (attemptCount) in the model, which are node specific
-    var counter = {correct: 0, notTopLevel: 0, premature: 0, initial: 0, extra: 0, irrelevant: 0, redundant: 0, incorrect: 0, lastFailure: 0, lastFailure2: 0};
-
+    //Declare variable for accessing state.js module
+    var record = null;
+	
     /*****
      * Summary: The following four functions are used by the above tables to push 
      *      statuses and messages to the return object array.
@@ -337,10 +336,14 @@ define([
     function state(/*object*/ obj, /*string*/ nodePart, /*string*/ status){
         obj.push({id: nodePart, attribute: "status", value: status});
     }
-
+    
     function message(/*object*/ obj, /*string*/ nodePart, /*string*/ status){
-        if(counter[status] < hints[status].length)
-            obj.push({id: "crisisAlert", attribute: "open", value: getMessage(nodePart, status)});
+	var hintSequence = hints[status];
+        if(record.getLocal(status) < hintSequence.length){
+	    var counter = record.getLocal(status);
+            obj.push({id: "crisisAlert", attribute: "open", value: hintSequence[counter]});
+	};
+	record.increment(status, 1);
         if(status === "extra" || status === "irrelevant")
             status = "incorrect";
         if(status === "lastFailure" || status === "lastFailure2")
@@ -350,20 +353,6 @@ define([
 
     function disable(/*object*/ obj, /*string*/ nodePart, /*boolean*/ disable){
         obj.push({id: nodePart, attribute: "disabled", value: disable});
-    }
-
-    function getMessage(/*string*/ nodePart, /*string*/ status){
-        // Summary: Returns the appropriate message from the hints object (above).
-        var messages = new Array();
-        var theCounter = 0;
-        messages = hints[status];
-        theCounter = counter[status];
-        counter[status]++;
-        if(theCounter > messages.length - 1){
-            return messages[messages.length - 1];
-        }else{
-            return messages[theCounter];
-        }
     }
 
     /*****
@@ -380,6 +369,13 @@ define([
         matchingID: null,
         logging: null,
         descriptionCounter: 0,
+	/*
+	 Counters used to determine which message in an array to display; 
+	 they are not dependent on which node is active and differ from 
+	 the counters (attemptCount) in the model, which are node-specific.
+	 */
+	counters: ["correct", "notTopLevel", "premature", "initial", "extra", "irrelevant", "redundant", "incorrect", "lastFailure", "lastFailure2"],
+	
         /*****
          * Private Functions
          *****/
@@ -502,14 +498,18 @@ define([
             }
             return interpretation;
         },
+	
         /*****
          * Public Functions
          *****/
-
-	setState: function(state){
-	    // Stub for setting state object.
+	
+	setState: function(/*state.js object*/ State){
+	    record = State;
+	    array.forEach(this.counters, function(counter){
+		record.init(counter, 0);
+	    });
 	},
-
+		
         processAnswer: function(/*string*/ id, /*string*/ nodePart, /*string | object*/ answer){
             // Summary: Pocesses a student's answers and returns if correct, 
             //      incorrect, etc. and alerts the controller about what parts 
@@ -656,6 +656,18 @@ define([
             // directives.push({id: 'type', attribute: 'disableOption', value: 'sum'});
             // directives.push({id: 'type', attribute: 'disableOption', value: 'product'});
             return directives;
+        },
+
+        checkDoneness: function(model){
+            if(this.mode == "COACHED" && model.areRequiredNodesVisible()){
+		return [{
+                    id: "crisisAlert", 
+		    attribute: "open", 
+		    value: "You have already created all the necessary nodes. You might want to click on \"Graph\" or \"Table\""
+		}];
+            } 
+            return false;
         }
+
     });
 });
