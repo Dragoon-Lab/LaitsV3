@@ -214,7 +214,7 @@ define([
                 // Need to order list alphabetically.
                 var unitList = new Array(this.getUnits());
                 array.forEach(this.given.getNodes(), function(node){
-                    if(array.indexOf(unitList, node.units) == -1){
+                    if(node.units && array.indexOf(unitList, node.units) == -1){
                         unitList.push(node.units);
                     }
                 }, this);
@@ -504,6 +504,7 @@ define([
             getDescriptions: function(){
                 // Summary: returns an array of all descriptions with
                 // name (label) and any associated node id (value).
+		// Note that the description may be empty.
                 // TO DO:  The list should be sorted.
                 return array.map(this.getNodes(), function(node){
                     return {label: node.description, value: node.ID};

@@ -256,10 +256,8 @@ define([
         handleUnits: function(units){
             console.log("**************** in handleUnits ", units);
             // Summary: Sets the units of the current node.
-            //if(units && units != "defaultSelect"){ 
-                this._model.active.setUnits(this.currentID, units);
-                this.applyDirectives(this.authorPM.process(this.currentID, "units", units));
-            //}
+            this._model.active.setUnits(this.currentID, units);
+            this.applyDirectives(this.authorPM.process(this.currentID, "units", units));
         },
         /*
          Handler for initial value input
@@ -357,22 +355,21 @@ define([
             *   For combo-box we need to setup a data-store which is collection of {name:'', id:''} object
             *
             */
-            var dummyArray =[];
+            var inputs = [];
             var descriptions = [];
             var units = [];
             array.forEach(this._model.given.getDescriptions(), function(desc){
                 if(desc.label){
                     var name = this._model.given.getName(desc.value);
-                    var obj = {name:name, id:desc.id};
-                    dummyArray.push(obj);
-            descriptions.push({name: this._model.given.getDescription(desc.value), id: desc.id});
+                    var obj = {name:name, id: desc.id};
+                    inputs.push(obj);
+		    descriptions.push({name: this._model.given.getDescription(desc.value), id: desc.id});
                 }
             }, this);
             array.forEach(this._model.getAllUnits(), function(unit){
-                if(unit)
-                    units.push({name : unit, id:unit});
+                units.push({name: unit, id: unit});
             }, this);
-            var m = new memory({data:dummyArray});
+            var m = new memory({data: inputs});
             inputsWidget.set("store", m);
             nameWidget.set("store", m);
             m = new memory({data: descriptions});
