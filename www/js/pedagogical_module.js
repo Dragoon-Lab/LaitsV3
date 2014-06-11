@@ -369,6 +369,7 @@ define([
         matchingID: null,
         logging: null,
         descriptionCounter: 0,
+	completedSent: false,
 	
         /*****
          * Private Functions
@@ -665,7 +666,8 @@ define([
         },
 	notifyCompleteness : function (model){
         if(model.matchesGivenSolution()){
-           if(record.getLocal("problemCompleted") < 2 ){ //counter = 2
+           if(!this.completedSent && record.getLocal("problemCompleted") < 2 ){ //counter = 2
+	       this.completedSent = true;
                 record.increment("problemCompleted",1);
                 return  [{
                     id: "crisisAlert",
