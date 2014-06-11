@@ -88,11 +88,11 @@ define([
                 for(var i = 0; i < this.model.task.studentModelNodes.length; i++){
                     var x = this.model.task.studentModelNodes[i].position.x;
                     var y = this.model.task.studentModelNodes[i].position.y;
-                    while (this.x > x - this.nodeWidth && this.x < x + this.nodeWidth &&
+                    while(this.x > x - this.nodeWidth && this.x < x + this.nodeWidth &&
                             this.y > y - this.nodeHeight && this.y < y + this.nodeHeight){
                         if(this.x + this.nodeWidth < document.documentElement.clientWidth + 100)
                             this.x += this.nodeWidth;
-                        else {
+                        else{
                             this.x = this.beginX;
                             this.y += this.nodeHeight;
                         }
@@ -151,27 +151,31 @@ define([
                 array.forEach(this.student.getNodes(), intID);
                 this._ID = largest + 1;
 
-		/*
-		 Sanity test that all given model IDs, node names,
-		 and descriptions are distinct, if they are defined.
-		 */
-		var ids = {}, names = {}, descriptions = {};
-		array.forEach(this.given.getNodes(), function(node){
-		    if(node.ID in ids){
-			throw new Error("Duplicate node id " + node.id);
-		    }
-		    if(node.name in names){
-			throw new Error("Duplicate node name \"" + node.name  + 
-					"\" for " + node.ID + " and " + names[node.name]);
-		    }
-		    if(node.description in descriptions){
-			throw new Error("Duplicate node description \"" + node.description + 
-					"\" for " + node.ID + " and " + descriptions[node.description]);
-		    }
-		    ids[node.ID] = true;
-		    if(node.name){ names[node.name] = node.ID; }
-		    if(node.description){ descriptions[node.description] = node.ID; }
-		}, this);
+                /*
+                 Sanity test that all given model IDs, node names,
+                 and descriptions are distinct, if they are defined.
+                 */
+                var ids = {}, names = {}, descriptions = {};
+                array.forEach(this.given.getNodes(), function(node){
+                    if(node.ID in ids){
+                        throw new Error("Duplicate node id " + node.id);
+                    }
+                    if(node.name in names){
+                        throw new Error("Duplicate node name \"" + node.name +
+                                "\" for " + node.ID + " and " + names[node.name]);
+                    }
+                    if(node.description in descriptions){
+                        throw new Error("Duplicate node description \"" + node.description +
+                                "\" for " + node.ID + " and " + descriptions[node.description]);
+                    }
+                    ids[node.ID] = true;
+                    if(node.name){
+                        names[node.name] = node.ID;
+                    }
+                    if(node.description){
+                        descriptions[node.description] = node.ID;
+                    }
+                }, this);
             },
             getModelAsString: function(){
                 // Summary: Returns a JSON object in string format
@@ -210,7 +214,7 @@ define([
                 // Need to order list alphabetically.
                 var unitList = new Array(this.getUnits());
                 array.forEach(this.given.getNodes(), function(node){
-                    if(array.indexOf(unitList, node.units) == -1){
+                    if(node.units && array.indexOf(unitList, node.units) == -1){
                         unitList.push(node.units);
                     }
                 }, this);
@@ -230,14 +234,14 @@ define([
                 for(var i = 0; i < solutionNodes.length; i++){
                     if(solutionNodes[i].parentNode){
                         if(!this.isNodeVisible(studentID, solutionNodes[i].ID))
-			    // Use this if no children are found
+                            // Use this if no children are found
                             nextNode = solutionNodes[i].ID;
                         else if(solutionNodes[i].inputs){
                             var optimalNode1 = this._getNextOptimalNode(solutionNodes[i].ID);
                             if(optimalNode1)
                                 return optimalNode1;
                         }
-                    }else {
+                    }else{
                         if(!this.isNodeVisible(studentID, solutionNodes[i].ID) && !nextNode)
                             nextNode = solutionNodes[i].ID;
                         else if(this.isNodeVisible(studentID, solutionNodes[i].ID) && solutionNodes[i].inputs){
@@ -286,12 +290,11 @@ define([
             matchesGivenSolution: function(){
                 /*See bug #2362*/
                 var flag = this.areRequiredNodesVisible() &&
-                    array.every(this.student.getNodes(), function(sNode){
-                        return this.student.isComplete(sNode.ID);
-                    }, this);
+                        array.every(this.student.getNodes(), function(sNode){
+                    return this.student.isComplete(sNode.ID);
+                }, this);
                 return flag ? true : false;
             },
-	    
             /**
              * SETTERS
              */
@@ -355,7 +358,7 @@ define([
                         return nodes[i];
                 }
                 console.warn("No matching node for '" + id + "'");
-		// console.trace();
+                // console.trace();
                 return null;
             },
             getType: function(/*string*/ id){
@@ -384,7 +387,7 @@ define([
             getInputs: function(/*string*/ id){
                 // Summary: return an array containing the input ids for a node.
                 var ret = this.getNode(id);
-		return ret && ret.inputs;
+                return ret && ret.inputs;
             },
             getOutputs: function(/*string*/ id){
                 // Summary: return an array containing the output ids for a node.
@@ -400,12 +403,12 @@ define([
             },
             setInputs: function(/*array*/ inputs, /*string*/ inputInto){
                 // Silently filter out any inputs that are not defined.
-		// inputs is an array of objects.
+                // inputs is an array of objects.
                 var node = this.getNode(inputInto);
                 if(node){
                     node.inputs = array.filter(inputs, function(input){
-			return this.isNode(input.ID);
-		    }, this);
+                        return this.isNode(input.ID);
+                    }, this);
                 }
             },
             setType: function(/*string*/ id, /*string*/ type){
@@ -458,7 +461,8 @@ define([
                         type: 0,
                         initial: 0,
                         units: 0,
-                        equation: 0
+                        equation: 0,
+                        assitanceScore: 0
                     },
                     status: {}
                 }, options || {});
@@ -500,6 +504,7 @@ define([
             getDescriptions: function(){
                 // Summary: returns an array of all descriptions with
                 // name (label) and any associated node id (value).
+		// Note that the description may be empty.
                 // TO DO:  The list should be sorted.
                 return array.map(this.getNodes(), function(node){
                     return {label: node.description, value: node.ID};
@@ -542,32 +547,35 @@ define([
                 // Summary: tracks student progress (correct, incorrect) on a given node;
                 this.getNode(id).status[part] = status;
             },
-	    isComplete: function(/*string*/ id){
-		// Summary: Test whether a node is completely filled out, correct or not
-		// Returns a boolean.  Units are ignored.
-		// id: the node id
-		// 
-		// If genus indicates a solution node or an optional node, 
-		// then all the fields must be filled in.  
-		// If it is a non-solution node, then only some fields
-		// must be included.  Here are the possibilities:
-		//   1.  Just a description (needs name, too)
+            isComplete: function(/*string*/ id, /*object*/ ignoreUnits){
+                // Summary: Test whether a node is completely filled out, correct or not
+                // Returns a boolean
+                // id: the node id
+                // ignoreUnits:  whether units need to be specified.
+                // 
+                // If genus indicates a solution node or an optional node, 
+                // then all the fields must be filled in.  
+                // If it is a non-solution node, then only some fields
+                // must be included.  Here are the possibilities:
+                //   1.  Just a description (needs name, too)
                 //   2.  Just units
-		//   3.  Optional quantity (needs name and description)
-		var node = this.getNode(id);
-		var initialEntered = node.type && node.type == "function" || node.initial;
-		var equationEntered = node.type && node.type == "parameter" || node.equation;
-		if(!node.genus || node.genus == "allowed" || node.genus == "preferred"){
-		    return node.name && node.description && 
-			node.type && initialEntered &&
-			equationEntered;
-		}else if (node.genus == "initialValue"){
-		    return node.name && node.description;
-		}else{
-		    return (node.name && node.description) || 
-			node.units;
-		}
-	    }
+                //   3.  Optional quantity (needs name and description)
+                var node = this.getNode(id);
+                var initialEntered = node.type && node.type == "function" || node.initial;
+                var equationEntered = node.type && node.type == "parameter" || node.equation;
+                ignoreUnits = (ignoreUnits ? ignoreUnits : false); // A hack! to explicitly set this true as return value is going undefined because node.units value is not set in author mode in many cases, and during all the calls to this function ignoreUnits is never sent.
+                if(!node.genus || node.genus == "allowed" || node.genus == "preferred"){
+                    return node.name && node.description &&
+                            node.type && initialEntered &&
+                            (ignoreUnits || node.units) &&
+                            equationEntered;
+                }else if(node.genus == "initialValue"){
+                    return node.name && node.description;
+                }else{
+                    return (node.name && node.description) ||
+                            node.units;
+                }
+            }
         }, both);
 
         obj.solution = lang.mixin({
@@ -607,7 +615,7 @@ define([
                     var returnValue = obj.getOptimalNode(studentID);
                     console.log("Correct node: ", returnValue);
                     return returnValue;
-                }else {
+                }else{
                     var id = this.getDescriptionID(studentID);
                     var node = obj.given.getNode(id);
                     return node[nodePart];
@@ -643,30 +651,37 @@ define([
             getNodes: function(){
                 return obj.model.task.studentModelNodes;
             },
-	    getCorrectness: function(/*string*/ studentID){
-		var node = this.getNode(studentID);
-		var rank = {
-		    "incorrect": 3,
-		    "demo": 2,
-		    "correct": 1,
-		    "": 0
-		};
-		var bestStatus = "";
-		var update = function(attr, sattr){
-		    // node.status always exists
-		    var nsa = node.status[attr];
-		    if(node[sattr || attr] && nsa && nsa.status && 
-		       rank[nsa.status] > rank[bestStatus]){
-			bestStatus = nsa.status;
-		    }
-		};
-		update("description", "descriptionID");
-		update("type");
-		update("initial");
-		update("units");
-		update("equation");
-		return bestStatus;
-	    },
+            getAssistanceScore: function(/*string*/ id){
+                // Summary: Returns a score based on the amount of errors/hints that 
+                //      a student receives, based on suggestions by Robert Hausmann;
+                //      a score of 0 means that a student did not have any errors;
+                var givenID = this.getDescriptionID(id);
+                return obj.given.getAttemptCount(givenID, "assistanceScore");
+            },
+            getCorrectness: function(/*string*/ studentID){
+                var node = this.getNode(studentID);
+                var rank = {
+                    "incorrect": 3,
+                    "demo": 2,
+                    "correct": 1,
+                    "": 0
+                };
+                var bestStatus = "";
+                var update = function(attr, sattr){
+                    // node.status always exists
+                    var nsa = node.status[attr];
+                    if(node[sattr || attr] && nsa && nsa.status &&
+                            rank[nsa.status] > rank[bestStatus]){
+                        bestStatus = nsa.status;
+                    }
+                };
+                update("description", "descriptionID");
+                update("type");
+                update("initial");
+                update("units");
+                update("equation");
+                return bestStatus;
+            },
             getStatusDirectives: function(/*string*/ id){
                 //Summary:  Return a list of directives (like PM does).
                 //          to set up node editor.
@@ -703,19 +718,37 @@ define([
                 this.getNode(id).status[control] = lang.mixin(attributes, options);
                 return attributes;
             },
-	    isComplete: function(/*string*/ id, /*boolean*/ ignoreUnits){
-    		// Summary: Test whether a node is completely filled out, correct or not
-    		// Returns a boolean
-    		// id: the node id
-    		var node = this.getNode(id);
-    		// Some given models do not include units.
-		var hasUnits = node.descriptionID && obj.given.getUnits(node.descriptionID);
-		var initialEntered = node.type && node.type == "function" || node.initial;
-    		var equationEntered = node.type && node.type == "parameter" || node.equation;
-    		return node.descriptionID && node.type && 
-		    initialEntered && (ignoreUnits || !hasUnits || node.units) &&
-    		    equationEntered;
-    	    }
+            setAssistanceScore: function(/*string*/ id, /*string*/ score){
+                // Summary: Sets a the amount of errors/hints that a student 
+                //      receives, based on suggestions by Robert Hausmann;
+                //
+                // Note: This is used by the PM when the student first gets the description correct
+                var givenID = this.getDescriptionID(id);
+                var node = obj.given.getNode(givenID);
+                node.attemptCount.assistanceScore = score;
+            },
+            incrementAssistanceScore: function(/*string*/ id){
+                // Summary: Incremements a score of the amount of errors/hints that 
+                //      a student receives, based on suggestions by Robert Hausmann;
+                //
+                // Note: This is used by the PM for all node parts except the description
+                var givenID = this.getDescriptionID(id);
+                var node = obj.given.getNode(givenID);
+                node.attemptCount.assistanceScore = (node.attemptCount.assistanceScore || 0) + 1;
+            },
+            isComplete: function(/*string*/ id){
+                // Summary: Test whether a node is completely filled out, correct or not
+                // Returns a boolean
+                // id: the node id
+                var node = this.getNode(id);
+                // Some given models do not include units.
+                var hasUnits = node.descriptionID && obj.given.getUnits(node.descriptionID);
+                var initialEntered = node.type && node.type == "function" || node.initial;
+                var equationEntered = node.type && node.type == "parameter" || node.equation;
+                return node.descriptionID && node.type &&
+                        initialEntered && (!hasUnits || node.units) &&
+                        equationEntered;
+            }
         }, both);
 
         // Execute the constructor

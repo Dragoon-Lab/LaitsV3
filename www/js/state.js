@@ -73,10 +73,20 @@ define([
 	},
 	
 	/*
+	 This is not in dojo store API, no value will be initiated less than 0.
+	 */
+	init: function (property, defaultValue) {
+	    // Add default value to cache *then* request
+	    // value from server, not looking at cache.
+	    this.cache[property] = defaultValue;
+	    this.get(property, true);
+	},
+
+	/*
 	 Get always returns a promise
 	 */
-	get: function(property){
-	    if(property in this.cache)
+	get: function(property, noCache){
+	    if(!noCache && property in this.cache)
 		return when(this.cache[property]);
 	    else {
 		var object = xhr.get(this.path, {
@@ -85,8 +95,9 @@ define([
 		});
 		object.then(lang.hitch(this, function(x){
 		    // Don't add to cache if property is also not on the server.
-		    if(x)
+		    if(x!=""){
 			this.cache[property] = x;
+		    }
 		}));
 		return object;
 	    }
@@ -102,10 +113,10 @@ define([
 	    }
 	    this.cache[property] = object;
 	    xhr.post(this.path, {
-		data: lang.mixin({
-		    pry: property, 
-		    vle: json.toJson(object)
-		}, this.params)
+	        data: lang.mixin({
+	            pry: property,
+	            vle: json.toJson(object)
+	        }, this.params)
 	    });
 	},
 
@@ -119,14 +130,25 @@ define([
 	    });
 	},
 
+	getLocal: function(property){
+	    // Summary:  get value from local cache or return an error.
+	    //           This is supposed to be used in conjunction with init()
+	    if (property in this.cache) {
+	        return this.cache[property];
+	    }else{
+	        throw new Error("Property '" + property + "' not in cache");
+	    }
+	},
+
 	/*
 	 This is not in Dojo Store API.
 	 */
-	increment: function(property, step){
-	    return this.get(property).then(lang.hitch(this, function(x){
-		x += step===undefined?1:step;
-		this.put(property, x);
-	    }));
+	increment: function (property, step){
+	    // The unary plus converts a string into a number
+	    var x = +this.getLocal(property);
+	    x += step === undefined ? 1 : step;
+	    this.put(property, x);
+	    return x;
 	}
 
     });

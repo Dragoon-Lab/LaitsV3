@@ -37,11 +37,12 @@ define([
     "./draw-model",
     "./logging",
     "./equation",
-    "./description"
+    "./description",
+	"./state"
 ], function(
         lang, dom, geometry, on, aspect, ioQuery, ready, registry,
         menu, loadSave, model,
-        Graph, Table, controlStudent, controlAuthor, Parser, drawmodel, logging, expression, description
+        Graph, Table, controlStudent, controlAuthor, Parser, drawmodel, logging, expression, description, State
         ){
 
     console.log("load main.js");
@@ -88,6 +89,12 @@ define([
         controllerObject.setLogging(session); // set up direct logging in controller
 
         expression.setLogging(session);
+
+	/*
+	 Create state object
+	 */
+	var state = new State(query.u, query.s, "action");
+	controllerObject.setState(state);
 	
         ready(function(){
 
@@ -99,9 +106,15 @@ define([
 
             /* add "Create Node" button to menu */
             menu.add("createNodeButton", function(){
+
+                if(controllerObject.checkDonenessMessage && 
+		   controllerObject.checkDonenessMessage()){
+                    return;
+                }
+		
                 var id = givenModel.active.addNode();
                 drawModel.addNode(givenModel.active.getNode(id));
-                controllerObject.logging.log('ui-action', {type: "menu-choice", name: "create-node"});
+                controllerObject.logging.log('ui-action', {type: "menu-choice", name: "create-node"});		
                 controllerObject.showNodeEditor(id);
             });
 
