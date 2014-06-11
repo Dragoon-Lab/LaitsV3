@@ -239,6 +239,7 @@ define([
             console.log("In AUTHOR mode. Input selected is: " + name);
             this.equationInsert(name);
             this.applyDirectives(this.authorPM.process(this.currentID,"inputs",name));
+            registry.byId(this.controlMap.inputs).set('value', '', false); //for reselecting the input
         },
         equationDoneHandler: function(){
             console.log("Inside equationDone handler");
