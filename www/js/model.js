@@ -303,7 +303,7 @@ define([
             },
             setImage: function(/*object*/ options){
                 // Summary: JSON object with "URL", "width", and "height" elements; see sample JSON model.
-                lang.mixin(this.model.task.image, options);
+                this.model.task.image = options;
             },
             setTime: function(/*object*/ options){
                 // Summary: JSON object with "start", "end", "step", and "units" elements; see sample JSON model.
