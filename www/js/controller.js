@@ -812,13 +812,13 @@ define([
 
 
             if(model.getNodeIDFor){
-            var d = registry.byId(this.controlMap.description);
-            array.forEach(this._model.given.getDescriptions(), function(desc){
-                var exists =  model.getNodeIDFor(desc.value);
-                 d.getOptions(desc).disabled=exists;
-                if(desc.value == nodeName){
-                    d.getOptions(desc).disabled=false;
-                }});
+		var d = registry.byId(this.controlMap.description);
+		array.forEach(this._model.given.getDescriptions(), function(desc){
+                    var exists =  model.getNodeIDFor(desc.value);
+                    d.getOptions(desc).disabled=exists;
+                    if(desc.value == nodeName){
+			d.getOptions(desc).disabled=false;
+                    }});
             }
 
             var type = model.getType(nodeid);
@@ -838,10 +838,8 @@ define([
             // Initial input in Units box
             registry.byId(this.controlMap.units).set('value', unit || '');
 
-            var input = model.getInputs(nodeid);
-            console.log('input is',input || "not set");
-            // Initial input in Inputs box
-            registry.byId(this.controlMap.inputs).set('value', input || '');
+            // Input choices are different in AUTHOR and student modes
+	    // So they are set in con-author.js and con-student.js
 
             var equation = model.getEquation(nodeid);
             console.log("equation before conversion ", equation);
