@@ -30,10 +30,10 @@ define([
     "./equation",
     "dojo/store/Memory",
     "dojo/domReady!"
-
 ], function(array, declare, lang, style, ready, registry, controller, equation, memory){
 
     return declare(controller, {
+        
         //pedagogical module class for author
         authorPM:{
             process: function(nodeID, nodeType, value, validInput){
@@ -135,7 +135,7 @@ define([
                         if(value && !validInput){
                             returnObj.push({id:"equation", attribute:"status", value:"entered"});
                         } else if(value && validInput){
-                            returnObj.push({id:"equation", attribute:"status", value:"incorrect"});
+                            returnObj.push({id:"equation", attribute:"status", value:"entered"});
                             //returnObj.push({id:"message", attribute:"append", value:"one or more variables the equation are not available in the model."});
                         } else {
                             returnObj.push({id:"equation", attribute:"status", value:""});
@@ -232,6 +232,7 @@ define([
             // If descriptionID is falsy give "null"; if it doesn't match, give "false"
             this.applyDirectives(this.authorPM.process(descriptionID?!(descriptionID==this.currentID):null, "description", description));
             if(!this._model.active.getNodeIDByDescription(description)){
+                
                 this._model.active.setDescription(this.currentID, description);
                 console.log("In AUTHOR mode. Description value is: " + description);
             }else {
@@ -256,34 +257,22 @@ define([
         handleUnits: function(units){
             console.log("**************** in handleUnits ", units);
             // Summary: Sets the units of the current node.
-            if(units && units != "defaultSelect"){ 
-                this._model.active.setUnits(this.currentID, units);
-                this.applyDirectives(this.authorPM.process(this.currentID, "units", units));
-            }
+            this._model.active.setUnits(this.currentID, units);
+            this.applyDirectives(this.authorPM.process(this.currentID, "units", units));
         },
         /*
          Handler for initial value input
          */
         handleInitial: function(initial){
-            // Summary: Sets the initial value of the current node.
-            /*
-             Evaluate only if the value is changed.
-
-             The controller modifies the initial value widget so that a "Change" event is
-             fired if the widget loses focus.  This may happen when the node editor is closed.
-             */
-            //check number checks for the % and nan values.
-            var numberFlag = this.checkNumber(initial);
-            this.applyDirectives(this.authorPM.process(this.currentID, "initial", initial, numberFlag));
-            if(initial == this.lastInitialValue || !numberFlag){
-                return;
+            var IniFlag = this.checkInitialValue(initial,this.lastInitialValue); //IniFlag returns the status and initial value           
+            if(IniFlag.status){
+		// If the initial value is not a number of is unchanged from previous value we dont process
+		var newInitial = IniFlag.value;
+		this.applyDirectives(this.authorPM.process(this.currentID, "initial", newInitial, true));
+		console.log("In AUTHOR mode. Initial value is: " + newInitial);
             }
-
-            this.lastInitialValue = initial;
-
-            this._model.active.setInitial(this.currentID, initial);
-            console.log("In AUTHOR mode. Initial value is: " + initial);
         },
+        
         handleInputs: function(name){
             console.log("In AUTHOR mode. Input selected is: " + name);
             this.equationInsert(name);
@@ -308,7 +297,7 @@ define([
                 parse = equation.parse(expression);
             } catch (err){
                 console.log("Parser error: ", err);
-                //this._model.active.setEquation(this.currentID, inputEquation);
+                this._model.active.setEquation(this.currentID, expression);
                 directives.push({id: 'message', attribute: 'append', value: 'Incorrect equation syntax.'});
                 directives.push({id: 'equation', attribute: 'status', value: 'incorrect'});
                 // Call hook for bad parse
@@ -350,31 +339,34 @@ define([
             var inputsWidget = registry.byId(this.controlMap.inputs);
             var nameWidget = registry.byId(this.controlMap.name);
             var descriptionWidget = registry.byId(this.controlMap.description);
+            var unitsWidget = registry.byId(this.controlMap.units);
 
             /*
             *   populate the nodes in the Name, Description, Units, and Inputs tab
             *   For combo-box we need to setup a data-store which is collection of {name:'', id:''} object
             *
             */
-            var dummyArray =[];
+            var inputs = [];
             var descriptions = [];
             var units = [];
             array.forEach(this._model.given.getDescriptions(), function(desc){
                 if(desc.label){
                     var name = this._model.given.getName(desc.value);
-                    var obj = {name:name, id:desc.id};
-                    dummyArray.push(obj);
-            descriptions.push({name: this._model.given.getDescription(desc.value), id: desc.id});
-            units.push({name: this._model.given.getUnits(desc.value), id: desc.id});
+                    var obj = {name:name, id: desc.id};
+                    inputs.push(obj);
+		    descriptions.push({name: this._model.given.getDescription(desc.value), id: desc.id});
                 }
             }, this);
-            var m = new memory({data:dummyArray});
+            array.forEach(this._model.getAllUnits(), function(unit){
+                units.push({name: unit, id: unit});
+            }, this);
+            var m = new memory({data: inputs});
             inputsWidget.set("store", m);
             nameWidget.set("store", m);
             m = new memory({data: descriptions});
             descriptionWidget.set("store", m);
             m = new memory({data: units});
-            units.push("store", m);
+            unitsWidget.set("store", m);
 
             var value;
             //node is not created for the first time. apply colors to widgets

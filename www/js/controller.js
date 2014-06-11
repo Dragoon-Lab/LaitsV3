@@ -73,6 +73,10 @@ define([
                 content: "Non-numeric data not accepted"
             });
         },
+        
+        
+        
+        
         // A list of common controls of student and author
         genericControlMap: {
             type: "typeId",
@@ -109,7 +113,7 @@ define([
 			doHide.apply(myThis._nodeEditor);
 			myThis.closeEditor.call(myThis);
                     }
-		};
+            };
 	    }));
 
             /*
@@ -117,7 +121,11 @@ define([
              If this can change during a session, then we
              should move this to this.showNodeEditor()
              */
-            var algebraic = (this._inputStyle == "algebraic" ? "" : "none");
+            if(this._inputStyle!="algebraic" && this._inputStyle!="structured" && this._inputStyle){ //If the input style is anything different frm algebraic, structured, unmentioned then we log an error as corrupted input style
+            error = new Error("input style has been corrupted");
+            throw error;
+            }
+            var algebraic = (this._inputStyle == "algebraic" || !this._inputStyle ? "" : "none"); //making algebraic the default input style incase n inputstyle is defined
             var structured = (this._inputStyle == "structured" ? "" : "none");
             domStyle.set("algebraic", "display", algebraic);
             domStyle.set("structured", "display", structured);
@@ -182,6 +190,7 @@ define([
                 this.startup();
             };
             
+            
             // All <select> controls
             array.forEach(this.selects, function(select){
                 var w = registry.byId(this.controlMap[select]);
@@ -197,8 +206,7 @@ define([
                     this.show();
                 };
                 on(registry.byId("OkButton"), "click", function(){
-                    console.log("this is called");
-                    crisis.hide();
+                crisis.hide();
                 });
 
             // Add appender to message widget
@@ -250,17 +258,18 @@ define([
                 w.set("status", '');  // remove colors
             }
 
-	    // Undo Name value (only in AUTHOR mode)
-	    if(this.controlMap.name){
-		var name = registry.byId(this.controlMap["name"]);
-		name.set("value", "");
-	    }
+            this.disableHandlers = true;
+            // Undo Name value (only in AUTHOR mode)
+    	    if(this.controlMap.name){
+        		var name = registry.byId(this.controlMap["name"]);
+        		name.set("value", "");
+    	    }
 
-	    // Undo Description value (only needed in AUTHOR mode)
-	    if(this.controlMap.description){
-		var description = registry.byId(this.controlMap.description);
-		description.set("value", "");
-	    }
+    	    // Undo Description value (only needed in AUTHOR mode)
+    	    if(this.controlMap.description){
+        		var description = registry.byId(this.controlMap.description);
+        		description.set("value", "");
+    	    }
 
             // Undo any initial value
             var initial = registry.byId(this.controlMap["initial"]);
@@ -286,8 +295,10 @@ define([
             var nodeName = graphObjects.getNodeName(this._model.active,this.currentID);
             if(dom.byId(this.currentID + 'Label'))
                 domConstruct.place(nodeName, this.currentID + 'Label', "replace");
+
 	    // In case any tool tips are still open.
             this.closePops();
+            //this.disableHandlers = false;
 
         },
         //set up event handling with UI components
@@ -305,7 +316,9 @@ define([
              */
 
             var desc = registry.byId(this.controlMap.description);
-            desc.on('Change', lang.hitch(this, this.handleDescription));
+            desc.on('Change', lang.hitch(this, function(){
+                return this.disableHandlers || this.handleDescription.apply(this, arguments);
+            }));
 
             /*
              *   event handler for 'type' field
@@ -427,13 +440,16 @@ define([
             popup.close(this.myTooltipDialog);
             popup.close(this.myTooltipDialog2);
     	},
-        checkNumber: function(initialString){
+        
+        checkInitialValue: function(initialString,thislastInitialValue){ 
+            //Description : performs non number check and also checks if the initial value was changed from previously entered value
+            //returns: status, a boolean value and value, the current initial value
             var initialWidget = dom.byId(this.widgetMap.initial);
             // Popups only occur for an error, so leave it up until
             // the next time the student attempts to enter a number.
-	    this.closePops();
+	         this.closePops();
             // we do this type conversion because we used a textbox for initialvalue input which is a numerical
-            var initial= +initialString; // usage of + unary operator converts a string to number 
+             var initial= +initialString; // usage of + unary operator converts a string to number 
             // use isNaN to test if conversion worked.
             if(isNaN(initial)){
                 // Put in checks here
@@ -452,10 +468,18 @@ define([
                         popup: this.myTooltipDialog,
                         around: initialWidget
                     });
-                }            
-                return false; 
+                 }            
+                return {status: false}; 
             }
-            return true;
+                        
+            if(typeof initialString === 'undefined' || initialString == thislastInitialValue){
+    		return { status: false};
+    	    }
+    	    this.lastInitialValue = initialString;
+            // updating node editor and the model.
+            initialString=+initialString;
+            this._model.active.setInitial(this.currentID, initialString);
+            return { status: true, value: initialString};
         },
         updateType: function(type){
             //update node type on canvas
@@ -470,6 +494,17 @@ define([
                 domClass.replace(this.currentID, type);
             }
 
+            //resetting the value of initial and equation boxes when type is changed in author mode
+            if(type == "function" && this._model.active.getInitial(this.currentID)){
+                var initialNode = registry.byId(this.controlMap.initial);
+                initialNode.set("value", "");
+            }
+            if(type == "parameter" && this._model.active.getEquation(this.currentID)){
+                var equationNode = registry.byId(this.controlMap.equation);
+                equationNode.set("value", "");
+                //changing the equation value does not call the handler so setting the value explicitly using set equation.
+                this._model.active.setEquation(this.currentID, '');
+            }
             // updating the model and the equation labels
             this._model.active.setType(this.currentID, type);
             this.updateEquationLabels();
@@ -740,8 +775,11 @@ define([
         setConnections: function(from, to){
             // console.log("======== setConnections fired for node" + to);
         },
+
         //show node editor
         showNodeEditor: function(/*string*/ id){
+            //Checks if the current mode is COACHED mode and exit from node editor if all the modes are defined
+
             console.log("showNodeEditor called for node ", id);
             this.currentID = id; //moved using inside populateNodeEditorFields
             this.disableHandlers = true;

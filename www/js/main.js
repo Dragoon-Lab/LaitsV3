@@ -106,9 +106,15 @@ define([
 
             /* add "Create Node" button to menu */
             menu.add("createNodeButton", function(){
+
+                if(controllerObject.checkDonenessMessage && 
+		   controllerObject.checkDonenessMessage()){
+                    return;
+                }
+		
                 var id = givenModel.active.addNode();
                 drawModel.addNode(givenModel.active.getNode(id));
-                controllerObject.logging.log('ui-action', {type: "menu-choice", name: "create-node"});
+                controllerObject.logging.log('ui-action', {type: "menu-choice", name: "create-node"});		
                 controllerObject.showNodeEditor(id);
             });
 

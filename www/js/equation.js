@@ -96,7 +96,7 @@ define([
                     });
                 }
                 // At this point, givenID can also be from the extra nodes.
-                this.evalVar(givenID, model.given, givenVals);
+                this.evalVar(givenID, model.solution, givenVals); //returning model.solution helps in identifying unknown variables in the expression
                 studentVals[variable] = givenVals[givenID];
             }, this);
             var studentResult = student.evaluate(studentVals);
@@ -114,7 +114,9 @@ define([
                     message:'unknown variable for evaluation, variable name : '+id, 
                     functionTag:'evalVar'
                 });
+            return; //this helps to alert an error incase variable is unknown
             }
+            
             var node = subModel.getNode(id);
             if(!(id in vals)){
                 if(parents[id]){
@@ -305,7 +307,9 @@ define([
 	    var fv = {};
 	    array.forEach(model.getNodes(), function(node){
 		// Include all nodes that belong in the solution.
-		if(!node.genus){
+		// Additionally we only include nodes that are complete,
+		// except for units.
+		if(!node.genus && model.isComplete(node.ID, true)){ 
 		    switch(node.type){
 		    case "parameter":
 			// No equation to parse

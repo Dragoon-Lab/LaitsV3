@@ -24,10 +24,10 @@
  */
 define([
     "dojo/_base/array", 'dojo/_base/declare', "dojo/_base/lang",
-    "dojo/dom", "dojo/dom-style", "dojo/ready",
+    "dojo/dom", "dojo/ready",
     'dijit/registry',
-    './controller', "./pedagogical_module", "./equation",'dojo/dom-style'
-], function(array, declare, lang, dom, style, ready, registry, controller, PM, expression){
+    './controller', "./pedagogical_module", "./equation"
+], function(array, declare, lang, dom, ready, registry, controller, PM, expression){
 
     /*
      Methods in controller specific to the student modes
@@ -118,28 +118,18 @@ define([
     	    this.updateType(value);
     	},
 	
-        handleInitial: function(initial){
-            if(!this.checkNumber(initial)){
-                return;
-            }
-            console.log("****** Student has chosen initial value", initial, this.lastInitialValue);
-    	    /*
-    	     Evaluate only if the value is changed.
-	     
-    	     The controller modifies the initial value widget so that a "Change" event is
-    	     fired if the widget loses focus.  This may happen when the node editor is closed.
-    	     */
-    	    if(typeof initial === 'undefined' || initial == this.lastInitialValue){
-    		return;
-    	    }
-
-    	    this.lastInitialValue = initial;
-	    
-            // updating node editor and the model.
-            this._model.active.setInitial(this.currentID, initial);
-            this.applyDirectives(this._PM.processAnswer(this.currentID, 'initial', initial));
-        },
+        /*
+         Handler for initial value input
+         */
 	
+	handleInitial: function(initial){
+            var IniFlag = this.checkInitialValue(initial,this.lastInitialValue); //IniFlag returns the status and initial value
+            if(IniFlag.status){ //If the initial value is not a number of is unchanged from previous value we dont process
+		var newInitial = IniFlag.value;
+		this.applyDirectives(this._PM.processAnswer(this.currentID, 'initial', newInitial));
+            }
+        },
+        
         initialSet: function(value){
                 this._model.active.setInitial(this.currentID, value);
     	},
@@ -241,6 +231,14 @@ define([
 
                 // console.warn("======= not saving in status, node=" + this.currentID + ": ", desc);
             }
+        },
+
+        checkDonenessMessage: function (){
+	    // Returns true if model is not complete.
+            var directives = this._PM.checkDoneness(this._model);
+	    this.applyDirectives(directives);
+	    return directives;
         }
+
     });
 });
