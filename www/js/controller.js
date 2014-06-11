@@ -290,6 +290,9 @@ define([
 	    // In case any tool tips are still open.
             this.closePops();
             //this.disableHandlers = false;
+		
+	   var directives = this._PM.notifyCompleteness(this._model);
+ 	   this.applyDirectives(directives);
 
         },
         //set up event handling with UI components
