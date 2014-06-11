@@ -275,11 +275,11 @@ define([
             this.equationInsert(name);
         },
         equationDoneHandler: function(){
-            directives = [];
+            var directives = [];
             var parse = this.equationAnalysis(directives);
 
             if(parse){
-                directives = directives.concat(this.authorPM.process(this.currentID, "equation", expression, variableFlag));
+                directives = directives.concat(this.authorPM.process(this.currentID, "equation", parse));
             }
             this.applyDirectives(directives);
         },
