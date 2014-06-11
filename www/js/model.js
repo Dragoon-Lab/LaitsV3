@@ -212,7 +212,11 @@ define([
                 // Summary:  returns a list of all distinct units 
                 // (string format) defined in a problem.
                 // Need to order list alphabetically.
-                var unitList = new Array(this.getUnits());
+                var unitList = new Array();
+		var timeUnits = this.getUnits();
+		if(timeUnits){
+		    unitList.push(timeUnits);
+		}
                 array.forEach(this.given.getNodes(), function(node){
                     if(node.units && array.indexOf(unitList, node.units) == -1){
                         unitList.push(node.units);
