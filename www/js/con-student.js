@@ -40,7 +40,7 @@ define([
             console.log("++++++++ In student constructor");
             this._PM = new PM(mode, subMode, model);
             lang.mixin(this.widgetMap, this.controlMap);
-	    ready(this, "populateSelections");
+            ready(this, "populateSelections");
         },
         // A list of control map specific to students
         controlMap: {
@@ -48,6 +48,10 @@ define([
             units: "selectUnits",
             inputs: "nodeInputs"
         },
+
+	setState: function(state){
+	    this._PM.setState(state);
+	},
 
         populateSelections: function(){
 	    /*
@@ -113,15 +117,16 @@ define([
     	typeSet: function(value){
     	    this.updateType(value);
     	},
+	
         /*
          Handler for initial value input
          */
 	
-       handleInitial: function(initial){
+	handleInitial: function(initial){
             var IniFlag = this.checkInitialValue(initial,this.lastInitialValue); //IniFlag returns the status and initial value
             if(IniFlag.status){ //If the initial value is not a number of is unchanged from previous value we dont process
-            var newInitial=IniFlag.value;
-            this.applyDirectives(this._PM.processAnswer(this.currentID, 'initial', newInitial));
+		var newInitial = IniFlag.value;
+		this.applyDirectives(this._PM.processAnswer(this.currentID, 'initial', newInitial));
             }
         },
         
@@ -226,25 +231,14 @@ define([
 
                 // console.warn("======= not saving in status, node=" + this.currentID + ": ", desc);
             }
-        }/*,
-		colorNodeBorder: function(nodeId){
-				//get model type
-				var type = this._model.student.getType(nodeId);
-				if(type){
-				console.log('model type is '+type);
-		
-				var colorMap = {
-                    correct: "green",
-                    incorrect: "#FF8080",
-                    demo: "yellow"
-                };
-				console.log('nodeId is '+nodeId);
-				var isComplete   = this._model.student.isComplete(nodeId,true)?'solid':'dashed';
-				var color = this._model.student.getCorrectness(nodeId);
-				console.log('color is '+color);
-				style.set(this.currentID,'border','2px '+isComplete+' '+colorMap[color]);
-				style.set(this.currentID,'box-shadow','inset 0px 0px 5px #000 , 0px 0px 10px #000');
-				}
-		}*/
+        },
+
+        checkDonenessMessage: function (){
+	    // Returns true if model is not complete.
+            var directives = this._PM.checkDoneness(this._model);
+	    this.applyDirectives(directives);
+	    return directives;
+        }
+
     });
 });

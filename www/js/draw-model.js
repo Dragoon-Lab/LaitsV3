@@ -175,6 +175,12 @@ define([
                 targetNodeIds: [node.ID]
             });
 
+	     this._instance.draggable(vertex,{
+                onMoveStart: lang.hitch(this, this.onMoveStart),
+                onMove: lang.hitch(this, this.onMove),
+                onMoveStop: lang.hitch(this, this.onMoveStop)
+            });
+
             pMenu.addChild(new MenuItem({
                 label: "Delete Node",
                 onClick: lang.hitch(this, function (){
