@@ -132,11 +132,8 @@ define([
                         break;
 
                     case "equation":
-                        if(value && !validInput){
+                        if(value){
                             returnObj.push({id:"equation", attribute:"status", value:"entered"});
-                        } else if(value && validInput){
-                            returnObj.push({id:"equation", attribute:"status", value:"entered"});
-                            //returnObj.push({id:"message", attribute:"append", value:"one or more variables the equation are not available in the model."});
                         } else {
                             returnObj.push({id:"equation", attribute:"status", value:""});
                         }
@@ -278,54 +275,33 @@ define([
             this.equationInsert(name);
         },
         equationDoneHandler: function(){
+            directives = [];
+            var parse = this.equationAnalysis(directives);
 
-            //WORKAROUND -- Sets equationENtered once Check Expression is clicked 
-	    // to enable window to close
-	    // Remove when equationDoneHandler calls equationAnalysis
-            this.equationEntered = true;
-
-            console.log("Inside equationDone handler");
-            var widget = registry.byId(this.controlMap.equation);
-            var expression = widget.get("value");
-            var undefinedVariables = '';
-            var directives = [];
-
-	    // This is redundant with code in equationAnalysis() in controller.js
-	    // See https://trello.com/c/dOklXlOu
-            var parse;
-            try{
-                parse = equation.parse(expression);
-            } catch (err){
-                console.log("Parser error: ", err);
-                this._model.active.setEquation(this.currentID, expression);
-                directives.push({id: 'message', attribute: 'append', value: 'Incorrect equation syntax.'});
-                directives.push({id: 'equation', attribute: 'status', value: 'incorrect'});
-                // Call hook for bad parse
-                this.badParse(expression);
-            }
-            var variableFlag = false;
             if(parse){
-                this._model.given.setEquation(this.currentID, expression);
-                // for every variable in the equation, check if variable matches with
-                // node name. If yes, replace node name with its ID
-                array.forEach(parse.variables(), lang.hitch(this, function(variable){
-                    if(this._model.given.getNodeIDByName(variable)){
-                        var nodeId = this._model.given.getNodeIDByName(variable);
-                        equation.addQuantity(nodeId, this._model.given);
-                        this.setConnections(this._model.given.getInputs(this.currentID), this.currentID);
-                    } else {
-                        variableFlag = true;
-			if(undefinedVariables){
-			    undefinedVariables += ", ";
-			}
-                        undefinedVariables += variable;
-                    }
-                }));
                 directives = directives.concat(this.authorPM.process(this.currentID, "equation", expression, variableFlag));
-                if(variableFlag)
-                    directives = directives.concat({id:"message", attribute:"append", value:"undefined variables : "+undefinedVariables});
             }
             this.applyDirectives(directives);
+        },
+        validateEquation: function(parse, directives){
+            var toPM = true;
+            array.forEach(parse.variables(), function(variable){
+                var givenID = this._model.active.getNodeIDByName(variable);
+                if(givenID){
+                    var type = this._model.active.getType(this.currentID);
+                    if(type && type === "function"){
+                        if(givenID === this.currentID){
+                            toPM = false;
+                            directives.push({id: 'equation', attribute: 'status', value: 'incorrect'});
+                            directives.push({id: 'message', attribute: 'append', value: "You cannot use '" + variable + "' in the equation. Function nodes cannot reference themselves."});
+                        }
+                    }
+                } else {
+                    toPM = false;
+                    directives.push({id: 'message', attribute: 'append', value: "Quantity '" + variable + "' not defined yet."});
+                }
+            }, this);
+            return toPM;
         },
         initialControlSettings: function(nodeid){
             var name = this._model.given.getName(nodeid);

@@ -187,7 +187,37 @@ define([
     	    // Generally, since this is the correct solution, there should be no directives
     	    this.applyDirectives(directives);
     	},
- 
+        validateEquation: function(parse, directives){
+            var toPM = true;
+            array.forEach(parse.variables(), function(variable){
+                // Test if variable name can be found in given model
+                var givenID = this._model.given.getNodeIDByName(variable);
+                // Checks for nodes referencing themselves; this causes problems because
+                //      functions will always evaluate to true if they reference themselves
+                if(this._model.student.getType(this.currentID) === "function"){
+                    if(givenID === this._model.student.getDescriptionID(this.currentID)){
+                        toPM = false;
+                        directives.push({id: 'equation', attribute: 'status', value: 'incorrect'});
+                        directives.push({id: 'message', attribute: 'append', value: "You cannot use '" + variable + "' in the equation. Function nodes cannot reference themselves."});
+                    }
+                }
+                if(givenID){
+                    // Test if variable has been defined already
+                    var studentID = this._model.active.getNodeIDFor(givenID);
+                    if(studentID){
+                        // console.log("       substituting ", variable, " -> ", studentID);
+                        parse.substitute(variable, studentID);
+                    }else {
+                        directives.push({id: 'message', attribute: 'append', value: "Quantity '" + variable + "' not defined yet."});
+                    }
+                }else {
+                    toPM = false;  // Don't send to PM
+                    directives.push({id: 'message', attribute: 'append', value: "Unknown variable '" + variable + "'."});
+                }
+            }, this);
+            
+            return toPM;
+        },
         /* 
          Settings for a new node, as supplied by the PM.
          These don't need to be recorded in the model, since they

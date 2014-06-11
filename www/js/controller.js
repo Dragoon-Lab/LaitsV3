@@ -719,33 +719,7 @@ define([
             }
 
             if(parse){
-                var toPM = true;
-                array.forEach(parse.variables(), function(variable){
-                    // Test if variable name can be found in given model
-                    var givenID = this._model.given.getNodeIDByName(variable);
-                    // Checks for nodes referencing themselves; this causes problems because
-                    //      functions will always evaluate to true if they reference themselves
-                    if(this._model.student.getType(this.currentID) === "function"){
-                        if(givenID === this._model.student.getDescriptionID(this.currentID)){
-                            toPM = false;
-                            directives.push({id: 'equation', attribute: 'status', value: 'incorrect'});
-                            directives.push({id: 'message', attribute: 'append', value: "You cannot use '" + variable + "' in the equation. Function nodes cannot reference themselves."});
-                        }
-                    }
-                    if(givenID){
-                        // Test if variable has been defined already
-                        var studentID = this._model.active.getNodeIDFor(givenID);
-                        if(studentID){
-                            // console.log("       substituting ", variable, " -> ", studentID);
-                            parse.substitute(variable, studentID);
-                        }else {
-                            directives.push({id: 'message', attribute: 'append', value: "Quantity '" + variable + "' not defined yet."});
-                        }
-                    }else {
-                        toPM = false;  // Don't send to PM
-                        directives.push({id: 'message', attribute: 'append', value: "Unknown variable '" + variable + "'."});
-                    }
-                }, this);
+                var toPM = this.validateEquation(parse, directives);
                 // Expression now is written in terms of student IDs, when possible.
                 // Save with explicit parentheses for all binary operations.
                 var parsedEquation = parse.toString(true);
