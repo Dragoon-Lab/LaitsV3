@@ -14,7 +14,7 @@
         "image": {
             "URL": "images/Leaning_Tower_of_Pisa.jpg"
         },
-        "taskDescription": " An object starts at rest and falls from a building that is 56 meters tall. Graph its velocity and position from 0 seconds to 4 seconds. Use 9.81 m/s<sup>2</sup> for the acceleration due to gravity. Choose coordinates so that the ground is at zero. ",
+        "taskDescription": " An object starts at rest and falls from a building that is 56 meters tall. Graph its velocity and position from 0 seconds to 4 seconds. Use 9.81 m/s^2 for the acceleration due to gravity. Choose coordinates so that the ground is at zero. ",
         "givenModelNodes": [
             {
                 "ID": "id1",

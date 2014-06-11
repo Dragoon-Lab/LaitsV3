@@ -35,7 +35,7 @@ define([
     "./calculations",
     "dojo/domReady!"
 ], function(array, declare, lang, on, Chart, Default, Lines, Grid, Legend, calculations){
-    return declare(calculations, {
+    return declare(calculations, {                //calculations constructor is loaded here before RenderGraph constructor is 
 	
 	type: "Graph",                                  //Rendering type
 	textBoxID:"textGraph",                          //ID for text-box DOM
@@ -70,8 +70,14 @@ define([
 	     one would need to order them using topologicalSort
 	     */
 	    var activeSolution = this.findSolution(true, this.active.plotVariables);
-
-	    if(this.mode != "AUTHOR"){
+        if(activeSolution.status=="error" && activeSolution.type=="missing") // Return value from findSlution in calculation, returns an array and we check for status and any missing nodes
+	    {
+	       this.dialogWidget.set("content", "<div>"+activeSolution.missingNode+" is missing</div>"); //We show the error message like "A Node is Missing"
+           return;
+	    }
+        
+        
+        if(this.mode != "AUTHOR"){
 	    	//check for author mode. Here we need to create just one graph.
 		    this.given.plotVariables = array.map(this.active.plotVariables, function(id){
 			var givenID = this.model.active.getDescriptionID?
@@ -82,8 +88,12 @@ define([
 			return givenNode && (!givenNode.genus?givenID:null);
 		    }, this);
 		    
-		    // Calculate solutions
+		
+        
+        
+            // Calculate solutions
 		    var givenSolution = this.findSolution(false, this.given.plotVariables);
+            
 		}
 
 		 array.forEach(this.active.plotVariables, function(id){
@@ -95,7 +105,8 @@ define([
 
             var charts = {};
             var legends = {};
-            if(this.active.plotVariables){
+            
+            if(this.active.plotVariables.length>0){ //we check the length of object, if there are nodes , then we proceed else give an error and return
 		array.forEach(this.active.plotVariables, function(id, k){
                     var str = "chart" + id;
                     charts[id] = new Chart(str);
@@ -136,8 +147,7 @@ define([
 
 		}, this);
             }else{
-		this.dialogWidget.set("content", "<div>Nothing to plot yet.</div>" +
-				       +"<div>Define more quantities.</div>");
+		this.dialogWidget.set("content", "<div>Nothing to plot yet.</div>" ); //Error telling there are no nodes and graph cant be rendered
             }
             this.chart = charts;
 	},

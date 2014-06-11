@@ -21,6 +21,7 @@ html, body, #main{
 
 .claro #nodeeditor .dijitDisabled{
     background-color:#e6e6e6;
+    cursor: pointer;
 }
 
 

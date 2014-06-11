@@ -26,8 +26,8 @@ define([
     "dojo/_base/array", 'dojo/_base/declare', "dojo/_base/lang",
     "dojo/dom", "dojo/ready",
     'dijit/registry',
-    './controller', "./pedagogical_module", "./equation",'dojo/dom-style',"dijit/TooltipDialog","dijit/popup"
-], function(array, declare, lang, dom, ready, registry, controller, PM, expression,style,TooltipDialog, popup){
+    './controller', "./pedagogical_module", "./equation"
+], function(array, declare, lang, dom, ready, registry, controller, PM, expression){
 
     /*
      Methods in controller specific to the student modes
@@ -40,17 +40,7 @@ define([
             console.log("++++++++ In student constructor");
             this._PM = new PM(mode, subMode, model);
             lang.mixin(this.widgetMap, this.controlMap);
-	    ready(this, "populateSelections");
-
-            this.myTooltipDialog = new TooltipDialog({ //new tool tip for indicating use of decimals instead of percentages
-		style: "width: 150px;",
-		content: "Use decimals instead of percent"
-            }); 
-            this.myTooltipDialog2 = new TooltipDialog({ // new tooltip for indicating non numeric data is not accepted
-		style: "width: 150px;",
-		content: "Non Numeric data not accepted"
-            });        
-
+            ready(this, "populateSelections");
         },
         // A list of control map specific to students
         controlMap: {
@@ -58,6 +48,10 @@ define([
             units: "selectUnits",
             inputs: "nodeInputs"
         },
+
+	setState: function(state){
+	    this._PM.setState(state);
+	},
 
         populateSelections: function(){
 	    /*
@@ -124,65 +118,18 @@ define([
     	    this.updateType(value);
     	},
 	
-        handleInitial: function(initial){
-            
-	    var initialWidget = dom.byId(this.widgetMap.initial);
-	    // Popups only occur for an error, so leave it up until
-	    // the next time the student attempts to enter a number.
-            popup.close(this.myTooltipDialog);// close old pop-ups' before a new one  
-            popup.close(this.myTooltipDialog2);
-    
-            
- 	    // we do this type conversion because we used a textbox for initialvalue input which is a numerical
-            initial= +initial; // usage of + unary operator converts a string to number 
-	    // use isNaN to test if conversion worked.
-            if(isNaN(initial)){
-		// Put in checks here
-   	        console.log('not a number');
-		//initialValue is the id of the textbox, we get the value in the textbox
-		var impose_nums= initialWidget.value; 
-		
-		if(!impose_nums.match('^[-+]?[0-9]*\.?[0-9]+([eE][-+]?[0-9]+)?%$')){ //To check the decimals against percentages
-                    
-                  if(isNaN(impose_nums) && impose_nums!=''){ //Incase input is not a number
-		    console.warn("Should log when this happens");
-                    popup.open({
-			popup: this.myTooltipDialog2,
-			around: initialWidget
-                    });
-                  }
-		}else{ //if entered string has percentage symbol, pop up a message to use decimals
-		    console.warn("Should log when this happens");
-                    popup.open({
-			popup: this.myTooltipDialog,
-			around: initialWidget
-                    });
-		}
-		
-		return; 
-            }
-	    console.log("****** Student has chosen initial value", initial, this.lastInitialValue);
-    	    /*
-    		 Evaluate only if the value is changed.
-	     
-    	     The controller modifies the initial value widget so that a "Change" event is
-    	     fired if the widget loses focus.  This may happen when the node editor is closed.
-    	     */
-    	    if(typeof initial === 'undefined' || initial == this.lastInitialValue){
-    		return;
-    	    }
-
-    	    this.lastInitialValue = initial;
-	    
-            // updating node editor and the model.
-            this._model.active.setInitial(this.currentID, initial);
-            this.applyDirectives(this._PM.processAnswer(this.currentID, 'initial', initial));
-	},
-         closePops: function(){
-            popup.close(this.myTooltipDialog);// close old pop-ups' before a new one  
-            popup.close(this.myTooltipDialog2);
-    	},
+        /*
+         Handler for initial value input
+         */
 	
+	handleInitial: function(initial){
+            var IniFlag = this.checkInitialValue(initial,this.lastInitialValue); //IniFlag returns the status and initial value
+            if(IniFlag.status){ //If the initial value is not a number of is unchanged from previous value we dont process
+		var newInitial = IniFlag.value;
+		this.applyDirectives(this._PM.processAnswer(this.currentID, 'initial', newInitial));
+            }
+        },
+        
         initialSet: function(value){
                 this._model.active.setInitial(this.currentID, value);
     	},
@@ -284,25 +231,14 @@ define([
 
                 // console.warn("======= not saving in status, node=" + this.currentID + ": ", desc);
             }
-        }/*,
-		colorNodeBorder: function(nodeId){
-				//get model type
-				var type = this._model.student.getType(nodeId);
-				if(type){
-				console.log('model type is '+type);
-		
-				var colorMap = {
-                    correct: "green",
-                    incorrect: "#FF8080",
-                    demo: "yellow"
-                };
-				console.log('nodeId is '+nodeId);
-				var isComplete   = this._model.student.isComplete(nodeId,true)?'solid':'dashed';
-				var color = this._model.student.getCorrectness(nodeId);
-				console.log('color is '+color);
-				style.set(this.currentID,'border','2px '+isComplete+' '+colorMap[color]);
-				style.set(this.currentID,'box-shadow','inset 0px 0px 5px #000 , 0px 0px 10px #000');
-				}
-		}*/
+        },
+
+        checkDonenessMessage: function (){
+	    // Returns true if model is not complete.
+            var directives = this._PM.checkDoneness(this._model);
+	    this.applyDirectives(directives);
+	    return directives;
+        }
+
     });
 });

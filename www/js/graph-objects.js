@@ -30,7 +30,7 @@ define([
                return [["Arrow", { location:1, id:"arrow", length:14, foldback:0.9 } ]];
         },
  	getNodeName:function(model,nodeId,type){
-	      var type = model.getType(nodeId)||type||'triangle';
+	      var type = type||model.getType(nodeId)||'triangle';
              var nodeName = model.getName(nodeId);
              var parse = model.getEquation(nodeId);
              var parameter =  '';
@@ -50,7 +50,7 @@ define([
 
             initialValue += " " + unitsValue;
 
-            if(nodeName&&type!='triangle')
+            if(nodeName && type!='triangle')
                 nodeName='<div id='+nodeId+'Label  class="bubble"><div class="'+type+'Wrapper"><strong>'+parameter+'<br>'+initialValue+'</strong></div><div class='+type+'Div><strong>'+nodeName+'</strong></div></div>';
             else
                 nodeName='';
