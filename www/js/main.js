@@ -155,15 +155,19 @@ define([
              Instead, we connect directly to the widget.
              */
             aspect.after(registry.byId('nodeeditor'), "hide", function(){
+           
                 console.log("Calling session.saveProblem");
                 controllerObject.logging.log("ui-action", {node: "name of the node", tab:"last value checked", type:"dialog-box-tab"});
                 session.saveProblem(givenModel.model);
-            });
+            
+        });
 
             // Wire up close button...
             // This will trigger the above session.saveProblem()
             on(registry.byId("closeButton"), "click", function(){
-                registry.byId("nodeeditor").hide();
+
+                    registry.byId("nodeeditor").hide();
+                
             });
 
 	    

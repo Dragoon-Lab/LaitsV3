@@ -314,10 +314,15 @@ define([
                         equation.addQuantity(nodeId, this._model.given);
                         this.setConnections(this._model.given.getInputs(this.currentID), this.currentID);
                     } else {
+                        console.log("REID ----  Setting VariableFlag");
                         variableFlag = true;
-			if(undefinedVariables){
-			    undefinedVariables += ", ";
-			}
+                        if(!this.undefinedNodes.indexOf(variable) > -1){
+                            console.log("REID -- pushing variable to array");
+                             this.undefinedNodes.push(variable);
+                        }
+			             if(undefinedVariables){
+			                 undefinedVariables += ", ";
+			             }
                         undefinedVariables += variable;
                     }
                 }));
