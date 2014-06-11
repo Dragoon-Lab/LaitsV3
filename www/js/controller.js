@@ -73,6 +73,10 @@ define([
                 content: "Non-numeric data not accepted"
             });
         },
+        
+        
+        
+        
         // A list of common controls of student and author
         genericControlMap: {
             type: "typeId",
@@ -117,7 +121,11 @@ define([
              If this can change during a session, then we
              should move this to this.showNodeEditor()
              */
-            var algebraic = (this._inputStyle == "algebraic" ? "" : "none");
+            if(this._inputStyle!="algebraic" && this._inputStyle!="structured" && this._inputStyle){ //If the input style is anything different frm algebraic, structured, unmentioned then we log an error as corrupted input style
+            error = new Error("input style has been corrupted");
+            throw error;
+            }
+            var algebraic = (this._inputStyle == "algebraic" || !this._inputStyle ? "" : "none"); //making algebraic the default input style incase n inputstyle is defined
             var structured = (this._inputStyle == "structured" ? "" : "none");
             domStyle.set("algebraic", "display", algebraic);
             domStyle.set("structured", "display", structured);
@@ -181,6 +189,7 @@ define([
                 });
                 this.startup();
             };
+            
             
             // All <select> controls
             array.forEach(this.selects, function(select){
@@ -434,13 +443,16 @@ define([
             popup.close(this.myTooltipDialog);
             popup.close(this.myTooltipDialog2);
     	},
-        checkNumber: function(initialString){
+        
+        checkInitialValue: function(initialString,thislastInitialValue){ 
+            //Description : performs non number check and also checks if the initial value was changed from previously entered value
+            //returns: status, a boolean value and value, the current initial value
             var initialWidget = dom.byId(this.widgetMap.initial);
             // Popups only occur for an error, so leave it up until
             // the next time the student attempts to enter a number.
-	    this.closePops();
+	         this.closePops();
             // we do this type conversion because we used a textbox for initialvalue input which is a numerical
-            var initial= +initialString; // usage of + unary operator converts a string to number 
+             var initial= +initialString; // usage of + unary operator converts a string to number 
             // use isNaN to test if conversion worked.
             if(isNaN(initial)){
                 // Put in checks here
@@ -459,10 +471,18 @@ define([
                         popup: this.myTooltipDialog,
                         around: initialWidget
                     });
-                }            
-                return false; 
+                 }            
+                return {status: false}; 
             }
-            return true;
+                        
+            if(typeof initialString === 'undefined' || initialString == thislastInitialValue){
+    		return { status: false};
+    	    }
+    	    this.lastInitialValue = initialString;
+            // updating node editor and the model.
+            initialString=+initialString;
+            this._model.active.setInitial(this.currentID, initialString);
+            return { status: true, value: initialString};
         },
         updateType: function(type){
             //update node type on canvas
@@ -795,13 +815,13 @@ define([
 
 
             if(model.getNodeIDFor){
-            var d = registry.byId(this.controlMap.description);
-            array.forEach(this._model.given.getDescriptions(), function(desc){
-                var exists =  model.getNodeIDFor(desc.value);
-                 d.getOptions(desc).disabled=exists;
-                if(desc.value == nodeName){
-                    d.getOptions(desc).disabled=false;
-                }});
+		var d = registry.byId(this.controlMap.description);
+		array.forEach(this._model.given.getDescriptions(), function(desc){
+                    var exists =  model.getNodeIDFor(desc.value);
+                    d.getOptions(desc).disabled=exists;
+                    if(desc.value == nodeName){
+			d.getOptions(desc).disabled=false;
+                    }});
             }
 
             var type = model.getType(nodeid);
@@ -818,7 +838,11 @@ define([
 
             var unit = model.getUnits(nodeid);
             console.log('unit is', unit || "not set");
-            registry.byId(this.controlMap.units).set('value', unit || 'defaultSelect');
+            // Initial input in Units box
+            registry.byId(this.controlMap.units).set('value', unit || '');
+
+            // Input choices are different in AUTHOR and student modes
+	    // So they are set in con-author.js and con-student.js
 
             var equation = model.getEquation(nodeid);
             console.log("equation before conversion ", equation);

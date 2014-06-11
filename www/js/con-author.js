@@ -30,10 +30,10 @@ define([
     "./equation",
     "dojo/store/Memory",
     "dojo/domReady!"
-
 ], function(array, declare, lang, style, ready, registry, controller, equation, memory){
 
     return declare(controller, {
+        
         //pedagogical module class for author
         authorPM:{
             process: function(nodeID, nodeType, value, validInput){
@@ -232,6 +232,7 @@ define([
             // If descriptionID is falsy give "null"; if it doesn't match, give "false"
             this.applyDirectives(this.authorPM.process(descriptionID?!(descriptionID==this.currentID):null, "description", description));
             if(!this._model.active.getNodeIDByDescription(description)){
+                
                 this._model.active.setDescription(this.currentID, description);
                 console.log("In AUTHOR mode. Description value is: " + description);
             }else {
@@ -263,25 +264,15 @@ define([
          Handler for initial value input
          */
         handleInitial: function(initial){
-            // Summary: Sets the initial value of the current node.
-            /*
-             Evaluate only if the value is changed.
-
-             The controller modifies the initial value widget so that a "Change" event is
-             fired if the widget loses focus.  This may happen when the node editor is closed.
-             */
-            //check number checks for the % and nan values.
-            var numberFlag = this.checkNumber(initial);
-            this.applyDirectives(this.authorPM.process(this.currentID, "initial", initial, numberFlag));
-            if(initial == this.lastInitialValue || !numberFlag){
-                return;
+            var IniFlag = this.checkInitialValue(initial,this.lastInitialValue); //IniFlag returns the status and initial value           
+            if(IniFlag.status){
+		// If the initial value is not a number of is unchanged from previous value we dont process
+		var newInitial = IniFlag.value;
+		this.applyDirectives(this.authorPM.process(this.currentID, "initial", newInitial, true));
+		console.log("In AUTHOR mode. Initial value is: " + newInitial);
             }
-
-            this.lastInitialValue = initial;
-
-            this._model.active.setInitial(this.currentID, initial);
-            console.log("In AUTHOR mode. Initial value is: " + initial);
         },
+        
         handleInputs: function(name){
             console.log("In AUTHOR mode. Input selected is: " + name);
             this.equationInsert(name);
