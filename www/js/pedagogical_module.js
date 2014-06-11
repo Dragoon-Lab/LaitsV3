@@ -503,7 +503,7 @@ define([
 	    for(var hint in hints){
 		record.init(hint, 0);
 	    };
-	    record.init("problemCompleted",0);
+	    record.init("problemCompleted",-1);
 	},
 		
         processAnswer: function(/*string*/ id, /*string*/ nodePart, /*string | object*/ answer){
@@ -666,9 +666,13 @@ define([
         },
 	notifyCompleteness : function (model){
         if(model.matchesGivenSolution()){
+
+	   if(!this.completedSent)	
+                record.increment("problemCompleted",1);
+		
+
            if(!this.completedSent && record.getLocal("problemCompleted") < 2 ){ //counter = 2
 	       this.completedSent = true;
-                record.increment("problemCompleted",1);
                 return  [{
                     id: "crisisAlert",
                     attribute: "open",
