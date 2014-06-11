@@ -85,9 +85,9 @@ define([
                 // Summary: keeps track of where to place the next node; function detects collisions
                 //      with other nodes; is called in addStudentNode() before creating the node
                 // Tags: private
-                for(var i = 0; i < this.model.task.studentModelNodes.length; i++){
-                    var x = this.model.task.studentModelNodes[i].position.x;
-                    var y = this.model.task.studentModelNodes[i].position.y;
+                array.forEach(obj.active.getNodes(), function(node) {
+                    var x = node.position.x;
+                    var y = node.position.y;
                     while(this.x > x - this.nodeWidth && this.x < x + this.nodeWidth &&
                             this.y > y - this.nodeHeight && this.y < y + this.nodeHeight){
                         if(this.x + this.nodeWidth < document.documentElement.clientWidth + 100)
@@ -97,7 +97,7 @@ define([
                             this.y += this.nodeHeight;
                         }
                     }
-                }
+                }, this);
             },
             _getNextOptimalNode: function(/*string*/ givenNodeID){
                 // Summary: Accepts the id of a parent node and returns the next optimal
