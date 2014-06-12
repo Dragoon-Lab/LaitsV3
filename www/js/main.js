@@ -63,7 +63,7 @@ define([
     session.loadProblem(query).then(function(solutionGraph){
 
         var givenModel = new model(query.m, query.p);
-        logging.session.log('open-problem',{problem : query.p});
+        logging.session.log('open-problem', {problem : query.p});
         if(solutionGraph){
             givenModel.loadModel(solutionGraph);
         }
@@ -83,11 +83,10 @@ define([
                 new controlStudent(query.m, subMode, givenModel, query.is);
 
         //setting up logging for different modules.
-        if(controllerObject._PM)
+        if(controllerObject._PM){
             controllerObject._PM.setLogging(session);  // Set up direct logging in PM
-        
+	}
         controllerObject.setLogging(session); // set up direct logging in controller
-
         expression.setLogging(session);
 
 	/*

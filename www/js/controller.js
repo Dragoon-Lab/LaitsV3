@@ -299,9 +299,12 @@ define([
 	    // In case any tool tips are still open.
             this.closePops();
             //this.disableHandlers = false;
-		
-	   var directives = this._PM.notifyCompleteness(this._model);
- 	   this.applyDirectives(directives);
+
+	    // This cannot go in controller.js since _PM is only in
+	    // con-student.  You will need con-student to attach this
+	    // to closeEditor (maybe using aspect.after?).
+	    var directives = this._PM.notifyCompleteness(this._model);
+	    this.applyDirectives(directives);
 
         },
         //set up event handling with UI components
