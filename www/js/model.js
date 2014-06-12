@@ -76,6 +76,7 @@ define([
             beginY: 100,
             nodeWidth: 200,
             nodeHeight: 200,
+	    isCompleteFlag: false,
             /**
              * 
              * Private methods; these methods should not be accessed outside of this class
@@ -176,6 +177,14 @@ define([
                         descriptions[node.description] = node.ID;
                     }
                 }, this);
+
+		/*
+		 Set flag showing that student model is complete.
+
+		 Does not corretly handle case where student completes
+		 the model, deletes some nodes, and reopens the problem.
+		 */
+		this.isCompleteFlag = this.matchesGivenSolution();
             },
             getModelAsString: function(){
                 // Summary: Returns a JSON object in string format
