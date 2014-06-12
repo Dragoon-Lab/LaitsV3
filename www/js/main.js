@@ -172,7 +172,7 @@ define([
 	    
             if(query.m == "AUTHOR"){
                 var db = registry.byId("descButton");
-	        db.setAttribute("disabled", false);
+	        db.set("disabled", false);
 		
 		// Description button wiring
 		menu.add("descButton", function(){
