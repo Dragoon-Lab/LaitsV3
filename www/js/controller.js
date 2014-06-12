@@ -300,6 +300,10 @@ define([
             this.closePops();
             //this.disableHandlers = false;	
 
+	    // This cannot go in controller.js since _PM is only in
+	    // con-student.  You will need con-student to attach this
+	    // to closeEditor (maybe using aspect.after?).
+
         },
         //set up event handling with UI components
         _initHandles: function(){

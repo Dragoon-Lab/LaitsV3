@@ -328,7 +328,7 @@ define([
 
     //Declare variable for accessing state.js module
     var record = null;
-    
+
     /*****
      * Summary: The following four functions are used by the above tables to push 
      *      statuses and messages to the return object array.
@@ -369,7 +369,6 @@ define([
         matchingID: null,
         logging: null,
         descriptionCounter: 0,
-	completedSent: false,
 	
         /*****
          * Private Functions
@@ -503,7 +502,7 @@ define([
 	    for(var hint in hints){
 		record.init(hint, 0);
 	    };
-	    record.init("problemCompleted",-1);
+	    record.init("problemCompleted", 0);
 	},
 		
         processAnswer: function(/*string*/ id, /*string*/ nodePart, /*string | object*/ answer){
@@ -664,24 +663,22 @@ define([
             } 
             return false;
         },
+
 	notifyCompleteness : function (model){
-        if(model.matchesGivenSolution()){
+            if(model.matchesGivenSolution() && !model.isCompleteFlag){
+		model.isCompleteFlag = true;
+                record.increment("problemCompleted", 1);
 
-	   if(!this.completedSent)	
-                record.increment("problemCompleted",1);
-		
-
-           if(!this.completedSent && record.getLocal("problemCompleted") < 2 ){ //counter = 2
-	       this.completedSent = true;
-                return  [{
-                    id: "crisisAlert",
-                    attribute: "open",
-                    value: 'You have completed your model. Click on "Graph" or "Table" to see what the solution looks like'
-                }];
-            }
-        return false;
-    }
-   }     
-
+		// Number of problems to show the hint upon completion
+		if(record.getLocal("problemCompleted") < 3 ){
+		    return  [{
+			id: "crisisAlert",
+			attribute: "open",
+			value: 'You have completed your model. Click on "Graph" or "Table" to see what the solution looks like'
+		    }];
+		}
+	    }
+	    return [];
+	}
     });
 });

@@ -26,8 +26,8 @@ define([
     "dojo/_base/array", 'dojo/_base/declare', "dojo/_base/lang",
     "dojo/dom", "dojo/ready",
     'dijit/registry',
-    './controller', "./pedagogical_module", "./equation"
-], function(array, declare, lang, dom, ready, registry, controller, PM, expression){
+    './controller', "./pedagogical_module", "./equation","dojo/aspect"
+], function(array, declare, lang, dom, ready, registry, controller, PM, expression,aspect){
 
     /*
      Methods in controller specific to the student modes
@@ -44,7 +44,7 @@ define([
 	    this.init();
         },
 	init:function(){
-		 aspect.after(this.prototype, "closeEditor", function(){
+		 aspect.after(this, "closeEditor", function(){
 			var directives = this._PM.notifyCompleteness(this._model);	
            		this.applyDirectives(directives);
     		}, true);

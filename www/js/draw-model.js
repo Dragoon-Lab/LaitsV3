@@ -243,8 +243,6 @@ define([
 	     isProduct = equation.isProduct(parse);
 	    }
 
-	    console.log('while adding connections ');
-
             array.forEach(this._instance.getConnections(), function(connection){
                 if(connection.targetId == destination)
                     this._instance.detach(connection);
