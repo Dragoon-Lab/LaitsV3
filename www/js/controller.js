@@ -674,14 +674,14 @@ define([
 			if(this.structured.ops.length == 0) {
 				var equationWidget = registry.byId("equationBox");
 				equationWidget.set("value", "");
-				dom.byId("equationText").innerHTML = ""
+				dom.byId("equationText").innerHTML = "";
 			}
 			else {
 				var widget = registry.byId(this.controlMap.equation);
 				this.structured.pop();
 			}
         },
-        equationAnalysis: function(directives){
+        equationAnalysis: function(directives, ignoreUnknownTest){
             this.equationEntered = true;
             console.log("****** enter button");
             /*
@@ -719,7 +719,38 @@ define([
             }
 
             if(parse){
-                var toPM = this.validateEquation(parse, directives);
+		var toPM = true;
+		// Explain this
+		var mapID = this._model.active.getDescriptionID || function(x){ return x; };
+		var unMapID = this._model.active.getNodeIDFor || function(x){ return x; };
+		array.forEach(parse.variables(), function(variable){
+		    // Test if variable name can be found in given model
+                    var givenID = this._model.given.getNodeIDByName(variable);
+                    // Checks for nodes referencing themselves; this causes problems because
+                    //      functions will always evaluate to true if they reference themselves
+                    if(givenID && this._model.active.getType(this.currentID) === "function" &&
+                       givenID === mapID(this.currentID)){
+			toPM = false;
+			directives.push({id: 'equation', attribute: 'status', value: 'incorrect'});
+			directives.push({id: 'message', attribute: 'append', value: "You cannot use '" + variable + "' in the equation. Function nodes cannot reference themselves."});
+                    }
+
+		    if(givenID || ignoreUnknownTest){
+			// Test if variable has been defined already
+			var subID = unMapID(givenID);
+			if(subID){
+                            // console.log("       substituting ", variable, " -> ", studentID);
+                            parse.substitute(variable, subID);
+			}else{
+                            directives.push({id: 'message', attribute: 'append', value: "Quantity '" + variable + "' not defined yet."});
+			}
+                    }else{
+			toPM = false;  // Don't send to PM
+			directives.push({id: 'message', attribute: 'append', value: "Unknown variable '" + variable + "'."});
+                    }
+		    
+		}, this);
+
                 // Expression now is written in terms of student IDs, when possible.
                 // Save with explicit parentheses for all binary operations.
                 var parsedEquation = parse.toString(true);

@@ -276,33 +276,14 @@ define([
         },
         equationDoneHandler: function(){
             var directives = [];
-            var parse = this.equationAnalysis(directives);
+            var parse = this.equationAnalysis(directives, true);
 
             if(parse){
                 directives = directives.concat(this.authorPM.process(this.currentID, "equation", parse));
             }
             this.applyDirectives(directives);
         },
-        validateEquation: function(parse, directives){
-            var toPM = true;
-            array.forEach(parse.variables(), function(variable){
-                var givenID = this._model.active.getNodeIDByName(variable);
-                if(givenID){
-                    var type = this._model.active.getType(this.currentID);
-                    if(type && type === "function"){
-                        if(givenID === this.currentID){
-                            toPM = false;
-                            directives.push({id: 'equation', attribute: 'status', value: 'incorrect'});
-                            directives.push({id: 'message', attribute: 'append', value: "You cannot use '" + variable + "' in the equation. Function nodes cannot reference themselves."});
-                        }
-                    }
-                } else {
-                    toPM = false;
-                    directives.push({id: 'message', attribute: 'append', value: "Quantity '" + variable + "' not defined yet."});
-                }
-            }, this);
-            return toPM;
-        },
+
         initialControlSettings: function(nodeid){
             var name = this._model.given.getName(nodeid);
             registry.byId(this.controlMap.name).set('value', name || '', false);
