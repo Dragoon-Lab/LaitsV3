@@ -316,7 +316,7 @@ define([
                     } else {
                         console.log("REID ----  Setting VariableFlag");
                         variableFlag = true;
-                        if(!this.undefinedNodes.indexOf(variable) > -1){
+                        if(this.undefinedNodes.indexOf(variable) == -1){
                             console.log("REID -- pushing variable to array");
                              this.undefinedNodes.push(variable);
                         }
@@ -361,6 +361,11 @@ define([
                     inputs.push(obj);
 		    descriptions.push({name: this._model.given.getDescription(desc.value), id: desc.id});
                 }
+            }, this);
+            array.forEach(this.undefinedNodes, function(node){
+                var obj = {name: node, id: ""};
+                inputs.push(obj);
+                descriptions.push(obj);
             }, this);
             array.forEach(this._model.getAllUnits(), function(unit){
                 units.push({name: unit, id: unit});
