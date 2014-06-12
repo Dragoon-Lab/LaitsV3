@@ -41,7 +41,14 @@ define([
             this._PM = new PM(mode, subMode, model);
             lang.mixin(this.widgetMap, this.controlMap);
             ready(this, "populateSelections");
+	    this.init();
         },
+	init:function(){
+		 aspect.after(this.prototype, "closeEditor", function(){
+			var directives = this._PM.notifyCompleteness(this._model);	
+           		this.applyDirectives(directives);
+    		}, true);
+	},
         // A list of control map specific to students
         controlMap: {
             description: "selectDescription",
