@@ -719,37 +719,36 @@ define([
             }
 
             if(parse){
-		var toPM = true;
-		// Explain this
-		var mapID = this._model.active.getDescriptionID || function(x){ return x; };
-		var unMapID = this._model.active.getNodeIDFor || function(x){ return x; };
-		array.forEach(parse.variables(), function(variable){
-		    // Test if variable name can be found in given model
+        		var toPM = true;
+        		//getDescriptionID is present only in student mode. So in author mode it will give an identity function. This is a work around in case when its in author mode at that time the given model is the actual model. So descriptionID etc are not available. 
+        		var mapID = this._model.active.getDescriptionID || function(x){ return x; };
+        		var unMapID = this._model.active.getNodeIDFor || function(x){ return x; };
+        		array.forEach(parse.variables(), function(variable){
+                    // Test if variable name can be found in given model
                     var givenID = this._model.given.getNodeIDByName(variable);
                     // Checks for nodes referencing themselves; this causes problems because
                     //      functions will always evaluate to true if they reference themselves
                     if(givenID && this._model.active.getType(this.currentID) === "function" &&
-                       givenID === mapID(this.currentID)){
-			toPM = false;
-			directives.push({id: 'equation', attribute: 'status', value: 'incorrect'});
-			directives.push({id: 'message', attribute: 'append', value: "You cannot use '" + variable + "' in the equation. Function nodes cannot reference themselves."});
+                        givenID === mapID.call(this._model.active, this.currentID)){
+            			toPM = false;
+            			directives.push({id: 'equation', attribute: 'status', value: 'incorrect'});
+            			directives.push({id: 'message', attribute: 'append', value: "You cannot use '" + variable + "' in the equation. Function nodes cannot reference themselves."});
                     }
 
-		    if(givenID || ignoreUnknownTest){
-			// Test if variable has been defined already
-			var subID = unMapID(givenID);
-			if(subID){
+        		    if(givenID || ignoreUnknownTest){
+                        // Test if variable has been defined already
+            			var subID = unMapID.call(this._model.active, givenID);
+            			if(subID){
                             // console.log("       substituting ", variable, " -> ", studentID);
                             parse.substitute(variable, subID);
-			}else{
+                        }else{
                             directives.push({id: 'message', attribute: 'append', value: "Quantity '" + variable + "' not defined yet."});
-			}
+                        }
                     }else{
-			toPM = false;  // Don't send to PM
-			directives.push({id: 'message', attribute: 'append', value: "Unknown variable '" + variable + "'."});
+                		toPM = false;  // Don't send to PM
+                		directives.push({id: 'message', attribute: 'append', value: "Unknown variable '" + variable + "'."});
                     }
-		    
-		}, this);
+                }, this);
 
                 // Expression now is written in terms of student IDs, when possible.
                 // Save with explicit parentheses for all binary operations.
@@ -759,9 +758,9 @@ define([
                 // console.log("********* Saving equation to model: ", parsedEquation);
                 this._model.active.setEquation(this.currentID, parsedEquation);
 
-		// Test if this is a pure sum or product
-		// If so, determine connection labels
-		var inputs = expression.createInputs(parse);
+        		// Test if this is a pure sum or product
+        		// If so, determine connection labels
+        		var inputs = expression.createInputs(parse);
 
                 // Update inputs and connections
                 this._model.active.setInputs(inputs, this.currentID);
