@@ -222,20 +222,20 @@ define([
             });
 
 
-           menu.add("doneButton", function(){
-                console.debug("done button is clicked");
-                var problemComplete = givenModel.matchesGivenSolution();
+        menu.add("doneButton", function(){
+            console.debug("done button is clicked");
+            var problemComplete = givenModel.matchesGivenSolution();
 
-                controllerObject.logging.log('close-problem', {
-                    type: "menu-choice", 
-                    name: "done-button", 
-                    problemComplete: problemComplete
-                });
-               window.history.back();
-
-
-
-           });
+            var promise = controllerObject.logging.log('close-problem', {
+                type: "menu-choice", 
+                name: "done-button", 
+                problemComplete: problemComplete
+            });
+            
+            promise.then(function(){
+                window.history.back();
+            });
+        });
 
 	    /* 
 	     Add link to intro video
