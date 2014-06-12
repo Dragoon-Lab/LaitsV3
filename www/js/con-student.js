@@ -138,15 +138,6 @@ define([
         *    handle event on inputs box
         * */
         handleInputs: function(id){
-            /*if(id.MOUSEDOWN){
-             if(this.lastHandleInputId){
-             console.log('onclick event found onSelect, use old id '+this.lastHandleInputId);
-             id=this.lastHandleInputId; //restore
-             }else
-             return;  //if last id is not defined return
-             }else
-             this.lastHandleInputId=id; //copy it for next onClick event*/
-
             //check if id is  not select else return
 
             console.log("*******Student has chosen input", id, this);
