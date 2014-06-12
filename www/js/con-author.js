@@ -33,131 +33,125 @@ define([
 ], function(array, declare, lang, style, ready, registry, controller, equation, memory){
 
     return declare(controller, {
-        
+
         //pedagogical module class for author
         authorPM:{
             process: function(nodeID, nodeType, value, validInput){
                 var returnObj=[];
                 switch(nodeType){
-                    case "type":
-                        returnObj.push({attribute:"status", id:"type", value:"entered"});
-                        if(value == "parameter"){
-                            //disable inputs and expression
-                            returnObj.push({attribute:"disabled", id:"initial", value:false});
+                case "type":
+                    returnObj.push({attribute:"status", id:"type", value:"entered"});
+                    if(value == "parameter"){
+                        //disable inputs and expression
+                        returnObj.push({attribute:"disabled", id:"initial", value:false});
 
-                            returnObj.push({attribute:"disabled", id:"inputs", value:true});
-                            returnObj.push({attribute:"status", id:"inputs", value:""});
+                        returnObj.push({attribute:"disabled", id:"inputs", value:true});
+                        returnObj.push({attribute:"status", id:"inputs", value:""});
 
-                            returnObj.push({attribute:"disabled", id:"equation", value:true});
-                            returnObj.push({attribute:"status", id:"equation", value:""});
-                        }
-                        else if(value == "function"){
-                            returnObj.push({attribute:"disabled", id:"initial", value:true});
-                            returnObj.push({attribute:"status", id:"initial", value:""});
+                        returnObj.push({attribute:"disabled", id:"equation", value:true});
+                        returnObj.push({attribute:"status", id:"equation", value:""});
+                    }else if(value == "function"){
+                        returnObj.push({attribute:"disabled", id:"initial", value:true});
+                        returnObj.push({attribute:"status", id:"initial", value:""});
 
-                            returnObj.push({attribute:"disabled", id:"inputs", value:false});
+                        returnObj.push({attribute:"disabled", id:"inputs", value:false});
 
-                            returnObj.push({attribute:"disabled", id:"equation", value:false});
-                        }
-                        else if(value == "accumulator"){
-                            returnObj.push({attribute:"disabled", id:"initial", value:false});
+                        returnObj.push({attribute:"disabled", id:"equation", value:false});
+                    }else if(value == "accumulator"){
+                        returnObj.push({attribute:"disabled", id:"initial", value:false});
 
-                            returnObj.push({attribute:"disabled", id:"inputs", value:false});
+                        returnObj.push({attribute:"disabled", id:"inputs", value:false});
 
-                            returnObj.push({attribute:"disabled", id:"equation", value:false});
-                        }
-                        else{
-                            returnObj.push({id:"type", attribute:"status", value:""});
-                            returnObj.push({id:"message", attribute:"append", value:"Please select node type"});
-                            returnObj.push({attribute:"disabled", id:"initial", value:false});
+                        returnObj.push({attribute:"disabled", id:"equation", value:false});
+                    }
+                    else{
+                        returnObj.push({id:"type", attribute:"status", value:""});
+                        returnObj.push({id:"message", attribute:"append", value:"Please select node type"});
+                        returnObj.push({attribute:"disabled", id:"initial", value:false});
 
-                            returnObj.push({attribute:"disabled", id:"inputs", value:false});
+                        returnObj.push({attribute:"disabled", id:"inputs", value:false});
 
-                            returnObj.push({attribute:"disabled", id:"equation", value:false});
-                        }
-                        break;
+                        returnObj.push({attribute:"disabled", id:"equation", value:false});
+                    }
+                    break;
 
-                    case "name":
-                        if(!nodeID && validInput){
-                            returnObj.push({id:"message", attribute:"append", value:"node name is available for use"});
-                            returnObj.push({id:"name", attribute:"status", value:"entered"});
-                        } else if(!validInput){
-                            returnObj.push({id:"message", attribute:"append", value:"Please enter a valid name without using numbers"});
-                            returnObj.push({id:"name", attribute:"status", value:"incorrect"});
-                        }
-                        else{
-                            returnObj.push({id:"message", attribute:"append", value:"Node name is already in use"});
-                            returnObj.push({id:"name", attribute:"status", value:"incorrect"});
-                        }
-                        break;
+                case "name":
+                    if(!nodeID && validInput){
+                        returnObj.push({id:"message", attribute:"append", value:"node name is available for use"});
+                        returnObj.push({id:"name", attribute:"status", value:"entered"});
+                    }else if(!validInput){
+                        returnObj.push({id:"message", attribute:"append", value:"Please enter a valid name without using numbers"});
+                        returnObj.push({id:"name", attribute:"status", value:"incorrect"});
+                    }else{
+                        returnObj.push({id:"message", attribute:"append", value:"Node name is already in use"});
+                        returnObj.push({id:"name", attribute:"status", value:"incorrect"});
+                    }
+                    break;
 
-                    case "kind":
-                        var message="";
-                        returnObj.push({id:"kind", attribute:"status", value:"entered"});
-                        if(value == "allowed"){
-                            message  = "One may include this quantity in a solution, but they can solve the problem without it.";
-                        }
-                        else if(value == "extra"){
-                            message  = "This quantity is mentioned in the problem description, but it not part of a valid model.";
-                        }
-                        else if(value == "irrelevant"){
-                            message  = "This quantity is not part of a valid solution and is not mentioned in the description.";
-                        }
-                        else{
-                            message = "Solution quantity";
-                        }
-                        returnObj.push({id:"message", attribute:"append", value:message});
-                        break;
+                case "kind":
+                    var message="";
+                    returnObj.push({id:"kind", attribute:"status", value:"entered"});
+                    if(value == "allowed"){
+                        message  = "One may include this quantity in a solution, but they can solve the problem without it.";
+                    }else if(value == "extra"){
+                        message  = "This quantity is mentioned in the problem description, but it not part of a valid model.";
+                    }else if(value == "irrelevant"){
+                        message  = "This quantity is not part of a valid solution and is not mentioned in the description.";
+                    }else{
+                        message = "Solution quantity";
+                    }
+                    returnObj.push({id:"message", attribute:"append", value:message});
+                    break;
 
-                    case "description":
-                        if(!value){
-                            returnObj.push({id:"description", attribute:"status", value:""});
-                        }else if(nodeID && value){ 
-                            returnObj.push({id:"description", attribute:"status", value:"incorrect"});
-                            returnObj.push({id:"message", attribute:"append", value:"Description is already in use"});
-                        }else{
-                            returnObj.push({id:"description", attribute:"status", value:"entered"});
-                        }
-                        break;
+                case "description":
+                    if(!value){
+                        returnObj.push({id:"description", attribute:"status", value:""});
+                    }else if(nodeID && value){ 
+                        returnObj.push({id:"description", attribute:"status", value:"incorrect"});
+                        returnObj.push({id:"message", attribute:"append", value:"Description is already in use"});
+                    }else{
+                        returnObj.push({id:"description", attribute:"status", value:"entered"});
+                    }
+                    break;
 
-                    case "initial":
-                        if(value && validInput){
-                            returnObj.push({id:"initial", attribute:"status", value:"entered"});
-                        } else if(value && !validInput){
-                            returnObj.push({id:"initial", attribute:"status", value:"incorrect"});
-                        }
-                        else{
-                            returnObj.push({id:"initial", attribute:"status", value:""});
-                        }
-                        break;
+                case "initial":
+                    if(value && validInput){
+                        returnObj.push({id:"initial", attribute:"status", value:"entered"});
+                    } else if(value && !validInput){
+                        returnObj.push({id:"initial", attribute:"status", value:"incorrect"});
+                    }else{
+                        returnObj.push({id:"initial", attribute:"status", value:""});
+                    }
+                    break;
 
-                    case "equation":
-                        if(value){
-                            returnObj.push({id:"equation", attribute:"status", value:"entered"});
-                        } else {
-                            returnObj.push({id:"equation", attribute:"status", value:""});
-                        }
-                        break;
+                case "equation":
+                    if(value){
+                        returnObj.push({id:"equation", attribute:"status", value:"entered"});
+                    } else {
+                        returnObj.push({id:"equation", attribute:"status", value:""});
+                    }
+                    break;
 
-                    case "units":
-                        if(value){
-                            returnObj.push({id:"units", attribute:"status", value:"entered"});
-                        }else{
-                            returnObj.push({id:"units", attribute:"status", value:""});
-                        }
-                        break;
+                case "units":
+                    if(value){
+                        returnObj.push({id:"units", attribute:"status", value:"entered"});
+                    }else{
+                        returnObj.push({id:"units", attribute:"status", value:""});
+                    }
+                    break;
 
-                    default:
-                        console.log("");
-                }
+                default:
+		    throw new Error("Unknown type: "+ nodeType + ".");
+		}
                 return returnObj;
-            }
+	    }
         },
+
         constructor: function(){
-            console.log("++++++++ In author constructor");
-            lang.mixin(this.widgetMap, this.controlMap);
-            this.authorControls();
-            ready(this, "initAuthorHandles");
+	    console.log("++++++++ In author constructor");
+	    lang.mixin(this.widgetMap, this.controlMap);
+	    this.authorControls();
+	    ready(this, "initAuthorHandles");
         },
 
 	/*
@@ -166,41 +160,41 @@ define([
 	setState: function(){},
 
         controlMap: {
-            inputs:"setInput",
-            name:"setName",
-            description:"setDescription",
-            kind:"selectKind",
-            units:"setUnits"
+	    inputs:"setInput",
+	    name:"setName",
+	    description:"setDescription",
+	    kind:"selectKind",
+	    units:"setUnits"
         },
         authorControls: function(){
-            console.log("++++++++ Setting AUTHOR format in Node Editor.");
-            style.set('nameControl', 'display', 'block');
-            style.set('descriptionControlStudent', 'display', 'none');
-            style.set('descriptionControlAuthor', 'display', 'block');
-            style.set('selectUnitsControl', 'display', 'none');
-            style.set('setUnitsControl', 'display', 'inline');
-            style.set('inputControlAuthor', 'display', 'block');
-            style.set('inputControlStudent', 'display', 'none');
+	    console.log("++++++++ Setting AUTHOR format in Node Editor.");
+	    style.set('nameControl', 'display', 'block');
+	    style.set('descriptionControlStudent', 'display', 'none');
+	    style.set('descriptionControlAuthor', 'display', 'block');
+	    style.set('selectUnitsControl', 'display', 'none');
+	    style.set('setUnitsControl', 'display', 'inline');
+	    style.set('inputControlAuthor', 'display', 'block');
+	    style.set('inputControlStudent', 'display', 'none');
         },
         initAuthorHandles: function(){
-            var name = registry.byId(this.controlMap.name);
-            name.on('Change', lang.hitch(this, function(){
+	    var name = registry.byId(this.controlMap.name);
+	    name.on('Change', lang.hitch(this, function(){
                 return this.disableHandlers || this.handleName.apply(this, arguments);
-            }));
-            var kind = registry.byId(this.controlMap.kind);
-            kind.on('Change', lang.hitch(this, function(){
+	    }));
+	    var kind = registry.byId(this.controlMap.kind);
+	    kind.on('Change', lang.hitch(this, function(){
                 return this.disableHandlers || this.handleKind.apply(this, arguments);
-            }));
+	    }));
         },
         /*
          Handler for type selector
          */
         handleName: function(name){
-            console.log("**************** in handleName ", name);
+	    console.log("**************** in handleName ", name);
 
-            /* check if node with name already exists and
-               if name is parsed as valid variable
-            */
+	    /* check if node with name already exists and
+             if name is parsed as valid variable
+             */
             var nameID = this._model.given.getNodeIDByName(name);
             // If nameID is falsy give "null"; if it doesn't match, give "false"
             this.applyDirectives(this.authorPM.process(nameID?!(nameID==this.currentID):null,'name',name, equation.isVariable(name)));
@@ -273,6 +267,10 @@ define([
         handleInputs: function(name){
             console.log("In AUTHOR mode. Input selected is: " + name);
             this.equationInsert(name);
+	    // After variable input, reset control to its initial state.
+	    // Third argument keeps handler from being called.
+	    var inputWidget = registry.byId(this.controlMap.inputs);
+	    inputWidget.set('value', '', false); 
         },
         equationDoneHandler: function(){
             var directives = [];
