@@ -105,7 +105,7 @@ define([
             file: filename, 
             line: lineNumber
         });
-	return true;
+	return false;
     };
 
     return logging;
