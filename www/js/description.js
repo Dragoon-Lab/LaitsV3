@@ -89,12 +89,9 @@ define([
 		var width = null;
         if (url) {
 			imageObj.onerror = function() {
-				var errorImage = new Image();
-				errorImage.src='images/error.png';
-				context.drawImage(errorImage,imageLeft,imageTop,errorImage.width/2,errorImage.height/2);
 				context.font = "normal 20px 'Lucida Grande, sans-serif'";
 				context.fillStyle= "#1f96db";
-				context.fillText("Image not found", errorImage.width/8, imageTop+errorImage.height/1.8);
+				context.fillText("Image not found", imageLeft, imageTop);
 				showText();
 	    		  };
 	    
