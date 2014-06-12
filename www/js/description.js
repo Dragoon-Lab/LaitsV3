@@ -59,7 +59,7 @@ define([
 
     showDescription: function(){
 
-        var canvas = document.getElementById('myCanvas');
+        var canvas = dom.byId('myCanvas');
         var context = canvas.getContext('2d');
         context.clearRect(0,0,canvas.width, canvas.height);
         var desc_text = this.givenModel.getTaskDescription();
@@ -89,10 +89,15 @@ define([
 		var width = null;
         if (url) {
 			imageObj.onerror = function() {
-				context.font = "normal 13px Arial";
-				context.fillText("Image not found", imageLeft, imageTop);
+				var errorImage = new Image();
+				errorImage.src='images/error.png';
+				context.drawImage(errorImage,imageLeft,imageTop,errorImage.width/2,errorImage.height/2);
+				context.font = "normal 20px 'Lucida Grande, sans-serif'";
+				context.fillStyle= "#1f96db";
+				context.fillText("Image not found", errorImage.width/8, imageTop+errorImage.height/1.8);
 				showText();
-			};
+	    		  };
+	    
             imageObj.src = url;
 		// Can't compute layout unless image is downloaded
 		// The model can also provide dimensions.  If it does, then 
