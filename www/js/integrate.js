@@ -35,7 +35,7 @@ define([
 	    //     {times: [t1, t2, ...], values: [[x1, x2, ...], 
 	    //                                     [y1, y2, ....], ...]}
 	    var i, j, n = initial.length, gradient;
-	    var t = times.start, values = initial.slice(0);
+        var t = times.start, values = initial.slice(0);
 	    var ret = {
 		times: [], 
 		values: array.map(initial, function(){return [];})
@@ -43,14 +43,14 @@ define([
 	    for(t = times.start, j=0; t<times.end; t += times.step, j++){
 		if(j>0){
 		    gradient = f.call(env, values);;
-		    for(i=0; i<n; i++){
+            for(i=0; i<n; i++){
 			values[i] += gradient[i]*times.step;
 		    }
 		}
+
 		ret.times.push(t);
 		for(i=0; i<n; i++){
 		    ret.values[i].push(values[i]);
-		    // console.log("ret.values", ret.times, ret.values[i]);
 		}
 	    }
 	    return ret;

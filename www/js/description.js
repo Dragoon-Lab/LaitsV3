@@ -112,10 +112,11 @@ define([
             this.givenModel.setTaskDescription(tin.split("\n"));
 	    
             var timeObj = {
-		start: dom.byId("authorSetTimeStart").value,
-		end: dom.byId("authorSetTimeEnd").value,
-		step: dom.byId("authorSetTimeStep").value, 
-		units: dom.byId("authorSetTimeStepUnits").value
+     //following values being read from html input textboxes should all be parsed as numbers , so we use + unary operator
+		start: +dom.byId("authorSetTimeStart").value,
+		end: +dom.byId("authorSetTimeEnd").value,
+		step: +dom.byId("authorSetTimeStep").value, 
+		units: +dom.byId("authorSetTimeStepUnits").value
             };
 	    
             this.givenModel.setTime(timeObj);
