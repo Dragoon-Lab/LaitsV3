@@ -298,7 +298,11 @@ define([
 
 	    // In case any tool tips are still open.
             this.closePops();
-            //this.disableHandlers = false;
+            //this.disableHandlers = false;	
+
+	    // This cannot go in controller.js since _PM is only in
+	    // con-student.  You will need con-student to attach this
+	    // to closeEditor (maybe using aspect.after?).
 
         },
         //set up event handling with UI components
@@ -674,14 +678,14 @@ define([
 			if(this.structured.ops.length == 0) {
 				var equationWidget = registry.byId("equationBox");
 				equationWidget.set("value", "");
-				dom.byId("equationText").innerHTML = ""
+				dom.byId("equationText").innerHTML = "";
 			}
 			else {
 				var widget = registry.byId(this.controlMap.equation);
 				this.structured.pop();
 			}
         },
-        equationAnalysis: function(directives){
+        equationAnalysis: function(directives, ignoreUnknownTest){
             this.equationEntered = true;
             console.log("****** enter button");
             /*
@@ -719,33 +723,37 @@ define([
             }
 
             if(parse){
-                var toPM = true;
-                array.forEach(parse.variables(), function(variable){
+        		var toPM = true;
+        		//getDescriptionID is present only in student mode. So in author mode it will give an identity function. This is a work around in case when its in author mode at that time the given model is the actual model. So descriptionID etc are not available. 
+        		var mapID = this._model.active.getDescriptionID || function(x){ return x; };
+        		var unMapID = this._model.active.getNodeIDFor || function(x){ return x; };
+        		array.forEach(parse.variables(), function(variable){
                     // Test if variable name can be found in given model
                     var givenID = this._model.given.getNodeIDByName(variable);
                     // Checks for nodes referencing themselves; this causes problems because
                     //      functions will always evaluate to true if they reference themselves
-                    if(this._model.student.getType(this.currentID) === "function"){
-                        if(givenID === this._model.student.getDescriptionID(this.currentID)){
-                            toPM = false;
-                            directives.push({id: 'equation', attribute: 'status', value: 'incorrect'});
-                            directives.push({id: 'message', attribute: 'append', value: "You cannot use '" + variable + "' in the equation. Function nodes cannot reference themselves."});
-                        }
+                    if(givenID && this._model.active.getType(this.currentID) === "function" &&
+                        givenID === mapID.call(this._model.active, this.currentID)){
+            			toPM = false;
+            			directives.push({id: 'equation', attribute: 'status', value: 'incorrect'});
+            			directives.push({id: 'message', attribute: 'append', value: "You cannot use '" + variable + "' in the equation. Function nodes cannot reference themselves."});
                     }
-                    if(givenID){
+
+        		    if(givenID || ignoreUnknownTest){
                         // Test if variable has been defined already
-                        var studentID = this._model.active.getNodeIDFor(givenID);
-                        if(studentID){
+            			var subID = unMapID.call(this._model.active, givenID);
+            			if(subID){
                             // console.log("       substituting ", variable, " -> ", studentID);
-                            parse.substitute(variable, studentID);
-                        }else {
+                            parse.substitute(variable, subID);
+                        }else{
                             directives.push({id: 'message', attribute: 'append', value: "Quantity '" + variable + "' not defined yet."});
                         }
-                    }else {
-                        toPM = false;  // Don't send to PM
-                        directives.push({id: 'message', attribute: 'append', value: "Unknown variable '" + variable + "'."});
+                    }else{
+                		toPM = false;  // Don't send to PM
+                		directives.push({id: 'message', attribute: 'append', value: "Unknown variable '" + variable + "'."});
                     }
                 }, this);
+
                 // Expression now is written in terms of student IDs, when possible.
                 // Save with explicit parentheses for all binary operations.
                 var parsedEquation = parse.toString(true);
@@ -754,9 +762,9 @@ define([
                 // console.log("********* Saving equation to model: ", parsedEquation);
                 this._model.active.setEquation(this.currentID, parsedEquation);
 
-		// Test if this is a pure sum or product
-		// If so, determine connection labels
-		var inputs = expression.createInputs(parse);
+        		// Test if this is a pure sum or product
+        		// If so, determine connection labels
+        		var inputs = expression.createInputs(parse);
 
                 // Update inputs and connections
                 this._model.active.setInputs(inputs, this.currentID);

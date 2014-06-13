@@ -26,8 +26,8 @@ define([
     "dojo/_base/array", 'dojo/_base/declare', "dojo/_base/lang",
     "dojo/dom", "dojo/ready",
     'dijit/registry',
-    './controller', "./pedagogical_module", "./equation"
-], function(array, declare, lang, dom, ready, registry, controller, PM, expression){
+    './controller', "./pedagogical_module", "./equation","dojo/aspect"
+], function(array, declare, lang, dom, ready, registry, controller, PM, expression,aspect){
 
     /*
      Methods in controller specific to the student modes
@@ -41,7 +41,14 @@ define([
             this._PM = new PM(mode, subMode, model);
             lang.mixin(this.widgetMap, this.controlMap);
             ready(this, "populateSelections");
+	    this.init();
         },
+	init:function(){
+		 aspect.after(this, "closeEditor", function(){
+			var directives = this._PM.notifyCompleteness(this._model);	
+           		this.applyDirectives(directives);
+    		}, true);
+	},
         // A list of control map specific to students
         controlMap: {
             description: "selectDescription",
@@ -138,15 +145,6 @@ define([
         *    handle event on inputs box
         * */
         handleInputs: function(id){
-            /*if(id.MOUSEDOWN){
-             if(this.lastHandleInputId){
-             console.log('onclick event found onSelect, use old id '+this.lastHandleInputId);
-             id=this.lastHandleInputId; //restore
-             }else
-             return;  //if last id is not defined return
-             }else
-             this.lastHandleInputId=id; //copy it for next onClick event*/
-
             //check if id is  not select else return
 
             console.log("*******Student has chosen input", id, this);
@@ -170,7 +168,7 @@ define([
         },
         equationDoneHandler: function(){
             var directives = [];
-            var parse = this.equationAnalysis(directives);
+            var parse = this.equationAnalysis(directives, false);
             if(parse){
                 var dd = this._PM.processAnswer(this.currentID, 'equation', parse);
                 directives = directives.concat(dd);
@@ -187,7 +185,7 @@ define([
     	    // Generally, since this is the correct solution, there should be no directives
     	    this.applyDirectives(directives);
     	},
- 
+
         /* 
          Settings for a new node, as supplied by the PM.
          These don't need to be recorded in the model, since they

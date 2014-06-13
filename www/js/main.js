@@ -63,7 +63,7 @@ define([
     session.loadProblem(query).then(function(solutionGraph){
 
         var givenModel = new model(query.m, query.p);
-        logging.session.log('open-problem',{problem : query.p});
+        logging.session.log('open-problem', {problem : query.p});
         if(solutionGraph){
             givenModel.loadModel(solutionGraph);
         }
@@ -83,11 +83,10 @@ define([
                 new controlStudent(query.m, subMode, givenModel, query.is);
 
         //setting up logging for different modules.
-        if(controllerObject._PM)
+        if(controllerObject._PM){
             controllerObject._PM.setLogging(session);  // Set up direct logging in PM
-        
+	}
         controllerObject.setLogging(session); // set up direct logging in controller
-
         expression.setLogging(session);
 
 	/*
@@ -172,7 +171,7 @@ define([
 	    
             if(query.m == "AUTHOR"){
                 var db = registry.byId("descButton");
-	        db.setAttribute("disabled", false);
+	        db.set("disabled", false);
 		
 		// Description button wiring
 		menu.add("descButton", function(){
@@ -222,20 +221,20 @@ define([
             });
 
 
-           menu.add("doneButton", function(){
-                console.debug("done button is clicked");
-                var problemComplete = givenModel.matchesGivenSolution();
+        menu.add("doneButton", function(){
+            console.debug("done button is clicked");
+            var problemComplete = givenModel.matchesGivenSolution();
 
-                controllerObject.logging.log('close-problem', {
-                    type: "menu-choice", 
-                    name: "done-button", 
-                    problemComplete: problemComplete
-                });
-               window.history.back();
-
-
-
-           });
+            var promise = controllerObject.logging.log('close-problem', {
+                type: "menu-choice", 
+                name: "done-button", 
+                problemComplete: problemComplete
+            });
+            
+            promise.then(function(){
+                window.history.back();
+            });
+        });
 
 	    /* 
 	     Add link to intro video
