@@ -35,7 +35,9 @@ define([
     "./calculations",
     "dojo/domReady!"
 ], function(array, declare, lang, on, Chart, Default, Lines, Grid, Legend, calculations){
-    return declare(calculations, {                //calculations constructor is loaded here before RenderGraph constructor is 
+
+    // The calculations constructor is loaded before the RenderGraph constructor
+    return declare(calculations, {
 	
 	type: "Graph",                                  //Rendering type
 	textBoxID:"textGraph",                          //ID for text-box DOM
@@ -49,7 +51,9 @@ define([
 	
 	constructor: function(){
             console.log("***** In RenderGraph constructor");
-            this.initialize();
+	    if(this.active.timeStep){  // Abort if there is an error in timSstep.
+		this.initialize();
+	    }
 	},
 	
 	/*
