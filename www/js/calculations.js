@@ -42,6 +42,7 @@ define([
 	dialogContent: "",                  // Parameter to set DOM in a dialog dynamically
 	sliders: {},                        // Parameter to create slider objects
 	mode : null, 						// Parameter to hold the mode value to differentiate graphs for author and student mode.
+	_logging : null,
 	
 	constructor: function(model, mode){
             console.log("***** In calculations constructor", this.given);
@@ -104,6 +105,12 @@ define([
             if(this.model.active.getName(if_id))
             var miss_node=this.model.active.getName(if_id); // In case a node is incomplete
             else miss_node=if_id;
+
+            this._logging.clientLog("error", {
+            	message:"graph/table created with missing node : "+miss_node,
+            	functionTag : "findSolution"
+            });
+
             return {status: 'error', type: 'missing', missingNode: miss_node};
         }
         /*
@@ -303,7 +310,11 @@ define([
 	/* @brief: display the graph*/
 	show: function(){
             this.dialogWidget.show();
-	}
+	}, 
+
+	setLogging: function(/*string*/ logging){
+        this._logging = logging;
+    },
 
     });
 });

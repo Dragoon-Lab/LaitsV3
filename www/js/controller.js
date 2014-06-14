@@ -460,14 +460,20 @@ define([
                 console.log('not a number');
                 //initialValue is the id of the textbox, we get the value in the textbox
                 if(!initialString.match('%')){ //To check the decimals against percentages
-                    console.warn("Sachin should log when this happens");
+                    this.logging.clientLog('warning', {
+                        message:"% used instead of decimals",
+                        functionTag:"checkInitialValue"
+                    });
                     popup.open({
                         popup: this.myTooltipDialog2,
                         around: initialWidget
                     });
                 }else{ 
 		    // if entered string has percentage symbol, pop up a message to use decimals
-                    console.warn("Sachin should log when this happens");
+                    this.logging.clientLog('warning', {
+                        message:"initial value is not a number",
+                        functionTag :"checkInitialValue"
+                    });
                     popup.open({
                         popup: this.myTooltipDialog,
                         around: initialWidget

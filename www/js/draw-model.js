@@ -32,6 +32,7 @@ define([
 
         _instance: null,
         _givenModel: null,
+        _logging:null,
 	// Hook for updates
 	updater: function(){},
 
@@ -191,6 +192,10 @@ define([
                             this._instance.detach(connection);
 		    }, this);
 		    
+            this._logging.log('ui-action', {
+                node :node.name, 
+                type:"delete"
+            });
 		    //delete from  the model
 		    this._givenModel.deleteNode(node.ID);
 		    this.updater();
@@ -316,6 +321,10 @@ define([
 
         onClickNoMove: function(){
             // stub for attaching node editor startup
+        },
+
+        setLogging: function(/*string*/ logging){
+            this._logging = logging;
         }
 
     });

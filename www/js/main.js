@@ -88,6 +88,8 @@ define([
 	}
         controllerObject.setLogging(session); // set up direct logging in controller
         expression.setLogging(session);
+        Graph.superclass.setLogging(session);
+
 
 	/*
 	 Create state object
@@ -98,6 +100,7 @@ define([
         ready(function(){
 
             var drawModel = new drawmodel(givenModel.active);
+            drawModel.setLogging(session);
 	    // Wire up send to server
 	    aspect.after(drawModel, "updater", function(){
 		session.saveProblem(givenModel.model);
