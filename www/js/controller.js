@@ -724,6 +724,11 @@ define([
                 this._model.active.setEquation(this.currentID, inputEquation);
                 directives.push({id: 'message', attribute: 'append', value: 'Incorrect equation syntax.'});
                 directives.push({id: 'equation', attribute: 'status', value: 'incorrect'});
+                this.logging.clientLog("error", {
+                    message : 'Parser called with incorrect equation syntax : '+parse,
+                    error : err,
+                    functionTag : equationAnalysis
+                });
                 // Call hook for bad parse
                 this.badParse(inputEquation);
             }
@@ -743,6 +748,7 @@ define([
             			toPM = false;
             			directives.push({id: 'equation', attribute: 'status', value: 'incorrect'});
             			directives.push({id: 'message', attribute: 'append', value: "You cannot use '" + variable + "' in the equation. Function nodes cannot reference themselves."});
+                        //need to ask if this will be a logged at all or it would be a client message or a UI message. The incorrectness of the equation will be logged from pedagogical module, i think logging it here would be redundant
                     }
 
         		    if(givenID || ignoreUnknownTest){
