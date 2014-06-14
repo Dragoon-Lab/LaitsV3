@@ -113,7 +113,7 @@ define([
 	    var solution = this.findSolution(true, this.plotVariables); // Return value from findSlution in calculation, returns an array and we check for status and any missing nodes
         if(solution.status=="error" && solution.type=="missing")
 	    {
-	       this.dialogWidget.set("content", "<div>"+solution.missingNode+" is missing</div>"); //We show the error message like "A Node is Missing"
+	       this.dialogWidget.set("content", "<div>"+solution.missingNode+" is not defined</div>"); //We show the error message like "A Node is Missing"
            return;
 	    }
         
