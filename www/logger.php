@@ -36,7 +36,7 @@ if (!function_exists('json_last_error_msg')) {
 
 //connect to database
 require "db-login.php";
-$mysqli = mysqli_connect("localhost", $dbuser, $dbpass, $dbname)
+$mysqli = mysqli_connect("127.0.0.1", $dbuser, $dbpass, $dbname)
   or trigger_error('Could not connect to database.',E_USER_ERROR);
 
 $sessionId = $_POST['x'];

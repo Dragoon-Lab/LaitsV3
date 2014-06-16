@@ -43,7 +43,7 @@ define([
         logging: null,
         // Variable to track if an equation has been entered and checked
 	    equationEntered: null,  // value is set when node editor opened
-        undefinedNodes: [],
+        
 
         constructor: function(mode, subMode, model, inputStyle){
 
@@ -264,13 +264,13 @@ define([
     	    if(this.controlMap.name){
         		var name = registry.byId(this.controlMap["name"]);
                 //If the created node was in the undefinedNodes array, remove it
-                var index = this.undefinedNodes.indexOf(name.value);
+                var index = this._model.getUndefinedNodes().indexOf(name.value);
                 if(index > -1){
-                    this.undefinedNodes.splice(index, 1);
+                    this._model.getUndefinedNodes().splice(index, 1);
                 }
         		name.set("value", "");
     	    }
-            console.log("REID *****  undefinedNodes: ", this.undefinedNodes);
+            console.log("REID *****  undefinedNodes: ", this._model.getUndefinedNodes());
 
     	    // Undo Description value (only needed in AUTHOR mode)
     	    if(this.controlMap.description){

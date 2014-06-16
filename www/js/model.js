@@ -60,7 +60,9 @@ define([
                         image: {},
                         taskDescription: "",
                         givenModelNodes: [],
-                        studentModelNodes: []
+                        studentModelNodes: [],
+                        studentUndefinedNodes: [],
+                        givenUndefinedNodes: []
                     }};
 
                 /*
@@ -440,6 +442,7 @@ define([
                 // Summary: Removes inputs and equations that refer to a given node
                 //      and then deletes the node.
                 var index;
+                var name = this.getName(id);
                 var nodes = this.getNodes();
                 for(var i = 0; i < nodes.length; i++){
                     var found = false;
@@ -457,6 +460,7 @@ define([
                     }
                 }
                 nodes.splice(index, 1);
+                this.getUndefinedNodes().push(name);
             }
         };
 
@@ -487,6 +491,9 @@ define([
             },
             getNodes: function(){
                 return obj.model.task.givenModelNodes;
+            },
+            getUndefinedNodes: function(){
+                return obj.model.task.givenUndefinedNodes;
             },
             getName: function(/*string*/ id){
                 // Summary: returns the name of a node matching the student model.
@@ -663,6 +670,9 @@ define([
             },
             getNodes: function(){
                 return obj.model.task.studentModelNodes;
+            },
+            getUndefinedNodes: function(){
+                return obj.model.task.studentUndefinedNodes;
             },
             getAssistanceScore: function(/*string*/ id){
                 // Summary: Returns a score based on the amount of errors/hints that 

@@ -277,8 +277,7 @@ define([
             var parse = this.equationAnalysis(directives, true);
 
             if(parse){
-                directives = directives.concat(this.authorPM.process(this.currentID, "equation", parse));
-            }
+                directives = directives.concat(this.authorPM.process(this.currentID, "equation", parse));            }
             this.applyDirectives(directives);
         },
 
@@ -312,7 +311,7 @@ define([
 		    descriptions.push({name: this._model.given.getDescription(desc.value), id: desc.id});
                 }
             }, this);
-            array.forEach(this.undefinedNodes, function(node){
+            array.forEach(this._model.active.getUndefinedNodes(), function(node){
                 var obj = {name: node, id: ""};
                 inputs.push(obj);
                 descriptions.push(obj);
