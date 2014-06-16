@@ -175,6 +175,11 @@
     transition:background-color 0.25s ease-in;
 }
 
+.triangleDiv{
+   margin-top:90px;
+   margin-left:-20px;
+}
+
 
 .function {
     width: 60px;
