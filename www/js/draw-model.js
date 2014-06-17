@@ -138,17 +138,26 @@ define([
                 correct: "green",
                 incorrect: "#FF8080",
 				demo: "yellow",
-				neutral: "gray"
+				neutral: "gray",
+				perfect: "#94FF94"
             };
 			var borderColor = "",
-			boxShadow = "";
+			boxshadow = "";
+			var backgroundcolor = "";
 			if(type){
 				var color = this._givenModel.getCorrectness?
 				this._givenModel.getCorrectness(nodeID):"neutral";
 				borderColor += "2px "+isComplete+" " + colorMap[color];
-				boxShadow = 'inset 0px 0px 5px #000 , 0px 0px 10px #000';
+				boxshadow = 'inset 0px 0px 5px #000 , 0px 0px 10px #000';
+				//check for perfect node
+				if (this._givenModel.getAssistanceScore) {
+					if (this._givenModel.isComplete(nodeID) && this._givenModel.getAssistanceScore(nodeID) === 0) {
+						backgroundcolor = colorMap.perfect;
+					}
+				}
 			}
-			return {bColor: borderColor, bShadow: boxShadow};
+			console.log("borderColor: ", borderColor);
+			return {border: borderColor, boxShadow: boxshadow, backgroundColor: backgroundcolor};
 		},
 
         /* addNode: Add a node to the jsPlumb model, returning the DOM element.  */
@@ -162,16 +171,15 @@ define([
 	
             var nodeName = graphObjects.getNodeName(this._givenModel,node.ID);
 			var colorBorder = this.colorNodeBorder(node.ID);
-			console.log("bColor: " + colorBorder.bColor);
-			console.log(colorBorder.bShadow);
             var vertex = domConstruct.create("div", {
 		id: node.ID,
 		"class": type,
 		style: {
 		    left: node.position.x +'px', 
 		    top: node.position.y +'px',
-		    border: colorBorder.bColor,
-		    'box-shadow':colorBorder.bShadow
+		    border: colorBorder.border,
+		    boxShadow: colorBorder.boxShadow,
+			backgroundColor: colorBorder.backgroundColor
 		},
 		innerHTML: nodeName
 	    }, "statemachine-demo");

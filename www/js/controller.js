@@ -282,8 +282,9 @@ define([
 
             // Color the borders of the Node
             var borderColor = this.colorNodeBorder(this.currentID);
-			domStyle.set(this.currentID,'border', borderColor.bColor);
-            domStyle.set(this.currentID,'box-shadow', borderColor.bShadow);
+			domStyle.set(this.currentID, 'border', borderColor.bColor);
+            domStyle.set(this.currentID, 'box-shadow', borderColor.bShadow);
+			domStyle.set(this.currentID, 'backgroundColor', borderColor.bGround);
 	
             // update Node labels upon exit	
             var nodeName = graphObjects.getNodeName(this._model.active,this.currentID);
