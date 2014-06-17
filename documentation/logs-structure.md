@@ -15,7 +15,6 @@ The logging will use the **`session`** table (see
 	*	`start-session` send session ID to the server as well as the user name and section and major mode.  Normally, it will also include the problem name and the author name for custom problems.  This will create an entry in the `session` table.
 	* `open-problem` - Client asks for the problem from the server or opens a local file.  The message will include problem name and possibly section name and author name for custom problems.
 	*	`client-message` - Java/JavaScript exceptions and warnings.  Messages associated with the dragoon code itself.
-	*	`student-status` - Informational messages about the status of the student's progress in solving the problem.  
 	*	`ui-action` - Actions taken by the user on the interface, such as clicking on a menu or moving a node on the canvas, that are not problem-solving steps.  We will not log keystrokes or mouse events but a level above it. Like switch tabs and open node editor, values added to the node editor *et cetera*.  
  The JavaScript version will record going in and out of focus.  See [`andes/drawing.js`](https://github.com/bvds/andes/blob/master/web-UI/andes/drawing.js) for an example.
  *	`solution-step`  - Steps that the student takes toward solving the
@@ -38,22 +37,19 @@ most important information missing from the present logging:
  
 * Enter Node Editor (method `ui-action`) Needed info:
   + Entered thru Create Node action or existing Node
-  + Which tab Node Editor opens to
-  + Which Node was opened (if existing)
-* **Check** button pressed (method `solution-step`) Needed info:
+  + Which was the last checked value
+  + Which is the next value to be filled in the node (if existing)
+* User answer is **Checked** (method `solution-step`) Needed info:
   + The node
-  + Tab that was checked
+  + Property that was checked
   + Value student entered
   + Correct or Incorrect
   + If incorrect, what was correct value
-* **Demo** button pressed (method `seek-help`) Needed info:
+* User answer gets **Demo-ed** (method `seek-help`) Needed info:
   + The node
-  + Tab that was demoed
-* Calculations panel button **New Node** pressed (method `ui-action` or `solution-step`?)  Needed info:
- + Same **Check**/**Demo** info as default Node Editor
- + What node (if any) was created
+  + Property for which the help was given
 * Close Node Editor (method `ui-action` or `solution-step`?) Needed info:
- + Was node completed (*i.e.* was Calculations panel correct or demoed, indicating node complete?)
+ + Was node completed, which was the last element filled if incomplete.
 * **Show Graph** button (method `ui-action`) Needed info:
   + Was correct or incorrect
   + If correct, indicate problem is completed
@@ -97,17 +93,9 @@ one for the menu button and one for opening the node editor.
 -- method: `ui-action`  
 -- message: `{"time": 21.3, "type": "open-dialog-box",
   "name": "node-editor", "tab": "DESCRIPTION", "node": null}`  
-In the JavaScript version, we will use the node id to name the node, so this will never be null.  In the Java version, we use the node name, when it is known.
-
-Possible logging message associated with above  
--- method: `student-status` 
--- message: `{"time": 21.3, "type": "info",
-  "text": "Vertex Details before opening node editor", "data":
-  {"node":  "description", "descriptionPanelStatus": null, "selected
-  plan": null, "planPanelStatus": null, "nodeType": null}}`  
-Note that member names with a space, like `"plan panel"`, do not work
-well with JavaScript or other languages.  It is better to use
-camelCase or underscores.
+In the JavaScript version, we can not use the node id to name the node, 
+as while processing the logs we can never know the names of the nodes. 
+So if we give them names like "id10" here we can never tell the names on the dashboard. 
 
 Student chooses a quantity in the description tab.  
 -- method: `solution-step`  
@@ -115,28 +103,35 @@ Student chooses a quantity in the description tab.
   "name": "fat content", "text": "The ratio of the weight of the fat
   in a potato chip to the weight of the potato chip", "checkResult":
   "CORRECT"}`  
-In the JavaScript version, `"node"` is the node id, in the Java
+In the JavaScript version, `"node"` like the Java
   version, it is either null or the node name `"fat content"`.
 
-Student switches tabs:  
+Student goes to next element:  
 -- method: `ui-action`  
--- message: `{"time": 50.1, "type": "dialog-box-tab",
-  "name": "node-editor", "tab": "PLAN", "node": "fat content"}`  
+-- message: `{"time": 50.1, "type": "new-element-selected",
+  "name": "node-editor", "element": "node-type", "node": "fat content"}`  
 
 Student chooses node type:  
 -- method: `solution-step`  
--- message: `{"time": 53.1, "node": fat content, "type": "quantity-type",
-  "name": "CONSTANT", "checkResult":  "CORRECT"}`
+-- message: `{"time": 53.1, "node": fat content, "type": "solution-checked",
+  element : "node-type",  "value": "ACCUMULATOR", "checkResult":  "CORRECT"}`
 
-Student switches tabs:  
--- method: `ui-action`  
--- message: `{"time": 57.6, "type": "dialog-box-tab",  
-  "name": "node-editor", "tab": "CALCULATIONS", "node": "fat content"}`  
-
-Student fills out the calculation tab.   
+Student fills out the initial value.   
 -- method: `solution-step`  
--- message: `{"time": 60.2, "node": "fat content", "type": "quantity-initial-value",
-  "value": "0.35", "correct-value": "0.35", "checkResult":  "CORRECT"}`  
+-- message: `{"time": 60.2, "node": "fat content", "type":"solution-checked",
+  "element": "initial-value", "value": "0.35", "correct-value": "0.35", 
+  "checkResult":  "CORRECT"}`
+for incorrect value
+-- method: `solution-step`  
+-- message: `{"time": 60.2, "node": "fat content", "type":"solution-checked",
+  "element": "initial-value", "value": "0.35", "correct-value": "0.45", 
+  "checkResult":  "INCORRECT"}`
+for parser errors 
+-- method: `solution-step`  
+-- message: `{"time": 60.2, "node": "fat content", "type": "parse-error",
+  "element" : "initial-value", "value": "35%", "correct-value": "0.35", 
+  "checkResult":  "INCORRECT"}`
+
 For the calculation tab, `solution-step` logging can be broken into several messages, depending on how the
   grading/evaluation is done:  each `solution-step` should be something that
   is evaluated (turns red/rgeen) separately.
@@ -144,13 +139,32 @@ For the calculation tab, `solution-step` logging can be broken into several mess
 Student closes node editor:  
 -- method: `ui-action`  
 -- message: `{"time": 61.6, "type": "close-dialog-box",
-  "name": "node-editor", "tab": "CALCULATIONS", "node": "fat content"}`  
+  "name": "node-editor", "element": "description", "node": "fat content"}`  
 Member `"tab"` is optional.
 
-##### Not done yet, I was following session `4b736807374ba02eaa2131a22523b746` in table `laits_ram` #####
-
 ### Further Examples ###
+Following are the different elements in the node :
+* description
+* node-type
+* initial-value
+* units
+* equations
 
+Since the only UI action that a user does is to go to the next element, 
+so that will be recorded to mark the time at which the user starts working for that new element.
+
+There are no check buttons and help buttons so no UI actions will be logged for them. 
+
+The check comes on its own after the answer is filled. So all the solutions will be logged under
+solution-step. After two answers the demo answer is sent so a log with seek-help method will be
+logged with the information mentioned above.
+
+-- method - 'seek-help'
+-- message - {time : '47.2', type: "seek-help", node : "fat content", element:"initial-value"}
+
+
+###These values are not needed as they are already recorded through solution-step for each element###
+###The messages below need to be removed after discussing with Brett tomorrow.###
 Student closes node editor for an accumulator node in the rabbits
 problem:  
 -- method: `ui-action`  
