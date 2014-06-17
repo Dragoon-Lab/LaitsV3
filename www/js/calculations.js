@@ -279,7 +279,7 @@ define([
 		// The input element does not have an end tag so we can't use
 		// this.createDom().
 		// Set width as number of characters.
-		this.dialogContent += "<input id=\"" + textBoxID[paramID] + "\" type=\"text\" readOnly=true size=10>";
+		this.dialogContent += "<input id=\"" + textBoxID[paramID] + "\" type=\"text\" size=10>";
 		units = this.model.active.getUnits(paramID);
 		if(units){
                     this.dialogContent += " " + units;
@@ -292,12 +292,45 @@ define([
 	    
 	    var dialogWidget = registry.byId("solution");
 	    dialogWidget.set("title", this.model.getTaskName() + " - " + this.type);
-            dialogWidget.set("content", this.dialogContent);
-	    
+        // Attach contents of dialog box to DOM all at once
+        dialogWidget.set("content", this.dialogContent);
+
+
+        // Attach slider widget to DOM
             for(paramID in sliderVars){
 		dom.byId(textBoxID[paramID]).value = sliderVars[paramID];
 		dom.byId(sliderID[paramID]).appendChild(this.sliders[paramID].domNode);
             }
+
+        // Attach text handles to slider text box
+        for(paramID in sliderVars){
+            var textBox = dom.byId(textBoxID[paramID]);
+            console.log("----     textbox", textBox);
+
+            on(textBox, "change",  lang.hitch(this, function(){
+                console.log("---- value box change ");
+
+                if(this._rendering){
+                    console.log("     returning");
+                    return;
+                }
+                this._rendering = true;
+                var active = this.active;
+                /*if(paramID in active.timeStep.parameters){
+                    active.timeStep.parameters[paramID] = dom.byId(textBoxID[paramID]).value;
+                }else if(paramID in active.xvarMap){
+                    active.initialValues[active.xvarMap[paramID]] = dom.byId(textBoxID[paramID]).value;
+                } else {
+                    throw new Error("Invalid id", paramID);
+                }
+                this.findSolution(true); // Solve active model
+                console.log("      new solution", this.getTime());
+                //this function is specific to graph/table
+                this.renderDialog();
+                this._rendering = false;*/
+                console.log("      new plot done", this.getTime());
+            }));
+        }
 	},
 		
 	/* @brief: display the graph*/
