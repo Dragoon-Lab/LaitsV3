@@ -180,7 +180,6 @@ define([
                 });
                 aspect.after(registry.byId('authorDescDialog'), "hide", function(){
                     console.log("Saving Description/Timestep edits");
-                    descObj.closeDescriptionEditor();
                     session.saveProblem(givenModel.model);
                 });
 		on(registry.byId("descCloseButton"), "click", function(){

@@ -27,8 +27,8 @@ define([
     'dojo/aspect', 'dojo/dom', "dojo/dom-class", "dojo/dom-construct", 'dojo/dom-style',
     'dojo/keys', 'dojo/on', "dojo/ready", 
     "dijit/popup", 'dijit/registry', "dijit/TooltipDialog",
-    './equation', './graph-objects'
-], function(array, declare, lang, aspect, dom, domClass, domConstruct, domStyle, keys, on, ready, popup, registry, TooltipDialog, expression, graphObjects){
+    './equation', './graph-objects',"./typechecker"
+], function(array, declare, lang, aspect, dom, domClass, domConstruct, domStyle, keys, on, ready, popup, registry, TooltipDialog, expression, graphObjects,typechecker){
 
     return declare(null, {
         _model: null,
@@ -62,21 +62,8 @@ define([
             ready(this, this._setUpNodeEditor);
             ready(this, this._initHandles);
 
-	    // Tool Tip for indicating use of decimals instead of percentages
-            this.myTooltipDialog = new TooltipDialog({ 
-                style: "width: 150px;",
-                content: "Use decimals instead of percent."
-            });
-	    // Tool Tip for indicating non numeric data is not accepted
-            this.myTooltipDialog2 = new TooltipDialog({
-                style: "width: 150px;",
-                content: "Non-numeric data not accepted"
-            });
+	    
         },
-        
-        
-        
-        
         // A list of common controls of student and author
         genericControlMap: {
             type: "typeId",
@@ -203,6 +190,7 @@ define([
                     var crisisMessage = dom.byId('crisisMessage');
                     console.log("crisis alert message ", message);
                     crisisMessage.innerHTML = message;
+                    console.log("this",this);
                     this.show();
                 };
                 on(registry.byId("OkButton"), "click", function(){
@@ -291,13 +279,12 @@ define([
             // Color the borders of the Node
             this.colorNodeBorder(this.currentID);
 
-            // update Node labels upon exit	
+            // update Node labels upon exit
             var nodeName = graphObjects.getNodeName(this._model.active,this.currentID);
             if(dom.byId(this.currentID + 'Label'))
                 domConstruct.place(nodeName, this.currentID + 'Label', "replace");
 
-	    // In case any tool tips are still open.
-            this.closePops();
+
             //this.disableHandlers = false;
 
         },
@@ -307,11 +294,11 @@ define([
 
             /*
              Attach callbacks to each field in node Editor.
-             
+
              The lang.hitch sets the scope to the current scope
              and then the handler is only called when disableHandlers
              is false.
-             
+
              We could write a function to attach the handlers?
              */
 
@@ -422,7 +409,7 @@ define([
         // attributes that should be saved in the status section
         validStatus: {status: true, disabled: true},
         updateNodes: function(){
-            // Update node editor and the model.	    
+            // Update node editor and the model.
             this._nodeEditor.set('title', this._model.active.getName(this.currentID));
 
             // Update inputs and other equations based on new quantity.
@@ -436,51 +423,8 @@ define([
         /* Stub to update connections in graph */
         addQuantity: function(source, destinations){
         },
-        closePops: function(){
-            popup.close(this.myTooltipDialog);
-            popup.close(this.myTooltipDialog2);
-    	},
-        
-        checkInitialValue: function(initialString,thislastInitialValue){ 
-            //Description : performs non number check and also checks if the initial value was changed from previously entered value
-            //returns: status, a boolean value and value, the current initial value
-            var initialWidget = dom.byId(this.widgetMap.initial);
-            // Popups only occur for an error, so leave it up until
-            // the next time the student attempts to enter a number.
-	         this.closePops();
-            // we do this type conversion because we used a textbox for initialvalue input which is a numerical
-             var initial= +initialString; // usage of + unary operator converts a string to number 
-            // use isNaN to test if conversion worked.
-            if(isNaN(initial)){
-                // Put in checks here
-                console.log('not a number');
-                //initialValue is the id of the textbox, we get the value in the textbox
-                if(!initialString.match('%')){ //To check the decimals against percentages
-                    console.warn("Sachin should log when this happens");
-                    popup.open({
-                        popup: this.myTooltipDialog2,
-                        around: initialWidget
-                    });
-                }else{ 
-		    // if entered string has percentage symbol, pop up a message to use decimals
-                    console.warn("Sachin should log when this happens");
-                    popup.open({
-                        popup: this.myTooltipDialog,
-                        around: initialWidget
-                    });
-                 }            
-                return {status: false}; 
-            }
-                        
-            if(typeof initialString === 'undefined' || initialString == thislastInitialValue){
-    		return { status: false};
-    	    }
-    	    this.lastInitialValue = initialString;
-            // updating node editor and the model.
-            initialString=+initialString;
-            this._model.active.setInitial(this.currentID, initialString);
-            return { status: true, value: initialString};
-        },
+
+
         updateType: function(type){
             //update node type on canvas
             console.log("===========>   changing node class to " + type);
@@ -508,7 +452,7 @@ define([
             // updating the model and the equation labels
             this._model.active.setType(this.currentID, type);
             this.updateEquationLabels();
-            
+
             var nodeName = graphObjects.getNodeName(this._model.active,this.currentID,type);
             if(nodeName != ''){
                 if(dom.byId(this.currentID + 'Label'))

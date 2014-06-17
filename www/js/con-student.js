@@ -26,8 +26,8 @@ define([
     "dojo/_base/array", 'dojo/_base/declare', "dojo/_base/lang",
     "dojo/dom", "dojo/ready",
     'dijit/registry',
-    './controller', "./pedagogical_module", "./equation"
-], function(array, declare, lang, dom, ready, registry, controller, PM, expression){
+    './controller', "./pedagogical_module", "./equation","./typechecker"
+], function(array, declare, lang, dom, ready, registry, controller, PM, expression, typechecker){
 
     /*
      Methods in controller specific to the student modes
@@ -123,9 +123,11 @@ define([
          */
 	
 	handleInitial: function(initial){
-            var IniFlag = this.checkInitialValue(initial,this.lastInitialValue); //IniFlag returns the status and initial value
+ 	        var initialWidget = dom.byId(this.widgetMap.initial);
+            var IniFlag = typechecker.checkInitialValue(initial,this.lastInitialValue,initialWidget,"Student Controller"); //IniFlag returns the status and initial value
             if(IniFlag.status){ //If the initial value is not a number of is unchanged from previous value we dont process
 		var newInitial = IniFlag.value;
+        this._model.active.setInitial(this.currentID, newInitial);
 		this.applyDirectives(this._PM.processAnswer(this.currentID, 'initial', newInitial));
             }
         },

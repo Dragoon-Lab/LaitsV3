@@ -145,18 +145,18 @@
         <!-- Putting crisis-Alert Dialog stuff end -->
 
             <!--  authorSetDescription, authorSetTimeStart, authorSetTimeEnd, authorSetTimeStep, authorSetTimeStepUnits, authorSetImage) -->
-        <div class="claro"  data-dojo-type="dijit/Dialog" id="authorDescDialog" title="Edit Times, Image, and Description">
+        <div class="claro"  data-dojo-type="dijit/Dialog" id="authorDescDialog" title="Edit Times, Image, and Description" class="editor">
 	  <div class="fieldgroup">
 	    <label for="authorSetTimeStart">Start Time:</label>
-            <input id="authorSetTimeStart"  style="width:5em" value="0"></input>
+                <input id="authorSetTimeStart"  style="width:5em" value="0" data-dojo-type="dijit/form/TextBox"></input>
 	  </div>
 	  <div class="fieldgroup">
-            <label for="authorSetTimeEnd">End Time:</label>
-            <input id="authorSetTimeEnd"  style="width:5em" value="10"></input>
+            <label for="authorSetTimeEnd" >End Time:</label>
+            <input id="authorSetTimeEnd"  style="width:5em" value="10" data-dojo-type="dijit/form/TextBox"></input>
 	  </div>
 	  <div class="fieldgroup">
-            <label for="authorSetTimeStep">Time Step:</label>
-            <input id="authorSetTimeStep"  style="width:5em" value="1"></input>
+            <label for="authorSetTimeStep" >Time Step:</label>
+            <input id="authorSetTimeStep"  style="width:5em" value="1" data-dojo-type="dijit/form/TextBox"></input>
 	  </div>
 	  <div class="fieldgroup">
             <label for="authorSetTimeStepUnits">Units:</label>
@@ -180,7 +180,7 @@
 	</div>
 
 	<!-- Putting Node-Editor -Dialog stuff for demo -->
-        <div class="claro"  data-dojo-type="dijit/Dialog" id="nodeeditor">
+        <div class="claro"  data-dojo-type="dijit/Dialog" id="nodeeditor" class="editor">
            <div id="nameControl" class="fieldgroup" style="display:none">
 	        <label for="setName">Name</label>
                 <input id="setName" data-dojo-type="dijit/form/ComboBox">

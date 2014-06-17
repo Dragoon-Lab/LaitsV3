@@ -24,13 +24,13 @@
  */
 define([
     "dojo/_base/array", 'dojo/_base/declare', "dojo/_base/lang",
-    'dojo/dom-style', 'dojo/ready',
+    'dojo/dom-style', 'dojo/dom','dojo/ready',
     'dijit/registry',
     './controller',
     "./equation",
-    "dojo/store/Memory",
+    "dojo/store/Memory","./typechecker",
     "dojo/domReady!"
-], function(array, declare, lang, style, ready, registry, controller, equation, memory){
+], function(array, declare, lang, style, dom, ready, registry, controller, equation, memory, typechecker){
 
     return declare(controller, {
 
@@ -259,7 +259,8 @@ define([
          Handler for initial value input
          */
         handleInitial: function(initial){
-            var IniFlag = this.checkInitialValue(initial,this.lastInitialValue); //IniFlag returns the status and initial value           
+            var initialWidget = dom.byId(this.widgetMap.initial);
+            var IniFlag = typechecker.checkInitialValue(initial,this.lastInitialValue,initialWidget,"Author Controller"); //IniFlag returns the status and initial value
             if(IniFlag.status){
 		// If the initial value is not a number of is unchanged from previous value we dont process
 		var newInitial = IniFlag.value;
