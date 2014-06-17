@@ -142,7 +142,7 @@ Student closes node editor:
   "name": "node-editor", "element": "description", "node": "fat content"}`  
 Member `"tab"` is optional.
 
-### Further Examples ###
+### Node description and demo usage ###
 Following are the different elements in the node :
 * description
 * node-type
