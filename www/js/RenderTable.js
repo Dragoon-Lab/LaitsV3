@@ -44,7 +44,9 @@ define([
 	 */
 	constructor: function(){
             console.log("***** In RenderTable constructor");
-     	    this.initialize();
+	    if(this.active.timeStep){  // Abort if there is an error in timSstep.
+		this.initialize();
+	    }
 	},
 	
 	/*

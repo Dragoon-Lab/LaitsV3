@@ -48,7 +48,9 @@ define([
             console.log("***** In calculations constructor", this.given);
             this.model = model;
             this.mode = mode;
-            /* In AUTHOR mode, plot solution for all given nodes of genus false
+	    this.dialogWidget = registry.byId("solution");
+            /*
+	     In AUTHOR mode, plot solution for all given nodes of genus false
              and type "accumulator" or "function""
              The table contains the same nodes.
 	     
@@ -57,7 +59,11 @@ define([
              as any matching given model node of genus false.
              The table contains only the student nodes.
              */
-	    this.active.timeStep = equation.initializeTimeStep(model.active);
+	    this.active.timeStep = this.initializeSolution(model.active);
+	    if(!this.active.timeStep){
+		return; // abort on error in constructing timeStep
+	    }
+
             this.active.initialValues = array.map(
 		this.active.timeStep.xvars, 
 		model.active.getInitial,
@@ -67,25 +73,42 @@ define([
 	    array.forEach(this.active.timeStep.xvars, function(xvar, i){
 		this.active.xvarMap[xvar] = i;
 	    }, this);
+
 	    // These are not used for the tables
 	    if(mode != "AUTHOR"){
-	       console.log("now in given model");
-	    	this.given.timeStep = equation.initializeTimeStep(model.given);
+		console.log("now in given model");
+		this.given.timeStep = this.initializeSolution(model.given);
+		if(!this.given.timeStep){
+		    return;  // abort on error
+		}
 		this.given.initialValues = array.map(
 		    this.given.timeStep.xvars, 
 		    model.given.getInitial,
 		    model.given
 		);
-	    } else {
+	    }else{
 		console.log("-------- no given solution for mode", mode); 
 	    }
-	this.dialogWidget = registry.byId("solution");
-    },
-	
+	},
+
+	initializeSolution: function(model){
+	    //Summary:  Initialize solution and give a message if a cycle is found.
+	    var timeStep = null;
+	    try{
+		timeStep = equation.initializeTimeStep(model);
+	    }catch(e){
+		if(e.name == "graph-cycle"){
+		    // Also, need to log this.  Trello card https://trello.com/c/XdK6JqNE
+		    this.dialogWidget.set("content", "<div>This model cannot be solved:<br>The function nodes depend on each other in an inconsistant manner.</div>");		    
+		}
+	    }
+	    return timeStep;
+	},
+
 	findSolution: function(isActive, plotVariables){ 
-	    //Summary:  Find a solution
-	    //Returns:  an object of the form
-        //{status: s, type: m, missingNode: n/soln: solution}
+	    // Summary:  Find a solution
+	    // Returns:  an object of the form
+            //          {status: s, type: m, missingNode: n/soln: solution}
 	    var choice = isActive?this.active:this.given;
 	    console.log("in findSolution ", isActive, choice.initialValues, choice.timeStep.parameters);
 	    /*
