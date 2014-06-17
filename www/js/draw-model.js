@@ -129,6 +129,27 @@ define([
             return instance;
 
         },
+		
+		colorNodeBorder: function(/*Object*/ nodeID) {
+			var type = this._givenModel.getNode(nodeID).type;
+			var isComplete = this._givenModel.isComplete(nodeID)?'solid':'dashed';
+			
+			var colorMap = {
+                correct: "green",
+                incorrect: "#FF8080",
+				demo: "yellow",
+				neutral: "gray"
+            };
+			var borderColor = "",
+			boxShadow = "";
+			if(type){
+				var color = this._givenModel.getCorrectness?
+				this._givenModel.getCorrectness(nodeID):"neutral";
+				borderColor += "2px "+isComplete+" " + colorMap[color];
+				boxShadow = 'inset 0px 0px 5px #000 , 0px 0px 10px #000';
+			}
+			return {bColor: borderColor, bShadow: boxShadow};
+		},
 
         /* addNode: Add a node to the jsPlumb model, returning the DOM element.  */
 
@@ -140,31 +161,17 @@ define([
             console.log("      --> setting position for vertex : "+ node.ID +" position: x"+node.position.x+"  y:"+node.position.y);
 	
             var nodeName = graphObjects.getNodeName(this._givenModel,node.ID);
-	        var isComplete = this._givenModel.isComplete(node.ID)?'solid':'dashed';
-
-	    var colorMap = {
-                correct: "green",
-                incorrect: "#FF8080",
-                demo: "yellow",
-		neutral: "gray"
-            };
-	    var borderColor = "",
-		boxShadow = "";
-	    if(type!='triangle'){
-		var color = this._givenModel.getCorrectness?
-			this._givenModel.getCorrectness(node.ID):"neutral";
-		borderColor += "2px "+isComplete+" " + colorMap[color];
-		boxShadow = 'inset 0px 0px 5px #000 , 0px 0px 10px #000';
-	    }
-
+			var colorBorder = this.colorNodeBorder(node.ID);
+			console.log("bColor: " + colorBorder.bColor);
+			console.log(colorBorder.bShadow);
             var vertex = domConstruct.create("div", {
 		id: node.ID,
 		"class": type,
 		style: {
 		    left: node.position.x +'px', 
 		    top: node.position.y +'px',
-		    border:borderColor,
-		    'box-shadow':boxShadow
+		    border: colorBorder.bColor,
+		    'box-shadow':colorBorder.bShadow
 		},
 		innerHTML: nodeName
 	    }, "statemachine-demo");

@@ -104,6 +104,10 @@ define([
 		session.saveProblem(givenModel.model);
 	    });
 
+		aspect.after(controllerObject, "colorNodeBorder", 
+         lang.hitch(drawModel, drawModel.colorNodeBorder
+		 ), true);
+		
             /* add "Create Node" button to menu */
             menu.add("createNodeButton", function(){
                 var id = givenModel.active.addNode();

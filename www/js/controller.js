@@ -281,8 +281,10 @@ define([
             messageWidget.set('content', '');
 
             // Color the borders of the Node
-            this.colorNodeBorder(this.currentID);
-
+            var borderColor = this.colorNodeBorder(this.currentID);
+			domStyle.set(this.currentID,'border', borderColor.bColor);
+            domStyle.set(this.currentID,'box-shadow', borderColor.bShadow);
+	
             // update Node labels upon exit	
             var nodeName = graphObjects.getNodeName(this._model.active,this.currentID);
             if(dom.byId(this.currentID + 'Label'))
@@ -860,9 +862,9 @@ define([
         },
 
         // Stub to be overwritten by student or author mode-specific method.
-	colorNodeBorder: function(nodeId){
+	colorNodeBorder: function(nodeID){
 	    console.log("colorNodeBorder stub called");
-	                                  //get model type
+	    /*                              //get model type
         var type = this._model.active.getType(nodeId);
         if(type){
             console.log('model type is '+type);
@@ -879,7 +881,7 @@ define([
             console.log('color is '+color);
             domStyle.set(this.currentID,'border','2px '+isComplete+' '+colorMap[color]);
             domStyle.set(this.currentID,'box-shadow','inset 0px 0px 5px #000 , 0px 0px 10px #000');
-        }
+        }*/
     }
 
     });
