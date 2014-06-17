@@ -166,29 +166,8 @@ define([
 	     slider appear "stuck."  Need to find some way to update
 	     the plots without blocking all other processes.
 	     */
-            on(slider, "change", lang.hitch(this, function(){
-		console.log("---- slider event", this.getTime());
-
-		if(this._rendering){
-		    console.log("     returning");
-		    return;
-		}
-		this._rendering = true;
-		var active = this.active;
-		if(paramID in active.timeStep.parameters){
-		    active.timeStep.parameters[paramID] = transform(slider.value);
-		}else if(paramID in active.xvarMap){
-		    active.initialValues[active.xvarMap[paramID]] = transform(slider.value);
-		} else {
-		    throw new Error("Invalid id", paramID);
-		}
-		this.findSolution(true); // Solve active model
-		console.log("      new solution", this.getTime());
-		//this function is specific to graph/table
-		this.renderDialog();
-		this._rendering = false;
-		console.log("      new plot done", this.getTime());
-            }));
+         // Since graph will be updated when value in boxes changed,
+         // there is no need to put a function here to deal with the graphs when sliders changed
 	},
 	_rendering: false,
 
