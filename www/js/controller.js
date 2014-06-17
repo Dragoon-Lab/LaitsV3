@@ -462,9 +462,13 @@ define([
                 console.log('not a number');
                 //initialValue is the id of the textbox, we get the value in the textbox
                 if(!initialString.match('%')){ //To check the decimals against percentages
-                    this.logging.clientLog('warning', {
-                        message:"% used instead of decimals",
-                        functionTag:"checkInitialValue"
+                    this.logging.log('solution-step', {
+                        type : "parse-error",
+                        node : this._model.active.getNodeName(this.currentID),
+                        element : "initial-value",
+                        value : initial,
+                        correctResult : this._model.active.getInitial(this.currentID),
+                        checkResult : "INCORRECT"
                     });
                     popup.open({
                         popup: this.myTooltipDialog2,
@@ -472,9 +476,13 @@ define([
                     });
                 }else{ 
 		    // if entered string has percentage symbol, pop up a message to use decimals
-                    this.logging.clientLog('warning', {
-                        message:"initial value is not a number",
-                        functionTag :"checkInitialValue"
+                    this.logging.clientLog('solution-step', {
+                        type : "parse-error",
+                        node : this._model.active.getNodeName(this.currentID),
+                        element : "initial-value",
+                        value : initial,
+                        correctResult : this._model.active.getInitial(this.currentID),                     
+                        checkResult : "INCORRECT"
                     });
                     popup.open({
                         popup: this.myTooltipDialog,
@@ -726,10 +734,14 @@ define([
                 this._model.active.setEquation(this.currentID, inputEquation);
                 directives.push({id: 'message', attribute: 'append', value: 'Incorrect equation syntax.'});
                 directives.push({id: 'equation', attribute: 'status', value: 'incorrect'});
-                this.logging.clientLog("error", {
-                    message : 'Parser called with incorrect equation syntax : '+parse,
-                    error : err,
-                    functionTag : equationAnalysis
+                this.logging.log("solution-step", {
+                    type : "parse-error",
+                    node : this._model.active.getNodeName(this.currentID),
+                    element : "equation",
+                    value : parse,
+                    correctResult : this._model.given.getEquation(this.currentID),                     
+                    checkResult : "INCORRECT",
+                    message : err
                 });
                 // Call hook for bad parse
                 this.badParse(inputEquation);
@@ -750,6 +762,14 @@ define([
             			toPM = false;
             			directives.push({id: 'equation', attribute: 'status', value: 'incorrect'});
             			directives.push({id: 'message', attribute: 'append', value: "You cannot use '" + variable + "' in the equation. Function nodes cannot reference themselves."});
+                        this.logging.log("solution-step", {
+                            type : "parse-error",
+                            node : this._model.active.getNodeName(this.currentID),
+                            element : "equation",
+                            value : parse,
+                            correctResult : this._model.given.getEquation(this.currentID),                     
+                            checkResult : "INCORRECT"
+                        });
                         //need to ask if this will be a logged at all or it would be a client message or a UI message. The incorrectness of the equation will be logged from pedagogical module, i think logging it here would be redundant
                     }
 
@@ -765,6 +785,14 @@ define([
                     }else{
                 		toPM = false;  // Don't send to PM
                 		directives.push({id: 'message', attribute: 'append', value: "Unknown variable '" + variable + "'."});
+                        this.logging.log("solution-step", {
+                            type : "parse-error",
+                            node : this._model.active.getNodeName(this.currentID),
+                            element : "equation",
+                            value : parse,
+                            correctResult : this._model.given.getEquation(this.currentID),                     
+                            checkResult : "INCORRECT"
+                        });
                     }
                 }, this);
 
