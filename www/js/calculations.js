@@ -316,10 +316,10 @@ define([
                 }
                 this._rendering = true;
                 var active = this.active;
-                /*if(paramID in active.timeStep.parameters){
-                    active.timeStep.parameters[paramID] = dom.byId(textBoxID[paramID]).value;
+                if(paramID in active.timeStep.parameters){
+                    active.timeStep.parameters[paramID] = +dom.byId(textBoxID[paramID]).value;
                 }else if(paramID in active.xvarMap){
-                    active.initialValues[active.xvarMap[paramID]] = dom.byId(textBoxID[paramID]).value;
+                    active.initialValues[active.xvarMap[paramID]] = +dom.byId(textBoxID[paramID]).value;
                 } else {
                     throw new Error("Invalid id", paramID);
                 }
@@ -327,7 +327,7 @@ define([
                 console.log("      new solution", this.getTime());
                 //this function is specific to graph/table
                 this.renderDialog();
-                this._rendering = false;*/
+                this._rendering = false;
                 console.log("      new plot done", this.getTime());
             }));
         }
