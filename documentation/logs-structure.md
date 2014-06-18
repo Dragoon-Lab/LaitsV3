@@ -17,12 +17,9 @@ The logging will use the **`session`** table (see
 	*	`client-message` - Java/JavaScript exceptions and warnings.  Messages associated with the dragoon code itself.
 	*	`ui-action` - Actions taken by the user on the interface, such as clicking on a menu or moving a node on the canvas, that are not problem-solving steps.  We will not log keystrokes or mouse events but a level above it. Like switch tabs and open node editor, values added to the node editor *et cetera*.  
  The JavaScript version will record going in and out of focus.  See [`andes/drawing.js`](https://github.com/bvds/andes/blob/master/web-UI/andes/drawing.js) for an example.
- *	`solution-step`  - Steps that the student takes toward solving the
- problem.  This will generally be associated with something that could
- turn red or green.  The log message will contain both the student
- action and the tutors response, if any. For Dragoon, this includes the "check" button.
  * `seek-help` -  Student request for help and the response. For Dragoon, this includes the "Demo" button.
- *	`close-problem` - The student has closed the session.  This may be missing if the session was interrupted (e.g. the network connection died). 
+ *	`close-problem` - The student has closed the session.  This may be missing if the session was interrupted (e.g. the network connection died).
+ * `window-focus` - The student window goes in and out of focus after the session has been started. 
 *	`message` - A `text` format field that holds actual log message. The format is specified in the section "Message Format" below.
 
 This table is analogous to the table `STEP_TRANSACTION` in Andes; see [`create_STEP_TRANSACTION.sql`](https://github.com/bvds/andes/blob/master/LogProcessing/database/create_STEP_TRANSACTION.sql).  The Andes table can be used to see how the `step` table should be formatted.
@@ -161,3 +158,12 @@ logged with the information mentioned above.
 
 -- method - 'seek-help'
 -- message - {time : '47.2', type: "seek-help", node : "fat content", property:"initial-value"}
+
+Other log messages :
+When user brings the window in focus.
+-- method - 'window-focus'
+-- message - {time: '56.9', type: 'in-focus'}
+
+When user goes away from the window or starts doing something else.
+-- method - 'window-focus'
+-- message - {time: '56.9', type: 'out-of-focus'}
