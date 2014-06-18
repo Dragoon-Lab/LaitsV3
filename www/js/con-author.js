@@ -22,6 +22,7 @@
 /*
  * AUTHOR mode-specific handlers
  */
+
 define([
     "dojo/_base/array", 'dojo/_base/declare', "dojo/_base/lang",
     'dojo/dom-style', 'dojo/dom','dojo/ready',
@@ -31,17 +32,24 @@ define([
     "dojo/store/Memory","./typechecker",
     "dojo/domReady!"
 ], function(array, declare, lang, style, dom, ready, registry, controller, equation, memory, typechecker){
+	// Summary: 
+	//          MVC for the node editor, for authors
+	// Description:
+	//          Makes pedagogical desicions for author mode; handles selections 
+	//          from the author; inherits controller.js
+	// Tags:
+	//          controller, pedagogical module, author mode
 
-    return declare(controller, {
+	return declare(controller, {
 
-        //pedagogical module class for author
-        authorPM:{
-            process: function(nodeID, nodeType, value, validInput){
-                var returnObj=[];
-                switch(nodeType){
-                case "type":
-                    returnObj.push({attribute:"status", id:"type", value:"entered"});
-                    if(value == "parameter"){
+		//pedagogical module class for author
+		authorPM:{
+			process: function(nodeID, nodeType, value, validInput){
+				var returnObj=[];
+				switch(nodeType){
+				case "type":
+					returnObj.push({attribute:"status", id:"type", value:"entered"});
+					if(value == "parameter"){
                         //disable inputs and expression
                         returnObj.push({attribute:"disabled", id:"initial", value:false});
 
@@ -119,19 +127,15 @@ define([
                         returnObj.push({id:"initial", attribute:"status", value:"entered"});
                     } else if(value && !validInput){
                         returnObj.push({id:"initial", attribute:"status", value:"incorrect"});
-                        }
-                    else{
+                    }else{
                         returnObj.push({id:"initial", attribute:"status", value:""});
                     }
                     break;
 
                 case "equation":
-                    if(value && !validInput){
+                    if(value){
                         returnObj.push({id:"equation", attribute:"status", value:"entered"});
-                    }else if(value && validInput){
-                        returnObj.push({id:"equation", attribute:"status", value:"entered"});
-                        //returnObj.push({id:"message", attribute:"append", value:"one or more variables the equation are not available in the model."});
-                    }else{
+                    } else {
                         returnObj.push({id:"equation", attribute:"status", value:""});
                     }
                     break;
@@ -278,55 +282,15 @@ define([
 	    inputWidget.set('value', '', false); 
         },
         equationDoneHandler: function(){
-
-            //WORKAROUND -- Sets equationENtered once Check Expression is clicked 
-	    // to enable window to close
-	    // Remove when equationDoneHandler calls equationAnalysis
-            this.equationEntered = true;
-
-            console.log("Inside equationDone handler");
-            var widget = registry.byId(this.controlMap.equation);
-            var expression = widget.get("value");
-            var undefinedVariables = '';
             var directives = [];
+            var parse = this.equationAnalysis(directives, true);
 
-	    // This is redundant with code in equationAnalysis() in controller.js
-	    // See https://trello.com/c/dOklXlOu
-            var parse;
-            try{
-                parse = equation.parse(expression);
-            } catch (err){
-                console.log("Parser error: ", err);
-                this._model.active.setEquation(this.currentID, expression);
-                directives.push({id: 'message', attribute: 'append', value: 'Incorrect equation syntax.'});
-                directives.push({id: 'equation', attribute: 'status', value: 'incorrect'});
-                // Call hook for bad parse
-                this.badParse(expression);
-            }
-            var variableFlag = false;
             if(parse){
-                this._model.given.setEquation(this.currentID, expression);
-                // for every variable in the equation, check if variable matches with
-                // node name. If yes, replace node name with its ID
-                array.forEach(parse.variables(), lang.hitch(this, function(variable){
-                    if(this._model.given.getNodeIDByName(variable)){
-                        var nodeId = this._model.given.getNodeIDByName(variable);
-                        equation.addQuantity(nodeId, this._model.given);
-                        this.setConnections(this._model.given.getInputs(this.currentID), this.currentID);
-                    } else {
-                        variableFlag = true;
-			if(undefinedVariables){
-			    undefinedVariables += ", ";
-			}
-                        undefinedVariables += variable;
-                    }
-                }));
-                directives = directives.concat(this.authorPM.process(this.currentID, "equation", expression, variableFlag));
-                if(variableFlag)
-                    directives = directives.concat({id:"message", attribute:"append", value:"undefined variables : "+undefinedVariables});
+                directives = directives.concat(this.authorPM.process(this.currentID, "equation", parse));
             }
             this.applyDirectives(directives);
         },
+
         initialControlSettings: function(nodeid){
             var name = this._model.given.getName(nodeid);
             registry.byId(this.controlMap.name).set('value', name || '', false);

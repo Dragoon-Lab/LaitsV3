@@ -18,16 +18,26 @@
  *along with Dragoon.  If not, see <http://www.gnu.org/licenses/>.
  *
  */
+
 /* global define */
+
 /*
- *                          student mode-specific handlers
+ * Student mode-specific handlers
  */
+
 define([
-    "dojo/_base/array", 'dojo/_base/declare', "dojo/_base/lang",
+    "dojo/aspect", "dojo/_base/array", 'dojo/_base/declare', "dojo/_base/lang",
     "dojo/dom", "dojo/ready",
     'dijit/registry',
-    './controller', "./pedagogical_module", "./equation","./typechecker"
-], function(array, declare, lang, dom, ready, registry, controller, PM, expression, typechecker){
+    './controller', "./pedagogical_module", "./equation", "./typechecker"
+], function(aspect, array, declare, lang, dom, ready, registry, controller, PM, expression, typechecker){
+	// Summary: 
+	//          MVC for the node editor, for students
+	// Description:
+	//          Handles selections from the student as he/she completes a model;
+	//          inherits controller.js
+	// Tags:
+	//          controller, student mode, coached mode, test mode
 
     /*
      Methods in controller specific to the student modes
@@ -41,7 +51,14 @@ define([
             this._PM = new PM(mode, subMode, model);
             lang.mixin(this.widgetMap, this.controlMap);
             ready(this, "populateSelections");
+	    this.init();
         },
+	init:function(){
+		 aspect.after(this, "closeEditor", function(){
+			var directives = this._PM.notifyCompleteness(this._model);	
+           		this.applyDirectives(directives);
+    		}, true);
+	},
         // A list of control map specific to students
         controlMap: {
             description: "selectDescription",
@@ -163,7 +180,7 @@ define([
         },
         equationDoneHandler: function(){
             var directives = [];
-            var parse = this.equationAnalysis(directives);
+            var parse = this.equationAnalysis(directives, false);
             if(parse){
                 var dd = this._PM.processAnswer(this.currentID, 'equation', parse);
                 directives = directives.concat(dd);
@@ -180,7 +197,7 @@ define([
     	    // Generally, since this is the correct solution, there should be no directives
     	    this.applyDirectives(directives);
     	},
- 
+
         /* 
          Settings for a new node, as supplied by the PM.
          These don't need to be recorded in the model, since they

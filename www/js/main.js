@@ -63,7 +63,7 @@ define([
     session.loadProblem(query).then(function(solutionGraph){
 
         var givenModel = new model(query.m, query.p);
-        logging.session.log('open-problem',{problem : query.p});
+        logging.session.log('open-problem', {problem : query.p});
         if(solutionGraph){
             givenModel.loadModel(solutionGraph);
         }
@@ -79,30 +79,35 @@ define([
          */
         var subMode = query.sm || "feedback";
         /* In principle, we could load just one controller or the other. */
-            var controllerObject = query.m == 'AUTHOR' ? new controlAuthor(query.m, subMode, givenModel, query.is) :
+        var controllerObject = query.m == 'AUTHOR' ? new controlAuthor(query.m, subMode, givenModel, query.is) :
                 new controlStudent(query.m, subMode, givenModel, query.is);
 
         //setting up logging for different modules.
-        if(controllerObject._PM)
+        if(controllerObject._PM){
             controllerObject._PM.setLogging(session);  // Set up direct logging in PM
-        
+		}
         controllerObject.setLogging(session); // set up direct logging in controller
-
         expression.setLogging(session);
 
-	/*
-	 Create state object
-	 */
-	var state = new State(query.u, query.s, "action");
-	controllerObject.setState(state);
-	
+		/*
+		 Create state object
+		 */
+		var state = new State(query.u, query.s, "action");
+		controllerObject.setState(state);
+
         ready(function(){
 
             var drawModel = new drawmodel(givenModel.active);
-	    // Wire up send to server
-	    aspect.after(drawModel, "updater", function(){
-		session.saveProblem(givenModel.model);
-	    });
+			// Wire up send to server
+			aspect.after(drawModel, "updater", function(){
+				session.saveProblem(givenModel.model);
+			});
+
+			// When the node editor controller wants to update node style, inform
+			// the controller for the drawing su
+			aspect.after(controllerObject, "colorNodeBorder",
+						 lang.hitch(drawModel, drawModel.colorNodeBorder), 
+						 true);
 
             /* add "Create Node" button to menu */
             menu.add("createNodeButton", function(){
@@ -221,20 +226,20 @@ define([
             });
 
 
-           menu.add("doneButton", function(){
-                console.debug("done button is clicked");
-                var problemComplete = givenModel.matchesGivenSolution();
+        menu.add("doneButton", function(){
+            console.debug("done button is clicked");
+            var problemComplete = givenModel.matchesGivenSolution();
 
-                controllerObject.logging.log('close-problem', {
-                    type: "menu-choice", 
-                    name: "done-button", 
-                    problemComplete: problemComplete
-                });
-               window.history.back();
-
-
-
-           });
+            var promise = controllerObject.logging.log('close-problem', {
+                type: "menu-choice", 
+                name: "done-button", 
+                problemComplete: problemComplete
+            });
+            
+            promise.then(function(){
+                window.history.back();
+            });
+        });
 
 	    /* 
 	     Add link to intro video

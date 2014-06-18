@@ -18,17 +18,23 @@
  *along with Dragoon.  If not, see <http://www.gnu.org/licenses/>.
  *
  */
+
 /* global define */
-/*
- *                               Controller for Node Editor
- */
+
 define([
     "dojo/_base/array", 'dojo/_base/declare', "dojo/_base/lang",
     'dojo/aspect', 'dojo/dom', "dojo/dom-class", "dojo/dom-construct", 'dojo/dom-style',
     'dojo/keys', 'dojo/on', "dojo/ready", 
     "dijit/popup", 'dijit/registry', "dijit/TooltipDialog",
-    './equation', './graph-objects',"./typechecker"
-], function(array, declare, lang, aspect, dom, domClass, domConstruct, domStyle, keys, on, ready, popup, registry, TooltipDialog, expression, graphObjects,typechecker){
+    './equation', './graph-objects', "./typechecker"
+], function(array, declare, lang, aspect, dom, domClass, domConstruct, domStyle, keys, on, ready, popup, registry, TooltipDialog, expression, graphObjects, typechecker){
+	// Summary: 
+	//          Controller for the node editor, common to all modes
+	// Description:
+	//          Handles selections from the student or author as he/she 
+	//          completes a model; inherited by con-student.js and con-author.js
+	// Tags:
+	//          controller, student mode, coached mode, test mode, author mode
 
     return declare(null, {
         _model: null,
@@ -42,7 +48,7 @@ define([
         lastInitialValue: null,
         logging: null,
         // Variable to track if an equation has been entered and checked
-	equationEntered: null,  // value is set when node editor opened
+		equationEntered: null,  // value is set when node editor opened
 
         constructor: function(mode, subMode, model, inputStyle){
 
@@ -108,11 +114,15 @@ define([
              If this can change during a session, then we
              should move this to this.showNodeEditor()
              */
-            if(this._inputStyle!="algebraic" && this._inputStyle!="structured" && this._inputStyle){ //If the input style is anything different frm algebraic, structured, unmentioned then we log an error as corrupted input style
-            error = new Error("input style has been corrupted");
-            throw error;
-            }
-            var algebraic = (this._inputStyle == "algebraic" || !this._inputStyle ? "" : "none"); //making algebraic the default input style incase n inputstyle is defined
+			if(this._inputStyle!="algebraic" && this._inputStyle!="structured" && this._inputStyle){
+				/*
+				If the input style is anything different frm algebraic, structured,
+				 unmentioned then we log an error as corrupted input style
+				 */
+				throw new Error("input style has been corrupted");
+			}
+			//making algebraic the default input style in case inputstyle is defined
+			var algebraic = (this._inputStyle == "algebraic" || !this._inputStyle ? "" : "none");
             var structured = (this._inputStyle == "structured" ? "" : "none");
             domStyle.set("algebraic", "display", algebraic);
             domStyle.set("structured", "display", structured);
@@ -276,16 +286,23 @@ define([
             var messageWidget = registry.byId(this.widgetMap.message);
             messageWidget.set('content', '');
 
-            // Color the borders of the Node
-            this.colorNodeBorder(this.currentID);
+			// Color the borders of the Node
+			this.colorNodeBorder(this.currentID, true);
 
             // update Node labels upon exit
             var nodeName = graphObjects.getNodeName(this._model.active,this.currentID);
             if(dom.byId(this.currentID + 'Label'))
                 domConstruct.place(nodeName, this.currentID + 'Label', "replace");
+	    else
+		domConstruct.place('<div id="'+this.currentID+'Label" class="bubble">'+nodeName+'</div>', this.currentID);
 
+	    // In case any tool tips are still open.
+            this.closePops();
+            //this.disableHandlers = false;	
 
-            //this.disableHandlers = false;
+	    // This cannot go in controller.js since _PM is only in
+	    // con-student.  You will need con-student to attach this
+	    // to closeEditor (maybe using aspect.after?).
 
         },
         //set up event handling with UI components
@@ -618,14 +635,14 @@ define([
 			if(this.structured.ops.length == 0) {
 				var equationWidget = registry.byId("equationBox");
 				equationWidget.set("value", "");
-				dom.byId("equationText").innerHTML = ""
+				dom.byId("equationText").innerHTML = "";
 			}
 			else {
 				var widget = registry.byId(this.controlMap.equation);
 				this.structured.pop();
 			}
         },
-        equationAnalysis: function(directives){
+        equationAnalysis: function(directives, ignoreUnknownTest){
             this.equationEntered = true;
             console.log("****** enter button");
             /*
@@ -663,33 +680,37 @@ define([
             }
 
             if(parse){
-                var toPM = true;
-                array.forEach(parse.variables(), function(variable){
+        		var toPM = true;
+        		//getDescriptionID is present only in student mode. So in author mode it will give an identity function. This is a work around in case when its in author mode at that time the given model is the actual model. So descriptionID etc are not available. 
+        		var mapID = this._model.active.getDescriptionID || function(x){ return x; };
+        		var unMapID = this._model.active.getNodeIDFor || function(x){ return x; };
+        		array.forEach(parse.variables(), function(variable){
                     // Test if variable name can be found in given model
                     var givenID = this._model.given.getNodeIDByName(variable);
                     // Checks for nodes referencing themselves; this causes problems because
                     //      functions will always evaluate to true if they reference themselves
-                    if(this._model.student.getType(this.currentID) === "function"){
-                        if(givenID === this._model.student.getDescriptionID(this.currentID)){
-                            toPM = false;
-                            directives.push({id: 'equation', attribute: 'status', value: 'incorrect'});
-                            directives.push({id: 'message', attribute: 'append', value: "You cannot use '" + variable + "' in the equation. Function nodes cannot reference themselves."});
-                        }
+                    if(givenID && this._model.active.getType(this.currentID) === "function" &&
+                        givenID === mapID.call(this._model.active, this.currentID)){
+            			toPM = false;
+            			directives.push({id: 'equation', attribute: 'status', value: 'incorrect'});
+            			directives.push({id: 'message', attribute: 'append', value: "You cannot use '" + variable + "' in the equation. Function nodes cannot reference themselves."});
                     }
-                    if(givenID){
+
+        		    if(givenID || ignoreUnknownTest){
                         // Test if variable has been defined already
-                        var studentID = this._model.active.getNodeIDFor(givenID);
-                        if(studentID){
+            			var subID = unMapID.call(this._model.active, givenID);
+            			if(subID){
                             // console.log("       substituting ", variable, " -> ", studentID);
-                            parse.substitute(variable, studentID);
-                        }else {
+                            parse.substitute(variable, subID);
+                        }else{
                             directives.push({id: 'message', attribute: 'append', value: "Quantity '" + variable + "' not defined yet."});
                         }
-                    }else {
-                        toPM = false;  // Don't send to PM
-                        directives.push({id: 'message', attribute: 'append', value: "Unknown variable '" + variable + "'."});
+                    }else{
+                		toPM = false;  // Don't send to PM
+                		directives.push({id: 'message', attribute: 'append', value: "Unknown variable '" + variable + "'."});
                     }
                 }, this);
+
                 // Expression now is written in terms of student IDs, when possible.
                 // Save with explicit parentheses for all binary operations.
                 var parsedEquation = parse.toString(true);
@@ -698,9 +719,9 @@ define([
                 // console.log("********* Saving equation to model: ", parsedEquation);
                 this._model.active.setEquation(this.currentID, parsedEquation);
 
-		// Test if this is a pure sum or product
-		// If so, determine connection labels
-		var inputs = expression.createInputs(parse);
+        		// Test if this is a pure sum or product
+        		// If so, determine connection labels
+        		var inputs = expression.createInputs(parse);
 
                 // Update inputs and connections
                 this._model.active.setInputs(inputs, this.currentID);
@@ -840,28 +861,10 @@ define([
             }, this);
         },
 
-        // Stub to be overwritten by student or author mode-specific method.
-	colorNodeBorder: function(nodeId){
-	    console.log("colorNodeBorder stub called");
-	                                  //get model type
-        var type = this._model.active.getType(nodeId);
-        if(type){
-            console.log('model type is '+type);
-
-            var colorMap = {
-                correct: "green",
-                incorrect: "#FF8080",
-                demo: "yellow",
-                neutral: "gray"
-            };
-            console.log('nodeId is '+nodeId);
-            var isComplete   = this._model.active.isComplete(nodeId)?'solid':'dashed';
-            var color = this._model.active.getCorrectness? this._model.active.getCorrectness(nodeId):'neutral';
-            console.log('color is '+color);
-            domStyle.set(this.currentID,'border','2px '+isComplete+' '+colorMap[color]);
-            domStyle.set(this.currentID,'box-shadow','inset 0px 0px 5px #000 , 0px 0px 10px #000');
-        }
-    }
+		// Stub to be overwritten by student or author mode-specific method.
+		colorNodeBorder: function(nodeID){
+			console.log("colorNodeBorder stub called");
+		}
 
     });
 });
