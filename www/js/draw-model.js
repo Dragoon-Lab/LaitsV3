@@ -18,16 +18,21 @@
  *along with Dragoon.  If not, see <http://www.gnu.org/licenses/>.
  *
  */
+
 /* global define, jsPlumb */
-/*
- This is just a quick initial attempt to draw a model
- */
+
 define([
     "dojo/_base/array", 'dojo/_base/declare', 'dojo/_base/lang',
     'dojo/dom', "dojo/dom-attr", "dojo/dom-construct", "dojo/dom-style",
 	"dijit/Menu", "dijit/MenuItem",
 	"./equation","./graph-objects", "jsPlumb/jsPlumb"
 ], function(array, declare, lang, dom, attr, domConstruct, domStyle, Menu, MenuItem, equation, graphObjects){
+    // Summary: 
+    //          MVC for the canvas
+    // Description:
+    //          Acts as interface to JS Plumb
+    // Tags:
+    //          JS Plumb, model
 
     return declare(null, {
 

@@ -19,11 +19,18 @@
  *along with Dragoon.  If not, see <http://www.gnu.org/licenses/>.
  *
  */
+
 define([
     "dojo/_base/array", "dojo/_base/declare", 
     "dijit/registry", "dojo/dom",
     "./model", "./wraptext"
 ], function(array, declare, registry, dom, model, wrapText) {
+    // Summary: 
+    //          MVC for the description box in author mode
+    // Description:
+    //          Allows the author to modify the description and the times 
+    // Tags:
+    //          description box, author mode
 
     return declare(null, {
 

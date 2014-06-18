@@ -18,14 +18,20 @@
  *along with Dragoon.  If not, see <http://www.gnu.org/licenses/>.
  *
  */
+
 /*global define*/
+
 define([
     "dojo/dom",
     "dojo/ready",
     "dijit/registry",
     "dojo/on"
 ], function(dom, ready, registry, on){
-
+    // Summary/Description: 
+    //          Connects the menu buttons to the program
+    // Tags:
+    //          menu, buttons
+    
     return {
 	add: function(button, handler){
             // If I use registry.byId(), then the function is called twice.

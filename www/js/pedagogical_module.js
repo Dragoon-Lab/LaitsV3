@@ -1,4 +1,3 @@
-/* global define */
 /**
  *Dragoon Project
  *Arizona State University
@@ -25,15 +24,23 @@
  * @author: Brandon Strong
  **/
 
-/**
- * Pedagogical module that accepts student entries, and returns an object with the  
- * id of the node, a message with encouragement or a hint, and the status of the 
- * attempt (correct, incorrect, demo, or premature).
- **/
+/* global define */
 
 define([
-    "dojo/_base/array", "dojo/_base/declare", "./equation", "dojo/_base/lang"
-], function(array, declare, check, lang){
+<<<<<<< HEAD
+    "dojo/_base/array", "dojo/_base/declare", "dojo/_base/lang", "./equation"
+], function(array, declare, lang, check){
+    // Summary: 
+    //          Processes student selections and returns instructions to the 
+    //          program
+    // Description:
+    //          A pedagogical module that accepts student entries, and returns 
+    //          an object with the ID of the node, a message with encouragement 
+    //          or a hint, and the status of the attempt (correct, incorrect, 
+    //          demo, or premature).
+    // Tags:
+    //          pedagogical module (PM), student mode, coached mode, test mode
+
 
     var hints = {
         // Summary: Messages that are given to the user based on the type of user, 

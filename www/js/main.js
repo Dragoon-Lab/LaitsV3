@@ -44,6 +44,12 @@ define([
         menu, loadSave, model,
         Graph, Table, controlStudent, controlAuthor, Parser, drawmodel, logging, expression, description, State
         ){
+    // Summary: 
+    //          Menu controller
+    // Description:
+    //          Acts as the controller for the buttons on the menu
+    // Tags:
+    //          menu, buttons, controller
 
     console.log("load main.js");
 
