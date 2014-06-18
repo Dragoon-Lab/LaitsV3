@@ -1,3 +1,4 @@
+/* global define */
 /**
  *Dragoon Project
  *Arizona State University
@@ -18,38 +19,38 @@
  *along with Dragoon.  If not, see <http://www.gnu.org/licenses/>.
  *
  */
-/* global define */
 define([
-    "dojo/_base/array",
-    "dijit/popup", 'dijit/registry', "dijit/TooltipDialog",'dojo/dom'
-], function(array,popup,registry, TooltipDialog,dom){
+	"dojo/_base/array", "dojo/dom",
+	"dijit/popup", 'dijit/registry', "dijit/TooltipDialog"
+], function(array, dom, popup, registry, TooltipDialog){
+
     return {
+
         closePops: function(){
             popup.close(this.myTooltipDialog);
             popup.close(this.myTooltipDialog2);
-    	    }, 
-
-        checkInitialValue: function(initialString,thislastInitialValue,initialWidget,source){
+    	}, 
+		
+        checkInitialValue: function(initialString, lastInitialValue, widget, source){
             //source variable contains the source of this function call which could be used for logging: sachin can use it
             // In case any tool tips are still open.
-            //console.log("initialWidget",initialWidget);
-                myTooltipDialog = new TooltipDialog({
-                style: "width: 150px;",
-                content: "Use decimals instead of percent."
-            });
-        // Tool Tip for indicating non numeric data is not accepted
-            myTooltipDialog2 = new TooltipDialog({
+            var myTooltipDialog = new TooltipDialog({
+				style: "width: 150px;",
+				content: "Use decimals instead of percent."
+			});
+			// Tool Tip for indicating non numeric data is not accepted
+            var myTooltipDialog2 = new TooltipDialog({
                 style: "width: 150px;",
                 content: "Non-numeric data not accepted"
             });
             //Description : performs non number check and also checks if the initial value was changed from previously entered value
             //returns: status, a boolean value and value, the current initial value
-           
+			
             // Popups only occur for an error, so leave it up until
             // the next time the student attempts to enter a number.
-	         this.closePops();
+	        this.closePops();
             // we do this type conversion because we used a textbox for initialvalue input which is a numerical
-             var initial= +initialString; // usage of + unary operator converts a string to number 
+            var initial= +initialString; // usage of + unary operator converts a string to number 
             // use isNaN to test if conversion worked.
             if(isNaN(initial)){
                 // Put in checks here
@@ -59,26 +60,23 @@ define([
                     console.warn("Sachin should log when this happens");
                     popup.open({
                         popup: myTooltipDialog2,
-                        around: initialWidget
+                        around: widget
                     });
                 }else{ 
-		    // if entered string has percentage symbol, pop up a message to use decimals
+					// if entered string has percentage symbol, pop up a message to use decimals
                     console.warn("Sachin should log when this happens");
                     popup.open({
                         popup: myTooltipDialog,
-                        around: initialWidget
+                        around: widget
                     });
-                 }            
+                }            
                 return {status: false}; 
             }
-                        
-            if(typeof initialString === 'undefined' || initialString == thislastInitialValue){
-    		return { status: false};
+            if(initialString == lastInitialValue){
+    			return {status: false};
     	    }
-    	    this.lastInitialValue = initialString;
             // updating node editor and the model.
-            initialString=+initialString;
-            return { status: true, value: initialString};
+            return {status: true, value: initial};
         }           
-   };
+	};
 });
