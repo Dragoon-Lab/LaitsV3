@@ -168,6 +168,31 @@ define([
 	     */
          // Since graph will be updated when value in boxes changed,
          // there is no need to put a function here to deal with the graphs when sliders changed
+        on(slider, "change", lang.hitch(this, function(){
+            console.log("---- slider event", this.getTime());
+
+            if(this._rendering){
+                console.log("     returning");
+                return;
+            }
+            this._rendering = true;
+            var active = this.active;
+            if(paramID in active.timeStep.parameters){
+                active.timeStep.parameters[paramID] = transform(slider.value);
+                console.log("--> Time step: ", transform(slider.value));
+            }else if(paramID in active.xvarMap){
+                active.initialValues[active.xvarMap[paramID]] = transform(slider.value);
+                console.log("--> Initial value: ", transform(slider.value));
+            } else {
+                throw new Error("Invalid id", paramID);
+            }
+            this.findSolution(true); // Solve active model
+            console.log("      new solution", this.getTime());
+            //this function is specific to graph/table
+            this.renderDialog();
+            this._rendering = false;
+            console.log("      new plot done", this.getTime());
+        }));
 	},
 	_rendering: false,
 
@@ -198,6 +223,36 @@ define([
             console.debug("dom is " + dom);
             return dom;
 	},
+
+    // This function is simply helping text handlers to apply the value to new graphs
+    applyTextValueToGraph: function(index, paramID, slider){
+        on(dom.byId(index), "change",  lang.hitch(this, function(){
+            console.log("---- value box change ", dom.byId(index));
+
+            if(this._rendering){
+                console.log("     returning");
+                return;
+            }
+            this._rendering = true;
+            var active = this.active;
+            console.log("--> paramID is: ", paramID);
+            if(paramID in active.timeStep.parameters){
+                active.timeStep.parameters[paramID] = +dom.byId(index).value;
+                console.log("Time step: ", +dom.byId(index).value);
+            }else if(paramID in active.xvarMap){
+                active.initialValues[active.xvarMap[paramID]] = +dom.byId(index).value;
+                console.log("Initial value: ", +dom.byId(index).value);
+            } else {
+                throw new Error("Invalid id", paramID);
+            }
+            this.findSolution(true); // Solve active model
+            console.log("      new solution", this.getTime());
+            //this function is specific to graph/table
+            this.renderDialog();
+            this._rendering = false;
+            console.log("      new plot done", this.getTime());
+        }));
+    },
 	
 	/*
 	 * @brief: create slider object for graphs and table
@@ -284,31 +339,8 @@ define([
         // Attach text handles to slider text box
         for(paramID in sliderVars){
             var textBox = dom.byId(textBoxID[paramID]);
+            this.applyTextValueToGraph(textBoxID[paramID], paramID, this.sliders[paramID]);
             console.log("----     textbox", textBox);
-
-            on(textBox, "change",  lang.hitch(this, function(){
-                console.log("---- value box change ");
-
-                if(this._rendering){
-                    console.log("     returning");
-                    return;
-                }
-                this._rendering = true;
-                var active = this.active;
-                if(paramID in active.timeStep.parameters){
-                    active.timeStep.parameters[paramID] = +dom.byId(textBoxID[paramID]).value;
-                }else if(paramID in active.xvarMap){
-                    active.initialValues[active.xvarMap[paramID]] = +dom.byId(textBoxID[paramID]).value;
-                } else {
-                    throw new Error("Invalid id", paramID);
-                }
-                this.findSolution(true); // Solve active model
-                console.log("      new solution", this.getTime());
-                //this function is specific to graph/table
-                this.renderDialog();
-                this._rendering = false;
-                console.log("      new plot done", this.getTime());
-            }));
         }
 	},
 		
