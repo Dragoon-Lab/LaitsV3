@@ -18,10 +18,9 @@
  *along with Dragoon.  If not, see <http://www.gnu.org/licenses/>.
  *
  */
+
 /* global define */
-/*
- *                               Controller for Node Editor
- */
+
 define([
     "dojo/_base/array", 'dojo/_base/declare', "dojo/_base/lang",
     'dojo/aspect', 'dojo/dom', "dojo/dom-class", "dojo/dom-construct", 'dojo/dom-style',
@@ -29,7 +28,14 @@ define([
     "dijit/popup", 'dijit/registry', "dijit/TooltipDialog",
     './equation', './graph-objects'
 ], function(array, declare, lang, aspect, dom, domClass, domConstruct, domStyle, keys, on, ready, popup, registry, TooltipDialog, expression, graphObjects){
-
+    // Summary: 
+    //          Controller for the node editor, common to all modes
+    // Description:
+    //          Handles selections from the student or author as he/she 
+    //          completes a model; inherited by con-student.js and con-author.js
+    // Tags:
+    //          controller, student mode, coached mode, test mode, author mode
+    
     return declare(null, {
         _model: null,
         _nodeEditor: null, // node-editor object- will be used for populating fields
@@ -121,11 +127,15 @@ define([
              If this can change during a session, then we
              should move this to this.showNodeEditor()
              */
-            if(this._inputStyle!="algebraic" && this._inputStyle!="structured" && this._inputStyle){ //If the input style is anything different frm algebraic, structured, unmentioned then we log an error as corrupted input style
-            error = new Error("input style has been corrupted");
-            throw error;
-            }
-            var algebraic = (this._inputStyle == "algebraic" || !this._inputStyle ? "" : "none"); //making algebraic the default input style incase n inputstyle is defined
+			if(this._inputStyle!="algebraic" && this._inputStyle!="structured" && this._inputStyle){
+				/*
+				If the input style is anything different frm algebraic, structured,
+				 unmentioned then we log an error as corrupted input style
+				 */
+				throw new Error("input style has been corrupted");
+			}
+			//making algebraic the default input style in case inputstyle is defined
+			var algebraic = (this._inputStyle == "algebraic" || !this._inputStyle ? "" : "none");
             var structured = (this._inputStyle == "structured" ? "" : "none");
             domStyle.set("algebraic", "display", algebraic);
             domStyle.set("structured", "display", structured);
@@ -288,8 +298,8 @@ define([
             var messageWidget = registry.byId(this.widgetMap.message);
             messageWidget.set('content', '');
 
-            // Color the borders of the Node
-            this.colorNodeBorder(this.currentID);
+			// Color the borders of the Node
+			this.colorNodeBorder(this.currentID, true);
 
             // update Node labels upon exit	
             var nodeName = graphObjects.getNodeName(this._model.active,this.currentID);
@@ -950,28 +960,10 @@ define([
             }, this);
         },
 
-        // Stub to be overwritten by student or author mode-specific method.
-	colorNodeBorder: function(nodeId){
-	    console.log("colorNodeBorder stub called");
-	                                  //get model type
-        var type = this._model.active.getType(nodeId);
-        if(type){
-            console.log('model type is '+type);
-
-            var colorMap = {
-                correct: "green",
-                incorrect: "#FF8080",
-                demo: "yellow",
-                neutral: "gray"
-            };
-            console.log('nodeId is '+nodeId);
-            var isComplete   = this._model.active.isComplete(nodeId)?'solid':'dashed';
-            var color = this._model.active.getCorrectness? this._model.active.getCorrectness(nodeId):'neutral';
-            console.log('color is '+color);
-            domStyle.set(this.currentID,'border','2px '+isComplete+' '+colorMap[color]);
-            domStyle.set(this.currentID,'box-shadow','inset 0px 0px 5px #000 , 0px 0px 10px #000');
-        }
-    }
+		// Stub to be overwritten by student or author mode-specific method.
+		colorNodeBorder: function(nodeID, bool){
+			console.log("colorNodeBorder stub called");
+		}
 
     });
 });
