@@ -300,8 +300,13 @@ define([
 
 	    // In case any tool tips are still open.
             this.closePops();
-            //this.disableHandlers = false;	
-
+            //this.disableHandlers = false;
+            this.logging.log('ui-action', {
+                type: 'close-dialog-box',
+                nodeID: this.currentID,
+                node: this._model.active.getName(this.currentID),
+                nodeComplete: this._model.active.isComplete(this.currentID)
+            });                
 	    // This cannot go in controller.js since _PM is only in
 	    // con-student.  You will need con-student to attach this
 	    // to closeEditor (maybe using aspect.after?).
@@ -325,7 +330,7 @@ define([
             desc.on('Change', lang.hitch(this, function(){
                 return this.disableHandlers || this.handleDescription.apply(this, arguments);
             }));
-
+            
             /*
              *   event handler for 'type' field
              *   'handleType' will be called in either Student or Author mode
@@ -333,7 +338,7 @@ define([
             var type = registry.byId(this.controlMap.type);
             type.on('Change', lang.hitch(this, function(){
                 return this.disableHandlers || this.handleType.apply(this, arguments);
-            }));
+            }));            
 
             /*
              *   event handler for 'Initial' field
@@ -927,6 +932,12 @@ define([
                         // Each control has its own function to update the
                         // the model and the graph.
                         this[directive.id+'Set'].call(this, directive.value);
+                        this.logging.log('seek-help', {
+                            type: 'seek-help',
+                            nodeID: this.currentID,
+                            node: this._model.active.getName(this.currentID),
+                            property: directive.id
+                        });
                     } else
                         w.set(directive.attribute, directive.value);
                 } else {

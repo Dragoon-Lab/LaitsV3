@@ -32,8 +32,8 @@
  **/
 
 define([
-    "dojo/_base/array", "dojo/_base/declare", "./equation"
-], function(array, declare, check){
+    "dojo/_base/array", "dojo/_base/declare", "./equation", "dojo/_base/lang"
+], function(array, declare, check, lang){
 
     var hints = {
         // Summary: Messages that are given to the user based on the type of user, 
@@ -480,16 +480,6 @@ define([
              This is an example of logging via direct function calls
              Note that I haven't set correct-value.  For most controls, it should be set
              */
-            if(this.logging){
-                this.logging.log('solution-step', {
-                    node: studentID,
-                    name: this.model.student.getName(givenID),
-                    type: nodePart,
-                    value: answer,
-                    checkResult: (interpretation == 'correct' || interpretation == 'optimal') ? 'CORRECT' : 'INCORRECT',
-                    order: interpretation
-                });
-            }
             return interpretation;
         },
 	
@@ -530,6 +520,28 @@ define([
                 }else
                     returnObj.push({id: nodePart, attribute: "value", value: answer});
             }
+            var logObj = null;
+            if(interpretation == 'correct' || interpretation == 'optimal'){
+                logObj = {
+                    checkResult: 'CORRECT'
+                }   
+            } else {
+                logObj = {
+                    checkResult: 'INCORRECT',
+                    correctValue: this.model.student.getCorrectAnswer(id, nodePart),
+                    pmInterpretation: interpretation
+                }
+            }
+            logObj = lang.mixin({
+                type : "solution-check",
+                nodeID: id,
+                node: this.model.student.getName(id),
+                property: nodePart,
+                value: answer
+            }, logObj);
+            this.logging.log('solution-step', logObj);
+            
+
 
             // Local function that updates the status if it is not already set to "correct" or "demo"
             var updateStatus = function(returnObj, model){

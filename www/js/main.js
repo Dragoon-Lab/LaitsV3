@@ -156,7 +156,6 @@ define([
              */
             aspect.after(registry.byId('nodeeditor'), "hide", function(){
                 console.log("Calling session.saveProblem");
-                controllerObject.logging.log("ui-action", {node: "name of the node", tab:"last value checked", type:"dialog-box-tab"});
                 session.saveProblem(givenModel.model);
             });
 

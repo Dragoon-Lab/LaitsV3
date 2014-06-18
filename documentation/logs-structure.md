@@ -89,44 +89,46 @@ one for the menu button and one for opening the node editor.
   "name": "create-node"}`  
 -- method: `ui-action`  
 -- message: `{"time": 21.3, "type": "open-dialog-box",
-  "name": "node-editor", "tab": "DESCRIPTION", "node-id": null}`  
+  "name": "node-editor", "tab": "DESCRIPTION", "nodeID": null}`  
 In the JavaScript version, we can not use the node id to name the node, 
 as while processing the logs we can never know the names of the nodes. 
 So if we give them names like "id10" here we can never tell the names on the dashboard. 
 
 Student chooses a quantity in the description tab.  
 -- method: `solution-step`  
--- message: `{"time": 40.2, "node": null, "type": "enter-quantity",
-  "name": "fat content", "text": "The ratio of the weight of the fat
+-- message: `{"time": 40.2, "nodeID": null, "type": "enter-quantity",
+  "node": "fat content", "text": "The ratio of the weight of the fat
   in a potato chip to the weight of the potato chip", "checkResult":
   "CORRECT"}`  
 In the JavaScript version, `"node"` like the Java
   version, it is either null or the node name `"fat content"`.
 
+`this message has been removed as we can safely assume that the time spent on the 
+next property starts right after the previous property has been correctly entered`
 Student goes to next property:  
 -- method: `ui-action`  
 -- message: `{"time": 50.1, "type": "new-property-selected",
-  "name": "node-editor", "property": "node-type", "node": "fat content", "node-id":"id10"}`  
+  "name": "node-editor", "property": "type", "node": "fat content", "nodeID":"id10"}`  
 
 Student chooses node type:  
 -- method: `solution-step`  
--- message: `{"time": 53.1, "node": fat content, "node-id": "id10", "type": "solution-checked",
-  property : "node-type",  "value": "ACCUMULATOR", "checkResult":  "CORRECT"}`
+-- message: `{"time": 53.1, "node": fat content, "nodeID": "id10", "type": "solution-checked",
+  property : "type",  "value": "ACCUMULATOR", "checkResult":  "CORRECT"}`
 
 Student fills out the initial value.   
 -- method: `solution-step`  
--- message: `{"time": 60.2, "node": "fat content", "node-id": "id10", "type":"solution-checked",
-  "property": "initial-value", "value": "0.35", "correct-value": "0.35", 
+-- message: `{"time": 60.2, "node": "fat content", "nodeID": "id10", "type":"solution-checked",
+  "property": "initial", "value": "0.35", "correctValue: "0.35", 
   "checkResult":  "CORRECT"}`
 for incorrect value
 -- method: `solution-step`  
--- message: `{"time": 60.2, "node": "fat content", "node-id": "id10", "type":"solution-checked",
-  "property": "initial-value", "value": "0.35", "correct-value": "0.45", 
+-- message: `{"time": 60.2, "node": "fat content", "nodeID": "id10", "type":"solution-checked",
+  "property": "initial-value", "value": "0.35", "correctValue": "0.45", 
   "checkResult":  "INCORRECT"}`
 for parser errors 
 -- method: `solution-step`  
--- message: `{"time": 60.2, "node": "fat content", "node-id": "id10", "type": "parse-error",
-  "property" : "initial-value", "value": "35%", "correct-value": "0.35", 
+-- message: `{"time": 60.2, "node": "fat content", "nodeID": "id10", "type": "parse-error",
+  "property" : "initial-value", "value": "35%", "correctValue": "0.35", 
   "checkResult":  "INCORRECT"}`
 
 For the calculation tab, `solution-step` logging can be broken into several messages, depending on how the
@@ -136,14 +138,14 @@ For the calculation tab, `solution-step` logging can be broken into several mess
 Student closes node editor:  
 -- method: `ui-action`  
 -- message: `{"time": 61.6, "type": "close-dialog-box",
-  "name": "node-editor",  "node-id": "id10", "property": "description", "node": "fat content"}`  
+  "nodeID": "id10", "nodeComplete": "true", "node": "fat content"}`  
 Member `"tab"` is optional.
 
 ### Node description and demo usage ###
 Following are the different properties in the node :
 * description
-* node-type
-* initial-value
+* type
+* initial
 * units
 * equations
 
@@ -157,13 +159,17 @@ solution-step. After two answers the demo answer is sent so a log with seek-help
 logged with the information mentioned above.
 
 -- method - 'seek-help'
--- message - {time : '47.2', type: "seek-help", node : "fat content", "node-id": "id10", property:"initial-value"}
+-- message - {"time" : '47.2', "type": "seek-help", "node" : "fat content", "nodeID": "id10", property:"initial-value"}
+
+User deletes a node
+-- method - 'ui-action'
+-- message - {"time":'65.9', "type":'node-delete', "node":'fat content', "nodeID": "id10", "nodeComplete":'true'}
 
 Other log messages :
 When user brings the window in focus.
 -- method - 'window-focus'
--- message - {time: '56.9', type: 'in-focus'}
+-- message - {"time": '56.9', "type": 'in-focus'}
 
 When user goes away from the window or starts doing something else.
 -- method - 'window-focus'
--- message - {time: '56.9', type: 'out-of-focus'}
+-- message - {"time": '56.9', "type": 'out-of-focus'}
