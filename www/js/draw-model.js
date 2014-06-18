@@ -194,7 +194,7 @@ define([
 		    
             this._logging.log('ui-action', {
                 type:"node-delete",
-                node :node.name, 
+                node :this._givenModel.getName(node.ID), 
                 nodeID : node.ID
             });
 		    //delete from  the model
