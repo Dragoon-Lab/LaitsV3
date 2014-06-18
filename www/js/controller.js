@@ -127,11 +127,15 @@ define([
              If this can change during a session, then we
              should move this to this.showNodeEditor()
              */
-            if(this._inputStyle!="algebraic" && this._inputStyle!="structured" && this._inputStyle){ //If the input style is anything different frm algebraic, structured, unmentioned then we log an error as corrupted input style
-            error = new Error("input style has been corrupted");
-            throw error;
-            }
-            var algebraic = (this._inputStyle == "algebraic" || !this._inputStyle ? "" : "none"); //making algebraic the default input style incase n inputstyle is defined
+			if(this._inputStyle!="algebraic" && this._inputStyle!="structured" && this._inputStyle){
+				/*
+				If the input style is anything different frm algebraic, structured,
+				 unmentioned then we log an error as corrupted input style
+				 */
+				throw new Error("input style has been corrupted");
+			}
+			//making algebraic the default input style in case inputstyle is defined
+			var algebraic = (this._inputStyle == "algebraic" || !this._inputStyle ? "" : "none");
             var structured = (this._inputStyle == "structured" ? "" : "none");
             domStyle.set("algebraic", "display", algebraic);
             domStyle.set("structured", "display", structured);
@@ -294,12 +298,9 @@ define([
             var messageWidget = registry.byId(this.widgetMap.message);
             messageWidget.set('content', '');
 
-            // Color the borders of the Node
-            var borderColor = this.colorNodeBorder(this.currentID);
-			domStyle.set(this.currentID, 'border', borderColor.border);
-            domStyle.set(this.currentID, 'box-shadow', borderColor.boxShadow);
-			domStyle.set(this.currentID, 'backgroundColor', borderColor.backgroundColor);
-	
+			// Color the borders of the Node
+			this.colorNodeBorder(this.currentID, true);
+
             // update Node labels upon exit	
             var nodeName = graphObjects.getNodeName(this._model.active,this.currentID);
             if(dom.byId(this.currentID + 'Label'))
@@ -915,10 +916,10 @@ define([
             }, this);
         },
 
-        // Stub to be overwritten by student or author mode-specific method.
-	colorNodeBorder: function(nodeID){
-	    console.log("colorNodeBorder stub called");
-    }
+		// Stub to be overwritten by student or author mode-specific method.
+		colorNodeBorder: function(nodeID){
+			console.log("colorNodeBorder stub called");
+		}
 
     });
 });
