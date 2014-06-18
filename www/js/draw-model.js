@@ -190,6 +190,12 @@ define([
                 targetNodeIds: [node.ID]
             });
 
+	     this._instance.draggable(vertex,{
+                onMoveStart: lang.hitch(this, this.onMoveStart),
+                onMove: lang.hitch(this, this.onMove),
+                onMoveStop: lang.hitch(this, this.onMoveStop)
+            });
+
             pMenu.addChild(new MenuItem({
                 label: "Delete Node",
                 onClick: lang.hitch(this, function (){
@@ -251,8 +257,6 @@ define([
 	     isSum = equation.isSum(parse);
 	     isProduct = equation.isProduct(parse);
 	    }
-
-	    console.log('while adding connections ');
 
             array.forEach(this._instance.getConnections(), function(connection){
                 if(connection.targetId == destination)

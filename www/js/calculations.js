@@ -19,6 +19,7 @@
  *along with Dragoon.  If not, see <http://www.gnu.org/licenses/>.
  *
  */
+
 define([
     "dojo/_base/array",
     "dojo/_base/declare",
@@ -30,24 +31,33 @@ define([
     "./equation",
     "./integrate"
 ], function(array, declare, lang, Parser, on, dom, registry, HorizontalSlider, equation, integrate){
-
+    // Summary: 
+    //          Finds model solutions and sets up the sliders.
+    // Description:
+    //          Calls the parser to check the equation; sets up and manages the
+    //          sliders; listens for and registers changes in the sliders; 
+    // Tags:
+    //          sliders, slider listener
+    
     return declare(null, {
 	
 	model: null,                        // model
-	active: {},                       // set current mode. TRUE = givenModel / FALSE = StudentModel
+	active: {},                         // set current mode. TRUE = givenModel / FALSE = StudentModel
 	
 	/* variables specific to rendering graph and table */
 	given: {},                          // object to store calculated parameters from given model
-	dialog: "",                          // dialog box to be displayed
+	dialog: "",                         // dialog box to be displayed
 	dialogContent: "",                  // Parameter to set DOM in a dialog dynamically
 	sliders: {},                        // Parameter to create slider objects
-	mode : null, 						// Parameter to hold the mode value to differentiate graphs for author and student mode.
+	mode : null,                        // Parameter to hold the mode value to differentiate graphs for author and student mode.
 	
 	constructor: function(model, mode){
             console.log("***** In calculations constructor", this.given);
             this.model = model;
             this.mode = mode;
-            /* In AUTHOR mode, plot solution for all given nodes of genus false
+	    this.dialogWidget = registry.byId("solution");
+            /*
+	     In AUTHOR mode, plot solution for all given nodes of genus false
              and type "accumulator" or "function""
              The table contains the same nodes.
 	     
@@ -56,8 +66,11 @@ define([
              as any matching given model node of genus false.
              The table contains only the student nodes.
              */
-	    
-	    this.active.timeStep = equation.initializeTimeStep(model.active);
+	    this.active.timeStep = this.initializeSolution(model.active);
+	    if(!this.active.timeStep){
+		return; // abort on error in constructing timeStep
+	    }
+
             this.active.initialValues = array.map(
 		this.active.timeStep.xvars, 
 		model.active.getInitial,
@@ -67,32 +80,64 @@ define([
 	    array.forEach(this.active.timeStep.xvars, function(xvar, i){
 		this.active.xvarMap[xvar] = i;
 	    }, this);
+
 	    // These are not used for the tables
 	    if(mode != "AUTHOR"){
-	    	this.given.timeStep = equation.initializeTimeStep(model.given);
+		console.log("now in given model");
+		this.given.timeStep = this.initializeSolution(model.given);
+		if(!this.given.timeStep){
+		    return;  // abort on error
+		}
 		this.given.initialValues = array.map(
 		    this.given.timeStep.xvars, 
 		    model.given.getInitial,
 		    model.given
 		);
-	    } else {
+	    }else{
 		console.log("-------- no given solution for mode", mode); 
 	    }
 	},
-	
-	findSolution: function(isActive, plotVariables){
+
+	initializeSolution: function(model){
+	    //Summary:  Initialize solution and give a message if a cycle is found.
+	    var timeStep = null;
+	    try{
+		timeStep = equation.initializeTimeStep(model);
+	    }catch(e){
+		if(e.name == "graph-cycle"){
+		    // Also, need to log this.  Trello card https://trello.com/c/XdK6JqNE
+		    this.dialogWidget.set("content", "<div>This model cannot be solved:<br>The function nodes depend on each other in an inconsistant manner.</div>");		    
+		}
+	    }
+	    return timeStep;
+	},
+
+	findSolution: function(isActive, plotVariables){ 
+	    // Summary:  Find a solution
+	    // Returns:  an object of the form
+            //          {status: s, type: m, missingNode: n/soln: solution}
 	    var choice = isActive?this.active:this.given;
-	    // console.log("in findSolution ", isActive, choice.initialValues, choice.timeStep.parameters);
+	    console.log("in findSolution ", isActive, choice.initialValues, choice.timeStep.parameters);
 	    /*
 	     Calculate solution by solving differential 
 	     equation for accumulator nodes
 	     */
+        try { // we try to run the method because there might be some nodes missing and an error is generated
 	    var solution = integrate.eulersMethod(
 		choice.timeStep, 
 		equation.evaluateTimeStep,
 		choice.initialValues, 
 		this.model.getTime());
-	    /*
+	    }
+        catch(err){ // we catch the correspoding error here
+            var if_id=err.message.substr(19).trim(); //In case the name is not generated and a node id is , we have to get the name from the active object for the user to understand           
+            console.log("catch error",this.model.active.getName(if_id));  
+            if(this.model.active.getName(if_id))
+            var miss_node=this.model.active.getName(if_id); // In case a node is incomplete
+            else miss_node=if_id;
+            return {status: 'error', type: 'missing', missingNode: miss_node};
+        }
+        /*
 	     Given a solution, create an array of values for the
 	     list of plot variables.  The list may include function nodes.
 	     */
@@ -119,7 +164,7 @@ define([
 		}	    
 		return {times: solution.times, plotValues: plotValues};
 	    } else {
-		return solution;
+		return {status: 'solution', soln: solution};
 	    }
 	},
 	
@@ -276,9 +321,9 @@ define([
 		this.dialogContent += this.createDom('div', sliderID[paramID]);
             }
 	    
-	    this.dialogWidget = registry.byId("solution");
-	    this.dialogWidget.set("title", this.model.getTaskName() + " - " + this.type);
-            this.dialogWidget.set("content", this.dialogContent);
+	    var dialogWidget = registry.byId("solution");
+	    dialogWidget.set("title", this.model.getTaskName() + " - " + this.type);
+            dialogWidget.set("content", this.dialogContent);
 	    
             for(paramID in sliderVars){
 		dom.byId(textBoxID[paramID]).value = sliderVars[paramID];

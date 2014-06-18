@@ -18,10 +18,9 @@
  *along with Dragoon.  If not, see <http://www.gnu.org/licenses/>.
  *
  */
+
 /* global define */
-/*
- *                               Controller for Node Editor
- */
+
 define([
     "dojo/_base/array", 'dojo/_base/declare', "dojo/_base/lang",
     'dojo/aspect', 'dojo/dom', "dojo/dom-class", "dojo/dom-construct", 'dojo/dom-style',
@@ -29,7 +28,14 @@ define([
     "dijit/popup", 'dijit/registry', "dijit/TooltipDialog",
     './equation', './graph-objects'
 ], function(array, declare, lang, aspect, dom, domClass, domConstruct, domStyle, keys, on, ready, popup, registry, TooltipDialog, expression, graphObjects){
-
+    // Summary: 
+    //          Controller for the node editor, common to all modes
+    // Description:
+    //          Handles selections from the student or author as he/she 
+    //          completes a model; inherited by con-student.js and con-author.js
+    // Tags:
+    //          controller, student mode, coached mode, test mode, author mode
+    
     return declare(null, {
         _model: null,
         _nodeEditor: null, // node-editor object- will be used for populating fields
@@ -73,6 +79,10 @@ define([
                 content: "Non-numeric data not accepted"
             });
         },
+        
+        
+        
+        
         // A list of common controls of student and author
         genericControlMap: {
             type: "typeId",
@@ -109,7 +119,7 @@ define([
 			doHide.apply(myThis._nodeEditor);
 			myThis.closeEditor.call(myThis);
                     }
-        };
+            };
 	    }));
 
             /*
@@ -117,7 +127,11 @@ define([
              If this can change during a session, then we
              should move this to this.showNodeEditor()
              */
-            var algebraic = (this._inputStyle == "algebraic" ? "" : "none");
+            if(this._inputStyle!="algebraic" && this._inputStyle!="structured" && this._inputStyle){ //If the input style is anything different frm algebraic, structured, unmentioned then we log an error as corrupted input style
+            error = new Error("input style has been corrupted");
+            throw error;
+            }
+            var algebraic = (this._inputStyle == "algebraic" || !this._inputStyle ? "" : "none"); //making algebraic the default input style incase n inputstyle is defined
             var structured = (this._inputStyle == "structured" ? "" : "none");
             domStyle.set("algebraic", "display", algebraic);
             domStyle.set("structured", "display", structured);
@@ -182,6 +196,7 @@ define([
                 this.startup();
             };
             
+            
             // All <select> controls
             array.forEach(this.selects, function(select){
                 var w = registry.byId(this.controlMap[select]);
@@ -197,8 +212,7 @@ define([
                     this.show();
                 };
                 on(registry.byId("OkButton"), "click", function(){
-                    console.log("this is called");
-                    crisis.hide();
+                crisis.hide();
                 });
 
             // Add appender to message widget
@@ -290,10 +304,16 @@ define([
             var nodeName = graphObjects.getNodeName(this._model.active,this.currentID);
             if(dom.byId(this.currentID + 'Label'))
                 domConstruct.place(nodeName, this.currentID + 'Label', "replace");
+	    else
+		domConstruct.place('<div id="'+this.currentID+'Label" class="bubble">'+nodeName+'</div>', this.currentID);
 
 	    // In case any tool tips are still open.
             this.closePops();
-            //this.disableHandlers = false;
+            //this.disableHandlers = false;	
+
+	    // This cannot go in controller.js since _PM is only in
+	    // con-student.  You will need con-student to attach this
+	    // to closeEditor (maybe using aspect.after?).
 
         },
         //set up event handling with UI components
@@ -435,13 +455,16 @@ define([
             popup.close(this.myTooltipDialog);
             popup.close(this.myTooltipDialog2);
     	},
-        checkNumber: function(initialString){
+        
+        checkInitialValue: function(initialString,thislastInitialValue){ 
+            //Description : performs non number check and also checks if the initial value was changed from previously entered value
+            //returns: status, a boolean value and value, the current initial value
             var initialWidget = dom.byId(this.widgetMap.initial);
             // Popups only occur for an error, so leave it up until
             // the next time the student attempts to enter a number.
-	    this.closePops();
+	         this.closePops();
             // we do this type conversion because we used a textbox for initialvalue input which is a numerical
-            var initial= +initialString; // usage of + unary operator converts a string to number 
+             var initial= +initialString; // usage of + unary operator converts a string to number 
             // use isNaN to test if conversion worked.
             if(isNaN(initial)){
                 // Put in checks here
@@ -460,10 +483,18 @@ define([
                         popup: this.myTooltipDialog,
                         around: initialWidget
                     });
-                }            
-                return false; 
+                 }            
+                return {status: false}; 
             }
-            return true;
+                        
+            if(typeof initialString === 'undefined' || initialString == thislastInitialValue){
+    		return { status: false};
+    	    }
+    	    this.lastInitialValue = initialString;
+            // updating node editor and the model.
+            initialString=+initialString;
+            this._model.active.setInitial(this.currentID, initialString);
+            return { status: true, value: initialString};
         },
         updateType: function(type){
             //update node type on canvas
@@ -478,6 +509,17 @@ define([
                 domClass.replace(this.currentID, type);
             }
 
+            //resetting the value of initial and equation boxes when type is changed in author mode
+            if(type == "function" && this._model.active.getInitial(this.currentID)){
+                var initialNode = registry.byId(this.controlMap.initial);
+                initialNode.set("value", "");
+            }
+            if(type == "parameter" && this._model.active.getEquation(this.currentID)){
+                var equationNode = registry.byId(this.controlMap.equation);
+                equationNode.set("value", "");
+                //changing the equation value does not call the handler so setting the value explicitly using set equation.
+                this._model.active.setEquation(this.currentID, '');
+            }
             // updating the model and the equation labels
             this._model.active.setType(this.currentID, type);
             this.updateEquationLabels();
@@ -647,14 +689,14 @@ define([
 			if(this.structured.ops.length == 0) {
 				var equationWidget = registry.byId("equationBox");
 				equationWidget.set("value", "");
-				dom.byId("equationText").innerHTML = ""
+				dom.byId("equationText").innerHTML = "";
 			}
 			else {
 				var widget = registry.byId(this.controlMap.equation);
 				this.structured.pop();
 			}
         },
-        equationAnalysis: function(directives){
+        equationAnalysis: function(directives, ignoreUnknownTest){
             this.equationEntered = true;
             console.log("****** enter button");
             /*
@@ -692,33 +734,37 @@ define([
             }
 
             if(parse){
-                var toPM = true;
-                array.forEach(parse.variables(), function(variable){
+        		var toPM = true;
+        		//getDescriptionID is present only in student mode. So in author mode it will give an identity function. This is a work around in case when its in author mode at that time the given model is the actual model. So descriptionID etc are not available. 
+        		var mapID = this._model.active.getDescriptionID || function(x){ return x; };
+        		var unMapID = this._model.active.getNodeIDFor || function(x){ return x; };
+        		array.forEach(parse.variables(), function(variable){
                     // Test if variable name can be found in given model
                     var givenID = this._model.given.getNodeIDByName(variable);
                     // Checks for nodes referencing themselves; this causes problems because
                     //      functions will always evaluate to true if they reference themselves
-                    if(this._model.student.getType(this.currentID) === "function"){
-                        if(givenID === this._model.student.getDescriptionID(this.currentID)){
-                            toPM = false;
-                            directives.push({id: 'equation', attribute: 'status', value: 'incorrect'});
-                            directives.push({id: 'message', attribute: 'append', value: "You cannot use '" + variable + "' in the equation. Function nodes cannot reference themselves."});
-                        }
+                    if(givenID && this._model.active.getType(this.currentID) === "function" &&
+                        givenID === mapID.call(this._model.active, this.currentID)){
+            			toPM = false;
+            			directives.push({id: 'equation', attribute: 'status', value: 'incorrect'});
+            			directives.push({id: 'message', attribute: 'append', value: "You cannot use '" + variable + "' in the equation. Function nodes cannot reference themselves."});
                     }
-                    if(givenID){
+
+        		    if(givenID || ignoreUnknownTest){
                         // Test if variable has been defined already
-                        var studentID = this._model.active.getNodeIDFor(givenID);
-                        if(studentID){
+            			var subID = unMapID.call(this._model.active, givenID);
+            			if(subID){
                             // console.log("       substituting ", variable, " -> ", studentID);
-                            parse.substitute(variable, studentID);
-                        }else {
+                            parse.substitute(variable, subID);
+                        }else{
                             directives.push({id: 'message', attribute: 'append', value: "Quantity '" + variable + "' not defined yet."});
                         }
-                    }else {
-                        toPM = false;  // Don't send to PM
-                        directives.push({id: 'message', attribute: 'append', value: "Unknown variable '" + variable + "'."});
+                    }else{
+                		toPM = false;  // Don't send to PM
+                		directives.push({id: 'message', attribute: 'append', value: "Unknown variable '" + variable + "'."});
                     }
                 }, this);
+
                 // Expression now is written in terms of student IDs, when possible.
                 // Save with explicit parentheses for all binary operations.
                 var parsedEquation = parse.toString(true);
@@ -727,9 +773,9 @@ define([
                 // console.log("********* Saving equation to model: ", parsedEquation);
                 this._model.active.setEquation(this.currentID, parsedEquation);
 
-		// Test if this is a pure sum or product
-		// If so, determine connection labels
-		var inputs = expression.createInputs(parse);
+        		// Test if this is a pure sum or product
+        		// If so, determine connection labels
+        		var inputs = expression.createInputs(parse);
 
                 // Update inputs and connections
                 this._model.active.setInputs(inputs, this.currentID);
@@ -748,8 +794,11 @@ define([
         setConnections: function(from, to){
             // console.log("======== setConnections fired for node" + to);
         },
+
         //show node editor
         showNodeEditor: function(/*string*/ id){
+            //Checks if the current mode is COACHED mode and exit from node editor if all the modes are defined
+
             console.log("showNodeEditor called for node ", id);
             this.currentID = id; //moved using inside populateNodeEditorFields
             this.disableHandlers = true;
@@ -782,13 +831,13 @@ define([
 
 
             if(model.getNodeIDFor){
-            var d = registry.byId(this.controlMap.description);
-            array.forEach(this._model.given.getDescriptions(), function(desc){
-                var exists =  model.getNodeIDFor(desc.value);
-                 d.getOptions(desc).disabled=exists;
-                if(desc.value == nodeName){
-                    d.getOptions(desc).disabled=false;
-                }});
+		var d = registry.byId(this.controlMap.description);
+		array.forEach(this._model.given.getDescriptions(), function(desc){
+                    var exists =  model.getNodeIDFor(desc.value);
+                    d.getOptions(desc).disabled=exists;
+                    if(desc.value == nodeName){
+			d.getOptions(desc).disabled=false;
+                    }});
             }
 
             var type = model.getType(nodeid);
@@ -805,7 +854,11 @@ define([
 
             var unit = model.getUnits(nodeid);
             console.log('unit is', unit || "not set");
-            registry.byId(this.controlMap.units).set('value', unit || 'defaultSelect');
+            // Initial input in Units box
+            registry.byId(this.controlMap.units).set('value', unit || '');
+
+            // Input choices are different in AUTHOR and student modes
+	    // So they are set in con-author.js and con-student.js
 
             var equation = model.getEquation(nodeid);
             console.log("equation before conversion ", equation);

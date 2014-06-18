@@ -22,23 +22,27 @@
 /**
  * 
  * Model controller to build, load, and retrieve Dragoon problems
- * @author: Brandon Strong
+ * @author: Brandon Strong, Brett van de Sande
  * 
  **/
-
-/**
- * 
- * NOTE: this.beginX, this.beginY, this.nodeWidth, and this.nodeHeight should 
- *      be set to match the requirements of the viewer part of the MVC. These 
- *      variables control where the nodes will begin being placed, and tell the
- *      model the size of the nodes to avoid collisions.
- * 
- */
 
 define([
     "dojo/_base/array", "dojo/_base/lang"
 ], function(array, lang){
-
+    // Summary: 
+    //          Manages the model in memory for the MVC (model view controller)
+    // Description:
+    //          Loads the model when a student starts a problem; accesses and 
+    //          modifies it when there are changes or requests; builds a model 
+    //          in author mode; 
+    // Tags:
+    //          MVC, model
+    // Note: 
+    //          this.beginX, this.beginY, this.nodeWidth, and this.nodeHeight  
+    //          should be set to match the requirements of the viewer part of 
+    //          the MVC. These variables control where the nodes will begin 
+    //          being placed, and tell the model the size of the nodes to avoid 
+    //          collisions.
 
     return function(){
 
@@ -76,6 +80,7 @@ define([
             beginY: 100,
             nodeWidth: 200,
             nodeHeight: 200,
+	    isCompleteFlag: false,
             /**
              * 
              * Private methods; these methods should not be accessed outside of this class
@@ -85,9 +90,9 @@ define([
                 // Summary: keeps track of where to place the next node; function detects collisions
                 //      with other nodes; is called in addStudentNode() before creating the node
                 // Tags: private
-                for(var i = 0; i < this.model.task.studentModelNodes.length; i++){
-                    var x = this.model.task.studentModelNodes[i].position.x;
-                    var y = this.model.task.studentModelNodes[i].position.y;
+                array.forEach(obj.active.getNodes(), function(node) {
+                    var x = node.position.x;
+                    var y = node.position.y;
                     while(this.x > x - this.nodeWidth && this.x < x + this.nodeWidth &&
                             this.y > y - this.nodeHeight && this.y < y + this.nodeHeight){
                         if(this.x + this.nodeWidth < document.documentElement.clientWidth + 100)
@@ -97,7 +102,7 @@ define([
                             this.y += this.nodeHeight;
                         }
                     }
-                }
+                }, this);
             },
             _getNextOptimalNode: function(/*string*/ givenNodeID){
                 // Summary: Accepts the id of a parent node and returns the next optimal
@@ -176,6 +181,14 @@ define([
                         descriptions[node.description] = node.ID;
                     }
                 }, this);
+
+		/*
+		 Set flag showing that student model is complete.
+
+		 Does not corretly handle case where student completes
+		 the model, deletes some nodes, and reopens the problem.
+		 */
+		this.isCompleteFlag = this.matchesGivenSolution();
             },
             getModelAsString: function(){
                 // Summary: Returns a JSON object in string format
@@ -189,9 +202,11 @@ define([
             getTaskName: function(){
                 return this.model.task.taskName;
             },
+/*                   
             getPhase: function(){
                 return this.model.task.properties.phase;
             },
+*/
             getType: function(){
                 return this.model.task.properties.type;
             },
@@ -212,9 +227,13 @@ define([
                 // Summary:  returns a list of all distinct units 
                 // (string format) defined in a problem.
                 // Need to order list alphabetically.
-                var unitList = new Array(this.getUnits());
+                var unitList = new Array();
+		var timeUnits = this.getUnits();
+		if(timeUnits){
+		    unitList.push(timeUnits);
+		}
                 array.forEach(this.given.getNodes(), function(node){
-                    if(array.indexOf(unitList, node.units) == -1){
+                    if(node.units && array.indexOf(unitList, node.units) == -1){
                         unitList.push(node.units);
                     }
                 }, this);
@@ -303,7 +322,7 @@ define([
             },
             setImage: function(/*object*/ options){
                 // Summary: JSON object with "URL", "width", and "height" elements; see sample JSON model.
-                lang.mixin(this.model.task.image, options);
+                this.model.task.image = options;
             },
             setTime: function(/*object*/ options){
                 // Summary: JSON object with "start", "end", "step", and "units" elements; see sample JSON model.
@@ -504,6 +523,7 @@ define([
             getDescriptions: function(){
                 // Summary: returns an array of all descriptions with
                 // name (label) and any associated node id (value).
+		// Note that the description may be empty.
                 // TO DO:  The list should be sorted.
                 return array.map(this.getNodes(), function(node){
                     return {label: node.description, value: node.ID};

@@ -328,7 +328,7 @@ define([
 
     //Declare variable for accessing state.js module
     var record = null;
-	
+
     /*****
      * Summary: The following four functions are used by the above tables to push 
      *      statuses and messages to the return object array.
@@ -369,12 +369,6 @@ define([
         matchingID: null,
         logging: null,
         descriptionCounter: 0,
-	/*
-	 Counters used to determine which message in an array to display; 
-	 they are not dependent on which node is active and differ from 
-	 the counters (attemptCount) in the model, which are node-specific.
-	 */
-	counters: ["correct", "notTopLevel", "premature", "initial", "extra", "irrelevant", "redundant", "incorrect", "lastFailure", "lastFailure2"],
 	
         /*****
          * Private Functions
@@ -505,9 +499,10 @@ define([
 	
 	setState: function(/*state.js object*/ State){
 	    record = State;
-	    array.forEach(this.counters, function(counter){
-		record.init(counter, 0);
-	    });
+	    for(var hint in hints){
+		record.init(hint, 0);
+	    };
+	    record.init("problemCompleted", 0);
 	},
 		
         processAnswer: function(/*string*/ id, /*string*/ nodePart, /*string | object*/ answer){
@@ -656,6 +651,34 @@ define([
             // directives.push({id: 'type', attribute: 'disableOption', value: 'sum'});
             // directives.push({id: 'type', attribute: 'disableOption', value: 'product'});
             return directives;
-        }
+        },
+
+        checkDoneness: function(model){
+            if(this.mode == "COACHED" && model.areRequiredNodesVisible()){
+		return [{
+                    id: "crisisAlert", 
+		    attribute: "open", 
+		    value: "You have already created all the necessary nodes. You might want to click on \"Graph\" or \"Table\""
+		}];
+            } 
+            return false;
+        },
+
+	notifyCompleteness : function (model){
+            if(model.matchesGivenSolution() && !model.isCompleteFlag){
+		model.isCompleteFlag = true;
+                record.increment("problemCompleted", 1);
+
+		// Number of problems to show the hint upon completion
+		if(record.getLocal("problemCompleted") < 3 ){
+		    return  [{
+			id: "crisisAlert",
+			attribute: "open",
+			value: 'You have completed your model. Click on "Graph" or "Table" to see what the solution looks like'
+		    }];
+		}
+	    }
+	    return [];
+	}
     });
 });
