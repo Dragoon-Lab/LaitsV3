@@ -26,7 +26,13 @@
 define([
     "dojo/_base/array", "dojo/_base/lang"
 ], function(array, lang){
-    
+    // Summary: 
+    //          Solves a system of differential equations
+    // Description:
+    //          General routine to solve a system of differential equations using Euler's method.
+    // Tags:
+    //          equation
+
     return {
 	eulersMethod: function(env, f, initial, times){
 	    // Summary:  Use Euler's method to find time evolution of a 
