@@ -225,7 +225,7 @@ define([
 	},
 
     // This function is simply helping text handlers to apply the value to new graphs
-    applyTextValueToGraph: function(index, paramID, slider){
+    applyTextValueToGraph: function(index, paramID){
         on(dom.byId(index), "change",  lang.hitch(this, function(){
             console.log("---- value box change ", dom.byId(index));
 
@@ -339,7 +339,7 @@ define([
         // Attach text handles to slider text box
         for(paramID in sliderVars){
             var textBox = dom.byId(textBoxID[paramID]);
-            this.applyTextValueToGraph(textBoxID[paramID], paramID, this.sliders[paramID]);
+            this.applyTextValueToGraph(textBoxID[paramID], paramID);
             console.log("----     textbox", textBox);
         }
 	},
