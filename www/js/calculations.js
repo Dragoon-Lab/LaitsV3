@@ -181,46 +181,20 @@ define([
 		 *  graph and table-specific functionality is carried out in renderGraph/renderTable
 		 */
 		registerEventOnSlider: function(slider, index, paramID, transform){
-			on(slider, "click", lang.hitch(this, function(){
-				console.log("---- slider click", this.getTime());
-			}));
-			// Do this separately in case plotting is slow
-            on(slider, "change", lang.hitch(this, function(){
-				// Print slider value in box.
-				dom.byId(index).value = transform(slider.value).toPrecision(3);
-			}));
-			// Can use "change" or "mouseup"
+			// Summary:  When slider is changed, put value in textbox 
+			//           and emit change event
 			/* 
 			 If plotting is too slow, then "change" makes the
 			 slider appear "stuck."  Need to find some way to update
 			 the plots without blocking all other processes.
 			 */
-			// Since graph will be updated when value in boxes changed,
-			// there is no need to put a function here to deal with the graphs when sliders changed
-			on(slider, "change", lang.hitch(this, function(){
-				console.log("---- slider event", this.getTime());
-
-				if(this._rendering){
-					console.log("     returning");
-					return;
-				}
-				this._rendering = true;
-				var active = this.active;
-				if(paramID in active.timeStep.parameters){
-					active.timeStep.parameters[paramID] = transform(slider.value);
-					console.log("--> Time step: ", transform(slider.value));
-				}else if(paramID in active.xvarMap){
-					active.initialValues[active.xvarMap[paramID]] = transform(slider.value);
-					console.log("--> Initial value: ", transform(slider.value));
-				}else{
-					throw new Error("Invalid id", paramID);
-				}
-				this.findSolution(true); // Solve active model
-				console.log("      new solution", this.getTime());
-				//this function is specific to graph/table
-				this.renderDialog();
-				this._rendering = false;
-				console.log("      new plot done", this.getTime());
+			// Can use "change" or "mouseup"
+            on(slider, "change", lang.hitch(this, function(){
+				var input = dom.byId(index);
+				// Print slider value in box.
+				input.value = transform(slider.value).toPrecision(3);
+				// Fire an "onchange" event since the value has changed.
+				on.emit(input, "change", {});
 			}));
 		},
 		_rendering: false,
@@ -254,9 +228,12 @@ define([
 		},
 		
 		// This function is simply helping text handlers to apply the value to new graphs
-		applyTextValueToGraph: function(index, paramID){
-			on(dom.byId(index), "change",  lang.hitch(this, function(){
-				console.log("---- value box change ", dom.byId(index));
+		applyTextValueToGraph: function(textBoxID, paramID){
+			// Using a JavaScript closure:
+			// The value of 'index' is still available when the change event is fired.
+			var index = dom.byId(textBoxID[paramID]);
+			on(index, "change",  lang.hitch(this, function(){
+				console.log("---- value box change ", this.getTime());
 
 				if(this._rendering){
 					console.log("     returning");
@@ -365,9 +342,7 @@ define([
 
 			// Attach text handles to slider text box
 			for(paramID in sliderVars){
-				var textBox = dom.byId(textBoxID[paramID]);
-				this.applyTextValueToGraph(textBoxID[paramID], paramID);
-            console.log("----     textbox", textBox);
+				this.applyTextValueToGraph(textBoxID, paramID);
 			}
 		},
 
