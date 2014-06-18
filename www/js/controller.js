@@ -357,11 +357,10 @@ define([
                     this.emit('Change', {}, [this.get('value')]);
 
             });
-
+            // undo color on change in the initial value widget
             initialWidget.on("keydown",lang.hitch(this,function(evt){
                if(evt.keyCode != keys.ENTER){
                    var w = registry.byId(this.controlMap.initial);
-                   console.log('keydown event on initial ',w);
                    w.set('status','');
                }
             }));
@@ -579,7 +578,13 @@ define([
         handleEquation: function(equation){
             var w = registry.byId(this.widgetMap.equation);
             this.equationEntered = false;
-            w.set("status", "");
+            // undo color when new value is entered in the equation box widget
+            w.on("keydown",lang.hitch(this,function(evt){
+                if(evt.keyCode != keys.ENTER){
+                    w.set('status','');
+                }
+            }));
+
         },
         plusHandler: function(){
             console.log("****** plus button");
