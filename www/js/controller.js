@@ -282,9 +282,9 @@ define([
 
             // Color the borders of the Node
             var borderColor = this.colorNodeBorder(this.currentID);
-			domStyle.set(this.currentID, 'border', borderColor.bColor);
-            domStyle.set(this.currentID, 'box-shadow', borderColor.bShadow);
-			domStyle.set(this.currentID, 'backgroundColor', borderColor.bGround);
+			domStyle.set(this.currentID, 'border', borderColor.border);
+            domStyle.set(this.currentID, 'box-shadow', borderColor.boxShadow);
+			domStyle.set(this.currentID, 'backgroundColor', borderColor.backgroundColor);
 	
             // update Node labels upon exit	
             var nodeName = graphObjects.getNodeName(this._model.active,this.currentID);
@@ -865,24 +865,6 @@ define([
         // Stub to be overwritten by student or author mode-specific method.
 	colorNodeBorder: function(nodeID){
 	    console.log("colorNodeBorder stub called");
-	    /*                              //get model type
-        var type = this._model.active.getType(nodeId);
-        if(type){
-            console.log('model type is '+type);
-
-            var colorMap = {
-                correct: "green",
-                incorrect: "#FF8080",
-                demo: "yellow",
-                neutral: "gray"
-            };
-            console.log('nodeId is '+nodeId);
-            var isComplete   = this._model.active.isComplete(nodeId)?'solid':'dashed';
-            var color = this._model.active.getCorrectness? this._model.active.getCorrectness(nodeId):'neutral';
-            console.log('color is '+color);
-            domStyle.set(this.currentID,'border','2px '+isComplete+' '+colorMap[color]);
-            domStyle.set(this.currentID,'box-shadow','inset 0px 0px 5px #000 , 0px 0px 10px #000');
-        }*/
     }
 
     });

@@ -178,7 +178,7 @@ define([
 		    left: node.position.x +'px', 
 		    top: node.position.y +'px',
 		    border: colorBorder.border,
-		    boxShadow: colorBorder.boxShadow,
+		    'box-shadow': colorBorder.boxShadow,
 			backgroundColor: colorBorder.backgroundColor
 		},
 		innerHTML: nodeName
