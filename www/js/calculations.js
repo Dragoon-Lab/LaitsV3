@@ -19,6 +19,7 @@
  *along with Dragoon.  If not, see <http://www.gnu.org/licenses/>.
  *
  */
+
 define([
     "dojo/_base/array",
     "dojo/_base/declare",
@@ -30,18 +31,25 @@ define([
     "./equation",
     "./integrate"
 ], function(array, declare, lang, Parser, on, dom, registry, HorizontalSlider, equation, integrate){
-
+    // Summary: 
+    //          Finds model solutions and sets up the sliders.
+    // Description:
+    //          Calls the parser to check the equation; sets up and manages the
+    //          sliders; listens for and registers changes in the sliders; 
+    // Tags:
+    //          sliders, slider listener
+    
     return declare(null, {
 	
 	model: null,                        // model
-	active: {},                       // set current mode. TRUE = givenModel / FALSE = StudentModel
+	active: {},                         // set current mode. TRUE = givenModel / FALSE = StudentModel
 	
 	/* variables specific to rendering graph and table */
 	given: {},                          // object to store calculated parameters from given model
-	dialog: "",                          // dialog box to be displayed
+	dialog: "",                         // dialog box to be displayed
 	dialogContent: "",                  // Parameter to set DOM in a dialog dynamically
 	sliders: {},                        // Parameter to create slider objects
-	mode : null, 						// Parameter to hold the mode value to differentiate graphs for author and student mode.
+	mode : null,                        // Parameter to hold the mode value to differentiate graphs for author and student mode.
 	
 	constructor: function(model, mode){
             console.log("***** In calculations constructor", this.given);

@@ -18,10 +18,9 @@
  *along with Dragoon.  If not, see <http://www.gnu.org/licenses/>.
  *
  */
+
 /* global define */
-/*
- *                               Controller for Node Editor
- */
+
 define([
     "dojo/_base/array", 'dojo/_base/declare', "dojo/_base/lang",
     'dojo/aspect', 'dojo/dom', "dojo/dom-class", "dojo/dom-construct", 'dojo/dom-style',
@@ -29,7 +28,14 @@ define([
     "dijit/popup", 'dijit/registry', "dijit/TooltipDialog",
     './equation', './graph-objects'
 ], function(array, declare, lang, aspect, dom, domClass, domConstruct, domStyle, keys, on, ready, popup, registry, TooltipDialog, expression, graphObjects){
-
+    // Summary: 
+    //          Controller for the node editor, common to all modes
+    // Description:
+    //          Handles selections from the student or author as he/she 
+    //          completes a model; inherited by con-student.js and con-author.js
+    // Tags:
+    //          controller, student mode, coached mode, test mode, author mode
+    
     return declare(null, {
         _model: null,
         _nodeEditor: null, // node-editor object- will be used for populating fields

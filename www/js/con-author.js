@@ -22,6 +22,7 @@
 /*
  * AUTHOR mode-specific handlers
  */
+
 define([
     "dojo/_base/array", 'dojo/_base/declare', "dojo/_base/lang",
     'dojo/dom-style', 'dojo/ready',
@@ -31,7 +32,14 @@ define([
     "dojo/store/Memory",
     "dojo/domReady!"
 ], function(array, declare, lang, style, ready, registry, controller, equation, memory){
-
+    // Summary: 
+    //          MVC for the node editor, for authors
+    // Description:
+    //          Makes pedagogical desicions for author mode; handles selections 
+    //          from the author; inherits controller.js
+    // Tags:
+    //          controller, pedagogical module, author mode
+    
     return declare(controller, {
 
         //pedagogical module class for author
