@@ -49,7 +49,7 @@ most important information missing from the present logging:
   + The node
   + Property for which the help was given
 * Close Node Editor (method `ui-action` or `solution-step`?) Needed info:
- + Was node completed, which was the last element filled if incomplete.
+ + Was node completed, which was the last property filled if incomplete.
 * **Show Graph** button (method `ui-action`) Needed info:
   + Was correct or incorrect
   + If correct, indicate problem is completed
@@ -106,30 +106,30 @@ Student chooses a quantity in the description tab.
 In the JavaScript version, `"node"` like the Java
   version, it is either null or the node name `"fat content"`.
 
-Student goes to next element:  
+Student goes to next property:  
 -- method: `ui-action`  
--- message: `{"time": 50.1, "type": "new-element-selected",
-  "name": "node-editor", "element": "node-type", "node": "fat content"}`  
+-- message: `{"time": 50.1, "type": "new-property-selected",
+  "name": "node-editor", "property": "node-type", "node": "fat content"}`  
 
 Student chooses node type:  
 -- method: `solution-step`  
 -- message: `{"time": 53.1, "node": fat content, "type": "solution-checked",
-  element : "node-type",  "value": "ACCUMULATOR", "checkResult":  "CORRECT"}`
+  property : "node-type",  "value": "ACCUMULATOR", "checkResult":  "CORRECT"}`
 
 Student fills out the initial value.   
 -- method: `solution-step`  
 -- message: `{"time": 60.2, "node": "fat content", "type":"solution-checked",
-  "element": "initial-value", "value": "0.35", "correct-value": "0.35", 
+  "property": "initial-value", "value": "0.35", "correct-value": "0.35", 
   "checkResult":  "CORRECT"}`
 for incorrect value
 -- method: `solution-step`  
 -- message: `{"time": 60.2, "node": "fat content", "type":"solution-checked",
-  "element": "initial-value", "value": "0.35", "correct-value": "0.45", 
+  "property": "initial-value", "value": "0.35", "correct-value": "0.45", 
   "checkResult":  "INCORRECT"}`
 for parser errors 
 -- method: `solution-step`  
 -- message: `{"time": 60.2, "node": "fat content", "type": "parse-error",
-  "element" : "initial-value", "value": "35%", "correct-value": "0.35", 
+  "property" : "initial-value", "value": "35%", "correct-value": "0.35", 
   "checkResult":  "INCORRECT"}`
 
 For the calculation tab, `solution-step` logging can be broken into several messages, depending on how the
@@ -139,19 +139,19 @@ For the calculation tab, `solution-step` logging can be broken into several mess
 Student closes node editor:  
 -- method: `ui-action`  
 -- message: `{"time": 61.6, "type": "close-dialog-box",
-  "name": "node-editor", "element": "description", "node": "fat content"}`  
+  "name": "node-editor", "property": "description", "node": "fat content"}`  
 Member `"tab"` is optional.
 
 ### Node description and demo usage ###
-Following are the different elements in the node :
+Following are the different properties in the node :
 * description
 * node-type
 * initial-value
 * units
 * equations
 
-Since the only UI action that a user does is to go to the next element, 
-so that will be recorded to mark the time at which the user starts working for that new element.
+Since the only UI action that a user does is to go to the next property, 
+so that will be recorded to mark the time at which the user starts working for that new property.
 
 There are no check buttons and help buttons so no UI actions will be logged for them. 
 
@@ -160,44 +160,4 @@ solution-step. After two answers the demo answer is sent so a log with seek-help
 logged with the information mentioned above.
 
 -- method - 'seek-help'
--- message - {time : '47.2', type: "seek-help", node : "fat content", element:"initial-value"}
-
-
-###These values are not needed as they are already recorded through solution-step for each element###
-###The messages below need to be removed after discussing with Brett tomorrow.###
-Student closes node editor for an accumulator node in the rabbits
-problem:  
--- method: `ui-action`  
--- message: `{"time": 61.6, "type": "close-dialog-box",
-  "name": "node-editor", "tab": "CALCULATIONS", "node": "population"}`  
--- method: `student-status`   
--- message: `{"time": 61.6, "type": "info",
-  "text": "Node Editor closed. Vertex Details after closing", "data":
-  {"node":  "population", "Description": "The ratio of rabbits born in a month
-to the rabbit population", "DescriptionPanelStatus": "CORRECT ",
-"SelectedPlan": "accumulator", "PlanPanelStatus": "GAVEUP",
-"CalculationPanelStatus": "CORRECT", "InitialValue": "0.2" }}`  
-Member `"tab"` is optional.
-
-For a quantity that is an accumulator, the logging for the calculations
-tab should contain two actions by the student corresponding to the
-initial value and the equation.  These can be
-described using either two solution step rows or using a single solution step
-with two substeps.
-
-This is the version with two solution steps.  This matches the design
-for the JavaScript version better.   
--- method: `solution-step`  
--- message: `{"time": 60.2, "node": "velocity", "type": "quantity-initial-value",
-  "value": "0.45", "correct-value": "0.65", "checkResult": "INCORRECT"}`  
--- method: `solution-step`   
--- message: `{"time": 60.2, "node": "velocity", "type": "quantity-equation",
-  "value": "fish+fowl*2", "correct-value": "fish-fowl", "checkResult":  "CORRECT"}`
-
-This is the version with one solution step.  This better matches the
-behavior of the current Java version where both things turn red/green
-when the **check** button is clicked.  
--- method: `solution-step`  
--- message: `{"time": 60.2, "node": "velocity", "substeps"; [{"type": "quantity-initial-value",
-  "value": "0.45", "correct-value": "0.65"},{"type": "quantity-equation",
-  "value": "fish+fowl*2", "correct-value": "fish-fowl"}], "checkResult":  "INCORRECT"}`
+-- message - {time : '47.2', type: "seek-help", node : "fat content", property:"initial-value"}

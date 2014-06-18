@@ -462,33 +462,26 @@ define([
                 console.log('not a number');
                 //initialValue is the id of the textbox, we get the value in the textbox
                 if(!initialString.match('%')){ //To check the decimals against percentages
-                    this.logging.log('solution-step', {
-                        type : "parse-error",
-                        node : this._model.active.getNodeName(this.currentID),
-                        element : "initial-value",
-                        value : initial,
-                        correctResult : this._model.active.getInitial(this.currentID),
-                        checkResult : "INCORRECT"
-                    });
+                    
                     popup.open({
                         popup: this.myTooltipDialog2,
                         around: initialWidget
                     });
                 }else{ 
 		    // if entered string has percentage symbol, pop up a message to use decimals
-                    this.logging.clientLog('solution-step', {
-                        type : "parse-error",
-                        node : this._model.active.getNodeName(this.currentID),
-                        element : "initial-value",
-                        value : initial,
-                        correctResult : this._model.active.getInitial(this.currentID),                     
-                        checkResult : "INCORRECT"
-                    });
                     popup.open({
                         popup: this.myTooltipDialog,
                         around: initialWidget
                     });
-                 }            
+                 }    
+                this.logging.log('solution-step', {
+                    type : "parse-error",
+                    node : this._model.active.getNodeName(this.currentID),
+                    property : "initial-value",
+                    value : initial,
+                    correctResult : this._model.active.getInitial(this.currentID),
+                    checkResult : "INCORRECT"
+                });        
                 return {status: false}; 
             }
                         
@@ -737,7 +730,7 @@ define([
                 this.logging.log("solution-step", {
                     type : "parse-error",
                     node : this._model.active.getNodeName(this.currentID),
-                    element : "equation",
+                    property : "equation",
                     value : parse,
                     correctResult : this._model.given.getEquation(this.currentID),                     
                     checkResult : "INCORRECT",
@@ -765,7 +758,7 @@ define([
                         this.logging.log("solution-step", {
                             type : "parse-error",
                             node : this._model.active.getNodeName(this.currentID),
-                            element : "equation",
+                            property : "equation",
                             value : parse,
                             correctResult : this._model.given.getEquation(this.currentID),                     
                             checkResult : "INCORRECT"
@@ -788,7 +781,7 @@ define([
                         this.logging.log("solution-step", {
                             type : "parse-error",
                             node : this._model.active.getNodeName(this.currentID),
-                            element : "equation",
+                            property : "equation",
                             value : parse,
                             correctResult : this._model.given.getEquation(this.currentID),                     
                             checkResult : "INCORRECT"

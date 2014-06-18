@@ -88,8 +88,6 @@ define([
 	}
         controllerObject.setLogging(session); // set up direct logging in controller
         expression.setLogging(session);
-        Graph.superclass.setLogging(session);
-
 
 	/*
 	 Create state object
@@ -200,10 +198,10 @@ define([
              menu.add("graphButton", function(){
                 console.debug("button clicked");
                 // instantiate graph object
-                var graph = new Graph(givenModel, query.m);
+                var graph = new Graph(givenModel, query.m, session);
                 var problemComplete = givenModel.matchesGivenSolution();
                 
-                controllerObject.logging.log('ui-action', {
+                graph._logging.log('ui-action', {
                     type: "menu-choice", 
                     name: "graph-button", 
                     problemComplete: problemComplete
@@ -215,8 +213,9 @@ define([
             // show table when button clicked
             menu.add("tableButton", function(){
                 console.debug("table button clicked");
-                var table = new Table(givenModel, query.m);
-                controllerObject.logging.log('ui-action', {
+                var table = new Table(givenModel, query.m, session);
+                
+                table._logging.log('ui-action', {
                     type: "menu-choice", 
                     name: "table-button"
                 });

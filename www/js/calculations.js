@@ -44,11 +44,12 @@ define([
 	mode : null, 						// Parameter to hold the mode value to differentiate graphs for author and student mode.
 	_logging : null,
 	
-	constructor: function(model, mode){
+	constructor: function(model, mode, logging){
             console.log("***** In calculations constructor", this.given);
             this.model = model;
             this.mode = mode;
 	    this.dialogWidget = registry.byId("solution");
+	    this.setLogging(logging);
             /*
 	     In AUTHOR mode, plot solution for all given nodes of genus false
              and type "accumulator" or "function""
