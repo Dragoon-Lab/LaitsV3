@@ -89,7 +89,7 @@ one for the menu button and one for opening the node editor.
   "name": "create-node"}`  
 -- method: `ui-action`  
 -- message: `{"time": 21.3, "type": "open-dialog-box",
-  "name": "node-editor", "tab": "DESCRIPTION", "node": null}`  
+  "name": "node-editor", "tab": "DESCRIPTION", "node-id": null}`  
 In the JavaScript version, we can not use the node id to name the node, 
 as while processing the logs we can never know the names of the nodes. 
 So if we give them names like "id10" here we can never tell the names on the dashboard. 
@@ -106,26 +106,26 @@ In the JavaScript version, `"node"` like the Java
 Student goes to next property:  
 -- method: `ui-action`  
 -- message: `{"time": 50.1, "type": "new-property-selected",
-  "name": "node-editor", "property": "node-type", "node": "fat content"}`  
+  "name": "node-editor", "property": "node-type", "node": "fat content", "node-id":"id10"}`  
 
 Student chooses node type:  
 -- method: `solution-step`  
--- message: `{"time": 53.1, "node": fat content, "type": "solution-checked",
+-- message: `{"time": 53.1, "node": fat content, "node-id": "id10", "type": "solution-checked",
   property : "node-type",  "value": "ACCUMULATOR", "checkResult":  "CORRECT"}`
 
 Student fills out the initial value.   
 -- method: `solution-step`  
--- message: `{"time": 60.2, "node": "fat content", "type":"solution-checked",
+-- message: `{"time": 60.2, "node": "fat content", "node-id": "id10", "type":"solution-checked",
   "property": "initial-value", "value": "0.35", "correct-value": "0.35", 
   "checkResult":  "CORRECT"}`
 for incorrect value
 -- method: `solution-step`  
--- message: `{"time": 60.2, "node": "fat content", "type":"solution-checked",
+-- message: `{"time": 60.2, "node": "fat content", "node-id": "id10", "type":"solution-checked",
   "property": "initial-value", "value": "0.35", "correct-value": "0.45", 
   "checkResult":  "INCORRECT"}`
 for parser errors 
 -- method: `solution-step`  
--- message: `{"time": 60.2, "node": "fat content", "type": "parse-error",
+-- message: `{"time": 60.2, "node": "fat content", "node-id": "id10", "type": "parse-error",
   "property" : "initial-value", "value": "35%", "correct-value": "0.35", 
   "checkResult":  "INCORRECT"}`
 
@@ -136,7 +136,7 @@ For the calculation tab, `solution-step` logging can be broken into several mess
 Student closes node editor:  
 -- method: `ui-action`  
 -- message: `{"time": 61.6, "type": "close-dialog-box",
-  "name": "node-editor", "property": "description", "node": "fat content"}`  
+  "name": "node-editor",  "node-id": "id10", "property": "description", "node": "fat content"}`  
 Member `"tab"` is optional.
 
 ### Node description and demo usage ###
@@ -157,7 +157,7 @@ solution-step. After two answers the demo answer is sent so a log with seek-help
 logged with the information mentioned above.
 
 -- method - 'seek-help'
--- message - {time : '47.2', type: "seek-help", node : "fat content", property:"initial-value"}
+-- message - {time : '47.2', type: "seek-help", node : "fat content", "node-id": "id10", property:"initial-value"}
 
 Other log messages :
 When user brings the window in focus.
