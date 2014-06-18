@@ -353,8 +353,18 @@ define([
             initialWidget.on("keydown", function(evt){
                 // console.log("----------- input character ", evt.keyCode, this.get('value'));
                 if(evt.keyCode == keys.ENTER)
+
                     this.emit('Change', {}, [this.get('value')]);
+
             });
+
+            initialWidget.on("keydown",lang.hitch(this,function(evt){
+               if(evt.keyCode != keys.ENTER){
+                   var w = registry.byId(this.controlMap.initial);
+                   console.log('keydown event on initial ',w);
+                   w.set('status','');
+               }
+            }));
 
             var inputsWidget = registry.byId(this.controlMap.inputs);
             inputsWidget.on('Change',  lang.hitch(this, function(){
@@ -381,6 +391,7 @@ define([
             equationWidget.on('Change', lang.hitch(this, function(){
                 return this.disableHandlers || this.handleEquation.apply(this, arguments);
             }));
+
 
             // When the equation box is enabled/disabled, do the same for
             // the inputs widgets.
@@ -447,7 +458,8 @@ define([
             popup.close(this.myTooltipDialog2);
     	},
         
-        checkInitialValue: function(initialString,thislastInitialValue){ 
+        checkInitialValue: function(initialString,thislastInitialValue){
+
             //Description : performs non number check and also checks if the initial value was changed from previously entered value
             //returns: status, a boolean value and value, the current initial value
             var initialWidget = dom.byId(this.widgetMap.initial);
