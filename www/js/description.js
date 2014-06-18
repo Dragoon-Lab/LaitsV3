@@ -30,7 +30,6 @@ define([
         givenModel: null,
         constructor: function(/*model*/ givenModel){
             this.givenModel = givenModel;
-
             var timeObj = givenModel.getTime();
             dom.byId("authorSetTimeStart").value = timeObj.start;
             dom.byId("authorSetTimeEnd").value = timeObj.end;
@@ -58,23 +57,21 @@ define([
 	    }
 	},
 
-        showDescription: function(){
+    showDescription: function(){
 
-            var canvas = document.getElementById('myCanvas');
-            var context = canvas.getContext('2d');
-            context.clearRect(0,0,canvas.width, canvas.height);
-            var desc_text = this.givenModel.getTaskDescription();
+        var canvas = dom.byId('myCanvas');
+        var context = canvas.getContext('2d');
+        context.clearRect(0,0,canvas.width, canvas.height);
+        var desc_text = this.givenModel.getTaskDescription();
 
-            var imageLeft = 30;
-            var imageTop = 20;
+        var imageLeft = 30;
+        var imageTop = 20;
 	    var imageHeight = 0;  // default in case there is no image
-            var gapTextImage = 30;
-            var textLeft = 30;
-            var textTop = 50;
-            var textWidth = 400;
-            var textHeight = 20;
-
-            var url = this.givenModel.getImageURL();
+        var gapTextImage = 30;
+        var textLeft = 30;
+        var textTop = 50;
+        var textWidth = 400;
+        var textHeight = 20;
 
 	    // Layout text
 	    // This routine should go in wrapText.js
@@ -85,25 +82,35 @@ define([
 		context.font = "normal 13px Arial";
 		wrapText(context, desc_text, textLeft, marginTop, textWidth, textHeight);
 	    };
-
-            if (url) {
+		
+        var url = this.givenModel.getImageURL();
 		var imageObj = new Image();
-                imageObj.src = url;
+		var height = null;
+		var width = null;
+        if (url) {
+			imageObj.onerror = function() {
+				context.font = "normal 20px 'Lucida Grande, sans-serif'";
+				context.fillStyle= "#1f96db";
+				context.fillText("Image not found", imageLeft, imageTop);
+				showText();
+	    		  };
+	    
+            imageObj.src = url;
 		// Can't compute layout unless image is downloaded
 		// The model can also provide dimensions.  If it does, then 
 		// we can layout the text immediately
-		imageObj.onload = function(){
-		    console.log("Image width is " + imageObj.width);
-		    // Rescale image size, while maintaining aspect ratio,
-		    // assuming we want max width 300
-		    var scalingFactor = imageObj.width > 300 ? 300 / imageObj.width : 1.0;
-		    console.log('Computing scaling factor for image ' + scalingFactor);
-		    imageHeight = imageObj.height * scalingFactor;
-		    context.drawImage(imageObj, imageLeft, imageTop, imageObj.width * scalingFactor, imageHeight);
-		    showText();
-		};
+			imageObj.onload = function(){
+				console.log("Image width is " + imageObj.width);
+				// Rescale image size, while maintaining aspect ratio,
+				// assuming we want max width 300
+				var scalingFactor = imageObj.width > 300 ? 300 / imageObj.width : 1.0;
+				console.log('Computing scaling factor for image ' + scalingFactor);
+				imageHeight = imageObj.height * scalingFactor;
+				context.drawImage(imageObj, imageLeft, imageTop, imageObj.width * scalingFactor, imageHeight);
+				showText();
+			};
 	    }else{
-		showText();
+			showText();
 	    }
 	},
 
@@ -111,31 +118,25 @@ define([
 	    var tin = dom.byId("authorSetDescription").value;
             this.givenModel.setTaskDescription(tin.split("\n"));
 	    
+	    // Work-around for Bug #2379 note that this gives no
+	    // feedback to the user and applying defaults could break the
+	    // (t_end-t_start)/t_step > 0 constraint.
+	    var convert = function(xString, defaultValue){
+		var x = +xString;  // Use unary plus to convert to number
+		return isNaN(x)?defaultValue:x;
+	    };
+	    
             var timeObj = {
-		start: dom.byId("authorSetTimeStart").value,
-		end: dom.byId("authorSetTimeEnd").value,
-		step: dom.byId("authorSetTimeStep").value, 
+		start: convert(dom.byId("authorSetTimeStart").value, 0),
+		end: convert(dom.byId("authorSetTimeEnd").value, 10),
+		step: convert(dom.byId("authorSetTimeStep").value, 1),
 		units: dom.byId("authorSetTimeStepUnits").value
             };
 	    
             this.givenModel.setTime(timeObj);
-	    
-            var imageObj = new Image();
-            var height = null;
-            var width = null;
-            var url = dom.byId("authorSetImage").value;
-	    // This doesn't handle case of deleting an image. Bug #2369
-            if (url) {
-                imageObj.src = url;
-                var imageJson = {
-                    URL: url,
-                    width: imageObj.width,
-                    height: imageObj.height
-                };
-                this.givenModel.setImage(imageJson);
-		
-            };
-            this.showDescription(this.givenModel);
+	    var url = dom.byId("authorSetImage").value;
+	    this.givenModel.setImage(url?{URL: url} : {});
+	    this.showDescription();
 	}
 
     });

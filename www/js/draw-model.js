@@ -24,9 +24,10 @@
  */
 define([
     "dojo/_base/array", 'dojo/_base/declare', 'dojo/_base/lang',
-    'dojo/dom', "dojo/dom-attr", "dojo/dom-construct","dijit/Menu",
-    "dijit/MenuItem","./equation","./graph-objects", "jsPlumb/jsPlumb"
-], function(array, declare, lang, dom, attr, domConstruct, Menu, MenuItem, equation, graphObjects){
+    'dojo/dom', "dojo/dom-attr", "dojo/dom-construct", "dojo/dom-style",
+	"dijit/Menu", "dijit/MenuItem",
+	"./equation","./graph-objects", "jsPlumb/jsPlumb"
+], function(array, declare, lang, dom, attr, domConstruct, domStyle, Menu, MenuItem, equation, graphObjects){
 
     return declare(null, {
 
@@ -130,71 +131,91 @@ define([
 
         },
 
+		colorNodeBorder: function(/*Object*/ nodeID, updateNode){
+			var type = this._givenModel.getNode(nodeID).type;
+			var isComplete = this._givenModel.isComplete(nodeID)?'solid':'dashed';
+
+			var colorMap = {
+				correct: "green",
+				incorrect: "#FF8080",
+				demo: "yellow",
+				neutral: "gray",
+				perfect: "#94FF94"
+			};
+			var borderColor = "",
+			boxshadow = "";
+			var backgroundcolor = "";
+			if(type){
+				var color = this._givenModel.getCorrectness?
+				this._givenModel.getCorrectness(nodeID):"neutral";
+				borderColor += "2px "+isComplete+" " + colorMap[color];
+				boxshadow = 'inset 0px 0px 5px #000 , 0px 0px 10px #000';
+				//check for perfect node
+				if (this._givenModel.getAssistanceScore){
+					if (this._givenModel.isComplete(nodeID) && this._givenModel.getAssistanceScore(nodeID) === 0){
+						backgroundcolor = colorMap.perfect;
+					}
+				}
+			}
+			console.log("borderColor: ", borderColor);
+			if(updateNode){
+				domStyle.set(nodeID, 'border', borderColor);
+				domStyle.set(nodeID, 'box-shadow', boxshadow);
+				domStyle.set(nodeID, 'backgroundColor', backgroundcolor);
+			}
+			return {border: borderColor, boxShadow: boxshadow, backgroundColor: backgroundcolor};
+		},
+
         /* addNode: Add a node to the jsPlumb model, returning the DOM element.  */
 
-        addNode: function(/*object*/ node){
+		addNode: function(/*object*/ node){
 
-            var type = node.type || "triangle";
-            console.log("------- Adding element to canvas, id = ", node.ID, ", class = ", type);
+			var type = node.type || "triangle";
+			console.log("------- Adding element to canvas, id = ", node.ID, ", class = ", type);
             // Add div to drawing
-            console.log("      --> setting position for vertex : "+ node.ID +" position: x"+node.position.x+"  y:"+node.position.y);
+			console.log("      --> setting position for vertex : "+ node.ID +" position: x"+node.position.x+"  y:"+node.position.y);
 	
-            var nodeName = graphObjects.getNodeName(this._givenModel,node.ID);
-	        var isComplete = this._givenModel.isComplete(node.ID)?'solid':'dashed';
+			var nodeName = graphObjects.getNodeName(this._givenModel,node.ID);
+			// Don't actually update node, since we will create it below.
+			var colorBorder = this.colorNodeBorder(node.ID, false);
+			var vertex = domConstruct.create("div", {
+				id: node.ID,
+				"class": type,
+				style: {
+					left: node.position.x +'px', 
+					top: node.position.y +'px',
+					border: colorBorder.border,
+					'box-shadow': colorBorder.boxShadow,
+					backgroundColor: colorBorder.backgroundColor
+				},
+				innerHTML: nodeName
+			}, "statemachine-demo");
 
-	    var colorMap = {
-                correct: "green",
-                incorrect: "#FF8080",
-                demo: "yellow",
-		neutral: "gray"
-            };
-	    var borderColor = "",
-		boxShadow = "";
-	    if(type!='triangle'){
-		var color = this._givenModel.getCorrectness?
-			this._givenModel.getCorrectness(node.ID):"neutral";
-		borderColor += "2px "+isComplete+" " + colorMap[color];
-		boxShadow = 'inset 0px 0px 5px #000 , 0px 0px 10px #000';
-	    }
+			//add menu to delete or we can iterate over all node.IDs and do following
+			var pMenu = new Menu({
+				targetNodeIds: [node.ID]
+			});
 
-            var vertex = domConstruct.create("div", {
-		id: node.ID,
-		"class": type,
-		style: {
-		    left: node.position.x +'px', 
-		    top: node.position.y +'px',
-		    border:borderColor,
-		    'box-shadow':boxShadow
-		},
-		innerHTML: nodeName
-	    }, "statemachine-demo");
-
-            //add menu to delete or we can iterate over all node.IDs and do following
-            var pMenu = new Menu({
-
-                targetNodeIds: [node.ID]
-            });
-
-	     this._instance.draggable(vertex,{
-                onMoveStart: lang.hitch(this, this.onMoveStart),
-                onMove: lang.hitch(this, this.onMove),
-                onMoveStop: lang.hitch(this, this.onMoveStop)
-            });
+			this._instance.draggable(vertex,{
+				onMoveStart: lang.hitch(this, this.onMoveStart),
+				onMove: lang.hitch(this, this.onMove),
+				onMoveStop: lang.hitch(this, this.onMoveStop)
+			});
 
             pMenu.addChild(new MenuItem({
                 label: "Delete Node",
                 onClick: lang.hitch(this, function (){
 		    domConstruct.destroy(node.ID);
-		    //remove all connnections including incoming and outgoing
-		    array.forEach(this._instance.getConnections(), function(connection){
+					//remove all connnections including incoming and outgoing
+					array.forEach(this._instance.getConnections(), function(connection){
                         if(connection.targetId == node.ID||connection.sourceId == node.ID)
                             this._instance.detach(connection);
-		    }, this);
-		    
-		    //delete from  the model
-		    this._givenModel.deleteNode(node.ID);
-		    this.updater();
-		})
+					}, this);
+					
+					//delete from  the model
+					this._givenModel.deleteNode(node.ID);
+					this.updater();
+				})
             }));
             /*
              Fire off functions associated with draggable events.
@@ -242,8 +263,6 @@ define([
 	     isSum = equation.isSum(parse);
 	     isProduct = equation.isProduct(parse);
 	    }
-
-	    console.log('while adding connections ');
 
             array.forEach(this._instance.getConnections(), function(connection){
                 if(connection.targetId == destination)

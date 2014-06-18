@@ -354,7 +354,11 @@ define([
 		    parents[vertex] = true;
 		    array.forEach(directedGraph[vertex], function(child){
 			if(parents[child]){
-			    new Error("Found cycle in graph", directedGraph);
+			    // Ideally, this would be a custom Error object.
+			    throw {
+				name: "graph-cycle",
+				message: "Found cycle in graph."
+			    };
 			}
 			if(child in directedGraph){
 			    followEdge(child);

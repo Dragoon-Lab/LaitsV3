@@ -121,7 +121,8 @@ define([
 	log: function(method, params){
 	    // Add time to log message (allowing override).
 	    var p = lang.mixin({time: this.getTime()}, params);
-            xhr.post(this.path + "logger.php", {
+        
+        return xhr.post(this.path + "logger.php", {
 		data: {
 		    method: method,
 		    message: json.toJson(p),
