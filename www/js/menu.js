@@ -32,7 +32,6 @@ define([
     // Tags:
     //          menu, buttons
     
-//connects the menu buttons to the program
     return {
 	add: function(button, handler){
             // If I use registry.byId(), then the function is called twice.

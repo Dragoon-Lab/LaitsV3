@@ -29,7 +29,8 @@ define([
     // Summary: 
     //          Solves a system of differential equations
     // Description:
-    //          General routine to solve a system of differential equations using Euler's method.
+    //          General routine to solve a system of differential equations 
+    //          using Euler's method.
     // Tags:
     //          equation
 
