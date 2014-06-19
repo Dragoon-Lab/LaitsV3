@@ -52,7 +52,7 @@ define([
 		_logging : null,
 		mode : null,                        // Parameter to hold the mode value to differentiate graphs for author and student mode.
 
-		constructor: function(model, mode){
+		constructor: function(model, mode, logging){
             console.log("***** In calculations constructor", this.given);
             this.model = model;
 			this.mode = mode;
@@ -359,7 +359,11 @@ define([
 		/* @brief: display the graph*/
 		show: function(){
             this.dialogWidget.show();
-		}
+		},
+
+		setLogging: function(/*string*/ logging){
+	    	this._logging = logging;
+	    }
 
     });
 });
