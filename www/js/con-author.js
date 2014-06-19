@@ -194,6 +194,15 @@ define([
         kind.on('Change', lang.hitch(this, function(){
                 return this.disableHandlers || this.handleKind.apply(this, arguments);
         }));
+
+            //undo color on change in the widget.
+            var nameWidget = registry.byId(this.controlMap.name);
+            nameWidget.on("keydown", lang.hitch(this, function(evt){
+				if(evt.keyCode != keys.ENTER){
+					nameWidget.set('status','');
+				}
+            }));
+
         },
         /*
          Handler for type selector
@@ -207,15 +216,6 @@ define([
             var nameID = this._model.given.getNodeIDByName(name);
             // If nameID is falsy give "null"; if it doesn't match, give "false"
             this.applyDirectives(this.authorPM.process(nameID?!(nameID==this.currentID):null,'name',name, equation.isVariable(name)));
-
-            //undo color on change in the widget.
-            var nameWidget = registry.byId(this.controlMap.name);
-             nameWidget.on("keydown",lang.hitch(this,function(evt){
-             if(evt.keyCode != keys.ENTER){
-             // var w = registry.byId(this.controlMap.name);
-             nameWidget.set('status','');
-             }
-             }));
 
             if(!this._model.given.getNodeIDByName(name) && equation.isVariable(name)){
                 // check all nodes in the model for equations containing name of this node
@@ -232,7 +232,6 @@ define([
             console.log("**************** in handleKind ", kind);
             this._model.given.setGenus(this.currentID, kind);
             this.applyDirectives(this. authorPM.process(this.currentID, "kind", kind));
-
         },
 
         handleDescription: function(description){
