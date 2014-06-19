@@ -18,7 +18,9 @@
  *along with Dragoon.  If not, see <http://www.gnu.org/licenses/>.
  *
  */
+
 /* global define */
+
 /**
  * 
  * Test file to load and save Dragoon problems
@@ -30,6 +32,13 @@ define([
     "dojo/_base/declare", "dojo/request/xhr", "dojo/_base/json",
     "dojo/_base/lang"
 ], function(declare, xhr, json, lang){
+    // Summary: 
+    //          Loads and saves sessions and sets up logging
+    // Description:
+    //          Manage sessions and communicate with the server, including 
+    //          logging
+    // Tags:
+    //          save session, logging
 
         // FNV-1a for string, 32 bit version, returning hex.
 	var FNV1aHash = function(x){
@@ -60,21 +69,6 @@ define([
 	    this.path = path || "";
 	    // Create a session
 	    this.log("start-session", params);
-        },
-
-        loadFromFile: function(/*string*/ file){
-            //Summary: retrieves the text of a given file and returns it as a Dojo promise
-            return xhr(this.path + file, {
-                handleAs: "json"
-            }).then(function(model_object){
-		console.log("loadFromFile worked");
-                return model_object;
-            }, function(err){
-	        this.clientLog("error", {
-	        	message: "loadFromFile error : "+err,
-	        	functionTag: 'loadFromFile'
-	        });
-	    });
         },
 
         loadProblem: function(/*object*/ params){

@@ -18,17 +18,27 @@
  *along with Dragoon.  If not, see <http://www.gnu.org/licenses/>.
  *
  */
+
 /* global define */
+
 /*
- *                          student mode-specific handlers
+ * Student mode-specific handlers
  */
+
 define([
     "dojo/_base/array", 'dojo/_base/declare', "dojo/_base/lang",
     "dojo/dom", "dojo/ready",
     'dijit/registry',
     './controller', "./pedagogical_module", "./equation","dojo/aspect"
 ], function(array, declare, lang, dom, ready, registry, controller, PM, expression,aspect){
-
+    // Summary: 
+    //          MVC for the node editor, for students
+    // Description:
+    //          Handles selections from the student as he/she completes a model;
+    //          inherits controller.js
+    // Tags:
+    //          controller, student mode, coached mode, test mode
+    
     /*
      Methods in controller specific to the student modes
      */

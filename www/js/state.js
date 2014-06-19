@@ -18,39 +18,8 @@
  *along with Dragoon.  If not, see <http://www.gnu.org/licenses/>.
  *
  */
+
 /* global define */
-/*
- Get and set state variables for the tutor or the student.
-
- Variables are defined by:
-     section (string):
-     user (string): If user is omitted, then variable is a section-wide default.
-     apopropos (string):  A group of parameters (see below)
-     property (string):  A parameter name  
-     value (JavaScript object):  Stored as JSON in the database
-
- Note that one may choose to store several parameters together as a more
- complicated object, if that is more convenient.
-
- Internally, the database table uses tid to label variables so that the 
- history of a variable may be tracked.
-
- Choices for apropos include:
-
-     policies: settings of the tutor system, such as whether to use
-         structured or algebraic equation inputs on the node editor
-         or what level of hints to give.
-
-     actions: counters detailing what the student has done
-         in the past.  For example: how many greeens the student has seen.
-
-     skills: variables describing what the student does or does not know
-
- Generally, actions are used to determine skills and skills are used
- to determine policies.
-
- The interface sort of follows the Dojo Stores API.
-*/
 
 define([
     "dojo/_base/declare",
@@ -60,6 +29,41 @@ define([
     "dojo/request/xhr",
     "dojo/when"
 ], function(declare, json, lang, promise, xhr, when){
+    // Summary: 
+    //          Routines for saving state.
+    // Description:
+    //          Get and set state variables for the tutor or the student.
+
+    //          Variables are defined by:
+    //               section (string):
+    //               user (string): If user is omitted, then variable is a section-wide default.
+    //               apopropos (string):  A group of parameters (see below)
+    //               property (string):  A parameter name  
+    //               value (JavaScript object):  Stored as JSON in the database
+    //
+    //          Note that one may choose to store several parameters together as a more
+    //          complicated object, if that is more convenient.
+    //
+    //          Internally, the database table uses tid to label variables so that the 
+    //          history of a variable may be tracked.
+    //
+    //          Choices for apropos include:
+    //
+    //              policies: settings of the tutor system, such as whether to use
+    //                  structured or algebraic equation inputs on the node editor
+    //                  or what level of hints to give.
+    //
+    //              actions: counters detailing what the student has done
+    //                  in the past.  For example: how many greeens the student has seen.
+    //
+    //              skills: variables describing what the student does or does not know
+    //
+    //              Generally, actions are used to determine skills and skills are used
+    //          to determine policies.
+    //
+    //          The interface sort of follows the Dojo Stores API.
+    // Tags:
+    //          state, model, load, save
 
     return declare(null, {
 

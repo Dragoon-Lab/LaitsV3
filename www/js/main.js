@@ -44,6 +44,12 @@ define([
         menu, loadSave, model,
         Graph, Table, controlStudent, controlAuthor, Parser, drawmodel, logging, expression, description, State
         ){
+    // Summary: 
+    //          Menu controller
+    // Description:
+    //          Acts as the controller for the buttons on the menu
+    // Tags:
+    //          menu, buttons, controller
 
     console.log("load main.js");
 
@@ -79,29 +85,37 @@ define([
          */
         var subMode = query.sm || "feedback";
         /* In principle, we could load just one controller or the other. */
-            var controllerObject = query.m == 'AUTHOR' ? new controlAuthor(query.m, subMode, givenModel, query.is) :
+        var controllerObject = query.m == 'AUTHOR' ? new controlAuthor(query.m, subMode, givenModel, query.is) :
                 new controlStudent(query.m, subMode, givenModel, query.is);
 
         //setting up logging for different modules.
         if(controllerObject._PM){
             controllerObject._PM.setLogging(session);  // Set up direct logging in PM
-	}
+		}
         controllerObject.setLogging(session); // set up direct logging in controller
         expression.setLogging(session);
 
-	/*
-	 Create state object
-	 */
-	var state = new State(query.u, query.s, "action");
-	controllerObject.setState(state);
-	
+		/*
+		 Create state object
+		 */
+		var state = new State(query.u, query.s, "action");
+		controllerObject.setState(state);
+
         ready(function(){
 
-            var drawModel = new drawmodel(givenModel.active);
-	    // Wire up send to server
-	    aspect.after(drawModel, "updater", function(){
-		session.saveProblem(givenModel.model);
-	    });
+			var drawModel = new drawmodel(givenModel.active);
+			drawModel.setLogging(session);
+
+			// Wire up send to server
+			aspect.after(drawModel, "updater", function(){
+				session.saveProblem(givenModel.model);
+			});
+
+			// When the node editor controller wants to update node style, inform
+			// the controller for the drawing su
+			aspect.after(controllerObject, "colorNodeBorder",
+						 lang.hitch(drawModel, drawModel.colorNodeBorder), 
+						 true);
 
             /* add "Create Node" button to menu */
             menu.add("createNodeButton", function(){
@@ -155,7 +169,6 @@ define([
              */
             aspect.after(registry.byId('nodeeditor'), "hide", function(){
                 console.log("Calling session.saveProblem");
-                controllerObject.logging.log("ui-action", {node: "name of the node", tab:"last value checked", type:"dialog-box-tab"});
                 session.saveProblem(givenModel.model);
             });
 
@@ -197,10 +210,10 @@ define([
              menu.add("graphButton", function(){
                 console.debug("button clicked");
                 // instantiate graph object
-                var graph = new Graph(givenModel, query.m);
+                var graph = new Graph(givenModel, query.m, session);
                 var problemComplete = givenModel.matchesGivenSolution();
                 
-                controllerObject.logging.log('ui-action', {
+                graph._logging.log('ui-action', {
                     type: "menu-choice", 
                     name: "graph-button", 
                     problemComplete: problemComplete
@@ -212,11 +225,11 @@ define([
             // show table when button clicked
             menu.add("tableButton", function(){
                 console.debug("table button clicked");
-                var table = new Table(givenModel, query.m);
-                controllerObject.logging.log('ui-action', {
-                    type: "menu-choice", 
-                    name: "table-button"
-                });
+                var table = new Table(givenModel, query.m, session);
+				table._logging.log('ui-action', {
+					type: "menu-choice", 
+					name: "table-button"
+				});
                 table.show();
             });
 
