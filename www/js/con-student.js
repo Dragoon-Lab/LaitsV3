@@ -139,13 +139,16 @@ define([
          Handler for initial value input
          */
 	
-	handleInitial: function(initial){
- 	        var initialWidget = dom.byId(this.widgetMap.initial);
-            var IniFlag = typechecker.checkInitialValue(initial,this.lastInitialValue,initialWidget,"Student Controller"); //IniFlag returns the status and initial value
-            if(IniFlag.status){ //If the initial value is not a number of is unchanged from previous value we dont process
-		var newInitial = IniFlag.value;
-        this._model.active.setInitial(this.currentID, newInitial);
-		this.applyDirectives(this._PM.processAnswer(this.currentID, 'initial', newInitial));
+		handleInitial: function(initial){
+ 			var initialWidget = dom.byId(this.widgetMap.initial);
+			//IniFlag returns the status and initial value
+			var IniFlag = typechecker.checkInitialValue(initial, this.lastInitialValue, initialWidget, "studentController");
+			if(IniFlag.status){ 
+				//If the initial value is not a number or is unchanged from 
+				// previous value we dont process
+				var newInitial = IniFlag.value;
+				this._model.active.setInitial(this.currentID, newInitial);
+				this.applyDirectives(this._PM.processAnswer(this.currentID, 'initial', newInitial));
             }
         },
         

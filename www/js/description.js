@@ -25,7 +25,7 @@ define([
     "dijit/registry", "dojo/dom", "dojo/on", "dojo/ready",
     "./model", "./wraptext", "./typechecker"
 ], function(aspect, array, declare, lang, registry, dom, on, ready, model, wrapText, typechecker){
-	
+
 	// Summary: 
 	//          MVC for the description box in author mode
 	// Description:
@@ -34,7 +34,7 @@ define([
 	//          description box, author mode
 
 	return declare(null, {
-		
+
         givenModel: null,
         constructor: function(/*model*/ givenModel){
             console.log("registry",registry);
@@ -44,19 +44,19 @@ define([
             dom.byId("authorSetTimeEnd").value = timeObj.end;
             dom.byId("authorSetTimeStep").value = timeObj.step;
             dom.byId("authorSetTimeStepUnits").value = timeObj.units || "seconds";
-			
+
             dom.byId("authorSetImage").value = givenModel.getImageURL() || "";
             dom.byId("authorSetDescription").value = this.serialize(
 				givenModel.getTaskDescription() ? givenModel.getTaskDescription() : ""	
 			);
-            ready(this, this._initHandles);
-        },
+			ready(this, this._initHandles);
+		},
 		descControlMap : {
 			setTimeStart: "authorSetTimeStart",
 			setTimeStep: "authorSetTimeStep",
 			setTimeStop: "authorSetTimeEnd"
 		},
-		
+
 		widgetMap: {
             crisisAlert: 'crisisAlertMessage'
 		},
@@ -87,7 +87,7 @@ define([
             }));
 
             //for End Time Field
-			
+
             descWidgetStop.on('change', lang.hitch(this, function(){
 
                 var initial_stop_time=dom.byId(this.descControlMap.setTimeStop).value;
@@ -162,7 +162,7 @@ define([
 			var context = canvas.getContext('2d');
 			context.clearRect(0,0,canvas.width, canvas.height);
 			var desc_text = this.givenModel.getTaskDescription();
-			
+
 			var imageLeft = 30;
 			var imageTop = 20;
 			var imageHeight = 0;  // default in case there is no image
@@ -171,17 +171,17 @@ define([
 			var textTop = 50;
 			var textWidth = 400;
 			var textHeight = 20;
-			
+
 			// Layout text
 			// This routine should go in wrapText.js
 			var showText = function(){
 				var marginTop = Math.max(gapTextImage + imageHeight + imageTop, textTop);
-				
+
 				// Set font for description text
 				context.font = "normal 13px Arial";
 				wrapText(context, desc_text, textLeft, marginTop, textWidth, textHeight);
 			};
-			
+
 			var url = this.givenModel.getImageURL();
 			var imageObj = new Image();
 			var height = null;

@@ -25,12 +25,11 @@
 
 define([
     "dojo/_base/array", 'dojo/_base/declare', "dojo/_base/lang",
-    'dojo/dom-style', 'dojo/ready', 'dijit/registry',
-    './controller',
-    "./equation",
-    "dojo/store/Memory", "./typechecker",
+    'dojo/dom-style', 'dojo/ready', "dojo/store/Memory",
+	'dijit/registry',
+	'./controller', "./equation", "./typechecker",
     "dojo/domReady!"
-], function(array, declare, lang, style, ready, registry, controller, equation, memory, typechecker){
+], function(array, declare, lang, style, ready, memory, registry, controller, equation, typechecker){
 	// Summary: 
 	//          MVC for the node editor, for authors
 	// Description:
@@ -263,12 +262,14 @@ define([
          */
         handleInitial: function(initial){
             var initialWidget = registry.byId(this.widgetMap.initial);
-            var IniFlag = typechecker.checkInitialValue(initial,this.lastInitialValue,initialWidget,"Author Controller"); //IniFlag returns the status and initial value
+			//IniFlag contains the status and initial value
+            var IniFlag = typechecker.checkInitialValue(initial, this.lastInitial, initialWidget, "authorController");
             if(IniFlag.status){
-		// If the initial value is not a number of is unchanged from previous value we dont process
-		var newInitial = IniFlag.value;
-		this.applyDirectives(this.authorPM.process(this.currentID, "initial", newInitial, true));
-		console.log("In AUTHOR mode. Initial value is: " + newInitial);
+				// If the initial value is not a number or is unchanged from 
+				// previous value we dont process
+				var newInitial = IniFlag.value;
+				this.applyDirectives(this.authorPM.process(this.currentID, "initial", newInitial, true));
+				console.log("In AUTHOR mode. Initial value is: " + newInitial);
             }
         },
         

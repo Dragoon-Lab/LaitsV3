@@ -26,57 +26,64 @@ define([
 
     return {
 
-        closePops: function(){
-            popup.close(this.myTooltipDialog);
-            popup.close(this.myTooltipDialog2);
-    	}, 
-		
-        checkInitialValue: function(initialString, lastInitialValue, widget, source){
-            //source variable contains the source of this function call which could be used for logging: sachin can use it
-            // In case any tool tips are still open.
-            var myTooltipDialog = new TooltipDialog({
+		closePops: function(){
+			popup.close(this.myTooltipDialog);
+			popup.close(this.myTooltipDialog2);
+		},
+
+		checkInitialValue: function(initialString, lastInitial, widget, source){
+			//source variable contains the source of this function call which could be used for logging: sachin can use it
+			// In case any tool tips are still open.
+			var myTooltipDialog = new TooltipDialog({
 				style: "width: 150px;",
 				content: "Use decimals instead of percent."
 			});
 			// Tool Tip for indicating non numeric data is not accepted
-            var myTooltipDialog2 = new TooltipDialog({
-                style: "width: 150px;",
-                content: "Non-numeric data not accepted"
-            });
-            //Description : performs non number check and also checks if the initial value was changed from previously entered value
-            //returns: status, a boolean value and value, the current initial value
-			
-            // Popups only occur for an error, so leave it up until
-            // the next time the student attempts to enter a number.
-	        this.closePops();
-            // we do this type conversion because we used a textbox for initialvalue input which is a numerical
-            var initial= +initialString; // usage of + unary operator converts a string to number 
-            // use isNaN to test if conversion worked.
-            if(isNaN(initial)){
-                // Put in checks here
-                console.log('not a number');
-                //initialValue is the id of the textbox, we get the value in the textbox
-                if(!initialString.match('%')){ //To check the decimals against percentages
-                    console.warn("Sachin should log when this happens");
-                    popup.open({
-                        popup: myTooltipDialog2,
-                        around: widget
-                    });
-                }else{ 
+			var myTooltipDialog2 = new TooltipDialog({
+				style: "width: 150px;",
+				content: "Non-numeric data not accepted"
+			});
+			//Description : performs non number check and also checks if the initial value was changed from previously entered value
+			//returns: status, a boolean value and value, the current initial value
+
+			// Popups only occur for an error, so leave it up until
+			// the next time the student attempts to enter a number.
+			this.closePops();
+
+			// Don't do anything if the value has not changed.
+			initialString = initialString.trim();
+			if(initialString == lastInitial.value){
+				return {status: false};
+			}
+			lastInitial.value = initialString;
+
+			// we do this type conversion because we used a textbox for 
+			// initialvalue input which is a numerical
+			var initial= +initialString; // usage of + unary operator converts a string to number
+
+			// use isNaN to test if conversion worked.
+			if(isNaN(initial)){
+				// Put in checks here
+				console.log('not a number');
+				//initialValue is the id of the textbox, we get the value in the textbox
+				if(!initialString.match('%')){ //To check the decimals against percentages
+					console.warn("Sachin should log when this happens");
+					popup.open({
+						popup: myTooltipDialog2,
+						around: widget
+					});
+				}else{
 					// if entered string has percentage symbol, pop up a message to use decimals
-                    console.warn("Sachin should log when this happens");
-                    popup.open({
-                        popup: myTooltipDialog,
-                        around: widget
-                    });
-                }            
-                return {status: false}; 
-            }
-            if(initialString == lastInitialValue){
-    			return {status: false};
-    	    }
-            // updating node editor and the model.
-            return {status: true, value: initial};
-        }           
+					console.warn("Sachin should log when this happens");
+					popup.open({
+						popup: myTooltipDialog,
+						around: widget
+					});
+				}
+				return {status: false};
+			}
+			// updating node editor and the model.
+			return {status: true, value: initial};
+		}
 	};
 });

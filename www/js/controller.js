@@ -26,8 +26,8 @@ define([
     'dojo/aspect', 'dojo/dom', "dojo/dom-class", "dojo/dom-construct", 'dojo/dom-style',
     'dojo/keys', 'dojo/on', "dojo/ready", 
     "dijit/popup", 'dijit/registry', "dijit/TooltipDialog",
-    './equation', './graph-objects', "./typechecker"
-], function(array, declare, lang, aspect, dom, domClass, domConstruct, domStyle, keys, on, ready, popup, registry, TooltipDialog, expression, graphObjects, typechecker){
+    './equation', './graph-objects'
+], function(array, declare, lang, aspect, dom, domClass, domConstruct, domStyle, keys, on, ready, popup, registry, TooltipDialog, expression, graphObjects){
 	// Summary: 
 	//          Controller for the node editor, common to all modes
 	// Description:
@@ -37,17 +37,17 @@ define([
 	//          controller, student mode, coached mode, test mode, author mode
 
     return declare(null, {
-        _model: null,
-        _nodeEditor: null, // node-editor object- will be used for populating fields
-        /*
+		_model: null,
+		_nodeEditor: null, // node-editor object- will be used for populating fields
+		/*
          When opening the node editor, we need to populate the controls without
          evaluating those changes.
          */
-        disableHandlers: false,
-        /* The last value entered into the intial value control */
-        lastInitialValue: null,
-        logging: null,
-        // Variable to track if an equation has been entered and checked
+		disableHandlers: false,
+		/* The last value entered into the intial value control */
+		lastInitial: {value: null},
+		logging: null,
+		// Variable to track if an equation has been entered and checked
 		equationEntered: null,  // value is set when node editor opened
 
         constructor: function(mode, subMode, model, inputStyle){
@@ -67,9 +67,8 @@ define([
             // after widgets are set up.
             ready(this, this._setUpNodeEditor);
             ready(this, this._initHandles);
-
-	    
         },
+
         // A list of common controls of student and author
         genericControlMap: {
             type: "typeId",
@@ -200,7 +199,6 @@ define([
                     var crisisMessage = dom.byId('crisisMessage');
                     console.log("crisis alert message ", message);
                     crisisMessage.innerHTML = message;
-                    console.log("this",this);
                     this.show();
                 };
                 on(registry.byId("OkButton"), "click", function(){
@@ -272,7 +270,7 @@ define([
             // Undo any initial value
             var initial = registry.byId(this.controlMap["initial"]);
             initial.set("value", "");
-            this.lastInitialValue = "";
+            this.lastInitial.value = null;
 
             // Undo equation labels
             this.updateEquationLabels("none");
@@ -795,7 +793,7 @@ define([
 
             var initial = model.getInitial(nodeid);
             console.log('initial value is', initial || "not set");
-            this.lastInitialValue = initial;
+            this.lastInitial.value = initial.toString();
             registry.byId(this.controlMap.initial).attr('value', initial || '');
 
             var unit = model.getUnits(nodeid);
