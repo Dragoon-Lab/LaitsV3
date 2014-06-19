@@ -34,26 +34,24 @@ define([
 	//          changes in the sliders; 
 	// Tags:
 	//          sliders, slider listener
-
-    return declare(null, {
-	
+    
+   return declare(null, {
+		
 		model: null,                        // model
 		active: {},                         // set current mode. TRUE = givenModel / FALSE = StudentModel
-		
+
 		/* variables specific to rendering graph and table */
 		given: {},                          // object to store calculated parameters from given model
 		dialog: "",                         // dialog box to be displayed
 		dialogContent: "",                  // Parameter to set DOM in a dialog dynamically
 		sliders: {},                        // Parameter to create slider objects
-		_logging : null,
 		mode : null,                        // Parameter to hold the mode value to differentiate graphs for author and student mode.
-		
-		constructor: function(model, mode, logging){
+
+		constructor: function(model, mode){
             console.log("***** In calculations constructor", this.given);
             this.model = model;
-            this.mode = mode;
-		    this.dialogWidget = registry.byId("solution");
-		    this.setLogging(logging);
+			this.mode = mode;
+			this.dialogWidget = registry.byId("solution");
             /*
 			 In AUTHOR mode, plot solution for all given nodes of genus false
              and type "accumulator" or "function""
@@ -114,57 +112,28 @@ define([
 			// Summary:  Find a solution
 			// Returns:  an object of the form
             //          {status: s, type: m, missingNode: n/soln: solution}
-<<<<<<< HEAD
-	    var choice = isActive?this.active:this.given;
-	    console.log("in findSolution ", isActive, choice.initialValues, choice.timeStep.parameters);
-	    /*
-	     Calculate solution by solving differential 
-	     equation for accumulator nodes
-	     */
-        try { // we try to run the method because there might be some nodes missing and an error is generated
-		    var solution = integrate.eulersMethod(
-			choice.timeStep, 
-			equation.evaluateTimeStep,
-			choice.initialValues, 
-			this.model.getTime());
-	    }
-        catch(err){ // we catch the correspoding error here
-            var if_id=err.message.substr(19).trim(); //In case the name is not generated and a node id is , we have to get the name from the active object for the user to understand           
-            console.log("catch error",this.model.active.getName(if_id));  
-            if(this.model.active.getName(if_id))
-            	var miss_node=this.model.active.getName(if_id); // In case a node is incomplete
-            else 
-            	miss_node=if_id;
-
-            this._logging.clientLog("error", {
-            	message:"graph/table created with missing node : "+miss_node,
-            	functionTag : "findSolution"
-            });
-
-            return {status: 'error', type: 'missing', missingNode: miss_node};
-        }
-        /*
-	     Given a solution, create an array of values for the
-	     list of plot variables.  The list may include function nodes.
-	     */
-	    if(plotVariables){
-		// If id is null, then make row null
-		var plotValues = array.map(plotVariables, function(x){
-		    return x?[]:null;
-		});
-		var timeStep = choice.timeStep;
-		// Copy parameters object.
-		var variables = lang.mixin({}, timeStep.parameters);
-		for(var i=0; i<solution.times.length; i++){
-		    for(var j=0; j<timeStep.xvars.length; j++){
-				variables[timeStep.xvars[j]] = solution.values[j][i];
-		    }
-		    array.forEach(timeStep.functions, function(id){
-				variables[id] = timeStep.parse[id].evaluate(variables);
-		    });
-		    array.forEach(plotVariables, function(id, k){
-			if(id){
-			    plotValues[k].push(variables[id]);
+			var choice = isActive?this.active:this.given;
+			console.log("in findSolution ", isActive, choice.initialValues, choice.timeStep.parameters);
+			/*
+			 Calculate solution by solving differential 
+			 equation for accumulator nodes
+			 */
+			try { // we try to run the method because there might be some nodes missing and an error is generated
+				var solution = integrate.eulersMethod(
+					choice.timeStep, 
+					equation.evaluateTimeStep,
+					choice.initialValues, 
+					this.model.getTime());
+			}
+			catch(err){ // we catch the correspoding error here
+				var if_id=err.message.substr(19).trim(); //In case the name is not generated and a node id is , we have to get the name from the active object for the user to understand           
+				console.log("catch error",this.model.active.getName(if_id));  
+				if(this.model.active.getName(if_id)){
+					var miss_node=this.model.active.getName(if_id); // In case a node is incomplete
+				}else{
+					miss_node=if_id;
+				}
+				return {status: 'error', type: 'missing', missingNode: miss_node};
 			}
 			/*
 			 Given a solution, create an array of values for the
@@ -380,11 +349,7 @@ define([
 		/* @brief: display the graph*/
 		show: function(){
             this.dialogWidget.show();
-		},
-
-		setLogging: function(/*string*/ logging){
-	        this._logging = logging;
-	    }
+		}
 
     });
 });
