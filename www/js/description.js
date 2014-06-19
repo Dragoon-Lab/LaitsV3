@@ -19,13 +19,21 @@
  *along with Dragoon.  If not, see <http://www.gnu.org/licenses/>.
  *
  */
+
 define([
-    "dojo/_base/array", "dojo/_base/declare",
-    "dijit/registry", "dojo/dom",
-    "./model", "./wraptext","dojo/on","dojo/ready","dojo/_base/lang","./typechecker",'dojo/aspect'
-], function(array, declare, registry, dom, model, wrapText, on, ready, lang, typechecker, aspect){
+    "dojo/aspect", "dojo/_base/array", "dojo/_base/declare", "dojo/_base/lang",
+    "dijit/registry", "dojo/dom", "dojo/on", "dojo/ready",
+    "./model", "./wraptext", "./typechecker"
+], function(aspect, array, declare, lang, registry, dom, on, ready, model, wrapText, typechecker){
 	
-    return declare(null, {
+	// Summary: 
+	//          MVC for the description box in author mode
+	// Description:
+	//          Allows the author to modify the description and the times 
+	// Tags:
+	//          description box, author mode
+
+	return declare(null, {
 		
         givenModel: null,
         constructor: function(/*model*/ givenModel){

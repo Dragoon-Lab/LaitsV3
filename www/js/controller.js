@@ -862,7 +862,7 @@ define([
         },
 
 		// Stub to be overwritten by student or author mode-specific method.
-		colorNodeBorder: function(nodeID){
+		colorNodeBorder: function(nodeID, bool){
 			console.log("colorNodeBorder stub called");
 		}
 

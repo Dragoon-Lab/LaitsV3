@@ -18,27 +18,26 @@
  *along with Dragoon.  If not, see <http://www.gnu.org/licenses/>.
  *
  */
+
 /* global define */
-/*
- *                               Logging facility
- */
+
 define([
     'dojo/aspect', 'dojo/on',
     "./pedagogical_module",
     "./model",
     './controller'
 ], function(aspect, on, PM, model, controller){
-
-    /*
-     In this case, we have a single global logger that we attach
-     to various functions in other modules.
-     */
-
-    /* 
-     The big design question is whether we isolate logging to this module,
-     emphasizing aspect-oriented programming or we disperse the logging
-     commands through the code.  Maybe some of each and see which looks best?
-     */
+    // Summary: 
+    //          Used for logging
+    // Description:
+    //          In this case, we have a single global logger that we attach 
+    //          to various functions in other modules.
+    // Tags:
+    //          logging
+    // Note:    The big design question is whether we isolate logging to this 
+    //          module, emphasizing aspect-oriented programming or we disperse 
+    //          the logging commands through the code.  Maybe some of each and 
+    //          see which looks best?
 
     var logging = {
 	session: null,
