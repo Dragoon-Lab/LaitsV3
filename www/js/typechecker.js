@@ -31,8 +31,7 @@ define([
 			popup.close(this.myTooltipDialog2);
 		},
 
-		checkInitialValue: function(initialString, lastInitial, widget, source){
-			//source variable contains the source of this function call which could be used for logging: sachin can use it
+		checkInitialValue: function(initialString, lastInitial, widget){
 			// In case any tool tips are still open.
 			var myTooltipDialog = new TooltipDialog({
 				style: "width: 150px;",
@@ -63,6 +62,7 @@ define([
 
 			// use isNaN to test if conversion worked.
 			if(isNaN(initial)){
+				var errorType;
 				// Put in checks here
 				console.log('not a number');
 				//initialValue is the id of the textbox, we get the value in the textbox
@@ -72,6 +72,7 @@ define([
 						popup: myTooltipDialog2,
 						around: widget
 					});
+					errorType = "number-with-percent";
 				}else{
 					// if entered string has percentage symbol, pop up a message to use decimals
 					console.warn("Sachin should log when this happens");
@@ -79,8 +80,10 @@ define([
 						popup: myTooltipDialog,
 						around: widget
 					});
+					errorType = "parse-error";
 				}
-				return {status: false};
+
+				return {status: false, errorType: errorType};
 			}
 			// updating node editor and the model.
 			return {status: true, value: initial};

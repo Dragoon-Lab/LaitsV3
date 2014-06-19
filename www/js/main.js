@@ -103,7 +103,9 @@ define([
 
         ready(function(){
 
-            var drawModel = new drawmodel(givenModel.active);
+			var drawModel = new drawmodel(givenModel.active);
+			drawModel.setLogging(session);
+
 			// Wire up send to server
 			aspect.after(drawModel, "updater", function(){
 				session.saveProblem(givenModel.model);
@@ -167,7 +169,6 @@ define([
              */
             aspect.after(registry.byId('nodeeditor'), "hide", function(){
                 console.log("Calling session.saveProblem");
-                controllerObject.logging.log("ui-action", {node: "name of the node", tab:"last value checked", type:"dialog-box-tab"});
                 session.saveProblem(givenModel.model);
             });
 
@@ -208,10 +209,10 @@ define([
              menu.add("graphButton", function(){
                 console.debug("button clicked");
                 // instantiate graph object
-                var graph = new Graph(givenModel, query.m);
+                var graph = new Graph(givenModel, query.m, session);
                 var problemComplete = givenModel.matchesGivenSolution();
                 
-                controllerObject.logging.log('ui-action', {
+                graph._logging.log('ui-action', {
                     type: "menu-choice", 
                     name: "graph-button", 
                     problemComplete: problemComplete
@@ -223,11 +224,11 @@ define([
             // show table when button clicked
             menu.add("tableButton", function(){
                 console.debug("table button clicked");
-                var table = new Table(givenModel, query.m);
-                controllerObject.logging.log('ui-action', {
-                    type: "menu-choice", 
-                    name: "table-button"
-                });
+                var table = new Table(givenModel, query.m, session);
+				table._logging.log('ui-action', {
+					type: "menu-choice", 
+					name: "table-button"
+				});
                 table.show();
             });
 

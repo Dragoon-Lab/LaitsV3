@@ -149,7 +149,16 @@ define([
 				var newInitial = IniFlag.value;
 				this._model.active.setInitial(this.currentID, newInitial);
 				this.applyDirectives(this._PM.processAnswer(this.currentID, 'initial', newInitial));
-            }
+            }else if(IniFlag.errorType){
+				this.logging.log('solution-step', {
+                    type: IniFlag.errorType,
+                    node: this._model.active.getNodeName(this.currentID),
+                    property: "initial-value",
+                    value: initial,
+                    correctResult: this._model.active.getInitial(this.currentID),
+                    checkResult: "INCORRECT"
+				});
+			}
         },
         
         initialSet: function(value){

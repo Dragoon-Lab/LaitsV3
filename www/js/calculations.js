@@ -21,11 +21,15 @@
  */
 
 define([
-	"dojo/_base/array", "dojo/_base/declare", "dojo/_base/lang",
-	"parser/parser",
-	"dojo/on","dojo/dom",
-	"dijit/registry", "dijit/form/HorizontalSlider",
-	"./equation", "./integrate"
+    "dojo/_base/array",
+    "dojo/_base/declare",
+    "dojo/_base/lang",
+    "parser/parser",
+    "dojo/on","dojo/dom",
+    "dijit/registry",
+    "dijit/form/HorizontalSlider",
+    "./equation",
+    "./integrate"
 ], function(array, declare, lang, Parser, on, dom, registry, HorizontalSlider, equation, integrate){
 	// Summary: 
 	//          Finds model solutions and sets up the sliders
@@ -35,7 +39,7 @@ define([
 	// Tags:
 	//          sliders, slider listener
     
-   return declare(null, {
+	return declare(null, {
 		
 		model: null,                        // model
 		active: {},                         // set current mode. TRUE = givenModel / FALSE = StudentModel
@@ -45,13 +49,15 @@ define([
 		dialog: "",                         // dialog box to be displayed
 		dialogContent: "",                  // Parameter to set DOM in a dialog dynamically
 		sliders: {},                        // Parameter to create slider objects
+		_logging : null,
 		mode : null,                        // Parameter to hold the mode value to differentiate graphs for author and student mode.
 
-		constructor: function(model, mode){
-            console.log("***** In calculations constructor", this.given);
+		constructor: function(model, mode, logging){
+			console.log("***** In calculations constructor", this.given);
             this.model = model;
 			this.mode = mode;
 			this.dialogWidget = registry.byId("solution");
+			this.setLogging(logging);
             /*
 			 In AUTHOR mode, plot solution for all given nodes of genus false
              and type "accumulator" or "function""
@@ -133,6 +139,10 @@ define([
 				}else{
 					miss_node=if_id;
 				}
+				this._logging.clientLog("error", {
+					message:"graph/table created with missing node : "+miss_node,
+					functionTag : "findSolution"
+				});
 				return {status: 'error', type: 'missing', missingNode: miss_node};
 			}
 			/*
@@ -349,6 +359,10 @@ define([
 		/* @brief: display the graph*/
 		show: function(){
             this.dialogWidget.show();
+		},
+
+		setLogging: function(/*string*/ logging){
+			this._logging = logging;
 		}
 
     });
