@@ -59,18 +59,18 @@ jsPlumb.ready(function(){
 				}
 			}]
 		]
-	};   
-    instance.connect({
+	};
+        //Connections from main.js (the connectsions are reversed in the code for aesthetic purposes)
+        instance.connect({
 		source:"menu",
 		target:"maine"
 	}, connection1);
-	         
-    instance.connect({
+        instance.connect({
 		source:"load-save",
 		target:"maine"
-	}, connection1);
+	}, connection1);        
         instance.connect({
-		source:"model",
+		source:"wraptext",
 		target:"maine"
 	}, connection1);
         instance.connect({
@@ -79,10 +79,6 @@ jsPlumb.ready(function(){
 	}, connection1);
         instance.connect({
 		source:"RenderTable",
-		target:"maine"
-	}, connection1);
-        instance.connect({
-		source:"wraptext",
 		target:"maine"
 	}, connection1);
         instance.connect({
@@ -100,17 +96,27 @@ jsPlumb.ready(function(){
         instance.connect({
 		source:"logging",
 		target:"maine"
+	}, connection1);        
+        instance.connect({
+		source:"model",
+		target:"maine"
 	}, connection1);
+        
+        //Connections from rendergraph.js
         instance.connect({
 		source:"calculations",
 		target:"RenderGraph"
 	}, connection1);
+        
+        //Connections from rendertable.js
         instance.connect({
 		source:"calculations",
 		target:"RenderTable"
 	}, connection1);
+        
+        //Connections from con-student.js
         instance.connect({
-		source:"controller",
+		source:"equation",
 		target:"con-student"
 	}, connection1);
         instance.connect({
@@ -118,40 +124,58 @@ jsPlumb.ready(function(){
 		target:"con-student"
 	}, connection1);
         instance.connect({
-		source:"equation",
+		source:"controller",
 		target:"con-student"
 	}, connection1);
-            instance.connect({
+        
+        //Connections from con-author.js
+        instance.connect({
+		source:"equation",
+		target:"con-author"
+	}, connection1);
+        instance.connect({
 		source:"controller",
 		target:"con-author"
 	}, connection1);
-            instance.connect({
-		source:"equation",
-		target:"con-author"
-	}, connection1);
+        
+        //Connections from draw-model.js
         instance.connect({
 		source:"equation",
 		target:"drawmodel"
 	}, connection1);
         instance.connect({
-		source:"equation",
-		target:"calculations"
+		source:"graph-objects",
+		target:"drawmodel"
 	}, connection1);
+        
+        //Connections from logging.js
+        instance.connect({
+		source:"pedagogical_module",
+		target:"logging"
+	}, connection1);
+        instance.connect({
+		source:"controller",
+		target:"logging"
+	}, connection1);
+        instance.connect({
+		source:"model",
+		target:"logging"
+	}, connection1);
+        
+        //Connections from calculations.js
         instance.connect({
 		source:"integrate",
 		target:"calculations"
 	}, connection1);
         instance.connect({
-		source:"pedagogical_module",
-		target:"logging"
-	}, connection1);		
-                instance.connect({
-		source:"model",
-		target:"logging"
+		source:"equation",
+		target:"calculations"
 	}, connection1);
-          instance.connect({
-		source:"controller",
-		target:"logging"
+        
+        //Connections from controller.js
+        instance.connect({
+		source:"graph-objects",
+		target:"controller"
 	}, connection1);
 
 	// jsplumb event handlers
