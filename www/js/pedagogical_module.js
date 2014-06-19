@@ -509,7 +509,7 @@ define([
             var interpretation = this._getInterpretation(id, nodePart, answer);
             var returnObj = [], currentStatus;
             var givenID;  // ID of the correct node, if it exists
-            var solutionGiven = false;
+			var solutionGiven = false;
 
             // Send correct answer to controller if status will be set to 'demo'
             if(interpretation === "lastFailure" || interpretation === "secondFailure"){
@@ -525,7 +525,7 @@ define([
                         console.error("Unexpected null from model.getCorrectAnswer().");
                 }else{
                     returnObj.push({id: nodePart, attribute: "value", value: answer});
-                    solutionGiven = true;
+					solutionGiven = true;
                 }
             }
 			var logObj = null;
@@ -546,7 +546,7 @@ define([
 				node: this.model.student.getName(id),
 				property: nodePart,
 				value: answer,
-                solutionProvided : solutionGiven
+				solutionProvided: solutionGiven
 			}, logObj);
 			this.logging.log('solution-step', logObj);
 

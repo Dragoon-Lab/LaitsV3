@@ -942,14 +942,14 @@ define([
                         // Each control has its own function to update the
                         // the model and the graph.
                         this[directive.id+'Set'].call(this, directive.value);
-                    } else {
+                    }else{
                         w.set(directive.attribute, directive.value);
 					}
-                } else {
-                    this.logging.clientLog("warning", {
-                        message: "Directive with unknown id, id :"+directive.id,
-                        functionTag: 'applyDirectives'
-                    });
+                }else{
+					this.logging.clientLog("warning", {
+						message: "Directive with unknown id, id :"+directive.id,
+						functionTag: 'applyDirectives'
+					});
                 }
 
             }, this);
