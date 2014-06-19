@@ -27,10 +27,11 @@ define([
     'dojo/aspect', 'dojo/dom', "dojo/dom-class", "dojo/dom-construct", 'dojo/dom-style',
     'dojo/keys', 'dojo/on', "dojo/ready", 
     "dijit/popup", 'dijit/registry', "dijit/TooltipDialog",
-    './equation', './graph-objects'
+    './equation', './graph-objects', './state'
 ], function(array, declare, lang, aspect, dom, domClass, domConstruct, domStyle, keys, on, ready, popup, registry, TooltipDialog, expression, graphObjects){
 
     return declare(null, {
+		_record: null,
         _model: null,
         _nodeEditor: null, // node-editor object- will be used for populating fields
         /*
@@ -44,14 +45,13 @@ define([
         // Variable to track if an equation has been entered and checked
 	equationEntered: null,  // value is set when node editor opened
 
-        constructor: function(mode, subMode, model, inputStyle){
+        constructor: function(mode, subMode, model, inputStyle, state){
 
             console.log("+++++++++ In generic controller constructor");
             lang.mixin(this.controlMap, this.genericControlMap);
             this._model = model;
             this._mode = mode;
             this._inputStyle = inputStyle;
-
             // structured should be its own module.  For now,
             // initialize
             this.structured._model = this._model;
@@ -73,10 +73,12 @@ define([
                 content: "Non-numeric data not accepted"
             });
         },
-        
-        
-        
-        
+		
+		setState: function(state){
+			this._record = state;
+			this.setPMState(state);
+		},
+		
         // A list of common controls of student and author
         genericControlMap: {
             type: "typeId",
@@ -115,22 +117,6 @@ define([
                     }
             };
 	    }));
-
-            /*
-             Hide/show fields based on inputStyle
-             If this can change during a session, then we
-             should move this to this.showNodeEditor()
-             */
-            if(this._inputStyle!="algebraic" && this._inputStyle!="structured" && this._inputStyle){ //If the input style is anything different frm algebraic, structured, unmentioned then we log an error as corrupted input style
-            error = new Error("input style has been corrupted");
-            throw error;
-            }
-            var algebraic = (this._inputStyle == "algebraic" || !this._inputStyle ? "" : "none"); //making algebraic the default input style incase n inputstyle is defined
-            var structured = (this._inputStyle == "structured" ? "" : "none");
-            domStyle.set("algebraic", "display", algebraic);
-            domStyle.set("structured", "display", structured);
-            domStyle.set("equationBox", "display", algebraic);
-            domStyle.set("equationText", "display", structured);
 
             /*
              Add attribute handler to all of the controls
@@ -239,8 +225,7 @@ define([
                 u.addOption({label: unit, value: unit});
             });
         },
-         
-         
+		
         // Function called when node editor is closed.
         // This can be used as a hook for saving sessions and logging
         closeEditor: function(){
@@ -796,6 +781,29 @@ define([
             this._nodeEditor.show().then(lang.hitch(this, function(){
                 this.disableHandlers = false;
             }));
+			/*
+             Hide/show fields based on inputStyle
+             If this can change during a session, then we
+             should move this to this.showNodeEditor()
+             */
+            if(this._inputStyle!="algebraic" && this._inputStyle!="structured" && this._inputStyle){ //If the input style is anything different frm algebraic, structured, unmentioned then we log an error as corrupted input style
+            error = new Error("input style has been corrupted");
+            throw error;
+            }
+            var algebraic = (this._inputStyle == "algebraic" || !this._inputStyle ? "" : "none"); //making algebraic the default input style incase n inputstyle is defined
+            var structured = (this._inputStyle == "structured" ? "" : "none");
+			if (!this._inputStyle){
+				this._record.get("mode").then(function(x){
+					if (x == "structured") {
+						algebraic = "none";
+						structured = "";
+					}
+				});
+			}
+            domStyle.set("algebraic", "display", algebraic);
+            domStyle.set("structured", "display", structured);
+            domStyle.set("equationBox", "display", algebraic);
+            domStyle.set("equationText", "display", structured);
         },
         // Stub to be overwritten by student or author mode-specific method.
         initialControlSettings: function(id){
@@ -903,7 +911,7 @@ define([
 
             }, this);
         },
-
+	
         // Stub to be overwritten by student or author mode-specific method.
 	colorNodeBorder: function(nodeId){
 	    console.log("colorNodeBorder stub called");

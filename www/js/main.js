@@ -56,7 +56,7 @@ define([
         console.warn("Dragoon log files won't work since we can't set up a session.");
         console.error("Function called without arguments");
     }
-
+	
     // Start up new session and get model object from server
     var session = new loadSave(query);
     logging.setSession(session);  // Give logger message destination
@@ -71,7 +71,7 @@ define([
         /*
          start up controller
          */
-
+		
         /* 
          The sub-mode of STUDENT mode can be either "feedback" or "power"
          This is eventually supposed to be supplied by the student model.
@@ -81,7 +81,7 @@ define([
         /* In principle, we could load just one controller or the other. */
             var controllerObject = query.m == 'AUTHOR' ? new controlAuthor(query.m, subMode, givenModel, query.is) :
                 new controlStudent(query.m, subMode, givenModel, query.is);
-
+		
         //setting up logging for different modules.
         if(controllerObject._PM){
             controllerObject._PM.setLogging(session);  // Set up direct logging in PM
@@ -93,6 +93,7 @@ define([
 	 Create state object
 	 */
 	var state = new State(query.u, query.s, "action");
+	state.init("mode", "structured");
 	controllerObject.setState(state);
 	
         ready(function(){

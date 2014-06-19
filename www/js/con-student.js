@@ -56,7 +56,7 @@ define([
             inputs: "nodeInputs"
         },
 
-	setState: function(state){
+	setPMState: function(state){
 	    this._PM.setState(state);
 	},
 
