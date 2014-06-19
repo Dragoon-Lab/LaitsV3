@@ -195,13 +195,38 @@ define([
                 return this.disableHandlers || this.handleKind.apply(this, arguments);
         }));
 
-            //undo color on change in the widget.
+            //undo color on change in the Name widget.
             var nameWidget = registry.byId(this.controlMap.name);
             nameWidget.on("keydown", lang.hitch(this, function(evt){
 				if(evt.keyCode != keys.ENTER){
 					nameWidget.set('status','');
 				}
             }));
+
+            //undo colors on change in the description widget
+            var descriptionWidget = registry.byId(this.controlMap.description);
+            descriptionWidget.on("keydown", lang.hitch(this, function(evt){
+                if(evt.keyCode != keys.ENTER){
+                    descriptionWidget.set('status','');
+                }
+            }));
+
+            //undo colors on change in the intial value widget
+            var initialValueWidget = registry.byId(this.controlMap.initial);
+            initialValueWidget.on("keydown", lang.hitch(this, function(evt){
+                if(evt.keyCode != keys.ENTER){
+                    initialValueWidget.set('status','');
+                }
+            }));
+
+            //undo colors on change in the units widget
+            var unitsWidget = registry.byId(this.controlMap.units);
+            unitsWidget.on("keydown", lang.hitch(this, function(evt){
+                if(evt.keyCode != keys.ENTER){
+                    unitsWidget.set('status','');
+                }
+            }));
+
 
         },
         /*
@@ -241,13 +266,6 @@ define([
             // If descriptionID is falsy give "null"; if it doesn't match, give "false"
             this.applyDirectives(this.authorPM.process(descriptionID?!(descriptionID==this.currentID):null, "description", description));
 
-            //undo colors on change in the description widget
-            var descriptionWidget = registry.byId(this.controlMap.description);
-            descriptionWidget.on("keydown",lang.hitch(this,function(evt){
-                if(evt.keyCode != keys.ENTER){
-                 descriptionWidget.set('status','');
-                }
-            }));
             if(!this._model.active.getNodeIDByDescription(description)){
 
                 this._model.active.setDescription(this.currentID, description);
@@ -276,14 +294,6 @@ define([
             // Summary: Sets the units of the current node.
             this._model.active.setUnits(this.currentID, units);
             this.applyDirectives(this.authorPM.process(this.currentID, "units", units));
-            //undo colors on change
-
-            var unitsWidget = registry.byId(this.controlMap.units);
-            unitsWidget.on("keydown",lang.hitch(this,function(evt){
-                if(evt.keyCode != keys.ENTER){
-                    unitsWidget.set('status','');
-                }
-            }));
 
         },
         /*
@@ -296,14 +306,7 @@ define([
         var newInitial = IniFlag.value;
         this.applyDirectives(this.authorPM.process(this.currentID, "initial", newInitial, true));
         console.log("In AUTHOR mode. Initial value is: " + newInitial);
-         // undo colors on change
 
-        var initialValueWidget = registry.byId(this.controlMap.initial);
-         initialValueWidget.on("keydown",lang.hitch(this,function(evt){
-             if(evt.keyCode != keys.ENTER){
-                initialValueWidget.set('status','');
-             }
-          }));
             }
         },
 
