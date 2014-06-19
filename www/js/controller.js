@@ -942,13 +942,7 @@ define([
                         // Each control has its own function to update the
                         // the model and the graph.
                         this[directive.id+'Set'].call(this, directive.value);
-						this.logging.log('seek-help', {
-							type: 'seek-help',
-							nodeID: this.currentID,
-							node: this._model.active.getName(this.currentID),
-							property: directive.id
-						});
-                    }else{
+                    } else {
                         w.set(directive.attribute, directive.value);
 					}
                 } else {
