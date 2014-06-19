@@ -311,12 +311,13 @@ define([
 	    // In case any tool tips are still open.
             this.closePops();
             //this.disableHandlers = false;
-            this.logging.log('ui-action', {
-                type: 'close-dialog-box',
-                nodeID: this.currentID,
-                node: this._model.active.getName(this.currentID),
-                nodeComplete: this._model.active.isComplete(this.currentID)
-            });                
+			this.logging.log('ui-action', {
+				type: 'close-dialog-box',
+				nodeID: this.currentID,
+				node: this._model.active.getName(this.currentID),
+				nodeComplete: this._model.active.isComplete(this.currentID)
+			});
+
 	    // This cannot go in controller.js since _PM is only in
 	    // con-student.  You will need con-student to attach this
 	    // to closeEditor (maybe using aspect.after?).
@@ -477,13 +478,12 @@ define([
                 console.log('not a number');
                 //initialValue is the id of the textbox, we get the value in the textbox
                 if(!initialString.match('%')){ //To check the decimals against percentages
-                    
                     popup.open({
                         popup: this.myTooltipDialog2,
                         around: initialWidget
                     });
                 }else{ 
-		    // if entered string has percentage symbol, pop up a message to use decimals
+					// if entered string has percentage symbol, pop up a message to use decimals
                     popup.open({
                         popup: this.myTooltipDialog,
                         around: initialWidget
@@ -496,7 +496,7 @@ define([
                     value : initial,
                     correctResult : this._model.active.getInitial(this.currentID),
                     checkResult : "INCORRECT"
-                });        
+                });
                 return {status: false}; 
             }
                         
@@ -742,15 +742,15 @@ define([
                 this._model.active.setEquation(this.currentID, inputEquation);
                 directives.push({id: 'message', attribute: 'append', value: 'Incorrect equation syntax.'});
                 directives.push({id: 'equation', attribute: 'status', value: 'incorrect'});
-                this.logging.log("solution-step", {
-                    type : "parse-error",
-                    node : this._model.active.getNodeName(this.currentID),
-                    property : "equation",
-                    value : parse,
-                    correctResult : this._model.given.getEquation(this.currentID),                     
-                    checkResult : "INCORRECT",
-                    message : err
-                });
+				this.logging.log("solution-step", {
+					type: "parse-error",
+					node: this._model.active.getNodeName(this.currentID),
+					property: "equation",
+					value: parse,
+					correctResult: this._model.given.getEquation(this.currentID),
+					checkResult: "INCORRECT",
+					message: err
+				});
                 // Call hook for bad parse
                 this.badParse(inputEquation);
             }
@@ -770,16 +770,16 @@ define([
             			toPM = false;
             			directives.push({id: 'equation', attribute: 'status', value: 'incorrect'});
             			directives.push({id: 'message', attribute: 'append', value: "You cannot use '" + variable + "' in the equation. Function nodes cannot reference themselves."});
-                        this.logging.log("solution-step", {
-                            type : "parse-error",
-                            node : this._model.active.getNodeName(this.currentID),
-                            property : "equation",
-                            value : parse,
-                            correctResult : this._model.given.getEquation(this.currentID),                     
-                            checkResult : "INCORRECT"
-                        });
+						this.logging.log("solution-step", {
+							type: "parse-error",
+							node: this._model.active.getNodeName(this.currentID),
+							property: "equation",
+							value: parse,
+							correctResult: this._model.given.getEquation(this.currentID),
+							checkResult: "INCORRECT"
+						});
                         //need to ask if this will be a logged at all or it would be a client message or a UI message. The incorrectness of the equation will be logged from pedagogical module, i think logging it here would be redundant
-                    }
+					}
 
         		    if(givenID || ignoreUnknownTest){
                         // Test if variable has been defined already
@@ -793,13 +793,13 @@ define([
                     }else{
                 		toPM = false;  // Don't send to PM
                 		directives.push({id: 'message', attribute: 'append', value: "Unknown variable '" + variable + "'."});
-                        this.logging.log("solution-step", {
-                            type : "parse-error",
-                            node : this._model.active.getNodeName(this.currentID),
-                            property : "equation",
-                            value : parse,
-                            correctResult : this._model.given.getEquation(this.currentID),                     
-                            checkResult : "INCORRECT"
+						this.logging.log("solution-step", {
+							type: "parse-error",
+							node: this._model.active.getNodeName(this.currentID),
+							property: "equation",
+							value: parse,
+							correctResult: this._model.given.getEquation(this.currentID),
+							checkResult: "INCORRECT"
                         });
                     }
                 }, this);
@@ -942,14 +942,15 @@ define([
                         // Each control has its own function to update the
                         // the model and the graph.
                         this[directive.id+'Set'].call(this, directive.value);
-                        this.logging.log('seek-help', {
-                            type: 'seek-help',
-                            nodeID: this.currentID,
-                            node: this._model.active.getName(this.currentID),
-                            property: directive.id
-                        });
-                    } else
+						this.logging.log('seek-help', {
+							type: 'seek-help',
+							nodeID: this.currentID,
+							node: this._model.active.getName(this.currentID),
+							property: directive.id
+						});
+                    }else{
                         w.set(directive.attribute, directive.value);
+					}
                 } else {
                     this.logging.clientLog("warning", {
                         message: "Directive with unknown id, id :"+directive.id,

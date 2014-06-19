@@ -103,9 +103,9 @@ define([
 
         ready(function(){
 
-            var drawModel = new drawmodel(givenModel.active);
+			var drawModel = new drawmodel(givenModel.active);
+			drawModel.setLogging(session);
 
-            drawModel.setLogging(session);
 			// Wire up send to server
 			aspect.after(drawModel, "updater", function(){
 				session.saveProblem(givenModel.model);
@@ -226,11 +226,10 @@ define([
             menu.add("tableButton", function(){
                 console.debug("table button clicked");
                 var table = new Table(givenModel, query.m, session);
-                
-                table._logging.log('ui-action', {
-                    type: "menu-choice", 
-                    name: "table-button"
-                });
+				table._logging.log('ui-action', {
+					type: "menu-choice", 
+					name: "table-button"
+				});
                 table.show();
             });
 

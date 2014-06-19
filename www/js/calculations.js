@@ -39,7 +39,7 @@ define([
 	// Tags:
 	//          sliders, slider listener
     
-   return declare(null, {
+	return declare(null, {
 		
 		model: null,                        // model
 		active: {},                         // set current mode. TRUE = givenModel / FALSE = StudentModel
@@ -53,7 +53,7 @@ define([
 		mode : null,                        // Parameter to hold the mode value to differentiate graphs for author and student mode.
 
 		constructor: function(model, mode, logging){
-            console.log("***** In calculations constructor", this.given);
+			console.log("***** In calculations constructor", this.given);
             this.model = model;
 			this.mode = mode;
 			this.dialogWidget = registry.byId("solution");
@@ -140,9 +140,9 @@ define([
 					miss_node=if_id;
 				}
 				this._logging.clientLog("error", {
-	            	message:"graph/table created with missing node : "+miss_node,
-	            	functionTag : "findSolution"
-	            });
+					message:"graph/table created with missing node : "+miss_node,
+					functionTag : "findSolution"
+				});
 				return {status: 'error', type: 'missing', missingNode: miss_node};
 			}
 			/*
@@ -362,8 +362,8 @@ define([
 		},
 
 		setLogging: function(/*string*/ logging){
-	    	this._logging = logging;
-	    }
+			this._logging = logging;
+		}
 
     });
 });

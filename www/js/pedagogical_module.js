@@ -40,7 +40,6 @@ define([
     // Tags:
     //          pedagogical module (PM), student mode, coached mode, test mode
 
-
     var hints = {
         // Summary: Messages that are given to the user based on the type of user, 
         //      his or her answers, and the number of hints of that type.
@@ -526,28 +525,26 @@ define([
                 }else
                     returnObj.push({id: nodePart, attribute: "value", value: answer});
             }
-            var logObj = null;
-            if(interpretation == 'correct' || interpretation == 'optimal'){
-                logObj = {
-                    checkResult: 'CORRECT'
-                }   
-            } else {
-                logObj = {
-                    checkResult: 'INCORRECT',
-                    correctValue: this.model.student.getCorrectAnswer(id, nodePart),
-                    pmInterpretation: interpretation
-                }
+			var logObj = null;
+			if(interpretation == 'correct' || interpretation == 'optimal'){
+				logObj = {
+					checkResult: 'CORRECT'
+				};
+			}else{
+				logObj = {
+					checkResult: 'INCORRECT',
+					correctValue: this.model.student.getCorrectAnswer(id, nodePart),
+					pmInterpretation: interpretation
+				};
             }
-            logObj = lang.mixin({
-                type : "solution-check",
-                nodeID: id,
-                node: this.model.student.getName(id),
-                property: nodePart,
-                value: answer
-            }, logObj);
-            this.logging.log('solution-step', logObj);
-            
-
+			logObj = lang.mixin({
+				type : "solution-check",
+				nodeID: id,
+				node: this.model.student.getName(id),
+				property: nodePart,
+				value: answer
+			}, logObj);
+			this.logging.log('solution-step', logObj);
 
             // Local function that updates the status if it is not already set to "correct" or "demo"
             var updateStatus = function(returnObj, model){

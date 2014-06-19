@@ -216,14 +216,13 @@ define([
 					array.forEach(this._instance.getConnections(), function(connection){
                         if(connection.targetId == node.ID||connection.sourceId == node.ID)
                             this._instance.detach(connection);
-
 					}, this);
-					
-                    this._logging.log('ui-action', {
-                        type:"node-delete",
-                        node :this._givenModel.getName(node.ID), 
-                        nodeID : node.ID
-                    });
+
+					this._logging.log('ui-action', {
+						type: "node-delete",
+						node: this._givenModel.getName(node.ID),
+						nodeID: node.ID
+					});
 					//delete from  the model
 					this._givenModel.deleteNode(node.ID);
 					this.updater();

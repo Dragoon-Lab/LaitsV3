@@ -107,17 +107,17 @@ define([
 	return false;
     };
 
-    window.onfocus = function(){
-        logging.session.log('window-focus', {
-            type:"in-focus"
-        }); 
-    };
+	window.onfocus = function(){
+		logging.session.log('window-focus', {
+			type:"in-focus"
+		});
+	};
 
-    window.onblur = function(){
-        logging.session.log('window-focus', {
-            type:"out-of-focus"
-        }); 
-    };
+	window.onblur = function(){
+		logging.session.log('window-focus', {
+			type:"out-of-focus"
+		});
+	};
 
     return logging;
 });
