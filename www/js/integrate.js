@@ -26,6 +26,11 @@
 define([
     "dojo/_base/array", "dojo/_base/lang"
 ], function(array, lang){
+    // A helper function to find the decimal places
+    function decimalPlaces(number) {
+        var result= /^-?[0-9]+\.([0-9]+)$/.exec(number);
+        return result === null ? 0 : result[1].length;
+    }
     
     return {
 	eulersMethod: function(env, f, initial, times){
@@ -47,7 +52,9 @@ define([
 			values[i] += gradient[i]*times.step;
 		    }
 		}
-		ret.times.push(t);
+            // Using the helper function to ensure the times having
+            // the same decimal places with times.step
+		ret.times.push(t.toFixed(decimalPlaces(times.step)));
 		for(i=0; i<n; i++){
 		    ret.values[i].push(values[i]);
 		    // console.log("ret.values", ret.times, ret.values[i]);
