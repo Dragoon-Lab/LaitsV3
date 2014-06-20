@@ -490,12 +490,13 @@ define([
                     });
                  }    
                 this.logging.log('solution-step', {
-                    type : "parse-error",
-                    node : this._model.active.getNodeName(this.currentID),
-                    property : "initial-value",
-                    value : initial,
-                    correctResult : this._model.active.getInitial(this.currentID),
-                    checkResult : "INCORRECT"
+                    type: "parse-error",
+                    node: this._model.active.getName(this.currentID),
+                    id: this.currentID,
+                    property: "initial-value",
+                    value: initial,
+                    correctResult: this._model.active.getInitial(this.currentID),
+                    checkResult: "INCORRECT"
                 });
                 return {status: false}; 
             }
@@ -744,7 +745,8 @@ define([
                 directives.push({id: 'equation', attribute: 'status', value: 'incorrect'});
 				this.logging.log("solution-step", {
 					type: "parse-error",
-					node: this._model.active.getNodeName(this.currentID),
+					node: this._model.active.getName(this.currentID),
+                    nodeID: this.curentID,
 					property: "equation",
 					value: parse,
 					correctResult: this._model.given.getEquation(this.currentID),
@@ -770,14 +772,6 @@ define([
             			toPM = false;
             			directives.push({id: 'equation', attribute: 'status', value: 'incorrect'});
             			directives.push({id: 'message', attribute: 'append', value: "You cannot use '" + variable + "' in the equation. Function nodes cannot reference themselves."});
-						this.logging.log("solution-step", {
-							type: "parse-error",
-							node: this._model.active.getNodeName(this.currentID),
-							property: "equation",
-							value: parse,
-							correctResult: this._model.given.getEquation(this.currentID),
-							checkResult: "INCORRECT"
-						});
                         //need to ask if this will be a logged at all or it would be a client message or a UI message. The incorrectness of the equation will be logged from pedagogical module, i think logging it here would be redundant
 					}
 
@@ -793,16 +787,21 @@ define([
                     }else{
                 		toPM = false;  // Don't send to PM
                 		directives.push({id: 'message', attribute: 'append', value: "Unknown variable '" + variable + "'."});
-						this.logging.log("solution-step", {
-							type: "parse-error",
-							node: this._model.active.getNodeName(this.currentID),
-							property: "equation",
-							value: parse,
-							correctResult: this._model.given.getEquation(this.currentID),
-							checkResult: "INCORRECT"
-                        });
+						
                     }
                 }, this);
+                
+                if(!toPM){
+                    this.logging.log("solution-step", {
+                        type: "parse-error",
+                        node: this._model.active.getName(this.currentID),
+                        nodeID: this.currentID,
+                        property: "equation",
+                        value: parse,
+                        correctResult: this._model.given.getEquation(this.currentID),
+                        checkResult: "INCORRECT"
+                    });
+                }
 
                 // Expression now is written in terms of student IDs, when possible.
                 // Save with explicit parentheses for all binary operations.
