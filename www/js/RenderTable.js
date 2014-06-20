@@ -71,7 +71,7 @@ define([
             } 
             else //Error telling there are no nodes and Table cant be rendered
             {
-		paneText = "Nothing to plot.  Please define some quantitites"; 
+		paneText = "There is nothing to show in the table.  Please define some quantitites."; 
             }
             this.contentPane = new contentPane({
 		content:paneText
