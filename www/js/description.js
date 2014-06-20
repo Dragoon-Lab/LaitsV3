@@ -19,11 +19,18 @@
  *along with Dragoon.  If not, see <http://www.gnu.org/licenses/>.
  *
  */
+
 define([
     "dojo/_base/array", "dojo/_base/declare", 
     "dijit/registry", "dojo/dom",
     "./model", "./wraptext"
 ], function(array, declare, registry, dom, model, wrapText) {
+    // Summary: 
+    //          MVC for the description box in author mode
+    // Description:
+    //          Allows the author to modify the description and the times 
+    // Tags:
+    //          description box, author mode
 
     return declare(null, {
 
@@ -116,19 +123,27 @@ define([
 
 	closeDescriptionEditor: function(){
 	    var tin = dom.byId("authorSetDescription").value;
-        this.givenModel.setTaskDescription(tin.split("\n"));
+            this.givenModel.setTaskDescription(tin.split("\n"));
 	    
-        var timeObj = {
-		start: dom.byId("authorSetTimeStart").value,
-		end: dom.byId("authorSetTimeEnd").value,
-		step: dom.byId("authorSetTimeStep").value, 
+	    // Work-around for Bug #2379 note that this gives no
+	    // feedback to the user and applying defaults could break the
+	    // (t_end-t_start)/t_step > 0 constraint.
+	    var convert = function(xString, defaultValue){
+		var x = +xString;  // Use unary plus to convert to number
+		return isNaN(x)?defaultValue:x;
+	    };
+	    
+            var timeObj = {
+		start: convert(dom.byId("authorSetTimeStart").value, 0),
+		end: convert(dom.byId("authorSetTimeEnd").value, 10),
+		step: convert(dom.byId("authorSetTimeStep").value, 1),
 		units: dom.byId("authorSetTimeStepUnits").value
-        };
+            };
 	    
-        this.givenModel.setTime(timeObj);
-		var url = dom.byId("authorSetImage").value;
-		this.givenModel.setImage(url?{URL: url} : {});
-		this.showDescription();
+            this.givenModel.setTime(timeObj);
+	    var url = dom.byId("authorSetImage").value;
+	    this.givenModel.setImage(url?{URL: url} : {});
+	    this.showDescription();
 	}
 
     });
