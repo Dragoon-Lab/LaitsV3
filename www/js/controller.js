@@ -742,6 +742,11 @@ define([
                 // Expression now is written in terms of student IDs, when possible.
                 // Save with explicit parentheses for all binary operations.
                 var parsedEquation = parse.toString(true);
+				
+				//Check to see if parsedEquation returns a string, change to string if not
+				if (typeof parsedEquation == "number"){
+					parsedEquation = parsedEquation.toString();
+				}
 
                 // This duplicates code in equationDoneHandler
                 // console.log("********* Saving equation to model: ", parsedEquation);
