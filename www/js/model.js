@@ -566,11 +566,11 @@ define([
                 // Summary: tracks student progress (correct, incorrect) on a given node;
                 this.getNode(id).status[part] = status;
             },
-            isComplete: function(/*string*/ id, /*object*/ ignoreUnits){
+            isComplete: function(/*string*/ id, /*bool*/ unitsRequired){
                 // Summary: Test whether a node is completely filled out, correct or not
                 // Returns a boolean
                 // id: the node id
-                // ignoreUnits:  whether units need to be specified.
+                // unitsRequired:  whether units need to be specified.
                 // 
                 // If genus indicates a solution node or an optional node, 
                 // then all the fields must be filled in.  
@@ -582,11 +582,10 @@ define([
                 var node = this.getNode(id);
                 var initialEntered = node.type && node.type == "function" || node.initial;
                 var equationEntered = node.type && node.type == "parameter" || node.equation;
-                ignoreUnits = (ignoreUnits ? ignoreUnits : false); // A hack! to explicitly set this true as return value is going undefined because node.units value is not set in author mode in many cases, and during all the calls to this function ignoreUnits is never sent.
                 if(!node.genus || node.genus == "allowed" || node.genus == "preferred"){
                     return node.name && node.description &&
                             node.type && initialEntered &&
-                            (ignoreUnits || node.units) &&
+                            (!unitsRequired || node.units) &&
                             equationEntered;
                 }else if(node.genus == "initialValue"){
                     return node.name && node.description;

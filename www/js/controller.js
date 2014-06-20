@@ -445,7 +445,6 @@ define([
         addQuantity: function(source, destinations){
         },
 
-
         updateType: function(type){
             //update node type on canvas
             console.log("===========>   changing node class to " + type);
@@ -681,9 +680,10 @@ define([
                 directives.push({id: 'equation', attribute: 'status', value: 'incorrect'});
 				this.logging.log("solution-step", {
 					type: "parse-error",
-					node: this._model.active.getNodeName(this.currentID),
+					node: this._model.active.getName(this.currentID),
+					nodeID: this.curentID,
 					property: "equation",
-					value: parse,
+					value: inputEquation,
 					correctResult: this._model.given.getEquation(this.currentID),
 					checkResult: "INCORRECT",
 					message: err
@@ -708,14 +708,14 @@ define([
             			directives.push({id: 'equation', attribute: 'status', value: 'incorrect'});
             			directives.push({id: 'message', attribute: 'append', value: "You cannot use '" + variable + "' in the equation. Function nodes cannot reference themselves."});
 						this.logging.log("solution-step", {
-							type: "parse-error",
-							node: this._model.active.getNodeName(this.currentID),
+							type: "self-referencing-function",
+							node: this._model.active.getName(this.currentID),
+							nodeID: this.currentID,
 							property: "equation",
-							value: parse,
+							value: inputEquation,
 							correctResult: this._model.given.getEquation(this.currentID),
 							checkResult: "INCORRECT"
 						});
-                        //need to ask if this will be a logged at all or it would be a client message or a UI message. The incorrectness of the equation will be logged from pedagogical module, i think logging it here would be redundant
 					}
 
         		    if(givenID || ignoreUnknownTest){
@@ -731,13 +731,14 @@ define([
                 		toPM = false;  // Don't send to PM
                 		directives.push({id: 'message', attribute: 'append', value: "Unknown variable '" + variable + "'."});
 						this.logging.log("solution-step", {
-							type: "parse-error",
-							node: this._model.active.getNodeName(this.currentID),
+							type: "unknown-variable",
+							node: this._model.active.getName(this.currentID),
+							nodeID: this.currentID,
 							property: "equation",
-							value: parse,
+							value: inputEquation,
 							correctResult: this._model.given.getEquation(this.currentID),
 							checkResult: "INCORRECT"
-                        });
+						});
                     }
                 }, this);
 
