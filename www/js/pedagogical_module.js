@@ -1,4 +1,3 @@
-/* global define */
 /**
  *Dragoon Project
  *Arizona State University
@@ -25,15 +24,21 @@
  * @author: Brandon Strong
  **/
 
-/**
- * Pedagogical module that accepts student entries, and returns an object with the  
- * id of the node, a message with encouragement or a hint, and the status of the 
- * attempt (correct, incorrect, demo, or premature).
- **/
+/* global define */
 
 define([
-    "dojo/_base/array", "dojo/_base/declare", "./equation"
-], function(array, declare, check){
+    "dojo/_base/array", "dojo/_base/declare", "dojo/_base/lang", "./equation"
+], function(array, declare, lang, check){
+    // Summary: 
+    //          Processes student selections and returns instructions to the 
+    //          program
+    // Description:
+    //          A pedagogical module that accepts student entries, and returns 
+    //          an object with the ID of the node, a message with encouragement 
+    //          or a hint, and the status of the attempt (correct, incorrect, 
+    //          demo, or premature).
+    // Tags:
+    //          pedagogical module (PM), student mode, coached mode, test mode
 
     var hints = {
         // Summary: Messages that are given to the user based on the type of user, 
@@ -480,16 +485,6 @@ define([
              This is an example of logging via direct function calls
              Note that I haven't set correct-value.  For most controls, it should be set
              */
-            if(this.logging){
-                this.logging.log('solution-step', {
-                    node: studentID,
-                    name: this.model.student.getName(givenID),
-                    type: nodePart,
-                    value: answer,
-                    checkResult: (interpretation == 'correct' || interpretation == 'optimal') ? 'CORRECT' : 'INCORRECT',
-                    order: interpretation
-                });
-            }
             return interpretation;
         },
 	
@@ -514,6 +509,7 @@ define([
             var interpretation = this._getInterpretation(id, nodePart, answer);
             var returnObj = [], currentStatus;
             var givenID;  // ID of the correct node, if it exists
+			var solutionGiven = false;
 
             // Send correct answer to controller if status will be set to 'demo'
             if(interpretation === "lastFailure" || interpretation === "secondFailure"){
@@ -527,9 +523,32 @@ define([
                         returnObj.push({id: "message", attribute: "append", value: "You have already created all the necessary nodes."});
                     }else
                         console.error("Unexpected null from model.getCorrectAnswer().");
-                }else
+                }else{
                     returnObj.push({id: nodePart, attribute: "value", value: answer});
+					solutionGiven = true;
+                }
             }
+			var logObj = null;
+			if(interpretation == 'correct' || interpretation == 'optimal'){
+				logObj = {
+					checkResult: 'CORRECT'
+				};
+			}else{
+				logObj = {
+					checkResult: 'INCORRECT',
+					correctValue: this.model.student.getCorrectAnswer(id, nodePart),
+					pmInterpretation: interpretation
+				};
+            }
+			logObj = lang.mixin({
+				type : "solution-check",
+				nodeID: id,
+				node: this.model.student.getName(id),
+				property: nodePart,
+				value: answer,
+				solutionProvided: solutionGiven
+			}, logObj);
+			this.logging.log('solution-step', logObj);
 
             // Local function that updates the status if it is not already set to "correct" or "demo"
             var updateStatus = function(returnObj, model){

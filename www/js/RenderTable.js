@@ -71,7 +71,7 @@ define([
             } 
             else //Error telling there are no nodes and Table cant be rendered
             {
-		paneText = "Nothing to plot.  Please define some quantitites"; 
+		paneText = "There is nothing to show in the table.  Please define some quantitites."; 
             }
             this.contentPane = new contentPane({
 		content:paneText
@@ -115,7 +115,7 @@ define([
 	    var solution = this.findSolution(true, this.plotVariables); // Return value from findSlution in calculation, returns an array and we check for status and any missing nodes
         if(solution.status=="error" && solution.type=="missing")
 	    {
-	       this.dialogWidget.set("content", "<div>"+solution.missingNode+" is missing</div>"); //We show the error message like "A Node is Missing"
+	       this.dialogWidget.set("content", "<div>Not all nodes have been completed. For example, \""+solution.missingNode+"\" is not yet fully defined."); //We show the error message like "A Node is Missing"
            return;
 	    }
         
