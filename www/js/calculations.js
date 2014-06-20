@@ -215,18 +215,6 @@ define([
 		 * @param: domText - text to be contained in dom. e.g <label>TEXT</label>. domText = TEXT in this case
 		 */
 
-		// This should be removed in favor of dojo/dom-create or explicit code.
-		// See Bug #2351.
-		createDom: function(domType, domId, domParam, domText){
-			var dom = "<" + domType;
-			dom += domParam? " "+ domParam:"";
-			dom += domId?" id='" + domId + "'> ":">";
-            dom += domText || "";
-            dom += "</" + domType + ">";
-            console.debug("dom is " + dom);
-            return dom;
-		},
-		
 		// This function is simply helping text handlers to apply the value to new graphs
 		applyTextValueToGraph: function(textBoxID, paramID){
 			// Using a JavaScript closure:
@@ -314,7 +302,7 @@ define([
 				//create label for name of a textbox
 				//create input for a textbox
 				//create div for embedding a slider
-				this.dialogContent += this.createDom('label', '', '', labelText + " = ");
+                this.dialogContent += "\<label>" + labelText + " = " + "\</label>";
 				// The input element does not have an end tag so we can't use
 				// this.createDom().
 				// Set width as number of characters.
@@ -326,7 +314,7 @@ define([
 				this.dialogContent += "<br>";
 				// DOM id for slider <div>
 				sliderID[paramID] = this.sliderID + "_" + paramID;
-				this.dialogContent += this.createDom('div', sliderID[paramID]);
+                this.dialogContent += "<div id='" + sliderID[paramID] + "'> " + "\</div>";
             }
 
 			var dialogWidget = registry.byId("solution");

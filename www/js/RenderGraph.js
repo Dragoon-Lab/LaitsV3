@@ -101,8 +101,8 @@ define([
 		}
 
 		 array.forEach(this.active.plotVariables, function(id){
-			this.dialogContent += this.createDom('div', "chart" + id);
-			this.dialogContent += this.createDom('div', "legend" + id, "class='legend'");
+             this.dialogContent += "<div id='chart" + id + "'> " + "\</div>";
+             this.dialogContent += "<div class='legend' id='legend" + id + "'> " + "\</div>";
 	            }, this);
 		    //plot sliders 
 	            this.createSliderAndDialogObject();
