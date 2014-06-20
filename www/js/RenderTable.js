@@ -122,10 +122,10 @@ define([
         
             for(var i=0; i<solution.times.length; i++){
 		tableString += "<tr>";
-		tableString += "<td align='center'>" + solution.times[i] + "</td>";
+		tableString += "<td align='center'>" + solution.times[i].toPrecision(3) + "</td>";
 		//set values in table according to their table-headers
 		array.forEach(solution.plotValues, function(value){
-                    tableString += "<td align='center'>" + value[i].toFixed(2) + "</td>";
+                    tableString += "<td align='center'>" + value[i].toPrecision(3) + "</td>";
 		});
 		tableString += "</tr>";
             }
