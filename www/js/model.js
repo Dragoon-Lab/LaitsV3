@@ -27,8 +27,8 @@
  **/
 
 define([
-    "dojo/_base/array", "dojo/_base/lang"
-], function(array, lang){
+    "dojo/_base/array", "dojo/_base/lang", "dojo/dom"
+], function(array, lang, dom){
     // Summary: 
     //          Manages the model in memory for the MVC (model view controller)
     // Description:
@@ -467,7 +467,21 @@ define([
                 }
                 nodes.splice(index, 1);
                 this.getUndefinedNodes().push(name);
+            },
+
+            setUndefinedNodesText: function(){
+                var nodes = this.getUndefinedNodes();
+                var nodeTextArea = dom.byId("undefinedNodesText");
+                if(nodes.length > 0){
+                    nodeTextArea.innerHTML = "Currently undefined nodes: ";
+                    array.forEach(nodes, function(node){
+                        nodeTextArea.innerHTML += node + ",";
+                    });
+                } else {
+                    nodeTextArea.innerHTML = "";
+                }
             }
+
         };
 
         obj.given = lang.mixin({
@@ -499,9 +513,9 @@ define([
                 return obj.model.task.givenModelNodes;
             },
             getUndefinedNodes: function(){
+                console.log("REID ---- undefinedNodes is", obj.model.task.givenUndefinedNodes, "object.model.task:", obj.model.task);
                 return obj.model.task.givenUndefinedNodes;
-            },
-            getName: function(/*string*/ id){
+            },            getName: function(/*string*/ id){
                 // Summary: returns the name of a node matching the student model.
                 //      If no match is found, then return null.
                 var node = this.getNode(id);

@@ -274,13 +274,13 @@ define([
     	    if(this.controlMap.name){
         		var name = registry.byId(this.controlMap["name"]);
                 //If the created node was in the undefinedNodes array, remove it
-                var index = this._model.getUndefinedNodes().indexOf(name.value);
+                var index = this._model.active.getUndefinedNodes().indexOf(name.value);
                 if(index > -1){
-                    this._model.getUndefinedNodes().splice(index, 1);
+                    this._model.active.getUndefinedNodes().splice(index, 1);
                 }
         		name.set("value", "");
     	    }
-            console.log("REID *****  undefinedNodes: ", this._model.getUndefinedNodes());
+            console.log("REID *****  undefinedNodes: ", this._model.active.getUndefinedNodes());
 
     	    // Undo Description value (only needed in AUTHOR mode)
     	    if(this.controlMap.description){
@@ -312,8 +312,11 @@ define([
             var nodeName = graphObjects.getNodeName(this._model.active,this.currentID);
             if(dom.byId(this.currentID + 'Label'))
                 domConstruct.place(nodeName, this.currentID + 'Label', "replace");
-	    else
-		domConstruct.place('<div id="'+this.currentID+'Label" class="bubble">'+nodeName+'</div>', this.currentID);
+	       else
+		      domConstruct.place('<div id="'+this.currentID+'Label" class="bubble">'+nodeName+'</div>', this.currentID);
+
+
+            this._model.active.setUndefinedNodesText();
 
 	    // In case any tool tips are still open.
             this.closePops();
@@ -795,6 +798,7 @@ define([
                             // console.log("       substituting ", variable, " -> ", studentID);
                             parse.substitute(variable, subID);
                         }else{
+                            this._model.active.getUndefinedNodes().push(variable);
                             directives.push({id: 'message', attribute: 'append', value: "Quantity '" + variable + "' not defined yet."});
                         }
                     }else{
