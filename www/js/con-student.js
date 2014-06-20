@@ -140,9 +140,9 @@ define([
          */
 	
 		handleInitial: function(initial){
- 			var initialWidget = dom.byId(this.widgetMap.initial);
 			//IniFlag returns the status and initial value
-			var IniFlag = typechecker.checkInitialValue(initial, this.lastInitialValue, initialWidget, "studentController");
+            var initialWidget = registry.byId(initialValue);
+            var IniFlag = typechecker.checkInitialValue(initial, this.lastInitial, initialWidget, "studentController");
 			if(IniFlag.status){ 
 				//If the initial value is not a number or is unchanged from 
 				// previous value we dont process
@@ -150,15 +150,17 @@ define([
 				this._model.active.setInitial(this.currentID, newInitial);
 				this.applyDirectives(this._PM.processAnswer(this.currentID, 'initial', newInitial));
             }else if(IniFlag.errorType){
+                console.log(this._model.active);
 				this.logging.log('solution-step', {
                     type: IniFlag.errorType,
-                    node: this._model.active.getNodeName(this.currentID),
+                    node: this._model.active.getName(this.currentID),
                     property: "initial-value",
                     value: initial,
                     correctResult: this._model.active.getInitial(this.currentID),
                     checkResult: "INCORRECT"
 				});
 			}
+
         },
         
         initialSet: function(value){

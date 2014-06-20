@@ -31,7 +31,9 @@ define([
 			popup.close(this.myTooltipDialog2);
 		},
 
-		checkInitialValue: function(initialString, lastInitial, widget){
+
+		checkInitialValue: function(inputString, lastInput, widget, source){
+			//source variable contains the source of this function call which could be used for logging: sachin can use it
 			// In case any tool tips are still open.
 			var myTooltipDialog = new TooltipDialog({
 				style: "width: 150px;",
@@ -50,23 +52,25 @@ define([
 			this.closePops();
 
 			// Don't do anything if the value has not changed.
-			initialString = initialString.trim();
-			if(initialString == lastInitial.value){
+			inputString = inputString.trim();
+            console.log("is,liv",inputString,lastInput.value);
+			if(inputString == lastInput.value){
 				return {status: false};
 			}
-			lastInitial.value = initialString;
+			lastInput.value = inputString;
 
 			// we do this type conversion because we used a textbox for 
 			// initialvalue input which is a numerical
-			var initial= +initialString; // usage of + unary operator converts a string to number
+			var input= +inputString; // usage of + unary operator converts a string to number
 
 			// use isNaN to test if conversion worked.
-			if(isNaN(initial)){
-				var errorType;
+
+			if(isNaN(input)){
+    var errorType;
 				// Put in checks here
 				console.log('not a number');
 				//initialValue is the id of the textbox, we get the value in the textbox
-				if(!initialString.match('%')){ //To check the decimals against percentages
+				if(!inputString.match('%')){ //To check the decimals against percentages
 					console.warn("Sachin should log when this happens");
 					popup.open({
 						popup: myTooltipDialog2,
@@ -86,7 +90,8 @@ define([
 				return {status: false, errorType: errorType};
 			}
 			// updating node editor and the model.
-			return {status: true, value: initial};
+			return {status: true, value: input};
 		}
 	};
+
 });

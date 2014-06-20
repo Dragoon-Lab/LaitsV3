@@ -261,8 +261,8 @@ define([
          Handler for initial value input
          */
         handleInitial: function(initial){
-            var initialWidget = registry.byId(this.widgetMap.initial);
 			//IniFlag contains the status and initial value
+            var initialWidget = registry.byId(initialValue);
             var IniFlag = typechecker.checkInitialValue(initial, this.lastInitial, initialWidget, "authorController");
             if(IniFlag.status){
 				// If the initial value is not a number or is unchanged from 
@@ -270,6 +270,16 @@ define([
 				var newInitial = IniFlag.value;
 				this.applyDirectives(this.authorPM.process(this.currentID, "initial", newInitial, true));
 				console.log("In AUTHOR mode. Initial value is: " + newInitial);
+            }else if(IniFlag.errorType){
+                console.log(this._model.active);
+                this.logging.log('solution-step', {
+                    type: IniFlag.errorType,
+                    node: this._model.active.getName(this.currentID),
+                    property: "initial-value",
+                    value: initial,
+                    correctResult: this._model.active.getInitial(this.currentID),
+                    checkResult: "INCORRECT"
+                });
             }
         },
         

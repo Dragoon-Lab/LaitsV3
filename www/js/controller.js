@@ -825,7 +825,7 @@ define([
 
             var initial = model.getInitial(nodeid);
             console.log('initial value is ', initial);
-            this.lastInitial.value = (typeof initial === "number")?initial.toString():null;
+            this.lastInitial.value=(typeof initial === "number")?initial.toString():null;
             registry.byId(this.controlMap.initial).attr('value', initial || '');
 
             var unit = model.getUnits(nodeid);

@@ -1,4 +1,3 @@
-/* global define, Image */
 /**
  *Dragoon Project
  *Arizona State University
@@ -65,45 +64,52 @@ define([
             //Define all the variables necessary to fire onchange events and to pop up tooltips
 			//for authorSetTimeStart
             var descWidgetStart = registry.byId(this.descControlMap.setTimeStart);
-            var descWidgetStart1 = dom.byId(this.descControlMap.setTimeStart);
+            var descWidgetStart1 = registry.byId(authorSetTimeStart);
             //for authorSetTimeStop
             var descWidgetStop = registry.byId(this.descControlMap.setTimeStop);
-            var descWidgetStop1 = dom.byId(this.descControlMap.setTimeStop);
+            var descWidgetStop1 = registry.byId(authorSetTimeEnd);
             //for authorSetTimeStep
             var descWidgetStep = registry.byId(this.descControlMap.setTimeStep);
-            var descWidgetStep1 = dom.byId(this.descControlMap.setTimeStep);
-
+            var descWidgetStep1 = registry.byId(authorSetTimeStep);
             // This event gets fired if student hits TAB or input box
             // goes out of focus.
-            //for Start Time Field
             var ret_start_time={ 'status': true};
             var ret_stop_time={ 'status': true};
             var ret_step_time={ 'status': true};
             console.log(ret_start_time);
+
+           //Present values in Times are copied to an object which represent the lastTime
+           //This object helps us to compare if the recent value has been changed compared to last time
+           //and responds accordingly
+            var lastStartTime = {value: dom.byId(this.descControlMap.setTimeStart).value};
+            var lastStopTime = {value: dom.byId(this.descControlMap.setTimeStop).value};
+            var lastStepTime = {value: dom.byId(this.descControlMap.setTimeStep).value };
+
+            console.log("LST",lastStartTime);
+            //for start time field
+
             descWidgetStart.on('change', lang.hitch(this, function(){
-                var initial_start_time=dom.byId(this.descControlMap.setTimeStart).value;
-				ret_start_time=typechecker.checkInitialValue(initial_start_time,100,descWidgetStart1,"Description Time Start");
+                initial_start_time=dom.byId(this.descControlMap.setTimeStart).value;
+				ret_start_time=typechecker.checkInitialValue(initial_start_time,lastStartTime,descWidgetStart1,"Description Time Start");
 				console.log("returned",ret_start_time);
             }));
 
             //for End Time Field
 
             descWidgetStop.on('change', lang.hitch(this, function(){
-
                 var initial_stop_time=dom.byId(this.descControlMap.setTimeStop).value;
                 console.log(ret_start_time);
-                ret_stop_time=typechecker.checkInitialValue(initial_stop_time,100,descWidgetStop1, "Description Time End");
+                ret_stop_time=typechecker.checkInitialValue(initial_stop_time,lastStopTime,descWidgetStop1, "Description Time End");
             }));
             //for Time Step Field
             descWidgetStep.on('change', lang.hitch(this, function(){
                 var initial_step_time=dom.byId(this.descControlMap.setTimeStep).value;
-                ret_step_time=typechecker.checkInitialValue(initial_step_time,100,descWidgetStep1, "Description Time Step");
+                ret_step_time=typechecker.checkInitialValue(initial_step_time,lastStepTime,descWidgetStep1, "Description Time Step");
             }));
             this._descEditor = registry.byId('authorDescDialog');
 
             aspect.around(this._descEditor, "hide", lang.hitch(this, function(doHide){
                 var myThis = this;
-                console.log("this",this);
                 return function(){
                     var equation = registry.byId("equationBox");
                     console.log(ret_start_time);
@@ -112,15 +118,17 @@ define([
                     var initial_start_time=dom.byId(myThis.descControlMap.setTimeStart).value;
                     var initial_stop_time=dom.byId(myThis.descControlMap.setTimeStop).value;
                     var initial_step_time=dom.byId(myThis.descControlMap.setTimeStep).value;
-                    if(isNaN(+initial_start_time) || isNaN(+initial_stop_time) || isNaN(+initial_step_time) ){
-                        console.log("crisis alert message ", "Check For Non-Numeric Times");
-                        crisisMessage.innerHTML = "Check For Non-Numeric Times";
-                        crisis.show();
-                    }else{
-                        // Else, do normal closeEditor routine and hide
-                        ret_start_time=typechecker.checkInitialValue(initial_start_time,100,descWidgetStart1,"Description Time Start");
-                        ret_stop_time=typechecker.checkInitialValue(initial_stop_time,100,descWidgetStop1, "Description Time End");
-                        ret_step_time=typechecker.checkInitialValue(initial_step_time,100,descWidgetStep1, "Description Time Step");
+                    //We check the return status and error type for Start Time, Stop Time,Time Step
+                    // and incase there is an error with a defined type
+                    // we don't close the description editor and further prompt to fix errors in input
+                    ret_start_time=typechecker.checkInitialValue(initial_start_time,lastStartTime,descWidgetStart1,"Description Time Start");
+                    if(!ret_start_time.status && ret_start_time.errorType) return;
+                    ret_stop_time=typechecker.checkInitialValue(initial_stop_time,lastStopTime,descWidgetStop1, "Description Time End");
+                    if(!ret_stop_time.status && ret_stop_time.errorType) return;
+                    ret_step_time=typechecker.checkInitialValue(initial_step_time,lastStepTime,descWidgetStep1, "Description Time Step");
+                    if(!ret_step_time.status && ret_step_time.errorType) return;
+                         //after it has passed all those checks we
+                        // do normal closeEditor routine and hide
                         doHide.apply(myThis._descEditor);
                         console.log("close description editor is being called");
                         typechecker.closePops();
@@ -136,7 +144,7 @@ define([
                         var url = dom.byId("authorSetImage").value;
                         myThis.givenModel.setImage(url?{URL: url} : {});
                         myThis.showDescription();
-                    }
+
                 };
             }));
         },
@@ -212,5 +220,6 @@ define([
 				showText();
 			}
 		}
+
     });
 });
