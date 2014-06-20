@@ -53,6 +53,9 @@ define([
             ready(this, "populateSelections");
 	    this.init();
         },
+
+        resettableControls: ["initial","equation"],
+
 	init:function(){
 		 aspect.after(this, "closeEditor", function(){
 			var directives = this._PM.notifyCompleteness(this._model);	
