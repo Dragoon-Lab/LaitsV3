@@ -444,6 +444,16 @@ define([
                     w.set("disabled", newValue);
                 });
             }, this);
+
+            //undo background color on change
+            array.forEach(this.resettableControls, function(con){
+                  var w = registry.byId(this.controlMap[con]);
+                  w.on("keydown", lang.hitch(this, function(evt){
+                    if(evt.keyCode != keys.ENTER){
+                         w.set('status','');
+                    }
+                  }));
+            }, this);
         },
         // Need to save state of the node editor in the status section
         // of the student model.  See documentation/json-format.md

@@ -163,10 +163,13 @@ define([
         ready(this, "initAuthorHandles");
         },
 
-    /*
-     Stub for setting up state saving in AUTHOR mode.
-     */
+       resettableControls: ["name","description","initial","units","equation"],
+
+        /*
+         Stub for setting up state saving in AUTHOR mode.
+         */
     setState: function(){},
+
 
         controlMap: {
         inputs:"setInput",
@@ -194,41 +197,7 @@ define([
         kind.on('Change', lang.hitch(this, function(){
                 return this.disableHandlers || this.handleKind.apply(this, arguments);
         }));
-
-            //undo color on change in the Name widget.
-            var nameWidget = registry.byId(this.controlMap.name);
-            nameWidget.on("keydown", lang.hitch(this, function(evt){
-				if(evt.keyCode != keys.ENTER){
-					nameWidget.set('status','');
-				}
-            }));
-
-            //undo colors on change in the description widget
-            var descriptionWidget = registry.byId(this.controlMap.description);
-            descriptionWidget.on("keydown", lang.hitch(this, function(evt){
-                if(evt.keyCode != keys.ENTER){
-                    descriptionWidget.set('status','');
-                }
-            }));
-
-            //undo colors on change in the intial value widget
-            var initialValueWidget = registry.byId(this.controlMap.initial);
-            initialValueWidget.on("keydown", lang.hitch(this, function(evt){
-                if(evt.keyCode != keys.ENTER){
-                    initialValueWidget.set('status','');
-                }
-            }));
-
-            //undo colors on change in the units widget
-            var unitsWidget = registry.byId(this.controlMap.units);
-            unitsWidget.on("keydown", lang.hitch(this, function(evt){
-                if(evt.keyCode != keys.ENTER){
-                    unitsWidget.set('status','');
-                }
-            }));
-
-
-        },
+      },
         /*
          Handler for type selector
          */
