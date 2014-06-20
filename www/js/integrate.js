@@ -26,12 +26,14 @@
 define([
     "dojo/_base/array", "dojo/_base/lang"
 ], function(array, lang){
-    // A helper function to find the decimal places
-    function decimalPlaces(number) {
-        var result= /^-?[0-9]+\.([0-9]+)$/.exec(number);
-        return result === null ? 0 : result[1].length;
-    }
-    
+    // Summary: 
+    //          Solves a system of differential equations
+    // Description:
+    //          General routine to solve a system of differential equations 
+    //          using Euler's method.
+    // Tags:
+    //          equation
+
     return {
 	eulersMethod: function(env, f, initial, times){
 	    // Summary:  Use Euler's method to find time evolution of a 
@@ -52,9 +54,7 @@ define([
 			values[i] += gradient[i]*times.step;
 		    }
 		}
-            // Using the helper function to ensure the times having
-            // the same decimal places with times.step
-		ret.times.push(t.toFixed(decimalPlaces(times.step)));
+		ret.times.push(t);
 		for(i=0; i<n; i++){
 		    ret.values[i].push(values[i]);
 		    // console.log("ret.values", ret.times, ret.values[i]);
