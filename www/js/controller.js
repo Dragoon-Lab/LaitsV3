@@ -26,8 +26,8 @@ define([
     'dojo/aspect', 'dojo/dom', "dojo/dom-class", "dojo/dom-construct", 'dojo/dom-style',
     'dojo/keys', 'dojo/on', "dojo/ready", 
     "dijit/popup", 'dijit/registry', "dijit/TooltipDialog",
-    './equation', './graph-objects'
-], function(array, declare, lang, aspect, dom, domClass, domConstruct, domStyle, keys, on, ready, popup, registry, TooltipDialog, expression, graphObjects){
+    './equation', './graph-objects','./typechecker'
+], function(array, declare, lang, aspect, dom, domClass, domConstruct, domStyle, keys, on, ready, popup, registry, TooltipDialog, expression, graphObjects, typechecker){
 	// Summary: 
 	//          Controller for the node editor, common to all modes
 	// Description:
@@ -295,7 +295,7 @@ define([
 		domConstruct.place('<div id="'+this.currentID+'Label" class="bubble">'+nodeName+'</div>', this.currentID);
 
 	    // In case any tool tips are still open.
-            this.closePops();
+            typechecker.closePops();
             //this.disableHandlers = false;
 			this.logging.log('ui-action', {
 				type: 'close-dialog-box',

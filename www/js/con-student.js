@@ -141,8 +141,8 @@ define([
 	
 		handleInitial: function(initial){
 			//IniFlag returns the status and initial value
-            var initialWidget = registry.byId(initialValue);
-            var IniFlag = typechecker.checkInitialValue(initial, this.lastInitial, initialWidget, "studentController");
+            var initialWidget = dom.byId(this.widgetMap.initial);
+            var IniFlag = typechecker.checkInitialValue(initial, this.lastInitial, initialWidget);
 			if(IniFlag.status){ 
 				//If the initial value is not a number or is unchanged from 
 				// previous value we dont process

@@ -32,8 +32,7 @@ define([
 		},
 
 
-		checkInitialValue: function(inputString, lastInput, widget, source){
-			//source variable contains the source of this function call which could be used for logging: sachin can use it
+		checkInitialValue: function(inputString, lastInput, widget){
 			// In case any tool tips are still open.
 			var myTooltipDialog = new TooltipDialog({
 				style: "width: 150px;",
@@ -53,7 +52,6 @@ define([
 
 			// Don't do anything if the value has not changed.
 			inputString = inputString.trim();
-            console.log("is,liv",inputString,lastInput.value);
 			if(inputString == lastInput.value){
 				return {status: false};
 			}
@@ -66,6 +64,7 @@ define([
 			// use isNaN to test if conversion worked.
 
 			if(isNaN(input)){
+
     var errorType;
 				// Put in checks here
 				console.log('not a number');

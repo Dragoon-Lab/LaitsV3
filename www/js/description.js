@@ -33,118 +33,99 @@ define([
 	//          description box, author mode
 
 	return declare(null, {
-
         givenModel: null,
         constructor: function(/*model*/ givenModel){
-            console.log("registry",registry);
             this.givenModel = givenModel;
-            var timeObj = givenModel.getTime();
-            dom.byId("authorSetTimeStart").value = timeObj.start;
-            dom.byId("authorSetTimeEnd").value = timeObj.end;
-            dom.byId("authorSetTimeStep").value = timeObj.step;
-            dom.byId("authorSetTimeStepUnits").value = timeObj.units || "seconds";
+            this.timeObj = givenModel.getTime();
+            //Read Values from timeObj and place them in description editor
+            //We also assign them as previous start, stop times and time step
+            dom.byId("authorSetTimeStart").value = this.timeObj.start;
+            this.lastStartTime = {value: this.timeObj.start};
 
+            dom.byId("authorSetTimeEnd").value = this.timeObj.end;
+            this.lastStopTime = {value: this.timeObj.end};
+
+            dom.byId("authorSetTimeStep").value = this.timeObj.step;
+            this.lastStepTime = {value: this.timeObj.step};
+
+            dom.byId("authorSetTimeStepUnits").value = this.timeObj.units || "seconds";
             dom.byId("authorSetImage").value = givenModel.getImageURL() || "";
             dom.byId("authorSetDescription").value = this.serialize(
 				givenModel.getTaskDescription() ? givenModel.getTaskDescription() : ""	
 			);
 			ready(this, this._initHandles);
 		},
-		descControlMap : {
-			setTimeStart: "authorSetTimeStart",
-			setTimeStep: "authorSetTimeStep",
-			setTimeStop: "authorSetTimeEnd"
-		},
 
-		widgetMap: {
-            crisisAlert: 'crisisAlertMessage'
-		},
         //set up event handling with UI components
         _initHandles: function() {
             //Define all the variables necessary to fire onchange events and to pop up tooltips
 			//for authorSetTimeStart
-            var descWidgetStart = registry.byId(this.descControlMap.setTimeStart);
-            var descWidgetStart1 = registry.byId(authorSetTimeStart);
+            var descWidgetStart = registry.byId('authorSetTimeStart');
+            var start_node=dom.byId('authorSetTimeStart');
             //for authorSetTimeStop
-            var descWidgetStop = registry.byId(this.descControlMap.setTimeStop);
-            var descWidgetStop1 = registry.byId(authorSetTimeEnd);
+            var descWidgetStop = registry.byId('authorSetTimeEnd');
+            var stop_node=dom.byId('authorSetTimeEnd');
             //for authorSetTimeStep
-            var descWidgetStep = registry.byId(this.descControlMap.setTimeStep);
-            var descWidgetStep1 = registry.byId(authorSetTimeStep);
+            var descWidgetStep = registry.byId('authorSetTimeStep');
+            var step_node=dom.byId('authorSetTimeStep');
             // This event gets fired if student hits TAB or input box
             // goes out of focus.
-            var ret_start_time={ 'status': true};
-            var ret_stop_time={ 'status': true};
-            var ret_step_time={ 'status': true};
-            console.log(ret_start_time);
-
-           //Present values in Times are copied to an object which represent the lastTime
-           //This object helps us to compare if the recent value has been changed compared to last time
-           //and responds accordingly
-            var lastStartTime = {value: dom.byId(this.descControlMap.setTimeStart).value};
-            var lastStopTime = {value: dom.byId(this.descControlMap.setTimeStop).value};
-            var lastStepTime = {value: dom.byId(this.descControlMap.setTimeStep).value };
-
-            console.log("LST",lastStartTime);
             //for start time field
+            descWidgetStart.on("change", lang.hitch(this, function(){
+                var initial_start_time=start_node.value;
+                var ret_start_time=typechecker.checkInitialValue(initial_start_time,this.lastStartTime,start_node);
+                if(ret_start_time.value) this.timeObj.start=ret_start_time.value;
+           }));
 
-            descWidgetStart.on('change', lang.hitch(this, function(){
-                initial_start_time=dom.byId(this.descControlMap.setTimeStart).value;
-				ret_start_time=typechecker.checkInitialValue(initial_start_time,lastStartTime,descWidgetStart1,"Description Time Start");
-				console.log("returned",ret_start_time);
+            //for end time field
+            descWidgetStop.on("change", lang.hitch(this, function(){
+                var initial_stop_time=stop_node.value;
+                var ret_stop_time=typechecker.checkInitialValue(initial_stop_time,this.lastStopTime,stop_node);
+                if(ret_stop_time.value) this.timeObj.end=ret_stop_time.value;
             }));
 
-            //for End Time Field
+            //for  time step field
+            descWidgetStep.on("change", lang.hitch(this, function(){
+                var initial_step_time=step_node.value;
+                var ret_step_time=typechecker.checkInitialValue(initial_step_time,this.lastStepTime,step_node);
+                if(ret_step_time.value) this.timeObj.step=ret_step_time.value;
+            }));
 
-            descWidgetStop.on('change', lang.hitch(this, function(){
-                var initial_stop_time=dom.byId(this.descControlMap.setTimeStop).value;
-                console.log(ret_start_time);
-                ret_stop_time=typechecker.checkInitialValue(initial_stop_time,lastStopTime,descWidgetStop1, "Description Time End");
-            }));
-            //for Time Step Field
-            descWidgetStep.on('change', lang.hitch(this, function(){
-                var initial_step_time=dom.byId(this.descControlMap.setTimeStep).value;
-                ret_step_time=typechecker.checkInitialValue(initial_step_time,lastStepTime,descWidgetStep1, "Description Time Step");
-            }));
             this._descEditor = registry.byId('authorDescDialog');
-
             aspect.around(this._descEditor, "hide", lang.hitch(this, function(doHide){
                 var myThis = this;
                 return function(){
-                    var equation = registry.byId("equationBox");
-                    console.log(ret_start_time);
-                    var crisis = registry.byId("crisisAlertMessage");
-                    var crisisMessage = dom.byId('crisisMessage');
-                    var initial_start_time=dom.byId(myThis.descControlMap.setTimeStart).value;
-                    var initial_stop_time=dom.byId(myThis.descControlMap.setTimeStop).value;
-                    var initial_step_time=dom.byId(myThis.descControlMap.setTimeStep).value;
                     //We check the return status and error type for Start Time, Stop Time,Time Step
                     // and incase there is an error with a defined type
                     // we don't close the description editor and further prompt to fix errors in input
-                    ret_start_time=typechecker.checkInitialValue(initial_start_time,lastStartTime,descWidgetStart1,"Description Time Start");
-                    if(!ret_start_time.status && ret_start_time.errorType) return;
-                    ret_stop_time=typechecker.checkInitialValue(initial_stop_time,lastStopTime,descWidgetStop1, "Description Time End");
-                    if(!ret_stop_time.status && ret_stop_time.errorType) return;
-                    ret_step_time=typechecker.checkInitialValue(initial_step_time,lastStepTime,descWidgetStep1, "Description Time Step");
-                    if(!ret_step_time.status && ret_step_time.errorType) return;
-                         //after it has passed all those checks we
-                        // do normal closeEditor routine and hide
-                        doHide.apply(myThis._descEditor);
-                        console.log("close description editor is being called");
-                        typechecker.closePops();
-                        var tin = dom.byId("authorSetDescription").value;
-                        myThis.givenModel.setTaskDescription(tin.split("\n"));
-                        var timeObj = {
-                            start: ret_start_time.value,
-                            end: ret_stop_time.value,
-                            step: ret_step_time.value,
-                            units: dom.byId("authorSetTimeStepUnits").value
-                        };
-                        myThis.givenModel.setTime(timeObj);
-                        var url = dom.byId("authorSetImage").value;
-                        myThis.givenModel.setImage(url?{URL: url} : {});
-                        myThis.showDescription();
+                    var initial_start_time=start_node.value;
+                    var ret_start_time=typechecker.checkInitialValue(initial_start_time,myThis.lastStartTime,start_node);
+                    if(ret_start_time.errorType) return;
 
+                    var initial_stop_time=stop_node.value;
+                    var ret_stop_time=typechecker.checkInitialValue(initial_stop_time,myThis.lastStopTime,stop_node);
+                    if(ret_stop_time.errorType) return;
+
+                    var initial_step_time=step_node.value;
+                    var ret_step_time=typechecker.checkInitialValue(initial_step_time,myThis.lastStepTime,step_node);
+                    if(ret_step_time.errorType) return;
+
+                     //after it has passed all those checks we
+                     // do normal closeEditor routine and hide
+                      doHide.apply(myThis._descEditor);
+                      console.log("close description editor is being called");
+                      typechecker.closePops();
+                      var tin = dom.byId("authorSetDescription").value;
+                      myThis.givenModel.setTaskDescription(tin.split("\n"));
+                      if(ret_start_time.value)  myThis.timeObj.start=ret_start_time.value;
+                      if(ret_stop_time.value)  myThis.timeObj.end=ret_stop_time.value;
+                      if(ret_step_time.value)  myThis.timeObj.step=ret_step_time.value;
+                      myThis.timeObj.units= dom.byId("authorSetTimeStepUnits").value
+                      myThis.givenModel.setTime(myThis.timeObj);
+                      console.log("final object being returned",myThis.timeObj);
+                      var url = dom.byId("authorSetImage").value;
+                      myThis.givenModel.setImage(url?{URL: url} : {});
+                      myThis.showDescription();
                 };
             }));
         },
