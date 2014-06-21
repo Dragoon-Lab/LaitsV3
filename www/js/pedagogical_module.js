@@ -353,7 +353,7 @@ define([
             status = "incorrect";
         if(status === "lastFailure" || status === "lastFailure2")
             status = "incorrect. The correct answer has been given";
-        obj.push({id: "message", attribute: "append", value: "The value entered for " + nodePart + " is " + status + "."});
+        obj.push({id: "message", attribute: "append", value: "The value entered for the " + nodePart + " is " + status + "."});
     }
 
     function disable(/*object*/ obj, /*string*/ nodePart, /*boolean*/ disable){

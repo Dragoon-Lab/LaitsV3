@@ -809,8 +809,12 @@ define([
 							checkResult: "INCORRECT"
 						});
 					}
-
-        		    if(givenID || ignoreUnknownTest){
+                    // The variable "descriptionID" is the corresponding givenModelNodeID from the model (it is not equal to the givenID used here).
+                    // The variable "badVarCount" is used to track the number of times a user has attempted to use an incorrect variable to prevent
+                    //      them from being stuck.
+                    var descriptionID = this._model.active.getDescriptionID(this.currentID);
+                    var badVarCount = this._model.given.getAttemptCount(descriptionID, "unkownVar");
+        		    if(givenID || ignoreUnknownTest || badVarCount > 3){
                         // Test if variable has been defined already
             			var subID = unMapID.call(this._model.active, givenID);
             			if(subID){
@@ -821,6 +825,21 @@ define([
                         }
                     }else{
                 		toPM = false;  // Don't send to PM
+                        
+                        // The following if/else statement prevents a user from being endlessly stuck if he/she is using an incorrect variable. 
+                        //      To organize this better in the future we may want to move this check into another file with the code from 
+                        //      pedagogical_module.js that is responsible for deciding the correctness of a student's response.
+                        if(badVarCount){
+                            this._model.given.setAttemptCount(descriptionID, "unkownVar", badVarCount+1);
+                            
+                            if(badVarCount > 2){
+                                this._model.given.setAttemptCount(descriptionID, "equation", badVarCount+1);
+                            }
+                            
+                        }else{
+                            this._model.given.setAttemptCount(descriptionID, "unkownVar", 1);
+                        }
+                        
                 		directives.push({id: 'message', attribute: 'append', value: "Unknown variable '" + variable + "'."});
 						this.logging.log("solution-step", {
 							type: "unknown-variable",
