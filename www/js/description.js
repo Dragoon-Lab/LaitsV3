@@ -21,10 +21,11 @@
  */
 
 define([
-    "dojo/_base/array", "dojo/_base/declare", 
-    "dijit/registry", "dojo/dom",
-    "./model", "./wraptext"
-], function(array, declare, registry, dom, model, wrapText) {
+    "dojo/_base/array", 
+    "dojo/_base/declare", 
+    "dojo/dom",
+    "./wraptext"
+], function(array, declare, dom, wrapText) {
     // Summary: 
     //          MVC for the description box in author mode
     // Description:

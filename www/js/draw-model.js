@@ -22,11 +22,18 @@
 /* global define, jsPlumb */
 
 define([
-    "dojo/_base/array", 'dojo/_base/declare', 'dojo/_base/lang',
-    'dojo/dom', "dojo/dom-attr", "dojo/dom-construct", "dojo/dom-style",
-	"dijit/Menu", "dijit/MenuItem",
-	"./equation","./graph-objects", "jsPlumb/jsPlumb"
-], function(array, declare, lang, dom, attr, domConstruct, domStyle, Menu, MenuItem, equation, graphObjects){
+    "dojo/_base/array", 
+    'dojo/_base/declare', 
+    'dojo/_base/lang',
+    "dojo/dom-attr", 
+    "dojo/dom-construct", 
+    "dojo/dom-style",
+	"dijit/Menu", 
+    "dijit/MenuItem",
+	"./equation",
+    "./graph-objects", 
+    "jsPlumb/jsPlumb"
+], function(array, declare, lang, attr, domConstruct, domStyle, Menu, MenuItem, equation, graphObjects){
     // Summary: 
     //          MVC for the canvas
     // Description:

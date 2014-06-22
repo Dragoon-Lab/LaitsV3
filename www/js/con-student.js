@@ -26,11 +26,16 @@
  */
 
 define([
-    "dojo/_base/array", 'dojo/_base/declare', "dojo/_base/lang",
-    "dojo/dom", "dojo/ready",
+    "dojo/_base/array", 
+    'dojo/_base/declare', 
+    "dojo/_base/lang",
+    "dojo/dom", 
+    "dojo/ready",
     'dijit/registry',
-    './controller', "./pedagogical_module", "./equation","dojo/aspect"
-], function(array, declare, lang, dom, ready, registry, controller, PM, expression,aspect){
+    './controller', 
+    "./pedagogical_module", 
+    "dojo/aspect"
+], function(array, declare, lang, dom, ready, registry, controller, PM, aspect){
     // Summary: 
     //          MVC for the node editor, for students
     // Description:

@@ -31,9 +31,10 @@ define([
     "./menu",
     "./load-save",
     "./model",
-    "./RenderGraph", "./RenderTable",
-    "./con-student", './con-author',
-    "parser/parser",
+    "./RenderGraph", 
+    "./RenderTable",
+    "./con-student", 
+    "./con-author",
     "./draw-model",
     "./logging",
     "./equation",
@@ -42,7 +43,7 @@ define([
 ], function(
         lang, dom, geometry, on, aspect, ioQuery, ready, registry,
         menu, loadSave, model,
-        Graph, Table, controlStudent, controlAuthor, Parser, drawmodel, logging, expression, description, State
+        Graph, Table, controlStudent, controlAuthor, drawmodel, logging, expression, description, State
         ){
     // Summary: 
     //          Menu controller

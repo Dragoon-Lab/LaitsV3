@@ -21,7 +21,8 @@
 
 /* global define */
 define([
-    "dojo/_base/array"
+    "dojo/_base/array"    
+], function(array){    
     // Summary: 
     //          Format the desciption onto the canvas
     // Description:
@@ -29,8 +30,6 @@ define([
     //          line breaks and blank lines between paragraphs
     // Tags:
     //          description, canvas
-    
-], function(array){
 
     return function(context, textIn, x, y, maxWidth, lineHeight){
 	array.forEach(typeof textIn == "string"?[textIn]:textIn, function(text){
