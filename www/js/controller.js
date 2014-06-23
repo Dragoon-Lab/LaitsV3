@@ -249,33 +249,6 @@ define([
 				u.addOption({label: unit, value: unit});
 			});
 		},
-		
-		// Set the background color for the new <p> element
-		// then undo the background color after waiting.
-                var element=domConstruct.place('<p style="background-color:#FFD700;">' 
-					       + message + '</p>', message_box_id);
-                window.setTimeout(function(){ 
-		    // This unsets the "background-color" style
-                    domStyle.set(element, "backgroundColor", "");
-                }, 3000);  // Wait in milliseconds
-
-                // Scroll to bottoms
-                this.domNode.scrollTop = this.domNode.scrollHeight;
-            };
-             /*Set interval for message blink*/
-             
-            
-            /*
-             Add fields to units box, using units in model node
-             In author mode, this needs to be turned into a text box.
-             */
-            var u = registry.byId("selectUnits");
-            // console.log("units widget ", u);
-            array.forEach(this._model.getAllUnits(), function(unit){
-                u.addOption({label: unit, value: unit});
-            });
-        },
-         
          
         // Function called when node editor is closed.
         // This can be used as a hook for saving sessions and logging
