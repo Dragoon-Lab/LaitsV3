@@ -44,21 +44,21 @@ define([
 		lang, dom, geometry, on, aspect, ioQuery, ready, registry,
 		menu, loadSave, model,
 		Graph, Table, controlStudent, controlAuthor, drawmodel, logging, expression, description, State
-		){
+){
 	// Summary: 
 	//			Menu controller
 	// Description:
 	//			Acts as the controller for the buttons on the menu
 	// Tags:
 	//			menu, buttons, controller
-
+	
 	console.log("load main.js");
 
 	// Get session parameters
 	var query = {};
 	if(window.location.search){
 		query = ioQuery.queryToObject(window.location.search.slice(1));
-	}else {
+	}else{
 		console.warn("Should have method for logging this to Apache log files.");
 		console.warn("Dragoon log files won't work since we can't set up a session.");
 		console.error("Function called without arguments");
@@ -68,7 +68,7 @@ define([
 	var session = new loadSave(query);
 	logging.setSession(session);  // Give logger message destination
 	session.loadProblem(query).then(function(solutionGraph){
-
+		
 		var givenModel = new model(query.m, query.p);
 		logging.session.log('open-problem', {problem : query.p});
 		if(solutionGraph){
@@ -95,7 +95,7 @@ define([
 		}
 		controllerObject.setLogging(session); // set up direct logging in controller
 		expression.setLogging(session);
-
+		
 		/*
 		 Create state object
 		 */
@@ -122,16 +122,16 @@ define([
 			menu.add("createNodeButton", function(){
 
 				if(controllerObject.checkDonenessMessage && 
-		   controllerObject.checkDonenessMessage()){
+				   controllerObject.checkDonenessMessage()){
 					return;
 				}
-		
+				
 				var id = givenModel.active.addNode();
 				drawModel.addNode(givenModel.active.getNode(id));
 				controllerObject.logging.log('ui-action', {type: "menu-choice", name: "create-node"});		
 				controllerObject.showNodeEditor(id);
 			});
-
+			
 			/*
 			 Connect node editor to "click with no move" events.
 			 */
@@ -139,7 +139,7 @@ define([
 				if(mover.mouseButton != 2) //check if not right click
 					controllerObject.showNodeEditor(mover.node.id);
 			}, true);
-
+			
 			/* 
 			 After moving node, save coordinates to model, and autosave
 			 */
@@ -151,15 +151,15 @@ define([
 				// It would be more efficient if we only saved the changed node.
 				session.saveProblem(givenModel.model);	 // Autosave to server
 			}, true);
-
+			
 			/*
 			 Add connection when inputs are updated
 			 */
 			aspect.after(controllerObject, 'addQuantity',
 					lang.hitch(drawModel, drawModel.addQuantity), true);
 			aspect.after(controllerObject, 'setConnections',
-					lang.hitch(drawModel, drawModel.setConnections), true);
-
+						 lang.hitch(drawModel, drawModel.setConnections), true);
+			
 			/*
 			 Autosave on close window
 			 It would be more efficient if we only saved the changed node.
@@ -172,7 +172,7 @@ define([
 				console.log("Calling session.saveProblem");
 				session.saveProblem(givenModel.model);
 			});
-
+			
 			// Wire up close button...
 			// This will trigger the above session.saveProblem()
 			on(registry.byId("closeButton"), "click", function(){
@@ -180,34 +180,34 @@ define([
 			});
 
 		
-		// Also used in image loading below.
+			// Also used in image loading below.
 			var descObj = new description(givenModel);
-		
+			
 			if(query.m == "AUTHOR"){
 				var db = registry.byId("descButton");
 			db.set("disabled", false);
-		
-		// Description button wiring
-		menu.add("descButton", function(){
+				
+				// Description button wiring
+				menu.add("descButton", function(){
 					registry.byId("authorDescDialog").show();
 				});
 				aspect.after(registry.byId('authorDescDialog'), "hide", function(){
 					console.log("Saving Description/Timestep edits");
 					session.saveProblem(givenModel.model);
 				});
-		on(registry.byId("descCloseButton"), "click", function(){
+				on(registry.byId("descCloseButton"), "click", function(){
 					registry.byId("authorDescDialog").hide();
-			});
-		 }
+				});
+			}
 
 			/*
 			 Make model solution plot using dummy data. 
 			 This should be put in its own module.
 			 */
-
+			
 
 			// show graph when button clicked
-			 menu.add("graphButton", function(){
+			menu.add("graphButton", function(){
 				console.debug("button clicked");
 				// instantiate graph object
 				var graph = new Graph(givenModel, query.m, session);
@@ -221,7 +221,7 @@ define([
 				graph.show();
 			});
 
-
+			
 			// show table when button clicked
 			menu.add("tableButton", function(){
 				console.debug("table button clicked");
@@ -234,38 +234,38 @@ define([
 			});
 
 
-		menu.add("doneButton", function(){
-			console.debug("done button is clicked");
+			menu.add("doneButton", function(){
+				console.debug("done button is clicked");
 			var problemComplete = givenModel.matchesGivenSolution();
-
-			var promise = controllerObject.logging.log('close-problem', {
+				
+				var promise = controllerObject.logging.log('close-problem', {
 				type: "menu-choice", 
-				name: "done-button", 
-				problemComplete: problemComplete
+					name: "done-button", 
+					problemComplete: problemComplete
+				});
+				
+				promise.then(function(){
+					window.history.back();
+				});
 			});
 			
-			promise.then(function(){
-				window.history.back();
-			});
-		});
-
-		/* 
-		 Add link to intro video
-		 */
-		var video = dom.byId("menuIntroVideo");
-		on(video, "click", function(){
-		controllerObject.logging.log('ui-action', {
+			/* 
+			 Add link to intro video
+			 */
+			var video = dom.byId("menuIntroVideo");
+			on(video, "click", function(){
+				controllerObject.logging.log('ui-action', {
 					type: "menu-choice", 
 					name: "intro-video"
 				});
-		// "newwindow": the pop-out window name, not required, could be empty
-		// "height" and "width": pop-out window size
-		// Other properties could be changed as the value of yes or no
-		window.open("https://www.youtube.com/watch_popup?v=gsrM07XfABk","newwindow",
-				"height=400, width=600, toolbar =no, menubar=no, scrollbars=no, resizable=no, location=no, status=no"
-			   );
-		});
-
+				// "newwindow": the pop-out window name, not required, could be empty
+				// "height" and "width": pop-out window size
+				// Other properties could be changed as the value of yes or no
+				window.open("https://www.youtube.com/watch_popup?v=gsrM07XfABk","newwindow",
+							"height=400, width=600, toolbar =no, menubar=no, scrollbars=no, resizable=no, location=no, status=no"
+						   );
+			});
+			
 			/*
 			 BvdS:	this doesn't look quite right.	We want to download
 			 the image and then get its dimensions.	 (This is a property of 
@@ -276,9 +276,9 @@ define([
 			 These will be wired up to dialog boxes to set the image URL and
 			 the description.
 			 */
-
+			
 			descObj.showDescription();
-
+			
 		});
 	});
 });
