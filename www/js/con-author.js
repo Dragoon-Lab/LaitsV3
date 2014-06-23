@@ -172,7 +172,6 @@ define([
 		/*
 		 Stub for setting up state saving in AUTHOR mode.
 		 */
-	setState: function(){},
 
 
 		controlMap: {
