@@ -355,8 +355,17 @@ define([
             initialWidget.on("keydown", function(evt){
                 // console.log("----------- input character ", evt.keyCode, this.get('value'));
                 if(evt.keyCode == keys.ENTER)
+
                     this.emit('Change', {}, [this.get('value')]);
+
             });
+            // undo color on change in the initial value widget
+            initialWidget.on("keydown",lang.hitch(this,function(evt){
+               if(evt.keyCode != keys.ENTER){
+                   var w = registry.byId(this.controlMap.initial);
+                   w.set('status','');
+               }
+            }));
 
             var inputsWidget = registry.byId(this.controlMap.inputs);
             inputsWidget.on('Change',  lang.hitch(this, function(){
@@ -383,6 +392,7 @@ define([
             equationWidget.on('Change', lang.hitch(this, function(){
                 return this.disableHandlers || this.handleEquation.apply(this, arguments);
             }));
+
 
             // When the equation box is enabled/disabled, do the same for
             // the inputs widgets.
@@ -419,6 +429,16 @@ define([
                     // console.log("************* " + (newValue?"dis":"en") + "able " + button);
                     w.set("disabled", newValue);
                 });
+            }, this);
+
+            //undo background color on change
+            array.forEach(this.resettableControls, function(con){
+                  var w = registry.byId(this.controlMap[con]);
+                  w.on("keydown", lang.hitch(this, function(evt){
+                    if(evt.keyCode != keys.ENTER){
+                         w.set('status','');
+                    }
+                  }));
             }, this);
         },
         // Need to save state of the node editor in the status section
@@ -525,7 +545,13 @@ define([
         handleEquation: function(equation){
             var w = registry.byId(this.widgetMap.equation);
             this.equationEntered = false;
-            w.set("status", "");
+            // undo color when new value is entered in the equation box widget
+            w.on("keydown",lang.hitch(this,function(evt){
+                if(evt.keyCode != keys.ENTER){
+                    w.set('status','');
+                }
+            }));
+
         },
         plusHandler: function(){
             console.log("****** plus button");
