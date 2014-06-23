@@ -43,7 +43,7 @@ define([
 		
 		model: null,						// model
 		active: {},							// set current mode. TRUE = givenModel / FALSE = StudentModel
-
+		
 		/* variables specific to rendering graph and table */
 		given: {},							// object to store calculated parameters from given model
 		dialog: "",							// dialog box to be displayed
@@ -62,7 +62,7 @@ define([
 			 In AUTHOR mode, plot solution for all given nodes of genus false
 			 and type "accumulator" or "function""
 			 The table contains the same nodes.
-
+			 
 			 In student modes, plot solution for all student nodes (of type
 			 "accumulator" or "function") as well
 			 as any matching given model node of genus false.
@@ -72,7 +72,7 @@ define([
 			if(!this.active.timeStep){
 				return; // abort on error in constructing timeStep
 			}
-
+			
 			this.active.initialValues = array.map(
 				this.active.timeStep.xvars, 
 				model.active.getInitial,
@@ -82,7 +82,7 @@ define([
 			array.forEach(this.active.timeStep.xvars, function(xvar, i){
 				this.active.xvarMap[xvar] = i;
 			}, this);
-
+			
 			// These are not used for the tables
 			if(mode != "AUTHOR"){
 				console.log("now in given model");
@@ -99,7 +99,7 @@ define([
 				console.log("-------- no given solution for mode", mode); 
 			}
 		},
-
+		
 		initializeSolution: function(model){
 			//Summary:	Initialize solution and give a message if a cycle is found.
 			var timeStep = null;
@@ -113,7 +113,7 @@ define([
 			}
 			return timeStep;
 		},
-
+		
 		findSolution: function(isActive, plotVariables){ 
 			// Summary:	 Find a solution
 			// Returns:	 an object of the form
