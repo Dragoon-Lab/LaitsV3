@@ -79,9 +79,11 @@ define([
                 content: "Non-numeric data not accepted"
             });
         },
-		
+
 		setState: function(state){
-			this.setPMState(state);
+			if(this.setPMState){
+				this.setPMState(state);
+			}
 			ready(this, function(){
 				/*
 				 Hide/show fields based on inputStyle
@@ -96,13 +98,13 @@ define([
 				}
 			});
 		},
-		
+
 		setEquationStyle: function(style){
 			var algebraic, structured;
 			if(!style || style == "algebraic"){
 				algebraic = ""; structured = "none";
 			}else if(style=="structured"){
-				algebraic = "none"; structured = "";				
+				algebraic = "none"; structured = "";
 			}else{
 				throw new Error("Invalid input style: "+style);
 			}
@@ -111,7 +113,7 @@ define([
 			domStyle.set("equationBox", "display", algebraic);
 			domStyle.set("equationText", "display", structured);
 		},
-		
+
         // A list of common controls of student and author
         genericControlMap: {
             type: "typeId",
@@ -820,15 +822,16 @@ define([
                     // The variable "descriptionID" is the corresponding givenModelNodeID from the model (it is not equal to the givenID used here).
                     // The variable "badVarCount" is used to track the number of times a user has attempted to use an incorrect variable to prevent
                     //      him or her from being stuck indefinitely.
-                    
+
                     var descriptionID = "";
                     var badVarCount = "";
-                    if(this._mode!=="AUTHOR"){ // Should we also disable the "unknown variable" check for "Test" mode? Also see the code in the next if clause.
+					// Fix this:  The controller should be ignorant about mode
+                    if(this._mode!=="AUTHOR"){ 
                         descriptionID = this._model.active.getDescriptionID(this.currentID);
                         badVarCount = this._model.given.getAttemptCount(descriptionID, "unknownVar");
                     }
-                    
-        		    if(givenID || ignoreUnknownTest || badVarCount > 3){
+
+        			if(givenID || ignoreUnknownTest || badVarCount > 3){
                         // Test if variable has been defined already
             			var subID = unMapID.call(this._model.active, givenID);
             			if(subID){
@@ -839,23 +842,23 @@ define([
                         }
                     }else{
                 		toPM = false;  // Don't send to PM
-                        
+
                         // The following if statement prevents a user from being endlessly stuck if he/she is using an incorrect variable. 
                         //      To organize this better in the future we may want to move this check into another file with the code from 
                         //      pedagogical_module.js that is responsible for deciding the correctness of a student's response.
-                        if(this._mode!=="AUTHOR"){  // Should we also disable the "unknown variable" check for "Test" mode? Also see the code in above this if/else clause.
+						// Fix this:  The controller should be ignorant about mode
+                        if(this._mode!=="AUTHOR"){
                             if(badVarCount){
                                 this._model.given.setAttemptCount(descriptionID, "unknownVar", badVarCount+1);
 
                                 if(badVarCount > 2){
                                     this._model.given.setAttemptCount(descriptionID, "equation", badVarCount+1);
                                 }
-
                             }else{
                                 this._model.given.setAttemptCount(descriptionID, "unknownVar", 1);
                             }
                         }
-                        
+
                 		directives.push({id: 'message', attribute: 'append', value: "Unknown variable '" + variable + "'."});
 						this.logging.log("solution-step", {
 							type: "unknown-variable",
@@ -917,7 +920,7 @@ define([
                 this.disableHandlers = false;
             }));
 		},
-			
+
         // Stub to be overwritten by student or author mode-specific method.
         initialControlSettings: function(id){
             console.error("initialControlSettings should be overwritten.");

@@ -22,7 +22,7 @@
 /* global define */
 define([
     "dojo/_base/array"    
-], function(array){    
+], function(array){
     // Summary: 
     //          Format the desciption onto the canvas
     // Description:
