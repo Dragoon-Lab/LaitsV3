@@ -22,11 +22,18 @@
 /* global define, jsPlumb */
 
 define([
-    "dojo/_base/array", 'dojo/_base/declare', 'dojo/_base/lang',
-    'dojo/dom', "dojo/dom-attr", "dojo/dom-construct", "dojo/dom-style",
-	"dijit/Menu", "dijit/MenuItem",
-	"./equation","./graph-objects", "jsPlumb/jsPlumb"
-], function(array, declare, lang, dom, attr, domConstruct, domStyle, Menu, MenuItem, equation, graphObjects){
+    "dojo/_base/array", 
+    'dojo/_base/declare', 
+    'dojo/_base/lang',
+    "dojo/dom-attr", 
+    "dojo/dom-construct", 
+    "dojo/dom-style",
+	"dijit/Menu", 
+    "dijit/MenuItem",
+	"./equation",
+    "./graph-objects", 
+    "jsPlumb/jsPlumb"
+], function(array, declare, lang, attr, domConstruct, domStyle, Menu, MenuItem, equation, graphObjects){
     // Summary: 
     //          MVC for the canvas
     // Description:
@@ -139,7 +146,7 @@ define([
 
 		colorNodeBorder: function(/*Object*/ nodeID, updateNode){
 			var type = this._givenModel.getNode(nodeID).type;
-			var isComplete = this._givenModel.isComplete(nodeID)?'solid':'dashed';
+			var isComplete = this._givenModel.isComplete(nodeID, true)?'solid':'dashed';
 
 			var colorMap = {
 				correct: "green",

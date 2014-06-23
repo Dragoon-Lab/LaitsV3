@@ -1,3 +1,4 @@
+/*global define, Image*/
 /**
  *Dragoon Project
  *Arizona State University
@@ -21,9 +22,9 @@
 
 define([
     "dojo/aspect", "dojo/_base/array", "dojo/_base/declare", "dojo/_base/lang",
-    "dijit/registry", "dojo/dom", "dojo/on", "dojo/ready",
+    "dijit/registry", "dojo/dom", "dojo/ready",
     "./model", "./wraptext", "./typechecker"
-], function(aspect, array, declare, lang, registry, dom, on, ready, model, wrapText, typechecker){
+], function(aspect, array, declare, lang, registry, dom, ready, model, wrapText, typechecker){
 
 	// Summary: 
 	//          MVC for the description box in author mode

@@ -566,7 +566,7 @@ define([
                 // Summary: tracks student progress (correct, incorrect) on a given node;
                 this.getNode(id).status[part] = status;
             },
-            isComplete: function(/*string*/ id, /*bool*/ unitsRequired){
+            isComplete: function(/*string*/ id, /*bool*/ unitsOptional){
                 // Summary: Test whether a node is completely filled out, correct or not
                 // Returns a boolean
                 // id: the node id
@@ -585,7 +585,7 @@ define([
                 if(!node.genus || node.genus == "allowed" || node.genus == "preferred"){
                     return node.name && node.description &&
                             node.type && initialEntered &&
-                            (!unitsRequired || node.units) &&
+                            (unitsOptional || node.units) &&
                             equationEntered;
                 }else if(node.genus == "initialValue"){
                     return node.name && node.description;

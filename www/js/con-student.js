@@ -26,19 +26,25 @@
  */
 
 define([
-    "dojo/aspect", "dojo/_base/array", 'dojo/_base/declare', "dojo/_base/lang",
-    "dojo/dom", "dojo/ready",
+    "dojo/aspect",
+    "dojo/_base/array", 
+    'dojo/_base/declare', 
+    "dojo/_base/lang",
+    "dojo/dom", 
+    "dojo/ready",
     'dijit/registry',
-    './controller', "./pedagogical_module", "./equation", "./typechecker"
-], function(aspect, array, declare, lang, dom, ready, registry, controller, PM, expression, typechecker){
-	// Summary: 
-	//          MVC for the node editor, for students
-	// Description:
-	//          Handles selections from the student as he/she completes a model;
-	//          inherits controller.js
-	// Tags:
-	//          controller, student mode, coached mode, test mode
-
+    './controller', 
+    "./pedagogical_module", 
+	"./typechecker"
+], function(aspect, array, declare, lang, dom, ready, registry, controller, PM, aspect, typechecker){
+    // Summary: 
+    //          MVC for the node editor, for students
+    // Description:
+    //          Handles selections from the student as he/she completes a model;
+    //          inherits controller.js
+    // Tags:
+    //          controller, student mode, coached mode, test mode
+    
     /*
      Methods in controller specific to the student modes
      */
@@ -69,7 +75,7 @@ define([
             inputs: "nodeInputs"
         },
 
-	setState: function(state){
+	setPMState: function(state){
 	    this._PM.setState(state);
 	},
 
@@ -153,7 +159,6 @@ define([
 				this._model.active.setInitial(this.currentID, newInitial);
 				this.applyDirectives(this._PM.processAnswer(this.currentID, 'initial', newInitial));
             }else if(IniFlag.errorType){
-                console.log(this._model.active);
 				this.logging.log('solution-step', {
                     type: IniFlag.errorType,
                     node: this._model.active.getName(this.currentID),

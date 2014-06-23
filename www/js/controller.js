@@ -37,9 +37,9 @@ define([
 	//          controller, student mode, coached mode, test mode, author mode
 
     return declare(null, {
-		_model: null,
-		_nodeEditor: null, // node-editor object- will be used for populating fields
-		/*
+        _model: null,
+        _nodeEditor: null, // node-editor object- will be used for populating fields
+        /*
          When opening the node editor, we need to populate the controls without
          evaluating those changes.
          */
@@ -57,7 +57,6 @@ define([
             this._model = model;
             this._mode = mode;
             this._inputStyle = inputStyle;
-
             // structured should be its own module.  For now,
             // initialize
             this.structured._model = this._model;
@@ -68,6 +67,40 @@ define([
             ready(this, this._setUpNodeEditor);
             ready(this, this._initHandles);
         },
+
+		setState: function(state){
+			if(this.setPMState){
+				this.setPMState(state);
+			}
+			ready(this, function(){
+				/*
+				 Hide/show fields based on inputStyle
+				 If inputStyle is given with the URL, use that.
+				 Otherwise, query the state table to see if style is set.
+				 If not, use algebraic
+				 */
+				if(this._inputStyle){
+					  this.setEquationStyle(this._inputStyle);
+				}else{
+					state.get("mode").then(this.setEquationStyle);
+				}
+			});
+		},
+
+		setEquationStyle: function(style){
+			var algebraic, structured;
+			if(!style || style == "algebraic"){
+				algebraic = ""; structured = "none";
+			}else if(style=="structured"){
+				algebraic = "none"; structured = "";
+			}else{
+				throw new Error("Invalid input style: "+style);
+			}
+			domStyle.set("algebraic", "display", algebraic);
+			domStyle.set("structured", "display", structured);
+			domStyle.set("equationBox", "display", algebraic);
+			domStyle.set("equationText", "display", structured);
+		},
 
         // A list of common controls of student and author
         genericControlMap: {
@@ -107,26 +140,6 @@ define([
                     }
             };
 	    }));
-
-            /*
-             Hide/show fields based on inputStyle
-             If this can change during a session, then we
-             should move this to this.showNodeEditor()
-             */
-			if(this._inputStyle!="algebraic" && this._inputStyle!="structured" && this._inputStyle){
-				/*
-				If the input style is anything different frm algebraic, structured,
-				 unmentioned then we log an error as corrupted input style
-				 */
-				throw new Error("input style has been corrupted");
-			}
-			//making algebraic the default input style in case inputstyle is defined
-			var algebraic = (this._inputStyle == "algebraic" || !this._inputStyle ? "" : "none");
-            var structured = (this._inputStyle == "structured" ? "" : "none");
-            domStyle.set("algebraic", "display", algebraic);
-            domStyle.set("structured", "display", structured);
-            domStyle.set("equationBox", "display", algebraic);
-            domStyle.set("equationText", "display", structured);
 
             /*
              Add attribute handler to all of the controls
@@ -235,8 +248,7 @@ define([
                 u.addOption({label: unit, value: unit});
             });
         },
-         
-         
+		
         // Function called when node editor is closed.
         // This can be used as a hook for saving sessions and logging
         closeEditor: function(){
@@ -743,8 +755,19 @@ define([
 							checkResult: "INCORRECT"
 						});
 					}
+                    // The variable "descriptionID" is the corresponding givenModelNodeID from the model (it is not equal to the givenID used here).
+                    // The variable "badVarCount" is used to track the number of times a user has attempted to use an incorrect variable to prevent
+                    //      him or her from being stuck indefinitely.
 
-        		    if(givenID || ignoreUnknownTest){
+                    var descriptionID = "";
+                    var badVarCount = "";
+					// Fix this:  The controller should be ignorant about mode
+                    if(this._mode!=="AUTHOR"){ 
+                        descriptionID = this._model.active.getDescriptionID(this.currentID);
+                        badVarCount = this._model.given.getAttemptCount(descriptionID, "unknownVar");
+                    }
+
+        			if(givenID || ignoreUnknownTest || badVarCount > 3){
                         // Test if variable has been defined already
             			var subID = unMapID.call(this._model.active, givenID);
             			if(subID){
@@ -755,6 +778,23 @@ define([
                         }
                     }else{
                 		toPM = false;  // Don't send to PM
+
+                        // The following if statement prevents a user from being endlessly stuck if he/she is using an incorrect variable. 
+                        //      To organize this better in the future we may want to move this check into another file with the code from 
+                        //      pedagogical_module.js that is responsible for deciding the correctness of a student's response.
+						// Fix this:  The controller should be ignorant about mode
+                        if(this._mode!=="AUTHOR"){
+                            if(badVarCount){
+                                this._model.given.setAttemptCount(descriptionID, "unknownVar", badVarCount+1);
+
+                                if(badVarCount > 2){
+                                    this._model.given.setAttemptCount(descriptionID, "equation", badVarCount+1);
+                                }
+                            }else{
+                                this._model.given.setAttemptCount(descriptionID, "unknownVar", 1);
+                            }
+                        }
+
                 		directives.push({id: 'message', attribute: 'append', value: "Unknown variable '" + variable + "'."});
 						this.logging.log("solution-step", {
 							type: "unknown-variable",
@@ -771,6 +811,11 @@ define([
                 // Expression now is written in terms of student IDs, when possible.
                 // Save with explicit parentheses for all binary operations.
                 var parsedEquation = parse.toString(true);
+				
+				//Check to see if parsedEquation returns a string, change to string if not
+				if (typeof parsedEquation == "number"){
+					parsedEquation = parsedEquation.toString();
+				}
 
                 // This duplicates code in equationDoneHandler
                 // console.log("********* Saving equation to model: ", parsedEquation);
@@ -810,7 +855,8 @@ define([
             this._nodeEditor.show().then(lang.hitch(this, function(){
                 this.disableHandlers = false;
             }));
-        },
+		},
+
         // Stub to be overwritten by student or author mode-specific method.
         initialControlSettings: function(id){
             console.error("initialControlSettings should be overwritten.");

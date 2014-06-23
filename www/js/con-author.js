@@ -24,10 +24,16 @@
  */
 
 define([
-    "dojo/_base/array", 'dojo/_base/declare', "dojo/_base/lang",
-    'dojo/dom-style', 'dojo/ready', "dojo/store/Memory",
-	'dijit/registry',
-	'./controller', "./equation", "./typechecker",
+    "dojo/_base/array", 
+    'dojo/_base/declare', 
+    "dojo/_base/lang",
+    'dojo/dom-style', 
+    'dojo/ready',
+    "dojo/store/Memory",
+    'dijit/registry',
+    './controller',
+    "./equation",
+	"./typechecker",
     "dojo/domReady!"
 ], function(array, declare, lang, style, ready, memory, registry, controller, equation, typechecker){
 
@@ -268,7 +274,7 @@ define([
          */
         handleInitial: function(initial){
 			//IniFlag contains the status and initial value
-            var initialWidget = dom.byId(this.widgetMap.initial);
+            var initialWidget = registry.byId(this.widgetMap.initial);
             var IniFlag = typechecker.checkInitialValue(initial, this.lastInitial, initialWidget);
             if(IniFlag.status){
 				// If the initial value is not a number or is unchanged from 
@@ -277,14 +283,11 @@ define([
 				this.applyDirectives(this.authorPM.process(this.currentID, "initial", newInitial, true));
 				console.log("In AUTHOR mode. Initial value is: " + newInitial);
             }else if(IniFlag.errorType){
-                console.log(this._model.active);
                 this.logging.log('solution-step', {
                     type: IniFlag.errorType,
                     node: this._model.active.getName(this.currentID),
                     property: "initial-value",
-                    value: initial,
-                    correctResult: this._model.active.getInitial(this.currentID),
-                    checkResult: "INCORRECT"
+                    value: initial
                 });
             }
         },
@@ -295,7 +298,7 @@ define([
         // After variable input, reset control to its initial state.
         // Third argument keeps handler from being called.
         var inputWidget = registry.byId(this.controlMap.inputs);
-        inputWidget.set('value', '', false);
+         inputWidget.set('value', '', false);
         },
         equationDoneHandler: function(){
             var directives = [];

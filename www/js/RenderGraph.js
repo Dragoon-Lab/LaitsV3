@@ -107,48 +107,48 @@ define([
             var charts = {};
             var legends = {};
             
-            if(this.active.plotVariables.length>0){ //we check the length of object, if there are nodes , then we proceed else give an error and return
-		array.forEach(this.active.plotVariables, function(id, k){
-                    var str = "chart" + id;
-                    charts[id] = new Chart(str);
-                    charts[id].addPlot("default", {
-			type: Lines, 
-			// Do not include markers if there are too
-			// many plot points.  It looks ugly and slows down
-			// plotting significantly.
-			markers: activeSolution.times.length<25
-		    });
-                    charts[id].addAxis("x", {
-			title: this.labelString(),
-			titleOrientation: "away", titleGap: 5
+            if(this.active.plotVariables.length>0){ //we check the length of object, if there are nodes, then we proceed else give an error and return
+                array.forEach(this.active.plotVariables, function(id, k){
+                            var str = "chart" + id;
+                            charts[id] = new Chart(str);
+                            charts[id].addPlot("default", {
+                    type: Lines, 
+                    // Do not include markers if there are too
+                    // many plot points.  It looks ugly and slows down
+                    // plotting significantly.
+                    markers: activeSolution.times.length<25
                     });
-		    
-                    // var obj = this.getMinMaxFromArray(this.student.arrayOfNodeValues[j]);
-                    charts[id].addAxis("y", {
-			vertical: true, // min: obj.min, max: obj.max,
-			title: this.labelString(id)
-                    });
+                            charts[id].addAxis("x", {
+                    title: this.labelString(),
+                    titleOrientation: "away", titleGap: 5
+                            });
 
-		    if(this.mode != "AUTHOR")	
-                var givenID = this.model.active.getDescriptionID(id);
-		    
-                    //plot chart for student node
+                            // var obj = this.getMinMaxFromArray(this.student.arrayOfNodeValues[j]);
+                            charts[id].addAxis("y", {
+                    vertical: true, // min: obj.min, max: obj.max,
+                    title: this.labelString(id)
+                            });
+
+                    if(this.mode != "AUTHOR")	
+                        var givenID = this.model.active.getDescriptionID(id);
+
+                            //plot chart for student node
+                            charts[id].addSeries(
+                    "Variable solution", 
+                    this.formatSeriesForChart(activeSolution, k), 
+                    {stroke: "green"}
+                    );
+                    if(this.mode != "AUTHOR" && this.given.plotVariables[k]){
                     charts[id].addSeries(
-			"Variable solution", 
-			this.formatSeriesForChart(activeSolution, k), 
-			{stroke: "green"}
-		    );
-		    if(this.mode != "AUTHOR" && this.given.plotVariables[k]){
-			charts[id].addSeries(
-			    "correct solution", 
-			    this.formatSeriesForChart(givenSolution, k), {stroke: "red"});
-                    }
-                    charts[id].render();
-                    legends[id] = new Legend({chart: charts[id]}, "legend" + id);
+                        "correct solution", 
+                        this.formatSeriesForChart(givenSolution, k), {stroke: "red"});
+                            }
+                            charts[id].render();
+                            legends[id] = new Legend({chart: charts[id]}, "legend" + id);
 
-		}, this);
+                }, this);
             }else{
-		this.dialogWidget.set("content", "<div>There isn't anything to plot. Try adding some accumulator or function nodes.</div>" ); //Error telling there are no nodes and graph cant be rendered
+                this.dialogWidget.set("content", "<div>There isn't anything to plot. Try adding some accumulator or function nodes.</div>" ); //Error telling there are no nodes and graph cant be rendered
             }
             this.chart = charts;
 	},

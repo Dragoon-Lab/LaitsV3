@@ -24,13 +24,13 @@ define([
     "dojo/_base/array",
     "dojo/_base/declare",
     "dojo/_base/lang",
-    "parser/parser",
-    "dojo/on","dojo/dom",
+    "dojo/on",
+    "dojo/dom",
     "dijit/registry",
     "dijit/form/HorizontalSlider",
     "./equation",
     "./integrate"
-], function(array, declare, lang, Parser, on, dom, registry, HorizontalSlider, equation, integrate){
+], function(array, declare, lang, on, dom, registry, HorizontalSlider, equation, integrate){
 	// Summary: 
 	//          Finds model solutions and sets up the sliders
 	// Description:

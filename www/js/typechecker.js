@@ -26,6 +26,18 @@ define([
 
     return {
 
+		// In case any tool tips are still open.
+		myTooltipDialog: new TooltipDialog({
+			style: "width: 150px;",
+			content: "Use decimals instead of percent."
+		}),
+
+		// Tool Tip for indicating non numeric data is not accepted
+		myTooltipDialog2: new TooltipDialog({
+			style: "width: 150px;",
+			content: "Non-numeric data not accepted"
+		}),
+
 		closePops: function(){
 			popup.close(this.myTooltipDialog);
 			popup.close(this.myTooltipDialog2);
@@ -33,16 +45,6 @@ define([
 
 
 		checkInitialValue: function(inputString, lastInput, widget){
-			// In case any tool tips are still open.
-			var myTooltipDialog = new TooltipDialog({
-				style: "width: 150px;",
-				content: "Use decimals instead of percent."
-			});
-			// Tool Tip for indicating non numeric data is not accepted
-			var myTooltipDialog2 = new TooltipDialog({
-				style: "width: 150px;",
-				content: "Non-numeric data not accepted"
-			});
 			//Description : performs non number check and also checks if the initial value was changed from previously entered value
 			//returns: status, a boolean value and value, the current initial value
 
@@ -72,7 +74,7 @@ define([
 				if(!inputString.match('%')){ //To check the decimals against percentages
 					console.warn("Sachin should log when this happens");
 					popup.open({
-						popup: myTooltipDialog2,
+						popup: this.myTooltipDialog2,
 						around: widget
 					});
 					errorType = "number-with-percent";
@@ -80,7 +82,7 @@ define([
 					// if entered string has percentage symbol, pop up a message to use decimals
 					console.warn("Sachin should log when this happens");
 					popup.open({
-						popup: myTooltipDialog,
+						popup: this.myTooltipDialog,
 						around: widget
 					});
 					errorType = "parse-error";
