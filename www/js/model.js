@@ -11,7 +11,7 @@
  *
  *Dragoon is distributed in the hope that it will be useful,
  *but WITHOUT ANY WARRANTY; without even the implied warranty of
- *MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ *MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.	See the
  *GNU General Public License for more details.
  *
  *You should have received a copy of the GNU General Public License
@@ -44,15 +44,15 @@ define([
     //          being placed, and tell the model the size of the nodes to avoid 
     //          collisions.
 
-    return function(){
+	return function(){
 
-        var obj = {
-            constructor: function(/*string*/ mode, /*string*/ name){
-                // Summary: Initializes the object (the Dragoon problem)
-                // Note: beginX and beginY specify coordinates where nodes can begin appearing
-                //      when the student adds them; nodeWidth and nodeHeighth can be manually
-                //      adjusted to allow enough room in between the nodes; _updateNextXYPosition()
-                //      uses nodeWidth and nodeHeighth to know where to place new student nodes
+		var obj = {
+			constructor: function(/*string*/ mode, /*string*/ name){
+				// Summary: Initializes the object (the Dragoon problem)
+				// Note: beginX and beginY specify coordinates where nodes can begin appearing
+				//		when the student adds them; nodeWidth and nodeHeighth can be manually
+				//		adjusted to allow enough room in between the nodes; _updateNextXYPosition()
+				//		uses nodeWidth and nodeHeighth to know where to place new student nodes
 
                 this.x = this.beginX;
                 this.y = this.beginY;
@@ -68,121 +68,120 @@ define([
                         studentUndefinedNodes: [],
                         givenUndefinedNodes: []
                     }};
+				/*
+				 Define the "active model" (see doucumentation/javascript.md).
+				 */
+				obj.active = (mode == "AUTHOR") ? obj.given : obj.student;
 
-                /*
-                 Define the "active model" (see doucumentation/javascript.md).
-                 */
-                obj.active = (mode == "AUTHOR") ? obj.given : obj.student;
+			},
+			// Private variables
+			_ID: 1,
+			// Public variables
+			beginX: 400,
+			beginY: 100,
+			nodeWidth: 200,
+			nodeHeight: 200,
+		isCompleteFlag: false,
+			/**
+			 * 
+			 * Private methods; these methods should not be accessed outside of this class
+			 *	
+			 */
+			_updateNextXYPosition: function(){
+				// Summary: keeps track of where to place the next node; function detects collisions
+				//		with other nodes; is called in addStudentNode() before creating the node
+				// Tags: private
+				array.forEach(obj.active.getNodes(), function(node) {
+					var x = node.position.x;
+					var y = node.position.y;
+					while(this.x > x - this.nodeWidth && this.x < x + this.nodeWidth &&
+							this.y > y - this.nodeHeight && this.y < y + this.nodeHeight){
+						if(this.x + this.nodeWidth < document.documentElement.clientWidth + 100)
+							this.x += this.nodeWidth;
+						else{
+							this.x = this.beginX;
+							this.y += this.nodeHeight;
+						}
+					}
+				}, this);
+			},
+			_getNextOptimalNode: function(/*string*/ givenNodeID){
+				// Summary: Accepts the id of a parent node and returns the next optimal
+				//		child node that is not visible, or null if all descendants are visible;
+				//		called by getOptimalNode().
+				var optimalNode = null;
+				var isInputVisible = function(givenNodeID){
+					return array.some(obj.student.getNodes(), function(node){
+						return node.descriptionID === givenNodeID;
+					}, this);
+				};
+				array.forEach(this.given.getNode(givenNodeID).inputs, function(node){
+					if(!isInputVisible(node.ID) && givenNodeID !== node.ID){
+						optimalNode = node.ID;
+					}else if(node.inputs){
+						optimalNode = this._getNextOptimalNode(node.ID);
+					}
+				}, obj);
+				return optimalNode;
+			},
+			/**
+			 * 
+			 * Public methods
+			 *	
+			 */
 
-            },
-            // Private variables
-            _ID: 1,
-            // Public variables
-            beginX: 400,
-            beginY: 100,
-            nodeWidth: 200,
-            nodeHeight: 200,
-	    isCompleteFlag: false,
-            /**
-             * 
-             * Private methods; these methods should not be accessed outside of this class
-             *  
-             */
-            _updateNextXYPosition: function(){
-                // Summary: keeps track of where to place the next node; function detects collisions
-                //      with other nodes; is called in addStudentNode() before creating the node
-                // Tags: private
-                array.forEach(obj.active.getNodes(), function(node) {
-                    var x = node.position.x;
-                    var y = node.position.y;
-                    while(this.x > x - this.nodeWidth && this.x < x + this.nodeWidth &&
-                            this.y > y - this.nodeHeight && this.y < y + this.nodeHeight){
-                        if(this.x + this.nodeWidth < document.documentElement.clientWidth + 100)
-                            this.x += this.nodeWidth;
-                        else{
-                            this.x = this.beginX;
-                            this.y += this.nodeHeight;
-                        }
-                    }
-                }, this);
-            },
-            _getNextOptimalNode: function(/*string*/ givenNodeID){
-                // Summary: Accepts the id of a parent node and returns the next optimal
-                //      child node that is not visible, or null if all descendants are visible;
-                //      called by getOptimalNode().
-                var optimalNode = null;
-                var isInputVisible = function(givenNodeID){
-                    return array.some(obj.student.getNodes(), function(node){
-                        return node.descriptionID === givenNodeID;
-                    }, this);
-                };
-                array.forEach(this.given.getNode(givenNodeID).inputs, function(node){
-                    if(!isInputVisible(node.ID) && givenNodeID !== node.ID){
-                        optimalNode = node.ID;
-                    }else if(node.inputs){
-                        optimalNode = this._getNextOptimalNode(node.ID);
-                    }
-                }, obj);
-                return optimalNode;
-            },
-            /**
-             * 
-             * Public methods
-             *  
-             */
+			/**
+			 * Functions to load or retrieve a model in string format
+			 */
+			loadModel: function(/*object*/ model){
+				// Summary: loads a model object;
+				//		allows Dragoon to load a pre-defined program or to load a users saved work
+				//		Sets id for next node.
+				this.model = model;
 
-            /**
-             * Functions to load or retrieve a model in string format
-             */
-            loadModel: function(/*object*/ model){
-                // Summary: loads a model object;
-                //      allows Dragoon to load a pre-defined program or to load a users saved work
-                //      Sets id for next node.
-                this.model = model;
+				/*
+				 We use ids of the form "id"+integer.  This loops through
+				 all the nodes in the model and finds the lowest integer such
+				 that there is no name conflict.  We simply ignore any ids that
+				 are not of the form "id"+integer.
+				 */
+				var largest = 0;
+				var intID = function(/*object*/ node){
+					if(node.ID.length >= 2 && node.ID.slice(0, 2) == "id"){
+						var n = parseInt(node.ID.slice(2));
+						if(n && n > largest)
+							largest = n;
+					}
+				};
+				array.forEach(this.given.getNodes(), intID);
+				array.forEach(this.student.getNodes(), intID);
+				this._ID = largest + 1;
 
-                /*
-                 We use ids of the form "id"+integer.  This loops through
-                 all the nodes in the model and finds the lowest integer such
-                 that there is no name conflict.  We simply ignore any ids that
-                 are not of the form "id"+integer.
-                 */
-                var largest = 0;
-                var intID = function(/*object*/ node){
-                    if(node.ID.length >= 2 && node.ID.slice(0, 2) == "id"){
-                        var n = parseInt(node.ID.slice(2));
-                        if(n && n > largest)
-                            largest = n;
-                    }
-                };
-                array.forEach(this.given.getNodes(), intID);
-                array.forEach(this.student.getNodes(), intID);
-                this._ID = largest + 1;
-
-                /*
-                 Sanity test that all given model IDs, node names,
-                 and descriptions are distinct, if they are defined.
-                 */
-                var ids = {}, names = {}, descriptions = {};
-                array.forEach(this.given.getNodes(), function(node){
-                    if(node.ID in ids){
-                        throw new Error("Duplicate node id " + node.id);
-                    }
-                    if(node.name in names){
-                        throw new Error("Duplicate node name \"" + node.name +
-                                "\" for " + node.ID + " and " + names[node.name]);
-                    }
-                    if(node.description in descriptions){
-                        throw new Error("Duplicate node description \"" + node.description +
-                                "\" for " + node.ID + " and " + descriptions[node.description]);
-                    }
-                    ids[node.ID] = true;
-                    if(node.name){
-                        names[node.name] = node.ID;
-                    }
-                    if(node.description){
-                        descriptions[node.description] = node.ID;
-                    }
-                }, this);
+				/*
+				 Sanity test that all given model IDs, node names,
+				 and descriptions are distinct, if they are defined.
+				 */
+				var ids = {}, names = {}, descriptions = {};
+				array.forEach(this.given.getNodes(), function(node){
+					if(node.ID in ids){
+						throw new Error("Duplicate node id " + node.id);
+					}
+					if(node.name in names){
+						throw new Error("Duplicate node name \"" + node.name +
+								"\" for " + node.ID + " and " + names[node.name]);
+					}
+					if(node.description in descriptions){
+						throw new Error("Duplicate node description \"" + node.description +
+								"\" for " + node.ID + " and " + descriptions[node.description]);
+					}
+					ids[node.ID] = true;
+					if(node.name){
+						names[node.name] = node.ID;
+					}
+					if(node.description){
+						descriptions[node.description] = node.ID;
+					}
+				}, this);
 
 		/*
 		 Set flag showing that student model is complete.
@@ -191,165 +190,165 @@ define([
 		 the model, deletes some nodes, and reopens the problem.
 		 */
 		this.isCompleteFlag = this.matchesGivenSolution();
-            },
-            getModelAsString: function(){
-                // Summary: Returns a JSON object in string format
-                //          Should only be used for debugging.
-                return JSON.stringify(this.model, null, 4);
-            },
-            /**
-             * GETTERS; retrieves specific attributes from a model; node attributes are usually
-             * by accessed by the node's ID--if the ID is not known use getNodeIDByName("name");
-             */
-            getTaskName: function(){
-                return this.model.task.taskName;
-            },
-/*                   
-            getPhase: function(){
-                return this.model.task.properties.phase;
-            },
+			},
+			getModelAsString: function(){
+				// Summary: Returns a JSON object in string format
+				//			Should only be used for debugging.
+				return JSON.stringify(this.model, null, 4);
+			},
+			/**
+			 * GETTERS; retrieves specific attributes from a model; node attributes are usually
+			 * by accessed by the node's ID--if the ID is not known use getNodeIDByName("name");
+			 */
+			getTaskName: function(){
+				return this.model.task.taskName;
+			},
+/*					 
+			getPhase: function(){
+				return this.model.task.properties.phase;
+			},
 */
-            getType: function(){
-                return this.model.task.properties.type;
-            },
-            getImageURL: function(){
-                return this.model.task.image.URL;
-            },
-            getImageDimensons: function(){
-                return {width: this.model.task.image.width, height: this.model.task.image.height};
-            },
-            getTime: function(){
-                // Summary: Returns the time object from the JSON model.
-                return this.model.task.time;
-            },
-            getUnits: function(){
-                return this.model.task.time.units;
-            },
-            getAllUnits: function(){
-                // Summary:  returns a list of all distinct units 
-                // (string format) defined in a problem.
-                // Need to order list alphabetically.
-                var unitList = new Array();
+			getType: function(){
+				return this.model.task.properties.type;
+			},
+			getImageURL: function(){
+				return this.model.task.image.URL;
+			},
+			getImageDimensons: function(){
+				return {width: this.model.task.image.width, height: this.model.task.image.height};
+			},
+			getTime: function(){
+				// Summary: Returns the time object from the JSON model.
+				return this.model.task.time;
+			},
+			getUnits: function(){
+				return this.model.task.time.units;
+			},
+			getAllUnits: function(){
+				// Summary:	 returns a list of all distinct units 
+				// (string format) defined in a problem.
+				// Need to order list alphabetically.
+				var unitList = new Array();
 		var timeUnits = this.getUnits();
 		if(timeUnits){
-		    unitList.push(timeUnits);
+			unitList.push(timeUnits);
 		}
-                array.forEach(this.given.getNodes(), function(node){
-                    if(node.units && array.indexOf(unitList, node.units) == -1){
-                        unitList.push(node.units);
-                    }
-                }, this);
-                return unitList;
-            },
-            getTaskDescription: function(){
-                return this.model.task.taskDescription;
-            },
-            getOptimalNode: function(/*string*/ studentID){
-                // Summary: Returns the next optimal node, first checking for children
-                //      of visible parent nodes, and then checking for parent nodes that
-                //      aren't visible; Returns null if all nodes visible.
-                //      
-                // Note: the student node studentID is assumed incorrect so it is ignored
-                var solutionNodes = this.solution.getNodes();
-                var nextNode = null;
-                for(var i = 0; i < solutionNodes.length; i++){
-                    if(solutionNodes[i].parentNode){
-                        if(!this.isNodeVisible(studentID, solutionNodes[i].ID))
-                            // Use this if no children are found
-                            nextNode = solutionNodes[i].ID;
-                        else if(solutionNodes[i].inputs){
-                            var optimalNode1 = this._getNextOptimalNode(solutionNodes[i].ID);
-                            if(optimalNode1)
-                                return optimalNode1;
-                        }
-                    }else{
-                        if(!this.isNodeVisible(studentID, solutionNodes[i].ID) && !nextNode)
-                            nextNode = solutionNodes[i].ID;
-                        else if(this.isNodeVisible(studentID, solutionNodes[i].ID) && solutionNodes[i].inputs){
-                            var optimalNode2 = this._getNextOptimalNode(solutionNodes[i].ID);
-                            if(optimalNode2)
-                                return optimalNode2;
-                        }
-                    }
-                }
-                return nextNode;
-            },
-            areRequiredNodesVisible: function(){
-                //Summary: returns true if all of the nodes in the model are visible
-                var solutionNodes = this.solution.getNodes();
-                var sLength = solutionNodes.length;
-                for(var i = 0; i < sLength; i++){
-                    if(!array.some(this.student.getNodes(), function(studentNode){
-                        return this.isNodeVisible(studentNode.ID, solutionNodes[i].ID);
-                    }, this))
-                        return false;
-                }
-                return true;
-            },
-            isParentNode: function(/*string*/ id){
-                // Summary: returns true if a node is the parent node in a tree structure;
-                return this.given.getNode(id).parentNode;
-            },
-            isNodeVisible: function(/*string*/ studentID, /*string*/ givenID){
-                // Summary: returns true if the node is in the student model,
-                //          excluding the current student node.
-                return array.some(this.student.getNodes(), function(node){
-                    return node.ID !== studentID && node.descriptionID === givenID;
-                });
-            },
-            isNodesParentVisible: function(/*string*/ studentID, /*string*/ givenID){
-                // Summary: returns true if the given node's parent is visible (if the 
-                //      node is an input into another node that is in the student model)
-                var nodes = this.given.getNodes();
+				array.forEach(this.given.getNodes(), function(node){
+					if(node.units && array.indexOf(unitList, node.units) == -1){
+						unitList.push(node.units);
+					}
+				}, this);
+				return unitList;
+			},
+			getTaskDescription: function(){
+				return this.model.task.taskDescription;
+			},
+			getOptimalNode: function(/*string*/ studentID){
+				// Summary: Returns the next optimal node, first checking for children
+				//		of visible parent nodes, and then checking for parent nodes that
+				//		aren't visible; Returns null if all nodes visible.
+				//		
+				// Note: the student node studentID is assumed incorrect so it is ignored
+				var solutionNodes = this.solution.getNodes();
+				var nextNode = null;
+				for(var i = 0; i < solutionNodes.length; i++){
+					if(solutionNodes[i].parentNode){
+						if(!this.isNodeVisible(studentID, solutionNodes[i].ID))
+							// Use this if no children are found
+							nextNode = solutionNodes[i].ID;
+						else if(solutionNodes[i].inputs){
+							var optimalNode1 = this._getNextOptimalNode(solutionNodes[i].ID);
+							if(optimalNode1)
+								return optimalNode1;
+						}
+					}else{
+						if(!this.isNodeVisible(studentID, solutionNodes[i].ID) && !nextNode)
+							nextNode = solutionNodes[i].ID;
+						else if(this.isNodeVisible(studentID, solutionNodes[i].ID) && solutionNodes[i].inputs){
+							var optimalNode2 = this._getNextOptimalNode(solutionNodes[i].ID);
+							if(optimalNode2)
+								return optimalNode2;
+						}
+					}
+				}
+				return nextNode;
+			},
+			areRequiredNodesVisible: function(){
+				//Summary: returns true if all of the nodes in the model are visible
+				var solutionNodes = this.solution.getNodes();
+				var sLength = solutionNodes.length;
+				for(var i = 0; i < sLength; i++){
+					if(!array.some(this.student.getNodes(), function(studentNode){
+						return this.isNodeVisible(studentNode.ID, solutionNodes[i].ID);
+					}, this))
+						return false;
+				}
+				return true;
+			},
+			isParentNode: function(/*string*/ id){
+				// Summary: returns true if a node is the parent node in a tree structure;
+				return this.given.getNode(id).parentNode;
+			},
+			isNodeVisible: function(/*string*/ studentID, /*string*/ givenID){
+				// Summary: returns true if the node is in the student model,
+				//			excluding the current student node.
+				return array.some(this.student.getNodes(), function(node){
+					return node.ID !== studentID && node.descriptionID === givenID;
+				});
+			},
+			isNodesParentVisible: function(/*string*/ studentID, /*string*/ givenID){
+				// Summary: returns true if the given node's parent is visible (if the 
+				//		node is an input into another node that is in the student model)
+				var nodes = this.given.getNodes();
 
-                return array.some(nodes, function(node){
-                    return array.some(node.inputs, function(input){
-                        return givenID === input.ID && this.isNodeVisible(studentID, node.ID); // node.ID is the parent of input.ID;
-                    }, this);
-                }, this);
-            },
-            matchesGivenSolution: function(){
-                /*See bug #2362*/
-                var flag = this.areRequiredNodesVisible() &&
-                        array.every(this.student.getNodes(), function(sNode){
-                    return this.student.isComplete(sNode.ID);
-                }, this);
-                return flag ? true : false;
-            },
-            /**
-             * SETTERS
-             */
-            setTaskName: function(/*string*/ name){
-                this.model.task.taskName = name;
-            },
-            setImage: function(/*object*/ options){
-                // Summary: JSON object with "URL", "width", and "height" elements; see sample JSON model.
-                this.model.task.image = options;
-            },
-            setTime: function(/*object*/ options){
-                // Summary: JSON object with "start", "end", "step", and "units" elements; see sample JSON model.
-                lang.mixin(this.model.task.time, options);
-            },
-            setPhase: function(/*string*/ phase){
-                // Summary: set the model's phase
-                this.model.task.properties.phase = phase;
-            },
-            setType: function(/*string*/ type){
-                // Summary: set the model's type
-                this.model.task.properties.type = type;
-            },
-            setTaskDescription: function(/*string*/ description){
-                // Summary: set the task description
-                this.model.task.taskDescription = description;
-            }
-        };
+				return array.some(nodes, function(node){
+					return array.some(node.inputs, function(input){
+						return givenID === input.ID && this.isNodeVisible(studentID, node.ID); // node.ID is the parent of input.ID;
+					}, this);
+				}, this);
+			},
+			matchesGivenSolution: function(){
+				/*See bug #2362*/
+				var flag = this.areRequiredNodesVisible() &&
+						array.every(this.student.getNodes(), function(sNode){
+					return this.student.isComplete(sNode.ID);
+				}, this);
+				return flag ? true : false;
+			},
+			/**
+			 * SETTERS
+			 */
+			setTaskName: function(/*string*/ name){
+				this.model.task.taskName = name;
+			},
+			setImage: function(/*object*/ options){
+				// Summary: JSON object with "URL", "width", and "height" elements; see sample JSON model.
+				this.model.task.image = options;
+			},
+			setTime: function(/*object*/ options){
+				// Summary: JSON object with "start", "end", "step", and "units" elements; see sample JSON model.
+				lang.mixin(this.model.task.time, options);
+			},
+			setPhase: function(/*string*/ phase){
+				// Summary: set the model's phase
+				this.model.task.properties.phase = phase;
+			},
+			setType: function(/*string*/ type){
+				// Summary: set the model's type
+				this.model.task.properties.type = type;
+			},
+			setTaskDescription: function(/*string*/ description){
+				// Summary: set the task description
+				this.model.task.taskDescription = description;
+			}
+		};
 
-        /* 
-         add subclasses with model accessors 
-         
-         TODO:  Move associated functions themselves to this 
-         section.
-         */
+		/* 
+		 add subclasses with model accessors 
+		 
+		 TODO:	Move associated functions themselves to this 
+		 section.
+		 */
 
         // Methods common to both student and given.
         // These will be mixed into both obj.given and obj.student
@@ -545,93 +544,92 @@ define([
                 // Summary: returns an array of all descriptions with
                 // name (label) and any associated node id (value).
 		// Note that the description may be empty.
-                // TO DO:  The list should be sorted.
-                return array.map(this.getNodes(), function(node){
-                    return {label: node.description, value: node.ID};
-                });
-            },
-            getDescription: function(/*string*/ id){
-                return this.getNode(id).description;
-            },
-            getAttemptCount: function(/*string*/ id, /*string*/ part){
-                return this.getNode(id).attemptCount[part];
-            },
-            getStatus: function(/*string*/ id, /*string*/ nodePart){
-                return this.getNode(id).status[nodePart];
-            },
-            setName: function(/*string*/ id, /*string*/ name){
-                this.getNode(id).name = name.trim();
-            },
-            setDescription: function(/*string*/ id, /*string*/ description){
-                this.getNode(id).description = description.trim();
-            },
-            setParent: function(/*string*/ id, /*bool*/ parent){
-                this.getNode(id).parentNode = parent;
-            },
-            setGenus: function(/*string*/ id, /*string*/ genus){
-                this.getNode(id).genus = genus;
-            },
-            setUnits: function(/*string*/ id, /*string*/ units){
-                this.getNode(id).units = units;
-            },
-            setInitial: function(/*string*/ id, /*float*/ initial){
-                this.getNode(id).initial = initial;
-            },
-            setEquation: function(/*string*/ id, /*string | object*/ equation){
-                this.getNode(id).equation = equation;
-            },
-            setAttemptCount: function(/*string*/ id, /*string*/ part, /*string*/ count){
-                this.getNode(id).attemptCount[part] = count;
-            },
-            setStatus: function(/*string*/ id, /*string*/ part, /*string*/ status){
-                // Summary: tracks student progress (correct, incorrect) on a given node;
-                this.getNode(id).status[part] = status;
-            },
-            isComplete: function(/*string*/ id, /*object*/ ignoreUnits){
-                // Summary: Test whether a node is completely filled out, correct or not
-                // Returns a boolean
-                // id: the node id
-                // ignoreUnits:  whether units need to be specified.
-                // 
-                // If genus indicates a solution node or an optional node, 
-                // then all the fields must be filled in.  
-                // If it is a non-solution node, then only some fields
-                // must be included.  Here are the possibilities:
-                //   1.  Just a description (needs name, too)
-                //   2.  Just units
-                //   3.  Optional quantity (needs name and description)
-                var node = this.getNode(id);
-                var initialEntered = node.type && node.type == "function" || node.initial;
-                var equationEntered = node.type && node.type == "parameter" || node.equation;
-                ignoreUnits = (ignoreUnits ? ignoreUnits : false); // A hack! to explicitly set this true as return value is going undefined because node.units value is not set in author mode in many cases, and during all the calls to this function ignoreUnits is never sent.
-                if(!node.genus || node.genus == "allowed" || node.genus == "preferred"){
-                    return node.name && node.description &&
-                            node.type && initialEntered &&
-                            (ignoreUnits || node.units) &&
-                            equationEntered;
-                }else if(node.genus == "initialValue"){
-                    return node.name && node.description;
-                }else{
-                    return (node.name && node.description) ||
-                            node.units;
-                }
-            }
-        }, both);
+				// TO DO:  The list should be sorted.
+				return array.map(this.getNodes(), function(node){
+					return {label: node.description, value: node.ID};
+				});
+			},
+			getDescription: function(/*string*/ id){
+				return this.getNode(id).description;
+			},
+			getAttemptCount: function(/*string*/ id, /*string*/ part){
+				return this.getNode(id).attemptCount[part];
+			},
+			getStatus: function(/*string*/ id, /*string*/ nodePart){
+				return this.getNode(id).status[nodePart];
+			},
+			setName: function(/*string*/ id, /*string*/ name){
+				this.getNode(id).name = name.trim();
+			},
+			setDescription: function(/*string*/ id, /*string*/ description){
+				this.getNode(id).description = description.trim();
+			},
+			setParent: function(/*string*/ id, /*bool*/ parent){
+				this.getNode(id).parentNode = parent;
+			},
+			setGenus: function(/*string*/ id, /*string*/ genus){
+				this.getNode(id).genus = genus;
+			},
+			setUnits: function(/*string*/ id, /*string*/ units){
+				this.getNode(id).units = units;
+			},
+			setInitial: function(/*string*/ id, /*float*/ initial){
+				this.getNode(id).initial = initial;
+			},
+			setEquation: function(/*string*/ id, /*string | object*/ equation){
+				this.getNode(id).equation = equation;
+			},
+			setAttemptCount: function(/*string*/ id, /*string*/ part, /*string*/ count){
+				this.getNode(id).attemptCount[part] = count;
+			},
+			setStatus: function(/*string*/ id, /*string*/ part, /*string*/ status){
+				// Summary: tracks student progress (correct, incorrect) on a given node;
+				this.getNode(id).status[part] = status;
+			},
+			isComplete: function(/*string*/ id, /*bool*/ unitsOptional){
+				// Summary: Test whether a node is completely filled out, correct or not
+				// Returns a boolean
+				// id: the node id
+				// unitsRequired:  whether units need to be specified.
+				// 
+				// If genus indicates a solution node or an optional node, 
+				// then all the fields must be filled in.  
+				// If it is a non-solution node, then only some fields
+				// must be included.  Here are the possibilities:
+				//	 1.	 Just a description (needs name, too)
+				//	 2.	 Just units
+				//	 3.	 Optional quantity (needs name and description)
+				var node = this.getNode(id);
+				var initialEntered = node.type && node.type == "function" || node.initial;
+				var equationEntered = node.type && node.type == "parameter" || node.equation;
+				if(!node.genus || node.genus == "allowed" || node.genus == "preferred"){
+					return node.name && node.description &&
+							node.type && initialEntered &&
+							(unitsOptional || node.units) &&
+							equationEntered;
+				}else if(node.genus == "initialValue"){
+					return node.name && node.description;
+				}else{
+					return (node.name && node.description) ||
+							node.units;
+				}
+			}
+		}, both);
 
-        obj.solution = lang.mixin({
-            getNodes: function(){
-                return array.filter(obj.model.task.givenModelNodes, function(node){
-                    return !node.genus;
-                });
-            },
-            // This method is common with given but not student.
-            getName: function(/*string*/ id){
-                // Summary: returns the name of a node matching the student model.
-                //      If no match is found, then return null.
-                var node = this.getNode(id);
-                return node && node.name;
-            }
-        }, both);
+		obj.solution = lang.mixin({
+			getNodes: function(){
+				return array.filter(obj.model.task.givenModelNodes, function(node){
+					return !node.genus;
+				});
+			},
+			// This method is common with given but not student.
+			getName: function(/*string*/ id){
+				// Summary: returns the name of a node matching the student model.
+				//		If no match is found, then return null.
+				var node = this.getNode(id);
+				return node && node.name;
+			}
+		}, both);
 
         obj.student = lang.mixin({
             addNode: function(options){
@@ -794,9 +792,9 @@ define([
             }
         }, both);
 
-        // Execute the constructor
-        obj.constructor.apply(obj, arguments);
+		// Execute the constructor
+		obj.constructor.apply(obj, arguments);
 
-        return obj;
-    };
+		return obj;
+	};
 });

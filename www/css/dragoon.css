@@ -19,7 +19,7 @@ html, body, #main{
 }
 
 
-.claro #nodeeditor .dijitDisabled{
+.claro .sameedit .dijitDisabled{
     background-color:#e6e6e6;
     cursor: pointer;
 }
@@ -37,11 +37,11 @@ html, body, #main{
                         Node editor
 */
 
-#nodeeditor, #crisisAlertMessage, #authorDescDialog, div#solution {
+.sameedit, #crisisAlertMessage, .sameedit, div#solution {
     font:10pt Arial,Myriad,Tahoma,Verdana,sans-serif !important;
 }
 
-#nodeeditor .fieldgroup {
+.sameedit .fieldgroup {
     display:block;
     margin-top:2ex;
     margin-bottom:2ex;
@@ -49,29 +49,29 @@ html, body, #main{
     clear:both;
 }
 
-#nodeeditor .fieldgroup > label {
+.sameedit .fieldgroup > label {
     text-align:right;
     margin-left:2ex;
     margin-right:1ex;
 }
 
-#nodeeditor .fieldgroup > * {
+.sameedit .fieldgroup > * {
     display:inline-block;
     vertical-align:top
 }
 
-#nodeeditor .fieldgroup > label:first-child {
+.sameedit .fieldgroup > label:first-child {
     width:10ex;
 }
 
-#nodeeditor #equationText {
+.sameedit #equationText {
     max-width:40ex;
     border:solid black 1px;
     padding:2px;
     margin:2px;
 }
 
-#nodeeditor .textscroll {
+.sameedit .textscroll {
     background:#e5e5e5;
     border:solid black 1px;
     overflow-y:scroll;
@@ -79,25 +79,25 @@ html, body, #main{
     width:20em
 }
 
-#nodeeditor .textscroll p {
+.sameedit .textscroll p {
     margin-top:0.5ex;
     margin-bottom:0.5ex;
 }
 
 /*  Display contents as horizontal but this block as vertical. */
-#nodeeditor .horizontal {
+.sameedit .horizontal {
     display:block;
 }
 
 /* Display contents as vertical but this block as horizontal. */
-#nodeeditor .vertical {
+.sameedit .vertical {
     display:inline-block;
     vertical-align:top;
 }
 
 /* If we use float to horizontally align, there seems to be
    no way to vertically align the buttons.  */
-#nodeeditor .buttonBox {
+.sameedit .buttonBox {
     float:right;
 }
 
@@ -107,6 +107,19 @@ html, body, #main{
     clear:right;
 }
 
+#authorDescDialog .fieldgroup > label:first-child{
+width: 12em;
+}
+
+#authorDescDialog #authorSetDescription{
+    height: 10ex;
+    border:solid black 1px;
+    padding:2px;
+    margin:2px;
+}
+#authorDescDialog .timeStepAuthor{
+    width: 10ex;
+}
 
 /*
             plots and tables 
