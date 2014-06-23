@@ -11,7 +11,7 @@
  *
  *Dragoon is distributed in the hope that it will be useful,
  *but WITHOUT ANY WARRANTY; without even the implied warranty of
- *MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ *MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.	See the
  *GNU General Public License for more details.
  *
  *You should have received a copy of the GNU General Public License
@@ -21,37 +21,37 @@
 
 /* global define */
 define([
-    "dojo/_base/array"    
+	"dojo/_base/array"	  
 ], function(array){
-    // Summary: 
-    //          Format the desciption onto the canvas
-    // Description:
-    //          Ensures that the model description is properly formated with 
-    //          line breaks and blank lines between paragraphs
-    // Tags:
-    //          description, canvas
+	// Summary: 
+	//			Format the desciption onto the canvas
+	// Description:
+	//			Ensures that the model description is properly formated with 
+	//			line breaks and blank lines between paragraphs
+	// Tags:
+	//			description, canvas
 
-    return function(context, textIn, x, y, maxWidth, lineHeight){
+	return function(context, textIn, x, y, maxWidth, lineHeight){
 	array.forEach(typeof textIn == "string"?[textIn]:textIn, function(text){
-            var words = text.split(' ');
-            var line = '';
+			var words = text.split(' ');
+			var line = '';
 
-            for(var n = 0; n < words.length; n++){
+			for(var n = 0; n < words.length; n++){
 		var testLine = line + words[n] + ' ';
 		var metrics = context.measureText(testLine);
 		var testWidth = metrics.width;
 		if(testWidth > maxWidth && n > 0){
-		    context.fillText(line, x, y);
-		    line = words[n] + ' ';
-		    y += lineHeight;
+			context.fillText(line, x, y);
+			line = words[n] + ' ';
+			y += lineHeight;
 		}
 		else {
-		    line = testLine;
+			line = testLine;
 		}
-            }
-            context.fillText(line, x, y);
-	    y += lineHeight; // Add blank line between paragraphs
+			}
+			context.fillText(line, x, y);
+		y += lineHeight; // Add blank line between paragraphs
 	});
-    };
+	};
 
 });

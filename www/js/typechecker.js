@@ -12,7 +12,7 @@
  *
  *Dragoon is distributed in the hope that it will be useful,
  *but WITHOUT ANY WARRANTY; without even the implied warranty of
- *MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ *MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.	See the
  *GNU General Public License for more details.
  *
  *You should have received a copy of the GNU General Public License
@@ -24,7 +24,7 @@ define([
 	"dijit/popup", 'dijit/registry', "dijit/TooltipDialog"
 ], function(array, dom, popup, registry, TooltipDialog){
 
-    return {
+	return {
 
 		// In case any tool tips are still open.
 		myTooltipDialog: new TooltipDialog({
@@ -67,7 +67,7 @@ define([
 
 			if(isNaN(input)){
 
-    var errorType;
+	var errorType;
 				// Put in checks here
 				console.log('not a number');
 				//initialValue is the id of the textbox, we get the value in the textbox

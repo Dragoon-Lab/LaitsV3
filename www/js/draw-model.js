@@ -11,7 +11,7 @@
  *
  *Dragoon is distributed in the hope that it will be useful,
  *but WITHOUT ANY WARRANTY; without even the implied warranty of
- *MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ *MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.	See the
  *GNU General Public License for more details.
  *
  *You should have received a copy of the GNU General Public License
@@ -22,127 +22,127 @@
 /* global define, jsPlumb */
 
 define([
-    "dojo/_base/array", 
-    'dojo/_base/declare', 
-    'dojo/_base/lang',
-    "dojo/dom-attr", 
-    "dojo/dom-construct", 
-    "dojo/dom-style",
+	"dojo/_base/array", 
+	'dojo/_base/declare', 
+	'dojo/_base/lang',
+	"dojo/dom-attr", 
+	"dojo/dom-construct", 
+	"dojo/dom-style",
 	"dijit/Menu", 
-    "dijit/MenuItem",
+	"dijit/MenuItem",
 	"./equation",
-    "./graph-objects", 
-    "jsPlumb/jsPlumb"
+	"./graph-objects", 
+	"jsPlumb/jsPlumb"
 ], function(array, declare, lang, attr, domConstruct, domStyle, Menu, MenuItem, equation, graphObjects){
-    // Summary: 
-    //          MVC for the canvas
-    // Description:
-    //          Acts as interface to JS Plumb
-    // Tags:
-    //          JS Plumb, model
+	// Summary: 
+	//			MVC for the canvas
+	// Description:
+	//			Acts as interface to JS Plumb
+	// Tags:
+	//			JS Plumb, model
 
-    return declare(null, {
+	return declare(null, {
 
-        _instance: null,
-        _givenModel: null,
-        _logging:null,
+		_instance: null,
+		_givenModel: null,
+		_logging:null,
 	// Hook for updates
 	updater: function(){},
 
-        constructor: function(givenModel){
+		constructor: function(givenModel){
 
-            // setup some defaults for jsPlumb.
-            var instance = jsPlumb.getInstance({
-                Endpoint : ["Dot", {radius:0.1}], //hiding it
-                HoverPaintStyle : {strokeStyle:"#1e8151", lineWidth:2 },
-                ConnectionOverlays : [
-                    [ "Arrow", {
-                        location:1,
-                        id:"arrow",
-                        length:14,
-                        foldback:0.9
-                    } ]
-                    /*,[ "Label", { label:"+", id:"label", cssClass:"aLabel" }]*/
-                ],
-                Container:"statemachine-demo"
-            });
+			// setup some defaults for jsPlumb.
+			var instance = jsPlumb.getInstance({
+				Endpoint : ["Dot", {radius:0.1}], //hiding it
+				HoverPaintStyle : {strokeStyle:"#1e8151", lineWidth:2 },
+				ConnectionOverlays : [
+					[ "Arrow", {
+						location:1,
+						id:"arrow",
+						length:14,
+						foldback:0.9
+					} ]
+					/*,[ "Label", { label:"+", id:"label", cssClass:"aLabel" }]*/
+				],
+				Container:"statemachine-demo"
+			});
 
-            this._instance = instance;
-            this._givenModel = givenModel;
-            var shapes = {
-                accumulator: "accumulator",
-                function: "function",
-                parameter: "parameter"
-            };
+			this._instance = instance;
+			this._givenModel = givenModel;
+			var shapes = {
+				accumulator: "accumulator",
+				function: "function",
+				parameter: "parameter"
+			};
 
-            // initialise draggable elements.
-            var vertices = array.map(givenModel.getNodes(), function(node){
-                return this.addNode(node);
-            }, this);
-
-
-            console.log("-------- instance:  ", instance);
+			// initialise draggable elements.
+			var vertices = array.map(givenModel.getNodes(), function(node){
+				return this.addNode(node);
+			}, this);
 
 
-            /* bind a click listener to each connection; the connection is deleted. you could of course
-             just do this: jsPlumb.bind("click", jsPlumb.detach), but I wanted to make it clear what was
-             happening. */
-            instance.bind("click", function(c){
-                //instance.detach(c);
-            });
-
-            /* bind a connection listener. note that the parameter passed to this function contains more than
-             just the new connection - see the documentation for a full list of what is included in 'info'.
-             this listener sets the connection's internal
-             id as the label overlay's text. */
-            /* instance.bind("connection", function(info){
-             info.connection.getOverlay("label").setLabel(info.connection.id);
-             }); */
-
-            // suspend drawing and initialise.
-            instance.doWhileSuspended(function(){
-
-                /* make each ".ep" div a source and give it some parameters to work with.  here we tell it
-                 to use a Continuous anchor and the StateMachine connectors, and also we give it the
-                 connector's paint style.  note that in this demo the strokeStyle is dynamically generated,
-                 which prevents us from just setting a jsPlumb.Defaults.PaintStyle.  but that is what i
-                 would recommend you do. Note also here that we use the 'filter' option to tell jsPlumb
-                 which parts of the element should actually respond to a drag start. */
-
-                array.forEach(vertices, function(vertex){
-                    instance.makeSource(vertex, {
-                        filter:".ep",                               // only supported by jquery
-                        anchor:"Continuous",
-                        connector:[ "StateMachine", { curviness:20 } ],
-                        connectorStyle:{ strokeStyle:"#5c96bc", lineWidth:2, outlineColor:"transparent", outlineWidth:4 },
-                        maxConnections:5,
-                        onMaxConnections:function(info, e){
-                            alert("Maximum connections (" + info.maxConnections + ") reached");
-                        }
-                    });
-                });
-
-                // initialise all '.w' elements as connection targets.
-                array.forEach(vertices, function(vertex){
-                    instance.makeTarget(vertex, {
-                        dropOptions:{ hoverClass:"dragHover" },
-                        anchor:"Continuous"
-                    });
-                });
+			console.log("-------- instance:	 ", instance);
 
 
+			/* bind a click listener to each connection; the connection is deleted. you could of course
+			 just do this: jsPlumb.bind("click", jsPlumb.detach), but I wanted to make it clear what was
+			 happening. */
+			instance.bind("click", function(c){
+				//instance.detach(c);
+			});
 
-            });
+			/* bind a connection listener. note that the parameter passed to this function contains more than
+			 just the new connection - see the documentation for a full list of what is included in 'info'.
+			 this listener sets the connection's internal
+			 id as the label overlay's text. */
+			/* instance.bind("connection", function(info){
+			 info.connection.getOverlay("label").setLabel(info.connection.id);
+			 }); */
 
-            array.forEach(vertices, function(vertex){
-                var id = attr.get(vertex, "id");
-                var inputs = givenModel.getInputs(id);
-                this.setConnections(inputs, vertex);
-            }, this);
+			// suspend drawing and initialise.
+			instance.doWhileSuspended(function(){
 
-            return instance;
+				/* make each ".ep" div a source and give it some parameters to work with.  here we tell it
+				 to use a Continuous anchor and the StateMachine connectors, and also we give it the
+				 connector's paint style.  note that in this demo the strokeStyle is dynamically generated,
+				 which prevents us from just setting a jsPlumb.Defaults.PaintStyle.	 but that is what i
+				 would recommend you do. Note also here that we use the 'filter' option to tell jsPlumb
+				 which parts of the element should actually respond to a drag start. */
 
-        },
+				array.forEach(vertices, function(vertex){
+					instance.makeSource(vertex, {
+						filter:".ep",								// only supported by jquery
+						anchor:"Continuous",
+						connector:[ "StateMachine", { curviness:20 } ],
+						connectorStyle:{ strokeStyle:"#5c96bc", lineWidth:2, outlineColor:"transparent", outlineWidth:4 },
+						maxConnections:5,
+						onMaxConnections:function(info, e){
+							alert("Maximum connections (" + info.maxConnections + ") reached");
+						}
+					});
+				});
+
+				// initialise all '.w' elements as connection targets.
+				array.forEach(vertices, function(vertex){
+					instance.makeTarget(vertex, {
+						dropOptions:{ hoverClass:"dragHover" },
+						anchor:"Continuous"
+					});
+				});
+
+
+
+			});
+
+			array.forEach(vertices, function(vertex){
+				var id = attr.get(vertex, "id");
+				var inputs = givenModel.getInputs(id);
+				this.setConnections(inputs, vertex);
+			}, this);
+
+			return instance;
+
+		},
 
 		colorNodeBorder: function(/*Object*/ nodeID, updateNode){
 			var type = this._givenModel.getNode(nodeID).type;
@@ -179,14 +179,14 @@ define([
 			return {border: borderColor, boxShadow: boxshadow, backgroundColor: backgroundcolor};
 		},
 
-        /* addNode: Add a node to the jsPlumb model, returning the DOM element.  */
+		/* addNode: Add a node to the jsPlumb model, returning the DOM element.	 */
 
 		addNode: function(/*object*/ node){
 
 			var type = node.type || "triangle";
 			console.log("------- Adding element to canvas, id = ", node.ID, ", class = ", type);
-            // Add div to drawing
-			console.log("      --> setting position for vertex : "+ node.ID +" position: x"+node.position.x+"  y:"+node.position.y);
+			// Add div to drawing
+			console.log("	   --> setting position for vertex : "+ node.ID +" position: x"+node.position.x+"  y:"+node.position.y);
 	
 			var nodeName = graphObjects.getNodeName(this._givenModel,node.ID);
 			// Don't actually update node, since we will create it below.
@@ -215,14 +215,14 @@ define([
 				onMoveStop: lang.hitch(this, this.onMoveStop)
 			});
 
-            pMenu.addChild(new MenuItem({
-                label: "Delete Node",
-                onClick: lang.hitch(this, function (){
-		    domConstruct.destroy(node.ID);
+			pMenu.addChild(new MenuItem({
+				label: "Delete Node",
+				onClick: lang.hitch(this, function (){
+			domConstruct.destroy(node.ID);
 					//remove all connnections including incoming and outgoing
 					array.forEach(this._instance.getConnections(), function(connection){
-                        if(connection.targetId == node.ID||connection.sourceId == node.ID)
-                            this._instance.detach(connection);
+						if(connection.targetId == node.ID||connection.sourceId == node.ID)
+							this._instance.detach(connection);
 					}, this);
 
 					this._logging.log('ui-action', {
@@ -234,132 +234,132 @@ define([
 					this._givenModel.deleteNode(node.ID);
 					this.updater();
 				})
-            }));
-            /*
-             Fire off functions associated with draggable events.
+			}));
+			/*
+			 Fire off functions associated with draggable events.
 
-             Note that the names (onMoveStart, onMove, onMoveStop) are from
-             the underlying library dojo/dnd/move, rather than jsPlumb.
-             */
-            this._instance.draggable(vertex,{
-                onMoveStart: lang.hitch(this, this.onMoveStart),
-                onMove: lang.hitch(this, this.onMove),
-                onMoveStop: lang.hitch(this, this.onMoveStop)
-            });
-            this._instance.makeSource(vertex, {
-                filter:".ep",                               // only supported by jquery
-                anchor:"Continuous",
-                connector:[ "StateMachine", { curviness:20 } ],
-                connectorStyle:{ strokeStyle:"#5c96bc", lineWidth:2, outlineColor:"transparent", outlineWidth:4 },
-                maxConnections:5,
-                onMaxConnections:function(info, e){
-                    alert("Maximum connections (" + info.maxConnections + ") reached");
-                }
-            });
-            this._instance.makeTarget(vertex, {
-                dropOptions:{ hoverClass:"dragHover" },
-                anchor:"Continuous"
-            });
+			 Note that the names (onMoveStart, onMove, onMoveStop) are from
+			 the underlying library dojo/dnd/move, rather than jsPlumb.
+			 */
+			this._instance.draggable(vertex,{
+				onMoveStart: lang.hitch(this, this.onMoveStart),
+				onMove: lang.hitch(this, this.onMove),
+				onMoveStop: lang.hitch(this, this.onMoveStop)
+			});
+			this._instance.makeSource(vertex, {
+				filter:".ep",								// only supported by jquery
+				anchor:"Continuous",
+				connector:[ "StateMachine", { curviness:20 } ],
+				connectorStyle:{ strokeStyle:"#5c96bc", lineWidth:2, outlineColor:"transparent", outlineWidth:4 },
+				maxConnections:5,
+				onMaxConnections:function(info, e){
+					alert("Maximum connections (" + info.maxConnections + ") reached");
+				}
+			});
+			this._instance.makeTarget(vertex, {
+				dropOptions:{ hoverClass:"dragHover" },
+				anchor:"Continuous"
+			});
 
-            return vertex;
-        },
-        setConnections: function(/*array*/ sources, /*string*/ destination){
+			return vertex;
+		},
+		setConnections: function(/*array*/ sources, /*string*/ destination){
 
-            //after determining equation type + or  - , set connection EndPoint by using following method
-            //this._instance.Defaults.ConnectionOverlays = this.getEndPointConfiguration('+');
-            // For now, we simply remove all existing connections and
-            // create all new connections.
-            // See http://stackoverflow.com/questions/11488067/how-to-delete-jsplumb-connection
-            // console.log("----- setConnections:  Need to delete existing connections going into " + destination, this._instance);
-            // Go through existing connections and delete those that
-            // have this destination as their target.
-	    
-             var targetId = attr.get(destination, "id");
-	     var parse = this._givenModel.getEquation(targetId),isSum,isProduct;
-	    if(parse){
-	     parse = equation.parse(parse);
-	     isSum = equation.isSum(parse);
-	     isProduct = equation.isProduct(parse);
-	    }
+			//after determining equation type + or	- , set connection EndPoint by using following method
+			//this._instance.Defaults.ConnectionOverlays = this.getEndPointConfiguration('+');
+			// For now, we simply remove all existing connections and
+			// create all new connections.
+			// See http://stackoverflow.com/questions/11488067/how-to-delete-jsplumb-connection
+			// console.log("----- setConnections:  Need to delete existing connections going into " + destination, this._instance);
+			// Go through existing connections and delete those that
+			// have this destination as their target.
+		
+			 var targetId = attr.get(destination, "id");
+		 var parse = this._givenModel.getEquation(targetId),isSum,isProduct;
+		if(parse){
+		 parse = equation.parse(parse);
+		 isSum = equation.isSum(parse);
+		 isProduct = equation.isProduct(parse);
+		}
 
-            array.forEach(this._instance.getConnections(), function(connection){
-                if(connection.targetId == destination)
-                    this._instance.detach(connection);
-            }, this);
-            // Create new connections
-	    var connectionOverlays = graphObjects.getEndPointConfiguration('');
-            array.forEach(sources, function(source){
-                // All sources and destinations should exist.
-//                if(destination.is)
+			array.forEach(this._instance.getConnections(), function(connection){
+				if(connection.targetId == destination)
+					this._instance.detach(connection);
+			}, this);
+			// Create new connections
+		var connectionOverlays = graphObjects.getEndPointConfiguration('');
+			array.forEach(sources, function(source){
+				// All sources and destinations should exist.
+//				  if(destination.is)
 		if(source.label){
-		    console.log("------- At this point, we should add a '"+source.label+"' label to "+ source.ID);
-		    //check pure sum  or pure product but not both
-		    if(!(isSum&&isProduct)){	
+			console.log("------- At this point, we should add a '"+source.label+"' label to "+ source.ID);
+			//check pure sum  or pure product but not both
+			if(!(isSum&&isProduct)){	
 				if(isSum){
 					if(source.label=='-')						
 						 connectionOverlays = graphObjects.getEndPointConfiguration(source.label);
 				}else if(isProduct){
-					 if(source.label=='/')                                          
-                                                connectionOverlays = graphObjects.getEndPointConfiguration(source.label);
+					 if(source.label=='/')											
+												connectionOverlays = graphObjects.getEndPointConfiguration(source.label);
 				}
 			}
 		}
 
-                this._instance.connect({source: source.ID,
-                    target: destination,
-                    overlays:connectionOverlays
-                });
+				this._instance.connect({source: source.ID,
+					target: destination,
+					overlays:connectionOverlays
+				});
 		connectionOverlays = graphObjects.getEndPointConfiguration('');
-            }, this);
-        },
+			}, this);
+		},
 
-        addQuantity: function(/*string*/ source, /*array*/ destinations){
-            // Go through existing connections an delete those
-            // that have this source.
-            array.forEach(this._instance.getConnections(), function(connection){
-                if(connection.sourceId == source)
-                    this._instance.detach(connection);
-            }, this);
-            // Create new connections
-            array.forEach(destinations, function(destination){
-                // All sources and destinations should exist.
-                this._instance.connect({source: source, target: destination});
-            }, this);
+		addQuantity: function(/*string*/ source, /*array*/ destinations){
+			// Go through existing connections an delete those
+			// that have this source.
+			array.forEach(this._instance.getConnections(), function(connection){
+				if(connection.sourceId == source)
+					this._instance.detach(connection);
+			}, this);
+			// Create new connections
+			array.forEach(destinations, function(destination){
+				// All sources and destinations should exist.
+				this._instance.connect({source: source, target: destination});
+			}, this);
 
-        },
+		},
 
-        // Keep track of whether there was a mouseDown and mouseUp
-        // with no intervening mouseMove
-        _clickNoMove: false,
+		// Keep track of whether there was a mouseDown and mouseUp
+		// with no intervening mouseMove
+		_clickNoMove: false,
 
-        onMoveStart: function(){
-            this._clickNoMove = true;
-        },
+		onMoveStart: function(){
+			this._clickNoMove = true;
+		},
 
-        onMove: function(){
-            this._clickNoMove = false;
-        },
+		onMove: function(){
+			this._clickNoMove = false;
+		},
 
-        onMoveStop: function(){
-            if(this._clickNoMove){
-                this.onClickNoMove.apply(null, arguments);
-            }else {
-                this.onClickMoved.apply(null, arguments);
-            }
-            this._clickNoMove = false;
-        },
+		onMoveStop: function(){
+			if(this._clickNoMove){
+				this.onClickNoMove.apply(null, arguments);
+			}else {
+				this.onClickMoved.apply(null, arguments);
+			}
+			this._clickNoMove = false;
+		},
 
-        onClickMoved: function(mover){
-            // stub for attaching save new coordinates to model
-        },
+		onClickMoved: function(mover){
+			// stub for attaching save new coordinates to model
+		},
 
-        onClickNoMove: function(){
-            // stub for attaching node editor startup
-        },
+		onClickNoMove: function(){
+			// stub for attaching node editor startup
+		},
 
-        setLogging: function(/*string*/ logging){
-            this._logging = logging;
-        }
+		setLogging: function(/*string*/ logging){
+			this._logging = logging;
+		}
 
-    });
+	});
 });
