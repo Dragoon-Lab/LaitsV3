@@ -282,6 +282,7 @@ define([
 				var newInitial = IniFlag.value;
 				this.applyDirectives(this.authorPM.process(this.currentID, "initial", newInitial, true));
 				console.log("In AUTHOR mode. Initial value is: " + newInitial);
+				this._model.active.setInitial(this.currentID,newInitial);
 			}else if(IniFlag.errorType){
 				this.logging.log('solution-step', {
 					type: IniFlag.errorType,
