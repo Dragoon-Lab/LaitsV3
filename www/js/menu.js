@@ -11,7 +11,7 @@
  *
  *Dragoon is distributed in the hope that it will be useful,
  *but WITHOUT ANY WARRANTY; without even the implied warranty of
- *MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ *MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.	See the
  *GNU General Public License for more details.
  *
  *You should have received a copy of the GNU General Public License
@@ -22,21 +22,21 @@
 /*global define*/
 
 define([
-    "dojo/dom",
-    "dojo/ready",
-    "dijit/registry",
-    "dojo/on"
+	"dojo/dom",
+	"dojo/ready",
+	"dijit/registry",
+	"dojo/on"
 ], function(dom, ready, registry, on){
-    // Summary/Description: 
-    //          Connects the menu buttons to the program
-    // Tags:
-    //          menu, buttons
-    
-    return {
+	// Summary/Description: 
+	//			Connects the menu buttons to the program
+	// Tags:
+	//			menu, buttons
+	
+	return {
 	add: function(button, handler){
-            // If I use registry.byId(), then the function is called twice.
-	    var o = dom.byId(button);
-	    if(o){
+			// If I use registry.byId(), then the function is called twice.
+		var o = dom.byId(button);
+		if(o){
 		console.log("wiring up ", button, ", widget=", o);
 		/*
 		 This is a work-around for getting a button to work 
@@ -44,12 +44,12 @@ define([
 		 Otherwise, there is a superfluous error message.
 		 */
 		registry.byId(button)._setSelected = function(arg){
-		    console.log("_setSelected called with ", arg);
+			console.log("_setSelected called with ", arg);
 		};
 		on(o, 'click', handler);
-	    }else {
+		}else {
 		console.warn("Can't find menu item ", o);
-	    }
+		}
 	}
-    };
+	};
 });

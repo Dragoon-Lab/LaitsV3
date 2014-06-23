@@ -12,7 +12,7 @@
  *
  *Dragoon is distributed in the hope that it will be useful,
  *but WITHOUT ANY WARRANTY; without even the implied warranty of
- *MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ *MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.	See the
  *GNU General Public License for more details.
  *
  *You should have received a copy of the GNU General Public License
@@ -21,59 +21,59 @@
  */
 
 define([
-    "dojo/_base/array",
-    "dojo/_base/declare",
-    "dojo/_base/lang",
-    "dojo/on",
-    "dojo/dom",
-    "dijit/registry",
-    "dijit/form/HorizontalSlider",
-    "./equation",
-    "./integrate"
+	"dojo/_base/array",
+	"dojo/_base/declare",
+	"dojo/_base/lang",
+	"dojo/on",
+	"dojo/dom",
+	"dijit/registry",
+	"dijit/form/HorizontalSlider",
+	"./equation",
+	"./integrate"
 ], function(array, declare, lang, on, dom, registry, HorizontalSlider, equation, integrate){
 	// Summary: 
-	//          Finds model solutions and sets up the sliders
+	//			Finds model solutions and sets up the sliders
 	// Description:
-	//          Sets up and manages the sliders; listens for and registers 
-	//          changes in the sliders; 
+	//			Sets up and manages the sliders; listens for and registers 
+	//			changes in the sliders; 
 	// Tags:
-	//          sliders, slider listener
-    
+	//			sliders, slider listener
+	
 	return declare(null, {
 		
-		model: null,                        // model
-		active: {},                         // set current mode. TRUE = givenModel / FALSE = StudentModel
+		model: null,						// model
+		active: {},							// set current mode. TRUE = givenModel / FALSE = StudentModel
 
 		/* variables specific to rendering graph and table */
-		given: {},                          // object to store calculated parameters from given model
-		dialog: "",                         // dialog box to be displayed
-		dialogContent: "",                  // Parameter to set DOM in a dialog dynamically
-		sliders: {},                        // Parameter to create slider objects
+		given: {},							// object to store calculated parameters from given model
+		dialog: "",							// dialog box to be displayed
+		dialogContent: "",					// Parameter to set DOM in a dialog dynamically
+		sliders: {},						// Parameter to create slider objects
 		_logging : null,
-		mode : null,                        // Parameter to hold the mode value to differentiate graphs for author and student mode.
+		mode : null,						// Parameter to hold the mode value to differentiate graphs for author and student mode.
 
 		constructor: function(model, mode, logging){
 			console.log("***** In calculations constructor", this.given);
-            this.model = model;
+			this.model = model;
 			this.mode = mode;
 			this.dialogWidget = registry.byId("solution");
 			this.setLogging(logging);
-            /*
+			/*
 			 In AUTHOR mode, plot solution for all given nodes of genus false
-             and type "accumulator" or "function""
-             The table contains the same nodes.
+			 and type "accumulator" or "function""
+			 The table contains the same nodes.
 
-             In student modes, plot solution for all student nodes (of type
-             "accumulator" or "function") as well
-             as any matching given model node of genus false.
-             The table contains only the student nodes.
-             */
+			 In student modes, plot solution for all student nodes (of type
+			 "accumulator" or "function") as well
+			 as any matching given model node of genus false.
+			 The table contains only the student nodes.
+			 */
 			this.active.timeStep = this.initializeSolution(model.active);
 			if(!this.active.timeStep){
 				return; // abort on error in constructing timeStep
 			}
 
-            this.active.initialValues = array.map(
+			this.active.initialValues = array.map(
 				this.active.timeStep.xvars, 
 				model.active.getInitial,
 				model.active
@@ -88,7 +88,7 @@ define([
 				console.log("now in given model");
 				this.given.timeStep = this.initializeSolution(model.given);
 				if(!this.given.timeStep){
-					return;  // abort on error
+					return;	 // abort on error
 				}
 				this.given.initialValues = array.map(
 					this.given.timeStep.xvars, 
@@ -101,23 +101,23 @@ define([
 		},
 
 		initializeSolution: function(model){
-			//Summary:  Initialize solution and give a message if a cycle is found.
+			//Summary:	Initialize solution and give a message if a cycle is found.
 			var timeStep = null;
 			try{
 				timeStep = equation.initializeTimeStep(model);
 			}catch(e){
 				if(e.name == "graph-cycle"){
-					// Also, need to log this.  Trello card https://trello.com/c/XdK6JqNE
-					this.dialogWidget.set("content", "<div>This model cannot be solved:<br>The function nodes depend on each other in an inconsistant manner.</div>");		    
+					// Also, need to log this.	Trello card https://trello.com/c/XdK6JqNE
+					this.dialogWidget.set("content", "<div>This model cannot be solved:<br>The function nodes depend on each other in an inconsistant manner.</div>");			
 				}
 			}
 			return timeStep;
 		},
 
 		findSolution: function(isActive, plotVariables){ 
-			// Summary:  Find a solution
-			// Returns:  an object of the form
-            //          {status: s, type: m, missingNode: n/soln: solution}
+			// Summary:	 Find a solution
+			// Returns:	 an object of the form
+			//			{status: s, type: m, missingNode: n/soln: solution}
 			var choice = isActive?this.active:this.given;
 			console.log("in findSolution ", isActive, choice.initialValues, choice.timeStep.parameters);
 			/*
@@ -132,7 +132,7 @@ define([
 					this.model.getTime());
 			}
 			catch(err){ // we catch the correspoding error here
-				var if_id=err.message.substr(19).trim(); //In case the name is not generated and a node id is , we have to get the name from the active object for the user to understand           
+				var if_id=err.message.substr(19).trim(); //In case the name is not generated and a node id is , we have to get the name from the active object for the user to understand			
 				console.log("catch error",this.model.active.getName(if_id));  
 				if(this.model.active.getName(if_id)){
 					var miss_node=this.model.active.getName(if_id); // In case a node is incomplete
@@ -169,7 +169,7 @@ define([
 							plotValues[k].push(variables[id]);
 						}
 					});
-				}	    
+				}		
 				return {times: solution.times, plotValues: plotValues};
 			}else{
 				return {status: 'solution', soln: solution};
@@ -177,29 +177,29 @@ define([
 		},
 
 		labelString: function(id){
-            // Summary:  Return a string containing the quantity name and any units.
-            // id:  Node id for active model; null returns time label
-            var label = id?this.model.active.getName(id):"time";
-            var units = id?this.model.active.getUnits(id):this.model.getUnits();
-            if(units){
+			// Summary:	 Return a string containing the quantity name and any units.
+			// id:	Node id for active model; null returns time label
+			var label = id?this.model.active.getName(id):"time";
+			var units = id?this.model.active.getUnits(id):this.model.getUnits();
+			if(units){
 				label += " (" + units + ")";
-            }
-            return label;
+			}
+			return label;
 		},
 
 		/* @brief: this function registers event on slider from graph and table
-		 *  graph and table-specific functionality is carried out in renderGraph/renderTable
+		 *	graph and table-specific functionality is carried out in renderGraph/renderTable
 		 */
 		registerEventOnSlider: function(slider, index, paramID, transform){
-			// Summary:  When slider is changed, put value in textbox 
-			//           and emit change event
+			// Summary:	 When slider is changed, put value in textbox 
+			//			 and emit change event
 			/* 
 			 If plotting is too slow, then "change" makes the
-			 slider appear "stuck."  Need to find some way to update
+			 slider appear "stuck."	 Need to find some way to update
 			 the plots without blocking all other processes.
 			 */
 			// Can use "change" or "mouseup"
-            on(slider, "change", lang.hitch(this, function(){
+			on(slider, "change", lang.hitch(this, function(){
 				var input = dom.byId(index);
 				// Print slider value in box.
 				input.value = transform(slider.value).toPrecision(3);
@@ -211,7 +211,7 @@ define([
 
 		getTime: function(){
 			// Returns time in seconds since start of session.
-			return  ((new Date()).getTime() - this._startTime)/1000.0;
+			return	((new Date()).getTime() - this._startTime)/1000.0;
 		},
 
 		_startTime: (new Date()).getTime(),
@@ -230,11 +230,11 @@ define([
 			// Using a JavaScript closure:
 			// The value of 'index' is still available when the change event is fired.
 			var index = dom.byId(textBoxID[paramID]);
-			on(index, "change",  lang.hitch(this, function(){
+			on(index, "change",	 lang.hitch(this, function(){
 				console.log("---- value box change ", this.getTime());
 
 				if(this._rendering){
-					console.log("     returning");
+					console.log("	  returning");
 					return;
 				}
 				this._rendering = true;
@@ -250,11 +250,11 @@ define([
 					throw new Error("Invalid id", paramID);
 				}
 				this.findSolution(true); // Solve active model
-				console.log("      new solution", this.getTime());
+				console.log("	   new solution", this.getTime());
 				//this function is specific to graph/table
 				this.renderDialog();
 				this._rendering = false;
-				console.log("      new plot done", this.getTime());
+				console.log("	   new plot done", this.getTime());
 			}));
 		},
 
@@ -262,14 +262,14 @@ define([
 		 * @brief: create slider object for graphs and table
 		 */
 		createSliderAndDialogObject: function(){
-            var units;
+			var units;
 			var sliderVars = lang.clone(this.active.timeStep.parameters);
 			for(var j=0; j<this.active.timeStep.xvars.length; j++){
 				sliderVars[this.active.timeStep.xvars[j]] = this.active.initialValues[j];
 			}
 			var textBoxID = {}, sliderID = {};
-            //create sliders based on number of input parameters
-            for(var paramID in sliderVars){
+			//create sliders based on number of input parameters
+			for(var paramID in sliderVars){
 
 				/*
 				 Determine range and transform to use for slider
@@ -294,17 +294,17 @@ define([
 
 				// create slider
 				this.sliders[paramID] = new HorizontalSlider({
-                    name: this.sliderID + paramID,
-                    value: val,
-                    minimum: min,
-                    maximum: max,
-                    intermediateChanges: true,
-                    style: "width:300px;margin:3px;"
+					name: this.sliderID + paramID,
+					value: val,
+					minimum: min,
+					maximum: max,
+					intermediateChanges: true,
+					style: "width:300px;margin:3px;"
 				}, this.sliderID + paramID);
 
 				var labelText = this.model.active.getName(paramID);
 				if(paramID in this.active.xvarMap){
-                    labelText = "Initial " + labelText;
+					labelText = "Initial " + labelText;
 				}
 				// DOM id for the text <input>.
 				textBoxID[paramID] = this.textBoxID + "_" + paramID;
@@ -312,20 +312,20 @@ define([
 				//create label for name of a textbox
 				//create input for a textbox
 				//create div for embedding a slider
-                this.dialogContent += "\<label>" + labelText + " = " + "\</label>";
+				this.dialogContent += "\<label>" + labelText + " = " + "\</label>";
 				// The input element does not have an end tag so we can't use
 				// this.createDom().
 				// Set width as number of characters.
 				this.dialogContent += "<input id=\"" + textBoxID[paramID] + "\" type=\"text\" size=10>";
 				units = this.model.active.getUnits(paramID);
 				if(units){
-                    this.dialogContent += " " + units;
+					this.dialogContent += " " + units;
 				}
 				this.dialogContent += "<br>";
 				// DOM id for slider <div>
 				sliderID[paramID] = this.sliderID + "_" + paramID;
-                this.dialogContent += "<div id='" + sliderID[paramID] + "'> " + "\</div>";
-            }
+				this.dialogContent += "<div id='" + sliderID[paramID] + "'> " + "\</div>";
+			}
 
 			var dialogWidget = registry.byId("solution");
 			dialogWidget.set("title", this.model.getTaskName() + " - " + this.type);
@@ -333,10 +333,10 @@ define([
 			dialogWidget.set("content", this.dialogContent);
 
 			// Attach slider widget to DOM
-            for(paramID in sliderVars){
+			for(paramID in sliderVars){
 				dom.byId(textBoxID[paramID]).value = sliderVars[paramID];
 				dom.byId(sliderID[paramID]).appendChild(this.sliders[paramID].domNode);
-            }
+			}
 
 			// Attach text handles to slider text box
 			for(paramID in sliderVars){
@@ -346,12 +346,12 @@ define([
 
 		/* @brief: display the graph*/
 		show: function(){
-            this.dialogWidget.show();
+			this.dialogWidget.show();
 		},
 
 		setLogging: function(/*string*/ logging){
 			this._logging = logging;
 		}
 
-    });
+	});
 });
