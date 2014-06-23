@@ -1,24 +1,30 @@
 /** ELEMENT POSITIONS **/
-#maine {top:40em;left:4em;}
-#menu  {top:10em;left:30em;}
-#load-save {top:15em;left:30em;}
-#model  {top:57em;left:56em;}
-#RenderGraph {top:26em;left:30em;}
-#RenderTable {top:32em;left:30em;}
-#wraptext {top:20em;left:30em;}
-#con-student {top:38em;left:30em;}
-#con-author {top:44em;left:30em;}
-#drawmodel {top:53em;left:30em;}
-#calculations {top:29em;left:46em;}
-#logging {top:58em;left:30em;}
-#pedagogical_module { top:41em; left:58em;}
 
-#integrate { left:60em;top:23em; }
-#controller { top:49em; left:58em;}
+/*Column 1*/
+#maine {top:26em;left:5em;}
+/*Column 2*/
+#menu {top:0em;left:30em;}
+#description {top:6em;left:30em;}
+#RenderGraph {top:12em;left:30em;}
+#RenderTable {top:18em;left:30em;}
+#drawmodel {top:24em;left:30em;}
+#state {top:29em;left:30em;}
+#con-author {top:37em;left:30em;}
+#logging {top:43em;left:30em;}
+#con-student {top:49em;left:30em;}
+#load-save {top:55em;left:30em;}
+/*Column 3*/
+#model {top:37em;left:50em;}
+#controller {top:43em;left:50em;}
+#pedagogical_module {top:49em;left:50em;}
+/*Column 4*/
+#wraptext {top:6em;left:60em;}
+#calculations {top:12em;left:60em;}
+#graph-objects {top:18em;left:60em;}
+/*Column 5*/
+#equation {top:29em;left:80em;}
+/*Column 6*/
+#integrate {top:18em;left:95em;}
+#parser {top:24em;left:95em;}
 
-#state {left:44em;top:22em;}
-#util {left:43em;top:15em;}
-
-
-
-#equation {left:62em;top:34em;}
+/*#util {top:1em;left:45em;}*/

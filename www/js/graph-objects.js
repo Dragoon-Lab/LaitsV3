@@ -22,18 +22,25 @@
 define([
     "dojo/dom-construct","./equation"
 ], function(domConstruct,expression){
+    // Summary: 
+    //          Creates a node in the DOM (Note to developer: see who calls this and update the Dependency tree)
+    // Description:
+    //          Assists in creating the model graph
+    // Tags:
+    //          DOM, model, graph
+
     return {
-       getEndPointConfiguration:function(sign){
+        getEndPointConfiguration:function(sign){
             if(sign!='')
-             return [["Arrow", { location:1, id:"arrow", length:14, foldback:0.9 } ], ["Custom", { create:function(component){ var overlay = domConstruct.create("div", { innerHTML: "<div class='endPoint'>"+sign+"</div>" }); return overlay; }, location:1.0, id:"customOverlay" }]];
+                return [["Arrow", { location:1, id:"arrow", length:14, foldback:0.9 } ], ["Custom", { create:function(component){ var overlay = domConstruct.create("div", { innerHTML: "<div class='endPoint'>"+sign+"</div>" }); return overlay; }, location:1.0, id:"customOverlay" }]];
             else
-               return [["Arrow", { location:1, id:"arrow", length:14, foldback:0.9 } ]];
+                return [["Arrow", { location:1, id:"arrow", length:14, foldback:0.9 } ]];
         },
  	getNodeName:function(model,nodeId,type){
-	      var type = type||model.getType(nodeId)||'triangle';
-             var nodeName = model.getName(nodeId);
-             var parse = model.getEquation(nodeId);
-             var parameter =  '';
+            var type = type||model.getType(nodeId)||'triangle';
+            var nodeName = model.getName(nodeId);
+            var parse = model.getEquation(nodeId);
+            var parameter =  '';
             if(parse){
                 parse=expression.parse(parse);
                 // May want to change symbols to "sum" and "product"
@@ -42,15 +49,15 @@ define([
             }
             var initialValue = model.getInitial(nodeId);
             if(!initialValue)
-                 initialValue = '';
+                initialValue = '';
 
-             var unitsValue = model.getUnits(nodeId);
-             if(!unitsValue)
-                     unitsValue = '';
+            var unitsValue = model.getUnits(nodeId);
+            if(!unitsValue)
+                unitsValue = '';
 
             initialValue += " " + unitsValue;
 
-            if(nodeName && type!='triangle')
+            if(nodeName)
                 nodeName='<div id='+nodeId+'Label  class="bubble"><div class="'+type+'Wrapper"><strong>'+parameter+'<br>'+initialValue+'</strong></div><div class='+type+'Div><strong>'+nodeName+'</strong></div></div>';
             else
                 nodeName='';

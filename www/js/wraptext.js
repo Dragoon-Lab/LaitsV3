@@ -18,10 +18,18 @@
  *along with Dragoon.  If not, see <http://www.gnu.org/licenses/>.
  *
  */
+
 /* global define */
 define([
-    "dojo/_base/array"
+    "dojo/_base/array"    
 ], function(array){
+    // Summary: 
+    //          Format the desciption onto the canvas
+    // Description:
+    //          Ensures that the model description is properly formated with 
+    //          line breaks and blank lines between paragraphs
+    // Tags:
+    //          description, canvas
 
     return function(context, textIn, x, y, maxWidth, lineHeight){
 	array.forEach(typeof textIn == "string"?[textIn]:textIn, function(text){

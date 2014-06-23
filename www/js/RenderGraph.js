@@ -35,7 +35,9 @@ define([
     "./calculations",
     "dojo/domReady!"
 ], function(array, declare, lang, on, Chart, Default, Lines, Grid, Legend, calculations){
-    return declare(calculations, {                //calculations constructor is loaded here before RenderGraph constructor is 
+
+    // The calculations constructor is loaded before the RenderGraph constructor
+    return declare(calculations, {
 	
 	type: "Graph",                                  //Rendering type
 	textBoxID:"textGraph",                          //ID for text-box DOM
@@ -49,7 +51,9 @@ define([
 	
 	constructor: function(){
             console.log("***** In RenderGraph constructor");
-            this.initialize();
+	    if(this.active.timeStep){  // Abort if there is an error in timSstep.
+		this.initialize();
+	    }
 	},
 	
 	/*
@@ -72,7 +76,7 @@ define([
 	    var activeSolution = this.findSolution(true, this.active.plotVariables);
         if(activeSolution.status=="error" && activeSolution.type=="missing") // Return value from findSlution in calculation, returns an array and we check for status and any missing nodes
 	    {
-	       this.dialogWidget.set("content", "<div>"+activeSolution.missingNode+" is missing</div>"); //We show the error message like "A Node is Missing"
+	       this.dialogWidget.set("content", "<div>Not all nodes have been completed. For example, \""+activeSolution.missingNode+"\" is not yet fully defined.</div>"); //We show the error message like "A Node is Missing"
            return;
 	    }
         
@@ -87,18 +91,15 @@ define([
 			var givenNode = this.model.given.getNode(givenID);
 			return givenNode && (!givenNode.genus?givenID:null);
 		    }, this);
-		    
-		
-        
-        
+
             // Calculate solutions
 		    var givenSolution = this.findSolution(false, this.given.plotVariables);
             
 		}
 
 		 array.forEach(this.active.plotVariables, function(id){
-			this.dialogContent += this.createDom('div', "chart" + id);
-			this.dialogContent += this.createDom('div', "legend" + id, "class='legend'");
+             this.dialogContent += "<div id='chart" + id + "'> " + "\</div>";
+             this.dialogContent += "<div class='legend' id='legend" + id + "'> " + "\</div>";
 	            }, this);
 		    //plot sliders 
 	            this.createSliderAndDialogObject();
@@ -106,48 +107,48 @@ define([
             var charts = {};
             var legends = {};
             
-            if(this.active.plotVariables.length>0){ //we check the length of object, if there are nodes , then we proceed else give an error and return
-		array.forEach(this.active.plotVariables, function(id, k){
-                    var str = "chart" + id;
-                    charts[id] = new Chart(str);
-                    charts[id].addPlot("default", {
-			type: Lines, 
-			// Do not include markers if there are too
-			// many plot points.  It looks ugly and slows down
-			// plotting significantly.
-			markers: activeSolution.times.length<25
-		    });
-                    charts[id].addAxis("x", {
-			title: this.labelString(),
-			titleOrientation: "away", titleGap: 5
+            if(this.active.plotVariables.length>0){ //we check the length of object, if there are nodes, then we proceed else give an error and return
+                array.forEach(this.active.plotVariables, function(id, k){
+                            var str = "chart" + id;
+                            charts[id] = new Chart(str);
+                            charts[id].addPlot("default", {
+                    type: Lines, 
+                    // Do not include markers if there are too
+                    // many plot points.  It looks ugly and slows down
+                    // plotting significantly.
+                    markers: activeSolution.times.length<25
                     });
-		    
-                    // var obj = this.getMinMaxFromArray(this.student.arrayOfNodeValues[j]);
-                    charts[id].addAxis("y", {
-			vertical: true, // min: obj.min, max: obj.max,
-			title: this.labelString(id)
-                    });
+                            charts[id].addAxis("x", {
+                    title: this.labelString(),
+                    titleOrientation: "away", titleGap: 5
+                            });
 
-		    if(this.mode != "AUTHOR")	
-                var givenID = this.model.active.getDescriptionID(id);
-		    
-                    //plot chart for student node
+                            // var obj = this.getMinMaxFromArray(this.student.arrayOfNodeValues[j]);
+                            charts[id].addAxis("y", {
+                    vertical: true, // min: obj.min, max: obj.max,
+                    title: this.labelString(id)
+                            });
+
+                    if(this.mode != "AUTHOR")	
+                        var givenID = this.model.active.getDescriptionID(id);
+
+                            //plot chart for student node
+                            charts[id].addSeries(
+                    "Variable solution", 
+                    this.formatSeriesForChart(activeSolution, k), 
+                    {stroke: "green"}
+                    );
+                    if(this.mode != "AUTHOR" && this.given.plotVariables[k]){
                     charts[id].addSeries(
-			"Variable solution", 
-			this.formatSeriesForChart(activeSolution, k), 
-			{stroke: "green"}
-		    );
-		    if(this.mode != "AUTHOR" && this.given.plotVariables[k]){
-			charts[id].addSeries(
-			    "correct solution", 
-			    this.formatSeriesForChart(givenSolution, k), {stroke: "red"});
-                    }
-                    charts[id].render();
-                    legends[id] = new Legend({chart: charts[id]}, "legend" + id);
+                        "correct solution", 
+                        this.formatSeriesForChart(givenSolution, k), {stroke: "red"});
+                            }
+                            charts[id].render();
+                            legends[id] = new Legend({chart: charts[id]}, "legend" + id);
 
-		}, this);
+                }, this);
             }else{
-		this.dialogWidget.set("content", "<div>Nothing to plot yet.</div>" ); //Error telling there are no nodes and graph cant be rendered
+                this.dialogWidget.set("content", "<div>There isn't anything to plot. Try adding some accumulator or function nodes.</div>" ); //Error telling there are no nodes and graph cant be rendered
             }
             this.chart = charts;
 	},

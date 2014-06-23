@@ -18,16 +18,21 @@
  *along with Dragoon.  If not, see <http://www.gnu.org/licenses/>.
  *
  */
+
 /* global define */
-/*
- *  Routines associated with the Parser:
- *  * Equation checking to compare an equation given by the student with a given equation
- *  * Convert equation between format stored in model and format shown on node editor.
- */
 
 define([
     "dojo/_base/array", "dojo/_base/lang", "parser/parser"
 ], function(array, lang, Parser){
+    // Summary: 
+    //          Acts as interface to the parser
+    // Description:
+    //          Contains code for parsing and routines for evaluating equations;          
+    //          Routines associated with the Parser:
+    //           * Equation checking to compare an equation given by the student with a given equation
+    //           * Convert equation between format stored in model and format shown on node editor.
+    // Tags:
+    //          equation, parser
 
     return {
         parse: function(equation){
@@ -354,7 +359,11 @@ define([
 		    parents[vertex] = true;
 		    array.forEach(directedGraph[vertex], function(child){
 			if(parents[child]){
-			    new Error("Found cycle in graph", directedGraph);
+			    // Ideally, this would be a custom Error object.
+			    throw {
+				name: "graph-cycle",
+				message: "Found cycle in graph."
+			    };
 			}
 			if(child in directedGraph){
 			    followEdge(child);

@@ -18,17 +18,33 @@
  *along with Dragoon.  If not, see <http://www.gnu.org/licenses/>.
  *
  */
-/* global define */
-/*
- *                          student mode-specific handlers
- */
-define([
-    "dojo/_base/array", 'dojo/_base/declare', "dojo/_base/lang",
-    "dojo/dom", "dojo/ready",
-    'dijit/registry',
-    './controller', "./pedagogical_module", "./equation","dojo/aspect"
-], function(array, declare, lang, dom, ready, registry, controller, PM, expression,aspect){
 
+/* global define */
+
+/*
+ * Student mode-specific handlers
+ */
+
+define([
+    "dojo/aspect",
+    "dojo/_base/array", 
+    'dojo/_base/declare', 
+    "dojo/_base/lang",
+    "dojo/dom", 
+    "dojo/ready",
+    'dijit/registry',
+    './controller', 
+    "./pedagogical_module", 
+	"./typechecker"
+], function(aspect, array, declare, lang, dom, ready, registry, controller, PM, aspect, typechecker){
+    // Summary: 
+    //          MVC for the node editor, for students
+    // Description:
+    //          Handles selections from the student as he/she completes a model;
+    //          inherits controller.js
+    // Tags:
+    //          controller, student mode, coached mode, test mode
+    
     /*
      Methods in controller specific to the student modes
      */
@@ -43,6 +59,9 @@ define([
             ready(this, "populateSelections");
 	    this.init();
         },
+
+        resettableControls: ["initial","equation"],
+
 	init:function(){
 		 aspect.after(this, "closeEditor", function(){
 			var directives = this._PM.notifyCompleteness(this._model);	
@@ -56,7 +75,7 @@ define([
             inputs: "nodeInputs"
         },
 
-	setState: function(state){
+	setPMState: function(state){
 	    this._PM.setState(state);
 	},
 
@@ -129,12 +148,27 @@ define([
          Handler for initial value input
          */
 	
-	handleInitial: function(initial){
-            var IniFlag = this.checkInitialValue(initial,this.lastInitialValue); //IniFlag returns the status and initial value
-            if(IniFlag.status){ //If the initial value is not a number of is unchanged from previous value we dont process
-		var newInitial = IniFlag.value;
-		this.applyDirectives(this._PM.processAnswer(this.currentID, 'initial', newInitial));
-            }
+		handleInitial: function(initial){
+			//IniFlag returns the status and initial value
+            var initialWidget = dom.byId(this.widgetMap.initial);
+            var IniFlag = typechecker.checkInitialValue(initial, this.lastInitial, initialWidget);
+			if(IniFlag.status){ 
+				//If the initial value is not a number or is unchanged from 
+				// previous value we dont process
+				var newInitial = IniFlag.value;
+				this._model.active.setInitial(this.currentID, newInitial);
+				this.applyDirectives(this._PM.processAnswer(this.currentID, 'initial', newInitial));
+            }else if(IniFlag.errorType){
+				this.logging.log('solution-step', {
+                    type: IniFlag.errorType,
+                    node: this._model.active.getName(this.currentID),
+                    property: "initial-value",
+                    value: initial,
+                    correctResult: this._model.active.getInitial(this.currentID),
+                    checkResult: "INCORRECT"
+				});
+			}
+
         },
         
         initialSet: function(value){

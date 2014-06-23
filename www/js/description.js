@@ -1,4 +1,4 @@
-/* global define, Image */
+/*global define, Image*/
 /**
  *Dragoon Project
  *Arizona State University
@@ -19,126 +19,189 @@
  *along with Dragoon.  If not, see <http://www.gnu.org/licenses/>.
  *
  */
+
 define([
-    "dojo/_base/array", "dojo/_base/declare", 
-    "dijit/registry", "dojo/dom",
-    "./model", "./wraptext"
-], function(array, declare, registry, dom, model, wrapText) {
+    "dojo/aspect", "dojo/_base/array", "dojo/_base/declare", "dojo/_base/lang",
+    "dijit/registry", "dojo/dom", "dojo/ready",
+    "./model", "./wraptext", "./typechecker"
+], function(aspect, array, declare, lang, registry, dom, ready, model, wrapText, typechecker){
 
-    return declare(null, {
+	// Summary: 
+	//          MVC for the description box in author mode
+	// Description:
+	//          Allows the author to modify the description and the times 
+	// Tags:
+	//          description box, author mode
 
+	return declare(null, {
         givenModel: null,
         constructor: function(/*model*/ givenModel){
             this.givenModel = givenModel;
-            var timeObj = givenModel.getTime();
-            dom.byId("authorSetTimeStart").value = timeObj.start;
-            dom.byId("authorSetTimeEnd").value = timeObj.end;
-            dom.byId("authorSetTimeStep").value = timeObj.step;
-            dom.byId("authorSetTimeStepUnits").value = timeObj.units || "seconds";
+            this.timeObj = givenModel.getTime();
+            //Read Values from timeObj and place them in description editor
+            //We also assign them as previous start, stop times and time step
+            dom.byId("authorSetTimeStart").value = this.timeObj.start;
+            this.lastStartTime = {value: this.timeObj.start};
 
+            dom.byId("authorSetTimeEnd").value = this.timeObj.end;
+            this.lastStopTime = {value: this.timeObj.end};
+
+            dom.byId("authorSetTimeStep").value = this.timeObj.step;
+            this.lastStepTime = {value: this.timeObj.step};
+
+            dom.byId("authorSetTimeStepUnits").value = this.timeObj.units || "seconds";
             dom.byId("authorSetImage").value = givenModel.getImageURL() || "";
             dom.byId("authorSetDescription").value = this.serialize(
-		givenModel.getTaskDescription() ? givenModel.getTaskDescription() : ""
-	    );
+				givenModel.getTaskDescription() ? givenModel.getTaskDescription() : ""	
+			);
+			ready(this, this._initHandles);
+		},
+
+        //set up event handling with UI components
+        _initHandles: function() {
+            //Define all the variables necessary to fire onchange events and to pop up tooltips
+			//for authorSetTimeStart
+            var descWidgetStart = registry.byId('authorSetTimeStart');
+            var start_node=dom.byId('authorSetTimeStart');
+            //for authorSetTimeStop
+            var descWidgetStop = registry.byId('authorSetTimeEnd');
+            var stop_node=dom.byId('authorSetTimeEnd');
+            //for authorSetTimeStep
+            var descWidgetStep = registry.byId('authorSetTimeStep');
+            var step_node=dom.byId('authorSetTimeStep');
+            // This event gets fired if student hits TAB or input box
+            // goes out of focus.
+            //for start time field
+            descWidgetStart.on("change", lang.hitch(this, function(){
+                var initial_start_time=start_node.value;
+                var ret_start_time=typechecker.checkInitialValue(initial_start_time,this.lastStartTime,start_node);
+                if(ret_start_time.value) this.timeObj.start=ret_start_time.value;
+           }));
+
+            //for end time field
+            descWidgetStop.on("change", lang.hitch(this, function(){
+                var initial_stop_time=stop_node.value;
+                var ret_stop_time=typechecker.checkInitialValue(initial_stop_time,this.lastStopTime,stop_node);
+                if(ret_stop_time.value) this.timeObj.end=ret_stop_time.value;
+            }));
+
+            //for  time step field
+            descWidgetStep.on("change", lang.hitch(this, function(){
+                var initial_step_time=step_node.value;
+                var ret_step_time=typechecker.checkInitialValue(initial_step_time,this.lastStepTime,step_node);
+                if(ret_step_time.value) this.timeObj.step=ret_step_time.value;
+            }));
+
+            this._descEditor = registry.byId('authorDescDialog');
+            aspect.around(this._descEditor, "hide", lang.hitch(this, function(doHide){
+                var myThis = this;
+                return function(){
+                    //We check the return status and error type for Start Time, Stop Time,Time Step
+                    // and incase there is an error with a defined type
+                    // we don't close the description editor and further prompt to fix errors in input
+                    var initial_start_time=start_node.value;
+                    var ret_start_time=typechecker.checkInitialValue(initial_start_time,myThis.lastStartTime,start_node);
+                    if(ret_start_time.errorType) return;
+
+                    var initial_stop_time=stop_node.value;
+                    var ret_stop_time=typechecker.checkInitialValue(initial_stop_time,myThis.lastStopTime,stop_node);
+                    if(ret_stop_time.errorType) return;
+
+                    var initial_step_time=step_node.value;
+                    var ret_step_time=typechecker.checkInitialValue(initial_step_time,myThis.lastStepTime,step_node);
+                    if(ret_step_time.errorType) return;
+
+                     //after it has passed all those checks we
+                     // do normal closeEditor routine and hide
+                      doHide.apply(myThis._descEditor);
+                      console.log("close description editor is being called");
+                      typechecker.closePops();
+                      var tin = dom.byId("authorSetDescription").value;
+                      myThis.givenModel.setTaskDescription(tin.split("\n"));
+                      if(ret_start_time.value)  myThis.timeObj.start=ret_start_time.value;
+                      if(ret_stop_time.value)  myThis.timeObj.end=ret_stop_time.value;
+                      if(ret_step_time.value)  myThis.timeObj.step=ret_step_time.value;
+                      myThis.timeObj.units= dom.byId("authorSetTimeStepUnits").value
+                      myThis.givenModel.setTime(myThis.timeObj);
+                      console.log("final object being returned",myThis.timeObj);
+                      var url = dom.byId("authorSetImage").value;
+                      myThis.givenModel.setImage(url?{URL: url} : {});
+                      myThis.showDescription();
+                };
+            }));
         },
 
-	// add line breaks
-	// use string split method to unserialize
-	// https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/String/split
-	serialize: function(d){
-	    if(typeof d === "string"){
-		return d;
-	    } else {
-		var result="";
-		array.forEach(d, function(x){
-		    result += x + "\n";		
-		});
-		return result;
-	    }
-	},
+		// add line breaks
+		// use string split method to unserialize
+		// https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/String/split
+		serialize: function(d){
+			if(typeof d === "string"){
+				return d;
+			}else{
+				var result="";
+				array.forEach(d, function(x){
+					result += x + "\n";
+				});
+				return result;
+			}
+		},
 
-    showDescription: function(){
+		showDescription: function(){
 
-        var canvas = dom.byId('myCanvas');
-        var context = canvas.getContext('2d');
-        context.clearRect(0,0,canvas.width, canvas.height);
-        var desc_text = this.givenModel.getTaskDescription();
+			var canvas = dom.byId('myCanvas');
+			var context = canvas.getContext('2d');
+			context.clearRect(0,0,canvas.width, canvas.height);
+			var desc_text = this.givenModel.getTaskDescription();
 
-        var imageLeft = 30;
-        var imageTop = 20;
-	    var imageHeight = 0;  // default in case there is no image
-        var gapTextImage = 30;
-        var textLeft = 30;
-        var textTop = 50;
-        var textWidth = 400;
-        var textHeight = 20;
+			var imageLeft = 30;
+			var imageTop = 20;
+			var imageHeight = 0;  // default in case there is no image
+			var gapTextImage = 30;
+			var textLeft = 30;
+			var textTop = 50;
+			var textWidth = 400;
+			var textHeight = 20;
 
-	    // Layout text
-	    // This routine should go in wrapText.js
-	    var showText = function(){
-		var marginTop = Math.max(gapTextImage + imageHeight + imageTop, textTop);
+			// Layout text
+			// This routine should go in wrapText.js
+			var showText = function(){
+				var marginTop = Math.max(gapTextImage + imageHeight + imageTop, textTop);
 
-		// Set font for description text
-		context.font = "normal 13px Arial";
-		wrapText(context, desc_text, textLeft, marginTop, textWidth, textHeight);
-	    };
-		
-        var url = this.givenModel.getImageURL();
-		var imageObj = new Image();
-		var height = null;
-		var width = null;
-        if (url) {
-			imageObj.onerror = function() {
-				context.font = "normal 20px 'Lucida Grande, sans-serif'";
-				context.fillStyle= "#1f96db";
-				context.fillText("Image not found", imageLeft, imageTop);
-				showText();
-	    		  };
-	    
-            imageObj.src = url;
-		// Can't compute layout unless image is downloaded
-		// The model can also provide dimensions.  If it does, then 
-		// we can layout the text immediately
-			imageObj.onload = function(){
-				console.log("Image width is " + imageObj.width);
-				// Rescale image size, while maintaining aspect ratio,
-				// assuming we want max width 300
-				var scalingFactor = imageObj.width > 300 ? 300 / imageObj.width : 1.0;
-				console.log('Computing scaling factor for image ' + scalingFactor);
-				imageHeight = imageObj.height * scalingFactor;
-				context.drawImage(imageObj, imageLeft, imageTop, imageObj.width * scalingFactor, imageHeight);
-				showText();
+				// Set font for description text
+				context.font = "normal 13px Arial";
+				wrapText(context, desc_text, textLeft, marginTop, textWidth, textHeight);
 			};
-	    }else{
-			showText();
-	    }
-	},
 
-	closeDescriptionEditor: function(){
-	    var tin = dom.byId("authorSetDescription").value;
-            this.givenModel.setTaskDescription(tin.split("\n"));
-	    
-	    // Work-around for Bug #2379 note that this gives no
-	    // feedback to the user and applying defaults could break the
-	    // (t_end-t_start)/t_step > 0 constraint.
-	    var convert = function(xString, defaultValue){
-		var x = +xString;  // Use unary plus to convert to number
-		return isNaN(x)?defaultValue:x;
-	    };
-	    
-            var timeObj = {
-		start: convert(dom.byId("authorSetTimeStart").value, 0),
-		end: convert(dom.byId("authorSetTimeEnd").value, 10),
-		step: convert(dom.byId("authorSetTimeStep").value, 1),
-		units: dom.byId("authorSetTimeStepUnits").value
-            };
-	    
-            this.givenModel.setTime(timeObj);
-	    var url = dom.byId("authorSetImage").value;
-	    this.givenModel.setImage(url?{URL: url} : {});
-	    this.showDescription();
-	}
+			var url = this.givenModel.getImageURL();
+			var imageObj = new Image();
+			var height = null;
+			var width = null;
+			if(url){
+				imageObj.onerror = function() {
+					context.font = "normal 20px 'Lucida Grande, sans-serif'";
+					context.fillStyle= "#1f96db";
+					context.fillText("Image not found", imageLeft, imageTop);
+					showText();
+	    		};
+
+				imageObj.src = url;
+				// Can't compute layout unless image is downloaded
+				// The model can also provide dimensions.  If it does, then
+				// we can layout the text immediately
+				imageObj.onload = function(){
+				console.log("Image width is " + imageObj.width);
+					// Rescale image size, while maintaining aspect ratio,
+					// assuming we want max width 300
+					var scalingFactor = imageObj.width > 300 ? 300 / imageObj.width : 1.0;
+					console.log('Computing scaling factor for image ' + scalingFactor);
+					imageHeight = imageObj.height * scalingFactor;
+					context.drawImage(imageObj, imageLeft, imageTop, imageObj.width * scalingFactor, imageHeight);
+					showText();
+				};
+			}else{
+				showText();
+			}
+		}
 
     });
 });
-
