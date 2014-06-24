@@ -51,7 +51,7 @@ define([
 		equationEntered: null,	// value is set when node editor opened
 
 		constructor: function(mode, subMode, model, inputStyle){
-
+			
 			console.log("+++++++++ In generic controller constructor");
 			lang.mixin(this.controlMap, this.genericControlMap);
 			this._model = model;
@@ -121,7 +121,7 @@ define([
 			this._nodeEditor = registry.byId('nodeeditor');
 
 			// Wire up this.closeEditor.  Aspect.around is used so we can stop hide()
-		// from firing if equation is not entered.
+			// from firing if equation is not entered.
 			aspect.around(this._nodeEditor, "hide", lang.hitch(this, function(doHide){
 				//To keep the proper scope throughout
 				var myThis = this;
@@ -222,20 +222,20 @@ define([
 			var messageWidget = registry.byId(this.widgetMap.message);
 			messageWidget._setAppendAttr = function(message){
 				var message_box_id=dom.byId("messageBox");
-		
-		// Set the background color for the new <p> element
-		// then undo the background color after waiting.
+				
+				// Set the background color for the new <p> element
+				// then undo the background color after waiting.
 				var element=domConstruct.place('<p style="background-color:#FFD700;">' 
-						   + message + '</p>', message_box_id);
+											   + message + '</p>', message_box_id);
 				window.setTimeout(function(){ 
-			// This unsets the "background-color" style
+					// This unsets the "background-color" style
 					domStyle.set(element, "backgroundColor", "");
 				}, 3000);  // Wait in milliseconds
-
+				
 				// Scroll to bottoms
 				this.domNode.scrollTop = this.domNode.scrollHeight;
 			};
-			 /*Set interval for message blink*/
+			/*Set interval for message blink*/
 			 
 			
 			/*
@@ -301,12 +301,12 @@ define([
 
 			// update Node labels upon exit
 			var nodeName = graphObjects.getNodeName(this._model.active,this.currentID);
-			if(dom.byId(this.currentID + 'Label'))
+			if(dom.byId(this.currentID + 'Label')){
 				domConstruct.place(nodeName, this.currentID + 'Label', "replace");
-		else
-		domConstruct.place('<div id="'+this.currentID+'Label" class="bubble">'+nodeName+'</div>', this.currentID);
-
-		// In case any tool tips are still open.
+			}else{
+				domConstruct.place('<div id="'+this.currentID+'Label" class="bubble">'+nodeName+'</div>', this.currentID);
+			}
+			// In case any tool tips are still open.
 			typechecker.closePops();
 			//this.disableHandlers = false;
 			this.logging.log('ui-action', {
@@ -316,25 +316,25 @@ define([
 				nodeComplete: this._model.active.isComplete(this.currentID)
 			});
 
-		// This cannot go in controller.js since _PM is only in
-		// con-student.	 You will need con-student to attach this
-		// to closeEditor (maybe using aspect.after?).
-
+			// This cannot go in controller.js since _PM is only in
+			// con-student.	 You will need con-student to attach this
+			// to closeEditor (maybe using aspect.after?).
+			
 		},
 		//set up event handling with UI components
 		_initHandles: function(){
 			// Summary: Set up Node Editor Handlers
-
+			
 			/*
 			 Attach callbacks to each field in node Editor.
-
+			 
 			 The lang.hitch sets the scope to the current scope
 			 and then the handler is only called when disableHandlers
 			 is false.
 
 			 We could write a function to attach the handlers?
 			 */
-
+			
 			var desc = registry.byId(this.controlMap.description);
 			desc.on('Change', lang.hitch(this, function(){
 				return this.disableHandlers || this.handleDescription.apply(this, arguments);
@@ -348,50 +348,50 @@ define([
 			type.on('Change', lang.hitch(this, function(){
 				return this.disableHandlers || this.handleType.apply(this, arguments);
 			}));			
-
+			
 			/*
 			 *	 event handler for 'Initial' field
 			 *	 'handleInitial' will be called in either Student or Author mode
 			 * */
-
+			
 			var initialWidget = registry.byId(this.controlMap.initial);
 			// This event gets fired if student hits TAB or input box
 			// goes out of focus.
-			 initialWidget.on('Change', lang.hitch(this, function(){
-			return this.disableHandlers || this.handleInitial.apply(this, arguments);
+			initialWidget.on('Change', lang.hitch(this, function(){
+				return this.disableHandlers || this.handleInitial.apply(this, arguments);
 			}));
-
+			
 			// Look for ENTER key event and fire 'Change' event, passing
 			// value in box as argument.  This is then intercepted by the
 			// regular handler.
 			initialWidget.on("keydown", function(evt){
 				// console.log("----------- input character ", evt.keyCode, this.get('value'));
 				if(evt.keyCode == keys.ENTER)
-
+					
 					this.emit('Change', {}, [this.get('value')]);
-
+				
 			});
 			// undo color on change in the initial value widget
 			initialWidget.on("keydown",lang.hitch(this,function(evt){
-			   if(evt.keyCode != keys.ENTER){
-				   var w = registry.byId(this.controlMap.initial);
-				   w.set('status','');
-			   }
+				if(evt.keyCode != keys.ENTER){
+					var w = registry.byId(this.controlMap.initial);
+					w.set('status','');
+				}
 			}));
-
+			
 			var inputsWidget = registry.byId(this.controlMap.inputs);
 			inputsWidget.on('Change',  lang.hitch(this, function(){
 				return this.disableHandlers || this.handleInputs.apply(this, arguments);
 			}));
-
+			
 			var unitsWidget = registry.byId(this.controlMap.units);
 			unitsWidget.on('Change', lang.hitch(this, function(){
 				return this.disableHandlers || this.handleUnits.apply(this, arguments);
 			}));
-
+			
 			var positiveWidget = registry.byId("positiveInputs");
 			positiveWidget.on('Change', lang.hitch(this.structured, this.structured.handlePositive));
-
+			
 			var negativeWidget = registry.byId("negativeInputs");
 			negativeWidget.on('Change', lang.hitch(this.structured, this.structured.handleNegative));
 
@@ -880,15 +880,15 @@ define([
 
 
 			if(model.getNodeIDFor){
-		var d = registry.byId(this.controlMap.description);
-		array.forEach(this._model.given.getDescriptions(), function(desc){
+				var d = registry.byId(this.controlMap.description);
+				array.forEach(this._model.given.getDescriptions(), function(desc){
 					var exists =  model.getNodeIDFor(desc.value);
 					d.getOptions(desc).disabled=exists;
 					if(desc.value == nodeName){
-			d.getOptions(desc).disabled=false;
+						d.getOptions(desc).disabled=false;
 					}});
 			}
-
+			
 			var type = model.getType(nodeid);
 			console.log('node type is', type || "not set");
 
@@ -900,15 +900,15 @@ define([
 			console.log('initial value is ', initial);
 			this.lastInitial.value=(typeof initial === "number")?initial.toString():null;
 			registry.byId(this.controlMap.initial).attr('value', initial || '');
-
+			
 			var unit = model.getUnits(nodeid);
 			console.log('unit is', unit || "not set");
 			// Initial input in Units box
 			registry.byId(this.controlMap.units).set('value', unit || '');
 
 			// Input choices are different in AUTHOR and student modes
-		// So they are set in con-author.js and con-student.js
-
+			// So they are set in con-author.js and con-student.js
+			
 			var equation = model.getEquation(nodeid);
 			console.log("equation before conversion ", equation);
 			var mEquation = equation ? expression.convert(model, equation) : '';
@@ -934,12 +934,12 @@ define([
 		setLogging: function(/*string*/ logging){
 			this.logging = logging;
 		},
-	/* 
+		/* 
 		 Take a list of directives and apply them to the Node Editor,
 		 updating the model and updating the graph.
-	 
+		 
 		 The format for directives is defined in documentation/javascript.md
-	 */
+		 */
 		applyDirectives: function(directives, noModelUpdate){
 			// Apply directives, either from PM or the controller itself.
 			array.forEach(directives, function(directive) {
