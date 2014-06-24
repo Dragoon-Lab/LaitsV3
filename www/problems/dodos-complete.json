@@ -1,0 +1,214 @@
+{
+    "task": {
+        "taskName": "Dodo extinction",
+        "time": {
+            "start": 0,
+            "end": 20,
+            "step": 1,
+            "units": "Years"
+        },
+        "properties": {
+            "phase": "Intro",
+            "type": "Construct"
+        },
+        "image": {
+            "URL": "images/737px-Frohawk_Dodo.png"
+        },
+        "taskDescription": [
+            "Suppose that 1000 Dodos were living on the island of Mauritius when sailors landed. The sailors accidentally introduced a new species, rats. The rats ate essentially all the Dodo eggs as soon as they were laid, so the Dodo birth rate dropped to zero. Meanwhile, the annual Dodo death rate continued to be 20%. That is, 20% of the Dodos died each year and no Dodos were born. Build a model and observe how the Dodo population changed over 20 years.",
+            "You will need:",
+            "* A node called \"population\" to represent the number of Dodos still alive on Mauritius. This decreases each year due to deaths.",
+            "* A node called \"deaths\" to represent the number of Dodos that die each year. To calculate it, multiple death rate by population.",
+            "* A node called \"death rate\" to represent the fraction of the Dodo population that dies each year. Dragoon doesn't understand percentages, so we use 0.20 instead of 20%."
+        ],
+        "givenModelNodes": [
+            {
+                "ID": "id1",
+                "inputs": [
+                    {
+                        "ID": "id2"
+                    }
+                ],
+                "position": {
+                    "x": 400,
+                    "y": 100
+                },
+                "attemptCount": {
+                    "description": 1,
+                    "type": 1,
+                    "initial": 1,
+                    "units": 0,
+                    "equation": 1,
+                    "assistanceScore": 0
+                },
+                "status": {
+                    "description": "correct",
+                    "type": "correct",
+                    "initial": "correct",
+                    "equation": "correct"
+                },
+                "name": "population",
+                "type": "accumulator",
+                "parentNode": true,
+                "units": "",
+                "description": "The number of Dodos in the Dodo population",
+                "initial": 1000,
+                "equation": "- id2"
+            },
+            {
+                "ID": "id2",
+                "inputs": [
+                    {
+                        "ID": "id1"
+                    },
+                    {
+                        "ID": "id3"
+                    }
+                ],
+                "position": {
+                    "x": 400,
+                    "y": 100
+                },
+                "attemptCount": {
+                    "description": 1,
+                    "type": 1,
+                    "initial": 0,
+                    "units": 0,
+                    "equation": 1,
+                    "assistanceScore": 0
+                },
+                "status": {
+                    "description": "correct",
+                    "type": "correct",
+                    "equation": "correct"
+                },
+                "name": "deaths",
+                "type": "function",
+                "parentNode": false,
+                "units": "",
+                "description": "The number of Dodos that die each year",
+                "equation": "id1 * id3"
+            },
+            {
+                "ID": "id3",
+                "inputs": [],
+                "position": {
+                    "x": 400,
+                    "y": 100
+                },
+                "attemptCount": {
+                    "description": 1,
+                    "type": 1,
+                    "initial": 1,
+                    "units": 0,
+                    "equation": 0,
+                    "assistanceScore": 0
+                },
+                "status": {
+                    "description": "correct",
+                    "type": "correct",
+                    "initial": "correct"
+                },
+                "name": "death rate",
+                "type": "parameter",
+                "parentNode": false,
+                "units": "",
+                "description": "The fraction of Dodos that die each year",
+                "initial": 0.2
+            }
+        ],
+        "studentModelNodes": [
+            {
+                "ID": "id4",
+                "inputs": [
+                    {
+                        "ID": "id5"
+                    }
+                ],
+                "position": {
+                    "x": 437,
+                    "y": 102
+                },
+                "status": {
+                    "description": {
+                        "status": "correct",
+                        "disabled": true
+                    },
+                    "type": {
+                        "disabled": true,
+                        "status": "correct"
+                    },
+                    "initial": {
+                        "disabled": true,
+                        "status": "correct"
+                    },
+                    "equation": {
+                        "disabled": true,
+                        "status": "correct"
+                    }
+                },
+                "descriptionID": "id1",
+                "type": "accumulator",
+                "initial": 1000,
+                "equation": "-id5"
+            },
+            {
+                "ID": "id5",
+                "inputs": [
+                    {
+                        "ID": "id4"
+                    },
+                    {
+                        "ID": "id6"
+                    }
+                ],
+                "position": {
+                    "x": 613,
+                    "y": 156
+                },
+                "status": {
+                    "description": {
+                        "status": "correct",
+                        "disabled": true
+                    },
+                    "type": {
+                        "disabled": true,
+                        "status": "correct"
+                    },
+                    "equation": {
+                        "disabled": true,
+                        "status": "correct"
+                    }
+                },
+                "descriptionID": "id2",
+                "type": "function",
+                "equation": "id4*id6"
+            },
+            {
+                "ID": "id6",
+                "inputs": [],
+                "position": {
+                    "x": 786.7451782226562,
+                    "y": 208.7451629638672
+                },
+                "status": {
+                    "description": {
+                        "status": "correct",
+                        "disabled": true
+                    },
+                    "type": {
+                        "disabled": true,
+                        "status": "correct"
+                    },
+                    "initial": {
+                        "disabled": true,
+                        "status": "correct"
+                    }
+                },
+                "descriptionID": "id3",
+                "type": "parameter",
+                "initial": 0.2
+            }
+        ]
+    }
+}
