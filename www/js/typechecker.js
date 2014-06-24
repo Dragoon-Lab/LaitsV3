@@ -44,10 +44,18 @@ define([
 		},
 
 
-		checkInitialValue: function(inputString, lastInput, widget){
+		checkInitialValue: function(inputString, lastInput, domNode){
+			//inputString: String
+			// latest value of inputString being checked
+			//lastInput: String
+			// Old value of inputString
+			//domNode: Dom Element
+			// Dom element around which pop up appears
+				
+	
 			//Description : performs non number check and also checks if the initial value was changed from previously entered value
 			//returns: status, a boolean value and value, the current initial value
-
+			
 			// Popups only occur for an error, so leave it up until
 			// the next time the student attempts to enter a number.
 			this.closePops();
@@ -75,7 +83,7 @@ define([
 					console.warn("Sachin should log when this happens");
 					popup.open({
 						popup: this.myTooltipDialog2,
-						around: widget
+						around: domNode
 					});
 					errorType = "number-with-percent";
 				}else{
@@ -83,7 +91,7 @@ define([
 					console.warn("Sachin should log when this happens");
 					popup.open({
 						popup: this.myTooltipDialog,
-						around: widget
+						around: domNode
 					});
 					errorType = "parse-error";
 				}
