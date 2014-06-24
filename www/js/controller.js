@@ -732,6 +732,7 @@ define([
 
 			if(parse){
 				var toPM = true;
+				var cancelUpdate = false;
 				//getDescriptionID is present only in student mode. So in author mode it will give an identity function. This is a work around in case when its in author mode at that time the given model is the actual model. So descriptionID etc are not available. 
 				var mapID = this._model.active.getDescriptionID || function(x){ return x; };
 				var unMapID = this._model.active.getNodeIDFor || function(x){ return x; };
@@ -805,6 +806,7 @@ define([
 							correctResult: this._model.given.getEquation(this.currentID),
 							checkResult: "INCORRECT"
 						});
+						cancelUpdate = true;
 					}
 				}, this);
 
@@ -815,6 +817,10 @@ define([
 				//Check to see if parsedEquation returns a string, change to string if not
 				if (typeof parsedEquation == "number"){
 					parsedEquation = parsedEquation.toString();
+				}
+				
+				if (cancelUpdate){
+					return null;
 				}
 
 				// This duplicates code in equationDoneHandler
