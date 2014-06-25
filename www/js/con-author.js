@@ -188,7 +188,7 @@ define([
 		style.set('descriptionControlStudent', 'display', 'none');
 		style.set('descriptionControlAuthor', 'display', 'block');
 		style.set('selectUnitsControl', 'display', 'none');
-		style.set('setUnits', 'display', 'inline');
+		style.set('setUnitsControl', 'display', 'inline');
 		style.set('inputControlAuthor', 'display', 'block');
 		style.set('inputControlStudent', 'display', 'none');
 		},
