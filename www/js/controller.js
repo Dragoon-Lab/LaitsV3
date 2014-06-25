@@ -842,7 +842,7 @@ define([
 			}
 			return null;
 		},
-		
+
 		// Stub to set connections in the graph
 		setConnections: function(from, to){
 			// console.log("======== setConnections fired for node" + to);
