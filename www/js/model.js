@@ -444,7 +444,9 @@ define([
 			},
 			deleteNode: function(/*string*/ id){
 				// Summary: Removes inputs and equations that refer to a given node
-				//		and then deletes the node.
+				//		and then deletes the node. When deleting a node it searches 
+                //		for other nodes that have the node being deleted as an input 
+                //		and removes the inputs and re-enables the equation box.
 				var index;
 				var nodes = this.getNodes();
 				for(var i = 0; i < nodes.length; i++){
@@ -456,10 +458,13 @@ define([
 							found = true;
 							return;
 						}
-					});
+					});                    
 					if(found){
 						nodes[i].inputs = [];
 						nodes[i].equation = "";
+                        nodes[i].status.equation = {
+                            "disabled": false
+                        };
 					}
 				}
 				nodes.splice(index, 1);

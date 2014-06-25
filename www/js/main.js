@@ -39,11 +39,12 @@ define([
 	"./logging",
 	"./equation",
 	"./description",
-	"./state"
+	"./state",
+    "./typechecker"
 ], function(
 		lang, dom, geometry, on, aspect, ioQuery, ready, registry,
 		menu, loadSave, model,
-		Graph, Table, controlStudent, controlAuthor, drawmodel, logging, expression, description, State
+		Graph, Table, controlStudent, controlAuthor, drawmodel, logging, expression, description, State, typechecker
 ){
 	// Summary: 
 	//			Menu controller
@@ -176,6 +177,7 @@ define([
 			// Wire up close button...
 			// This will trigger the above session.saveProblem()
 			on(registry.byId("closeButton"), "click", function(){
+
 				registry.byId("nodeeditor").hide();
 			});
 
@@ -232,7 +234,13 @@ define([
 				});
 				table.show();
 			});
-
+            //the solution div which shows graph/table when closed
+            //should disable all the pop ups
+            aspect.after(registry.byId('solution'), "hide", function(){
+                console.log("Calling graph/table to be closed");
+                typechecker.closePops();
+                //session.saveProblem(givenModel.model);
+            });
 
 			menu.add("doneButton", function(){
 				console.debug("done button is clicked");

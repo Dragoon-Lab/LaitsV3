@@ -710,6 +710,10 @@ define([
 			var widget = registry.byId(this.controlMap.equation);
 			var inputEquation = widget.get("value");
 			var parse = null;
+			if (inputEquation == "") {
+				directives.push({id: 'message', attribute: 'append', value: 'There is no equation to check.'});
+				return null;
+			}
 			try {
 				parse = expression.parse(inputEquation);
 			}catch(err){
@@ -727,8 +731,6 @@ define([
 					checkResult: "INCORRECT",
 					message: err
 				});
-				// Call hook for bad parse
-				this.badParse(inputEquation);
 			}
 
 			if(parse){
@@ -835,9 +837,6 @@ define([
 				return toPM ? parse : null;
 			}
 			return null;
-		},
-		// Stub to connect logging to record bad parse.
-		badParse: function(inputEquation){
 		},
 		// Stub to set connections in the graph
 		setConnections: function(from, to){
