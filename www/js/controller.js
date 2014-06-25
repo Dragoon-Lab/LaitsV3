@@ -782,7 +782,9 @@ define([
 							// console.log("	   substituting ", variable, " -> ", studentID);
 							parse.substitute(variable, subID);
 						}else{
-                            this._model.active.getUndefinedNodes().push(variable);
+                            if(!this._model.active.getUndefinedNodes().indexOf(variable)){
+                               this._model.active.getUndefinedNodes().push(variable);
+                            }
 							directives.push({id: 'message', attribute: 'append', value: "Quantity '" + variable + "' not defined yet."});
 						}
 					}else{
@@ -805,6 +807,7 @@ define([
 						}
 
 						directives.push({id: 'message', attribute: 'append', value: "Unknown variable '" + variable + "'."});
+
 						this.logging.log("solution-step", {
 							type: "unknown-variable",
 							node: this._model.active.getName(this.currentID),
