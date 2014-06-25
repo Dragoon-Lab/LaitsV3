@@ -91,6 +91,7 @@ define([
 			var algebraic, structured;
 			if(!style || style == "algebraic"){
 				algebraic = ""; structured = "none";
+                dom.byId("undoButton").innerHTML = "Clear";
 			}else if(style=="structured"){
 				algebraic = "none"; structured = "";
 			}else{
