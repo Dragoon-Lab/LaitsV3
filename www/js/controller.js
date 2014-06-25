@@ -91,9 +91,10 @@ define([
 			var algebraic, structured;
 			if(!style || style == "algebraic"){
 				algebraic = ""; structured = "none";
-                dom.byId("undoButton").innerHTML = "Clear";
+				dom.byId("undoButton").innerHTML = "Clear";
 			}else if(style=="structured"){
 				algebraic = "none"; structured = "";
+				dom.byId("undoButton").innerHTML = "Undo";
 			}else{
 				throw new Error("Invalid input style: "+style);
 			}
