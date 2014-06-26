@@ -21,8 +21,8 @@
  */
 define([
 	"dojo/_base/array", "dojo/dom",
-	"dijit/popup", 'dijit/registry', "dijit/TooltipDialog"
-], function(array, dom, popup, registry, TooltipDialog){
+	"dijit/popup", "dijit/TooltipDialog"
+], function(array, dom, popup, TooltipDialog){
 
 	return {
 
@@ -44,24 +44,22 @@ define([
 		},
 
 
-		checkInitialValue: function(inputString, lastInput, domNode){
-			//inputString: String
-			// latest value of inputString being checked
-			//lastInput: String
-			// Old value of inputString
-			//domNode: Dom Element
-			// Dom element around which pop up appears
-				
-	
-			//Description : performs non number check and also checks if the initial value was changed from previously entered value
+		checkInitialValue: function(nodeID, lastInput){
+			//Description : performs non number check and also checks if the initial 
+			// value was changed from previously entered value
 			//returns: status, a boolean value and value, the current initial value
+			// nodeID: string
+			//     id of dom node to be checked.
+			// lastInput: object 
+			//     lastInput.value is old value of nodeID
 			
 			// Popups only occur for an error, so leave it up until
 			// the next time the student attempts to enter a number.
 			this.closePops();
 
 			// Don't do anything if the value has not changed.
-			inputString = inputString.trim();
+			var domNode = dom.byId(nodeID);
+			var inputString = domNode.value.trim();
 			if(inputString == lastInput.value){
 				return {status: false};
 			}

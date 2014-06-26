@@ -121,7 +121,7 @@ define([
 
 			// get Node Editor widget from tree
 			this._nodeEditor = registry.byId('nodeeditor');
-
+			
 			// Wire up this.closeEditor.  Aspect.around is used so we can stop hide()
 			// from firing if equation is not entered.
 			aspect.around(this._nodeEditor, "hide", lang.hitch(this, function(doHide){
@@ -130,18 +130,18 @@ define([
 				return function(){
 					var equation = registry.byId("equationBox");
 					if(equation.value && !myThis.equationEntered){
-			//Crisis alert popup if equation not checked
-			myThis.applyDirectives([{
-				id: "crisisAlert", attribute:
-				"open", value: "Your expression has not been checked!  Go back and check your expression to verify it is correct, or delete the expression, before closing the node editor."
-			}]);
+						//Crisis alert popup if equation not checked
+						myThis.applyDirectives([{
+							id: "crisisAlert", attribute:
+							"open", value: "Your expression has not been checked!  Go back and check your expression to verify it is correct, or delete the expression, before closing the node editor."
+						}]);
 					}else{
-			// Else, do normal closeEditor routine and hide
-			doHide.apply(myThis._nodeEditor);
-			myThis.closeEditor.call(myThis);
+						// Else, do normal closeEditor routine and hide
+						doHide.apply(myThis._nodeEditor);
+						myThis.closeEditor.call(myThis);
 					}
-			};
-		}));
+				};
+			}));
 
 			/*
 			 Add attribute handler to all of the controls
@@ -485,10 +485,10 @@ define([
 
 			//if type is triangle, remove border and box-shadow
 			if(type==''){
-		domStyle.set(this.currentID,'border','');
-		domStyle.set(this.currentID,'box-shadow','');
-		domClass.replace(this.currentID, "triangle");
-			} else {
+				domStyle.set(this.currentID,'border','');
+				domStyle.set(this.currentID,'box-shadow','');
+				domClass.replace(this.currentID, "triangle");
+			}else{
 				domClass.replace(this.currentID, type);
 			}
 
@@ -715,7 +715,7 @@ define([
 				directives.push({id: 'message', attribute: 'append', value: 'There is no equation to check.'});
 				return null;
 			}
-			try {
+			try{
 				parse = expression.parse(inputEquation);
 			}catch(err){
 				console.log("Parser error: ", err);

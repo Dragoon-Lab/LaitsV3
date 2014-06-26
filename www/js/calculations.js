@@ -235,7 +235,7 @@ define([
 				console.log("---- value box change ", this.getTime());
                 //We use a Non-numeric value check from typechecker to make sure
                 //non numeric values shouldn't be sent to graph/table for a change
-                var temp_ret=typechecker.checkInitialValue(index.value,last_index_value,index);
+                var temp_ret=typechecker.checkInitialValue(textBoxID[paramID], last_index_value);
                 //if there is an error returned typechecker shows the error
                 //and at the same time we return without further rendering grpah/table
                 if(temp_ret.errorType) return;
@@ -247,11 +247,11 @@ define([
 				var active = this.active;
 				console.log("--> paramID is: ", paramID);
 				if(paramID in active.timeStep.parameters){
-					active.timeStep.parameters[paramID] = +dom.byId(index).value;
-					console.log("Time step: ", +dom.byId(index).value);
+					active.timeStep.parameters[paramID] = temp_ret.value;
+					console.log("Time step: ", temp_ret.value);
 				}else if(paramID in active.xvarMap){
-					active.initialValues[active.xvarMap[paramID]] = +dom.byId(index).value;
-					console.log("Initial value: ", +dom.byId(index).value);
+					active.initialValues[active.xvarMap[paramID]] = temp_ret.value;
+					console.log("Initial value: ", temp_ret.value);
 				}else{
 					throw new Error("Invalid id", paramID);
 				}

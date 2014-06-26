@@ -62,34 +62,27 @@ define([
 			//Define all the variables necessary to fire onchange events and to pop up tooltips
 			//for authorSetTimeStart
 			var descWidgetStart = registry.byId('authorSetTimeStart');
-			var start_node=dom.byId('authorSetTimeStart');
 			//for authorSetTimeStop
 			var descWidgetStop = registry.byId('authorSetTimeEnd');
-			var stop_node=dom.byId('authorSetTimeEnd');
 			//for authorSetTimeStep
 			var descWidgetStep = registry.byId('authorSetTimeStep');
-			var step_node=dom.byId('authorSetTimeStep');
+
 			// This event gets fired if student hits TAB or input box
 			// goes out of focus.
 			//for start time field
 			descWidgetStart.on("change", lang.hitch(this, function(){
-				var initial_start_time=start_node.value;
-				var ret_start_time=typechecker.checkInitialValue(initial_start_time,this.lastStartTime,start_node);
-				if(ret_start_time.value) this.timeObj.start=ret_start_time.value;
+				var ret_start_time=typechecker.checkInitialValue('authorSetTimeStart', this.lastStartTime);
+				if(ret_start_time.value){this.timeObj.start=ret_start_time.value; }
 		   }));
-
 			//for end time field
 			descWidgetStop.on("change", lang.hitch(this, function(){
-				var initial_stop_time=stop_node.value;
-				var ret_stop_time=typechecker.checkInitialValue(initial_stop_time,this.lastStopTime,stop_node);
-				if(ret_stop_time.value) this.timeObj.end=ret_stop_time.value;
+				var ret_stop_time=typechecker.checkInitialValue('authorSetTimeEnd', this.lastStopTime);
+				if(ret_stop_time.value){ this.timeObj.end=ret_stop_time.value; }
 			}));
-
 			//for  time step field
 			descWidgetStep.on("change", lang.hitch(this, function(){
-				var initial_step_time=step_node.value;
-				var ret_step_time=typechecker.checkInitialValue(initial_step_time,this.lastStepTime,step_node);
-				if(ret_step_time.value) this.timeObj.step=ret_step_time.value;
+				var ret_step_time=typechecker.checkInitialValue('authorSetTimeStep', this.lastStepTime);
+				if(ret_step_time.value){ this.timeObj.step=ret_step_time.value; }
 			}));
 
 			this._descEditor = registry.byId('authorDescDialog');
@@ -99,17 +92,14 @@ define([
 					//We check the return status and error type for Start Time, Stop Time,Time Step
 					// and incase there is an error with a defined type
 					// we don't close the description editor and further prompt to fix errors in input
-					var initial_start_time=start_node.value;
-					var ret_start_time=typechecker.checkInitialValue(initial_start_time,myThis.lastStartTime,start_node);
-					if(ret_start_time.errorType) return;
+					var ret_start_time=typechecker.checkInitialValue('authorSetTimeStart', myThis.lastStartTime);
+					if(ret_start_time.errorType){ return; }
 
-					var initial_stop_time=stop_node.value;
-					var ret_stop_time=typechecker.checkInitialValue(initial_stop_time,myThis.lastStopTime,stop_node);
-					if(ret_stop_time.errorType) return;
+					var ret_stop_time=typechecker.checkInitialValue('authorSetTimeEnd', myThis.lastStopTime);
+					if(ret_stop_time.errorType){ return; }
 
-					var initial_step_time=step_node.value;
-					var ret_step_time=typechecker.checkInitialValue(initial_step_time,myThis.lastStepTime,step_node);
-					if(ret_step_time.errorType) return;
+					var ret_step_time=typechecker.checkInitialValue('authorSetTimeStep', myThis.lastStepTime);
+					if(ret_step_time.errorType){ return; }
 
 					 //after it has passed all those checks we
 					 // do normal closeEditor routine and hide
@@ -118,10 +108,16 @@ define([
 					  typechecker.closePops();
 					  var tin = dom.byId("authorSetDescription").value;
 					  myThis.givenModel.setTaskDescription(tin.split("\n"));
-					  if(ret_start_time.value)	myThis.timeObj.start=ret_start_time.value;
-					  if(ret_stop_time.value)  myThis.timeObj.end=ret_stop_time.value;
-					  if(ret_step_time.value)  myThis.timeObj.step=ret_step_time.value;
-					  myThis.timeObj.units= dom.byId("authorSetTimeStepUnits").value
+					  if(ret_start_time.value){
+						  myThis.timeObj.start = ret_start_time.value;
+					  }
+					  if(ret_stop_time.value){
+						  myThis.timeObj.end = ret_stop_time.value;
+					  }
+					  if(ret_step_time.value){
+						  myThis.timeObj.step = ret_step_time.value;
+					  }
+					  myThis.timeObj.units = dom.byId("authorSetTimeStepUnits").value;
 					  myThis.givenModel.setTime(myThis.timeObj);
 					  console.log("final object being returned",myThis.timeObj);
 					  var url = dom.byId("authorSetImage").value;
@@ -138,7 +134,7 @@ define([
 			if(typeof d === "string"){
 				return d;
 			}else{
-				var result="";
+				var result = "";
 				array.forEach(d, function(x){
 					result += x + "\n";
 				});
