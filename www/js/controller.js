@@ -766,7 +766,9 @@ define([
 					// Fix this:  The controller should be ignorant about mode
 					descriptionID = this._model.active.getDescriptionID(this.currentID);
 					//Check for number of unknown var, only in student mode.
-					badVarCount = this._model.given.getAttemptCount(descriptionID, "unknownVar");
+					if (!ignoreUnknownTest) {
+						badVarCount = this._model.given.getAttemptCount(descriptionID, "unknownVar");
+					}
 
 					if(givenID || ignoreUnknownTest || badVarCount > 3){
 						// Test if variable has been defined already
@@ -784,16 +786,14 @@ define([
 						//		To organize this better in the future we may want to move this check into another file with the code from 
 						//		pedagogical_module.js that is responsible for deciding the correctness of a student's response.
 						// Fix this:  The controller should be ignorant about mode
-						if(this._mode!=="AUTHOR"){
-							if(badVarCount){
-								this._model.given.setAttemptCount(descriptionID, "unknownVar", badVarCount+1);
+						if(badVarCount){
+							this._model.given.setAttemptCount(descriptionID, "unknownVar", badVarCount+1);
 
-								if(badVarCount > 2){
-									this._model.given.setAttemptCount(descriptionID, "equation", badVarCount+1);
-								}
-							}else{
-								this._model.given.setAttemptCount(descriptionID, "unknownVar", 1);
+							if(badVarCount > 2){
+								this._model.given.setAttemptCount(descriptionID, "equation", badVarCount+1);
 							}
+						}else{
+							this._model.given.setAttemptCount(descriptionID, "unknownVar", 1);
 						}
 
 						directives.push({id: 'message', attribute: 'append', value: "Unknown variable '" + variable + "'."});
@@ -809,7 +809,13 @@ define([
 						cancelUpdate = true;
 					}
 				}, this);
-
+				
+				//Check to see if there are unknown variables in parsedEquation if in student mode
+				//If unknown variable exist, do not update equation in model. 
+				if (cancelUpdate){
+					return null;
+				}
+				
 				// Expression now is written in terms of student IDs, when possible.
 				// Save with explicit parentheses for all binary operations.
 				var parsedEquation = parse.toString(true);
@@ -817,10 +823,6 @@ define([
 				//Check to see if parsedEquation returns a string, change to string if not
 				if (typeof parsedEquation == "number"){
 					parsedEquation = parsedEquation.toString();
-				}
-				
-				if (cancelUpdate){
-					return null;
 				}
 
 				// This duplicates code in equationDoneHandler
