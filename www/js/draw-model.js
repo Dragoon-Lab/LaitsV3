@@ -209,12 +209,6 @@ define([
 				targetNodeIds: [node.ID]
 			});
 
-			this._instance.draggable(vertex,{
-				onMoveStart: lang.hitch(this, this.onMoveStart),
-				onMove: lang.hitch(this, this.onMove),
-				onMoveStop: lang.hitch(this, this.onMoveStop)
-			});
-
 			pMenu.addChild(new MenuItem({
 				label: "Delete Node",
 				onClick: lang.hitch(this, function (){
@@ -330,23 +324,23 @@ define([
 
 		// Keep track of whether there was a mouseDown and mouseUp
 		// with no intervening mouseMove
-		_clickNoMove: false,
+		_counter: null,
 
 		onMoveStart: function(){
-			this._clickNoMove = true;
+			this._counter = 0;
 		},
 
 		onMove: function(){
-			this._clickNoMove = false;
+			this._counter++;
 		},
 
 		onMoveStop: function(){
-			if(this._clickNoMove){
+			//Check to see if the distance the node moved is less than 5 onmousemovement
+			if(this._counter <= 5){
 				this.onClickNoMove.apply(null, arguments);
 			}else {
 				this.onClickMoved.apply(null, arguments);
 			}
-			this._clickNoMove = false;
 		},
 
 		onClickMoved: function(mover){

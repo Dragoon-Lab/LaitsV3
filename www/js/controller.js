@@ -764,10 +764,9 @@ define([
 					var descriptionID = "";
 					var badVarCount = "";
 					// Fix this:  The controller should be ignorant about mode
-					if(this._mode!=="AUTHOR"){ 
-						descriptionID = this._model.active.getDescriptionID(this.currentID);
-						badVarCount = this._model.given.getAttemptCount(descriptionID, "unknownVar");
-					}
+					descriptionID = this._model.active.getDescriptionID(this.currentID);
+					//Check for number of unknown var, only in student mode.
+					badVarCount = this._model.given.getAttemptCount(descriptionID, "unknownVar");
 
 					if(givenID || ignoreUnknownTest || badVarCount > 3){
 						// Test if variable has been defined already
