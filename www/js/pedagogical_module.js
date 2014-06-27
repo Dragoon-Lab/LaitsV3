@@ -148,7 +148,6 @@ define([
 			COACHED: function(obj, part){
 				state(obj, part, "premature");
 				message(obj, part, "premature");
-                message(obj, part, "premature");
 			},
 			feedback: function(obj, part){
 				state(obj, part, "correct");
@@ -330,7 +329,8 @@ define([
 			power: function(obj, part){
 				disable(obj, "enableRemaining", false);
 			}
-		}};
+		}
+	};
 
 	//Declare variable for accessing state.js module
 	var record = null;
@@ -341,22 +341,23 @@ define([
 	 *****/
 	function state(/*object*/ obj, /*string*/ nodePart, /*string*/ status){
 		obj.push({id: nodePart, attribute: "status", value: status});
-        if(status==="premature"){
-            obj.push({id: nodePart, attribute: "value", value: ""});
-        }
+		if(status==="premature"){
+			obj.push({id: nodePart, attribute: "value", value: ""});
+		}
 	}
 	
 	function message(/*object*/ obj, /*string*/ nodePart, /*string*/ status){
-	var hintSequence = hints[status];
+		var hintSequence = hints[status];
 		if(record.getLocal(status) < hintSequence.length){
-            var counter = record.getLocal(status);
-                obj.push({id: "crisisAlert", attribute: "open", value: hintSequence[counter]});
-        };
-	record.increment(status, 1);
-		if(status === "extra" || status === "irrelevant")
+			var counter = record.getLocal(status);
+			obj.push({id: "crisisAlert", attribute: "open", value: hintSequence[counter]});
+		};
+		record.increment(status, 1);
+		if(status === "extra" || status === "irrelevant"){
 			status = "incorrect";
-		if(status === "lastFailure" || status === "lastFailure2")
+		}else if(status === "lastFailure" || status === "lastFailure2"){
 			status = "incorrect. The correct answer has been given";
+		}
 		obj.push({id: "message", attribute: "append", value: "The value entered for the " + nodePart + " is " + status + "."});
 	}
 
