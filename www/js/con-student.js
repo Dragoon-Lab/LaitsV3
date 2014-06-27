@@ -150,8 +150,7 @@ define([
 	
 		handleInitial: function(initial){
 			//IniFlag returns the status and initial value
-			var initialWidget = dom.byId(this.widgetMap.initial);
-			var IniFlag = typechecker.checkInitialValue(initial, this.lastInitial, initialWidget);
+			var IniFlag = typechecker.checkInitialValue(this.widgetMap.initial, this.lastInitial);
 			if(IniFlag.status){ 
 				//If the initial value is not a number or is unchanged from 
 				// previous value we dont process

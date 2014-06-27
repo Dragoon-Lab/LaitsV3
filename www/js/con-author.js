@@ -27,7 +27,6 @@ define([
 	"dojo/_base/array", 
 	'dojo/_base/declare', 
 	"dojo/_base/lang",
-    "dojo/dom",
 	'dojo/dom-style', 
 	'dojo/ready',
 	"dojo/store/Memory",
@@ -36,7 +35,7 @@ define([
 	"./equation",
 	"./typechecker",
 	"dojo/domReady!"
-], function(array, declare, lang, dom, style, ready, memory, registry, controller, equation, typechecker){
+], function(array, declare, lang, style, ready, memory, registry, controller, equation, typechecker){
 
 	// Summary: 
 	//			MVC for the node editor, for authors
@@ -274,8 +273,7 @@ define([
 		 */
 		handleInitial: function(initial){
 			//IniFlag contains the status and initial value
-			var initialWidget = dom.byId(this.widgetMap.initial);
-			var IniFlag = typechecker.checkInitialValue(initial, this.lastInitial, initialWidget);
+			var IniFlag = typechecker.checkInitialValue(this.widgetMap.initial, this.lastInitial);
 			if(IniFlag.status){
 				// If the initial value is not a number or is unchanged from 
 				// previous value we dont process

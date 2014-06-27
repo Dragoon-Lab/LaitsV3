@@ -46,8 +46,8 @@ define([
 		_instance: null,
 		_givenModel: null,
 		_logging:null,
-	// Hook for updates
-	updater: function(){},
+		// Hook for updates
+		updater: function(){},
 
 		constructor: function(givenModel){
 
@@ -80,9 +80,7 @@ define([
 				return this.addNode(node);
 			}, this);
 
-
 			console.log("-------- instance:	 ", instance);
-
 
 			/* bind a click listener to each connection; the connection is deleted. you could of course
 			 just do this: jsPlumb.bind("click", jsPlumb.detach), but I wanted to make it clear what was
@@ -90,14 +88,6 @@ define([
 			instance.bind("click", function(c){
 				//instance.detach(c);
 			});
-
-			/* bind a connection listener. note that the parameter passed to this function contains more than
-			 just the new connection - see the documentation for a full list of what is included in 'info'.
-			 this listener sets the connection's internal
-			 id as the label overlay's text. */
-			/* instance.bind("connection", function(info){
-			 info.connection.getOverlay("label").setLabel(info.connection.id);
-			 }); */
 
 			// suspend drawing and initialise.
 			instance.doWhileSuspended(function(){
@@ -129,9 +119,6 @@ define([
 						anchor:"Continuous"
 					});
 				});
-
-
-
 			});
 
 			array.forEach(vertices, function(vertex){
@@ -209,12 +196,6 @@ define([
 				targetNodeIds: [node.ID]
 			});
 
-			this._instance.draggable(vertex,{
-				onMoveStart: lang.hitch(this, this.onMoveStart),
-				onMove: lang.hitch(this, this.onMove),
-				onMoveStop: lang.hitch(this, this.onMoveStop)
-			});
-
 			pMenu.addChild(new MenuItem({
 				label: "Delete Node",
 				onClick: lang.hitch(this, function (){
@@ -263,6 +244,7 @@ define([
 
 			return vertex;
 		},
+
 		setConnections: function(/*array*/ sources, /*string*/ destination){
 
 			//after determining equation type + or	- , set connection EndPoint by using following method
@@ -274,42 +256,40 @@ define([
 			// Go through existing connections and delete those that
 			// have this destination as their target.
 		
-			 var targetId = attr.get(destination, "id");
-		 var parse = this._givenModel.getEquation(targetId),isSum,isProduct;
-		if(parse){
-		 parse = equation.parse(parse);
-		 isSum = equation.isSum(parse);
-		 isProduct = equation.isProduct(parse);
-		}
+			var targetId = attr.get(destination, "id");
+			var parse = this._givenModel.getEquation(targetId),isSum,isProduct;
+			if(parse){
+				parse = equation.parse(parse);
+				isSum = equation.isSum(parse);
+				isProduct = equation.isProduct(parse);
+			}
 
 			array.forEach(this._instance.getConnections(), function(connection){
 				if(connection.targetId == destination)
 					this._instance.detach(connection);
 			}, this);
 			// Create new connections
-		var connectionOverlays = graphObjects.getEndPointConfiguration('');
+			var connectionOverlays = graphObjects.getEndPointConfiguration('');
 			array.forEach(sources, function(source){
 				// All sources and destinations should exist.
-//				  if(destination.is)
-		if(source.label){
-			console.log("------- At this point, we should add a '"+source.label+"' label to "+ source.ID);
-			//check pure sum  or pure product but not both
-			if(!(isSum&&isProduct)){	
-				if(isSum){
-					if(source.label=='-')						
-						 connectionOverlays = graphObjects.getEndPointConfiguration(source.label);
-				}else if(isProduct){
-					 if(source.label=='/')											
-												connectionOverlays = graphObjects.getEndPointConfiguration(source.label);
+				//				  if(destination.is)
+				if(source.label){
+					console.log("------- At this point, we should add a '"+source.label+"' label to "+ source.ID);
+					//check pure sum  or pure product but not both
+					if(!(isSum&&isProduct)){
+						if(isSum && source.label == '-'){
+								connectionOverlays = graphObjects.getEndPointConfiguration(source.label);
+						}else if(isProduct && source.label == '/'){
+							connectionOverlays = graphObjects.getEndPointConfiguration(source.label);
+						}
+					}
 				}
-			}
-		}
 
 				this._instance.connect({source: source.ID,
-					target: destination,
+										target: destination,
 					overlays:connectionOverlays
 				});
-		connectionOverlays = graphObjects.getEndPointConfiguration('');
+				connectionOverlays = graphObjects.getEndPointConfiguration('');
 			}, this);
 		},
 
@@ -325,28 +305,27 @@ define([
 				// All sources and destinations should exist.
 				this._instance.connect({source: source, target: destination});
 			}, this);
-
 		},
 
 		// Keep track of whether there was a mouseDown and mouseUp
 		// with no intervening mouseMove
-		_clickNoMove: false,
+		_counter: 0,
 
 		onMoveStart: function(){
-			this._clickNoMove = true;
+			this._counter = 0;
 		},
 
 		onMove: function(){
-			this._clickNoMove = false;
+			this._counter++;
 		},
 
 		onMoveStop: function(){
-			if(this._clickNoMove){
+			//Check to see if the distance the node moved is less than 5 onmousemovement
+			if(this._counter <= 5){
 				this.onClickNoMove.apply(null, arguments);
 			}else {
 				this.onClickMoved.apply(null, arguments);
 			}
-			this._clickNoMove = false;
 		},
 
 		onClickMoved: function(mover){
