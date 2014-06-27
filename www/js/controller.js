@@ -51,7 +51,7 @@ define([
 		equationEntered: null,	// value is set when node editor opened
 
 		constructor: function(mode, subMode, model, inputStyle){
-
+			
 			console.log("+++++++++ In generic controller constructor");
 			lang.mixin(this.controlMap, this.genericControlMap);
 			this._model = model;
@@ -91,8 +91,10 @@ define([
 			var algebraic, structured;
 			if(!style || style == "algebraic"){
 				algebraic = ""; structured = "none";
+				dom.byId("undoButton").innerHTML = "Clear";
 			}else if(style=="structured"){
 				algebraic = "none"; structured = "";
+				dom.byId("undoButton").innerHTML = "Undo";
 			}else{
 				throw new Error("Invalid input style: "+style);
 			}
@@ -119,27 +121,27 @@ define([
 
 			// get Node Editor widget from tree
 			this._nodeEditor = registry.byId('nodeeditor');
-
+			
 			// Wire up this.closeEditor.  Aspect.around is used so we can stop hide()
-		// from firing if equation is not entered.
+			// from firing if equation is not entered.
 			aspect.around(this._nodeEditor, "hide", lang.hitch(this, function(doHide){
 				//To keep the proper scope throughout
 				var myThis = this;
 				return function(){
 					var equation = registry.byId("equationBox");
 					if(equation.value && !myThis.equationEntered){
-			//Crisis alert popup if equation not checked
-			myThis.applyDirectives([{
-				id: "crisisAlert", attribute:
-				"open", value: "Your expression has not been checked!  Go back and check your expression to verify it is correct, or delete the expression, before closing the node editor."
-			}]);
+						//Crisis alert popup if equation not checked
+						myThis.applyDirectives([{
+							id: "crisisAlert", attribute:
+							"open", value: "Your expression has not been checked!  Go back and check your expression to verify it is correct, or delete the expression, before closing the node editor."
+						}]);
 					}else{
-			// Else, do normal closeEditor routine and hide
-			doHide.apply(myThis._nodeEditor);
-			myThis.closeEditor.call(myThis);
+						// Else, do normal closeEditor routine and hide
+						doHide.apply(myThis._nodeEditor);
+						myThis.closeEditor.call(myThis);
 					}
-			};
-		}));
+				};
+			}));
 
 			/*
 			 Add attribute handler to all of the controls
@@ -222,20 +224,20 @@ define([
 			var messageWidget = registry.byId(this.widgetMap.message);
 			messageWidget._setAppendAttr = function(message){
 				var message_box_id=dom.byId("messageBox");
-		
-		// Set the background color for the new <p> element
-		// then undo the background color after waiting.
+				
+				// Set the background color for the new <p> element
+				// then undo the background color after waiting.
 				var element=domConstruct.place('<p style="background-color:#FFD700;">' 
-						   + message + '</p>', message_box_id);
+											   + message + '</p>', message_box_id);
 				window.setTimeout(function(){ 
-			// This unsets the "background-color" style
+					// This unsets the "background-color" style
 					domStyle.set(element, "backgroundColor", "");
 				}, 3000);  // Wait in milliseconds
-
+				
 				// Scroll to bottoms
 				this.domNode.scrollTop = this.domNode.scrollHeight;
 			};
-			 /*Set interval for message blink*/
+			/*Set interval for message blink*/
 			 
 			
 			/*
@@ -301,12 +303,12 @@ define([
 
 			// update Node labels upon exit
 			var nodeName = graphObjects.getNodeName(this._model.active,this.currentID);
-			if(dom.byId(this.currentID + 'Label'))
+			if(dom.byId(this.currentID + 'Label')){
 				domConstruct.place(nodeName, this.currentID + 'Label', "replace");
-		else
-		domConstruct.place('<div id="'+this.currentID+'Label" class="bubble">'+nodeName+'</div>', this.currentID);
-
-		// In case any tool tips are still open.
+			}else{
+				domConstruct.place('<div id="'+this.currentID+'Label" class="bubble">'+nodeName+'</div>', this.currentID);
+			}
+			// In case any tool tips are still open.
 			typechecker.closePops();
 			//this.disableHandlers = false;
 			this.logging.log('ui-action', {
@@ -316,25 +318,25 @@ define([
 				nodeComplete: this._model.active.isComplete(this.currentID)
 			});
 
-		// This cannot go in controller.js since _PM is only in
-		// con-student.	 You will need con-student to attach this
-		// to closeEditor (maybe using aspect.after?).
-
+			// This cannot go in controller.js since _PM is only in
+			// con-student.	 You will need con-student to attach this
+			// to closeEditor (maybe using aspect.after?).
+			
 		},
 		//set up event handling with UI components
 		_initHandles: function(){
 			// Summary: Set up Node Editor Handlers
-
+			
 			/*
 			 Attach callbacks to each field in node Editor.
-
+			 
 			 The lang.hitch sets the scope to the current scope
 			 and then the handler is only called when disableHandlers
 			 is false.
 
 			 We could write a function to attach the handlers?
 			 */
-
+			
 			var desc = registry.byId(this.controlMap.description);
 			desc.on('Change', lang.hitch(this, function(){
 				return this.disableHandlers || this.handleDescription.apply(this, arguments);
@@ -348,50 +350,50 @@ define([
 			type.on('Change', lang.hitch(this, function(){
 				return this.disableHandlers || this.handleType.apply(this, arguments);
 			}));			
-
+			
 			/*
 			 *	 event handler for 'Initial' field
 			 *	 'handleInitial' will be called in either Student or Author mode
 			 * */
-
+			
 			var initialWidget = registry.byId(this.controlMap.initial);
 			// This event gets fired if student hits TAB or input box
 			// goes out of focus.
-			 initialWidget.on('Change', lang.hitch(this, function(){
-			return this.disableHandlers || this.handleInitial.apply(this, arguments);
+			initialWidget.on('Change', lang.hitch(this, function(){
+				return this.disableHandlers || this.handleInitial.apply(this, arguments);
 			}));
-
+			
 			// Look for ENTER key event and fire 'Change' event, passing
 			// value in box as argument.  This is then intercepted by the
 			// regular handler.
 			initialWidget.on("keydown", function(evt){
 				// console.log("----------- input character ", evt.keyCode, this.get('value'));
 				if(evt.keyCode == keys.ENTER)
-
+					
 					this.emit('Change', {}, [this.get('value')]);
-
+				
 			});
 			// undo color on change in the initial value widget
 			initialWidget.on("keydown",lang.hitch(this,function(evt){
-			   if(evt.keyCode != keys.ENTER){
-				   var w = registry.byId(this.controlMap.initial);
-				   w.set('status','');
-			   }
+				if(evt.keyCode != keys.ENTER){
+					var w = registry.byId(this.controlMap.initial);
+					w.set('status','');
+				}
 			}));
-
+			
 			var inputsWidget = registry.byId(this.controlMap.inputs);
 			inputsWidget.on('Change',  lang.hitch(this, function(){
 				return this.disableHandlers || this.handleInputs.apply(this, arguments);
 			}));
-
+			
 			var unitsWidget = registry.byId(this.controlMap.units);
 			unitsWidget.on('Change', lang.hitch(this, function(){
 				return this.disableHandlers || this.handleUnits.apply(this, arguments);
 			}));
-
+			
 			var positiveWidget = registry.byId("positiveInputs");
 			positiveWidget.on('Change', lang.hitch(this.structured, this.structured.handlePositive));
-
+			
 			var negativeWidget = registry.byId("negativeInputs");
 			negativeWidget.on('Change', lang.hitch(this.structured, this.structured.handleNegative));
 
@@ -483,10 +485,10 @@ define([
 
 			//if type is triangle, remove border and box-shadow
 			if(type==''){
-		domStyle.set(this.currentID,'border','');
-		domStyle.set(this.currentID,'box-shadow','');
-		domClass.replace(this.currentID, "triangle");
-			} else {
+				domStyle.set(this.currentID,'border','');
+				domStyle.set(this.currentID,'box-shadow','');
+				domClass.replace(this.currentID, "triangle");
+			}else{
 				domClass.replace(this.currentID, type);
 			}
 
@@ -709,7 +711,11 @@ define([
 			var widget = registry.byId(this.controlMap.equation);
 			var inputEquation = widget.get("value");
 			var parse = null;
-			try {
+			if (inputEquation == "") {
+				directives.push({id: 'message', attribute: 'append', value: 'There is no equation to check.'});
+				return null;
+			}
+			try{
 				parse = expression.parse(inputEquation);
 			}catch(err){
 				console.log("Parser error: ", err);
@@ -726,12 +732,9 @@ define([
 					checkResult: "INCORRECT",
 					message: err
 				});
-				// Call hook for bad parse
-				this.badParse(inputEquation);
 			}
-
 			if(parse){
-				var toPM = true;
+				var cancelUpdate = false;
 				//getDescriptionID is present only in student mode. So in author mode it will give an identity function. This is a work around in case when its in author mode at that time the given model is the actual model. So descriptionID etc are not available. 
 				var mapID = this._model.active.getDescriptionID || function(x){ return x; };
 				var unMapID = this._model.active.getNodeIDFor || function(x){ return x; };
@@ -742,7 +745,7 @@ define([
 					//		functions will always evaluate to true if they reference themselves
 					if(givenID && this._model.active.getType(this.currentID) === "function" &&
 						givenID === mapID.call(this._model.active, this.currentID)){
-						toPM = false;
+						cancelUpdate = true;
 						directives.push({id: 'equation', attribute: 'status', value: 'incorrect'});
 						directives.push({id: 'message', attribute: 'append', value: "You cannot use '" + variable + "' in the equation. Function nodes cannot reference themselves."});
 						this.logging.log("solution-step", {
@@ -761,9 +764,9 @@ define([
 
 					var descriptionID = "";
 					var badVarCount = "";
-					// Fix this:  The controller should be ignorant about mode
-					if(this._mode!=="AUTHOR"){ 
-						descriptionID = this._model.active.getDescriptionID(this.currentID);
+					descriptionID = this._model.active.getDescriptionID(this.currentID);
+					//Check for number of unknown var, only in student mode.
+					if (!ignoreUnknownTest) {
 						badVarCount = this._model.given.getAttemptCount(descriptionID, "unknownVar");
 					}
 
@@ -777,22 +780,19 @@ define([
 							directives.push({id: 'message', attribute: 'append', value: "Quantity '" + variable + "' not defined yet."});
 						}
 					}else{
-						toPM = false;  // Don't send to PM
+						cancelUpdate = true;  // Don't update model or send ot PM.
 
 						// The following if statement prevents a user from being endlessly stuck if he/she is using an incorrect variable. 
 						//		To organize this better in the future we may want to move this check into another file with the code from 
 						//		pedagogical_module.js that is responsible for deciding the correctness of a student's response.
-						// Fix this:  The controller should be ignorant about mode
-						if(this._mode!=="AUTHOR"){
-							if(badVarCount){
-								this._model.given.setAttemptCount(descriptionID, "unknownVar", badVarCount+1);
+						if(badVarCount){
+							this._model.given.setAttemptCount(descriptionID, "unknownVar", badVarCount+1);
 
-								if(badVarCount > 2){
-									this._model.given.setAttemptCount(descriptionID, "equation", badVarCount+1);
-								}
-							}else{
-								this._model.given.setAttemptCount(descriptionID, "unknownVar", 1);
+							if(badVarCount > 2){
+								this._model.given.setAttemptCount(descriptionID, "equation", badVarCount+1);
 							}
+						}else{
+							this._model.given.setAttemptCount(descriptionID, "unknownVar", 1);
 						}
 
 						directives.push({id: 'message', attribute: 'append', value: "Unknown variable '" + variable + "'."});
@@ -807,6 +807,13 @@ define([
 						});
 					}
 				}, this);
+
+				//Check to see if there are unknown variables in parsedEquation if in student mode
+				//If unknown variable exist, do not update equation in model. 
+				//Do the same if a function node references itself.
+				if (cancelUpdate){
+					return null;
+				}
 
 				// Expression now is written in terms of student IDs, when possible.
 				// Save with explicit parentheses for all binary operations.
@@ -831,13 +838,11 @@ define([
 				// console.log("************** equationAnalysis directives ", directives);
 
 				// Send to PM if all variables are known.
-				return toPM ? parse : null;
+				return parse;
 			}
 			return null;
 		},
-		// Stub to connect logging to record bad parse.
-		badParse: function(inputEquation){
-		},
+
 		// Stub to set connections in the graph
 		setConnections: function(from, to){
 			// console.log("======== setConnections fired for node" + to);
@@ -880,15 +885,15 @@ define([
 
 
 			if(model.getNodeIDFor){
-		var d = registry.byId(this.controlMap.description);
-		array.forEach(this._model.given.getDescriptions(), function(desc){
+				var d = registry.byId(this.controlMap.description);
+				array.forEach(this._model.given.getDescriptions(), function(desc){
 					var exists =  model.getNodeIDFor(desc.value);
 					d.getOptions(desc).disabled=exists;
 					if(desc.value == nodeName){
-			d.getOptions(desc).disabled=false;
+						d.getOptions(desc).disabled=false;
 					}});
 			}
-
+			
 			var type = model.getType(nodeid);
 			console.log('node type is', type || "not set");
 
@@ -900,15 +905,15 @@ define([
 			console.log('initial value is ', initial);
 			this.lastInitial.value=(typeof initial === "number")?initial.toString():null;
 			registry.byId(this.controlMap.initial).attr('value', initial || '');
-
+			
 			var unit = model.getUnits(nodeid);
 			console.log('unit is', unit || "not set");
 			// Initial input in Units box
 			registry.byId(this.controlMap.units).set('value', unit || '');
 
 			// Input choices are different in AUTHOR and student modes
-		// So they are set in con-author.js and con-student.js
-
+			// So they are set in con-author.js and con-student.js
+			
 			var equation = model.getEquation(nodeid);
 			console.log("equation before conversion ", equation);
 			var mEquation = equation ? expression.convert(model, equation) : '';
@@ -934,12 +939,12 @@ define([
 		setLogging: function(/*string*/ logging){
 			this.logging = logging;
 		},
-	/* 
+		/* 
 		 Take a list of directives and apply them to the Node Editor,
 		 updating the model and updating the graph.
-	 
+		 
 		 The format for directives is defined in documentation/javascript.md
-	 */
+		 */
 		applyDirectives: function(directives, noModelUpdate){
 			// Apply directives, either from PM or the controller itself.
 			array.forEach(directives, function(directive) {

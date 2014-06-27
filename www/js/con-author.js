@@ -172,7 +172,6 @@ define([
 		/*
 		 Stub for setting up state saving in AUTHOR mode.
 		 */
-	setState: function(){},
 
 
 		controlMap: {
@@ -274,14 +273,14 @@ define([
 		 */
 		handleInitial: function(initial){
 			//IniFlag contains the status and initial value
-			var initialWidget = registry.byId(this.widgetMap.initial);
-			var IniFlag = typechecker.checkInitialValue(initial, this.lastInitial, initialWidget);
+			var IniFlag = typechecker.checkInitialValue(this.widgetMap.initial, this.lastInitial);
 			if(IniFlag.status){
 				// If the initial value is not a number or is unchanged from 
 				// previous value we dont process
 				var newInitial = IniFlag.value;
 				this.applyDirectives(this.authorPM.process(this.currentID, "initial", newInitial, true));
 				console.log("In AUTHOR mode. Initial value is: " + newInitial);
+				this._model.active.setInitial(this.currentID,newInitial);
 			}else if(IniFlag.errorType){
 				this.logging.log('solution-step', {
 					type: IniFlag.errorType,

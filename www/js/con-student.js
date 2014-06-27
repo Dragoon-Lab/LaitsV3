@@ -36,7 +36,7 @@ define([
 	'./controller', 
 	"./pedagogical_module", 
 	"./typechecker"
-], function(aspect, array, declare, lang, dom, ready, registry, controller, PM, aspect, typechecker){
+], function(aspect, array, declare, lang, dom, ready, registry, controller, PM, typechecker){
 	// Summary: 
 	//			MVC for the node editor, for students
 	// Description:
@@ -57,17 +57,17 @@ define([
 			this._PM = new PM(mode, subMode, model);
 			lang.mixin(this.widgetMap, this.controlMap);
 			ready(this, "populateSelections");
-		this.init();
+			this.init();
 		},
 
 		resettableControls: ["initial","equation"],
 
-	init:function(){
-		 aspect.after(this, "closeEditor", function(){
-			var directives = this._PM.notifyCompleteness(this._model);	
+		init:function(){
+			aspect.after(this, "closeEditor", function(){
+				var directives = this._PM.notifyCompleteness(this._model);	
 				this.applyDirectives(directives);
 			}, true);
-	},
+		},
 		// A list of control map specific to students
 		controlMap: {
 			description: "selectDescription",
@@ -75,9 +75,9 @@ define([
 			inputs: "nodeInputs"
 		},
 
-	setPMState: function(state){
-		this._PM.setState(state);
-	},
+		setPMState: function(state){
+			this._PM.setState(state);
+		},
 
 		populateSelections: function(){
 		/*
@@ -150,8 +150,7 @@ define([
 	
 		handleInitial: function(initial){
 			//IniFlag returns the status and initial value
-			var initialWidget = dom.byId(this.widgetMap.initial);
-			var IniFlag = typechecker.checkInitialValue(initial, this.lastInitial, initialWidget);
+			var IniFlag = typechecker.checkInitialValue(this.widgetMap.initial, this.lastInitial);
 			if(IniFlag.status){ 
 				//If the initial value is not a number or is unchanged from 
 				// previous value we dont process

@@ -29,8 +29,8 @@ define([
 	"dijit/registry",
 	"dijit/form/HorizontalSlider",
 	"./equation",
-	"./integrate"
-], function(array, declare, lang, on, dom, registry, HorizontalSlider, equation, integrate){
+	"./integrate","./typechecker"
+], function(array, declare, lang, on, dom, registry, HorizontalSlider, equation, integrate, typechecker){
 	// Summary: 
 	//			Finds model solutions and sets up the sliders
 	// Description:
@@ -43,7 +43,7 @@ define([
 		
 		model: null,						// model
 		active: {},							// set current mode. TRUE = givenModel / FALSE = StudentModel
-
+		
 		/* variables specific to rendering graph and table */
 		given: {},							// object to store calculated parameters from given model
 		dialog: "",							// dialog box to be displayed
@@ -62,7 +62,7 @@ define([
 			 In AUTHOR mode, plot solution for all given nodes of genus false
 			 and type "accumulator" or "function""
 			 The table contains the same nodes.
-
+			 
 			 In student modes, plot solution for all student nodes (of type
 			 "accumulator" or "function") as well
 			 as any matching given model node of genus false.
@@ -72,7 +72,7 @@ define([
 			if(!this.active.timeStep){
 				return; // abort on error in constructing timeStep
 			}
-
+			
 			this.active.initialValues = array.map(
 				this.active.timeStep.xvars, 
 				model.active.getInitial,
@@ -82,7 +82,7 @@ define([
 			array.forEach(this.active.timeStep.xvars, function(xvar, i){
 				this.active.xvarMap[xvar] = i;
 			}, this);
-
+			
 			// These are not used for the tables
 			if(mode != "AUTHOR"){
 				console.log("now in given model");
@@ -99,7 +99,7 @@ define([
 				console.log("-------- no given solution for mode", mode); 
 			}
 		},
-
+		
 		initializeSolution: function(model){
 			//Summary:	Initialize solution and give a message if a cycle is found.
 			var timeStep = null;
@@ -113,7 +113,7 @@ define([
 			}
 			return timeStep;
 		},
-
+		
 		findSolution: function(isActive, plotVariables){ 
 			// Summary:	 Find a solution
 			// Returns:	 an object of the form
@@ -230,10 +230,16 @@ define([
 			// Using a JavaScript closure:
 			// The value of 'index' is still available when the change event is fired.
 			var index = dom.byId(textBoxID[paramID]);
+            var last_index_value={value: index.value};
 			on(index, "change",	 lang.hitch(this, function(){
 				console.log("---- value box change ", this.getTime());
-
-				if(this._rendering){
+                //We use a Non-numeric value check from typechecker to make sure
+                //non numeric values shouldn't be sent to graph/table for a change
+                var temp_ret=typechecker.checkInitialValue(textBoxID[paramID], last_index_value);
+                //if there is an error returned typechecker shows the error
+                //and at the same time we return without further rendering grpah/table
+                if(temp_ret.errorType) return;
+                if(this._rendering){
 					console.log("	  returning");
 					return;
 				}
@@ -241,11 +247,11 @@ define([
 				var active = this.active;
 				console.log("--> paramID is: ", paramID);
 				if(paramID in active.timeStep.parameters){
-					active.timeStep.parameters[paramID] = +dom.byId(index).value;
-					console.log("Time step: ", +dom.byId(index).value);
+					active.timeStep.parameters[paramID] = temp_ret.value;
+					console.log("Time step: ", temp_ret.value);
 				}else if(paramID in active.xvarMap){
-					active.initialValues[active.xvarMap[paramID]] = +dom.byId(index).value;
-					console.log("Initial value: ", +dom.byId(index).value);
+					active.initialValues[active.xvarMap[paramID]] = temp_ret.value;
+					console.log("Initial value: ", temp_ret.value);
 				}else{
 					throw new Error("Invalid id", paramID);
 				}
