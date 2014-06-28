@@ -270,6 +270,5 @@ define([
 		this.applyDirectives(directives);
 		return directives;
 		}
-
 	});
 });

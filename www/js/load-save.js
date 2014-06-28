@@ -89,15 +89,21 @@ define([
 			});
 		},
 
-		saveProblem: function(model){
+		saveProblem: function(model, shareBit){
 			// Summary: saves the string held in this.saveData in the database.
+            var object = {
+                sg: json.toJson(model),
+                x: this.sessionId
+            }
+            console.log("mirror mirror on the wall what is the shareBit that went to all : "+ shareBit);
+            if(shareBit) {
+                object = lang.mixin(object, {
+                    share: shareBit
+                });
+            }
 			xhr.post(this.path + "save_solution.php", {
-		data: {
-			sg: json.toJson(model),
-					// see documentation/sessions.md for notation
-					x: this.sessionId
-				}
-			}).then(function(reply){  // this makes saveProblem blocking?
+                data: object
+            }).then(function(reply){  // this makes saveProblem blocking?
 			console.log("saveProblem worked: ", reply);
 			}, function(err){
 				this.clientLog("error", {

@@ -183,11 +183,11 @@ define([
 
 		
 			// Also used in image loading below.
-			var descObj = new description(givenModel);
+			var descObj = new description(givenModel, controllerObject);
 			
 			if(query.m == "AUTHOR"){
 				var db = registry.byId("descButton");
-			db.set("disabled", false);
+			    db.set("disabled", false);
 				
 				// Description button wiring
 				menu.add("descButton", function(){
@@ -195,7 +195,7 @@ define([
 				});
 				aspect.after(registry.byId('authorDescDialog'), "hide", function(){
 					console.log("Saving Description/Timestep edits");
-					session.saveProblem(givenModel.model);
+					session.saveProblem(givenModel.model, controllerObject.shareBit);
 				});
 				on(registry.byId("descCloseButton"), "click", function(){
 					registry.byId("authorDescDialog").hide();

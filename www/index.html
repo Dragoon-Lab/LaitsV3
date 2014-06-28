@@ -46,7 +46,7 @@
             "dijit/form/ComboBox", "dijit/form/Textarea",
 	    "dijit/form/SimpleTextarea", "dijit/Menu",
             "dijit/layout/ContentPane",
-	    "dragoon/menu", // Wire up menus
+	    "dragoon/menu", "dijit/form/CheckBox", // Wire up menus
             // Load up Dragoon itself
 	    "dragoon"
         ]);	
@@ -168,12 +168,16 @@
 	  </div>
 	  <div class="fieldgroup">
             <label for="authorSetImage">URL for Image:</label>
-            <input id="authorSetImage"></input>
+            <input id="authorSetImage"/>
 	  </div>
 	  <div class="fieldgroup">
             <label for="authorSetDescription">Description of Problem:</label>
             <textarea id="authorSetDescription" name="authorSetDescription" data-dojo-type="dijit/form/SimpleTextarea" value="Enter Description here..."></textarea>
           </div>
+      <div class="fieldgroup">
+          <label for ="authorProblemShare">Share:</label>
+          <input id = "authorProblemShare" name="authorProblemShare" data-dojo-type="dijit/form/CheckBox" value="agreed" checked="false"/>
+      </div>
 	  <div class="fieldgroup">
 	    <button id="descCloseButton" type="button" data-dojo-type="dijit/form/Button" iconClass="dijitNoIcon">Done</button>
           </div>

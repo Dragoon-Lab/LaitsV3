@@ -35,9 +35,11 @@ define([
 
 	return declare(null, {
 		givenModel: null,
-		constructor: function(/*model*/ givenModel){
+        controller: null,
+		constructor: function(/*model*/ givenModel, /*controller*/ controllerObj){
 			this.givenModel = givenModel;
 			this.timeObj = givenModel.getTime();
+            this.controller = controllerObj;
 			//Read Values from timeObj and place them in description editor
 			//We also assign them as previous start, stop times and time step
 			dom.byId("authorSetTimeStart").value = this.timeObj.start;
@@ -66,6 +68,8 @@ define([
 			var descWidgetStop = registry.byId('authorSetTimeEnd');
 			//for authorSetTimeStep
 			var descWidgetStep = registry.byId('authorSetTimeStep');
+            //for share Bit checkbox
+            var descWidgetShareBit = registry.byId("authorProblemShare");
 
 			// This event gets fired if student hits TAB or input box
 			// goes out of focus.
@@ -125,6 +129,11 @@ define([
 					  myThis.showDescription();
 				};
 			}));
+
+            //for share Bit checkbox
+            descWidgetShareBit.on("change", lang.hitch(this, function(){
+                this.controller.setShareBit(descWidgetShareBit.checked);
+            }));
 		},
 
 		// add line breaks
