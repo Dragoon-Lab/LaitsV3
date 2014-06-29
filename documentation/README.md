@@ -14,6 +14,7 @@ This contains mostly design documents.
   as well as [Sachin's version](Pedagogical-Module-JavaScript-Version-2.docx)
 * [Logging format](logs-structure.md)
 * [Saving State](state.md)
+* [Teacher Dashboard](dashboard.md)
 
 Documentation can be in any convenient format (word, html, *et cetera*) with 
 generic [markdown](http://en.wikipedia.org/wiki/Markdown) being the default 
