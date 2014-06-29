@@ -24,13 +24,12 @@ by the class in a time range. It will give time each student took to complete th
 In brackets it will show the time for which the problem was out of focus. This will be most
 consised and informative format.
 
-|---------|----------|---------|---------|
+
 | Student | Rabbits  | Isle 1  | Isle 2  |
-|---------|----------|---------|---------|
+|:-------:|:---------|:--------|:--------|
 | Name1   | 846(211) | 545(23) | 651(99) |
-|---------|----------|---------|---------|
-| Name2   |          | 432(15) | 598(55) |
-|---------|----------|---------|---------|
+| Name2   |    --    | 432(15) | 598(55) |
+
 
 Each problem time would be clickable which will show a div at the top or bottom of the dashboard
 page or above the table and that will show the complete detail as how many times incorrect solution 
