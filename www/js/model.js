@@ -350,123 +350,128 @@ define([
 		 section.
 		 */
 
-        // Methods common to both student and given.
-        // These will be mixed into both obj.given and obj.student
-        var both = {
-            isNode: function(/*string*/ id){
-                return array.some(this.getNodes(), function(node){
-                    return node.ID === id;
-                });
-            },
-            isInput: function(/*string*/ mainNodeID, /*string*/ inputID){
-                // Summary: returns true if the node identified by inputID is an 
-                //      input into the mainNodeID 
-                var main = this.getNode(mainNodeID);
-                return main && array.some(main.inputs, function(input){
-                    return array.some(input, function(link){
-                        return link.ID == inputID;
-                    });
-                });
-            },
-            getNode: function(/*string*/ id){
-                // This is not very efficient:  should probably have separate
-                // method for each sub-class and construct a hash table.
-                var nodes = this.getNodes();
-                var l = nodes.length;
-                for(var i = 0; i < l; i++){
-                    if(nodes[i].ID == id)
-                        return nodes[i];
-                }
-                console.warn("No matching node for '" + id + "'");
-                // console.trace();
-                return null;
-            },
-            getType: function(/*string*/ id){
-                var node = this.getNode(id);
-                return node && node.type;
-            },
-            getInitial: function(/*string*/ id){
-                var node = this.getNode(id);
-                return node && node.initial;
-            },
-            getUnits: function(/*string*/ id){
-                return this.getNode(id).units;
-            },
-            getEachNodeUnitbyID: function(){
-                //summary: returns key/value pair of node-id/unit
-                var unitList = {};
-                array.forEach(this.getNodes(), function(node){
-                    unitList[node.ID] = node.units;
-                });
-                return unitList;
-            },
-            getEquation: function(/*string*/ id){
-                var node = this.getNode(id);
-                return node && node.equation;
-            },
-            getInputs: function(/*string*/ id){
-                // Summary: return an array containing the input ids for a node.
-                var ret = this.getNode(id);
-                return ret && ret.inputs;
-            },
-            getOutputs: function(/*string*/ id){
-                // Summary: return an array containing the output ids for a node.
-                var outputs = [];
-                array.forEach(this.getNodes(), function(node){
-                    if(array.some(node.inputs, function(input){
-                        return input.ID == id;
-                    })){
-                        outputs.push(node.ID);
-                    }
-                });
-                return outputs;
-            },
-            setInputs: function(/*array*/ inputs, /*string*/ inputInto){
-                // Silently filter out any inputs that are not defined.
-                // inputs is an array of objects.
-                var node = this.getNode(inputInto);
-                if(node){
-                    node.inputs = array.filter(inputs, function(input){
-                        return this.isNode(input.ID);
-                    }, this);
-                }
-            },
-            setType: function(/*string*/ id, /*string*/ type){
-                var ret = this.getNode(id);
-                if(ret)
-                    ret.type = type;
-            },
-            setPosition: function(/*string*/ id, /*object*/ positionObject){
-                // Summary: sets the "X" and "Y" values of a node's position
-                this.getNode(id).position = positionObject;
-            },
-            addInput: function(/*string*/ input, /*string*/ inputInto){
-                console.error("Deprecated.  Use setInputs() instead.");
-            },
-            deleteNode: function(/*string*/ id){
-                // Summary: Removes inputs and equations that refer to a given node
-                //      and then deletes the node.
-                var index;
-                var name = this.getName(id);
-                var nodes = this.getNodes();
-                for(var i = 0; i < nodes.length; i++){
-                    var found = false;
-                    if(nodes[i].ID === id)
-                        index = i;
-                    array.forEach(nodes[i].inputs, function(input){
-                        if(input.ID === id){
-                            found = true;
-                            return;
-                        }
-                    });
-                    if(found){
-                        nodes[i].inputs = [];
-                        nodes[i].equation = "";
-                    }
-                }
-                nodes.splice(index, 1);
+		// Methods common to both student and given.
+		// These will be mixed into both obj.given and obj.student
+		var both = {
+			isNode: function(/*string*/ id){
+				return array.some(this.getNodes(), function(node){
+					return node.ID === id;
+				});
+			},
+			isInput: function(/*string*/ mainNodeID, /*string*/ inputID){
+				// Summary: returns true if the node identified by inputID is an 
+				//		input into the mainNodeID 
+				var main = this.getNode(mainNodeID);
+				return main && array.some(main.inputs, function(input){
+					return array.some(input, function(link){
+						return link.ID == inputID;
+					});
+				});
+			},
+			getNode: function(/*string*/ id){
+				// This is not very efficient:	should probably have separate
+				// method for each sub-class and construct a hash table.
+				var nodes = this.getNodes();
+				var l = nodes.length;
+				for(var i = 0; i < l; i++){
+					if(nodes[i].ID == id)
+						return nodes[i];
+				}
+				console.warn("No matching node for '" + id + "'");
+				// console.trace();
+				return null;
+			},
+			getType: function(/*string*/ id){
+				var node = this.getNode(id);
+				return node && node.type;
+			},
+			getInitial: function(/*string*/ id){
+				var node = this.getNode(id);
+				return node && node.initial;
+			},
+			getUnits: function(/*string*/ id){
+				return this.getNode(id).units;
+			},
+			getEachNodeUnitbyID: function(){
+				//summary: returns key/value pair of node-id/unit
+				var unitList = {};
+				array.forEach(this.getNodes(), function(node){
+					unitList[node.ID] = node.units;
+				});
+				return unitList;
+			},
+			getEquation: function(/*string*/ id){
+				var node = this.getNode(id);
+				return node && node.equation;
+			},
+			getInputs: function(/*string*/ id){
+				// Summary: return an array containing the input ids for a node.
+				var ret = this.getNode(id);
+				return ret && ret.inputs;
+			},
+			getOutputs: function(/*string*/ id){
+				// Summary: return an array containing the output ids for a node.
+				var outputs = [];
+				array.forEach(this.getNodes(), function(node){
+					if(array.some(node.inputs, function(input){
+						return input.ID == id;
+					})){
+						outputs.push(node.ID);
+					}
+				});
+				return outputs;
+			},
+			setInputs: function(/*array*/ inputs, /*string*/ inputInto){
+				// Silently filter out any inputs that are not defined.
+				// inputs is an array of objects.
+				var node = this.getNode(inputInto);
+				if(node){
+					node.inputs = array.filter(inputs, function(input){
+						return this.isNode(input.ID);
+					}, this);
+				}
+			},
+			setType: function(/*string*/ id, /*string*/ type){
+				var ret = this.getNode(id);
+				if(ret)
+					ret.type = type;
+			},
+			setPosition: function(/*string*/ id, /*object*/ positionObject){
+				// Summary: sets the "X" and "Y" values of a node's position
+				this.getNode(id).position = positionObject;
+			},
+			addInput: function(/*string*/ input, /*string*/ inputInto){
+				console.error("Deprecated.	Use setInputs() instead.");
+			},
+			deleteNode: function(/*string*/ id){
+				// Summary: Removes inputs and equations that refer to a given node
+				//		and then deletes the node. When deleting a node it searches 
+                //		for other nodes that have the node being deleted as an input 
+                //		and removes the inputs and re-enables the equation box.
+				var index;
+				var nodes = this.getNodes();
+				for(var i = 0; i < nodes.length; i++){
+					var found = false;
+					if(nodes[i].ID === id)
+						index = i;
+					array.forEach(nodes[i].inputs, function(input){
+						if(input.ID === id){
+							found = true;
+							return;
+						}
+					});                    
+					if(found){
+						nodes[i].inputs = [];
+						nodes[i].equation = "";
+                        nodes[i].status.equation = {
+                            "disabled": false
+                        };
+					}
+				}
+				nodes.splice(index, 1);
                 this.getUndefinedNodes().push(name);
-            },
+			}
+		};
 
             setUndefinedNodesText: function(){
                 var nodes = this.getUndefinedNodes();

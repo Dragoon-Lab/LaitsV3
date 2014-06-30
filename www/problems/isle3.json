@@ -151,6 +151,16 @@
                 "equation": "id1 * id3"
             }
         ],
-        "studentModelNodes": []
+        "studentModelNodes": [
+            {"ID":"id6","inputs":[],
+            "position":{"x":400,"y":100},
+            "status":{
+                "description":{
+                    "status":"correct","disabled":true},
+                "type":{"disabled":true,"status":"correct"},
+                "initial":{"disabled":true,"status":"correct"}
+                },
+                "descriptionID":"id2","type":"parameter","initial":0.2},
+            {"ID":"id7","inputs":[{"ID":"id8"},{"ID":"id6"}],"position":{"x":600,"y":100},"status":{"description":{"status":"correct","disabled":true},"type":{"disabled":true,"status":"correct"},"equation":{"disabled":true,"status":"correct"}},"descriptionID":"id4","type":"function","equation":"id8*id6"},{"ID":"id8","inputs":[{"ID":"id7","label":""}],"position":{"x":800,"y":100},"status":{"description":{"status":"correct","disabled":true},"type":{"disabled":true,"status":"correct"},"initial":{"disabled":true,"status":"correct"},"equation":{"disabled":false,"status":"incorrect"}},"descriptionID":"id1","type":"accumulator","initial":20,"equation":"id7"}]
     }
 }

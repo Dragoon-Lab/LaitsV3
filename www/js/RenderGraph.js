@@ -134,8 +134,8 @@ define([
 					
 					//plot chart for student node
 					charts[id].addSeries(
-						"Variable solution", 
-						this.formatSeriesForChart(activeSolution, k), 
+						"Variable solution",
+						this.formatSeriesForChart(activeSolution, k),
 						{stroke: "green"}
 					);
 					if(this.mode != "AUTHOR" && this.given.plotVariables[k]){
