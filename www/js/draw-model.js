@@ -322,8 +322,31 @@ define([
 			}, this);
 			// Create new connections
 			array.forEach(destinations, function(destination){
+				var parse = this._givenModel.getEquation(destination),isSum,isProduct;
+				if(parse){
+					parse=equation.parse(parse);
+					isSum=equation.isSum(parse);
+					isProduct=equation.isProduct(parse);
+				}
+			    var connectionOverlays = graphObjects.getEndPointConfiguration('');
+			    //if it has multiple inputs ? - right now accessing 0th input
+			    var destinationLabel =this._givenModel.getNode(destination).inputs[0]; //0th index ? - bad idea
+			    if(destinationLabel.label){
+					 console.log("------- At this point, we should add a '"+destinationLabel.label+"' label to "+ destinationLabel.ID);
+                        //check pure sum  or pure product but not both
+                        if(!(isSum&&isProduct)){
+                                if(isSum){
+                                        if(destinationLabel.label=='-')
+                                                 connectionOverlays = graphObjects.getEndPointConfiguration(destinationLabel.label);
+                                }else if(isProduct){
+                                         if(destinationLabel.label=='/')
+                                                 connectionOverlays = graphObjects.getEndPointConfiguration(destinationLabel.label);
+                                }
+                        }	
+		}
+
 				// All sources and destinations should exist.
-				this._instance.connect({source: source, target: destination});
+				this._instance.connect({source: source, target: destination, overlays:connectionOverlays});
 			}, this);
 
 		},

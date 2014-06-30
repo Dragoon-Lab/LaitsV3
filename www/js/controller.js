@@ -838,12 +838,6 @@ define([
 		// Stub to connect logging to record bad parse.
 		badParse: function(inputEquation){
 		},
-		// Stub to set connections in the graph
-		setConnections: function(from, to){
-			// console.log("======== setConnections fired for node" + to);
-		},
-
-		//show node editor
 		showNodeEditor: function(/*string*/ id){
 			//Checks if the current mode is COACHED mode and exit from node editor if all the modes are defined
 
