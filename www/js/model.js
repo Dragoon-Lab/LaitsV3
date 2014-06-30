@@ -470,8 +470,7 @@ define([
 				}
 				nodes.splice(index, 1);
                 this.getUndefinedNodes().push(name);
-			}
-		};
+			},
 
             setUndefinedNodesText: function(){
                 var nodes = this.getUndefinedNodes();
