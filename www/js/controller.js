@@ -764,9 +764,9 @@ define([
 
 					var descriptionID = "";
 					var badVarCount = "";
-					descriptionID = this._model.active.getDescriptionID(this.currentID);
-					//Check for number of unknown var, only in student mode.
-					if (!ignoreUnknownTest) {
+                    if (!ignoreUnknownTest) {
+                        // Check for number of unknown var, only in student mode.
+                        descriptionID = this._model.active.getDescriptionID(this.currentID);
 						badVarCount = this._model.given.getAttemptCount(descriptionID, "unknownVar");
 					}
 
