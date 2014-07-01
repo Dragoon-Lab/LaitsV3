@@ -29,8 +29,8 @@ define([
 	"dijit/registry",
 	"dijit/form/HorizontalSlider",
 	"./equation",
-	"./integrate"
-], function(array, declare, lang, on, dom, registry, HorizontalSlider, equation, integrate){
+	"./integrate","./typechecker"
+], function(array, declare, lang, on, dom, registry, HorizontalSlider, equation, integrate, typechecker){
 	// Summary: 
 	//			Finds model solutions and sets up the sliders
 	// Description:
@@ -230,10 +230,16 @@ define([
 			// Using a JavaScript closure:
 			// The value of 'index' is still available when the change event is fired.
 			var index = dom.byId(textBoxID[paramID]);
+            var last_index_value={value: index.value};
 			on(index, "change",	 lang.hitch(this, function(){
 				console.log("---- value box change ", this.getTime());
-
-				if(this._rendering){
+                //We use a Non-numeric value check from typechecker to make sure
+                //non numeric values shouldn't be sent to graph/table for a change
+                var temp_ret=typechecker.checkInitialValue(textBoxID[paramID], last_index_value);
+                //if there is an error returned typechecker shows the error
+                //and at the same time we return without further rendering grpah/table
+                if(temp_ret.errorType) return;
+                if(this._rendering){
 					console.log("	  returning");
 					return;
 				}
@@ -241,11 +247,11 @@ define([
 				var active = this.active;
 				console.log("--> paramID is: ", paramID);
 				if(paramID in active.timeStep.parameters){
-					active.timeStep.parameters[paramID] = +dom.byId(index).value;
-					console.log("Time step: ", +dom.byId(index).value);
+					active.timeStep.parameters[paramID] = temp_ret.value;
+					console.log("Time step: ", temp_ret.value);
 				}else if(paramID in active.xvarMap){
-					active.initialValues[active.xvarMap[paramID]] = +dom.byId(index).value;
-					console.log("Initial value: ", +dom.byId(index).value);
+					active.initialValues[active.xvarMap[paramID]] = temp_ret.value;
+					console.log("Initial value: ", temp_ret.value);
 				}else{
 					throw new Error("Invalid id", paramID);
 				}
