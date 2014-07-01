@@ -287,6 +287,10 @@ define([
 					this._instance.detach(connection);
 			}, this);
 			// Create new connections
+
+
+
+		//connectionOverlays code duplicated in addQuantity 
 		var connectionOverlays = graphObjects.getEndPointConfiguration('');
 			array.forEach(sources, function(source){
 				// All sources and destinations should exist.
@@ -328,12 +332,14 @@ define([
 					isSum=equation.isSum(parse);
 					isProduct=equation.isProduct(parse);
 				}
+			   
+			   //connectionOverlays code duplicated in setConnections 
 			    var connectionOverlays = graphObjects.getEndPointConfiguration('');
 			    //if it has multiple inputs  - access input label which matches source
 			    array.forEach(this._givenModel.getNode(destination).inputs,function(input){
 				if(input.ID == source)
 				{
-					var destinationLabel =input; //0th index ? - bad idea
+					var destinationLabel =input;
                             		if(destinationLabel.label){
                                         	 console.log("------- At this point, we should add a '"+destinationLabel.label+"' label to "+ destinationLabel.ID);
                         			 //check pure sum  or pure product but not both
