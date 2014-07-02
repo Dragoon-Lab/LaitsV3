@@ -225,6 +225,11 @@ define([
 				this.updateEquationLabels();
 			}
 		},
+		autocreateNodes:function(variable){
+
+                        console.log("auto creating nodes in author controller");
+
+                },
 
 		handleKind: function(kind){
 			console.log("**************** in handleKind ", kind);

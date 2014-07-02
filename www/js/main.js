@@ -107,6 +107,9 @@ define([
 
 			var drawModel = new drawmodel(givenModel.active);
 			drawModel.setLogging(session);
+			
+			//set DrawModel in controller
+			controllerObject.setDrawModel(drawModel);
 
 			// Wire up send to server
 			aspect.after(drawModel, "updater", function(){

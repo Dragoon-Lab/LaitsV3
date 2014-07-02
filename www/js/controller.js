@@ -49,8 +49,9 @@ define([
 		logging: null,
 		// Variable to track if an equation has been entered and checked
 		equationEntered: null,	// value is set when node editor opened
+		drawModel:null,
 
-		constructor: function(mode, subMode, model, inputStyle){
+		constructor: function(mode, subMode, model, inputStyle,drawModel){
 			
 			console.log("+++++++++ In generic controller constructor");
 			lang.mixin(this.controlMap, this.genericControlMap);
@@ -60,7 +61,6 @@ define([
 			// structured should be its own module.	 For now,
 			// initialize
 			this.structured._model = this._model;
-
 			// The Node Editor widget must be set up before modifications
 			// It might be a better idea to only  call the controller
 			// after widgets are set up.
@@ -86,7 +86,9 @@ define([
 				}
 			});
 		},
-
+		setDrawModel:function(parameter){
+			drawModel=parameter;
+		},
 		setEquationStyle: function(style){
 			var algebraic, structured;
 			if(!style || style == "algebraic"){
@@ -302,12 +304,8 @@ define([
 			this.colorNodeBorder(this.currentID, true);
 
 			// update Node labels upon exit
-			var nodeName = graphObjects.getNodeName(this._model.active,this.currentID);
-			if(dom.byId(this.currentID + 'Label')){
-				domConstruct.place(nodeName, this.currentID + 'Label', "replace");
-			}else{
-				domConstruct.place('<div id="'+this.currentID+'Label" class="bubble">'+nodeName+'</div>', this.currentID);
-			}
+			this.updateNodeLabel(this.currentID);
+			
 			// In case any tool tips are still open.
 			typechecker.closePops();
 			//this.disableHandlers = false;
@@ -322,6 +320,15 @@ define([
 			// con-student.	 You will need con-student to attach this
 			// to closeEditor (maybe using aspect.after?).
 			
+		},
+		//update the node label
+		updateNodeLabel:function(nodeID){
+			var nodeName = graphObjects.getNodeName(this._model.active,nodeID);
+                        if(dom.byId(nodeID + 'Label')){
+                                domConstruct.place(nodeName, nodeID + 'Label', "replace");
+                        }else{
+                                domConstruct.place('<div id="'+nodeID+'Label" class="bubble">'+nodeName+'</div>', nodeID);
+                        }
 		},
 		//set up event handling with UI components
 		_initHandles: function(){
@@ -740,7 +747,13 @@ define([
 				var unMapID = this._model.active.getNodeIDFor || function(x){ return x; };
 				array.forEach(parse.variables(), function(variable){
 					// Test if variable name can be found in given model
+
 					var givenID = this._model.given.getNodeIDByName(variable);
+
+					var autocreationFlag = true; //set autocreation flag based on preferences
+					if(autocreationFlag&&!this._model.active.isNode(givenID))
+						this.autocreateNodes(variable);
+
 					// Checks for nodes referencing themselves; this causes problems because
 					//		functions will always evaluate to true if they reference themselves
 					if(givenID && this._model.active.getType(this.currentID) === "function" &&

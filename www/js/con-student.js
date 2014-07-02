@@ -112,7 +112,26 @@ define([
 				negativeInputs.addOption(option);
 			}, this);
 		},
+		//stub autocreate nodes 
+		autocreateNodes:function(variable){
+			console.log("auto creating nodes student controller");
+			//since variable is not present, addNode to the model 	
+			var id = this._model.active.addNode();
+                         drawModel.addNode(this._model.active.getNode(id));	
+			//getDescriptionID using variable name
+			var descID = this._model.given.getNodeIDByName(variable);
+			//setDescriptionID for the node id
+			this._model.active.setDescriptionID(id,descID);
+			//get directives for description of auto created node
+			var directives = this._PM.processAnswer(id,'description',descID);
+			//update Model status for auto created node directives
+			array.forEach(directives,function(directive){
+				this.updateModelStatus(directive,id);
+			},this);
+			 // update Node labels upon exit
+                        this.updateNodeLabel(id);
 
+		},
 		handleDescription: function(selectDescription){
 			console.log("****** in handleDescription ", this.currentID, selectDescription);
 			if(selectDescription == 'defaultSelect')
@@ -251,11 +270,15 @@ define([
 
 		// Need to save state of the node editor in the status section
 		// of the student model.  See documentation/json-format.md
-		updateModelStatus: function(desc) {
+		updateModelStatus: function(desc,id) {
+			//in case of autocreation nodes, id will be passed as currentID
+			if(!id)
+			   	id=this.currentID;
+
 			if (this.validStatus[desc.attribute]) {
 				var opt = {};
 				opt[desc.attribute] = desc.value;
-				this._model.student.setStatus(this.currentID, desc.id, opt);
+				this._model.student.setStatus(id, desc.id, opt);
 			} else {
 				// There are some directives that should update
 				// the student model node (but not the status section).
