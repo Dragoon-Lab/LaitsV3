@@ -842,6 +842,9 @@ define([
 			}
 			return null;
 		},
+		// Stub to connect logging to record bad parse.
+		badParse: function(inputEquation){
+		},
 
 		// Stub to set connections in the graph
 		setConnections: function(from, to){
