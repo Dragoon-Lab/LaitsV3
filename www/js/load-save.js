@@ -112,7 +112,6 @@ define([
                 sg: json.toJson(model),
                 x: this.sessionId
             }
-            console.log("mirror mirror on the wall what is the shareBit that went to all : "+ shareBit);
             if(shareBit) {
                 object = lang.mixin(object, {
                     share: shareBit

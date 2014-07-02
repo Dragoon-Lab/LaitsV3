@@ -40,6 +40,7 @@ define([
 		constructor: function(/*model*/ givenModel,/*boolean*/ share){
 			this.givenModel = givenModel;
 			this.timeObj = givenModel.getTime();
+
 			//Read Values from timeObj and place them in description editor
 			//We also assign them as previous start, stop times and time step
 			dom.byId("authorSetTimeStart").value = this.timeObj.start;
@@ -56,7 +57,7 @@ define([
 			dom.byId("authorSetDescription").value = this.serialize(
 				givenModel.getTaskDescription() ? givenModel.getTaskDescription() : ""	
 			);
-            this.shareBit = share?true:false;
+            this.setShareBit(share);
             dom.byId("authorProblemShare").checked = this.shareBit;
 			ready(this, this._initHandles);
 		},
@@ -211,8 +212,7 @@ define([
 		},
 
         setShareBit:function(value){
-            console.log("con author value "+value);
-            this.shareBit = value;
+            this.shareBit = value=="1"?true:false;
         }
 
 	});
