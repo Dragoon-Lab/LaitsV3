@@ -946,7 +946,7 @@ define([
 		 Take a list of directives and apply them to the Node Editor,
 		 updating the model and updating the graph.
 		 
-		 The format for directives is defined in documentation/javascript.md
+		 The format for directives is defined in documentation/node-editor.md
 		 */
 		applyDirectives: function(directives, noModelUpdate){
 			// Apply directives, either from PM or the controller itself.

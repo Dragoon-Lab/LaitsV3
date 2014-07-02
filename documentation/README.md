@@ -1,12 +1,21 @@
 # Documentation for Dragoon #
 
-This contains mostly design documents. 
+## Architecture ##
+
+We are using:
+
+* The [Dojo](http://dojotoolkit.org) framework.
+* A [fork of jsPlumb](https://github.com/bhosaledipak/JsPlumb_Dojo_Integreate)
+  that uses AMD and Dojo.
+* A [fork of js-expression-eval](https://github.com/bvds/js-expression-eval) 
+ that uses AMD and can accept variable names with spaces.
+
+Here are the major components of the design:
 
 * [Session behavior](sessions.md) which discusses saving, modifying, and sharing problems.
 * [Major modes](major-modes.md) (STUDENT COACHED TEST AUTHOR)
-* [Graph (nodes and connectors) Design](graph.md)
-* [Node Editor Design](node-editor.md)
-* [Libraries, Model-View-Controller, and the Pedagogical Module](javascript.md)
+* [Graph (nodes and connectors)](graph.md)
+* [Node Editor](node-editor.md)
 * [Module Dependencies](dependency_graph.html)
 * [JSON format](json-format.md)
 * [Forum](forum.md)
@@ -15,9 +24,6 @@ This contains mostly design documents.
 * [Logging format](logs-structure.md)
 * [Saving State](state.md)
 
-Documentation can be in any convenient format (word, html, *et cetera*) with 
-generic [markdown](http://en.wikipedia.org/wiki/Markdown) being the default 
-choice.  Any document should have an associated link in this file. 
 
 ## Code Review process ##
 
