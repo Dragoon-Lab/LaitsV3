@@ -23,8 +23,8 @@
 define([
 	"dojo/aspect", "dojo/_base/array", "dojo/_base/declare", "dojo/_base/lang",
 	"dijit/registry", "dojo/dom", "dojo/ready",
-	"./model", "./wraptext", "./typechecker"
-], function(aspect, array, declare, lang, registry, dom, ready, model, wrapText, typechecker){
+	"./model", "./wraptext", "./typechecker", "./load-save"
+], function(aspect, array, declare, lang, registry, dom, ready, model, wrapText, typechecker, loadSave){
 
 	// Summary: 
 	//			MVC for the description box in author mode
@@ -36,10 +36,10 @@ define([
 	return declare(null, {
 		givenModel: null,
         controller: null,
-		constructor: function(/*model*/ givenModel, /*controller*/ controllerObj){
+        shareBit: false,
+		constructor: function(/*model*/ givenModel,/*boolean*/ share){
 			this.givenModel = givenModel;
 			this.timeObj = givenModel.getTime();
-            this.controller = controllerObj;
 			//Read Values from timeObj and place them in description editor
 			//We also assign them as previous start, stop times and time step
 			dom.byId("authorSetTimeStart").value = this.timeObj.start;
@@ -56,6 +56,8 @@ define([
 			dom.byId("authorSetDescription").value = this.serialize(
 				givenModel.getTaskDescription() ? givenModel.getTaskDescription() : ""	
 			);
+            this.shareBit = share?true:false;
+            dom.byId("authorProblemShare").checked = this.shareBit;
 			ready(this, this._initHandles);
 		},
 
@@ -132,7 +134,7 @@ define([
 
             //for share Bit checkbox
             descWidgetShareBit.on("change", lang.hitch(this, function(){
-                this.controller.setShareBit(descWidgetShareBit.checked);
+                this.setShareBit(descWidgetShareBit.checked);
             }));
 		},
 
@@ -206,7 +208,12 @@ define([
 			}else{
 				showText();
 			}
-		}
+		},
+
+        setShareBit:function(value){
+            console.log("con author value "+value);
+            this.shareBit = value;
+        }
 
 	});
 });

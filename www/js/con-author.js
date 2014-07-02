@@ -167,7 +167,6 @@ define([
 		ready(this, "initAuthorHandles");
 		},
 
-        shareBit: false,
 	   resettableControls: ["name","description","initial","units","equation"],
 
 		/*
@@ -398,11 +397,7 @@ define([
 		},
 		updateModelStatus: function(desc){
 			//stub for updateModelStatus
-		},
+		}
 
-        setShareBit:function(value){
-            console.log("con author value "+value);
-            this.shareBit = value;
-        }
 	});
 });

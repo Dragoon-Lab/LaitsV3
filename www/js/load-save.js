@@ -89,6 +89,23 @@ define([
 			});
 		},
 
+        loadShareBit: function(/*object*/ params){
+            //Summery: calls share_fetcher.php to retrieve a share bit
+            console.log("loadShareBit called:", params);
+            return xhr.get(this.path + "share_fetcher.php", {
+                query: params,
+                handleAs: "json"
+            }).then(function(share_value){
+                console.log("Share bit found in DB", share_value);
+                return share_value;
+            },function(err){
+                this.clientLog("error",{
+                    message: "finding share bit error: " +err,
+                    functionTag: 'findShareBit'
+                });
+            });
+        },
+
 		saveProblem: function(model, shareBit){
 			// Summary: saves the string held in this.saveData in the database.
             var object = {

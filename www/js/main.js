@@ -183,7 +183,8 @@ define([
 
 		
 			// Also used in image loading below.
-			var descObj = new description(givenModel, controllerObject);
+            var shareBit = session.loadShareBit(query);
+			var descObj = new description(givenModel, shareBit);
 			
 			if(query.m == "AUTHOR"){
 				var db = registry.byId("descButton");
