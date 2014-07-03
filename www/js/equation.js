@@ -194,13 +194,14 @@ define([
 					if(changed){
 						node.equation = expr.toString(true);
 						node.inputs = [];
-						array.forEach(expr.variables(), function(id){
-							if(subModel.isNode(id))
-								node.inputs.push({ID: id});
+						var inputs = this.createInputs(expr);
+						array.forEach(inputs, function(input){
+							if(subModel.isNode(input.ID))
+								node.inputs.push(input);
 						});
 					}
 				}
-			});
+			},this);
 		},
 		isSum: function(parse){
 			// Return true if expression is a sum of variables, allowing for minus signs.

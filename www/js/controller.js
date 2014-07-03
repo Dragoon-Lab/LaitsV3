@@ -764,9 +764,9 @@ define([
 
 					var descriptionID = "";
 					var badVarCount = "";
-					descriptionID = this._model.active.getDescriptionID(this.currentID);
-					//Check for number of unknown var, only in student mode.
-					if (!ignoreUnknownTest) {
+                    if (!ignoreUnknownTest) {
+                        // Check for number of unknown var, only in student mode.
+                        descriptionID = this._model.active.getDescriptionID(this.currentID);
 						badVarCount = this._model.given.getAttemptCount(descriptionID, "unknownVar");
 					}
 
@@ -841,6 +841,9 @@ define([
 				return parse;
 			}
 			return null;
+		},
+		// Stub to connect logging to record bad parse.
+		badParse: function(inputEquation){
 		},
 
 		// Stub to set connections in the graph
@@ -943,7 +946,7 @@ define([
 		 Take a list of directives and apply them to the Node Editor,
 		 updating the model and updating the graph.
 		 
-		 The format for directives is defined in documentation/javascript.md
+		 The format for directives is defined in documentation/node-editor.md
 		 */
 		applyDirectives: function(directives, noModelUpdate){
 			// Apply directives, either from PM or the controller itself.
