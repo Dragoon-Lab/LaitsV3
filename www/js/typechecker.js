@@ -58,9 +58,10 @@ define([
 			this.closePops();
 
 			// Don't do anything if the value has not changed.
+            //Also Don't do anything if the value is empty
 			var domNode = dom.byId(nodeID);
 			var inputString = domNode.value.trim();
-			if(inputString == lastInput.value){
+			if(inputString == lastInput.value || inputString==""){
 				return {status: false};
 			}
 			lastInput.value = inputString;
