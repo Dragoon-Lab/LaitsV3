@@ -733,9 +733,8 @@ define([
 					message: err
 				});
 			}
-
 			if(parse){
-				var toPM = true;
+				var cancelUpdate = false;
 				//getDescriptionID is present only in student mode. So in author mode it will give an identity function. This is a work around in case when its in author mode at that time the given model is the actual model. So descriptionID etc are not available. 
 				var mapID = this._model.active.getDescriptionID || function(x){ return x; };
 				var unMapID = this._model.active.getNodeIDFor || function(x){ return x; };
@@ -746,7 +745,7 @@ define([
 					//		functions will always evaluate to true if they reference themselves
 					if(givenID && this._model.active.getType(this.currentID) === "function" &&
 						givenID === mapID.call(this._model.active, this.currentID)){
-						toPM = false;
+						cancelUpdate = true;
 						directives.push({id: 'equation', attribute: 'status', value: 'incorrect'});
 						directives.push({id: 'message', attribute: 'append', value: "You cannot use '" + variable + "' in the equation. Function nodes cannot reference themselves."});
 						this.logging.log("solution-step", {
@@ -765,9 +764,9 @@ define([
 
 					var descriptionID = "";
 					var badVarCount = "";
-					// Fix this:  The controller should be ignorant about mode
-					if(this._mode!=="AUTHOR"){ 
-						descriptionID = this._model.active.getDescriptionID(this.currentID);
+                    if (!ignoreUnknownTest) {
+                        // Check for number of unknown var, only in student mode.
+                        descriptionID = this._model.active.getDescriptionID(this.currentID);
 						badVarCount = this._model.given.getAttemptCount(descriptionID, "unknownVar");
 					}
 
@@ -781,22 +780,19 @@ define([
 							directives.push({id: 'message', attribute: 'append', value: "Quantity '" + variable + "' not defined yet."});
 						}
 					}else{
-						toPM = false;  // Don't send to PM
+						cancelUpdate = true;  // Don't update model or send ot PM.
 
 						// The following if statement prevents a user from being endlessly stuck if he/she is using an incorrect variable. 
 						//		To organize this better in the future we may want to move this check into another file with the code from 
 						//		pedagogical_module.js that is responsible for deciding the correctness of a student's response.
-						// Fix this:  The controller should be ignorant about mode
-						if(this._mode!=="AUTHOR"){
-							if(badVarCount){
-								this._model.given.setAttemptCount(descriptionID, "unknownVar", badVarCount+1);
+						if(badVarCount){
+							this._model.given.setAttemptCount(descriptionID, "unknownVar", badVarCount+1);
 
-								if(badVarCount > 2){
-									this._model.given.setAttemptCount(descriptionID, "equation", badVarCount+1);
-								}
-							}else{
-								this._model.given.setAttemptCount(descriptionID, "unknownVar", 1);
+							if(badVarCount > 2){
+								this._model.given.setAttemptCount(descriptionID, "equation", badVarCount+1);
 							}
+						}else{
+							this._model.given.setAttemptCount(descriptionID, "unknownVar", 1);
 						}
 
 						directives.push({id: 'message', attribute: 'append', value: "Unknown variable '" + variable + "'."});
@@ -811,6 +807,13 @@ define([
 						});
 					}
 				}, this);
+
+				//Check to see if there are unknown variables in parsedEquation if in student mode
+				//If unknown variable exist, do not update equation in model. 
+				//Do the same if a function node references itself.
+				if (cancelUpdate){
+					return null;
+				}
 
 				// Expression now is written in terms of student IDs, when possible.
 				// Save with explicit parentheses for all binary operations.
@@ -835,10 +838,14 @@ define([
 				// console.log("************** equationAnalysis directives ", directives);
 
 				// Send to PM if all variables are known.
-				return toPM ? parse : null;
+				return parse;
 			}
 			return null;
 		},
+		// Stub to connect logging to record bad parse.
+		badParse: function(inputEquation){
+		},
+
 		// Stub to set connections in the graph
 		setConnections: function(from, to){
 			// console.log("======== setConnections fired for node" + to);
@@ -939,7 +946,7 @@ define([
 		 Take a list of directives and apply them to the Node Editor,
 		 updating the model and updating the graph.
 		 
-		 The format for directives is defined in documentation/javascript.md
+		 The format for directives is defined in documentation/node-editor.md
 		 */
 		applyDirectives: function(directives, noModelUpdate){
 			// Apply directives, either from PM or the controller itself.

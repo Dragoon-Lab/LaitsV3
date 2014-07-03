@@ -74,3 +74,24 @@ added to the node `inputs` by the function `createInputs()` in
 For example:
 
     inputs: [{ID: "id2, label: "-"}, ...]
+
+## Automatic node placement ##
+
+Our algorithm for automatic node placement will
+produce a pattern like this:
+
+     0  1  4  9
+     2  3  5 10
+     6  7  8 11
+    12 13 14 15
+
+Here is some code that will produce this:
+
+    n is the number of the node
+    q = int(sqrt(n));
+    if(n<q^2+q)
+      position=(q,n-q^2)
+    else
+      position=(n-q^2-q,q)
+
+An explanation, showing the above table, should be included as a comment in the code.
