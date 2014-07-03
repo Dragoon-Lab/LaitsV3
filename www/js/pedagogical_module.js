@@ -473,11 +473,14 @@ define([
 				case "type":
 					interpret(this.model.given.getType(givenID));
 					break;
-				case "initial":
-					if(!this.model.given.getInitial(givenID))
-						interpretation = "correct";
+                case "initial":
+                    //We check the typeof returning initial value, if it is
+                    //a number we check with the model else return correct
+                    //interpretation
+					if(typeof this.model.given.getInitial(givenID) === "number")
+                        interpret(this.model.given.getInitial(givenID));
 					else
-						interpret(this.model.given.getInitial(givenID));
+                        interpretation = "correct";
 					break;
 				case "units":
 					interpret(this.model.given.getUnits(givenID));

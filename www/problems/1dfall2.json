@@ -62,7 +62,7 @@
                 "parentNode": false,
                 "units": "",
                 "description": "The speed of the falling object",
-                "initial": null,
+                "initial": 0,
                 "equation": "id1"
             },
             {
@@ -89,7 +89,7 @@
                 "parentNode": true,
                 "units": "",
                 "description": "The distance travelled by the falling object",
-                "initial": null,
+                "initial": 0,
                 "equation": "id2"
             }
         ],
