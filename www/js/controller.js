@@ -49,9 +49,8 @@ define([
 		logging: null,
 		// Variable to track if an equation has been entered and checked
 		equationEntered: null,	// value is set when node editor opened
-		drawModel:null,
 
-		constructor: function(mode, subMode, model, inputStyle,drawModel){
+		constructor: function(mode, subMode, model, inputStyle){
 			
 			console.log("+++++++++ In generic controller constructor");
 			lang.mixin(this.controlMap, this.genericControlMap);
@@ -61,6 +60,7 @@ define([
 			// structured should be its own module.	 For now,
 			// initialize
 			this.structured._model = this._model;
+
 			// The Node Editor widget must be set up before modifications
 			// It might be a better idea to only  call the controller
 			// after widgets are set up.
@@ -86,9 +86,7 @@ define([
 				}
 			});
 		},
-		setDrawModel:function(parameter){
-			drawModel=parameter;
-		},
+
 		setEquationStyle: function(style){
 			var algebraic, structured;
 			if(!style || style == "algebraic"){
@@ -104,6 +102,11 @@ define([
 			domStyle.set("structured", "display", structured);
 			domStyle.set("equationBox", "display", algebraic);
 			domStyle.set("equationText", "display", structured);
+		},
+
+		// A stub for connecting routine to draw new node.
+		addNode: function(node){
+			console.log("Node Editor calling addNode() for ", node.id);
 		},
 
 		// A list of common controls of student and author
@@ -305,7 +308,7 @@ define([
 
 			// update Node labels upon exit
 			this.updateNodeLabel(this.currentID);
-			
+
 			// In case any tool tips are still open.
 			typechecker.closePops();
 			//this.disableHandlers = false;
@@ -318,18 +321,19 @@ define([
 
 			// This cannot go in controller.js since _PM is only in
 			// con-student.	 You will need con-student to attach this
-			// to closeEditor (maybe using aspect.after?).
-			
+			// to closeEditor (maybe using aspect.after?).			
 		},
+
 		//update the node label
 		updateNodeLabel:function(nodeID){
 			var nodeName = graphObjects.getNodeName(this._model.active,nodeID);
-                        if(dom.byId(nodeID + 'Label')){
-                                domConstruct.place(nodeName, nodeID + 'Label', "replace");
-                        }else{
-                                domConstruct.place('<div id="'+nodeID+'Label" class="bubble">'+nodeName+'</div>', nodeID);
-                        }
+            if(dom.byId(nodeID + 'Label')){
+                domConstruct.place(nodeName, nodeID + 'Label', "replace");
+            }else{
+                domConstruct.place('<div id="'+nodeID+'Label" class="bubble">'+nodeName+'</div>', nodeID);
+            }
 		},
+
 		//set up event handling with UI components
 		_initHandles: function(){
 			// Summary: Set up Node Editor Handlers
@@ -750,8 +754,11 @@ define([
 
 					var givenID = this._model.given.getNodeIDByName(variable);
 
-					var autocreationFlag = true; //set autocreation flag based on preferences
-					if(autocreationFlag&&!this._model.active.isNode(givenID))
+					// autocreation flag will eventually be set from the URL
+					// or from the state table.  Alternatively, we will show a list
+					// of variables.
+					var autocreationFlag = true; 
+					if(autocreationFlag && !this._model.active.isNode(givenID))
 						this.autocreateNodes(variable);
 
 					// Checks for nodes referencing themselves; this causes problems because

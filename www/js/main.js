@@ -107,9 +107,11 @@ define([
 
 			var drawModel = new drawmodel(givenModel.active);
 			drawModel.setLogging(session);
-			
-			//set DrawModel in controller
-			controllerObject.setDrawModel(drawModel);
+
+			// Wire up drawing new node
+			aspect.after(controllerObject, "addNode",
+						 lang.hitch(drawModel, drawModel.addNode),
+						 true);
 
 			// Wire up send to server
 			aspect.after(drawModel, "updater", function(){
