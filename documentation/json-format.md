@@ -36,7 +36,13 @@ The JSON document will begin with the "task" element, of which all other
 elements will be attributes. It will be followed by the name, properties and 
 description of the task (problem) that is being modeled.
 
+The optional "deleted" and "share" elements give the status as
+defined in other columns of the [**solutions** table](sessions.md).  These are only
+needed for AUTHOR mode.
+
     {
+        "deleted": false,
+        "share": true,
         "task": {
             "taskName": "Rabbits - Intro Problem",
             "properties": {

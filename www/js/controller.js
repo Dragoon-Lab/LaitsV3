@@ -500,7 +500,7 @@ define([
 			}
 
 			//resetting the value of initial and equation boxes when type is changed in author mode
-			if(type == "function" && this._model.active.getInitial(this.currentID)){
+			if(type == "function" && typeof this._model.active.getInitial(this.currentID) === "number"){
 				var initialNode = registry.byId(this.controlMap.initial);
 				initialNode.set("value", "");
 			}
@@ -959,7 +959,7 @@ define([
 		 Take a list of directives and apply them to the Node Editor,
 		 updating the model and updating the graph.
 		 
-		 The format for directives is defined in documentation/javascript.md
+		 The format for directives is defined in documentation/node-editor.md
 		 */
 		applyDirectives: function(directives, noModelUpdate){
 			// Apply directives, either from PM or the controller itself.
