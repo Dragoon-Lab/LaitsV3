@@ -12,12 +12,13 @@ We are using:
 
 Here are the major components of the design:
 
-* [Session behavior](sessions.md) which discusses saving, modifying, and sharing problems.
+* [Session behavior](sessions.md) which discusses saving, modifying,
+  and sharing problems.  It also describes the database tables.
 * [Major modes](major-modes.md) (STUDENT COACHED TEST AUTHOR)
 * [Graph (nodes and connectors)](graph.md)
 * [Node Editor](node-editor.md)
 * [Module Dependencies](dependency_graph.html)
-* [JSON format](json-format.md)
+* [Model object (JSON format)](json-format.md)
 * [Forum](forum.md)
 * Kurt's design for the [Pedagogical Module](Pedagogical-Module.docx)
   as well as [Sachin's version](Pedagogical-Module-JavaScript-Version-2.docx)
