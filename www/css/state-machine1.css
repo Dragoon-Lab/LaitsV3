@@ -1,8 +1,9 @@
+/*
+    Styles associated with the main canvas
+*/
+
 #demo {
     margin-top:5em;
-}
-.dijitCheckBoxInput{
- opacity:1.0;
 }
 
 .accumulator {

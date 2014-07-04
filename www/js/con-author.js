@@ -399,6 +399,5 @@ define([
 		updateModelStatus: function(desc){
 			//stub for updateModelStatus
 		}
-
 	});
 });

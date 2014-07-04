@@ -34,7 +34,7 @@ html, body, #main{
 
 
 /*
-                        Node editor
+                        Node Editor and Description Editor
 */
 
 .sameedit, #crisisAlertMessage, .sameedit, div#solution {
@@ -106,6 +106,12 @@ html, body, #main{
     float:right;
     clear:right;
 }
+
+/* pointer to Dojo bug here, also add bugzilla entry */
+.sameedit .dijitCheckBoxInput{
+ opacity:1.0;
+}
+
 
 #authorDescDialog .fieldgroup > label:first-child{
 width: 12em;
