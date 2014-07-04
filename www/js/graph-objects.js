@@ -31,12 +31,19 @@ define([
 
 	return {
 		getEndPointConfiguration:function(sign){
-			if(sign!='')
-				return [["Arrow", { location:1, id:"arrow", length:14, foldback:0.9 } ], ["Custom", { create:function(component){ var overlay = domConstruct.create("div", { innerHTML: "<div class='endPoint'>"+sign+"</div>" }); return overlay; }, location:1.0, id:"customOverlay" }]];
-			else
+			if(sign!=''){
+				return [
+					["Arrow", { location:1, id:"arrow", length:14, foldback:0.9 } ], 
+					["Custom", { create:function(component){ 
+						var overlay = domConstruct.create("div", { innerHTML: "<div class='endPoint'>"+sign+"</div>" }); 
+						return overlay; 
+					}, location:1.0, id:"customOverlay" }]
+				];
+			}else{
 				return [["Arrow", { location:1, id:"arrow", length:14, foldback:0.9 } ]];
+			}
 		},
-	getNodeName:function(model,nodeId,type){
+		getNodeName:function(model,nodeId,type){
 			var type = type||model.getType(nodeId)||'triangle';
 			var nodeName = model.getName(nodeId);
 			var parse = model.getEquation(nodeId);
@@ -45,23 +52,25 @@ define([
 				parse=expression.parse(parse);
 				// May want to change symbols to "sum" and "product"
 				parameter = expression.isSum(parse)&&expression.isProduct(parse)?'':expression.isSum(parse)?'+':expression.isProduct(parse)?'*':'';
-		parameter = '<strong style="font-size:18px">'+parameter+'</strong>';
+				parameter = '<strong style="font-size:18px">'+parameter+'</strong>';
 			}
 			var initialValue = model.getInitial(nodeId);
-        if(!typeof initialValue === "number")
-            initialValue = '';
+			if(!typeof initialValue === "number"){
+				initialValue = '';
+			}
 			var unitsValue = model.getUnits(nodeId);
-			if(!unitsValue)
+			if(!unitsValue){
 				unitsValue = '';
-
+			}
 			initialValue += " " + unitsValue;
 
-			if(nodeName)
+			if(nodeName){
 				nodeName='<div id='+nodeId+'Label  class="bubble"><div class="'+type+'Wrapper"><strong>'+parameter+'<br>'+initialValue+'</strong></div><div class='+type+'Div><strong>'+nodeName+'</strong></div></div>';
-			else
+			}else{
 				nodeName='';
-				return nodeName;
+			}
 
-	}
+			return nodeName;
+		}
 	};
 });
