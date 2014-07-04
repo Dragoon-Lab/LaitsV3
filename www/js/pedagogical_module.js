@@ -255,7 +255,8 @@ define([
 				disable(obj, part, true);
 				disable(obj, "type", false);
 			}
-		}};
+		}
+	};
 
 	var actionTable = {
 		// Summary: This table is used for determining the proper response to a student's answers in the 
@@ -392,32 +393,32 @@ define([
 			var newPart = "equation";
 
 			switch(currentPart){
-				case "type":
-					if(nodeType === "parameter" || nodeType === "accumulator"){
-						disable(obj, "initial", false);
-						newPart = "initial";
-					}else if(this.model.given.getUnits(givenNodeID)){
-						disable(obj, "units", false);
+			case "type":
+				if(nodeType === "parameter" || nodeType === "accumulator"){
+					disable(obj, "initial", false);
+					newPart = "initial";
+				}else if(this.model.given.getUnits(givenNodeID)){
+					disable(obj, "units", false);
 						newPart = "units";
-					}else{
-						disable(obj, "equation", false);
-						newPart = "equation";
-					}
-					break;
-				case "initial":
-					if(this.model.given.getUnits(givenNodeID)){
-						disable(obj, "units", false);
-						newPart = "units";
-					}else if(nodeType === "function" || nodeType === "accumulator"){
-						disable(obj, "equation", false);
-						newPart = "equation";
-					}
-					break;
-				case "units":
-					if(nodeType === "function" || nodeType === "accumulator")
-						disable(obj, "equation", false);
+				}else{
+					disable(obj, "equation", false);
 					newPart = "equation";
-					break;
+				}
+				break;
+			case "initial":
+				if(this.model.given.getUnits(givenNodeID)){
+					disable(obj, "units", false);
+					newPart = "units";
+				}else if(nodeType === "function" || nodeType === "accumulator"){
+					disable(obj, "equation", false);
+					newPart = "equation";
+				}
+				break;
+			case "units":
+				if(nodeType === "function" || nodeType === "accumulator")
+					disable(obj, "equation", false);
+				newPart = "equation";
+				break;
 			}
 			if(job === "enableRemaining" && newPart !== "equation")
 				this._enableNext(obj, givenNodeID, newPart, job);
@@ -448,46 +449,47 @@ define([
 
 			// Take action based on the part of the node being evaluated
 			switch(nodePart){
-				case "description":
-					this.descriptionCounter++;
+			case "description":
+				this.descriptionCounter++;
 
-					if(this.model.given.getGenus(answer)){
-						array.forEach(this.model.given.getNodes(), function(extra){
-							if(answer === extra.ID && extra.genus && extra.genus != "allowed"){
-								interpretation = extra.genus;
-							}
-						});
-					}else if(this.model.isNodeVisible(studentID, answer)){
+				if(this.model.given.getGenus(answer)){
+					array.forEach(this.model.given.getNodes(), function(extra){
+						if(answer === extra.ID && extra.genus && extra.genus != "allowed"){
+							interpretation = extra.genus;
+						}
+					});
+				}else if(this.model.isNodeVisible(studentID, answer)){
 						interpretation = "redundant";
-					}else if(this.model.isParentNode(answer) || this.model.isNodesParentVisible(studentID, answer)){
-						interpretation = "optimal";
-					}else if(this.model.student.getNodes().length === 0){
-						interpretation = "notTopLevel";
-					}else{
-						interpretation = "premature";
-					}
-					if(interpretation !== "optimal" && this.descriptionCounter > 2){
-						interpretation = "lastFailure";
-					}
-					break;
-				case "type":
-					interpret(this.model.given.getType(givenID));
-					break;
-                case "initial":
-                    //We check the typeof returning initial value, if it is
-                    //a number we check with the model else return correct
-                    //interpretation
-					if(typeof this.model.given.getInitial(givenID) === "number")
-                        interpret(this.model.given.getInitial(givenID));
-					else
-                        interpretation = "correct";
-					break;
-				case "units":
-					interpret(this.model.given.getUnits(givenID));
-					break;
-				case "equation":
-					interpret(check.areEquivalent(givenID, this.model, answer));
-					break;
+				}else if(this.model.isParentNode(answer) || this.model.isNodesParentVisible(studentID, answer)){
+					interpretation = "optimal";
+				}else if(this.model.student.getNodes().length === 0){
+					interpretation = "notTopLevel";
+				}else{
+					interpretation = "premature";
+				}
+				if(interpretation !== "optimal" && this.descriptionCounter > 2){
+					interpretation = "lastFailure";
+				}
+				break;
+			case "type":
+				interpret(this.model.given.getType(givenID));
+				break;
+            case "initial":
+                //We check the typeof returning initial value, if it is
+                //a number we check with the model else return correct
+                //interpretation
+				if(typeof this.model.given.getInitial(givenID) === "number"){
+                    interpret(this.model.given.getInitial(givenID));
+				}else{
+                    interpretation = "correct";
+				}
+				break;
+			case "units":
+				interpret(this.model.given.getUnits(givenID));
+				break;
+			case "equation":
+				interpret(check.areEquivalent(givenID, this.model, answer));
+				break;
 			}
 			/* 
 			 This is an example of logging via direct function calls
@@ -495,7 +497,7 @@ define([
 			 */
 			return interpretation;
 		},
-	
+		
 		/*****
 		 * Public Functions
 		 *****/

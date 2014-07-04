@@ -17,7 +17,7 @@ $mysqli = mysqli_connect("localhost", $dbuser, $dbpass, $dbname)
 $student = isset($_GET['student'])?mysqli_real_escape_string($mysqli, $_GET['student']):'';
 $section = mysqli_real_escape_string($mysqli, $_GET['section']);
 
-$query="SELECT problem,author FROM solutions,session WHERE section='$section' AND NOT deleted AND (share OR author='$student')";
+$query="SELECT problem,author FROM solutions WHERE section='$section' AND NOT deleted AND (share OR author='$student')";
 if($result = $mysqli->query($query)){
   $json = array(); 
   while($row = $result->fetch_object()){
