@@ -21,6 +21,14 @@ $problem =  mysqli_real_escape_string($mysqli,$_GET['p'])
 // Author is optional
 $author = isset($_GET['a'])?mysqli_real_escape_string($mysqli,$_GET['a']):null;
 
+/*
+  Print out JSON object containing the model task and the share bit
+*/
+function printModel($row){
+  header("Content-type: application/json");
+  print "{\"task\":$row[0],\"share\":" . ($row[1]?"true":"false") . "}";
+}
+
 /* 
    Not providing the author is equivalent to saying that this is 
    a published problem.
@@ -43,7 +51,7 @@ if(isset($_GET['u']) && isset($_GET['s']) && isset($_GET['m'])){
   $as = isset($_GET['a'])? "= '$author'":'IS NULL';
 
   $query = <<<EOT
-    SELECT t1.solution_graph FROM solutions AS t1 JOIN session AS t2 USING (session_id) 
+    SELECT t1.solution_graph, t1.share FROM solutions AS t1 JOIN session AS t2 USING (session_id) 
       WHERE t2.user = '$user' AND t2.section = '$section' AND t2.mode = '$mode' 
           AND t2.problem = '$problem' AND t2.author $as ORDER BY t1.time DESC LIMIT 1
 EOT;
@@ -51,8 +59,7 @@ EOT;
   $result = $mysqli->query($query)
     or trigger_error("Previous work query failed." . $mysqli->error);
   if($row = $result->fetch_row()){
-    header("Content-type: application/json");
-    print $row[0];
+    printModel($row);
     exit;
   }
 }
@@ -72,7 +79,7 @@ if(isset($_GET['a']) && isset($_GET['s'])){
   $section = mysqli_real_escape_string($mysqli,$_GET['s']);
 
   $query = <<<EOT
-    SELECT t1.solution_graph FROM solutions AS t1 JOIN session AS t2 
+    SELECT t1.solution_graph, t1.share FROM solutions AS t1 JOIN session AS t2 
           USING (session_id) 
       WHERE t2.section = '$section' AND t2.mode = 'AUTHOR' 
           AND t2.problem = '$problem' AND t2.author = '$author' ORDER BY t1.time DESC LIMIT 1
@@ -81,8 +88,7 @@ EOT;
   $result = $mysqli->query($query)
     or trigger_error("Custom solution query failed.");
   if($row = $result->fetch_row()){
-    header("Content-type: application/json");
-    print $row[0];
+    printModel($row);
   } else {
     // No previous work found:  assume that this is a new problem	 
     $statusCode=204;

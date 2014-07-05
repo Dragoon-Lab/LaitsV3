@@ -493,7 +493,7 @@ define([
 			}
 
 			//resetting the value of initial and equation boxes when type is changed in author mode
-			if(type == "function" && this._model.active.getInitial(this.currentID)){
+			if(type == "function" && typeof this._model.active.getInitial(this.currentID) === "number"){
 				var initialNode = registry.byId(this.controlMap.initial);
 				initialNode.set("value", "");
 			}

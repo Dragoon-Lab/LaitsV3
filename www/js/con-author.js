@@ -375,7 +375,7 @@ define([
 				this.applyDirectives(this.authorPM.process(this.currentID, 'units', this._model.given.getUnits(this.currentID)));
 		}
 			//color initial value widget
-			if(this._model.given.getInitial(this.currentID)){
+			if(typeof this._model.given.getInitial(this.currentID) === "number"){
 				this.applyDirectives(this.authorPM.process(this.currentID, 'initial', this._model.given.getInitial(this.currentID), true));
 		}
 			//color units widget
@@ -388,7 +388,7 @@ define([
 				this.applyDirectives(this.authorPM.process(this.currentID, 'type', type));
 		}
 			if(type && type != 'function'){
-				if(this._model.given.getInitial(this.currentID))
+				if(typeof this._model.given.getInitial(this.currentID) === "number")
 					this.applyDirectives([{id:"initial", attribute:"status", value:"entered"}]);
 			}
 			if(type && type != 'parameter'){
