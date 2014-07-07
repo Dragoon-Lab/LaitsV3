@@ -113,6 +113,29 @@ define([
 			}, this);
 		},
 
+		//stub autocreate nodes
+		// BvdS:  the parts of this that are common to both AUTHOR and student modes
+		//  should be moved to a function in controller.js
+		autocreateNodes:function(variable){
+			console.log("auto creating nodes student controller");
+			//getDescriptionID using variable name
+			var descID = this._model.given.getNodeIDByName(variable);
+			//since variable is not present, addNode to the model
+			var id = this._model.active.addNode();
+			this.addNode(this._model.active.getNode(id));
+			//setDescriptionID for the node id
+			this._model.active.setDescriptionID(id, descID);
+			//get directives for description of auto created node
+			var directives = this._PM.processAnswer(id, 'description', descID);
+			// BvdS: There is a routine in controller.js to apply directives.
+			//update Model status for auto created node directives
+			array.forEach(directives,function(directive){
+				this.updateModelStatus(directive,id);
+			}, this);
+			// update Node labels upon exit
+			this.updateNodeLabel(id);
+		},
+
 		handleDescription: function(selectDescription){
 			console.log("****** in handleDescription ", this.currentID, selectDescription);
 			if(selectDescription == 'defaultSelect')
@@ -239,7 +262,7 @@ define([
 			array.forEach(this._model.student.getStatusDirectives(nodeid), function(directive){
 				var w = registry.byId(this.controlMap[directive.id]);
 				w.set(directive.attribute, directive.value);
-			// The actual values should be in the model itself, not in status directives.
+				// The actual values should be in the model itself, not in status directives.
 				if(directive.attribute == "value"){
 					this.logging.clientLog("error", {
 						message: "Values should not be set in status directives",
@@ -251,12 +274,14 @@ define([
 
 		// Need to save state of the node editor in the status section
 		// of the student model.  See documentation/json-format.md
-		updateModelStatus: function(desc) {
-			if (this.validStatus[desc.attribute]) {
+		updateModelStatus: function(desc, id){
+			//in case of autocreation nodes, id must be passed explicitly
+			id = id || this.currentID;
+			if(this.validStatus[desc.attribute]){
 				var opt = {};
 				opt[desc.attribute] = desc.value;
-				this._model.student.setStatus(this.currentID, desc.id, opt);
-			} else {
+				this._model.student.setStatus(id, desc.id, opt);
+			}else{
 				// There are some directives that should update
 				// the student model node (but not the status section).
 

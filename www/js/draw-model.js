@@ -269,7 +269,9 @@ define([
 					this._instance.detach(connection);
 			}, this);
 			// Create new connections
-			var connectionOverlays = graphObjects.getEndPointConfiguration('');
+
+		//connectionOverlays code duplicated in addQuantity 
+		var connectionOverlays = graphObjects.getEndPointConfiguration('');
 			array.forEach(sources, function(source){
 				// All sources and destinations should exist.
 				//				  if(destination.is)
@@ -302,8 +304,37 @@ define([
 			}, this);
 			// Create new connections
 			array.forEach(destinations, function(destination){
-				// All sources and destinations should exist.
-				this._instance.connect({source: source, target: destination});
+				var parse = this._givenModel.getEquation(destination),isSum,isProduct;
+				if(parse){
+					parse=equation.parse(parse);
+					isSum=equation.isSum(parse);
+					isProduct=equation.isProduct(parse);
+				}
+			   
+			   //connectionOverlays code duplicated in setConnections 
+			    var connectionOverlays = graphObjects.getEndPointConfiguration('');
+			    //if it has multiple inputs  - access input label which matches source
+			    array.forEach(this._givenModel.getNode(destination).inputs,function(input){
+				if(input.ID == source)
+				{
+					var destinationLabel =input;
+                            		if(destinationLabel.label){
+                                        	 console.log("------- At this point, we should add a '"+destinationLabel.label+"' label to "+ destinationLabel.ID);
+                        			 //check pure sum  or pure product but not both
+                        			if(!(isSum&&isProduct)){
+                                			if(isSum){
+                                        			if(destinationLabel.label=='-')
+                                                 			connectionOverlays = graphObjects.getEndPointConfiguration(destinationLabel.label);
+                                				}else if(isProduct){
+                                         				if(destinationLabel.label=='/')
+                                                 				connectionOverlays = graphObjects.getEndPointConfiguration(destinationLabel.label);
+                                					}
+                        			}
+                			}				
+				this._instance.connect({source: source, target: destination, overlays:connectionOverlays});
+				}	
+
+			    },this);	
 			}, this);
 		},
 

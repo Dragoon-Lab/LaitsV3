@@ -69,7 +69,7 @@ define([
                         givenUndefinedNodes: []
                     }};
 				/*
-				 Define the "active model" (see doucumentation/javascript.md).
+				 Define the "active model" (see doucumentation/node-editor.md).
 				 */
 				obj.active = (mode == "AUTHOR") ? obj.given : obj.student;
 
