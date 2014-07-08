@@ -103,7 +103,6 @@ define([
 
 					 //after it has passed all those checks we
 					 // do normal closeEditor routine and hide
-					  doHide.apply(myThis._descEditor);
 					  console.log("close description editor is being called");
 					  typechecker.closePops();
 					  var tin = dom.byId("authorSetDescription").value;
@@ -117,6 +116,14 @@ define([
 					  if(ret_step_time.value){
 						  myThis.timeObj.step = ret_step_time.value;
 					  }
+                      // time interval validation
+                      var time_interval_validation=typechecker.validateTimeInterval('authorSetTimeEnd',myThis.timeObj);
+                      if(time_interval_validation.errorType) { return; }
+                      // time step validation
+                      var time_step_validation=typechecker.validateTimeStep('authorSetTimeStep',myThis.timeObj);
+                      if(time_step_validation.errorType) { return; }
+
+                      doHide.apply(myThis._descEditor);
 					  myThis.timeObj.units = dom.byId("authorSetTimeStepUnits").value;
 					  myThis.givenModel.setTime(myThis.timeObj);
 					  console.log("final object being returned",myThis.timeObj);

@@ -37,14 +37,63 @@ define([
 			style: "width: 150px;",
 			content: "Non-numeric data not accepted"
 		}),
+        // Tool Tip for indicating wrong time interval values
+        myTooltipDialog3: new TooltipDialog({
+            style: "width: 150px;",
+            content: "End Time should always be greater than Start Time"
+        }),
+        // Tool Tip for indicating wrong time step value
+        myTooltipDialog4: new TooltipDialog({
+            style: "width: 150px;",
+            content: "Time Step should always be greater than zero"
+        }),
 
 		closePops: function(){
 			popup.close(this.myTooltipDialog);
 			popup.close(this.myTooltipDialog2);
+            popup.close(this.myTooltipDialog3);
+            popup.close(this.myTooltipDialog4);
 		},
 
+         validateTimeInterval : function(nodeID, timeObj){
+            //Description: performs time interval check
+            // precisely checks start time > end time and returns error if any
+            var errorType;
+            console.log('validate timeInterval called',timeObj);
+            this.closePops();
+            var domNode = dom.byId(nodeID);
+            console.log("dom Node is",domNode);
+             if(timeObj.start>timeObj.end) {
+               console.log("Error in time intervals");
+               popup.open({
+                 popup: this.myTooltipDialog3,
+                 around: domNode
+               });
+             errorType = "time-interval-invalid";
+             }
+             return {errorType: errorType};
+        },
 
-		checkInitialValue: function(nodeID, lastInput){
+        validateTimeStep : function(nodeID, timeObj){
+            //Description: performs time step check
+            // precisely checks time step >0 and returns error if any
+            var errorType;
+            console.log('validate timeStep called',timeObj);
+            this.closePops();
+            var domNode = dom.byId(nodeID);
+            if(timeObj.step<=0){
+                console.log("Error in Time Step");
+                popup.open({
+                    popup: this.myTooltipDialog4,
+                    around: domNode
+                });
+                errorType = "timestep-value-invalid";
+            }
+            return {errorType: errorType};
+        },
+
+
+        checkInitialValue: function(nodeID, lastInput){
 			//Description : performs non number check and also checks if the initial 
 			// value was changed from previously entered value
 			//returns: status, a boolean value and value, the current initial value
