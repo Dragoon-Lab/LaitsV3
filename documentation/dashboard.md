@@ -46,17 +46,17 @@ This can be done using a bar chart showing how many students have done or are do
 problem, how many are doing the third and so on.
 
 ###Dashboard Logging Object###
-To handle different types of views for the dashboard, the script (logProblemObject.php) creates a PHP object which is similar
+To handle different types of views for the dashboard, the script (`logProblemObject.php`) creates a PHP object which is similar
 to the javascipt model object. This will be created for every session-user-problem group
 and the array of objects will be returned. You can print whatever you want to and however you want to.
 
-The object structure can be checked in logProblemObject.php in log folder. Structure is based on three classes:
+The object structure can be checked in `logProblemObject.php` in log folder. Structure is based on three classes:
 * UserProblemObject - This is the complete session object which contains information about the username, problem
 session times, out of focus time, wasted time (when the window is selected but the user is not doing anything
 for more than 7 minutes), and an array of Node objects (in PHP they are the second class).
 * Node - This class has all the node related data, which is the name of the node, how many times node was opened
 and the status of all the properties that the user has completed. The properties form the third class.
-* Property - This class holds the lowest level of information. It name of the property(which can be description, 
+* Property - This class holds the lowest level of information. It name of the property (which can be description, 
 type, units etc), the status of each property (this is an array), time spent on each property, correct solution 
 for the property. Summations of these times will give the total time spent on the node.
 
