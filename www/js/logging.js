@@ -22,7 +22,7 @@
 /* global define */
 
 define([
-	'dojo/aspect', 'dojo/on',
+	'dojo/aspect', 'dojo/on', 'dojo/_base/unload',
 	"./pedagogical_module",
 	"./model",
 	'./controller'
@@ -67,12 +67,12 @@ define([
 	 */
 
 	aspect.after(controller.prototype, "showNodeEditor", function(id){
-	logging.session.log('ui-action', {type: 'open-dialog-box', name: 'node-editor', node: id});
+	logging.session.log('ui-action', {type: 'open-dialog-box', name: 'node-editor', nodeID: id, node: this._model.active.getName(id)});
 	}, true);
 
 
 	aspect.after(controller.prototype, "closeEditor", function(){
-	logging.session.log('ui-action', {type: 'close-dialog-box', name: 'node-editor', node: this.currentID});
+	logging.session.log('ui-action', {type: 'close-dialog-box', name: 'node-editor', nodeID: this.currentID, node: this._model.active.getName(this.currentID)});
 	}, true);
 
 	aspect.after(controller.prototype, "initialControlSettings", function(){
@@ -119,5 +119,13 @@ define([
 		});
 	};
 
+	var unLoad = function(){
+		logging.session.log('ui-action', {
+			type: "window",
+			name: "close-button"
+		});
+	}
+	dojo.addOnUnload(unLoad);
+	
 	return logging;
 });
