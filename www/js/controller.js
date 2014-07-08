@@ -758,8 +758,8 @@ define([
 					// or from the state table.  Alternatively, we will show a list
 					// of variables.
 					var autocreationFlag = true; 
-					if(autocreationFlag && !this._model.active.isNode(givenID))
-						this.autocreateNodes(variable);
+					/*if(autocreationFlag && !this._model.active.isNode(givenID))
+						this.autocreateNodes(variable);*/
 
 					// Checks for nodes referencing themselves; this causes problems because
 					//		functions will always evaluate to true if they reference themselves
@@ -797,6 +797,16 @@ define([
 							// console.log("	   substituting ", variable, " -> ", studentID);
 							parse.substitute(variable, subID);
 						}else{
+							//auto creation should happen here
+                                                        if(autocreationFlag){
+								//create node 
+								var id = this._model.active.addNode();
+				                                this.addNode(this._model.active.getNode(id));
+                                                                this.autocreateNodes(id,variable);
+                                                                //get Node ID and substitute in equation
+                                                                var subID = unMapID.call(this._model.active,givenID);
+                                                                parse.substitute(variable,subID); //this should handle createInputs and connections to automatic node
+                                                        }else
 							directives.push({id: 'message', attribute: 'append', value: "Quantity '" + variable + "' not defined yet."});
 						}
 					}else{

@@ -54,7 +54,7 @@ define([
 				parameter = expression.isSum(parse)&&expression.isProduct(parse)?'':expression.isSum(parse)?'+':expression.isProduct(parse)?'*':'';
 				parameter = '<strong style="font-size:18px">'+parameter+'</strong>';
 			}
-			var initialValue = model.getInitial(nodeId);
+			var initialValue = model.getInitial(nodeId) || '';
 			if(!typeof initialValue === "number"){
 				initialValue = '';
 			}

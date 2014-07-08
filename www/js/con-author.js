@@ -225,9 +225,12 @@ define([
 				this.updateEquationLabels();
 			}
 		},
-		autocreateNodes:function(variable){
-
+		autocreateNodes:function(/** auto node id **/ id, /**variable name**/ variable){
                         console.log("auto creating nodes in author controller");
+			//update the name for nodeid
+                        this._model.active.setName(id,variable);
+                        // update Node labels upon exit
+                         this.updateNodeLabel(id);
 
                 },
 
