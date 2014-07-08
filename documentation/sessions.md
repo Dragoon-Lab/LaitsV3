@@ -63,11 +63,16 @@ The Andes table can be used to see how the `session` table should be
 formatted.  Note that the column names of this table correspond to the [list of variable names](sessions.md). 
 
 **`solutions`** table stores solution graphs for custom problems.
-This table has columns for session id, a "share" bit
-(default zero), a "deleted" bit (default zero), a timestamp and the 
-solution graph in JSON format. 
+This table has columns for
+
+* session id,
+* a "share" bit (default zero),
+* a "deleted" bit (default zero),
+* a timestamp and
+* the "task" element of the [model in JSON format](json-format.md).
+
 The primary key for the table is the session id:  only one copy of
-the solution persists for a session id.
+the solution persists for a given session id.
 
 The share bit determines whether a custom problem can be viewed --
 in either author or student mode -- by other members of a section. 
