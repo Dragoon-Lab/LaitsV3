@@ -23,8 +23,8 @@
 define([
 	"dojo/aspect", "dojo/_base/array", "dojo/_base/declare", "dojo/_base/lang",
 	"dijit/registry", "dojo/dom", "dojo/ready",
-	"./model", "./wraptext", "./typechecker", "./load-save"
-], function(aspect, array, declare, lang, registry, dom, ready, model, wrapText, typechecker, loadSave){
+	"./model", "./wraptext", "./typechecker"
+], function(aspect, array, declare, lang, registry, dom, ready, model, wrapText, typechecker){
 
 	// Summary: 
 	//			MVC for the description box in author mode
@@ -35,7 +35,6 @@ define([
 
 	return declare(null, {
 		givenModel: null,
-        controller: null,
 		constructor: function(/*model*/ givenModel){
 			this.givenModel = givenModel;
 			this.timeObj = givenModel.getTime();
@@ -56,7 +55,7 @@ define([
 			dom.byId("authorSetDescription").value = this.serialize(
 				givenModel.getTaskDescription() ? givenModel.getTaskDescription() : ""	
 			);
-            dom.byId("authorProblemShare").checked = givenModel.getShare();
+			dom.byId("authorProblemShare").checked = givenModel.getShare();
 			ready(this, this._initHandles);
 		},
 
@@ -69,8 +68,6 @@ define([
 			var descWidgetStop = registry.byId('authorSetTimeEnd');
 			//for authorSetTimeStep
 			var descWidgetStep = registry.byId('authorSetTimeStep');
-            //for share Bit checkbox
-            var descWidgetShareBit = registry.byId("authorProblemShare");
 
 			// This event gets fired if student hits TAB or input box
 			// goes out of focus.
@@ -131,10 +128,11 @@ define([
 				};
 			}));
 
-            //for share Bit checkbox
-            descWidgetShareBit.on("change", lang.hitch(this, function(){
-                this.givenModel.setShare(descWidgetShareBit.checked);
-            }));
+			//for share Bit checkbox
+			var descWidgetShareBit = registry.byId("authorProblemShare");
+			descWidgetShareBit.on("change", lang.hitch(this, function(){
+				this.givenModel.setShare(descWidgetShareBit.checked);
+			}));
 		},
 
 		// add line breaks

@@ -65,9 +65,7 @@ define([
 						taskDescription: "",
 						givenModelNodes: [],
 						studentModelNodes: []
-					},
-                    share: ''
-                };
+				}};
 
 				/*
 				 Define the "active model" (see doucumentation/node-editor.md).
@@ -82,7 +80,8 @@ define([
 			beginY: 100,
 			nodeWidth: 200,
 			nodeHeight: 200,
-		    isCompleteFlag: false,
+			isCompleteFlag: false,
+
 			/**
 			 *
 			 * Private methods; these methods should not be accessed outside of this class
@@ -125,18 +124,20 @@ define([
 				}, obj);
 				return optimalNode;
 			},
+
 			/**
 			 *
 			 * Public methods
 			 *
 			 */
-            setShare: function(value){
-                this.model.share = value=="1"?true:false;
-            },
+			setShare: function(value){
+				// value: Boolean
+				this.model.share = value;
+			},
 
-            getShare: function(){
-                return this.model.share;
-            },
+			getShare: function(){
+				return this.model.share;
+			},
 			/**
 			 * Functions to load or retrieve a model in string format
 			 */
@@ -210,11 +211,6 @@ define([
 			getTaskName: function(){
 				return this.model.task.taskName;
 			},
-/*
-			getPhase: function(){
-				return this.model.task.properties.phase;
-			},
-*/
 			getType: function(){
 				return this.model.task.properties.type;
 			},
@@ -236,10 +232,10 @@ define([
 				// (string format) defined in a problem.
 				// Need to order list alphabetically.
 				var unitList = new Array();
-		var timeUnits = this.getUnits();
-		if(timeUnits){
-			unitList.push(timeUnits);
-		}
+				var timeUnits = this.getUnits();
+				if(timeUnits){
+					unitList.push(timeUnits);
+				}
 				array.forEach(this.given.getNodes(), function(node){
 					if(node.units && array.indexOf(unitList, node.units) == -1){
 						unitList.push(node.units);
