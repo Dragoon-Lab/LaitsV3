@@ -73,6 +73,7 @@ define([
 		var givenModel = new model(query.m, query.p);
 		logging.session.log('open-problem', {problem : query.p});
 		if(solutionGraph){
+            console.log("*******************This is solution graph: ", solutionGraph);
 			givenModel.loadModel(solutionGraph);
 		}
 
@@ -183,37 +184,36 @@ define([
 
 		
 			// Also used in image loading below.
-            session.loadShareBit(query).then(function(share_value){
-                var descObj = new description(givenModel, share_value);
-                if(query.m == "AUTHOR"){
-                    var db = registry.byId("descButton");
-                    db.set("disabled", false);
+            var descObj = new description(givenModel);
+            if(query.m == "AUTHOR"){
+                var db = registry.byId("descButton");
+                db.set("disabled", false);
 
-                    // Description button wiring
-                    menu.add("descButton", function(){
-                        registry.byId("authorDescDialog").show();
-                    });
-                    aspect.after(registry.byId('authorDescDialog'), "hide", function(){
-                        console.log("Saving Description/Timestep edits");
-                        session.saveProblem(givenModel.model, descObj.shareBit);
-                    });
-                    on(registry.byId("descCloseButton"), "click", function(){
-                        registry.byId("authorDescDialog").hide();
-                    });
-                }
-                /*
-                 BvdS:	this doesn't look quite right.	We want to download
-                 the image and then get its dimensions.	 (This is a property of
-                 the image object) and use the dimensions to place the description
+                // Description button wiring
+                menu.add("descButton", function(){
+                    registry.byId("authorDescDialog").show();
+                });
+                aspect.after(registry.byId('authorDescDialog'), "hide", function(){
+                    console.log("Saving Description/Timestep edits");
+                    session.saveProblem(givenModel.model);
+                });
+                on(registry.byId("descCloseButton"), "click", function(){
+                    registry.byId("authorDescDialog").hide();
+                });
+            }
+            /*
+             BvdS:	this doesn't look quite right.	We want to download
+             the image and then get its dimensions.	 (This is a property of
+             the image object) and use the dimensions to place the description
 
-                 In AUTHOR mode, make image clickable or put in "click here" box.
-                 Also, make description clickable, with default text "click here".
-                 These will be wired up to dialog boxes to set the image URL and
-                 the description.
-                 */
+             In AUTHOR mode, make image clickable or put in "click here" box.
+             Also, make description clickable, with default text "click here".
+             These will be wired up to dialog boxes to set the image URL and
+             the description.
+             */
 
-                descObj.showDescription();
-            });
+            descObj.showDescription();
+
 			/*
 			 Make model solution plot using dummy data. 
 			 This should be put in its own module.

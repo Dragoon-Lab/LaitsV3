@@ -89,32 +89,13 @@ define([
 			});
 		},
 
-        loadShareBit: function(/*object*/ params){
-            //Summery: calls share_fetcher.php to retrieve a share bit
-            console.log("loadShareBit called:", params);
-            return xhr.get(this.path + "share_fetcher.php", {
-                query: params,
-                handleAs: "json"
-            }).then(function(share_value){
-                console.log("Share bit found in DB", share_value);
-                return share_value;
-            },function(err){
-                this.clientLog("error",{
-                    message: "finding share bit error: " +err,
-                    functionTag: 'findShareBit'
-                });
-            });
-        },
-
-		saveProblem: function(model, shareBit){
+		saveProblem: function(model){
 			// Summary: saves the string held in this.saveData in the database.
             var object = {
                 sg: json.toJson(model.task),
                 x: this.sessionId
             };
-            if(typeof shareBit === 'boolean') {
-                object.share = shareBit;
-            }
+            object.share = model.share?1:0;
 			xhr.post(this.path + "save_solution.php", {
                 data: object
 			}).then(function(reply){  // this makes saveProblem blocking?

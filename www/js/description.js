@@ -36,8 +36,7 @@ define([
 	return declare(null, {
 		givenModel: null,
         controller: null,
-        shareBit: false,
-		constructor: function(/*model*/ givenModel,/*boolean*/ share){
+		constructor: function(/*model*/ givenModel){
 			this.givenModel = givenModel;
 			this.timeObj = givenModel.getTime();
 
@@ -57,8 +56,7 @@ define([
 			dom.byId("authorSetDescription").value = this.serialize(
 				givenModel.getTaskDescription() ? givenModel.getTaskDescription() : ""	
 			);
-            this.setShareBit(share);
-            dom.byId("authorProblemShare").checked = this.shareBit;
+            dom.byId("authorProblemShare").checked = givenModel.getShare();
 			ready(this, this._initHandles);
 		},
 
@@ -135,7 +133,7 @@ define([
 
             //for share Bit checkbox
             descWidgetShareBit.on("change", lang.hitch(this, function(){
-                this.setShareBit(descWidgetShareBit.checked);
+                this.givenModel.setShare(descWidgetShareBit.checked);
             }));
 		},
 
@@ -209,11 +207,7 @@ define([
 			}else{
 				showText();
 			}
-		},
-
-        setShareBit:function(value){
-            this.shareBit = value=="1"?true:false;
-        }
+		}
 
 	});
 });
