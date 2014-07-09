@@ -23,7 +23,7 @@
 define([
 	"dojo/aspect", "dojo/_base/array", "dojo/_base/declare", "dojo/_base/lang",
 	"dijit/registry", "dojo/dom", "dojo/ready",
-	"./model", "./wraptext", "./typechecker"
+	"./model", "./wraptext", "./time-checker"
 ], function(aspect, array, declare, lang, registry, dom, ready, model, wrapText, typechecker){
 
 	// Summary: 
@@ -102,34 +102,34 @@ define([
 					if(ret_step_time.errorType){ return; }
 
 					 //after it has passed all those checks we
-					 // do normal closeEditor routine and hide
-					  console.log("close description editor is being called");
-					  typechecker.closePops();
-					  var tin = dom.byId("authorSetDescription").value;
-					  myThis.givenModel.setTaskDescription(tin.split("\n"));
-					  if(ret_start_time.value){
-						  myThis.timeObj.start = ret_start_time.value;
-					  }
-					  if(ret_stop_time.value){
-						  myThis.timeObj.end = ret_stop_time.value;
-					  }
-					  if(ret_step_time.value){
-						  myThis.timeObj.step = ret_step_time.value;
-					  }
-                      // time interval validation
-                      var time_interval_validation=typechecker.validateTimeInterval('authorSetTimeEnd',myThis.timeObj);
-                      if(time_interval_validation.errorType) { return; }
-                      // time step validation
-                      var time_step_validation=typechecker.validateTimeStep('authorSetTimeStep',myThis.timeObj);
-                      if(time_step_validation.errorType) { return; }
+					// do normal closeEditor routine and hide
+					console.log("close description editor is being called");
+					typechecker.closePops();
+					var tin = dom.byId("authorSetDescription").value;
+					myThis.givenModel.setTaskDescription(tin.split("\n"));
+					if(ret_start_time.value){
+						myThis.timeObj.start = ret_start_time.value;
+					}
+					if(ret_stop_time.value){
+						myThis.timeObj.end = ret_stop_time.value;
+					}
+					if(ret_step_time.value){
+						myThis.timeObj.step = ret_step_time.value;
+					}
+					// time interval validation
+					var time_interval_validation=typechecker.validateTimeInterval('authorSetTimeEnd', myThis.timeObj);
+					if(time_interval_validation.errorType) { return; }
+					// time step validation
+					var time_step_validation=typechecker.validateTimeStep('authorSetTimeStep', myThis.timeObj);
+					if(time_step_validation.errorType) { return; }
 
-                      doHide.apply(myThis._descEditor);
-					  myThis.timeObj.units = dom.byId("authorSetTimeStepUnits").value;
-					  myThis.givenModel.setTime(myThis.timeObj);
-					  console.log("final object being returned",myThis.timeObj);
-					  var url = dom.byId("authorSetImage").value;
-					  myThis.givenModel.setImage(url?{URL: url} : {});
-					  myThis.showDescription();
+					doHide.apply(myThis._descEditor);
+					myThis.timeObj.units = dom.byId("authorSetTimeStepUnits").value;
+					myThis.givenModel.setTime(myThis.timeObj);
+					console.log("final object being returned",myThis.timeObj);
+					var url = dom.byId("authorSetImage").value;
+					myThis.givenModel.setImage(url?{URL: url} : {});
+					myThis.showDescription();
 				};
 			}));
 		},
