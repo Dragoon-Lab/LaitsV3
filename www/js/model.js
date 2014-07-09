@@ -472,7 +472,10 @@ define([
                 this.getUndefinedNodes().push(name);
 			},
 
+            //Summary: Adds a text list of currently undefined nodes to the canvas.  Called when node editor is closed.  TODO: also on load
+            // or when node is deleted
             setUndefinedNodesText: function(){
+                console.log('REID --- inside setUndefinedNodesText');
                 var nodes = this.getUndefinedNodes();
                 var nodeTextArea = dom.byId("undefinedNodesText");
                 if(nodes.length > 0){

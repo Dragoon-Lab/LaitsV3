@@ -286,11 +286,11 @@ define([
                 if(index > -1){
                     this._model.active.getUndefinedNodes().splice(index, 1);
                 }
-                if(!this._autoCreateFlag)
-                    this._model.active.setUndefinedNodesText();
         		name.set("value", "");
     	    }
             console.log("REID *****  undefinedNodes: ", this._model.active.getUndefinedNodes());
+            if(!this._autoCreateFlag)
+                this._model.active.setUndefinedNodesText();
 
     	    // Undo Description value (only needed in AUTHOR mode)
     	    if(this.controlMap.description){
@@ -490,6 +490,11 @@ define([
 		updateNodes: function(){
 			// Update node editor and the model.
 			this._nodeEditor.set('title', this._model.active.getName(this.currentID));
+            //Remove node from list of undefinedNodes if it is in that list
+            var index = this._model.active.getUndefinedNodes().indexOf(this._model.active.getName(this.currentID));
+                if(index > -1){
+                    this._model.active.getUndefinedNodes().splice(index, 1);
+                }
 
 			// Update inputs and other equations based on new quantity.
 			expression.addQuantity(this.currentID, this._model.active);
