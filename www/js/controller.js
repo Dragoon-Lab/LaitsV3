@@ -369,9 +369,9 @@ define([
 			initialWidget.on("keydown", function(evt){
 				// console.log("----------- input character ", evt.keyCode, this.get('value'));
 				if(evt.keyCode == keys.ENTER)
-					
+
 					this.emit('Change', {}, [this.get('value')]);
-				
+
 			});
 			// undo color on change in the initial value widget
 			initialWidget.on("keydown",lang.hitch(this,function(evt){

@@ -63,10 +63,6 @@ define([
 			//Also Don't do anything if the value is empty
 			var domNode = dom.byId(nodeID);
 			var inputString = domNode.value.trim();
-			if(inputString == lastInput.value || inputString==""){
-				return {status: false};
-			}
-			lastInput.value = inputString;
 
 			// we do this type conversion because we used a textbox for 
 			// initialvalue input which is a numerical
@@ -98,7 +94,12 @@ define([
 
 				return {status: false, errorType: errorType};
 			}
-			// updating node editor and the model.
+            else if(inputString == lastInput.value || inputString==""){
+                return {status: false};
+            }
+            lastInput.value = inputString;
+
+            // updating node editor and the model.
 			return {status: true, value: input};
 		}
 	};

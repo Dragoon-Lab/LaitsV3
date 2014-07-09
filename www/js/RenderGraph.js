@@ -26,7 +26,7 @@
 
 define([
 	"dojo/_base/array", "dojo/_base/declare",
-	"dojo/_base/lang", "dojo/on",
+	"dojo/_base/lang", "dojo/on","dojo/query", 'dojo/dom-attr',
 	"dojox/charting/Chart",
 	"dojox/charting/axis2d/Default",
 	"dojox/charting/plot2d/Lines",
@@ -34,7 +34,7 @@ define([
 	"dojox/charting/widget/Legend",
 	"./calculations",
 	"dojo/domReady!"
-], function(array, declare, lang, on, Chart, Default, Lines, Grid, Legend, calculations){
+], function(array, declare, lang, on, query, domAttr, Chart, Default, Lines, Grid, Legend, calculations){
 	
 	// The calculations constructor is loaded before the RenderGraph constructor
 	return declare(calculations, {
@@ -54,7 +54,21 @@ define([
 			if(this.active.timeStep){  // Abort if there is an error in timSstep.
 				this.initialize();
 			}
-		},
+
+            query(".show_graphs").onclick(function(e){
+                var thisid=domAttr.get("chartid10","id");
+                var divid="chart" + thisid;
+                console.log("divid is", divid);
+                if(!query(".show_graphs").attr("checked")[0]){
+                    var obj = { display: "none" };
+                    domAttr.set(divid, "style", obj);
+                }
+                else{
+                    console.log("entered else");
+                    domAttr.remove(divid, "style");
+                }
+            });
+        },
 		
 		/*
 		 * @brief: initialize Dialog/charts and sliders
@@ -96,11 +110,23 @@ define([
 				var givenSolution = this.findSolution(false, this.given.plotVariables);
 				
 			}
-			
 			array.forEach(this.active.plotVariables, function(id){
-				this.dialogContent += "<div id='chart" + id + "'> " + "\</div>";
-				this.dialogContent += "<div class='legend' id='legend" + id + "'> " + "\</div>";
-			}, this);
+                var display='';
+
+                if(this.model.active.getType(id)=="accumulator") {
+                    this.dialogContent += "<input id='sel" + id + "' type='checkbox' checked='checked' class='show_graphs' thisid='"+ id+"'/>"+ this.model.active.getName(id);
+                    this.dialogContent += "<div id='chart" + id + "'> " + "\</div>";
+                    this.dialogContent += "<div class='legend' id='legend" + id + "'> " + "\</div>";
+                }else {
+                    console.log(this.model.active.getType(id),id);
+                    this.dialogContent += "<input id='sel" + id + "' type='checkbox' class='show_graphs' thisid='"+ id+"'/>"+ this.model.active.getName(id);
+                    this.dialogContent += "<div  id='chart" + id + "'> " + "\</div>";
+                    this.dialogContent += "<div class='legend' id='legend" + id + "'> " + "\</div>";
+                }
+            }, this);
+
+
+
 			//plot sliders 
 			this.createSliderAndDialogObject();
 			
@@ -109,6 +135,7 @@ define([
 			
 			if(this.active.plotVariables.length>0){ //we check the length of object, if there are nodes, then we proceed else give an error and return
 				array.forEach(this.active.plotVariables, function(id, k){
+
 					var str = "chart" + id;
 							charts[id] = new Chart(str);
 							charts[id].addPlot("default", {
