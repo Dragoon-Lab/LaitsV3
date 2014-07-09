@@ -221,7 +221,6 @@ define([
 				this.updateNodes();
 				//not required - because updateNodes() will add connections automatically
 				//this.setConnections(this._model.active.getInputs(this.currentID), this.currentID);
-
 				this.updateEquationLabels();
 			}
 		},
@@ -231,7 +230,8 @@ define([
                         this._model.active.setName(id,variable);
                         // update Node labels upon exit
                          this.updateNodeLabel(id);
-
+			//make connection
+			 this.setConnection(id,this.currentID);
                 },
 
 		handleKind: function(kind){

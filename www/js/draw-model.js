@@ -244,7 +244,9 @@ define([
 
 			return vertex;
 		},
-
+		setConnection:function(/*string*/source,/*string*/destination){
+			 this._instance.connect({source: source, target: destination});
+		},
 		setConnections: function(/*array*/ sources, /*string*/ destination){
 
 			//after determining equation type + or	- , set connection EndPoint by using following method
@@ -310,16 +312,19 @@ define([
 					isSum=equation.isSum(parse);
 					isProduct=equation.isProduct(parse);
 				}
-			   
-			   //connectionOverlays code duplicated in setConnections 
-			    var connectionOverlays = graphObjects.getEndPointConfiguration('');
-			    //if it has multiple inputs  - access input label which matches source
-			    array.forEach(this._givenModel.getNode(destination).inputs,function(input){
-				if(input.ID == source)
-				{
-					var destinationLabel =input;
-                            		if(destinationLabel.label){
-                                        	 console.log("------- At this point, we should add a '"+destinationLabel.label+"' label to "+ destinationLabel.ID);
+				
+			   //check for call from student mode 			  
+			   if(this._givenModel.getNode(destination)){ 
+
+				   //connectionOverlays code duplicated in setConnections 
+			  	   var connectionOverlays = graphObjects.getEndPointConfiguration('');
+			 	   //if it has multiple inputs  - access input label which matches source
+				    array.forEach(this._givenModel.getNode(destination).inputs,function(input){
+				   if(input.ID == source)
+				    {
+						var destinationLabel =input;
+                            			if(destinationLabel.label){
+                                        		 console.log("------- At this point, we should add a '"+destinationLabel.label+"' label to "+ destinationLabel.ID);
                         			 //check pure sum  or pure product but not both
                         			if(!(isSum&&isProduct)){
                                 			if(isSum){
@@ -331,10 +336,14 @@ define([
                                 					}
                         			}
                 			}				
-				this._instance.connect({source: source, target: destination, overlays:connectionOverlays});
+					this._instance.connect({source: source, target: destination, overlays:connectionOverlays});
 				}	
 
-			    },this);	
+			    },this);
+			}else{
+				//author mode automatic node connection
+				this._instance.connect({source:source,target:destination});
+			}	
 			}, this);
 		},
 

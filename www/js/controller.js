@@ -804,7 +804,7 @@ define([
 				                                this.addNode(this._model.active.getNode(id));
                                                                 this.autocreateNodes(id,variable);
                                                                 //get Node ID and substitute in equation
-                                                                var subID = unMapID.call(this._model.active,givenID);
+                                                                var subID = unMapID.call(this._model.active,givenID||id);
                                                                 parse.substitute(variable,subID); //this should handle createInputs and connections to automatic node
                                                         }else
 							directives.push({id: 'message', attribute: 'append', value: "Quantity '" + variable + "' not defined yet."});
@@ -880,7 +880,10 @@ define([
 		setConnections: function(from, to){
 			// console.log("======== setConnections fired for node" + to);
 		},
-
+		 // Stub to set connection in the graph / one to one
+                setConnection: function(from, to){
+                        // console.log("======== setConnections fired for node" + to);
+                },
 		//show node editor
 		showNodeEditor: function(/*string*/ id){
 			//Checks if the current mode is COACHED mode and exit from node editor if all the modes are defined
