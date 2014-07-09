@@ -480,6 +480,7 @@ define([
                     array.forEach(nodes, function(node){
                         nodeTextArea.innerHTML += node + ",";
                     });
+                    nodeTextArea.innerHTML = nodeTextArea.innerHTML.slice(0, -1);
                 } else {
                     nodeTextArea.innerHTML = "";
                 }
@@ -518,7 +519,8 @@ define([
             getUndefinedNodes: function(){
                 console.log("REID ---- undefinedNodes is", obj.model.task.givenUndefinedNodes, "object.model.task:", obj.model.task);
                 return obj.model.task.givenUndefinedNodes;
-            },            getName: function(/*string*/ id){
+            },            
+            getName: function(/*string*/ id){
                 // Summary: returns the name of a node matching the student model.
                 //      If no match is found, then return null.
                 var node = this.getNode(id);
@@ -694,6 +696,8 @@ define([
                 return obj.model.task.studentModelNodes;
             },
             getUndefinedNodes: function(){
+
+                console.log("REID ---- undefinedNodes is", obj.model.task.studentUndefinedNodes, "object.model.task:", obj.model.task);
                 return obj.model.task.studentUndefinedNodes;
             },
             getAssistanceScore: function(/*string*/ id){

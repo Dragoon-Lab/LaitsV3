@@ -38,6 +38,7 @@ define([
 
 	return declare(null, {
 		_model: null,
+        _autoCreateFlag: null, // flag for autocreation of nodes
 		_nodeEditor: null, // node-editor object- will be used for populating fields
 		/*
 		 When opening the node editor, we need to populate the controls without
@@ -50,13 +51,15 @@ define([
 		// Variable to track if an equation has been entered and checked
 		equationEntered: null,	// value is set when node editor opened
 
-		constructor: function(mode, subMode, model, inputStyle){
+		constructor: function(mode, subMode, model, inputStyle, autoCreate){
 			
 			console.log("+++++++++ In generic controller constructor");
 			lang.mixin(this.controlMap, this.genericControlMap);
 			this._model = model;
 			this._mode = mode;
 			this._inputStyle = inputStyle;
+            this._autoCreateFlag = autoCreate === 'true';
+            console.log('REID -- AutocreateFlag', this._autoCreateFlag);
 			// structured should be its own module.	 For now,
 			// initialize
 			this.structured._model = this._model;
@@ -283,6 +286,8 @@ define([
                 if(index > -1){
                     this._model.active.getUndefinedNodes().splice(index, 1);
                 }
+                if(!this._autoCreateFlag)
+                    this._model.active.setUndefinedNodesText();
         		name.set("value", "");
     	    }
             console.log("REID *****  undefinedNodes: ", this._model.active.getUndefinedNodes());
@@ -765,8 +770,8 @@ define([
 					// autocreation flag will eventually be set from the URL
 					// or from the state table.  Alternatively, we will show a list
 					// of variables.
-					var autocreationFlag = true; 
-					if(autocreationFlag && !this._model.active.isNode(givenID))
+                    console.log('REID -- AutocreateFlag', this._autoCreateFlag);
+					if(this._autoCreateFlag && !this._model.active.isNode(givenID))
 						this.autocreateNodes(variable);
 
 					// Checks for nodes referencing themselves; this causes problems because
@@ -805,7 +810,9 @@ define([
 							// console.log("	   substituting ", variable, " -> ", studentID);
 							parse.substitute(variable, subID);
 						}else{
-                            if(!this._model.active.getUndefinedNodes().indexOf(variable)){
+                            console.log('REID -- Checking to see if a node is undefined:', this._model.active.getUndefinedNodes().indexOf(variable));
+                            if(this._model.active.getUndefinedNodes().indexOf(variable) == -1){
+                                console.log('REID --- Inside the undefined node if');
                                this._model.active.getUndefinedNodes().push(variable);
                             }
 							directives.push({id: 'message', attribute: 'append', value: "Quantity '" + variable + "' not defined yet."});

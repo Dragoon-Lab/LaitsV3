@@ -87,8 +87,8 @@ define([
 		 */
 		var subMode = query.sm || "feedback";
 		/* In principle, we could load just one controller or the other. */
-		var controllerObject = query.m == 'AUTHOR' ? new controlAuthor(query.m, subMode, givenModel, query.is) :
-				new controlStudent(query.m, subMode, givenModel, query.is);
+		var controllerObject = query.m == 'AUTHOR' ? new controlAuthor(query.m, subMode, givenModel, query.is, query.ac) :
+				new controlStudent(query.m, subMode, givenModel, query.is, query.ac);
 		
 		//setting up logging for different modules.
 		if(controllerObject._PM){
