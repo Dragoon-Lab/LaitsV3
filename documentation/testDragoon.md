@@ -1,4 +1,4 @@
- ## Testing Dragoon ##
+## Testing Dragoon ##
 
 Dragoon uses [Selenium 2.0]( http://docs.seleniumhq.org/projects/webdriver/) to perform automated [functional testing] (http://en.wikipedia.org/wiki/Functional_testing). 
 
