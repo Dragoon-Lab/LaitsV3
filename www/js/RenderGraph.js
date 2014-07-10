@@ -53,21 +53,8 @@ define([
 			console.log("***** In RenderGraph constructor");
 			if(this.active.timeStep){  // Abort if there is an error in timSstep.
 				this.initialize();
-			}
 
-            query(".show_graphs").onclick(function(e){
-                var thisid=domAttr.get("chartid10","id");
-                var divid="chart" + thisid;
-                console.log("divid is", divid);
-                if(!query(".show_graphs").attr("checked")[0]){
-                    var obj = { display: "none" };
-                    domAttr.set(divid, "style", obj);
-                }
-                else{
-                    console.log("entered else");
-                    domAttr.remove(divid, "style");
-                }
-            });
+			}
         },
 		
 		/*
@@ -111,17 +98,15 @@ define([
 				
 			}
 			array.forEach(this.active.plotVariables, function(id){
-                var display='';
-
                 if(this.model.active.getType(id)=="accumulator") {
-                    this.dialogContent += "<input id='sel" + id + "' type='checkbox' checked='checked' class='show_graphs' thisid='"+ id+"'/>"+ this.model.active.getName(id);
+                    this.dialogContent += "<div><input id='sel" + id + "' type='checkbox' checked='checked' class='show_graphs' thisid='"+ id+"'/>" + " Show " + this.model.active.getName(id) + "</div>";
                     this.dialogContent += "<div id='chart" + id + "'> " + "\</div>";
                     this.dialogContent += "<div class='legend' id='legend" + id + "'> " + "\</div>";
                 }else {
                     console.log(this.model.active.getType(id),id);
-                    this.dialogContent += "<input id='sel" + id + "' type='checkbox' class='show_graphs' thisid='"+ id+"'/>"+ this.model.active.getName(id);
-                    this.dialogContent += "<div  id='chart" + id + "'> " + "\</div>";
-                    this.dialogContent += "<div class='legend' id='legend" + id + "'> " + "\</div>";
+                    this.dialogContent += "<div><input id='sel" + id + "' type='checkbox' class='show_graphs' thisid='"+ id+"'/>"+  " Show " + this.model.active.getName(id) +"</div>";
+                    this.dialogContent += "<div  id='chart" + id + "' style='display: none;'> " + "\</div>";
+                    this.dialogContent += "<div class='legend' id='legend" + id + "' style='display: none;'> " + "\</div>";
                 }
             }, this);
 
@@ -172,13 +157,41 @@ define([
 					}
 					charts[id].render();
 					legends[id] = new Legend({chart: charts[id]}, "legend" + id);
-					
+
 				}, this);
 			}else{
 				this.dialogWidget.set("content", "<div>There isn't anything to plot. Try adding some accumulator or function nodes.</div>" ); //Error telling there are no nodes and graph cant be rendered
 			}
 			this.chart = charts;
-		},
+            // The following loop makes sure legends of function graphs are not visible initially
+            //until the user requests, we use the display : none property
+            array.forEach(this.active.plotVariables, function(id){
+                     console.log("changing style",id,this.model.active.getType(id));
+                    if(this.model.active.getType(id)=="function") {
+                        console.log("for id",id);
+                        var leg_style = { display: "none" };
+                        var k=domAttr.set("legend"+id, "style", leg_style);
+                        console.log("result",k);
+                    }
+
+            }, this);
+
+            //the following event handles the checkbox and
+            // works on whether to show or hide a chart
+            query(".show_graphs").onclick(function(e){
+                var divid="chart"+domAttr.get(this,"thisid");
+                var legendid="legend"+domAttr.get(this,"thisid");
+                if(!domAttr.get(this,"checked")){
+                    var obj = { display: "none" };
+                    domAttr.set(divid, "style", obj);
+                    domAttr.set(legendid, "style", obj);
+                }
+                else{
+                    domAttr.remove(divid, "style");
+                    domAttr.remove(legendid, "style");
+                }
+            });
+        },
 		
 		/*
 		 * @brief: this function formats array of node values into an array which consists of object of type
