@@ -11,7 +11,7 @@
  *
  *Dragoon is distributed in the hope that it will be useful,
  *but WITHOUT ANY WARRANTY; without even the implied warranty of
- *MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.	See the
+ *MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.    See the
  *GNU General Public License for more details.
  *
  *You should have received a copy of the GNU General Public License
@@ -25,214 +25,215 @@
  */
 
 define([
-	"dojo/_base/array", "dojo/_base/declare",
-	"dojo/_base/lang", "dojo/on","dojo/query", 'dojo/dom-attr',
-	"dojox/charting/Chart",
-	"dojox/charting/axis2d/Default",
-	"dojox/charting/plot2d/Lines",
-	"dojox/charting/plot2d/Grid",
-	"dojox/charting/widget/Legend",
-	"./calculations",
-	"dojo/domReady!"
-], function(array, declare, lang, on, query, domAttr, Chart, Default, Lines, Grid, Legend, calculations){
-	
-	// The calculations constructor is loaded before the RenderGraph constructor
-	return declare(calculations, {
-	
-		type: "Graph",									//Rendering type
-		textBoxID:"textGraph",							//ID for text-box DOM
-		sliderID: "sliderGraph",						//ID for slider DOM
-		chart: {},										//Object of a chart
-		
-		/*
-		 *	@brief:constructor for a graph object
-		 *	@param: noOfParam
-		 */
-		
-		constructor: function(){
-			console.log("***** In RenderGraph constructor");
-			if(this.active.timeStep){  // Abort if there is an error in timSstep.
-				this.initialize();
-			}
+    "dojo/_base/array", "dojo/_base/declare",
+    "dojo/_base/lang", "dojo/on", "dojo/query", 'dojo/dom', 'dojo/dom-attr',
+    "dojox/charting/Chart",
+    "dojox/charting/axis2d/Default",
+    "dojox/charting/plot2d/Lines",
+    "dojox/charting/plot2d/Grid",
+    "dojox/charting/widget/Legend", 'dijit/registry',
+    "./calculations",
+    "dojo/domReady!"
+], function (array, declare, lang, on, query, dom, domAttr, Chart, Default, Lines, Grid, Legend, registry, calculations) {
+
+    // The calculations constructor is loaded before the RenderGraph constructor
+    return declare(calculations, {
+
+        type: "Graph",									//Rendering type
+        textBoxID: "textGraph",							//ID for text-box DOM
+        sliderID: "sliderGraph",						//ID for slider DOM
+        chart: {},										//Object of a chart
+
+        /*
+         *	@brief:constructor for a graph object
+         *	@param: noOfParam
+         */
+
+        constructor: function () {
+            console.log("***** In RenderGraph constructor");
+            if (this.active.timeStep) {  // Abort if there is an error in timSstep.
+                this.initialize();
+            }
         },
 
-		/*
-		 * @brief: initialize Dialog/charts and sliders
-		 *
-		 */
-		initialize: function(){
-			/* List of variables to plot: Include functions */
-			this.active.plotVariables = this.active.timeStep.xvars.concat(
-				this.active.timeStep.functions);
-			/* 
-			 Match list of given model variables.
-			 If the given model node is not part of the given solution,
-			 set variable to null to indicate that it should not
-			 be calulated.
-			 
-			 To include optional nodes,
-			 one would need to order them using topologicalSort
-			 */
-			var activeSolution = this.findSolution(true, this.active.plotVariables);
-			if(activeSolution.status=="error" && activeSolution.type=="missing"){
-				// Return value from findSlution in calculation, returns an array and we check for status and any missing nodes
-				this.dialogWidget.set("content", "<div>Not all nodes have been completed. For example, \""+activeSolution.missingNode+"\" is not yet fully defined.</div>"); //We show the error message like "A Node is Missing"
-				return;
-			}
+        /*
+         * @brief: initialize Dialog/charts and sliders
+         *
+         */
+        initialize: function () {
+            /* List of variables to plot: Include functions */
+            this.active.plotVariables = this.active.timeStep.xvars.concat(
+                this.active.timeStep.functions);
+            /*
+             Match list of given model variables.
+             If the given model node is not part of the given solution,
+             set variable to null to indicate that it should not
+             be calulated.
 
-			if(this.mode != "AUTHOR"){
-				//check for author mode. Here we need to create just one graph.
-				this.given.plotVariables = array.map(this.active.plotVariables, function(id){
-					var givenID = this.model.active.getDescriptionID?
-							this.model.active.getDescriptionID(id):id;
-					// givenID should always exist.
-					console.assert(givenID, "Node '" + id + "' has no corresponding given node");
-					var givenNode = this.model.given.getNode(givenID);
-					return givenNode && (!givenNode.genus?givenID:null);
-				}, this);
+             To include optional nodes,
+             one would need to order them using topologicalSort
+             */
+            var activeSolution = this.findSolution(true, this.active.plotVariables);
+            if (activeSolution.status == "error" && activeSolution.type == "missing") {
+                // Return value from findSlution in calculation, returns an array and we check for status and any missing nodes
+                this.dialogWidget.set("content", "<div>Not all nodes have been completed. For example, \"" + activeSolution.missingNode + "\" is not yet fully defined.</div>"); //We show the error message like "A Node is Missing"
+                return;
+            }
 
-				// Calculate solutions
-				var givenSolution = this.findSolution(false, this.given.plotVariables);
+            if (this.mode != "AUTHOR") {
+                //check for author mode. Here we need to create just one graph.
+                this.given.plotVariables = array.map(this.active.plotVariables, function (id) {
+                    var givenID = this.model.active.getDescriptionID ?
+                        this.model.active.getDescriptionID(id) : id;
+                    // givenID should always exist.
+                    console.assert(givenID, "Node '" + id + "' has no corresponding given node");
+                    var givenNode = this.model.given.getNode(givenID);
+                    return givenNode && (!givenNode.genus ? givenID : null);
+                }, this);
 
-			}
+                // Calculate solutions
+                var givenSolution = this.findSolution(false, this.given.plotVariables);
 
-			// Add three <div>s for each quantity: 
-			//  display graph checkbox, the graph, and the legend.
-			// The default is to display only the accumulator nodes.
-			array.forEach(this.active.plotVariables, function(id){
-				var show = this.model.active.getType(id)=="accumulator";
-				var checked = show?" checked='checked'":"";
-				this.dialogContent += "<div><input id='sel" + id + "' type='checkbox' class='show_graphs' thisid='"+ id+"'" + checked + "/>" + " Show " + this.model.active.getName(id) +"</div>";
-				var style = show?"":" style='display: none;'";
-				this.dialogContent += "<div  id='chart" + id + "'" + style + "></div>";
-				// Since the legend div is replaced, we cannot hide the legend here.
-				this.dialogContent += "<div class='legend' id='legend" + id + "'></div>";
-			}, this);
+            }
 
-			//plot sliders 
-			this.createSliderAndDialogObject();
-			
-			var charts = {};
-			var legends = {};
-			
-			if(this.active.plotVariables.length>0){ //we check the length of object, if there are nodes, then we proceed else give an error and return
-				array.forEach(this.active.plotVariables, function(id, k){
-					var str = "chart" + id;
-							charts[id] = new Chart(str);
-							charts[id].addPlot("default", {
-								type: Lines, 
-								// Do not include markers if there are too
-								// many plot points.  It looks ugly and slows down
-								// plotting significantly.
-								markers: activeSolution.times.length<25
-							});
-					charts[id].addAxis("x", {
-						title: this.labelString(),
-						titleOrientation: "away", titleGap: 5
-					});
-					
-					// var obj = this.getMinMaxFromArray(this.student.arrayOfNodeValues[j]);
-					charts[id].addAxis("y", {
-						vertical: true, // min: obj.min, max: obj.max,
-						title: this.labelString(id)
-					});
-					
-					if(this.mode != "AUTHOR")	
-						var givenID = this.model.active.getDescriptionID(id);
-					
-					//plot chart for student node
-					charts[id].addSeries(
-						"Variable solution",
-						this.formatSeriesForChart(activeSolution, k),
-						{stroke: "green"}
-					);
-					if(this.mode != "AUTHOR" && this.given.plotVariables[k]){
-						charts[id].addSeries(
-							"correct solution", 
-							this.formatSeriesForChart(givenSolution, k), {stroke: "red"});
-					}
-					charts[id].render();
-					legends[id] = new Legend({chart: charts[id]}, "legend" + id);
+            // Add three <div>s for each quantity:
+            //  display graph checkbox, the graph, and the legend.
+            // The default is to display only the accumulator nodes.
+            array.forEach(this.active.plotVariables, function (id) {
+                var show = this.model.active.getType(id) == "accumulator";
+                var checked = show ? " checked='checked'" : "";
+                this.dialogContent += "<div><input id='sel" + id + "' type='checkbox' class='show_graphs' thisid='" + id + "'" + checked + "/>" + " Show " + this.model.active.getName(id) + "</div>";
+                var style = show ? "" : " style='display: none;'";
+                this.dialogContent += "<div  id='chart" + id + "'" + style + "></div>";
+                // Since the legend div is replaced, we cannot hide the legend here.
+                this.dialogContent += "<div class='legend' id='legend" + id + "'></div>";
+            }, this);
 
-				}, this);
-			}else{
-				this.dialogWidget.set("content", "<div>There isn't anything to plot. Try adding some accumulator or function nodes.</div>" ); //Error telling there are no nodes and graph cant be rendered
-			}
-			this.chart = charts;
+            //plot sliders
+            this.createSliderAndDialogObject();
 
-			// The following loop makes sure legends of function graphs are not visible initially
-			// until the user requests, we use the display : none property
-			// The legend div is replaced in the dom, so we must hide it dynamically.
-			array.forEach(this.active.plotVariables, function(id){
-				console.log("changing style",id,this.model.active.getType(id));
-				if(this.model.active.getType(id)=="function") {
-					console.log("for id",id);
-					var leg_style = { display: "none" };
-					var k = domAttr.set("legend" + id, "style", leg_style);
-					console.log("result",k);
-				}
-			}, this);
+            var charts = {};
+            var legends = {};
 
-			// the following event handles the checkbox and
-			// works on whether to show or hide a chart
-			query(".show_graphs").onclick(function(e){
-				var divid = "chart" + domAttr.get(this, "thisid");
-				var legendid = "legend" + domAttr.get(this, "thisid");
-				if(!domAttr.get(this,"checked")){
-					var obj = { display: "none" };
-					domAttr.set(divid, "style", obj);
-					domAttr.set(legendid, "style", obj);
-				}else{
-					domAttr.remove(divid, "style");
-					domAttr.remove(legendid, "style");
-				}
-			});
-		},
+            if (this.active.plotVariables.length > 0) { //we check the length of object, if there are nodes, then we proceed else give an error and return
+                array.forEach(this.active.plotVariables, function (id, k) {
+                    var str = "chart" + id;
+                    charts[id] = new Chart(str);
+                    charts[id].addPlot("default", {
+                        type: Lines,
+                        // Do not include markers if there are too
+                        // many plot points.  It looks ugly and slows down
+                        // plotting significantly.
+                        markers: activeSolution.times.length < 25
+                    });
+                    charts[id].addAxis("x", {
+                        title: this.labelString(),
+                        titleOrientation: "away", titleGap: 5
+                    });
 
-		/*
-		 * @brief: this function formats array of node values into an array which consists of object of type
-		 * {x: timestep, y: node value from array at timstep x}
-		 */
-		formatSeriesForChart: function(result, j){
-			return array.map(result.times, function(time, k){
-				return {x: time, y: result.plotValues[j][k]};
-			});
-		},
-		
-		/*
-		 * @brief: this function returns object with min and max
-		 * value from an array
-		 */
-		getMinMaxFromArray:function(array){
-			var i;
-			var min= array[0];
-			var max = array[0];
-			for(i=1; i<array.length; i++){
-				if(array[i] < min){
-					min = array[i];
-				}
-				if(array[i] > max){
-					max = array[i];
-				}
-			}
-			return {min:min, max:max};
-		},
-		
-		/*
-		 * @brief: this function renders dialog again when slider event is fired and
-		 * new values for student nodes are calculated
-		 */
-		renderDialog: function(calculationObj){
-			var activeSolution = this.findSolution(true, this.active.plotVariables);
-			//update and render the charts
-			array.forEach(this.active.plotVariables, function(id, k){
-				this.chart[id].updateSeries(
-					"Variable solution", 
-					this.formatSeriesForChart(activeSolution, k),
-					{stroke: "green"}
-				);
-				this.chart[id].render();
-			}, this);
-		}
-	});
+                    // var obj = this.getMinMaxFromArray(this.student.arrayOfNodeValues[j]);
+                    charts[id].addAxis("y", {
+                        vertical: true, // min: obj.min, max: obj.max,
+                        title: this.labelString(id)
+                    });
+
+                    if (this.mode != "AUTHOR")
+                        var givenID = this.model.active.getDescriptionID(id);
+
+                    //plot chart for student node
+                    charts[id].addSeries(
+                        "Variable solution",
+                        this.formatSeriesForChart(activeSolution, k),
+                        {stroke: "green"}
+                    );
+                    if (this.mode != "AUTHOR" && this.given.plotVariables[k]) {
+                        charts[id].addSeries(
+                            "correct solution",
+                            this.formatSeriesForChart(givenSolution, k), {stroke: "red"});
+                    }
+                    charts[id].render();
+                    legends[id] = new Legend({chart: charts[id]}, "legend" + id);
+
+                }, this);
+            } else {
+                this.dialogWidget.set("content", "<div>There isn't anything to plot. Try adding some accumulator or function nodes.</div>"); //Error telling there are no nodes and graph cant be rendered
+            }
+            this.chart = charts;
+
+            // The following loop makes sure legends of function graphs are not visible initially
+            // until the user requests, we use the display : none property
+            // The legend div is replaced in the dom, so we must hide it dynamically.
+            array.forEach(this.active.plotVariables, function (id) {
+                if (this.model.active.getType(id) == "function") {
+                    var leg_style = { display: "none" };
+                    var k = domAttr.set("legend" + id, "style", leg_style);
+                }
+                temp = dom.byId("sel" + id);
+                on(temp, "click", function () {
+
+                    if (!domAttr.get(this, "checked")) {
+                        var obj = { display: "none" };
+                        domAttr.set("chart" + id, "style", obj);
+                        domAttr.set("legend" + id, "style", obj);
+                    } else {
+                        domAttr.remove("chart" + id, "style");
+                        domAttr.remove("legend" + id, "style");
+                    }
+
+                });
+
+
+            }, this);
+
+            // the following event handles the checkbox and
+            // works on whether to show or hide a chart
+
+        },
+
+        /*
+         * @brief: this function formats array of node values into an array which consists of object of type
+         * {x: timestep, y: node value from array at timstep x}
+         */
+        formatSeriesForChart: function (result, j) {
+            return array.map(result.times, function (time, k) {
+                return {x: time, y: result.plotValues[j][k]};
+            });
+        },
+
+        /*
+         * @brief: this function returns object with min and max
+         * value from an array
+         */
+        getMinMaxFromArray: function (array) {
+            var i;
+            var min = array[0];
+            var max = array[0];
+            for (i = 1; i < array.length; i++) {
+                if (array[i] < min) {
+                    min = array[i];
+                }
+                if (array[i] > max) {
+                    max = array[i];
+                }
+            }
+            return {min: min, max: max};
+        },
+
+        /*
+         * @brief: this function renders dialog again when slider event is fired and
+         * new values for student nodes are calculated
+         */
+        renderDialog: function (calculationObj) {
+            var activeSolution = this.findSolution(true, this.active.plotVariables);
+            //update and render the charts
+            array.forEach(this.active.plotVariables, function (id, k) {
+                this.chart[id].updateSeries(
+                    "Variable solution",
+                    this.formatSeriesForChart(activeSolution, k),
+                    {stroke: "green"}
+                );
+                this.chart[id].render();
+            }, this);
+        }
+    });
 });
