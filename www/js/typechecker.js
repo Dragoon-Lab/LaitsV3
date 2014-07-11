@@ -93,13 +93,12 @@ define([
 				}
 
 				return {status: false, errorType: errorType};
+			}else if(inputString == lastInput.value || inputString==""){
+				return {status: false};
 			}
-            else if(inputString == lastInput.value || inputString==""){
-                return {status: false};
-            }
-            lastInput.value = inputString;
+			lastInput.value = inputString;
 
-            // updating node editor and the model.
+			// updating node editor and the model.
 			return {status: true, value: input};
 		}
 	};

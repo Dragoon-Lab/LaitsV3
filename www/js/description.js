@@ -22,7 +22,7 @@
 
 define([
 	"dojo/aspect", "dojo/_base/array", "dojo/_base/declare", "dojo/_base/lang",
-	"dijit/registry", "dojo/dom", "dojo/ready",'dojo/keys',
+	"dijit/registry", "dojo/dom", "dojo/ready", 'dojo/keys',
 	"./model", "./wraptext", "./time-checker"
 ], function(aspect, array, declare, lang, registry, dom, ready, keys, model, wrapText, typechecker){
 
@@ -73,35 +73,35 @@ define([
 			descWidgetStart.on("change", lang.hitch(this, function(){
 				var ret_start_time=typechecker.checkInitialValue('authorSetTimeStart', this.lastStartTime);
 				if(ret_start_time.status){this.timeObj.start=ret_start_time.value; }
-		   }));
-            //The following event handles incase enter button is pressed in start time field
-            descWidgetStart.on("keydown", function(evt){
-                // console.log("----------- input character ", evt.keyCode, this.get('value'));
-                if(evt.keyCode == keys.ENTER)
-                    this.emit('Change', {}, [this.get('value')]);
-            });
+			}));
+			//The following event handles incase enter button is pressed in start time field
+			descWidgetStart.on("keydown", function(evt){
+				// console.log("----------- input character ", evt.keyCode, this.get('value'));
+				if(evt.keyCode == keys.ENTER)
+					this.emit('Change', {}, [this.get('value')]);
+			});
 			//for end time field
 			descWidgetStop.on("change", lang.hitch(this, function(){
 				var ret_stop_time=typechecker.checkInitialValue('authorSetTimeEnd', this.lastStopTime);
 				if(ret_stop_time.status){ this.timeObj.end=ret_stop_time.value; }
 			}));
-            //The following event handles incase enter button is pressed in end time field
-            descWidgetStop.on("keydown", function(evt){
-                // console.log("----------- input character ", evt.keyCode, this.get('value'));
-                if(evt.keyCode == keys.ENTER)
-                    this.emit('Change', {}, [this.get('value')]);
-            });
+			//The following event handles incase enter button is pressed in end time field
+			descWidgetStop.on("keydown", function(evt){
+				// console.log("----------- input character ", evt.keyCode, this.get('value'));
+				if(evt.keyCode == keys.ENTER)
+					this.emit('Change', {}, [this.get('value')]);
+			});
 			//for  time step field
 			descWidgetStep.on("change", lang.hitch(this, function(){
 				var ret_step_time=typechecker.checkInitialValue('authorSetTimeStep', this.lastStepTime);
 				if(ret_step_time.status){ this.timeObj.step=ret_step_time.value; }
 			}));
-            //The following event handles incase enter button is pressed in  time step field
-            descWidgetStep.on("keydown", function(evt){
-                // console.log("----------- input character ", evt.keyCode, this.get('value'));
-                if(evt.keyCode == keys.ENTER)
-                    this.emit('Change', {}, [this.get('value')]);
-            });
+			//The following event handles incase enter button is pressed in  time step field
+			descWidgetStep.on("keydown", function(evt){
+				// console.log("----------- input character ", evt.keyCode, this.get('value'));
+				if(evt.keyCode == keys.ENTER)
+					this.emit('Change', {}, [this.get('value')]);
+			});
 
 			this._descEditor = registry.byId('authorDescDialog');
 			aspect.around(this._descEditor, "hide", lang.hitch(this, function(doHide){
@@ -131,10 +131,10 @@ define([
 					if(ret_stop_time.status){
 						myThis.timeObj.end = ret_stop_time.value;
 					}
-                    console.log("step", ret_step_time);
+					console.log("step", ret_step_time);
 					if(ret_step_time.status){
 						myThis.timeObj.step = ret_step_time.value;
-                        //console.log("time step is",myThis.timeObj.step);
+						//console.log("time step is",myThis.timeObj.step);
 					}
 					// time interval validation
 					var time_interval_validation=typechecker.validateTimeInterval('authorSetTimeEnd', myThis.timeObj);

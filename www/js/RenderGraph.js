@@ -53,10 +53,9 @@ define([
 			console.log("***** In RenderGraph constructor");
 			if(this.active.timeStep){  // Abort if there is an error in timSstep.
 				this.initialize();
-
 			}
         },
-		
+
 		/*
 		 * @brief: initialize Dialog/charts and sliders
 		 *
@@ -80,8 +79,7 @@ define([
 				this.dialogWidget.set("content", "<div>Not all nodes have been completed. For example, \""+activeSolution.missingNode+"\" is not yet fully defined.</div>"); //We show the error message like "A Node is Missing"
 				return;
 			}
-			
-			
+
 			if(this.mode != "AUTHOR"){
 				//check for author mode. Here we need to create just one graph.
 				this.given.plotVariables = array.map(this.active.plotVariables, function(id){
@@ -92,25 +90,24 @@ define([
 					var givenNode = this.model.given.getNode(givenID);
 					return givenNode && (!givenNode.genus?givenID:null);
 				}, this);
-				
+
 				// Calculate solutions
 				var givenSolution = this.findSolution(false, this.given.plotVariables);
-				
+
 			}
+
+			// Add three <div>s for each quantity: 
+			//  display graph checkbox, the graph, and the legend.
+			// The default is to display only the accumulator nodes.
 			array.forEach(this.active.plotVariables, function(id){
-                if(this.model.active.getType(id)=="accumulator") {
-                    this.dialogContent += "<div><input id='sel" + id + "' type='checkbox' checked='checked' class='show_graphs' thisid='"+ id+"'/>" + " Show " + this.model.active.getName(id) + "</div>";
-                    this.dialogContent += "<div id='chart" + id + "'> " + "\</div>";
-                    this.dialogContent += "<div class='legend' id='legend" + id + "'> " + "\</div>";
-                }else {
-                    console.log(this.model.active.getType(id),id);
-                    this.dialogContent += "<div><input id='sel" + id + "' type='checkbox' class='show_graphs' thisid='"+ id+"'/>"+  " Show " + this.model.active.getName(id) +"</div>";
-                    this.dialogContent += "<div  id='chart" + id + "' style='display: none;'> " + "\</div>";
-                    this.dialogContent += "<div class='legend' id='legend" + id + "' style='display: none;'> " + "\</div>";
-                }
-            }, this);
-
-
+				var show = this.model.active.getType(id)=="accumulator";
+				var checked = show?" checked='checked'":"";
+				this.dialogContent += "<div><input id='sel" + id + "' type='checkbox' class='show_graphs' thisid='"+ id+"'" + checked + "/>" + " Show " + this.model.active.getName(id) +"</div>";
+				var style = show?"":" style='display: none;'";
+				this.dialogContent += "<div  id='chart" + id + "'" + style + "></div>";
+				// Since the legend div is replaced, we cannot hide the legend here.
+				this.dialogContent += "<div class='legend' id='legend" + id + "'></div>";
+			}, this);
 
 			//plot sliders 
 			this.createSliderAndDialogObject();
@@ -120,7 +117,6 @@ define([
 			
 			if(this.active.plotVariables.length>0){ //we check the length of object, if there are nodes, then we proceed else give an error and return
 				array.forEach(this.active.plotVariables, function(id, k){
-
 					var str = "chart" + id;
 							charts[id] = new Chart(str);
 							charts[id].addPlot("default", {
@@ -163,36 +159,36 @@ define([
 				this.dialogWidget.set("content", "<div>There isn't anything to plot. Try adding some accumulator or function nodes.</div>" ); //Error telling there are no nodes and graph cant be rendered
 			}
 			this.chart = charts;
-            // The following loop makes sure legends of function graphs are not visible initially
-            //until the user requests, we use the display : none property
-            array.forEach(this.active.plotVariables, function(id){
-                     console.log("changing style",id,this.model.active.getType(id));
-                    if(this.model.active.getType(id)=="function") {
-                        console.log("for id",id);
-                        var leg_style = { display: "none" };
-                        var k=domAttr.set("legend"+id, "style", leg_style);
-                        console.log("result",k);
-                    }
 
-            }, this);
+			// The following loop makes sure legends of function graphs are not visible initially
+			// until the user requests, we use the display : none property
+			// The legend div is replaced in the dom, so we must hide it dynamically.
+			array.forEach(this.active.plotVariables, function(id){
+				console.log("changing style",id,this.model.active.getType(id));
+				if(this.model.active.getType(id)=="function") {
+					console.log("for id",id);
+					var leg_style = { display: "none" };
+					var k = domAttr.set("legend" + id, "style", leg_style);
+					console.log("result",k);
+				}
+			}, this);
 
-            //the following event handles the checkbox and
-            // works on whether to show or hide a chart
-            query(".show_graphs").onclick(function(e){
-                var divid="chart"+domAttr.get(this,"thisid");
-                var legendid="legend"+domAttr.get(this,"thisid");
-                if(!domAttr.get(this,"checked")){
-                    var obj = { display: "none" };
-                    domAttr.set(divid, "style", obj);
-                    domAttr.set(legendid, "style", obj);
-                }
-                else{
-                    domAttr.remove(divid, "style");
-                    domAttr.remove(legendid, "style");
-                }
-            });
-        },
-		
+			// the following event handles the checkbox and
+			// works on whether to show or hide a chart
+			query(".show_graphs").onclick(function(e){
+				var divid = "chart" + domAttr.get(this, "thisid");
+				var legendid = "legend" + domAttr.get(this, "thisid");
+				if(!domAttr.get(this,"checked")){
+					var obj = { display: "none" };
+					domAttr.set(divid, "style", obj);
+					domAttr.set(legendid, "style", obj);
+				}else{
+					domAttr.remove(divid, "style");
+					domAttr.remove(legendid, "style");
+				}
+			});
+		},
+
 		/*
 		 * @brief: this function formats array of node values into an array which consists of object of type
 		 * {x: timestep, y: node value from array at timstep x}
