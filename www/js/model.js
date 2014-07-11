@@ -479,7 +479,7 @@ define([
                 var nodes = this.getUndefinedNodes();
                 var nodeTextArea = dom.byId("undefinedNodesText");
                 if(nodes.length > 0){
-                    nodeTextArea.innerHTML = "Currently undefined nodes: ";
+                    nodeTextArea.innerHTML = "Currently undefined quantities: ";
                     array.forEach(nodes, function(node){
                         nodeTextArea.innerHTML += node + ",";
                     });

@@ -772,13 +772,6 @@ define([
 
 					var givenID = this._model.given.getNodeIDByName(variable);
 
-					// autocreation flag will eventually be set from the URL
-					// or from the state table.  Alternatively, we will show a list
-					// of variables.
-                    console.log('REID -- AutocreateFlag', this._autoCreateFlag);
-					if(this._autoCreateFlag && !this._model.active.isNode(givenID))
-						this.autocreateNodes(variable);
-
 					// Checks for nodes referencing themselves; this causes problems because
 					//		functions will always evaluate to true if they reference themselves
 					if(givenID && this._model.active.getType(this.currentID) === "function" &&
@@ -815,11 +808,23 @@ define([
 							// console.log("	   substituting ", variable, " -> ", studentID);
 							parse.substitute(variable, subID);
 						}else{
+
                             console.log('REID -- Checking to see if a node is undefined:', this._model.active.getUndefinedNodes().indexOf(variable));
                             if(this._model.active.getUndefinedNodes().indexOf(variable) == -1){
                                 console.log('REID --- Inside the undefined node if');
                                this._model.active.getUndefinedNodes().push(variable);
                             }
+
+							//auto creation should happen here
+                                                        if(this._autoCreateFlag){
+								//create node 
+								var id = this._model.active.addNode();
+				                                this.addNode(this._model.active.getNode(id));
+                                                                this.autocreateNodes(id,variable);
+                                                                //get Node ID and substitute in equation
+                                                                var subID = unMapID.call(this._model.active,givenID||id);
+                                                                parse.substitute(variable,subID); //this should handle createInputs and connections to automatic node
+                                                        }else
 							directives.push({id: 'message', attribute: 'append', value: "Quantity '" + variable + "' not defined yet."});
 						}
 					}else{
@@ -894,7 +899,10 @@ define([
 		setConnections: function(from, to){
 			// console.log("======== setConnections fired for node" + to);
 		},
-
+		 // Stub to set connection in the graph / one to one
+                setConnection: function(from, to){
+                        // console.log("======== setConnections fired for node" + to);
+                },
 		//show node editor
 		showNodeEditor: function(/*string*/ id){
 			//Checks if the current mode is COACHED mode and exit from node editor if all the modes are defined

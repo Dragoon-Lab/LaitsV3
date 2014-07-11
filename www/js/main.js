@@ -165,8 +165,9 @@ define([
 					lang.hitch(drawModel, drawModel.addQuantity), true);
 			aspect.after(controllerObject, 'setConnections',
 						 lang.hitch(drawModel, drawModel.setConnections), true);
-			
-			/*
+			aspect.after(controllerObject, 'setConnection',
+                                                 lang.hitch(drawModel, drawModel.setConnection), true);
+			 /*
 			 Autosave on close window
 			 It would be more efficient if we only saved the changed node.
 			 

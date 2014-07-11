@@ -113,27 +113,31 @@ define([
 			}, this);
 		},
 
-		//stub autocreate nodes
-		// BvdS:  the parts of this that are common to both AUTHOR and student modes
+
 		//  should be moved to a function in controller.js
-		autocreateNodes:function(variable){
-			console.log("auto creating nodes student controller");
-			//getDescriptionID using variable name
-			var descID = this._model.given.getNodeIDByName(variable);
-			//since variable is not present, addNode to the model
-			var id = this._model.active.addNode();
-			this.addNode(this._model.active.getNode(id));
-			//setDescriptionID for the node id
-			this._model.active.setDescriptionID(id, descID);
-			//get directives for description of auto created node
-			var directives = this._PM.processAnswer(id, 'description', descID);
-			// BvdS: There is a routine in controller.js to apply directives.
-			//update Model status for auto created node directives
-			array.forEach(directives,function(directive){
+		autocreateNodes:function(/** auto node id **/ id, /**variable name**/ variable){
+			 //get the givenID of node from Name
+                        var givenID = this._model.given.getNodeIDByName(variable);
+                        //get student ID from the givenID if it exists
+                        var studentNodeID = this._model.student.getNodeIDFor(givenID);
+
+                        //if student node doesn't exist auto create node
+                        if(!studentNodeID){
+				console.log("auto creating nodes student controller");
+				//getDescriptionID using variable name
+				var descID = this._model.given.getNodeIDByName(variable);
+				//setDescriptionID for the node id
+				this._model.active.setDescriptionID(id, descID);
+				//get directives for description of auto created node
+				var directives = this._PM.processAnswer(id, 'description', descID);
+				// BvdS: There is a routine in controller.js to apply directives.
+				//update Model status for auto created node directives
+				array.forEach(directives,function(directive){
 				this.updateModelStatus(directive,id);
-			}, this);
-			// update Node labels upon exit
-			this.updateNodeLabel(id);
+				}, this);
+				// update Node labels upon exit
+				this.updateNodeLabel(id);
+			}
 		},
 
 		handleDescription: function(selectDescription){
