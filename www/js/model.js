@@ -547,6 +547,9 @@ define([
 			getStatus: function(/*string*/ id, /*string*/ nodePart){
 				return this.getNode(id).status[nodePart];
 			},
+            getParent: function(/*string*/ id){
+                return this.getNode(id).parentNode;
+            },
 			setName: function(/*string*/ id, /*string*/ name){
 				this.getNode(id).name = name.trim();
 			},

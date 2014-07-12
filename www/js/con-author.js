@@ -34,8 +34,9 @@ define([
 	'./controller',
 	"./equation",
 	"./typechecker",
+    "dojo/dom",
 	"dojo/domReady!"
-], function(array, declare, lang, style, ready, memory, registry, controller, equation, typechecker){
+], function(array, declare, lang, style, ready, memory, registry, controller, equation, typechecker, dom){
 
 	// Summary: 
 	//			MVC for the node editor, for authors
@@ -179,7 +180,8 @@ define([
 		name:"setName",
 		description:"setDescription",
 		kind:"selectKind",
-		units:"setUnits"
+		units:"setUnits",
+        root:"markRootNode"
 		},
 		authorControls: function(){
 		console.log("++++++++ Setting AUTHOR format in Node Editor.");
@@ -200,6 +202,11 @@ define([
 		kind.on('Change', lang.hitch(this, function(){
 				return this.disableHandlers || this.handleKind.apply(this, arguments);
 		}));
+        var root = registry.byId(this.controlMap.root);
+        root.on('Change', lang.hitch(this, function(){
+                this.handleRoot(root.checked);
+            console.log("############ This is root: ", root);
+        }));
 	  },
 		/*
 		 Handler for type selector
@@ -247,6 +254,12 @@ define([
 				console.warn("In AUTHOR mode. Attempted to use description that already exists: " + description);
 			}
 		},
+
+        handleRoot: function(root){
+            // Summary: Sets the current node to be parent node
+            console.log("********************* in handleRoot", root);
+            this._model.given.setParent(this.currentID,/*bool*/ root);
+        },
 
 		handleType: function(type){
 			// Summary: Sets the type of the current node.
@@ -318,6 +331,8 @@ define([
 			var desc = this._model.given.getDescription(nodeid);
 			console.log('description is', desc || "not set");
 			registry.byId(this.controlMap.description).set('value', desc || '', false);
+
+            dom.byId("markRootNode").checked = this._model.given.getParent(nodeid);
 
 			// populate inputs
 			var inputsWidget = registry.byId(this.controlMap.inputs);
