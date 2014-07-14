@@ -64,6 +64,10 @@ define([
 
 						returnObj.push({attribute:"disabled", id:"equation", value:true});
 						returnObj.push({attribute:"status", id:"equation", value:""});
+
+                        //disable and uncheck root node
+                        returnObj.push({attribute:"checked", id:"root", value:false});
+                        returnObj.push({attribute:"disabled", id:"root", value:true});
 					}else if(value == "function"){
 						returnObj.push({attribute:"disabled", id:"initial", value:true});
 						returnObj.push({attribute:"status", id:"initial", value:""});
@@ -71,12 +75,16 @@ define([
 						returnObj.push({attribute:"disabled", id:"inputs", value:false});
 
 						returnObj.push({attribute:"disabled", id:"equation", value:false});
+
+                        returnObj.push({attribute:"disabled", id:"root", value:false});
 					}else if(value == "accumulator"){
 						returnObj.push({attribute:"disabled", id:"initial", value:false});
 
 						returnObj.push({attribute:"disabled", id:"inputs", value:false});
 
 						returnObj.push({attribute:"disabled", id:"equation", value:false});
+
+                        returnObj.push({attribute:"disabled", id:"root", value:false});
 					}
 					else{
 						returnObj.push({id:"type", attribute:"status", value:""});
@@ -332,7 +340,9 @@ define([
 			console.log('description is', desc || "not set");
 			registry.byId(this.controlMap.description).set('value', desc || '', false);
 
+            // Initialize root node checkbox
             dom.byId("markRootNode").checked = this._model.given.getParent(nodeid);
+            this.applyDirectives([{attribute:"disabled", id:"root", value:true}]);
 
 			// populate inputs
 			var inputsWidget = registry.byId(this.controlMap.inputs);
