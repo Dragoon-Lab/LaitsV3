@@ -8,11 +8,6 @@ var server = new SeleniumServer("C:/Selenium/selenium-server-standalone-2.42.2.j
 
 server.start();
 
-/*var driver = new webdriver.Builder().
-   usingServer(server.address()).
-   withCapabilities(webdriver.Capabilities.chrome()).
-   build();*/
-
 var driver = new webdriver.Builder().
     usingServer(server.address()).
     withCapabilities(webdriver.Capabilities.firefox()).
