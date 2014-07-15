@@ -1,3 +1,4 @@
+/* global define */
 /**
  *Dragoon Project
  *Arizona State University
@@ -18,7 +19,6 @@
  *along with Dragoon.  If not, see <http://www.gnu.org/licenses/>.
  *
  */
-/* global define */
 /*
  * AUTHOR mode-specific handlers
  */
@@ -37,7 +37,7 @@ define([
     "dojo/dom",
 	"dojo/domReady!"
 ], function(array, declare, lang, style, ready, memory, registry, controller, equation, typechecker, dom){
-
+	
 	// Summary: 
 	//			MVC for the node editor, for authors
 	// Description:
@@ -47,7 +47,7 @@ define([
 	//			controller, pedagogical module, author mode
 	
 	return declare(controller, {
-
+		
 		//pedagogical module class for author
 		authorPM:{
 			process: function(nodeID, nodeType, value, validInput){
@@ -58,39 +58,39 @@ define([
 					if(value == "parameter"){
 						//disable inputs and expression
 						returnObj.push({attribute:"disabled", id:"initial", value:false});
-
+						
 						returnObj.push({attribute:"disabled", id:"inputs", value:true});
 						returnObj.push({attribute:"status", id:"inputs", value:""});
-
+						
 						returnObj.push({attribute:"disabled", id:"equation", value:true});
 						returnObj.push({attribute:"status", id:"equation", value:""});
-
+						
                         //disable and uncheck root node
                         returnObj.push({attribute:"checked", id:"root", value:false});
                         returnObj.push({attribute:"disabled", id:"root", value:true});
 					}else if(value == "function"){
 						returnObj.push({attribute:"disabled", id:"initial", value:true});
 						returnObj.push({attribute:"status", id:"initial", value:""});
-
+						
 						returnObj.push({attribute:"disabled", id:"inputs", value:false});
-
+						
 						returnObj.push({attribute:"disabled", id:"equation", value:false});
-
+						
                         returnObj.push({attribute:"disabled", id:"root", value:false});
 					}else if(value == "accumulator"){
 						returnObj.push({attribute:"disabled", id:"initial", value:false});
-
+						
 						returnObj.push({attribute:"disabled", id:"inputs", value:false});
-
+						
 						returnObj.push({attribute:"disabled", id:"equation", value:false});
-
+						
                         returnObj.push({attribute:"disabled", id:"root", value:false});
 					}
 					else{
 						returnObj.push({id:"type", attribute:"status", value:""});
 						returnObj.push({id:"message", attribute:"append", value:"Please select node type"});
 						returnObj.push({attribute:"disabled", id:"initial", value:false});
-
+						
 						returnObj.push({attribute:"disabled", id:"inputs", value:false});
 
 						returnObj.push({attribute:"disabled", id:"equation", value:false});
@@ -124,7 +124,7 @@ define([
 					}
 					returnObj.push({id:"message", attribute:"append", value:message});
 					break;
-
+					
 				case "description":
 					if(!value){
 						returnObj.push({id:"description", attribute:"status", value:""});
@@ -161,74 +161,68 @@ define([
 						returnObj.push({id:"units", attribute:"status", value:""});
 					}
 					break;
-
+					
 				default:
-			throw new Error("Unknown type: "+ nodeType + ".");
-		}
+					throw new Error("Unknown type: "+ nodeType + ".");
+				}
 				return returnObj;
-		}
+			}
 		},
-
+		
 		constructor: function(){
-		console.log("++++++++ In author constructor");
-		lang.mixin(this.widgetMap, this.controlMap);
-		this.authorControls();
-		ready(this, "initAuthorHandles");
+			console.log("++++++++ In author constructor");
+			lang.mixin(this.widgetMap, this.controlMap);
+			this.authorControls();
+			ready(this, "initAuthorHandles");
 		},
-
-	   resettableControls: ["name","description","initial","units","equation"],
-
-		/*
-		 Stub for setting up state saving in AUTHOR mode.
-		 */
-
-
+		
+		resettableControls: ["name","description","initial","units","equation"],
+				
 		controlMap: {
-		inputs:"setInput",
-		name:"setName",
-		description:"setDescription",
-		kind:"selectKind",
-		units:"setUnits",
-        root:"markRootNode"
+			inputs: "setInput",
+			name: "setName",
+			description: "setDescription",
+			kind: "selectKind",
+			units: "setUnits",
+			root: "markRootNode"
 		},
 		authorControls: function(){
-		console.log("++++++++ Setting AUTHOR format in Node Editor.");
-		style.set('nameControl', 'display', 'block');
-		style.set('descriptionControlStudent', 'display', 'none');
-		style.set('descriptionControlAuthor', 'display', 'block');
-		style.set('selectUnitsControl', 'display', 'none');
-		style.set('setUnitsControl', 'display', 'inline');
-		style.set('inputControlAuthor', 'display', 'block');
-		style.set('inputControlStudent', 'display', 'none');
+			console.log("++++++++ Setting AUTHOR format in Node Editor.");
+			style.set('nameControl', 'display', 'block');
+			style.set('descriptionControlStudent', 'display', 'none');
+			style.set('descriptionControlAuthor', 'display', 'block');
+			style.set('selectUnitsControl', 'display', 'none');
+			style.set('setUnitsControl', 'display', 'inline');
+			style.set('inputControlAuthor', 'display', 'block');
+			style.set('inputControlStudent', 'display', 'none');
 		},
 		initAuthorHandles: function(){
-		var name = registry.byId(this.controlMap.name);
-		name.on('Change', lang.hitch(this, function(){
+			var name = registry.byId(this.controlMap.name);
+			name.on('Change', lang.hitch(this, function(){
 				return this.disableHandlers || this.handleName.apply(this, arguments);
-		}));
-		var kind = registry.byId(this.controlMap.kind);
-		kind.on('Change', lang.hitch(this, function(){
+			}));
+			var kind = registry.byId(this.controlMap.kind);
+			kind.on('Change', lang.hitch(this, function(){
 				return this.disableHandlers || this.handleKind.apply(this, arguments);
-		}));
-        var root = registry.byId(this.controlMap.root);
-        root.on('Change', lang.hitch(this, function(){
-                this.handleRoot(root.checked);
-            console.log("############ This is root: ", root);
-        }));
-	  },
+			}));
+			var root = registry.byId(this.controlMap.root);
+			root.on('Change', lang.hitch(this, function(checked){
+					return this.disableHandlers || this.handleRoot(checked);
+			}));
+		},
 		/*
 		 Handler for type selector
 		 */
 		handleName: function(name){
-		console.log("**************** in handleName ", name);
+			console.log("**************** in handleName ", name);
 
-		/* check if node with name already exists and
+			/* check if node with name already exists and
 			 if name is parsed as valid variable
 			 */
 			var nameID = this._model.given.getNodeIDByName(name);
 			// If nameID is falsy give "null"; if it doesn't match, give "false"
 			this.applyDirectives(this.authorPM.process(nameID?!(nameID==this.currentID):null,'name',name, equation.isVariable(name)));
-
+			
 			if(!this._model.given.getNodeIDByName(name) && equation.isVariable(name)){
 				// check all nodes in the model for equations containing name of this node
 				// replace name of this node in equation with its ID
@@ -236,11 +230,11 @@ define([
 				this.updateNodes();
 				//not required - because updateNodes() will add connections automatically
 				//this.setConnections(this._model.active.getInputs(this.currentID), this.currentID);
-
+				
 				this.updateEquationLabels();
 			}
 		},
-
+		
 		handleKind: function(kind){
 			console.log("**************** in handleKind ", kind);
 			this._model.given.setGenus(this.currentID, kind);
@@ -266,7 +260,7 @@ define([
         handleRoot: function(root){
             // Summary: Sets the current node to be parent node
             console.log("********************* in handleRoot", root);
-            this._model.given.setParent(this.currentID,/*bool*/ root);
+            this._model.given.setParent(this.currentID, root);
         },
 
 		handleType: function(type){
@@ -316,15 +310,15 @@ define([
 		handleInputs: function(name){
 			console.log("In AUTHOR mode. Input selected is: " + name);
 			this.equationInsert(name);
-		// After variable input, reset control to its initial state.
-		// Third argument keeps handler from being called.
-		var inputWidget = registry.byId(this.controlMap.inputs);
-		 inputWidget.set('value', '', false);
+			// After variable input, reset control to its initial state.
+			// Third argument keeps handler from being called.
+			var inputWidget = registry.byId(this.controlMap.inputs);
+			inputWidget.set('value', '', false);
 		},
 		equationDoneHandler: function(){
 			var directives = [];
 			var parse = this.equationAnalysis(directives, true);
-
+			
 			if(parse){
 				directives = directives.concat(this.authorPM.process(this.currentID, "equation", parse));
 			}
@@ -333,6 +327,13 @@ define([
 		},
 
 		initialControlSettings: function(nodeid){
+
+			// Apply settings appropriate for a new node
+			// This is the equivalent to newAction() in student mode.
+			this.applyDirectives([
+				{attribute:"disabled", id:"root", value:true}
+			]);
+
 			var name = this._model.given.getName(nodeid);
 			registry.byId(this.controlMap.name).set('value', name || '', false);
 
@@ -341,8 +342,7 @@ define([
 			registry.byId(this.controlMap.description).set('value', desc || '', false);
 
             // Initialize root node checkbox
-            dom.byId("markRootNode").checked = this._model.given.getParent(nodeid);
-            this.applyDirectives([{attribute:"disabled", id:"root", value:true}]);
+			registry.byId(this.controlMap.root).set('value', this._model.given.getParent(nodeid));
 
 			// populate inputs
 			var inputsWidget = registry.byId(this.controlMap.inputs);
@@ -363,7 +363,7 @@ define([
 					var name = this._model.given.getName(desc.value);
 					var obj = {name:name, id: desc.id};
 					inputs.push(obj);
-			descriptions.push({name: this._model.given.getDescription(desc.value), id: desc.id});
+					descriptions.push({name: this._model.given.getDescription(desc.value), id: desc.id});
 				}
 			}, this);
 			array.forEach(this._model.getAllUnits(), function(unit){
@@ -376,42 +376,42 @@ define([
 			descriptionWidget.set("store", m);
 			m = new memory({data: units});
 			unitsWidget.set("store", m);
-
+			
 			var value;
 			//node is not created for the first time. apply colors to widgets
 			//color name widget
-
+			
 			//false value is set because while creating a name we are already checking for uniqueness and checking again while re-opening the node is not needed.
 			if(name){
 				this.applyDirectives(this.authorPM.process(false, "name", name, equation.isVariable(name)));
-		}
+			}
 			//color kind widget
 			if(this._model.given.getGenus(this.currentID)){
 				this.applyDirectives(this.authorPM.process(this.currentID, "kind", this._model.given.getGenus(this.currentID)));
-		}
+			}
 			//color description widget
 			//uniqueness taken care of by the handler while adding a new value. So a false value sent.
 			if(this._model.given.getDescription(this.currentID)){
 				this.applyDirectives(this.authorPM.process(false, "description", this._model.given.getDescription(this.currentID)));
-		}
+			}
 			//color units widget
 			var unitsChoice = this._model.given.getUnits(this.currentID);
 			if(unitsChoice && unitsChoice != 'defaultSelect'){
 				this.applyDirectives(this.authorPM.process(this.currentID, 'units', this._model.given.getUnits(this.currentID)));
-		}
+			}
 			//color initial value widget
 			if(typeof this._model.given.getInitial(this.currentID) === "number"){
 				this.applyDirectives(this.authorPM.process(this.currentID, 'initial', this._model.given.getInitial(this.currentID), true));
-		}
+			}
 			//color units widget
 			if(this._model.given.getEquation(this.currentID)){
 				this.applyDirectives(this.authorPM.process(this.currentID, 'initial', this._model.given.getInitial(this.currentID), true));
-		}
+			}
 			var type = this._model.given.getType(this.currentID);
 			//color type widget
 			if(type){
 				this.applyDirectives(this.authorPM.process(this.currentID, 'type', type));
-		}
+			}
 			if(type && type != 'function'){
 				if(typeof this._model.given.getInitial(this.currentID) === "number")
 					this.applyDirectives([{id:"initial", attribute:"status", value:"entered"}]);

@@ -55,12 +55,17 @@ define([
 			dom.byId("authorSetDescription").value = this.serialize(
 				givenModel.getTaskDescription() ? givenModel.getTaskDescription() : ""
 			);
-			dom.byId("authorProblemShare").checked = givenModel.getShare();
+
 			ready(this, this._initHandles);
 		},
 
 		//set up event handling with UI components
 		_initHandles: function(){
+			// Summary:  initialization associated with widgets
+
+			// Set checkbox for sharing
+			registry.byId("authorProblemShare").attr("value", this.givenModel.getShare());
+
 			//Define all the variables necessary to fire onchange events and to pop up tooltips
 			//for authorSetTimeStart
 			var descWidgetStart = registry.byId('authorSetTimeStart');
@@ -162,11 +167,11 @@ define([
 				};
 			}));
 
-			//for share Bit checkbox
-			var descShareBit = dom.byId("authorProblemShare");
-			on(descShareBit, "click", lang.hitch(this, function(){
-				// console.log("check box", descShareBit.checked);
-				this.givenModel.setShare(descShareBit.checked);
+			//for share bit checkbox
+			var descShareBit = registry.byId("authorProblemShare");
+			descShareBit.on("Change", lang.hitch(this, function(checked){
+				// console.log("check box", descShareBit, checked);
+				this.givenModel.setShare(checked);
 			}));
 		},
 

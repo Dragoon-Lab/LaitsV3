@@ -299,6 +299,7 @@ define([
 				}
 
 				// create slider
+				// The associated css style sheet is loaded by css/dragoon.css
 				this.sliders[paramID] = new HorizontalSlider({
 					name: this.sliderID + paramID,
 					value: val,
