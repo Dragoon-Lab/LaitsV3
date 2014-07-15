@@ -11,7 +11,7 @@
  *
  *Dragoon is distributed in the hope that it will be useful,
  *but WITHOUT ANY WARRANTY; without even the implied warranty of
- *MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.	  See the
+ *MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
  *GNU General Public License for more details.
  *
  *You should have received a copy of the GNU General Public License
@@ -26,15 +26,15 @@
 
 define([
 	"dojo/_base/array", "dojo/_base/declare",
-	"dojo/_base/lang", "dojo/on", "dojo/query", 'dojo/dom', 'dojo/dom-attr',
+	"dojo/_base/lang", "dojo/on", 'dojo/dom', 'dojo/dom-attr',
 	"dojox/charting/Chart",
 	"dojox/charting/axis2d/Default",
 	"dojox/charting/plot2d/Lines",
 	"dojox/charting/plot2d/Grid",
-	"dojox/charting/widget/Legend", 'dijit/registry',
+	"dojox/charting/widget/Legend",
 	"./calculations",
 	"dojo/domReady!"
-], function(array, declare, lang, on, query, dom, domAttr, Chart, Default, Lines, Grid, Legend, registry, calculations){
+], function(array, declare, lang, on, dom, domAttr, Chart, Default, Lines, Grid, Legend, calculations){
 
 	// The calculations constructor is loaded before the RenderGraph constructor
 	return declare(calculations, {
@@ -42,6 +42,7 @@ define([
 		textBoxID: "textGraph",							//ID for text-box DOM
 		sliderID: "sliderGraph",						//ID for slider DOM
 		chart: {},										//Object of a chart
+
 		/*
 		 *	@brief:constructor for a graph object
 		 *	@param: noOfParam
@@ -81,7 +82,7 @@ define([
 				//check for author mode. Here we need to create just one graph.
 				this.given.plotVariables = array.map(this.active.plotVariables, function(id){
 					var givenID = this.model.active.getDescriptionID ?
-					this.model.active.getDescriptionID(id) : id;
+							this.model.active.getDescriptionID(id) : id;
 					// givenID should always exist.
 					console.assert(givenID, "Node '" + id + "' has no corresponding given node");
 					var givenNode = this.model.given.getNode(givenID);
@@ -104,6 +105,8 @@ define([
 				this.dialogContent += "<div class='legend' id='legend" + id + "'></div>";
 			}, this);
 
+			this.dialogContent += "<hr>";
+
 			//plot sliders
 			this.createSliderAndDialogObject();
 
@@ -114,7 +117,7 @@ define([
 				array.forEach(this.active.plotVariables, function(id, k){
 					var str = "chart" + id;
 					charts[id] = new Chart(str);
-					charts[id].addPlot("default",{
+					charts[id].addPlot("default", {
 						type: Lines,
 						// Do not include markers if there are too
 						// many plot points.  It looks ugly and slows down
@@ -132,16 +135,16 @@ define([
 						title: this.labelString(id)
 						});
 
-					if(this.mode != "AUTHOR")
+					if(this.mode != "AUTHOR"){
 						var givenID = this.model.active.getDescriptionID(id);
-
+					}
 					//plot chart for student node
 					charts[id].addSeries(
 						"Variable solution",
 						this.formatSeriesForChart(activeSolution, k),
 						{stroke: "green"}
 					);
-					if(this.mode != "AUTHOR" && this.given.plotVariables[k]) {
+					if(this.mode != "AUTHOR" && this.given.plotVariables[k]){
 						charts[id].addSeries(
 							"correct solution",
 							this.formatSeriesForChart(givenSolution, k), {stroke: "red"}

@@ -33,7 +33,7 @@ define([
 	// Tags:
 	//			description box, author mode
 
-	return declare(null,{
+	return declare(null, {
 		givenModel: null,
 		constructor: function(/*model*/ givenModel){
 			this.givenModel = givenModel;
@@ -90,7 +90,7 @@ define([
 					this.timeObj.step = ret_step_time.value;
 				}
 			}));
-			//The following event handles incase enter button is pressed in	 time step field
+			//The following event handles in case enter button is pressed in the time step field.
 			array.forEach(['authorSetTimeStart', 'authorSetTimeEnd', 'authorSetTimeStep'], function(param){
 				paramid = registry.byId(param);
 				paramid.on("keydown", function(evt){
