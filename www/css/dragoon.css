@@ -107,12 +107,6 @@ html, body, #main{
     clear:right;
 }
 
-/* pointer to Dojo bug here, also add bugzilla entry */
-.sameedit .dijitCheckBoxInput{
- opacity:1.0;
-}
-
-
 #authorDescDialog .fieldgroup > label:first-child{
 width: 12em;
 }

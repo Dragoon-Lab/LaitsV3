@@ -22,9 +22,9 @@
 
 define([
 	"dojo/aspect", "dojo/_base/array", "dojo/_base/declare", "dojo/_base/lang",
-	"dijit/registry", "dojo/dom", "dojo/ready", 'dojo/keys',
+	"dijit/registry", "dojo/dom", "dojo/on", "dojo/ready", 'dojo/keys',
 	"./model", "./wraptext", "./time-checker"
-], function(aspect, array, declare, lang, registry, dom, ready, keys, model, wrapText, typechecker){
+], function(aspect, array, declare, lang, registry, dom, on, ready, keys, model, wrapText, typechecker){
 
 	// Summary:
 	//			MVC for the description box in author mode
@@ -94,7 +94,7 @@ define([
 			}));
 			//The following event handles in case enter button is pressed in the time step field.
 			array.forEach(['authorSetTimeStart', 'authorSetTimeEnd', 'authorSetTimeStep'], function(param){
-				paramid = registry.byId(param);
+				var paramid = registry.byId(param);
 				paramid.on("keydown", function(evt){
 					// console.log("----------- input character ", evt.keyCode, this.get('value'));
 					if(evt.keyCode == keys.ENTER)
@@ -163,9 +163,10 @@ define([
 			}));
 
 			//for share Bit checkbox
-			var descWidgetShareBit = registry.byId("authorProblemShare");
-			descWidgetShareBit.on("change", lang.hitch(this, function(){
-				this.givenModel.setShare(descWidgetShareBit.checked);
+			var descShareBit = dom.byId("authorProblemShare");
+			on(descShareBit, "click", lang.hitch(this, function(){
+				// console.log("check box", descShareBit.checked);
+				this.givenModel.setShare(descShareBit.checked);
 			}));
 		},
 

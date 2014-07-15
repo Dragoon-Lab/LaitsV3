@@ -58,15 +58,15 @@ define([
 				this.y = this.beginY;
 				this.checkedNodes = new Array();
 				this.model = {task: {
-						taskName: name,
-						time: {start: 0, end: 10, step: .5},
-						properties: {},
-						image: {},
-						taskDescription: "",
-						givenModelNodes: [],
-						studentModelNodes: []
+					taskName: name,
+					time: {start: 0, end: 10, step: .5},
+					properties: {},
+					image: {},
+					taskDescription: "",
+					givenModelNodes: [],
+					studentModelNodes: []
 				}};
-
+				
 				/*
 				 Define the "active model" (see doucumentation/node-editor.md).
 				 */
@@ -532,7 +532,7 @@ define([
 			getDescriptions: function(){
 				// Summary: returns an array of all descriptions with
 				// name (label) and any associated node id (value).
-		// Note that the description may be empty.
+				// Note that the description may be empty.
 				// TO DO:  The list should be sorted.
 				return array.map(this.getNodes(), function(node){
 					return {label: node.description, value: node.ID};
@@ -547,9 +547,9 @@ define([
 			getStatus: function(/*string*/ id, /*string*/ nodePart){
 				return this.getNode(id).status[nodePart];
 			},
-            getParent: function(/*string*/ id){
-                return this.getNode(id).parentNode;
-            },
+			getParent: function(/*string*/ id){
+				return this.getNode(id).parentNode;
+			},
 			setName: function(/*string*/ id, /*string*/ name){
 				this.getNode(id).name = name.trim();
 			},
