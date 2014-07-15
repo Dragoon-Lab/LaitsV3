@@ -234,15 +234,18 @@ define([
 			}
 		},
 
-		autocreateNodes:function(/** auto node id **/ id, /**variable name**/ variable){
-            console.log("auto creating nodes in author controller");
+		autocreateNodes: function(/** auto node id **/ id, /**variable name**/ variable){
+			console.log("auto creating nodes in author controller");
 			//update the name for nodeid
-            this._model.active.setName(id,variable);
-            // update Node labels upon exit
-            this.updateNodeLabel(id);
+			// BvdS:  when we set the name we don't send to author PM
+			// since there is nothing to update in the node editor since
+			// this is a different node.
+			this._model.active.setName(id, variable);
+			// update Node labels upon exit
+			this.updateNodeLabel(id);
 			//make connection
-			this.setConnection(id,this.currentID);
-        },
+			this.setConnection(id, this.currentID);
+		 },
 
 		handleKind: function(kind){
 			console.log("**************** in handleKind ", kind);

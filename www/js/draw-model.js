@@ -244,7 +244,7 @@ define([
 
 			return vertex;
 		},
- 		setConnection:function(/*string*/source,/*string*/destination){
+		setConnection:function(/*string*/source,/*string*/destination){
 			this._instance.connect({source: source, target: destination});
 		},
 
@@ -314,37 +314,35 @@ define([
 					isSum=equation.isSum(parse);
 					isProduct=equation.isProduct(parse);
 				}
-				
-				//check for call from student mode 			  
-				if(this._givenModel.getNode(destination)){ 
-					
-					//connectionOverlays code duplicated in setConnections 
-			  		var connectionOverlays = graphObjects.getEndPointConfiguration('');
-			 		//if it has multiple inputs  - access input label which matches source
-				    array.forEach(this._givenModel.getNode(destination).inputs,function(input){
+
+				//check for call from student mode
+				if(this._givenModel.getNode(destination)){
+
+					//connectionOverlays code duplicated in setConnections
+					var connectionOverlays = graphObjects.getEndPointConfiguration('');
+					//if it has multiple inputs  - access input label which matches source
+					array.forEach(this._givenModel.getNode(destination).inputs, function(input){
 						if(input.ID == source){
 							var destinationLabel =input;
-                            if(destinationLabel.label){
-                                console.log("------- At this point, we should add a '"+destinationLabel.label+"' label to "+ destinationLabel.ID);
-                        		//check pure sum  or pure product but not both
-                        		if(!(isSum&&isProduct)){
-                                	if(isSum){
-                                        if(destinationLabel.label=='-')
-                                            connectionOverlays = graphObjects.getEndPointConfiguration(destinationLabel.label);
-                                	}else if(isProduct){
-                                        if(destinationLabel.label=='/')
-                                            connectionOverlays = graphObjects.getEndPointConfiguration(destinationLabel.label);
-                                	}
-                        		}
-                			}				
+							if(destinationLabel.label){
+								console.log("------- At this point, we should add a '"+destinationLabel.label+"' label to "+ destinationLabel.ID);
+								//check pure sum  or pure product but not both
+								if(!(isSum && isProduct)){
+									if(isSum && destinationLabel.label=='-'){
+										connectionOverlays = graphObjects.getEndPointConfiguration(destinationLabel.label);
+									}else if(isProduct && destinationLabel.label=='/'){
+										connectionOverlays = graphObjects.getEndPointConfiguration(destinationLabel.label);
+									}
+								}
+							}
 							this._instance.connect({source: source, target: destination, overlays:connectionOverlays});
-						}	
-						
-					},this);
+						}
+
+					}, this);
 				}else{
 					//author mode automatic node connection
-					this._instance.connect({source:source,target:destination});
-				}	
+					this._instance.connect({source:source, target:destination});
+				}
 			}, this);
 		},
 

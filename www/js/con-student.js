@@ -116,28 +116,18 @@ define([
 
 		//  should be moved to a function in controller.js
 		autocreateNodes:function(/** auto node id **/ id, /**variable name**/ variable){
-			 //get the givenID of node from Name
-                        var givenID = this._model.given.getNodeIDByName(variable);
-                        //get student ID from the givenID if it exists
-                        var studentNodeID = this._model.student.getNodeIDFor(givenID);
-
-                        //if student node doesn't exist auto create node
-                        if(!studentNodeID){
-				console.log("auto creating nodes student controller");
-				//getDescriptionID using variable name
-				var descID = this._model.given.getNodeIDByName(variable);
-				//setDescriptionID for the node id
-				this._model.active.setDescriptionID(id, descID);
-				//get directives for description of auto created node
-				var directives = this._PM.processAnswer(id, 'description', descID);
-				// BvdS: There is a routine in controller.js to apply directives.
-				//update Model status for auto created node directives
-				array.forEach(directives,function(directive){
-				this.updateModelStatus(directive,id);
-				}, this);
-				// update Node labels upon exit
-				this.updateNodeLabel(id);
-			}
+			console.log("auto creating nodes student controller");
+			//getDescriptionID using variable name
+			var descID = this._model.given.getNodeIDByName(variable);
+			//setDescriptionID for the node id
+			this._model.active.setDescriptionID(id, descID);
+			var directives = this._PM.processAnswer(id, 'description', descID);
+			// Need to send to PM and update status, but don't actually
+			// apply directives since they are for a different node.
+			array.forEach(directives,function(directive){
+                this.updateModelStatus(directive,id);
+            }, this);
+			this.updateNodeLabel(id);
 		},
 
 		handleDescription: function(selectDescription){

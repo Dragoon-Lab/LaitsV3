@@ -321,17 +321,17 @@ define([
 
 			// This cannot go in controller.js since _PM is only in
 			// con-student.	 You will need con-student to attach this
-			// to closeEditor (maybe using aspect.after?).			
+			// to closeEditor (maybe using aspect.after?).	
 		},
 
 		//update the node label
 		updateNodeLabel:function(nodeID){
 			var nodeName = graphObjects.getNodeName(this._model.active,nodeID);
-            if(dom.byId(nodeID + 'Label')){
-                domConstruct.place(nodeName, nodeID + 'Label', "replace");
-            }else{
-                domConstruct.place('<div id="'+nodeID+'Label" class="bubble">'+nodeName+'</div>', nodeID);
-            }
+			if(dom.byId(nodeID + 'Label')){
+				domConstruct.place(nodeName, nodeID + 'Label', "replace");
+			}else{
+				domConstruct.place('<div id="'+nodeID+'Label" class="bubble">'+nodeName+'</div>', nodeID);
+			}
 		},
 
 		//set up event handling with UI components
@@ -796,17 +796,17 @@ define([
 							// console.log("	   substituting ", variable, " -> ", studentID);
 							parse.substitute(variable, subID);
 						}else{
-							//auto creation should happen here
-                                                        if(autocreationFlag){
+							if(autocreationFlag){
 								//create node 
 								var id = this._model.active.addNode();
-				                                this.addNode(this._model.active.getNode(id));
-                                                                this.autocreateNodes(id,variable);
-                                                                //get Node ID and substitute in equation
-                                                                var subID = unMapID.call(this._model.active,givenID||id);
-                                                                parse.substitute(variable,subID); //this should handle createInputs and connections to automatic node
-                                                        }else
-							directives.push({id: 'message', attribute: 'append', value: "Quantity '" + variable + "' not defined yet."});
+								this.addNode(this._model.active.getNode(id));
+								this.autocreateNodes(id,variable);
+								//get Node ID and substitute in equation
+								var subID2 = unMapID.call(this._model.active,givenID||id);
+								parse.substitute(variable,subID2); //this should handle createInputs and connections to automatic node
+							}else{
+								directives.push({id: 'message', attribute: 'append', value: "Quantity '" + variable + "' not defined yet."});
+							}
 						}
 					}else{
 						cancelUpdate = true;  // Don't update model or send ot PM.
