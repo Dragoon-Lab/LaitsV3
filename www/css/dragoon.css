@@ -107,6 +107,15 @@ html, body, #main{
     clear:right;
 }
 
+/*
+  The dijit style file dijit/themes/dijit.css sets the
+  opacity to zero and the box is invisible.
+ */
+.sameedit .dijitCheckBoxInput{
+ opacity:1.0;
+}
+
+
 #authorDescDialog .fieldgroup > label:first-child{
 width: 12em;
 }
