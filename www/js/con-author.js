@@ -137,12 +137,11 @@ define([
 					break;
 
 				case "initial":
-					if(value && validInput){
+					if(validInput){
 						returnObj.push({id:"initial", attribute:"status", value:"entered"});
-					} else if(value && !validInput){
-						returnObj.push({id:"initial", attribute:"status", value:"incorrect"});
 					}else{
-						returnObj.push({id:"initial", attribute:"status", value:""});
+						// This never happens
+						returnObj.push({id:"initial", attribute:"status", value:"incorrect"});
 					}
 					break;
 
@@ -308,7 +307,7 @@ define([
 				var newInitial = IniFlag.value;
 				this.applyDirectives(this.authorPM.process(this.currentID, "initial", newInitial, true));
 				console.log("In AUTHOR mode. Initial value is: " + newInitial);
-				this._model.active.setInitial(this.currentID,newInitial);
+				this._model.active.setInitial(this.currentID, newInitial);
 			}else if(IniFlag.errorType){
 				this.logging.log('solution-step', {
 					type: IniFlag.errorType,

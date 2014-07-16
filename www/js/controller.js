@@ -937,9 +937,11 @@ define([
 			this.updateEquationLabels(type);
 
 			var initial = model.getInitial(nodeid);
-			console.log('initial value is ', initial);
-			this.lastInitial.value=(typeof initial === "number")?initial.toString():null;
-			registry.byId(this.controlMap.initial).attr('value', initial || '');
+			console.log('initial value is ', initial, typeof initial);
+			// Initial value will be undefined if it is not in the model
+			var isInitial = typeof initial === "number";
+			this.lastInitial.value = isInitial?initial.toString():null;
+			registry.byId(this.controlMap.initial).attr('value', isInitial?initial:'');
 			
 			var unit = model.getUnits(nodeid);
 			console.log('unit is', unit || "not set");
