@@ -244,7 +244,11 @@ define([
 
 			return vertex;
 		},
+		setConnection:function(/*string*/source,/*string*/destination){
+			this._instance.connect({source: source, target: destination});
+		},
 
+		// Code duplication issue:  https://trello.com/c/6cdUaCPl
 		setConnections: function(/*array*/ sources, /*string*/ destination){
 
 			//after determining equation type + or	- , set connection EndPoint by using following method
@@ -257,7 +261,7 @@ define([
 			// have this destination as their target.
 		
 			var targetId = attr.get(destination, "id");
-			var parse = this._givenModel.getEquation(targetId),isSum,isProduct;
+			var parse = this._givenModel.getEquation(targetId), isSum, isProduct;
 			if(parse){
 				parse = equation.parse(parse);
 				isSum = equation.isSum(parse);
@@ -269,6 +273,7 @@ define([
 					this._instance.detach(connection);
 			}, this);
 			// Create new connections
+
 			var connectionOverlays = graphObjects.getEndPointConfiguration('');
 			array.forEach(sources, function(source){
 				// All sources and destinations should exist.
@@ -276,9 +281,9 @@ define([
 				if(source.label){
 					console.log("------- At this point, we should add a '"+source.label+"' label to "+ source.ID);
 					//check pure sum  or pure product but not both
-					if(!(isSum&&isProduct)){
+					if(!(isSum && isProduct)){
 						if(isSum && source.label == '-'){
-								connectionOverlays = graphObjects.getEndPointConfiguration(source.label);
+							connectionOverlays = graphObjects.getEndPointConfiguration(source.label);
 						}else if(isProduct && source.label == '/'){
 							connectionOverlays = graphObjects.getEndPointConfiguration(source.label);
 						}
@@ -287,12 +292,13 @@ define([
 
 				this._instance.connect({source: source.ID,
 										target: destination,
-					overlays:connectionOverlays
+										overlays:connectionOverlays
 				});
 				connectionOverlays = graphObjects.getEndPointConfiguration('');
 			}, this);
 		},
 
+		// Code duplication issue:  https://trello.com/c/6cdUaCPl
 		addQuantity: function(/*string*/ source, /*array*/ destinations){
 			// Go through existing connections an delete those
 			// that have this source.
@@ -302,8 +308,41 @@ define([
 			}, this);
 			// Create new connections
 			array.forEach(destinations, function(destination){
-				// All sources and destinations should exist.
-				this._instance.connect({source: source, target: destination});
+				var parse = this._givenModel.getEquation(destination), isSum, isProduct;
+				if(parse){
+					parse=equation.parse(parse);
+					isSum=equation.isSum(parse);
+					isProduct=equation.isProduct(parse);
+				}
+
+				//check for call from student mode
+				if(this._givenModel.getNode(destination)){
+
+					//connectionOverlays code duplicated in setConnections
+					var connectionOverlays = graphObjects.getEndPointConfiguration('');
+					//if it has multiple inputs  - access input label which matches source
+					array.forEach(this._givenModel.getNode(destination).inputs, function(input){
+						if(input.ID == source){
+							var destinationLabel =input;
+							if(destinationLabel.label){
+								console.log("------- At this point, we should add a '"+destinationLabel.label+"' label to "+ destinationLabel.ID);
+								//check pure sum  or pure product but not both
+								if(!(isSum && isProduct)){
+									if(isSum && destinationLabel.label=='-'){
+										connectionOverlays = graphObjects.getEndPointConfiguration(destinationLabel.label);
+									}else if(isProduct && destinationLabel.label=='/'){
+										connectionOverlays = graphObjects.getEndPointConfiguration(destinationLabel.label);
+									}
+								}
+							}
+							this._instance.connect({source: source, target: destination, overlays:connectionOverlays});
+						}
+
+					}, this);
+				}else{
+					//author mode automatic node connection
+					this._instance.connect({source:source, target:destination});
+				}
 			}, this);
 		},
 

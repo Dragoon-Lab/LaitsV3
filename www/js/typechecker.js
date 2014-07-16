@@ -38,11 +38,13 @@ define([
 			content: "Non-numeric data not accepted"
 		}),
 
-		closePops: function(){
-			popup.close(this.myTooltipDialog);
-			popup.close(this.myTooltipDialog2);
-		},
+		dialogs: [this.myTooltipDialog, this.myTooltipDialog2],
 
+		closePops: function(){
+			array.forEach(this.dialogs, function(dialog){
+				popup.close(dialog);
+			});
+		},
 
 		checkInitialValue: function(nodeID, lastInput){
 			//Description : performs non number check and also checks if the initial 
@@ -58,12 +60,9 @@ define([
 			this.closePops();
 
 			// Don't do anything if the value has not changed.
+			//Also Don't do anything if the value is empty
 			var domNode = dom.byId(nodeID);
 			var inputString = domNode.value.trim();
-			if(inputString == lastInput.value){
-				return {status: false};
-			}
-			lastInput.value = inputString;
 
 			// we do this type conversion because we used a textbox for 
 			// initialvalue input which is a numerical
@@ -72,8 +71,7 @@ define([
 			// use isNaN to test if conversion worked.
 
 			if(isNaN(input)){
-
-	var errorType;
+				var errorType;
 				// Put in checks here
 				console.log('not a number');
 				//initialValue is the id of the textbox, we get the value in the textbox
@@ -95,7 +93,11 @@ define([
 				}
 
 				return {status: false, errorType: errorType};
+			}else if(inputString == lastInput.value || inputString==""){
+				return {status: false};
 			}
+			lastInput.value = inputString;
+
 			// updating node editor and the model.
 			return {status: true, value: input};
 		}

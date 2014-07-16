@@ -108,6 +108,11 @@ define([
 			var drawModel = new drawmodel(givenModel.active);
 			drawModel.setLogging(session);
 
+			// Wire up drawing new node
+			aspect.after(controllerObject, "addNode",
+						 lang.hitch(drawModel, drawModel.addNode),
+						 true);
+
 			// Wire up send to server
 			aspect.after(drawModel, "updater", function(){
 				session.saveProblem(givenModel.model);
@@ -160,8 +165,9 @@ define([
 					lang.hitch(drawModel, drawModel.addQuantity), true);
 			aspect.after(controllerObject, 'setConnections',
 						 lang.hitch(drawModel, drawModel.setConnections), true);
-			
-			/*
+			aspect.after(controllerObject, 'setConnection',
+                                                 lang.hitch(drawModel, drawModel.setConnection), true);
+			 /*
 			 Autosave on close window
 			 It would be more efficient if we only saved the changed node.
 			 
@@ -181,14 +187,12 @@ define([
 				registry.byId("nodeeditor").hide();
 			});
 
-		
 			// Also used in image loading below.
 			var descObj = new description(givenModel);
-			
 			if(query.m == "AUTHOR"){
 				var db = registry.byId("descButton");
-			db.set("disabled", false);
-				
+				db.set("disabled", false);
+
 				// Description button wiring
 				menu.add("descButton", function(){
 					registry.byId("authorDescDialog").show();
@@ -201,13 +205,14 @@ define([
 					registry.byId("authorDescDialog").hide();
 				});
 			}
+			// Render image description on canvas
+			descObj.showDescription();
 
 			/*
 			 Make model solution plot using dummy data. 
 			 This should be put in its own module.
 			 */
 			
-
 			// show graph when button clicked
 			menu.add("graphButton", function(){
 				console.debug("button clicked");
@@ -269,24 +274,10 @@ define([
 				// "newwindow": the pop-out window name, not required, could be empty
 				// "height" and "width": pop-out window size
 				// Other properties could be changed as the value of yes or no
-				window.open("https://www.youtube.com/watch_popup?v=gsrM07XfABk","newwindow",
+				window.open("https://www.youtube.com/watch_popup?v=Pll8iyDzcUs","newwindow",
 							"height=400, width=600, toolbar =no, menubar=no, scrollbars=no, resizable=no, location=no, status=no"
 						   );
 			});
-			
-			/*
-			 BvdS:	this doesn't look quite right.	We want to download
-			 the image and then get its dimensions.	 (This is a property of 
-			 the image object) and use the dimensions to place the description
-			 
-			 In AUTHOR mode, make image clickable or put in "click here" box.
-			 Also, make description clickable, with default text "click here".
-			 These will be wired up to dialog boxes to set the image URL and
-			 the description.
-			 */
-			
-			descObj.showDescription();
-			
 		});
 	});
 });

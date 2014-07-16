@@ -91,12 +91,16 @@ define([
 
 		saveProblem: function(model){
 			// Summary: saves the string held in this.saveData in the database.
+			var object = {
+				sg: json.toJson(model.task),
+				x: this.sessionId
+			};
+			if("share" in model){
+				// Database Boolean
+				object.share = model.share?1:0;
+			}
 			xhr.post(this.path + "save_solution.php", {
-				data: {
-					sg: json.toJson(model.task),
-					// see documentation/sessions.md for notation
-					x: this.sessionId
-				}
+				data: object
 			}).then(function(reply){  // this makes saveProblem blocking?
 				console.log("saveProblem worked: ", reply);
 			}, function(err){

@@ -58,17 +58,17 @@ define([
 				this.y = this.beginY;
 				this.checkedNodes = new Array();
 				this.model = {task: {
-						taskName: name,
-						time: {start: 0, end: 10, step: .5},
-						properties: {},
-						image: {},
-						taskDescription: "",
-						givenModelNodes: [],
-						studentModelNodes: []
-					}};
-
+					taskName: name,
+					time: {start: 0, end: 10, step: .5},
+					properties: {},
+					image: {},
+					taskDescription: "",
+					givenModelNodes: [],
+					studentModelNodes: []
+				}};
+				
 				/*
-				 Define the "active model" (see doucumentation/javascript.md).
+				 Define the "active model" (see doucumentation/node-editor.md).
 				 */
 				obj.active = (mode == "AUTHOR") ? obj.given : obj.student;
 
@@ -80,11 +80,12 @@ define([
 			beginY: 100,
 			nodeWidth: 200,
 			nodeHeight: 200,
-		isCompleteFlag: false,
+			isCompleteFlag: false,
+
 			/**
-			 * 
+			 *
 			 * Private methods; these methods should not be accessed outside of this class
-			 *	
+			 *
 			 */
 			_updateNextXYPosition: function(){
 				// Summary: keeps track of where to place the next node; function detects collisions
@@ -123,12 +124,20 @@ define([
 				}, obj);
 				return optimalNode;
 			},
-			/**
-			 * 
-			 * Public methods
-			 *	
-			 */
 
+			/**
+			 *
+			 * Public methods
+			 *
+			 */
+			setShare: function(value){
+				// value: Boolean
+				this.model.share = value;
+			},
+
+			getShare: function(){
+				return this.model.share;
+			},
 			/**
 			 * Functions to load or retrieve a model in string format
 			 */
@@ -202,11 +211,6 @@ define([
 			getTaskName: function(){
 				return this.model.task.taskName;
 			},
-/*					 
-			getPhase: function(){
-				return this.model.task.properties.phase;
-			},
-*/
 			getType: function(){
 				return this.model.task.properties.type;
 			},
@@ -224,14 +228,14 @@ define([
 				return this.model.task.time.units;
 			},
 			getAllUnits: function(){
-				// Summary:	 returns a list of all distinct units 
+				// Summary:	 returns a list of all distinct units
 				// (string format) defined in a problem.
 				// Need to order list alphabetically.
 				var unitList = new Array();
-		var timeUnits = this.getUnits();
-		if(timeUnits){
-			unitList.push(timeUnits);
-		}
+				var timeUnits = this.getUnits();
+				if(timeUnits){
+					unitList.push(timeUnits);
+				}
 				array.forEach(this.given.getNodes(), function(node){
 					if(node.units && array.indexOf(unitList, node.units) == -1){
 						unitList.push(node.units);
@@ -246,7 +250,7 @@ define([
 				// Summary: Returns the next optimal node, first checking for children
 				//		of visible parent nodes, and then checking for parent nodes that
 				//		aren't visible; Returns null if all nodes visible.
-				//		
+				//
 				// Note: the student node studentID is assumed incorrect so it is ignored
 				var solutionNodes = this.solution.getNodes();
 				var nextNode = null;
@@ -296,7 +300,7 @@ define([
 				});
 			},
 			isNodesParentVisible: function(/*string*/ studentID, /*string*/ givenID){
-				// Summary: returns true if the given node's parent is visible (if the 
+				// Summary: returns true if the given node's parent is visible (if the
 				//		node is an input into another node that is in the student model)
 				var nodes = this.given.getNodes();
 
@@ -528,7 +532,7 @@ define([
 			getDescriptions: function(){
 				// Summary: returns an array of all descriptions with
 				// name (label) and any associated node id (value).
-		// Note that the description may be empty.
+				// Note that the description may be empty.
 				// TO DO:  The list should be sorted.
 				return array.map(this.getNodes(), function(node){
 					return {label: node.description, value: node.ID};
@@ -542,6 +546,9 @@ define([
 			},
 			getStatus: function(/*string*/ id, /*string*/ nodePart){
 				return this.getNode(id).status[nodePart];
+			},
+			getParent: function(/*string*/ id){
+				return this.getNode(id).parentNode;
 			},
 			setName: function(/*string*/ id, /*string*/ name){
 				this.getNode(id).name = name.trim();

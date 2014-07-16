@@ -33,22 +33,26 @@
 	};
     </script>
 
-    <script type="text/javascript">
-        // This require should include all of the packages
-        // needed by widgets defined in the html below.
-        require([
-	    "dojo/parser",
-	    "dijit/Dialog",
-            "dijit/MenuBar", "dijit/PopupMenuBarItem",
-            "dijit/layout/BorderContainer", "dijit/MenuItem",
-            "dijit/form/Select", 
-	    "dijit/form/Button", "dijit/form/TextBox",
-            "dijit/form/ComboBox", "dijit/form/Textarea",
-	    "dijit/form/SimpleTextarea", "dijit/Menu",
-            "dijit/layout/ContentPane",
-	    "dragoon/menu", // Wire up menus
-            // Load up Dragoon itself
-	    "dragoon"
+	<script type="text/javascript">
+		/*
+		 This require should include all of the packages
+		 needed by widgets defined in the html below.
+
+		 Most widgets have an associated css style sheet that is
+		 loaded by css/dragoon.css
+		 */
+		require([
+			"dojo/parser",
+			"dijit/Dialog",
+			"dijit/MenuBar", "dijit/PopupMenuBarItem",
+			"dijit/layout/BorderContainer", "dijit/MenuItem",
+			"dijit/form/Select", 
+			"dijit/form/Button", "dijit/form/CheckBox", "dijit/form/TextBox",
+			"dijit/form/ComboBox", "dijit/form/Textarea",
+			"dijit/form/SimpleTextarea", "dijit/Menu",
+			"dijit/layout/ContentPane",
+			"dragoon/menu", // Wire up menus
+			"dragoon" // Load up Dragoon itself
         ]);	
     </script>
 
@@ -168,15 +172,19 @@
 	  </div>
 	  <div class="fieldgroup">
             <label for="authorSetImage">URL for Image:</label>
-            <input id="authorSetImage"></input>
-	  </div>
-	  <div class="fieldgroup">
-            <label for="authorSetDescription">Description of Problem:</label>
-            <textarea id="authorSetDescription" name="authorSetDescription" data-dojo-type="dijit/form/SimpleTextarea" value="Enter Description here..."></textarea>
-          </div>
-	  <div class="fieldgroup">
-	    <button id="descCloseButton" type="button" data-dojo-type="dijit/form/Button" iconClass="dijitNoIcon">Done</button>
-          </div>
+			<input id="authorSetImage"/>
+		</div>
+		<div class="fieldgroup">
+			<label for="authorSetDescription">Description of Problem:</label>
+			<textarea id="authorSetDescription" name="authorSetDescription" data-dojo-type="dijit/form/SimpleTextarea" value="Enter Description here..."></textarea>
+		</div>
+		<div class="fieldgroup">
+			<label for="authorProblemShare" title="Share this problem with students.">Share Problem:</label>
+			<input id="authorProblemShare" name="authorProblemShare" data-dojo-type="dijit/form/CheckBox" value="agreed" checked="false"/>
+		</div>
+		<div class="buttonBox">
+			<button id="descCloseButton" type="button" data-dojo-type="dijit/form/Button" iconClass="dijitNoIcon">Done</button>
+		</div>
 	</div>
 
 	<!-- Putting Node-Editor -Dialog stuff for demo -->
@@ -201,6 +209,8 @@
             <div id="descriptionControlAuthor" class="fieldgroup" style="display:none">
 	        <label for="setDescription">Description</label>
                 <input id="setDescription" data-dojo-type="dijit/form/ComboBox">
+            <label for ="markRootNode" title ="Mark this node as a root node.">Root:</label>
+                <input id ="markRootNode" name ="markRootNode" data-dojo-type="dijit/form/CheckBox" value="agreed" checked="false"/>
 	    </div>
             <div class="fieldgroup">
                 <label for="typeId">Type</label>
