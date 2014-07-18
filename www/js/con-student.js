@@ -103,7 +103,14 @@ define([
 			var negativeInputs = registry.byId("negativeInputs");
 			console.log("description widget = ", d, this.controlMap.description);
 		  //  d.removeOption(d.getOptions()); // Delete all options
-			array.forEach(this._model.given.getDescriptions(), function(desc){
+
+            //get descriptions to sort as alphabetic order
+            var descriptions = this._model.given.getDescriptions();
+            descriptions.sort(function(obj1, obj2){
+                return obj1.label > obj2.label;
+            });
+
+			array.forEach(descriptions, function(desc){
 				d.addOption(desc);
 				var name = this._model.given.getName(desc.value);
 				var option = {label: name + " (" + desc.label + ")", value: desc.value};
