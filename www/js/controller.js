@@ -330,7 +330,7 @@ define([
 			if(dom.byId(nodeID + 'Label')){
 				domConstruct.place(nodeName, nodeID + 'Label', "replace");
 			}else{
-				domConstruct.place('<div id="'+nodeID+'Label" class="bubble">'+nodeName+'</div>', nodeID);
+				domConstruct.place(nodeName, nodeID);
 			}
 		},
 
