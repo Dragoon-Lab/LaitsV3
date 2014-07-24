@@ -5,16 +5,16 @@
  *
  *This file is a part of Dragoon
  *Dragoon is free software: you can redistribute it and/or modify
- *it under the terms of the GNU General Public License as published by
+ *it under the terms of the GNU Lesser General Public License as published by
  *the Free Software Foundation, either version 3 of the License, or
  *(at your option) any later version.
  *
  *Dragoon is distributed in the hope that it will be useful,
  *but WITHOUT ANY WARRANTY; without even the implied warranty of
  *MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.	See the
- *GNU General Public License for more details.
+ *GNU Lesser General Public License for more details.
  *
- *You should have received a copy of the GNU General Public License
+ *You should have received a copy of the GNU Lesser General Public License
  *along with Dragoon.  If not, see <http://www.gnu.org/licenses/>.
  *
  */
@@ -111,6 +111,23 @@ define([
 				positiveInputs.addOption(option);
 				negativeInputs.addOption(option);
 			}, this);
+		},
+
+
+		//  should be moved to a function in controller.js
+		autocreateNodes:function(/** auto node id **/ id, /**variable name**/ variable){
+			console.log("auto creating nodes student controller");
+			//getDescriptionID using variable name
+			var descID = this._model.given.getNodeIDByName(variable);
+			//setDescriptionID for the node id
+			this._model.active.setDescriptionID(id, descID);
+			var directives = this._PM.processAnswer(id, 'description', descID);
+			// Need to send to PM and update status, but don't actually
+			// apply directives since they are for a different node.
+			array.forEach(directives,function(directive){
+                this.updateModelStatus(directive,id);
+            }, this);
+			this.updateNodeLabel(id);
 		},
 
 		handleDescription: function(selectDescription){
@@ -239,7 +256,7 @@ define([
 			array.forEach(this._model.student.getStatusDirectives(nodeid), function(directive){
 				var w = registry.byId(this.controlMap[directive.id]);
 				w.set(directive.attribute, directive.value);
-			// The actual values should be in the model itself, not in status directives.
+				// The actual values should be in the model itself, not in status directives.
 				if(directive.attribute == "value"){
 					this.logging.clientLog("error", {
 						message: "Values should not be set in status directives",
@@ -251,12 +268,14 @@ define([
 
 		// Need to save state of the node editor in the status section
 		// of the student model.  See documentation/json-format.md
-		updateModelStatus: function(desc) {
-			if (this.validStatus[desc.attribute]) {
+		updateModelStatus: function(desc, id){
+			//in case of autocreation nodes, id must be passed explicitly
+			id = id || this.currentID;
+			if(this.validStatus[desc.attribute]){
 				var opt = {};
 				opt[desc.attribute] = desc.value;
-				this._model.student.setStatus(this.currentID, desc.id, opt);
-			} else {
+				this._model.student.setStatus(id, desc.id, opt);
+			}else{
 				// There are some directives that should update
 				// the student model node (but not the status section).
 

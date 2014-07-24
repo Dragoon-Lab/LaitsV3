@@ -5,16 +5,16 @@
  *
  *This file is a part of Dragoon
  *Dragoon is free software: you can redistribute it and/or modify
- *it under the terms of the GNU General Public License as published by
+ *it under the terms of the GNU Lesser General Public License as published by
  *the Free Software Foundation, either version 3 of the License, or
  *(at your option) any later version.
  *
  *Dragoon is distributed in the hope that it will be useful,
  *but WITHOUT ANY WARRANTY; without even the implied warranty of
  *MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.	See the
- *GNU General Public License for more details.
+ *GNU Lesser General Public License for more details.
  *
- *You should have received a copy of the GNU General Public License
+ *You should have received a copy of the GNU Lesser General Public License
  *along with Dragoon.  If not, see <http://www.gnu.org/licenses/>.
  *
  */
@@ -102,6 +102,11 @@ define([
 			domStyle.set("structured", "display", structured);
 			domStyle.set("equationBox", "display", algebraic);
 			domStyle.set("equationText", "display", structured);
+		},
+
+		// A stub for connecting routine to draw new node.
+		addNode: function(node){
+			console.log("Node Editor calling addNode() for ", node.id);
 		},
 
 		// A list of common controls of student and author
@@ -302,12 +307,8 @@ define([
 			this.colorNodeBorder(this.currentID, true);
 
 			// update Node labels upon exit
-			var nodeName = graphObjects.getNodeName(this._model.active,this.currentID);
-			if(dom.byId(this.currentID + 'Label')){
-				domConstruct.place(nodeName, this.currentID + 'Label', "replace");
-			}else{
-				domConstruct.place('<div id="'+this.currentID+'Label" class="bubble">'+nodeName+'</div>', this.currentID);
-			}
+			this.updateNodeLabel(this.currentID);
+
 			// In case any tool tips are still open.
 			typechecker.closePops();
 			//this.disableHandlers = false;
@@ -320,9 +321,19 @@ define([
 
 			// This cannot go in controller.js since _PM is only in
 			// con-student.	 You will need con-student to attach this
-			// to closeEditor (maybe using aspect.after?).
-			
+			// to closeEditor (maybe using aspect.after?).	
 		},
+
+		//update the node label
+		updateNodeLabel:function(nodeID){
+			var nodeName = graphObjects.getNodeName(this._model.active,nodeID);
+			if(dom.byId(nodeID + 'Label')){
+				domConstruct.place(nodeName, nodeID + 'Label', "replace");
+			}else{
+				domConstruct.place(nodeName, nodeID);
+			}
+		},
+
 		//set up event handling with UI components
 		_initHandles: function(){
 			// Summary: Set up Node Editor Handlers
@@ -368,10 +379,9 @@ define([
 			// regular handler.
 			initialWidget.on("keydown", function(evt){
 				// console.log("----------- input character ", evt.keyCode, this.get('value'));
-				if(evt.keyCode == keys.ENTER)
-					
+				if(evt.keyCode == keys.ENTER){
 					this.emit('Change', {}, [this.get('value')]);
-				
+				}
 			});
 			// undo color on change in the initial value widget
 			initialWidget.on("keydown",lang.hitch(this,function(evt){
@@ -740,7 +750,16 @@ define([
 				var unMapID = this._model.active.getNodeIDFor || function(x){ return x; };
 				array.forEach(parse.variables(), function(variable){
 					// Test if variable name can be found in given model
+
 					var givenID = this._model.given.getNodeIDByName(variable);
+
+					// autocreation flag will eventually be set from the URL
+					// or from the state table.  Alternatively, we will show a list
+					// of variables.
+					var autocreationFlag = true; 
+					/*if(autocreationFlag && !this._model.active.isNode(givenID))
+						this.autocreateNodes(variable);*/
+
 					// Checks for nodes referencing themselves; this causes problems because
 					//		functions will always evaluate to true if they reference themselves
 					if(givenID && this._model.active.getType(this.currentID) === "function" &&
@@ -777,7 +796,17 @@ define([
 							// console.log("	   substituting ", variable, " -> ", studentID);
 							parse.substitute(variable, subID);
 						}else{
-							directives.push({id: 'message', attribute: 'append', value: "Quantity '" + variable + "' not defined yet."});
+							if(autocreationFlag){
+								//create node 
+								var id = this._model.active.addNode();
+								this.addNode(this._model.active.getNode(id));
+								this.autocreateNodes(id,variable);
+								//get Node ID and substitute in equation
+								var subID2 = unMapID.call(this._model.active,givenID||id);
+								parse.substitute(variable,subID2); //this should handle createInputs and connections to automatic node
+							}else{
+								directives.push({id: 'message', attribute: 'append', value: "Quantity '" + variable + "' not defined yet."});
+							}
 						}
 					}else{
 						cancelUpdate = true;  // Don't update model or send ot PM.
@@ -850,7 +879,10 @@ define([
 		setConnections: function(from, to){
 			// console.log("======== setConnections fired for node" + to);
 		},
-
+		 // Stub to set connection in the graph / one to one
+                setConnection: function(from, to){
+                        // console.log("======== setConnections fired for node" + to);
+                },
 		//show node editor
 		showNodeEditor: function(/*string*/ id){
 			//Checks if the current mode is COACHED mode and exit from node editor if all the modes are defined
@@ -905,9 +937,11 @@ define([
 			this.updateEquationLabels(type);
 
 			var initial = model.getInitial(nodeid);
-			console.log('initial value is ', initial);
-			this.lastInitial.value=(typeof initial === "number")?initial.toString():null;
-			registry.byId(this.controlMap.initial).attr('value', initial || '');
+			console.log('initial value is ', initial, typeof initial);
+			// Initial value will be undefined if it is not in the model
+			var isInitial = typeof initial === "number";
+			this.lastInitial.value = isInitial?initial.toString():null;
+			registry.byId(this.controlMap.initial).attr('value', isInitial?initial:'');
 			
 			var unit = model.getUnits(nodeid);
 			console.log('unit is', unit || "not set");
