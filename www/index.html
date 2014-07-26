@@ -110,7 +110,7 @@
              <button type="button" data-dojo-type="dijit/form/Button" id="createNodeButton">Create Node</button>
              <button type="button" data-dojo-type="dijit/form/Button" id="graphButton">Graph</button>
              <button type="button" data-dojo-type="dijit/form/Button" id="tableButton">Table</button>
-             <button type="button" data-dojo-type="dijit/form/Button" id="forumButton">Forum</button>
+             <button type="button" data-dojo-type="dijit/form/Button" id="forumButton" disabled="true">Forum</button>
              <button type="button" data-dojo-type="dijit/form/Button" id="descButton" disabled="true">Description &amp; Times</button>
 	     <div data-dojo-type="dijit/PopupMenuBarItem">
                  <span>Help</span>
@@ -297,7 +297,7 @@
 		<div class="buttonBox">
 		    <!-- Strut to move close button down.  It would be
                     better to do this with css... -->
-		    <div>&nbsp;</div>
+		    <div>&nbsp;<button id="nodeForumButton" type="button" data-dojo-type="dijit/form/Button" iconClass="dijitNoIcon" disabled="true">Forum</button></div>
 		    <div>&nbsp;</div>
 		    <div>&nbsp;</div>
 		    <button id="closeButton" type="button" data-dojo-type="dijit/form/Button" iconClass="dijitNoIcon">Done</button>
