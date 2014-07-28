@@ -192,6 +192,7 @@ define([
 			style.set('descriptionControlAuthor', 'display', 'block');
 			style.set('selectUnitsControl', 'display', 'none');
 			style.set('setUnitsControl', 'display', 'inline');
+            style.set('setRootNode', 'display', 'block')
 			style.set('inputControlAuthor', 'display', 'block');
 			style.set('inputControlStudent', 'display', 'none');
 		},
