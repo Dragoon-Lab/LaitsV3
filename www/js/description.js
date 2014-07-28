@@ -6,16 +6,16 @@
  *
  *This file is a part of Dragoon
  *Dragoon is free software: you can redistribute it and/or modify
- *it under the terms of the GNU General Public License as published by
+ *it under the terms of the GNU Lesser General Public License as published by
  *the Free Software Foundation, either version 3 of the License, or
  *(at your option) any later version.
  *
  *Dragoon is distributed in the hope that it will be useful,
  *but WITHOUT ANY WARRANTY; without even the implied warranty of
  *MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.	  See the
- *GNU General Public License for more details.
+ *GNU Lesser General Public License for more details.
  *
- *You should have received a copy of the GNU General Public License
+ *You should have received a copy of the GNU Lesser General Public License
  *along with Dragoon.  If not, see <http://www.gnu.org/licenses/>.
  *
  */
@@ -55,12 +55,17 @@ define([
 			dom.byId("authorSetDescription").value = this.serialize(
 				givenModel.getTaskDescription() ? givenModel.getTaskDescription() : ""
 			);
-			dom.byId("authorProblemShare").checked = givenModel.getShare();
+
 			ready(this, this._initHandles);
 		},
 
 		//set up event handling with UI components
 		_initHandles: function(){
+			// Summary:  initialization associated with widgets
+
+			// Set checkbox for sharing
+			registry.byId("authorProblemShare").attr("value", this.givenModel.getShare());
+
 			//Define all the variables necessary to fire onchange events and to pop up tooltips
 			//for authorSetTimeStart
 			var descWidgetStart = registry.byId('authorSetTimeStart');
@@ -162,11 +167,11 @@ define([
 				};
 			}));
 
-			//for share Bit checkbox
-			var descShareBit = dom.byId("authorProblemShare");
-			on(descShareBit, "click", lang.hitch(this, function(){
-				// console.log("check box", descShareBit.checked);
-				this.givenModel.setShare(descShareBit.checked);
+			//for share bit checkbox
+			var descShareBit = registry.byId("authorProblemShare");
+			descShareBit.on("Change", lang.hitch(this, function(checked){
+				// console.log("check box", descShareBit, checked);
+				this.givenModel.setShare(checked);
 			}));
 		},
 

@@ -5,16 +5,16 @@
  *
  *This file is a part of Dragoon
  *Dragoon is free software: you can redistribute it and/or modify
- *it under the terms of the GNU General Public License as published by
+ *it under the terms of the GNU Lesser General Public License as published by
  *the Free Software Foundation, either version 3 of the License, or
  *(at your option) any later version.
  *
  *Dragoon is distributed in the hope that it will be useful,
  *but WITHOUT ANY WARRANTY; without even the implied warranty of
  *MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.	See the
- *GNU General Public License for more details.
+ *GNU Lesser General Public License for more details.
  *
- *You should have received a copy of the GNU General Public License
+ *You should have received a copy of the GNU Lesser General Public License
  *along with Dragoon.  If not, see <http://www.gnu.org/licenses/>.
  *
  */
@@ -108,6 +108,11 @@ define([
 			var drawModel = new drawmodel(givenModel.active);
 			drawModel.setLogging(session);
 
+			// Wire up drawing new node
+			aspect.after(controllerObject, "addNode",
+						 lang.hitch(drawModel, drawModel.addNode),
+						 true);
+
 			// Wire up send to server
 			aspect.after(drawModel, "updater", function(){
 				session.saveProblem(givenModel.model);
@@ -160,8 +165,9 @@ define([
 					lang.hitch(drawModel, drawModel.addQuantity), true);
 			aspect.after(controllerObject, 'setConnections',
 						 lang.hitch(drawModel, drawModel.setConnections), true);
-			
-			/*
+			aspect.after(controllerObject, 'setConnection',
+                                                 lang.hitch(drawModel, drawModel.setConnection), true);
+			 /*
 			 Autosave on close window
 			 It would be more efficient if we only saved the changed node.
 			 

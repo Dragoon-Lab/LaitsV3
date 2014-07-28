@@ -5,16 +5,16 @@
  *
  *This file is a part of Dragoon
  *Dragoon is free software: you can redistribute it and/or modify
- *it under the terms of the GNU General Public License as published by
+ *it under the terms of the GNU Lesser General Public License as published by
  *the Free Software Foundation, either version 3 of the License, or
  *(at your option) any later version.
  *
  *Dragoon is distributed in the hope that it will be useful,
  *but WITHOUT ANY WARRANTY; without even the implied warranty of
- *MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
- *GNU General Public License for more details.
+ *MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.	See the
+ *GNU Lesser General Public License for more details.
  *
- *You should have received a copy of the GNU General Public License
+ *You should have received a copy of the GNU Lesser General Public License
  *along with Dragoon.  If not, see <http://www.gnu.org/licenses/>.
  *
  */
@@ -26,7 +26,8 @@
 
 define([
 	"dojo/_base/array", "dojo/_base/declare",
-	"dojo/_base/lang", "dojo/on", 'dojo/dom', 'dojo/dom-attr',
+	"dojo/_base/lang", "dojo/on", 'dojo/dom-attr',
+	"dijit/registry",
 	"dojox/charting/Chart",
 	"dojox/charting/axis2d/Default",
 	"dojox/charting/plot2d/Lines",
@@ -34,7 +35,7 @@ define([
 	"dojox/charting/widget/Legend",
 	"./calculations",
 	"dojo/domReady!"
-], function(array, declare, lang, on, dom, domAttr, Chart, Default, Lines, Grid, Legend, calculations){
+], function(array, declare, lang, on, domAttr, registry, Chart, Default, Lines, Grid, Legend, calculations){
 
 	// The calculations constructor is loaded before the RenderGraph constructor
 	return declare(calculations, {
@@ -98,7 +99,7 @@ define([
 			array.forEach(this.active.plotVariables, function(id){
 				var show = this.model.active.getType(id) == "accumulator";
 				var checked = show ? " checked='checked'" : "";
-				this.dialogContent += "<div><input id='sel" + id + "' type='checkbox' class='show_graphs' thisid='" + id + "'" + checked + "/>" + " Show " + this.model.active.getName(id) + "</div>";
+				this.dialogContent += "<div><input id='sel" + id + "' data-dojo-type='dijit/form/CheckBox' class='show_graphs' thisid='" + id + "'" + checked + "/>" + " Show " + this.model.active.getName(id) + "</div>";
 				var style = show ? "" : " style='display: none;'";
 				this.dialogContent += "<div	 id='chart" + id + "'" + style + "></div>";
 				// Since the legend div is replaced, we cannot hide the legend here.
@@ -159,7 +160,7 @@ define([
 			}
 			this.chart = charts;
 
-			// The following loop makes sure legends of functiongraphs are not visible initially
+			// The following loop makes sure legends of function node graphs are not visible initially
 			// until the user requests, we use the display : none property
 			// The legend div is replaced in the dom, so we must hide it dynamically.
 			array.forEach(this.active.plotVariables, function(id){
@@ -167,22 +168,18 @@ define([
 					var leg_style = { display: "none" };
 					var k = domAttr.set("legend" + id, "style", leg_style);
 				}
-				var check = dom.byId("sel" + id);
-				on(check, "click", function(){
-					if(!domAttr.get(this, "checked")) {
+				var check = registry.byId("sel" + id);
+				check.on("Change", function(checked){
+					if(checked) {
+						domAttr.remove("chart" + id, "style");
+						domAttr.remove("legend" + id, "style");
+					}else{
 						var obj = { display: "none" };
 						domAttr.set("chart" + id, "style", obj);
 						domAttr.set("legend" + id, "style", obj);
-					}else{
-						domAttr.remove("chart" + id, "style");
-						domAttr.remove("legend" + id, "style");
 					}
 				});
 			}, this);
-
-			// the following event handles the checkbox and
-			// works on whether to show or hide a chart
-
 		},
 
 		/*

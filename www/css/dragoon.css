@@ -3,6 +3,9 @@
 @import url("../dijit/themes/claro/layout/BorderContainer.css");
 @import url("../dijit/themes/claro/layout/ContentPane.css");
 @import url("../dijit/themes/claro/form/Button.css");
+@import url("../dijit/themes/claro/form/Checkbox.css");
+@import url("../dijit/themes/claro/form/Select.css");
+@import url("../dijit/themes/claro/form/Slider.css");
 @import url("../dijit/themes/claro/Menu.css");
 @import url("../dijit/themes/claro/Dialog.css");
 @import url("../dijit/themes/claro/document.css");
@@ -106,15 +109,6 @@ html, body, #main{
     float:right;
     clear:right;
 }
-
-/*
-  The dijit style file dijit/themes/dijit.css sets the
-  opacity to zero and the box is invisible.
- */
-.sameedit .dijitCheckBoxInput{
- opacity:1.0;
-}
-
 
 #authorDescDialog .fieldgroup > label:first-child{
 width: 12em;
