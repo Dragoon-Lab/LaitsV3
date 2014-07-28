@@ -370,13 +370,13 @@ define([
 			var descriptions = [];
 			var units = [];
 
-            // Get descriptions and units in AUTHOR mode to sort as alphabetic order
-            var authorDesc = this._model.given.getDescriptions();
-            authorDesc.sort(function(obj1, obj2){
-                return obj1.label > obj2.label;
-            });
-            var authorUnits = this._model.getAllUnits();
-            authorUnits.sort();
+			// Get descriptions and units in AUTHOR mode to sort as alphabetic order
+			var authorDesc = this._model.given.getDescriptions();
+			authorDesc.sort(function(obj1, obj2){
+				return obj1.label > obj2.label;
+			});
+			var authorUnits = this._model.getAllUnits();
+			authorUnits.sort();
 
 			array.forEach(authorDesc, function(desc){
 				if(desc.label){
@@ -390,10 +390,10 @@ define([
 				units.push({name: unit, id: unit});
 			}, this);
 
-            // Sort inputs in AUTHOR mode as alphabetic order
-            inputs.sort(function(obj1, obj2){
-                return obj1.name > obj2.name;
-            });
+			// Sort inputs in AUTHOR mode as alphabetic order
+			inputs.sort(function(obj1, obj2){
+				return obj1.name > obj2.name;
+			});
 
 			var m = new memory({data: inputs});
 			inputsWidget.set("store", m);
@@ -402,7 +402,7 @@ define([
 			descriptionWidget.set("store", m);
 			m = new memory({data: units});
 			unitsWidget.set("store", m);
-			
+
 			var value;
 			//node is not created for the first time. apply colors to widgets
 			//color name widget
