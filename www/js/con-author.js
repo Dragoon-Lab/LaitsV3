@@ -369,7 +369,16 @@ define([
 			var inputs = [];
 			var descriptions = [];
 			var units = [];
-			array.forEach(this._model.given.getDescriptions(), function(desc){
+
+            // Get descriptions and units in AUTHOR mode to sort as alphabetic order
+            var authorDesc = this._model.given.getDescriptions();
+            authorDesc.sort(function(obj1, obj2){
+                return obj1.label > obj2.label;
+            });
+            var authorUnits = this._model.getAllUnits();
+            authorUnits.sort();
+
+			array.forEach(authorDesc, function(desc){
 				if(desc.label){
 					var name = this._model.given.getName(desc.value);
 					var obj = {name:name, id: desc.id};
@@ -377,9 +386,15 @@ define([
 					descriptions.push({name: this._model.given.getDescription(desc.value), id: desc.id});
 				}
 			}, this);
-			array.forEach(this._model.getAllUnits(), function(unit){
+			array.forEach(authorUnits, function(unit){
 				units.push({name: unit, id: unit});
 			}, this);
+
+            // Sort inputs in AUTHOR mode as alphabetic order
+            inputs.sort(function(obj1, obj2){
+                return obj1.name > obj2.name;
+            });
+
 			var m = new memory({data: inputs});
 			inputsWidget.set("store", m);
 			nameWidget.set("store", m);
@@ -391,7 +406,7 @@ define([
 			var value;
 			//node is not created for the first time. apply colors to widgets
 			//color name widget
-			
+
 			//false value is set because while creating a name we are already checking for uniqueness and checking again while re-opening the node is not needed.
 			if(name){
 				this.applyDirectives(this.authorPM.process(false, "name", name, equation.isVariable(name)));
