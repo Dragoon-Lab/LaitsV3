@@ -251,7 +251,11 @@ define([
 			 */
 			var u = registry.byId("selectUnits");
 			// console.log("units widget ", u);
-			array.forEach(this._model.getAllUnits(), function(unit){
+
+			var units = this._model.getAllUnits();
+			units.sort();
+
+			array.forEach(units, function(unit){
 				u.addOption({label: unit, value: unit});
 			});
 		},
