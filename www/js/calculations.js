@@ -238,7 +238,7 @@ define([
                 var temp_ret=typechecker.checkInitialValue(textBoxID[paramID], last_index_value);
                 //if there is an error returned typechecker shows the error
                 //and at the same time we return without further rendering grpah/table
-                if(temp_ret.errorType) return;
+                if(temp_ret.status == false) return;
                 if(this._rendering){
 					console.log("	  returning");
 					return;

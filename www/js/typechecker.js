@@ -71,6 +71,7 @@ define([
 			// use isNaN to test if conversion worked.
 
 			if(inputString == lastInput.value || inputString==""){
+				errorType = "no change needed"
 				return {status: false};
 			}else if(isNaN(input)){
 				var errorType;
