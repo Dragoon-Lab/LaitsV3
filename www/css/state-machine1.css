@@ -279,4 +279,9 @@
 
 .dragHover { border:2px solid orange; }
 
-path { cursor:pointer; }
+path { 
+cursor:pointer;
+pointer-events: visiblestroke;
+stroke:rgb(92, 150, 188);
+stroke-width: 2px;
+}
