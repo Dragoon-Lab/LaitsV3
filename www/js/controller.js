@@ -105,7 +105,7 @@ define([
 		},
 
 		// A stub for connecting routine to draw new node.
-		addNode: function(node){
+		addNode: function(node,autoflag){
 			console.log("Node Editor calling addNode() for ", node.id);
 		},
 
@@ -803,7 +803,7 @@ define([
 							if(autocreationFlag){
 								//create node 
 								var id = this._model.active.addNode();
-								this.addNode(this._model.active.getNode(id));
+								this.addNode(this._model.active.getNode(id),true);
 								this.autocreateNodes(id,variable);
 								//get Node ID and substitute in equation
 								var subID2 = unMapID.call(this._model.active,givenID||id);
