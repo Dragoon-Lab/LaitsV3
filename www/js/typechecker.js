@@ -70,7 +70,9 @@ define([
 
 			// use isNaN to test if conversion worked.
 
-			if(isNaN(input)){
+			if(inputString == lastInput.value || inputString==""){
+				return {status: false};
+			}else if(isNaN(input)){
 				var errorType;
 				// Put in checks here
 				console.log('not a number');
@@ -93,8 +95,6 @@ define([
 				}
 
 				return {status: false, errorType: errorType};
-			}else if(inputString == lastInput.value || inputString==""){
-				return {status: false};
 			}
 			lastInput.value = inputString;
 
