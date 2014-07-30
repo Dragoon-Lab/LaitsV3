@@ -46,8 +46,10 @@ More information on [starting php and Apache on OS X](http://akrabat.com/computi
 
 ## Testing Dragoon ##
 
-Dragoon uses [Selenium 2.0]( http://docs.seleniumhq.org/projects/webdriver/) to perform automated [functional testing] (http://en.wikipedia.org/wiki/Functional_testing). 
+Dragoon uses Selenium bindings for JavaScript, the [webdriverjs](https://github.com/webdriverio/webdriverio/) to describe [functional tests] (http://en.wikipedia.org/wiki/Functional_testing)and [Selenium server](http://docs.seleniumhq.org/download/) to run selenium stlye scripts.  The tests run in a WeBKit Engine called [PhantomJS](http://phantomjs.org/) therefore ruling out the need to install the broswer specfic drivers. It also uses the [Chai](http://chaijs.com/) assertion library and [Mocha](http://visionmedia.github.io/mocha/). 
+
 
 ### Install libraries to run tests ###
 
 In the root directory, enter `make test` to install the libraries that include [Selenium WebDriver] (http://docs.seleniumhq.org/projects/webdriver/), [Selenium Server](http://docs.seleniumhq.org/download/) and Javascript client driver [node.js] (http://nodejs.org/).
+
