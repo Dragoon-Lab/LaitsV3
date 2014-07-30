@@ -105,7 +105,7 @@ define([
 		},
 
 		// A stub for connecting routine to draw new node.
-		addNode: function(node){
+		addNode: function(node, autoflag){
 			console.log("Node Editor calling addNode() for ", node.id);
 		},
 
@@ -251,7 +251,11 @@ define([
 			 */
 			var u = registry.byId("selectUnits");
 			// console.log("units widget ", u);
-			array.forEach(this._model.getAllUnits(), function(unit){
+
+			var units = this._model.getAllUnits();
+			units.sort();
+
+			array.forEach(units, function(unit){
 				u.addOption({label: unit, value: unit});
 			});
 		},
@@ -795,18 +799,16 @@ define([
 						if(subID){
 							// console.log("	   substituting ", variable, " -> ", studentID);
 							parse.substitute(variable, subID);
+						}else if(autocreationFlag){
+							//create node
+							var id = this._model.active.addNode();
+							this.addNode(this._model.active.getNode(id), true);
+							this.autocreateNodes(id, variable);
+							//get Node ID and substitute in equation
+							var subID2 = unMapID.call(this._model.active, givenID||id);
+							parse.substitute(variable, subID2); //this should handle createInputs and connections to automatic node
 						}else{
-							if(autocreationFlag){
-								//create node 
-								var id = this._model.active.addNode();
-								this.addNode(this._model.active.getNode(id));
-								this.autocreateNodes(id,variable);
-								//get Node ID and substitute in equation
-								var subID2 = unMapID.call(this._model.active,givenID||id);
-								parse.substitute(variable,subID2); //this should handle createInputs and connections to automatic node
-							}else{
-								directives.push({id: 'message', attribute: 'append', value: "Quantity '" + variable + "' not defined yet."});
-							}
+							directives.push({id: 'message', attribute: 'append', value: "Quantity '" + variable + "' not defined yet."});
 						}
 					}else{
 						cancelUpdate = true;  // Don't update model or send ot PM.

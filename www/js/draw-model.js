@@ -167,8 +167,7 @@ define([
 		},
 
 		/* addNode: Add a node to the jsPlumb model, returning the DOM element.	 */
-
-		addNode: function(/*object*/ node){
+		addNode: function(/*object*/ node, /*automatic creation*/ autoflag){
 
 			var type = node.type || "triangle";
 			console.log("------- Adding element to canvas, id = ", node.ID, ", class = ", type);
@@ -222,11 +221,26 @@ define([
 			 Note that the names (onMoveStart, onMove, onMoveStop) are from
 			 the underlying library dojo/dnd/move, rather than jsPlumb.
 			 */
+			if(!autoflag){
+				this.makeDraggable(vertex);
+			}else{
+				// This is a work-around for Bug #2414.
+				// Need to find a way to determine if dom element has been created.
+				window.setTimeout(lang.hitch(this, function(){
+					this.makeDraggable(vertex);
+				}), 1000);
+			}
+
+			return vertex;
+		},
+
+		makeDraggable:function(/*vertex*/ vertex){
 			this._instance.draggable(vertex,{
 				onMoveStart: lang.hitch(this, this.onMoveStart),
 				onMove: lang.hitch(this, this.onMove),
 				onMoveStop: lang.hitch(this, this.onMoveStop)
 			});
+
 			this._instance.makeSource(vertex, {
 				filter:".ep",								// only supported by jquery
 				anchor:"Continuous",
@@ -242,8 +256,8 @@ define([
 				anchor:"Continuous"
 			});
 
-			return vertex;
 		},
+
 		setConnection:function(/*string*/source,/*string*/destination){
 			this._instance.connect({source: source, target: destination});
 		},
