@@ -255,6 +255,7 @@ define([
 			}else {
 				console.warn("In AUTHOR mode. Attempted to use description that already exists: " + description);
 			}
+            this.setEnableNodeForumBut();
 		},
 
         handleRoot: function(root){

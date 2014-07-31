@@ -124,8 +124,8 @@ define([
 		// This is only needed if the type has already been set,
 		// something that is generally only possible in TEST mode.
 			this.updateEquationLabels();
-
 			this.applyDirectives(this._PM.processAnswer(this.currentID, 'description', selectDescription));
+            this.setEnableNodeForumBut();
 		},
 		descriptionSet: function(value){
 			// Update the model.

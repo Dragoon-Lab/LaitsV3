@@ -24,10 +24,10 @@
 define([
 	"dojo/_base/array", 'dojo/_base/declare', "dojo/_base/lang",
 	'dojo/aspect', 'dojo/dom', "dojo/dom-class", "dojo/dom-construct", 'dojo/dom-style',
-	'dojo/keys', 'dojo/on', "dojo/ready", 
+	'dojo/keys', 'dojo/on', "dojo/ready", "dojo/io-query",
 	"dijit/popup", 'dijit/registry', "dijit/TooltipDialog",
-	'./equation', './graph-objects','./typechecker'
-], function(array, declare, lang, aspect, dom, domClass, domConstruct, domStyle, keys, on, ready, popup, registry, TooltipDialog, expression, graphObjects, typechecker){
+	'./equation', './graph-objects','./typechecker', "./forum"
+], function(array, declare, lang, aspect, dom, domClass, domConstruct, domStyle, keys, on, ready, ioQuery, popup, registry, TooltipDialog, expression, graphObjects, typechecker, forum){
 	// Summary: 
 	//			Controller for the node editor, common to all modes
 	// Description:
@@ -60,6 +60,7 @@ define([
 			// structured should be its own module.	 For now,
 			// initialize
 			this.structured._model = this._model;
+            registry.byId()
 
 			// The Node Editor widget must be set up before modifications
 			// It might be a better idea to only  call the controller
@@ -862,6 +863,7 @@ define([
 			this._nodeEditor.show().then(lang.hitch(this, function(){
 				this.disableHandlers = false;
 			}));
+            this.setEnableNodeForumBut();
 		},
 
 		// Stub to be overwritten by student or author mode-specific method.
@@ -941,7 +943,34 @@ define([
 		setLogging: function(/*string*/ logging){
 			this.logging = logging;
 		},
-		/* 
+        //Enabling a disabled button
+        setEnableNodeForumBut: function(){
+            var query = {};
+            if(window.location.search){
+                query = ioQuery.queryToObject(window.location.search.slice(1));
+            }else{
+                console.warn("Should have method for logging this to Apache log files.");
+                console.warn("Dragoon log files won't work since we can't set up a session.");
+                console.error("Function called without arguments");
+            }
+            var nodeForumBut = registry.byId("nodeForumButton");
+            //check if the forum button inside Node Editor has to be enabled
+            console.log(this._model);
+            var check2=query.m=="AUTHOR"?this._model.active.getDescription(this.currentID):this._model.active.getDescriptionID(this.currentID);
+            console.log("second check",check2);
+            if(query.f && check2){
+                nodeForumBut.set("disabled", false);
+                forum.handleForumInEditor(this._model, this.currentID, query);
+            }
+            //we write else in case there are many nodes
+            //to make sure forum button is disabled
+
+            else{
+                nodeForumBut.set("disabled", true);
+            }
+        },
+
+        		/*
 		 Take a list of directives and apply them to the Node Editor,
 		 updating the model and updating the graph.
 		 
