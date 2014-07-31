@@ -25,17 +25,17 @@ In brackets it will show the time for which the problem was out of focus. This w
 consised and informative format.
 
 
-| Student | Rabbits  | Isle 1  | Isle 2  |
-|:-------:|:---------|:--------|:--------|
-| Name1   | 846(211) | 545(23) | 651(99) |
-| Name2   |    --    | 432(15) | 598(55) |
+    | Student | Rabbits  | Isle 1  | Isle 2  |
+    |:-------:|:---------|:--------|:--------|
+    | Name1   | 846(211) | 545(23) | 651(99) |
+    | Name2   |    --    | 432(15) | 598(55) |
 
-
-Each problem time would be clickable which will show a div at the top or bottom of the dashboard
+Each problem time would be clickable which will show a `<div>` at the top or bottom of the dashboard
 page or above the table and that will show the complete detail as how many times incorrect solution 
-was entered and so on. The presentation of this div has to be decided. Easiest way to show this
+was entered and so on. The presentation of this `<div>` has to be decided. Easiest way to show this
 would be similar to the Java version. But same information can be presented in a better way using
-colors instead of words. Important information to be shown in this div:
+colors instead of words. Important information to be shown in this `<div>`:
+
 * The nodes created by the student
 * Status of each property.
 * How many times incorrect solution was given and what was the incorrect solution.
@@ -50,7 +50,9 @@ To handle different types of views for the dashboard, the script (`logProblemObj
 to the javascipt model object. This will be created for every session-user-problem group
 and the array of objects will be returned. You can print whatever you want to and however you want to.
 
-The object structure can be checked in `logProblemObject.php` in log folder. Structure is based on three classes:
+The object structure can be checked in `logProblemObject.php` in log
+folder. Structure is based on three classes:
+
 * UserProblemObject - This is the complete session object which contains information about the username, problem
 session times, out of focus time, wasted time (when the window is selected but the user is not doing anything
 for more than 7 minutes), and an array of Node objects (in PHP they are the second class).

@@ -162,7 +162,7 @@
 				}
 			}
 			$errorRatio = $incorrectChecks/$totalChecks;
-			
+
 			$upObject->setWastedTime($wastedTime);
 			$upObject->setTotalTime($sessionTime);
 			$upObject->setOutOfFocusTime($outOfFocusTime);

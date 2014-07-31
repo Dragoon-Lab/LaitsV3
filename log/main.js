@@ -1,12 +1,14 @@
+/* global define */
 define([
 	"dojo/ioQuery",
 	"dojo/dom",
+	"dojo/ready",
 	"dojo/fx/Toggler", 
 	"dojo/request/xhr", 
 	"dojo/_base/lang",
 	"./dashboard"
 ], function(
-	ioQuery, dom, Toggler, xhr, lang, dashboard
+	ioQuery, dom, ready, Toggler, xhr, lang, dashboard
 ){
 	var query = ioQuery.queryToObject(window.location.search.slice(1));
 
@@ -18,11 +20,11 @@ define([
 
 		if(dashboard.runtime){
 			//add event catchers for each radio change.
-			
-		} else {
+
+		}else{
 			var tableDiv = new Toggler({
 				nodeID:"tableTypes"
-			)};
+			});
 			tableDiv.hide();
 
 			//add action for each time node to show detailed analysis

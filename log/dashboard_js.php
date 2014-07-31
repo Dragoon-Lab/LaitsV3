@@ -5,7 +5,7 @@
 <meta http-equiv="Content-type" content="text/html;charset=UTF-8">
 <title>Detailed Dashboard</title>
 <script type="text/javascript">
-	
+
 </script>
 </head>
 <body>
@@ -16,7 +16,7 @@
 
 	set_time_limit(30000);
 	include "createDashboard_js.php";
-	
+
 	date_default_timezone_set('America/Phoenix');
 	!empty($_REQUEST["fromDate"])?($fromDate = $_REQUEST["fromDate"]):($fromDate = Date("Y-m-d"));
 	!empty($_REQUEST["toDate"])?($toDate = $_REQUEST["toDate"]):'';
@@ -26,7 +26,7 @@
 	!empty($_REQUEST["mode"])?($mode = $_REQUEST["mode"]):$mode = 'STUDENT';
 	!empty($_REQUEST["user"])?($user = $_REQUEST["user"]):$user = '';
 	(!empty($_REQUEST["dashboard"]) &&($_REQUEST["dashboard"] === 'small'))?($smallDashboard = true):($smallDashboard=false);
-	
+
 	$mysqli = mysqli_connect("localhost",$dbuser, $dbpass, $dbname) or die("Connection not established. Check the user log file");
 	//$mysqli = mysqli_connect("localhost", "root", "qwerty211", "laits_stable14") or die("Connection not established. Check the user log file");
 

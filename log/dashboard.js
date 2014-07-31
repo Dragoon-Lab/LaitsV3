@@ -1,9 +1,11 @@
+/* global define */
 define([ 
+	'dojo/_base/declare',
 	"dojo/request/xhr", 
 	"dojo/_base/json",
 	"dojo/_base/lang",
 	"dojo/_bas/array"
-], function(xhr, json, lang, array){
+], function(declare, xhr, json, lang, array){
 	return declare(null,{
 		problems: null,
 		users: null,
@@ -46,7 +48,7 @@ define([
 				console.log("task objects found in the logs : ", results);
 				return results;
 			}, function(err){
-				console.error("error in dashboard_js, error message : "+error);
+				console.error("error in dashboard_js, error message : " + err);
 			});
 		},
 
@@ -54,6 +56,9 @@ define([
 			var index = 0;
 			array.forEach(this.objects, function(upObject){
 				var user = upObject.user;
+				/*
+				 BvdS:  users is undefined!
+				 */
 				if(index>0 && users[index-1] != user){
 					this.users.push(user);
 					index++;
@@ -105,7 +110,7 @@ define([
 					this.errorRatio[userIndex][problemIndex] = upObject['errorRatio'];
 					this.problemComplete[userIndex][problemIndex] = upObject['problemComplete'];
 					var detailedString = '';
-					var nodes = object['nodes'];
+					var nodes = object['nodes'];  // BvdS: object is undefined
 					if(nodes){
 						array.forEach(nodes, function(node){
 							detailedString += "<p>"+node['name'];
@@ -120,7 +125,8 @@ define([
 											detailedString += "<span style='color:blue'>D </span>";
 										} else {
 											var answer = property['answers'];
-											detailedString += "<span style='color:red'>I ("+answer[index]+") </span>"
+											// BvdS:  index is undefined
+											detailedString += "<span style='color:red'>I ("+answer[index]+") </span>";
 										}
 									}
 								});
@@ -176,6 +182,7 @@ define([
 		},
 
 		renderTable: function(/* String */ toShow){
+			// BvdS:  initTable and makeTable are undefined
 			var table = initTable();
 			switch(toShow){
 				case "time":

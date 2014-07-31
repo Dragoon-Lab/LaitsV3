@@ -26,7 +26,7 @@ define([
 	"./pedagogical_module",
 	"./model",
 	'./controller'
-], function(aspect, on, PM, model, controller){
+], function(aspect, on, baseUnload, PM, model, controller){
 	// Summary: 
 	//			Used for logging
 	// Description:
@@ -38,43 +38,43 @@ define([
 	//			module, emphasizing aspect-oriented programming or we disperse 
 	//			the logging commands through the code.	Maybe some of each and 
 	//			see which looks best?
-
+	
 	var logging = {
-	session: null,
-	verbose: false,
-	setSession: function(session){
-		this.session = session;
-	},
-	// Send log messages to the console.
-	setVerbose: function(verbose){
-		this.verbose = verbose;
-	}
+		session: null,
+		verbose: false,
+		setSession: function(session){
+			this.session = session;
+		},
+		// Send log messages to the console.
+		setVerbose: function(verbose){
+			this.verbose = verbose;
+		}
 
 	// This works, but it is ugly, since it has to be called manually for
 	// each class instantiation.
-	/*
-	setupController: function(controller){
-		aspect.after(controller, "closeEditor", function(){
-		console.log("---------- closeEditor logging 2: ", arguments, this);
-		}, true);
+		/*
+		 setupController: function(controller){
+		 aspect.after(controller, "closeEditor", function(){
+		 console.log("---------- closeEditor logging 2: ", arguments, this);
+		 }, true);
 	}
-	 */
+		 */
 	};
-
+	
 	/* 
 	 Some examples where we attach logging to a function in the prototype of a class.
 	 Then, when the class is instantiated, the associated function has the logging attached.
 	 */
-
+	
 	aspect.after(controller.prototype, "showNodeEditor", function(id){
-	logging.session.log('ui-action', {type: 'open-dialog-box', name: 'node-editor', nodeID: id, node: this._model.active.getName(id)});
+		logging.session.log('ui-action', {type: 'open-dialog-box', name: 'node-editor', nodeID: id, node: this._model.active.getName(id)});
 	}, true);
-
-
+	
+	
 	aspect.after(controller.prototype, "closeEditor", function(){
-	logging.session.log('ui-action', {type: 'close-dialog-box', name: 'node-editor', nodeID: this.currentID, node: this._model.active.getName(this.currentID)});
+		logging.session.log('ui-action', {type: 'close-dialog-box', name: 'node-editor', nodeID: this.currentID, node: this._model.active.getName(this.currentID)});
 	}, true);
-
+	
 	aspect.after(controller.prototype, "initialControlSettings", function(){
 		logging.session.clientLog("error", {
 			message:'initialControlSettings should be overwritten.', 
@@ -83,19 +83,18 @@ define([
 	}, true);
 
 
-
 	// This does not work for some reason.	It should call the existing
 	// closeEditor function.  Instead, it over-writes closeEditor.
 	/*
-	controller.extend({
-	closeEditor:  function(){
-		var z = this.inherited(arguments);
-		console.log(">>>>>>>>> in closeEditor logging 1: ", arguments, this, z);
+	 controller.extend({
+	 closeEditor:  function(){
+	 var z = this.inherited(arguments);
+	 console.log(">>>>>>>>> in closeEditor logging 1: ", arguments, this, z);
 		return z;
-		}
+	 }
 	});
 	 */
-
+	
 	window.onerror = function(msg, url, lineNumber){
 		var tempFile = url.split('/');
 		var filename = tempFile[tempFile.length-1];
@@ -104,28 +103,27 @@ define([
 			file: filename, 
 			line: lineNumber
 		});
-	return false;
+		return false;
 	};
-
+	
 	window.onfocus = function(){
 		logging.session.log('window-focus', {
 			type:"in-focus"
 		});
 	};
-
+	
 	window.onblur = function(){
 		logging.session.log('window-focus', {
 			type:"out-of-focus"
 		});
 	};
-
-	var unLoad = function(){
+	
+	baseUnload.addOnUnload(function(){
 		logging.session.log('ui-action', {
 			type: "window",
 			name: "close-button"
 		});
-	}
-	dojo.addOnUnload(unLoad);
+	});
 	
 	return logging;
 });

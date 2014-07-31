@@ -111,9 +111,8 @@
 		}
 
 		function getNodeFromName($name){
-			var $allNodes = this->getNodes();
+		  var $allNodes = this->getNodes(); // BvdS:  my editor complained about this line, but it wouldn't tell me what was wrong
 			var $resultNode = null;
-			var $node;
 			foreach($allNodes as $node){
 				if($name == $node->getName()){
 					$resultNode = $node;
