@@ -19,7 +19,7 @@
         // If group field is empty, remove from form.
         // Dragoon treats the presence of the group field
         // as a switch for published versus custom problems.
-        if(form.a.value.trim() == ""){
+        if(form.g.value.trim() == ""){
           console.log("Deleting group (g) from GET.", form);
           document.getElementById("group").removeAttribute('name');
         }

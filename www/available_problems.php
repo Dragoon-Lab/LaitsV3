@@ -39,7 +39,7 @@ trigger_error("This doesn't work!  See Bug #2418",E_USER_ERROR);
 $student = isset($_GET['student'])?mysqli_real_escape_string($mysqli, $_GET['student']):'';
 $section = mysqli_real_escape_string($mysqli, $_GET['section']);
 
-$query="SELECT problem,group FROM solutions WHERE section='$section' AND NOT deleted AND (share OR group='$student')";
+$query="SELECT problem,`group` FROM solutions WHERE section='$section' AND NOT deleted AND (share OR `group`='$student')";
 if($result = $mysqli->query($query)){
   $json = array(); 
   while($row = $result->fetch_object()){

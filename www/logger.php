@@ -86,7 +86,7 @@ if($method == 'start-session'){
   $group = isset($x->g)?"'$x->g'":"DEFAULT";
   // This should give an error if session id already exists.
   // Need to verify how error is handled.
-  $query = "INSERT INTO session (session_id, mode, user, section, problem, group) " .
+  $query = "INSERT INTO session (session_id, mode, user, section, problem, `group`) " .
     "VALUES ('$sessionId','$x->m','$x->u','$x->s',$problem,$group)";
   // echo "Starting new session query $query\n";
   $mysqli->query($query)
