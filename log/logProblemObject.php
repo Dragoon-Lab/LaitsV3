@@ -8,6 +8,9 @@
 		private $problemComplete;
 		private $problemReOpen;
 		private $sessionRunning;
+		private $incorrectChecks;
+		private $totalSolutionChecks;
+		private $errorRatio;
 		private $nodes = array();
 
 		//getter setters for each
@@ -73,6 +76,30 @@
 
 		function getSessionRunning(){
 			return $this->sessionRunning;
+		}
+
+		function setIncorrectChecks($value){
+			$this->incorrectChecks = $value;
+		}
+
+		function getIncorrectChecks(){
+			return $this->incorrectChecks;
+		}
+
+		function setTotalSolutionChecks($value){
+			$this->totalSolutionChecks = $value;
+		}
+
+		function getIncorrectChecks(){
+			return $this->incorrectChecks;
+		}
+
+		function setErrorRatio($value){
+			$this->errorRatio = $value;
+		}
+
+		function getErrorRatio(){
+			return $this->errorRatio;
 		}
 
 		function setNodes($value){

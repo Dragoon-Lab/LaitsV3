@@ -17,9 +17,23 @@
 		}
 
 		function getQuery($section, $mode, $user, $problem, $fromTime, $fromDate, $toTime, $toDate){
-			var $userString = "AND uesr = '".$user."' ";
+			var $userString = "AND user = '".$user."' ";
 			var $problemString = "AND problem = '".$problem."' ";
-			var $queryString = "SELECT tid, session.session_id, user, problem, time, method, message, author from session JOIN step ON session.session_id = step.session_id where section = '".$section."' AND time >= '".$fromDate." ".$fromTime."' AND method != 'client-message' ".(!empty($user)?$userString:"").(!empty($problem) ?$problemString:"")."AND time <= '".(!empty($toDate)?$toDate:$fromDate)." ".$toTime."' AND mode = '".$mode."' ".($user != ''?$userString:'')."ORDER BY user asc, problem_name asc, tid asc;";
+			var $fromTimeString =  "AND time >= '".$fromDate." ".$fromTime."' ";
+			var $toTimeString = "AND time <= '".(!empty($toDate)?$toDate:$fromDate)." ".$toTime."' ";
+			var $queryString = 
+			"SELECT 
+				tid, session.session_id, user, problem, time, method, message, author 
+			from 
+				session JOIN step ON session.session_id = step.session_id 
+			where 
+				section = '".$section."' ".(!empty($fromDate)?$fromTimeString:"").
+				" AND method != 'client-message' ".
+				(!empty($user)?$userString:"").
+				(!empty($problem) ?$problemString:"").
+				(!empty($fromDate)?$toTimeString:"").
+				" AND mode = '".$mode."' ".
+			"ORDER BY user asc, problem_name asc, tid asc;";
 
 			return $queryString;
 		}
@@ -33,6 +47,7 @@
 			var $problemReOpen;
 			var $objectArray = array();
 			var $propertyStartTime;
+			var $totalChecks, $incorrectChecks, $errorRatio;
 			while($row = $result->mysqli_fetch($result)){
 				if($resetVariables){
 					$sessionTime = 0, $outOfFocusTime = 0, $wastedTime=0;
@@ -40,6 +55,8 @@
 					$oldRow = $row;
 					$upObject = new logProblemObject();
 					$upObject->setSessionRunning(true);
+					$totalChecks = 0, $incorrectChecks=0;
+					$errorRatio = 0;
 				}
 				$resetVariables = false;
 				$method = $row['method'];
@@ -109,6 +126,7 @@
 						var $checkResult = $newMessage['checkResult'];
 						$currentProperty->setStatus($checkResult);
 						$currentProperty->setCorrectValue($newMessage['correctValue']);
+						$totalChecks = $totalChecks + 1;
 
 						if($checkResult === "CORRECT"){
 							$currentProperty->setTime($newMessage['time']-$propertyStartTime);
@@ -117,6 +135,10 @@
 							$currentProperty = null;
 						} else if($checkResult === "INCORRECT"){
 							$currentProperty->setAnswers($newMessage['value']);
+							$incorrectChecks = $incorrectChecks+1;
+							if($newMessage['solutionProvided'] == "true"){
+								$currentProperty->setStatus("DEMO");
+							}
 						}
 					}
 				} else if($method === "window-focus"){
@@ -127,17 +149,27 @@
 				}
 
 				if($resetVariables){
+					$errorRatio = $incorrectChecks/$totalChecks;
+
 					$upObject->setWastedTime($wastedTime);
 					$upObject->setTotalTime($sessionTime);
 					$upObject->setOutOfFocusTime($outOfFocusTime);
 					$upObject->setOpenTimes($problemReOpen);
+					$upObject->setIncorrectChecks($incorrectChecks);
+					$upObject->setTotalSolutionChecks($totalChecks);
+					$upObject->setErrorRatio($errorRatio);
 					array_push($objectArray, $upObject);
 				}
 			}
+			$errorRatio = $incorrectChecks/$totalChecks;
+			
 			$upObject->setWastedTime($wastedTime);
 			$upObject->setTotalTime($sessionTime);
 			$upObject->setOutOfFocusTime($outOfFocusTime);
 			$upObject->setOpenTimes($problemReOpen);
+			$upObject->setIncorrectChecks($incorrectChecks);
+			$upObject->setTotalSolutionChecks($totalChecks);
+			$upObject->setErrorRatio($errorRatio);
 			array_push($objectArray, $upObject);
 
 			return $objectArray;
