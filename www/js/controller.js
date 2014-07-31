@@ -60,7 +60,6 @@ define([
 			// structured should be its own module.	 For now,
 			// initialize
 			this.structured._model = this._model;
-            registry.byId()
 
 			// The Node Editor widget must be set up before modifications
 			// It might be a better idea to only  call the controller
@@ -882,10 +881,12 @@ define([
 		setConnections: function(from, to){
 			// console.log("======== setConnections fired for node" + to);
 		},
-		 // Stub to set connection in the graph / one to one
-                setConnection: function(from, to){
-                        // console.log("======== setConnections fired for node" + to);
-                },
+
+		// Stub to set connection in the graph / one to one
+		setConnection: function(from, to){
+			// console.log("======== setConnections fired for node" + to);
+		},
+
 		//show node editor
 		showNodeEditor: function(/*string*/ id){
 			//Checks if the current mode is COACHED mode and exit from node editor if all the modes are defined
@@ -898,7 +899,7 @@ define([
 			this._nodeEditor.show().then(lang.hitch(this, function(){
 				this.disableHandlers = false;
 			}));
-            this.setEnableNodeForumBut();
+			this.setEnableNodeForumBut();
 		},
 
 		// Stub to be overwritten by student or author mode-specific method.
@@ -980,34 +981,33 @@ define([
 		setLogging: function(/*string*/ logging){
 			this.logging = logging;
 		},
-        //Enabling a disabled button
-        setEnableNodeForumBut: function(){
-            var query = {};
-            if(window.location.search){
-                query = ioQuery.queryToObject(window.location.search.slice(1));
-            }else{
-                console.warn("Should have method for logging this to Apache log files.");
-                console.warn("Dragoon log files won't work since we can't set up a session.");
-                console.error("Function called without arguments");
-            }
-            var nodeForumBut = registry.byId("nodeForumButton");
-            //check if the forum button inside Node Editor has to be enabled
-            console.log(this._model);
-            var check2=query.m=="AUTHOR"?this._model.active.getDescription(this.currentID):this._model.active.getDescriptionID(this.currentID);
-            console.log("second check",check2);
-            if(query.f && check2){
-                nodeForumBut.set("disabled", false);
-                forum.handleForumInEditor(this._model, this.currentID, query);
-            }
-            //we write else in case there are many nodes
-            //to make sure forum button is disabled
 
-            else{
+		//Enabling the forum button
+		setEnableNodeForumBut: function(){
+			var query = {};
+			if(window.location.search){
+				query = ioQuery.queryToObject(window.location.search.slice(1));
+			}else{
+				console.warn("Should have method for logging this to Apache log files.");
+				console.warn("Dragoon log files won't work since we can't set up a session.");
+				console.error("Function called without arguments");
+			}
+			var nodeForumBut = registry.byId("nodeForumButton");
+			//check if the forum button inside Node Editor has to be enabled
+			console.log(this._model);
+			var check2=query.m=="AUTHOR"?this._model.active.getDescription(this.currentID):this._model.active.getDescriptionID(this.currentID);
+			console.log("second check",check2);
+			if(query.f && check2){
+				nodeForumBut.set("disabled", false);
+				forum.handleForumInEditor(this._model, this.currentID, query);
+			}else{
+				//In case there are many nodes,
+				//make sure forum button is disabled
                 nodeForumBut.set("disabled", true);
             }
         },
 
-        		/*
+        /*
 		 Take a list of directives and apply them to the Node Editor,
 		 updating the model and updating the graph.
 		 

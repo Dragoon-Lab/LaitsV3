@@ -139,17 +139,18 @@ define([
 
 		handleDescription: function(selectDescription){
 			console.log("****** in handleDescription ", this.currentID, selectDescription);
-			if(selectDescription == 'defaultSelect')
+			if(selectDescription == 'defaultSelect'){
 				return; // don't do anything if they choose default
-
+			}
 			this._model.active.setDescriptionID(this.currentID, selectDescription);
 			this.updateNodes();
 
-		// This is only needed if the type has already been set,
-		// something that is generally only possible in TEST mode.
+			// This is only needed if the type has already been set,
+			// something that is generally only possible in TEST mode.
 			this.updateEquationLabels();
+
 			this.applyDirectives(this._PM.processAnswer(this.currentID, 'description', selectDescription));
-            this.setEnableNodeForumBut();
+			this.setEnableNodeForumBut();
 		},
 		descriptionSet: function(value){
 			// Update the model.
