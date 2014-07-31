@@ -6,16 +6,16 @@
  *
  *This file is a part of Dragoon
  *Dragoon is free software: you can redistribute it and/or modify
- *it under the terms of the GNU General Public License as published by
+ *it under the terms of the GNU Lesser General Public License as published by
  *the Free Software Foundation, either version 3 of the License, or
  *(at your option) any later version.
  *
  *Dragoon is distributed in the hope that it will be useful,
  *but WITHOUT ANY WARRANTY; without even the implied warranty of
  *MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.	See the
- *GNU General Public License for more details.
+ *GNU Lesser General Public License for more details.
  *
- *You should have received a copy of the GNU General Public License
+ *You should have received a copy of the GNU Lesser General Public License
  *along with Dragoon.  If not, see <http://www.gnu.org/licenses/>.
  *
  */
@@ -137,12 +137,11 @@ define([
 					break;
 
 				case "initial":
-					if(value && validInput){
+					if(validInput){
 						returnObj.push({id:"initial", attribute:"status", value:"entered"});
-					} else if(value && !validInput){
-						returnObj.push({id:"initial", attribute:"status", value:"incorrect"});
 					}else{
-						returnObj.push({id:"initial", attribute:"status", value:""});
+						// This never happens
+						returnObj.push({id:"initial", attribute:"status", value:"incorrect"});
 					}
 					break;
 
@@ -193,6 +192,7 @@ define([
 			style.set('descriptionControlAuthor', 'display', 'block');
 			style.set('selectUnitsControl', 'display', 'none');
 			style.set('setUnitsControl', 'display', 'inline');
+            style.set('setRootNode', 'display', 'block')
 			style.set('inputControlAuthor', 'display', 'block');
 			style.set('inputControlStudent', 'display', 'none');
 		},
@@ -230,11 +230,23 @@ define([
 				this.updateNodes();
 				//not required - because updateNodes() will add connections automatically
 				//this.setConnections(this._model.active.getInputs(this.currentID), this.currentID);
-				
 				this.updateEquationLabels();
 			}
 		},
-		
+
+		autocreateNodes: function(/** auto node id **/ id, /**variable name**/ variable){
+			console.log("auto creating nodes in author controller");
+			//update the name for nodeid
+			// BvdS:  when we set the name we don't send to author PM
+			// since there is nothing to update in the node editor since
+			// this is a different node.
+			this._model.active.setName(id, variable);
+			// update Node labels upon exit
+			this.updateNodeLabel(id);
+			//make connection
+			this.setConnection(id, this.currentID);
+		 },
+
 		handleKind: function(kind){
 			console.log("**************** in handleKind ", kind);
 			this._model.given.setGenus(this.currentID, kind);
@@ -297,7 +309,7 @@ define([
 				var newInitial = IniFlag.value;
 				this.applyDirectives(this.authorPM.process(this.currentID, "initial", newInitial, true));
 				console.log("In AUTHOR mode. Initial value is: " + newInitial);
-				this._model.active.setInitial(this.currentID,newInitial);
+				this._model.active.setInitial(this.currentID, newInitial);
 			}else if(IniFlag.errorType){
 				this.logging.log('solution-step', {
 					type: IniFlag.errorType,
@@ -359,7 +371,16 @@ define([
 			var inputs = [];
 			var descriptions = [];
 			var units = [];
-			array.forEach(this._model.given.getDescriptions(), function(desc){
+
+			// Get descriptions and units in AUTHOR mode to sort as alphabetic order
+			var authorDesc = this._model.given.getDescriptions();
+			authorDesc.sort(function(obj1, obj2){
+				return obj1.label > obj2.label;
+			});
+			var authorUnits = this._model.getAllUnits();
+			authorUnits.sort();
+
+			array.forEach(authorDesc, function(desc){
 				if(desc.label){
 					var name = this._model.given.getName(desc.value);
 					var obj = {name:name, id: desc.id};
@@ -367,9 +388,15 @@ define([
 					descriptions.push({name: this._model.given.getDescription(desc.value), id: desc.id});
 				}
 			}, this);
-			array.forEach(this._model.getAllUnits(), function(unit){
+			array.forEach(authorUnits, function(unit){
 				units.push({name: unit, id: unit});
 			}, this);
+
+			// Sort inputs in AUTHOR mode as alphabetic order
+			inputs.sort(function(obj1, obj2){
+				return obj1.name > obj2.name;
+			});
+
 			var m = new memory({data: inputs});
 			inputsWidget.set("store", m);
 			nameWidget.set("store", m);
@@ -377,11 +404,11 @@ define([
 			descriptionWidget.set("store", m);
 			m = new memory({data: units});
 			unitsWidget.set("store", m);
-			
+
 			var value;
 			//node is not created for the first time. apply colors to widgets
 			//color name widget
-			
+
 			//false value is set because while creating a name we are already checking for uniqueness and checking again while re-opening the node is not needed.
 			if(name){
 				this.applyDirectives(this.authorPM.process(false, "name", name, equation.isVariable(name)));

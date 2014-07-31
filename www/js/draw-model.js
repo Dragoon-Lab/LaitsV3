@@ -5,16 +5,16 @@
  *
  *This file is a part of Dragoon
  *Dragoon is free software: you can redistribute it and/or modify
- *it under the terms of the GNU General Public License as published by
+ *it under the terms of the GNU Lesser General Public License as published by
  *the Free Software Foundation, either version 3 of the License, or
  *(at your option) any later version.
  *
  *Dragoon is distributed in the hope that it will be useful,
  *but WITHOUT ANY WARRANTY; without even the implied warranty of
  *MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.	See the
- *GNU General Public License for more details.
+ *GNU Lesser General Public License for more details.
  *
- *You should have received a copy of the GNU General Public License
+ *You should have received a copy of the GNU Lesser General Public License
  *along with Dragoon.  If not, see <http://www.gnu.org/licenses/>.
  *
  */
@@ -167,8 +167,7 @@ define([
 		},
 
 		/* addNode: Add a node to the jsPlumb model, returning the DOM element.	 */
-
-		addNode: function(/*object*/ node){
+		addNode: function(/*object*/ node, /*automatic creation*/ autoflag){
 
 			var type = node.type || "triangle";
 			console.log("------- Adding element to canvas, id = ", node.ID, ", class = ", type);
@@ -222,11 +221,26 @@ define([
 			 Note that the names (onMoveStart, onMove, onMoveStop) are from
 			 the underlying library dojo/dnd/move, rather than jsPlumb.
 			 */
+			if(!autoflag){
+				this.makeDraggable(vertex);
+			}else{
+				// This is a work-around for Bug #2414.
+				// Need to find a way to determine if dom element has been created.
+				window.setTimeout(lang.hitch(this, function(){
+					this.makeDraggable(vertex);
+				}), 1000);
+			}
+
+			return vertex;
+		},
+
+		makeDraggable:function(/*vertex*/ vertex){
 			this._instance.draggable(vertex,{
 				onMoveStart: lang.hitch(this, this.onMoveStart),
 				onMove: lang.hitch(this, this.onMove),
 				onMoveStop: lang.hitch(this, this.onMoveStop)
 			});
+
 			this._instance.makeSource(vertex, {
 				filter:".ep",								// only supported by jquery
 				anchor:"Continuous",
@@ -242,7 +256,10 @@ define([
 				anchor:"Continuous"
 			});
 
-			return vertex;
+		},
+
+		setConnection:function(/*string*/source,/*string*/destination){
+			this._instance.connect({source: source, target: destination});
 		},
 
 		// Code duplication issue:  https://trello.com/c/6cdUaCPl
@@ -311,26 +328,35 @@ define([
 					isSum=equation.isSum(parse);
 					isProduct=equation.isProduct(parse);
 				}
-				var connectionOverlays = graphObjects.getEndPointConfiguration('');
-				//if it has multiple inputs  - access input label which matches source
-				array.forEach(this._givenModel.getNode(destination).inputs,function(input){
-					if(input.ID == source){
-						var destinationLabel =input;
-						if(destinationLabel.label){
-							console.log("------- At this point, we should add a '"+destinationLabel.label+"' label to "+ destinationLabel.ID);
-							//check pure sum  or pure product but not both
-							if(!(isSum && isProduct)){
-								if(isSum && destinationLabel.label=='-'){
-									connectionOverlays = graphObjects.getEndPointConfiguration(destinationLabel.label);
-								}else if(isProduct && destinationLabel.label=='/'){
-									connectionOverlays = graphObjects.getEndPointConfiguration(destinationLabel.label);
+
+				//check for call from student mode
+				if(this._givenModel.getNode(destination)){
+
+					//connectionOverlays code duplicated in setConnections
+					var connectionOverlays = graphObjects.getEndPointConfiguration('');
+					//if it has multiple inputs  - access input label which matches source
+					array.forEach(this._givenModel.getNode(destination).inputs, function(input){
+						if(input.ID == source){
+							var destinationLabel =input;
+							if(destinationLabel.label){
+								console.log("------- At this point, we should add a '"+destinationLabel.label+"' label to "+ destinationLabel.ID);
+								//check pure sum  or pure product but not both
+								if(!(isSum && isProduct)){
+									if(isSum && destinationLabel.label=='-'){
+										connectionOverlays = graphObjects.getEndPointConfiguration(destinationLabel.label);
+									}else if(isProduct && destinationLabel.label=='/'){
+										connectionOverlays = graphObjects.getEndPointConfiguration(destinationLabel.label);
+									}
 								}
 							}
+							this._instance.connect({source: source, target: destination, overlays:connectionOverlays});
 						}
-						this._instance.connect({source: source, target: destination, overlays:connectionOverlays});
-					}
-			    },this);
 
+					}, this);
+				}else{
+					//author mode automatic node connection
+					this._instance.connect({source:source, target:destination});
+				}
 			}, this);
 		},
 
