@@ -33,11 +33,13 @@ require "db-login.php";
 $mysqli = mysqli_connect("localhost", $dbuser, $dbpass, $dbname)
   or trigger_error('Could not connect to database.',E_USER_ERROR);
 
+trigger_error("This doesn't work!  See Bug #2418",E_USER_ERROR);
+
 //retrieve POST variables
 $student = isset($_GET['student'])?mysqli_real_escape_string($mysqli, $_GET['student']):'';
 $section = mysqli_real_escape_string($mysqli, $_GET['section']);
 
-$query="SELECT problem,author FROM solutions WHERE section='$section' AND NOT deleted AND (share OR author='$student')";
+$query="SELECT problem,group FROM solutions WHERE section='$section' AND NOT deleted AND (share OR group='$student')";
 if($result = $mysqli->query($query)){
   $json = array(); 
   while($row = $result->fetch_object()){
