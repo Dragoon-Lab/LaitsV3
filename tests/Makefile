@@ -1,4 +1,4 @@
-ifeq($(shell uname),Drawin)
+ifeq ($(shell uname),Darwin)
     SUDO = sudo
 else
     SUDO =
