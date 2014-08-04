@@ -5,16 +5,16 @@
  *
  *This file is a part of Dragoon
  *Dragoon is free software: you can redistribute it and/or modify
- *it under the terms of the GNU General Public License as published by
+ *it under the terms of the GNU Lesser General Public License as published by
  *the Free Software Foundation, either version 3 of the License, or
  *(at your option) any later version.
  *
  *Dragoon is distributed in the hope that it will be useful,
  *but WITHOUT ANY WARRANTY; without even the implied warranty of
  *MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.	See the
- *GNU General Public License for more details.
+ *GNU Lesser General Public License for more details.
  *
- *You should have received a copy of the GNU General Public License
+ *You should have received a copy of the GNU Lesser General Public License
  *along with Dragoon.  If not, see <http://www.gnu.org/licenses/>.
  *
  */
@@ -80,7 +80,7 @@ define([
 		},
 
 		populateSelections: function(){
-		/*
+			/*
 			 Initialize select options in the node editor that are
 			 common to all nodes in a problem.
 			 
@@ -102,8 +102,15 @@ define([
 			var positiveInputs = registry.byId("positiveInputs");
 			var negativeInputs = registry.byId("negativeInputs");
 			console.log("description widget = ", d, this.controlMap.description);
-		  //  d.removeOption(d.getOptions()); // Delete all options
-			array.forEach(this._model.given.getDescriptions(), function(desc){
+			//  d.removeOption(d.getOptions()); // Delete all options
+
+			//get descriptions to sort as alphabetic order
+			var descriptions = this._model.given.getDescriptions();
+			descriptions.sort(function(obj1, obj2){
+				return obj1.label > obj2.label;
+			});
+
+			array.forEach(descriptions, function(desc){
 				d.addOption(desc);
 				var name = this._model.given.getName(desc.value);
 				var option = {label: name + " (" + desc.label + ")", value: desc.value};
@@ -144,11 +151,6 @@ define([
 
 			this.applyDirectives(this._PM.processAnswer(this.currentID, 'description', selectDescription));
 		},
-		descriptionSet: function(value){
-			// Update the model.
-			this._model.student.setDescriptionID(this.currentID, value);
-			this.updateNodes();
-		},
 
 		handleType: function(type){
 			console.log("****** Student has chosen type ", type, this);
@@ -188,7 +190,7 @@ define([
 		},
 		
 		initialSet: function(value){
-				this._model.active.setInitial(this.currentID, value);
+			this._model.active.setInitial(this.currentID, value);
 		},
 
 		/*
