@@ -103,6 +103,13 @@ define([
 		var state = new State(query.u, query.s, "action");
 		controllerObject.setState(state);
 
+		if(forum.exists(query.f)){
+			controllerObject.setForum(query.f);
+			
+		}else{
+			// log an error...
+		}
+
 		ready(function(){
 
 			var drawModel = new drawmodel(givenModel.active);
