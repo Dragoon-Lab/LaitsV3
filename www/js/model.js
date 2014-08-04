@@ -450,14 +450,20 @@ define([
                 //		and removes the inputs and re-enables the equation box.
 				var index;
 				var nodes = this.getNodes();
+                var name;
+                var inputs = [];
 				for(var i = 0; i < nodes.length; i++){
+                    console.log('REID ---- Deleting nodes, here is a node object: ', nodes[i]);
 					var found = false;
-					if(nodes[i].ID === id)
+					if(nodes[i].ID === id){
+
 						index = i;
+                        name=nodes[i].name;
+                    }
 					array.forEach(nodes[i].inputs, function(input){
 						if(input.ID === id){
 							found = true;
-							return;
+						    return;
 						}
 					});                    
 					if(found){
@@ -469,8 +475,28 @@ define([
 					}
 				}
 				nodes.splice(index, 1);
-                this.getUndefinedNodes().push(name);
+                this.parseUndefinedNodes();
+                this.setUndefinedNodesText();
 			},
+
+            parseUndefinedNodes: function(){
+                var nodes = this.getNodes();
+                var inputs = [];
+                array.forEach(nodes, function(node){
+                    console.log("REID -- node is ", node);
+                    array.forEach(node.inputs, function(input){
+                        if(inputs.indexOf(input.name) == -1){
+                            inputs.push(input.name);
+                        }
+                    });
+
+                });
+                console.log("REID -- What is this, baby don't hurt me", this, this.getUndefinedNodes());
+                this.getUndefinedNodes().length = 0;
+                array.forEach(inputs, function(input){
+                    this.getUndefinedNodes().push(input);
+                });
+            },
 
             //Summary: Adds a text list of currently undefined nodes to the canvas.  Called when node editor is closed.  TODO: also on load
             // or when node is deleted

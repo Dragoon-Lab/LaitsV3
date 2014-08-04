@@ -15,6 +15,7 @@
             "URL": "images/moose_20.png"
         },
         "taskDescription": [
+        "In these problems, we will be modeling the population of moose and wolves that lived on the Isle Royale.  Wolves preyed on the moose, so their populations were tied together in what is known as a “predator-prey” relationship—as the number of moose grew, the number of wolves grew in response to having more food available, but then the wolves would eat more moose, causing the moose population to decrease, meaning less food is available for wolves, etc.  This relationship is complicated, so creating a model is necessary for fully understanding the relationship between the two populations.  Let us build up to the final model by making a series of models of simpler systems.  For instance, the first few systems pretend that Isle Royale has only moose on it and no wolves on it.  ",
 	    "Assumptions: ",
 	    " * The moose population is 20 in the first year (1900).",
 	    " * Births are the only change in population. Deaths, immigration and emigration do not occur.",
