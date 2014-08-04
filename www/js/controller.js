@@ -68,6 +68,12 @@ define([
 			ready(this, this._initHandles);
 		},
 
+		_forum: null,
+		
+		setForum: function(forum){
+			this._forum = forum;
+		},
+
 		setState: function(state){
 			if(this.setPMState){
 				this.setPMState(state);
