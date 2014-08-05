@@ -155,11 +155,6 @@ define([
                 this.activateForumButton();
             }
 		},
-		descriptionSet: function(value){
-			// Update the model.
-			this._model.student.setDescriptionID(this.currentID, value);
-			this.updateNodes();
-		},
 
 		handleType: function(type){
 			console.log("****** Student has chosen type ", type, this);
@@ -199,7 +194,7 @@ define([
 		},
 		
 		initialSet: function(value){
-				this._model.active.setInitial(this.currentID, value);
+			this._model.active.setInitial(this.currentID, value);
 		},
 
 		/*

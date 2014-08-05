@@ -5,9 +5,9 @@ First, some definitions. We distinguish between the LMS and the tutor:
 * __tutor__ is the JavaScript code for Dragoon. It is invoked
 via the URL `index.html`. On startup, the URL includes name-value pairs
 of the [major mode](major-modes.md), user name, section, 
-problem name, and (optionally) the problem author. 
+problem name, and (optionally) the group name. 
 *  __LMS__ or Learning Management System refers to the "outer loop" that
-invokes the tutor system for a particular user, group, problem, author. 
+invokes the tutor system for a particular user, section, problem, group. 
 It could be a full LMS like Moodle, or a simple web page like  `www/login.html`.
 
 For the tutor, we distinguish between two usage modes:
@@ -54,8 +54,8 @@ header when communicating between client and server.
 *	`time` - this will be the server time. This can be set using `CURRENT_TIMESTAMP` in mySQL.
 *	`user` - user name (string)
 *	`section` - section name (string).
-*   `problem` - problem name (string).  May be NULL if `mode` is `author`.
-*	`author` - For custom problems (string).  Otherwise it will be NULL.
+*   `problem` - problem name (string).  May be NULL if `mode` is AUTHOR.
+*	`group` - For custom problems (string).  Otherwise it will be NULL.
 
 This table analogous to the table `PROBLEM_ATTEMPT` in Andes; see
 [create_PROBLEM_ATTEMPT.sql](https://github.com/bvds/andes/blob/master/LogProcessing/database/create_PROBLEM_ATTEMPT.sql).
@@ -63,16 +63,16 @@ The Andes table can be used to see how the `session` table should be
 formatted.  Note that the column names of this table correspond to the [list of variable names](sessions.md). 
 
 **`solutions`** table stores solution graphs for custom problems.
-This table has columns for
+This table has columns:
 
-* session id,
-* a "share" bit (default zero),
-* a "deleted" bit (default zero),
-* a timestamp and
-* the "task" element of the [model in JSON format](json-format.md).
+* `session_id` - see above
+* `share` -  "share" bit (default zero)
+* `deleted` - a "deleted" bit (default zero)
+* `solution_graph` -  the [model in JSON format](json-format.md)
+* `time` - a timestamp.
 
-The primary key for the table is the session id:  only one copy of
-the solution persists for a given session id.
+The primary key for the table is the `session_id`:  only one copy of
+the solution persists for a given `sessionId`.
 
 The share bit determines whether a custom problem can be viewed --
 in either author or student mode -- by other members of a section. 
@@ -98,17 +98,22 @@ search constraints if you do not know them.
 
 To place a a completed model on the server to access it as a regular model, 
 retrieve the JSON code from the database using the above method. You can format 
-it to be more readable by going to http://jsonlint.com/, pasting the code in the
-entry box, and clicking "Validate". Then copy the formated code into a new file 
-and push it to the `www/problems` directory on the master branch. It will be moved 
-to the server during the next release.
+it to be more readable by going to [http://jsonlint.com](http://jsonlint.com), pasting the code in the
+entry box, and clicking "Validate". Then copy the formated code into a
+new file in the `www/problems/` directory.  Next you will need edit
+the file, wrapping the json with a new object containing only a member `task`:
+
+    <object> -> {task: <object>}
+
+Then you can add this file to the git repository.
 
 ## Variable names identifying users and problems ##
 
-There are two issues: we might want to specify short
-names for http requests and we may in the future slowly switch over to
-using numerical IDs for some quantities so that we can abstract away 
-from user, section, and problem names.
+In this section, we define variable names that identify problems and
+users.  We specify associated short variable names to be used
+in HTTP requests.  Eventually, we may want to switch over to using
+using abstract IDs for some quantities so that we can change 
+user, section, and problem names.
 (See the way things are done in phpBB for an example.)
 
 Here is a starting list.  Note that some items should not have an id.
@@ -116,9 +121,8 @@ The categories are *name*, *short name*, *id*, *short id*:
 
 - user, u userId, uid
 - section, s, sectionId, sid
-- problem, p, problemId, pid
-- author, au (for custom problems; this is the original author's
-  user name)
+- problem, p (can use sessionId for id)
+- group, g
 - newProblem, np, newProblemId, npid
 - solutionGraph, sg  (for serialized solution graph)
 - action, ac
@@ -149,17 +153,17 @@ student name is supplied), then
 looks for a matching problem in the `solutions` table, then attempts
 to find a matching published problem. 
 Calls to `task_fetcher.php` use the GET method and must include a problem name, and may
-include student name and section name or  author name and section
-name.  Author name and section are
+include student name and section name or  group name and section
+name.  Group name and section are
 mandatory for a match to a custom problem.
-
+We eventually want to switch to using `sessionId` to access custom problems.
 
 ## Custom Problem Selection ##
 
 The server script `available_problems.php` retrieves all problems available
-to the student in the form of author, problem name pairs 
+to the student giving, `sessionId`, `group`, `problem`.
 (in xml or json format). It is called using the GET method with the user 
-name and section supplied.
+name and section (and maybe group) supplied.
 
 Either the LMS or the tutor itself can request this list.
 Note that the response includes a list of all problems that the
@@ -173,7 +177,7 @@ may choose a new problem name.
 
 ## Student Mode ##
 
-In this mode the user only modifies the student graph. This mode
+In this mode, the user only modifies the student graph. This mode
 is pretty restrictive: the student may not rename a problem or merge other
 solutions with their solution or share their solution with other students.
 
@@ -187,7 +191,7 @@ the student when a problem is opened.
 In author mode, the LMS *may* choose to display only problems that the user
 has themselves authored, along with the ability to create a new
 problem name. The author can choose to share his problem with other
-students to solve as a student, test, or coached mode problem.  This is done by enabling
+students to solve in  STUDENT, TEST, or COACHED mode.  This is done by enabling
 the "share" option.  The author needs to be able to define a node as 
 a "first node" for the coached mode target node strategy to work;
 these could be set at export or by a toggle in the node editor.
@@ -215,13 +219,6 @@ intuitive for most users.
 Finally, the tutor needs a method for allowing the author to
 create the "predefined" nodes for a problem. This would be some
 sort of switch in the UI?
-
-Since users of the Forum landing page often work in groups, it has been modified 
-to allow multiple authors to author the same problem.  When a problem is created, 
-its original author is assigned in the "author groups" table.  If another student 
-attempts to enter that problem to author it, they are added to "author groups" 
-as an additional author.  The Forum page will pass the original author's name 
-to the PHP, allowing the second person access to the problem. 
 
 ## Open and Managed access modes ##
 

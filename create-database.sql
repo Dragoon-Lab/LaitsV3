@@ -11,7 +11,7 @@ CREATE TABLE `session` (
   `user` varchar(30) NOT NULL,
   `section` varchar(30) NOT NULL,
   `problem` varchar(30) DEFAULT NULL,
-  `author` varchar(30) DEFAULT NULL,
+  `group` varchar(30) DEFAULT NULL,
   `time` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
   PRIMARY KEY (`session_id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
