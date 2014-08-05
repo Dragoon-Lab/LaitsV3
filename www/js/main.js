@@ -103,13 +103,6 @@ define([
 		var state = new State(query.u, query.s, "action");
 		controllerObject.setState(state);
 
-		if(forum.exists(query.f)){
-			controllerObject.setForum(query.f);
-			
-		}else{
-			// log an error...
-		}
-
 		ready(function(){
 
 			var drawModel = new drawmodel(givenModel.active);
@@ -194,10 +187,14 @@ define([
 				registry.byId("nodeeditor").hide();
 			});
 
-            //check if forumurl is present and enable the forum button accordingly
+            // checks if forumurl is present
             if(query.f) {
+                //Enable the forum button in the menu
                 var forumBut=registry.byId("forumButton");
                 forumBut.set("disabled", false);
+                //setter function used for setting forum parameters
+                //inside controller
+                controllerObject.setForum(query);
             }
 			// Also used in image loading below.
 			var descObj = new description(givenModel);

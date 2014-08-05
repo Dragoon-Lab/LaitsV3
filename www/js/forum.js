@@ -29,8 +29,7 @@ define([
 	//			Make sures all the parameters necessary for redirecting to
 	//			respective forum/thread are passed successfully
 	return {
-		handleForumInEditor: function (model, currentID, query) {
-			console.log(model);
+		activateForum: function (model, currentID, forumparam) {
 			var givenModel=model;
 			var nodeForumBut=registry.byId("nodeForumButton");
 			nodeForumBut.on("click", function () {
@@ -40,14 +39,26 @@ define([
 				var nid = givenModel.active.getDescriptionID(current_id);
 				var ndesc = givenModel.given.getDescription(nid);
 				console.log("nid and desc are", nid, ndesc);
-				var prob_name = givenModel.getTaskName(query.p);
+				var prob_name = givenModel.getTaskName(forumparam.p);
 				console.log("problem name is ", prob_name);
 				// "newwindow": the pop-out window name, not required, could be empty
 				// "height" and "width": pop-out window size
 				// Other properties could be changed as the value of yes or no
-				window.open(query.f + "?&n=" + prob_name + "&s=" + query.s + "&fid=" + query.fid + "&sid=" + query.sid + "&nid=" + nid + "&ndesc=" + ndesc, "newwindow",
-							"height=400, width=600, toolbar =no, menubar=no, scrollbars=no, resizable=no, location=no, status=no"
-						   );
+                var redirectTo=forumparam.f + "?&n=" + prob_name + "&s=" + forumparam.s + "&fid=" + forumparam.fid + "&sid=" + forumparam.sid + "&nid=" + nid + "&ndesc=" + ndesc;
+                var request = new XMLHttpRequest();
+                request.open('GET', redirectTo, true);
+                request.onreadystatechange = function(){
+                    if (request.readyState === 4){
+                        if (request.status === 404) {
+                            console.error("page dosen't exist");
+                        }
+                        else{
+                            console.log(request.status);
+                        }
+                    }
+                };
+                request.send();
+                var open=window.open(redirectTo,"newwindow","height=400, width=600, toolbar =no, menubar=no, scrollbars=no, resizable=no, location=no, status=no");
 			});
 		}
 	};

@@ -150,7 +150,10 @@ define([
 			this.updateEquationLabels();
 
 			this.applyDirectives(this._PM.processAnswer(this.currentID, 'description', selectDescription));
-			this.setEnableNodeForumBut();
+            if(this._forumparams){
+                // enable forum button and activate the event
+                this.activateForumButton();
+            }
 		},
 		descriptionSet: function(value){
 			// Update the model.

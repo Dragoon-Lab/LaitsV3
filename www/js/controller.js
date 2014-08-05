@@ -896,7 +896,6 @@ define([
 		//show node editor
 		showNodeEditor: function(/*string*/ id){
 			//Checks if the current mode is COACHED mode and exit from node editor if all the modes are defined
-
 			console.log("showNodeEditor called for node ", id);
 			this.currentID = id; //moved using inside populateNodeEditorFields
 			this.disableHandlers = true;
@@ -905,8 +904,17 @@ define([
 			this._nodeEditor.show().then(lang.hitch(this, function(){
 				this.disableHandlers = false;
 			}));
-			this.setEnableNodeForumBut();
-		},
+            var nodeForumBut = registry.byId("nodeForumButton");
+            var check_desc=this._forumparams.m=="AUTHOR"?this._model.active.getDescription(this.currentID):this._model.active.getDescriptionID(this.currentID);
+            if(this._forumparams && check_desc){
+                nodeForumBut.set("disabled", false);
+                forum.activateForum(this._model, this.currentID, this._forumparams);
+            }else{
+                //In case there are many nodes,
+                //make sure forum button is disabled
+                nodeForumBut.set("disabled", true);
+            }
+        },
 
 		// Stub to be overwritten by student or author mode-specific method.
 		initialControlSettings: function(id){
@@ -988,29 +996,18 @@ define([
 			this.logging = logging;
 		},
 
-		//Enabling the forum button
-		setEnableNodeForumBut: function(){
-			var query = {};
-			if(window.location.search){
-				query = ioQuery.queryToObject(window.location.search.slice(1));
-			}else{
-				console.warn("Should have method for logging this to Apache log files.");
-				console.warn("Dragoon log files won't work since we can't set up a session.");
-				console.error("Function called without arguments");
-			}
-			var nodeForumBut = registry.byId("nodeForumButton");
-			//check if the forum button inside Node Editor has to be enabled
-			console.log(this._model);
-			var check2=query.m=="AUTHOR"?this._model.active.getDescription(this.currentID):this._model.active.getDescriptionID(this.currentID);
-			console.log("second check",check2);
-			if(query.f && check2){
-				nodeForumBut.set("disabled", false);
-				forum.handleForumInEditor(this._model, this.currentID, query);
-			}else{
-				//In case there are many nodes,
-				//make sure forum button is disabled
-                nodeForumBut.set("disabled", true);
-            }
+        // Setting Forum Parameters
+		setForum: function(forum_params){
+			this._forumparams=forum_params;
+        },
+
+        //Enables the Forum Button in node editor
+        //Also uses the forum module to activate the event button click
+        activateForumButton: function(){
+            var nodeForumBut = registry.byId("nodeForumButton");
+            nodeForumBut.set("disabled", false);
+            //Attach the event
+            forum.activateForum(this._model,this.currentID,this._forumparams);
         },
 
         /*

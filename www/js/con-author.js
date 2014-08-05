@@ -266,14 +266,10 @@ define([
 			}else {
 				console.warn("In AUTHOR mode. Attempted to use description that already exists: " + description);
 			}
-<<<<<<< Updated upstream
-			this.setEnableNodeForumBut();
-=======
-			if(this._forum){
-				// enable forum button.
+			if(this._forumparams){
+				// enable forum button and activate event
+                this.activateForumButton();
 			}
-
->>>>>>> Stashed changes
 		},
 
         handleRoot: function(root){
