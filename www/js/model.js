@@ -541,6 +541,7 @@ define([
 			getDescription: function(/*string*/ id){
 				return this.getNode(id).description;
 			},
+			getGivenDescription: this.getDescription,
 			getAttemptCount: function(/*string*/ id, /*string*/ part){
 				return this.getNode(id).attemptCount[part];
 			},
@@ -656,6 +657,7 @@ define([
 				var node = this.getNode(id);
 				return node && node.descriptionID;
 			},
+			getGivenDescription: this.getDescriptionID,
 			getNodeIDFor: function(givenID){
 				// Summary: returns the id of a student node having a matching descriptionID;
 				//			return null if no match is found.

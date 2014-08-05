@@ -47,18 +47,18 @@ define([
                 var redirectTo=forumparam.f + "?&n=" + prob_name + "&s=" + forumparam.s + "&fid=" + forumparam.fid + "&sid=" + forumparam.sid + "&nid=" + nid + "&ndesc=" + ndesc;
                 var request = new XMLHttpRequest();
                 request.open('GET', redirectTo, true);
-                request.onreadystatechange = function(){
-                    if (request.readyState === 4){
-                        if (request.status === 404) {
-                            console.error("page dosen't exist");
-                        }
-                        else{
-                            console.log(request.status);
-                        }
-                    }
-                };
-                request.send();
-                var open=window.open(redirectTo,"newwindow","height=400, width=600, toolbar =no, menubar=no, scrollbars=no, resizable=no, location=no, status=no");
+				request.onreadystatechange = function(){
+					// Need to add logging here.
+					if (request.readyState === 4){
+						if (request.status === 404){
+							console.error("page dosen't exist");
+                        }else{
+							console.log(request.status);
+						}
+					}
+				};
+				request.send();
+				var open=window.open(redirectTo,"newwindow","height=400, width=600, toolbar =no, menubar=no, scrollbars=no, resizable=no, location=no, status=no");
 			});
 		}
 	};

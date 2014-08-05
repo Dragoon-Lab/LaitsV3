@@ -289,22 +289,23 @@ define([
 						   );
 			});
 
-            //For redirecting to the forum from forum button click on header
-                menu.add("forumButton",function(){
-                console.log("clicked on main forum button");
-                controllerObject.logging.log('ui-action', {
-                    type: "menu-forum-button",
-                    name: "forum"
-                });
-                var prob_name=givenModel.getTaskName(query.p);
-                console.log("problem name is ", prob_name);
-                // "newwindow": the pop-out window name, not required, could be empty
-                // "height" and "width": pop-out window size
-                // Other properties could be changed as the value of yes or no
-                window.open(query.f+"?&n="+prob_name+"&s="+query.s+"&fid="+query.fid+"&sid="+query.sid,"newwindow",
-                    "height=400, width=600, toolbar =no, menubar=no, scrollbars=no, resizable=no, location=no, status=no"
-                );
-            });
+			//For redirecting to the forum from forum button click on header
+            menu.add("forumButton",function(){
+				console.log("clicked on main forum button");
+				controllerObject.logging.log('ui-action', {
+					type: "menu-forum-button",
+					name: "forum"
+				});
+				var prob_name=givenModel.getTaskName();
+				console.log("problem name is ", prob_name);
+				// "newwindow": the pop-out window name, not required, could be empty
+				// "height" and "width": pop-out window size
+				// Other properties could be changed as the value of yes or no
+				window.open(query.f+"?&n="+prob_name+"&s="+query.s+"&fid="+query.fid+"&sid="+query.sid,"newwindow",
+							"height=400, width=600, toolbar =no, menubar=no, scrollbars=no, resizable=no, location=no, status=no"
+						   );
+			});
+
 		});
 	});
 });

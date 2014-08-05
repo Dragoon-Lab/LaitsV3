@@ -24,10 +24,10 @@
 define([
 	"dojo/_base/array", 'dojo/_base/declare', "dojo/_base/lang",
 	'dojo/aspect', 'dojo/dom', "dojo/dom-class", "dojo/dom-construct", 'dojo/dom-style',
-	'dojo/keys', 'dojo/on', "dojo/ready", "dojo/io-query",
+	'dojo/keys', 'dojo/on', "dojo/ready",
 	"dijit/popup", 'dijit/registry', "dijit/TooltipDialog",
 	'./equation', './graph-objects','./typechecker', "./forum"
-], function(array, declare, lang, aspect, dom, domClass, domConstruct, domStyle, keys, on, ready, ioQuery, popup, registry, TooltipDialog, expression, graphObjects, typechecker, forum){
+], function(array, declare, lang, aspect, dom, domClass, domConstruct, domStyle, keys, on, ready, popup, registry, TooltipDialog, expression, graphObjects, typechecker, forum){
 	// Summary: 
 	//			Controller for the node editor, common to all modes
 	// Description:
@@ -39,6 +39,7 @@ define([
 	return declare(null, {
 		_model: null,
 		_nodeEditor: null, // node-editor object- will be used for populating fields
+		_forumParams: null, // Addresses needed for linking to forum
 		/*
 		 When opening the node editor, we need to populate the controls without
 		 evaluating those changes.
@@ -66,12 +67,6 @@ define([
 			// after widgets are set up.
 			ready(this, this._setUpNodeEditor);
 			ready(this, this._initHandles);
-		},
-
-		_forum: null,
-		
-		setForum: function(forum){
-			this._forum = forum;
 		},
 
 		setState: function(state){
@@ -904,17 +899,17 @@ define([
 			this._nodeEditor.show().then(lang.hitch(this, function(){
 				this.disableHandlers = false;
 			}));
-            var nodeForumBut = registry.byId("nodeForumButton");
-            var check_desc=this._forumparams.m=="AUTHOR"?this._model.active.getDescription(this.currentID):this._model.active.getDescriptionID(this.currentID);
-            if(this._forumparams && check_desc){
-                nodeForumBut.set("disabled", false);
-                forum.activateForum(this._model, this.currentID, this._forumparams);
-            }else{
-                //In case there are many nodes,
-                //make sure forum button is disabled
-                nodeForumBut.set("disabled", true);
-            }
-        },
+			var nodeForumBut = registry.byId("nodeForumButton");
+			var check_desc = this._model.active.getGivenDescription(this.currentID);
+			if(this._forumparams && check_desc){
+				nodeForumBut.set("disabled", false);
+				forum.activateForum(this._model, this.currentID, this._forumparams);
+			}else{
+				//In case there are many nodes,
+				//make sure forum button is disabled
+				nodeForumBut.set("disabled", true);
+			}
+		},
 
 		// Stub to be overwritten by student or author mode-specific method.
 		initialControlSettings: function(id){
@@ -996,24 +991,24 @@ define([
 			this.logging = logging;
 		},
 
-        // Setting Forum Parameters
+		// Setting Forum Parameters
 		setForum: function(forum_params){
 			this._forumparams=forum_params;
-        },
+		},
 
-        //Enables the Forum Button in node editor
-        //Also uses the forum module to activate the event button click
-        activateForumButton: function(){
-            var nodeForumBut = registry.byId("nodeForumButton");
-            nodeForumBut.set("disabled", false);
-            //Attach the event
-            forum.activateForum(this._model,this.currentID,this._forumparams);
-        },
+		//Enables the Forum Button in node editor
+		//Also uses the forum module to activate the event button click
+		activateForumButton: function(){
+			var nodeForumBut = registry.byId("nodeForumButton");
+			nodeForumBut.set("disabled", false);
+			//Attach the event
+            forum.activateForum(this._model, this.currentID, this._forumparams);
+		},
 
-        /*
+		/*
 		 Take a list of directives and apply them to the Node Editor,
 		 updating the model and updating the graph.
-		 
+
 		 The format for directives is defined in documentation/node-editor.md
 		 */
 		applyDirectives: function(directives, noModelUpdate){
