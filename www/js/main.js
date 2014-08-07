@@ -289,6 +289,23 @@ define([
 						   );
 			});
 
+            /*
+             Add link to intro video
+             */
+            var math_func = dom.byId("menuMathFunctions");
+            on(math_func, "click", function(){
+                controllerObject.logging.log('ui-action', {
+                    type: "menu-choice",
+                    name: "math-functions"
+                });
+                // "newwindow": the pop-out window name, not required, could be empty
+                // "height" and "width": pop-out window size
+                // Other properties could be changed as the value of yes or no
+                window.open("http://localhost/LaitsV3/www/math_probs.html","newwindow",
+                    "height=400, width=600, toolbar =no, menubar=no, scrollbars=no, resizable=no, location=no, status=no"
+                );
+            });
+
 			//For redirecting to the forum from forum button click on header
             menu.add("forumButton",function(){
 				console.log("clicked on main forum button");

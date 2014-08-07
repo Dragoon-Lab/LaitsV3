@@ -16,7 +16,7 @@
 	    'jared3' : "Jared &amp; Oprah +",
             'jared4' : "Jared &amp; Oprah *",
             'dodos' : "Dodo extinction",
-            'rabbits' : "Rabbit population",	          
+            'rabbits' : "Rabbit population",
             105:'Intro problem 1', 106:'Intro problem 2',
             107:'Intro problem 3',108:'Intro problem 4',
 	},
@@ -69,7 +69,7 @@
             'weighttoss': 'Weight Toss'
         }
     };
-	     
+
     function validateForm(ff){
         var form = document.forms[ff?"problem-select2":"problem-select"];
         var x = form.u.value;
@@ -94,8 +94,8 @@
         }
     };
 
-    window.onload = function(){ 
-        updateProblems();   
+    window.onload = function(){
+        updateProblems();
     };
 
     /* Print out the list of problems in csv format */
@@ -122,7 +122,7 @@
 
             <h2>Additional Dragoon Problems</h2>
 
- 
+
                     <div class="fieldgroup">
                         <label for="un1">Username: </label>
                         <input id="un1" type="text" name="u">
@@ -155,10 +155,10 @@
 		        <!-- onclick and onmouseup work only for
                         Firefox, onchange works for both Firefox and Chrome -->
                         <select id="problem_category" onchange="updateProblems();">
-                           <option>Isle Royale</option> 
-                           <option>Kinematics</option> 
-                           <option>Calories</option> 
-                           <option>Urban Waterfowl</option> 
+                           <option>Isle Royale</option>
+                           <option>Kinematics</option>
+                           <option>Calories</option>
+                           <option>Urban Waterfowl</option>
                            <option>Introductory</option>
                            <option>Training</option>
                            <option>Challenge</option>
@@ -169,13 +169,13 @@
                     <div class="fieldgroup">
                         <label for="problem_id">Problem: </label>
                         <select id="problem_id" name="p">
-                           <!-- These should be filled dynamially from map, Bug #2183 --> 
+                           <!-- These should be filled dynamially from map, Bug #2183 -->
                             <option value="isle1">Moose population 1</option>
                             <option value="isle2">Moose population 2</option>
                             <option value="isle3">Moose population 3</option>
                             <option value="isle4">Moose population 4</option>
                             <option value="isle5">Wolves</option>
-                            <option value="isle6">Moose and Wolves</option>                            
+                            <option value="isle6">Moose and Wolves</option>
                         </select>
                     </div>
 
