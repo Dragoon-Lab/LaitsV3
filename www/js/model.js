@@ -68,6 +68,7 @@ define([
 				}};
 				
 				/*
+
 				 Define the "active model" (see doucumentation/node-editor.md).
 				 */
 				obj.active = (mode == "AUTHOR") ? obj.given : obj.student;
@@ -376,6 +377,7 @@ define([
 				// method for each sub-class and construct a hash table.
 				var nodes = this.getNodes();
 				var l = nodes.length;
+                console.log("length is ", l);
 				for(var i = 0; i < l; i++){
 					if(nodes[i].ID == id)
 						return nodes[i];
@@ -479,7 +481,7 @@ define([
 			addNode: function(options){
 				// Summary: builds a new node and returns the node's unique id
 				//			Can optionally add initial values to node.
-				obj._updateNextXYPosition();
+			    obj._updateNextXYPosition();
 				var newNode = lang.mixin({
 					ID: "id" + obj._ID++,
 					inputs: [],
@@ -541,7 +543,9 @@ define([
 			getDescription: function(/*string*/ id){
 				return this.getNode(id).description;
 			},
-			getGivenDescription: this.getDescription,
+			getGivenID: function(/*string*/ id){
+                return id;
+            },
 			getAttemptCount: function(/*string*/ id, /*string*/ part){
 				return this.getNode(id).attemptCount[part];
 			},
@@ -652,12 +656,14 @@ define([
 					return node[nodePart];
 				}
 			},
-			getDescriptionID: function(id){
+            getDescriptionID: function(id){
 				// Summary: Return any matched given model id for student node.
 				var node = this.getNode(id);
 				return node && node.descriptionID;
 			},
-			getGivenDescription: this.getDescriptionID,
+			getGivenID: function(id){
+                return this.getDescriptionID(id);
+            },
 			getNodeIDFor: function(givenID){
 				// Summary: returns the id of a student node having a matching descriptionID;
 				//			return null if no match is found.

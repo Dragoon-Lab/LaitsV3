@@ -29,16 +29,21 @@ define([
 	//			Make sures all the parameters necessary for redirecting to
 	//			respective forum/thread are passed successfully
 	return {
-		activateForum: function (model, currentID, forumparam) {
+		activateForum: function (model, currentID, forumparam, logging) {
 			var givenModel=model;
 			var nodeForumBut=registry.byId("nodeForumButton");
 			nodeForumBut.on("click", function () {
+                logging.log('ui-action',{
+                    type: "open node specific forum",
+                    node: givenModel.active.getName(currentID),
+                    nodeID: currentID
+                });
 				console.log("clicked on nodeEditor forum button");
 				var current_id = currentID;
-				console.log("current id is", current_id);
-				var nid = givenModel.active.getDescriptionID(current_id);
-				var ndesc = givenModel.given.getDescription(nid);
-				console.log("nid and desc are", nid, ndesc);
+                var nid = givenModel.active.getGivenID(current_id);
+                console.log("nid is",nid);
+                var ndesc = givenModel.given.getDescription(nid);
+                console.log("ndesc is", ndesc);
 				var prob_name = givenModel.getTaskName(forumparam.p);
 				console.log("problem name is ", prob_name);
 				// "newwindow": the pop-out window name, not required, could be empty
@@ -52,6 +57,10 @@ define([
 					if (request.readyState === 4){
 						if (request.status === 404){
 							console.error("page dosen't exist");
+                            logging.clientLog("assert", {
+                                message: 'Forum page not found' + redirectTo,
+                                functionTag: 'activateForum'
+                            });
                         }else{
 							console.log(request.status);
 						}
