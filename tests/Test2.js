@@ -11,7 +11,7 @@ var expect = require('chai').expect;
  
 describe('Test dragoon website', function(){
     before(function(done) {
-        client.init().url('http://localhost/LaitsV3/www/index.html?u=Raichu24&m=STUDENT&sm=feedback&is=algebraic&p=rabbits&s=login.html&c=Continue', done);
+        client.init().url('http://localhost/LaitsV3/www/index.html?u=Raichu29&m=STUDENT&sm=feedback&is=algebraic&p=rabbits&s=login.html&c=Continue', done);
     });
 
     describe('Rabbit Problem', function(){
