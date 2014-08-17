@@ -67,20 +67,12 @@ define([
 	 */
 	
 	aspect.after(controller.prototype, "showNodeEditor", function(id){
-<<<<<<< HEAD
 		logging.session.log('ui-action', {type: 'open-dialog-box', name: 'node-editor', nodeID: id, node: this._model.active.getName(id)});
-=======
-		logging.session.log('ui-action', {type: 'open-dialog-box', name: 'node-editor', node: id});
->>>>>>> master
 	}, true);
 	
 	
 	aspect.after(controller.prototype, "closeEditor", function(){
-<<<<<<< HEAD
 		logging.session.log('ui-action', {type: 'close-dialog-box', name: 'node-editor', nodeID: this.currentID, node: this._model.active.getName(this.currentID)});
-=======
-		logging.session.log('ui-action', {type: 'close-dialog-box', name: 'node-editor', node: this.currentID});
->>>>>>> master
 	}, true);
 	
 	aspect.after(controller.prototype, "initialControlSettings", function(){
