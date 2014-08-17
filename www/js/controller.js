@@ -126,7 +126,7 @@ define([
 
 			// get Node Editor widget from tree
 			this._nodeEditor = registry.byId('nodeeditor');
-			
+
 			// Wire up this.closeEditor.  Aspect.around is used so we can stop hide()
 			// from firing if equation is not entered.
 			aspect.around(this._nodeEditor, "hide", lang.hitch(this, function(doHide){
@@ -182,7 +182,7 @@ define([
 			 If the status is set for equationBox, we also need to set
 			 the status for equationText.  Since equationText is not a widget,
 			 we need to set it explicitly.
-			 
+
 			 Adding a watch method to the equationBox didn't work.
 			 */
 			aspect.after(registry.byId(this.controlMap.equation), "_setStatusAttr",
@@ -205,8 +205,8 @@ define([
 				});
 				this.startup();
 			};
-			
-			
+
+
 			// All <select> controls
 			array.forEach(this.selects, function(select){
 				var w = registry.byId(this.controlMap[select]);
@@ -214,16 +214,16 @@ define([
 				w._setDisableOptionAttr = setDisableOption;
 			}, this);
 
-				var crisis = registry.byId(this.widgetMap.crisisAlert);
-				crisis._setOpenAttr = function(message){
-					var crisisMessage = dom.byId('crisisMessage');
-					console.log("crisis alert message ", message);
-					crisisMessage.innerHTML = message;
-					this.show();
-				};
-				on(registry.byId("OkButton"), "click", function(){
+			var crisis = registry.byId(this.widgetMap.crisisAlert);
+			crisis._setOpenAttr = function(message){
+				var crisisMessage = dom.byId('crisisMessage');
+				console.log("crisis alert message ", message);
+				crisisMessage.innerHTML = message;
+				this.show();
+			};
+			on(registry.byId("OkButton"), "click", function(){
 				crisis.hide();
-				});
+			});
 
 			// Add appender to message widget
 			var messageWidget = registry.byId(this.widgetMap.message);
@@ -238,13 +238,13 @@ define([
 					// This unsets the "background-color" style
 					domStyle.set(element, "backgroundColor", "");
 				}, 3000);  // Wait in milliseconds
-				
+
 				// Scroll to bottoms
 				this.domNode.scrollTop = this.domNode.scrollHeight;
 			};
 			/*Set interval for message blink*/
-			 
-			
+
+
 			/*
 			 Add fields to units box, using units in model node
 			 In author mode, this needs to be turned into a text box.
@@ -259,7 +259,7 @@ define([
 				u.addOption({label: unit, value: unit});
 			});
 		},
-		
+
 		// Function called when node editor is closed.
 		// This can be used as a hook for saving sessions and logging
 		closeEditor: function(){

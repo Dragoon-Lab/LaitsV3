@@ -49,16 +49,16 @@ define([
 		setVerbose: function(verbose){
 			this.verbose = verbose;
 		}
-
-	// This works, but it is ugly, since it has to be called manually for
-	// each class instantiation.
+		
+		// This works, but it is ugly, since it has to be called manually for
+		// each class instantiation.
 		/*
-		 setupController: function(controller){
-		 aspect.after(controller, "closeEditor", function(){
-		 console.log("---------- closeEditor logging 2: ", arguments, this);
-		 }, true);
-	}
-		 */
+		setupController: function(controller){
+			aspect.after(controller, "closeEditor", function(){
+				console.log("---------- closeEditor logging 2: ", arguments, this);
+			}, true);
+		}
+		*/
 	};
 	
 	/* 
@@ -67,12 +67,20 @@ define([
 	 */
 	
 	aspect.after(controller.prototype, "showNodeEditor", function(id){
+<<<<<<< HEAD
 		logging.session.log('ui-action', {type: 'open-dialog-box', name: 'node-editor', nodeID: id, node: this._model.active.getName(id)});
+=======
+		logging.session.log('ui-action', {type: 'open-dialog-box', name: 'node-editor', node: id});
+>>>>>>> master
 	}, true);
 	
 	
 	aspect.after(controller.prototype, "closeEditor", function(){
+<<<<<<< HEAD
 		logging.session.log('ui-action', {type: 'close-dialog-box', name: 'node-editor', nodeID: this.currentID, node: this._model.active.getName(this.currentID)});
+=======
+		logging.session.log('ui-action', {type: 'close-dialog-box', name: 'node-editor', node: this.currentID});
+>>>>>>> master
 	}, true);
 	
 	aspect.after(controller.prototype, "initialControlSettings", function(){
