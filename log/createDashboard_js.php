@@ -23,7 +23,7 @@
 			var $toTimeString = "AND time <= '".(!empty($toDate)?$toDate:$fromDate)." ".$toTime."' ";
 			var $queryString = 
 			"SELECT 
-				tid, session.session_id, user, problem, time, method, message, author 
+				tid, session.session_id, user, problem, time, method, message, group 
 			from 
 				session JOIN step ON session.session_id = step.session_id 
 			where 

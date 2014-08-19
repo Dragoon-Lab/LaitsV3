@@ -1,0 +1,40 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en">
+<head>
+<meta http-equiv="Content-type" content="text/html;charset=UTF-8">
+<title>Dragoon Dashboard</title>
+<script type="text/javascript">
+	dojoConfig = {
+		parseOnLoad:true,
+	    async: true,
+	    baseUrl: "./log",
+	    packages: [
+	    	{name:'dashboard', location: 'js'},
+	    	{name: 'dojo', location: '../dojo'},
+	    	{name: 'dijit', location: '../dijit'}
+	    ]
+	};
+
+</script>
+<script type="text/javascript">
+	require([
+		"dashboard",
+		"dijit/form/RadioButton"
+	]);
+</script>
+</head>
+<body>
+	<div id="table">
+		<!--div to render the table -->
+	</div>
+
+	<div id="choice change">
+		<input type="radio" name="type" value="default" id="default" data-dojo-type="dijit/form/RadioButton"/>
+		<label for="default">Nothing</label>
+		<input type="radio" name="type" value="time" id="time" data-dojo-type="dijit/form/RadioButton"/>
+		<label for="default">Running Time</label>
+		<input type="radio" name="type" value="errors" id="errors" data-dojo-type="dijit/form/RadioButton"/>
+		<label for="default">Problem Errors (wrong choices/total choices)</label>	
+	</div> 
+</body>
+</html>
