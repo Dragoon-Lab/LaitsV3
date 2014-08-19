@@ -97,6 +97,7 @@ describe('Test dragoon website', function(){
         it("should have the correct function node", function(done){
             //Check the contents inside the node editor after opening the node
             client.click('canvas[id="myCanvas"]', function(err){
+                client.pause(1000, function(err){
                 client.waitForVisible('div[id="id11"]', 3000, function(err){
                     client.click('div[id="id11"]', function(err){
                         client.waitForInvisible('span[id="createNodeButton_label"]', 2000, function(err){
@@ -105,6 +106,7 @@ describe('Test dragoon website', function(){
                             functions.checkDisabled(client, expect, ['table[id="typeId"]']);
                         })
                     })
+                })
                 })
             })
             //Check the contents of the node editor after type is selected
@@ -151,12 +153,16 @@ describe('Test dragoon website', function(){
         it("should have the correct parameter node", function(done){
             //Check the contents inside the node editor after opening the node
             client.click('canvas[id="myCanvas"]', function(err){
-                client.click('div[id="id12"]', function(err){
-                    client.waitForInvisible('span[id="createNodeButton_label"]', 1000, function(err){
-                        functions.checkColor(client, expect, 'table[id="selectDescription"]', "144, 238, 144");
-                        functions.checkMessage(client, expect, 'div[id="messageBox"]', "", true);
-                        functions.checkDisabled(client, expect, ['table[id="typeId"]']);
+                client.pause(1000, function(err){
+                client.waitForVisible('div[id="id12"]', 3000, function(err){
+                    client.click('div[id="id12"]', function(err){
+                        client.waitForInvisible('span[id="createNodeButton_label"]', 1000, function(err){
+                            functions.checkColor(client, expect, 'table[id="selectDescription"]', "144, 238, 144");
+                            functions.checkMessage(client, expect, 'div[id="messageBox"]', "", true);
+                            functions.checkDisabled(client, expect, ['table[id="typeId"]']);
+                        })
                     })
+                })
                 })
             })
             //Check the contents of the node editor after type is selected

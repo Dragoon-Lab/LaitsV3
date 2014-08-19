@@ -43,7 +43,7 @@ exports.checkColor = function(client, expect, id, color, borderType, borderColor
 }
 
 //Check to see if the dom object with the given value
-exports.checkMessage = function(client, expect, id, message){
+exports.checkValue = function(client, expect, id, message){
     client.getValue(id, function(err, value){
         expect(value).to.equal(message);
     })
