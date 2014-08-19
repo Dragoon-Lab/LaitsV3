@@ -14,7 +14,8 @@ var functions = require('./function.js');
 describe('Test dragoon website', function(){
     //start client and redirect to dragoon page for a new problem
     before(function(done) {
-        client.init().url('http://localhost/LaitsV3/www/index.html?u=Pikachu18&m=STUDENT&sm=feedback&is=algebraic&p=rabbits&s=login.html&c=Continue', done);
+        var date = functions.getDate();
+        client.init().url('http://localhost/LaitsV3/www/index.html?u='+date+'&m=STUDENT&sm=feedback&is=algebraic&p=rabbits&s=login.html&c=Continue', done);
     });
  
     describe('Rabbit Problem', function(){
