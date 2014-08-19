@@ -46,4 +46,4 @@ More information on [starting php and Apache on OS X](http://akrabat.com/computi
 
 ## Testing Dragoon ##
 
-More information about testing and installation of testing can be found in the tests folder under readme.md
+More information about testing and installation of testing can be found in the [Readme in test folder](tests/README.md)
