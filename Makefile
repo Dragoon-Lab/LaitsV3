@@ -3,7 +3,6 @@ install:
 	@echo "You will also need to create a \"db_user_password\" file."
 	@echo "See README.md for installation instructions."
 	cd www; $(MAKE) install
-	cd ..;
 	cd tests; $(MAKE) install
 
 update:
