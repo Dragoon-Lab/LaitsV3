@@ -187,15 +187,15 @@ define([
 				registry.byId("nodeeditor").hide();
 			});
 
-            // checks if forumurl is present
-            if(query.f) {
-                //Enable the forum button in the menu
-                var forumBut=registry.byId("forumButton");
-                forumBut.set("disabled", false);
-                //setter function used for setting forum parameters
-                //inside controller
-                controllerObject.setForum(query);
-            }
+			// checks if forumurl is present
+			if(query.f) {
+				//Enable the forum button in the menu
+				var forumBut=registry.byId("forumButton");
+				forumBut.set("disabled", false);
+				//setter function used for setting forum parameters
+				//inside controller
+				controllerObject.setForum(query);
+			}
 			// Also used in image loading below.
 			var descObj = new description(givenModel);
 			if(query.m == "AUTHOR"){
@@ -271,7 +271,6 @@ define([
 				});
 			});
 
-			
 			/* 
 			 Add link to intro video
 			 */
@@ -289,25 +288,26 @@ define([
 						   );
 			});
 
-            /*
-             Add link to intro video
+			/*
+             Add link to list of math functions
              */
-            var math_func = dom.byId("menuMathFunctions");
-            on(math_func, "click", function(){
-                controllerObject.logging.log('ui-action', {
-                    type: "menu-choice",
-                    name: "math-functions"
-                });
-                // "newwindow": the pop-out window name, not required, could be empty
-                // "height" and "width": pop-out window size
-                // Other properties could be changed as the value of yes or no
-                window.open("http://localhost/LaitsV3/www/math-probs.html","newwindow",
-                    "height=400, width=600, toolbar =no, menubar=no, scrollbars=no, resizable=no, location=no, status=no"
-                );
-            });
+			var math_func = dom.byId("menuMathFunctions");
+			on(math_func, "click", function(){
+				controllerObject.logging.log('ui-action', {
+					type: "menu-choice",
+					name: "math-functions"
+				});
+				// "newwindow": the pop-out window name, not required, could be empty
+				// "height" and "width": pop-out window size
+				// Other properties could be changed as the value of yes or no
+				window.open("http://localhost/LaitsV3/www/math-probs.html","newwindow",
+							"height=400, width=600, toolbar =no, menubar=no, scrollbars=no, resizable=no, location=no, status=no"
+						   );
+			});
 
 			//For redirecting to the forum from forum button click on header
-            menu.add("forumButton",function(){
+			menu.add("forumButton",function(){
+				//  Some portion of this function body should be moved to forum.js, Bug #2424
 				console.log("clicked on main forum button");
 				controllerObject.logging.log('ui-action', {
 					type: "menu-forum-button",
@@ -318,6 +318,9 @@ define([
 				// "newwindow": the pop-out window name, not required, could be empty
 				// "height" and "width": pop-out window size
 				// Other properties could be changed as the value of yes or no
+				//
+				// The parameters should be escaped, Bug #2423
+				// Should add logging, Bug #2424
 				window.open(query.f+"?&n="+prob_name+"&s="+query.s+"&fid="+query.fid+"&sid="+query.sid,"newwindow",
 							"height=400, width=600, toolbar =no, menubar=no, scrollbars=no, resizable=no, location=no, status=no"
 						   );

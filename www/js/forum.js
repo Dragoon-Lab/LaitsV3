@@ -23,7 +23,7 @@
 define([
 	"dojo/_base/array","dijit/registry","dojo/on"
 ], function(array, registry, on){
-	// Summary: 
+	// Summary:
 	//			Handling the Node Editor Forum Click Button Event
 	// Description:
 	//			Make sures all the parameters necessary for redirecting to
@@ -33,41 +33,27 @@ define([
 			var givenModel=model;
 			var nodeForumBut=registry.byId("nodeForumButton");
 			nodeForumBut.on("click", function () {
-                logging.log('ui-action',{
-                    type: "open node specific forum",
-                    node: givenModel.active.getName(currentID),
-                    nodeID: currentID
-                });
+				logging.log('ui-action',{
+					type: "open node specific forum",
+					node: givenModel.active.getName(currentID),
+					nodeID: currentID
+				});
 				console.log("clicked on nodeEditor forum button");
 				var current_id = currentID;
-                var nid = givenModel.active.getGivenID(current_id);
-                console.log("nid is",nid);
-                var ndesc = givenModel.given.getDescription(nid);
-                console.log("ndesc is", ndesc);
+				var nid = givenModel.active.getGivenID(current_id);
+				console.log("nid is",nid);
+				var ndesc = givenModel.given.getDescription(nid);
+				console.log("ndesc is", ndesc);
 				var prob_name = givenModel.getTaskName(forumparam.p);
 				console.log("problem name is ", prob_name);
+
 				// "newwindow": the pop-out window name, not required, could be empty
 				// "height" and "width": pop-out window size
 				// Other properties could be changed as the value of yes or no
-                var redirectTo=forumparam.f + "?&n=" + prob_name + "&s=" + forumparam.s + "&fid=" + forumparam.fid + "&sid=" + forumparam.sid + "&nid=" + nid + "&ndesc=" + ndesc;
-                var request = new XMLHttpRequest();
-                request.open('GET', redirectTo, true);
-				request.onreadystatechange = function(){
-					// Need to add logging here.
-					if (request.readyState === 4){
-						if (request.status === 404){
-							console.error("page dosen't exist");
-                            logging.clientLog("assert", {
-                                message: 'Forum page not found' + redirectTo,
-                                functionTag: 'activateForum'
-                            });
-                        }else{
-							console.log(request.status);
-						}
-					}
-				};
-				request.send();
-				var open=window.open(redirectTo,"newwindow","height=400, width=600, toolbar =no, menubar=no, scrollbars=no, resizable=no, location=no, status=no");
+				//
+				// The parameters should be escaped, Bug #2423
+				var redirectTo=forumparam.f + "?&n=" + prob_name + "&s=" + forumparam.s + "&fid=" + forumparam.fid + "&sid=" + forumparam.sid + "&nid=" + nid + "&ndesc=" + ndesc;
+				var open=window.open(redirectTo, "newwindow", "height=400, width=600, toolbar =no, menubar=no, scrollbars=no, resizable=no, location=no, status=no");
 			});
 		}
 	};

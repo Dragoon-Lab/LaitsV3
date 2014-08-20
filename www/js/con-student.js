@@ -150,10 +150,10 @@ define([
 			this.updateEquationLabels();
 
 			this.applyDirectives(this._PM.processAnswer(this.currentID, 'description', selectDescription));
-            if(this._forumparams){
-                // enable forum button and activate the event
-                this.activateForumButton();
-            }
+			if(this._forumparams){
+				// enable forum button and activate the event
+				this.activateForumButton();
+			}
 		},
 
 		handleType: function(type){
@@ -290,10 +290,10 @@ define([
 		},
 
 		checkDonenessMessage: function (){
-		// Returns true if model is not complete.
+			// Returns true if model is not complete.
 			var directives = this._PM.checkDoneness(this._model);
-		this.applyDirectives(directives);
-		return directives;
+			this.applyDirectives(directives);
+			return directives;
 		}
 
 	});
