@@ -62,7 +62,8 @@ This table analogous to the table `PROBLEM_ATTEMPT` in Andes; see
 The Andes table can be used to see how the `session` table should be
 formatted.  Note that the column names of this table correspond to the [list of variable names](sessions.md). 
 
-**`solutions`** table stores solution graphs for custom problems.
+**`solutions`** table stores solution graphs for custom problems as
+well  as student work on any problem (custom or published).
 This table has columns:
 
 * `session_id` - see above
@@ -83,18 +84,19 @@ be viewed by users outside of a section.
 ## Retrieving completed problems from the database ##
 
 Problem solutions are saved in the `solutions` table; you will need to reference the `session` table as well to 
-get a solution for a specific problem and user. You can use the following query to access 
+get a solution for a specific problem and user. You can use a query like the following to access 
 this information:
 
     SELECT S.user, S.problem, SOL.time, SOL.solution_graph FROM session S, solutions SOL 
         WHERE S.session_id = SOL.session_id 
         AND S.user = '<USERNAME>' 
         AND S.problem = '<PROBLEM-NAME>' 
+        AND S.section = '<SECTION-NAME>' 
+        AND S.group = '<GROUP-NAME>' 
         AND SOL.time LIKE '<YYYY-MM-DD>%';
 
-Replace <USERNAME>, <PROBLEM-NAME>, and <YYYY-MM-DD> (date) with the appropriate 
-values, keeping the "%" operator in the date. You can remove any of these 
-search constraints if you do not know them.
+Replace `<USERNAME>`, `<PROBLEM-NAME>`, *et cetera* with the appropriate 
+values. You can omit any of these search constraints if you do not need them.
 
 To place a a completed model on the server to access it as a regular model, 
 retrieve the JSON code from the database using the above method. You can format 
@@ -106,6 +108,9 @@ the file, wrapping the json with a new object containing only a member `task`:
     <object> -> {task: <object>}
 
 Then you can add this file to the git repository.
+
+You can also use the script `task_fetcher.php` to retrieve a problem
+from the database.  **Need to add documentation for this.**
 
 ## Variable names identifying users and problems ##
 

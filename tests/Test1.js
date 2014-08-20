@@ -14,7 +14,7 @@ var functions = require('./function.js');
 describe('Test dragoon website', function(){
     //start client and redirect to dragoon page for a new problem
     before(function(done) {
-        client.init().url('http://localhost/LaitsV3/www/index.html?u=Pikachu6&m=STUDENT&sm=feedback&is=algebraic&p=rabbits&s=login.html&c=Continue', done);
+        client.init().url('http://localhost/LaitsV3/www/index.html?u=Pikachu18&m=STUDENT&sm=feedback&is=algebraic&p=rabbits&s=login.html&c=Continue', done);
     });
  
     describe('Rabbit Problem', function(){
@@ -96,11 +96,13 @@ describe('Test dragoon website', function(){
         it("should have the correct function node", function(done){
             //Check the contents inside the node editor after opening the node
             client.click('canvas[id="myCanvas"]', function(err){
-                client.click('div[id="id11"]', function(err){
-                    client.waitForInvisible('span[id="createNodeButton_label"]', 1000, function(err){
-                        functions.checkColor(client, expect, 'table[id="selectDescription"]', "144, 238, 144");
-                        functions.checkMessage(client, expect, 'div[id="messageBox"]', "", true);
-                        functions.checkDisabled(client, expect, ['table[id="typeId"]']);
+                client.waitForVisible('div[id="id11"]', 3000, function(err){
+                    client.click('div[id="id11"]', function(err){
+                        client.waitForInvisible('span[id="createNodeButton_label"]', 2000, function(err){
+                            functions.checkColor(client, expect, 'table[id="selectDescription"]', "144, 238, 144");
+                            functions.checkMessage(client, expect, 'div[id="messageBox"]', "", true);
+                            functions.checkDisabled(client, expect, ['table[id="typeId"]']);
+                        })
                     })
                 })
             })

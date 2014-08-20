@@ -40,48 +40,47 @@ define([
 	//			see which looks best?
 
 	var logging = {
-	session: null,
-	verbose: false,
-	setSession: function(session){
-		this.session = session;
-	},
-	// Send log messages to the console.
-	setVerbose: function(verbose){
-		this.verbose = verbose;
-	}
-
-	// This works, but it is ugly, since it has to be called manually for
-	// each class instantiation.
-	/*
-	setupController: function(controller){
-		aspect.after(controller, "closeEditor", function(){
-		console.log("---------- closeEditor logging 2: ", arguments, this);
-		}, true);
-	}
-	 */
+		session: null,
+		verbose: false,
+		setSession: function(session){
+			this.session = session;
+		},
+		// Send log messages to the console.
+		setVerbose: function(verbose){
+			this.verbose = verbose;
+		}
+		
+		// This works, but it is ugly, since it has to be called manually for
+		// each class instantiation.
+		/*
+		 setupController: function(controller){
+		 aspect.after(controller, "closeEditor", function(){
+		 console.log("---------- closeEditor logging 2: ", arguments, this);
+		 }, true);
+		 }
+		 */
 	};
-
+	
 	/* 
 	 Some examples where we attach logging to a function in the prototype of a class.
 	 Then, when the class is instantiated, the associated function has the logging attached.
 	 */
 
 	aspect.after(controller.prototype, "showNodeEditor", function(id){
-	logging.session.log('ui-action', {type: 'open-dialog-box', name: 'node-editor', node: id});
+		logging.session.log('ui-action', {type: 'open-dialog-box', name: 'node-editor', node: id});
 	}, true);
-
-
+	
+	
 	aspect.after(controller.prototype, "closeEditor", function(){
-	logging.session.log('ui-action', {type: 'close-dialog-box', name: 'node-editor', node: this.currentID});
+		logging.session.log('ui-action', {type: 'close-dialog-box', name: 'node-editor', node: this.currentID});
 	}, true);
-
+	
 	aspect.after(controller.prototype, "initialControlSettings", function(){
 		logging.session.clientLog("error", {
 			message:'initialControlSettings should be overwritten.', 
 			functionTag:'initialControlSettings'
 		});
 	}, true);
-
 
 
 	// This does not work for some reason.	It should call the existing
