@@ -43,8 +43,20 @@ exports.checkColor = function(client, expect, id, color, borderType, borderColor
 }
 
 //Check to see if the dom object with the given value
-exports.checkMessage = function(client, expect, id, message){
+exports.checkValue = function(client, expect, id, message){
     client.getValue(id, function(err, value){
         expect(value).to.equal(message);
     })
+}
+
+//get the current time and date
+exports.getDate = function(){
+    var date = new Date();
+    var dd = date.getDate();
+    var mm = date.getMonth()+1;
+    var yyyy = date.getFullYear();
+    var seconds = date.getTime()/1000;
+
+    date = mm+'/'+dd+'/'+yyyy+'/'+seconds;
+    return date;
 }
