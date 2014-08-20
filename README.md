@@ -44,10 +44,27 @@ local server on OS X 10.8 (mountain lion).
 
 More information on [starting php and Apache on OS X](http://akrabat.com/computing/setting-up-php-mysql-on-os-x-10-8-mountain-lion).
 
+In order to give the apache server permisions to access the folder containing the dragoon librarys you must change the folder to a sharded folder and allow access to directory from the apache config
+
+To change the folder to a sharded folder, simply right click (or control click) select get info, and then check the box that says "Shared folder"
+
+Go into the config file
+
+    sudo nano /etc/apache2/httpd.conf
+    
+Find the default directory settings and change them so they look like the following
+
+    <Directory />
+        Options +Indexes FollowSymLinks +ExecCGI
+        AllowOverride AuthConfig FileInfo
+        Order allow, deny
+        Allow from all
+    </Directory>
+    
+Afterwards reset the server
+
+    sudo apachectl restart
+
 ## Testing Dragoon ##
 
-Dragoon uses [Selenium 2.0]( http://docs.seleniumhq.org/projects/webdriver/) to perform automated [functional testing] (http://en.wikipedia.org/wiki/Functional_testing). 
-
-### Install libraries to run tests ###
-
-In the root directory, enter `make test` to install the libraries that include [Selenium WebDriver] (http://docs.seleniumhq.org/projects/webdriver/), [Selenium Server](http://docs.seleniumhq.org/download/) and Javascript client driver [node.js] (http://nodejs.org/).
+More information about testing and installation of testing can be found in the [Readme in test folder](tests/README.md)
