@@ -10,18 +10,19 @@
 		}
 
 		function createDashboard($section, $mode, $user, $problem, $fromTime, $fromDate, $toTime, $toDate){
-			$query = $this->$getQuery($section, $mode, $user, $problem, $fromTime, $fromDate, $toTime, $toDate);
-			$result = $al->getResults($query);
-			$objects = $this->$parseMessages($result);
+			$query = $this->getQuery($section, $mode, $user, $problem, $fromTime, $fromDate, $toTime, $toDate);
+			echo $query;
+			$result = $this->al->getResults($query);
+			$objects = $this->parseMessages($result);
 			return $objects;
 		}
 
 		function getQuery($section, $mode, $user, $problem, $fromTime, $fromDate, $toTime, $toDate){
-			var $userString = "AND user = '".$user."' ";
-			var $problemString = "AND problem = '".$problem."' ";
-			var $fromTimeString =  "AND time >= '".$fromDate." ".$fromTime."' ";
-			var $toTimeString = "AND time <= '".(!empty($toDate)?$toDate:$fromDate)." ".$toTime."' ";
-			var $queryString = 
+			$userString = "AND user = '".$user."' ";
+			$problemString = "AND problem = '".$problem."' ";
+			$fromTimeString =  "AND time >= '".$fromDate." ".$fromTime."' ";
+			$toTimeString = "AND time <= '".(!empty($toDate)?$toDate:$fromDate)." ".$toTime."' ";
+			$queryString = 
 			"SELECT 
 				tid, session.session_id, user, problem, time, method, message, group 
 			from 
@@ -39,23 +40,23 @@
 		}
 
 		function parseMessages($result){
-			var $resetVariables = true;
-			var $sessionTime, $outOfFocusTime, $wastedTime;
-			var $oldRow, $method, $oldMessage, $newMessage;
-			var $row, $oldSession, $newSession;
-			var $upObject, $currentNode;//up stands for user-problem
-			var $problemReOpen;
-			var $objectArray = array();
-			var $propertyStartTime;
-			var $totalChecks, $incorrectChecks, $errorRatio;
+			$resetVariables = true;
+			$sessionTime; $outOfFocusTime; $wastedTime;
+			$oldRow; $method; $oldMessage; $newMessage;
+			$row; $oldSession; $newSession;
+			$upObject; $currentNode;//up stands for user-problem
+			$problemReOpen;
+			$objectArray = array();
+			$propertyStartTime;
+			$totalChecks; $incorrectChecks; $errorRatio;
 			while($row = $result->mysqli_fetch($result)){
 				if($resetVariables){
-					$sessionTime = 0, $outOfFocusTime = 0, $wastedTime=0;
+					$sessionTime = 0; $outOfFocusTime = 0; $wastedTime=0;
 					$problemReOpen = 1;
 					$oldRow = $row;
 					$upObject = new logProblemObject();
 					$upObject->setSessionRunning(true);
-					$totalChecks = 0, $incorrectChecks=0;
+					$totalChecks = 0; $incorrectChecks=0;
 					$errorRatio = 0;
 				}
 				$resetVariables = false;
@@ -65,7 +66,7 @@
 				$oldSession = $oldRow['session'];
 				$newSession = $row['session'];
 
-				var $stepTime = $newMessage['time'] - $oldMessage['time'];
+				$stepTime = $newMessage['time'] - $oldMessage['time'];
 				if($oldSession != $newSession){
 					//this means either the problem was opened again or their is a new user problem combination.
 					if(($oldRow['user'] == $row['user']) && ($oldRow['problem'] == $row['problem'])){
@@ -85,10 +86,10 @@
 				if($method === "start-session"){
 					$upObject->setProblem($row['problem']);
 				} else if($method === "ui-action"){
-					var $type = $newMessage['type'];
+					$type = $newMessage['type'];
 					if($type === "menu-choice"){
 						//a new node created
-						var $name = $newMessage['name'];
+						$name = $newMessage['name'];
 						if($name === 'create-node'){
 							if(!isset($currentNode)){
 								$currentNode = new Node();
@@ -119,11 +120,11 @@
 						}
 					}
 				} else if($method === "solution-step"){
-					var $type = $newMessage['type'];
+					$type = $newMessage['type'];
 					if($type === "solution-check"){
-						var $currentProperty = new Property();
+						$currentProperty = new Property();
 						$currentProperty->setName($newMessage['property']);
-						var $checkResult = $newMessage['checkResult'];
+						$checkResult = $newMessage['checkResult'];
 						$currentProperty->setStatus($checkResult);
 						$currentProperty->setCorrectValue($newMessage['correctValue']);
 						$totalChecks = $totalChecks + 1;

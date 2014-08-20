@@ -4,7 +4,7 @@ define([
 	"dojo/request/xhr", 
 	"dojo/_base/json",
 	"dojo/_base/lang",
-	"dojo/_bas/array"
+	"dojo/_base/array"
 ], function(declare, xhr, json, lang, array){
 	return declare(null,{
 		problems: null,

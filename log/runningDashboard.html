@@ -7,7 +7,7 @@
 	dojoConfig = {
 		parseOnLoad:true,
 	    async: true,
-	    baseUrl: "./log",
+	    baseUrl: "./",
 	    packages: [
 	    	{name:'dashboard', location: 'js'},
 	    	{name: 'dojo', location: '../dojo'},
@@ -16,12 +16,16 @@
 	};
 
 </script>
+<script src="../dojo/dojo.js"></script>
 <script type="text/javascript">
 	require([
 		"dashboard",
 		"dijit/form/RadioButton"
 	]);
 </script>
+<style>
+	.newLine{display:block;}
+</style>
 </head>
 <body>
 	<div id="table">
@@ -29,12 +33,18 @@
 	</div>
 
 	<div id="choice change">
-		<input type="radio" name="type" value="default" id="default" data-dojo-type="dijit/form/RadioButton"/>
-		<label for="default">Nothing</label>
-		<input type="radio" name="type" value="time" id="time" data-dojo-type="dijit/form/RadioButton"/>
-		<label for="default">Running Time</label>
-		<input type="radio" name="type" value="errors" id="errors" data-dojo-type="dijit/form/RadioButton"/>
-		<label for="default">Problem Errors (wrong choices/total choices)</label>	
+		<div class="newLine">
+			<input type="radio" name="type" value="default" id="default" data-dojo-type="dijit/form/RadioButton"/>
+			<label for="default">Nothing</label>
+		</div>
+		<div class="newLine">
+			<input type="radio" name="type" value="time" id="time" data-dojo-type="dijit/form/RadioButton"/>
+			<label for="default">Running Time</label>
+		</div>
+		<div class="newLine">
+			<input type="radio" name="type" value="errors" id="errors" data-dojo-type="dijit/form/RadioButton"/>
+			<label for="default">Problem Errors (wrong choices/total choices)</label>	
+		</div>
 	</div> 
 </body>
 </html>

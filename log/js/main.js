@@ -1,6 +1,6 @@
 /* global define */
 define([
-	"dojo/ioQuery",
+	"dojo/io-query",
 	"dojo/dom",
 	"dojo/ready",
 	"dojo/fx/Toggler", 

@@ -90,8 +90,8 @@
 			$this->totalSolutionChecks = $value;
 		}
 
-		function getIncorrectChecks(){
-			return $this->incorrectChecks;
+		function getTotalSolutionChecks(){
+			return $this->totalSolutionChecks;
 		}
 
 		function setErrorRatio($value){
@@ -111,8 +111,8 @@
 		}
 
 		function getNodeFromName($name){
-		  var $allNodes = this->getNodes(); // BvdS:  my editor complained about this line, but it wouldn't tell me what was wrong
-			var $resultNode = null;
+			$allNodes = $this->getNodes(); // BvdS:  my editor complained about this line, but it wouldn't tell me what was wrong
+			$resultNode = null;
 			foreach($allNodes as $node){
 				if($name == $node->getName()){
 					$resultNode = $node;
@@ -163,9 +163,9 @@
 		}
 
 		function getPropertyFromName($name){
-			var $allProperties = this->getProperties();
-			var $resultProperty = null;
-			var $property;
+			$allProperties = $this->getProperties();
+			$resultProperty = null;
+			$property;
 			foreach($allProperties as $property){
 				if($name == $property->getName()){
 					$resultProperty = $property;
@@ -173,7 +173,7 @@
 				}
 			}
 
-			return $resultNode
+			return $resultNode;
 		}
 	}
 

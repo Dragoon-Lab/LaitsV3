@@ -1,15 +1,3 @@
-<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN"
-   "http://www.w3.org/TR/html4/loose.dtd">
-<html>
-<head>
-<meta http-equiv="Content-type" content="text/html;charset=UTF-8">
-<title>Detailed Dashboard</title>
-<script type="text/javascript">
-
-</script>
-</head>
-<body>
-
 <?php
 	//require "../www/db-login.php";
 	//require "../www/error-handler.php";
@@ -27,15 +15,13 @@
 	!empty($_REQUEST["user"])?($user = $_REQUEST["user"]):$user = '';
 	(!empty($_REQUEST["dashboard"]) &&($_REQUEST["dashboard"] === 'small'))?($smallDashboard = true):($smallDashboard=false);
 
-	$mysqli = mysqli_connect("localhost",$dbuser, $dbpass, $dbname) or die("Connection not established. Check the user log file");
-	//$mysqli = mysqli_connect("localhost", "root", "qwerty211", "laits_stable14") or die("Connection not established. Check the user log file");
+	//$mysqli = mysqli_connect("localhost",$dbuser, $dbpass, $dbname) or die("Connection not established. Check the user log file");
+	$mysqli = mysqli_connect("localhost", "root", "qwerty211", "laits_stable14") or die("Connection not established. Check the user log file");
 
 	$db = new Dashboard($mysqli);
 
-	$resultObjects = $db->createSmallDashboard($section, $mode, $user, $problem, $fromDate, $toDate, $fromTime, $toTime);
+	$resultObjects = $db->createDashboard($section, $mode, $user, $problem, $fromDate, $toDate, $fromTime, $toTime);
 
 	print(json_encode($resultObjects));
 	mysqli_close($mysqli);
 ?>
-</body>
-</html>
