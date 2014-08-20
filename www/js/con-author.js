@@ -268,7 +268,7 @@ define([
 			}
 			if(this._forumparams){
 				// enable forum button and activate event
-                this.activateForumButton();
+				this.activateForumButton();
 			}
 		},
 
