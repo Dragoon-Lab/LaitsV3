@@ -83,11 +83,11 @@ if($method == 'start-session'){
     $value =  mysqli_real_escape_string($mysqli, $value);
   }
   $problem = isset($x->p)?"'$x->p'":"DEFAULT";
-  $author = isset($x->a)?"'$x->a'":"DEFAULT";
+  $group = isset($x->g)?"'$x->g'":"DEFAULT";
   // This should give an error if session id already exists.
   // Need to verify how error is handled.
-  $query = "INSERT INTO session (session_id, mode, user, section, problem, author) " .
-    "VALUES ('$sessionId','$x->m','$x->u','$x->s',$problem,$author)";
+  $query = "INSERT INTO session (session_id, mode, user, section, problem, `group`) " .
+    "VALUES ('$sessionId','$x->m','$x->u','$x->s',$problem,$group)";
   // echo "Starting new session query $query\n";
   $mysqli->query($query)
     or trigger_error("Session creation failed: " . $mysqli->error);

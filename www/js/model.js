@@ -541,6 +541,9 @@ define([
 			getDescription: function(/*string*/ id){
 				return this.getNode(id).description;
 			},
+			getGivenID: function(/*string*/ id){
+				return id;
+			},
 			getAttemptCount: function(/*string*/ id, /*string*/ part){
 				return this.getNode(id).attemptCount[part];
 			},
@@ -596,7 +599,7 @@ define([
 				var equationEntered = node.type && node.type == "parameter" || node.equation;
 				if(!node.genus || node.genus == "allowed" || node.genus == "preferred"){
 					return node.name && node.description &&
-							node.type && initialEntered &&
+							node.type && typeof initialEntered === "number" &&
 							(unitsOptional || node.units) &&
 							equationEntered;
 				}else if(node.genus == "initialValue"){
@@ -655,6 +658,9 @@ define([
 				// Summary: Return any matched given model id for student node.
 				var node = this.getNode(id);
 				return node && node.descriptionID;
+			},
+			getGivenID: function(id){
+				return this.getDescriptionID(id);
 			},
 			getNodeIDFor: function(givenID){
 				// Summary: returns the id of a student node having a matching descriptionID;

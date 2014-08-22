@@ -77,11 +77,6 @@
             alert("Please enter a username.");
             return false;
         }
-        // For author form, remove empty author
-        if(ff && form.a.value.trim() == ""){
-          console.log("Deleting author (a) from GET.", form);
-          document.getElementById("author2").removeAttribute('name');
-        }
         return true;
     };
 
@@ -207,8 +202,8 @@
                     </div>
 
                     <div class="fieldgroup">
-                        <label for="author2">Group: </label>
-                        <input id="author2" type="text" name="a">
+                        <label for="group2">Group: </label>
+                        <input id="group2" type="text" name="g">
                     </div>
 
                     <input type="hidden" name="s" value="public-login.html">
