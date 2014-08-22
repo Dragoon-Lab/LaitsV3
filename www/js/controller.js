@@ -539,9 +539,10 @@ define([
 			// Only add label when name exists
 			if(name){
 				switch(type){
-					case "accumulator":
+                    case "accumulator":
 						nodeName = 'new ' + name + ' = ' + 'old ' + name + ' +';
-						tt = " * Change in Time";
+						//Commenting out Change in Time label per Dr. Kurt
+						//tt = " * Change in Time";
 						break;
 					case "function":
 						nodeName = name + ' = ';
@@ -558,7 +559,7 @@ define([
 			}
 			// Removing all the text is the same as setting display:none.
 			dom.byId('equationLabel').innerHTML = nodeName;
-			dom.byId('timeStepLabel').innerHTML = tt;
+			//dom.byId('timeStepLabel').innerHTML = tt;
 		},
 		equationInsert: function(text){
 			var widget = registry.byId(this.controlMap.equation);
