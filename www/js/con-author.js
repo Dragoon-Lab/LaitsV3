@@ -261,11 +261,14 @@ define([
 			this.applyDirectives(this.authorPM.process(descriptionID?!(descriptionID==this.currentID):null, "description", description));
 
 			if(!this._model.active.getNodeIDByDescription(description)){
-
 				this._model.active.setDescription(this.currentID, description);
 				console.log("In AUTHOR mode. Description value is: " + description);
 			}else {
 				console.warn("In AUTHOR mode. Attempted to use description that already exists: " + description);
+			}
+			if(this._forumparams){
+				// enable forum button and activate event
+				this.activateForumButton();
 			}
 		},
 

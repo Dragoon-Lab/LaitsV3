@@ -1,3 +1,4 @@
+/* global define */
 /**
  *Dragoon Project
  *Arizona State University

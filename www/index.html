@@ -110,14 +110,15 @@
              <button type="button" data-dojo-type="dijit/form/Button" id="createNodeButton">Create Node</button>
              <button type="button" data-dojo-type="dijit/form/Button" id="graphButton">Graph</button>
              <button type="button" data-dojo-type="dijit/form/Button" id="tableButton">Table</button>
-             <button type="button" data-dojo-type="dijit/form/Button" id="forumButton">Forum</button>
+             <button type="button" data-dojo-type="dijit/form/Button" id="forumButton" disabled="true">Forum</button>
              <button type="button" data-dojo-type="dijit/form/Button" id="descButton" disabled="true">Description &amp; Times</button>
              <button type="button" data-dojo-type="dijit/form/Button" id="saveButton" disabled="true">Rename</button>
 	     <div data-dojo-type="dijit/PopupMenuBarItem">
                  <span>Help</span>
 		 <div data-dojo-type="dijit/Menu" id="menuHelp">
 		    <div id="menuIntroText" data-dojo-type="dijit/MenuItem">Introduction</div>
-		    <div id="menuIntroVideo" data-dojo-type="dijit/MenuItem">Intro Video</div>                  
+		    <div id="menuIntroVideo" data-dojo-type="dijit/MenuItem">Intro Video</div>
+            <div id="menuMathFunctions" data-dojo-type="dijit/MenuItem">Math Functions</div>
 		 </div>
              </div>
 
@@ -302,7 +303,7 @@
                     <div id="equationLabel"></div>
                     <textarea id="equationBox" rows=2 cols=30 data-dojo-type="dijit/form/SimpleTextarea"></textarea>
 	            <div id="equationText"></div>
-                    <div id="timeStepLabel"></div>
+                    <!--<div id="timeStepLabel"></div>-->
                 </div>
                 <div class="buttonBox">	    
 	            <button id="undoButton" type="button" data-dojo-type="dijit/form/Button" iconClass="dijitNoIcon">Undo</button>
@@ -315,7 +316,7 @@
 		<div class="buttonBox">
 		    <!-- Strut to move close button down.  It would be
                     better to do this with css... -->
-		    <div>&nbsp;</div>
+		    <div>&nbsp;<button id="nodeForumButton" type="button" data-dojo-type="dijit/form/Button" iconClass="dijitNoIcon" disabled="true">Forum</button></div>
 		    <div>&nbsp;</div>
 		    <div>&nbsp;</div>
 		    <button id="closeButton" type="button" data-dojo-type="dijit/form/Button" iconClass="dijitNoIcon">Done</button>
