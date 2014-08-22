@@ -35,7 +35,7 @@ $mysqli = mysqli_connect("localhost", $dbuser, $dbpass, $dbname)
 
 //retrieve POST variables
 $section = mysqli_real_escape_string($mysqli, $_GET['section']);
-$query="select S.* from session S,solutions T  where S.section='$section' AND S.mode='AUTHOR' AND S.session_id=T.session_id AND T.share";
+$query="select S.* from session S,solutions T  where S.section='$section' AND S.mode='AUTHOR' AND S.session_id=T.session_id AND (T.share)";
 if($result = $mysqli->query($query)){
   $json = array(); 
   while($row = $result->fetch_object()){
