@@ -126,13 +126,13 @@ define([
 			 */
 			try { // we try to run the method because there might be some nodes missing and an error is generated
 				var solution;
-				if(this.model.active.getIntegrationMethod() == "eulersMethdod") 
+				/*if(this.model.active.getIntegrationMethod() == "eulersMethdod") 
 					solution = integrate.eulersMethod(
 					choice.timeStep, 
 					equation.evaluateTimeStep,
 					choice.initialValues, 
 					this.model.getTime());
-				else
+				else*/
 					solution = integrate.midpointMethod(
 					choice.timeStep, 
 					equation.evaluateTimeStep,

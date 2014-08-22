@@ -59,7 +59,7 @@ define([
 				this.checkedNodes = new Array();
 				this.model = {task: {
 					taskName: name,
-					time: {start: 0, end: 10, step: .5},
+					time: {start: 0, end: 10, step: .5, integrationMethod: "midpointMethod"},
 					properties: {},
 					image: {},
 					taskDescription: "",
@@ -245,7 +245,7 @@ define([
 			},
 			getIntegrationMethod: function(){
 				return this.model.task.time.integrationMethod;
-			}
+			},
 			getTaskDescription: function(){
 				return this.model.task.taskDescription;
 			},
