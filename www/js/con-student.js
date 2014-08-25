@@ -139,17 +139,21 @@ define([
 
 		handleDescription: function(selectDescription){
 			console.log("****** in handleDescription ", this.currentID, selectDescription);
-			if(selectDescription == 'defaultSelect')
+			if(selectDescription == 'defaultSelect'){
 				return; // don't do anything if they choose default
-
+			}
 			this._model.active.setDescriptionID(this.currentID, selectDescription);
 			this.updateNodes();
 
-		// This is only needed if the type has already been set,
-		// something that is generally only possible in TEST mode.
+			// This is only needed if the type has already been set,
+			// something that is generally only possible in TEST mode.
 			this.updateEquationLabels();
 
 			this.applyDirectives(this._PM.processAnswer(this.currentID, 'description', selectDescription));
+			if(this._forumparams){
+				// enable forum button and activate the event
+				this.activateForumButton();
+			}
 		},
 
 		handleType: function(type){
@@ -286,10 +290,10 @@ define([
 		},
 
 		checkDonenessMessage: function (){
-		// Returns true if model is not complete.
+			// Returns true if model is not complete.
 			var directives = this._PM.checkDoneness(this._model);
-		this.applyDirectives(directives);
-		return directives;
+			this.applyDirectives(directives);
+			return directives;
 		}
 
 	});
