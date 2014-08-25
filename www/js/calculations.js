@@ -81,6 +81,7 @@ define([
 			this.active.xvarMap = {};
 			array.forEach(this.active.timeStep.xvars, function(xvar, i){
 				this.active.xvarMap[xvar] = i;
+				
 			}, this);
 			
 			// These are not used for the tables
@@ -126,13 +127,13 @@ define([
 			 */
 			try { // we try to run the method because there might be some nodes missing and an error is generated
 				var solution;
-				/*if(this.model.active.getIntegrationMethod() == "eulersMethdod") 
+				if(this.model.getIntegrationMethod() == "eulersMethdod") 
 					solution = integrate.eulersMethod(
 					choice.timeStep, 
 					equation.evaluateTimeStep,
 					choice.initialValues, 
 					this.model.getTime());
-				else*/
+				else
 					solution = integrate.midpointMethod(
 					choice.timeStep, 
 					equation.evaluateTimeStep,
