@@ -60,10 +60,13 @@ define([
 
 		// The constructor creates a session and sets the sessionId
 		// It also sets the path.
+		params:{},	
+	
 		constructor: function(/*object*/ params, /*string*/ path){
 			// Dragoon database requires that clientID be 50 characters.
 			this.sessionId = FNV1aHash(params.u+"_"+params.s) +
 				'_' + new Date().getTime();
+			this.params = params;
 			console.log("New sessionId = ", this.sessionId);
 			this._startTime = (new Date()).getTime();
 			this.path = path || "";
@@ -88,8 +91,38 @@ define([
 				});
 			});
 		},
+		saveAsProblem : function(model,problemName,groupName){
+			//update params to be passed
+			var newParams = this.params;
+			newParams.p = problemName;
+			newParams.g = groupName;
+			//insert new session ID for newly saved as problem
+			var sessionId = FNV1aHash(this.params.u+this.params.s)+'_'+new Date().getTime();
+			console.log("renaming problem session id :"+sessionId);
+			this.log("rename-problem",newParams,sessionId);			
 
-		saveProblem: function(model){
+			//save the solution with new session ID
+			var object = {
+				sg: json.toJson(model.task),
+				 x: sessionId
+			};
+			if("share" in model){
+				// Database Boolean
+				object.share = model.share?1:0;
+			}
+			xhr.post(this.path + "save_solution.php", {
+				data: object
+			}).then(function(reply){  // this makes saveProblem blocking?
+				console.log("saveProblem worked: ", reply);
+			}, function(err){
+				this.clientLog("error", {
+					message: "save Problem error : "+err,
+					functionTag: 'saveProblem'
+				});
+			});
+			
+		},
+		saveProblem: function(model,newSessionID){
 			// Summary: saves the string held in this.saveData in the database.
 			var object = {
 				sg: json.toJson(model.task),
@@ -115,8 +148,8 @@ define([
 			// Returns time in seconds since start of session.
 			return	((new Date()).getTime() - this._startTime)/1000.0;
 		},
-
-		log: function(method, params){
+		//used to create session, in case of renaming problem use new session
+		log: function(method, params, rsessionId){ //rsessionId for saving new problem
 			// Add time to log message (allowing override).
 			var p = lang.mixin({time: this.getTime()}, params);
 
@@ -124,7 +157,7 @@ define([
 				data: {
 					method: method,
 					message: json.toJson(p),
-					x: this.sessionId
+					x: rsessionId?rsessionId:this.sessionId
 				}
 			}).then(function(reply){
 				console.log("---------- logging " + method + ': ', p, " OK, reply: ", reply);

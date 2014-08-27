@@ -223,6 +223,9 @@ define([
                 aspect.after(registry.byId('authorSaveDialog'), "hide", function(){
                     console.log("Rename and Save Problem edits");
                     // Save problem
+		   var problemName = registry.byId("authorSaveProblem");
+		   var groupName = registry.byId("authorSaveGroup");
+		   session.saveAsProblem(givenModel.model,problemName,groupName);	
                 });
                 on(registry.byId("saveCloseButton"), "click", function(){
                     registry.byId("authorSaveDialog").hide();
