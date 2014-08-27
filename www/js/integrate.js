@@ -60,6 +60,7 @@ define([
 					// console.log("ret.values", ret.times, ret.values[i]);
 				}
 			}
+			console.log("eulers method called");
 			return ret;
 		},
 		midpointMethod: function(env, f, initial, times){
@@ -98,6 +99,7 @@ define([
 					ret.values[i].push(values[i]);
 				}
 			}
+			console.log("midpoint method called");
 			return ret; 
 		}		
 	}
