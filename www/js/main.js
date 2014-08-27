@@ -223,8 +223,12 @@ define([
                 aspect.after(registry.byId('authorSaveDialog'), "hide", function(){
                     console.log("Rename and Save Problem edits");
                     // Save problem
-		   var problemName = registry.byId("authorSaveProblem");
-		   var groupName = registry.byId("authorSaveGroup");
+		   var problemName = registry.byId("authorSaveProblem").value;
+		   var groupName = registry.byId("authorSaveGroup").value;
+		   if(problemName&&problemName=='' || groupName&&groupName==''){
+			alert('Missing input ');
+			return; 
+		    }
 		   session.saveAsProblem(givenModel.model,problemName,groupName);	
                 });
                 on(registry.byId("saveCloseButton"), "click", function(){

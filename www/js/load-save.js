@@ -55,6 +55,15 @@ define([
 		}
 		return Number(hash).toString(16);
 	};
+	//object copy - not deep copy
+	var copy = function clone(obj) {
+    			if (null == obj || "object" != typeof obj) return obj;
+    				var copy = obj.constructor();
+    			for (var attr in obj) {
+        			if (obj.hasOwnProperty(attr)) copy[attr] = obj[attr];
+    			}
+    			return copy;
+		};
 
 	return declare(null, {
 
@@ -93,7 +102,7 @@ define([
 		},
 		saveAsProblem : function(model,problemName,groupName){
 			//update params to be passed
-			var newParams = this.params;
+			var newParams = copy(this.params);  //clone the object
 			newParams.p = problemName;
 			newParams.g = groupName;
 			//insert new session ID for newly saved as problem
