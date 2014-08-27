@@ -816,7 +816,7 @@ define([
 						}else if(autocreationFlag){
 							//create node
 							var id = this._model.active.addNode();
-							this.addNode(this._model.active.getNode(id), true);
+							this.addNode(this._model.active.getNode(id));
 							this.autocreateNodes(id, variable);
 							//get Node ID and substitute in equation
 							var subID2 = unMapID.call(this._model.active, givenID||id);
