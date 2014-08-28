@@ -70,11 +70,6 @@ define([
 		logging.session.log('ui-action', {type: 'open-dialog-box', name: 'node-editor', nodeID: id, node: this._model.active.getName(id)});
 	}, true);
 	
-	
-	aspect.after(controller.prototype, "closeEditor", function(){
-		logging.session.log('ui-action', {type: 'close-dialog-box', name: 'node-editor', nodeID: this.currentID, node: this._model.active.getName(this.currentID)});
-	}, true);
-	
 	aspect.after(controller.prototype, "initialControlSettings", function(){
 		logging.session.clientLog("error", {
 			message:'initialControlSettings should be overwritten.', 
