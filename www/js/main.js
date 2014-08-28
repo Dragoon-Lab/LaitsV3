@@ -239,14 +239,14 @@ define([
                 //from textboxes of Rename dialog
     			on(registry.byId("authorSaveProblem"), "blur", function() {
     				var problemName = registry.byId("authorSaveProblem").value;
-    				var groupName = registry.byId("authorSaveGroup").value;
+    				var groupName = registry.byId("authorSaveGroup").value;    				
     				session.isProblemNameConflict(problemName,groupName).then(function(isConflict) {
-    					if(isConflict) {
-    						//registry.setAttr("authorSaveProblemConflictStatus","src","images/cross.png");
+    					if(isConflict) {    					
     						registry.byId("saveCloseButton").set("disabled",true);
-    					} else {
-    						//registry.setAttr("authorSaveProblemConflictStatus","src","images/okay.png");
+    						registry.byId("saveCloseButton").set("title","Problem name conflict");
+    					} else {    						
     						registry.byId("saveCloseButton").set("disabled",false);
+    						registry.byId("saveCloseButton").set("title","Problem name doesn't conflict");
     					}
     				});    				
     			});
@@ -254,12 +254,12 @@ define([
     				var problemName = registry.byId("authorSaveProblem").value;
     				var groupName = registry.byId("authorSaveGroup").value;
     				session.isProblemNameConflict(problemName,groupName).then(function(isConflict) {
-    					if(isConflict) {
-    						//registry.setAttr("authorSaveProblemConflictStatus","src","images/cross.png");
+    					if(isConflict) {    						
     						registry.byId("saveCloseButton").set("disabled",true);
-    					} else {
-    						//registry.setAttr("authorSaveProblemConflictStatus","src","images/okay.png");
+    						registry.byId("saveCloseButton").set("title","Problem name conflict");
+    					} else {    					
     						registry.byId("saveCloseButton").set("disabled",false);
+    						registry.byId("saveCloseButton").set("title","Problem name doesn't conflict");
     					}
     				});
     			});
