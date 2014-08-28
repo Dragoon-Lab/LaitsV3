@@ -13,7 +13,10 @@
 			$query = $this->getQuery($section, $mode, $user, $problem, $fromTime, $fromDate, $toTime, $toDate);
 			echo $query;
 			$result = $this->al->getResults($query);
-			$objects = $this->parseMessages($result);
+			$objects = null;
+			if($result != null)
+				$objects = $this->parseMessages($result);
+
 			return $objects;
 		}
 
@@ -22,9 +25,9 @@
 			$problemString = "AND problem = '".$problem."' ";
 			$fromTimeString =  "AND time >= '".$fromDate." ".$fromTime."' ";
 			$toTimeString = "AND time <= '".(!empty($toDate)?$toDate:$fromDate)." ".$toTime."' ";
-			$queryString = 
+			/*$queryString = 
 			"SELECT 
-				tid, session.session_id, user, problem, time, method, message, group 
+				tid, session.session_id, user, problem, time, method, message, `group` 
 			from 
 				session JOIN step ON session.session_id = step.session_id 
 			where 
@@ -34,7 +37,8 @@
 				(!empty($problem) ?$problemString:"").
 				(!empty($fromDate)?$toTimeString:"").
 				" AND mode = '".$mode."' ".
-			"ORDER BY user asc, problem_name asc, tid asc;";
+			"ORDER BY user asc, problem asc, tid asc;"; */
+			$queryString = "SELECT tid, session.session_id, user, problem, time, method, message, `group` from session JOIN step ON session.session_id = step.session_id where section = 'student101' AND method != 'client-message' AND mode = 'STUDENT' AND user = 'st1' ORDER BY user asc, problem asc, tid asc;";
 
 			return $queryString;
 		}
@@ -49,13 +53,13 @@
 			$objectArray = array();
 			$propertyStartTime;
 			$totalChecks; $incorrectChecks; $errorRatio;
-			while($row = $result->mysqli_fetch($result)){
+			while($row = $result->fetch_assoc()){
 				if($resetVariables){
 					$sessionTime = 0; $outOfFocusTime = 0; $wastedTime=0;
 					$problemReOpen = 1;
 					$oldRow = $row;
-					$upObject = new logProblemObject();
-					$upObject->setSessionRunning(true);
+					$upObject = new UserProblemObject ();
+					$upObject->sessionRunning = true;
 					$totalChecks = 0; $incorrectChecks=0;
 					$errorRatio = 0;
 				}
@@ -63,28 +67,28 @@
 				$method = $row['method'];
 				$newMessage = json_decode($row['message'], true);
 				$oldMessage = json_decode($oldRow['message'], true);
-				$oldSession = $oldRow['session'];
-				$newSession = $row['session'];
+				$oldSession = $oldRow['session_id'];
+				$newSession = $row['session_id'];
 
 				$stepTime = $newMessage['time'] - $oldMessage['time'];
 				if($oldSession != $newSession){
 					//this means either the problem was opened again or their is a new user problem combination.
 					if(($oldRow['user'] == $row['user']) && ($oldRow['problem'] == $row['problem'])){
 						$stepTime = 0;
-						$upObject->setSessionRunning(true);
+						$upObject->ssessionRunning = true;
 						$problemReOpen +=1;
 					} else {
 						$resetVariables = true;
 						array_push($objectArray, $upObject);
 					}
 				}
-				if($stepTime > $al->getActionTime() && $method != "window-focus"){
+				if($stepTime > $this->al->getActionTime() && $method != "window-focus"){
 					$timeWasted += $stepTime;
 				}
 				$sessionTime += $stepTime;
 
 				if($method === "start-session"){
-					$upObject->setProblem($row['problem']);
+					$upObject->problem = $row['problem'];
 				} else if($method === "ui-action"){
 					$type = $newMessage['type'];
 					if($type === "menu-choice"){
@@ -94,55 +98,90 @@
 							if(!isset($currentNode)){
 								$currentNode = new Node();
 							} else {
-								$upObject->setNodes($currentNode);
+								array_push($upObject->nodes, $currentNode);
 								$currentNode = new Node();
 							}
+							$currentNode->openTimes = 1;
+							$currentNode->nodeExist = true;
+							$currentNode->newMessage['nodeID'];
 						} else if($name === "graph-button"){
-							$upObject->setProblemComplete($row['problemComplete']);
+							$upObject->problemComplete = $newMessage['problemComplete'];
 						} else if($name === "done-button"){
-							$upObject->setProblemComplete($row['problemComplete']);
-							$upObject->setSessionRunning(false);
+							$upObject->problemComplete = $newMessage['problemComplete'];
+							$upObject->sessionRunning = false;
 						}
 						$propertyStartTime = $newMessage['time'];
 					} else if($type === "close-dialog-box"){
 						if(isset($currentProerty)){
-							$currentNode->setProperties($currentProperty);
+							array_push($currentNode->properties, $currentProperty);
 						}
-						$upObject->setNodes($currentNode);
+						array_push($upObject->nodes, $currentNode);
 						$currentNode = null;
 					} else if($type === "node-delete"){
-						$currentNode->setNodeExist(false);
+						$deletedNode = $upObject->getNodeFromName($newMessage['node']);
+						$deletedNode->nodeExist = false;
+						$index = $upObject->getIndex($newMessage['node']);
+						$upObject->nodes[$index] = $deletedNode;
 					} else if($type === "open-dialog-box"){
 						if(array_key_exists('node', $newMessage)){
 							//node reopened
 							$currentNode = $upObject->getNodeFromName($newMessage['node']);
-							$currentNode->setOpenTimes(($currentNode->getOpenTimes())+1);
+							if(count($currentNode->properties) > 1){
+								$currentNode->openTimes = $currentNode->openTimes+1;
+							}
+							//otherwise auto created node with the property of description was created.
 						}
 					}
 				} else if($method === "solution-step"){
 					$type = $newMessage['type'];
 					if($type === "solution-check"){
-						$currentProperty = new Property();
-						$currentProperty->setName($newMessage['property']);
+						$autoCreated = false;
+						if($currentProperty == null)
+							$currentProperty = new Property();
+						$currentProperty->name = $newMessage['property'];
+						if($newMessage['property'] === "description"){
+							if(count($currentNode->properties) == 0){
+								$currentNode->name = $newMessage['node'];
+								$autoCreated = false;
+							}else{
+								//autocreated node
+								$newNode = new Node();
+								$newNode->openTimes = 1;
+								$newNode->nodeExist = true;
+								$newNode->name = $newMessage['node'];
+								$newNode->id = $newMessage['nodeID'];
+								$autoCreated = true;
+							} 
+
+						}
 						$checkResult = $newMessage['checkResult'];
-						$currentProperty->setStatus($checkResult);
-						$currentProperty->setCorrectValue($newMessage['correctValue']);
+						$currentProperty->status = $checkResult;						
 						$totalChecks = $totalChecks + 1;
 
 						if($checkResult === "CORRECT"){
-							$currentProperty->setTime($newMessage['time']-$propertyStartTime);
+							$currentProperty->time = $newMessage['time']-$propertyStartTime;
 							$propertyStartTime = $newMessage['time'];
-							$currentNode->setProperties($currentProperty);
+							$currentNode->properties = $currentProperty;
+							$currentProperty->correctValue = $newMessage['value'];
+							if(!$autoCreated){
+								array_push($currentNode->properties, $currentProperty);
+							} else {
+								array_push($newNode->properties, $currentProperty);
+								array_push($upObject, $newNode);
+								$newNode = null;
+							}
 							$currentProperty = null;
 						} else if($checkResult === "INCORRECT"){
-							$currentProperty->setAnswers($newMessage['value']);
+							array_push($currentProperty->answers, $newMessage['value']);
 							$incorrectChecks = $incorrectChecks+1;
+							$currentProperty->correctValue = $newMessage['correctValue'];
 							if($newMessage['solutionProvided'] == "true"){
-								$currentProperty->setStatus("DEMO");
+								$currentProperty->status = "DEMO";
 							}
 						}
 					}
 				} else if($method === "window-focus"){
+					$type = $newMessage['type'];
 					if($type === "in-focus"){
 						//window came back in focus
 						$outOfFocusTime += $stepTime; // as previous message will be for out of focus.
@@ -152,26 +191,28 @@
 				if($resetVariables){
 					$errorRatio = $incorrectChecks/$totalChecks;
 
-					$upObject->setWastedTime($wastedTime);
-					$upObject->setTotalTime($sessionTime);
-					$upObject->setOutOfFocusTime($outOfFocusTime);
-					$upObject->setOpenTimes($problemReOpen);
-					$upObject->setIncorrectChecks($incorrectChecks);
-					$upObject->setTotalSolutionChecks($totalChecks);
-					$upObject->setErrorRatio($errorRatio);
+					$upObject->wastedTime = $wastedTime;
+					$upObject->totalTime = $sessionTime;
+					$upObject->outOfFocusTime = $outOfFocusTime;
+					$upObject->openTimes = $problemReOpen;
+					$upObject->incorrectChecks = $incorrectChecks;
+					$upObject->totalSolutionChecks = $totalChecks;
+					$upObject->errorRatio = $errorRatio;
 					array_push($objectArray, $upObject);
 				}
 			}
 			$errorRatio = $incorrectChecks/$totalChecks;
 
-			$upObject->setWastedTime($wastedTime);
-			$upObject->setTotalTime($sessionTime);
-			$upObject->setOutOfFocusTime($outOfFocusTime);
-			$upObject->setOpenTimes($problemReOpen);
-			$upObject->setIncorrectChecks($incorrectChecks);
-			$upObject->setTotalSolutionChecks($totalChecks);
-			$upObject->setErrorRatio($errorRatio);
+			$upObject->wastedTime = $wastedTime;
+			$upObject->totalTime = $sessionTime;
+			$upObject->outOfFocusTime = $outOfFocusTime;
+			$upObject->openTimes = $problemReOpen;
+			$upObject->incorrectChecks = $incorrectChecks;
+			$upObject->totalSolutionChecks = $totalChecks;
+			$upObject->errorRatio = $errorRatio;
 			array_push($objectArray, $upObject);
+
+			print_r($upObject);
 
 			return $objectArray;
 		}

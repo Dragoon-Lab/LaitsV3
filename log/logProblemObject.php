@@ -1,173 +1,57 @@
 <?php
 	class UserProblemObject{
-		private $problem;
-		private $user;
-		private $totalTime; // total time for which the session is running
-		private $outOfFocusTime; // time when the window was out of focus
-		private $wastedTime; // for a long time when nothing was done, no logs for 420 seconds.
-		private $problemComplete;
-		private $problemReOpen;
-		private $sessionRunning;
-		private $incorrectChecks;
-		private $totalSolutionChecks;
-		private $errorRatio;
-		private $nodes = array();
+		public $problem;
+		public $user;
+		public $totalTime; // total time for which the session is running
+		public $outOfFocusTime; // time when the window was out of focus
+		public $wastedTime; // for a long time when nothing was done, no logs for 420 seconds.
+		public $problemComplete;
+		public $problemReOpen;
+		public $sessionRunning;
+		public $incorrectChecks;
+		public $totalSolutionChecks;
+		public $errorRatio;
+		public $nodes = array();
 
-		//getter setters for each
-		function setProblem($value){
-			$this->problem = $value;
-		}
-
-		function getProblem(){
-			return $this->problem;
-		}
-
-		function setUser($value){
-			$this->user = $value;
-		}
-
-		function getUser(){
-			return $this->user;
-		}
-
-		function setTotalTime($value){
-			$this->totalTime = $value;
-		}
-
-		function getTotalTime(){
-			return $this->totalTime;
-		}
-
-		function setOutOfFocusTime($value){
-			$this->outOfFocusTime = $value;
-		}
-
-		function getOutOfFocusTime(){
-			return $this->outOfFocusTime;
-		}
-
-		function setWastedTime($value){
-			$this->wastedTime = $value;
-		}
-
-		function getWastedTime(){
-			return $this->wastedTime;
-		}
-
-		function setProblemComplete($value){
-			$this->problemComplete = $value;
-		}
-
-		function getProblemComplete(){
-			return $this->problemComplete;
-		}
-
-		function setProblemReOpen($value){
-			$this->problemReOpen = $value;
-		}
-
-		function getProblemReOpen(){
-			return $this->problemReOpen;
-		}
-
-		function setSessionRunning($value){
-			$this->sessionRunning = $value;
-		}
-
-		function getSessionRunning(){
-			return $this->sessionRunning;
-		}
-
-		function setIncorrectChecks($value){
-			$this->incorrectChecks = $value;
-		}
-
-		function getIncorrectChecks(){
-			return $this->incorrectChecks;
-		}
-
-		function setTotalSolutionChecks($value){
-			$this->totalSolutionChecks = $value;
-		}
-
-		function getTotalSolutionChecks(){
-			return $this->totalSolutionChecks;
-		}
-
-		function setErrorRatio($value){
-			$this->errorRatio = $value;
-		}
-
-		function getErrorRatio(){
-			return $this->errorRatio;
-		}
-
-		function setNodes($value){
-			array_push($this->nodes, $value);
-		}
-
-		function getNodes(){
-			return $this->nodes;
-		}
-
-		function getNodeFromName($name){
-			$allNodes = $this->getNodes(); // BvdS:  my editor complained about this line, but it wouldn't tell me what was wrong
+		function getNodeFromName($checkName){
+			$allNodes = $this->nodes; // BvdS:  my editor complained about this line, but it wouldn't tell me what was wrong
 			$resultNode = null;
 			foreach($allNodes as $node){
-				if($name == $node->getName()){
+				echo "<br/><br/>qwerty";
+				print_r($node);
+				if($checkName == $node->name){
 					$resultNode = $node;
 					break;
 				}
 			}
-
 			return $resultNode;
+		}
+
+		function getIndex($nodeName){
+			$allNodes = $this->nodes;
+			$i = 0;
+			foreach($allNodes as $node){
+				if($nodeName == $node->name){
+					return $i;
+				}
+				$i += 1;
+			}
 		}
 	}
 
 	class Node{
-		private $name;
-		private $nodeExist;
-		private $openTimes;
-		private $properties = array();
-
-		function setName($value){
-			$this->name = $value;
-		}
-
-		function getName(){
-			return $this->name;
-		}
-
-		function setNodeExist($value){
-			$this->nodeExist = $value;
-		}
-
-		function getNodeExist(){
-			return $this->nodeExist;
-		}
-
-		function setOpenTimes($value){
-			$this->openTimes = $value;
-		}
-
-		function getOpenTimes(){
-			return $this->openTimes;
-		}
-
-		function setProperties($value){
-			array_push($this->properties, $value);
-		}
-
-		function getProperties(){
-			return $this->properties;
-		}
+		public $name;
+		public $id;
+		public $nodeExist;
+		public $openTimes;
+		public $properties = array();
 
 		function getPropertyFromName($name){
-			$allProperties = $this->getProperties();
+			$allProperties = $this->properties;
 			$resultProperty = null;
 			$property;
 			foreach($allProperties as $property){
-				if($name == $property->getName()){
+				if($name == $property->name){
 					$resultProperty = $property;
 					break;
 				}
@@ -178,50 +62,10 @@
 	}
 
 	class Property{
-		private $name;
-		private $time;
-		private $correctValue;
-		private $status = array();
-		private $answers = array();
-
-		function setName($value){
-			$this->name = $value;
-		}
-
-		function getName(){
-			return $this->name;
-		}
-
-		function setTime($value){
-			$this->time = $value;
-		}
-
-		function getTime(){
-			return $this->time;
-		}
-
-		function setCorrectValue($value){
-			$this->correctValue = $value;
-		}
-
-		function getCorrectValue(){
-			return $this->correctValue;
-		}
-
-		function setStatus($value){
-			array_push($this->status, $value);
-		}
-
-		function getStatus(){
-			return $this->status;
-		}
-
-		function setAnswers($value){
-			array_push($this->answers, $value);
-		}
-
-		function getAnswers(){
-			return $this->answers;
-		}
+		public $name;
+		public $time;
+		public $correctValue;
+		public $status = array();
+		public $answers = array();
 	}
 ?>

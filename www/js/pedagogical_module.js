@@ -555,7 +555,7 @@ define([
 				nodeID: id,
 				node: this.model.student.getName(id),
 				property: nodePart,
-				value: answer,
+				value: answer.toString(),
 				solutionProvided: solutionGiven
 			}, logObj);
 			this.logging.log('solution-step', logObj);
