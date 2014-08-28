@@ -201,7 +201,7 @@ define([
 			if(query.m == "AUTHOR"){
 				var db = registry.byId("descButton");
 				db.set("disabled", false);
-                db = registry.byId("saveButton");
+                db = registry.byId("saveButton");   
                 db.set("disabled", false);
 
 				// Description button wiring
@@ -234,7 +234,37 @@ define([
                 on(registry.byId("saveCloseButton"), "click", function(){
                     registry.byId("authorSaveDialog").hide();
                 });
+                
+                //Author Save Dialog - check for name conflict on losing focus
+                //from textboxes of Rename dialog
+    			on(registry.byId("authorSaveProblem"), "blur", function() {
+    				var problemName = registry.byId("authorSaveProblem").value;
+    				var groupName = registry.byId("authorSaveGroup").value;
+    				session.isProblemNameConflict(problemName,groupName).then(function(isConflict) {
+    					if(isConflict) {
+    						//registry.setAttr("authorSaveProblemConflictStatus","src","images/cross.png");
+    						registry.byId("saveCloseButton").set("disabled",true);
+    					} else {
+    						//registry.setAttr("authorSaveProblemConflictStatus","src","images/okay.png");
+    						registry.byId("saveCloseButton").set("disabled",false);
+    					}
+    				});    				
+    			});
+    			on(registry.byId("authorSaveGroup"), "blur", function() {
+    				var problemName = registry.byId("authorSaveProblem").value;
+    				var groupName = registry.byId("authorSaveGroup").value;
+    				session.isProblemNameConflict(problemName,groupName).then(function(isConflict) {
+    					if(isConflict) {
+    						//registry.setAttr("authorSaveProblemConflictStatus","src","images/cross.png");
+    						registry.byId("saveCloseButton").set("disabled",true);
+    					} else {
+    						//registry.setAttr("authorSaveProblemConflictStatus","src","images/okay.png");
+    						registry.byId("saveCloseButton").set("disabled",false);
+    					}
+    				});
+    			});
 			}
+						
 			// Render image description on canvas
 			descObj.showDescription();
 
