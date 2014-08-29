@@ -510,7 +510,7 @@ define([
 		record.init("problemCompleted", 0);
 	},
 		
-		processAnswer: function(/*string*/ id, /*string*/ nodePart, /*string | object*/ answer){
+		processAnswer: function(/*string*/ id, /*string*/ nodePart, /*string | object*/ answer,/*string*/ answerString){
 			// Summary: Pocesses a student's answers and returns if correct, 
 			//		incorrect, etc. and alerts the controller about what parts 
 			//		of the node editor should be active.
@@ -550,12 +550,13 @@ define([
 					pmInterpretation: interpretation
 				};
 			}
+			var logAnswer = answerString || answer.toString();
 			logObj = lang.mixin({
 				type : "solution-check",
 				nodeID: id,
 				node: this.model.student.getName(id),
 				property: nodePart,
-				value: answer.toString(),
+				value: logAnswer,
 				solutionProvided: solutionGiven
 			}, logObj);
 			this.logging.log('solution-step', logObj);
