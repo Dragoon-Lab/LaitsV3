@@ -19,7 +19,15 @@
                     "dojox/charting/axis2d/Default",
                     "dojo/domReady!"
                 ],function(Chart, theme, LinesPlot){
-                    var chartData = [10000,9200,11811,12000,7662,13887,14200,12222,12000,10009,11288,12099];
+                    var chartData = [];
+                    var t     = 0;   // for parameter
+                    var start = 0;
+                    var end   = 100;
+                    var step  = 0.1;
+                    // Set x and y value with parameter t
+                    for(t=start;t<end;t+=step){
+                        chartData.push({x:Math.sin(t)+Math.cos(t),y:t*t});
+                    }
                     var chart = new Chart("chartNode");
                     chart.setTheme(theme);
                     chart.addPlot("default", {
@@ -27,10 +35,9 @@
                         markers: true
                     });
                     chart.addAxis("x");
-                    chart.addAxis("y", { min: 5000, max: 15000, vertical: true, fixLower: "major", fixUpper: "major" });
-                    chart.addSeries("Monthly Sales",chartData);
+                    chart.addAxis("y", {vertical: true, fixLower: "major", fixUpper: "major" });
+                    chart.addSeries("Monthly Sales", chartData);
                     chart.render();
-
                 }
         );
     </script>
