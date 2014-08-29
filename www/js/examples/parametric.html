@@ -22,11 +22,11 @@
                     var chartData = [];
                     var t     = 0;   // for parameter
                     var start = 0;
-                    var end   = 100;
-                    var step  = 0.1;
+                    var end   = 2*Math.PI;
+                    var step  = 0.01;
                     // Set x and y value with parameter t
                     for(t=start;t<end;t+=step){
-                        chartData.push({x:Math.sin(t)+Math.cos(t),y:t*t});
+                        chartData.push({x:Math.sin(t),y:Math.sin(2*t)});
                     }
                     var chart = new Chart("chartNode");
                     chart.setTheme(theme);
@@ -34,9 +34,9 @@
                         type: LinesPlot,
                         markers: true
                     });
-                    chart.addAxis("x");
-                    chart.addAxis("y", {vertical: true, fixLower: "major", fixUpper: "major" });
-                    chart.addSeries("Monthly Sales", chartData);
+                    chart.addAxis("x", {position:"center"});
+                    chart.addAxis("y", {vertical: true, fixLower: "major", fixUpper: "major", position:"center"});
+                    chart.addSeries("Parametric Plot", chartData);
                     chart.render();
                 }
         );
