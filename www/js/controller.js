@@ -512,6 +512,7 @@ define([
 			if(type == "function" && typeof this._model.active.getInitial(this.currentID) === "number"){
 				var initialNode = registry.byId(this.controlMap.initial);
 				initialNode.set("value", "");
+				this._model.active.setInitial(this.currentID, "");
 			}
 			if(type == "parameter" && this._model.active.getEquation(this.currentID)){
 				var equationNode = registry.byId(this.controlMap.equation);
