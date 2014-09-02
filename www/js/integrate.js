@@ -48,16 +48,43 @@ define([
 				values: array.map(initial, function(){return [];})
 			};
 			for(t = times.start, j=0; t<times.end; t += times.step, j++){
-				if(j>0){
+				if(t + times.step > times.end)
+				{
 					gradient = f.call(env, values);;
-					for(i=0; i<n; i++){
-						values[i] += gradient[i]*times.step;
+					for(i=0; i<n; i++)
+					{
+						values[i] += gradient[i]*(times.end - t);
+					}
+					ret.times.push(times.end);
+					for(i=0; i<n; i++)
+					{
+						ret.values[i].push(values[i]);
 					}
 				}
-				ret.times.push(t);
-				for(i=0; i<n; i++){
-					ret.values[i].push(values[i]);
-					// console.log("ret.values", ret.times, ret.values[i]);
+				else
+				{
+					if(j>0){
+						gradient = f.call(env, values);;
+						for(i=0; i<n; i++){
+							values[i] += gradient[i]*times.step;
+						}
+					}
+					ret.times.push(t);
+					for(i=0; i<n; i++){
+						ret.values[i].push(values[i]);
+						// console.log("ret.values", ret.times, ret.values[i]);
+					}
+				}
+			}
+			if(ret.times[ret.times.length - 1] != times.end)
+			{
+				if(ret.times[ret.times.length - 1] < times.end)
+				{
+
+				}
+				else
+				{
+
 				}
 			}
 			return ret;

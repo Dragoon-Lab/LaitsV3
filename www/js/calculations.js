@@ -170,9 +170,24 @@ define([
 						}
 					});
 				}		
-				return {times: solution.times, plotValues: plotValues};
+				return {times: solution.times, plotValues: plotValues};	
 			}else{
 				return {status: 'solution', soln: solution};
+			}
+		},
+
+		findExplicitSolution: function(isActive, explicitValue)
+		{
+			// Summary: Find an explicit soution(one input) to the equation
+			// Return: Returns an float of the value of the explicit solution
+			var timeObject = this.model.getTime();
+			timeObject.end = explicitValue;
+			try{
+				var solution = integrate.eulersMethod(
+					choice.timeStep, 
+					equation.evaluateTimeStep,
+					choice.initialValues, 
+					timeObject);
 			}
 		},
 
