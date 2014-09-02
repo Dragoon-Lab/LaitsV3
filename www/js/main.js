@@ -133,8 +133,8 @@ define([
 				}
 				
 				var id = givenModel.active.addNode();
-				drawModel.addNode(givenModel.active.getNode(id));
-				controllerObject.logging.log('ui-action', {type: "menu-choice", name: "create-node"});		
+				controllerObject.logging.log('ui-action', {type: "menu-choice", name: "create-node"});
+				drawModel.addNode(givenModel.active.getNode(id));		
 				controllerObject.showNodeEditor(id);
 			});
 			

@@ -17,8 +17,6 @@
 			$allNodes = $this->nodes; // BvdS:  my editor complained about this line, but it wouldn't tell me what was wrong
 			$resultNode = null;
 			foreach($allNodes as $node){
-				echo "<br/><br/>qwerty";
-				print_r($node);
 				if($checkName == $node->name){
 					$resultNode = $node;
 					break;
@@ -36,6 +34,19 @@
 				}
 				$i += 1;
 			}
+			return -1;
+		}
+
+		function getNodeFromID($nodeID){
+			$allNodes = $this->nodes;
+			$resultNode = null;
+			foreach($allNodes as $node){
+				if($nodeID == $node->id){
+					$resultNode = $node;
+					break;
+				}
+			}
+			return $resultNode;
 		}
 	}
 
