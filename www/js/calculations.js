@@ -188,7 +188,9 @@ define([
 					equation.evaluateTimeStep,
 					choice.initialValues, 
 					timeObject);
+				var result = {time: solution.time[solution.time.length - 1], value: solution.values[solution.values.length - 1]};
 			}
+			return result;
 		},
 
 		labelString: function(id){
