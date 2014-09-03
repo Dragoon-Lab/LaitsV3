@@ -514,7 +514,7 @@ define([
 				initialNode.set("value", "");
 				this._model.active.setInitial(this.currentID, "");
 			}
-			if(type == "parameter" && this._model.active.getEquation(this.currentID)){
+			if(type == "parameter"){
 				var equationNode = registry.byId(this.controlMap.equation);
 				equationNode.set("value", "");
 				//changing the equation value does not call the handler so setting the value explicitly using set equation.
