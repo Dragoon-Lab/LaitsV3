@@ -1026,7 +1026,7 @@ define([
 						w.set("value", directive.value, false);
 						// Each control has its own function to update the
 						// the model and the graph.
-						this[directive.id+'Set'].call(this, directive.value);
+						//this[directive.id+'Set'].call(this, directive.value);
 					}else{
 						w.set(directive.attribute, directive.value);
 					}
