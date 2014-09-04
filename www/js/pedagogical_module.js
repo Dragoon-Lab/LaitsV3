@@ -510,7 +510,7 @@ define([
 		record.init("problemCompleted", 0);
 	},
 		
-		processAnswer: function(/*string*/ id, /*string*/ nodePart, /*string | object*/ answer){
+		processAnswer: function(/*string*/ id, /*string*/ nodePart, /*string | object*/ answer,/*string*/ answerString){
 			// Summary: Pocesses a student's answers and returns if correct, 
 			//		incorrect, etc. and alerts the controller about what parts 
 			//		of the node editor should be active.
@@ -538,27 +538,6 @@ define([
 					solutionGiven = true;
 				}
 			}
-			var logObj = null;
-			if(interpretation == 'correct' || interpretation == 'optimal'){
-				logObj = {
-					checkResult: 'CORRECT'
-				};
-			}else{
-				logObj = {
-					checkResult: 'INCORRECT',
-					correctValue: this.model.student.getCorrectAnswer(id, nodePart),
-					pmInterpretation: interpretation
-				};
-			}
-			logObj = lang.mixin({
-				type : "solution-check",
-				nodeID: id,
-				node: this.model.student.getName(id),
-				property: nodePart,
-				value: answer,
-				solutionProvided: solutionGiven
-			}, logObj);
-			this.logging.log('solution-step', logObj);
 
 			// Local function that updates the status if it is not already set to "correct" or "demo"
 			var updateStatus = function(returnObj, model){
@@ -642,6 +621,38 @@ define([
 				}
 			}
 			//returnObj.push([{id: "crisisAlert", attribute: "open", value: "You should be more careful."}]);
+
+			//logging pm response
+			var logObj = null;
+			var checkStatus;
+			for(var i =0; i<returnObj.length; i++){
+				if(returnObj[i].attribute == "status"){
+					checkStatus = returnObj[i].value;
+					break;
+				}
+			}
+			if(checkStatus == "correct"){
+				logObj = {
+					checkResult: 'CORRECT',
+				};
+			}else if(checkStatus == "demo" || checkStatus == "incorrect"){
+				logObj = {
+					checkResult: 'INCORRECT',
+					correctValue: this.model.student.getCorrectAnswer(id, nodePart),
+					pmInterpretation: interpretation
+				};
+			}
+			var logAnswer = answerString || answer.toString();
+			logObj = lang.mixin({
+				type : "solution-check",
+				nodeID: id,
+				node: this.model.student.getName(id),
+				property: nodePart,
+				value: logAnswer,
+				solutionProvided: solutionGiven
+			}, logObj);
+			this.logging.log('solution-step', logObj);
+
 			console.log("**** PM returning:\n", returnObj);
 			return returnObj;
 		},
