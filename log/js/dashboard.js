@@ -188,7 +188,7 @@ define([
 				//var problemDetails = printArray[row];
 				var col = 0;
 				array.forEach(this.problems, function(problem){
-					var urlString = "<a href='/code/index.html?u=" + user + "&m=STUDENT&sm=feedback&is=algebraic&p=" + problem + "&s=" + this.section + "&c=Continue&t=true' target='_blank'>";
+					var urlString = "<a href='/code/index.html?u=" + user + "&m=STUDENT&sm=feedback&is=algebraic&p=" + problem + "&s=" + this.section + "&c=Continue&t=true' target='_blank' title='Click to check session'>";
 					var complete = this.problemComplete[row][col];
 					var runningStatus = this.sessionRunning[row][col];
 

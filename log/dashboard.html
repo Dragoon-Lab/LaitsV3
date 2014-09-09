@@ -50,6 +50,7 @@
 	a{
 		text-decoration: none;
 		color:black;
+		cursor:pointer;
 	}
 	.border{
 		border: 1px solid #000000;
@@ -61,18 +62,34 @@
 	ul li{
 		list-style:none;
 	}
+	.right{
+		float:right;
+	}
+	.clear{
+		clear:both;
+	}
+	.left{
+		float:left;
+	}
+	.wrapper{
+		width:50%;
+	}
 </style>
 </head>
 <body>
-	<h3>Class Dashboard</h3>
-	<div>
+	<div class = "wrapper left">
+		<h2>Class Dashboard</h3>
+	</div>
+	<div class = "right">
 		<p>Color Key</p>
 		<ul>
 			<li><span class="green border">Problem Completed</span></li>
-			<li><span class="yellow border">Problem Incomplete & Session Running</span>
-			<li><span class="border">Problem not Started</span>
-
+			<li><span class="yellow border">Problem Incomplete & Session Running</span></li>
+			<li><span class="border">Problem not Started</span></li>
+		</ul>
 	</div>
+	<div class="clear"></div>
+
 	<div id="table">
 		<!--div to render the table -->
 	</div>
