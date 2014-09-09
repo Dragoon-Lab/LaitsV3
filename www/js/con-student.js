@@ -128,7 +128,7 @@ define([
 			var descID = this._model.given.getNodeIDByName(variable);
 			//setDescriptionID for the node id
 			this._model.active.setDescriptionID(id, descID);
-			var directives = this._PM.processAnswer(id, 'description', descID);
+			var directives = this._PM.processAnswer(id, 'description', descID, this._model.given.getName(descID));
 			// Need to send to PM and update status, but don't actually
 			// apply directives since they are for a different node.
 			array.forEach(directives,function(directive){
@@ -149,7 +149,7 @@ define([
 			// something that is generally only possible in TEST mode.
 			this.updateEquationLabels();
 
-			this.applyDirectives(this._PM.processAnswer(this.currentID, 'description', selectDescription));
+			this.applyDirectives(this._PM.processAnswer(this.currentID, 'description', selectDescription, this._model.given.getName(selectDescription)));
 			if(this._forumparams){
 				// enable forum button and activate the event
 				this.activateForumButton();
@@ -226,7 +226,7 @@ define([
 			var directives = [];
 			var parse = this.equationAnalysis(directives, false);
 			if(parse){
-				var dd = this._PM.processAnswer(this.currentID, 'equation', parse);
+				var dd = this._PM.processAnswer(this.currentID, 'equation', parse, registry.byId(this.controlMap.equation).get("value"));
 				directives = directives.concat(dd);
 			}
 			this.applyDirectives(directives);
