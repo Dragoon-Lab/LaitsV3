@@ -5,16 +5,16 @@
  *
  *This file is a part of Dragoon
  *Dragoon is free software: you can redistribute it and/or modify
- *it under the terms of the GNU General Public License as published by
+ *it under the terms of the GNU Lesser General Public License as published by
  *the Free Software Foundation, either version 3 of the License, or
  *(at your option) any later version.
  *
  *Dragoon is distributed in the hope that it will be useful,
  *but WITHOUT ANY WARRANTY; without even the implied warranty of
  *MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.	See the
- *GNU General Public License for more details.
+ *GNU Lesser General Public License for more details.
  *
- *You should have received a copy of the GNU General Public License
+ *You should have received a copy of the GNU Lesser General Public License
  *along with Dragoon.  If not, see <http://www.gnu.org/licenses/>.
  *
  */
@@ -80,7 +80,7 @@ define([
 		},
 
 		populateSelections: function(){
-		/*
+			/*
 			 Initialize select options in the node editor that are
 			 common to all nodes in a problem.
 			 
@@ -102,8 +102,15 @@ define([
 			var positiveInputs = registry.byId("positiveInputs");
 			var negativeInputs = registry.byId("negativeInputs");
 			console.log("description widget = ", d, this.controlMap.description);
-		  //  d.removeOption(d.getOptions()); // Delete all options
-			array.forEach(this._model.given.getDescriptions(), function(desc){
+			//  d.removeOption(d.getOptions()); // Delete all options
+
+			//get descriptions to sort as alphabetic order
+			var descriptions = this._model.given.getDescriptions();
+			descriptions.sort(function(obj1, obj2){
+				return obj1.label > obj2.label;
+			});
+
+			array.forEach(descriptions, function(desc){
 				d.addOption(desc);
 				var name = this._model.given.getName(desc.value);
 				var option = {label: name + " (" + desc.label + ")", value: desc.value};
@@ -113,24 +120,40 @@ define([
 			}, this);
 		},
 
+
+		//  should be moved to a function in controller.js
+		autocreateNodes:function(/** auto node id **/ id, /**variable name**/ variable){
+			console.log("auto creating nodes student controller");
+			//getDescriptionID using variable name
+			var descID = this._model.given.getNodeIDByName(variable);
+			//setDescriptionID for the node id
+			this._model.active.setDescriptionID(id, descID);
+			var directives = this._PM.processAnswer(id, 'description', descID, this._model.given.getName(descID));
+			// Need to send to PM and update status, but don't actually
+			// apply directives since they are for a different node.
+			array.forEach(directives,function(directive){
+                this.updateModelStatus(directive,id);
+            }, this);
+			this.updateNodeLabel(id);
+		},
+
 		handleDescription: function(selectDescription){
 			console.log("****** in handleDescription ", this.currentID, selectDescription);
-			if(selectDescription == 'defaultSelect')
+			if(selectDescription == 'defaultSelect'){
 				return; // don't do anything if they choose default
-
+			}
 			this._model.active.setDescriptionID(this.currentID, selectDescription);
 			this.updateNodes();
 
-		// This is only needed if the type has already been set,
-		// something that is generally only possible in TEST mode.
+			// This is only needed if the type has already been set,
+			// something that is generally only possible in TEST mode.
 			this.updateEquationLabels();
 
-			this.applyDirectives(this._PM.processAnswer(this.currentID, 'description', selectDescription));
-		},
-		descriptionSet: function(value){
-			// Update the model.
-			this._model.student.setDescriptionID(this.currentID, value);
-			this.updateNodes();
+			this.applyDirectives(this._PM.processAnswer(this.currentID, 'description', selectDescription, this._model.given.getName(selectDescription)));
+			if(this._forumparams){
+				// enable forum button and activate the event
+				this.activateForumButton();
+			}
 		},
 
 		handleType: function(type){
@@ -171,7 +194,7 @@ define([
 		},
 		
 		initialSet: function(value){
-				this._model.active.setInitial(this.currentID, value);
+			this._model.active.setInitial(this.currentID, value);
 		},
 
 		/*
@@ -203,7 +226,7 @@ define([
 			var directives = [];
 			var parse = this.equationAnalysis(directives, false);
 			if(parse){
-				var dd = this._PM.processAnswer(this.currentID, 'equation', parse);
+				var dd = this._PM.processAnswer(this.currentID, 'equation', parse, registry.byId(this.controlMap.equation).get("value"));
 				directives = directives.concat(dd);
 			}
 			this.applyDirectives(directives);
@@ -239,7 +262,7 @@ define([
 			array.forEach(this._model.student.getStatusDirectives(nodeid), function(directive){
 				var w = registry.byId(this.controlMap[directive.id]);
 				w.set(directive.attribute, directive.value);
-			// The actual values should be in the model itself, not in status directives.
+				// The actual values should be in the model itself, not in status directives.
 				if(directive.attribute == "value"){
 					this.logging.clientLog("error", {
 						message: "Values should not be set in status directives",
@@ -251,12 +274,14 @@ define([
 
 		// Need to save state of the node editor in the status section
 		// of the student model.  See documentation/json-format.md
-		updateModelStatus: function(desc) {
-			if (this.validStatus[desc.attribute]) {
+		updateModelStatus: function(desc, id){
+			//in case of autocreation nodes, id must be passed explicitly
+			id = id || this.currentID;
+			if(this.validStatus[desc.attribute]){
 				var opt = {};
 				opt[desc.attribute] = desc.value;
-				this._model.student.setStatus(this.currentID, desc.id, opt);
-			} else {
+				this._model.student.setStatus(id, desc.id, opt);
+			}else{
 				// There are some directives that should update
 				// the student model node (but not the status section).
 
@@ -265,10 +290,10 @@ define([
 		},
 
 		checkDonenessMessage: function (){
-		// Returns true if model is not complete.
+			// Returns true if model is not complete.
 			var directives = this._PM.checkDoneness(this._model);
-		this.applyDirectives(directives);
-		return directives;
+			this.applyDirectives(directives);
+			return directives;
 		}
 
 	});

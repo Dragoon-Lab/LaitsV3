@@ -5,16 +5,16 @@
  *
  *This file is a part of Dragoon
  *Dragoon is free software: you can redistribute it and/or modify
- *it under the terms of the GNU General Public License as published by
+ *it under the terms of the GNU Lesser General Public License as published by
  *the Free Software Foundation, either version 3 of the License, or
  *(at your option) any later version.
  *
  *Dragoon is distributed in the hope that it will be useful,
  *but WITHOUT ANY WARRANTY; without even the implied warranty of
  *MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.	See the
- *GNU General Public License for more details.
+ *GNU Lesser General Public License for more details.
  *
- *You should have received a copy of the GNU General Public License
+ *You should have received a copy of the GNU Lesser General Public License
  *along with Dragoon.  If not, see <http://www.gnu.org/licenses/>.
  *
  */
@@ -24,10 +24,10 @@
 define([
 	"dojo/_base/array", 'dojo/_base/declare', "dojo/_base/lang",
 	'dojo/aspect', 'dojo/dom', "dojo/dom-class", "dojo/dom-construct", 'dojo/dom-style',
-	'dojo/keys', 'dojo/on', "dojo/ready", 
+	'dojo/keys', 'dojo/on', "dojo/ready",
 	"dijit/popup", 'dijit/registry', "dijit/TooltipDialog",
-	'./equation', './graph-objects','./typechecker'
-], function(array, declare, lang, aspect, dom, domClass, domConstruct, domStyle, keys, on, ready, popup, registry, TooltipDialog, expression, graphObjects, typechecker){
+	'./equation', './graph-objects','./typechecker', "./forum"
+], function(array, declare, lang, aspect, dom, domClass, domConstruct, domStyle, keys, on, ready, popup, registry, TooltipDialog, expression, graphObjects, typechecker, forum){
 	// Summary: 
 	//			Controller for the node editor, common to all modes
 	// Description:
@@ -39,6 +39,7 @@ define([
 	return declare(null, {
 		_model: null,
 		_nodeEditor: null, // node-editor object- will be used for populating fields
+		_forumParams: null, // Addresses needed for linking to forum
 		/*
 		 When opening the node editor, we need to populate the controls without
 		 evaluating those changes.
@@ -104,6 +105,11 @@ define([
 			domStyle.set("equationText", "display", structured);
 		},
 
+		// A stub for connecting routine to draw new node.
+		addNode: function(node, autoflag){
+			console.log("Node Editor calling addNode() for ", node.id);
+		},
+
 		// A list of common controls of student and author
 		genericControlMap: {
 			type: "typeId",
@@ -121,7 +127,7 @@ define([
 
 			// get Node Editor widget from tree
 			this._nodeEditor = registry.byId('nodeeditor');
-			
+
 			// Wire up this.closeEditor.  Aspect.around is used so we can stop hide()
 			// from firing if equation is not entered.
 			aspect.around(this._nodeEditor, "hide", lang.hitch(this, function(doHide){
@@ -177,7 +183,7 @@ define([
 			 If the status is set for equationBox, we also need to set
 			 the status for equationText.  Since equationText is not a widget,
 			 we need to set it explicitly.
-			 
+
 			 Adding a watch method to the equationBox didn't work.
 			 */
 			aspect.after(registry.byId(this.controlMap.equation), "_setStatusAttr",
@@ -200,8 +206,8 @@ define([
 				});
 				this.startup();
 			};
-			
-			
+
+
 			// All <select> controls
 			array.forEach(this.selects, function(select){
 				var w = registry.byId(this.controlMap[select]);
@@ -209,16 +215,16 @@ define([
 				w._setDisableOptionAttr = setDisableOption;
 			}, this);
 
-				var crisis = registry.byId(this.widgetMap.crisisAlert);
-				crisis._setOpenAttr = function(message){
-					var crisisMessage = dom.byId('crisisMessage');
-					console.log("crisis alert message ", message);
-					crisisMessage.innerHTML = message;
-					this.show();
-				};
-				on(registry.byId("OkButton"), "click", function(){
+			var crisis = registry.byId(this.widgetMap.crisisAlert);
+			crisis._setOpenAttr = function(message){
+				var crisisMessage = dom.byId('crisisMessage');
+				console.log("crisis alert message ", message);
+				crisisMessage.innerHTML = message;
+				this.show();
+			};
+			on(registry.byId("OkButton"), "click", function(){
 				crisis.hide();
-				});
+			});
 
 			// Add appender to message widget
 			var messageWidget = registry.byId(this.widgetMap.message);
@@ -233,24 +239,28 @@ define([
 					// This unsets the "background-color" style
 					domStyle.set(element, "backgroundColor", "");
 				}, 3000);  // Wait in milliseconds
-				
+
 				// Scroll to bottoms
 				this.domNode.scrollTop = this.domNode.scrollHeight;
 			};
 			/*Set interval for message blink*/
-			 
-			
+
+
 			/*
 			 Add fields to units box, using units in model node
 			 In author mode, this needs to be turned into a text box.
 			 */
 			var u = registry.byId("selectUnits");
 			// console.log("units widget ", u);
-			array.forEach(this._model.getAllUnits(), function(unit){
+
+			var units = this._model.getAllUnits();
+			units.sort();
+
+			array.forEach(units, function(unit){
 				u.addOption({label: unit, value: unit});
 			});
 		},
-		
+
 		// Function called when node editor is closed.
 		// This can be used as a hook for saving sessions and logging
 		closeEditor: function(){
@@ -302,12 +312,8 @@ define([
 			this.colorNodeBorder(this.currentID, true);
 
 			// update Node labels upon exit
-			var nodeName = graphObjects.getNodeName(this._model.active,this.currentID);
-			if(dom.byId(this.currentID + 'Label')){
-				domConstruct.place(nodeName, this.currentID + 'Label', "replace");
-			}else{
-				domConstruct.place('<div id="'+this.currentID+'Label" class="bubble">'+nodeName+'</div>', this.currentID);
-			}
+			this.updateNodeLabel(this.currentID);
+
 			// In case any tool tips are still open.
 			typechecker.closePops();
 			//this.disableHandlers = false;
@@ -320,9 +326,19 @@ define([
 
 			// This cannot go in controller.js since _PM is only in
 			// con-student.	 You will need con-student to attach this
-			// to closeEditor (maybe using aspect.after?).
-			
+			// to closeEditor (maybe using aspect.after?).	
 		},
+
+		//update the node label
+		updateNodeLabel:function(nodeID){
+			var nodeName = graphObjects.getNodeName(this._model.active,nodeID);
+			if(dom.byId(nodeID + 'Label')){
+				domConstruct.place(nodeName, nodeID + 'Label', "replace");
+			}else{
+				domConstruct.place(nodeName, nodeID);
+			}
+		},
+
 		//set up event handling with UI components
 		_initHandles: function(){
 			// Summary: Set up Node Editor Handlers
@@ -368,10 +384,9 @@ define([
 			// regular handler.
 			initialWidget.on("keydown", function(evt){
 				// console.log("----------- input character ", evt.keyCode, this.get('value'));
-				if(evt.keyCode == keys.ENTER)
-					
+				if(evt.keyCode == keys.ENTER){
 					this.emit('Change', {}, [this.get('value')]);
-				
+				}
 			});
 			// undo color on change in the initial value widget
 			initialWidget.on("keydown",lang.hitch(this,function(evt){
@@ -454,6 +469,7 @@ define([
 					}
 				  }));
 			}, this);
+
 		},
 		// Need to save state of the node editor in the status section
 		// of the student model.  See documentation/json-format.md
@@ -496,6 +512,7 @@ define([
 			if(type == "function" && typeof this._model.active.getInitial(this.currentID) === "number"){
 				var initialNode = registry.byId(this.controlMap.initial);
 				initialNode.set("value", "");
+				this._model.active.setInitial(this.currentID, "");
 			}
 			if(type == "parameter" && this._model.active.getEquation(this.currentID)){
 				var equationNode = registry.byId(this.controlMap.equation);
@@ -523,9 +540,10 @@ define([
 			// Only add label when name exists
 			if(name){
 				switch(type){
-					case "accumulator":
+                    case "accumulator":
 						nodeName = 'new ' + name + ' = ' + 'old ' + name + ' +';
-						tt = " * Change in Time";
+						//Commenting out Change in Time label per Dr. Kurt
+						//tt = " * Change in Time";
 						break;
 					case "function":
 						nodeName = name + ' = ';
@@ -542,7 +560,7 @@ define([
 			}
 			// Removing all the text is the same as setting display:none.
 			dom.byId('equationLabel').innerHTML = nodeName;
-			dom.byId('timeStepLabel').innerHTML = tt;
+			//dom.byId('timeStepLabel').innerHTML = tt;
 		},
 		equationInsert: function(text){
 			var widget = registry.byId(this.controlMap.equation);
@@ -685,6 +703,17 @@ define([
 				this.structured.pop();
 			}
 		},
+
+		//Enables the Forum Button in node editor
+		//Also uses the forum module to activate the event button click
+		activateForumButton: function(){
+			var nodeForumBut = registry.byId("nodeForumButton");
+			nodeForumBut.set("disabled", false);
+			//Attach the event
+			console.log("attatching event",this.logging);
+			forum.activateForum(this._model, this.currentID, this._forumparams, this.logging);
+		},
+
 		equationAnalysis: function(directives, ignoreUnknownTest){
 			this.equationEntered = true;
 			console.log("****** enter button");
@@ -740,7 +769,16 @@ define([
 				var unMapID = this._model.active.getNodeIDFor || function(x){ return x; };
 				array.forEach(parse.variables(), function(variable){
 					// Test if variable name can be found in given model
+
 					var givenID = this._model.given.getNodeIDByName(variable);
+
+					// autocreation flag will eventually be set from the URL
+					// or from the state table.  Alternatively, we will show a list
+					// of variables.
+					var autocreationFlag = true; 
+					/*if(autocreationFlag && !this._model.active.isNode(givenID))
+						this.autocreateNodes(variable);*/
+
 					// Checks for nodes referencing themselves; this causes problems because
 					//		functions will always evaluate to true if they reference themselves
 					if(givenID && this._model.active.getType(this.currentID) === "function" &&
@@ -776,6 +814,14 @@ define([
 						if(subID){
 							// console.log("	   substituting ", variable, " -> ", studentID);
 							parse.substitute(variable, subID);
+						}else if(autocreationFlag){
+							//create node
+							var id = this._model.active.addNode();
+							this.addNode(this._model.active.getNode(id));
+							this.autocreateNodes(id, variable);
+							//get Node ID and substitute in equation
+							var subID2 = unMapID.call(this._model.active, givenID||id);
+							parse.substitute(variable, subID2); //this should handle createInputs and connections to automatic node
 						}else{
 							directives.push({id: 'message', attribute: 'append', value: "Quantity '" + variable + "' not defined yet."});
 						}
@@ -851,10 +897,14 @@ define([
 			// console.log("======== setConnections fired for node" + to);
 		},
 
+		// Stub to set connection in the graph / one to one
+		setConnection: function(from, to){
+			// console.log("======== setConnections fired for node" + to);
+		},
+
 		//show node editor
 		showNodeEditor: function(/*string*/ id){
 			//Checks if the current mode is COACHED mode and exit from node editor if all the modes are defined
-
 			console.log("showNodeEditor called for node ", id);
 			this.currentID = id; //moved using inside populateNodeEditorFields
 			this.disableHandlers = true;
@@ -863,6 +913,16 @@ define([
 			this._nodeEditor.show().then(lang.hitch(this, function(){
 				this.disableHandlers = false;
 			}));
+			var nodeForumBut = registry.byId("nodeForumButton");
+			var check_desc=this._model.active.getGivenID(id);
+			if(this._forumparams && this._model.given.getDescription(check_desc)){
+				nodeForumBut.set("disabled", false);
+				forum.activateForum(this._model, this.currentID, this._forumparams,this.logging);
+			}else{
+				//In case there are many nodes,
+				//make sure forum button is disabled
+				nodeForumBut.set("disabled", true);
+			}
 		},
 
 		// Stub to be overwritten by student or author mode-specific method.
@@ -905,9 +965,11 @@ define([
 			this.updateEquationLabels(type);
 
 			var initial = model.getInitial(nodeid);
-			console.log('initial value is ', initial);
-			this.lastInitial.value=(typeof initial === "number")?initial.toString():null;
-			registry.byId(this.controlMap.initial).attr('value', initial || '');
+			console.log('initial value is ', initial, typeof initial);
+			// Initial value will be undefined if it is not in the model
+			var isInitial = typeof initial === "number";
+			this.lastInitial.value = isInitial?initial.toString():null;
+			registry.byId(this.controlMap.initial).attr('value', isInitial?initial:'');
 			
 			var unit = model.getUnits(nodeid);
 			console.log('unit is', unit || "not set");
@@ -942,10 +1004,16 @@ define([
 		setLogging: function(/*string*/ logging){
 			this.logging = logging;
 		},
-		/* 
+
+		// Setting Forum Parameters
+		setForum: function(forum_params){
+			this._forumparams=forum_params;
+		},
+
+		/*
 		 Take a list of directives and apply them to the Node Editor,
 		 updating the model and updating the graph.
-		 
+
 		 The format for directives is defined in documentation/node-editor.md
 		 */
 		applyDirectives: function(directives, noModelUpdate){

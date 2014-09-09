@@ -6,16 +6,16 @@
  *
  *This file is a part of Dragoon
  *Dragoon is free software: you can redistribute it and/or modify
- *it under the terms of the GNU General Public License as published by
+ *it under the terms of the GNU Lesser General Public License as published by
  *the Free Software Foundation, either version 3 of the License, or
  *(at your option) any later version.
  *
  *Dragoon is distributed in the hope that it will be useful,
  *but WITHOUT ANY WARRANTY; without even the implied warranty of
  *MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.	See the
- *GNU General Public License for more details.
+ *GNU Lesser General Public License for more details.
  *
- *You should have received a copy of the GNU General Public License
+ *You should have received a copy of the GNU Lesser General Public License
  *along with Dragoon.  If not, see <http://www.gnu.org/licenses/>.
  *
  */
@@ -91,12 +91,16 @@ define([
 
 		saveProblem: function(model){
 			// Summary: saves the string held in this.saveData in the database.
+			var object = {
+				sg: json.toJson(model.task),
+				x: this.sessionId
+			};
+			if("share" in model){
+				// Database Boolean
+				object.share = model.share?1:0;
+			}
 			xhr.post(this.path + "save_solution.php", {
-				data: {
-					sg: json.toJson(model.task),
-					// see documentation/sessions.md for notation
-					x: this.sessionId
-				}
+				data: object
 			}).then(function(reply){  // this makes saveProblem blocking?
 				console.log("saveProblem worked: ", reply);
 			}, function(err){
