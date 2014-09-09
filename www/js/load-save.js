@@ -55,15 +55,27 @@ define([
 		}
 		return Number(hash).toString(16);
 	};
+	//object copy - not deep copy
+	var copy = function clone(obj) {
+    			if (null == obj || "object" != typeof obj) return obj;
+    				var copy = obj.constructor();
+    			for (var attr in obj) {
+        			if (obj.hasOwnProperty(attr)) copy[attr] = obj[attr];
+    			}
+    			return copy;
+		};
 
 	return declare(null, {
 
 		// The constructor creates a session and sets the sessionId
 		// It also sets the path.
+		params:{},	
+	
 		constructor: function(/*object*/ params, /*string*/ path){
 			// Dragoon database requires that clientID be 50 characters.
 			this.sessionId = FNV1aHash(params.u+"_"+params.s) +
 				'_' + new Date().getTime();
+			this.params = params;
 			console.log("New sessionId = ", this.sessionId);
 			this._startTime = (new Date()).getTime();
 			this.path = path || "";
@@ -88,12 +100,23 @@ define([
 				});
 			});
 		},
-
-		saveProblem: function(model){
+		saveAsProblem : function(model,problemName,groupName){
+			//update params to be passed
+			var newParams = copy(this.params);  //clone the object
+			newParams.p = problemName;
+			newParams.g = groupName;
+			//insert new session ID for newly saved as problem
+			var sessionId = FNV1aHash(this.params.u+this.params.s)+'_'+new Date().getTime();
+			console.log("renaming problem session id :"+sessionId);
+			this.log("rename-problem",newParams,sessionId);			
+			
+			this.saveProblem(model,sessionId); //reuse saveProblem with new sessionId of renamed problem
+		},
+		saveProblem: function(model,newSessionID){
 			// Summary: saves the string held in this.saveData in the database.
 			var object = {
 				sg: json.toJson(model.task),
-				x: this.sessionId
+				x: newSessionID?newSessionID:this.sessionId
 			};
 			if("share" in model){
 				// Database Boolean
@@ -115,8 +138,8 @@ define([
 			// Returns time in seconds since start of session.
 			return	((new Date()).getTime() - this._startTime)/1000.0;
 		},
-
-		log: function(method, params){
+		//used to create session, in case of renaming problem use new session
+		log: function(method, params, rsessionId){ //rsessionId for saving new problem
 			// Add time to log message (allowing override).
 			var p = lang.mixin({time: this.getTime()}, params);
 
@@ -124,7 +147,7 @@ define([
 				data: {
 					method: method,
 					message: json.toJson(p),
-					x: this.sessionId
+					x: rsessionId?rsessionId:this.sessionId
 				}
 			}).then(function(reply){
 				console.log("---------- logging " + method + ': ', p, " OK, reply: ", reply);
