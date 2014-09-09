@@ -22,29 +22,77 @@
 		"dashboard",
 		"dijit/form/RadioButton"
 	]);
+
 </script>
 <style>
-	.newLine{display:block;}
+	fieldset{
+		border:none;
+	}
+	.newLine{
+		display:block;
+		padding-top: 15px;
+	}
+	input[type=radio]{
+		float:left;
+	}
+	label{
+		padding-right:2em;
+	}
+	.hidden{
+		display:none;
+	}
+	.visible{
+		display:block;
+	}
+	.green{
+		background-color:#00FF00;
+	}
+	a{
+		text-decoration: none;
+		color:black;
+	}
+	.border{
+		border: 1px solid #000000;
+		padding:0 10px 0 10px;
+	}
+	.yellow{
+		background-color:yellow;
+	}
+	ul li{
+		list-style:none;
+	}
 </style>
 </head>
 <body>
+	<h3>Class Dashboard</h3>
+	<div>
+		<p>Color Key</p>
+		<ul>
+			<li><span class="green border">Problem Completed</span></li>
+			<li><span class="yellow border">Problem Incomplete & Session Running</span>
+			<li><span class="border">Problem not Started</span>
+
+	</div>
 	<div id="table">
 		<!--div to render the table -->
 	</div>
 
-	<div id="choice change">
-		<div class="newLine">
-			<input type="radio" name="type" value="default" id="default" data-dojo-type="dijit/form/RadioButton"/>
-			<label for="default">Nothing</label>
+	<fieldset id="tableType">
+		<div id="choice change" class="choice">
+			<div class="newLine">
+				<input type="radio" name="type" value="default" id="default" data-dojo-type="dijit/form/RadioButton" checked/>
+				<label for="default">Nothing (shows the progress of the class)</label>
+			</div>
+			<div class="newLine">
+				<input type="radio" name="type" value="time" id="time" data-dojo-type="dijit/form/RadioButton"/>
+				<label for="default">Running Time (in minutes, Total time spent / time for which window was not in focus)</label>
+			</div>
+			<div class="newLine">
+				<input type="radio" name="type" value="errors" id="errors" data-dojo-type="dijit/form/RadioButton"/>
+				<label for="default">Problem Errors (Wrong choices / Total choices)</label>	
+			</div>
 		</div>
-		<div class="newLine">
-			<input type="radio" name="type" value="time" id="time" data-dojo-type="dijit/form/RadioButton"/>
-			<label for="default">Running Time</label>
-		</div>
-		<div class="newLine">
-			<input type="radio" name="type" value="errors" id="errors" data-dojo-type="dijit/form/RadioButton"/>
-			<label for="default">Problem Errors (wrong choices/total choices)</label>	
-		</div>
-	</div> 
+	</fieldset>
+
 </body>
 </html>
