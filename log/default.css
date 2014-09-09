@@ -3,7 +3,7 @@ a{text-decoration: none; color:black; cursor:pointer;}
 ul li{list-style:none;}
 input[type=radio]{float:left;}
 label{padding-right:2em;}
-
+td{text-align:center;}
 
 .hidden{display:none;}
 .visible{display:block;}

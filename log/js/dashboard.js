@@ -97,10 +97,12 @@ define([
 			}, function(){*/
 				array.forEach(this.objects, function(object){
 					if(problems.length > 0){
-						array.forEach(problems, function(problem){
-							if(problem != object['problem'])
-								problems.push(object['problem']);
-						}, this);
+						var problemExist = array.some(problems, function(problem){
+							return object['problem'] == problem;
+						});
+						if(!problemExist){
+							problems.push(object['problem']);
+						}
 					} else {
 						problems.push(object['problem']);
 					}
@@ -127,7 +129,7 @@ define([
 				var userIndex = array.indexOf(this.users, upObject['user']);
 				var problemIndex = array.indexOf(this.problems, upObject['problem']);
 				if(userIndex >= 0 && problemIndex >= 0){
-					this.timeSpent[userIndex][problemIndex] = (number.round(upObject['totalTime']*10))/10+ " / " + (number.round(upObject['outOfFocusTime']*10))/10;
+					this.timeSpent[userIndex][problemIndex] = (number.round(upObject['totalTime']*10))/10+ " - " + (number.round(upObject['outOfFocusTime']*10))/10;
 					this.errorRatio[userIndex][problemIndex] = upObject['incorrectChecks'] + " / " + upObject['totalSolutionChecks'];
 					this.problemComplete[userIndex][problemIndex] = upObject['problemComplete'];
 					this.sessionRunning[userIndex][problemIndex] = upObject['sessionRunning'];

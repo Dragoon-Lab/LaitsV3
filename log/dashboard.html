@@ -30,14 +30,15 @@
 </head>
 <body>
 	<div class = "wrapper left">
-		<h2>Class Dashboard</h3>
+		<h2>Class Dashboard</h2>
+		<h4>Click on the box to check the complete session of the student.</h4>
 	</div>
 	<div class = "right">
 		<p>Color Key</p>
 		<ul>
 			<li><span class="green border">Problem Completed</span></li>
 			<li><span class="yellow border">Problem Incomplete & Session Running</span></li>
-			<li><span class="border">Problem not Started</span></li>
+			<li><span class="border">Problem not Started or Incomplete</span></li>
 		</ul>
 	</div>
 	<div class="clear"></div>
@@ -50,11 +51,11 @@
 		<div id="choice change" class="choice">
 			<div class="newLine">
 				<input type="radio" name="type" value="default" id="default" data-dojo-type="dijit/form/RadioButton" checked/>
-				<label for="default">Nothing (shows the progress of the class)</label>
+				<label for="default">Blank</label>
 			</div>
 			<div class="newLine">
 				<input type="radio" name="type" value="time" id="time" data-dojo-type="dijit/form/RadioButton"/>
-				<label for="default">Running Time (in minutes, Total time spent / time for which window was not in focus)</label>
+				<label for="default">Running Time (in minutes, Total time spent - time for which window was not in focus)</label>
 			</div>
 			<div class="newLine">
 				<input type="radio" name="type" value="errors" id="errors" data-dojo-type="dijit/form/RadioButton"/>
