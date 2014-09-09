@@ -116,7 +116,7 @@ define([
 			parents = parents || {};
 			if(!subModel.isNode(id)){
 				this.logging.clientLog("assert", {
-					message:'unknown variable for evaluation, variable name : '+id, 
+					message:'unknown variable used in the equation : '+id, 
 					functionTag:'evalVar'
 				});
 				return; //this helps to alert an error incase variable is unknown
