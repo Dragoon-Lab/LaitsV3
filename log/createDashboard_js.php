@@ -37,7 +37,6 @@
 				(!empty($fromDate)?$toTimeString:"").
 				" AND mode = '".$mode."' ".
 			"ORDER BY user asc, problem asc, tid asc;";
-			echo $queryString;
 			//$queryString = "SELECT tid, session.session_id, user, problem, time, method, message, `group` from session JOIN step ON session.session_id = step.session_id where method != 'client-message' AND mode = 'STUDENT' AND user = 'adsfwe' ORDER BY user asc, problem asc, tid asc;";
 
 			return $queryString;
@@ -90,11 +89,6 @@
 						$resetVariables = true;
 						$timeSkip = true;
 						//array_push($objectArray, $upObject);
-						echo " 22222222222222222222ab hua session reset<br/>";
-						print_r($oldRow);
-						echo "</br>";
-						print_r($row);
-						echo "</br>";
 					}
 				}
 
@@ -102,10 +96,8 @@
 				if($stepTime > $this->al->getActionTime() && $method != "window-focus"){
 					$timeWasted += $stepTime;
 				}
-				print_r($row);
 				if(!$timeSkip)
 					$sessionTime += $stepTime;
-				echo "<br/>".$sessionTime." added time ".$stepTime." sachin ".$timeSkip."<br/>";
 				
 				if($method === "ui-action"){
 					$type = $newMessage['type'];
@@ -194,7 +186,13 @@
 							} 
 
 						}
-						$checkResult = $newMessage['checkResult'];
+
+						//a hack for earlier messages when checkResult was missing for testing. This has been fixed in JS and it will never go to the else case.
+						if(array_key_exists('checkResult', $newMessage))
+							$checkResult = $newMessage['checkResult'];
+						else
+							$checkResult = "CORRECT";
+						
 						array_push($currentProperty->status, $checkResult);						
 						$totalChecks = $totalChecks + 1;
 
@@ -241,18 +239,14 @@
 						$errorRatio = $incorrectChecks/$totalChecks;
 					}
 
-					echo "</br> in reset ".$sessionTime;
-					$upObject->wastedTime = $wastedTime;
-					$upObject->totalTime = $sessionTime;
-					$upObject->outOfFocusTime = $outOfFocusTime;
+					$upObject->wastedTime = $wastedTime/60;
+					$upObject->totalTime = $sessionTime/60;
+					$upObject->outOfFocusTime = $outOfFocusTime/60;
 					$upObject->openTimes = $problemReOpen;
 					$upObject->incorrectChecks = $incorrectChecks;
 					$upObject->totalSolutionChecks = $totalChecks;
 					$upObject->errorRatio = $errorRatio;
 					array_push($objectArray, $upObject);
-
-					print_r($upObject);
-					echo "<br/><br/>";
 				}else{
 					$oldRow = $row;
 					$oldMessage= $newMessage;
@@ -264,9 +258,9 @@
 				$errorRatio = $incorrectChecks/$totalChecks;
 			}
 
-			$upObject->wastedTime = $wastedTime;
-			$upObject->totalTime = $sessionTime;
-			$upObject->outOfFocusTime = $outOfFocusTime;
+			$upObject->wastedTime = $wastedTime/60;
+			$upObject->totalTime = $sessionTime/60;
+			$upObject->outOfFocusTime = $outOfFocusTime/60;
 			$upObject->openTimes = $problemReOpen;
 			$upObject->incorrectChecks = $incorrectChecks;
 			$upObject->totalSolutionChecks = $totalChecks;
