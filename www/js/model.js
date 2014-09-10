@@ -662,6 +662,9 @@ define([
 				var node = this.getNode(id);
 				return node && node.descriptionID;
 			},
+            getGivenID: function(id){
+                return this.getDescriptionID(id);
+            },
 			getNodeIDFor: function(givenID){
 				// Summary: returns the id of a student node having a matching descriptionID;
 				//			return null if no match is found.
