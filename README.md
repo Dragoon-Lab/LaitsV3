@@ -10,7 +10,7 @@ available.
 ## Dragoon Install ##
 
 This document contains instructions for setting up a Dragoon server.
-These instructions are for the Javascript version of Dragoon.
+These instructions are for the JavaScript version of Dragoon.
 
 ### Database Setup ###
 
@@ -43,3 +43,28 @@ local server on OS X 10.8 (mountain lion).
 	sudo ln -s /tmp/mysql.sock /var/mysql/mysql.sock
 
 More information on [starting php and Apache on OS X](http://akrabat.com/computing/setting-up-php-mysql-on-os-x-10-8-mountain-lion).
+
+In order to give the apache server permisions to access the folder containing the dragoon librarys you must change the folder to a sharded folder and allow access to directory from the apache config
+
+To change the folder to a sharded folder, simply right click (or control click) select get info, and then check the box that says "Shared folder"
+
+Go into the config file
+
+    sudo nano /etc/apache2/httpd.conf
+    
+Find the default directory settings and change them so they look like the following
+
+    <Directory />
+        Options +Indexes FollowSymLinks +ExecCGI
+        AllowOverride AuthConfig FileInfo
+        Order allow, deny
+        Allow from all
+    </Directory>
+    
+Afterwards reset the server
+
+    sudo apachectl restart
+
+## Testing Dragoon ##
+
+More information about testing and installation of testing can be found in the [Readme in test folder](tests/README.md)

@@ -33,22 +33,26 @@
 	};
     </script>
 
-    <script type="text/javascript">
-        // This require should include all of the packages
-        // needed by widgets defined in the html below.
-        require([
-	    "dojo/parser",
-            "dijit/Dialog",
-            "dijit/MenuBar", "dijit/PopupMenuBarItem",
-            "dijit/layout/BorderContainer", "dijit/MenuItem",
-            "dijit/form/Select", 
-	    "dijit/form/Button", "dijit/form/TextBox",
-            "dijit/form/ComboBox", "dijit/form/Textarea",
-	    "dijit/form/SimpleTextarea", "dijit/Menu",
-            "dijit/layout/ContentPane",
-	    "dragoon/menu", // Wire up menus
-            // Load up Dragoon itself
-	    "dragoon"
+	<script type="text/javascript">
+		/*
+		 This require should include all of the packages
+		 needed by widgets defined in the html below.
+
+		 Most widgets have an associated css style sheet that is
+		 loaded by css/dragoon.css
+		 */
+		require([
+			"dojo/parser",
+			"dijit/Dialog",
+			"dijit/MenuBar", "dijit/PopupMenuBarItem",
+			"dijit/layout/BorderContainer", "dijit/MenuItem",
+			"dijit/form/Select", 
+			"dijit/form/Button", "dijit/form/CheckBox", "dijit/form/TextBox",
+			"dijit/form/ComboBox", "dijit/form/Textarea",
+			"dijit/form/SimpleTextarea", "dijit/Menu",
+			"dijit/layout/ContentPane",
+			"dragoon/menu", // Wire up menus
+			"dragoon" // Load up Dragoon itself
         ]);	
     </script>
 
@@ -106,13 +110,15 @@
              <button type="button" data-dojo-type="dijit/form/Button" id="createNodeButton">Create Node</button>
              <button type="button" data-dojo-type="dijit/form/Button" id="graphButton">Graph</button>
              <button type="button" data-dojo-type="dijit/form/Button" id="tableButton">Table</button>
-             <button type="button" data-dojo-type="dijit/form/Button" id="forumButton">Forum</button>
+             <button type="button" data-dojo-type="dijit/form/Button" id="forumButton" disabled="true">Forum</button>
              <button type="button" data-dojo-type="dijit/form/Button" id="descButton" disabled="true">Description &amp; Times</button>
+             <button type="button" data-dojo-type="dijit/form/Button" id="saveButton" disabled="true">Rename</button>
 	     <div data-dojo-type="dijit/PopupMenuBarItem">
                  <span>Help</span>
 		 <div data-dojo-type="dijit/Menu" id="menuHelp">
 		    <div id="menuIntroText" data-dojo-type="dijit/MenuItem">Introduction</div>
-		    <div id="menuIntroVideo" data-dojo-type="dijit/MenuItem">Intro Video</div>                  
+		    <div id="menuIntroVideo" data-dojo-type="dijit/MenuItem">Intro Video</div>
+            <div id="menuMathFunctions" data-dojo-type="dijit/MenuItem">Math Functions</div>
 		 </div>
              </div>
 
@@ -162,23 +168,53 @@
 	  <div class="fieldgroup">
             <label for="authorSetTimeStepUnits">Units:</label>
             <select data-dojo-type="dijit/form/ComboBox" id="authorSetTimeStepUnits" name="authorSetTimeStepUnits" class="timeStepAuthor">
-              <option selected>Years</option>
-              <option>Hours</option>
-              <option>Months</option>
+              <option>seconds</option>
+              <option>minutes</option>
+              <option>hours</option>
+              <option>days</option>
+              <option>weeks</option>
+              <option>months</option>
+              <option>years</option>
             </select>
 	  </div>
+      <div class="fieldgroup">
+            <label for="authorSetIntegrationMethod">Integration Method:</label>
+            <select data-dojo-type="dijit/form/ComboBox" id="authorSetIntegrationMethod" name="authorSetIntegrationMethod" class="integrationMethodAuthor">
+                <option>Eulers Method</option>
+                <option>Midpoint Method</option>
+            </select>
+      </div>
 	  <div class="fieldgroup">
             <label for="authorSetImage">URL for Image:</label>
-            <input id="authorSetImage"></input>
-	  </div>
-	  <div class="fieldgroup">
-            <label for="authorSetDescription">Description of Problem:</label>
-            <textarea id="authorSetDescription" name="authorSetDescription" data-dojo-type="dijit/form/SimpleTextarea" value="Enter Description here..."></textarea>
-          </div>
-	  <div class="fieldgroup">
-	    <button id="descCloseButton" type="button" data-dojo-type="dijit/form/Button" iconClass="dijitNoIcon">Done</button>
-          </div>
+			<input id="authorSetImage"/>
+		</div>
+		<div class="fieldgroup">
+			<label for="authorSetDescription">Description of Problem:</label>
+			<textarea id="authorSetDescription" name="authorSetDescription" data-dojo-type="dijit/form/SimpleTextarea" value="Enter Description here..."></textarea>
+		</div>
+		<div class="fieldgroup">
+			<label for="authorProblemShare" title="Share this problem with students.">Share Problem:</label>
+			<input id="authorProblemShare" name="authorProblemShare" data-dojo-type="dijit/form/CheckBox" value="agreed" checked="false"/>
+		</div>
+		<div class="fieldgroup" align="right">
+			<button id="descCloseButton" type="button" data-dojo-type="dijit/form/Button" iconClass="dijitNoIcon">Done</button>
+		</div>
 	</div>
+
+    <!-- authorSaveProblem, authorSaveGroup -->
+    <div class="claro sameedit" data-dojo-type="dijit/Dialog" id="authorSaveDialog" title="Rename and Save Problem">
+        <div class="fieldgroup">
+            <label for="authorSaveProblem" style="width:7em">Problem Name:</label>
+            <input id="authorSaveProblem" style="width:10em" value="0" data-dojo-type="dijit/form/TextBox"></input>
+        </div>
+        <div class="fieldgroup">
+            <label for="authorSaveGroup" style="width:7em">Group Name:</label>
+            <input id="authorSaveGroup" style="width:10em" value="0" data-dojo-type="dijit/form/TextBox"></input>
+        </div>
+        <div class="fieldgroup" align="right">
+            <button id="saveCloseButton" type="button" data-dojo-type="dijit/form/Button" iconClass="dijitNoIcon">Save</button>
+        </div>
+    </div>
 
 	<!-- Putting Node-Editor -Dialog stuff for demo -->
         <div class="claro sameedit" data-dojo-type="dijit/Dialog" id="nodeeditor">
@@ -226,6 +262,10 @@
                         <input id="setUnits" data-dojo-type="dijit/form/ComboBox" style="width:6em">
                     </label>
                </div>
+            </div>
+            <div id="setRootNode" class="fieldgroup" style="display:none">
+                <label for ="markRootNode" title ="Mark this node as a root node.">Root:</label>
+                <input id ="markRootNode" name ="markRootNode" data-dojo-type="dijit/form/CheckBox" value="agreed" checked="false"/>
             </div>
             <div class="fieldgroup" id="algebraic">
 	        <label>Inputs</label>
@@ -275,7 +315,7 @@
                     <div id="equationLabel"></div>
                     <textarea id="equationBox" rows=2 cols=30 data-dojo-type="dijit/form/SimpleTextarea"></textarea>
 	            <div id="equationText"></div>
-                    <div id="timeStepLabel"></div>
+                    <!--<div id="timeStepLabel"></div>-->
                 </div>
                 <div class="buttonBox">	    
 	            <button id="undoButton" type="button" data-dojo-type="dijit/form/Button" iconClass="dijitNoIcon">Undo</button>
@@ -288,7 +328,7 @@
 		<div class="buttonBox">
 		    <!-- Strut to move close button down.  It would be
                     better to do this with css... -->
-		    <div>&nbsp;</div>
+		    <div>&nbsp;<button id="nodeForumButton" type="button" data-dojo-type="dijit/form/Button" iconClass="dijitNoIcon" disabled="true">Forum</button></div>
 		    <div>&nbsp;</div>
 		    <div>&nbsp;</div>
 		    <button id="closeButton" type="button" data-dojo-type="dijit/form/Button" iconClass="dijitNoIcon">Done</button>

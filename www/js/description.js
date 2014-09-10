@@ -50,6 +50,7 @@ define([
 			this.lastStepTime = {value: this.timeObj.step};
 
 			dom.byId("authorSetTimeStepUnits").value = this.timeObj.units || "seconds";
+			dom.byId("authorSetIntegrationMethod").value = this.timeObj.integrationMethod || "Eulers Method";
 			dom.byId("authorSetImage").value = givenModel.getImageURL() || "";
 			dom.byId("authorSetDescription").value = this.serialize(
 				givenModel.getTaskDescription() ? givenModel.getTaskDescription() : ""	
@@ -118,6 +119,8 @@ define([
 						  myThis.timeObj.step = ret_step_time.value;
 					  }
 					  myThis.timeObj.units = dom.byId("authorSetTimeStepUnits").value;
+					  myThis.timeObj.integrationMethod = dom.byId("authorSetIntegrationMethod").value;
+					  console.log("integration value" + dom.byId("authorSetIntegrationMethod").value);
 					  myThis.givenModel.setTime(myThis.timeObj);
 					  console.log("final object being returned",myThis.timeObj);
 					  var url = dom.byId("authorSetImage").value;

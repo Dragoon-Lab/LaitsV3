@@ -5,16 +5,16 @@
  *
  *This file is a part of Dragoon
  *Dragoon is free software: you can redistribute it and/or modify
- *it under the terms of the GNU General Public License as published by
+ *it under the terms of the GNU Lesser General Public License as published by
  *the Free Software Foundation, either version 3 of the License, or
  *(at your option) any later version.
  *
  *Dragoon is distributed in the hope that it will be useful,
  *but WITHOUT ANY WARRANTY; without even the implied warranty of
  *MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.	See the
- *GNU General Public License for more details.
+ *GNU Lesser General Public License for more details.
  *
- *You should have received a copy of the GNU General Public License
+ *You should have received a copy of the GNU Lesser General Public License
  *along with Dragoon.  If not, see <http://www.gnu.org/licenses/>.
  *
  */
@@ -510,7 +510,7 @@ define([
 		record.init("problemCompleted", 0);
 	},
 		
-		processAnswer: function(/*string*/ id, /*string*/ nodePart, /*string | object*/ answer){
+		processAnswer: function(/*string*/ id, /*string*/ nodePart, /*string | object*/ answer,/*string*/ answerString){
 			// Summary: Pocesses a student's answers and returns if correct, 
 			//		incorrect, etc. and alerts the controller about what parts 
 			//		of the node editor should be active.
@@ -538,27 +538,6 @@ define([
 					solutionGiven = true;
 				}
 			}
-			var logObj = null;
-			if(interpretation == 'correct' || interpretation == 'optimal'){
-				logObj = {
-					checkResult: 'CORRECT'
-				};
-			}else{
-				logObj = {
-					checkResult: 'INCORRECT',
-					correctValue: this.model.student.getCorrectAnswer(id, nodePart),
-					pmInterpretation: interpretation
-				};
-			}
-			logObj = lang.mixin({
-				type : "solution-check",
-				nodeID: id,
-				node: this.model.student.getName(id),
-				property: nodePart,
-				value: answer,
-				solutionProvided: solutionGiven
-			}, logObj);
-			this.logging.log('solution-step', logObj);
 
 			// Local function that updates the status if it is not already set to "correct" or "demo"
 			var updateStatus = function(returnObj, model){
@@ -642,6 +621,38 @@ define([
 				}
 			}
 			//returnObj.push([{id: "crisisAlert", attribute: "open", value: "You should be more careful."}]);
+
+			//logging pm response
+			var logObj = null;
+			var checkStatus;
+			for(var i =0; i<returnObj.length; i++){
+				if(returnObj[i].attribute == "status"){
+					checkStatus = returnObj[i].value;
+					break;
+				}
+			}
+			if(checkStatus == "correct"){
+				logObj = {
+					checkResult: 'CORRECT',
+				};
+			}else if(checkStatus == "demo" || checkStatus == "incorrect"){
+				logObj = {
+					checkResult: 'INCORRECT',
+					correctValue: this.model.student.getCorrectAnswer(id, nodePart),
+					pmInterpretation: interpretation
+				};
+			}
+			var logAnswer = answerString || answer.toString();
+			logObj = lang.mixin({
+				type : "solution-check",
+				nodeID: id,
+				node: this.model.student.getName(id),
+				property: nodePart,
+				value: logAnswer,
+				solutionProvided: solutionGiven
+			}, logObj);
+			this.logging.log('solution-step', logObj);
+
 			console.log("**** PM returning:\n", returnObj);
 			return returnObj;
 		},

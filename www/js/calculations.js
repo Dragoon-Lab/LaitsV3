@@ -6,16 +6,16 @@
  *
  *This file is a part of Dragoon
  *Dragoon is free software: you can redistribute it and/or modify
- *it under the terms of the GNU General Public License as published by
+ *it under the terms of the GNU Lesser General Public License as published by
  *the Free Software Foundation, either version 3 of the License, or
  *(at your option) any later version.
  *
  *Dragoon is distributed in the hope that it will be useful,
  *but WITHOUT ANY WARRANTY; without even the implied warranty of
  *MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.	See the
- *GNU General Public License for more details.
+ *GNU Lesser General Public License for more details.
  *
- *You should have received a copy of the GNU General Public License
+ *You should have received a copy of the GNU Lesser General Public License
  *along with Dragoon.  If not, see <http://www.gnu.org/licenses/>.
  *
  */
@@ -81,6 +81,7 @@ define([
 			this.active.xvarMap = {};
 			array.forEach(this.active.timeStep.xvars, function(xvar, i){
 				this.active.xvarMap[xvar] = i;
+				
 			}, this);
 			
 			// These are not used for the tables
@@ -125,7 +126,16 @@ define([
 			 equation for accumulator nodes
 			 */
 			try { // we try to run the method because there might be some nodes missing and an error is generated
-				var solution = integrate.eulersMethod(
+				var solution;
+				console.log(this.model.getIntegrationMethod());
+				if(this.model.getIntegrationMethod() == "Midpoint Method") 
+					solution = integrate.midpointMethod(
+					choice.timeStep, 
+					equation.evaluateTimeStep,
+					choice.initialValues, 
+					this.model.getTime());
+				else
+					solution = integrate.eulersMethod(
 					choice.timeStep, 
 					equation.evaluateTimeStep,
 					choice.initialValues, 
@@ -299,6 +309,7 @@ define([
 				}
 
 				// create slider
+				// The associated css style sheet is loaded by css/dragoon.css
 				this.sliders[paramID] = new HorizontalSlider({
 					name: this.sliderID + paramID,
 					value: val,

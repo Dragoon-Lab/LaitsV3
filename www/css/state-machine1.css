@@ -1,3 +1,7 @@
+/*
+    Styles associated with the main canvas
+*/
+
 #demo {
     margin-top:5em;
 }
@@ -267,12 +271,11 @@
     z-index:3;
 }
 
-/*
-    These should be removed once positions are gotten from the model.
-*/
-
-
-
 .dragHover { border:2px solid orange; }
 
-path { cursor:pointer; }
+path {
+	cursor:pointer;
+	pointer-events: visiblestroke;
+	stroke:rgb(92, 150, 188);
+	stroke-width: 2px;
+}

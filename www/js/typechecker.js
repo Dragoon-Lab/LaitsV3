@@ -6,16 +6,16 @@
  *
  *This file is a part of Dragoon
  *Dragoon is free software: you can redistribute it and/or modify
- *it under the terms of the GNU General Public License as published by
+ *it under the terms of the GNU Lesser General Public License as published by
  *the Free Software Foundation, either version 3 of the License, or
  *(at your option) any later version.
  *
  *Dragoon is distributed in the hope that it will be useful,
  *but WITHOUT ANY WARRANTY; without even the implied warranty of
  *MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.	See the
- *GNU General Public License for more details.
+ *GNU Lesser General Public License for more details.
  *
- *You should have received a copy of the GNU General Public License
+ *You should have received a copy of the GNU Lesser General Public License
  *along with Dragoon.  If not, see <http://www.gnu.org/licenses/>.
  *
  */
@@ -38,11 +38,13 @@ define([
 			content: "Non-numeric data not accepted"
 		}),
 
-		closePops: function(){
-			popup.close(this.myTooltipDialog);
-			popup.close(this.myTooltipDialog2);
-		},
+		dialogs: [this.myTooltipDialog, this.myTooltipDialog2],
 
+		closePops: function(){
+			array.forEach(this.dialogs, function(dialog){
+				popup.close(dialog);
+			});
+		},
 
 		checkInitialValue: function(nodeID, lastInput){
 			//Description : performs non number check and also checks if the initial 
@@ -61,10 +63,6 @@ define([
 			//Also Don't do anything if the value is empty
 			var domNode = dom.byId(nodeID);
 			var inputString = domNode.value.trim();
-			if(inputString == lastInput.value || inputString==""){
-				return {status: false};
-			}
-			lastInput.value = inputString;
 
 			// we do this type conversion because we used a textbox for 
 			// initialvalue input which is a numerical
@@ -73,8 +71,7 @@ define([
 			// use isNaN to test if conversion worked.
 
 			if(isNaN(input)){
-
-	var errorType;
+				var errorType;
 				// Put in checks here
 				console.log('not a number');
 				//initialValue is the id of the textbox, we get the value in the textbox
@@ -96,7 +93,11 @@ define([
 				}
 
 				return {status: false, errorType: errorType};
+			}else if(inputString == lastInput.value || inputString==""){
+				return {status: false};
 			}
+			lastInput.value = inputString;
+
 			// updating node editor and the model.
 			return {status: true, value: input};
 		}

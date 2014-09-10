@@ -16,12 +16,12 @@
             alert("Please enter a username.");
             return false;
         }
-        // If author field is empty, remove from form.
-        // Dragoon treats the presence of the author field
+        // If group field is empty, remove from form.
+        // Dragoon treats the presence of the group field
         // as a switch for published versus custom problems.
-        if(form.a.value.trim() == ""){
-          console.log("Deleting author (a) from GET.", form);
-          document.getElementById("author").removeAttribute('name');
+        if(form.g.value.trim() == ""){
+          console.log("Deleting group (g) from GET.", form);
+          document.getElementById("group").removeAttribute('name');
         }
         return true;
     }
@@ -84,12 +84,12 @@
                     </div>
 
                     <div class="fieldgroup">
-                        <label for="author">Group (Author mode): </label>
-                        <input id="author" type="text" name="a" value="">
+                        <label for="group">Group (optional): </label>
+                        <input id="group" type="text" name="g" value="">
                     </div>
 
                     <div class="fieldgroup">
-                        <input type="submit" value="Continue" class="submit">
+                        <input type="submit" name="c" value="Continue" class="submit">
                         
                     </div>
         </form>

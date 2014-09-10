@@ -5,16 +5,16 @@
  *
  *This file is a part of Dragoon
  *Dragoon is free software: you can redistribute it and/or modify
- *it under the terms of the GNU General Public License as published by
+ *it under the terms of the GNU Lesser General Public License as published by
  *the Free Software Foundation, either version 3 of the License, or
  *(at your option) any later version.
  *
  *Dragoon is distributed in the hope that it will be useful,
  *but WITHOUT ANY WARRANTY; without even the implied warranty of
  *MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.	See the
- *GNU General Public License for more details.
+ *GNU Lesser General Public License for more details.
  *
- *You should have received a copy of the GNU General Public License
+ *You should have received a copy of the GNU Lesser General Public License
  *along with Dragoon.  If not, see <http://www.gnu.org/licenses/>.
  *
  */
@@ -133,8 +133,8 @@ define([
 				}
 				
 				var id = givenModel.active.addNode();
-				drawModel.addNode(givenModel.active.getNode(id));
-				controllerObject.logging.log('ui-action', {type: "menu-choice", name: "create-node"});		
+				controllerObject.logging.log('ui-action', {type: "menu-choice", name: "create-node"});
+				drawModel.addNode(givenModel.active.getNode(id));		
 				controllerObject.showNodeEditor(id);
 			});
 			
@@ -186,14 +186,23 @@ define([
 
 				registry.byId("nodeeditor").hide();
 			});
-		
+			// checks if forumurl is present
+			if(query.f) {
+				//Enable the forum button in the menu
+				var forumBut=registry.byId("forumButton");
+				forumBut.set("disabled", false);
+				//setter function used for setting forum parameters
+				//inside controller
+				controllerObject.setForum(query);
+			}
 			// Also used in image loading below.
 			var descObj = new description(givenModel);
-			
 			if(query.m == "AUTHOR"){
 				var db = registry.byId("descButton");
-			db.set("disabled", false);
-				
+				db.set("disabled", false);
+                db = registry.byId("saveButton");
+                db.set("disabled", false);
+
 				// Description button wiring
 				menu.add("descButton", function(){
 					registry.byId("authorDescDialog").show();
@@ -205,14 +214,34 @@ define([
 				on(registry.byId("descCloseButton"), "click", function(){
 					registry.byId("authorDescDialog").hide();
 				});
+
+                // Rename button wiring
+                menu.add("saveButton", function(){
+                    registry.byId("authorSaveDialog").show();
+                });
+                aspect.after(registry.byId('authorSaveDialog'), "hide", function(){
+                    console.log("Rename and Save Problem edits");
+                    // Save problem
+		   var problemName = registry.byId("authorSaveProblem").value;
+		   var groupName = registry.byId("authorSaveGroup").value;
+		   if(problemName&&problemName=='' || groupName&&groupName==''){
+			alert('Missing input ');
+			return; 
+		    }
+		   session.saveAsProblem(givenModel.model,problemName,groupName);	
+                });
+                on(registry.byId("saveCloseButton"), "click", function(){
+                    registry.byId("authorSaveDialog").hide();
+                });
 			}
+			// Render image description on canvas
+			descObj.showDescription();
 
 			/*
 			 Make model solution plot using dummy data. 
 			 This should be put in its own module.
 			 */
 			
-
 			// show graph when button clicked
 			menu.add("graphButton", function(){
 				console.debug("button clicked");
@@ -261,7 +290,7 @@ define([
 					window.history.back();
 				});
 			});
-			
+
 			/* 
 			 Add link to intro video
 			 */
@@ -274,24 +303,49 @@ define([
 				// "newwindow": the pop-out window name, not required, could be empty
 				// "height" and "width": pop-out window size
 				// Other properties could be changed as the value of yes or no
-				window.open("https://www.youtube.com/watch_popup?v=gsrM07XfABk","newwindow",
+				window.open("https://www.youtube.com/watch_popup?v=Pll8iyDzcUs","newwindow",
 							"height=400, width=600, toolbar =no, menubar=no, scrollbars=no, resizable=no, location=no, status=no"
 						   );
 			});
-			
+
 			/*
-			 BvdS:	this doesn't look quite right.	We want to download
-			 the image and then get its dimensions.	 (This is a property of 
-			 the image object) and use the dimensions to place the description
-			 
-			 In AUTHOR mode, make image clickable or put in "click here" box.
-			 Also, make description clickable, with default text "click here".
-			 These will be wired up to dialog boxes to set the image URL and
-			 the description.
-			 */
-			
-			descObj.showDescription();
-			
+             Add link to list of math functions
+             */
+			var math_func = dom.byId("menuMathFunctions");
+			on(math_func, "click", function(){
+				controllerObject.logging.log('ui-action', {
+					type: "menu-choice",
+					name: "math-functions"
+				});
+				// "newwindow": the pop-out window name, not required, could be empty
+				// "height" and "width": pop-out window size
+				// Other properties could be changed as the value of yes or no
+				window.open("math-probs.html","newwindow",
+							"height=400, width=600, toolbar =no, menubar=no, scrollbars=yes, resizable=no, location=no, status=no"
+						   );
+			});
+
+			//For redirecting to the forum from forum button click on header
+			menu.add("forumButton",function(){
+				//  Some portion of this function body should be moved to forum.js, Bug #2424
+				console.log("clicked on main forum button");
+				controllerObject.logging.log('ui-action', {
+					type: "menu-forum-button",
+					name: "forum"
+				});
+				var prob_name=givenModel.getTaskName();
+				console.log("problem name is ", prob_name);
+				// "newwindow": the pop-out window name, not required, could be empty
+				// "height" and "width": pop-out window size
+				// Other properties could be changed as the value of yes or no
+				//
+				// The parameters should be escaped, Bug #2423
+				// Should add logging, Bug #2424
+				window.open(query.f+"?&n="+prob_name+"&s="+query.s+"&fid="+query.fid+"&sid="+query.sid,"newwindow",
+							"height=400, width=600, toolbar =no, menubar=no, scrollbars=no, resizable=no, location=no, status=no"
+						   );
+			});
+
 		});
 	});
 });
