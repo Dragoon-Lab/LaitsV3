@@ -543,7 +543,10 @@ define([
 			},
 			getDescription: function(/*string*/ id){
 				return this.getNode(id).description;
-			},
+			},           
+            getGivenID: function(/*string*/ id){
+                return id;
+            },
 			getAttemptCount: function(/*string*/ id, /*string*/ part){
 				return this.getNode(id).attemptCount[part];
 			},
