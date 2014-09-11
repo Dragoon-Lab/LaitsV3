@@ -67,6 +67,8 @@ define([
 			var descWidgetStop = registry.byId('authorSetTimeEnd');
 			//for authorSetTimeStep
 			var descWidgetStep = registry.byId('authorSetTimeStep');
+            // Set checkbox for sharing
+           registry.byId("authorProblemShare").attr("value", this.givenModel.getShare());
 
 			// This event gets fired if student hits TAB or input box
 			// goes out of focus.
@@ -128,6 +130,12 @@ define([
 					  myThis.showDescription();
 				};
 			}));
+            //for share bit checkbox
+           var descShareBit = registry.byId("authorProblemShare");
+           descShareBit.on("Change", lang.hitch(this, function(checked){
+               // console.log("check box", descShareBit, checked);
+               this.givenModel.setShare(checked);
+           }));
 		},
 
 		// add line breaks
