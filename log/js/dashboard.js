@@ -175,7 +175,7 @@ define([
 		initTable: function(){
 			var tableString = "<table border='1'>";
 			var problems = this.getAllProblems();
-			tableString += "<th>Users\\Problems</th>";
+			tableString += "<th>Users \/ Problems -></th>";
 			array.forEach(problems, function(problem){
 				tableString += "<th>" + problem + "</th>";
 			});
@@ -190,9 +190,9 @@ define([
 				//var problemDetails = printArray[row];
 				var col = 0;
 				array.forEach(this.problems, function(problem){
-					var urlString = "<a href='/devel/index.html?u=" + user + "&m=STUDENT&sm=feedback&is=algebraic&p=" + problem + "&s=" + this.section + "&c=Continue&t=true' target='_blank' title='Click to check session'>";
+					//var urlString = "<a href='/devel/index.html?u=" + user + "&m=STUDENT&sm=feedback&is=algebraic&p=" + problem + "&s=" + this.section + "&c=Continue&t=true' target='_blank' title='Click to check session' style='width:90px'>";
 					//for demo server
-					//var urlString = "<a href='/demo/index.html?u=" + user + "&m=STUDENT&sm=feedback&is=algebraic&p=" + problem + "&s=" + this.section + "&c=Continue&t=true' target='_blank' title='Click to check session'>";
+					var urlString = "<a href='/demo/index.html?u=" + user + "&m=STUDENT&sm=feedback&is=algebraic&p=" + problem + "&s=" + this.section + "&c=Continue&t=true' target='_blank' title='Click to check session'>";
 					//for local server
 					//var urlString = "<a href='/code/index.html?u=" + user + "&m=STUDENT&sm=feedback&is=algebraic&p=" + problem + "&s=" + this.section + "&c=Continue&t=true' target='_blank' title='Click to check session'>";
 					var complete = this.problemComplete[row][col];
@@ -206,8 +206,18 @@ define([
 						tableString += "<td>";
 					}
 					tableString += "<span class='empty all'>" + this.emptyArray[row][col] + "</span>";
-					tableString += "<span class='time all'>" + urlString + this.timeSpent[row][col] + "</a></span>";
-					tableString += "<span class='errors all'>" + urlString + this.errorRatio[row][col] + "</a></span>";
+					tableString += "<span class='time all'>";
+					if(this.timeSpent[row][col] != '-'){
+						tableString += urlString;
+					}
+					tableString += this.timeSpent[row][col] + "</a></span>";
+					
+
+					tableString += "<span class='errors all'>"; 
+					if(this.errorRatio[row][col] != "-"){
+						tableString += urlString;
+					}
+					tableString += this.errorRatio[row][col] + "</a></span>";
 					if(!this.runtime){
 						tableString += "<div class='nodeDetails' style='display:none;'>"+this.detailedNodeAnalysis[row][col]+"</div>";
 					}
