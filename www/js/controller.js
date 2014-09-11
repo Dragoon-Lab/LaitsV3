@@ -915,7 +915,7 @@ define([
 			}));
 			var nodeForumBut = registry.byId("nodeForumButton");
 			var check_desc=this._model.active.getGivenID(id);
-			if(this._forumparams && this._model.given.getDescription(check_desc)){
+			if(this._forumparams && check_desc && this._model.given.getDescription(check_desc)){
 				nodeForumBut.set("disabled", false);
 				forum.activateForum(this._model, this.currentID, this._forumparams,this.logging);
 			}else{
