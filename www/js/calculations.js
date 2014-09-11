@@ -176,22 +176,23 @@ define([
 			}
 		},
 
-		findExplicitSolution: function(isActive, explicitValue)
+		/*findExplicitSolution: function(isActive, explicitValue)
 		{
 			// Summary: Find an explicit soution(one input) to the equation
 			// Return: Returns an float of the value of the explicit solution
 			var timeObject = this.model.getTime();
 			timeObject.end = explicitValue;
+			var result;
 			try{
 				var solution = integrate.eulersMethod(
 					choice.timeStep, 
 					equation.evaluateTimeStep,
 					choice.initialValues, 
 					timeObject);
-				var result = {time: solution.time[solution.time.length - 1], value: solution.values[solution.values.length - 1]};
+				result = {time: solution.time[solution.time.length - 1], value: solution.values[solution.values.length - 1]};
 			}
 			return result;
-		},
+		},*/
 
 		labelString: function(id){
 			// Summary:	 Return a string containing the quantity name and any units.
