@@ -782,7 +782,7 @@ define([
 				var node = this.getNode(id);
 				// Some given models do not include units.
 				var hasUnits = node.descriptionID && obj.given.getUnits(node.descriptionID);
-				var initialEntered = node.type && node.type == "function" || node.initial;
+				var initialEntered = node.type && node.type == "function" || node.initial != null;
 				var equationEntered = node.type && node.type == "parameter" || node.equation;
 				return node.descriptionID && node.type &&
 						initialEntered && (!hasUnits || node.units) &&
