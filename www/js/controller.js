@@ -1025,6 +1025,9 @@ define([
 					var w = registry.byId(this.widgetMap[directive.id]);
 					if (directive.attribute == 'value') {
 						w.set("value", directive.value, false);
+                        if(w.id == 'typeId'){
+                            this.updateType(directive.value);
+                        }
 						// Each control has its own function to update the
 						// the model and the graph.
 						//this[directive.id+'Set'].call(this, directive.value);
