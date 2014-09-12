@@ -81,6 +81,7 @@ define([
 			this.active.xvarMap = {};
 			array.forEach(this.active.timeStep.xvars, function(xvar, i){
 				this.active.xvarMap[xvar] = i;
+				
 			}, this);
 			
 			// These are not used for the tables
@@ -125,7 +126,16 @@ define([
 			 equation for accumulator nodes
 			 */
 			try { // we try to run the method because there might be some nodes missing and an error is generated
-				var solution = integrate.eulersMethod(
+				var solution;
+				console.log(this.model.getIntegrationMethod());
+				if(this.model.getIntegrationMethod() == "Midpoint Method") 
+					solution = integrate.midpointMethod(
+					choice.timeStep, 
+					equation.evaluateTimeStep,
+					choice.initialValues, 
+					this.model.getTime());
+				else
+					solution = integrate.eulersMethod(
 					choice.timeStep, 
 					equation.evaluateTimeStep,
 					choice.initialValues, 

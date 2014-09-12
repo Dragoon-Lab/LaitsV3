@@ -33,6 +33,10 @@
                  {start: 0, end: 10, step: 2});
             console.log("integration result: ", result.times, result.values);
 
+            result=integrate.midpointMethod({a: 1, b: -1}, f, [3, 5],
+                {start: 0, end: 10, step: 2});
+            console.log("midpoint results: ", result.times, result.values);
+
             console.info("Make simple model and integrate over time");
 	    var rabbits = new model("STUDENT", "test model");
 	    rabbits.setTime({start: 1, end: 9, step: 2});
