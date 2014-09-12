@@ -112,6 +112,7 @@
              <button type="button" data-dojo-type="dijit/form/Button" id="tableButton">Table</button>
              <button type="button" data-dojo-type="dijit/form/Button" id="forumButton" disabled="true">Forum</button>
              <button type="button" data-dojo-type="dijit/form/Button" id="descButton" disabled="true">Description &amp; Times</button>
+             <button type="button" data-dojo-type="dijit/form/Button" id="saveButton" disabled="true">Rename</button>
 	     <div data-dojo-type="dijit/PopupMenuBarItem">
                  <span>Help</span>
 		 <div data-dojo-type="dijit/Menu" id="menuHelp">
@@ -121,7 +122,7 @@
 		 </div>
              </div>
 
-	     <button type="button" data-dojo-type="dijit/form/Button" id="doneButton" style="position:absolute; top:0; right:10px; margin:0;">Done</button>
+	     <button type="button" data-dojo-type="dijit/form/Button" id="doneButton">Done</button>
 	</div> <!-- Menubar -->
         <div id="drawingPane" data-dojo-type="dijit/layout/ContentPane" region="center">
 		
@@ -166,11 +167,22 @@
 	  <div class="fieldgroup">
             <label for="authorSetTimeStepUnits">Units:</label>
             <select data-dojo-type="dijit/form/ComboBox" id="authorSetTimeStepUnits" name="authorSetTimeStepUnits" class="timeStepAuthor">
-              <option selected>Years</option>
-              <option>Hours</option>
-              <option>Months</option>
+              <option>seconds</option>
+              <option>minutes</option>
+              <option>hours</option>
+              <option>days</option>
+              <option>weeks</option>
+              <option>months</option>
+              <option>years</option>
             </select>
 	  </div>
+      <div class="fieldgroup">
+            <label for="authorSetIntegrationMethod">Integration Method:</label>
+            <select data-dojo-type="dijit/form/ComboBox" id="authorSetIntegrationMethod" name="authorSetIntegrationMethod" class="integrationMethodAuthor">
+                <option>Eulers Method</option>
+                <option>Midpoint Method</option>
+            </select>
+      </div>
 	  <div class="fieldgroup">
             <label for="authorSetImage">URL for Image:</label>
 			<input id="authorSetImage"/>
@@ -183,10 +195,25 @@
 			<label for="authorProblemShare" title="Share this problem with students.">Share Problem:</label>
 			<input id="authorProblemShare" name="authorProblemShare" data-dojo-type="dijit/form/CheckBox" value="agreed" checked="false"/>
 		</div>
-		<div class="buttonBox">
+		<div class="fieldgroup" align="right">
 			<button id="descCloseButton" type="button" data-dojo-type="dijit/form/Button" iconClass="dijitNoIcon">Done</button>
 		</div>
 	</div>
+
+    <!-- authorSaveProblem, authorSaveGroup -->
+    <div class="claro sameedit" data-dojo-type="dijit/Dialog" id="authorSaveDialog" title="Rename and Save Problem">
+        <div class="fieldgroup">
+            <label for="authorSaveProblem" style="width:7em">Problem Name:</label>
+            <input id="authorSaveProblem" style="width:10em" value="0" data-dojo-type="dijit/form/TextBox"></input>
+        </div>
+        <div class="fieldgroup">
+            <label for="authorSaveGroup" style="width:7em">Group Name:</label>
+            <input id="authorSaveGroup" style="width:10em" value="0" data-dojo-type="dijit/form/TextBox"></input>
+        </div>
+        <div class="fieldgroup" align="right">
+            <button id="saveCloseButton" type="button" data-dojo-type="dijit/form/Button" iconClass="dijitNoIcon">Save</button>
+        </div>
+    </div>
 
 	<!-- Putting Node-Editor -Dialog stuff for demo -->
         <div class="claro sameedit" data-dojo-type="dijit/Dialog" id="nodeeditor">
@@ -287,7 +314,7 @@
                     <div id="equationLabel"></div>
                     <textarea id="equationBox" rows=2 cols=30 data-dojo-type="dijit/form/SimpleTextarea"></textarea>
 	            <div id="equationText"></div>
-                    <div id="timeStepLabel"></div>
+                    <!--<div id="timeStepLabel"></div>-->
                 </div>
                 <div class="buttonBox">	    
 	            <button id="undoButton" type="button" data-dojo-type="dijit/form/Button" iconClass="dijitNoIcon">Undo</button>

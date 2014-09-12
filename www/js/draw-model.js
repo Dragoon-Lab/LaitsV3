@@ -167,7 +167,7 @@ define([
 		},
 
 		/* addNode: Add a node to the jsPlumb model, returning the DOM element.	 */
-		addNode: function(/*object*/ node, /*automatic creation*/ autoflag){
+		addNode: function(/*object*/ node){
 
 			var type = node.type || "triangle";
 			console.log("------- Adding element to canvas, id = ", node.ID, ", class = ", type);
@@ -188,7 +188,8 @@ define([
 					backgroundColor: colorBorder.backgroundColor
 				},
 				innerHTML: nodeName
-			}, "statemachine-demo");
+			},"statemachine-demo");
+			//domConstruct.place(vertex, "statemachine-demo");
 
 			//add menu to delete or we can iterate over all node.IDs and do following
 			var pMenu = new Menu({
@@ -220,17 +221,9 @@ define([
 
 			 Note that the names (onMoveStart, onMove, onMoveStop) are from
 			 the underlying library dojo/dnd/move, rather than jsPlumb.
-			 */
-			if(!autoflag){
-				this.makeDraggable(vertex);
-			}else{
-				// This is a work-around for Bug #2414.
-				// Need to find a way to determine if dom element has been created.
-				window.setTimeout(lang.hitch(this, function(){
-					this.makeDraggable(vertex);
-				}), 1000);
-			}
-
+			 */		
+			this.makeDraggable(vertex);
+			
 			return vertex;
 		},
 

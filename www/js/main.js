@@ -134,8 +134,8 @@ define([
 				}
 				
 				var id = givenModel.active.addNode();
-				drawModel.addNode(givenModel.active.getNode(id));
-				controllerObject.logging.log('ui-action', {type: "menu-choice", name: "create-node"});		
+				controllerObject.logging.log('ui-action', {type: "menu-choice", name: "create-node"});
+				drawModel.addNode(givenModel.active.getNode(id));		
 				controllerObject.showNodeEditor(id);
 			});
 			
@@ -202,6 +202,8 @@ define([
 			if(query.m == "AUTHOR"){
 				var db = registry.byId("descButton");
 				db.set("disabled", false);
+                db = registry.byId("saveButton");
+                db.set("disabled", false);
 
 				// Description button wiring
 				menu.add("descButton", function(){
@@ -214,6 +216,25 @@ define([
 				on(registry.byId("descCloseButton"), "click", function(){
 					registry.byId("authorDescDialog").hide();
 				});
+
+                // Rename button wiring
+                menu.add("saveButton", function(){
+                    registry.byId("authorSaveDialog").show();
+                });
+                aspect.after(registry.byId('authorSaveDialog'), "hide", function(){
+                    console.log("Rename and Save Problem edits");
+                    // Save problem
+		   var problemName = registry.byId("authorSaveProblem").value;
+		   var groupName = registry.byId("authorSaveGroup").value;
+		   if(problemName&&problemName=='' || groupName&&groupName==''){
+			alert('Missing input ');
+			return; 
+		    }
+		   session.saveAsProblem(givenModel.model,problemName,groupName);	
+                });
+                on(registry.byId("saveCloseButton"), "click", function(){
+                    registry.byId("authorSaveDialog").hide();
+                });
 			}
 			// Render image description on canvas
 			descObj.showDescription();
@@ -268,7 +289,10 @@ define([
 				});
 				
 				promise.then(function(){
-					window.history.back();
+					 if(window.history.length == 1)
+                                                window.close();
+                                        else
+                                                window.history.back();
 				});
 			});
 
