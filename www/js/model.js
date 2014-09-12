@@ -59,7 +59,7 @@ define([
 				this.checkedNodes = new Array();
 				this.model = {task: {
 					taskName: name,
-					time: {start: 0, end: 10, step: .5},
+					time: {start: 0, end: 10, step: .5, integrationMethod: "Eulers Method"},
 					properties: {},
 					image: {},
 					taskDescription: "",
@@ -243,6 +243,9 @@ define([
 				}, this);
 				return unitList;
 			},
+			getIntegrationMethod: function(){
+				return this.model.task.time.integrationMethod;
+			},
 			getTaskDescription: function(){
 				return this.model.task.taskDescription;
 			},
@@ -329,7 +332,7 @@ define([
 				this.model.task.image = options;
 			},
 			setTime: function(/*object*/ options){
-				// Summary: JSON object with "start", "end", "step", and "units" elements; see sample JSON model.
+				// Summary: JSON object with "start", "end", "step", "units", and itegrationMethod elements; see sample JSON model.
 				lang.mixin(this.model.task.time, options);
 			},
 			setPhase: function(/*string*/ phase){
@@ -540,10 +543,10 @@ define([
 			},
 			getDescription: function(/*string*/ id){
 				return this.getNode(id).description;
-			},
-			getGivenID: function(/*string*/ id){
-				return id;
-			},
+			},           
+            getGivenID: function(/*string*/ id){
+                return id;
+            },
 			getAttemptCount: function(/*string*/ id, /*string*/ part){
 				return this.getNode(id).attemptCount[part];
 			},
@@ -599,7 +602,7 @@ define([
 				var equationEntered = node.type && node.type == "parameter" || node.equation;
 				if(!node.genus || node.genus == "allowed" || node.genus == "preferred"){
 					return node.name && node.description &&
-							node.type && typeof initialEntered === "number" &&
+							node.type && (initialEntered || typeof initialEntered === "number") &&
 							(unitsOptional || node.units) &&
 							equationEntered;
 				}else if(node.genus == "initialValue"){
@@ -659,9 +662,9 @@ define([
 				var node = this.getNode(id);
 				return node && node.descriptionID;
 			},
-			getGivenID: function(id){
-				return this.getDescriptionID(id);
-			},
+            getGivenID: function(id){
+                return this.getDescriptionID(id);
+            },
 			getNodeIDFor: function(givenID){
 				// Summary: returns the id of a student node having a matching descriptionID;
 				//			return null if no match is found.

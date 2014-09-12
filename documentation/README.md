@@ -24,6 +24,7 @@ Here are the major components of the design:
   as well as [Sachin's version](Pedagogical-Module-JavaScript-Version-2.docx)
 * [Logging format](logs-structure.md)
 * [Saving State](state.md)
+* [Teacher Dashboard](dashboard.md)
 
 
 ## Code Review process ##

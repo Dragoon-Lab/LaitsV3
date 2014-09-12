@@ -1,6 +1,6 @@
 {
     "task": {
-        "taskName": null,
+        "taskName": "Fall from building 1",
         "time": {
             "start": 0,
             "end": 4,
@@ -14,7 +14,7 @@
         "image": {
             "URL": "images/Leaning_Tower_of_Pisa.jpg"
         },
-        "taskDescription": " An object starts at rest and falls from a building that is 56 meters tall. Graph its speed and distance fallen between 0 seconds and 4 seconds. Use 9.81 m/s^2 for the acceleration due to gravity. ",
+        "taskDescription": " An object starts at rest and falls from a building that is 56 meters tall. Graph its velocity and position from 0 seconds to 4 seconds. Use 9.81 m/s^2 for the acceleration due to gravity. Choose coordinates so that the ground is at zero. ",
         "givenModelNodes": [
             {
                 "ID": "id1",
@@ -36,7 +36,7 @@
                 "parentNode": false,
                 "units": "",
                 "description": "The acceleration of the object due to gravity",
-                "initial": 9.81
+                "initial": -9.81
             },
             {
                 "ID": "id2",
@@ -57,11 +57,11 @@
                     "equation": 0
                 },
                 "status": {},
-                "name": "Speed",
+                "name": "Velocity",
                 "type": "accumulator",
                 "parentNode": false,
                 "units": "",
-                "description": "The speed of the falling object",
+                "description": "The velocity of the falling object",
                 "initial": 0,
                 "equation": "id1"
             },
@@ -84,12 +84,12 @@
                     "equation": 0
                 },
                 "status": {},
-                "name": "Distance",
+                "name": "Position",
                 "type": "accumulator",
                 "parentNode": true,
                 "units": "",
-                "description": "The distance travelled by the falling object",
-                "initial": 0,
+                "description": "The position of the falling object",
+                "initial": 56,
                 "equation": "id2"
             }
         ],
