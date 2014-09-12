@@ -64,7 +64,7 @@ define([
 				return results;
 			}, function(err){
 				console.error("error in dashboard_js, error message : " + err);
-				throw new error;
+				throw err;
 			});
 		},
 
