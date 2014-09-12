@@ -107,7 +107,7 @@
 						if($name === 'create-node'){
 							if(!isset($currentNode)){
 								$currentNode = new Node();
-							} else if(count($currentNode->properties) > 0){
+							} else if($currentNode != null && count($currentNode->properties) > 0){
 								array_push($upObject->nodes, $currentNode);
 								$currentNode = new Node();
 							}
@@ -143,8 +143,14 @@
 						if(array_key_exists('node', $newMessage)){
 							//node reopened
 							$currentNode = $upObject->getNodeFromName($newMessage['node']);
-							if(count($currentNode->properties) > 1){
+							if($currentNode != null && count($currentNode->properties) > 1){
 								$currentNode->openTimes = $currentNode->openTimes+1;
+							} else if($currentNode == null){
+								// this is for the case when the node has already been given to the student. 
+								$currentNode = new Node();
+								$currentNode->id = $newMessage['nodeID'];
+								$currentNode->openTimes = 1;
+								$currentNode->nodeExist = true;
 							}
 							//otherwise auto created node with the property of description was created.
 						} else {
