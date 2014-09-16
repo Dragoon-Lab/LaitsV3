@@ -201,8 +201,10 @@ define([
 			if(query.m == "AUTHOR"){
 				var db = registry.byId("descButton");
 				db.set("disabled", false);
-                db = registry.byId("saveButton");
-                db.set("disabled", false);
+                		db = registry.byId("saveButton");
+                		db.set("disabled", false);
+				db = registry.byId("previewButton");
+				db.set("disabled", false);
 
 				// Description button wiring
 				menu.add("descButton", function(){
