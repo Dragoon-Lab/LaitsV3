@@ -334,7 +334,7 @@ define([
 			var nodeName = graphObjects.getNodeName(this._model.active,nodeID);
 			if(dom.byId(nodeID + 'Label')){
 				domConstruct.place(nodeName, nodeID + 'Label', "replace");
-			}else{
+			}else if(nodeName){
 				domConstruct.place(nodeName, nodeID);
 			}
 		},
@@ -1021,6 +1021,7 @@ define([
 			array.forEach(directives, function(directive) {
 				if(!noModelUpdate)
 					this.updateModelStatus(directive);
+
 				if (this.widgetMap[directive.id]) {
 					var w = registry.byId(this.widgetMap[directive.id]);
 					if (directive.attribute == 'value') {
@@ -1028,6 +1029,10 @@ define([
                         if(w.id == 'typeId'){
                             this.updateType(directive.value);
                         }
+                        if(w.id == 'initialValue'){
+                            this._model.active.setInitial(this.currentID, directive.value);
+                        }
+
 						// Each control has its own function to update the
 						// the model and the graph.
 						//this[directive.id+'Set'].call(this, directive.value);
