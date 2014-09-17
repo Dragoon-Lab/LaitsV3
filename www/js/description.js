@@ -128,14 +128,55 @@ define([
 					  var url = dom.byId("authorSetImage").value;
 					  myThis.givenModel.setImage(url?{URL: url} : {});
 					  myThis.showDescription();
-				};
+		    		};
 			}));
             //for share bit checkbox
-           var descShareBit = registry.byId("authorProblemShare");
-           descShareBit.on("Change", lang.hitch(this, function(checked){
-               // console.log("check box", descShareBit, checked);
-               this.givenModel.setShare(checked);
-           }));
+            var descShareBit = registry.byId("authorProblemShare");
+            descShareBit.on("Change", lang.hitch(this, function(checked) {
+                if (checked) {
+                    errordialogWidget = registry.byId("solution");
+                    console.log("share bit",descShareBit);
+                    // console.log("check box", descShareBit, checked);
+                    var newModel = this.givenModel;
+                    var check_parent = 0;
+                    array.forEach(this.givenModel.active.getNodes(), function (node) {
+                        // Include all nodes that belong in the solution.
+                        // Additionally we only include nodes that are complete,
+                        // except for units.
+
+                        if (!newModel.active.isComplete(node.ID)) {
+                            errordialogWidget.set("content", "<div>please complete the model before you share</div>");
+                            errordialogWidget.show();
+                            descShareBit.set("checked",false);
+                            //console.log("checked is", checked);
+                            this.givenModel.setShare(true);
+                            //console.log("gng to db is",this.givenModel.getShare());
+                            return;
+                        }
+                        if (newModel.active.getNode(node.ID).parentNode)
+                            check_parent = 1;
+                    });
+
+                    if (check_parent) {
+                        //console.log("check parent", check_parent);
+                        //console.log("checked is", checked);
+                        this.givenModel.setShare(true);
+                        //console.log("gng to db is",this.givenModel.getShare());
+                    }
+                    else {
+                        descShareBit.set("checked",false);
+                        //console.log("checked is", checked);
+                        this.givenModel.setShare(false);
+                        //console.log("gng to db is",this.givenModel.getShare());
+                        errordialogWidget.set("content", "<div>Please set a root node before you share</div>");
+                        errordialogWidget.show();
+                        return;
+                    }
+                }
+                else{
+                    this.givenModel.setShare(false);
+                }
+            }));
 		},
 
 		// add line breaks
