@@ -217,6 +217,9 @@ define([
 				on(registry.byId("descCloseButton"), "click", function(){
 					registry.byId("authorDescDialog").hide();
 				});
+				on(registry.byId("previewButton"),"click",function(){
+					window.open(document.URL.replace("m=AUTHOR","m=STUDENT"),"newwindow");
+				});
 
                 // Rename button wiring
                 menu.add("saveButton", function(){
