@@ -1,9 +1,9 @@
 {
     "task": {
-        "taskName": null,
+        "taskName": "Throw Stone 1",
         "time": {
             "start": 0,
-            "end": 4,
+            "end": 3,
             "step": 0.1,
             "units": "Seconds"
         },
@@ -12,9 +12,9 @@
             "type": "Construct"
         },
         "image": {
-            "URL": "images/Leaning_Tower_of_Pisa.jpg"
+            "URL": "images/weight-toss.jpg"
         },
-        "taskDescription": " An object starts at rest and falls from a building that is 56 meters tall. Graph its speed and distance fallen between 0 seconds and 4 seconds. Use 9.81 m/s^2 for the acceleration due to gravity. ",
+        "taskDescription": " A weight is thrown vertically upward with a velocity of 8.5 m/s from an initial height of 1.2 m. Graph its velocity and height from 0 seconds to 3 seconds. How fast is it moving when it reaches a height of 4.0m? How long is required to reach this height? Explain why there are two answers. Use -9.81 m/s^2 as the gravitational acceleration. ",
         "givenModelNodes": [
             {
                 "ID": "id1",
@@ -35,8 +35,8 @@
                 "type": "parameter",
                 "parentNode": false,
                 "units": "",
-                "description": "The acceleration of the object due to gravity",
-                "initial": 9.81
+                "description": "The acceleration of the weight due to gravity",
+                "initial": -9.81
             },
             {
                 "ID": "id2",
@@ -57,12 +57,12 @@
                     "equation": 0
                 },
                 "status": {},
-                "name": "Speed",
+                "name": "Velocity",
                 "type": "accumulator",
                 "parentNode": false,
                 "units": "",
-                "description": "The speed of the falling object",
-                "initial": 0,
+                "description": "The velocity of the weight",
+                "initial": 8.5,
                 "equation": "id1"
             },
             {
@@ -84,12 +84,12 @@
                     "equation": 0
                 },
                 "status": {},
-                "name": "Distance",
+                "name": "Height",
                 "type": "accumulator",
                 "parentNode": true,
                 "units": "",
-                "description": "The distance travelled by the falling object",
-                "initial": 0,
+                "description": "The height of the weight",
+                "initial": 1.2,
                 "equation": "id2"
             }
         ],

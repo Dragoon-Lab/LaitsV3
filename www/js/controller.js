@@ -334,7 +334,7 @@ define([
 			var nodeName = graphObjects.getNodeName(this._model.active,nodeID);
 			if(dom.byId(nodeID + 'Label')){
 				domConstruct.place(nodeName, nodeID + 'Label', "replace");
-			}else{
+			}else if(nodeName){
 				domConstruct.place(nodeName, nodeID);
 			}
 		},
@@ -512,6 +512,7 @@ define([
 			if(type == "function" && typeof this._model.active.getInitial(this.currentID) === "number"){
 				var initialNode = registry.byId(this.controlMap.initial);
 				initialNode.set("value", "");
+				this._model.active.setInitial(this.currentID, "");
 			}
 			if(type == "parameter" && this._model.active.getEquation(this.currentID)){
 				var equationNode = registry.byId(this.controlMap.equation);
@@ -914,7 +915,7 @@ define([
 			}));
 			var nodeForumBut = registry.byId("nodeForumButton");
 			var check_desc=this._model.active.getGivenID(id);
-			if(this._forumparams && this._model.given.getDescription(check_desc)){
+			if(this._forumparams && check_desc && this._model.given.getDescription(check_desc)){
 				nodeForumBut.set("disabled", false);
 				forum.activateForum(this._model, this.currentID, this._forumparams,this.logging);
 			}else{
@@ -1020,13 +1021,21 @@ define([
 			array.forEach(directives, function(directive) {
 				if(!noModelUpdate)
 					this.updateModelStatus(directive);
+
 				if (this.widgetMap[directive.id]) {
 					var w = registry.byId(this.widgetMap[directive.id]);
 					if (directive.attribute == 'value') {
 						w.set("value", directive.value, false);
+                        if(w.id == 'typeId'){
+                            this.updateType(directive.value);
+                        }
+                        if(w.id == 'initialValue'){
+                            this._model.active.setInitial(this.currentID, directive.value);
+                        }
+
 						// Each control has its own function to update the
 						// the model and the graph.
-						this[directive.id+'Set'].call(this, directive.value);
+						//this[directive.id+'Set'].call(this, directive.value);
 					}else{
 						w.set(directive.attribute, directive.value);
 					}

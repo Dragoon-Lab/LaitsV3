@@ -528,7 +528,7 @@ define([
 				if(nodePart == "equation"){
 					answer = check.convert(this.model.given, answer);
 				}
-				if(!answer){
+				if(answer == null){
 					if(nodePart === "description"){
 						returnObj.push({id: "message", attribute: "append", value: "You have already created all the necessary nodes."});
 					}else

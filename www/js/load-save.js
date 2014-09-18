@@ -79,8 +79,20 @@ define([
 			console.log("New sessionId = ", this.sessionId);
 			this._startTime = (new Date()).getTime();
 			this.path = path || "";
+
 			// Create a session
-			this.log("start-session", params);
+			if(params.t){
+				//means a teacher has opened the session
+				//changing the name of the user as well as the section
+				var temp = dojo.clone(params);
+
+				temp.u = params.u + '_check';
+				temp.s = params.s + '_check';
+				this.log("start-session", temp);
+			} else {
+				this.log("start-session", params);
+			}
+			
 		},
 
 		loadProblem: function(/*object*/ params){

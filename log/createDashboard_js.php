@@ -37,18 +37,17 @@
 				(!empty($fromDate)?$toTimeString:"").
 				" AND mode = '".$mode."' ".
 			"ORDER BY user asc, problem asc, tid asc;";
-			echo $queryString;
-			//$queryString = "SELECT tid, session.session_id, user, problem, time, method, message, `group` from session JOIN step ON session.session_id = step.session_id where method != 'client-message' AND mode = 'STUDENT' AND user = 'adsfwe' ORDER BY user asc, problem asc, tid asc;";
+			//$queryString = "SELECT tid, session.session_id, user, problem, time, method, message, `group` from session JOIN step ON session.session_id = step.session_id where method != 'client-message' AND mode = 'STUDENT' AND user = '202gold' AND problem = '115' ORDER BY user asc, problem asc, tid asc;";
 
 			return $queryString;
 		}
 
 		function parseMessages($result){
 			$resetVariables = true;
-			$sessionTime; $outOfFocusTime; $wastedTime;
+			$sessionTime; $outOfFocusTime; $timeWasted	;
 			$oldRow; $method; $oldMessage; $newMessage;
 			$row; $oldSession; $newSession;
-			$upObject; $currentNode;//up stands for user-problem
+			$upObject; $currentNode = null;//up stands for user-problem
 			$problemReOpen;
 			$objectArray = array();
 			$propertyStartTime;
@@ -57,7 +56,7 @@
 			$nodeUpdate; $timeSkip;
 			while($row = $result->fetch_assoc()){
 				if($resetVariables){
-					$sessionTime = 0; $outOfFocusTime = 0; $wastedTime=0;
+					$sessionTime = 0; $outOfFocusTime = 0; $timeWasted=0;
 					$problemReOpen = 1;
 					$oldRow = $row;
 					$upObject = new UserProblemObject ();
@@ -77,7 +76,7 @@
 				$newMessage = json_decode($row['message'], true);
 				$oldMessage = json_decode($oldRow['message'], true);
 				$oldSession = $oldRow['session_id'];
-				$newSession = $row['session_id'];
+				$newSession = $row['session_id'];	
 				if($oldSession != $newSession){
 					//this means either the problem was opened again or their is a new user problem combination.
 					if(($oldRow['user'] == $row['user']) && ($oldRow['problem'] == $row['problem'])){
@@ -90,11 +89,6 @@
 						$resetVariables = true;
 						$timeSkip = true;
 						//array_push($objectArray, $upObject);
-						echo " 22222222222222222222ab hua session reset<br/>";
-						print_r($oldRow);
-						echo "</br>";
-						print_r($row);
-						echo "</br>";
 					}
 				}
 
@@ -102,10 +96,8 @@
 				if($stepTime > $this->al->getActionTime() && $method != "window-focus"){
 					$timeWasted += $stepTime;
 				}
-				print_r($row);
 				if(!$timeSkip)
 					$sessionTime += $stepTime;
-				echo "<br/>".$sessionTime." added time ".$stepTime." sachin ".$timeSkip."<br/>";
 				
 				if($method === "ui-action"){
 					$type = $newMessage['type'];
@@ -115,7 +107,7 @@
 						if($name === 'create-node'){
 							if(!isset($currentNode)){
 								$currentNode = new Node();
-							} else if(count($currentNode->properties) > 0){
+							} else if($currentNode != null && count($currentNode->properties) > 0){
 								array_push($upObject->nodes, $currentNode);
 								$currentNode = new Node();
 							}
@@ -129,30 +121,50 @@
 						}
 						$propertyStartTime = $newMessage['time'];
 					} else if($type === "close-dialog-box"){
-						if(isset($currentProerty)){
-							array_push($currentNode->properties, $currentProperty);
-						}
-						$index = -1; 
-						if($currentNode->name != null){
-							$index = $upObject->getIndex($currentNode->name);
-						}
-						if($index < 0){
-							array_push($upObject->nodes, $currentNode);
+						if($currentNode != null){
+							if(isset($currentProerty)){
+								array_push($currentNode->properties, $currentProperty);
+							}
+							$index = -1;
+							if($currentNode->name != null){
+								$index = $upObject->getIndex($currentNode->name);
+							}
+							if($index < 0){
+								array_push($upObject->nodes, $currentNode);
+							} else {
+								$upObject->nodes[$index] = $currentNode;
+							}
+							$currentNode = null;
 						} else {
-							$upObject->nodes[$index] = $currentNode;
+							$index = $upObject->getIndex($newMessage['nodeID']);
+							if($index >= 0){
+								continue;
+							}
 						}
-						$currentNode = null;
 					} else if($type === "node-delete"){
 						$deletedNode = $upObject->getNodeFromID($newMessage['nodeID']);
+						if($deletedNode == null){
+							//node to be deleted is not found for some log missing or something. So creating a node for that and information cant be found.
+							$deletedNode = new Node();
+							$deletedNode->id = $newMessage['nodeID'];
+							$deletedNode->openTimes = 1;
+							array_push($upObject->nodes, $deletedNode);
+						}
 						$deletedNode->nodeExist = false;
-						$index = $upObject->getIndex($newMessage['node']);
+						$index = $upObject->getIndex($newMessage['nodeID']);
 						$upObject->nodes[$index] = $deletedNode;
-					} else if($type === "open-dialog-box"){
+					} else if($type === "open-dialog-box"){ 
 						if(array_key_exists('node', $newMessage)){
 							//node reopened
 							$currentNode = $upObject->getNodeFromName($newMessage['node']);
-							if(count($currentNode->properties) > 1){
+							if($currentNode != null && count($currentNode->properties) > 1){
 								$currentNode->openTimes = $currentNode->openTimes+1;
+							} else if($currentNode == null){
+								// this is for the case when the node has already been given to the student. 
+								$currentNode = new Node();
+								$currentNode->id = $newMessage['nodeID'];
+								$currentNode->openTimes = 1;
+								$currentNode->nodeExist = true;
 							}
 							//otherwise auto created node with the property of description was created.
 						} else {
@@ -171,30 +183,73 @@
 					if($type === "solution-check"){
 						$autoCreated = false;
 						$newNode;
+						$pushNodeBack = false; // in case of some discrepency in log order the solution check message is sent after the node has been closed.
 						if($currentProperty == null){
 							$currentProperty = new Property();
 						}
+
 						$currentProperty->name = $newMessage['property'];
-						if($newMessage['property'] === "description"){
-							if($currentNode != null && count($currentNode->properties) == 0){
+						$nodeID = $newMessage['nodeID'];
+
+						if($currentNode == null){
+							$newNode = $upObject->getNodeFromID($nodeID);
+							if($newMessage['property'] != "description" && $newNode == null){
+								//for some reason node was not found and no node was opened. so we will go get the node
+								$newNode = new Node();
+								$newNode->name = $newMessage['node'];
+								$newNode->id = $nodeID;
+								$newNode->openTimes = 1;
+								$newNode->nodeExist = true;
+								$pushNodeBack = true;
+							} else if($newMessage['property'] === "description"){
+								// this means that current node did not exist.. the description for which solution is checked is a new node and for some reason open node log is missing.
+								$propertyStartTime = $oldMessage['time'];
+								$currentNode = new Node();
+								$currentNode->id = $nodeID;
 								$currentNode->name = $newMessage['node'];
-								$tempNode = $upObject->getNodeFromName($newMessage['node']);
-								if($tempNode != null){
-									$currentNode = $tempNode;
-									$nodeUpdate = true;
-								}
-							}else{
-								//autocreated node
+								$currentNode->openTimes = 1;
+								$currentNode->nodeExist = true;
+							} else if($newNode != null){
+								$pushNodeBack = true;
+							}
+						} else if($currentNode->id != $newMessage['nodeID']){
+							// the case when the property check does not belong to the currentNode
+							if($newMessage['property'] === "description"){
+								// then the node is mostly autocreated
 								$newNode = new Node();
 								$newNode->openTimes = 1;
 								$newNode->nodeExist = true;
 								$newNode->name = $newMessage['node'];
 								$newNode->id = $newMessage['nodeID'];
 								$autoCreated = true;
-							} 
-
+							} else {
+								$newNode = $upObject->getNodeFromID($nodeID);
+								if($newNode == null){
+									//for some reason node was not found and no node was opened. so we will go get the node
+									$newNode = new Node();
+									$newNode->name = $newMessage['node'];
+									$newNode->id = $nodeID;
+									$newNode->openTimes = 1;
+									$newNode->nodeExist = true;
+								}
+								$pushNodeBack = true;
+							}
+						} else {
+							//normal case
+							$currentNode->name = $newMessage['node'];
+							$tempNode = $upObject->getNodeFromID($nodeID);
+							if($tempNode != null){
+								$currentNode = $tempNode;
+								$nodeUpdate = true;
+							}
 						}
-						$checkResult = $newMessage['checkResult'];
+
+						//a hack for earlier messages when checkResult was missing for testing. This has been fixed in JS and it will never go to the else case.
+						if(array_key_exists('checkResult', $newMessage))
+							$checkResult = $newMessage['checkResult'];
+						else
+							$checkResult = "CORRECT";
+						
 						array_push($currentProperty->status, $checkResult);						
 						$totalChecks = $totalChecks + 1;
 
@@ -202,7 +257,7 @@
 							$currentProperty->time = $newMessage['time']-$propertyStartTime;
 							$propertyStartTime = $newMessage['time'];
 							$currentProperty->correctValue = $newMessage['value'];
-							if(!$autoCreated){
+							if(!$autoCreated && !$pushNodeBack){
 								array_push($currentNode->properties, $currentProperty);
 								$currentProperty = null;
 							}
@@ -218,7 +273,7 @@
 								$currentProperty = null;
 							}
 						}
-						if($autoCreated){
+						if($autoCreated || $pushNodeBack){
 							array_push($newNode->properties, $currentProperty);
 							array_push($upObject->nodes, $newNode);
 							$newNode = null;
@@ -241,18 +296,14 @@
 						$errorRatio = $incorrectChecks/$totalChecks;
 					}
 
-					echo "</br> in reset ".$sessionTime;
-					$upObject->wastedTime = $wastedTime;
-					$upObject->totalTime = $sessionTime;
-					$upObject->outOfFocusTime = $outOfFocusTime;
+					$upObject->wastedTime = $timeWasted/60;
+					$upObject->totalTime = $sessionTime/60;
+					$upObject->outOfFocusTime = $outOfFocusTime/60;
 					$upObject->openTimes = $problemReOpen;
 					$upObject->incorrectChecks = $incorrectChecks;
 					$upObject->totalSolutionChecks = $totalChecks;
 					$upObject->errorRatio = $errorRatio;
 					array_push($objectArray, $upObject);
-
-					print_r($upObject);
-					echo "<br/><br/>";
 				}else{
 					$oldRow = $row;
 					$oldMessage= $newMessage;
@@ -264,9 +315,9 @@
 				$errorRatio = $incorrectChecks/$totalChecks;
 			}
 
-			$upObject->wastedTime = $wastedTime;
-			$upObject->totalTime = $sessionTime;
-			$upObject->outOfFocusTime = $outOfFocusTime;
+			$upObject->wastedTime = $timeWasted/60;
+			$upObject->totalTime = $sessionTime/60;
+			$upObject->outOfFocusTime = $outOfFocusTime/60;
 			$upObject->openTimes = $problemReOpen;
 			$upObject->incorrectChecks = $incorrectChecks;
 			$upObject->totalSolutionChecks = $totalChecks;

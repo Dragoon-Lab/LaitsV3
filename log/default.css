@@ -1,0 +1,19 @@
+fieldset{border:none;}
+a{text-decoration: none; color:black; cursor:pointer; display:inline-block; width:90px;}
+ul li{list-style:none;}
+input[type=radio]{float:left;}
+label{padding-right:2em;}
+table{table-layout: fixed; word-wrap:break-word;}
+th, td{text-align:center; max-width:90px; min-width:90px;}
+/*th{text-align:center; max-width:90px; min-width:90px;}*/
+
+.hidden{display:none;}
+.visible{display:block;}
+.green{background-color:#00FF00;}
+.newLine{display:block;	padding-top: 15px;}
+.border{border: 1px solid #000000; padding:0 10px 0 10px;}
+.yellow{background-color:yellow;}
+.right{float:right;}
+.clear{clear:both;}
+.left{float:left;}
+.wrapper{width:50%;}
