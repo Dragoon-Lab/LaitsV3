@@ -43,6 +43,7 @@ define([
 	
 	console.log("public login main.js");
 	
+	//Gets login details and populates it in appropriate combo boxes
 	var getPublicLoginDetails =  function(userName, problemName) {		
 		return xhr.post("public_login_details_fetcher.php", {
 			data: {
@@ -78,6 +79,7 @@ define([
 		});
 	};
 
+	//This functions just binds the event to the controls
 	ready(function(){
 		on(dom.byId("un2"), "blur",lang.hitch(this, function() {
 			var userName = dom.byId("un2").value;

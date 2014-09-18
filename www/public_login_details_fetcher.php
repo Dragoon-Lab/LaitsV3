@@ -39,10 +39,6 @@ $user = isset($_REQUEST['user'])?mysqli_real_escape_string($mysqli, $_REQUEST['u
 $problemName = isset($_REQUEST['problem'])?mysqli_real_escape_string($mysqli, $_REQUEST['problem']):'';
 
 
-//$user = "vpatade";
-//$problemName = "";
-
-
 $query = "";
 if($user && strlen($problemName) == 0) {
 	$query="SELECT s.problem FROM session s WHERE s.user='$user'";
