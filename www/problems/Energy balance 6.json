@@ -1,0 +1,962 @@
+﻿{
+"task":{
+    "taskName": "eb5",
+    "time": {
+        "start": 0,
+        "end": 2000,
+        "step": 1,
+        "units": "days",
+        "integrationMethod": "Eulers Method"
+    },
+    "properties": {},
+    "image": {},
+    "taskDescription": [
+        "The resting energy expenditure, which is measured when you are doing no exercise and no ingestion of food, includes the energy used for breathing, blood circulation and many other routine bodily functions.  The bigger the body, the more energy these bodily functions require.  However, young bodies burn more energy per pound than old bodies.  The Mifflin equation, shown below, is the most accurate estimator known so far:",
+        "",
+        "REE = 4.5*weight + 15.9*height - 5*age + gender REE",
+        "",
+        "where:",
+        "-- REE is resting energy expenditure",
+        "-- gender REE is 5 for men and -161 for women",
+        "-- weight is in pounds",
+        "-- height is in inches",
+        "-- age is in years",
+        "",
+        "Please modify the node for \"resting energy expenditure\" to implement this equation.  Assume Joe is a 20 year old, 65 inch tall male.",
+        "",
+        "",
+        "",
+        "",
+        ""
+    ],
+    "givenModelNodes": [
+        {
+            "ID": "id1",
+            "inputs": [
+                {
+                    "ID": "id2",
+                    "label": ""
+                }
+            ],
+            "position": {
+                "x": 571,
+                "y": 311
+            },
+            "attemptCount": {
+                "description": 0,
+                "type": 0,
+                "initial": 0,
+                "units": 0,
+                "equation": 0,
+                "assitanceScore": 0
+            },
+            "status": {},
+            "name": "weight",
+            "type": "accumulator",
+            "initial": 150,
+            "units": "lbs",
+            "equation": "id2",
+            "description": "weight per day"
+        },
+        {
+            "ID": "id2",
+            "inputs": [
+                {
+                    "ID": "id3",
+                    "label": ""
+                },
+                {
+                    "ID": "id4",
+                    "label": "/"
+                }
+            ],
+            "position": {
+                "x": 488,
+                "y": 225
+            },
+            "attemptCount": {
+                "description": 0,
+                "type": 0,
+                "initial": 0,
+                "units": 0,
+                "equation": 0,
+                "assitanceScore": 0
+            },
+            "status": {},
+            "name": "weight change",
+            "description": "change in weight per day",
+            "type": "function",
+            "units": "lbs",
+            "equation": "id3/id4"
+        },
+        {
+            "ID": "id3",
+            "inputs": [
+                {
+                    "ID": "id5",
+                    "label": ""
+                },
+                {
+                    "ID": "id6",
+                    "label": "-"
+                }
+            ],
+            "position": {
+                "x": 597,
+                "y": 322
+            },
+            "attemptCount": {
+                "description": 0,
+                "type": 0,
+                "initial": 0,
+                "units": 0,
+                "equation": 0,
+                "assitanceScore": 0
+            },
+            "status": {},
+            "name": "energy balance",
+            "description": "energy gained or lost per day",
+            "type": "function",
+            "units": "calories/lb",
+            "equation": "id5-id6"
+        },
+        {
+            "ID": "id4",
+            "inputs": [],
+            "position": {
+                "x": 612.7451782226562,
+                "y": 130.7451629638672
+            },
+            "attemptCount": {
+                "description": 0,
+                "type": 0,
+                "initial": 0,
+                "units": 0,
+                "equation": 0,
+                "assitanceScore": 0
+            },
+            "status": {},
+            "name": "calories per pound",
+            "description": "calories stored in one pound",
+            "type": "parameter",
+            "parentNode": false,
+            "initial": 3500,
+            "units": "calories/lb"
+        },
+        {
+            "ID": "id5",
+            "inputs": [],
+            "position": {
+                "x": 515.7451782226562,
+                "y": 30.745166778564453
+            },
+            "attemptCount": {
+                "description": 0,
+                "type": 0,
+                "initial": 0,
+                "units": 0,
+                "equation": 0,
+                "assitanceScore": 0
+            },
+            "status": {},
+            "name": "energy ingested",
+            "description": "energy food eaten that day",
+            "type": "parameter",
+            "parentNode": false,
+            "initial": 1989,
+            "units": "calories"
+        },
+        {
+            "ID": "id6",
+            "inputs": [
+                {
+                    "ID": "id7",
+                    "label": ""
+                },
+                {
+                    "ID": "id8",
+                    "label": ""
+                },
+                {
+                    "ID": "id9",
+                    "label": ""
+                }
+            ],
+            "position": {
+                "x": 535,
+                "y": 378
+            },
+            "attemptCount": {
+                "description": 0,
+                "type": 0,
+                "initial": 0,
+                "units": 0,
+                "equation": 0,
+                "assitanceScore": 0
+            },
+            "status": {},
+            "name": "energy expended",
+            "description": "energy expended from all sources per day",
+            "type": "function",
+            "units": "calories",
+            "equation": "(id7+id8)+id9"
+        },
+        {
+            "ID": "id7",
+            "inputs": [
+                {
+                    "ID": "id5",
+                    "label": ""
+                },
+                {
+                    "ID": "id14",
+                    "label": ""
+                }
+            ],
+            "position": {
+                "x": 513,
+                "y": 40
+            },
+            "attemptCount": {
+                "description": 0,
+                "type": 0,
+                "initial": 0,
+                "units": 0,
+                "equation": 0,
+                "assitanceScore": 0
+            },
+            "status": {},
+            "name": "digestive activity expenditure",
+            "description": "energy spent digesting daily food",
+            "type": "function",
+            "parentNode": false,
+            "initial": "",
+            "units": "calories",
+            "equation": "id5*id14"
+        },
+        {
+            "ID": "id8",
+            "inputs": [
+                {
+                    "ID": "id9",
+                    "label": ""
+                },
+                {
+                    "ID": "id10",
+                    "label": ""
+                }
+            ],
+            "position": {
+                "x": 593,
+                "y": 273
+            },
+            "attemptCount": {
+                "description": 0,
+                "type": 0,
+                "initial": 0,
+                "units": 0,
+                "equation": 0,
+                "assitanceScore": 0
+            },
+            "status": {},
+            "name": "physical activity expenditure",
+            "description": "energy burned by exercise each day",
+            "type": "function",
+            "units": "calories",
+            "equation": "id9*id10"
+        },
+        {
+            "ID": "id9",
+            "inputs": [
+                {
+                    "ID": "id15",
+                    "label": ""
+                },
+                {
+                    "ID": "id16",
+                    "label": ""
+                },
+                {
+                    "ID": "id17",
+                    "label": "-"
+                },
+                {
+                    "ID": "id18",
+                    "label": ""
+                }
+            ],
+            "position": {
+                "x": 622,
+                "y": 594
+            },
+            "attemptCount": {
+                "description": 0,
+                "type": 0,
+                "initial": 0,
+                "units": 0,
+                "equation": 0,
+                "assitanceScore": 0
+            },
+            "status": {
+                "equation": {
+                    "disabled": false
+                }
+            },
+            "name": "resting energy expenditure",
+            "description": "energy for basic bodily functions",
+            "type": "function",
+            "units": "calories",
+            "equation": "((id15+id16)-id17)+id18"
+        },
+        {
+            "ID": "id10",
+            "inputs": [],
+            "position": {
+                "x": 361.74517822265625,
+                "y": 590.7451782226562
+            },
+            "attemptCount": {
+                "description": 0,
+                "type": 0,
+                "initial": 0,
+                "units": 0,
+                "equation": 0,
+                "assitanceScore": 0
+            },
+            "status": {},
+            "name": "physical activity level",
+            "description": "how much exercise per day",
+            "type": "parameter",
+            "parentNode": false,
+            "initial": 0.2,
+            "units": "calories/lb"
+        },
+        {
+            "ID": "id14",
+            "inputs": [],
+            "position": {
+                "x": 591.7451782226562,
+                "y": 368.74517822265625
+            },
+            "attemptCount": {
+                "description": 0,
+                "type": 0,
+                "initial": 0,
+                "units": 0,
+                "equation": 0,
+                "assitanceScore": 0
+            },
+            "status": {},
+            "name": "digestive activity factor",
+            "description": "how much energy is needed per calorie ingested",
+            "type": "parameter",
+            "parentNode": false,
+            "initial": 0.1
+        },
+        {
+            "ID": "id15",
+            "inputs": [
+                {
+                    "ID": "id1",
+                    "label": ""
+                },
+                {
+                    "ID": "id19",
+                    "label": ""
+                }
+            ],
+            "position": {
+                "x": 525,
+                "y": 588
+            },
+            "attemptCount": {
+                "description": 0,
+                "type": 0,
+                "initial": 0,
+                "units": 0,
+                "equation": 0,
+                "assitanceScore": 0
+            },
+            "status": {},
+            "name": "weight REE",
+            "description": "contribution to REE from weight",
+            "type": "function",
+            "units": "calories",
+            "equation": "id1*id19"
+        },
+        {
+            "ID": "id16",
+            "inputs": [
+                {
+                    "ID": "id20",
+                    "label": ""
+                },
+                {
+                    "ID": "id21",
+                    "label": ""
+                }
+            ],
+            "position": {
+                "x": 532,
+                "y": 600
+            },
+            "attemptCount": {
+                "description": 0,
+                "type": 0,
+                "initial": 0,
+                "units": 0,
+                "equation": 0,
+                "assitanceScore": 0
+            },
+            "status": {},
+            "name": "height REE",
+            "description": "heights contribution to REE",
+            "type": "function",
+            "units": "calories",
+            "equation": "id20*id21"
+        },
+        {
+            "ID": "id17",
+            "inputs": [
+                {
+                    "ID": "id22",
+                    "label": ""
+                },
+                {
+                    "ID": "id23",
+                    "label": ""
+                }
+            ],
+            "position": {
+                "x": 554,
+                "y": 361
+            },
+            "attemptCount": {
+                "description": 0,
+                "type": 0,
+                "initial": 0,
+                "units": 0,
+                "equation": 0,
+                "assitanceScore": 0
+            },
+            "status": {},
+            "name": "age REE",
+            "description": "age's contribution to REE",
+            "type": "function",
+            "units": "calories",
+            "equation": "id22*id23"
+        },
+        {
+            "ID": "id18",
+            "inputs": [],
+            "position": {
+                "x": 343.74517822265625,
+                "y": 785.7451782226562
+            },
+            "attemptCount": {
+                "description": 0,
+                "type": 0,
+                "initial": 0,
+                "units": 0,
+                "equation": 0,
+                "assitanceScore": 0
+            },
+            "status": {},
+            "name": "gender REE",
+            "description": "a constant in the Mifflin eqn",
+            "type": "parameter",
+            "parentNode": false,
+            "initial": 5,
+            "units": "calories"
+        },
+        {
+            "ID": "id19",
+            "inputs": [],
+            "position": {
+                "x": 565.7451782226562,
+                "y": 326.74517822265625
+            },
+            "attemptCount": {
+                "description": 0,
+                "type": 0,
+                "initial": 0,
+                "units": 0,
+                "equation": 0,
+                "assitanceScore": 0
+            },
+            "status": {},
+            "name": "weight REE multiplier",
+            "description": "from Mifflin equation",
+            "type": "parameter",
+            "parentNode": false,
+            "initial": 4.5,
+            "units": "calories/lb"
+        },
+        {
+            "ID": "id20",
+            "inputs": [],
+            "position": {
+                "x": 468.74517822265625,
+                "y": 515.7451782226562
+            },
+            "attemptCount": {
+                "description": 0,
+                "type": 0,
+                "initial": 0,
+                "units": 0,
+                "equation": 0,
+                "assitanceScore": 0
+            },
+            "status": {},
+            "name": "height",
+            "description": "Joe's height",
+            "type": "parameter",
+            "parentNode": false,
+            "initial": 65,
+            "units": "inches"
+        },
+        {
+            "ID": "id21",
+            "inputs": [],
+            "position": {
+                "x": 587.7451782226562,
+                "y": 250.7451629638672
+            },
+            "attemptCount": {
+                "description": 0,
+                "type": 0,
+                "initial": 0,
+                "units": 0,
+                "equation": 0,
+                "assitanceScore": 0
+            },
+            "status": {},
+            "name": "height REE multiplier",
+            "type": "parameter",
+            "parentNode": false,
+            "initial": 15.9,
+            "units": "calories/inch",
+            "description": "also from Mifflin equation"
+        },
+        {
+            "ID": "id22",
+            "inputs": [],
+            "position": {
+                "x": 575.7451782226562,
+                "y": 480.74517822265625
+            },
+            "attemptCount": {
+                "description": 0,
+                "type": 0,
+                "initial": 0,
+                "units": 0,
+                "equation": 0,
+                "assitanceScore": 0
+            },
+            "status": {},
+            "name": "age",
+            "description": "Joes age",
+            "type": "parameter",
+            "parentNode": false,
+            "initial": 20,
+            "units": "yrs"
+        },
+        {
+            "ID": "id23",
+            "inputs": [],
+            "position": {
+                "x": 593.7451782226562,
+                "y": 240.7451629638672
+            },
+            "attemptCount": {
+                "description": 0,
+                "type": 0,
+                "initial": 0,
+                "units": 0,
+                "equation": 0,
+                "assitanceScore": 0
+            },
+            "status": {},
+            "name": "age REE multiplier",
+            "description": "a factor in the Mifflin eqn",
+            "type": "parameter",
+            "parentNode": false,
+            "initial": 5,
+            "units": "calories/yr"
+        }
+    ],
+    "studentModelNodes": [
+    {
+        "ID": "id24",
+        "inputs": [
+            {
+                "ID": "id26",
+                "label": ""
+            },
+            {
+                "ID": "id25",
+                "label": "-"
+            }
+        ],
+        "position": {
+            "x": 700,
+            "y": 300
+        },
+        "status": {
+            "description": {
+                "status": "correct",
+                "disabled": true
+            },
+            "type": {
+                "disabled": true,
+                "status": "correct"
+            },
+            "units": {
+                "disabled": true,
+                "status": "correct"
+            },
+            "equation": {
+                "disabled": false,
+                "status": "correct"
+            }
+        },
+        "descriptionID": "id3",
+        "type": "function",
+        "equation": "id26-id25",
+        "units": "calories"
+    },
+    {
+        "ID": "id25",
+        "inputs": [
+            {
+                "ID": "id30",
+                "label": ""
+            },
+            {
+                "ID": "id31",
+                "label": ""
+            },
+            {
+                "ID": "id32",
+                "label": ""
+            }
+        ],
+        "position": {
+            "x": 690,
+            "y": 459
+        },
+        "status": {
+            "description": {
+                "status": "correct",
+                "disabled": true
+            },
+            "type": {
+                "disabled": true,
+                "status": "correct"
+            },
+            "units": {
+                "disabled": true,
+                "status": "correct"
+            },
+            "equation": {
+                "disabled": true,
+                "status": "correct"
+            }
+        },
+        "descriptionID": "id6",
+        "type": "function",
+        "initial": "",
+        "units": "calories",
+        "equation": "(id30+id31)+id32"
+    },
+    {
+        "ID": "id26",
+        "inputs": [],
+        "position": {
+            "x": 905.7451782226562,
+            "y": 369.74517822265625
+        },
+        "status": {
+            "description": {
+                "status": "correct",
+                "disabled": true
+            },
+            "type": {
+                "disabled": true,
+                "status": "correct"
+            },
+            "initial": {
+                "disabled": true,
+                "status": "correct"
+            },
+            "units": {
+                "disabled": true,
+                "status": "correct"
+            }
+        },
+        "descriptionID": "id5",
+        "type": "parameter",
+        "initial": 1989,
+        "units": "calories/lbs"
+    },
+    {
+        "ID": "id27",
+        "inputs": [],
+        "position": {
+            "x": 930.7451782226562,
+            "y": 194.7451629638672
+        },
+        "status": {
+            "description": {
+                "status": "correct",
+                "disabled": true
+            },
+            "type": {
+                "disabled": true,
+                "status": "correct"
+            },
+            "initial": {
+                "disabled": true,
+                "status": "correct"
+            },
+            "units": {
+                "disabled": true,
+                "status": "correct"
+            }
+        },
+        "descriptionID": "id4",
+        "type": "parameter",
+        "initial": 3500,
+        "units": "calories/lbs"
+    },
+    {
+        "ID": "id28",
+        "inputs": [
+            {
+                "ID": "id29",
+                "label": ""
+            }
+        ],
+        "position": {
+            "x": 700,
+            "y": 50
+        },
+        "status": {
+            "description": {
+                "status": "correct",
+                "disabled": true
+            },
+            "type": {
+                "disabled": true,
+                "status": "correct"
+            },
+            "initial": {
+                "disabled": true,
+                "status": "correct"
+            },
+            "units": {
+                "disabled": false,
+                "status": "correct"
+            },
+            "equation": {
+                "disabled": true,
+                "status": "correct"
+            }
+        },
+        "descriptionID": "id1",
+        "type": "accumulator",
+        "units": "lbs",
+        "equation": "id29",
+        "initial": 150
+    },
+    {
+        "ID": "id29",
+        "inputs": [
+            {
+                "ID": "id24",
+                "label": ""
+            },
+            {
+                "ID": "id27",
+                "label": ""
+            }
+        ],
+        "position": {
+            "x": 700,
+            "y": 166
+        },
+        "status": {
+            "description": {
+                "status": "correct",
+                "disabled": true
+            },
+            "type": {
+                "disabled": true,
+                "status": "correct"
+            },
+            "units": {
+                "disabled": true,
+                "status": "correct"
+            },
+            "equation": {
+                "disabled": false,
+                "status": "correct"
+            }
+        },
+        "descriptionID": "id2",
+        "type": "function",
+        "equation": "id24*id27",
+        "units": "lbs"
+    },
+    {
+        "ID": "id30",
+        "inputs": [],
+        "position": {
+            "x": 681.7451782226562,
+            "y": 604.7451782226562
+        },
+        "status": {
+            "description": {
+                "status": "correct",
+                "disabled": true
+            },
+            "type": {
+                "disabled": false,
+                "status": "incorrect"
+            }
+        },
+        "descriptionID": "id9",
+        "type": "parameter"
+    },
+    {
+        "ID": "id31",
+        "inputs": [
+            {
+                "ID": "id34",
+                "label": ""
+            },
+            {
+                "ID": "id26",
+                "label": ""
+            }
+        ],
+        "position": {
+            "x": 488,
+            "y": 466
+        },
+        "status": {
+            "description": {
+                "status": "correct",
+                "disabled": true
+            },
+            "type": {
+                "disabled": true,
+                "status": "correct"
+            },
+            "units": {
+                "disabled": true,
+                "status": "correct"
+            },
+            "equation": {
+                "disabled": true,
+                "status": "correct"
+            }
+        },
+        "descriptionID": "id7",
+        "type": "function",
+        "equation": "id34+id26",
+        "units": "calories"
+    },
+    {
+        "ID": "id32",
+        "inputs": [
+            {
+                "ID": "id30",
+                "label": ""
+            },
+            {
+                "ID": "id33",
+                "label": ""
+            }
+        ],
+        "position": {
+            "x": 896,
+            "y": 500
+        },
+        "status": {
+            "description": {
+                "status": "correct",
+                "disabled": true
+            },
+            "type": {
+                "disabled": true,
+                "status": "correct"
+            },
+            "units": {
+                "disabled": true,
+                "status": "correct"
+            }
+        },
+        "descriptionID": "id8",
+        "type": "function",
+        "equation": "id30*id33",
+        "units": "calories"
+    },
+    {
+        "ID": "id33",
+        "inputs": [],
+        "position": {
+            "x": 1058.7451171875,
+            "y": 549.7451782226562
+        },
+        "status": {
+            "description": {
+                "status": "correct",
+                "disabled": true
+            },
+            "type": {
+                "disabled": true,
+                "status": "correct"
+            },
+            "initial": {
+                "disabled": true,
+                "status": "correct"
+            },
+            "units": {
+                "disabled": true,
+                "status": "correct"
+            }
+        },
+        "descriptionID": "id10",
+        "type": "parameter",
+        "initial": 0.2,
+        "units": "calories/lb"
+    },
+    {
+        "ID": "id34",
+        "inputs": [],
+        "position": {
+            "x": 497,
+            "y": 237
+        },
+        "status": {
+            "description": {
+                "status": "correct",
+                "disabled": true
+            },
+            "type": {
+                "disabled": true,
+                "status": "correct"
+            },
+            "initial": {
+                "disabled": true,
+                "status": "correct"
+            }
+        },
+        "descriptionID": "id14",
+        "type": "parameter",
+        "initial": 0.1
+    }
+]
+}
+}
