@@ -131,7 +131,7 @@
         ],
         "studentModelNodes": [
     {
-        "ID": "id3",
+        "ID": "id5",
         "inputs": [],
         "position": {
             "x": 630,
@@ -151,10 +151,10 @@
         "type": "parameter"
     },
     {
-        "ID": "id4",
+        "ID": "id6",
         "inputs": [
             {
-                "ID": "id3",
+                "ID": "id5",
                 "label": ""
             }
         ],
@@ -186,7 +186,7 @@
         "descriptionID": "id1",
         "type": "accumulator",
         "initial": 345000,
-        "equation": "id3",
+        "equation": "id5",
 		"units": "calories"
     }
 ]
