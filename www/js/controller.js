@@ -1049,9 +1049,10 @@ define([
 						w.set("value", directive.value, false);
                         if(w.id == 'typeId'){
                             this.updateType(directive.value);
-                        }
-                        if(w.id == 'initialValue'){
+                        } else if(w.id == 'initialValue'){
                             this._model.active.setInitial(this.currentID, directive.value);
+                        } else if(w.id == 'equationBox'){
+                        	this.equationSet(directive.value);
                         }
 
 						// Each control has its own function to update the
