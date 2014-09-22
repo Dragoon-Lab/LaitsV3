@@ -296,7 +296,24 @@ define([
 				});
 			});
 
-			/* 
+            /*
+             Add link to intro video
+             */
+            var video = dom.byId("menuIntroText");
+            on(video, "click", function(){
+                controllerObject.logging.log('ui-action', {
+                    type: "menu-choice",
+                    name: "introduction"
+                });
+                // "newwindow": the pop-out window name, not required, could be empty
+                // "height" and "width": pop-out window size
+                // Other properties could be changed as the value of yes or no
+                window.open("http://dragoon.asu.edu","newwindow",
+                    "toolbar =no, menubar=no, scrollbars=no, resizable=no, location=no, status=no"
+                );
+            });
+
+            /*
 			 Add link to intro video
 			 */
 			var video = dom.byId("menuIntroVideo");

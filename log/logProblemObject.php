@@ -29,7 +29,7 @@
 			$allNodes = $this->nodes;
 			$i = 0;
 			foreach($allNodes as $node){
-				if($nodeName == $node->name){
+				if($nodeName == $node->name || $nodeName == $node->id){
 					return $i;
 				}
 				$i += 1;

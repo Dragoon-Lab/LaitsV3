@@ -334,7 +334,7 @@ define([
 			var nodeName = graphObjects.getNodeName(this._model.active,nodeID);
 			if(dom.byId(nodeID + 'Label')){
 				domConstruct.place(nodeName, nodeID + 'Label', "replace");
-			}else{
+			}else if(nodeName){
 				domConstruct.place(nodeName, nodeID);
 			}
 		},
@@ -788,6 +788,27 @@ define([
 						directives.push({id: 'message', attribute: 'append', value: "You cannot use '" + variable + "' in the equation. Function nodes cannot reference themselves."});
 						this.logging.log("solution-step", {
 							type: "self-referencing-function",
+							node: this._model.active.getName(this.currentID),
+							nodeID: this.currentID,
+							property: "equation",
+							value: inputEquation,
+							correctResult: this._model.given.getEquation(this.currentID),
+							checkResult: "INCORRECT"
+						});
+					}
+
+					//check if accumulator has a reference to itself as per the Trello card https://trello.com/c/0aqmwqqG
+					if(givenID && this._model.active.getType(this.currentID) === "accumulator" && 
+						givenID === mapID.call(this._model.active, this.currentID)){
+						cancelUpdate = true;
+						directives.push({id: 'equation', attribute: 'status', value: 'incorrect'});
+						directives.push({
+							id: 'crisisAlert',
+							attribute: 'open',
+							value: "The old value of the accumulator is already included in the expression, so you don't have to mention it in the expression.  Only put an expression for the change in the accumulators value.", 
+						});
+						this.logging.log("solution-step", {
+							type: "self-referencing-accumulator",
 							node: this._model.active.getName(this.currentID),
 							nodeID: this.currentID,
 							property: "equation",
