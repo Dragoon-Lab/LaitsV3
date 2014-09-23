@@ -27,7 +27,7 @@ define([
 	"dojo/_base/array", 
 	'dojo/_base/declare', 
 	"dojo/_base/lang",
-	'dojo/dom-style', 
+	'dojo/dom-style',
 	'dojo/ready',
 	"dojo/store/Memory",
 	'dijit/registry',
@@ -183,7 +183,9 @@ define([
 			description: "setDescription",
 			kind: "selectKind",
 			units: "setUnits",
-			root: "markRootNode"
+			root: "markRootNode",
+			student: "setStudentNode",
+			modelType: "selectModel"
 		},
 		authorControls: function(){
 			console.log("++++++++ Setting AUTHOR format in Node Editor.");
@@ -195,6 +197,7 @@ define([
             style.set('setRootNode', 'display', 'block')
 			style.set('inputControlAuthor', 'display', 'block');
 			style.set('inputControlStudent', 'display', 'none');
+			style.set('studentModelControl', 'display', 'inline-block');
 		},
 		initAuthorHandles: function(){
 			var name = registry.byId(this.controlMap.name);
@@ -208,6 +211,14 @@ define([
 			var root = registry.byId(this.controlMap.root);
 			root.on('Change', lang.hitch(this, function(checked){
 					return this.disableHandlers || this.handleRoot(checked);
+			}));
+			var setStudentNode = registry.byId(this.controlMap.student);
+			setStudentNode.on('Change', lang.hitch(this, function(checked){
+					return this.disableHandlers || this.handleSetStudentNode(checked);
+			}));
+			var selectModel = registry.byId(this.controlMap.modelType);
+			selectModel.on('Change', lang.hitch(this, function(){
+					return this.disableHandlers || this.handleSelectModel.apply(this, arguments);
 			}));
 		},
 		/*
@@ -278,24 +289,86 @@ define([
             this._model.given.setParent(this.currentID, root);
         },
 
-		handleType: function(type){
-			// Summary: Sets the type of the current node.
-			console.log("****** AUTHOR has chosen type ", type, this);
-			this.applyDirectives(this.authorPM.process(this.currentID,'type', type));
-			if(type == 'defaultSelect' || type == ''){
-				console.log("undo type selection");
-				this.logging.clientLog("error", {
-					message: "no type selected for author node type",
-					functionTag: "handleType"
-				});
-				type = "";
+		handleSetStudentNode: function(checked){
+			console.log("********************* in handleSelecetModel", checked);
+			if(checked){
+				style.set('selectModelControl', 'display', 'block');
+				var studentNode = this._model.student.getNodeIDFor(this.currentID);
+				if(studentNode == null){
+					this.addStudentNode(this.currentID);
+				}								
 			}
-			this.updateType(type);
+			else{
+				style.set('selectModelControl', 'display', 'none');
+				this.removeStudentNode(this.currentID);
+			}
+		},
+		
+		handleSelectModel: function(modelType){		
+			if(modelType === "correct"){
+				this._model.active = this._model.given;
+				this.enableDisableFields(modelType);
+				this.populateNodeEditorFields(this.currentID);
+			}
+			else if(modelType === "given"){
+				this._model.active = this._model.student;
+				this.enableDisableFields(modelType);
+				this.getStudentNodeValues(this.currentID);				
+			}			
+		},
+		handleType: function(type){
+		 if(this.getModelType() == "correct"){
+				// Summary: Sets the type of the current node.
+				console.log("****** AUTHOR has chosen type ", type, this);
+				this.applyDirectives(this.authorPM.process(this.currentID,'type', type));
+				if(type == 'defaultSelect' || type == ''){
+					console.log("undo type selection");
+					this.logging.clientLog("error", {
+						message: "no type selected for author node type",
+						functionTag: "handleType"
+					});
+					type = "";
+				}
+				this.updateType(type);
+			}
+			else if(this.getModelType() == "given"){
+				var studentNodeID = this._model.student.getNodeIDFor(this.currentID); 
+				this._model.active.setType(studentNodeID, type);
+				if(type == "function"){
+					if(this._model.active.getInitial(studentNodeID) === "number"){
+						var initialNode = registry.byId(this.controlMap.initial);
+						initialNode.set("value", "");
+						this._model.active.setInitial(studentNodeID, "");
+					}
+					registry.byId(this.controlMap.inputs).set("disabled", false);
+					registry.byId(this.controlMap.equation).set("disabled", false);
+					registry.byId(this.controlMap.initial).set("disabled", true);					
+				}
+				if(type == "parameter"){
+					var equationNode = registry.byId(this.controlMap.equation);
+					equationNode.set("value", "");					
+					this._model.active.setEquation(studentNodeID, '');
+					registry.byId(this.controlMap.inputs).set("disabled", true);
+					registry.byId(this.controlMap.equation).set("disabled", true);
+				}				
+				if(type == "accumulator"){					
+					registry.byId(this.controlMap.inputs).set("disabled", false);
+					registry.byId(this.controlMap.equation).set("disabled", false);
+					registry.byId(this.controlMap.equation).set("disabled", false);
+				}
+			}
 		},
 		handleUnits: function(units){
 			console.log("**************** in handleUnits ", units);
 			// Summary: Sets the units of the current node.
-			this._model.active.setUnits(this.currentID, units);
+			var modelType = this.getModelType();
+			if(modelType == "given"){
+				var studentNodeID = this._model.student.getNodeIDFor(this.currentID);
+				this._model.active.setUnits(studentNodeID, units);
+			}
+			else{
+				this._model.active.setUnits(this.currentID, units);
+			}
 			this.applyDirectives(this.authorPM.process(this.currentID, "units", units));
 
 		},
@@ -304,6 +377,7 @@ define([
 		 */
 		handleInitial: function(initial){
 			//IniFlag contains the status and initial value
+			var modelType = this.getModelType();
 			var IniFlag = typechecker.checkInitialValue(this.widgetMap.initial, this.lastInitial);
 			if(IniFlag.status){
 				// If the initial value is not a number or is unchanged from 
@@ -311,7 +385,12 @@ define([
 				var newInitial = IniFlag.value;
 				this.applyDirectives(this.authorPM.process(this.currentID, "initial", newInitial, true));
 				console.log("In AUTHOR mode. Initial value is: " + newInitial);
-				this._model.active.setInitial(this.currentID, newInitial);
+				if(modelType == "given"){
+					var studentNodeID = this._model.student.getNodeIDFor(this.currentID);
+					this._model.active.setInitial(studentNodeID, newInitial);
+				}
+				else
+					this._model.active.setInitial(this.currentID, newInitial);
 			}else if(IniFlag.errorType){
 				this.logging.log('solution-step', {
 					type: IniFlag.errorType,
@@ -337,8 +416,7 @@ define([
 			if(parse){
 				directives = directives.concat(this.authorPM.process(this.currentID, "equation", parse));
 			}
-			this.applyDirectives(directives);
-
+			this.applyDirectives(directives);					
 		},
 
 		initialControlSettings: function(nodeid){
@@ -348,7 +426,7 @@ define([
 			this.applyDirectives([
 				{attribute:"disabled", id:"root", value:true}
 			]);
-
+			
 			var name = this._model.given.getName(nodeid);
 			registry.byId(this.controlMap.name).set('value', name || '', false);
 
@@ -358,7 +436,18 @@ define([
 
             // Initialize root node checkbox
 			registry.byId(this.controlMap.root).set('value', this._model.given.getParent(nodeid));
-
+			
+			// Initialize student node checkbox
+			var givenNode = this._model.given.getNode(nodeid);
+			var studentNodes = this._model.student.getNodes();
+			var checked = false;
+			checked = array.some(studentNodes, function(node){
+				return node.descriptionID === givenNode.ID;
+			}, this);
+			
+			registry.byId(this.controlMap.student).set('value', checked);
+			this.handleSetStudentNode(checked);
+			
 			// populate inputs
 			var inputsWidget = registry.byId(this.controlMap.inputs);
 			var nameWidget = registry.byId(this.controlMap.name);
@@ -453,6 +542,87 @@ define([
 		},
 		updateModelStatus: function(desc){
 			//stub for updateModelStatus
+		},
+		
+		getModelType: function(){
+			return registry.byId(this.controlMap.modelType).value;
+		},
+		
+		addStudentNode: function(nodeid){
+			//Adds the current node from student Model
+			
+			this.removeStudentNode(nodeid);
+			var currentNode = this._model.given.getNode(nodeid);
+			var newNodeID = this._model.student.addNode();
+			//copy correct values into student node
+			this._model.student.setDescriptionID(newNodeID, currentNode.ID);
+			this._model.student.setInitial(newNodeID, currentNode.initial);
+			this._model.student.setUnits(newNodeID, currentNode.units);
+			this._model.student.setEquation(newNodeID, currentNode.equation);
+			this._model.student.setType(newNodeID, currentNode.type);
+			this._model.student.setInputs(currentNode.inputs, newNodeID);
+		},
+		
+		removeStudentNode: function(nodeid){
+			//Removes the current node from student Model
+			var studentNodeID = this._model.student.getNodeIDFor(nodeid);
+			if(studentNodeID){
+				this._model.student.deleteNode(studentNodeID);				
+			}
+			
+		},
+		
+		getStudentNodeValues: function(nodeid){
+			var studentNodeID = this._model.student.getNodeIDFor(nodeid);
+			console.log("studentNode", studentNodeID);			
+			if(studentNodeID){
+				var type = this._model.student.getType(studentNodeID);
+				registry.byId(this.controlMap.type).set('value', type || "defaultSelect");
+				
+				var initial = this._model.student.getInitial(studentNodeID);
+				// Initial value will be undefined if it is not in the model
+				if(initial){
+					registry.byId(this.controlMap.initial).set('value', initial);
+				}
+				
+				var units = this._model.student.getUnits(studentNodeID);
+				registry.byId(this.controlMap.units).set('value', units || "");
+				
+				var equation = this._model.student.getEquation(studentNodeID);
+				if(equation){
+					registry.byId(this.controlMap.equation).set('disabled', false);
+					registry.byId(this.controlMap.equation).set('value', equation || "");
+				}
+			}
+		},		
+		
+		enableDisableFields: function(modelType){
+			//enable disable fields in the node editor based on selected model value
+			if(modelType == "given"){
+				registry.byId(this.controlMap.name).set("disabled",true);
+				registry.byId(this.controlMap.description).set("disabled",true);
+				registry.byId(this.controlMap.name).set("status",'');
+				registry.byId(this.controlMap.description).set("status",'');
+				
+				registry.byId(this.controlMap.kind).set("disabled",true);
+				registry.byId(this.controlMap.root).set("disabled",true);
+			}
+			else if(modelType == "correct"){
+				registry.byId(this.controlMap.name).set("disabled",false);
+				registry.byId(this.controlMap.description).set("disabled",false);
+				registry.byId(this.controlMap.name).set("status","entered");
+				registry.byId(this.controlMap.description).set("status","entered");
+				
+				registry.byId(this.controlMap.kind).set("disabled",false);
+				registry.byId(this.controlMap.root).set("disabled",false);								
+			}
+		},
+/*
+		getStudentNodeIdByName: function(name){
+			array.forEach(this._model.task.studentModelNodes, function(node){
+				if(this._model.student.getNodeIDFor(node.get
+			});
 		}
+		*/
 	});
 });

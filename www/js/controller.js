@@ -264,6 +264,8 @@ define([
 		// Function called when node editor is closed.
 		// This can be used as a hook for saving sessions and logging
 		closeEditor: function(){
+			this._model.active = this._model.given;
+			registry.byId("selectModel").set('value',"correct");
 			console.log("++++++++++ entering closeEditor");
 			// Erase modifications to the control settingse.
 			// Enable all options in select controls.
@@ -583,7 +585,6 @@ define([
 					w.set('status','');
 				}
 			}));
-
 		},
 		plusHandler: function(){
 			console.log("****** plus button");
@@ -739,6 +740,7 @@ define([
 			 */
 			var widget = registry.byId(this.controlMap.equation);
 			var inputEquation = widget.get("value");
+					
 			var parse = null;
 			if (inputEquation == "") {
 				directives.push({id: 'message', attribute: 'append', value: 'There is no equation to check.'});
