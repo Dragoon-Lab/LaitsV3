@@ -228,6 +228,17 @@ define([
 			}
 			return true;
 		},
+        isDivide: function(parse){
+            //Return true if the expression contains division but not multiplication.
+            //Intended to be used in conjunction with isProduct
+            var ops = parse.operators();
+            var allowed = {"/": true, "variable": true};
+            for(var op in ops){
+                if(ops[op] > 0 && !allowed[op])
+                    return false;
+            }
+            return true;
+        },
 		gradient: function(parse, /*boolean*/ monomial, point){
 			// Find the numerical partial derivatives of the expression at
 			// the given point or at a random point, if the point is not supplied.

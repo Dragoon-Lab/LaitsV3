@@ -108,8 +108,11 @@ define([
 				timeStep = equation.initializeTimeStep(model);
 			}catch(e){
 				if(e.name == "graph-cycle"){
-					// Also, need to log this.	Trello card https://trello.com/c/XdK6JqNE
-					this.dialogWidget.set("content", "<div>This model cannot be solved:<br>The function nodes depend on each other in an inconsistant manner.</div>");			
+					this.dialogWidget.set("content", "<div>This model cannot be solved:<br>The function nodes depend on each other in an inconsistant manner.</div>");
+					this._logging.clientLog("warning", {
+						message: "there is a cycle in the model and thus graph cant be shown",
+						functionTag : "initializeSolution"
+					});
 				}
 			}
 			return timeStep;
