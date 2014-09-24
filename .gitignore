@@ -41,3 +41,5 @@ www/math-parser/
 www/php-test.php
 
 www/util/
+
+tests/npm/
