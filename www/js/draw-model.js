@@ -133,8 +133,8 @@ define([
 
 		colorNodeBorder: function(/*Object*/ nodeID, updateNode){
 			var type = this._givenModel.getNode(nodeID).type;
-			var isComplete = this._givenModel.isComplete(nodeID, true)?'solid':'dashed';
 
+			var isComplete = this._givenModel.isComplete(nodeID, true)?'solid':'dashed';
 			var colorMap = {
 				correct: "green",
 				incorrect: "#FF8080",

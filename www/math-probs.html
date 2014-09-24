@@ -39,6 +39,10 @@
                 <td><a href="http://en.wikipedia.org/wiki/Arctan" target="_blank">Arc Tangent</a> of x (x is in radians)</td>
             </tr>
             <tr>
+                <td>atan2(x, y)</td>
+                <td><a href="http://en.wikipedia.org/wiki/Arctan" target="_blank">Arc Tangent</a> of x/y. i.e. the angle between (0, 0) and (x, y) in radians.</td>
+            </tr>
+            <tr>
                 <td>sqrt(x)</td>
                 <td><a href="http://en.wikipedia.org/wiki/Square_root" target="_blank">Square Root</a> of x. Result is NaN (Not a Number) if x is negative</td>
             </tr>
@@ -64,7 +68,7 @@
             </tr>
             <tr>
                 <td>exp(x)</td>
-                <td><a href="http://en.wikipedia.org/wiki/Exponential_function" target="_blank">Exponential</a> of x (x is in radians)</td>
+                <td><a href="http://en.wikipedia.org/wiki/Exponential_function" target="_blank">Exponential</a> of x. ie e^x</td>
             </tr>
             <tr>
                 <td>random(n)</td>
@@ -72,7 +76,7 @@
             </tr>
             <tr>
                 <td>fac(n)</td>
-                <td>n! <a href="http://en.wikipedia.org/wiki/Factorial_function" target="_blank">Factorial</a> of n: “n * (n-1) * (n-2) * … * 2 * 1″)</td>
+                <td>n! <a href="http://en.wikipedia.org/wiki/Factorial_function" target="_blank">Factorial</a> of n: “n * (n-1) * (n-2) * … * 2 * 1″) or n!</td>
             </tr>
             <tr>
                 <td>min(a,b,…)</td>
@@ -91,8 +95,12 @@
                 <td><a href="http://en.wikipedia.org/wiki/Power_function" target="_blank">Power Function</a> Returns “x^y”. It’s just provided since it’s in the Math object from JavaScript</td>
             </tr>
             <tr>
-                <td>atan2(y, x)</td>
-                <td><a href="http://en.wikipedia.org/wiki/Arctan" target="_blank">Arc Tangent</a> of x/y. i.e. the angle between (0, 0) and (x, y) in radians.</td>
+                <td>pulse(x,y)</td>
+                <td><a href="http://en.wikipedia.org/wiki/Pulse_wave" target="_blank">pulse</a> of x , y is equal to 1 between times x and y inclusively.</td>
+            <tr>
+            <tr>
+                <td>pulsetrain(x,y,z)</td>
+                <td><a href="http://en.wikipedia.org/wiki/Pulse_wave" target="_blank">pulse train</a> of x,y,z is equal to one starting at x for a length of y and then equal to zero for a length of z and then repeats.</td>
             </tr>
 
         </table>

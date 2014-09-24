@@ -172,7 +172,7 @@ define([
 						variables[timeStep.xvars[j]] = solution.values[j][i];
 					}
 					array.forEach(timeStep.functions, function(id){
-						variables[id] = timeStep.parse[id].evaluate(variables);
+						variables[id] = timeStep.parse[id].evaluate(variables, solution.times[i]);
 					});
 					array.forEach(plotVariables, function(id, k){
 						if(id){

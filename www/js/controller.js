@@ -318,7 +318,7 @@ define([
 			typechecker.closePops();
 			//this.disableHandlers = false;
 			this.logging.log('ui-action', {
-				type: 'close-dialog-box',
+				type: 'close-dialog-box', 
 				nodeID: this.currentID,
 				node: this._model.active.getName(this.currentID),
 				nodeComplete: this._model.active.isComplete(this.currentID)
@@ -913,7 +913,13 @@ define([
 				this.disableHandlers = false;
 			}));
 			var nodeForumBut = registry.byId("nodeForumButton");
-			var check_desc=this._model.active.getGivenID(id);
+			try{
+				var check_desc=this._model.active.getGivenID(id);
+			}
+			catch(err)
+			{
+				console.log(err);
+			}
 			if(this._forumparams && this._model.given.getDescription(check_desc)){
 				nodeForumBut.set("disabled", false);
 				forum.activateForum(this._model, this.currentID, this._forumparams,this.logging);
