@@ -11,10 +11,11 @@
     "properties": {},
     "image": {},
     "taskDescription": [
-        "Almost all the body's stored energy is stored as tissue, such as fat, muscle, internal organs and skin.  Roughly speaking, a pound of tissue stores 3500 calories.  Create a model that represents stored energy in Joe's body as his weight in pounds.  Assume his body weighs 150 pounds initially.  Use the same assumptions about energy balance as before:",
+        "Almost all the body's stored energy is stored as tissue, such as fat, muscle, internal organs and skin.  Roughly speaking, a pound of tissue stores 3500 calories.  Modify the given model to create a model that represents stored energy in Joe's body as his weight in pounds.  Assume his body weighs 150 pounds initially.  Use the same assumptions about energy balance as before:",
         "* Joe expends 2100 calories per day",
         "* Joe ingests 1989 calories per day",
-        "* Joes' body's energy balance is the energy ingested minus the energy expended."
+        "* Joes' body's energy balance is the energy ingested minus the energy expended.",
+        "Hint: You will need an accumulator, but it will accumulate ______ instead of calories."
     ],
     "givenModelNodes": [
         {

@@ -16,7 +16,7 @@
         "* energy burned by the digestion process, because it takes energy to release the energy in food.  ",
         "* energy required just to run all the other bodily functions -- heartbeat, breathing, and so on.  This is how much energy you burn if you are doing no exercise and ingesting no food.  It is measured while you are lying still, so it is called the \"resting energy expenditure\" or \"resting metabolic rate.\" It is similar to an older measure, \"basal metabolic rate.\"",
         "",
-        "Create a model that shows energy expended per day as the sum of these three types of energy.  Assume:",
+        "Modify the given model to show the energy expended per day as the sum of these three types of energy.  Assume:",
         "* physical activity expenditure is 400 calories",
         "* digestive activity expenditure is 200 calories",
         "* resting energy expenditure is 1400 calories",
