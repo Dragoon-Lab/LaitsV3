@@ -1,6 +1,6 @@
 <?php
-	require "../www/db-login.php";
-	require "../www/error-handler.php";
+	//require "../www/db-login.php";
+	//require "../www/error-handler.php";
 
 	set_time_limit(30000);
 	include "createDashboard_js.php";
@@ -16,8 +16,8 @@
 	!empty($_REQUEST["problem"])?($problem = $_REQUEST["problem"]):$problem = '';
 	(!empty($_REQUEST["dashboard"]) &&($_REQUEST["dashboard"] === 'small'))?($smallDashboard = true):($smallDashboard=false);
 
-	$mysqli = mysqli_connect("localhost",$dbuser, $dbpass, $dbname) or die("Connection not established. Check the user log file");
-	//$mysqli = mysqli_connect("localhost", "root", "qwerty211", "laits_js_dev1") or die("Connection not established. Check the user log file");
+	//$mysqli = mysqli_connect("localhost",$dbuser, $dbpass, $dbname) or die("Connection not established. Check the user log file");
+	$mysqli = mysqli_connect("localhost", "root", "qwerty211", "laits_eno") or die("Connection not established. Check the user log file");
 
 	$db = new Dashboard($mysqli);
 
