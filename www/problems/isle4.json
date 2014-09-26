@@ -18,9 +18,10 @@
             "Assumptions:",
 	    " * The moose population is 20 in the first year (1900).",
 	    " * Births and deaths are the only change in the population. Immigration and emigration do not occur.",
-	    " * The number of moose births each year is 20% of the moose population.",
-	    " * The number of moose deaths each year is the moose death rate times the moose population.",
-	    " * Moose death rate = moose birth rate * (moose population / carrying capacity)",
+        " * The number of moose births each year is the moose birth probability times the moose population",
+        " * The probability of a moose giving birth each year is 20%.",
+	    " * The number of moose deaths each year is the moose death probability times the moose population.",
+	    " * Moose death probability = moose birth probability * (moose population / carrying capacity)",
 	    " * Carrying capacity is 500 (for moose living on Isle Royale). "
         ],
         "givenModelNodes": [
@@ -68,11 +69,11 @@
                     "equation": 0
                 },
                 "status": {},
-                "name": "moose birth rate",
+                "name": "moose birth probability",
                 "type": "parameter",
                 "parentNode": false,
                 "units": "",
-                "description": "The ratio of moose born each year to the moose population",
+                "description": "The probability of a moose giving birth during the year",
                 "initial": 0.2
             },
             {
@@ -122,11 +123,11 @@
                     "equation": 0
                 },
                 "status": {},
-                "name": "moose death rate",
+                "name": "moose death probability",
                 "type": "function",
                 "parentNode": false,
                 "units": "",
-                "description": "The ratio of moose that die each year to the moose population",
+                "description": "The probability of a moose dying during the year",
                 "equation": "id2 * (id5 / id3)"
             },
             {
