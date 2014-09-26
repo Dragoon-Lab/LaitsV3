@@ -598,7 +598,7 @@ define([
 				//	 2.	 Just units
 				//	 3.	 Optional quantity (needs name and description)
 				var node = this.getNode(id);
-				var initialEntered = node.type && node.type == "function" || node.initial;
+				var initialEntered = node.type && node.type == "function" || node.initial != null;
 				var equationEntered = node.type && node.type == "parameter" || node.equation;
 				if(!node.genus || node.genus == "allowed" || node.genus == "preferred"){
 					return node.name && node.description &&
@@ -709,7 +709,7 @@ define([
 				var update = function(attr, sattr){
 					// node.status always exists
 					var nsa = node.status[attr];
-					if(node[sattr || attr] && nsa && nsa.status &&
+					if(node[sattr || attr] != null && nsa && nsa.status &&
 							rank[nsa.status] > rank[bestStatus]){
 						bestStatus = nsa.status;
 					}
@@ -782,7 +782,7 @@ define([
 				var node = this.getNode(id);
 				// Some given models do not include units.
 				var hasUnits = node.descriptionID && obj.given.getUnits(node.descriptionID);
-				var initialEntered = node.type && node.type == "function" || node.initial;
+				var initialEntered = node.type && node.type == "function" || node.initial != null;
 				var equationEntered = node.type && node.type == "parameter" || node.equation;
 				return node.descriptionID && node.type &&
 						initialEntered && (!hasUnits || node.units) &&

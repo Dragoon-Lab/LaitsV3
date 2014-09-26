@@ -64,7 +64,7 @@ define([
 				return results;
 			}, function(err){
 				console.error("error in dashboard_js, error message : " + err);
-				throw new error;
+				throw err;
 			});
 		},
 
@@ -142,25 +142,27 @@ define([
 							var properties = node['properties'];
 							if(properties){
 								array.forEach(properties, function(property){
-									var status = property['status'];
-									if(status){
-										var index = 0;
-										array.forEach(status, function(propStatus){
-											if(propStatus == "CORRECT"){
-											detailedString += "<span style='color:green'>C ("+property['correctValue']+") </span>";
-											} else if(propStatus == "DEMO"){
-												detailedString += "<span style='color:blue'>D </span>";
-											} else {
-												var answers = property['answers'];
-												var length = answers.length;
-												detailedString += "<span style='color:red'>I" ;
-												if(index < length){
-													detailedString += "( "+answers[index]+ " )";
-												}
-												detailedString += " </span>";
-												index++;
-											}	
-										});
+									if(property){
+										var status = property['status'];
+										if(status){
+											var index = 0;
+											array.forEach(status, function(propStatus){
+												if(propStatus == "CORRECT"){
+												detailedString += "<span style='color:green'>C ("+property['correctValue']+") </span>";
+												} else if(propStatus == "DEMO"){
+													detailedString += "<span style='color:blue'>D </span>";
+												} else {
+													var answers = property['answers'];
+													var length = answers.length;
+													detailedString += "<span style='color:red'>I" ;
+													if(index < length){
+														detailedString += "( "+answers[index]+ " )";
+													}
+													detailedString += " </span>";
+													index++;
+												}	
+											});
+										}
 									}
 								}, this);
 							}
