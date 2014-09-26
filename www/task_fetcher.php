@@ -63,6 +63,21 @@ function printModel($row){
        forward to published problems
 
 */
+if(isset($_GET['x'])){
+	
+	$session_id = mysqli_real_escape_string($mysqli,$_GET['x']);
+
+  	$query = <<<EOT
+    SELECT solution_graph, share from solutions where session_id = '$session_id'      
+EOT;
+
+  $result = $mysqli->query($query)
+    or trigger_error("Previous work query failed." . $mysqli->error);
+  if($row = $result->fetch_row()){
+    printModel($row);
+    exit;
+  }	
+ }
 
 if(isset($_GET['u']) && isset($_GET['s']) && isset($_GET['m'])){
   $user = mysqli_real_escape_string($mysqli,$_GET['u']);

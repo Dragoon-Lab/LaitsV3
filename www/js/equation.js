@@ -408,11 +408,11 @@ define([
 			//	   specified by xvars.
 			var variables = {};
 			for(var i=0; i<x.length; i++){
-				variables[this.xvars[i]] = x[i];
+                variables[this.xvars[i]] = x[i];
 			}
-			lang.mixin(variables, this.parameters);
+            lang.mixin(variables, this.parameters);
 			array.forEach(this.functions, function(id){
-				variables[id] = this.parse[id].evaluate(variables);
+                variables[id] = this.parse[id].evaluate(variables);
 			}, this);
 			return array.map(this.xvars, function(id){
 				return this.parse[id].evaluate(variables);

@@ -67,6 +67,7 @@ define([
 	
 	// Start up new session and get model object from server
 	var session = new loadSave(query);
+    console.log("session is",session);
 	logging.setSession(session);  // Give logger message destination
 	session.loadProblem(query).then(function(solutionGraph){
 		

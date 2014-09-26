@@ -68,7 +68,7 @@ define([
 			 as any matching given model node of genus false.
 			 The table contains only the student nodes.
 			 */
-			this.active.timeStep = this.initializeSolution(model.active);
+            this.active.timeStep = this.initializeSolution(model.active);
 			if(!this.active.timeStep){
 				return; // abort on error in constructing timeStep
 			}
@@ -122,16 +122,15 @@ define([
 			// Summary:	 Find a solution
 			// Returns:	 an object of the form
 			//			{status: s, type: m, missingNode: n/soln: solution}
-			var choice = isActive?this.active:this.given;
-			console.log("in findSolution ", isActive, choice.initialValues, choice.timeStep.parameters);
-			/*
+		    var choice = isActive?this.active:this.given;
+            /*
 			 Calculate solution by solving differential 
 			 equation for accumulator nodes
 			 */
 			try { // we try to run the method because there might be some nodes missing and an error is generated
 				var solution;
 				console.log(this.model.getIntegrationMethod());
-				if(this.model.getIntegrationMethod() == "Midpoint Method") 
+                if(this.model.getIntegrationMethod() == "Midpoint Method")
 					solution = integrate.midpointMethod(
 					choice.timeStep, 
 					equation.evaluateTimeStep,
@@ -145,7 +144,7 @@ define([
 					this.model.getTime());
 			}
 			catch(err){ // we catch the correspoding error here
-				var if_id=err.message.substr(19).trim(); //In case the name is not generated and a node id is , we have to get the name from the active object for the user to understand			
+            	var if_id=err.message.substr(19).trim(); //In case the name is not generated and a node id is , we have to get the name from the active object for the user to understand
 				console.log("catch error",this.model.active.getName(if_id));  
 				if(this.model.active.getName(if_id)){
 					var miss_node=this.model.active.getName(if_id); // In case a node is incomplete
