@@ -298,7 +298,7 @@
 						$errorRatio = $incorrectChecks/$totalChecks;
 					}
 
-					$diff = strtotime($currentTime) - strtotime($row['time']) + $newMessage['time'];
+					$diff = strtotime($currentTime) - strtotime($row['time']) - $newMessage['time'];
 					if($upObject->sessionRunning && $diff > 7200){
 						$upObject->sessionRunning = false;
 					}
@@ -322,7 +322,7 @@
 				$errorRatio = $incorrectChecks/$totalChecks;
 			}
 
-			$diff = strtotime($currentTime) - strtotime($row['time']) + $newMessage['time'];
+			$diff = strtotime($currentTime) - strtotime($row['time']) - $newMessage['time'];
 			if($upObject->sessionRunning && $diff > 7200){
 				$upObject->sessionRunning = false;
 			}
