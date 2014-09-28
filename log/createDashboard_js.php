@@ -54,6 +54,7 @@
 			$totalChecks; $incorrectChecks; $errorRatio;
 			$currentProperty;
 			$nodeUpdate; $timeSkip;
+			$currentTime = date("c");
 			while($row = $result->fetch_assoc()){
 				if($resetVariables){
 					$sessionTime = 0; $outOfFocusTime = 0; $timeWasted=0;
@@ -282,7 +283,8 @@
 					}
 				} else if($method === "window-focus"){
 					$type = $newMessage['type'];
-					if($type === "in-focus"){
+					//echo print_r($row)." reset variable -> ".$resetVariables." <- <br/>";
+					if($newMessage['time'] > 1 && $type === "in-focus"){
 						//window came back in focus
 						$outOfFocusTime += $stepTime; // as previous message will be for out of focus.
 					}
@@ -294,6 +296,11 @@
 				if($resetVariables){
 					if($totalChecks >0){
 						$errorRatio = $incorrectChecks/$totalChecks;
+					}
+
+					$diff = strtotime($currentTime) - strtotime($row['time']) + $newMessage['time'];
+					if($upObject->sessionRunning && $diff > 7200){
+						$upObject->sessionRunning = false;
 					}
 
 					$upObject->wastedTime = $timeWasted/60;
@@ -313,6 +320,11 @@
 			
 			if($totalChecks >0){
 				$errorRatio = $incorrectChecks/$totalChecks;
+			}
+
+			$diff = strtotime($currentTime) - strtotime($row['time']) + $newMessage['time'];
+			if($upObject->sessionRunning && $diff > 7200){
+				$upObject->sessionRunning = false;
 			}
 
 			$upObject->wastedTime = $timeWasted/60;
