@@ -30,13 +30,14 @@ define([
 	'dojo/dom-style',
 	'dojo/ready',
 	"dojo/store/Memory",
+	"dojo/aspect",	
 	'dijit/registry',
 	'./controller',
 	"./equation",
 	"./typechecker",
     "dojo/dom",
 	"dojo/domReady!"
-], function(array, declare, lang, style, ready, memory, registry, controller, equation, typechecker, dom){
+], function(array, declare, lang, style, ready, memory, aspect, registry, controller, equation, typechecker, dom){
 	
 	// Summary: 
 	//			MVC for the node editor, for authors
@@ -313,7 +314,7 @@ define([
 			else if(modelType === "given"){
 				this._model.active = this._model.student;
 				this.enableDisableFields(modelType);
-				this.getStudentNodeValues(this.currentID);				
+				this.getStudentNodeValues(this.currentID);								
 			}			
 		},
 		handleType: function(type){
@@ -410,13 +411,28 @@ define([
 			inputWidget.set('value', '', false);
 		},
 		equationDoneHandler: function(){
-			var directives = [];
-			var parse = this.equationAnalysis(directives, true);
-			
-			if(parse){
-				directives = directives.concat(this.authorPM.process(this.currentID, "equation", parse));
+			var model = registry.byId("selectModel").value;
+			if(model && model == "correct"){
+				var directives = [];
+				var parse = this.equationAnalysis(directives, true);
+				
+				if(parse){
+					directives = directives.concat(this.authorPM.process(this.currentID, "equation", parse));
+				}
+				this.applyDirectives(directives);
 			}
-			this.applyDirectives(directives);					
+			else if(model && model =="given"){
+				var studentNodeID = this._model.student.getNodeIDFor(this.currentID);
+				var eqn = registry.byId(this.widgetMap.equation).value;
+				if(eqn){
+					var parse = equation.parse(eqn);
+					array.forEach(parse.variables(), lang.hitch(this, function(variable){
+						var givenID = this._model.given.getNodeIDByName(variable);							
+						eqn = eqn.replace(variable, this._model.student.getNodeIDFor(givenID));							
+					}));
+					this._model.student.setEquation(studentNodeID, eqn);
+				}
+			}			
 		},
 
 		initialControlSettings: function(nodeid){
@@ -558,9 +574,27 @@ define([
 			this._model.student.setDescriptionID(newNodeID, currentNode.ID);
 			this._model.student.setInitial(newNodeID, currentNode.initial);
 			this._model.student.setUnits(newNodeID, currentNode.units);
-			this._model.student.setEquation(newNodeID, currentNode.equation);
 			this._model.student.setType(newNodeID, currentNode.type);
-			this._model.student.setInputs(currentNode.inputs, newNodeID);
+			if(currentNode.equation){
+				var inputs = [];
+				var equation = currentNode.equation;				
+				array.forEach(currentNode.inputs, lang.hitch(this, function(input){					 
+				     var studentNodeID = this._model.student.getNodeIDFor(input.ID);
+					 if(studentNodeID){
+						inputs.push({ "ID": studentNodeID});
+						var regexp = "(" +input.ID +")([^0-9]?)";
+						var re = new RegExp(regexp);						 
+						equation = equation.replace(re, studentNodeID+"$2");						
+					}
+					else{
+						//alert("All inputs used must be added to student model");
+					}					
+				}));
+				this._model.student.setInputs(inputs, newNodeID);
+				this._model.student.setEquation(newNodeID, equation);
+			}
+			this._model.student.setPosition(newNodeID, currentNode.position);
+			
 		},
 		
 		removeStudentNode: function(nodeid){
@@ -573,8 +607,7 @@ define([
 		},
 		
 		getStudentNodeValues: function(nodeid){
-			var studentNodeID = this._model.student.getNodeIDFor(nodeid);
-			console.log("studentNode", studentNodeID);			
+			var studentNodeID = this._model.student.getNodeIDFor(nodeid);		
 			if(studentNodeID){
 				var type = this._model.student.getType(studentNodeID);
 				registry.byId(this.controlMap.type).set('value', type || "defaultSelect");
@@ -587,12 +620,19 @@ define([
 				
 				var units = this._model.student.getUnits(studentNodeID);
 				registry.byId(this.controlMap.units).set('value', units || "");
-				
+				var inputs = this._model.student.getInputs(studentNodeID);
 				var equation = this._model.student.getEquation(studentNodeID);
 				if(equation){
-					registry.byId(this.controlMap.equation).set('disabled', false);
+					array.forEach(inputs, lang.hitch(this, function(input){
+						var node = this._model.given.getNode(this._model.student.getDescriptionID(input.ID));
+						var name = node.name;
+						var regexp = "(" + input.ID +")([^0-9]?)";
+						var re = new RegExp(regexp);						 
+						equation = equation.replace(re, name+"$2");						
+					}));					
+					registry.byId(this.controlMap.equation).set('disabled', false);				
 					registry.byId(this.controlMap.equation).set('value', equation || "");
-				}
+				}				
 			}
 		},		
 		
@@ -616,13 +656,8 @@ define([
 				registry.byId(this.controlMap.kind).set("disabled",false);
 				registry.byId(this.controlMap.root).set("disabled",false);								
 			}
-		},
-/*
-		getStudentNodeIdByName: function(name){
-			array.forEach(this._model.task.studentModelNodes, function(node){
-				if(this._model.student.getNodeIDFor(node.get
-			});
 		}
-		*/
+		
+		
 	});
 });
