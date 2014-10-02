@@ -1,8 +1,4 @@
 <?php
-<<<<<<< HEAD
-	//require "../www/db-login.php";
-	//require "../www/error-handler.php";
-=======
 /*
      Dragoon Project
      Arizona State University
@@ -24,29 +20,22 @@
 */
 	require "../www/db-login.php";
 	require "../www/error-handler.php";
->>>>>>> master
 
 	set_time_limit(30000);
 	include "createDashboard_js.php";
 
 	date_default_timezone_set('America/Phoenix');
-	!empty($_REQUEST["fromDate"])?($fromDate = $_REQUEST["fromDate"]):($fromDate = '');
-	!empty($_REQUEST["toDate"])?($toDate = $_REQUEST["toDate"]):($toDate = '');
-	!empty($_REQUEST["fromTime"])?($fromTime = $_REQUEST["fromTime"]):($fromTime = '');
-	!empty($_REQUEST["toTime"])?($toTime = $_REQUEST["toTime"]):($toTime = '');
-	!empty($_REQUEST["section"])?($section = $_REQUEST["section"]):($section = 'login.html');
-	!empty($_REQUEST["mode"])?($mode = $_REQUEST["mode"]):$mode = 'STUDENT';
-	!empty($_REQUEST["user"])?($user = $_REQUEST["user"]):$user = '';
-	!empty($_REQUEST["problem"])?($problem = $_REQUEST["problem"]):$problem = '';
-	(!empty($_REQUEST["dashboard"]) &&($_REQUEST["dashboard"] === 'small'))?($smallDashboard = true):($smallDashboard=false);
+	!empty($_REQUEST["fd"])?($fromDate = $_REQUEST["fd"]):($fromDate = '');
+	!empty($_REQUEST["td"])?($toDate = $_REQUEST["td"]):($toDate = '');
+	!empty($_REQUEST["ft"])?($fromTime = $_REQUEST["ft"]):($fromTime = '');
+	!empty($_REQUEST["tt"])?($toTime = $_REQUEST["tt"]):($toTime = '');
+	!empty($_REQUEST["s"])?($section = $_REQUEST["s"]):($section = 'login.html');
+	!empty($_REQUEST["m"])?($mode = $_REQUEST["m"]):$mode = 'STUDENT';
+	!empty($_REQUEST["u"])?($user = $_REQUEST["u"]):$user = '';
+	!empty($_REQUEST["p"])?($problem = $_REQUEST["p"]):$problem = '';
 
-<<<<<<< HEAD
-	//$mysqli = mysqli_connect("localhost",$dbuser, $dbpass, $dbname) or die("Connection not established. Check the user log file");
-	$mysqli = mysqli_connect("localhost", "root", "qwerty211", "laits_eno") or die("Connection not established. Check the user log file");
-=======
 	$mysqli = mysqli_connect("localhost",$dbuser, $dbpass, $dbname) or die("Connection not established. Check the user log file");
 	//$mysqli = mysqli_connect("localhost", "root", "qwerty211", "laits_eno") or die("Connection not established. Check the user log file");
->>>>>>> master
 
 	$db = new Dashboard($mysqli);
 
