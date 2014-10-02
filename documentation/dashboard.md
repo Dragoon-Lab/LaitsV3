@@ -67,14 +67,14 @@ Each of the properties in the class have been set to private and there are gette
 ####Code structure (View)####
 * main.js : This is the file that is first called from the html. It has the one and only ready object. It creates a dashboard object and calls the dashboard_js.php to get the session objects from each user as per the parameters sent.
 * dashboard.js : The idea of this was to convert the json objects that came from php to html and then show. There have been a series of changes made to this file to make it more and more modularised. The code can be checked and the use of each function is written in comments. The most important part is to understand how the type defines what kind of a dashboard we show. There is a modules object which defines makes the dashboard based on the values inside it. defineModules function is used to define the various parts of the html that need to be shown or not. The modules object structure and values that are possible are written below. 
-- name : true/false : to show the names of the user or not in the table. If names are not shown then the name sent using "us" parameter is highlighted
-- heading : String : Heading that one shows usually the board name that is predefined. 
-- sub-heading : String/HTML : Any String that is shown below the heading. Can be used as instructions for the user. This is also prefined and not based on the parameters.
-- color : true/false : whether to show the colors in the background of each cell of the table and also the corresponding key to the user.
-- display : empty/time/errors : the first value to be shown in the cells. Empty does not show any value in the row, i.e. just a color in the background. Time shows the time spent by the user on the problem and the time wasted as well. Errors shows the number of incorrect checks and the total checks by the user.
-- sessionLink : true/false : to show the clickable link on each table cell, which opens the corresponding complete session link for the user to see.
-- options : true/false : to give a user the choice to switch between the values shown in the cell, i.e. errors or empty or time.
-- completeAnalysis : true/false : to show the complete node about each and every property in the node or not. This and session link should be kept alternate. They can both be false in cases when we just want to show the values. But essentially they add a functionality which works on a click and so can not be true simultaneously.
+	- name : true/false : to show the names of the user or not in the table. If names are not shown then the name sent using "us" parameter is highlighted
+	- heading : String : Heading that one shows usually the board name that is predefined. 
+	- sub-heading : String/HTML : Any String that is shown below the heading. Can be used as instructions for the user. This is also prefined and not based on the parameters.
+	- color : true/false : whether to show the colors in the background of each cell of the table and also the corresponding key to the user.
+	- display : empty/time/errors : the first value to be shown in the cells. Empty does not show any value in the row, i.e. just a color in the background. Time shows the time spent by the user on the problem and the time wasted as well. Errors shows the number of incorrect checks and the total checks by the user.
+	- sessionLink : true/false : to show the clickable link on each table cell, which opens the corresponding complete session link for the user to see.
+	- options : true/false : to give a user the choice to switch between the values shown in the cell, i.e. errors or empty or time.
+	- completeAnalysis : true/false : to show the complete node about each and every property in the node or not. This and session link should be kept alternate. They can both be false in cases when we just want to show the values. But essentially they add a functionality which works on a click and so can not be true simultaneously.
 
 Different views depend a lot on the parameter values that are sent in the URL, the params are:
 * m - mode of the logs (STUDENT/AUTHOR)
