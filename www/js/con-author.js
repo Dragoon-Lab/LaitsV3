@@ -244,6 +244,7 @@ define([
 				//this.setConnections(this._model.active.getInputs(this.currentID), this.currentID);
 				this.updateEquationLabels();
 			}
+			this.enableDisableSetStudentNode();
 		},
 
 		autocreateNodes: function(/** auto node id **/ id, /**variable name**/ variable){
@@ -282,6 +283,7 @@ define([
 				// enable forum button and activate event
 				this.activateForumButton();
 			}
+			this.enableDisableSetStudentNode();
 		},
 
         handleRoot: function(root){
@@ -312,9 +314,21 @@ define([
 				this.populateNodeEditorFields(this.currentID);
 			}
 			else if(modelType === "given"){
-				this._model.active = this._model.student;
-				this.enableDisableFields(modelType);
-				this.getStudentNodeValues(this.currentID);								
+				var equation = registry.byId("equationBox");
+				if(equation.value && !this.equationEntered){
+					//Crisis alert popup if equation not checked
+					this.applyDirectives([{
+						id: "crisisAlert", attribute:
+						"open", value: "Your expression has not been checked!  Go back and check your expression to verify it is correct, or delete the expression, before closing the node editor."
+					}]);
+					registry.byId("selectModel").set('value',"correct");
+				}
+				else{
+					this._model.active = this._model.student;
+					this.enableDisableFields(modelType);
+					this.getStudentNodeValues(this.currentID);
+					this.equationEntered = true;
+				}
 			}			
 		},
 		handleType: function(type){
@@ -431,7 +445,7 @@ define([
 				var studentNodeID = this._model.student.getNodeIDFor(this.currentID);
 				var eqn = registry.byId(this.widgetMap.equation).value;
 				var inputs = this._model.student.getInputs(studentNodeID);
-				if(eqn){					
+				if(typeof equation != "undefined" && eqn != null && eqn != ""){					
 					var parse = equation.parse(eqn);
 					array.forEach(parse.variables(), lang.hitch(this, function(variable){
 						var givenID = this._model.given.getNodeIDByName(variable);
@@ -443,10 +457,10 @@ define([
 						if(!isInputPresent){
 								inputs.push({"ID": studentID});
 						}						
-					}));
-					this._model.student.setInput(inputs);
-					this._model.student.setEquation(studentNodeID, eqn);
+					}));					
 				}
+				this._model.student.setInputs(inputs);
+				this._model.student.setEquation(studentNodeID, eqn);
 			}			
 		},
 
@@ -469,15 +483,20 @@ define([
 			registry.byId(this.controlMap.root).set('value', this._model.given.getParent(nodeid));
 			
 			// Initialize student node checkbox
-			var givenNode = this._model.given.getNode(nodeid);
-			var studentNodes = this._model.student.getNodes();
-			var checked = false;
-			checked = array.some(studentNodes, function(node){
-				return node.descriptionID === givenNode.ID;
-			}, this);
-			
-			registry.byId(this.controlMap.student).set('value', checked);
-			this.handleSetStudentNode(checked);
+				var givenNode = this._model.given.getNode(nodeid);
+				var studentNodes = this._model.student.getNodes();
+				var checked = false;
+				checked = array.some(studentNodes, function(node){
+					return node.descriptionID === givenNode.ID;
+				}, this);		
+				registry.byId(this.controlMap.student).set('value', checked);
+				this.handleSetStudentNode(checked);
+			if(name != null && desc != null){
+				registry.byId(this.controlMap.student).set('disabled', false);			
+			}
+			else{
+				registry.byId(this.controlMap.student).set('disabled', true);
+			}
 			
 			// populate inputs
 			var inputsWidget = registry.byId(this.controlMap.inputs);
@@ -634,19 +653,16 @@ define([
 				registry.byId(this.controlMap.type).set('value', type || "defaultSelect");
 				
 				var initial = this._model.student.getInitial(studentNodeID);
-				// Initial value will be undefined if it is not in the model
-				if(initial != null){
-					registry.byId(this.controlMap.initial).set('value', initial);
-				}
+				if(typeof initial !== "undefined" && initial != null)
+					registry.byId(this.controlMap.initial).set('value', initial);				
 				
-				var units = this._model.student.getUnits(studentNodeID);
-				if(units != null)
+				var units = this._model.student.getUnits(studentNodeID);				
 				registry.byId(this.controlMap.units).set('value', units || "");
 				
 				//Replace the studentNodeIDs by corrosponding names before setting the equation field
 				var inputs = this._model.student.getInputs(studentNodeID);
 				var equation = this._model.student.getEquation(studentNodeID);
-				if(equation != null){
+				if(typeof equation !== "undefined" && equation != null){
 					array.forEach(inputs, lang.hitch(this, function(input){
 						var node = this._model.given.getNode(this._model.student.getDescriptionID(input.ID));
 						var name = node.name;
@@ -681,7 +697,17 @@ define([
 				registry.byId(this.controlMap.root).set("disabled",false);								
 			}
 		},
-		
+		enableDisableSetStudentNode : function(){
+			var name = registry.byId(this.controlMap.name).value;
+			var desc = registry.byId(this.controlMap.description).value;
+			
+			if(name != '' && desc != ''){
+				registry.byId(this.controlMap.student).set("disabled",false);				
+			}
+			else{
+				registry.byId(this.controlMap.student).set("disabled",true);				
+			}
+		},
 		updateStatus: function(/*String*/control, correctValue, newValue){
 			var studentNodeID = this._model.student.getNodeIDFor(this.currentID);			
 			if(studentNodeID != null){
