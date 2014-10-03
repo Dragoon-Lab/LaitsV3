@@ -28,6 +28,7 @@ define([
 	"dojo/io-query",
 	"dojo/ready",
 	'dijit/registry',
+    "dijit/Tooltip",
 	"./menu",
 	"./load-save",
 	"./model",
@@ -42,7 +43,7 @@ define([
 	"./state",
     "./typechecker"
 ], function(
-		lang, dom, geometry, on, aspect, ioQuery, ready, registry,
+		lang, dom, geometry, on, aspect, ioQuery, ready, registry,toolTip,
 		menu, loadSave, model,
 		Graph, Table, controlStudent, controlAuthor, drawmodel, logging, expression, description, State, typechecker
 ){
@@ -138,7 +139,20 @@ define([
 				drawModel.addNode(givenModel.active.getNode(id));		
 				controllerObject.showNodeEditor(id);
 			});
-			
+
+            // Show tips for Root in node modifier and Share Bit in Description and Time
+            var makeTooltip  = function(id,content){
+                new toolTip({
+                    connectId: [id],
+                    label: content
+                });
+            };
+            makeTooltip('questionMark',"When running in COACHED mode, the system will guide the student through <br>" +
+                "the construction of the model beginning with this node, then proceeding with <br>" +
+                "this node's inputs, then their inputs, and so forth until the model is complete.");
+			makeTooltip('questionMarkShare', "When checked, your problem appears in the list <br>" +
+                "of custom problems for other users to solve.");
+
 			/*
 			 Connect node editor to "click with no move" events.
 			 */

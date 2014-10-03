@@ -67,6 +67,10 @@ html, body, #main{
     width:10ex;
 }
 
+.questionMark{
+    width:4%;
+}
+
 .sameedit #equationText {
     max-width:40ex;
     border:solid black 1px;
