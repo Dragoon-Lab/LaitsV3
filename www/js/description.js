@@ -60,83 +60,154 @@ define([
 
 		//set up event handling with UI components
 		_initHandles: function() {
-			//Define all the variables necessary to fire onchange events and to pop up tooltips
-			//for authorSetTimeStart
-			var descWidgetStart = registry.byId('authorSetTimeStart');
-			//for authorSetTimeStop
-			var descWidgetStop = registry.byId('authorSetTimeEnd');
-			//for authorSetTimeStep
-			var descWidgetStep = registry.byId('authorSetTimeStep');
+            //Define all the variables necessary to fire onchange events and to pop up tooltips
+            //for authorSetTimeStart
+            var descWidgetStart = registry.byId('authorSetTimeStart');
+            //for authorSetTimeStop
+            var descWidgetStop = registry.byId('authorSetTimeEnd');
+            //for authorSetTimeStep
+            var descWidgetStep = registry.byId('authorSetTimeStep');
             // Set checkbox for sharing
-           registry.byId("authorProblemShare").attr("value", this.givenModel.getShare());
+            registry.byId("authorProblemShare").attr("value", this.givenModel.getShare());
 
-			// This event gets fired if student hits TAB or input box
-			// goes out of focus.
-			//for start time field
-			descWidgetStart.on("change", lang.hitch(this, function(){
-				var ret_start_time=typechecker.checkInitialValue('authorSetTimeStart', this.lastStartTime);
-				if(ret_start_time.value){this.timeObj.start=ret_start_time.value; }
-		   }));
-			//for end time field
-			descWidgetStop.on("change", lang.hitch(this, function(){
-				var ret_stop_time=typechecker.checkInitialValue('authorSetTimeEnd', this.lastStopTime);
-				if(ret_stop_time.value){ this.timeObj.end=ret_stop_time.value; }
-			}));
-			//for  time step field
-			descWidgetStep.on("change", lang.hitch(this, function(){
-				var ret_step_time=typechecker.checkInitialValue('authorSetTimeStep', this.lastStepTime);
-				if(ret_step_time.value){ this.timeObj.step=ret_step_time.value; }
-			}));
+            // This event gets fired if student hits TAB or input box
+            // goes out of focus.
+            //for start time field
+            descWidgetStart.on("change", lang.hitch(this, function () {
+                var ret_start_time = typechecker.checkInitialValue('authorSetTimeStart', this.lastStartTime);
+                if (ret_start_time.value) {
+                    this.timeObj.start = ret_start_time.value;
+                }
+            }));
+            //for end time field
+            descWidgetStop.on("change", lang.hitch(this, function () {
+                var ret_stop_time = typechecker.checkInitialValue('authorSetTimeEnd', this.lastStopTime);
+                if (ret_stop_time.value) {
+                    this.timeObj.end = ret_stop_time.value;
+                }
+            }));
+            //for  time step field
+            descWidgetStep.on("change", lang.hitch(this, function () {
+                var ret_step_time = typechecker.checkInitialValue('authorSetTimeStep', this.lastStepTime);
+                if (ret_step_time.value) {
+                    this.timeObj.step = ret_step_time.value;
+                }
+            }));
 
-			this._descEditor = registry.byId('authorDescDialog');
-			aspect.around(this._descEditor, "hide", lang.hitch(this, function(doHide){
-				var myThis = this;
-				return function(){
-					//We check the return status and error type for Start Time, Stop Time,Time Step
-					// and incase there is an error with a defined type
-					// we don't close the description editor and further prompt to fix errors in input
-					var ret_start_time=typechecker.checkInitialValue('authorSetTimeStart', myThis.lastStartTime);
-					if(ret_start_time.errorType){ return; }
+            this._descEditor = registry.byId('authorDescDialog');
+            aspect.around(this._descEditor, "hide", lang.hitch(this, function (doHide) {
+                var myThis = this;
+                return function () {
+                    //We check the return status and error type for Start Time, Stop Time,Time Step
+                    // and incase there is an error with a defined type
+                    // we don't close the description editor and further prompt to fix errors in input
+                    var ret_start_time = typechecker.checkInitialValue('authorSetTimeStart', myThis.lastStartTime);
+                    if (ret_start_time.errorType) {
+                        return;
+                    }
 
-					var ret_stop_time=typechecker.checkInitialValue('authorSetTimeEnd', myThis.lastStopTime);
-					if(ret_stop_time.errorType){ return; }
+                    var ret_stop_time = typechecker.checkInitialValue('authorSetTimeEnd', myThis.lastStopTime);
+                    if (ret_stop_time.errorType) {
+                        return;
+                    }
 
-					var ret_step_time=typechecker.checkInitialValue('authorSetTimeStep', myThis.lastStepTime);
-					if(ret_step_time.errorType){ return; }
+                    var ret_step_time = typechecker.checkInitialValue('authorSetTimeStep', myThis.lastStepTime);
+                    if (ret_step_time.errorType) {
+                        return;
+                    }
 
-					 //after it has passed all those checks we
-					 // do normal closeEditor routine and hide
-					  doHide.apply(myThis._descEditor);
-					  console.log("close description editor is being called");
-					  typechecker.closePops();
-					  var tin = dom.byId("authorSetDescription").value;
-					  myThis.givenModel.setTaskDescription(tin.split("\n"));
-					  if(ret_start_time.value){
-						  myThis.timeObj.start = ret_start_time.value;
-					  }
-					  if(ret_stop_time.value){
-						  myThis.timeObj.end = ret_stop_time.value;
-					  }
-					  if(ret_step_time.value){
-						  myThis.timeObj.step = ret_step_time.value;
-					  }
-					  myThis.timeObj.units = dom.byId("authorSetTimeStepUnits").value;
-					  myThis.timeObj.integrationMethod = dom.byId("authorSetIntegrationMethod").value;
-					  console.log("integration value" + dom.byId("authorSetIntegrationMethod").value);
-					  myThis.givenModel.setTime(myThis.timeObj);
-					  console.log("final object being returned",myThis.timeObj);
-					  var url = dom.byId("authorSetImage").value;
-					  myThis.givenModel.setImage(url?{URL: url} : {});
-					  myThis.showDescription();
-				};
-			}));
+                    //after it has passed all those checks we
+                    // do normal closeEditor routine and hide
+                    doHide.apply(myThis._descEditor);
+                    console.log("close description editor is being called");
+                    typechecker.closePops();
+                    var tin = dom.byId("authorSetDescription").value;
+                    myThis.givenModel.setTaskDescription(tin.split("\n"));
+                    if (ret_start_time.value) {
+                        myThis.timeObj.start = ret_start_time.value;
+                    }
+                    if (ret_stop_time.value) {
+                        myThis.timeObj.end = ret_stop_time.value;
+                    }
+                    if (ret_step_time.value) {
+                        myThis.timeObj.step = ret_step_time.value;
+                    }
+                    myThis.timeObj.units = dom.byId("authorSetTimeStepUnits").value;
+                    myThis.timeObj.integrationMethod = dom.byId("authorSetIntegrationMethod").value;
+                    console.log("integration value" + dom.byId("authorSetIntegrationMethod").value);
+                    myThis.givenModel.setTime(myThis.timeObj);
+                    console.log("final object being returned", myThis.timeObj);
+                    var url = dom.byId("authorSetImage").value;
+                    myThis.givenModel.setImage(url ? {URL: url} : {});
+                    myThis.showDescription();
+                };
+            }));
             //for share bit checkbox
-           var descShareBit = registry.byId("authorProblemShare");
-           descShareBit.on("Change", lang.hitch(this, function(checked){
-               // console.log("check box", descShareBit, checked);
-               this.givenModel.setShare(checked);
-           }));
-		},
+            var descShareBit = registry.byId("authorProblemShare");
+            console.log("descShareBit",descShareBit);
+            descShareBit.on("Change", lang.hitch(this, function (checked) {
+                //when change event is fired, check if the author wants to share the problem or un share,
+                //if he tries to share , then verify completeness and root node existence
+                if (checked) {
+                    errordialogWidget = registry.byId("solution");
+                    //check if there are any nodes at all
+                    var nodes_exist = this.givenModel.active.getNodes().length;
+                    if (nodes_exist) {
+                        console.log("nodes exist");
+                        var newModel = this.givenModel;
+                        var check_comp = true;
+                        array.forEach(this.givenModel.active.getNodes(), function (node) {
+                            if (!newModel.active.isComplete(node.ID)) {
+                                errordialogWidget.set("content", "<div>please complete the model before you share</div>");
+                                errordialogWidget.show();
+                                newModel.setShare(false);
+                                descShareBit.set("checked", false);
+                                check_comp = false;
+                                console.log("problem is incomplete");
+                                return;
+                            }
+                            console.log("next node");
+                        });
+
+                        console.log("return value", check_comp);
+                        //if the check_comp flag is false, that is any node is incomplete just return
+                        if (!check_comp) return;
+                        //if not continue to check for root node
+                        //only functions and accumalators are root nodes
+                        console.log("problem is complete checking for root node");
+                        var check_parent=false;
+                        array.forEach(newModel.active.getNodes(), function (node) {
+                            console.log("new model type is", newModel.active.getType(node.ID));
+                            if(newModel.active.getNode(node.ID).parentNode){
+                                check_parent=true;
+                                console.log("problem has a root node");
+                                return;
+                            }
+                        });
+
+                        if(check_parent)
+                            newModel.setShare(true);
+                        else {
+                            console.log("No Root");
+                            errordialogWidget.set("content", "<div>Please make sure there is a root node</div>");
+                            errordialogWidget.show();
+                            newModel.setShare(false);
+                            descShareBit.set("checked", false);
+                        }
+                    }
+                    else{
+                        console.log("Empty problem");
+                        errordialogWidget.set("content", "<div>cannot share an empty problem</div>");
+                        errordialogWidget.show();
+                        this.givenModel.setShare(false);
+                        descShareBit.set("checked", false);
+                    }
+                }
+                else{ // the author wants to unshare, no matter about conditions just set share bit to false
+                    this.givenModel.setShare(false);
+                }
+            }));
+        },
 
 		// add line breaks
 		// use string split method to unserialize

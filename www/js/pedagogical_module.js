@@ -43,6 +43,9 @@ define([
 	var hints = {
 		// Summary: Messages that are given to the user based on the type of user, 
 		//		his or her answers, and the number of hints of that type.
+		//      2014.9.24: Since the LAITS model allows for students to author, 
+		//                 we've changed the hints to refer to the 'author's
+		//                 answer' rather than using 'correct'/'incorrect'
 		irrelevant: [
 			"The quantity is irrelevant to this problem.  Choose a different one.",
 			"This quantity is irrelevant for modeling the system.  Try again.",
@@ -68,30 +71,30 @@ define([
 		],
 		notTopLevel: [
 			"Blue means that quantity isn’t one that the problem statement asks you to graph.  Although this quantity will eventually be in your model, you should follow the Target Node Strategy, which says you should first define a node for a top level goal quantity.",
-			"Please start with a quantity mentioned in the problem statement as one that needs to be graphed."
+			"Please start with a quantity mentioned in the problem statement as the one that needs to be graphed."
 		],
 		correct: [
-			"Green means correct.  Good job!",
-			"Green means correct."
+			"Green means you chose the author's answer.  Good job!",
+			"Green means you chose the author's answer."
 		],
 		incorrect: [
-			"Your answer is incorrect. Please try again.",
-			"Your answer is incorrect."
+			"Your answer does not match the author's answer. Please try again.",
+			"Your answer does not match the author's answer."
 		],
 		lastFailure: [
-			"Sorry, but that quantity isn’t relevant to the model.	Moreover, this is the third failure, so a correct selection is being done for you.	Please study it and figure out why it is correct.  Your goal should be to make a correct selection on the first attempt.",
-			"Here’s a correct solution.	 Please figure out why it is correct so that next time, your first selection will be correct.",
-			"Please study this correct selection."
+			"Sorry, but that quantity isn’t relevant to the model.	Moreover, this is the third failure, so the author's answer is being chosen for you.	Please study it and figure out why it is correct.  Your goal should be to match the author's model on the first attempt.",
+			"Here’s the author's answer.  Please figure out why it is correct so that next time, your first selection will match the author's model.",
+			"Please study the author's answer."
 		],
 		lastFailure2: [
-			"Yellow means that you made an incorrect choice too many times, so you are being shown the correct choice.	You should figure out why it is correct so that next time your first choice will be correct.",
+			"Yellow means that you failed to match the author's answer too many times, so it is being shown to you.	You should figure out why it is correct so that next time your first choice will match the author's model.",
 			"Can you figure out why this is the right type for the node?"
 		],
 		erasedCorrect: [
-			"Your choice was not correct and you are being given the correct answer. However, you previously completed this part correctly. It will continue to be marked this way."
+			"Your choice did not match the author's answer so it is being given to you. However, your previous work matched the author's answer. It will continue to be marked this way."
 		],
 		erasedDemo: [
-			"Your choice was correct, however this part was previously completed by the model. It will continue to be marked this way."
+			"Your choice matched the author's answer, however this part was previously completed by the model. It will continue to be marked this way."
 		]
 	};
 
