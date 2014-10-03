@@ -274,6 +274,7 @@ define([
 			 This should be put in its own module.
 			 */
 			
+			var isLessonLearnedShown = false;
 			// show graph when button clicked
 			menu.add("graphButton", function(){
 				console.debug("button clicked");
@@ -287,6 +288,14 @@ define([
 					problemComplete: problemComplete
 				});
 				graph.show();
+				if(!isLessonLearnedShown) {
+					var button = dojo.byId("lessonsLearnedButton");
+					var event = document.createEvent("HTMLEvents");
+			        event.initEvent("click", false, true);
+			        console.debug(event);
+			        button.dispatchEvent(event);
+					isLessonLearnedShown = true;
+				}
 			});
 
 			
@@ -299,6 +308,14 @@ define([
 					name: "table-button"
 				});
 				table.show();
+				if(!isLessonLearnedShown) {
+					var button = dojo.byId("lessonsLearnedButton");
+					var event = document.createEvent("HTMLEvents");
+			        event.initEvent("click", false, true);
+			        console.debug(event);
+			        button.dispatchEvent(event);
+					isLessonLearnedShown = true;
+				}
 			});
             //the solution div which shows graph/table when closed
             //should disable all the pop ups
@@ -326,6 +343,14 @@ define([
 				});
 			});
 
+			//Disable the lessonsLearnedButton
+			var lessonsLearnedButton = registry.byId("lessonsLearnedButton");   
+			lessonsLearnedButton.set("disabled", true);
+			//Bind lessonsLearnedButton to the click event	
+			menu.add("lessonsLearnedButton", function(){
+				console.debug("Lessons Learned Button button is clicked");
+				alert("Lesson Learned Button Clicked.");
+			});
             /*
              Add link to intro video
              */
@@ -397,7 +422,6 @@ define([
 							"height=400, width=600, toolbar =no, menubar=no, scrollbars=no, resizable=no, location=no, status=no"
 						   );
 			});
-
 		});
 	});
 });
