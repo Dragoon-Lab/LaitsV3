@@ -34,8 +34,11 @@ define([
 	"dojox/charting/plot2d/Grid",
 	"dojox/charting/widget/Legend",
 	"./calculations",
+	"dijit/_base",
+	"dijit/layout/TabContainer",
+	"dijit/layout/ContentPane",
 	"dojo/domReady!"
-], function(array, declare, lang, on, domAttr, registry, Chart, Default, Lines, Grid, Legend, calculations){
+], function(array, declare, lang, on, domAttr, registry, Chart, Default, Lines, Grid, Legend, calculations, base){
 
 	// The calculations constructor is loaded before the RenderGraph constructor
 	return declare(calculations, {
@@ -96,6 +99,13 @@ define([
 			// Add three <div>s for each quantity:
 			//	display graph checkbox, the graph, and the legend.
 			// The default is to display only the accumulator nodes.
+			
+			/*this.dialogContent += "<div data-dojo-type='dijit/layout/TabContainer' id='testDiv'>"  style='overflow:auto; width:50%; float:left; height: 100%; background-color: #FFFFFF'>
+									"<div data-dojo-type='dijit/layout/ContentPane' data-dojo-props='title:Tab 1'>";*/
+
+
+		 	this.dialogContent += "<div data-dojo-type=''dijit/layout/TabContainer'>
+			<div data-dojo-type='dijit/layout/ContentPane' data-dojo-props='title:\"Tab 1\"'>"
 			array.forEach(this.active.plotVariables, function(id){
 				var show = this.model.active.getType(id) == "accumulator";
 				var checked = show ? " checked='checked'" : "";
@@ -106,13 +116,21 @@ define([
 				this.dialogContent += "<div class='legend' id='legend" + id + "'></div>";
 			}, this);
 
-			this.dialogContent += "<hr>";
+			this.dialogContent += "</div>
+									<div data-dojo-type='dijit/layout/ContentPane' data-dojo-props='title:\"Tab 2\"'>
+										test test test test test
+									</div>
+									</div>"
+									//<div style='overflow:auto; width:50%; float:right; height: 100%; background-color: #FFFFFF'>";
 
 			//plot sliders
 			this.createSliderAndDialogObject();
 
+			this.dialogContent += "</div>";
 			var charts = {};
 			var legends = {};
+
+
 
 			if(this.active.plotVariables.length > 0){ //we check the length of object, if there are nodes, then we proceed else give an error and return
 				array.forEach(this.active.plotVariables, function(id, k){
@@ -190,6 +208,34 @@ define([
 			return array.map(result.times, function(time, k){
 				return {x: time, y: result.plotValues[j][k]};
 			});
+		},
+
+			resetposition: function(){
+		// summary: position modal dialog in center of screen
+		
+			if(dojo.hasClass(dojo.body(),"dojoMove")){ return; }
+			var viewport = dijit.getViewport();
+			var mb = dojo.marginBox(this.domNode);
+
+			var style = this.style;
+			style.left = Math.floor((viewport.l + (viewport.w - mb.w)/2)) + "px";
+			
+			// Change to avoid the dialog being outside the viewport
+			var top = Math.floor((viewport.t + (viewport.h - mb.h)/2));
+			
+			// A standard margin is nice to have for layout reasons
+			// I think it should be proportional to the page height
+			var margin = Math.floor(viewport.h/30);
+			
+			// The top can't be less than viewport top
+			if (top - margin < viewport.t)
+			{
+				top = viewport.t + margin;
+			}
+			
+			// If the height of the box is the same or bigger than the viewport
+			// it means that the box should be made scrollable and a bottom should be set
+
 		},
 
 		/*
