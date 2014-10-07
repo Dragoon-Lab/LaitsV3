@@ -302,6 +302,8 @@ define([
 				}								
 			}
 			else{
+				this._model.active = this._model.given;
+				registry.byId("selectModel").set('value',"correct");
 				style.set('selectModelControl', 'display', 'none');
 				this.removeStudentNode(this.currentID);
 			}
@@ -444,22 +446,17 @@ define([
 			else if(model && model =="given"){
 				var studentNodeID = this._model.student.getNodeIDFor(this.currentID);
 				var eqn = registry.byId(this.widgetMap.equation).value;
-				var inputs = this._model.student.getInputs(studentNodeID);
+				var inputs = [];
 				if(typeof equation != "undefined" && eqn != null && eqn != ""){					
 					var parse = equation.parse(eqn);
 					array.forEach(parse.variables(), lang.hitch(this, function(variable){
 						var givenID = this._model.given.getNodeIDByName(variable);
 						var studentID = this._model.student.getNodeIDFor(givenID);						
 						eqn = eqn.replace(variable, studentID);
-						var isInputPresent = array.some(inputs, function(input){
-							if(input.ID == studentID){	return true; }
-						});
-						if(!isInputPresent){
-								inputs.push({"ID": studentID});
-						}						
+						inputs.push({"ID": studentID});												
 					}));					
 				}
-				this._model.student.setInputs(inputs);
+				this._model.student.setInputs(inputs, studentNodeID);
 				this._model.student.setEquation(studentNodeID, eqn);
 			}			
 		},
