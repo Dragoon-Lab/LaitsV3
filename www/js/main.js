@@ -147,7 +147,7 @@ define([
                     label: content
                 });
             };
-            makeTooltip('questionMark',"When running in COACHED mode, the system will guide the student through <br>" +
+            makeTooltip('questionMarkRoot',"When running in COACHED mode, the system will guide the student through <br>" +
                 "the construction of the model beginning with this node, then proceeding with <br>" +
                 "this node's inputs, then their inputs, and so forth until the model is complete.");
 			makeTooltip('questionMarkShare', "When checked, your problem appears in the list <br>" +
