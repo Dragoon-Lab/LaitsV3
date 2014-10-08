@@ -470,7 +470,7 @@ define([
 				}else{
 					interpretation = "premature";
 				}
-				if(interpretation !== "optimal" && this.descriptionCounter > 2){
+				if(interpretation !== "optimal" && interpretation !== "premature" && this.descriptionCounter > 2){
 					interpretation = "lastFailure";
 				}
 				break;
