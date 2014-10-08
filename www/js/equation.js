@@ -228,6 +228,17 @@ define([
 			}
 			return true;
 		},
+        isDivide: function(parse){
+            //Return true if the expression contains division but not multiplication.
+            //Intended to be used in conjunction with isProduct
+            var ops = parse.operators();
+            var allowed = {"/": true, "variable": true};
+            for(var op in ops){
+                if(ops[op] > 0 && !allowed[op])
+                    return false;
+            }
+            return true;
+        },
 		gradient: function(parse, /*boolean*/ monomial, point){
 			// Find the numerical partial derivatives of the expression at
 			// the given point or at a random point, if the point is not supplied.
@@ -397,11 +408,11 @@ define([
 			//	   specified by xvars.
 			var variables = {};
 			for(var i=0; i<x.length; i++){
-				variables[this.xvars[i]] = x[i];
+                variables[this.xvars[i]] = x[i];
 			}
-			lang.mixin(variables, this.parameters);
+            lang.mixin(variables, this.parameters);
 			array.forEach(this.functions, function(id){
-				variables[id] = this.parse[id].evaluate(variables);
+                variables[id] = this.parse[id].evaluate(variables);
 			}, this);
 			return array.map(this.xvars, function(id){
 				return this.parse[id].evaluate(variables);

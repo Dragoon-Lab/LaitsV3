@@ -1,302 +1,331 @@
 ﻿{
- "task":{
-    "taskName": "eb4",
-    "time": {
-        "start": 0,
-        "end": 1000,
-        "step": 1,
-        "units": "days",
-        "integrationMethod": "Eulers Method"
-    },
-    "properties": {},
-    "image": {},
-    "taskDescription": [
-        "The amount of physical activity energy burned per days depends mostly on two factors:  how much exercise you do and your resting energy expenditure.  The energy spent on exercise is estimated by multiplying the resting energy expenditure by a factor, which is:",
-        "",
-        "0.2 for little or no exercise, ",
-        "0.375 for light exercise,",
-        "0.55 for moderate exercise,",
-        "0.75 for hard exercise but not every day",
-        "0.9 for daily hard exercise.",
-        "",
-        "Please change the node \"physical activity expenditure\" to be the product of resting energy expenditure and a new node, physical activity level.  Let's assume Joe does little exercise, so his physical activity level is 0.2. ",
-        "",
-        ""
-    ],
-    "givenModelNodes": [
-        {
-            "ID": "id1",
-            "inputs": [
-                {
-                    "ID": "id2",
-                    "label": ""
-                }
-            ],
-            "position": {
-                "x": 472,
-                "y": 82
-            },
-            "attemptCount": {
-                "description": 0,
-                "type": 0,
-                "initial": 0,
-                "units": 0,
-                "equation": 0,
-                "assitanceScore": 0
-            },
-            "status": {},
-            "name": "weight",
-            "description": "Joe's weight daily",
-            "type": "accumulator",
-            "initial": 150,
-            "units": "lbs",
-            "equation": "id2"
+    "task": {
+        "taskName": "eb4",
+        "time": {
+            "start": 0,
+            "end": 1000,
+            "step": 1,
+            "units": "days",
+            "integrationMethod": "Eulers Method"
         },
-        {
-            "ID": "id2",
-            "inputs": [
-                {
-                    "ID": "id3",
-                    "label": ""
+        "properties": {},
+        "image": {},
+        "taskDescription": [
+            "The more food you eat, the more energy it takes to digest it.  The expression \"thermic effect of food\" is used to describe the energy expended by our bodies in order to consume (bite, chew and swallow) and process (digest, transport, metabolize and store) food.",
+            "",
+            "A factor of 10% is generally used to account for the thermic effect of food. Thus, if you eat 500 calories of food, you will expend 50 calories processing it.  However, this is only a rough estimate, because the factor is different for different foods.  Processing protein requires the greatest expenditure of energy, with estimates ranging as high as 30%. Dietary fat, on the other hand, is so easily processed and turned into body fat that there is little thermic effect, perhaps only 2 or 3%. The amount of energy required to process carbohydrates falls between that of protein and fat. ",
+            "",
+            "Since we don't know much about Joe's diet, let's just use the default value of 10%.  Please change the node \"digestive activity expenditure\" to be the product of \"energy ingested\" and a parameter \"digestive energy factor\" with the value 0.10.",
+            "",
+            "",
+            "",
+            "Reference for this problem:",
+            "\"The Thermic Effect of Food.\" Calories Per Hour.  Web. 15 Sept. 2014. <http://www.caloriesperhour.com/tutorial_thermic.php>. ",
+            ""
+        ],
+        "givenModelNodes": [
+            {
+                "ID": "id1",
+                "inputs": [
+                    {
+                        "ID": "id2",
+                        "label": ""
+                    }
+                ],
+                "position": {
+                    "x": 459,
+                    "y": 68
                 },
-                {
-                    "ID": "id4",
-                    "label": "/"
-                }
-            ],
-            "position": {
-                "x": 469,
-                "y": 195
-            },
-            "attemptCount": {
-                "description": 0,
-                "type": 0,
-                "initial": 0,
-                "units": 0,
-                "equation": 0,
-                "assitanceScore": 0
-            },
-            "status": {},
-            "name": "weight change",
-            "description": "how much weight changes due to energy surplus or deficit",
-            "type": "function",
-            "units": "lbs",
-            "equation": "id3/id4"
-        },
-        {
-            "ID": "id3",
-            "inputs": [
-                {
-                    "ID": "id5",
-                    "label": ""
+                "attemptCount": {
+                    "description": 0,
+                    "type": 0,
+                    "initial": 0,
+                    "units": 0,
+                    "equation": 0,
+                    "assitanceScore": 0
                 },
-                {
-                    "ID": "id6",
-                    "label": "-"
-                }
-            ],
-            "position": {
-                "x": 471,
-                "y": 315
+                "status": {},
+                "name": "weight",
+                "description": "how much Joe weighs",
+                "type": "accumulator",
+                "initial": 150,
+                "units": "lbs",
+                "equation": "id2"
             },
-            "attemptCount": {
-                "description": 0,
-                "type": 0,
-                "initial": 0,
-                "units": 0,
-                "equation": 0,
-                "assitanceScore": 0
-            },
-            "status": {},
-            "name": "energy balance",
-            "description": "surplus (positive) or deficit (negative) energy per day",
-            "type": "function",
-            "units": "calories",
-            "equation": "id5-id6"
-        },
-        {
-            "ID": "id4",
-            "inputs": [],
-            "position": {
-                "x": 607.7451782226562,
-                "y": 120.74516296386719
-            },
-            "attemptCount": {
-                "description": 0,
-                "type": 0,
-                "initial": 0,
-                "units": 0,
-                "equation": 0,
-                "assitanceScore": 0
-            },
-            "status": {},
-            "name": "calories per pound",
-            "description": "calories stored as a pound of tissue",
-            "type": "parameter",
-            "parentNode": false,
-            "initial": 3500,
-            "units": "calories/lb"
-        },
-        {
-            "ID": "id5",
-            "inputs": [],
-            "position": {
-                "x": 606.7451782226562,
-                "y": 262.74517822265625
-            },
-            "attemptCount": {
-                "description": 0,
-                "type": 0,
-                "initial": 0,
-                "units": 0,
-                "equation": 0,
-                "assitanceScore": 0
-            },
-            "status": {},
-            "name": "energy ingested",
-            "description": "energy from ingestion of food per day",
-            "type": "parameter",
-            "parentNode": false,
-            "initial": 1989,
-            "units": "calories"
-        },
-        {
-            "ID": "id6",
-            "inputs": [
-                {
-                    "ID": "id7",
-                    "label": ""
+            {
+                "ID": "id2",
+                "inputs": [
+                    {
+                        "ID": "id3",
+                        "label": ""
+                    },
+                    {
+                        "ID": "id4",
+                        "label": "/"
+                    }
+                ],
+                "position": {
+                    "x": 465,
+                    "y": 207
                 },
-                {
-                    "ID": "id8",
-                    "label": ""
+                "attemptCount": {
+                    "description": 0,
+                    "type": 0,
+                    "initial": 0,
+                    "units": 0,
+                    "equation": 0,
+                    "assitanceScore": 0
                 },
-                {
-                    "ID": "id9",
-                    "label": ""
-                }
-            ],
-            "position": {
-                "x": 459,
-                "y": 461
+                "status": {},
+                "name": "weight change",
+                "description": "how much Joe's weight changes per day",
+                "type": "function",
+                "units": "lbs",
+                "equation": "id3/id4"
             },
-            "attemptCount": {
-                "description": 0,
-                "type": 0,
-                "initial": 0,
-                "units": 0,
-                "equation": 0,
-                "assitanceScore": 0
-            },
-            "status": {},
-            "name": "energy expended",
-            "description": "energy expended per day from all sources",
-            "type": "function",
-            "units": "calories",
-            "equation": "(id7+id8)+id9"
-        },
-        {
-            "ID": "id7",
-            "inputs": [
-                {
-                    "ID": "id9",
-                    "label": ""
+            {
+                "ID": "id3",
+                "inputs": [
+                    {
+                        "ID": "id5",
+                        "label": ""
+                    },
+                    {
+                        "ID": "id6",
+                        "label": "-"
+                    }
+                ],
+                "position": {
+                    "x": 445,
+                    "y": 363
                 },
-                {
-                    "ID": "id11",
-                    "label": ""
-                }
-            ],
-            "position": {
-                "x": 448,
-                "y": 594
+                "attemptCount": {
+                    "description": 0,
+                    "type": 0,
+                    "initial": 0,
+                    "units": 0,
+                    "equation": 0,
+                    "assitanceScore": 0
+                },
+                "status": {},
+                "name": "energy balance",
+                "description": "energy ingested minus energy burned",
+                "type": "function",
+                "units": "calories",
+                "equation": "id5-id6"
             },
-            "attemptCount": {
-                "description": 0,
-                "type": 0,
-                "initial": 0,
-                "units": 0,
-                "equation": 0,
-                "assitanceScore": 0
+            {
+                "ID": "id4",
+                "inputs": [],
+                "position": {
+                    "x": 582.7451782226562,
+                    "y": 70.74516296386719
+                },
+                "attemptCount": {
+                    "description": 0,
+                    "type": 0,
+                    "initial": 0,
+                    "units": 0,
+                    "equation": 0,
+                    "assitanceScore": 0
+                },
+                "status": {},
+                "name": "calories per pound",
+                "description": "calories stored in a pound",
+                "type": "parameter",
+                "parentNode": false,
+                "initial": 3500,
+                "units": "calories/lb"
             },
-            "status": {},
-            "name": "physical activity expenditure",
-            "description": "energy per day due to exercise",
-            "type": "function",
-            "units": "calories",
-            "equation": "id9*id11"
-        },
-        {
-            "ID": "id8",
-            "inputs": [],
-            "position": {
-                "x": 608.7451782226562,
-                "y": 420.74517822265625
+            {
+                "ID": "id5",
+                "inputs": [],
+                "position": {
+                    "x": 579.7451782226562,
+                    "y": 260.74517822265625
+                },
+                "attemptCount": {
+                    "description": 0,
+                    "type": 0,
+                    "initial": 0,
+                    "units": 0,
+                    "equation": 0,
+                    "assitanceScore": 0
+                },
+                "status": {},
+                "name": "energy ingested",
+                "description": "energy from food ingested",
+                "type": "parameter",
+                "parentNode": false,
+                "initial": 1989,
+                "units": "calories"
             },
-            "attemptCount": {
-                "description": 0,
-                "type": 0,
-                "initial": 0,
-                "units": 0,
-                "equation": 0,
-                "assitanceScore": 0
+            {
+                "ID": "id6",
+                "inputs": [
+                    {
+                        "ID": "id7",
+                        "label": ""
+                    },
+                    {
+                        "ID": "id8",
+                        "label": ""
+                    },
+                    {
+                        "ID": "id9",
+                        "label": ""
+                    }
+                ],
+                "position": {
+                    "x": 428,
+                    "y": 486
+                },
+                "attemptCount": {
+                    "description": 0,
+                    "type": 0,
+                    "initial": 0,
+                    "units": 0,
+                    "equation": 0,
+                    "assitanceScore": 0
+                },
+                "status": {},
+                "name": "energy expended",
+                "description": "energy burned all sources",
+                "type": "function",
+                "units": "calories",
+                "equation": "(id7+id8)+id9"
             },
-            "status": {},
-            "name": "digestive activity expenditure",
-            "description": "energy for digesting food",
-            "type": "parameter",
-            "parentNode": false,
-            "initial": 200,
-            "units": "calories"
-        },
-        {
-            "ID": "id9",
-            "inputs": [],
-            "position": {
-                "x": 220.7451629638672,
-                "y": 547.7451782226562
+            {
+                "ID": "id7",
+                "inputs": [
+                    {
+                        "ID": "id5",
+                        "label": ""
+                    },
+                    {
+                        "ID": "id10",
+                        "label": ""
+                    }
+                ],
+                "position": {
+                    "x": 594,
+                    "y": 417
+                },
+                "attemptCount": {
+                    "description": 0,
+                    "type": 0,
+                    "initial": 0,
+                    "units": 0,
+                    "equation": 0,
+                    "assitanceScore": 0
+                },
+                "status": {},
+                "name": "digestive activity expenditure",
+                "description": "energy burned while digesting food",
+                "type": "function",
+                "units": "calories",
+                "equation": "id5*id10"
             },
-            "attemptCount": {
-                "description": 0,
-                "type": 0,
-                "initial": 0,
-                "units": 0,
-                "equation": 0,
-                "assitanceScore": 0
+            {
+                "ID": "id8",
+                "inputs": [],
+                "position": {
+                    "x": 184,
+                    "y": 474
+                },
+                "attemptCount": {
+                    "description": 0,
+                    "type": 0,
+                    "initial": 0,
+                    "units": 0,
+                    "equation": 0,
+                    "assitanceScore": 0
+                },
+                "status": {},
+                "name": "resting energy expenditure",
+                "description": "energy burned by resting bodily functions",
+                "type": "parameter",
+                "parentNode": false,
+                "initial": 1400,
+                "units": "calories"
             },
-            "status": {},
-            "name": "resting energy expenditure",
-            "description": "how much energy expended per day for basic bodily functions",
-            "type": "parameter",
-            "parentNode": false,
-            "initial": 1400,
-            "units": "calories"
-        },
-        {
-            "ID": "id11",
-            "inputs": [],
-            "position": {
-                "x": 609.7451782226562,
-                "y": 578.7451782226562
+            {
+                "ID": "id9",
+                "inputs": [
+                    {
+                        "ID": "id8",
+                        "label": ""
+                    },
+                    {
+                        "ID": "id11",
+                        "label": ""
+                    }
+                ],
+                "position": {
+                    "x": 421,
+                    "y": 636
+                },
+                "attemptCount": {
+                    "description": 0,
+                    "type": 0,
+                    "initial": 0,
+                    "units": 0,
+                    "equation": 0,
+                    "assitanceScore": 0
+                },
+                "status": {},
+                "name": "physical activity expenditure",
+                "description": "energy burned by physical activity",
+                "type": "function",
+                "units": "calories",
+                "equation": "id8*id11"
             },
-            "attemptCount": {
-                "description": 0,
-                "type": 0,
-                "initial": 0,
-                "units": 0,
-                "equation": 0,
-                "assitanceScore": 0
+            {
+                "ID": "id10",
+                "inputs": [],
+                "position": {
+                    "x": 513.7451782226562,
+                    "y": 548.7451782226562
+                },
+                "attemptCount": {
+                    "description": 0,
+                    "type": 0,
+                    "initial": 0,
+                    "units": 0,
+                    "equation": 0,
+                    "assitanceScore": 0
+                },
+                "status": {},
+                "name": "digestive energy factor",
+                "description": "proportion of ingested energy required to digest it",
+                "type": "parameter",
+                "parentNode": false,
+                "initial": 0.1
             },
-            "status": {},
-            "name": "physical activity level",
-            "description": "represents how much exercise done per day",
-            "type": "parameter",
-            "parentNode": false,
-            "initial": 0.2,
-            "units": "calories/lb"
-        }
-    ],
-    "studentModelNodes": [
+            {
+                "ID": "id11",
+                "inputs": [],
+                "position": {
+                    "x": 592,
+                    "y": 622
+                },
+                "attemptCount": {
+                    "description": 0,
+                    "type": 0,
+                    "initial": 0,
+                    "units": 0,
+                    "equation": 0,
+                    "assitanceScore": 0
+                },
+                "status": {},
+                "name": "physical activity level",
+                "description": "how much physical exercise done daily",
+                "type": "parameter",
+                "parentNode": false,
+                "initial": 0.2
+            }
+        ],
+        "studentModelNodes": [
     {
         "ID": "id13",
         "inputs": [
@@ -353,8 +382,8 @@
             }
         ],
         "position": {
-            "x": 700,
-            "y": 500
+            "x": 690,
+            "y": 459
         },
         "status": {
             "description": {
@@ -523,38 +552,8 @@
         "ID": "id19",
         "inputs": [],
         "position": {
-            "x": 700,
-            "y": 650
-        },
-        "status": {
-            "description": {
-                "status": "correct",
-                "disabled": true
-            },
-            "type": {
-                "disabled": true,
-                "status": "correct"
-            },
-            "initial": {
-                "disabled": true,
-                "status": "correct"
-            },
-            "units": {
-                "disabled": true,
-                "status": "correct"
-            }
-        },
-        "descriptionID": "id9",
-        "type": "parameter",
-        "initial": 1400,
-        "units": "calories"
-    },
-    {
-        "ID": "id20",
-        "inputs": [],
-        "position": {
-            "x": 400,
-            "y": 500
+            "x": 681.7451782226562,
+            "y": 604.7451782226562
         },
         "status": {
             "description": {
@@ -576,15 +575,15 @@
         },
         "descriptionID": "id8",
         "type": "parameter",
-        "initial": 200,
+        "initial": 1400,
         "units": "calories"
     },
     {
-        "ID": "id21",
+        "ID": "id20",
         "inputs": [],
         "position": {
-            "x": 900,
-            "y": 500
+            "x": 400,
+            "y": 300
         },
         "status": {
             "description": {
@@ -598,7 +597,72 @@
         },
         "descriptionID": "id7",
         "type": "parameter"
+    },
+    {
+        "ID": "id21",
+        "inputs": [
+            {
+                "ID": "id19",
+                "label": ""
+            },
+            {
+                "ID": "id22",
+                "label": ""
+            }
+        ],
+        "position": {
+            "x": 896,
+            "y": 500
+        },
+        "status": {
+            "description": {
+                "status": "correct",
+                "disabled": true
+            },
+            "type": {
+                "disabled": true,
+                "status": "correct"
+            },
+			"units": {
+                "disabled": true,
+                "status": "correct"
+            }
+        },
+        "descriptionID": "id9",
+        "type": "function",
+        "equation": "id19*id22",
+        "units": "calories"
+    },
+    {
+        "ID": "id22",
+        "inputs": [],
+        "position": {
+            "x": 1058.7451171875,
+            "y": 549.7451782226562
+        },
+        "status": {
+            "description": {
+                "status": "correct",
+                "disabled": true
+            },
+            "type": {
+                "disabled": true,
+                "status": "correct"
+            },
+            "initial": {
+                "disabled": true,
+                "status": "correct"
+            },
+            "units": {
+                "disabled": true,
+                "status": "correct"
+            }
+        },
+        "descriptionID": "id11",
+        "type": "parameter",
+        "initial": 0.2,
+        "units": "calories/lb"
     }
 ]
-}
+    }
 }
