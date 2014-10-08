@@ -264,8 +264,11 @@ define([
 		// Function called when node editor is closed.
 		// This can be used as a hook for saving sessions and logging
 		closeEditor: function(){
-			this._model.active = this._model.given;
-			registry.byId("selectModel").set('value',"correct");
+			if(this._mode == "AUTHOR"){
+				//Reset to given on close of node editor
+				this._model.active = this._model.given;
+				registry.byId("selectModel").set('value',"correct");
+			}
 			console.log("++++++++++ entering closeEditor");
 			// Erase modifications to the control settingse.
 			// Enable all options in select controls.

@@ -616,9 +616,6 @@ define([
 						var regexp = "(" +input.ID +")([^0-9]?)";
 						var re = new RegExp(regexp);						 
 						equation = equation.replace(re, studentNodeID+"$2");						
-					}
-					else{
-						//alert("All inputs used must be added to student model");
 					}					
 				}));
 				this._model.student.setInputs(inputs, newNodeID);
@@ -674,7 +671,7 @@ define([
 		},		
 		
 		enableDisableFields: function(/*String*/modelType){
-			//enable disable fields in the node editor based on selected model value
+			//Summary: enable disable fields in the node editor based on selected model value
 			if(modelType == "given"){
 				registry.byId(this.controlMap.name).set("disabled",true);
 				registry.byId(this.controlMap.description).set("disabled",true);
@@ -694,7 +691,8 @@ define([
 				registry.byId(this.controlMap.root).set("disabled",false);								
 			}
 		},
-		enableDisableSetStudentNode : function(){
+		enableDisableSetStudentNode: function(){
+			//Summary: Enable Set student mode checkbox only when name and description are filled
 			var name = registry.byId(this.controlMap.name).value;
 			var desc = registry.byId(this.controlMap.description).value;
 			
@@ -705,14 +703,15 @@ define([
 				registry.byId(this.controlMap.student).set("disabled",true);				
 			}
 		},
-		updateStatus: function(/*String*/control, correctValue, newValue){
+		updateStatus: function(/*String*/control, /*String*/correctValue, /*String*/newValue){		
+			//Summary: Updates the status of the student model nodes 
 			var studentNodeID = this._model.student.getNodeIDFor(this.currentID);			
 			if(studentNodeID != null){
-				if(newValue != correctValue){
+				if(newValue != correctValue){ //If given value not same as correct Value 
 					this._model.student.setStatus(studentNodeID, control , {"disabled": false,"status":"incorrect"});
 				}
 				else{
-					this._model.student.setStatus(studentNodeID, "initial", {"disabled": true,"status":"correct"});
+					this._model.student.setStatus(studentNodeID, control, {"disabled": true,"status":"correct"});
 				}			
 			}
 		}	
