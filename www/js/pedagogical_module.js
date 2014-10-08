@@ -88,7 +88,7 @@ define([
 		],
 		lastFailure2: [
 			"Yellow means that you failed to match the author's answer too many times, so it is being shown to you.	You should figure out why it is correct so that next time your first choice will match the author's model.",
-			"Can you figure out why this is the right type for the node?"
+			"Can you figure out why is this the correct value for the node?"
 		],
 		erasedCorrect: [
 			"Your choice did not match the author's answer so it is being given to you. However, your previous work matched the author's answer. It will continue to be marked this way."
@@ -470,7 +470,7 @@ define([
 				}else{
 					interpretation = "premature";
 				}
-				if(interpretation !== "optimal" && this.descriptionCounter > 2){
+				if(interpretation !== "optimal" && interpretation !== "premature" && this.descriptionCounter > 2){
 					interpretation = "lastFailure";
 				}
 				break;

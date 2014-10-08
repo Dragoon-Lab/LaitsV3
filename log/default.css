@@ -9,7 +9,7 @@ th, td{text-align:center; max-width:90px; min-width:90px;}
 
 .hidden{display:none;}
 .visible{display:block;}
-.green{background-color:#00FF00;}
+.green{background-color: #00FF00;}
 .newLine{display:block;	padding-top: 15px;}
 .border{border: 1px solid #000000; padding:0 10px 0 10px;}
 .yellow{background-color:yellow;}
@@ -17,3 +17,4 @@ th, td{text-align:center; max-width:90px; min-width:90px;}
 .clear{clear:both;}
 .left{float:left;}
 .wrapper{width:50%;}
+.light-blue{background-color: #cde7f0;}
