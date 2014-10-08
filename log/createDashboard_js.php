@@ -1,4 +1,23 @@
 <?php
+/*
+     Dragoon Project
+     Arizona State University
+     (c) 2014, Arizona Board of Regents for and on behalf of Arizona State University
+     
+     This file is a part of Dragoon
+     Dragoon is free software: you can redistribute it and/or modify
+     it under the terms of the GNU Lesser General Public License as published by
+     the Free Software Foundation, either version 3 of the License, or
+     (at your option) any later version.
+     
+     Dragoon is distributed in the hope that it will be useful,
+     but WITHOUT ANY WARRANTY; without even the implied warranty of
+     MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+     GNU Lesser General Public License for more details.
+     
+     You should have received a copy of the GNU Lesser General Public License
+     along with Dragoon.  If not, see <http://www.gnu.org/licenses/>.
+*/
 	include "logAnalysis.php";
 	include "logProblemObject.php";
 
@@ -54,6 +73,7 @@
 			$totalChecks; $incorrectChecks; $errorRatio;
 			$currentProperty;
 			$nodeUpdate; $timeSkip;
+			$currentTime = date("c");
 			while($row = $result->fetch_assoc()){
 				if($resetVariables){
 					$sessionTime = 0; $outOfFocusTime = 0; $timeWasted=0;
@@ -282,7 +302,8 @@
 					}
 				} else if($method === "window-focus"){
 					$type = $newMessage['type'];
-					if($type === "in-focus"){
+					//echo print_r($row)." reset variable -> ".$resetVariables." <- <br/>";
+					if($newMessage['time'] > 1 && $type === "in-focus"){
 						//window came back in focus
 						$outOfFocusTime += $stepTime; // as previous message will be for out of focus.
 					}
@@ -294,6 +315,11 @@
 				if($resetVariables){
 					if($totalChecks >0){
 						$errorRatio = $incorrectChecks/$totalChecks;
+					}
+
+					$diff = strtotime($currentTime) - strtotime($row['time']) - $newMessage['time'];
+					if($upObject->sessionRunning && $diff > 7200){
+						$upObject->sessionRunning = false;
 					}
 
 					$upObject->wastedTime = $timeWasted/60;
@@ -313,6 +339,11 @@
 			
 			if($totalChecks >0){
 				$errorRatio = $incorrectChecks/$totalChecks;
+			}
+
+			$diff = strtotime($currentTime) - strtotime($row['time']) - $newMessage['time'];
+			if($upObject->sessionRunning && $diff > 7200){
+				$upObject->sessionRunning = false;
 			}
 
 			$upObject->wastedTime = $timeWasted/60;
