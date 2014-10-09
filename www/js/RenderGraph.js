@@ -292,6 +292,13 @@ define([
 				);
 				this.chart[id].render();
 			}, this);
+			var paneText = "";
+			paneText += this.initTable();
+			paneText += this.setTableHeader();
+			paneText += this.setTableContent();
+			paneText += this.closeTable();
+			
+			this.contentPane.setContent(paneText);
 		},
 		initTable: function(){
 			return "<div align='center'>" + "<table class='solution'>";
