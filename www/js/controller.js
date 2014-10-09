@@ -264,6 +264,11 @@ define([
 		// Function called when node editor is closed.
 		// This can be used as a hook for saving sessions and logging
 		closeEditor: function(){
+			if(this._mode == "AUTHOR"){
+				//Reset to given on close of node editor
+				this._model.active = this._model.given;
+				registry.byId("selectModel").set('value',"correct");
+			}
 			console.log("++++++++++ entering closeEditor");
 			// Erase modifications to the control settingse.
 			// Enable all options in select controls.
@@ -514,7 +519,7 @@ define([
 				initialNode.set("value", "");
 				this._model.active.setInitial(this.currentID, "");
 			}
-			if(type == "parameter" && this._model.active.getEquation(this.currentID)){
+			if(type == "parameter"){
 				var equationNode = registry.byId(this.controlMap.equation);
 				equationNode.set("value", "");
 				//changing the equation value does not call the handler so setting the value explicitly using set equation.
@@ -583,7 +588,6 @@ define([
 					w.set('status','');
 				}
 			}));
-
 		},
 		plusHandler: function(){
 			console.log("****** plus button");
@@ -739,6 +743,7 @@ define([
 			 */
 			var widget = registry.byId(this.controlMap.equation);
 			var inputEquation = widget.get("value");
+					
 			var parse = null;
 			if (inputEquation == "") {
 				directives.push({id: 'message', attribute: 'append', value: 'There is no equation to check.'});

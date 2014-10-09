@@ -204,8 +204,10 @@ define([
 			if(query.m == "AUTHOR"){
 				var db = registry.byId("descButton");
 				db.set("disabled", false);
-                db = registry.byId("saveButton");   
-                db.set("disabled", false);
+                		db = registry.byId("saveButton");
+                		db.set("disabled", false);
+				db = registry.byId("previewButton");
+				db.set("disabled", false);
 
 				// Description button wiring
 				menu.add("descButton", function(){
@@ -217,6 +219,14 @@ define([
 				});
 				on(registry.byId("descCloseButton"), "click", function(){
 					registry.byId("authorDescDialog").hide();
+				});
+				on(registry.byId("previewButton"),"click",function(){
+					var user = query.u;
+					var timestamp = new Date().getTime();
+					var url = document.URL.replace("u="+query.u,"u="+query.u+"-"+timestamp);
+					//console.log(url);
+					url=url+"&l=false";
+					window.open(url.replace("m=AUTHOR","m=STUDENT"),"newwindow");
 				});
 
                 // Rename button wiring
