@@ -63,6 +63,7 @@ define([
 					properties: {},
 					image: {},
 					taskDescription: "",
+					lessonsLearned: "",
 					givenModelNodes: [],
 					studentModelNodes: []
 				}};
@@ -248,6 +249,9 @@ define([
 			},
 			getTaskDescription: function(){
 				return this.model.task.taskDescription;
+			},
+			getTaskLessonsLearned : function() {
+				return this.model.task.lessonsLearned;
 			},
 			getOptimalNode: function(/*string*/ studentID){
 				// Summary: Returns the next optimal node, first checking for children

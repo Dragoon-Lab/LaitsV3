@@ -106,6 +106,8 @@ define([
 
 		ready(function(){
 
+			var isLessonLearnedShown = false;
+			
 			var drawModel = new drawmodel(givenModel.active);
 			drawModel.setLogging(session);
 
@@ -274,7 +276,6 @@ define([
 			 This should be put in its own module.
 			 */
 			
-			var isLessonLearnedShown = false;
 			// show graph when button clicked
 			menu.add("graphButton", function(){
 				console.debug("button clicked");
@@ -287,15 +288,12 @@ define([
 					name: "graph-button", 
 					problemComplete: problemComplete
 				});
-				graph.show();
 				if(!isLessonLearnedShown) {
-					var button = dojo.byId("lessonsLearnedButton");
-					var event = document.createEvent("HTMLEvents");
-			        event.initEvent("click", false, true);
-			        console.debug(event);
-			        button.dispatchEvent(event);
-					isLessonLearnedShown = true;
+					graph.show(givenModel.getTaskLessonsLearned());
+				} else {
+					graph.show("");
 				}
+				isLessonLearnedShown = true;
 			});
 
 			
@@ -307,15 +305,12 @@ define([
 					type: "menu-choice", 
 					name: "table-button"
 				});
-				table.show();
 				if(!isLessonLearnedShown) {
-					var button = dojo.byId("lessonsLearnedButton");
-					var event = document.createEvent("HTMLEvents");
-			        event.initEvent("click", false, true);
-			        console.debug(event);
-			        button.dispatchEvent(event);
-					isLessonLearnedShown = true;
+					table.show(givenModel.getTaskLessonsLearned());
+				} else {
+					table.show("");
 				}
+				isLessonLearnedShown = true;
 			});
             //the solution div which shows graph/table when closed
             //should disable all the pop ups
@@ -348,8 +343,11 @@ define([
 			lessonsLearnedButton.set("disabled", true);
 			//Bind lessonsLearnedButton to the click event	
 			menu.add("lessonsLearnedButton", function(){
-				console.debug("Lessons Learned Button button is clicked");
-				alert("Lesson Learned Button Clicked.");
+				var lessonLearnedDialog = registry.byId("lesson");
+				var titleMsg = "Lessons Learned";
+				lessonLearnedDialog.set("content", givenModel.getTaskLessonsLearned()[0]);
+				lessonLearnedDialog.set("title", titleMsg);
+				lessonLearnedDialog.show();
 			});
             /*
              Add link to intro video

@@ -364,8 +364,26 @@ define([
 		},
 
 		/* @brief: display the graph*/
-		show: function(){
+		show: function(contentMsg){
 			this.dialogWidget.show();
+			var content = this.dialogWidget.get("content").toString();
+			if(content.search("There isn't anything to plot. Try adding some accumulator or functionnodes.") >= 0 
+					||content.search("There is nothing to show in the table.	Please define some quantitites.") >= 0) {
+				return;
+			}
+			var lessonsLearnedButton = registry.byId("lessonsLearnedButton");   
+			lessonsLearnedButton.set("disabled", false);
+			lang.hitch(this,this.dialogWidget.connect(this.dialogWidget,"hide",function(e) {
+				if(contentMsg === "") {
+					return;
+				}
+				var lessonLearnedDialog = registry.byId("lesson");
+				var titleMsg = "Lessons Learned";
+				lessonLearnedDialog.set("content", contentMsg[0]);
+				lessonLearnedDialog.set("title", titleMsg);
+				lessonLearnedDialog.show();
+				contentMsg="";
+			}));
 		},
 
 		setLogging: function(/*string*/ logging){
