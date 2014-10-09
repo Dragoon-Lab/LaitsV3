@@ -35,10 +35,11 @@ define([
 	"dojox/charting/widget/Legend",
 	"./calculations",
 	"dijit/_base",
-	"dijit/layout/TabContainer",
 	"dijit/layout/ContentPane",
+	"dijit/layout/TabContainer",
+	
 	"dojo/domReady!"
-], function(array, declare, lang, on, domAttr, registry, Chart, Default, Lines, Grid, Legend, calculations, base){
+], function(array, declare, lang, on, domAttr, registry, Chart, Default, Lines, Grid, Legend, calculations, base, contentPane){
 
 	// The calculations constructor is loaded before the RenderGraph constructor
 	return declare(calculations, {
@@ -102,10 +103,11 @@ define([
 			
 			/*this.dialogContent += "<div data-dojo-type='dijit/layout/TabContainer' id='testDiv'>"  style='overflow:auto; width:50%; float:left; height: 100%; background-color: #FFFFFF'>
 									"<div data-dojo-type='dijit/layout/ContentPane' data-dojo-props='title:Tab 1'>";*/
-
-
-		 	this.dialogContent += "<div data-dojo-type=''dijit/layout/TabContainer'>
-			<div data-dojo-type='dijit/layout/ContentPane' data-dojo-props='title:\"Tab 1\"'>"
+		 	/*this.dialogContent += "<div data-dojo-type=''dijit/layout/TabContainer'>
+			<div data-dojo-type='dijit/layout/ContentPane' data-dojo-props='title:\"Tab 1\"'>"*/
+			//this.dialogContent += "<div data-dojo-attach-point='containerNode' class = 'dijitDialogPaneContent dijitAlignCenter'>";
+			this.dialogContent += "<div data-dojo-type= 'dijit/layout/ContentPane' style='overflow:auto; width:50%; float:left; height: 700px; background-color: #FFFFFF'>"
+			this.dialogContent += "<div data-dojo-type='dijit/layout/TabContainer' style='overflow:auto; height:600px; width:100%'><div data-dojo-type='dijit/layout/ContentPane' data-dojo-props='title:\"Graph\"'>";
 			array.forEach(this.active.plotVariables, function(id){
 				var show = this.model.active.getType(id) == "accumulator";
 				var checked = show ? " checked='checked'" : "";
@@ -116,12 +118,14 @@ define([
 				this.dialogContent += "<div class='legend' id='legend" + id + "'></div>";
 			}, this);
 
-			this.dialogContent += "</div>
-									<div data-dojo-type='dijit/layout/ContentPane' data-dojo-props='title:\"Tab 2\"'>
-										test test test test test
-									</div>
-									</div>"
-									//<div style='overflow:auto; width:50%; float:right; height: 100%; background-color: #FFFFFF'>";
+			this.dialogContent += "</div><div data-dojo-type='dijit/layout/ContentPane' data-dojo-props='title:\"Table\"'>"
+
+			//Render table here
+			this.dialogContent += "<div id='table'></div>";
+
+			this.dialogContent += "</div></div></div>"
+
+			this.dialogContent += "<div data-dojo-type='dijit/layout/ContentPane' style='overflow:auto; width:40%; float:right; height: 100%; background-color: #FFFFFF'>";
 
 			//plot sliders
 			this.createSliderAndDialogObject();
@@ -129,7 +133,23 @@ define([
 			this.dialogContent += "</div>";
 			var charts = {};
 			var legends = {};
+			var paneText="";
 
+			/* List of variables to plot: Include functions */
+			this.plotVariables = this.active.timeStep.xvars.concat(
+				this.active.timeStep.functions);
+			if(this.plotVariables.length>0){ //we check the length of object, if there are nodes , then we proceed else give an error and return
+				paneText += this.initTable();
+				paneText += this.setTableHeader();
+				paneText += this.setTableContent();
+				paneText += this.closeTable();
+			}else{
+				//Error telling there are no nodes and Table cant be rendered
+				paneText = "There is nothing to show in the table.	Please define some quantitites."; 
+			}
+			this.contentPane = new contentPane({
+				content:paneText
+			}, "table");
 
 
 			if(this.active.plotVariables.length > 0){ //we check the length of object, if there are nodes, then we proceed else give an error and return
@@ -272,6 +292,61 @@ define([
 				);
 				this.chart[id].render();
 			}, this);
+		},
+		initTable: function(){
+			return "<div align='center'>" + "<table class='solution'>";
+		},
+		
+		/*
+		 * @brief: function to close table dom
+		 */
+		closeTable: function(){
+			return "</table>"+"</div>";
+		},
+		
+		/*
+		 * @brief: function to set headers of table
+		 */
+		setTableHeader: function(){
+			var i, tableString = "";
+			tableString += "<tr>";
+			//setup xunit (unit of timesteps)
+			tableString += "<th>" + this.labelString() + "</th>";
+			array.forEach(this.plotVariables, function(id){
+				tableString += "<th>" + this.labelString(id) + "</th>";
+			}, this);
+			tableString += "</tr>";
+			return tableString;
+		},
+		
+		/*
+		 * @brief: function to set contents of table according to node values
+		 */
+		setTableContent: function(){
+			var tableString="";
+			var solution = this.findSolution(true, this.plotVariables); // Return value from findSlution in calculation, returns an array and we check for status and any missing nodes
+			if(solution.status=="error" && solution.type=="missing"){
+				this.dialogWidget.set("content", "<div>Not all nodes have been completed. For example, \""+solution.missingNode+"\" is not yet fully defined."); //We show the error message like "A Node is Missing"
+				// Not sure what the return should be here
+				return "";
+			}
+			
+			for(var i=0; i<solution.times.length; i++){
+				tableString += "<tr>";
+				tableString += "<td align='center'>" + solution.times[i].toPrecision(4) + "</td>";
+				//set values in table according to their table-headers
+				array.forEach(solution.plotValues, function(value){
+					tableString += "<td align='center'>" + value[i].toPrecision(3) + "</td>";
+				});
+				tableString += "</tr>";
+			}
+			return tableString;
 		}
+		
+
+
+
+
+
 	});
 });
