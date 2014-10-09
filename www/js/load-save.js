@@ -70,19 +70,10 @@ define([
 			console.log("New sessionId = ", this.sessionId);
 			this._startTime = (new Date()).getTime();
 			this.path = path || "";
-			this.logging = params.l=="false" ? false : true;
+			this.doLogging = params.l=="false" ? false : true;
+			
 			// Create a session
-			if(params.t){
-				//means a teacher has opened the session
-				//changing the name of the user as well as the section
-				var temp = dojo.clone(params);
-
-				temp.u = params.u + '_check';
-				temp.s = params.s + '_check';
-				this.log("start-session", temp);
-			} else {
-				this.log("start-session", params);
-			}
+			this.log("start-session", params);
 			
 		},
 
@@ -144,7 +135,7 @@ define([
 		//used to create session, in case of renaming problem use new session
 		log: function(method, params, rsessionId){ //rsessionId for saving new problem
 			// Add time to log message (allowing override).
-			if(this.logging){
+			if(this.doLogging){
 				var p = lang.mixin({time: this.getTime()}, params);
 			
 				return xhr.post(this.path + "logger.php", {
