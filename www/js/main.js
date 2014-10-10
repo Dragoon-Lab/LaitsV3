@@ -152,6 +152,9 @@ define([
                 "this node's inputs, then their inputs, and so forth until the model is complete.");
 			makeTooltip('questionMarkShare', "When checked, your problem appears in the list <br>" +
                 "of custom problems for other users to solve.");
+            makeTooltip('questionMarkURL', "If you wish to use an image from your computer, <br>" +
+                "you must first upload it to a website and then copy <br>" +
+                "the URL of the image into this box.");
 
 			/*
 			 Connect node editor to "click with no move" events.
