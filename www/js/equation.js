@@ -36,6 +36,7 @@ define([
 
 	return {
 		parse: function(equation){
+			//Check for pulse or pulsetrain function
 			return Parser.parse(equation);
 		},
 		isVariable: Parser.isVariable,
@@ -422,7 +423,7 @@ define([
 			return sorted;
 		},
 		
-		evaluateTimeStep:  function(x){
+		evaluateTimeStep:  function(x, time){
 			// Summary:	 evaluate model at some time step.
 			// Description:	 The rationale behind this notation is that the 
 			//	  numerical integration routine should know nothing about 
@@ -442,16 +443,22 @@ define([
 			}
             lang.mixin(variables, this.parameters);
 			array.forEach(this.functions, function(id){
+<<<<<<< HEAD
                 variables[id] = this.parse[id].evaluate(variables);
+=======
+				variables[id] = this.parse[id].evaluate(variables , time);
+>>>>>>> dillanButler
 			}, this);
 			return array.map(this.xvars, function(id){
-				return this.parse[id].evaluate(variables);
+				return this.parse[id].evaluate(variables , time);
 			}, this);		
 		},
 		
 		setLogging: function(/*string*/ logging){
 			this.logging = logging;
 		}
+
+
 		
 	};
 });
