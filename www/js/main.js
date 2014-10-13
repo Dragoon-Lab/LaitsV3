@@ -67,6 +67,11 @@ define([
 	
 	// Start up new session and get model object from server
 	var session = new loadSave(query);
+	var sesssion = new loadSave(query);
+	session.params.z = "sachin";
+	console.log(session.params);
+	console.log(sesssion.params);
+	
     console.log("session is",session);
 	logging.setSession(session);  // Give logger message destination
 	session.loadProblem(query).then(function(solutionGraph){
@@ -105,8 +110,6 @@ define([
 		controllerObject.setState(state);
 
 		ready(function(){
-
-			var isLessonLearnedShown = false;
 			
 			var drawModel = new drawmodel(givenModel.active);
 			drawModel.setLogging(session);
@@ -298,12 +301,7 @@ define([
 					name: "graph-button", 
 					problemComplete: problemComplete
 				});
-				if(!isLessonLearnedShown) {
-					graph.show(givenModel.getTaskLessonsLearned());
-				} else {
-					graph.show("");
-				}
-				isLessonLearnedShown = true;
+				graph.show();
 			});
 
 			
@@ -315,12 +313,7 @@ define([
 					type: "menu-choice", 
 					name: "table-button"
 				});
-				if(!isLessonLearnedShown) {
-					table.show(givenModel.getTaskLessonsLearned());
-				} else {
-					table.show("");
-				}
-				isLessonLearnedShown = true;
+				table.show();
 			});
             //the solution div which shows graph/table when closed
             //should disable all the pop ups
@@ -348,9 +341,6 @@ define([
 				});
 			});
 
-			//Disable the lessonsLearnedButton
-			var lessonsLearnedButton = registry.byId("lessonsLearnedButton");   
-			lessonsLearnedButton.set("disabled", true);
 			//Bind lessonsLearnedButton to the click event	
 			menu.add("lessonsLearnedButton", function(){
 				var lessonLearnedDialog = registry.byId("lesson");
