@@ -940,10 +940,8 @@ define([
 				this.disableHandlers = false;
 			}));
 			var nodeForumBut = registry.byId("nodeForumButton");
-<<<<<<< HEAD
 			var check_desc=this._model.active.getGivenID(id);
 			if(this._forumparams && check_desc && this._model.given.getDescription(check_desc)){
-=======
 			try{
 				var check_desc=this._model.active.getGivenID(id);
 			}
@@ -952,13 +950,13 @@ define([
 				console.log(err);
 			}
 			if(this._forumparams && this._model.given.getDescription(check_desc)){
->>>>>>> dillanButler
 				nodeForumBut.set("disabled", false);
 				forum.activateForum(this._model, this.currentID, this._forumparams,this.logging);
 			}else{
 				//In case there are many nodes,
 				//make sure forum button is disabled
 				nodeForumBut.set("disabled", true);
+			}
 			}
 		},
 
