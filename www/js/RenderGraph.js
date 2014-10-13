@@ -37,6 +37,7 @@ define([
 	"dijit/_base",
 	"dijit/layout/ContentPane",
 	"dijit/layout/TabContainer",
+	"dojo/parser",
 	
 	"dojo/domReady!"
 ], function(array, declare, lang, on, domAttr, registry, Chart, Default, Lines, Grid, Legend, calculations, base, contentPane){
@@ -107,7 +108,7 @@ define([
 			<div data-dojo-type='dijit/layout/ContentPane' data-dojo-props='title:\"Tab 1\"'>"*/
 			//this.dialogContent += "<div data-dojo-attach-point='containerNode' class = 'dijitDialogPaneContent dijitAlignCenter'>";
 			this.dialogContent += "<div data-dojo-type= 'dijit/layout/ContentPane' style='overflow:auto; width:50%; float:left; height: 700px; background-color: #FFFFFF'>"
-			this.dialogContent += "<div data-dojo-type='dijit/layout/TabContainer' style='overflow:auto; height:600px; width:100%'><div data-dojo-type='dijit/layout/ContentPane' data-dojo-props='title:\"Graph\"'>";
+			this.dialogContent += "<div data-dojo-type='dijit/layout/TabContainer' style='overflow:auto; height:90%; width:100%'><div data-dojo-type='dijit/layout/ContentPane' data-dojo-props='title:\"Graph\"'>";
 			array.forEach(this.active.plotVariables, function(id){
 				var show = this.model.active.getType(id) == "accumulator";
 				var checked = show ? " checked='checked'" : "";
@@ -179,13 +180,13 @@ define([
 					}
 					//plot chart for student node
 					charts[id].addSeries(
-						"Variable solution",
+						"Your solution",
 						this.formatSeriesForChart(activeSolution, k),
 						{stroke: "green"}
 					);
-					if(this.mode != "AUTHOR" && this.given.plotVariables[k]){
+					if(this.mode != "AUTHOR"  && this.mode != "EDITOR" && this.given.plotVariables[k]){
 						charts[id].addSeries(
-							"correct solution",
+							"Author's solution",
 							this.formatSeriesForChart(givenSolution, k), {stroke: "red"}
 						);
 					}
