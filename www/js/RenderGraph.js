@@ -128,10 +128,18 @@ define([
 			this.dialogContent += "</div></div></div>"
 
 			this.dialogContent += "<div data-dojo-type='dijit/layout/ContentPane' style='overflow:auto; width:40%; float:right; height: 100%; background-color: #FFFFFF'>";
-
+			//text for correctness of solution
+			if(this.mode != "AUTHOR"  && this.mode != "EDITOR")
+			{
+				if(this.model.isCompleteFlag)
+				{
+					this.dialogContent += "<font color='green'>Congratulations, your model's behavior matches the author's</font><br>";
+				}
+				else
+					this.dialogContent += "<font color='red'>Unfortunately, your model's behavior does not match the author's</font><br>";
+			}
 			//plot sliders
 			this.createSliderAndDialogObject();
-
 			this.dialogContent += "</div>";
 			var charts = {};
 			var legends = {};
@@ -299,12 +307,13 @@ define([
 			//update and render the charts
 			array.forEach(this.active.plotVariables, function(id, k){
 				this.chart[id].updateSeries(
-					"Variable solution",
+					"Your solution",
 					this.formatSeriesForChart(activeSolution, k),
 					{stroke: "green"}
 				);
 				this.chart[id].render();
 			}, this);
+
 			var paneText = "";
 			paneText += this.initTable();
 			paneText += this.setTableHeader();
@@ -362,11 +371,5 @@ define([
 			}
 			return tableString;
 		}
-		
-
-
-
-
-
 	});
 });
