@@ -41,6 +41,8 @@ define([
 			// Returns:	 An object containing times and values:
 			//	   {times: [t1, t2, ...], values: [[x1, x2, ...], 
 			//									   [y1, y2, ....], ...]}
+
+			console.log("eulers method called");
 			var i, j, n = initial.length, gradient;
 			var t = times.start, values = initial.slice(0);
 			var ret = {
@@ -49,7 +51,7 @@ define([
 			};
 			for(t = times.start, j=0; t<times.end; t += times.step, j++){
 				if(j>0){
-					gradient = f.call(env, values);;
+					gradient = f.call(env, values, t);;
 					for(i=0; i<n; i++){
 						values[i] += gradient[i]*times.step;
 					}
@@ -60,7 +62,7 @@ define([
 					// console.log("ret.values", ret.times, ret.values[i]);
 				}
 			}
-			console.log("eulers method called");
+			console.log(ret);
 			return ret;
 		},
 		midpointMethod: function(env, f, initial, times){
