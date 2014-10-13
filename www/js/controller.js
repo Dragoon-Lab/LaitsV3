@@ -264,6 +264,11 @@ define([
 		// Function called when node editor is closed.
 		// This can be used as a hook for saving sessions and logging
 		closeEditor: function(){
+			if(this._mode == "AUTHOR"){
+				//Reset to given on close of node editor
+				this._model.active = this._model.given;
+				registry.byId("selectModel").set('value',"correct");
+			}
 			console.log("++++++++++ entering closeEditor");
 			// Erase modifications to the control settingse.
 			// Enable all options in select controls.
@@ -334,7 +339,7 @@ define([
 			var nodeName = graphObjects.getNodeName(this._model.active,nodeID);
 			if(dom.byId(nodeID + 'Label')){
 				domConstruct.place(nodeName, nodeID + 'Label', "replace");
-			}else{
+			}else if(nodeName){
 				domConstruct.place(nodeName, nodeID);
 			}
 		},
@@ -512,8 +517,9 @@ define([
 			if(type == "function" && typeof this._model.active.getInitial(this.currentID) === "number"){
 				var initialNode = registry.byId(this.controlMap.initial);
 				initialNode.set("value", "");
+				this._model.active.setInitial(this.currentID, "");
 			}
-			if(type == "parameter" && this._model.active.getEquation(this.currentID)){
+			if(type == "parameter"){
 				var equationNode = registry.byId(this.controlMap.equation);
 				equationNode.set("value", "");
 				//changing the equation value does not call the handler so setting the value explicitly using set equation.
@@ -582,7 +588,6 @@ define([
 					w.set('status','');
 				}
 			}));
-
 		},
 		plusHandler: function(){
 			console.log("****** plus button");
@@ -738,6 +743,7 @@ define([
 			 */
 			var widget = registry.byId(this.controlMap.equation);
 			var inputEquation = widget.get("value");
+					
 			var parse = null;
 			if (inputEquation == "") {
 				directives.push({id: 'message', attribute: 'append', value: 'There is no equation to check.'});
@@ -787,6 +793,27 @@ define([
 						directives.push({id: 'message', attribute: 'append', value: "You cannot use '" + variable + "' in the equation. Function nodes cannot reference themselves."});
 						this.logging.log("solution-step", {
 							type: "self-referencing-function",
+							node: this._model.active.getName(this.currentID),
+							nodeID: this.currentID,
+							property: "equation",
+							value: inputEquation,
+							correctResult: this._model.given.getEquation(this.currentID),
+							checkResult: "INCORRECT"
+						});
+					}
+
+					//check if accumulator has a reference to itself as per the Trello card https://trello.com/c/0aqmwqqG
+					if(givenID && this._model.active.getType(this.currentID) === "accumulator" && 
+						givenID === mapID.call(this._model.active, this.currentID)){
+						cancelUpdate = true;
+						directives.push({id: 'equation', attribute: 'status', value: 'incorrect'});
+						directives.push({
+							id: 'crisisAlert',
+							attribute: 'open',
+							value: "The old value of the accumulator is already included in the expression, so you don't have to mention it in the expression.  Only put an expression for the change in the accumulators value.", 
+						});
+						this.logging.log("solution-step", {
+							type: "self-referencing-accumulator",
 							node: this._model.active.getName(this.currentID),
 							nodeID: this.currentID,
 							property: "equation",
@@ -913,6 +940,10 @@ define([
 				this.disableHandlers = false;
 			}));
 			var nodeForumBut = registry.byId("nodeForumButton");
+<<<<<<< HEAD
+			var check_desc=this._model.active.getGivenID(id);
+			if(this._forumparams && check_desc && this._model.given.getDescription(check_desc)){
+=======
 			try{
 				var check_desc=this._model.active.getGivenID(id);
 			}
@@ -921,6 +952,7 @@ define([
 				console.log(err);
 			}
 			if(this._forumparams && this._model.given.getDescription(check_desc)){
+>>>>>>> dillanButler
 				nodeForumBut.set("disabled", false);
 				forum.activateForum(this._model, this.currentID, this._forumparams,this.logging);
 			}else{
@@ -1026,13 +1058,22 @@ define([
 			array.forEach(directives, function(directive) {
 				if(!noModelUpdate)
 					this.updateModelStatus(directive);
+
 				if (this.widgetMap[directive.id]) {
 					var w = registry.byId(this.widgetMap[directive.id]);
 					if (directive.attribute == 'value') {
 						w.set("value", directive.value, false);
+                        if(w.id == 'typeId'){
+                            this.updateType(directive.value);
+                        } else if(w.id == 'initialValue'){
+                            this._model.active.setInitial(this.currentID, directive.value);
+                        } else if(w.id == 'equationBox'){
+                        	this.equationSet(directive.value);
+                        }
+
 						// Each control has its own function to update the
 						// the model and the graph.
-						this[directive.id+'Set'].call(this, directive.value);
+						//this[directive.id+'Set'].call(this, directive.value);
 					}else{
 						w.set(directive.attribute, directive.value);
 					}

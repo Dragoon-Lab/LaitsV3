@@ -67,6 +67,7 @@ define([
 	
 	// Start up new session and get model object from server
 	var session = new loadSave(query);
+    console.log("session is",session);
 	logging.setSession(session);  // Give logger message destination
 	session.loadProblem(query).then(function(solutionGraph){
 		
@@ -133,8 +134,8 @@ define([
 				}
 				
 				var id = givenModel.active.addNode();
-				drawModel.addNode(givenModel.active.getNode(id));
-				controllerObject.logging.log('ui-action', {type: "menu-choice", name: "create-node"});		
+				controllerObject.logging.log('ui-action', {type: "menu-choice", name: "create-node"});
+				drawModel.addNode(givenModel.active.getNode(id));		
 				controllerObject.showNodeEditor(id);
 			});
 			
@@ -188,7 +189,7 @@ define([
 			});
 
 			// checks if forumurl is present
-			if(query.f) {
+			if(query.f && query.fe == "true") {
 				//Enable the forum button in the menu
 				var forumBut=registry.byId("forumButton");
 				forumBut.set("disabled", false);
@@ -200,6 +201,10 @@ define([
 			var descObj = new description(givenModel);
 			if(query.m == "AUTHOR"){
 				var db = registry.byId("descButton");
+				db.set("disabled", false);
+                		db = registry.byId("saveButton");
+                		db.set("disabled", false);
+				db = registry.byId("previewButton");
 				db.set("disabled", false);
 
 				// Description button wiring
@@ -213,6 +218,33 @@ define([
 				on(registry.byId("descCloseButton"), "click", function(){
 					registry.byId("authorDescDialog").hide();
 				});
+				on(registry.byId("previewButton"),"click",function(){
+					var user = query.u;
+					var timestamp = new Date().getTime();
+					var url = document.URL.replace("u="+query.u,"u="+query.u+"-"+timestamp);
+					//console.log(url);
+					url=url+"&l=false";
+					window.open(url.replace("m=AUTHOR","m=STUDENT"),"newwindow");
+				});
+
+                // Rename button wiring
+                menu.add("saveButton", function(){
+                    registry.byId("authorSaveDialog").show();
+                });
+                aspect.after(registry.byId('authorSaveDialog'), "hide", function(){
+                    console.log("Rename and Save Problem edits");
+                    // Save problem
+		   var problemName = registry.byId("authorSaveProblem").value;
+		   var groupName = registry.byId("authorSaveGroup").value;
+		   if(problemName&&problemName=='' || groupName&&groupName==''){
+			alert('Missing input ');
+			return; 
+		    }
+		   session.saveAsProblem(givenModel.model,problemName,groupName);	
+                });
+                on(registry.byId("saveCloseButton"), "click", function(){
+                    registry.byId("authorSaveDialog").hide();
+                });
 			}
 			// Render image description on canvas
 			descObj.showDescription();
@@ -267,11 +299,31 @@ define([
 				});
 				
 				promise.then(function(){
-					window.history.back();
+					 if(window.history.length == 1)
+                                                window.close();
+                                        else
+                                                window.history.back();
 				});
 			});
 
-			/* 
+            /*
+             Add link to intro video
+             */
+            var video = dom.byId("menuIntroText");
+            on(video, "click", function(){
+                controllerObject.logging.log('ui-action', {
+                    type: "menu-choice",
+                    name: "introduction"
+                });
+                // "newwindow": the pop-out window name, not required, could be empty
+                // "height" and "width": pop-out window size
+                // Other properties could be changed as the value of yes or no
+                window.open("http://dragoon.asu.edu","newwindow",
+                    "toolbar =no, menubar=no, scrollbars=no, resizable=no, location=no, status=no"
+                );
+            });
+
+            /*
 			 Add link to intro video
 			 */
 			var video = dom.byId("menuIntroVideo");

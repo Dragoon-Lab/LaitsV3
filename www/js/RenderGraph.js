@@ -55,7 +55,7 @@ define([
 		 */
 		constructor: function(){
 			console.log("***** In RenderGraph constructor");
-			if(this.active.timeStep){  // Abort if there is an error in timSstep.
+			if(this.active.timeStep){  // Abort if there is an error in timestep.
 				this.initialize();
 			}
 		},
@@ -77,8 +77,9 @@ define([
 			 To include optional nodes,
 			 one would need to order them using topologicalSort
 			 */
-			var activeSolution = this.findSolution(true, this.active.plotVariables);
-			if(activeSolution.status == "error" && activeSolution.type == "missing") {
+            console.log("length of active plot variables",this.active.plotVariables.length);
+            var activeSolution = this.findSolution(true, this.active.plotVariables);
+            if(activeSolution.status == "error" && activeSolution.type == "missing") {
 				// Return value from findSlution in calculation, returns an array and we check for status and any missing nodes
 				this.dialogWidget.set("content", "<div>Not all nodes have been completed. For example, \"" + activeSolution.missingNode + "\" is not yet fully defined.</div>"); //We show the error message like "A Node is Missing"
 				return;
@@ -195,7 +196,18 @@ define([
 
 				}, this);
 			} else {
-				this.dialogWidget.set("content", "<div>There isn't anything to plot. Try adding some accumulator or functionnodes.</div>"); //Error telling there are no nodes and graph cant be rendered
+                //Now it is possible that there might be incomplete nodes which are not listed in active plot variables
+                var thisModel = this;
+                var modStatus = true;
+                array.forEach(this.model.active.getNodes(), function (thisnode) {
+                    if(thisModel.model.active.getType(thisnode.ID)=="function" || thisModel.model.active.getType(thisnode.ID)=="accumulator"){
+                        thisModel.dialogWidget.set("content", "<div>Not all nodes have been completed. For example, \"" + thisModel.model.active.getName(thisnode.ID) + "\" is not yet fully defined.</div>");
+                        modStatus = false;
+                        return;
+                    }
+                });
+                if(modStatus)
+				    this.dialogWidget.set("content", "<div>There isn't anything to plot. Try adding some accumulator or functionnodes.</div>"); //Error telling there are no nodes and graph cant be rendered
 			}
 			this.chart = charts;
 

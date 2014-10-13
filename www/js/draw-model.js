@@ -138,7 +138,7 @@ define([
 			var colorMap = {
 				correct: "green",
 				incorrect: "#FF8080",
-				demo: "yellow",
+				demo: "#ffd500",
 				neutral: "gray",
 				perfect: "#94FF94"
 			};
@@ -148,7 +148,7 @@ define([
 			if(type){
 				var color = this._givenModel.getCorrectness?
 				this._givenModel.getCorrectness(nodeID):"neutral";
-				borderColor += "2px "+isComplete+" " + colorMap[color];
+				borderColor += "3px "+isComplete+" " + colorMap[color];
 				boxshadow = 'inset 0px 0px 5px #000 , 0px 0px 10px #000';
 				//check for perfect node
 				if (this._givenModel.getAssistanceScore){

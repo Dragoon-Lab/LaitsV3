@@ -70,7 +70,7 @@ if (get_magic_quotes_gpc()) {
     $message = stripslashes($message);
 }
 
-if($method == 'start-session'){
+if($method == 'start-session'||$method == 'rename-problem'){
   /*
     Create a new session 
     In this case, the message contains a list of session parameters,

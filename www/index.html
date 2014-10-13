@@ -112,6 +112,8 @@
              <button type="button" data-dojo-type="dijit/form/Button" id="tableButton">Table</button>
              <button type="button" data-dojo-type="dijit/form/Button" id="forumButton" disabled="true">Forum</button>
              <button type="button" data-dojo-type="dijit/form/Button" id="descButton" disabled="true">Description &amp; Times</button>
+             <button type="button" data-dojo-type="dijit/form/Button" id="saveButton" disabled="true">Rename</button>
+	     <button type="button" data-dojo-type="dijit/form/Button" id="previewButton" disabled="true">Preview</button>     
 	     <div data-dojo-type="dijit/PopupMenuBarItem">
                  <span>Help</span>
 		 <div data-dojo-type="dijit/Menu" id="menuHelp">
@@ -121,7 +123,7 @@
 		 </div>
              </div>
 
-	     <button type="button" data-dojo-type="dijit/form/Button" id="doneButton" style="position:absolute; top:0; right:10px; margin:0;">Done</button>
+	     <button type="button" data-dojo-type="dijit/form/Button" id="doneButton">Done</button>
 	</div> <!-- Menubar -->
         <div id="drawingPane" data-dojo-type="dijit/layout/ContentPane" region="center">
 		
@@ -194,14 +196,41 @@
 			<label for="authorProblemShare" title="Share this problem with students.">Share Problem:</label>
 			<input id="authorProblemShare" name="authorProblemShare" data-dojo-type="dijit/form/CheckBox" value="agreed" checked="false"/>
 		</div>
-		<div class="buttonBox">
+		<div class="fieldgroup" align="right">
 			<button id="descCloseButton" type="button" data-dojo-type="dijit/form/Button" iconClass="dijitNoIcon">Done</button>
 		</div>
 	</div>
 
+    <!-- authorSaveProblem, authorSaveGroup -->
+    <div class="claro sameedit" data-dojo-type="dijit/Dialog" id="authorSaveDialog" title="Rename and Save Problem">
+        <div class="fieldgroup">
+            <label for="authorSaveProblem" style="width:7em">Problem Name:</label>
+            <input id="authorSaveProblem" style="width:10em" value="0" data-dojo-type="dijit/form/TextBox"></input>
+        </div>
+        <div class="fieldgroup">
+            <label for="authorSaveGroup" style="width:7em">Group Name:</label>
+            <input id="authorSaveGroup" style="width:10em" value="0" data-dojo-type="dijit/form/TextBox"></input>
+        </div>
+        <div class="fieldgroup" align="right">
+            <button id="saveCloseButton" type="button" data-dojo-type="dijit/form/Button" iconClass="dijitNoIcon">Save</button>
+        </div>
+    </div>
+
 	<!-- Putting Node-Editor -Dialog stuff for demo -->
         <div class="claro sameedit" data-dojo-type="dijit/Dialog" id="nodeeditor">
-           <div id="nameControl" class="fieldgroup" style="display:none">
+           <div id="studentModelControl" class="fieldgroup" style="display:none;" >
+			<label style="width:20ex;" for "setGivenNode">Show in Student Model</label>
+				<input id="setStudentNode" name="markStudentNode" data-dojo-type="dijit/form/CheckBox" checked="false"/>
+			</div>
+			<div id="selectModelControl" class="fieldgroup" style="display:none" >
+			<label for="selectModel">Select Model</label>
+                <select id="selectModel" data-dojo-type="dijit/form/Select">
+	            <option value='correct' selected>Correct Values</option>
+				<option value='given'>Given Values</option>
+	            
+	        </select>
+		   </div>
+		   <div id="nameControl" class="fieldgroup" style="display:none">
 	        <label for="setName">Name</label>
                 <input id="setName" data-dojo-type="dijit/form/ComboBox">
 	        <label for="selectKind">Kind of quantity:</label>
