@@ -20,9 +20,11 @@
  */
 /* global define */
 define([
+	"dojo/_base/array",
 	'dojo/_base/lang',
 	"dojo/dom",
 	'dojo/dom-geometry',
+	"dojo/dom-style",
 	"dojo/on",
 	'dojo/aspect',
 	"dojo/io-query",
@@ -42,7 +44,7 @@ define([
 	"./state",
     "./typechecker"
 ], function(
-		lang, dom, geometry, on, aspect, ioQuery, ready, registry,
+		array, lang, dom, geometry, domStyle, on, aspect, ioQuery, ready, registry,
 		menu, loadSave, model,
 		Graph, Table, controlStudent, controlAuthor, drawmodel, logging, expression, description, State, typechecker
 ){
@@ -124,6 +126,13 @@ define([
 			aspect.after(controllerObject, "colorNodeBorder",
 						 lang.hitch(drawModel, drawModel.colorNodeBorder), 
 						 true);
+
+			//In TEST and EDITOR mode remove border color from existing Student model nodes.			 
+			if(controllerObject._mode == "TEST" || controllerObject._mode == "EDITOR"){
+				array.forEach(givenModel.model.task.studentModelNodes, function(studentNode){
+					domStyle.set(studentNode.ID, 'border', "gray");
+				});
+			}
 
 			/* add "Create Node" button to menu */
 			menu.add("createNodeButton", function(){
