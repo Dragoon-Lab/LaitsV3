@@ -74,7 +74,7 @@ define([
 
 		makeCountNodeSlide: function(title){
 			var typeCount = this._model.given.getNodeTypeCount();
-			slideString = "</h4>"+title+"</h4><br/><ul><span>This model requires: </span><li> "+typeCount.accumulator+" accumulator nodes </li><li>" + typeCount['function'] + " function nodes </li><li>"+ typeCount['parameter'] + " parameter nodes </li></ul>";
+			slideString = "<h4>"+title+"</h4><br/><ul><span>This model requires: </span><li> "+typeCount.accumulator+" accumulator nodes </li><li>" + typeCount['function'] + " function nodes </li><li>"+ typeCount['parameter'] + " parameter nodes </li></ul>";
 
 			return slideString;
 		},

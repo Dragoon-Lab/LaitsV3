@@ -436,18 +436,23 @@ define([
 			//var lessonsLearnedButton = registry.byId("lessonsLearnedButton");   
 			//lessonsLearnedButton.set("disabled", true);
 			//Bind lessonsLearnedButton to the click event	
-			menu.add("lessonsLearnedButton", function(){
-				var lessonLearnedDialog = registry.byId("lesson");
-				var titleMsg = "Lessons Learned";
-				contentMsg = givenModel.getTaskLessonsLearned();
-				var contentHTML = contentMsg[0];
-				for(var i=1;i<contentMsg.length;i++) {
-					contentHTML = contentHTML +"<br>"+contentMsg[i];
+			if(query.m == "STUDENT" || query.m == "COACHED"){
+				if(givenModel.isLessonLearnedShown == true){
+					registry.byId("lessonsLearnedButton").set("disabled", false);
 				}
-				lessonLearnedDialog.set("content", contentHTML);
-				lessonLearnedDialog.set("title", titleMsg);
-				lessonLearnedDialog.show();
-			});
+				menu.add("lessonsLearnedButton", function(){
+					var lessonLearnedDialog = registry.byId("lesson");
+					var titleMsg = "Lessons Learned";
+					contentMsg = givenModel.getTaskLessonsLearned();
+					var contentHTML = contentMsg[0];
+					for(var i=1;i<contentMsg.length;i++) {
+						contentHTML = contentHTML +"<br>"+contentMsg[i];
+					}
+					lessonLearnedDialog.set("content", contentHTML);
+					lessonLearnedDialog.set("title", titleMsg);
+					lessonLearnedDialog.show();
+				});
+			}
             /*
              Add link to intro video
              */

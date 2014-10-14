@@ -65,9 +65,7 @@ define([
 			"A node already exists for that quantity.  If you want to edit it, click on it."
 		],
 		premature: [
-			"Blue means that the quantity is relevant for modeling the system, but it is not yet time to define it.	 You should follow the Target Node Strategy, which says you should edit an existing node that is not yet defined.  Such nodes have dotted outlines.	 Click on one to edit it.",
-			"Blue means that according to the Target Node Strategy, it is too early to define a node for this quantity.	 Edit a node that has a dotted outline.",
-			"Blue means premature.	Edit a node with a dotted outline instead."
+			"The node you are trying to create is Premature. Please follow the Target Node Strategy."
 		],
 		notTopLevel: [
 			"Blue means that quantity isn’t one that the problem statement asks you to graph.  Although this quantity will eventually be in your model, you should follow the Target Node Strategy, which says you should first define a node for a top level goal quantity.",

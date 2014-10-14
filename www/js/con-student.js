@@ -55,7 +55,7 @@ define([
 
 		constructor: function(mode, subMode, model){
 			console.log("++++++++ In student constructor");
-			if(mode === "TEST" || mode === "EDITOR")
+			if(mode == "TEST" || mode == "EDITOR")
 				this._PM = new PMNoFeedback(mode, subMode, model);
 			else
 				this._PM = new PM(mode, subMode, model);
