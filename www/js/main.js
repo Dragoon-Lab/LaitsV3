@@ -189,7 +189,7 @@ define([
 			});
 
 			// checks if forumurl is present
-			if(query.f && query.fe) {
+			if(query.f && query.fe == "true") {
 				//Enable the forum button in the menu
 				var forumBut=registry.byId("forumButton");
 				forumBut.set("disabled", false);
@@ -282,7 +282,7 @@ define([
 			});
             //the solution div which shows graph/table when closed
             //should disable all the pop ups
-            aspect.after(registry.byId('solution'), "hide", function(){
+            aspect.after(registry.byId(' '), "hide", function(){
                 console.log("Calling graph/table to be closed");
                 typechecker.closePops();
                 //session.saveProblem(givenModel.model);
