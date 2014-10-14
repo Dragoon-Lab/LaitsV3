@@ -99,17 +99,12 @@ define([
 				var givenSolution = this.findSolution(false, this.given.plotVariables);
 			}
 
-			// Add three <div>s for each quantity:
-			//	display graph checkbox, the graph, and the legend.
-			// The default is to display only the accumulator nodes.
-			
-			/*this.dialogContent += "<div data-dojo-type='dijit/layout/TabContainer' id='testDiv'>"  style='overflow:auto; width:50%; float:left; height: 100%; background-color: #FFFFFF'>
-									"<div data-dojo-type='dijit/layout/ContentPane' data-dojo-props='title:Tab 1'>";*/
-		 	/*this.dialogContent += "<div data-dojo-type=''dijit/layout/TabContainer'>
-			<div data-dojo-type='dijit/layout/ContentPane' data-dojo-props='title:\"Tab 1\"'>"*/
-			//this.dialogContent += "<div data-dojo-attach-point='containerNode' class = 'dijitDialogPaneContent dijitAlignCenter'>";
+			//create content pane for displaying graph/table and sliders
 			this.dialogContent += "<div data-dojo-type= 'dijit/layout/ContentPane' style='overflow:auto; width:50%; float:left; height: 700px; background-color: #FFFFFF'>"
-			this.dialogContent += "<div data-dojo-type='dijit/layout/TabContainer' style='overflow:auto; height:90%; width:100%'><div data-dojo-type='dijit/layout/ContentPane' data-dojo-props='title:\"Graph\"'>";
+			//create tab container on left side for graph and table
+			this.dialogContent += "<div data-dojo-type='dijit/layout/TabContainer' style='overflow:auto; height:90%; width:100%'>"
+			//create tab for graph and fill it
+			this.dialogContent += "<div data-dojo-type='dijit/layout/ContentPane' data-dojo-props='title:\"Graph\"'>";
 			array.forEach(this.active.plotVariables, function(id){
 				var show = this.model.active.getType(id) == "accumulator";
 				var checked = show ? " checked='checked'" : "";
@@ -119,14 +114,16 @@ define([
 				// Since the legend div is replaced, we cannot hide the legend here.
 				this.dialogContent += "<div class='legend' id='legend" + id + "'></div>";
 			}, this);
-
-			this.dialogContent += "</div><div data-dojo-type='dijit/layout/ContentPane' data-dojo-props='title:\"Table\"'>"
+			//create tab for table
+			this.dialogContent += "</div><div data-dojo-type='dijit/layout/ContentPane' style='overflow:visible' data-dojo-props='title:\"Table\"'>"
 
 			//Render table here
 			this.dialogContent += "<div id='table'></div>";
 
+			//end divs for graph and table 
 			this.dialogContent += "</div></div></div>"
 
+			//create content pane for sliders
 			this.dialogContent += "<div data-dojo-type='dijit/layout/ContentPane' style='overflow:auto; width:40%; float:right; height: 100%; background-color: #FFFFFF'>";
 			//text for correctness of solution
 			if(this.mode != "AUTHOR"  && this.mode != "EDITOR")
