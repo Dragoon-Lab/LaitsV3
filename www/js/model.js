@@ -254,6 +254,9 @@ define([
 			getTaskLessonsLearned : function() {
 				return this.model.task.lessonsLearned;
 			},
+			getSlides: function(){
+				return this.model.task.slides;
+			},
 			getOptimalNode: function(/*string*/ studentID){
 				// Summary: Returns the next optimal node, first checking for children
 				//		of visible parent nodes, and then checking for parent nodes that
@@ -560,6 +563,39 @@ define([
 			},
 			getParent: function(/*string*/ id){
 				return this.getNode(id).parentNode;
+			},
+			getNodeTypeCount: function(){
+				var nodes = this.getNodes();
+				var param = 0, acc = 0, func=0;
+				var nodeNumber = {};
+				array.forEach(nodes, function(node){
+					var id = node.ID;
+					//console.log("from count type : "+id + " node "+ node);
+					var genus = this.getGenus(id);
+					if(!genus || genus == "allowed"){
+						var type = this.getType(id)||"none";
+						switch(type){
+							case "accumulator":
+								acc++;
+								break;
+							case "parameter":
+								param++;
+								break;
+							case "function":
+								func++;
+								break;
+							default:
+								break;
+						}       
+					}
+				}, this);
+				nodeNumber = {
+					"accumulator": acc,
+					"function": func,
+					"parameter": param
+				};
+
+				return nodeNumber;
 			},
 			setName: function(/*string*/ id, /*string*/ name){
 				this.getNode(id).name = name.trim();

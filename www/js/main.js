@@ -23,6 +23,7 @@ define([
 	'dojo/_base/lang',
 	"dojo/dom",
 	'dojo/dom-geometry',
+	"dojo/dom-style",
 	"dojo/on",
 	'dojo/aspect',
 	"dojo/io-query",
@@ -40,11 +41,12 @@ define([
 	"./equation",
 	"./description",
 	"./state",
-    "./typechecker"
+    "./typechecker",
+	"./createSlides"
 ], function(
-		lang, dom, geometry, on, aspect, ioQuery, ready, registry,
+		lang, dom, geometry, style, on, aspect, ioQuery, ready, registry,
 		menu, loadSave, model,
-		Graph, Table, controlStudent, controlAuthor, drawmodel, logging, expression, description, State, typechecker
+		Graph, Table, controlStudent, controlAuthor, drawmodel, logging, expression, description, State, typechecker, slides
 ){
 	// Summary: 
 	//			Menu controller
@@ -275,7 +277,93 @@ define([
     				});
     			});
 			}
+
+			if(query.m == "EDITOR"){
+				if(givenModel.model.task.slides){
+					var sb = registry.byId("slidesButton");
+					sb.set("disabled", false);
+					var createSlides = new slides(givenModel);
+					menu.add("slidesButton", function(){
+						createSlides.show();
+
+						var size = createSlides._slides.length;
+						var	pb = registry.byId("prevSlide");
+						if(pb.value == 0)
+							pb.set("disabled", true);
+						else 
+							pb.set("disabled", false);
+
+						var nb = registry.byId("nextSlide");
+						if(nb.value == size+1)
+							nb.set("disabled", true);
+						else
+							nb.set("disabled", false);
+
+						on(registry.byId("prevSlide"), "click", function(){
+							var id = pb.value;
+							if(id>0){
+								var currID =id +1;
+								
+								currID = currID.toString();
+								id = id.toString();
+							
+								var hideDOM = dom.byId(currID);
+								var prevDOM = dom.byId(id);
+							
+								style.set(hideDOM, "display", "none");
+								style.set(prevDOM, "display", "block");
+								
+								id = parseInt(id);
+								pb.value = id - 1;
+								nb.value = id + 1;
+
+								if(id > 1)
+									pb.set("disabled", false);
+								else
+									pb.set("disabled", true);
+
+								if(id < size)
+									nb.set("disabled", false);
+								else
+									nb.set("disabled", true);
+							}
+						});
 						
+						on(registry.byId("nextSlide"), "click", function(){
+							var id = nb.value;
+							if(id<=size){
+								var currID = id - 1;
+							
+								currID = currID.toString();
+								id = id.toString();
+
+								var nextDOM = dom.byId(id);
+								var hideDOM = dom.byId(currID);
+
+								style.set(hideDOM, "display", "none");
+								style.set(nextDOM, "display", "block");
+								
+								id = parseInt(id);
+								pb.value = id - 1;
+								nb.value = id + 1;
+
+								if(id > 1)
+									pb.set("disabled", false);
+								else
+									pb.set("disabled", true);
+
+								if(id < size)
+									nb.set("disabled", false);
+								else
+									nb.set("disabled", true);
+							}
+						});
+					});
+				}
+													
+
+			}
+
 			// Render image description on canvas
 			descObj.showDescription();
 
