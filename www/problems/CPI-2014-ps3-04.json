@@ -14,7 +14,12 @@
         "image": {
             "URL": "http://upload.wikimedia.org/wikipedia/commons/8/89/Usns_comfort.jpg"
         },
-        "taskDescription": " Problem: After World War II, the United States had the largest merchant marine of any nation. The merchant marine is the collection of ships that transport goods and people over the oceans, not counting navy vessels. Unfortunately, the US Merchant Marine got smaller and smaller each year, while the merchant marine of other countries has grown. Suppose that in 1950 the US Merchant Marine was 5000 ships of 10000 tons or larger, where Panama's merchant marine was only 1000 ships of 10000 tons or larger. Suppose that the US Merchant Marine shrank by 5% each year mostly because ships were sold to other countries. Suppose that Panama's merchant marine grew by 100 ships a year mostly because it was cheap to own a ship registered in Panama. For instance, the difference starts out with the US having 4000 more ships than the Panama in 1950. What happens on the way to 1951? Goal: Graph the difference in size between the two fleets over 50 years.",
+        "taskDescription": [
+            " Problem: After World War II, the United States had the largest merchant marine of any nation. The merchant marine is the collection of ships that transport goods and people over the oceans, not counting navy vessels. Unfortunately, the US Merchant Marine got smaller and smaller each year, while the merchant marine of other countries has grown. Suppose that in 1950 the US Merchant Marine was 5000 ships of 10000 tons or larger, where Panama's merchant marine was only 1000 ships of 10000 tons or larger. Suppose that the US Merchant Marine shrank by 5% each year mostly because ships were sold to other countries. Suppose that Panama's merchant marine grew by 100 ships a year mostly because it was cheap to own a ship registered in Panama. For instance, the difference starts out with the US having 4000 more ships than the Panama in 1950. What happens on the way to 1951? Goal: Graph the difference in size between the two fleets over 50 years."
+        ],
+        "lessonsLearned" : [
+            " This system has two processes, a linear growth (the Panamanian fleet) and an exponential decay (the US fleet).  However, the problem seeks a model of the difference in the fleet sizes, so that node should be created first."
+        ],
         "givenModelNodes": [
             {
                 "ID": "id1",

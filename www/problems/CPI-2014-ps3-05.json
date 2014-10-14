@@ -14,7 +14,12 @@
         "image": {
             "URL": "http://upload.wikimedia.org/wikipedia/commons/c/cd/ARTurista.JPG"
         },
-        "taskDescription": " Problem: Capacity utilization is an important statistic for virtually any form of passenger transportation, regardless of whether the transportation is by bus, train, plane, or ship. Capacity utilization is the ratio of the number of passengers riding to the capacity of the system, which is usually determined by the number of seats (for busses, trains and planes) or cabins (for cruise ships). Unfortunately, transportation management usually cannot rapidly adjust capacity. Suppose that a small airline initially flies 222 flights per month, which combine to a total capacity of 10000 seats. The airline is running at about 0.9 capacity utilization, which means 9000 of its seats are filled every month. During an economic downturn, the airline loses 1000 passengers each month but can take only 500 seats out of service each month. Goal: Graph the capacity utilization over 6 months. ",
+        "taskDescription": [
+            " Problem: Capacity utilization is an important statistic for virtually any form of passenger transportation, regardless of whether the transportation is by bus, train, plane, or ship. Capacity utilization is the ratio of the number of passengers riding to the capacity of the system, which is usually determined by the number of seats (for busses, trains and planes) or cabins (for cruise ships). Unfortunately, transportation management usually cannot rapidly adjust capacity. Suppose that a small airline initially flies 222 flights per month, which combine to a total capacity of 10000 seats. The airline is running at about 0.9 capacity utilization, which means 9000 of its seats are filled every month. During an economic downturn, the airline loses 1000 passengers each month but can take only 500 seats out of service each month. Goal: Graph the capacity utilization over 6 months. "
+        ],
+        "lessonsLearned" : [
+            " This system has two processes, and both are linear decays.  However, the problem asks for a ratio of the accumulators, so the shape of that graph is not linear. "
+        ],
         "givenModelNodes": [
             {
                 "ID": "id1",
