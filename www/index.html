@@ -114,7 +114,7 @@
              <button type="button" data-dojo-type="dijit/form/Button" id="descButton" disabled="true">Description &amp; Times</button>
              <button type="button" data-dojo-type="dijit/form/Button" id="saveButton" disabled="true">Rename</button>
 			 <button type="button" data-dojo-type="dijit/form/Button" id="previewButton" disabled="true">Preview</button>
-			 <button type="button" data-dojo-type="dijit/form/Button" id="slidesButton" disabled="true">Slides</button>
+			 <button type="button" data-dojo-type="dijit/form/Button" id="slidesButton" disabled="true">Hints</button>
 	     <div data-dojo-type="dijit/PopupMenuBarItem">
                  <span>Help</span>
 		 <div data-dojo-type="dijit/Menu" id="menuHelp">
@@ -356,10 +356,12 @@
         <!-- Putting Node-Editor stuff for demo  end -->
 
 	
-	<div class="claro" id="slidesBox" data-dojo-type="dijit/Dialog" title="Slides">
+	<div class="claro slides" id="slidesBox" data-dojo-type="dijit/Dialog" title="Hints">
+		<div id="buttons">
+		    <button id="prevSlide" type="button" data-dojo-type="dijit/form/Button" iconClass="dijitNoIcon">Previous Slide</button>
+			<button id="nextSlide" type="button" data-dojo-type="dijit/form/Button" iconClass="dijitNoIcon">Next Slide</button>
+		</div>
 		<div id="slideWrapper"> <!--container for slides --></div>
-		<button id="prevSlide" type="button" data-dojo-type="dijit/form/Button" iconClass="dijitNoIcon">Previous Slide</button>
-		<button id="nextSlide" type="button" data-dojo-type="dijit/form/Button" iconClass="dijitNoIcon">Next Slide</button>
 	</div>
 				
     </div>  <!-- main -->			
