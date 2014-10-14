@@ -267,13 +267,13 @@ define([
 				//var problemDetails = printArray[row];
 				var col = 0;
 				array.forEach(this.problems, function(problem){
-					//var urlString = "<a href='/devel/index.html?u=" + user + "&m=STUDENT&sm=feedback&is=algebraic&p=" + problem + "&s=" + this.section + "&c=Continue&t=true' target='_blank' title='Click to check session' style='width:90px'>";
+					//var urlString = "<a href='/devel/index.html?u=" + user + "&m=STUDENT&sm=feedback&is=algebraic&p=" + problem + "&s=" + this.section + "&c=Continue&l=false' target='_blank' title='Click to check session' style='width:90px'>";
 					//for demo server
 					var urlString = '';
 					if(this.modules['sessionLink'])
-						urlString = "<a href='/demo/index.html?u=" + user + "&m=STUDENT&sm=feedback&is=algebraic&p=" + problem + "&s=" + this.section + "&c=Continue&t=true' target='_blank' title='Click to check session'>";
+						urlString = "<a href='/demo/index.html?u=" + user + "&m=STUDENT&sm=feedback&is=algebraic&p=" + problem + "&s=" + this.section + "&c=Continue&l=false' target='_blank' title='Click to check session'>";
 					//for local server
-					//var urlString = "<a href='/code/index.html?u=" + user + "&m=STUDENT&sm=feedback&is=algebraic&p=" + problem + "&s=" + this.section + "&c=Continue&t=true' target='_blank' title='Click to check session'>";
+					//var urlString = "<a href='/code/index.html?u=" + user + "&m=STUDENT&sm=feedback&is=algebraic&p=" + problem + "&s=" + this.section + "&c=Continue&l=false' target='_blank' title='Click to check session'>";
 					var complete = this.problemComplete[row][col];
 					var runningStatus = this.sessionRunning[row][col];
 					tableString += "<td";

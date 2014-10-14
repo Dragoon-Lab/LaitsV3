@@ -38,7 +38,7 @@ define([
 	//			or a hint, and the status of the attempt (correct, incorrect, 
 	//			demo, or premature).
 	// Tags:
-	//			pedagogical module (PM), student mode, coached mode, test mode
+	//			pedagogical module (PM), student mode, coached mode
 
 	var hints = {
 		// Summary: Messages that are given to the user based on the type of user, 
@@ -114,11 +114,6 @@ define([
 				disable(obj, part, true);
 				disable(obj, "type", false);
 			},
-			TEST: function(obj, part){
-				state(obj, part, "correct");
-				disable(obj, part, true);
-				disable(obj, "type", false);
-			},
 			power: function(obj, part){
 				state(obj, part, "correct");
 				disable(obj, part, true);
@@ -133,11 +128,6 @@ define([
 			feedback: function(obj, part){
 				state(obj, part, "correct");
 				message(obj, part, "correct");
-				disable(obj, part, true);
-				disable(obj, "type", false);
-			},
-			TEST: function(obj, part){
-				state(obj, part, "correct");
 				disable(obj, part, true);
 				disable(obj, "type", false);
 			},
@@ -158,11 +148,6 @@ define([
 				disable(obj, part, true);
 				disable(obj, "type", false);
 			},
-			TEST: function(obj, part){
-				state(obj, part, "correct");
-				disable(obj, part, true);
-				disable(obj, "type", false);
-			},
 			power: function(obj, part){
 				state(obj, part, "correct");
 				disable(obj, part, true);
@@ -178,9 +163,6 @@ define([
 				state(obj, part, "incorrect");
 				message(obj, part, "initialValue");
 			},
-			TEST: function(obj, part){
-				state(obj, part, "incorrect");
-			},
 			power: function(obj, part){
 				state(obj, part, "incorrect");
 			}
@@ -193,9 +175,6 @@ define([
 			feedback: function(obj, part){
 				state(obj, part, "incorrect");
 				message(obj, part, "extra");
-			},
-			TEST: function(obj, part){
-				state(obj, part, "incorrect");
 			},
 			power: function(obj, part){
 				state(obj, part, "incorrect");
@@ -210,9 +189,6 @@ define([
 				state(obj, part, "incorrect");
 				message(obj, part, "irrelevant");
 			},
-			TEST: function(obj, part){
-				state(obj, part, "incorrect");
-			},
 			power: function(obj, part){
 				state(obj, part, "incorrect");
 			}
@@ -223,10 +199,6 @@ define([
 				message(obj, part, "redundant");
 			},
 			feedback: function(obj, part){
-				state(obj, part, "incorrect");
-				message(obj, part, "redundant");
-			},
-			TEST: function(obj, part){
 				state(obj, part, "incorrect");
 				message(obj, part, "redundant");
 			},
@@ -245,11 +217,6 @@ define([
 			feedback: function(obj, part){
 				state(obj, part, "demo");
 				message(obj, part, "lastFailure2");
-				disable(obj, part, true);
-				disable(obj, "type", false);
-			},
-			TEST: function(obj, part){
-				state(obj, part, "demo");
 				disable(obj, part, true);
 				disable(obj, "type", false);
 			},
@@ -277,9 +244,6 @@ define([
 				disable(obj, part, true);
 				disable(obj, "enableRemaining", false);
 			},
-			TEST: function(obj, part){
-				disable(obj, "enableRemaining", false);
-			},
 			power: function(obj, part){
 				disable(obj, "enableRemaining", false);
 			}
@@ -292,9 +256,6 @@ define([
 			feedback: function(obj, part){
 				state(obj, part, "incorrect");
 				message(obj, part, "incorrect");
-			},
-			TEST: function(obj, part){
-				disable(obj, "enableRemaining", false);
 			},
 			power: function(obj, part){
 				disable(obj, "enableRemaining", false);
@@ -313,9 +274,6 @@ define([
 				disable(obj, part, true);
 				disable(obj, "enableRemaining", false);
 			},
-			TEST: function(obj, part){
-				disable(obj, "enableRemaining", false);
-			},
 			power: function(obj, part){
 				disable(obj, "enableRemaining", false);
 			}
@@ -326,9 +284,6 @@ define([
 			},
 			feedback: function(){
 				console.error("Attempting to access actionTable after demo has been sent.");
-			},
-			TEST: function(obj, part){
-				disable(obj, "enableRemaining", false);
 			},
 			power: function(obj, part){
 				disable(obj, "enableRemaining", false);
@@ -541,6 +496,7 @@ define([
 					solutionGiven = true;
 				}
 			}
+
 
 			// Local function that updates the status if it is not already set to "correct" or "demo"
 			var updateStatus = function(returnObj, model){

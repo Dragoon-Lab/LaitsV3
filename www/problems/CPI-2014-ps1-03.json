@@ -1,0 +1,79 @@
+{
+    "task": {
+        "taskName": "Jared's weight",
+        "time": {
+            "start": 0,
+            "end": 10,
+            "step": 0.5,
+            "units": "Weeks"
+        },
+        "properties": {
+            "phase": "Intro",
+            "type": "Debug"
+        },
+        "image": {
+            "URL": "images/weighing-scales2.jpg"
+        },
+        "taskDescription": " Jared is on a diet and loses 2.5 pounds each week. He started the diet weighing 200 pounds. A node defining Jared's weekly weight loss as a function of time has been given. Construct a model for Jared's weight as a function of time. ",
+        "lessonsLearned": [
+        	"The graph of the quantity \"Jared’s weight\" is a straight line headed downward, so this quantity is said to exhibit \"linear",
+        	"decay.\" Many different models can have quantities that exhibit linear decay, but the simplest such model is exactly like",
+        	"the one you just constructed: An accumulator with a parameter as a negated input.",
+        	"<br><br>Notice the small circle with a minus sign inside it. This indicates that the input is negated. Thus, just by looking at the",
+        	"arrows and the contents of the nodes, you can tell exactly what the calculations inside the nodes are."
+    	],
+        "givenModelNodes": [
+            {
+                "ID": "id1",
+                "inputs": [],
+                "position": {
+                    "x": 400,
+                    "y": 100
+                },
+                "attemptCount": {
+                    "description": 0,
+                    "type": 0,
+                    "initial": 0,
+                    "units": 0,
+                    "equation": 0
+                },
+                "status": {},
+                "name": "weight change",
+                "type": "parameter",
+                "parentNode": false,
+                "units": "",
+                "description": "The amount of weight Jared lost this week.",
+                "initial": 2.5
+            },
+            {
+                "ID": "id2",
+                "inputs": [
+                    {
+                        "ID": "id1"
+                    }
+                ],
+                "position": {
+                    "x": 400,
+                    "y": 100
+                },
+                "attemptCount": {
+                    "description": 0,
+                    "type": 0,
+                    "initial": 0,
+                    "units": 0,
+                    "equation": 0
+                },
+                "status": {},
+                "name": "Jared weight",
+                "type": "accumulator",
+                "parentNode": true,
+                "units": "",
+                "description": "Jared's weight.",
+                "initial": 200,
+                "equation": "- id1"
+            }
+
+        ],
+        "studentModelNodes": []
+    }
+}

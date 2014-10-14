@@ -21,6 +21,7 @@
 	    "",
 	    "In this exercise, you will construct a model of rabbit population growth. The first quantity in this model is the population or number of rabbits in the population. Initially, there are 24 rabbits, but the number increases with time. The new population each year is its present value plus the net growth (number of rabbits born minus deaths). The net growth is equal to the product of the population and the growth rate. The growth rate has a fixed value of 0.3 per year."
 	],
+		"lessonsLearned" : ["Simple introductory mathematics. Idea of functions, accumulators and parameters. This is simple model which brush ups your elementary mathetics."],
         "givenModelNodes": [
             {
                 "ID": "id1",
