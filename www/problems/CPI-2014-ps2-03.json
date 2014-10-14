@@ -1,1 +1,134 @@
-{ "task" : {"taskName":"deadly+cruise","time":{"start":0,"end":10,"step":1,"integrationMethod":"Eulers Method","units":"days"},"properties":{},"image":{},"taskDescription":["On a cruise ship, the uninfected population starts with 212 passengers. The infected population starts with 4 passengers.  Moreover, 26 passengers are infected each day.  Of the infected passengers, 2 die each day.  Construct a model that shows how both populations change daily."],"givenModelNodes":[{"ID":"id1","inputs":[{"ID":"id2","label":"-"}],"position":{"x":429,"y":73},"attemptCount":{"description":0,"type":0,"initial":0,"units":0,"equation":0,"assitanceScore":0},"status":{},"name":"Uninfected population","description":"Number of people on the cruise ship without the infection","type":"accumulator","initial":512,"equation":"-id2"},{"ID":"id2","inputs":[],"position":{"x":532.3309326171875,"y":60.33095169067383},"attemptCount":{"description":0,"type":0,"initial":0,"units":0,"equation":0,"assitanceScore":0},"status":{},"name":"infected daily","description":"Number of people who are infected each day","type":"parameter","parentNode":false,"initial":26},{"ID":"id3","inputs":[{"ID":"id2","label":""},{"ID":"id4","label":"-"}],"position":{"x":675,"y":73},"attemptCount":{"description":0,"type":0,"initial":0,"units":0,"equation":0,"assitanceScore":0},"status":{},"name":"Infectedpopulation","description":"Number of passengers who are infected and alive","type":"accumulator","initial":4,"equation":"id2-id4"},{"ID":"id4","inputs":[],"position":{"x":792.3309326171875,"y":55.33095169067383},"attemptCount":{"description":0,"type":0,"initial":0,"units":0,"equation":0,"assitanceScore":0},"status":{},"name":"die daily","description":"Number of infected people who die each day","type":"parameter","parentNode":false,"initial":2}],"studentModelNodes":[]} }
+{
+    "task": {
+        "taskName": "deadly+cruise",
+        "time": {
+            "start": 0,
+            "end": 10,
+            "step": 1,
+            "integrationMethod": "Eulers Method",
+            "units": "days"
+        },
+        "properties": {},
+        "image": {},
+        "taskDescription": [
+            "On a cruise ship, the uninfected population starts with 212 passengers. The infected population starts with 4 passengers.  Moreover, 26 passengers are infected each day.  Of the infected passengers, 2 die each day.  Construct a model that shows how both populations change daily."
+        ],
+        "lessonsLearned" : [
+            "Analysis:",
+            "* Process 1:  Passengers becoming infected",
+            "* Source 1:  Passengers in the uninfected state",
+            "* Destination 1: Passengers in the infected state",
+            "* Changing 1:  Passengers who change from uninfected to infected each day",
+            "",
+            "* Process 2:  Passengers dying",
+            "* Source 2:  Passengers in the infected state",
+            "* Destination 2:  Irrelevant",
+            "* Changing 2:  Passengers who change from the infected to the dead state each day"
+        ],
+        "givenModelNodes": [
+            {
+                "ID": "id1",
+                "inputs": [
+                    {
+                        "ID": "id2",
+                        "label": "-"
+                    }
+                ],
+                "position": {
+                    "x": 429,
+                    "y": 73
+                },
+                "attemptCount": {
+                    "description": 0,
+                    "type": 0,
+                    "initial": 0,
+                    "units": 0,
+                    "equation": 0,
+                    "assitanceScore": 0
+                },
+                "status": {},
+                "name": "Uninfected population",
+                "description": "Number of people on the cruise ship without the infection",
+                "type": "accumulator",
+                "initial": 512,
+                "equation": "-id2"
+            },
+            {
+                "ID": "id2",
+                "inputs": [],
+                "position": {
+                    "x": 532.3309326171875,
+                    "y": 60.33095169067383
+                },
+                "attemptCount": {
+                    "description": 0,
+                    "type": 0,
+                    "initial": 0,
+                    "units": 0,
+                    "equation": 0,
+                    "assitanceScore": 0
+                },
+                "status": {},
+                "name": "infected daily",
+                "description": "Number of people who are infected each day",
+                "type": "parameter",
+                "parentNode": false,
+                "initial": 26
+            },
+            {
+                "ID": "id3",
+                "inputs": [
+                    {
+                        "ID": "id2",
+                        "label": ""
+                    },
+                    {
+                        "ID": "id4",
+                        "label": "-"
+                    }
+                ],
+                "position": {
+                    "x": 675,
+                    "y": 73
+                },
+                "attemptCount": {
+                    "description": 0,
+                    "type": 0,
+                    "initial": 0,
+                    "units": 0,
+                    "equation": 0,
+                    "assitanceScore": 0
+                },
+                "status": {},
+                "name": "Infectedpopulation",
+                "description": "Number of passengers who are infected and alive",
+                "type": "accumulator",
+                "initial": 4,
+                "equation": "id2-id4"
+            },
+            {
+                "ID": "id4",
+                "inputs": [],
+                "position": {
+                    "x": 792.3309326171875,
+                    "y": 55.33095169067383
+                },
+                "attemptCount": {
+                    "description": 0,
+                    "type": 0,
+                    "initial": 0,
+                    "units": 0,
+                    "equation": 0,
+                    "assitanceScore": 0
+                },
+                "status": {},
+                "name": "die daily",
+                "description": "Number of infected people who die each day",
+                "type": "parameter",
+                "parentNode": false,
+                "initial": 2
+            }
+        ],
+        "studentModelNodes": []
+    }
+}
