@@ -1,4 +1,4 @@
-/**
+ /**
  *Dragoon Project
  *Arizona State University
  *(c) 2014, Arizona Board of Regents for and on behalf of Arizona State University
@@ -36,6 +36,7 @@ define([
 
 	return {
 		parse: function(equation){
+			//Check for pulse or pulsetrain function
 			return Parser.parse(equation);
 		},
 		isVariable: Parser.isVariable,
@@ -62,7 +63,8 @@ define([
 					functionTag : 'areEquivalent'
 			});
 			}
-			var givenParse = Parser.parse(model.given.getEquation(id));
+			
+			var givenParse = Parser.parse(givenEqn);
 			var givenVals = {};
 			array.forEach(model.given.getNodes(), function(node){
 				/* Parameter and accumulator nodes are treated as independent. */
@@ -70,42 +72,71 @@ define([
 					givenVals[node.ID] = Math.random();
 				}
 			});
-			array.forEach(givenParse.variables(), function(variable){
+			var valsCopy = dojo.clone(givenVals);
+
+			var givenResult = this.getEquationValue(givenParse, model, givenVals, "given");
+			var studentResult = this.getEquationValue(student, model, givenVals, "solution");
+
+			var flag = Math.abs(studentResult - givenResult) <= 10e-10 * Math.abs(studentResult + givenResult);
+
+			if(givenEqn.indexOf("max") >= 0 || givenEqn.indexOf("min") >= 0){
+				var index = 0;
+				var nodes = Object.keys(valsCopy);
+				var givenVals1 = {};
+				for(var i = 0; i<nodes.length; i++){
+					givenVals1[nodes[i]] = -1*valsCopy[nodes[i]];
+				}
+				var givenResult1 = this.getEquationValue(givenParse, model, givenVals1, "given");
+				var studentResult1 = this.getEquationValue(student, model, givenVals1, "solution");
+
+				flag = flag && (Math.abs(studentResult1 - givenResult1) <= 10e-10 * Math.abs(studentResult1 + givenResult1));
+			}
+
+			return flag; 
+		},
+
+		getEquationValue: function(/* math parser object */ parse, /*model object*/ model, values, /* string */ active){
+			var id;
+			var solutionVals = {};
+			array.forEach(parse.variables(), function(variable){
 				// console.log("	==== evaluating given variable ", variable);
 				// given model variables should all be given node IDs
-				this.evalVar(variable, model.given, givenVals);
+				if(active == "solution"){
+					/*
+					 Go through student variables.	Each variable can be either
+					 a given/extra model node name or a student modelnode id.
+					 A variable may, or may not, have a value assigned when 
+					 the given model was evaluated above.
+					 */
+					console.log("	 ==== evaluating student variable ", variable);
+					if(model.student.isNode(variable)){
+						id = model.student.getDescriptionID(variable);
+					}else {
+						id = model.given.getNodeIDByName(variable);
+					}
+					/* This should never happen:  there is a check for unknown variables
+					 at a higher level. */
+					if(!id){
+						this.logging.clientLog("assert", {
+							message:'Student variable has no match, variable name : '+variable, 
+							functionTag: 'areEquivalent'
+						});
+					}
+					this.evalVar(id, model.solution, values);
+					solutionVals[variable] = values[id];
+				} else {
+					console.log("	==== evaluating given variable ", variable);
+					id = variable;
+					this.evalVar(id, model.given, values);
+				}	
+
 			}, this);
-			var givenResult = givenParse.evaluate(givenVals);
-			
-			/*
-			 Go through student variables.	Each variable can be either
-			 a given/extra model node name or a student modelnode id.
-			 A variable may, or may not, have a value assigned when 
-			 the given model was evaluated above.
-			 */
-			var studentVals = {};
-			array.forEach(student.variables(), function(variable){
-				console.log("	 ==== evaluating student variable ", variable);
-				var givenID;
-				if(model.student.isNode(variable)){
-					givenID = model.student.getDescriptionID(variable);
-				}else {
-					givenID = model.given.getNodeIDByName(variable);
-				}
-				/* This should never happen:  there is a check for unknown variables
-				 at a higher level. */
-				if(!givenID){
-					this.logging.clientLog("assert", {
-						message:'Student variable has no match, variable name : '+variable, 
-						functionTag: 'areEquivalent'
-					});
-				}
-				// At this point, givenID can also be from the extra nodes.
-				this.evalVar(givenID, model.solution, givenVals); //returning model.solution helps in identifying unknown variables in the expression
-				studentVals[variable] = givenVals[givenID];
-			}, this);
-			var studentResult = student.evaluate(studentVals);
-			return Math.abs(studentResult - givenResult) <= 10e-10 * Math.abs(studentResult + givenResult);
+			if(active == "solution")
+				values = solutionVals;
+
+			var result = parse.evaluate(values);
+
+			return result;
 		},
 		/*
 		 Recursively evaluate functions in the model.
@@ -392,7 +423,7 @@ define([
 			return sorted;
 		},
 		
-		evaluateTimeStep:  function(x){
+		evaluateTimeStep:  function(x, time){
 			// Summary:	 evaluate model at some time step.
 			// Description:	 The rationale behind this notation is that the 
 			//	  numerical integration routine should know nothing about 
@@ -413,15 +444,18 @@ define([
             lang.mixin(variables, this.parameters);
 			array.forEach(this.functions, function(id){
                 variables[id] = this.parse[id].evaluate(variables);
+				variables[id] = this.parse[id].evaluate(variables , time);
 			}, this);
 			return array.map(this.xvars, function(id){
-				return this.parse[id].evaluate(variables);
+				return this.parse[id].evaluate(variables , time);
 			}, this);		
 		},
 		
 		setLogging: function(/*string*/ logging){
 			this.logging = logging;
 		}
+
+
 		
 	};
 });

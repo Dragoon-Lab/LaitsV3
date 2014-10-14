@@ -29,11 +29,12 @@
 </script>
 </head>
 <body>
+	<p id="wait">Please Wait while we are analysing the data.</p>
 	<div class = "wrapper left">
-		<h2>Class Dashboard</h2>
-		<h4>Click on the box to check the complete session of the student.</h4>
+		<h2 id ="heading"></h2> <!-- Place holder for the page heading, which changes with every type of the dashboard. defined in dashboard. js -->
+		<h4 id = "sub-heading"></h4> <!-- Place holder for the page sub heading -->
 	</div>
-	<div class = "right">
+	<div id="key" class = "right hidden">
 		<p>Color Key</p>
 		<ul>
 			<li><span class="green border">Problem Completed</span></li>
@@ -47,7 +48,7 @@
 		<!--div to render the table -->
 	</div>
 
-	<fieldset id="tableType">
+	<fieldset id="tableType" class = "hidden">
 		<div id="choice change" class="choice">
 			<div class="newLine">
 				<input type="radio" name="type" value="default" id="default" data-dojo-type="dijit/form/RadioButton" checked/>
