@@ -11,14 +11,20 @@
         "properties": {},
         "image": {},
         "taskDescription": [
-            "Suppose Mr. and Mrs. Walton start their retirement with $100,000 in their bank account. The interest rate is 5%, where “interest rate” refers to the proportion of the account’s money that thebank deposits annually to the account (that is, the account earns simple interest, not compound interest).  For instance, in the first year, the bank would deposit $5,000, which is 5% of $100,000.  Meanwhile the Waltons annually withdraw $12,000 for living expenses.  Construct a model showing how the money in their account changes.  Hints:",
-            "* The new value for “money in the account” is the old value plus the bank’s annual deposit minus the Walton’s annual withdrawal.",
-            "* The account starts with $100000 in it.  Dragoon doesn’t understand commas in numbers, so you must omit them. ",
-            "* For this problem, you will sometimes need to use dollars as the unit.",
-            "* The bank’s annual deposit each year is the interest rate times the money in the account that year.",
-            "* The interest rate is always 5%.",
-            "* The Walton’s annual withdrawal is always $12000.",
-            ""
+            "Suppose Mr. and Mrs. Walton start their retirement with $100,000 in their bank account. The interest rate is 5%, where “interest rate” refers to the proportion of the account’s money that the bank deposits annually to the account (that is, the account earns simple interest, not compound interest).  For instance, in the first year, the bank would deposit $5,000, which is 5% of $100,000.  Meanwhile the Waltons annually withdraw $12,000 for living expenses.  Construct a model showing how the money in their account changes.",
+            "",
+            "Analysis:",
+            "* Process 1:  The bank adds money to the Walton’s account",
+            "* Source 1:  irrelevant",
+            "* Destination 1:  the Waltons’ account",
+            "* Changing:  a proportion, 5%, of the destination changes state per year",
+            "",
+            "* Process 2: Waltons remove money from their account",
+            "* Source 2:  the Walton’s account",
+            "* Destination 2: irrelevant",
+            "* Changing: a constant $12,000 changes state each year",
+            "",
+            "Implementation:  For process 1, see the problem “proportional to destination” in the problem set “generic changes.”    For process 2, see the problem “constant” in the problem set “generic changes”"
         ],
         "lessonsLearned" : [
             "This model combines exponential growth and linear decay. If you play with the sliders, you will find that the curve is",

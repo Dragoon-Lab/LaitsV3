@@ -14,7 +14,16 @@
         "image": {
             "URL": "images/weight-toss.jpg"
         },
-        "taskDescription": " A weight is thrown vertically upward with a velocity of 8.5m/s from an initial height of 1.2 m. Graph its velocity and its height from 0 seconds to 3 seconds. Use -9.8 m/s/s as the gravitational acceleration. If you haven’t taken physics, you will need to know that the change in height is velocity. That is next(height) = height + velocity. You will also need to know that the change in velocity is acceleration. That is, next(velocity) = velocity + acceleration.” ",
+        "taskDescription": [
+            "In the Highland Games, male athletes use one hand to throw a heavy weight over a bar set at increasing heights.   Suppose an athlete launches the weight from a height of 1.2 m with an upward velocity of 8.5 m/s.  As with all objects near Earth, the weight’s acceleration is -9.8 m/s/s.  That is, every second the object’s upward velocity has -9.8 subtracted from it, which means the velocity gets smaller, and eventually becomes negative, which means that the weight moves downward.   Construct a model that shows how the height of the weight changes.",
+            "",
+            "* Process: the height of the weight changes",
+            "* Source: irrelevant",
+            "* Destination: height",
+            "* Changing: the velocity is the amount of height change per second, and acceleration is the amount of velocity change per second.",
+            "",
+            "Implementation:  See the image or the problem “acceleration” in the problem set “generic changes”."
+        ],
         "lessonsLearned": [
             "This model is another classic one, often called acceleration, wherein one accumulator acts as the input to another",
             "accumulator. In case you are wondering, the weight used by male athletes in the Highland Games weighs 56 pounds.",

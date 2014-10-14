@@ -12,10 +12,12 @@
         "image": {},
         "taskDescription": [
             "Prof. Smith is retiring soon, so she is gradually taking books from her office to her home, two books per day.  If she starts with 250 books in her office and 100 books at home, construct a model showing how the number of books changes in both locations.",
-            "* The books transferred per day is 2.",
-            "* The books in the office decrease by the books transferred per day.",
-            "* The books at home increase by the books transferred per day.",
-            ""
+            "",
+            "Analysis:",
+            "* Process: transferring books from office to home",
+            "* Source: books in the office",
+            "* Destination: books at home",
+            "* Changing: A constant 2 books change state each day"
         ],
         "lessonsLearned": [
             "This type of model is called a linear transfer model, because the change in the source and destination quantities is linear."

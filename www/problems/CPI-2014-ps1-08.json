@@ -11,14 +11,15 @@
         "properties": {},
         "image": {},
         "taskDescription": [
-            "The human body tries to keep its temperature close to 98.6 degrees, which is called the set point.  If the body temperature is below the set point (98.6 degrees), then the body shivers and makes other changes to increase its temperature.  If the body temperature is above the set point, the body sweats and makes other changes to lower its temperature.  The amount of shivering, sweating, etc. is proportional to how far the body’s temperature is from the set point.  Thus, the amount of change in the body temperature per minute is proportional to the how far the body’s temperatureis from the set point.  That is, when you are really hot, you sweat a lot and cool down faster than when you are only a little hot.  Construct a model of the body’s temperature regulation that shows how the temperature changes each minute given these assumptions:",
-            "* The set point is 98.6 degrees (yes, you need to use “degrees” as a unit).",
-            "* The new body temperature is the old body temperature minus the cooling caused by sweating, shivering, etc.",
-            "* The surplus body temperature is the body temperature minus the set point.  If the body is too hot, this quantity is positive.  If the body is too cold, this quantity is negative.  If the body temperature is 98.6, this quantity is zero.",
-            "* The cooling caused by the sweating, shivering, etc. is a fixed proportion, called the recovery rate, times the surplus body temperature.  This quantity is positive if the body is too hot, and negative if the body is too cold.",
-            "* The recovery rate is 0.5. \t",
-            "* The initial body temperature is 105 degrees.",
-            ""
+            "The human body tries to keep its temperature close to 98.6 degrees, which is called the set point of this system.  If the body temperature is below the set point (98.6 degrees), then the body shivers and makes other changes in order to increase its temperature.  If the body temperature is above the set point, the body sweats and makes other changes in order to lower its temperature.  The amount of change in the body temperature per minute is proportional to the how far the body’s temperature is from the set point.  That is, when you are really hot, you sweat a lot and cool down faster than when you are only a little hot.  Construct a model of the body’s temperature regulation that shows how the temperature changes each minute.  Use degrees as the unit of temperature.   Assume the body’s initial temperature is 105 degrees, and that the body is able to reduce the difference between the set point and the body temperature by 50% each minute.",
+            "",
+            "Analysis:",
+            "* Process:  The body temperature converges on the set point",
+            "* Source: Irrelevant",
+            "* Destination:  the body’s current temperature",
+            "* Changing: a proportion, 50%, of the difference between the set point and the destination changes state each minute.",
+            "",
+            "Implementation:  See the image, or the problem “ propor to set point minus destination” in the problem set “generic changes”."
         ],
         "lessonsLearned": [
             "Body temperature exhibits a behavior called “goal seeking” or “homeostasis.” When a quantity is above or below its set",

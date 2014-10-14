@@ -15,12 +15,21 @@
             "URL": "images/moose_60.png"
         },
         "taskDescription": [
-	    "Assumptions:",
-	    " * The moose population is 20 in the first year (1900).",
-	    " * Births and deaths are the only change in the population. Immigration and emigration do not occur.",
-	    " * The number of moose births each year is 20% of the moose population.",
-	    " * The number of moose deaths each year is 5% of the moose population. "
-	    ],
+            "Let’s assume that the moose population on an island is 20 in the first year that it was observed, and that the only changes in the population are due to births and deaths—moose immigration and emigration do not occur.  Assume that the chance of a moose given birth is 20% per year, and that the chance of a moose dying is 5% per year.  Construct a model showing how the moose population changes assuming:",
+            "",
+            "Analysis:",
+            "* Process 1:  Adding baby moose to the population",
+            "* Source 1: irrelevant",
+            "* Destination 1:  the moose population",
+            "* Changing 1:  a proportion, 20%, of the destination changes state each year",
+            "",
+            "* Process 2:  Moose removed from the population as they die.",
+            "* Source 2:  the moose population",
+            "* Destination 2:  irrelevant",
+            "* Changing 2:  a proportion, 5%, of the source changes state each year",
+            "",
+            "Implementation:  For process 1, see the problem “proportional to destination” in the problem set “generic changes.”    For process 2, see the problem “proportional to source” in the problem set “generic changes”"
+        ],
         "lessonsLearned": [
             "This model combines exponential growth and exponential decay. If you play with the sliders, you’ll see that regardless",
             "of the values of the parameters, the graph is always an exponential curve. (You will need to type in a high initial value",

@@ -14,11 +14,17 @@
         "image": {
             "URL": "images/737px-Frohawk_Dodo.png"
         },
-        "taskDescription": ["Suppose that 1000 Dodos were living on the island of Mauritius when sailors landed. The sailors accidentally introduced a new species, rats. The rats ate essentially all the Dodo eggs as soon as they were laid, so the Dodo birth rate dropped to zero. Meanwhile, the annual Dodo death rate continued to be 20%. That is, 20% of the Dodos died each year and no Dodos were born. Build a model and observe how the Dodo population changed over 20 years.", 
-           "You will need:", 
-           "* A node called \"population\" to represent the number of Dodos still alive on Mauritius. This decreases each year due to deaths.", 
-           "* A node called \"deaths\" to represent the number of Dodos that die each year. To calculate it, multiply death rate by population.",
-           "* A node called \"death rate\" to represent the fraction of the Dodo population that dies each year. Dragoon doesn't understand percentages, so we use 0.20 instead of 20%."],
+        "taskDescription": [
+            "Suppose that 1000 dodos (pronounced: doe-doze) were living on the island of Mauritius when sailors landed.  The sailors accidentally introduced a new species, rats.  The rats ate essentially all the dodo eggs as soon as they were laid, so the dodo birth rate dropped to zero.  Meanwhile, the annual death rate continued to be 20%.  That is, 20% of the dodos died each year and no dodos were born.  Build a model that shows how the dodo population changed.",
+            "",
+            "Analysis:",
+            "* Process: Removing dodos from the population as they die.",
+            "* Source: the dodo population",
+            "* Destination: irrelevant, presumably dodo heaven",
+            "* Changing:  a proportion, 20%, of the source changes state each year",
+            "",
+            "Implementation: See image, or see the problem “proportional to source” in the problem set “generic changes.”"
+        ],
         "lessonsLearned": [
             "The graph of the quantity \"population\" is a curved line that approaches zero slowly. This behavior is called \"exponential",
             "decay,\" because the curve fits an exponential function. See the Wikipedia article on \"exponential decay\" for details.",

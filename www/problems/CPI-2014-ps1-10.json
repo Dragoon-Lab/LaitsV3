@@ -14,7 +14,16 @@
         "image": {
             "URL": "images/barrels.jpg"
         },
-        "taskDescription": " Consider two 100-gallon rain barrels that are connected to each other by a hose. They are next to each other on a horizontal surface, and a hose connects them at their bottoms. One barrel starts with 55 gallons in it, and the other is empty. Thus, water will flow from the full barrel to the empty barrel via the hose. The rate of flow is proportional to the difference in the water levels in the the two barrels. In particular, when both barrels have the same amount of water in them, the flow stops. The number of gallons that flow through the hose per minute is difference in the number of gallons in the two barrels times 0.03. ",
+        "taskDescription": [
+            "Suppose two large barrels are connected at the bottom (not at the top, as shown above).  After a heavy rain dumps 55 gallons of water into the first barrel, the water starts to flow from it into the second barrel, which starts empty.  The number of gallons transferred per minute is proportional to the difference in the amount of water they have.  In particular, when the two barrels have the same amount of water, the difference is zero and the flow stops.   Assume that the water flowing between the barrels each minute is 3% of the difference between the barrel’s contents.  Construct a model that shows how the water level in both barrels changes.",
+            "",
+            "* Process: Water flowing from the first barrel to the second barrel.",
+            "* Source: Amount of water in the first barrel",
+            "* Destination: Amount of water in the second barrel",
+            "* Changing: a proportion, 3%, of the difference between the first barrel and second barrel changes flow between barrels each minute.",
+            "",
+            "Implementation: See the problem “propor to source minus destination” in the problem set “generic changes”"
+        ],
         "lessonsLeaned": [
             "This type of model is sometimes called an equilibrating process, which is a process that seeks an equilibrium. In this",
             "case, the process seeks to have the same amount of water in the two barrels. Such processes are common in chemistry",

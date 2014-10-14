@@ -14,7 +14,20 @@
         "image": {
             "URL": "http://amt.javiergs.com/images/tasks/intro-4.png"
         },
-        "taskDescription": "Problem: Corky is a struggling student. He keeps a task list of assignments he needs to do, but it keeps getting longer and longer. Each week Corky adds 7 new assignments to his task list. As hard as he tries, Corky is only able to complete 3 assignments each week and remove them from his task list. At the beginning of the semester, he starts with 2 tasks on his list. Goal: Graph the number of assignments on the task list over the 12-week semester. ",
+        "taskDescription":[
+            "Corky keeps a list of assignments he needs to complete for his classes, but it keeps getting longer and longer.  Each week, Corky adds 7 new assignments to his task list.  As hard as he tries, Corky is only able to complete 3 assignments each week and remove them from his task list. Construct a model that show how the number of tasks on Corky’s list changes.",
+            "",
+            "Analysis:",
+            "* Process 1: Adding new assignments to the task list",
+            "* Source 1:  irrelevant",
+            "* Destination 1: the task list",
+            "* Changing 1: a constant 7 assignments changes state each week",
+            "",
+            "* Process 2:  Removing completed assignments from the task list",
+            "* Source 2: the task list",
+            "* Destination 2:  irrelevant",
+            "* Changing 2: a constant 3 assignments changes state each week"
+        ],
         "lessonsLearned" :[
             "This model combines linear growth and linear decay. If you play with the sliders, you’ll see that regardless of the values of the parameters, the graph is always a straight line. Thus, if you combine two or more linear changes, you get a linear change."
         ],
