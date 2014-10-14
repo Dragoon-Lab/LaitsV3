@@ -1,0 +1,145 @@
+{
+    "task": {
+        "taskName": "retirement",
+        "time": {
+            "start": 0,
+            "end": 20,
+            "step": 0.5,
+            "integrationMethod": "Eulers Method",
+            "units": "years"
+        },
+        "properties": {},
+        "image": {},
+        "taskDescription": [
+            "Suppose Mr. and Mrs. Walton start their retirement with $100,000 in their bank account. The interest rate is 5%, where “interest rate” refers to the proportion of the account’s money that thebank deposits annually to the account (that is, the account earns simple interest, not compound interest).  For instance, in the first year, the bank would deposit $5,000, which is 5% of $100,000.  Meanwhile the Waltons annually withdraw $12,000 for living expenses.  Construct a model showing how the money in their account changes.  Hints:",
+            "* The new value for “money in the account” is the old value plus the bank’s annual deposit minus the Walton’s annual withdrawal.",
+            "* The account starts with $100000 in it.  Dragoon doesn’t understand commas in numbers, so you must omit them. ",
+            "* For this problem, you will sometimes need to use dollars as the unit.",
+            "* The bank’s annual deposit each year is the interest rate times the money in the account that year.",
+            "* The interest rate is always 5%.",
+            "* The Walton’s annual withdrawal is always $12000.",
+            ""
+        ],
+        "lessonsLearned" : [
+            "This model combines exponential growth and linear decay. If you play with the sliders, you will find that the curve is",
+            "always exponential. However, when the annual deposit exactly equals the annual withdrawal, the money in the account",
+            "stays the same and the curve is a horizontal flat line. Technically speaking, this flat line is also an exponential curve",
+            "where the exponent is 0. Anyway, the main point is that when you combine an exponential change with a linear change",
+            "you get an exponential change. By the way, when do the Waltons run out of money? If you or your parents are close",
+            "to retirement, you might want to determine the maximum the Waltons can withdraw annually so that they just run out",
+            "after 20 years of retirement"
+        ],
+        "givenModelNodes": [
+            {
+                "ID": "id1",
+                "inputs": [
+                    {
+                        "ID": "id2",
+                        "label": ""
+                    },
+                    {
+                        "ID": "id3",
+                        "label": "-"
+                    }
+                ],
+                "position": {
+                    "x": 459,
+                    "y": 130
+                },
+                "attemptCount": {
+                    "description": 0,
+                    "type": 0,
+                    "initial": 0,
+                    "units": 0,
+                    "equation": 0,
+                    "assitanceScore": 0
+                },
+                "status": {},
+                "name": "Money in the account",
+                "description": "The amount of money in the Walton's account",
+                "type": "accumulator",
+                "initial": 100000,
+                "units": "dollars",
+                "parentNode": true,
+                "equation": "id2-id3"
+            },
+            {
+                "ID": "id2",
+                "inputs": [
+                    {
+                        "ID": "id4",
+                        "label": ""
+                    },
+                    {
+                        "ID": "id1",
+                        "label": ""
+                    }
+                ],
+                "position": {
+                    "x": 460,
+                    "y": 291
+                },
+                "attemptCount": {
+                    "description": 0,
+                    "type": 0,
+                    "initial": 0,
+                    "units": 0,
+                    "equation": 0,
+                    "assitanceScore": 0
+                },
+                "status": {},
+                "name": "annual deposit",
+                "description": "Money deposited by the bank into the account annually",
+                "type": "function",
+                "units": "dollars",
+                "equation": "id4*id1"
+            },
+            {
+                "ID": "id3",
+                "inputs": [],
+                "position": {
+                    "x": 541,
+                    "y": 118
+                },
+                "attemptCount": {
+                    "description": 0,
+                    "type": 0,
+                    "initial": 0,
+                    "units": 0,
+                    "equation": 0,
+                    "assitanceScore": 0
+                },
+                "status": {},
+                "name": "annual withdrawal",
+                "description": "The money that the Walton's withdraw from the account annually",
+                "type": "parameter",
+                "parentNode": false,
+                "initial": 12000,
+                "units": "dollars"
+            },
+            {
+                "ID": "id4",
+                "inputs": [],
+                "position": {
+                    "x": 574.7451782226562,
+                    "y": 270.74517822265625
+                },
+                "attemptCount": {
+                    "description": 0,
+                    "type": 0,
+                    "initial": 0,
+                    "units": 0,
+                    "equation": 0,
+                    "assitanceScore": 0
+                },
+                "status": {},
+                "name": "interest rate",
+                "description": "The proportion of the account's money that the bank deposits annuall",
+                "type": "parameter",
+                "parentNode": false,
+                "initial": 0.05
+            }
+        ],
+        "studentModelNodes": []
+    }
+}
