@@ -367,14 +367,12 @@ define([
 			this.dialogWidget.show();
 			var content = this.dialogWidget.get("content").toString();
 			if(content.search("There isn't anything to plot. Try adding some accumulator or functionnodes.") >= 0 
-					||content.search("There is nothing to show in the table.	Please define some quantitites.") >= 0) {
+					||content.search("There is nothing to show in the table.	Please define some quantitites.") >= 0 ||
+					this.model.m === "EDITOR" || !this.model.isCompleteFlag) {
 				return;
 			}
 			var contentMsg = this.model.getTaskLessonsLearned();
 			var shown = this.model.isLessonLearnedShown;
-			/*if(!contentMsg || shown) {
-				return;
-			}*/
 			this.model.isLessonLearnedShown = true;
 			var lessonsLearnedButton = registry.byId("lessonsLearnedButton");   
 			lessonsLearnedButton.set("disabled", false);
@@ -395,16 +393,6 @@ define([
 			});
 			
 			lang.hitch(this, handle);
-			/*lang.hitch(this, this.dialogWidget.connect(this.dialogWidget,"hide",function(e) {
-				if(!contentMsg || shown) {
-					return;
-				}
-				var lessonLearnedDialog = registry.byId("lesson");
-				var titleMsg = "Lessons Learned";
-				lessonLearnedDialog.set("content", contentMsg[0]);
-				lessonLearnedDialog.set("title", titleMsg);
-				lessonLearnedDialog.show();
-			}));*/
 		},
 
 		setLogging: function(/*string*/ logging){

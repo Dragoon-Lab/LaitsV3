@@ -67,11 +67,6 @@ define([
 	
 	// Start up new session and get model object from server
 	var session = new loadSave(query);
-	var sesssion = new loadSave(query);
-	session.params.z = "sachin";
-	console.log(session.params);
-	console.log(sesssion.params);
-	
     console.log("session is",session);
 	logging.setSession(session);  // Give logger message destination
 	session.loadProblem(query).then(function(solutionGraph){
@@ -194,7 +189,7 @@ define([
 			});
 
 			// checks if forumurl is present
-			if(query.f && query.fe == "true") {
+			if(query.f && query.fe) {
 				//Enable the forum button in the menu
 				var forumBut=registry.byId("forumButton");
 				forumBut.set("disabled", false);
@@ -317,7 +312,7 @@ define([
 			});
             //the solution div which shows graph/table when closed
             //should disable all the pop ups
-            aspect.after(registry.byId(' '), "hide", function(){
+            aspect.after(registry.byId('solution'), "hide", function(){
                 console.log("Calling graph/table to be closed");
                 typechecker.closePops();
                 //session.saveProblem(givenModel.model);
@@ -341,6 +336,9 @@ define([
 				});
 			});
 
+			//Disable the lessonsLearnedButton
+			//var lessonsLearnedButton = registry.byId("lessonsLearnedButton");   
+			//lessonsLearnedButton.set("disabled", true);
 			//Bind lessonsLearnedButton to the click event	
 			menu.add("lessonsLearnedButton", function(){
 				var lessonLearnedDialog = registry.byId("lesson");
