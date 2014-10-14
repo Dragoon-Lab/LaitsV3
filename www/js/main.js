@@ -343,7 +343,12 @@ define([
 			menu.add("lessonsLearnedButton", function(){
 				var lessonLearnedDialog = registry.byId("lesson");
 				var titleMsg = "Lessons Learned";
-				lessonLearnedDialog.set("content", givenModel.getTaskLessonsLearned()[0]);
+				contentMsg = givenModel.getTaskLessonsLearned();
+				var contentHTML = contentMsg[0];
+				for(var i=1;i<contentMsg.length;i++) {
+					contentHTML = contentHTML +"<br>"+contentMsg[i];
+				}
+				lessonLearnedDialog.set("content", contentHTML);
 				lessonLearnedDialog.set("title", titleMsg);
 				lessonLearnedDialog.show();
 			});

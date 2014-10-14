@@ -386,7 +386,11 @@ define([
 				}
 				var lessonLearnedDialog = registry.byId("lesson");
 				var titleMsg = "Lessons Learned";
-				lessonLearnedDialog.set("content", contentMsg[0]);
+				var contentHTML = contentMsg[0];
+				for(var i=1;i<contentMsg.length;i++) {
+					contentHTML = contentHTML +"<br>"+contentMsg[i];
+				}
+				lessonLearnedDialog.set("content", contentHTML);
 				lessonLearnedDialog.set("title", titleMsg);
 				lessonLearnedDialog.show();
 				dojo.disconnect(handle);
