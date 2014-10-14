@@ -122,7 +122,7 @@
             <div id="menuMathFunctions" data-dojo-type="dijit/MenuItem">Math Functions</div>
 		 </div>
              </div>
-
+		 <button type="button" data-dojo-type="dijit/form/Button" id="lessonsLearnedButton" disabled="true">Lessons Learned</button>
 	     <button type="button" data-dojo-type="dijit/form/Button" id="doneButton">Done</button>
 	</div> <!-- Menubar -->
         <div id="drawingPane" data-dojo-type="dijit/layout/ContentPane" region="center">
@@ -142,6 +142,9 @@
         <div class="claro" id="solution" data-dojo-type="dijit.Dialog" style="height:750px; width:1000px;background-color: #FFFFFF">
 	</div>
 	
+	<!-- Dialog showing lessonsLearned  -->
+        <div class="claro" id="lesson" data-dojo-type="dijit.Dialog">
+	</div>
         <!-- Putting crisis-Alert Dialog stuff -->
 
         <div class="claro" id="crisisAlertMessage" data-dojo-type="dijit.Dialog" title="Message">
@@ -210,6 +213,8 @@
         <div class="fieldgroup">
             <label for="authorSaveGroup" style="width:7em">Group Name:</label>
             <input id="authorSaveGroup" style="width:10em" value="0" data-dojo-type="dijit/form/TextBox"></input>
+        </div>
+        <div class="fieldgroup" aligh="right" id="authorSaveStatus">            
         </div>
         <div class="fieldgroup" align="right">
             <button id="saveCloseButton" type="button" data-dojo-type="dijit/form/Button" iconClass="dijitNoIcon">Save</button>

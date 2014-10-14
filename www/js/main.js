@@ -105,7 +105,7 @@ define([
 		controllerObject.setState(state);
 
 		ready(function(){
-
+			
 			var drawModel = new drawmodel(givenModel.active);
 			drawModel.setLogging(session);
 
@@ -189,7 +189,7 @@ define([
 			});
 
 			// checks if forumurl is present
-			if(query.f && query.fe == "true") {
+			if(query.f && query.fe) {
 				//Enable the forum button in the menu
 				var forumBut=registry.byId("forumButton");
 				forumBut.set("disabled", false);
@@ -245,7 +245,37 @@ define([
                 on(registry.byId("saveCloseButton"), "click", function(){
                     registry.byId("authorSaveDialog").hide();
                 });
+                
+                //Author Save Dialog - check for name conflict on losing focus
+                //from textboxes of Rename dialog
+    			on(registry.byId("authorSaveProblem"), "blur", function() {
+    				var problemName = registry.byId("authorSaveProblem").value;
+    				var groupName = registry.byId("authorSaveGroup").value;    				
+    				session.isProblemNameConflict(problemName,groupName).then(function(isConflict) {
+    					if(isConflict) {    					
+    						registry.byId("saveCloseButton").set("disabled",true);
+    						registry.byId("saveCloseButton").set("title","Problem name conflict");
+    					} else {    						
+    						registry.byId("saveCloseButton").set("disabled",false);
+    						registry.byId("saveCloseButton").set("title","Problem name doesn't conflict");
+    					}
+    				});    				
+    			});
+    			on(registry.byId("authorSaveGroup"), "blur", function() {
+    				var problemName = registry.byId("authorSaveProblem").value;
+    				var groupName = registry.byId("authorSaveGroup").value;
+    				session.isProblemNameConflict(problemName,groupName).then(function(isConflict) {
+    					if(isConflict) {    						
+    						registry.byId("saveCloseButton").set("disabled",true);
+    						registry.byId("saveCloseButton").set("title","Problem name conflict");
+    					} else {    					
+    						registry.byId("saveCloseButton").set("disabled",false);
+    						registry.byId("saveCloseButton").set("title","Problem name doesn't conflict");
+    					}
+    				});
+    			});
 			}
+						
 			// Render image description on canvas
 			descObj.showDescription();
 
@@ -282,7 +312,7 @@ define([
 			});
             //the solution div which shows graph/table when closed
             //should disable all the pop ups
-            aspect.after(registry.byId(' '), "hide", function(){
+            aspect.after(registry.byId('solution'), "hide", function(){
                 console.log("Calling graph/table to be closed");
                 typechecker.closePops();
                 //session.saveProblem(givenModel.model);
@@ -306,6 +336,22 @@ define([
 				});
 			});
 
+			//Disable the lessonsLearnedButton
+			//var lessonsLearnedButton = registry.byId("lessonsLearnedButton");   
+			//lessonsLearnedButton.set("disabled", true);
+			//Bind lessonsLearnedButton to the click event	
+			menu.add("lessonsLearnedButton", function(){
+				var lessonLearnedDialog = registry.byId("lesson");
+				var titleMsg = "Lessons Learned";
+				contentMsg = givenModel.getTaskLessonsLearned();
+				var contentHTML = contentMsg[0];
+				for(var i=1;i<contentMsg.length;i++) {
+					contentHTML = contentHTML +"<br>"+contentMsg[i];
+				}
+				lessonLearnedDialog.set("content", contentHTML);
+				lessonLearnedDialog.set("title", titleMsg);
+				lessonLearnedDialog.show();
+			});
             /*
              Add link to intro video
              */
@@ -377,7 +423,6 @@ define([
 							"height=400, width=600, toolbar =no, menubar=no, scrollbars=no, resizable=no, location=no, status=no"
 						   );
 			});
-
 		});
 	});
 });

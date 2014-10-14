@@ -94,7 +94,26 @@ define([
 				});
 			});
 		},
-		saveAsProblem : function(model,problemName,groupName){
+		isProblemNameConflict: function(problemName, groupName) {
+			return xhr.post(this.path + "problems_conflict_checker.php", {
+				data: {
+					group: groupName,
+					section: this.params.s,
+					problem: problemName
+				},
+				handleAs: "json"
+			}).then(function(reply){  // this makes blocking?
+				console.log("Got the conflict status ", reply);
+				return reply.isConflict;			
+			}, function(err){
+				alert('error');
+				this.clientLog("error", {
+					message: "get problem conflict status : "+err,
+					functionTag: 'problemConflictChecker'
+				});
+			});
+		},
+		saveAsProblem : function(model,problemName,groupName){ 
 			//update params to be passed
 			var newParams = dojo.clone(this.params);  //clone the object
 			newParams.p = problemName;

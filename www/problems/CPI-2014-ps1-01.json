@@ -1,0 +1,76 @@
+{
+    "task": {
+        "taskName": "Bookworm",
+        "time": {
+            "start": 0,
+            "end": 52,
+            "step": 0.5,
+            "units": "weeks"
+        },
+        "properties": {
+            "phase": "Challenge",
+            "type": "Construct"
+        },
+        "image": {
+            "URL": "http://passion2read.files.wordpress.com/2011/09/bookworm1.gif"
+        },
+        "taskDescription": "Problem: Rod is a book worm. He already has 100 books. Each week he buys and reads two more books. Goal: Graph the number of books Rod has in 52 weeks. Hints: (1) The Done button is enabled (turns green) only when the model is complete and correct. (2) Although you could construct models by guessing and running them until the Done button is enabled, this will take too long; it is better to analyze the task and design the model using the advice starting on slide 67 of the instruction tab. (3) If you get really stuck or the software acts buggy, then please ask an experimenter for help.",
+        "lessonsLearned": [
+        	"The graph of the quantity \"books\" is a straight line headed upwards. This type of behavior is called \"linear growth.\"",
+        	"The simplest model that exhibits linear growth is exactly like the one you just constructed: An accumulator with a",
+        	"parameter whose value is repeatedly added to the accumulator’s value."
+    	],
+        "givenModelNodes": [
+            {
+                "ID": "id1",
+                "inputs": [],
+                "position": {
+                    "x": 400,
+                    "y": 100
+                },
+                "attemptCount": {
+                    "description": 0,
+                    "type": 0,
+                    "initial": 0,
+                    "units": 0,
+                    "equation": 0
+                },
+                "status": {},
+                "name": "weekly books bought",
+                "type": "parameter",
+                "parentNode": false,
+                "units": "",
+                "description": "The number of books Rod buys each week",
+                "initial": 2
+            },
+            {
+                "ID": "id2",
+                "inputs": [
+                    {
+                        "ID": "id1"
+                    }
+                ],
+                "position": {
+                    "x": 400,
+                    "y": 100
+                },
+                "attemptCount": {
+                    "description": 0,
+                    "type": 0,
+                    "initial": 0,
+                    "units": 0,
+                    "equation": 0
+                },
+                "status": {},
+                "name": "books",
+                "type": "accumulator",
+                "parentNode": true,
+                "units": "",
+                "description": "The number of books Rod has",
+                "initial": 100,
+                "equation": "+ id1"
+            }
+        ],
+        "studentModelNodes": []
+    }
+}

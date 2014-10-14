@@ -51,7 +51,6 @@ define([
 		sliders: {},						// Parameter to create slider objects
 		_logging : null,
 		mode : null,						// Parameter to hold the mode value to differentiate graphs for author and student mode.
-
 		constructor: function(model, mode, logging){
 			console.log("***** In calculations constructor", this.given);
 			this.model = model;
@@ -366,6 +365,38 @@ define([
 		/* @brief: display the graph*/
 		show: function(){
 			this.dialogWidget.show();
+			var content = this.dialogWidget.get("content").toString();
+			if(content.search("There isn't anything to plot. Try adding some accumulator or functionnodes.") >= 0 
+					||content.search("There is nothing to show in the table.	Please define some quantitites.") >= 0 ||
+					this.model.m === "EDITOR" || !this.model.isCompleteFlag) {
+				return;
+			}
+			var contentMsg = this.model.getTaskLessonsLearned();
+			var shown = this.model.isLessonLearnedShown;
+			this.model.isLessonLearnedShown = true;
+			var lessonsLearnedButton = registry.byId("lessonsLearnedButton");   
+			lessonsLearnedButton.set("disabled", false);
+			
+			var handle = this.dialogWidget.connect(this.dialogWidget,"hide",function(e) {
+				if(!contentMsg || shown) {
+					if(!contentMsg) {
+						lessonsLearnedButton.set("disabled", true);
+					}
+					return;
+				}
+				var lessonLearnedDialog = registry.byId("lesson");
+				var titleMsg = "Lessons Learned";
+				var contentHTML = contentMsg[0];
+				for(var i=1;i<contentMsg.length;i++) {
+					contentHTML = contentHTML +"<br>"+contentMsg[i];
+				}
+				lessonLearnedDialog.set("content", contentHTML);
+				lessonLearnedDialog.set("title", titleMsg);
+				lessonLearnedDialog.show();
+				dojo.disconnect(handle);
+			});
+			
+			lang.hitch(this, handle);
 		},
 
 		setLogging: function(/*string*/ logging){
