@@ -11,10 +11,10 @@
         "properties": {},
         "image": {},
         "taskDescription": [
-            "As you know, the more weight a person carries, the more energy they burn per day.  And you now know that the proportion of weight change allocated to fat also increases a fat (and hence weight) increases.  These two trends interact, because it turns out that fat requires less energy per day than lean tissue.  A pound of fat requires about 1.74 calories of resting energy expenditure (REE) per day, whereas a pound of lean tissue requires three times as much, about 5.22 calories of REE per day.  Our old model of energy balance, which didn't distinguish between fat and lean tissue, assumed 4.5 calories per pound per day, which is true only for a 150 pound male, like Joe.  Please modify the model of energy balance to include the distinction between fat and lean tissue, and the differences in REE burned by each type.",
-            "",
-            "",
-            ""
+            "Jockeys, body builders, actors and others who need to control their weight carefully use a model that has been given to you.  Starting at the top, it says that one’s total weight is composed of the weight of fat and lean tissues.  The change in weight is allocated unevenly to them.  The more fat one has, the more that of the weight change is allocated to fat.  Weight change can be positive or negative, depending on the balance (node: energy balance) between energy ingested as food and energy expended.  Calories are the measure of energy, and they are converted to weight by dividing by 3500.  Now the energy expended is composed of REE (resting energy expenditures) and energy expended during physical activity.  REE is measured when one has been lying still for a long time.  It can be estimated from four components: age, height, gender and weight.  This model is for a 20 year old male who is 65 inches tall and weighs 150 pounds.   For people of more-or-less normal weight, weight REE can be estimated by multiplying weight (in pounds) by 4.5 to get calories.  However, for people who are not more-or-less normal in weight, this estimate is inaccurate.  The fact is that a pound of fat contributes 1.74 calories to weight REE and a pound of lean teaches contributes three times as much:  5.22 calories.  Modify the given model to take these facts into account.    Manipulate the slider for “energy ingested” to see what happens when this 20 year old, 65 inch guy starts overeating. "
+        ],
+        "lessonsLearned" : [
+            "This model is typical of many professional models in that it has lots of functions and parameters that are not directly connected to accumulators.  In fact, this model only has two accumulators in it.  All the other nodes represent physiological variables that have meaning and can be varied independently of each other."
         ],
         "givenModelNodes": [
             {

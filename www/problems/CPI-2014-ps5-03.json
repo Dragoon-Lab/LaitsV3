@@ -14,7 +14,12 @@
         "image": {
             "URL": "images/bobcat_with_rabbit.jpg"
         },
-        "taskDescription": " In the foothills of the Wasatch Mountains near Brigham City, Utah, there is a small valley that is home to a rabbit population of 53 rabbits and 4 bobcats. The rabbits have a birth rate of 1.5 per rabbit per year. However, the number of bobcats affects the rabbit death rate so the number of rabbit deaths is: Rabbit Population * Rabbit Death Coefficient * Bobcat Population, where the Rabbit Death Coefficient is 0.25. The bobcats have a death rate of .25 per bobcat per year. The number of rabbits affects the bobcat birth rate so the number of bobcat births is: Bobcat Birthrate * Bobcat Population * Rabbit Population, where the Bobcat Birth Coefficient is 0.005. Construct a model that shows the change in the rabbit and bobcat populations over a period of 10 years. Assume that births and deaths are the only change in the population. Immigration and emigration do not occur. ",
+        "taskDescription": [
+            " In the problem “Moose and Wolves” you constructed a simple but inaccurate model of a predator-prey ecosystem (its graph is shown above).  In the problem “Capacity-limited moose population” you constructed a model of the moose population without wolves.  Construct a model that combines them.  The predator-prey model has been given to you.  You need to modify it in order to show two ways a moose can die:  being killed by wolves or starving to death.  Assume the carrying capacity for moose is 500. "
+        ],
+        "lessonsLearned": [
+            " The addition of capacity limits prevents the moose population from spiking, which in turn prevents the spiking of the wolf population."
+        ],
         "givenModelNodes": [
             {
                 "ID": "id1",
