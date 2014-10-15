@@ -1,0 +1,86 @@
+{
+    "task": {
+        "taskName": "Bookworm",
+        "time": {
+            "start": 0,
+            "end": 52,
+            "step": 0.5,
+            "units": "weeks"
+        },
+        "properties": {
+            "phase": "Challenge",
+            "type": "Construct"
+        },
+        "image": {
+            "URL": "http://passion2read.files.wordpress.com/2011/09/bookworm1.gif"
+        },
+        "taskDescription": [
+            "Rod is a book worm.  He already has 100 books.  Each week, he buys and reads two more books.  Construct a model that shows how many books he has each week.",
+            "",
+            "Analysis:",
+            "* Process: buying books",
+            "* Source: irrelevant",
+            "* Destination:  Rod’s books",
+            "* Changing: a constant number, 2, of books changes state each week",
+            "",
+            "Implementation:  See image above, but change the numbers and names.  Or see the problem “constant” in the problem set “generic changes.”"
+        ],
+        "lessonsLearned": [
+            "The graph of the quantity \"books\" is a straight line headed upwards. This type of behavior is called \"linear growth.\"",
+            "The simplest model that exhibits linear growth is exactly like the one you just constructed: An accumulator with a",
+            "parameter whose value is repeatedly added to the accumulator’s value."
+        ],
+        "givenModelNodes": [
+            {
+                "ID": "id1",
+                "inputs": [],
+                "position": {
+                    "x": 400,
+                    "y": 100
+                },
+                "attemptCount": {
+                    "description": 0,
+                    "type": 0,
+                    "initial": 0,
+                    "units": 0,
+                    "equation": 0
+                },
+                "status": {},
+                "name": "weekly books bought",
+                "type": "parameter",
+                "parentNode": false,
+                "units": "",
+                "description": "The number of books Rod buys each week",
+                "initial": 2
+            },
+            {
+                "ID": "id2",
+                "inputs": [
+                    {
+                        "ID": "id1"
+                    }
+                ],
+                "position": {
+                    "x": 400,
+                    "y": 100
+                },
+                "attemptCount": {
+                    "description": 0,
+                    "type": 0,
+                    "initial": 0,
+                    "units": 0,
+                    "equation": 0
+                },
+                "status": {},
+                "name": "books",
+                "type": "accumulator",
+                "parentNode": true,
+                "units": "",
+                "description": "The number of books Rod has",
+                "initial": 100,
+                "equation": "+ id1"
+            }
+        ],
+        "studentModelNodes": []
+    }
+}

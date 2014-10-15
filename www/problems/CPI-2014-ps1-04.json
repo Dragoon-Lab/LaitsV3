@@ -1,0 +1,117 @@
+{
+    "task": {
+        "taskName": "Dodo extinction",
+        "time": {
+            "start": 0,
+            "end": 20,
+            "step": 1.0,
+            "units": "Years"
+        },
+        "properties": {
+            "phase": "Intro",
+            "type": "Construct"
+        },
+        "image": {
+            "URL": "images/737px-Frohawk_Dodo.png"
+        },
+        "taskDescription": [
+            "Suppose that 1000 dodos (pronounced: doe-doze) were living on the island of Mauritius when sailors landed.  The sailors accidentally introduced a new species, rats.  The rats ate essentially all the dodo eggs as soon as they were laid, so the dodo birth rate dropped to zero.  Meanwhile, the annual death rate continued to be 20%.  That is, 20% of the dodos died each year and no dodos were born.  Build a model that shows how the dodo population changed.",
+            "",
+            "Analysis:",
+            "* Process: Removing dodos from the population as they die.",
+            "* Source: the dodo population",
+            "* Destination: irrelevant, presumably dodo heaven",
+            "* Changing:  a proportion, 20%, of the source changes state each year",
+            "",
+            "Implementation: See image, or see the problem “proportional to source” in the problem set “generic changes.”"
+        ],
+        "lessonsLearned": [
+            "The graph of the quantity \"population\" is a curved line that approaches zero slowly. This behavior is called \"exponential",
+            "decay,\" because the curve fits an exponential function. See the Wikipedia article on \"exponential decay\" for details.",
+            "The simplest model that exhibits exponential decay is exactly the one you just built: It has an accumulator, a function",
+            "and a parameter, hooked up just as you have done. The small circle with a minus sign inside it indicates that the input to",
+            "the accumulator is negated before it is added to the old value of the accumulator."
+        ],
+        "givenModelNodes": [
+            {
+                "ID": "id1",
+                "inputs": [
+                    {
+                        "ID": "id2"
+                    }
+                ],
+                "position": {
+                    "x": 400,
+                    "y": 100
+                },
+                "attemptCount": {
+                    "description": 0,
+                    "type": 0,
+                    "initial": 0,
+                    "units": 0,
+                    "equation": 0
+                },
+                "status": {},
+                "name": "population",
+                "type": "accumulator",
+                "parentNode": true,
+                "units": "",
+                "description": "The number of Dodos in the Dodo population",
+                "initial": 1000,
+                "equation": "- id2"
+            },
+            {
+                "ID": "id2",
+                "inputs": [
+                    {
+                        "ID": "id1"
+                    },
+                    {
+                        "ID": "id3"
+                    }
+                ],
+                "position": {
+                    "x": 400,
+                    "y": 100
+                },
+                "attemptCount": {
+                    "description": 0,
+                    "type": 0,
+                    "initial": 0,
+                    "units": 0,
+                    "equation": 0
+                },
+                "status": {},
+                "name": "deaths",
+                "type": "function",
+                "parentNode": false,
+                "units": "",
+                "description": "The number of Dodos that die each year",
+                "equation": "id1 * id3"
+            },
+            {
+                "ID": "id3",
+                "inputs": [],
+                "position": {
+                    "x": 400,
+                    "y": 100
+                },
+                "attemptCount": {
+                    "description": 0,
+                    "type": 0,
+                    "initial": 0,
+                    "units": 0,
+                    "equation": 0
+                },
+                "status": {},
+                "name": "death rate",
+                "type": "parameter",
+                "parentNode": false,
+                "units": "",
+                "description": "The fraction of Dodos that die each year",
+                "initial": 0.2
+            }
+        ],
+        "studentModelNodes": []
+    }
+}

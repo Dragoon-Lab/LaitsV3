@@ -1,0 +1,543 @@
+{
+    "task": {
+        "taskName": "simple blood glucose homeostasis",
+        "time": {
+            "start": 0,
+            "end": 100,
+            "step": 1,
+            "integrationMethod": "Eulers Method",
+            "units": "minutes"
+        },
+        "properties": {},
+        "image": {},
+        "taskDescription": [
+            "A famous article (R.N. Bergman, C. Cobelli, Minimal modelling, partition analysis and the estimation of insulin sensitivity, Federation Proc. 39 (1980) 110–115) presented a model of how quickly the body corrects an over-supply of blood glucose.  This is important for understanding diabetes.  By manipulating the parameters of the model, one can make it fit both a diabetic’s response to a candy bar and a normal person’ response.  In this problem, you will construct part of this famous model.",
+            "",
+            "Excess blood glucose is removed by two kinds of tissues: (1) muscles and similar tissues whose consumption of glucose is regulated by insulin, and (2)  nerves, internal organs and other tissues that burn glucose at a constant rate that that isn’t affected by insulin.   The latter subsystem has been modelled for you already as a homeostatic system (see the nodes:  blood glucose; glucose difference; glucose set point; glucose removed without insulin; glucose effectiveness).   We are going to focus on the tissues affected by insulin, since they are the important ones for diabetes.",
+            "",
+            "When the liver detects that the blood glucose is higher than the set point, it secrets insulin into the blood.  The amount secreted is represented by the node “insulin from liver” in the model.  Do its inputs make sense to you?  Next, insulin is transported by the blood to the muscles and other so-called “remote tissues” that will burn up the excess glucose.  This part of the model is missing; you’ll need to construct it.  The insulin in the blood is absorbed by the remote tissues.  The amount absorbed per second is represented by the given node “blood insulin to remote.”    The amount of insulin in the remote tissues (represented by the node “remote insulin”) affects both the amount of glucose removed from the blood and the speed at which more insulin is absorbed from the blood.  This subsystem has been given to you.    Your job is to complete the model by constructing the model that connects the nodes “insulin from liver” and “blood insulin to remote.”  This is a homeostatic process:",
+            "* Source:  insulin in the blood",
+            "* Destination:  Insulin in the remote tissues",
+            "* Changing:  A proportional (15%) of the difference between the insulin in the blood and the blood insulin set point (7 ulU/mL)."
+            ""
+        ],
+        "lessonsLearned": [
+            "Although this is a professional model, which appeared in a journal for research physiologists, you can understand it easily by dividing it into homeostatic and exponential processes whose basic form should be familiar to you already."
+        ],
+        "givenModelNodes": [
+            {
+                "ID": "id1",
+                "inputs": [
+                    {
+                        "ID": "id2",
+                        "label": ""
+                    },
+                    {
+                        "ID": "id3",
+                        "label": "-"
+                    }
+                ],
+                "position": {
+                    "x": 530,
+                    "y": 268
+                },
+                "attemptCount": {
+                    "description": 1,
+                    "type": 1,
+                    "initial": 0,
+                    "units": 0,
+                    "equation": 0,
+                    "assitanceScore": 0,
+                    "assistanceScore": 0
+                },
+                "status": {
+                    "description": "correct",
+                    "type": "correct"
+                },
+                "name": "Blood glucose",
+                "description": "Amount of glucose in the blood",
+                "type": "accumulator",
+                "initial": 92,
+                "equation": "id2-id3",
+                "units": "mg/dL"
+            },
+            {
+                "ID": "id2",
+                "inputs": [
+                    {
+                        "ID": "id6",
+                        "label": ""
+                    },
+                    {
+                        "ID": "id9",
+                        "label": ""
+                    }
+                ],
+                "position": {
+                    "x": 615,
+                    "y": 393
+                },
+                "attemptCount": {
+                    "description": 1,
+                    "type": 1,
+                    "initial": 0,
+                    "units": 0,
+                    "equation": 0,
+                    "assitanceScore": 0,
+                    "assistanceScore": 0
+                },
+                "status": {
+                    "description": "correct",
+                    "type": "correct"
+                },
+                "name": "glucose added",
+                "description": "How much glucose the liver adds to blood each minute",
+                "type": "function",
+                "equation": "id6*id9",
+                "units": "mg/dL"
+            },
+            {
+                "ID": "id3",
+                "inputs": [
+                    {
+                        "ID": "id7",
+                        "label": ""
+                    },
+                    {
+                        "ID": "id8",
+                        "label": ""
+                    }
+                ],
+                "position": {
+                    "x": 607,
+                    "y": 120
+                },
+                "attemptCount": {
+                    "description": 1,
+                    "type": 1,
+                    "initial": 0,
+                    "units": 0,
+                    "equation": 0,
+                    "assitanceScore": 0,
+                    "assistanceScore": 0
+                },
+                "status": {
+                    "description": "correct",
+                    "type": "correct"
+                },
+                "name": "glucose removed",
+                "description": "Glucose removed from blood by burning or storing it",
+                "type": "function",
+                "equation": "id7*id8",
+                "units": "mg/dL"
+            },
+            {
+                "ID": "id4",
+                "inputs": [
+                    {
+                        "ID": "id1",
+                        "label": ""
+                    },
+                    {
+                        "ID": "id5",
+                        "label": "-"
+                    }
+                ],
+                "position": {
+                    "x": 648,
+                    "y": 228
+                },
+                "attemptCount": {
+                    "description": 1,
+                    "type": 1,
+                    "initial": 0,
+                    "units": 0,
+                    "equation": 0,
+                    "assitanceScore": 0,
+                    "assistanceScore": 0
+                },
+                "status": {
+                    "description": "correct",
+                    "type": "correct"
+                },
+                "name": "glucose difference",
+                "description": "Glucose in blood minus glucose set point",
+                "type": "function",
+                "equation": "id1-id5",
+                "units": "mg/dL"
+            },
+            {
+                "ID": "id5",
+                "inputs": [],
+                "position": {
+                    "x": 782.7451782226562,
+                    "y": 232.7451629638672
+                },
+                "attemptCount": {
+                    "description": 1,
+                    "type": 1,
+                    "initial": 0,
+                    "units": 0,
+                    "equation": 0,
+                    "assitanceScore": 0,
+                    "assistanceScore": 0
+                },
+                "status": {
+                    "description": "correct",
+                    "type": "correct"
+                },
+                "name": "glucose set point",
+                "description": "The quantity of glucose that the body tries to keep in the blood at all times",
+                "type": "parameter",
+                "parentNode": false,
+                "initial": 92,
+                "units": "mg/dL"
+            },
+            {
+                "ID": "id6",
+                "inputs": [
+                    {
+                        "ID": "id4"
+                    }
+                ],
+                "position": {
+                    "x": 746,
+                    "y": 394
+                },
+                "attemptCount": {
+                    "description": 1,
+                    "type": 1,
+                    "initial": 0,
+                    "units": 0,
+                    "equation": 0,
+                    "assitanceScore": 0,
+                    "assistanceScore": 0
+                },
+                "status": {
+                    "description": "correct",
+                    "type": "correct"
+                },
+                "name": "glucose deficit",
+                "description": "If blood glucose < set point, by how much?  Zero otherwise",
+                "type": "function",
+                "equation": "max(0,(-id4))",
+                "units": "mg/dL"
+            },
+            {
+                "ID": "id7",
+                "inputs": [
+                    {
+                        "ID": "id4"
+                    }
+                ],
+                "position": {
+                    "x": 744,
+                    "y": 134
+                },
+                "attemptCount": {
+                    "description": 1,
+                    "type": 1,
+                    "initial": 0,
+                    "units": 0,
+                    "equation": 0,
+                    "assitanceScore": 0,
+                    "assistanceScore": 0
+                },
+                "status": {
+                    "description": "correct",
+                    "type": "correct"
+                },
+                "name": "glucose suplus",
+                "description": "If blood glucose > set point, by how much?  Zero otherwise.",
+                "type": "function",
+                "equation": "max(0,id4)",
+                "units": "mg/dL"
+            },
+            {
+                "ID": "id8",
+                "inputs": [],
+                "position": {
+                    "x": 463.74517822265625,
+                    "y": 97.74516296386719
+                },
+                "attemptCount": {
+                    "description": 1,
+                    "type": 1,
+                    "initial": 0,
+                    "units": 0,
+                    "equation": 0,
+                    "assitanceScore": 0,
+                    "assistanceScore": 0
+                },
+                "status": {
+                    "description": "correct",
+                    "type": "correct"
+                },
+                "name": "convergence rate for glucose surplus",
+                "description": "Proportion of surplus glucose burned or stored each minute",
+                "type": "parameter",
+                "parentNode": false,
+                "initial": 0.024
+            },
+            {
+                "ID": "id9",
+                "inputs": [],
+                "position": {
+                    "x": 465.74517822265625,
+                    "y": 379.74517822265625
+                },
+                "attemptCount": {
+                    "description": 1,
+                    "type": 1,
+                    "initial": 0,
+                    "units": 0,
+                    "equation": 0,
+                    "assitanceScore": 0,
+                    "assistanceScore": 0
+                },
+                "status": {
+                    "description": "correct",
+                    "type": "correct"
+                },
+                "name": "convergence rate for glucose deficit",
+                "description": "Proportion of glucose deficit that is added by liver each minute",
+                "type": "parameter",
+                "parentNode": false,
+                "initial": 0.1
+            }
+        ],
+        "studentModelNodes": [
+            {
+                "ID": "id10",
+                "inputs": [],
+                "position": {
+                    "x": 595,
+                    "y": 282
+                },
+                "status": {
+                    "description": {
+                        "status": "correct",
+                        "disabled": true
+                    },
+                    "type": {
+                        "disabled": true,
+                        "status": "correct"
+                    },
+                    "initial": {
+                        "disabled": false
+                    },
+                    "units": {
+                        "disabled": false
+                    },
+                    "equation": {
+                        "disabled": false
+                    }
+                },
+                "descriptionID": "id1",
+                "type": "accumulator"
+            },
+            {
+                "ID": "id11",
+                "inputs": [],
+                "position": {
+                    "x": 773,
+                    "y": 280
+                },
+                "status": {
+                    "description": {
+                        "status": "correct",
+                        "disabled": true
+                    },
+                    "type": {
+                        "disabled": true,
+                        "status": "correct"
+                    },
+                    "units": {
+                        "disabled": false
+                    },
+                    "equation": {
+                        "disabled": false
+                    }
+                },
+                "descriptionID": "id4",
+                "type": "function"
+            },
+            {
+                "ID": "id12",
+                "inputs": [],
+                "position": {
+                    "x": 691,
+                    "y": 139
+                },
+                "status": {
+                    "description": {
+                        "status": "correct",
+                        "disabled": true
+                    },
+                    "type": {
+                        "disabled": true,
+                        "status": "correct"
+                    },
+                    "units": {
+                        "disabled": false
+                    },
+                    "equation": {
+                        "disabled": false
+                    }
+                },
+                "descriptionID": "id3",
+                "type": "function"
+            },
+            {
+                "ID": "id13",
+                "inputs": [],
+                "position": {
+                    "x": 691,
+                    "y": 435
+                },
+                "status": {
+                    "description": {
+                        "status": "correct",
+                        "disabled": true
+                    },
+                    "type": {
+                        "disabled": true,
+                        "status": "correct"
+                    },
+                    "units": {
+                        "disabled": false
+                    },
+                    "equation": {
+                        "disabled": false
+                    }
+                },
+                "descriptionID": "id2",
+                "type": "function"
+            },
+            {
+                "ID": "id14",
+                "inputs": [],
+                "position": {
+                    "x": 883,
+                    "y": 437
+                },
+                "status": {
+                    "description": {
+                        "status": "correct",
+                        "disabled": true
+                    },
+                    "type": {
+                        "disabled": true,
+                        "status": "correct"
+                    },
+                    "units": {
+                        "disabled": false
+                    },
+                    "equation": {
+                        "disabled": false
+                    }
+                },
+                "descriptionID": "id6",
+                "type": "function"
+            },
+            {
+                "ID": "id15",
+                "inputs": [],
+                "position": {
+                    "x": 882,
+                    "y": 137
+                },
+                "status": {
+                    "description": {
+                        "status": "correct",
+                        "disabled": true
+                    },
+                    "type": {
+                        "disabled": true,
+                        "status": "correct"
+                    },
+                    "units": {
+                        "disabled": false
+                    },
+                    "equation": {
+                        "disabled": false
+                    }
+                },
+                "descriptionID": "id7",
+                "type": "function"
+            },
+            {
+                "ID": "id16",
+                "inputs": [],
+                "position": {
+                    "x": 504.74517822265625,
+                    "y": 417.74517822265625
+                },
+                "status": {
+                    "description": {
+                        "status": "correct",
+                        "disabled": true
+                    },
+                    "type": {
+                        "disabled": true,
+                        "status": "correct"
+                    },
+                    "initial": {
+                        "disabled": false
+                    }
+                },
+                "descriptionID": "id9",
+                "type": "parameter"
+            },
+            {
+                "ID": "id17",
+                "inputs": [],
+                "position": {
+                    "x": 500.74517822265625,
+                    "y": 128.7451629638672
+                },
+                "status": {
+                    "description": {
+                        "status": "correct",
+                        "disabled": true
+                    },
+                    "type": {
+                        "disabled": true,
+                        "status": "correct"
+                    },
+                    "initial": {
+                        "disabled": false
+                    }
+                },
+                "descriptionID": "id8",
+                "type": "parameter"
+            },
+            {
+                "ID": "id18",
+                "inputs": [],
+                "position": {
+                    "x": 965.7451782226562,
+                    "y": 264.74517822265625
+                },
+                "status": {
+                    "description": {
+                        "status": "correct",
+                        "disabled": true
+                    },
+                    "type": {
+                        "disabled": true,
+                        "status": "correct"
+                    },
+                    "initial": {
+                        "disabled": false
+                    },
+                    "units": {
+                        "disabled": false
+                    }
+                },
+                "descriptionID": "id5",
+                "type": "parameter"
+            }
+        ]
+    }
+}

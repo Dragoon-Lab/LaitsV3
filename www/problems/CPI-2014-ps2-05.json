@@ -1,0 +1,103 @@
+{
+    "task": {
+        "taskName": "custom+bike+backlog",
+        "time": {
+            "start": 0,
+            "end": 10,
+            "step": 1,
+            "integrationMethod": "Eulers Method",
+            "units": "seconds"
+        },
+        "properties": {},
+        "image": {},
+        "taskDescription": [
+            "A custom bike factory has a backlog of 23 orders for bikes.  It can manufacture and ship 5 bikes a day.  Assuming no new orders arrive, construct a model showing how the backlog changes daily.  The backlog must not become negative; that would not make sense.  Hint:  Use the function min(…), which is briefly explained by clicking on Dragoon’s Help button and then “Math functions.”",
+            "",
+            "Implementation: See the problem “constant change runs out” in the problem set “generic changes.”",
+            ""
+        ],
+        "lessonsLearned" : [
+            "Many linear change models have the potential inaccuracy of an accumulator going negative.  The solution used in this problem can be used more generally.  If A is the accumulator and it decreases by parameter P per time unit, then one should let A’s input by min(A,P)."
+        ],
+        "givenModelNodes": [
+            {
+                "ID": "id1",
+                "inputs": [
+                    {
+                        "ID": "id2",
+                        "label": "-"
+                    }
+                ],
+                "position": {
+                    "x": 451,
+                    "y": 119
+                },
+                "attemptCount": {
+                    "description": 0,
+                    "type": 0,
+                    "initial": 0,
+                    "units": 0,
+                    "equation": 0,
+                    "assitanceScore": 0
+                },
+                "status": {},
+                "name": "Backlog",
+                "description": "The number of orders waiting to be fulfilled",
+                "type": "accumulator",
+                "initial": 23,
+                "equation": "-id2"
+            },
+            {
+                "ID": "id2",
+                "inputs": [
+                    {
+                        "ID": "id1"
+                    },
+                    {
+                        "ID": "id3"
+                    }
+                ],
+                "position": {
+                    "x": 613,
+                    "y": 121
+                },
+                "attemptCount": {
+                    "description": 0,
+                    "type": 0,
+                    "initial": 0,
+                    "units": 0,
+                    "equation": 0,
+                    "assitanceScore": 0
+                },
+                "status": {},
+                "name": "bikes shipped",
+                "description": "bikes actually shipped each day",
+                "type": "function",
+                "equation": "min(id1,id3)"
+            },
+            {
+                "ID": "id3",
+                "inputs": [],
+                "position": {
+                    "x": 748.3309326171875,
+                    "y": 108.3309555053711
+                },
+                "attemptCount": {
+                    "description": 0,
+                    "type": 0,
+                    "initial": 0,
+                    "units": 0,
+                    "equation": 0,
+                    "assitanceScore": 0
+                },
+                "status": {},
+                "name": "Max bikes shipped",
+                "description": "Maximum number of bikes that can be shipped in one day",
+                "type": "parameter",
+                "parentNode": false,
+                "initial": 5
+            }
+        ],
+        "studentModelNodes": []
+    }
+}
