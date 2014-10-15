@@ -24,10 +24,32 @@
             "",
             "Implementation: See the problem “propor to source minus destination” in the problem set “generic changes”"
         ],
-        "lessonsLeaned": [
+        "lessonsLearned": [
             "This type of model is sometimes called an equilibrating process, which is a process that seeks an equilibrium. In this",
             "case, the process seeks to have the same amount of water in the two barrels. Such processes are common in chemistry",
             "and biology."
+        ],
+        "slides": [
+            {
+                "type": "text",
+                "value": "count",
+                "title": "Types of nodes in the model"
+            },
+            {
+                "type": "image",
+                "value": "images/CPI/twoBarrels_graphs.jpg",
+                "title": "Author's graph for Two Barrels Problem"
+            },
+            {
+                "type": "image",
+                "value": "images/CPI/twoBarrels_correctnodes.png",
+                "title": "Author's solution for Two Barrels Problem"
+            },
+            {
+                "type": "text",
+                "value": "lessons",
+                "title": "Lessons Learned"
+            }
         ],
         "givenModelNodes": [
             {

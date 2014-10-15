@@ -19,11 +19,34 @@
 	    " * The moose population is 20 in the first year (1900).",
 	    " * Births are the only change in the population. Deaths, immigration and emigration do not occur.",
 	    " * The number of moose births each year is 20% of the moose population. "
-	],
-	"lessonsLearned": [
-        "The graph of \"moose population\" increases slowly at first and then gets steeper. The graph fits an exponential function,",
-        "so this process is called \"exponential growth.\""
-    ],
+    	],
+    	"lessonsLearned": [
+            "The graph of \"moose population\" increases slowly at first and then gets steeper. The graph fits an exponential function,",
+            "so this process is called \"exponential growth.\""
+        ],
+
+        "slides": [
+            {
+                "type": "text",
+                "value": "count",
+                "title": "Types of nodes in the model"
+            },
+            {
+                "type": "image",
+                "value": "images/CPI/isle2_graphs.jpg",
+                "title": "Author's graph for Moose Population Problem"
+            },
+            {
+                "type": "image",
+                "value": "images/CPI/isle2_correctnodes.png",
+                "title": "Author's solution for Moose Population Problem"
+            },
+            {
+                "type": "text",
+                "value": "lessons",
+                "title": "Lessons Learned"
+            }
+        ],
         "givenModelNodes": [
             {
                 "ID": "id1",

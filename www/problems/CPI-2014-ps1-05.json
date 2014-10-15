@@ -31,6 +31,28 @@
         "lessonsLearned" :[
             "This model combines linear growth and linear decay. If you play with the sliders, you’ll see that regardless of the values of the parameters, the graph is always a straight line. Thus, if you combine two or more linear changes, you get a linear change."
         ],
+        "slides": [
+            {
+                "type": "text",
+                "value": "count",
+                "title": "Types of nodes in the model"
+            },
+            {
+                "type": "image",
+                "value": "images/CPI/IntroProblem3_graph.png",
+                "title": "Author's graph for Introduction Problem"
+            },
+            {
+                "type": "image",
+                "value": "images/CPI/IntroProblem3_correctnodes.png",
+                "title": "Author's solution for Introduction Problem"
+            },
+            {
+                "type": "text",
+                "value": "lessons",
+                "title": "Lessons Learned"
+            }
+        ],
         "givenModelNodes": [
             {
                 "ID": "id1",

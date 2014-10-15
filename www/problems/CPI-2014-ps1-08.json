@@ -27,6 +27,28 @@
             "this example, but it can be linear. Homeostatic subsystems are common in both natural and engineered systems. For",
             "instance, your body regulates blood sugar, and the speed control on your car regulates the car’s speed."
         ],
+        "slides": [
+            {
+                "type": "text",
+                "value": "count",
+                "title": "Types of nodes in the model"
+            },
+            {
+                "type": "image",
+                "value": "images/CPI/body_temperature_graphs.jpg",
+                "title": "Author's graph for Body Temperature Problem"
+            },
+            {
+                "type": "image",
+                "value": "images/CPI/body_temperature_correctnodes.png",
+                "title": "Author's solution for Body Temperature Problem"
+            },
+            {
+                "type": "text",
+                "value": "lessons",
+                "title": "Lessons Learned"
+            }
+        ],
         "givenModelNodes": [
             {
                 "ID": "id1",

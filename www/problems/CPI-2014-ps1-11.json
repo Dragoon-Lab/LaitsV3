@@ -20,6 +20,28 @@
         	"accumulator. In case you are wondering, the weight used by male athletes in the Highland Games weighs 56 pounds.",
         	"The world record for height is 16.17 feet (4.93 m)."
     	],
+        "slides": [
+            {
+                "type": "text",
+                "value": "count",
+                "title": "Types of nodes in the model"
+            },
+            {
+                "type": "image",
+                "value": "images/CPI/weightToss_graph.jpg",
+                "title": "Author's graph for Weight Toss Problem"
+            },
+            {
+                "type": "image",
+                "value": "images/CPI/weightToss_correctnodes.png",
+                "title": "Author's solution for Weight Toss Problem"
+            },
+            {
+                "type": "text",
+                "value": "lessons",
+                "title": "Lessons Learned"
+            }
+        ],
         "givenModelNodes": [
             {
                 "ID": "id1",

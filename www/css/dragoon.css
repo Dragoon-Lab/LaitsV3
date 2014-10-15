@@ -169,3 +169,7 @@ div.legend {
 	width:450px;
 	margin-left: 60px;
 }
+
+.learning ul{
+	list-style-type: none;
+}

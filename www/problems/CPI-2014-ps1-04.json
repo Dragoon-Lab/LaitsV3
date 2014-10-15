@@ -26,6 +26,28 @@
         	"and a parameter, hooked up just as you have done. The small circle with a minus sign inside it indicates that the input to",
         	"the accumulator is negated before it is added to the old value of the accumulator."
         ],
+        "slides": [
+            {
+                "type": "text",
+                "value": "count",
+                "title": "Types of nodes in the model"
+            },
+            {
+                "type": "image",
+                "value": "images/CPI/dodos_graphs.jpg",
+                "title": "Author's graph for Dodos Extinction Problem"
+            },
+            {
+                "type": "image",
+                "value": "images/CPI/dodos_correctnodes.png",
+                "title": "Author's solution for Dodos Extinction Problem"
+            },
+            {
+                "type": "text",
+                "value": "lessons",
+                "title": "Lessons Learned"
+            }
+        ],
         "givenModelNodes": [
             {
                 "ID": "id1",

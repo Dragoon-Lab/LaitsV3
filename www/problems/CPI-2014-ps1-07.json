@@ -35,6 +35,28 @@
             "to retirement, you might want to determine the maximum the Waltons can withdraw annually so that they just run out",
             "after 20 years of retirement"
         ],
+        "slides": [
+            {
+                "type": "text",
+                "value": "count",
+                "title": "Types of nodes in the model"
+            },
+            {
+                "type": "image",
+                "value": "images/CPI/retirement_graphs.jpg",
+                "title": "Author's graph for Retirement Problem"
+            },
+            {
+                "type": "image",
+                "value": "images/CPI/retirement_correctnodes.png",
+                "title": "Author's solution for Retirement Problem"
+            },
+            {
+                "type": "text",
+                "value": "lessons",
+                "title": "Lessons Learned"
+            }
+        ],
         "givenModelNodes": [
             {
                 "ID": "id1",

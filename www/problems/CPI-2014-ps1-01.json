@@ -20,6 +20,28 @@
         	"The simplest model that exhibits linear growth is exactly like the one you just constructed: An accumulator with a",
         	"parameter whose value is repeatedly added to the accumulator’s value."
     	],
+        "slides": [
+            {
+                "type": "text",
+                "value": "count",
+                "title": "Types of nodes in the model"
+            },
+            {
+                "type": "image",
+                "value": "images/CPI/bookworm_graph.png",
+                "title": "Author's graph for Bookworm Problem"
+            },
+            {
+                "type": "image",
+                "value": "images/CPI/bookworm_correctnodes.png",
+                "title": "Author's solution for Bookworm Problem"
+            },
+            {
+                "type": "text",
+                "value": "lessons",
+                "title": "Lessons Learned"
+            }
+        ],
         "givenModelNodes": [
             {
                 "ID": "id1",

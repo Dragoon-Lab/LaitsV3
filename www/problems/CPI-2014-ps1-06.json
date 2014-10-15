@@ -20,13 +20,35 @@
 	    " * Births and deaths are the only change in the population. Immigration and emigration do not occur.",
 	    " * The number of moose births each year is 20% of the moose population.",
 	    " * The number of moose deaths each year is 5% of the moose population. "
-	],
-	"lessonsLearned": [
-        "This model combines exponential growth and exponential decay. If you play with the sliders, you’ll see that regardless",
-        "of the values of the parameters, the graph is always an exponential curve. (You will need to type in a high initial value",
-        "for the moose population (e.g. 20000) in order to see what happens when death rate is larger than birth rate.) Thus, if",
-        "you combine two or more exponential changes, you get an exponential change."
-    ],
+    	],
+    	"lessonsLearned": [
+            "This model combines exponential growth and exponential decay. If you play with the sliders, you’ll see that regardless",
+            "of the values of the parameters, the graph is always an exponential curve. (You will need to type in a high initial value",
+            "for the moose population (e.g. 20000) in order to see what happens when death rate is larger than birth rate.) Thus, if",
+            "you combine two or more exponential changes, you get an exponential change."
+        ],
+        "slides": [
+            {
+                "type": "text",
+                "value": "count",
+                "title": "Types of nodes in the model"
+            },
+            {
+                "type": "image",
+                "value": "images/CPI/isle3_graph.jpg",
+                "title": "Author's graph for Moose Population Problem"
+            },
+            {
+                "type": "image",
+                "value": "images/CPI/isle3_correctnodes.png",
+                "title": "Author's solution for Moose Population Problem"
+            },
+            {
+                "type": "text",
+                "value": "lessons",
+                "title": "Lessons Learned"
+            }
+        ],
         "givenModelNodes": [
             {
                 "ID": "id1",

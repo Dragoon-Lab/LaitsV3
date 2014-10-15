@@ -81,13 +81,13 @@ define([
 		
 		makeLessonSlide: function(title){
 			var lessons = this._model.getTaskLessonsLearned();
-			var slideString = "<h4>"+title+"</h4>";
+			var slideString = "<div class='learning'><h4>"+title+"</h4>";
 			if(lessons){
 				slideString += "<ul>";
 				array.forEach(lessons, function(lesson){
 					slideString += "<li>"+lesson+"</li>";
 				}, this);
-				slideString+= "</ul>";
+				slideString+= "</ul></div>";
 			}
 
 			return slideString;
@@ -173,11 +173,11 @@ define([
 		},
 
 		log: function(/*object */ logging){
-			var current = registry.byId("prevSlide").value +1;
+			var current = registry.byId("prevSlide").value;
 			logging.log('ui-action',{
 				type: 'slide-change',
 				name: this._slides[current].title,
-				slide: current
+				slide: current+1
 			});
 		}
 	});
