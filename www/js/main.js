@@ -134,6 +134,7 @@ define([
 					var isComplete = givenModel.active.isComplete(studentNode.ID, true)?'solid':'dashed';
 					var borderColor = "3px "+isComplete+" gray";
 					style.set(studentNode.ID, 'border', borderColor);
+					style.set(studentNode.ID, 'backgroundColor', "white");
 				});
 			}
 
