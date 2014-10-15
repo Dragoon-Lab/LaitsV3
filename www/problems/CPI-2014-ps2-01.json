@@ -1,0 +1,107 @@
+{
+    "task": {
+        "taskName": "Front Lot to Back Lot",
+        "time": {
+            "start": 0,
+            "end": 40,
+            "step": 1,
+            "units": "Days"
+        },
+        "properties": {
+            "phase": "",
+            "type": ""
+        },
+        "image": {
+            "URL": "images/parking.jpg"
+        },
+        "taskDescription": " A car dealership has a front lot and a back lot, and it has to empty the front lot every evening before closing.  The back lot starts with 10 cars in it, and the front lot starts with 40 cars in it.  Jack drives cars from the front lot to the back lot at a rate of one car per minute.  After 40 minutes, he’s done.  Graph the contents of both lots. ",
+        "lessonsLearned" : [
+            "This system has a single process, a linear transfer.    The analysis is:",
+            "* Process: The cars change state from being in the front lot to being in the back lot",
+            "* Source: Number of cars in the front lot.",
+            "* Destination: Number of cars in the back lot",
+            "* Changing:  The number of cars changing state is a constant 1.",
+            "",
+            "For implementation, see the problem “constant” in the problem set “generic changes”."
+        ],
+        "givenModelNodes": [
+            {
+                "ID": "id1",
+                "inputs": [
+                    {
+                        "ID": "id3"
+                    }
+                ],
+                "position": {
+                    "x": 400,
+                    "y": 100
+                },
+                "attemptCount": {
+                    "description": 0,
+                    "type": 0,
+                    "initial": 0,
+                    "units": 0,
+                    "equation": 0
+                },
+                "status": {},
+                "name": "front lot",
+                "type": "accumulator",
+                "parentNode": true,
+                "units": "",
+                "description": "The number of cars parked in the front lot",
+                "initial": 40,
+                "equation": "- id3"
+            },
+            {
+                "ID": "id2",
+                "inputs": [
+                    {
+                        "ID": "id3"
+                    }
+                ],
+                "position": {
+                    "x": 400,
+                    "y": 100
+                },
+                "attemptCount": {
+                    "description": 0,
+                    "type": 0,
+                    "initial": 0,
+                    "units": 0,
+                    "equation": 0
+                },
+                "status": {},
+                "name": "back lot",
+                "type": "accumulator",
+                "parentNode": true,
+                "units": "",
+                "description": "The number of cars parked in the back lot",
+                "initial": 10,
+                "equation": "id3"
+            },
+            {
+                "ID": "id3",
+                "inputs": [],
+                "position": {
+                    "x": 400,
+                    "y": 100
+                },
+                "attemptCount": {
+                    "description": 0,
+                    "type": 0,
+                    "initial": 0,
+                    "units": 0,
+                    "equation": 0
+                },
+                "status": {},
+                "name": "cars moved per minute",
+                "type": "parameter",
+                "parentNode": false,
+                "units": "",
+                "description": "The number of cars moved per minute",
+                "initial": 1
+            }
+        ],
+        "studentModelNodes": []
+    }
+}

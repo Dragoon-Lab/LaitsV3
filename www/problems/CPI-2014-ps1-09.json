@@ -1,0 +1,105 @@
+{
+    "task": {
+        "taskName": "book+shuttle",
+        "time": {
+            "start": 0,
+            "end": 10,
+            "step": 0.5,
+            "integrationMethod": "Eulers Method",
+            "units": "days"
+        },
+        "properties": {},
+        "image": {},
+        "taskDescription": [
+            "Prof. Smith is retiring soon, so she is gradually taking books from her office to her home, two books per day.  If she starts with 250 books in her office and 100 books at home, construct a model showing how the number of books changes in both locations.",
+            "",
+            "Analysis:",
+            "* Process: transferring books from office to home",
+            "* Source: books in the office",
+            "* Destination: books at home",
+            "* Changing: A constant 2 books change state each day"
+        ],
+        "lessonsLearned": [
+            "This type of model is called a linear transfer model, because the change in the source and destination quantities is linear."
+        ],
+        "givenModelNodes": [
+            {
+                "ID": "id1",
+                "inputs": [
+                    {
+                        "ID": "id2",
+                        "label": "-"
+                    }
+                ],
+                "position": {
+                    "x": 479,
+                    "y": 65
+                },
+                "attemptCount": {
+                    "description": 0,
+                    "type": 0,
+                    "initial": 0,
+                    "units": 0,
+                    "equation": 0,
+                    "assitanceScore": 0
+                },
+                "status": {},
+                "name": "Books in office",
+                "description": "Number of books in the office",
+                "type": "accumulator",
+                "initial": 250,
+                "equation": "-id2"
+            },
+            {
+                "ID": "id2",
+                "inputs": [],
+                "position": {
+                    "x": 560.7451782226562,
+                    "y": 190.7451629638672
+                },
+                "attemptCount": {
+                    "description": 0,
+                    "type": 0,
+                    "initial": 0,
+                    "units": 0,
+                    "equation": 0,
+                    "assitanceScore": 0
+                },
+                "status": {},
+                "name": "Books transferred per day",
+                "description": "Number of Prof Smith takes homeeach day",
+                "type": "parameter",
+                "parentNode": false,
+                "initial": 2
+            },
+            {
+                "ID": "id3",
+                "inputs": [
+                    {
+                        "ID": "id2",
+                        "label": ""
+                    }
+                ],
+                "position": {
+                    "x": 679,
+                    "y": 67
+                },
+                "attemptCount": {
+                    "description": 0,
+                    "type": 0,
+                    "initial": 0,
+                    "units": 0,
+                    "equation": 0,
+                    "assitanceScore": 0
+                },
+                "status": {},
+                "name": "Books at home",
+                "description": "Number of books at home",
+                "type": "accumulator",
+                "initial": 100,
+                "equation": "id2"
+            }
+        ],
+        "studentModelNodes": []
+    }
+}

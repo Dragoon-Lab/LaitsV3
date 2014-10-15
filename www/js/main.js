@@ -198,7 +198,7 @@ define([
 			});
 
 			// checks if forumurl is present
-			if(query.f && query.fe) {
+			if(query.f && query.fe == "true") {
 				//Enable the forum button in the menu
 				var forumBut=registry.byId("forumButton");
 				forumBut.set("disabled", false);
@@ -228,7 +228,12 @@ define([
 					registry.byId("authorDescDialog").hide();
 				});
 				on(registry.byId("previewButton"),"click",function(){
-					window.open(document.URL.replace("m=AUTHOR","m=STUDENT"),"newwindow");
+					var user = query.u;
+					var timestamp = new Date().getTime();
+					var url = document.URL.replace("u="+query.u,"u="+query.u+"-"+timestamp);
+					//console.log(url);
+					url=url+"&l=false";
+					window.open(url.replace("m=AUTHOR","m=STUDENT"),"newwindow");
 				});
 
                 // Rename button wiring
@@ -286,7 +291,7 @@ define([
 			});
             //the solution div which shows graph/table when closed
             //should disable all the pop ups
-            aspect.after(registry.byId('solution'), "hide", function(){
+            aspect.after(registry.byId(' '), "hide", function(){
                 console.log("Calling graph/table to be closed");
                 typechecker.closePops();
                 //session.saveProblem(givenModel.model);

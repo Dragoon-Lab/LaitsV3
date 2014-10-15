@@ -1,0 +1,169 @@
+{
+    "task": {
+        "taskName": "buses+in+the+shop",
+        "time": {
+            "start": 0,
+            "end": 52,
+            "step": 1,
+            "integrationMethod": "Eulers Method",
+            "units": "weeks"
+        },
+        "properties": {},
+        "image": {},
+        "taskDescription": [
+            "Suppose a city wins a large federal grant and uses it to buy 100 low-emission buses.  Although the buses have excellent technology, they are driven all day long so 10% of them fail each week.  Since the city does not have the funding to increase the staff of its bus fleet maintenance facility, the staff can fix only 5 buses per week.  Construct a model that shows how many buses are operational and how many are in the shop."
+        ],
+        "lessonsLearned" : [
+            "This is a combination of an exponential decay with a linear growth.  Here’s the analysis:",
+            "",
+            "* Process 1:  Buses change state from operational to failed.",
+            "* Source:  Operational buses",
+            "* Destination: Buses in the shop",
+            "* Changing:  The number of buses changing to the failed state each week is a proportion, 10%, of the operational buses.",
+            "",
+            "* Process 2:  Buses change state from failed to operational",
+            "* Source: Buses in the shop",
+            "* Destination: Operational buses",
+            "* Changing:  The number of buses changing to the operational state each week is a constant, 5."
+        ],
+        "givenModelNodes": [
+            {
+                "ID": "id1",
+                "inputs": [
+                    {
+                        "ID": "id2",
+                        "label": ""
+                    },
+                    {
+                        "ID": "id3",
+                        "label": "-"
+                    }
+                ],
+                "position": {
+                    "x": 517,
+                    "y": 167
+                },
+                "attemptCount": {
+                    "description": 0,
+                    "type": 0,
+                    "initial": 0,
+                    "units": 0,
+                    "equation": 0,
+                    "assitanceScore": 0
+                },
+                "status": {},
+                "name": "Operational buses",
+                "description": "Number of buses in the operational state",
+                "type": "accumulator",
+                "initial": 100,
+                "equation": "id2-id3"
+            },
+            {
+                "ID": "id2",
+                "inputs": [],
+                "position": {
+                    "x": 622.3309326171875,
+                    "y": 58.33095169067383
+                },
+                "attemptCount": {
+                    "description": 0,
+                    "type": 0,
+                    "initial": 0,
+                    "units": 0,
+                    "equation": 0,
+                    "assitanceScore": 0
+                },
+                "status": {},
+                "name": "Buses repaired",
+                "description": "Number of buses repaired each week",
+                "type": "parameter",
+                "parentNode": false,
+                "initial": 5
+            },
+            {
+                "ID": "id3",
+                "inputs": [
+                    {
+                        "ID": "id1",
+                        "label": ""
+                    },
+                    {
+                        "ID": "id5",
+                        "label": ""
+                    }
+                ],
+                "position": {
+                    "x": 631,
+                    "y": 249
+                },
+                "attemptCount": {
+                    "description": 0,
+                    "type": 0,
+                    "initial": 0,
+                    "units": 0,
+                    "equation": 0,
+                    "assitanceScore": 0
+                },
+                "status": {},
+                "name": "Buses failing",
+                "description": "Number of buses that fail each week",
+                "type": "function",
+                "equation": "id1*id5"
+            },
+            {
+                "ID": "id4",
+                "inputs": [
+                    {
+                        "ID": "id3",
+                        "label": ""
+                    },
+                    {
+                        "ID": "id2",
+                        "label": "-"
+                    }
+                ],
+                "position": {
+                    "x": 768,
+                    "y": 164
+                },
+                "attemptCount": {
+                    "description": 0,
+                    "type": 0,
+                    "initial": 0,
+                    "units": 0,
+                    "equation": 0,
+                    "assitanceScore": 0
+                },
+                "status": {},
+                "name": "Broken buses",
+                "description": "Number of non-operational buses",
+                "type": "accumulator",
+                "initial": 0,
+                "equation": "id3-id2"
+            },
+            {
+                "ID": "id5",
+                "inputs": [],
+                "position": {
+                    "x": 761.3309326171875,
+                    "y": 275.3309326171875
+                },
+                "attemptCount": {
+                    "description": 0,
+                    "type": 0,
+                    "initial": 0,
+                    "units": 0,
+                    "equation": 0,
+                    "assitanceScore": 0
+                },
+                "status": {},
+                "name": "Failure rate",
+                "description": "Proportion of operational buses that fail each week",
+                "type": "parameter",
+                "parentNode": false,
+                "initial": 0.1
+            }
+        ],
+        "studentModelNodes": []
+    }
+}
