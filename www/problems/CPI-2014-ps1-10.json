@@ -86,7 +86,7 @@
                 "parentNode": true,
                 "units": "",
                 "description": "The amount of water in the second barrel",
-                "initial": null,
+                "initial": 0,
                 "equation": "id4"
             },
             {
