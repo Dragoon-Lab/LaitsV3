@@ -20,15 +20,15 @@
             "Analysis:",
             "* Process: buying books",
             "* Source: irrelevant",
-            "* Destination: Rod’s books",
+            "* Destination: Rodâ€™s books",
             "* Changing: a constant number, 2, of books changes state each week",
-            "Implementation: See image above, but change the numbers and names. Or see the problem “constant” in the problem",
+            "Implementation: See image above, but change the numbers and names. Or see the problem â€œconstantâ€� in the problem",
             "set generic changes."
         ],
         "lessonsLearned": [
-            "The graph of the quantity “books” is a straight line headed upwards. This type of behavior is called “linear growth.”",
+            "The graph of the quantity \"books\" is a straight line headed upwards. This type of behavior is called \"linear growth.\"",
             "The simplest model that exhibits linear growth is exactly like the one you just constructed: An accumulator with a",
-            "parameter whose value is repeatedly added to the accumulator’s value."
+            "parameter whose value is repeatedly added to the accumulator&apos;s value."
         ],
         "slides": [
             {

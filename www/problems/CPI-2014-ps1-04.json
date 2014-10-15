@@ -24,11 +24,11 @@
             "* Source: the dodo population",
             "* Destination: irrelevant, presumably dodo heaven",
             "* Changing: a proportion, 20%, of the source changes state each year",
-            "Implementation: See image, or see the problem “proportional to source” in the problem set “generic changes.”"
+            "Implementation: See image, or see the problem \"proportional to source\" in the problem set \"generic changes.\""
         ],
         "lessonsLearned": [
-            "The graph of the quantity “population” is a curved line that approaches zero slowly. This behavior is called “exponential",
-            "decay,” because the curve fits an exponential function. See the Wikipedia article on “exponential decay” for details.",
+            "The graph of the quantity \"population\" is a curved line that approaches zero slowly. This behavior is called \"exponential",
+            "decay,\" because the curve fits an exponential function. See the Wikipedia article on \"exponential decay\" for details.",
             "The simplest model that exhibits exponential decay is exactly the one you just built: It has an accumulator, a function",
             "and a parameter, hooked up just as you have done. The small circle with a minus sign inside it indicates that the input to",
             "the accumulator is negated before it is added to the old value of the accumulator."
