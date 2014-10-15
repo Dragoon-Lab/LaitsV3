@@ -12,35 +12,23 @@
             "type": "Construct"
         },
         "image": {
-            "URL": "http://passion2read.files.wordpress.com/2011/09/bookworm1.gif"
+            "URL": "images/CPI-2014-ps1-01.jpg"
         },
-        "taskDescription": "Problem: Rod is a book worm. He already has 100 books. Each week he buys and reads two more books. Goal: Graph the number of books Rod has in 52 weeks. Hints: (1) The Done button is enabled (turns green) only when the model is complete and correct. (2) Although you could construct models by guessing and running them until the Done button is enabled, this will take too long; it is better to analyze the task and design the model using the advice starting on slide 67 of the instruction tab. (3) If you get really stuck or the software acts buggy, then please ask an experimenter for help.",
+        "taskDescription": [
+            "Rod is a book worm. He already has 100 books. Each week, he buys and reads two more books. Construct a model that",
+            "shows how many books he has each week.",
+            "Analysis:",
+            "* Process: buying books",
+            "* Source: irrelevant",
+            "* Destination: Rod’s books",
+            "* Changing: a constant number, 2, of books changes state each week",
+            "Implementation: See image above, but change the numbers and names. Or see the problem “constant” in the problem",
+            "set generic changes."
+        ],
         "lessonsLearned": [
-        	"The graph of the quantity \"books\" is a straight line headed upwards. This type of behavior is called \"linear growth.\"",
-        	"The simplest model that exhibits linear growth is exactly like the one you just constructed: An accumulator with a",
-        	"parameter whose value is repeatedly added to the accumulator�s value."
-    	],
-        "slides": [
-            {
-                "type": "text",
-                "value": "count",
-                "title": "Types of nodes in the model"
-            },
-            {
-                "type": "image",
-                "value": "images/CPI/bookworm_graph.png",
-                "title": "Author's graph for Bookworm Problem"
-            },
-            {
-                "type": "image",
-                "value": "images/CPI/bookworm_correctnodes.png",
-                "title": "Author's solution for Bookworm Problem"
-            },
-            {
-                "type": "text",
-                "value": "lessons",
-                "title": "Lessons Learned"
-            }
+            "The graph of the quantity “books” is a straight line headed upwards. This type of behavior is called “linear growth.”",
+            "The simplest model that exhibits linear growth is exactly like the one you just constructed: An accumulator with a",
+            "parameter whose value is repeatedly added to the accumulator’s value."
         ],
         "givenModelNodes": [
             {
@@ -51,13 +39,18 @@
                     "y": 100
                 },
                 "attemptCount": {
-                    "description": 0,
-                    "type": 0,
-                    "initial": 0,
+                    "description": 1,
+                    "type": 1,
+                    "initial": 1,
                     "units": 0,
-                    "equation": 0
+                    "equation": 0,
+                    "assistanceScore": 0
                 },
-                "status": {},
+                "status": {
+                    "description": "correct",
+                    "type": "correct",
+                    "initial": "correct"
+                },
                 "name": "weekly books bought",
                 "type": "parameter",
                 "parentNode": false,
@@ -77,22 +70,89 @@
                     "y": 100
                 },
                 "attemptCount": {
-                    "description": 0,
-                    "type": 0,
-                    "initial": 0,
+                    "description": 1,
+                    "type": 1,
+                    "initial": 1,
                     "units": 0,
-                    "equation": 0
+                    "equation": 1,
+                    "assistanceScore": 0
                 },
-                "status": {},
+                "status": {
+                    "description": "correct",
+                    "type": "correct",
+                    "initial": "correct",
+                    "equation": "correct"
+                },
                 "name": "books",
                 "type": "accumulator",
                 "parentNode": true,
                 "units": "",
-                "description": "The number of books Rod has",
+                "description": "The numberof books Rod has",
                 "initial": 100,
                 "equation": "+ id1"
             }
         ],
-        "studentModelNodes": []
+        "studentModelNodes": [
+            {
+                "ID": "id3",
+                "inputs": [],
+                "position": {
+                    "x": 400,
+                    "y": 100
+                },
+                "status": {
+                    "description": {
+                        "status": "correct",
+                        "disabled": true
+                    },
+                    "type": {
+                        "disabled": true,
+                        "status": "correct"
+                    },
+                    "initial": {
+                        "disabled": true,
+                        "status": "correct"
+                    }
+                },
+                "descriptionID": "id1",
+                "type": "parameter",
+                "initial": 2
+            },
+            {
+                "ID": "id4",
+                "inputs": [
+                    {
+                        "ID": "id3",
+                        "label": ""
+                    }
+                ],
+                "position": {
+                    "x": 598,
+                    "y": 151
+                },
+                "status": {
+                    "description": {
+                        "status": "correct",
+                        "disabled": true
+                    },
+                    "type": {
+                        "disabled": true,
+                        "status": "correct"
+                    },
+                    "initial": {
+                        "disabled": true,
+                        "status": "correct"
+                    },
+                    "equation": {
+                        "disabled": true,
+                        "status": "correct"
+                    }
+                },
+                "descriptionID": "id2",
+                "type": "accumulator",
+                "initial": 100,
+                "equation": "id3"
+            }
+        ]
     }
 }
