@@ -14,7 +14,7 @@
             "Suppose a city wins a large federal grant and uses it to buy 100 low-emission buses.  Although the buses have excellent technology, they are driven all day long so 10% of them fail each week.  Since the city does not have the funding to increase the staff of its bus fleet maintenance facility, the staff can fix only 5 buses per week.  Construct a model that shows how many buses are operational and how many are in the shop."
         ],
         "lessonsLearned" : [
-            "This is a combination of an exponential decay with a linear growth.  Here’s the analysis:",
+            "This is a combination of an exponential decay with a linear growth.  Here&apos;s the analysis:",
             "",
             "* Process 1:  Buses change state from operational to failed.",
             "* Source:  Operational buses",

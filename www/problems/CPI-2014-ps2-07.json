@@ -15,10 +15,10 @@
             "URL": "images/toilettank.jpg"
         },
         "taskDescription": [
-            "Most toilets have a mechanism, shown above, that refills the water tank after a flush empties it.  Let’s assume the mechanism is adjusted so that the water level is 13 inches when the tank is full.  A ball-shaped float detects the height of the water level in the tank.  When the float height is below 13 inches, the mechanism lets water into the tank.  The water flow is proportional to the distance between the float height and the float height when the tank is full.  In fact, for every inch that the float height is below the full height, the water flow is sufficient to raise the float 0.05 inch per second.   Assuming the tank starts with 0 water because the toilet has just been flushed, construct a model that shows how the water level changes each second."
+            "Most toilets have a mechanism, shown above, that refills the water tank after a flush empties it.  Let&apos;s assume the mechanism is adjusted so that the water level is 13 inches when the tank is full.  A ball-shaped float detects the height of the water level in the tank.  When the float height is below 13 inches, the mechanism lets water into the tank.  The water flow is proportional to the distance between the float height and the float height when the tank is full.  In fact, for every inch that the float height is below the full height, the water flow is sufficient to raise the float 0.05 inch per second.   Assuming the tank starts with 0 water because the toilet has just been flushed, construct a model that shows how the water level changes each second."
         ],
         "lessonsLearned": [
-            "This is an instance of a goal-seeking process, also called a homeostatic process.  See the problem “propor to set point minus destination” in the problem set “generic changes”"
+            "This is an instance of a goal-seeking process, also called a homeostatic process.  See the problem \"propor to set point minus destination\" in the problem set \"generic changes\""
         ],
         "givenModelNodes": [
             {
