@@ -1,0 +1,227 @@
+{
+    "task": {
+        "taskName": "student+infections",
+        "time": {
+            "start": 0,
+            "end": 100,
+            "step": 0.5,
+            "integrationMethod": "Eulers Method",
+            "units": "days"
+        },
+        "properties": {},
+        "image": {},
+        "taskDescription": [
+            "Suppose there are 10000 healthy students on campus and 5 infected ones.  Suppose there are 5000 two-person meetings per day where one student meets another, and if one is infected and the other is healthy, then the meeting makes the healthy one infected.  Construct a model showing how the infected and healthy populations change.",
+            "",
+            "Analysis:",
+            "* Process:  Students change from healthy state to infected state",
+            "* Source:  Healthy students",
+            "* Destination: Infected students",
+            "* Changing:  The number of students that change state is the product of the number of meetings times the probability that a meeting will have a healthy student and an infected student.",
+            "",
+            "Implementation: See image or the problem “epidemic” in the problem set “generic changes”."
+        ],
+        "lessonsLearned": [
+            "This is a classic process that is characteristic of many systems where chance meeting between objects determines the",
+            "number of objects changing state each time tick. The probability of a meeting having a healthy student and an infected",
+            "student is assumed to be the product of",
+            "* the probability that one participant in the meeting is a healthy student times",
+            "* the probability that the other participant in the meeting is a healthy student."
+        ],
+        "givenModelNodes": [
+            {
+                "ID": "id1",
+                "inputs": [
+                    {
+                        "ID": "id7",
+                        "label": ""
+                    }
+                ],
+                "position": {
+                    "x": 446,
+                    "y": 413
+                },
+                "attemptCount": {
+                    "description": 0,
+                    "type": 0,
+                    "initial": 0,
+                    "units": 0,
+                    "equation": 0,
+                    "assitanceScore": 0
+                },
+                "status": {},
+                "name": "Infected students",
+                "description": "Number of infected students",
+                "type": "accumulator",
+                "initial": 5,
+                "equation": "id7"
+            },
+            {
+                "ID": "id2",
+                "inputs": [
+                    {
+                        "ID": "id7",
+                        "label": "-"
+                    }
+                ],
+                "position": {
+                    "x": 698,
+                    "y": 420
+                },
+                "attemptCount": {
+                    "description": 0,
+                    "type": 0,
+                    "initial": 0,
+                    "units": 0,
+                    "equation": 0,
+                    "assitanceScore": 0
+                },
+                "status": {},
+                "name": "Healthy students",
+                "description": "Number of healthy students",
+                "type": "accumulator",
+                "initial": 10000,
+                "equation": "-id7"
+            },
+            {
+                "ID": "id3",
+                "inputs": [],
+                "position": {
+                    "x": 553.649658203125,
+                    "y": 520.6288452148438
+                },
+                "attemptCount": {
+                    "description": 0,
+                    "type": 0,
+                    "initial": 0,
+                    "units": 0,
+                    "equation": 0,
+                    "assitanceScore": 0
+                },
+                "status": {},
+                "name": "Total students",
+                "description": "Total of healthy and infected students",
+                "type": "parameter",
+                "parentNode": false,
+                "initial": 10005
+            },
+            {
+                "ID": "id4",
+                "inputs": [
+                    {
+                        "ID": "id1",
+                        "label": ""
+                    },
+                    {
+                        "ID": "id3",
+                        "label": "/"
+                    }
+                ],
+                "position": {
+                    "x": 433,
+                    "y": 214
+                },
+                "attemptCount": {
+                    "description": 0,
+                    "type": 0,
+                    "initial": 0,
+                    "units": 0,
+                    "equation": 0,
+                    "assitanceScore": 0
+                },
+                "status": {},
+                "name": "Probability of infected",
+                "description": "Probability that a student in the meeting is infected",
+                "type": "function",
+                "equation": "id1/id3"
+            },
+            {
+                "ID": "id5",
+                "inputs": [
+                    {
+                        "ID": "id2",
+                        "label": ""
+                    },
+                    {
+                        "ID": "id3",
+                        "label": "/"
+                    }
+                ],
+                "position": {
+                    "x": 720,
+                    "y": 211
+                },
+                "attemptCount": {
+                    "description": 0,
+                    "type": 0,
+                    "initial": 0,
+                    "units": 0,
+                    "equation": 0,
+                    "assitanceScore": 0
+                },
+                "status": {},
+                "name": "Probability of healthy",
+                "description": "Probability that a student in the meeting is healthy",
+                "type": "function",
+                "equation": "id2/id3"
+            },
+            {
+                "ID": "id6",
+                "inputs": [],
+                "position": {
+                    "x": 558.3309326171875,
+                    "y": 53.33095169067383
+                },
+                "attemptCount": {
+                    "description": 0,
+                    "type": 0,
+                    "initial": 0,
+                    "units": 0,
+                    "equation": 0,
+                    "assitanceScore": 0
+                },
+                "status": {},
+                "name": "Meetings",
+                "description": "Number of meetings per day",
+                "type": "parameter",
+                "parentNode": false,
+                "initial": 5000
+            },
+            {
+                "ID": "id7",
+                "inputs": [
+                    {
+                        "ID": "id6",
+                        "label": ""
+                    },
+                    {
+                        "ID": "id4",
+                        "label": ""
+                    },
+                    {
+                        "ID": "id5",
+                        "label": ""
+                    }
+                ],
+                "position": {
+                    "x": 567,
+                    "y": 225
+                },
+                "attemptCount": {
+                    "description": 0,
+                    "type": 0,
+                    "initial": 0,
+                    "units": 0,
+                    "equation": 0,
+                    "assitanceScore": 0
+                },
+                "status": {},
+                "name": "Infectious meetings",
+                "description": "Number of meetings where one student infects the other",
+                "type": "function",
+                "equation": "(id6*id4)*id5"
+            }
+        ],
+        "studentModelNodes": []
+    }
+}

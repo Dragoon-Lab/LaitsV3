@@ -1,0 +1,338 @@
+{
+    "task": {
+        "taskName": "snowball",
+        "time": {
+            "start": 0,
+            "end": 10,
+            "step": 0.5,
+            "integrationMethod": "Eulers Method",
+            "units": "seconds"
+        },
+        "properties": {},
+        "image": {},
+        "taskDescription": [
+            "On New Year’s Eve in 1969, some teenagers released a large snowball, 0.5 meter in radius, from the top of a high hill overlooking the village swimming pool, which was closed for the season.  After 10 seconds, the snowball crashed through a chain link fence and into the village swimming pool.  Construct a model that shows how the snowball’s weight changed using the following facts about this nefarious act of vandalism.  As the snowball started to roll down, it was initially turning at 1.0 revolution per second.  However, with each passing second, it’s turning speed increased by 0.2 revolutions per second.  For instance, after 3 seconds, it was rotating at 1.6 revolutions per second.  As it rotated, snow clung to it, increasing its radius by 0.1 meters per revolution.  Thus, the snowball’s radius also gradually increased per second as it thundered down the hill.  Any ball of radius R has a volume of 4.71225*R^3, where 4.71225 is 3π/2.  The weight of a ball is its volume times its density.  The density of the snowball was 210 kg per cubic meter.    "
+        ],
+        "lessonsLearned": [
+            "This system is like the simple acceleration problem in problem set “generic change” in that one accumulator controls the gain of a second accumulator.  However, there are several extra math relationships."
+        ],
+        "givenModelNodes": [
+            {
+                "ID": "id1",
+                "inputs": [
+                    {
+                        "ID": "id2"
+                    },
+                    {
+                        "ID": "id3"
+                    }
+                ],
+                "position": {
+                    "x": 830,
+                    "y": 186
+                },
+                "attemptCount": {
+                    "description": 0,
+                    "type": 0,
+                    "initial": 0,
+                    "units": 0,
+                    "equation": 0,
+                    "assitanceScore": 0
+                },
+                "status": {},
+                "name": "Volume",
+                "description": "The volume of the snowball",
+                "type": "function",
+                "equation": "((3/2)*id2)*(id3^3)",
+                "units": "m^3"
+            },
+            {
+                "ID": "id2",
+                "inputs": [],
+                "position": {
+                    "x": 858.3309326171875,
+                    "y": 337.3309631347656
+                },
+                "attemptCount": {
+                    "description": 0,
+                    "type": 0,
+                    "initial": 0,
+                    "units": 0,
+                    "equation": 0,
+                    "assitanceScore": 0
+                },
+                "status": {},
+                "name": "Three pi over two",
+                "description": "A constant for converting radius to volume",
+                "equation": "",
+                "type": "parameter",
+                "parentNode": false,
+                "initial": 4.71225,
+                "genus": ""
+            },
+            {
+                "ID": "id3",
+                "inputs": [
+                    {
+                        "ID": "id6",
+                        "label": ""
+                    }
+                ],
+                "position": {
+                    "x": 702,
+                    "y": 187
+                },
+                "attemptCount": {
+                    "description": 0,
+                    "type": 0,
+                    "initial": 0,
+                    "units": 0,
+                    "equation": 0,
+                    "assitanceScore": 0
+                },
+                "status": {},
+                "name": "Radius",
+                "description": "The snowballs radius eachsecond",
+                "type": "accumulator",
+                "initial": 0.5,
+                "units": "m",
+                "equation": "id6"
+            },
+            {
+                "ID": "id4",
+                "inputs": [
+                    {
+                        "ID": "id1",
+                        "label": ""
+                    },
+                    {
+                        "ID": "id5",
+                        "label": ""
+                    }
+                ],
+                "position": {
+                    "x": 955,
+                    "y": 98
+                },
+                "attemptCount": {
+                    "description": 0,
+                    "type": 0,
+                    "initial": 0,
+                    "units": 0,
+                    "equation": 0,
+                    "assitanceScore": 0
+                },
+                "status": {},
+                "name": "Weight",
+                "description": "The weight of the snowball each second",
+                "type": "function",
+                "equation": "id1*id5",
+                "units": "kg"
+            },
+            {
+                "ID": "id5",
+                "inputs": [],
+                "position": {
+                    "x": 1028.3309326171875,
+                    "y": 224.33094787597656
+                },
+                "attemptCount": {
+                    "description": 0,
+                    "type": 0,
+                    "initial": 0,
+                    "units": 0,
+                    "equation": 0,
+                    "assitanceScore": 0
+                },
+                "status": {},
+                "name": "Density",
+                "description": "The density of packed snow",
+                "type": "parameter",
+                "equation": "",
+                "parentNode": false,
+                "initial": 210,
+                "units": "kg/m^3"
+            },
+            {
+                "ID": "id6",
+                "inputs": [
+                    {
+                        "ID": "id7",
+                        "label": ""
+                    },
+                    {
+                        "ID": "id8",
+                        "label": ""
+                    }
+                ],
+                "position": {
+                    "x": 545,
+                    "y": 211
+                },
+                "attemptCount": {
+                    "description": 0,
+                    "type": 0,
+                    "initial": 0,
+                    "units": 0,
+                    "equation": 0,
+                    "assitanceScore": 0
+                },
+                "status": {},
+                "name": "Radius gained",
+                "description": "The radius gained by the snowball each second",
+                "type": "function",
+                "units": "m",
+                "equation": "id7*id8"
+            },
+            {
+                "ID": "id7",
+                "inputs": [],
+                "position": {
+                    "x": 608,
+                    "y": 326
+                },
+                "attemptCount": {
+                    "description": 0,
+                    "type": 0,
+                    "initial": 0,
+                    "units": 0,
+                    "equation": 0,
+                    "assitanceScore": 0
+                },
+                "status": {},
+                "name": "Radius per revolution",
+                "description": "Amount of radius gained per revolution",
+                "equation": "",
+                "type": "parameter",
+                "parentNode": false,
+                "initial": 0.1,
+                "units": "m"
+            },
+            {
+                "ID": "id8",
+                "inputs": [
+                    {
+                        "ID": "id9",
+                        "label": ""
+                    }
+                ],
+                "position": {
+                    "x": 477,
+                    "y": 334
+                },
+                "attemptCount": {
+                    "description": 0,
+                    "type": 0,
+                    "initial": 0,
+                    "units": 0,
+                    "equation": 0,
+                    "assitanceScore": 0
+                },
+                "status": {},
+                "name": "Speed",
+                "description": "The speed of the snowballs rotation each second",
+                "type": "accumulator",
+                "initial": 1,
+                "units": "rev per sec",
+                "equation": "id9"
+            },
+            {
+                "ID": "id9",
+                "inputs": [],
+                "position": {
+                    "x": 536,
+                    "y": 455
+                },
+                "attemptCount": {
+                    "description": 0,
+                    "type": 0,
+                    "initial": 0,
+                    "units": 0,
+                    "equation": 0,
+                    "assitanceScore": 0
+                },
+                "status": {},
+                "name": "Speed gain",
+                "description": "The speed gained by the snowball each second",
+                "equation": "",
+                "type": "parameter",
+                "parentNode": false,
+                "initial": 0.2,
+                "units": "rev per sec"
+            },
+            {
+                "ID": "id10",
+                "inputs": [],
+                "position": {
+                    "x": 697.3309326171875,
+                    "y": 463.3309631347656
+                },
+                "attemptCount": {
+                    "description": 0,
+                    "type": 0,
+                    "initial": 0,
+                    "units": 0,
+                    "equation": 0,
+                    "assitanceScore": 0
+                },
+                "status": {},
+                "name": "Speed at three seconds",
+                "description": "The snowballs speed at three seconds",
+                "equation": "",
+                "type": "parameter",
+                "parentNode": false,
+                "initial": 1.6,
+                "units": "rev per sec"
+            },
+            {
+                "ID": "id11",
+                "inputs": [],
+                "position": {
+                    "x": 833.3309326171875,
+                    "y": 506.3309631347656
+                },
+                "attemptCount": {
+                    "description": 0,
+                    "type": 0,
+                    "initial": 0,
+                    "units": 0,
+                    "equation": 0,
+                    "assitanceScore": 0
+                },
+                "status": {},
+                "name": "Year of crime",
+                "description": "The year when this vandalism occurred",
+                "equation": "",
+                "type": "parameter",
+                "parentNode": false,
+                "initial": 1969,
+                "genus": "extra"
+            },
+            {
+                "ID": "id12",
+                "inputs": [],
+                "position": {
+                    "x": 740.3309326171875,
+                    "y": 355.3309631347656
+                },
+                "attemptCount": {
+                    "description": 0,
+                    "type": 0,
+                    "initial": 0,
+                    "units": 0,
+                    "equation": 0,
+                    "assitanceScore": 0
+                },
+                "status": {},
+                "name": "pi",
+                "description": "Pi, the famous mathematical constant",
+                "equation": "",
+                "type": "parameter",
+                "parentNode": false,
+                "initial": 3.1415,
+                "genus": "extra"
+            }
+        ],
+        "studentModelNodes": []
+    }
+}
