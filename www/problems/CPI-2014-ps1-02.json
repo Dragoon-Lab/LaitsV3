@@ -1,10 +1,10 @@
 {
     "task": {
-        "taskName": "Isle Royale - Moose population 2",
+        "taskName": "moose population growth",
         "time": {
             "start": 1900,
             "end": 1920,
-            "step": 1.0,
+            "step": 1,
             "units": "Years"
         },
         "properties": {
@@ -12,40 +12,23 @@
             "type": ""
         },
         "image": {
-            "URL": "images/moose_60.png"
+            "URL": "images/CPI/CPI-2014-ps1-02.jpg"
         },
         "taskDescription": [
-	    "Assumptions:",
-	    " * The moose population is 20 in the first year (1900).",
-	    " * Births are the only change in the population. Deaths, immigration and emigration do not occur.",
-	    " * The number of moose births each year is 20% of the moose population. "
-    	],
-    	"lessonsLearned": [
-            "The graph of \"moose population\" increases slowly at first and then gets steeper. The graph fits an exponential function,",
-            "so this process is called \"exponential growth.\""
+             "Suppose 20 moose are introduced to a remote island in Canada many years ago. Suppose that the birth rate is 20%.",
+             "That is, the number of moose born each year equals 20% of the population that year. Construct a model that shows",
+             "how the moose population changes each year.",
+             "Analysis:",
+             "* Process: adding moose to the population via births",
+             "* Source: irrelevant",
+             "* Destination: Moose population",
+             "* Changing: a proportion, 20%, of the destination changes state each year",
+             "Implementation: See image, but change names and numbers. Or see the problem “proportional to destination” in the",
+             "problem set “generic changes.”",
         ],
-
-        "slides": [
-            {
-                "type": "text",
-                "value": "count",
-                "title": "Types of nodes in the model"
-            },
-            {
-                "type": "image",
-                "value": "images/CPI/isle2_graphs.jpg",
-                "title": "Author's graph for Moose Population Problem"
-            },
-            {
-                "type": "image",
-                "value": "images/CPI/isle2_correctnodes.png",
-                "title": "Author's solution for Moose Population Problem"
-            },
-            {
-                "type": "text",
-                "value": "lessons",
-                "title": "Lessons Learned"
-            }
+        "lessonsLearned": [
+             "The graph of “moose population” increases slowly at first and then gets steeper. The graph fits an exponential function,",
+             "so this process is called “exponential growth.”"
         ],
         "givenModelNodes": [
             {
@@ -60,13 +43,19 @@
                     "y": 100
                 },
                 "attemptCount": {
-                    "description": 0,
-                    "type": 0,
-                    "initial": 0,
+                    "description": 1,
+                    "type": 1,
+                    "initial": 1,
                     "units": 0,
-                    "equation": 0
+                    "equation": 1,
+                    "assistanceScore": 0
                 },
-                "status": {},
+                "status": {
+                    "description": "correct",
+                    "type": "correct",
+                    "equation": "correct",
+                    "initial": "correct"
+                },
                 "name": "moose population",
                 "type": "accumulator",
                 "parentNode": true,
@@ -83,13 +72,18 @@
                     "y": 100
                 },
                 "attemptCount": {
-                    "description": 0,
-                    "type": 0,
-                    "initial": 0,
+                    "description": 1,
+                    "type": 1,
+                    "initial": 1,
                     "units": 0,
-                    "equation": 0
+                    "equation": 0,
+                    "assistanceScore": 0
                 },
-                "status": {},
+                "status": {
+                    "description": "correct",
+                    "type": "correct",
+                    "initial": "correct"
+                },
                 "name": "moose birth rate",
                 "type": "parameter",
                 "parentNode": false,
@@ -112,13 +106,18 @@
                     "y": 100
                 },
                 "attemptCount": {
-                    "description": 0,
-                    "type": 0,
+                    "description": 1,
+                    "type": 1,
                     "initial": 0,
                     "units": 0,
-                    "equation": 0
+                    "equation": 1,
+                    "assistanceScore": 0
                 },
-                "status": {},
+                "status": {
+                    "description": "correct",
+                    "type": "correct",
+                    "equation": "correct"
+                },
                 "name": "moose births",
                 "type": "function",
                 "parentNode": false,
@@ -127,6 +126,101 @@
                 "equation": "id1 * id2"
             }
         ],
-        "studentModelNodes": []
+        "studentModelNodes": [
+            {
+                "ID": "id5",
+                "inputs": [
+                    {
+                        "ID": "id6",
+                        "label": ""
+                    },
+                    {
+                        "ID": "id7",
+                        "label": ""
+                    }
+                ],
+                "position": {
+                    "x": 600,
+                    "y": 100
+                },
+                "status": {
+                    "description": {
+                        "status": "correct",
+                        "disabled": true
+                    },
+                    "type": {
+                        "disabled": true,
+                        "status": "correct"
+                    },
+                    "equation": {
+                        "disabled": true,
+                        "status": "correct"
+                    }
+                },
+                "descriptionID": "id3",
+                "type": "function",
+                "equation": "id6*id7"
+            },
+            {
+                "ID": "id6",
+                "inputs": [],
+                "position": {
+                    "x": 433,
+                    "y": 108
+                },
+                "status": {
+                    "description": {
+                        "status": "correct",
+                        "disabled": true
+                    },
+                    "type": {
+                        "disabled": true,
+                        "status": "correct"
+                    },
+                    "initial": {
+                        "disabled": true,
+                        "status": "correct"
+                    }
+                },
+                "descriptionID": "id2",
+                "type": "parameter",
+                "initial": 0.2
+            },
+            {
+                "ID": "id7",
+                "inputs": [
+                    {
+                        "ID": "id5",
+                        "label": ""
+                    }
+                ],
+                "position": {
+                    "x": 729,
+                    "y": 118
+                },
+                "status": {
+                    "description": {
+                        "status": "correct",
+                        "disabled": true
+                    },
+                    "type": {
+                        "disabled": true,
+                        "status": "correct"
+                    },
+                    "initial": {
+                        "disabled": true,
+                        "status": "correct"
+                    },
+                    "equation": {
+                        "disabled": false,
+                        "status": "correct"
+                    }
+                },
+                "descriptionID": "id1",
+                "type": "accumulator",
+                "equation": "id5",
+                "initial": 20
+            }
+        ]
     }
 }
