@@ -42,11 +42,12 @@ define([
 	"./equation",
 	"./description",
 	"./state",
-    "./typechecker"
+    "./typechecker",
+	"./createSlides"
 ], function(
-		array, lang, dom, geometry, domStyle, on, aspect, ioQuery, ready, registry,
+		array, lang, dom, geometry, style, on, aspect, ioQuery, ready, registry,
 		menu, loadSave, model,
-		Graph, Table, controlStudent, controlAuthor, drawmodel, logging, expression, description, State, typechecker
+		Graph, Table, controlStudent, controlAuthor, drawmodel, logging, expression, description, State, typechecker, slides
 ){
 	// Summary: 
 	//			Menu controller
@@ -107,7 +108,7 @@ define([
 		controllerObject.setState(state);
 
 		ready(function(){
-
+			
 			var drawModel = new drawmodel(givenModel.active);
 			drawModel.setLogging(session);
 
@@ -130,7 +131,7 @@ define([
 			//In TEST and EDITOR mode remove border color from existing Student model nodes.			 
 			if(controllerObject._mode == "TEST" || controllerObject._mode == "EDITOR"){
 				array.forEach(givenModel.model.task.studentModelNodes, function(studentNode){
-					domStyle.set(studentNode.ID, 'border', "gray");
+					style.set(studentNode.ID, 'border', "gray");
 				});
 			}
 
@@ -198,7 +199,7 @@ define([
 			});
 
 			// checks if forumurl is present
-			if(query.f && query.fe == "true") {
+			if(query.f && query.fe) {
 				//Enable the forum button in the menu
 				var forumBut=registry.byId("forumButton");
 				forumBut.set("disabled", false);
@@ -254,7 +255,123 @@ define([
                 on(registry.byId("saveCloseButton"), "click", function(){
                     registry.byId("authorSaveDialog").hide();
                 });
+                
+                //Author Save Dialog - check for name conflict on losing focus
+                //from textboxes of Rename dialog
+    			on(registry.byId("authorSaveProblem"), "blur", function() {
+    				var problemName = registry.byId("authorSaveProblem").value;
+    				var groupName = registry.byId("authorSaveGroup").value;    				
+    				session.isProblemNameConflict(problemName,groupName).then(function(isConflict) {
+    					if(isConflict) {    					
+    						registry.byId("saveCloseButton").set("disabled",true);
+    						registry.byId("saveCloseButton").set("title","Problem name conflict");
+    					} else {    						
+    						registry.byId("saveCloseButton").set("disabled",false);
+    						registry.byId("saveCloseButton").set("title","Problem name doesn't conflict");
+    					}
+    				});    				
+    			});
+    			on(registry.byId("authorSaveGroup"), "blur", function() {
+    				var problemName = registry.byId("authorSaveProblem").value;
+    				var groupName = registry.byId("authorSaveGroup").value;
+    				session.isProblemNameConflict(problemName,groupName).then(function(isConflict) {
+    					if(isConflict) {    						
+    						registry.byId("saveCloseButton").set("disabled",true);
+    						registry.byId("saveCloseButton").set("title","Problem name conflict");
+    					} else {    					
+    						registry.byId("saveCloseButton").set("disabled",false);
+    						registry.byId("saveCloseButton").set("title","Problem name doesn't conflict");
+    					}
+    				});
+    			});
 			}
+
+			if(query.m == "EDITOR"){
+				if(givenModel.model.task.slides){
+					var sb = registry.byId("slidesButton");
+					sb.set("disabled", false);
+					var createSlides = new slides(givenModel);
+					menu.add("slidesButton", function(){
+						createSlides.show();
+
+						var size = createSlides._slides.length;
+						var	pb = registry.byId("prevSlide");
+						if(pb.value == 0)
+							pb.set("disabled", true);
+						else 
+							pb.set("disabled", false);
+
+						var nb = registry.byId("nextSlide");
+						if(nb.value == size+1)
+							nb.set("disabled", true);
+						else
+							nb.set("disabled", false);
+
+						on(registry.byId("prevSlide"), "click", function(){
+							var id = pb.value;
+							if(id>0){
+								var currID =id +1;
+								
+								currID = currID.toString();
+								id = id.toString();
+							
+								var hideDOM = dom.byId(currID);
+								var prevDOM = dom.byId(id);
+							
+								style.set(hideDOM, "display", "none");
+								style.set(prevDOM, "display", "block");
+								
+								id = parseInt(id);
+								pb.value = id - 1;
+								nb.value = id + 1;
+
+								if(id > 1)
+									pb.set("disabled", false);
+								else
+									pb.set("disabled", true);
+
+								if(id < size)
+									nb.set("disabled", false);
+								else
+									nb.set("disabled", true);
+							}
+						});
+						
+						on(registry.byId("nextSlide"), "click", function(){
+							var id = nb.value;
+							if(id<=size){
+								var currID = id - 1;
+							
+								currID = currID.toString();
+								id = id.toString();
+
+								var nextDOM = dom.byId(id);
+								var hideDOM = dom.byId(currID);
+
+								style.set(hideDOM, "display", "none");
+								style.set(nextDOM, "display", "block");
+								
+								id = parseInt(id);
+								pb.value = id - 1;
+								nb.value = id + 1;
+
+								if(id > 1)
+									pb.set("disabled", false);
+								else
+									pb.set("disabled", true);
+
+								if(id < size)
+									nb.set("disabled", false);
+								else
+									nb.set("disabled", true);
+							}
+						});
+					});
+				}
+													
+
+			}
+
 			// Render image description on canvas
 			descObj.showDescription();
 
@@ -291,7 +408,7 @@ define([
 			});
             //the solution div which shows graph/table when closed
             //should disable all the pop ups
-            aspect.after(registry.byId(' '), "hide", function(){
+            aspect.after(registry.byId('solution'), "hide", function(){
                 console.log("Calling graph/table to be closed");
                 typechecker.closePops();
                 //session.saveProblem(givenModel.model);
@@ -315,6 +432,27 @@ define([
 				});
 			});
 
+			//Disable the lessonsLearnedButton
+			//var lessonsLearnedButton = registry.byId("lessonsLearnedButton");   
+			//lessonsLearnedButton.set("disabled", true);
+			//Bind lessonsLearnedButton to the click event	
+			if(query.m == "STUDENT" || query.m == "COACHED"){
+				if(givenModel.isLessonLearnedShown == true){
+					registry.byId("lessonsLearnedButton").set("disabled", false);
+				}
+				menu.add("lessonsLearnedButton", function(){
+					var lessonLearnedDialog = registry.byId("lesson");
+					var titleMsg = "Lessons Learned";
+					contentMsg = givenModel.getTaskLessonsLearned();
+					var contentHTML = contentMsg[0];
+					for(var i=1;i<contentMsg.length;i++) {
+						contentHTML = contentHTML +"<br>"+contentMsg[i];
+					}
+					lessonLearnedDialog.set("content", contentHTML);
+					lessonLearnedDialog.set("title", titleMsg);
+					lessonLearnedDialog.show();
+				});
+			}
             /*
              Add link to intro video
              */
@@ -386,7 +524,6 @@ define([
 							"height=400, width=600, toolbar =no, menubar=no, scrollbars=no, resizable=no, location=no, status=no"
 						   );
 			});
-
 		});
 	});
 });

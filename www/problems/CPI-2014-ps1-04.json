@@ -14,6 +14,7 @@
         "image": {
             "URL": "images/737px-Frohawk_Dodo.png"
         },
+<<<<<<< HEAD
         "taskDescription": [
             "Suppose that 1000 dodos (pronounced: doe-doze) were living on the island of Mauritius when sailors landed.  The sailors accidentally introduced a new species, rats.  The rats ate essentially all the dodo eggs as soon as they were laid, so the dodo birth rate dropped to zero.  Meanwhile, the annual death rate continued to be 20%.  That is, 20% of the dodos died each year and no dodos were born.  Build a model that shows how the dodo population changed.",
             "",
@@ -31,6 +32,19 @@
             "The simplest model that exhibits exponential decay is exactly the one you just built: It has an accumulator, a function",
             "and a parameter, hooked up just as you have done. The small circle with a minus sign inside it indicates that the input to",
             "the accumulator is negated before it is added to the old value of the accumulator."
+=======
+        "taskDescription": ["Suppose that 1000 Dodos were living on the island of Mauritius when sailors landed. The sailors accidentally introduced a new species, rats. The rats ate essentially all the Dodo eggs as soon as they were laid, so the Dodo birth rate dropped to zero. Meanwhile, the annual Dodo death rate continued to be 20%. That is, 20% of the Dodos died each year and no Dodos were born. Build a model and observe how the Dodo population changed over 20 years.", 
+           "You will need:", 
+           "* A node called \"population\" to represent the number of Dodos still alive on Mauritius. This decreases each year due to deaths.", 
+           "* A node called \"deaths\" to represent the number of Dodos that die each year. To calculate it, multiply death rate by population.",
+           "* A node called \"death rate\" to represent the fraction of the Dodo population that dies each year. Dragoon doesn't understand percentages, so we use 0.20 instead of 20%."],
+        "lessonsLearned": [
+       		"The graph of the quantity \"population\" is a curved line that approaches zero slowly. This behavior is called \"exponential",
+        	"decay,\" because the curve fits an exponential function. See the Wikipedia article on \"exponential decay\" for details.",
+        	"The simplest model that exhibits exponential decay is exactly the one you just built: It has an accumulator, a function",
+        	"and a parameter, hooked up just as you have done. The small circle with a minus sign inside it indicates that the input to",
+        	"the accumulator is negated before it is added to the old value of the accumulator."
+>>>>>>> origin/sachin
         ],
         "givenModelNodes": [
             {

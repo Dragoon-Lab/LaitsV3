@@ -15,6 +15,7 @@
             "URL": "images/moose_60.png"
         },
         "taskDescription": [
+<<<<<<< HEAD
             "Suppose 20 moose are introduced to a remote island in Canada many years ago.  Suppose that the birth rate is 20%.   That is, the number of moose born each year equals 20% of the population that year.  Construct a model that shows how the moose population changes each year.",
 	        " ",
             "Analysis:",
@@ -29,6 +30,17 @@
             "The graph of \"moose population\" increases slowly at first and then gets steeper. The graph fits an exponential function,",
             "so this process is called \"exponential growth.\""
         ],
+=======
+	    "Assumptions:",
+	    " * The moose population is 20 in the first year (1900).",
+	    " * Births are the only change in the population. Deaths, immigration and emigration do not occur.",
+	    " * The number of moose births each year is 20% of the moose population. "
+	],
+	"lessonsLearned": [
+        "The graph of \"moose population\" increases slowly at first and then gets steeper. The graph fits an exponential function,",
+        "so this process is called \"exponential growth.\""
+    ],
+>>>>>>> origin/sachin
         "givenModelNodes": [
             {
                 "ID": "id1",
