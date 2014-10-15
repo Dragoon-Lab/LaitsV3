@@ -13,9 +13,9 @@
         },
         "image": {},
         "taskDescription": [
-            "Corky keeps a list of assignments he needs to complete for his classes, but it keeps getting longer and longer. Each",
+            "Corky keeps a list of assignments he needs to complete for his classes, but it keeps getting longer and longer. Corky starts with 2 tasks on his list. Each",
             "week, Corky adds 7 new assignments to his task list. As hard as he tries, Corky is only able to complete 3 assignments",
-            "each week and remove them from his task list. Construct a model that show how the number of tasks on Corky’s list",
+            "each week and remove them from his task list. Construct a model that shows how the number of tasks on Corky’s list",
             "changes.",
             "Analysis:",
             "* Process 1: Adding new assignments to the task list",
