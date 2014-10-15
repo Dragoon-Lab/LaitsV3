@@ -126,6 +126,59 @@ define([
 			registry.byId("prevSlide").set("value", value-1);
 			registry.byId("nextSlide").set("value", value+1);
 			style.set(first, "display", "block");
+			this.toggleButtons();
+		},
+
+		toggleButtons: function(){
+			var size = this._slides.length;
+			
+			var pb = registry.byId("prevSlide");
+			var nb = registry.byId("nextSlide");
+			
+			var current = pb.value + 1;
+			if(current <= 1)
+				pb.set("disabled", true);
+			else 
+				pb.set("disabled", false);
+
+			if(current >= size)
+				nb.set("disabled", true);
+			else
+				nb.set("disabled", false);
+		},
+
+		changeSlides: function(/* string */type){
+			var pb = registry.byId("prevSlide");
+			var nb = registry.byId("nextSlide");
+			
+			var id = type=="prev"?pb.value:nb.value;
+			if(id>0){
+				var currID = type == "prev" ?(id +1):(id -1); 
+				currID = currID.toString();
+				id = id.toString();
+
+				var hideDOM = dom.byId(currID);
+				var newDOM = dom.byId(id);
+				
+				style.set(hideDOM, "display", "none");
+				style.set(newDOM, "display", "block");
+				
+				id = parseInt(id);
+
+				pb.set("value", id-1);
+				nb.set("value", id+1);
+
+				this.toggleButtons();
+			}
+		},
+
+		log: function(/*object */ logging){
+			var current = registry.byId("prevSlide").value +1;
+			logging.log('ui-action',{
+				type: 'slide-change',
+				name: this._slides[current].title,
+				slide: current
+			});
 		}
 	});
 });

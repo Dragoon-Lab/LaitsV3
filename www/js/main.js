@@ -293,78 +293,16 @@ define([
 					var createSlides = new slides(givenModel);
 					menu.add("slidesButton", function(){
 						createSlides.show();
-
-						var size = createSlides._slides.length;
-						var	pb = registry.byId("prevSlide");
-						if(pb.value == 0)
-							pb.set("disabled", true);
-						else 
-							pb.set("disabled", false);
-
-						var nb = registry.byId("nextSlide");
-						if(nb.value == size+1)
-							nb.set("disabled", true);
-						else
-							nb.set("disabled", false);
+						createSlides.log(controllerObject.logging);
 
 						on(registry.byId("prevSlide"), "click", function(){
-							var id = pb.value;
-							if(id>0){
-								var currID =id +1;
-								
-								currID = currID.toString();
-								id = id.toString();
-							
-								var hideDOM = dom.byId(currID);
-								var prevDOM = dom.byId(id);
-							
-								style.set(hideDOM, "display", "none");
-								style.set(prevDOM, "display", "block");
-								
-								id = parseInt(id);
-								pb.value = id - 1;
-								nb.value = id + 1;
-
-								if(id > 1)
-									pb.set("disabled", false);
-								else
-									pb.set("disabled", true);
-
-								if(id < size)
-									nb.set("disabled", false);
-								else
-									nb.set("disabled", true);
-							}
+							createSlides.changeSlides("prev");
+							createSlides.log(controllerObject.logging);
 						});
 						
 						on(registry.byId("nextSlide"), "click", function(){
-							var id = nb.value;
-							if(id<=size){
-								var currID = id - 1;
-							
-								currID = currID.toString();
-								id = id.toString();
-
-								var nextDOM = dom.byId(id);
-								var hideDOM = dom.byId(currID);
-
-								style.set(hideDOM, "display", "none");
-								style.set(nextDOM, "display", "block");
-								
-								id = parseInt(id);
-								pb.value = id - 1;
-								nb.value = id + 1;
-
-								if(id > 1)
-									pb.set("disabled", false);
-								else
-									pb.set("disabled", true);
-
-								if(id < size)
-									nb.set("disabled", false);
-								else
-									nb.set("disabled", true);
-							}
+							createSlides.changeSlides("next");
+							createSlides.log(controllerObject.logging);
 						});
 					});
 				}
@@ -437,20 +375,19 @@ define([
 			//lessonsLearnedButton.set("disabled", true);
 			//Bind lessonsLearnedButton to the click event	
 			if(query.m == "STUDENT" || query.m == "COACHED"){
-				if(givenModel.isLessonLearnedShown == true){
-					registry.byId("lessonsLearnedButton").set("disabled", false);
-				}
 				menu.add("lessonsLearnedButton", function(){
-					var lessonLearnedDialog = registry.byId("lesson");
-					var titleMsg = "Lessons Learned";
-					contentMsg = givenModel.getTaskLessonsLearned();
-					var contentHTML = contentMsg[0];
-					for(var i=1;i<contentMsg.length;i++) {
-						contentHTML = contentHTML +"<br>"+contentMsg[i];
+					if(givenModel.isLessonLearnedShown == true){
+						var lessonLearnedDialog = registry.byId("lesson");
+						var titleMsg = "Lessons Learned";
+						contentMsg = givenModel.getTaskLessonsLearned();
+						var contentHTML = contentMsg[0];
+						for(var i=1;i<contentMsg.length;i++) {
+							contentHTML = contentHTML +"<br>"+contentMsg[i];
+						}
+						lessonLearnedDialog.set("content", contentHTML);
+						lessonLearnedDialog.set("title", titleMsg);
+						lessonLearnedDialog.show();
 					}
-					lessonLearnedDialog.set("content", contentHTML);
-					lessonLearnedDialog.set("title", titleMsg);
-					lessonLearnedDialog.show();
 				});
 			}
             /*
