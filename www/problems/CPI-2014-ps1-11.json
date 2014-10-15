@@ -63,12 +63,12 @@
                     "y": 100
                 },
                 "attemptCount": {
-                    "description": 1,
-                    "type": 1,
-                    "initial": 2,
+                    "description": 0,
+                    "type": 0,
+                    "initial": 0,
                     "units": 0,
                     "equation": 0,
-                    "assistanceScore": 1
+                    "assistanceScore": 0
                 },
                 "status": {
                     "description": "correct",
@@ -94,12 +94,12 @@
                     "y": 100
                 },
                 "attemptCount": {
-                    "description": 1,
-                    "type": 1,
-                    "initial": 1,
+                    "description": 0,
+                    "type": 0,
+                    "initial": 0,
                     "units": 0,
-                    "equation": 2,
-                    "assistanceScore": 1
+                    "equation": 0,
+                    "assistanceScore": 0
                 },
                 "status": {
                     "description": "correct",
@@ -127,11 +127,11 @@
                     "y": 100
                 },
                 "attemptCount": {
-                    "description": 1,
-                    "type": 1,
-                    "initial": 1,
+                    "description": 0,
+                    "type": 0,
+                    "initial": 0,
                     "units": 0,
-                    "equation": 1,
+                    "equation": 0,
                     "assistanceScore": 0
                 },
                 "status": {
