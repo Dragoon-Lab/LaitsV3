@@ -65,11 +65,11 @@
                     "y": 100
                 },
                 "attemptCount": {
-                    "description": 1,
-                    "type": 1,
-                    "initial": 1,
+                    "description": 0,
+                    "type": 0,
+                    "initial": 0,
                     "units": 0,
-                    "equation": 1,
+                    "equation": 0,
                     "assistanceScore": 0
                 },
                 "status": {
@@ -94,9 +94,9 @@
                     "y": 100
                 },
                 "attemptCount": {
-                    "description": 1,
-                    "type": 1,
-                    "initial": 1,
+                    "description": 0,
+                    "type": 0,
+                    "initial": 0,
                     "units": 0,
                     "equation": 0,
                     "assistanceScore": 0
@@ -128,11 +128,11 @@
                     "y": 100
                 },
                 "attemptCount": {
-                    "description": 1,
-                    "type": 1,
+                    "description": 0,
+                    "type": 0,
                     "initial": 0,
                     "units": 0,
-                    "equation": 1,
+                    "equation": 0,
                     "assistanceScore": 0
                 },
                 "status": {
