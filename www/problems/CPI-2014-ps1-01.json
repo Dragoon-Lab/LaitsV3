@@ -30,6 +30,28 @@
             "The simplest model that exhibits linear growth is exactly like the one you just constructed: An accumulator with a",
             "parameter whose value is repeatedly added to the accumulator’s value."
         ],
+        "slides": [
+            {
+                "type": "text",
+                "value": "count",
+                "title": "Types of nodes in the model"
+            },
+            {
+                "type": "image",
+                "value": "images/CPI/bookworm_graph.png",
+                "title": "Author's graph for Bookworm Problem"
+            },
+            {
+                "type": "image",
+                "value": "images/CPI/bookworm_correctnodes.png",
+                "title": "Author's solution for Bookworm Problem"
+            },
+            {
+                "type": "text",
+                "value": "lessons",
+                "title": "Lessons Learned"
+            }
+        ],
         "givenModelNodes": [
             {
                 "ID": "id1",
@@ -92,67 +114,6 @@
                 "equation": "+ id1"
             }
         ],
-        "studentModelNodes": [
-            {
-                "ID": "id3",
-                "inputs": [],
-                "position": {
-                    "x": 400,
-                    "y": 100
-                },
-                "status": {
-                    "description": {
-                        "status": "correct",
-                        "disabled": true
-                    },
-                    "type": {
-                        "disabled": true,
-                        "status": "correct"
-                    },
-                    "initial": {
-                        "disabled": true,
-                        "status": "correct"
-                    }
-                },
-                "descriptionID": "id1",
-                "type": "parameter",
-                "initial": 2
-            },
-            {
-                "ID": "id4",
-                "inputs": [
-                    {
-                        "ID": "id3",
-                        "label": ""
-                    }
-                ],
-                "position": {
-                    "x": 598,
-                    "y": 151
-                },
-                "status": {
-                    "description": {
-                        "status": "correct",
-                        "disabled": true
-                    },
-                    "type": {
-                        "disabled": true,
-                        "status": "correct"
-                    },
-                    "initial": {
-                        "disabled": true,
-                        "status": "correct"
-                    },
-                    "equation": {
-                        "disabled": true,
-                        "status": "correct"
-                    }
-                },
-                "descriptionID": "id2",
-                "type": "accumulator",
-                "initial": 100,
-                "equation": "id3"
-            }
-        ]
+        "studentModelNodes": []
     }
 }
