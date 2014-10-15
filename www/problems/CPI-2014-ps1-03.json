@@ -12,37 +12,47 @@
             "type": "Debug"
         },
         "image": {
-            "URL": "images/weighing-scales2.jpg"
+            "URL": "images/CPI/CPI-2014-ps1-03.jpg"
         },
-<<<<<<< HEAD
         "taskDescription": [
-            "Jared is on a diet and loses 2.5 pounds each week.  He started his diet weighing 200 pounds.  Construct a model that shows how his weight changes each week. ",
-            "",
+            "Jared is on a diet and loses 2.5 pounds each week. He started his diet weighing 200 pounds. Construct a model that",
+            "shows how his weight changes each week.",
             "Analysis:",
             "* Process: Jared’s weight is decreasing",
             "* Source: Jared’s weight",
             "* Destination: irrelevant",
             "* Changing: a constant 2.5 pounds changes state each week",
-            "",
-            "Implementation:  See image, or see the problem “constant” in the problem set “generic changes.”"
-        ],
+            "Implementation: See image, or see the problem “constant” in the problem set “generic changes.”"
+            ],
         "lessonsLearned": [
-            "The graph of the quantity \"Jared’s weight\" is a straight line headed downward, so this quantity is said to exhibit \"linear",
-            "decay.\" Many different models can have quantities that exhibit linear decay, but the simplest such model is exactly like",
+            "The graph of the quantity “Jared’s weight” is a straight line headed downward, so this quantity is said to exhibit “linear",
+            "decay.” Many different models can have quantities that exhibit linear decay, but the simplest such model is exactly like",
             "the one you just constructed: An accumulator with a parameter as a negated input.",
-            "<br><br>Notice the small circle with a minus sign inside it. This indicates that the input is negated. Thus, just by looking at the",
+            "Notice the small circle with a minus sign inside it. This indicates that the input is negated. Thus, just by looking at the",
             "arrows and the contents of the nodes, you can tell exactly what the calculations inside the nodes are."
         ],
-=======
-        "taskDescription": " Jared is on a diet and loses 2.5 pounds each week. He started the diet weighing 200 pounds. A node defining Jared's weekly weight loss as a function of time has been given. Construct a model for Jared's weight as a function of time. ",
-        "lessonsLearned": [
-        	"The graph of the quantity \"Jared�s weight\" is a straight line headed downward, so this quantity is said to exhibit \"linear",
-        	"decay.\" Many different models can have quantities that exhibit linear decay, but the simplest such model is exactly like",
-        	"the one you just constructed: An accumulator with a parameter as a negated input.",
-        	"<br><br>Notice the small circle with a minus sign inside it. This indicates that the input is negated. Thus, just by looking at the",
-        	"arrows and the contents of the nodes, you can tell exactly what the calculations inside the nodes are."
-    	],
->>>>>>> origin/sachin
+        "slides": [
+            {
+                "type": "text",
+                "value": "count",
+                "title": "Types of nodes in the model"
+            },
+            {
+                "type": "image",
+                "value": "images/CPI/jaredweight_graph.png",
+                "title": "Author's graph for Jared's weight Problem"
+            },
+            {
+                "type": "image",
+                "value": "images/CPI/jaredweight_correctnodes.png",
+                "title": "Author's solution for Jared's weight Problem"
+            },
+            {
+                "type": "text",
+                "value": "lessons",
+                "title": "Lessons Learned"
+            }
+        ],
         "givenModelNodes": [
             {
                 "ID": "id1",
@@ -52,13 +62,18 @@
                     "y": 100
                 },
                 "attemptCount": {
-                    "description": 0,
-                    "type": 0,
-                    "initial": 0,
+                    "description": 1,
+                    "type": 1,
+                    "initial": 1,
                     "units": 0,
-                    "equation": 0
+                    "equation": 0,
+                    "assistanceScore": 0
                 },
-                "status": {},
+                "status": {
+                    "description": "correct",
+                    "type": "correct",
+                    "initial": "correct"
+                },
                 "name": "weight change",
                 "type": "parameter",
                 "parentNode": false,
@@ -78,13 +93,19 @@
                     "y": 100
                 },
                 "attemptCount": {
-                    "description": 0,
-                    "type": 0,
-                    "initial": 0,
+                    "description": 1,
+                    "type": 1,
+                    "initial": 1,
                     "units": 0,
-                    "equation": 0
+                    "equation": 2,
+                    "assistanceScore": 1
                 },
-                "status": {},
+                "status": {
+                    "description": "correct",
+                    "type": "correct",
+                    "initial": "correct",
+                    "equation": "correct"
+                },
                 "name": "Jared weight",
                 "type": "accumulator",
                 "parentNode": true,
@@ -93,7 +114,6 @@
                 "initial": 200,
                 "equation": "- id1"
             }
-
         ],
         "studentModelNodes": []
     }

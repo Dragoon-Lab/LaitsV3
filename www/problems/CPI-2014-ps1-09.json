@@ -22,6 +22,28 @@
         "lessonsLearned": [
             "This type of model is called a linear transfer model, because the change in the source and destination quantities is linear."
         ],
+        "slides": [
+            {
+                "type": "text",
+                "value": "count",
+                "title": "Types of nodes in the model"
+            },
+            {
+                "type": "image",
+                "value": "images/CPI/book_shuttle_graphs.jpg",
+                "title": "Author's graph for Book Shuttle Problem"
+            },
+            {
+                "type": "image",
+                "value": "images/CPI/book_shuttle_correctnodes.png",
+                "title": "Author's solution for Book Shuttle Problem"
+            },
+            {
+                "type": "text",
+                "value": "lessons",
+                "title": "Lessons Learned"
+            }
+        ],
         "givenModelNodes": [
             {
                 "ID": "id1",

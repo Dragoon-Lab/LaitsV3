@@ -1,6 +1,6 @@
 {
     "task": {
-        "taskName": "Intro Problem 3",
+        "taskName": "Corky is falling behind",
         "time": {
             "start": 0,
             "end": 12,
@@ -11,25 +11,48 @@
             "phase": "Intro",
             "type": "Debug"
         },
-        "image": {
-            "URL": "http://amt.javiergs.com/images/tasks/intro-4.png"
-        },
-        "taskDescription":[
-            "Corky keeps a list of assignments he needs to complete for his classes, but it keeps getting longer and longer.  Each week, Corky adds 7 new assignments to his task list.  As hard as he tries, Corky is only able to complete 3 assignments each week and remove them from his task list. Construct a model that show how the number of tasks on Corky’s list changes.",
-            "",
+        "image": {},
+        "taskDescription": [
+            "Corky keeps a list of assignments he needs to complete for his classes, but it keeps getting longer and longer. Each",
+            "week, Corky adds 7 new assignments to his task list. As hard as he tries, Corky is only able to complete 3 assignments",
+            "each week and remove them from his task list. Construct a model that show how the number of tasks on Corky’s list",
+            "changes.",
             "Analysis:",
             "* Process 1: Adding new assignments to the task list",
-            "* Source 1:  irrelevant",
+            "* Source 1: irrelevant",
             "* Destination 1: the task list",
             "* Changing 1: a constant 7 assignments changes state each week",
-            "",
-            "* Process 2:  Removing completed assignments from the task list",
+            "* Process 2: Removing completed assignments from the task list",
             "* Source 2: the task list",
-            "* Destination 2:  irrelevant",
+            "* Destination 2: irrelevant",
             "* Changing 2: a constant 3 assignments changes state each week"
         ],
-        "lessonsLearned" :[
-            "This model combines linear growth and linear decay. If you play with the sliders, you’ll see that regardless of the values of the parameters, the graph is always a straight line. Thus, if you combine two or more linear changes, you get a linear change."
+        "lessonsLearned": [
+            "This model combines linear growth and linear decay. If you play with the sliders, you’ll see that regardless of the values",
+            "of the parameters, the graph is always a straight line. Thus, if you combine two or more linear changes, you get a linear",
+            "change."
+        ],
+        "slides": [
+            {
+                "type": "text",
+                "value": "count",
+                "title": "Types of nodes in the model"
+            },
+            {
+                "type": "image",
+                "value": "images/CPI/IntroProblem3_graph.png",
+                "title": "Author's graph for Introduction Problem"
+            },
+            {
+                "type": "image",
+                "value": "images/CPI/IntroProblem3_correctnodes.png",
+                "title": "Author's solution for Introduction Problem"
+            },
+            {
+                "type": "text",
+                "value": "lessons",
+                "title": "Lessons Learned"
+            }
         ],
         "givenModelNodes": [
             {
@@ -40,13 +63,18 @@
                     "y": 100
                 },
                 "attemptCount": {
-                    "description": 0,
-                    "type": 0,
-                    "initial": 0,
+                    "description": 1,
+                    "type": 1,
+                    "initial": 2,
                     "units": 0,
-                    "equation": 0
+                    "equation": 0,
+                    "assistanceScore": 2
                 },
-                "status": {},
+                "status": {
+                    "description": "correct",
+                    "type": "correct",
+                    "initial": "demo"
+                },
                 "name": "assignments added",
                 "type": "parameter",
                 "parentNode": false,
@@ -62,13 +90,18 @@
                     "y": 100
                 },
                 "attemptCount": {
-                    "description": 0,
-                    "type": 0,
-                    "initial": 0,
+                    "description": 2,
+                    "type": 1,
+                    "initial": 2,
                     "units": 0,
-                    "equation": 0
+                    "equation": 0,
+                    "assistanceScore": 2
                 },
-                "status": {},
+                "status": {
+                    "description": "correct",
+                    "type": "correct",
+                    "initial": "correct"
+                },
                 "name": "assignments removed",
                 "type": "parameter",
                 "parentNode": false,
@@ -91,13 +124,20 @@
                     "y": 100
                 },
                 "attemptCount": {
-                    "description": 0,
-                    "type": 0,
-                    "initial": 0,
+                    "description": 1,
+                    "type": 1,
+                    "initial": 1,
                     "units": 0,
-                    "equation": 0
+                    "equation": 5,
+                    "assistanceScore": 1,
+                    "unknownVar": 4
                 },
-                "status": {},
+                "status": {
+                    "description": "correct",
+                    "type": "correct",
+                    "initial": "correct",
+                    "equation": "demo"
+                },
                 "name": "task list",
                 "type": "accumulator",
                 "parentNode": true,
@@ -106,7 +146,6 @@
                 "initial": 2,
                 "equation": "+ id1 - id2"
             }
-
         ],
         "studentModelNodes": []
     }
