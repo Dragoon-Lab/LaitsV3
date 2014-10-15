@@ -294,20 +294,18 @@ define([
 					menu.add("slidesButton", function(){
 						createSlides.show();
 						createSlides.log(controllerObject.logging);
-
-						on(registry.byId("prevSlide"), "click", function(){
-							createSlides.changeSlides("prev");
-							createSlides.log(controllerObject.logging);
-						});
-						
-						on(registry.byId("nextSlide"), "click", function(){
-							createSlides.changeSlides("next");
-							createSlides.log(controllerObject.logging);
-						});
+					});
+					
+					on(registry.byId("prevSlide"), "click", function(){
+						createSlides.changeSlides("prev");
+						createSlides.log(controllerObject.logging);
+					});
+										
+					on(registry.byId("nextSlide"), "click", function(){
+						createSlides.changeSlides("next");
+						createSlides.log(controllerObject.logging);
 					});
 				}
-													
-
 			}
 
 			// Render image description on canvas
