@@ -12,7 +12,7 @@
             "type": "Construct"
         },
         "image": {
-            "URL": "images/CPI-2014-ps1-01.jpg"
+            "URL": "images/CPI/CPI-2014-ps1-01.jpg"
         },
         "taskDescription": [
             "Rod is a book worm. He already has 100 books. Each week, he buys and reads two more books. Construct a model that",
