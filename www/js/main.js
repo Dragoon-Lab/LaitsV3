@@ -131,7 +131,9 @@ define([
 			//In TEST and EDITOR mode remove border color from existing Student model nodes.			 
 			if(controllerObject._mode == "TEST" || controllerObject._mode == "EDITOR"){
 				array.forEach(givenModel.model.task.studentModelNodes, function(studentNode){
-					style.set(studentNode.ID, 'border', "gray");
+					var isComplete = givenModel.active.isComplete(studentNode.ID, true)?'solid':'dashed';
+					var borderColor = "3px "+isComplete+" gray";
+					style.set(studentNode.ID, 'border', borderColor);
 				});
 			}
 
