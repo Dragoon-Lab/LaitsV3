@@ -199,7 +199,7 @@ define([
 			});
 
 			// checks if forumurl is present
-			if(query.f && query.fe) {
+			if(query.f && query.fe=="true") {
 				//Enable the forum button in the menu
 				var forumBut=registry.byId("forumButton");
 				forumBut.set("disabled", false);
