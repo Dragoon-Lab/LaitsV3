@@ -21,7 +21,7 @@
             "",
             "Implementation: See image or the problem “epidemic” in the problem set “generic changes”."
         ],
-        "lessonsLearned" : [
+        "lessonsLearned": [
             "This is a classic process that is characteristic of many systems where chance meeting between objects determines the",
             "number of objects changing state each time tick. The probability of a meeting having a healthy student and an infected",
             "student is assumed to be the product of",
@@ -85,19 +85,10 @@
             },
             {
                 "ID": "id3",
-                "inputs": [
-                    {
-                        "ID": "id2",
-                        "label": ""
-                    },
-                    {
-                        "ID": "id1",
-                        "label": ""
-                    }
-                ],
+                "inputs": [],
                 "position": {
-                    "x": 572,
-                    "y": 409
+                    "x": 553.649658203125,
+                    "y": 520.6288452148438
                 },
                 "attemptCount": {
                     "description": 0,
@@ -110,8 +101,7 @@
                 "status": {},
                 "name": "Total students",
                 "description": "Total of healthy and infected students",
-                "type": "accumulator",
-                "equation": "",
+                "type": "parameter",
                 "parentNode": false,
                 "initial": 10005
             },
