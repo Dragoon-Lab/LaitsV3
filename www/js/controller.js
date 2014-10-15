@@ -316,7 +316,8 @@ define([
 			messageWidget.set('content', '');
 
 			// Color the borders of the Node
-			this.colorNodeBorder(this.currentID, true);
+			if(this._mode !="TEST" && this._mode != "EDITOR")
+				this.colorNodeBorder(this.currentID, true);
 
 			// update Node labels upon exit
 			this.updateNodeLabel(this.currentID);
