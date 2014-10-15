@@ -380,14 +380,15 @@ define([
 						var lessonLearnedDialog = registry.byId("lesson");
 						var titleMsg = "Lessons Learned";
 						contentMsg = givenModel.getTaskLessonsLearned();
-						var contentHTML = contentMsg[0];
+						var contentHTML = "<font size='2'>" + contentMsg[0];
 						for(var i=1;i<contentMsg.length;i++) {
 							contentHTML = contentHTML +"<br>"+contentMsg[i];
 						}
+						contentHTML = contentHTML + "</font>";
 						lessonLearnedDialog.set("content", contentHTML);
 						lessonLearnedDialog.set("title", titleMsg);
 						lessonLearnedDialog.show();
-					}
+					}		
 				});
 			}
             /*
