@@ -9,7 +9,9 @@
             "units": "days"
         },
         "properties": {},
-        "image": {},
+        "image": {
+            "URL": "images/CPI/CPI-2014-ps1-12.jpg"
+        },
         "taskDescription": [
             "Suppose there are 10000 healthy students on campus and 5 infected ones.  Suppose there are 5000 two-person meetings per day where one student meets another, and if one is infected and the other is healthy, then the meeting makes the healthy one infected.  Construct a model showing how the infected and healthy populations change.",
             "",
@@ -19,7 +21,10 @@
             "* Destination: Infected students",
             "* Changing:  The number of students that change state is the product of the number of meetings times the probability that a meeting will have a healthy student and an infected student.",
             "",
-            "Implementation: See image or the problem “epidemic” in the problem set “generic changes”."
+            "Implementation: See image or the problem “epidemic” in the problem set “generic changes”.",
+            "Note that your solution may need to differ from the one shown, although it",
+            "should be mathematically equivalent.  There are often multiple equivalent ways",
+            "to express a model."
         ],
         "lessonsLearned": [
             "This is a classic process that is characteristic of many systems where chance meeting between objects determines the",

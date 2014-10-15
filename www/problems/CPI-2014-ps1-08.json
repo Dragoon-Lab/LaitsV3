@@ -9,7 +9,9 @@
             "units": "minutes"
         },
         "properties": {},
-        "image": {},
+        "image": {
+            "URL": "images/CPI/CPI-2014-ps1-08.jpg"
+        },
         "taskDescription": [
             "The human body tries to keep its temperature close to 98.6 degrees, which is called the set point of this system.  If the body temperature is below the set point (98.6 degrees), then the body shivers and makes other changes in order to increase its temperature.  If the body temperature is above the set point, the body sweats and makes other changes in order to lower its temperature.  The amount of change in the body temperature per minute is proportional to the how far the body’s temperature is from the set point.  That is, when you are really hot, you sweat a lot and cool down faster than when you are only a little hot.  Construct a model of the body’s temperature regulation that shows how the temperature changes each minute.  Use degrees as the unit of temperature.   Assume the body’s initial temperature is 105 degrees, and that the body is able to reduce the difference between the set point and the body temperature by 50% each minute.",
             "",
