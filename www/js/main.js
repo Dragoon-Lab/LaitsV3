@@ -206,6 +206,26 @@ define([
 				//Enable the forum button in the menu
 				var forumBut=registry.byId("forumButton");
 				forumBut.set("disabled", false);
+                //For redirecting to the forum from forum button click on header, only incase enabled
+                menu.add("forumButton",function(){
+                    //  Some portion of this function body should be moved to forum.js, Bug #2424
+                    console.log("clicked on main forum button");
+                    controllerObject.logging.log('ui-action', {
+                        type: "menu-forum-button",
+                        name: "forum"
+                    });
+                    var prob_name=givenModel.getTaskName();
+                    console.log("problem name is ", prob_name);
+                    // "newwindow": the pop-out window name, not required, could be empty
+                    // "height" and "width": pop-out window size
+                    // Other properties could be changed as the value of yes or no
+                    //
+                    // The parameters should be escaped, Bug #2423
+                    // Should add logging, Bug #2424
+                    window.open(query.f+"?&n="+prob_name+"&s="+query.s+"&fid="+query.fid+"&sid="+query.sid,"newwindow",
+                        "height=400, width=600, toolbar =no, menubar=no, scrollbars=no, resizable=no, location=no, status=no"
+                    );
+                });
 				//setter function used for setting forum parameters
 				//inside controller
 				controllerObject.setForum(query);
@@ -443,26 +463,6 @@ define([
 						   );
 			});
 
-			//For redirecting to the forum from forum button click on header
-			menu.add("forumButton",function(){
-				//  Some portion of this function body should be moved to forum.js, Bug #2424
-				console.log("clicked on main forum button");
-				controllerObject.logging.log('ui-action', {
-					type: "menu-forum-button",
-					name: "forum"
-				});
-				var prob_name=givenModel.getTaskName();
-				console.log("problem name is ", prob_name);
-				// "newwindow": the pop-out window name, not required, could be empty
-				// "height" and "width": pop-out window size
-				// Other properties could be changed as the value of yes or no
-				//
-				// The parameters should be escaped, Bug #2423
-				// Should add logging, Bug #2424
-				window.open(query.f+"?&n="+prob_name+"&s="+query.s+"&fid="+query.fid+"&sid="+query.sid,"newwindow",
-							"height=400, width=600, toolbar =no, menubar=no, scrollbars=no, resizable=no, location=no, status=no"
-						   );
-			});
 		});
 	});
 });
