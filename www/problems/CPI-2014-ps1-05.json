@@ -70,11 +70,7 @@
                     "equation": 0,
                     "assistanceScore": 0
                 },
-                "status": {
-                    "description": "correct",
-                    "type": "correct",
-                    "initial": "demo"
-                },
+                "status": {},
                 "name": "assignments added",
                 "type": "parameter",
                 "parentNode": false,
@@ -97,11 +93,7 @@
                     "equation": 0,
                     "assistanceScore": 0
                 },
-                "status": {
-                    "description": "correct",
-                    "type": "correct",
-                    "initial": "correct"
-                },
+                "status": {},
                 "name": "assignments removed",
                 "type": "parameter",
                 "parentNode": false,
@@ -132,12 +124,7 @@
                     "assistanceScore": 0,
                     "unknownVar": 0
                 },
-                "status": {
-                    "description": "correct",
-                    "type": "correct",
-                    "initial": "correct",
-                    "equation": "demo"
-                },
+                "status": {},
                 "name": "task list",
                 "type": "accumulator",
                 "parentNode": true,

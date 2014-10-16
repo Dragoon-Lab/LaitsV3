@@ -68,11 +68,7 @@
                     "equation": 0,
                     "assistanceScore": 0
                 },
-                "status": {
-                    "description": "correct",
-                    "type": "correct",
-                    "initial": "correct"
-                },
+                "status": {},
                 "name": "weekly books bought",
                 "type": "parameter",
                 "parentNode": false,
@@ -99,12 +95,7 @@
                     "equation": 0,
                     "assistanceScore": 0
                 },
-                "status": {
-                    "description": "correct",
-                    "type": "correct",
-                    "initial": "correct",
-                    "equation": "correct"
-                },
+                "status": {},
                 "name": "books",
                 "type": "accumulator",
                 "parentNode": true,
