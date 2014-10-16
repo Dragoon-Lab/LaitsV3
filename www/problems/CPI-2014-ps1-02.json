@@ -72,12 +72,7 @@
                     "equation": 0,
                     "assistanceScore": 0
                 },
-                "status": {
-                    "description": "correct",
-                    "type": "correct",
-                    "equation": "correct",
-                    "initial": "correct"
-                },
+                "status": {},
                 "name": "moose population",
                 "type": "accumulator",
                 "parentNode": true,
@@ -101,11 +96,7 @@
                     "equation": 0,
                     "assistanceScore": 0
                 },
-                "status": {
-                    "description": "correct",
-                    "type": "correct",
-                    "initial": "correct"
-                },
+                "status": {},
                 "name": "moose birth rate",
                 "type": "parameter",
                 "parentNode": false,
@@ -135,11 +126,7 @@
                     "equation": 0,
                     "assistanceScore": 0
                 },
-                "status": {
-                    "description": "correct",
-                    "type": "correct",
-                    "equation": "correct"
-                },
+                "status": {},
                 "name": "moose births",
                 "type": "function",
                 "parentNode": false,

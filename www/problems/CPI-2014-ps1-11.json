@@ -70,11 +70,7 @@
                     "equation": 0,
                     "assistanceScore": 0
                 },
-                "status": {
-                    "description": "correct",
-                    "type": "correct",
-                    "initial": "correct"
-                },
+                "status": {},
                 "name": "Acceleration",
                 "type": "parameter",
                 "parentNode": false,
@@ -101,12 +97,7 @@
                     "equation": 0,
                     "assistanceScore": 0
                 },
-                "status": {
-                    "description": "correct",
-                    "type": "correct",
-                    "initial": "correct",
-                    "equation": "correct"
-                },
+                "status": {},
                 "name": "Velocity",
                 "type": "accumulator",
                 "parentNode": false,
@@ -134,12 +125,7 @@
                     "equation": 0,
                     "assistanceScore": 0
                 },
-                "status": {
-                    "description": "correct",
-                    "type": "correct",
-                    "initial": "correct",
-                    "equation": "correct"
-                },
+                "status": {},
                 "name": "Height",
                 "type": "accumulator",
                 "parentNode": true,

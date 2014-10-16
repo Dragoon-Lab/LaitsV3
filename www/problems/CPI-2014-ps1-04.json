@@ -75,12 +75,7 @@
                     "equation": 0,
                     "assistanceScore": 0
                 },
-                "status": {
-                    "description": "correct",
-                    "type": "correct",
-                    "initial": "correct",
-                    "equation": "correct"
-                },
+                "status": {},
                 "name": "population",
                 "type": "accumulator",
                 "parentNode": true,
@@ -111,11 +106,7 @@
                     "equation": 0,
                     "assistanceScore": 0
                 },
-                "status": {
-                    "description": "correct",
-                    "type": "correct",
-                    "equation": "correct"
-                },
+                "status": {},
                 "name": "deaths",
                 "type": "function",
                 "parentNode": false,
@@ -138,11 +129,7 @@
                     "equation": 0,
                     "assistanceScore": 0
                 },
-                "status": {
-                    "description": "correct",
-                    "type": "correct",
-                    "initial": "correct"
-                },
+                "status": {},
                 "name": "death rate",
                 "type": "parameter",
                 "parentNode": false,

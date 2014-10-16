@@ -79,9 +79,7 @@
                     "units": 0,
                     "equation": 0
                 },
-                "status": {
-                    "equation": "correct"
-                },
+                "status": {},
                 "name": "moose population",
                 "type": "accumulator",
                 "parentNode": true,
@@ -190,11 +188,7 @@
                     "equation": 0,
                     "assistanceScore": 0
                 },
-                "status": {
-                    "description": "correct",
-                    "type": "correct",
-                    "equation": "correct"
-                },
+                "status": {},
                 "name": "moose deaths",
                 "type": "function",
                 "parentNode": false,

@@ -75,12 +75,7 @@
                     "equation": 0,
                     "assistanceScore": 0
                 },
-                "status": {
-                    "description": "correct",
-                    "type": "correct",
-                    "initial": "correct",
-                    "equation": "correct"
-                },
+                "status": {},
                 "name": "second barrel",
                 "type": "accumulator",
                 "parentNode": true,
@@ -108,12 +103,7 @@
                     "equation": 0,
                     "assistanceScore": 0
                 },
-                "status": {
-                    "description": "correct",
-                    "type": "correct",
-                    "initial": "correct",
-                    "equation": "correct"
-                },
+                "status": {},
                 "name": "first barrel",
                 "type": "accumulator",
                 "parentNode": false,
@@ -137,11 +127,7 @@
                     "equation": 0,
                     "assistanceScore": 0
                 },
-                "status": {
-                    "description": "correct",
-                    "type": "correct",
-                    "initial": "correct"
-                },
+                "status": {},
                 "name": "water flow factor",
                 "type": "parameter",
                 "parentNode": false,
@@ -171,11 +157,7 @@
                     "equation": 0,
                     "assistanceScore": 0
                 },
-                "status": {
-                    "description": "correct",
-                    "type": "correct",
-                    "equation": "correct"
-                },
+                "status": {},
                 "name": "water flow",
                 "type": "function",
                 "parentNode": false,
@@ -205,11 +187,7 @@
                     "equation": 0,
                     "assistanceScore": 0
                 },
-                "status": {
-                    "description": "correct",
-                    "type": "correct",
-                    "equation": "correct"
-                },
+                "status": {},
                 "name": "water difference",
                 "type": "function",
                 "parentNode": false,
