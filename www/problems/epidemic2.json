@@ -1,1 +1,234 @@
-{ "task" :{"taskName":"epidemic","time":{"start":0,"end":10,"step":0.5,"integrationMethod":"Eulers Method","units":"seconds"},"properties":{},"image":{},"taskDescription":["","Analysis:","* Process:  Objects change from Source to Destination state","* Source:  Objects in source state","* Destination: Objects in destination state","* Changing:  The number of students that change state is the product of the number of meetings times the probability that a meeting will have a both a source and a destination object in it. ","","Popular names:","*  There is no generic name for this process, but it often used for epidemics, word of mouth sales, the spread of rumors, social networking, etc.","","Caveat:  If a meeting is such that A meeting B has the same effect as B meeting A, then the expression for Changing needs to have 0.5 in the product.  (i.e., because the meeting is a combination, not a permutation; these terms are from discrete math).  For our purposes, we can ignore this detail."],"givenModelNodes":[{"ID":"id1","inputs":[{"ID":"id2","label":"-"}],"position":{"x":497,"y":304},"attemptCount":{"description":0,"type":0,"initial":0,"units":0,"equation":0,"assitanceScore":0},"status":{},"name":"Source","description":"Quantity of stuff in source state","type":"accumulator","initial":1000,"equation":"-id2"},{"ID":"id2","inputs":[{"ID":"id4","label":""},{"ID":"id5","label":""},{"ID":"id7","label":""}],"position":{"x":645.9896240234375,"y":313.9757080078125},"attemptCount":{"description":0,"type":0,"initial":0,"units":0,"equation":0,"assitanceScore":0},"status":{"equation":{"disabled":false}},"name":"Changing","description":"Quantity of stuff changing state each time unit","type":"function","equation":"(id4*id5)*id7"},{"ID":"id3","inputs":[{"ID":"id2","label":""}],"position":{"x":786,"y":283},"attemptCount":{"description":0,"type":0,"initial":0,"units":0,"equation":0,"assitanceScore":0},"status":{},"name":"Destination","description":"Quantity of stuff in destination state","type":"accumulator","initial":1,"equation":"id2"},{"ID":"id4","inputs":[{"ID":"id1","label":""},{"ID":"id6","label":"/"}],"position":{"x":523,"y":446},"attemptCount":{"description":0,"type":0,"initial":0,"units":0,"equation":0,"assitanceScore":0},"status":{},"name":"Probability of source","description":"Probability of a meeting participant being in source state","type":"function","equation":"id1/id6"},{"ID":"id5","inputs":[{"ID":"id3","label":""},{"ID":"id6","label":"/"}],"position":{"x":765,"y":448},"attemptCount":{"description":0,"type":0,"initial":0,"units":0,"equation":0,"assitanceScore":0},"status":{},"name":"Probability of destination","description":"Probability of a meeting participant being in the destination state","type":"function","equation":"id3/id6"},{"ID":"id6","inputs":[{"ID":"id1","label":""},{"ID":"id3","label":""}],"position":{"x":647,"y":451},"attemptCount":{"description":0,"type":0,"initial":0,"units":0,"equation":0,"assitanceScore":0},"status":{},"name":"Total","description":"All stuff, including both source and destination states","type":"function","equation":"id1+id3"},{"ID":"id7","inputs":[],"position":{"x":638.3309326171875,"y":153.33096313476562},"attemptCount":{"description":0,"type":0,"initial":0,"units":0,"equation":0,"assitanceScore":0},"status":{},"name":"Meetings","description":"Number of meetings each time unit","type":"parameter","parentNode":false,"initial":200}],"studentModelNodes":[]} }
+{
+    "taskName": "epidemic",
+    "time": {
+        "start": 0,
+        "end": 10,
+        "step": 0.5,
+        "integrationMethod": "Eulers Method",
+        "units": "seconds"
+    },
+    "properties": {},
+    "image": {},
+    "taskDescription": [
+        "",
+        "Analysis:",
+        "* Process:  Objects change from Source to Destination state",
+        "* Source:  Objects in source state",
+        "* Destination: Objects in destination state",
+        "* Changing:  The number of students that change state is the product of the number of meetings times the probability that a meeting will have a both a source and a destination object in it. ",
+        "",
+        "Popular names:",
+        "*  There is no generic name for this process, but it often used for epidemics, word of mouth sales, the spread of rumors, social networking, etc.",
+        "",
+        "Caveat:  If a meeting is such that A meeting B has the same effect as B meeting A, then the expression for Changing needs to have 0.5 in the product.  (i.e., because the meeting is a combination, not a permutation; these terms are from discrete math).  For our purposes, we can ignore this detail."
+    ],
+    "givenModelNodes": [
+        {
+            "ID": "id1",
+            "inputs": [
+                {
+                    "ID": "id2",
+                    "label": "-"
+                }
+            ],
+            "position": {
+                "x": 497,
+                "y": 304
+            },
+            "attemptCount": {
+                "description": 0,
+                "type": 0,
+                "initial": 0,
+                "units": 0,
+                "equation": 0,
+                "assitanceScore": 0
+            },
+            "status": {},
+            "name": "Source",
+            "description": "Quantity of stuff in source state",
+            "type": "accumulator",
+            "initial": 1000,
+            "equation": "-id2"
+        },
+        {
+            "ID": "id2",
+            "inputs": [
+                {
+                    "ID": "id4",
+                    "label": ""
+                },
+                {
+                    "ID": "id5",
+                    "label": ""
+                },
+                {
+                    "ID": "id7",
+                    "label": ""
+                }
+            ],
+            "position": {
+                "x": 645.9896240234375,
+                "y": 313.9757080078125
+            },
+            "attemptCount": {
+                "description": 0,
+                "type": 0,
+                "initial": 0,
+                "units": 0,
+                "equation": 0,
+                "assitanceScore": 0
+            },
+            "status": {
+                "equation": {
+                    "disabled": false
+                }
+            },
+            "name": "Changing",
+            "description": "Quantity of stuff changing state each time unit",
+            "type": "function",
+            "equation": "(id4*id5)*id7"
+        },
+        {
+            "ID": "id3",
+            "inputs": [
+                {
+                    "ID": "id2",
+                    "label": ""
+                }
+            ],
+            "position": {
+                "x": 799,
+                "y": 313
+            },
+            "attemptCount": {
+                "description": 0,
+                "type": 0,
+                "initial": 0,
+                "units": 0,
+                "equation": 0,
+                "assitanceScore": 0
+            },
+            "status": {},
+            "name": "Destination",
+            "description": "Quantity of stuff in destination state",
+            "type": "accumulator",
+            "initial": 1,
+            "equation": "id2"
+        },
+        {
+            "ID": "id4",
+            "inputs": [
+                {
+                    "ID": "id1",
+                    "label": ""
+                },
+                {
+                    "ID": "id6",
+                    "label": "/"
+                }
+            ],
+            "position": {
+                "x": 523,
+                "y": 446
+            },
+            "attemptCount": {
+                "description": 0,
+                "type": 0,
+                "initial": 0,
+                "units": 0,
+                "equation": 0,
+                "assitanceScore": 0
+            },
+            "status": {},
+            "name": "Probability of source",
+            "description": "Probability of a meeting participant being in source state",
+            "type": "function",
+            "equation": "id1/id6"
+        },
+        {
+            "ID": "id5",
+            "inputs": [
+                {
+                    "ID": "id3",
+                    "label": ""
+                },
+                {
+                    "ID": "id6",
+                    "label": "/"
+                }
+            ],
+            "position": {
+                "x": 765,
+                "y": 448
+            },
+            "attemptCount": {
+                "description": 0,
+                "type": 0,
+                "initial": 0,
+                "units": 0,
+                "equation": 0,
+                "assitanceScore": 0
+            },
+            "status": {},
+            "name": "Probability of destination",
+            "description": "Probability of a meeting participant being in the destination state",
+            "type": "function",
+            "equation": "id3/id6"
+        },
+        {
+            "ID": "id6",
+            "inputs": [
+                {
+                    "ID": "id1",
+                    "label": ""
+                },
+                {
+                    "ID": "id3",
+                    "label": ""
+                }
+            ],
+            "position": {
+                "x": 635.3309326171875,
+                "y": 524.3309326171875
+            },
+            "attemptCount": {
+                "description": 0,
+                "type": 0,
+                "initial": 0,
+                "units": 0,
+                "equation": 0,
+                "assitanceScore": 0
+            },
+            "status": {},
+            "name": "Total",
+            "description": "All stuff, including both source and destination states",
+            "type": "parameter",
+            "equation": "",
+            "parentNode": false,
+            "initial": 1001
+        },
+        {
+            "ID": "id7",
+            "inputs": [],
+            "position": {
+                "x": 638.3309326171875,
+                "y": 153.33096313476562
+            },
+            "attemptCount": {
+                "description": 0,
+                "type": 0,
+                "initial": 0,
+                "units": 0,
+                "equation": 0,
+                "assitanceScore": 0
+            },
+            "status": {},
+            "name": "Meetings",
+            "description": "Number of meetings each time unit",
+            "type": "parameter",
+            "parentNode": false,
+            "initial": 200
+        }
+    ],
+    "studentModelNodes": []
+}
