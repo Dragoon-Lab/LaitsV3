@@ -12,7 +12,7 @@
             "type": ""
         },
         "image": {
-            "URL": "images/toilettank.jpg"
+            "URL": "images/CPI/CPI-2014-ps2-07.jpg"
         },
         "taskDescription": [
             "Most toilets have a mechanism, shown above, that refills the water tank after a flush empties it.  Let&apos;s assume the mechanism is adjusted so that the water level is 13 inches when the tank is full.  A ball-shaped float detects the height of the water level in the tank.  When the float height is below 13 inches, the mechanism lets water into the tank.  The water flow is proportional to the distance between the float height and the float height when the tank is full.  In fact, for every inch that the float height is below the full height, the water flow is sufficient to raise the float 0.05 inch per second.   Assuming the tank starts with 0 water because the toilet has just been flushed, construct a model that shows how the water level changes each second."
@@ -33,19 +33,14 @@
                     "y": 100
                 },
                 "attemptCount": {
-                    "description": 1,
-                    "type": 1,
-                    "initial": 1,
+                    "description": 0,
+                    "type": 0,
+                    "initial": 0,
                     "units": 0,
-                    "equation": 1,
+                    "equation": 0,
                     "assistanceScore": 0
                 },
-                "status": {
-                    "description": "correct",
-                    "type": "correct",
-                    "equation": "correct",
-                    "initial": "correct"
-                },
+                "status": {},
                 "name": "float height",
                 "type": "accumulator",
                 "parentNode": true,
@@ -69,18 +64,14 @@
                     "y": 100
                 },
                 "attemptCount": {
-                    "description": 1,
-                    "type": 1,
+                    "description": 0,
+                    "type": 0,
                     "initial": 0,
                     "units": 0,
-                    "equation": 1,
+                    "equation": 0,
                     "assistanceScore": 0
                 },
-                "status": {
-                    "description": "correct",
-                    "type": "correct",
-                    "equation": "correct"
-                },
+                "status": {},
                 "name": "water flow",
                 "type": "function",
                 "parentNode": false,
@@ -96,18 +87,14 @@
                     "y": 100
                 },
                 "attemptCount": {
-                    "description": 1,
-                    "type": 1,
-                    "initial": 1,
+                    "description": 0,
+                    "type": 0,
+                    "initial": 0,
                     "units": 0,
                     "equation": 0,
                     "assistanceScore": 0
                 },
-                "status": {
-                    "description": "correct",
-                    "type": "correct",
-                    "initial": "correct"
-                },
+                "status": {},
                 "name": "full height",
                 "type": "parameter",
                 "parentNode": false,
@@ -130,18 +117,14 @@
                     "y": 100
                 },
                 "attemptCount": {
-                    "description": 1,
-                    "type": 1,
+                    "description": 0,
+                    "type": 0,
                     "initial": 0,
                     "units": 0,
-                    "equation": 1,
+                    "equation": 0,
                     "assistanceScore": 0
                 },
-                "status": {
-                    "description": "correct",
-                    "type": "correct",
-                    "equation": "correct"
-                },
+                "status": {},
                 "name": "height difference",
                 "type": "function",
                 "parentNode": false,
@@ -157,18 +140,14 @@
                     "y": 100
                 },
                 "attemptCount": {
-                    "description": 1,
-                    "type": 1,
-                    "initial": 2,
+                    "description": 0,
+                    "type": 0,
+                    "initial": 0,
                     "units": 0,
                     "equation": 0,
-                    "assistanceScore": 1
+                    "assistanceScore": 0
                 },
-                "status": {
-                    "description": "correct",
-                    "type": "correct",
-                    "initial": "correct"
-                },
+                "status": {},
                 "name": "flow per inch",
                 "type": "parameter",
                 "parentNode": false,
@@ -177,160 +156,6 @@
                 "initial": 0.05
             }
         ],
-        "studentModelNodes": [
-            {
-                "ID": "id6",
-                "inputs": [
-                    {
-                        "ID": "id7",
-                        "label": ""
-                    }
-                ],
-                "position": {
-                    "x": 436,
-                    "y": 118
-                },
-                "status": {
-                    "description": {
-                        "status": "correct",
-                        "disabled": true
-                    },
-                    "type": {
-                        "disabled": true,
-                        "status": "correct"
-                    },
-                    "initial": {
-                        "disabled": true,
-                        "status": "correct"
-                    },
-                    "equation": {
-                        "disabled": false,
-                        "status": "correct"
-                    }
-                },
-                "descriptionID": "id1",
-                "type": "accumulator",
-                "equation": "id7",
-                "initial": 0
-            },
-            {
-                "ID": "id7",
-                "inputs": [
-                    {
-                        "ID": "id8",
-                        "label": ""
-                    },
-                    {
-                        "ID": "id9",
-                        "label": ""
-                    }
-                ],
-                "position": {
-                    "x": 600,
-                    "y": 100
-                },
-                "status": {
-                    "description": {
-                        "status": "correct",
-                        "disabled": true
-                    },
-                    "type": {
-                        "disabled": true,
-                        "status": "correct"
-                    },
-                    "equation": {
-                        "disabled": true,
-                        "status": "correct"
-                    }
-                },
-                "descriptionID": "id2",
-                "type": "function",
-                "equation": "id8*id9"
-            },
-            {
-                "ID": "id8",
-                "inputs": [],
-                "position": {
-                    "x": 761.3309326171875,
-                    "y": 107.3309555053711
-                },
-                "status": {
-                    "description": {
-                        "status": "correct",
-                        "disabled": true
-                    },
-                    "type": {
-                        "disabled": true,
-                        "status": "correct"
-                    },
-                    "initial": {
-                        "disabled": true,
-                        "status": "correct"
-                    }
-                },
-                "descriptionID": "id5",
-                "type": "parameter",
-                "initial": 0.05
-            },
-            {
-                "ID": "id9",
-                "inputs": [
-                    {
-                        "ID": "id10",
-                        "label": ""
-                    },
-                    {
-                        "ID": "id6",
-                        "label": "-"
-                    }
-                ],
-                "position": {
-                    "x": 575,
-                    "y": 247
-                },
-                "status": {
-                    "description": {
-                        "status": "correct",
-                        "disabled": true
-                    },
-                    "type": {
-                        "disabled": true,
-                        "status": "correct"
-                    },
-                    "equation": {
-                        "disabled": true,
-                        "status": "correct"
-                    }
-                },
-                "descriptionID": "id4",
-                "type": "function",
-                "equation": "id10-id6"
-            },
-            {
-                "ID": "id10",
-                "inputs": [],
-                "position": {
-                    "x": 756,
-                    "y": 233
-                },
-                "status": {
-                    "description": {
-                        "status": "correct",
-                        "disabled": true
-                    },
-                    "type": {
-                        "disabled": true,
-                        "status": "correct"
-                    },
-                    "initial": {
-                        "disabled": true,
-                        "status": "correct"
-                    }
-                },
-                "descriptionID": "id3",
-                "type": "parameter",
-                "initial": 13
-            }
-        ]
+        "studentModelNodes": []
     }
 }

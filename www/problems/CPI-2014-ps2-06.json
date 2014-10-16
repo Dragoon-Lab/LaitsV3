@@ -9,7 +9,9 @@
             "units": "minutes"
         },
         "properties": {},
-        "image": {},
+        "image": {
+            "URL": "images/CPI/CPI-2014-ps2-06.jpg"
+        },
         "taskDescription": [
             "In a house that only has a furnace, there is just one thermostat, which we will assume is set to 72 degrees.  When the room temperature is below the set point of the thermostat, the furnace turns on.  It adds a constant amount of heat per minute, resulting in a constant rise in the room temperature per minute (assume this is 0.25 degrees per minute). When the room temperature reaches the set point of the thermostat, the furnace shuts off.  Assuming that the room starts at 70 degrees, construct a model showing how the room temperature changes.",
             "",

@@ -9,7 +9,9 @@
             "units": "minutes"
         },
         "properties": {},
-        "image": {},
+        "image": {
+            "URL": "images/CPI/CPI-2014-ps2-09.jpg"
+        },
         "taskDescription": [
             "Consider two large rain barrels that are connected to each other by a hose. One barrel is higher than the other so water drains from it through the hose and into the lower barrel. The hose is attached to the higher barrel a little ways up the side so that there will always be 10 gallons in that barrel.  20% of the water above the hose of the higher barrel empties every minute into the lower barrel.   Meanwhile, the lower barrel is losing 30% of its water every minute though a hole in its bottom. The higher barrel starts out with 55 gallons and the lower barrel starts out empty.   Construct a model showing how the water in the two barrels changes."
         ],
