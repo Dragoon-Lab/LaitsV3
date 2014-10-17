@@ -20,9 +20,11 @@
  */
 /* global define */
 define([
+	"dojo/_base/array",
 	'dojo/_base/lang',
 	"dojo/dom",
 	'dojo/dom-geometry',
+	"dojo/dom-style",
 	"dojo/on",
 	'dojo/aspect',
 	"dojo/io-query",
@@ -41,11 +43,12 @@ define([
 	"./equation",
 	"./description",
 	"./state",
-    "./typechecker"
+    "./typechecker",
+	"./createSlides"
 ], function(
-		lang, dom, geometry, on, aspect, ioQuery, ready, registry,toolTip,
+		array, lang, dom, geometry, style, on, aspect, ioQuery, ready, registry,
 		menu, loadSave, model,
-		Graph, Table, controlStudent, controlAuthor, drawmodel, logging, expression, description, State, typechecker
+		Graph, Table, controlStudent, controlAuthor, drawmodel, logging, expression, description, State, typechecker, slides
 ){
 	// Summary: 
 	//			Menu controller
@@ -106,7 +109,7 @@ define([
 		controllerObject.setState(state);
 
 		ready(function(){
-
+			
 			var drawModel = new drawmodel(givenModel.active);
 			drawModel.setLogging(session);
 
@@ -125,6 +128,16 @@ define([
 			aspect.after(controllerObject, "colorNodeBorder",
 						 lang.hitch(drawModel, drawModel.colorNodeBorder), 
 						 true);
+
+			//In TEST and EDITOR mode remove border color from existing Student model nodes.			 
+			if(controllerObject._mode == "TEST" || controllerObject._mode == "EDITOR"){
+				array.forEach(givenModel.model.task.studentModelNodes, function(studentNode){
+					var isComplete = givenModel.active.isComplete(studentNode.ID, true)?'solid':'dashed';
+					var borderColor = "3px "+isComplete+" gray";
+					style.set(studentNode.ID, 'border', borderColor);
+					style.set(studentNode.ID, 'backgroundColor', "white");
+				});
+			}
 
 			/* add "Create Node" button to menu */
 			menu.add("createNodeButton", function(){
@@ -206,10 +219,30 @@ define([
 			});
 
 			// checks if forumurl is present
-			if(query.f && query.fe == "true") {
+			if(query.f && query.fe=="true") {
 				//Enable the forum button in the menu
 				var forumBut=registry.byId("forumButton");
 				forumBut.set("disabled", false);
+                //For redirecting to the forum from forum button click on header, only incase enabled
+                menu.add("forumButton",function(){
+                    //  Some portion of this function body should be moved to forum.js, Bug #2424
+                    console.log("clicked on main forum button");
+                    controllerObject.logging.log('ui-action', {
+                        type: "menu-forum-button",
+                        name: "forum"
+                    });
+                    var prob_name=givenModel.getTaskName();
+                    console.log("problem name is ", prob_name);
+                    // "newwindow": the pop-out window name, not required, could be empty
+                    // "height" and "width": pop-out window size
+                    // Other properties could be changed as the value of yes or no
+                    //
+                    // The parameters should be escaped, Bug #2423
+                    // Should add logging, Bug #2424
+                    window.open(query.f+"?&n="+prob_name+"&s="+query.s+"&fid="+query.fid+"&sid="+query.sid,"newwindow",
+                        "height=400, width=600, toolbar =no, menubar=no, scrollbars=no, resizable=no, location=no, status=no"
+                    );
+                });
 				//setter function used for setting forum parameters
 				//inside controller
 				controllerObject.setForum(query);
@@ -262,7 +295,59 @@ define([
                 on(registry.byId("saveCloseButton"), "click", function(){
                     registry.byId("authorSaveDialog").hide();
                 });
+                
+                //Author Save Dialog - check for name conflict on losing focus
+                //from textboxes of Rename dialog
+    			on(registry.byId("authorSaveProblem"), "blur", function() {
+    				var problemName = registry.byId("authorSaveProblem").value;
+    				var groupName = registry.byId("authorSaveGroup").value;    				
+    				session.isProblemNameConflict(problemName,groupName).then(function(isConflict) {
+    					if(isConflict) {    					
+    						registry.byId("saveCloseButton").set("disabled",true);
+    						registry.byId("saveCloseButton").set("title","Problem name conflict");
+    					} else {    						
+    						registry.byId("saveCloseButton").set("disabled",false);
+    						registry.byId("saveCloseButton").set("title","Problem name doesn't conflict");
+    					}
+    				});    				
+    			});
+    			on(registry.byId("authorSaveGroup"), "blur", function() {
+    				var problemName = registry.byId("authorSaveProblem").value;
+    				var groupName = registry.byId("authorSaveGroup").value;
+    				session.isProblemNameConflict(problemName,groupName).then(function(isConflict) {
+    					if(isConflict) {    						
+    						registry.byId("saveCloseButton").set("disabled",true);
+    						registry.byId("saveCloseButton").set("title","Problem name conflict");
+    					} else {    					
+    						registry.byId("saveCloseButton").set("disabled",false);
+    						registry.byId("saveCloseButton").set("title","Problem name doesn't conflict");
+    					}
+    				});
+    			});
 			}
+
+			if(query.m == "EDITOR"){
+				if(givenModel.model.task.slides){
+					var sb = registry.byId("slidesButton");
+					sb.set("disabled", false);
+					var createSlides = new slides(givenModel);
+					menu.add("slidesButton", function(){
+						createSlides.show();
+						createSlides.log(controllerObject.logging);
+					});
+					
+					on(registry.byId("prevSlide"), "click", function(){
+						createSlides.changeSlides("prev");
+						createSlides.log(controllerObject.logging);
+					});
+										
+					on(registry.byId("nextSlide"), "click", function(){
+						createSlides.changeSlides("next");
+						createSlides.log(controllerObject.logging);
+					});
+				}
+			}
+
 			// Render image description on canvas
 			descObj.showDescription();
 
@@ -299,7 +384,7 @@ define([
 			});
             //the solution div which shows graph/table when closed
             //should disable all the pop ups
-            aspect.after(registry.byId(' '), "hide", function(){
+            aspect.after(registry.byId('solution'), "hide", function(){
                 console.log("Calling graph/table to be closed");
                 typechecker.closePops();
                 //session.saveProblem(givenModel.model);
@@ -323,6 +408,27 @@ define([
 				});
 			});
 
+			//Disable the lessonsLearnedButton
+			//var lessonsLearnedButton = registry.byId("lessonsLearnedButton");   
+			//lessonsLearnedButton.set("disabled", true);
+			//Bind lessonsLearnedButton to the click event	
+			if(query.m == "STUDENT" || query.m == "COACHED"){
+				menu.add("lessonsLearnedButton", function(){
+					if(givenModel.isLessonLearnedShown == true){
+						var lessonLearnedDialog = registry.byId("lesson");
+						var titleMsg = "Lessons Learned";
+						contentMsg = givenModel.getTaskLessonsLearned();
+						var contentHTML = "<font size='2'>" + contentMsg[0];
+						for(var i=1;i<contentMsg.length;i++) {
+							contentHTML = contentHTML +"<br>"+contentMsg[i];
+						}
+						contentHTML = contentHTML + "</font>";
+						lessonLearnedDialog.set("content", contentHTML);
+						lessonLearnedDialog.set("title", titleMsg);
+						lessonLearnedDialog.show();
+					}		
+				});
+			}
             /*
              Add link to intro video
              */
@@ -371,27 +477,6 @@ define([
 				// Other properties could be changed as the value of yes or no
 				window.open("math-probs.html","newwindow",
 							"height=400, width=600, toolbar =no, menubar=no, scrollbars=yes, resizable=no, location=no, status=no"
-						   );
-			});
-
-			//For redirecting to the forum from forum button click on header
-			menu.add("forumButton",function(){
-				//  Some portion of this function body should be moved to forum.js, Bug #2424
-				console.log("clicked on main forum button");
-				controllerObject.logging.log('ui-action', {
-					type: "menu-forum-button",
-					name: "forum"
-				});
-				var prob_name=givenModel.getTaskName();
-				console.log("problem name is ", prob_name);
-				// "newwindow": the pop-out window name, not required, could be empty
-				// "height" and "width": pop-out window size
-				// Other properties could be changed as the value of yes or no
-				//
-				// The parameters should be escaped, Bug #2423
-				// Should add logging, Bug #2424
-				window.open(query.f+"?&n="+prob_name+"&s="+query.s+"&fid="+query.fid+"&sid="+query.sid,"newwindow",
-							"height=400, width=600, toolbar =no, menubar=no, scrollbars=no, resizable=no, location=no, status=no"
 						   );
 			});
 

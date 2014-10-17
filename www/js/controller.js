@@ -173,11 +173,13 @@ define([
 				 Previously, just set domNode.bgcolor but this approach didn't work
 				 for text boxes.   */
 				// console.log(">>>>>>>>>>>>> setting color ", this.domNode.id, " to ", value);
-				domStyle.set(this.domNode, 'backgroundColor', value ? colorMap[value] : '');
+					domStyle.set(this.domNode, 'backgroundColor', value ? colorMap[value] : '');
 			};
-			for(var control in this.controlMap){
-				var w = registry.byId(this.controlMap[control]);
-				w._setStatusAttr = setStatus;
+			if(this._mode != "TEST" && this._mode != "EDITOR"){
+				for(var control in this.controlMap){
+					var w = registry.byId(this.controlMap[control]);
+					w._setStatusAttr = setStatus;
+				}
 			}
 			/*
 			 If the status is set for equationBox, we also need to set
@@ -314,7 +316,8 @@ define([
 			messageWidget.set('content', '');
 
 			// Color the borders of the Node
-			this.colorNodeBorder(this.currentID, true);
+			if(this._mode !="TEST" && this._mode != "EDITOR")
+				this.colorNodeBorder(this.currentID, true);
 
 			// update Node labels upon exit
 			this.updateNodeLabel(this.currentID);
@@ -328,7 +331,12 @@ define([
 				node: this._model.active.getName(this.currentID),
 				nodeComplete: this._model.active.isComplete(this.currentID)
 			});
-
+			
+			if(this._mode == "EDITOR" || this._mode == "TEST"){
+				var isComplete = this._model.active.isComplete(this.currentID, true)?'solid':'dashed';
+				var borderColor = "3px "+isComplete+" gray";
+				domStyle.set(this.currentID, 'border', borderColor);	 // set border gray for studentModelNodes in TEST and EDITOR mode
+			}
 			// This cannot go in controller.js since _PM is only in
 			// con-student.	 You will need con-student to attach this
 			// to closeEditor (maybe using aspect.after?).	

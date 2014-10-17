@@ -18,7 +18,7 @@
             " The sun heats some water, adding 3 units of thermal energy per hour.  The evaporation of water is a function of the thermal energy of the water.  In particular, if the thermal energy of the water is T, then the percentage of water evaporated during an hour is T*2%.  Assuming that the initial thermal energy is 0 and the initial water level is 1000, construct a model that shows how the water level changes over 20 hours. "
         ],
         "lessonsLearned" : [
-            " This system has two processes.  The increase in thermal energy is linear growth.  The evaporation of water doesn’t match any of our simple change processes exactly.  It is similar to both exponential growth and acceleration. "
+            " This system has two processes.  The increase in thermal energy is linear growth.  The evaporation of water doesn&apos;t match any of our simple change processes exactly.  It is similar to both exponential growth and acceleration. "
         ],
         "givenModelNodes": [
             {

@@ -12,9 +12,9 @@
             "type": ""
         },
         "image": {
-            "URL": "images/parking.jpg"
+            "URL": ""
         },
-        "taskDescription": " A car dealership has a front lot and a back lot, and it has to empty the front lot every evening before closing.  The back lot starts with 10 cars in it, and the front lot starts with 40 cars in it.  Jack drives cars from the front lot to the back lot at a rate of one car per minute.  After 40 minutes, he’s done.  Graph the contents of both lots. ",
+        "taskDescription": " A car dealership has a front lot and a back lot, and it has to empty the front lot every evening before closing.  The back lot starts with 10 cars in it, and the front lot starts with 40 cars in it.  Jack drives cars from the front lot to the back lot at a rate of one car per minute.  After 40 minutes, he's done.  Graph the contents of both lots. ",
         "lessonsLearned" : [
             "This system has a single process, a linear transfer.    The analysis is:",
             "* Process: The cars change state from being in the front lot to being in the back lot",
@@ -22,7 +22,7 @@
             "* Destination: Number of cars in the back lot",
             "* Changing:  The number of cars changing state is a constant 1.",
             "",
-            "For implementation, see the problem “constant” in the problem set “generic changes”."
+            "For implementation, see the problem \"constant\" in the problem set \"generic changes\"."
         ],
         "givenModelNodes": [
             {

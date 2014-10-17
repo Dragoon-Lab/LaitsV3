@@ -11,10 +11,10 @@
         "properties": {},
         "image": {},
         "taskDescription": [
-            "Suppose a town of 5000 people is extremely unhappy with the country’s government.   Every day, there are about 500 meetings where two people discuss politics and their dissatisfaction with government.  A single terrorist comes to town with such a compelling message that every time he talks with another person, that person becomes a terrorist as well.  Moreover, the new terrorists have the same message, so they can recruit others.  Construct a model that shows how the number of terrorist and non-terrorists changes over the days.  You should assume that the two people who meet are randomly chosen from the population of 5001 individuals."
+            "Suppose a town of 5000 people is extremely unhappy with the country&apos;s government.   Every day, there are about 500 meetings where two people discuss politics and their dissatisfaction with government.  A single terrorist comes to town with such a compelling message that every time he talks with another person, that person becomes a terrorist as well.  Moreover, the new terrorists have the same message, so they can recruit others.  Construct a model that shows how the number of terrorist and non-terrorists changes over the days.  You should assume that the two people who meet are randomly chosen from the population of 5001 individuals."
         ],
         "lessonsLearned": [
-            "This system is an example of an epidemic process.  See the problem “epidemic” in the problem set “generic changes.”"
+            "This system is an example of an epidemic process.  See the problem \"epidemic\" in the problem set \"generic changes.\""
         ],
         "givenModelNodes": [
             {

@@ -12,25 +12,46 @@
             "type": "Debug"
         },
         "image": {
-            "URL": "images/weighing-scales2.jpg"
+            "URL": "images/CPI/CPI-2014-ps1-03.jpg"
         },
         "taskDescription": [
-            "Jared is on a diet and loses 2.5 pounds each week.  He started his diet weighing 200 pounds.  Construct a model that shows how his weight changes each week. ",
-            "",
+            "Jared is on a diet and loses 2.5 pounds each week. He started his diet weighing 200 pounds. Construct a model that",
+            "shows how his weight changes each week.",
             "Analysis:",
-            "* Process: Jared’s weight is decreasing",
-            "* Source: Jared’s weight",
+            "* Process: Jared&apos;s weight is decreasing",
+            "* Source: Jared&apos;s weight",
             "* Destination: irrelevant",
             "* Changing: a constant 2.5 pounds changes state each week",
-            "",
-            "Implementation:  See image, or see the problem “constant” in the problem set “generic changes.”"
-        ],
+            "Implementation: See image, or see the problem â€œconstantâ€� in the problem set â€œgeneric changes.â€�"
+            ],
         "lessonsLearned": [
-            "The graph of the quantity \"Jared’s weight\" is a straight line headed downward, so this quantity is said to exhibit \"linear",
+            "The graph of the quantity \"Jared&apos;s weight\" is a straight line headed downward, so this quantity is said to exhibit \"linear",
             "decay.\" Many different models can have quantities that exhibit linear decay, but the simplest such model is exactly like",
             "the one you just constructed: An accumulator with a parameter as a negated input.",
-            "<br><br>Notice the small circle with a minus sign inside it. This indicates that the input is negated. Thus, just by looking at the",
+            "Notice the small circle with a minus sign inside it. This indicates that the input is negated. Thus, just by looking at the",
             "arrows and the contents of the nodes, you can tell exactly what the calculations inside the nodes are."
+        ],
+        "slides": [
+            {
+                "type": "text",
+                "value": "count",
+                "title": "Types of nodes in the model"
+            },
+            {
+                "type": "image",
+                "value": "images/CPI/jaredweight_graph.png",
+                "title": "Author's graph for Jared's weight Problem"
+            },
+            {
+                "type": "image",
+                "value": "images/CPI/jaredweight_correctnodes.png",
+                "title": "Author's solution for Jared's weight Problem"
+            },
+            {
+                "type": "text",
+                "value": "lessons",
+                "title": "Lessons Learned"
+            }
         ],
         "givenModelNodes": [
             {
@@ -45,7 +66,8 @@
                     "type": 0,
                     "initial": 0,
                     "units": 0,
-                    "equation": 0
+                    "equation": 0,
+                    "assistanceScore": 0
                 },
                 "status": {},
                 "name": "weight change",
@@ -71,7 +93,8 @@
                     "type": 0,
                     "initial": 0,
                     "units": 0,
-                    "equation": 0
+                    "equation": 0,
+                    "assistanceScore": 0
                 },
                 "status": {},
                 "name": "Jared weight",
@@ -82,7 +105,6 @@
                 "initial": 200,
                 "equation": "- id1"
             }
-
         ],
         "studentModelNodes": []
     }
