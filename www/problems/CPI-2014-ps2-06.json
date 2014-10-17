@@ -17,7 +17,7 @@
             "",
             "Hint:  For the temperature rise, use the calculation:",
             "max(0, min(Difference, max temperature rise))",
-            "In the above calculation, the function max(0, X) returns 0 when X is positive and X otherwise.  The function min(X,Y) returns either X or Y, whichever is the smaller number.  Thus, the overall calculation above returns 0 if Difference is zero or less; this means the room has returned to its proper temperature and the furnace has shut off.  If Difference is larger than 0.25, the maximum temperature rise, then the calculation returns 0.25.  Otherwise, it returns Difference, which is between 0 and 0.25.  Functions like max(..) and min(…) are briefly explained by clicking on Dragoon&apos;s Help button and then \"Math functions.\""
+            "In the above calculation, the function max(0, X) returns 0 when X is positive and X otherwise.  The function min(X,Y) returns either X or Y, whichever is the smaller number.  Thus, the overall calculation above returns 0 if Difference is zero or less; this means the room has returned to its proper temperature and the furnace has shut off.  If Difference is larger than 0.25, the maximum temperature rise, then the calculation returns 0.25.  Otherwise, it returns Difference, which is between 0 and 0.25.  Functions like max(..) and min(…) are briefly explained by clicking on Dragoon's Help button and then \"Math functions.\""
         ],
         "lessonsLearned": [
             "This is similar to the classic homeostatic process, modelled by the problem \"propor to set point minus destination\" in the problem set \"generic changes\".  However, that process involved exponential growth whereas the thermostat problem involves linear growth."
