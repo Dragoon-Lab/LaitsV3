@@ -128,7 +128,7 @@ define([
 			//text for correctness of solution
 			if(this.mode != "AUTHOR"  && this.mode != "EDITOR")
 			{
-				if(this.model.isCompleteFlag)
+				if(this.model.matchesGivenSolution())
 				{
 					this.dialogContent += "<font color='green'>Congratulations, your model's behavior matches the author's</font><br>";
 				}
