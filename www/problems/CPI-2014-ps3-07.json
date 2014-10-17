@@ -12,7 +12,7 @@
             "type": ""
         },
         "image": {
-            "URL": "images/lake.png"
+            "URL": ""
         },
         "taskDescription": [
             " The sun heats some water, adding 3 units of thermal energy per hour.  The evaporation of water is a function of the thermal energy of the water.  In particular, if the thermal energy of the water is T, then the percentage of water evaporated during an hour is T*2%.  Assuming that the initial thermal energy is 0 and the initial water level is 1000, construct a model that shows how the water level changes over 20 hours. "
