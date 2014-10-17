@@ -50,7 +50,7 @@
                 "name": "Uninfected population",
                 "description": "Number of people on the cruise ship without the infection",
                 "type": "accumulator",
-                "initial": 512,
+                "initial": 212,
                 "equation": "-id2"
             },
             {
