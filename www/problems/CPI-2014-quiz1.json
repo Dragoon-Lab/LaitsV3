@@ -94,7 +94,6 @@
                 "status": {},
                 "name": "probability of burning out",
                 "description": "Probability of a street light burning out on any given night",
-                "equation": "",
                 "type": "parameter",
                 "parentNode": false,
                 "initial": 0.005
@@ -117,7 +116,6 @@
                 "status": {},
                 "name": "Repaired during day",
                 "description": "Number of street light repaired each day",
-                "equation": "",
                 "type": "parameter",
                 "parentNode": false,
                 "initial": 32
