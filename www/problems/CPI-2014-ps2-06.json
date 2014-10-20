@@ -22,6 +22,28 @@
         "lessonsLearned": [
             "This is similar to the classic homeostatic process, modelled by the problem \"propor to set point minus destination\" in the problem set \"generic changes\".  However, that process involved exponential growth whereas the thermostat problem involves linear growth."
         ],
+        "slides": [
+            {
+                "type": "text",
+                "value": "count",
+                "title": "Types of nodes in the model"
+            },
+            {
+                "type": "image",
+                "value": "images/CPI/furnance_only_thermostat_graphs.jpg",
+                "title": "Author's graph for Infections Problem"
+            },
+            {
+                "type": "image",
+                "value": "images/CPI/furnance_only_thermostat_correctnodes.png",
+                "title": "Author's solution for Infections Problem"
+            },
+            {
+                "type": "text",
+                "value": "lessons",
+                "title": "Lessons Learned"
+            }
+        ],
         "givenModelNodes": [
             {
                 "ID": "id1",
