@@ -322,7 +322,6 @@ define([
 				}, this);
 			},
 			matchesGivenSolution: function(){
-				/*See bug #2362*/
 				var flag = this.areRequiredNodesVisible() &&
 						array.every(this.student.getNodes(), function(sNode){
 					return this.student.isComplete(sNode.ID);
@@ -731,6 +730,21 @@ define([
 			getNodes: function(){
 				return obj.model.task.studentModelNodes;
 			},
+            getStudentNodesInSolution: function() {
+                // Summary: Returns an array of nodes created by the student which are in the solution model (i.e.
+                //          their description ids match the ids of nodes in the solution).
+                var solutionNodeIDs = [];
+                array.forEach(obj.solution.getNodes(),function(node){
+                    solutionNodeIDs.push(node.ID);
+                });
+                var nodesInBoth = [];
+                array.forEach(this.getNodes(),function(node){
+                    if(array.indexOf(solutionNodeIDs,node.descriptionID) != -1){
+                        nodesInBoth.push(node);
+                    }
+                });
+                return nodesInBoth;
+            },
 			getAssistanceScore: function(/*string*/ id){
 				// Summary: Returns a score based on the amount of errors/hints that 
 				//		a student receives, based on suggestions by Robert Hausmann;
@@ -762,6 +776,16 @@ define([
 				update("equation");
 				return bestStatus;
 			},
+            matchesGivenSolutionAndCorrect: function() {
+                // Summary: Returns True if (1) matchesGivenSolution is true and (2) if all nodes that are part of the
+                // solution have correctness of "demo" or "correct"
+                return obj.matchesGivenSolution() &&
+                       array.every(this.getStudentNodesInSolution(),
+                        function(studentNode){
+                            var correctness = this.getCorrectness(studentNode.ID);
+                            return correctness === "correct" || correctness === "demo";
+                        }, this);
+            },
 			getStatusDirectives: function(/*string*/ id){
 				//Summary:	Return a list of directives (like PM does).
 				//			to set up node editor.
