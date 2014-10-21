@@ -212,7 +212,7 @@ define([
                     }
                 });
                 if(modStatus)
-				    this.dialogWidget.set("content", "<div>There isn't anything to plot. Try adding some accumulator or functionnodes.</div>"); //Error telling there are no nodes and graph cant be rendered
+				    this.dialogWidget.set("content", "<div>There isn't anything to plot. Try adding some accumulator or function nodes.</div>"); //Error telling there are no nodes and graph cant be rendered
 			}
 			this.chart = charts;
 
