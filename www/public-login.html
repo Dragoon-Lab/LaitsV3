@@ -7,6 +7,59 @@
     <link rel="stylesheet" type="text/css" href="css/login-base.css">
     <link rel="stylesheet" type="text/css" href="css/login-form.css">
 
+	 <script type="text/javascript">
+        dojoConfig = {
+	    isDebug:true,
+	    parseOnLoad:true,
+	    async: true,
+            // popup:true,
+	    baseUrl: "./",
+	    packages: [
+		{name: "dojo", location: "dojo"},
+		{name: "dijit", location: "dijit"},
+		{name: "dojox", location: "dojox"},
+		//{name: "jsPlumb", location: "jsPlumb/src"},
+		{name: "dragoon-public-login", location: "publicLogin"},
+             //   {name: "parser", location: "math-parser"},
+                // AMD doesn't handle file names with dots,
+                // need to specify explicitly
+             ///   {name: "jsBezier", location: "jsPlumb/lib", main: "jsBezier-0.6"},
+              //  {name: "jsplumb-geom", location: "jsPlumb/lib", main: "jsplumb-geom-0.1"},
+              //  {name: "demo", location: "jsPlumb/demo"}
+            ]
+	};
+	if(dojoConfig.isDebug){
+	    document.write('<link href="css/dragoon.css" rel="stylesheet" />');
+            document.write('<scr'+'ipt src="dojo/dojo.js"></scr'+'ipt>'); 
+	} else {
+	    document.write('<link href="release/css/dragoon.css" rel="stylesheet" />');
+	    document.write('<scr'+'ipt src="release/dojo/dojo.js"></scr'+'ipt>');
+	};
+    </script>
+
+	<script type="text/javascript">
+		/*
+		 This require should include all of the packages
+		 needed by widgets defined in the html below.
+
+		 Most widgets have an associated css style sheet that is
+		 loaded by css/dragoon.css
+		 */
+		require([
+			//"dojo/parser",
+			//"dijit/Dialog",
+			//"dijit/MenuBar", "dijit/PopupMenuBarItem",
+			//"dijit/layout/BorderContainer", "dijit/MenuItem",
+			"dijit/form/Select",
+			"dijit/form/CheckBox",
+			//"dijit/form/Button", "dijit/form/CheckBox", "dijit/form/TextBox",
+			//"dijit/form/ComboBox", "dijit/form/Textarea",
+			//"dijit/form/SimpleTextarea", "dijit/Menu",
+			//"dijit/layout/ContentPane",
+			//"dragoon/menu", // Wire up menus
+			"dragoon-public-login" // Load up Dragoon itself
+        ]);	
+    </script>
     <script type="text/javascript">
 
     var problemIndex = {
@@ -131,9 +184,11 @@
                     <div class="fieldgroup">
                         <label for="mode">Mode: </label>
                         <select name="m" id="mode">
-                            <option value="STUDENT">Student</option>
+                            <option value="STUDENT">Immediate Feedback (Student)</option>
+                            <option value="AUTHOR">Author</option>
                             <option value="COACHED">Coached</option>
-                            <option value="TEST">Test</option>
+                            <option value="TEST">Delayed Feedback (Test)</option>
+                            <option value="EDITOR">No Feedback (Editor)</option>
                         </select>
                     </div>
 
@@ -197,19 +252,21 @@
 		    <input type="hidden" name="m" value="AUTHOR">
 
                     <div class="fieldgroup">
-                        <label for="problem_id">Problem: </label>
-                        <input type="text" name="p" onChange="javascript:this.value=this.value.toLowerCase();">
-                    </div>
+                        <label for="problem_id">Problem: </label> 
+                        <select data-dojo-type="dijit/form/ComboBox" id="problemId" name="problemId">
+						</select>
+				</div>
 
                     <div class="fieldgroup">
                         <label for="group2">Group: </label>
-                        <input id="group2" type="text" name="g">
+                        <select data-dojo-type="dijit/form/ComboBox" id="group2" name="group2">
+						</select>
                     </div>
 
                     <input type="hidden" name="s" value="public-login.html">
 
                     <div class="fieldgroup">
-                        <input type="submit" value="Continue" class="submit">
+                        <input id="continue" type="submit" value="Continue" class="submit">
                     </div>
 
 

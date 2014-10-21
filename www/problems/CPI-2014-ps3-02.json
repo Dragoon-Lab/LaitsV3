@@ -1,0 +1,200 @@
+{
+    "task": {
+        "taskName": "Oil Tanker",
+        "time": {
+            "start": 0,
+            "end": 6,
+            "step": 0.5,
+            "units": "hours"
+        },
+        "properties": {
+            "phase": "Challenge",
+            "type": "Construct"
+        },
+        "image": {
+            "URL": "http://upload.wikimedia.org/wikipedia/commons/6/63/Maya_OBO_carrier_3.jpg"
+        },
+        "taskDescription": [
+            " Problem: An oil tanker is a ship that carries oil from one port to another. This particular oil tanker is small, so it only has 2 tanks. One tank is in the front of the ship and the other is in the rear. The front tank holds 100,000 gallons of oil when completely full and the rear tank also holds 100,000 gallons of oil when full. This ship had a problem with its rear tank, which has just been fixed. While it was being fixed, the front tank was being filled. At this time, the front tank has 45,000 gallons in it and the rear tank has 500. Thus, the ship has much more weight in the front than the rear and is not riding with an \"even keel\". That is, its front is pointing slightly downwards. This makes sense, because the ratio of the rear tanks' content to the front tank's content is 500/45,000, which is 0.01. This ratio should be 1.0, so that the ship rides at an even keel. After a quick calculation, the dock master orders the dockworkers to add 5,000 gallons per hour to the front tank and 15,000 gallons an hour to the rear tank. He figures that this will bring the weight distribution to equality in a few hours, and then the ship will ride at an even keel. Goal: Graph the ratio of the rear tank's content to the front tank's content over a 6-hour period. "
+        ],
+        "lessonsLearned" : [
+            "This system has two linear growths in it, one for each tank.   The only trick is that the problem asks your model to display the change in the ratio of the two tank&apos;s contents."
+        ],
+        "givenModelNodes": [
+            {
+                "ID": "id1",
+                "inputs": [],
+                "position": {
+                    "x": 400,
+                    "y": 100
+                },
+                "attemptCount": {
+                    "description": 0,
+                    "type": 0,
+                    "initial": 0,
+                    "units": 0,
+                    "equation": 0
+                },
+                "status": {},
+                "name": "added to rear tank",
+                "type": "parameter",
+                "parentNode": false,
+                "units": "",
+                "description": "The amount of oil in gallons added to the rear tank each hour",
+                "initial": 15000
+            },
+            {
+                "ID": "id2",
+                "inputs": [],
+                "position": {
+                    "x": 400,
+                    "y": 100
+                },
+                "attemptCount": {
+                    "description": 0,
+                    "type": 0,
+                    "initial": 0,
+                    "units": 0,
+                    "equation": 0
+                },
+                "status": {},
+                "name": "front tank capacity",
+                "type": "parameter",
+                "parentNode": false,
+                "genus": "extra",
+                "units": "",
+                "description": "The amount of oil in gallons that the front tank can hold when completely full",
+                "initial": 100000
+            },
+            {
+                "ID": "id3",
+                "inputs": [],
+                "position": {
+                    "x": 400,
+                    "y": 100
+                },
+                "attemptCount": {
+                    "description": 0,
+                    "type": 0,
+                    "initial": 0,
+                    "units": 0,
+                    "equation": 0
+                },
+                "status": {},
+                "name": "rear tank capacity",
+                "type": "parameter",
+                "parentNode": false,
+                "genus": "extra",
+                "units": "",
+                "description": "The amount of oil in gallons that the rear tank can hold when completely full",
+                "initial": 100000
+            },
+            {
+                "ID": "id4",
+                "inputs": [],
+                "position": {
+                    "x": 400,
+                    "y": 100
+                },
+                "attemptCount": {
+                    "description": 0,
+                    "type": 0,
+                    "initial": 0,
+                    "units": 0,
+                    "equation": 0
+                },
+                "status": {},
+                "name": "added to front tank",
+                "type": "parameter",
+                "parentNode": false,
+                "units": "",
+                "description": "The amount of oil in gallons added to the front tank each hour",
+                "initial": 5000
+            },
+            {
+                "ID": "id5",
+                "inputs": [
+                    {
+                        "ID": "id1"
+                    }
+                ],
+                "position": {
+                    "x": 400,
+                    "y": 100
+                },
+                "attemptCount": {
+                    "description": 0,
+                    "type": 0,
+                    "initial": 0,
+                    "units": 0,
+                    "equation": 0
+                },
+                "status": {},
+                "name": "rear tank",
+                "type": "accumulator",
+                "parentNode": false,
+                "units": "",
+                "description": "The amount of oil in gallons in the rear tank each hour",
+                "initial": 500,
+                "equation": "+ id1"
+            },
+            {
+                "ID": "id6",
+                "inputs": [
+                    {
+                        "ID": "id4"
+                    }
+                ],
+                "position": {
+                    "x": 400,
+                    "y": 100
+                },
+                "attemptCount": {
+                    "description": 0,
+                    "type": 0,
+                    "initial": 0,
+                    "units": 0,
+                    "equation": 0
+                },
+                "status": {},
+                "name": "front tank",
+                "type": "accumulator",
+                "parentNode": false,
+                "units": "",
+                "description": "The amount of oil in gallons in the front tank each hour",
+                "initial": 45000,
+                "equation": "+ id4"
+            },
+            {
+                "ID": "id7",
+                "inputs": [
+                    {
+                        "ID": "id6"
+                    },
+                    {
+                        "ID": "id5"
+                    }
+                ],
+                "position": {
+                    "x": 400,
+                    "y": 100
+                },
+                "attemptCount": {
+                    "description": 0,
+                    "type": 0,
+                    "initial": 0,
+                    "units": 0,
+                    "equation": 0
+                },
+                "status": {},
+                "name": "rear to front ratio",
+                "type": "function",
+                "parentNode": true,
+                "units": "",
+                "description": "The ratio of the amount of oil in the rear tank to the amount of oil in the front tank each hour",
+                "equation": "id5 / id6"
+            }
+        ],
+        "studentModelNodes": []
+    }
+}

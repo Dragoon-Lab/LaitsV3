@@ -173,11 +173,13 @@ define([
 				 Previously, just set domNode.bgcolor but this approach didn't work
 				 for text boxes.   */
 				// console.log(">>>>>>>>>>>>> setting color ", this.domNode.id, " to ", value);
-				domStyle.set(this.domNode, 'backgroundColor', value ? colorMap[value] : '');
+					domStyle.set(this.domNode, 'backgroundColor', value ? colorMap[value] : '');
 			};
-			for(var control in this.controlMap){
-				var w = registry.byId(this.controlMap[control]);
-				w._setStatusAttr = setStatus;
+			if(this._mode != "TEST" && this._mode != "EDITOR"){
+				for(var control in this.controlMap){
+					var w = registry.byId(this.controlMap[control]);
+					w._setStatusAttr = setStatus;
+				}
 			}
 			/*
 			 If the status is set for equationBox, we also need to set
@@ -264,6 +266,11 @@ define([
 		// Function called when node editor is closed.
 		// This can be used as a hook for saving sessions and logging
 		closeEditor: function(){
+			if(this._mode == "AUTHOR"){
+				//Reset to given on close of node editor
+				this._model.active = this._model.given;
+				registry.byId("selectModel").set('value',"correct");
+			}
 			console.log("++++++++++ entering closeEditor");
 			// Erase modifications to the control settingse.
 			// Enable all options in select controls.
@@ -309,7 +316,8 @@ define([
 			messageWidget.set('content', '');
 
 			// Color the borders of the Node
-			this.colorNodeBorder(this.currentID, true);
+			if(this._mode !="TEST" && this._mode != "EDITOR")
+				this.colorNodeBorder(this.currentID, true);
 
 			// update Node labels upon exit
 			this.updateNodeLabel(this.currentID);
@@ -318,12 +326,17 @@ define([
 			typechecker.closePops();
 			//this.disableHandlers = false;
 			this.logging.log('ui-action', {
-				type: 'close-dialog-box',
+				type: 'close-dialog-box', 
 				nodeID: this.currentID,
 				node: this._model.active.getName(this.currentID),
 				nodeComplete: this._model.active.isComplete(this.currentID)
 			});
-
+			
+			if(this._mode == "EDITOR" || this._mode == "TEST"){
+				var isComplete = this._model.active.isComplete(this.currentID, true)?'solid':'dashed';
+				var borderColor = "3px "+isComplete+" gray";
+				domStyle.set(this.currentID, 'border', borderColor);	 // set border gray for studentModelNodes in TEST and EDITOR mode
+			}
 			// This cannot go in controller.js since _PM is only in
 			// con-student.	 You will need con-student to attach this
 			// to closeEditor (maybe using aspect.after?).	
@@ -514,7 +527,7 @@ define([
 				initialNode.set("value", "");
 				this._model.active.setInitial(this.currentID, "");
 			}
-			if(type == "parameter" && this._model.active.getEquation(this.currentID)){
+			if(type == "parameter"){
 				var equationNode = registry.byId(this.controlMap.equation);
 				equationNode.set("value", "");
 				//changing the equation value does not call the handler so setting the value explicitly using set equation.
@@ -583,7 +596,6 @@ define([
 					w.set('status','');
 				}
 			}));
-
 		},
 		plusHandler: function(){
 			console.log("****** plus button");
@@ -739,6 +751,7 @@ define([
 			 */
 			var widget = registry.byId(this.controlMap.equation);
 			var inputEquation = widget.get("value");
+					
 			var parse = null;
 			if (inputEquation == "") {
 				directives.push({id: 'message', attribute: 'append', value: 'There is no equation to check.'});
@@ -937,12 +950,21 @@ define([
 			var nodeForumBut = registry.byId("nodeForumButton");
 			var check_desc=this._model.active.getGivenID(id);
 			if(this._forumparams && check_desc && this._model.given.getDescription(check_desc)){
+			try{
+				var check_desc=this._model.active.getGivenID(id);
+			}
+			catch(err)
+			{
+				console.log(err);
+			}
+			if(this._forumparams && this._model.given.getDescription(check_desc)){
 				nodeForumBut.set("disabled", false);
 				forum.activateForum(this._model, this.currentID, this._forumparams,this.logging);
 			}else{
 				//In case there are many nodes,
 				//make sure forum button is disabled
 				nodeForumBut.set("disabled", true);
+			}
 			}
 		},
 

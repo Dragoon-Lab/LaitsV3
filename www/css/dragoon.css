@@ -142,3 +142,34 @@ table.solution th {
 div.legend {
     margin:0 auto;
 }
+
+#slidesBox{
+	font:10pt Arial,Myriad,Tahoma,Verdana,sans-serif !important;
+	min-width: 600px;
+	min-height: 600px;
+	position: absolute;
+	background: #fff; /* override claro Dialog css for slide box*/
+}
+
+#slidesBox h4{
+	font: 14pt Arial,Myriad,Tahoma,Verdana,sans-serif !important;
+	font-weight: bold;
+}
+
+#slideWrapper{
+	min-height: 480px;
+	margin: 5px 5px 5px 5px;	
+}
+#buttons{
+	/*position: fixed;*/
+	float: right;
+}
+
+#slideWrapper img{
+	width:450px;
+	margin-left: 60px;
+}
+
+.learning ul{
+	list-style-type: none;
+}

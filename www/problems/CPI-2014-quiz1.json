@@ -1,0 +1,126 @@
+{
+    "task": {
+        "taskName": "quiz oct 20",
+        "time": {
+            "start": 0,
+            "end": 1000,
+            "step": 10,
+            "integrationMethod": "Eulers Method",
+            "units": "days"
+        },
+        "properties": {},
+        "image": {},
+        "taskDescription": [
+            "Suppose that the Tempe has 10000 street lights.  Supposethe probability of a street light burning out on any given night is 0.5%.  Tempe has been running a huge crewof maintenance people, and has managed to repair every burned out light the very next day.  However, they justcut the crew significantly, and now the crew can only repair 32 lights a day.  Construct a model to show how the number of function street lights changes over a 1000 day period. "
+        ],
+        "lessonsLearned": "",
+        "givenModelNodes": [
+            {
+                "ID": "id1",
+                "inputs": [
+                    {
+                        "ID": "id4",
+                        "label": ""
+                    },
+                    {
+                        "ID": "id2",
+                        "label": "-"
+                    }
+                ],
+                "position": {
+                    "x": 475,
+                    "y": 144
+                },
+                "attemptCount": {
+                    "description": 0,
+                    "type": 0,
+                    "initial": 0,
+                    "units": 0,
+                    "equation": 0,
+                    "assitanceScore": 0
+                },
+                "status": {},
+                "name": "Good street lights",
+                "description": "Number of street lights that are functional each night",
+                "type": "accumulator",
+                "initial": 10000,
+                "equation": "id4-id2"
+            },
+            {
+                "ID": "id2",
+                "inputs": [
+                    {
+                        "ID": "id1",
+                        "label": ""
+                    },
+                    {
+                        "ID": "id3",
+                        "label": ""
+                    }
+                ],
+                "position": {
+                    "x": 652,
+                    "y": 139
+                },
+                "attemptCount": {
+                    "description": 0,
+                    "type": 0,
+                    "initial": 0,
+                    "units": 0,
+                    "equation": 0,
+                    "assitanceScore": 0
+                },
+                "status": {},
+                "name": "Burning out nightly",
+                "description": "Number of street lights that burn out each night",
+                "type": "function",
+                "equation": "id1*id3"
+            },
+            {
+                "ID": "id3",
+                "inputs": [],
+                "position": {
+                    "x": 803.3309326171875,
+                    "y": 127.3309555053711
+                },
+                "attemptCount": {
+                    "description": 0,
+                    "type": 0,
+                    "initial": 0,
+                    "units": 0,
+                    "equation": 0,
+                    "assitanceScore": 0
+                },
+                "status": {},
+                "name": "probability of burning out",
+                "description": "Probability of a street light burning out on any given night",
+                "type": "parameter",
+                "parentNode": false,
+                "initial": 0.005
+            },
+            {
+                "ID": "id4",
+                "inputs": [],
+                "position": {
+                    "x": 557.3309326171875,
+                    "y": 273.3309326171875
+                },
+                "attemptCount": {
+                    "description": 0,
+                    "type": 0,
+                    "initial": 0,
+                    "units": 0,
+                    "equation": 0,
+                    "assitanceScore": 0
+                },
+                "status": {},
+                "name": "Repaired during day",
+                "description": "Number of street light repaired each day",
+                "type": "parameter",
+                "parentNode": false,
+                "initial": 32
+            }
+        ],
+        "studentModelNodes": []
+    }
+}

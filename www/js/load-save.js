@@ -55,15 +55,6 @@ define([
 		}
 		return Number(hash).toString(16);
 	};
-	//object copy - not deep copy
-	var copy = function clone(obj) {
-    			if (null == obj || "object" != typeof obj) return obj;
-    				var copy = obj.constructor();
-    			for (var attr in obj) {
-        			if (obj.hasOwnProperty(attr)) copy[attr] = obj[attr];
-    			}
-    			return copy;
-		};
 
 	return declare(null, {
 
@@ -79,19 +70,10 @@ define([
 			console.log("New sessionId = ", this.sessionId);
 			this._startTime = (new Date()).getTime();
 			this.path = path || "";
-
+			this.doLogging = params.l=="false" ? false : true;
+			
 			// Create a session
-			if(params.t){
-				//means a teacher has opened the session
-				//changing the name of the user as well as the section
-				var temp = dojo.clone(params);
-
-				temp.u = params.u + '_check';
-				temp.s = params.s + '_check';
-				this.log("start-session", temp);
-			} else {
-				this.log("start-session", params);
-			}
+			this.log("start-session", params);
 			
 		},
 
@@ -112,9 +94,28 @@ define([
 				});
 			});
 		},
-		saveAsProblem : function(model,problemName,groupName){
+		isProblemNameConflict: function(problemName, groupName) {
+			return xhr.post(this.path + "problems_conflict_checker.php", {
+				data: {
+					group: groupName,
+					section: this.params.s,
+					problem: problemName
+				},
+				handleAs: "json"
+			}).then(function(reply){  // this makes blocking?
+				console.log("Got the conflict status ", reply);
+				return reply.isConflict;			
+			}, function(err){
+				alert('error');
+				this.clientLog("error", {
+					message: "get problem conflict status : "+err,
+					functionTag: 'problemConflictChecker'
+				});
+			});
+		},
+		saveAsProblem : function(model,problemName,groupName){ 
 			//update params to be passed
-			var newParams = copy(this.params);  //clone the object
+			var newParams = dojo.clone(this.params);  //clone the object
 			newParams.p = problemName;
 			newParams.g = groupName;
 			//insert new session ID for newly saved as problem
@@ -153,20 +154,22 @@ define([
 		//used to create session, in case of renaming problem use new session
 		log: function(method, params, rsessionId){ //rsessionId for saving new problem
 			// Add time to log message (allowing override).
-			var p = lang.mixin({time: this.getTime()}, params);
-
-			return xhr.post(this.path + "logger.php", {
-				data: {
-					method: method,
-					message: json.toJson(p),
-					x: rsessionId?rsessionId:this.sessionId
-				}
-			}).then(function(reply){
-				console.log("---------- logging " + method + ': ', p, " OK, reply: ", reply);
-			}, function(err){
-				console.error("---------- logging " + method + ': ', p, " error: ", err);
-				console.error("This should be sent to apache logs");
-			});
+			if(this.doLogging){
+				var p = lang.mixin({time: this.getTime()}, params);
+			
+				return xhr.post(this.path + "logger.php", {
+					data: {
+						method: method,
+						message: json.toJson(p),
+						x: rsessionId?rsessionId:this.sessionId
+					}
+				}).then(function(reply){
+					console.log("---------- logging " + method + ': ', p, " OK, reply: ", reply);
+				}, function(err){
+					console.error("---------- logging " + method + ': ', p, " error: ", err);
+					console.error("This should be sent to apache logs");
+				});
+			}
 		},
 
 		clientLog: function(/* string */ type, /* json */ opts){

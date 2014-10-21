@@ -30,13 +30,14 @@ define([
 	"dojo/_base/array", 
 	'dojo/_base/declare', 
 	"dojo/_base/lang",
-	"dojo/dom", 
+	"dojo/dom",
 	"dojo/ready",
 	'dijit/registry',
-	'./controller', 
-	"./pedagogical_module", 
+	'./controller',
+	"./pedagogical_module",
+	"./pm_no_feedback",
 	"./typechecker"
-], function(aspect, array, declare, lang, dom, ready, registry, controller, PM, typechecker){
+], function(aspect, array, declare, lang, dom, ready, registry, controller, PM, PMNoFeedback, typechecker){
 	// Summary: 
 	//			MVC for the node editor, for students
 	// Description:
@@ -54,7 +55,10 @@ define([
 
 		constructor: function(mode, subMode, model){
 			console.log("++++++++ In student constructor");
-			this._PM = new PM(mode, subMode, model);
+			if(mode == "TEST" || mode == "EDITOR")
+				this._PM = new PMNoFeedback(mode, subMode, model);
+			else
+				this._PM = new PM(mode, subMode, model);
 			lang.mixin(this.widgetMap, this.controlMap);
 			ready(this, "populateSelections");
 			this.init();
@@ -64,7 +68,7 @@ define([
 
 		init:function(){
 			aspect.after(this, "closeEditor", function(){
-				var directives = this._PM.notifyCompleteness(this._model);	
+				var directives = this._PM.notifyCompleteness(this._model);
 				this.applyDirectives(directives);
 			}, true);
 		},
@@ -119,7 +123,6 @@ define([
 				negativeInputs.addOption(option);
 			}, this);
 		},
-
 
 		//  should be moved to a function in controller.js
 		autocreateNodes:function(/** auto node id **/ id, /**variable name**/ variable){

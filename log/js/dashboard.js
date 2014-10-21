@@ -1,3 +1,22 @@
+/*
+     Dragoon Project
+     Arizona State University
+     (c) 2014, Arizona Board of Regents for and on behalf of Arizona State University
+     
+     This file is a part of Dragoon
+     Dragoon is free software: you can redistribute it and/or modify
+     it under the terms of the GNU Lesser General Public License as published by
+     the Free Software Foundation, either version 3 of the License, or
+     (at your option) any later version.
+     
+     Dragoon is distributed in the hope that it will be useful,
+     but WITHOUT ANY WARRANTY; without even the implied warranty of
+     MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+     GNU Lesser General Public License for more details.
+     
+     You should have received a copy of the GNU Lesser General Public License
+     along with Dragoon.  If not, see <http://www.gnu.org/licenses/>.
+*/
 /* global define */
 define([ 
 	'dojo/_base/declare',
@@ -5,10 +24,8 @@ define([
 	"dojo/_base/json",
 	"dojo/_base/lang",
 	"dojo/_base/array",
-	"dojo/html",
-	"dojo/dom",
-	"dojo/number"
-], function(declare, xhr, json, lang, array, html, dom, number){
+	"dojo/number",
+], function(declare, xhr, json, lang, array, number){
 	return declare(null,{
 		problems: null,
 		//path:'',
@@ -20,12 +37,57 @@ define([
 		sessionRunning: [],
 		detailedNodeAnalysis: [],
 		emptyArray: [],
+		modules:{},
 		//sessionDetails:[],
+		decideModules: function(/* string */ type){
+			switch(type){
+				case "leader":
+					this.modules = {
+						names : false, // show user name with each row
+						display : "errors", // what values to show in the table, all will show empty boxes by default the all the options at the bottom of the page and will 
+						options : false, //allowed to change the values from the bottom of the page
+						heading : "Leader Board", // heading at the top of the page
+						subHeading : "Each cell shows Red checks / Total checks. Your row is light blue. Refresh page to update.", // sub heading, van be used for instructions on the page. can be an HTML string as well. 
+						colors : true, // shows the key at the right of the page and the session running value under the td of the 
+						sessionLink : false, // to add the user session opening link to each td or not.
+						completeAnalysis : false // to add the detail node analysis to the tableString 
+	 				};
+	 				break;
+	 			case "complete":
+	 				this.modules = {
+	 					names: true,
+	 					display: "empty",
+	 					options: true,
+	 					heading: "Dashboard",
+	 					subHeading: "Click on the box to show the complete session details of the user.",
+	 					colors: true,
+	 					sessionLink: false,
+	 					completeAnalysis : true,
+	 				};
+	 				break;
+	 			case "dash":
+	 			default:
+	 				this.modules = {
+	 					names: true,
+	 					display: "empty",
+	 					options: true,
+	 					heading: "Dashboard",
+	 					subHeading: "Click on the box to check the complete session of the student.",
+	 					colors: true,
+	 					sessionLink: true,
+	 					completeAnalysis : false,
+	 				};
+	 				break;
+			}
+		},
 
 		constructor: function(/*json*/ params, /*string*/ path){
-			this.runtime = params['runtime']||true;
+			//this.runtime = params['runtime']||true;
 			this.path = path||"";
-			this.section = params['section'];
+			this.section = params['s'];
+			this.decideModules(params['t']);
+			this.currentUser = params['us'];
+			this.mode = params['m'];
 		},
 
 		init: function(){
@@ -124,6 +186,7 @@ define([
 			});
 		},
 
+		//convert json to rendering format and show it as meaningful data
 		getRenderingData: function(){
 			array.forEach(this.objects, function(upObject){
 				var userIndex = array.indexOf(this.users, upObject['user']);
@@ -134,41 +197,43 @@ define([
 					this.problemComplete[userIndex][problemIndex] = upObject['problemComplete'];
 					this.sessionRunning[userIndex][problemIndex] = upObject['sessionRunning'];
 					//this.sessionDetails[userIndex][problemIndex] = {user : upObject['user'], problem: upObject['problem'], section: this.section};
-					var detailedString = '';
-					var nodes = upObject['nodes']; 
-					if(nodes){
-						array.forEach(nodes, function(node){
-							detailedString += "<p>"+node['name'];
-							var properties = node['properties'];
-							if(properties){
-								array.forEach(properties, function(property){
-									if(property){
-										var status = property['status'];
-										if(status){
-											var index = 0;
-											array.forEach(status, function(propStatus){
-												if(propStatus == "CORRECT"){
-												detailedString += "<span style='color:green'>C ("+property['correctValue']+") </span>";
-												} else if(propStatus == "DEMO"){
-													detailedString += "<span style='color:blue'>D </span>";
-												} else {
-													var answers = property['answers'];
-													var length = answers.length;
-													detailedString += "<span style='color:red'>I" ;
-													if(index < length){
-														detailedString += "( "+answers[index]+ " )";
-													}
-													detailedString += " </span>";
-													index++;
-												}	
-											});
+					if(this.modules['completeAnalysis']){
+						var detailedString = '';
+						var nodes = upObject['nodes']; 
+						if(nodes){
+							array.forEach(nodes, function(node){
+								detailedString += "<p>"+node['name'];
+								var properties = node['properties'];
+								if(properties){
+									array.forEach(properties, function(property){
+										if(property){
+											var status = property['status'];
+											if(status){
+												var index = 0;
+												array.forEach(status, function(propStatus){
+													if(propStatus == "CORRECT"){
+													detailedString += "<span style='color:green'>C ("+property['correctValue']+") </span>";
+													} else if(propStatus == "DEMO"){
+														detailedString += "<span style='color:blue'>D </span>";
+													} else {
+														var answers = property['answers'];
+														var length = answers.length;
+														detailedString += "<span style='color:red'>I" ;
+														if(index < length){
+															detailedString += "( "+answers[index]+ " )";
+														}
+														detailedString += " </span>";
+														index++;
+													}	
+												});
+											}
 										}
-									}
-								}, this);
-							}
-							detailedString += "</p>";
-						}, this);
-						this.detailedNodeAnalysis[userIndex][problemIndex] = detailedString;
+									}, this);
+								}
+								detailedString += "</p>";
+							}, this);
+							this.detailedNodeAnalysis[userIndex][problemIndex] = detailedString;
+						}
 					}
 				}
 			}, this);
@@ -177,7 +242,8 @@ define([
 		initTable: function(){
 			var tableString = "<table border='1'>";
 			var problems = this.getAllProblems();
-			tableString += "<th>Users \/ Problems -></th>";
+			if(this.modules['names'])
+				tableString += "<th>Users \/ Problems -></th>";
 			array.forEach(problems, function(problem){
 				tableString += "<th>" + problem + "</th>";
 			});
@@ -188,39 +254,60 @@ define([
 			var tableString = '';
 			var row = 0;
 			array.forEach(this.users, function(user){
-				tableString += "<tr><td>"+user+"</td>";
+
+				if(this.modules['names']){ 
+						tableString += "<tr><td>"+user+"</td>";
+				}else{
+					if(this.currentUser == user)
+						tableString += "<tr class = 'light-blue'>";
+					else
+						tableString += "<tr>";
+				}
+
+					
 				//var problemDetails = printArray[row];
 				var col = 0;
 				array.forEach(this.problems, function(problem){
-					//var urlString = "<a href='/devel/index.html?u=" + user + "&m=STUDENT&sm=feedback&is=algebraic&p=" + problem + "&s=" + this.section + "&c=Continue&t=true' target='_blank' title='Click to check session' style='width:90px'>";
+					//var urlString = "<a href='/devel/index.html?u=" + user + "&m=" + this.mode + "&sm=feedback&is=algebraic&p=" + problem + "&s=" + this.section + "&c=Continue&l=false' target='_blank' title='Click to check session' style='width:90px'>";
 					//for demo server
-					var urlString = "<a href='/demo/index.html?u=" + user + "&m=STUDENT&sm=feedback&is=algebraic&p=" + problem + "&s=" + this.section + "&c=Continue&t=true' target='_blank' title='Click to check session'>";
+					var urlString = '';
+					if(this.modules['sessionLink'])
+						urlString = "<a href='/demo/index.html?u=" + user + "&m=" + this.mode + "&sm=feedback&is=algebraic&p=" + problem + "&s=" + this.section + "&c=Continue&l=false' target='_blank' title='Click to check session'>";
 					//for local server
-					//var urlString = "<a href='/code/index.html?u=" + user + "&m=STUDENT&sm=feedback&is=algebraic&p=" + problem + "&s=" + this.section + "&c=Continue&t=true' target='_blank' title='Click to check session'>";
+					//var urlString = "<a href='/code/index.html?u=" + user + "&m=" + this.mode + "&sm=feedback&is=algebraic&p=" + problem + "&s=" + this.section + "&c=Continue&l=false' target='_blank' title='Click to check session'>";
 					var complete = this.problemComplete[row][col];
 					var runningStatus = this.sessionRunning[row][col];
-
-					if(complete){
-						tableString += "<td class='green'>";
-					} else if(!complete && runningStatus){
-						tableString += "<td class='yellow'>";
-					} else {
-						tableString += "<td>";
+					tableString += "<td";
+					if(this.modules['colors']){
+						if(complete){
+							tableString += " class='green'";
+						} else if(!complete && runningStatus){
+							tableString += " class='yellow'";
+						}
 					}
+					tableString += ">";
 					tableString += "<span class='empty all'>" + this.emptyArray[row][col] + "</span>";
 					tableString += "<span class='time all'>";
-					if(this.timeSpent[row][col] != '-'){
+					if(this.modules['sessionLink'] && this.timeSpent[row][col] != '-'){
 						tableString += urlString;
 					}
-					tableString += this.timeSpent[row][col] + "</a></span>";
+					tableString += this.timeSpent[row][col]; 
+					if(this.modules['sessionLink'] && this.timeSpent[row][col] != '-'){
+						tableString += "</a>";
+					}
+					tableString += "</span>";
 					
 
 					tableString += "<span class='errors all'>"; 
-					if(this.errorRatio[row][col] != "-"){
+					if(this.modules['sessionLink'] && this.errorRatio[row][col] != "-"){
 						tableString += urlString;
 					}
-					tableString += this.errorRatio[row][col] + "</a></span>";
-					if(!this.runtime){
+					tableString += this.errorRatio[row][col];
+					if(this.modules['sessionLink'] && this.errorRatio[row][col] != "-"){
+						tableString += "</a>";
+					}
+					tableString +=  "</span>";
+					if(this.modules['completeAnalysis']){
 						tableString += "<div class='nodeDetails' style='display:none;'>"+this.detailedNodeAnalysis[row][col]+"</div>";
 					}
 					tableString += "</td>";
@@ -243,15 +330,7 @@ define([
 			table += this.makeTable();
 			table += this.closeTable();
 
-			this.show(table);
-		},
-
-		show: function(/* html string */ content){
-			var tableDOM = dom.byId("table");
-			html.set(tableDOM, content);
-
-			//tableWidget.show();
+			return table;
 		}
-
 	});
 });
