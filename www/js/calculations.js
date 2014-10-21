@@ -385,7 +385,7 @@ define([
 					return;
 				}
 				var lessonLearnedDialog = registry.byId("lesson");
-				var titleMsg = "Lessons Learned";
+				var titleMsg  = "<font size='3'>Lessons Learned</font>";
 				var contentHTML = "<font size='2'>" + contentMsg[0];
 				for(var i=1;i<contentMsg.length;i++) {
 					contentHTML = contentHTML +"<br>"+contentMsg[i];
