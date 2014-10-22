@@ -402,7 +402,7 @@ define([
 					if(givenModel.isLessonLearnedShown == true){
 						var lessonLearnedDialog = registry.byId("lesson");
 						var titleMsg = "<font size='3'>Lessons Learned</font>";
-						contentMsg = givenModel.getTakLessonsLearned();
+						contentMsg = givenModel.getTaskLessonsLearned();
 						var contentHTML = "<font size='2'>" + contentMsg[0];
 						for(var i=1;i<contentMsg.length;i++) {
 							contentHTML = contentHTML +"<br>"+contentMsg[i];
