@@ -9,13 +9,37 @@
             "units": "minutes"
         },
         "properties": {},
-        "image": {},
+        "image": {
+            "URL": "images/CPI/CPI-2014-ps2-09.jpg"
+        },
         "taskDescription": [
             "Consider two large rain barrels that are connected to each other by a hose. One barrel is higher than the other so water drains from it through the hose and into the lower barrel. The hose is attached to the higher barrel a little ways up the side so that there will always be 10 gallons in that barrel.  20% of the water above the hose of the higher barrel empties every minute into the lower barrel.   Meanwhile, the lower barrel is losing 30% of its water every minute though a hole in its bottom. The higher barrel starts out with 55 gallons and the lower barrel starts out empty.   Construct a model showing how the water in the two barrels changes."
         ],
         "lessonsLearned": [
             "This system is composed of two familiar processes:  A homeostatic process (the higher barrel draining into the lower barrel) and an exponential decay (the lower barrel draining).  What is interesting is how the water level in the lower barrel peaks at about 4 minutes."
         ],
+        "slides": [
+            {
+                "type": "text",
+                "value": "count",
+                "title": "Types of nodes in the model"
+            },
+            {
+                "type": "image",
+                "value": "images/CPI/Cascading_barrels_graphs.jpg",
+                "title": "Author's graph for Infections Problem"
+            },
+            {
+                "type": "image",
+                "value": "images/CPI/Cascading_barrels_correctnodes.png",
+                "title": "Author's solution for Infections Problem"
+            },
+            {
+                "type": "text",
+                "value": "lessons",
+                "title": "Lessons Learned"
+            }
+        ],  
         "givenModelNodes": [
             {
                 "ID": "id1",

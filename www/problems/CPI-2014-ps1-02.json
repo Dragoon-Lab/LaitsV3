@@ -23,12 +23,12 @@
              "* Source: irrelevant",
              "* Destination: Moose population",
              "* Changing: a proportion, 20%, of the destination changes state each year",
-             "Implementation: See image, but change names and numbers. Or see the problem “proportional to destination” in the",
-             "problem set “generic changes.”"
+             "Implementation: See image, but change names and numbers. Or see the problem â€œproportional to destinationâ€� in the",
+             "problem set â€œgeneric changes.â€�"
         ],
         "lessonsLearned": [
-             "The graph of “moose population” increases slowly at first and then gets steeper. The graph fits an exponential function,",
-             "so this process is called “exponential growth.”"
+             "The graph of \"moose population\" increases slowly at first and then gets steeper. The graph fits an exponential function,",
+             "so this process is called \"exponential growth.\""
         ],
         "slides": [
             {
@@ -65,19 +65,14 @@
                     "y": 100
                 },
                 "attemptCount": {
-                    "description": 1,
-                    "type": 1,
-                    "initial": 1,
+                    "description": 0,
+                    "type": 0,
+                    "initial": 0,
                     "units": 0,
-                    "equation": 1,
+                    "equation": 0,
                     "assistanceScore": 0
                 },
-                "status": {
-                    "description": "correct",
-                    "type": "correct",
-                    "equation": "correct",
-                    "initial": "correct"
-                },
+                "status": {},
                 "name": "moose population",
                 "type": "accumulator",
                 "parentNode": true,
@@ -94,18 +89,14 @@
                     "y": 100
                 },
                 "attemptCount": {
-                    "description": 1,
-                    "type": 1,
-                    "initial": 1,
+                    "description": 0,
+                    "type": 0,
+                    "initial": 0,
                     "units": 0,
                     "equation": 0,
                     "assistanceScore": 0
                 },
-                "status": {
-                    "description": "correct",
-                    "type": "correct",
-                    "initial": "correct"
-                },
+                "status": {},
                 "name": "moose birth rate",
                 "type": "parameter",
                 "parentNode": false,
@@ -128,18 +119,14 @@
                     "y": 100
                 },
                 "attemptCount": {
-                    "description": 1,
-                    "type": 1,
+                    "description": 0,
+                    "type": 0,
                     "initial": 0,
                     "units": 0,
-                    "equation": 1,
+                    "equation": 0,
                     "assistanceScore": 0
                 },
-                "status": {
-                    "description": "correct",
-                    "type": "correct",
-                    "equation": "correct"
-                },
+                "status": {},
                 "name": "moose births",
                 "type": "function",
                 "parentNode": false,

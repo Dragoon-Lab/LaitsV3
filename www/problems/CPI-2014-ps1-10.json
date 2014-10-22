@@ -19,14 +19,14 @@
             "55 gallons of water into the first barrel, the water starts to flow from it into the second barrel, which starts empty.",
             "The number of gallons transferred per minute is proportional to the difference in the amount of water they have. In",
             "particular, when the two barrels have the same amount of water, the difference is zero and the flow stops. Assume",
-            "that the water flowing between the barrels each minute is 3% of the difference between the barrel’s contents.",
+            "that the water flowing between the barrels each minute is 3% of the difference between the barrel&apos;s contents.",
             "Construct a model that shows how the water level in both barrels changes.",
             "* Process: Water flowing from the first barrel to the second barrel.",
             "* Source: Amount of water in the first barrel",
             "* Destination: Amount of water in the second barrel",
             "* Changing: a proportion, 3%, of the difference between the first barrel and second barrel changes flow between barrels",
             "each minute.",
-            "Implementation: See the problem “propor to source minus destination” in the problem set “generic changes”"
+            "Implementation: See the problem \"propor to source minus destination\" in the problem set \"generic changes\""
             ],
         "lessonsLearned": [
             "This type of model is sometimes called an equilibrating process, which is a process that seeks an equilibrium. In this",
@@ -68,25 +68,20 @@
                     "y": 100
                 },
                 "attemptCount": {
-                    "description": 1,
-                    "type": 1,
-                    "initial": 1,
+                    "description": 0,
+                    "type": 0,
+                    "initial": 0,
                     "units": 0,
-                    "equation": 1,
+                    "equation": 0,
                     "assistanceScore": 0
                 },
-                "status": {
-                    "description": "correct",
-                    "type": "correct",
-                    "initial": "correct",
-                    "equation": "correct"
-                },
+                "status": {},
                 "name": "second barrel",
                 "type": "accumulator",
                 "parentNode": true,
                 "units": "",
                 "description": "The amount of water in the second barrel",
-                "initial": null,
+                "initial": 0,
                 "equation": "id4"
             },
             {
@@ -101,19 +96,14 @@
                     "y": 100
                 },
                 "attemptCount": {
-                    "description": 1,
-                    "type": 1,
-                    "initial": 1,
+                    "description": 0,
+                    "type": 0,
+                    "initial": 0,
                     "units": 0,
-                    "equation": 1,
+                    "equation": 0,
                     "assistanceScore": 0
                 },
-                "status": {
-                    "description": "correct",
-                    "type": "correct",
-                    "initial": "correct",
-                    "equation": "correct"
-                },
+                "status": {},
                 "name": "first barrel",
                 "type": "accumulator",
                 "parentNode": false,
@@ -130,18 +120,14 @@
                     "y": 100
                 },
                 "attemptCount": {
-                    "description": 1,
-                    "type": 1,
-                    "initial": 1,
+                    "description": 0,
+                    "type": 0,
+                    "initial": 0,
                     "units": 0,
                     "equation": 0,
                     "assistanceScore": 0
                 },
-                "status": {
-                    "description": "correct",
-                    "type": "correct",
-                    "initial": "correct"
-                },
+                "status": {},
                 "name": "water flow factor",
                 "type": "parameter",
                 "parentNode": false,
@@ -164,18 +150,14 @@
                     "y": 100
                 },
                 "attemptCount": {
-                    "description": 1,
-                    "type": 1,
+                    "description": 0,
+                    "type": 0,
                     "initial": 0,
                     "units": 0,
-                    "equation": 1,
+                    "equation": 0,
                     "assistanceScore": 0
                 },
-                "status": {
-                    "description": "correct",
-                    "type": "correct",
-                    "equation": "correct"
-                },
+                "status": {},
                 "name": "water flow",
                 "type": "function",
                 "parentNode": false,
@@ -198,18 +180,14 @@
                     "y": 100
                 },
                 "attemptCount": {
-                    "description": 1,
-                    "type": 1,
+                    "description": 0,
+                    "type": 0,
                     "initial": 0,
                     "units": 0,
-                    "equation": 1,
+                    "equation": 0,
                     "assistanceScore": 0
                 },
-                "status": {
-                    "description": "correct",
-                    "type": "correct",
-                    "equation": "correct"
-                },
+                "status": {},
                 "name": "water difference",
                 "type": "function",
                 "parentNode": false,

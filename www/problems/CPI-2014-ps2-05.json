@@ -11,13 +11,35 @@
         "properties": {},
         "image": {},
         "taskDescription": [
-            "A custom bike factory has a backlog of 23 orders for bikes.  It can manufacture and ship 5 bikes a day.  Assuming no new orders arrive, construct a model showing how the backlog changes daily.  The backlog must not become negative; that would not make sense.  Hint:  Use the function min(…), which is briefly explained by clicking on Dragoon’s Help button and then “Math functions.”",
+            "A custom bike factory has a backlog of 23 orders for bikes.  It can manufacture and ship 5 bikes a day.  Assuming no new orders arrive, construct a model showing how the backlog changes daily.  The backlog must not become negative; that would not make sense.  Hint:  Use the function min(…), which is briefly explained by clicking on Dragoon's Help button and then \"Math functions.\"",
             "",
-            "Implementation: See the problem “constant change runs out” in the problem set “generic changes.”",
+            "Implementation: See the problem \"constant change runs out\" in the problem set \"generic changes.\"",
             ""
         ],
         "lessonsLearned" : [
-            "Many linear change models have the potential inaccuracy of an accumulator going negative.  The solution used in this problem can be used more generally.  If A is the accumulator and it decreases by parameter P per time unit, then one should let A’s input by min(A,P)."
+            "Many linear change models have the potential inaccuracy of an accumulator going negative.  The solution used in this problem can be used more generally.  If A is the accumulator and it decreases by parameter P per time unit, then one should let A's input by min(A,P)."
+        ],
+        "slides": [
+            {
+                "type": "text",
+                "value": "count",
+                "title": "Types of nodes in the model"
+            },
+            {
+                "type": "image",
+                "value": "images/CPI/Custom-bikes_graphs.jpg",
+                "title": "Author's graph for Infections Problem"
+            },
+            {
+                "type": "image",
+                "value": "images/CPI/Custom-bikes_correctnodes.png",
+                "title": "Author's solution for Infections Problem"
+            },
+            {
+                "type": "text",
+                "value": "lessons",
+                "title": "Lessons Learned"
+            }
         ],
         "givenModelNodes": [
             {

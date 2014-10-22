@@ -14,7 +14,29 @@
             "Suppose you work for a company that runs a strange retirement savings plan for you that is intended to keep you from leaving the company after you have become experienced.  Your retirement account starts with $1000 in it.  The first year, the company contributes 1% interest to the account (simple interest; not compound).  The next year, the company puts 1.5% of the account into it.  Thus, the interest rate on the account increases by 0.5% annually.  Construct a model that shows how the money in your accounts changes."
         ],
         "lessonsLearned": [
-            "This system is a type of accelerating change.  See the problem “acceleration” in the problem set “generic changes.”"
+            "This system is a type of accelerating change.  See the problem \"acceleration\" in the problem set \"generic changes.\""
+        ],
+        "slides": [
+            {
+                "type": "text",
+                "value": "count",
+                "title": "Types of nodes in the model"
+            },
+            {
+                "type": "image",
+                "value": "images/CPI/Strange_Retirement_Plan_graphs.jpg",
+                "title": "Author's graph for Infections Problem"
+            },
+            {
+                "type": "image",
+                "value": "images/CPI/Strange_Retirement_Plan_correctnodes.png",
+                "title": "Author's solution for Infections Problem"
+            },
+            {
+                "type": "text",
+                "value": "lessons",
+                "title": "Lessons Learned"
+            }
         ],
         "givenModelNodes": [
             {

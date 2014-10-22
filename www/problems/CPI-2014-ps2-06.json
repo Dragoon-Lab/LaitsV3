@@ -9,16 +9,40 @@
             "units": "minutes"
         },
         "properties": {},
-        "image": {},
+        "image": {
+            "URL": "images/CPI/CPI-2014-ps2-06.jpg"
+        },
         "taskDescription": [
             "In a house that only has a furnace, there is just one thermostat, which we will assume is set to 72 degrees.  When the room temperature is below the set point of the thermostat, the furnace turns on.  It adds a constant amount of heat per minute, resulting in a constant rise in the room temperature per minute (assume this is 0.25 degrees per minute). When the room temperature reaches the set point of the thermostat, the furnace shuts off.  Assuming that the room starts at 70 degrees, construct a model showing how the room temperature changes.",
             "",
             "Hint:  For the temperature rise, use the calculation:",
             "max(0, min(Difference, max temperature rise))",
-            "In the above calculation, the function max(0, X) returns 0 when X is positive and X otherwise.  The function min(X,Y) returns either X or Y, whichever is the smaller number.  Thus, the overall calculation above returns 0 if Difference is zero or less; this means the room has returned to its proper temperature and the furnace has shut off.  If Difference is larger than 0.25, the maximum temperature rise, then the calculation returns 0.25.  Otherwise, it returns Difference, which is between 0 and 0.25.  Functions like max(..) and min(…) are briefly explained by clicking on Dragoon’s Help button and then “Math functions.”"
+            "In the above calculation, the function max(0, X) returns 0 when X is positive and X otherwise.  The function min(X,Y) returns either X or Y, whichever is the smaller number.  Thus, the overall calculation above returns 0 if Difference is zero or less; this means the room has returned to its proper temperature and the furnace has shut off.  If Difference is larger than 0.25, the maximum temperature rise, then the calculation returns 0.25.  Otherwise, it returns Difference, which is between 0 and 0.25.  Functions like max(..) and min(…) are briefly explained by clicking on Dragoon's Help button and then \"Math functions.\""
         ],
         "lessonsLearned": [
-            "This is similar to the classic homeostatic process, modelled by the problem “propor to set point minus destination” in the problem set “generic changes”.  However, that process involved exponential growth whereas the thermostat problem involves linear growth."
+            "This is similar to the classic homeostatic process, modelled by the problem \"propor to set point minus destination\" in the problem set \"generic changes\".  However, that process involved exponential growth whereas the thermostat problem involves linear growth."
+        ],
+        "slides": [
+            {
+                "type": "text",
+                "value": "count",
+                "title": "Types of nodes in the model"
+            },
+            {
+                "type": "image",
+                "value": "images/CPI/furnance_only_thermostat_graphs.jpg",
+                "title": "Author's graph for Infections Problem"
+            },
+            {
+                "type": "image",
+                "value": "images/CPI/furnance_only_thermostat_correctnodes.png",
+                "title": "Author's solution for Infections Problem"
+            },
+            {
+                "type": "text",
+                "value": "lessons",
+                "title": "Lessons Learned"
+            }
         ],
         "givenModelNodes": [
             {

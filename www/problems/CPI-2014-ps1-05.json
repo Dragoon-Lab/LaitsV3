@@ -13,9 +13,9 @@
         },
         "image": {},
         "taskDescription": [
-            "Corky keeps a list of assignments he needs to complete for his classes, but it keeps getting longer and longer. Each",
+            "Corky keeps a list of assignments he needs to complete for his classes, but it keeps getting longer and longer. Corky starts with 2 tasks on his list. Each",
             "week, Corky adds 7 new assignments to his task list. As hard as he tries, Corky is only able to complete 3 assignments",
-            "each week and remove them from his task list. Construct a model that show how the number of tasks on Corky’s list",
+            "each week and remove them from his task list. Construct a model that shows how the number of tasks on Corky’s list",
             "changes.",
             "Analysis:",
             "* Process 1: Adding new assignments to the task list",
@@ -28,7 +28,7 @@
             "* Changing 2: a constant 3 assignments changes state each week"
         ],
         "lessonsLearned": [
-            "This model combines linear growth and linear decay. If you play with the sliders, you’ll see that regardless of the values",
+            "This model combines linear growth and linear decay. If you play with the sliders, you&apos;ll see that regardless of the values",
             "of the parameters, the graph is always a straight line. Thus, if you combine two or more linear changes, you get a linear",
             "change."
         ],
@@ -63,18 +63,14 @@
                     "y": 100
                 },
                 "attemptCount": {
-                    "description": 1,
-                    "type": 1,
-                    "initial": 2,
+                    "description": 0,
+                    "type": 0,
+                    "initial": 0,
                     "units": 0,
                     "equation": 0,
-                    "assistanceScore": 2
+                    "assistanceScore": 0
                 },
-                "status": {
-                    "description": "correct",
-                    "type": "correct",
-                    "initial": "demo"
-                },
+                "status": {},
                 "name": "assignments added",
                 "type": "parameter",
                 "parentNode": false,
@@ -90,18 +86,14 @@
                     "y": 100
                 },
                 "attemptCount": {
-                    "description": 2,
-                    "type": 1,
-                    "initial": 2,
+                    "description": 0,
+                    "type": 0,
+                    "initial": 0,
                     "units": 0,
                     "equation": 0,
-                    "assistanceScore": 2
+                    "assistanceScore": 0
                 },
-                "status": {
-                    "description": "correct",
-                    "type": "correct",
-                    "initial": "correct"
-                },
+                "status": {},
                 "name": "assignments removed",
                 "type": "parameter",
                 "parentNode": false,
@@ -124,20 +116,15 @@
                     "y": 100
                 },
                 "attemptCount": {
-                    "description": 1,
-                    "type": 1,
-                    "initial": 1,
+                    "description": 0,
+                    "type": 0,
+                    "initial": 0,
                     "units": 0,
-                    "equation": 5,
-                    "assistanceScore": 1,
-                    "unknownVar": 4
+                    "equation": 0,
+                    "assistanceScore": 0,
+                    "unknownVar": 0
                 },
-                "status": {
-                    "description": "correct",
-                    "type": "correct",
-                    "initial": "correct",
-                    "equation": "demo"
-                },
+                "status": {},
                 "name": "task list",
                 "type": "accumulator",
                 "parentNode": true,
