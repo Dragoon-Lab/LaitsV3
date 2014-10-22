@@ -131,7 +131,7 @@ define([
 			//text for correctness of solution
 			if(this.mode != "AUTHOR"  && this.mode != "EDITOR")
 			{
-				if(this.model.isCompleteFlag)
+				if(this.model.active.matchesGivenSolutionAndCorrect())
 				{
 					this.dialogContent += "<font color='green'>Congratulations, your model's behavior matches the author's</font><br>";
 				}
@@ -215,7 +215,7 @@ define([
                     }
                 });
                 if(modStatus)
-				    this.dialogWidget.set("content", "<div>There isn't anything to plot. Try adding some accumulator or functionnodes.</div>"); //Error telling there are no nodes and graph cant be rendered
+				    this.dialogWidget.set("content", "<div>There isn't anything to plot. Try adding some accumulator or function nodes.</div>"); //Error telling there are no nodes and graph cant be rendered
 			}
 			this.chart = charts;
 

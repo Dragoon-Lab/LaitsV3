@@ -189,17 +189,14 @@ define([
 			switch(currentPart){
 			case "type":
 				if(nodeType === "parameter"){
-					disable(obj, "initial", false);				    
-					disable(obj, "equation", true);
+					disable(obj, "initial", false);
 					newPart = "initial";
 				}else if(nodeType === "accumulator"){
 					disable(obj, "initial", false);
-					disable(obj, "equation", false);
-						newPart = "units";
+						newPart = "initial";
 				}else if(nodeType === "function"){
 					disable(obj, "initial", true);
-					disable(obj, "equation", false);
-						newPart = "units";
+						newPart = "initial";
 				}else if(this.model.given.getUnits(givenNodeID)){
 					disable(obj, "units", false);
 						newPart = "units";
@@ -215,7 +212,9 @@ define([
 				}
 				break;
 			case "units":
-				if(nodeType === "function" || nodeType === "accumulator")
+				if(nodeType === "parameter")
+					disable(obj, "equation", true);
+				else if(nodeType === "function" || nodeType === "accumulator")
 					disable(obj, "equation", false);
 				newPart = "equation";
 				break;
@@ -321,28 +320,8 @@ define([
 					if(i.attribute === "status"){
 						if(i.value === "correct"){
 							if(model.given.getStatus(givenID, nodePart) !== "demo")
-								model.given.setStatus(givenID, nodePart, "correct");
-							else{
-								i.value = "demo";
-								returnObj.forEach(function(j){
-									if(j.id === "message"){
-										j.value = hints.erasedDemo;
-									}
-								});
-							}
-						}
-						else if(i.value === "demo"){
-							if(model.given.getStatus(givenID, nodePart) !== "correct")
-								model.given.setStatus(givenID, nodePart, "demo");
-							else{
-								i.value = "correct";
-								returnObj.forEach(function(j){
-									if(j.id === "message"){
-										j.value = hints.erasedCorrect;
-									}
-								});
-							}
-						}
+								model.given.setStatus(givenID, nodePart, "correct");						
+						}						
 						else
 							model.given.setStatus(givenID, nodePart, "incorrect");
 					}
@@ -375,18 +354,9 @@ define([
 				}
 				// Process answers for all other node types
 			}else{
-				givenID = this.model.student.getDescriptionID(id);
-				currentStatus = this.model.given.getStatus(givenID, nodePart); //get current status set in given model
+				givenID = this.model.student.getDescriptionID(id);				
 				console.assert(actionTable[interpretation], "processAnswer() interpretation '" + interpretation + "' not in table ", actionTable);
-				actionTable[interpretation][this.userType](returnObj, nodePart);
-				if(currentStatus !== "correct" && currentStatus !== "demo"){
-					this.model.given.setAttemptCount(givenID, nodePart, this.model.given.getAttemptCount(givenID, nodePart) + 1);
-					//
-					for(var i = 0; i < returnObj.length; i++)
-						if(returnObj[i].value === "incorrect" || returnObj[i].value === "demo"){
-							this.model.student.incrementAssistanceScore(id);
-						}
-				}
+				actionTable[interpretation][this.userType](returnObj, nodePart);				
 				updateStatus(returnObj, this.model);
 
 				// Activate appropriate parts of the node editor

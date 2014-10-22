@@ -1,0 +1,211 @@
+{
+    "task": {
+        "taskName": "saturated air",
+        "time": {
+            "start": 0,
+            "end": 100,
+            "step": 1,
+            "integrationMethod": "Eulers Method",
+            "units": "seconds"
+        },
+        "properties": {},
+        "image": {},
+        "taskDescription": [
+            "Suppose some water is sitting at the bottom of a very small closed cylinder.   The chance that a water molecule will strike the surface of the water and escape into the air is proportional to the kinetic energy in the water and the size of the water surface.  These are both fixed in this system, so the number of molecules evaporating is constant, let&apos;s say 300 per second.  Now once there is some water vapor in the air, the chance of a molecule striking the surface of the water and getting reabsorbed in proportional to the density of water molecules in the air, the surface area of the water and their kinetic energy.  Let&apos;s again assume that the kinetic energy, surface area and the volume of air are all constant, so what varies is the number of water molecules in the air.  Thus, the number of molecules condensing back into the water is proportional to the number in the air, so let&apos;s assume that it is 3% of the water in the air.  When the system reaches equilibrium, the air is said to be saturated.  Assuming that the air starts completely dry, that the kinetic energy is 14.5 Joules, the surface area of the water is 0.001 mm^2, and the volume of the air is 0.01 mm^3, construct a model showing the number of water molecules in the air per second."
+        ],
+        "lessonsLearned": [
+            "This is a simple combination of a linear increase with an exponential decay.  However, there are several spurious numbers given."
+        ],
+        "givenModelNodes": [
+            {
+                "ID": "id1",
+                "inputs": [
+                    {
+                        "ID": "id2",
+                        "label": ""
+                    },
+                    {
+                        "ID": "id3",
+                        "label": "-"
+                    }
+                ],
+                "position": {
+                    "x": 673,
+                    "y": 110
+                },
+                "attemptCount": {
+                    "description": 0,
+                    "type": 0,
+                    "initial": 0,
+                    "units": 0,
+                    "equation": 0,
+                    "assitanceScore": 0
+                },
+                "status": {},
+                "name": "Water vapor",
+                "description": "Number of water molecules in the air",
+                "type": "accumulator",
+                "initial": 0,
+                "equation": "id2-id3"
+            },
+            {
+                "ID": "id2",
+                "inputs": [],
+                "position": {
+                    "x": 501.3309631347656,
+                    "y": 100.3309555053711
+                },
+                "attemptCount": {
+                    "description": 0,
+                    "type": 0,
+                    "initial": 0,
+                    "units": 0,
+                    "equation": 0,
+                    "assitanceScore": 0
+                },
+                "status": {},
+                "name": "water evaporating",
+                "description": "Number of water molecules leaving the water each second",
+                "equation": "",
+                "type": "parameter",
+                "parentNode": false,
+                "initial": 300
+            },
+            {
+                "ID": "id3",
+                "inputs": [
+                    {
+                        "ID": "id1",
+                        "label": ""
+                    },
+                    {
+                        "ID": "id7",
+                        "label": ""
+                    }
+                ],
+                "position": {
+                    "x": 859,
+                    "y": 103
+                },
+                "attemptCount": {
+                    "description": 0,
+                    "type": 0,
+                    "initial": 0,
+                    "units": 0,
+                    "equation": 0,
+                    "assitanceScore": 0
+                },
+                "status": {
+                    "equation": {
+                        "disabled": false
+                    }
+                },
+                "name": "water condensing",
+                "description": "Number of water molecules entering the water per second",
+                "type": "function",
+                "equation": "id1*id7",
+                "genus": ""
+            },
+            {
+                "ID": "id7",
+                "inputs": [],
+                "position": {
+                    "x": 786,
+                    "y": 273
+                },
+                "attemptCount": {
+                    "description": 0,
+                    "type": 0,
+                    "initial": 0,
+                    "units": 0,
+                    "equation": 0,
+                    "assitanceScore": 0
+                },
+                "status": {},
+                "name": "proportion condensing",
+                "description": "Proportion of the water molecules in the air that enter the water",
+                "equation": "",
+                "type": "parameter",
+                "parentNode": false,
+                "initial": 0.03,
+                "genus": ""
+            },
+            {
+                "ID": "id8",
+                "inputs": [],
+                "position": {
+                    "x": 547.3309326171875,
+                    "y": 260.3309326171875
+                },
+                "attemptCount": {
+                    "description": 0,
+                    "type": 0,
+                    "initial": 0,
+                    "units": 0,
+                    "equation": 0,
+                    "assitanceScore": 0
+                },
+                "status": {},
+                "name": "kinetic energy",
+                "description": "Amount of kinetic energy of the system",
+                "equation": "",
+                "type": "parameter",
+                "parentNode": false,
+                "initial": 14.5,
+                "units": "joules",
+                "genus": "allowed"
+            },
+            {
+                "ID": "id9",
+                "inputs": [],
+                "position": {
+                    "x": 675.3309326171875,
+                    "y": 265.3309326171875
+                },
+                "attemptCount": {
+                    "description": 0,
+                    "type": 0,
+                    "initial": 0,
+                    "units": 0,
+                    "equation": 0,
+                    "assitanceScore": 0
+                },
+                "status": {},
+                "name": "Surface area",
+                "description": "Surface area of the water",
+                "equation": "",
+                "type": "parameter",
+                "parentNode": false,
+                "initial": 0.001,
+                "units": "mm^2",
+                "genus": "extra"
+            },
+            {
+                "ID": "id10",
+                "inputs": [],
+                "position": {
+                    "x": 427.3309631347656,
+                    "y": 265.3309326171875
+                },
+                "attemptCount": {
+                    "description": 0,
+                    "type": 0,
+                    "initial": 0,
+                    "units": 0,
+                    "equation": 0,
+                    "assitanceScore": 0
+                },
+                "status": {},
+                "name": "Volume",
+                "description": "Volume of the air",
+                "equation": "",
+                "type": "parameter",
+                "parentNode": false,
+                "initial": 0.01,
+                "units": "mm^3",
+                "genus": "extra"
+            }
+        ],
+        "studentModelNodes": []
+    }
+}

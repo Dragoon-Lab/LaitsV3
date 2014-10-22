@@ -316,7 +316,8 @@ define([
 			messageWidget.set('content', '');
 
 			// Color the borders of the Node
-			this.colorNodeBorder(this.currentID, true);
+			if(this._mode !="TEST" && this._mode != "EDITOR")
+				this.colorNodeBorder(this.currentID, true);
 
 			// update Node labels upon exit
 			this.updateNodeLabel(this.currentID);
@@ -331,8 +332,10 @@ define([
 				nodeComplete: this._model.active.isComplete(this.currentID)
 			});
 			
-			if(this._mode === "EDITOR" || this._mode === "TEST"){
-				domStyle.set(this.currentID, 'border', "gray");	 // set border gray for studentModelNodes in TEST and EDITOR mode
+			if(this._mode == "EDITOR" || this._mode == "TEST"){
+				var isComplete = this._model.active.isComplete(this.currentID, true)?'solid':'dashed';
+				var borderColor = "3px "+isComplete+" gray";
+				domStyle.set(this.currentID, 'border', borderColor);	 // set border gray for studentModelNodes in TEST and EDITOR mode
 			}
 			// This cannot go in controller.js since _PM is only in
 			// con-student.	 You will need con-student to attach this

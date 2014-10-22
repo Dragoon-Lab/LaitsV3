@@ -1,0 +1,144 @@
+{
+    "task": {
+        "taskName": "Venice",
+        "time": {
+            "start": 0,
+            "end": 10,
+            "step": 0.5,
+            "units": "decades"
+        },
+        "properties": {
+            "phase": "Challenge",
+            "type": "Construct"
+        },
+        "image": {
+            "URL": "http://upload.wikimedia.org/wikipedia/commons/3/36/Venezia_acqua_alta_notte_2005_modificata.jpg"
+        },
+        "taskDescription": [
+            " Problem: The city of Venice in Italy is famous for its canals. The largest canal is 36,576 centimeters wide and on average the smaller canals are 3,810 centimeters wide. While the main form of transportation is via waterways, there are still a few streets and road that are mainly used by pedestrians. Unfortunately, like many coastal cities, Venice is sinking slowly. It sinks about 10 centimeters per decade. The elevation of most of the streets still in use is 300 centimeters above sea level. Goal: Graph the elevation above sea level of those streets for the next 10 decades."
+        ],
+        "lessonsLearned": [
+            "This system has a simple linear decay process, but it is obscured by extra numbers and information. "
+        ],
+        "slides": [
+            {
+                "type": "text",
+                "value": "count",
+                "title": "Types of nodes in the model"
+            },
+            {
+                "type": "image",
+                "value": "images/CPI/Venice_graphs.png",
+                "title": "Author's graph for Infections Problem"
+            },
+            {
+                "type": "image",
+                "value": "images/CPI/Venice_correctnodes.png",
+                "title": "Author's solution for Infections Problem"
+            },
+            {
+                "type": "text",
+                "value": "lessons",
+                "title": "Lessons Learned"
+            }
+        ],
+        "givenModelNodes": [
+            {
+                "ID": "id1",
+                "inputs": [],
+                "position": {
+                    "x": 400,
+                    "y": 100
+                },
+                "attemptCount": {
+                    "description": 0,
+                    "type": 0,
+                    "initial": 0,
+                    "units": 0,
+                    "equation": 0
+                },
+                "status": {},
+                "name": "smaller canal width",
+                "type": "parameter",
+                "parentNode": false,
+                "genus": "extra",
+                "units": "",
+                "description": "The number of centimeters wide of the smaller canals",
+                "initial": 3810
+            },
+            {
+                "ID": "id2",
+                "inputs": [],
+                "position": {
+                    "x": 400,
+                    "y": 100
+                },
+                "attemptCount": {
+                    "description": 0,
+                    "type": 0,
+                    "initial": 0,
+                    "units": 0,
+                    "equation": 0
+                },
+                "status": {},
+                "name": "largest canal width",
+                "type": "parameter",
+                "parentNode": false,
+                "genus": "extra",
+                "units": "",
+                "description": "The number of centimeters wide of the largest canals",
+                "initial": 36576
+            },
+            {
+                "ID": "id3",
+                "inputs": [],
+                "position": {
+                    "x": 400,
+                    "y": 100
+                },
+                "attemptCount": {
+                    "description": 0,
+                    "type": 0,
+                    "initial": 0,
+                    "units": 0,
+                    "equation": 0
+                },
+                "status": {},
+                "name": "cm sunk per decade",
+                "type": "parameter",
+                "parentNode": false,
+                "units": "",
+                "description": "The number of centimeters the streets of Venice sink each decade",
+                "initial": 10
+            },
+            {
+                "ID": "id4",
+                "inputs": [
+                    {
+                        "ID": "id3"
+                    }
+                ],
+                "position": {
+                    "x": 400,
+                    "y": 100
+                },
+                "attemptCount": {
+                    "description": 0,
+                    "type": 0,
+                    "initial": 0,
+                    "units": 0,
+                    "equation": 0
+                },
+                "status": {},
+                "name": "cm above sea level",
+                "type": "accumulator",
+                "parentNode": true,
+                "units": "",
+                "description": "The number of centimeters the streets of Venice are above sea level each decade",
+                "initial": 300,
+                "equation": "- id3"
+            }
+        ],
+        "studentModelNodes": []
+    }
+}

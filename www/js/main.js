@@ -131,7 +131,10 @@ define([
 			//In TEST and EDITOR mode remove border color from existing Student model nodes.			 
 			if(controllerObject._mode == "TEST" || controllerObject._mode == "EDITOR"){
 				array.forEach(givenModel.model.task.studentModelNodes, function(studentNode){
-					style.set(studentNode.ID, 'border', "gray");
+					var isComplete = givenModel.active.isComplete(studentNode.ID, true)?'solid':'dashed';
+					var borderColor = "3px "+isComplete+" gray";
+					style.set(studentNode.ID, 'border', borderColor);
+					style.set(studentNode.ID, 'backgroundColor', "white");
 				});
 			}
 
@@ -199,10 +202,30 @@ define([
 			});
 
 			// checks if forumurl is present
-			if(query.f && query.fe) {
+			if(query.f && query.fe=="true") {
 				//Enable the forum button in the menu
 				var forumBut=registry.byId("forumButton");
 				forumBut.set("disabled", false);
+                //For redirecting to the forum from forum button click on header, only incase enabled
+                menu.add("forumButton",function(){
+                    //  Some portion of this function body should be moved to forum.js, Bug #2424
+                    console.log("clicked on main forum button");
+                    controllerObject.logging.log('ui-action', {
+                        type: "menu-forum-button",
+                        name: "forum"
+                    });
+                    var prob_name=givenModel.getTaskName();
+                    console.log("problem name is ", prob_name);
+                    // "newwindow": the pop-out window name, not required, could be empty
+                    // "height" and "width": pop-out window size
+                    // Other properties could be changed as the value of yes or no
+                    //
+                    // The parameters should be escaped, Bug #2423
+                    // Should add logging, Bug #2424
+                    window.open(query.f+"?&n="+prob_name+"&s="+query.s+"&fid="+query.fid+"&sid="+query.sid,"newwindow",
+                        "height=400, width=600, toolbar =no, menubar=no, scrollbars=no, resizable=no, location=no, status=no"
+                    );
+                });
 				//setter function used for setting forum parameters
 				//inside controller
 				controllerObject.setForum(query);
@@ -293,83 +316,19 @@ define([
 					var createSlides = new slides(givenModel);
 					menu.add("slidesButton", function(){
 						createSlides.show();
-
-						var size = createSlides._slides.length;
-						var	pb = registry.byId("prevSlide");
-						if(pb.value == 0)
-							pb.set("disabled", true);
-						else 
-							pb.set("disabled", false);
-
-						var nb = registry.byId("nextSlide");
-						if(nb.value == size+1)
-							nb.set("disabled", true);
-						else
-							nb.set("disabled", false);
-
-						on(registry.byId("prevSlide"), "click", function(){
-							var id = pb.value;
-							if(id>0){
-								var currID =id +1;
-								
-								currID = currID.toString();
-								id = id.toString();
-							
-								var hideDOM = dom.byId(currID);
-								var prevDOM = dom.byId(id);
-							
-								style.set(hideDOM, "display", "none");
-								style.set(prevDOM, "display", "block");
-								
-								id = parseInt(id);
-								pb.value = id - 1;
-								nb.value = id + 1;
-
-								if(id > 1)
-									pb.set("disabled", false);
-								else
-									pb.set("disabled", true);
-
-								if(id < size)
-									nb.set("disabled", false);
-								else
-									nb.set("disabled", true);
-							}
-						});
-						
-						on(registry.byId("nextSlide"), "click", function(){
-							var id = nb.value;
-							if(id<=size){
-								var currID = id - 1;
-							
-								currID = currID.toString();
-								id = id.toString();
-
-								var nextDOM = dom.byId(id);
-								var hideDOM = dom.byId(currID);
-
-								style.set(hideDOM, "display", "none");
-								style.set(nextDOM, "display", "block");
-								
-								id = parseInt(id);
-								pb.value = id - 1;
-								nb.value = id + 1;
-
-								if(id > 1)
-									pb.set("disabled", false);
-								else
-									pb.set("disabled", true);
-
-								if(id < size)
-									nb.set("disabled", false);
-								else
-									nb.set("disabled", true);
-							}
-						});
+						createSlides.log(controllerObject.logging);
+					});
+					
+					on(registry.byId("prevSlide"), "click", function(){
+						createSlides.changeSlides("prev");
+						createSlides.log(controllerObject.logging);
+					});
+										
+					on(registry.byId("nextSlide"), "click", function(){
+						createSlides.changeSlides("next");
+						createSlides.log(controllerObject.logging);
 					});
 				}
-													
-
 			}
 
 			// Render image description on canvas
@@ -436,18 +395,23 @@ define([
 			//var lessonsLearnedButton = registry.byId("lessonsLearnedButton");   
 			//lessonsLearnedButton.set("disabled", true);
 			//Bind lessonsLearnedButton to the click event	
-			menu.add("lessonsLearnedButton", function(){
-				var lessonLearnedDialog = registry.byId("lesson");
-				var titleMsg = "Lessons Learned";
-				contentMsg = givenModel.getTaskLessonsLearned();
-				var contentHTML = contentMsg[0];
-				for(var i=1;i<contentMsg.length;i++) {
-					contentHTML = contentHTML +"<br>"+contentMsg[i];
-				}
-				lessonLearnedDialog.set("content", contentHTML);
-				lessonLearnedDialog.set("title", titleMsg);
-				lessonLearnedDialog.show();
-			});
+			if(query.m == "STUDENT" || query.m == "COACHED"){
+				menu.add("lessonsLearnedButton", function(){
+					if(givenModel.isLessonLearnedShown == true){
+						var lessonLearnedDialog = registry.byId("lesson");
+						var titleMsg = "<font size='3'>Lessons Learned</font>";
+						contentMsg = givenModel.getTakLessonsLearned();
+						var contentHTML = "<font size='2'>" + contentMsg[0];
+						for(var i=1;i<contentMsg.length;i++) {
+							contentHTML = contentHTML +"<br>"+contentMsg[i];
+						}
+						contentHTML = contentHTML + "</font>";
+						lessonLearnedDialog.set("content", contentHTML);
+						lessonLearnedDialog.set("title", titleMsg);
+						lessonLearnedDialog.show();
+					}		
+				});
+			}
             /*
              Add link to intro video
              */
@@ -499,26 +463,6 @@ define([
 						   );
 			});
 
-			//For redirecting to the forum from forum button click on header
-			menu.add("forumButton",function(){
-				//  Some portion of this function body should be moved to forum.js, Bug #2424
-				console.log("clicked on main forum button");
-				controllerObject.logging.log('ui-action', {
-					type: "menu-forum-button",
-					name: "forum"
-				});
-				var prob_name=givenModel.getTaskName();
-				console.log("problem name is ", prob_name);
-				// "newwindow": the pop-out window name, not required, could be empty
-				// "height" and "width": pop-out window size
-				// Other properties could be changed as the value of yes or no
-				//
-				// The parameters should be escaped, Bug #2423
-				// Should add logging, Bug #2424
-				window.open(query.f+"?&n="+prob_name+"&s="+query.s+"&fid="+query.fid+"&sid="+query.sid,"newwindow",
-							"height=400, width=600, toolbar =no, menubar=no, scrollbars=no, resizable=no, location=no, status=no"
-						   );
-			});
 		});
 	});
 });

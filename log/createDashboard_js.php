@@ -149,12 +149,15 @@
 							if($currentNode->name != null){
 								$index = $upObject->getIndex($currentNode->name);
 							}
-							if($index < 0){
-								array_push($upObject->nodes, $currentNode);
-							} else {
-								$upObject->nodes[$index] = $currentNode;
+							//echo print_r($newMessage)."</br>";
+							if($currentNode->id == $newMessage['nodeID']){
+								if($index < 0){
+									array_push($upObject->nodes, $currentNode);
+								} else {
+									$upObject->nodes[$index] = $currentNode;
+								}
+								$currentNode = null;
 							}
-							$currentNode = null;
 						} else {
 							$index = $upObject->getIndex($newMessage['nodeID']);
 							if($index >= 0){
@@ -289,6 +292,7 @@
 								array_push($currentProperty->status, "DEMO");
 								$currentProperty->time = $newMessage['time'] - $propertyStartTime;
 								$propertyStartTime = $newMessage['time'];
+								//echo "row - ".print_r($row)."</br>";
 								array_push($currentNode->properties, $currentProperty);
 								$currentProperty = null;
 							}

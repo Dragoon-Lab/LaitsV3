@@ -1,0 +1,139 @@
+{
+    "task": {
+        "taskName": "Corky is falling behind",
+        "time": {
+            "start": 0,
+            "end": 12,
+            "step": 0.5,
+            "units": "weeks"
+        },
+        "properties": {
+            "phase": "Intro",
+            "type": "Debug"
+        },
+        "image": {},
+        "taskDescription": [
+            "Corky keeps a list of assignments he needs to complete for his classes, but it keeps getting longer and longer. Corky starts with 2 tasks on his list. Each",
+            "week, Corky adds 7 new assignments to his task list. As hard as he tries, Corky is only able to complete 3 assignments",
+            "each week and remove them from his task list. Construct a model that shows how the number of tasks on Corky’s list",
+            "changes.",
+            "Analysis:",
+            "* Process 1: Adding new assignments to the task list",
+            "* Source 1: irrelevant",
+            "* Destination 1: the task list",
+            "* Changing 1: a constant 7 assignments changes state each week",
+            "* Process 2: Removing completed assignments from the task list",
+            "* Source 2: the task list",
+            "* Destination 2: irrelevant",
+            "* Changing 2: a constant 3 assignments changes state each week"
+        ],
+        "lessonsLearned": [
+            "This model combines linear growth and linear decay. If you play with the sliders, you&apos;ll see that regardless of the values",
+            "of the parameters, the graph is always a straight line. Thus, if you combine two or more linear changes, you get a linear",
+            "change."
+        ],
+        "slides": [
+            {
+                "type": "text",
+                "value": "count",
+                "title": "Types of nodes in the model"
+            },
+            {
+                "type": "image",
+                "value": "images/CPI/IntroProblem3_graph.png",
+                "title": "Author's graph for Introduction Problem"
+            },
+            {
+                "type": "image",
+                "value": "images/CPI/IntroProblem3_correctnodes.png",
+                "title": "Author's solution for Introduction Problem"
+            },
+            {
+                "type": "text",
+                "value": "lessons",
+                "title": "Lessons Learned"
+            }
+        ],
+        "givenModelNodes": [
+            {
+                "ID": "id1",
+                "inputs": [],
+                "position": {
+                    "x": 400,
+                    "y": 100
+                },
+                "attemptCount": {
+                    "description": 0,
+                    "type": 0,
+                    "initial": 0,
+                    "units": 0,
+                    "equation": 0,
+                    "assistanceScore": 0
+                },
+                "status": {},
+                "name": "assignments added",
+                "type": "parameter",
+                "parentNode": false,
+                "units": "",
+                "description": "The number of new assignments added each week",
+                "initial": 7
+            },
+            {
+                "ID": "id2",
+                "inputs": [],
+                "position": {
+                    "x": 400,
+                    "y": 100
+                },
+                "attemptCount": {
+                    "description": 0,
+                    "type": 0,
+                    "initial": 0,
+                    "units": 0,
+                    "equation": 0,
+                    "assistanceScore": 0
+                },
+                "status": {},
+                "name": "assignments removed",
+                "type": "parameter",
+                "parentNode": false,
+                "units": "",
+                "description": "The number of assignments completed and removed from the task list each week",
+                "initial": 3
+            },
+            {
+                "ID": "id3",
+                "inputs": [
+                    {
+                        "ID": "id1"
+                    },
+                    {
+                        "ID": "id2"
+                    }
+                ],
+                "position": {
+                    "x": 400,
+                    "y": 100
+                },
+                "attemptCount": {
+                    "description": 0,
+                    "type": 0,
+                    "initial": 0,
+                    "units": 0,
+                    "equation": 0,
+                    "assistanceScore": 0,
+                    "unknownVar": 0
+                },
+                "status": {},
+                "name": "task list",
+                "type": "accumulator",
+                "parentNode": true,
+                "units": "",
+                "description": "The number of assignments on the task list at the end of each week",
+                "initial": 2,
+                "equation": "+ id1 - id2"
+            }
+        ],
+        "studentModelNodes": []
+    }
+}

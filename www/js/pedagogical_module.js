@@ -58,16 +58,14 @@ define([
 		],
 		extra: [
 			"You tried to define a parameter for a number you read in the problem.	Not all numbers in the problem statement are necessary for the model.  You will save effort if you follow the Target Node Strategy, which says you should start by defining a node for a quantity that the problem asks you to graph, then define nodes for its inputs, and then define nodes for their inputs, etc.  That way, every node you create is an input to some node.",
-			"Not every number in the problem statement is necessary for the model.	You should define a node for a quantity only when either (1) it is required as input to a previously defined node, or (2) the problem statement asks you to graph it.",
+			"Not every number in the problem statement is necessary for the model.	You should define a node for a quantity only when either (1) it is required as input to a previously defined node, or (2) the problem statement asks you to graph it or to model how it changes.",
 			"Please be sure you need a node before defining it.	 Even if a number appears in the problem statement, it may not be needed in the model."
 		],
 		redundant: [
 			"A node already exists for that quantity.  If you want to edit it, click on it."
 		],
 		premature: [
-			"Blue means that the quantity is relevant for modeling the system, but it is not yet time to define it.	 You should follow the Target Node Strategy, which says you should edit an existing node that is not yet defined.  Such nodes have dotted outlines.	 Click on one to edit it.",
-			"Blue means that according to the Target Node Strategy, it is too early to define a node for this quantity.	 Edit a node that has a dotted outline.",
-			"Blue means premature.	Edit a node with a dotted outline instead."
+			"The node you are trying to create is Premature. Please follow the Target Node Strategy."
 		],
 		notTopLevel: [
 			"Blue means that quantity isn’t one that the problem statement asks you to graph.  Although this quantity will eventually be in your model, you should follow the Target Node Strategy, which says you should first define a node for a top level goal quantity.",
