@@ -20,6 +20,28 @@
         "lessonsLearned" : [
             " This system has two processes.  The increase in thermal energy is linear growth.  The evaporation of water doesn&apos;t match any of our simple change processes exactly.  It is similar to both exponential growth and acceleration. "
         ],
+        "slides": [
+            {
+                "type": "text",
+                "value": "count",
+                "title": "Types of nodes in the model"
+            },
+            {
+                "type": "image",
+                "value": "images/CPI/Accelerating_evaporation_graphs.jpg",
+                "title": "Author's graph for Infections Problem"
+            },
+            {
+                "type": "image",
+                "value": "images/CPI/Accelerating_evaporation_correctnodes.png",
+                "title": "Author's solution for Infections Problem"
+            },
+            {
+                "type": "text",
+                "value": "lessons",
+                "title": "Lessons Learned"
+            }
+        ],
         "givenModelNodes": [
             {
                 "ID": "id1",

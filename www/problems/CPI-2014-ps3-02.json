@@ -20,6 +20,28 @@
         "lessonsLearned" : [
             "This system has two linear growths in it, one for each tank.   The only trick is that the problem asks your model to display the change in the ratio of the two tank&apos;s contents."
         ],
+        "slides": [
+            {
+                "type": "text",
+                "value": "count",
+                "title": "Types of nodes in the model"
+            },
+            {
+                "type": "image",
+                "value": "images/CPI/Oil_tanker_graphs.jpg",
+                "title": "Author's graph for Infections Problem"
+            },
+            {
+                "type": "image",
+                "value": "images/CPI/Oil_tanker_correntnodes.png",
+                "title": "Author's solution for Infections Problem"
+            },
+            {
+                "type": "text",
+                "value": "lessons",
+                "title": "Lessons Learned"
+            }
+        ],
         "givenModelNodes": [
             {
                 "ID": "id1",
