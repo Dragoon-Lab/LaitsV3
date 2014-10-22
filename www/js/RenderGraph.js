@@ -53,7 +53,8 @@ define([
 		 *	@brief:constructor for a graph object
 		 *	@param: noOfParam
 		 */
-		constructor: function(){
+		constructor: function(model, mode, logging, buttonClicked){
+			this.buttonClicked = buttonClicked;
 			console.log("***** In RenderGraph constructor");
 			this.resizeWindow();
 			if(this.active.timeStep){  // Abort if there is an error in timestep.
@@ -66,6 +67,8 @@ define([
 		 *
 		 */
 		initialize: function(){
+			console.log("graphing");
+			console.log(this.buttonClicked);
 			/* List of variables to plot: Include functions */
 			this.active.plotVariables = this.active.timeStep.xvars.concat(
 				this.active.timeStep.functions);
@@ -118,8 +121,10 @@ define([
 				this.dialogContent += "<div class='legend' id='legend" + id + "'></div>";
 			}, this);
 			//create tab for table
-			this.dialogContent += "</div><div data-dojo-type='dijit/layout/ContentPane' style='overflow:auto' data-dojo-props='title:\"Table\"'>"
-
+			if(this.buttonClicked == "graph")
+				this.dialogContent += "</div><div data-dojo-type='dijit/layout/ContentPane' style='overflow:visible' data-dojo-props='title:\"Table\"'>"
+			if(this.buttonClicked == "table")
+				this.dialogContent += "</div><div data-dojo-type='dijit/layout/ContentPane' style='overflow:visible' selected = true data-dojo-props='title:\"Table\"'>"
 			//Render table here
 			this.dialogContent += "<div id='table' stlye='overflow:visible'></div>";
 
@@ -336,7 +341,7 @@ define([
 			this.contentPane.setContent(paneText);
 		},
 		initTable: function(){
-			return "<div style='overflow:visible' align='center'>" + "<table class='solution'>";
+			return "<div style='overflow:visible' align='center'>" + "<table class='solution' style='overflow:visible'>";
 		},
 		
 		/*
@@ -351,9 +356,9 @@ define([
 		 */
 		setTableHeader: function(){
 			var i, tableString = "";
-			tableString += "<tr>";
+			tableString += "<tr style='overflow:visible'>";
 			//setup xunit (unit of timesteps)
-			tableString += "<th>" + this.labelString() + "</th>";
+			tableString += "<th style='overflow:visible'>" + this.labelString() + "</th>";
 			array.forEach(this.plotVariables, function(id){
 				tableString += "<th>" + this.labelString(id) + "</th>";
 			}, this);
@@ -374,11 +379,11 @@ define([
 			}
 			
 			for(var i=0; i<solution.times.length; i++){
-				tableString += "<tr>";
-				tableString += "<td align='center'>" + solution.times[i].toPrecision(4) + "</td>";
+				tableString += "<tr style='overflow:visible'>";
+				tableString += "<td align='center' style='overflow:visible'>" + solution.times[i].toPrecision(4) + "</td>";
 				//set values in table according to their table-headers
 				array.forEach(solution.plotValues, function(value){
-					tableString += "<td align='center'>" + value[i].toPrecision(3) + "</td>";
+					tableString += "<td align='center' style='overflow:visible'>" + value[i].toPrecision(3) + "</td>";
 				});
 				tableString += "</tr>";
 			}

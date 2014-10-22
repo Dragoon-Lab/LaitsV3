@@ -343,7 +343,8 @@ define([
 			menu.add("graphButton", function(){
 				console.debug("button clicked");
 				// instantiate graph object
-				var graph = new Graph(givenModel, query.m, session);
+				var buttonClicked = "graph";
+				var graph = new Graph(givenModel, query.m, session, buttonClicked);
 				var problemComplete = givenModel.matchesGivenSolution();
 				
 				graph._logging.log('ui-action', {
@@ -358,7 +359,8 @@ define([
 			// show table when button clicked
 			menu.add("tableButton", function(){
 				console.debug("table button clicked");
-				var table = new Table(givenModel, query.m, session);
+				var buttonClicked = "table";
+				var table = new Graph(givenModel, query.m, session, buttonClicked);
 				table._logging.log('ui-action', {
 					type: "menu-choice", 
 					name: "table-button"
