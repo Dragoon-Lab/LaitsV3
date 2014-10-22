@@ -532,6 +532,9 @@ define([
 				equationNode.set("value", "");
 				//changing the equation value does not call the handler so setting the value explicitly using set equation.
 				this._model.active.setEquation(this.currentID, '');
+				//Clear the inputs and reset connections
+				this._model.active.setInputs([], this.currentID);
+				this.setConnections(this._model.active.getInputs(this.currentID), this.currentID);
 			}
 			// updating the model and the equation labels
 			this._model.active.setType(this.currentID, type);
