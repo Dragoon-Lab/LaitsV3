@@ -171,5 +171,6 @@ div.legend {
 }
 
 .learning ul{
-	list-style-type: none;
+	/*list-style-type: none;*/
+    max-width: 500px;
 }
