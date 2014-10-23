@@ -172,7 +172,8 @@
                 "type": "parameter",
                 "parentNode": false,
                 "initial": 6e+24,
-                "units": "kg"
+                "units": "kg",
+                "genus": "extra"
             }
         ],
         "studentModelNodes": []
