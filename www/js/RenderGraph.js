@@ -53,8 +53,10 @@ define([
 		 *	@brief:constructor for a graph object
 		 *	@param: noOfParam
 		 */
-		constructor: function(){
+		constructor: function(model, mode, logging, buttonClicked){
+			this.buttonClicked = buttonClicked;
 			console.log("***** In RenderGraph constructor");
+			this.resizeWindow();
 			if(this.active.timeStep){  // Abort if there is an error in timestep.
 				this.initialize();
 			}
@@ -65,6 +67,8 @@ define([
 		 *
 		 */
 		initialize: function(){
+			console.log("graphing");
+			console.log(this.buttonClicked);
 			/* List of variables to plot: Include functions */
 			this.active.plotVariables = this.active.timeStep.xvars.concat(
 				this.active.timeStep.functions);
@@ -98,13 +102,15 @@ define([
 				// Calculate solutions
 				var givenSolution = this.findSolution(false, this.given.plotVariables);
 			}
+			this.resizeWindow();
+
 
 			//create content pane for displaying graph/table and sliders
-			this.dialogContent += "<div data-dojo-type= 'dijit/layout/ContentPane' style='overflow:auto; width:50%; float:left; height: 700px; background-color: #FFFFFF'>"
+			this.dialogContent += "<div data-dojo-type= 'dijit/layout/ContentPane' style='overflow:visible; width:50%; float:left; height: 700px; background-color: #FFFFFF'>"
 			//create tab container on left side for graph and table
-			this.dialogContent += "<div data-dojo-type='dijit/layout/TabContainer' style='overflow:auto; height:90%; width:100%'>"
+			this.dialogContent += "<div data-dojo-type='dijit/layout/TabContainer' style='overflow:visible; height:700px; width:501px'>"
 			//create tab for graph and fill it
-			this.dialogContent += "<div data-dojo-type='dijit/layout/ContentPane' data-dojo-props='title:\"Graph\"'>";
+			this.dialogContent += "<div data-dojo-type='dijit/layout/ContentPane' style='overflow:auto' data-dojo-props='title:\"Graph\"'>";
 			array.forEach(this.active.plotVariables, function(id){
 				var show = this.model.active.getType(id) == "accumulator";
 				var checked = show ? " checked='checked'" : "";
@@ -115,10 +121,12 @@ define([
 				this.dialogContent += "<div class='legend' id='legend" + id + "'></div>";
 			}, this);
 			//create tab for table
-			this.dialogContent += "</div><div data-dojo-type='dijit/layout/ContentPane' style='overflow:visible' data-dojo-props='title:\"Table\"'>"
-
+			if(this.buttonClicked == "graph")
+				this.dialogContent += "</div><div data-dojo-type='dijit/layout/ContentPane' style='overflow:visible' data-dojo-props='title:\"Table\"'>"
+			if(this.buttonClicked == "table")
+				this.dialogContent += "</div><div data-dojo-type='dijit/layout/ContentPane' style='overflow:visible' selected = true data-dojo-props='title:\"Table\"'>"
 			//Render table here
-			this.dialogContent += "<div id='table'></div>";
+			this.dialogContent += "<div id='table' stlye='overflow:visible'></div>";
 
 			//end divs for graph and table 
 			this.dialogContent += "</div></div></div>"
@@ -236,6 +244,7 @@ define([
 					}
 				});
 			}, this);
+			this.resizeWindow();
 		},
 
 		/*
@@ -248,6 +257,18 @@ define([
 			});
 		},
 
+		doLayout: function()
+		{},
+
+		resizeWindow: function(){
+			console.log("resizing window");
+			var dialogWindow = document.getElementById("solution");
+			dialogWindow.style.height = "750px";
+			dialogWindow.style.width = "1000px";
+			dialogWindow.style.left = "0px";
+			dialogWindow.style.top = "0px";
+		},
+/*
 			resetposition: function(){
 		// summary: position modal dialog in center of screen
 		
@@ -274,7 +295,7 @@ define([
 			// If the height of the box is the same or bigger than the viewport
 			// it means that the box should be made scrollable and a bottom should be set
 
-		},
+		},*/
 
 		/*
 		 * @brief: this functionreturns object with min and max
@@ -320,7 +341,7 @@ define([
 			this.contentPane.setContent(paneText);
 		},
 		initTable: function(){
-			return "<div align='center'>" + "<table class='solution'>";
+			return "<div style='overflow:visible' align='center'>" + "<table class='solution' style='overflow:visible'>";
 		},
 		
 		/*
@@ -335,9 +356,9 @@ define([
 		 */
 		setTableHeader: function(){
 			var i, tableString = "";
-			tableString += "<tr>";
+			tableString += "<tr style='overflow:visible'>";
 			//setup xunit (unit of timesteps)
-			tableString += "<th>" + this.labelString() + "</th>";
+			tableString += "<th style='overflow:visible'>" + this.labelString() + "</th>";
 			array.forEach(this.plotVariables, function(id){
 				tableString += "<th>" + this.labelString(id) + "</th>";
 			}, this);
@@ -358,11 +379,11 @@ define([
 			}
 			
 			for(var i=0; i<solution.times.length; i++){
-				tableString += "<tr>";
-				tableString += "<td align='center'>" + solution.times[i].toPrecision(4) + "</td>";
+				tableString += "<tr style='overflow:visible'>";
+				tableString += "<td align='center' style='overflow:visible'>" + solution.times[i].toPrecision(4) + "</td>";
 				//set values in table according to their table-headers
 				array.forEach(solution.plotValues, function(value){
-					tableString += "<td align='center'>" + value[i].toPrecision(3) + "</td>";
+					tableString += "<td align='center' style='overflow:visible'>" + value[i].toPrecision(3) + "</td>";
 				});
 				tableString += "</tr>";
 			}

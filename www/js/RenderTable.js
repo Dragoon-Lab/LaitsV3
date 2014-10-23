@@ -100,9 +100,9 @@ define([
 			}
 
 			//create content pane for displaying graph/table and sliders
-			this.dialogContent += "<div data-dojo-type= 'dijit/layout/ContentPane' style='overflow:auto; width:50%; float:left; height: 700px; background-color: #FFFFFF'>"
+			this.dialogContent += "<div data-dojo-type= 'dijit/layout/ContentPane' style='overflow:visible; width:50%; float:left; height: 700px; background-color: #FFFFFF'>"
 			//create tab container on left side for graph and table
-			this.dialogContent += "<div data-dojo-type='dijit/layout/TabContainer' style='overflow:auto; height:90%; width:100%'>"
+			this.dialogContent += "<div data-dojo-type='dijit/layout/TabContainer' style='overflow:visible; height:700px; width:350px'>"
 			//create tab for graph and fill it
 			this.dialogContent += "<div data-dojo-type='dijit/layout/ContentPane' data-dojo-props='title:\"Graph\"'>";
 			array.forEach(this.active.plotVariables, function(id){
@@ -118,7 +118,7 @@ define([
 			this.dialogContent += "</div><div data-dojo-type='dijit/layout/ContentPane' style='overflow:visible' selected=true data-dojo-props='title:\"Table\"'>"
 
 			//Render table here
-			this.dialogContent += "<div id='table'></div>";
+			this.dialogContent += "<div id='table' stlye='overflow:visible'></div>";
 
 			//end divs for graph and table 
 			this.dialogContent += "</div></div></div>"

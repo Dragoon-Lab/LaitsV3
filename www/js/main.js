@@ -146,7 +146,7 @@ define([
 					return;
 				}
 				
-				var id = givenModel.active.addNode();
+				var id = givenModel.active.addNode("fromButton");
 				controllerObject.logging.log('ui-action', {type: "menu-choice", name: "create-node"});
 				drawModel.addNode(givenModel.active.getNode(id));		
 				controllerObject.showNodeEditor(id);
@@ -343,7 +343,8 @@ define([
 			menu.add("graphButton", function(){
 				console.debug("button clicked");
 				// instantiate graph object
-				var graph = new Graph(givenModel, query.m, session);
+				var buttonClicked = "graph";
+				var graph = new Graph(givenModel, query.m, session, buttonClicked);
 				var problemComplete = givenModel.matchesGivenSolution();
 				
 				graph._logging.log('ui-action', {
@@ -358,7 +359,8 @@ define([
 			// show table when button clicked
 			menu.add("tableButton", function(){
 				console.debug("table button clicked");
-				var table = new Table(givenModel, query.m, session);
+				var buttonClicked = "table";
+				var table = new Graph(givenModel, query.m, session, buttonClicked);
 				table._logging.log('ui-action', {
 					type: "menu-choice", 
 					name: "table-button"
@@ -400,7 +402,7 @@ define([
 					if(givenModel.isLessonLearnedShown == true){
 						var lessonLearnedDialog = registry.byId("lesson");
 						var titleMsg = "<font size='3'>Lessons Learned</font>";
-						contentMsg = givenModel.getTakLessonsLearned();
+						contentMsg = givenModel.getTaskLessonsLearned();
 						var contentHTML = "<font size='2'>" + contentMsg[0];
 						for(var i=1;i<contentMsg.length;i++) {
 							contentHTML = contentHTML +"<br>"+contentMsg[i];

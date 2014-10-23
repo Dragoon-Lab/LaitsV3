@@ -89,23 +89,31 @@ define([
 			 * Private methods; these methods should not be accessed outside of this class
 			 *
 			 */
-			_updateNextXYPosition: function(){
+			_updateNextXYPosition: function(options){
 				// Summary: keeps track of where to place the next node; function detects collisions
 				//		with other nodes; is called in addStudentNode() before creating the node
 				// Tags: private
-				array.forEach(obj.active.getNodes(), function(node) {
-					var x = node.position.x;
-					var y = node.position.y;
-					while(this.x > x - this.nodeWidth && this.x < x + this.nodeWidth &&
-							this.y > y - this.nodeHeight && this.y < y + this.nodeHeight){
-						if(this.x + this.nodeWidth < document.documentElement.clientWidth + 100)
-							this.x += this.nodeWidth;
-						else{
-							this.x = this.beginX;
-							this.y += this.nodeHeight;
+				if(options == "fromButton")
+				{
+					this.x = document.documentElement.clientWidth*(1/16);
+					this.y = document.documentElement.clientHeight * (1/16);
+				}
+				else
+				{
+					array.forEach(obj.active.getNodes(), function(node) {
+						var x = node.position.x;
+						var y = node.position.y;
+						while(this.x > x - this.nodeWidth && this.x < x + this.nodeWidth &&
+								this.y > y - this.nodeHeight && this.y < y + this.nodeHeight){
+							if(this.x + this.nodeWidth < document.documentElement.clientWidth + 100)
+								this.x += this.nodeWidth;
+							else{
+								this.x = this.beginX;
+								this.y += this.nodeHeight;
+							}
 						}
-					}
-				}, this);
+					}, this);
+				}
 			},
 			_getNextOptimalNode: function(/*string*/ givenNodeID){
 				// Summary: Accepts the id of a parent node and returns the next optimal
@@ -489,7 +497,7 @@ define([
 			addNode: function(options){
 				// Summary: builds a new node and returns the node's unique id
 				//			Can optionally add initial values to node.
-				obj._updateNextXYPosition();
+				obj._updateNextXYPosition(options);
 				var newNode = lang.mixin({
 					ID: "id" + obj._ID++,
 					inputs: [],
