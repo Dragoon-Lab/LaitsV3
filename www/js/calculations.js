@@ -29,8 +29,9 @@ define([
 	"dijit/registry",
 	"dijit/form/HorizontalSlider",
 	"./equation",
-	"./integrate","./typechecker"
-], function(array, declare, lang, on, dom, registry, HorizontalSlider, equation, integrate, typechecker){
+	"./integrate","./typechecker",
+	"./lessons-learned"
+], function(array, declare, lang, on, dom, registry, HorizontalSlider, equation, integrate, typechecker,lessonsLearned){
 	// Summary: 
 	//			Finds model solutions and sets up the sliders
 	// Description:
@@ -384,7 +385,7 @@ define([
 					}
 					return;
 				}
-				equation.displayLessonsLearned(contentMsg);
+				lessonsLearned.displayLessonsLearned(contentMsg);
 				dojo.disconnect(handle);
 			});
 			

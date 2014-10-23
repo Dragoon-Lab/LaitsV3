@@ -44,11 +44,11 @@ define([
 	"./state",
     "./typechecker",
 	"./createSlides",
-	"./calculations"
+	"./lessons-learned"
 ], function(
 		array, lang, dom, geometry, style, on, aspect, ioQuery, ready, registry,
 		menu, loadSave, model,
-		Graph, Table, controlStudent, controlAuthor, drawmodel, logging, equation, description, State, typechecker, slides, calculations
+		Graph, Table, controlStudent, controlAuthor, drawmodel, logging, equation, description, State, typechecker, slides, lessonsLearned
 ){
 	// Summary: 
 	//			Menu controller
@@ -402,7 +402,7 @@ define([
 				menu.add("lessonsLearnedButton", function(){
 					if(givenModel.isLessonLearnedShown == true){
 						contentMsg = givenModel.getTaskLessonsLearned();
-						equation.displayLessonsLearned(contentMsg);
+						lessonsLearned.displayLessonsLearned(contentMsg);
 					}		
 				});
 			}

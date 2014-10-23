@@ -451,20 +451,6 @@ define([
 			}, this);		
 		},
 
-
-		displayLessonsLearned: function(contentMessage)
-		{
-			var lessonLearnedDialog = registry.byId("lesson");
-				var titleMsg  = "<font size='3'>Lessons Learned</font>";
-				var contentHTML = "<font size='2'>" + contentMessage[0];
-				for(var i=1;i<contentMessage.length;i++) {
-					contentHTML = contentHTML +"<br>"+contentMessage[i];
-				}
-				contentHTML = contentHTML + "</font>";
-				lessonLearnedDialog.set("content", contentHTML);
-				lessonLearnedDialog.set("title", titleMsg);
-				lessonLearnedDialog.show();
-		},
 		
 		setLogging: function(/*string*/ logging){
 			this.logging = logging;
