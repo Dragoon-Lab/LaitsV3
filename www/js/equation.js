@@ -22,8 +22,8 @@
 /* global define */
 
 define([
-	"dojo/_base/array", "dojo/_base/lang", "parser/parser"
-], function(array, lang, Parser){
+	"dojo/_base/array", "dojo/_base/lang", "parser/parser", 	"dijit/registry"
+], function(array, lang, Parser, registry){
 	// Summary: 
 	//			Acts as interface to the parser
 	// Description:
@@ -449,6 +449,21 @@ define([
 			return array.map(this.xvars, function(id){
 				return this.parse[id].evaluate(variables , time);
 			}, this);		
+		},
+
+
+		displayLessonsLearned: function(contentMessage)
+		{
+			var lessonLearnedDialog = registry.byId("lesson");
+				var titleMsg  = "<font size='3'>Lessons Learned</font>";
+				var contentHTML = "<font size='2'>" + contentMessage[0];
+				for(var i=1;i<contentMessage.length;i++) {
+					contentHTML = contentHTML +"<br>"+contentMessage[i];
+				}
+				contentHTML = contentHTML + "</font>";
+				lessonLearnedDialog.set("content", contentHTML);
+				lessonLearnedDialog.set("title", titleMsg);
+				lessonLearnedDialog.show();
 		},
 		
 		setLogging: function(/*string*/ logging){

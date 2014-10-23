@@ -384,21 +384,13 @@ define([
 					}
 					return;
 				}
-				var lessonLearnedDialog = registry.byId("lesson");
-				var titleMsg  = "<font size='3'>Lessons Learned</font>";
-				var contentHTML = "<font size='2'>" + contentMsg[0];
-				for(var i=1;i<contentMsg.length;i++) {
-					contentHTML = contentHTML +"<br>"+contentMsg[i];
-				}
-				contentHTML = contentHTML + "</font>";
-				lessonLearnedDialog.set("content", contentHTML);
-				lessonLearnedDialog.set("title", titleMsg);
-				lessonLearnedDialog.show();
+				equation.displayLessonsLearned(contentMsg);
 				dojo.disconnect(handle);
 			});
 			
 			lang.hitch(this, handle);
 		},
+
 
 		setLogging: function(/*string*/ logging){
 			this._logging = logging;

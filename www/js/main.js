@@ -43,11 +43,12 @@ define([
 	"./description",
 	"./state",
     "./typechecker",
-	"./createSlides"
+	"./createSlides",
+	"./calculations"
 ], function(
 		array, lang, dom, geometry, style, on, aspect, ioQuery, ready, registry,
 		menu, loadSave, model,
-		Graph, Table, controlStudent, controlAuthor, drawmodel, logging, expression, description, State, typechecker, slides
+		Graph, Table, controlStudent, controlAuthor, drawmodel, logging, equation, description, State, typechecker, slides, calculations
 ){
 	// Summary: 
 	//			Menu controller
@@ -99,7 +100,7 @@ define([
 			controllerObject._PM.setLogging(session);  // Set up direct logging in PM
 		}
 		controllerObject.setLogging(session); // set up direct logging in controller
-		expression.setLogging(session);
+		equation.setLogging(session);
 		
 		/*
 		 Create state object
@@ -400,17 +401,8 @@ define([
 			if(query.m == "STUDENT" || query.m == "COACHED"){
 				menu.add("lessonsLearnedButton", function(){
 					if(givenModel.isLessonLearnedShown == true){
-						var lessonLearnedDialog = registry.byId("lesson");
-						var titleMsg = "<font size='3'>Lessons Learned</font>";
 						contentMsg = givenModel.getTaskLessonsLearned();
-						var contentHTML = "<font size='2'>" + contentMsg[0];
-						for(var i=1;i<contentMsg.length;i++) {
-							contentHTML = contentHTML +"<br>"+contentMsg[i];
-						}
-						contentHTML = contentHTML + "</font>";
-						lessonLearnedDialog.set("content", contentHTML);
-						lessonLearnedDialog.set("title", titleMsg);
-						lessonLearnedDialog.show();
+						equation.displayLessonsLearned(contentMsg);
 					}		
 				});
 			}
