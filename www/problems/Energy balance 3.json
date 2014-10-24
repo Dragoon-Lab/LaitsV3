@@ -465,7 +465,7 @@
         },
         "descriptionID": "id2",
         "type": "function",
-        "equation": "id11*id14",
+        "equation": "id11/id14",
         "units": "lbs"
     }
 ]
