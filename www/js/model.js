@@ -591,7 +591,10 @@ define([
 			},
 			getDescription: function(/*string*/ id){
 				return this.getNode(id).description;
-			},
+			},           
+            getGivenID: function(/*string*/ id){
+                return id;
+            },
 			getAttemptCount: function(/*string*/ id, /*string*/ part){
 				return this.getNode(id).attemptCount[part];
 			},
@@ -643,7 +646,7 @@ define([
 				//	 2.	 Just units
 				//	 3.	 Optional quantity (needs name and description)
 				var node = this.getNode(id);
-				var initialEntered = node.type && node.type == "function" || node.initial;
+				var initialEntered = node.type && node.type == "function" || node.initial != null;
 				var equationEntered = node.type && node.type == "parameter" || node.equation;
 				if(!node.genus || node.genus == "allowed" || node.genus == "preferred"){
 					return node.name && node.description &&
@@ -674,168 +677,166 @@ define([
 			}
 		}, both);
 
-        obj.student = lang.mixin({
-            addNode: function(options){
-                // Summary: builds a new node in the student model and 
-                //          returns the node's ID.  Can optionally set 
-                //          properties.
-                obj._updateNextXYPosition();
-                var newNode = lang.mixin({
-                    ID: "id" + obj._ID++,
-                    inputs: [],
-                    position: {x: obj.x, y: obj.y},
-                    status: {}
-                }, options || {});
-                obj.model.task.studentModelNodes.push(newNode);
-                return newNode.ID;
+		obj.student = lang.mixin({
+			addNode: function(options){
+				// Summary: builds a new node in the student model and 
+				//			returns the node's ID.	Can optionally set 
+				//			properties.
+				obj._updateNextXYPosition();
+				var newNode = lang.mixin({
+					ID: "id" + obj._ID++,
+					inputs: [],
+					position: {x: obj.x, y: obj.y},
+					status: {}
+				}, options || {});
+				obj.model.task.studentModelNodes.push(newNode);
+				return newNode.ID;
+			},
+			getCorrectAnswer: function(/*string*/ studentID, /*string*/ nodePart){
+				// Summary: returns the correct answer for a given part of a node;
+				//		used by the pedagogical model
+				if(nodePart === "description"){
+					var returnValue = obj.getOptimalNode(studentID);
+					console.log("Correct node: ", returnValue);
+					return returnValue;
+				}else{
+					var id = this.getDescriptionID(studentID);
+					var node = obj.given.getNode(id);
+					return node[nodePart];
+				}
+			},
+			getDescriptionID: function(id){
+				// Summary: Return any matched given model id for student node.
+				var node = this.getNode(id);
+				return node && node.descriptionID;
+			},
+            getGivenID: function(id){
+                return this.getDescriptionID(id);
             },
-            getCorrectAnswer: function(/*string*/ studentID, /*string*/ nodePart){
-                // Summary: returns the correct answer for a given part of a node;
-                //      used by the pedagogical model
-                if(nodePart === "description"){
-                    var returnValue = obj.getOptimalNode(studentID);
-                    console.log("Correct node: ", returnValue);
-                    return returnValue;
-                }else{
-                    var id = this.getDescriptionID(studentID);
-                    var node = obj.given.getNode(id);
-                    return node[nodePart];
-                }
-            },
-            getDescriptionID: function(id){
-                // Summary: Return any matched given model id for student node.
-                var node = this.getNode(id);
-                return node && node.descriptionID;
-            },
-            getNodeIDFor: function(givenID){
-                // Summary: returns the id of a student node having a matching descriptionID;
-                //          return null if no match is found.
-                var id;
-                var gotIt = array.some(this.getNodes(), function(node){
-                    id = node.ID;
-                    return node.descriptionID == givenID;
-                });
-                return gotIt ? id : null;
-            },
-            getName: function(/*string*/ id){
-                // Summary: returns the name of a node matching the student model.
-                //      If no match is found, then return null.
-                /*
-                 Determine what student has selected for this node 
-                 and then look for matching node in given model
-                 and extraDescriptions
-                 */
-                var node = this.getNode(id);
-                return node && node.descriptionID
-                        && obj.given.getName(node.descriptionID);
-            },
-            getNodes: function(){
-                return obj.model.task.studentModelNodes;
-            },
-            getUndefinedNodes: function(){
-
-                console.log("REID ---- undefinedNodes is", obj.model.task.studentUndefinedNodes, "object.model.task:", obj.model.task);
-                return obj.model.task.studentUndefinedNodes;
-            },
-            getAssistanceScore: function(/*string*/ id){
-                // Summary: Returns a score based on the amount of errors/hints that 
-                //      a student receives, based on suggestions by Robert Hausmann;
-                //      a score of 0 means that a student did not have any errors;
-                var givenID = this.getDescriptionID(id);
-                return obj.given.getAttemptCount(givenID, "assistanceScore");
-            },
-            getCorrectness: function(/*string*/ studentID){
-                var node = this.getNode(studentID);
-                var rank = {
-                    "incorrect": 3,
-                    "demo": 2,
-                    "correct": 1,
-                    "": 0
-                };
-                var bestStatus = "";
-                var update = function(attr, sattr){
-                    // node.status always exists
-                    var nsa = node.status[attr];
-                    if(node[sattr || attr] && nsa && nsa.status &&
-                            rank[nsa.status] > rank[bestStatus]){
-                        bestStatus = nsa.status;
-                    }
-                };
-                update("description", "descriptionID");
-                update("type");
-                update("initial");
-                update("units");
-                update("equation");
-                return bestStatus;
-            },
-            getStatusDirectives: function(/*string*/ id){
-                //Summary:  Return a list of directives (like PM does).
-                //          to set up node editor.
-                var status = this.getNode(id).status;
-                var directives = [];
-                for(var control in status){
-                    for(var attribute in status[control]){
-                        directives.push({
-                            id: control,
-                            attribute: attribute,
-                            value: status[control][attribute]
-                        });
-                    }
-                }
-                return directives;
-            },
-            setDescriptionID: function(/*string*/ id, /*string*/ descriptionID){
-                this.getNode(id).descriptionID = descriptionID;
-            },
-            setInitial: function(/*string*/ id, /*float*/ initial){
-                this.getNode(id).initial = initial;
-            },
-            setUnits: function(/*string*/ id, /*string*/ units){
-                this.getNode(id).units = units;
-            },
-            setEquation: function(/*string*/ id, /*string | object*/ equation){
-                this.getNode(id).equation = equation;
-            },
-            setStatus: function(/*string*/ id, /*string*/ control, /*object*/ options){
-                //Summary: Update status for a particular control.
-                //         options may have attributes "status" and "disabled".
-                var attributes = this.getNode(id).status[control];
-                // When undefined, status[control] needs to be set explicitly.
-                this.getNode(id).status[control] = lang.mixin(attributes, options);
-                return attributes;
-            },
-            setAssistanceScore: function(/*string*/ id, /*string*/ score){
-                // Summary: Sets a the amount of errors/hints that a student 
-                //      receives, based on suggestions by Robert Hausmann;
-                //
-                // Note: This is used by the PM when the student first gets the description correct
-                var givenID = this.getDescriptionID(id);
-                var node = obj.given.getNode(givenID);
-                node.attemptCount.assistanceScore = score;
-            },
-            incrementAssistanceScore: function(/*string*/ id){
-                // Summary: Incremements a score of the amount of errors/hints that 
-                //      a student receives, based on suggestions by Robert Hausmann;
-                //
-                // Note: This is used by the PM for all node parts except the description
-                var givenID = this.getDescriptionID(id);
-                var node = obj.given.getNode(givenID);
-                node.attemptCount.assistanceScore = (node.attemptCount.assistanceScore || 0) + 1;
-            },
-            isComplete: function(/*string*/ id){
-                // Summary: Test whether a node is completely filled out, correct or not
-                // Returns a boolean
-                // id: the node id
-                var node = this.getNode(id);
-                // Some given models do not include units.
-                var hasUnits = node.descriptionID && obj.given.getUnits(node.descriptionID);
-                var initialEntered = node.type && node.type == "function" || node.initial;
-                var equationEntered = node.type && node.type == "parameter" || node.equation;
-                return node.descriptionID && node.type &&
-                        initialEntered && (!hasUnits || node.units) &&
-                        equationEntered;
-            }
-        }, both);
+			getNodeIDFor: function(givenID){
+				// Summary: returns the id of a student node having a matching descriptionID;
+				//			return null if no match is found.
+				var id;
+				var gotIt = array.some(this.getNodes(), function(node){
+					id = node.ID;
+					return node.descriptionID == givenID;
+				});
+				return gotIt ? id : null;
+			},
+			getName: function(/*string*/ id){
+				// Summary: returns the name of a node matching the student model.
+				//		If no match is found, then return null.
+				/*
+				 Determine what student has selected for this node 
+				 and then look for matching node in given model
+				 and extraDescriptions
+				 */
+				var node = this.getNode(id);
+				return node && node.descriptionID
+						&& obj.given.getName(node.descriptionID);
+			},
+			getNodes: function(){
+				return obj.model.task.studentModelNodes;
+			},
+			getAssistanceScore: function(/*string*/ id){
+				// Summary: Returns a score based on the amount of errors/hints that 
+				//		a student receives, based on suggestions by Robert Hausmann;
+				//		a score of 0 means that a student did not have any errors;
+				var givenID = this.getDescriptionID(id);
+				return obj.given.getAttemptCount(givenID, "assistanceScore");
+			},
+			getCorrectness: function(/*string*/ studentID){
+				var node = this.getNode(studentID);
+				var rank = {
+					"incorrect": 3,
+					"demo": 2,
+					"correct": 1,
+					"": 0
+				};
+				var bestStatus = "";
+				var update = function(attr, sattr){
+					// node.status always exists
+					var nsa = node.status[attr];
+					if(node[sattr || attr] != null && nsa && nsa.status &&
+							rank[nsa.status] > rank[bestStatus]){
+						bestStatus = nsa.status;
+					}
+				};
+				update("description", "descriptionID");
+				update("type");
+				update("initial");
+				update("units");
+				update("equation");
+				return bestStatus;
+			},
+			getStatusDirectives: function(/*string*/ id){
+				//Summary:	Return a list of directives (like PM does).
+				//			to set up node editor.
+				var status = this.getNode(id).status;
+				var directives = [];
+				for(var control in status){
+					for(var attribute in status[control]){
+						directives.push({
+							id: control,
+							attribute: attribute,
+							value: status[control][attribute]
+						});
+					}
+				}
+				return directives;
+			},
+			setDescriptionID: function(/*string*/ id, /*string*/ descriptionID){
+				this.getNode(id).descriptionID = descriptionID;
+			},
+			setInitial: function(/*string*/ id, /*float*/ initial){
+				this.getNode(id).initial = initial;
+			},
+			setUnits: function(/*string*/ id, /*string*/ units){
+				this.getNode(id).units = units;
+			},
+			setEquation: function(/*string*/ id, /*string | object*/ equation){
+				this.getNode(id).equation = equation;
+			},
+			setStatus: function(/*string*/ id, /*string*/ control, /*object*/ options){
+				//Summary: Update status for a particular control.
+				//		   options may have attributes "status" and "disabled".
+				var attributes = this.getNode(id).status[control];
+				// When undefined, status[control] needs to be set explicitly.
+				this.getNode(id).status[control] = lang.mixin(attributes, options);
+				return attributes;
+			},
+			setAssistanceScore: function(/*string*/ id, /*string*/ score){
+				// Summary: Sets a the amount of errors/hints that a student 
+				//		receives, based on suggestions by Robert Hausmann;
+				//
+				// Note: This is used by the PM when the student first gets the description correct
+				var givenID = this.getDescriptionID(id);
+				var node = obj.given.getNode(givenID);
+				node.attemptCount.assistanceScore = score;
+			},
+			incrementAssistanceScore: function(/*string*/ id){
+				// Summary: Incremements a score of the amount of errors/hints that 
+				//		a student receives, based on suggestions by Robert Hausmann;
+				//
+				// Note: This is used by the PM for all node parts except the description
+				var givenID = this.getDescriptionID(id);
+				var node = obj.given.getNode(givenID);
+				node.attemptCount.assistanceScore = (node.attemptCount.assistanceScore || 0) + 1;
+			},
+			isComplete: function(/*string*/ id){
+				// Summary: Test whether a node is completely filled out, correct or not
+				// Returns a boolean
+				// id: the node id
+				var node = this.getNode(id);
+				// Some given models do not include units.
+				var hasUnits = node.descriptionID && obj.given.getUnits(node.descriptionID);
+				var initialEntered = node.type && node.type == "function" || node.initial != null;
+				var equationEntered = node.type && node.type == "parameter" || node.equation;
+				return node.descriptionID && node.type &&
+						initialEntered && (!hasUnits || node.units) &&
+						equationEntered;
+			}
+		}, both);
 
 		// Execute the constructor
 		obj.constructor.apply(obj, arguments);

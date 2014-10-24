@@ -370,7 +370,7 @@ define([
 			var nodeName = graphObjects.getNodeName(this._model.active,nodeID);
 			if(dom.byId(nodeID + 'Label')){
 				domConstruct.place(nodeName, nodeID + 'Label', "replace");
-			}else{
+			}else if(nodeName){
 				domConstruct.place(nodeName, nodeID);
 			}
 		},
@@ -830,6 +830,27 @@ define([
 							checkResult: "INCORRECT"
 						});
 					}
+
+					//check if accumulator has a reference to itself as per the Trello card https://trello.com/c/0aqmwqqG
+					if(givenID && this._model.active.getType(this.currentID) === "accumulator" && 
+						givenID === mapID.call(this._model.active, this.currentID)){
+						cancelUpdate = true;
+						directives.push({id: 'equation', attribute: 'status', value: 'incorrect'});
+						directives.push({
+							id: 'crisisAlert',
+							attribute: 'open',
+							value: "The old value of the accumulator is already included in the expression, so you don't have to mention it in the expression.  Only put an expression for the change in the accumulators value.", 
+						});
+						this.logging.log("solution-step", {
+							type: "self-referencing-accumulator",
+							node: this._model.active.getName(this.currentID),
+							nodeID: this.currentID,
+							property: "equation",
+							value: inputEquation,
+							correctResult: this._model.given.getEquation(this.currentID),
+							checkResult: "INCORRECT"
+						});
+					}
 					// The variable "descriptionID" is the corresponding givenModelNodeID from the model (it is not equal to the givenID used here).
 					// The variable "badVarCount" is used to track the number of times a user has attempted to use an incorrect variable to prevent
 					//		him or her from being stuck indefinitely.
@@ -951,7 +972,7 @@ define([
 			}));
 			var nodeForumBut = registry.byId("nodeForumButton");
 			var check_desc=this._model.active.getGivenID(id);
-			if(this._forumparams && this._model.given.getDescription(check_desc)){
+			if(this._forumparams && check_desc && this._model.given.getDescription(check_desc)){
 				nodeForumBut.set("disabled", false);
 				forum.activateForum(this._model, this.currentID, this._forumparams,this.logging);
 			}else{
@@ -1057,10 +1078,19 @@ define([
 			array.forEach(directives, function(directive) {
 				if(!noModelUpdate)
 					this.updateModelStatus(directive);
+
 				if (this.widgetMap[directive.id]) {
 					var w = registry.byId(this.widgetMap[directive.id]);
 					if (directive.attribute == 'value') {
 						w.set("value", directive.value, false);
+                        if(w.id == 'typeId'){
+                            this.updateType(directive.value);
+                        } else if(w.id == 'initialValue'){
+                            this._model.active.setInitial(this.currentID, directive.value);
+                        } else if(w.id == 'equationBox'){
+                        	this.equationSet(directive.value);
+                        }
+
 						// Each control has its own function to update the
 						// the model and the graph.
 						//this[directive.id+'Set'].call(this, directive.value);

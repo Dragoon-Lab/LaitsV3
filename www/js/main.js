@@ -67,6 +67,7 @@ define([
 	
 	// Start up new session and get model object from server
 	var session = new loadSave(query);
+    console.log("session is",session);
 	logging.setSession(session);  // Give logger message destination
 	session.loadProblem(query).then(function(solutionGraph){
 		
@@ -187,7 +188,7 @@ define([
 				registry.byId("nodeeditor").hide();
 			});
 			// checks if forumurl is present
-			if(query.f) {
+			if(query.f && query.fe) {
 				//Enable the forum button in the menu
 				var forumBut=registry.byId("forumButton");
 				forumBut.set("disabled", false);
@@ -287,11 +288,31 @@ define([
 				});
 				
 				promise.then(function(){
-					window.history.back();
+					 if(window.history.length == 1)
+                                                window.close();
+                                        else
+                                                window.history.back();
 				});
 			});
 
-			/* 
+            /*
+             Add link to intro video
+             */
+            var video = dom.byId("menuIntroText");
+            on(video, "click", function(){
+                controllerObject.logging.log('ui-action', {
+                    type: "menu-choice",
+                    name: "introduction"
+                });
+                // "newwindow": the pop-out window name, not required, could be empty
+                // "height" and "width": pop-out window size
+                // Other properties could be changed as the value of yes or no
+                window.open("http://dragoon.asu.edu","newwindow",
+                    "toolbar =no, menubar=no, scrollbars=no, resizable=no, location=no, status=no"
+                );
+            });
+
+            /*
 			 Add link to intro video
 			 */
 			var video = dom.byId("menuIntroVideo");
