@@ -193,6 +193,7 @@ define([
 						var givenID = this.model.active.getDescriptionID(id);
 					}
 					//plot chart for student node
+                    console.log("active solution",activeSolution);
 					charts[id].addSeries(
 						"Your solution",
 						this.formatSeriesForChart(activeSolution, k),
@@ -253,7 +254,7 @@ define([
 		 */
 		formatSeriesForChart: function(result, j){
 			return array.map(result.times, function(time, k){
-				return {x: time, y: result.plotValues[j][k]};
+				return {x: time, y: result.plotValues[j][k].toFixed(3)};
 			});
 		},
 
