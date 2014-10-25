@@ -39,7 +39,7 @@ define([
 ){
     function makeTable(problem,type,tableID) {
         try {
-        var args = "p=" + problem + "&t=" + type;
+        var args = "p=" + problem + "&s=tutor_cpi360&t=" + type;
 
         /*var args = window.location.search.slice(1);*/
         var query = query = ioQuery.queryToObject(args);
@@ -129,12 +129,12 @@ define([
     makeTable("CPI-2014-ps1-04","leader","1-4");
     makeTable("CPI-2014-ps1-05","leader","1-5");
     makeTable("CPI-2014-ps1-06","leader","1-6");
-    makeTable("CPI-2014-ps1-01","leader","1-7");
-    makeTable("CPI-2014-ps1-02","leader","1-8");
-    makeTable("CPI-2014-ps1-03","leader","1-9");
-    makeTable("CPI-2014-ps1-04","leader","1-10");
-    makeTable("CPI-2014-ps1-05","leader","1-11");
-    makeTable("CPI-2014-ps1-06","leader","1-12");
+    makeTable("CPI-2014-ps1-07","leader","1-7");
+    makeTable("CPI-2014-ps1-08","leader","1-8");
+    makeTable("CPI-2014-ps1-09","leader","1-9");
+    makeTable("CPI-2014-ps1-10","leader","1-10");
+    makeTable("CPI-2014-ps1-11","leader","1-11");
+    makeTable("CPI-2014-ps1-12","leader","1-12");
 
     makeTable("CPI-2014-ps2-01","leader","2-1");
     makeTable("CPI-2014-ps2-02","leader","2-2");
