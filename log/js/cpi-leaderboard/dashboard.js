@@ -47,7 +47,7 @@ define([
 						display : "errors", // what values to show in the table, all will show empty boxes by default the all the options at the bottom of the page and will 
 						options : false, //allowed to change the values from the bottom of the page
 						heading : "Leader Board", // heading at the top of the page
-						subHeading : "Each cell shows your proportion of correct selections in the node editor. Each time you get a red or yellow box, it goes down. (Remember, however, that homework does not affect your grade--only the in-class quizzes.)  Your cells have red borders and bold numbers. Refresh page to update.", // sub heading, van be used for instructions on the page. can be an HTML string as well.
+						subHeading : "Each cell shows your proportion of correct selections in the node editor. Each time you get a red or yellow box, it goes down. (Remember, however, that homework does not affect your grade--only the in-class quizzes.) Your cells have red borders and bold numbers. The number of boxes in the column corresponds to the number of people who have started that problem. Refresh page to update.", // sub heading, van be used for instructions on the page. can be an HTML string as well.
 						colors : true, // shows the key at the right of the page and the session running value under the td of the 
 						sessionLink : false, // to add the user session opening link to each td or not.
 						completeAnalysis : false // to add the detail node analysis to the tableString 
