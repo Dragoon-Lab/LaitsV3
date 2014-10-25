@@ -16,6 +16,28 @@
         "lessonsLearned": [
             "This is a capacity limited growth model, but the capacity is not a fixed quantity.  Rather, it is the water in the water hole, which itself changes."
         ],
+        "slides": [
+            {
+                "type": "text",
+                "value": "count",
+                "title": "Types of nodes in the model"
+            },
+            {
+                "type": "image",
+                "value": "images/CPI/varmints_at_the_waterhole_grapph.png",
+                "title": "Author's graph for  Varmints at the waterhole Problem"
+            },
+            {
+                "type": "image",
+                "value": "images/CPI/varmints_at_the_waterhole_correctnodes.png",
+                "title": "Author's solution for Varmints at the waterhole Problem"
+            },
+            {
+                "type": "text",
+                "value": "lessons",
+                "title": "Lessons Learned"
+            }
+        ],
         "givenModelNodes": [
             {
                 "ID": "id2",

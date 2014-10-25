@@ -16,6 +16,28 @@
         "lessonsLearned": [
             "This system is like the simple acceleration problem in problem set \"generic change\" in that one accumulator controls the gain of a second accumulator.  However, there are several extra math relationships."
         ],
+        "slides": [
+            {
+                "type": "text",
+                "value": "count",
+                "title": "Types of nodes in the model"
+            },
+            {
+                "type": "image",
+                "value": "images/CPI/snowball_graph.png",
+                "title": "Author's graph for Snowball Problem"
+            },
+            {
+                "type": "image",
+                "value": "images/CPI/snowball_correctnodes.png",
+                "title": "Author's solution for Snowball Problem"
+            },
+            {
+                "type": "text",
+                "value": "lessons",
+                "title": "Lessons Learned"
+            }
+        ],
         "givenModelNodes": [
             {
                 "ID": "id1",

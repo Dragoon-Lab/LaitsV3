@@ -16,6 +16,28 @@
         "lessonsLearned": [
             "This is like the simple acceleration problem in \"generic changes\" problem set, except that the acceleration is not constant.  The numbers in this problem are accurate, by the way.  The escape velocity for earth is 6.96 miles/second, which is 33 times the speed of sound and several times the muzzle velocity of a rifle bullet.  At this speed, air friction is not at all negligible.  Objects would burn up or be torn apart by atmospheric drag."
         ],
+        "slides": [
+            {
+                "type": "text",
+                "value": "count",
+                "title": "Types of nodes in the model"
+            },
+            {
+                "type": "image",
+                "value": "images/CPI/super_gun_graphs.png",
+                "title": "Author's graph for Super gun Problem"
+            },
+            {
+                "type": "image",
+                "value": "images/CPI/super_gun_correctnodes.png",
+                "title": "Author's solution for Super Gun Problem"
+            },
+            {
+                "type": "text",
+                "value": "lessons",
+                "title": "Lessons Learned"
+            }
+        ],
         "givenModelNodes": [
             {
                 "ID": "id1",

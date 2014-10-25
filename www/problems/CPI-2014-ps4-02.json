@@ -16,6 +16,28 @@
         "lessonsLearned": [
             "This is a simple combination of a linear increase with an exponential decay.  However, there are several spurious numbers given."
         ],
+        "slides": [
+            {
+                "type": "text",
+                "value": "count",
+                "title": "Types of nodes in the model"
+            },
+            {
+                "type": "image",
+                "value": "images/CPI/saturated_air_graph.png",
+                "title": "Author's graph for Saturated air Problem"
+            },
+            {
+                "type": "image",
+                "value": "images/CPI/saturated_air_correctnodes.png",
+                "title": "Author's solution for Saturated air Problem"
+            },
+            {
+                "type": "text",
+                "value": "lessons",
+                "title": "Lessons Learned"
+            }
+        ],
         "givenModelNodes": [
             {
                 "ID": "id1",

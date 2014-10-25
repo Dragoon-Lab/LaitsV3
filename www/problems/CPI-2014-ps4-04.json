@@ -16,6 +16,28 @@
         "lessonsLearned": [
             "This system is an example of an epidemic process.  See the problem “epidemic” in the problem set “generic changes.”"
         ],
+        "slides": [
+            {
+                "type": "text",
+                "value": "count",
+                "title": "Types of nodes in the model"
+            },
+            {
+                "type": "image",
+                "value": "images/CPI/the_growth_of_terrorism_graph.png",
+                "title": "Author's graph for The growth of terrorism Problem"
+            },
+            {
+                "type": "image",
+                "value": "images/CPI/the_growth_of_terrorism_correctnodes.png",
+                "title": "Author's solution for The growth of terrorism Problem"
+            },
+            {
+                "type": "text",
+                "value": "lessons",
+                "title": "Lessons Learned"
+            }
+        ],
         "givenModelNodes": [
             {
                 "ID": "id1",
