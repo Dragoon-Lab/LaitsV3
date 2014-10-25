@@ -1,0 +1,356 @@
+{
+    "task": {
+        "taskName": "quiz3",
+        "time": {
+            "start": 0,
+            "end": 25,
+            "step": 1,
+            "integrationMethod": "Eulers Method",
+            "units": "weeks"
+        },
+        "properties": {},
+        "image": {},
+        "taskDescription": [
+            "The population of a small town in Transylvania is 5001.  One of the residents is a zombie and 100 residents belong to the secret society of clowns.  Now this is a very active town, so there are 900 chance meetings between pairs of residents every week.  If a zombie happens to meet with a person, then there is a 75% chance that the zombie will convert the person into a zombie.  However, zombies don't live so long in Transylvania. A population of 12 vampires eat one zombie each, so each week, 5% of the zombies die.  Now just as a reminder of how chance meetings work, if the number of zombies in the population is, say, 25 and the total population is 250, then there is a 10% chance (25/250) of a zombie being in the meeting.  If the number of clowns in town is 50, then the chance of a clown being in the meeting is 20% (50/250).  Thus, the chance of a meeting having both a clown and a zombie in it is 0.10*0.20=0.02."
+        ],
+        "lessonsLearned": "",
+        "givenModelNodes": [
+            {
+                "0": "f",
+                "1": "r",
+                "2": "o",
+                "3": "m",
+                "4": "B",
+                "5": "u",
+                "6": "t",
+                "7": "t",
+                "8": "o",
+                "9": "n",
+                "ID": "id1",
+                "inputs": [
+                    {
+                        "ID": "id2",
+                        "label": ""
+                    },
+                    {
+                        "ID": "id5",
+                        "label": "-"
+                    }
+                ],
+                "position": {
+                    "x": 411,
+                    "y": 213
+                },
+                "attemptCount": {
+                    "description": 0,
+                    "type": 0,
+                    "initial": 0,
+                    "units": 0,
+                    "equation": 0,
+                    "assitanceScore": 0
+                },
+                "status": {},
+                "name": "zombies",
+                "description": "Number of zombies in the population each week",
+                "type": "accumulator",
+                "initial": 1,
+                "equation": "id2-id5"
+            },
+            {
+                "ID": "id2",
+                "inputs": [
+                    {
+                        "ID": "id3",
+                        "label": ""
+                    },
+                    {
+                        "ID": "id4",
+                        "label": ""
+                    },
+                    {
+                        "ID": "id9",
+                        "label": ""
+                    },
+                    {
+                        "ID": "id8",
+                        "label": ""
+                    }
+                ],
+                "position": {
+                    "x": 602,
+                    "y": 204
+                },
+                "attemptCount": {
+                    "description": 0,
+                    "type": 0,
+                    "initial": 0,
+                    "units": 0,
+                    "equation": 0,
+                    "assitanceScore": 0
+                },
+                "status": {},
+                "name": "conversions",
+                "description": "Number of people converted to zombies",
+                "type": "function",
+                "equation": "((id3*id4)*id9)*id8"
+            },
+            {
+                "ID": "id3",
+                "inputs": [],
+                "position": {
+                    "x": 712,
+                    "y": 68
+                },
+                "attemptCount": {
+                    "description": 0,
+                    "type": 0,
+                    "initial": 0,
+                    "units": 0,
+                    "equation": 0,
+                    "assitanceScore": 0
+                },
+                "status": {},
+                "name": "meetings",
+                "description": "Number of chance meetings per week",
+                "equation": "",
+                "type": "parameter",
+                "parentNode": false,
+                "initial": 900
+            },
+            {
+                "ID": "id4",
+                "inputs": [],
+                "position": {
+                    "x": 440,
+                    "y": 52
+                },
+                "attemptCount": {
+                    "description": 0,
+                    "type": 0,
+                    "initial": 0,
+                    "units": 0,
+                    "equation": 0,
+                    "assitanceScore": 0
+                },
+                "status": {},
+                "name": "proportion zombie conversions",
+                "description": "When a zombie/person meeting occurs, chance of conversion",
+                "equation": "",
+                "type": "parameter",
+                "parentNode": false,
+                "initial": 0.75
+            },
+            {
+                "ID": "id5",
+                "inputs": [
+                    {
+                        "ID": "id1",
+                        "label": ""
+                    },
+                    {
+                        "ID": "id10",
+                        "label": ""
+                    }
+                ],
+                "position": {
+                    "x": 396,
+                    "y": 349
+                },
+                "attemptCount": {
+                    "description": 0,
+                    "type": 0,
+                    "initial": 0,
+                    "units": 0,
+                    "equation": 0,
+                    "assitanceScore": 0
+                },
+                "status": {},
+                "name": "zombie deaths",
+                "description": "Number of zombies that die each week",
+                "type": "function",
+                "equation": "id1*id10"
+            },
+            {
+                "0": "f",
+                "1": "r",
+                "2": "o",
+                "3": "m",
+                "4": "B",
+                "5": "u",
+                "6": "t",
+                "7": "t",
+                "8": "o",
+                "9": "n",
+                "ID": "id6",
+                "inputs": [
+                    {
+                        "ID": "id2",
+                        "label": "-"
+                    }
+                ],
+                "position": {
+                    "x": 804,
+                    "y": 226
+                },
+                "attemptCount": {
+                    "description": 0,
+                    "type": 0,
+                    "initial": 0,
+                    "units": 0,
+                    "equation": 0,
+                    "assitanceScore": 0
+                },
+                "status": {},
+                "name": "People",
+                "description": "Number of peoplel in the population each week",
+                "type": "accumulator",
+                "initial": 5000,
+                "equation": "-id2"
+            },
+            {
+                "0": "f",
+                "1": "r",
+                "2": "o",
+                "3": "m",
+                "4": "B",
+                "5": "u",
+                "6": "t",
+                "7": "t",
+                "8": "o",
+                "9": "n",
+                "ID": "id7",
+                "inputs": [
+                    {
+                        "ID": "id1",
+                        "label": ""
+                    },
+                    {
+                        "ID": "id6",
+                        "label": ""
+                    }
+                ],
+                "position": {
+                    "x": 625,
+                    "y": 362
+                },
+                "attemptCount": {
+                    "description": 0,
+                    "type": 0,
+                    "initial": 0,
+                    "units": 0,
+                    "equation": 0,
+                    "assitanceScore": 0
+                },
+                "status": {},
+                "name": "Total population",
+                "description": "Population of zombies and people each week",
+                "type": "function",
+                "equation": "id1+id6"
+            },
+            {
+                "0": "f",
+                "1": "r",
+                "2": "o",
+                "3": "m",
+                "4": "B",
+                "5": "u",
+                "6": "t",
+                "7": "t",
+                "8": "o",
+                "9": "n",
+                "ID": "id8",
+                "inputs": [
+                    {
+                        "ID": "id1",
+                        "label": ""
+                    },
+                    {
+                        "ID": "id7",
+                        "label": "/"
+                    }
+                ],
+                "position": {
+                    "x": 518,
+                    "y": 362
+                },
+                "attemptCount": {
+                    "description": 0,
+                    "type": 0,
+                    "initial": 0,
+                    "units": 0,
+                    "equation": 0,
+                    "assitanceScore": 0
+                },
+                "status": {},
+                "name": "Chance of zombie in meeting",
+                "description": "Chance of a zombie being in a meeting",
+                "type": "function",
+                "equation": "id1/id7"
+            },
+            {
+                "0": "f",
+                "1": "r",
+                "2": "o",
+                "3": "m",
+                "4": "B",
+                "5": "u",
+                "6": "t",
+                "7": "t",
+                "8": "o",
+                "9": "n",
+                "ID": "id9",
+                "inputs": [
+                    {
+                        "ID": "id6",
+                        "label": ""
+                    },
+                    {
+                        "ID": "id7",
+                        "label": "/"
+                    }
+                ],
+                "position": {
+                    "x": 753,
+                    "y": 369
+                },
+                "attemptCount": {
+                    "description": 0,
+                    "type": 0,
+                    "initial": 0,
+                    "units": 0,
+                    "equation": 0,
+                    "assitanceScore": 0
+                },
+                "status": {},
+                "name": "Chance of person in meeting",
+                "description": "Chance of a person being in a random meeting",
+                "type": "function",
+                "equation": "id6/id7"
+            },
+            {
+                "ID": "id10",
+                "inputs": [],
+                "position": {
+                    "x": 438,
+                    "y": 475
+                },
+                "attemptCount": {
+                    "description": 0,
+                    "type": 0,
+                    "initial": 0,
+                    "units": 0,
+                    "equation": 0,
+                    "assitanceScore": 0
+                },
+                "status": {},
+                "name": "proportion zombie deaths",
+                "description": "the proportion of the zombies that die each week",
+                "equation": "",
+                "type": "parameter",
+                "parentNode": false,
+                "initial": 0.05
+            }
+        ],
+        "studentModelNodes": []
+    }
+}
