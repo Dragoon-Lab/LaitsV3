@@ -202,7 +202,7 @@
                 },
                 "status": {},
                 "name": "People",
-                "description": "Number of peoplel in the population each week",
+                "description": "Number of people in the population each week",
                 "type": "accumulator",
                 "initial": 5000,
                 "equation": "-id2"
