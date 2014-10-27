@@ -12,7 +12,9 @@
 		},
 		"properties":{},
 		"image":{},
-		"taskDescription":["Modify the previous system to create a new one which controls the value of a quantity so that it stays near a given set point.  In this system, the set point is a parameter node, and we'll assume its value 98.6.  The set point is subtracted from the controlled quantity.  You will need a node to represent this difference.  If the difference is positive, then 10% of the difference is subtracted from the controlled quantity until it falls to become equal to the set point.  On the other hand, if the difference is negative, then 10% of the difference is again subtracted from the controlled quantity until it rises to become equal to the set point.  Lastly, you should assume that the initial value of the controlled quantity is 98.6 (yes, it is the same as the set point's value).  Test your model by varying the initial value of the controlled quantity and seeing how that change the graph.","",""],
+		"taskDescription":[
+            "Nonzero Set Point Homeostasis",
+            "Modify the previous system to create a new one which controls the value of a quantity so that it stays near a given set point.  In this system, the set point is a parameter node, and we'll assume its value 98.6.  The set point is subtracted from the controlled quantity.  You will need a node to represent this difference.  If the difference is positive, then 10% of the difference is subtracted from the controlled quantity until it falls to become equal to the set point.  On the other hand, if the difference is negative, then 10% of the difference is again subtracted from the controlled quantity until it rises to become equal to the set point.  Lastly, you should assume that the initial value of the controlled quantity is 98.6 (yes, it is the same as the set point's value).  Test your model by varying the initial value of the controlled quantity and seeing how that change the graph.","",""],
 		"givenModelNodes":
 		[
 			{
