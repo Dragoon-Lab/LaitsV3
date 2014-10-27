@@ -160,7 +160,7 @@
                 },
                 "status": {},
                 "name": "Weeds",
-                "description": "Number of weeds alive in thecorn field",
+                "description": "Number of weeds alive in the corn field",
                 "type": "accumulator",
                 "initial": 50000,
                 "equation": "id5-id7"

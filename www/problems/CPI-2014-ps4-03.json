@@ -11,7 +11,7 @@
         "properties": {},
         "image": {},
         "taskDescription": [
-            "On New Year&apos;s Eve in 1969, some teenagers released a large snowball, 0.5 meter in radius, from the top of a high hill overlooking the village swimming pool, which was closed for the season.  After 10 seconds, the snowball crashed through a chain link fence and into the village swimming pool.  Construct a model that shows how the snowball&apos;s weight changed using the following facts about this nefarious act of vandalism.  As the snowball started to roll down, it was initially turning at 1.0 revolution per second.  However, with each passing second, it&apos;s turning speed increased by 0.2 revolutions per second.  For instance, after 3 seconds, it was rotating at 1.6 revolutions per second.  As it rotated, snow clung to it, increasing its radius by 0.1 meters per revolution.  Thus, the snowball&apos;s radius also gradually increased per second as it thundered down the hill.  Any ball of radius R has a volume of 4.71225*R^3, where 4.71225 is 3π/2.  The weight of a ball is its volume times its density.  The density of the snowball was 210 kg per cubic meter.    "
+            "On New Year's Eve in 1969, some teenagers released a large snowball, 0.5 meter in radius, from the top of a high hill overlooking the village swimming pool, which was closed for the season.  After 10 seconds, the snowball crashed through a chain link fence and into the village swimming pool.  Construct a model that shows how the snowball's weight changed using the following facts about this nefarious act of vandalism.  As the snowball started to roll down, it was initially turning at 1.0 revolution per second.  However, with each passing second, it's turning speed increased by 0.2 revolutions per second.  For instance, after 3 seconds, it was rotating at 1.6 revolutions per second.  As it rotated, snow clung to it, increasing its radius by 0.1 meters per revolution.  Thus, the snowball's radius also gradually increased per second as it thundered down the hill.  Any ball of radius R has a volume of 4.71225*R^3, where 4.71225 is 3π/2.  The weight of a ball is its volume times its density.  The density of the snowball was 210 kg per cubic meter.    "
         ],
         "lessonsLearned": [
             "This system is like the simple acceleration problem in problem set \"generic change\" in that one accumulator controls the gain of a second accumulator.  However, there are several extra math relationships."
@@ -65,7 +65,7 @@
                 "name": "Volume",
                 "description": "The volume of the snowball",
                 "type": "function",
-                "equation": "((3/2)*id2)*(id3^3)",
+                "equation": "(id2)*(id3^3)",
                 "units": "m^3"
             },
             {
@@ -304,7 +304,8 @@
                 "type": "parameter",
                 "parentNode": false,
                 "initial": 1.6,
-                "units": "rev per sec"
+                "units": "rev per sec",
+                "genus": "extra"
             },
             {
                 "ID": "id11",
