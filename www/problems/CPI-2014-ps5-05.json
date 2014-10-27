@@ -1,9 +1,9 @@
 {
     "task": {
-        "taskName": "simple blood glucose homeostasis",
+        "taskName": "Blood glucose homeostasis",
         "time": {
             "start": 0,
-            "end": 100,
+            "end": 200,
             "step": 1,
             "integrationMethod": "Eulers Method",
             "units": "minutes"
@@ -11,17 +11,12 @@
         "properties": {},
         "image": {},
         "taskDescription": [
-            "A famous article (R.N. Bergman, C. Cobelli, Minimal modelling, partition analysis and the estimation of insulin sensitivity, Federation Proc. 39 (1980) 110&#45;115) presented a model of how quickly the body corrects an over-supply of blood glucose.  This is important for understanding diabetes.  By manipulating the parameters of the model, one can make it fit both a diabetic&apos;s response to a candy bar and a normal person&apos; response.  In this problem, you will construct part of this famous model.",
-            "",
-            "Excess blood glucose is removed by two kinds of tissues: (1) muscles and similar tissues whose consumption of glucose is regulated by insulin, and (2)  nerves, internal organs and other tissues that burn glucose at a constant rate that that isn&apos;t affected by insulin.   The latter subsystem has been modelled for you already as a homeostatic system (see the nodes:  blood glucose; glucose difference; glucose set point; glucose removed without insulin; glucose effectiveness).   We are going to focus on the tissues affected by insulin, since they are the important ones for diabetes.",
-            "",
-            "When the liver detects that the blood glucose is higher than the set point, it secrets insulin into the blood.  The amount secreted is represented by the node \"insulin from liver\" in the model.  Do its inputs make sense to you?  Next, insulin is transported by the blood to the muscles and other so-called \"remote tissues\" that will burn up the excess glucose.  This part of the model is missing; you&apos;ll need to construct it.  The insulin in the blood is absorbed by the remote tissues.  The amount absorbed per second is represented by the given node \"blood insulin to remote.\"    The amount of insulin in the remote tissues (represented by the node \"remote insulin\") affects both the amount of glucose removed from the blood and the speed at which more insulin is absorbed from the blood.  This subsystem has been given to you.    Your job is to complete the model by constructing the model that connects the nodes \"insulin from liver\" and \"blood insulin to remote.\"  This is a homeostatic process:",
+            "A famous article (R.N. Bergman, C. Cobelli, Minimal modelling, partition analysis and the estimation of insulin sensitivity, Federation Proc. 39 (1980) 110–115) presented a model of how quickly the body corrects an over-supply of blood glucose.  This is important for understanding diabetes.  By manipulating the parameters of the model, one can make it fit both a diabetic’s response to a candy bar and a normal person’ response.  In this problem, you will construct part of this famous model.Excess blood glucose is removed by two kinds of tissues: (1) muscles and similar tissues whose consumption of glucose is regulated by insulin, and (2)  nerves, internal organs and other tissues that burn glucose at a constant rate that that isn’t affected by insulin.   The latter subsystem has been modelled for you already as a homeostatic system (see the nodes:  blood glucose; glucose difference; glucose set point; glucose removed without insulin; glucose effectiveness).   We are going to focus on the tissues affected by insulin, since they are the important ones for diabetes.When the liver detects that the blood glucose is higher than the set point, it secrets insulin into the blood.  The amount secreted is represented by the node “insulin from liver” in the model.  Do its inputs make sense to you?  Next, insulin is transported by the blood to the muscles and other so-called “remote tissues” that will burn up the excess glucose.  This part of the model is missing; you’ll need to construct it.  The insulin in the blood is absorbed by the remote tissues.  The amount absorbed per second is represented by the given node “blood insulin to remote.”    The amount of insulin in the remote tissues (represented by the node “remote insulin”) affects both the amount of glucose removed from the blood and the speed at which more insulin is absorbed from the blood.  This subsystem has been given to you.    Your job is to complete the model by constructing the model that connects the nodes “insulin from liver” and “blood insulin to remote.”  This is a homeostatic process:",
             "* Source:  insulin in the blood",
             "* Destination:  Insulin in the remote tissues",
             "* Changing:  A proportional (15%) of the difference between the insulin in the blood and the blood insulin set point (7 ulU/mL)."
-            ""
         ],
-        "lessonsLearned": [
+        "lessonsLearned" : [
             "Although this is a professional model, which appeared in a journal for research physiologists, you can understand it easily by dividing it into homeostatic and exponential processes whose basic form should be familiar to you already."
         ],
         "givenModelNodes": [
@@ -30,7 +25,7 @@
                 "inputs": [
                     {
                         "ID": "id2",
-                        "label": ""
+                        "label": "-"
                     },
                     {
                         "ID": "id3",
@@ -38,153 +33,191 @@
                     }
                 ],
                 "position": {
-                    "x": 530,
-                    "y": 268
+                    "x": 461,
+                    "y": 75
                 },
                 "attemptCount": {
                     "description": 1,
                     "type": 1,
-                    "initial": 0,
-                    "units": 0,
-                    "equation": 0,
+                    "initial": 1,
+                    "units": 1,
+                    "equation": 1,
                     "assitanceScore": 0,
                     "assistanceScore": 0
                 },
                 "status": {
                     "description": "correct",
-                    "type": "correct"
+                    "type": "correct",
+                    "initial": "correct",
+                    "units": "correct",
+                    "equation": "correct"
                 },
-                "name": "Blood glucose",
+                "name": "blood glucose",
                 "description": "Amount of glucose in the blood",
                 "type": "accumulator",
-                "initial": 92,
-                "equation": "id2-id3",
-                "units": "mg/dL"
+                "initial": 279,
+                "units": "mg/dL",
+                "equation": "(-id2)-id3"
             },
             {
                 "ID": "id2",
                 "inputs": [
                     {
-                        "ID": "id6",
+                        "ID": "id4",
                         "label": ""
                     },
                     {
-                        "ID": "id9",
+                        "ID": "id5",
                         "label": ""
                     }
                 ],
                 "position": {
-                    "x": 615,
-                    "y": 393
+                    "x": 461,
+                    "y": 215
                 },
                 "attemptCount": {
                     "description": 1,
                     "type": 1,
                     "initial": 0,
-                    "units": 0,
-                    "equation": 0,
+                    "units": 1,
+                    "equation": 1,
                     "assitanceScore": 0,
                     "assistanceScore": 0
                 },
                 "status": {
                     "description": "correct",
-                    "type": "correct"
+                    "type": "correct",
+                    "equation": "correct",
+                    "units": "correct"
                 },
-                "name": "glucose added",
-                "description": "How much glucose the liver adds to blood each minute",
+                "name": "glucose removed without insulin",
                 "type": "function",
-                "equation": "id6*id9",
-                "units": "mg/dL"
+                "description": "glucose removed from blood each minute without involvement of insulin",
+                "units": "mg/dL",
+                "equation": "id4*id5"
             },
             {
                 "ID": "id3",
-                "inputs": [
-                    {
-                        "ID": "id7",
-                        "label": ""
-                    },
-                    {
-                        "ID": "id8",
-                        "label": ""
-                    }
-                ],
-                "position": {
-                    "x": 607,
-                    "y": 120
-                },
-                "attemptCount": {
-                    "description": 1,
-                    "type": 1,
-                    "initial": 0,
-                    "units": 0,
-                    "equation": 0,
-                    "assitanceScore": 0,
-                    "assistanceScore": 0
-                },
-                "status": {
-                    "description": "correct",
-                    "type": "correct"
-                },
-                "name": "glucose removed",
-                "description": "Glucose removed from blood by burning or storing it",
-                "type": "function",
-                "equation": "id7*id8",
-                "units": "mg/dL"
-            },
-            {
-                "ID": "id4",
                 "inputs": [
                     {
                         "ID": "id1",
                         "label": ""
                     },
                     {
-                        "ID": "id5",
+                        "ID": "id7",
+                        "label": ""
+                    }
+                ],
+                "position": {
+                    "x": 607,
+                    "y": 67
+                },
+                "attemptCount": {
+                    "description": 1,
+                    "type": 1,
+                    "initial": 0,
+                    "units": 1,
+                    "equation": 1,
+                    "assitanceScore": 0,
+                    "assistanceScore": 0
+                },
+                "status": {
+                    "description": "correct",
+                    "type": "correct",
+                    "units": "correct",
+                    "equation": "correct"
+                },
+                "name": "glucose removed via insulin",
+                "description": "Glucose removed from blood per minute by remote tissues",
+                "type": "function",
+                "units": "mg/dL",
+                "equation": "id1*id7"
+            },
+            {
+                "ID": "id4",
+                "inputs": [],
+                "position": {
+                    "x": 447.74517822265625,
+                    "y": 351.74517822265625
+                },
+                "attemptCount": {
+                    "description": 1,
+                    "type": 1,
+                    "initial": 2,
+                    "units": 0,
+                    "equation": 0,
+                    "assitanceScore": 0,
+                    "assistanceScore": 1
+                },
+                "status": {
+                    "description": "correct",
+                    "type": "correct",
+                    "initial": "correct"
+                },
+                "name": "glucose effectiveness",
+                "description": "How effectively the body restores glucose to homeostasis without insulin",
+                "type": "parameter",
+                "parentNode": false,
+                "initial": 0.026
+            },
+            {
+                "ID": "id5",
+                "inputs": [
+                    {
+                        "ID": "id1",
+                        "label": ""
+                    },
+                    {
+                        "ID": "id6",
                         "label": "-"
                     }
                 ],
                 "position": {
-                    "x": 648,
-                    "y": 228
+                    "x": 580,
+                    "y": 215
                 },
                 "attemptCount": {
                     "description": 1,
                     "type": 1,
                     "initial": 0,
-                    "units": 0,
-                    "equation": 0,
+                    "units": 1,
+                    "equation": 1,
                     "assitanceScore": 0,
                     "assistanceScore": 0
                 },
                 "status": {
                     "description": "correct",
-                    "type": "correct"
+                    "type": "correct",
+                    "units": "correct",
+                    "equation": "correct"
                 },
                 "name": "glucose difference",
-                "description": "Glucose in blood minus glucose set point",
+                "description": "Glucose in the blood minus glucose set point",
                 "type": "function",
-                "equation": "id1-id5",
-                "units": "mg/dL"
+                "units": "mg/dL",
+                "equation": "id1-id6"
             },
             {
-                "ID": "id5",
+                "ID": "id6",
                 "inputs": [],
                 "position": {
-                    "x": 782.7451782226562,
-                    "y": 232.7451629638672
+                    "x": 565.7451782226562,
+                    "y": 347.74517822265625
                 },
                 "attemptCount": {
                     "description": 1,
                     "type": 1,
-                    "initial": 0,
-                    "units": 0,
+                    "initial": 1,
+                    "units": 1,
                     "equation": 0,
                     "assitanceScore": 0,
                     "assistanceScore": 0
                 },
                 "status": {
                     "description": "correct",
-                    "type": "correct"
+                    "type": "correct",
+                    "initial": "correct",
+                    "units": "correct"
                 },
                 "name": "glucose set point",
                 "description": "The quantity of glucose that the body tries to keep in the blood at all times",
@@ -194,330 +227,436 @@
                 "units": "mg/dL"
             },
             {
-                "ID": "id6",
-                "inputs": [
-                    {
-                        "ID": "id4"
-                    }
-                ],
-                "position": {
-                    "x": 746,
-                    "y": 394
-                },
-                "attemptCount": {
-                    "description": 1,
-                    "type": 1,
-                    "initial": 0,
-                    "units": 0,
-                    "equation": 0,
-                    "assitanceScore": 0,
-                    "assistanceScore": 0
-                },
-                "status": {
-                    "description": "correct",
-                    "type": "correct"
-                },
-                "name": "glucose deficit",
-                "description": "If blood glucose < set point, by how much?  Zero otherwise",
-                "type": "function",
-                "equation": "max(0,(-id4))",
-                "units": "mg/dL"
-            },
-            {
                 "ID": "id7",
                 "inputs": [
                     {
-                        "ID": "id4"
+                        "ID": "id8",
+                        "label": ""
+                    },
+                    {
+                        "ID": "id13",
+                        "label": "-"
                     }
                 ],
                 "position": {
-                    "x": 744,
-                    "y": 134
+                    "x": 742,
+                    "y": 68
                 },
                 "attemptCount": {
                     "description": 1,
                     "type": 1,
-                    "initial": 0,
-                    "units": 0,
-                    "equation": 0,
+                    "initial": 1,
+                    "units": 1,
+                    "equation": 1,
                     "assitanceScore": 0,
                     "assistanceScore": 0
                 },
                 "status": {
                     "description": "correct",
-                    "type": "correct"
+                    "type": "correct",
+                    "initial": "correct",
+                    "units": "correct",
+                    "equation": "correct"
                 },
-                "name": "glucose suplus",
-                "description": "If blood glucose > set point, by how much?  Zero otherwise.",
-                "type": "function",
-                "equation": "max(0,id4)",
-                "units": "mg/dL"
+                "name": "remote insulin",
+                "description": "Insulin in tissues other than the pancreas",
+                "type": "accumulator",
+                "initial": 0,
+                "units": "uIU/mL",
+                "equation": "id8-id13"
             },
             {
                 "ID": "id8",
-                "inputs": [],
+                "inputs": [
+                    {
+                        "ID": "id9",
+                        "label": ""
+                    },
+                    {
+                        "ID": "id10",
+                        "label": ""
+                    }
+                ],
                 "position": {
-                    "x": 463.74517822265625,
-                    "y": 97.74516296386719
+                    "x": 817,
+                    "y": 163
                 },
                 "attemptCount": {
                     "description": 1,
                     "type": 1,
                     "initial": 0,
-                    "units": 0,
-                    "equation": 0,
+                    "units": 1,
+                    "equation": 1,
                     "assitanceScore": 0,
                     "assistanceScore": 0
                 },
                 "status": {
                     "description": "correct",
-                    "type": "correct"
+                    "type": "correct",
+                    "units": "correct",
+                    "equation": "correct"
                 },
-                "name": "convergence rate for glucose surplus",
-                "description": "Proportion of surplus glucose burned or stored each minute",
-                "type": "parameter",
-                "parentNode": false,
-                "initial": 0.024
+                "name": "blood insulin to remote",
+                "description": "How much blood insulin moves into or out of the remote tissue",
+                "type": "function",
+                "units": "uIU/mL",
+                "equation": "id9*id10"
             },
             {
                 "ID": "id9",
-                "inputs": [],
+                "inputs": [
+                    {
+                        "ID": "id14",
+                        "label": ""
+                    },
+                    {
+                        "ID": "id24",
+                        "label": ""
+                    }
+                ],
                 "position": {
-                    "x": 465.74517822265625,
-                    "y": 379.74517822265625
+                    "x": 970,
+                    "y": 162
                 },
                 "attemptCount": {
                     "description": 1,
                     "type": 1,
                     "initial": 0,
                     "units": 0,
+                    "equation": 1,
+                    "assitanceScore": 0,
+                    "assistanceScore": 0
+                },
+                "status": {
+                    "description": "correct",
+                    "type": "correct",
+                    "equation": "correct"
+                },
+                "name": "insulin speed",
+                "description": "Proportion of surplus/deficit blood insulin that moves into/out of remote tissues",
+                "type": "function",
+                "parentNode": false,
+                "initial": "",
+                "equation": "id14*id24"
+            },
+            {
+                "ID": "id10",
+                "inputs": [
+                    {
+                        "ID": "id11",
+                        "label": ""
+                    },
+                    {
+                        "ID": "id12",
+                        "label": "-"
+                    }
+                ],
+                "position": {
+                    "x": 927,
+                    "y": 286
+                },
+                "attemptCount": {
+                    "description": 1,
+                    "type": 1,
+                    "initial": 0,
+                    "units": 1,
                     "equation": 0,
                     "assitanceScore": 0,
                     "assistanceScore": 0
                 },
                 "status": {
                     "description": "correct",
-                    "type": "correct"
+                    "type": "correct",
+                    "units": "correct"
                 },
-                "name": "convergence rate for glucose deficit",
-                "description": "Proportion of glucose deficit that is added by liver each minute",
-                "type": "parameter",
-                "parentNode": false,
-                "initial": 0.1
-            }
-        ],
-        "studentModelNodes": [
-            {
-                "ID": "id10",
-                "inputs": [],
-                "position": {
-                    "x": 595,
-                    "y": 282
-                },
-                "status": {
-                    "description": {
-                        "status": "correct",
-                        "disabled": true
-                    },
-                    "type": {
-                        "disabled": true,
-                        "status": "correct"
-                    },
-                    "initial": {
-                        "disabled": false
-                    },
-                    "units": {
-                        "disabled": false
-                    },
-                    "equation": {
-                        "disabled": false
-                    }
-                },
-                "descriptionID": "id1",
-                "type": "accumulator"
+                "name": "blood insulin difference",
+                "description": "blood insulin minus blood insulin set point",
+                "type": "function",
+                "units": "uIU/mL",
+                "equation": "id11-id12"
             },
             {
                 "ID": "id11",
-                "inputs": [],
+                "inputs": [
+                    {
+                        "ID": "id22",
+                        "label": ""
+                    },
+                    {
+                        "ID": "id17",
+                        "label": "-"
+                    }
+                ],
                 "position": {
-                    "x": 773,
-                    "y": 280
+                    "x": 784,
+                    "y": 289
+                },
+                "attemptCount": {
+                    "description": 0,
+                    "type": 0,
+                    "initial": 0,
+                    "units": 0,
+                    "equation": 0,
+                    "assitanceScore": 0
                 },
                 "status": {
-                    "description": {
-                        "status": "correct",
-                        "disabled": true
-                    },
-                    "type": {
-                        "disabled": true,
-                        "status": "correct"
-                    },
-                    "units": {
-                        "disabled": false
-                    },
                     "equation": {
                         "disabled": false
                     }
                 },
-                "descriptionID": "id4",
-                "type": "function"
+                "name": "blood insulin",
+                "description": "Insulin in the blood",
+                "type": "accumulator",
+                "initial": 11,
+                "equation": "id22-id17",
+                "units": "uIU/mL"
             },
             {
                 "ID": "id12",
                 "inputs": [],
                 "position": {
-                    "x": 691,
-                    "y": 139
+                    "x": 1076.7451171875,
+                    "y": 333.74517822265625
                 },
-                "status": {
-                    "description": {
-                        "status": "correct",
-                        "disabled": true
-                    },
-                    "type": {
-                        "disabled": true,
-                        "status": "correct"
-                    },
-                    "units": {
-                        "disabled": false
-                    },
-                    "equation": {
-                        "disabled": false
-                    }
+                "attemptCount": {
+                    "description": 0,
+                    "type": 0,
+                    "initial": 0,
+                    "units": 0,
+                    "equation": 0,
+                    "assitanceScore": 0
                 },
-                "descriptionID": "id3",
-                "type": "function"
+                "status": {},
+                "name": "blood insulin set point",
+                "description": "The quantity of blood insulin the body tries to maintain",
+                "type": "parameter",
+                "parentNode": false,
+                "initial": 7,
+                "units": "uIU/mL"
             },
             {
                 "ID": "id13",
-                "inputs": [],
+                "inputs": [
+                    {
+                        "ID": "id14",
+                        "label": ""
+                    },
+                    {
+                        "ID": "id7",
+                        "label": ""
+                    }
+                ],
                 "position": {
-                    "x": 691,
-                    "y": 435
+                    "x": 901,
+                    "y": 64
+                },
+                "attemptCount": {
+                    "description": 1,
+                    "type": 1,
+                    "initial": 0,
+                    "units": 1,
+                    "equation": 1,
+                    "assitanceScore": 0,
+                    "assistanceScore": 0
                 },
                 "status": {
-                    "description": {
-                        "status": "correct",
-                        "disabled": true
-                    },
-                    "type": {
-                        "disabled": true,
-                        "status": "correct"
-                    },
-                    "units": {
-                        "disabled": false
-                    },
-                    "equation": {
-                        "disabled": false
-                    }
+                    "description": "correct",
+                    "type": "correct",
+                    "units": "correct",
+                    "equation": "correct"
                 },
-                "descriptionID": "id2",
-                "type": "function"
+                "name": "remote insulin removed",
+                "description": "remote insulin removed each minute",
+                "type": "function",
+                "units": "uIU/mL",
+                "equation": "id14*id7"
             },
             {
                 "ID": "id14",
                 "inputs": [],
                 "position": {
-                    "x": 883,
-                    "y": 437
+                    "x": 1071.7451171875,
+                    "y": 43.74516677856445
+                },
+                "attemptCount": {
+                    "description": 1,
+                    "type": 1,
+                    "initial": 1,
+                    "units": 0,
+                    "equation": 0,
+                    "assitanceScore": 0,
+                    "assistanceScore": 0
                 },
                 "status": {
-                    "description": {
-                        "status": "correct",
-                        "disabled": true
-                    },
-                    "type": {
-                        "disabled": true,
-                        "status": "correct"
-                    },
-                    "units": {
-                        "disabled": false
-                    },
-                    "equation": {
-                        "disabled": false
-                    }
+                    "description": "correct",
+                    "type": "correct",
+                    "initial": "correct"
                 },
-                "descriptionID": "id6",
-                "type": "function"
-            },
-            {
-                "ID": "id15",
-                "inputs": [],
-                "position": {
-                    "x": 882,
-                    "y": 137
-                },
-                "status": {
-                    "description": {
-                        "status": "correct",
-                        "disabled": true
-                    },
-                    "type": {
-                        "disabled": true,
-                        "status": "correct"
-                    },
-                    "units": {
-                        "disabled": false
-                    },
-                    "equation": {
-                        "disabled": false
-                    }
-                },
-                "descriptionID": "id7",
-                "type": "function"
-            },
-            {
-                "ID": "id16",
-                "inputs": [],
-                "position": {
-                    "x": 504.74517822265625,
-                    "y": 417.74517822265625
-                },
-                "status": {
-                    "description": {
-                        "status": "correct",
-                        "disabled": true
-                    },
-                    "type": {
-                        "disabled": true,
-                        "status": "correct"
-                    },
-                    "initial": {
-                        "disabled": false
-                    }
-                },
-                "descriptionID": "id9",
-                "type": "parameter"
+                "name": "remote insulin removal rate",
+                "description": "Proportion of remote insulin removed per minute",
+                "type": "parameter",
+                "parentNode": false,
+                "initial": 0.025
             },
             {
                 "ID": "id17",
-                "inputs": [],
-                "position": {
-                    "x": 500.74517822265625,
-                    "y": 128.7451629638672
-                },
-                "status": {
-                    "description": {
-                        "status": "correct",
-                        "disabled": true
+                "inputs": [
+                    {
+                        "ID": "id10",
+                        "label": ""
                     },
-                    "type": {
-                        "disabled": true,
-                        "status": "correct"
-                    },
-                    "initial": {
-                        "disabled": false
+                    {
+                        "ID": "id18",
+                        "label": ""
                     }
+                ],
+                "position": {
+                    "x": 859,
+                    "y": 399
                 },
-                "descriptionID": "id8",
-                "type": "parameter"
+                "attemptCount": {
+                    "description": 0,
+                    "type": 0,
+                    "initial": 0,
+                    "units": 0,
+                    "equation": 0,
+                    "assitanceScore": 0
+                },
+                "status": {},
+                "name": "insulin removed",
+                "description": "Insulin removed from blood each minute",
+                "type": "function",
+                "equation": "id10*id18",
+                "units": "uIU/mL"
             },
             {
                 "ID": "id18",
                 "inputs": [],
                 "position": {
-                    "x": 965.7451782226562,
-                    "y": 264.74517822265625
+                    "x": 992.7451782226562,
+                    "y": 377.74517822265625
+                },
+                "attemptCount": {
+                    "description": 0,
+                    "type": 0,
+                    "initial": 0,
+                    "units": 0,
+                    "equation": 0,
+                    "assitanceScore": 0
+                },
+                "status": {},
+                "name": "convergence rate for insulin",
+                "description": "Proportion of insulin surplus removed each minute",
+                "type": "parameter",
+                "parentNode": false,
+                "initial": 0.15
+            },
+            {
+                "ID": "id22",
+                "inputs": [
+                    {
+                        "ID": "id5"
+                    },
+                    {
+                        "ID": "id23"
+                    }
+                ],
+                "position": {
+                    "x": 701,
+                    "y": 216
+                },
+                "attemptCount": {
+                    "description": 1,
+                    "type": 1,
+                    "initial": 0,
+                    "units": 1,
+                    "equation": 2,
+                    "assitanceScore": 0,
+                    "assistanceScore": 2
+                },
+                "status": {
+                    "description": "correct",
+                    "type": "correct",
+                    "units": "correct",
+                    "equation": "correct"
+                },
+                "name": "insulin from pancreas",
+                "description": "Amount of insulin secreted by pancreas to lower glucose",
+                "type": "function",
+                "equation": "max(0,(id5*id23))",
+                "units": "uIU/mL"
+            },
+            {
+                "ID": "id23",
+                "inputs": [],
+                "position": {
+                    "x": 688.7451782226562,
+                    "y": 350.74517822265625
+                },
+                "attemptCount": {
+                    "description": 1,
+                    "type": 1,
+                    "initial": 1,
+                    "units": 0,
+                    "equation": 0,
+                    "assitanceScore": 0,
+                    "assistanceScore": 0
+                },
+                "status": {
+                    "description": "correct",
+                    "type": "correct",
+                    "initial": "correct"
+                },
+                "name": "insulin secretion rate",
+                "description": "What proportion of the glucose surplus is secreted as insulin",
+                "type": "parameter",
+                "parentNode": false,
+                "initial": 0.19
+            },
+            {
+                "ID": "id24",
+                "inputs": [],
+                "position": {
+                    "x": 1076.7451171875,
+                    "y": 196.7451629638672
+                },
+                "attemptCount": {
+                    "description": 1,
+                    "type": 1,
+                    "initial": 1,
+                    "units": 0,
+                    "equation": 0,
+                    "assitanceScore": 0,
+                    "assistanceScore": 0
+                },
+                "status": {
+                    "description": "correct",
+                    "type": "correct",
+                    "initial": "correct"
+                },
+                "name": "insulin sensitivity",
+                "description": "how quickly the body responds to insulin",
+                "type": "parameter",
+                "parentNode": false,
+                "initial": 0.0005
+            }
+        ],
+        "studentModelNodes": [
+            {
+                "ID": "id25",
+                "inputs": [
+                    {
+                        "ID": "id26",
+                        "label": "-"
+                    },
+                    {
+                        "ID": "id27",
+                        "label": "-"
+                    }
+                ],
+                "position": {
+                    "x": 486,
+                    "y": 134
                 },
                 "status": {
                     "description": {
@@ -529,14 +668,459 @@
                         "status": "correct"
                     },
                     "initial": {
-                        "disabled": false
+                        "disabled": true,
+                        "status": "correct"
                     },
                     "units": {
-                        "disabled": false
+                        "disabled": true,
+                        "status": "correct"
+                    },
+                    "equation": {
+                        "disabled": true,
+                        "status": "correct"
+                    }
+                },
+                "descriptionID": "id1",
+                "type": "accumulator",
+                "initial": 279,
+                "units": "mg/dL",
+                "equation": "(-id26)-id27"
+            },
+            {
+                "ID": "id26",
+                "inputs": [
+                    {
+                        "ID": "id28",
+                        "label": ""
+                    },
+                    {
+                        "ID": "id29",
+                        "label": ""
+                    }
+                ],
+                "position": {
+                    "x": 471,
+                    "y": 302
+                },
+                "status": {
+                    "description": {
+                        "status": "correct",
+                        "disabled": true
+                    },
+                    "type": {
+                        "disabled": true,
+                        "status": "correct"
+                    },
+                    "units": {
+                        "disabled": true,
+                        "status": "correct"
+                    },
+                    "equation": {
+                        "disabled": false,
+                        "status": "correct"
+                    }
+                },
+                "descriptionID": "id2",
+                "type": "function",
+                "equation": "id28*id29",
+                "units": "mg/dL"
+            },
+            {
+                "ID": "id27",
+                "inputs": [
+                    {
+                        "ID": "id25",
+                        "label": ""
+                    },
+                    {
+                        "ID": "id31",
+                        "label": ""
+                    }
+                ],
+                "position": {
+                    "x": 674,
+                    "y": 112
+                },
+                "status": {
+                    "description": {
+                        "status": "correct",
+                        "disabled": true
+                    },
+                    "type": {
+                        "disabled": true,
+                        "status": "correct"
+                    },
+                    "units": {
+                        "disabled": true,
+                        "status": "correct"
+                    },
+                    "equation": {
+                        "disabled": true,
+                        "status": "correct"
+                    }
+                },
+                "descriptionID": "id3",
+                "type": "function",
+                "units": "mg/dL",
+                "equation": "id25*id31"
+            },
+            {
+                "ID": "id28",
+                "inputs": [
+                    {
+                        "ID": "id25",
+                        "label": ""
+                    },
+                    {
+                        "ID": "id30",
+                        "label": "-"
+                    }
+                ],
+                "position": {
+                    "x": 650,
+                    "y": 292
+                },
+                "status": {
+                    "description": {
+                        "status": "correct",
+                        "disabled": true
+                    },
+                    "type": {
+                        "disabled": true,
+                        "status": "correct"
+                    },
+                    "units": {
+                        "disabled": true,
+                        "status": "correct"
+                    },
+                    "equation": {
+                        "disabled": true,
+                        "status": "correct"
                     }
                 },
                 "descriptionID": "id5",
-                "type": "parameter"
+                "type": "function",
+                "units": "mg/dL",
+                "equation": "id25-id30"
+            },
+            {
+                "ID": "id29",
+                "inputs": [],
+                "position": {
+                    "x": 464,
+                    "y": 467
+                },
+                "status": {
+                    "description": {
+                        "status": "correct",
+                        "disabled": true
+                    },
+                    "type": {
+                        "disabled": true,
+                        "status": "correct"
+                    },
+                    "initial": {
+                        "disabled": true,
+                        "status": "correct"
+                    }
+                },
+                "descriptionID": "id4",
+                "type": "parameter",
+                "initial": 0.026
+            },
+            {
+                "ID": "id30",
+                "inputs": [],
+                "position": {
+                    "x": 652,
+                    "y": 479
+                },
+                "status": {
+                    "description": {
+                        "status": "correct",
+                        "disabled": true
+                    },
+                    "type": {
+                        "disabled": true,
+                        "status": "correct"
+                    },
+                    "initial": {
+                        "disabled": true,
+                        "status": "correct"
+                    },
+                    "units": {
+                        "disabled": true,
+                        "status": "correct"
+                    }
+                },
+                "descriptionID": "id6",
+                "type": "parameter",
+                "initial": 92,
+                "units": "mg/dL"
+            },
+            {
+                "ID": "id31",
+                "inputs": [
+                    {
+                        "ID": "id32",
+                        "label": ""
+                    },
+                    {
+                        "ID": "id33",
+                        "label": "-"
+                    }
+                ],
+                "position": {
+                    "x": 862,
+                    "y": 105
+                },
+                "status": {
+                    "description": {
+                        "status": "correct",
+                        "disabled": true
+                    },
+                    "type": {
+                        "disabled": true,
+                        "status": "correct"
+                    },
+                    "initial": {
+                        "disabled": true,
+                        "status": "correct"
+                    },
+                    "units": {
+                        "disabled": true,
+                        "status": "correct"
+                    },
+                    "equation": {
+                        "disabled": true,
+                        "status": "correct"
+                    }
+                },
+                "descriptionID": "id7",
+                "type": "accumulator",
+                "initial": 0,
+                "units": "uIU/mL",
+                "equation": "id32-id33"
+            },
+            {
+                "ID": "id32",
+                "inputs": [
+
+                ],
+                "position": {
+                    "x": 1014,
+                    "y": 246
+                },
+                "status": {
+                    "description": {
+                        "status": "correct",
+                        "disabled": true
+                    },
+                    "type": {
+                        "disabled": true,
+                        "status": "correct"
+                    },
+                    "units": {
+                        "disabled": true,
+                        "status": "correct"
+                    },
+                    "equation": {
+                        "disabled": true,
+                        "status": "correct"
+                    }
+                },
+                "descriptionID": "id8",
+                "type": "function",
+                "units": "uIU/mL",
+                "equation": ""
+            },
+            {
+                "ID": "id33",
+                "inputs": [
+                    {
+                        "ID": "id31",
+                        "label": ""
+                    },
+                    {
+                        "ID": "id34",
+                        "label": ""
+                    }
+                ],
+                "position": {
+                    "x": 1112,
+                    "y": 88
+                },
+                "status": {
+                    "description": {
+                        "status": "correct",
+                        "disabled": true
+                    },
+                    "type": {
+                        "disabled": true,
+                        "status": "correct"
+                    },
+                    "units": {
+                        "disabled": true,
+                        "status": "correct"
+                    },
+                    "equation": {
+                        "disabled": true,
+                        "status": "correct"
+                    }
+                },
+                "descriptionID": "id13",
+                "type": "function",
+                "units": "uIU/mL",
+                "equation": "id31*id34"
+            },
+            {
+                "ID": "id34",
+                "inputs": [],
+                "position": {
+                    "x": 1288,
+                    "y": 77
+                },
+                "status": {
+                    "description": {
+                        "status": "correct",
+                        "disabled": true
+                    },
+                    "type": {
+                        "disabled": true,
+                        "status": "correct"
+                    },
+                    "initial": {
+                        "disabled": true,
+                        "status": "correct"
+                    }
+                },
+                "descriptionID": "id14",
+                "type": "parameter",
+                "initial": 0.025
+            },
+
+            {
+                "ID": "id36",
+                "inputs": [
+                    {
+                        "ID": "id37",
+                        "label": ""
+                    },
+                    {
+                        "ID": "id34",
+                        "label": ""
+                    }
+                ],
+                "position": {
+                    "x": 1175,
+                    "y": 242
+                },
+                "status": {
+                    "description": {
+                        "status": "correct",
+                        "disabled": true
+                    },
+                    "type": {
+                        "disabled": true,
+                        "status": "correct"
+                    },
+                    "equation": {
+                        "disabled": true,
+                        "status": "correct"
+                    }
+                },
+                "descriptionID": "id9",
+                "type": "function",
+                "equation": "id37*id34"
+            },
+            {
+                "ID": "id37",
+                "inputs": [],
+                "position": {
+                    "x": 1308,
+                    "y": 272
+                },
+                "status": {
+                    "description": {
+                        "status": "correct",
+                        "disabled": true
+                    },
+                    "type": {
+                        "disabled": true,
+                        "status": "correct"
+                    },
+                    "initial": {
+                        "disabled": true,
+                        "status": "correct"
+                    }
+                },
+                "descriptionID": "id24",
+                "type": "parameter",
+                "initial": 0.0005
+            },
+            {
+                "ID": "id38",
+                "inputs": [
+                    {
+                        "ID": "id39",
+                        "label": ""
+                    },
+                    {
+                        "ID": "id28",
+                        "label": ""
+                    }
+                ],
+                "position": {
+                    "x": 791,
+                    "y": 322
+                },
+                "status": {
+                    "description": {
+                        "status": "correct",
+                        "disabled": true
+                    },
+                    "type": {
+                        "disabled": true,
+                        "status": "correct"
+                    },
+                    "units": {
+                        "disabled": true,
+                        "status": "correct"
+                    },
+                    "equation": {
+                        "disabled": true,
+                        "status": "correct"
+                    }
+                },
+                "descriptionID": "id22",
+                "type": "function",
+                "units": "uIU/mL",
+                "equation": "id39*id28"
+            },
+            {
+                "ID": "id39",
+                "inputs": [],
+                "position": {
+                    "x": 810,
+                    "y": 489
+                },
+                "status": {
+                    "description": {
+                        "status": "correct",
+                        "disabled": true
+                    },
+                    "type": {
+                        "disabled": true,
+                        "status": "correct"
+                    },
+                    "initial": {
+                        "disabled": true,
+                        "status": "correct"
+                    }
+                },
+                "descriptionID": "id23",
+                "type": "parameter",
+                "initial": 0.19
             }
         ]
     }
