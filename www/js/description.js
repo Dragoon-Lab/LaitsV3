@@ -157,7 +157,7 @@ define([
                         var newModel = this.givenModel;
                         var check_comp = true;
                         array.forEach(this.givenModel.active.getNodes(), function (node) {
-                            if (!newModel.active.isComplete(node.ID)) {
+                            if (!newModel.active.isComplete(node.ID,true)) {
                                 errordialogWidget.set("content", "<div>please complete the model before you share</div>");
                                 errordialogWidget.show();
                                 newModel.setShare(false);
