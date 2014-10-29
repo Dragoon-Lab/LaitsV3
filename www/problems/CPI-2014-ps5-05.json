@@ -19,6 +19,28 @@
         "lessonsLearned" : [
             "Although this is a professional model, which appeared in a journal for research physiologists, you can understand it easily by dividing it into homeostatic and exponential processes whose basic form should be familiar to you already."
         ],
+        "slides": [
+            {
+                "type": "text",
+                "value": "count",
+                "title": "Types of nodes in the model"
+            },
+            {
+                "type": "image",
+                "value": "images/CPI/Blood_glucose_homeostatis_graph.jpg",
+                "title": "Author's graph for Blood glucose homeostasis Problem"
+            },
+            {
+                "type": "image",
+                "value": "images/CPI/Blood_glucose_homeostatis_correctnodes.png",
+                "title": "Author's solution for Blood glucose homeostasis Problem"
+            },
+            {
+                "type": "text",
+                "value": "lessons",
+                "title": "Lessons Learned"
+            }
+        ],
         "givenModelNodes": [
             {
                 "ID": "id1",

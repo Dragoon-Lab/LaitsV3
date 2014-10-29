@@ -14,7 +14,31 @@
             "In the problem “Moose and Wolves” you constructed a simple but inaccurate model of a predator-prey ecosystem (one of its graphs is shown above).  In the problem, “Capacity-limited moose population” you constructed a model of the moose population without wolves.  Construct a model that combines them.  The predator-prey model has been given to you.  You need to modify it in order to show two ways a moose can die:  being killed by wolves or starving to death.  Assume the carrying capacity for moose is 500. ",
             ""
         ],
-        "lessonsLearned": "",
+        "lessonsLearned": [
+            "The addition of capacity limits prevents the moose population from spiking, which in turn prevents the spiking of the wolf population."
+        ],
+        "slides": [
+            {
+                "type": "text",
+                "value": "count",
+                "title": "Types of nodes in the model"
+            },
+            {
+                "type": "image",
+                "value": "images/CPI/Predator_Prey_graph.jpg",
+                "title": "Author's graph for Predator-Prey Problem"
+            },
+            {
+                "type": "image",
+                "value": "images/CPI/Predator_Prey_correctnodes.png",
+                "title": "Author's solution for Predator-Prey Problem"
+            },
+            {
+                "type": "text",
+                "value": "lessons",
+                "title": "Lessons Learned"
+            }
+        ],
         "givenModelNodes": [
             {
                 "ID": "id1",

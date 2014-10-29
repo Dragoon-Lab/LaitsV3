@@ -20,6 +20,28 @@
         "lessonsLearned": [
             "This model of predator-prey ecosystems is called the Lotka-Volterra model.  It is simple, but inaccurate because no matter how you set the parameters, the wolves all die off. "
         ],
+        "slides": [
+            {
+                "type": "text",
+                "value": "count",
+                "title": "Types of nodes in the model"
+            },
+            {
+                "type": "image",
+                "value": "images/CPI/Isle_Royale_Moose_and_Wolves_graph.jpg",
+                "title": "Author's graph for Isle Royale - Moose and Wolves Problem"
+            },
+            {
+                "type": "image",
+                "value": "images/CPI/Isle_Royale_Moose_and_Wolves_correctnodes.png",
+                "title": "Author's solution for Isle Royale - Moose and Wolves Problem"
+            },
+            {
+                "type": "text",
+                "value": "lessons",
+                "title": "Lessons Learned"
+            }
+        ],
         "givenModelNodes": [
             {
                 "ID": "id1",
