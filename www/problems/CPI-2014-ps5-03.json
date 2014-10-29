@@ -20,6 +20,28 @@
         "lessonsLearned": [
             " The addition of capacity limits prevents the moose population from spiking, which in turn prevents the spiking of the wolf population."
         ],
+        "slides": [
+            {
+                "type": "text",
+                "value": "count",
+                "title": "Types of nodes in the model"
+            },
+            {
+                "type": "image",
+                "value": "images/CPI/Predator_Prey_graph.jpg",
+                "title": "Author's graph for Predator-Prey Problem"
+            },
+            {
+                "type": "image",
+                "value": "images/CPI/Predator_Prey_correctnodes.png",
+                "title": "Author's solution for Predator-Prey Problem"
+            },
+            {
+                "type": "text",
+                "value": "lessons",
+                "title": "Lessons Learned"
+            }
+        ],
         "givenModelNodes": [
             {
                 "ID": "id1",

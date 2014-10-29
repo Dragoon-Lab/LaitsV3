@@ -19,6 +19,28 @@
             "*  fearfulness: exponential growth, but due to other country's budget",
             "*  antagonism:  linear growth."
         ],
+        "slides": [
+            {
+                "type": "text",
+                "value": "count",
+                "title": "Types of nodes in the model"
+            },
+            {
+                "type": "image",
+                "value": "images/CPI/arms_race_graph.jpg",
+                "title": "Author's graph for arms race Problem"
+            },
+            {
+                "type": "image",
+                "value": "images/CPI/arms_race_correctnodes.png",
+                "title": "Author's solution for arms race Problem"
+            },
+            {
+                "type": "text",
+                "value": "lessons",
+                "title": "Lessons Learned"
+            }
+        ],
         "givenModelNodes": [
             {
                 "ID": "id1",

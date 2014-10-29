@@ -20,6 +20,28 @@
         "lessonsLearned": [
             "In this model of capacity limited growth, the capacity affects the death rate while the birth rate was constant.  There are similar models where the death rate is constant but capacity affects the birth rate.  The point is that when the two rates become equal, the population stabilizes."
         ],
+        "slides": [
+            {
+                "type": "text",
+                "value": "count",
+                "title": "Types of nodes in the model"
+            },
+            {
+                "type": "image",
+                "value": "images/CPI/Capacity_limited_moose_population_graph.jpg",
+                "title": "Author's graph for Capacity limited moose population Problem"
+            },
+            {
+                "type": "image",
+                "value": "images/CPI/Capacity_limited_moose_population_correctnode.png",
+                "title": "Author's solution for Capacity limited moose population Problem"
+            },
+            {
+                "type": "text",
+                "value": "lessons",
+                "title": "Lessons Learned"
+            }
+        ],
         "givenModelNodes": [
             {
                 "ID": "id1",
