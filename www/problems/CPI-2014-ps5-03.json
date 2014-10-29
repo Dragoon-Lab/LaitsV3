@@ -25,13 +25,13 @@
             },
             {
                 "type": "image",
-                "value": "images/CPI/Predator_Prey_graph.jpg",
-                "title": "Author's graph for Predator-Prey Problem"
+                "value": "images/CPI/pred-prey_with_capacity_limits_graph.jpg",
+                "title": "Author's graph for pred-prey with capacity limits Problem"
             },
             {
                 "type": "image",
-                "value": "images/CPI/Predator_Prey_correctnodes.png",
-                "title": "Author's solution for Predator-Prey Problem"
+                "value": "images/CPI/pred-prey_with_capacity_limits_correctnodes.png",
+                "title": "Author's solution for pred-prey with capacity limits Problem"
             },
             {
                 "type": "text",
