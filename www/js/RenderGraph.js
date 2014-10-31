@@ -44,7 +44,7 @@ define([
 
 	// The calculations constructor is loaded before the RenderGraph constructor
 	return declare(calculations, {
-		type: "Graph",									//Rendering type
+		type: "Graph and Table",									//Rendering type
 		textBoxID: "textGraph",							//ID for text-box DOM
 		sliderID: "sliderGraph",						//ID for slider DOM
 		chart: {},										//Object of a chart
