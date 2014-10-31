@@ -41,3 +41,7 @@ www/php-test.php
 www/util/
 
 tests/npm/
+tests/node_modules
+tests/phantomjsdriver.log
+tests/selenium.log
+
