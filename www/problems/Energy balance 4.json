@@ -11,6 +11,7 @@
         "properties": {},
         "image": {},
         "taskDescription": [
+            "Energy Balance 4",
             "The more food you eat, the more energy it takes to digest it.  The expression \"thermic effect of food\" is used to describe the energy expended by our bodies in order to consume (bite, chew and swallow) and process (digest, transport, metabolize and store) food.",
             "",
             "A factor of 10% is generally used to account for the thermic effect of food. Thus, if you eat 500 calories of food, you will expend 50 calories processing it.  However, this is only a rough estimate, because the factor is different for different foods.  Processing protein requires the greatest expenditure of energy, with estimates ranging as high as 30%. Dietary fat, on the other hand, is so easily processed and turned into body fat that there is little thermic effect, perhaps only 2 or 3%. The amount of energy required to process carbohydrates falls between that of protein and fat. ",
@@ -322,6 +323,7 @@
                 "description": "how much physical exercise done daily",
                 "type": "parameter",
                 "parentNode": false,
+                "units": "",
                 "initial": 0.2
             }
         ],
@@ -437,7 +439,7 @@
         "descriptionID": "id5",
         "type": "parameter",
         "initial": 1989,
-        "units": "calories/lbs"
+        "units": "calories/lb"
     },
     {
         "ID": "id16",
@@ -467,7 +469,7 @@
         "descriptionID": "id4",
         "type": "parameter",
         "initial": 3500,
-        "units": "calories/lbs"
+        "units": "calories/lb"
     },
     {
         "ID": "id17",
@@ -545,7 +547,7 @@
         },
         "descriptionID": "id2",
         "type": "function",
-        "equation": "id13*id16",
+        "equation": "id13/id16",
         "units": "lbs"
     },
     {
@@ -654,14 +656,13 @@
                 "status": "correct"
             },
             "units": {
-                "disabled": true,
-                "status": "correct"
+                "disabled": true
             }
         },
         "descriptionID": "id11",
         "type": "parameter",
         "initial": 0.2,
-        "units": "calories/lb"
+        "units": ""
     }
 ]
     }

@@ -20,6 +20,28 @@
         "lessonsLearned" : [
             " This problem is tricky because it asks for doctors but patients is the accumulator.  It is also tricky because patients is almost a simple constant growth + exponential decay, except that the exponential decay is not proportional to the number of patients, but instead to the number of doctors."
         ],
+        "slides": [
+            {
+                "type": "text",
+                "value": "count",
+                "title": "Types of nodes in the model"
+            },
+            {
+                "type": "image",
+                "value": "images/CPI/Busy_hospital_graphs.jpg",
+                "title": "Author's graph for Infections Problem"
+            },
+            {
+                "type": "image",
+                "value": "images/CPI/Busy_hospital_correctnodes.png",
+                "title": "Author's solution for Infections Problem"
+            },
+            {
+                "type": "text",
+                "value": "lessons",
+                "title": "Lessons Learned"
+            }
+        ],
         "givenModelNodes": [
             {
                 "ID": "id1",

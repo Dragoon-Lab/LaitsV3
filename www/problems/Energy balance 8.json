@@ -11,6 +11,7 @@
         "properties": {},
         "image": {},
         "taskDescription": [
+            "Energy Balance 8",
             "As you know, the more weight a person carries, the more energy they burn per day.  And you now know that the proportion of weight change allocated to fat also increases a fat (and hence weight) increases.  These two trends interact, because it turns out that fat requires less energy per day than lean tissue.  A pound of fat requires about 1.74 calories of resting energy expenditure (REE) per day, whereas a pound of lean tissue requires three times as much, about 5.22 calories of REE per day.  Our old model of energy balance, which didn't distinguish between fat and lean tissue, assumed 4.5 calories per pound per day, which is true only for a 150 pound male, like Joe.  Please modify the model of energy balance to include the distinction between fat and lean tissue, and the differences in REE burned by each type.",
             "",
             "",

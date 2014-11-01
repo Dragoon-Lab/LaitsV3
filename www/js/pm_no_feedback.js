@@ -203,6 +203,10 @@ define([
 				}
 				break;
 			case "initial":
+				if(nodeType === "parameter"){
+					disable(obj, "equation", true);
+					newPart = "equation";
+				}
 				if(this.model.given.getUnits(givenNodeID)){
 					disable(obj, "units", false);
 					newPart = "units";

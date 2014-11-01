@@ -16,6 +16,28 @@
         "lessonsLearned": [
             "This system is a type of accelerating change.  See the problem \"acceleration\" in the problem set \"generic changes.\""
         ],
+        "slides": [
+            {
+                "type": "text",
+                "value": "count",
+                "title": "Types of nodes in the model"
+            },
+            {
+                "type": "image",
+                "value": "images/CPI/Strange_Retirement_Plan_graphs.jpg",
+                "title": "Author's graph for Infections Problem"
+            },
+            {
+                "type": "image",
+                "value": "images/CPI/Strange_Retirement_Plan_correctnodes.png",
+                "title": "Author's solution for Infections Problem"
+            },
+            {
+                "type": "text",
+                "value": "lessons",
+                "title": "Lessons Learned"
+            }
+        ],
         "givenModelNodes": [
             {
                 "ID": "id1",
