@@ -1,0 +1,218 @@
+{
+    "task": {
+        "taskName": "exam q2",
+        "time": {
+            "start": 0,
+            "end": 100,
+            "step": 1,
+            "integrationMethod": "Eulers Method",
+            "units": "seconds"
+        },
+        "properties": {},
+        "image": {},
+        "taskDescription": [
+            "Suppose that 10 mg of chemical A and 50 mg of chemical B are dissolved in 150 mL of pure water.  Two reactions start to occur.  One reaction converts a mg of chemical A into a mg of chemical B, and the other converts a mg of chemical B into a mg of chemical A.  The speed of the reaction, in terms of number of mg converted per second, is determined by a reaction rate.  The reaction rate indicates what proportion of the source chemical is converted per second.  In particular, the reaction rate of the A to B reaction is 1% of chemical A, and the reaction rate of the B to A reaction is 3% of chemical B.   Construct a model of how the amounts of chemical A and B change over time."
+        ],
+        "lessonsLearned": "",
+        "givenModelNodes": [
+            {"ID": "id1",
+                "inputs": [
+                    {
+                        "ID": "id2",
+                        "label": ""
+                    },
+                    {
+                        "ID": "id3",
+                        "label": "-"
+                    }
+                ],
+                "position": {
+                    "x": 445,
+                    "y": 180
+                },
+                "attemptCount": {
+                    "description": 0,
+                    "type": 0,
+                    "initial": 0,
+                    "units": 0,
+                    "equation": 0,
+                    "assitanceScore": 0
+                },
+                "status": {},
+                "name": "Chemical A",
+                "description": "Amount of chemical A in the water",
+                "type": "accumulator",
+                "initial": 10,
+                "equation": "id2-id3",
+                "units": "mg",
+                "genus": ""
+            },
+            {
+                "ID": "id2",
+                "inputs": [
+                    {
+                        "ID": "id5",
+                        "label": ""
+                    },
+                    {
+                        "ID": "id6",
+                        "label": ""
+                    }
+                ],
+                "position": {
+                    "x": 547,
+                    "y": 82
+                },
+                "attemptCount": {
+                    "description": 0,
+                    "type": 0,
+                    "initial": 0,
+                    "units": 0,
+                    "equation": 0,
+                    "assitanceScore": 0
+                },
+                "status": {},
+                "name": "B to A reaction",
+                "description": "Amount of B converted to A per second",
+                "type": "function",
+                "equation": "id5*id6",
+                "units": "mg"
+            },
+            {
+                "ID": "id3",
+                "inputs": [
+                    {
+                        "ID": "id1",
+                        "label": ""
+                    },
+                    {
+                        "ID": "id7",
+                        "label": ""
+                    }
+                ],
+                "position": {
+                    "x": 556,
+                    "y": 272
+                },
+                "attemptCount": {
+                    "description": 0,
+                    "type": 0,
+                    "initial": 0,
+                    "units": 0,
+                    "equation": 0,
+                    "assitanceScore": 0
+                },
+                "status": {},
+                "name": "A to B reaction",
+                "description": "Amount of A converted to B per second",
+                "type": "function",
+                "equation": "id1*id7",
+                "units": "mg"
+            },
+            {
+                "ID": "id5",
+                "inputs": [
+                    {
+                        "ID": "id3",
+                        "label": ""
+                    },
+                    {
+                        "ID": "id2",
+                        "label": "-"
+                    }
+                ],
+                "position": {
+                    "x": 672,
+                    "y": 181
+                },
+                "attemptCount": {
+                    "description": 0,
+                    "type": 0,
+                    "initial": 0,
+                    "units": 0,
+                    "equation": 0,
+                    "assitanceScore": 0
+                },
+                "status": {},
+                "name": "Chemical B",
+                "description": "Amount of chemical B in the water",
+                "type": "accumulator",
+                "initial": 50,
+                "equation": "id3-id2",
+                "units": "mg"
+            },
+            {
+                "ID": "id6",
+                "inputs": [],
+                "position": {
+                    "x": 737.3309326171875,
+                    "y": 61.33095169067383
+                },
+                "attemptCount": {
+                    "description": 0,
+                    "type": 0,
+                    "initial": 0,
+                    "units": 0,
+                    "equation": 0,
+                    "assitanceScore": 0
+                },
+                "status": {},
+                "name": "B to A reaction rate",
+                "description": "Number of B to A reactions per unit of B",
+                "equation": "",
+                "type": "parameter",
+                "parentNode": false,
+                "initial": 0.03
+            },
+            {
+                "ID": "id7",
+                "inputs": [],
+                "position": {
+                    "x": 430.3309631347656,
+                    "y": 294.3309631347656
+                },
+                "attemptCount": {
+                    "description": 0,
+                    "type": 0,
+                    "initial": 0,
+                    "units": 0,
+                    "equation": 0,
+                    "assitanceScore": 0
+                },
+                "status": {},
+                "name": "A to B reaction rate",
+                "description": "Number of A to B reactions per unit of A",
+                "equation": "",
+                "type": "parameter",
+                "parentNode": false,
+                "initial": 0.01
+            },
+            {
+                "ID": "id9",
+                "inputs": [],
+                "position": {
+                    "x": 700.3309326171875,
+                    "y": 291.3309631347656
+                },
+                "attemptCount": {
+                    "description": 0,
+                    "type": 0,
+                    "initial": 0,
+                    "units": 0,
+                    "equation": 0,
+                    "assitanceScore": 0
+                },
+                "status": {},
+                "name": "water",
+                "description": "Amount of water",
+                "equation": "",
+                "type": "parameter",
+                "parentNode": false,
+                "initial": 150,
+                "units": "mL",
+                "genus": "extra"
+            }
+        ],
+        "studentModelNodes": []
+    }
+}
