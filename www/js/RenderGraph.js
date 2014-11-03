@@ -96,7 +96,7 @@ define([
 							this.model.active.getDescriptionID(id) : id;
 					// givenID should always exist.
 					console.assert(givenID, "Node '" + id + "' has no corresponding given node");
-					var givenNode = this.model.given.getNode(givenID);
+					var givenNode = this.model.given.getNode(givenID); 
 					return givenNode && (!givenNode.genus ? givenID : null);
 				}, this);
 				// Calculate solutions
@@ -144,8 +144,9 @@ define([
 					this.dialogContent += "<font color='red'>Unfortunately, your model's behavior does not match the author's</font><br>";
 			}
 			//plot sliders
+
 			this.createSliderAndDialogObject();
-			this.dialogContent += "</div>";
+			this.dialogContent += "</div>";			
 			var charts = {};
 			var legends = {};
 			var paneText="";

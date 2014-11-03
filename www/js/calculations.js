@@ -30,8 +30,9 @@ define([
 	"dijit/form/HorizontalSlider",
 	"./equation",
 	"./integrate","./typechecker",
-	"./lessons-learned"
-], function(array, declare, lang, on, dom, registry, HorizontalSlider, equation, integrate, typechecker,lessonsLearned){
+	"./lessons-learned",
+	"dijit/form/Button"
+], function(array, declare, lang, on, dom, registry, HorizontalSlider, equation, integrate, typechecker,lessonsLearned, Button){
 	// Summary: 
 	//			Finds model solutions and sets up the sliders
 	// Description:
@@ -287,6 +288,29 @@ define([
 			}
 			var textBoxID = {}, sliderID = {};
 			//create sliders based on number of input parameters
+			resetSliders = function()
+			{}
+
+			this.dialogContent += "<button id='resetSlidersButton'  value='Reset Sliders'>Reset Sliders</button><br>";
+
+			var resetButton = new Button({
+				label: "Reset Sliders",
+				onClick: function(){					
+					console.log("reseting sliders");
+					var units;
+					var sliderVars = lang.clone(this.active.timeStep.parameters);
+					for(var j=0; j<this.active.timeStep.xvars.length; j++){
+						sliderVars[this.active.timeStep.xvars[j]] = this.active.initialValues[j];
+					}
+					var textBoxID = {}, sliderID = {};
+					//create sliders based on number of input parameters
+
+					for(var paramID in sliderVars){
+							this.sliders[paramID].value = sliderVars[paramID];
+						}
+				}
+			}, "resetSlidersButton");
+
 			for(var paramID in sliderVars){
 
 				/*
@@ -335,7 +359,7 @@ define([
 				// The input element does not have an end tag so we can't use
 				// this.createDom().
 				// Set width as number of characters.
-				this.dialogContent += "<input id=\"" + textBoxID[paramID] + "\" type=\"text\" size=10>";
+				this.dialogContent += "<input id=\"" + textBoxID[paramID] + "\" type=\"text\" size=10 value=\"" + sliderVars[paramID] + "\">";
 				units = this.model.active.getUnits(paramID);
 				if(units){
 					this.dialogContent += " " + units;
@@ -345,7 +369,7 @@ define([
 				sliderID[paramID] = this.sliderID + "_" + paramID;
 				this.dialogContent += "<div id='" + sliderID[paramID] + "'> " + "\</div>";
 			}
-
+			//this.dialogContent += "</form>";
 			var dialogWidget = registry.byId("solution");
 			dialogWidget.set("title", this.model.getTaskName() + " - " + this.type);
 			// Attach contents of dialog box to DOM all at once
@@ -361,7 +385,16 @@ define([
 			for(paramID in sliderVars){
 				this.applyTextValueToGraph(textBoxID, paramID);
 			}
+							var resetButton = graph.dom.byId("resetSlidersButton");
+				resetButton.onClick = function(){
+					console.log("reset clicked");
+				};
 		},
+
+		resetSliders: function()
+		{
+		},
+
 
 		/* @brief: display the graph*/
 		show: function(){
