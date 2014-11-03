@@ -134,6 +134,7 @@ define([
 			//create content pane for sliders
 			this.dialogContent += "<div data-dojo-type='dijit/layout/ContentPane' style='overflow:auto; width:40%; float:right; height: 100%; background-color: #FFFFFF'>";
 			//text for correctness of solution
+			this.dialogContent += "<p>To reset sliders, close and reopen window</p><br>";
 			if(this.mode != "AUTHOR"  && this.mode != "EDITOR")
 			{
 				if(this.model.active.matchesGivenSolutionAndCorrect())
