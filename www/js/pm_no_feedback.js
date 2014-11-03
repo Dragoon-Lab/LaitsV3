@@ -79,7 +79,7 @@ define([
 				disable(obj, "type", false);
 			},
 			EDITOR: function(obj, part){			
-				disable(obj, part, false);
+				disable(obj, "type", false);
 			}
 		},
 		irrelevant: {			
@@ -337,7 +337,7 @@ define([
 				if(answer){
 					givenID = answer;
 					descriptionTable[interpretation][this.userType](returnObj, nodePart);
-					for(var i = 0; i < returnObj.length; i++)
+					for(var i = 0; i < returnObj.length; i++){
 						if(returnObj[i].value === "correct" || returnObj[i].value === "demo"){
 							currentStatus = this.model.given.getStatus(givenID, nodePart); //get current status set in given model
 							if(currentStatus !== "correct" && currentStatus !== "demo"){
@@ -355,6 +355,7 @@ define([
 								updateStatus(returnObj, this.model);
 							this.descriptionCounter = 0;
 						}
+					}
 				}
 				// Process answers for all other node types
 			}else{
