@@ -288,29 +288,7 @@ define([
 			}
 			var textBoxID = {}, sliderID = {};
 			//create sliders based on number of input parameters
-			resetSliders = function()
-			{}
-
-			this.dialogContent += "<button id='resetSlidersButton'  value='Reset Sliders'>Reset Sliders</button><br>";
-
-			var resetButton = new Button({
-				label: "Reset Sliders",
-				onClick: function(){					
-					console.log("reseting sliders");
-					var units;
-					var sliderVars = lang.clone(this.active.timeStep.parameters);
-					for(var j=0; j<this.active.timeStep.xvars.length; j++){
-						sliderVars[this.active.timeStep.xvars[j]] = this.active.initialValues[j];
-					}
-					var textBoxID = {}, sliderID = {};
-					//create sliders based on number of input parameters
-
-					for(var paramID in sliderVars){
-							this.sliders[paramID].value = sliderVars[paramID];
-						}
-				}
-			}, "resetSlidersButton");
-
+			
 			for(var paramID in sliderVars){
 
 				/*
@@ -369,7 +347,6 @@ define([
 				sliderID[paramID] = this.sliderID + "_" + paramID;
 				this.dialogContent += "<div id='" + sliderID[paramID] + "'> " + "\</div>";
 			}
-			//this.dialogContent += "</form>";
 			var dialogWidget = registry.byId("solution");
 			dialogWidget.set("title", this.model.getTaskName() + " - " + this.type);
 			// Attach contents of dialog box to DOM all at once
@@ -385,16 +362,7 @@ define([
 			for(paramID in sliderVars){
 				this.applyTextValueToGraph(textBoxID, paramID);
 			}
-							var resetButton = graph.dom.byId("resetSlidersButton");
-				resetButton.onClick = function(){
-					console.log("reset clicked");
-				};
 		},
-
-		resetSliders: function()
-		{
-		},
-
 
 		/* @brief: display the graph*/
 		show: function(){
