@@ -368,7 +368,7 @@ define([
 			var content = this.dialogWidget.get("content").toString();
 			if(content.search("There isn't anything to plot. Try adding some accumulator or function nodes.") >= 0 
 					||content.search("There is nothing to show in the table.	Please define some quantitites.") >= 0 ||
-					this.mode == "EDITOR" || this.mode == "AUTHOR" ||
+					this.mode === "EDITOR" || this.mode === "AUTHOR" ||
 					!this.model.active.matchesGivenSolutionAndCorrect()) {
 				return;
 			}
