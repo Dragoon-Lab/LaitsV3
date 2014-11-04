@@ -331,14 +331,14 @@ define([
 			var activeSolution = this.findSolution(true, this.active.plotVariables);
 			var givenSolution;
             // TODO: Consider making this condition a function, like "givenGraphViewable()
-            if (this.mode !== "AUTHOR" || this.mode !== "EDITOR"){
+            if (this.mode != "AUTHOR" && this.mode != "EDITOR"){
                 givenSolution = this.findSolution(false, this.given.plotVariables);
             }
 			//update and render the charts
 			array.forEach(this.active.plotVariables, function(id, k){	
 				// Calculate Min and Max values to plot on y axis based on your solution (and given, when applicable)
 				var obj = this.getMinMaxFromArray(activeSolution.plotValues[k]);
-                if (this.mode !== "AUTHOR" || this.mode !== "EDITOR") {
+                if (this.mode != "AUTHOR" && this.mode != "EDITOR") {
                     var givenObj = this.getMinMaxFromArray(givenSolution.plotValues[k]);
                     if (givenObj.min < obj.min) {
                         obj.min = givenObj.min;
