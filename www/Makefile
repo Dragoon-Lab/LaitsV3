@@ -20,7 +20,7 @@ ifeq ($(shell test -f dojo-install-version && cat dojo-install-version),${dojo-v
 	cd dojox; git pull
 	cd util; git pull
 	cd jsPlumb; git pull
-    cd math-parser; git pull
+	cd math-parser; git pull
 	@echo "call to build script goes here"
 	@echo "Updated Dojo $(dojo-version)."
 else 
