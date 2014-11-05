@@ -4,7 +4,7 @@
         "time": {
             "start": 1950,
             "end": 2009,
-            "step": 1.0,
+            "step": 1,
             "units": "Years"
         },
         "properties": {
@@ -19,11 +19,11 @@
             " * Births and deaths are the only change in the population.",
             " * The wolf population is 20 in the first year.",
             " * The number of wolf deaths each year is the wolf death probability times the wolf population.",
-            " * The probability of a wolf dying each year is 25%."
+            " * The probability of a wolf dying each year is 25%.",
             " * The number of wolf births is wolf birth probability times the wolf population.",
             " * The wolf birth probability is the moose pop. times the effect of moose on wolves.",
             " * The effect of moose on wolves is 0.00075.",
-            " * The moose population is 500 in the first year.", 
+            " * The moose population is 500 in the first year.",
             " * The number of moose births each year is the moose birth probability times the moose population",
             " * The probability of a moose giving birth each year is 10%.",
             " * The number of moose deaths is the moose death probability times the moose pop.",
@@ -354,6 +354,299 @@
                 "equation": "+ id6 - id7"
             }
         ],
-        "studentModelNodes": [{"ID":"id13","inputs":[{"ID":"id15"},{"ID":"id17"}],"position":{"x":711,"y":254},"status":{"description":{"status":"correct","disabled":true},"type":{"disabled":true,"status":"correct"},"initial":{"disabled":true,"status":"correct"},"equation":{"disabled":true,"status":"correct"}},"descriptionID":"id2","type":"accumulator","initial":500,"equation":"id15-id17"},{"ID":"id14","inputs":[{"ID":"id16"},{"ID":"id18"}],"position":{"x":872,"y":254},"status":{"description":{"status":"correct","disabled":true},"type":{"disabled":true,"status":"correct"},"initial":{"disabled":true,"status":"correct"},"equation":{"disabled":true,"status":"correct"}},"descriptionID":"id12","type":"accumulator","initial":20,"equation":"id16-id18"},{"ID":"id15","inputs":[{"ID":"id13"},{"ID":"id19"}],"position":{"x":572,"y":128},"status":{"description":{"status":"correct","disabled":true},"type":{"disabled":true,"status":"correct"},"equation":{"disabled":true,"status":"correct"}},"descriptionID":"id1","type":"function","equation":"id13*id19"},{"ID":"id16","inputs":[{"ID":"id14"},{"ID":"id21"}],"position":{"x":999,"y":123},"status":{"description":{"status":"correct","disabled":true},"type":{"disabled":true,"status":"correct"},"equation":{"disabled":true,"status":"correct"}},"descriptionID":"id6","type":"function","equation":"id14*id21"},{"ID":"id17","inputs":[{"ID":"id13"},{"ID":"id22"}],"position":{"x":569,"y":382},"status":{"description":{"status":"correct","disabled":true},"type":{"disabled":true,"status":"correct"},"equation":{"disabled":true,"status":"correct"}},"descriptionID":"id3","type":"function","equation":"id13*id22"},{"ID":"id18","inputs":[{"ID":"id14"},{"ID":"id20"}],"position":{"x":1010,"y":405},"status":{"description":{"status":"correct","disabled":true},"type":{"disabled":true,"status":"correct"},"equation":{"disabled":true,"status":"correct"}},"descriptionID":"id7","type":"function","equation":"id14*id20"},{"ID":"id19","inputs":[],"position":{"x":691.7451782226562,"y":33.74516677856445},"status":{"description":{"status":"correct","disabled":true},"type":{"disabled":true,"status":"correct"},"initial":{"disabled":true,"status":"correct"}},"descriptionID":"id5","type":"parameter","initial":0.1},{"ID":"id20","inputs":[],"position":{"x":869.7451782226562,"y":490.74517822265625},"status":{"description":{"status":"correct","disabled":true},"type":{"disabled":true,"status":"correct"},"initial":{"disabled":true,"status":"correct"}},"descriptionID":"id9","type":"parameter","initial":0.25},{"ID":"id21","inputs":[],"position":{"x":858.7451782226562,"y":29.745166778564453},"status":{"description":{"status":"correct","disabled":true},"type":{"disabled":false,"status":"incorrect"}},"descriptionID":"id8","type":"parameter"},{"ID":"id22","inputs":[],"position":{"x":698.7451782226562,"y":485.74517822265625},"status":{"description":{"status":"correct","disabled":true},"type":{"disabled":false,"status":"incorrect"}},"descriptionID":"id4","type":"parameter"}]
+        "studentModelNodes": [
+            {
+                "ID": "id13",
+                "inputs": [
+                    {
+                        "ID": "id15"
+                    },
+                    {
+                        "ID": "id17"
+                    }
+                ],
+                "position": {
+                    "x": 711,
+                    "y": 254
+                },
+                "status": {
+                    "description": {
+                        "status": "correct",
+                        "disabled": true
+                    },
+                    "type": {
+                        "disabled": true,
+                        "status": "correct"
+                    },
+                    "initial": {
+                        "disabled": true,
+                        "status": "correct"
+                    },
+                    "equation": {
+                        "disabled": true,
+                        "status": "correct"
+                    }
+                },
+                "descriptionID": "id2",
+                "type": "accumulator",
+                "initial": 500,
+                "equation": "id15-id17"
+            },
+            {
+                "ID": "id14",
+                "inputs": [
+                    {
+                        "ID": "id16"
+                    },
+                    {
+                        "ID": "id18"
+                    }
+                ],
+                "position": {
+                    "x": 872,
+                    "y": 254
+                },
+                "status": {
+                    "description": {
+                        "status": "correct",
+                        "disabled": true
+                    },
+                    "type": {
+                        "disabled": true,
+                        "status": "correct"
+                    },
+                    "initial": {
+                        "disabled": true,
+                        "status": "correct"
+                    },
+                    "equation": {
+                        "disabled": true,
+                        "status": "correct"
+                    }
+                },
+                "descriptionID": "id12",
+                "type": "accumulator",
+                "initial": 20,
+                "equation": "id16-id18"
+            },
+            {
+                "ID": "id15",
+                "inputs": [
+                    {
+                        "ID": "id13"
+                    },
+                    {
+                        "ID": "id19"
+                    }
+                ],
+                "position": {
+                    "x": 572,
+                    "y": 128
+                },
+                "status": {
+                    "description": {
+                        "status": "correct",
+                        "disabled": true
+                    },
+                    "type": {
+                        "disabled": true,
+                        "status": "correct"
+                    },
+                    "equation": {
+                        "disabled": true,
+                        "status": "correct"
+                    }
+                },
+                "descriptionID": "id1",
+                "type": "function",
+                "equation": "id13*id19"
+            },
+            {
+                "ID": "id16",
+                "inputs": [
+                    {
+                        "ID": "id14"
+                    },
+                    {
+                        "ID": "id21"
+                    }
+                ],
+                "position": {
+                    "x": 999,
+                    "y": 123
+                },
+                "status": {
+                    "description": {
+                        "status": "correct",
+                        "disabled": true
+                    },
+                    "type": {
+                        "disabled": true,
+                        "status": "correct"
+                    },
+                    "equation": {
+                        "disabled": true,
+                        "status": "correct"
+                    }
+                },
+                "descriptionID": "id6",
+                "type": "function",
+                "equation": "id14*id21"
+            },
+            {
+                "ID": "id17",
+                "inputs": [
+                    {
+                        "ID": "id13"
+                    },
+                    {
+                        "ID": "id22"
+                    }
+                ],
+                "position": {
+                    "x": 569,
+                    "y": 382
+                },
+                "status": {
+                    "description": {
+                        "status": "correct",
+                        "disabled": true
+                    },
+                    "type": {
+                        "disabled": true,
+                        "status": "correct"
+                    },
+                    "equation": {
+                        "disabled": true,
+                        "status": "correct"
+                    }
+                },
+                "descriptionID": "id3",
+                "type": "function",
+                "equation": "id13*id22"
+            },
+            {
+                "ID": "id18",
+                "inputs": [
+                    {
+                        "ID": "id14"
+                    },
+                    {
+                        "ID": "id20"
+                    }
+                ],
+                "position": {
+                    "x": 1010,
+                    "y": 405
+                },
+                "status": {
+                    "description": {
+                        "status": "correct",
+                        "disabled": true
+                    },
+                    "type": {
+                        "disabled": true,
+                        "status": "correct"
+                    },
+                    "equation": {
+                        "disabled": true,
+                        "status": "correct"
+                    }
+                },
+                "descriptionID": "id7",
+                "type": "function",
+                "equation": "id14*id20"
+            },
+            {
+                "ID": "id19",
+                "inputs": [],
+                "position": {
+                    "x": 691.7451782226562,
+                    "y": 33.74516677856445
+                },
+                "status": {
+                    "description": {
+                        "status": "correct",
+                        "disabled": true
+                    },
+                    "type": {
+                        "disabled": true,
+                        "status": "correct"
+                    },
+                    "initial": {
+                        "disabled": true,
+                        "status": "correct"
+                    }
+                },
+                "descriptionID": "id5",
+                "type": "parameter",
+                "initial": 0.1
+            },
+            {
+                "ID": "id20",
+                "inputs": [],
+                "position": {
+                    "x": 869.7451782226562,
+                    "y": 490.74517822265625
+                },
+                "status": {
+                    "description": {
+                        "status": "correct",
+                        "disabled": true
+                    },
+                    "type": {
+                        "disabled": true,
+                        "status": "correct"
+                    },
+                    "initial": {
+                        "disabled": true,
+                        "status": "correct"
+                    }
+                },
+                "descriptionID": "id9",
+                "type": "parameter",
+                "initial": 0.25
+            },
+            {
+                "ID": "id21",
+                "inputs": [],
+                "position": {
+                    "x": 858.7451782226562,
+                    "y": 29.745166778564453
+                },
+                "status": {
+                    "description": {
+                        "status": "correct",
+                        "disabled": true
+                    },
+                    "type": {
+                        "disabled": false,
+                        "status": "incorrect"
+                    }
+                },
+                "descriptionID": "id8",
+                "type": "parameter"
+            },
+            {
+                "ID": "id22",
+                "inputs": [],
+                "position": {
+                    "x": 698.7451782226562,
+                    "y": 485.74517822265625
+                },
+                "status": {
+                    "description": {
+                        "status": "correct",
+                        "disabled": true
+                    },
+                    "type": {
+                        "disabled": false,
+                        "status": "incorrect"
+                    }
+                },
+                "descriptionID": "id4",
+                "type": "parameter"
+            }
+        ]
     }
 }
