@@ -104,7 +104,7 @@ define([
 			},
 			updatePosition: function()
 			{
-				if(this.x + this.nodeWidth < document.documentElement.clientWidth)
+				if((this.x + this.nodeWidth) < (document.documentElement.clientWidth - this.nodeWidth))
 					this.x += this.nodeWidth;
 				else
 				{
