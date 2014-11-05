@@ -11,6 +11,7 @@
     "properties": {},
     "image": {},
     "taskDescription": [
+        "Energy Balance 6",
         "The resting energy expenditure, which is measured when you are doing no exercise and no ingestion of food, includes the energy used for breathing, blood circulation and many other routine bodily functions.  The bigger the body, the more energy these bodily functions require.  However, young bodies burn more energy per pound than old bodies.  The Mifflin equation, shown below, is the most accurate estimator known so far:",
         "",
         "REE = 4.5*weight + 15.9*height - 5*age + gender REE",
@@ -329,7 +330,7 @@
             "type": "parameter",
             "parentNode": false,
             "initial": 0.2,
-            "units": "calories/lb"
+            "units": ""
         },
         {
             "ID": "id14",
@@ -697,7 +698,7 @@
         "descriptionID": "id5",
         "type": "parameter",
         "initial": 1989,
-        "units": "calories/lbs"
+        "units": "calories"
     },
     {
         "ID": "id27",
@@ -727,7 +728,7 @@
         "descriptionID": "id4",
         "type": "parameter",
         "initial": 3500,
-        "units": "calories/lbs"
+        "units": "calories/lb"
     },
     {
         "ID": "id28",
@@ -805,7 +806,7 @@
         },
         "descriptionID": "id2",
         "type": "function",
-        "equation": "id24*id27",
+        "equation": "id24/id27",
         "units": "lbs"
     },
     {
@@ -864,7 +865,7 @@
         },
         "descriptionID": "id7",
         "type": "function",
-        "equation": "id34+id26",
+        "equation": "id34*id26",
         "units": "calories"
     },
     {
@@ -923,14 +924,13 @@
                 "status": "correct"
             },
             "units": {
-                "disabled": true,
-                "status": "correct"
+                "disabled": true
             }
         },
         "descriptionID": "id10",
         "type": "parameter",
         "initial": 0.2,
-        "units": "calories/lb"
+        "units": ""
     },
     {
         "ID": "id34",

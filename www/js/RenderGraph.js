@@ -37,14 +37,13 @@ define([
 	"dijit/_base",
 	"dijit/layout/ContentPane",
 	"dijit/layout/TabContainer",
-	"dojo/parser",
-	
+	"dojo/parser",	
 	"dojo/domReady!"
 ], function(array, declare, lang, on, domAttr, registry, Chart, Default, Lines, Grid, Legend, calculations, base, contentPane){
 
 	// The calculations constructor is loaded before the RenderGraph constructor
 	return declare(calculations, {
-		type: "Graph",									//Rendering type
+		type: "Graph and Table",									//Rendering type
 		textBoxID: "textGraph",							//ID for text-box DOM
 		sliderID: "sliderGraph",						//ID for slider DOM
 		chart: {},										//Object of a chart
@@ -134,8 +133,9 @@ define([
 			//create content pane for sliders
 			this.dialogContent += "<div data-dojo-type='dijit/layout/ContentPane' style='overflow:auto; width:40%; float:right; height: 100%; background-color: #FFFFFF'>";
 			//text for correctness of solution
+			
 			this.dialogContent += "<p>To reset sliders, close and reopen window</p><br>";
-			if(this.mode != "AUTHOR"  && this.mode != "EDITOR")
+			if(this.mode != "AUTHOR"  && this.mode != "EDITOR" && this.mode != "TEST")
 			{
 				if(this.model.active.matchesGivenSolutionAndCorrect())
 				{
@@ -185,9 +185,11 @@ define([
 						titleOrientation: "away", titleGap: 5
 						});
 
-					// var obj = this.getMinMaxFromArray(this.student.arrayOfNodeValues[j]);
+					var obj = this.getMinMaxFromArray(activeSolution.plotValues[k]);
 					charts[id].addAxis("y", {
-						vertical: true, // min: obj.min, max: obj.max,
+						vertical: true,
+						min: obj.min,
+						max:obj.max,
 						title: this.labelString(id)
 						});
 
@@ -195,12 +197,13 @@ define([
 						var givenID = this.model.active.getDescriptionID(id);
 					}
 					//plot chart for student node
+                    console.log("active solution",activeSolution);
 					charts[id].addSeries(
 						"Your solution",
 						this.formatSeriesForChart(activeSolution, k),
 						{stroke: "green"}
 					);
-					if(this.mode != "AUTHOR"  && this.mode != "EDITOR" && this.given.plotVariables[k]){
+					if(this.mode !== "AUTHOR"  && this.mode !== "EDITOR" && this.given.plotVariables[k]){
 						charts[id].addSeries(
 							"Author's solution",
 							this.formatSeriesForChart(givenSolution, k), {stroke: "red"}
@@ -255,7 +258,7 @@ define([
 		 */
 		formatSeriesForChart: function(result, j){
 			return array.map(result.times, function(time, k){
-				return {x: time, y: result.plotValues[j][k]};
+				return {x: time, y: result.plotValues[j][k].toFixed(3)};
 			});
 		},
 
@@ -315,6 +318,11 @@ define([
 					max = array[i];
 				}
 			}
+			// Check if the maximum and minimum are same and change the min and max values
+			if(min == max){ 
+				min = min - 1;
+				max = max + 1;
+			}
 			return {min: min, max: max};
 		},
 
@@ -324,8 +332,33 @@ define([
 		 */
 		renderDialog: function(calculationObj){
 			var activeSolution = this.findSolution(true, this.active.plotVariables);
+			var givenSolution;
+            // TODO: Consider making this condition a function, like "givenGraphViewable()
+           if (this.mode !== "AUTHOR" && this.mode !== "EDITOR"){
+                givenSolution = this.findSolution(false, this.given.plotVariables);
+            }
 			//update and render the charts
-			array.forEach(this.active.plotVariables, function(id, k){
+			array.forEach(this.active.plotVariables, function(id, k){	
+				// Calculate Min and Max values to plot on y axis based on your solution (and given, when applicable)
+				var obj = this.getMinMaxFromArray(activeSolution.plotValues[k]);
+                if (this.mode !== "AUTHOR" && this.mode !== "EDITOR") {
+                    var givenObj = this.getMinMaxFromArray(givenSolution.plotValues[k]);
+                    if (givenObj.min < obj.min) {
+                        obj.min = givenObj.min;
+                    }
+                    if (givenObj.max > obj.max) {
+                        obj.max = givenObj.max;
+                    }
+                }
+
+				//Redraw y axis based on new min and max values
+				this.chart[id].addAxis("y", {
+						vertical: true,
+						min: obj.min,
+						max: obj.max,
+						title: this.labelString(id)
+						});
+
 				this.chart[id].updateSeries(
 					"Your solution",
 					this.formatSeriesForChart(activeSolution, k),

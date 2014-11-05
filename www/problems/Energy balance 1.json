@@ -11,6 +11,7 @@
         "properties": {},
         "image": {},
         "taskDescription": [
+            "Energy Balance 1",
             "The energy balance of your body is the difference between the energy you add to the body by ingesting food and the energy you subtract from the body by physical exercise and other activities.  When the energy you ingest exactly equals the energy you expend, the energy balance is zero.  When the energy you ingest is greater than the energy you expend, the energy balance is positive and the excess energy is added to the body's energy stores.  When you consume less energy than you expend, the energy balance is negative and your body makes up the deficit by withdrawing energy from storage.  Starting from the simpler model that you made in part 1, create a model of Joe's body using four nodes:  energy balance, energy ingested, energy expended and energy stored.  Used calories as the unit of energy.  Assume:",
             "* Joe ingests 1989 calories a day",
             "* Joe expends 2100 calories a day",

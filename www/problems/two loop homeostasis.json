@@ -12,7 +12,9 @@
 		},
 		"properties":{},
 		"image":{},
-		"taskDescription":["The body often uses two different negative feedback loops in order to keep the controlled quantity's value close to the set point.  One negative feedback loop is used to reduce a surplus, and the other loop is used to reduce a deficit.  Because the body uses different biochemical pathways to implement the different loops, the rates of convergences can be different.  Let us assume that the convergence rate for a surplus is 0.10, and the convergence rate for a deficit is 0.20.  As before, assume the set point is 98.6 and so is the initial value of the controlled quantity.  Here are the definitions of surplus and deficit (note that both are defined to be non-negative numbers):","","surplus = max(0, difference)","deficit = max(0, -difference)","","Starting with the nodes given, develop a two-loop model.  Note that the loop for reducing the surplus must subtract from the controlled variable, whereas the loop for reducing the deficit must add to the controlled variable.     ","",""],
+		"taskDescription":[
+            "Two Loop Homeostasis",
+            "The body often uses two different negative feedback loops in order to keep the controlled quantity's value close to the set point.  One negative feedback loop is used to reduce a surplus, and the other loop is used to reduce a deficit.  Because the body uses different biochemical pathways to implement the different loops, the rates of convergences can be different.  Let us assume that the convergence rate for a surplus is 0.10, and the convergence rate for a deficit is 0.20.  As before, assume the set point is 98.6 and so is the initial value of the controlled quantity.  Here are the definitions of surplus and deficit (note that both are defined to be non-negative numbers):","","surplus = max(0, difference)","deficit = max(0, -difference)","","Starting with the nodes given, develop a two-loop model.  Note that the loop for reducing the surplus must subtract from the controlled variable, whereas the loop for reducing the deficit must add to the controlled variable.     ","",""],
 		"givenModelNodes":
 		[
 			{
