@@ -147,7 +147,7 @@ define([
 					return;
 				}
 				
-				var id = givenModel.active.addNode("fromButton");
+				var id = givenModel.active.addNode();
 				controllerObject.logging.log('ui-action', {type: "menu-choice", name: "create-node"});
 				drawModel.addNode(givenModel.active.getNode(id));		
 				controllerObject.showNodeEditor(id);
