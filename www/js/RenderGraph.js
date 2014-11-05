@@ -134,7 +134,7 @@ define([
 			this.dialogContent += "<div data-dojo-type='dijit/layout/ContentPane' style='overflow:auto; width:40%; float:right; height: 100%; background-color: #FFFFFF'>";
 			//text for correctness of solution
 			
-			this.dialogContent += "<p>To reset sliders, close and reopen window</p><br>";
+			
 			if(this.mode != "AUTHOR"  && this.mode != "EDITOR" && this.mode != "TEST")
 			{
 				if(this.model.active.matchesGivenSolutionAndCorrect())
@@ -144,9 +144,11 @@ define([
 				else
 					this.dialogContent += "<font color='red'>Unfortunately, your model's behavior does not match the author's</font><br>";
 			}
+			this.dialogContent += "<p>To reset the sliders, close and reopen the window.</p>";
 			//plot sliders
 
 			this.createSliderAndDialogObject();
+
 			this.dialogContent += "</div>";			
 			var charts = {};
 			var legends = {};
