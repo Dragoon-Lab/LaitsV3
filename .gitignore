@@ -1,7 +1,6 @@
 /build/
 /dist/
 /test/
-/tests/
 /logs/
 /nbproject/
 /build.xml
@@ -46,7 +45,7 @@ www/util/
 .idea/
 
 tests/npm/
-tests/node_modules
+tests/node_modules/
 tests/phantomjsdriver.log
 tests/selenium.log
 
