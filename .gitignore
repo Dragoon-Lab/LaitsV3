@@ -1,6 +1,7 @@
 /build/
 /dist/
 /test/
+/tests/
 /logs/
 /nbproject/
 /build.xml
@@ -36,12 +37,17 @@ www/dojox/
 
 www/jsPlumb/
 
+www/math-parser/
+
 www/php-test.php
 
 www/util/
+
+.idea/
 
 tests/npm/
 tests/node_modules
 tests/phantomjsdriver.log
 tests/selenium.log
+
 

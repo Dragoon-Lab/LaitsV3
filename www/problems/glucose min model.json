@@ -11,6 +11,7 @@
         "properties": {},
         "image": {},
         "taskDescription": [
+            "Glucose Min Model",
             "Please finish the construction of the minimal model of glucose reduction.  Here are the subsystems that have been built already:",
             "",
             "Blood glucose being burned by tissues that are not sensitive to insulin: blood glucose; glucose difference; glucose set point; glucose removed without insulin; glucose effectiveness",

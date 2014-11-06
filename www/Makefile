@@ -1,12 +1,13 @@
 dojo-version=master
 
 install:
-	-rm -r -f dojo dijit dojox util jsPlumb
+	-rm -r -f dojo dijit dojox util jsPlumb math-parser
 	git clone https://github.com/dojo/dojo.git dojo
 	git clone https://github.com/dojo/dijit.git dijit
 	git clone https://github.com/dojo/dojox.git dojox
 	git clone https://github.com/dojo/util.git util
 	git clone https://github.com/bhosaledipak/JsPlumb_Dojo_Integreate.git jsPlumb
+    git clone https://github.com/bvds/js-expression-eval.git math-parser  
 	# In case the build fails, we tag version first.
 	echo "${dojo-version}" > dojo-install-version
 	@echo "call to build script goes here"
@@ -19,6 +20,7 @@ ifeq ($(shell test -f dojo-install-version && cat dojo-install-version),${dojo-v
 	cd dojox; git pull
 	cd util; git pull
 	cd jsPlumb; git pull
+	cd math-parser; git pull
 	@echo "call to build script goes here"
 	@echo "Updated Dojo $(dojo-version)."
 else 

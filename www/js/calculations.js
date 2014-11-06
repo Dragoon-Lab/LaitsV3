@@ -29,8 +29,10 @@ define([
 	"dijit/registry",
 	"dijit/form/HorizontalSlider",
 	"./equation",
-	"./integrate","./typechecker"
-], function(array, declare, lang, on, dom, registry, HorizontalSlider, equation, integrate, typechecker){
+	"./integrate","./typechecker",
+	"./lessons-learned",
+	"dijit/form/Button"
+], function(array, declare, lang, on, dom, registry, HorizontalSlider, equation, integrate, typechecker,lessonsLearned, Button){
 	// Summary: 
 	//			Finds model solutions and sets up the sliders
 	// Description:
@@ -286,6 +288,7 @@ define([
 			}
 			var textBoxID = {}, sliderID = {};
 			//create sliders based on number of input parameters
+			
 			for(var paramID in sliderVars){
 
 				/*
@@ -334,7 +337,7 @@ define([
 				// The input element does not have an end tag so we can't use
 				// this.createDom().
 				// Set width as number of characters.
-				this.dialogContent += "<input id=\"" + textBoxID[paramID] + "\" type=\"text\" size=10>";
+				this.dialogContent += "<input id=\"" + textBoxID[paramID] + "\" type=\"text\" size=10 value=\"" + sliderVars[paramID] + "\">";
 				units = this.model.active.getUnits(paramID);
 				if(units){
 					this.dialogContent += " " + units;
@@ -344,7 +347,6 @@ define([
 				sliderID[paramID] = this.sliderID + "_" + paramID;
 				this.dialogContent += "<div id='" + sliderID[paramID] + "'> " + "\</div>";
 			}
-
 			var dialogWidget = registry.byId("solution");
 			dialogWidget.set("title", this.model.getTaskName() + " - " + this.type);
 			// Attach contents of dialog box to DOM all at once
@@ -368,7 +370,8 @@ define([
 			var content = this.dialogWidget.get("content").toString();
 			if(content.search("There isn't anything to plot. Try adding some accumulator or function nodes.") >= 0 
 					||content.search("There is nothing to show in the table.	Please define some quantitites.") >= 0 ||
-					this.mode == "EDITOR" || !this.model.active.matchesGivenSolutionAndCorrect()) {
+					this.mode === "EDITOR" || this.mode === "AUTHOR" ||
+					!this.model.active.matchesGivenSolutionAndCorrect()) {
 				return;
 			}
 			var contentMsg = this.model.getTaskLessonsLearned();
@@ -384,21 +387,13 @@ define([
 					}
 					return;
 				}
-				var lessonLearnedDialog = registry.byId("lesson");
-				var titleMsg  = "<font size='3'>Lessons Learned</font>";
-				var contentHTML = "<font size='2'>" + contentMsg[0];
-				for(var i=1;i<contentMsg.length;i++) {
-					contentHTML = contentHTML +"<br>"+contentMsg[i];
-				}
-				contentHTML = contentHTML + "</font>";
-				lessonLearnedDialog.set("content", contentHTML);
-				lessonLearnedDialog.set("title", titleMsg);
-				lessonLearnedDialog.show();
+				lessonsLearned.displayLessonsLearned(contentMsg);
 				dojo.disconnect(handle);
 			});
 			
 			lang.hitch(this, handle);
 		},
+
 
 		setLogging: function(/*string*/ logging){
 			this._logging = logging;

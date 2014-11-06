@@ -11,13 +11,35 @@
         "properties": {},
         "image": {},
         "taskDescription": [
-            "Lewis Fry Richardson (see Wikipedia entry) presented the first mathematical analysis of the arms race.  Two countries, A and B, each have an annual arms budget.  Let&apos;s say they both start with an annual budget of 100.  The change in the arms budget of each country depends on three factors.  The first factor is economization:  The larger the current arms budget, the larger the decrease because the government wants to economize.  Let&apos;s say that both governments want to try to decrease the budget by 20% a year.  The second is fear of the other country:  the larger the arms budget of the other country, the more money added to arms budget.  The last is antagonism: the more the country hates the other country, the larger the growth in its arms budget each year.  Whereas money added due to fear is proportional to the other country&apos;s arms budget, money added due to antagonism is a constant.    Let&apos;s assume that country A really hates country B, so its antagonism is 8, and country A really fears country B, so the effect of fear is to increase A&apos;s budget by 15% of B&apos;s budget.  On the other hand, B is a more laid back country.  Its antagonism toward A is 5, and its fear factor is 10%.  Construct a model and explore how the budgets of A and B change depending on what their initial budgets are."
+            "Lewis Fry Richardson (see Wikipedia entry) presented the first mathematical analysis of the arms race.  Two countries, A and B, each have an annual arms budget.  Let's say they both start with an annual budget of 100.  The change in the arms budget of each country depends on three factors.  The first factor is economization:  The larger the current arms budget, the larger the decrease because the government wants to economize.  Let's say that both governments want to try to decrease the budget by 20% a year.  The second is fear of the other country:  the larger the arms budget of the other country, the more money added to arms budget.  The last is antagonism: the more the country hates the other country, the larger the growth in its arms budget each year.  Whereas money added due to fear is proportional to the other country's arms budget, money added due to antagonism is a constant.    Let's assume that country A really hates country B, so its antagonism is 8, and country A really fears country B, so the effect of fear is to increase A's budget by 15% of B's budget.  On the other hand, B is a more laid back country.  Its antagonism toward A is 5, and its fear factor is 10%.  Construct a model and explore how the budgets of A and B change depending on what their initial budgets are."
         ],
         "lessonsLearned": [
             "Richardson, who was a Quaker and a pacifist, may have been disappointed to find that the arms budget of countries tended to stabilize at non-zero values or to explode.  The arms budgets became small only when antagonism and fear become very small.   Moreover, if one country becomes a pacifist, the other country does not.  Does this make  sense if we look at the processes involved?",
             "*  economizing:  exponential decay",
-            "*  fearfulness: exponential growth, but due to other country&apos;s budget",
+            "*  fearfulness: exponential growth, but due to other country's budget",
             "*  antagonism:  linear growth."
+        ],
+        "slides": [
+            {
+                "type": "text",
+                "value": "count",
+                "title": "Types of nodes in the model"
+            },
+            {
+                "type": "image",
+                "value": "images/CPI/arms_race_graph.jpg",
+                "title": "Author's graph for arms race Problem"
+            },
+            {
+                "type": "image",
+                "value": "images/CPI/arms_race_correctnodes.png",
+                "title": "Author's solution for arms race Problem"
+            },
+            {
+                "type": "text",
+                "value": "lessons",
+                "title": "Lessons Learned"
+            }
         ],
         "givenModelNodes": [
             {

@@ -31,6 +31,28 @@
             "* Destination 3: irrelevant",
             "* Changing 3:  Proportional to amount of poison sprayed that day"
         ],
+        "slides": [
+            {
+                "type": "text",
+                "value": "count",
+                "title": "Types of nodes in the model"
+            },
+            {
+                "type": "image",
+                "value": "images/CPI/running_out_of_poison_graph.jpg",
+                "title": "Author's graph for  Running out of Poison Problem"
+            },
+            {
+                "type": "image",
+                "value": "images/CPI/running_out_of_poison_correctnodes.png",
+                "title": "Author's solution for Running out of Poison Problem"
+            },
+            {
+                "type": "text",
+                "value": "lessons",
+                "title": "Lessons Learned"
+            }
+        ],
         "givenModelNodes": [
             {
                 "ID": "id1",
@@ -138,7 +160,7 @@
                 },
                 "status": {},
                 "name": "Weeds",
-                "description": "Number of weeds alive in thecorn field",
+                "description": "Number of weeds alive in the corn field",
                 "type": "accumulator",
                 "initial": 50000,
                 "equation": "id5-id7"

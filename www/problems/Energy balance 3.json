@@ -11,6 +11,7 @@
     "properties": {},
     "image": {},
     "taskDescription": [
+        "Energy Balance 3",
         "Exactly how much energy is burned by your body depends on many factors, including the amount of physical activity you do, your weight, your age and other factors.  In preparation for describing these effects, scientists divide energy expended into three types: ",
         "* energy burned by physical exercise.  ",
         "* energy burned by the digestion process, because it takes energy to release the energy in food.  ",
@@ -465,7 +466,7 @@
         },
         "descriptionID": "id2",
         "type": "function",
-        "equation": "id11*id14",
+        "equation": "id11/id14",
         "units": "lbs"
     }
 ]
