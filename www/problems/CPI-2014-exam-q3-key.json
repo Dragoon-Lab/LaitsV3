@@ -1,0 +1,460 @@
+{
+    "task": {
+        "taskName": "exam q3",
+        "time": {
+            "start": 0,
+            "end": 100,
+            "step": 1,
+            "integrationMethod": "Eulers Method",
+            "units": "years"
+        },
+        "properties": {},
+        "image": {},
+        "taskDescription": [
+            "Suppose that a certain kind of animal lives on a small (2 square mile) island.  Initially, there are 190 females and 100 males.   The males are so aggressive that whenever two males meet, they fight until one of them dies.  Moreover, whenever a male meets a female, they mate and a baby is eventually born.  The number of meetings during a year is the animal density, where animal density is the total population of animals divided by the size of the island. You should know how to calculate the chance that one of the participants in a meeting is male, and the chance that one of the participants in a meeting is female, and this will allow you to calculate the number of male-male meetings and the number of male-female meetings. ",
+            "",
+            "The females don't fight, so they die of old age.  The proportion of the females that dies each year is 7%.  The males all die in fights.   ",
+            "",
+            "Unlike humans, where about half the births are male and half are female, the probability of a birth being a male animal is 0.2.  Of course, the probability of a birth being female is just 1.0 minus the male birth probability.  Construct a model that shows how the male and female populations change over time.  Use a single slider for these two birth probabilities so that you can study how the birth ratio affects the population.",
+            ""
+        ],
+        "lessonsLearned": "",
+        "givenModelNodes": [
+            {
+                "ID": "id1",
+                "inputs": [
+                    {
+                        "ID": "id2",
+                        "label": ""
+                    },
+                    {
+                        "ID": "id3",
+                        "label": "-"
+                    }
+                ],
+                "position": {
+                    "x": 449,
+                    "y": 302
+                },
+                "attemptCount": {
+                    "description": 0,
+                    "type": 0,
+                    "initial": 0,
+                    "units": 0,
+                    "equation": 0,
+                    "assitanceScore": 0
+                },
+                "status": {},
+                "name": "Males",
+                "description": "Number of males on the island",
+                "type": "accumulator",
+                "initial": 100,
+                "equation": "id2-id3"
+            },
+            {
+                "ID": "id2",
+                "inputs": [
+                    {
+                        "ID": "id10",
+                        "label": ""
+                    },
+                    {
+                        "ID": "id11",
+                        "label": ""
+                    }
+                ],
+                "position": {
+                    "x": 448,
+                    "y": 438
+                },
+                "attemptCount": {
+                    "description": 0,
+                    "type": 0,
+                    "initial": 0,
+                    "units": 0,
+                    "equation": 0,
+                    "assitanceScore": 0
+                },
+                "status": {},
+                "name": "male births",
+                "description": "Number of males born each year",
+                "type": "function",
+                "equation": "id10*id11"
+            },
+            {
+                "ID": "id3",
+                "inputs": [
+                    {
+                        "ID": "id8",
+                        "label": ""
+                    },
+                    {
+                        "ID": "id9",
+                        "label": ""
+                    }
+                ],
+                "position": {
+                    "x": 632,
+                    "y": 96
+                },
+                "attemptCount": {
+                    "description": 0,
+                    "type": 0,
+                    "initial": 0,
+                    "units": 0,
+                    "equation": 0,
+                    "assitanceScore": 0
+                },
+                "status": {},
+                "name": "male deaths",
+                "description": "Number of male deaths each year",
+                "type": "function",
+                "equation": "(id8*id9)*id9"
+            },
+            {
+               "ID": "id4",
+                "inputs": [
+                    {
+                        "ID": "id5",
+                        "label": ""
+                    },
+                    {
+                        "ID": "id6",
+                        "label": "-"
+                    }
+                ],
+                "position": {
+                    "x": 857,
+                    "y": 224
+                },
+                "attemptCount": {
+                    "description": 0,
+                    "type": 0,
+                    "initial": 0,
+                    "units": 0,
+                    "equation": 0,
+                    "assitanceScore": 0
+                },
+                "status": {},
+                "name": "Females",
+                "description": "Number of females on the island",
+                "type": "accumulator",
+                "initial": 190,
+                "equation": "id5-id6"
+            },
+            {
+                "ID": "id5",
+                "inputs": [
+                    {
+                        "ID": "id10",
+                        "label": ""
+                    },
+                    {
+                        "ID": "id13",
+                        "label": ""
+                    }
+                ],
+                "position": {
+                    "x": 851,
+                    "y": 365
+                },
+                "attemptCount": {
+                    "description": 0,
+                    "type": 0,
+                    "initial": 0,
+                    "units": 0,
+                    "equation": 0,
+                    "assitanceScore": 0
+                },
+                "status": {},
+                "name": "female births",
+                "description": "Number of females born each year",
+                "type": "function",
+                "equation": "id10*id13"
+            },
+            {
+                "ID": "id6",
+                "inputs": [
+                    {
+                        "ID": "id4",
+                        "label": ""
+                    },
+                    {
+                        "ID": "id7",
+                        "label": ""
+                    }
+                ],
+                "position": {
+                    "x": 860,
+                    "y": 85
+                },
+                "attemptCount": {
+                    "description": 0,
+                    "type": 0,
+                    "initial": 0,
+                    "units": 0,
+                    "equation": 0,
+                    "assitanceScore": 0
+                },
+                "status": {},
+                "name": "female deaths",
+                "description": "Number of female deaths per year",
+                "type": "function",
+                "equation": "id4*id7"
+            },
+            {
+                "ID": "id7",
+                "inputs": [],
+                "position": {
+                    "x": 717.3309326171875,
+                    "y": 73.33094787597656
+                },
+                "attemptCount": {
+                    "description": 0,
+                    "type": 0,
+                    "initial": 0,
+                    "units": 0,
+                    "equation": 0,
+                    "assitanceScore": 0
+                },
+                "status": {},
+                "name": "proportion female deaths",
+                "description": "Proportion of female population that dies each year",
+                "equation": "",
+                "type": "parameter",
+                "parentNode": false,
+                "initial": 0.07
+            },
+            {
+                "ID": "id8",
+                "inputs": [
+                    {
+                        "ID": "id14",
+                        "label": ""
+                    },
+                    {
+                        "ID": "id15",
+                        "label": "/"
+                    }
+                ],
+                "position": {
+                    "x": 654,
+                    "y": 358
+                },
+                "attemptCount": {
+                    "description": 0,
+                    "type": 0,
+                    "initial": 0,
+                    "units": 0,
+                    "equation": 0,
+                    "assitanceScore": 0
+                },
+                "status": {
+                    "equation": {
+                        "disabled": false
+                    }
+                },
+                "name": "meetings",
+                "description": "Number of meetings per year",
+                "type": "function",
+                "equation": "id14/id15"
+            },
+            {
+                "ID": "id9",
+                "inputs": [
+                    {
+                        "ID": "id1",
+                        "label": ""
+                    },
+                    {
+                        "ID": "id14",
+                        "label": "/"
+                    }
+                ],
+                "position": {
+                    "x": 477,
+                    "y": 91
+                },
+                "attemptCount": {
+                    "description": 0,
+                    "type": 0,
+                    "initial": 0,
+                    "units": 0,
+                    "equation": 0,
+                    "assitanceScore": 0
+                },
+                "status": {},
+                "name": "chance of male in meeting",
+                "description": "Change of a male being one of the participants in a meeting",
+                "type": "function",
+                "equation": "id1/id14"
+            },
+            {
+                "ID": "id10",
+                "inputs": [
+                    {
+                        "ID": "id8",
+                        "label": ""
+                    },
+                    {
+                        "ID": "id12",
+                        "label": ""
+                    },
+                    {
+                        "ID": "id9",
+                        "label": ""
+                    }
+                ],
+                "position": {
+                    "x": 572,
+                    "y": 428
+                },
+                "attemptCount": {
+                    "description": 0,
+                    "type": 0,
+                    "initial": 0,
+                    "units": 0,
+                    "equation": 0,
+                    "assitanceScore": 0
+                },
+                "status": {},
+                "name": "births",
+                "description": "Number of births each year both male and female",
+                "type": "function",
+                "equation": "(id8*id12)*id9"
+            },
+            {
+                "ID": "id11",
+                "inputs": [],
+                "position": {
+                    "x": 508.3309631347656,
+                    "y": 525.3309326171875
+                },
+                "attemptCount": {
+                    "description": 0,
+                    "type": 0,
+                    "initial": 0,
+                    "units": 0,
+                    "equation": 0,
+                    "assitanceScore": 0
+                },
+                "status": {},
+                "name": "probability of male birth",
+                "description": "probability that a birth will produce a male",
+                "equation": "",
+                "type": "parameter",
+                "parentNode": false,
+                "initial": 0.2
+            },
+            {
+                "ID": "id12",
+                "inputs": [
+                    {
+                        "ID": "id4",
+                        "label": ""
+                    },
+                    {
+                        "ID": "id14",
+                        "label": "/"
+                    }
+                ],
+                "position": {
+                    "x": 733,
+                    "y": 248
+                },
+                "attemptCount": {
+                    "description": 0,
+                    "type": 0,
+                    "initial": 0,
+                    "units": 0,
+                    "equation": 0,
+                    "assitanceScore": 0
+                },
+                "status": {},
+                "name": "chance of female in meeting",
+                "description": "Chance of a female being one of the participants in a meeting",
+                "type": "function",
+                "equation": "id4/id14"
+            },
+            {
+                "ID": "id13",
+                "inputs": [
+                    {
+                        "ID": "id11"
+                    }
+                ],
+                "position": {
+                    "x": 810,
+                    "y": 487
+                },
+                "attemptCount": {
+                    "description": 0,
+                    "type": 0,
+                    "initial": 0,
+                    "units": 0,
+                    "equation": 0,
+                    "assitanceScore": 0
+                },
+                "status": {},
+                "name": "probability of female births",
+                "description": "probability of a birth producing a female",
+                "type": "function",
+                "equation": "1-id11"
+            },
+            {
+                "ID": "id14",
+                "inputs": [
+                    {
+                        "ID": "id1",
+                        "label": ""
+                    },
+                    {
+                        "ID": "id4",
+                        "label": ""
+                    }
+                ],
+                "position": {
+                    "x": 582,
+                    "y": 213
+                },
+                "attemptCount": {
+                    "description": 0,
+                    "type": 0,
+                    "initial": 0,
+                    "units": 0,
+                    "equation": 0,
+                    "assitanceScore": 0
+                },
+                "status": {},
+                "name": "total population",
+                "description": "Number of males and females on the island",
+                "type": "function",
+                "equation": "id1+id4"
+            },
+            {
+                "ID": "id15",
+                "inputs": [],
+                "position": {
+                    "x": 672.3309326171875,
+                    "y": 529.3309326171875
+                },
+                "attemptCount": {
+                    "description": 0,
+                    "type": 0,
+                    "initial": 0,
+                    "units": 0,
+                    "equation": 0,
+                    "assitanceScore": 0
+                },
+                "status": {},
+                "name": "size of island",
+                "description": "Size of the island",
+                "equation": "",
+                "type": "parameter",
+                "parentNode": false,
+                "initial": 2
+            }
+        ],
+        "studentModelNodes": []
+    }
+}
