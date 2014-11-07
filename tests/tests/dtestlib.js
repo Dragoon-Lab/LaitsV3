@@ -66,8 +66,8 @@ exports.openProblem = function(client,parameters,done){
     client.init().url(url, done);
 }
 
-exports.createNode = function(client){
-    client.click('span[id="createNodeButton_label"]');
+exports.createNode = function(client,done){
+    client.click('#createNodeButton');
 }
 
 
