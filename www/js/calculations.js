@@ -347,6 +347,7 @@ define([
 				sliderID[paramID] = this.sliderID + "_" + paramID;
 				this.dialogContent += "<div id='" + sliderID[paramID] + "'> " + "\</div>";
 			}
+			this.dialogContent += "</div>";
 			var dialogWidget = registry.byId("solution");
 			dialogWidget.set("title", this.model.getTaskName() + " - " + this.type);
 			// Attach contents of dialog box to DOM all at once

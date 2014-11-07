@@ -36,11 +36,12 @@ define([
 	"./calculations",
 	"dijit/_base",
 	"dijit/layout/ContentPane",
+	"dojo/dom",
 	"dijit/layout/TabContainer",
 	"dojo/parser",
 	
 	"dojo/domReady!"
-], function(array, declare, lang, on, domAttr, registry, Chart, Default, Lines, Grid, Legend, calculations, base, contentPane){
+], function(array, declare, lang, on, domAttr, registry, Chart, Default, Lines, Grid, Legend, calculations, base, contentPane, dom){
 
 	// The calculations constructor is loaded before the RenderGraph constructor
 	return declare(calculations, {
@@ -48,7 +49,7 @@ define([
 		textBoxID: "textGraph",							//ID for text-box DOM
 		sliderID: "sliderGraph",						//ID for slider DOM
 		chart: {},										//Object of a chart
-
+		counter: 0, 
 		/*
 		 *	@brief:constructor for a graph object
 		 *	@param: noOfParam
@@ -108,9 +109,9 @@ define([
 			//create content pane for displaying graph/table and sliders
 			this.dialogContent += "<div data-dojo-type= 'dijit/layout/ContentPane' style='overflow:visible; width:50%; float:left; height: 700px; background-color: #FFFFFF'>"
 			//create tab container on left side for graph and table
-			this.dialogContent += "<div data-dojo-type='dijit/layout/TabContainer' style='overflow:visible; height:700px; width:501px'>"
+			this.dialogContent += "<div data-dojo-type='dijit/layout/TabContainer' style='overflow:visible; height:700px; width:501px;'>"
 			//create tab for graph and fill it
-			this.dialogContent += "<div data-dojo-type='dijit/layout/ContentPane' style='overflow:auto' data-dojo-props='title:\"Graph\"'>";
+			this.dialogContent += "<div data-dojo-type='dijit/layout/ContentPane' style='overflow:auto; ' data-dojo-props='title:\"Graph\"'>";
 			array.forEach(this.active.plotVariables, function(id){
 				var show = this.model.active.getType(id) == "accumulator";
 				var checked = show ? " checked='checked'" : "";
@@ -146,8 +147,12 @@ define([
 			}
 			//plot sliders
 
-			this.createSliderAndDialogObject();
-			this.dialogContent += "</div>";			
+			this.createSliderAndDialogObject();	
+			var graphTabTitle = registry.byId("dijit_layout_TabContainer_0_tablist_dijit_layout_ContentPane_1");
+			var tableTabTitle = registry.byId("dijit_layout_TabContainer_0_tablist_dijit_layout_ContentPane_2");
+			console.log(graphTabTitle);
+			graphTabTitle.style.borderWidth = "5px";
+			tableTabTitle.style.borderWidth = "5px";
 			var charts = {};
 			var legends = {};
 			var paneText="";
