@@ -100,9 +100,9 @@ define([
 			}
 
 			//create content pane for displaying graph/table and sliders
-			this.dialogContent += "<div data-dojo-type= 'dijit/layout/ContentPane' style='overflow:auto; width:50%; float:left; height: 700px; background-color: #FFFFFF'>"
+			this.dialogContent += "<div data-dojo-type= 'dijit/layout/ContentPane' style='overflow:visible; width:50%; float:left; height: 700px; background-color: #FFFFFF'>"
 			//create tab container on left side for graph and table
-			this.dialogContent += "<div data-dojo-type='dijit/layout/TabContainer' style='overflow:auto; height:90%; width:100%'>"
+			this.dialogContent += "<div data-dojo-type='dijit/layout/TabContainer' style='overflow:visible; height:700px; width:350px'>"
 			//create tab for graph and fill it
 			this.dialogContent += "<div data-dojo-type='dijit/layout/ContentPane' data-dojo-props='title:\"Graph\"'>";
 			array.forEach(this.active.plotVariables, function(id){
@@ -118,7 +118,7 @@ define([
 			this.dialogContent += "</div><div data-dojo-type='dijit/layout/ContentPane' style='overflow:visible' selected=true data-dojo-props='title:\"Table\"'>"
 
 			//Render table here
-			this.dialogContent += "<div id='table'></div>";
+			this.dialogContent += "<div id='table' stlye='overflow:visible'></div>";
 
 			//end divs for graph and table 
 			this.dialogContent += "</div></div></div>"
@@ -126,9 +126,9 @@ define([
 			//create content pane for sliders
 			this.dialogContent += "<div data-dojo-type='dijit/layout/ContentPane' style='overflow:auto; width:40%; float:right; height: 100%; background-color: #FFFFFF'>";
 			//text for correctness of solution
-			if(this.mode != "AUTHOR"  && this.mode != "EDITOR")
+			if(this.mode != "AUTHOR"  && this.mode != "EDITOR" && this.mode != "TEST")
 			{
-				if(this.model.isCompleteFlag)
+				if(this.model.active.matchesGivenSolutionAndCorrect())
 				{
 					this.dialogContent += "<font color='green'>Congratulations, your model's behavior matches the author's</font><br>";
 				}
@@ -212,7 +212,7 @@ define([
                     }
                 });
                 if(modStatus)
-				    this.dialogWidget.set("content", "<div>There isn't anything to plot. Try adding some accumulator or functionnodes.</div>"); //Error telling there are no nodes and graph cant be rendered
+				    this.dialogWidget.set("content", "<div>There isn't anything to plot. Try adding some accumulator or function nodes.</div>"); //Error telling there are no nodes and graph cant be rendered
 			}
 			this.chart = charts;
 

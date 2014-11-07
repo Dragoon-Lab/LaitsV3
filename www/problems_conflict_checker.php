@@ -52,5 +52,5 @@ if($result = $mysqli->query($query)){
 } else {
   trigger_error("Query failed:  $query");
 }
-
+mysqli_close($mysqli);
 ?>

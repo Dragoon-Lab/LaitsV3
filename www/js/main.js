@@ -44,11 +44,12 @@ define([
 	"./description",
 	"./state",
     "./typechecker",
-	"./createSlides"
+	"./createSlides",
+	"./lessons-learned"
 ], function(
-		array, lang, dom, geometry, style, on, aspect, ioQuery, ready, registry,
+		array, lang, dom, geometry, style, on, aspect, ioQuery, ready, registry, toolTip,
 		menu, loadSave, model,
-		Graph, Table, controlStudent, controlAuthor, drawmodel, logging, expression, description, State, typechecker, slides
+		Graph, Table, controlStudent, controlAuthor, drawmodel, logging, equation, description, State, typechecker, slides, lessonsLearned
 ){
 	// Summary: 
 	//			Menu controller
@@ -100,7 +101,7 @@ define([
 			controllerObject._PM.setLogging(session);  // Set up direct logging in PM
 		}
 		controllerObject.setLogging(session); // set up direct logging in controller
-		expression.setLogging(session);
+		equation.setLogging(session);
 		
 		/*
 		 Create state object
@@ -360,7 +361,8 @@ define([
 			menu.add("graphButton", function(){
 				console.debug("button clicked");
 				// instantiate graph object
-				var graph = new Graph(givenModel, query.m, session);
+				var buttonClicked = "graph";
+				var graph = new Graph(givenModel, query.m, session, buttonClicked);
 				var problemComplete = givenModel.matchesGivenSolution();
 				
 				graph._logging.log('ui-action', {
@@ -375,7 +377,8 @@ define([
 			// show table when button clicked
 			menu.add("tableButton", function(){
 				console.debug("table button clicked");
-				var table = new Table(givenModel, query.m, session);
+				var buttonClicked = "table";
+				var table = new Graph(givenModel, query.m, session, buttonClicked);
 				table._logging.log('ui-action', {
 					type: "menu-choice", 
 					name: "table-button"
@@ -415,17 +418,8 @@ define([
 			if(query.m == "STUDENT" || query.m == "COACHED"){
 				menu.add("lessonsLearnedButton", function(){
 					if(givenModel.isLessonLearnedShown == true){
-						var lessonLearnedDialog = registry.byId("lesson");
-						var titleMsg = "Lessons Learned";
 						contentMsg = givenModel.getTaskLessonsLearned();
-						var contentHTML = "<font size='2'>" + contentMsg[0];
-						for(var i=1;i<contentMsg.length;i++) {
-							contentHTML = contentHTML +"<br>"+contentMsg[i];
-						}
-						contentHTML = contentHTML + "</font>";
-						lessonLearnedDialog.set("content", contentHTML);
-						lessonLearnedDialog.set("title", titleMsg);
-						lessonLearnedDialog.show();
+						lessonsLearned.displayLessonsLearned(contentMsg);
 					}		
 				});
 			}

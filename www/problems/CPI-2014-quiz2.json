@@ -1,0 +1,339 @@
+{
+    "task": {
+        "taskName": "CPI 2014 Quiz 2",
+        "time": {
+            "start": 0,
+            "end": 10,
+            "step": 0.5,
+            "integrationMethod": "Eulers Method",
+            "units": "hours"
+        },
+        "properties": {},
+        "image": {},
+        "taskDescription": [
+            "Suppose a water filtration system has two identical tanks, one for dirty water and one for clean water.  They are connected at their bottom by a filter, which passes only clean water and leaves the dirt behind.  The amount of water that goes through the filter is determined by the pressure difference across it.  The pressure difference is determined by the difference in the height of the water in the two tanks, which is in turn determined by the number of gallons of the water in the tanks.  When the difference in number of gallons is D, then the filter passes 20% of D.  Obviously, the water flows from the tank with more water into the tank with less water.     ",
+            "",
+            "The dirty water tank gets a constant 5 gallons of water per hour added to it, and the clean water tank gets a constant 5 gallons of water drained from it.  Unfortunately, someone made a mistake when initializing the system, so the dirty water tank starts with 1 gallon in it, and the clean water tank starts with 15 gallons in it, which means the water starts by flowing from the clean water tank into the dirty water tank.  First create a model to show what happens to the water in both tanks.  (3 points)",
+            "",
+            "Now modify the model to make sure that the number of gallons of water in the clean tank does not become negative--that would be physically impossible. (+1 point)",
+            "",
+            "Lastly, modify the model so that the dirty water tank has an \"overfill check valve.\"  This is a device that acts like a thermostat.  As long as the water in the tank is below the set point (25 gallons), it lets in the full 5 gallons per hour.  Otherwise, it lets in just enough to fill the tank to 25 gallons.  So if the tank had 23 gallons in it, then it would let in only 2 gallons.  (+2 points)"
+        ],
+        "lessonsLearned": "",
+        "givenModelNodes": [
+            {
+                "ID": "id1",
+                "inputs": [
+                    {
+                        "ID": "id12",
+                        "label": ""
+                    },
+                    {
+                        "ID": "id3",
+                        "label": "-"
+                    }
+                ],
+                "position": {
+                    "x": 633,
+                    "y": 166
+                },
+                "attemptCount": {
+                    "description": 0,
+                    "type": 0,
+                    "initial": 0,
+                    "units": 0,
+                    "equation": 0,
+                    "assitanceScore": 0
+                },
+                "status": {},
+                "name": "Dirty water",
+                "description": "Amount of water in the Dirty water tank",
+                "type": "accumulator",
+                "initial": 1,
+                "equation": "id12-id3",
+                "units": "gallons"
+            },
+            {
+                "ID": "id3",
+                "inputs": [
+                    {
+                        "ID": "id8",
+                        "label": ""
+                    },
+                    {
+                        "ID": "id9",
+                        "label": ""
+                    }
+                ],
+                "position": {
+                    "x": 792,
+                    "y": 140
+                },
+                "attemptCount": {
+                    "description": 0,
+                    "type": 0,
+                    "initial": 0,
+                    "units": 0,
+                    "equation": 0,
+                    "assitanceScore": 0
+                },
+                "status": {},
+                "name": "Filter flow",
+                "description": "Water flowing per hour through the filter",
+                "type": "function",
+                "equation": "id8*id9",
+                "units": "gallons"
+            },
+            {
+                "ID": "id5",
+                "inputs": [
+                    {
+                        "ID": "id3",
+                        "label": ""
+                    },
+                    {
+                        "ID": "id7",
+                        "label": "-"
+                    }
+                ],
+                "position": {
+                    "x": 950,
+                    "y": 140
+                },
+                "attemptCount": {
+                    "description": 0,
+                    "type": 0,
+                    "initial": 0,
+                    "units": 0,
+                    "equation": 0,
+                    "assitanceScore": 0
+                },
+                "status": {},
+                "name": "Clean water",
+                "description": "Amount of water in the Clean water tank",
+                "type": "accumulator",
+                "initial": 15,
+                "equation": "id3-id7",
+                "units": "gallons"
+            },
+            {
+                "ID": "id7",
+                "inputs": [
+                    {
+                        "ID": "id5"
+                    },
+                    {
+                        "ID": "id11"
+                    }
+                ],
+                "position": {
+                    "x": 1153,
+                    "y": 134
+                },
+                "attemptCount": {
+                    "description": 0,
+                    "type": 0,
+                    "initial": 0,
+                    "units": 0,
+                    "equation": 0,
+                    "assitanceScore": 0
+                },
+                "status": {},
+                "name": "Clean water outflow",
+                "description": "Amount of water flowing out of the Clean water tank per hou",
+                "type": "function",
+                "equation": "min(id5,id11)",
+                "units": "gallons"
+            },
+            {
+                "ID": "id8",
+                "inputs": [
+                    {
+                        "ID": "id1",
+                        "label": ""
+                    },
+                    {
+                        "ID": "id5",
+                        "label": "-"
+                    }
+                ],
+                "position": {
+                    "x": 794,
+                    "y": 285
+                },
+                "attemptCount": {
+                    "description": 0,
+                    "type": 0,
+                    "initial": 0,
+                    "units": 0,
+                    "equation": 0,
+                    "assitanceScore": 0
+                },
+                "status": {},
+                "name": "Difference",
+                "description": "Dirty water amount minus Clean water amount",
+                "type": "function",
+                "equation": "id1-id5",
+                "units": "gallons"
+            },
+            {
+                "ID": "id9",
+                "inputs": [],
+                "position": {
+                    "x": 908.3309326171875,
+                    "y": 277.3309326171875
+                },
+                "attemptCount": {
+                    "description": 0,
+                    "type": 0,
+                    "initial": 0,
+                    "units": 0,
+                    "equation": 0,
+                    "assitanceScore": 0
+                },
+                "status": {},
+                "name": "Filter flow proportion",
+                "description": "Proportion of the water tank difference that flows thru filter",
+                "equation": "",
+                "type": "parameter",
+                "parentNode": false,
+                "initial": 0.2
+            },
+            {
+                "ID": "id11",
+                "inputs": [],
+                "position": {
+                    "x": 1046.3309326171875,
+                    "y": 256.3309326171875
+                },
+                "attemptCount": {
+                    "description": 0,
+                    "type": 0,
+                    "initial": 0,
+                    "units": 0,
+                    "equation": 0,
+                    "assitanceScore": 0
+                },
+                "status": {},
+                "name": "Maximum clean water outflow",
+                "description": "Maximum amount of clean water flowing out per hour",
+                "equation": "",
+                "type": "parameter",
+                "parentNode": false,
+                "initial": 5,
+                "units": "gallons"
+            },
+            {
+                "ID": "id12",
+                "inputs": [
+                    {
+                        "ID": "id16"
+                    },
+                    {
+                        "ID": "id14"
+                    }
+                ],
+                "position": {
+                    "x": 543,
+                    "y": 255
+                },
+                "attemptCount": {
+                    "description": 0,
+                    "type": 0,
+                    "initial": 0,
+                    "units": 0,
+                    "equation": 0,
+                    "assitanceScore": 0
+                },
+                "status": {},
+                "name": "Dirty water inflow",
+                "description": "Amount of dirty water added per hour",
+                "equation": "min(id16,id14)",
+                "type": "function",
+                "parentNode": false,
+                "initial": "",
+                "units": "gallons"
+            },
+            {
+                "ID": "id14",
+                "inputs": [],
+                "position": {
+                    "x": 642.3309326171875,
+                    "y": 315.3309631347656
+                },
+                "attemptCount": {
+                    "description": 0,
+                    "type": 0,
+                    "initial": 0,
+                    "units": 0,
+                    "equation": 0,
+                    "assitanceScore": 0
+                },
+                "status": {},
+                "name": "Max dirty water inflow",
+                "description": "Maximum water flowing into the dirty water tank",
+                "equation": "",
+                "type": "parameter",
+                "parentNode": false,
+                "initial": 5,
+                "units": "gallons"
+            },
+            {
+                "ID": "id15",
+                "inputs": [],
+                "position": {
+                    "x": 473.3309631347656,
+                    "y": 376.3309631347656
+                },
+                "attemptCount": {
+                    "description": 0,
+                    "type": 0,
+                    "initial": 0,
+                    "units": 0,
+                    "equation": 0,
+                    "assitanceScore": 0
+                },
+                "status": {},
+                "name": "Dirty water set point",
+                "description": "Maximum water allowed in the Dirty water tank",
+                "equation": "",
+                "type": "parameter",
+                "parentNode": false,
+                "initial": 25,
+                "units": "gallons"
+            },
+            {
+                "ID": "id16",
+                "inputs": [
+                    {
+                        "ID": "id15",
+                        "label": ""
+                    },
+                    {
+                        "ID": "id1",
+                        "label": "-"
+                    }
+                ],
+                "position": {
+                    "x": 470,
+                    "y": 155
+                },
+                "attemptCount": {
+                    "description": 0,
+                    "type": 0,
+                    "initial": 0,
+                    "units": 0,
+                    "equation": 0,
+                    "assitanceScore": 0
+                },
+                "status": {},
+                "name": "Dirty water difference",
+                "description": "Difference between set point and current amount of dirty water",
+                "type": "function",
+                "units": "gallons",
+                "equation": "id15-id1"
+            }
+        ],
+        "studentModelNodes": []
+    }
+}

@@ -18,6 +18,28 @@
         "lessonsLearned": [
             "This system is composed of two familiar processes:  A homeostatic process (the higher barrel draining into the lower barrel) and an exponential decay (the lower barrel draining).  What is interesting is how the water level in the lower barrel peaks at about 4 minutes."
         ],
+        "slides": [
+            {
+                "type": "text",
+                "value": "count",
+                "title": "Types of nodes in the model"
+            },
+            {
+                "type": "image",
+                "value": "images/CPI/Cascading_barrels_graphs.jpg",
+                "title": "Author's graph for Infections Problem"
+            },
+            {
+                "type": "image",
+                "value": "images/CPI/Cascading_barrels_correctnodes.png",
+                "title": "Author's solution for Infections Problem"
+            },
+            {
+                "type": "text",
+                "value": "lessons",
+                "title": "Lessons Learned"
+            }
+        ],  
         "givenModelNodes": [
             {
                 "ID": "id1",

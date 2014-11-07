@@ -58,7 +58,7 @@ define([
 		],
 		extra: [
 			"You tried to define a parameter for a number you read in the problem.	Not all numbers in the problem statement are necessary for the model.  You will save effort if you follow the Target Node Strategy, which says you should start by defining a node for a quantity that the problem asks you to graph, then define nodes for its inputs, and then define nodes for their inputs, etc.  That way, every node you create is an input to some node.",
-			"Not every number in the problem statement is necessary for the model.	You should define a node for a quantity only when either (1) it is required as input to a previously defined node, or (2) the problem statement asks you to graph it.",
+			"Not every number in the problem statement is necessary for the model.	You should define a node for a quantity only when either (1) it is required as input to a previously defined node, or (2) the problem statement asks you to graph it or to model how it changes.",
 			"Please be sure you need a node before defining it.	 Even if a number appears in the problem statement, it may not be needed in the model."
 		],
 		redundant: [

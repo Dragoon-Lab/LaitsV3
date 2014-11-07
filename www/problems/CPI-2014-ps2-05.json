@@ -19,6 +19,28 @@
         "lessonsLearned" : [
             "Many linear change models have the potential inaccuracy of an accumulator going negative.  The solution used in this problem can be used more generally.  If A is the accumulator and it decreases by parameter P per time unit, then one should let A's input by min(A,P)."
         ],
+        "slides": [
+            {
+                "type": "text",
+                "value": "count",
+                "title": "Types of nodes in the model"
+            },
+            {
+                "type": "image",
+                "value": "images/CPI/Custom-bikes_graphs.jpg",
+                "title": "Author's graph for Infections Problem"
+            },
+            {
+                "type": "image",
+                "value": "images/CPI/Custom-bikes_correctnodes.png",
+                "title": "Author's solution for Infections Problem"
+            },
+            {
+                "type": "text",
+                "value": "lessons",
+                "title": "Lessons Learned"
+            }
+        ],
         "givenModelNodes": [
             {
                 "ID": "id1",

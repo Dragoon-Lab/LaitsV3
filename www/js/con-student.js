@@ -110,9 +110,15 @@ define([
 
 			//get descriptions to sort as alphabetic order
 			var descriptions = this._model.given.getDescriptions();
+            //create map of names for sorting
+            var descNameMap = {};
+            array.forEach(descriptions,function(desc){
+                descNameMap[desc.value]=this._model.given.getName(desc.value);
+            },this);
 			descriptions.sort(function(obj1, obj2){
-				return obj1.label > obj2.label;
-			});
+				//return obj1.label > obj2.label;
+                    return descNameMap[obj1.value] > descNameMap[obj2.value];
+			},this);
 
 			array.forEach(descriptions, function(desc){
 				d.addOption(desc);

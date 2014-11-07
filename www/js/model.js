@@ -79,8 +79,8 @@ define([
 			// Public variables
 			beginX: 400,
 			beginY: 100,
-			nodeWidth: 200,
-			nodeHeight: 200,
+			nodeWidth: 100,
+			nodeHeight: 100,
 			isCompleteFlag: false,
 			isLessonLearnedShown: false,
 
@@ -93,20 +93,39 @@ define([
 				// Summary: keeps track of where to place the next node; function detects collisions
 				//		with other nodes; is called in addStudentNode() before creating the node
 				// Tags: private
-				array.forEach(obj.active.getNodes(), function(node) {
-					var x = node.position.x;
-					var y = node.position.y;
-					while(this.x > x - this.nodeWidth && this.x < x + this.nodeWidth &&
-							this.y > y - this.nodeHeight && this.y < y + this.nodeHeight){
-						if(this.x + this.nodeWidth < document.documentElement.clientWidth + 100)
-							this.x += this.nodeWidth;
-						else{
-							this.x = this.beginX;
-							this.y += this.nodeHeight;
-						}
+					this.x = this.beginX;
+					this.y = this.beginY;
+					var pos = { x: this.x, y: this.y, nodeWidth: this.nodeWidth, nodeHeight: this.nodeHeight};
+					while(obj.active.getNodes().some(this.collides, pos))
+					{
+						this.updatePosition();
+						pos = { x: this.x, y: this.y, nodeWidth: this.nodeWidth, nodeHeight: this.nodeHeight};
 					}
-				}, this);
 			},
+			updatePosition: function()
+			{
+				if((this.x + this.nodeWidth) < (document.documentElement.clientWidth - this.nodeWidth))
+					this.x += this.nodeWidth;
+				else
+				{
+					this.x = this.beginX;
+					this.y += this.nodeHeight;
+				}
+			},
+
+			collides: function(element)
+			{
+				var x = element.position.x;
+				var y = element.position.y;
+				if(this.x > x - this.nodeWidth && this.x < x + this.nodeWidth &&
+									this.y > y - this.nodeHeight && this.y < y + this.nodeHeight)
+				{
+					return true;
+				}
+				else
+					return false;
+			},
+
 			_getNextOptimalNode: function(/*string*/ givenNodeID){
 				// Summary: Accepts the id of a parent node and returns the next optimal
 				//		child node that is not visible, or null if all descendants are visible;
@@ -322,7 +341,6 @@ define([
 				}, this);
 			},
 			matchesGivenSolution: function(){
-				/*See bug #2362*/
 				var flag = this.areRequiredNodesVisible() &&
 						array.every(this.student.getNodes(), function(sNode){
 					return this.student.isComplete(sNode.ID);
@@ -731,6 +749,21 @@ define([
 			getNodes: function(){
 				return obj.model.task.studentModelNodes;
 			},
+            getStudentNodesInSolution: function() {
+                // Summary: Returns an array of nodes created by the student which are in the solution model (i.e.
+                //          their description ids match the ids of nodes in the solution).
+                var solutionNodeIDs = [];
+                array.forEach(obj.solution.getNodes(),function(node){
+                    solutionNodeIDs.push(node.ID);
+                });
+                var nodesInBoth = [];
+                array.forEach(this.getNodes(),function(node){
+                    if(array.indexOf(solutionNodeIDs,node.descriptionID) != -1){
+                        nodesInBoth.push(node);
+                    }
+                });
+                return nodesInBoth;
+            },
 			getAssistanceScore: function(/*string*/ id){
 				// Summary: Returns a score based on the amount of errors/hints that 
 				//		a student receives, based on suggestions by Robert Hausmann;
@@ -762,6 +795,16 @@ define([
 				update("equation");
 				return bestStatus;
 			},
+            matchesGivenSolutionAndCorrect: function() {
+                // Summary: Returns True if (1) matchesGivenSolution is true and (2) if all nodes that are part of the
+                // solution have correctness of "demo" or "correct"
+                return obj.matchesGivenSolution() &&
+                       array.every(this.getStudentNodesInSolution(),
+                        function(studentNode){
+                            var correctness = this.getCorrectness(studentNode.ID);
+                            return correctness === "correct" || correctness === "demo";
+                        }, this);
+            },
 			getStatusDirectives: function(/*string*/ id){
 				//Summary:	Return a list of directives (like PM does).
 				//			to set up node editor.

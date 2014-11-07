@@ -20,6 +20,28 @@
         "lessonsLearned" : [
             " This system has two processes, a linear growth (the Panamanian fleet) and an exponential decay (the US fleet).  However, the problem seeks a model of the difference in the fleet sizes, so that node should be created first."
         ],
+        "slides": [
+            {
+                "type": "text",
+                "value": "count",
+                "title": "Types of nodes in the model"
+            },
+            {
+                "type": "image",
+                "value": "images/CPI/Merchant_Marine_graphs.jpg",
+                "title": "Author's graph for Infections Problem"
+            },
+            {
+                "type": "image",
+                "value": "images/CPI/Merchant_Marine_correctnodes.png",
+                "title": "Author's solution for Infections Problem"
+            },
+            {
+                "type": "text",
+                "value": "lessons",
+                "title": "Lessons Learned"
+            }
+        ],
         "givenModelNodes": [
             {
                 "ID": "id1",

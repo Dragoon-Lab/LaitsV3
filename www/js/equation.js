@@ -22,8 +22,8 @@
 /* global define */
 
 define([
-	"dojo/_base/array", "dojo/_base/lang", "parser/parser"
-], function(array, lang, Parser){
+	"dojo/_base/array", "dojo/_base/lang", "parser/parser", 	"dijit/registry"
+], function(array, lang, Parser, registry){
 	// Summary: 
 	//			Acts as interface to the parser
 	// Description:
@@ -450,6 +450,7 @@ define([
 				return this.parse[id].evaluate(variables , time);
 			}, this);		
 		},
+
 		
 		setLogging: function(/*string*/ logging){
 			this.logging = logging;

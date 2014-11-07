@@ -1,0 +1,228 @@
+{
+    "task": {
+        "taskName": "exam q1",
+        "time": {
+            "start": 0,
+            "end": 100,
+            "step": 1,
+            "integrationMethod": "Eulers Method",
+            "units": "hours"
+        },
+        "properties": {},
+        "image": {},
+        "taskDescription": [
+            "Suppose a type of amoeba only reproduces when two amoeba collide with each other, and scientists are studying their birth rate by scattering an initial population of 100 amoeba around a petri dish of 50 cm^2 in area. A petri dish is a shallow, circular glass dish, like a saucer with a 0.5 cm wall around its edge.  This petri dish is 2.8 cm in radius.  The number of amoeba born during any given hour is 0.75 times the amoeba density, where amoeba density is just the number of amoeba in the population divided by the area of the petri dish. Construct a model showing how the amoeba population changes.",
+            ""
+        ],
+        "lessonsLearned": "",
+        "givenModelNodes": [
+            {
+                "ID": "id1",
+                "inputs": [
+                    {
+                        "ID": "id2",
+                        "label": ""
+                    }
+                ],
+                "position": {
+                    "x": 751,
+                    "y": 104
+                },
+                "attemptCount": {
+                    "description": 0,
+                    "type": 0,
+                    "initial": 0,
+                    "units": 0,
+                    "equation": 0,
+                    "assitanceScore": 0
+                },
+                "status": {},
+                "name": "population",
+                "description": "The size of the amoeba population each hour",
+                "type": "accumulator",
+                "initial": 100,
+                "equation": "id2"
+            },
+            {
+                "ID": "id2",
+                "inputs": [
+                    {
+                        "ID": "id3",
+                        "label": ""
+                    },
+                    {
+                        "ID": "id4",
+                        "label": ""
+                    }
+                ],
+                "position": {
+                    "x": 619,
+                    "y": 160
+                },
+                "attemptCount": {
+                    "description": 0,
+                    "type": 0,
+                    "initial": 0,
+                    "units": 0,
+                    "equation": 0,
+                    "assitanceScore": 0
+                },
+                "status": {},
+                "name": "births",
+                "description": "Number of amoeba births each hour",
+                "type": "function",
+                "equation": "id3*id4"
+            },
+            {
+                "ID": "id3",
+                "inputs": [
+                    {
+                        "ID": "id1",
+                        "label": ""
+                    },
+                    {
+                        "ID": "id5",
+                        "label": "/"
+                    }
+                ],
+                "position": {
+                    "x": 476,
+                    "y": 134
+                },
+                "attemptCount": {
+                    "description": 0,
+                    "type": 0,
+                    "initial": 0,
+                    "units": 0,
+                    "equation": 0,
+                    "assitanceScore": 0
+                },
+                "status": {},
+                "name": "density",
+                "description": "Number of amoeba per square centimeter",
+                "type": "function",
+                "equation": "id1/id5"
+            },
+            {
+                "ID": "id4",
+                "inputs": [],
+                "position": {
+                    "x": 616.3309326171875,
+                    "y": 314.3309631347656
+                },
+                "attemptCount": {
+                    "description": 0,
+                    "type": 0,
+                    "initial": 0,
+                    "units": 0,
+                    "equation": 0,
+                    "assitanceScore": 0
+                },
+                "status": {},
+                "name": "birth probability",
+                "description": "probability of a birth given density",
+                "equation": "",
+                "type": "parameter",
+                "parentNode": false,
+                "initial": 0.75
+            },
+            {
+                "ID": "id5",
+                "inputs": [],
+                "position": {
+                    "x": 476.3309631347656,
+                    "y": 291.3309631347656
+                },
+                "attemptCount": {
+                    "description": 0,
+                    "type": 0,
+                    "initial": 0,
+                    "units": 0,
+                    "equation": 0,
+                    "assitanceScore": 0
+                },
+                "status": {},
+                "name": "area of petri dish",
+                "description": "The area of the petri dish",
+                "equation": "",
+                "type": "parameter",
+                "parentNode": false,
+                "initial": 50,
+                "units": "cm^2"
+            },
+            {
+                "ID": "id7",
+                "inputs": [],
+                "position": {
+                    "x": 747.3309326171875,
+                    "y": 305.3309631347656
+                },
+                "attemptCount": {
+                    "description": 0,
+                    "type": 0,
+                    "initial": 0,
+                    "units": 0,
+                    "equation": 0,
+                    "assitanceScore": 0
+                },
+                "status": {},
+                "genus": "extra",
+                "name": "radius of petri dish",
+                "description": "The radius of the petri dish",
+                "equation": "",
+                "type": "parameter",
+                "parentNode": false,
+                "initial": 2.8,
+                "units": "cm"
+            },
+            {
+                "ID": "id8",
+                "inputs": [],
+                "position": {
+                    "x": 869.3309326171875,
+                    "y": 298.3309631347656
+                },
+                "attemptCount": {
+                    "description": 0,
+                    "type": 0,
+                    "initial": 0,
+                    "units": 0,
+                    "equation": 0,
+                    "assitanceScore": 0
+                },
+                "status": {},
+                "name": "height of petri dish",
+                "description": "Height of wall around petri dish edge",
+                "equation": "",
+                "type": "parameter",
+                "parentNode": false,
+                "initial": 0.5,
+                "units": "cm"
+            },
+            {
+                "ID": "id9",
+                "inputs": [],
+                "position": {
+                    "x": 991.3309326171875,
+                    "y": 299.3309631347656
+                },
+                "attemptCount": {
+                    "description": 0,
+                    "type": 0,
+                    "initial": 0,
+                    "units": 0,
+                    "equation": 0,
+                    "assitanceScore": 0
+                },
+                "status": {},
+                "name": "pi",
+                "description": "The mathematical constant pi",
+                "equation": "",
+                "type": "parameter",
+                "parentNode": false,
+                "initial": 3.1415
+            }
+        ],
+        "studentModelNodes": []
+    }
+}

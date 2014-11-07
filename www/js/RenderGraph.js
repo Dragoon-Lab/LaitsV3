@@ -37,14 +37,13 @@ define([
 	"dijit/_base",
 	"dijit/layout/ContentPane",
 	"dijit/layout/TabContainer",
-	"dojo/parser",
-	
+	"dojo/parser",	
 	"dojo/domReady!"
 ], function(array, declare, lang, on, domAttr, registry, Chart, Default, Lines, Grid, Legend, calculations, base, contentPane){
 
 	// The calculations constructor is loaded before the RenderGraph constructor
 	return declare(calculations, {
-		type: "Graph",									//Rendering type
+		type: "Graph and Table",									//Rendering type
 		textBoxID: "textGraph",							//ID for text-box DOM
 		sliderID: "sliderGraph",						//ID for slider DOM
 		chart: {},										//Object of a chart
@@ -53,8 +52,10 @@ define([
 		 *	@brief:constructor for a graph object
 		 *	@param: noOfParam
 		 */
-		constructor: function(){
+		constructor: function(model, mode, logging, buttonClicked){
+			this.buttonClicked = buttonClicked;
 			console.log("***** In RenderGraph constructor");
+			this.resizeWindow();
 			if(this.active.timeStep){  // Abort if there is an error in timestep.
 				this.initialize();
 			}
@@ -65,6 +66,8 @@ define([
 		 *
 		 */
 		initialize: function(){
+			console.log("graphing");
+			console.log(this.buttonClicked);
 			/* List of variables to plot: Include functions */
 			this.active.plotVariables = this.active.timeStep.xvars.concat(
 				this.active.timeStep.functions);
@@ -92,19 +95,21 @@ define([
 							this.model.active.getDescriptionID(id) : id;
 					// givenID should always exist.
 					console.assert(givenID, "Node '" + id + "' has no corresponding given node");
-					var givenNode = this.model.given.getNode(givenID);
+					var givenNode = this.model.given.getNode(givenID); 
 					return givenNode && (!givenNode.genus ? givenID : null);
 				}, this);
 				// Calculate solutions
 				var givenSolution = this.findSolution(false, this.given.plotVariables);
 			}
+			this.resizeWindow();
+
 
 			//create content pane for displaying graph/table and sliders
-			this.dialogContent += "<div data-dojo-type= 'dijit/layout/ContentPane' style='overflow:auto; width:50%; float:left; height: 700px; background-color: #FFFFFF'>"
+			this.dialogContent += "<div data-dojo-type= 'dijit/layout/ContentPane' style='overflow:visible; width:50%; float:left; height: 700px; background-color: #FFFFFF'>"
 			//create tab container on left side for graph and table
-			this.dialogContent += "<div data-dojo-type='dijit/layout/TabContainer' style='overflow:auto; height:90%; width:100%'>"
+			this.dialogContent += "<div data-dojo-type='dijit/layout/TabContainer' style='overflow:visible; height:700px; width:501px'>"
 			//create tab for graph and fill it
-			this.dialogContent += "<div data-dojo-type='dijit/layout/ContentPane' data-dojo-props='title:\"Graph\"'>";
+			this.dialogContent += "<div data-dojo-type='dijit/layout/ContentPane' style='overflow:auto' data-dojo-props='title:\"Graph\"'>";
 			array.forEach(this.active.plotVariables, function(id){
 				var show = this.model.active.getType(id) == "accumulator";
 				var checked = show ? " checked='checked'" : "";
@@ -115,10 +120,12 @@ define([
 				this.dialogContent += "<div class='legend' id='legend" + id + "'></div>";
 			}, this);
 			//create tab for table
-			this.dialogContent += "</div><div data-dojo-type='dijit/layout/ContentPane' style='overflow:visible' data-dojo-props='title:\"Table\"'>"
-
+			if(this.buttonClicked == "graph")
+				this.dialogContent += "</div><div data-dojo-type='dijit/layout/ContentPane' style='overflow:visible' data-dojo-props='title:\"Table\"'>"
+			if(this.buttonClicked == "table")
+				this.dialogContent += "</div><div data-dojo-type='dijit/layout/ContentPane' style='overflow:visible' selected = true data-dojo-props='title:\"Table\"'>"
 			//Render table here
-			this.dialogContent += "<div id='table'></div>";
+			this.dialogContent += "<div id='table' stlye='overflow:visible'></div>";
 
 			//end divs for graph and table 
 			this.dialogContent += "</div></div></div>"
@@ -126,18 +133,23 @@ define([
 			//create content pane for sliders
 			this.dialogContent += "<div data-dojo-type='dijit/layout/ContentPane' style='overflow:auto; width:40%; float:right; height: 100%; background-color: #FFFFFF'>";
 			//text for correctness of solution
-			if(this.mode != "AUTHOR"  && this.mode != "EDITOR")
+			
+			
+			if(this.mode != "AUTHOR"  && this.mode != "EDITOR" && this.mode != "TEST")
 			{
-				if(this.model.isCompleteFlag)
+				if(this.model.active.matchesGivenSolutionAndCorrect())
 				{
 					this.dialogContent += "<font color='green'>Congratulations, your model's behavior matches the author's</font><br>";
 				}
 				else
 					this.dialogContent += "<font color='red'>Unfortunately, your model's behavior does not match the author's</font><br>";
 			}
+			this.dialogContent += "<p>To reset the sliders, close and reopen the window.</p>";
 			//plot sliders
+
 			this.createSliderAndDialogObject();
-			this.dialogContent += "</div>";
+
+			this.dialogContent += "</div>";			
 			var charts = {};
 			var legends = {};
 			var paneText="";
@@ -175,9 +187,11 @@ define([
 						titleOrientation: "away", titleGap: 5
 						});
 
-					// var obj = this.getMinMaxFromArray(this.student.arrayOfNodeValues[j]);
+					var obj = this.getMinMaxFromArray(activeSolution.plotValues[k]);
 					charts[id].addAxis("y", {
-						vertical: true, // min: obj.min, max: obj.max,
+						vertical: true,
+						min: obj.min,
+						max:obj.max,
 						title: this.labelString(id)
 						});
 
@@ -185,12 +199,13 @@ define([
 						var givenID = this.model.active.getDescriptionID(id);
 					}
 					//plot chart for student node
+                    console.log("active solution",activeSolution);
 					charts[id].addSeries(
 						"Your solution",
 						this.formatSeriesForChart(activeSolution, k),
 						{stroke: "green"}
 					);
-					if(this.mode != "AUTHOR"  && this.mode != "EDITOR" && this.given.plotVariables[k]){
+					if(this.mode !== "AUTHOR"  && this.mode !== "EDITOR" && this.given.plotVariables[k]){
 						charts[id].addSeries(
 							"Author's solution",
 							this.formatSeriesForChart(givenSolution, k), {stroke: "red"}
@@ -212,7 +227,7 @@ define([
                     }
                 });
                 if(modStatus)
-				    this.dialogWidget.set("content", "<div>There isn't anything to plot. Try adding some accumulator or functionnodes.</div>"); //Error telling there are no nodes and graph cant be rendered
+				    this.dialogWidget.set("content", "<div>There isn't anything to plot. Try adding some accumulator or function nodes.</div>"); //Error telling there are no nodes and graph cant be rendered
 			}
 			this.chart = charts;
 
@@ -236,6 +251,7 @@ define([
 					}
 				});
 			}, this);
+			this.resizeWindow();
 		},
 
 		/*
@@ -244,10 +260,22 @@ define([
 		 */
 		formatSeriesForChart: function(result, j){
 			return array.map(result.times, function(time, k){
-				return {x: time, y: result.plotValues[j][k]};
+				return {x: time, y: result.plotValues[j][k].toFixed(3)};
 			});
 		},
 
+		doLayout: function()
+		{},
+
+		resizeWindow: function(){
+			console.log("resizing window");
+			var dialogWindow = document.getElementById("solution");
+			dialogWindow.style.height = "750px";
+			dialogWindow.style.width = "1000px";
+			dialogWindow.style.left = "0px";
+			dialogWindow.style.top = "0px";
+		},
+/*
 			resetposition: function(){
 		// summary: position modal dialog in center of screen
 		
@@ -274,7 +302,7 @@ define([
 			// If the height of the box is the same or bigger than the viewport
 			// it means that the box should be made scrollable and a bottom should be set
 
-		},
+		},*/
 
 		/*
 		 * @brief: this functionreturns object with min and max
@@ -292,6 +320,11 @@ define([
 					max = array[i];
 				}
 			}
+			// Check if the maximum and minimum are same and change the min and max values
+			if(min == max){ 
+				min = min - 1;
+				max = max + 1;
+			}
 			return {min: min, max: max};
 		},
 
@@ -301,8 +334,33 @@ define([
 		 */
 		renderDialog: function(calculationObj){
 			var activeSolution = this.findSolution(true, this.active.plotVariables);
+			var givenSolution;
+            // TODO: Consider making this condition a function, like "givenGraphViewable()
+           if (this.mode !== "AUTHOR" && this.mode !== "EDITOR"){
+                givenSolution = this.findSolution(false, this.given.plotVariables);
+            }
 			//update and render the charts
-			array.forEach(this.active.plotVariables, function(id, k){
+			array.forEach(this.active.plotVariables, function(id, k){	
+				// Calculate Min and Max values to plot on y axis based on your solution (and given, when applicable)
+				var obj = this.getMinMaxFromArray(activeSolution.plotValues[k]);
+                if (this.mode !== "AUTHOR" && this.mode !== "EDITOR") {
+                    var givenObj = this.getMinMaxFromArray(givenSolution.plotValues[k]);
+                    if (givenObj.min < obj.min) {
+                        obj.min = givenObj.min;
+                    }
+                    if (givenObj.max > obj.max) {
+                        obj.max = givenObj.max;
+                    }
+                }
+
+				//Redraw y axis based on new min and max values
+				this.chart[id].addAxis("y", {
+						vertical: true,
+						min: obj.min,
+						max: obj.max,
+						title: this.labelString(id)
+						});
+
 				this.chart[id].updateSeries(
 					"Your solution",
 					this.formatSeriesForChart(activeSolution, k),
@@ -320,7 +378,7 @@ define([
 			this.contentPane.setContent(paneText);
 		},
 		initTable: function(){
-			return "<div align='center'>" + "<table class='solution'>";
+			return "<div style='overflow:visible' align='center'>" + "<table class='solution' style='overflow:visible'>";
 		},
 		
 		/*
@@ -335,9 +393,9 @@ define([
 		 */
 		setTableHeader: function(){
 			var i, tableString = "";
-			tableString += "<tr>";
+			tableString += "<tr style='overflow:visible'>";
 			//setup xunit (unit of timesteps)
-			tableString += "<th>" + this.labelString() + "</th>";
+			tableString += "<th style='overflow:visible'>" + this.labelString() + "</th>";
 			array.forEach(this.plotVariables, function(id){
 				tableString += "<th>" + this.labelString(id) + "</th>";
 			}, this);
@@ -358,11 +416,11 @@ define([
 			}
 			
 			for(var i=0; i<solution.times.length; i++){
-				tableString += "<tr>";
-				tableString += "<td align='center'>" + solution.times[i].toPrecision(4) + "</td>";
+				tableString += "<tr style='overflow:visible'>";
+				tableString += "<td align='center' style='overflow:visible'>" + solution.times[i].toPrecision(4) + "</td>";
 				//set values in table according to their table-headers
 				array.forEach(solution.plotValues, function(value){
-					tableString += "<td align='center'>" + value[i].toPrecision(3) + "</td>";
+					tableString += "<td align='center' style='overflow:visible'>" + value[i].toPrecision(3) + "</td>";
 				});
 				tableString += "</tr>";
 			}
