@@ -11,6 +11,7 @@
     "properties": {},
     "image": {},
     "taskDescription": [
+        "Energy Balance 5",
         "The amount of physical activity energy burned per days depends mostly on two factors:  how much exercise you do and your resting energy expenditure.  The energy spent on exercise is estimated by multiplying the resting energy expenditure by a factor, which is:",
         "",
         "0.2 for little or no exercise, ",
@@ -293,7 +294,7 @@
             "type": "parameter",
             "parentNode": false,
             "initial": 0.2,
-            "units": "calories/lb"
+            "units": ""
         }
     ],
     "studentModelNodes": [
@@ -408,7 +409,7 @@
         "descriptionID": "id5",
         "type": "parameter",
         "initial": 1989,
-        "units": "calories/lbs"
+        "units": "calories"
     },
     {
         "ID": "id16",
@@ -438,7 +439,7 @@
         "descriptionID": "id4",
         "type": "parameter",
         "initial": 3500,
-        "units": "calories/lbs"
+        "units": "calories/lb"
     },
     {
         "ID": "id17",
@@ -516,7 +517,7 @@
         },
         "descriptionID": "id2",
         "type": "function",
-        "equation": "id13*id16",
+        "equation": "id13/id16",
         "units": "lbs"
     },
     {

@@ -14,7 +14,15 @@ These instructions are for the JavaScript version of Dragoon.
 
 ### Database Setup ###
 
-Create the database using the script `create-database.sql`.
+Create the database using the script `create-database.sql`.  First enter mysql as root:
+
+    $ mysql -u root -p
+When prompted, enter the root password you created for mysql, not the root password for your machine.  Then create your new database and run the script.  You can use the following commands:
+
+    mysql> create database <your database name>;
+    mysql> use <your database name>;
+    mysql> source create-database.sql;
+
 In the project root directory, create a file `db_user_passsword`
 containing three lines containing the username, password, and 
 database name.

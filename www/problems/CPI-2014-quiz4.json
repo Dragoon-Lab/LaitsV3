@@ -1,0 +1,485 @@
+{
+    "task": {
+        "taskName": "quiz 4",
+        "time": {
+            "start": 0,
+            "end": 36,
+            "step": 1,
+            "integrationMethod": "Eulers Method",
+            "units": "months"
+        },
+        "properties": {},
+        "image": {},
+        "taskDescription": [
+            "When Moe moves to ASU, she opens a savings account and a credit card account.  She starts off nicely, with $500 in her savings account and a $0 balance in her credit card account.  On the first of the month, her $1000 paycheck is deposited automatically to her savings account.  The savings account pays 0.5% interest per month, so during the first month, she makes $2.50 = 0.005*500.  Her credit card account charges 1% interest per month.  At the end of each month, she tries to pays off her credit card balance.  She transfers either the whole credit card balance, if she has that much in her savings account;  otherwise, she pays as much as she can, which empties her savings account.  Of course, a few days later, her paycheck arrives.  Now Moe's credit card pays 2 airline miles for each dollar charged on it.  Moe has already go 12,500 miles and she is really wants to save up 25,000 miles so she can get a free round-trip flight to Hawaii.  Thus, she pays for everything, even her rent, with her credit card.  Thus, her fixed expenses (rent, phone, auto insurance) come to $500 a month. Her variable expenses (food, travel, auto repair, gas, utilities, etc.) vary randomly between $0 and $1000 per month.  (Hint: create a function node \"varying expenses\" which has as its calculation random(max variable expense). ).  Although Moe's parents are paying for the first three years' tuition at ASU, Moe hopes to save enough during her first three years to pay tuition for the last year so that she doesn't have to ask her parents for any more money.  She estimates that tuition will be $12,000 that last year.  Construct a model that shows how much money Moe will have in her savings account each month.   ",
+            "",
+            ""
+        ],
+        "lessonsLearned": "",
+        "givenModelNodes": [
+            {
+                "ID": "id3",
+                "inputs": [
+                    {
+                        "ID": "id4",
+                        "label": ""
+                    },
+                    {
+                        "ID": "id5",
+                        "label": ""
+                    }
+                ],
+                "position": {
+                    "x": 856,
+                    "y": 59
+                },
+                "attemptCount": {
+                    "description": 0,
+                    "type": 0,
+                    "initial": 0,
+                    "units": 0,
+                    "equation": 0,
+                    "assitanceScore": 0
+                },
+                "status": {},
+                "name": "expenses",
+                "description": "Monthly expenses",
+                "type": "function",
+                "equation": "id4+id5",
+                "units": "dollars"
+            },
+            {
+                "ID": "id4",
+                "inputs": [],
+                "position": {
+                    "x": 833.3309326171875,
+                    "y": 194.33094787597656
+                },
+                "attemptCount": {
+                    "description": 0,
+                    "type": 0,
+                    "initial": 0,
+                    "units": 0,
+                    "equation": 0,
+                    "assitanceScore": 0
+                },
+                "status": {},
+                "name": "fixed expenses",
+                "description": "expense that are the same each month",
+                "equation": "",
+                "type": "parameter",
+                "parentNode": false,
+                "initial": 500,
+                "units": "dollars"
+            },
+            {
+                "ID": "id5",
+                "inputs": [
+                    {
+                        "ID": "id6"
+                    }
+                ],
+                "position": {
+                    "x": 952,
+                    "y": 58
+                },
+                "attemptCount": {
+                    "description": 0,
+                    "type": 0,
+                    "initial": 0,
+                    "units": 0,
+                    "equation": 0,
+                    "assitanceScore": 0
+                },
+                "status": {},
+                "name": "varying expense",
+                "description": "Expenses that vary each month",
+                "type": "function",
+                "equation": "random(id6)",
+                "units": "dollars"
+            },
+            {
+                "ID": "id6",
+                "inputs": [],
+                "position": {
+                    "x": 944.3309326171875,
+                    "y": 191.33094787597656
+                },
+                "attemptCount": {
+                    "description": 0,
+                    "type": 0,
+                    "initial": 0,
+                    "units": 0,
+                    "equation": 0,
+                    "assitanceScore": 0
+                },
+                "status": {},
+                "name": "max variable expense",
+                "description": "maximum of variable monthly expenses",
+                "equation": "",
+                "type": "parameter",
+                "parentNode": false,
+                "initial": 1000,
+                "units": "dollars"
+            },
+            {
+                "ID": "id7",
+                "inputs": [
+                    {
+                        "ID": "id3",
+                        "label": ""
+                    },
+                    {
+                        "ID": "id8",
+                        "label": ""
+                    },
+                    {
+                        "ID": "id14",
+                        "label": "-"
+                    }
+                ],
+                "position": {
+                    "x": 753,
+                    "y": 55
+                },
+                "attemptCount": {
+                    "description": 0,
+                    "type": 0,
+                    "initial": 0,
+                    "units": 0,
+                    "equation": 0,
+                    "assitanceScore": 0
+                },
+                "status": {},
+                "name": "credit card balance",
+                "description": "Money owed to credit card company each month",
+                "type": "accumulator",
+                "initial": 0,
+                "units": "dollars",
+                "equation": "(id3+id8)-id14"
+            },
+            {
+                "ID": "id8",
+                "inputs": [
+                    {
+                        "ID": "id7",
+                        "label": ""
+                    },
+                    {
+                        "ID": "id9",
+                        "label": ""
+                    }
+                ],
+                "position": {
+                    "x": 699,
+                    "y": 209
+                },
+                "attemptCount": {
+                    "description": 0,
+                    "type": 0,
+                    "initial": 0,
+                    "units": 0,
+                    "equation": 0,
+                    "assitanceScore": 0
+                },
+                "status": {},
+                "name": "credit card interest",
+                "description": "Amount added to credit card balance by company each month",
+                "type": "function",
+                "units": "dollars",
+                "equation": "id7*id9"
+            },
+            {
+                "ID": "id9",
+                "inputs": [],
+                "position": {
+                    "x": 713.3309326171875,
+                    "y": 334.3309631347656
+                },
+                "attemptCount": {
+                    "description": 0,
+                    "type": 0,
+                    "initial": 0,
+                    "units": 0,
+                    "equation": 0,
+                    "assitanceScore": 0
+                },
+                "status": {},
+                "name": "credit card interest rate",
+                "description": "proportion of balance added as interest each month",
+                "equation": "",
+                "type": "parameter",
+                "parentNode": false,
+                "initial": 0.01
+            },
+            {
+                "ID": "id10",
+                "inputs": [
+                    {
+                        "ID": "id11",
+                        "label": ""
+                    },
+                    {
+                        "ID": "id12",
+                        "label": ""
+                    },
+                    {
+                        "ID": "id14",
+                        "label": "-"
+                    }
+                ],
+                "position": {
+                    "x": 509,
+                    "y": 77
+                },
+                "attemptCount": {
+                    "description": 0,
+                    "type": 0,
+                    "initial": 0,
+                    "units": 0,
+                    "equation": 0,
+                    "assitanceScore": 0
+                },
+                "status": {},
+                "name": "Savings account balance",
+                "description": "Money in savings account each month",
+                "type": "accumulator",
+                "initial": 500,
+                "units": "dollars",
+                "equation": "(id11+id12)-id14",
+                "parentNode": true
+            },
+            {
+                "ID": "id11",
+                "inputs": [],
+                "position": {
+                    "x": 511.3309631347656,
+                    "y": 281.3309326171875
+                },
+                "attemptCount": {
+                    "description": 0,
+                    "type": 0,
+                    "initial": 0,
+                    "units": 0,
+                    "equation": 0,
+                    "assitanceScore": 0
+                },
+                "status": {},
+                "name": "paycheck",
+                "description": "Net pay deposited to savings account each month",
+                "equation": "",
+                "type": "parameter",
+                "parentNode": false,
+                "initial": 1000,
+                "units": "dollars"
+            },
+            {
+                "ID": "id12",
+                "inputs": [
+                    {
+                        "ID": "id10",
+                        "label": ""
+                    },
+                    {
+                        "ID": "id13",
+                        "label": ""
+                    }
+                ],
+                "position": {
+                    "x": 604,
+                    "y": 220
+                },
+                "attemptCount": {
+                    "description": 0,
+                    "type": 0,
+                    "initial": 0,
+                    "units": 0,
+                    "equation": 0,
+                    "assitanceScore": 0
+                },
+                "status": {},
+                "name": "Savings account interest",
+                "description": "Money added to savings account each month",
+                "type": "function",
+                "units": "dollars",
+                "equation": "id10*id13"
+            },
+            {
+                "ID": "id13",
+                "inputs": [],
+                "position": {
+                    "x": 608.3309326171875,
+                    "y": 368.3309631347656
+                },
+                "attemptCount": {
+                    "description": 0,
+                    "type": 0,
+                    "initial": 0,
+                    "units": 0,
+                    "equation": 0,
+                    "assitanceScore": 0
+                },
+                "status": {},
+                "name": "Savings account interest rate",
+                "description": "proportion of savings account added to it each month",
+                "equation": "",
+                "type": "parameter",
+                "parentNode": false,
+                "initial": 0.005
+            },
+            {
+                "ID": "id14",
+                "inputs": [
+                    {
+                        "ID": "id10"
+                    },
+                    {
+                        "ID": "id7"
+                    }
+                ],
+                "position": {
+                    "x": 645,
+                    "y": 60
+                },
+                "attemptCount": {
+                    "description": 0,
+                    "type": 0,
+                    "initial": 0,
+                    "units": 0,
+                    "equation": 0,
+                    "assitanceScore": 0
+                },
+                "status": {},
+                "name": "payments",
+                "description": "Money paid to credit card company each month",
+                "type": "function",
+                "units": "dollars",
+                "equation": "min(id10,id7)"
+            },
+            {
+                "ID": "id17",
+                "inputs": [],
+                "position": {
+                    "x": 515.3309326171875,
+                    "y": 517.3309326171875
+                },
+                "attemptCount": {
+                    "description": 0,
+                    "type": 0,
+                    "initial": 0,
+                    "units": 0,
+                    "equation": 0,
+                    "assitanceScore": 0
+                },
+                "status": {},
+                "name": "Interest during first month",
+                "description": "How much interest is deposited to savings account during first month",
+                "equation": "",
+                "type": "parameter",
+                "parentNode": false,
+                "initial": 2.5,
+                "units": "dollars",
+                "genus": "extra"
+            },
+            {
+                "ID": "id18",
+                "inputs": [],
+                "position": {
+                    "x": 621.3309326171875,
+                    "y": 521.3309326171875
+                },
+                "attemptCount": {
+                    "description": 0,
+                    "type": 0,
+                    "initial": 0,
+                    "units": 0,
+                    "equation": 0,
+                    "assitanceScore": 0
+                },
+                "status": {},
+                "name": "airline miles per dollar",
+                "description": "Number of airline miles awarded for each dollar charged on credit card",
+                "equation": "",
+                "type": "parameter",
+                "parentNode": false,
+                "initial": 2,
+                "units": "miles",
+                "genus": "extra"
+            },
+            {
+                "ID": "id19",
+                "inputs": [],
+                "position": {
+                    "x": 756,
+                    "y": 572
+                },
+                "attemptCount": {
+                    "description": 0,
+                    "type": 0,
+                    "initial": 0,
+                    "units": 0,
+                    "equation": 0,
+                    "assitanceScore": 0
+                },
+                "status": {},
+                "name": "airline miles",
+                "description": "Number of airline miles each month in Moe's account",
+                "type": "accumulator",
+                "initial": 12500,
+                "units": "miles",
+                "genus": "extra"
+            },
+            {
+                "ID": "id20",
+                "inputs": [],
+                "position": {
+                    "x": 826.3309326171875,
+                    "y": 521.3309326171875
+                },
+                "attemptCount": {
+                    "description": 0,
+                    "type": 0,
+                    "initial": 0,
+                    "units": 0,
+                    "equation": 0,
+                    "assitanceScore": 0
+                },
+                "status": {},
+                "name": "Hawaii set point",
+                "description": "Number of miles required for free flight to Hawaii",
+                "equation": "",
+                "type": "parameter",
+                "parentNode": false,
+                "initial": 25000,
+                "units": "miles",
+                "genus": "extra"
+            },
+            {
+                "ID": "id21",
+                "inputs": [],
+                "position": {
+                    "x": 935.3309326171875,
+                    "y": 519.3309326171875
+                },
+                "attemptCount": {
+                    "description": 0,
+                    "type": 0,
+                    "initial": 0,
+                    "units": 0,
+                    "equation": 0,
+                    "assitanceScore": 0
+                },
+                "status": {},
+                "name": "ASU tuition",
+                "description": "Estimate of ASU tuition for a year 3 years from now",
+                "equation": "",
+                "type": "parameter",
+                "parentNode": false,
+                "initial": 12000,
+                "units": "dollars",
+                "genus": "extra"
+            }
+        ],
+        "studentModelNodes": []
+    }
+}

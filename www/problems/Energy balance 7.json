@@ -11,6 +11,7 @@
         "properties": {},
         "image": {},
         "taskDescription": [
+            "Energy Balance 7",
             "Scientists classify tissue as either fat or lean.  When weight increases, both fat and lean tissue increase.  However, the weight change is not divided evenly among fat and lean tissue.  Forbes found that the proportion of weight change that goes to fatty tissue is fat / (22.9+fat) where \"fat\" is the weight of fatty tissue.  That is, as fat increases, a higher proportion of the weight gain is allocated to fat.  Let's model just this system by creating:",
             "* a node \"fat\" which is an accumulator representing the weight of fat in Joe's body.",
             "* a node \"lean tissue\" which is an accumulator representing the weight of the lean tissue in Joe's body.  ",
