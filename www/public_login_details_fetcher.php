@@ -59,5 +59,5 @@ if($result){
 } else {
   trigger_error("Query failed:  $query"); 
 }
-
+mysqli_close($mysqli);
 ?>
