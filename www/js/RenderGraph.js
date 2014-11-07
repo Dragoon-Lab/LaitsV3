@@ -49,7 +49,6 @@ define([
 		textBoxID: "textGraph",							//ID for text-box DOM
 		sliderID: "sliderGraph",						//ID for slider DOM
 		chart: {},										//Object of a chart
-		counter: 0, 
 		/*
 		 *	@brief:constructor for a graph object
 		 *	@param: noOfParam
@@ -69,7 +68,6 @@ define([
 		 */
 		initialize: function(){
 			console.log("graphing");
-			console.log(this.buttonClicked);
 			/* List of variables to plot: Include functions */
 			this.active.plotVariables = this.active.timeStep.xvars.concat(
 				this.active.timeStep.functions);
@@ -148,14 +146,14 @@ define([
 			//plot sliders
 
 			this.createSliderAndDialogObject();	
-			var graphTabTitle = registry.byId("dijit_layout_TabContainer_0_tablist_dijit_layout_ContentPane_1");
-			var tableTabTitle = registry.byId("dijit_layout_TabContainer_0_tablist_dijit_layout_ContentPane_2");
-			console.log(graphTabTitle);
-			graphTabTitle.style.borderWidth = "5px";
-			tableTabTitle.style.borderWidth = "5px";
+
+			
 			var charts = {};
 			var legends = {};
 			var paneText="";
+			
+			console.log(graphTabTitle);
+			//graphTabTitle.style.borderWidth = "3px";
 
 			/* List of variables to plot: Include functions */
 			this.plotVariables = this.active.timeStep.xvars.concat(
