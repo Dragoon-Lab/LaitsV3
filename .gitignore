@@ -45,6 +45,7 @@ www/util/
 .idea/
 
 tests/npm/
+tests/node/
 tests/node_modules/
 tests/phantomjsdriver.log
 tests/selenium.log
