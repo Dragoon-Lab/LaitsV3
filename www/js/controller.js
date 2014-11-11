@@ -141,6 +141,21 @@ define([
 							id: "crisisAlert", attribute:
 							"open", value: "Your expression has not been checked!  Go back and check your expression to verify it is correct, or delete the expression, before closing the node editor."
 						}]);
+					}
+					else if(myThis._mode == "AUTHOR" && registry.byId("selectModel").value == "given"){
+						var equation = registry.byId("givenEquationBox");
+						if(equation.value && !myThis.givenEquationEntered){
+						//Crisis alert popup if equation not checked
+							myThis.applyDirectives([{
+								id: "crisisAlert", attribute:
+								"open", value: "Given Expression is not checked!  Go back and check your expression to verify it is correct, or delete the expression, before closing the node editor."
+							}]);
+						}
+						else{
+							// Else, do normal closeEditor routine and hide
+							doHide.apply(myThis._nodeEditor);
+							myThis.closeEditor.call(myThis);
+						}
 					}else{
 						// Else, do normal closeEditor routine and hide
 						doHide.apply(myThis._nodeEditor);
@@ -270,6 +285,9 @@ define([
 				//Reset to given on close of node editor
 				this._model.active = this._model.given;
 				registry.byId("selectModel").set('value',"correct");
+				this.controlMap.equation = "equationBox";
+				domStyle.set('equationBox', 'display', 'block');				
+				domStyle.set('givenEquationBox', 'display', 'none');
 			}
 			console.log("++++++++++ entering closeEditor");
 			// Erase modifications to the control settingse.
