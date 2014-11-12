@@ -148,7 +148,7 @@ define([
 						//Crisis alert popup if equation not checked
 							myThis.applyDirectives([{
 								id: "crisisAlert", attribute:
-								"open", value: "Given Expression is not checked!  Go back and check your expression to verify it is correct, or delete the expression, before closing the node editor."
+								"open", value: "Initial Student Expression value is not checked!  Go back and check your expression to verify it is correct, or delete the expression, before closing the node editor."
 							}]);
 						}
 						else{

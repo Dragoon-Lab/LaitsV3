@@ -228,9 +228,7 @@ define([
 			selectModel.on('Change', lang.hitch(this, function(){
 					return this.disableHandlers || this.handleGivenEquation.apply(this, arguments);
 			}));
-			
-			
-		    this.givenEquationDoneHandler();
+
 			this.handleErrorMessage(); //binds a function to Display Error message if expression is cleared.
 		},
 		/*
@@ -526,7 +524,7 @@ define([
 							this.errorStatus.splice(index, 1);
 							this.applyDirectives([{
 								id: "crisisAlert", attribute:
-								"open", value: "The expression in Given Values was cleared because nodes were missing from the student model."
+								"open", value: "The expression in Initial Student Values was cleared because nodes were missing from the student model."
 							}]);
 							return;
 						}
