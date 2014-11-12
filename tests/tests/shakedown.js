@@ -47,14 +47,20 @@ describe('Test dragoon testing framework', function() {
         dtest.openProblem(client,[["problem","rabbits"],["mode","student"]],done);
     });
 
-    it("should allow us to create a node",function(done) {
-        dtest.createNode(client,done);
-    });
-
-    after(function(done) {
+    after(function (done) {
         client.end();
         done();
     });
+
+    // API Tests:
+    it("menuCreateNode()",function (done) {
+        dtest.menuCreateNode(client,done);
+    });
+
+    it("closeNodeEditor()",function (done) {
+        dtest.closeNodeEditor(client,done);
+    });
+
 });
 
 
