@@ -51,3 +51,7 @@ tests/phantomjsdriver.log
 tests/selenium.log
 
 
+
+tests/chromedriver
+
+tests/node/
