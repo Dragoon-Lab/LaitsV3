@@ -225,7 +225,7 @@ define([
 					return this.disableHandlers || this.handleSelectModel.apply(this, arguments);
 			}));
 			var givenEquation = registry.byId("givenEquationBox");
-			selectModel.on('Change', lang.hitch(this, function(){
+			givenEquation.on('Change', lang.hitch(this, function(){
 					return this.disableHandlers || this.handleGivenEquation.apply(this, arguments);
 			}));
 
@@ -504,10 +504,10 @@ define([
 		handleGivenEquation: function(equation){
 			//Summary: changes the status of givenEquationEntered when given equation is modified
 			var w = registry.byId("givenEquationBox");
-			this.givenEquationEntered = false;
 			// undo color when new value is entered in the given equation box widget
 			w.on("keydown",lang.hitch(this,function(evt){
 				if(evt.keyCode != keys.ENTER){					
+					this.givenEquationEntered = false;
 					style.set(this.controlMap.equation, 'backgroundColor', '');					
 				}
 			}));
@@ -697,6 +697,7 @@ define([
 				if(isExpressionValid){
 					this._model.student.setInputs(inputs, newNodeID);
 					this._model.student.setEquation(newNodeID, equation);
+					this.givenEquationEntered = true;
 				}
 				else{
 					this._model.student.setInputs([], newNodeID);
@@ -761,8 +762,7 @@ define([
 				//Replace the studentNodeIDs by corrosponding names before setting the equation field
 				var inputs = this._model.student.getInputs(studentNodeID);
 				var equation = this._model.student.getEquation(studentNodeID);
-				if(typeof equation !== "undefined" && equation != ""){
-					this.givenEquationEntered = true;
+				if(typeof equation !== "undefined" && equation != ""){					
 					style.set(this.controlMap.equation, 'backgroundColor', "#2EFEF7");
 					array.forEach(inputs, lang.hitch(this, function(input){
 						var node = this._model.given.getNode(this._model.student.getDescriptionID(input.ID));
@@ -774,6 +774,7 @@ define([
 					}));
 				}
 					registry.byId(this.controlMap.equation).set('value', equation || "");
+					this.givenEquationEntered = true;
 			}
 		},
 
