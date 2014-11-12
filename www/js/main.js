@@ -193,7 +193,10 @@ define([
 			aspect.after(registry.byId('nodeeditor'), "hide", function(){
 				console.log("Calling session.saveProblem");
 				session.saveProblem(givenModel.model);
-			});
+                if(controllerObject.isDescriptionCorrect&&controllerObject.isDescriptionCorrect.status=="incorrect")
+                    if(controllerObject.currentID == controllerObject.isDescriptionCorrect.id) //to protect deletion of previous correct nodeS
+                            drawModel.deleteNode(controllerObject.currentID);
+    		});
 			
 			// Wire up close button...
 			// This will trigger the above session.saveProblem()

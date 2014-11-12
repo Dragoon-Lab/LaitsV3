@@ -165,7 +165,24 @@ define([
 			}
 			return {border: borderColor, boxShadow: boxshadow, backgroundColor: backgroundcolor};
 		},
+        /* Delete Nodes*/
+        deleteNode:function(/*node id*/ nodeID){
+			domConstruct.destroy(nodeID);
+					//remove all connnections including incoming and outgoing
+					array.forEach(this._instance.getConnections(), function(connection){
+						if(connection.targetId == nodeID||connection.sourceId == nodeID)
+							this._instance.detach(connection);
+					}, this);
 
+					this._logging.log('ui-action', {
+						type: "node-delete",
+						node: this._givenModel.getName(nodeID),
+						nodeID: nodeID
+					});
+					//delete from  the model
+					this._givenModel.deleteNode(nodeID);
+					this.updater();
+        },
 		/* addNode: Add a node to the jsPlumb model, returning the DOM element.	 */
 		addNode: function(/*object*/ node){
 
@@ -195,10 +212,13 @@ define([
 			var pMenu = new Menu({
 				targetNodeIds: [node.ID]
 			});
-
+            //test
 			pMenu.addChild(new MenuItem({
 				label: "Delete Node",
-				onClick: lang.hitch(this, function (){
+				onClick: lang.hitch(this,function(){
+                        this.deleteNode(node.ID)
+                    })
+                    /*function (){
 			domConstruct.destroy(node.ID);
 					//remove all connnections including incoming and outgoing
 					array.forEach(this._instance.getConnections(), function(connection){
@@ -214,7 +234,7 @@ define([
 					//delete from  the model
 					this._givenModel.deleteNode(node.ID);
 					this.updater();
-				})
+				})*/
 			}));
 			/*
 			 Fire off functions associated with draggable events.
