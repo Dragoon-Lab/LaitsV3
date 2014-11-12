@@ -92,51 +92,54 @@ exports.menuCreateNode = function(client,done){
 }
 
 exports.menuOpenGraph = function(client,done){
-    console.warn("Not yet implemented.");
+    client.click('#graphButton');
 }
 
 exports.menuOpenTable = function(client,done){
-    console.warn("Not yet implemented.");
+    client.click('#tableButton');
 }
 
 exports.menuOpenForum = function(client,done){
-    console.warn("Not yet implemented.");
+    client.click('#forumButton');
 }
 
 exports.menuOpenAuthorOptions = function(client,done){
-    console.warn("Not yet implemented.");
+    client.click('#descButton');
 }
 
 exports.menuOpenSaveAs = function(client,done){
-    console.warn("Not yet implemented.");
+    client.click('#saveButton');
 }
 
 exports.menuOpenPreview = function(client,done){
-    console.warn("Not yet implemented.");
+    client.click('#previewButton');
 }
 
 exports.menuOpenHints = function(client,done){
-    console.warn("Not yet implemented.");
+    client.click('#descButton');
 }
 
 exports.menuOpenHelpIntroduction = function(client,done){
-    console.warn("Not yet implemented.");
+    client.click('#dijit_PopupMenuBarItem_0_text');
+    client.click('#menuIntroText');
 }
 
 exports.menuOpenHelpIntroVideo = function(client,done){
-    console.warn("Not yet implemented.");
+    client.click('#dijit_PopupMenuBarItem_0_text');
+    client.click('#menuIntroVideo');
 }
 
 exports.menuOpenHelpMathFunctions = function(client,done){
-    console.warn("Not yet implemented.");
+    client.click('#dijit_PopupMenuBarItem_0_text');
+    client.click('#menuMathFunctions');
 }
 
 exports.menuOpenLessonsLearned = function(client,done){
-    console.warn("Not yet implemented.");
+    client.click('#lessonsLearnedButton');
 }
 
 exports.menuDone = function(client,done){
-    console.warn("Not yet implemented.");
+    client.click('#doneButton');
 }
 
 
@@ -144,16 +147,21 @@ exports.menuDone = function(client,done){
 // 3. Canvas functions
 
 // Node manipulation
-
+// This currently is by nodeId and not node name
+// If by node name is needed then an additional "findIdByNodeName" will be needed
 exports.openEditorForNode = function(client,nodeName,done){
-    console.warn("Not yet implemented.");
+    client.click('#' + nodeName);
 }
 
 exports.moveNode = function(client,nodeName,xDest,yDest,done){
+    client.mouseDown('#' + nodeName);
+    client.mouseMove('#myCanvas', xDest, yDest);
+    client.release();
     console.warn("Not yet implemented.");
 }
 
 exports.deleteNode = function(client,nodeName,done){
+    client.contextClick('#' + nodeName); 
     console.warn("Not yet implemented.");
 }
 
