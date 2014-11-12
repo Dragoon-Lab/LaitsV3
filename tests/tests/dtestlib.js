@@ -170,7 +170,7 @@ exports.closeAlertMessage = function(client,done){
 }
 
 ////////////////////////////////////////////////////////////////////////////////////////////////////
-// 2. Node editor window functions -- these require an open node!!
+// 4. Node editor window functions -- these require an open node!!
 
 exports.setNodeDescription = function(client,done){
     console.warn("Not yet implemented.");
@@ -252,11 +252,79 @@ exports.clearExpression = function(client,done){
     console.warn("Not yet implemented.");
 }
 
+//
+// Author mode only:
+//
 
 
 ////////////////////////////////////////////////////////////////////////////////////////////////////
-// 3. Graph and table editor window functions
+// 5. Graph and table editor window functions
+// These functions require an open Graph & Table window
+
+// Switching tabs
+
+exports.selectGraphTab = function(client,done){
+    // Summary: Selects (clicks) the graph tab, making the graphs visible
+    console.warn("Not yet implemented.");
+}
+
+exports.selectTableTab = function(client,done){
+    // Summary: Selects (clicks) the table tab, making the table visible
+    console.warn("Not yet implemented.");
+}
+
+// Read text in graph window
+exports.getGraphMessageText = function(client,done){
+    // Summary: returns the text in the graph window, if no graph is displayed (or null otherwise)
+    console.warn("Not yet implemented.");
+    return null;
+}
+
+exports.getGraphResultText = function(client,done){
+    // Summary: returns the text used to display if the student matched the author's result or not
+    //          (i.e. the red or green text) or null if neither message is not present
+    console.warn("Not yet implemented.");
+    return null;
+}
+
+// Slider and value manipulation
+
+exports.setQuantityValue = function(client,quantityName,newValue,done){
+    // Summary: Changes the value in the box marked with quantityName to newValue
+    console.warn("Not yet implemented.");
+}
+
+exports.moveSliderRight = function(client,quantityName,distance,done){
+    // Summary: Moves the slider marked with quantityName to the right distance pixels.
+    console.warn("Not yet implemented.");
+}
+
+exports.moveSliderLeft = function(client,quantityName,distance,done){
+    // Summary: Moves the slider marked with quantityName to the left distance pixels.
+    console.warn("Not yet implemented.");
+}
 
 
-// Node editor commands:
+// Table
 
+exports.tableGetValue = function(client,column,row,done){
+    // Summary: returns the value of the cell in the column/row of table, or null if the cell can't
+    //          be found.
+    console.warn("Not yet implemented.");
+    return null;
+}
+
+////////////////////////////////////////////////////////////////////////////////////////////////////
+// 6.  Description & Times window functions
+
+////////////////////////////////////////////////////////////////////////////////////////////////////
+// 7.  "Save as..." window functions
+
+////////////////////////////////////////////////////////////////////////////////////////////////////
+// 8.  Hint slides window functions
+
+////////////////////////////////////////////////////////////////////////////////////////////////////
+// 9.  Lessons Learned window functions
+
+////////////////////////////////////////////////////////////////////////////////////////////////////
+// 10.  Forum functions
