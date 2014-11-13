@@ -69,9 +69,9 @@ describe('Test dragoon testing framework', function() {
             });
         });
 
-        it("should have \"New Quantity\" for the title",function (done) {
-            assert(windowTitle==="NewQuantity",
-                    "The title was "+windowTitle+" instead of \"New Quantity\"");
+        it("should have \"New quantity\" for the title",function () {
+            assert(windowTitle==="New quantity",
+                    "The title was "+windowTitle+" instead of \"New quantity\"");
         });
     });
 });
