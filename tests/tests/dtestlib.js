@@ -165,6 +165,31 @@ exports.deleteNode = function(client,nodeName,done){
     console.warn("Not yet implemented.");
 }
 
+// Reading nodes
+exports.getNodeBorderColor = function(client,nodeName,done){
+    console.warn("Not yet implemented.");
+    return "";
+}
+
+exports.getNodeBorderStyle = function(client,nodeName,done){
+    console.warn("Not yet implemented.");
+    return "";
+}
+
+exports.getNodeFillColor = function(client,nodeName,done){
+    console.warn("Not yet implemented.");
+    return "";
+}
+
+exports.getNodeExteriorText = function(client,nodeName,done){
+    console.warn("Not yet implemented.");
+    return "";
+}
+
+exports.getNodeInteriorText = function(client,nodeName,done){
+    console.warn("Not yet implemented.");
+    return "";
+}
 // Alert messages
 
 exports.getAlertMessageText = function(client,done){
@@ -176,6 +201,8 @@ exports.getAlertMessageText = function(client,done){
 exports.closeAlertMessage = function(client,done){
     console.warn("Not yet implemented.");
 }
+
+
 
 ////////////////////////////////////////////////////////////////////////////////////////////////////
 // 4. Node editor window functions -- these require an open node!!
