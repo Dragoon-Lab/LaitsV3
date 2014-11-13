@@ -50,7 +50,6 @@ define([
 		logging: null,
 		// Variable to track if an equation has been entered and checked
 		equationEntered: null,	// value is set when node editor opened
-        isDescriptionCorrect:null, //stores status of last applied description correct/incorrect
 
 		constructor: function(mode, subMode, model, inputStyle){
 			
@@ -1088,9 +1087,6 @@ define([
 						//this[directive.id+'Set'].call(this, directive.value);
 					}else{
 						w.set(directive.attribute, directive.value);
-                        if(directive.id=="description"&&directive.attribute=="status"){
-                            this.isDescriptionCorrect={id:this.currentID,status:directive.value}; //store againts the ID
-                        }
 					}
 				}else{
 					this.logging.clientLog("warning", {

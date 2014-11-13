@@ -47,7 +47,14 @@ define([
 		_givenModel: null,
 		_logging:null,
 		// Hook for updates
-		updater: function(){},
+		updater: function(){
+            //time to update borders
+            //check needed for student mode ?
+            var nodes=this._givenModel.getNodes();
+            array.forEach(nodes,function(node){
+               this.colorNodeBorder(node.ID,true); 
+            },this);
+        },
 
 		constructor: function(givenModel){
 
@@ -218,23 +225,6 @@ define([
 				onClick: lang.hitch(this,function(){
                         this.deleteNode(node.ID)
                     })
-                    /*function (){
-			domConstruct.destroy(node.ID);
-					//remove all connnections including incoming and outgoing
-					array.forEach(this._instance.getConnections(), function(connection){
-						if(connection.targetId == node.ID||connection.sourceId == node.ID)
-							this._instance.detach(connection);
-					}, this);
-
-					this._logging.log('ui-action', {
-						type: "node-delete",
-						node: this._givenModel.getName(node.ID),
-						nodeID: node.ID
-					});
-					//delete from  the model
-					this._givenModel.deleteNode(node.ID);
-					this.updater();
-				})*/
 			}));
 			/*
 			 Fire off functions associated with draggable events.
