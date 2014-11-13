@@ -414,13 +414,14 @@ define([
 				// Not sure what the return should be here
 				return "";
 			}
-			
+			var j = 0;
 			for(var i=0; i<solution.times.length; i++){
 				tableString += "<tr style='overflow:visible'>";
-				tableString += "<td align='center' style='overflow:visible'>" + solution.times[i].toPrecision(4) + "</td>";
+				tableString += "<td align='center' style='overflow:visible' id = 'row" + i + "col0' >" + solution.times[i].toPrecision(4) + "</td>";
 				//set values in table according to their table-headers
+				j = 1;
 				array.forEach(solution.plotValues, function(value){
-					tableString += "<td align='center' style='overflow:visible'>" + value[i].toPrecision(3) + "</td>";
+					tableString += "<td align='center' style='overflow:visible' id = 'row" + i + "col" + j + "'>" + value[i].toPrecision(3) + "</td>";
 				});
 				tableString += "</tr>";
 			}
