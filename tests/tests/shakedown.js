@@ -53,14 +53,27 @@ describe('Test dragoon testing framework', function() {
     });
 
     // API Tests:
-    it("menuCreateNode()",function (done) {
-        dtest.menuCreateNode(client,done);
-    });
 
-    it("closeNodeEditor()",function (done) {
-        dtest.closeNodeEditor(client,done);
-    });
+    describe("menuCreateNode()",function () {
+        var windowTitle = "";
 
+        // before statements execute in order :D
+        before(function (done) {
+            dtest.menuCreateNode(client,done);
+        });
+
+        before(function (done) { 
+            dtest.getNodeEditorTitle(client,function(err,result){
+                windowTitle = result;
+                done();
+            });
+        });
+
+        it("should have \"New Quantity\" for the title",function (done) {
+            assert(windowTitle==="NewQuantity",
+                    "The title was "+windowTitle+" instead of \"New Quantity\"");
+        });
+    });
 });
 
 

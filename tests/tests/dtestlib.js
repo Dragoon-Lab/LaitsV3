@@ -88,7 +88,7 @@ exports.openProblem = function(client,parameters,done){
 // 2. Menu bar functions
 
 exports.menuCreateNode = function(client,done){
-    client.click('#createNodeButton');
+    client.click('#createNodeButton',done);
 }
 
 exports.menuOpenGraph = function(client,done){
@@ -207,8 +207,21 @@ exports.closeAlertMessage = function(client,done){
 ////////////////////////////////////////////////////////////////////////////////////////////////////
 // 4. Node editor window functions -- these require an open node!!
 
+exports.getNodeEditorTitle = function(client,callback){
+    
+    console.warn("Not working yet!!");  
+    
+    // I don't think I have the right selector here:
+    client.getText("#nodeeditor_title.dijitDialogTitle",callback);
+}
+
 exports.setNodeDescription = function(client,done){
     console.warn("Not yet implemented.");
+}
+
+exports.getNodeDescription = function(client){
+    console.warn("Not yet implemented.");
+    return "";
 }
 
 exports.setNodeType = function(client,done){
