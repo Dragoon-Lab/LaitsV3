@@ -47,6 +47,10 @@ function getDate(){
     return date;
 }
 
+function findIdbyName(nodeName){
+    return null;
+}
+
 ////////////////////////////////////////////////////////////////////////////////////////////////////
 // Exported functions - The dtest API
 ////////////////////////////////////////////////////////////////////////////////////////////////////
@@ -61,7 +65,7 @@ exports.openProblem = function(client,parameters,done){
     var paramMap = convertArrayToMap(parameters);
     console.log(paramMap);
     // required params
-    var urlRoot = 'http://localhost/LaitsV3/www/index.html';
+    var urlRoot = 'http://localhost/Dragoon/www/index.html';
     var user = "u="+(paramMap["user"] || getDate()); // defaults to the current date
     var problem = "&p=" + paramMap["problem"];
     var mode = "&m=" + (paramMap["mode"]);
@@ -149,19 +153,24 @@ exports.menuDone = function(client,done){
 // Node manipulation
 // This currently is by nodeId and not node name
 // If by node name is needed then an additional "findIdByNodeName" will be needed
-exports.openEditorForNode = function(client,nodeName,done){
-    client.click('#' + nodeName);
+exports.openEditorForNode = function(client,nodeId,done){
+    client.click('#' + nodeId);
+}
+
+exports.openEditorForNodeByName = function(client, nodeName, done){
+    client.selectByVisibleText('#myCanvas', nodeName);
 }
 
 exports.moveNode = function(client,nodeName,xDest,yDest,done){
-    client.mouseDown('#' + nodeName);
-    client.mouseMove('#myCanvas', xDest, yDest);
-    client.release();
-    console.warn("Not yet implemented.");
+    client.moveToObject('#' + nodeName, 50, 50);
+    client.buttonDown();
+    client.moveToObject('#myCanvas', xDest, yDest);
+    client.buttonUp();
 }
 
 exports.deleteNode = function(client,nodeName,done){
-    client.contextClick('#' + nodeName); 
+    client.rightClick('#' + nodeName, 50, 50);
+    client.click('#dijit_Menu_0');
     console.warn("Not yet implemented.");
 }
 
@@ -358,8 +367,10 @@ exports.moveSliderLeft = function(client,quantityName,distance,done){
 exports.tableGetValue = function(client,column,row,done){
     // Summary: returns the value of the cell in the column/row of table, or null if the cell can't
     //          be found.
-    console.warn("Not yet implemented.");
-    return null;
+    var value;
+    client.getText('#row' + row + 'col' + column, value);
+    console.log(value);
+    return value;
 }
 
 ////////////////////////////////////////////////////////////////////////////////////////////////////
