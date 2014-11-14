@@ -139,10 +139,10 @@ define([
 			{
 				if(this.model.active.matchesGivenSolutionAndCorrect())
 				{
-					this.dialogContent += "<font color='green'>Congratulations, your model's behavior matches the author's</font><br>";
+					this.dialogContent += "<font id='graphResultText' color='green'>Congratulations, your model's behavior matches the author's</font><br>";
 				}
 				else
-					this.dialogContent += "<font color='red'>Unfortunately, your model's behavior does not match the author's</font><br>";
+					this.dialogContent += "<font id='graphResultText' color='red'>Unfortunately, your model's behavior does not match the author's</font><br>";
 			}
 			this.dialogContent += "<p>To reset the sliders, close and reopen the window.</p>";
 			//plot sliders

@@ -77,7 +77,7 @@ exports.openProblem = function(client,parameters,callback){
     var paramMap = convertArrayToMap(parameters);
     console.log(paramMap);
     // required params
-    var urlRoot = 'http://localhost/dragoon/index.html';
+    var urlRoot = 'http://localhost/dragoon/www/index.html';
     var user = "u="+(paramMap["user"] || getDate()); // defaults to the current date
     var problem = "&p=" + paramMap["problem"];
     var mode = "&m=" + (paramMap["mode"]);
@@ -166,24 +166,24 @@ exports.menuDone = function(client,callback){
 // This currently is by nodeId and not node name
 // If by node name is needed then an additional "findIdByNodeName" will be needed
 exports.openEditorForNode = function(client,nodeId,callback){
-    client.click('#' + nodeId);
+    client.click('#id' + nodeId);
 }
 
 exports.openEditorForNodeByName = function(client, nodeName, callback){
     client.selectByVisibleText('#myCanvas', nodeName);
+    console.warn("Not yet implemented");
 }
 
 exports.moveNode = function(client,nodeName,xDest,yDest,callback){
-    client.moveToObject('#' + nodeName, 50, 50);
+    client.moveToObject('#id' + nodeName, 50, 50);
     client.buttonDown();
     client.moveToObject('#myCanvas', xDest, yDest);
     client.buttonUp();
 }
 
 exports.deleteNode = function(client,nodeName,callback){
-    client.rightClick('#' + nodeName, 50, 50);
-    client.click('#dijit_Menu_0');
-    console.warn("Not yet implemented.");
+    client.rightClick('#id' + nodeName, 50, 50);
+    client.click('#dijit_Menu_1');
 }
 
 // Reading nodes
@@ -336,12 +336,38 @@ exports.closeNodeEditor = function(client,callback){
 
 exports.selectGraphTab = function(client,callback){
     // Summary: Selects (clicks) the graph tab, making the graphs visible
-    console.warn("Not yet implemented.");
+    var found = false;
+    var count = -1;
+    while(!found && count < 10)
+    {
+        count++;
+        try{
+        client.click('#dijit_layout_TabContainer_' + count + '_tablist_dijit_layout_ContentPane_' + (1 + count*4) , callback);
+        found = true;
+        }
+        catch(err){}
+    }
 }
 
 exports.selectTableTab = function(client,callback){
     // Summary: Selects (clicks) the table tab, making the table visible
-    console.warn("Not yet implemented.");
+    var found = false;
+    var count = -1;
+    while(!found && count < 10)
+    {
+        count++;
+        try{
+        client.click('#dijit_layout_TabContainer_' + count + '_tablist_dijit_layout_ContentPane_' + (2 + count*4) , callback);
+        found = true;
+        }
+        catch(err){}
+    }
+}
+
+// Closing the graph/table window
+
+exports.closeGraphTableWindow = function(client, callback){
+    console.warn("Not yet implemented");
 }
 
 // Read text in graph window
@@ -353,13 +379,14 @@ exports.getGraphMessageText = function(client,callback){
 exports.getGraphResultText = function(client,callback){
     // Summary: returns the text used to display if the student matched the author's result or not
     //          (i.e. the red or green text) or null if neither message is not present
-    console.warn("Not yet implemented.");
+    client.getText('#graphResultText', callback);
 }
 
 // Slider and value manipulation
 
 exports.setQuantityValue = function(client,quantityName,newValue,callback){
     // Summary: Changes the value in the box marked with quantityName to newValue
+    client.setValue('#textGraph_id' + quantityName, newValue, callback);
     console.warn("Not yet implemented.");
 }
 
