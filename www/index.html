@@ -233,8 +233,8 @@
 			<div id="selectModelControl" class="fieldgroup" style="display:none" >
 			<label for="selectModel">Select Model</label>
                 <select id="selectModel" data-dojo-type="dijit/form/Select">
-	            <option value='correct' selected>Correct Values</option>
-				<option value='given'>Given Values</option>
+	            <option value='correct' selected>Author's Values</option>
+				<option value='given'>Initial Student Values</option>
 	            
 	        </select>
 		   </div>
@@ -335,6 +335,8 @@
                 <div class="vertical">
                     <div id="equationLabel"></div>
                     <textarea id="equationBox" rows=2 cols=30 data-dojo-type="dijit/form/SimpleTextarea"></textarea>
+					<!-- adding givenEquationBox for equations in given model for author , hidden in student mode -->
+					<textarea id="givenEquationBox" rows=2 cols=30 data-dojo-type="dijit/form/SimpleTextarea" style="display:none;"></textarea>
 	            <div id="equationText"></div>
                     <!--<div id="timeStepLabel"></div>-->
                 </div>
