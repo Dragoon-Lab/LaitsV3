@@ -75,6 +75,7 @@ EOT;
     or trigger_error("Previous work query failed." . $mysqli->error);
   if($row = $result->fetch_row()){
     printModel($row);
+	mysqli_close($mysqli);
     exit;
   }	
  }
@@ -95,6 +96,7 @@ EOT;
     or trigger_error("Previous work query failed." . $mysqli->error);
   if($row = $result->fetch_row()){
     printModel($row);
+	mysqli_close($mysqli);
     exit;
   }
 }
@@ -146,5 +148,5 @@ EOT;
      HTTP/1.1 requires an absolute URI as argument to Location. */
   header("Location: http://$host$uri/$extra");
 }
-
+mysqli_close($mysqli);
 ?>

@@ -79,8 +79,8 @@ define([
 			// Public variables
 			beginX: 400,
 			beginY: 100,
-			nodeWidth: 200,
-			nodeHeight: 200,
+			nodeWidth: 100,
+			nodeHeight: 100,
 			isCompleteFlag: false,
 			isLessonLearnedShown: false,
 
@@ -89,32 +89,43 @@ define([
 			 * Private methods; these methods should not be accessed outside of this class
 			 *
 			 */
-			_updateNextXYPosition: function(options){
+			_updateNextXYPosition: function(){
 				// Summary: keeps track of where to place the next node; function detects collisions
 				//		with other nodes; is called in addStudentNode() before creating the node
 				// Tags: private
-				if(options == "fromButton")
-				{
-					this.x = document.documentElement.clientWidth*(1/16);
-					this.y = document.documentElement.clientHeight * (1/16);
-				}
+					this.x = this.beginX;
+					this.y = this.beginY;
+					var pos = { x: this.x, y: this.y, nodeWidth: this.nodeWidth, nodeHeight: this.nodeHeight};
+					while(obj.active.getNodes().some(this.collides, pos))
+					{
+						this.updatePosition();
+						pos = { x: this.x, y: this.y, nodeWidth: this.nodeWidth, nodeHeight: this.nodeHeight};
+					}
+			},
+			updatePosition: function()
+			{
+				if((this.x + this.nodeWidth) < (document.documentElement.clientWidth - this.nodeWidth))
+					this.x += this.nodeWidth;
 				else
 				{
-					array.forEach(obj.active.getNodes(), function(node) {
-						var x = node.position.x;
-						var y = node.position.y;
-						while(this.x > x - this.nodeWidth && this.x < x + this.nodeWidth &&
-								this.y > y - this.nodeHeight && this.y < y + this.nodeHeight){
-							if(this.x + this.nodeWidth < document.documentElement.clientWidth + 100)
-								this.x += this.nodeWidth;
-							else{
-								this.x = this.beginX;
-								this.y += this.nodeHeight;
-							}
-						}
-					}, this);
+					this.x = this.beginX;
+					this.y += this.nodeHeight;
 				}
 			},
+
+			collides: function(element)
+			{
+				var x = element.position.x;
+				var y = element.position.y;
+				if(this.x > x - this.nodeWidth && this.x < x + this.nodeWidth &&
+									this.y > y - this.nodeHeight && this.y < y + this.nodeHeight)
+				{
+					return true;
+				}
+				else
+					return false;
+			},
+
 			_getNextOptimalNode: function(/*string*/ givenNodeID){
 				// Summary: Accepts the id of a parent node and returns the next optimal
 				//		child node that is not visible, or null if all descendants are visible;
@@ -497,7 +508,7 @@ define([
 			addNode: function(options){
 				// Summary: builds a new node and returns the node's unique id
 				//			Can optionally add initial values to node.
-				obj._updateNextXYPosition(options);
+				obj._updateNextXYPosition();
 				var newNode = lang.mixin({
 					ID: "id" + obj._ID++,
 					inputs: [],

@@ -102,5 +102,5 @@ if($method == 'start-session'||$method == 'rename-problem'){
   $mysqli->query($query)
     or trigger_error("Logging failed.". $mysqli->error);
 }
-
+mysqli_close($mysqli);
 ?>

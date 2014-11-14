@@ -95,7 +95,7 @@ define([
 							this.model.active.getDescriptionID(id) : id;
 					// givenID should always exist.
 					console.assert(givenID, "Node '" + id + "' has no corresponding given node");
-					var givenNode = this.model.given.getNode(givenID);
+					var givenNode = this.model.given.getNode(givenID); 
 					return givenNode && (!givenNode.genus ? givenID : null);
 				}, this);
 				// Calculate solutions
@@ -133,6 +133,8 @@ define([
 			//create content pane for sliders
 			this.dialogContent += "<div data-dojo-type='dijit/layout/ContentPane' style='overflow:auto; width:40%; float:right; height: 100%; background-color: #FFFFFF'>";
 			//text for correctness of solution
+			
+			
 			if(this.mode != "AUTHOR"  && this.mode != "EDITOR" && this.mode != "TEST")
 			{
 				if(this.model.active.matchesGivenSolutionAndCorrect())
@@ -142,9 +144,12 @@ define([
 				else
 					this.dialogContent += "<font color='red'>Unfortunately, your model's behavior does not match the author's</font><br>";
 			}
+			this.dialogContent += "<p>To reset the sliders, close and reopen the window.</p>";
 			//plot sliders
+
 			this.createSliderAndDialogObject();
-			this.dialogContent += "</div>";
+
+			this.dialogContent += "</div>";			
 			var charts = {};
 			var legends = {};
 			var paneText="";
@@ -200,7 +205,7 @@ define([
 						this.formatSeriesForChart(activeSolution, k),
 						{stroke: "green"}
 					);
-					if(this.mode != "AUTHOR"  && this.mode != "EDITOR" && this.given.plotVariables[k]){
+					if(this.mode !== "AUTHOR"  && this.mode !== "EDITOR" && this.given.plotVariables[k]){
 						charts[id].addSeries(
 							"Author's solution",
 							this.formatSeriesForChart(givenSolution, k), {stroke: "red"}
@@ -329,18 +334,25 @@ define([
 		 */
 		renderDialog: function(calculationObj){
 			var activeSolution = this.findSolution(true, this.active.plotVariables);
-			var givenSolution = this.findSolution(false, this.given.plotVariables);			
+			var givenSolution;
+            // TODO: Consider making this condition a function, like "givenGraphViewable()
+           if (this.mode !== "AUTHOR" && this.mode !== "EDITOR"){
+                givenSolution = this.findSolution(false, this.given.plotVariables);
+            }
 			//update and render the charts
 			array.forEach(this.active.plotVariables, function(id, k){	
-				// Calculate Min and Max values to plot on y axis based on given solution and your solution
+				// Calculate Min and Max values to plot on y axis based on your solution (and given, when applicable)
 				var obj = this.getMinMaxFromArray(activeSolution.plotValues[k]);
-				var givenObj = this.getMinMaxFromArray(givenSolution.plotValues[k]);				
-				if(givenObj.min < obj.min){
-					obj.min = givenObj.min;
-				}
-				if(givenObj.max > obj.max){
-					obj.max = givenObj.max;
-				}
+                if (this.mode !== "AUTHOR" && this.mode !== "EDITOR") {
+                    var givenObj = this.getMinMaxFromArray(givenSolution.plotValues[k]);
+                    if (givenObj.min < obj.min) {
+                        obj.min = givenObj.min;
+                    }
+                    if (givenObj.max > obj.max) {
+                        obj.max = givenObj.max;
+                    }
+                }
+
 				//Redraw y axis based on new min and max values
 				this.chart[id].addAxis("y", {
 						vertical: true,

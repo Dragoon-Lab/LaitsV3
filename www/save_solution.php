@@ -58,4 +58,5 @@ $query="REPLACE INTO solutions(session_id,share,deleted,solution_graph) VALUES (
 $result=$mysqli->query($query)
   or trigger_error("author_save insert failed: " . $mysqli->error);
 
+mysqli_close($mysqli);  
 ?>

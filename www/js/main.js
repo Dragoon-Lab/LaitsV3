@@ -44,11 +44,12 @@ define([
 	"./description",
 	"./state",
     "./typechecker",
-	"./createSlides"
+	"./createSlides",
+	"./lessons-learned"
 ], function(
-		array, lang, dom, geometry, style, on, aspect, ioQuery, ready, registry,
+		array, lang, dom, geometry, style, on, aspect, ioQuery, ready, registry, toolTip,
 		menu, loadSave, model,
-		Graph, Table, controlStudent, controlAuthor, drawmodel, logging, expression, description, State, typechecker, slides
+		Graph, Table, controlStudent, controlAuthor, drawmodel, logging, equation, description, State, typechecker, slides, lessonsLearned
 ){
 	// Summary: 
 	//			Menu controller
@@ -100,7 +101,7 @@ define([
 			controllerObject._PM.setLogging(session);  // Set up direct logging in PM
 		}
 		controllerObject.setLogging(session); // set up direct logging in controller
-		expression.setLogging(session);
+		equation.setLogging(session);
 		
 		/*
 		 Create state object
@@ -147,7 +148,7 @@ define([
 					return;
 				}
 				
-				var id = givenModel.active.addNode("fromButton");
+				var id = givenModel.active.addNode();
 				controllerObject.logging.log('ui-action', {type: "menu-choice", name: "create-node"});
 				drawModel.addNode(givenModel.active.getNode(id));		
 				controllerObject.showNodeEditor(id);
@@ -417,17 +418,8 @@ define([
 			if(query.m == "STUDENT" || query.m == "COACHED"){
 				menu.add("lessonsLearnedButton", function(){
 					if(givenModel.isLessonLearnedShown == true){
-						var lessonLearnedDialog = registry.byId("lesson");
-						var titleMsg = "<font size='3'>Lessons Learned</font>";
 						contentMsg = givenModel.getTaskLessonsLearned();
-						var contentHTML = "<font size='2'>" + contentMsg[0];
-						for(var i=1;i<contentMsg.length;i++) {
-							contentHTML = contentHTML +"<br>"+contentMsg[i];
-						}
-						contentHTML = contentHTML + "</font>";
-						lessonLearnedDialog.set("content", contentHTML);
-						lessonLearnedDialog.set("title", titleMsg);
-						lessonLearnedDialog.show();
+						lessonsLearned.displayLessonsLearned(contentMsg);
 					}		
 				});
 			}

@@ -1,6 +1,7 @@
 /build/
 /dist/
 /test/
+/tests/
 /logs/
 /nbproject/
 /build.xml
@@ -36,8 +37,13 @@ www/dojox/
 
 www/jsPlumb/
 
+www/math-parser/
+
 www/php-test.php
 
 www/util/
 
 tests/npm/
+
+.idea/
+

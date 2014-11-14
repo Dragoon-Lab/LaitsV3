@@ -74,6 +74,7 @@ if($_POST){
   $query = "SELECT value FROM state WHERE section='$section' AND (user='$user' OR user='') AND apropos='$apropos' AND property='$property' ORDER BY user DESC, tid DESC LIMIT 1";
   $result = $mysqli->query($query)
     or trigger_error("State query failed." . $mysqli->error);
+  mysqli_close($mysqli);
   if($row = $result->fetch_row()){
     header("Content-type: application/json");
     print $row[0];
