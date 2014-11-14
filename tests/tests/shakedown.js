@@ -65,6 +65,7 @@ describe('Test dragoon testing framework', function() {
         before(function (done) { 
             dtest.getNodeEditorTitle(client,function(err,result){
                 windowTitle = result;
+                console.log(windowTitle);
                 done();
             });
         });
@@ -74,6 +75,4 @@ describe('Test dragoon testing framework', function() {
                     "The title was "+windowTitle+" instead of \"New quantity\"");
         });
     });
-});
-
-
+});1`1

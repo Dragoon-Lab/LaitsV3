@@ -22,7 +22,7 @@
 /*
  * The "dtest" library is a set of functions useful for building tests for Dragoon.
  * See README.md for documentation.
-*/
+ */
 
 ////////////////////////////////////////////////////////////////////////////////////////////////////
 // Utility functions (used within the API)
@@ -211,7 +211,7 @@ exports.getNodeInteriorText = function(client,nodeName,callback){
 // Alert messages
 
 exports.getAlertMessageText = function(client,callback){
-    // Summary: Returns the string that is 
+    // Summary: Returns the string that is
     console.warn("Not yet implemented.");
 }
 
@@ -230,14 +230,30 @@ exports.closeAlertMessage = function(client,callback){
 // Title (can be used to see if the correct node was opened)
 
 exports.getNodeEditorTitle = function(client,callback){
-    client.getText("#nodeeditor_title.dijitDialogTitle",callback);
+    client.waitForVisible('span[id="createNodeButton_label"]', 1000, function(err) {
+        client.click('span[id="createNodeButton_label"]', function (err) {
+            client.waitForVisible('span[id="nodeeditor_title"]', 1000, function (err) {
+                client.getText('span[id="nodeeditor_title"]', function(err, text){
+                console.log(text);
+                });
+            });
+        });
+    });
 }
 
 //////////////////////////////////////////////////
 // Node description
 
 exports.getNodeDescription = function(client,callback){
-    console.warn("Not yet implemented.");
+    client.waitForVisible('span[id="createNodeButton_label"]', 1000, function(err) {
+        client.click('span[id="createNodeButton_label"]', function (err) {
+            client.waitForVisible('div[id="descriptionControlStudent"]', 1000, function (err) {
+                client.getText('span[id="descriptionControlStudent"]', function(err, text){
+                    console.log(text);
+                });
+            });
+        });
+    });
 }
 
 exports.setNodeDescription = function(client,callback){
@@ -248,7 +264,15 @@ exports.setNodeDescription = function(client,callback){
 // Node type
 
 exports.getNodeType = function(client,callback){
-    console.warn("Not yet implemented.");
+    client.waitForVisible('span[id="createNodeButton_label"]', 1000, function(err) {
+        client.click('span[id="createNodeButton_label"]', function (err) {
+            client.waitForVisible('table[id="typeId"]', 1000, function (err) {
+                client.getText('table[id="typeId"]', function(err, text){
+                    console.log(text);
+                });
+            });
+        });
+    });
 }
 
 exports.setNodeType = function(client,callback){
@@ -259,7 +283,15 @@ exports.setNodeType = function(client,callback){
 // Initial Value
 
 exports.getNodeInitialValue = function(client,callback){
-    console.warn("Not yet implemented.");
+    client.waitForVisible('span[id="createNodeButton_label"]', 1000, function(err) {
+        client.click('span[id="createNodeButton_label"]', function (err) {
+            client.waitForVisible('input[id="initialValue"]', 1000, function (err) {
+                client.getText('input[id="initialValue"]', function(err, text){
+                    console.log(text);
+                });
+            });
+        });
+    });
 }
 
 exports.setNodeInitialValue = function(client,callback){
@@ -270,7 +302,15 @@ exports.setNodeInitialValue = function(client,callback){
 // Units
 
 exports.getNodeUnitsValue = function(client,callback){
-    console.warn("Not yet implemented.");
+    client.waitForVisible('span[id="createNodeButton_label"]', 1000, function(err) {
+        client.click('span[id="createNodeButton_label"]', function (err) {
+            client.waitForVisible('table[id="selectUnits"]', 1000, function (err) {
+                client.getText('table[id="selectUnits"]', function(err, text){
+                    console.log(text);
+                });
+            });
+        });
+    });
 }
 
 exports.setNodeUnitsValue = function(client,callback){
@@ -281,8 +321,15 @@ exports.setNodeUnitsValue = function(client,callback){
 // Expression controls
 
 exports.getNodeExpression = function(client,callback){
-    //Summary gets the text in the expression box
-    console.warn("Not yet implemented.");
+    client.waitForVisible('span[id="createNodeButton_label"]', 1000, function(err) {
+        client.click('span[id="createNodeButton_label"]', function (err) {
+            client.waitForVisible('textarea[id="equationBox"]', 1000, function (err) {
+                client.getText('textarea[id="equationBox"]', function(err, text){
+                    console.log(text);
+                });
+            });
+        });
+    });
 }
 
 exports.setNodeExpression = function(client,callback){
@@ -298,12 +345,26 @@ exports.expressionInsertInput = function(client,callback){
 
 exports.clearExpression = function(client,callback){
     //Summary: presses the clear expression button
-    console.warn("Not yet implemented.");
+    client.waitForVisible('span[id="createNodeButton_label"]', 1000, function(err) {
+        client.click('span[id="createNodeButton_label"]', function (err) {
+            client.waitForVisible('span[id="undoButton"]', 1000, function (err) {
+                client.click('span[id="undoButton"]');
+                console.log("clear button");
+            });
+        });
+    });
 }
 
 exports.checkExpression = function(client,callback){
     //Summary: presses the check expression button
-    console.warn("Not yet implemented.");
+    client.waitForVisible('span[id="createNodeButton_label"]', 1000, function(err) {
+        client.click('span[id="createNodeButton_label"]', function (err) {
+            client.waitForVisible('span[id="equationDoneButton_label"]', 1000, function (err) {
+                client.click('span[id="equationDoneButton_label"]');
+                console.log("check expression");
+            });
+        });
+    });
 }
 
 
@@ -311,7 +372,14 @@ exports.checkExpression = function(client,callback){
 // Forum button
 
 exports.openNodeForum = function(client,callback){
-    console.warn("Not yet implemented.");
+    client.waitForVisible('span[id="createNodeButton_label"]', 1000, function(err) {
+        client.click('span[id="createNodeButton_label"]', function (err) {
+            client.waitForVisible('span[id="nodeForumButton_label"]', 1000, function (err) {
+                client.click('span[id="nodeForumButton_label"]');
+                console.log("Forum Button ");
+            });
+        });
+    });
 }
 
 //////////////////////////////////////////////////
@@ -319,12 +387,27 @@ exports.openNodeForum = function(client,callback){
 
 exports.nodeEditorDone = function(client,callback){
     // Summary: Hits the "Done" button in the node editor
-    console.warn("Not yet implemented.");
+    client.waitForVisible('span[id="createNodeButton_label"]', 1000, function(err) {
+        client.click('span[id="createNodeButton_label"]', function (err) {
+            client.waitForVisible('span[id="closeButton_label"]', 1000, function (err) {
+                client.click('span[id="closeButton_label"]');
+                console.log("node editor closed");
+            });
+        });
+    });
 }
 
 exports.closeNodeEditor = function(client,callback){
     // Summary: Closes node editor using the "x"
-    console.warn("Not yet implemented.");
+    client.waitForVisible('span[id="createNodeButton_label"]', 1000, function(err) {
+        client.click('span[id="createNodeButton_label"]', function (err) {
+            client.waitForVisible('span[class="dijitDialogCloseIcon"]', 1000, function (err) {
+                client.click('span[class="dijitDialogCloseIcon"]', function(err){
+                console.log("node editor closed");
+                });
+            });
+        });
+    });
 }
 
 
