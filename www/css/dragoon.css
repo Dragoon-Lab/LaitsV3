@@ -174,3 +174,13 @@ div.legend {
 	/*list-style-type: none;*/
     max-width: 500px;
 }
+
+/* Bug fix: Buttons are sticky */
+
+.dijitButtonNode {
+    padding: 0 !important;
+}
+
+.dijitButtonContents{
+    padding: 2px 4px 4px 4px;
+}
