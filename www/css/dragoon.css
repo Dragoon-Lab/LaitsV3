@@ -21,7 +21,9 @@ html, body, #main{
 	font:10pt Arial,Myriad,Tahoma,Verdana,sans-serif !important;
 }
 
-
+.restrict-vscroll {
+	overflow-x:hidden!important;
+}
 .claro .sameedit .dijitDisabled{
     background-color:#e6e6e6;
     cursor: pointer;
@@ -65,6 +67,10 @@ html, body, #main{
 
 .sameedit .fieldgroup > label:first-child {
     width:10ex;
+}
+
+.questionMark{
+    width:4%;
 }
 
 .sameedit #equationText {
