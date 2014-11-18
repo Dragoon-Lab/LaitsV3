@@ -71,13 +71,13 @@ function findIdbyName(nodeName){
 // 1. Problem functions
 
 // Open a problem
-exports.openProblem = function(client,parameters,done){
+exports.openProblem = function(client,parameters,callback){
     // parameters should be an associative array of arguments corresponding to the values needed to
     // build the URL
     var paramMap = convertArrayToMap(parameters);
     console.log(paramMap);
     // required params
-    var urlRoot = 'http://localhost/Laitsv3/www/index.html';
+    var urlRoot = 'http://dragoon.asu.edu/devel/index.html';
     var user = "u="+(paramMap["user"] || getDate()); // defaults to the current date
     var problem = "&p=" + paramMap["problem"];
     var mode = "&m=" + (paramMap["mode"]);
@@ -97,16 +97,14 @@ exports.openProblem = function(client,parameters,done){
     var url = urlRoot + '?' + user + section + problem + mode + nodeEditorMode + "&c=Continue";
     console.log(url);
 
-    client.init().url(url, done);
+    client.init().url(url,callback);
 }
 
 ////////////////////////////////////////////////////////////////////////////////////////////////////
 // 2. Menu bar functions
 
-exports.menuCreateNode = function(client,callback){
-    client.waitForVisible('span[id="createNodeButton_label"]', 1000, function(err) {
-    client.click('span[id="createNodeButton_label"]');
-    });
+exports.menuCreateNode = function(client,callback){    
+    client.click('span[id="createNodeButton_label"]',callback);
 }
 
 exports.menuOpenGraph = function(client,callback){
