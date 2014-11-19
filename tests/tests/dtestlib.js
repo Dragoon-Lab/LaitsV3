@@ -92,9 +92,17 @@ exports.openProblem = function(client,parameters,callback){
     } else {
         group = "&g=" + group;
     }
+
+    var logging = paramMap["logging"];
+    if (logging == null){
+        logging = "";
+    } else {
+        logging = "&l=" + logging;
+    }
     // possible TODO: allow power user mode.
 
-    var url = urlRoot + '?' + user + section + problem + mode + nodeEditorMode + "&c=Continue";
+    var url = urlRoot + '?' + user + section + problem + mode + nodeEditorMode + group + logging +
+              "&c=Continue";
     console.log(url);
 
     client.init().url(url,callback);
@@ -235,7 +243,7 @@ exports.getNodeEditorTitle = function(client,callback){
 // Node description
 
 exports.getNodeDescription = function(client,callback){
-    console.warn("Not yet implemented.");
+    client.getText('span[id="descriptionControlStudent"]',callback);
 }
 
 exports.setNodeDescription = function(client,callback){
@@ -246,7 +254,7 @@ exports.setNodeDescription = function(client,callback){
 // Node type
 
 exports.getNodeType = function(client,callback){
-    console.warn("Not yet implemented.");
+    client.getText('table[id="typeId"]', callback);
 }
 
 exports.setNodeType = function(client,callback){
@@ -257,7 +265,7 @@ exports.setNodeType = function(client,callback){
 // Initial Value
 
 exports.getNodeInitialValue = function(client,callback){
-    console.warn("Not yet implemented.");
+    client.getText('input[id="initialValue"]', callback);
 }
 
 exports.setNodeInitialValue = function(client,callback){
@@ -267,11 +275,11 @@ exports.setNodeInitialValue = function(client,callback){
 //////////////////////////////////////////////////
 // Units
 
-exports.getNodeUnitsValue = function(client,callback){
-    console.warn("Not yet implemented.");
+exports.getNodeUnits = function(client,callback){
+    client.getText('table[id="selectUnits"]',callback);
 }
 
-exports.setNodeUnitsValue = function(client,callback){
+exports.setNodeUnits = function(client,callback){
     console.warn("Not yet implemented.");
 }
 
@@ -317,12 +325,12 @@ exports.openNodeForum = function(client,callback){
 
 exports.nodeEditorDone = function(client,callback){
     // Summary: Hits the "Done" button in the node editor
-    console.warn("Not yet implemented.");
+    client.click('span[id="closeButton_label"]',callback);
 }
 
 exports.closeNodeEditor = function(client,callback){
     // Summary: Closes node editor using the "x"
-    console.warn("Not yet implemented.");
+    client.click('span[class="dijitDialogCloseIcon"]',callback);
 }
 
 

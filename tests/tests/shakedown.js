@@ -43,19 +43,14 @@ var dtest = require('./dtestlib.js');
 // This block should test each function in the API
 
 describe('Test dragoon testing framework', function() {
-    before(function (done) {
-        dtest.openProblem(client,[["problem","rabbits"],["mode","student"]],done);
-    });
-
-    after(function (done) {
-        client.end();
-        done();
-    });
 
     // API Tests:
 
     describe("menuCreateNode()",function () {
         var windowTitle = "";
+        before(function (done) {
+            dtest.openProblem(client,[["problem","rabbits"],["mode","student"]],done);
+        });
 
         // before statements execute in order :D
         before(function (done) {
@@ -73,6 +68,65 @@ describe('Test dragoon testing framework', function() {
         it("should have \"New quantity\" for the title",function () {
             assert(windowTitle==="New quantity",
                     "The title was "+windowTitle+" instead of \"New quantity\"");
+        });
+
+        after(function (done) {
+            client.end();
+            done();
+        });
+    });
+
+    describe("node editor getter functions",function () {
+        before(function (done) {
+            dtest.openProblem(client,[["problem","rabbits"],["mode","student"],
+                                      ["user","dtest"],["section","regression-testing"],
+                                      ["logging","false"]],done);
+        });
+
+        var nextNodeToCheck="population";
+        var nodeTitle,nodeDescription,nodeType,nodeInitialValue,nodeUnits,nodeExpression = "";
+        
+        beforeEach(function (done) {
+            dtest.openEditorForNodeByName(client,nextNodeToCheck,done);
+        });
+
+        beforeEach(function (done) {
+            dtest.getNodeEditorTitle(client,function(err,result){ nodeTitle = result;});
+            dtest.getNodeDescription(client,function(err,result){ nodeDescription = result;});
+            dtest.getNodeType(client,function(err,result){ nodeType = result;});
+            dtest.getNodeInitialValue(client,function(err,result){ nodeInitialValue = result;});
+            dtest.getNodeUnits(client,function(err,result){ nodeUnits = result;});
+            dtest.getNodeExpression(client,function(err,result){ nodeExpression = result;});
+            done();
+        });
+
+        it("population should have the expected values",function () {
+            assert(nodeTitle==="population",
+                    "The title was "+nodeTitle+" instead of \"population\"");
+            // TODO Add other values
+            nextNodeToCheck ="net growth";
+        });
+
+        it("net growth should have the expected values",function () {
+            assert(nodeTitle==="net growth",
+                    "The title was "+nodeTitle+" instead of \"net growth\"");
+            // TODO
+            nextNodeToCheck ="growth rate";
+        });
+
+        it("growth rate should have the expected values",function () {
+            assert(nodeTitle==="growth rate",
+                    "The title was "+nodeTitle+" instead of \"growth rate\"");
+            // TODO
+        });                
+
+        afterEach(function (done) {
+            dtest.closeNodeEditor(client,done);
+        });
+
+        after(function (done) {
+            client.end();
+            done();
         });
     });
 });
