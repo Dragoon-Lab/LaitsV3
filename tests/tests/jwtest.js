@@ -20,6 +20,7 @@ var dtest = require('./riteshTests.js');
 describe('Test dragoon website', function() {
     before(function (done) {
         dtest.openProblem(client,[["problem","rabbits"],["mode","STUDENT"]],done);
+
     });
 
     it('should have the correct accumulator', function (done) {
@@ -27,6 +28,7 @@ describe('Test dragoon website', function() {
        //dtest.openNodeForum(client,done);
        //dtest.checkExpression(client,done);
         dtest.clearExpression(client,done);
+
       });
     after(function(done) {
         //dtest.openProblem(client,[["problem","isle1"],["mode","student"]],done);

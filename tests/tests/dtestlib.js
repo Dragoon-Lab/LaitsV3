@@ -47,8 +47,13 @@ function getDate(){
     return date;
 }
 
-function findIdbyName(nodeName){
-    console.warn("Not yet implemented!");
+function findIdbyName(client, nodeName){
+    var text = client.getText('#id1', function(err, text){
+        var lines = text.split('\n');
+        lines.splice(0,1);
+        var newText = lines.join('\n');
+        console.log(newText);
+    });
     return null;
 }
 
@@ -70,8 +75,13 @@ function findIdbyName(nodeName){
 ////////////////////////////////////////////////////////////////////////////////////////////////////
 // 1. Problem functions
 
+exports.findIdbyNameTest = function(client,id,callback)
+{
+    findIdbyName(client, id);
+}
+
 // Open a problem
-exports.openProblem = function(client,parameters,callback){
+exports.openProblem = function(client,parameters,done){
     // parameters should be an associative array of arguments corresponding to the values needed to
     // build the URL
     var paramMap = convertArrayToMap(parameters);
@@ -106,14 +116,17 @@ exports.openProblem = function(client,parameters,callback){
               "&c=Continue";
     console.log(url);
 
-    client.init().url(url,callback);
+    client.init().url(url, done);
 }
 
 ////////////////////////////////////////////////////////////////////////////////////////////////////
 // 2. Menu bar functions
 
-exports.menuCreateNode = function(client,callback){    
-    client.click('span[id="createNodeButton_label"]',callback);
+
+exports.menuCreateNode = function(client,callback){
+    client.waitForVisible('span[id="createNodeButton_label"]', 1000, function(err) {
+    client.click('span[id="createNodeButton_label"]');
+    });
 }
 
 exports.menuOpenGraph = function(client,callback){
@@ -409,6 +422,17 @@ exports.moveSliderLeft = function(client,quantityName,distance,callback){
     console.warn("Not yet implemented.");
 }
 
+exports.clickSliderRight = function(client,quantityName,clicks,callback)
+{
+    // Summary: Clicks the button to move the slider right 'clicks' number of times
+    console.warn("Not yet implemented");
+}
+
+exports.clickSliderLeft = function(client,quantityName,clicks,callback)
+{
+    // Summary: Clicks the button to move the slider left 'clicks' number of times
+    console.warn("Not yet implemented");
+}
 
 // Table
 
