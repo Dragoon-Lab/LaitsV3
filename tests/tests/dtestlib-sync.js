@@ -24,9 +24,12 @@
  * See README.md for documentation.
 */
 
+////////////////////////////////////////////////////////////////////////////////////////////////////
+// Set up sync library (See: http://alexeypetrushin.github.io/synchronize/docs/index.html for info.)
 var sync = require('synchronize');
-var await = sync.await;
-var defer = sync.defer;
+// Globalize these so we don't have to type "sync." everywhere.
+var await = sync.await;  // Wrap this around asynchronous functions. Returns 2nd arg to callback
+var defer = sync.defer;  // Pass this as the callback function to asynchronous functions
 
 ////////////////////////////////////////////////////////////////////////////////////////////////////
 // Utility functions (used within the API)
@@ -120,54 +123,54 @@ exports.menuCreateNode = function(client){
 }
 
 exports.menuOpenGraph = function(client){
-    client.click('#graphButton');
+    await(client.click('#graphButton',defer()));
 }
 
 exports.menuOpenTable = function(client){
-    client.click('#tableButton');
+    await(client.click('#tableButton',defer()));
 }
 
 exports.menuOpenForum = function(client){
-    client.click('#forumButton');
+    await(client.click('#forumButton',defer()));
 }
 
 exports.menuOpenAuthorOptions = function(client){
-    client.click('#descButton');
+    await(client.click('#descButton',defer()));
 }
 
 exports.menuOpenSaveAs = function(client){
-    client.click('#saveButton');
+    await(client.click('#saveButton',defer()));
 }
 
 exports.menuOpenPreview = function(client){
-    client.click('#previewButton');
+    await(client.click('#previewButton',defer()));
 }
 
 exports.menuOpenHints = function(client){
-    client.click('#descButton');
+    await(client.click('#descButton',defer()));
 }
 
 exports.menuOpenHelpIntroduction = function(client){
-    client.click('#dijit_PopupMenuBarItem_0_text');
-    client.click('#menuIntroText');
+    await(client.click('#dijit_PopupMenuBarItem_0_text',defer()));
+    await(client.click('#menuIntroText',defer()));
 }
 
 exports.menuOpenHelpIntroVideo = function(client){
-    client.click('#dijit_PopupMenuBarItem_0_text');
-    client.click('#menuIntroVideo');
+    await(client.click('#dijit_PopupMenuBarItem_0_text',defer()));
+    await(client.click('#menuIntroVideo',defer()));
 }
 
 exports.menuOpenHelpMathFunctions = function(client){
-    client.click('#dijit_PopupMenuBarItem_0_text');
-    client.click('#menuMathFunctions');
+    await(client.click('#dijit_PopupMenuBarItem_0_text',defer()));
+    await(client.click('#menuMathFunctions',defer()));
 }
 
 exports.menuOpenLessonsLearned = function(client){
-    client.click('#lessonsLearnedButton');
+    await(client.click('#lessonsLearnedButton',defer()));
 }
 
 exports.menuDone = function(client){
-    client.click('#doneButton');
+    await(client.click('#doneButton',defer()));
 }
 
 
@@ -178,23 +181,23 @@ exports.menuDone = function(client){
 // This currently is by nodeId and not node name
 // If by node name is needed then an additional "findIdByNodeName" will be needed
 exports.openEditorForNode = function(client,nodeId){
-    client.click('#' + nodeId);
+    await(client.click('#' + nodeId,defer()));
 }
 
 exports.openEditorForNodeByName = function(client, nodeName){
-    client.selectByVisibleText('#myCanvas', nodeName);
+    await(client.selectByVisibleText('#myCanvas',nodeName,defer()));
 }
 
 exports.moveNode = function(client,nodeName,xDest,yDest){
-    client.moveToObject('#' + nodeName, 50, 50);
-    client.buttonDown();
-    client.moveToObject('#myCanvas', xDest, yDest);
-    client.buttonUp();
+    await(client.moveToObject('#' + nodeName, 50, 50,defer()));
+    await(client.buttonDown(defer()));
+    await(client.moveToObject('#myCanvas', xDest, yDest,defer()));
+    await(client.buttonUp(defer()));
 }
 
 exports.deleteNode = function(client,nodeName){
-    client.rightClick('#' + nodeName, 50, 50);
-    client.click('#dijit_Menu_0');
+    await(client.rightClick('#' + nodeName, 50, 50,defer()));
+    await(client.click('#dijit_Menu_0',defer()));
     console.warn("Not yet implemented.");
 }
 
@@ -240,7 +243,6 @@ exports.closeAlertMessage = function(client){
 // Title (can be used to see if the correct node was opened)
 
 exports.getNodeEditorTitle = function(client){
-    console.log("in get node editor title");
     return await(client.getText("#nodeeditor_title.dijitDialogTitle",defer()));
 }
 
@@ -248,7 +250,7 @@ exports.getNodeEditorTitle = function(client){
 // Node description
 
 exports.getNodeDescription = function(client){
-    client.getText('span[id="descriptionControlStudent"]');
+    return await(client.getText('span[id="descriptionControlStudent"]',defer()));
 }
 
 exports.setNodeDescription = function(client){
@@ -259,7 +261,7 @@ exports.setNodeDescription = function(client){
 // Node type
 
 exports.getNodeType = function(client){
-    client.getText('table[id="typeId"]');
+    return await(client.getText('table[id="typeId"]',defer()));
 }
 
 exports.setNodeType = function(client){
@@ -270,7 +272,7 @@ exports.setNodeType = function(client){
 // Initial Value
 
 exports.getNodeInitialValue = function(client){
-    client.getText('input[id="initialValue"]');
+    return await(client.getText('input[id="initialValue"]',defer()));
 }
 
 exports.setNodeInitialValue = function(client){
@@ -281,7 +283,7 @@ exports.setNodeInitialValue = function(client){
 // Units
 
 exports.getNodeUnits = function(client){
-    client.getText('table[id="selectUnits"]');
+    return await(client.getText('table[id="selectUnits"]',defer()));
 }
 
 exports.setNodeUnits = function(client){
@@ -330,16 +332,13 @@ exports.openNodeForum = function(client){
 
 exports.nodeEditorDone = function(client){
     // Summary: Hits the "Done" button in the node editor
-    client.click('span[id="closeButton_label"]');
+    await(client.click('span[id="closeButton_label"]',defer()));
 }
 
 exports.closeNodeEditor = function(client){
     // Summary: Closes node editor using the "x"
-    client.click('span[class="dijitDialogCloseIcon"]');
+    await(client.click('span[class="dijitDialogCloseIcon"]',defer()));
 }
-
-
-
 
 ////////////////////////////////////////////////////////////////////////////////////////////////////
 // 5. Graph and table editor window functions
@@ -392,7 +391,7 @@ exports.moveSliderLeft = function(client,quantityName,distance){
 exports.tableGetValue = function(client,column,row){
     // Summary: returns the value of the cell in the column/row of table, or null if the cell can't
     //          be found.
-    client.getText('#row' + row + 'col' + column);
+    return await(client.getText('#row' + row + 'col' + column,defer()));
 }
 
 ////////////////////////////////////////////////////////////////////////////////////////////////////
@@ -410,4 +409,3 @@ exports.tableGetValue = function(client,column,row){
 ////////////////////////////////////////////////////////////////////////////////////////////////////
 // 10.  Forum functions
 
-//}); // end sync.Fiber wrapper

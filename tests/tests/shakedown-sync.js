@@ -46,7 +46,7 @@ var async = sync.asyncIt;
 
 // This block should test each function in the API
 
-describe('Test dragoon testing framework', function() {
+describe('Test dragoon testing framework',function() {
 
     // API Tests:
     describe("menuCreateNode()",function () {        
@@ -58,6 +58,63 @@ describe('Test dragoon testing framework', function() {
             windowTitle = dtest.getNodeEditorTitle(client);
             assert(windowTitle==="New quantity",
                     "The title was "+windowTitle+" instead of \"New quantity\"");
+        }));
+
+        after(function (done) {
+            client.end();
+            done();
+        });
+    });
+
+    describe("node editor getter functions",function () {
+        before(async(function () {
+            dtest.openProblem(client,[["problem","rabbits"],["mode","STUDENT"],
+                                      ["user","dtest"],["section","regression-testing"],
+                                      ["logging","false"]]);
+        }));
+
+        var nextNodeToCheck="population";
+        //nextNodeToCheck="id10"; // temporary hack until using real names works
+        var nodeTitle,nodeDescription,nodeType,nodeInitialValue,nodeUnits,nodeExpression = "";
+        
+        beforeEach(async(function () {
+            dtest.openEditorForNodeByName(client,nextNodeToCheck);
+        }));
+
+        beforeEach(async(function (done) {
+            nodeTitle = dtest.getNodeEditorTitle(client);
+            //nodeDescription = dtest.getNodeDescription(client);
+            //nodeType = dtest.getNodeType(client);
+            //nodeInitialValue = dtest.getNodeInitialValue(client);
+            //nodeUnits = dtest.getNodeUnits(client);
+            //nodeExpression = dtest.getNodeExpression(client);
+            done();
+        }));
+
+        it("population should have the expected values",function () {
+            assert(nodeTitle==="population",
+                    "The title was "+nodeTitle+" instead of \"population\"");
+            // TODO Add other values
+            nextNodeToCheck ="net growth";
+            //nextNodeToCheck = "id11" // temporary hack until using real names works
+        });
+
+        it("net growth should have the expected values",function () {
+            assert(nodeTitle==="net growth",
+                    "The title was "+nodeTitle+" instead of \"net growth\"");
+            // TODO
+            nextNodeToCheck ="growth rate";
+            //nextNodeToCheck = "id13" // temporary hack until using real names works
+        });
+
+        it("growth rate should have the expected values",function () {
+            assert(nodeTitle==="growth rate",
+                    "The title was "+nodeTitle+" instead of \"growth rate\"");
+            // TODO
+        });
+
+        afterEach(async(function () {
+            dtest.closeNodeEditor(client);
         }));
 
         after(function (done) {
