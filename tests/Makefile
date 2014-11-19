@@ -35,4 +35,4 @@ run:
 	@echo "waiting 10 seconds for the server to come up..."
 	sleep 10s
 	@echo "launching tests"
-	mocha tests -t 10000
+	mocha scripts -t 10000
