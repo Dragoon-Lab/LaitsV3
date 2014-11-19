@@ -1,5 +1,5 @@
 // Creating a selenium client utilizing webdriverjs
-var client = require('webdriverio').remote({
+var client = require('webdriverjs').remote({
     desiredCapabilities: {
         // See other browers at:
         // http://code.google.com/p/selenium/wiki/DesiredCapabilities
@@ -10,7 +10,7 @@ var client = require('webdriverio').remote({
 var assert = require('chai').assert;
 
 //import dragoon test library module
-var dtest = require('./dtestlib.js');
+var dtest = require('./riteshTests.js');
 
 
 //start client and redirect to dragoon page for a new problem
@@ -19,14 +19,18 @@ var dtest = require('./dtestlib.js');
 
 describe('Test dragoon website', function() {
     before(function (done) {
-        dtest.openProblem(client,[["problem","rabbits"],["mode","student"]],done);
+        dtest.openProblem(client,[["problem","rabbits"],["mode","STUDENT"]],done);
     });
 
-    it("should allow us to create an accumulator",function(done) {
-        dtest.createNode(client,done);
-    });
-
+    it('should have the correct accumulator', function (done) {
+        //open node editor and check contents inside the node editor
+       //dtest.openNodeForum(client,done);
+       //dtest.checkExpression(client,done);
+        dtest.clearExpression(client,done);
+      });
     after(function(done) {
+        //dtest.openProblem(client,[["problem","isle1"],["mode","student"]],done);
+        //dtest.menuCreateNode(client,done);
         client.end();
         done();
     });

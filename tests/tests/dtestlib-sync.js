@@ -25,6 +25,13 @@
 */
 
 ////////////////////////////////////////////////////////////////////////////////////////////////////
+// Set up sync library (See: http://alexeypetrushin.github.io/synchronize/docs/index.html for info.)
+var sync = require('synchronize');
+// Globalize these so we don't have to type "sync." everywhere.
+var await = sync.await;  // Wrap this around asynchronous functions. Returns 2nd arg to callback
+var defer = sync.defer;  // Pass this as the callback function to asynchronous functions
+
+////////////////////////////////////////////////////////////////////////////////////////////////////
 // Utility functions (used within the API)
 ////////////////////////////////////////////////////////////////////////////////////////////////////
 
@@ -71,13 +78,12 @@ function findIdbyName(nodeName){
 // 1. Problem functions
 
 // Open a problem
-exports.openProblem = function(client,parameters,callback){
+exports.openProblem = function(client,parameters){
     // parameters should be an associative array of arguments corresponding to the values needed to
     // build the URL
     var paramMap = convertArrayToMap(parameters);
     console.log(paramMap);
     // required params
-
     var urlRoot = 'http://dragoon.asu.edu/devel/index.html';
     var user = "u="+(paramMap["user"] || getDate()); // defaults to the current date
     var problem = "&p=" + paramMap["problem"];
@@ -105,66 +111,66 @@ exports.openProblem = function(client,parameters,callback){
     var url = urlRoot + '?' + user + section + problem + mode + nodeEditorMode + group + logging +
               "&c=Continue";
     console.log(url);
-
-    client.init().url(url,callback);
+    await(client.init().url(url,defer()));
 }
 
 ////////////////////////////////////////////////////////////////////////////////////////////////////
 // 2. Menu bar functions
 
-exports.menuCreateNode = function(client,callback){    
-    client.click('span[id="createNodeButton_label"]',callback);
+exports.menuCreateNode = function(client){    
+    console.log("in menu create node");
+    await(client.click('span[id="createNodeButton_label"]',defer()));
 }
 
-exports.menuOpenGraph = function(client,callback){
-    client.click('#graphButton');
+exports.menuOpenGraph = function(client){
+    await(client.click('#graphButton',defer()));
 }
 
-exports.menuOpenTable = function(client,callback){
-    client.click('#tableButton');
+exports.menuOpenTable = function(client){
+    await(client.click('#tableButton',defer()));
 }
 
-exports.menuOpenForum = function(client,callback){
-    client.click('#forumButton');
+exports.menuOpenForum = function(client){
+    await(client.click('#forumButton',defer()));
 }
 
-exports.menuOpenAuthorOptions = function(client,callback){
-    client.click('#descButton');
+exports.menuOpenAuthorOptions = function(client){
+    await(client.click('#descButton',defer()));
 }
 
-exports.menuOpenSaveAs = function(client,callback){
-    client.click('#saveButton');
+exports.menuOpenSaveAs = function(client){
+    await(client.click('#saveButton',defer()));
 }
 
-exports.menuOpenPreview = function(client,callback){
-    client.click('#previewButton');
+exports.menuOpenPreview = function(client){
+    await(client.click('#previewButton',defer()));
 }
 
-exports.menuOpenHints = function(client,callback){
-    client.click('#descButton');
+exports.menuOpenHints = function(client){
+    await(client.click('#descButton',defer()));
 }
 
-exports.menuOpenHelpIntroduction = function(client,callback){
-    client.click('#dijit_PopupMenuBarItem_0_text');
-    client.click('#menuIntroText');
+exports.menuOpenHelpIntroduction = function(client){
+    await(client.click('#dijit_PopupMenuBarItem_0_text',defer()));
+    await(client.click('#menuIntroText',defer()));
 }
 
-exports.menuOpenHelpIntroVideo = function(client,callback){
-    client.click('#dijit_PopupMenuBarItem_0_text');
-    client.click('#menuIntroVideo');
+exports.menuOpenHelpIntroVideo = function(client){
+    await(client.click('#dijit_PopupMenuBarItem_0_text',defer()));
+    await(client.click('#menuIntroVideo',defer()));
 }
 
-exports.menuOpenHelpMathFunctions = function(client,callback){
-    client.click('#dijit_PopupMenuBarItem_0_text');
-    client.click('#menuMathFunctions');
+exports.menuOpenHelpMathFunctions = function(client){
+    await(client.click('#dijit_PopupMenuBarItem_0_text',defer()));
+    await(client.click('#menuMathFunctions',defer()));
 }
 
-exports.menuOpenLessonsLearned = function(client,callback){
-    client.click('#lessonsLearnedButton');
+exports.menuOpenLessonsLearned = function(client){
+    await(client.click('#lessonsLearnedButton',defer()));
 }
 
-exports.menuDone = function(client,callback){
-    client.click('#doneButton');
+exports.menuDone = function(client){
+    await(client.click('#doneButton',defer()));
 }
 
 
@@ -174,55 +180,55 @@ exports.menuDone = function(client,callback){
 // Node manipulation
 // This currently is by nodeId and not node name
 // If by node name is needed then an additional "findIdByNodeName" will be needed
-exports.openEditorForNode = function(client,nodeId,callback){
-    client.click('#id' + nodeId);
+exports.openEditorForNode = function(client,nodeId){
+    await(client.click('#' + nodeId,defer()));
 }
 
-exports.openEditorForNodeByName = function(client, nodeName, callback){
-    client.selectByVisibleText('#myCanvas', nodeName);
-    console.warn("Not yet implemented");
+exports.openEditorForNodeByName = function(client, nodeName){
+    await(client.selectByVisibleText('#myCanvas',nodeName,defer()));
 }
 
-exports.moveNode = function(client,nodeName,xDest,yDest,callback){
-    client.moveToObject('#id' + nodeName, 50, 50);
-    client.buttonDown();
-    client.moveToObject('#myCanvas', xDest, yDest);
-    client.buttonUp();
+exports.moveNode = function(client,nodeName,xDest,yDest){
+    await(client.moveToObject('#' + nodeName, 50, 50,defer()));
+    await(client.buttonDown(defer()));
+    await(client.moveToObject('#myCanvas', xDest, yDest,defer()));
+    await(client.buttonUp(defer()));
 }
 
-exports.deleteNode = function(client,nodeName,callback){
-    client.rightClick('#id' + nodeName, 50, 50);
-    client.click('#dijit_Menu_1');
+exports.deleteNode = function(client,nodeName){
+    await(client.rightClick('#' + nodeName, 50, 50,defer()));
+    await(client.click('#dijit_Menu_0',defer()));
+    console.warn("Not yet implemented.");
 }
 
 // Reading nodes
-exports.getNodeBorderColor = function(client,nodeName,callback){
+exports.getNodeBorderColor = function(client,nodeName){
     console.warn("Not yet implemented.");
 }
 
-exports.getNodeBorderStyle = function(client,nodeName,callback){
+exports.getNodeBorderStyle = function(client,nodeName){
     console.warn("Not yet implemented.");
 }
 
-exports.getNodeFillColor = function(client,nodeName,callback){
+exports.getNodeFillColor = function(client,nodeName){
     console.warn("Not yet implemented.");
 }
 
-exports.getNodeExteriorText = function(client,nodeName,callback){
+exports.getNodeExteriorText = function(client,nodeName){
     console.warn("Not yet implemented.");
 }
 
-exports.getNodeInteriorText = function(client,nodeName,callback){
+exports.getNodeInteriorText = function(client,nodeName){
     console.warn("Not yet implemented.");
 }
 // Alert messages
 
-exports.getAlertMessageText = function(client,callback){
+exports.getAlertMessageText = function(client){
     // Summary: Returns the string that is 
     console.warn("Not yet implemented.");
 }
 
-exports.closeAlertMessage = function(client,callback){
+exports.closeAlertMessage = function(client){
     console.warn("Not yet implemented.");
 }
 
@@ -236,79 +242,79 @@ exports.closeAlertMessage = function(client,callback){
 //////////////////////////////////////////////////
 // Title (can be used to see if the correct node was opened)
 
-exports.getNodeEditorTitle = function(client,callback){
-    client.getText("#nodeeditor_title.dijitDialogTitle",callback);
+exports.getNodeEditorTitle = function(client){
+    return await(client.getText("#nodeeditor_title.dijitDialogTitle",defer()));
 }
 
 //////////////////////////////////////////////////
 // Node description
 
-exports.getNodeDescription = function(client,callback){
-    client.getText('span[id="descriptionControlStudent"]',callback);
+exports.getNodeDescription = function(client){
+    return await(client.getText('span[id="descriptionControlStudent"]',defer()));
 }
 
-exports.setNodeDescription = function(client,callback){
+exports.setNodeDescription = function(client){
     console.warn("Not yet implemented.");
 }
 
 //////////////////////////////////////////////////
 // Node type
 
-exports.getNodeType = function(client,callback){
-    client.getText('table[id="typeId"]', callback);
+exports.getNodeType = function(client){
+    return await(client.getText('table[id="typeId"]',defer()));
 }
 
-exports.setNodeType = function(client,callback){
+exports.setNodeType = function(client){
     console.warn("Not yet implemented.");
 }
 
 //////////////////////////////////////////////////
 // Initial Value
 
-exports.getNodeInitialValue = function(client,callback){
-    client.getText('input[id="initialValue"]', callback);
+exports.getNodeInitialValue = function(client){
+    return await(client.getText('input[id="initialValue"]',defer()));
 }
 
-exports.setNodeInitialValue = function(client,callback){
+exports.setNodeInitialValue = function(client){
     console.warn("Not yet implemented.");
 }
 
 //////////////////////////////////////////////////
 // Units
 
-exports.getNodeUnits = function(client,callback){
-    client.getText('table[id="selectUnits"]',callback);
+exports.getNodeUnits = function(client){
+    return await(client.getText('table[id="selectUnits"]',defer()));
 }
 
-exports.setNodeUnits = function(client,callback){
+exports.setNodeUnits = function(client){
     console.warn("Not yet implemented.");
 }
 
 //////////////////////////////////////////////////
 // Expression controls
 
-exports.getNodeExpression = function(client,callback){
+exports.getNodeExpression = function(client){
     //Summary gets the text in the expression box
     console.warn("Not yet implemented.");
 }
 
-exports.setNodeExpression = function(client,callback){
+exports.setNodeExpression = function(client){
     console.warn("Not yet implemented.");
 }
 
-exports.expressionInsertInput = function(client,callback){
+exports.expressionInsertInput = function(client){
     //Summary: use the insert control to add something to the expression
     console.warn("Not yet implemented.");
 }
 
 // TODO: Add +,-,*,and / insert functions
 
-exports.clearExpression = function(client,callback){
+exports.clearExpression = function(client){
     //Summary: presses the clear expression button
     console.warn("Not yet implemented.");
 }
 
-exports.checkExpression = function(client,callback){
+exports.checkExpression = function(client){
     //Summary: presses the check expression button
     console.warn("Not yet implemented.");
 }
@@ -317,25 +323,22 @@ exports.checkExpression = function(client,callback){
 //////////////////////////////////////////////////
 // Forum button
 
-exports.openNodeForum = function(client,callback){
+exports.openNodeForum = function(client){
     console.warn("Not yet implemented.");
 }
 
 //////////////////////////////////////////////////
 // Exiting the node editor
 
-exports.nodeEditorDone = function(client,callback){
+exports.nodeEditorDone = function(client){
     // Summary: Hits the "Done" button in the node editor
-    client.click('span[id="closeButton_label"]',callback);
+    await(client.click('span[id="closeButton_label"]',defer()));
 }
 
-exports.closeNodeEditor = function(client,callback){
+exports.closeNodeEditor = function(client){
     // Summary: Closes node editor using the "x"
-    client.click('span[class="dijitDialogCloseIcon"]',callback);
+    await(client.click('span[class="dijitDialogCloseIcon"]',defer()));
 }
-
-
-
 
 ////////////////////////////////////////////////////////////////////////////////////////////////////
 // 5. Graph and table editor window functions
@@ -343,68 +346,41 @@ exports.closeNodeEditor = function(client,callback){
 
 // Switching tabs
 
-exports.selectGraphTab = function(client,callback){
+exports.selectGraphTab = function(client){
     // Summary: Selects (clicks) the graph tab, making the graphs visible
-    var found = false;
-    var count = -1;
-    while(!found && count < 10)
-    {
-        count++;
-        try{
-        client.click('#dijit_layout_TabContainer_' + count + '_tablist_dijit_layout_ContentPane_' + (1 + count*4) , callback);
-        found = true;
-        }
-        catch(err){}
-    }
+    console.warn("Not yet implemented.");
 }
 
-exports.selectTableTab = function(client,callback){
+exports.selectTableTab = function(client){
     // Summary: Selects (clicks) the table tab, making the table visible
-    var found = false;
-    var count = -1;
-    while(!found && count < 10)
-    {
-        count++;
-        try{
-        client.click('#dijit_layout_TabContainer_' + count + '_tablist_dijit_layout_ContentPane_' + (2 + count*4) , callback);
-        found = true;
-        }
-        catch(err){}
-    }
-}
-
-// Closing the graph/table window
-
-exports.closeGraphTableWindow = function(client, callback){
-    console.warn("Not yet implemented");
+    console.warn("Not yet implemented.");
 }
 
 // Read text in graph window
-exports.getGraphMessageText = function(client,callback){
+exports.getGraphMessageText = function(client){
     // Summary: returns the text in the graph window, if no graph is displayed (or null otherwise)
     console.warn("Not yet implemented.");
 }
 
-exports.getGraphResultText = function(client,callback){
+exports.getGraphResultText = function(client){
     // Summary: returns the text used to display if the student matched the author's result or not
     //          (i.e. the red or green text) or null if neither message is not present
-    client.getText('#graphResultText', callback);
+    console.warn("Not yet implemented.");
 }
 
 // Slider and value manipulation
 
-exports.setQuantityValue = function(client,quantityName,newValue,callback){
+exports.setQuantityValue = function(client,quantityName,newValue){
     // Summary: Changes the value in the box marked with quantityName to newValue
-    client.setValue('#textGraph_id' + quantityName, newValue, callback);
     console.warn("Not yet implemented.");
 }
 
-exports.moveSliderRight = function(client,quantityName,distance,callback){
+exports.moveSliderRight = function(client,quantityName,distance){
     // Summary: Moves the slider marked with quantityName to the right distance pixels.
     console.warn("Not yet implemented.");
 }
 
-exports.moveSliderLeft = function(client,quantityName,distance,callback){
+exports.moveSliderLeft = function(client,quantityName,distance){
     // Summary: Moves the slider marked with quantityName to the left distance pixels.
     console.warn("Not yet implemented.");
 }
@@ -412,10 +388,10 @@ exports.moveSliderLeft = function(client,quantityName,distance,callback){
 
 // Table
 
-exports.tableGetValue = function(client,column,row,callback){
+exports.tableGetValue = function(client,column,row){
     // Summary: returns the value of the cell in the column/row of table, or null if the cell can't
     //          be found.
-    client.getText('#row' + row + 'col' + column,callback);
+    return await(client.getText('#row' + row + 'col' + column,defer()));
 }
 
 ////////////////////////////////////////////////////////////////////////////////////////////////////
@@ -432,3 +408,4 @@ exports.tableGetValue = function(client,column,row,callback){
 
 ////////////////////////////////////////////////////////////////////////////////////////////////////
 // 10.  Forum functions
+

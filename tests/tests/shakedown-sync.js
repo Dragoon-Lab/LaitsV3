@@ -36,39 +36,29 @@ var client = require('webdriverio').remote({
 
 var assert = require('chai').assert;
 
-//import dragoon test library module
-var dtest = require('./dtestlib.js');
+// import dragoon test library module
+var dtest = require('./dtestlib-sync.js');
 
+// import sync library
+var sync = require('synchronize');
+
+var async = sync.asyncIt;
 
 // This block should test each function in the API
 
-describe('Test dragoon testing framework', function() {
+describe('Test dragoon testing framework',function() {
 
     // API Tests:
-
-    describe("menuCreateNode()",function () {
-        var windowTitle = "";
-        before(function (done) {
-            dtest.openProblem(client,[["problem","rabbits"],["mode","student"]],done);
-        });
-
-        // before statements execute in order :D
-        before(function (done) {
-            dtest.menuCreateNode(client,done);
-        });
-
-        before(function (done) { 
-            dtest.getNodeEditorTitle(client,function(err,result){
-                windowTitle = result;
-                console.log(windowTitle);
-                done();
-            });
-        });
-
-        it("should have \"New quantity\" for the title",function () {
+    describe("menuCreateNode()",function () {        
+        
+        it("should have \"New quantity\" for the title",async(function () {
+            var windowTitle = "";
+            dtest.openProblem(client,[["problem","rabbits"],["mode","student"]]);
+            dtest.menuCreateNode(client);
+            windowTitle = dtest.getNodeEditorTitle(client);
             assert(windowTitle==="New quantity",
                     "The title was "+windowTitle+" instead of \"New quantity\"");
-        });
+        }));
 
         after(function (done) {
             client.end();
@@ -77,34 +67,35 @@ describe('Test dragoon testing framework', function() {
     });
 
     describe("node editor getter functions",function () {
-        before(function (done) {
-            dtest.openProblem(client,[["problem","rabbits"],["mode","student"],
+        before(async(function () {
+            dtest.openProblem(client,[["problem","rabbits"],["mode","STUDENT"],
                                       ["user","dtest"],["section","regression-testing"],
-                                      ["logging","false"]],done);
-        });
+                                      ["logging","false"]]);
+        }));
 
         var nextNodeToCheck="population";
+        //nextNodeToCheck="id10"; // temporary hack until using real names works
         var nodeTitle,nodeDescription,nodeType,nodeInitialValue,nodeUnits,nodeExpression = "";
         
-        beforeEach(function (done) {
-            dtest.openEditorForNodeByName(client,nextNodeToCheck,done);
-        });
+        beforeEach(async(function () {
+            dtest.openEditorForNodeByName(client,nextNodeToCheck);
+        }));
 
-        beforeEach(function (done) {
-            dtest.getNodeEditorTitle(client,function(err,result){ nodeTitle = result;});
-            dtest.getNodeDescription(client,function(err,result){ nodeDescription = result;});
-            dtest.getNodeType(client,function(err,result){ nodeType = result;});
-            dtest.getNodeInitialValue(client,function(err,result){ nodeInitialValue = result;});
-            dtest.getNodeUnits(client,function(err,result){ nodeUnits = result;});
-            dtest.getNodeExpression(client,function(err,result){ nodeExpression = result;});
-            done();
-        });
+        beforeEach(async(function () {
+            nodeTitle = dtest.getNodeEditorTitle(client);
+            //nodeDescription = dtest.getNodeDescription(client);
+            //nodeType = dtest.getNodeType(client);
+            //nodeInitialValue = dtest.getNodeInitialValue(client);
+            //nodeUnits = dtest.getNodeUnits(client);
+            //nodeExpression = dtest.getNodeExpression(client);
+        }));
 
         it("population should have the expected values",function () {
             assert(nodeTitle==="population",
                     "The title was "+nodeTitle+" instead of \"population\"");
             // TODO Add other values
             nextNodeToCheck ="net growth";
+            //nextNodeToCheck = "id11" // temporary hack until using real names works
         });
 
         it("net growth should have the expected values",function () {
@@ -112,17 +103,18 @@ describe('Test dragoon testing framework', function() {
                     "The title was "+nodeTitle+" instead of \"net growth\"");
             // TODO
             nextNodeToCheck ="growth rate";
+            //nextNodeToCheck = "id13" // temporary hack until using real names works
         });
 
         it("growth rate should have the expected values",function () {
             assert(nodeTitle==="growth rate",
                     "The title was "+nodeTitle+" instead of \"growth rate\"");
             // TODO
-        });                
-
-        afterEach(function (done) {
-            dtest.closeNodeEditor(client,done);
         });
+
+        afterEach(async(function () {
+            dtest.closeNodeEditor(client);
+        }));
 
         after(function (done) {
             client.end();
