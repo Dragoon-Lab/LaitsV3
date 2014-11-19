@@ -78,7 +78,7 @@ describe('Test dragoon testing framework',function() {
         var nodeTitle,nodeDescription,nodeType,nodeInitialValue,nodeUnits,nodeExpression = "";
         
         beforeEach(async(function () {
-            dtest.openEditorForNodeByName(client,nextNodeToCheck);
+            dtest.openEditorForNode(client,nextNodeToCheck);
         }));
 
         beforeEach(async(function () {

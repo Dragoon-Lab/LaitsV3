@@ -54,9 +54,27 @@ function getDate(){
     return date;
 }
 
-function findIdbyName(nodeName){
-    console.warn("Not yet implemented!");
-    return null;
+function findIdbyName(client, nodeName){
+    var notFound = true;
+    var counter = 1;
+    var result = null;
+    var text = "";
+    while(notFound && counter < 100)
+    {
+        try{
+            text = await(client.getText('#id' + counter, defer()));
+            var lines = text.split('\n');
+            lines.splice(0,1);
+            var newText = lines.join('\n');
+        }catch(err){}
+        if(newText === nodeName)
+        {
+            notFound = false;
+            result = counter;
+        }
+        counter++;
+    }
+    return result;
 }
 
 ////////////////////////////////////////////////////////////////////////////////////////////////////
@@ -180,12 +198,8 @@ exports.menuDone = function(client){
 // Node manipulation
 // This currently is by nodeId and not node name
 // If by node name is needed then an additional "findIdByNodeName" will be needed
-exports.openEditorForNode = function(client,nodeId){
-    await(client.click('#' + nodeId,defer()));
-}
-
-exports.openEditorForNodeByName = function(client, nodeName){
-    await(client.selectByVisibleText('#myCanvas',nodeName,defer()));
+exports.openEditorForNode = function(client,nodeName){
+    await(client.click('#id' + findIdbyName(client, nodeName),defer()));
 }
 
 exports.moveNode = function(client,nodeName,xDest,yDest){

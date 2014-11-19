@@ -24,7 +24,7 @@ describe('Test dragoon website', function() {
     });
 
     it('should have the correct accumulator', function (done) {
-        //open node editor and check contents inside the node editor
+        //open node editor and check contents inside the node editor    
        //dtest.openNodeForum(client,done);
        //dtest.checkExpression(client,done);
         dtest.clearExpression(client,done);
