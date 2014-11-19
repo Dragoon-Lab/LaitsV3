@@ -81,14 +81,13 @@ describe('Test dragoon testing framework',function() {
             dtest.openEditorForNodeByName(client,nextNodeToCheck);
         }));
 
-        beforeEach(async(function (done) {
+        beforeEach(async(function () {
             nodeTitle = dtest.getNodeEditorTitle(client);
             //nodeDescription = dtest.getNodeDescription(client);
             //nodeType = dtest.getNodeType(client);
             //nodeInitialValue = dtest.getNodeInitialValue(client);
             //nodeUnits = dtest.getNodeUnits(client);
             //nodeExpression = dtest.getNodeExpression(client);
-            done();
         }));
 
         it("population should have the expected values",function () {
