@@ -25,6 +25,8 @@
 */
 
 var sync = require('synchronize');
+var await = sync.await;
+var defer = sync.defer;
 
 ////////////////////////////////////////////////////////////////////////////////////////////////////
 // Utility functions (used within the API)
@@ -106,7 +108,7 @@ exports.openProblem = function(client,parameters){
     var url = urlRoot + '?' + user + section + problem + mode + nodeEditorMode + group + logging +
               "&c=Continue";
     console.log(url);
-    sync.await(client.init().url(url,sync.defer()));
+    await(client.init().url(url,defer()));
 }
 
 ////////////////////////////////////////////////////////////////////////////////////////////////////
@@ -114,57 +116,57 @@ exports.openProblem = function(client,parameters){
 
 exports.menuCreateNode = function(client){    
     console.log("in menu create node");
-    sync.await(client.click('span[id="createNodeButton_label"]',sync.defer()));
+    await(client.click('span[id="createNodeButton_label"]',defer()));
 }
 
-exports.menuOpenGraph = function(client,callback){
+exports.menuOpenGraph = function(client){
     client.click('#graphButton');
 }
 
-exports.menuOpenTable = function(client,callback){
+exports.menuOpenTable = function(client){
     client.click('#tableButton');
 }
 
-exports.menuOpenForum = function(client,callback){
+exports.menuOpenForum = function(client){
     client.click('#forumButton');
 }
 
-exports.menuOpenAuthorOptions = function(client,callback){
+exports.menuOpenAuthorOptions = function(client){
     client.click('#descButton');
 }
 
-exports.menuOpenSaveAs = function(client,callback){
+exports.menuOpenSaveAs = function(client){
     client.click('#saveButton');
 }
 
-exports.menuOpenPreview = function(client,callback){
+exports.menuOpenPreview = function(client){
     client.click('#previewButton');
 }
 
-exports.menuOpenHints = function(client,callback){
+exports.menuOpenHints = function(client){
     client.click('#descButton');
 }
 
-exports.menuOpenHelpIntroduction = function(client,callback){
+exports.menuOpenHelpIntroduction = function(client){
     client.click('#dijit_PopupMenuBarItem_0_text');
     client.click('#menuIntroText');
 }
 
-exports.menuOpenHelpIntroVideo = function(client,callback){
+exports.menuOpenHelpIntroVideo = function(client){
     client.click('#dijit_PopupMenuBarItem_0_text');
     client.click('#menuIntroVideo');
 }
 
-exports.menuOpenHelpMathFunctions = function(client,callback){
+exports.menuOpenHelpMathFunctions = function(client){
     client.click('#dijit_PopupMenuBarItem_0_text');
     client.click('#menuMathFunctions');
 }
 
-exports.menuOpenLessonsLearned = function(client,callback){
+exports.menuOpenLessonsLearned = function(client){
     client.click('#lessonsLearnedButton');
 }
 
-exports.menuDone = function(client,callback){
+exports.menuDone = function(client){
     client.click('#doneButton');
 }
 
@@ -175,55 +177,55 @@ exports.menuDone = function(client,callback){
 // Node manipulation
 // This currently is by nodeId and not node name
 // If by node name is needed then an additional "findIdByNodeName" will be needed
-exports.openEditorForNode = function(client,nodeId,callback){
+exports.openEditorForNode = function(client,nodeId){
     client.click('#' + nodeId);
 }
 
-exports.openEditorForNodeByName = function(client, nodeName, callback){
+exports.openEditorForNodeByName = function(client, nodeName){
     client.selectByVisibleText('#myCanvas', nodeName);
 }
 
-exports.moveNode = function(client,nodeName,xDest,yDest,callback){
+exports.moveNode = function(client,nodeName,xDest,yDest){
     client.moveToObject('#' + nodeName, 50, 50);
     client.buttonDown();
     client.moveToObject('#myCanvas', xDest, yDest);
     client.buttonUp();
 }
 
-exports.deleteNode = function(client,nodeName,callback){
+exports.deleteNode = function(client,nodeName){
     client.rightClick('#' + nodeName, 50, 50);
     client.click('#dijit_Menu_0');
     console.warn("Not yet implemented.");
 }
 
 // Reading nodes
-exports.getNodeBorderColor = function(client,nodeName,callback){
+exports.getNodeBorderColor = function(client,nodeName){
     console.warn("Not yet implemented.");
 }
 
-exports.getNodeBorderStyle = function(client,nodeName,callback){
+exports.getNodeBorderStyle = function(client,nodeName){
     console.warn("Not yet implemented.");
 }
 
-exports.getNodeFillColor = function(client,nodeName,callback){
+exports.getNodeFillColor = function(client,nodeName){
     console.warn("Not yet implemented.");
 }
 
-exports.getNodeExteriorText = function(client,nodeName,callback){
+exports.getNodeExteriorText = function(client,nodeName){
     console.warn("Not yet implemented.");
 }
 
-exports.getNodeInteriorText = function(client,nodeName,callback){
+exports.getNodeInteriorText = function(client,nodeName){
     console.warn("Not yet implemented.");
 }
 // Alert messages
 
-exports.getAlertMessageText = function(client,callback){
+exports.getAlertMessageText = function(client){
     // Summary: Returns the string that is 
     console.warn("Not yet implemented.");
 }
 
-exports.closeAlertMessage = function(client,callback){
+exports.closeAlertMessage = function(client){
     console.warn("Not yet implemented.");
 }
 
@@ -239,78 +241,78 @@ exports.closeAlertMessage = function(client,callback){
 
 exports.getNodeEditorTitle = function(client){
     console.log("in get node editor title");
-    return sync.await(client.getText("#nodeeditor_title.dijitDialogTitle",sync.defer()));
+    return await(client.getText("#nodeeditor_title.dijitDialogTitle",defer()));
 }
 
 //////////////////////////////////////////////////
 // Node description
 
-exports.getNodeDescription = function(client,callback){
-    client.getText('span[id="descriptionControlStudent"]',callback);
+exports.getNodeDescription = function(client){
+    client.getText('span[id="descriptionControlStudent"]');
 }
 
-exports.setNodeDescription = function(client,callback){
+exports.setNodeDescription = function(client){
     console.warn("Not yet implemented.");
 }
 
 //////////////////////////////////////////////////
 // Node type
 
-exports.getNodeType = function(client,callback){
-    client.getText('table[id="typeId"]', callback);
+exports.getNodeType = function(client){
+    client.getText('table[id="typeId"]');
 }
 
-exports.setNodeType = function(client,callback){
+exports.setNodeType = function(client){
     console.warn("Not yet implemented.");
 }
 
 //////////////////////////////////////////////////
 // Initial Value
 
-exports.getNodeInitialValue = function(client,callback){
-    client.getText('input[id="initialValue"]', callback);
+exports.getNodeInitialValue = function(client){
+    client.getText('input[id="initialValue"]');
 }
 
-exports.setNodeInitialValue = function(client,callback){
+exports.setNodeInitialValue = function(client){
     console.warn("Not yet implemented.");
 }
 
 //////////////////////////////////////////////////
 // Units
 
-exports.getNodeUnits = function(client,callback){
-    client.getText('table[id="selectUnits"]',callback);
+exports.getNodeUnits = function(client){
+    client.getText('table[id="selectUnits"]');
 }
 
-exports.setNodeUnits = function(client,callback){
+exports.setNodeUnits = function(client){
     console.warn("Not yet implemented.");
 }
 
 //////////////////////////////////////////////////
 // Expression controls
 
-exports.getNodeExpression = function(client,callback){
+exports.getNodeExpression = function(client){
     //Summary gets the text in the expression box
     console.warn("Not yet implemented.");
 }
 
-exports.setNodeExpression = function(client,callback){
+exports.setNodeExpression = function(client){
     console.warn("Not yet implemented.");
 }
 
-exports.expressionInsertInput = function(client,callback){
+exports.expressionInsertInput = function(client){
     //Summary: use the insert control to add something to the expression
     console.warn("Not yet implemented.");
 }
 
 // TODO: Add +,-,*,and / insert functions
 
-exports.clearExpression = function(client,callback){
+exports.clearExpression = function(client){
     //Summary: presses the clear expression button
     console.warn("Not yet implemented.");
 }
 
-exports.checkExpression = function(client,callback){
+exports.checkExpression = function(client){
     //Summary: presses the check expression button
     console.warn("Not yet implemented.");
 }
@@ -319,21 +321,21 @@ exports.checkExpression = function(client,callback){
 //////////////////////////////////////////////////
 // Forum button
 
-exports.openNodeForum = function(client,callback){
+exports.openNodeForum = function(client){
     console.warn("Not yet implemented.");
 }
 
 //////////////////////////////////////////////////
 // Exiting the node editor
 
-exports.nodeEditorDone = function(client,callback){
+exports.nodeEditorDone = function(client){
     // Summary: Hits the "Done" button in the node editor
-    client.click('span[id="closeButton_label"]',callback);
+    client.click('span[id="closeButton_label"]');
 }
 
-exports.closeNodeEditor = function(client,callback){
+exports.closeNodeEditor = function(client){
     // Summary: Closes node editor using the "x"
-    client.click('span[class="dijitDialogCloseIcon"]',callback);
+    client.click('span[class="dijitDialogCloseIcon"]');
 }
 
 
@@ -345,23 +347,23 @@ exports.closeNodeEditor = function(client,callback){
 
 // Switching tabs
 
-exports.selectGraphTab = function(client,callback){
+exports.selectGraphTab = function(client){
     // Summary: Selects (clicks) the graph tab, making the graphs visible
     console.warn("Not yet implemented.");
 }
 
-exports.selectTableTab = function(client,callback){
+exports.selectTableTab = function(client){
     // Summary: Selects (clicks) the table tab, making the table visible
     console.warn("Not yet implemented.");
 }
 
 // Read text in graph window
-exports.getGraphMessageText = function(client,callback){
+exports.getGraphMessageText = function(client){
     // Summary: returns the text in the graph window, if no graph is displayed (or null otherwise)
     console.warn("Not yet implemented.");
 }
 
-exports.getGraphResultText = function(client,callback){
+exports.getGraphResultText = function(client){
     // Summary: returns the text used to display if the student matched the author's result or not
     //          (i.e. the red or green text) or null if neither message is not present
     console.warn("Not yet implemented.");
@@ -369,17 +371,17 @@ exports.getGraphResultText = function(client,callback){
 
 // Slider and value manipulation
 
-exports.setQuantityValue = function(client,quantityName,newValue,callback){
+exports.setQuantityValue = function(client,quantityName,newValue){
     // Summary: Changes the value in the box marked with quantityName to newValue
     console.warn("Not yet implemented.");
 }
 
-exports.moveSliderRight = function(client,quantityName,distance,callback){
+exports.moveSliderRight = function(client,quantityName,distance){
     // Summary: Moves the slider marked with quantityName to the right distance pixels.
     console.warn("Not yet implemented.");
 }
 
-exports.moveSliderLeft = function(client,quantityName,distance,callback){
+exports.moveSliderLeft = function(client,quantityName,distance){
     // Summary: Moves the slider marked with quantityName to the left distance pixels.
     console.warn("Not yet implemented.");
 }
@@ -387,10 +389,10 @@ exports.moveSliderLeft = function(client,quantityName,distance,callback){
 
 // Table
 
-exports.tableGetValue = function(client,column,row,callback){
+exports.tableGetValue = function(client,column,row){
     // Summary: returns the value of the cell in the column/row of table, or null if the cell can't
     //          be found.
-    client.getText('#row' + row + 'col' + column,callback);
+    client.getText('#row' + row + 'col' + column);
 }
 
 ////////////////////////////////////////////////////////////////////////////////////////////////////
