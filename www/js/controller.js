@@ -618,6 +618,7 @@ define([
 		handleEquation: function(equation){
 			var w = registry.byId(this.widgetMap.equation);
 			this.equationEntered = false;
+			w.set('status','');
 			// undo color when new value is entered in the equation box widget
 			w.on("keydown",lang.hitch(this,function(evt){
 				if(evt.keyCode != keys.ENTER){
