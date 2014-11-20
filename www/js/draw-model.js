@@ -56,7 +56,7 @@ define([
             },this);
             //time to delete all connectiion having node as source node
             array.forEach(this._instance.getConnections(), function(connection){
-                if(setOfConnections[connection.sourceId]){
+                if(setOfConnections[connection.targetId]){
                 	this._instance.detach(connection); //remove that connection
             	}
             }, this);
@@ -184,11 +184,12 @@ define([
 					var setConnections = []; //setOfConnections to delete
  					//remove all connnections including incoming and outgoing and store the targetIDs
 					array.forEach(this._instance.getConnections(), function(connection){
-						if(connection.targetId == nodeID||connection.sourceId == nodeID)
+						if(connection.targetId == nodeID||connection.sourceId == nodeID){
 							if(connection.sourceId == nodeID){
 						        	setConnections[connection.targetId]=true;//connections to delete for matching sourceId
 							}
 							this._instance.detach(connection);
+						}
 					}, this);
 
 					this._logging.log('ui-action', {
