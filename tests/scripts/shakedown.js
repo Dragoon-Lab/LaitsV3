@@ -44,20 +44,63 @@ var sync = require('synchronize');
 
 var async = sync.asyncIt;
 
+function openPartiallyCompleteRabbits() {
+    dtest.openProblem(client,[["problem","rabbits"],["mode","STUDENT"],
+                                      ["user","dtest"],["section","regression-testing"],
+                                      ["logging","false"]]);
+}
+
+function openCompleteIncorrectRabbits() {
+    dtest.openProblem(client,[["problem","rabbits"],["mode","STUDENT"],
+                                      ["user","dtest2"],["section","regression-testing"],
+                                      ["logging","false"]]);
+}
+
+// TODO: move these to the test library.
+var nodesIncompleteMessage = 
+    "Not all nodes have been completed. For example, \"growth rate\" is not yet fully defined.";
+var modelIncorrectMessage =
+    "Unfortunately, your model's behavior does not match the author's";
+
 // This block should test each function in the API
 
 describe('Test dragoon testing framework',function() {
 
     // API Tests:
-    describe("menuCreateNode()",function () {        
+    describe("menu & canvas functions",function () {
+
+        before(async(function () {
+            openPartiallyCompleteRabbits();
+        }));
         
-        it("should have \"New quantity\" for the title",async(function () {
-            var windowTitle = "";
-            dtest.openProblem(client,[["problem","rabbits"],["mode","student"]]);
+        it("should open a new quantity when create node is clicked",async(function () {
             dtest.menuCreateNode(client);
-            windowTitle = dtest.getNodeEditorTitle(client);
+            var windowTitle = dtest.getNodeEditorTitle(client);
             assert(windowTitle==="New quantity",
                     "The title was "+windowTitle+" instead of \"New quantity\"");
+            dtest.nodeEditorDone(client);
+        }));
+
+        it("should be able to delete a node",async(function () {
+            dtest.deleteNode(client,"birth rate");
+            var errored = false;
+            try{
+                dtest.openEditorForNode
+            }catch(err){
+                errored = true;
+            }
+            assert(errored===true,"The deleted node could still be opened!");
+        }));
+
+        it("should be able to read the node border colors",async(function () {
+            var populationColor = dtest.getNodeBorderColor(client,"population");
+            var netGrowthColor = dtest.getNodeBorderColor(client,"net growth");
+            var growthRateColor = dtest.getNodeBorderColor(client,"growth rate");
+            var birthRateColor = dtest.getNodeBorderColor(client,"birth rate");
+            assert(populationColor === "green","The population node should have a green border.");
+            assert(netGrowthColor === "yellow","The net growth node should have a yellow border.");
+            assert(growthRateColor === "red","The growth rate node should have a red border.");
+            assert(birthRateColor === "none","The birth rate node should have no border.");
         }));
 
         after(function (done) {
@@ -66,11 +109,10 @@ describe('Test dragoon testing framework',function() {
         });
     });
 
+
     describe("node editor getter functions",function () {
         before(async(function () {
-            dtest.openProblem(client,[["problem","rabbits"],["mode","STUDENT"],
-                                      ["user","dtest"],["section","regression-testing"],
-                                      ["logging","false"]]);
+            openPartiallyCompleteRabbits();
         }));
 
         var nextNodeToCheck="population";
@@ -119,6 +161,56 @@ describe('Test dragoon testing framework',function() {
         after(function (done) {
             client.end();
             done();
+        });
+    });
+    
+    describe("graph & table functions",function () {
+        describe("for an incomplete model",function(){
+            it("should show an error message in graph window when incomplete",async(function () {
+                openPartiallyCompleteRabbits();
+                dtest.menuOpenGraph(client);
+                var message = dtest.getGraphMessageText(client);
+                assert(message===nodesIncompleteMessage,"The graph window message was different:\n"+
+                    "expected: "+nodesIncompleteMessage+"\n"+
+                    "received: "+message);
+            }));
+
+            after(function (done) {
+                client.end();
+                done();
+            });
+        });
+
+        describe("for a complete incorrect model",function(){
+            before(async(function () {
+                openCompleteIncorrectRabbits();
+                dtest.menuOpenGraph(client);
+            }));
+
+            it("should not show an error message when complete",async(function () {
+                var message = dtest.getGraphMessageText(client);
+                assert(message===null,"Unexpected graph window message:" + message);
+            }));
+
+            it("should say the model is incorrect",async(function () {
+                var message = dtest.getGraphResultText(client);
+                assert(message===modelIncorrectMessage,
+                    "Unexpected graph window message:" + message);
+            }));
+
+            it("should show expected incorrect values",async(function () {
+                assert("24.0"===dtest.tableGetValue(client,"population (rabbits)",1),
+                    "Incorrect table value!");
+                assert("923"===dtest.tableGetValue(client,"population (rabbits)",10),
+                    "Incorrect table value!");
+                assert("461"===dtest.tableGetValue(client,"net growth (rabbits/year)",10),
+                    "Incorrect table value!");
+            }));
+
+            after(function (done) {
+                client.end();
+                done();
+            });
         });
     });
 });

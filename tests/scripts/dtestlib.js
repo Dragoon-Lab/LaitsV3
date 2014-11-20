@@ -217,30 +217,45 @@ exports.deleteNode = function(client,nodeName){
 }
 
 // Reading nodes
-exports.getNodeBorderColor = function(client,nodeName){
+exports.getNodeType = function(client,nodeName){
+    // Summary: Returns a string describing the type of the node, e.g. "accumulator", "parameter",
+    //          "function", or "none" if the node has no type yet.
     console.warn("Not yet implemented.");
+    return null;
+}
+
+exports.getNodeBorderColor = function(client,nodeName){
+    // Summary: Returns a string describing the color of the node's border
+    //          (e.g. "green" "red" "yellow"), or "none" if the node has no border (no type)
+    console.warn("Not yet implemented.");
+    return null;
 }
 
 exports.getNodeBorderStyle = function(client,nodeName){
     console.warn("Not yet implemented.");
+    return null;
 }
 
 exports.getNodeFillColor = function(client,nodeName){
     console.warn("Not yet implemented.");
+    return null;
 }
 
 exports.getNodeExteriorText = function(client,nodeName){
     console.warn("Not yet implemented.");
+    return null;
 }
 
 exports.getNodeInteriorText = function(client,nodeName){
     console.warn("Not yet implemented.");
+    return null;
 }
 // Alert messages
 
 exports.getAlertMessageText = function(client){
     // Summary: Returns the string that is 
     console.warn("Not yet implemented.");
+    return null;
 }
 
 exports.closeAlertMessage = function(client){
