@@ -424,6 +424,11 @@ exports.tableGetValue = function(client,column,row){
     return await(client.getText('#row' + row + 'col' + column,defer()));
 }
 
+exports.closeGraphAndTableWindow = function(client){
+    // Summary: closes the graph/table window
+    console.warn("Not yet implemented.");
+}
+
 ////////////////////////////////////////////////////////////////////////////////////////////////////
 // 6.  Description & Times window functions
 
