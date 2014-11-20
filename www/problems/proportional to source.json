@@ -1,1 +1,136 @@
-{"task" : {"taskName":"proportional+to+source","time":{"start":0,"end":10,"step":0.5,"integrationMethod":"Eulers Method","units":"seconds"},"properties":{},"image":{},"taskDescription":["* Process: Generic change","* Source: Quantity of stuff in Source state","* Destination: Quantity of stuff in Destination state","* Changing:  A proportion of Source","","Some problems lack the Destination accumulator.","","Popular names:","* exponential transfer","* exponential decay (refers to Source only)",""],"givenModelNodes":[{"ID":"id1","inputs":[{"ID":"id2","label":"-"}],"position":{"x":396,"y":241},"attemptCount":{"description":0,"type":0,"initial":0,"units":0,"equation":0,"assitanceScore":0},"status":{},"name":"Source","description":"Quantity of stuff that is in the Source state","type":"accumulator","initial":10,"equation":"-id2"},{"ID":"id2","inputs":[{"ID":"id1","label":""},{"ID":"id4","label":""}],"position":{"x":521,"y":241},"attemptCount":{"description":0,"type":0,"initial":0,"units":0,"equation":0,"assitanceScore":0},"status":{},"name":"Changing","description":"Quantity of stuff that changes state per unit time","type":"function","equation":"id1*id4"},{"ID":"id3","inputs":[{"ID":"id2","label":""}],"position":{"x":642,"y":238},"attemptCount":{"description":0,"type":0,"initial":0,"units":0,"equation":0,"assitanceScore":0},"status":{},"name":"Destination","description":"Quantity of stuff that is in the Destination state","type":"accumulator","initial":1,"equation":"id2"},{"ID":"id4","inputs":[],"position":{"x":379.74517822265625,"y":98.74516296386719},"attemptCount":{"description":0,"type":0,"initial":0,"units":0,"equation":0,"assitanceScore":0},"status":{},"name":"Proportion changing","description":"The proportion of Source that changes per unit time","type":"parameter","parentNode":false,"initial":0.2}],"studentModelNodes":[]} }
+{
+    "task": {
+        "taskName": "proportional+to+source",
+        "time": {
+            "start": 0,
+            "end": 10,
+            "step": 0.5,
+            "integrationMethod": "Eulers Method",
+            "units": "seconds"
+        },
+        "properties": {},
+        "image": {},
+        "taskDescription": [
+            "* Process: Generic change",
+            "* Source: Quantity of stuff in Source state",
+            "* Destination: Quantity of stuff in Destination state",
+            "* Changing:  A proportion of Source",
+            "",
+            "Some problems lack the Destination accumulator.",
+            "",
+            "Popular names:",
+            "* exponential transfer",
+            "* exponential decay (refers to Source only)",
+            ""
+        ],
+        "givenModelNodes": [
+            {
+                "ID": "id1",
+                "inputs": [
+                    {
+                        "ID": "id2",
+                        "label": "-"
+                    }
+                ],
+                "position": {
+                    "x": 396,
+                    "y": 241
+                },
+                "attemptCount": {
+                    "description": 0,
+                    "type": 0,
+                    "initial": 0,
+                    "units": 0,
+                    "equation": 0,
+                    "assistanceScore": 0
+                },
+                "status": {},
+                "name": "Source",
+                "description": "Quantity of stuff that is in the Source state",
+                "type": "accumulator",
+                "initial": 10,
+                "equation": "-id2"
+            },
+            {
+                "ID": "id2",
+                "inputs": [
+                    {
+                        "ID": "id1",
+                        "label": ""
+                    },
+                    {
+                        "ID": "id4",
+                        "label": ""
+                    }
+                ],
+                "position": {
+                    "x": 521,
+                    "y": 241
+                },
+                "attemptCount": {
+                    "description": 0,
+                    "type": 0,
+                    "initial": 0,
+                    "units": 0,
+                    "equation": 0,
+                    "assistanceScore": 0
+                },
+                "status": {},
+                "name": "Changing",
+                "description": "Quantity of stuff that changes state per unit time",
+                "type": "function",
+                "equation": "id1*id4"
+            },
+            {
+                "ID": "id3",
+                "inputs": [
+                    {
+                        "ID": "id2",
+                        "label": ""
+                    }
+                ],
+                "position": {
+                    "x": 642,
+                    "y": 238
+                },
+                "attemptCount": {
+                    "description": 0,
+                    "type": 0,
+                    "initial": 0,
+                    "units": 0,
+                    "equation": 0,
+                    "assistanceScore": 0
+                },
+                "status": {},
+                "name": "Destination",
+                "description": "Quantity of stuff that is in the Destination state",
+                "type": "accumulator",
+                "initial": 1,
+                "equation": "id2"
+            },
+            {
+                "ID": "id4",
+                "inputs": [],
+                "position": {
+                    "x": 379.74517822265625,
+                    "y": 98.74516296386719
+                },
+                "attemptCount": {
+                    "description": 0,
+                    "type": 0,
+                    "initial": 0,
+                    "units": 0,
+                    "equation": 0,
+                    "assistanceScore": 0
+                },
+                "status": {},
+                "name": "Proportion changing",
+                "description": "The proportion of Source that changes per unit time",
+                "type": "parameter",
+                "parentNode": false,
+                "initial": 0.2
+            }
+        ],
+        "studentModelNodes": []
+    }
+}

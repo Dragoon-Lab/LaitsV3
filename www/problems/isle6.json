@@ -138,7 +138,8 @@
                     "type": 0,
                     "initial": 0,
                     "units": 0,
-                    "equation": 0
+                    "equation": 0,
+                    "assistanceScore": 0
                 },
                 "status": {},
                 "name": "moose death probability",
@@ -247,7 +248,8 @@
                     "type": 0,
                     "initial": 0,
                     "units": 0,
-                    "equation": 0
+                    "equation": 0,
+                    "assistanceScore": 0
                 },
                 "status": {},
                 "name": "wolf birth probability",
