@@ -37,7 +37,7 @@ var client = require('webdriverio').remote({
 var assert = require('chai').assert;
 
 // import dragoon test library module
-var dtest = require('dtestlib.js');
+var dtest = require('./dtestlib.js');
 
 // import sync library
 var sync = require('synchronize');
@@ -113,7 +113,7 @@ describe('Test dragoon testing framework',function() {
         });
 
         afterEach(async(function () {
-            dtest.closeNodeEditor(client);
+            dtest.nodeEditorDone(client);
         }));
 
         after(function (done) {

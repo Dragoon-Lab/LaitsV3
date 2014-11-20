@@ -31,6 +31,8 @@ var sync = require('synchronize');
 var await = sync.await;  // Wrap this around asynchronous functions. Returns 2nd arg to callback
 var defer = sync.defer;  // Pass this as the callback function to asynchronous functions
 
+var MAX_NODE_IDS = 100; // The maximum number of node IDs we'll support
+
 ////////////////////////////////////////////////////////////////////////////////////////////////////
 // Utility functions (used within the API)
 ////////////////////////////////////////////////////////////////////////////////////////////////////
@@ -59,13 +61,12 @@ function findIdbyName(client, nodeName){
     var counter = 1;
     var result = null;
     var text = "";
-    while(notFound && counter < 100)
+    while(notFound && counter < MAX_NODE_IDS)
     {
         try{
             text = await(client.getText('#id' + counter, defer()));
             var lines = text.split('\n');
-            lines.splice(0,1);
-            var newText = lines.join('\n');
+            var newText = lines.splice(-1,1)[0]; // take the last line
         }catch(err){}
         if(newText === nodeName)
         {
@@ -100,7 +101,7 @@ exports.openProblem = function(client,parameters){
     // parameters should be an associative array of arguments corresponding to the values needed to
     // build the URL
     var paramMap = convertArrayToMap(parameters);
-    console.log(paramMap);
+
     // required params
     var urlRoot = 'http://dragoon.asu.edu/devel/index.html';
     var user = "u="+(paramMap["user"] || getDate()); // defaults to the current date
@@ -128,7 +129,7 @@ exports.openProblem = function(client,parameters){
 
     var url = urlRoot + '?' + user + section + problem + mode + nodeEditorMode + group + logging +
               "&c=Continue";
-    console.log(url);
+
     await(client.init().url(url,defer()));
 }
 
