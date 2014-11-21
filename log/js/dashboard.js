@@ -176,7 +176,14 @@ define([
 				var problemIndex = array.indexOf(this.problems, upObject['problem']);
 				if(userIndex >= 0 && problemIndex >= 0){
 					this.timeSpent[userIndex][problemIndex] = (number.round(upObject['totalTime']*10))/10+ " - " + (number.round(upObject['outOfFocusTime']*10))/10;
-					this.errorRatio[userIndex][problemIndex] = upObject['incorrectChecks'] + " / " + upObject['totalSolutionChecks'];
+					
+					var errorRatioText = "Blank";
+                    var errorRatioNumber = (100-((parseFloat(upObject['incorrectChecks'])/parseFloat(upObject['totalSolutionChecks']))*100));
+                    if (!isNaN(errorRatioNumber)){ 
+                        errorRatioText = errorRatioNumber.toFixed(1)+"%"; 
+                    } 
+ 					this.errorRatio[userIndex][problemIndex] = errorRatioText;
+					
 					this.problemComplete[userIndex][problemIndex] = upObject['problemComplete'];
 					this.sessionRunning[userIndex][problemIndex] = upObject['sessionRunning'];
 					//this.sessionDetails[userIndex][problemIndex] = {user : upObject['user'], problem: upObject['problem'], section: this.section};
