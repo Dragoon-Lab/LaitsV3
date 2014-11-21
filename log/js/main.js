@@ -39,78 +39,75 @@ define([
 	var query = ioQuery.queryToObject(window.location.search.slice(1));
 
 	var db = new dashboard(query);
+	
+	if((db.modules.query == "custom" || query == "") && db.modules.qObject){
+		query = db.modules.qObject;
+	}
 
-	db.getResults(query).then(function(results){
-		db.objects = json.parse(results);
+	ready(function(){
+		var content = db.renderTable();
 
-
-		ready(function(){
-			db.init();			
-			
-			var content = db.renderTable();
-
-			// show each modules as per the db.modules
-			// hide the waiting info
+		// show each modules as per the db.modules
+		// hide the waiting info
 			var waitDOM = dom.byId("wait");
-			domClass.add(waitDOM, "hidden");
+		domClass.add(waitDOM, "hidden");
 
-			//showing the heading
-			var headingDOM = dom.byId("heading");
-			html.set(headingDOM, db.modules['heading']);
+		//showing the heading
+		var headingDOM = dom.byId("heading");
+		html.set(headingDOM, db.modules['heading']);
 
-			//showing the subheading
-			var subHeadingDOM = dom.byId("sub-heading");
-			html.set(subHeadingDOM, db.modules['subHeading']);
+		//showing the subheading
+		var subHeadingDOM = dom.byId("sub-heading");
+		html.set(subHeadingDOM, db.modules['subHeading']);
 
-			// showing the color key based on the modules value
-			if(db.modules['colors']){
-				var colorKeyDOM = dom.byId("key");
-				domClass.remove(colorKeyDOM, "hidden");
-				domClass.add(colorKeyDOM, "visible");
-			}
+		// showing the color key based on the modules value
+		if(db.modules['colors']){
+			var colorKeyDOM = dom.byId("key");
+			domClass.remove(colorKeyDOM, "hidden");
+			domClass.add(colorKeyDOM, "visible");
+		}
 
-			//add table structure string to the table div
-			var tableDOM = dom.byId("table");
-			html.set(tableDOM, content);
+		//add table structure string to the table div
+		var tableDOM = dom.byId("table");
+		html.set(tableDOM, content);
 
-			//showing or hinding the class type based on the db.modules.display
-			var allNodes = domQuery(".all");
-			allNodes.forEach(function(node){
-				domClass.add(node, 'hidden');
-			});
-			var classString = "." + db.modules['display'];
-			var showNodes = domQuery(classString);
-			showNodes.forEach(function(node){
-				domClass.toggle(node, "hidden");
-				domClass.add(node, "visible");
-			});
-
-			if(db.modules['options']){
-				//add event catchers for each radio change.
-				var radioWidget = dom.byId("tableType");
-				domClass.remove(radioWidget, "hidden");
-				domClass.add(radioWidget, "visible");
-				on(radioWidget, "change", function(){
-					var tableType = '';
-					array.forEach(radioWidget.elements, function(element){
-						if(element.checked){
-							tableType = element.value;
-						}
-					}, this);
-
-					allNodes.forEach(function(node){
-						domClass.remove(node, 'visible');
-						domClass.add(node, 'hidden');
-					});
-					
-					var classString = "."+tableType;
-					var showNodes = domQuery(classString);
-					showNodes.forEach(function(node){
-						domClass.remove(node, 'hidden');
-						domClass.add(node, 'visible');
-					});
-				});
-			}
+		//showing or hinding the class type based on the db.modules.display
+		var allNodes = domQuery(".all");
+		allNodes.forEach(function(node){
+			domClass.add(node, 'hidden');
 		});
+		var classString = "." + db.modules['display'];
+		var showNodes = domQuery(classString);
+		showNodes.forEach(function(node){
+			domClass.toggle(node, "hidden");
+			domClass.add(node, "visible");
+		});
+
+		if(db.modules['options']){
+			//add event catchers for each radio change.
+			var radioWidget = dom.byId("tableType");
+			domClass.remove(radioWidget, "hidden");
+			domClass.add(radioWidget, "visible");
+			on(radioWidget, "change", function(){
+				var tableType = '';
+				array.forEach(radioWidget.elements, function(element){
+					if(element.checked){
+						tableType = element.value;
+					}
+				}, this);
+
+				allNodes.forEach(function(node){
+					domClass.remove(node, 'visible');
+					domClass.add(node, 'hidden');
+				});
+				
+				var classString = "."+tableType;
+				var showNodes = domQuery(classString);
+				showNodes.forEach(function(node){
+					domClass.remove(node, 'hidden');
+					domClass.add(node, 'visible');
+				});
+			});
+		}
 	});
 });
