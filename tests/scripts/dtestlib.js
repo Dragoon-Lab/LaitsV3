@@ -211,9 +211,8 @@ exports.moveNode = function(client,nodeName,xDest,yDest){
 }
 
 exports.deleteNode = function(client,nodeName){
-    await(client.rightClick('#' + nodeName, 50, 50,defer()));
-    await(client.click('#dijit_Menu_0',defer()));
-    console.warn("Not yet implemented.");
+    await(client.rightClick('#id' + findIdbyName(client, nodeName), 50, 50, defer());
+    await(client.click('#dijit_Menu_' + (findIdbyName(client, nodeName) - 1, defer()));
 }
 
 // Reading nodes
@@ -378,31 +377,51 @@ exports.closeNodeEditor = function(client){
 
 exports.selectGraphTab = function(client){
     // Summary: Selects (clicks) the graph tab, making the graphs visible
-    console.warn("Not yet implemented.");
+    var found = false;
+    var count = -1;
+    while(!found && count < 10)
+    {
+        count++;
+        try{
+        client.click('#dijit_layout_TabContainer_' + count + '_tablist_dijit_layout_ContentPane_' + (1 + count*4) , callback);
+        found = true;
+        }
+        catch(err){}
+    }
 }
 
 exports.selectTableTab = function(client){
     // Summary: Selects (clicks) the table tab, making the table visible
-    console.warn("Not yet implemented.");
+    var found = false;
+    var count = -1;
+    while(!found && count < 10)
+    {
+        count++;
+        try{
+        client.click('#dijit_layout_TabContainer_' + count + '_tablist_dijit_layout_ContentPane_' + (2 + count*4) , callback);
+        found = true;
+        }
+        catch(err){}
+    }
 }
 
 // Read text in graph window
 exports.getGraphMessageText = function(client){
     // Summary: returns the text in the graph window, if no graph is displayed (or null otherwise)
-    console.warn("Not yet implemented.");
+    return await(client.getText('#solution', defer()))
 }
 
 exports.getGraphResultText = function(client){
     // Summary: returns the text used to display if the student matched the author's result or not
     //          (i.e. the red or green text) or null if neither message is not present
-    console.warn("Not yet implemented.");
+    return await(client.getText('#graphResultText', defer()));
 }
 
 // Slider and value manipulation
 
 exports.setQuantityValue = function(client,quantityName,newValue){
     // Summary: Changes the value in the box marked with quantityName to newValue
-    console.warn("Not yet implemented.");
+    await(client.setValue('#textGraph_id' + quantityName, newValue, defer()));
 }
 
 exports.moveSliderRight = function(client,quantityName,distance){
