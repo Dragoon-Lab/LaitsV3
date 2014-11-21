@@ -85,7 +85,7 @@ describe('Test dragoon testing framework',function() {
             dtest.deleteNode(client,"birth rate");
             var errored = false;
             try{
-                dtest.openEditorForNode
+                dtest.openEditorForNode(client,"birth rate");
             }catch(err){
                 errored = true;
             }
