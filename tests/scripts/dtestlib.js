@@ -211,8 +211,8 @@ exports.moveNode = function(client,nodeName,xDest,yDest){
 }
 
 exports.deleteNode = function(client,nodeName){
-    await(client.rightClick('#id' + findIdbyName(client, nodeName), 50, 50, defer());
-    await(client.click('#dijit_Menu_' + (findIdbyName(client, nodeName) - 1, defer()));
+    await(client.rightClick('#' + nodeName, 50, 50,defer()));
+    await(client.click('#dijit_Menu_0',defer()));
 }
 
 // Reading nodes
