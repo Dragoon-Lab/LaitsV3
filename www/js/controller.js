@@ -357,6 +357,11 @@ define([
 					domStyle.set(this.currentID, 'border', borderColor);	 // set border gray for studentModelNodes in TEST and EDITOR mode
 				}
 			}
+
+            if(this._previousExpression) //bug 2365
+                this._previousExpression=null; //clear the expression
+
+
 			// This cannot go in controller.js since _PM is only in
 			// con-student.	 You will need con-student to attach this
 			// to closeEditor (maybe using aspect.after?).	
