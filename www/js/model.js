@@ -102,6 +102,9 @@ define([
 						pos = { x: this.x, y: this.y, nodeWidth: this.nodeWidth, nodeHeight: this.nodeHeight};
 					}
 			},
+			setLessonLearned : function(_isLessonLearnedShown) {
+				this.isLessonLearnedShown = _isLessonLearnedShown;
+			},
 			updatePosition: function()
 			{
 				if((this.x + this.nodeWidth) < (document.documentElement.clientWidth - this.nodeWidth))
