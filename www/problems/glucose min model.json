@@ -50,21 +50,14 @@
                     "y": 75
                 },
                 "attemptCount": {
-                    "description": 1,
-                    "type": 1,
-                    "initial": 1,
-                    "units": 1,
-                    "equation": 1,
-                    "assistanceScore": 0,
+                    "description": 0,
+                    "type": 0,
+                    "initial": 0,
+                    "units": 0,
+                    "equation": 0,
                     "assistanceScore": 0
                 },
-                "status": {
-                    "description": "correct",
-                    "type": "correct",
-                    "initial": "correct",
-                    "units": "correct",
-                    "equation": "correct"
-                },
+                "status": {},
                 "name": "blood glucose",
                 "description": "Amount of glucose in the blood",
                 "type": "accumulator",
