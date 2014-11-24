@@ -34,7 +34,7 @@
                     "initial": 0,
                     "units": 0,
                     "equation": 0,
-                    "assitanceScore": 0
+                    "assistanceScore": 0
                 },
                 "status": {},
                 "name": "population",
@@ -65,7 +65,7 @@
                     "initial": 0,
                     "units": 0,
                     "equation": 0,
-                    "assitanceScore": 0
+                    "assistanceScore": 0
                 },
                 "status": {},
                 "name": "births",
@@ -95,7 +95,7 @@
                     "initial": 0,
                     "units": 0,
                     "equation": 0,
-                    "assitanceScore": 0
+                    "assistanceScore": 0
                 },
                 "status": {},
                 "name": "density",
@@ -116,7 +116,7 @@
                     "initial": 0,
                     "units": 0,
                     "equation": 0,
-                    "assitanceScore": 0
+                    "assistanceScore": 0
                 },
                 "status": {},
                 "name": "birth probability",
@@ -139,7 +139,7 @@
                     "initial": 0,
                     "units": 0,
                     "equation": 0,
-                    "assitanceScore": 0
+                    "assistanceScore": 0
                 },
                 "status": {},
                 "name": "area of petri dish",
@@ -163,7 +163,7 @@
                     "initial": 0,
                     "units": 0,
                     "equation": 0,
-                    "assitanceScore": 0
+                    "assistanceScore": 0
                 },
                 "status": {},
                 "genus": "extra",
@@ -188,7 +188,7 @@
                     "initial": 0,
                     "units": 0,
                     "equation": 0,
-                    "assitanceScore": 0
+                    "assistanceScore": 0
                 },
                 "status": {},
                 "name": "height of petri dish",
@@ -212,7 +212,7 @@
                     "initial": 0,
                     "units": 0,
                     "equation": 0,
-                    "assitanceScore": 0
+                    "assistanceScore": 0
                 },
                 "status": {},
                 "name": "pi",

@@ -1,1 +1,100 @@
-{ "task": {"taskName":"custom+bike+backlog","time":{"start":0,"end":10,"step":1,"integrationMethod":"Eulers Method","units":"seconds"},"properties":{},"image":{},"taskDescription":["A custom bike factory has a backlog of 23 orders for bikes.  It can manufacture and ship 5 bikes a day.  Assuming no new orders arrive, construct a model showing how the backlog changes daily.  The backlog must not become negative; that would not make sense.","","Hint:  In order to prevent the backlog from becoming negative, use the function min(…). ",""],"givenModelNodes":[{"ID":"id1","inputs":[{"ID":"id2","label":"-"}],"position":{"x":451,"y":119},"attemptCount":{"description":0,"type":0,"initial":0,"units":0,"equation":0,"assitanceScore":0},"status":{},"name":"Backlog","description":"The number of orders waiting to be fulfilled","type":"accumulator","initial":23,"equation":"-id2"},{"ID":"id2","inputs":[{"ID":"id1"},{"ID":"id3"}],"position":{"x":613,"y":121},"attemptCount":{"description":0,"type":0,"initial":0,"units":0,"equation":0,"assitanceScore":0},"status":{},"name":"bikes shipped","description":"bikes actually shipped each day","type":"function","equation":"min(id1,id3)"},{"ID":"id3","inputs":[],"position":{"x":748.3309326171875,"y":108.3309555053711},"attemptCount":{"description":0,"type":0,"initial":0,"units":0,"equation":0,"assitanceScore":0},"status":{},"name":"Max bikes shipped","description":"Maximum number of bikes that can be shipped in one day","type":"parameter","parentNode":false,"initial":5}],"studentModelNodes":[]} }
+{
+    "task": {
+        "taskName": "custom+bike+backlog",
+        "time": {
+            "start": 0,
+            "end": 10,
+            "step": 1,
+            "integrationMethod": "Eulers Method",
+            "units": "seconds"
+        },
+        "properties": {},
+        "image": {},
+        "taskDescription": [
+            "A custom bike factory has a backlog of 23 orders for bikes.  It can manufacture and ship 5 bikes a day.  Assuming no new orders arrive, construct a model showing how the backlog changes daily.  The backlog must not become negative; that would not make sense.",
+            "",
+            "Hint:  In order to prevent the backlog from becoming negative, use the function min(…). ",
+            ""
+        ],
+        "givenModelNodes": [
+            {
+                "ID": "id1",
+                "inputs": [
+                    {
+                        "ID": "id2",
+                        "label": "-"
+                    }
+                ],
+                "position": {
+                    "x": 451,
+                    "y": 119
+                },
+                "attemptCount": {
+                    "description": 0,
+                    "type": 0,
+                    "initial": 0,
+                    "units": 0,
+                    "equation": 0,
+                    "assistanceScore": 0
+                },
+                "status": {},
+                "name": "Backlog",
+                "description": "The number of orders waiting to be fulfilled",
+                "type": "accumulator",
+                "initial": 23,
+                "equation": "-id2"
+            },
+            {
+                "ID": "id2",
+                "inputs": [
+                    {
+                        "ID": "id1"
+                    },
+                    {
+                        "ID": "id3"
+                    }
+                ],
+                "position": {
+                    "x": 613,
+                    "y": 121
+                },
+                "attemptCount": {
+                    "description": 0,
+                    "type": 0,
+                    "initial": 0,
+                    "units": 0,
+                    "equation": 0,
+                    "assistanceScore": 0
+                },
+                "status": {},
+                "name": "bikes shipped",
+                "description": "bikes actually shipped each day",
+                "type": "function",
+                "equation": "min(id1,id3)"
+            },
+            {
+                "ID": "id3",
+                "inputs": [],
+                "position": {
+                    "x": 748.3309326171875,
+                    "y": 108.3309555053711
+                },
+                "attemptCount": {
+                    "description": 0,
+                    "type": 0,
+                    "initial": 0,
+                    "units": 0,
+                    "equation": 0,
+                    "assistanceScore": 0
+                },
+                "status": {},
+                "name": "Max bikes shipped",
+                "description": "Maximum number of bikes that can be shipped in one day",
+                "type": "parameter",
+                "parentNode": false,
+                "initial": 5
+            }
+        ],
+        "studentModelNodes": []
+    }
+}
