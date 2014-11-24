@@ -303,6 +303,8 @@ define([
 				w.set("status", '');  // remove colors
 			}
 
+			this.addAssistanceScore(this.currentID);
+
 			this.disableHandlers = true;
 			// Undo Name value (only in AUTHOR mode)
 			if(this.controlMap.name){
@@ -1125,6 +1127,10 @@ define([
 		// Stub to be overwritten by student or author mode-specific method.
 		colorNodeBorder: function(nodeID, bool){
 			console.log("colorNodeBorder stub called");
+		},
+
+		addAssistanceScore: function(/* String */ id){
+			//stub over written in con-author. if there is a student specific implementation then kindly move this to con-student
 		}
 
 	});
