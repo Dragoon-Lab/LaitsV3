@@ -11,6 +11,7 @@
 		public $incorrectChecks;
 		public $totalSolutionChecks;
 		public $errorRatio;
+		public $slides = array();
 		public $nodes = array();
 
 		function getNodeFromName($checkName){
