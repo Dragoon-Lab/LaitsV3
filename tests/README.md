@@ -29,9 +29,21 @@ In the original version of this work, test scripts called the webdriver directly
 Currently all of the exported library functions require at one argument: "client", the webdriver.io client.  Inside the library we use [synchronize.js](http://alexeypetrushin.github.io/synchronize/docs/index.html) to serialize the selenium calls, converting the asynchronous code into code that runs serially.
 
 #Running tests
-To run through all the tests, type "make run" in any command prompt that support the running of the make file. To run an individual tests, you must first run the selenium server. To run the selenium server, redirect the command prompt to this directory and type "java -jar selenium-server-standalone-2.42.2.jar". Then, open git and type "mocha + the location and name of the file + -t 10000". So if I want to run Test1.js and I am in this directory, I would type "mocha scripts/Test1.js -t 10000". The mocha command calls test runner mocha and the -t 10000, specifies in milliseconds the amount of seconds before mocha times out. Without specifying, mocha defaults to 2 seconds which may not be enough for server to respond. 
+To run through all the tests, type "make run" in any command prompt that support the running of the make file. To run an individual tests, you must first run the selenium server. To run the selenium server, redirect the command prompt to this directory and type:
+
+    java -jar selenium-server-standalone-2.42.2.jar > selenium.log &
+
+Then, run mocha: 
+
+    mocha <path-to-test(s)> -t 30000
+    
+The mocha command is the test runner the -t 30000, specifies in milliseconds the amount of seconds before mocha times out. Without specifying, mocha defaults to 2 seconds which may not be enough for server to respond.
 
 #Setup on OSX
 There are additional steps to setting this up on OSX.  For starters, OSX to come with a -pre version of node.  One of the modules used by the synchronize module only works on stable versions of node.  You'll need to install a node version manager such as [n](https://github.com/tj/n).  To install n, run:
   npm install -g n
 Once installed find the latest version of the even numbered release of node (e.g. 0.10.33) and install it.  Then run the makefile.
+
+#Test Script List
+* shakedown.js - Test script of unit tests for dtestlib; run this to ensure everything is working before running other test files.  (Also provides an example of how to write a test script.)
+* rabbits-student.js - Solves the rabbits problem in student mode
