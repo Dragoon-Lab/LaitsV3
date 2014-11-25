@@ -572,6 +572,10 @@ define([
 			var nameWidget = registry.byId(this.controlMap.name);
 			var descriptionWidget = registry.byId(this.controlMap.description);
 			var unitsWidget = registry.byId(this.controlMap.units);
+			var kind = registry.byId(this.controlMap.kind);
+			
+			var value = this._model.given.getGenus(this.currentID);
+			kind.set('value',value);
 
 			/*
 			*	populate the nodes in the Name, Description, Units, and Inputs tab
