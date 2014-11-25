@@ -285,7 +285,20 @@ exports.getNodeDescription = function(client){
     return await(client.getText('span[id="descriptionControlStudent"]',defer()));
 }
 
-exports.setNodeDescription = function(client){
+exports.getNodeDescriptionColor = function(client){
+    // Summary: Returns a string representing the color of the field: "red","yellow","green","blue"
+    //          or "none" if the field has no color.
+    console.warn("Not yet implemented.");
+    return null
+}
+
+exports.isNodeDescriptionDisabled = function(client){
+    // Summary: Returns a boolean; true if the field is disabled, false if it is enabled.
+    console.warn("Not yet implemented.");
+    return null;
+}
+
+exports.setNodeDescription = function(client,description){
     console.warn("Not yet implemented.");
 }
 
@@ -296,7 +309,20 @@ exports.getNodeType = function(client){
     return await(client.getText('table[id="typeId"]',defer()));
 }
 
-exports.setNodeType = function(client){
+exports.getNodeTypeColor = function(client){
+    // Summary: Returns a string representing the color of the field: "red","yellow","green","blue"
+    //          or "none" if the field has no color.
+    console.warn("Not yet implemented.");
+    return null
+}
+
+exports.isNodeTypeDisabled = function(client){
+    // Summary: Returns a boolean; true if the field is disabled, false if it is enabled.
+    console.warn("Not yet implemented.");
+    return null;
+}
+
+exports.setNodeType = function(client,type){
     console.warn("Not yet implemented.");
 }
 
@@ -307,7 +333,20 @@ exports.getNodeInitialValue = function(client){
     return await(client.getText('input[id="initialValue"]',defer()));
 }
 
-exports.setNodeInitialValue = function(client){
+exports.getNodeInitialValueColor = function(client){
+    // Summary: Returns a string representing the color of the field: "red","yellow","green","blue"
+    //          or "none" if the field has no color.
+    console.warn("Not yet implemented.");
+    return null;
+}
+
+exports.isNodeInitialValueDisabled = function(client){
+    // Summary: Returns a boolean; true if the field is disabled, false if it is enabled.
+    console.warn("Not yet implemented.");
+    return null;
+}
+
+exports.setNodeInitialValue = function(client,initialValue){
     console.warn("Not yet implemented.");
 }
 
@@ -318,7 +357,20 @@ exports.getNodeUnits = function(client){
     return await(client.getText('table[id="selectUnits"]',defer()));
 }
 
-exports.setNodeUnits = function(client){
+exports.getNodeUnitsColor = function(client){
+    // Summary: Returns a string representing the color of the field: "red","yellow","green","blue"
+    //          or "none" if the field has no color.
+    console.warn("Not yet implemented.");
+    return null;
+}
+
+exports.isNodeUnitsDisabled = function(client){
+    // Summary: Returns a boolean; true if the field is disabled, false if it is enabled.
+    console.warn("Not yet implemented.");
+    return null;
+}
+
+exports.setNodeUnits = function(client,units){
     console.warn("Not yet implemented.");
 }
 
@@ -330,7 +382,20 @@ exports.getNodeExpression = function(client){
     console.warn("Not yet implemented.");
 }
 
-exports.setNodeExpression = function(client){
+exports.getNodeExpressionColor = function(client){
+    // Summary: Returns a string representing the color of the field: "red","yellow","green","blue"
+    //          or "none" if the field has no color.
+    console.warn("Not yet implemented.");
+    return null
+}
+
+exports.isNodeExpressionDisabled = function(client){
+    // Summary: Returns a boolean; true if the field is disabled, false if it is enabled.
+    console.warn("Not yet implemented.");
+    return null;
+}
+
+exports.setNodeExpression = function(client,expression){
     console.warn("Not yet implemented.");
 }
 
