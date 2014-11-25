@@ -519,7 +519,7 @@ define([
 						initial: 0,
 						units: 0,
 						equation: 0,
-						assitanceScore: 0
+						assistanceScore: 0
 					},
 					status: {}
 				}, options || {});
@@ -846,6 +846,7 @@ define([
 				//		receives, based on suggestions by Robert Hausmann;
 				//
 				// Note: This is used by the PM when the student first gets the description correct
+				// and also in con-author when we need to show error values to the students.
 				var givenID = this.getDescriptionID(id);
 				var node = obj.given.getNode(givenID);
 				node.attemptCount.assistanceScore = score;

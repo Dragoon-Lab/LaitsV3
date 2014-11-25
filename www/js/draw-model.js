@@ -47,8 +47,21 @@ define([
 		_givenModel: null,
 		_logging:null,
 		// Hook for updates
-		updater: function(){},
+		updater: function(nodeID,setOfConnections){
+            //time to update borders
+            //check needed for student mode ?
+            var nodes=this._givenModel.getNodes();
+            array.forEach(nodes,function(node){
+               this.colorNodeBorder(node.ID,true); 
+            },this);
+            //time to delete all connectiion having node as source node
+            array.forEach(this._instance.getConnections(), function(connection){
+                if(setOfConnections[connection.targetId]){
+                	this._instance.detach(connection); //remove that connection
+            	}
+            }, this);
 
+        },
 		constructor: function(givenModel){
 
 			// setup some defaults for jsPlumb.
@@ -165,7 +178,29 @@ define([
 			}
 			return {border: borderColor, boxShadow: boxshadow, backgroundColor: backgroundcolor};
 		},
+        /* Delete Nodes*/
+        deleteNode:function(/*node id*/ nodeID){
+			domConstruct.destroy(nodeID);
+					var setConnections = []; //setOfConnections to delete
+ 					//remove all connnections including incoming and outgoing and store the targetIDs
+					array.forEach(this._instance.getConnections(), function(connection){
+						if(connection.targetId == nodeID||connection.sourceId == nodeID){
+							if(connection.sourceId == nodeID){
+						        	setConnections[connection.targetId]=true;//connections to delete for matching sourceId
+							}
+							this._instance.detach(connection);
+						}
+					}, this);
 
+					this._logging.log('ui-action', {
+						type: "node-delete",
+						node: this._givenModel.getName(nodeID),
+						nodeID: nodeID
+					});
+					//delete from  the model
+					this._givenModel.deleteNode(nodeID);
+					this.updater(nodeID,setConnections);
+        },
 		/* addNode: Add a node to the jsPlumb model, returning the DOM element.	 */
 		addNode: function(/*object*/ node){
 
@@ -195,26 +230,12 @@ define([
 			var pMenu = new Menu({
 				targetNodeIds: [node.ID]
 			});
-
+            //test
 			pMenu.addChild(new MenuItem({
 				label: "Delete Node",
-				onClick: lang.hitch(this, function (){
-			domConstruct.destroy(node.ID);
-					//remove all connnections including incoming and outgoing
-					array.forEach(this._instance.getConnections(), function(connection){
-						if(connection.targetId == node.ID||connection.sourceId == node.ID)
-							this._instance.detach(connection);
-					}, this);
-
-					this._logging.log('ui-action', {
-						type: "node-delete",
-						node: this._givenModel.getName(node.ID),
-						nodeID: node.ID
-					});
-					//delete from  the model
-					this._givenModel.deleteNode(node.ID);
-					this.updater();
-				})
+				onClick: lang.hitch(this,function(){
+                        this.deleteNode(node.ID)
+                    })
 			}));
 			/*
 			 Fire off functions associated with draggable events.

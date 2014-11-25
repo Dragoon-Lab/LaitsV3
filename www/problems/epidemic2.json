@@ -41,7 +41,7 @@
                 "initial": 0,
                 "units": 0,
                 "equation": 0,
-                "assitanceScore": 0
+                "assistanceScore": 0
             },
             "status": {},
             "name": "Source",
@@ -76,7 +76,7 @@
                 "initial": 0,
                 "units": 0,
                 "equation": 0,
-                "assitanceScore": 0
+                "assistanceScore": 0
             },
             "status": {
                 "equation": {
@@ -106,7 +106,7 @@
                 "initial": 0,
                 "units": 0,
                 "equation": 0,
-                "assitanceScore": 0
+                "assistanceScore": 0
             },
             "status": {},
             "name": "Destination",
@@ -137,7 +137,7 @@
                 "initial": 0,
                 "units": 0,
                 "equation": 0,
-                "assitanceScore": 0
+                "assistanceScore": 0
             },
             "status": {},
             "name": "Probability of source",
@@ -167,7 +167,7 @@
                 "initial": 0,
                 "units": 0,
                 "equation": 0,
-                "assitanceScore": 0
+                "assistanceScore": 0
             },
             "status": {},
             "name": "Probability of destination",
@@ -197,7 +197,7 @@
                 "initial": 0,
                 "units": 0,
                 "equation": 0,
-                "assitanceScore": 0
+                "assistanceScore": 0
             },
             "status": {},
             "name": "Total",
@@ -220,7 +220,7 @@
                 "initial": 0,
                 "units": 0,
                 "equation": 0,
-                "assitanceScore": 0
+                "assistanceScore": 0
             },
             "status": {},
             "name": "Meetings",

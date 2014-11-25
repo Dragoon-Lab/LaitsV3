@@ -64,7 +64,7 @@
                     "initial": 1,
                     "units": 1,
                     "equation": 1,
-                    "assitanceScore": 0,
+                    "assistanceScore": 0,
                     "assistanceScore": 0
                 },
                 "status": {
@@ -103,7 +103,7 @@
                     "initial": 0,
                     "units": 1,
                     "equation": 1,
-                    "assitanceScore": 0,
+                    "assistanceScore": 0,
                     "assistanceScore": 0
                 },
                 "status": {
@@ -140,7 +140,7 @@
                     "initial": 0,
                     "units": 1,
                     "equation": 1,
-                    "assitanceScore": 0,
+                    "assistanceScore": 0,
                     "assistanceScore": 0
                 },
                 "status": {
@@ -168,7 +168,7 @@
                     "initial": 2,
                     "units": 0,
                     "equation": 0,
-                    "assitanceScore": 0,
+                    "assistanceScore": 0,
                     "assistanceScore": 1
                 },
                 "status": {
@@ -204,7 +204,7 @@
                     "initial": 0,
                     "units": 1,
                     "equation": 1,
-                    "assitanceScore": 0,
+                    "assistanceScore": 0,
                     "assistanceScore": 0
                 },
                 "status": {
@@ -232,7 +232,7 @@
                     "initial": 1,
                     "units": 1,
                     "equation": 0,
-                    "assitanceScore": 0,
+                    "assistanceScore": 0,
                     "assistanceScore": 0
                 },
                 "status": {
@@ -270,7 +270,7 @@
                     "initial": 1,
                     "units": 1,
                     "equation": 1,
-                    "assitanceScore": 0,
+                    "assistanceScore": 0,
                     "assistanceScore": 0
                 },
                 "status": {
@@ -309,7 +309,7 @@
                     "initial": 0,
                     "units": 1,
                     "equation": 1,
-                    "assitanceScore": 0,
+                    "assistanceScore": 0,
                     "assistanceScore": 0
                 },
                 "status": {
@@ -346,7 +346,7 @@
                     "initial": 0,
                     "units": 0,
                     "equation": 1,
-                    "assitanceScore": 0,
+                    "assistanceScore": 0,
                     "assistanceScore": 0
                 },
                 "status": {
@@ -383,7 +383,7 @@
                     "initial": 0,
                     "units": 1,
                     "equation": 0,
-                    "assitanceScore": 0,
+                    "assistanceScore": 0,
                     "assistanceScore": 0
                 },
                 "status": {
@@ -419,7 +419,7 @@
                     "initial": 0,
                     "units": 0,
                     "equation": 0,
-                    "assitanceScore": 0
+                    "assistanceScore": 0
                 },
                 "status": {
                     "equation": {
@@ -446,7 +446,7 @@
                     "initial": 0,
                     "units": 0,
                     "equation": 0,
-                    "assitanceScore": 0
+                    "assistanceScore": 0
                 },
                 "status": {},
                 "name": "blood insulin set point",
@@ -478,7 +478,7 @@
                     "initial": 0,
                     "units": 1,
                     "equation": 1,
-                    "assitanceScore": 0,
+                    "assistanceScore": 0,
                     "assistanceScore": 0
                 },
                 "status": {
@@ -506,7 +506,7 @@
                     "initial": 1,
                     "units": 0,
                     "equation": 0,
-                    "assitanceScore": 0,
+                    "assistanceScore": 0,
                     "assistanceScore": 0
                 },
                 "status": {
@@ -542,7 +542,7 @@
                     "initial": 0,
                     "units": 0,
                     "equation": 0,
-                    "assitanceScore": 0
+                    "assistanceScore": 0
                 },
                 "status": {},
                 "name": "insulin removed",
@@ -564,7 +564,7 @@
                     "initial": 0,
                     "units": 0,
                     "equation": 0,
-                    "assitanceScore": 0
+                    "assistanceScore": 0
                 },
                 "status": {},
                 "name": "convergence rate for insulin",
@@ -593,7 +593,7 @@
                     "initial": 0,
                     "units": 1,
                     "equation": 2,
-                    "assitanceScore": 0,
+                    "assistanceScore": 0,
                     "assistanceScore": 2
                 },
                 "status": {
@@ -621,7 +621,7 @@
                     "initial": 1,
                     "units": 0,
                     "equation": 0,
-                    "assitanceScore": 0,
+                    "assistanceScore": 0,
                     "assistanceScore": 0
                 },
                 "status": {
@@ -648,7 +648,7 @@
                     "initial": 1,
                     "units": 0,
                     "equation": 0,
-                    "assitanceScore": 0,
+                    "assistanceScore": 0,
                     "assistanceScore": 0
                 },
                 "status": {

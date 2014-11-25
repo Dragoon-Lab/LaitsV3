@@ -1,39 +1,32 @@
 {
     "task": {
-        "taskName": "proportional+to+destination",
+        "taskName": "exam q1",
         "time": {
             "start": 0,
-            "end": 10,
-            "step": 0.5,
+            "end": 100,
+            "step": 1,
             "integrationMethod": "Eulers Method",
-            "units": "seconds"
+            "units": "hours"
         },
         "properties": {},
         "image": {},
         "taskDescription": [
-            "* Process: Generic state change",
-            "* Source: Quantity of stuff in Source state",
-            "* Destination: Quantity of stuff in Destination state",
-            "* Changing: Proportional to the Destination",
-            "",
-            "Some problems do not need the Source node.",
-            "",
-            "Popular names for this type of process:",
-            "* exponential transfer",
-            "* exponential growth"
+            "Suppose a type of amoeba only reproduces when two amoeba collide with each other, and scientists are studying their birth rate by scattering an initial population of 100 amoeba around a petri dish of 50 cm^2 in area. A petri dish is a shallow, circular glass dish, like a saucer with a 0.5 cm wall around its edge.  This petri dish is 2.8 cm in radius.  The number of amoeba born during any given hour is 0.75 times the amoeba density, where amoeba density is just the number of amoeba in the population divided by the area of the petri dish. Construct a model showing how the amoeba population changes.",
+            ""
         ],
+        "lessonsLearned": "",
         "givenModelNodes": [
             {
                 "ID": "id1",
                 "inputs": [
                     {
                         "ID": "id2",
-                        "label": "-"
+                        "label": ""
                     }
                 ],
                 "position": {
-                    "x": 403,
-                    "y": 236
+                    "x": 751,
+                    "y": 104
                 },
                 "attemptCount": {
                     "description": 0,
@@ -44,11 +37,11 @@
                     "assistanceScore": 0
                 },
                 "status": {},
-                "name": "Source",
-                "description": "Quantity of stuff in the Source state",
+                "name": "population",
+                "description": "The size of the amoeba population each hour",
                 "type": "accumulator",
                 "initial": 100,
-                "equation": "-id2"
+                "equation": "id2"
             },
             {
                 "ID": "id2",
@@ -63,8 +56,8 @@
                     }
                 ],
                 "position": {
-                    "x": 531,
-                    "y": 209
+                    "x": 619,
+                    "y": 160
                 },
                 "attemptCount": {
                     "description": 0,
@@ -75,8 +68,8 @@
                     "assistanceScore": 0
                 },
                 "status": {},
-                "name": "Changing",
-                "description": "Quantity of stuff changing state per time unit",
+                "name": "births",
+                "description": "Number of amoeba births each hour",
                 "type": "function",
                 "equation": "id3*id4"
             },
@@ -84,13 +77,17 @@
                 "ID": "id3",
                 "inputs": [
                     {
-                        "ID": "id2",
+                        "ID": "id1",
                         "label": ""
+                    },
+                    {
+                        "ID": "id5",
+                        "label": "/"
                     }
                 ],
                 "position": {
-                    "x": 684,
-                    "y": 204
+                    "x": 476,
+                    "y": 134
                 },
                 "attemptCount": {
                     "description": 0,
@@ -101,18 +98,17 @@
                     "assistanceScore": 0
                 },
                 "status": {},
-                "name": "Destination",
-                "description": "Quantity of stuff in the Destination state",
-                "type": "accumulator",
-                "initial": 1,
-                "equation": "id2"
+                "name": "density",
+                "description": "Number of amoeba per square centimeter",
+                "type": "function",
+                "equation": "id1/id5"
             },
             {
                 "ID": "id4",
                 "inputs": [],
                 "position": {
-                    "x": 638.3309326171875,
-                    "y": 97.3309555053711
+                    "x": 616.3309326171875,
+                    "y": 314.3309631347656
                 },
                 "attemptCount": {
                     "description": 0,
@@ -123,11 +119,36 @@
                     "assistanceScore": 0
                 },
                 "status": {},
-                "name": "Proportion changing",
-                "description": "Proportion of Destination that change state per time unit",
+                "name": "birth probability",
+                "description": "probability of a birth given density",
+                "equation": "",
                 "type": "parameter",
                 "parentNode": false,
-                "initial": 0.2
+                "initial": 0.75
+            },
+            {
+                "ID": "id5",
+                "inputs": [],
+                "position": {
+                    "x": 476.3309631347656,
+                    "y": 291.3309631347656
+                },
+                "attemptCount": {
+                    "description": 0,
+                    "type": 0,
+                    "initial": 0,
+                    "units": 0,
+                    "equation": 0,
+                    "assistanceScore": 0
+                },
+                "status": {},
+                "name": "area of petri dish",
+                "description": "The area of the petri dish",
+                "equation": "",
+                "type": "parameter",
+                "parentNode": false,
+                "initial": 50,
+                "units": "cm^2"
             }
         ],
         "studentModelNodes": []

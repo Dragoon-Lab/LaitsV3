@@ -1,58 +1,34 @@
 {
     "task": {
-        "taskName": "super gun",
+        "taskName": "exam q2",
         "time": {
             "start": 0,
-            "end": 10000,
-            "step": 50,
+            "end": 100,
+            "step": 1,
             "integrationMethod": "Eulers Method",
             "units": "seconds"
         },
         "properties": {},
         "image": {},
         "taskDescription": [
-            "Suppose a 10 kg shell is shot from a super gun straight up with an initial velocity of 6 miles per second.  Measured from the center of the earth, its initial position is 3960 miles, which is the radius of the earth.  The shell’s distance from the center of the earth increases according to the shell’s velocity.   But the velocity itself changes.  It is decreased by the acceleration dueto earth’s gravity. And the acceleration decreases, too!  In compliance with Newton’s law of gravitation, the acceleration is K/d^2 where d is the distance of the shell from the center of the earth and K is 95501.  Assuming that air friction is negligible and the mass of the earth is 6e24 kg, construct a model showing the distance of the shell from earth over 10000 seconds.  Using the sliders, show that with initial velocity of 6, the shell falls back to earth, but with an initial velocity of 7, it escapes."
+            "Suppose that 10 mg of chemical A and 50 mg of chemical B are dissolved in 150 mL of pure water.  Two reactions start to occur.  One reaction converts a mg of chemical A into a mg of chemical B, and the other converts a mg of chemical B into a mg of chemical A.  The speed of the reaction, in terms of number of mg converted per second, is determined by a reaction rate.  The reaction rate indicates what proportion of the source chemical is converted per second.  In particular, the reaction rate of the A to B reaction is 1% of chemical A, and the reaction rate of the B to A reaction is 3% of chemical B.   Construct a model of how the amounts of chemical A and B change over time."
         ],
+        "lessonsLearned": "",
         "givenModelNodes": [
-            {
-                "ID": "id1",
+            {"ID": "id1",
                 "inputs": [
                     {
                         "ID": "id2",
                         "label": ""
-                    }
-                ],
-                "position": {
-                    "x": 487,
-                    "y": 133
-                },
-                "attemptCount": {
-                    "description": 0,
-                    "type": 0,
-                    "initial": 0,
-                    "units": 0,
-                    "equation": 0,
-                    "assistanceScore": 0
-                },
-                "status": {},
-                "name": "Distance",
-                "description": "Distance of the shell from the center of the earth",
-                "type": "accumulator",
-                "initial": 3960,
-                "units": "miles",
-                "equation": "id2"
-            },
-            {
-                "ID": "id2",
-                "inputs": [
+                    },
                     {
                         "ID": "id3",
                         "label": "-"
                     }
                 ],
                 "position": {
-                    "x": 644,
-                    "y": 232
+                    "x": 445,
+                    "y": 180
                 },
                 "attemptCount": {
                     "description": 0,
@@ -63,26 +39,60 @@
                     "assistanceScore": 0
                 },
                 "status": {},
-                "name": "Velocity",
-                "description": "Velocity of the shell each second",
+                "name": "Chemical A",
+                "description": "Amount of chemical A in the water",
                 "type": "accumulator",
-                "initial": 6,
-                "units": "miles/sec",
-                "equation": "-id3"
+                "initial": 10,
+                "equation": "id2-id3",
+                "units": "mg",
+                "genus": ""
+            },
+            {
+                "ID": "id2",
+                "inputs": [
+                    {
+                        "ID": "id5",
+                        "label": ""
+                    },
+                    {
+                        "ID": "id6",
+                        "label": ""
+                    }
+                ],
+                "position": {
+                    "x": 547,
+                    "y": 82
+                },
+                "attemptCount": {
+                    "description": 0,
+                    "type": 0,
+                    "initial": 0,
+                    "units": 0,
+                    "equation": 0,
+                    "assistanceScore": 0
+                },
+                "status": {},
+                "name": "B to A reaction",
+                "description": "Amount of B converted to A per second",
+                "type": "function",
+                "equation": "id5*id6",
+                "units": "mg"
             },
             {
                 "ID": "id3",
                 "inputs": [
                     {
-                        "ID": "id4"
+                        "ID": "id1",
+                        "label": ""
                     },
                     {
-                        "ID": "id1"
+                        "ID": "id7",
+                        "label": ""
                     }
                 ],
                 "position": {
-                    "x": 704,
-                    "y": 103
+                    "x": 556,
+                    "y": 272
                 },
                 "attemptCount": {
                     "description": 0,
@@ -93,41 +103,27 @@
                     "assistanceScore": 0
                 },
                 "status": {},
-                "name": "Acceleration downward",
-                "description": "Acceleration downward of the shell",
+                "name": "A to B reaction",
+                "description": "Amount of A converted to B per second",
                 "type": "function",
-                "units": "miles/sec/sed",
-                "equation": "id4/(id1^2)"
-            },
-            {
-                "ID": "id4",
-                "inputs": [],
-                "position": {
-                    "x": 851.3309326171875,
-                    "y": 154.33096313476562
-                },
-                "attemptCount": {
-                    "description": 0,
-                    "type": 0,
-                    "initial": 0,
-                    "units": 0,
-                    "equation": 0,
-                    "assistanceScore": 0
-                },
-                "status": {},
-                "name": "K",
-                "description": "A constant for calculating acceleration",
-                "equation": "",
-                "type": "parameter",
-                "parentNode": false,
-                "initial": 95501
+                "equation": "id1*id7",
+                "units": "mg"
             },
             {
                 "ID": "id5",
-                "inputs": [],
+                "inputs": [
+                    {
+                        "ID": "id3",
+                        "label": ""
+                    },
+                    {
+                        "ID": "id2",
+                        "label": "-"
+                    }
+                ],
                 "position": {
-                    "x": 474.3309631347656,
-                    "y": 278.3309326171875
+                    "x": 672,
+                    "y": 181
                 },
                 "attemptCount": {
                     "description": 0,
@@ -138,20 +134,41 @@
                     "assistanceScore": 0
                 },
                 "status": {},
-                "name": "Mass of shell",
-                "description": "the mass of the shell",
-                "equation": "",
-                "type": "parameter",
-                "parentNode": false,
-                "initial": 5,
-                "units": "kg",
-                "genus": "extra"
+                "name": "Chemical B",
+                "description": "Amount of chemical B in the water",
+                "type": "accumulator",
+                "initial": 50,
+                "equation": "id3-id2",
+                "units": "mg"
             },
             {
                 "ID": "id6",
                 "inputs": [],
                 "position": {
-                    "x": 754.3309326171875,
+                    "x": 737.3309326171875,
+                    "y": 61.33095169067383
+                },
+                "attemptCount": {
+                    "description": 0,
+                    "type": 0,
+                    "initial": 0,
+                    "units": 0,
+                    "equation": 0,
+                    "assistanceScore": 0
+                },
+                "status": {},
+                "name": "B to A reaction rate",
+                "description": "Number of B to A reactions per unit of B",
+                "equation": "",
+                "type": "parameter",
+                "parentNode": false,
+                "initial": 0.03
+            },
+            {
+                "ID": "id7",
+                "inputs": [],
+                "position": {
+                    "x": 430.3309631347656,
                     "y": 294.3309631347656
                 },
                 "attemptCount": {
@@ -163,13 +180,12 @@
                     "assistanceScore": 0
                 },
                 "status": {},
-                "name": "Mass of the earth",
-                "description": "the mass of the earth",
+                "name": "A to B reaction rate",
+                "description": "Number of A to B reactions per unit of A",
                 "equation": "",
                 "type": "parameter",
                 "parentNode": false,
-                "initial": 6e+24,
-                "units": "kg"
+                "initial": 0.01
             }
         ],
         "studentModelNodes": []
