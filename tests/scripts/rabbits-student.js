@@ -92,14 +92,14 @@ describe('Solving rabbits in student mode',function() {
         }));
 
         after(async(function (){
-            nodeEditorDone(client);
+            dtest.nodeEditorDone(client);
         }));
     });
     
     describe('finish the net growth node',function() {
         it("should open the net groth node editor",async(function () {
             dtest.openEditorForNode(client,"net growth");
-        }
+        }));
 
         it("should set the net growth node parameters correctly",async(function () {
             setAndCheckColor(client,dtest.setNodeType,dtest.getNodeTypeColor,
@@ -113,14 +113,14 @@ describe('Solving rabbits in student mode',function() {
         }));
 
         after(async(function (){
-            nodeEditorDone(client);
+            dtest.nodeEditorDone(client);
         }));
     });
     
     describe('create the growth rate node',function() {
         it("should open the net groth node editor",async(function () {
             dtest.openEditorForNode(client,"growth rate");
-        }
+        }));
 
         it("should set the growth rate node parameters correctly",async(function () {
             setAndCheckColor(client,dtest.setNodeType,dtest.getNodeTypeColor,
@@ -132,7 +132,7 @@ describe('Solving rabbits in student mode',function() {
         }));
 
         after(async(function (){
-            nodeEditorDone(client);
+            dtest.nodeEditorDone(client);
         }));
     });
 
@@ -148,7 +148,7 @@ describe('Solving rabbits in student mode',function() {
         before(async(function () {
             dtest.menuOpenGraph(client);
         }));
-        
+
         it("should say the model is correct",async(function () {
             var message = dtest.getGraphResultText(client);
             assert(message===_modelCorrectMessage,
