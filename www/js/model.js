@@ -59,7 +59,7 @@ define([
 				this.checkedNodes = new Array();
 				this.model = {task: {
 					taskName: name,
-					time: {start: 0, end: 10, step: .5, integrationMethod: "Eulers Method"},
+					time: {start: 0, end: 10, step: 1.0, integrationMethod: "Eulers Method"},
 					properties: {},
 					image: {},
 					taskDescription: "",
