@@ -575,6 +575,8 @@ define([
 			var kind = registry.byId(this.controlMap.kind);
 			
 			var value = this._model.given.getGenus(this.currentID);
+			if(!value)
+				value='';
 			kind.set('value',value);
 
 			/*
@@ -628,7 +630,7 @@ define([
 				this.applyDirectives(this.authorPM.process(false, "name", name, equation.isVariable(name)));
 			}
 			//color kind widget
-			if(this._model.given.getGenus(this.currentID)){
+			if(this._model.given.getGenus(this.currentID) === '' || this._model.given.getGenus(this.currentID)){
 				this.applyDirectives(this.authorPM.process(this.currentID, "kind", this._model.given.getGenus(this.currentID)));
 			}
 			//color description widget
