@@ -7,6 +7,7 @@
 		public $wastedTime; // for a long time when nothing was done, no logs for 420 seconds.
 		public $problemComplete;
 		public $problemReOpen;
+		public $openTimes;
 		public $sessionRunning;
 		public $incorrectChecks;
 		public $totalSolutionChecks;
@@ -70,6 +71,19 @@
 			}
 
 			return $resultNode;
+		}
+
+		function getIndex($name){
+			$allProperties = $this->properties;
+			$i = 0;
+			foreach($allProperties as $property){
+				if($property != null && $name == $property->name){
+					return $i;
+				}
+				$i += 1;
+			}
+
+			return -1;
 		}
 	}
 

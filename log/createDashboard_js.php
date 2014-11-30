@@ -140,10 +140,18 @@
 						//a new node created
 						$name = $newMessage['name'];
 						if($name === 'create-node'){
+							$index = -1;
+							if(isset($currentNode) && $currentNode->id != null){
+								$index = $upObject->getIndex($currentNode->id);
+							}
+
 							if(!isset($currentNode)){
 								$currentNode = new Node();
-							} else if($currentNode != null && count($currentNode->properties) > 0){
+							} else if($currentNode != null && count($currentNode->properties) > 0 && $index <0){
 								array_push($upObject->nodes, $currentNode);
+								$currentNode = new Node();
+							} else if($currentNode != null && count($currentNode->properties) > 0 && $index >=0){
+								$upObject->nodes[$index] = $currentNode;
 								$currentNode = new Node();
 							}
 							$currentNode->openTimes = 1;
@@ -156,7 +164,7 @@
 						}
 						$propertyStartTime = $newMessage['time'];
 					} else if($type === "close-dialog-box"){
-						if($currentNode != null){
+						if($currentNode != null && $currentNode->name != null){
 							if(isset($currentProerty)){
 								array_push($currentNode->properties, $currentProperty);
 							}
@@ -169,7 +177,24 @@
 								if($index < 0){
 									array_push($upObject->nodes, $currentNode);
 								} else {
-									$upObject->nodes[$index] = $currentNode;
+									//handling conflicts to just make sure that the replication of nodes is minimized. 
+									$originalNode = $upObject->nodes[$index];
+									if(count($originalNode->properties) == 0){
+										$upObject->nodes[$index] = $currentNode;
+									} else {
+										$num = count($currentNode->properties);
+										for($i=0; $i<$num; $i++){
+											if($currentNode->properties[$i] != null){
+												$pIndex = $originalNode->getIndex($currentNode->properties[$i]->name);
+												if($pIndex >=0){
+													$originalNode->properties[$pIndex] = $currentNode->properties[$i];
+												} else {
+													array_push($originalNode->properties, $currentNode->properties[$i]);
+												}
+											}
+										}
+										$upObject->nodes[$index] = $originalNode;
+									}
 								}
 								$currentNode = null;
 							}
@@ -212,6 +237,7 @@
 							}
 							$currentNode->id = $newMessage['nodeID'];
 						}
+						$propertyStartTime = $newMessage['time'];
 					} else if($type === "window"){
 						$upObject->sessionRunning = false;
 						//$resetVariable = true;
@@ -227,7 +253,7 @@
 						$autoCreated = false;
 						$newNode;
 						$pushNodeBack = false; // in case of some discrepency in log order the solution check message is sent after the node has been closed.
-						if($currentProperty == null){
+						if($currentProperty == null || !isset($currentProperty)){
 							$currentProperty = new Property();
 						}
 
@@ -319,9 +345,15 @@
 						}
 						if($autoCreated || $pushNodeBack){
 							array_push($newNode->properties, $currentProperty);
-							array_push($upObject->nodes, $newNode);
+							$index = $upObject->getIndex($newNode->id);
+							if($index < 0)
+								array_push($upObject->nodes, $newNode);
+							else 
+								$upObject->nodes[$index] = $newNode;
 							$newNode = null;
 							$currentProperty = null;
+							$pushNodeBack = false;
+							$autoCreated = false;
 						}
 					}
 				} else if($method === "window-focus"){
