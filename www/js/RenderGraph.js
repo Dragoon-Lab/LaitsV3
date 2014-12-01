@@ -60,7 +60,9 @@ define([
 				this.initialize();
 			}
 		},
-
+		setStateGraph : function(state) {
+			this.setState(state);
+		},
 		/*
 		 * @brief: initialize Dialog/charts and sliders
 		 *

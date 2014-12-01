@@ -24,7 +24,7 @@ define([
 	"dojo/_base/json",
 	"dojo/_base/lang",
 	"dojo/_base/array",
-	"dojo/number",
+	"dojo/number"
 ], function(declare, xhr, json, lang, array, number){
 	return declare(null,{
 		problems: null,
@@ -38,84 +38,67 @@ define([
 		detailedNodeAnalysis: [],
 		emptyArray: [],
 		modules:{},
+		query:{}, // added if we want to send multiple queries. moving the query from main function to the global init. this init can be called again for each new function and then new table can be created. 
 		//sessionDetails:[],
 		decideModules: function(/* string */ type){
-			switch(type){
-				case "leader":
-					this.modules = {
-						names : false, // show user name with each row
-						display : "errors", // what values to show in the table, all will show empty boxes by default the all the options at the bottom of the page and will 
-						options : false, //allowed to change the values from the bottom of the page
-						heading : "Leader Board", // heading at the top of the page
-						subHeading : "Each cell shows Red checks / Total checks. Your row is light blue. Refresh page to update.", // sub heading, van be used for instructions on the page. can be an HTML string as well. 
-						colors : true, // shows the key at the right of the page and the session running value under the td of the 
-						sessionLink : false, // to add the user session opening link to each td or not.
-						completeAnalysis : false // to add the detail node analysis to the tableString 
-	 				};
-	 				break;
-	 			case "complete":
-	 				this.modules = {
-	 					names: true,
-	 					display: "empty",
-	 					options: true,
-	 					heading: "Dashboard",
-	 					subHeading: "Click on the box to show the complete session details of the user.",
-	 					colors: true,
-	 					sessionLink: false,
-	 					completeAnalysis : true,
-	 				};
-	 				break;
-	 			case "dash":
-	 			default:
-	 				this.modules = {
-	 					names: true,
-	 					display: "empty",
-	 					options: true,
-	 					heading: "Dashboard",
-	 					subHeading: "Click on the box to check the complete session of the student.",
-	 					colors: true,
-	 					sessionLink: true,
-	 					completeAnalysis : false,
-	 				};
-	 				break;
+			this.getModules().then(function(results){
+				array.forEach(results, function(module){
+					if(module.tName == type)
+						this.modules = module;
+				});
+			});
+		},
+
+		getModules: function(){
+			return xhr.get(this.path + "modules.json", {
+				handleAs: json
+			}). then function(resutls){
+				return modules;
+			}, function(err){
+				console.error("modules could not be loaded");
 			}
 		},
 
 		constructor: function(/*json*/ params, /*string*/ path){
 			//this.runtime = params['runtime']||true;
 			this.path = path||"";
-			this.section = params['s'];
-			this.decideModules(params['t']);
+			var t = params['t']||"default";
+			this.decideModules(t);
+			this.section = params['s']||this.modules.qObject.s;
 			this.currentUser = params['us'];
 			this.mode = params['m'];
+			this.query = params;
 		},
 
 		init: function(){
-			this.users = this.getAllUsers();
-			this.problems = this.getAllProblems();
+			this.getResults(this.query).then(function(results){
+				this.objects = json.parse(results);
+				this.users = this.getAllUsers();
+				this.problems = this.getAllProblems();
 			
-			//initializing the arrays to be exact size as this will lead exact size of the table while rendering.
-			var totalUsers = this.users.length;
-			var totalProblems = this.problems.length;
-			for(var i = 0; i<totalUsers; i++){
-				this.timeSpent[i] = [];
-				this.errorRatio[i] = [];
-				this.problemComplete[i] = [];
-				this.sessionRunning[i] = [];
-				this.detailedNodeAnalysis[i] = [];
-				this.emptyArray[i] = [];
-				//this.sessionDetails[i] = [];
-				for(var j = 0; j<totalProblems; j++){
-					this.timeSpent[i][j] = "-";
-					this.errorRatio[i][j] = "-";
-					this.problemComplete[i][j] = false;
-					this.sessionRunning[i][j] = false;
-					this.detailedNodeAnalysis[i][j] = "-";
-					this.emptyArray[i][j] = " ";
-					//this.sessionDetails[i][j] = " ";
+				//initializing the arrays to be exact size as this will lead exact size of the table while rendering.
+				var totalUsers = this.users.length;
+				var totalProblems = this.problems.length;
+				for(var i = 0; i<totalUsers; i++){
+					this.timeSpent[i] = [];
+					this.errorRatio[i] = [];
+					this.problemComplete[i] = [];
+					this.sessionRunning[i] = [];
+					this.detailedNodeAnalysis[i] = [];
+					this.emptyArray[i] = [];
+					//this.sessionDetails[i] = [];
+					for(var j = 0; j<totalProblems; j++){
+						this.timeSpent[i][j] = "-";
+						this.errorRatio[i][j] = "-";
+						this.problemComplete[i][j] = false;
+						this.sessionRunning[i][j] = false;
+						this.detailedNodeAnalysis[i][j] = "-";
+						this.emptyArray[i][j] = " ";
+						//this.sessionDetails[i][j] = " ";
+					}
 				}
-			}
-			this.getRenderingData();
+				this.getRenderingData();
+			});
 		},
 
 		getResults: function(/*json*/ params){
@@ -193,7 +176,14 @@ define([
 				var problemIndex = array.indexOf(this.problems, upObject['problem']);
 				if(userIndex >= 0 && problemIndex >= 0){
 					this.timeSpent[userIndex][problemIndex] = (number.round(upObject['totalTime']*10))/10+ " - " + (number.round(upObject['outOfFocusTime']*10))/10;
-					this.errorRatio[userIndex][problemIndex] = upObject['incorrectChecks'] + " / " + upObject['totalSolutionChecks'];
+					
+					var errorRatioText = "Blank";
+                    var errorRatioNumber = (100-((parseFloat(upObject['incorrectChecks'])/parseFloat(upObject['totalSolutionChecks']))*100));
+                    if (!isNaN(errorRatioNumber)){ 
+                        errorRatioText = errorRatioNumber.toFixed(1)+"%"; 
+                    } 
+ 					this.errorRatio[userIndex][problemIndex] = errorRatioText;
+					
 					this.problemComplete[userIndex][problemIndex] = upObject['problemComplete'];
 					this.sessionRunning[userIndex][problemIndex] = upObject['sessionRunning'];
 					//this.sessionDetails[userIndex][problemIndex] = {user : upObject['user'], problem: upObject['problem'], section: this.section};
@@ -327,10 +317,26 @@ define([
 			return tableString;
 		},
 
-		renderTable: function(){
+		defaultInit: function(){
+			this.init();
 			var table = this.initTable();
 			table += this.makeTable();
 			table += this.closeTable();
+
+			return table;
+		},
+
+		renderTable: function(){
+			//table related init function can be used to make different html structures if we want. 
+			//for sending multiple queries you would need to make an array of queries in modules and send them using the table init function. 
+			//Call the init again and again. I have moved the init from main to table init function. 
+			var fName = "this." + this.modules['tName'] + 'init';
+			var table = "";
+			if(fName){
+				table = fName;
+			} else {
+				table = this.defaultInit();
+			}
 
 			return table;
 		}

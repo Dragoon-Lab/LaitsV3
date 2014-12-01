@@ -59,7 +59,7 @@ define([
 				this.checkedNodes = new Array();
 				this.model = {task: {
 					taskName: name,
-					time: {start: 0, end: 10, step: .5, integrationMethod: "Eulers Method"},
+					time: {start: 0, end: 10, step: 1.0, integrationMethod: "Eulers Method"},
 					properties: {},
 					image: {},
 					taskDescription: "",
@@ -101,6 +101,9 @@ define([
 						this.updatePosition();
 						pos = { x: this.x, y: this.y, nodeWidth: this.nodeWidth, nodeHeight: this.nodeHeight};
 					}
+			},
+			setLessonLearned : function(_isLessonLearnedShown) {
+				this.isLessonLearnedShown = _isLessonLearnedShown;
 			},
 			updatePosition: function()
 			{
@@ -519,7 +522,7 @@ define([
 						initial: 0,
 						units: 0,
 						equation: 0,
-						assitanceScore: 0
+						assistanceScore: 0
 					},
 					status: {}
 				}, options || {});
@@ -846,6 +849,7 @@ define([
 				//		receives, based on suggestions by Robert Hausmann;
 				//
 				// Note: This is used by the PM when the student first gets the description correct
+				// and also in con-author when we need to show error values to the students.
 				var givenID = this.getDescriptionID(id);
 				var node = obj.given.getNode(givenID);
 				node.attemptCount.assistanceScore = score;

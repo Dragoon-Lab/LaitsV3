@@ -74,6 +74,7 @@
 			$currentProperty;
 			$nodeUpdate; $timeSkip;
 			$currentTime = date("c");
+			$slideIndex; $slidesOpen;
 			while($row = $result->fetch_assoc()){
 				if($resetVariables){
 					$sessionTime = 0; $outOfFocusTime = 0; $timeWasted=0;
@@ -90,6 +91,9 @@
 					$upObject->problem = $row['problem'];
 					$upObject->user = $row['user'];
 					$timeSkip = false;
+					$slideIndex = -1;
+					$slidesOpen = false;
+					$slides = array();
 				}
 				$resetVariables = false;
 				$method = $row['method'];
@@ -119,6 +123,17 @@
 				if(!$timeSkip)
 					$sessionTime += $stepTime;
 				
+				if($slidesOpen && $slideIndex > 0){
+					//added because there is no close slides log message.
+					//echo print_r($newMessage)."</br>".$stepTime." ".$slideIndex;
+					if(!array_key_exists($slideIndex-1, $slides))
+						$slides[$slideIndex-1] = $stepTime; // as prior to this there was a slide open.
+					else 
+						$slides[$slideIndex-1] += $stepTime;
+					$slideIndex = -1;
+					$slidesOpen = false;
+				}
+
 				if($method === "ui-action"){
 					$type = $newMessage['type'];
 					if($type === "menu-choice"){
@@ -200,6 +215,11 @@
 					} else if($type === "window"){
 						$upObject->sessionRunning = false;
 						//$resetVariable = true;
+					} else if($type === "slide-change"){
+						//echo print_r($newMessage)."</br>".$stepTime." ".$slideIndex;
+						
+						$slideIndex = $newMessage['slide'];
+						$slidesOpen = true;
 					}
 				} else if($method === "solution-step"){
 					$type = $newMessage['type'];
@@ -333,6 +353,7 @@
 					$upObject->incorrectChecks = $incorrectChecks;
 					$upObject->totalSolutionChecks = $totalChecks;
 					$upObject->errorRatio = $errorRatio;
+					$upObject->slides = $slides;
 					array_push($objectArray, $upObject);
 				}else{
 					$oldRow = $row;
@@ -357,6 +378,7 @@
 			$upObject->incorrectChecks = $incorrectChecks;
 			$upObject->totalSolutionChecks = $totalChecks;
 			$upObject->errorRatio = $errorRatio;
+			$upObject->slides = $slides;
 			array_push($objectArray, $upObject);
 			
 			return $objectArray;

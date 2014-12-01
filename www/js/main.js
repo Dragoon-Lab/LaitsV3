@@ -107,6 +107,9 @@ define([
 		 Create state object
 		 */
 		var state = new State(query.u, query.s, "action");
+		state.get("isLessonLearnedShown").then(function(reply) {
+			givenModel.setLessonLearned(reply);
+		});
 		controllerObject.setState(state);
 
 		ready(function(){
@@ -210,7 +213,16 @@ define([
 			aspect.after(registry.byId('nodeeditor'), "hide", function(){
 				console.log("Calling session.saveProblem");
 				session.saveProblem(givenModel.model);
-			});
+                var descDirective=controllerObject._model.student.getStatusDirectives(controllerObject.currentID);
+                var directive = null;
+                for(i=0;i<descDirective.length;i++){
+                    if(descDirective[i].id=="description")
+                            directive=descDirective[i];
+                        
+                }
+                if(directive&&(directive.value=="incorrect" || directive.value=="premature"))
+                            drawModel.deleteNode(controllerObject.currentID);
+    		});
 			
 			// Wire up close button...
 			// This will trigger the above session.saveProblem()
@@ -370,6 +382,7 @@ define([
 				// instantiate graph object
 				var buttonClicked = "graph";
 				var graph = new Graph(givenModel, query.m, session, buttonClicked);
+				graph.setStateGraph(state);
 				var problemComplete = givenModel.matchesGivenSolution();
 				
 				graph._logging.log('ui-action', {
@@ -386,6 +399,7 @@ define([
 				console.debug("table button clicked");
 				var buttonClicked = "table";
 				var table = new Graph(givenModel, query.m, session, buttonClicked);
+				table.setStateTable(state);
 				table._logging.log('ui-action', {
 					type: "menu-choice", 
 					name: "table-button"

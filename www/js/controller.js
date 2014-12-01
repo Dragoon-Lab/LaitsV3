@@ -303,6 +303,8 @@ define([
 				w.set("status", '');  // remove colors
 			}
 
+			this.addAssistanceScore(this.currentID);
+
 			this.disableHandlers = true;
 			// Undo Name value (only in AUTHOR mode)
 			if(this.controlMap.name){
@@ -357,6 +359,11 @@ define([
 					domStyle.set(this.currentID, 'border', borderColor);	 // set border gray for studentModelNodes in TEST and EDITOR mode
 				}
 			}
+
+            if(this._previousExpression) //bug 2365
+                this._previousExpression=null; //clear the expression
+
+
 			// This cannot go in controller.js since _PM is only in
 			// con-student.	 You will need con-student to attach this
 			// to closeEditor (maybe using aspect.after?).	
@@ -1120,6 +1127,10 @@ define([
 		// Stub to be overwritten by student or author mode-specific method.
 		colorNodeBorder: function(nodeID, bool){
 			console.log("colorNodeBorder stub called");
+		},
+
+		addAssistanceScore: function(/* String */ id){
+			//stub over written in con-author. if there is a student specific implementation then kindly move this to con-student
 		}
 
 	});
