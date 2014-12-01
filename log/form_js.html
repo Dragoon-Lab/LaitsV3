@@ -1,0 +1,35 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN"
+   "http://www.w3.org/TR/html4/loose.dtd">
+<html>
+<head>
+<meta http-equiv="Content-type" content="text/html;charset=UTF-8">
+<title>Search Dragoon Logs</title>
+</head>
+<body>
+	<h4>Class experiments analysis in a time range</h4>
+	<form method ="get" action = "dashboard.html">
+		<label>Mode&nbsp;:</label>&nbsp;<input type ="text" name="m"/> <br/>
+		<label>Section&nbsp;:</label>&nbsp;<input type ="text" name ="s"/> <br/>
+		<label>Student Name&nbsp;:</label>&nbsp;<input type ="text" name ="u"/> <br/>
+		<label>Problem&nbsp;:</label>&nbsp;<input type = "text" name = "p"/> <br/>
+		<label>Date&nbsp;(format YYYY-MM-DD)-&nbsp;From</label>&nbsp;<input type = "datetime" name = "fd"/>&nbsp;<label>to&nbsp;-</label>&nbsp;<input type = "datetime" name = "td"/> <br/>
+		<label>Table&nbsp;:</label>&nbsp;<input type="text" name ="t"/> <br/>
+		<br/>
+		<label>DB Name&nbsp;:</label>&nbsp;<input type ="text" name ="db_name"/> <br/>
+		<label>DB User&nbsp;:</label>&nbsp;<input type ="text" name ="db_user"/> <br/>
+		<label>Password&nbsp;:</label>&nbsp;<input type ="password" name ="db_password"/><br/>
+		<label>DB Table&nbsp;:</label>&nbsp;<input type = "text" name = "db_table"/> <br/>
+		<br/>	
+		<input type ="submit" value = "Submit" name ="form_submit" />
+		
+	</form>
+	<h4>Instructions</h4>
+	<div>
+		<ul>
+			<li>For calculating the time crunched before an exam we need to provide the from date and to date. The logs between the time mentioned will be picked up and analyzed.</li>
+			<li>Otherwise it just acts like a normal url dashboard that we use.</li>
+			<li>If you want to check different databases and not the one used in the db_user file, then enter the values in DB Name and so on.</li>
+		</ul>
+	</div>
+</body>
+</html>
