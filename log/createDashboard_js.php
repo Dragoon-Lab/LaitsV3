@@ -40,9 +40,20 @@
 
 		function getQuery($section, $mode, $user, $problem, $fromTime, $fromDate, $toTime, $toDate){
 			$userString = "AND user = '".$user."' ";
-			$problemString = "AND problem = '".$problem."' ";
-			$fromTimeString =  "AND time >= '".$fromDate." ".$fromTime."' ";
-			$toTimeString = "AND time <= '".(!empty($toDate)?$toDate:$fromDate)." ".$toTime."' ";
+			$fromTimeString =  "AND time >= '".$fromDate.(!empty($fromTime)?(" ".$fromTime):"")."' ";
+			$toTimeString = "AND time <= '".(!empty($toDate)?$toDate:$fromDate).(!empty($toTime)?(" ".$toTime):"")."' ";
+			
+			$notMode = false;
+			if(substr($mode, 0, 1) == "!"){
+				$notMode = true;
+				$mode = substr($mode, 1);
+			}
+			$likeProblem = false;
+			if(substr($problem, 0, 1) == "%"){
+				$likeProblem = true;
+			}
+			$problemString = "AND problem ".($likeProblem?"LIKE":"=")." '".$problem."' ";
+			$modeString = " AND mode ".($notMode?"!":"")."= '".$mode."' ";
 			$queryString = 
 			"SELECT 
 				tid, session.session_id, user, problem, time, method, message, `group` 
@@ -54,7 +65,7 @@
 				(!empty($user)?$userString:"").
 				(!empty($problem) ?$problemString:"").
 				(!empty($fromDate)?$toTimeString:"").
-				" AND mode = '".$mode."' ".
+				(!empty($mode)?$modeString:"").
 			"ORDER BY user asc, problem asc, tid asc;";
 			//$queryString = "SELECT tid, session.session_id, user, problem, time, method, message, `group` from session JOIN step ON session.session_id = step.session_id where method != 'client-message' AND mode = 'STUDENT' AND user = '202gold' AND problem = '115' ORDER BY user asc, problem asc, tid asc;";
 

@@ -77,7 +77,10 @@ define([
 			this.section = params['s']||this.modules.qObject.s;
 			this.currentUser = params['us'];
 			this.mode = params['m'];
-			this.query = params;
+			if(this.modules.query == 'custom')
+				this.query = this.modules.qObject;
+			else 
+				this.query = params;
 		},
 
 		init: function(){
@@ -273,7 +276,7 @@ define([
 				tableString += "<th>Total time spent</th>";
 			}
 			if(this.modules['names'])
-				tableString += "<th>Users \/ Problems -></th>";
+				tableString += "<th class='grey'>Users \/ Problems -></th>";
 			array.forEach(problems, function(problem){
 				tableString += "<th>" + problem + "</th>";
 			});
@@ -298,7 +301,7 @@ define([
 				}
 
 				if(this.modules['names'])
-					tableString += "<td>"+user+"</td>";
+					tableString += "<td class='grey'>"+user+"</td>";
 				//var problemDetails = printArray[row];
 				var col = 0;
 				array.forEach(this.problems, function(problem){
