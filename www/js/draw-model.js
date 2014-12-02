@@ -30,11 +30,10 @@ define([
 	"dojo/dom-style",
 	"dijit/Menu", 
 	"dijit/MenuItem",
-	"dijit/registry",
 	"./equation",
 	"./graph-objects", 
 	"jsPlumb/jsPlumb"
-], function(array, declare, lang, attr, domConstruct, domStyle, Menu, MenuItem, registry, equation, graphObjects){
+], function(array, declare, lang, attr, domConstruct, domStyle, Menu, MenuItem, equation, graphObjects){
 	// Summary: 
 	//			MVC for the canvas
 	// Description:
@@ -234,38 +233,18 @@ define([
             //test
 			pMenu.addChild(new MenuItem({
 				label: "Delete Node",
-				onClick: lang.hitch(this, function (){
-			 		this.deleteNode(node.ID);
-				})
+				onClick: lang.hitch(this,function(){
+                        this.deleteNode(node.ID)
+                    })
 			}));
 			/*
 			 Fire off functions associated with draggable events.
-
 			 Note that the names (onMoveStart, onMove, onMoveStop) are from
 			 the underlying library dojo/dnd/move, rather than jsPlumb.
 			 */		
 			this.makeDraggable(vertex);
 			
 			return vertex;
-		},
-
-		deleteNode:function(/*string*/ nodeid){
-			//delete Node function Removes node 
-			domConstruct.destroy(nodeid);
-					//remove all connnections including incoming and outgoing
-					array.forEach(this._instance.getConnections(), function(connection){
-						if(connection.targetId == nodeid||connection.sourceId == nodeid)
-							this._instance.detach(connection);
-					}, this);
-
-					this._logging.log('ui-action', {
-						type: "node-delete",
-						node: this._givenModel.getName(nodeid),
-						nodeID: nodeid
-					});
-					//delete from  the model
-					this._givenModel.deleteNode(nodeid);
-					this.updater();
 		},
 
 		makeDraggable:function(/*vertex*/ vertex){
