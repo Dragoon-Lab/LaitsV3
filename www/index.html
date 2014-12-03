@@ -127,7 +127,7 @@
 		 <button type="button" data-dojo-type="dijit/form/Button" id="lessonsLearnedButton" disabled="true">Lessons Learned</button>
 	     <button type="button" data-dojo-type="dijit/form/Button" id="doneButton">Done</button>
 	</div> <!-- Menubar -->
-        <div id="drawingPane" data-dojo-type="dijit/layout/ContentPane" region="center">
+        <div id="drawingPane" class="restrict-vscroll" data-dojo-type="dijit/layout/ContentPane" region="center">
 		
 		<!--<div id="tableGrid" data-dojo-type="dijit/layout/ContentPane" region="center"></div>-->
 		
@@ -192,6 +192,7 @@
 	  <div class="fieldgroup">
             <label for="authorSetImage">URL for Image:</label>
 			<input id="authorSetImage"/>
+             <img id="questionMarkURL"  class="questionMark" src="images/questionmark.png"/>
 		</div>
 		<div class="fieldgroup">
 			<label for="authorSetDescription">Description of Problem:</label>
@@ -200,6 +201,7 @@
 		<div class="fieldgroup">
 			<label for="authorProblemShare" title="Share this problem with students.">Share Problem:</label>
 			<input id="authorProblemShare" name="authorProblemShare" data-dojo-type="dijit/form/CheckBox" value="agreed" checked="false"/>
+            <img id="questionMarkShare"  class="questionMark" src="images/questionmark.png"/>
 		</div>
 		<div class="fieldgroup" align="right">
 			<button id="descCloseButton" type="button" data-dojo-type="dijit/form/Button" iconClass="dijitNoIcon">Done</button>
@@ -207,7 +209,7 @@
 	</div>
 
     <!-- authorSaveProblem, authorSaveGroup -->
-    <div class="claro sameedit" data-dojo-type="dijit/Dialog" id="authorSaveDialog" title="Rename and Save Problem">
+    <div class="claro sameedit" data-dojo-type="dijit/Dialog" id="authorSaveDialog" title="Save As...">
         <div class="fieldgroup">
             <label for="authorSaveProblem" style="width:7em">Problem Name:</label>
             <input id="authorSaveProblem" style="width:10em" value="0" data-dojo-type="dijit/form/TextBox"></input>
@@ -305,6 +307,7 @@
             <div id="setRootNode" class="fieldgroup" style="display:none">
                 <label for ="markRootNode" title ="Mark this node as a root node.">Root:</label>
                 <input id ="markRootNode" name ="markRootNode" data-dojo-type="dijit/form/CheckBox" value="agreed" checked="false"/>
+                <img id="questionMarkRoot"  class="questionMark" src="images/questionmark.png"/>
             </div>
             <div class="fieldgroup" id="algebraic">
 	        <label>Inputs</label>

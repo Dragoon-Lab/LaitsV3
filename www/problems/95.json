@@ -14,7 +14,7 @@
         "image": {
             "URL": "http://farm3.static.flickr.com/2465/3825067478_cb2c3ce571.jpg"
         },
-        "taskDescription": " Problem: Suppose a city wins a large federal grant and uses it to buy 105 low-emission buses. Although the buses have excellent technology, they are driven all day long so 9% of them fail each week. Therefore, approximately 9 buses fail in the first week. Since the city does not have the funding to increase the staff of its bus fleet maintenance facility, the staff can fix only 6 buses per week. Goal: Graph the size of the bus fleet (i.e., the ones that are on the road and not being repaired) over the first 10 weeks of operation. A model has been provided for you and run. As you can tell from the G indicators, some of the graphs are wrong. You will need to fix the model. ",
+        "taskDescription": " Problem: Suppose a city wins a large federal grant and uses it to buy 105 low-emission buses. Although the buses have excellent technology, they are driven all day long so 9% of them fail each week. Therefore, approximately 9 buses fail in the first week. Since the city does not have the funding to increase the staff of its bus fleet maintenance facility, the staff can fix only 6 buses per week. Goal: Graph the size of the bus fleet (i.e., the ones that are on the road and not being repaired) over the first 10 weeks of operation.",
         "givenModelNodes": [
             {
                 "ID": "id1",
@@ -31,7 +31,7 @@
                     "equation": 0
                 },
                 "status": {},
-                "name": "buses each week",
+                "name": "buses fixed each week",
                 "type": "parameter",
                 "parentNode": false,
                 "units": "",
@@ -53,12 +53,12 @@
                     "equation": 0
                 },
                 "status": {},
-                "name": "prop buses that fail",
+                "name": "proportion of buses that fail",
                 "type": "parameter",
                 "parentNode": false,
                 "units": "",
                 "description": "The proportion of the number of buses that fail to the number of buses that are in the bus fleet each week",
-                "initial": 9
+                "initial": 0.09
             },
             {
                 "ID": "id3",
@@ -112,12 +112,12 @@
                     "equation": 0
                 },
                 "status": {},
-                "name": "buses fail each week",
+                "name": "buses failing each week",
                 "type": "function",
                 "parentNode": false,
                 "units": "",
                 "description": "The number of buses that fail each week",
-                "equation": "id3 + id2"
+                "equation": "id3 * id2"
             }
 
         ],

@@ -30,6 +30,7 @@ define([
 	"dojo/io-query",
 	"dojo/ready",
 	'dijit/registry',
+    "dijit/Tooltip",
 	"./menu",
 	"./load-save",
 	"./model",
@@ -46,7 +47,7 @@ define([
 	"./createSlides",
 	"./lessons-learned"
 ], function(
-		array, lang, dom, geometry, style, on, aspect, ioQuery, ready, registry,
+		array, lang, dom, geometry, style, on, aspect, ioQuery, ready, registry, toolTip,
 		menu, loadSave, model,
 		Graph, Table, controlStudent, controlAuthor, drawmodel, logging, equation, description, State, typechecker, slides, lessonsLearned
 ){
@@ -106,6 +107,9 @@ define([
 		 Create state object
 		 */
 		var state = new State(query.u, query.s, "action");
+		state.get("isLessonLearnedShown").then(function(reply) {
+			givenModel.setLessonLearned(reply);
+		});
 		controllerObject.setState(state);
 
 		ready(function(){
@@ -152,7 +156,23 @@ define([
 				drawModel.addNode(givenModel.active.getNode(id));		
 				controllerObject.showNodeEditor(id);
 			});
-			
+
+            // Show tips for Root in node modifier and Share Bit in Description and Time
+            var makeTooltip  = function(id,content){
+                new toolTip({
+                    connectId: [id],
+                    label: content
+                });
+            };
+            makeTooltip('questionMarkRoot',"When running in COACHED mode, the system will guide the student through <br>" +
+                "the construction of the model beginning with this node, then proceeding with <br>" +
+                "this node's inputs, then their inputs, and so forth until the model is complete.");
+			makeTooltip('questionMarkShare', "When checked, your problem appears in the list <br>" +
+                "of custom problems for other users to solve.");
+            makeTooltip('questionMarkURL', "If you wish to use an image from your computer, <br>" +
+                "you must first upload it to a website and then copy <br>" +
+                "the URL of the image into this box.");
+
 			/*
 			 Connect node editor to "click with no move" events.
 			 */
@@ -370,6 +390,7 @@ define([
 				// instantiate graph object
 				var buttonClicked = "graph";
 				var graph = new Graph(givenModel, query.m, session, buttonClicked);
+				graph.setStateGraph(state);
 				var problemComplete = givenModel.matchesGivenSolution();
 				
 				graph._logging.log('ui-action', {
@@ -386,6 +407,7 @@ define([
 				console.debug("table button clicked");
 				var buttonClicked = "table";
 				var table = new Graph(givenModel, query.m, session, buttonClicked);
+				table.setStateTable(state);
 				table._logging.log('ui-action', {
 					type: "menu-choice", 
 					name: "table-button"

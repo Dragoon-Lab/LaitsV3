@@ -45,7 +45,7 @@
                 "initial": 0,
                 "units": 0,
                 "equation": 0,
-                "assitanceScore": 0
+                "assistanceScore": 0
             },
             "status": {},
             "name": "weight",
@@ -77,7 +77,7 @@
                 "initial": 0,
                 "units": 0,
                 "equation": 0,
-                "assitanceScore": 0
+                "assistanceScore": 0
             },
             "status": {},
             "name": "weight change",
@@ -108,7 +108,7 @@
                 "initial": 0,
                 "units": 0,
                 "equation": 0,
-                "assitanceScore": 0
+                "assistanceScore": 0
             },
             "status": {},
             "name": "energy balance",
@@ -130,7 +130,7 @@
                 "initial": 0,
                 "units": 0,
                 "equation": 0,
-                "assitanceScore": 0
+                "assistanceScore": 0
             },
             "status": {},
             "name": "calories per pound",
@@ -153,7 +153,7 @@
                 "initial": 0,
                 "units": 0,
                 "equation": 0,
-                "assitanceScore": 0
+                "assistanceScore": 0
             },
             "status": {},
             "name": "energy ingested",
@@ -189,7 +189,7 @@
                 "initial": 0,
                 "units": 0,
                 "equation": 0,
-                "assitanceScore": 0
+                "assistanceScore": 0
             },
             "status": {},
             "name": "energy expended",
@@ -212,7 +212,7 @@
                 "initial": 0,
                 "units": 0,
                 "equation": 0,
-                "assitanceScore": 0
+                "assistanceScore": 0
             },
             "status": {},
             "name": "physical activity expenditure",
@@ -235,7 +235,7 @@
                 "initial": 0,
                 "units": 0,
                 "equation": 0,
-                "assitanceScore": 0
+                "assistanceScore": 0
             },
             "status": {},
             "name": "digestive activity expenditure",
@@ -258,7 +258,7 @@
                 "initial": 0,
                 "units": 0,
                 "equation": 0,
-                "assitanceScore": 0
+                "assistanceScore": 0
             },
             "status": {},
             "name": "resting energy expenditure",
@@ -270,205 +270,205 @@
         }
     ],
     "studentModelNodes": [
-    {
-        "ID": "id11",
-        "inputs": [
             {
-                "ID": "id13",
-                "label": ""
+                "ID": "id11",
+                "inputs": [
+                    {
+                        "ID": "id13",
+                        "label": ""
+                    },
+                    {
+                        "ID": "id12",
+                        "label": "-"
+                    }
+                ],
+                "position": {
+                    "x": 700,
+                    "y": 300
+                },
+                "status": {
+                    "description": {
+                        "status": "correct",
+                        "disabled": true
+                    },
+                    "type": {
+                        "disabled": true,
+                        "status": "correct"
+                    },
+                    "units": {
+                        "disabled": true,
+                        "status": "correct"
+                    },
+                    "equation": {
+                        "disabled": false,
+                        "status": "correct"
+                    }
+                },
+                "descriptionID": "id3",
+                "type": "function",
+                "equation": "id13-id12",
+                "units": "calories"
             },
             {
                 "ID": "id12",
-                "label": "-"
-            }
-        ],
-        "position": {
-            "x": 700,
-            "y": 300
-        },
-        "status": {
-            "description": {
-                "status": "correct",
-                "disabled": true
+                "inputs": [],
+                "position": {
+                    "x": 700,
+                    "y": 400
+                },
+                "status": {
+                    "description": {
+                        "status": "correct",
+                        "disabled": true
+                    },
+                    "type": {
+                        "disabled": false,
+                        "status": "incorrect"
+                    }
+                },
+                "descriptionID": "id6",
+                "type": "parameter",
+        		"initial":2100
             },
-            "type": {
-                "disabled": true,
-                "status": "correct"
-            },
-            "units": {
-                "disabled": true,
-                "status": "correct"
-            },
-            "equation": {
-                "disabled": false,
-                "status": "correct"
-            }
-        },
-        "descriptionID": "id3",
-        "type": "function",
-        "equation": "id13-id12",
-        "units": "calories"
-    },
-    {
-        "ID": "id12",
-        "inputs": [],
-        "position": {
-            "x": 700,
-            "y": 400
-        },
-        "status": {
-            "description": {
-                "status": "correct",
-                "disabled": true
-            },
-            "type": {
-                "disabled": false,
-                "status": "incorrect"
-            }
-        },
-        "descriptionID": "id6",
-        "type": "parameter",
-		"initial":2100
-    },
-    {
-        "ID": "id13",
-        "inputs": [],
-        "position": {
-            "x": 900,
-            "y": 300
-        },
-        "status": {
-            "description": {
-                "status": "correct",
-                "disabled": true
-            },
-            "type": {
-                "disabled": true,
-                "status": "correct"
-            },
-            "initial": {
-                "disabled": true,
-                "status": "correct"
-            },
-            "units": {
-                "disabled": true,
-                "status": "correct"
-            }
-        },
-        "descriptionID": "id5",
-        "type": "parameter",
-        "initial": 1989,
-        "units": "calories/lbs"
-    },
-    {
-        "ID": "id14",
-        "inputs": [],
-        "position": {
-            "x": 900,
-            "y": 150
-        },
-        "status": {
-            "description": {
-                "status": "correct",
-                "disabled": true
-            },
-            "type": {
-                "disabled": true,
-                "status": "correct"
-            },
-            "initial": {
-                "disabled": true,
-                "status": "correct"
-            },
-            "units": {
-                "disabled": true,
-                "status": "correct"
-            }
-        },
-        "descriptionID": "id4",
-        "type": "parameter",
-        "initial": 3500,
-        "units": "calories/lbs"
-    },
-    {
-        "ID": "id15",
-        "inputs": [
             {
-                "ID": "id16",
-                "label": ""
-            }
-        ],
-        "position": {
-            "x": 700,
-            "y": 50
-        },
-        "status": {
-            "description": {
-                "status": "correct",
-                "disabled": true
-            },
-            "type": {
-                "disabled": true,
-                "status": "correct"
-            },
-            "initial": {
-                "disabled": true,
-                "status": "correct"
-            },
-            "units": {
-                "disabled": false,
-                "status": "correct"
-            },
-            "equation": {
-                "disabled": true,
-                "status": "correct"
-            }
-        },
-        "descriptionID": "id1",
-        "type": "accumulator",
-        "units": "lbs",
-        "equation": "id16",
-        "initial": 150
-    },
-    {
-        "ID": "id16",
-        "inputs": [
-            {
-                "ID": "id11",
-                "label": ""
+                "ID": "id13",
+                "inputs": [],
+                "position": {
+                    "x": 900,
+                    "y": 300
+                },
+                "status": {
+                    "description": {
+                        "status": "correct",
+                        "disabled": true
+                    },
+                    "type": {
+                        "disabled": true,
+                        "status": "correct"
+                    },
+                    "initial": {
+                        "disabled": true,
+                        "status": "correct"
+                    },
+                    "units": {
+                        "disabled": true,
+                        "status": "correct"
+                    }
+                },
+                "descriptionID": "id5",
+                "type": "parameter",
+                "initial": 1989,
+                "units": "calories/lbs"
             },
             {
                 "ID": "id14",
-                "label": ""
+                "inputs": [],
+                "position": {
+                    "x": 900,
+                    "y": 150
+                },
+                "status": {
+                    "description": {
+                        "status": "correct",
+                        "disabled": true
+                    },
+                    "type": {
+                        "disabled": true,
+                        "status": "correct"
+                    },
+                    "initial": {
+                        "disabled": true,
+                        "status": "correct"
+                    },
+                    "units": {
+                        "disabled": true,
+                        "status": "correct"
+                    }
+                },
+                "descriptionID": "id4",
+                "type": "parameter",
+                "initial": 3500,
+                "units": "calories/lbs"
+            },
+            {
+                "ID": "id15",
+                "inputs": [
+                    {
+                        "ID": "id16",
+                        "label": ""
+                    }
+                ],
+                "position": {
+                    "x": 700,
+                    "y": 50
+                },
+                "status": {
+                    "description": {
+                        "status": "correct",
+                        "disabled": true
+                    },
+                    "type": {
+                        "disabled": true,
+                        "status": "correct"
+                    },
+                    "initial": {
+                        "disabled": true,
+                        "status": "correct"
+                    },
+                    "units": {
+                        "disabled": false,
+                        "status": "correct"
+                    },
+                    "equation": {
+                        "disabled": true,
+                        "status": "correct"
+                    }
+                },
+                "descriptionID": "id1",
+                "type": "accumulator",
+                "units": "lbs",
+                "equation": "id16",
+                "initial": 150
+            },
+            {
+                "ID": "id16",
+                "inputs": [
+                    {
+                        "ID": "id11",
+                        "label": ""
+                    },
+                    {
+                        "ID": "id14",
+                        "label": ""
+                    }
+                ],
+                "position": {
+                    "x": 700,
+                    "y": 166
+                },
+                "status": {
+                    "description": {
+                        "status": "correct",
+                        "disabled": true
+                    },
+                    "type": {
+                        "disabled": true,
+                        "status": "correct"
+                    },
+                    "units": {
+                        "disabled": true,
+                        "status": "correct"
+                    },
+                    "equation": {
+                        "disabled": false,
+                        "status": "correct"
+                    }
+                },
+                "descriptionID": "id2",
+                "type": "function",
+                "equation": "id11/id14",
+                "units": "lbs"
             }
-        ],
-        "position": {
-            "x": 700,
-            "y": 166
-        },
-        "status": {
-            "description": {
-                "status": "correct",
-                "disabled": true
-            },
-            "type": {
-                "disabled": true,
-                "status": "correct"
-            },
-            "units": {
-                "disabled": true,
-                "status": "correct"
-            },
-            "equation": {
-                "disabled": false,
-                "status": "correct"
-            }
-        },
-        "descriptionID": "id2",
-        "type": "function",
-        "equation": "id11/id14",
-        "units": "lbs"
-    }
-]
+        ]
 	}
 }

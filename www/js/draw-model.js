@@ -47,15 +47,21 @@ define([
 		_givenModel: null,
 		_logging:null,
 		// Hook for updates
-		updater: function(){
+		updater: function(nodeID,setOfConnections){
             //time to update borders
             //check needed for student mode ?
             var nodes=this._givenModel.getNodes();
             array.forEach(nodes,function(node){
                this.colorNodeBorder(node.ID,true); 
             },this);
-        },
+            //time to delete all connectiion having node as source node
+            array.forEach(this._instance.getConnections(), function(connection){
+                if(setOfConnections[connection.targetId]){
+                	this._instance.detach(connection); //remove that connection
+            	}
+            }, this);
 
+        },
 		constructor: function(givenModel){
 
 			// setup some defaults for jsPlumb.
@@ -175,10 +181,15 @@ define([
         /* Delete Nodes*/
         deleteNode:function(/*node id*/ nodeID){
 			domConstruct.destroy(nodeID);
-					//remove all connnections including incoming and outgoing
+					var setConnections = []; //setOfConnections to delete
+ 					//remove all connnections including incoming and outgoing and store the targetIDs
 					array.forEach(this._instance.getConnections(), function(connection){
-						if(connection.targetId == nodeID||connection.sourceId == nodeID)
+						if(connection.targetId == nodeID||connection.sourceId == nodeID){
+							if(connection.sourceId == nodeID){
+						        	setConnections[connection.targetId]=true;//connections to delete for matching sourceId
+							}
 							this._instance.detach(connection);
+						}
 					}, this);
 
 					this._logging.log('ui-action', {
@@ -188,7 +199,7 @@ define([
 					});
 					//delete from  the model
 					this._givenModel.deleteNode(nodeID);
-					this.updater();
+					this.updater(nodeID,setConnections);
         },
 		/* addNode: Add a node to the jsPlumb model, returning the DOM element.	 */
 		addNode: function(/*object*/ node){
