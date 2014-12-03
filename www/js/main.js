@@ -298,13 +298,18 @@ define([
                 });
                 menu.add("mergeButton", function(){
                     registry.byId("authorMergeDialog").show();
-                    var sample = {g:"pradeep",m:"AUTHOR",s:"login.html",p:"pradeep",u:"rabbits82"};;
+                    var sample = {g:"jon",m:"AUTHOR",s:"login.html",p:"jon",u:"asdfadsf1"};;
                   	session.loadProblem(sample).then(function(solutionGraph){
 							console.log("Merge problem is loaded "+solutionGraph);
-							var nodes = solutionGraph.task.givenModelNodes;
-							var ids = givenModel.active.mergeNodes(nodes);
-							console.log("merged nodes are "+ids);
-							session.saveProblem(givenModel.model);
+							if(solutionGraph){
+								var nodes = solutionGraph.task.givenModelNodes;
+								var ids = givenModel.active.mergeNodes(nodes);
+								console.log("merged nodes are "+ids);
+								session.saveProblem(givenModel.model);
+							}else{
+								console.log("Problem Not found");
+								alert("Problem Not found");
+							}
                		 });
              	});
 

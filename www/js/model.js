@@ -531,22 +531,34 @@ define([
 			},
 			/*merges imported model and returns ids of merged nodes*/
 			mergeNodes: function(nodes){
-				var ids = [];
+				var ids = [];  //holds new names
+				var shift = this.getNodes().length;
+
 				array.forEach(nodes,function(node){
                		obj._updateNextXYPosition();
 					node.position = {x: obj.x, y: obj.y};
-					/*//update the node equation
-					if(node.equation){
-						var find = 'abc';
-						var re = new RegExp(find, 'g');
-						str = str.replace(re, '');
-					}*/
-					node.ID = "id" + obj._ID++; //replace old id with new ID
+					var nID = "id" + obj._ID; //replace old id with new ID
+					node.ID =nID;
 					node.name=node.name+obj._ID;
 					node.description=node.description+obj._ID;
-					obj.model.task.givenModelNodes.push(node);
 					ids.push(node.ID);
+					/*trick to update equations with new ids */
+					var equation = node.equation;
+					var nEquation=equation.replace(/(\d+)+/g, function(match, number) {
+       						return parseInt(number)+shift;
+       					});
+					//also update inputs for graph generation
+					for(i=0;i<node.inputs.length;i++){
+						node.inputs[i].ID=node.inputs[i].ID.replace(/\d+$/, function(n){ return parseInt(n)+shift });//shift = total nodes in old model
+					}
+
+					node.equation=nEquation;
+					obj._ID=obj._ID+1; //for next coming node
+
+            		//push to givenModelNodes
+            		obj.model.task.givenModelNodes.push(node);
             	},this);
+
 
 				return ids;				
 			},
