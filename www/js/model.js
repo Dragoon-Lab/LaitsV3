@@ -526,6 +526,27 @@ define([
 				obj.model.task.givenModelNodes.push(newNode);
 				return newNode.ID;
 			},
+			/*merges imported model and returns ids of merged nodes*/
+			mergeNodes: function(nodes){
+				var ids = [];
+				array.forEach(nodes,function(node){
+               		obj._updateNextXYPosition();
+					node.position = {x: obj.x, y: obj.y};
+					/*//update the node equation
+					if(node.equation){
+						var find = 'abc';
+						var re = new RegExp(find, 'g');
+						str = str.replace(re, '');
+					}*/
+					node.ID = "id" + obj._ID++; //replace old id with new ID
+					node.name=node.name+obj._ID;
+					node.description=node.description+obj._ID;
+					obj.model.task.givenModelNodes.push(node);
+					ids.push(node.ID);
+            	},this);
+
+				return ids;				
+			},
 			getGenus: function(/*string*/ id){
 				return this.getNode(id).genus;
 			},
