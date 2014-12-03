@@ -123,33 +123,66 @@ describe('Test dragoon testing framework',function() {
 
         beforeEach(async(function () {
             nodeTitle = dtest.getNodeEditorTitle(client);
-            //nodeDescription = dtest.getNodeDescription(client);
-            //nodeType = dtest.getNodeType(client);
-            //nodeInitialValue = dtest.getNodeInitialValue(client);
-            //nodeUnits = dtest.getNodeUnits(client);
-            //nodeExpression = dtest.getNodeExpression(client);
+            nodeDescription = dtest.getNodeDescription(client);
+            nodeType = dtest.getNodeType(client);
+            nodeInitialValue = dtest.getNodeInitialValue(client);
+            nodeUnits = dtest.getNodeUnits(client);
+            nodeExpression = dtest.getNodeExpression(client);
+
+            //colors
+            nodeDescriptionColor = dtest.getNodeDescriptionColor(client);
+            nodeTypeColor = dtest.getNodeTypeColor(client);
+            nodeInitialValueColor = dtest.getNodeInitialValueColor(client);
+            nodeUnitsColor = dtest.getNodeUnitsColor(client);
+            nodeExpressionColor = dtest.getNodeExpressionColor(client);
         }));
 
-        it("population should have the expected values",function () {
+        it("population node should have the expected values",function () {
             assert(nodeTitle==="population",
                     "The title was "+nodeTitle+" instead of \"population\"");
-            // TODO Add other values
+            assert(nodeDescription==="The number of rabbits in the population");
+            assert(nodeType==="Accumulator");
+            assert(nodeInitialValue==="24");
+            assert(nodeUnits==="rabbits");
+            assert(nodeExpression==="net growth");
+
+            assert(nodeDescriptionColor==="green");
+            assert(nodeTypeColor==="green");
+            assert(nodeInitialValueColor==="green");
+            assert(nodeUnitsColor==="green");
+            assert(nodeExpressionColor==="green");
+
             nextNodeToCheck ="net growth";
-            //nextNodeToCheck = "id11" // temporary hack until using real names works
         });
 
-        it("net growth should have the expected values",function () {
+        it("net growth node should have the expected values",function () {
             assert(nodeTitle==="net growth",
                     "The title was "+nodeTitle+" instead of \"net growth\"");
-            // TODO
+            assert(nodeDescription==="The number of additional rabbits each year");
+            assert(nodeType==="Function");
+            assert(nodeUnits==="rabbits/year");
+            assert(nodeExpression==="population*growth rate");
+
+            assert(nodeDescriptionColor==="green");
+            assert(nodeTypeColor==="green");
+            assert(nodeUnitsColor==="green");
+            assert(nodeExpressionColor==="yellow");
+
             nextNodeToCheck ="growth rate";
-            //nextNodeToCheck = "id13" // temporary hack until using real names works
         });
 
-        it("growth rate should have the expected values",function () {
+        it("growth rate node should have the expected values",function () {
             assert(nodeTitle==="growth rate",
                     "The title was "+nodeTitle+" instead of \"growth rate\"");
-            // TODO
+            assert(nodeDescription==="The number of rabbits in the population");
+            assert(nodeType==="Parameter");
+            assert(nodeInitialValue==="33");
+            assert(nodeUnits==="--Select--");
+
+            assert(nodeDescriptionColor==="green");
+            assert(nodeTypeColor==="green");
+            assert(nodeInitialValueColor==="red");
+            assert(nodeUnitsColor==="white");
         });
 
         afterEach(async(function () {
