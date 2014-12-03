@@ -143,6 +143,13 @@ define([
 				else
 					this.dialogContent += "<font color='red'>Unfortunately, your model's behavior does not match the author's</font><br>";
 			}
+			this.plotVariables = this.active.timeStep.xvars.concat(
+				this.active.timeStep.functions);
+			console.log(this.checkForNan());
+			if(this.mode === "AUTHOR" && this.checkForNan())
+			{
+				this.dialogContent += "<font color='red' id = 'errorText'>The solution contains imaginary or overflowed numbers</font><br>";
+			}
 			//plot sliders
 
 			this.createSliderAndDialogObject();	
@@ -152,12 +159,10 @@ define([
 			var legends = {};
 			var paneText="";
 			
-			console.log(graphTabTitle);
 			//graphTabTitle.style.borderWidth = "3px";
 
 			/* List of variables to plot: Include functions */
-			this.plotVariables = this.active.timeStep.xvars.concat(
-				this.active.timeStep.functions);
+			
 			if(this.plotVariables.length>0){ //we check the length of object, if there are nodes , then we proceed else give an error and return
 				paneText += this.initTable();
 				paneText += this.setTableHeader();
@@ -393,6 +398,20 @@ define([
 				tableString += "</tr>";
 			}
 			return tableString;
+		},
+
+		checkForNan: function(){
+			var solution = this.findSolution(true, this.plotVariables);
+			var nan = false;
+			for(var i = 0; i < solution.times.length; i++){
+				if(isNaN(solution.times[i].toPrecision(4)))
+					nan = true;
+				array.forEach(solution.plotValues, function(value){
+					if(isNaN(value[i]))
+						nan = true;
+				});
+			}
+			return nan;
 		}
 	});
 });
