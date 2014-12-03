@@ -306,6 +306,16 @@ define([
 								var ids = givenModel.active.mergeNodes(nodes);
 								console.log("merged nodes are "+ids);
 								session.saveProblem(givenModel.model);
+								//add merged nodes
+								array.forEach(ids,function(id){	
+									var node = 	givenModel.active.getNode(id);
+									drawModel.addNode(node);	
+								},this);	
+								//set connections for merged nodes
+								array.forEach(ids,function(id){
+									var node = 	givenModel.active.getNode(id);
+									drawModel.setConnections(node.inputs,dojo.byId(id));
+								},this);
 							}else{
 								console.log("Problem Not found");
 								alert("Problem Not found");
