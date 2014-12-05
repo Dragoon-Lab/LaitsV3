@@ -209,6 +209,16 @@ define([
 			 */
 			aspect.after(registry.byId('nodeeditor'), "hide", function(){
 				console.log("Calling session.saveProblem");
+				console.log(controllerObject.currentID);				
+				array.forEach(givenModel.model.task.givenModelNodes, function(node){
+					if(node.ID === controllerObject.currentID)
+					{
+						if(node.description === "" || node.description === null)
+						{
+							node.description = node.name;
+						}
+					}
+				}, this);
 				session.saveProblem(givenModel.model);
                 var descDirective=controllerObject._model.student.getStatusDirectives(controllerObject.currentID);
                 var directive = null;
@@ -217,6 +227,7 @@ define([
                             directive=descDirective[i];
                         
                 }
+                console.log(descDirective);
                 if(directive&&(directive.value=="incorrect" || directive.value=="premature"))
                             drawModel.deleteNode(controllerObject.currentID);
     		});
@@ -224,7 +235,6 @@ define([
 			// Wire up close button...
 			// This will trigger the above session.saveProblem()
 			on(registry.byId("closeButton"), "click", function(){
-
 				registry.byId("nodeeditor").hide();
 			});
 
