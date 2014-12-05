@@ -111,7 +111,7 @@
              <button type="button" data-dojo-type="dijit/form/Button" id="graphButton">Graph</button>
              <button type="button" data-dojo-type="dijit/form/Button" id="tableButton">Table</button>
              <button type="button" data-dojo-type="dijit/form/Button" id="forumButton" disabled="true">Forum</button>
-             <button type="button" data-dojo-type="dijit/form/Button" id="descButton" disabled="true">Description &amp; Times</button>
+             <button type="button" data-dojo-type="dijit/form/Button" id="descButton" disabled="true">Problem &amp; Times</button>
              <button type="button" data-dojo-type="dijit/form/Button" id="saveButton" disabled="true">Save As...</button>
 			 <button type="button" data-dojo-type="dijit/form/Button" id="previewButton" disabled="true">Preview</button>
 			 <button type="button" data-dojo-type="dijit/form/Button" id="slidesButton" disabled="true">Hints</button>
@@ -194,7 +194,7 @@
              <img id="questionMarkURL"  class="questionMark" src="images/questionmark.png"/>
 		</div>
 		<div class="fieldgroup">
-			<label for="authorSetDescription">Description of Problem:</label>
+			<label for="authorSetDescription">Problem Statement:</label>
 			<textarea id="authorSetDescription" name="authorSetDescription" data-dojo-type="dijit/form/SimpleTextarea" value="Enter Description here..."></textarea>
 		</div>
 		<div class="fieldgroup">
@@ -243,8 +243,8 @@
                 <input id="setName" data-dojo-type="dijit/form/ComboBox">
 	        <label for="selectKind">Kind of quantity:</label>
                 <select id="selectKind" data-dojo-type="dijit/form/Select">
-	            <option value='' selected>in model</option>
-	            <option value='allowed'>optional</option>
+	            <option value='' selected>in model & required</option>
+	            <option value='allowed'>in model & optional</option>
 	            <option value='extra'>in description but not in model</option>
 	            <option value='irrelevant'>not in model or description</option>
 	        </select>

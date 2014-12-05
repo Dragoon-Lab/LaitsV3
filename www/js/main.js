@@ -107,6 +107,9 @@ define([
 		 Create state object
 		 */
 		var state = new State(query.u, query.s, "action");
+		state.get("isLessonLearnedShown").then(function(reply) {
+			givenModel.setLessonLearned(reply);
+		});
 		controllerObject.setState(state);
 
 		ready(function(){
@@ -372,6 +375,7 @@ define([
 				// instantiate graph object
 				var buttonClicked = "graph";
 				var graph = new Graph(givenModel, query.m, session, buttonClicked);
+				graph.setStateGraph(state);
 				var problemComplete = givenModel.matchesGivenSolution();
 				
 				graph._logging.log('ui-action', {
@@ -388,6 +392,7 @@ define([
 				console.debug("table button clicked");
 				var buttonClicked = "table";
 				var table = new Graph(givenModel, query.m, session, buttonClicked);
+				table.setStateTable(state);
 				table._logging.log('ui-action', {
 					type: "menu-choice", 
 					name: "table-button"
