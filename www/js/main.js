@@ -188,6 +188,25 @@ define([
 				var g = geometry.position(mover.node, true);  // take into account scrolling
 				console.log("Update model coordinates for ", mover.node.id, g);
 				console.warn("This should take into account scrolling, Bug #2300.");
+				
+				var node = registry.byId(mover.node);
+				var widthLimit = window.screen.availWidth - 250;
+				var topLimit = 20;
+				//check if bounds inside
+				if(g.y < topLimit) {
+					g.y = topLimit;
+					node.style.top = topLimit+"px";			
+				}
+				
+				if(g.x > widthLimit) {
+					g.x = widthLimit;
+					node.style.left = widthLimit+"px";
+				}
+				if(g.x < 0) {
+					g.x = 0;
+					node.style.left = "0px";
+				}
+				
 				givenModel.active.setPosition(mover.node.id, {"x": g.x, "y": g.y});
 				// It would be more efficient if we only saved the changed node.
 				session.saveProblem(givenModel.model);	 // Autosave to server
