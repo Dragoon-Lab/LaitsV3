@@ -430,7 +430,7 @@ define([
 				console.debug("table button clicked");
 				var buttonClicked = "table";
 				var table = new Graph(givenModel, query.m, session, buttonClicked);
-				table.setStateTable(state);
+				table.setStateGraph(state);
 				table._logging.log('ui-action', {
 					type: "menu-choice", 
 					name: "table-button"
