@@ -209,19 +209,15 @@ define([
 			 */
 			aspect.after(registry.byId('nodeeditor'), "hide", function(){
 				console.log("Calling session.saveProblem");
-
-				console.log(controllerObject);
-				console.log(givenModel);
 				if(controllerObject._mode == "AUTHOR")
 				{	
-					console.log("Checking description");
 					array.forEach(givenModel.model.task.givenModelNodes, function(node){
 						if(node.ID === controllerObject.currentID)
 						{
 							console.log(node.description);
 							if(node.description === "" || node.description == null)
 							{
-								console.log("changing description");
+								console.log("Changing description to match name");
 								node.description = node.name;
 							}
 						}
