@@ -209,17 +209,30 @@ define([
 			 */
 			aspect.after(registry.byId('nodeeditor'), "hide", function(){
 				console.log("Calling session.saveProblem");
-				console.log(controllerObject.currentID);				
-				array.forEach(givenModel.model.task.givenModelNodes, function(node){
-					if(node.ID === controllerObject.currentID)
-					{
-						if(node.description === "" || node.description === null)
+
+				console.log(controllerObject);
+				console.log(givenModel);
+				if(controllerObject._mode == "AUTHOR")
+				{	
+					console.log("Checking description");
+					array.forEach(givenModel.model.task.givenModelNodes, function(node){
+						if(node.ID === controllerObject.currentID)
 						{
-							node.description = node.name;
+							console.log(node.description);
+							if(node.description === "" || node.description == null)
+							{
+								console.log("changing description");
+								node.description = node.name;
+							}
 						}
-					}
-				}, this);
+					}, this);
+					var isComplete = givenModel.given.isComplete(controllerObject.currentID, true)?'solid':'dashed';
+					var borderColor = "3px "+isComplete+" gray";
+					style.set(controllerObject.currentID, 'border', borderColor);
+					style.set(controllerObject.currentID, 'backgroundColor', "white");
+				}
 				session.saveProblem(givenModel.model);
+				//This section errors out in author mode
                 var descDirective=controllerObject._model.student.getStatusDirectives(controllerObject.currentID);
                 var directive = null;
                 for(i=0;i<descDirective.length;i++){
@@ -227,7 +240,6 @@ define([
                             directive=descDirective[i];
                         
                 }
-                console.log(descDirective);
                 if(directive&&(directive.value=="incorrect" || directive.value=="premature"))
                             drawModel.deleteNode(controllerObject.currentID);
     		});
