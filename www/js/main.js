@@ -107,6 +107,9 @@ define([
 		 Create state object
 		 */
 		var state = new State(query.u, query.s, "action");
+		state.get("isLessonLearnedShown").then(function(reply) {
+			givenModel.setLessonLearned(reply);
+		});
 		controllerObject.setState(state);
 
 		ready(function(){
@@ -184,7 +187,27 @@ define([
 			aspect.after(drawModel, "onClickMoved", function(mover){
 				var g = geometry.position(mover.node, true);  // take into account scrolling
 				console.log("Update model coordinates for ", mover.node.id, g);
-				console.warn("This should take into account scrolling, Bug #2300.");
+				
+				var node = registry.byId(mover.node);
+				var widthLimit = document.documentElement.clientWidth - 110;
+				var topLimit = 20;
+
+				//check if bounds inside
+				if(g.y < topLimit) { // BUG: this g.y should be absolute coordinates instead
+					g.y = topLimit;
+					node.style.top = topLimit+"px";  // BUG: This needs to correct for scroll
+				}
+								
+				if(g.x > widthLimit) {
+					g.x = widthLimit;
+					node.style.left = widthLimit+"px";
+				}
+				
+				if(g.x < 0) {
+					g.x = 0;
+					node.style.left = "0px";
+				}
+				
 				givenModel.active.setPosition(mover.node.id, {"x": g.x, "y": g.y});
 				// It would be more efficient if we only saved the changed node.
 				session.saveProblem(givenModel.model);	 // Autosave to server
@@ -390,6 +413,7 @@ define([
 				// instantiate graph object
 				var buttonClicked = "graph";
 				var graph = new Graph(givenModel, query.m, session, buttonClicked);
+				graph.setStateGraph(state);
 				var problemComplete = givenModel.matchesGivenSolution();
 				
 				graph._logging.log('ui-action', {
@@ -406,6 +430,7 @@ define([
 				console.debug("table button clicked");
 				var buttonClicked = "table";
 				var table = new Graph(givenModel, query.m, session, buttonClicked);
+				table.setStateTable(state);
 				table._logging.log('ui-action', {
 					type: "menu-choice", 
 					name: "table-button"

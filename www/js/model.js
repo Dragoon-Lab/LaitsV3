@@ -59,7 +59,7 @@ define([
 				this.checkedNodes = new Array();
 				this.model = {task: {
 					taskName: name,
-					time: {start: 0, end: 10, step: .5, integrationMethod: "Eulers Method"},
+					time: {start: 0, end: 10, step: 1.0, integrationMethod: "Eulers Method"},
 					properties: {},
 					image: {},
 					taskDescription: "",
@@ -101,6 +101,9 @@ define([
 						this.updatePosition();
 						pos = { x: this.x, y: this.y, nodeWidth: this.nodeWidth, nodeHeight: this.nodeHeight};
 					}
+			},
+			setLessonLearned : function(_isLessonLearnedShown) {
+				this.isLessonLearnedShown = _isLessonLearnedShown;
 			},
 			updatePosition: function()
 			{
