@@ -239,7 +239,6 @@ define([
 			}));
 			/*
 			 Fire off functions associated with draggable events.
-
 			 Note that the names (onMoveStart, onMove, onMoveStop) are from
 			 the underlying library dojo/dnd/move, rather than jsPlumb.
 			 */		
