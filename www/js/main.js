@@ -187,21 +187,22 @@ define([
 			aspect.after(drawModel, "onClickMoved", function(mover){
 				var g = geometry.position(mover.node, true);  // take into account scrolling
 				console.log("Update model coordinates for ", mover.node.id, g);
-				console.warn("This should take into account scrolling, Bug #2300.");
 				
 				var node = registry.byId(mover.node);
-				var widthLimit = window.screen.availWidth - 250;
+				var widthLimit = document.documentElement.clientWidth - 110;
 				var topLimit = 20;
+
 				//check if bounds inside
-				if(g.y < topLimit) {
+				if(g.y < topLimit) { // BUG: this g.y should be absolute coordinates instead
 					g.y = topLimit;
-					node.style.top = topLimit+"px";			
+					node.style.top = topLimit+"px";  // BUG: This needs to correct for scroll
 				}
-				
+								
 				if(g.x > widthLimit) {
 					g.x = widthLimit;
 					node.style.left = widthLimit+"px";
 				}
+				
 				if(g.x < 0) {
 					g.x = 0;
 					node.style.left = "0px";
