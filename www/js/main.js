@@ -232,7 +232,26 @@ define([
 			 */
 			aspect.after(registry.byId('nodeeditor'), "hide", function(){
 				console.log("Calling session.saveProblem");
+				if(controllerObject._mode == "AUTHOR")
+				{	
+					array.forEach(givenModel.model.task.givenModelNodes, function(node){
+						if(node.ID === controllerObject.currentID)
+						{
+							console.log(node.description);
+							if(node.description === "" || node.description == null)
+							{
+								console.log("Changing description to match name");
+								node.description = node.name;
+							}
+						}
+					}, this);
+					var isComplete = givenModel.given.isComplete(controllerObject.currentID, true)?'solid':'dashed';
+					var borderColor = "3px "+isComplete+" gray";
+					style.set(controllerObject.currentID, 'border', borderColor);
+					style.set(controllerObject.currentID, 'backgroundColor', "white");
+				}
 				session.saveProblem(givenModel.model);
+				//This section errors out in author mode
                 var descDirective=controllerObject._model.student.getStatusDirectives(controllerObject.currentID);
                 var directive = null;
                 for(i=0;i<descDirective.length;i++){
@@ -247,7 +266,6 @@ define([
 			// Wire up close button...
 			// This will trigger the above session.saveProblem()
 			on(registry.byId("closeButton"), "click", function(){
-
 				registry.byId("nodeeditor").hide();
 			});
 
@@ -419,7 +437,7 @@ define([
 				console.debug("table button clicked");
 				var buttonClicked = "table";
 				var table = new Graph(givenModel, query.m, session, buttonClicked);
-				table.setStateTable(state);
+				table.setStateGraph(state);
 				table._logging.log('ui-action', {
 					type: "menu-choice", 
 					name: "table-button"
