@@ -84,7 +84,7 @@ html, body, #main{
     background:#e5e5e5;
     border:solid black 1px;
     overflow-y:scroll;
-    height:8ex;
+    height:50px;
     width:20em
 }
 

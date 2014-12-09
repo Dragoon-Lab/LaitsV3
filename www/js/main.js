@@ -269,6 +269,13 @@ define([
 				registry.byId("nodeeditor").hide();
 			});
 
+			on(registry.byId("deleteButton"), "click", function(){
+				//delete node from model and remove from display
+				drawModel.deleteNode(controllerObject.currentID);
+				registry.byId("nodeeditor").hide();
+			});
+
+
 			// checks if forumurl is present
 			if(query.f && query.fe=="true") {
 				//Enable the forum button in the menu
