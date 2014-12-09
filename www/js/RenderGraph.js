@@ -138,12 +138,18 @@ define([
 			this.dialogContent += "<p>To reset sliders, close and reopen window</p><br>";
 			if(this.mode != "AUTHOR"  && this.mode != "EDITOR")
 			{
-				if(this.model.active.matchesGivenSolutionAndCorrect())
+				if(this.model.active.isCompleteFlag && this.model.active.checkStudenNodeCorrectness())
 				{
 					this.dialogContent += "<font color='green'>Congratulations, your model's behavior matches the author's</font><br>";
 				}
 				else
-					this.dialogContent += "<font color='red'>Unfortunately, your model's behavior does not match the author's</font><br>";
+				{
+					if(this.model.active.checkStudenNodeCorrectness())
+						this.dialogContent += "<font color='red'>Some nodes that the author requires are missing from your model, probably because a subexpression in some node's expression needs to be turned into a node.</font><br>";
+					else
+						this.dialogContent += "<font color='red'>Unfortunately, your model's behavior does not match the author's</font><br>";
+					 
+				}
 			}
 			this.plotVariables = this.active.timeStep.xvars.concat(
 				this.active.timeStep.functions);

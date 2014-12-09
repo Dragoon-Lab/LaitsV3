@@ -808,6 +808,13 @@ define([
                             return correctness === "correct" || correctness === "demo";
                         }, this);
             },
+            checkStudenNodeCorrectness: function(){
+            	return array.every(this.getStudentNodesInSolution(),
+                        function(studentNode){
+                            var correctness = this.getCorrectness(studentNode.ID);
+                            return correctness === "correct" || correctness === "demo";
+                        }, this);
+            },
 			getStatusDirectives: function(/*string*/ id){
 				//Summary:	Return a list of directives (like PM does).
 				//			to set up node editor.
