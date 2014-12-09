@@ -225,6 +225,21 @@ define([
 				var input = dom.byId(index);
 				// Print slider value in box.
 				input.value = transform(slider.value).toPrecision(3);
+				console.log(this.model.student.getName(paramID));
+				console.log(this.mode);
+				console.log(this.active);
+				if(this.mode != "AUTHOR")
+				{
+					var logObj = lang.mixin({
+						type : "slider-change",
+						nodeID: paramID,
+						node: this.model.student.getName(paramID),
+						newValue: input.value
+					}, logObj);
+					console.log(logObj);
+					this._logging.doLogging = true;
+					this._logging.log('slider-change', logObj);
+				}	
 				// Fire an "onchange" event since the value has changed.
 				on.emit(input, "change", {});
 			}));
