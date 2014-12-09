@@ -138,7 +138,7 @@ define([
 			this.dialogContent += "<p>To reset sliders, close and reopen window</p><br>";
 			if(this.mode != "AUTHOR"  && this.mode != "EDITOR")
 			{
-				if(this.model.active.isCompleteFlag && this.model.active.checkStudenNodeCorrectness())
+				if(this.model.active.matchesGivenSolutionAndCorrect())
 				{
 					this.dialogContent += "<font color='green'>Congratulations, your model's behavior matches the author's</font><br>";
 				}
