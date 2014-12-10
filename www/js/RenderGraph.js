@@ -147,7 +147,7 @@ define([
 				}
 				else
 				{
-					if(this.model.active.checkStudenNodeCorrectness())
+					if(this.model.active.checkStudentNodeCorrectness())
 						this.dialogContent += "<font color='red'>Some nodes that the author requires are missing from your model, probably because a subexpression in some node's expression needs to be turned into a node.</font><br>";
 					else
 						this.dialogContent += "<font color='red'>Unfortunately, your model's behavior does not match the author's</font><br>";

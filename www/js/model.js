@@ -802,13 +802,9 @@ define([
                 // Summary: Returns True if (1) matchesGivenSolution is true and (2) if all nodes that are part of the
                 // solution have correctness of "demo" or "correct"
                 return obj.matchesGivenSolution() &&
-                       array.every(this.getStudentNodesInSolution(),
-                        function(studentNode){
-                            var correctness = this.getCorrectness(studentNode.ID);
-                            return correctness === "correct" || correctness === "demo";
-                        }, this);
+                       checkStudentNodeCorrectness();
             },
-            checkStudenNodeCorrectness: function(){
+            checkStudentNodeCorrectness: function(){
             	return array.every(this.getStudentNodesInSolution(),
                         function(studentNode){
                             var correctness = this.getCorrectness(studentNode.ID);
