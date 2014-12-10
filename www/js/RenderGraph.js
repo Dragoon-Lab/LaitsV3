@@ -175,14 +175,14 @@ define([
 			graphTab.addEventListener("click", function(){ 
 				console.log("graph tab clicked");
 				logger.session.log('ui-action', {
-					type: "graph-tab-clicked",
+					type: "solution-manipulation",
 					name: "graph-tab"
 				});
 				});
 			tableTab.addEventListener("click", function(){
 				console.log("table tab clicked");
 				logger.session.log('ui-action', {
-					type: "table-tab-clicked",
+					type: "solution-manipulation",
 					name: "table-tab"
 				});
 			});

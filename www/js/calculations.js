@@ -231,14 +231,15 @@ define([
 				if(this.mode != "AUTHOR")
 				{
 					var logObj = lang.mixin({
-						type : "slider-change",
+						type : "solution-manipulation",
+						name : "slider-change",
 						nodeID: paramID,
 						node: this.model.student.getName(paramID),
 						newValue: input.value
 					}, logObj);
 					console.log(logObj);
 					this._logging.doLogging = true;
-					this._logging.log('slider-change', logObj);
+					this._logging.log('ui-action', logObj);
 				}	
 				// Fire an "onchange" event since the value has changed.
 				on.emit(input, "change", {});
