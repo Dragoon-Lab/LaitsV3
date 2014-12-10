@@ -34,6 +34,7 @@ define([
 	"dojox/charting/plot2d/Grid",
 	"dojox/charting/widget/Legend",
 	"./calculations",
+	"./logging",
 	"dijit/_base",
 	"dijit/layout/ContentPane",
 	"dojo/dom",
@@ -41,7 +42,7 @@ define([
 	"dojo/parser",
 	
 	"dojo/domReady!"
-], function(array, declare, lang, on, domAttr, registry, Chart, Default, Lines, Grid, Legend, calculations, base, contentPane, dom){
+], function(array, declare, lang, on, domAttr, registry, Chart, Default, Lines, Grid, Legend, calculations, logger, base, contentPane, dom){
 
 	// The calculations constructor is loaded before the RenderGraph constructor
 	return declare(calculations, {
@@ -55,7 +56,9 @@ define([
 		 */
 		constructor: function(model, mode, logging, buttonClicked){
 			this.buttonClicked = buttonClicked;
+			logger.setSession(logging);
 			console.log("***** In RenderGraph constructor");
+			console.log(logging);
 			this.resizeWindow();
 			if(this.active.timeStep){  // Abort if there is an error in timestep.
 				this.initialize();
@@ -162,7 +165,32 @@ define([
 
 			this.createSliderAndDialogObject();	
 
-			
+			var graphTab = null;
+			var count = -1;
+			while(graphTab == null){
+				count++;
+				graphTab = dom.byId("dijit_layout_TabContainer_" + count + "_tablist_dijit_layout_ContentPane_" + (1 + count*4));
+			}
+			var tableTab = dom.byId("dijit_layout_TabContainer_" + count + "_tablist_dijit_layout_ContentPane_" + (2 + count*4));
+			graphTab.addEventListener("click", function(){ 
+				console.log("graph tab clicked");
+				logger.session.log('ui-action', {
+					type: "graph-tab-clicked",
+					name: "graph-tab"
+				});
+				});
+			tableTab.addEventListener("click", function(){
+				console.log("table tab clicked");
+				logger.session.log('ui-action', {
+					type: "table-tab-clicked",
+					name: "table-tab"
+				});
+			});
+
+			graphTab.style.border = "thin solid black";
+			tableTab.style.border = "thin solid black";
+
+
 			var charts = {};
 			var legends = {};
 			var paneText="";
