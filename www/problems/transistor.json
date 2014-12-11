@@ -1,0 +1,420 @@
+{
+    "taskName": "Transistor+circuit",
+    "time": {
+        "start": 0,
+        "end": 1,
+        "step": 0.01,
+        "integrationMethod": "Eulers Method",
+        "units": "seconds"
+    },
+    "properties": {},
+    "image": {},
+    "taskDescription": [
+        "",
+        ""
+    ],
+    "lessonsLearned": "",
+    "givenModelNodes": [
+        {
+            "ID": "id8",
+            "inputs": [],
+            "position": {
+                "x": 472.98614501953125,
+                "y": 186.9791717529297
+            },
+            "attemptCount": {
+                "description": 0,
+                "type": 0,
+                "initial": 0,
+                "units": 0,
+                "equation": 0,
+                "assistanceScore": 0
+            },
+            "status": {},
+            "name": "Vin",
+            "description": "Input voltage supply",
+            "equation": "16+random(0.2)",
+            "type": "function",
+            "parentNode": false,
+            "initial": "",
+            "units": "Volts"
+        },
+        {
+            "ID": "id11",
+            "inputs": [
+                {
+                    "ID": "id24",
+                    "label": ""
+                },
+                {
+                    "ID": "id23",
+                    "label": "-"
+                }
+            ],
+            "position": {
+                "x": 635,
+                "y": 386.19793701171875
+            },
+            "attemptCount": {
+                "description": 0,
+                "type": 0,
+                "initial": 0,
+                "units": 0,
+                "equation": 0,
+                "assistanceScore": 0
+            },
+            "status": {},
+            "name": "Zener Voltage",
+            "description": "Zener Voltage",
+            "equation": "id24-id23",
+            "type": "function",
+            "parentNode": false,
+            "initial": "",
+            "units": "Volts"
+        },
+        {
+            "ID": "id12",
+            "inputs": [],
+            "position": {
+                "x": 763.649658203125,
+                "y": 77.6253433227539
+            },
+            "attemptCount": {
+                "description": 0,
+                "type": 0,
+                "initial": 0,
+                "units": 0,
+                "equation": 0,
+                "assistanceScore": 0
+            },
+            "status": {},
+            "name": "R1 circuit resistance",
+            "description": "Resistance",
+            "equation": "",
+            "type": "parameter",
+            "parentNode": false,
+            "initial": 180,
+            "units": "Ohms"
+        },
+        {
+            "ID": "id14",
+            "inputs": [
+                {
+                    "ID": "id8",
+                    "label": ""
+                },
+                {
+                    "ID": "id18",
+                    "label": "/"
+                }
+            ],
+            "position": {
+                "x": 196.9965362548828,
+                "y": 192.20486450195312
+            },
+            "attemptCount": {
+                "description": 0,
+                "type": 0,
+                "initial": 0,
+                "units": 0,
+                "equation": 0,
+                "assistanceScore": 0
+            },
+            "status": {},
+            "name": "Load Current",
+            "description": "Current Through Load",
+            "type": "function",
+            "units": "mA",
+            "equation": "id8/id18"
+        },
+        {
+            "ID": "id16",
+            "inputs": [
+                {
+                    "ID": "id20",
+                    "label": ""
+                }
+            ],
+            "position": {
+                "x": 91.99652862548828,
+                "y": 573.9757080078125
+            },
+            "attemptCount": {
+                "description": 0,
+                "type": 0,
+                "initial": 0,
+                "units": 0,
+                "equation": 0,
+                "assistanceScore": 0
+            },
+            "status": {},
+            "name": "Zener resistance",
+            "description": "Zener Resistance",
+            "initial": 200,
+            "units": "Ohms",
+            "type": "accumulator",
+            "equation": "id20",
+            "parentNode": false
+        },
+        {
+            "ID": "id17",
+            "inputs": [
+                {
+                    "ID": "id14",
+                    "label": ""
+                },
+                {
+                    "ID": "id16",
+                    "label": ""
+                }
+            ],
+            "position": {
+                "x": 193.99305725097656,
+                "y": 422.98614501953125
+            },
+            "attemptCount": {
+                "description": 0,
+                "type": 0,
+                "initial": 0,
+                "units": 0,
+                "equation": 0,
+                "assistanceScore": 0
+            },
+            "status": {},
+            "name": "voltage drop",
+            "description": "voltage drop",
+            "type": "function",
+            "units": "Volts",
+            "equation": "id14*id16"
+        },
+        {
+            "ID": "id18",
+            "inputs": [
+                {
+                    "ID": "id16",
+                    "label": ""
+                },
+                {
+                    "ID": "id12",
+                    "label": ""
+                }
+            ],
+            "position": {
+                "x": 96.99652862548828,
+                "y": 114.9826431274414
+            },
+            "attemptCount": {
+                "description": 0,
+                "type": 0,
+                "initial": 0,
+                "units": 0,
+                "equation": 0,
+                "assistanceScore": 0
+            },
+            "status": {},
+            "name": "Total Resistance",
+            "description": "total res",
+            "type": "function",
+            "units": "Ohms",
+            "equation": "id16+id12"
+        },
+        {
+            "ID": "id19",
+            "inputs": [
+                {
+                    "ID": "id11",
+                    "label": ""
+                },
+                {
+                    "ID": "id17",
+                    "label": "-"
+                }
+            ],
+            "position": {
+                "x": 366.9965515136719,
+                "y": 375.763916015625
+            },
+            "attemptCount": {
+                "description": 0,
+                "type": 0,
+                "initial": 0,
+                "units": 0,
+                "equation": 0,
+                "assistanceScore": 0
+            },
+            "status": {},
+            "name": "difference",
+            "description": "diff",
+            "type": "function",
+            "units": "Volts",
+            "equation": "id11-id17"
+        },
+        {
+            "ID": "id20",
+            "inputs": [
+                {
+                    "ID": "id19",
+                    "label": ""
+                },
+                {
+                    "ID": "id21",
+                    "label": ""
+                }
+            ],
+            "position": {
+                "x": 351.9965515136719,
+                "y": 540.2083740234375
+            },
+            "attemptCount": {
+                "description": 0,
+                "type": 0,
+                "initial": 0,
+                "units": 0,
+                "equation": 0,
+                "assistanceScore": 0
+            },
+            "status": {},
+            "name": "Resistance added",
+            "description": "Resistance added",
+            "equation": "id19*id21",
+            "type": "function",
+            "parentNode": false,
+            "units": "Volts"
+        },
+        {
+            "ID": "id21",
+            "inputs": [],
+            "position": {
+                "x": 792.6427001953125,
+                "y": 545.837158203125
+            },
+            "attemptCount": {
+                "description": 0,
+                "type": 0,
+                "initial": 0,
+                "units": 0,
+                "equation": 0,
+                "assistanceScore": 0
+            },
+            "status": {},
+            "name": "Zener Speed",
+            "equation": "",
+            "type": "parameter",
+            "parentNode": false,
+            "initial": 1000,
+            "units": "Ohms/Volts",
+            "description": "Zener speed"
+        },
+        {
+            "ID": "id22",
+            "inputs": [
+                {
+                    "ID": "id14",
+                    "label": ""
+                },
+                {
+                    "ID": "id25",
+                    "label": "/"
+                }
+            ],
+            "position": {
+                "x": 511.9965515136719,
+                "y": 252.2048797607422
+            },
+            "attemptCount": {
+                "description": 0,
+                "type": 0,
+                "initial": 0,
+                "units": 0,
+                "equation": 0,
+                "assistanceScore": 0
+            },
+            "status": {},
+            "name": "Base Current",
+            "description": "Base Current",
+            "type": "function",
+            "units": "mA",
+            "equation": "id14/id25"
+        },
+        {
+            "ID": "id23",
+            "inputs": [
+                {
+                    "ID": "id22",
+                    "label": ""
+                },
+                {
+                    "ID": "id18",
+                    "label": ""
+                }
+            ],
+            "position": {
+                "x": 661.99658203125,
+                "y": 79.2013931274414
+            },
+            "attemptCount": {
+                "description": 0,
+                "type": 0,
+                "initial": 0,
+                "units": 0,
+                "equation": 0,
+                "assistanceScore": 0
+            },
+            "status": {},
+            "name": "Base emitter voltage",
+            "description": "Base emitter voltage",
+            "equation": "id22*id18",
+            "type": "function",
+            "parentNode": false,
+            "units": "Volts"
+        },
+        {
+            "ID": "id24",
+            "inputs": [],
+            "position": {
+                "x": 795.6461791992188,
+                "y": 385.837158203125
+            },
+            "attemptCount": {
+                "description": 0,
+                "type": 0,
+                "initial": 0,
+                "units": 0,
+                "equation": 0,
+                "assistanceScore": 0
+            },
+            "status": {},
+            "name": "Zener Voltage set point",
+            "description": "VZ set point",
+            "equation": "",
+            "type": "parameter",
+            "parentNode": false,
+            "initial": 13,
+            "units": "Volts"
+        },
+        {
+            "ID": "id25",
+            "inputs": [],
+            "position": {
+                "x": 773.649658203125,
+                "y": 241.84410095214844
+            },
+            "attemptCount": {
+                "description": 0,
+                "type": 0,
+                "initial": 0,
+                "units": 0,
+                "equation": 0,
+                "assistanceScore": 0
+            },
+            "status": {},
+            "name": "collector emitter voltage drop",
+            "description": "collector emitter voltage drop",
+            "equation": "",
+            "type": "parameter",
+            "parentNode": false,
+            "initial": 25
+        }
+    ],
+    "studentModelNodes": []
+}
