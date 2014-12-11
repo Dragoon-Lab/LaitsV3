@@ -39,6 +39,10 @@ Then, run mocha:
     
 The mocha command is the test runner the -t 30000, specifies in milliseconds the amount of seconds before mocha times out. Without specifying, mocha defaults to 2 seconds which may not be enough for server to respond.
 
+When you're done, you can shut down your selenium server by pointing your web browser at:
+
+    http://localhost:4444/selenium-server/driver/?cmd=shutDownSeleniumServer
+
 #Setup on OSX
 There are additional steps to setting this up on OSX.  For starters, OSX to come with a -pre version of node.  One of the modules used by the synchronize module only works on stable versions of node.  You'll need to install a node version manager such as [n](https://github.com/tj/n).  To install n, run:
   npm install -g n
