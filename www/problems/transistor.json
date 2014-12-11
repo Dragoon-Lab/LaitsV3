@@ -136,8 +136,8 @@
                 }
             ],
             "position": {
-                "x": 91.99652862548828,
-                "y": 573.9757080078125
+                "x": 90.98958587646484,
+                "y": 561.4236450195312
             },
             "attemptCount": {
                 "description": 0,
@@ -318,8 +318,8 @@
                 }
             ],
             "position": {
-                "x": 511.9965515136719,
-                "y": 252.2048797607422
+                "x": 482.98614501953125,
+                "y": 299.09722900390625
             },
             "attemptCount": {
                 "description": 0,
@@ -344,13 +344,13 @@
                     "label": ""
                 },
                 {
-                    "ID": "id18",
+                    "ID": "id16",
                     "label": ""
                 }
             ],
             "position": {
-                "x": 661.99658203125,
-                "y": 79.2013931274414
+                "x": 618.9931030273438,
+                "y": 581.4236450195312
             },
             "attemptCount": {
                 "description": 0,
@@ -363,7 +363,7 @@
             "status": {},
             "name": "Base emitter voltage",
             "description": "Base emitter voltage",
-            "equation": "id22*id18",
+            "equation": "id22*id16",
             "type": "function",
             "parentNode": false,
             "units": "Volts"
