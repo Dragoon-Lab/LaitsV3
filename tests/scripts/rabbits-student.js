@@ -38,7 +38,7 @@ var client = require('webdriverio').remote({
 // import chai assertion library
 var assert = require('chai').assert;
 // import dragoon test library module
-var dtest = require('./dtestlib.js');
+var dtest = require("./dtestlib.js");
 // import sync library
 var sync = require('synchronize');
 // import wrapper for asynchronous functions

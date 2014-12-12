@@ -272,10 +272,45 @@ exports.closeAlertMessage = function(client){
 // TODO: add getters for disabled state and color for all applicable boxes
 
 //////////////////////////////////////////////////
+//Show in student model
+
+exports.getShownInStudentModel = function(client){
+    console.warn("Not yet implemented.");
+}
+
+exports.setShownInStudentModel = function(client, shown){
+    console.warn("Not yet implemented.");
+}
+
+//Select model
+exports.getSelectModel = function(client){
+    console.warn("Not yet implemented.");
+}
+
+exports.setSelectModel = function(client){
+    console.warn("Not yet implemented.");
+}
+
+//////////////////////////////////////////////////
 // Title (can be used to see if the correct node was opened)
 
 exports.getNodeEditorTitle = function(client){
     return await(client.getText("#nodeeditor_title.dijitDialogTitle",defer()));
+}
+
+exports.setNodename = function(client, nodeName){
+    await(client.setValue('#setName', nodeName, defer()));
+}
+
+//////////////////////////////////////////////////
+//Kind of quantity
+
+exports.getKindOfQuantity = function(client){
+    console.warn("Not yet implemented.");
+}
+
+exports.setKindOfQuantity = function(client, type){
+    console.warn("Not yet implemented.");
 }
 
 //////////////////////////////////////////////////
@@ -299,13 +334,15 @@ exports.isNodeDescriptionDisabled = function(client){
 }
 
 exports.setNodeDescription = function(client,description){
-    console.warn("Not yet implemented.");
+    await(client.setValue('#setDescription', description, defer()));
 }
 
 //////////////////////////////////////////////////
 // Node type
 
 exports.getNodeType = function(client){
+    // Summary: Returns a string of the node type: "Parameter","Accumulator", "Function" or "--Select--"
+    //          if a type has not been selected
     return await(client.getText('table[id="typeId"]',defer()));
 }
 
@@ -347,7 +384,7 @@ exports.isNodeInitialValueDisabled = function(client){
 }
 
 exports.setNodeInitialValue = function(client,initialValue){
-    console.warn("Not yet implemented.");
+    await(client.setValue('#initialValue', initialValue, defer()));
 }
 
 //////////////////////////////////////////////////
@@ -396,7 +433,7 @@ exports.isNodeExpressionDisabled = function(client){
 }
 
 exports.setNodeExpression = function(client,expression){
-    console.warn("Not yet implemented.");
+    await(client.setValue('#equationBox', expression, defer()));
 }
 
 exports.expressionInsertInput = function(client){
@@ -406,14 +443,28 @@ exports.expressionInsertInput = function(client){
 
 // TODO: Add +,-,*,and / insert functions
 
+exports.pressPlusButton = function(client){    
+    await(client.click('span[id="plusButton_label"]',defer()));
+}
+
+exports.pressMinusButton = function(client){    
+    await(client.click('span[id="minusButton_label"]',defer()));
+}
+
+exports.pressMultiplyButton = function(client){    
+    await(client.click('span[id="timesButton_label"]',defer()));
+}
+
+exports.pressDivideButton = function(client){    
+    await(client.click('span[id="divideButton_label"]',defer()));
+}
+
 exports.clearExpression = function(client){
-    //Summary: presses the clear expression button
-    console.warn("Not yet implemented.");
+    await(client.click('span[id="undoButton"]',defer()));
 }
 
 exports.checkExpression = function(client){
-    //Summary: presses the check expression button
-    console.warn("Not yet implemented.");
+    await(client.click('span[id="equationDoneButton_label"]',defer()));
 }
 
 
