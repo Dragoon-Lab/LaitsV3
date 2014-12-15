@@ -3,13 +3,23 @@
 <head>        
     <meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
     <title>Dragoon</title>
+    <script type = "text/javascript" src = "version.js"></script>
     <script type="text/javascript">
+        var version = "";
+        
+        if(window.location.hostname == "dragoon.asu.edu"){
+            version = getVersion();  // Get version from version.js
+        }else{
+            version = new Date();
+        }
+
         dojoConfig = {
 	    isDebug:true,
 	    parseOnLoad:true,
 	    async: true,
             // popup:true,
 	    baseUrl: "./",
+        cacheBust: version,
 	    packages: [
 		{name: "dojo", location: "dojo"},
 		{name: "dijit", location: "dijit"},
@@ -25,10 +35,10 @@
             ]
 	};
 	if(dojoConfig.isDebug){
-	    document.write('<link href="css/dragoon.css" rel="stylesheet" />');
+	    document.write('<link href="css/dragoon.css?'+ version+'" rel="stylesheet" />');
             document.write('<scr'+'ipt src="dojo/dojo.js"></scr'+'ipt>'); 
 	} else {
-	    document.write('<link href="release/css/dragoon.css" rel="stylesheet" />');
+	    document.write('<link href="release/css/dragoon.css?'+ version+'"  rel="stylesheet" />');
 	    document.write('<scr'+'ipt src="release/dojo/dojo.js"></scr'+'ipt>');
 	};
     </script>
