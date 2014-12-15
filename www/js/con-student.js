@@ -205,6 +205,8 @@ define([
 				// previous value we dont process
 				var newInitial = IniFlag.value;
 				this._model.active.setInitial(this.currentID, newInitial);
+                console.log("ini value action");
+                console.log("current ID",this.currentID,newInitial);
 				this.applyDirectives(this._PM.processAnswer(this.currentID, 'initial', newInitial));
 			}else if(IniFlag.errorType){
 				this.logging.log('solution-step', {

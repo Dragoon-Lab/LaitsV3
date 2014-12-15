@@ -27,8 +27,8 @@
 /* global define */
 
 define([
-	"dojo/_base/array", "dojo/_base/declare", "dojo/_base/lang", "./equation"
-], function(array, declare, lang, check){
+	"dojo/_base/array", "dojo/_base/declare", "dojo/_base/lang", "./equation", "dojo/dom"
+], function(array, declare, lang, check, dom){
 	// Summary: 
 	//			Processes student selections and returns instructions to the 
 	//			program
@@ -362,18 +362,25 @@ define([
 				}
 				break;
 			case "initial":
+                console.log("case intial",this.model.given.getUnits(givenNodeID));
 				if(this.model.given.getUnits(givenNodeID)){
-					disable(obj, "units", false);
+                    disable(obj, "units", false);
 					newPart = "units";
 				}else if(nodeType === "function" || nodeType === "accumulator"){
-					disable(obj, "equation", false);
-					newPart = "equation";
+                    var dat = dom.byId("equationBox").value;
+                    if(dat=="")
+                    disable(obj, "equation", false);
+                    newPart = "equation";
 				}
 				break;
 			case "units":
-				if(nodeType === "function" || nodeType === "accumulator")
-					disable(obj, "equation", false);
-				newPart = "equation";
+                console.log("case units",givenNodeID);
+				if(nodeType === "function" || nodeType === "accumulator") {
+                    var dat = dom.byId("equationBox").value;
+                    if(dat=="")
+                    disable(obj, "equation", false);
+                }
+                newPart = "equation";
 				break;
 			}
 			if(job === "enableRemaining" && newPart !== "equation")
