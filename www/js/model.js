@@ -532,7 +532,7 @@ define([
 			/*merges imported model and returns ids of merged nodes*/
 			mergeNodes: function(nodes){
 				var ids = [];  //holds new names
-				var shift = this.getNodes().length;
+				var shift = obj._ID-1;
 
 				array.forEach(nodes,function(node){
                		obj._updateNextXYPosition();

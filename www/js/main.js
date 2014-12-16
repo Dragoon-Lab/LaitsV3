@@ -296,10 +296,24 @@ define([
                 menu.add("saveButton", function(){
                     registry.byId("authorSaveDialog").show();
                 });
+
                 menu.add("mergeButton", function(){
                     registry.byId("authorMergeDialog").show();
-                    var sample = {g:"jon",m:"AUTHOR",s:"login.html",p:"jon",u:"asdfadsf1"};;
-                  	session.loadProblem(sample).then(function(solutionGraph){
+             	});
+
+				on(registry.byId("mergeDialogButton"),"click",function(){
+					 var group = registry.byId("authorMergeGroup").value;
+					 var section = registry.byId("authorMergeSection").value;
+					 var problem = registry.byId("authorMergeProblem").value;
+
+					 if(!problem || !section)
+					 	{
+					 		alert("Problem/Section can't be empty");
+					 		return;
+					 	}
+
+					 var query = {g:group,m:"AUTHOR",s:section,p:problem};
+                  	 session.loadProblem(query).then(function(solutionGraph){
 							console.log("Merge problem is loaded "+solutionGraph);
 							if(solutionGraph){
 								var nodes = solutionGraph.task.givenModelNodes;
@@ -316,12 +330,13 @@ define([
 									var node = 	givenModel.active.getNode(id);
 									drawModel.setConnections(node.inputs,dojo.byId(id));
 								},this);
+								registry.byId("authorMergeDialog").hide();
 							}else{
 								console.log("Problem Not found");
 								alert("Problem Not found");
 							}
                		 });
-             	});
+				});
 
                 aspect.after(registry.byId('authorSaveDialog'), "hide", function(){
                     console.log("Rename and Save Problem edits");
