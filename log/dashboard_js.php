@@ -33,9 +33,12 @@
 	!empty($_REQUEST["m"])?($mode = $_REQUEST["m"]):$mode = 'STUDENT';
 	!empty($_REQUEST["u"])?($user = $_REQUEST["u"]):$user = '';
 	!empty($_REQUEST["p"])?($problem = $_REQUEST["p"]):$problem = '';
-
+	!empty($_REQUEST["db_name"])?($dbname = $_REQUEST["db_name"]):'';
+	!empty($_REQUEST["db_user"])?($dbuser = $_REQUEST["db_user"]):'';
+	!empty($_REQUEST["db_name"])?($dbpass = $_REQUEST["db_password"]):'';
+	
 	$mysqli = mysqli_connect("localhost",$dbuser, $dbpass, $dbname) or die("Connection not established. Check the user log file");
-	//$mysqli = mysqli_connect("localhost", "root", "qwerty211", "laits_eno") or die("Connection not established. Check the user log file");
+	//$mysqli = mysqli_connect("localhost", "root", "qwerty211", "laits_cpi") or die("Connection not established. Check the user log file");
 
 	$db = new Dashboard($mysqli);
 

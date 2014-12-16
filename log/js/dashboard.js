@@ -21,7 +21,7 @@
 define([ 
 	'dojo/_base/declare',
 	"dojo/request/xhr", 
-	"dojo/_base/json",
+	"dojo/json",
 	"dojo/_base/lang",
 	"dojo/_base/array",
 	"dojo/number"
@@ -31,6 +31,11 @@ define([
 		//path:'',
 		users: null,
 		objects: null,
+		totalTimeSpent: [],
+		totalProblemsCompleted: [],
+		totalProblemsStarted: [],
+		problemRevisits:[],
+		nodesAttempted: [],
 		timeSpent: [],
 		errorRatio: [],
 		problemComplete: [],
@@ -41,76 +46,98 @@ define([
 		query:{}, // added if we want to send multiple queries. moving the query from main function to the global init. this init can be called again for each new function and then new table can be created. 
 		//sessionDetails:[],
 		decideModules: function(/* string */ type){
+			var returnModule;
 			this.getModules().then(function(results){
-				array.forEach(results, function(module){
+				var obj = json.parse(results);
+				array.forEach(obj.modules, function(module){
 					if(module.tName == type)
-						this.modules = module;
-				});
+						returnModule = lang.clone(module);
+				}, this);
 			});
+			return returnModule;
 		},
 
 		getModules: function(){
-			return xhr.get(this.path + "modules.json", {
-				handleAs: json
-			}). then function(resutls){
-				return modules;
+			return xhr.get(this.path +"js/modules.json", {
+				handleAs: "text",
+				sync: true
+			}).then(function(results){
+				console.log("modules loaded ");
+				return results;
 			}, function(err){
 				console.error("modules could not be loaded");
-			}
+			});
 		},
 
 		constructor: function(/*json*/ params, /*string*/ path){
 			//this.runtime = params['runtime']||true;
 			this.path = path||"";
 			var t = params['t']||"default";
-			this.decideModules(t);
+			this.modules = this.decideModules(t);
 			this.section = params['s']||this.modules.qObject.s;
 			this.currentUser = params['us'];
 			this.mode = params['m'];
-			this.query = params;
+			if(this.modules.query == 'custom')
+				this.query = this.modules.qObject;
+			else 
+				this.query = params;
 		},
 
 		init: function(){
-			this.getResults(this.query).then(function(results){
-				this.objects = json.parse(results);
-				this.users = this.getAllUsers();
-				this.problems = this.getAllProblems();
+			this.setObjects();
+			this.users = this.getAllUsers();
+			this.problems = this.getAllProblems();
 			
-				//initializing the arrays to be exact size as this will lead exact size of the table while rendering.
-				var totalUsers = this.users.length;
-				var totalProblems = this.problems.length;
-				for(var i = 0; i<totalUsers; i++){
-					this.timeSpent[i] = [];
-					this.errorRatio[i] = [];
-					this.problemComplete[i] = [];
-					this.sessionRunning[i] = [];
-					this.detailedNodeAnalysis[i] = [];
-					this.emptyArray[i] = [];
-					//this.sessionDetails[i] = [];
-					for(var j = 0; j<totalProblems; j++){
-						this.timeSpent[i][j] = "-";
-						this.errorRatio[i][j] = "-";
-						this.problemComplete[i][j] = false;
-						this.sessionRunning[i][j] = false;
-						this.detailedNodeAnalysis[i][j] = "-";
-						this.emptyArray[i][j] = " ";
-						//this.sessionDetails[i][j] = " ";
-					}
+			//initializing the arrays to be exact size as this will lead exact size of the table while rendering.
+			var totalUsers = this.users.length;
+			var totalProblems = this.problems.length;
+			for(var i = 0; i<totalUsers; i++){
+				this.timeSpent[i] = [];
+				this.errorRatio[i] = [];
+				this.problemComplete[i] = [];
+				this.sessionRunning[i] = [];
+				this.detailedNodeAnalysis[i] = [];
+				this.emptyArray[i] = [];
+				this.problemRevisits[i] = [];
+				this.nodesAttempted[i] = [];
+				this.totalProblemsStarted[i] = 0;
+				this.totalProblemsCompleted[i] = 0;
+				this.totalTimeSpent[i] = 0;
+				//this.sessionDetails[i] = [];
+				for(var j = 0; j<totalProblems; j++){
+					this.timeSpent[i][j] = "-";
+					this.errorRatio[i][j] = "-";
+					this.problemComplete[i][j] = false;
+					this.sessionRunning[i][j] = false;
+					this.detailedNodeAnalysis[i][j] = "-";
+					this.emptyArray[i][j] = " ";
+					this.problemRevisits[i][j] = "-";
+					this.nodesAttempted[i][j] = "-";
+					//this.sessionDetails[i][j] = " ";
 				}
-				this.getRenderingData();
-			});
+			}
+			this.getRenderingData();
 		},
 
 		getResults: function(/*json*/ params){
 			return xhr.get(this.path + "dashboard_js.php", {
-				query: params
+				query: params,
+				sync: true
 			}).then(function(results){	 // this makes loadProblem blocking?
-				console.log("task objects found in the logs : ", results);
+				console.log("task objects found in the logs");
 				return results;
 			}, function(err){
 				console.error("error in dashboard_js, error message : " + err);
 				throw err;
 			});
+		},
+
+		setObjects: function(){
+			var obj;
+			this.getResults(this.query).then(function(results){
+				obj = json.parse(results);
+			});
+			this.objects = obj;
 		},
 
 		getAllUsers: function(){
@@ -176,7 +203,9 @@ define([
 				var problemIndex = array.indexOf(this.problems, upObject['problem']);
 				if(userIndex >= 0 && problemIndex >= 0){
 					this.timeSpent[userIndex][problemIndex] = (number.round(upObject['totalTime']*10))/10+ " - " + (number.round(upObject['outOfFocusTime']*10))/10;
-					
+					this.totalTimeSpent[userIndex] += (number.round(upObject['totalTime']*10))/10;
+					this.totalTimeSpent[userIndex] = (number.round(this.totalTimeSpent[userIndex]*100))/100; // just making sure no extra long decimals show up.
+
 					var errorRatioText = "Blank";
                     var errorRatioNumber = (100-((parseFloat(upObject['incorrectChecks'])/parseFloat(upObject['totalSolutionChecks']))*100));
                     if (!isNaN(errorRatioNumber)){ 
@@ -185,6 +214,15 @@ define([
  					this.errorRatio[userIndex][problemIndex] = errorRatioText;
 					
 					this.problemComplete[userIndex][problemIndex] = upObject['problemComplete'];
+					if(this.problemComplete[userIndex][problemIndex] == true){
+						this.totalProblemsCompleted[userIndex]++;
+						this.totalProblemsStarted[userIndex]++;
+					} else {
+						this.totalProblemsStarted[userIndex]++;
+					}
+
+					this.problemRevisits[userIndex][problemIndex] = upObject['openTimes'];
+					this.nodesAttempted[userIndex][problemIndex] = upObject['nodes'].length;
 					this.sessionRunning[userIndex][problemIndex] = upObject['sessionRunning'];
 					//this.sessionDetails[userIndex][problemIndex] = {user : upObject['user'], problem: upObject['problem'], section: this.section};
 					if(this.modules['completeAnalysis']){
@@ -232,8 +270,13 @@ define([
 		initTable: function(){
 			var tableString = "<table border='1'>";
 			var problems = this.getAllProblems();
+			if(this.modules['userData']){
+				tableString += "<th>Problems Started</th>";
+				tableString += "<th>Problems Completed</th>";
+				tableString += "<th>Total time spent</th>";
+			}
 			if(this.modules['names'])
-				tableString += "<th>Users \/ Problems -></th>";
+				tableString += "<th class='grey'>Users \/ Problems -></th>";
 			array.forEach(problems, function(problem){
 				tableString += "<th>" + problem + "</th>";
 			});
@@ -245,16 +288,20 @@ define([
 			var row = 0;
 			array.forEach(this.users, function(user){
 
-				if(this.modules['names']){ 
-						tableString += "<tr><td>"+user+"</td>";
-				}else{
-					if(this.currentUser == user)
-						tableString += "<tr class = 'light-blue'>";
-					else
-						tableString += "<tr>";
+				if(!this.modules['names'] && this.currentUser == user){
+					tableString += "<tr class = 'light-blue'>";
+				} else {
+					tableString += "<tr>";
+				}
+				
+				if(this.modules['userData']){
+					tableString += "<td>"+ this.totalProblemsStarted[row] + "</td>"; 
+					tableString += "<td>"+ this.totalProblemsCompleted[row] + "</td>"; 
+					tableString += "<td>"+ this.totalTimeSpent[row] + "</td>"; 
 				}
 
-					
+				if(this.modules['names'])
+					tableString += "<td class='grey'>"+user+"</td>";
 				//var problemDetails = printArray[row];
 				var col = 0;
 				array.forEach(this.problems, function(problem){
@@ -299,6 +346,27 @@ define([
 						tableString += "</a>";
 					}
 					tableString +=  "</span>";
+					
+					tableString += "<span class='revisits all'>";
+					if(this.modules['sessionLink'] && this.problemRevisits[row][col] != "-"){
+						tableString += urlString;
+					}
+					tableString += this.problemRevisits[row][col];
+					if(this.modules['sessionLink'] && this.problemRevisits[row][col] != "-"){
+						tableString += "</a>";
+					}
+					tableString += "</span>";
+
+					tableString += "<span class='nodes all'>";
+					if(this.modules['sessionLink'] && this.nodesAttempted[row][col] != ""){
+						tableString += urlString;
+					}
+					tableString += this.nodesAttempted[row][col];
+					if(this.modules['sessionLink'] && this.nodesAttempted[row][col] != ""){
+						tableString += "</a>";
+					}
+					tableString += "</span>";
+						
 					if(this.modules['completeAnalysis']){
 						tableString += "<div class='nodeDetails' style='display:none;'>"+this.detailedNodeAnalysis[row][col]+"</div>";
 					}
@@ -330,10 +398,10 @@ define([
 			//table related init function can be used to make different html structures if we want. 
 			//for sending multiple queries you would need to make an array of queries in modules and send them using the table init function. 
 			//Call the init again and again. I have moved the init from main to table init function. 
-			var fName = "this." + this.modules['tName'] + 'init';
+			var fName = this.modules['tName'] + 'Init';
 			var table = "";
-			if(fName){
-				table = fName;
+			if(this[fName]){
+				table = this[fName]();
 			} else {
 				table = this.defaultInit();
 			}

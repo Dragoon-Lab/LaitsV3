@@ -39,18 +39,14 @@
                     "y": 216
                 },
                 "attemptCount": {
-                    "description": 1,
-                    "type": 1,
-                    "initial": 1,
+                    "description": 0,
+                    "type": 0,
+                    "initial": 0,
                     "units": 0,
                     "equation": 0,
                     "assistanceScore": 0
                 },
-                "status": {
-                    "description": "correct",
-                    "type": "correct",
-                    "initial": "correct"
-                },
+                "status": {},
                 "name": "controlled quantity",
                 "description": "The quantity (e.g., body temperature) being held constant",
                 "type": "accumulator",
@@ -99,18 +95,14 @@
                     "y": 205
                 },
                 "attemptCount": {
-                    "description": 1,
-                    "type": 1,
+                    "description": 0,
+                    "type": 0,
                     "initial": 0,
                     "units": 0,
-                    "equation": 1,
-                    "assistanceScore": 0
+                    "equation": 0,
+                    "assistanceScore": 1
                 },
-                "status": {
-                    "description": "correct",
-                    "type": "correct",
-                    "equation": "correct"
-                },
+                "status": {},
                 "name": "difference",
                 "description": "The difference between the controlled quantity and the set point",
                 "type": "function",
@@ -124,18 +116,14 @@
                     "y": 182.7451629638672
                 },
                 "attemptCount": {
-                    "description": 1,
-                    "type": 1,
-                    "initial": 1,
+                    "description": 0,
+                    "type": 0,
+                    "initial": 0,
                     "units": 0,
                     "equation": 0,
-                    "assistanceScore": 0
+                    "assistanceScore": 1
                 },
-                "status": {
-                    "description": "correct",
-                    "type": "correct",
-                    "initial": "correct"
-                },
+                "status": {},
                 "name": "set point",
                 "description": "The value that the system tries to keep the controlled quantity at",
                 "type": "parameter",

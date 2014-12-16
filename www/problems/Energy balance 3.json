@@ -45,7 +45,7 @@
                 "initial": 0,
                 "units": 0,
                 "equation": 0,
-                "assistanceScore": 0
+                "assistanceScore": 1
             },
             "status": {},
             "name": "weight",
@@ -77,7 +77,7 @@
                 "initial": 0,
                 "units": 0,
                 "equation": 0,
-                "assistanceScore": 0
+                "assistanceScore": 1
             },
             "status": {},
             "name": "weight change",
@@ -108,7 +108,7 @@
                 "initial": 0,
                 "units": 0,
                 "equation": 0,
-                "assistanceScore": 0
+                "assistanceScore": 1
             },
             "status": {},
             "name": "energy balance",
@@ -130,7 +130,7 @@
                 "initial": 0,
                 "units": 0,
                 "equation": 0,
-                "assistanceScore": 0
+                "assistanceScore": 1
             },
             "status": {},
             "name": "calories per pound",
@@ -153,7 +153,7 @@
                 "initial": 0,
                 "units": 0,
                 "equation": 0,
-                "assistanceScore": 0
+                "assistanceScore": 1
             },
             "status": {},
             "name": "energy ingested",

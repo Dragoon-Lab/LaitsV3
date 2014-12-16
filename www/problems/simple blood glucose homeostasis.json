@@ -44,17 +44,14 @@
                     "y": 268
                 },
                 "attemptCount": {
-                    "description": 1,
-                    "type": 1,
+                    "description": 0,
+                    "type": 0,
                     "initial": 0,
                     "units": 0,
                     "equation": 0,
                     "assistanceScore": 0
                 },
-                "status": {
-                    "description": "correct",
-                    "type": "correct"
-                },
+                "status": {},
                 "name": "Blood glucose",
                 "description": "Amount of glucose in the blood",
                 "type": "accumulator",
@@ -79,17 +76,14 @@
                     "y": 393
                 },
                 "attemptCount": {
-                    "description": 1,
-                    "type": 1,
+                    "description": 0,
+                    "type": 0,
                     "initial": 0,
                     "units": 0,
                     "equation": 0,
                     "assistanceScore": 0
                 },
-                "status": {
-                    "description": "correct",
-                    "type": "correct"
-                },
+                "status": {},
                 "name": "glucose added",
                 "description": "How much glucose the liver adds to blood each minute",
                 "type": "function",
@@ -113,17 +107,14 @@
                     "y": 120
                 },
                 "attemptCount": {
-                    "description": 1,
-                    "type": 1,
+                    "description": 0,
+                    "type": 0,
                     "initial": 0,
                     "units": 0,
                     "equation": 0,
                     "assistanceScore": 0
                 },
-                "status": {
-                    "description": "correct",
-                    "type": "correct"
-                },
+                "status": {},
                 "name": "glucose removed",
                 "description": "Glucose removed from blood by burning or storing it",
                 "type": "function",
@@ -147,17 +138,14 @@
                     "y": 228
                 },
                 "attemptCount": {
-                    "description": 1,
-                    "type": 1,
+                    "description": 0,
+                    "type": 0,
                     "initial": 0,
                     "units": 0,
                     "equation": 0,
                     "assistanceScore": 0
                 },
-                "status": {
-                    "description": "correct",
-                    "type": "correct"
-                },
+                "status": {},
                 "name": "glucose difference",
                 "description": "Glucose in blood minus glucose set point",
                 "type": "function",
@@ -172,17 +160,14 @@
                     "y": 232.7451629638672
                 },
                 "attemptCount": {
-                    "description": 1,
-                    "type": 1,
+                    "description": 0,
+                    "type": 0,
                     "initial": 0,
                     "units": 0,
                     "equation": 0,
                     "assistanceScore": 0
                 },
-                "status": {
-                    "description": "correct",
-                    "type": "correct"
-                },
+                "status": {},
                 "name": "glucose set point",
                 "description": "The quantity of glucose that the body tries to keep in the blood at all times",
                 "type": "parameter",
@@ -202,17 +187,14 @@
                     "y": 394
                 },
                 "attemptCount": {
-                    "description": 1,
-                    "type": 1,
+                    "description": 0,
+                    "type": 0,
                     "initial": 0,
                     "units": 0,
                     "equation": 0,
                     "assistanceScore": 0
                 },
-                "status": {
-                    "description": "correct",
-                    "type": "correct"
-                },
+                "status": {},
                 "name": "glucose deficit",
                 "description": "If blood glucose < set point, by how much?  Zero otherwise",
                 "type": "function",
@@ -231,17 +213,14 @@
                     "y": 134
                 },
                 "attemptCount": {
-                    "description": 1,
-                    "type": 1,
+                    "description": 0,
+                    "type": 0,
                     "initial": 0,
                     "units": 0,
                     "equation": 0,
                     "assistanceScore": 0
                 },
-                "status": {
-                    "description": "correct",
-                    "type": "correct"
-                },
+                "status": {},
                 "name": "glucose suplus",
                 "description": "If blood glucose > set point, by how much?  Zero otherwise.",
                 "type": "function",
@@ -256,17 +235,14 @@
                     "y": 97.74516296386719
                 },
                 "attemptCount": {
-                    "description": 1,
-                    "type": 1,
+                    "description": 0,
+                    "type": 0,
                     "initial": 0,
                     "units": 0,
                     "equation": 0,
                     "assistanceScore": 0
                 },
-                "status": {
-                    "description": "correct",
-                    "type": "correct"
-                },
+                "status": {},
                 "name": "convergence rate for glucose surplus",
                 "description": "Proportion of surplus glucose burned or stored each minute",
                 "type": "parameter",
@@ -281,17 +257,14 @@
                     "y": 379.74517822265625
                 },
                 "attemptCount": {
-                    "description": 1,
-                    "type": 1,
+                    "description": 0,
+                    "type": 0,
                     "initial": 0,
                     "units": 0,
                     "equation": 0,
                     "assistanceScore": 0
                 },
-                "status": {
-                    "description": "correct",
-                    "type": "correct"
-                },
+                "status": {},
                 "name": "convergence rate for glucose deficit",
                 "description": "Proportion of glucose deficit that is added by liver each minute",
                 "type": "parameter",

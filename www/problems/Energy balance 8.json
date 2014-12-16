@@ -40,7 +40,7 @@
                     "initial": 0,
                     "units": 0,
                     "equation": 0,
-                    "assistanceScore": 0
+                    "assistanceScore": 1
                 },
                 "status": {},
                 "name": "weight",
@@ -67,7 +67,7 @@
                     "initial": 0,
                     "units": 0,
                     "equation": 0,
-                    "assistanceScore": 0
+                    "assistanceScore": 1
                 },
                 "status": {},
                 "name": "fat",
@@ -95,7 +95,7 @@
                     "initial": 0,
                     "units": 0,
                     "equation": 0,
-                    "assistanceScore": 0
+                    "assistanceScore": 1
                 },
                 "status": {},
                 "name": "lean tissue",
@@ -127,7 +127,7 @@
                     "initial": 0,
                     "units": 0,
                     "equation": 0,
-                    "assistanceScore": 0
+                    "assistanceScore": 1
                 },
                 "status": {},
                 "name": "fat change",
@@ -158,7 +158,7 @@
                     "initial": 0,
                     "units": 0,
                     "equation": 0,
-                    "assistanceScore": 0
+                    "assistanceScore": 1
                 },
                 "status": {},
                 "name": "lean tissue change",
@@ -184,13 +184,9 @@
                     "initial": 0,
                     "units": 0,
                     "equation": 0,
-                    "assistanceScore": 0
+                    "assistanceScore": 1
                 },
-                "status": {
-                    "equation": {
-                        "disabled": false
-                    }
-                },
+                "status": {},
                 "name": "fats proportion of weight change",
                 "description": "proportion of the weight change allocated to fat",
                 "type": "function",
@@ -218,7 +214,7 @@
                     "initial": 0,
                     "units": 0,
                     "equation": 0,
-                    "assistanceScore": 0
+                    "assistanceScore": 1
                 },
                 "status": {},
                 "name": "weight change",
@@ -249,7 +245,7 @@
                     "initial": 0,
                     "units": 0,
                     "equation": 0,
-                    "assistanceScore": 0
+                    "assistanceScore": 1
                 },
                 "status": {},
                 "name": "energy balance",
@@ -271,7 +267,7 @@
                     "initial": 0,
                     "units": 0,
                     "equation": 0,
-                    "assistanceScore": 0
+                    "assistanceScore": 1
                 },
                 "status": {},
                 "name": "energy ingested",
@@ -307,7 +303,7 @@
                     "initial": 0,
                     "units": 0,
                     "equation": 0,
-                    "assistanceScore": 0
+                    "assistanceScore": 1
                 },
                 "status": {},
                 "name": "energy expended",
@@ -329,7 +325,7 @@
                     "initial": 0,
                     "units": 0,
                     "equation": 0,
-                    "assistanceScore": 0
+                    "assistanceScore": 1
                 },
                 "status": {},
                 "name": "calories per pound",
@@ -361,7 +357,7 @@
                     "initial": 0,
                     "units": 0,
                     "equation": 0,
-                    "assistanceScore": 0
+                    "assistanceScore": 1
                 },
                 "status": {},
                 "name": "digestive activity expenditure",
@@ -394,7 +390,7 @@
                     "initial": 0,
                     "units": 0,
                     "equation": 0,
-                    "assistanceScore": 0
+                    "assistanceScore": 1
                 },
                 "status": {},
                 "name": "physical activity expenditure",
@@ -433,13 +429,9 @@
                     "initial": 0,
                     "units": 0,
                     "equation": 0,
-                    "assistanceScore": 0
+                    "assistanceScore": 1
                 },
-                "status": {
-                    "equation": {
-                        "disabled": false
-                    }
-                },
+                "status": {},
                 "name": "REE resting energy expenditures",
                 "description": "energy for basic bodily functions per day",
                 "type": "function",
@@ -492,7 +484,7 @@
                     "initial": 0,
                     "units": 0,
                     "equation": 0,
-                    "assistanceScore": 0
+                    "assistanceScore": 1
                 },
                 "status": {},
                 "name": "physical activity level",
@@ -623,7 +615,7 @@
                     "initial": 0,
                     "units": 0,
                     "equation": 0,
-                    "assistanceScore": 0
+                    "assistanceScore": 1
                 },
                 "status": {},
                 "name": "digestive activity factor",
@@ -654,7 +646,7 @@
                     "initial": 0,
                     "units": 0,
                     "equation": 0,
-                    "assistanceScore": 0
+                    "assistanceScore": 1
                 },
                 "status": {},
                 "name": "age REE",
@@ -685,7 +677,7 @@
                     "initial": 0,
                     "units": 0,
                     "equation": 0,
-                    "assistanceScore": 0
+                    "assistanceScore": 1
                 },
                 "status": {},
                 "name": "height REE",
@@ -707,7 +699,7 @@
                     "initial": 0,
                     "units": 0,
                     "equation": 0,
-                    "assistanceScore": 0
+                    "assistanceScore": 1
                 },
                 "status": {},
                 "name": "gender REE",
@@ -730,7 +722,7 @@
                     "initial": 0,
                     "units": 0,
                     "equation": 0,
-                    "assistanceScore": 0
+                    "assistanceScore": 1
                 },
                 "status": {},
                 "name": "age REE multiplier",
@@ -753,7 +745,7 @@
                     "initial": 0,
                     "units": 0,
                     "equation": 0,
-                    "assistanceScore": 0
+                    "assistanceScore": 1
                 },
                 "status": {},
                 "name": "age",
@@ -776,7 +768,7 @@
                     "initial": 0,
                     "units": 0,
                     "equation": 0,
-                    "assistanceScore": 0
+                    "assistanceScore": 1
                 },
                 "status": {},
                 "name": "height REE multiplier",
@@ -799,7 +791,7 @@
                     "initial": 0,
                     "units": 0,
                     "equation": 0,
-                    "assistanceScore": 0
+                    "assistanceScore": 1
                 },
                 "status": {},
                 "name": "height",

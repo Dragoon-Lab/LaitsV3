@@ -3,13 +3,23 @@
 <head>        
     <meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
     <title>Dragoon</title>
+    <script type = "text/javascript" src = "version.js"></script>
     <script type="text/javascript">
+        var version = "";
+        
+        if(window.location.hostname == "dragoon.asu.edu"){
+            version = getVersion();  // Get version from version.js
+        }else{
+            version = new Date();
+        }
+
         dojoConfig = {
 	    isDebug:true,
 	    parseOnLoad:true,
 	    async: true,
             // popup:true,
 	    baseUrl: "./",
+        cacheBust: version,
 	    packages: [
 		{name: "dojo", location: "dojo"},
 		{name: "dijit", location: "dijit"},
@@ -25,10 +35,10 @@
             ]
 	};
 	if(dojoConfig.isDebug){
-	    document.write('<link href="css/dragoon.css" rel="stylesheet" />');
+	    document.write('<link href="css/dragoon.css?'+ version+'" rel="stylesheet" />');
             document.write('<scr'+'ipt src="dojo/dojo.js"></scr'+'ipt>'); 
 	} else {
-	    document.write('<link href="release/css/dragoon.css" rel="stylesheet" />');
+	    document.write('<link href="release/css/dragoon.css?'+ version+'"  rel="stylesheet" />');
 	    document.write('<scr'+'ipt src="release/dojo/dojo.js"></scr'+'ipt>');
 	};
     </script>
@@ -111,7 +121,7 @@
              <button type="button" data-dojo-type="dijit/form/Button" id="graphButton">Graph</button>
              <button type="button" data-dojo-type="dijit/form/Button" id="tableButton">Table</button>
              <button type="button" data-dojo-type="dijit/form/Button" id="forumButton" disabled="true">Forum</button>
-             <button type="button" data-dojo-type="dijit/form/Button" id="descButton" disabled="true">Description &amp; Times</button>
+             <button type="button" data-dojo-type="dijit/form/Button" id="descButton" disabled="true">Problem &amp; Times</button>
              <button type="button" data-dojo-type="dijit/form/Button" id="saveButton" disabled="true">Save As...</button>
             <button type="button" data-dojo-type="dijit/form/Button" id="mergeButton" disabled="true">Merge </button>
 			 <button type="button" data-dojo-type="dijit/form/Button" id="previewButton" disabled="true">Preview</button>
@@ -157,7 +167,7 @@
         <!-- Putting crisis-Alert Dialog stuff end -->
 
             <!--  authorSetDescription, authorSetTimeStart, authorSetTimeEnd, authorSetTimeStep, authorSetTimeStepUnits, authorSetImage) -->
-        <div class="claro sameedit" data-dojo-type="dijit/Dialog" id="authorDescDialog" title="Edit Times, Image, and Description">
+        <div class="claro sameedit" data-dojo-type="dijit/Dialog" id="authorDescDialog" title="Edit Times, Image, and Problem Statement">
 	  <div class="fieldgroup">
 	    <label for="authorSetTimeStart">Start Time:</label>
                 <input id="authorSetTimeStart" style="width:5em" value="0" data-dojo-type="dijit/form/TextBox"></input>
@@ -195,7 +205,7 @@
              <img id="questionMarkURL"  class="questionMark" src="images/questionmark.png"/>
 		</div>
 		<div class="fieldgroup">
-			<label for="authorSetDescription">Description of Problem:</label>
+			<label for="authorSetDescription">Problem Statement:</label>
 			<textarea id="authorSetDescription" name="authorSetDescription" data-dojo-type="dijit/form/SimpleTextarea" value="Enter Description here..."></textarea>
 		</div>
 		<div class="fieldgroup">
@@ -263,10 +273,10 @@
                 <input id="setName" data-dojo-type="dijit/form/ComboBox">
 	        <label for="selectKind">Kind of quantity:</label>
                 <select id="selectKind" data-dojo-type="dijit/form/Select">
-	            <option value='' selected>in model</option>
-	            <option value='allowed'>optional</option>
-	            <option value='extra'>in description but not in model</option>
-	            <option value='irrelevant'>not in model or description</option>
+	            <option value='' selected>in model & required</option>
+	            <option value='allowed'>in model & optional</option>
+	            <option value='extra'>in problem statement but not in model</option>
+	            <option value='irrelevant'>not in model or problem statement</option>
 	        </select>
 	    </div>
             <div id="descriptionControlStudent" class="fieldgroup">
@@ -374,7 +384,12 @@
 		    <div>&nbsp;<button id="nodeForumButton" type="button" data-dojo-type="dijit/form/Button" iconClass="dijitNoIcon" disabled="true">Forum</button></div>
 		    <div>&nbsp;</div>
 		    <div>&nbsp;</div>
-		    <button id="closeButton" type="button" data-dojo-type="dijit/form/Button" iconClass="dijitNoIcon">Done</button>
+        </div>
+        <div style="display:block">
+            <div>&nbsp;</div>
+            <button id="deleteButton" type="button" data-dojo-type="dijit/form/Button" iconClass="dijitNoIcon" style="float:left;">Delete Node</button>
+		    <button id="closeButton" type="button" data-dojo-type="dijit/form/Button" iconClass="dijitNoIcon" style="float:right;">Done</button>
+            <div>&nbsp;</div>
 		</div>
 	    </div>
 	</div> <!-- end of node editor -->
