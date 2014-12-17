@@ -77,6 +77,37 @@ function findIdbyName(client, nodeName){
     }
     return result;
 }
+function findDropDownByName(client, name){
+    var notFound = true;
+    var counter = 0;
+    var result = null;
+    var text = "";
+    while(notFound && counter < MAX_NODE_IDS)
+    {
+        try{
+            text = await(client.getText('#dijit_MenuItem_' + counter, defer()));
+        }catch(err){}
+        if(text == name)
+        {
+            notFound = false;
+            result = counter;
+        }
+        counter++;
+    }
+    return result;
+}
+
+function wait(milliseconds)
+{
+  var start = new Date().getTime();
+  for (var i = 0; i < 1e7; i++) {
+    if ((new Date().getTime() - start) > milliseconds){
+      break;
+    }
+  }
+}
+
+//dijit_MenuItem_#
 
 ////////////////////////////////////////////////////////////////////////////////////////////////////
 // Exported functions - The dtest API
@@ -103,7 +134,8 @@ exports.openProblem = function(client,parameters){
     var paramMap = convertArrayToMap(parameters);
 
     // required params
-    var urlRoot = 'http://dragoon.asu.edu/devel/index.html';
+    //var urlRoot = 'http://dragoon.asu.edu/devel/index.html';
+    var urlRoot = "http://localhost/dragoon/www/index.html";
     var user = "u="+(paramMap["user"] || getDate()); // defaults to the current date
     var problem = "&p=" + paramMap["problem"];
     var mode = "&m=" + (paramMap["mode"]);
@@ -133,11 +165,12 @@ exports.openProblem = function(client,parameters){
     await(client.init().url(url,defer()));
 }
 
+
+
 ////////////////////////////////////////////////////////////////////////////////////////////////////
 // 2. Menu bar functions
 
-exports.menuCreateNode = function(client){    
-    console.log("in menu create node");
+exports.menuCreateNode = function(client){  
     await(client.click('span[id="createNodeButton_label"]',defer()));
 }
 
@@ -303,6 +336,14 @@ exports.setNodename = function(client, nodeName){
 }
 
 //////////////////////////////////////////////////
+// Popup window funcitons
+
+exports.popupWindowPressOk = function(client){
+    await(client.click('#OkButton',defer()));
+    wait(200);
+}
+
+//////////////////////////////////////////////////
 //Kind of quantity
 
 exports.getKindOfQuantity = function(client){
@@ -310,7 +351,18 @@ exports.getKindOfQuantity = function(client){
 }
 
 exports.setKindOfQuantity = function(client, type){
-    console.warn("Not yet implemented.");
+    await(client.click('#selectKind', defer()));
+    await(client.click('#selectKind', defer()));
+    await(client.waitForVisible('#selectKind_menu', defer()));
+    var number = findDropDownByName(client, type);
+    if(number != null)
+    {
+        await(client.click('#dijit_MenuItem_' + number, defer()));
+    }
+    else
+    {
+        await(client.click('#selectKind', defer()));
+    }
 }
 
 //////////////////////////////////////////////////
@@ -333,9 +385,28 @@ exports.isNodeDescriptionDisabled = function(client){
     return null;
 }
 
-exports.setNodeDescription = function(client,description){
-    await(client.setValue('#setDescription', description, defer()));
+exports.setNodeDescription = function(client, description){
+    if(await(client.isVisible('#selectDescription',defer())))
+    {
+        await(client.click('#selectDescription', defer()));
+        //await(client.click('#selectDescription', defer()));
+        await(client.waitForVisible('#selectDescription_menu', defer()));
+        var number = findDropDownByName(client, description);
+        if(number != null)
+        {
+            await(client.click('#dijit_MenuItem_' + number, defer()));
+        }
+        else
+        {
+            await(client.click('#selectDescription', defer()));
+        }
+    }
+    else
+    {
+        await(client.setValue('#setDescription', description, defer()));
+    }
 }
+
 
 //////////////////////////////////////////////////
 // Node type
@@ -360,7 +431,17 @@ exports.isNodeTypeDisabled = function(client){
 }
 
 exports.setNodeType = function(client,type){
-    console.warn("Not yet implemented.");
+    await(client.click('#typeId', defer()));
+    await(client.waitForVisible('#typeId_menu', defer()));
+    var number = findDropDownByName(client, type);
+    if(number != null)
+    {
+        await(client.click('#dijit_MenuItem_' + number, defer()));
+    }
+    else
+    {
+        await(client.click('#selectKind', defer()));
+    }
 }
 
 //////////////////////////////////////////////////
@@ -407,8 +488,32 @@ exports.isNodeUnitsDisabled = function(client){
     return null;
 }
 
+
 exports.setNodeUnits = function(client,units){
-    console.warn("Not yet implemented.");
+    try{
+        if(await(client.isVisible('#selectUnits',defer())))
+        {
+            await(client.click('#selectUnits', defer()));
+            await(client.waitForVisible('#selectUnits_menu', defer()));
+            var number = findDropDownByName(client, units);
+            if(number != null)
+            {
+                await(client.click('#dijit_MenuItem_' + number, defer()));
+            }
+            else
+            {
+                await(client.click('#selectUnits', defer()));
+            }
+        }
+        else
+        {
+            await(client.setValue('#setUnits', unit, defer()));
+        }
+    }
+    catch(err){
+        console.warn("Error setting node units");
+    }
+
 }
 
 //////////////////////////////////////////////////
@@ -481,6 +586,7 @@ exports.openNodeForum = function(client){
 exports.nodeEditorDone = function(client){
     // Summary: Hits the "Done" button in the node editor
     await(client.click('span[id="closeButton_label"]',defer()));
+    wait(200);
 }
 
 exports.closeNodeEditor = function(client){
