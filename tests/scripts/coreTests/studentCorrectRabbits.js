@@ -18,7 +18,7 @@ var sync = require('synchronize');
 // import wrapper for asynchronous functions
 var async = sync.asyncIt;
 
-describe("Test student mode", function() {
+describe("Test student mode:", function() {
 
     before(async(function (done) {
             dtest.openProblem(client,[["problem","rabbits"],["mode","STUDENT"],
@@ -26,7 +26,7 @@ describe("Test student mode", function() {
                                       ["logging","false"]]);
     }));
 
-    describe("Creating nodes", function(){
+    describe("Creating nodes:", function(){
         it("Should create Accumulator node - population", async(function(){
             dtest.menuCreateNode(client);
             dtest.setNodeDescription(client, "The number of rabbits in the population");
@@ -61,10 +61,83 @@ describe("Test student mode", function() {
         }));
     });
 
-    describe("Checking Nodes", function(){
+    describe("Checking Nodes:", function(){
         it("Should have correct Accumulator values", async(function(){
             dtest.openEditorForNode(client, "population");
-            
+
+            var description = dtest.getNodeDescription(client);
+            var nodeType = dtest.getNodeType(client);
+            var initialValue = dtest.getNodeInitialValue(client);
+            var nodeUnits = dtest.getNodeUnits(client);
+            var expression = dtest.getNodeExpression(client);
+
+            dtest.nodeEditorDone(client);
+
+            var expectedDescription = "The number of rabbits in the population";
+            var expectedNodeType = "Accumulator";
+            var expectedInitialValue = "24";
+            var expectedNodeUnits = "rabbits";
+            var expectedExpression = "net growth";
+
+            assert(description === expectedDescription,
+                "Description was " + description + " instead of \"" + expectedDescription + "\"");
+            assert(nodeType === expectedNodeType,
+                "Node type was " + nodeType + " instead of \"" + expectedNodeType + "\"");
+            assert(initialValue === expectedInitialValue,
+                "Initial value was " + initialValue + " instead of \"" + expectedInitialValue + "\"");
+            assert(nodeUnits === expectedNodeUnits,
+                "Units were " + nodeUnits + " instead of \"" + expectedNodeUnits + "\"");
+            assert(expression === expectedExpression,
+                "Expression was " + expression + "instead of \"" + expectedExpression + "\"");
+        }));
+
+        it("Should have correct function values", async(function(){
+            dtest.openEditorForNode(client, "net growth");
+
+            var description = dtest.getNodeDescription(client);
+            var nodeType = dtest.getNodeType(client);
+            var nodeUnits = dtest.getNodeUnits(client);
+            var expression = dtest.getNodeExpression(client);
+
+            dtest.nodeEditorDone(client);
+
+            var expectedDescription = "The number of additional rabbits each year";
+            var expectedNodeType = "Function";
+            var expectedNodeUnits = "rabbits/year";
+            var expectedExpression = "growth rate*population";
+
+            assert(description === expectedDescription,
+                "Description was " + description + " instead of \"" + expectedDescription + "\"");
+            assert(nodeType === expectedNodeType,
+                "Node type was " + nodeType + " instead of \"" + expectedNodeType + "\"");
+            assert(nodeUnits === expectedNodeUnits,
+                "Units were " + nodeUnits + " instead of \"" + expectedNodeUnits + "\"");
+            assert(expression === expectedExpression,
+                "Expression was " + expression + "instead of \"" + expectedExpression + "\"");
+        }));
+
+        it("Should have correct parameter values", async(function(){
+            dtest.openEditorForNode(client, "growth rate");
+            var description = dtest.getNodeDescription(client);
+            var nodeType = dtest.getNodeType(client);
+            var initialValue = dtest.getNodeInitialValue(client);
+            var nodeUnits = dtest.getNodeUnits(client);
+
+            dtest.nodeEditorDone(client);
+
+            var expectedDescription = "The number of additional rabbits per year per rabbit";
+            var expectedNodeType = "Parameter";
+            var expectedInitialValue = "0.3";
+            var expectedNodeUnits = "1/year";
+
+            assert(description === expectedDescription,
+                "Description was " + description + " instead of \"" + expectedDescription + "\"");
+            assert(nodeType === expectedNodeType,
+                "Node type was " + nodeType + " instead of \"" + expectedNodeType + "\"");
+            assert(initialValue === expectedInitialValue,
+                "Initial value was " + initialValue + " instead of \"" + expectedInitialValue + "\"");
+            assert(nodeUnits === expectedNodeUnits,
+                "Units were " + nodeUnits + " instead of \"" + expectedNodeUnits + "\"");
         }));
     });
     after(function(done) {

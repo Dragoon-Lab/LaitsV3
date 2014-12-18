@@ -43,6 +43,7 @@ describe("Test author mode", function() {
 
         it("Should fill in function node - net growth", async(function(){
             dtest.openEditorForNode(client, "net growth");
+            dtest.setNodeDescription(client, "The number of additional rabbits each year");
             dtest.setNodeUnits(client, "rabbits/year");
             dtest.setNodeType(client, "Function");
             dtest.setNodeExpression(client, "growth rate*population");
@@ -53,6 +54,7 @@ describe("Test author mode", function() {
 
         it("Should fill in parameter node - growth rate", async(function(){
             dtest.openEditorForNode(client, "growth rate");
+            dtest.setNodeDescription(client, "The number of additional rabbits per year per rabbit");
             dtest.setNodeInitialValue(client, 0.3);
             dtest.setNodeType(client, "Parameter");
             dtest.setNodeUnits(client, "1/year");

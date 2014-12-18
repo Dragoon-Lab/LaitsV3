@@ -235,6 +235,7 @@ exports.menuDone = function(client){
 // If by node name is needed then an additional "findIdByNodeName" will be needed
 exports.openEditorForNode = function(client,nodeName){
     await(client.click('#id' + findIdbyName(client, nodeName),defer()));
+    wait(100);
 }
 
 exports.moveNode = function(client,nodeName,xDest,yDest){
@@ -370,7 +371,7 @@ exports.setKindOfQuantity = function(client, type){
 // Node description
 
 exports.getNodeDescription = function(client){
-    return await(client.getText('span[id="descriptionControlStudent"]',defer()));
+    return await(client.getText('#selectDescription',defer()));
 }
 
 exports.getNodeDescriptionColor = function(client){
@@ -449,7 +450,7 @@ exports.setNodeType = function(client,type){
 // Initial Value
 
 exports.getNodeInitialValue = function(client){
-    return await(client.getText('input[id="initialValue"]',defer()));
+    return await(client.getValue('#initialValue',defer()));
 }
 
 exports.getNodeInitialValueColor = function(client){
@@ -523,7 +524,7 @@ exports.setNodeUnits = function(client,units){
 
 exports.getNodeExpression = function(client){
     //Summary gets the text in the expression box
-    console.warn("Not yet implemented.");
+    return await(client.getValue('#equationBox',defer()));
 }
 
 exports.getNodeExpressionColor = function(client){
