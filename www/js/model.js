@@ -530,7 +530,7 @@ define([
 				return newNode.ID;
 			},
 			/*merges imported model and returns ids of merged nodes*/
-			mergeNodes: function(nodes){
+			mergeNodes: function(nodes,isStudent){
 				var ids = [];  //holds new names
 				var shift = obj._ID-1;
 
@@ -555,8 +555,11 @@ define([
 					node.equation=nEquation;
 					obj._ID=obj._ID+1; //for next coming node
 
-            		//push to givenModelNodes
-            		obj.model.task.givenModelNodes.push(node);
+            		//push to studentModelNodes and givenModelNodes
+            		if(isStudent)
+            			obj.model.task.studentModelNodes.push(node);
+            		else	
+            			obj.model.task.givenModelNodes.push(node);
             	},this);
 
 

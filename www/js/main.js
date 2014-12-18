@@ -363,7 +363,10 @@ define([
 							if(solutionGraph){
 								var nodes = solutionGraph.task.givenModelNodes;
 								var ids = givenModel.active.mergeNodes(nodes);
-								console.log("merged nodes are "+ids);
+								var snodes = solutionGraph.task.studentModelNodes;
+								var sids = givenModel.active.mergeNodes(snodes,true);
+								console.log(" merged given nodes are "+ids);
+								console.log(" merged student nodes are "+sids);
 								session.saveProblem(givenModel.model);
 								//add merged nodes
 								array.forEach(ids,function(id){	
