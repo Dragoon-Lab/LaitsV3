@@ -137,7 +137,7 @@ exports.openProblem = function(client,parameters){
     //var urlRoot = 'http://dragoon.asu.edu/devel/index.html';
     var urlRoot = "http://localhost/dragoon/www/index.html";
     var user = "u="+(paramMap["user"] || getDate()); // defaults to the current date
-    var problem = "&p=" + paramMap["problem"];
+    var problem = "&p=" + (paramMap["problem"] || getDate());
     var mode = "&m=" + (paramMap["mode"]);
     var section = "&s=" + (paramMap["section"] || "autotest");
     var nodeEditorMode = "&is=" + (paramMap["submode"] ||  "algebraic");
@@ -172,6 +172,7 @@ exports.openProblem = function(client,parameters){
 
 exports.menuCreateNode = function(client){  
     await(client.click('span[id="createNodeButton_label"]',defer()));
+    wait(200);
 }
 
 exports.menuOpenGraph = function(client){
@@ -331,7 +332,7 @@ exports.getNodeEditorTitle = function(client){
     return await(client.getText("#nodeeditor_title.dijitDialogTitle",defer()));
 }
 
-exports.setNodename = function(client, nodeName){
+exports.setNodeName = function(client, nodeName){
     await(client.setValue('#setName', nodeName, defer()));
 }
 
@@ -466,6 +467,7 @@ exports.isNodeInitialValueDisabled = function(client){
 
 exports.setNodeInitialValue = function(client,initialValue){
     await(client.setValue('#initialValue', initialValue, defer()));
+    await(client.click("#algebraic",defer()));
 }
 
 //////////////////////////////////////////////////

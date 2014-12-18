@@ -12,7 +12,7 @@ var client = require('webdriverio').remote({
 // import chai assertion library
 var assert = require('chai').assert;
 // import dragoon test library module
-var dtest = require('../scripts/dtestlib.js');
+var dtest = require('./dtestlib.js');
 // import sync library
 var sync = require('synchronize');
 // import wrapper for asynchronous functions
@@ -33,7 +33,7 @@ describe('Test dragoon website', function() {
     it('should have the correct accumulator', async(function (done) {
         //open node editor and check contents inside the node editor    
         dtest.menuCreateNode(client);
-        dtest.setKindOfQuantity(client, "optional");
+        dtest.setNodeName(client, "population");
 
       }));
     after(function(done) {
