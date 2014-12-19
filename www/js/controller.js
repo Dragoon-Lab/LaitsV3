@@ -356,6 +356,8 @@ define([
 			    if(typeof this._model.active.getType(this.currentID) !== "undefined"){
 					var isComplete = this._model.active.isComplete(this.currentID, true)?'solid':'dashed';
 					var borderColor = "3px "+isComplete+" gray";
+					var boxshadow = 'inset 0px 0px 5px #000 , 0px 0px 10px #000';
+					domStyle.set(this.currentID, 'box-shadow', boxshadow);
 					domStyle.set(this.currentID, 'border', borderColor);	 // set border gray for studentModelNodes in TEST and EDITOR mode
 				}
 			}
