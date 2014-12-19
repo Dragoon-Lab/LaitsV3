@@ -28,6 +28,7 @@ CREATE TABLE `step` (
   `session_id` varchar(50) NOT NULL,
   `method` varchar(20) NOT NULL,
   `message` text,
+  `id` int(5) unsigned NOT NULL,
   PRIMARY KEY (`tid`),
   KEY (`session_id`),
   CONSTRAINT `fk_session_id` FOREIGN KEY (`session_id`) REFERENCES `session` (`session_id`) ON DELETE CASCADE ON UPDATE CASCADE
