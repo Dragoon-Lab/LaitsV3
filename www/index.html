@@ -123,6 +123,7 @@
              <button type="button" data-dojo-type="dijit/form/Button" id="forumButton" disabled="true">Forum</button>
              <button type="button" data-dojo-type="dijit/form/Button" id="descButton" disabled="true">Problem &amp; Times</button>
              <button type="button" data-dojo-type="dijit/form/Button" id="saveButton" disabled="true">Save As...</button>
+            <button type="button" data-dojo-type="dijit/form/Button" id="mergeButton" disabled="true">Merge </button>
 			 <button type="button" data-dojo-type="dijit/form/Button" id="previewButton" disabled="true">Preview</button>
 			 <button type="button" data-dojo-type="dijit/form/Button" id="slidesButton" disabled="true">Hints</button>
 	     <div data-dojo-type="dijit/PopupMenuBarItem">
@@ -231,6 +232,25 @@
         </div>
         <div class="fieldgroup" align="right">
             <button id="saveCloseButton" type="button" data-dojo-type="dijit/form/Button" iconClass="dijitNoIcon">Save</button>
+        </div>
+    </div>
+
+     <!-- authorMergeProblem -->
+    <div class="claro sameedit" data-dojo-type="dijit/Dialog" id="authorMergeDialog" title="Merge Problem">
+        <div class="fieldgroup">
+            <label for="authorMergeProblem" style="width:7em">Problem Name:</label>
+            <input id="authorMergeProblem" style="width:10em" value="" data-dojo-type="dijit/form/TextBox"></input>
+        </div>
+        <div class="fieldgroup">
+            <label for="authorMergeSection" style="width:7em">Section Name:</label>
+            <input id="authorMergeSection" style="width:10em" value="" data-dojo-type="dijit/form/TextBox"></input>
+        </div>
+        <div class="fieldgroup">
+            <label for="authorMergeGroup" style="width:7em">Group Name:</label>
+            <input id="authorMergeGroup" style="width:10em" value="" data-dojo-type="dijit/form/TextBox"></input>
+        </div>         
+        <div class="fieldgroup" align="right">
+            <button id="mergeDialogButton" type="button" data-dojo-type="dijit/form/Button" iconClass="dijitNoIcon">Merge</button>
         </div>
     </div>
 

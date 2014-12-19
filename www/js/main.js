@@ -322,8 +322,10 @@ define([
 			if(query.m == "AUTHOR"){
 				var db = registry.byId("descButton");
 				db.set("disabled", false);
-                		db = registry.byId("saveButton");
-                		db.set("disabled", false);
+                db = registry.byId("saveButton");
+                db.set("disabled", false);
+                db = registry.byId("mergeButton");
+                db.set("disabled", false);
 				db = registry.byId("previewButton");
 				db.set("disabled", false);
 
@@ -351,6 +353,48 @@ define([
                 menu.add("saveButton", function(){
                     registry.byId("authorSaveDialog").show();
                 });
+
+                menu.add("mergeButton", function(){
+                    registry.byId("authorMergeDialog").show();
+             	});
+
+				on(registry.byId("mergeDialogButton"),"click",function(){
+					 var group = registry.byId("authorMergeGroup").value;
+					 var section = registry.byId("authorMergeSection").value;
+					 var problem = registry.byId("authorMergeProblem").value;
+
+					 if(!problem || !section)
+					 	{
+					 		alert("Problem/Section can't be empty");
+					 		return;
+					 	}
+
+					 var query = {g:group,m:"AUTHOR",s:section,p:problem};
+                  	 session.loadProblem(query).then(function(solutionGraph){
+							console.log("Merge problem is loaded "+solutionGraph);
+							if(solutionGraph){
+								var nodes = solutionGraph.task.givenModelNodes;
+								var ids = givenModel.active.mergeNodes(nodes);
+								console.log("merged nodes are "+ids);
+								session.saveProblem(givenModel.model);
+								//add merged nodes
+								array.forEach(ids,function(id){	
+									var node = 	givenModel.active.getNode(id);
+									drawModel.addNode(node);	
+								},this);	
+								//set connections for merged nodes
+								array.forEach(ids,function(id){
+									var node = 	givenModel.active.getNode(id);
+									drawModel.setConnections(node.inputs,dojo.byId(id));
+								},this);
+								registry.byId("authorMergeDialog").hide();
+							}else{
+								console.log("Problem Not found");
+								alert("Problem Not found");
+							}
+               		 });
+				});
+
                 aspect.after(registry.byId('authorSaveDialog'), "hide", function(){
                     console.log("Rename and Save Problem edits");
                     // Save problem
@@ -365,6 +409,7 @@ define([
                 on(registry.byId("saveCloseButton"), "click", function(){
                     registry.byId("authorSaveDialog").hide();
                 });
+                //authorMergeDialog
                 
                 //Author Save Dialog - check for name conflict on losing focus
                 //from textboxes of Rename dialog
