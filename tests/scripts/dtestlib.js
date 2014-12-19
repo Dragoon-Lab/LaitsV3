@@ -333,6 +333,10 @@ exports.getNodeEditorTitle = function(client){
     return await(client.getText("#nodeeditor_title.dijitDialogTitle",defer()));
 }
 
+exports.getNodeName = function(client){
+    await(client.getText('#widget_setName', defer()));
+}
+
 exports.setNodeName = function(client, nodeName){
     await(client.setValue('#setName', nodeName, defer()));
 }
@@ -371,7 +375,14 @@ exports.setKindOfQuantity = function(client, type){
 // Node description
 
 exports.getNodeDescription = function(client){
-    return await(client.getText('#selectDescription',defer()));
+    if(await(client.isVisible('#selectDescription',defer())))
+    {
+        return await(client.getText('#selectDescription',defer()));
+    }
+    else
+    {
+        return await(client.getValue('#setDescription', defer()));
+    }
 }
 
 exports.getNodeDescriptionColor = function(client){
@@ -475,7 +486,14 @@ exports.setNodeInitialValue = function(client,initialValue){
 // Units
 
 exports.getNodeUnits = function(client){
-    return await(client.getText('table[id="selectUnits"]',defer()));
+    if(await(client.isVisible('#selectUnits',defer())))
+    {
+        return await(client.getText('table[id="selectUnits"]',defer()));
+    }
+    else
+    {
+        return await(client.getValue('#setUnits',defer()));
+    }
 }
 
 exports.getNodeUnitsColor = function(client){
@@ -510,11 +528,11 @@ exports.setNodeUnits = function(client,units){
         }
         else
         {
-            await(client.setValue('#setUnits', unit, defer()));
+            await(client.setValue('#setUnits', units, defer()));
         }
     }
     catch(err){
-        console.warn("Error setting node units");
+        console.warn("Error setting node units: " + err);
     }
 
 }

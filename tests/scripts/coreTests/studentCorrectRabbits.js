@@ -34,7 +34,6 @@ describe("Test student mode:", function() {
             dtest.setNodeType(client, "Accumulator");
             dtest.popupWindowPressOk(client);
             dtest.setNodeInitialValue(client, 24);
-            //Doubled because of bug, remove in future
             dtest.setNodeUnits(client, "rabbits");     
             dtest.setNodeExpression(client, "net growth");
             dtest.checkExpression(client);
@@ -140,6 +139,7 @@ describe("Test student mode:", function() {
                 "Units were " + nodeUnits + " instead of \"" + expectedNodeUnits + "\"");
         }));
     });
+
     after(function(done) {
         client.end();
         done();
