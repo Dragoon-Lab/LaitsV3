@@ -41,7 +41,61 @@
 			"qObject": {
 				"m": "!AUTHOR",
 				"p": "%CPI-2014-ps%",
-				"s": "cpi_tutor"
+				"s": "tutor_cpi360"
+			}
+		},
+		{
+			"names": true,
+			"display": "empty",
+			"options": true,
+			"heading": "Dashboard",
+			"subHeading": "Click on the box to show the complete session details of the user.",
+			"colors": true,
+			"sessionLink": false,
+			"completeAnalysis": false,
+			"userData": true,
+			"tName": "cpiTutor",
+			"query": "custom",
+			"qObject": {
+				"m": "!AUTHOR",
+				"p": "%CPI-2014-ps%",
+				"s": "tutor_cpi360"
+			}
+		},
+		{
+			"names": true,
+			"display": "empty",
+			"options": true,
+			"heading": "Dashboard",
+			"subHeading": "Click on the box to show the complete session details of the user.",
+			"colors": true,
+			"sessionLink": false,
+			"completeAnalysis": false,
+			"userData": true,
+			"tName": "cpiEditor",
+			"query": "custom",
+			"qObject": {
+				"m": "!AUTHOR",
+				"p": "%CPI-2014-ps%",
+				"s": "editor_cpi360"
+			}
+		},
+		{
+			"names": true,
+			"display": "empty",
+			"options": true,
+			"heading": "Dashboard",
+			"subHeading": "Click on the box to show the complete session details of the user.",
+			"colors": true,
+			"sessionLink": false,
+			"completeAnalysis": false,
+			"userData": true,
+			"tName": "cpiComplete",
+			"query": "custom",
+			"qObject": {
+				"m": "!AUTHOR",
+				"p": "%CPI-2014-ps%",
+				"s": "%cpi360%"
 			}
 		},
 		{

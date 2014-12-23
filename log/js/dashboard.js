@@ -42,6 +42,7 @@ define([
 		sessionRunning: [],
 		detailedNodeAnalysis: [],
 		emptyArray: [],
+		mode: [],
 		modules:{},
 		query:{}, // added if we want to send multiple queries. moving the query from main function to the global init. this init can be called again for each new function and then new table can be created. 
 		//sessionDetails:[],
@@ -76,7 +77,7 @@ define([
 			this.modules = this.decideModules(t);
 			this.section = params['s']||this.modules.qObject.s;
 			this.currentUser = params['us'];
-			this.mode = params['m'];
+			//this.mode = params['m'];
 			if(this.modules.query == 'custom')
 				this.query = this.modules.qObject;
 			else 
@@ -100,6 +101,7 @@ define([
 				this.emptyArray[i] = [];
 				this.problemRevisits[i] = [];
 				this.nodesAttempted[i] = [];
+				this.mode[i] = [];
 				this.totalProblemsStarted[i] = 0;
 				this.totalProblemsCompleted[i] = 0;
 				this.totalTimeSpent[i] = 0;
@@ -112,7 +114,8 @@ define([
 					this.detailedNodeAnalysis[i][j] = "-";
 					this.emptyArray[i][j] = " ";
 					this.problemRevisits[i][j] = "-";
-					this.nodesAttempted[i][j] = "-";
+					this.mode[i][j] = "-"; //added because for the cases when the mode might not be same
+					this.nodesAttempted[i][j] = 0;
 					//this.sessionDetails[i][j] = " ";
 				}
 			}
@@ -202,8 +205,10 @@ define([
 				var userIndex = array.indexOf(this.users, upObject['user']);
 				var problemIndex = array.indexOf(this.problems, upObject['problem']);
 				if(userIndex >= 0 && problemIndex >= 0){
-					this.timeSpent[userIndex][problemIndex] = (number.round(upObject['totalTime']*10))/10+ " - " + (number.round(upObject['outOfFocusTime']*10))/10;
-					this.totalTimeSpent[userIndex] += (number.round(upObject['totalTime']*10))/10;
+					this.mode[userIndex][problemIndex] = upObject['mode'];
+					//this.timeSpent[userIndex][problemIndex] = (number.round(upObject['totalTime']*10))/10+ " - " + (number.round(upObject['outOfFocusTime']*10))/10;
+					this.timeSpent[userIndex][problemIndex] = (number.round((upObject['focusTime'] - upObject['wastedTime'])*10))/10;
+					this.totalTimeSpent[userIndex] += this.timeSpent[userIndex][problemIndex];
 					this.totalTimeSpent[userIndex] = (number.round(this.totalTimeSpent[userIndex]*100))/100; // just making sure no extra long decimals show up.
 
 					var errorRatioText = "Blank";
@@ -222,8 +227,20 @@ define([
 					}
 
 					this.problemRevisits[userIndex][problemIndex] = upObject['openTimes'];
-					this.nodesAttempted[userIndex][problemIndex] = upObject['nodes'].length;
+					//this.nodesAttempted[userIndex][problemIndex] = upObject['nodes'].length;
 					this.sessionRunning[userIndex][problemIndex] = upObject['sessionRunning'];
+					
+					if(upObject['nodes']){
+							console.log("session ", upObject);
+						array.forEach(upObject['nodes'], function(node){
+							console.log("sachin ", node.nodeExist, " length ", upObject['nodes'].length, " user ", userIndex, " problemIndex ", problemIndex);
+							if(node.nodeExist){
+								this.nodesAttempted[userIndex][problemIndex]++;
+							}
+						}, this);
+					}
+
+
 					//this.sessionDetails[userIndex][problemIndex] = {user : upObject['user'], problem: upObject['problem'], section: this.section};
 					if(this.modules['completeAnalysis']){
 						var detailedString = '';
@@ -308,11 +325,11 @@ define([
 					var urlString = '';
 					if(this.modules['sessionLink']){
 						//for devel server
-						urlString = "<a href='/devel/index.html?u=" + user + "&m=" + this.mode + "&sm=feedback&is=algebraic&p=" + problem + "&s=" + this.section + "&c=Continue&l=false' target='_blank' title='Click to check session' style='width:90px'>";
+						urlString = "<a href='/devel/index.html?u=" + user + "&m=" + this.mode[row][col] + "&sm=feedback&is=algebraic&p=" + problem + "&s=" + this.section + "&c=Continue&l=false' target='_blank' title='Click to check session' style='width:90px'>";
 						//for demo server
-						//urlString = "<a href='/demo/index.html?u=" + user + "&m=" + this.mode + "&sm=feedback&is=algebraic&p=" + problem + "&s=" + this.section + "&c=Continue&l=false' target='_blank' title='Click to check session'>";
+						//urlString = "<a href='/demo/index.html?u=" + user + "&m=" + this.mode[row][col] + "&sm=feedback&is=algebraic&p=" + problem + "&s=" + this.section + "&c=Continue&l=false' target='_blank' title='Click to check session'>";
 						//for local server
-						//var urlString = "<a href='/code/index.html?u=" + user + "&m=" + this.mode + "&sm=feedback&is=algebraic&p=" + problem + "&s=" + this.section + "&c=Continue&l=false' target='_blank' title='Click to check session'>";
+						//var urlString = "<a href='/code/index.html?u=" + user + "&m=" + this.mode[row][col] + "&sm=feedback&is=algebraic&p=" + problem + "&s=" + this.section + "&c=Continue&l=false' target='_blank' title='Click to check session'>";
 					}
 					var complete = this.problemComplete[row][col];
 					var runningStatus = this.sessionRunning[row][col];
