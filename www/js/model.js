@@ -811,6 +811,12 @@ define([
                             return correctness === "correct" || correctness === "demo";
                         }, this);
             },
+            checkStudentNodeNumber: function(){
+            	console.log("******************");
+            	console.log(this.getStudentNodesInSolution().length);
+            	console.log(this.getNodes());
+            	return this.getNodes().length - this.getStudentNodesInSolution().length;
+            },
 			getStatusDirectives: function(/*string*/ id){
 				//Summary:	Return a list of directives (like PM does).
 				//			to set up node editor.
