@@ -361,12 +361,11 @@ define([
                   	 session.loadProblem(query).then(function(solutionGraph){
 							console.log("Merge problem is loaded "+solutionGraph);
 							if(solutionGraph){
-								var nodes = solutionGraph.task.givenModelNodes;
-								var ids = givenModel.active.mergeNodes(nodes);
-								var snodes = solutionGraph.task.studentModelNodes;
-								var sids = givenModel.active.mergeNodes(snodes,true);
-								console.log(" merged given nodes are "+ids);
-								console.log(" merged student nodes are "+sids);
+								//var nodes = solutionGraph.task.givenModelNodes;
+								var ids = givenModel.active.mergeNodes(solutionGraph);
+								//var snodes = solutionGraph.task.studentModelNodes;
+								//var sids = givenModel.active.mergeNodes(snodes,true);
+								
 								session.saveProblem(givenModel.model);
 								//add merged nodes
 								array.forEach(ids,function(id){	
