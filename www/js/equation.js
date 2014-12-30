@@ -50,8 +50,13 @@ define([
 		areEquivalent: function(/*string*/ id, /*object*/ model, /*string*/ studentEquation){
 			//Summary: For a given model node id, checks the correctness of the student equation.
 			//
-			if(typeof studentEquation == 'string')
-				var student = Parser.parse(studentEquation);
+			var d = new Date();
+			var seed = d.getTime();
+			if(typeof(studentEquation) == 'string')
+			{
+				console.log("hello");
+				var student = Parser.parse(studentEquation, seed);
+			}
 			else
 				student = studentEquation;
 
@@ -64,7 +69,7 @@ define([
 			});
 			}
 			
-			var givenParse = Parser.parse(givenEqn);
+			var givenParse = Parser.parse(givenEqn, seed);
 			var givenVals = {};
 			array.forEach(model.given.getNodes(), function(node){
 				/* Parameter and accumulator nodes are treated as independent. */
@@ -74,9 +79,12 @@ define([
 			});
 			var valsCopy = dojo.clone(givenVals);
 
-			var givenResult = this.getEquationValue(givenParse, model, givenVals, "given");
-			var studentResult = this.getEquationValue(student, model, givenVals, "solution");
-
+			var givenResult = this.getEquationValue(givenParse, model, givenVals, "given", seed);
+			var studentResult = this.getEquationValue(student, model, givenVals, "solution", seed);
+			console.log(typeof givenResult);
+			console.log(givenResult);
+			console.log(givenResult === NaN);
+			console.log(isNaN(givenResult));
 			var flag = Math.abs(studentResult - givenResult) <= 10e-10 * Math.abs(studentResult + givenResult);
 
 			if(givenEqn.indexOf("max") >= 0 || givenEqn.indexOf("min") >= 0){
@@ -86,16 +94,20 @@ define([
 				for(var i = 0; i<nodes.length; i++){
 					givenVals1[nodes[i]] = -1*valsCopy[nodes[i]];
 				}
-				var givenResult1 = this.getEquationValue(givenParse, model, givenVals1, "given");
-				var studentResult1 = this.getEquationValue(student, model, givenVals1, "solution");
+				var givenResult1 = this.getEquationValue(givenParse, model, givenVals1, "given", seed);
+				var studentResult1 = this.getEquationValue(student, model, givenVals1, "solution", seed);
 
 				flag = flag && (Math.abs(studentResult1 - givenResult1) <= 10e-10 * Math.abs(studentResult1 + givenResult1));
 			}
-
+			if(isNaN(givenResult) && isNaN(studentResult))
+			{
+				flag = true;
+			}
+			console.log(flag);
 			return flag; 
 		},
 
-		getEquationValue: function(/* math parser object */ parse, /*model object*/ model, values, /* string */ active){
+		getEquationValue: function(/* math parser object */ parse, /*model object*/ model, values, /* string */ active, /* float */ seed){
 			var id;
 			var solutionVals = {};
 			array.forEach(parse.variables(), function(variable){
@@ -134,7 +146,7 @@ define([
 			if(active == "solution")
 				values = solutionVals;
 
-			var result = parse.evaluate(values);
+			var result = parse.evaluate(values, 0, seed);
 
 			return result;
 		},

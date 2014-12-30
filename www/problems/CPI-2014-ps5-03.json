@@ -62,7 +62,7 @@
                     "initial": 0,
                     "units": 0,
                     "equation": 0,
-                    "assitanceScore": 0
+                    "assistanceScore": 1
                 },
                 "status": {},
                 "name": "moose population",
@@ -94,7 +94,7 @@
                     "initial": 0,
                     "units": 0,
                     "equation": 0,
-                    "assitanceScore": 0
+                    "assistanceScore": 1
                 },
                 "status": {},
                 "name": "moose births",
@@ -115,7 +115,7 @@
                     "initial": 0,
                     "units": 0,
                     "equation": 0,
-                    "assitanceScore": 0
+                    "assistanceScore": 1
                 },
                 "status": {},
                 "name": "moose birth rate",
@@ -147,7 +147,7 @@
                     "initial": 0,
                     "units": 0,
                     "equation": 0,
-                    "assitanceScore": 0
+                    "assistanceScore": 1
                 },
                 "status": {},
                 "name": "moose deaths",
@@ -177,7 +177,7 @@
                     "initial": 0,
                     "units": 0,
                     "equation": 0,
-                    "assitanceScore": 0
+                    "assistanceScore": 0
                 },
                 "status": {},
                 "name": "moose death rate",
@@ -207,7 +207,7 @@
                     "initial": 0,
                     "units": 0,
                     "equation": 0,
-                    "assitanceScore": 0
+                    "assistanceScore": 1
                 },
                 "status": {},
                 "name": "moose predation rate",
@@ -241,7 +241,7 @@
                     "initial": 0,
                     "units": 0,
                     "equation": 0,
-                    "assitanceScore": 0
+                    "assistanceScore": 0
                 },
                 "status": {},
                 "name": "moose starvation rate",
@@ -271,7 +271,7 @@
                     "initial": 0,
                     "units": 0,
                     "equation": 0,
-                    "assitanceScore": 0
+                    "assistanceScore": 1
                 },
                 "status": {},
                 "name": "wolf population",
@@ -293,7 +293,7 @@
                     "initial": 0,
                     "units": 0,
                     "equation": 0,
-                    "assitanceScore": 0
+                    "assistanceScore": 1
                 },
                 "status": {},
                 "name": "effect of wolves on moose",
@@ -325,7 +325,7 @@
                     "initial": 0,
                     "units": 0,
                     "equation": 0,
-                    "assitanceScore": 0
+                    "assistanceScore": 1
                 },
                 "status": {},
                 "name": "wolf births",
@@ -355,7 +355,7 @@
                     "initial": 0,
                     "units": 0,
                     "equation": 0,
-                    "assitanceScore": 0
+                    "assistanceScore": 1
                 },
                 "status": {},
                 "name": "wolf deaths",
@@ -385,7 +385,7 @@
                     "initial": 0,
                     "units": 0,
                     "equation": 0,
-                    "assitanceScore": 0
+                    "assistanceScore": 1
                 },
                 "status": {},
                 "name": "wolf birth rate",
@@ -406,7 +406,7 @@
                     "initial": 0,
                     "units": 0,
                     "equation": 0,
-                    "assitanceScore": 0
+                    "assistanceScore": 1
                 },
                 "status": {},
                 "name": "wolf death rate",
@@ -429,7 +429,7 @@
                     "initial": 0,
                     "units": 0,
                     "equation": 0,
-                    "assitanceScore": 0
+                    "assistanceScore": 1
                 },
                 "status": {},
                 "name": "effect of moose on wolves",
@@ -452,7 +452,7 @@
                     "initial": 0,
                     "units": 0,
                     "equation": 0,
-                    "assitanceScore": 0
+                    "assistanceScore": 0
                 },
                 "status": {},
                 "name": "moose capacity",
@@ -639,12 +639,10 @@
                         "status": "correct"
                     },
                     "initial": {
-                        "disabled": true,
-                        "status": "correct"
+                        "disabled": true
                     },
                     "units": {
-                        "disabled": true,
-                        "status": "correct"
+                        "disabled": true
                     },
                     "equation": {
                         "disabled": false,

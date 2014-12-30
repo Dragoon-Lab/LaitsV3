@@ -50,21 +50,14 @@
                     "y": 75
                 },
                 "attemptCount": {
-                    "description": 1,
-                    "type": 1,
-                    "initial": 1,
-                    "units": 1,
-                    "equation": 1,
-                    "assitanceScore": 0,
-                    "assistanceScore": 0
+                    "description": 0,
+                    "type": 0,
+                    "initial": 0,
+                    "units": 0,
+                    "equation": 0,
+                    "assistanceScore": 1
                 },
-                "status": {
-                    "description": "correct",
-                    "type": "correct",
-                    "initial": "correct",
-                    "units": "correct",
-                    "equation": "correct"
-                },
+                "status": {},
                 "name": "blood glucose",
                 "description": "Amount of glucose in the blood",
                 "type": "accumulator",
@@ -89,20 +82,14 @@
                     "y": 215
                 },
                 "attemptCount": {
-                    "description": 1,
-                    "type": 1,
+                    "description": 0,
+                    "type": 0,
                     "initial": 0,
-                    "units": 1,
-                    "equation": 1,
-                    "assitanceScore": 0,
-                    "assistanceScore": 0
+                    "units": 0,
+                    "equation": 0,
+                    "assistanceScore": 1
                 },
-                "status": {
-                    "description": "correct",
-                    "type": "correct",
-                    "equation": "correct",
-                    "units": "correct"
-                },
+                "status": {},
                 "name": "glucose removed without insulin",
                 "type": "function",
                 "description": "glucose removed from blood each minute without involvement of insulin",
@@ -126,20 +113,14 @@
                     "y": 67
                 },
                 "attemptCount": {
-                    "description": 1,
-                    "type": 1,
+                    "description": 0,
+                    "type": 0,
                     "initial": 0,
-                    "units": 1,
-                    "equation": 1,
-                    "assitanceScore": 0,
-                    "assistanceScore": 0
+                    "units": 0,
+                    "equation": 0,
+                    "assistanceScore": 1
                 },
-                "status": {
-                    "description": "correct",
-                    "type": "correct",
-                    "units": "correct",
-                    "equation": "correct"
-                },
+                "status": {},
                 "name": "glucose removed via insulin",
                 "description": "Glucose removed from blood per minute by remote tissues",
                 "type": "function",
@@ -154,19 +135,14 @@
                     "y": 351.74517822265625
                 },
                 "attemptCount": {
-                    "description": 1,
-                    "type": 1,
-                    "initial": 2,
+                    "description": 0,
+                    "type": 0,
+                    "initial": 0,
                     "units": 0,
                     "equation": 0,
-                    "assitanceScore": 0,
                     "assistanceScore": 1
                 },
-                "status": {
-                    "description": "correct",
-                    "type": "correct",
-                    "initial": "correct"
-                },
+                "status": {},
                 "name": "glucose effectiveness",
                 "description": "How effectively the body restores glucose to homeostasis without insulin",
                 "type": "parameter",
@@ -190,20 +166,14 @@
                     "y": 215
                 },
                 "attemptCount": {
-                    "description": 1,
-                    "type": 1,
+                    "description": 0,
+                    "type": 0,
                     "initial": 0,
-                    "units": 1,
-                    "equation": 1,
-                    "assitanceScore": 0,
-                    "assistanceScore": 0
+                    "units": 0,
+                    "equation": 0,
+                    "assistanceScore": 1
                 },
-                "status": {
-                    "description": "correct",
-                    "type": "correct",
-                    "units": "correct",
-                    "equation": "correct"
-                },
+                "status": {},
                 "name": "glucose difference",
                 "description": "Glucose in the blood minus glucose set point",
                 "type": "function",
@@ -218,20 +188,14 @@
                     "y": 347.74517822265625
                 },
                 "attemptCount": {
-                    "description": 1,
-                    "type": 1,
-                    "initial": 1,
-                    "units": 1,
+                    "description": 0,
+                    "type": 0,
+                    "initial": 0,
+                    "units": 0,
                     "equation": 0,
-                    "assitanceScore": 0,
-                    "assistanceScore": 0
+                    "assistanceScore": 1
                 },
-                "status": {
-                    "description": "correct",
-                    "type": "correct",
-                    "initial": "correct",
-                    "units": "correct"
-                },
+                "status": {},
                 "name": "glucose set point",
                 "description": "The quantity of glucose that the body tries to keep in the blood at all times",
                 "type": "parameter",
@@ -256,21 +220,14 @@
                     "y": 68
                 },
                 "attemptCount": {
-                    "description": 1,
-                    "type": 1,
-                    "initial": 1,
-                    "units": 1,
-                    "equation": 1,
-                    "assitanceScore": 0,
-                    "assistanceScore": 0
+                    "description": 0,
+                    "type": 0,
+                    "initial": 0,
+                    "units": 0,
+                    "equation": 0,
+                    "assistanceScore": 1
                 },
-                "status": {
-                    "description": "correct",
-                    "type": "correct",
-                    "initial": "correct",
-                    "units": "correct",
-                    "equation": "correct"
-                },
+                "status": {},
                 "name": "remote insulin",
                 "description": "Insulin in tissues other than the pancreas",
                 "type": "accumulator",
@@ -295,20 +252,14 @@
                     "y": 163
                 },
                 "attemptCount": {
-                    "description": 1,
-                    "type": 1,
+                    "description": 0,
+                    "type": 0,
                     "initial": 0,
-                    "units": 1,
-                    "equation": 1,
-                    "assitanceScore": 0,
-                    "assistanceScore": 0
+                    "units": 0,
+                    "equation": 0,
+                    "assistanceScore": 1
                 },
-                "status": {
-                    "description": "correct",
-                    "type": "correct",
-                    "units": "correct",
-                    "equation": "correct"
-                },
+                "status": {},
                 "name": "blood insulin to remote",
                 "description": "How much blood insulin moves into or out of the remote tissue",
                 "type": "function",
@@ -332,19 +283,14 @@
                     "y": 162
                 },
                 "attemptCount": {
-                    "description": 1,
-                    "type": 1,
+                    "description": 0,
+                    "type": 0,
                     "initial": 0,
                     "units": 0,
-                    "equation": 1,
-                    "assitanceScore": 0,
-                    "assistanceScore": 0
+                    "equation": 0,
+                    "assistanceScore": 1
                 },
-                "status": {
-                    "description": "correct",
-                    "type": "correct",
-                    "equation": "correct"
-                },
+                "status": {},
                 "name": "insulin speed",
                 "description": "Proportion of surplus/deficit blood insulin that moves into/out of remote tissues",
                 "type": "function",
@@ -369,19 +315,14 @@
                     "y": 286
                 },
                 "attemptCount": {
-                    "description": 1,
-                    "type": 1,
+                    "description": 0,
+                    "type": 0,
                     "initial": 0,
-                    "units": 1,
+                    "units": 0,
                     "equation": 0,
-                    "assitanceScore": 0,
-                    "assistanceScore": 0
+                    "assistanceScore": 1
                 },
-                "status": {
-                    "description": "correct",
-                    "type": "correct",
-                    "units": "correct"
-                },
+                "status": {},
                 "name": "blood insulin difference",
                 "description": "blood insulin minus blood insulin set point",
                 "type": "function",
@@ -410,13 +351,9 @@
                     "initial": 0,
                     "units": 0,
                     "equation": 0,
-                    "assitanceScore": 0
+                    "assistanceScore": 0
                 },
-                "status": {
-                    "equation": {
-                        "disabled": false
-                    }
-                },
+                "status": {},
                 "name": "blood insulin",
                 "description": "Insulin in the blood",
                 "type": "accumulator",
@@ -437,7 +374,7 @@
                     "initial": 0,
                     "units": 0,
                     "equation": 0,
-                    "assitanceScore": 0
+                    "assistanceScore": 0
                 },
                 "status": {},
                 "name": "blood insulin set point",
@@ -464,20 +401,14 @@
                     "y": 64
                 },
                 "attemptCount": {
-                    "description": 1,
-                    "type": 1,
+                    "description": 0,
+                    "type": 0,
                     "initial": 0,
-                    "units": 1,
-                    "equation": 1,
-                    "assitanceScore": 0,
-                    "assistanceScore": 0
+                    "units": 0,
+                    "equation": 0,
+                    "assistanceScore": 1
                 },
-                "status": {
-                    "description": "correct",
-                    "type": "correct",
-                    "units": "correct",
-                    "equation": "correct"
-                },
+                "status": {},
                 "name": "remote insulin removed",
                 "description": "remote insulin removed each minute",
                 "type": "function",
@@ -492,19 +423,14 @@
                     "y": 43.74516677856445
                 },
                 "attemptCount": {
-                    "description": 1,
-                    "type": 1,
-                    "initial": 1,
+                    "description": 0,
+                    "type": 0,
+                    "initial": 0,
                     "units": 0,
                     "equation": 0,
-                    "assitanceScore": 0,
-                    "assistanceScore": 0
+                    "assistanceScore": 1
                 },
-                "status": {
-                    "description": "correct",
-                    "type": "correct",
-                    "initial": "correct"
-                },
+                "status": {},
                 "name": "remote insulin removal rate",
                 "description": "Proportion of remote insulin removed per minute",
                 "type": "parameter",
@@ -533,7 +459,7 @@
                     "initial": 0,
                     "units": 0,
                     "equation": 0,
-                    "assitanceScore": 0
+                    "assistanceScore": 0
                 },
                 "status": {},
                 "name": "insulin removed",
@@ -555,7 +481,7 @@
                     "initial": 0,
                     "units": 0,
                     "equation": 0,
-                    "assitanceScore": 0
+                    "assistanceScore": 0
                 },
                 "status": {},
                 "name": "convergence rate for insulin",
@@ -579,20 +505,14 @@
                     "y": 216
                 },
                 "attemptCount": {
-                    "description": 1,
-                    "type": 1,
+                    "description": 0,
+                    "type": 0,
                     "initial": 0,
-                    "units": 1,
-                    "equation": 2,
-                    "assitanceScore": 0,
-                    "assistanceScore": 2
+                    "units": 0,
+                    "equation": 0,
+                    "assistanceScore": 1
                 },
-                "status": {
-                    "description": "correct",
-                    "type": "correct",
-                    "units": "correct",
-                    "equation": "correct"
-                },
+                "status": {},
                 "name": "insulin from pancreas",
                 "description": "Amount of insulin secreted by pancreas to lower glucose",
                 "type": "function",
@@ -607,19 +527,14 @@
                     "y": 350.74517822265625
                 },
                 "attemptCount": {
-                    "description": 1,
-                    "type": 1,
-                    "initial": 1,
+                    "description": 0,
+                    "type": 0,
+                    "initial": 0,
                     "units": 0,
                     "equation": 0,
-                    "assitanceScore": 0,
-                    "assistanceScore": 0
+                    "assistanceScore": 1
                 },
-                "status": {
-                    "description": "correct",
-                    "type": "correct",
-                    "initial": "correct"
-                },
+                "status": {},
                 "name": "insulin secretion rate",
                 "description": "What proportion of the glucose surplus is secreted as insulin",
                 "type": "parameter",
@@ -634,19 +549,14 @@
                     "y": 196.7451629638672
                 },
                 "attemptCount": {
-                    "description": 1,
-                    "type": 1,
-                    "initial": 1,
+                    "description": 0,
+                    "type": 0,
+                    "initial": 0,
                     "units": 0,
                     "equation": 0,
-                    "assitanceScore": 0,
-                    "assistanceScore": 0
+                    "assistanceScore": 1
                 },
-                "status": {
-                    "description": "correct",
-                    "type": "correct",
-                    "initial": "correct"
-                },
+                "status": {},
                 "name": "insulin sensitivity",
                 "description": "how quickly the body responds to insulin",
                 "type": "parameter",

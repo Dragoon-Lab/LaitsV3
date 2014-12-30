@@ -59,7 +59,7 @@
                     "initial": 0,
                     "units": 0,
                     "equation": 0,
-                    "assitanceScore": 0
+                    "assistanceScore": 0
                 },
                 "status": {},
                 "name": "Higher barrel",
@@ -91,7 +91,7 @@
                     "initial": 0,
                     "units": 0,
                     "equation": 0,
-                    "assitanceScore": 0
+                    "assistanceScore": 0
                 },
                 "status": {},
                 "name": "Draining through the hose",
@@ -122,7 +122,7 @@
                     "initial": 0,
                     "units": 0,
                     "equation": 0,
-                    "assitanceScore": 0
+                    "assistanceScore": 0
                 },
                 "status": {},
                 "name": "Lower barrel",
@@ -154,7 +154,7 @@
                     "initial": 0,
                     "units": 0,
                     "equation": 0,
-                    "assitanceScore": 0
+                    "assistanceScore": 0
                 },
                 "status": {},
                 "name": "draining out hole",
@@ -176,7 +176,7 @@
                     "initial": 0,
                     "units": 0,
                     "equation": 0,
-                    "assitanceScore": 0
+                    "assistanceScore": 0
                 },
                 "status": {},
                 "name": "Set point",
@@ -208,7 +208,7 @@
                     "initial": 0,
                     "units": 0,
                     "equation": 0,
-                    "assitanceScore": 0
+                    "assistanceScore": 0
                 },
                 "status": {},
                 "name": "Difference",
@@ -230,7 +230,7 @@
                     "initial": 0,
                     "units": 0,
                     "equation": 0,
-                    "assitanceScore": 0
+                    "assistanceScore": 0
                 },
                 "status": {},
                 "name": "Proportion draining thru hose",
@@ -252,7 +252,7 @@
                     "initial": 0,
                     "units": 0,
                     "equation": 0,
-                    "assitanceScore": 0
+                    "assistanceScore": 0
                 },
                 "status": {},
                 "name": "Proportion draining out hole",

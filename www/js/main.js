@@ -30,6 +30,7 @@ define([
 	"dojo/io-query",
 	"dojo/ready",
 	'dijit/registry',
+    "dijit/Tooltip",
 	"./menu",
 	"./load-save",
 	"./model",
@@ -46,7 +47,7 @@ define([
 	"./createSlides",
 	"./lessons-learned"
 ], function(
-		array, lang, dom, geometry, style, on, aspect, ioQuery, ready, registry,
+		array, lang, dom, geometry, style, on, aspect, ioQuery, ready, registry, toolTip,
 		menu, loadSave, model,
 		Graph, Table, controlStudent, controlAuthor, drawmodel, logging, equation, description, State, typechecker, slides, lessonsLearned
 ){
@@ -106,6 +107,9 @@ define([
 		 Create state object
 		 */
 		var state = new State(query.u, query.s, "action");
+		state.get("isLessonLearnedShown").then(function(reply) {
+			givenModel.setLessonLearned(reply);
+		});
 		controllerObject.setState(state);
 
 		ready(function(){
@@ -129,13 +133,23 @@ define([
 						 lang.hitch(drawModel, drawModel.colorNodeBorder), 
 						 true);
 
-			//In TEST and EDITOR mode remove border color from existing Student model nodes.			 
-			if(controllerObject._mode == "TEST" || controllerObject._mode == "EDITOR"){
+			var removeStatusColor = function(){
 				array.forEach(givenModel.model.task.studentModelNodes, function(studentNode){
-					var isComplete = givenModel.active.isComplete(studentNode.ID, true)?'solid':'dashed';
-					var borderColor = "3px "+isComplete+" gray";
-					style.set(studentNode.ID, 'border', borderColor);
-					style.set(studentNode.ID, 'backgroundColor', "white");
+					 if(typeof givenModel.active.getType(studentNode.ID) !== "undefined"){
+							var isComplete = givenModel.active.isComplete(studentNode.ID, true)?'solid':'dashed';
+							var borderColor = "3px "+isComplete+" gray";
+							var boxshadow = 'inset 0px 0px 5px #000 , 0px 0px 10px #000';
+							style.set(studentNode.ID, 'border', borderColor);
+							style.set(studentNode.ID, 'box-shadow', boxshadow);
+							style.set(studentNode.ID, 'backgroundColor', "white");
+						}
+					});
+			}
+			//In TEST and EDITOR mode remove background color and border color on update		 
+			if(controllerObject._mode == "TEST" || controllerObject._mode == "EDITOR"){
+				removeStatusColor();
+				aspect.after(drawModel, "updater", function(){
+					removeStatusColor();
 				});
 			}
 
@@ -152,7 +166,23 @@ define([
 				drawModel.addNode(givenModel.active.getNode(id));		
 				controllerObject.showNodeEditor(id);
 			});
-			
+
+            // Show tips for Root in node modifier and Share Bit in Description and Time
+            var makeTooltip  = function(id,content){
+                new toolTip({
+                    connectId: [id],
+                    label: content
+                });
+            };
+            makeTooltip('questionMarkRoot',"When running in COACHED mode, the system will guide the student through <br>" +
+                "the construction of the model beginning with this node, then proceeding with <br>" +
+                "this node's inputs, then their inputs, and so forth until the model is complete.");
+			makeTooltip('questionMarkShare', "When checked, your problem appears in the list <br>" +
+                "of custom problems for other users to solve.");
+            makeTooltip('questionMarkURL', "If you wish to use an image from your computer, <br>" +
+                "you must first upload it to a website and then copy <br>" +
+                "the URL of the image into this box.");
+
 			/*
 			 Connect node editor to "click with no move" events.
 			 */
@@ -167,7 +197,27 @@ define([
 			aspect.after(drawModel, "onClickMoved", function(mover){
 				var g = geometry.position(mover.node, true);  // take into account scrolling
 				console.log("Update model coordinates for ", mover.node.id, g);
-				console.warn("This should take into account scrolling, Bug #2300.");
+				
+				var node = registry.byId(mover.node);
+				var widthLimit = document.documentElement.clientWidth - 110;
+				var topLimit = 20;
+
+				//check if bounds inside
+				if(g.y < topLimit) { // BUG: this g.y should be absolute coordinates instead
+					g.y = topLimit;
+					node.style.top = topLimit+"px";  // BUG: This needs to correct for scroll
+				}
+								
+				if(g.x > widthLimit) {
+					g.x = widthLimit;
+					node.style.left = widthLimit+"px";
+				}
+				
+				if(g.x < 0) {
+					g.x = 0;
+					node.style.left = "0px";
+				}
+				
 				givenModel.active.setPosition(mover.node.id, {"x": g.x, "y": g.y});
 				// It would be more efficient if we only saved the changed node.
 				session.saveProblem(givenModel.model);	 // Autosave to server
@@ -192,15 +242,51 @@ define([
 			 */
 			aspect.after(registry.byId('nodeeditor'), "hide", function(){
 				console.log("Calling session.saveProblem");
+				if(controllerObject._mode == "AUTHOR")
+				{	
+					array.forEach(givenModel.model.task.givenModelNodes, function(node){
+						if(node.ID === controllerObject.currentID)
+						{
+							console.log(node.description);
+							if(node.description === "" || node.description == null)
+							{
+								console.log("Changing description to match name");
+								node.description = node.name;
+							}
+						}
+					}, this);
+					var isComplete = givenModel.given.isComplete(controllerObject.currentID, true)?'solid':'dashed';
+					var borderColor = "3px "+isComplete+" gray";
+					style.set(controllerObject.currentID, 'border', borderColor);
+					style.set(controllerObject.currentID, 'backgroundColor', "white");
+				}
 				session.saveProblem(givenModel.model);
-			});
+				//This section errors out in author mode
+                var descDirective=controllerObject._model.student.getStatusDirectives(controllerObject.currentID);
+                var directive = null;
+                for(i=0;i<descDirective.length;i++){
+                    if(descDirective[i].id=="description")
+                            directive=descDirective[i];
+                        
+                }
+                if(controllerObject._mode !== "TEST" && controllerObject._mode !== "EDITOR"){
+                	if(directive&&(directive.value=="incorrect" || directive.value=="premature"))
+                            drawModel.deleteNode(controllerObject.currentID);
+                }
+    		});
 			
 			// Wire up close button...
 			// This will trigger the above session.saveProblem()
 			on(registry.byId("closeButton"), "click", function(){
-
 				registry.byId("nodeeditor").hide();
 			});
+
+			on(registry.byId("deleteButton"), "click", function(){
+				//delete node from model and remove from display
+				drawModel.deleteNode(controllerObject.currentID);
+				registry.byId("nodeeditor").hide();
+			});
+
 
 			// checks if forumurl is present
 			if(query.f && query.fe=="true") {
@@ -236,8 +322,10 @@ define([
 			if(query.m == "AUTHOR"){
 				var db = registry.byId("descButton");
 				db.set("disabled", false);
-                		db = registry.byId("saveButton");
-                		db.set("disabled", false);
+                db = registry.byId("saveButton");
+                db.set("disabled", false);
+                db = registry.byId("mergeButton");
+                db.set("disabled", false);
 				db = registry.byId("previewButton");
 				db.set("disabled", false);
 
@@ -265,6 +353,50 @@ define([
                 menu.add("saveButton", function(){
                     registry.byId("authorSaveDialog").show();
                 });
+
+                menu.add("mergeButton", function(){
+                    registry.byId("authorMergeDialog").show();
+             	});
+
+				on(registry.byId("mergeDialogButton"),"click",function(){
+					 var group = registry.byId("authorMergeGroup").value;
+					 var section = registry.byId("authorMergeSection").value;
+					 var problem = registry.byId("authorMergeProblem").value;
+
+					 if(!problem || !section)
+					 	{
+					 		alert("Problem/Section can't be empty");
+					 		return;
+					 	}
+
+					 var query = {g:group,m:"AUTHOR",s:section,p:problem};
+                  	 session.loadProblem(query).then(function(solutionGraph){
+							console.log("Merge problem is loaded "+solutionGraph);
+							if(solutionGraph){
+								//var nodes = solutionGraph.task.givenModelNodes;
+								var ids = givenModel.active.mergeNodes(solutionGraph);
+								//var snodes = solutionGraph.task.studentModelNodes;
+								//var sids = givenModel.active.mergeNodes(snodes,true);
+								
+								session.saveProblem(givenModel.model);
+								//add merged nodes
+								array.forEach(ids,function(id){	
+									var node = 	givenModel.active.getNode(id);
+									drawModel.addNode(node);	
+								},this);	
+								//set connections for merged nodes
+								array.forEach(ids,function(id){
+									var node = 	givenModel.active.getNode(id);
+									drawModel.setConnections(node.inputs,dojo.byId(id));
+								},this);
+								registry.byId("authorMergeDialog").hide();
+							}else{
+								console.log("Problem Not found");
+								alert("Problem Not found");
+							}
+               		 });
+				});
+
                 aspect.after(registry.byId('authorSaveDialog'), "hide", function(){
                     console.log("Rename and Save Problem edits");
                     // Save problem
@@ -279,6 +411,7 @@ define([
                 on(registry.byId("saveCloseButton"), "click", function(){
                     registry.byId("authorSaveDialog").hide();
                 });
+                //authorMergeDialog
                 
                 //Author Save Dialog - check for name conflict on losing focus
                 //from textboxes of Rename dialog
@@ -346,6 +479,7 @@ define([
 				// instantiate graph object
 				var buttonClicked = "graph";
 				var graph = new Graph(givenModel, query.m, session, buttonClicked);
+				graph.setStateGraph(state);
 				var problemComplete = givenModel.matchesGivenSolution();
 				
 				graph._logging.log('ui-action', {
@@ -362,6 +496,7 @@ define([
 				console.debug("table button clicked");
 				var buttonClicked = "table";
 				var table = new Graph(givenModel, query.m, session, buttonClicked);
+				table.setStateGraph(state);
 				table._logging.log('ui-action', {
 					type: "menu-choice", 
 					name: "table-button"

@@ -35,9 +35,8 @@ define([
 	'dijit/registry',
 	'./controller',
 	"./pedagogical_module",
-	"./pm_no_feedback",
 	"./typechecker"
-], function(aspect, array, declare, lang, dom, ready, registry, controller, PM, PMNoFeedback, typechecker){
+], function(aspect, array, declare, lang, dom, ready, registry, controller, PM, typechecker){
 	// Summary: 
 	//			MVC for the node editor, for students
 	// Description:
@@ -52,13 +51,10 @@ define([
 
 	return declare(controller, {
 		_PM: null,
-
+        _previousExpression:null,
 		constructor: function(mode, subMode, model){
 			console.log("++++++++ In student constructor");
-			if(mode == "TEST" || mode == "EDITOR")
-				this._PM = new PMNoFeedback(mode, subMode, model);
-			else
-				this._PM = new PM(mode, subMode, model);
+			this._PM = new PM(mode, subMode, model);
 			lang.mixin(this.widgetMap, this.controlMap);
 			ready(this, "populateSelections");
 			this.init();
@@ -145,7 +141,24 @@ define([
             }, this);
 			this.updateNodeLabel(id);
 		},
-
+        isExpressionChanged:function(){
+            var evalue=registry.byId(this.controlMap.equation).get("value");
+            if(this._previousExpression)
+            {
+                var expr=evalue;
+                expr=expr.replace(/\s+/g, '');
+                if(expr==this._previousExpression)
+                {
+                    alert("Expression is same, Please modify the expression.");
+                    return true;
+                }else{
+                    this._previousExpression=expr;
+                }
+            }else{
+                this._previousExpression=evalue.replace(/\s+/g,'');
+            }
+            return false;
+        },
 		handleDescription: function(selectDescription){
 			console.log("****** in handleDescription ", this.currentID, selectDescription);
 			if(selectDescription == 'defaultSelect'){
@@ -233,6 +246,8 @@ define([
 		},
 		equationDoneHandler: function(){
 			var directives = [];
+            if(this.isExpressionChanged())
+                    return; //2365 fix, just to check pattern change, not evaluating 
 			var parse = this.equationAnalysis(directives, false);
 			if(parse){
 				var dd = this._PM.processAnswer(this.currentID, 'equation', parse, registry.byId(this.controlMap.equation).get("value"));

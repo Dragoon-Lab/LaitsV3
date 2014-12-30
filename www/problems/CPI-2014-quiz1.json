@@ -37,7 +37,7 @@
                     "initial": 0,
                     "units": 0,
                     "equation": 0,
-                    "assitanceScore": 0
+                    "assistanceScore": 0
                 },
                 "status": {},
                 "name": "Good street lights",
@@ -68,7 +68,7 @@
                     "initial": 0,
                     "units": 0,
                     "equation": 0,
-                    "assitanceScore": 0
+                    "assistanceScore": 0
                 },
                 "status": {},
                 "name": "Burning out nightly",
@@ -89,7 +89,7 @@
                     "initial": 0,
                     "units": 0,
                     "equation": 0,
-                    "assitanceScore": 0
+                    "assistanceScore": 0
                 },
                 "status": {},
                 "name": "probability of burning out",
@@ -111,7 +111,7 @@
                     "initial": 0,
                     "units": 0,
                     "equation": 0,
-                    "assitanceScore": 0
+                    "assistanceScore": 0
                 },
                 "status": {},
                 "name": "Repaired during day",

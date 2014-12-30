@@ -21,7 +21,9 @@ html, body, #main{
 	font:10pt Arial,Myriad,Tahoma,Verdana,sans-serif !important;
 }
 
-
+.restrict-vscroll {
+	overflow-x:hidden!important;
+}
 .claro .sameedit .dijitDisabled{
     background-color:#e6e6e6;
     cursor: pointer;
@@ -67,6 +69,10 @@ html, body, #main{
     width:10ex;
 }
 
+.questionMark{
+    width:4%;
+}
+
 .sameedit #equationText {
     max-width:40ex;
     border:solid black 1px;
@@ -78,7 +84,7 @@ html, body, #main{
     background:#e5e5e5;
     border:solid black 1px;
     overflow-y:scroll;
-    height:8ex;
+    height:50px;
     width:20em
 }
 
@@ -173,4 +179,14 @@ div.legend {
 .learning ul{
 	/*list-style-type: none;*/
     max-width: 500px;
+}
+
+/* Bug fix: Buttons are sticky */
+
+.dijitButtonNode {
+    padding: 0 !important;
+}
+
+.dijitButtonContents{
+    padding: 2px 4px 4px 4px;
 }
