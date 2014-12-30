@@ -35,9 +35,8 @@ define([
 	'dijit/registry',
 	'./controller',
 	"./pedagogical_module",
-	"./pm_no_feedback",
 	"./typechecker"
-], function(aspect, array, declare, lang, dom, ready, registry, controller, PM, PMNoFeedback, typechecker){
+], function(aspect, array, declare, lang, dom, ready, registry, controller, PM, typechecker){
 	// Summary: 
 	//			MVC for the node editor, for students
 	// Description:
@@ -55,10 +54,7 @@ define([
         _previousExpression:null,
 		constructor: function(mode, subMode, model){
 			console.log("++++++++ In student constructor");
-			if(mode == "TEST" || mode == "EDITOR")
-				this._PM = new PMNoFeedback(mode, subMode, model);
-			else
-				this._PM = new PM(mode, subMode, model);
+			this._PM = new PM(mode, subMode, model);
 			lang.mixin(this.widgetMap, this.controlMap);
 			ready(this, "populateSelections");
 			this.init();

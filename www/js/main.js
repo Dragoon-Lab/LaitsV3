@@ -133,13 +133,23 @@ define([
 						 lang.hitch(drawModel, drawModel.colorNodeBorder), 
 						 true);
 
-			//In TEST and EDITOR mode remove border color from existing Student model nodes.			 
-			if(controllerObject._mode == "TEST" || controllerObject._mode == "EDITOR"){
+			var removeStatusColor = function(){
 				array.forEach(givenModel.model.task.studentModelNodes, function(studentNode){
-					var isComplete = givenModel.active.isComplete(studentNode.ID, true)?'solid':'dashed';
-					var borderColor = "3px "+isComplete+" gray";
-					style.set(studentNode.ID, 'border', borderColor);
-					style.set(studentNode.ID, 'backgroundColor', "white");
+					 if(typeof givenModel.active.getType(studentNode.ID) !== "undefined"){
+							var isComplete = givenModel.active.isComplete(studentNode.ID, true)?'solid':'dashed';
+							var borderColor = "3px "+isComplete+" gray";
+							var boxshadow = 'inset 0px 0px 5px #000 , 0px 0px 10px #000';
+							style.set(studentNode.ID, 'border', borderColor);
+							style.set(studentNode.ID, 'box-shadow', boxshadow);
+							style.set(studentNode.ID, 'backgroundColor', "white");
+						}
+					});
+			}
+			//In TEST and EDITOR mode remove background color and border color on update		 
+			if(controllerObject._mode == "TEST" || controllerObject._mode == "EDITOR"){
+				removeStatusColor();
+				aspect.after(drawModel, "updater", function(){
+					removeStatusColor();
 				});
 			}
 
@@ -259,8 +269,10 @@ define([
                             directive=descDirective[i];
                         
                 }
-                if(directive&&(directive.value=="incorrect" || directive.value=="premature"))
+                if(controllerObject._mode !== "TEST" && controllerObject._mode !== "EDITOR"){
+                	if(directive&&(directive.value=="incorrect" || directive.value=="premature"))
                             drawModel.deleteNode(controllerObject.currentID);
+                }
     		});
 			
 			// Wire up close button...

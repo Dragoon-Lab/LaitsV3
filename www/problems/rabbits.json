@@ -106,14 +106,35 @@
                 "name": "birth rate",
                 "description": "The number of rabbits born per year per rabbit",
                 "units": "1/year",
-                "genus": "irrelevant"
+                "genus": "irrelevant",
+                "attemptCount": {
+                    "description": 0,
+                    "type": 0,
+                    "initial": 0,
+                    "units": 0,
+                    "equation": 0,
+                    "assistanceScore": 0
+                },
+                "status": {},
+                "inputs":[]
+
             },
             {
                 "ID": "id9",
                 "name": "death rate",
                 "description": "The number of rabbits that die per year per rabbit",
                 "units": "1/year",
-                "genus": "irrelevant"
+                "genus": "irrelevant",
+                "attemptCount": {
+                    "description": 0,
+                    "type": 0,
+                    "initial": 0,
+                    "units": 0,
+                    "equation": 0,
+                    "assistanceScore": 0
+                },
+                "status": {},
+                "inputs":[]
             }
         ],
         "studentModelNodes": []
