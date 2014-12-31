@@ -507,6 +507,10 @@ define([
             //should disable all the pop ups
             aspect.after(registry.byId('solution'), "hide", function(){
                 console.log("Calling graph/table to be closed");
+                controllerObject.logging.log('ui-action', {
+                    type: "menu-choice",
+                    name: "graph-closed"
+                });
                 typechecker.closePops();
                 //session.saveProblem(givenModel.model);
             });
