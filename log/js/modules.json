@@ -1,0 +1,61 @@
+{ 
+	"modules" : [
+		{
+			"names": false,
+			"display": "errors",
+			"options": false,
+			"heading": "Leader Board",
+			"subHeading": "Each cell shows Red checks / Total checks. Your row is light blue. Refresh page to update.",
+			"colors": true, 
+			"sessionLink": false,
+			"completeAnalysis": false,
+			"userData": false,
+			"tName": "leader",
+			"query": "general"
+		},
+		{
+			"names": true,
+			"display": "empty",
+			"options": true,
+			"heading": "Dashboard",
+			"subHeading": "Click on the box to show the complete session details of the user.",
+			"colors": true,
+			"sessionLink": false,
+			"completeAnalysis": true,
+			"userData": true,
+			"tName": "complete",
+			"query": "general"
+		},
+		{
+			"names": false,
+			"display": "errors",
+			"options": false,
+			"heading": "Leader Board",
+			"subHeading": "Each cell shows your proportion of correct selections in the node editor. Each time you get a red or yellow box, it goes down. (Remember, however, that homework does not affect your grade--only the in-class quizzes.) Your cells have red borders and bold numbers. The number of boxes in the column corresponds to the number of people who have started that problem. Refresh page to update.",
+			"colors": true,
+			"sessionLink": false,
+			"completeAnalysis": false,
+			"userData": false,
+			"tName": "cpiLeader",
+			"query": "custom",
+			"qObject": {
+				"m": "!AUTHOR",
+				"p": "%CPI-2014-ps%",
+				"s": "cpi_tutor"
+			}
+		},
+		{
+			"names": true,
+			"display": "empty",
+			"options": true,
+			"heading": "Dashboard",
+			"subHeading": "Click on the box to check the complete session of the student.",
+			"colors": true,
+			"sessionLink": true,
+			"completeAnalysis": false,
+			"userData": true,
+			"tName": "default",
+			"query": "general"
+		}
+	]
+}

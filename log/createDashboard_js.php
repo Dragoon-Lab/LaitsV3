@@ -40,9 +40,20 @@
 
 		function getQuery($section, $mode, $user, $problem, $fromTime, $fromDate, $toTime, $toDate){
 			$userString = "AND user = '".$user."' ";
-			$problemString = "AND problem = '".$problem."' ";
-			$fromTimeString =  "AND time >= '".$fromDate." ".$fromTime."' ";
-			$toTimeString = "AND time <= '".(!empty($toDate)?$toDate:$fromDate)." ".$toTime."' ";
+			$fromTimeString =  "AND time >= '".$fromDate.(!empty($fromTime)?(" ".$fromTime):"")."' ";
+			$toTimeString = "AND time <= '".(!empty($toDate)?$toDate:$fromDate).(!empty($toTime)?(" ".$toTime):"")."' ";
+			
+			$notMode = false;
+			if(substr($mode, 0, 1) == "!"){
+				$notMode = true;
+				$mode = substr($mode, 1);
+			}
+			$likeProblem = false;
+			if(substr($problem, 0, 1) == "%"){
+				$likeProblem = true;
+			}
+			$problemString = "AND problem ".($likeProblem?"LIKE":"=")." '".$problem."' ";
+			$modeString = " AND mode ".($notMode?"!":"")."= '".$mode."' ";
 			$queryString = 
 			"SELECT 
 				tid, session.session_id, user, problem, time, method, message, `group` 
@@ -54,7 +65,7 @@
 				(!empty($user)?$userString:"").
 				(!empty($problem) ?$problemString:"").
 				(!empty($fromDate)?$toTimeString:"").
-				" AND mode = '".$mode."' ".
+				(!empty($mode)?$modeString:"").
 			"ORDER BY user asc, problem asc, tid asc;";
 			//$queryString = "SELECT tid, session.session_id, user, problem, time, method, message, `group` from session JOIN step ON session.session_id = step.session_id where method != 'client-message' AND mode = 'STUDENT' AND user = '202gold' AND problem = '115' ORDER BY user asc, problem asc, tid asc;";
 
@@ -74,6 +85,7 @@
 			$currentProperty;
 			$nodeUpdate; $timeSkip;
 			$currentTime = date("c");
+			$slideIndex; $slidesOpen;
 			while($row = $result->fetch_assoc()){
 				if($resetVariables){
 					$sessionTime = 0; $outOfFocusTime = 0; $timeWasted=0;
@@ -90,6 +102,9 @@
 					$upObject->problem = $row['problem'];
 					$upObject->user = $row['user'];
 					$timeSkip = false;
+					$slideIndex = -1;
+					$slidesOpen = false;
+					$slides = array();
 				}
 				$resetVariables = false;
 				$method = $row['method'];
@@ -119,16 +134,35 @@
 				if(!$timeSkip)
 					$sessionTime += $stepTime;
 				
+				if($slidesOpen && $slideIndex > 0){
+					//added because there is no close slides log message.
+					//echo print_r($newMessage)."</br>".$stepTime." ".$slideIndex;
+					if(!array_key_exists($slideIndex-1, $slides))
+						$slides[$slideIndex-1] = $stepTime; // as prior to this there was a slide open.
+					else 
+						$slides[$slideIndex-1] += $stepTime;
+					$slideIndex = -1;
+					$slidesOpen = false;
+				}
+
 				if($method === "ui-action"){
 					$type = $newMessage['type'];
 					if($type === "menu-choice"){
 						//a new node created
 						$name = $newMessage['name'];
 						if($name === 'create-node'){
+							$index = -1;
+							if(isset($currentNode) && $currentNode->id != null){
+								$index = $upObject->getIndex($currentNode->id);
+							}
+
 							if(!isset($currentNode)){
 								$currentNode = new Node();
-							} else if($currentNode != null && count($currentNode->properties) > 0){
+							} else if($currentNode != null && count($currentNode->properties) > 0 && $index <0){
 								array_push($upObject->nodes, $currentNode);
+								$currentNode = new Node();
+							} else if($currentNode != null && count($currentNode->properties) > 0 && $index >=0){
+								$upObject->nodes[$index] = $currentNode;
 								$currentNode = new Node();
 							}
 							$currentNode->openTimes = 1;
@@ -141,7 +175,7 @@
 						}
 						$propertyStartTime = $newMessage['time'];
 					} else if($type === "close-dialog-box"){
-						if($currentNode != null){
+						if($currentNode != null && $currentNode->name != null){
 							if(isset($currentProerty)){
 								array_push($currentNode->properties, $currentProperty);
 							}
@@ -154,7 +188,24 @@
 								if($index < 0){
 									array_push($upObject->nodes, $currentNode);
 								} else {
-									$upObject->nodes[$index] = $currentNode;
+									//handling conflicts to just make sure that the replication of nodes is minimized. 
+									$originalNode = $upObject->nodes[$index];
+									if(count($originalNode->properties) == 0){
+										$upObject->nodes[$index] = $currentNode;
+									} else {
+										$num = count($currentNode->properties);
+										for($i=0; $i<$num; $i++){
+											if($currentNode->properties[$i] != null){
+												$pIndex = $originalNode->getIndex($currentNode->properties[$i]->name);
+												if($pIndex >=0){
+													$originalNode->properties[$pIndex] = $currentNode->properties[$i];
+												} else {
+													array_push($originalNode->properties, $currentNode->properties[$i]);
+												}
+											}
+										}
+										$upObject->nodes[$index] = $originalNode;
+									}
 								}
 								$currentNode = null;
 							}
@@ -197,9 +248,15 @@
 							}
 							$currentNode->id = $newMessage['nodeID'];
 						}
+						$propertyStartTime = $newMessage['time'];
 					} else if($type === "window"){
 						$upObject->sessionRunning = false;
 						//$resetVariable = true;
+					} else if($type === "slide-change"){
+						//echo print_r($newMessage)."</br>".$stepTime." ".$slideIndex;
+						
+						$slideIndex = $newMessage['slide'];
+						$slidesOpen = true;
 					}
 				} else if($method === "solution-step"){
 					$type = $newMessage['type'];
@@ -207,7 +264,7 @@
 						$autoCreated = false;
 						$newNode;
 						$pushNodeBack = false; // in case of some discrepency in log order the solution check message is sent after the node has been closed.
-						if($currentProperty == null){
+						if($currentProperty == null || !isset($currentProperty)){
 							$currentProperty = new Property();
 						}
 
@@ -299,9 +356,15 @@
 						}
 						if($autoCreated || $pushNodeBack){
 							array_push($newNode->properties, $currentProperty);
-							array_push($upObject->nodes, $newNode);
+							$index = $upObject->getIndex($newNode->id);
+							if($index < 0)
+								array_push($upObject->nodes, $newNode);
+							else 
+								$upObject->nodes[$index] = $newNode;
 							$newNode = null;
 							$currentProperty = null;
+							$pushNodeBack = false;
+							$autoCreated = false;
 						}
 					}
 				} else if($method === "window-focus"){
@@ -333,6 +396,7 @@
 					$upObject->incorrectChecks = $incorrectChecks;
 					$upObject->totalSolutionChecks = $totalChecks;
 					$upObject->errorRatio = $errorRatio;
+					$upObject->slides = $slides;
 					array_push($objectArray, $upObject);
 				}else{
 					$oldRow = $row;
@@ -357,6 +421,7 @@
 			$upObject->incorrectChecks = $incorrectChecks;
 			$upObject->totalSolutionChecks = $totalChecks;
 			$upObject->errorRatio = $errorRatio;
+			$upObject->slides = $slides;
 			array_push($objectArray, $upObject);
 			
 			return $objectArray;

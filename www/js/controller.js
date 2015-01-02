@@ -303,6 +303,8 @@ define([
 				w.set("status", '');  // remove colors
 			}
 
+			this.addAssistanceScore(this.currentID);
+
 			this.disableHandlers = true;
 			// Undo Name value (only in AUTHOR mode)
 			if(this.controlMap.name){
@@ -354,9 +356,16 @@ define([
 			    if(typeof this._model.active.getType(this.currentID) !== "undefined"){
 					var isComplete = this._model.active.isComplete(this.currentID, true)?'solid':'dashed';
 					var borderColor = "3px "+isComplete+" gray";
+					var boxshadow = 'inset 0px 0px 5px #000 , 0px 0px 10px #000';
+					domStyle.set(this.currentID, 'box-shadow', boxshadow);
 					domStyle.set(this.currentID, 'border', borderColor);	 // set border gray for studentModelNodes in TEST and EDITOR mode
 				}
 			}
+
+            if(this._previousExpression) //bug 2365
+                this._previousExpression=null; //clear the expression
+
+
 			// This cannot go in controller.js since _PM is only in
 			// con-student.	 You will need con-student to attach this
 			// to closeEditor (maybe using aspect.after?).	
@@ -613,6 +622,7 @@ define([
 		handleEquation: function(equation){
 			var w = registry.byId(this.widgetMap.equation);
 			this.equationEntered = false;
+			w.set('status','');
 			// undo color when new value is entered in the equation box widget
 			w.on("keydown",lang.hitch(this,function(evt){
 				if(evt.keyCode != keys.ENTER){
@@ -1119,6 +1129,10 @@ define([
 		// Stub to be overwritten by student or author mode-specific method.
 		colorNodeBorder: function(nodeID, bool){
 			console.log("colorNodeBorder stub called");
+		},
+
+		addAssistanceScore: function(/* String */ id){
+			//stub over written in con-author. if there is a student specific implementation then kindly move this to con-student
 		}
 
 	});

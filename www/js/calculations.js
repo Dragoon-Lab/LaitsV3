@@ -52,7 +52,9 @@ define([
 		dialogContent: "",					// Parameter to set DOM in a dialog dynamically
 		sliders: {},						// Parameter to create slider objects
 		_logging : null,
-		mode : null,						// Parameter to hold the mode value to differentiate graphs for author and student mode.
+		mode : null,	
+		_state : null,
+		// Parameter to hold the mode value to differentiate graphs for author and student mode.
 		constructor: function(model, mode, logging){
 			console.log("***** In calculations constructor", this.given);
 			this.model = model;
@@ -100,6 +102,13 @@ define([
 			}else{
 				console.log("-------- no given solution for mode", mode); 
 			}
+		},
+		
+		setState : function(state) {
+			if(!this._state) {
+				this._state = state;
+			}
+			console.log("Setting state "+this._state);
 		},
 		
 		initializeSolution: function(model){
@@ -347,6 +356,7 @@ define([
 				sliderID[paramID] = this.sliderID + "_" + paramID;
 				this.dialogContent += "<div id='" + sliderID[paramID] + "'> " + "\</div>";
 			}
+			this.dialogContent += "</div>";
 			var dialogWidget = registry.byId("solution");
 			dialogWidget.set("title", this.model.getTaskName() + " - " + this.type);
 			// Attach contents of dialog box to DOM all at once
@@ -377,9 +387,11 @@ define([
 			var contentMsg = this.model.getTaskLessonsLearned();
 			var shown = this.model.isLessonLearnedShown;
 			this.model.isLessonLearnedShown = true;
+			this._state.put("isLessonLearnedShown",true);
 			var lessonsLearnedButton = registry.byId("lessonsLearnedButton");   
 			lessonsLearnedButton.set("disabled", false);
 			
+			var userName = this.model;
 			var handle = this.dialogWidget.connect(this.dialogWidget,"hide",function(e) {
 				if(!contentMsg || shown) {
 					if(!contentMsg) {

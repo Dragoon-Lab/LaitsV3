@@ -572,6 +572,12 @@ define([
 			var nameWidget = registry.byId(this.controlMap.name);
 			var descriptionWidget = registry.byId(this.controlMap.description);
 			var unitsWidget = registry.byId(this.controlMap.units);
+			var kind = registry.byId(this.controlMap.kind);
+			
+			var value = this._model.given.getGenus(this.currentID);
+			if(!value)
+				value='';
+			kind.set('value',value);
 
 			/*
 			*	populate the nodes in the Name, Description, Units, and Inputs tab
@@ -624,7 +630,7 @@ define([
 				this.applyDirectives(this.authorPM.process(false, "name", name, equation.isVariable(name)));
 			}
 			//color kind widget
-			if(this._model.given.getGenus(this.currentID)){
+			if(this._model.given.getGenus(this.currentID) === '' || this._model.given.getGenus(this.currentID)){
 				this.applyDirectives(this.authorPM.process(this.currentID, "kind", this._model.given.getGenus(this.currentID)));
 			}
 			//color description widget
@@ -708,12 +714,10 @@ define([
 			this._model.student.setPosition(newNodeID, currentNode.position);
 
 			//Set default status to correct for all the fields
-			this._model.student.setStatus(newNodeID, "name" , {"disabled":true,"status":"correct"});
 			this._model.student.setStatus(newNodeID, "description" , {"disabled":true,"status":"correct"});
 			this._model.student.setStatus(newNodeID, "type" , {"disabled":true,"status":"correct"});
 			this._model.student.setStatus(newNodeID, "initial" , {"disabled":true,"status":"correct"});
 			this._model.student.setStatus(newNodeID, "units" , {"disabled":true,"status":"correct"});
-			this._model.student.setStatus(newNodeID, "equation" , {"disabled":true,"status":"correct"});
 		},
 
 		removeStudentNode: function(nodeid){
@@ -820,6 +824,17 @@ define([
 				}
 				else{
 					this._model.student.setStatus(studentNodeID, control, {"disabled": true,"status":"correct"});
+				}
+			}
+		},
+		addAssistanceScore: function(/* String */ id){
+			var studentNodeID = this._model.student.getNodeIDFor(id);
+			if(studentNodeID){
+				var isComplete = this._model.student.isComplete(studentNodeID);
+				if(isComplete){
+					this._model.student.setAssistanceScore(studentNodeID, 1);
+				} else {
+					this._model.student.setAssistanceScore(studentNodeID, 0);
 				}
 			}
 		}

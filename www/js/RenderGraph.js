@@ -44,6 +44,7 @@ define([
 	"dojo/domReady!"
 ], function(array, declare, lang, on, domAttr, registry, Chart, Default, Lines, Grid, Legend, calculations, logger, base, contentPane, dom){
 
+
 	// The calculations constructor is loaded before the RenderGraph constructor
 	return declare(calculations, {
 		type: "Graph",									//Rendering type
@@ -165,6 +166,7 @@ define([
 			{
 				this.dialogContent += "<font color='red' id = 'errorText'>The solution contains imaginary or overflowed numbers</font><br>";
 			}
+
 			//plot sliders
 
 			this.createSliderAndDialogObject();	
@@ -194,7 +196,7 @@ define([
 			graphTab.style.border = "thin solid black";
 			tableTab.style.border = "thin solid black";
 
-
+			
 			var charts = {};
 			var legends = {};
 			var paneText="";

@@ -48,7 +48,6 @@ define([
 		textBoxID: "textGraph",							//ID for text-box DOM
 		sliderID: "sliderGraph",						//ID for slider DOM
 		chart: {},										//Object of a chart
-
 		/*
 		 *	@brief:constructor for a graph object
 		 *	@param: noOfParam
@@ -60,6 +59,9 @@ define([
 			}
 		},
 
+		setStateTable : function(state) {
+			calculations.setState(state);
+		},
 		/*
 		 * @brief: initialize Dialog/charts and sliders
 		 *

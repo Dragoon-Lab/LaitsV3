@@ -499,7 +499,7 @@ exports.isNodeInitialValueDisabled = function(client){
 }
 
 exports.setNodeInitialValue = function(client,initialValue){
-    await(client.setValue('#initialValue', initialValue, defer()));
+    await(client.setValue('#initialValue',initialValue.toString(), defer()));
     await(client.click("#algebraic",defer()));
 }
 
