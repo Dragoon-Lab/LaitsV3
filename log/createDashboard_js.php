@@ -38,7 +38,7 @@
 			return $objects;
 		}
 
-		function getQuery($section, $mode, $user, $problem, $fromTime, $fromDate, $toTime, $toDate){
+		function getQuery($section, $mode, $user, $problem, $fromDate, $toDate, $fromTime, $toTime){
 			$userString = "AND user = '".$user."' ";
 			$fromTimeString =  "AND time >= '".$fromDate.(!empty($fromTime)?(" ".$fromTime):"")."' ";
 			$toTimeString = "AND time <= '".(!empty($toDate)?$toDate:$fromDate).(!empty($toTime)?(" ".$toTime):"")."' ";

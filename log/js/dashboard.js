@@ -231,9 +231,9 @@ define([
 					this.sessionRunning[userIndex][problemIndex] = upObject['sessionRunning'];
 					
 					if(upObject['nodes']){
-							console.log("session ", upObject);
+							//console.log("session ", upObject);
 						array.forEach(upObject['nodes'], function(node){
-							console.log("sachin ", node.nodeExist, " length ", upObject['nodes'].length, " user ", userIndex, " problemIndex ", problemIndex);
+							//console.log("sachin ", node.nodeExist, " length ", upObject['nodes'].length, " user ", userIndex, " problemIndex ", problemIndex);
 							if(node.nodeExist){
 								this.nodesAttempted[userIndex][problemIndex]++;
 							}
