@@ -34,6 +34,7 @@ define([
 	"dojox/charting/plot2d/Grid",
 	"dojox/charting/widget/Legend",
 	"./calculations",
+	"./logging",
 	"dijit/_base",
 	"dijit/layout/ContentPane",
 	"dojo/dom",
@@ -41,7 +42,7 @@ define([
 	"dojo/parser",
 	
 	"dojo/domReady!"
-], function(array, declare, lang, on, domAttr, registry, Chart, Default, Lines, Grid, Legend, calculations, base, contentPane, dom){
+], function(array, declare, lang, on, domAttr, registry, Chart, Default, Lines, Grid, Legend, calculations, logger, base, contentPane, dom){
 
 	// The calculations constructor is loaded before the RenderGraph constructor
 	return declare(calculations, {
@@ -55,7 +56,9 @@ define([
 		 */
 		constructor: function(model, mode, logging, buttonClicked){
 			this.buttonClicked = buttonClicked;
+			logger.setSession(logging);
 			console.log("***** In RenderGraph constructor");
+			console.log(logging);
 			this.resizeWindow();
 			if(this.active.timeStep){  // Abort if there is an error in timestep.
 				this.initialize();
@@ -143,7 +146,17 @@ define([
 					this.dialogContent += "<font color='green'>Congratulations, your model's behavior matches the author's</font><br>";
 				}
 				else
-					this.dialogContent += "<font color='red'>Unfortunately, your model's behavior does not match the author's</font><br>";
+				{
+					if(this.model.active.checkStudentNodeCount() < 0)
+						this.dialogContent += "<font color='red'>Some nodes that the author requires are missing from your model, probably because a subexpression in some node's expression needs to be turned into a node.</font><br>";
+					else if(this.model.active.checkStudentNodeCount() > 0){
+						this.dialogContent += "<font color='red'>Your model does not match the author's.  You may have extra nodes in your model.</font><br>"
+					}
+					else{
+						this.dialogContent += "<font color='red'>Unfortunately, your model's behavior does not match the author's.</font><br>";
+					}
+					 
+				}
 			}
 			this.plotVariables = this.active.timeStep.xvars.concat(
 				this.active.timeStep.functions);
@@ -156,7 +169,32 @@ define([
 
 			this.createSliderAndDialogObject();	
 
-			
+			var graphTab = null;
+			var count = -1;
+			while(graphTab == null){
+				count++;
+				graphTab = dom.byId("dijit_layout_TabContainer_" + count + "_tablist_dijit_layout_ContentPane_" + (1 + count*4));
+			}
+			var tableTab = dom.byId("dijit_layout_TabContainer_" + count + "_tablist_dijit_layout_ContentPane_" + (2 + count*4));
+			graphTab.addEventListener("click", function(){ 
+				console.log("graph tab clicked");
+				logger.session.log('ui-action', {
+					type: "solution-manipulation",
+					name: "graph-tab"
+				});
+				});
+			tableTab.addEventListener("click", function(){
+				console.log("table tab clicked");
+				logger.session.log('ui-action', {
+					type: "solution-manipulation",
+					name: "table-tab"
+				});
+			});
+
+			graphTab.style.border = "thin solid black";
+			tableTab.style.border = "thin solid black";
+
+
 			var charts = {};
 			var legends = {};
 			var paneText="";

@@ -1,0 +1,145 @@
+{
+    "task": {
+        "taskName": "abc",
+        "time": {
+            "start": 0,
+            "end": 10,
+            "step": 1,
+            "integrationMethod": "Eulers Method"
+        },
+        "properties": {},
+        "image": {},
+        "taskDescription": "",
+        "lessonsLearned": "",
+        "givenModelNodes": [
+            {
+                "ID": "id1",
+                "inputs": [
+                    {
+                        "ID": "id2",
+                        "label": ""
+                    },
+                    {
+                        "ID": "id3",
+                        "label": ""
+                    }
+                ],
+                "position": {
+                    "x": 400,
+                    "y": 100
+                },
+                "attemptCount": {
+                    "description": 0,
+                    "type": 0,
+                    "initial": 0,
+                    "units": 0,
+                    "equation": 0,
+                    "assistanceScore": 0
+                },
+                "status": {},
+                "type": "function",
+                "name": "a",
+                "description": "a",
+                "equation": "id2+id3"
+            },
+            {
+                "ID": "id2",
+                "inputs": [],
+                "position": {
+                    "x": 500,
+                    "y": 100
+                },
+                "attemptCount": {
+                    "description": 0,
+                    "type": 0,
+                    "initial": 0,
+                    "units": 0,
+                    "equation": 0,
+                    "assistanceScore": 0
+                },
+                "status": {},
+                "name": "b",
+                "equation": "",
+                "type": "parameter",
+                "parentNode": false,
+                "initial": 1,
+                "description": "b"
+            },
+            {
+                "ID": "id3",
+                "inputs": [],
+                "position": {
+                    "x": 600,
+                    "y": 100
+                },
+                "attemptCount": {
+                    "description": 0,
+                    "type": 0,
+                    "initial": 0,
+                    "units": 0,
+                    "equation": 0,
+                    "assistanceScore": 0
+                },
+                "status": {},
+                "name": "c",
+                "equation": "",
+                "type": "parameter",
+                "parentNode": false,
+                "initial": 1,
+                "description": "c"
+            },
+            {
+                "ID": "id4",
+                "inputs": [
+                    {
+                        "ID": "id1",
+                        "label": ""
+                    }
+                ],
+                "position": {
+                    "x": 566,
+                    "y": 36
+                },
+                "attemptCount": {
+                    "description": 0,
+                    "type": 0,
+                    "initial": 0,
+                    "units": 0,
+                    "equation": 0,
+                    "assistanceScore": 0
+                },
+                "status": {},
+                "name": "g",
+                "type": "accumulator",
+                "initial": 0,
+                "description": "g",
+                "equation": "id1"
+            },
+            {
+                "ID": "id5",
+                "inputs": [],
+                "position": {
+                    "x": 220.33094787597656,
+                    "y": 300.3309631347656
+                },
+                "attemptCount": {
+                    "description": 0,
+                    "type": 0,
+                    "initial": 0,
+                    "units": 0,
+                    "equation": 0,
+                    "assistanceScore": 0
+                },
+                "status": {},
+                "name": "x",
+                "genus": "irrelevant",
+                "equation": "",
+                "type": "parameter",
+                "parentNode": false,
+                "initial": 2,
+                "description": "x"
+            }
+        ],
+        "studentModelNodes": []
+    }
+}

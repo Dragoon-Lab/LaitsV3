@@ -89,14 +89,15 @@ define([
 			 * Private methods; these methods should not be accessed outside of this class
 			 *
 			 */
-			_updateNextXYPosition: function(){
+			_updateNextXYPosition: function(isMerge){
 				// Summary: keeps track of where to place the next node; function detects collisions
 				//		with other nodes; is called in addStudentNode() before creating the node
 				// Tags: private
 					this.x = this.beginX;
 					this.y = this.beginY;
 					var pos = { x: this.x, y: this.y, nodeWidth: this.nodeWidth, nodeHeight: this.nodeHeight};
-					while(obj.active.getNodes().some(this.collides, pos))
+					var nodes = isMerge?obj.student.getNodes():obj.active.getNodes();
+					while(nodes.some(this.collides, pos))
 					{
 						this.updatePosition();
 						pos = { x: this.x, y: this.y, nodeWidth: this.nodeWidth, nodeHeight: this.nodeHeight};
@@ -214,15 +215,15 @@ define([
 						descriptions[node.description] = node.ID;
 					}
 				}, this);
+				/*
+				 Set flag showing that student model is complete.
 
-		/*
-		 Set flag showing that student model is complete.
-
-		 Does not corretly handle case where student completes
-		 the model, deletes some nodes, and reopens the problem.
-		 */
-		this.isCompleteFlag = this.matchesGivenSolution();
+				 Does not corretly handle case where student completes
+				 the model, deletes some nodes, and reopens the problem.
+				 */
+				this.isCompleteFlag = this.matchesGivenSolution();
 			},
+
 			getModelAsString: function(){
 				// Summary: Returns a JSON object in string format
 				//			Should only be used for debugging.
@@ -530,35 +531,82 @@ define([
 				return newNode.ID;
 			},
 			/*merges imported model and returns ids of merged nodes*/
-			mergeNodes: function(nodes){
-				var ids = [];  //holds new names
+			mergeNodes: function(model){
+				var ids = [];  //holds new ids of author nodes
+				var sids = []; //holds new ids of student nodes
 				var shift = obj._ID-1;
+				var idMap = {};
 
+				var nodes = model.task.givenModelNodes;
+
+				//copy author nodes
 				array.forEach(nodes,function(node){
                		obj._updateNextXYPosition();
 					node.position = {x: obj.x, y: obj.y};
 					var nID = "id" + obj._ID; //replace old id with new ID
+					idMap[node.ID]=nID; //store old ID vs new ID
 					node.ID =nID;
 					node.name=node.name+obj._ID;
 					node.description=node.description+obj._ID;
 					ids.push(node.ID);
 					/*trick to update equations with new ids */
-					var equation = node.equation;
-					var nEquation=equation.replace(/(\d+)+/g, function(match, number) {
-       						return parseInt(number)+shift;
-       					});
-					//also update inputs for graph generation
-					for(i=0;i<node.inputs.length;i++){
-						node.inputs[i].ID=node.inputs[i].ID.replace(/\d+$/, function(n){ return parseInt(n)+shift });//shift = total nodes in old model
+					if(node.equation){
+						var equation = node.equation;
+						var nEquation=equation.replace(/(\d+)+/g, function(match, number) {
+       							return parseInt(number)+shift;
+       						});
+						//also update inputs for graph generation
+						for(i=0;i<node.inputs.length;i++){
+							node.inputs[i].ID=node.inputs[i].ID.replace(/\d+$/, function(n){ return parseInt(n)+shift });//shift = total nodes in old model
+						}
+						node.equation=nEquation;
 					}
-
-					node.equation=nEquation;
 					obj._ID=obj._ID+1; //for next coming node
-
-            		//push to givenModelNodes
             		obj.model.task.givenModelNodes.push(node);
             	},this);
 
+				//copy student nodes
+				var snodes = model.task.studentModelNodes;
+				var sIDMap = {};
+				array.forEach(snodes,function(node){
+					obj._updateNextXYPosition(true);
+					node.position = {x: obj.x, y: obj.y};
+					var nID = "id" + obj._ID; //replace old id with new ID
+					sIDMap[node.ID]=nID; //store old vs new StudentIDs
+					node.ID =nID;
+					node.name=node.name+obj._ID;
+					node.description=node.description+obj._ID;
+					node.descriptionID=idMap[node.descriptionID]; //new DescriptionID of Node
+					sids.push(node.ID);
+					obj._ID=obj._ID+1; //for next coming node
+					obj.model.task.studentModelNodes.push(node);
+				},this);
+
+				//iterate over new student IDs to update equations and inputs in terms of new student IDs using sIDMap
+				array.forEach(sids,function(id){
+					var snode = obj.student.getNode(id);
+					if(snode.equation){
+						var inputs = [];
+						var isExpressionValid = true;
+						var equation = snode.equation;
+						array.forEach(snode.inputs, lang.hitch(this, function(input){
+				   			  var studentNodeID = sIDMap[input.ID];
+					 		  if(studentNodeID){
+									inputs.push({ "ID": studentNodeID});
+									var regexp = "(" +input.ID +")([^0-9]?)";
+									var re = new RegExp(regexp);
+									equation = equation.replace(re, studentNodeID+"$2");
+								}
+								else{
+									isExpressionValid = false;
+								}
+						}));
+						if(isExpressionValid){
+							snode.inputs=inputs;
+							snode.equation=equation;
+						}
+					}
+				},this);
 
 				return ids;				
 			},
@@ -835,11 +883,17 @@ define([
                 // Summary: Returns True if (1) matchesGivenSolution is true and (2) if all nodes that are part of the
                 // solution have correctness of "demo" or "correct"
                 return obj.matchesGivenSolution() &&
-                       array.every(this.getStudentNodesInSolution(),
+                       this.checkStudentNodeCorrectness();
+            },
+            checkStudentNodeCorrectness: function(){
+            	return array.every(this.getStudentNodesInSolution(),
                         function(studentNode){
                             var correctness = this.getCorrectness(studentNode.ID);
                             return correctness === "correct" || correctness === "demo";
                         }, this);
+            },
+            checkStudentNodeCount: function(){
+            	return this.getNodes().length - obj.solution.getNodes().length;
             },
 			getStatusDirectives: function(/*string*/ id){
 				//Summary:	Return a list of directives (like PM does).

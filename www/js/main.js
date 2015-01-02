@@ -133,13 +133,23 @@ define([
 						 lang.hitch(drawModel, drawModel.colorNodeBorder), 
 						 true);
 
-			//In TEST and EDITOR mode remove border color from existing Student model nodes.			 
-			if(controllerObject._mode == "TEST" || controllerObject._mode == "EDITOR"){
+			var removeStatusColor = function(){
 				array.forEach(givenModel.model.task.studentModelNodes, function(studentNode){
-					var isComplete = givenModel.active.isComplete(studentNode.ID, true)?'solid':'dashed';
-					var borderColor = "3px "+isComplete+" gray";
-					style.set(studentNode.ID, 'border', borderColor);
-					style.set(studentNode.ID, 'backgroundColor', "white");
+					 if(typeof givenModel.active.getType(studentNode.ID) !== "undefined"){
+							var isComplete = givenModel.active.isComplete(studentNode.ID, true)?'solid':'dashed';
+							var borderColor = "3px "+isComplete+" gray";
+							var boxshadow = 'inset 0px 0px 5px #000 , 0px 0px 10px #000';
+							style.set(studentNode.ID, 'border', borderColor);
+							style.set(studentNode.ID, 'box-shadow', boxshadow);
+							style.set(studentNode.ID, 'backgroundColor', "white");
+						}
+					});
+			}
+			//In TEST and EDITOR mode remove background color and border color on update		 
+			if(controllerObject._mode == "TEST" || controllerObject._mode == "EDITOR"){
+				removeStatusColor();
+				aspect.after(drawModel, "updater", function(){
+					removeStatusColor();
 				});
 			}
 
@@ -259,8 +269,10 @@ define([
                             directive=descDirective[i];
                         
                 }
-                if(directive&&(directive.value=="incorrect" || directive.value=="premature"))
+                if(controllerObject._mode !== "TEST" && controllerObject._mode !== "EDITOR"){
+                	if(directive&&(directive.value=="incorrect" || directive.value=="premature"))
                             drawModel.deleteNode(controllerObject.currentID);
+                }
     		});
 			
 			// Wire up close button...
@@ -361,9 +373,11 @@ define([
                   	 session.loadProblem(query).then(function(solutionGraph){
 							console.log("Merge problem is loaded "+solutionGraph);
 							if(solutionGraph){
-								var nodes = solutionGraph.task.givenModelNodes;
-								var ids = givenModel.active.mergeNodes(nodes);
-								console.log("merged nodes are "+ids);
+								//var nodes = solutionGraph.task.givenModelNodes;
+								var ids = givenModel.active.mergeNodes(solutionGraph);
+								//var snodes = solutionGraph.task.studentModelNodes;
+								//var sids = givenModel.active.mergeNodes(snodes,true);
+								
 								session.saveProblem(givenModel.model);
 								//add merged nodes
 								array.forEach(ids,function(id){	
@@ -493,6 +507,10 @@ define([
             //should disable all the pop ups
             aspect.after(registry.byId('solution'), "hide", function(){
                 console.log("Calling graph/table to be closed");
+                controllerObject.logging.log('ui-action', {
+                    type: "menu-choice",
+                    name: "graph-closed"
+                });
                 typechecker.closePops();
                 //session.saveProblem(givenModel.model);
             });
