@@ -215,15 +215,15 @@ define([
 						descriptions[node.description] = node.ID;
 					}
 				}, this);
+				/*
+				 Set flag showing that student model is complete.
 
-		/*
-		 Set flag showing that student model is complete.
-
-		 Does not corretly handle case where student completes
-		 the model, deletes some nodes, and reopens the problem.
-		 */
-		this.isCompleteFlag = this.matchesGivenSolution();
+				 Does not corretly handle case where student completes
+				 the model, deletes some nodes, and reopens the problem.
+				 */
+				this.isCompleteFlag = this.matchesGivenSolution();
 			},
+
 			getModelAsString: function(){
 				// Summary: Returns a JSON object in string format
 				//			Should only be used for debugging.
@@ -883,11 +883,17 @@ define([
                 // Summary: Returns True if (1) matchesGivenSolution is true and (2) if all nodes that are part of the
                 // solution have correctness of "demo" or "correct"
                 return obj.matchesGivenSolution() &&
-                       array.every(this.getStudentNodesInSolution(),
+                       this.checkStudentNodeCorrectness();
+            },
+            checkStudentNodeCorrectness: function(){
+            	return array.every(this.getStudentNodesInSolution(),
                         function(studentNode){
                             var correctness = this.getCorrectness(studentNode.ID);
                             return correctness === "correct" || correctness === "demo";
                         }, this);
+            },
+            checkStudentNodeCount: function(){
+            	return this.getNodes().length - obj.solution.getNodes().length;
             },
 			getStatusDirectives: function(/*string*/ id){
 				//Summary:	Return a list of directives (like PM does).
