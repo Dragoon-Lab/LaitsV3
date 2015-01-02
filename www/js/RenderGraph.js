@@ -34,40 +34,45 @@ define([
 	"dojox/charting/plot2d/Grid",
 	"dojox/charting/widget/Legend",
 	"./calculations",
+	"./logging",
 	"dijit/_base",
 	"dijit/layout/ContentPane",
+	"dojo/dom",
 	"dijit/layout/TabContainer",
-	"dojo/parser",	
+	"dojo/parser",
+	
 	"dojo/domReady!"
-], function(array, declare, lang, on, domAttr, registry, Chart, Default, Lines, Grid, Legend, calculations, base, contentPane){
+], function(array, declare, lang, on, domAttr, registry, Chart, Default, Lines, Grid, Legend, calculations, logger, base, contentPane, dom){
 
 	// The calculations constructor is loaded before the RenderGraph constructor
 	return declare(calculations, {
-		type: "Graph and Table",									//Rendering type
+		type: "Graph",									//Rendering type
 		textBoxID: "textGraph",							//ID for text-box DOM
 		sliderID: "sliderGraph",						//ID for slider DOM
 		chart: {},										//Object of a chart
-
 		/*
 		 *	@brief:constructor for a graph object
 		 *	@param: noOfParam
 		 */
 		constructor: function(model, mode, logging, buttonClicked){
 			this.buttonClicked = buttonClicked;
+			logger.setSession(logging);
 			console.log("***** In RenderGraph constructor");
+			console.log(logging);
 			this.resizeWindow();
 			if(this.active.timeStep){  // Abort if there is an error in timestep.
 				this.initialize();
 			}
 		},
-
+		setStateGraph : function(state) {
+			this.setState(state);
+		},
 		/*
 		 * @brief: initialize Dialog/charts and sliders
 		 *
 		 */
 		initialize: function(){
 			console.log("graphing");
-			console.log(this.buttonClicked);
 			/* List of variables to plot: Include functions */
 			this.active.plotVariables = this.active.timeStep.xvars.concat(
 				this.active.timeStep.functions);
@@ -107,9 +112,9 @@ define([
 			//create content pane for displaying graph/table and sliders
 			this.dialogContent += "<div data-dojo-type= 'dijit/layout/ContentPane' style='overflow:visible; width:50%; float:left; height: 700px; background-color: #FFFFFF'>"
 			//create tab container on left side for graph and table
-			this.dialogContent += "<div data-dojo-type='dijit/layout/TabContainer' style='overflow:visible; height:700px; width:501px'>"
+			this.dialogContent += "<div data-dojo-type='dijit/layout/TabContainer' style='overflow:visible; height:700px; width:501px;'>"
 			//create tab for graph and fill it
-			this.dialogContent += "<div data-dojo-type='dijit/layout/ContentPane' style='overflow:auto' data-dojo-props='title:\"Graph\"'>";
+			this.dialogContent += "<div data-dojo-type='dijit/layout/ContentPane' style='overflow:auto; ' data-dojo-props='title:\"Graph\"'>";
 			array.forEach(this.active.plotVariables, function(id){
 				var show = this.model.active.getType(id) == "accumulator";
 				var checked = show ? " checked='checked'" : "";
@@ -133,30 +138,71 @@ define([
 			//create content pane for sliders
 			this.dialogContent += "<div data-dojo-type='dijit/layout/ContentPane' style='overflow:auto; width:40%; float:right; height: 100%; background-color: #FFFFFF'>";
 			//text for correctness of solution
-			
-			
-			if(this.mode != "AUTHOR"  && this.mode != "EDITOR" && this.mode != "TEST")
+			this.dialogContent += "<p>To reset sliders, close and reopen window</p><br>";
+			if(this.mode != "AUTHOR"  && this.mode != "EDITOR")
 			{
 				if(this.model.active.matchesGivenSolutionAndCorrect())
 				{
-					this.dialogContent += "<font id='graphResultText' color='green'>Congratulations, your model's behavior matches the author's</font><br>";
+					this.dialogContent += "<font color='green'>Congratulations, your model's behavior matches the author's</font><br>";
 				}
 				else
-					this.dialogContent += "<font id='graphResultText' color='red'>Unfortunately, your model's behavior does not match the author's</font><br>";
+				{
+					if(this.model.active.checkStudentNodeNumber() < 0)
+						this.dialogContent += "<font color='red'>Some nodes that the author requires are missing from your model, probably because a subexpression in some node's expression needs to be turned into a node.</font><br>";
+					else if(this.model.active.checkStudentNodeNumber() > 0){ 
+						this.dialogContent += "<font color='red'>Your model does not match the author's you may have extra nodes in your model</font><br>"
+					}
+					else{
+						this.dialogContent += "<font color='red'>Unfortunately, your model's behavior does not match the author's</font><br>";
+					}
+					 
+				}
 			}
-			this.dialogContent += "<p>To reset the sliders, close and reopen the window.</p>";
+			this.plotVariables = this.active.timeStep.xvars.concat(
+				this.active.timeStep.functions);
+			console.log(this.checkForNan());
+			if(this.mode === "AUTHOR" && this.checkForNan())
+			{
+				this.dialogContent += "<font color='red' id = 'errorText'>The solution contains imaginary or overflowed numbers</font><br>";
+			}
 			//plot sliders
 
-			this.createSliderAndDialogObject();
+			this.createSliderAndDialogObject();	
 
-			this.dialogContent += "</div>";			
+			var graphTab = null;
+			var count = -1;
+			while(graphTab == null){
+				count++;
+				graphTab = dom.byId("dijit_layout_TabContainer_" + count + "_tablist_dijit_layout_ContentPane_" + (1 + count*4));
+			}
+			var tableTab = dom.byId("dijit_layout_TabContainer_" + count + "_tablist_dijit_layout_ContentPane_" + (2 + count*4));
+			graphTab.addEventListener("click", function(){ 
+				console.log("graph tab clicked");
+				logger.session.log('ui-action', {
+					type: "solution-manipulation",
+					name: "graph-tab"
+				});
+				});
+			tableTab.addEventListener("click", function(){
+				console.log("table tab clicked");
+				logger.session.log('ui-action', {
+					type: "solution-manipulation",
+					name: "table-tab"
+				});
+			});
+
+			graphTab.style.border = "thin solid black";
+			tableTab.style.border = "thin solid black";
+
+
 			var charts = {};
 			var legends = {};
 			var paneText="";
+			
+			//graphTabTitle.style.borderWidth = "3px";
 
 			/* List of variables to plot: Include functions */
-			this.plotVariables = this.active.timeStep.xvars.concat(
-				this.active.timeStep.functions);
+			
 			if(this.plotVariables.length>0){ //we check the length of object, if there are nodes , then we proceed else give an error and return
 				paneText += this.initTable();
 				paneText += this.setTableHeader();
@@ -187,11 +233,9 @@ define([
 						titleOrientation: "away", titleGap: 5
 						});
 
-					var obj = this.getMinMaxFromArray(activeSolution.plotValues[k]);
+					// var obj = this.getMinMaxFromArray(this.student.arrayOfNodeValues[j]);
 					charts[id].addAxis("y", {
-						vertical: true,
-						min: obj.min,
-						max:obj.max,
+						vertical: true, // min: obj.min, max: obj.max,
 						title: this.labelString(id)
 						});
 
@@ -199,13 +243,12 @@ define([
 						var givenID = this.model.active.getDescriptionID(id);
 					}
 					//plot chart for student node
-                    console.log("active solution",activeSolution);
 					charts[id].addSeries(
 						"Your solution",
 						this.formatSeriesForChart(activeSolution, k),
 						{stroke: "green"}
 					);
-					if(this.mode !== "AUTHOR"  && this.mode !== "EDITOR" && this.given.plotVariables[k]){
+					if(this.mode != "AUTHOR"  && this.mode != "EDITOR" && this.given.plotVariables[k]){
 						charts[id].addSeries(
 							"Author's solution",
 							this.formatSeriesForChart(givenSolution, k), {stroke: "red"}
@@ -260,7 +303,7 @@ define([
 		 */
 		formatSeriesForChart: function(result, j){
 			return array.map(result.times, function(time, k){
-				return {x: time, y: result.plotValues[j][k].toFixed(3)};
+				return {x: time, y: result.plotValues[j][k]};
 			});
 		},
 
@@ -320,11 +363,6 @@ define([
 					max = array[i];
 				}
 			}
-			// Check if the maximum and minimum are same and change the min and max values
-			if(min == max){ 
-				min = min - 1;
-				max = max + 1;
-			}
 			return {min: min, max: max};
 		},
 
@@ -334,33 +372,8 @@ define([
 		 */
 		renderDialog: function(calculationObj){
 			var activeSolution = this.findSolution(true, this.active.plotVariables);
-			var givenSolution;
-            // TODO: Consider making this condition a function, like "givenGraphViewable()
-           if (this.mode !== "AUTHOR" && this.mode !== "EDITOR"){
-                givenSolution = this.findSolution(false, this.given.plotVariables);
-            }
 			//update and render the charts
-			array.forEach(this.active.plotVariables, function(id, k){	
-				// Calculate Min and Max values to plot on y axis based on your solution (and given, when applicable)
-				var obj = this.getMinMaxFromArray(activeSolution.plotValues[k]);
-                if (this.mode !== "AUTHOR" && this.mode !== "EDITOR") {
-                    var givenObj = this.getMinMaxFromArray(givenSolution.plotValues[k]);
-                    if (givenObj.min < obj.min) {
-                        obj.min = givenObj.min;
-                    }
-                    if (givenObj.max > obj.max) {
-                        obj.max = givenObj.max;
-                    }
-                }
-
-				//Redraw y axis based on new min and max values
-				this.chart[id].addAxis("y", {
-						vertical: true,
-						min: obj.min,
-						max: obj.max,
-						title: this.labelString(id)
-						});
-
+			array.forEach(this.active.plotVariables, function(id, k){
 				this.chart[id].updateSeries(
 					"Your solution",
 					this.formatSeriesForChart(activeSolution, k),
@@ -417,15 +430,30 @@ define([
 			var j = 0;
 			for(var i=0; i<solution.times.length; i++){
 				tableString += "<tr style='overflow:visible'>";
-				tableString += "<td align='center' style='overflow:visible' id = 'row" + i + "col0' >" + solution.times[i].toPrecision(4) + "</td>";
+				tableString += "<td align='center' style='overflow:visible' id ='row" + i + "col0'>" + solution.times[i].toPrecision(4) + "</td>";
 				//set values in table according to their table-headers
 				j = 1;
 				array.forEach(solution.plotValues, function(value){
-					tableString += "<td align='center' style='overflow:visible' id = 'row" + i + "col" + j + "'>" + value[i].toPrecision(3) + "</td>";
+					tableString += "<td align='center' style='overflow:visible' id='row" + i + "col" + j + "'>" + value[i].toPrecision(3) + "</td>";
+					j++;
 				});
 				tableString += "</tr>";
 			}
 			return tableString;
+		},
+
+		checkForNan: function(){
+			var solution = this.findSolution(true, this.plotVariables);
+			var nan = false;
+			for(var i = 0; i < solution.times.length; i++){
+				if(isNaN(solution.times[i].toPrecision(4)))
+					nan = true;
+				array.forEach(solution.plotValues, function(value){
+					if(isNaN(value[i]))
+						nan = true;
+				});
+			}
+			return nan;
 		}
 	});
 });

@@ -30,7 +30,7 @@ var sync = require('synchronize');
 // Globalize these so we don't have to type "sync." everywhere.
 var await = sync.await;  // Wrap this around asynchronous functions. Returns 2nd arg to callback
 var defer = sync.defer;  // Pass this as the callback function to asynchronous functions
-
+var testPath = require('./test-paths.js');
 var MAX_NODE_IDS = 100; // The maximum number of node IDs we'll support
 
 ////////////////////////////////////////////////////////////////////////////////////////////////////
@@ -107,6 +107,27 @@ function wait(milliseconds)
   }
 }
 
+function getUrlRoot()
+{
+    var testTarget = testPath.getTestTarget();
+    if(testTarget === "devel")
+    {
+        return 'http://dragoon.asu.edu/devel/index.html'
+    }
+    else if(testTarget === "demo")
+    {
+        return 'http://dragoon.asu.edu/demo/index.html'
+    }
+    else if(testTarget === "local")
+    {
+        return testPath.getLocalPath();
+    }
+    else
+    {
+        throw "Test target is not valid please check test-paths.js";
+    }
+}
+
 //dijit_MenuItem_#
 
 ////////////////////////////////////////////////////////////////////////////////////////////////////
@@ -135,7 +156,7 @@ exports.openProblem = function(client,parameters){
 
     // required params
     //var urlRoot = 'http://dragoon.asu.edu/devel/index.html';
-    var urlRoot = "http://localhost/dragoon/www/index.html";
+    var urlRoot = getUrlRoot();
     var user = "u="+(paramMap["user"] || getDate()); // defaults to the current date
     var problem = "&p=" + (paramMap["problem"] || getDate());
     var mode = "&m=" + (paramMap["mode"]);
@@ -683,7 +704,7 @@ exports.moveSliderLeft = function(client,quantityName,distance){
 
 // Table
 
-exports.tableGetValue = function(client,column,row){
+exports.tableGetValue = function(client,row,column){
     // Summary: returns the value of the cell in the column/row of table, or null if the cell can't
     //          be found.
     return await(client.getText('#row' + row + 'col' + column,defer()));
