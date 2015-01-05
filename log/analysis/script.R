@@ -18,6 +18,8 @@
 
 ############################    README   ###################################
 #This file analysis the pre post test results for ATI evaluation and also the work done by the user which comes from the dashboard.
+#The analysis is not same based on the doControl factor. 
+#This will be true when the control condition has used dragoon, in case its a pen paper scenario then there will be no data and hence the it wont be able to do ANCOVA analysis completely.
 #The files it uses for those purpose are text files which can be given as input to read.table commands in first 6 lines of the file.
 #The files are named - tests_tutor and tests_editor which gives a table of test results both post and pre. 
 #Important column names are "post" for post test marks and "pre" for pre test marks.
@@ -31,12 +33,15 @@
 #require(gdata)
 ##clearing work space
 rm(list = ls())
+doControl <- FALSE
 
 y_tutor = read.table("tests_tutor.txt", header = TRUE)
 y_editor = read.table("tests_editor.txt", header = TRUE)
 
 x_tutor = read.table("complete_tutor.txt", header = TRUE)
-x_editor = read.table("complete_editor.txt", header = TRUE)
+if(doControl){
+	x_editor = read.table("complete_editor.txt", header = TRUE)
+}
 
 #linear regression between pre and post test results
 lm.tutor_y = lm(y_tutor$post ~ y_tutor$pre)
@@ -47,7 +52,11 @@ print(summary(lm.editor_y))
 
 
 complete_y = rbind(y_tutor, y_editor)
-complete_x = rbind(x_tutor, x_editor)
+if(doControl){
+	complete_x = rbind(x_tutor, x_editor)
+} else {
+	complete_x = x_tutor
+}
 pre_range = range(complete_y$pre)
 post_range = range(complete_y$post)
 
@@ -63,51 +72,65 @@ dev.off()
 lm.tutor_time = lm(y_tutor$post ~ x_tutor$total_time)
 print(summary(lm.tutor_time))
 
-lm.editor_time = lm(y_editor$post ~ x_editor$total_time)
-print(summary(lm.editor_time))
+if(doControl){
+	lm.editor_time = lm(y_editor$post ~ x_editor$total_time)
+	print(summary(lm.editor_time))
+}
 
 time_range = range(complete_x$total_time)
 png(filename="post_total_time.png", height=500, width = 500, bg="white")
 plot(x_tutor$total_time, y_tutor$post, col="red", main="Total Time vs Post//Control(blue) and Tutor(Red)", xlab = "Total time spent", ylab="Posttest", ylim=post_range, xlim=time_range)
-points(x_editor$total_time, y_editor$post, col="blue")
 abline(lm.tutor_time, col="red")
-abline(lm.editor_time, col="blue")
+if(doControl){
+	points(x_editor$total_time, y_editor$post, col="blue")
+	abline(lm.editor_time, col="blue")
+}
 dev.off()
 
 #linear regression on post agains pre and total time and covariance variable as well
 lm.tutor = lm(y_tutor$post ~ y_tutor$pre + x_tutor$total_time)
 print(summary(lm.tutor))
-	
-lm.editor = lm(y_editor$post ~ y_editor$pre + x_editor$total_time)
-print(summary(lm.editor))
 
 lm.tutor_interaction = lm(y_tutor$post ~ y_tutor$pre + x_tutor$total_time + (y_tutor$pre)*(x_tutor$total_time))
 print(summary(lm.tutor_interaction))
 
-lm.editor_interaction = lm(y_editor$post ~ y_editor$pre + x_editor$total_time + (y_editor$pre)*(x_editor$total_time))
-print(summary(lm.editor_interaction))
-
+if(doControl){
+	lm.editor = lm(y_editor$post ~ y_editor$pre + x_editor$total_time)
+	print(summary(lm.editor))
+	
+	lm.editor_interaction = lm(y_editor$post ~ y_editor$pre + x_editor$total_time + (y_editor$pre)*(x_editor$total_time))
+	print(summary(lm.editor_interaction))
+}
 ## ANCOVA analysis
-y_tutor[, "mode"] <- rep("TUTOR", nrow(y_tutor))
-y_editor[, "mode"] <- rep("EDITOR", nrow(y_editor))
-x_tutor[, "mode"] <- rep("TUTOR", nrow(x_tutor))
-x_editor[, "mode"] <- rep("EDITOR", nrow(y_editor))
+if(doControl){
+	y_tutor[, "mode"] <- rep("TUTOR", nrow(y_tutor))
+	y_editor[, "mode"] <- rep("EDITOR", nrow(y_editor))
+	x_tutor[, "mode"] <- rep("TUTOR", nrow(x_tutor))
+	x_editor[, "mode"] <- rep("EDITOR", nrow(x_editor))
 
-x_tutor[, "dill_time_m"] <- x_tutor$total_time >= mean(x_tutor$total_time)
-x_editor[, "dill_time_m"] <- x_editor$total_time >= mean(x_editor$total_time)
+	x_tutor[, "dill_time_m"] <- x_tutor$total_time >= mean(x_tutor$total_time)
+	x_editor[, "dill_time_m"] <- x_editor$total_time >= mean(x_editor$total_time)
 
-complete_y <- rbind(y_tutor, y_editor)
-complete_x <- rbind(x_tutor, x_editor)
+	complete_y <- rbind(y_tutor, y_editor)
+	complete_x <- rbind(x_tutor, x_editor)
 
-complete_y[, "dill_time"] <- complete_x$total_time >= mean(complete_x$total_time)
-complete_y[, "dill_prob_started"] <- complete_x$prob_started >= mean(complete_x$prob_started)
-complete_y[, "dill_time_m"] <- complete_x$dill_time_m
+	complete_y[, "dill_time"] <- complete_x$total_time >= mean(complete_x$total_time)
+	complete_y[, "dill_prob_started"] <- complete_x$prob_started >= mean(complete_x$prob_started)
+	complete_y[, "dill_time_m"] <- complete_x$dill_time_m
 
-aov.mode <- aov(complete_y$post ~ complete_y$pre + complete_y$mode)
-print(summary(aov.mode))
+	aov.mode <- aov(complete_y$post ~ complete_y$pre + complete_y$mode)
+	print(summary(aov.mode))
 
-aov.mode_time <- aov(complete_y$post ~ complete_y$pre + complete_y$mode + complete_y$dill_time)
-print(summary(aov.mode_time))
+	aov.mode_time <- aov(complete_y$post ~ complete_y$pre + complete_y$mode + complete_y$dill_time)
+	print(summary(aov.mode_time))
 
-aov.time <- aov(complete_y$post ~ complete_y$pre + complete_y$dill_time)
-print(summary(aov.time))
+	aov.time <- aov(complete_y$post ~ complete_y$pre + complete_y$dill_time)
+	print(summary(aov.time))
+}
+cor.tutor_time <- cor(y_tutor$post, x_tutor$total_time)
+cat("Corelation between Post test and total time for Experimental Condition is : ", cor.tutor_time, "\n")
+
+if(doControl){
+	cor.editor_time <- cor(y_editor$post, x_editor$total_time)
+	cat("Corelation between Post test and total time for Control Condition is : ", cor.editor_time, "\n")
+}
