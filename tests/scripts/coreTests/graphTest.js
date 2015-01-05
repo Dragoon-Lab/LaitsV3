@@ -41,8 +41,28 @@ describe("Test graph/table window:", function() {
                 }
                 current++;
             }
+
+            //Population (rabbits) coumn
+            var population = true;
+            var populationValues = [24,31.2,40.6,52.7,68.5,89.1,116,151,196,255,331,430,559,727,945];
+            for(var i = 0; i < populationValues.length; i++)
+            {
+                if(!(dtest.tableGetValue(client, i, 0) == populationValues[i]))
+                {
+                    population = false;
+                }
+            }
+
+            //Net growth (rabbits/year)
+            var netGrowth = true;
+            var netGrowthValues = [7.20,9.36,12.2,15.8,20.6,26.7,34.8,45.2,58.7,76.4,99.3,129,168,218];
+            
+
             assert(years === true,
                 "Values in the \"Time (years)\" column were incorrect");
+            assert(population === true,
+                "Values in the \"population (rabbits)\" column were incorrect");
+
         }));
 
     });

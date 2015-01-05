@@ -128,6 +128,37 @@ function getUrlRoot()
     }
 }
 
+function rgbToColor(toConvert)
+{
+    console.log(toConvert);
+    if(toConvert === "rgb(0,128,0)" || toConvert === "rgba(148,255,148,1)" || toConvert === "rgba(144,238,144,1)" || toConvert === "green" || toConvert === "rgb(144,238,144)")
+    {
+        return "green";
+    }
+    else if(toConvert === "rgb(255,213,0)" || toConvert === "yellow")
+    {
+        return "yellow";
+    }
+    else if(toConvert === "rgb(255,128,128)" || toConvert === "red")
+    {
+        return "red";
+    }
+    else if(toConvert === "rgba(255,255,255,1)" || toConvert === "white")
+    {
+        return "white";
+    }
+    else if(toConvert === "rgba(0,0,0,0)" || toConvert === "gray")
+    {
+        return "gray";
+    }
+    else if(toConvert === "rgb(46,254,247" || toConvert === "blue" || toConvert === "rgb(173,216,230)")
+    {
+        return "blue";
+    }
+    else
+        return toConvert;
+}
+
 //dijit_MenuItem_#
 
 ////////////////////////////////////////////////////////////////////////////////////////////////////
@@ -186,7 +217,13 @@ exports.openProblem = function(client,parameters){
     await(client.init().url(url,defer()));
 }
 
-
+//Test Functions
+exports.getHtmlOfNode = function(client, nodeName){
+    var html = await(client.getHTML('#id' + findIdbyName(client, nodeName),defer()));
+    //console.log(html);
+    var style = await(client.getCssProperty('#selectDescription',"background-color" ,defer()));
+    console.log(style.value);
+}
 
 ////////////////////////////////////////////////////////////////////////////////////////////////////
 // 2. Menu bar functions
@@ -284,19 +321,19 @@ exports.getNodeType = function(client,nodeName){
 
 exports.getNodeBorderColor = function(client,nodeName){
     // Summary: Returns a string describing the color of the node's border
-    //          (e.g. "green" "red" "yellow"), or "none" if the node has no border (no type)
-    console.warn("Not yet implemented.");
-    return null;
+    //          returns in the format "rgb(#,#,#)"
+
+    return rgbToColor(await(client.getCssProperty('#id' + findIdbyName(client, nodeName),"border-color" ,defer())).value);
 }
 
 exports.getNodeBorderStyle = function(client,nodeName){
-    console.warn("Not yet implemented.");
-    return null;
+    return await(client.getCssProperty('#id' + findIdbyName(client, nodeName),"border-style" ,defer())).value;
 }
 
 exports.getNodeFillColor = function(client,nodeName){
-    console.warn("Not yet implemented.");
-    return null;
+    // Summary: returns a string describing the fill color of the node
+    //          returns in the format "rgba(#,#,#,#)"
+    return rgbToColor(await(client.getCssProperty('#id' + findIdbyName(client, nodeName),"background-color" ,defer())).value);
 }
 
 exports.getNodeExteriorText = function(client,nodeName){
@@ -409,8 +446,10 @@ exports.getNodeDescription = function(client){
 exports.getNodeDescriptionColor = function(client){
     // Summary: Returns a string representing the color of the field: "red","yellow","green","blue"
     //          or "none" if the field has no color.
-    console.warn("Not yet implemented.");
-    return null
+    var test = await(client.getCssProperty('#selectDescription',"background-color" ,defer())).value;
+    console.log(test);
+    wait(5000);
+    return rgbToColor(test);
 }
 
 exports.isNodeDescriptionDisabled = function(client){
@@ -454,8 +493,7 @@ exports.getNodeType = function(client){
 exports.getNodeTypeColor = function(client){
     // Summary: Returns a string representing the color of the field: "red","yellow","green","blue"
     //          or "none" if the field has no color.
-    console.warn("Not yet implemented.");
-    return null
+    return rgbToColor(await(client.getCssProperty('table[id="typeId"]',"background-color" ,defer())).value);
 }
 
 exports.isNodeTypeDisabled = function(client){
@@ -488,8 +526,7 @@ exports.getNodeInitialValue = function(client){
 exports.getNodeInitialValueColor = function(client){
     // Summary: Returns a string representing the color of the field: "red","yellow","green","blue"
     //          or "none" if the field has no color.
-    console.warn("Not yet implemented.");
-    return null;
+    return rgbToColor(await(client.getCssProperty('#initialValue',"background-color" ,defer())).value);
 }
 
 exports.isNodeInitialValueDisabled = function(client){
@@ -520,8 +557,7 @@ exports.getNodeUnits = function(client){
 exports.getNodeUnitsColor = function(client){
     // Summary: Returns a string representing the color of the field: "red","yellow","green","blue"
     //          or "none" if the field has no color.
-    console.warn("Not yet implemented.");
-    return null;
+    return rgbToColor(await(client.getCssProperty('#selectUnits',"background-color" ,defer())).value);
 }
 
 exports.isNodeUnitsDisabled = function(client){
@@ -569,8 +605,7 @@ exports.getNodeExpression = function(client){
 exports.getNodeExpressionColor = function(client){
     // Summary: Returns a string representing the color of the field: "red","yellow","green","blue"
     //          or "none" if the field has no color.
-    console.warn("Not yet implemented.");
-    return null
+    return rgbToColor(await(client.getCssProperty('#equationBox',"background-color" ,defer())).value);
 }
 
 exports.isNodeExpressionDisabled = function(client){

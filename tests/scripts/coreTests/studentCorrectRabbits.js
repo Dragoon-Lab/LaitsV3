@@ -38,6 +38,18 @@ describe("Test student mode:", function() {
             dtest.setNodeExpression(client, "net growth");
             dtest.checkExpression(client);
             dtest.nodeEditorDone(client);
+                        var descriptionColor = dtest.getNodeDescriptionColor(client);
+            var typeColor = dtest.getNodeTypeColor(client);
+            var initialColor = dtest.getNodeInitialValueColor(client);
+            var unitsColor = dtest.getNodeUnitsColor(client);
+            var expressionColor = dtest.getNodeExpressionColor(client);
+
+
+            console.log(descriptionColor);
+            console.log(typeColor);
+            console.log(initialColor);
+            console.log(unitsColor);
+            console.log(expressionColor);
         }));
 
         it("Should fill in function node - net growth", async(function(){
@@ -61,8 +73,28 @@ describe("Test student mode:", function() {
     });
 
     describe("Checking Nodes:", function(){
-        it("Should have correct Accumulator values", async(function(){
-            dtest.openEditorForNode(client, "population");
+        it("Nodes should have correct border and fill colors", async(function(){
+            //Defines which nodes to check
+            var nodesToCheck = ["population", "net growth", "growth rate"];
+            //Does test for all nodes
+            nodesToCheck.forEach(function(element){
+                //Gets values
+                var nodeBorderColor = dtest.getNodeBorderColor(client, element);
+                var nodeBorderStyle = dtest.getNodeBorderStyle(client, element);
+                var nodeFillColor = dtest.getNodeFillColor(client, element);
+                //Asserts values
+                assert(nodeBorderColor === "green",
+                    "Node border color for " + element + " was " + nodeBorderColor + " instead of green");
+                assert(nodeBorderStyle === "solid",
+                    "Node border style for " + element + " was " + nodeBorderStyle + " instead of solid");
+                assert(nodeFillColor === "green",
+                    "Node fill color for " + element + " was " + nodeFillColor + " instead of green");
+            });
+        }));
+        it("Should have correct Accumulator values and colors", async(function(){
+            var nodeName = "population"
+            dtest.openEditorForNode(client, nodeName);
+
 
             var description = dtest.getNodeDescription(client);
             var nodeType = dtest.getNodeType(client);
@@ -79,18 +111,40 @@ describe("Test student mode:", function() {
             var expectedExpression = "net growth";
 
             assert(description === expectedDescription,
-                "Description was " + description + " instead of \"" + expectedDescription + "\"");
+                "Description was " + description + " instead of \"" + expectedDescription + "\" for node " + nodeName);
             assert(nodeType === expectedNodeType,
-                "Node type was " + nodeType + " instead of \"" + expectedNodeType + "\"");
+                "Node type was " + nodeType + " instead of \"" + expectedNodeType + "\" for node " + nodeName);
             assert(initialValue === expectedInitialValue,
-                "Initial value was " + initialValue + " instead of \"" + expectedInitialValue + "\"");
+                "Initial value was " + initialValue + " instead of \"" + expectedInitialValue + "\" for node " + nodeName);
             assert(nodeUnits === expectedNodeUnits,
-                "Units were " + nodeUnits + " instead of \"" + expectedNodeUnits + "\"");
+                "Units were " + nodeUnits + " instead of \"" + expectedNodeUnits + "\" for node " + nodeName);
             assert(expression === expectedExpression,
-                "Expression was " + expression + "instead of \"" + expectedExpression + "\"");
+                "Expression was " + expression + "instead of \"" + expectedExpression + "\" for node " + nodeName);
+
+            var descriptionColor = dtest.getNodeDescriptionColor(client);
+            var typeColor = dtest.getNodeTypeColor(client);
+            var initialColor = dtest.getNodeInitialValueColor(client);
+            var unitsColor = dtest.getNodeUnitsColor(client);
+            var expressionColor = dtest.getNodeExpressionColor(client);
+
+            /*assert(descriptionColor === "green",
+                "Description color was " + descriptionColor + " instead of green for node " + nodeName);
+            assert(typeColor === "green",
+                "Type color was " +  typeColor + " instead of green for node " + nodeName);
+            assert(initialColor === "green",
+                "Initial value color was " + initialColor + " intead of green for node " + nodeName);
+            assert(unitsColor === "green",
+                "Units color was " + unitsColor + " intead of green for node " + nodeName);
+            assert(expressionColor === "green",
+                "Expression color was " + expressionColor + " instead of green for node " + nodeName);*/
+            console.log(descriptionColor);
+            console.log(typeColor);
+            console.log(initialColor);
+            console.log(unitsColor);
+            console.log(expressionColor);
         }));
 
-        it("Should have correct function values", async(function(){
+        it("Should have correct function values and colors", async(function(){
             dtest.openEditorForNode(client, "net growth");
 
             var description = dtest.getNodeDescription(client);
@@ -115,7 +169,7 @@ describe("Test student mode:", function() {
                 "Expression was " + expression + "instead of \"" + expectedExpression + "\"");
         }));
 
-        it("Should have correct parameter values", async(function(){
+        it("Should have correct parameter values and colors", async(function(){
             dtest.openEditorForNode(client, "growth rate");
             var description = dtest.getNodeDescription(client);
             var nodeType = dtest.getNodeType(client);
