@@ -286,7 +286,10 @@ define([
 				drawModel.deleteNode(controllerObject.currentID);
 				registry.byId("nodeeditor").hide();
 			});
-
+			if(controllerObject._mode == "AUTHOR"){
+				aspect.after(drawModel, "deleteNode",
+							 lang.hitch(controllerObject, controllerObject.removeStudentNode), true);
+			}
 
 			// checks if forumurl is present
 			if(query.f && query.fe=="true") {

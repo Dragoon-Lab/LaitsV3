@@ -484,20 +484,33 @@ define([
 							registry.byId(this.controlMap.equation).set("value", "");
 						}
 					}));
+
+					this._model.student.setInputs(inputs, studentNodeID);
+					this._model.student.setEquation(studentNodeID, eqn);				
+					if(this.givenEquationEntered){
+						style.set(this.controlMap.equation, 'backgroundColor', "#2EFEF7");
+					}
+					var flag = equation.areEquivalent(this.currentID, this._model, eqn);
+					//update student node status
+					if(!flag){
+						this._model.student.setStatus(studentNodeID, "equation" , {"disabled": false,"status":"incorrect"});
+					}
+					else{
+						this._model.student.setStatus(studentNodeID, "equation" , {"disabled": false,"status":"correct"});
+					}
+				}else{
+					 //set status if equation is empty
+					 givenEqn = this._model.given.getEquation(this.currentID);
+					 if(typeof givenEqn === 'undefined' || givenEqn === "" || givenEqn === null){
+						this._model.student.setStatus(studentNodeID, "equation" , {"disabled": true,"status":"correct"});
+					 }
+					 else{
+						this._model.student.setStatus(studentNodeID, "equation" , {"disabled": false,"status":"incorrect"});
+					 }
+					 this._model.student.setInputs(inputs, studentNodeID);
+					 this._model.student.setEquation(studentNodeID, "");
 				}
-				this._model.student.setInputs(inputs, studentNodeID);
-				this._model.student.setEquation(studentNodeID, eqn);				
-				if(this.givenEquationEntered){						
-					style.set(this.controlMap.equation, 'backgroundColor', "#2EFEF7");
-				}
-				var flag = equation.areEquivalent(this.currentID, this._model, eqn);
-				//update student node status
-				if(!flag){
-					this._model.student.setStatus(studentNodeID, "equation" , {"disabled": false,"status":"incorrect"});
-				}
-				else{
-					this._model.student.setStatus(studentNodeID, "equation" , {"disabled": false,"status":"correct"});
-				}
+
 			}
 		},
 		
@@ -704,11 +717,13 @@ define([
 					this._model.student.setInputs(inputs, newNodeID);
 					this._model.student.setEquation(newNodeID, equation);
 					this.givenEquationEntered = true;
+					this._model.student.setStatus(newNodeID, "equation" , {"disabled":true,"status":"correct"});
 				}
 				else{
 					this._model.student.setInputs([], newNodeID);
 					this._model.student.setEquation(newNodeID, "");
 					this.errorStatus.push({"id": nodeid, "isExpressionCleared":true});
+					this._model.student.setStatus(newNodeID, "equation" , {"disabled":false,"status":"incorrect"});
 				}
 			}
 			this._model.student.setPosition(newNodeID, currentNode.position);
@@ -716,8 +731,12 @@ define([
 			//Set default status to correct for all the fields
 			this._model.student.setStatus(newNodeID, "description" , {"disabled":true,"status":"correct"});
 			this._model.student.setStatus(newNodeID, "type" , {"disabled":true,"status":"correct"});
-			this._model.student.setStatus(newNodeID, "initial" , {"disabled":true,"status":"correct"});
-			this._model.student.setStatus(newNodeID, "units" , {"disabled":true,"status":"correct"});
+			if(typeof currentNode.units !== "undefined"){
+				this._model.student.setStatus(newNodeID, "units" , {"disabled":true,"status":"correct"});
+		    }
+			if(currentNode.type === "parameter" || currentNode.type === "accumulator" ){
+				this._model.student.setStatus(newNodeID, "initial" , {"disabled":true,"status":"correct"});
+			}
 		},
 
 		removeStudentNode: function(nodeid){
