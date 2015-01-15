@@ -3,16 +3,21 @@
 
  // Creating a selenium client utilizing webdriverjs
 var client = require('webdriverio').remote({
+    //logLevel: "verbose",
     desiredCapabilities: {
         // See other browers at:
         // http://code.google.com/p/selenium/wiki/DesiredCapabilities
         browserName: 'chrome'
+
     }
 });
+
 // import chai assertion library
 var assert = require('chai').assert;
 // import dragoon test library module
 var dtest = require('../dtestlib.js');
+// import dragoon assertion library
+var atest = require('../assertTestLib.js');
 // import sync library
 var sync = require('synchronize');
 // import wrapper for asynchronous functions
@@ -23,7 +28,7 @@ describe("Test student mode:", function() {
     before(async(function (done) {
             dtest.openProblem(client,[["problem","rabbits"],["mode","STUDENT"],
                                       ["section","regression-testing"],
-                                      ["logging","false"]]);
+                                      ["logging","true"]]);
     }));
 
     describe("Creating nodes:", function(){
@@ -38,18 +43,7 @@ describe("Test student mode:", function() {
             dtest.setNodeExpression(client, "net growth");
             dtest.checkExpression(client);
             dtest.nodeEditorDone(client);
-                        var descriptionColor = dtest.getNodeDescriptionColor(client);
-            var typeColor = dtest.getNodeTypeColor(client);
-            var initialColor = dtest.getNodeInitialValueColor(client);
-            var unitsColor = dtest.getNodeUnitsColor(client);
-            var expressionColor = dtest.getNodeExpressionColor(client);
 
-
-            console.log(descriptionColor);
-            console.log(typeColor);
-            console.log(initialColor);
-            console.log(unitsColor);
-            console.log(expressionColor);
         }));
 
         it("Should fill in function node - net growth", async(function(){
@@ -71,8 +65,7 @@ describe("Test student mode:", function() {
             dtest.popupWindowPressOk(client);
         }));
     });
-
-    describe("Checking Nodes:", function(){
+    describe("Checking node colors", function(){
         it("Nodes should have correct border and fill colors", async(function(){
             //Defines which nodes to check
             var nodesToCheck = ["population", "net growth", "growth rate"];
@@ -91,106 +84,63 @@ describe("Test student mode:", function() {
                     "Node fill color for " + element + " was " + nodeFillColor + " instead of green");
             });
         }));
+    });
+    
+    describe("Checking Nodes:", function(){
+        
+        afterEach(async(function(){
+            dtest.nodeEditorDone(client);
+        }));
+
         it("Should have correct Accumulator values and colors", async(function(){
             var nodeName = "population"
             dtest.openEditorForNode(client, nodeName);
 
-
-            var description = dtest.getNodeDescription(client);
-            var nodeType = dtest.getNodeType(client);
-            var initialValue = dtest.getNodeInitialValue(client);
-            var nodeUnits = dtest.getNodeUnits(client);
-            var expression = dtest.getNodeExpression(client);
-
-            dtest.nodeEditorDone(client);
-
-            var expectedDescription = "The number of rabbits in the population";
-            var expectedNodeType = "Accumulator";
-            var expectedInitialValue = "24";
-            var expectedNodeUnits = "rabbits";
-            var expectedExpression = "net growth";
-
-            assert(description === expectedDescription,
-                "Description was " + description + " instead of \"" + expectedDescription + "\" for node " + nodeName);
-            assert(nodeType === expectedNodeType,
-                "Node type was " + nodeType + " instead of \"" + expectedNodeType + "\" for node " + nodeName);
-            assert(initialValue === expectedInitialValue,
-                "Initial value was " + initialValue + " instead of \"" + expectedInitialValue + "\" for node " + nodeName);
-            assert(nodeUnits === expectedNodeUnits,
-                "Units were " + nodeUnits + " instead of \"" + expectedNodeUnits + "\" for node " + nodeName);
-            assert(expression === expectedExpression,
-                "Expression was " + expression + "instead of \"" + expectedExpression + "\" for node " + nodeName);
-
-            var descriptionColor = dtest.getNodeDescriptionColor(client);
-            var typeColor = dtest.getNodeTypeColor(client);
-            var initialColor = dtest.getNodeInitialValueColor(client);
-            var unitsColor = dtest.getNodeUnitsColor(client);
-            var expressionColor = dtest.getNodeExpressionColor(client);
-
-            /*assert(descriptionColor === "green",
-                "Description color was " + descriptionColor + " instead of green for node " + nodeName);
-            assert(typeColor === "green",
-                "Type color was " +  typeColor + " instead of green for node " + nodeName);
-            assert(initialColor === "green",
-                "Initial value color was " + initialColor + " intead of green for node " + nodeName);
-            assert(unitsColor === "green",
-                "Units color was " + unitsColor + " intead of green for node " + nodeName);
-            assert(expressionColor === "green",
-                "Expression color was " + expressionColor + " instead of green for node " + nodeName);*/
-            console.log(descriptionColor);
-            console.log(typeColor);
-            console.log(initialColor);
-            console.log(unitsColor);
-            console.log(expressionColor);
+            atest.checkNodeValues([["nodeName", "population"],
+                                    ["expectedDescription", "The number of rabbits in the population"],
+                                    ["expectedNodeType", "Accumulator"],
+                                    ["expectedInitialValue", "24"],
+                                    ["expectedNodeUnits", "rabbits"],
+                                    ["expectedExpression", "net growth"],
+                                    ["expectedDescriptionColor", "green"],
+                                    ["expectedTypeColor", "green"],
+                                    ["expectedInitialColor", "green"],
+                                    ["expectedUnitsColor", "green"],
+                                    ["expectedExpressionColor", "green"]], dtest, client);
         }));
 
         it("Should have correct function values and colors", async(function(){
-            dtest.openEditorForNode(client, "net growth");
+            var nodeName = "net growth"
 
-            var description = dtest.getNodeDescription(client);
-            var nodeType = dtest.getNodeType(client);
-            var nodeUnits = dtest.getNodeUnits(client);
-            var expression = dtest.getNodeExpression(client);
+            dtest.openEditorForNode(client, nodeName);
 
-            dtest.nodeEditorDone(client);
-
-            var expectedDescription = "The number of additional rabbits each year";
-            var expectedNodeType = "Function";
-            var expectedNodeUnits = "rabbits/year";
-            var expectedExpression = "growth rate*population";
-
-            assert(description === expectedDescription,
-                "Description was " + description + " instead of \"" + expectedDescription + "\"");
-            assert(nodeType === expectedNodeType,
-                "Node type was " + nodeType + " instead of \"" + expectedNodeType + "\"");
-            assert(nodeUnits === expectedNodeUnits,
-                "Units were " + nodeUnits + " instead of \"" + expectedNodeUnits + "\"");
-            assert(expression === expectedExpression,
-                "Expression was " + expression + "instead of \"" + expectedExpression + "\"");
+            atest.checkNodeValues([["nodeName", "net growth"],
+                                    ["expectedDescription", "The number of additional rabbits each year"],
+                                    ["expectedNodeType", "Function"],
+                                    ["expectedNodeUnits", "rabbits/year"],
+                                    ["expectedExpression", "growth rate*population"],
+                                    ["expectedDescriptionColor", "green"],
+                                    ["expectedTypeColor", "green"],
+                                    ["expectedInitialColor", "gray"],
+                                    ["expectedUnitsColor", "green"],
+                                    ["expectedExpressionColor", "green"]], dtest, client);
         }));
 
         it("Should have correct parameter values and colors", async(function(){
+            var nodeName = "growth rate";
+
             dtest.openEditorForNode(client, "growth rate");
-            var description = dtest.getNodeDescription(client);
-            var nodeType = dtest.getNodeType(client);
-            var initialValue = dtest.getNodeInitialValue(client);
-            var nodeUnits = dtest.getNodeUnits(client);
 
-            dtest.nodeEditorDone(client);
-
-            var expectedDescription = "The number of additional rabbits per year per rabbit";
-            var expectedNodeType = "Parameter";
-            var expectedInitialValue = "0.3";
-            var expectedNodeUnits = "1/year";
-
-            assert(description === expectedDescription,
-                "Description was " + description + " instead of \"" + expectedDescription + "\"");
-            assert(nodeType === expectedNodeType,
-                "Node type was " + nodeType + " instead of \"" + expectedNodeType + "\"");
-            assert(initialValue === expectedInitialValue,
-                "Initial value was " + initialValue + " instead of \"" + expectedInitialValue + "\"");
-            assert(nodeUnits === expectedNodeUnits,
-                "Units were " + nodeUnits + " instead of \"" + expectedNodeUnits + "\"");
+            atest.checkNodeValues([["nodeName", "growth rate"],
+                                    ["expectedDescription", "The number of additional rabbits per year per rabbit"],
+                                    ["expectedNodeType", "Parameter"],
+                                    ["expectedInitialValue", "0.3"],
+                                    ["expectedNodeUnits", "1/year"],
+                                    ["expectedDescriptionColor", "green"],
+                                    ["expectedTypeColor", "green"],
+                                    ["expectedInitialColor", "green"],
+                                    ["expectedUnitsColor", "green"],
+                                    ["expectedExpressionColor", "gray"]], dtest, client);            
         }));
     });
 

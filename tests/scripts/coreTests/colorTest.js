@@ -22,7 +22,7 @@ describe("Test graph/table window:", function() {
 
     before(async(function (done) {
             dtest.openProblem(client,[["problem","rabbits"],["mode","STUDENT"],
-                                      ["user", "AutoTest"],
+                                      ["user", "1/15/2015/1421349321.505"],
                                       ["section","regression-testing"],
                                       ["logging","True"]]);
     }));
@@ -46,11 +46,39 @@ describe("Test graph/table window:", function() {
             console.log(initial);
             console.log(units);
             console.log(expression);
+            dtest.nodeEditorDone(client);
             /*dtest.openEditorForNode(client, "population");
             var des = dtest.getNodeExpressionColor(client);
             console.log(des);*/
         }));
-
+        it("Test2", async(function(){
+            dtest.openEditorForNode(client, "growth rate");
+            var description = dtest.getNodeDescriptionColor(client);
+            var type = dtest.getNodeTypeColor(client);
+            var initial = dtest.getNodeInitialValueColor(client);
+            var units = dtest.getNodeUnitsColor(client);
+            var expression = dtest.getNodeExpressionColor(client);
+            console.log(description);
+            console.log(type);
+            console.log(initial);
+            console.log(units);
+            console.log(expression);
+            dtest.nodeEditorDone(client);
+        }));
+        it("Test2", async(function(){
+            dtest.openEditorForNode(client, "net growth");
+            var description = dtest.getNodeDescriptionColor(client);
+            var type = dtest.getNodeTypeColor(client);
+            var initial = dtest.getNodeInitialValueColor(client);
+            var units = dtest.getNodeUnitsColor(client);
+            var expression = dtest.getNodeExpressionColor(client);
+            console.log(description);
+            console.log(type);
+            console.log(initial);
+            console.log(units);
+            console.log(expression);
+            dtest.nodeEditorDone(client);
+        }));
     });
 
     after(function(done) {

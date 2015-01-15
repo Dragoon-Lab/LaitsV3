@@ -130,7 +130,7 @@ function getUrlRoot()
 
 function rgbToColor(toConvert)
 {
-    console.log(toConvert);
+    toConvert = toConvert.trim();
     if(toConvert === "rgb(0,128,0)" || toConvert === "rgba(148,255,148,1)" || toConvert === "rgba(144,238,144,1)" || toConvert === "green" || toConvert === "rgb(144,238,144)")
     {
         return "green";
@@ -147,7 +147,7 @@ function rgbToColor(toConvert)
     {
         return "white";
     }
-    else if(toConvert === "rgba(0,0,0,0)" || toConvert === "gray")
+    else if(toConvert === "rgba(0,0,0,0)" || toConvert === "gray" || toConvert === "rgb(230,230,230)" || toConvert == "rgb(230,230,230)" || toConvert == "rgba(230,230,230,1)")
     {
         return "gray";
     }
@@ -225,6 +225,30 @@ exports.getHtmlOfNode = function(client, nodeName){
     console.log(style.value);
 }
 
+exports.waitTime = function(client, timeToWait)
+{
+    await(wait(timeToWait),defer());
+}
+
+exports.waitForEditor = function(client)
+{
+    await(client.waitForVisible('#nodeeditor',1000, false, defer()));
+}
+
+exports.refresh = function(client)
+{
+    var url = await(client.url(defer()));
+    //await(client.window());
+    await(client.newWindow(url.value, "Color test", 'width=1000,height=1000,resizable,scrollbars=yes,status=1', defer()));
+}
+
+exports.changeClient = function (client, newClient)
+{
+    var url = await(client.url(defer()));
+    console.log(url.value);
+    client.end();
+    await(newClient.init().url(url.value, defer()));
+}
 ////////////////////////////////////////////////////////////////////////////////////////////////////
 // 2. Menu bar functions
 
@@ -447,7 +471,6 @@ exports.getNodeDescriptionColor = function(client){
     // Summary: Returns a string representing the color of the field: "red","yellow","green","blue"
     //          or "none" if the field has no color.
     var test = await(client.getCssProperty('#selectDescription',"background-color" ,defer())).value;
-    console.log(test);
     wait(5000);
     return rgbToColor(test);
 }
@@ -526,7 +549,7 @@ exports.getNodeInitialValue = function(client){
 exports.getNodeInitialValueColor = function(client){
     // Summary: Returns a string representing the color of the field: "red","yellow","green","blue"
     //          or "none" if the field has no color.
-    return rgbToColor(await(client.getCssProperty('#initialValue',"background-color" ,defer())).value);
+    return rgbToColor(await(client.getCssProperty('#widget_initialValue',"background-color" ,defer())).value);
 }
 
 exports.isNodeInitialValueDisabled = function(client){
@@ -605,6 +628,7 @@ exports.getNodeExpression = function(client){
 exports.getNodeExpressionColor = function(client){
     // Summary: Returns a string representing the color of the field: "red","yellow","green","blue"
     //          or "none" if the field has no color.
+    //console.log("test");
     return rgbToColor(await(client.getCssProperty('#equationBox',"background-color" ,defer())).value);
 }
 
