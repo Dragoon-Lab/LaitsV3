@@ -19,7 +19,9 @@ Each browser handles certain aspects of dragoon differently. As a result, in ord
 
 #Files
 * dtestlib.js - library of functions which drive and/or retrieve information from the Dragoon UI
+* example-test-paths.js - Copy this file to test-paths.js (same directory), and change the paths to match your local webserver set up.
 * shakedown.js - Test script of unit tests for dtestlib; run this to ensure everything is working before running other test files.  (Also provides an example of how to write a test script.)
+* coreTests/ - Holds tests which should be run to test all the core functionality of Dragoon itself.
 
 The shakedown test imports selenium server and thus requires selenium server to be running.
 
@@ -29,7 +31,9 @@ In the original version of this work, test scripts called the webdriver directly
 Currently all of the exported library functions require at one argument: "client", the webdriver.io client.  Inside the library we use [synchronize.js](http://alexeypetrushin.github.io/synchronize/docs/index.html) to serialize the selenium calls, converting the asynchronous code into code that runs serially.
 
 #Running tests
-To run through all the tests, type "make run" in any command prompt that support the running of the make file. To run an individual tests, you must first run the selenium server. To run the selenium server, redirect the command prompt to this directory and type:
+First, make sure you have created test-paths.js in tests/scripts (see example-test-scripts.js above).
+
+To run through all the tests, type "make run" in any command prompt that support the running of the make file. To run individual tests, you must first run the selenium server. To run the selenium server, redirect the command prompt to this directory and type:
 
     java -jar selenium-server-standalone-2.42.2.jar > selenium.log &
 
