@@ -49,9 +49,6 @@ tests/node/
 tests/node_modules/
 tests/phantomjsdriver.log
 tests/selenium.log
-
-
-
 tests/chromedriver
-
 tests/node/
+tests/scripts/test-paths.js
