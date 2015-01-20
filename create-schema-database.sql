@@ -14,7 +14,7 @@ CREATE TABLE `schema_opportunity`(
 	`nodes` text COMMENT 'nodes to which the schema is applied should be added in the form of a json, structure can be checked from documentation',
 	`id` varchar(50) NOT NULL COMMENT 'contains problem_schemaID string with the int conversion of isolated:cues:phrases i.e. 0 to 7 and is the primary key' 
 	`time` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
-	PRIMARY KEY (`id`)
+	CONSTRAINT problem_id PRIMARY KEY (`id`, `problem`)
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
@@ -39,6 +39,7 @@ CREATE TABLE `schema_application`(
 	`time_spent` float(7, 2) NOT NULL COMMENT 'total time spent on the schema',
 	`errors` int(5) unsigned NOT NULL COMMENT 'errors related to this schema',
 	`competence` float(8, 7) NOT NULL,
+	`count` int(5) unsigned NOT NULL COMMENT 'incremented value sent to order the schema as per the student value',
 	`tid` int(10) unsigned NOT NULL AUTO_INCREMENT,
 	PRIMARY KEY (`tid`),
 	KEY (`session_id`),
