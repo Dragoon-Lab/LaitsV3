@@ -465,13 +465,14 @@ define([
 					newPart = "initial";
 				}else if(nodeType === "function"){
 					disable(obj, "initial", true);
-						newPart = "initial";
-				}else if(this.model.given.getUnits(givenNodeID)){
-					disable(obj, "units", false);
+						
+					if(this.model.given.getUnits(givenNodeID)){
+						disable(obj, "units", false);
 						newPart = "units";
-				}else{
-					disable(obj, "equation", false);
-					newPart = "equation";
+					}else{
+						disable(obj, "equation", false);
+						newPart = "equation";
+					}
 				}
 				break;
 			case "initial":
@@ -539,7 +540,7 @@ define([
 				case "description":
 					this.descriptionCounter++;
 
-					if(this.model.given.getGenus(answer)){
+					if(this.model.given.getGenus(answer) && this.model.given.getGenus(answer) != "required"){
 						array.forEach(this.model.given.getNodes(), function(extra){
 							if(answer === extra.ID && extra.genus && extra.genus != "allowed"){
 								interpretation = extra.genus;
