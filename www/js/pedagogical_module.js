@@ -455,7 +455,12 @@ define([
 			//		the node
 			//
 			// Tags: Private
-			var nodeType = this.model.student.getType(this.model.student.getNodeIDFor(givenNodeID));
+			var nodeType = "";
+			if(this.showCorrectAnswer){ //For Other modes get node type from correct answer
+			  	nodeType = this.model.given.getType(givenNodeID); 
+			}else{  //For EDITOR and TEST get node type from user selected answer
+				nodeType = this.model.student.getType(this.model.student.getNodeIDFor(givenNodeID));
+			}
 			var newPart = "equation";
 
 			switch(currentPart){
