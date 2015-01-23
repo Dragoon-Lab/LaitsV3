@@ -66,11 +66,7 @@ define([
 
 			if(nodeName){
 				nodeName='<div id='+nodeId+'Label  class="bubble"><div class="'+type+'Wrapper"><strong>'+parameter+'<br>'+initialValue+'</strong></div><div class='+type+'Div><strong>'+nodeName+'</strong></div></div>';
-                console.log("###########");
-
                 console.log(nodeName);
-                console.log("###########");
-
             }else{
 				nodeName='';
 			}
