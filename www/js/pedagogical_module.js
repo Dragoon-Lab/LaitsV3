@@ -456,7 +456,7 @@ define([
 			//
 			// Tags: Private
 			var nodeType = "";
-			if(this.showCorrectAnswer){ //For Other modes get node type from correct answer
+			if(this.showCorrectAnswer){ //For Other modes get node type from given model
 			  	nodeType = this.model.given.getType(givenNodeID); 
 			}else{  //For EDITOR and TEST get node type from user selected answer
 				nodeType = this.model.student.getType(this.model.student.getNodeIDFor(givenNodeID));
