@@ -51,7 +51,7 @@ define([
 			if(parse){
 				parse=expression.parse(parse);
 				// May want to change symbols to "sum" and "product"
-				parameter = expression.isSum(parse)&&expression.isProduct(parse)?'':expression.isSum(parse)?'+':expression.isProduct(parse)&&!expression.isDivide(parse)?'*':expression.isProduct(parse)&&expression.isDivide(parse)?'/':'';
+                parameter = expression.isSum(parse)&&expression.isProduct(parse)?'':expression.isSum(parse)?'+':expression.isProduct(parse)?'*':'';
 				parameter = '<strong style="font-size:18px">'+parameter+'</strong>';
 			}
 			var initialValue = model.getInitial(nodeId) || '';
@@ -66,7 +66,8 @@ define([
 
 			if(nodeName){
 				nodeName='<div id='+nodeId+'Label  class="bubble"><div class="'+type+'Wrapper"><strong>'+parameter+'<br>'+initialValue+'</strong></div><div class='+type+'Div><strong>'+nodeName+'</strong></div></div>';
-			}else{
+                console.log(nodeName);
+            }else{
 				nodeName='';
 			}
 
