@@ -27,8 +27,8 @@
 /* global define */
 
 define([
-	"dojo/_base/array", "dojo/_base/declare", "dojo/_base/lang", "./equation"
-], function(array, declare, lang, check){
+	"dojo/_base/array", "dojo/_base/declare", "dojo/_base/lang", "./equation", "dojo/dom"
+], function(array, declare, lang, check, dom){
 	// Summary: 
 	//			Processes student selections and returns instructions to the 
 	//			program
@@ -455,7 +455,12 @@ define([
 			//		the node
 			//
 			// Tags: Private
-			var nodeType = this.model.student.getType(this.model.student.getNodeIDFor(givenNodeID));
+			var nodeType = "";
+			if(this.showCorrectAnswer){ //For Other modes get node type from given model
+			  	nodeType = this.model.given.getType(givenNodeID); 
+			}else{  //For EDITOR and TEST get node type from user selected answer
+				nodeType = this.model.student.getType(this.model.student.getNodeIDFor(givenNodeID));
+			}
 			var newPart = "equation";
 
 			switch(currentPart){
@@ -465,39 +470,48 @@ define([
 					newPart = "initial";
 				}else if(nodeType === "function"){
 					disable(obj, "initial", true);
-						newPart = "initial";
-				}else if(this.model.given.getUnits(givenNodeID)){
-					disable(obj, "units", false);
+						
+					if(this.model.given.getUnits(givenNodeID)){
+						disable(obj, "units", false);
 						newPart = "units";
-				}else{
-					disable(obj, "equation", false);
-					newPart = "equation";
+					}else{
+						disable(obj, "equation", false);
+						newPart = "equation";
+					}
 				}
 				break;
 			case "initial":
 				if(this.model.given.getUnits(givenNodeID)){
-					disable(obj, "units", false);
+                    disable(obj, "units", false);
 					newPart = "units";
 				}else if(nodeType === "function" || nodeType === "accumulator"){
-					disable(obj, "equation", false);
-					newPart = "equation";
+                    var dat = dom.byId("equationBox").value;
+                    if(dat=="") {
+                    	disable(obj, "equation", false);
+                    }
+                    newPart = "equation";
 				}else if(nodeType === "parameter"){
 					disable(obj, "equation", true);
 					newPart = "equation";
 				}
 				break;
 			case "units":
-				if(nodeType === "parameter")
+				if(nodeType === "parameter"){
 					disable(obj, "equation", true);
-				else if(nodeType === "function" || nodeType === "accumulator")
-					disable(obj, "equation", false);
+				}else if(nodeType === "function" || nodeType === "accumulator"){
+	                var dat = dom.byId("equationBox").value;
+                    if(dat==""){
+                    	disable(obj, "equation", false);
+                    }
+			    }
 				newPart = "equation";
 				break;
 			}
-			if(job === "enableRemaining" && newPart !== "equation")
+			if(job === "enableRemaining" && newPart !== "equation"){
 				this._enableNext(obj, givenNodeID, newPart, job);
-			else
+			}else{
 				return;
+			}
 		},
 		_getInterpretation: function(/*string*/ studentID, /*string*/ nodePart, /*string | object*/ answer){
 			// Summary: Returns the interpretation of a given answer (correct, incorrect, etc.)
@@ -531,7 +545,7 @@ define([
 				case "description":
 					this.descriptionCounter++;
 
-					if(this.model.given.getGenus(answer)){
+					if(this.model.given.getGenus(answer) && this.model.given.getGenus(answer) != "required"){
 						array.forEach(this.model.given.getNodes(), function(extra){
 							if(answer === extra.ID && extra.genus && extra.genus != "allowed"){
 								interpretation = extra.genus;

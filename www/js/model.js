@@ -215,15 +215,15 @@ define([
 						descriptions[node.description] = node.ID;
 					}
 				}, this);
+				/*
+				 Set flag showing that student model is complete.
 
-		/*
-		 Set flag showing that student model is complete.
-
-		 Does not corretly handle case where student completes
-		 the model, deletes some nodes, and reopens the problem.
-		 */
-		this.isCompleteFlag = this.matchesGivenSolution();
+				 Does not corretly handle case where student completes
+				 the model, deletes some nodes, and reopens the problem.
+				 */
+				this.isCompleteFlag = this.matchesGivenSolution();
 			},
+
 			getModelAsString: function(){
 				// Summary: Returns a JSON object in string format
 				//			Should only be used for debugging.
@@ -674,7 +674,7 @@ define([
 					var id = node.ID;
 					//console.log("from count type : "+id + " node "+ node);
 					var genus = this.getGenus(id);
-					if(!genus || genus == "allowed"){
+					if(!genus|| genus == "required" || genus == "allowed"){
 						var type = this.getType(id)||"none";
 						switch(type){
 							case "accumulator":
@@ -743,13 +743,13 @@ define([
 				var node = this.getNode(id);
 				var initialEntered = node.type && node.type == "function" || node.initial != null;
 				var equationEntered = node.type && node.type == "parameter" || node.equation;
-				if(!node.genus || node.genus == "allowed" || node.genus == "preferred"){
-					return node.name && node.description &&
+				if(!node.genus || node.genus == "required" || node.genus == "allowed" || node.genus == "preferred"){
+					return node.genus && node.name && node.description &&
 							node.type && (initialEntered || typeof initialEntered === "number") &&
 							(unitsOptional || node.units) &&
 							equationEntered;
 				}else if(node.genus == "initialValue"){
-					return node.name && node.description;
+					return node.genus && node.name && node.description;
 				}else{
 					return (node.name && node.description) ||
 							node.units;
@@ -760,7 +760,7 @@ define([
 		obj.solution = lang.mixin({
 			getNodes: function(){
 				return array.filter(obj.model.task.givenModelNodes, function(node){
-					return !node.genus;
+					return !node.genus || node.genus == "required";
 				});
 			},
 			// This method is common with given but not student.
@@ -883,11 +883,17 @@ define([
                 // Summary: Returns True if (1) matchesGivenSolution is true and (2) if all nodes that are part of the
                 // solution have correctness of "demo" or "correct"
                 return obj.matchesGivenSolution() &&
-                       array.every(this.getStudentNodesInSolution(),
+                       this.checkStudentNodeCorrectness();
+            },
+            checkStudentNodeCorrectness: function(){
+            	return array.every(this.getStudentNodesInSolution(),
                         function(studentNode){
                             var correctness = this.getCorrectness(studentNode.ID);
                             return correctness === "correct" || correctness === "demo";
                         }, this);
+            },
+            checkStudentNodeCount: function(){
+            	return this.getNodes().length - obj.solution.getNodes().length;
             },
 			getStatusDirectives: function(/*string*/ id){
 				//Summary:	Return a list of directives (like PM does).
