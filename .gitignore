@@ -52,3 +52,5 @@ tests/selenium.log
 tests/chromedriver
 tests/node/
 tests/scripts/test-paths.js
+
+*.swp
