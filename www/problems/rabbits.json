@@ -137,6 +137,23 @@
                 "inputs":[]
             }
         ],
-        "studentModelNodes": []
+        "studentModelNodes": [],
+		"schemas": [
+			{
+				"ID": "growth",
+				"difficulty": {
+					"isolation": 0,
+					"cues": 0,
+					"phrases": 0
+				},
+				"nodes": "id1, id2, id3",
+				"competence": {
+					"errors": 0,
+					"total": 0,
+					"timeSpent": 0,
+					"values": {}
+				}
+			}
+		]
     }
 }
