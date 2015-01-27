@@ -37,8 +37,8 @@
 	!empty($_REQUEST["db_user"])?($dbuser = $_REQUEST["db_user"]):'';
 	!empty($_REQUEST["db_name"])?($dbpass = $_REQUEST["db_password"]):'';
 	
-	//$mysqli = mysqli_connect("localhost",$dbuser, $dbpass, $dbname) or die("Connection not established. Check the user log file");
-	$mysqli = mysqli_connect("localhost", "root", "qwerty211", "laits_cpi") or die("Connection not established. Check the user log file");
+	$mysqli = mysqli_connect("localhost",$dbuser, $dbpass, $dbname) or die("Connection not established. Check the user log file");
+	//$mysqli = mysqli_connect("localhost", "root", "qwerty211", "laits_cpi") or die("Connection not established. Check the user log file");
 
 	$db = new Dashboard($mysqli);
 
