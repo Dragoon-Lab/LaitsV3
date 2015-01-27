@@ -775,7 +775,7 @@ define([
 				index = 1;
 				var nodeString = "";
 				array.forEach(nodesID, function(ID){
-					if(index == l - 1)
+					if(index == l - 1){
 						nodeString += ID;
 					} else {
 						nodeString += ID+", ";
