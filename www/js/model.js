@@ -65,7 +65,8 @@ define([
 					taskDescription: "",
 					lessonsLearned: "",
 					givenModelNodes: [],
-					studentModelNodes: []
+					studentModelNodes: [],
+					schemas: []
 				}};
 				
 				/*
@@ -76,6 +77,7 @@ define([
 			},
 			// Private variables
 			_ID: 1,
+			_SID: 1,
 			// Public variables
 			beginX: 400,
 			beginY: 100,
@@ -457,6 +459,12 @@ define([
 				});
 				return outputs;
 			},
+			getSchemas: function(){
+				return obj.model.task.schemas;
+			},
+			setSchemas: function(/* object */ schemas){
+				obj.model.task.schemas = schemas;
+			},
 			setInputs: function(/*array*/ inputs, /*string*/ inputInto){
 				// Silently filter out any inputs that are not defined.
 				// inputs is an array of objects.
@@ -529,6 +537,24 @@ define([
 				}, options || {});
 				obj.model.task.givenModelNodes.push(newNode);
 				return newNode.ID;
+			},
+			addSchema: function(/* string */ schemaID){
+				var newSchema = {
+					ID: schemaID||"schema"+obj._SID++,
+					schemaClass: "",
+					competence: {
+						errors: 0,
+						total: 0,
+						timeSpent: 0,
+						values:{}
+					},
+					nodes: "",
+					difficulty: {}
+				}
+
+				obj.model.task.schemas.push(newSchema);
+
+				return newSchema.ID;
 			},
 			/*merges imported model and returns ids of merged nodes*/
 			mergeNodes: function(model){
@@ -699,6 +725,17 @@ define([
 
 				return nodeNumber;
 			},
+			getSchema: function(/* string */ schemaID){
+				var schemas = this.getSchemas();
+				var l = schemas.length;
+				for(var i = 0; i < l; i++){
+					if(schemas[i].ID == schemaID){
+						return schemas[i];
+					}
+				}
+
+				return null;
+			},
 			setName: function(/*string*/ id, /*string*/ name){
 				this.getNode(id).name = name.trim();
 			},
@@ -722,6 +759,31 @@ define([
 			},
 			setAttemptCount: function(/*string*/ id, /*string*/ part, /*string*/ count){
 				this.getNode(id).attemptCount[part] = count;
+			},
+			setSchemaDifficulty: function(/* string */ schemaID, /* string */ diffPart, /* binary */ value){
+				var schema = this.getSchema(schemaID);
+				var newDifficulty = {diffPart: value};
+				this.model.task.schemas.difficulty.push(newDifficulty);
+			},
+			setSchemaClass: function(/* string */ schemaID, /* string */ value){
+				var schema = this.getSchema(schemaID);
+				schema.schemaClass = value;
+			},
+			setSchemaNodes: function(/* string */ schemaID, /* array */ nodesID){
+				var nodes = this.model.task.schemas.nodes;
+				var l = nodesID.length;
+				index = 1;
+				var nodeString = "";
+				array.forEach(nodesID, function(ID){
+					if(index == l - 1)
+						nodeString += ID;
+					} else {
+						nodeString += ID+", ";
+					}
+				}, this);
+				
+				var schema = this.getSchema(schemaID);
+				schema.nodes = nodeString;
 			},
 			setStatus: function(/*string*/ id, /*string*/ part, /*string*/ status){
 				// Summary: tracks student progress (correct, incorrect) on a given node;
@@ -786,6 +848,28 @@ define([
 				}, options || {});
 				obj.model.task.studentModelNodes.push(newNode);
 				return newNode.ID;
+			},
+			addSchemaTime: function(/* string */ id, /* number */ value){
+				var givenID = this.getDescriptionID(id);
+
+				if(givenID){
+					var schemas = this.getSchemas();
+					if(schemas){
+						array.forEach(schemas, function(schema){
+							if(schema.nodes.indexOf(givenID) >= 0){
+								schema.competence.timeSpent += value;
+							}
+						}, this);
+					}
+				}
+
+				return givenID;
+			},
+			addCompetenceValues: function(/* string */ type, /* number */ value){
+				var newCompetence = {type: value};
+				this.schemas.competence.values.push(newCompetence);
+
+				return newCompetence;
 			},
 			getCorrectAnswer: function(/*string*/ studentID, /*string*/ nodePart){
 				// Summary: returns the correct answer for a given part of a node;
@@ -949,6 +1033,25 @@ define([
 				var givenID = this.getDescriptionID(id);
 				var node = obj.given.getNode(givenID);
 				node.attemptCount.assistanceScore = (node.attemptCount.assistanceScore || 0) + 1;
+			},
+			incrementSchemaErrors: function(/* string */ id, /* boolean */ isCorrect){
+				var givenID = this.getDescriptionID(id);
+
+				if(givenID){
+					var schemas = this.getSchemas();
+					if(schemas){
+						array.forEach(schemas, function(schema){
+							if(schema.nodes.indexOf(givenID) >= 0){
+								schema.competences.total++;
+								if(!isCorrect){
+									schema.competences.errors++;
+								}
+							}
+						}, this);
+					}
+				}
+
+				return givenID;
 			},
 			isComplete: function(/*string*/ id){
 				// Summary: Test whether a node is completely filled out, correct or not

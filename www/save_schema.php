@@ -4,7 +4,7 @@ require "db-login.php";
 
 $mysqli = mysqli_connect("localhost", $dbuser, $dbpass, $dbname) or trigger_error('Could not connect to database.', E_USER_ERROR);
 
-$schema = json_decode($_REQUEST($obj))
+$schema = json_decode($_REQUEST($obj));
 $p = $schema["problem"];
 $sid = $schema["schema_id"];
 $i = $schema["isolated"];

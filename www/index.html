@@ -8,9 +8,9 @@
         var version = "";
         
         if(window.location.hostname == "dragoon.asu.edu"){
-            version = getVersion();  // Get version from version.js
+			version = getVersion();  // Get version from version.js
         }else{
-            version = new Date();
+			version = new Date();
         }
 
         dojoConfig = {
@@ -426,6 +426,11 @@
 			<label for="nodesDropdown">Nodes: </label>
 			<div id="nodesDropdown"></div> <!-- place holder for nodes dropdown -->
 		</div>
+		<div id="buttons">
+			<button id="saveSchema" type="button" data-dojo-type="dijit/form/Button" iconClass="dijitNoIcon">Save</button>
+			<button id="resetSchema" type="button" data-dojo-type="dijit/form/Button" iconClass="dijitNoIcon">Reset</button>
+		</div>
+
 	</div>
 				
     </div>  <!-- main -->			
