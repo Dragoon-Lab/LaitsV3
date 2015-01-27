@@ -121,8 +121,10 @@ define([
 						message	 = "This quantity is mentioned in the problem description, but it not part of a valid model.";
 					}else if(value == "irrelevant"){
 						message	 = "This quantity is not part of a valid solution and is not mentioned in the description.";
-					}else{
+					}else if(value == "required"){
 						message = "Solution quantity";
+					}else{
+						message = "Please select Kind of Quantity";
 					}
 					returnObj.push({id:"message", attribute:"append", value:message});
 					break;
@@ -271,8 +273,18 @@ define([
 
 		handleKind: function(kind){
 			console.log("**************** in handleKind ", kind);
-			this._model.given.setGenus(this.currentID, kind);
-			this.applyDirectives(this. authorPM.process(this.currentID, "kind", kind));
+			if(kind == "defaultSelect" || kind == ''){
+				console.log("undo kind selection");
+				this.logging.clientLog("error", {
+					message: "no kind selected for author node type",
+					functionTag: "handleKind"
+				});
+				kind = "";
+				this._model.given.setGenus(this.currentID, kind);
+			}else{
+				this._model.given.setGenus(this.currentID, kind);
+				this.applyDirectives(this. authorPM.process(this.currentID, "kind", kind));
+			}
 		},
 
 		handleDescription: function(description){

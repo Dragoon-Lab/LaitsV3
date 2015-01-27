@@ -1,7 +1,6 @@
 /build/
 /dist/
 /test/
-/tests/
 /logs/
 /nbproject/
 /build.xml
@@ -43,7 +42,13 @@ www/php-test.php
 
 www/util/
 
-tests/npm/
-
 .idea/
 
+tests/npm/
+tests/node/
+tests/node_modules/
+tests/phantomjsdriver.log
+tests/selenium.log
+tests/chromedriver
+tests/node/
+tests/scripts/test-paths.js
