@@ -13,12 +13,13 @@ define([
 		},
 
 		getFileData: function(/* string */ fileName, /* path */ path){
+			console.log("sachin ", fileName, " ",  path); 
 			path = path || this._path;
-			return xhr.post(path + fileName, function(){
-				handleAs: text,
+			return xhr.post(path + fileName, {
+				handleAs: "text",
 				sync: true
 			}).then(function(results){
-				console.log(fileName + "found, data : " + results);
+				console.log(fileName + " found, data : ");
 				return results;
 			}, function(err){
 				console.error(fileName + " not found, error message :  " + err);
@@ -28,10 +29,10 @@ define([
 		
 		sendData: function(/* object */ obj, /* object */ params, /* string */ fileName, /* string */ path){
 			path = path || this._path;
-			return xhr.post(path + fileName, function(){
+			return xhr.post(path + fileName, {
 				data:{
 					params: params,
-					object: obj,
+					object: obj
 				}
 			}).then(function(reply){
 				console.log("data sent successfully");

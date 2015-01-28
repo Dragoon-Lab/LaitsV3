@@ -1,70 +1,106 @@
 [
+	{
+		"schemaClass" : "Generics",
+		"subClasses": [
+			{
+				"name" : "Linear transfer",
+				"id" : "linear_transfer",
+				"template" : "An amount increases/decays at a constant value.",
+				"example" : "The perimeter of an area increases by 5 hectares every year. What is the perimeter after 4 years?"
+			},
+			{
+				"name" : "Exponential transfer",
+				"id" : "exponential_transfer",
+				"template" : "An amount increases/decays at a certain rate.",
+				"example" : "A certain element has a half-life of 2 years. If there is 60 pounds of the material, how much time will it take until there is less than one pound?"
+			},
+			{
+				"name" : "Goal transfer",
+				"id" : "goal_transfer",
+				"template" : "An amount increases/decays at a rate which is proportional to difference between two quantities out of which atleast one of them is not a source or destination.",
+				"example" : "The velocity of a pendulum (point mass m and mass-less thread length l) is inversely proporitonal by a factor 'k', to the difference of distance of its current position and the equilibrium position. If it is taken to a height h and left then find the time it takes to come back to its original position?"
+			},
+			{
+				"name" : "Equilibrating",
+				"id" : "equilibrating",
+				"template" : "An amount increases/decays at a rate which is proportional to difference between the source and the destination quantities.",
+				"example" : "Water flows through a porus membrane by factor of -0.3 times the difference of density of salt at both the places. How much time will it take to reach the equilibrium condition?"
+			},
+			{
+				"name" : "Accelerating transfer",
+				"id" : "accelerating_transfer",
+				"template" : "An amount increases/decays at a rate which increases or decreases by a constant amount every time.",
+				"example" : "A car starts 2m/sec and has an accelerationg which increases by 0.5m/sec^2 starting from 0 at time = 0 sec. What will be the speed of the vehicle after 10 seconeds?"
+			},
+			{
+				"name" : "Epidemic transfer",
+				"id" : "epidemic_transfer",
+				"template" : "An amount increases/decays at a rate, which is the product of the number of meetings times the probability that a meeting will have a both a source and a destination object in it.",
+				"example" : ""
+			}
+		]
+	},
 	{ 
-		"schemaClass" : "Motion", 
+		"schemaClass" : "Motion & River Currents", 
 		"subClasses" : [
 			{
-				"name" : "Simple DRT",
+				"name" : "Motion - Simple DRT",
 				"id" : "simple_drt",
 				"template" : "A vehicle travels a certain distance in a certain amount of time at a certain speed.",
 				"example" : "Bill Less drove from Boston to Cleveland, a distance of 624 miles, in the time of 12 hours. Find his rate of driving."
 			},
 			{
-				"name" : "Overtake",
+				"name" : "Motion - Overtake",
 				"id" : "overtake",
 				"template" : "One vehicle starts and is followed later by a second vehicle that travels over the same route at a faster rate.",
 				"example" : "A train leaves a station and travels east at 72 km/h. Three hours later a second train leaves on a parallel track and travels east at 120 km/h. How long will it take to overtake the first train?"
 			},
 			{
-				"name" : " Opposite direction ",
+				"name" : "Motion - Opposite direction",
 				"id" : "opposite_direction ",
 				"template" : "Two vehicles leave the same point traveling in opposite directions.",
 				"example" : "Two trains leave the same station at the same time. They travel in opposite directions. One train travels 64 km/h and the other 104 km/h. In how many hours will they be 1008 km apart?"
 			},
 			{
-				"name" : "Round trip",
-				"id" : "round_trip",
+				"name" : "Motion - Round trip",
+				"id" : "motion_round_trip",
 				"template" : " = A traveler (or vehicle) travels from point A to point B and returns.",
 				"example" : "George rode out of town on the bus at an average speed of 20 miles per hour and walked back at an average speed of 3 miles per hour. How far did he go if the entire trip took six hours?"
 			},
 			{
-				"name" : "Closure 1",
+				"name" : "Motion - Closure 1",
 				"id" : "closure_1",
 				"template" : "Two vehicles start at different points traveling towards one another.",
 				"example" : "Two cyclists start at the same time from towns 36 miles apart. The cyclists move toward each other; one travels at 4 mph and the other at 8 mph. How long will it take for them to meet?"
 			},
 			{
-				"name" : "Speed change 1",
+				"name" : "Motion - Speed change 1",
 				"id" : "speed_change_1",
 				"template" : "A vehicle travels at a certain rate for the first leg of a trip and then changes to another rate for the remainder of the trip.",
 				"example" : "G. Otrotrot jogs and walks to school each day. He averages 4 km/h walking and 8 km/h jogging. The distance from home to school is 6 km and he makes the trip in I hour. How far does he jog in a trip?"
-			}
-		]
-	},
-	{
-		"schemaClass" : "Current",
-		"subClasses" : [
+			},
 			{
-				"name" : "Total time 1",
-				"id" : "total_time_1",
+				"name" : "Current - Total time 1",
+				"id" : "current_total_time_1",
 				"template" : "A boat travels a certain distance with the current and a certain distance against the current in a total time.",
 				"example" : "The current in a stream moves at a speed of 4 km/h. A boat travels 4 km upstream and 12 km downstream in a total time of 2 hours. What is the speed of the boat in still water?"
 			},
 			{
-				"name" : "Round trip 1",
-				"id" : "round_trip_1",
+				"name" : "Current - Round trip 1",
+				"id" : "current_round_trip_1",
 				"template" : "A boat travels a certain distance with the current and a certain distance against the current in a total time.",
 				"example" : "The current in a stream moves at a speed of 4 km/h. A boat travels 4 km upstream and 12 km downstream in a total time of 2 hours. What is the speed of the boat in still water?"
 			},
 			{
-				"name" : "Round trip 2",
-				"id" : "round_trip_2",
+				"name" : "Current - Round trip 2",
+				"id" : "current_round_trip_2",
 				"template" : "A boat travels with the current in a certain time and returns in a certain time against the current.",
 				"example" : "Fly High Airlines flies from Po dunk to Swampville in 5 hours with a tailwind. The return trip, against the same wind, takes 6 hours. Podunk is about 5550 km from Swampville. Find the speed of the plane and the velocity of the wind."
 			}
 		]
 	},
 	{
-		"schemaClass": "Unit cost",
+		"schemaClass": "Unit cost & Interest",
 		"subClasses" : [
 			{
 				"name" : "Cost Unit Total",
@@ -89,29 +125,7 @@
 				"id" : "relative_number_given",
 				"template" : "In a collection of two types of coins, the number of one type is related to the number of the other type and the collection is worth a certain total amount.",
 				"example" : "Ken's coin collections contains·7 more dimes than nickels. In all, the collection amounts to $3.25. How many of each coin does he have?"
-			}
-		]
-	},
-	{
-		"schemaClass" : "Dry mixture",
-		"subClasses" : [
-			{
-				"name" : "Two absolute amounts",
-				"id" : "two_absolute_amounts",
-				"template" : "Some amount of one item with a certain unit cost is mixed with some amount of another item with a certain unit cost to yield a total amount with a certain unit cost; individual",
-				"example" : "Jean worked 5 hours. She earned a total of $1 S. How much does she earn each hour?"
-			},
-			{
-				"name" : "Two relative amounts",
-				"id" : "Two_relative_amounts",
-				"template" : "Some amount of one item with a certain unit cost is mixed with some amount of another item with a certain unit cost to yield a total amount with a certain total cost, relative amounts are known.",
-				"example" : "Pedro wants to mix candy selling at $2.20 per kg with another selling at $2040 per kg. He wants to make an $11.60 gift box. The number of kg at $2.20 per kg is 1 less than the number of kg at $2.40 per kg. Find the number of kg of each."
-			}
-		]
-	},
-	{
-		"schemaClass" : "Interest",
-		"subClasses" : [
+			},	
 			{
 				"name" : "Simple interest and time",
 				"id" : "simple_interest_time",
@@ -125,16 +139,45 @@
 				"example" : "Suppose $750 is invested at 5% compounded annually. What amount will be on the account at the end of two years?"
 			},
 			{
-				"name" : "Two absolute amounts",
-				"id" : "two_absolute_amounts",
+				"name" : "Interest - Two absolute amounts",
+				"id" : "interest_two_absolute_amounts",
 				"template" : "A certain amount of money is split into two parts with one part invested at one rate and the other part invested at another interest rate.",
 				"example" : "Part of $2000 is invested at 7.5% annual interest. The rest is invested at 6%. Last year's interest was $136.50. How much money was invested at each rate?"
 			},
 			{
-				"name" : "Two relative amounts",
-				"id" : "two_relative_amounts",
+				"name" : "Interest - Two relative amounts",
+				"id" : "interest_two_relative_amounts",
 				"template" : "A certain amount of money is invested at one rate and another amount is invested at another rate.",
 				"example" : "Delaine Jones invested a certain amount of money at 6% annual interest and $2000 more than that amount at 8% annual interest. Last year she received $580 in interest. How much did she invest at each rate?"
+			}
+		]
+	},
+	{
+		"schemaClass" : "Mixtures",
+		"subClasses" : [
+			{
+				"name" : "Dry - Two absolute amounts",
+				"id" : "dry_two_absolute_amounts",
+				"template" : "Some amount of one item with a certain unit cost is mixed with some amount of another item with a certain unit cost to yield a total amount with a certain unit cost; individual",
+				"example" : "Jean worked 5 hours. She earned a total of $1 S. How much does she earn each hour?"
+			},
+			{
+				"name" : "Dry - Two relative amounts",
+				"id" : "two_relative_amounts",
+				"template" : "Some amount of one item with a certain unit cost is mixed with some amount of another item with a certain unit cost to yield a total amount with a certain total cost, relative amounts are known.",
+				"example" : "Pedro wants to mix candy selling at $2.20 per kg with another selling at $2040 per kg. He wants to make an $11.60 gift box. The number of kg at $2.20 per kg is 1 less than the number of kg at $2.40 per kg. Find the number of kg of each."
+			},
+			{
+				"name" : "Wet - Add to given",
+				"id" : "add_to_given",
+				"template" : "Given a certain amount of one solution, some amount of another solution is added to yield a total amount of a new solution.",
+				"example" : "A chemist has 3:1 of a 5% acid solution. How many liters of a 20% solution must be added to make a mixture which is 10% acid?"
+			},
+			{
+				"name" : "Wet - Two absolute amounts",
+				"id" : "wet_two_absolute_amounts",
+				"template" : "Some amount of one solution is mixed with some amount of a second solution to yield a total amount of a new solution.",
+				"example" : "Dried apricots are 5% protein and dried prunes are 2% protein. How much of each type of fruit should be used to make a 100-gram mixture that is 3% protein?"
 			}
 		]
 	},
@@ -174,94 +217,55 @@
 		]
 	},
 	{
-		"schemaClass" : "Direct variation",
+		"schemaClass" : "Variation",
 		"subClasses" : [
 			{
-				"name" : "Miscellaneous",
+				"name" : "Direct - Miscellaneous",
 				"id" : "miscellaneous",
 				"template" : "If a certain amount corresponds to a certain number of units, then a different amount will correspond to a different number of units.",
 				"example" : "If a machine can make 1000 bolts in 2 hours, working at the same rate how many can it make in 5 hours?"
 			},
 			{
-				"name" : "Unit cost",
+				"name" : "Direct - Unit cost",
 				"id" : "unit_cost",
 				"template" : "If a certain number of units cost a certain total amount, then a different number of units cost a different total amount.",
 				"example" : "Twelve slices of pizza cost $6. How much would eight slices cost?"
 			},
 			{
-				"name" : "Travel",
+				"name" : "Direct - Travel",
 				"id" : "travel",
 				"template" : "If a certain distance can be covered in a certain number of days (or using a certain amount of gas), then a different distance can be covered in a different number of days (or using a different amount of gas).",
 				"example" : "Maria traveled 700 kilometers in 5 days. At this rate how far would she travel in 24 days?"
 			},
 			{
-				"name" : "Map scale",
+				"name" : "Direct - Map scale",
 				"id" : "map_scale",
 				"template" : "If a certain length on a map corresponds to a certain actual distance, then a different length on the map corresponds to another distance.",
 				"example" : "If 5 em on a map represent 400 kilometers, what distance do 16 em represent?"
-			}
-		]
-	},
-	{
-		"schemaClass" : "Inverse variation",
-		"subClasses": [
+			},
 			{
-				"name" : "Pressure volume",
+				"name" : "Inverse - Pressure volume",
 				"id" : "pressure_volume",
 				"template" : "The volume of gas under a certain pressure changes to a different volume under a different pressure.",
 				"example" : "The volume of gas varies inversely with the pressure upon it. The volume of a gas is 200 cm^2 under a pressure of 32 kg/cm^2 . What will be its volume under a pressure of 40 kg/cm^2"
 			},
 			{
-				"name" : "Physics",
+				"name" : "Inverse - Physics",
 				"id" : "physics",
 				"template" : "A rate that produces a certain amount is changed to a different rate that produces a different amount.",
 				"example" : "The current in an electrical conductor varies inversely with the resistance of the conductor. The current is 2 amps when the resistance is 960 ohms. What is the current when the resistance is 540 ohms?"
 			},
 			{
-				"name" : "Motion",
+				"name" : "Inverse - Motion",
 				"id" : "motion",
 				"template" : "If it takes a certain amount of time to travel a distance at a certain rate, how long will it take to cover the same distance at a different rate?",
 				"example" : "The time to drive a certain distance varies inversely with the speed of the vehicle. Mary Bronson drives 47 mph for 4 hours. How long would it take her to make the same trip at 55 mph?"
 			},
 			{
-				"name" : "Work",
+				"name" : "Inverse - Work",
 				"id" : "work",
 				"template" : "If it takes a certain number of workers a certain amount of time to do a job, how long would it take a different number of workers?",
 				"example" : "If it takes 4 hours for 9 cooks to prepare a school lunch, how long would it take 8 cooks to prepare the lunch?"
-			}
-		]
-	},
-	{
-		"schemaClass" : "Wet mixture",
-		"subClasses" : [
-			{
-				"name" : "Add to given",
-				"id" : "add_to_given",
-				"template" : "Given a certain amount of one solution, some amount of another solution is added to yield a total amount of a new solution.",
-				"example" : "A chemist has 3:1 of a 5% acid solution. How many liters of a 20% solution must be added to make a mixture which is 10% acid?"
-			},
-			{
-				"name" : "Two absolute amounts",
-				"id" : "two_absolute_amounts",
-				"template" : "Some amount of one solution is mixed with some amount of a second solution to yield a total amount of a new solution.",
-				"example" : "Dried apricots are 5% protein and dried prunes are 2% protein. How much of each type of fruit should be used to make a 100-gram mixture that is 3% protein?"
-			}
-		]
-	},
-	{
-		"schemaClass" : "Age",
-		"subClasses" : [
-			{
-				"name" : "Relative now then",
-				"id" : "relative_now_then",
-				"template" : "Relative ages for two people now are compared to their relative ages at some other time.",
-				"example" : "Ann Teak is twice as old as her son. Ten years ago Ann was three times as old as her son. What are their present ages?"
-			},
-			{
-				"name" : "Absolute now then",
-				"id" : "absolute_now_then",
-				"template" : "Absolute ages for two people now are compared to their relative ages at some other time.",
-				"example" : "A man is now 40 years old and his son is 14 years old. A number of years from now the father will be twice as old as his son. What is this number of years?"
 			}
 		]
 	},
@@ -298,63 +302,34 @@
 		"schemaClass" : "Others",
 		"subClasses": [
 			{
-				"name" : "Fulcrum:Two weights absolute",
+				"name" : "Fulcrum - Two weights absolute",
 				"id" : "two_weights_absolute",
 				"template" : "One object is positioned a certain distance from a fulcrum such that it is balanced with another object that is positioned a certain distance on the other side.",
 				"example" : "Laurie weighs 60 kg and is sitting 165 cm from the fulcrum of a seesaw. Bill weighs 55 kg. How far from the fulcrum must Bill sit to balance the seesaw?"
 			},
 			{
-				"name" : "Part:Two piece relative",
+				"name" : "Parts - Two piece relative",
 				"id" : "two_piece_relative",
 				"template" : "A certain object (or amount) is broken into two parts.",
 				"example" : "An 8-meter rope is cut into two pieces. One piece is 3 meters longer than the other. How long are the pieces?"
 			},
 			{
-				"name" : "Progression:Increment decrement",
+				"name" : "Progression - Increment decrement",
 				"id" : "increment_decrement",
 				"template" : "A certain number is incremented by a constant and added to total, recursively.",
 				"example" : "Joan saves 1 dime the 1st day, 2 dimes the 2nd day, 3 dimes the 3rd day, and so on. How much money will she have saved at the end of 30 days?"
-			}
-		]
-	},
-	{
-		"schemaClass" : "Generics",
-		"subClasses": [
-			{
-				"name" : "Linear transfer",
-				"id" : "linear_transfer",
-				"template" : "An amount increases/decays at a constant value.",
-				"example" : "The perimeter of an area increases by 5 hectares every year. What is the perimeter after 4 years?"
 			},
 			{
-				"name" : "Exponential transfer",
-				"id" : "exponential_transfer",
-				"template" : "An amount increases/decays at a certain rate.",
-				"example" : "A certain element has a half-life of 2 years. If there is 60 pounds of the material, how much time will it take until there is less than one pound?"
+				"name" : "Age - Relative now then",
+				"id" : "relative_now_then",
+				"template" : "Relative ages for two people now are compared to their relative ages at some other time.",
+				"example" : "Ann Teak is twice as old as her son. Ten years ago Ann was three times as old as her son. What are their present ages?"
 			},
 			{
-				"name" : "Goal transfer",
-				"id" : "goal_transfer",
-				"template" : "An amount increases/decays at a rate which is proportional to difference between two quantities out of which atleast one of them is not a source or destination.",
-				"example" : "The velocity of a pendulum (point mass m and mass-less thread length l) is inversely proporitonal by a factor 'k', to the difference of distance of its current position and the equilibrium position. If it is taken to a height h and left then find the time it takes to come back to its original position?"
-			},
-			{
-				"name" : "Equilibrating",
-				"id" : "equilibrating",
-				"template" : "An amount increases/decays at a rate which is proportional to difference between the source and the destination quantities.",
-				"example" : "Water flows through a porus membrane by factor of -0.3 times the difference of density of salt at both the places. How much time will it take to reach the equilibrium condition?"
-			},
-			{
-				"name" : "Accelerating transfer",
-				"id" : "accelerating_transfer",
-				"template" : "An amount increases/decays at a rate which increases or decreases by a constant amount every time.",
-				"example" : "A car starts 2m/sec and has an accelerationg which increases by 0.5m/sec^2 starting from 0 at time = 0 sec. What will be the speed of the vehicle after 10 seconeds?"
-			},
-			{
-				"name" : "Epidemic transfer",
-				"id" : "epidemic_transfer",
-				"template" : "An amount increases/decays at a rate, which is the product of the number of meetings times the probability that a meeting will have a both a source and a destination object in it.",
-				"example" : ""
+				"name" : "Age - Absolute now then",
+				"id" : "absolute_now_then",
+				"template" : "Absolute ages for two people now are compared to their relative ages at some other time.",
+				"example" : "A man is now 40 years old and his son is 14 years old. A number of years from now the father will be twice as old as his son. What is this number of years?"
 			}
 		]
 	}
