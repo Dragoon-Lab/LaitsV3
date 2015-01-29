@@ -1,21 +1,21 @@
 [
 	{
-		"schemaClass" : "Generics",
+		"schemaClass" : "Generic models of dynamic systems",
 		"subClasses": [
 			{
-				"name" : "Linear transfer",
+				"name" : "Linear",
 				"id" : "linear_transfer",
 				"template" : "An amount increases/decays at a constant value.",
 				"example" : "The perimeter of an area increases by 5 hectares every year. What is the perimeter after 4 years?"
 			},
 			{
-				"name" : "Exponential transfer",
+				"name" : "Exponential",
 				"id" : "exponential_transfer",
 				"template" : "An amount increases/decays at a certain rate.",
 				"example" : "A certain element has a half-life of 2 years. If there is 60 pounds of the material, how much time will it take until there is less than one pound?"
 			},
 			{
-				"name" : "Goal transfer",
+				"name" : "Goal-seeking",
 				"id" : "goal_transfer",
 				"template" : "An amount increases/decays at a rate which is proportional to difference between two quantities out of which atleast one of them is not a source or destination.",
 				"example" : "The velocity of a pendulum (point mass m and mass-less thread length l) is inversely proporitonal by a factor 'k', to the difference of distance of its current position and the equilibrium position. If it is taken to a height h and left then find the time it takes to come back to its original position?"
@@ -27,13 +27,13 @@
 				"example" : "Water flows through a porus membrane by factor of -0.3 times the difference of density of salt at both the places. How much time will it take to reach the equilibrium condition?"
 			},
 			{
-				"name" : "Accelerating transfer",
+				"name" : "Accelerating",
 				"id" : "accelerating_transfer",
 				"template" : "An amount increases/decays at a rate which increases or decreases by a constant amount every time.",
 				"example" : "A car starts 2m/sec and has an accelerationg which increases by 0.5m/sec^2 starting from 0 at time = 0 sec. What will be the speed of the vehicle after 10 seconeds?"
 			},
 			{
-				"name" : "Epidemic transfer",
+				"name" : "Epidemic",
 				"id" : "epidemic_transfer",
 				"template" : "An amount increases/decays at a rate, which is the product of the number of meetings times the probability that a meeting will have a both a source and a destination object in it.",
 				"example" : ""

@@ -91,19 +91,19 @@ define([
 			var obj = { 
 				u: this._session.params.u,
 				x: this._session.sessionId,
-				s: schema,
+				s: schemaID,
 				sec: this._session.params.s
 			};
 
-			return xhr.post(this._path + "get_schema_application.php", function(){
-				data: obj
+			return xhr.post(this._path + "get_schema_application.php", {
+				data: obj,
 				sync: true
 			}).then(function(reply){
 				console.log("schema value retrieved "+reply);
 				return reply;
 			}, function(err){
 				console.error("schema value not received ", err);
-				throw error;
+				throw err;
 			});
 		}
 	});

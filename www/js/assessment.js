@@ -1,40 +1,56 @@
 define([
-	"dojo/define", 
+	"dojo/_base/declare", 
 	"dojo/_base/array",
-	"dojo/json"
-], function(define, array, json){
-	return define(null, {
+	"dojo/json",
+	"./schemas-load-save"
+], function(declare, array, json, schemaSession){
+	return declare(null, {
 	
-	constructor: function(/* object */ model, /* object */ schema_session){
+	constructor: function(/* object */ model, /* object */ session){
 		this._model = model;
-		this._session = schema_session;
+		this._session = new schemaSession(session);
 		this.initSchema();
 	},
 
 	initSchema: function(){
 		this._schemas = this._model.student.getSchemas();
 		array.forEach(this._schemas, function(schema){
+			var resultJSON;
 			this._session.getSchemaApplication(schema.ID).then(function(result){
-				var resultJSON = json.parse(result);
-				schema.competence = resultJSON.competence; 
+				resultJSON = result;
 			});
+			resultJSON = json.parse(resultJSON);
+			if(resultJSON.competence){
+				schema.competence = resultJSON.competence;
+			}
 		}, this);
 	},
 
 	updateSchema: function(/* object */ time, /* object */ errors){
-		array.forEach(this._schemas, function(schema){
-			if(schema.nodes.indexOf(error.node) >= 0){
-				schema.competence.errors += error.errors;
-				schema.competence.total += error.total;
-				//schema.competence.timeSpent += error.time
-			}
-		}, this);
+		if(time.given == ""){
+			time.given = this._model.student.getDescriptionID(time.node);
+		}
 
-		array.forEach(this._schemas, function(schema){
-			if(schema.nodes.indexOf(time.node) >= 0){
-				schema.competence.timeSpent += time.difference;
-			}
-		}, this);
+		if(errors.given == ""){
+			errors.given = this._model.student.getDescriptionID(errors.node);
+		}
+		if(errors.given){
+			array.forEach(this._schemas, function(schema){
+				if(schema.nodes.indexOf(errors.given) >= 0){
+					schema.competence.errors += errors.errors;
+					schema.competence.total += errors.total;
+					//schema.competence.timeSpent += error.time
+				}
+			}, this);
+		}
+
+		if(time.given){
+			array.forEach(this._schemas, function(schema){
+				if(schema.nodes.indexOf(time.given) >= 0){
+					schema.competence.timeSpent += time.difference;
+				}
+			}, this);
+		}
 	},
 	
 	saveSchema: function(){
@@ -47,9 +63,9 @@ define([
 	dummy: function(){
 		array.forEach(this._schemas, function(schema){
 			var competence = 1 - (schema.competence.errors/schema.competence.total);
-			schema.competence.values.push({dummy: competence});
+			schema.competence.values.dummy = competence;
 		}, this);
-	},
+	}
 		
 	});	
 });

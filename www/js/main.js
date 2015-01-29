@@ -45,11 +45,13 @@ define([
 	"./state",
     "./typechecker",
 	"./createSlides",
-	"./lessons-learned"
+	"./lessons-learned",
+	"./schemas-author",
 ], function(
 		array, lang, dom, geometry, style, on, aspect, ioQuery, ready, registry, toolTip,
 		menu, loadSave, model,
-		Graph, Table, controlStudent, controlAuthor, drawmodel, logging, equation, description, State, typechecker, slides, lessonsLearned
+		Graph, Table, controlStudent, controlAuthor, drawmodel, logging, equation, 
+		description, State, typechecker, slides, lessonsLearned, schemaAuthor
 ){
 	// Summary: 
 	//			Menu controller
@@ -101,6 +103,7 @@ define([
 			controllerObject._PM.setLogging(session);  // Set up direct logging in PM
 		}
 		controllerObject.setLogging(session); // set up direct logging in controller
+		controllerObject.setAssessment(session); //set up assessment for student.
 		equation.setLogging(session);
 		
 		/*
@@ -331,6 +334,8 @@ define([
                 db.set("disabled", false);
 				db = registry.byId("previewButton");
 				db.set("disabled", false);
+				db = registry.byId("schemaButton");
+				db.set("disabled", false);
 
 				// Description button wiring
 				menu.add("descButton", function(){
@@ -351,6 +356,16 @@ define([
 					url=url+"&l=false";
 					window.open(url.replace("m=AUTHOR","m=STUDENT"),"newwindow");
 				});
+
+				menu.add("schemaButton", "click", function(){
+					registry.byId("schemaAuthorBox").show();
+				});
+
+				var schema = new schemaAuthor(givenModel, session);
+				on(registry.byId("schemaButton"), "click", function(){
+					schema.showSchemaWindow();
+				});
+
 
                 // Rename button wiring
                 menu.add("saveButton", function(){
@@ -403,13 +418,13 @@ define([
                 aspect.after(registry.byId('authorSaveDialog'), "hide", function(){
                     console.log("Rename and Save Problem edits");
                     // Save problem
-		   var problemName = registry.byId("authorSaveProblem").value;
-		   var groupName = registry.byId("authorSaveGroup").value;
-		   if(problemName&&problemName=='' || groupName&&groupName==''){
-			alert('Missing input ');
-			return; 
-		    }
-		   session.saveAsProblem(givenModel.model,problemName,groupName);	
+					var problemName = registry.byId("authorSaveProblem").value;
+					var groupName = registry.byId("authorSaveGroup").value;
+					if(problemName&&problemName=='' || groupName&&groupName==''){
+						alert('Missing input ');
+						return; 
+					}
+					session.saveAsProblem(givenModel.model,problemName,groupName);	
                 });
                 on(registry.byId("saveCloseButton"), "click", function(){
                     registry.byId("authorSaveDialog").hide();

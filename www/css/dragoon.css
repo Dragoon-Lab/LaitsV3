@@ -177,6 +177,14 @@ height:385px;
 	width:300px;
 }
 
+.nodesDropdown{
+	margin-bottom: 5px;
+}
+
+input[type=radio]{
+	opacity:1 !important;
+}
+
 #slidesBox{
 	font:10pt Arial,Myriad,Tahoma,Verdana,sans-serif !important;
 	min-width: 600px;
