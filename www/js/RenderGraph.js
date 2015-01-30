@@ -114,7 +114,7 @@ define([
 			//create tab container on left side for graph and table
 			this.dialogContent += "<div data-dojo-type='dijit/layout/TabContainer' style='overflow:visible; height:700px; width:501px;'>"
 			//create tab for graph and fill it
-			this.dialogContent += "<div data-dojo-type='dijit/layout/ContentPane' style='overflow:auto; ' data-dojo-props='title:\"Graph\"'>";
+			this.dialogContent += "<div id='GraphTab' data-dojo-type='dijit/layout/ContentPane' style='overflow:auto; ' data-dojo-props='title:\"Graph\"'>";
 			array.forEach(this.active.plotVariables, function(id){
 				var show = this.model.active.getType(id) == "accumulator";
 				var checked = show ? " checked='checked'" : "";
@@ -126,7 +126,7 @@ define([
 			}, this);
 			//create tab for table
 			if(this.buttonClicked == "graph")
-				this.dialogContent += "</div><div data-dojo-type='dijit/layout/ContentPane' style='overflow:visible' data-dojo-props='title:\"Table\"'>"
+				this.dialogContent += "</div><div id='TableTab' data-dojo-type='dijit/layout/ContentPane' style='overflow:visible' data-dojo-props='title:\"Table\"'>"
 			if(this.buttonClicked == "table")
 				this.dialogContent += "</div><div data-dojo-type='dijit/layout/ContentPane' style='overflow:visible' selected = true data-dojo-props='title:\"Table\"'>"
 			//Render table here
@@ -173,9 +173,9 @@ define([
 			var count = -1;
 			while(graphTab == null){
 				count++;
-				graphTab = dom.byId("dijit_layout_TabContainer_" + count + "_tablist_dijit_layout_ContentPane_" + (1 + count*4));
+				graphTab = dom.byId("GraphTab");
 			}
-			var tableTab = dom.byId("dijit_layout_TabContainer_" + count + "_tablist_dijit_layout_ContentPane_" + (2 + count*4));
+			var tableTab = dom.byId("TableTab");
 			graphTab.addEventListener("click", function(){ 
 				console.log("graph tab clicked");
 				logger.session.log('ui-action', {
