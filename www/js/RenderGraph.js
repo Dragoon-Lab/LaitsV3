@@ -101,7 +101,7 @@ define([
 					// givenID should always exist.
 					console.assert(givenID, "Node '" + id + "' has no corresponding given node");
 					var givenNode = this.model.given.getNode(givenID); 
-					return givenNode && ((!givenNode.genus  || node.genus === "required")? givenID : null);
+					return givenNode && ((!givenNode.genus  || givenNode.genus === "required")? givenID : null);
 				}, this);
 				// Calculate solutions
 				var givenSolution = this.findSolution(false, this.given.plotVariables);
@@ -128,7 +128,7 @@ define([
 			if(this.buttonClicked == "graph")
 				this.dialogContent += "</div><div id='TableTab' data-dojo-type='dijit/layout/ContentPane' style='overflow:visible' data-dojo-props='title:\"Table\"'>"
 			if(this.buttonClicked == "table")
-				this.dialogContent += "</div><div data-dojo-type='dijit/layout/ContentPane' style='overflow:visible' selected = true data-dojo-props='title:\"Table\"'>"
+				this.dialogContent += "</div><div id='TableTab' data-dojo-type='dijit/layout/ContentPane' style='overflow:visible' selected = true data-dojo-props='title:\"Table\"'>"
 			//Render table here
 			this.dialogContent += "<div id='table' stlye='overflow:visible'></div>";
 
