@@ -440,7 +440,7 @@ exports.getKindOfQuantity = function(client){
 
 exports.setKindOfQuantity = function(client, type){
     await(client.click('#selectKind', defer()));
-    await(client.click('#selectKind', defer()));
+    wait(100);
     await(client.waitForVisible('#selectKind_menu', defer()));
     var number = findDropDownByName(client, type);
     if(number != null)
