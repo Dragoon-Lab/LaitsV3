@@ -148,63 +148,66 @@ define([
             descShareBit.on("Change", lang.hitch(this, function (checked) {
                 //when change event is fired, check if the author wants to share the problem or un share,
                 //if he tries to share , then verify completeness and root node existence
-                if (checked) {
-                    errordialogWidget = registry.byId("solution");
-                    //check if there are any nodes at all
-                    var nodes_exist = this.givenModel.active.getNodes().length;
-                    if (nodes_exist) {
-                        console.log("nodes exist");
-                        var newModel = this.givenModel;
-                        var check_comp = true;
-                        array.forEach(this.givenModel.active.getNodes(), function (node) {
-                            if (!newModel.active.isComplete(node.ID,true)) {
-                                errordialogWidget.set("content", "<div>please complete the model before you share</div>");
+                if(document.getElementById("authorDescDialog").style.display !== "none")
+                {
+                    if (checked) {
+                        errordialogWidget = registry.byId("solution");
+                        //check if there are any nodes at all
+                        var nodes_exist = this.givenModel.active.getNodes().length;
+                        if (nodes_exist) {
+                            console.log("nodes exist");
+                            var newModel = this.givenModel;
+                            var check_comp = true;
+                            array.forEach(this.givenModel.active.getNodes(), function (node) {
+                                if (!newModel.active.isComplete(node.ID,true)) {
+                                    errordialogWidget.set("content", "<div>please complete the model before you share</div>");
+                                    errordialogWidget.show();
+                                    newModel.setShare(false);
+                                    descShareBit.set("checked", false);
+                                    check_comp = false;
+                                    console.log("problem is incomplete");
+                                    return;
+                                }
+                                console.log("next node");
+                            });
+
+                            console.log("return value", check_comp);
+                            //if the check_comp flag is false, that is any node is incomplete just return
+                            if (!check_comp) return;
+                            //if not continue to check for root node
+                            //only functions and accumalators are root nodes
+                            console.log("problem is complete checking for root node");
+                            var check_parent=false;
+                            array.forEach(newModel.active.getNodes(), function (node) {
+                                console.log("new model type is", newModel.active.getType(node.ID));
+                                if(newModel.active.getNode(node.ID).parentNode){
+                                    check_parent=true;
+                                    console.log("problem has a root node");
+                                    return;
+                                }
+                            });
+
+                            if(check_parent)
+                                newModel.setShare(true);
+                            else {
+                                console.log("No Root");
+                                errordialogWidget.set("content", "<div>Please make sure there is a root node</div>");
                                 errordialogWidget.show();
                                 newModel.setShare(false);
                                 descShareBit.set("checked", false);
-                                check_comp = false;
-                                console.log("problem is incomplete");
-                                return;
                             }
-                            console.log("next node");
-                        });
-
-                        console.log("return value", check_comp);
-                        //if the check_comp flag is false, that is any node is incomplete just return
-                        if (!check_comp) return;
-                        //if not continue to check for root node
-                        //only functions and accumalators are root nodes
-                        console.log("problem is complete checking for root node");
-                        var check_parent=false;
-                        array.forEach(newModel.active.getNodes(), function (node) {
-                            console.log("new model type is", newModel.active.getType(node.ID));
-                            if(newModel.active.getNode(node.ID).parentNode){
-                                check_parent=true;
-                                console.log("problem has a root node");
-                                return;
-                            }
-                        });
-
-                        if(check_parent)
-                            newModel.setShare(true);
-                        else {
-                            console.log("No Root");
-                            errordialogWidget.set("content", "<div>Please make sure there is a root node</div>");
+                        }
+                        else{
+                            console.log("Empty problem");
+                            errordialogWidget.set("content", "<div>cannot share an empty problem</div>");
                             errordialogWidget.show();
-                            newModel.setShare(false);
+                            this.givenModel.setShare(false);
                             descShareBit.set("checked", false);
                         }
                     }
-                    else{
-                        console.log("Empty problem");
-                        errordialogWidget.set("content", "<div>cannot share an empty problem</div>");
-                        errordialogWidget.show();
+                    else{ // the author wants to unshare, no matter about conditions just set share bit to false
                         this.givenModel.setShare(false);
-                        descShareBit.set("checked", false);
                     }
-                }
-                else{ // the author wants to unshare, no matter about conditions just set share bit to false
-                    this.givenModel.setShare(false);
                 }
             }));
         },
