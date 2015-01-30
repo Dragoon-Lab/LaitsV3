@@ -17,7 +17,7 @@
             "",
             ""
         ],
-        "lessonsLearned": "",
+        "lessonsLearned": "This problem is an instance of the generic model, “proportional to destination.”  The change process is the birth of Giardia.  This change adds to the number of Giardia in the tank, so the destination of the change is “Number of Giardia per liter of water in the tank.” The amount of change per unit time is the “Number of Giardia born per liter each hour.”  It is proportional to the value of the destination, which is why this is the right generic model to use.  The proportionality is a constant, “Birth rate.”",
         "givenModelNodes": [
             {
                 "ID": "id1",
