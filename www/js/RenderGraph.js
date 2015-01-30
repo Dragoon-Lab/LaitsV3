@@ -110,7 +110,7 @@ define([
 
 
 			//create content pane for displaying graph/table and sliders
-			this.dialogContent += "<div data-dojo-type= 'dijit/layout/ContentPane' style='overflow:visible; width:50%; float:left; height: 700px; background-color: #FFFFFF'>"
+			this.dialogContent += "<div data-dojo-type= 'dijit/layout/ContentPane' style='overflow:visible; width:55%; float:left; height: 700px; background-color: #FFFFFF'>"
 			//create tab container on left side for graph and table
 			this.dialogContent += "<div data-dojo-type='dijit/layout/TabContainer' style='overflow:visible; height:700px; width:501px;'>"
 			//create tab for graph and fill it
