@@ -136,10 +136,11 @@ define([
 			var id = event.target.id;
 
 			var widget = dom.byId(id);
-			if(widget.checked)
-				this.currentSchema.difficulty[name] = 1;
-			else
+			if(widget.checked){
 				this.currentSchema.difficulty[name] = 0;
+			} else {
+				this.currentSchema.difficulty[name] = 1;
+			}
 		},
 
 		handleNodes: function(event){

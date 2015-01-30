@@ -328,7 +328,6 @@ define([
 
 			// Reset equationText to be empty
 			this.structured.reset();
-			this.nodeCloseAssessment();
 
 			/* Erase messages
 			 Eventually, we probably want to save and restore
