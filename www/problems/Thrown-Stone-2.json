@@ -1,0 +1,98 @@
+{
+    "task": {
+        "taskName": "Throw Stone 2",
+        "time": {
+            "start": 0,
+            "end": 8,
+            "step": 0.5,
+            "units": "Seconds"
+        },
+        "properties": {
+            "phase": "Intro",
+            "type": "Construct"
+        },
+        "image": {
+            "URL": "images/Beachy_Head_and_Lighthouse.jpg"
+        },
+        "taskDescription": " A stone is thrown vertically upward with a velocity of 12.0 m/s from the edge of a cliff 162 m high. Graph its velocity and height from 0 seconds to 8 seconds. How much later does it reach the bottom of the cliff? What is its velocity just before hitting? What total distance did it travel? Because the stone is moving against gravity we will set acceleration due to gravity at -9.81 m/s^2. Choose coordinates so that the bottom of the cliff is at zero. ",
+        "givenModelNodes": [
+            {
+                "ID": "id1",
+                "inputs": [],
+                "position": {
+                    "x": 400,
+                    "y": 100
+                },
+                "attemptCount": {
+                    "description": 0,
+                    "type": 0,
+                    "initial": 0,
+                    "units": 0,
+                    "equation": 0
+                },
+                "status": {},
+                "name": "Acceleration",
+                "type": "parameter",
+                "parentNode": false,
+                "units": "",
+                "description": "The acceleration of the stone due to gravity",
+                "initial": -9.81
+            },
+            {
+                "ID": "id2",
+                "inputs": [
+                    {
+                        "ID": "id1"
+                    }
+                ],
+                "position": {
+                    "x": 400,
+                    "y": 100
+                },
+                "attemptCount": {
+                    "description": 0,
+                    "type": 0,
+                    "initial": 0,
+                    "units": 0,
+                    "equation": 0
+                },
+                "status": {},
+                "name": "Velocity",
+                "type": "accumulator",
+                "parentNode": false,
+                "units": "",
+                "description": "The velocity of the stone",
+                "initial": 12,
+                "equation": "id1"
+            },
+            {
+                "ID": "id3",
+                "inputs": [
+                    {
+                        "ID": "id2"
+                    }
+                ],
+                "position": {
+                    "x": 400,
+                    "y": 100
+                },
+                "attemptCount": {
+                    "description": 0,
+                    "type": 0,
+                    "initial": 0,
+                    "units": 0,
+                    "equation": 0
+                },
+                "status": {},
+                "name": "Height",
+                "type": "accumulator",
+                "parentNode": true,
+                "units": "",
+                "description": "The height of the stone",
+                "initial": 162,
+                "equation": "id2"
+            }
+        ],
+        "studentModelNodes": []
+    }
+}

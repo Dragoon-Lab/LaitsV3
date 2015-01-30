@@ -1,0 +1,86 @@
+{ 
+	"task":  {
+		"taskName":"zero set point homeostasis",
+		"time":{
+			"start":0,
+			"end":25,
+			"step":1,
+			"integrationMethod":"Eulers Method",
+			"units":"minutes"
+			},
+		"properties":{},
+		"image":{},
+		"taskDescription": [
+            "Zero Set Point Homeostasis",
+            "This homeostatic system consists of a single quantity whose value is being controlled by the system so that it stays near zero.  When the quantity is above zero, the system subtracts 10% of its value continually until the value reaches zero.  When the quantity is below zero, the system also subtracts 10% of its value until the value reaches zero.  However, subtracting a negative quantity is the same as adding a positive quantity, so we could rephrase that last sentences as, \"the system adds 10% of the absolute value of the quantity to its value, thus move the value upwards towards zero.\"  Your model should have three nodes:","","1.  An accumulator for the controlled quantity, whose initial value is zero.","","2.  A function for the change in the controlled quantity per unit of time (this problem uses minutes).","","3.  A parameter for the rate of convergence, that is, what proportion of the controlled quantity is subtracted at each time.","","Test your model by varying the initial value of the controlled quantity.",""],
+
+		"givenModelNodes":[
+			{
+				"ID":"id1",
+				"inputs":[{"ID":"id2","label":"-"}],
+				"position":{
+					"x":497,
+					"y":70
+					},
+				"attemptCount":{
+					"description":0,
+					"type":0,
+					"initial":0,
+					"units":0,
+					"equation":0,
+					"assistanceScore":0
+					},
+				"status":{},
+				"name":"controlled quantity",
+				"description":"The quantity (e.g., body temperature) being kept constant",
+				"type":"accumulator",
+				"initial":0,
+				"equation":"-id2"
+			},
+			{
+				"ID":"id2",
+				"inputs":[{"ID":"id1","label":""},{"ID":"id3","label":""}],
+				"position":{
+					"x":507,
+					"y":225
+				},
+				"attemptCount":{
+					"description":0,
+					"type":0,
+					"initial":0,
+					"units":0,
+					"equation":0,
+					"assistanceScore":0
+				},
+				"status":{},
+				"name":"change in quantity",
+				"description":"How much the controlled quantity changes per minute",
+				"type":"function",
+				"equation":"id1*id3"
+			},
+			{
+				"ID":"id3",
+				"inputs":[],
+				"position":{
+					"x":491.74517822265625,
+					"y":364.74517822265625
+				},
+				"attemptCount":{
+					"description":0,
+					"type":0,
+					"initial":0,
+					"units":0,
+					"equation":0,
+					"assistanceScore":0
+				},
+				"status":{},
+				"name":"rate of convergence",
+				"description":"The proportion of the difference remaining that is abolished each minute",
+				"type":"parameter",
+				"parentNode":false,
+				"initial":0.1
+			}
+		],
+		"studentModelNodes":[]
+	}
+}
