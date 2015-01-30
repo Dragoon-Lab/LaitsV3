@@ -211,6 +211,10 @@ input[type=radio]{
 	margin-left: 60px;
 }
 
+.schema #buttons{
+	margin-bottom: 10px;
+}
+
 .learning ul{
 	/*list-style-type: none;*/
     max-width: 500px;
