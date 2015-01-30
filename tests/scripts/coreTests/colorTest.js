@@ -38,14 +38,6 @@ describe("Test graph/table window:", function() {
             var initial = dtest.getNodeInitialValueColor(client);
             var units = dtest.getNodeUnitsColor(client);
             var expression = dtest.getNodeExpressionColor(client);
-            console.log(border);
-            console.log(borderStyle);
-            console.log(nodeFill);
-            console.log(description);
-            console.log(type);
-            console.log(initial);
-            console.log(units);
-            console.log(expression);
             dtest.nodeEditorDone(client);
             /*dtest.openEditorForNode(client, "population");
             var des = dtest.getNodeExpressionColor(client);
@@ -58,11 +50,6 @@ describe("Test graph/table window:", function() {
             var initial = dtest.getNodeInitialValueColor(client);
             var units = dtest.getNodeUnitsColor(client);
             var expression = dtest.getNodeExpressionColor(client);
-            console.log(description);
-            console.log(type);
-            console.log(initial);
-            console.log(units);
-            console.log(expression);
             dtest.nodeEditorDone(client);
         }));
         it("Test2", async(function(){
@@ -72,11 +59,6 @@ describe("Test graph/table window:", function() {
             var initial = dtest.getNodeInitialValueColor(client);
             var units = dtest.getNodeUnitsColor(client);
             var expression = dtest.getNodeExpressionColor(client);
-            console.log(description);
-            console.log(type);
-            console.log(initial);
-            console.log(units);
-            console.log(expression);
             dtest.nodeEditorDone(client);
         }));
     });
