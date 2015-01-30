@@ -97,8 +97,8 @@ describe("Test student mode:", function() {
         }));
     });
 
-    /*after(function(done) {
+    after(function(done) {
         client.end();
         done();
-    });*/
+    });
 });
