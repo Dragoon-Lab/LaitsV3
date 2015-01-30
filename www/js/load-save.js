@@ -60,13 +60,15 @@ define([
 
 		// The constructor creates a session and sets the sessionId
 		// It also sets the path.
-		params:{},	
+		params:{},
+		counter:null,
 	
 		constructor: function(/*object*/ params, /*string*/ path){
 			// Dragoon database requires that clientID be 50 characters.
 			this.sessionId = FNV1aHash(params.u+"_"+params.s) +
 				'_' + new Date().getTime();
 			this.params = params;
+			this.counter = 0;
 			console.log("New sessionId = ", this.sessionId);
 			this._startTime = (new Date()).getTime();
 			this.path = path || "";
@@ -161,7 +163,8 @@ define([
 					data: {
 						method: method,
 						message: json.toJson(p),
-						x: rsessionId?rsessionId:this.sessionId
+						x: rsessionId?rsessionId:this.sessionId,
+						id: this.counter++
 					}
 				}).then(function(reply){
 					console.log("---------- logging " + method + ': ', p, " OK, reply: ", reply);

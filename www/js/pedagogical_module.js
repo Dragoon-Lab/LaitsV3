@@ -455,7 +455,12 @@ define([
 			//		the node
 			//
 			// Tags: Private
-			var nodeType = this.model.student.getType(this.model.student.getNodeIDFor(givenNodeID));
+			var nodeType = "";
+			if(this.showCorrectAnswer){ //For Other modes get node type from given model
+			  	nodeType = this.model.given.getType(givenNodeID); 
+			}else{  //For EDITOR and TEST get node type from user selected answer
+				nodeType = this.model.student.getType(this.model.student.getNodeIDFor(givenNodeID));
+			}
 			var newPart = "equation";
 
 			switch(currentPart){
@@ -465,13 +470,14 @@ define([
 					newPart = "initial";
 				}else if(nodeType === "function"){
 					disable(obj, "initial", true);
-						newPart = "initial";
-				}else if(this.model.given.getUnits(givenNodeID)){
-					disable(obj, "units", false);
+						
+					if(this.model.given.getUnits(givenNodeID)){
+						disable(obj, "units", false);
 						newPart = "units";
-				}else{
-					disable(obj, "equation", false);
-					newPart = "equation";
+					}else{
+						disable(obj, "equation", false);
+						newPart = "equation";
+					}
 				}
 				break;
 			case "initial":
@@ -539,7 +545,7 @@ define([
 				case "description":
 					this.descriptionCounter++;
 
-					if(this.model.given.getGenus(answer)){
+					if(this.model.given.getGenus(answer) && this.model.given.getGenus(answer) != "required"){
 						array.forEach(this.model.given.getNodes(), function(extra){
 							if(answer === extra.ID && extra.genus && extra.genus != "allowed"){
 								interpretation = extra.genus;
