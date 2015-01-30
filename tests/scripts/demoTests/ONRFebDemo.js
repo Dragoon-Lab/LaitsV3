@@ -44,7 +44,7 @@ var dtest = require('../dtestlib.js');
 // import dragoon assertion library
 var atest = require('../assertTestLib.js');
 // import sync library
-var sync = require('synchronize');
+varnn sync = require('synchronize');
 // import wrapper for asynchronous functions
 var async = sync.asyncIt;
 
@@ -87,7 +87,7 @@ describe("Running through ONR Feb 2015 demo", function() {
             dtest.nodeEditorDone(client);
         }));
 
-        it("should open a function node", async(function(){
+        it("should open a parameter node not in the model", async(function(){
             dtest.openEditorForNode(client, "Giardia per liter of tank water");
             atest.checkNodeValues([["expectedDescription", "Number of Giardia per liter of water"],
                                     ["expectedNodeType", "Accumulator"],
@@ -97,25 +97,98 @@ describe("Running through ONR Feb 2015 demo", function() {
             dtest.nodeEditorDone(client);
         }));
 
-
-
-        it("The value of softwood choice should turn red", async(function(){
-            dtest.setNodeDescription(client, "The value of softwood in the market each year");
-            dtest.popupWindowPressOk(client);
-            atest.checkNodeValues([["expectedDescriptionColor", "red"]],dtest,client);
+        it("should save as simplified giardia", async(function(){
+            
         }));
 
-        it("The value of hardwood choice should turn yellow and correct itself", async(function(){
-            dtest.setNodeDescription(client, "The value of hardwood in the market each year");
-            dtest.popupWindowPressOk(client);
-            atest.checkNodeValues([["expectedDescriptionColor", "yellow"],
-                                   ["expectedDescription", "The number of trees in the forest each year"]]
-                                   ,dtest,client);
+        it("modify the description text", async(function(){
+            
+        }));
+
+        it("should delete all the nodes with no links", async(function(){
+            
+        }));
+
+        it("should move the nodes around", async(function(){
+            
+        }));
+
+        it("should change the name of the accumulator to population", async(function(){
+            
+        }));
+
+        it("should open in student mode and create a node", async(function(){
+            
+        }));
+        after(function(done) {
+            client.end();
+            done();
+        }));
+
+    });
+
+    describe("Demo slide 25 (student mode)", function(){
+        before(async(function (done) {
+            dtest.openProblem(client,[["problem","realgiardia"],["mode","COACHED"],
+                                      ["section","testing"],
+                                      ["group","jwauthor"],
+                                      ["logging","true"]]);
+        }));
+
+        it("Should create a node for the liters of water in tank and get TNS popup and red", async(function(){
+            // TODO: check values here
+        }));
+
+        it("Should select number of giardia per liter and turn green", async(function(){
+            // TODO: check values here
+        }));
+
+        it("Should select parameter, turn red", async(function(){
+            // TODO: check values here
+        }));
+
+        it("Should select function, turn yellow", async(function(){
+            // TODO: check values here
+        }));
+
+        it("Should enter initial value of 1.5 -> green", async(function(){
+            // TODO: check values here
+        }));
+
+        it("Should enter giardia births and check expression -> green", async(function(){
+            // TODO: check values here
+        }));
+
+        it("Should close node, create node for birth rate and get blue", async(function(){
+            // TODO: check values here
+        }));
+
+        it("Should click on births fill out type as function -> green ", async(function(){
+            // TODO: check values here
+        }));
+
+        after(function(done) {
+            client.end();
+            done();
         }));
     });
 
-    after(function(done) {
-        client.end();
-        done();
+ describe("Demo slide 29 (schem lib and reflective debriefing)", function(){
+        before(async(function (done) {
+            dtest.openProblem(client,[["problem","Proportional to destination"],["mode","COACHED"],
+                                      ["section","testing"],
+                                      ["group","jwauthor"],
+                                      ["logging","true"]]);
+        }));
+
+        it("Should create a node for the liters of water in tank and get TNS popup and red", async(function(){
+            // TODO: check values here
+        }));
+
+        after(function(done) {
+            client.end();
+            done();
+        }));
     });
+
 });
