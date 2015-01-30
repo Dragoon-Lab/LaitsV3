@@ -167,22 +167,29 @@ describe("Running through ONR Feb 2015 demo", function() {
             // TODO: check values here
         }));
 
+        // Break would go here, resumes at slide 29
+        
+        it("Should complete the function node successfully", async(function(){
+            // TODO: check values here
+        }));
+
+        it("Should complete the parameter node successfully", async(function(){
+            // TODO: check values here
+        }));
+
+
         after(function(done) {
             client.end();
             done();
         }));
     });
 
- describe("Demo slide 29 (schem lib and reflective debriefing)", function(){
+    describe("Demo slide 29 (schem lib and reflective debriefing)", function(){
         before(async(function (done) {
             dtest.openProblem(client,[["problem","Proportional to destination"],["mode","COACHED"],
                                       ["section","testing"],
                                       ["group","jwauthor"],
                                       ["logging","true"]]);
-        }));
-
-        it("Should create a node for the liters of water in tank and get TNS popup and red", async(function(){
-            // TODO: check values here
         }));
 
         after(function(done) {
