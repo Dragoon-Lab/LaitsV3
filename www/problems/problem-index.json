@@ -13,11 +13,11 @@
         },
 
         'Blood Glucose' : {
-            'Zero-set-point-homeostasis' : 'Zero set point homeostasis',
-            'Nonzero-set-point-homeostasis' : 'Nonzero set point homeostasis',
-            'Two-loop-homoestatis':'Two loop homoestatis',
-            'Simple-Blood-glucose homoestatis' : 'Simple Blood glucose homoestatis' ,
-            'Glucose-min-model' : 'Glucose min model'
+            'zero-set-point-homeostasis' : 'Zero set point homeostasis',
+            'nonzero-set-point-homeostasis' : 'Nonzero set point homeostasis',
+            'two-loop-homoestatis':'Two loop homoestatis',
+            'simple-Blood-glucose homoestatis' : 'Simple Blood glucose homoestatis' ,
+            'glucose-min-model' : 'Glucose min model'
         },
 
         'Mastering model construction: Problem Set 1':{
