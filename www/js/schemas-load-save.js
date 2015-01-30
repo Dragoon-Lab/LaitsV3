@@ -6,6 +6,7 @@ define([
 	return declare(null, {
 		_session: null,
 		_path: null,
+		count: 1,
 
 		constructor: function (/* object */ session, /* string */ path){
 			this._session = session;
@@ -73,7 +74,8 @@ define([
 			var obj = {
 				schema_id: schema,
 				x: this._session.sessionId,
-				comptence: json.toJson(competence)
+				competence: json.toJson(competence),
+				count: this.count++
 			};
 			
 			xhr.post(this._path + "save_schema_application.php", {
