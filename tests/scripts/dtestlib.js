@@ -135,12 +135,12 @@ function rgbToColor(toConvert)
     {
         return "green";
     }
-    else if(toConvert === "rgb(255,213,0)" || toConvert === "yellow")
+    else if(toConvert === "rgb(255,213,0)" || toConvert === "yellow" || toConvert === "rgba(255,255,0,1)")
     {
         return "yellow";
     }
-    else if(toConvert === "rgb(255,128,128)" || toConvert === "red" || toConvert === "rgba(255,128,128,1)")
-    {   
+    else if(toConvert === "rgb(255,128,128)" || toConvert === "rgba(255,128,128,1)" || toConvert === "red")
+    {
         return "red";
     }
     else if(toConvert === "rgba(255,255,255,1)" || toConvert === "white")

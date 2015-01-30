@@ -8,9 +8,9 @@
         var version = "";
         
         if(window.location.hostname == "dragoon.asu.edu"){
-            version = getVersion();  // Get version from version.js
+			version = getVersion();  // Get version from version.js
         }else{
-            version = new Date();
+			version = new Date();
         }
 
         dojoConfig = {
@@ -60,7 +60,7 @@
 			"dijit/form/Button", "dijit/form/CheckBox", "dijit/form/TextBox",
 			"dijit/form/ComboBox", "dijit/form/Textarea",
 			"dijit/form/SimpleTextarea", "dijit/Menu",
-			"dijit/layout/ContentPane",
+			"dijit/layout/ContentPane", "dijit/layout/AccordionContainer",
 			"dragoon/menu", // Wire up menus
 			"dragoon" // Load up Dragoon itself
         ]);	
@@ -121,9 +121,10 @@
              <button type="button" data-dojo-type="dijit/form/Button" id="graphButton">Graph</button>
              <button type="button" data-dojo-type="dijit/form/Button" id="tableButton">Table</button>
              <button type="button" data-dojo-type="dijit/form/Button" id="forumButton" disabled="true">Forum</button>
+             <button type="button" data-dojo-type="dijit/form/Button" id="schemaButton" disabled="true">Schema</button>
              <button type="button" data-dojo-type="dijit/form/Button" id="descButton" disabled="true">Problem &amp; Times</button>
              <button type="button" data-dojo-type="dijit/form/Button" id="saveButton" disabled="true">Save As...</button>
-            <button type="button" data-dojo-type="dijit/form/Button" id="mergeButton" disabled="true">Merge </button>
+             <button type="button" data-dojo-type="dijit/form/Button" id="mergeButton" disabled="true">Merge </button>
 			 <button type="button" data-dojo-type="dijit/form/Button" id="previewButton" disabled="true">Preview</button>
 			 <button type="button" data-dojo-type="dijit/form/Button" id="slidesButton" disabled="true">Hints</button>
 	     <div data-dojo-type="dijit/PopupMenuBarItem">
@@ -273,7 +274,8 @@
                 <input id="setName" data-dojo-type="dijit/form/ComboBox">
 	        <label for="selectKind">Kind of quantity:</label>
                 <select id="selectKind" data-dojo-type="dijit/form/Select">
-	            <option value='' selected>in model & required</option>
+                <option value='defaultSelect'>--Select--</option>
+	            <option value='required'>in model & required</option>
 	            <option value='allowed'>in model & optional</option>
 	            <option value='extra'>in problem statement but not in model</option>
 	            <option value='irrelevant'>not in model or problem statement</option>
@@ -402,6 +404,34 @@
 			<button id="nextSlide" type="button" data-dojo-type="dijit/form/Button" iconClass="dijitNoIcon">Next Slide</button>
 		</div>
 		<div id="slideWrapper"> <!--container for slides --></div>
+	</div>
+
+	<div class="claro schema" id="schemaAuthorBox" data-dojo-type="dijit/Dialog" title="Schema Author">
+		<div class = "fieldgroup">
+			<label for"accordion">Schemas</label>
+			<div id="accordion" data-dojo-type = "dijit/layout/AccordionContainer"/><!--div for schema box-->
+		</div>
+		<div class = "fieldgroup">
+			<label for="isolationCheckbox">Schema Application in Isolation?</label>
+			<input id="isolationCheckbox" name="isolation" data-dojo-type="dijit/form/CheckBox" value="agreed" checked="false"/>
+		</div>
+		<div class = "fieldgroup">
+			<label for="cuesCheckbox">Schema presentation has noun cues?</label>
+			<input id="cuesCheckbox" name="cues" data-dojo-type="dijit/form/CheckBox" value="agreed" checked="false"/>
+		</div>
+		<div class = "fieldgroup">
+			<label for="phrasesCheckbox">Schema presentation has noun phrases?</label>
+			<input id="phrasesCheckbox" name="phrases" data-dojo-type="dijit/form/CheckBox" value="agreed" checked="false"/>
+		</div>
+		<div class="fieldgroup">
+			<label for="nodesDropdown">Nodes: </label>
+			<div id="nodesDropdown"></div> <!-- place holder for nodes dropdown -->
+		</div>
+		<div id="buttons">
+			<button id="saveSchema" type="button" data-dojo-type="dijit/form/Button" iconClass="dijitNoIcon">Save</button>
+			<button id="resetSchema" type="button" data-dojo-type="dijit/form/Button" iconClass="dijitNoIcon">Reset</button>
+		</div>
+
 	</div>
 				
     </div>  <!-- main -->			

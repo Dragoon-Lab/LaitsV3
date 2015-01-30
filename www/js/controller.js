@@ -537,6 +537,13 @@ define([
 		addQuantity: function(source, destinations){
 		},
 
+		updateDescription: function(descID){
+			console.log("===========>	changing node description to " + descID);
+			if(typeof descID !== 'undefined' && descID != null){
+				this._model.active.setDescriptionID(this.currentID, descID);
+			}
+		},
+
 		updateType: function(type){
 			//update node type on canvas
 			console.log("===========>	changing node class to " + type);
@@ -1108,6 +1115,8 @@ define([
                             this._model.active.setInitial(this.currentID, directive.value);
                         } else if(w.id == 'equationBox'){
                         	this.equationSet(directive.value);
+                        }else if(w.id == 'selectDescription'){
+                        	this.updateDescription(directive.value);
                         }
 
 						// Each control has its own function to update the

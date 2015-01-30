@@ -58,9 +58,10 @@ require "db-login.php";
 $mysqli = mysqli_connect("localhost", $dbuser, $dbpass, $dbname)
   or trigger_error('Could not connect to database.',E_USER_ERROR);
 
-$sessionId = $_POST['x'];
-$method = $_POST['method']; // system generated choices
-$message =  $_POST['message'];
+$sessionId = $_REQUEST['x'];
+$method = $_REQUEST['method']; // system generated choices
+$message =  $_REQUEST['message'];
+$id = $_REQUEST['id'];
 
 /*
    Work-around in case magic quotes are enabled.
@@ -98,7 +99,7 @@ if($method == 'start-session'||$method == 'rename-problem'){
      Save log message, assuming session exists.
   */
   $message = mysqli_real_escape_string($mysqli, $message);
-  $query = "INSERT INTO step (session_id,method,message) VALUES ('$sessionId','$method','$message')";
+  $query = "INSERT INTO step (session_id,method,message,id) VALUES ('$sessionId','$method','$message','$id')";
   $mysqli->query($query)
     or trigger_error("Logging failed.". $mysqli->error);
 }

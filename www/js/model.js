@@ -65,7 +65,8 @@ define([
 					taskDescription: "",
 					lessonsLearned: "",
 					givenModelNodes: [],
-					studentModelNodes: []
+					studentModelNodes: [],
+					schemas: []
 				}};
 				
 				/*
@@ -76,6 +77,7 @@ define([
 			},
 			// Private variables
 			_ID: 1,
+			_SID: 1,
 			// Public variables
 			beginX: 400,
 			beginY: 100,
@@ -215,15 +217,15 @@ define([
 						descriptions[node.description] = node.ID;
 					}
 				}, this);
+				/*
+				 Set flag showing that student model is complete.
 
-		/*
-		 Set flag showing that student model is complete.
-
-		 Does not corretly handle case where student completes
-		 the model, deletes some nodes, and reopens the problem.
-		 */
-		this.isCompleteFlag = this.matchesGivenSolution();
+				 Does not corretly handle case where student completes
+				 the model, deletes some nodes, and reopens the problem.
+				 */
+				this.isCompleteFlag = this.matchesGivenSolution();
 			},
+
 			getModelAsString: function(){
 				// Summary: Returns a JSON object in string format
 				//			Should only be used for debugging.
@@ -457,6 +459,12 @@ define([
 				});
 				return outputs;
 			},
+			getSchemas: function(){
+				return obj.model.task.schemas;
+			},
+			setSchemas: function(/* object */ schemas){
+				obj.model.task.schemas = schemas;
+			},
 			setInputs: function(/*array*/ inputs, /*string*/ inputInto){
 				// Silently filter out any inputs that are not defined.
 				// inputs is an array of objects.
@@ -529,6 +537,24 @@ define([
 				}, options || {});
 				obj.model.task.givenModelNodes.push(newNode);
 				return newNode.ID;
+			},
+			addSchema: function(/* string */ schemaID){
+				var newSchema = {
+					ID: schemaID||"schema"+obj._SID++,
+					schemaClass: "",
+					competence: {
+						errors: 0,
+						total: 0,
+						timeSpent: 0,
+						values:{}
+					},
+					nodes: "",
+					difficulty: {}
+				}
+
+				obj.model.task.schemas.push(newSchema);
+
+				return newSchema.ID;
 			},
 			/*merges imported model and returns ids of merged nodes*/
 			mergeNodes: function(model){
@@ -674,7 +700,7 @@ define([
 					var id = node.ID;
 					//console.log("from count type : "+id + " node "+ node);
 					var genus = this.getGenus(id);
-					if(!genus || genus == "allowed"){
+					if(!genus|| genus == "required" || genus == "allowed"){
 						var type = this.getType(id)||"none";
 						switch(type){
 							case "accumulator":
@@ -698,6 +724,17 @@ define([
 				};
 
 				return nodeNumber;
+			},
+			getSchema: function(/* string */ schemaID){
+				var schemas = this.getSchemas();
+				var l = schemas.length;
+				for(var i = 0; i < l; i++){
+					if(schemas[i].ID == schemaID){
+						return schemas[i];
+					}
+				}
+
+				return null;
 			},
 			setName: function(/*string*/ id, /*string*/ name){
 				this.getNode(id).name = name.trim();
@@ -723,6 +760,31 @@ define([
 			setAttemptCount: function(/*string*/ id, /*string*/ part, /*string*/ count){
 				this.getNode(id).attemptCount[part] = count;
 			},
+			setSchemaDifficulty: function(/* string */ schemaID, /* string */ diffPart, /* binary */ value){
+				var schema = this.getSchema(schemaID);
+				var newDifficulty = {diffPart: value};
+				this.model.task.schemas.difficulty.push(newDifficulty);
+			},
+			setSchemaClass: function(/* string */ schemaID, /* string */ value){
+				var schema = this.getSchema(schemaID);
+				schema.schemaClass = value;
+			},
+			setSchemaNodes: function(/* string */ schemaID, /* array */ nodesID){
+				var nodes = this.model.task.schemas.nodes;
+				var l = nodesID.length;
+				index = 1;
+				var nodeString = "";
+				array.forEach(nodesID, function(ID){
+					if(index == l - 1){
+						nodeString += ID;
+					} else {
+						nodeString += ID+", ";
+					}
+				}, this);
+				
+				var schema = this.getSchema(schemaID);
+				schema.nodes = nodeString;
+			},
 			setStatus: function(/*string*/ id, /*string*/ part, /*string*/ status){
 				// Summary: tracks student progress (correct, incorrect) on a given node;
 				this.getNode(id).status[part] = status;
@@ -743,13 +805,13 @@ define([
 				var node = this.getNode(id);
 				var initialEntered = node.type && node.type == "function" || node.initial != null;
 				var equationEntered = node.type && node.type == "parameter" || node.equation;
-				if(!node.genus || node.genus == "allowed" || node.genus == "preferred"){
-					return node.name && node.description &&
+				if(!node.genus || node.genus == "required" || node.genus == "allowed" || node.genus == "preferred"){
+					return node.genus && node.name && node.description &&
 							node.type && (initialEntered || typeof initialEntered === "number") &&
 							(unitsOptional || node.units) &&
 							equationEntered;
 				}else if(node.genus == "initialValue"){
-					return node.name && node.description;
+					return node.genus && node.name && node.description;
 				}else{
 					return (node.name && node.description) ||
 							node.units;
@@ -760,7 +822,7 @@ define([
 		obj.solution = lang.mixin({
 			getNodes: function(){
 				return array.filter(obj.model.task.givenModelNodes, function(node){
-					return !node.genus;
+					return !node.genus || node.genus == "required";
 				});
 			},
 			// This method is common with given but not student.
@@ -786,6 +848,28 @@ define([
 				}, options || {});
 				obj.model.task.studentModelNodes.push(newNode);
 				return newNode.ID;
+			},
+			addSchemaTime: function(/* string */ id, /* number */ value){
+				var givenID = this.getDescriptionID(id);
+
+				if(givenID){
+					var schemas = this.getSchemas();
+					if(schemas){
+						array.forEach(schemas, function(schema){
+							if(schema.nodes.indexOf(givenID) >= 0){
+								schema.competence.timeSpent += value;
+							}
+						}, this);
+					}
+				}
+
+				return givenID;
+			},
+			addCompetenceValues: function(/* string */ type, /* number */ value){
+				var newCompetence = {type: value};
+				this.schemas.competence.values.push(newCompetence);
+
+				return newCompetence;
 			},
 			getCorrectAnswer: function(/*string*/ studentID, /*string*/ nodePart){
 				// Summary: returns the correct answer for a given part of a node;
@@ -883,11 +967,17 @@ define([
                 // Summary: Returns True if (1) matchesGivenSolution is true and (2) if all nodes that are part of the
                 // solution have correctness of "demo" or "correct"
                 return obj.matchesGivenSolution() &&
-                       array.every(this.getStudentNodesInSolution(),
+                       this.checkStudentNodeCorrectness();
+            },
+            checkStudentNodeCorrectness: function(){
+            	return array.every(this.getStudentNodesInSolution(),
                         function(studentNode){
                             var correctness = this.getCorrectness(studentNode.ID);
                             return correctness === "correct" || correctness === "demo";
                         }, this);
+            },
+            checkStudentNodeCount: function(){
+            	return this.getNodes().length - obj.solution.getNodes().length;
             },
 			getStatusDirectives: function(/*string*/ id){
 				//Summary:	Return a list of directives (like PM does).
@@ -943,6 +1033,25 @@ define([
 				var givenID = this.getDescriptionID(id);
 				var node = obj.given.getNode(givenID);
 				node.attemptCount.assistanceScore = (node.attemptCount.assistanceScore || 0) + 1;
+			},
+			incrementSchemaErrors: function(/* string */ id, /* boolean */ isCorrect){
+				var givenID = this.getDescriptionID(id);
+
+				if(givenID){
+					var schemas = this.getSchemas();
+					if(schemas){
+						array.forEach(schemas, function(schema){
+							if(schema.nodes.indexOf(givenID) >= 0){
+								schema.competences.total++;
+								if(!isCorrect){
+									schema.competences.errors++;
+								}
+							}
+						}, this);
+					}
+				}
+
+				return givenID;
 			},
 			isComplete: function(/*string*/ id){
 				// Summary: Test whether a node is completely filled out, correct or not

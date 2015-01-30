@@ -1,0 +1,226 @@
+{
+    "task": {
+        "taskName": "real giardia",
+        "time": {
+            "start": 0,
+            "end": 50,
+            "step": 1,
+            "integrationMethod": "Eulers Method",
+            "units": "hours"
+        },
+        "properties": {},
+        "image": {
+            "URL": "http://i.imgur.com/bAMhBQ1.png"
+        },
+        "taskDescription": [
+            "Captain, we have a problem with the ship's 10,000 liter tank of drinking water.  Before I could stop him, one of the sailors poured in a liter of pond water.  We know the pond water has Giardia in it, because about half the men who drank pond water got sick, so the pond water has about 15,000 Giardia per liter in it.  Fortunately, only one liter was poured in the tank, which means the water tank has about 1.5 Giardia per liter in it, because of the 10000:1 dilution.  For now, it's safe to drink, because water becomes unsafe only when it has 10,000 or more Giardia per liter.  However, I’ve read that Giardia’s growth rate is high, about 20% per hour.  How long will it be before the drinking water becomes unsafe?",
+            "",
+            ""
+        ],
+        "lessonsLearned": "This problem is an instance of the generic model, “proportional to destination.”  The change process is the birth of Giardia.  This change adds to the number of Giardia in the tank, so the destination of the change is “Number of Giardia per liter of water in the tank.” The amount of change per unit time is the “Number of Giardia born per liter each hour.”  It is proportional to the value of the destination, which is why this is the right generic model to use.  The proportionality is a constant, “Birth rate.”",
+        "givenModelNodes": [
+            {
+                "ID": "id1",
+                "inputs": [
+                    {
+                        "ID": "id2",
+                        "label": ""
+                    }
+                ],
+                "position": {
+                    "x": 410.9942932128906,
+                    "y": 141.98863220214844
+                },
+                "attemptCount": {
+                    "description": 0,
+                    "type": 0,
+                    "initial": 0,
+                    "units": 0,
+                    "equation": 0,
+                    "assistanceScore": 0
+                },
+                "status": {},
+                "name": "Giardia per liter of tank water",
+                "description": "Number of Giardia per liter of water in the tank",
+                "type": "accumulator",
+                "initial": 1.5,
+                "equation": "id2",
+                "parentNode": true
+            },
+            {
+                "ID": "id2",
+                "inputs": [
+                    {
+                        "ID": "id1",
+                        "label": ""
+                    },
+                    {
+                        "ID": "id3",
+                        "label": ""
+                    }
+                ],
+                "position": {
+                    "x": 581.9885864257812,
+                    "y": 136.98863220214844
+                },
+                "attemptCount": {
+                    "description": 0,
+                    "type": 0,
+                    "initial": 0,
+                    "units": 0,
+                    "equation": 0,
+                    "assistanceScore": 0
+                },
+                "status": {},
+                "name": "Giardia births",
+                "description": "Number of giardia born per liter each hour",
+                "type": "function",
+                "equation": "id1*id3"
+            },
+            {
+                "ID": "id3",
+                "inputs": [],
+                "position": {
+                    "x": 724.4410400390625,
+                    "y": 155.4211883544922
+                },
+                "attemptCount": {
+                    "description": 0,
+                    "type": 0,
+                    "initial": 0,
+                    "units": 0,
+                    "equation": 0,
+                    "assistanceScore": 0
+                },
+                "status": {},
+                "name": "Birth rate",
+                "description": "Giardia births as a proportion of Giardia population",
+                "equation": "",
+                "type": "parameter",
+                "parentNode": false,
+                "initial": 0.2
+            },
+            {
+                "ID": "id4",
+                "inputs": [],
+                "position": {
+                    "x": 459.4410705566406,
+                    "y": 320.4211730957031
+                },
+                "attemptCount": {
+                    "description": 0,
+                    "type": 0,
+                    "initial": 0,
+                    "units": 0,
+                    "equation": 0,
+                    "assistanceScore": 0
+                },
+                "status": {},
+                "genus": "extra",
+                "name": "Size of water tank",
+                "description": "Number of liters of water in tank",
+                "equation": "",
+                "type": "parameter",
+                "parentNode": false,
+                "initial": 10000
+            },
+            {
+                "ID": "id5",
+                "inputs": [],
+                "position": {
+                    "x": 572.438232421875,
+                    "y": 319.4268798828125
+                },
+                "attemptCount": {
+                    "description": 0,
+                    "type": 0,
+                    "initial": 0,
+                    "units": 0,
+                    "equation": 0,
+                    "assistanceScore": 0
+                },
+                "status": {},
+                "name": "Giardia per liter of pond water",
+                "description": "Number of Giardia per liter of pond water",
+                "equation": "",
+                "type": "parameter",
+                "parentNode": false,
+                "initial": 15000,
+                "genus": "extra"
+            },
+            {
+                "ID": "id6",
+                "inputs": [],
+                "position": {
+                    "x": 679.4410400390625,
+                    "y": 323.43255615234375
+                },
+                "attemptCount": {
+                    "description": 0,
+                    "type": 0,
+                    "initial": 0,
+                    "units": 0,
+                    "equation": 0,
+                    "assistanceScore": 0
+                },
+                "status": {},
+                "genus": "extra",
+                "name": "Max safe Giardia per liter",
+                "description": "Maximum number of Giardia per liter for safe water",
+                "equation": "",
+                "type": "parameter",
+                "parentNode": false,
+                "initial": 10
+            },
+            {
+                "ID": "id7",
+                "inputs": [],
+                "position": {
+                    "x": 784.4410400390625,
+                    "y": 321.4297180175781
+                },
+                "attemptCount": {
+                    "description": 0,
+                    "type": 0,
+                    "initial": 0,
+                    "units": 0,
+                    "equation": 0,
+                    "assistanceScore": 0
+                },
+                "status": {},
+                "genus": "extra",
+                "name": "Pond water added to tank",
+                "description": "Number of liters of pond water added to the tank",
+                "equation": "",
+                "type": "parameter",
+                "parentNode": false,
+                "initial": 1
+            },
+            {
+                "ID": "id8",
+                "inputs": [],
+                "position": {
+                    "x": 885.4353637695312,
+                    "y": 316.4297180175781
+                },
+                "attemptCount": {
+                    "description": 0,
+                    "type": 0,
+                    "initial": 0,
+                    "units": 0,
+                    "equation": 0,
+                    "assistanceScore": 0
+                },
+                "status": {},
+                "genus": "extra",
+                "name": "Initial Giardia per liter of tank water",
+                "description": "Initial number of Giardia per liter of water in the tank",
+                "equation": "",
+                "type": "parameter",
+                "parentNode": false,
+                "initial": 1.5
+            }
+        ],
+        "studentModelNodes": []
+    }
+}

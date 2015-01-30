@@ -44,7 +44,6 @@ define([
 	"dojo/domReady!"
 ], function(array, declare, lang, on, domAttr, registry, Chart, Default, Lines, Grid, Legend, calculations, logger, base, contentPane, dom){
 
-
 	// The calculations constructor is loaded before the RenderGraph constructor
 	return declare(calculations, {
 		type: "Graph",									//Rendering type
@@ -148,15 +147,14 @@ define([
 				}
 				else
 				{
-					if(this.model.active.checkStudentNodeNumber() < 0)
+					if(this.model.active.checkStudentNodeCount() < 0)
 						this.dialogContent += "<font color='red'>Some nodes that the author requires are missing from your model, probably because a subexpression in some node's expression needs to be turned into a node.</font><br>";
-					else if(this.model.active.checkStudentNodeNumber() > 0){ 
-						this.dialogContent += "<font color='red'>Your model does not match the author's you may have extra nodes in your model</font><br>"
+					else if(this.model.active.checkStudentNodeCount() > 0){
+						this.dialogContent += "<font color='red'>Your model does not match the author's.  You may have extra nodes in your model.</font><br>"
 					}
 					else{
-						this.dialogContent += "<font color='red'>Unfortunately, your model's behavior does not match the author's</font><br>";
-					}
-					 
+						this.dialogContent += "<font color='red'>Unfortunately, your model's behavior does not match the author's.</font><br>";
+					}					 
 				}
 			}
 			this.plotVariables = this.active.timeStep.xvars.concat(
@@ -196,7 +194,7 @@ define([
 			graphTab.style.border = "thin solid black";
 			tableTab.style.border = "thin solid black";
 
-			
+
 			var charts = {};
 			var legends = {};
 			var paneText="";
