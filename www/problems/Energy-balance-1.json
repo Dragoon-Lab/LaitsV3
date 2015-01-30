@@ -1,0 +1,195 @@
+﻿{
+    "task": {
+        "taskName": "eb1",
+        "time": {
+            "start": 0,
+            "end": 1000,
+            "step": 1,
+            "units": "days",
+            "integrationMethod": "Eulers Method"
+        },
+        "properties": {},
+        "image": {},
+        "taskDescription": [
+            "Energy Balance 1",
+            "The energy balance of your body is the difference between the energy you add to the body by ingesting food and the energy you subtract from the body by physical exercise and other activities.  When the energy you ingest exactly equals the energy you expend, the energy balance is zero.  When the energy you ingest is greater than the energy you expend, the energy balance is positive and the excess energy is added to the body's energy stores.  When you consume less energy than you expend, the energy balance is negative and your body makes up the deficit by withdrawing energy from storage.  Starting from the simpler model that you made in part 1, create a model of Joe's body using four nodes:  energy balance, energy ingested, energy expended and energy stored.  Used calories as the unit of energy.  Assume:",
+            "* Joe ingests 1989 calories a day",
+            "* Joe expends 2100 calories a day",
+            "* His body's energy balance is the energy ingested minus the energy expended.",
+            "* Joe's body has 345000 calories stored initially.  The energy balance changes this each day. Thus, if the energy balance is positive on a particular day, then the energy stored goes up by that amount during the day.  If the energy balance is negative, then the energy stored goes down.",
+            "",
+            "",
+            "",
+            "",
+            ""
+        ],
+        "givenModelNodes": [
+            {
+                "ID": "id1",
+                "inputs": [
+                    {
+                        "ID": "id2",
+                        "label": ""
+                    }
+                ],
+                "position": {
+                    "x": 617,
+                    "y": 131
+                },
+                "attemptCount": {
+                    "description": 0,
+                    "type": 0,
+                    "initial": 0,
+                    "units": 0,
+                    "equation": 0,
+                    "assistanceScore": 0
+                },
+                "status": {},
+                "name": "energy stored",
+                "description": "The energy stored in the body",
+                "type": "accumulator",
+                "initial": 345000,
+                "units": "calories",
+                "equation": "id2"
+            },
+            {
+                "ID": "id2",
+                "inputs": [
+                    {
+                        "ID": "id3",
+                        "label": ""
+                    },
+                    {
+                        "ID": "id4",
+                        "label": "-"
+                    }
+                ],
+                "position": {
+                    "x": 617,
+                    "y": 256
+                },
+                "attemptCount": {
+                    "description": 0,
+                    "type": 0,
+                    "initial": 0,
+                    "units": 0,
+                    "equation": 0,
+                    "assistanceScore": 0
+                },
+                "status": {},
+                "name": "energy balance",
+                "description": "The difference between ingestion and expenditure of energy per day",
+                "type": "function",
+                "units": "calories",
+                "equation": "id3-id4"
+            },
+            {
+                "ID": "id3",
+                "inputs": [],
+                "position": {
+                    "x": 744.7451782226562,
+                    "y": 242.7451629638672
+                },
+                "attemptCount": {
+                    "description": 0,
+                    "type": 0,
+                    "initial": 0,
+                    "units": 0,
+                    "equation": 0,
+                    "assistanceScore": 0
+                },
+                "status": {},
+                "name": "energy ingested",
+                "description": "energy ingested daily",
+                "type": "parameter",
+                "parentNode": false,
+                "initial": 1989,
+                "units": "calories"
+            },
+            {
+                "ID": "id4",
+                "inputs": [],
+                "position": {
+                    "x": 458.74517822265625,
+                    "y": 242.7451629638672
+                },
+                "attemptCount": {
+                    "description": 0,
+                    "type": 0,
+                    "initial": 0,
+                    "units": 0,
+                    "equation": 0,
+                    "assistanceScore": 0
+                },
+                "status": {},
+                "name": "energy expended",
+                "description": "energy expended daily",
+                "type": "parameter",
+                "parentNode": false,
+                "initial": 2100,
+                "units": "calories"
+            }
+        ],
+        "studentModelNodes": [
+    {
+        "ID": "id5",
+        "inputs": [],
+        "position": {
+            "x": 630,
+            "y": 300
+        },
+        "status": {
+            "description": {
+                "status": "correct",
+                "disabled": true
+            },
+            "type": {
+                "disabled": false,
+                "status": "incorrect"
+            }
+        },
+        "descriptionID": "id2",
+        "type": "parameter"
+    },
+    {
+        "ID": "id6",
+        "inputs": [
+            {
+                "ID": "id5",
+                "label": ""
+            }
+        ],
+        "position": {
+            "x": 600,
+            "y": 100
+        },
+        "status": {
+            "description": {
+                "status": "correct",
+                "disabled": true
+            },
+            "type": {
+                "disabled": true,
+                "status": "correct"
+            },
+            "initial": {
+                "disabled": true,
+                "status": "correct"
+            },
+            "units": {
+                "disabled": false
+            },
+            "equation": {
+                "disabled": true,
+                "status": "correct"
+            }
+        },
+        "descriptionID": "id1",
+        "type": "accumulator",
+        "initial": 345000,
+        "equation": "id5",
+		"units": "calories"
+    }
+]
+    }
+}

@@ -1,0 +1,605 @@
+﻿{
+ "task":{
+    "taskName": "eb5",
+    "time": {
+        "start": 0,
+        "end": 1000,
+        "step": 1,
+        "units": "days",
+        "integrationMethod": "Eulers Method"
+    },
+    "properties": {},
+    "image": {},
+    "taskDescription": [
+        "Energy Balance 5",
+        "The amount of physical activity energy burned per days depends mostly on two factors:  how much exercise you do and your resting energy expenditure.  The energy spent on exercise is estimated by multiplying the resting energy expenditure by a factor, which is:",
+        "",
+        "0.2 for little or no exercise, ",
+        "0.375 for light exercise,",
+        "0.55 for moderate exercise,",
+        "0.75 for hard exercise but not every day",
+        "0.9 for daily hard exercise.",
+        "",
+        "Please change the node \"physical activity expenditure\" to be the product of resting energy expenditure and a new node, physical activity level.  Let's assume Joe does little exercise, so his physical activity level is 0.2. ",
+        "",
+        ""
+    ],
+    "givenModelNodes": [
+        {
+            "ID": "id1",
+            "inputs": [
+                {
+                    "ID": "id2",
+                    "label": ""
+                }
+            ],
+            "position": {
+                "x": 472,
+                "y": 82
+            },
+            "attemptCount": {
+                "description": 0,
+                "type": 0,
+                "initial": 0,
+                "units": 0,
+                "equation": 0,
+                "assistanceScore": 1
+            },
+            "status": {},
+            "name": "weight",
+            "description": "Joe's weight daily",
+            "type": "accumulator",
+            "initial": 150,
+            "units": "lbs",
+            "equation": "id2"
+        },
+        {
+            "ID": "id2",
+            "inputs": [
+                {
+                    "ID": "id3",
+                    "label": ""
+                },
+                {
+                    "ID": "id4",
+                    "label": "/"
+                }
+            ],
+            "position": {
+                "x": 469,
+                "y": 195
+            },
+            "attemptCount": {
+                "description": 0,
+                "type": 0,
+                "initial": 0,
+                "units": 0,
+                "equation": 0,
+                "assistanceScore": 1
+            },
+            "status": {},
+            "name": "weight change",
+            "description": "how much weight changes due to energy surplus or deficit",
+            "type": "function",
+            "units": "lbs",
+            "equation": "id3/id4"
+        },
+        {
+            "ID": "id3",
+            "inputs": [
+                {
+                    "ID": "id5",
+                    "label": ""
+                },
+                {
+                    "ID": "id6",
+                    "label": "-"
+                }
+            ],
+            "position": {
+                "x": 471,
+                "y": 315
+            },
+            "attemptCount": {
+                "description": 0,
+                "type": 0,
+                "initial": 0,
+                "units": 0,
+                "equation": 0,
+                "assistanceScore": 1
+            },
+            "status": {},
+            "name": "energy balance",
+            "description": "surplus (positive) or deficit (negative) energy per day",
+            "type": "function",
+            "units": "calories",
+            "equation": "id5-id6"
+        },
+        {
+            "ID": "id4",
+            "inputs": [],
+            "position": {
+                "x": 607.7451782226562,
+                "y": 120.74516296386719
+            },
+            "attemptCount": {
+                "description": 0,
+                "type": 0,
+                "initial": 0,
+                "units": 0,
+                "equation": 0,
+                "assistanceScore": 1
+            },
+            "status": {},
+            "name": "calories per pound",
+            "description": "calories stored as a pound of tissue",
+            "type": "parameter",
+            "parentNode": false,
+            "initial": 3500,
+            "units": "calories/lb"
+        },
+        {
+            "ID": "id5",
+            "inputs": [],
+            "position": {
+                "x": 606.7451782226562,
+                "y": 262.74517822265625
+            },
+            "attemptCount": {
+                "description": 0,
+                "type": 0,
+                "initial": 0,
+                "units": 0,
+                "equation": 0,
+                "assistanceScore": 1
+            },
+            "status": {},
+            "name": "energy ingested",
+            "description": "energy from ingestion of food per day",
+            "type": "parameter",
+            "parentNode": false,
+            "initial": 1989,
+            "units": "calories"
+        },
+        {
+            "ID": "id6",
+            "inputs": [
+                {
+                    "ID": "id7",
+                    "label": ""
+                },
+                {
+                    "ID": "id8",
+                    "label": ""
+                },
+                {
+                    "ID": "id9",
+                    "label": ""
+                }
+            ],
+            "position": {
+                "x": 459,
+                "y": 461
+            },
+            "attemptCount": {
+                "description": 0,
+                "type": 0,
+                "initial": 0,
+                "units": 0,
+                "equation": 0,
+                "assistanceScore": 1
+            },
+            "status": {},
+            "name": "energy expended",
+            "description": "energy expended per day from all sources",
+            "type": "function",
+            "units": "calories",
+            "equation": "(id7+id8)+id9"
+        },
+        {
+            "ID": "id7",
+            "inputs": [
+                {
+                    "ID": "id9",
+                    "label": ""
+                },
+                {
+                    "ID": "id11",
+                    "label": ""
+                }
+            ],
+            "position": {
+                "x": 448,
+                "y": 594
+            },
+            "attemptCount": {
+                "description": 0,
+                "type": 0,
+                "initial": 0,
+                "units": 0,
+                "equation": 0,
+                "assistanceScore": 0
+            },
+            "status": {},
+            "name": "physical activity expenditure",
+            "description": "energy per day due to exercise",
+            "type": "function",
+            "units": "calories",
+            "equation": "id9*id11"
+        },
+        {
+            "ID": "id8",
+            "inputs": [],
+            "position": {
+                "x": 608.7451782226562,
+                "y": 420.74517822265625
+            },
+            "attemptCount": {
+                "description": 0,
+                "type": 0,
+                "initial": 0,
+                "units": 0,
+                "equation": 0,
+                "assistanceScore": 1
+            },
+            "status": {},
+            "name": "digestive activity expenditure",
+            "description": "energy for digesting food",
+            "type": "parameter",
+            "parentNode": false,
+            "initial": 200,
+            "units": "calories"
+        },
+        {
+            "ID": "id9",
+            "inputs": [],
+            "position": {
+                "x": 220.7451629638672,
+                "y": 547.7451782226562
+            },
+            "attemptCount": {
+                "description": 0,
+                "type": 0,
+                "initial": 0,
+                "units": 0,
+                "equation": 0,
+                "assistanceScore": 1
+            },
+            "status": {},
+            "name": "resting energy expenditure",
+            "description": "how much energy expended per day for basic bodily functions",
+            "type": "parameter",
+            "parentNode": false,
+            "initial": 1400,
+            "units": "calories"
+        },
+        {
+            "ID": "id11",
+            "inputs": [],
+            "position": {
+                "x": 609.7451782226562,
+                "y": 578.7451782226562
+            },
+            "attemptCount": {
+                "description": 0,
+                "type": 0,
+                "initial": 0,
+                "units": 0,
+                "equation": 0,
+                "assistanceScore": 0
+            },
+            "status": {},
+            "name": "physical activity level",
+            "description": "represents how much exercise done per day",
+            "type": "parameter",
+            "parentNode": false,
+            "initial": 0.2,
+            "units": ""
+        }
+    ],
+    "studentModelNodes": [
+            {
+                "ID": "id13",
+                "inputs": [
+                    {
+                        "ID": "id15",
+                        "label": ""
+                    },
+                    {
+                        "ID": "id14",
+                        "label": "-"
+                    }
+                ],
+                "position": {
+                    "x": 700,
+                    "y": 300
+                },
+                "status": {
+                    "description": {
+                        "status": "correct",
+                        "disabled": true
+                    },
+                    "type": {
+                        "disabled": true,
+                        "status": "correct"
+                    },
+                    "units": {
+                        "disabled": true,
+                        "status": "correct"
+                    },
+                    "equation": {
+                        "disabled": false,
+                        "status": "correct"
+                    }
+                },
+                "descriptionID": "id3",
+                "type": "function",
+                "equation": "id15-id14",
+                "units": "calories"
+            },
+            {
+                "ID": "id14",
+                "inputs": [
+                    {
+                        "ID": "id19",
+                        "label": ""
+                    },
+                    {
+                        "ID": "id20",
+                        "label": ""
+                    },
+                    {
+                        "ID": "id21",
+                        "label": ""
+                    }
+                ],
+                "position": {
+                    "x": 700,
+                    "y": 500
+                },
+                "status": {
+                    "description": {
+                        "status": "correct",
+                        "disabled": true
+                    },
+                    "type": {
+                        "disabled": true,
+                        "status": "correct"
+                    },
+                    "units": {
+                        "disabled": true,
+                        "status": "correct"
+                    },
+                    "equation": {
+                        "disabled": true,
+                        "status": "correct"
+                    }
+                },
+                "descriptionID": "id6",
+                "type": "function",
+                "initial": "",
+                "units": "calories",
+                "equation": "(id19+id20)+id21"
+            },
+            {
+                "ID": "id15",
+                "inputs": [],
+                "position": {
+                    "x": 900,
+                    "y": 300
+                },
+                "status": {
+                    "description": {
+                        "status": "correct",
+                        "disabled": true
+                    },
+                    "type": {
+                        "disabled": true,
+                        "status": "correct"
+                    },
+                    "initial": {
+                        "disabled": true,
+                        "status": "correct"
+                    },
+                    "units": {
+                        "disabled": true,
+                        "status": "correct"
+                    }
+                },
+                "descriptionID": "id5",
+                "type": "parameter",
+                "initial": 1989,
+                "units": "calories"
+            },
+            {
+                "ID": "id16",
+                "inputs": [],
+                "position": {
+                    "x": 900,
+                    "y": 150
+                },
+                "status": {
+                    "description": {
+                        "status": "correct",
+                        "disabled": true
+                    },
+                    "type": {
+                        "disabled": true,
+                        "status": "correct"
+                    },
+                    "initial": {
+                        "disabled": true,
+                        "status": "correct"
+                    },
+                    "units": {
+                        "disabled": true,
+                        "status": "correct"
+                    }
+                },
+                "descriptionID": "id4",
+                "type": "parameter",
+                "initial": 3500,
+                "units": "calories/lb"
+            },
+            {
+                "ID": "id17",
+                "inputs": [
+                    {
+                        "ID": "id18",
+                        "label": ""
+                    }
+                ],
+                "position": {
+                    "x": 700,
+                    "y": 50
+                },
+                "status": {
+                    "description": {
+                        "status": "correct",
+                        "disabled": true
+                    },
+                    "type": {
+                        "disabled": true,
+                        "status": "correct"
+                    },
+                    "initial": {
+                        "disabled": true,
+                        "status": "correct"
+                    },
+                    "units": {
+                        "disabled": false,
+                        "status": "correct"
+                    },
+                    "equation": {
+                        "disabled": true,
+                        "status": "correct"
+                    }
+                },
+                "descriptionID": "id1",
+                "type": "accumulator",
+                "units": "lbs",
+                "equation": "id18",
+                "initial": 150
+            },
+            {
+                "ID": "id18",
+                "inputs": [
+                    {
+                        "ID": "id13",
+                        "label": ""
+                    },
+                    {
+                        "ID": "id16",
+                        "label": ""
+                    }
+                ],
+                "position": {
+                    "x": 700,
+                    "y": 166
+                },
+                "status": {
+                    "description": {
+                        "status": "correct",
+                        "disabled": true
+                    },
+                    "type": {
+                        "disabled": true,
+                        "status": "correct"
+                    },
+                    "units": {
+                        "disabled": true,
+                        "status": "correct"
+                    },
+                    "equation": {
+                        "disabled": false,
+                        "status": "correct"
+                    }
+                },
+                "descriptionID": "id2",
+                "type": "function",
+                "equation": "id13/id16",
+                "units": "lbs"
+            },
+            {
+                "ID": "id19",
+                "inputs": [],
+                "position": {
+                    "x": 700,
+                    "y": 650
+                },
+                "status": {
+                    "description": {
+                        "status": "correct",
+                        "disabled": true
+                    },
+                    "type": {
+                        "disabled": true,
+                        "status": "correct"
+                    },
+                    "initial": {
+                        "disabled": true,
+                        "status": "correct"
+                    },
+                    "units": {
+                        "disabled": true,
+                        "status": "correct"
+                    }
+                },
+                "descriptionID": "id9",
+                "type": "parameter",
+                "initial": 1400,
+                "units": "calories"
+            },
+            {
+                "ID": "id20",
+                "inputs": [],
+                "position": {
+                    "x": 400,
+                    "y": 500
+                },
+                "status": {
+                    "description": {
+                        "status": "correct",
+                        "disabled": true
+                    },
+                    "type": {
+                        "disabled": true,
+                        "status": "correct"
+                    },
+                    "initial": {
+                        "disabled": true,
+                        "status": "correct"
+                    },
+                    "units": {
+                        "disabled": true,
+                        "status": "correct"
+                    }
+                },
+                "descriptionID": "id8",
+                "type": "parameter",
+                "initial": 200,
+                "units": "calories"
+            },
+            {
+                "ID": "id21",
+                "inputs": [],
+                "position": {
+                    "x": 900,
+                    "y": 500
+                },
+                "status": {
+                    "description": {
+                        "status": "correct",
+                        "disabled": true
+                    },
+                    "type": {
+                        "disabled": false,
+                        "status": "incorrect"
+                    }
+                },
+                "descriptionID": "id7",
+                "type": "parameter"
+            }
+        ]
+    }
+}

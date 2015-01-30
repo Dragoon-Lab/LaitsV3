@@ -1,0 +1,143 @@
+
+{
+  'Human Digestive Energy Balance' : {
+            'Energy-balance-0' : 'Energy Balance 0',
+            'Energy-balance-1' : 'Energy Balance 1',
+            'Energy-balance-2' : 'Energy Balance 2',
+            'Energy-balance-3' : 'Energy Balance 3',
+            'Energy-balance-4' : 'Energy Balance 4',
+            'Energy-balance-5' : 'Energy Balance 5',
+            'Energy-balance-6' : 'Energy Balance 6',
+            'Energy-balance-7' : 'Energy Balance 7',
+            'Energy-balance-8' : 'Energy Balance 8'
+        },
+
+        'Blood Glucose' : {
+            'Zero-set-point-homeostasis' : 'Zero set point homeostasis',
+            'Nonzero-set-point-homeostasis' : 'Nonzero set point homeostasis',
+            'Two-loop-homoestatis':'Two loop homoestatis',
+            'Simple-Blood-glucose homoestatis' : 'Simple Blood glucose homoestatis' ,
+            'Glucose-min-model' : 'Glucose min model'
+        },
+
+        'Mastering model construction: Problem Set 1':{
+            'CPI-2014-ps1-01' :'Mastering model construction: Problem Set 1',
+            'CPI-2014-ps1-02' :'Mastering model construction: Problem Set 2',
+            'CPI-2014-ps1-03' :'Mastering model construction: Problem Set 3',
+            'CPI-2014-ps1-04' :'Mastering model construction: Problem Set 4',
+            'CPI-2014-ps1-05' :'Mastering model construction: Problem Set 5',
+            'CPI-2014-ps1-06' :'Mastering model construction: Problem Set 6',
+            'CPI-2014-ps1-07' :'Mastering model construction: Problem Set 7',
+            'CPI-2014-ps1-08' :'Mastering model construction: Problem Set 8',
+            'CPI-2014-ps1-09' :'Mastering model construction: Problem Set 9',
+            'CPI-2014-ps1-10' :'Mastering model construction: Problem Set 10',
+            'CPI-2014-ps1-11' :'Mastering model construction: Problem Set 11',
+            'CPI-2014-ps1-12' :'Mastering model construction: Problem Set 12'
+        },
+
+        'Mastering model construction: Problem Set 2':{
+           'CPI-2014-ps2-01' :'Mastering model construction: Problem Set 1',
+           'CPI-2014-ps2-02' :'Mastering model construction: Problem Set 2',
+           'CPI-2014-ps2-03' :'Mastering model construction: Problem Set 3',
+           'CPI-2014-ps2-04' :'Mastering model construction: Problem Set 4',
+           'CPI-2014-ps2-05' :'Mastering model construction: Problem Set 5',
+           'CPI-2014-ps2-06' :'Mastering model construction: Problem Set 6',
+           'CPI-2014-ps2-07' :'Mastering model construction: Problem Set 7',
+           'CPI-2014-ps2-08' :'Mastering model construction: Problem Set 8',
+           'CPI-2014-ps2-09' :'Mastering model construction: Problem Set 9'
+        },
+
+        'Mastering model construction: Problem Set 3':{
+           'CPI-2014-ps3-01' :'Mastering model construction: Problem Set 1',
+           'CPI-2014-ps3-02' :'Mastering model construction: Problem Set 2',
+           'CPI-2014-ps3-03' :'Mastering model construction: Problem Set 3',
+           'CPI-2014-ps3-04' :'Mastering model construction: Problem Set 4',
+           'CPI-2014-ps3-05' :'Mastering model construction: Problem Set 5',
+           'CPI-2014-ps3-06' :'Mastering model construction: Problem Set 6',
+           'CPI-2014-ps3-07' :'Mastering model construction: Problem Set 7',
+           'CPI-2014-ps3-08' :'Mastering model construction: Problem Set 8'
+        },
+
+        'Mastering model construction: Problem Set 4':{
+           'CPI-2014-ps4-01' :'Mastering model construction: Problem Set 1',
+           'CPI-2014-ps4-02' :'Mastering model construction: Problem Set 2',
+           'CPI-2014-ps4-03' :'Mastering model construction: Problem Set 3',
+           'CPI-2014-ps4-04' :'Mastering model construction: Problem Set 4',
+           'CPI-2014-ps4-05' :'Mastering model construction: Problem Set 5',
+           'CPI-2014-ps4-06' :'Mastering model construction: Problem Set 6'
+        },
+
+        'Mastering model construction: Problem Set 5':{
+           'CPI-2014-ps5-01' :'Mastering model construction: Problem Set 1',
+           'CPI-2014-ps5-02' :'Mastering model construction: Problem Set 2',
+           'CPI-2014-ps5-03' :'Mastering model construction: Problem Set 3',
+           'CPI-2014-ps5-04' :'Mastering model construction: Problem Set 4',
+           'CPI-2014-ps5-05' :'Mastering model construction: Problem Set 5',
+           'CPI-2014-ps5-06' :'Mastering model construction: Problem Set 6'
+   },
+        'Ecosystem Population Dynamics':{
+            'isle1' : 'Moose population 1',
+            'isle2' : 'Moose population 2',
+            'isle3' : 'Moose population 3',
+            'isle4' : 'Moose population 4',
+            'isle5' : 'Wolves',
+            'isle6' : 'Moose and Wolves',
+            '201' : 'Waterfowl 1',
+            '202' : 'Waterfowl 2',
+            '203' : 'Waterfowl 3',
+            '204' : 'Waterfowl & cats'
+   },
+        'Miscellaneous':{
+            'jared1' : "Jared's weight",
+            'jared2' : "Jared Oprah",
+            'jared3' : "Jared Oprah +",
+            'jared4' : "Jared Oprah *",
+            'dodos' : "Dodo extinction",
+            'rabbits' : "Rabbit population",              
+            '105':'Intro problem 1',
+            '106':'Intro problem 2',
+            '107':'Intro problem 3',
+            '108':'Intro problem 4',
+            '74':'Dying orchard',
+            '92':'Bilge water',
+            '94':'Rust',
+            '110':'Chestnut blight',
+            '95':'Bus Fleet',
+            '93':'Rider gap',
+            '96':'Capacity utilization',
+            '97':'Bank Account',
+            '98':'Merchant Marine',
+            '80':'Metro Singles Club', 
+            '111':'Bookworm',
+            '99':'Venice',
+            '109':'Giardia Bacteria',
+            '112':'Blood Glucose',
+            '100':'Oil Tanker',
+            '79':'Hardwood Forest',
+            '101':'ASU Commuters',
+            '115':'Widget Stocking',
+            '113':'Busy Hospital',
+            '114':'ObscureFlix'
+       },
+   
+        'Kinematics': {
+            'Fall-from-building-1' : 'Fall from building 1',
+            'Fall-from-building-2' : 'Fall from building 2',
+            'Fall-from-building-3' : 'Fall from building 3',
+            'Thrown-Stone-1' : 'Thrown Stone 1',
+            'Thrown-Stone-2' : 'Thrown Stone 2'
+        },
+
+    'Generic Changes':{
+            'constant':'constant',
+            'constant-change-runs-out':'constant change runs out',
+            'propor-to-set-point-minus-destination':'propor to set point minus destination',
+            'propor-to-source-minus-destination':'propor to source minus destination',
+            'proportional-to-source':'proportional to source',
+            'proportional-to-destination':'proportional to destination',
+            'acceleration':'acceleration',
+            'epidemic2':'epidemic2'
+        }
+
+    }
+	     

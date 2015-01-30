@@ -1,0 +1,135 @@
+{
+    "task": {
+        "taskName": "proportional+to+destination",
+        "time": {
+            "start": 0,
+            "end": 10,
+            "step": 0.5,
+            "integrationMethod": "Eulers Method",
+            "units": "seconds"
+        },
+        "properties": {},
+        "image": {},
+        "taskDescription": [
+            "* Process: Generic state change",
+            "* Source: Quantity of stuff in Source state",
+            "* Destination: Quantity of stuff in Destination state",
+            "* Changing: Proportional to the Destination",
+            "",
+            "Some problems do not need the Source node.",
+            "",
+            "Popular names for this type of process:",
+            "* exponential transfer",
+            "* exponential growth"
+        ],
+        "givenModelNodes": [
+            {
+                "ID": "id1",
+                "inputs": [
+                    {
+                        "ID": "id2",
+                        "label": "-"
+                    }
+                ],
+                "position": {
+                    "x": 403,
+                    "y": 236
+                },
+                "attemptCount": {
+                    "description": 0,
+                    "type": 0,
+                    "initial": 0,
+                    "units": 0,
+                    "equation": 0,
+                    "assistanceScore": 0
+                },
+                "status": {},
+                "name": "Source",
+                "description": "Quantity of stuff in the Source state",
+                "type": "accumulator",
+                "initial": 100,
+                "equation": "-id2"
+            },
+            {
+                "ID": "id2",
+                "inputs": [
+                    {
+                        "ID": "id3",
+                        "label": ""
+                    },
+                    {
+                        "ID": "id4",
+                        "label": ""
+                    }
+                ],
+                "position": {
+                    "x": 531,
+                    "y": 209
+                },
+                "attemptCount": {
+                    "description": 0,
+                    "type": 0,
+                    "initial": 0,
+                    "units": 0,
+                    "equation": 0,
+                    "assistanceScore": 0
+                },
+                "status": {},
+                "name": "Changing",
+                "description": "Quantity of stuff changing state per time unit",
+                "type": "function",
+                "equation": "id3*id4"
+            },
+            {
+                "ID": "id3",
+                "inputs": [
+                    {
+                        "ID": "id2",
+                        "label": ""
+                    }
+                ],
+                "position": {
+                    "x": 684,
+                    "y": 204
+                },
+                "attemptCount": {
+                    "description": 0,
+                    "type": 0,
+                    "initial": 0,
+                    "units": 0,
+                    "equation": 0,
+                    "assistanceScore": 0
+                },
+                "status": {},
+                "name": "Destination",
+                "description": "Quantity of stuff in the Destination state",
+                "type": "accumulator",
+                "initial": 1,
+                "equation": "id2"
+            },
+            {
+                "ID": "id4",
+                "inputs": [],
+                "position": {
+                    "x": 638.3309326171875,
+                    "y": 97.3309555053711
+                },
+                "attemptCount": {
+                    "description": 0,
+                    "type": 0,
+                    "initial": 0,
+                    "units": 0,
+                    "equation": 0,
+                    "assistanceScore": 0
+                },
+                "status": {},
+                "name": "Proportion changing",
+                "description": "Proportion of Destination that change state per time unit",
+                "type": "parameter",
+                "parentNode": false,
+                "initial": 0.2
+            }
+        ],
+        "studentModelNodes": []
+    }
+}
