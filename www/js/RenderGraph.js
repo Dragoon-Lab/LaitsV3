@@ -101,7 +101,7 @@ define([
 					// givenID should always exist.
 					console.assert(givenID, "Node '" + id + "' has no corresponding given node");
 					var givenNode = this.model.given.getNode(givenID); 
-					return givenNode && (!givenNode.genus ? givenID : null);
+					return givenNode && ((!givenNode.genus  || node.genus === "required")? givenID : null);
 				}, this);
 				// Calculate solutions
 				var givenSolution = this.findSolution(false, this.given.plotVariables);

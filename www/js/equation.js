@@ -73,7 +73,7 @@ define([
 			var givenVals = {};
 			array.forEach(model.given.getNodes(), function(node){
 				/* Parameter and accumulator nodes are treated as independent. */
-				if(!node.genus && (node.type == 'parameter' || node.type == 'accumulator')){
+				if((!node.genus || node.genus === "required") && (node.type == 'parameter' || node.type == 'accumulator')){
 					givenVals[node.ID] = Math.random();
 				}
 			});
@@ -369,7 +369,7 @@ define([
 				// Include all nodes that belong in the solution.
 				// Additionally we only include nodes that are complete,
 				// except for units.
-				if(!node.genus && model.isComplete(node.ID, true)){ 
+				if((!node.genus || node.genus === "required") && model.isComplete(node.ID, true)){ 
 					switch(node.type){
 					case "parameter":
 						// No equation to parse
