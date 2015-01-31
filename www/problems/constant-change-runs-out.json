@@ -1,0 +1,135 @@
+{
+    "task": {
+        "taskName": "constant+change+runs+out",
+        "time": {
+            "start": 0,
+            "end": 10,
+            "step": 1,
+            "integrationMethod": "Eulers Method",
+            "units": "seconds"
+        },
+        "properties": {},
+        "image": {},
+        "taskDescription": [
+            "* Process: Changing from the source state to the destination state",
+            "* Source: Stuff in the source state",
+            "* Destination: Stuff in the destination state",
+            "* Changing:  A constantamount of stuff change each time unit until the source state runs out.",
+            "",
+            "This uses a function, min(X,Y), which returns either X or Y, whichever is smaller.  Thus, 5+min(2,3) is 7 and min(-8,2) is-8.  ",
+            "",
+            "When Source becomes less than Max changing, then the model subtracts only Source from Source, thus emptying it out.  If it subtracted Max changing instead, then Source would become negative.",
+            "",
+            "A complete list of functions that you can use in Dragoon expressions is available by clicking on the Help button and then on \"Math functions.\"",
+            "",
+            ""
+        ],
+        "givenModelNodes": [
+            {
+                "ID": "id1",
+                "inputs": [
+                    {
+                        "ID": "id2",
+                        "label": "-"
+                    }
+                ],
+                "position": {
+                    "x": 477,
+                    "y": 145
+                },
+                "attemptCount": {
+                    "description": 0,
+                    "type": 0,
+                    "initial": 0,
+                    "units": 0,
+                    "equation": 0,
+                    "assistanceScore": 0
+                },
+                "status": {},
+                "name": "Source",
+                "description": "Amount of stuff in the source state",
+                "type": "accumulator",
+                "initial": 100,
+                "equation": "-id2"
+            },
+            {
+                "ID": "id2",
+                "inputs": [
+                    {
+                        "ID": "id1"
+                    },
+                    {
+                        "ID": "id4"
+                    }
+                ],
+                "position": {
+                    "x": 610,
+                    "y": 148
+                },
+                "attemptCount": {
+                    "description": 0,
+                    "type": 0,
+                    "initial": 0,
+                    "units": 0,
+                    "equation": 0,
+                    "assistanceScore": 0
+                },
+                "status": {},
+                "name": "Changing",
+                "description": "Amount of stuff changing each time unit",
+                "type": "function",
+                "equation": "min(id1,id4)"
+            },
+            {
+                "ID": "id3",
+                "inputs": [
+                    {
+                        "ID": "id2",
+                        "label": ""
+                    }
+                ],
+                "position": {
+                    "x": 757,
+                    "y": 143
+                },
+                "attemptCount": {
+                    "description": 0,
+                    "type": 0,
+                    "initial": 0,
+                    "units": 0,
+                    "equation": 0,
+                    "assistanceScore": 0
+                },
+                "status": {},
+                "name": "Destination",
+                "description": "Amount of stuff in the destination state",
+                "type": "accumulator",
+                "initial": 4,
+                "equation": "id2"
+            },
+            {
+                "ID": "id4",
+                "inputs": [],
+                "position": {
+                    "x": 597.3309326171875,
+                    "y": 267.3309326171875
+                },
+                "attemptCount": {
+                    "description": 0,
+                    "type": 0,
+                    "initial": 0,
+                    "units": 0,
+                    "equation": 0,
+                    "assistanceScore": 0
+                },
+                "status": {},
+                "name": "Max changing",
+                "description": "The maximum amount of stuff changing each time unit",
+                "type": "parameter",
+                "parentNode": false,
+                "initial": 15
+            }
+        ],
+        "studentModelNodes": []
+    }
+}
